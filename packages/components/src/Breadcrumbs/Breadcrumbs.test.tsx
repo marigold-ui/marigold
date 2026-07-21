@@ -1,21 +1,19 @@
 import { act, render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createRef } from 'react';
+import type { RefObject } from 'react';
 import { vi } from 'vitest';
+import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
-import {
-  AutoCollapse,
-  Basic,
-  Collapsed,
-  ManyItems,
-} from './Breadcrumbs.stories';
+import { AutoCollapse, Basic } from './Breadcrumbs.stories';
 import { BreadcrumbsItem } from './BreadcrumbsItem';
 import { useAutoCollapse } from './useAutoCollapse';
 
+const smallScreenQuery = `(width < ${theme.screens!.sm})`;
+
 const user = userEvent.setup();
 
-window.matchMedia = mockMatchMedia(['(width < 640px)']);
+window.matchMedia = mockMatchMedia([smallScreenQuery]);
 
 test('renders items as links with separators', () => {
   render(<Basic.Component />);
@@ -34,33 +32,28 @@ test('renders items as links with separators', () => {
 });
 
 test('hides middle items behind ellipsis when collapsed', () => {
-  renderWithOverlay(<Collapsed.Component />);
+  renderWithOverlay(<Basic.Component maxVisibleItems={2} />);
 
-  expect(screen.getByRole('link', { name: 'Home' })).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: 'Breadcrumb3' })).toBeInTheDocument();
   expect(
     screen.getByRole('button', { name: 'These breadcrumbs are hidden' })
   ).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Breadcrumb2' })).toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: 'Home' })).not.toBeInTheDocument();
   expect(
     screen.queryByRole('link', { name: 'Breadcrumb1' })
-  ).not.toBeInTheDocument();
-  expect(
-    screen.queryByRole('link', { name: 'Breadcrumb2' })
   ).not.toBeInTheDocument();
 });
 
 test('reveals hidden items as menu items on ellipsis click', async () => {
-  renderWithOverlay(<Collapsed.Component />);
+  renderWithOverlay(<Basic.Component maxVisibleItems={2} />);
 
   await user.click(
     screen.getByRole('button', { name: 'These breadcrumbs are hidden' })
   );
 
+  expect(screen.getByRole('menuitem', { name: 'Home' })).toBeInTheDocument();
   expect(
     screen.getByRole('menuitem', { name: 'Breadcrumb1' })
-  ).toBeInTheDocument();
-  expect(
-    screen.getByRole('menuitem', { name: 'Breadcrumb2' })
   ).toBeInTheDocument();
 });
 
@@ -78,17 +71,14 @@ test('shows all items when maxVisibleItems is auto and space allows', () => {
 });
 
 test('shows only ellipsis and current item when collapsed to minimum', () => {
-  renderWithOverlay(<ManyItems.Component />);
+  renderWithOverlay(<Basic.Component maxVisibleItems={2} />);
 
-  expect(
-    screen.getByRole('link', { name: 'Breadcrumb 30' })
-  ).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Breadcrumb2' })).toBeInTheDocument();
   expect(
     screen.getByRole('button', { name: 'These breadcrumbs are hidden' })
   ).toBeInTheDocument();
-  expect(
-    screen.queryByRole('link', { name: 'Breadcrumb 1' })
-  ).not.toBeInTheDocument();
+  // only the current item stays as a link; the rest sit behind the ellipsis
+  expect(screen.getAllByRole('link')).toHaveLength(1);
 });
 
 test('does not collapse when items fit within visible limit', () => {
@@ -110,7 +100,7 @@ test('does not collapse when maxVisibleItems is less than 2', () => {
 });
 
 test('forwards ref', () => {
-  const objectRef = createRef<HTMLOListElement>();
+  const objectRef: RefObject<HTMLOListElement | null> = { current: null };
   const callbackRef = vi.fn();
 
   render(<Basic.Component ref={objectRef} />);
@@ -186,8 +176,10 @@ describe('useAutoCollapse', () => {
 
   test('shows all items when they fit', () => {
     // 5 items: 50+50+50+50+50 = 250, plus 4 gaps of 8 = 282. Container=300 → fits
-    const containerRef = { current: createMockContainer(300) };
-    const hiddenRef = {
+    const containerRef: RefObject<HTMLOListElement | null> = {
+      current: createMockContainer(300),
+    };
+    const hiddenRef: RefObject<HTMLDivElement | null> = {
       current: createMockHiddenDiv([50, 50, 50, 50, 50], 30),
     };
     const { result } = renderHook(() =>
@@ -202,8 +194,10 @@ describe('useAutoCollapse', () => {
   test('collapses to minimum when nothing fits', () => {
     // 5 items each 80px: total = 400 + 4*8 = 432. Container = 200.
     // first(80) + gap(8) + ellipsis(30) + gap(8) + last(80) = 206 > 200 → stays at 2
-    const containerRef = { current: createMockContainer(200) };
-    const hiddenRef = {
+    const containerRef: RefObject<HTMLOListElement | null> = {
+      current: createMockContainer(200),
+    };
+    const hiddenRef: RefObject<HTMLDivElement | null> = {
       current: createMockHiddenDiv([80, 80, 80, 80, 80], 30),
     };
     const { result } = renderHook(() =>
@@ -221,8 +215,10 @@ describe('useAutoCollapse', () => {
     // + item[3](40) + gap(8) = 214 → fits (count=3)
     // + item[2](40) + gap(8) = 262 > 250 → stop
     // returns count(3) + 1 = 4 (displayed: [first, ellipsis, item[3], last])
-    const containerRef = { current: createMockContainer(250) };
-    const hiddenRef = {
+    const containerRef: RefObject<HTMLOListElement | null> = {
+      current: createMockContainer(250),
+    };
+    const hiddenRef: RefObject<HTMLDivElement | null> = {
       current: createMockHiddenDiv([60, 40, 40, 40, 60], 30),
     };
     const { result } = renderHook(() =>
@@ -234,8 +230,8 @@ describe('useAutoCollapse', () => {
   });
 
   test('does nothing when refs are null', () => {
-    const containerRef = { current: null };
-    const hiddenRef = { current: null };
+    const containerRef: RefObject<HTMLOListElement | null> = { current: null };
+    const hiddenRef: RefObject<HTMLDivElement | null> = { current: null };
     const { result } = renderHook(() =>
       useAutoCollapse(containerRef, hiddenRef, 5)
     );
@@ -246,8 +242,10 @@ describe('useAutoCollapse', () => {
   });
 
   test('resets when item count changes', async () => {
-    const containerRef = { current: createMockContainer(200) };
-    const hiddenRef = {
+    const containerRef: RefObject<HTMLOListElement | null> = {
+      current: createMockContainer(200),
+    };
+    const hiddenRef: RefObject<HTMLDivElement | null> = {
       current: createMockHiddenDiv([80, 80, 80, 80, 80], 30),
     };
     const { result, rerender } = renderHook(

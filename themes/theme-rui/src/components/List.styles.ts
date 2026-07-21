@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const List: ThemeComponent<'List'> = {
   ul: cva({
-    base: 'ml-6 list-outside list-disc space-y-1 marker:text-muted-foreground',
+    base: 'ml-6 list-outside list-disc space-y-1 marker:text-secondary',
     variants: {
       size: {
         default: '',
@@ -14,7 +14,7 @@ export const List: ThemeComponent<'List'> = {
     },
   }),
   ol: cva({
-    base: 'ml-6 list-outside list-decimal space-y-1 marker:text-muted-foreground',
+    base: 'ml-6 list-outside list-decimal space-y-1 marker:text-secondary',
     variants: {
       size: {
         default: '',

@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { Basic, WithAction, WithLeadingIcons } from './Input.stories';
+import { Basic, WithIcons } from './Input.stories';
 
 test('applies base styles', () => {
   render(<Basic.Component data-testid="input" />);
@@ -23,15 +23,27 @@ test('supports variant and size props', () => {
 });
 
 test('renders with leading icon', () => {
-  render(<WithLeadingIcons.Component />);
+  render(<WithIcons.Component />);
   // eslint-disable-next-line testing-library/no-node-access
   const icon = document.querySelector('svg');
 
   expect(icon).toBeInTheDocument();
 });
 
+test('constrains the leading icon to 16px so it stays clear of the text', () => {
+  render(<WithIcons.Component />);
+  const action = screen.getByRole('button');
+  // The leading icon is the svg rendered outside the trailing action button.
+  // eslint-disable-next-line testing-library/no-node-access
+  const icon = [...document.querySelectorAll('svg')].find(
+    svg => !action.contains(svg)
+  );
+
+  expect(icon).toHaveClass('size-4');
+});
+
 test('renders with action', () => {
-  render(<WithAction.Component />);
+  render(<WithIcons.Component />);
   const button = screen.getByRole('button');
 
   expect(button).toBeInTheDocument();

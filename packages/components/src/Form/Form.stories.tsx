@@ -49,6 +49,7 @@ export const Basic = meta.story({
 });
 
 export const Horizontal = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => (
     <Inline space={4} alignY="bottom">
       <TextField label="Name" width={72} />
@@ -58,6 +59,7 @@ export const Horizontal = meta.story({
 });
 
 export const Selected = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     return (
       <Form {...args}>
@@ -136,11 +138,11 @@ export const Selected = meta.story({
               selectionMode="multiple"
               defaultSelectedKeys={['monday', 'tuesday', 'wednesday', 'friday']}
             >
-              <SelectList.Item id="monday">Monday</SelectList.Item>
-              <SelectList.Item id="tuesday">Tuesday</SelectList.Item>
-              <SelectList.Item id="wednesday">Wednesday</SelectList.Item>
-              <SelectList.Item id="thursday">Thursday</SelectList.Item>
-              <SelectList.Item id="friday">Friday</SelectList.Item>
+              <SelectList.Option id="monday">Monday</SelectList.Option>
+              <SelectList.Option id="tuesday">Tuesday</SelectList.Option>
+              <SelectList.Option id="wednesday">Wednesday</SelectList.Option>
+              <SelectList.Option id="thursday">Thursday</SelectList.Option>
+              <SelectList.Option id="friday">Friday</SelectList.Option>
             </SelectList>
           </Stack>
           <Stack space={5}>
@@ -155,33 +157,45 @@ export const Selected = meta.story({
   },
 });
 
-const FormWithRef = () => {
-  const formRef = useRef<HTMLFormElement>(null);
-
-  return (
+export const BooleanFields = meta.story({
+  render: () => (
     <Stack space={4}>
-      <Form ref={formRef} data-testid="form-with-ref">
-        <Stack space={5}>
-          <TextField label="Name" name="name" />
-          <TextField label="Email" type="email" name="email" />
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-        </Stack>
-      </Form>
-      <Button
-        onPress={() => {
-          if (formRef.current) {
-            formRef.current.reset();
-          }
-        }}
-      >
-        Reset Form
-      </Button>
+      <Checkbox defaultChecked label="Accept Terms and Conditions" />
+      <Radio.Group defaultValue="email" label="Contact Preference">
+        <Radio value="email">Email</Radio>
+        <Radio value="phone">Phone</Radio>
+      </Radio.Group>
+      <Switch defaultSelected label="Enable Notifications" />
     </Stack>
-  );
-};
+  ),
+});
 
 export const WithRef = meta.story({
-  render: () => <FormWithRef />,
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: () => {
+    const formRef = useRef<HTMLFormElement>(null);
+
+    return (
+      <Stack space={4}>
+        <Form ref={formRef}>
+          <Stack space={5}>
+            <TextField label="Name" name="name" />
+            <TextField label="Email" type="email" name="email" />
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+          </Stack>
+        </Form>
+        <Button
+          onPress={() => {
+            if (formRef.current) {
+              formRef.current.reset();
+            }
+          }}
+        >
+          Reset Form
+        </Button>
+      </Stack>
+    );
+  },
 });

@@ -13,6 +13,9 @@ const Block = ({ children }: { children: ReactNode }) => (
 const meta = preview.meta({
   title: 'Components/Split',
   component: Split,
+  parameters: {
+    surface: false,
+  },
 });
 
 export const WithInline = meta.story({
@@ -28,7 +31,7 @@ export const WithInline = meta.story({
 
 export const WithStack = meta.story({
   render: () => (
-    <div className="h-400">
+    <div className="h-96">
       <Stack space={2} stretch>
         <Block>First</Block>
         <Split />

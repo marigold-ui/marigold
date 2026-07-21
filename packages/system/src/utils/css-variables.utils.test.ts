@@ -8,6 +8,7 @@ import {
   isFraction,
   isScale,
   isValidCssCustomPropertyName,
+  resolveInsetAxes,
 } from './css-variables.utils';
 
 describe('isScale', () => {
@@ -159,6 +160,51 @@ describe('createSpacingVar', () => {
       });
     }
   );
+});
+
+describe('resolveInsetAxes', () => {
+  it('resolves a named token to -x / -y suffixed values', () => {
+    expect(resolveInsetAxes({ defaultInset: 'square-regular' })).toEqual({
+      px: 'square-regular-x',
+      py: 'square-regular-y',
+    });
+  });
+
+  it('resolves a numeric p to the same value on both axes (no -x/-y suffix)', () => {
+    expect(resolveInsetAxes({ p: 4, defaultInset: 'square-regular' })).toEqual({
+      px: '4',
+      py: '4',
+    });
+  });
+
+  it('resolves a string scale p to the same value on both axes', () => {
+    expect(
+      resolveInsetAxes({ p: '8', defaultInset: 'square-regular' })
+    ).toEqual({
+      px: '8',
+      py: '8',
+    });
+  });
+
+  it('explicit px/py override the default inset', () => {
+    expect(
+      resolveInsetAxes({
+        px: 'padding-loose',
+        py: 'padding-tight',
+        defaultInset: 'square-regular',
+      })
+    ).toEqual({
+      px: 'padding-loose',
+      py: 'padding-tight',
+    });
+  });
+
+  it('uses the default inset when p is undefined', () => {
+    expect(resolveInsetAxes({ defaultInset: 'square-relaxed' })).toEqual({
+      px: 'square-relaxed-x',
+      py: 'square-relaxed-y',
+    });
+  });
 });
 
 describe('createWidthVar', () => {

@@ -3,58 +3,51 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const SectionMessage: ThemeComponent<'SectionMessage'> = {
   container: cva({
     base: [
-      "grid-cols-[min-content_auto_min-content] gap-x-4 gap-y-1 [grid-template-areas:'icon_title_close''icon_content_content']",
-      'bg-background rounded-md border px-3 py-4',
+      "grid-cols-[min-content_auto_min-content] [grid-template-areas:'icon_title_close''icon_description_close''icon_content_close']",
+      'ui-surface text-foreground px-3 py-4',
     ],
+    // Neutral surface (Toast-aligned, DST-1439) so standard actions/links read
+    // correctly. The variant is carried at the edge, away from the content: a
+    // muted accent border (accent mixed 50% into the neutral border) via
+    // `--ui-border-color`, the hook `ui-surface` reads. No tinted background —
+    // a fill would re-introduce the "actions float on a colored surface" problem.
     variants: {
       variant: {
+        info: '[--ui-border-color:color-mix(in_oklab,var(--color-info-accent)_50%,var(--color-border))]',
         success:
-          'border-success-muted-accent bg-success-muted text-success-muted-foreground',
+          '[--ui-border-color:color-mix(in_oklab,var(--color-success-accent)_50%,var(--color-border))]',
         warning:
-          'border-warning-muted-accent bg-warning-muted text-warning-muted-foreground',
-        info: 'border-info-muted-accent bg-info-muted text-info-muted-foreground',
+          '[--ui-border-color:color-mix(in_oklab,var(--color-warning-accent)_50%,var(--color-border))]',
         error:
-          'border-destructive-muted-accent bg-destructive-muted text-destructive-muted-foreground',
+          '[--ui-border-color:color-mix(in_oklab,var(--color-destructive-accent)_50%,var(--color-border))]',
       },
     },
     defaultVariants: {
       variant: 'info',
     },
   }),
-  title: cva({ base: 'text-sm font-medium' }),
+  title: cva({ base: 'mb-1 text-sm font-medium' }),
+  description: cva({
+    base: 'text-secondary mb-2 text-sm leading-5 font-normal',
+  }),
   content: cva({
-    base: 'text-muted-foreground text-sm leading-5 font-normal',
-    variants: {
-      variant: {
-        success: 'text-success-muted-foreground',
-        warning: 'text-warning-muted-foreground',
-        info: 'text-info-muted-foreground',
-        error: 'text-destructive-muted-foreground',
-      },
-    },
-    defaultVariants: {
-      variant: 'info',
-    },
+    base: 'text-foreground text-sm leading-5 font-normal',
   }),
   icon: cva({
-    base: 'h-6 w-6 align-baseline leading-none -mt-0.5',
+    // `mr-4` (rather than a grid `gap-x`) spaces the icon from the content.
+    // The close column carries its own `ml-4` on the button, so when there is
+    // no close button the empty column contributes no phantom right gap.
+    base: 'mr-4 flex h-5 w-5 items-center justify-center self-start leading-none',
     variants: {
       variant: {
-        success: 'text-success-muted-accent',
-        warning: 'text-warning-muted-accent',
-        info: 'text-info-muted-accent',
-        error: 'text-destructive-muted-accent',
+        info: 'text-info-accent',
+        success: 'text-success-accent',
+        warning: 'text-warning-accent',
+        error: 'text-destructive-accent',
       },
     },
     defaultVariants: {
       variant: 'info',
     },
-  }),
-  close: cva({
-    base: [
-      'size-8 text-foreground',
-      '[&_svg]:size-6',
-      '-my-1.5 -me-2', // align button with title
-    ],
   }),
 };

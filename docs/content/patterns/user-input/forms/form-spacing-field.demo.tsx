@@ -21,7 +21,7 @@ export default () => {
         selected={showSpacing}
         onChange={setShowSpacing}
       />
-      <Inset spaceX={20}>
+      <Inset px={20}>
         <Stack space="group">
           <Stack space="regular">
             <Headline level={2}>Shipping Address</Headline>

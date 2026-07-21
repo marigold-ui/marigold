@@ -2,10 +2,12 @@
   "pages": [
     "component-principles",
     "accessibility",
-    "design-tokens",
+    "token-overview",
+    "typography",
     "elevation",
     "layouts",
-    "icons",
+    "responsive",
+    "iconography",
     "form-fields",
     "spacing"
   ]

@@ -1,7 +1,7 @@
-import { useContext } from 'react';
-import { ToggleButton } from 'react-aria-components';
+import { use } from 'react';
 import type RAC from 'react-aria-components';
-import { useClassNames } from '@marigold/system';
+import { ToggleButton } from 'react-aria-components/ToggleButton';
+import { cn, useClassNames } from '@marigold/system';
 import { ToggleButtonContext } from './Context';
 import { ToggleButtonGroup } from './ToggleButtonGroup';
 
@@ -31,7 +31,7 @@ export const _ToggleButton = ({
   size,
   ...props
 }: ToggleButtonProps) => {
-  const context = useContext(ToggleButtonContext);
+  const context = use(ToggleButtonContext);
 
   const classNames = useClassNames({
     component: 'ToggleButton',
@@ -43,7 +43,7 @@ export const _ToggleButton = ({
     <ToggleButton
       isSelected={selected}
       isDisabled={disabled}
-      className={classNames.button}
+      className={cn(classNames.button, 'in-[.group]:focus-visible:z-10')}
       {...props}
     >
       {children}

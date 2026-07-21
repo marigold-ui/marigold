@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, use } from 'react';
 import { WidthProp } from '@marigold/system';
 
 export interface RadioGroupContextProps {
@@ -8,4 +8,4 @@ export interface RadioGroupContextProps {
 }
 
 export const RadioGroupContext = createContext<RadioGroupContextProps>({});
-export const useRadioGroupContext = () => useContext(RadioGroupContext);
+export const useRadioGroupContext = () => use(RadioGroupContext);

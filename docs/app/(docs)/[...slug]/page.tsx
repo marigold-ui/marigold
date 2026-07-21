@@ -1,14 +1,9 @@
 import { getPageImage, source } from '@/lib/source';
 import { getMDXComponents } from '@/mdx-components';
 import {
-  AlignmentsX,
-  AlignmentsY,
   AppearanceDemo,
   AppearanceTable,
-  BorderRadius,
   Center,
-  ColorPalettes,
-  ColorTokenTable,
   Columns,
   ComponentDemo,
   DateFormat,
@@ -23,10 +18,10 @@ import {
   GuidelineTiles,
   IconList,
   RelativeTime,
-  Spacing,
   Stack,
   StorybookHintMessage,
   TeaserList,
+  TokenTable,
 } from '@/ui';
 import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
 import {
@@ -52,7 +47,10 @@ const Page = async (props: PageProps<'/[...slug]'>) => {
   const isReleaseBlogPost =
     params.slug?.[0] === 'releases' && params.slug?.[1] === 'blog';
   const isReleasesPage = params.slug?.[0] === 'releases';
-  const toc = isReleasesPage && !isReleaseBlogPost ? undefined : page.data.toc;
+  const toc =
+    isReleasesPage && !isReleaseBlogPost
+      ? undefined
+      : page.data.toc.filter(item => item.depth <= 3);
 
   return (
     <DocsPage
@@ -84,13 +82,7 @@ const Page = async (props: PageProps<'/[...slug]'>) => {
             Center,
 
             ImageZoom,
-            ColorTokenTable,
-            ColorPalettes,
-
-            Spacing,
-            BorderRadius,
-            AlignmentsX,
-            AlignmentsY,
+            TokenTable,
 
             IconList,
             PostList,

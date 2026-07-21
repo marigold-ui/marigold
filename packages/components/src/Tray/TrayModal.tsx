@@ -2,18 +2,16 @@ import {
   AnimatePresence,
   animate,
   cubicBezier,
-  motion,
   useMotionValue,
   useReducedMotion,
 } from 'motion/react';
+import { create } from 'motion/react-m';
 import { use } from 'react';
-import {
-  Modal,
-  ModalOverlay,
-  OverlayTriggerStateContext,
-} from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { OverlayTriggerStateContext } from 'react-aria-components/Dialog';
+import { Modal, ModalOverlay } from 'react-aria-components/Modal';
 import { cn, useClassNames } from '@marigold/system';
+import { MotionFeatures } from '../lazyMotion';
 
 type RemovedProps =
   | 'isOpen'
@@ -29,9 +27,10 @@ interface TrayModalProps extends Omit<RAC.ModalOverlayProps, RemovedProps> {
   keyboardDismissable?: RAC.ModalOverlayProps['isKeyboardDismissDisabled'];
 }
 
-// Wrap React Aria modal components so they support motion values.
-const MotionModal = motion.create(Modal);
-const MotionModalOverlay = motion.create(ModalOverlay);
+// Wrap React Aria modal components so they support motion values. `create`
+// comes from `motion/react-m` so these stay part of the lazy-loaded bundle.
+const MotionModal = create(Modal);
+const MotionModalOverlay = create(ModalOverlay);
 
 const inertiaTransition = {
   type: 'inertia' as const,
@@ -77,7 +76,7 @@ export const TrayModal = ({
         onOpenChange={handleOpenChange}
         isDismissable={dismissable}
         isKeyboardDismissDisabled={!keyboardDismissable}
-        className={cn(classNames.overlay)}
+        className={cn('z-50', classNames.overlay)}
       >
         <Modal className={classNames.container}>{children}</Modal>
       </ModalOverlay>
@@ -85,37 +84,39 @@ export const TrayModal = ({
   }
 
   return (
-    <AnimatePresence>
-      {open && (
-        <MotionModalOverlay
-          // Force the modal to be open when AnimatePresence renders it.
-          isOpen
-          onOpenChange={handleOpenChange}
-          isDismissable={dismissable}
-          isKeyboardDismissDisabled={!keyboardDismissable}
-          className={cn(classNames.overlay)}
-        >
-          <MotionModal
-            className={classNames.container}
-            initial={{ y: h }}
-            animate={{ y: 0 }}
-            exit={{ y: h }}
-            transition={staticTransition}
-            style={{ y }}
-            drag="y"
-            dragConstraints={{ top: 0 }}
-            onDragEnd={(_e, { offset, velocity }) => {
-              if (offset.y > window.innerHeight * 0.75 || velocity.y > 10) {
-                handleOpenChange(false);
-              } else {
-                animate(y, 0, { ...inertiaTransition, min: 0, max: 0 });
-              }
-            }}
+    <MotionFeatures>
+      <AnimatePresence>
+        {open && (
+          <MotionModalOverlay
+            // Force the modal to be open when AnimatePresence renders it.
+            isOpen
+            onOpenChange={handleOpenChange}
+            isDismissable={dismissable}
+            isKeyboardDismissDisabled={!keyboardDismissable}
+            className={cn('z-50', classNames.overlay)}
           >
-            {children}
-          </MotionModal>
-        </MotionModalOverlay>
-      )}
-    </AnimatePresence>
+            <MotionModal
+              className={classNames.container}
+              initial={{ y: h }}
+              animate={{ y: 0 }}
+              exit={{ y: h }}
+              transition={staticTransition}
+              style={{ y }}
+              drag="y"
+              dragConstraints={{ top: 0 }}
+              onDragEnd={(_e, { offset, velocity }) => {
+                if (offset.y > window.innerHeight * 0.75 || velocity.y > 10) {
+                  handleOpenChange(false);
+                } else {
+                  animate(y, 0, { ...inertiaTransition, min: 0, max: 0 });
+                }
+              }}
+            >
+              {children}
+            </MotionModal>
+          </MotionModalOverlay>
+        )}
+      </AnimatePresence>
+    </MotionFeatures>
   );
 };

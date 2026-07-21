@@ -1,6 +1,6 @@
 {
   "name": "@marigold/components",
-  "version": "17.7.0",
+  "version": "18.0.0-beta.3",
   "description": "Components for the Marigold Design System",
   "license": "MIT",
   "keywords": [
@@ -52,10 +52,12 @@
     "@react-aria/calendar": "^3.10.1",
     "@react-aria/collections": "3.1.1",
     "@react-aria/focus": "^3.22.1",
+    "@react-aria/form": "^3.1.5",
     "@react-aria/i18n": "^3.13.1",
     "@react-aria/interactions": "^3.28.1",
     "@react-aria/label": "^3.8.1",
     "@react-aria/landmark": "^3.1.1",
+    "@react-aria/live-announcer": "^3.5.0",
     "@react-aria/overlays": "^3.32.1",
     "@react-aria/selection": "^3.28.1",
     "@react-aria/ssr": "^3.10.1",
@@ -64,6 +66,7 @@
     "@react-aria/visually-hidden": "^3.9.1",
     "@react-stately/collections": "^3.13.1",
     "@react-stately/data": "^3.16.1",
+    "@react-stately/form": "^3.2.4",
     "@react-stately/overlays": "^3.7.1",
     "@react-stately/table": "^3.16.1",
     "@react-stately/tree": "^3.10.1",
@@ -74,7 +77,8 @@
     "@react-types/shared": "^3.35.0",
     "@react-types/table": "~3.13.0",
     "motion": "12.39.0",
-    "react-aria-components": "^1.18.0"
+    "react-aria-components": "^1.18.0",
+    "react-select": "^5.10.2"
   },
   "peerDependencies": {
     "react": ">=17.0.0",
@@ -83,15 +87,18 @@
   "devDependencies": {
     "@marigold/icons": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
-    "@types/react": "19.2.15",
-    "lucide-react": "^1.7.0",
-    "react": "19.2.6",
-    "react-dom": "19.2.6",
-    "tsdown": "0.22.2"
+    "@size-limit/preset-small-lib": "^12.1.0",
+    "@types/react": "19.2.17",
+    "lucide-react": "^1.9.0",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "size-limit": "^12.1.0",
+    "tsdown": "0.22.9"
   },
   "scripts": {
     "build": "tsdown",
     "watch": "tsdown --watch",
+    "size": "size-limit",
     "clean": "rm -rf node_modules && rm -rf dist"
   }
 }

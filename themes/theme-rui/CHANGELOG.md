@@ -1,5 +1,735 @@
 # @marigold/theme-rui
 
+## 6.0.0-beta.3
+
+### Minor Changes
+
+- 141a2cc: feat(DST-1373): adopt the slot-configuration pattern in `Card`
+
+  `Card.Header` is now a slot provider: drop a `<Title>` and an optional `<Description>` directly inside it and the header wires up the heading level, id, accessible name, and theme classes automatically. A bare `<Title>` placed directly inside `<Card>` (no `Card.Header` wrapper) is also picked up by the root, so title-only cards can skip the header and still get the right padding and `aria-labelledby` wiring. `<Card>` itself now renders an `<article>` landmark and is automatically labelled by its `<Title>` via `aria-labelledby`, or by an explicit `aria-label`. A new `headingLevel` prop (default `3`) controls the underlying heading tag for the document outline.
+
+  The theme `Card` slot map gains `title` and `description` entries — the typography previously carried on the `header` slot has moved to `title`. Variant text color now flows through a new `--card-accent` CSS custom property, so `master` and `admin` cards pick up the matching accent automatically. Raw `<Stack>` / `<Headline>` composition inside `Card.Header` still renders but does not pick up the slot wiring; prefer `<Title>` / `<Description>` going forward.
+
+- bd45aee: feat(DST-876): add Card usage guidelines
+
+  Renames the `Card.Preview` slot to `Card.Media` across components, theme, and docs. This is a breaking change: consumers using `<Card.Preview>`, the `data-card-preview` selector, or the `preview` theme slot key must migrate to `Card.Media`, `data-card-media`, and the `media` slot key respectively.
+
+  Adds a "Usage" section to the Card docs covering when to use cards, media slot guidance.
+
+- 263c5e6: feat(DST-1238): align Dialog with the shared `ui-panel-*` pattern
+
+  Dialog now adopts the `ui-panel-content` and `ui-panel-actions` utilities already used by Drawer, Tray, and Sidebar. Visible changes are scoped to Dialog:
+  - Actions gain a `border-t` divider as the interaction-zone marker
+  - Content gains consistent `py-4` vertical padding (was `py-1`)
+  - Actions padding becomes symmetric `py-4` (was `pt-4 pb-6`)
+  - Responsive button stacking (`flex-col-reverse sm:flex-row`) remains Dialog-specific identity
+
+  Dialog's header keeps its original treatment (`px-6 pt-6`, no border). It's a conversational opener that sits close to the message body, not a section divider above scrollable content — the ticket's "maintain unique identity where functionally necessary" guidance applies.
+
+  New `ui-panel-content` utility (`overflow-y-auto outline-none px-6 py-4`) added; adopted by Dialog and Drawer. Tray retains its compact `p-2` content padding and Sidebar retains its tighter `px-3 py-1` nav padding because those areas have intentionally tighter densities.
+
+  The `ui-panel-*` utilities are now documented with an inline docstring in `ui.css` clarifying they're for modal-style panels (Dialog/Drawer/Tray/Sidebar) and distinct from the `Panel` component.
+
+  Drawer, Tray, and Sidebar have no visual change — Drawer migrates inline padding/scroll classes to the new `ui-panel-content` utility (identical CSS output); Tray and Sidebar style files are untouched.
+
+  [DST-1238](https://reservix.atlassian.net/browse/DST-1238)
+
+- 4d20fb6: feat(DST-1483): remove ActionButton in favor of a slot-aware Button (rename ActionGroup → ButtonGroup)
+
+  The beta-only `<ActionButton>` is removed. `<Button>` is now slot-aware: it adapts
+  automatically inside a button container, so you write `<Button>` everywhere instead
+  of learning a second button component.
+  - `<ActionButton>` is removed. Use `<Button>`; it adapts inside `<ButtonGroup>` and
+    `<Panel.Header>`. Opt a button out of the cascade with `slot={null}`.
+  - `<ActionGroup>` is renamed to `<ButtonGroup>`, mirroring the existing
+    `ToggleButtonGroup → ToggleButtonContext → ToggleButton` trio.
+  - A single Marigold-owned `ButtonContext` drives the cascade (replaces
+    `ActionButtonContext` + `ActionGroupContext`). RAC's own `ButtonContext`
+    (`close`/`increment`/`decrement` slots) is untouched.
+  - **Uniform precedence:** a local prop (`variant`, `size`, `disabled`) always wins
+    over the container. This drops the former `ActionGroup` `size`-group-wins outlier.
+  - `<ButtonGroup>` cascades `variant: 'secondary'` when unset, the same baseline
+    as a standalone `<Button>`. Slot-aware parents override it where they want
+    lower emphasis: `<Panel.Header>` cascades `variant: 'ghost'` + `size: 'small'`,
+    so a labelled header action stays readable. An icon-only action (a bare-icon
+    `<Button>`, an `<ActionMenu>` kebab) sets `size="icon"` to render as a square.
+  - `<ButtonGroup>` now owns a structural `flex gap-1` layout (orientation-aware), so
+    a standalone cluster is spaced correctly — `<ActionGroup>` had no layout of its
+    own. A container's positional className (e.g. Panel's `[grid-area:actions]`) still
+    rides along and positions the group.
+  - Overlays (`Popover`, `Modal`, `Tray`, `Drawer`) reset `ButtonContext` at their
+    content root, so a header/group cascade can't leak through the portal into an
+    overlay's `slot="close"` or `Dialog.Actions` buttons.
+  - `<SelectList.Option>` cascades `variant: 'ghost'` to a nested `<Button>`,
+    `<LinkButton>`, or `<ActionMenu>`, so a trailing in-row action reads as
+    low-emphasis chrome without an explicit `variant`.
+
+  **Migration**
+  - `<ActionButton>` → `<Button>` (its `default` variant maps to `variant="ghost"`).
+  - `<ActionGroup>` → `<ButtonGroup>`.
+  - `ActionButtonContext` / `ActionGroupContext` → `ButtonContext`.
+  - `<ActionMenu>` keeps its public name. Its trigger is now a slot-aware `<Button>`
+    that inherits the cascade instead of hardcoding a variant: it renders `secondary`
+    on its own (the standalone `<Button>` baseline, matching the pre-unification look)
+    and `ghost` inside `<Panel.Header>`, `<SelectList.Option>`, or a `<ButtonGroup>`.
+    A `variant` set on the `<ActionMenu>` still wins.
+
+### Patch Changes
+
+- 16bcb56: feat([DST-1395]): **SelectList** horizontal layouts now automatically flip to a vertical stack when the wrapping container is narrower than `40rem` (~640px).
+- 0760ecc: refactor(DST-1374): use `<TextValue>` and `<Description>` for selection-container items
+
+  Consumer-facing JSX in component stories and documentation demos for `<Select>`, `<SelectList>`, `<ListBox>`, `<Menu>`, `<ComboBox>`, and `<Autocomplete>` now composes item content with the `<TextValue>` and `<Description>` primitives instead of hand-written `<Text slot="label">` / `<Text slot="description">`. The primitives are drop-in replacements that render the same RAC `<Text>` with the same default slot values, so rendering, `aria-describedby` wiring, and accessibility are identical.
+
+  `<Menu.Item>` gains first-class `label` and `description` theme slots, mirroring `<SelectList.Option>`. `MenuItem` merges the Marigold theme classNames into RAC's `TextContext` so nested `<TextValue>` / `<Description>` pick up Menu styling without losing RAC's slot wiring. Menu items adopt a two-column grid layout (icon column + content column) so descriptions render below labels; existing plain-text and icon+text menu items are unaffected.
+
+  The `Menu` theme type in `@marigold/system` is extended with required `label` and `description` slot keys. Consumers maintaining a custom theme that overrides `Menu` will need to add these two slots to satisfy the type. `@marigold/theme-rui` is updated accordingly in this release.
+
+  No public API change on `Select.Option`, `SelectList.Option`, `ListBox.Item`, `Menu.Item`, `ComboBox.Option`, or `Autocomplete.Option`.
+
+- 6430567: fix(DST-1436): drop `background` from hover transitions across `ui-surface`, `ui-surface-contrast`, `Button`, `Tabs`, `Table` (row + edit buttons), `LegacyTable`, `Sidebar` (navLink + backButton), `Calendar` cells, `SelectList`, and `ActionBar.clearButton`. Hover background flips now happen instantly, making high-frequency controls feel snappier and aligning Button variants (primary/secondary previously transitioned the background while ghost/destructive were already instant). Color, border, box-shadow, and transform transitions are preserved.
+- 334688e: chore(DST-1364): migrate `ListBox` item label/description styling off descendant selectors
+
+  `ListBox` now exposes `label` and `description` as first-class theme entries, and `ListBox.Item` injects their classNames into react-aria's `TextContext` (merging rather than replacing, so RAC's `aria-describedby` wiring is preserved) instead of styling `[slot=description]` via a descendant selector on `item`. This also benefits `Select.Option`, `ComboBox.Option`, and `Autocomplete.Option`, which re-export `ListBox.Item`.
+
+  The `Theme` type in `@marigold/system` now requires `label` and `description` keys on the `ListBox` record, so custom themes implementing `ListBox` must add these entries. No public API change in `@marigold/components`; visually identical except `description` now explicitly sets `font-normal` (parity with `SelectList`).
+
+- Updated dependencies [5945653]
+- Updated dependencies [141a2cc]
+- Updated dependencies [bd45aee]
+- Updated dependencies [16bcb56]
+- Updated dependencies [75cab86]
+- Updated dependencies [0760ecc]
+- Updated dependencies [14f1324]
+- Updated dependencies [431d4dd]
+- Updated dependencies [141a2cc]
+- Updated dependencies [4d20fb6]
+- Updated dependencies [fc9ffb1]
+- Updated dependencies [334688e]
+- Updated dependencies [334688e]
+- Updated dependencies [9cdb389]
+  - @marigold/components@18.0.0-beta.3
+  - @marigold/system@18.0.0-beta.3
+
+## 6.0.0-beta.2
+
+### Minor Changes
+
+- 9a407ef: feat([DST-753]): `SectionMessage` exposes an `announce` prop and uses react-aria's `LiveAnnouncer` to notify assistive technology.
+
+  **What changed (DST-753):**
+  - `<SectionMessage>` accepts a new `announce?: boolean` prop. When set, the message text is sent to a shared, always-mounted live region maintained by `@react-aria/live-announcer`. Priority is `polite` for `info` / `success` / `warning` and `assertive` for `error`.
+  - `announce` defaults to `true` for `variant="error"` and `false` for all other variants, preserving today's behavior for the common error case while letting consumers opt in for confirmations and informational updates.
+  - The wrapper element no longer carries `role="alert"` for the error variant. Announcements are now delegated to the singleton live announcer instead.
+  - Re-announcing the same message uses the React `key` pattern: pass a changing `key` to force a remount.
+
+  **Why:**
+
+  The previous implementation only announced the `error` variant, and it did so by adding `role="alert"` to a conditionally rendered element. Per the WAI-ARIA spec and MDN guidance, `role="alert"` should be on an element that already exists in the DOM before its content is injected, and it should not contain interactive elements. Marigold's `SectionMessage` violated both constraints (the alert was mounted together with its content, and it can contain close buttons and action links), making announcements unreliable on some screen reader / browser combinations.
+
+  The new implementation uses `@react-aria/live-announcer`, which maintains persistent polite and assertive live regions at the document root. This is the same mechanism used across React Spectrum and avoids the conditional-rendering and interactive-content pitfalls of inline `role="alert"`. It also unifies the API: opt in to announcement for any variant with a single prop.
+
+  **Additional cleanup bundled with this release (beyond DST-753):**
+  - **Close button now matches the rest of the system.** The previous theme defined a `close` slot for `SectionMessage` with bespoke overrides (`size-8`, `[&_svg]:size-6`, `text-foreground`, negative margins) that produced a visibly larger close button than every other close button in the design system. The component now renders the shared `<CloseButton>` with no overrides, so it gets the same 16px icon, focus ring, hover-opacity, and rounded-full styling as Dialog, Drawer, etc. The `close` slot has been removed from the `SectionMessage` theme type.
+  - **Component cleanup.** Dropped a stale `useButton(props, buttonRef)` call that was applying div-level props to a button, the unused `buttonRef`, and the `{...buttonProps}` spread on `<CloseButton>`. The `Button` inside `CloseButton` already provides all keyboard/press semantics.
+  - **Theme variant order normalized.** `info` (the default) is now listed first across the `container`, `content`, and `icon` slots in `theme-rui`, matching the variant table in the docs and the existing `defaultVariants` setting.
+
+  **Docs:**
+  - New anatomy SVG matching the Card / Sidebar / SelectList style; title and close button marked as optional, with content rules (no period in title, don't repeat title in body).
+  - Two realistic announcement demos: a bulk-archive form (polite, with RAC `validate` and the `key` re-announce pattern) and a server-availability save error (assertive).
+  - Added focus-management guidance for dynamic appearance and post-dismiss.
+  - Added form-summary placement rule pairing `<SectionMessage>` with field-level validation.
+  - Added action constraints (one primary action, verb+noun labels, descriptive link text).
+  - Added two-line body rule with a link-out overflow pattern for longer content.
+  - Folded the previous Position subsection into Usage; removed redundant Do/Don't tiles; renamed subsections to Dismissal / Actions / Announcements.
+  - Drive-by: typo fix in the `feedback-messages` pattern doc.
+
+  **Migration:**
+  - Code relying on `getByRole('alert')` or `[role="alert"]` selectors to find rendered `SectionMessage` error nodes needs to be updated. The message text itself is still rendered as before; only the wrapper role is gone.
+  - Consumers who previously wrapped a dynamic `<SectionMessage>` in their own `<div role="status">` or `<div aria-live="polite">` can replace that wrapper with `<SectionMessage announce>`.
+  - Custom themes that defined a `SectionMessage.close` slot will now see a type error. Remove the slot. Close button styling now flows entirely from the `CloseButton` theme.
+  - The SectionMessage's close button is visually smaller after this release (matches every other close button in Marigold). If you previously relied on the larger size, that was an inconsistency, not a feature.
+
+### Patch Changes
+
+- Updated dependencies [3a62175]
+- Updated dependencies [2a34a64]
+- Updated dependencies [61f917f]
+- Updated dependencies [d51416c]
+- Updated dependencies [a59d2dd]
+- Updated dependencies [9a407ef]
+  - @marigold/components@18.0.0-beta.2
+  - @marigold/system@18.0.0-beta.2
+
+## 6.0.0-beta.1
+
+### Minor Changes
+
+- 727163c: feat([DST-1134]): add `<RangeCalendar>` component (alpha)
+
+  Adds a new `<RangeCalendar>` for selecting a contiguous or non-contiguous date range, built on react-aria's `<RangeCalendar>` with Marigold conventions (`disabled`, `readOnly`, `error`, `dateUnavailable`, `allowsNonContiguousRanges`). Supports up to three side-by-side months via `visibleDuration`, stacking vertically below the `sm` breakpoint; the same responsive stacking now applies to multi-month `<Calendar>` for parity. `description` and `errorMessage` route through `<FieldBase>` so the help/error UI matches the rest of the form-component family (TriangleAlert icon + HelpText container). Ships as an alpha component with a stub docs page under the form section.
+
+  [DST-1134](https://reservix.atlassian.net/browse/DST-1134)
+
+- cc568e3: feat([DST-1429]): `Card` now exposes a `Panel`-aligned padding API.
+
+  **What changed:**
+  - `Card` accepts `p` / `px` / `py` props (mutually exclusive `p` vs `px+py`), resolving to CSS custom properties `--card-px` and `--card-py` on the container. Defaults to `square-regular`.
+  - A new `space` prop controls the gap between slots, resolving to `--card-gap`. Defaults to `regular`.
+  - `Card.Body` and `Card.Footer` accept an opt-in `bleed` prop to skip horizontal padding for tables, media, or full-width action bars.
+  - Internally, `Card` switched from CSS grid with `grid-template-areas` to a flex column with `gap-y`. JSX order now determines visual order — place `Card.Preview` first when used.
+  - Slot theme styles (`header`, `body`, `footer`) no longer hardcode `px-4` / `py-*`; padding lives in the component layer and is driven by the CSS variables above.
+  - `Card.Preview` automatically escapes the container's vertical padding when used as the first or last child via negative margins.
+
+  **Why:**
+
+  Cards previously had no consumer-controllable padding API and no default padding on the container — content rendered as direct children of `<Card>` was visually broken. The new API mirrors `Panel`'s padding model so the two surfaces behave consistently.
+
+  **Migration:**
+  - Wrap bare children in `<Card.Body>`. Bare children inside `<Card>` are no longer rendered with horizontal padding; this matches `Panel`'s composition contract.
+  - If you used `Card.Preview` for media at the top, keep doing so — it stays edge-to-edge.
+  - No changes needed for the canonical composition (`Preview` + `Header` + `Body` + `Footer`).
+
+- 496a9f2: feat(SelectList): standardized API, item layout, and visual distinction from ListBox (DST-1076)
+
+  `<SelectList>` has been refined into a first-class form field for picking one or many items from a visible list of rich two-line rows. This release contains breaking renames and a tightened type surface.
+
+  **Breaking changes**
+  - `SelectList.Item` → **`SelectList.Option`**. The option semantic matches `Select.Option` and the HTML `<option>` mental model. Update any `<SelectList.Item>` usage to `<SelectList.Option>`.
+  - `SelectList.Action` has been **removed**. Drop your `<ActionMenu>` or `<IconButton>` directly inside `<SelectList.Option>` — the component positions, sizes, and styles the nested control automatically via `ButtonContext`. Limit: one action per option (multi-button groups will arrive with a future `ActionGroup`).
+  - Leading-image slot has been **removed**. Compose images inside `<Text slot="label">` (or anywhere in children) as you see fit.
+  - `selectionMode="none"` is no longer accepted. `SelectList` is a form field; the default is now `"single"`.
+  - `onChange` is strictly typed per `selectionMode`: `(key: Key | null) => void` for single, `(keys: Key[]) => void` for multiple. The shape matches `Select<T, M>`. Passing `setState` directly may require adapting the callback.
+
+  **Other changes**
+  - **Selection indicator** — single-select rows render a visible radio circle; multi-select renders a checkbox.
+  - **Label & description slots** — use `<Text slot="label">` and `<Text slot="description">` inside `<SelectList.Option>`. The row skeleton is `selection · label + description · action (optional)`.
+  - **Dev-mode warning** when `textValue` is missing on an option whose children aren't a plain string.
+  - **Own theme entry** — `SelectList` ships a dedicated theme component. The theme exposes first-class `label`, `description`, and `action` entries; slot styling no longer uses descendant selectors. Consumers with custom themes must add or update a `SelectList` entry.
+
+  **Documentation**
+
+  The SelectList docs page is rewritten around the new API. Adds an anatomy diagram, a decision table for choosing between `<SelectList>` and lighter controls (`<Radio.Group>`, `<Checkbox.Group>`, `<Select>`, `<Combobox>`, `<TagField>`), and dedicated sections for multi-selection, per-row actions (decision-help and configuration patterns), horizontal orientation, and empty state. Replaces selected prose with Do/Don't tiles. Tightens the accessibility section to what's specific to SelectList (keyboard model, label requirement, `textValue` for rich rows).
+
+  **Migration**
+
+  ```diff
+  - <SelectList selectionMode="none">
+  -   <SelectList.Item id="free">
+  -     <SelectList.Action>
+  -       <IconButton aria-label="Info"><Info /></IconButton>
+  -     </SelectList.Action>
+  -     Free
+  -   </SelectList.Item>
+  - </SelectList>
+  + <SelectList selectionMode="single">
+  +   <SelectList.Option id="free">
+  +     Free
+  +     <IconButton aria-label="Info"><Info /></IconButton>
+  +   </SelectList.Option>
+  + </SelectList>
+  ```
+
+### Patch Changes
+
+- 566c468: fix([DST-1295]): replace `gap` between `CheckboxGroup` and `RadioGroup` items with per-item padding so the full space between items is clickable. Vertical items now meet the 24px target-size minimum; horizontal spacing keeps visual parity. Standalone `Checkbox` is unaffected.
+
+  Also align the label and icon: switched the inner row layout from `items-center` to `items-start` so the icon stays on the first line when the label wraps. `Radio` labels now use `leading-4` to match `Checkbox`, and `Radio`'s icon-to-label gap moves from an inline `gap-[1ch]` to the theme-driven `gap-x-2` for parity with `Checkbox`.
+
+- 2014edf: fix(DST-1406): restore focus outline on virtualized ListBox items. RAC's virtualizer wrapper sets an inline `z-index: 0` per item, creating a stacking context the option's `focus-visible:z-1` cannot escape — adjacent wrappers paint on top in DOM order and clip the focused outline (most visible when the next item is `selected`). Lift the wrapper containing the focused option above its siblings so the outline is fully visible. Affects all virtualized listboxes (`Select`, `ComboBox`, `Autocomplete`).
+- f8fbef9: fix([DST-1412]): fix multi-month Calendar/RangeCalendar layout at non-default widths. With three months at `width="1/2"` the third month overflowed the calendar wrapper because `min-w-[250px]` only sized for a single month; with `width="full"` the date grids stayed at content size while their columns expanded, leaving header text floating over empty space. Switch the calendar minimum to `min-w-fit` so multi-month grows to fit its natural content, and add `w-full` to `calendarGrid` so the date table fills its column.
+
+  [DST-1412](https://reservix.atlassian.net/browse/DST-1412)
+
+- 4742e8e: feat([DST-901]): styleProps for `width`, `maxWidth`, `height`, `space`, `spaceX`, `spaceY`, `pr`, `pl`, `pt`, `pb` now accept both numeric scale values (`4`) and their string equivalents (`"4"`). The public types are now declarative (`Scale | Fraction | WidthKeyword`, etc.) instead of being derived from the internal class-name maps.
+
+  Components that previously resolved `width`, `maxWidth`, and `height` via class-name lookup (Form, Calendar, legacy Table column header / select-all cell, Slider, Scrollable, Switch, Grid) now resolve them through CSS custom properties (`createWidthVar` / `createHeightVar`) targeting `--width`, `--max-width`, `--height`. Those variables — along with `--container-width` and `--field-width` already used by `FieldBase` — are registered as non-inheriting (`@property … inherits: false`) in the RUI theme so they cannot leak into descendants.
+
+  `createWidthVar` gained support for the previously missing keywords (`svh`, `lvh`, `dvh`, `px`, `container`), and a new `createHeightVar` helper was added. Both share a common factory and a base keyword set, so they remain trivially in sync.
+
+  The runtime class-name maps `width`, `maxWidth`, `height`, `gapSpace`, `paddingSpace`, `paddingSpaceX`, `paddingSpaceY`, `paddingRight`, `paddingLeft`, `paddingTop`, `paddingBottom` are no longer exported from `@marigold/system`. These were internal utilities consumed only by `@marigold/components`. Use the prop types (`WidthProp`, `HeightProp`, …) and the CSS-var helpers (`createWidthVar`, `createHeightVar`, `createSpacingVar`) instead. The corresponding TypeScript prop types are unchanged.
+
+- 5f2e9a0: fix([DST-1408]): drop `position: relative` from body in theme-rui preflight
+
+  `themes/theme-rui/src/preflight.css` previously set
+  `body { position: relative; overflow-x: clip }` to contain
+  `@react-aria/live-announcer`'s portal. Empirically that containment
+  isn't needed: the live-announcer node is a 1×1 px element with
+  `overflow: hidden` and `clip-path: inset(50%)`, so its content cannot
+  expand the document's scrollable area in any state — a synthetic
+  test toggling `body.position` between `relative` and `static` with
+  the announcer mounted produces identical `body.scrollWidth/scrollHeight`.
+
+  Meanwhile, `position: relative` on `<body>` makes it the containing
+  block for absolute portals (Tooltip, Popover, Menu, Select dropdown).
+  React-aria's `useOverlayPosition` then takes a special-case branch
+  that adds the page's scroll offset on top of itself when computing
+  "available space above the trigger", producing a near-zero number
+  even when the viewport has hundreds of pixels of headroom. Every
+  overlay with a `top` placement (notably `<Tooltip>`) flips to
+  `bottom`, and forcing `placement="top"` positions the overlay far
+  off-screen because the same math is broken in both directions.
+
+  Removing `position: relative` while keeping `overflow-x: clip`
+  restores correct overlay placement without losing the defensive
+  horizontal-scroll guard. `clip` does not establish a containing
+  block for absolute descendants (per CSS Overflow Module Level 3), so
+  the bug cannot reappear from this rule alone — but the file's
+  comment now warns that `position`, `transform`, `contain`,
+  `filter`, `backdrop-filter`, or `will-change: transform` on `<body>`
+  would re-introduce it.
+
+- 2d9d6fd: feat(DST-1366): introduce slot-configurable primitives
+
+  Adds three text-bearing role primitives — `Title`, `Description`, `TextValue` — and three action primitives — `ActionButton`, `ActionGroup`, `ActionMenu` — that participate in slot-keyed context. Text/heading slots use React Aria's `HeadingContext` / `TextContext` directly; action slots use Marigold-owned contexts (`ActionButtonContext`, `ActionGroupContext`, `ActionMenuContext`) consumed via `useContextProps`.
+
+  `Title` wraps RAC's `<Heading>` with `slot="title"` and `level={2}` as defaults, both overridable by `HeadingContext`. The `level` precedence is default ← context ← local, so a container can publish `{ level: 4 }` and drive a stretch of nested `<Title>`s to `<h4>` without each call site setting it. `Description` and `TextValue` forward straight to RAC's `<Text>` with `slot="description"` and `slot="label"` defaults respectively, letting `<Text>` consume `TextContext` on its own. None of the three carry typography props. Styling cascades from the surrounding container (or selection item) via `HeadingContext` / `TextContext`. Consumers drop these into containers without any `slot` wiring. The container provides level, layout (e.g. a grid area), size, variant, color, and any other styling through a single `Provider`.
+
+  `ActionGroup` is its own top-level component (own folder, own docs page, own Storybook entry) — there is no `ActionButton.Group` compound. It cascades `size`, `variant`, and `disabled` to nested `<ActionButton>`, `<LinkButton>`, and `<ActionMenu>` triggers via `ActionGroupContext`, with explicit per-prop precedence:
+  - `size`: group wins (visual uniformity within a cluster).
+  - `variant`: local wins (so a single destructive action can sit inside an otherwise uniform group).
+  - `disabled`: local wins; the group provides the default. Writing `disabled={false}` on a child re-enables it inside an otherwise-disabled group.
+
+  `ActionMenu` is rebuilt to compose its own `MenuTrigger` + `<ActionButton>` + `Popover` / `Tray` + RAC `Menu` rather than delegating to Marigold's `Menu`. The trigger uses `<ActionButton>` so an outer `ActionButtonContext` cascades to it. Marigold's `Menu` is untouched.
+
+  `LinkButton` is now slot-aware: it picks up `ActionButtonContext` and `ActionGroupContext` so a navigating action can sit alongside `<ActionButton>` inside an `<ActionGroup>` and inherit the same cascade. A `destructive-ghost` variant is added to match `<ActionButton>`. Context is consumed read-only (via `useSlottedContext`) to sidestep the anchor/button ref-type mismatch that `useContextProps` would have created. The read-only consumption now also absorbs `className` from `ActionButtonContext` (mirroring `<ActionButton>`'s `useContextProps`-driven className merge) so positional classes published by a parent container — e.g. a grid-area class injected via `ActionButtonContext` — reach the rendered anchor. This lets `<LinkButton>` participate in container-driven layouts the same way `<ActionButton>` does.
+
+  The container-driven layout pattern this enables comes with a corresponding convention: **positional `className` flows through slot contexts and is absorbed at the first layout boundary**. `<ActionGroup>` enforces the convention at its own boundary by scrubbing `ActionButtonContext` for its descendants — it republishes an empty value so nested `<ActionButton>`s and `<LinkButton>`s do not individually re-claim a positional class that was meant for the group as a whole. Cascading props (`size`, `variant`, `disabled`) still reach the children via `ActionGroupContext`, which they read independently. This convention scales to every future container that adopts the slot-configuration pattern.
+
+  `<ActionBar>`'s legacy top-level `ActionButton` slot is internalized and re-exposed as `ActionBar.Button`. Existing consumers that already use `<ActionBar.Button>` are unaffected.
+
+  Typography prep: `Headline` exports `HeadlineSize`, `Text` exports `TextSize` and `TextVariant`. The aliases aren't yet consumed by other primitives, but exposing them now lets a future typography-token PR replace runtime classes without rewriting consumer-facing prop types.
+
+- Updated dependencies [727163c]
+- Updated dependencies [cc568e3]
+- Updated dependencies [566c468]
+- Updated dependencies [9f4dc97]
+- Updated dependencies [3c6a943]
+- Updated dependencies [4742e8e]
+- Updated dependencies [496a9f2]
+- Updated dependencies [496a9f2]
+- Updated dependencies [8b754f0]
+- Updated dependencies [5744bbf]
+- Updated dependencies [2d9d6fd]
+- Updated dependencies [2ff7bda]
+  - @marigold/components@18.0.0-beta.1
+  - @marigold/system@18.0.0-beta.1
+
+## 6.0.0-beta.0
+
+### Major Changes
+
+- adb8a18: feat(DST-1237): theme-owned breakpoints with CSS fallback
+
+  Breakpoint resolution is now theme-driven: `useSmallScreen` and `useResponsiveValue` read `theme.screens` from the ThemeProvider context instead of relying on hardcoded values in `defaultTheme`. If no theme provides screens, the hooks fall back to reading Tailwind v4's `--breakpoint-*` CSS custom properties.
+  - Added `screens` to `@marigold/theme-rui` (matches Tailwind v4 defaults)
+  - Removed `screens` from `defaultTheme` in `@marigold/system`
+  - Added `resolveScreens` utility for theme-first, CSS-fallback resolution
+
+- f629319: refactor([DST-1283]): **Breaking Change** — Remove `<Multiselect>` (and the `react-select` dependency) from `@marigold/components`.
+
+  Use `<TagField>` instead.
+
+- d35022b: DST-878: Polish design tokens and add token documentation.
+
+  **New color palette:**
+  - Replace default gray scale with warm neutral "charcoal" palette (oklch, hue 54, 11 steps from 50-950)
+
+  **Token renames and restructuring:**
+  - Rename `brand` to `primary`, `muted-foreground` to `secondary`, `focus` to `focus-highlight`
+  - Rename status token structure from `*-muted`/`*-muted-foreground`/`*-muted-accent` to `*`/`*-foreground`/`*-accent`
+  - Add `disabled-surface` token for disabled control backgrounds
+  - Add `overlay-backdrop` token for modal/tray backdrops
+  - Update page background colors
+
+  **New hover utilities:**
+  - Add `ui-state-hover` utility (solid hover for list items, table rows, menu items)
+  - Add `ui-state-hover-ghost` utility (translucent hover for ghost buttons, tabs, action bar)
+  - Migrate all components from raw `hover:bg-hover`/`hover:bg-current/10` to the new utilities
+
+  **Documentation:**
+  - Add new Token Overview page with complete token reference
+  - Add annotated UI diagram, color palette demo, Do/Don't guidance, hover and selection pattern docs
+  - Remove outdated `design-tokens.mdx` and `design-token-guidelines.mdx` pages
+
+- 968bc0b: DST-1209: Refactor elevation documentation and remove deprecated utilities.
+
+  **Breaking: Remove `util-surface-*` utilities**
+  - Delete `util-surface-sunken`, `util-surface-body`, `util-surface-raised`, `util-surface-overlay`
+  - Remove `utils.css` from theme-rui build
+
+  **Migration from legacy utilities:**
+  | Old utility | New replacement |
+  |---|---|
+  | `util-surface-sunken` | Removed, use `bg-background` for the page base layer |
+  | `util-surface-body` | `bg-background` (no shadow needed) |
+  | `util-surface-raised` | `ui-surface shadow-elevation-raised` |
+  | `util-surface-overlay` | `ui-surface shadow-elevation-overlay` |
+
+  **Documentation:**
+  - Rewrite elevation page around the 3-tier shadow system (border, raised, overlay)
+  - Add surfaces section explaining `bg-background`, `bg-surface`, `bg-muted`, and `ui-surface`
+  - Add interactive demos, annotated SVG diagram, and per-tier Do/Don't guidelines
+  - Add migration table from legacy `util-surface-*` to new tokens
+
+  **Fixes:**
+  - Fix broken `bg-bg-surface-*` tokens in card-elevation demo, inset-equal demo, and Columns story
+  - Update Card docs elevation section to match new page structure
+
+- 00d93c8: feat(DST-1246): update Switch component layout and sizing to align with Checkbox and Radio
+
+  The Switch component previously rendered its label on the left and toggle on the right, which was inconsistent with Checkbox and Radio where the control sits on the left. When used together in forms, this created a visually misaligned layout.
+
+  **Layout**: Toggle now renders before the label (control on the left, label on the right), matching Checkbox and Radio. This ensures consistent visual alignment when Switch is used alongside other boolean controls in form layouts.
+
+  **Sizing**: Reduced the default track size from 24x40px to 16x28px and thumb from 20px to 12px. This brings the Switch closer in visual weight to Checkbox/Radio (16px), making it fit better in the flow of forms.
+
+  **Settings variant**: A new `variant="settings"` mirrors the default layout — label and description on the left, toggle on the far right. This is the common pattern used on settings/preferences pages. The variant is propagated to `BooleanField` so that grid columns and description placement adjust accordingly.
+
+  **Description support**: Switch now accepts a `description` prop (help text rendered below the control), matching Checkbox's existing support. The description text aligns with the label text using CSS grid + subgrid, automatically adapting to any control size without hardcoded padding. Properly wired with `aria-describedby` for accessibility.
+
+  **Form support**: The `name` prop passes through to the underlying input for HTML form submission.
+
+  **Shared BooleanField**: Extracted a reusable `BooleanField` wrapper used by both Checkbox and Switch for consistent description rendering and `aria-describedby` wiring. Uses CSS grid with subgrid to align description text with label text across both components.
+
+  ## Breaking changes
+
+  ### Restoring the old Switch behavior
+
+  The default Switch layout has changed: the toggle is now on the **left** and the label on the **right** (previously reversed). If you need the old layout (label left, toggle right), use the new `variant="settings"`:
+
+  ```diff
+  - <Switch label="Wi-Fi" />
+  + <Switch label="Wi-Fi" variant="settings" />
+  ```
+
+  The `size="large"` prop has been removed. The default size is now smaller (16x28px track). There is no built-in way to get the old large dimensions (24x40px track) — if needed, create a custom size variant in your theme's `Switch.styles.ts`.
+
+  ### Custom theme migration
+
+  This release introduces a new required theme component `BooleanField` and changes the layout model of the `Checkbox` and `Switch` container slots from flexbox to CSS grid. **Custom themes must be updated or Checkbox/Switch will throw a runtime error.**
+
+  ### 1. Add `BooleanField` to your theme (required)
+
+  `BooleanField` is a new multi-slot theme component used internally by both `Checkbox` and `Switch` to render descriptions. If your theme does not include it, any `Checkbox` or `Switch` with a `description` prop will throw:
+
+  ```
+  Error: Component "BooleanField" is missing styles in the current theme.
+  ```
+
+  Add the following to your theme's component styles:
+
+  ```ts
+  import { cva } from '@marigold/system';
+
+  export const BooleanField = {
+    container: cva({
+      base: 'grid gap-x-2',
+      variants: {
+        variant: {
+          default: 'grid-cols-[auto_1fr]',
+          settings: 'grid-cols-[1fr_auto]',
+        },
+      },
+      defaultVariants: { variant: 'default' },
+    }),
+    description: cva({
+      base: 'mt-0.5',
+      variants: {
+        variant: {
+          default: 'col-start-2',
+          settings: 'col-start-1',
+        },
+      },
+      defaultVariants: { variant: 'default' },
+    }),
+  };
+  ```
+
+  - `container`: Defines the 2-column grid layout wrapping the control and its description. The `default` variant uses `grid-cols-[auto_1fr]` (control left, label right). The `settings` variant uses `grid-cols-[1fr_auto]` (label left, control right).
+  - `description`: Styles the description text wrapper. Placed under the label column via `col-start-2` (default) or `col-start-1` (settings). `mt-0.5` adds vertical spacing between the label row and description.
+
+  Then export it from your theme's component index file:
+
+  ```ts
+  export { BooleanField } from './BooleanField.styles';
+  ```
+
+  ### 2. Update `Checkbox` container slot (required if customized)
+
+  The `Checkbox` container slot changed from flexbox to CSS grid with conditional subgrid support:
+
+  **Before:**
+
+  ```ts
+  container: cva({ base: 'cursor-pointer read-only:cursor-default gap-2' }),
+  ```
+
+  **After:**
+
+  ```ts
+  container: cva({
+    base: [
+      'grid grid-cols-[auto_1fr] gap-x-2 items-center',
+      'cursor-pointer read-only:cursor-default',
+      'group-data-[booleanfield]/booleanfield:grid-cols-subgrid group-data-[booleanfield]/booleanfield:col-span-full',
+    ],
+  }),
+  ```
+
+  Key changes:
+  - `gap-2` changed to `gap-x-2` (column gap only, since row gap is now handled by `BooleanField.description`)
+  - `grid grid-cols-[auto_1fr] items-center` replaces the `flex items-center` that was previously hardcoded in the component
+  - `group-data-[booleanfield]/booleanfield:grid-cols-subgrid` and `group-data-[booleanfield]/booleanfield:col-span-full` enable subgrid when inside a `BooleanField` wrapper, so the description aligns with the label
+
+  ### 3. Update `Switch` container slot (required if customized)
+
+  The `Switch` container slot also changed from minimal styles to CSS grid with subgrid:
+
+  **Before:**
+
+  ```ts
+  container: cva({
+    base: 'disabled:cursor-not-allowed disabled:text-disabled-foreground',
+  }),
+  ```
+
+  **After:**
+
+  ```ts
+  container: cva({
+    base: [
+      'grid gap-x-2 items-center',
+      'disabled:cursor-not-allowed disabled:text-disabled-foreground',
+      'group-data-booleanfield/booleanfield:grid-cols-subgrid group-data-booleanfield/booleanfield:col-span-full',
+    ],
+    variants: {
+      variant: {
+        default: 'grid-cols-[auto_1fr]',
+        settings: 'grid-cols-[1fr_auto]',
+      },
+    },
+    defaultVariants: { variant: 'default' },
+  }),
+  ```
+
+  Key changes:
+  - Added `grid gap-x-2 items-center` (replaces `flex items-center gap-2` that was previously hardcoded in the component)
+  - Grid columns moved to `variant` to support both default and settings layouts
+  - Added subgrid support for BooleanField integration
+
+- 724f0ce: refa([DST-1162]): **Breaking changes**: The `Card` component has been refactored into a compound component pattern.
+
+  **What changed:**
+  - The previous prop-based API (`padding`, `space`, etc.) has been removed.
+  - Content must now be composed using explicit sub-components: `Card.Header`, `Card.Body`, `Card.Footer`, and `Card.Preview`.
+  - A `CardContext` is now required — sub-components will throw an error if used outside of a `<Card>`.
+
+  **Migration:**
+
+  ```tsx
+  // Before
+  <Card>
+    <SomeContent />
+  </Card>
+
+  // After
+  <Card>
+    <Card.Header>Title</Card.Header>
+    <Card.Body><SomeContent /></Card.Body>
+    <Card.Footer>Actions</Card.Footer>
+  </Card>
+  ```
+
+### Minor Changes
+
+- 6587493: refa([DST-1298]): Refactor Divider component: API, styling, and docs
+
+  We fixed the vertical orientation of the divider, which previously didn't work.
+  Added new Divider stories and updated the Divider docs.
+
+- 93f9ef1: feat(DST-1257): add universal `none` spacing token
+  - Introduce `NoSpacingToken = 'none'` shared across all spacing token families
+  - Add `'none'` to `SpacingTokens`, `PaddingSpacingTokens`, and `InsetSpacingTokens`
+  - Add `--spacing-none: --spacing(0)` CSS custom property to the theme
+
+  `'none'` now works wherever a spacing token is accepted: `Stack`/`Inline` gap (`space="none"`), `Inset` axis padding (`spaceX="none"` / `spaceY="none"`), and `Inset` recipes (`space="none"`) — useful for wrappers that should render without adding any spacing (e.g. an edge-to-edge `Table` inside a containing component).
+
+- 8326bf7: feat(DST-1326): introduce `Panel.CollapsibleHeader`, `Panel.CollapsibleTitle`, and `Panel.CollapsibleDescription`. The collapsible mirrors `Panel.Header` — a header wrapper with a title plus an optional description — and the whole visual surface is a single click target: title and description render as spans inside the trigger `<button>`, with the accessible name wired via `aria-labelledby` and the description via `aria-describedby`. The chevron icon uses a reusable `MorphCaret` that animates via SVG path morphing (honours `prefers-reduced-motion`).
+- 326f707: feat(theme-rui): preflight fixes, file layout refactor, token and export corrections
+
+  A cohesive set of changes that (1) adds peer-dependency fixes needed
+  for page-level scroll, (2) splits the theme's CSS into files with
+  unambiguous roles, and (3) fixes a prefixer bug that stranded design
+  tokens inside the scoped bundle.
+
+  **New: `preflight.css`**
+
+  Two peer-dependency fixes on the real `<html>` / `<body>`:
+  - `html { scrollbar-gutter: stable }` — prevents a 1 px reflow when
+    `@react-aria/overlays` locks the page (it sets `overflow: hidden`
+    on `<html>` and compensates scrollbar width).
+  - `body { position: relative; overflow-x: clip }` — contains the
+    `@react-aria/live-announcer` portal (mounted at `top: -10000px;
+left: -10000px`) so it cannot expand the document's scrollable
+    area. `clip` (not `hidden`) keeps `position: sticky` on
+    descendants working.
+
+  These rules ship inside both entry points; the prefixer excludes
+  `html`/`body` so the rules reach the document root while the rest
+  of the bundle stays scoped to `[data-theme="rui"]`.
+
+  **Scrollbar track**
+
+  `ui-scrollbar`'s track is now transparent so the themed scrollbar
+  blends into any surface.
+
+  **File layout refactor**
+  - `tokens.css` (new) — `@plugin` declaration and every design token
+    in one place. Easy to find, easy to extend.
+  - `theme.css` (Tailwind-native entry) — imports `preflight.css` +
+    `tokens.css` + `ui.css` + `variants.css` and paints `<body>`
+    directly. A Marigold-first app needs zero extra markup to get the
+    theme's page background, text color, and font.
+  - `styles.css` (pre-compiled entry) — imports the same base and
+    paints `[data-theme="rui"]`. The consumer places the attribute on
+    `<html>`, `<body>`, or a wrapper `<div>` to control where Marigold
+    paints — whole-app or island.
+  - `global.css` (removed, never released) — the body paint now lives
+    inline in the two entry points that actually need it, so a shared
+    file with ambiguous semantics is no longer necessary.
+
+  **Two clean mental models**
+  - Use `theme.css` with your own Tailwind build when Marigold is the
+    whole app. Body paints automatically, tokens live at `:root`,
+    utilities tree-shake against your content.
+  - Use `styles.css` as a pre-compiled drop-in when Marigold is an
+    island or you are not running Tailwind. Place `data-theme="rui"`
+    wherever Marigold should paint.
+
+  **Tokens at `:root`**
+
+  `postcss-prefix-selector` previously rewrote `@theme`'s output from
+  `:root, :host` to `[data-theme="rui"], [data-theme="rui"] :host`,
+  which meant any unscoped rule could not resolve
+  `var(--color-background)` because the variables were only declared
+  inside the `[data-theme="rui"]` scope. The prefixer now excludes
+  `:root`, `:host`, and `[data-theme="rui"]` in addition to
+  `html`/`body`, so design tokens are emitted globally while utility
+  classes remain scoped. The `[data-theme="rui"]` exclude uses a
+  quote-agnostic regex so prettier round-trips don't reintroduce
+  double-prefixing.
+
+  **CSS exports carry a `style` condition**
+
+  Tailwind v4's CSS resolver uses `conditionNames: ["style"]`.
+  Bare-string export entries without a matching condition fail under
+  strict resolvers, so every `.css` subpath now declares both `style`
+  and `default` targets. The unused `./*` JS catchall is removed. New
+  subpath exports: `./tokens.css`, `./preflight.css`.
+
+  Existing documented imports (`theme.css`, `styles.css`) continue to
+  work.
+
+### Patch Changes
+
+- 5cd5290: fix(DST-1359): align `ActionBar` action button spacing with the regular `Button`. The `actionButton` style in `theme-rui` was missing `gap-2 items-center justify-center`, which caused icons and labels inside ActionBar buttons to render without the proper spacing/alignment used by the ghost/default `Button`. Adding these utilities restores visual parity across the design system.
+- 84d3213: Paint `Checkbox` and `Radio` controls with `bg-surface` so the inner area follows the theme surface token. Keeps the controls visually distinct over containers that paint a non-default background — e.g. a hovered or selected `SelectList` row. `Radio` already used `bg-surface` (added in DST-878 token polish); this brings `Checkbox` in parity.
+- b7c132d: fix(DST-1354): restore collapsing `Table.EditableCell` edit trigger
+
+  The overlay/ring affordance introduced in #5250 (DST-1275) did not read as editable in user testing: sighted users did not associate the hover ring with inline editing, and there was no discoverable trigger for keyboard or touch. This change reverts that approach and restores the explicit pencil edit button.
+
+  The trigger collapses to zero layout space at rest (`w-0 overflow-hidden`) and expands on row hover or keyboard focus, so static layout remains clean while the affordance is discoverable the moment the user interacts with the row. When expanded, the wrapper switches to `overflow-visible` so the button's focus outline is not clipped. The cell itself stays clickable as a touch target. Enabled editable cells always truncate their content to stay aligned with column headers and match the single-line editing controls; disabled cells behave like a regular `Table.Cell`.
+
+- f16b887: fix(DST-1352): use correct outline for focus + error state in compound fields
+- 20a42b0: Rename universal spacing token from `none` to `collapsed` to avoid a Tailwind v4 collision. `--spacing-none` inside `@theme static` caused `leading-none` to resolve to `0` instead of `line-height: 1`. The new name `collapsed` is a semantic design term (cf. CSS margin collapse) that reads naturally in both gap (`space="collapsed"`) and padding (`inset="collapsed"`) contexts.
+- 8902b10: fix: register `--ui-background-color`, `--ui-border-color`, and `--ui-highlight-color` as non-inheriting custom properties
+
+  Previously, setting one of these variables on a themed surface (e.g. a destructive Panel overriding `--ui-border-color`) would cascade the value into every nested element that also reads `ui-surface`, tinting Inputs, Buttons, Cards, etc. with the parent's color.
+
+  These three custom properties are now registered via `@property { inherits: false }`, so each surface resolves its own fallback via the existing `var(..., var(--color-…))` pattern and nested surfaces keep their defaults.
+
+- Updated dependencies [adb8a18]
+- Updated dependencies [326f707]
+- Updated dependencies [b7c132d]
+- Updated dependencies [6587493]
+- Updated dependencies [f16b887]
+- Updated dependencies [f629319]
+- Updated dependencies [93f9ef1]
+- Updated dependencies [8326bf7]
+- Updated dependencies [bfea9df]
+- Updated dependencies [8326bf7]
+- Updated dependencies [1cac70d]
+- Updated dependencies [cddcfd3]
+- Updated dependencies [e33a1e7]
+- Updated dependencies [20a42b0]
+- Updated dependencies [00d93c8]
+- Updated dependencies [c2a1c72]
+- Updated dependencies [724f0ce]
+- Updated dependencies [62cca29]
+- Updated dependencies [de34b15]
+- Updated dependencies [04111ca]
+  - @marigold/system@18.0.0-beta.0
+  - @marigold/components@18.0.0-beta.0
+
+## 5.5.1
+
+### Patch Changes
+
+- cd9dd4d: fix(DSTSUP-266): render the required-field asterisk via a `ui-required-indicator` utility
+
+  The required indicator (the red `*` after a label) was defined inline as `after:content-["*"]`. That quoted arbitrary value does not survive JS compilation into an extractable class name (`content-["*"]` becomes `content-[\"*\"]`), so consumers that regenerate Tailwind by scanning the compiled theme packages (the Marigold starter, StackBlitz, `@reservix/core`) never generated a rule for it and the asterisk was invisible. It kept working in Storybook and the docs because those read the source or the pre-built CSS.
+
+  The indicator is now a named `ui-required-indicator` utility with its value defined in CSS (`ui.css`). The class name is quote-free, so it survives compilation and renders regardless of how a consumer builds its styles.
+
+- Updated dependencies [76fca24]
+  - @marigold/components@17.9.1
+  - @marigold/system@17.9.1
+
+## 5.5.0
+
+### Minor Changes
+
+- ed2d9ae: feat(DST-1551): add `DateRangePicker` component
+
+  New `<DateRangePicker>` lets users enter or select a start–end date range through a single field, mirroring `<DatePicker>`'s API and behaviour. Two date inputs (`start`/`end`) sit in one field group with a calendar button that opens a `<RangeCalendar>` in a popover on desktop and a tray on small screens. Supports per-input paste (ISO/EU/US formats), `granularity` (inline time segments), `visibleDuration` (up to three months), and the usual Marigold field props (`disabled`, `readOnly`, `required`, `error`, `errorMessage`, `description`, `minValue`, `maxValue`, `dateUnavailable`, `width`, `variant`, `size`). Adds a matching `DateRangePicker` theme entry to `theme-rui`.
+
+### Patch Changes
+
+- ed2d9ae: fix(DST-1551): round the `RangeCalendar` hover and focus highlight on days outside the selected range
+
+  Days outside the selected range now round their hover and focus highlight to match the selected state, instead of showing a square highlight against the rounded endpoints. In-range cells stay square so the range fill still connects seamlessly.
+
+- 24354a9: fix(DST-1560): correct the `@source inline` padding safelist to the real spacing tokens
+
+  The padding safelist in `styles.css` still used the pre-rename vocabulary `{compact, tight, regular, relaxed, spacious}`, but the spacing tokens were long ago renamed to `{tight, snug, regular, relaxed, loose}`. As a result `compact`/`spacious` force-generated dead utility classes (resolving to undefined `--spacing-*` vars), while the real `snug`/`loose` tokens were never safelisted and so were unavailable in scanner-excluded stories and in the (unscanned) docs app. The leading family-less line was also stale — it predates the `square`/`squish`/`stretch` split.
+
+  Replaced the three lines with the three inset-padding families (`square`/`squish`/`stretch`) using the real size names, so utility classes like `p-squish-relaxed` resolve to a concrete value and the full inset vocabulary is available where the scanner can't see it.
+
+- 4d44517: fix: make Select and Menu overlay appear above Drawer on small screens
+
+  On small screens, `Select` and `Menu` render their options in a `Tray` (bottom sheet). The `Tray` overlay had `z-40` in the theme while the `Drawer` overlay uses `z-50`, so the tray rendered behind an open drawer and was unreachable.
+
+  Moved the `z-index` from the theme style file into the `TrayModal` component implementation (matching the project's z-index architecture rule), and raised it to `z-50`. Both the `Drawer` and `Tray` portal to `document.body`; at equal z-index, DOM order determines stacking. The `Tray` is always mounted after the `Drawer`, so it correctly appears on top.
+
+- Updated dependencies [ed2d9ae]
+- Updated dependencies [e686474]
+- Updated dependencies [2fc7b96]
+- Updated dependencies [508ec2c]
+- Updated dependencies [4d44517]
+  - @marigold/components@17.9.0
+  - @marigold/system@17.9.0
+
+## 5.4.1
+
+### Patch Changes
+
+- Updated dependencies [bdda185]
+- Updated dependencies [a609642]
+- Updated dependencies [60b6e03]
+  - @marigold/components@17.8.0
+  - @marigold/system@17.8.0
+
 ## 5.4.0
 
 ### Minor Changes

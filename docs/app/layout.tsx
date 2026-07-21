@@ -4,8 +4,9 @@ import { flattenTree } from 'fumadocs-core/page-tree';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { Inter } from 'next/font/google';
+import { examplePages } from './(examples)/examples/navigation';
 import './global.css';
-import { Providers } from './providers';
+import { type PageEntry, Providers } from './providers';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -31,18 +32,23 @@ export const metadata: Metadata = {
 // Layout
 // ---------------
 const Layout = ({ children }: LayoutProps<'/'>) => {
+  const docsPages: PageEntry[] = flattenTree(source.pageTree.children)
+    .filter(
+      (item): item is typeof item & { name: string } =>
+        typeof item.name === 'string'
+    )
+    .map(item => ({ name: item.name, url: item.url, kind: 'doc' }));
+
+  const exampleEntries: PageEntry[] = examplePages().map(page => ({
+    ...page,
+    kind: 'example',
+  }));
+
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>
       <body className="flex min-h-screen flex-col">
         <Suspense>
-          <Providers
-            pages={flattenTree(source.pageTree.children)
-              .filter(
-                (item): item is typeof item & { name: string } =>
-                  typeof item.name === 'string'
-              )
-              .map(item => ({ name: item.name, url: item.url }))}
-          >
+          <Providers pages={[...docsPages, ...exampleEntries]}>
             {children}
           </Providers>
           <div id="portalContainer" data-theme="rui" className="not-prose" />

@@ -5,8 +5,8 @@ export const Pagination: ThemeComponent<'Pagination'> = {
   navigationButton: cva({
     base: [
       'ui-button-base',
-      'text-sm hover:bg-current/10',
-      'h-9 py-2 gap-1 px-2.5',
+      'text-sm hover:ui-state-hover-ghost',
+      'h-control py-2 gap-1 px-2.5',
       /**
        * Removes the spacing from the button when when there are hidden
        * elements (e.g. the hidden elements for accessibility).
@@ -17,8 +17,12 @@ export const Pagination: ThemeComponent<'Pagination'> = {
   pageButton: cva({
     base: [
       'ui-button-base',
-      'text-sm bg-background size-9',
-      'data-[selected=true]:ui-surface data-[selected=true]:shadow-elevation-border',
+      'text-sm bg-transparent size-control',
+      // An unselected page is a ghost button, same as the prev/next arrows, so it
+      // wears the identical translucent hover. Gated to unselected: the selected
+      // page keeps its ui-control fill and must not get the ghost overlay.
+      'data-[selected=false]:hover:ui-state-hover-ghost',
+      'data-[selected=true]:ui-control',
     ],
   }),
   icon: cva({ base: 'h-4 w-4' }),

@@ -89,7 +89,7 @@ jobs:
         # build that happened to have a real commit.
         id: sha
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-      - uses: pnpm/action-setup@v6.0.8 # Uses version from package.json#packageManager
+      - uses: pnpm/action-setup@v6.0.9 # Uses version from package.json#packageManager
       - name: Setup Node (using .node-version)
         uses: actions/setup-node@v6
         with:

@@ -6,10 +6,13 @@ import { Basic, Error } from './Radio.stories';
 test('takes full width by default', () => {
   render(<Basic.Component />);
 
-  const radio = screen.getByText('Option 1');
+  // Width lives on the RadioField wrapper (a `div`). RadioButton renders a
+  // `label`, so `closest('div[data-rac]')` lands on the field regardless of how
+  // deeply RAC nests the label internally.
+  const radio = screen.getByRole('radio', { name: 'Option 1' });
   // eslint-disable-next-line testing-library/no-node-access
-  const container = radio.closest('[data-rac]') || radio.parentElement!;
-  expect(container).toHaveClass('w-full');
+  const field = radio.closest('div[data-rac]');
+  expect(field).toHaveClass('w-full');
 });
 
 test('forwards ref', () => {

@@ -1,0 +1,209 @@
+---
+title: ActionBar
+description: Floating toolbar of bulk actions for the current selection in a collection
+badge: alpha
+---
+
+import { ActionBarAnatomy } from './actionbar-anatomy';
+
+The `<ActionBar>` is a floating toolbar of bulk actions for the items currently selected in a collection. It shows how many items are selected and offers actions that apply to all of them at once.
+
+Reach for it whenever a list or [`<Table>`](/components/collection/table) lets people pick several rows and then act on them together, such as deleting, exporting, or reassigning many records in one step instead of repeating the same action row by row. The [Bulk Actions pattern](/patterns/user-input/bulk-actions) covers the full flow around the bar, from selection scope to confirming destructive actions and reporting partial failures.
+
+## Anatomy
+
+<ActionBarAnatomy />
+
+- **Selection count:** States how many items the actions will affect, so the user knows the scope before pressing anything. It reads `All items selected` when the collection's select-all is used.
+- **Clear button:** Dismisses the bar and clears the selection. Rendered only when a clear handler is available.
+- **Toolbar:** Groups the actions into a single row.
+- **Action:** Each action is a plain [`<Button>`](/components/actions/button) that runs one operation across the whole selection. The bar adapts it to the toolbar look automatically.
+
+## Appearance
+
+<AppearanceDemo component="ActionBar" />
+
+<AppearanceTable component="ActionBar" />
+
+## Usage
+
+Keep the bar to a few high-value actions, the ones people reach for again and again on a multi-selection. Name each one with a verb so its effect is obvious, and place a destructive action such as delete last so the safer choices come first. When a selection carries more actions than fit comfortably, move the long tail into an [`<ActionMenu>`](/components/overlay/action-menu) rather than crowding the bar.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `<ActionBar>` for actions that apply to the current multi-selection in
+      a collection, and let it appear only while something is selected.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use it as a permanent toolbar or for actions on a single row. Reach
+      for a [`<ButtonGroup>`](/components/actions/button-group) for per-row or
+      surface actions, or a single [`<Button>`](/components/actions/button) for
+      one action.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Bulk actions in a table
+
+The most common home for an `<ActionBar>` is a [`<Table>`](/components/collection/table) with `selectionMode="multiple"`. Pass the bar through the Table's `actionBar` prop, and the Table tracks the selection, shows and hides the bar, and reserves space at the bottom so the last row stays reachable while the bar floats above it.
+
+<ComponentDemo name="actionbar-table-bulk-actions" />
+
+Inside the render prop you write only the actions; the selection count and the clear button are filled in for you. The bar stays pinned to the bottom of the scroll area as the user works down a long list.
+
+<Callout title="Acting on a full selection" type="info">
+  When the user toggles the Table's select-all checkbox, the selection becomes
+  the value `'all'` and the bar reads `All items selected`. The `actionBar`
+  render prop receives this value, so an action can apply to the entire result
+  set, including rows that aren't loaded yet, by fetching the full set rather
+  than the keys currently on screen. Before acting beyond the visible rows, read
+  the [selection scope guidance](/patterns/user-input/bulk-actions#scope) in the
+  Bulk Actions pattern, which recommends keeping the selection bounded to what
+  the user can see.
+</Callout>
+
+### Bulk editing in a drawer
+
+Some bulk actions need a few inputs before they can run, such as moving many events to a new date and venue at once. Compose a `<Button>` inside a [`<Drawer.Trigger>`](/components/overlay/drawer) so pressing the action opens a drawer with a small form, and apply the changes across the selection on submit.
+
+<ComponentDemo name="actionbar-drawer" />
+
+Keep the form short and make it clear that it edits many records at once. A common pattern is to apply only the fields the user fills in and leave the rest of each record untouched.
+
+### Outside a table
+
+A `<Table>` is not required. When you own the selection state yourself, on a gallery, a card grid, or any custom collection, drive the bar directly: pass `selectedItemCount` so it knows when to appear and what to show, and `onClearSelection` to reset your selection when the user dismisses it.
+
+<ComponentDemo name="actionbar-standalone" />
+
+For a collection that manages its own selection wiring the way `<Table>` does, the [`useActionBar`](#useactionbar) hook returns the selection handlers, the measured bar height, and the overlay to render alongside the collection.
+
+### Accessibility
+
+The `<ActionBar>` handles the behaviour that bulk-selection patterns are expected to have:
+
+- The actions sit in a toolbar with a localized `Bulk Actions` label, and the clear button carries its own label, so the bar's purpose is announced.
+- When the bar appears, screen readers announce that actions are available, without focus jumping away from the collection.
+- Pressing <kbd>Escape</kbd> clears the selection and dismisses the bar, and focus returns to where it was when the bar closes.
+
+Give every icon-only action a text label as well, either visible next to the icon or through an `aria-label`, so each action is announced clearly.
+
+## Props
+
+<StorybookHintMessage component="ActionBar" />
+
+### ActionBar
+
+<AutoTypeTable path="ActionBar" name="ActionBarProps" />
+
+### Actions
+
+Actions are plain [`<Button>`](/components/actions/button) elements. Place them directly inside the bar and it cascades the toolbar look (a `ghost` variant at the default size); a local `variant` or `size` on a button still wins. For an icon-only action, set `size="icon"` and give it an `aria-label`.
+
+```tsx
+<ActionBar selectedItemCount={3} onClearSelection={clear}>
+  <Button onPress={edit}>
+    <Pencil /> Edit
+  </Button>
+  <Button size="icon" aria-label="Delete" onPress={del}>
+    <Trash2 />
+  </Button>
+</ActionBar>
+```
+
+### useActionBar
+
+<AutoTypeTable path="ActionBar/useActionBar" name="UseActionBarProps" />
+
+## Alternative components
+
+<ul>
+  <li>
+    [ButtonGroup](/components/actions/button-group): Use for a cluster of
+    related actions on a single row or surface, rather than on a selection.
+  </li>
+  <li>
+    [ActionMenu](/components/overlay/action-menu): Use the menu pattern when a
+    selection carries more actions than fit comfortably in the bar.
+  </li>
+  <li>
+    [Button](/components/actions/button): Use for a single standalone action
+    that doesn't depend on a selection.
+  </li>
+</ul>
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Bulk Actions pattern',
+      href: '/patterns/user-input/bulk-actions',
+      caption:
+        'The end-to-end flow around the bar: selection scope, destructive confirmation, progress, and partial failures.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <rect x="3" y="9" width="18" height="7" rx="2" />
+          <path d="M7 12.5h.01" />
+          <path d="M11 12.5h6" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Table',
+      href: '../table',
+      caption:
+        'The most common host for an ActionBar. Selecting rows in a Table reveals the bar with bulk actions for the selection.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <path d="M3 9h18" />
+          <path d="M3 15h18" />
+          <path d="M9 3v18" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Drawer',
+      href: '../../overlay/drawer',
+      caption:
+        'Pair a Button with a Drawer when a bulk action needs a small form before it runs.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <path d="M15 3v18" />
+        </svg>
+      ),
+    },
+  ]}
+/>

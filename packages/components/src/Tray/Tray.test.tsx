@@ -75,18 +75,30 @@ vi.mock('motion/react', async () => {
       React.createElement(React.Fragment, null, children),
     LayoutGroup: ({ children }: { children: React.ReactNode }) =>
       React.createElement(React.Fragment, null, children),
-    motion: {
-      create: (Component: React.ComponentType<any>) =>
-        React.forwardRef(function MotionWrapper(props: any, ref: any) {
-          const { onDragEnd, ...rest } = props;
-          if (onDragEnd) dragState.onDragEnd = onDragEnd;
-          return React.createElement(Component, { ...rest, ref });
-        }),
-    },
+    // `MotionFeatures` (src/lazyMotion.tsx) wraps motion subtrees in
+    // `LazyMotion`; mock it as a pass-through so children render without
+    // loading the real feature bundle.
+    LazyMotion: ({ children }: { children: React.ReactNode }) =>
+      React.createElement(React.Fragment, null, children),
+    domMax: {},
     useMotionValue: () => ({ get: () => 0, set: () => {} }),
     useReducedMotion: () => false,
     animate: mockAnimate,
     cubicBezier: () => [0, 0, 0, 0],
+  };
+});
+
+// `TrayModal` now creates its motion components via `create` from
+// `motion/react-m` (the lazy `m` entry), so the drag wrapper lives here.
+vi.mock('motion/react-m', async () => {
+  const React = await import('react');
+  return {
+    create: (Component: React.ComponentType<any>) =>
+      React.forwardRef(function MotionWrapper(props: any, ref: any) {
+        const { onDragEnd, ...rest } = props;
+        if (onDragEnd) dragState.onDragEnd = onDragEnd;
+        return React.createElement(Component, { ...rest, ref });
+      }),
   };
 });
 

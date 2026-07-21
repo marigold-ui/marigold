@@ -1,10 +1,21 @@
-import { expect } from 'storybook/test';
+import { I18nProvider } from 'react-aria-components';
+import { expect, screen, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Breadcrumbs } from './Breadcrumbs';
 
 const meta = preview.meta({
   title: 'Components/Breadcrumbs',
   component: Breadcrumbs,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
+  ],
+  parameters: {
+    surface: false,
+  },
   argTypes: {
     variant: {
       control: 'radio',
@@ -44,53 +55,43 @@ export const Basic = meta.story({
   ),
 });
 
-export const Collapsed = meta.story({
-  render: args => (
-    <Breadcrumbs maxVisibleItems={3} {...args}>
-      <Breadcrumbs.Item href="https://marigold-ui.io">Home</Breadcrumbs.Item>
-      <Breadcrumbs.Item href="https://marigold-ui.io">
-        Breadcrumb1
-      </Breadcrumbs.Item>
-      <Breadcrumbs.Item href="https://marigold-ui.io">
-        Breadcrumb2
-      </Breadcrumbs.Item>
-      <Breadcrumbs.Item href="https://marigold-ui.io">
-        Breadcrumb3
-      </Breadcrumbs.Item>
-    </Breadcrumbs>
-  ),
-});
-
-export const ManyItems = meta.story({
-  render: args => (
-    <Breadcrumbs maxVisibleItems={2} {...args}>
-      {[...Array(30).keys()].map(i => (
-        <Breadcrumbs.Item key={i} href={`https://marigold-ui.io/`}>
-          Breadcrumb {i + 1}
-        </Breadcrumbs.Item>
-      ))}
-    </Breadcrumbs>
-  ),
-});
-
 export const AutoCollapse = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   render: args => (
-    <div className="border-border w-75 resize-x overflow-auto border p-2">
-      <Breadcrumbs {...args}>
-        <Breadcrumbs.Item href="#">Home</Breadcrumbs.Item>
-        <Breadcrumbs.Item href="#">Events</Breadcrumbs.Item>
-        <Breadcrumbs.Item href="#">Summer Festival</Breadcrumbs.Item>
-        <Breadcrumbs.Item href="#">Event Details Page</Breadcrumbs.Item>
-      </Breadcrumbs>
-    </div>
+    // Force English so the ellipsis aria-label is stable regardless of the
+    // runner's system locale (otherwise it localizes, e.g. to German).
+    <I18nProvider locale="en-US">
+      <div className="border-border w-75 resize-x overflow-auto border p-2">
+        <Breadcrumbs {...args}>
+          <Breadcrumbs.Item href="#">Home</Breadcrumbs.Item>
+          <Breadcrumbs.Item href="#">Events</Breadcrumbs.Item>
+          <Breadcrumbs.Item href="#">Summer Festival</Breadcrumbs.Item>
+          <Breadcrumbs.Item href="#">Event Details Page</Breadcrumbs.Item>
+        </Breadcrumbs>
+      </div>
+    </I18nProvider>
   ),
+});
 
-  play: async ({ canvas }) => {
+AutoCollapse.test(
+  'Collapses overflow items and reveals them under the ellipsis',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas }) => {
+    // The middle items collapse behind an ellipsis button at this width.
     const ellipsis = await canvas.findByRole('button', {
       name: 'These breadcrumbs are hidden',
     });
 
-    await expect(ellipsis).toBeInTheDocument();
-  },
-});
+    await userEvent.click(ellipsis);
+
+    await expect(
+      await screen.findByRole('menuitem', { name: 'Events' })
+    ).toBeInTheDocument();
+    await expect(
+      screen.getByRole('menuitem', { name: 'Summer Festival' })
+    ).toBeInTheDocument();
+  }
+);

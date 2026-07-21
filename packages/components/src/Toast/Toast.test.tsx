@@ -2,8 +2,7 @@
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Basic } from './Toast.stories';
-import { queue } from './ToastProvider';
-import { useToast } from './ToastQueue';
+import { getToastQueue, useToast } from './ToastQueue';
 
 // Manually adding container for ToastProvider to prevent log errors
 beforeEach(() => {
@@ -14,7 +13,7 @@ beforeEach(() => {
 
 afterEach(() => {
   act(() => {
-    queue.clear();
+    getToastQueue().clear();
   });
   const container = document.getElementById('storybook-root');
   if (container && container.parentNode) {
@@ -141,7 +140,7 @@ describe('addToast timeout resolution', () => {
   let addSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
-    addSpy = vi.spyOn(queue, 'add');
+    addSpy = vi.spyOn(getToastQueue(), 'add');
   });
   afterEach(() => {
     addSpy.mockRestore();

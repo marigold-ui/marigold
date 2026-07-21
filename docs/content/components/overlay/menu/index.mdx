@@ -26,7 +26,10 @@ There is also a companion component called `<ActionMenu>` which you can use if y
 
 ## Appearance
 
-<AppearanceDemo component={'Menu'} exclude={{ variant: ['destructive'] }} />
+<AppearanceDemo
+  component={'Menu'}
+  exclude={{ variant: ['destructive', 'master', 'admin'] }}
+/>
 
 <AppearanceTable component={'Menu'} />
 
@@ -41,10 +44,14 @@ The Menu component supports variants for both the trigger button and individual 
 
 **Menu item variants:**
 
-| Variant       | Description                                         | When to use                                                    |
-| ------------- | --------------------------------------------------- | -------------------------------------------------------------- |
-| `default`     | Standard menu item. This is the default variant.    | Regular menu actions like navigation, selection, or settings.  |
-| `destructive` | Red-colored menu item signaling a dangerous action. | Irreversible or high-impact actions like "Delete" or "Remove". |
+| Variant       | Description                                            | When to use                                                    |
+| ------------- | ------------------------------------------------------ | -------------------------------------------------------------- |
+| `default`     | Standard menu item. This is the default variant.       | Regular menu actions like navigation, selection, or settings.  |
+| `destructive` | Red-colored menu item signaling a dangerous action.    | Irreversible or high-impact actions like "Delete" or "Remove". |
+| `master`      | Menu item with a lock icon in the master access color. | Actions reserved for Reservix employees (master access).       |
+| `admin`       | Menu item with a key icon in the admin access color.   | Actions reserved for developers (admin access).                |
+
+The item variants apply to `<Menu.Item>`, not to the trigger. See the [Admin- and Mastermark pattern](/patterns/layout/admin-master-mark) for guidance on access marks.
 
 ## Usage
 
@@ -75,6 +82,12 @@ In this example you can see a simple `<Menu>` with some items to select. it is u
 
 <ComponentDemo name="menu-action" />
 
+### Items with description
+
+For menu items that need a label and a secondary line, compose with `<TextValue>` and `<Description>`. The description is wired to the item's `aria-describedby` automatically and picks up the Menu theme's `description` slot styling.
+
+<ComponentDemo name="menu-description" />
+
 ### Menu with sections
 
 When you have mutliple menu items that can be categorized under different headings. This is particularly useful in complext menus with many options, you can use `<Menu.Section>` and pass `title` for the group name.
@@ -87,13 +100,11 @@ In this example the `<Menu>` has set its prop `disabeldKeys`. So you can't inter
 
 <ComponentDemo name="menu-disabled" />
 
-### ActionMenu
+### Looking for the kebab-menu pattern?
 
-The `<ActionMenu>` is typically used to provide quick, context-specific actions related to an item or interface element. It is particularly useful in scenarios where speed and efficiency in selecting an action are crucial.
+For quick, context-specific actions on an item or row, see [`<ActionMenu>`](/components/overlay/action-menu). It uses a ghost `<Button>` as its trigger, switches to a `<Tray>` on small screens, and follows the same `<Menu.Item>` API.
 
-In this example, the `<ActionMenu>` is used within a table to allow users to perform actions like viewing details of a ticket or deleting a ticket. When "View Details" is selected, a dialog displays key information about the selected ticket, including its ID, event name, and status. The "Delete" option removes the ticket from the list.
-
-The example shows that the `<ActionMenu>` is very similar to the standard `<Menu>` component, offering flexibility and ease of use in various contexts.
+The example below shows `<ActionMenu>` inside a table for per-row actions:
 
 <ComponentDemo name="menu-action-table" />
 

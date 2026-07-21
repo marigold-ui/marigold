@@ -1,7 +1,8 @@
 import { CalendarDate } from '@internationalized/date';
 import { ReactElement } from 'react';
 import type RAC from 'react-aria-components';
-import { DateInput, Group } from 'react-aria-components';
+import { DateInput } from 'react-aria-components/DateField';
+import { Group } from 'react-aria-components/Group';
 import { cn, useClassNames } from '@marigold/system';
 import { DateSegment } from './DateSegment';
 
@@ -35,7 +36,9 @@ const extractCalendarDate = (
   }
 };
 
-const parseDateFromString = (dateString: string): CalendarDate | undefined => {
+export const parseDateFromString = (
+  dateString: string
+): CalendarDate | undefined => {
   const formats = [
     // ISO format: YYYY-MM-DD
     { regex: /^(\d{4})-(\d{1,2})-(\d{1,2})$/, order: ['year', 'month', 'day'] },

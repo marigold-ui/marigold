@@ -1,21 +1,14 @@
-import { useContext } from 'react';
-import { Button, ListStateContext } from 'react-aria-components';
-import type { TagGroupProps } from 'react-aria-components';
+import { use } from 'react';
+import { ListStateContext } from 'react-aria-components/ListBox';
+import type { TagGroupProps } from 'react-aria-components/TagGroup';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { Button } from '../Button/Button';
 import { intlMessages } from '../intl/messages';
 
-export interface TagGroupRemoveAllProps extends Pick<
-  TagGroupProps,
-  'onRemove'
-> {
-  className?: string;
-}
+export type TagGroupRemoveAllProps = Pick<TagGroupProps, 'onRemove'>;
 
-export const TagGroupRemoveAll = ({
-  className,
-  onRemove,
-}: TagGroupRemoveAllProps) => {
-  const state = useContext(ListStateContext);
+export const TagGroupRemoveAll = ({ onRemove }: TagGroupRemoveAllProps) => {
+  const state = use(ListStateContext);
   const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');
 
   if (state && state.collection.size < 2) {
@@ -23,10 +16,7 @@ export const TagGroupRemoveAll = ({
   }
 
   return (
-    <Button
-      onPress={() => onRemove?.(new Set(state?.collection.getKeys()))}
-      className={className}
-    >
+    <Button onPress={() => onRemove?.(new Set(state?.collection.getKeys()))}>
       {stringFormatter.format('removeAll')}
     </Button>
   );

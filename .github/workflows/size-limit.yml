@@ -1,0 +1,39 @@
+name: Size Limit
+
+on:
+  push:
+    # Skip pushes that can't affect the bundle (mirrors build.yml). The check
+    # stays push-triggered to match its sibling CI checks (lint/test/typecheck).
+    paths-ignore:
+      - '.changeset/**'
+      - '.github/**'
+      - 'docs/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  size-limit:
+    name: Size Limit
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      CI: true
+    steps:
+      # Setup
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6.0.9 # Uses version from package.json#packageManager
+      - name: Setup Node (using .node-version)
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build packages
+        run: pnpm build
+
+      # Action — fails when any component exceeds its budget in .size-limit.json
+      - name: Check bundle size
+        run: pnpm --filter @marigold/components size

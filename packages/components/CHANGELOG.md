@@ -1,5 +1,735 @@
 # @marigold/components
 
+## 18.0.0-beta.3
+
+### Minor Changes
+
+- 5945653: feat(DST-1460): animated open/close caret in `Accordion.Header`
+
+  `Accordion.Header` now uses the new `MorphCaret` icon, which smoothly animates between the closed (down) and open (up) states by morphing its SVG `d` path. Respects `prefers-reduced-motion`. The unused `ChevronDown` icon has been removed.
+
+- 141a2cc: feat(DST-1373): adopt the slot-configuration pattern in `Card`
+
+  `Card.Header` is now a slot provider: drop a `<Title>` and an optional `<Description>` directly inside it and the header wires up the heading level, id, accessible name, and theme classes automatically. A bare `<Title>` placed directly inside `<Card>` (no `Card.Header` wrapper) is also picked up by the root, so title-only cards can skip the header and still get the right padding and `aria-labelledby` wiring. `<Card>` itself now renders an `<article>` landmark and is automatically labelled by its `<Title>` via `aria-labelledby`, or by an explicit `aria-label`. A new `headingLevel` prop (default `3`) controls the underlying heading tag for the document outline.
+
+  The theme `Card` slot map gains `title` and `description` entries — the typography previously carried on the `header` slot has moved to `title`. Variant text color now flows through a new `--card-accent` CSS custom property, so `master` and `admin` cards pick up the matching accent automatically. Raw `<Stack>` / `<Headline>` composition inside `Card.Header` still renders but does not pick up the slot wiring; prefer `<Title>` / `<Description>` going forward.
+
+- bd45aee: feat(DST-876): add Card usage guidelines
+
+  Renames the `Card.Preview` slot to `Card.Media` across components, theme, and docs. This is a breaking change: consumers using `<Card.Preview>`, the `data-card-preview` selector, or the `preview` theme slot key must migrate to `Card.Media`, `data-card-media`, and the `media` slot key respectively.
+
+  Adds a "Usage" section to the Card docs covering when to use cards, media slot guidance.
+
+- 141a2cc: feat(DST-1480): forward arbitrary HTML attributes on `<Panel>`
+
+  `<Panel>` now extends `HTMLAttributes<HTMLElement>` (minus `className`/`style`) and spreads the remaining props onto its root `<section>`, matching the `<Card>` API. Consumers can now pass `id`, `data-*`, event handlers, and other standard attributes directly to a Panel.
+
+  A consumer-supplied `aria-labelledby` is preserved instead of being overwritten with `undefined` when no `<Title>` is present — the slot-owned `titleId` still wins when a `<Title>` renders. This mirrors the fallback adopted by `Card` in DST-1373.
+
+  [DST-1480](https://reservix.atlassian.net/browse/DST-1480)
+
+- 4d20fb6: feat(DST-1483): remove ActionButton in favor of a slot-aware Button (rename ActionGroup → ButtonGroup)
+
+  The beta-only `<ActionButton>` is removed. `<Button>` is now slot-aware: it adapts
+  automatically inside a button container, so you write `<Button>` everywhere instead
+  of learning a second button component.
+  - `<ActionButton>` is removed. Use `<Button>`; it adapts inside `<ButtonGroup>` and
+    `<Panel.Header>`. Opt a button out of the cascade with `slot={null}`.
+  - `<ActionGroup>` is renamed to `<ButtonGroup>`, mirroring the existing
+    `ToggleButtonGroup → ToggleButtonContext → ToggleButton` trio.
+  - A single Marigold-owned `ButtonContext` drives the cascade (replaces
+    `ActionButtonContext` + `ActionGroupContext`). RAC's own `ButtonContext`
+    (`close`/`increment`/`decrement` slots) is untouched.
+  - **Uniform precedence:** a local prop (`variant`, `size`, `disabled`) always wins
+    over the container. This drops the former `ActionGroup` `size`-group-wins outlier.
+  - `<ButtonGroup>` cascades `variant: 'secondary'` when unset, the same baseline
+    as a standalone `<Button>`. Slot-aware parents override it where they want
+    lower emphasis: `<Panel.Header>` cascades `variant: 'ghost'` + `size: 'small'`,
+    so a labelled header action stays readable. An icon-only action (a bare-icon
+    `<Button>`, an `<ActionMenu>` kebab) sets `size="icon"` to render as a square.
+  - `<ButtonGroup>` now owns a structural `flex gap-1` layout (orientation-aware), so
+    a standalone cluster is spaced correctly — `<ActionGroup>` had no layout of its
+    own. A container's positional className (e.g. Panel's `[grid-area:actions]`) still
+    rides along and positions the group.
+  - Overlays (`Popover`, `Modal`, `Tray`, `Drawer`) reset `ButtonContext` at their
+    content root, so a header/group cascade can't leak through the portal into an
+    overlay's `slot="close"` or `Dialog.Actions` buttons.
+  - `<SelectList.Option>` cascades `variant: 'ghost'` to a nested `<Button>`,
+    `<LinkButton>`, or `<ActionMenu>`, so a trailing in-row action reads as
+    low-emphasis chrome without an explicit `variant`.
+
+  **Migration**
+  - `<ActionButton>` → `<Button>` (its `default` variant maps to `variant="ghost"`).
+  - `<ActionGroup>` → `<ButtonGroup>`.
+  - `ActionButtonContext` / `ActionGroupContext` → `ButtonContext`.
+  - `<ActionMenu>` keeps its public name. Its trigger is now a slot-aware `<Button>`
+    that inherits the cascade instead of hardcoding a variant: it renders `secondary`
+    on its own (the standalone `<Button>` baseline, matching the pre-unification look)
+    and `ghost` inside `<Panel.Header>`, `<SelectList.Option>`, or a `<ButtonGroup>`.
+    A `variant` set on the `<ActionMenu>` still wins.
+
+### Patch Changes
+
+- 16bcb56: feat([DST-1395]): **SelectList** horizontal layouts now automatically flip to a vertical stack when the wrapping container is narrower than `40rem` (~640px).
+- 75cab86: feat(DST-1286): Panel renders a `data-panel` attribute on its root
+
+  The root `<section>` rendered by `<Panel>` now carries a valueless `data-panel` attribute. External stylesheets and host pages can use it as a stable selector (e.g. `:not(:has([data-panel]))`) to detect whether a Panel is present without depending on Tailwind utility classes.
+
+- 0760ecc: refactor(DST-1374): use `<TextValue>` and `<Description>` for selection-container items
+
+  Consumer-facing JSX in component stories and documentation demos for `<Select>`, `<SelectList>`, `<ListBox>`, `<Menu>`, `<ComboBox>`, and `<Autocomplete>` now composes item content with the `<TextValue>` and `<Description>` primitives instead of hand-written `<Text slot="label">` / `<Text slot="description">`. The primitives are drop-in replacements that render the same RAC `<Text>` with the same default slot values, so rendering, `aria-describedby` wiring, and accessibility are identical.
+
+  `<Menu.Item>` gains first-class `label` and `description` theme slots, mirroring `<SelectList.Option>`. `MenuItem` merges the Marigold theme classNames into RAC's `TextContext` so nested `<TextValue>` / `<Description>` pick up Menu styling without losing RAC's slot wiring. Menu items adopt a two-column grid layout (icon column + content column) so descriptions render below labels; existing plain-text and icon+text menu items are unaffected.
+
+  The `Menu` theme type in `@marigold/system` is extended with required `label` and `description` slot keys. Consumers maintaining a custom theme that overrides `Menu` will need to add these two slots to satisfy the type. `@marigold/theme-rui` is updated accordingly in this release.
+
+  No public API change on `Select.Option`, `SelectList.Option`, `ListBox.Item`, `Menu.Item`, `ComboBox.Option`, or `Autocomplete.Option`.
+
+- 14f1324: fix(DST-1467): make `MorphCaret` SSR-safe
+
+  The shared `reducedMotion` constant in `utils/reducedMotion.ts` sampled `window.matchMedia` at module evaluation, so the server bundle always resolved to `false` while a client with `prefers-reduced-motion: reduce` resolved to `true` — producing a React 19 hydration mismatch (silently absorbed in production, logged as an error in dev). `MorphCaret` now reads the preference via `useReducedMotion()` from `motion/react`, matching `SidebarToggleIcon` and `TrayModal`. The obsolete `utils/reducedMotion.ts` has been removed.
+
+- 431d4dd: fix(DST-1480): only set `aria-labelledby` on Panel when a Title is present
+
+  `<Panel>` previously rendered `aria-labelledby={titleId}` whenever no `aria-label` was given, even if no `<Title>` was present. That left the `<section>` landmark pointing at an id no element carried, producing a broken/empty accessible name.
+
+  The guard now also checks `hasTitle`, so `aria-labelledby` is only applied when a `<Title>` actually renders. This mirrors the stricter guard adopted by `Card` in DST-1373.
+
+  [DST-1480](https://reservix.atlassian.net/browse/DST-1480)
+
+- fc9ffb1: fix(DSTSUP-256): show `cursor-not-allowed` on disabled TagField
+
+  The hidden trigger button inside TagField had `cursor-pointer` hardcoded, so hovering a
+  disabled TagField showed the text/caret cursor instead of `not-allowed` — inconsistent with
+  Select and ComboBox. Added `disabled:cursor-not-allowed` to the trigger button so the cursor
+  now matches the rest of the form components.
+
+- 334688e: chore(DST-1364): migrate `ListBox` item label/description styling off descendant selectors
+
+  `ListBox` now exposes `label` and `description` as first-class theme entries, and `ListBox.Item` injects their classNames into react-aria's `TextContext` (merging rather than replacing, so RAC's `aria-describedby` wiring is preserved) instead of styling `[slot=description]` via a descendant selector on `item`. This also benefits `Select.Option`, `ComboBox.Option`, and `Autocomplete.Option`, which re-export `ListBox.Item`.
+
+  The `Theme` type in `@marigold/system` now requires `label` and `description` keys on the `ListBox` record, so custom themes implementing `ListBox` must add these entries. No public API change in `@marigold/components`; visually identical except `description` now explicitly sets `font-normal` (parity with `SelectList`).
+
+- 334688e: chore: extract shared `useMergedTextSlots` helper for RAC `TextContext` slot styling
+
+  `ListBox.Item` and `SelectList.Option` both merged `label`/`description` theme classNames into react-aria's `TextContext` (spreading the parent slot first to preserve RAC's `aria-describedby` `id`). That accessibility-critical logic — and its `SlottedContextValue` type — now lives in a single `useMergedTextSlots` hook that both consume. No public API or visual change.
+
+- 9cdb389: fix(DST-1464): keep wide content inside `<AppLayout.Main>` from overflowing the viewport. The shell grid uses `grid-cols-[auto_1fr]` and the main grid item defaulted to `min-width: auto`, so any content wider than the available track (most visibly a `<Select selectionMode="multiple">` with several long selected items) pushed the main column past the viewport and added a horizontal scrollbar. Adding `min-w-0` to `AppLayoutMain` lets the `1fr` track actually shrink, and children like `truncate` on the Select trigger can now clip at the right place.
+- Updated dependencies [141a2cc]
+- Updated dependencies [0760ecc]
+- Updated dependencies [4d20fb6]
+- Updated dependencies [334688e]
+  - @marigold/system@18.0.0-beta.3
+
+## 18.0.0-beta.2
+
+### Major Changes
+
+- 3a62175: feat([DST-1407]): `Drawer` enforces one open at a time.
+
+  Opening a sibling `<Drawer>` while one is already open dismisses the first.
+  Applies to desktop and mobile. The dismissed Drawer's `onOpenChange(false)`
+  is invoked so controlled-state consumers stay in sync.
+
+  A `<Drawer.Trigger>` nested _inside_ an already-open Drawer is treated as a
+  sub-flow: the nested Drawer opens over its parent and the parent stays
+  mounted. Dismissing the parent in that situation would also unmount the
+  nested trigger and tear down the new Drawer.
+
+  **Migration:** No API change. If a flow relied on multiple simultaneous
+  sibling drawers, refactor to a single drawer with switchable content, or
+  use `<Modal>` for layered interactions.
+
+### Minor Changes
+
+- d51416c: feat([DST-761]): export `useLandmark` from `@marigold/components`.
+
+  Marigold now re-exports React Aria's `useLandmark` hook (and its `AriaLandmarkRole` / `AriaLandmarkProps` types) so consumers can register custom regions as ARIA landmarks without adding `@react-aria/landmark` as a direct dependency.
+
+  ```tsx
+  import { useRef } from 'react';
+  import { useLandmark } from '@marigold/components';
+
+  const ref = useRef<HTMLElement>(null);
+  const { landmarkProps } = useLandmark(
+    { role: 'search', 'aria-label': 'Site search' },
+    ref
+  );
+  ```
+
+  A new accessibility guide on landmarks and a dedicated `useLandmark` reference page have been added to the documentation.
+
+- a59d2dd: fix([DST-1363]): make `<TagGroup>` `errorMessage` render and bridge it to form validation
+
+  `<TagGroup>` accepted `errorMessage` via `<FieldBase>` but never rendered it because RAC's `TagGroup` does not populate `FieldErrorContext`. The internal `<HelpText>` short-circuits on a missing context, so the error path was a silent no-op and `<Form>`-level validation never reached the user.
+
+  Bridges `<TagGroup>` to validation the same way `<SelectList>` does: `useFormValidationState` + `useFormValidation` on a hidden `<select>` (replacing the previous `<input type="checkbox">` shim), with `<FormContext>` inheritance for `validationBehavior`. The shared hidden control lives at `HiddenSelection/` and is now consumed by both `<SelectList>` and `<TagGroup>` so future fixes only happen once.
+
+  New props on `<TagGroup>`: `error`, `required`, `disabled`, `validate`, `validationBehavior`, `form`. Public API normalised to Marigold's convention — `isInvalid` / `isRequired` / `isDisabled` are removed and `onSelectionChange` is renamed to `onChange`. `selectionMode` now defaults to `'multiple'`. `disabled` now propagates to each `<Tag>` via context so interaction is blocked alongside the form-disabled state.
+
+  [DST-1363](https://reservix.atlassian.net/browse/DST-1363)
+
+- 9a407ef: feat([DST-753]): `SectionMessage` exposes an `announce` prop and uses react-aria's `LiveAnnouncer` to notify assistive technology.
+
+  **What changed (DST-753):**
+  - `<SectionMessage>` accepts a new `announce?: boolean` prop. When set, the message text is sent to a shared, always-mounted live region maintained by `@react-aria/live-announcer`. Priority is `polite` for `info` / `success` / `warning` and `assertive` for `error`.
+  - `announce` defaults to `true` for `variant="error"` and `false` for all other variants, preserving today's behavior for the common error case while letting consumers opt in for confirmations and informational updates.
+  - The wrapper element no longer carries `role="alert"` for the error variant. Announcements are now delegated to the singleton live announcer instead.
+  - Re-announcing the same message uses the React `key` pattern: pass a changing `key` to force a remount.
+
+  **Why:**
+
+  The previous implementation only announced the `error` variant, and it did so by adding `role="alert"` to a conditionally rendered element. Per the WAI-ARIA spec and MDN guidance, `role="alert"` should be on an element that already exists in the DOM before its content is injected, and it should not contain interactive elements. Marigold's `SectionMessage` violated both constraints (the alert was mounted together with its content, and it can contain close buttons and action links), making announcements unreliable on some screen reader / browser combinations.
+
+  The new implementation uses `@react-aria/live-announcer`, which maintains persistent polite and assertive live regions at the document root. This is the same mechanism used across React Spectrum and avoids the conditional-rendering and interactive-content pitfalls of inline `role="alert"`. It also unifies the API: opt in to announcement for any variant with a single prop.
+
+  **Additional cleanup bundled with this release (beyond DST-753):**
+  - **Close button now matches the rest of the system.** The previous theme defined a `close` slot for `SectionMessage` with bespoke overrides (`size-8`, `[&_svg]:size-6`, `text-foreground`, negative margins) that produced a visibly larger close button than every other close button in the design system. The component now renders the shared `<CloseButton>` with no overrides, so it gets the same 16px icon, focus ring, hover-opacity, and rounded-full styling as Dialog, Drawer, etc. The `close` slot has been removed from the `SectionMessage` theme type.
+  - **Component cleanup.** Dropped a stale `useButton(props, buttonRef)` call that was applying div-level props to a button, the unused `buttonRef`, and the `{...buttonProps}` spread on `<CloseButton>`. The `Button` inside `CloseButton` already provides all keyboard/press semantics.
+  - **Theme variant order normalized.** `info` (the default) is now listed first across the `container`, `content`, and `icon` slots in `theme-rui`, matching the variant table in the docs and the existing `defaultVariants` setting.
+
+  **Docs:**
+  - New anatomy SVG matching the Card / Sidebar / SelectList style; title and close button marked as optional, with content rules (no period in title, don't repeat title in body).
+  - Two realistic announcement demos: a bulk-archive form (polite, with RAC `validate` and the `key` re-announce pattern) and a server-availability save error (assertive).
+  - Added focus-management guidance for dynamic appearance and post-dismiss.
+  - Added form-summary placement rule pairing `<SectionMessage>` with field-level validation.
+  - Added action constraints (one primary action, verb+noun labels, descriptive link text).
+  - Added two-line body rule with a link-out overflow pattern for longer content.
+  - Folded the previous Position subsection into Usage; removed redundant Do/Don't tiles; renamed subsections to Dismissal / Actions / Announcements.
+  - Drive-by: typo fix in the `feedback-messages` pattern doc.
+
+  **Migration:**
+  - Code relying on `getByRole('alert')` or `[role="alert"]` selectors to find rendered `SectionMessage` error nodes needs to be updated. The message text itself is still rendered as before; only the wrapper role is gone.
+  - Consumers who previously wrapped a dynamic `<SectionMessage>` in their own `<div role="status">` or `<div aria-live="polite">` can replace that wrapper with `<SectionMessage announce>`.
+  - Custom themes that defined a `SectionMessage.close` slot will now see a type error. Remove the slot. Close button styling now flows entirely from the `CloseButton` theme.
+  - The SectionMessage's close button is visually smaller after this release (matches every other close button in Marigold). If you previously relied on the larger size, that was an inconsistency, not a feature.
+
+### Patch Changes
+
+- 2a34a64: refactor(DST-1367): Panel adopts the slot-configuration pattern
+
+  `Panel.Header` is now a single `<Provider>` that configures `HeadingContext`, `TextContext`, `ActionButtonContext`, and `ActionGroupContext` for everything nested inside it. Consumers drop slot-aware primitives directly into the header — `<Title>`, `<Description>`, and any of `<ActionButton>`, `<ActionGroup>`, `<ActionMenu>`, `<LinkButton>` — and the Panel injects level, ids, ref wiring, grid-area positioning, and the action cascade via context.
+
+  The compound sub-components that paired with `Panel.Header` are removed because slot-aware role primitives subsume their responsibilities:
+  - `<Panel.Title>` → use `<Title>`.
+  - `<Panel.Description>` → use `<Description>`.
+  - `<Panel.HeaderActions>` → drop the wrapper; the action primitives themselves (`<ActionButton>`, `<ActionGroup>`, `<ActionMenu>`, `<LinkButton>`) land in the actions grid cell via the context className that `Panel.Header` publishes.
+
+  Multiple actions belong inside an `<ActionGroup>` — the cluster claims one cell and renders as a toolbar. A raw `<Button>` inside `Panel.Header` is intentionally _not_ slot-aware: it stays as a footgun so the action primitives are the obvious choice for header chrome.
+
+  `Panel.CollapsibleHeader` adopts the same shape: `<Panel.CollapsibleTitle>` / `<Panel.CollapsibleDescription>` are removed in favour of plain `<Title>` and `<Description>` inside the header. `Panel.CollapsibleHeader` publishes slot-keyed `HeadingContext` and `TextContext` inside its disclosure trigger so the primitives render as spans (matching the heading-inside-button constraint), while the structural `<hN>` semantics come from `Panel.CollapsibleHeader` itself.
+
+  `<Description>` now honours `elementType` from its surrounding `TextContext` slot config. `Panel.Header` delivers `elementType: 'p'` so the description renders as a paragraph; `Panel.CollapsibleHeader` delivers `elementType: 'span'` so it nests cleanly inside the disclosure trigger button. Elsewhere, `<Description>` continues to render as RAC's default `<span>`.
+
+  `<Headline>` now defaults to opting out of any surrounding `HeadingContext` slot config (`slot` defaults to the no-slot opt-out instead of `undefined`). This avoids "A slot prop is required" runtime crashes when a bare `<Headline>` is rendered inside a container that publishes a slot-keyed `HeadingContext` — such as a `<Panel>` that publishes its `title` slot at the root. An explicit `slot` prop on `<Headline>` still overrides the default.
+
+- 61f917f: fix(DST-1447): restore focus to the Tray trigger on close under `prefers-reduced-motion: reduce`. `TrayModal` now skips `AnimatePresence` in that branch and renders a plain RAC `ModalOverlay`, so `FocusScope.restoreFocus` runs synchronously and the trigger reliably regains focus. Users without the preference still hit the same race — a full fix is tracked as follow-up.
+- Updated dependencies [9a407ef]
+  - @marigold/system@18.0.0-beta.2
+
+## 18.0.0-beta.1
+
+### Major Changes
+
+- 9f4dc97: refa([DST-1324]): **Breaking change**: Rename Inset's `space`/`spaceX`/`spaceY` props to `p`/`px`/`py`
+
+  The padding props on `Inset` are renamed to align with `Panel`'s existing API, so that across the design system `space` always means **gap between children** and `p`/`px`/`py` always mean **inner padding**. Previously, `space` carried two different meanings depending on the component, which was a source of confusion.
+
+  **Migration:**
+
+  | Before                            | After                     |
+  | --------------------------------- | ------------------------- |
+  | `<Inset space="…" />`             | `<Inset p="…" />`         |
+  | `<Inset spaceX="…" spaceY="…" />` | `<Inset px="…" py="…" />` |
+
+  The discriminated union shape is unchanged: `p` is mutually exclusive with `px`/`py`. Token vocabularies are unchanged (`InsetSpacingTokens` for `p`, `PaddingSpacingTokens` for `px`/`py`).
+
+### Minor Changes
+
+- 727163c: feat([DST-1134]): add `<RangeCalendar>` component (alpha)
+
+  Adds a new `<RangeCalendar>` for selecting a contiguous or non-contiguous date range, built on react-aria's `<RangeCalendar>` with Marigold conventions (`disabled`, `readOnly`, `error`, `dateUnavailable`, `allowsNonContiguousRanges`). Supports up to three side-by-side months via `visibleDuration`, stacking vertically below the `sm` breakpoint; the same responsive stacking now applies to multi-month `<Calendar>` for parity. `description` and `errorMessage` route through `<FieldBase>` so the help/error UI matches the rest of the form-component family (TriangleAlert icon + HelpText container). Ships as an alpha component with a stub docs page under the form section.
+
+  [DST-1134](https://reservix.atlassian.net/browse/DST-1134)
+
+- cc568e3: feat([DST-1429]): `Card` now exposes a `Panel`-aligned padding API.
+
+  **What changed:**
+  - `Card` accepts `p` / `px` / `py` props (mutually exclusive `p` vs `px+py`), resolving to CSS custom properties `--card-px` and `--card-py` on the container. Defaults to `square-regular`.
+  - A new `space` prop controls the gap between slots, resolving to `--card-gap`. Defaults to `regular`.
+  - `Card.Body` and `Card.Footer` accept an opt-in `bleed` prop to skip horizontal padding for tables, media, or full-width action bars.
+  - Internally, `Card` switched from CSS grid with `grid-template-areas` to a flex column with `gap-y`. JSX order now determines visual order — place `Card.Preview` first when used.
+  - Slot theme styles (`header`, `body`, `footer`) no longer hardcode `px-4` / `py-*`; padding lives in the component layer and is driven by the CSS variables above.
+  - `Card.Preview` automatically escapes the container's vertical padding when used as the first or last child via negative margins.
+
+  **Why:**
+
+  Cards previously had no consumer-controllable padding API and no default padding on the container — content rendered as direct children of `<Card>` was visually broken. The new API mirrors `Panel`'s padding model so the two surfaces behave consistently.
+
+  **Migration:**
+  - Wrap bare children in `<Card.Body>`. Bare children inside `<Card>` are no longer rendered with horizontal padding; this matches `Panel`'s composition contract.
+  - If you used `Card.Preview` for media at the top, keep doing so — it stays edge-to-edge.
+  - No changes needed for the canonical composition (`Preview` + `Header` + `Body` + `Footer`).
+
+- 4742e8e: feat([DST-901]): styleProps for `width`, `maxWidth`, `height`, `space`, `spaceX`, `spaceY`, `pr`, `pl`, `pt`, `pb` now accept both numeric scale values (`4`) and their string equivalents (`"4"`). The public types are now declarative (`Scale | Fraction | WidthKeyword`, etc.) instead of being derived from the internal class-name maps.
+
+  Components that previously resolved `width`, `maxWidth`, and `height` via class-name lookup (Form, Calendar, legacy Table column header / select-all cell, Slider, Scrollable, Switch, Grid) now resolve them through CSS custom properties (`createWidthVar` / `createHeightVar`) targeting `--width`, `--max-width`, `--height`. Those variables — along with `--container-width` and `--field-width` already used by `FieldBase` — are registered as non-inheriting (`@property … inherits: false`) in the RUI theme so they cannot leak into descendants.
+
+  `createWidthVar` gained support for the previously missing keywords (`svh`, `lvh`, `dvh`, `px`, `container`), and a new `createHeightVar` helper was added. Both share a common factory and a base keyword set, so they remain trivially in sync.
+
+  The runtime class-name maps `width`, `maxWidth`, `height`, `gapSpace`, `paddingSpace`, `paddingSpaceX`, `paddingSpaceY`, `paddingRight`, `paddingLeft`, `paddingTop`, `paddingBottom` are no longer exported from `@marigold/system`. These were internal utilities consumed only by `@marigold/components`. Use the prop types (`WidthProp`, `HeightProp`, …) and the CSS-var helpers (`createWidthVar`, `createHeightVar`, `createSpacingVar`) instead. The corresponding TypeScript prop types are unchanged.
+
+- 496a9f2: feat(SelectList): standardized API, item layout, and visual distinction from ListBox (DST-1076)
+
+  `<SelectList>` has been refined into a first-class form field for picking one or many items from a visible list of rich two-line rows. This release contains breaking renames and a tightened type surface.
+
+  **Breaking changes**
+  - `SelectList.Item` → **`SelectList.Option`**. The option semantic matches `Select.Option` and the HTML `<option>` mental model. Update any `<SelectList.Item>` usage to `<SelectList.Option>`.
+  - `SelectList.Action` has been **removed**. Drop your `<ActionMenu>` or `<IconButton>` directly inside `<SelectList.Option>` — the component positions, sizes, and styles the nested control automatically via `ButtonContext`. Limit: one action per option (multi-button groups will arrive with a future `ActionGroup`).
+  - Leading-image slot has been **removed**. Compose images inside `<Text slot="label">` (or anywhere in children) as you see fit.
+  - `selectionMode="none"` is no longer accepted. `SelectList` is a form field; the default is now `"single"`.
+  - `onChange` is strictly typed per `selectionMode`: `(key: Key | null) => void` for single, `(keys: Key[]) => void` for multiple. The shape matches `Select<T, M>`. Passing `setState` directly may require adapting the callback.
+
+  **Other changes**
+  - **Selection indicator** — single-select rows render a visible radio circle; multi-select renders a checkbox.
+  - **Label & description slots** — use `<Text slot="label">` and `<Text slot="description">` inside `<SelectList.Option>`. The row skeleton is `selection · label + description · action (optional)`.
+  - **Dev-mode warning** when `textValue` is missing on an option whose children aren't a plain string.
+  - **Own theme entry** — `SelectList` ships a dedicated theme component. The theme exposes first-class `label`, `description`, and `action` entries; slot styling no longer uses descendant selectors. Consumers with custom themes must add or update a `SelectList` entry.
+
+  **Documentation**
+
+  The SelectList docs page is rewritten around the new API. Adds an anatomy diagram, a decision table for choosing between `<SelectList>` and lighter controls (`<Radio.Group>`, `<Checkbox.Group>`, `<Select>`, `<Combobox>`, `<TagField>`), and dedicated sections for multi-selection, per-row actions (decision-help and configuration patterns), horizontal orientation, and empty state. Replaces selected prose with Do/Don't tiles. Tightens the accessibility section to what's specific to SelectList (keyboard model, label requirement, `textValue` for rich rows).
+
+  **Migration**
+
+  ```diff
+  - <SelectList selectionMode="none">
+  -   <SelectList.Item id="free">
+  -     <SelectList.Action>
+  -       <IconButton aria-label="Info"><Info /></IconButton>
+  -     </SelectList.Action>
+  -     Free
+  -   </SelectList.Item>
+  - </SelectList>
+  + <SelectList selectionMode="single">
+  +   <SelectList.Option id="free">
+  +     Free
+  +     <IconButton aria-label="Info"><Info /></IconButton>
+  +   </SelectList.Option>
+  + </SelectList>
+  ```
+
+- 8b754f0: feat(DST-1404): add `renderValue` prop to `<Select>` for custom trigger rendering. When provided, the callback receives the selected items and replaces the default trigger render. Useful when the trigger should look different from the option (e.g. avatar plus name in the trigger, avatar plus name plus role in the dropdown). The placeholder still renders when nothing is selected.
+- 2ff7bda: feat(DST-1098): persistent idle sort indicator on sortable columns
+
+  `Table.Column` with `allowsSorting` now shows a Lucide `arrow-down-up` icon when the column is sortable but not currently the active sort column. The active ascending/descending icons (`SortAscending` / `SortDescending`) are unchanged.
+
+### Patch Changes
+
+- 566c468: fix([DST-1295]): replace `gap` between `CheckboxGroup` and `RadioGroup` items with per-item padding so the full space between items is clickable. Vertical items now meet the 24px target-size minimum; horizontal spacing keeps visual parity. Standalone `Checkbox` is unaffected.
+
+  Also align the label and icon: switched the inner row layout from `items-center` to `items-start` so the icon stays on the first line when the label wraps. `Radio` labels now use `leading-4` to match `Checkbox`, and `Radio`'s icon-to-label gap moves from an inline `gap-[1ch]` to the theme-driven `gap-x-2` for parity with `Checkbox`.
+
+- 3c6a943: fix([DST-1410]): restore RangeCalendar build by using `createWidthVar` for the width prop. The component still imported the `width` runtime map from `@marigold/system`, which DST-901 removed when it migrated dimension props to CSS variables. This broke `main` for everyone — typecheck, unit tests, and Storybook tests all failed on every open PR. Apply the same migration pattern Calendar already uses: `w-(--width)` className plus `style={createWidthVar('width', width)}`.
+
+  [DST-1410](https://reservix.atlassian.net/browse/DST-1410)
+
+- 496a9f2: fix(FieldBase): forward `isInvalid`, `isRequired`, and `isDisabled` to RAC components passed via `as`
+
+  When `FieldBase` renders through a React Aria Components element (e.g. `as={RACComponent}`), validation props are now forwarded so the underlying RAC element receives them. Plain DOM elements continue to skip these props to avoid unknown attribute warnings.
+
+- 5744bbf: feat([DST-1396]): mobile-optimized pagination layout
+
+  `Pagination` now hides the numbered page buttons on small viewports (`max-sm`) and spreads the previous/next navigation buttons across the full width using `justify-between`. This produces a cleaner, touch-friendly pagination on mobile while preserving the full layout on larger screens.
+
+- 2d9d6fd: feat(DST-1366): introduce slot-configurable primitives
+
+  Adds three text-bearing role primitives — `Title`, `Description`, `TextValue` — and three action primitives — `ActionButton`, `ActionGroup`, `ActionMenu` — that participate in slot-keyed context. Text/heading slots use React Aria's `HeadingContext` / `TextContext` directly; action slots use Marigold-owned contexts (`ActionButtonContext`, `ActionGroupContext`, `ActionMenuContext`) consumed via `useContextProps`.
+
+  `Title` wraps RAC's `<Heading>` with `slot="title"` and `level={2}` as defaults, both overridable by `HeadingContext`. The `level` precedence is default ← context ← local, so a container can publish `{ level: 4 }` and drive a stretch of nested `<Title>`s to `<h4>` without each call site setting it. `Description` and `TextValue` forward straight to RAC's `<Text>` with `slot="description"` and `slot="label"` defaults respectively, letting `<Text>` consume `TextContext` on its own. None of the three carry typography props. Styling cascades from the surrounding container (or selection item) via `HeadingContext` / `TextContext`. Consumers drop these into containers without any `slot` wiring. The container provides level, layout (e.g. a grid area), size, variant, color, and any other styling through a single `Provider`.
+
+  `ActionGroup` is its own top-level component (own folder, own docs page, own Storybook entry) — there is no `ActionButton.Group` compound. It cascades `size`, `variant`, and `disabled` to nested `<ActionButton>`, `<LinkButton>`, and `<ActionMenu>` triggers via `ActionGroupContext`, with explicit per-prop precedence:
+  - `size`: group wins (visual uniformity within a cluster).
+  - `variant`: local wins (so a single destructive action can sit inside an otherwise uniform group).
+  - `disabled`: local wins; the group provides the default. Writing `disabled={false}` on a child re-enables it inside an otherwise-disabled group.
+
+  `ActionMenu` is rebuilt to compose its own `MenuTrigger` + `<ActionButton>` + `Popover` / `Tray` + RAC `Menu` rather than delegating to Marigold's `Menu`. The trigger uses `<ActionButton>` so an outer `ActionButtonContext` cascades to it. Marigold's `Menu` is untouched.
+
+  `LinkButton` is now slot-aware: it picks up `ActionButtonContext` and `ActionGroupContext` so a navigating action can sit alongside `<ActionButton>` inside an `<ActionGroup>` and inherit the same cascade. A `destructive-ghost` variant is added to match `<ActionButton>`. Context is consumed read-only (via `useSlottedContext`) to sidestep the anchor/button ref-type mismatch that `useContextProps` would have created. The read-only consumption now also absorbs `className` from `ActionButtonContext` (mirroring `<ActionButton>`'s `useContextProps`-driven className merge) so positional classes published by a parent container — e.g. a grid-area class injected via `ActionButtonContext` — reach the rendered anchor. This lets `<LinkButton>` participate in container-driven layouts the same way `<ActionButton>` does.
+
+  The container-driven layout pattern this enables comes with a corresponding convention: **positional `className` flows through slot contexts and is absorbed at the first layout boundary**. `<ActionGroup>` enforces the convention at its own boundary by scrubbing `ActionButtonContext` for its descendants — it republishes an empty value so nested `<ActionButton>`s and `<LinkButton>`s do not individually re-claim a positional class that was meant for the group as a whole. Cascading props (`size`, `variant`, `disabled`) still reach the children via `ActionGroupContext`, which they read independently. This convention scales to every future container that adopts the slot-configuration pattern.
+
+  `<ActionBar>`'s legacy top-level `ActionButton` slot is internalized and re-exposed as `ActionBar.Button`. Existing consumers that already use `<ActionBar.Button>` are unaffected.
+
+  Typography prep: `Headline` exports `HeadlineSize`, `Text` exports `TextSize` and `TextVariant`. The aliases aren't yet consumed by other primitives, but exposing them now lets a future typography-token PR replace runtime classes without rewriting consumer-facing prop types.
+
+- Updated dependencies [727163c]
+- Updated dependencies [4742e8e]
+- Updated dependencies [2d9d6fd]
+  - @marigold/system@18.0.0-beta.1
+
+## 18.0.0-beta.0
+
+### Major Changes
+
+- 326f707: feat(AppLayout): switch to page-level scroll
+
+  `AppLayout` no longer owns an interior scroll container. The document
+  (`<html>`/`<body>`) scrolls the whole page; the sidebar sticks via
+  `position: sticky` and the top header stays pinned through
+  `TopNavigation`'s own sticky positioning.
+
+  **Why page-level scroll**
+  - **Mobile URL bar collapses on scroll.** With interior scroll, Safari
+    and Chrome mobile keep the URL bar expanded forever, wasting ~8% of
+    the screen. Only document scroll lets the browser hide it.
+  - **Pull-to-refresh works.** Interior scroll disables it.
+  - **Browser scroll restoration** on back/forward only works reliably
+    for the document, not interior containers. Interior scroll produces
+    subtle "lost scroll position" bugs.
+  - **`Cmd+F` find-in-page** scrolls the document, not an interior
+    container, so matches outside the viewport scroll into view
+    correctly.
+  - **Anchor links (`#section`), iOS status-bar tap (scroll-to-top) and
+    native keyboard nav** (`PgUp`/`PgDn`/`Space`/`Home`/`End`) all
+    behave predictably.
+  - **`IntersectionObserver` with default root, scroll-snap, sticky
+    elements, `scroll-margin-top`** — all simpler when there is one
+    scroll container.
+
+  **Breaking changes**
+  - Code reading `mainRef.current.scrollTop` (or similar) will no
+    longer see user scroll. Read `window.scrollY` /
+    `document.documentElement.scrollTop` instead.
+  - Styles assuming a fixed-height main region (`height: 100%` on
+    direct children of `<AppLayout.Main>`, for example) will no
+    longer be bounded by the viewport. Use `min-h-dvh` or remove the
+    constraint.
+
+  **Known trade-offs**
+  - Pure app-shell look via `position: sticky` can flicker on iOS
+    Safari momentum scroll. Cosmetic, usually acceptable.
+  - Sticky elements may show a brief re-paint when overlays close.
+    Not a correctness bug.
+
+- f629319: refactor([DST-1283]): **Breaking Change** — Remove `<Multiselect>` (and the `react-select` dependency) from `@marigold/components`.
+
+  Use `<TagField>` instead.
+
+- cddcfd3: fix(DST-1353): remove `width="fit"` from Select, ComboBox, and Autocomplete
+
+  **BREAKING CHANGE:** The `fit` value for the `width` prop is no longer accepted on `Select`, `ComboBox`, and `Autocomplete`. These components use a popover with virtualized rendering, where the react-aria Virtualizer controls item sizing and ignores CSS layout. This caused dropdown content to be clipped when `width="fit"` was used. Affected usages should switch to an explicit width value instead.
+
+- 00d93c8: feat(DST-1246): update Switch component layout and sizing to align with Checkbox and Radio
+
+  The Switch component previously rendered its label on the left and toggle on the right, which was inconsistent with Checkbox and Radio where the control sits on the left. When used together in forms, this created a visually misaligned layout.
+
+  **Layout**: Toggle now renders before the label (control on the left, label on the right), matching Checkbox and Radio. This ensures consistent visual alignment when Switch is used alongside other boolean controls in form layouts.
+
+  **Sizing**: Reduced the default track size from 24x40px to 16x28px and thumb from 20px to 12px. This brings the Switch closer in visual weight to Checkbox/Radio (16px), making it fit better in the flow of forms.
+
+  **Settings variant**: A new `variant="settings"` mirrors the default layout — label and description on the left, toggle on the far right. This is the common pattern used on settings/preferences pages. The variant is propagated to `BooleanField` so that grid columns and description placement adjust accordingly.
+
+  **Description support**: Switch now accepts a `description` prop (help text rendered below the control), matching Checkbox's existing support. The description text aligns with the label text using CSS grid + subgrid, automatically adapting to any control size without hardcoded padding. Properly wired with `aria-describedby` for accessibility.
+
+  **Form support**: The `name` prop passes through to the underlying input for HTML form submission.
+
+  **Shared BooleanField**: Extracted a reusable `BooleanField` wrapper used by both Checkbox and Switch for consistent description rendering and `aria-describedby` wiring. Uses CSS grid with subgrid to align description text with label text across both components.
+
+  ## Breaking changes
+
+  ### Restoring the old Switch behavior
+
+  The default Switch layout has changed: the toggle is now on the **left** and the label on the **right** (previously reversed). If you need the old layout (label left, toggle right), use the new `variant="settings"`:
+
+  ```diff
+  - <Switch label="Wi-Fi" />
+  + <Switch label="Wi-Fi" variant="settings" />
+  ```
+
+  The `size="large"` prop has been removed. The default size is now smaller (16x28px track). There is no built-in way to get the old large dimensions (24x40px track) — if needed, create a custom size variant in your theme's `Switch.styles.ts`.
+
+  ### Custom theme migration
+
+  This release introduces a new required theme component `BooleanField` and changes the layout model of the `Checkbox` and `Switch` container slots from flexbox to CSS grid. **Custom themes must be updated or Checkbox/Switch will throw a runtime error.**
+
+  ### 1. Add `BooleanField` to your theme (required)
+
+  `BooleanField` is a new multi-slot theme component used internally by both `Checkbox` and `Switch` to render descriptions. If your theme does not include it, any `Checkbox` or `Switch` with a `description` prop will throw:
+
+  ```
+  Error: Component "BooleanField" is missing styles in the current theme.
+  ```
+
+  Add the following to your theme's component styles:
+
+  ```ts
+  import { cva } from '@marigold/system';
+
+  export const BooleanField = {
+    container: cva({
+      base: 'grid gap-x-2',
+      variants: {
+        variant: {
+          default: 'grid-cols-[auto_1fr]',
+          settings: 'grid-cols-[1fr_auto]',
+        },
+      },
+      defaultVariants: { variant: 'default' },
+    }),
+    description: cva({
+      base: 'mt-0.5',
+      variants: {
+        variant: {
+          default: 'col-start-2',
+          settings: 'col-start-1',
+        },
+      },
+      defaultVariants: { variant: 'default' },
+    }),
+  };
+  ```
+
+  - `container`: Defines the 2-column grid layout wrapping the control and its description. The `default` variant uses `grid-cols-[auto_1fr]` (control left, label right). The `settings` variant uses `grid-cols-[1fr_auto]` (label left, control right).
+  - `description`: Styles the description text wrapper. Placed under the label column via `col-start-2` (default) or `col-start-1` (settings). `mt-0.5` adds vertical spacing between the label row and description.
+
+  Then export it from your theme's component index file:
+
+  ```ts
+  export { BooleanField } from './BooleanField.styles';
+  ```
+
+  ### 2. Update `Checkbox` container slot (required if customized)
+
+  The `Checkbox` container slot changed from flexbox to CSS grid with conditional subgrid support:
+
+  **Before:**
+
+  ```ts
+  container: cva({ base: 'cursor-pointer read-only:cursor-default gap-2' }),
+  ```
+
+  **After:**
+
+  ```ts
+  container: cva({
+    base: [
+      'grid grid-cols-[auto_1fr] gap-x-2 items-center',
+      'cursor-pointer read-only:cursor-default',
+      'group-data-[booleanfield]/booleanfield:grid-cols-subgrid group-data-[booleanfield]/booleanfield:col-span-full',
+    ],
+  }),
+  ```
+
+  Key changes:
+  - `gap-2` changed to `gap-x-2` (column gap only, since row gap is now handled by `BooleanField.description`)
+  - `grid grid-cols-[auto_1fr] items-center` replaces the `flex items-center` that was previously hardcoded in the component
+  - `group-data-[booleanfield]/booleanfield:grid-cols-subgrid` and `group-data-[booleanfield]/booleanfield:col-span-full` enable subgrid when inside a `BooleanField` wrapper, so the description aligns with the label
+
+  ### 3. Update `Switch` container slot (required if customized)
+
+  The `Switch` container slot also changed from minimal styles to CSS grid with subgrid:
+
+  **Before:**
+
+  ```ts
+  container: cva({
+    base: 'disabled:cursor-not-allowed disabled:text-disabled-foreground',
+  }),
+  ```
+
+  **After:**
+
+  ```ts
+  container: cva({
+    base: [
+      'grid gap-x-2 items-center',
+      'disabled:cursor-not-allowed disabled:text-disabled-foreground',
+      'group-data-booleanfield/booleanfield:grid-cols-subgrid group-data-booleanfield/booleanfield:col-span-full',
+    ],
+    variants: {
+      variant: {
+        default: 'grid-cols-[auto_1fr]',
+        settings: 'grid-cols-[1fr_auto]',
+      },
+    },
+    defaultVariants: { variant: 'default' },
+  }),
+  ```
+
+  Key changes:
+  - Added `grid gap-x-2 items-center` (replaces `flex items-center gap-2` that was previously hardcoded in the component)
+  - Grid columns moved to `variant` to support both default and settings layouts
+  - Added subgrid support for BooleanField integration
+
+- 724f0ce: refa([DST-1162]): **Breaking changes**: The `Card` component has been refactored into a compound component pattern.
+
+  **What changed:**
+  - The previous prop-based API (`padding`, `space`, etc.) has been removed.
+  - Content must now be composed using explicit sub-components: `Card.Header`, `Card.Body`, `Card.Footer`, and `Card.Preview`.
+  - A `CardContext` is now required — sub-components will throw an error if used outside of a `<Card>`.
+
+  **Migration:**
+
+  ```tsx
+  // Before
+  <Card>
+    <SomeContent />
+  </Card>
+
+  // After
+  <Card>
+    <Card.Header>Title</Card.Header>
+    <Card.Body><SomeContent /></Card.Body>
+    <Card.Footer>Actions</Card.Footer>
+  </Card>
+  ```
+
+- 62cca29: refa([DST-1281]): **Breaking change**: `<Tooltip>` no longer accepts `open`. Controlled visibility is only supported on `<Tooltip.Trigger>` (`open` / `onOpenChange`). Removes the internal React context that previously forwarded `open` from `<Tooltip>` to the trigger.
+
+### Minor Changes
+
+- 6587493: refa([DST-1298]): Refactor Divider component: API, styling, and docs
+
+  We fixed the vertical orientation of the divider, which previously didn't work.
+  Added new Divider stories and updated the Divider docs.
+
+- 93f9ef1: feat(DST-1257): add universal `none` spacing token
+  - Introduce `NoSpacingToken = 'none'` shared across all spacing token families
+  - Add `'none'` to `SpacingTokens`, `PaddingSpacingTokens`, and `InsetSpacingTokens`
+  - Add `--spacing-none: --spacing(0)` CSS custom property to the theme
+
+  `'none'` now works wherever a spacing token is accepted: `Stack`/`Inline` gap (`space="none"`), `Inset` axis padding (`spaceX="none"` / `spaceY="none"`), and `Inset` recipes (`space="none"`) — useful for wrappers that should render without adding any spacing (e.g. an edge-to-edge `Table` inside a containing component).
+
+- 8326bf7: feat(DST-1326): introduce `Panel.CollapsibleHeader`, `Panel.CollapsibleTitle`, and `Panel.CollapsibleDescription`. The collapsible mirrors `Panel.Header` — a header wrapper with a title plus an optional description — and the whole visual surface is a single click target: title and description render as spans inside the trigger `<button>`, with the accessible name wired via `aria-labelledby` and the description via `aria-describedby`. The chevron icon uses a reusable `MorphCaret` that animates via SVG path morphing (honours `prefers-reduced-motion`).
+- e33a1e7: feat(DST-1322): add `current` prop to `Sidebar.Nav` for automatic active item detection
+
+  `Sidebar.Nav` now accepts a `current` prop that resolves the active leaf automatically — pass the current pathname (string) for smart segment-aware matching, or a predicate `(href, key) => boolean` for full control. Removes the per-item `active={pathname === '/...'}` boilerplate. The per-item `active` prop on `Sidebar.Item` still works as a local override.
+
+### Patch Changes
+
+- b7c132d: fix(DST-1354): restore collapsing `Table.EditableCell` edit trigger
+
+  The overlay/ring affordance introduced in #5250 (DST-1275) did not read as editable in user testing: sighted users did not associate the hover ring with inline editing, and there was no discoverable trigger for keyboard or touch. This change reverts that approach and restores the explicit pencil edit button.
+
+  The trigger collapses to zero layout space at rest (`w-0 overflow-hidden`) and expands on row hover or keyboard focus, so static layout remains clean while the affordance is discoverable the moment the user interacts with the row. When expanded, the wrapper switches to `overflow-visible` so the button's focus outline is not clipped. The cell itself stays clickable as a touch target. Enabled editable cells always truncate their content to stay aligned with column headers and match the single-line editing controls; disabled cells behave like a regular `Table.Cell`.
+
+- f16b887: fix(DST-1352): use correct outline for focus + error state in compound fields
+- bfea9df: `Panel.Title` may now be used as a direct child of `Panel` when the Panel has only a title (no description, no actions) — `Panel.Header` is the layout wrapper for title + description + actions, but a title-only Panel doesn't need it. Accessibility (`aria-labelledby`) and horizontal panel padding still resolve correctly. `Panel.Description` and `Panel.HeaderActions` continue to require a `Panel.Header` wrapper. No change to existing usages.
+- 8326bf7: test(DST-1329): add comprehensive unit and play-test coverage for `Panel` and its sub-components (Header, Title, Description, HeaderActions, Content, Footer, Collapsible, CollapsibleHeader, CollapsibleTitle, CollapsibleDescription, CollapsibleContent, Context). No runtime changes.
+- 1cac70d: docs: improve `AutoTypeTable` prop rendering
+
+  Centralizes the display of design-system aliases in the component docs'
+  prop tables. Props whose types reference aliases from `@marigold/system`
+  or `@marigold/types` (e.g. `SpacingTokens`, `Scale`, `WidthProp`,
+  `NonZeroPercentage`) now render with a meaningful summary in the main
+  cell **and** the full list of resolvable literal values on row expand —
+  instead of a wall of literals in the cell and a redundant alias name on
+  expand.
+
+  Before:
+  - Cell: `SpacingTokens<Tokens>` (a fabricated generic, inconsistent across components)
+  - Expand: `SpacingTokens | Scale | undefined` (same alias names, no new info)
+
+  After:
+  - Cell: `SpacingTokens | Scale` (accurate, derived from the real type)
+  - Expand: `"96" | "80" | ... | "tight" | "related" | 0` (every concrete value)
+
+  Under the hood this replaces 27 per-prop `@remarks \`TypeName\``JSDoc
+overrides with a single fumadocs-typescript transform in the docs site,
+so future components pick up the same behavior automatically. A`@remarks` tag on a prop still wins as an escape hatch.
+
+  `Multiselect.width` and `ComboBox.width` now use `WidthProp['width']`
+  directly instead of `FieldBaseProps<'label'>['width']` — structurally
+  identical, no runtime change.
+
+- c2a1c72: fix: apply `alignX` from `Table.Column` to first column cells
+
+  `TableCellContent` used a truthy check on `columnIndex`, causing it to skip the `alignX` lookup when `columnIndex` was `0` (first column). Replaced with a nullish check so all columns correctly inherit their alignment.
+
+- de34b15: chore(deps): update `react-aria-components`, `@react-aria/*`, `@react-stately/*`, `@react-types/*`, and `@internationalized/*` packages to their latest versions.
+- 04111ca: fix(DST-1355): widen `variant` and `size` prop types on `Loader` and `ProgressCircle` to accept arbitrary strings via `| (string & {})`. Matches the pattern already used by `Button`, `Panel`, and other components, and lets consumer themes register their own variant/size tokens without TypeScript errors while preserving IDE autocomplete for the built-in RUI values.
+- Updated dependencies [adb8a18]
+- Updated dependencies [f629319]
+- Updated dependencies [93f9ef1]
+- Updated dependencies [8326bf7]
+- Updated dependencies [20a42b0]
+- Updated dependencies [724f0ce]
+- Updated dependencies [de34b15]
+  - @marigold/system@18.0.0-beta.0
+
+## 17.9.1
+
+### Patch Changes
+
+- 76fca24: fix(DSTSUP-267): `FileField` appends files across selections when `multiple` is set
+
+  Previously, when `multiple` was set, selecting or dropping files in a second interaction replaced the existing selection instead of adding to it — only files chosen in a single action were kept. `FileField` now accumulates files across separate selections and drops, de-duplicating identical files (matched by name, size, and last-modified time). Behavior with `multiple` unset is unchanged: the latest single file still wins.
+  - @marigold/system@17.9.1
+
+## 17.9.0
+
+### Minor Changes
+
+- ed2d9ae: feat(DST-1551): add `DateRangePicker` component
+
+  New `<DateRangePicker>` lets users enter or select a start–end date range through a single field, mirroring `<DatePicker>`'s API and behaviour. Two date inputs (`start`/`end`) sit in one field group with a calendar button that opens a `<RangeCalendar>` in a popover on desktop and a tray on small screens. Supports per-input paste (ISO/EU/US formats), `granularity` (inline time segments), `visibleDuration` (up to three months), and the usual Marigold field props (`disabled`, `readOnly`, `required`, `error`, `errorMessage`, `description`, `minValue`, `maxValue`, `dateUnavailable`, `width`, `variant`, `size`). Adds a matching `DateRangePicker` theme entry to `theme-rui`.
+
+### Patch Changes
+
+- e686474: chore(DST-1503): Migrate `Checkbox`, `Switch`, and `Radio` off the deprecated react-aria-components single-element exports (`Checkbox`/`Switch`/`Radio`) to the `*Field` + `*Button` composition introduced in `react-aria-components@1.18.0`. This removes the `ts(6385)` deprecation warnings with no change to the public API, behavior, or visual output.
+- 2fc7b96: refactor(DST-1534): build the `Calendar` year dropdown on react-aria's `CalendarYearPicker`
+
+  The year dropdown now consumes react-aria's `CalendarYearPicker` render-prop (mirroring how the month dropdown already uses `CalendarMonthPicker`), replacing the hand-rolled year list and its localized `aria-label` workaround. This was unblocked by react-aria's June 2026 fix that makes `maxValue` inclusive, so the boundary year is reachable. Unbounded calendars keep the ±20-year window and bounded ranges stay fully reachable at both ends. When only one bound is set, the open side now widens to keep that bound reachable instead of staying at a fixed ±20 years.
+
+- 508ec2c: fix(DST-1553): drop the dead `'small' | 'medium' | 'large'` literals from `Tabs` `size`
+
+  The `size` and `variant` props on `Tabs` resolved to nothing after the RUI theme
+  size variants were removed (2025-03-04). `size` now accepts a plain `string`
+  (matching `Label` and `HelpText`) instead of advertising specific values that no
+  theme backs. The props stay in place as theme hooks, so a consumer theme can
+  define its own `size`/`variant` variants without the misleading built-in union.
+
+- 4d44517: fix: make Select and Menu overlay appear above Drawer on small screens
+
+  On small screens, `Select` and `Menu` render their options in a `Tray` (bottom sheet). The `Tray` overlay had `z-40` in the theme while the `Drawer` overlay uses `z-50`, so the tray rendered behind an open drawer and was unreachable.
+
+  Moved the `z-index` from the theme style file into the `TrayModal` component implementation (matching the project's z-index architecture rule), and raised it to `z-50`. Both the `Drawer` and `Tray` portal to `document.body`; at equal z-index, DOM order determines stacking. The `Tray` is always mounted after the `Drawer`, so it correctly appears on top.
+  - @marigold/system@17.9.0
+
+## 17.8.0
+
+### Minor Changes
+
+- bdda185: build(DST-1315): unbundle the build output for tree-shaking
+
+  `@marigold/components` previously shipped its entire ESM build as a single concatenated barrel (`index.mjs` re-exporting 74+ components). Because every export lived in one module, bundlers could not statically prove which parts were unused, so importing a single leaf component (e.g. `Stack`) pulled in essentially the whole library. On rspack this meant ~57 kB (≈82% of the lib) for a `Stack + Text + Card` import.
+
+  The build now emits **one file per source module** (`unbundle: true`, the `preserveModules` equivalent) while keeping the `.` barrel import fully backward compatible. Consumer bundlers (rspack, vite, esbuild) can now drop unused components: the same `Stack + Text + Card` import drops to **~0.8 kB**, and a single `Button` import drops from ~57 kB to **~1.7 kB**.
+
+  ### Why a build flag alone wasn't enough (source changes explained)
+
+  Flipping `unbundle: true` is necessary but not sufficient. The old single-barrel build **concatenated every module into one file**, which hid problems that only matter once each module stands on its own and a bundler starts deciding, per module, what it can safely drop. `unbundle` exposed those problems, so the following source changes were required to make tree-shaking actually work — without them the flag delivers little or no benefit:
+  - **Toast queue: removed a module-scope side effect.** `ToastProvider` exported `const queue = new ToastQueue(...)` at module top level. That constructor runs the moment the module is imported and touches `document` (view-transition setup). The package declares `sideEffects: false`, which tells bundlers "importing any module here does nothing observable, so unused ones are safe to delete." A top-level `new` that touches `document` directly contradicts that promise: it's a real side effect on import, it can break SSR, and it makes the `sideEffects: false` claim dishonest (risking either dropped-needed-code or kept-unneeded-code depending on the bundler). Fix: construct the queue lazily on first use via `getToastQueue()`, keeping the singleton but making the module genuinely side-effect-free. (Tests, stories, and `ToastProvider` were updated to call `getToastQueue()`.)
+  - **`motion`: switched off the non-shakeable `motion` proxy.** `import { motion } from 'motion/react'` pulls motion's entire feature set, and the `motion.*` proxy is by design not tree-shakeable — referencing `motion.div` drags in the whole renderer (~34 kB). In the old concatenated barrel this cost was paid once and amortized across the whole library, so it was easy to miss. Under `unbundle`, that cost attaches to **each** module that imports `motion` (`ActionBar`, `Tabs`, `Tray`), so importing any one of them would re-pull motion's full bundle — defeating the point. Fix: use the lightweight `m` components from `motion/react-m` (tiny core, no features) and load the `domMax` feature set through a `LazyMotion` boundary via a dynamic `import()` of a local module (`motionFeatures.ts`), so bundlers split it into its own async chunk that only loads when an animated component actually renders. (The dynamic import targets a _local_ file rather than `motion/react` directly because importing the dep dynamically made vite's optimizer re-bundle mid-run and drop named exports during tests.)
+  - **`hooks` barrel: replaced `export *` with explicit named re-exports.** `export * from './hooks'` forces a bundler to pull in and consider the entire namespace of the re-exported module; explicit named re-exports let it trace precisely which symbols are reachable. Minor on its own, but `export *` chains are a classic way to silently anchor unused code.
+  - **`react-select`: externalized and declared as a dependency.** Under `unbundle`, rolldown copies any non-externalized dependency into the output per-importing-module. `react-select` (~2 MB with `@emotion`) was being **bundled into the dist without even being a declared dependency** — invisible in the old barrel, but under unbundle it bloated every chunk that referenced it. Fix: mark it `external` in `tsdown.config.ts` and add it to `dependencies` so it resolves transitively at install time. It's used only by the deprecated `Multiselect`; drop both together in the next major.
+  - **Test/mock updates that follow the source changes.** `Tray.test.tsx`'s `vi.mock('motion/react')` had to gain `LazyMotion`/`domMax`, plus a new `vi.mock('motion/react-m')` providing `create`, because `TrayModal` now imports `create` from `motion/react-m`. `Toast.test.tsx`/`Toast.stories.tsx` switched from the removed module-level `queue` export to `getToastQueue()`.
+  - **A `size-limit` budget gate** (`pnpm --filter @marigold/components size`, run in CI) was added so these wins don't silently regress — e.g. someone re-introducing a `motion` proxy import or a module-scope side effect.
+
+  No public API changes: all imports from `@marigold/components` continue to work exactly as before.
+
+### Patch Changes
+
+- a609642: chore(DST-1512): import `I18nProvider` from `react-aria-components` in remaining stories/tests/demos
+
+  Follow-up to DST-1505. Migrates the remaining `I18nProvider` imports off the `@react-aria/i18n` shell package to stay consistent with the RAC-first principle (import an API from `react-aria-components` whenever it re-exports it, so provider and consumers share one `I18nContext`). Component stories/tests now import from `react-aria-components/I18nProvider`, and docs demos use the public `@marigold/components` export. The `packages/system` formatter tests intentionally stay on `@react-aria/i18n`, because the formatters under test read locale from that package directly and `packages/system` does not depend on `react-aria-components`.
+
+- 60b6e03: fix(DST-1507): make `Table.EditableCell` inline editing work after SSR hydration
+
+  In a server-rendered app (for example Next.js), editable cells were inert after hydration: clicking a cell did not open its inline editor until an unrelated re-render (such as a window resize) happened to occur. React Aria builds the table collection in a separate render pass, and the editing state previously lived in that build pass, so the rendered cell content stayed bound to the server pass's closures and never reconnected to the live component after hydration. The editing state and overlay now live in an inner component rendered inside the `Cell`, i.e. in the collection's content pass, so interaction reconnects on its own after hydration (the same structure React Spectrum's S2 `TableView` uses).
+  - @marigold/system@17.8.0
+
 ## 17.7.0
 
 ### Minor Changes

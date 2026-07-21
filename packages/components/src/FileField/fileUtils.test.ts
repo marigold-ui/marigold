@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { makeFile } from '../test.utils';
 import {
   filterAcceptedFiles,
   isFileDropItem,
   normalizeAndLimitFiles,
 } from './fileUtils';
+import { makeFile } from './makeFile';
 
 describe('filterAcceptedFiles', () => {
   it('returns all files when accept is undefined', () => {

@@ -1,7 +1,7 @@
-import { Bold, Italic, Underline } from 'lucide-react';
 import { useState } from 'react';
-import { Key } from 'react-aria-components';
+import { Key } from 'react-aria-components/ToggleButtonGroup';
 import { expect, userEvent, waitFor } from 'storybook/test';
+import { Bold, Italic, Underline } from '@marigold/icons';
 import preview from '../../../../.storybook/preview';
 import { ToggleButton } from './ToggleButton';
 import { ToggleButtonGroup } from './ToggleButtonGroup';
@@ -9,6 +9,16 @@ import { ToggleButtonGroup } from './ToggleButtonGroup';
 const meta = preview.meta({
   title: 'Components/ToggleButtonGroup',
   component: ToggleButtonGroup,
+  parameters: {
+    surface: false,
+  },
+  decorators: [
+    Story => (
+      <div className="self-start">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     disabled: {
       control: {
@@ -52,7 +62,6 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
-  args: {},
   render: args => {
     const [selectedKeys, setSelectedKeys] = useState(new Set<Key>(['sum']));
 
@@ -75,38 +84,60 @@ export const Basic = meta.story({
   },
 });
 
-Basic.test('Clicking buttons updates selection', async ({ canvas, step }) => {
-  await step('Initial state - sum is selected', async () => {
-    expect(canvas.getByTestId('selected-keys')).toHaveTextContent(
-      'Selected: sum'
-    );
-  });
-
-  await step('Click median button', async () => {
-    await userEvent.click(canvas.getByText('Median'));
-
-    await waitFor(() => {
-      expect(canvas.getByTestId('selected-keys')).toHaveTextContent(
-        'Selected: median'
-      );
-    });
-  });
-
-  await step('Click sum button again', async () => {
-    const sumButton = canvas.getByText('Sum');
-
-    await userEvent.click(sumButton);
-
-    await waitFor(() => {
+Basic.test(
+  'Clicking buttons updates selection',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    await step('Initial state - sum is selected', async () => {
       expect(canvas.getByTestId('selected-keys')).toHaveTextContent(
         'Selected: sum'
       );
     });
-  });
+
+    await step('Click median button', async () => {
+      await userEvent.click(canvas.getByText('Median'));
+
+      await waitFor(() => {
+        expect(canvas.getByTestId('selected-keys')).toHaveTextContent(
+          'Selected: median'
+        );
+      });
+    });
+
+    await step('Click sum button again', async () => {
+      const sumButton = canvas.getByText('Sum');
+
+      await userEvent.click(sumButton);
+
+      await waitFor(() => {
+        expect(canvas.getByTestId('selected-keys')).toHaveTextContent(
+          'Selected: sum'
+        );
+      });
+    });
+  }
+);
+
+export const BothSurfaces = meta.story({
+  parameters: {
+    chromatic: { disableSnapshot: true },
+    surface: 'both',
+  },
+  args: {
+    selectionMode: 'single',
+  },
+  render: args => (
+    <ToggleButton.Group {...args}>
+      <ToggleButton id="sum">Sum</ToggleButton>
+      <ToggleButton id="median">Median</ToggleButton>
+      <ToggleButton id="average">Average</ToggleButton>
+    </ToggleButton.Group>
+  ),
 });
 
 export const MultipleSelection = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     selectionMode: 'multiple',
     defaultSelectedKeys: ['bold'],
@@ -127,34 +158,39 @@ export const MultipleSelection = meta.story({
   ),
 });
 
-MultipleSelection.test('Select multiple buttons', async ({ canvas, step }) => {
-  await step('Initial state - bold is selected', async () => {
-    const boldButton = canvas.getByLabelText('Bold');
+MultipleSelection.test(
+  'Select multiple buttons',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, step }) => {
+    await step('Initial state - bold is selected', async () => {
+      const boldButton = canvas.getByLabelText('Bold');
 
-    expect(boldButton).toHaveAttribute('data-selected', 'true');
-  });
+      expect(boldButton).toHaveAttribute('data-selected', 'true');
+    });
 
-  await step('Click italic button to select it too', async () => {
-    const italicButton = canvas.getByLabelText('Italic');
+    await step('Click italic button to select it too', async () => {
+      const italicButton = canvas.getByLabelText('Italic');
 
-    await userEvent.click(italicButton);
+      await userEvent.click(italicButton);
 
-    await waitFor(() => {
+      await waitFor(() => {
+        expect(italicButton).toHaveAttribute('data-selected', 'true');
+      });
+    });
+
+    await step('Both bold and italic are selected', async () => {
+      const boldButton = canvas.getByLabelText('Bold');
+      const italicButton = canvas.getByLabelText('Italic');
+
+      expect(boldButton).toHaveAttribute('data-selected', 'true');
       expect(italicButton).toHaveAttribute('data-selected', 'true');
     });
-  });
-
-  await step('Both bold and italic are selected', async () => {
-    const boldButton = canvas.getByLabelText('Bold');
-    const italicButton = canvas.getByLabelText('Italic');
-
-    expect(boldButton).toHaveAttribute('data-selected', 'true');
-    expect(italicButton).toHaveAttribute('data-selected', 'true');
-  });
-});
+  }
+);
 
 export const DisabledButton = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [selectedKeys, setSelectedKeys] = useState(new Set<Key>());
 
@@ -176,6 +212,7 @@ export const DisabledButton = meta.story({
 
 DisabledButton.test(
   'Disabled button does not respond to clicks',
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, step }) => {
     await step('Option 2 is disabled', async () => {
       const option1 = canvas.getByText('Option 1');

@@ -11,13 +11,31 @@
 
 /*
  * Provides spacing and text styling for input elements.
- * Visual affordances (borders, backgrounds, shadows) are handled by "ui-surface".
+ * Visual affordances (borders, backgrounds, shadows) are handled by "ui-control".
  * Combine both utilities for complete input styling.
  */
 @utility ui-input {
-  @apply h-button w-full min-w-0;
+  @apply h-control w-full min-w-0;
   @apply px-3 py-2;
   @apply text-foreground placeholder:text-placeholder text-sm;
+  /* A field needs a visible boundary, so its frame ring uses the dense
+     control-border. Focus and error still override the ring color per state. */
+  --ui-border-color: var(--color-control-border);
+}
+
+/* ========================= */
+/*    Form field indicators  */
+/* ========================= */
+
+/*
+ * Required-field indicator (the red "*" after a label). Kept as a named
+ * utility, not inline as `after:content-["*"]`: quoted arbitrary values don't
+ * survive JS compilation as extractable classes, so consumers that rescan the
+ * compiled packages never generate the rule and the asterisk vanishes. See
+ * DSTSUP-266.
+ */
+@utility ui-required-indicator {
+  content: '*';
 }
 
 /* ========================= */
@@ -42,59 +60,120 @@
   syntax: '*';
   inherits: false;
 }
-
-/*
- * Use for interactive UI elements like inputs, selects, and cards. Anything that
- * sits on the page background and needs a clear visual boundary.
- */
-@utility ui-surface {
-  @apply rounded-surface relative transition-[background,border,box-shadow];
-
-  /* prettier-ignore */
-  background:
-      linear-gradient(
-        to bottom,
-        var(--ui-background-color, #fff),
-        var(--ui-background-color, #fff)
-      ),
-      linear-gradient(
-        to bottom,
-        var(--ui-border-color, var(--color-surface-border)),
-        oklch(from var(--ui-border-color, var(--color-surface-border)) calc(l - 0.1) c h)
-      );
-
-  background-clip: padding-box, border-box;
-  background-origin: padding-box, border-box;
-  border: 1px solid transparent;
+/* Soft cap edge base — non-inheriting so the hover flip (see Button.styles.ts)
+   stays scoped to the element it is set on. */
+@property --soft-edge {
+  syntax: '*';
+  inherits: false;
 }
 
-/* 
- * Use when the surface must stand out against the page. Toolbars, action bars,
- * or anything that uses the brand color to signal prominence.
+/*
+ * ui-frame — the role-neutral primitive every raised element is built on: a
+ * fill, a 1px rim, and a radius. The rim is an outset `ring` in the `box-shadow`
+ * chain (so it composes with `shadow-elevation-*`), outset so an edge-to-edge
+ * child (e.g. a Table in `Panel.Content bleed`) can't cover it. Role is set by
+ * the boundary token, not by the primitive: the default rim is the translucent
+ * decorative `--color-surface-border`; controls swap to the denser
+ * `--color-control-border`; state overrides set `--ui-border-color` to an opaque
+ * color. ui-surface and ui-control below both compose this — neither is built on
+ * the other.
+ *
+ * `background` is excluded from the transition so state bg flips feel instant.
  */
-@utility ui-surface-contrast {
-  @apply rounded-surface relative transition-[background,border,box-shadow];
-  @apply text-brand-foreground;
+@utility ui-frame {
+  @apply rounded-surface relative transition-[box-shadow];
+  background: var(--ui-background-color, var(--color-surface));
+  @apply ring-1 ring-[var(--ui-border-color,var(--color-surface-border))];
+}
 
-  @apply inset-shadow-[0_1px_0_0_var(--ui-highlight-color,oklch(from_var(--color-brand)_calc(l+0.4)_c_h))];
+/*
+ * Surface role: containers that structure the page — cards, panels, dialogs,
+ * menus, overlays. Wears the frame with its default translucent decorative
+ * hairline (`--color-surface-border`). Flat in normal flow — it separates by
+ * fill against the gray page ground; compose with shadow-elevation-overlay
+ * only when it floats (Dialog, Popover, Menu, Tray).
+ */
+@utility ui-surface {
+  @apply ui-frame;
+}
+
+/*
+ * Prominent dark surface: primary buttons, action bars. Mirrors ui-frame but
+ * inverted in value — the edge is a darker shade of the fill (crisp, no light
+ * rim) and the light lives on the face: a top-pooled glow plus a soft top-edge
+ * highlight (a tinted, low-alpha inset shadow). Every layer derives from
+ * `--ui-background-color`, so overriding that one token (e.g. the hover flip)
+ * retints the whole surface.
+ *
+ * `background` is excluded from the transition so state bg flips feel instant.
+ */
+@utility ui-contrast {
+  @apply rounded-surface relative transition-[box-shadow];
+  @apply text-primary-foreground;
+
+  /* Read --ui-border-color first (falling back to the derived dark edge) so state
+     overrides recolor the ring here exactly as on a plain ui-frame — otherwise a
+     disabled/focused/invalid contrast surface keeps its dark outline. */
+  @apply ring-1 ring-[var(--ui-border-color,oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_-_var(--contrast-edge-l))_c_h))];
+  @apply inset-shadow-[0_1px_1.5px_-1px_oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_+_var(--contrast-highlight-l))_c_h_/_var(--contrast-highlight-a))];
 
   /* prettier-ignore */
   background:
-      radial-gradient(ellipse 120% 60% at 50% -25%, var(--ui-highlight-color, oklch(from var(--color-brand) calc(l + 0.4) c h)), transparent 90%),
+      radial-gradient(ellipse 72% 70% at 50% -12%, var(--ui-highlight-color, oklch(from var(--ui-background-color, var(--color-primary)) calc(l + var(--contrast-glow-l)) c h / var(--contrast-glow-a))), transparent 72%),
       linear-gradient(
         to bottom,
-        var(--ui-background-color, var(--color-brand)),
-        var(--ui-background-color, var(--color-brand))
-      ),
-      linear-gradient(
-        to bottom,
-        oklch(from var(--ui-border-color, var(--color-brand)) calc(l + 0.2) c h),
-        oklch(from var(--ui-border-color, var(--color-brand)) calc(l + 0.15) c h)
+        oklch(from var(--ui-background-color, var(--color-primary)) calc(l + var(--contrast-fill-top-l)) c h),
+        oklch(from var(--ui-background-color, var(--color-primary)) calc(l - var(--contrast-fill-bottom-l)) c h)
       );
+}
 
-  background-clip: padding-box, padding-box, border-box;
-  background-origin: padding-box, padding-box, border-box;
-  border: 1px solid transparent;
+/*
+ * Destructive prominent surface: the destructive Button. Reuses ui-contrast
+ * and points --ui-background-color at --color-destructive-bold to retint every layer
+ * red. The text override sits inside the @apply so it beats the contrast utility's
+ * foreground regardless of emit order.
+ */
+@utility ui-contrast-destructive {
+  @apply ui-contrast text-destructive-bold-foreground;
+  --ui-background-color: var(--color-destructive-bold);
+}
+
+/*
+ * Soft surface: the raised light cap for neutral button-like controls
+ * (secondary Button, Menu trigger). The light-end mirror of the dark
+ * ui-contrast cap — a convex fill gradient (+0.005 / −0.02 L), a modeled ring
+ * one step darker than its edge base (−0.12 L), and a soft top glint
+ * (+0.2 L / 0.9 alpha inset). No drop shadow — the cap itself is the lift.
+ * Like ui-contrast it does not @apply ui-frame; it draws its own ring, glint
+ * and gradient. The ring reads --ui-border-color first so focus/disabled
+ * recolor it like every other surface; the edge base and fill flip via
+ * --soft-edge and --ui-background-color (e.g. the hover flip in Button.styles.ts).
+ *
+ * `background` is excluded from the transition so state bg flips feel instant.
+ */
+@utility ui-soft {
+  @apply rounded-surface relative transition-[box-shadow];
+  @apply text-foreground;
+  @apply ring-1 ring-[var(--ui-border-color,oklch(from_var(--soft-edge,var(--color-soft-edge))_calc(l_-_0.12)_c_h))];
+  @apply inset-shadow-[0_1px_1.5px_-1px_oklch(from_var(--soft-edge,var(--color-soft-edge))_calc(l_+_0.2)_c_h_/_0.9)];
+  /* prettier-ignore */
+  background: linear-gradient(
+    to bottom,
+    oklch(from var(--ui-background-color, var(--color-soft)) calc(l + 0.005) c h),
+    oklch(from var(--ui-background-color, var(--color-soft)) calc(l - 0.02) c h)
+  );
+}
+
+/*
+ * Control role: the operable counterpart to ui-surface, the other sibling built
+ * on ui-frame. Where a surface wears the whisper decorative hairline, a control
+ * needs a boundary that stands off the page, so this swaps the ring to the
+ * dense --color-control-border. Flat by design: no engraving, no elevation —
+ * the soft/contrast caps are the raised things, fields are wells.
+ */
+@utility ui-control {
+  @apply ui-frame;
+  --ui-border-color: var(--color-control-border);
 }
 
 /* ========================= */
@@ -114,19 +193,43 @@
 * Applies a consistent visual style for invalid elements.
 */
 @utility ui-state-error {
-  /* Overrides the transparent border. Gradient would get too dark. */
-  @apply border-destructive shadow-destructive/20;
-  @apply focus:border-destructive focus:outline-destructive/20;
+  /* Recolors the ui-surface ring. The focus: re-assert is a specificity bump (not
+     a duplicate): it compiles to `[data-invalid][data-focused]`, outranking
+     ui-state-focus so a focused-invalid field stays destructive. Don't remove it. */
+  --ui-border-color: var(--color-destructive-accent);
+  @apply shadow-destructive-accent/20;
+  @apply focus:outline-destructive-accent/20 focus:[--ui-border-color:var(--color-destructive-accent)];
 }
 
 /*
  * Applies a consistent visual style for disabled elements.
  */
 @utility ui-state-disabled {
-  @apply text-disabled-foreground cursor-not-allowed;
-  background: var(--color-disabled);
+  @apply text-disabled cursor-not-allowed;
+  background: var(--color-disabled-surface);
   background-clip: border-box;
-  box-shadow: none;
+  /* Dim the boundary rather than remove it: a borderless input reads as broken.
+     Recolor the ring to the light disabled-border for a soft, receding edge. */
+  --ui-border-color: var(--color-disabled-border);
+  /* No top highlight when disabled. Zeroing `--tw-inset-shadow` is reliable where a
+     raw `box-shadow: none` lost the cascade to the surface utilities' box-shadow. */
+  @apply inset-shadow-none;
+}
+
+/*
+ * Applies a consistent hover background for list items, table rows, menu items,
+ * and other elements on white surfaces.
+ */
+@utility ui-state-hover {
+  @apply bg-hover text-foreground;
+}
+
+/*
+ * Applies a translucent hover for ghost buttons, tabs, action bar buttons,
+ * and other minimal elements that need to blend into any context.
+ */
+@utility ui-state-hover-ghost {
+  @apply bg-current/10;
 }
 
 /*
@@ -154,7 +257,6 @@
   @apply inline-flex items-center justify-center;
   @apply rounded-surface font-medium whitespace-nowrap transition-[color,box-shadow,transform];
   @apply ui-interactive;
-  @apply border border-transparent;
 
   & svg {
     pointer-events: none;
@@ -178,15 +280,22 @@
 }
 
 /*
- * Standard panel header slot — shared by Drawer and Tray.
+ * Shared anatomy for sectioned overlay surfaces (Dialog, Drawer, Tray, Sidebar):
+ * a header with a bottom divider, a scrollable content area, and an actions row
+ * with a top divider, on one padding rhythm. Consumers override via composition
+ * (e.g. Dialog stacks actions responsively).
+ *
+ * Distinct from the Panel component, which has its own styling and does not use
+ * these.
  */
 @utility ui-panel-header {
   @apply border-border border-b px-6 py-4;
 }
 
-/*
- * Standard panel actions slot — shared by Drawer and Tray.
- */
+@utility ui-panel-content {
+  @apply overflow-y-auto px-6 py-4 outline-none;
+}
+
 @utility ui-panel-actions {
   @apply border-border flex flex-row justify-end gap-3 border-t px-6 py-4;
 }
@@ -247,5 +356,176 @@
   }
   &::-webkit-scrollbar-thumb:hover {
     background-color: var(--color-scrollbar-hover);
+  }
+}
+
+/* ========================= */
+/*        Scroll Mask        */
+/* ========================= */
+
+/*
+ * Registered so the fade widths can interpolate. Unregistered custom properties
+ * animate discretely (the browser treats them as untyped strings), so a
+ * `<length>` syntax is required for the scroll-driven fade to be smooth.
+ */
+@property --sc-mask-left {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+@property --sc-mask-right {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+@keyframes sc-reveal-left {
+  from {
+    --sc-mask-left: 0px;
+  }
+  to {
+    --sc-mask-left: var(--sc-mask-width);
+  }
+}
+@keyframes sc-hide-right {
+  from {
+    --sc-mask-right: var(--sc-mask-width);
+  }
+  to {
+    --sc-mask-right: 0px;
+  }
+}
+
+/*
+ * Horizontal "more content" affordance for a scrollable row: fades the leading
+ * and trailing edges in/out based on scroll position so the user can tell more
+ * items are hidden. Pure CSS via scroll-driven animations.
+ *
+ * Progressive enhancement: the fade (and scrollbar hiding) live behind
+ * `@supports`, so non-supporting browsers (e.g. Firefox) fall back to a plain
+ * scroll container with a native scrollbar — the affordance is preserved, just
+ * not as a fade. The fade is scroll-linked (driven by the user's own scroll,
+ * not autonomous), so it is intentionally not gated by `prefers-reduced-motion`.
+ */
+@utility ui-scroll-mask-x {
+  --sc-mask-width: 2.5rem;
+  --sc-scroll-buffer: 1.5rem;
+
+  overflow-x: auto;
+
+  @supports (animation-timeline: scroll()) {
+    /* Hide the scrollbar only where the fade can stand in for it. */
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    --sc-mask: linear-gradient(
+      to right,
+      transparent 0,
+      #000 var(--sc-mask-left),
+      #000 calc(100% - var(--sc-mask-right)),
+      transparent 100%
+    );
+    -webkit-mask-image: var(--sc-mask);
+    mask-image: var(--sc-mask);
+
+    animation:
+      sc-reveal-left linear both,
+      sc-hide-right linear both;
+    animation-timeline: scroll(self inline), scroll(self inline);
+    animation-range:
+      0 var(--sc-scroll-buffer),
+      calc(100% - var(--sc-scroll-buffer)) 100%;
+  }
+}
+
+@keyframes sc-edge-b {
+  to {
+    box-shadow: 0 1px 0 0 var(--color-border);
+  }
+}
+
+/*
+ * Scroll-revealed bottom edge for a sticky bar in a seamless shell: at rest
+ * the bar is borderless (the shell separates on whitespace), but once page
+ * content scrolls underneath, a hairline fades in so the seam stays legible.
+ *
+ * Progressive enhancement like `ui-scroll-mask-x`: without scroll-driven
+ * animation support the bar simply stays borderless — the sticky bar's opaque
+ * background still separates it from passing content. Scroll-linked, so not
+ * gated by `prefers-reduced-motion`.
+ *
+ * Only works when the bar is a *descendant* of the scroller (its own ancestor
+ * scrolls). For the sibling case — a header/footer flanking a scrolling body
+ * that is a grid sibling, not an ancestor — use `ui-scroll-seam-*` below.
+ */
+@utility ui-scroll-edge {
+  @supports (animation-timeline: scroll()) {
+    animation: sc-edge-b linear both;
+    animation-timeline: scroll();
+    animation-range: 0 2rem;
+  }
+}
+
+/*
+ * Scroll-revealed seams for a sticky header/footer that flank a scrolling body
+ * which is a grid *sibling* (not an ancestor) of them, so an anonymous
+ * `scroll()` timeline (as `ui-scroll-edge` uses) can't reach it. The scroller
+ * declares a NAMED timeline (`--scroll-seam` via `ui-scroll-seam-timeline`),
+ * hoisted with `timeline-scope` on the common grid wrapper
+ * (`ui-scroll-seam-scope`) so a preceding-sibling header can reference it too.
+ *
+ *   - Header: seamless at rest; bottom hairline fades in over the first 12px.
+ *   - Footer: top hairline shows until the body bottoms out, fading over the
+ *     last 12px.
+ *
+ * Consumers: Dialog (header only), Sidebar (header + footer). The hairline
+ * color is `--seam-color` (default `--color-border`). The Sidebar overrides it
+ * to `--color-surface-border` on its grid wrapper. A `box-shadow` hairline, so
+ * it never affects layout. Sharing one timeline name across components is safe:
+ * each `timeline-scope` confines resolution to its own subtree, and Dialogs
+ * render in an overlay portal (never nested in the Sidebar's scope). Without
+ * scroll-driven animation the fallback pins the seam on as an always-on divider.
+ */
+@keyframes scroll-seam-header {
+  to {
+    box-shadow: 0 1px 0 0 var(--seam-color, var(--color-border));
+  }
+}
+@keyframes scroll-seam-footer {
+  from {
+    box-shadow: 0 -1px 0 0 var(--seam-color, var(--color-border));
+  }
+  to {
+    box-shadow: 0 -1px 0 0 transparent;
+  }
+}
+
+@utility ui-scroll-seam-scope {
+  timeline-scope: --scroll-seam;
+}
+@utility ui-scroll-seam-timeline {
+  scroll-timeline: --scroll-seam block;
+}
+
+@utility ui-scroll-seam-header {
+  @supports (animation-timeline: scroll()) {
+    animation: scroll-seam-header linear both;
+    animation-timeline: --scroll-seam;
+    animation-range: 0 12px;
+  }
+  @supports not (animation-timeline: scroll()) {
+    box-shadow: 0 1px 0 0 var(--seam-color, var(--color-border));
+  }
+}
+@utility ui-scroll-seam-footer {
+  @supports (animation-timeline: scroll()) {
+    animation: scroll-seam-footer linear both;
+    animation-timeline: --scroll-seam;
+    animation-range: calc(100% - 12px) 100%;
+  }
+  @supports not (animation-timeline: scroll()) {
+    box-shadow: 0 -1px 0 0 var(--seam-color, var(--color-border));
   }
 }

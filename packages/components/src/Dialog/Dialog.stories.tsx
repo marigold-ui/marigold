@@ -1,18 +1,20 @@
-import { useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Copy, Download, Pencil, Trash2 } from '@marigold/icons';
 import { Button } from '../Button/Button';
+import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
+import { Description } from '../Description/Description';
 import { Form } from '../Form/Form';
-import { Menu } from '../Menu/Menu';
-import { Stack } from '../Stack/Stack';
+import { ActionMenu } from '../Menu/ActionMenu';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
-import { ConfirmationDialog } from './ConfirmationDialog';
+import { Title } from '../Title/Title';
 import { Dialog } from './Dialog';
 
 const meta = preview.meta({
   title: 'Components/Dialog',
   component: Dialog,
+  parameters: { surface: false },
   decorators: [
     Story => (
       <div id="storybook-root">
@@ -40,6 +42,8 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: ({ size, ...args }) => (
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
@@ -60,179 +64,76 @@ export const Basic = meta.story({
       </Dialog>
     </Dialog.Trigger>
   ),
-  play: async ({ canvas, userEvent }) => {
+});
+
+Basic.test(
+  'Open dialog',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+
     await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+  }
+);
 
-    await userEvent.click(canvas.getByRole('button', { name: 'Cancel' }));
-    await waitFor(() =>
-      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
-    );
-  },
+Basic.test('Close dialog', async ({ canvas, userEvent }) => {
+  await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+  await userEvent.click(canvas.getByRole('button', { name: 'Cancel' }));
+
+  await waitFor(() =>
+    expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+  );
 });
 
-export const WithForm = meta.story({
-  render: ({ size, ...args }) => {
-    return (
-      <Dialog.Trigger {...args}>
-        <Button variant="primary">Open</Button>
-        <Dialog size={size} closeButton>
-          <Dialog.Title>Please log into account</Dialog.Title>
-          <Dialog.Content>
-            <TextField label="Username" />
-            <TextField label="Password" type="password" />
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button slot="close" variant="secondary">
-              Cancel
-            </Button>
-            <Button
-              variant="primary"
-              slot="close"
-              onPress={() => alert('Dialog will be closed')}
-            >
-              Login
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Dialog.Trigger>
-    );
-  },
-});
-
+// Minimal render-prop + form example. Kept as the fixture for the
+// "children as function" and "form validation" unit tests in Dialog.test.tsx.
 export const WithFormValidation = meta.story({
-  render: ({ size, ...args }) => {
-    const [code, setCode] = useState('');
-
-    return (
-      <Stack alignX="left" space={8}>
-        <Dialog.Trigger {...args} dismissable={false}>
-          <Button variant="primary">Open</Button>
-          <Dialog size={size}>
-            {({ close }) => (
-              <>
-                <Dialog.Title>Please enter validation code</Dialog.Title>
-                <Dialog.Content>
-                  <Form
-                    id="code-form"
-                    onSubmit={e => {
-                      e.preventDefault();
-                      const formData = new FormData(e.currentTarget);
-                      setCode(formData.get('code') as string);
-                      close();
-                    }}
-                  >
-                    <TextField label="Code" name="code" required />
-                  </Form>
-                </Dialog.Content>
-                <Dialog.Actions>
-                  <Button slot="close" variant="secondary">
-                    Cancel
-                  </Button>
-                  <Button variant="primary" type="submit" form="code-form">
-                    Submit
-                  </Button>
-                </Dialog.Actions>
-              </>
-            )}
-          </Dialog>
-        </Dialog.Trigger>
-        <pre>
-          <code>Entered code: {code}</code>
-        </pre>
-      </Stack>
-    );
-  },
-});
-
-export const OpenFromMenu = meta.story({
-  render: () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [open, setDialogOpen] = useState(false);
-    const handleAction = (action: 'save' | 'delete') => {
-      switch (action) {
-        case 'save':
-          alert('saved!');
-          break;
-        case 'delete':
-          setDialogOpen(true);
-          break;
-        default:
-          throw new Error(`Unhandled action "${action}"!`);
-      }
-    };
-
-    return (
-      <>
-        <Menu onAction={handleAction} label="Settings">
-          <Menu.Item key="save" id="save">
-            Save
-          </Menu.Item>
-          <Menu.Item key="delete" id="delete">
-            Delete
-          </Menu.Item>
-        </Menu>
-        <Dialog open={open} onOpenChange={setDialogOpen} closeButton>
-          {({ close }) => (
-            <>
-              <Dialog.Title>Confirm delete</Dialog.Title>
-              <Dialog.Content>
-                <Text>Do you really wanna delete this?</Text>
-              </Dialog.Content>
-              <Dialog.Actions>
-                <Button slot="close">Cancel</Button>
-                <Button variant="destructive" onPress={close}>
-                  Delete
-                </Button>
-              </Dialog.Actions>
-            </>
-          )}
-        </Dialog>
-      </>
-    );
-  },
-});
-
-export const Confirmation = meta.story({
-  render: ({ ...args }) => (
-    <ConfirmationDialog.Trigger {...args}>
-      <Button>Open</Button>
-      <ConfirmationDialog title="Confirmation" confirmationLabel="Confirm">
-        Are you sure you want to proceed with this action?
-      </ConfirmationDialog>
-    </ConfirmationDialog.Trigger>
-  ),
-});
-
-export const TextOnly = meta.story({
-  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: ({ size, ...args }) => (
-    <Dialog.Trigger {...args}>
+    <Dialog.Trigger {...args} dismissable={false}>
       <Button variant="primary">Open</Button>
-      <Dialog size={size} closeButton>
-        <Dialog.Title>Information</Dialog.Title>
-        <Dialog.Content>
-          Your session will expire in 30 minutes. Save your work to avoid losing
-          any unsaved changes.
-        </Dialog.Content>
+      <Dialog size={size}>
+        {({ close }) => (
+          <>
+            <Dialog.Title>Please enter validation code</Dialog.Title>
+            <Dialog.Content>
+              <Form
+                id="code-form"
+                onSubmit={e => {
+                  e.preventDefault();
+                  close();
+                }}
+              >
+                <TextField label="Code" name="code" required />
+              </Form>
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button slot="close" variant="secondary">
+                Cancel
+              </Button>
+              <Button variant="primary" type="submit" form="code-form">
+                Submit
+              </Button>
+            </Dialog.Actions>
+          </>
+        )}
       </Dialog>
     </Dialog.Trigger>
   ),
-  play: async ({ canvas, userEvent }) => {
-    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
-    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
-  },
 });
 
 export const VeryLongContent = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const { size, ...triggerArgs } = args;
     return (
       <Dialog.Trigger {...triggerArgs}>
         <Button variant="primary">Open Dialog with Long Content</Button>
         <Dialog size={size} closeButton>
-          <Dialog.Title>Terms and Conditions</Dialog.Title>
+          <Title>Terms and Conditions</Title>
           <Dialog.Content>
             <Text>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
@@ -371,8 +272,17 @@ export const VeryLongContent = meta.story({
       </Dialog.Trigger>
     );
   },
-  play: async ({ canvas, userEvent }) => {
-    await userEvent.click(canvas.getByText('Open Dialog with Long Content'));
+});
+
+VeryLongContent.test(
+  'Shows very long content',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Open Dialog with Long Content' })
+    );
 
     await waitFor(() => {
       const dialog = document.querySelector('[role="dialog"]');
@@ -391,5 +301,113 @@ export const VeryLongContent = meta.story({
     // Test scroll functionality - scroll to bottom
     dialogContent.scrollTop = dialogContent.scrollHeight;
     expect(dialogContent.scrollTop).toBeGreaterThan(0);
-  },
+  }
+);
+
+/**
+ * The slot-aware primitives `<Title>` / `<Description>` and the action
+ * primitives can be used directly — `<Dialog.Header>` groups the title and
+ * description, and a `<ButtonGroup>` inside `<Dialog.Actions>` picks up its
+ * defaults from the dialog root.
+ */
+export const SlotPrimitives = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: ({ size, ...args }) => (
+    <Dialog.Trigger {...args}>
+      <Button variant="primary">Open</Button>
+      <Dialog size={size} closeButton>
+        <Dialog.Header>
+          <Title>Manage event</Title>
+          <Description>Update, duplicate, or remove this event.</Description>
+        </Dialog.Header>
+        <Dialog.Content>
+          Choose an action below. Changes apply immediately.
+        </Dialog.Content>
+        <Dialog.Actions>
+          <ButtonGroup aria-label="Event actions">
+            <Button>
+              <Pencil />
+              Edit
+            </Button>
+            <Button>
+              <Copy />
+              Duplicate
+            </Button>
+            <ActionMenu aria-label="More actions">
+              <ActionMenu.Item id="export">
+                <Download />
+                Export
+              </ActionMenu.Item>
+              <ActionMenu.Item id="delete" variant="destructive">
+                <Trash2 />
+                Delete
+              </ActionMenu.Item>
+            </ActionMenu>
+          </ButtonGroup>
+        </Dialog.Actions>
+      </Dialog>
+    </Dialog.Trigger>
+  ),
 });
+
+SlotPrimitives.test(
+  'Renders slot primitives with grouped actions',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+
+    expect(
+      canvas.getByRole('heading', { name: 'Manage event' })
+    ).toBeInTheDocument();
+    expect(
+      canvas.getByText('Update, duplicate, or remove this event.').tagName
+    ).toBe('P');
+    expect(
+      canvas.getByRole('toolbar', { name: 'Event actions' })
+    ).toBeInTheDocument();
+  }
+);
+
+/**
+ * A bare `<Title slot="title">` (no `<Dialog.Header>`, no description) is a
+ * fully valid, accessible title — the dialog's `aria-labelledby` resolves to
+ * it automatically.
+ */
+export const TitleOnlyWithoutHeader = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: ({ size, ...args }) => (
+    <Dialog.Trigger {...args}>
+      <Button variant="primary">Open</Button>
+      <Dialog size={size} closeButton>
+        <Title>Session expiring</Title>
+        <Dialog.Content>
+          Your session will expire in 5 minutes. Save your work to avoid losing
+          changes.
+        </Dialog.Content>
+      </Dialog>
+    </Dialog.Trigger>
+  ),
+});
+
+TitleOnlyWithoutHeader.test(
+  'Labels the dialog with a bare Title',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+
+    const dialog = await waitFor(() =>
+      canvas.getByRole('dialog', { name: 'Session expiring' })
+    );
+    const title = canvas.getByRole('heading', { name: 'Session expiring' });
+
+    expect(title.tagName).toBe('H2');
+    expect(dialog).toHaveAttribute('aria-labelledby', title.id);
+  }
+);

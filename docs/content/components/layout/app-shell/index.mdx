@@ -1,0 +1,107 @@
+---
+title: AppShell
+description: A CSS Grid container with three named areas sidebar, header, and main.
+badge: beta
+---
+
+`<AppShell>` is a CSS Grid container that divides the viewport into three areas: a sidebar on the left, a header on the top right, and the page below the header. The document itself scrolls. The sidebar sticks to the viewport with `position: sticky`, and the header stays pinned at the top via `<TopNavigation>`'s own sticky positioning.
+
+Place [`<Sidebar>`](/components/navigation/sidebar), [`<TopNavigation>`](/components/navigation/topnavigation), and [`<Page>`](/components/layout/page) directly as children. Each owns its own grid area, so the order does not matter and there are no wrapper sub-components.
+
+<Callout title="Looking for composition guidance?">
+  This page covers the component API. For a step-by-step guide on where to place
+  content, how to wire up navigation, and responsive strategy, see the [App
+  Frame pattern](/patterns/layout/app-frame).
+</Callout>
+
+## Usage
+
+### Basic structure
+
+```tsx
+<AppShell defaultSidebarOpen>
+  <Sidebar>
+    <Sidebar.Header>{/* Logo */}</Sidebar.Header>
+    <Sidebar.Nav>{/* Navigation items */}</Sidebar.Nav>
+  </Sidebar>
+  <TopNavigation>
+    <TopNavigation.Start>{/* Toggle */}</TopNavigation.Start>
+    <TopNavigation.Middle>{/* Breadcrumbs, search */}</TopNavigation.Middle>
+    <TopNavigation.End>{/* User menu */}</TopNavigation.End>
+  </TopNavigation>
+  <Page>
+    <Page.Header>{/* Title, description, actions */}</Page.Header>
+    {/* Panels and page content */}
+  </Page>
+</AppShell>
+```
+
+<ComponentDemo name="app-shell-basic" background="page" />
+
+### Sidebar state
+
+`<AppShell>` manages the sidebar's open/collapsed state for you. It wraps its children in a `Sidebar.Provider` internally. Pass `defaultSidebarOpen` to start expanded. The sidebar toggle in the header and the sidebar share this state automatically, with no provider boilerplate.
+
+For **controlled** sidebar state (`open` / `onOpenChange`) or to set the sidebar's `variant` / `size`, render your own [`<Sidebar.Provider>`](/components/navigation/sidebar) _around_ `<AppShell>`. `<AppShell>` detects the outer provider and uses it instead of creating its own:
+
+```tsx
+<Sidebar.Provider open={open} onOpenChange={setOpen}>
+  <AppShell>{/* … */}</AppShell>
+</Sidebar.Provider>
+```
+
+### Scrolling
+
+The page itself scrolls. `<AppShell>` does not create an interior scroll container. The sidebar and header stick to the viewport via `position: sticky`, so they stay visible as the user scrolls the page. The sidebar's navigation area scrolls independently when it has too many items to fit, which the [Sidebar](/components/navigation/sidebar) component handles internally.
+
+Page-level scroll keeps native browser behaviour (mobile URL-bar collapse, pull-to-refresh, scroll restoration on back/forward, `Cmd+F` find-in-page, and anchor links) working without extra wiring.
+
+<GuidelineTiles>
+  <Dont>
+    <DontDescription>
+      <ul>
+        <li>Don't nest `<AppShell>` inside other layout containers</li>
+        <li>Don't put page content directly in `<AppShell>`. Wrap it in a `<Page>` so it gets the `main` landmark, padding, and rhythm</li>
+        <li>Don't use `<AppShell>` for simple pages that only need a header or only a sidebar</li>
+      </ul>
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Accessibility
+
+- **Landmarks:** `<Page>` renders `<main>` and `<Sidebar>` renders `<aside>`, so both appear in the screen reader's landmark list automatically. Wrap them with [`useLandmark`](/components/hooks-and-utils/useLandmark) to add them to the `F6` cycle. See the [Landmarks foundation](/foundations/accessibility#landmarks) for details.
+- **Stacking order:** The header uses `z-index: 1` to ensure it stays above the page content during scroll.
+
+<Callout title="Note">
+  `<AppShell>` is a structural layout component. Accessibility features like keyboard navigation, focus management, and ARIA attributes are provided by the components placed inside it. See [Sidebar](/components/navigation/sidebar#accessibility) and [TopNavigation](/components/navigation/topnavigation#accessibility) for their accessibility details.
+</Callout>
+
+## Props
+
+{/* Storybook hint omitted while AppShell is beta: it has no story on the published Storybook (marigold-latest) the hint links to, so the link 404s. Restore when AppShell ships. */}
+
+### AppShell
+
+<AutoTypeTable path="AppShell" name="AppShellProps" />
+
+## Related components
+
+<ul>
+  <li>
+    [Page](/components/layout/page): The content area inside `<AppShell>`,
+    providing the `main` landmark, padding, and vertical rhythm.
+  </li>
+  <li>
+    [Sidebar](/components/navigation/sidebar): Use standalone when you only need
+    side navigation without a fixed header bar.
+  </li>
+  <li>
+    [TopNavigation](/components/navigation/topnavigation): Use standalone for a
+    horizontal navigation bar without a sidebar.
+  </li>
+  <li>
+    [Grid](/components/layout/grid): Use for custom grid layouts that don't
+    follow the L-shape pattern.
+  </li>
+</ul>

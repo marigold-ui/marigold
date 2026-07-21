@@ -1,8 +1,7 @@
 import type { ReactNode } from 'react';
-import { expect } from 'storybook/test';
+import { expect, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Collapsible } from './Collapsible';
-import { More } from './More';
 
 const meta = preview.meta({
   title: 'Components/Collapsible',
@@ -26,7 +25,16 @@ export const Basic = meta.story({
       <Collapsible.Content>{children as ReactNode}</Collapsible.Content>
     </Collapsible>
   ),
-  play: async ({ step, canvas, userEvent }) => {
+});
+
+Basic.test(
+  'expands and collapses content on trigger click',
+  {
+    parameters: {
+      chromatic: { disableSnapshot: true },
+    },
+  },
+  async ({ canvas, step }) => {
     await step('expand', async () => {
       await userEvent.click(canvas.getByText('Click me'));
 
@@ -42,28 +50,5 @@ export const Basic = meta.story({
         canvas.queryByText('This is the content of the collapsible component.')
       ).not.toBeVisible();
     });
-  },
-});
-
-export const ShowMore = meta.story({
-  render: ({ children = <p>Test Content</p>, ...args }) => (
-    <More {...args}>{children as ReactNode}</More>
-  ),
-  play: async ({ step, canvas, userEvent }) => {
-    await step('show more', async () => {
-      await userEvent.click(canvas.getByRole('button'));
-
-      expect(
-        canvas.getByText('This is the content of the collapsible component.')
-      ).toBeVisible();
-    });
-
-    await step('show less', async () => {
-      await userEvent.click(canvas.getByRole('button'));
-
-      expect(
-        canvas.queryByText('This is the content of the collapsible component.')
-      ).not.toBeVisible();
-    });
-  },
-});
+  }
+);

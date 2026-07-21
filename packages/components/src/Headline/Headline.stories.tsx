@@ -4,6 +4,7 @@ import { Headline } from './Headline';
 
 const meta = preview.meta({
   title: 'Components/Headline',
+  parameters: { surface: false },
   component: Headline,
   argTypes: {
     level: {
@@ -68,6 +69,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     children: 'This is a Headline!!',
   },

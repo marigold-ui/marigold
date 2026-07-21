@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { isValidElement } from 'react';
-import { Menu, MenuItem, MenuTrigger } from 'react-aria-components';
+import { Menu, MenuItem, MenuTrigger } from 'react-aria-components/Menu';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useClassNames } from '@marigold/system';
 import { IconButton } from '../IconButton/IconButton';

@@ -26,4 +26,10 @@ export interface NavSection {
 export interface ShellConfig {
   base: string;
   sections: NavSection[];
+  /**
+   * Resolves a dynamic path segment (e.g. a member id in `users/[id]`) to a
+   * human label for the breadcrumb. Lets a drill-in route show a readable
+   * trailing crumb without the page having to register it.
+   */
+  resolveLabel?: (segment: string) => string | undefined;
 }

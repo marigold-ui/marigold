@@ -1,15 +1,16 @@
 {
   "pages": [
-    "app-layout",
+    "app-shell",
     "aside",
     "aspect",
-    "breakout",
     "center",
     "columns",
     "container",
     "grid",
     "inline",
     "inset",
+    "page",
+    "panel",
     "scrollable",
     "split",
     "stack",

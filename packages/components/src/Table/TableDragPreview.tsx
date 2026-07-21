@@ -1,4 +1,4 @@
-import type { DragAndDropOptions } from 'react-aria-components';
+import type { DragAndDropOptions } from 'react-aria-components/useDragAndDrop';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
 import { intlMessages } from '../intl/messages';

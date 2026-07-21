@@ -1,8 +1,0 @@
-@layer base {
-  body {
-    font-optical-sizing: auto;
-    font-style: normal;
-
-    @apply supports-[font-variation-settings:normal]:font-sans-variable text-foreground bg-background font-sans;
-  }
-}

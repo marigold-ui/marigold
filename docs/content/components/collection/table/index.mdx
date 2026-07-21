@@ -3,25 +3,22 @@ title: Table
 description: Display and interact with structured data in rows and columns.
 ---
 
+import { TableAnatomy } from './table-anatomy';
+
 The `<Table>` component displays structured data in a grid layout with rows and columns. It provides features for selecting, sorting, editing, and reordering data, making it ideal for applications that need to present and manipulate tabular information.
 
 Use tables when you need to display datasets where users benefit from seeing multiple records at once, comparing values across columns, or performing bulk operations on selected items. Tables work well for admin interfaces, data management screens, and dashboards where structured information needs to be organized and actionable.
 
 ## Anatomy
 
-<ImageZoom
-  src="/table/table-anatomy.jpg"
-  alt="Anatomy of Table component"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+<TableAnatomy />
 
 - **Header (sticky):** Container for column headers, can stick to viewport top when scrolling.
 - **Column:** Individual column headers that can enable sorting functionality.
 - **Selection checkbox:** Checkbox for selecting individual rows or all rows at once.
 - **Row (selectable):** Individual table rows that can be selected, clicked, or dragged.
 - **Cell:** Standard cell containing data, text, or components.
+- **Footer (sticky):** Optional summary row rendered after the body, can stick to the viewport bottom when scrolling.
 
 ## Appearance
 
@@ -106,7 +103,7 @@ Proper alignment makes data easier to scan and compare. Different data types ben
 
 ### Selecting rows
 
-When users need to perform actions on multiple items at once, enable row selection. This allows users to select individual rows or all rows, then perform bulk operations like delete, export, or modify.
+When users need to perform actions on multiple items at once, enable row selection. This allows users to select individual rows or all rows, then perform bulk operations like delete, export, or modify. The [Bulk Actions pattern](/patterns/user-input/bulk-actions) describes the complete flow from selection to result feedback, including the [`<ActionBar>`](/components/collection/actionbar) that carries the actions.
 
 Row selection is particularly valuable in scenarios where users manage multiple records simultaneously, such as bulk deleting outdated entries, exporting selected data for reports, moving items between categories, or applying changes to multiple records. The selection mechanism provides visual feedback through checkboxes and highlights the selected rows to maintain clear context of what will be affected by subsequent actions.
 
@@ -141,7 +138,7 @@ When it comes to placement, always position row actions at the end of the row. T
 
 <ComponentDemo name="table-action" />
 
-Show only the most important 1–3 actions per row. These should be the actions users are most likely to need or expect to find without having to open a menu, such as "Edit" or "View." If you need to support more than three actions, prioritize them by frequency and importance: display the most critical ones directly, and group the rest into a contextual menu using an `<ActionMenu>` (see [ActionMenu section](/components/overlay/menu#actionmenu)). This keeps the row clean and scannable while still offering access to all necessary actions.
+Show only the most important 1 to 3 actions per row. These should be the actions users are most likely to need or expect to find without having to open a menu, such as "Edit" or "View." If you need to support more than three actions, prioritize them by frequency and importance: display the most critical ones directly, and group the rest into a contextual menu using an `<ActionMenu>` (see [ActionMenu section](/components/overlay/menu#actionmenu)). This keeps the row clean and scannable while still offering access to all necessary actions.
 
 Using too many visible actions at once can overwhelm users, make it hard to identify what to do, and increase visual clutter. If space is limited or the layout feels crowded, consider using icon buttons to keep actions compact. Pair them with tooltips to clearly communicate each action's purpose without adding visual noise.
 
@@ -162,7 +159,7 @@ If you cannot place all row actions at the end of the row, be mindful of clarity
           Place row actions at the end of the row for consistent scannability.
         </li>
         <li>
-          Limit visible actions to 1–3 per row and group the rest in an
+          Limit visible actions to 1 to 3 per row and group the rest in an
           ActionMenu.
         </li>
       </ul>
@@ -186,7 +183,7 @@ If you cannot place all row actions at the end of the row, be mindful of clarity
 
 ### Sorting columns
 
-When working with large datasets, users often need to organize information by specific attributes to find what they're looking for or identify patterns. Sorting solves the problem of information overload by letting users reorder data in a way that makes sense for their current task—whether that's finding the highest value, the most recent date, or items alphabetically.
+When working with large datasets, users often need to organize information by specific attributes to find what they're looking for or identify patterns. Sorting solves the problem of information overload by letting users reorder data in a way that makes sense for their current task, whether that's finding the highest value, the most recent date, or items alphabetically.
 
 Enable sorting to let users click column headers and dynamically reorder rows by that column's values. This is particularly valuable when users need to:
 
@@ -214,7 +211,7 @@ Enable sorting to let users click column headers and dynamically reorder rows by
 
 ### Inline editing
 
-When users need to make quick edits to individual values without navigating to a separate form, use editable cells. This is particularly effective for small, atomic changes where users need to update a single field across multiple records—like updating product prices, changing task statuses, correcting typos, or adjusting quantities. By allowing edits directly within the table, you keep users in context and reduce friction.
+When users need to make quick edits to individual values without navigating to a separate form, use editable cells. This is particularly effective for small, atomic changes where users need to update a single field across multiple records, like updating product prices, changing task statuses, correcting typos, or adjusting quantities. By allowing edits directly within the table, you keep users in context and reduce friction.
 
 Editable cells always truncate their content, regardless of the table-level `overflow` setting. This ensures consistent alignment with column headers and matches the single-line nature of the editing controls (TextField, Select, NumberField, etc.).
 
@@ -282,7 +279,7 @@ When a table has no data to display, whether from empty search results, filters 
   </Dont>
 </GuidelineTiles>
 
-### Sticky headers
+### Sticky headers and footers
 
 For tables with many rows that require scrolling, sticky headers keep column labels visible as users scroll through data. This helps users maintain context about what each column represents.
 
@@ -299,6 +296,32 @@ For tables with many rows that require scrolling, sticky headers keep column lab
     <DontDescription>
       Don't make headers sticky for short tables where all rows fit on screen
       without scrolling.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+Table footers can be sticky too, keeping the summary row visible while users scroll through long tables.
+
+<ComponentDemo name="table-footer-sticky" />
+
+### Display totals
+
+Use `<Table.Footer>` to display a summary row after the table body, such as totals, counts, or averages. Unlike faking a totals row with an extra `<Table.Row>` inside the body, the footer renders as a semantic `<tfoot>`, which keeps it out of the body's scroll and sticky-header semantics and is announced correctly by assistive technology.
+
+Compose the summary row from `<Table.Row>` and `<Table.Cell>` just like the body, using `colSpan` to span a label across multiple columns.
+
+<ComponentDemo name="table-footer" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use a footer for a single, table-wide summary row like totals or counts.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use a footer to add another data row, use `<Table.Body>` for
+      records.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
@@ -375,15 +398,19 @@ Mark the column that best identifies each row, typically a name, title, or ID co
 
 <AutoTypeTable path="Table/TableEditableCell" name="TableEditableCellProps" />
 
+### Table.Footer
+
+<AutoTypeTable path="Table/TableFooter" name="TableFooterProps" />
+
 ## Alternative components
 
 Choosing the right alternative to data tables is crucial for effectively displaying your data and enhancing user interaction. Depending on the type of data and the desired user experience, different components can offer different benefits. Here are some alternatives to data tables that might better suit your needs:
 
 <ul>
   <li>
-    [SelectionList](/components/collection/selectlist): Displays a list of
-    interactive items, useful to create an actionable list of related items,
-    such as a list of users.
+    [SelectionList](/components/form/selectlist): Displays a list of interactive
+    items, useful to create an actionable list of related items, such as a list
+    of users.
   </li>
   <li>
     [Cards](/components/content/card): Helpful if the data needs to be displayed

@@ -1,4 +1,4 @@
-import { Button } from 'react-aria-components';
+import { Button } from 'react-aria-components/Button';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useIsSSR } from '@react-aria/ssr';
 import { cn } from '@marigold/system';

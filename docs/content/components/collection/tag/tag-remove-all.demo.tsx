@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Tag, Text } from '@marigold/components';
 
 const emptyState = () => (
-  <Text fontSize="sm" color="muted-foreground" fontStyle="italic">
+  <Text fontSize="sm" color="secondary" fontStyle="italic">
     No filters selected.
   </Text>
 );

@@ -3,7 +3,7 @@ title: Marigold v17.3.0
 date: 2026-03-25
 type: Blog
 changed:
-  - components/layout/app-layout
+  - components/layout/app-shell
   - components/navigation/sidebar
   - components/navigation/top-navigation
   - components/overlay/toast
@@ -16,32 +16,30 @@ Spring is in full swing, and so is Marigold. v17.3.0 continues the navigation st
 
 ## Components
 
-### AppLayout (beta)
+### AppShell (beta)
 
-A new [`<AppLayout>`](/components/layout/app-layout) component provides a standardized App Shell layout using CSS Grid. It exposes three slots -- `<AppLayout.Sidebar>`, `<AppLayout.Header>`, and `<AppLayout.Main>` -- that compose the navigation primitives from v17.2.0 into a complete page chrome.
+A new [`<AppShell>`](/components/layout/app-shell) component provides a standardized App Shell layout using CSS Grid. You place `<Sidebar>`, `<TopNavigation>`, and `<Page>` directly as its children -- each owns its own named grid area, so the order doesn't matter -- composing the navigation primitives from v17.2.0 into a complete page chrome.
 
-Before `<AppLayout>`, teams had to hand-roll grid templates, `100dvh` height containers, and sticky-header logic every time they wired `<Sidebar>` and `<TopNavigation>` together. Getting scroll behavior right (only `<Main>` should scroll, sidebar and header stay put) was fiddly and easy to get subtly wrong. `<AppLayout>` encapsulates that layout so you can focus on content.
+Before `<AppShell>`, teams had to hand-roll grid templates, `100dvh` height containers, and sticky-header logic every time they wired `<Sidebar>` and `<TopNavigation>` together. Getting scroll behavior right (only the page area should scroll, sidebar and header stay put) was fiddly and easy to get subtly wrong. `<AppShell>` encapsulates that layout -- and absorbs the `Sidebar.Provider` for the common case -- so you can focus on content.
 
 ```tsx
-<Sidebar.Provider defaultOpen>
-  <AppLayout>
-    <AppLayout.Sidebar>
-      <Sidebar.Header>{/* Logo */}</Sidebar.Header>
-      <Sidebar.Nav>{/* Navigation items */}</Sidebar.Nav>
-    </AppLayout.Sidebar>
-    <AppLayout.Header>
-      <TopNavigation.Start>
-        <Sidebar.Toggle />
-      </TopNavigation.Start>
-      <TopNavigation.Middle>{/* Breadcrumbs, search */}</TopNavigation.Middle>
-      <TopNavigation.End>{/* User menu */}</TopNavigation.End>
-    </AppLayout.Header>
-    <AppLayout.Main>{/* Scrollable page content */}</AppLayout.Main>
-  </AppLayout>
-</Sidebar.Provider>
+<AppShell defaultSidebarOpen>
+  <Sidebar>
+    <Sidebar.Header>{/* Logo */}</Sidebar.Header>
+    <Sidebar.Nav>{/* Navigation items */}</Sidebar.Nav>
+  </Sidebar>
+  <TopNavigation>
+    <TopNavigation.Start>
+      <Sidebar.Toggle />
+    </TopNavigation.Start>
+    <TopNavigation.Middle>{/* Breadcrumbs, search */}</TopNavigation.Middle>
+    <TopNavigation.End>{/* User menu */}</TopNavigation.End>
+  </TopNavigation>
+  <Page>{/* Page content */}</Page>
+</AppShell>
 ```
 
-The grid fills `100dvh`, the header is a fixed `3.5rem` tall, and only `<AppLayout.Main>` scrolls. The sidebar header height was also aligned with the `<AppLayout>` header so logos and navigation items line up cleanly. See the new [App Shell pattern](/patterns/app-shell) for a step-by-step guide covering providers, responsive behavior, and where to place content.
+The grid fills `100dvh` and the header is a fixed `3.5rem` tall. The sidebar header height was also aligned with the `<AppShell>` header so logos and navigation items line up cleanly. See the new [App Shell pattern](/patterns/app-shell) for a step-by-step guide covering providers, responsive behavior, and where to place content.
 
 ## System
 

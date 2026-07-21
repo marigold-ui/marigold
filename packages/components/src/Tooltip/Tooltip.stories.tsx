@@ -1,3 +1,4 @@
+import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Tooltip } from './Tooltip';
@@ -5,6 +6,7 @@ import { Tooltip } from './Tooltip';
 const meta = preview.meta({
   title: 'Components/Tooltip',
   component: Tooltip,
+  parameters: { surface: false },
   decorators: [
     Story => (
       <div id="storybook-root">
@@ -53,13 +55,6 @@ const meta = preview.meta({
       description:
         'The placement padding that should be applied between the element and its surrounding container.',
     },
-    open: {
-      control: {
-        type: 'boolean',
-        default: 'false',
-      },
-      description: 'If the tooltip is open (controlled)',
-    },
     size: {
       control: {
         type: 'text',
@@ -70,15 +65,13 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
+  tags: ['component-test'],
   render: args => {
     return (
       <div className="ms-auto me-auto flex w-[min(100%-3rem,60ch)] gap-2 pt-32">
         <Tooltip.Trigger>
           <Button variant="primary">Hover me!</Button>
-          <Tooltip {...args}>Look at this tooltip!</Tooltip>
-        </Tooltip.Trigger>
-        <Tooltip.Trigger>
-          <Button variant="primary">Hover no! Me!</Button>
           <Tooltip {...args}>
             <div>I am a much more longer tooltip you know!</div>
             <div>I even have two lines!</div>
@@ -89,8 +82,18 @@ export const Basic = meta.story({
   },
 });
 
-export const OpenViaTooltipProp = Basic.extend({
-  args: {
-    open: true,
-  },
-});
+// Opens the tooltip (focus-visible) and re-enables the snapshot the base story
+// disables, so Chromatic captures the tooltip in its open state.
+Basic.test(
+  'shows the tooltip on focus',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.tab();
+
+    const tooltip = await waitFor(() => canvas.getByRole('tooltip'));
+    await expect(tooltip).toBeVisible();
+    await expect(tooltip).toHaveTextContent(
+      'I am a much more longer tooltip you know!'
+    );
+  }
+);

@@ -2,6 +2,7 @@ import { RenderOptions, RenderResult, render } from '@testing-library/react';
 import { ReactElement, ReactNode } from 'react';
 import { vi } from 'vitest';
 import { Theme, ThemeProvider, ThemeProviderProps } from '@marigold/system';
+import { theme } from '@marigold/theme-rui';
 
 export type SetupProps<T extends Theme> = Omit<
   ThemeProviderProps<T>,
@@ -46,9 +47,6 @@ export const renderWithOverlay = (ui: ReactNode): RenderResult => {
   return render(ui as ReactElement);
 };
 
-export const makeFile = (name: string, type: string, size = 1024) =>
-  new File([new Uint8Array(size)], name, { type });
-
 /**
  * Mock `matchMedia` for jsdom which does not implement it.
  * Returns a mock that supports the `addEventListener`/`removeEventListener`
@@ -60,3 +58,10 @@ export const mockMatchMedia = (matches: string[]) =>
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
   }));
+
+/**
+ * The media query `useSmallScreen` derives from the theme's `sm` breakpoint.
+ * Assign `window.matchMedia = mockMatchMedia([smallScreenQuery])` to put a
+ * test on a small screen.
+ */
+export const smallScreenQuery = `(width < ${theme.screens!.sm})`;

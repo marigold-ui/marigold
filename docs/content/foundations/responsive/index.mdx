@@ -1,0 +1,42 @@
+---
+title: Responsive Design
+description: How Marigold handles breakpoints, responsive values, and the minimum supported screen width.
+badge: new
+---
+
+Marigold components are responsive and adapt across screen sizes, from small phones to large desktops. The styling system is mobile-first: base styles target the smallest screens, and larger breakpoints layer on as the viewport grows.
+
+## Breakpoints
+
+Marigold uses a `min-width` based breakpoint scale. A breakpoint marks the width at which a layout is allowed to change, and styles apply at that width and above.
+
+| Breakpoint | Min width |
+| ---------- | --------- |
+| `sm`       | 640px     |
+| `md`       | 768px     |
+| `lg`       | 1024px    |
+| `xl`       | 1280px    |
+| `2xl`      | 1536px    |
+
+Because the scale is mobile-first, the range below `sm` (0 to 639px) is the unprefixed base. You style the base for small screens and add larger breakpoints as upgrades. To target the small range explicitly, use the `max-sm:` variant.
+
+## Responsive values in components
+
+For values that need to change with the screen size in JavaScript rather than CSS, Marigold provides two hooks:
+
+- [`useResponsiveValue`](../components/hooks-and-utils/useResponsiveValue) returns a value from an array based on the current breakpoint.
+- [`useSmallScreen`](../components/hooks-and-utils/useResponsiveValue#usesmallscreen) returns `true` below the `sm` breakpoint (640px). It defaults to the desktop layout until a small screen is detected, so components such as `Select`, `ComboBox` and `Menu` render a desktop popover by default and switch to a mobile tray below 640px.
+
+## Minimum supported width
+
+**Marigold supports a minimum viewport width of 320px.** Components are expected to remain usable and free of overflow all the way down to that width.
+
+<Callout title="Rollout in progress" type="warning">
+
+320px support is still being rolled out, so not every component has been verified at this width yet and some may still overflow or break. If you find one, please let us know.
+
+</Callout>
+
+That makes 320px a **support floor, not a breakpoint**, and the two are easy to confuse. A breakpoint marks a width where the layout _changes_, like `sm` at 640px. A support floor is different: it is simply the smallest width we promise to render correctly. Since nothing changes at 320px, it needs **no `xs` breakpoint**. Instead, the base styles (0 to 639px) hold the layout together all the way down to 320px, with `max-sm:` covering any small-screen tweaks.
+
+When building with Marigold, test your own layouts at 320px (for example using your browser's responsive design mode) to confirm nothing overflows at the floor.

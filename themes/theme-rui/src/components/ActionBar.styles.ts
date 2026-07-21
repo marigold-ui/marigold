@@ -7,7 +7,7 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
       'flex items-center justify-between justify-items-center gap-16',
       'px-6 py-3',
       'shadow-elevation-overlay',
-      'ui-surface-contrast',
+      'ui-contrast',
       'rounded-full font-medium',
       'focus-visible:ui-state-focus outline-none disabled:ui-state-disabled',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0',
@@ -30,18 +30,11 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
   clearButton: cva({
     base: [
       'inline-flex items-center justify-center',
-      'shrink-0 size-8 rounded-full cursor-pointer transition-[color,background-color]',
-      'hover:bg-current/10',
+      'shrink-0 size-8 rounded-full cursor-pointer transition-[color]',
+      'hover:ui-state-hover-ghost',
       'focus-visible:ui-state-focus outline-none',
       'disabled:ui-state-disabled',
       '[&_svg]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0',
-    ],
-  }),
-  actionButton: cva({
-    base: [
-      'ui-button-base gap-2 items-center justify-center',
-      'hover:bg-current/10',
-      'text-sm h-button p-squish-relaxed [&_svg]:size-4',
     ],
   }),
 };

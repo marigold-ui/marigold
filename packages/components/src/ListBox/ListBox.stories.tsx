@@ -1,8 +1,14 @@
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Description } from '../Description/Description';
+import { TextValue } from '../TextValue/TextValue';
 import { ListBox } from './ListBox';
 
 const meta = preview.meta({
   title: 'Components/ListBox',
+  parameters: {
+    surface: false,
+  },
 });
 
 export const Basic = meta.story({
@@ -22,9 +28,61 @@ export const Basic = meta.story({
   ),
 });
 
+export const WithDescription = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <ListBox aria-labelledby="listbox" selectionMode="single" {...args}>
+      <ListBox.Item id="public" textValue="Public">
+        <TextValue>Public</TextValue>
+        <Description>Anyone with the link can view.</Description>
+      </ListBox.Item>
+      <ListBox.Item id="restricted" textValue="Restricted">
+        <TextValue>Restricted</TextValue>
+        <Description>Only people you invite can view.</Description>
+      </ListBox.Item>
+    </ListBox>
+  ),
+});
+
+WithDescription.test(
+  'links each item to its description via aria-describedby',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvas }) => {
+    const item = canvas.getByRole('option', { name: /Restricted/ });
+    const description = canvas.getByText('Only people you invite can view.');
+
+    expect(description.id).toBeTruthy();
+    expect(item.getAttribute('aria-describedby') ?? '').toContain(
+      description.id
+    );
+  }
+);
+
+export const DisabledWithDescription = meta.story({
+  render: args => (
+    <ListBox
+      aria-labelledby="listbox"
+      selectionMode="single"
+      disabledKeys={['restricted']}
+      {...args}
+    >
+      <ListBox.Item id="public" textValue="Public">
+        <TextValue>Public</TextValue>
+        <Description>Anyone with the link can view.</Description>
+      </ListBox.Item>
+      <ListBox.Item id="restricted" textValue="Restricted">
+        <TextValue>Restricted</TextValue>
+        <Description>Only people you invite can view.</Description>
+      </ListBox.Item>
+    </ListBox>
+  ),
+});
+
 export const WithSections = meta.story({
   render: args => (
-    <ListBox aria-labelledby="listbox" {...args}>
+    <ListBox aria-labelledby="listbox" selectionMode="single" {...args}>
       <ListBox.Section header="Veggies">
         <ListBox.Item id="lettuce">Lettuce</ListBox.Item>
         <ListBox.Item id="tomato">Tomato</ListBox.Item>

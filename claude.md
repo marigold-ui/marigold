@@ -11,11 +11,15 @@ See @README.md for project overview and @package.json for available pnpm command
 
 Before writing code that uses a Marigold component, run the CLI to get its current API. Do not guess props from training data — Marigold is not in your training set and you will invent prop names.
 
+When you don't yet know the component name, start with `search`. It ranks components by what their docs actually say (title, description, headings, prose) and returns deep links in one call, instead of the `list` → guess → `docs` → retry loop. Then fetch `docs <Component> --section props` once you've committed to a component.
+
+- `marigold search <query>` — find components by docs content (start here for discovery)
+- `marigold search "field validation" --format json` — structured ranked results for agents (`{ name, slug, score, hits }`)
 - `marigold docs <Component>` — full component docs
 - `marigold docs <Component> --section props --format json` — structured prop data (preferred for agents)
 - `marigold docs <Component> --section usage` — usage guidelines
 - `marigold list --category form` — discover form components
-- `marigold list --search date` — search by name
+- `marigold list --search date` — filter by name (substring; use `search` for content)
 
 The CLI fetches from the Marigold docs site, caches for 24h, and works offline (`--offline`). For AI use, prefer `--format json` — it returns a structured payload instead of formatted markdown.
 
@@ -157,29 +161,29 @@ Z-index values are centralized and standardized across the design system to ensu
 
 **Architecture**:
 
-- Z-index **numeric values** are defined as CSS custom properties in `themes/theme-rui/src/theme.css`
+- Z-index **classes** are plain Tailwind v4 numeric utilities (`z-1`, `z-30`, `z-80`, …). Tailwind v4 generates `z-<integer>` on demand, so there are no `--z-*` custom properties or `theme.css` definitions — the scale below is a shared convention, not a token set
 - Z-index **classes** are applied directly in component implementations (`packages/components/src/`), NOT in theme style files
-- This makes z-index theme-independent while keeping numeric values customizable
+- This keeps stacking order consistent and discoverable without coupling it to the theme layer
 
-**Z-Index Scale**:
+**Z-Index Scale** (the agreed convention for which utility maps to which layer):
 
-```css
+```text
 /* Content Layer (0-10) */
---z-1: 1; /* Sticky headers (Table, Accordion, ListBox) */
---z-10: 10; /* Focus states (Calendar) */
+z-1    /* Sticky headers (Table, Accordion, ListBox) */
+z-10   /* Focus states (Calendar) */
 
 /* Floating Layer (20-49) */
---z-20: 20; /* Dropdowns (Multiselect, Select, ComboBox) */
---z-30: 30; /* Popovers, Menus, Tooltips, ActionBar */
+z-20   /* Dropdowns (Select, ComboBox) */
+z-30   /* Popovers, Menus, Tooltips, ActionBar */
 
 /* Overlay Layer (50-79) */
---z-50: 50; /* Modal overlays, Drawer overlays, Underlay */
+z-50   /* Modal overlays, Drawer overlays, Underlay */
 
 /* Notification Layer (80-99) */
---z-80: 80; /* Toast notifications, Drawer close button */
+z-80   /* Toast notifications, Drawer close button */
 
 /* System Layer (100+) */
---z-100: 100; /* Touch hitbox utility */
+z-100  /* Touch hitbox utility */
 ```
 
 **Component Examples**:
@@ -210,7 +214,7 @@ export const Toast: ThemeComponent = {
 - Always apply z-index classes in component implementations using Tailwind utilities (`z-1`, `z-30`, etc.)
 - Never add z-index classes to theme style files (`*.styles.ts`)
 - Use `cn()` utility to combine z-index with other classNames
-- Exception: Third-party libraries (like react-select) may require inline `zIndex` prop
+- Exception: Some third-party libraries may require an inline `zIndex` prop
 
 **Stacking Hierarchy**:
 

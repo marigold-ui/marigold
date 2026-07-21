@@ -26,6 +26,10 @@ vi.mock('../commands/examples.js', () => ({
   })),
 }));
 
+vi.mock('../commands/search.js', () => ({
+  runSearch: vi.fn(async () => ({ output: 'search output', cacheHit: false })),
+}));
+
 let stdoutSpy: ReturnType<typeof vi.spyOn>;
 let stderrSpy: ReturnType<typeof vi.spyOn>;
 
@@ -161,5 +165,48 @@ describe('main() — examples command', () => {
       exitCode: 1,
       args: expect.objectContaining({ sub: 'get', slug: 'filter' }),
     });
+  });
+});
+
+describe('main() — search command', () => {
+  test('dispatches a query and emits success telemetry', async () => {
+    const code = await main(['search', 'field', 'validation']);
+
+    expect(code).toBe(0);
+    expect(emitMock).toHaveBeenCalledTimes(1);
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      command: 'search',
+      exitCode: 0,
+      // The raw query is never sent — only that one was provided.
+      args: expect.objectContaining({ query: 'used' }),
+    });
+  });
+
+  test('fails when the query is missing', async () => {
+    const code = await main(['search']);
+
+    expect(code).toBe(1);
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      command: 'search',
+      exitCode: 1,
+    });
+  });
+
+  test('fails when --limit is not a positive integer', async () => {
+    const code = await main(['search', 'tag', '--limit', '0']);
+
+    expect(code).toBe(1);
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      command: 'search',
+      exitCode: 1,
+      args: expect.objectContaining({ limit: '0' }),
+    });
+  });
+
+  test('fails when --format is invalid', async () => {
+    const code = await main(['search', 'tag', '--format', 'bogus']);
+
+    expect(code).toBe(1);
+    expect(emitMock.mock.calls[0][0]).toMatchObject({ exitCode: 1 });
   });
 });

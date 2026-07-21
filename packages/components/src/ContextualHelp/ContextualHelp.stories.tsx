@@ -1,7 +1,6 @@
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Link } from '../Link/Link';
-import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import { ContextualHelp } from './ContextualHelp';
 
@@ -81,10 +80,11 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
+  parameters: { surface: false },
   render: args => (
     <div className="flex h-96 items-center justify-center">
       <ContextualHelp {...args}>
-        <ContextualHelp.Title>Whats this?</ContextualHelp.Title>
+        <ContextualHelp.Title>What's this?</ContextualHelp.Title>
         <ContextualHelp.Content>
           This feature explains important functions to you directly in the
           context of the page.
@@ -96,54 +96,35 @@ export const Basic = meta.story({
       </ContextualHelp>
     </div>
   ),
-  play: async ({ canvas, userEvent }) => {
-    const helpButton = await canvas.getByLabelText(/help|hilfe/i);
-    await userEvent.click(helpButton);
-
-    expect(await canvas.findByText('Whats this?')).toBeInTheDocument();
-    expect(
-      await canvas.findByText(
-        'This feature explains important functions to you directly in the context of the page.'
-      )
-    ).toBeInTheDocument();
-    expect(
-      await canvas.findByRole('link', {
-        name: 'To the documentation',
-      })
-    ).toBeInTheDocument();
-
-    // Reset
-    await userEvent.click(document.body);
-  },
 });
 
-export const LongContent = meta.story({
+Basic.test('Opens contextual help', async ({ canvas, userEvent }) => {
+  const helpButton = await canvas.getByLabelText(/help|hilfe/i);
+  await userEvent.click(helpButton);
+
+  expect(await canvas.findByText(/What.s this\?/)).toBeInTheDocument();
+  expect(
+    await canvas.findByText(
+      'This feature explains important functions to you directly in the context of the page.'
+    )
+  ).toBeInTheDocument();
+  expect(
+    await canvas.findByRole('link', {
+      name: 'To the documentation',
+    })
+  ).toBeInTheDocument();
+});
+
+export const WithDescription = meta.story({
   render: args => (
     <div className="flex h-96 items-center justify-center">
       <ContextualHelp {...args}>
-        <ContextualHelp.Title>Whats this?</ContextualHelp.Title>
+        <ContextualHelp.Title>Feature overview</ContextualHelp.Title>
+        <ContextualHelp.Description>
+          A short summary of this feature.
+        </ContextualHelp.Description>
         <ContextualHelp.Content>
-          <Text>
-            This feature explains important functions to you directly in the
-            context of the page.
-          </Text>
-
-          <Text>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Pellentesque euismod, urna eu tincidunt consectetur, nisi nisl
-            aliquam enim, eget facilisis sapien sapien nec est.
-          </Text>
-
-          <Text>
-            Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-            accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-            quae ab illo inventore veritatis et quasi architecto beatae vitae
-            dicta sunt explicabo.
-          </Text>
-
-          <Link href="https://www.marigold-ui.io/components/overview?theme=rui">
-            To the documentation
-          </Link>
+          More detail about how this feature works.
         </ContextualHelp.Content>
       </ContextualHelp>
     </div>

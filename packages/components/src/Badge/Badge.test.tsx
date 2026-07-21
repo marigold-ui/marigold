@@ -1,25 +1,48 @@
 import { render, screen } from '@testing-library/react';
 import { Basic } from './Badge.stories';
 
-test('renders correctly', () => {
-  render(<Basic.Component data-testid="badge" />);
+// Variant order rendered by the `Basic` showcase story. Deriving the index from
+// this list (instead of a bare `[4]`) keeps the assertion pointed at the info
+// variant even if the showcase is reordered.
+const VARIANT_ORDER = [
+  'default',
+  'primary',
+  'success',
+  'warning',
+  'info',
+  'error',
+  'master',
+  'admin',
+] as const;
 
-  const badge = screen.getByTestId('badge');
+test('renders the info variant correctly', () => {
+  render(<Basic.Component />);
+
+  // Basic renders one "Status" badge per variant; pick the info variant's markup.
+  const badge = screen.getAllByText('Status')[VARIANT_ORDER.indexOf('info')];
 
   expect(badge).toMatchInlineSnapshot(`
     <div
-      class="inline-flex items-center justify-center rounded-full px-2 text-xs font-medium leading-normal focus-visible:ui-state-focus outline-none has-[svg]:gap-1 bg-info-muted text-info-muted-foreground"
-      data-testid="badge"
+      class="inline-flex items-center justify-center rounded-full px-2 text-xs font-medium leading-normal focus-visible:ui-state-focus outline-none has-[svg]:gap-1 bg-info text-info-foreground"
     >
       Status
     </div>
   `);
 });
 
-test('shows the lock svg', () => {
-  render(<Basic.Component data-testid="badge" variant="master" />);
+// Icon rendering is covered by the Basic story test.
+test('master variant announces its visible text only', () => {
+  render(<Basic.Component />);
+  const master = screen.getAllByText('Status')[VARIANT_ORDER.indexOf('master')];
 
-  const svgs = screen.getAllByTestId('lock-icon');
+  // The badge's visible text already is the access level — no hidden access
+  // label may be added, or AT would announce "Status Master"-style doubles.
+  expect(master).toHaveTextContent(/^Status$/);
+});
 
-  expect(svgs.length).toBe(1);
+test('admin variant announces its visible text only', () => {
+  render(<Basic.Component />);
+  const admin = screen.getAllByText('Status')[VARIANT_ORDER.indexOf('admin')];
+
+  expect(admin).toHaveTextContent(/^Status$/);
 });

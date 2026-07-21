@@ -1,6 +1,6 @@
-import { motion } from 'motion/react';
+import * as m from 'motion/react-m';
 import type RAC from 'react-aria-components';
-import { Tab } from 'react-aria-components';
+import { Tab } from 'react-aria-components/Tabs';
 import { cn } from '@marigold/system';
 import { useTabContext } from './Context';
 
@@ -35,7 +35,7 @@ const _Tab = (props: TabProps) => {
           {typeof content === 'function' ? content(renderProps) : content}
 
           {renderProps.isSelected && (
-            <motion.span
+            <m.span
               data-testid="tab-indicator"
               className={cn('rounded-none', classNames.tabIndicator)}
               transition={INDICATOR_TRANSITION}

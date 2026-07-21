@@ -37,6 +37,7 @@ const meta = preview.meta({
   args: {
     variant: undefined,
     size: 'default',
+    loaderType: 'xloader',
   },
 });
 

@@ -8,7 +8,18 @@ import withMarigoldProviders from './decorators.js';
 // @ts-expect-error - CSS side-effect import handled by Vite bundler
 import './styles.css';
 
+// Storybook viewports only accept fixed pixel values, so we can't use the
+// theme's rem-based `sm` breakpoint directly. 639px = 40rem - 1px (at the
+// default 16px root font size), ensuring this viewport triggers `(width < 40rem)`.
 const customViewports = {
+  extraSmallScreen: {
+    name: 'Extra Small Screen (320px)',
+    styles: {
+      width: '320px',
+      height: '568px',
+    },
+    type: 'mobile' as const,
+  },
   smallScreen: {
     name: 'Small Screen (639px)',
     styles: {

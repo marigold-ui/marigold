@@ -1,8 +1,12 @@
 import type { ReactNode } from 'react';
-import { useContext } from 'react';
-import type { ValidationResult } from 'react-aria-components';
-import { FieldError, FieldErrorContext, Text } from 'react-aria-components';
+import { use } from 'react';
+import {
+  FieldError,
+  FieldErrorContext,
+} from 'react-aria-components/FieldError';
+import type { ValidationResult } from '@react-types/shared';
 import { cn, useClassNames } from '@marigold/system';
+import { Description } from '../Description/Description';
 import { TriangleAlert } from '../icons/TriangleAlert';
 
 // Props
@@ -34,7 +38,7 @@ export const HelpText = ({
     variant,
     size,
   });
-  const ctx = useContext(FieldErrorContext);
+  const ctx = use(FieldErrorContext);
 
   // Prevent rendering anything if no error/description should be shown.
   if (!description && !ctx?.isInvalid) {
@@ -76,9 +80,7 @@ export const HelpText = ({
           );
         }}
       </FieldError>
-      {ctx && ctx.isInvalid ? null : (
-        <Text slot="description">{description}</Text>
-      )}
+      {ctx && ctx.isInvalid ? null : <Description>{description}</Description>}
     </div>
   );
 };

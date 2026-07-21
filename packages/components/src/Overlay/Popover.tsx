@@ -1,7 +1,8 @@
-import { ReactNode, forwardRef } from 'react';
+import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Popover } from 'react-aria-components';
+import { Popover } from 'react-aria-components/Popover';
 import { cn, useClassNames } from '@marigold/system';
+import { ResetButtonContext } from '../Button/ResetButtonContext';
 
 // Internal Usage Notes
 // ---------------
@@ -25,30 +26,45 @@ export interface PopoverProps extends Omit<
 > {
   keyboardDismissDisabled?: boolean;
   open?: boolean;
+  /**
+   * Stretch the popover to at least the trigger's width. Right for field
+   * dropdowns (Select, ComboBox) whose list should line up with the field;
+   * turn off for content-sized overlays like a calendar, whose width is its
+   * own, not the trigger's.
+   * @default true
+   */
+  matchTriggerWidth?: boolean;
   children: ReactNode;
 }
 
 // Component
 // ---------------
-const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
-  (
-    { keyboardDismissDisabled, placement, offset = 0, open, children, ...rest },
-    ref
-  ) => {
-    const props: RAC.PopoverProps = {
-      isKeyboardDismissDisabled: keyboardDismissDisabled,
-      isOpen: open,
-      placement,
-      ...rest,
-    };
-    const classNames = useClassNames({
-      component: 'Popover',
-      variant: placement,
-      // Make Popover as wide as trigger element
-      className: 'min-w-(--trigger-width)',
-    });
+const PopoverBase = ({
+  keyboardDismissDisabled,
+  placement,
+  offset = 0,
+  open,
+  matchTriggerWidth = true,
+  children,
+  ref,
+  ...rest
+}: PopoverProps & { ref?: Ref<HTMLDivElement> }) => {
+  const props: RAC.PopoverProps = {
+    isKeyboardDismissDisabled: keyboardDismissDisabled,
+    isOpen: open,
+    placement,
+    ...rest,
+  };
+  const classNames = useClassNames({
+    component: 'Popover',
+    variant: placement,
+    // Match the trigger's width so field dropdowns line up with the field. A
+    // calendar sizes to its own content, so it opts out (matchTriggerWidth).
+    className: matchTriggerWidth ? 'min-w-(--trigger-width)' : undefined,
+  });
 
-    return (
+  return (
+    <ResetButtonContext>
       <Popover
         ref={ref}
         {...props}
@@ -58,8 +74,8 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
       >
         {children}
       </Popover>
-    );
-  }
-);
+    </ResetButtonContext>
+  );
+};
 
-export { _Popover as Popover };
+export { PopoverBase as Popover };

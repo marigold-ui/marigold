@@ -40,16 +40,6 @@ export type DistributiveOmit<T, TOmitted extends PropertyKey> = T extends any
   ? Omit<T, TOmitted>
   : never;
 
-/**
- * Fix the weird behavior of the forwardRef types.
- * Source: https://www.totaltypescript.com/pass-component-as-prop-react
- *
- * @example const fixedForwardRef = forwardRef as FixedForwardRef;
- */
-export type FixedForwardRef = <T, P = {}>(
-  render: (props: P, ref: React.Ref<T>) => React.ReactNode
-) => (props: P & React.RefAttributes<T>) => React.ReactNode;
-
 /**********************************************/
 /*                                            */
 /*            POLYMORPIC COMPONENT            */

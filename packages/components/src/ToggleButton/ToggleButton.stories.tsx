@@ -1,12 +1,22 @@
-import { Star } from 'lucide-react';
 import { useState } from 'react';
 import { expect, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Star } from '@marigold/icons';
 import { ToggleButton } from './ToggleButton';
 
 const meta = preview.meta({
   title: 'Components/ToggleButton',
   component: ToggleButton,
+  parameters: {
+    surface: false,
+  },
+  decorators: [
+    Story => (
+      <div className="self-start">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     children: {
       control: 'text',
@@ -53,6 +63,7 @@ export const Basic = meta.story({
 
 Basic.test(
   'Clicking the toggle button updates selection',
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }) => {
     const button = canvas.getByRole('button');
 
@@ -70,7 +81,36 @@ Basic.test(
   }
 );
 
-export const Controlled = meta.story({
+Basic.test(
+  'applies the selected foreground styling when toggled on',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas }) => {
+    const button = canvas.getByRole('button');
+
+    // The selected appearance is wired to react-aria's `data-selected` via the
+    // theme's `selected:*` utilities on the button.
+    expect(button).toHaveClass('selected:text-selected-bold-foreground');
+
+    const colorWhenUnselected = getComputedStyle(button).color;
+
+    await userEvent.click(button);
+
+    expect(button).toHaveAttribute('data-selected', 'true');
+    // Selecting swaps the text colour to the bold selected foreground, so the
+    // resolved colour must actually change.
+    expect(getComputedStyle(button).color).not.toBe(colorWhenUnselected);
+  }
+);
+
+export const BothSurfaces = meta.story({
+  parameters: {
+    chromatic: { disableSnapshot: true },
+    surface: 'both',
+  },
+  render: args => <ToggleButton {...args}>Toggle</ToggleButton>,
+});
+
+export const IconToggleButton = meta.story({
   render: args => {
     const [isSelected, setIsSelected] = useState(false);
 

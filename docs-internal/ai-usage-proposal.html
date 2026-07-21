@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Proposal: AI-Assisted Development Workflow for Marigold</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --surface: #ffffff;
+    --ink: #1f2421;
+    --muted: #5d6660;
+    --line: #e6e3db;
+    --accent: #c98a1b;        /* marigold */
+    --accent-soft: #fbf2dd;
+    --good: #2f7d4f;
+    --good-soft: #e8f4ec;
+    --warn: #b4571a;
+    --warn-soft: #fbede0;
+    --code-bg: #f4f2ec;
+    --radius: 12px;
+    --maxw: 860px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16181a; --surface: #1e2123; --ink: #e8e6e1; --muted: #9aa19c;
+      --line: #2e3235; --accent: #e0a83c; --accent-soft: #2a2418;
+      --good: #6cc08a; --good-soft: #1c2a21; --warn: #e08a4d; --warn-soft: #2c2017;
+      --code-bg: #14181a;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 17px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 64px 28px 120px; }
+
+  header.doc {
+    border-left: 4px solid var(--accent);
+    padding: 4px 0 4px 22px;
+    margin-bottom: 40px;
+  }
+  header.doc h1 { font-size: 2.1rem; line-height: 1.15; margin: 0 0 14px; letter-spacing: -0.02em; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill {
+    font-size: 0.78rem; color: var(--muted); background: var(--surface);
+    border: 1px solid var(--line); border-radius: 999px; padding: 3px 12px;
+  }
+  .pill strong { color: var(--ink); font-weight: 600; }
+
+  h2 {
+    font-size: 1.42rem; letter-spacing: -0.01em; margin: 56px 0 18px;
+    padding-bottom: 8px; border-bottom: 1px solid var(--line);
+  }
+  h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  h3 { font-size: 1.08rem; margin: 36px 0 12px; }
+  h3 .pnum { color: var(--accent); margin-right: 8px; }
+  p { margin: 14px 0; }
+  a { color: var(--accent); }
+  strong { font-weight: 650; }
+  .lead { font-size: 1.12rem; color: var(--ink); }
+  .muted { color: var(--muted); }
+
+  code {
+    font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+    font-size: 0.86em; background: var(--code-bg); padding: 1px 6px;
+    border-radius: 6px; border: 1px solid var(--line);
+  }
+  pre {
+    background: var(--code-bg); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 16px 18px; overflow-x: auto; font-size: 0.82rem; line-height: 1.55;
+    margin: 16px 0;
+  }
+  pre code { background: none; border: 0; padding: 0; font-size: 1em; }
+
+  table {
+    width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.95rem;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius); overflow: hidden;
+  }
+  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--accent-soft); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+  tr:last-child td { border-bottom: 0; }
+  td code { white-space: nowrap; }
+  .adopt { display: inline-block; font-size: 0.74rem; font-weight: 700; padding: 2px 9px; border-radius: 999px; white-space: nowrap; border: 1px solid transparent; }
+  .adopt.heavy { color: var(--good); background: var(--good-soft); border-color: var(--good); }
+  .adopt.ok    { color: var(--good); background: var(--good-soft); }
+  .adopt.auto  { color: var(--muted); background: var(--code-bg); }
+  .adopt.low   { color: var(--warn); background: var(--warn-soft); }
+  .adopt.none  { color: var(--warn); background: var(--warn-soft); border-color: var(--warn); }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 18px 20px; margin: 18px 0;
+  }
+  .card.accent { border-left: 4px solid var(--accent); }
+  .card .label { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 6px; }
+
+  /* gap/fix blocks inside proposals */
+  .gapfix { display: grid; gap: 10px; margin: 14px 0; }
+  .gapfix .row { display: grid; grid-template-columns: 64px 1fr; gap: 12px; align-items: baseline; }
+  .gapfix .tag { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 0; border-radius: 6px; text-align: left; }
+  .gapfix .tag.gap { color: var(--warn); }
+  .gapfix .tag.fix { color: var(--good); }
+  .gapfix .row > div:last-child { font-size: 0.97rem; }
+
+  /* flow diagram */
+  .flow { margin: 26px 0; }
+  .step {
+    position: relative; background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 14px 18px; margin: 0 auto;
+    max-width: 560px; display: flex; gap: 14px; align-items: baseline;
+  }
+  .step.proposed { border-style: dashed; border-color: var(--accent); background: var(--accent-soft); }
+  .step .n {
+    flex: 0 0 26px; height: 26px; border-radius: 50%; background: var(--accent);
+    color: #fff; font-size: 0.82rem; font-weight: 700; display: grid; place-items: center;
+    align-self: center;
+  }
+  .step .body { flex: 1; }
+  .step .t { font-weight: 650; }
+  .step .t .badge {
+    font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--accent); border: 1px solid var(--accent); border-radius: 999px;
+    padding: 1px 8px; margin-left: 8px; vertical-align: 2px;
+  }
+  .step .d { font-size: 0.88rem; color: var(--muted); margin-top: 2px; }
+  .step .d code { font-size: 0.82em; }
+  .arrow { width: 2px; height: 22px; background: var(--line); margin: 0 auto; position: relative; }
+  .arrow::after { content: "▾"; position: absolute; left: 50%; bottom: -7px; transform: translateX(-50%); color: var(--line); font-size: 0.8rem; line-height: 1; }
+
+  ul, ol { padding-left: 22px; }
+  li { margin: 6px 0; }
+
+  .toc { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 22px; margin: 0 0 40px; }
+  .toc .label { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 8px; }
+  .toc ol { margin: 0; padding-left: 20px; columns: 2; }
+  .toc a { text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+
+  footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.85rem; }
+
+  @media print {
+    body { background: #fff; color: #000; font-size: 12px; }
+    .wrap { padding: 0; max-width: 100%; }
+    .step, .card, table, .toc, pre { break-inside: avoid; }
+    h2, h3 { break-after: avoid; }
+  }
+  @media (max-width: 560px) { .toc ol { columns: 1; } .gapfix .row { grid-template-columns: 1fr; gap: 2px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="doc">
+    <h1>Proposal: AI-Assisted Development Workflow for Marigold</h1>
+    <div class="meta">
+      <span class="pill"><strong>Author</strong>&nbsp; Sebastian Sebald</span>
+      <span class="pill"><strong>Status</strong>&nbsp; Draft for team review</span>
+      <span class="pill"><strong>Audience</strong>&nbsp; DST team meeting</span>
+    </div>
+  </header>
+
+  <p class="lead">We have quietly built a fairly complete AI-assisted workflow inside the Marigold repo &mdash; custom skills, agents, MCP servers, and conventions baked into <code>CLAUDE.md</code>. Right now most of it lives in one person's muscle memory. This proposal <strong>documents the end-to-end workflow</strong> from ticket creation to PR review so the whole team can adopt it, and <strong>proposes concrete extensions</strong> (skills, hooks, CI) so AI usage is consistent, reviewable, and safe for everyone.</p>
+  <div class="card accent">
+    <div class="label">Why it matters</div>
+    <strong>Consistency</strong> (every PR looks the same to a reviewer), <strong>speed</strong> (the boring glue &mdash; changesets, PR bodies, ticket transitions &mdash; is automated), and <strong>onboarding</strong> (a new teammate inherits the workflow instead of reinventing it).
+  </div>
+
+  <nav class="toc">
+    <div class="label">Contents</div>
+    <ol>
+      <li><a href="#workflow">The workflow</a></li>
+      <li><a href="#toolkit">The toolkit we have</a></li>
+      <li><a href="#recos">Recommendations</a></li>
+      <li><a href="#proposals">Proposals: filling the gaps</a></li>
+      <li><a href="#horizon">On the horizon</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1 -->
+  <h2 id="workflow"><span class="num">1</span>The workflow <span class="muted" style="font-weight:400;font-size:1rem">(centerpiece)</span></h2>
+  <p>This is the <strong>intended happy path</strong> for a DST ticket. Steps 1&ndash;8 are all supported today by an existing skill/agent or a documented convention &mdash; though adoption varies (see <a href="#toolkit">&sect;2</a>): the glue steps (<code>simplify</code>, review, VRT) are used constantly, while the scaffolding steps are available but under-used. Step 0 is proposed (see <a href="#p1">P1/P2</a>).</p>
+
+  <div class="flow">
+    <div class="step proposed"><div class="n">0</div><div class="body"><div class="t">Scope &amp; refine<span class="badge">proposed</span></div><div class="d"><code>/grill-me</code> &middot; <code>/grill-with-docs</code> &mdash; interrogate the idea until every decision branch is resolved; capture vocabulary + ADRs</div></div></div>
+    <div class="arrow"></div>
+    <div class="step"><div class="n">1</div><div class="body"><div class="t">Jira ticket</div><div class="d">create / assign / add to sprint &mdash; DST conventions in <code>CLAUDE.md</code></div></div></div>
+    <div class="arrow"></div>
+    <div class="step"><div class="n">2</div><div class="body"><div class="t">Implement</div><div class="d"><code>/create-component</code> &middot; <code>component-scaffold</code> agent &middot; or hand-written component / MDX docs</div></div></div>
+    <div class="arrow"></div>
+    <div class="step"><div class="n">3</div><div class="body"><div class="t">Simplify</div><div class="d"><code>/simplify</code> &mdash; reduce &amp; de-duplicate the diff</div></div></div>
+    <div class="arrow"></div>
+    <div class="step"><div class="n">4</div><div class="body"><div class="t">Quality gates</div><div class="d"><code>typescript-codequality-check</code> &middot; <code>testing-codequality-check</code> &middot; <code>a11y-audit</code> agent &middot; prose style rules</div></div></div>
+    <div class="arrow"></div>
+    <div class="step"><div class="n">5</div><div class="body"><div class="t">Changeset + commit</div><div class="d">Conventional Commits, Jira scope: <code>fix(DST-1501): apply padding for numeric Panel</code></div></div></div>
+    <div class="arrow"></div>
+    <div class="step"><div class="n">6</div><div class="body"><div class="t">Create PR</div><div class="d"><code>/create-pr</code> &mdash; fills PR template, links Jira, ticks checklist</div></div></div>
+    <div class="arrow"></div>
+    <div class="step"><div class="n">7</div><div class="body"><div class="t">Vercel preview</div><div class="d">resolve preview comments</div></div></div>
+    <div class="arrow"></div>
+    <div class="step"><div class="n">8</div><div class="body"><div class="t">Review</div><div class="d"><code>/review-pr</code> + <code>/vrt</code> &mdash; code / TS / a11y review; visual regression if UI changed</div></div></div>
+  </div>
+
+  <!-- 3 -->
+  <h2 id="toolkit"><span class="num">2</span>The toolkit we already have</h2>
+  <p>Everything below is committed to the repo (<code>.claude/</code>) &mdash; so it is already <strong>team-available</strong>, not personal config.</p>
+
+  <p>&ldquo;Available&rdquo; is not the same as &ldquo;adopted&rdquo; &mdash; the <strong>Adoption</strong> column reflects real usage, and the gap is itself a finding (see the note below and <a href="#p8">&sect;4 P8</a>).</p>
+
+  <h3>Skills <span class="muted" style="font-weight:400">(<code>/command</code>)</span></h3>
+  <table>
+    <thead><tr><th>Skill</th><th>What it does</th><th>Adoption</th></tr></thead>
+    <tbody>
+      <tr><td><code>simplify</code></td><td>Reduces and de-duplicates the current diff.</td><td><span class="adopt heavy">Heavy</span></td></tr>
+      <tr><td><code>vrt</code></td><td>Triggers Chromatic visual regression tests.</td><td><span class="adopt ok">Regular</span></td></tr>
+      <tr><td><code>review-pr</code></td><td>Reviews a PR for code quality, TS, React, a11y; auto-detects whether VRT is needed.</td><td><span class="adopt ok">Regular</span></td></tr>
+      <tr><td><code>typescript-codequality-check</code></td><td>Post-change quality pass for <code>.ts</code>/<code>.tsx</code>.</td><td><span class="adopt auto">Auto</span></td></tr>
+      <tr><td><code>testing-codequality-check</code></td><td>Post-change quality pass for tests/stories.</td><td><span class="adopt auto">Auto</span></td></tr>
+      <tr><td><code>component-docs-writer</code></td><td>Writes MDX docs, demos, anatomy diagrams.</td><td><span class="adopt low">Rare</span></td></tr>
+      <tr><td><code>create-pr</code></td><td>Opens a PR matching our template + Conventional Commits + DST scope; auto-ticks checklist.</td><td><span class="adopt low">Rare</span></td></tr>
+      <tr><td><code>create-component</code></td><td>Scaffolds a new component with all required files.</td><td><span class="adopt low">Rare</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Agents</h3>
+  <table>
+    <thead><tr><th>Agent</th><th>What it does</th><th>Adoption</th></tr></thead>
+    <tbody>
+      <tr><td><code>component-scaffold</code></td><td>Creates new components with full file structure.</td><td><span class="adopt none">Unused</span></td></tr>
+      <tr><td><code>a11y-audit</code></td><td>WCAG 2.1 AA audit of a component.</td><td><span class="adopt none">Unused</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="card warn">
+    <div class="label">The pattern</div>
+    The lightweight, general-purpose skills (<code>simplify</code>, and the not-yet-committed <code>grill-me</code>) get heavy use, while the heavyweight scaffolding skills (<code>create-component</code>, <code>component-scaffold</code>, <code>component-docs-writer</code>, <code>create-pr</code>) are barely touched. Likely reasons: they're invoked rarely by nature (you scaffold a component far less often than you simplify a diff), they're not discoverable, or doing it by hand still feels faster. Either way, a tool nobody runs is maintenance cost with no payoff &mdash; <a href="#p8">P8</a> proposes what to do about it.
+  </div>
+
+  <h3>Conventions encoded in <code>CLAUDE.md</code></h3>
+  <ul>
+    <li>Marigold CLI for live component APIs (stops the model inventing prop names).</li>
+    <li>Full Jira (DST) ticket conventions: issue types, required custom fields, description template, title emoji convention.</li>
+    <li>Component patterns (RAC wrapping, compound components, <code>useClassNames</code>, z-index scale).</li>
+    <li>MCP servers: Storybook, React Aria, Atlassian, GitHub, Vercel, Figma.</li>
+  </ul>
+
+  <!-- 4 -->
+  <h2 id="recos"><span class="num">3</span>Recommendations for the team</h2>
+  <ol>
+    <li><strong>Adopt the chain as the default workflow.</strong> Treat the diagram in &sect;1 as the happy path for any DST ticket.</li>
+    <li><strong>Keep skills in the repo, reviewed like code.</strong> Skills are checked in, so changes go through PR review &mdash; the workflow improves for everyone at once.</li>
+    <li><strong>Lean on <code>CLAUDE.md</code> as the contract.</strong> When the model gets something wrong, the fix is usually a <code>CLAUDE.md</code> edit, not a one-off prompt.</li>
+    <li><strong>Plan before patching.</strong> For bugs, require ranked root-cause hypotheses (with evidence from the code) before any edit &mdash; via plan mode or a grilling session. This kills the most common failure mode: confidently fixing the wrong thing.</li>
+    <li><strong>Session hygiene.</strong> Short, scoped sessions (<code>/clear</code> between tasks) keep the model focused and cheap.</li>
+    <li><strong>Always verify outward-facing actions.</strong> PRs, ticket transitions, and Confluence edits get a human confirmation before they go out.</li>
+  </ol>
+
+  <!-- 5 -->
+  <h2 id="proposals"><span class="num">4</span>Proposals: filling the gaps</h2>
+  <p>Each proposal names the gap, the fix, and how to implement it. Ordered by expected impact.</p>
+
+  <h3 id="p1"><span class="pnum">P1</span>Adopt <code>/grill-me</code> as the standard scoping step</h3>
+  <div class="gapfix">
+    <div class="row"><div class="tag gap">Gap</div><div>Work often starts from an under-specified idea; misunderstandings surface late (during review) instead of early.</div></div>
+    <div class="row"><div class="tag fix">Fix</div><div>Before creating a ticket or starting non-trivial implementation, run a grilling session: the AI interviews you relentlessly, one question at a time, resolving every branch of the decision tree &mdash; and explores the codebase itself when a question can be answered there.</div></div>
+  </div>
+  <p><strong>Implementation:</strong> the skill is a single markdown file &mdash; commit it to <code>.claude/skills/grill-me/</code> so the whole team gets it from the repo. Already proven in practice for scoping initiatives, patterns, and Confluence pages.</p>
+
+  <h3 id="p2"><span class="pnum">P2</span>Adopt <code>grill-with-docs</code> for codebase work (CONTEXT.md + ADRs)</h3>
+  <div class="gapfix">
+    <div class="row"><div class="tag gap">Gap</div><div>Good scoping sessions produce shared language and decisions &mdash; and then nothing is written down. Example from our own work: the &ldquo;app chrome&rdquo; vs &ldquo;frame&rdquo; naming debate for AppLayout lives in a chat log.</div></div>
+    <div class="row"><div class="tag fix">Fix</div><div><a href="https://www.aihero.dev/grill-with-docs">grill-with-docs</a> (from <a href="https://github.com/mattpocock/skills">mattpocock/skills</a>) is <code>/grill-me</code> plus live documentation.</div></div>
+  </div>
+  <ul>
+    <li>Maintains a <strong><code>CONTEXT.md</code></strong> domain glossary &mdash; precise definitions of terms like <em>slot-configuration pattern</em>, <em>app chrome</em>, <em>trigger props</em>.</li>
+    <li>Writes an <strong>ADR</strong> whenever a decision is hard to reverse or surprising without context.</li>
+    <li>Challenges vague terms against the actual code during the session.</li>
+  </ul>
+  <p>A shared vocabulary compounds: variables, files, and docs get named consistently, and the agent stops re-deriving context every session.</p>
+  <p><strong>Implementation:</strong> <code>npx skills@latest add mattpocock/skills</code> (select <code>grill-with-docs</code> + the setup skill), commit the result. Routing rule: <code>grill-with-docs</code> when working in the codebase, <code>/grill-me</code> for everything else.</p>
+
+  <h3 id="p3"><span class="pnum">P3</span><code>/triage-feedback</code> skill: one triage pass over GitHub + Vercel comments</h3>
+  <div class="gapfix">
+    <div class="row"><div class="tag gap">Gap</div><div>Feedback on a PR arrives in <em>two</em> places &mdash; GitHub review comments and Vercel preview (toolbar) comments. Resolving them is one of our most repeated multi-step workflows, done by hand each time, with a constant context-switch between the PR tab and the preview UI. Steps get missed.</div></div>
+    <div class="row"><div class="tag fix">Fix</div><div>One committed skill that pulls from both sources, triages every item, and acts on it &mdash; replying and resolving in whichever system it came from. Both sides are fully API-addressable: GitHub via <code>gh</code>, and Vercel via its MCP (<code>list_toolbar_threads</code> &rarr; <code>get_toolbar_thread</code> &rarr; <code>reply_to_toolbar_thread</code> &rarr; <code>change_toolbar_thread_resolve_status</code>).</div></div>
+  </div>
+  <p>It triages each comment on three axes, then presents a table for approval <em>before</em> acting:</p>
+  <table>
+    <thead><tr><th>Axis</th><th>Values</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Source</strong></td><td>GitHub review comment &middot; Vercel toolbar thread</td></tr>
+      <tr><td><strong>Validity</strong> <span class="muted">(verify vs current code/diff)</span></td><td>confirmed &middot; stale / already-fixed &middot; incorrect</td></tr>
+      <tr><td><strong>Severity</strong></td><td>blocker &middot; should-fix &middot; nice-to-have &middot; question / non-actionable</td></tr>
+      <tr><td><strong>Action</strong></td><td>apply &middot; push back with reasoning &middot; needs human</td></tr>
+    </tbody>
+  </table>
+  <p>Then the loop:</p>
+  <ol>
+    <li>Gather unresolved comments from GitHub <strong>and</strong> Vercel for the current branch.</li>
+    <li>Triage each (table above); only <strong>needs-human</strong> items interrupt you.</li>
+    <li>Apply accepted fixes, run typecheck + build, push.</li>
+    <li>Reply in each thread (GitHub via <code>--body-file</code> &mdash; never inline strings, which shell-escaping can mangle) and resolve it in its origin system.</li>
+    <li>Update the changeset; post a summary comment.</li>
+  </ol>
+  <div class="card warn">
+    <div class="label">Limitation &mdash; visual feedback</div>
+    Vercel comments are often design/visual (&ldquo;spacing looks off&rdquo;). An agent can't verify pixels from text alone, so v1 routes visual comments straight to <strong>needs-human</strong>. The ambitious version uses the Playwright MCP to load the preview URL at the comment's page and screenshot it before judging &mdash; powerful, but more moving parts; ship the simple version first.
+  </div>
+  <p><strong>Implementation:</strong> new <code>.claude/skills/triage-feedback/SKILL.md</code>, mirroring our existing <code>create-pr</code>/<code>review-pr</code> skills with two source adapters and a shared triage core. Needs the Vercel MCP connected and the project linked (<code>.vercel/project.json</code> for the team/org id). The <code>--body-file</code> rule also goes into <code>CLAUDE.md</code> as a general convention.</p>
+
+  <h3 id="p4"><span class="pnum">P4</span><code>/create-ticket</code> skill: close the loop at the start</h3>
+  <div class="gapfix">
+    <div class="row"><div class="tag gap">Gap</div><div>The workflow officially starts at &ldquo;Jira ticket&rdquo;, but ticket creation itself is ad-hoc &mdash; conventions (emoji title, required custom fields, description template) are applied manually and inconsistently.</div></div>
+    <div class="row"><div class="tag fix">Fix</div><div>A <code>/create-ticket</code> skill that takes the output of a grilling session (P1/P2) and produces a DST-conform ticket: correct issue type, emoji prefix, Appetite/Rollout/UI-Kit fields, the Problem/Outcome/Scope template &mdash; then links it to the sprint. <code>grill-me &rarr; create-ticket &rarr; implement</code> becomes one continuous chain.</div></div>
+  </div>
+  <p><strong>Implementation:</strong> new <code>.claude/skills/create-ticket/SKILL.md</code>; all conventions already exist in <code>CLAUDE.md</code>, the skill just enforces them via the Atlassian MCP (with documented fallbacks for its known flaky errors).</p>
+
+  <h3 id="p5"><span class="pnum">P5</span>Hooks: pre-flight check and post-edit typecheck</h3>
+  <div class="gapfix">
+    <div class="row"><div class="tag gap">Gap</div><div>Two recurring time sinks: starting work on the wrong branch / with wrong env assumptions, and type or build regressions discovered late.</div></div>
+    <div class="row"><div class="tag fix">Fix</div><div>Two project-scoped hooks in <code>.claude/settings.json</code> &mdash; hooks are committed, so the whole team gets them.</div></div>
+  </div>
+  <pre><code>{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|clear",
+        "hooks": [
+          { "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/preflight.sh" }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          { "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/typecheck-changed.sh",
+            "timeout": 90 }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+  <ul>
+    <li><strong><code>preflight.sh</code></strong> prints current branch (flagging when it isn't the expected target, e.g. <code>beta-release</code> during a beta), pnpm version, and Tailwind major &mdash; <code>SessionStart</code> stdout lands directly in the model's context.</li>
+    <li><strong><code>typecheck-changed.sh</code></strong> runs a scoped typecheck after edits. Caveat: a full <code>tsc --noEmit</code> over the monorepo is too slow per-edit &mdash; scope it to the changed package, or run the full check on the <code>Stop</code> event instead.</li>
+  </ul>
+
+  <h3 id="p6"><span class="pnum">P6</span>Prose style as lint, not tribal knowledge</h3>
+  <div class="gapfix">
+    <div class="row"><div class="tag gap">Gap</div><div>Our docs prose rules (no em-dashes, no semicolons in prose &mdash; we shipped a whole cleanup PR for this) live in people's heads and in review comments.</div></div>
+    <div class="row"><div class="tag fix">Fix</div><div>Encode them as <a href="https://vale.sh">Vale</a> rules (simple YAML <code>existence</code> checks for <code>&mdash;</code> and <code>;</code> scoped to prose in <code>*.mdx</code>), wired into lint-staged and CI. The same rules can be referenced from <code>CLAUDE.md</code> so the AI writes compliant prose from the start instead of being corrected after.</div></div>
+  </div>
+
+  <h3 id="p7"><span class="pnum">P7</span>AI review in CI with <code>claude-code-action</code></h3>
+  <div class="gapfix">
+    <div class="row"><div class="tag gap">Gap</div><div><code>/review-pr</code> is powerful but local and opt-in &mdash; it only runs when the author remembers, on the author's machine.</div></div>
+    <div class="row"><div class="tag fix">Fix</div><div><a href="https://github.com/anthropics/claude-code-action">anthropics/claude-code-action</a> runs Claude in GitHub Actions.</div></div>
+  </div>
+  <ul>
+    <li><strong>Auto-review on <code>pull_request</code> events</strong> &mdash; every PR gets a baseline review against our standards (it reads <code>CLAUDE.md</code>, so our conventions apply automatically).</li>
+    <li><strong><code>@claude</code> mentions in comments</strong> &mdash; any reviewer can ask for clarification, a fix, or an explanation directly in the PR thread.</li>
+  </ul>
+  <p>This complements rather than replaces <code>/review-pr</code>: CI gives every PR a consistent floor; the local skill remains the deep, interactive review.</p>
+  <p><strong>Implementation:</strong> <code>/install-github-app</code> from Claude Code (needs repo admin + an API key secret). Start with <code>@claude</code> mentions only, expand to auto-review once we trust the signal-to-noise.</p>
+
+  <h3 id="p8"><span class="pnum">P8</span>Audit and consolidate the toolkit</h3>
+  <div class="gapfix">
+    <div class="row"><div class="tag gap">Gap</div><div>Several committed skills/agents see little or no use (<code>create-component</code>, <code>component-scaffold</code>, <code>component-docs-writer</code>, <code>create-pr</code>, <code>a11y-audit</code>). Unused tools are not free &mdash; they drift out of date, mislead new teammates about &ldquo;the way we work,&rdquo; and dilute the set of skills worth learning.</div></div>
+    <div class="row"><div class="tag fix">Fix</div><div>A short adoption review. For each low-use tool, pick one:</div></div>
+  </div>
+  <ul>
+    <li><strong>Improve</strong> &mdash; if it's valuable but clunky/undiscoverable (e.g. <code>create-pr</code> is genuinely useful but rarely reached for &mdash; maybe it needs to be the default muscle-memory step, or merged into a <code>ship</code> skill).</li>
+    <li><strong>Document</strong> &mdash; if it's only used rarely <em>by nature</em> (scaffolding a component is inherently infrequent), make sure people know it exists when they need it.</li>
+    <li><strong>Retire</strong> &mdash; if hand-doing it is genuinely faster, delete it and reduce noise.</li>
+  </ul>
+  <p><strong>Implementation:</strong> one team session to triage the list; fold the verdicts back into <code>CLAUDE.md</code> and this doc. Re-check adoption next quarter.</p>
+
+  <!-- 6 -->
+  <h2 id="horizon"><span class="num">5</span>On the horizon <span class="muted" style="font-weight:400;font-size:1rem">(stretch &mdash; for discussion, not commitment)</span></h2>
+  <p>The same loops are close to running semi-autonomously as models improve:</p>
+  <ul>
+    <li><strong>Autonomous feedback-resolution pipeline</strong> &mdash; P3 triggered by a PR/preview event instead of manually: gather GitHub + Vercel comments, triage, fix, test, reply, resolve, file follow-up tickets; surface only judgment calls.</li>
+    <li><strong>Parallel migration agents</strong> &mdash; fan out one subagent per package for repeatable migrations (beta bumps, Tailwind major upgrades), each opening its own tested PR.</li>
+    <li><strong>Test-first bug-fix loop</strong> &mdash; write a failing reproduction before any fix, so misdiagnoses are caught by the harness instead of by the reviewer.</li>
+  </ul>
+
+  <footer>
+    Draft &mdash; not yet published to Confluence. Basis: one month of real-world usage of this workflow in the Marigold repo (reviewed via Claude Code's usage analytics). Detailed per-person stats omitted &mdash; available on request.
+  </footer>
+
+</div>
+</body>
+</html>

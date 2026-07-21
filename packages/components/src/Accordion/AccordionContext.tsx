@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, use } from 'react';
 import type { ThemeComponent } from '@marigold/system';
 
 export interface AccordionContext {
@@ -14,7 +14,7 @@ const Context = createContext<AccordionContext | null>(null);
 export const AccordionProvider = Context.Provider;
 
 export const useAccordionContext = () => {
-  const ctx = useContext(Context);
+  const ctx = use(Context);
 
   if (ctx === null) {
     throw Error(

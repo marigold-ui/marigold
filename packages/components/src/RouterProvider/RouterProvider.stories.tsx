@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Tab, TabList, TabPanel, Tabs } from 'react-aria-components';
+import { Tab, TabList, TabPanel, Tabs } from 'react-aria-components/Tabs';
 import preview from '.storybook/preview';
 import { RouterProvider } from './RouterProvider';
 

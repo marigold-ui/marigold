@@ -1,11 +1,19 @@
-import { CalendarDate } from '@internationalized/date';
+import {
+  CalendarDate,
+  getLocalTimeZone,
+  isSameDay,
+  today,
+} from '@internationalized/date';
 import { useState } from 'react';
 import type { DateValue } from 'react-aria-components';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
-import { expect, spyOn, waitFor } from 'storybook/test';
+import { expect, fn, spyOn, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
+import { theme } from '../../../../themes/theme-rui/src/index.js';
 import { Stack } from '../Stack/Stack';
 import { DatePicker } from './DatePicker';
+
+const smallScreenQuery = `(width < ${theme.screens?.sm})`;
 
 const meta = preview.meta({
   title: 'Components/DatePicker',
@@ -95,7 +103,7 @@ const meta = preview.meta({
         Object.defineProperty(window, 'matchMedia', {
           writable: true,
           value: (query: string) => ({
-            matches: query === '(width < 640px)',
+            matches: query === smallScreenQuery,
             media: query,
             onchange: null,
             addListener: () => {},
@@ -114,7 +122,7 @@ const meta = preview.meta({
   ],
 });
 
-export const Basic: any = meta.story({
+export const Basic = meta.story({
   render: args => {
     return (
       <I18nProvider locale="de-DE">
@@ -129,7 +137,8 @@ export const Basic: any = meta.story({
   },
 });
 
-export const Controlled: any = meta.story({
+export const Controlled = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [value, setValue] = useState(
       new CalendarDate(2025, 8, 7) as DateValue
@@ -160,34 +169,41 @@ export const Controlled: any = meta.story({
   },
 });
 
-export const MinMax: any = meta.story({
+export const MinMax = meta.story({
+  args: {
+    open: true,
+  },
   render: args => (
     <I18nProvider locale="de-DE">
       <DatePicker
+        {...args}
         label="Date Picker"
         description="Determine min and max value for date picker"
         errorMessage="This is an error"
         minValue={new CalendarDate(2019, 6, 5)}
         maxValue={new CalendarDate(2019, 6, 20)}
-        {...args}
       />
     </I18nProvider>
   ),
 });
 
-export const UnavailableDate: any = meta.story({
+export const UnavailableDate = meta.story({
+  args: {
+    open: true,
+  },
   render: args => (
     <I18nProvider locale="de-DE">
       <DatePicker
         label="Date Picker"
-        dateUnavailable={date => date.toDate('Europe/Berlin').getDate() !== 1}
+        defaultValue={new CalendarDate(2019, 6, 1)}
+        dateUnavailable={date => date.day !== 1}
         {...args}
       />
     </I18nProvider>
   ),
 });
 
-export const WithDefaultValue: any = meta.story({
+export const WithDefaultValue = meta.story({
   render: args => (
     <I18nProvider locale="en-US">
       <DatePicker
@@ -199,7 +215,7 @@ export const WithDefaultValue: any = meta.story({
   ),
 });
 
-export const WithError: any = meta.story({
+export const WithError = meta.story({
   args: {
     error: true,
     errorMessage: 'Whoopsie',
@@ -212,7 +228,7 @@ export const WithError: any = meta.story({
   ),
 });
 
-export const Mobile: any = meta.story({
+export const Mobile = meta.story({
   tags: ['component-test'],
   globals: {
     viewport: { value: 'smallScreen' },
@@ -229,8 +245,23 @@ export const Mobile: any = meta.story({
 });
 
 Mobile.test(
+  'Open Tray',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }) => {
+    const trigger = await canvas.findByRole('button');
+
+    await userEvent.click(trigger);
+
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  }
+);
+
+Mobile.test(
   'Mobile DatePicker interaction',
-  async ({ canvas, step, userEvent }: any) => {
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step, userEvent }) => {
     // Mock releasePointerCapture to handle invalid pointer IDs in Firefox tests
     const releasePointerCaptureMock = spyOn(
       Element.prototype,
@@ -283,7 +314,7 @@ Mobile.test(
 
 Mobile.test(
   'Mobile DatePicker keyboard navigation',
-  async ({ canvas, step, userEvent }: any) => {
+  async ({ canvas, step, userEvent }) => {
     const trigger = canvas.getByRole('button');
 
     await step('Open tray by clicking trigger', async () => {
@@ -326,5 +357,99 @@ Mobile.test(
         expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
       );
     });
+  }
+);
+
+export const Presets = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Event date',
+    onChange: fn(),
+  },
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <DatePicker {...args} presets={['today', 'tomorrow']} />
+    </I18nProvider>
+  ),
+});
+
+Presets.test(
+  'selecting a preset applies the date and keeps the popover open',
+  async ({ args, canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button'));
+    const dialog = await canvas.findByRole('dialog');
+    const option = within(dialog).getByRole('option', { name: 'Tomorrow' });
+
+    await userEvent.click(option);
+    const [date] = (args.onChange as ReturnType<typeof fn>).mock.calls[0];
+
+    await expect(args.onChange).toHaveBeenCalledTimes(1);
+    await expect(
+      isSameDay(date, today(getLocalTimeZone()).add({ days: 1 }))
+    ).toBe(true);
+    await expect(dialog).toBeVisible();
+    await expect(option).toHaveAttribute('aria-selected', 'true');
+  }
+);
+
+// Inside the small-screen picker tray, "Quick selection" swaps the grid for
+// the preset list in place. Fixed preset values (instead of the relative
+// built-ins) keep the resolved-date sublabels and the visible month stable,
+// so Chromatic can snapshot the open preset view without daily diffs.
+export const PresetsMobile = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
+  // Chromatic ignores the Storybook viewport global and captures at its
+  // 1200px default, where the small-screen UI (and this story's play)
+  // doesn't exist. Pin its capture to phone width.
+  parameters: { chromatic: { disableSnapshot: true, viewports: [320] } },
+  args: {
+    label: 'Event date',
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <DatePicker
+        {...args}
+        defaultValue={new CalendarDate(2027, 3, 2)}
+        presets={[
+          { label: 'Kickoff', value: new CalendarDate(2027, 3, 2) },
+          { label: 'Review', value: new CalendarDate(2027, 3, 16) },
+          { label: 'Release', value: new CalendarDate(2027, 3, 30) },
+        ]}
+      />
+    </I18nProvider>
+  ),
+});
+
+PresetsMobile.test(
+  'switches the tray to the quick selection view',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button'));
+    const tray = await canvas.findByRole('dialog');
+    await within(tray).findByRole('grid');
+
+    await userEvent.click(
+      within(tray).getByRole('button', { name: 'Quick selection' })
+    );
+
+    // The preset list replaces the grid inside the same tray, topped by a
+    // Back row.
+    await expect(
+      within(tray).getByRole('listbox', { name: 'Quick selection' })
+    ).toBeVisible();
+    await expect(
+      within(tray).getByRole('button', { name: 'Back' })
+    ).toBeVisible();
+    await expect(within(tray).queryByRole('grid')).not.toBeInTheDocument();
+    // The preset matching the picker value shows as selected.
+    await expect(
+      within(tray).getByRole('option', { name: 'Kickoff' })
+    ).toHaveAttribute('aria-selected', 'true');
   }
 );

@@ -1,0 +1,149 @@
+---
+title: Page
+description: The main content area of a screen, with its title, description, primary action, and the sections beneath them.
+badge: beta
+---
+
+A `<Page>` is one screen of your application. It holds the screen's title and a short description, its primary action, and the sections of content beneath them. It also applies consistent spacing and a correct heading structure, so every screen in your product feels the same.
+
+For assistive technology, `<Page>` marks up the screen's main content region, so people can skip straight to it and hear the screen announced by its title.
+
+<Callout title="Looking for composition guidance?">
+  For where a page sits in the application frame and how to structure its
+  content, see the [App Frame pattern](/patterns/layout/app-frame).
+</Callout>
+
+## Usage
+
+Reach for a page as the top-level wrapper for every screen in your application. Whatever the screen does, a list, a detail view, a settings form, it has the same shape: a header carrying the screen's title and primary action, and a handful of [panels](/components/layout/panel) beneath it. Building every route this way is what keeps screens consistent, without anyone re-deciding the frame each time.
+
+The mental model is one of nesting. The [app shell](/components/layout/app-shell) is the application frame, the sidebar and top bar that stay put across screens. A page is the screen that lives inside that frame: it holds the screen's main heading and lets assistive technology jump straight to the content and hear it announced by its title. A [panel](/components/layout/panel) is a single region within the page. Reach for a page when you are building the screen itself, not the frame around it or one section inside it.
+
+<ComponentDemo name="page-basic" background="page" />
+
+### Header
+
+The page header introduces the screen. It is the first thing someone reads when the page loads: it tells the user what screen they're on and carries the screen's primary action. It has three slots: a title, an optional description, and an optional actions region on the right (covered in [Actions](#actions) below). Each slot has its own job.
+
+#### Title
+
+The page title names the screen. It becomes the page's main heading and the name assistive technology announces when someone lands on the page, so it carries weight beyond the label you see. Aim for a short noun phrase that names the screen, like "Billing" or "Team members".
+
+<Callout title="Every page needs a name">
+  The title doubles as the accessible name of the screen's main region. Include
+  a [`<Title>`](/components/content/title), or pass an `aria-label` on the
+  `<Page>` itself when the screen has no visible title.
+</Callout>
+
+#### Description
+
+A description is a single-sentence subtitle directly under the title. Include one when the title alone doesn't tell the user what the screen is for, or what's at stake. Skip it when the title already says it. A description that restates the heading adds reading weight without adding information.
+
+#### The header configures its children
+
+`<Page.Header>` is the layout wrapper that arranges title, description, and actions in a grid: the title and description on the left, the actions on the right. Drop a [`<Title>`](/components/content/title), an optional [`<Description>`](/components/content/description), and any buttons (`<Button>`, `<ButtonGroup>`, `<ActionMenu>`, `<LinkButton>`) directly inside it. It works the same way as [`<Panel.Header>`](/components/layout/panel#header), configuring slot context so each piece picks up its heading level, id wiring, and grid position from the page. There are no sub-components of its own to reach for.
+
+#### Title-only pages can skip the header
+
+When a page has only a title, with no description or actions, drop a bare [`<Title>`](/components/content/title) directly inside `<Page>` and skip the wrapper. Accessibility wires up the same way: the title becomes the page `<h1>` and names the `<main>` landmark, just as it does inside the header. As soon as the page needs a description or actions, reach for `<Page.Header>` so it can arrange them in the grid.
+
+#### Actions
+
+Page actions use [`<Button>`](/components/actions/button), [`<LinkButton>`](/components/actions/link-button), [`<ButtonGroup>`](/components/actions/button-group), and [`<ActionMenu>`](/components/overlay/action-menu). A page's primary action is meant to stand out, so it sits in the header as a prominent, label-sized primary button.
+
+Wrap the actions in a [`<ButtonGroup>`](/components/actions/button-group) whenever the header holds more than one, whether that is two buttons or a button beside an overflow [`<ActionMenu>`](/components/overlay/action-menu). A single action needs no group and sits in the header on its own.
+
+Pick the element by what the action _does_, not by how it looks. Both forms render as the same primary button.
+
+**Acts in place** (upgrade the plan, publish, save): use [`<Button variant="primary">`](/components/actions/button), which renders a `<button>`.
+
+<ComponentDemo name="page-action-acts-in-place" background="page" />
+
+**Navigates** (create a new entity that opens its own page, or move to another screen): use [`<LinkButton variant="primary">`](/components/actions/link-button), which renders an `<a>`. It looks identical to the button, but because it is a real link it behaves like one (open in a new tab, copy the address, follow with the keyboard).
+
+<ComponentDemo name="page-action-navigates" background="page" />
+
+A page has one prominent primary action, and it belongs to the page. Put it in the header for an action that operates on the whole screen, such as creating a new entity. For a form, the primary action is instead the submit button at the end of the form. A `<Panel>` is a surface within the page, so its header carries actions scoped to that surface rather than the page's primary call to action.
+
+### Width
+
+`<Page>` does not impose a max-width. Content fills the `main` area, and width is decided **per surface** rather than per page. Wrap form-style content in [`<Panel size="form">`](/components/layout/panel) to constrain it to a comfortable reading measure, and leave data-dense surfaces (tables, dashboards) full-width.
+
+```tsx
+// A settings page: each surface constrained to a readable measure
+<Page>
+  <Page.Header>
+    <Title>Account preferences</Title>
+  </Page.Header>
+  <Panel size="form">{/* … */}</Panel>
+  <Panel size="form">{/* … */}</Panel>
+</Page>
+```
+
+This is a deliberate departure from systems that expose a page-level `fullWidth` / `narrowWidth` switch. A real page often mixes a narrow form with a wide table, and constraining per surface keeps each readable without a single page-level width fighting the exceptions.
+
+### Status and metadata
+
+The header has room for a title, a description, and the page's primary action, and nothing else. Object status (a `<Badge>` such as "Published" or "Suspended") and at-a-glance metadata (counts, dates, owners) do not belong in it. Crowding the header with them buries the one action a user came there for, and there is no slot to hold them anyway.
+
+Show them in the page body instead. On a detail or record screen, the established shape is a primary column with the main content beside a narrower secondary `<Panel>`, usually titled "Overview", that carries the status and the key facts. The [detail layout](/patterns/layout/app-frame#common-page-layouts) in the App Frame pattern walks through this primary/secondary split.
+
+<ComponentDemo name="page-status-metadata" background="page" />
+
+### Spacing
+
+Most screens never need to override the spacing. The point of `<Page>` is that its padding and vertical rhythm come tuned, so every screen in your product shares one frame without anyone setting spacing by hand. Out of the box that is `square-relaxed` padding around the content and a `group` gap between the header and the sections beneath it.
+
+Reach for an override only when a screen has a reason the defaults cannot anticipate:
+
+- **Tighter padding** with `p` (or `px` and `py` for one axis) when the page is embedded in a surface that already supplies its own outer spacing. Set one or the other. Passing `p` together with `px` or `py` is a type error, since they would fight over the same edges.
+- **A different rhythm** with `space` when a sparse screen wants more air between the header and a lone panel, or when a dense screen reads better pulled tight.
+
+### Content
+
+Put `<Panel>`s directly inside `<Page>` for the common case. Reach for the optional `<Page.Content>` wrapper only when the rhythm _between_ sections should differ from the header-to-content gap, for instance a header set well apart from a group of panels that themselves sit close together. `<Page>`'s `space` then controls the header-to-content gap, and `<Page.Content space>` the gap between sections.
+
+```tsx
+<Page space="section">
+  <Page.Header>…</Page.Header>
+  <Page.Content space="regular">
+    <Panel>…</Panel>
+    <Panel>…</Panel>
+  </Page.Content>
+</Page>
+```
+
+### Accessibility
+
+- **Landmark:** `<Page>` renders a `<main>` landmark. When a `<Title>` is present in `<Page.Header>`, the `<main>` is labelled by it via `aria-labelledby`, so screen-reader landmark navigation announces the page by its title.
+- **No title:** If a page has no `<Title>`, pass an `aria-label` to `<Page>` so the `<main>` still has an accessible name.
+- **Heading outline:** `<Page>` sets the base heading level to `1`, so the page title renders as the `<h1>` and each `<Panel>` below it as an `<h2>` (Panel collapsibles as `<h3>`). The outline a screen-reader user skims to jump between sections falls out of these defaults, with no heading levels to set by hand.
+
+## Props
+
+{/* Storybook hint omitted while Page is beta: it has no story on the published Storybook (marigold-latest) the hint links to, so the link 404s. Restore when Page ships. */}
+
+### Page
+
+<AutoTypeTable path="Page" name="PageProps" />
+
+### Page.Header
+
+<AutoTypeTable path="Page/PageHeader" name="PageHeaderProps" />
+
+### Page.Content
+
+<AutoTypeTable path="Page/PageContent" name="PageContentProps" />
+
+## Related components
+
+<ul>
+  <li>
+    [AppShell](/components/layout/app-shell): The grid frame that positions the
+    page, sidebar, and header.
+  </li>
+  <li>
+    [Panel](/components/layout/panel): The titled surfaces that make up a page's
+    content, sharing the same header composition model.
+  </li>
+</ul>

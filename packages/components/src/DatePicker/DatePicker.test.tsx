@@ -1,33 +1,16 @@
 import { CalendarDate } from '@internationalized/date';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { mockMatchMedia } from '../test.utils';
+import { firePaste } from '../firePaste';
+import { mockMatchMedia, smallScreenQuery } from '../test.utils';
 import {
   Basic,
+  Presets,
   UnavailableDate,
   WithDefaultValue,
   WithError,
 } from './DatePicker.stories';
-
-/**
- * Dispatches a paste event with the given text on an element.
- * In a real browser, `userEvent.paste()` may not trigger React's onPaste
- * handler on ancestor elements reliably. We use Object.defineProperty
- * because Firefox's ClipboardEvent constructor ignores the clipboardData option.
- */
-const firePaste = (element: Element, text: string) => {
-  const pasteEvent = new Event('paste', {
-    bubbles: true,
-    cancelable: true,
-  });
-  Object.defineProperty(pasteEvent, 'clipboardData', {
-    value: {
-      getData: () => text,
-    },
-  });
-  element.dispatchEvent(pasteEvent);
-};
 
 const user = userEvent.setup();
 
@@ -370,17 +353,16 @@ test('DatePicker supports width prop', () => {
 });
 
 test('DatePicker supports data unavailable property', async () => {
-  render(
-    <UnavailableDate.Component data-testid="picker" aria-label="date picker" />
-  );
-
-  const button = screen.getByRole('button');
-  await user.click(button);
-  const date = screen.getAllByRole('gridcell');
+  // The UnavailableDate story opens the calendar by default (open: true),
+  // so the popover is already visible — no trigger click is needed (and the
+  // open calendar renders several buttons, which would make a lookup ambiguous).
+  render(<UnavailableDate.Component aria-label="date picker" />);
 
   await waitFor(() => {
     expect(screen.getByRole('application')).toBeVisible();
   });
+
+  const date = screen.getAllByRole('gridcell');
   // eslint-disable-next-line testing-library/no-node-access
   expect(date[10].firstChild).toHaveAttribute('data-unavailable', 'true');
 });
@@ -459,5 +441,78 @@ describe('paste handling', () => {
     expect(segments[0]).toHaveTextContent('09');
     expect(segments[1]).toHaveTextContent('24');
     expect(segments[2]).toHaveTextContent('2025');
+  });
+});
+
+describe('presets on small screens (tray)', () => {
+  afterEach(() => {
+    window.matchMedia = mockMatchMedia([]);
+  });
+
+  test('the tray opens on the calendar view', async () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    render(<Presets.Component />);
+
+    await user.click(screen.getByRole('button'));
+    const pickerTray = await screen.findByRole('dialog');
+
+    // The picker tray opens on the calendar, same as everywhere else.
+    expect(within(pickerTray).getByRole('grid')).toBeVisible();
+    expect(within(pickerTray).queryByRole('listbox')).not.toBeInTheDocument();
+  });
+
+  test('Quick selection swaps the grid for the preset list in the same tray', async () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    render(<Presets.Component />);
+    await user.click(screen.getByRole('button'));
+    const pickerTray = await screen.findByRole('dialog');
+
+    await user.click(
+      within(pickerTray).getByRole('button', { name: 'Quick selection' })
+    );
+
+    // The preset list replaces the grid within the SAME dialog — no second
+    // sheet stacks on top of the picker tray.
+    expect(screen.getAllByRole('dialog')).toHaveLength(1);
+    expect(
+      within(pickerTray).getByRole('listbox', { name: 'Quick selection' })
+    ).toBeVisible();
+    expect(within(pickerTray).queryByRole('grid')).not.toBeInTheDocument();
+  });
+
+  test('Back returns to the calendar view without selecting', async () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    render(<Presets.Component />);
+    await user.click(screen.getByRole('button'));
+    const pickerTray = await screen.findByRole('dialog');
+    await user.click(
+      within(pickerTray).getByRole('button', { name: 'Quick selection' })
+    );
+
+    await user.click(within(pickerTray).getByRole('button', { name: 'Back' }));
+
+    expect(within(pickerTray).getByRole('grid')).toBeVisible();
+    expect(within(pickerTray).queryByRole('listbox')).not.toBeInTheDocument();
+  });
+
+  test('selecting a preset applies it and returns to the calendar view', async () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    render(<Presets.Component />);
+    await user.click(screen.getByRole('button'));
+    const pickerTray = await screen.findByRole('dialog');
+    await user.click(
+      within(pickerTray).getByRole('button', { name: 'Quick selection' })
+    );
+
+    await user.click(
+      within(pickerTray).getByRole('option', { name: 'Tomorrow' })
+    );
+
+    // The picker tray stays open on the calendar view.
+    await waitFor(() =>
+      expect(within(pickerTray).getByRole('grid')).toBeVisible()
+    );
+    expect(screen.getAllByRole('dialog')).toHaveLength(1);
+    expect(within(pickerTray).queryByRole('listbox')).not.toBeInTheDocument();
   });
 });

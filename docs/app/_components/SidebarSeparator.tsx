@@ -16,7 +16,7 @@ export const SidebarSeparator: React.FC<{
   return (
     <FumadocsSidebarSeparator
       className={cn(
-        'font-bold text-neutral-700 dark:text-neutral-300 [&_svg]:size-4 [&_svg]:shrink-0'
+        'mt-4 mb-2 font-bold text-neutral-700 dark:text-neutral-300 [&_svg]:size-4 [&_svg]:shrink-0'
       )}
       style={{
         paddingInlineStart: `calc(${2 + 3 * depth} * var(--spacing))`,

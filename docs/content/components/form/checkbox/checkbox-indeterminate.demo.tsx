@@ -31,7 +31,7 @@ export default () => {
   return (
     <Stack space={1}>
       <Checkbox {...allProps}>All</Checkbox>
-      <Inset spaceX={4}>
+      <Inset px={4}>
         <Checkbox.Group
           aria-label="Favorite genres"
           value={selected}

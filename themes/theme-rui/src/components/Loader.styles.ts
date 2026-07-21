@@ -2,15 +2,16 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Loader: ThemeComponent<'Loader'> = {
   container: cva({
-    base: 'grid place-items-center text-brand',
+    // Content-sized so the box wraps the spinner and its label for centering.
+    base: 'grid place-items-center gap-2 text-primary',
     variants: {
       variant: {
         default: '',
-        inverted: 'text-secondary',
+        inverted: 'text-primary-foreground',
       },
       size: {
-        default: 'size-20',
-        large: 'size-36',
+        default: 'size-fit',
+        large: 'size-fit',
         fit: 'size-full',
       },
     },
@@ -20,16 +21,15 @@ export const Loader: ThemeComponent<'Loader'> = {
     },
   }),
   loader: cva({
-    base: 'size-full',
     variants: {
       variant: {
         default: '',
         inverted: '',
       },
       size: {
-        default: '',
-        large: '',
-        fit: '',
+        default: 'size-20',
+        large: 'size-36',
+        fit: 'size-full',
       },
     },
     defaultVariants: {
