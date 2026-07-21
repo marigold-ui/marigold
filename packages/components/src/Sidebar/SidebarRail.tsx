@@ -239,6 +239,14 @@ const SidebarRail = ({
   // Mobile: a miniature of the desktop layout — rail on the left, active
   // section's panel beside it. Section taps swap the panel; leaf links close
   // the drawer.
+  //
+  // On a page without an active section (a direct link like a dashboard) the
+  // drawer renders the rail alone and hugs its width — an empty panel column
+  // would read as broken, and mirroring the desktop (`--panel-w: 0`) is the
+  // consistent answer. The partial drawer also has no close button: the
+  // exposed, dimmed backdrop is the dismiss affordance (tap it or press
+  // Escape), matching the common nav-drawer-with-scrim pattern — see
+  // SidebarModal.
   if (isMobile) {
     return (
       <SidebarModal ref={ref} partial>
@@ -248,18 +256,27 @@ const SidebarRail = ({
           // The drawer rail is never icon-only: tiles read this state for their
           // labels, and railLayout resolves --rail-w to expanded.
           data-state="expanded"
+          // Read by the theme's modal recipe: with no active section (a
+          // direct-link page) the drawer hugs the rail instead of reserving an
+          // empty panel column.
+          data-panel={hasPanel ? 'expanded' : 'collapsed'}
           className={cn(
-            'grid h-full min-h-0 grid-cols-[var(--rail-w)_1fr] [grid-area:content]',
+            'grid h-full min-h-0 [grid-area:content]',
+            hasPanel
+              ? 'grid-cols-[var(--rail-w)_1fr]'
+              : 'grid-cols-[var(--rail-w)]',
             classNames.railLayout
           )}
         >
           {railColumn(false)}
-          <div
-            // The drawer edge is the boundary; drop the panel divider.
-            className={cn(classNames.panel, 'border-r-0')}
-          >
-            {panelBody}
-          </div>
+          {hasPanel ? (
+            <div
+              // The drawer edge is the boundary; drop the panel divider.
+              className={cn(classNames.panel, 'border-r-0')}
+            >
+              {panelBody}
+            </div>
+          ) : null}
         </div>
       </SidebarModal>
     );

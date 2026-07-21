@@ -362,6 +362,28 @@ describe('Sidebar.Rail — mobile', () => {
     const first = await screen.findByRole('link', { name: 'Übersicht' });
     await waitFor(() => expect(first).toHaveFocus());
   });
+
+  test('on a page without a panel, the drawer hugs the rail instead of reserving an empty panel column', async () => {
+    render(<Rail.Component />);
+    const toggle = await openDrawer();
+    // Navigating to the direct-link page closes the drawer and leaves no
+    // section selected.
+    await user.click(screen.getByRole('link', { name: 'Berichte' }));
+
+    await user.click(toggle);
+
+    const drawer = await screen.findByRole('complementary', {
+      name: 'Seitenleiste',
+    });
+    // The body flags the collapsed panel — the theme reads it to shrink the
+    // sheet to the rail — and the panel region is not rendered at all.
+    // eslint-disable-next-line testing-library/no-node-access
+    expect(drawer.querySelector('[data-panel]')).toHaveAttribute(
+      'data-panel',
+      'collapsed'
+    );
+    expect(within(drawer).queryByRole('heading')).not.toBeInTheDocument();
+  });
 });
 
 describe('modified clicks & keyboard activation', () => {

@@ -29,8 +29,11 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // desktop the sidebar is structure and stays flat.
       'shadow-elevation-overlay',
       // Partial (rail) sheet: hug the content so the backdrop strip stays
-      // exposed (`data-partial` sits on the overlay).
-      'in-data-partial:w-[min(88vw,24rem)]',
+      // exposed (`data-partial` sits on the overlay). With no active section
+      // (`data-panel=collapsed`, a direct-link page) it shrinks to the rail
+      // alone instead of reserving an empty panel column.
+      'in-data-partial:has-data-[panel=expanded]:w-[min(88vw,24rem)]',
+      'in-data-partial:has-data-[panel=collapsed]:w-fit',
       'entering:animate-slide-in-left',
       'exiting:animate-slide-out-left exiting:[--slide-out-duration:0.1s]',
       'motion-reduce:entering:animate-none motion-reduce:exiting:animate-none',
