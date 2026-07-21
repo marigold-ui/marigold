@@ -19,12 +19,7 @@ import Select, {
 import { useField } from '@react-aria/label';
 import { useId } from '@react-aria/utils';
 import type { WidthProp } from '@marigold/system';
-import {
-  ComponentClassNames,
-  cn,
-  createWidthVar,
-  useClassNames,
-} from '@marigold/system';
+import { ComponentClassNames, cn, useClassNames } from '@marigold/system';
 import { FieldBaseProps } from '../FieldBase/FieldBase';
 import { HelpText } from '../HelpText/HelpText';
 import { Label } from '../Label/Label';
@@ -287,12 +282,7 @@ export const Multiselect = ({
       ]}
     >
       <div
-        className={cn(
-          classNames.field,
-          'group/field',
-          width ? 'w-(--field-width) max-w-full min-w-0' : 'w-full'
-        )}
-        style={width ? createWidthVar('field-width', `${width}`) : undefined}
+        className={cn(classNames.field, 'group/field', `w-${width}`)}
         data-required={props.required}
         data-invalid={error}
         data-readonly={readOnly}
