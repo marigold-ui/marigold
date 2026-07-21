@@ -198,9 +198,26 @@ Reach for the [DateRangePicker](/components/form/daterangepicker) [quick select 
 
 ### Grouping
 
-Even after the most-used filters are promoted, the panel can still hold many groups, and 15 or more forces users to scroll past controls irrelevant to their task. Group related parameters into collapsible sections with an [Accordion](/components/navigation/accordion). Expand the most-used groups by default and collapse the rest, so the panel opens with a compact overview while every filter stays one click away.
+Even after the most-used filters are promoted, the panel can still hold many filters, and 15 or more force users to scroll past controls irrelevant to their task. Group related filters into collapsible sections with an [Accordion](/components/navigation/accordion). Order the sections most-used first, expand those by default, and collapse the rest, so the panel opens with a compact overview while every filter stays one click away.
+
+Sections are themes: a header such as "Facilities" bundles parking, seating, and amenities into one unit that users can skip or open as a whole. A section around a single filter cannot do that job. Its header only restates the filter's label, and once every filter owns a section, the collapsed panel just re-lists the form as headers, with an extra click in front of each field and none of the overview grouping was meant to buy. When one filter itself grows too large, that is a [Many Options](#many-options) problem, solved inside the filter with search or a "show more" control.
 
 <ComponentDemo name="filter-group-sections" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Name sections after themes that hold several related filters, such as
+      "Essentials" or "Facilities".
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Do not wrap each filter in its own section. Collapsed headers that repeat
+      the field labels are the form again, one click slower.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 A collapsed section must not hide that it holds active filters. Show the number of active filters on the section header, so a scan of the collapsed panel reveals where the current state lives. The count complements the applied filter tags and the badge on the filter button rather than replacing them.
 
