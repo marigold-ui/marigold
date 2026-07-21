@@ -66,7 +66,7 @@ For applications organized into several sections that each carry their own sub-n
 
 Each area has a clear purpose. Mixing responsibilities between them makes the layout harder to use and harder to maintain.
 
-- **Logo placement:** Put the application logo or name in the sidebar header, not in the top navigation. The sidebar is the persistent brand anchor. The top navigation is for orientation and utility actions. The exception is [two-level navigation](/components/navigation/sidebar#two-level-navigation): its full-width top bar becomes the brand anchor, so the logo lives in `TopNavigation.Start` instead (see above).
+- **Logo placement:** Put the application logo or name in the sidebar header, not in the top navigation. The sidebar is the persistent brand anchor. The top navigation is for orientation and utility actions. The exception is [two-level navigation](/components/navigation/sidebar#two-level-navigation): its full-width top bar becomes the brand anchor, so the logo lives in `TopNavigation.Start` next to `<Sidebar.Toggle variant="rail" />`, as shown in the two-level navigation example above.
 - **Primary navigation:** All section-level links belong in the sidebar. Use groups (`<Sidebar.GroupLabel>`) and separators (`<Sidebar.Separator>`) to organize them. See the [Sidebar docs](/components/navigation/sidebar) for drill-down navigation and detail page patterns.
 - **Top navigation:** The top navigation exists primarily for [breadcrumbs](/components/navigation/breadcrumbs) and [search](/components/form/search-field). Breadcrumbs go in the middle slot to show users where they are in the hierarchy. A search field can replace or complement them when global search is a core workflow. Don't place tabs, links, or secondary navigation here. That's what the sidebar is for. See the [TopNavigation docs](/components/navigation/topnavigation) for further information.
 - **Breadcrumbs, not in the page header:** Breadcrumbs describe where a page sits in the app, so they belong to the frame (which persists across navigation) rather than to `<Page.Header>`, which describes the page itself. This is why Marigold places them in `<TopNavigation>` rather than the page header, unlike systems that fold breadcrumbs into the page title block.
@@ -124,7 +124,7 @@ The `<main>` landmark is labelled by the page `<h1>` from `<Page.Header>`, so sc
 
 ### Responsive behavior
 
-`<AppShell>` always renders its grid and doesn't change at breakpoints. Responsive behavior comes from the components inside it. The sidebar collapses on desktop and becomes a modal sheet on mobile; with [two-level navigation](/components/navigation/sidebar#two-level-navigation) the drawer shows the rail and the active section panel side by side. The top navigation adapts its content at smaller widths. See the [Sidebar](/components/navigation/sidebar#collapsing) and [TopNavigation](/components/navigation/topnavigation#mobile-navigation) docs for details.
+`<AppShell>` always renders its grid and doesn't change at breakpoints. Responsive behavior comes from the components inside it. The sidebar collapses on desktop and becomes a modal sheet on mobile. With [two-level navigation](/components/navigation/sidebar#two-level-navigation) the drawer shows the rail and the active section panel side by side. The top navigation adapts its content at smaller widths. See the [Sidebar](/components/navigation/sidebar#collapsing) and [TopNavigation](/components/navigation/topnavigation#mobile-navigation) docs for details.
 
 ## Page structure
 

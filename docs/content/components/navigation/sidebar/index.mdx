@@ -33,9 +33,10 @@ With [two-level navigation](#two-level-navigation), the sidebar splits into a na
 <SidebarRailAnatomy />
 
 - **Rail:** The persistent strip of top-level destinations. It never
-  disappears — collapsing only narrows it to icons.
+  disappears. Collapsing only narrows it to icons.
 - **Rail item:** A stacked icon-and-label tile. With a nested `Sidebar.Nav`
-  it is a section (fills the panel); with only an `href` it is a direct link.
+  it is a section that fills the panel. With only an `href` it is a direct
+  link.
 - **Pinned item:** A rail item declared inside `Sidebar.Footer`, pinned to
   the bottom of the rail (e.g. a help center).
 - **Section panel:** The active section's navigation, headed by the panel
@@ -56,8 +57,8 @@ In most applications, the sidebar is paired with a [top navigation](/components/
   Single-column navigation items are text-only. If your application needs icons
   alongside every navigation label, coordinate across all applications first to
   ensure consistency. The exception is [two-level
-  navigation](#two-level-navigation), whose rail tiles are icon-first by design
-  — `icon` is required on `Sidebar.RailItem`.
+  navigation](#two-level-navigation), whose rail tiles are icon-first by design,
+  so `icon` is required on `Sidebar.RailItem`.
 </Callout>
 
 ### Header and Footer
@@ -105,28 +106,28 @@ The single-column sidebar supports one level of nesting. More levels would force
 
 ### Two-level navigation
 
-When an application has several top-level sections that each carry their own sub-navigation — tickets, events, contacts, settings — a single column starts to strain: either everything nests behind drill-downs, or the list grows past what users can scan. `Sidebar.Rail` splits the navigation into two persistent levels instead: a narrow rail of icon-and-label tiles for the sections, and a panel beside it showing the active section's items. Both levels stay visible, so switching sections is one click and users never lose sight of where they are.
+When an application has several top-level sections that each carry their own sub-navigation, like tickets, events, contacts, and settings, a single column starts to strain. Everything either nests behind drill-downs, or the list grows past what users can scan. `Sidebar.Rail` splits the navigation into two persistent levels instead: a narrow rail of icon-and-label tiles for the sections, and a panel beside it showing the active section's items. Both levels stay visible, so switching sections is one click and users never lose sight of where they are.
 
-A `Sidebar.RailItem` wrapping a `Sidebar.Nav` is a section — selecting it fills the panel with its navigation and lands on its first page. An item with only an `href` is a direct link: it navigates immediately and shows no panel. Rail items declared inside `Sidebar.Footer` render pinned at the bottom of the rail.
+A `Sidebar.RailItem` wrapping a `Sidebar.Nav` is a section. Selecting it fills the panel with its navigation and lands on its first page. An item with only an `href` is a direct link that navigates immediately and shows no panel. Rail items declared inside `Sidebar.Footer` render pinned at the bottom of the rail.
 
 <ComponentDemo name="sidebar-rail" background="page" />
 
-Collapsing behaves differently than in the single column: the toggle hides the **panel** while the rail narrows to an icon-only strip, so top-level navigation is always one click away. Re-selecting the active section reopens the panel. On small screens the drawer shows the rail and the active panel side by side — tapping a section swaps the panel in place, tapping a link closes the drawer.
+Collapsing behaves differently than in the single column: the toggle hides the **panel** while the rail narrows to an icon-only strip, so top-level navigation is always one click away. Re-selecting the active section reopens the panel. On small screens the drawer shows the rail and the active panel side by side. Tapping a section swaps the panel in place, and tapping a link closes the drawer.
 
-The rail is paired with a [top navigation](/components/navigation/topnavigation) that spans the full width of the screen — `AppShell` switches to this layout automatically when it contains a rail. Place the brand and `<Sidebar.Toggle variant="rail" />` in the top navigation's start slot.
+The rail is paired with a [top navigation](/components/navigation/topnavigation) that spans the full width of the screen, and `AppShell` switches to this layout automatically when it contains a rail. Place the brand and `<Sidebar.Toggle variant="rail" />` in the top navigation's start slot.
 
 <GuidelineTiles>
   <Do>
     <DoDescription>
       Use the rail for a small, stable set of sections (roughly 4–9) with
-      recognizable icons — it is the app's permanent backbone, not a place for
+      recognizable icons. It is the app's permanent backbone, not a place for
       content that changes often.
     </DoDescription>
   </Do>
   <Dont>
     <DontDescription>
       Don't reach for the rail when your navigation fits one column. A flat list
-      of pages needs no second level — the extra chrome only adds distance to
+      of pages needs no second level. The extra chrome only adds distance to
       every destination.
     </DontDescription>
   </Dont>
@@ -145,7 +146,7 @@ The sidebar marks the user's current page so they always know where they are. Pa
 
 Matching is segment-aware, so dynamic routes like `/users/abc-123` correctly highlight the `/users` item. When a leaf inside a drill-down branch matches, the parent branch lights up too and its sub-panel opens.
 
-With [two-level navigation](#two-level-navigation), pass `current` to `Sidebar.Rail` instead — it resolves both levels at once: the matching page lights up in the panel and its section is marked on the rail.
+With [two-level navigation](#two-level-navigation), pass `current` to `Sidebar.Rail` instead. It resolves both levels at once: the matching page lights up in the panel and its section is marked on the rail.
 
 For custom matching logic, pass a predicate `(href, key) => boolean` instead of a string. This is useful when URLs contain segments that don't map directly to item hrefs, such as a locale prefix:
 
@@ -192,13 +193,13 @@ For hierarchies deeper than two levels, pair the sidebar with [breadcrumbs](/com
 
 Users can collapse or expand the sidebar with the toggle button or the keyboard shortcut <kbd>Cmd+B</kbd> / <kbd>Ctrl+B</kbd>. The sidebar remembers this preference across page loads. When combined with a [top navigation](/components/navigation/topnavigation), the sidebar toggle button is typically placed in the top navigation's start slot.
 
-With [two-level navigation](#two-level-navigation), the same toggle and shortcut collapse the section panel while the rail narrows to an icon-only strip — top-level navigation never disappears.
+With [two-level navigation](#two-level-navigation), the same toggle and shortcut collapse the section panel while the rail narrows to an icon-only strip, so top-level navigation never disappears.
 
 ### Accessibility
 
 The sidebar renders as a `<nav>` element so screen readers can identify it as a [navigation landmark](/foundations/accessibility#landmarks). The keyboard shortcut <kbd>Cmd+B</kbd> / <kbd>Ctrl+B</kbd> toggles it globally. When drilling into a sub-panel, focus moves to the back button, and returns to the branch trigger when navigating back. The active item is announced as the current page. On mobile, the overlay traps focus and can be dismissed with <kbd>Escape</kbd>. Built-in strings support German and English localization.
 
-[Two-level navigation](#two-level-navigation) exposes two navigation landmarks: the rail itself ("Primary navigation") and the active section's panel, named after its section. The current page announces `aria-current="page"` (on the panel leaf, or on a direct-link rail item), while its section ancestor on the rail announces `aria-current="true"`. Rail tiles are plain, always-tabbable links — arrow keys (and <kbd>Home</kbd> / <kbd>End</kbd>) also move between them as a shortcut; switching sections moves focus to the panel heading so the swapped content is announced. Within the section panel the tab stop follows the current page: when the route changes, <kbd>Tab</kbd> re-enters the panel at the active item rather than wherever focus last rested. Collapsed, icon-only tiles reveal their label as a tooltip on hover or focus.
+[Two-level navigation](#two-level-navigation) exposes two navigation landmarks: the rail itself ("Primary navigation") and the active section's panel, named after its section. The current page announces `aria-current="page"` (on the panel leaf, or on a direct-link rail item), while its section ancestor on the rail announces `aria-current="true"`. Rail tiles are plain, always-tabbable links. Arrow keys (and <kbd>Home</kbd> / <kbd>End</kbd>) also move between them as a shortcut. Switching sections moves focus to the panel heading so the swapped content is announced. Within the section panel the tab stop follows the current page: when the route changes, <kbd>Tab</kbd> re-enters the panel at the active item rather than wherever focus last rested. Collapsed, icon-only tiles reveal their label as a tooltip on hover or focus.
 
 ## Props
 
