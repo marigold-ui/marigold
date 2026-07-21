@@ -23,10 +23,8 @@ import type { SidebarCurrent } from './collection';
 export interface SidebarRailNode {
   type: 'railItem';
   key: string;
-  /** Full accessible name (tooltip + `aria-label`). */
+  /** Full accessible name (tooltip + `aria-label`); also the visible tile label. */
   textValue: string;
-  /** Rail label content (the text shown under the icon). */
-  label: ReactNode[];
   icon: ReactNode;
   /** Resolved landing destination: explicit `href`, else the section's first leaf. */
   href?: string;
@@ -141,7 +139,6 @@ export const buildRailCollection = (
       type: 'railItem',
       key,
       textValue,
-      label,
       icon: child.props.icon,
       href,
       onPress: child.props.onPress,

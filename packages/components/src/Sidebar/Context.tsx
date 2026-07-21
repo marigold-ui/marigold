@@ -71,12 +71,7 @@ export const SidebarProvider = ({
   }, [toggleSidebar]);
 
   const value = useMemo(
-    () => ({
-      state,
-      toggleSidebar,
-      isMobile,
-      classNames,
-    }),
+    () => ({ state, toggleSidebar, isMobile, classNames }),
     [state, toggleSidebar, isMobile, classNames]
   );
 

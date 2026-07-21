@@ -3,7 +3,7 @@ import type { ReactNode, Ref } from 'react';
 import { Focusable } from 'react-aria-components/Focusable';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { isFocusVisible } from '@react-aria/interactions';
-import { handleLinkClick, useLinkProps, useRouter } from '@react-aria/utils';
+import { handleLinkClick, useRouter } from '@react-aria/utils';
 import { cn } from '@marigold/system';
 import { Tooltip } from '../Tooltip/Tooltip';
 import { intlMessages } from '../intl/messages';
@@ -68,7 +68,6 @@ const RailItemLink = ({
   className,
 }: RailItemLinkProps) => {
   const router = useRouter();
-  const routerLinkProps = useLinkProps({ href: node.href });
 
   // A section is only the current page's ancestor (`true`); a direct-link item
   // that is the page announces `page`. The leaf itself is marked in the panel.
@@ -80,7 +79,6 @@ const RailItemLink = ({
     <Tooltip.Trigger disabled={!collapsed}>
       <Focusable>
         <a
-          {...routerLinkProps}
           href={node.href}
           role={node.href ? undefined : 'button'}
           aria-current={ariaCurrent}
@@ -187,49 +185,41 @@ const SidebarRail = ({
 
   // Same column in both shells; only desktop collapses to icons (the drawer
   // always shows labels, so its tooltips stay disabled).
-  const railColumn = (collapsed: boolean) => (
-    <div className={classNames.railColumn}>
-      <nav
-        ref={railNavRef}
-        aria-label={ariaLabel || stringFormatter.format('railNavigation')}
-        className="flex min-h-0 flex-1 flex-col overflow-hidden"
-        onKeyDown={onRailKeyDown}
-      >
-        <div className={classNames.rail}>
-          {nodes
-            .filter(node => !node.inFooter)
-            .map(node => (
-              <RailItemLink
-                key={node.key}
-                node={node}
-                selected={selectedKey === node.key}
-                matched={matchedKey === node.key}
-                onActivate={() => activateRail(node)}
-                collapsed={collapsed}
-                className={classNames.railItem}
-              />
-            ))}
-        </div>
-        {/* Pinned below the list: footer rail items plus any raw footer content. */}
-        {footerNodes.length > 0 || footer ? (
-          <div className={classNames.railFooter}>
-            {footerNodes.map(node => (
-              <RailItemLink
-                key={node.key}
-                node={node}
-                selected={selectedKey === node.key}
-                matched={matchedKey === node.key}
-                onActivate={() => activateRail(node)}
-                collapsed={collapsed}
-                className={classNames.railItem}
-              />
-            ))}
-            {footer}
+  const railColumn = (collapsed: boolean) => {
+    const renderRailItem = (node: SidebarRailNode) => (
+      <RailItemLink
+        key={node.key}
+        node={node}
+        selected={selectedKey === node.key}
+        matched={matchedKey === node.key}
+        onActivate={() => activateRail(node)}
+        collapsed={collapsed}
+        className={classNames.railItem}
+      />
+    );
+
+    return (
+      <div className={classNames.railColumn}>
+        <nav
+          ref={railNavRef}
+          aria-label={ariaLabel || stringFormatter.format('railNavigation')}
+          className="flex min-h-0 flex-1 flex-col overflow-hidden"
+          onKeyDown={onRailKeyDown}
+        >
+          <div className={classNames.rail}>
+            {nodes.filter(node => !node.inFooter).map(renderRailItem)}
           </div>
-        ) : null}
-      </nav>
-    </div>
-  );
+          {/* Pinned below the list: footer rail items plus any raw footer content. */}
+          {footerNodes.length > 0 || footer ? (
+            <div className={classNames.railFooter}>
+              {footerNodes.map(renderRailItem)}
+              {footer}
+            </div>
+          ) : null}
+        </nav>
+      </div>
+    );
+  };
 
   const panelBody =
     selectedNode?.isSection && selectedNode.nav ? (

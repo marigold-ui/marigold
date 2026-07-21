@@ -479,6 +479,7 @@ describe('fragments', () => {
     );
 
     const branch = collection.getItem('branch');
+
     expect(branch?.type === 'item' && branch.children).toHaveLength(1);
     expect(collection.getItem('nested')).toBeDefined();
   });
