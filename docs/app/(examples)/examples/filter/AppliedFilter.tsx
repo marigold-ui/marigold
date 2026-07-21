@@ -98,6 +98,7 @@ export const AppliedFilter = () => {
       // every Tag.id below is a FilterKey, so the narrower cast is safe.
       onRemove={keys => removeFilter(keys as Set<FilterKeys>)}
       removeAll
+      collapseAt={3}
     >
       {activeKeys.map(name => (
         <Tag id={name} key={name}>

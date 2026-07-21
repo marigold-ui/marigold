@@ -259,7 +259,9 @@ When an applied filter contains a large number of values, avoid grouping them al
 
 <ComponentDemo name="filter-applied-filter-label" />
 
-Even with one tag per filter, many active filters can stack into several rows of tags and push the data set out of view. In that case, truncate the applied filter area after one or two rows behind a "show all" control.
+Even with one tag per filter, many active filters can stack into several rows of tags and push the data set out of view. Use the [`collapseAt`](/components/collection/tag#props) prop on `Tag.Group` to show only the first few tags and collapse the rest behind a "Show more" toggle, so the applied filter area keeps a predictable height. The example below collapses after 3 filters.
+
+<ComponentDemo name="filter-applied-filter-collapse" />
 
 Marigold deliberately does not provide a helper to generate these labels. Label phrasing and translation depend on the application's domain and i18n setup, so they are best composed where the filter state lives. We will revisit a shared helper if demand shows up.
 

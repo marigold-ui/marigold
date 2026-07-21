@@ -1,5 +1,13 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
+const linkAction = [
+  'inline whitespace-nowrap font-medium transition-[color,box-shadow,transform] rounded-md',
+  'ui-press',
+  'focus-visible:ui-state-focus outline-none',
+  'cursor-pointer',
+  'text-link text-xs ui-touch-hitbox',
+];
+
 export const Tag: ThemeComponent<'Tag'> = {
   container: cva({
     base: [
@@ -36,5 +44,8 @@ export const Tag: ThemeComponent<'Tag'> = {
       // mb-0 prevents whitespace when the hidden field is rendered
       'mb-0',
     ],
+  }),
+  showMore: cva({
+    base: linkAction,
   }),
 };
