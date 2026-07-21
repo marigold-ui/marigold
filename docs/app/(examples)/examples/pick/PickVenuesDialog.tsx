@@ -97,7 +97,7 @@ const PickBody = ({
             </Select>
           </Inline>
 
-          {/* The staged set stays visible as removable chips through every
+          {/* The staged set stays visible as removable tags through every
               search and filter, so picks never scroll out of sight or vanish
               when the list is narrowed. */}
           {stagedVenues.length > 0 && (
@@ -105,6 +105,7 @@ const PickBody = ({
               label={`Staged (${stagedVenues.length})`}
               selectionMode="none"
               onRemove={unstage}
+              collapseAt={6}
             >
               {stagedVenues.map(venue => (
                 <Tag key={venue.id} id={venue.id}>
@@ -186,6 +187,7 @@ export const PickVenuesDialog = ({
 }: PickVenuesDialogProps) => (
   <Dialog.Trigger>
     <Button variant="primary">{trigger}</Button>
+    {/* Switch to size="fullscreen" for this content-heavy pick once that Dialog size ships. */}
     <Dialog size="large" closeButton>
       {({ close }) => (
         <PickBody

@@ -171,6 +171,7 @@ const PickVenuesBody = ({ initial, onConfirm }: PickBodyProps) => {
               label={`Staged (${staged.length})`}
               selectionMode="none"
               onRemove={unstage}
+              collapseAt={6}
             >
               {staged.map(venue => (
                 <Tag key={venue.id} id={venue.id}>
@@ -235,6 +236,7 @@ export default () => {
     <Stack space={5} alignX="left">
       <Dialog.Trigger>
         <Button variant="primary">Add venues</Button>
+        {/* Switch to size="fullscreen" for this content-heavy pick once that Dialog size ships. */}
         <Dialog size="large" closeButton>
           {({ close }) => (
             <PickVenuesBody

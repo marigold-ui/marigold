@@ -54,9 +54,9 @@ The searchable-field tier in action: a [`<TagField>`](/components/form/tag-field
 <Callout type="info" title="Sizing a heavy pick">
   Marigold's [`<Dialog>`](/components/overlay/dialog) tops out around 640px tall
   and 1024px wide on desktop (`size="large"`). That is room enough for a search
-  field, a scrollable list, and a footer. When a pick genuinely needs more, for
-  example a rich two-pane layout or a mobile full-screen flow, use a routed page.
-  A dedicated full-screen dialog size is not available yet.
+  field, a scrollable list, and a footer. For a content-heavy pick that needs
+  more, a `size="fullscreen"` dialog (in progress) fills the viewport, leaving a
+  routed page for a pick that needs its own URL or appears in several places.
 </Callout>
 
 ## The pick dialog
@@ -245,6 +245,6 @@ The example is a report that owns its picked venues: choose venues and the commi
 - TODO: replace the draft anatomy SVG (`/pick/pick-anatomy.svg`) with a Figma-authored diagram (now shown under "The pick dialog").
 - TODO: demo and guidance for echoing the committed set back in the host task, using removable tags (`TagGroup`) or a list, with a way to re-open and edit the selection.
 - TODO: guidance on requiring a minimum selection (disable the commit at 0) and capping a maximum.
-- TODO: a routed-page pick example, for the tier the two pending full-screen product designs need, which a dialog cannot cover today (no fullscreen `Dialog` size yet).
+- TODO: when `size="fullscreen"` lands (DST-1643, in review), switch the pick dialog demo + `/examples/pick` to it, drop "(in progress)" from the Sizing callout, and rescope the routed-page tier to picks that need their own URL or appear in several places (not merely "too tall for a dialog").
 - TODO: keyboard and focus notes: focus the search on open, Escape cancels, and the integrated search-to-list arrow-key navigation that is still a component gap.
 - TODO: consider a side-by-side "two flows" visual (filter journey vs pick journey) in Filter vs Pick, adapted from the research explainer.
