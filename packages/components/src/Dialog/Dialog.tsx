@@ -97,9 +97,10 @@ const InnerDialog = ({
           : 'max-h-[80vh] max-w-[90vw]',
         "grid [grid-template-areas:'title'_'content'_'actions']",
         classNames.container,
-        // Grid with pinned rows and a clipped surface, so only the inner content scrolls, not the dialog.
+        // Clip the surface and pin the rows so only the content row scrolls, not the dialog.
+        // The trailing `grid` is load-bearing. It beats the container's `flex` via twMerge last-wins.
         isFullscreen &&
-          'grid grid-rows-[auto_minmax(0,1fr)_auto] overflow-x-hidden overflow-y-hidden'
+          'grid grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden'
       )}
     >
       {closeButton && (

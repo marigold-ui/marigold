@@ -397,6 +397,7 @@ const FullscreenPick = ({ size, ...args }: FullscreenPickProps) => {
               </Tag.Group>
             )}
 
+            {/* Plain scroll container with no accessible role, so tests assert its scroll via this testid rather than getByRole. */}
             <div
               className="min-h-0 flex-1 overflow-auto"
               data-testid="venue-list"
