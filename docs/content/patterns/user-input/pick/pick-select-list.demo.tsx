@@ -6,6 +6,7 @@ import {
   Dialog,
   EmptyState,
   Inline,
+  Panel,
   Scrollable,
   SearchField,
   Select,
@@ -127,9 +128,9 @@ const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
   // staged keys that are currently filtered out of view, so narrowing the list
   // by search or team never drops what is already staged.
   const onChange = (keys: Key[]) => {
-    const visibleIds = new Set(results.map(person => person.id));
+    const visibleIds = new Set<Key>(results.map(person => person.id));
     setSelected(prev => {
-      const offView = [...prev].filter(key => !visibleIds.has(String(key)));
+      const offView = [...prev].filter(key => !visibleIds.has(key));
       return new Set<Key>([...offView, ...keys]);
     });
   };
@@ -184,6 +185,7 @@ const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
               label={`Staged (${staged.length})`}
               selectionMode="none"
               onRemove={unstage}
+              collapseAt={6}
             >
               {staged.map(person => (
                 <Tag key={person.id} id={person.id}>
@@ -246,26 +248,30 @@ export default () => {
     .map(person => person.name);
 
   return (
-    <Stack space={5} alignX="left">
-      <Dialog.Trigger>
-        <Button variant="primary">Add people</Button>
-        <Dialog size="medium" closeButton>
-          {({ close }) => (
-            <PickPeopleBody
-              initial={added}
-              onConfirm={keys => {
-                setAdded(keys);
-                close();
-              }}
-            />
-          )}
-        </Dialog>
-      </Dialog.Trigger>
-      <Text>
-        {addedNames.length === 0
-          ? 'No people added yet.'
-          : `Access granted to: ${addedNames.join(', ')}`}
-      </Text>
-    </Stack>
+    <Panel aria-label="Access">
+      <Panel.Content>
+        <Stack space={5} alignX="left">
+          <Dialog.Trigger>
+            <Button variant="primary">Add people</Button>
+            <Dialog size="medium" closeButton>
+              {({ close }) => (
+                <PickPeopleBody
+                  initial={added}
+                  onConfirm={keys => {
+                    setAdded(keys);
+                    close();
+                  }}
+                />
+              )}
+            </Dialog>
+          </Dialog.Trigger>
+          <Text>
+            {addedNames.length === 0
+              ? 'No people added yet.'
+              : `Access granted to: ${addedNames.join(', ')}`}
+          </Text>
+        </Stack>
+      </Panel.Content>
+    </Panel>
   );
 };

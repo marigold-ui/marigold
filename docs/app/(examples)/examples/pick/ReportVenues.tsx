@@ -1,14 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  Button,
-  EmptyState,
-  Inline,
-  Panel,
-  Table,
-  Text,
-} from '@marigold/components';
+import { EmptyState, Inline, Panel, Table, Text } from '@marigold/components';
 import { PickVenuesDialog } from './PickVenuesDialog';
 import { venues } from './venues';
 

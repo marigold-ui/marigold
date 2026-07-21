@@ -6,6 +6,7 @@ import {
   Dialog,
   EmptyState,
   Inline,
+  Panel,
   SearchField,
   Select,
   Stack,
@@ -113,9 +114,9 @@ const PickVenuesBody = ({ initial, onConfirm }: PickBodyProps) => {
   // concrete set at the boundary, keeping venues staged under other filters, so
   // narrowing the list never changes what is committed.
   const onSelectionChange = (keys: Selection) => {
-    const visibleIds = new Set(results.map(venue => venue.id));
+    const visibleIds = new Set<Key>(results.map(venue => venue.id));
     setSelected(prev => {
-      const offView = [...prev].filter(key => !visibleIds.has(String(key)));
+      const offView = [...prev].filter(key => !visibleIds.has(key));
       const visibleSelection = keys === 'all' ? [...visibleIds] : [...keys];
       return new Set<Key>([...offView, ...visibleSelection]);
     });
@@ -246,42 +247,46 @@ export default () => {
   };
 
   return (
-    <Stack space={4} alignX="left">
-      {/* The committed set lives on the host task as removable tags: drop one here, or reopen (pre-staged) to change the set. */}
-      {addedVenues.length > 0 ? (
-        <Tag.Group
-          label="Selected venues"
-          selectionMode="none"
-          onRemove={removeVenue}
-          collapseAt={6}
-        >
-          {addedVenues.map(venue => (
-            <Tag key={venue.id} id={venue.id}>
-              {venue.name}
-            </Tag>
-          ))}
-        </Tag.Group>
-      ) : (
-        <Text>No venues added yet.</Text>
-      )}
-
-      <Dialog.Trigger>
-        <Button variant={addedVenues.length > 0 ? 'secondary' : 'primary'}>
-          {addedVenues.length > 0 ? 'Edit selection' : 'Add venues'}
-        </Button>
-        {/* Switch to size="fullscreen" for this content-heavy pick once that Dialog size ships. */}
-        <Dialog size="large" closeButton>
-          {({ close }) => (
-            <PickVenuesBody
-              initial={added}
-              onConfirm={keys => {
-                setAdded(keys);
-                close();
-              }}
-            />
+    <Panel aria-label="Report venues">
+      <Panel.Content>
+        <Stack space={4} alignX="left">
+          {/* The committed set lives on the host task as removable tags: drop one here, or reopen (pre-staged) to change the set. */}
+          {addedVenues.length > 0 ? (
+            <Tag.Group
+              label="Selected venues"
+              selectionMode="none"
+              onRemove={removeVenue}
+              collapseAt={6}
+            >
+              {addedVenues.map(venue => (
+                <Tag key={venue.id} id={venue.id}>
+                  {venue.name}
+                </Tag>
+              ))}
+            </Tag.Group>
+          ) : (
+            <Text>No venues added yet.</Text>
           )}
-        </Dialog>
-      </Dialog.Trigger>
-    </Stack>
+
+          <Dialog.Trigger>
+            <Button variant={addedVenues.length > 0 ? 'secondary' : 'primary'}>
+              {addedVenues.length > 0 ? 'Edit selection' : 'Add venues'}
+            </Button>
+            {/* Switch to size="fullscreen" for this content-heavy pick once that Dialog size ships. */}
+            <Dialog size="large" closeButton>
+              {({ close }) => (
+                <PickVenuesBody
+                  initial={added}
+                  onConfirm={keys => {
+                    setAdded(keys);
+                    close();
+                  }}
+                />
+              )}
+            </Dialog>
+          </Dialog.Trigger>
+        </Stack>
+      </Panel.Content>
+    </Panel>
   );
 };

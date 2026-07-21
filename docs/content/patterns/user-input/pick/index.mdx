@@ -59,7 +59,7 @@ One surface sits to the side of this progression: a transfer list, two panes wit
 
 The searchable-field tier in action: a [`<TagField>`](/components/form/tag-field) picks the performers for an event. Type to filter the roster, choose from the popover, and each pick becomes a removable tag. The selection is the committed set, so there is no separate commit step and the user never leaves the page. This is the whole tier below the dialog: names the user recognizes, no detail worth a table, and a collection small enough to stay in a field.
 
-<ComponentDemo name="pick-tag-field" />
+<ComponentDemo name="pick-tag-field" background="page" />
 
 <Callout type="info" title="Sizing a heavy pick">
   Marigold's [`<Dialog>`](/components/overlay/dialog) tops out around 640px tall
@@ -79,7 +79,7 @@ The matching records form the results collection, shown as a [`<Table>`](/compon
 
 The example below adds venues from a searchable, filterable, multi-select table, starting from nothing selected.
 
-<ComponentDemo name="pick-dialog" />
+<ComponentDemo name="pick-dialog" background="page" />
 
 A few details make the dialog trustworthy:
 
@@ -94,7 +94,7 @@ A few details make the dialog trustworthy:
 
 Not every pick needs a table. When you choose a record by its name, with at most a supporting line and no grid of comparable detail to scan across rows, a [`<SelectList>`](/components/form/selectlist) is the lighter collection: a multi-select list, checked to stage and committed the same way. An option can still carry a little more than a bare label, such as a name over an email, and it stays a list. Reach for a [`<Table>`](/components/collection/table) only once the records carry several attributes worth comparing side by side.
 
-<ComponentDemo name="pick-select-list" />
+<ComponentDemo name="pick-select-list" background="page" />
 
 Only the collection changes. This pick grants a set of people access and carries the same search, filter, removable staged-tag rail, and empty state as the venue dialog above. What differs is the results collection: a list of people, each a name over an email, instead of a table, since there is no grid of per-row detail to compare.
 
@@ -124,7 +124,7 @@ Sometimes the records are already on the page and the user only needs to act on 
 
 At that point you have crossed from picking into the [Bulk Actions](/patterns/user-input/bulk-actions) pattern, and the two are easy to confuse because they share a mechanism: both enumerate records one by one rather than narrowing by criteria. What separates them is what the selection is for. A pick gathers a set and carries it into another task, such as a report or an event's line-up, so the set is the deliverable and it outlives the selection. Bulk actions run an operation on the selected records themselves, such as archive or assign, so the operation is the deliverable and the selection is cleared once it finishes.
 
-<ComponentDemo name="pick-filter-select-act" />
+<ComponentDemo name="pick-filter-select-act" background="page" />
 
 The flow lives here only as a signpost. Whenever a pick dialog is tempting for records already in view, ask what the selection is for. If you are operating on the records rather than gathering them to use elsewhere, stay on the page and follow Bulk Actions, which covers selection scope, confirmation, progress, and partial-failure feedback in full.
 

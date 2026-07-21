@@ -4,8 +4,8 @@ import {
   ActionBar,
   Badge,
   Button,
+  Panel,
   SearchField,
-  Stack,
   Table,
 } from '@marigold/components';
 import { Archive, Tag } from '@marigold/icons';
@@ -72,53 +72,57 @@ export default () => {
   }, [search]);
 
   return (
-    <Stack space={4}>
-      <SearchField
-        aria-label="Search events"
-        placeholder="Search events"
-        value={search}
-        onChange={setSearch}
-        width={64}
-      />
-      <Table
-        aria-label="Events"
-        selectionMode="multiple"
-        selectedKeys={selected}
-        onSelectionChange={setSelected}
-        actionBar={() => (
-          <ActionBar>
-            <Button onPress={() => alert('Assign category')}>
-              <Tag />
-              Assign category
-            </Button>
-            <Button onPress={() => alert('Archive')}>
-              <Archive />
-              Archive
-            </Button>
-          </ActionBar>
-        )}
-      >
-        <Table.Header>
-          <Table.Column rowHeader>Event</Table.Column>
-          <Table.Column>Date</Table.Column>
-          <Table.Column>Status</Table.Column>
-        </Table.Header>
-        <Table.Body>
-          {rows.map(event => (
-            <Table.Row key={event.id} id={event.id}>
-              <Table.Cell>{event.name}</Table.Cell>
-              <Table.Cell>{event.date}</Table.Cell>
-              <Table.Cell>
-                <Badge
-                  variant={event.status === 'On sale' ? 'success' : 'info'}
-                >
-                  {event.status}
-                </Badge>
-              </Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
-    </Stack>
+    <Panel aria-label="Events">
+      <Panel.Content>
+        <SearchField
+          aria-label="Search events"
+          placeholder="Search events"
+          value={search}
+          onChange={setSearch}
+          width={64}
+        />
+      </Panel.Content>
+      <Panel.Content bleed>
+        <Table
+          aria-label="Events"
+          selectionMode="multiple"
+          selectedKeys={selected}
+          onSelectionChange={setSelected}
+          actionBar={() => (
+            <ActionBar>
+              <Button onPress={() => alert('Assign category')}>
+                <Tag />
+                Assign category
+              </Button>
+              <Button onPress={() => alert('Archive')}>
+                <Archive />
+                Archive
+              </Button>
+            </ActionBar>
+          )}
+        >
+          <Table.Header>
+            <Table.Column rowHeader>Event</Table.Column>
+            <Table.Column>Date</Table.Column>
+            <Table.Column>Status</Table.Column>
+          </Table.Header>
+          <Table.Body>
+            {rows.map(event => (
+              <Table.Row key={event.id} id={event.id}>
+                <Table.Cell>{event.name}</Table.Cell>
+                <Table.Cell>{event.date}</Table.Cell>
+                <Table.Cell>
+                  <Badge
+                    variant={event.status === 'On sale' ? 'success' : 'info'}
+                  >
+                    {event.status}
+                  </Badge>
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </Panel.Content>
+    </Panel>
   );
 };

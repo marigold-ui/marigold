@@ -50,9 +50,9 @@ const PickBody = ({
   // all" means that visible set. Merge every change with the venues staged
   // under other filters so narrowing the list never drops staged picks.
   const onSelectionChange = (keys: Selection) => {
-    const visibleIds = new Set(results.map(venue => venue.id));
+    const visibleIds = new Set<Key>(results.map(venue => venue.id));
     setSelected(prev => {
-      const offView = [...prev].filter(key => !visibleIds.has(String(key)));
+      const offView = [...prev].filter(key => !visibleIds.has(key));
       const visibleSelection = keys === 'all' ? [...visibleIds] : [...keys];
       return new Set<Key>([...offView, ...visibleSelection]);
     });
@@ -157,8 +157,15 @@ const PickBody = ({
         <Button variant="secondary" slot="close">
           Cancel
         </Button>
-        <Button variant="primary" onPress={() => onConfirm(ids)}>
-          {confirmLabel} {ids.length} {ids.length === 1 ? 'venue' : 'venues'}
+        {/* At least one venue is required, so an empty set can never commit. */}
+        <Button
+          variant="primary"
+          disabled={ids.length === 0}
+          onPress={() => onConfirm(ids)}
+        >
+          {ids.length === 0
+            ? `${confirmLabel} venues`
+            : `${confirmLabel} ${ids.length} ${ids.length === 1 ? 'venue' : 'venues'}`}
         </Button>
       </Dialog.Actions>
     </>

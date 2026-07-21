@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Key } from '@react-types/shared';
-import { Stack, TagField, Text } from '@marigold/components';
+import { Panel, Stack, TagField, Text } from '@marigold/components';
 
 const performers = [
   { id: 'aurora-glass', name: 'Aurora Glass' },
@@ -29,25 +29,31 @@ export default () => {
     .map(performer => performer.name);
 
   return (
-    <Stack space={4} alignX="left">
-      <TagField
-        label="Line-up"
-        description="Search the roster and add performers to this event."
-        placeholder="Search performers..."
-        items={performers}
-        value={lineup}
-        onChange={setLineup}
-        width={80}
-      >
-        {performer => (
-          <TagField.Option id={performer.id}>{performer.name}</TagField.Option>
-        )}
-      </TagField>
-      <Text>
-        {chosen.length === 0
-          ? 'No performers added yet.'
-          : `Line-up (${chosen.length}): ${chosen.join(', ')}`}
-      </Text>
-    </Stack>
+    <Panel aria-label="Event line-up">
+      <Panel.Content>
+        <Stack space={4} alignX="left">
+          <TagField
+            label="Line-up"
+            description="Search the roster and add performers to this event."
+            placeholder="Search performers..."
+            items={performers}
+            value={lineup}
+            onChange={setLineup}
+            width={80}
+          >
+            {performer => (
+              <TagField.Option id={performer.id}>
+                {performer.name}
+              </TagField.Option>
+            )}
+          </TagField>
+          <Text>
+            {chosen.length === 0
+              ? 'No performers added yet.'
+              : `Line-up (${chosen.length}): ${chosen.join(', ')}`}
+          </Text>
+        </Stack>
+      </Panel.Content>
+    </Panel>
   );
 };
