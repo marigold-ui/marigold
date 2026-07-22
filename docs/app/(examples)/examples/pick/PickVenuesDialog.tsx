@@ -152,32 +152,35 @@ const PickBody = ({
             </Select>
           </Inline>
 
-          <Text fontSize="sm">
-            {results.length} of {venues.length} venues
-          </Text>
-
           {/* The staged set stays visible as removable tags through every
               search and filter, so picks never scroll out of sight or vanish
-              when the list is narrowed. */}
-          {stagedVenues.length > 0 && (
-            <Tag.Group
-              label={`Staged (${stagedVenues.length})`}
-              selectionMode="none"
-              onRemove={unstage}
-              collapseAt={6}
-            >
-              {stagedVenues.map(venue => (
-                <Tag key={venue.id} id={venue.id}>
-                  {venue.name}
-                </Tag>
-              ))}
-            </Tag.Group>
-          )}
+              when the list is narrowed. The rail is always rendered, with a
+              muted hint when empty, so staging the first venue never shifts the
+              table below it. */}
+          <Tag.Group
+            label={`Staged (${stagedVenues.length})`}
+            selectionMode="none"
+            onRemove={unstage}
+            collapseAt={6}
+            emptyState={() => (
+              <Text variant="muted" fontSize="sm">
+                No venues staged yet. Tick a row to add it.
+              </Text>
+            )}
+          >
+            {stagedVenues.map(venue => (
+              <Tag key={venue.id} id={venue.id}>
+                {venue.name}
+              </Tag>
+            ))}
+          </Tag.Group>
 
           {/* A dialog fits a scrollable list, not a pager: the list scrolls
               inside a bounded height with a sticky header, and search plus the
-              filter do the narrowing. */}
-          <Scrollable height="360px">
+              filters do the narrowing. In a fullscreen dialog the region grows
+              to fill the viewport minus the surrounding chrome (title, filters,
+              staged rail, footer) instead of stopping at a fixed height. */}
+          <Scrollable height="calc(100dvh - 22rem)">
             <Table
               aria-label="Venues"
               selectionMode="multiple"
