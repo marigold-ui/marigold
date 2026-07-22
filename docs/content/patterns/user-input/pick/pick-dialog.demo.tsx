@@ -166,21 +166,26 @@ const PickVenuesBody = ({ initial, onConfirm }: PickBodyProps) => {
 
           {/* The staged set stays on screen as removable tags no matter what
               the search and filter are doing, including when the list below is
-              empty. Removing a tag unstages that venue. */}
-          {staged.length > 0 && (
-            <Tag.Group
-              label={`Staged (${staged.length})`}
-              selectionMode="none"
-              onRemove={unstage}
-              collapseAt={6}
-            >
-              {staged.map(venue => (
-                <Tag key={venue.id} id={venue.id}>
-                  {venue.name}
-                </Tag>
-              ))}
-            </Tag.Group>
-          )}
+              empty. The rail is always rendered, with a muted hint when empty,
+              so staging the first venue never shifts the table. Removing a tag
+              unstages that venue. */}
+          <Tag.Group
+            label={`Staged (${staged.length})`}
+            selectionMode="none"
+            onRemove={unstage}
+            collapseAt={6}
+            emptyState={() => (
+              <Text variant="muted" fontSize="sm">
+                No venues staged yet. Tick a row to add it.
+              </Text>
+            )}
+          >
+            {staged.map(venue => (
+              <Tag key={venue.id} id={venue.id}>
+                {venue.name}
+              </Tag>
+            ))}
+          </Tag.Group>
 
           <Table
             aria-label="Venues"

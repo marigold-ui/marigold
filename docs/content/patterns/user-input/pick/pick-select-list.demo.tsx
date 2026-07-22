@@ -178,21 +178,26 @@ const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
 
           {/* The staged set stays on screen as removable tags no matter what
               the search and filter are doing, including when the list below is
-              empty. Removing a tag unstages that person. */}
-          {staged.length > 0 && (
-            <Tag.Group
-              label={`Staged (${staged.length})`}
-              selectionMode="none"
-              onRemove={unstage}
-              collapseAt={6}
-            >
-              {staged.map(person => (
-                <Tag key={person.id} id={person.id}>
-                  {person.name}
-                </Tag>
-              ))}
-            </Tag.Group>
-          )}
+              empty. The rail is always rendered, with a muted hint when empty,
+              so staging the first person never shifts the list. Removing a tag
+              unstages that person. */}
+          <Tag.Group
+            label={`Staged (${staged.length})`}
+            selectionMode="none"
+            onRemove={unstage}
+            collapseAt={6}
+            emptyState={() => (
+              <Text variant="muted" fontSize="sm">
+                No people staged yet. Tick a name to add them.
+              </Text>
+            )}
+          >
+            {staged.map(person => (
+              <Tag key={person.id} id={person.id}>
+                {person.name}
+              </Tag>
+            ))}
+          </Tag.Group>
 
           {/* People are labels with a supporting email, not a grid of columns,
               so the results collection is a SelectList rather than a Table.
