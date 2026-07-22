@@ -23,7 +23,7 @@ export const Menu: ThemeComponent<'Menu'> = {
   // should use explicit grid-area placement.
   item: cva({
     base: [
-      'group/option relative grid grid-cols-[auto_1fr] items-center [&:has(>svg)]:gap-x-2 cursor-pointer rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap max-sm:min-h-11',
+      'group/option relative grid grid-cols-[auto_1fr] items-center [&:has(>svg)]:gap-x-2 cursor-pointer rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap max-sm:min-h-touch-target',
       'disabled:cursor-not-allowed disabled:text-disabled',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4 [&_svg]:row-span-full [&_svg]:self-center',
     ],

@@ -238,6 +238,12 @@
   --spacing-control-large: 2.5rem;
   --spacing-container: 50rem;
 
+  /* Minimum touch-target height (WCAG 2.5.8 / platform guidelines: 44px).
+   * List rows that are pointer-sized on desktop (menu options, listbox
+   * options, sidebar nav rows) grow to this on small screens, where they are
+   * operated by finger — e.g. inside a Tray or the mobile nav drawer. */
+  --spacing-touch-target: 2.75rem;
+
   /* The app shell's shared vertical datum: the top bar's height, the
    * sidebar's brand row, and the rail's sticky offset all derive from it. */
   --spacing-topbar: 3.5rem;

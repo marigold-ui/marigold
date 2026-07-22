@@ -123,6 +123,9 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     // pill; fixed h-7.5 keeps the list dense.
     base: [
       'mx-2 flex items-center gap-2 px-2 h-7.5 rounded-surface text-sm',
+      // Finger-sized rows in the mobile drawer (same rule as ListBox/Menu
+      // options in a Tray); min-height wins over the fixed desktop height.
+      'max-sm:min-h-touch-target',
       'transition-[color,background-color,box-shadow]',
       'motion-reduce:transition-none',
       'outline-none focus-visible:ui-state-focus',
@@ -140,6 +143,8 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // Same pill geometry as nav rows (mx-2 + px-2 + h-7.5) so the chevron sits
       // on the shared 16px content column.
       'mx-2 flex items-center gap-2 px-2 h-7.5 text-sm rounded-surface',
+      // Finger-sized like the nav rows below it (mobile drawer).
+      'max-sm:min-h-touch-target',
       // Button label ships font-medium; reset so it matches a regular nav row.
       '[&_span]:font-normal',
       'transition-[color,background-color]',

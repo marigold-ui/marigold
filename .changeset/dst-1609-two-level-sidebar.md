@@ -21,8 +21,10 @@ renders as the same single-column drawer as the plain sidebar: sections drill in
 - `Sidebar.Toggle` gains `variant="rail"` for its top-bar placement between the
   brand and the breadcrumbs.
 - New theme tokens: `--spacing-topbar` (the shell's shared vertical datum for the top bar
-  height, sidebar brand row, and rail sticky offset) and the rail column widths
-  `--spacing-rail` / `--spacing-rail-collapsed` / `--spacing-rail-panel`.
+  height, sidebar brand row, and rail sticky offset), the rail column widths
+  `--spacing-rail` / `--spacing-rail-collapsed` / `--spacing-rail-panel`, and
+  `--spacing-touch-target` (44px minimum row height on small screens, shared by the
+  drawer's nav rows and the existing Tray-mode ListBox/Menu options).
 - Idle single-column nav labels darken a step (new `--color-secondary-bold` token,
   charcoal-700) so they clearly out-rank the quiet group-label captions.
 - Keyboard: the rail supports arrow-key (and Home/End) movement on top of its flat
