@@ -1,22 +1,35 @@
 import type { ListViewProps } from '@marigold/components';
-import { Description, ListView, Switch, TextValue } from '@marigold/components';
+import {
+  ActionMenu,
+  Description,
+  ListView,
+  TextValue,
+} from '@marigold/components';
+import { FileText } from '@marigold/icons';
+
+const files = [
+  {
+    id: 'report',
+    name: 'Quarterly report',
+    meta: 'Updated 3 days ago · 2.1 MB',
+  },
+  { id: 'roadmap', name: 'Roadmap', meta: 'Updated today · 640 KB' },
+  { id: 'budget', name: 'Budget forecast', meta: 'Updated yesterday · 480 KB' },
+];
 
 export default (props: ListViewProps) => (
-  <ListView {...props} aria-label="Notification settings">
-    <ListView.Item id="email" textValue="Email notifications">
-      <TextValue>Email notifications</TextValue>
-      <Description>Receive updates by email.</Description>
-      <Switch aria-label="Email notifications" />
-    </ListView.Item>
-    <ListView.Item id="push" textValue="Push notifications">
-      <TextValue>Push notifications</TextValue>
-      <Description>Receive updates on this device.</Description>
-      <Switch aria-label="Push notifications" defaultSelected />
-    </ListView.Item>
-    <ListView.Item id="sms" textValue="SMS notifications">
-      <TextValue>SMS notifications</TextValue>
-      <Description>Receive updates by text message.</Description>
-      <Switch aria-label="SMS notifications" />
-    </ListView.Item>
+  <ListView {...props} aria-label="Resources">
+    {files.map(file => (
+      <ListView.Item key={file.id} id={file.id} textValue={file.name}>
+        <FileText size={20} />
+        <TextValue>{file.name}</TextValue>
+        <Description>{file.meta}</Description>
+        <ActionMenu aria-label={`${file.name} actions`}>
+          <ActionMenu.Item>Rename</ActionMenu.Item>
+          <ActionMenu.Item>Share</ActionMenu.Item>
+          <ActionMenu.Item variant="destructive">Delete</ActionMenu.Item>
+        </ActionMenu>
+      </ListView.Item>
+    ))}
   </ListView>
 );
