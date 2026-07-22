@@ -29,14 +29,6 @@ The same pattern applied to navigation is known as [Priority+](https://css-trick
 
 <ComponentDemo name="overflow-region-priority-nav" />
 
-### Tag and metadata rows
-
-In constrained spots like table cells or card metadata, a long list of tags easily takes over the layout. Truncate it to the available space and summarize the rest with a counter.
-
-<ComponentDemo name="overflow-region-tags" />
-
-Prefer an interactive indicator (for example a popover listing the hidden tags) when the hidden values matter for the task at hand. A plain `+N` counter is acceptable when the row is only a preview and a detail view exists elsewhere.
-
 ### External surfaces
 
 When the surface that holds the hidden items already exists outside the region, you do not need an indicator at all. A common example is a filter bar: the quick filters demote as space runs out, while a pinned "All filters" panel always contains the complete filter set. Use `onOverflowChange` to reflect the hidden count on the pinned trigger.
@@ -72,8 +64,11 @@ The indicator is part of the row's natural tab order and only rendered while ite
     recovery surface.
   </li>
   <li>
-    [TagGroup](../collection/tag): For tag input fields, `<TagGroup>` ships
-    its own show more/show less toggle based on a fixed count.
+    [TagGroup](../collection/tag): For rows of tags, use `<TagGroup>` with
+    its `collapseAt` prop. It caps the visible tags at a fixed count behind a
+    "Show more" toggle and keeps the tags interactive. Compose a region with
+    a `+N` counter only for a read-only preview in a dense spot, such as a
+    table cell.
   </li>
   <li>
     [Breadcrumbs](../navigation/breadcrumbs): Collapses from the middle
