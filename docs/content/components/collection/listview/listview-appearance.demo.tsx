@@ -11,7 +11,7 @@ export default (props: ListViewProps) => (
     <ListView.Item id="push" textValue="Push notifications">
       <TextValue>Push notifications</TextValue>
       <Description>Receive updates on this device.</Description>
-      <Switch aria-label="Push notifications" selected />
+      <Switch aria-label="Push notifications" defaultSelected />
     </ListView.Item>
     <ListView.Item id="sms" textValue="SMS notifications">
       <TextValue>SMS notifications</TextValue>

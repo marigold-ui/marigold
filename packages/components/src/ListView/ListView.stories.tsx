@@ -1,7 +1,9 @@
 import { expect, fn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Button } from '../Button/Button';
+import { Card } from '../Card/Card';
 import { Description } from '../Description/Description';
-import { IconButton } from '../IconButton/IconButton';
+import { EmptyState as EmptyStateComponent } from '../EmptyState/EmptyState';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Switch } from '../Switch/Switch';
 import { TextValue } from '../TextValue/TextValue';
@@ -12,12 +14,61 @@ import { ListView } from './ListView';
 const meta = preview.meta({
   title: 'Components/ListView',
   component: ListView,
+  argTypes: {
+    variant: {
+      control: { type: 'select' },
+      options: ['default', 'plain'],
+      table: {
+        type: { summary: 'select' },
+        defaultValue: { summary: 'default' },
+      },
+      description: 'Visual variant of the list.',
+    },
+    size: {
+      control: { type: 'text' },
+      table: {
+        type: { summary: 'string' },
+      },
+      description: 'Size token applied to the list.',
+    },
+    emptyState: {
+      control: false,
+      table: {
+        type: { summary: 'ReactNode' },
+      },
+      description: 'Content to render when the list is empty.',
+    },
+    disabledKeys: {
+      control: false,
+      table: {
+        type: { summary: 'Iterable<Key>' },
+      },
+      description:
+        'Keys of rows to disable. A disabled row is inert to press/keyboard ' +
+        'interaction but, unlike removing it, stays visible and announced.',
+    },
+    disabledBehavior: {
+      control: { type: 'radio' },
+      options: ['all', 'selection'],
+      table: {
+        type: { summary: 'select' },
+        defaultValue: { summary: 'all' },
+      },
+      description:
+        'Whether `disabledKeys` blocks all interactions with a row, or only ' +
+        "selection. ListView doesn't support selection, so `all` is the " +
+        'only setting with an observable effect.',
+    },
+  },
+  args: {
+    variant: 'default',
+  },
 });
 
 export const Basic = meta.story({
   tags: ['component-test'],
   render: args => (
-    <ListView {...args} aria-label="Recent files">
+    <ListView {...args} aria-label="Recent files" disabledKeys={['budget']}>
       <ListView.Item id="report" textValue="Q3 report">
         <TextValue>Q3 report</TextValue>
         <Description>Edited 2 days ago</Description>
@@ -35,27 +86,29 @@ export const Basic = meta.story({
 });
 
 Basic.test(
-  'renders rows in a non-form grid with no selection',
+  'renders rows in a non-form grid with no selection, honoring disabledKeys',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
     const grid = await canvas.findByRole('grid', { name: 'Recent files' });
     const row = canvas.getByRole('row', { name: /q3 report/i });
+    const disabledRow = canvas.getByRole('row', { name: /budget draft/i });
 
     expect(grid).toBeInTheDocument();
     expect(row).not.toHaveAttribute('aria-selected');
+    expect(disabledRow).toHaveAttribute('aria-disabled', 'true');
   }
 );
 
 // Scenario 1 — Notifications / activity feed: title + timestamp + mute
-// Switch + dismiss IconButton, operated in place. The shared DST-1485
+// Switch + dismiss button, operated in place. The shared DST-1485
 // (Popover notifications panel) example.
 const onMute = fn();
 const onDismiss = fn();
 
 export const NotificationsFeed = meta.story({
   tags: ['component-test'],
-  render: () => (
-    <ListView aria-label="Notifications">
+  render: args => (
+    <ListView {...args} aria-label="Notifications">
       <ListView.Item id="build" textValue="Build finished — 2 minutes ago">
         <TextValue>Build finished</TextValue>
         <Description>2 minutes ago</Description>
@@ -63,9 +116,14 @@ export const NotificationsFeed = meta.story({
           aria-label="Mute this thread"
           onChange={() => onMute('build')}
         />
-        <IconButton aria-label="Dismiss" onPress={() => onDismiss('build')}>
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label="Dismiss"
+          onPress={() => onDismiss('build')}
+        >
           <X />
-        </IconButton>
+        </Button>
       </ListView.Item>
       <ListView.Item id="deploy" textValue="Deploy succeeded — 1 hour ago">
         <TextValue>Deploy succeeded</TextValue>
@@ -74,9 +132,14 @@ export const NotificationsFeed = meta.story({
           aria-label="Mute this thread"
           onChange={() => onMute('deploy')}
         />
-        <IconButton aria-label="Dismiss" onPress={() => onDismiss('deploy')}>
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label="Dismiss"
+          onPress={() => onDismiss('deploy')}
+        >
           <X />
-        </IconButton>
+        </Button>
       </ListView.Item>
     </ListView>
   ),
@@ -128,17 +191,28 @@ NotificationsFeed.test(
 
 // Scenario 2 — Resource list with a per-row menu: icon + name + meta +
 // ActionMenu (rename / delete / share).
+// A plain rounded-rect outline reads as an unchecked checkbox at this size,
+// which is misleading next to rows that don't support selection — the
+// folded corner and text lines mark this as a file/document instead.
 const FileIcon = () => (
-  <svg aria-hidden width={20} height={20} viewBox="0 0 20 20">
-    <rect
-      x="3"
-      y="2"
-      width="14"
-      height="16"
-      rx="1.5"
-      fill="none"
+  <svg aria-hidden width={20} height={20} viewBox="0 0 20 20" fill="none">
+    <path
+      d="M5 2.5h6.5L15 6v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1Z"
       stroke="currentColor"
       strokeWidth="1.5"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M11.5 2.5V6H15"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M6.5 10h6M6.5 13h4"
+      stroke="currentColor"
+      strokeWidth="1.2"
+      strokeLinecap="round"
     />
   </svg>
 );
@@ -149,8 +223,8 @@ const onDelete = fn();
 
 export const ResourceListWithMenu = meta.story({
   tags: ['component-test'],
-  render: () => (
-    <ListView aria-label="Resources">
+  render: args => (
+    <ListView {...args} aria-label="Resources">
       <ListView.Item id="report" textValue="Quarterly report">
         <FileIcon />
         <TextValue>Quarterly report</TextValue>
@@ -210,56 +284,21 @@ ResourceListWithMenu.test(
   }
 );
 
-// Scenario 3 — Settings list with toggles: label + description + Switch,
-// operated in place.
-const onSettingChange = fn();
-
-export const SettingsList = meta.story({
-  tags: ['component-test'],
-  render: () => (
-    <ListView aria-label="Notification settings">
-      <ListView.Item id="email" textValue="Email notifications">
-        <TextValue>Email notifications</TextValue>
-        <Description>Receive updates by email.</Description>
-        <Switch
-          aria-label="Email notifications"
-          onChange={selected => onSettingChange('email', selected)}
-        />
-      </ListView.Item>
-      <ListView.Item id="push" textValue="Push notifications">
-        <TextValue>Push notifications</TextValue>
-        <Description>Receive updates on this device.</Description>
-        <Switch
-          aria-label="Push notifications"
-          selected
-          onChange={selected => onSettingChange('push', selected)}
-        />
-      </ListView.Item>
-    </ListView>
-  ),
-});
-
-SettingsList.test(
-  'toggles a setting in place',
-  { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas }) => {
-    onSettingChange.mockClear();
-
-    const emailSwitch = await canvas.findByRole('switch', {
-      name: 'Email notifications',
-    });
-
-    expect(emailSwitch).not.toBeChecked();
-
-    await userEvent.click(emailSwitch);
-
-    expect(emailSwitch).toBeChecked();
-    expect(onSettingChange).toHaveBeenCalledWith('email', true);
-  }
-);
-
 export const WithTitle = meta.story({
   tags: ['component-test'],
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Rows can use `<Title>` instead of `<TextValue>` when the row's " +
+          'primary text is genuinely heading-like. It still renders as a ' +
+          '`<span>`, not an `<hN>` — visually identical to `<TextValue>` — ' +
+          "so this isn't about adding a description, it's about which " +
+          "semantics the row's primary text carries. See " +
+          '[Accessibility](#accessibility) for when to reach for it.',
+      },
+    },
+  },
   render: args => (
     <ListView {...args} aria-label="Team members">
       <ListView.Item id="jane" textValue="Jane Cooper">
@@ -283,6 +322,124 @@ WithTitle.test(
   }
 );
 
+// Scenario 4 — Complex layout: avatar + title + two lines of metadata +
+// a Switch and a dismiss button, all in one row. Shows that a row isn't
+// limited to a single leading icon / single description — leading media,
+// multiple text lines, and several trailing controls can all combine.
+const Avatar = ({ initials, color }: { initials: string; color: string }) => (
+  <svg aria-hidden width={32} height={32} viewBox="0 0 32 32">
+    <circle cx="16" cy="16" r="16" fill={color} />
+    <text
+      x="16"
+      y="21"
+      textAnchor="middle"
+      fontSize="12"
+      fontWeight="600"
+      fill="white"
+    >
+      {initials}
+    </text>
+  </svg>
+);
+
+const onNotifyChange = fn();
+const onRemoveMember = fn();
+
+export const TeamRosterWithStatus = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <ListView aria-label="Team roster">
+      <ListView.Item
+        id="jane"
+        textValue="Jane Cooper — Design lead — Active now"
+      >
+        <Avatar initials="JC" color="#6366F1" />
+        <Title>Jane Cooper</Title>
+        <Description>Design lead</Description>
+        <Description>Active now</Description>
+        <Switch
+          aria-label="Notify Jane Cooper"
+          selected
+          onChange={selected => onNotifyChange('jane', selected)}
+        />
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label="Remove Jane Cooper"
+          onPress={() => onRemoveMember('jane')}
+        >
+          <X />
+        </Button>
+      </ListView.Item>
+      <ListView.Item id="alex" textValue="Alex Kim — Engineer — Away">
+        <Avatar initials="AK" color="#059669" />
+        <Title>Alex Kim</Title>
+        <Description>Engineer</Description>
+        <Description>Away</Description>
+        <Switch
+          aria-label="Notify Alex Kim"
+          onChange={selected => onNotifyChange('alex', selected)}
+        />
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label="Remove Alex Kim"
+          onPress={() => onRemoveMember('alex')}
+        >
+          <X />
+        </Button>
+      </ListView.Item>
+    </ListView>
+  ),
+});
+
+TeamRosterWithStatus.test(
+  'operates the trailing controls of a row with multiple text lines',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    onNotifyChange.mockClear();
+    onRemoveMember.mockClear();
+
+    const notifySwitch = await canvas.findByRole('switch', {
+      name: 'Notify Alex Kim',
+    });
+    await userEvent.click(notifySwitch);
+    expect(onNotifyChange).toHaveBeenCalledWith('alex', true);
+
+    const removeButton = canvas.getByRole('button', {
+      name: 'Remove Jane Cooper',
+    });
+    await userEvent.click(removeButton);
+    expect(onRemoveMember).toHaveBeenCalledWith('jane');
+  }
+);
+
+// `variant="plain"` drops the default surface (ring, shadow, radius) so the
+// list can sit flush inside a container that already provides its own frame
+// — a Popover, a Panel, or here, a Card. `bleed` lets the list's own dividers
+// span the Card's full width instead of stopping at its padding.
+export const EmbeddedInCard = meta.story({
+  render: () => (
+    <Card>
+      <Card.Header>
+        <Title>Notifications</Title>
+      </Card.Header>
+      <Card.Content bleed>
+        <ListView variant="plain" aria-label="Notifications">
+          <ListView.Item id="build" textValue="Build finished">
+            <TextValue>Build finished</TextValue>
+            <Description>2 minutes ago</Description>
+          </ListView.Item>
+          <ListView.Item id="deploy" textValue="Deploy succeeded">
+            <TextValue>Deploy succeeded</TextValue>
+            <Description>1 hour ago</Description>
+          </ListView.Item>
+        </ListView>
+      </Card.Content>
+    </Card>
+  ),
+});
+
 export const EmptyState = meta.story({
   render: args => (
     <ListView
@@ -290,9 +447,10 @@ export const EmptyState = meta.story({
       aria-label="Resources"
       items={[]}
       emptyState={
-        <div className="text-secondary p-6 text-center text-sm">
-          No resources yet.
-        </div>
+        <EmptyStateComponent
+          title="No resources yet."
+          description="Resources you add will show up here."
+        />
       }
     >
       {(item: { id: string; name: string }) => (

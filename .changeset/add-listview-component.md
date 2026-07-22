@@ -4,7 +4,7 @@
 '@marigold/docs': patch
 ---
 
-feat(ListView): add non-form interactive list component (DST-1485)
+feat(DST-1489): add non-form interactive list component
 
 Adds `<ListView>` and `<ListView.Item>`, a non-form list built on React Aria's `GridList`/`GridListItem` for rows the user operates in place — toggling a `<Switch>`, dismissing with an `<IconButton>`, opening a per-row `<ActionMenu>`, or following a link — without leaving the page. Unlike `<SelectList>`/`<Select>`/`<ListBox>`, `<ListView>` has no selection, no hidden input, and never becomes a submitted form value.
 

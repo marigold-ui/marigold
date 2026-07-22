@@ -1,3 +1,4 @@
+import type { Ref } from 'react';
 import { theme } from '@marigold/theme-rui';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -38,7 +39,7 @@ describe('ListView', () => {
     test('forwards refs to the underlying HTMLElement', () => {
       const ref: { current: HTMLDivElement | null } = { current: null };
 
-      render(<Basic.Component ref={ref as any} />);
+      render(<Basic.Component ref={ref as Ref<HTMLDivElement>} />);
 
       expect(ref.current).toBeInstanceOf(HTMLElement);
     });
@@ -79,20 +80,28 @@ describe('ListView', () => {
 
   describe('interactive rows (must-support scenarios)', () => {
     test('notifications: mutes and dismisses a row without navigating away', async () => {
+      // Arrange
       render(<NotificationsFeed.Component />);
-
       const [muteSwitch] = screen.getAllByRole('switch', {
         name: 'Mute this thread',
       });
+
+      // Assert (initial state)
       expect(muteSwitch).not.toBeChecked();
+
+      // Act
       await user.click(muteSwitch);
+
+      // Assert
       expect(muteSwitch).toBeChecked();
 
+      // Act
       const [dismissButton] = screen.getAllByRole('button', {
         name: 'Dismiss',
       });
       await user.click(dismissButton);
 
+      // Assert
       // The row's own content is still present — dismissing is a consumer
       // concern (removing the item from data), not something ListView does.
       expect(
@@ -101,30 +110,38 @@ describe('ListView', () => {
     });
 
     test('resource list: opens the row action menu and exposes its items', async () => {
+      // Arrange
       render(<ResourceListWithMenu.Component />);
-
       const trigger = screen.getByRole('button', {
         name: 'Quarterly report actions',
       });
+
+      // Assert (initial state)
       expect(trigger).toHaveAttribute('aria-expanded', 'false');
 
+      // Act
       await user.click(trigger);
 
+      // Assert
       await waitFor(() =>
         expect(trigger).toHaveAttribute('aria-expanded', 'true')
       );
     });
 
     test('settings list: toggles a switch in place', async () => {
+      // Arrange
       render(<SettingsList.Component />);
-
       const emailSwitch = screen.getByRole('switch', {
         name: 'Email notifications',
       });
+
+      // Assert (initial state)
       expect(emailSwitch).not.toBeChecked();
 
+      // Act
       await user.click(emailSwitch);
 
+      // Assert
       expect(emailSwitch).toBeChecked();
     });
   });

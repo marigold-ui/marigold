@@ -5,11 +5,11 @@ import { GridListItem as RACGridListItem } from 'react-aria-components/GridList'
 import { HeadingContext } from 'react-aria-components/Heading';
 import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
-import { cn } from '@marigold/system';
 import { ButtonContext as MarigoldButtonContext } from '../Button/Context';
 import { Description } from '../Description/Description';
 import { TextValue } from '../TextValue/TextValue';
 import { Title } from '../Title/Title';
+import type { SlottedContextValue } from '../utils/useMergedTextSlots';
 import { useMergedTextSlots } from '../utils/useMergedTextSlots';
 import { useListViewContext } from './Context';
 
@@ -23,20 +23,18 @@ import { useListViewContext } from './Context';
 // so can't be positioned purely via context-injected className.
 const TEXT_TYPES = new Set<unknown>([TextValue, Description, Title]);
 
+const isTextChild = (child: ReactNode) =>
+  isValidElement(child) && TEXT_TYPES.has(child.type);
+
 const splitChildren = (children: ReactNode) => {
   const items = Children.toArray(children);
-  const textIndexes = items
-    .map((child, index) =>
-      isValidElement(child) && TEXT_TYPES.has(child.type) ? index : -1
-    )
-    .filter(index => index !== -1);
+  const first = items.findIndex(isTextChild);
 
-  if (textIndexes.length === 0) {
+  if (first === -1) {
     return { leading: [], content: items, trailing: [] };
   }
 
-  const first = textIndexes[0];
-  const last = textIndexes[textIndexes.length - 1];
+  const last = items.findLastIndex(isTextChild);
 
   return {
     leading: items.slice(0, first),
@@ -52,6 +50,10 @@ export interface ListViewItemProps extends Omit<
   RemovedProps
 > {
   children?: ReactNode;
+  /**
+   * Whether the row is disabled.
+   * @default false
+   */
   disabled?: RAC.GridListItemProps<object>['isDisabled'];
   ref?: Ref<HTMLDivElement>;
 }
@@ -66,8 +68,7 @@ interface ItemChildrenProps {
   actionClassName?: string;
 }
 
-const EMPTY_HEADING_CTX: { slots?: Record<string, Record<string, unknown>> } =
-  {};
+const EMPTY_HEADING_CTX: SlottedContextValue = {};
 
 // A trailing action in a row is low-emphasis chrome, so a nested Marigold
 // `<Button>`/`<IconButton>`/`<ActionMenu>` defaults to `ghost` (a local
@@ -167,7 +168,7 @@ export const ListViewItem = ({
       isDisabled={disabled}
       textValue={resolvedTextValue}
       {...props}
-      className={cn(classNames?.item)}
+      className={classNames?.item}
       ref={ref}
     >
       <ItemChildren

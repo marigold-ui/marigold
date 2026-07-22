@@ -21,13 +21,25 @@ type RemovedProps =
   | 'disallowEmptySelection'
   | 'dragAndDropHooks'
   | 'renderEmptyState'
-  | 'orientation';
+  | 'orientation'
+  | 'layout';
 
 export interface ListViewProps extends Omit<
   RAC.GridListProps<object>,
   RemovedProps
 > {
-  variant?: 'default' | (string & {});
+  /**
+   * Visual variant of the list.
+   * - `default` — a bounded surface (ring, shadow, rounded corners), for a
+   *   standalone list.
+   * - `plain` — no outer frame, for embedding inside a container that
+   *   already provides one (e.g. `<Popover>`, `<Panel>`, `<Card>`).
+   * @default 'default'
+   */
+  variant?: 'default' | 'plain' | (string & {});
+  /**
+   * Size token applied to the list.
+   */
   size?: string;
   /**
    * Content to render when the list is empty.
@@ -61,9 +73,8 @@ const ListViewBase = ({
           renderEmptyState: () => emptyState,
         })}
         ref={ref}
-        layout="grid"
         selectionMode="none"
-        className={cn('group/list', classNames.list)}
+        className={cn(classNames.list)}
       >
         {children}
       </RACGridList>
