@@ -4,7 +4,7 @@ import {
   type KeyboardEvent,
   type PointerEvent,
   type PropsWithChildren,
-  useEffect,
+  useCallback,
   useRef,
   useState,
 } from 'react';
@@ -34,7 +34,6 @@ export const DemoResizer = ({
   defaultWidth = 480,
   minWidth = 200,
 }: PropsWithChildren<DemoResizerProps>) => {
-  const containerRef = useRef<HTMLDivElement | null>(null);
   const [width, setWidth] = useState(defaultWidth);
   const [maxWidth, setMaxWidth] = useState(Infinity);
   const dragStartRef = useRef<{ x: number; width: number } | null>(null);
@@ -42,19 +41,21 @@ export const DemoResizer = ({
   const clamp = (value: number) =>
     Math.round(Math.min(Math.max(value, minWidth), maxWidth));
 
-  // The upper bound is the available space: full container width minus
-  // the handle and the gap next to it.
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+  // The upper bound is the available space: full container width minus the
+  // handle and the gap next to it. A callback ref starts the observer as
+  // soon as the container mounts and its cleanup (React 19) disconnects it
+  // on unmount -- no separate effect needed since nothing else re-triggers
+  // this setup.
+  const containerRef = useCallback((node: HTMLDivElement | null) => {
+    if (!node) return;
 
     const observer = new ResizeObserver(() => {
-      const handle = container.lastElementChild as HTMLElement;
-      const max = container.clientWidth - handle.offsetWidth - 8;
+      const handle = node.lastElementChild as HTMLElement;
+      const max = node.clientWidth - handle.offsetWidth - 8;
       setMaxWidth(max);
       setWidth(current => Math.min(current, max));
     });
-    observer.observe(container);
+    observer.observe(node);
     return () => observer.disconnect();
   }, []);
 

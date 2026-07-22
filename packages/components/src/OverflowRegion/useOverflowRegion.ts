@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 export interface OverflowRegionItemProps {
   className: string;
@@ -37,91 +37,75 @@ const HIDDEN = 'shrink-0 invisible absolute';
  * visible count.
  */
 export const useOverflowRegion = (itemCount: number) => {
-  const regionRef = useRef<HTMLDivElement | null>(null);
+  // The region node lives in state (set by the ref callback below) so the
+  // layout effect can depend on it directly, instead of reaching into a
+  // plain ref from a second, separately triggered effect.
+  const [region, setRegion] = useState<HTMLDivElement | null>(null);
   const [visibleCount, setVisibleCount] = useState(itemCount);
 
-  const calculate = useCallback(() => {
-    const region = regionRef.current;
+  // (Re-)observe the region and its items whenever the node mounts or the
+  // item count changes -- a changed count means different children need
+  // their own observer entries. Runs before paint so the initial
+  // all-visible server markup is corrected without a flash.
+  //
+  // Items are observed too, not just the region, to catch an item changing
+  // its own size, e.g. a select growing with a longer value -- the
+  // region's width stays constant in that case, so a region-only observer
+  // would miss it.
+  useLayoutEffect(() => {
     if (!region) return;
 
-    const regionStyle = getComputedStyle(region);
-    // Content-box width: the padding is only clip-edge slack (see the
-    // region's className), not space that items may occupy.
-    const available =
-      region.clientWidth -
-      (parseFloat(regionStyle.paddingLeft) || 0) -
-      (parseFloat(regionStyle.paddingRight) || 0);
-    const gap = parseFloat(regionStyle.gap) || 0;
-    const width = (element: Element) => element.getBoundingClientRect().width;
+    const calculate = () => {
+      const regionStyle = getComputedStyle(region);
+      // Content-box width: the padding is only clip-edge slack (see the
+      // region's className), not space that items may occupy.
+      const available =
+        region.clientWidth -
+        (parseFloat(regionStyle.paddingLeft) || 0) -
+        (parseFloat(regionStyle.paddingRight) || 0);
+      const gap = parseFloat(regionStyle.gap) || 0;
+      const width = (element: Element) => element.getBoundingClientRect().width;
 
-    const items = Array.from(
-      region.querySelectorAll(':scope > [data-overflow-item]')
-    );
-    const indicator = region.querySelector(
-      ':scope > [data-overflow-indicator]'
-    );
+      const items = Array.from(
+        region.querySelectorAll(':scope > [data-overflow-item]')
+      );
+      const indicator = region.querySelector(
+        ':scope > [data-overflow-indicator]'
+      );
 
-    // Half-pixel tolerance so subpixel rounding does not demote an item
-    // that visually fits.
-    const fits = (used: number) => used <= available + 0.5;
+      // Half-pixel tolerance so subpixel rounding does not demote an item
+      // that visually fits.
+      const fits = (used: number) => used <= available + 0.5;
 
-    const total = items.reduce(
-      (sum, item, index) => sum + width(item) + (index > 0 ? gap : 0),
-      0
-    );
-    if (fits(total)) {
-      setVisibleCount(items.length);
-      return;
-    }
-
-    // Not everything fits: reserve room for the indicator, then fit items
-    // front to back — the tail demotes first.
-    const reserved = indicator ? width(indicator) + gap : 0;
-    let used = 0;
-    let count = 0;
-    for (const item of items) {
-      used += width(item) + (count > 0 ? gap : 0);
-      if (!fits(used + reserved)) break;
-      count++;
-    }
-    setVisibleCount(count);
-  }, []);
-
-  const observerRef = useRef<ResizeObserver | null>(null);
-
-  // Callback ref so observation starts as soon as the region mounts.
-  // Observing the items as well (not just the region) catches items
-  // changing their own size, e.g. a select growing with a longer value —
-  // the region's width stays constant in that case, so a region-only
-  // observer would miss it.
-  const observe = useCallback(
-    (node: HTMLDivElement | null) => {
-      observerRef.current?.disconnect();
-      observerRef.current = null;
-      regionRef.current = node;
-
-      if (!node) return;
-      const observer = new ResizeObserver(calculate);
-      observer.observe(node);
-      for (const child of node.children) {
-        observer.observe(child);
+      const total = items.reduce(
+        (sum, item, index) => sum + width(item) + (index > 0 ? gap : 0),
+        0
+      );
+      if (fits(total)) {
+        setVisibleCount(items.length);
+        return;
       }
-      observerRef.current = observer;
-    },
-    [calculate]
-  );
 
-  // Re-measure (and re-observe, since the children changed) when the item
-  // count changes; runs before paint so the initial all-visible server
-  // markup is corrected without a flash.
-  useLayoutEffect(() => {
-    const region = regionRef.current;
-    if (region) observe(region);
-    return () => {
-      observerRef.current?.disconnect();
-      observerRef.current = null;
+      // Not everything fits: reserve room for the indicator, then fit items
+      // front to back -- the tail demotes first.
+      const reserved = indicator ? width(indicator) + gap : 0;
+      let used = 0;
+      let count = 0;
+      for (const item of items) {
+        used += width(item) + (count > 0 ? gap : 0);
+        if (!fits(used + reserved)) break;
+        count++;
+      }
+      setVisibleCount(count);
     };
-  }, [itemCount, observe]);
+
+    const observer = new ResizeObserver(calculate);
+    observer.observe(region);
+    for (const child of region.children) {
+      observer.observe(child);
+    }
+    return () => observer.disconnect();
+  }, [region, itemCount]);
 
   const hidden = {
     className: HIDDEN,
@@ -131,7 +115,7 @@ export const useOverflowRegion = (itemCount: number) => {
 
   return {
     regionProps: {
-      ref: observe,
+      ref: setRegion,
       // `relative` anchors the absolutely positioned (demoted) items. Only
       // the x-axis is clipped so focus rings and border anti-aliasing stay
       // intact vertically; the negative margin + padding pair moves the
