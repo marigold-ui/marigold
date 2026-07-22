@@ -29,6 +29,13 @@ const regions = [
   'Baden-Württemberg',
   'Lower Saxony',
   'Rhineland-Palatinate',
+  'Saxony',
+  'Vienna',
+  'Upper Austria',
+  'Salzburg',
+  'Tyrol',
+  'Zurich',
+  'Basel-Stadt',
 ];
 const statuses = ['Available', 'Held', 'Booked'];
 
@@ -181,8 +188,12 @@ const PickBody = ({
                 <Table.Column rowHeader>Venue</Table.Column>
                 <Table.Column>City</Table.Column>
                 <Table.Column>Region</Table.Column>
+                <Table.Column>Country</Table.Column>
                 <Table.Column>Type</Table.Column>
+                <Table.Column>Setting</Table.Column>
                 <Table.Column alignX="right">Capacity</Table.Column>
+                <Table.Column alignX="right">Rating</Table.Column>
+                <Table.Column alignX="right">Upcoming</Table.Column>
                 <Table.Column>Status</Table.Column>
                 <Table.Column alignX="right">Day rate</Table.Column>
               </Table.Header>
@@ -200,8 +211,12 @@ const PickBody = ({
                     <Table.Cell>{venue.name}</Table.Cell>
                     <Table.Cell>{venue.city}</Table.Cell>
                     <Table.Cell>{venue.region}</Table.Cell>
+                    <Table.Cell>{venue.country}</Table.Cell>
                     <Table.Cell>{venue.type}</Table.Cell>
+                    <Table.Cell>{venue.setting}</Table.Cell>
                     <Table.Cell alignX="right">{venue.capacity}</Table.Cell>
+                    <Table.Cell alignX="right">{venue.rating}</Table.Cell>
+                    <Table.Cell alignX="right">{venue.events}</Table.Cell>
                     <Table.Cell>
                       <Badge variant={statusVariant[venue.status]}>
                         {venue.status}
