@@ -262,12 +262,24 @@ const rawVenues = [
 // this module never causes hydration mismatches.
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+// Format a `Date` as `YYYY-MM-DD` from its local date parts. `toISOString()`
+// would convert to UTC first, which shifts the calendar day across midnight for
+// runtimes west of UTC and can push a venue just outside a relative preset
+// ("Next 7 days", "This month") that resolves in the local timezone and should
+// include it.
+const toLocalISODate = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 export const venues = rawVenues.map((venue, index) => ({
   ...venue,
   /** Next available date as an ISO date (`YYYY-MM-DD`). */
-  nextAvailable: new Date(Date.now() + ((index * 11) % 84) * DAY_MS)
-    .toISOString()
-    .slice(0, 10),
+  nextAvailable: toLocalISODate(
+    new Date(Date.now() + ((index * 11) % 84) * DAY_MS)
+  ),
 }));
 
 export type Venue = (typeof venues)[number];

@@ -145,13 +145,15 @@ Promote a filter to a quick filter only when both hold:
 
 If you cannot identify the most-used few, leave everything in the panel and rely on search rather than promoting a filter you cannot justify by usage.
 
-For the controls themselves, use something compact and field shaped, such as a [Select](/components/form/select), so the bar reads as one family of inputs. A [SegmentedControl](/components/form/segmented-control) is not a quick filter but a scope switch: it answers which set the user is looking at, such as All, Active, and Archived events, while the filters narrow within that set. Because it re-bases the whole view rather than adding one more condition, it sits at the start of the bar, apart from the field cluster, and its label names the view rather than a filter dimension. Quick filters apply instantly, so see [Applying Filters](#applying) for how that model works alongside the panel's batched commit.
+For the controls themselves, use something compact and field shaped, such as a [Select](/components/form/select), so the bar reads as one family of inputs. Quick filters apply instantly, so see [Applying Filters](#applying) for how that model works alongside the panel's batched commit.
 
 <ComponentDemo name="filter-promoted" />
 
 #### Bar Layout
 
 Quick filters make the filter bar a real layout concern. Keep it to a **single horizontal row**: a scope switch first if there is one, then the search field, the quick filters, and the "All filters" button that opens the panel. Indicators or view actions sit at the far end, right-aligned. Compose the row with [Inline](/components/layout/inline) and `alignY="input"` so inputs and buttons line up.
+
+A [SegmentedControl](/components/form/segmented-control) is not a quick filter but a scope switch: it answers which set the user is looking at, such as All, Active, and Archived events, while the filters narrow within that set. Because it re-bases the whole view rather than adding one more condition, it sits at the start of the bar, apart from the field cluster, and its label names the view rather than a filter dimension.
 
 A single row only works when every control in it stays compact:
 

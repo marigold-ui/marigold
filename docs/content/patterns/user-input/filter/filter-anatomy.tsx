@@ -3,6 +3,7 @@ export const FilterAnatomy = () => (
     viewBox="0 0 820 470"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
   >
     {/* App frame / page */}
     <rect
