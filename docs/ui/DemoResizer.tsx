@@ -76,10 +76,9 @@ export const DemoResizer = ({
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    const direction =
-      event.key === 'ArrowLeft' ? -1 : event.key === 'ArrowRight' ? 1 : 0;
-    if (!direction) return;
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
     event.preventDefault();
+    const direction = event.key === 'ArrowLeft' ? -1 : 1;
     setWidth(current => clamp(current + direction * KEYBOARD_STEP));
   };
 

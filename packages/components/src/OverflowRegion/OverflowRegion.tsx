@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Children, useLayoutEffect, useRef } from 'react';
+import { Children, isValidElement, useLayoutEffect, useRef } from 'react';
 import type { SpaceProp, SpacingTokens } from '@marigold/system';
 import { cn, createSpacingVar } from '@marigold/system';
 import { useOverflowRegion } from './useOverflowRegion';
@@ -105,8 +105,10 @@ export const OverflowRegion = ({
     >
       {items.map((item, index) => {
         const { className, ...itemProps } = getItemProps(index);
-        // Children.toArray assigns stable keys to all children.
-        const key = (item as { key?: string | null }).key ?? index;
+        // Children.toArray assigns stable keys to elements; fall back to
+        // the index for non-element children (e.g. plain strings), which
+        // have none.
+        const key = isValidElement(item) ? (item.key ?? index) : index;
         return (
           <div key={key} {...itemProps} className={className}>
             {item}
