@@ -97,7 +97,7 @@ export const Compact = meta.story({
       title="Invoices didn't load"
       description="You can retry. The rest of the page is unaffected."
       action={
-        <Button variant="primary" size="small" onPress={retry}>
+        <Button variant="primary" size="small">
           Try again
         </Button>
       }
