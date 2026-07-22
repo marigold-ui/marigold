@@ -139,6 +139,12 @@ export type { FileTriggerProps } from './FileField/FileTrigger';
 export { FileField } from './FileField/FileField';
 export type { FileFieldProps } from './FileField/FileField';
 
+export { FilterBar } from './FilterBar/FilterBar';
+export type { FilterBarProps } from './FilterBar/FilterBar';
+export type { FilterBarQuickProps } from './FilterBar/FilterBarQuick';
+export type { FilterBarSearchProps } from './FilterBar/FilterBarSearch';
+export type { FilterBarPanelProps } from './FilterBar/FilterBarPanel';
+
 export { Form } from './Form/Form';
 export type { FormProps } from './Form/Form';
 

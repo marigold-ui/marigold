@@ -59,6 +59,7 @@ export { Underlay } from './Underlay.styles';
 export { Loader } from './Loader.styles';
 export { Breadcrumbs } from './Breadcrumbs.styles';
 export { FileField } from './FileField.styles';
+export { FilterBar } from './FilterBar.styles';
 export { ToggleButton } from './ToggleButton.styles';
 export { SegmentedControl } from './SegmentedControl.styles';
 export { TopNavigation } from './TopNavigation.styles';

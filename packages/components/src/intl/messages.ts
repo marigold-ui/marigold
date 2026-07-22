@@ -7,6 +7,7 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     appNavigation: 'App-Navigation',
     back: 'Zurück',
     backTo: vars => `Zurück zu ${vars?.label}`,
+    allFilters: 'Alle Filter',
     allItemsSelected: 'Alle Elemente ausgewählt',
     bulkActionsAriaLabel: 'Massenaktionen',
     cancel: 'Abbrechen',
@@ -21,6 +22,8 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     help: 'Hilfe',
     globalNavigation: 'Globale Navigation',
     globalNavigationUtilities: 'Hilfsfunktionen',
+    hiddenActiveFilters: vars =>
+      `${vars?.count} aktive Filter im Panel verfügbar`,
     hiddenBreadcrumbs: 'Diese Breadcrumbs sind ausgeblendet',
     hiddenPages: 'Diese Seiten sind ausgeblendet',
     items: 'Elemente',
@@ -63,6 +66,7 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     appNavigation: 'App navigation',
     back: 'Back',
     backTo: vars => `Back to ${vars?.label}`,
+    allFilters: 'All filters',
     allItemsSelected: 'All items selected',
     bulkActionsAriaLabel: 'Bulk Actions',
     cancel: 'Cancel',
@@ -77,6 +81,8 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     help: 'Help',
     globalNavigation: 'Global navigation',
     globalNavigationUtilities: 'Utilities',
+    hiddenActiveFilters: vars =>
+      `${vars?.count} active filters available in the panel`,
     hiddenBreadcrumbs: 'These breadcrumbs are hidden',
     hiddenPages: 'These pages are hidden',
     items: 'Items',
