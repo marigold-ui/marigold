@@ -9,21 +9,15 @@ import { useSidebar } from './Context';
 export interface SidebarModalProps {
   children?: ReactNode;
   ref?: Ref<HTMLElement>;
-  /**
-   * Renders the drawer as a partial-width sheet floating over a dimmed page
-   * (the two-level rail's mobile shell) instead of the default full-width
-   * sheet. Tapping the exposed backdrop dismisses.
-   */
-  partial?: boolean;
 }
 
 /**
  * The mobile drawer shell: a dismissable overlay + modal holding the sidebar
  * `aside` with its header/content/footer grid. Shared by the single-column
  * `Sidebar` and the two-level `Sidebar.Rail` so both collapse to the same
- * drawer on small screens.
+ * full-width drawer on small screens.
  */
-export const SidebarModal = ({ children, partial, ref }: SidebarModalProps) => {
+export const SidebarModal = ({ children, ref }: SidebarModalProps) => {
   const { state, toggleSidebar, classNames } = useSidebar();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
@@ -31,31 +25,20 @@ export const SidebarModal = ({ children, partial, ref }: SidebarModalProps) => {
     <ModalOverlay
       isOpen={state === 'expanded'}
       onOpenChange={open => !open && toggleSidebar()}
-      // The theme's overlay recipe reads this to paint the dimmed backdrop.
-      data-partial={partial || undefined}
       className={cn(
         'fixed inset-0 z-50 h-(--visual-viewport-height)',
         classNames.overlay
       )}
       isDismissable
     >
-      {/* Partial: the theme narrows the modal so the backdrop stays exposed;
-          a pointer down there is an outside interaction (dismiss). */}
       <Modal className={classNames.modal}>
         <aside
           ref={ref}
           aria-label={stringFormatter.format('sidebar')}
           data-state={state}
-          // relative: anchor the absolute close button to the drawer — without
-          // it the button resolves against the fixed overlay (viewport edge),
-          // which the partial (rail) drawer exposes.
+          // relative: anchor the absolute close button to the drawer.
           className={cn('relative h-full [grid-area:sidebar]', classNames.root)}
         >
-          {/* Both drawers carry the close button at the top-right. The `aside`
-              is `relative`, so it anchors to the drawer edge — on the partial
-              (rail) drawer that is the hugged sheet, not the exposed viewport.
-              The partial drawer can also be dismissed via the backdrop tap or
-              Escape. */}
           <CloseButton
             aria-label={stringFormatter.format('closeNavigation')}
             className={cn('z-50', classNames.closeButton)}

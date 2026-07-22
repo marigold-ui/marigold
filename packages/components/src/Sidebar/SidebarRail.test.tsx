@@ -261,58 +261,89 @@ describe('Sidebar.Rail — mobile', () => {
     ensureOverlayContainer();
   });
 
-  test('the drawer shows the rail and the active section panel side by side', async () => {
+  // Panels of every branch stay mounted (absolutely stacked, inert when not
+  // active) — assert which level is showing via its `data-position`, same as
+  // the single-column suite.
+  const panelPosition = (element: HTMLElement) =>
+    // eslint-disable-next-line testing-library/no-node-access
+    element.closest('[data-position]');
+
+  test('the drawer is the same single-column sheet as the plain sidebar', async () => {
     render(<Rail.Component />);
 
     await openDrawer();
 
-    // Both levels at once — the miniature of the desktop layout, not the old
-    // flattened drill-in (which announced itself with a Back-to-root action).
+    // One drill-down nav landmark — no rail column and no side-by-side
+    // section nav (sections are drilled-in regions now).
     expect(
       await screen.findByRole('navigation', { name: 'Hauptnavigation' })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('navigation', { name: 'Tickets' })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: 'Tickets' })
-    ).toBeInTheDocument();
-    expect(
-      screen.queryByRole('button', { name: /Zurück/i })
-    ).not.toBeInTheDocument();
-  });
-
-  test('a section tap swaps the panel in place and keeps the drawer open', async () => {
-    render(<Rail.Component />);
-    const toggle = await openDrawer();
-
-    await user.click(screen.getByRole('link', { name: 'Kontakte' }));
-
-    expect(
-      await screen.findByRole('navigation', { name: 'Kontakte' })
-    ).toBeInTheDocument();
-    expect(
       screen.queryByRole('navigation', { name: 'Tickets' })
     ).not.toBeInTheDocument();
-    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      screen.getByRole('button', { name: 'Navigation schließen' })
+    ).toBeInTheDocument();
   });
 
-  test('re-tapping the active section in the drawer is a no-op', async () => {
+  test('opens pre-drilled into the active section', async () => {
+    render(<Rail.Component />);
+
+    await openDrawer();
+
+    // `current` matches a Tickets leaf, so the drawer opens at the section
+    // level with the back row, not at the rail-level list. Scope to the
+    // drawer: the top-bar breadcrumb mirrors leaf names as links.
+    const drawer = await screen.findByRole('complementary', {
+      name: 'Seitenleiste',
+    });
+    expect(
+      within(drawer).getByRole('button', { name: 'Zurück zu Tickets' })
+    ).toBeInTheDocument();
+    expect(
+      panelPosition(within(drawer).getByRole('link', { name: 'Meine Tickets' }))
+    ).toHaveAttribute('data-position', 'active');
+  });
+
+  test('back returns to the rail-level list and keeps the drawer open', async () => {
     render(<Rail.Component />);
     const toggle = await openDrawer();
-    await user.click(screen.getByRole('link', { name: 'Kontakte' }));
-    await screen.findByRole('navigation', { name: 'Kontakte' });
 
-    await user.click(screen.getByRole('link', { name: 'Kontakte' }));
+    await user.click(
+      await screen.findByRole('button', { name: 'Zurück zu Tickets' })
+    );
 
-    // The panel is always visible in the drawer, so there is nothing to toggle.
-    expect(
-      screen.getByRole('navigation', { name: 'Kontakte' })
-    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        panelPosition(screen.getByRole('link', { name: 'Übersicht' }))
+      ).toHaveAttribute('data-position', 'active')
+    );
     expect(toggle).toHaveAttribute('aria-expanded', 'true');
   });
 
-  test('a panel leaf navigates and closes the drawer', async () => {
+  test('a section row drills in and keeps the drawer open', async () => {
+    render(<Rail.Component />);
+    const toggle = await openDrawer();
+    const drawer = await screen.findByRole('complementary', {
+      name: 'Seitenleiste',
+    });
+    await user.click(
+      within(drawer).getByRole('button', { name: 'Zurück zu Tickets' })
+    );
+
+    await user.click(within(drawer).getByRole('link', { name: 'Kontakte' }));
+
+    // Drilling in also navigates to the section's landing page (auto-derived
+    // href), mirroring the desktop rail and the single-column branch rows.
+    await waitFor(() =>
+      expect(
+        panelPosition(within(drawer).getByRole('link', { name: 'Personen' }))
+      ).toHaveAttribute('data-position', 'active')
+    );
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  test('a section leaf navigates and closes the drawer', async () => {
     render(<Rail.Component />);
     const toggle = await openDrawer();
 
@@ -320,71 +351,59 @@ describe('Sidebar.Rail — mobile', () => {
       await screen.findByRole('link', { name: 'Nicht zugewiesen' })
     );
 
-    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    await waitFor(() =>
+      expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    );
   });
 
-  test('a direct-link rail item navigates and closes the drawer', async () => {
+  test('a direct-link row navigates and closes the drawer', async () => {
     render(<Rail.Component />);
     const toggle = await openDrawer();
+    await user.click(
+      await screen.findByRole('button', { name: 'Zurück zu Tickets' })
+    );
 
-    await user.click(screen.getByRole('link', { name: 'Berichte' }));
+    await user.click(await screen.findByRole('link', { name: 'Berichte' }));
 
-    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    await waitFor(() =>
+      expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    );
   });
 
-  test('a pinned footer rail item navigates and closes the drawer', async () => {
+  test('a pinned footer rail item is a row in the list and closes the drawer', async () => {
     render(<Rail.Component />);
     const toggle = await openDrawer();
+    await user.click(
+      await screen.findByRole('button', { name: 'Zurück zu Tickets' })
+    );
 
     await user.click(await screen.findByRole('link', { name: 'Hilfe-Center' }));
 
-    expect(toggle).toHaveAttribute('aria-expanded', 'false');
-  });
-
-  test('opening the drawer moves focus to the panel heading', async () => {
-    render(<Rail.Component />);
-
-    await openDrawer();
-
-    // The Dialog-less drawer autofocuses nothing on its own — the rail moves
-    // focus so Escape and screen readers land inside the modal right away.
-    const heading = await screen.findByRole('heading', { name: 'Tickets' });
-    await waitFor(() => expect(heading).toHaveFocus());
-  });
-
-  test('on a page without a panel, focus falls to the first rail link', async () => {
-    render(<Rail.Component />);
-    const toggle = await openDrawer();
-    // Navigating to the direct-link page closes the drawer and leaves no
-    // section selected, so the reopened drawer has no panel heading to focus.
-    await user.click(screen.getByRole('link', { name: 'Berichte' }));
-
-    await user.click(toggle);
-
-    const first = await screen.findByRole('link', { name: 'Übersicht' });
-    await waitFor(() => expect(first).toHaveFocus());
-  });
-
-  test('on a page without a panel, the drawer hugs the rail instead of reserving an empty panel column', async () => {
-    render(<Rail.Component />);
-    const toggle = await openDrawer();
-    // Navigating to the direct-link page closes the drawer and leaves no
-    // section selected.
-    await user.click(screen.getByRole('link', { name: 'Berichte' }));
-
-    await user.click(toggle);
-
-    const drawer = await screen.findByRole('complementary', {
-      name: 'Seitenleiste',
-    });
-    // The body flags the collapsed panel — the theme reads it to shrink the
-    // sheet to the rail — and the panel region is not rendered at all.
-    // eslint-disable-next-line testing-library/no-node-access
-    expect(drawer.querySelector('[data-panel]')).toHaveAttribute(
-      'data-panel',
-      'collapsed'
+    await waitFor(() =>
+      expect(toggle).toHaveAttribute('aria-expanded', 'false')
     );
-    expect(within(drawer).queryByRole('heading')).not.toBeInTheDocument();
+  });
+
+  test('the close button and the backdrop dismiss the drawer', async () => {
+    render(<Rail.Component />);
+    const toggle = await openDrawer();
+
+    await user.click(
+      screen.getByRole('button', { name: 'Navigation schließen' })
+    );
+    await waitFor(() =>
+      expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    );
+
+    await user.click(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    // Dismiss via react-aria's hidden dismiss button (simulates the backdrop
+    // tap / Escape), same as the single-column drawer suite.
+    const [dismiss] = screen.getAllByRole('button', { name: 'Schließen' });
+    await user.click(dismiss);
+    await waitFor(() =>
+      expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    );
   });
 });
 

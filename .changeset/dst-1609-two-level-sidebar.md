@@ -12,9 +12,9 @@ A `Sidebar.RailItem` wrapping a `Sidebar.Nav` is a section that shows a panel. O
 only an `href` is a direct link, and one inside `Sidebar.Footer` pins to the bottom of the
 rail. Its `active` prop overrides href matching for pages the URL can't identify.
 Collapsing (toggle or Cmd/Ctrl+B) hides the panel while the rail narrows to an icon
-strip, so top-level navigation always stays available. On small screens the drawer
-shows the rail and the active panel side by side, where sections swap the panel in place
-and links close the drawer.
+strip, so top-level navigation always stays available. On small screens the rail
+renders as the same single-column drawer as the plain sidebar: sections drill in
+(opened at the active section) and links close the drawer.
 
 - `<AppShell>` switches to a full-width top bar automatically when a rail is present
   (pure CSS via `:has()`), so the brand never moves when the panel collapses.

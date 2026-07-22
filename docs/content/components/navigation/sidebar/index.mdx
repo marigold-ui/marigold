@@ -112,7 +112,7 @@ A `Sidebar.RailItem` wrapping a `Sidebar.Nav` is a section. Selecting it fills t
 
 <ComponentDemo name="sidebar-rail" background="page" />
 
-Collapsing behaves differently than in the single column: the toggle hides the **panel** while the rail narrows to an icon-only strip, so top-level navigation is always one click away. Re-selecting the active section reopens the panel. On small screens the drawer shows the rail and the active panel side by side. Tapping a section swaps the panel in place, and tapping a link closes the drawer.
+Collapsing behaves differently than in the single column: the toggle hides the **panel** while the rail narrows to an icon-only strip, so top-level navigation is always one click away. Re-selecting the active section reopens the panel. On small screens the rail renders as the same drawer as the single-column sidebar: one column where sections [drill in](#drill-down-navigation) (the drawer opens inside the active section), direct links are plain rows, and tapping a link closes the drawer.
 
 The rail is paired with a [top navigation](/components/navigation/topnavigation) that spans the full width of the screen, and `AppShell` switches to this layout automatically when it contains a rail. Place the brand and `<Sidebar.Toggle variant="rail" />` in the top navigation's start slot.
 

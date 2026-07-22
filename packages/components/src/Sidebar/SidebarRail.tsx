@@ -8,7 +8,9 @@ import { cn } from '@marigold/system';
 import { Tooltip } from '../Tooltip/Tooltip';
 import { intlMessages } from '../intl/messages';
 import { useSidebar } from './Context';
+import { SidebarItem, SidebarSeparator } from './SidebarItem';
 import { SidebarModal } from './SidebarModal';
+import { SidebarNav } from './SidebarNav';
 import type { SidebarCurrent } from './collection';
 import { activateOnEnterOrSpace, isModifiedClick } from './linkActivation';
 import { resolveRailActivation } from './railActivation';
@@ -140,10 +142,9 @@ const SidebarRail = ({
   // focus is never stolen unprompted.
   const focusPendingRef = useRef(false);
 
-  // On mobile `state` is drawer visibility; the open drawer always shows the
-  // active section's panel.
-  const hasPanel =
-    (selectedNode?.isSection ?? false) && (isMobile || state === 'expanded');
+  // Desktop-only concept: on mobile the drawer renders a drill-down nav
+  // instead of a panel column.
+  const hasPanel = (selectedNode?.isSection ?? false) && state === 'expanded';
 
   const footerNodes = nodes.filter(node => node.inFooter);
 
@@ -158,22 +159,10 @@ const SidebarRail = ({
     titleRef.current?.focus({ focusVisible: isFocusVisible() } as FocusOptions);
   }, [hasPanel, selectedKey]);
 
-  // The drawer has no RAC Dialog to autofocus, so move focus to the panel
-  // heading (or first rail link, if no panel) — Escape and screen readers must
-  // land inside the modal.
-  const mobileBodyRef = useRef<HTMLDivElement>(null);
-  useLayoutEffect(() => {
-    if (!isMobile || state !== 'expanded') return;
-    const target =
-      titleRef.current ?? mobileBodyRef.current?.querySelector('a');
-    target?.focus({ focusVisible: isFocusVisible() } as FocusOptions);
-  }, [isMobile, state]);
-
   // Maps `resolveRailActivation`'s decision onto state/refs; returns whether
   // the click should navigate.
   const activateRail = (node: SidebarRailNode): boolean => {
     const action = resolveRailActivation(node, {
-      isMobile,
       selectedKey,
       state,
     });
@@ -236,47 +225,53 @@ const SidebarRail = ({
       </>
     ) : null;
 
-  // Mobile: a miniature of the desktop layout — rail on the left, active
-  // section's panel beside it. Section taps swap the panel; leaf links close
-  // the drawer. The drawer hugs its content over a dimmed backdrop (`partial`):
-  // with a section it spans most of the screen (rail + panel), and on a
-  // direct-link page (no section) it shrinks to the rail alone instead of
-  // reserving an empty panel column.
-  //
-  // It carries the same close button as the single-column drawer, anchored to
-  // the drawer's top-right. On a direct-link page the rail body reserves a
-  // top strip (`pt-topbar`) so the button never lands on the first tile.
+  // Mobile: the rail renders as the same full-width drawer as the single-column
+  // sidebar — one nav column, brand header, close button. Sections become
+  // drill-in branches (their `Sidebar.Nav` children are spliced in as the
+  // pushed level, so the drawer opens pre-drilled into the active section);
+  // direct links and pinned footer items become plain rows. Leaf taps close
+  // the drawer, branch taps and the back button keep it open — all inherited
+  // from `SidebarNav`, so the two sidebar variants stay pixel-identical here.
   if (isMobile) {
-    return (
-      <SidebarModal ref={ref} partial>
-        {header}
-        <div
-          ref={mobileBodyRef}
-          // The drawer rail is never icon-only: tiles read this state for their
-          // labels, and railLayout resolves --rail-w to expanded.
-          data-state="expanded"
-          // Read by the theme's modal recipe: with no active section (a
-          // direct-link page) the drawer hugs the rail instead of reserving an
-          // empty panel column.
-          data-panel={hasPanel ? 'expanded' : 'collapsed'}
-          className={cn(
-            'grid h-full min-h-0 [grid-area:content]',
-            hasPanel
-              ? 'grid-cols-[var(--rail-w)_1fr]'
-              : 'pt-topbar grid-cols-[var(--rail-w)]',
-            classNames.railLayout
-          )}
+    // Explicit ids keep drill-down state stable across renders (auto-ids are
+    // position-based); the `rail:` prefix avoids collisions with ids inside
+    // the section navs.
+    const renderMobileItem = (node: SidebarRailNode) =>
+      node.isSection && node.nav ? (
+        <SidebarItem
+          key={node.key}
+          id={`rail:${node.key}`}
+          textValue={node.panelTitle ?? node.textValue}
+          onPress={node.onPress}
         >
-          {railColumn(false)}
-          {hasPanel ? (
-            <div
-              // The drawer edge is the boundary; drop the panel divider.
-              className={cn(classNames.panel, 'border-r-0')}
-            >
-              {panelBody}
-            </div>
-          ) : null}
-        </div>
+          {node.textValue}
+          {/* Splice the nav's children (not the element) so they become the
+              branch's drilled-in level instead of a nested landmark. */}
+          {node.nav.props.children}
+        </SidebarItem>
+      ) : (
+        <SidebarItem
+          key={node.key}
+          id={`rail:${node.key}`}
+          href={node.href}
+          onPress={node.onPress}
+        >
+          {node.textValue}
+        </SidebarItem>
+      );
+
+    return (
+      <SidebarModal ref={ref}>
+        {header}
+        <SidebarNav
+          current={current}
+          aria-label={ariaLabel || stringFormatter.format('railNavigation')}
+        >
+          {nodes.filter(node => !node.inFooter).map(renderMobileItem)}
+          {footerNodes.length > 0 ? <SidebarSeparator /> : null}
+          {footerNodes.map(renderMobileItem)}
+        </SidebarNav>
+        {footer}
       </SidebarModal>
     );
   }

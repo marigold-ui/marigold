@@ -467,10 +467,11 @@ export const RailControlled = meta.story({
   render: () => <RailControlledExample />,
 });
 
-// Mobile: the drawer contains a miniature of the desktop layout — the
-// icon+label rail on its left edge, the active section's panel beside it.
-// No drill-in and no back button at the top level; section taps swap the
-// panel in place, leaf links and direct links close the drawer.
+// Mobile: the rail renders as the same full-width drawer as the single-column
+// sidebar — one drill-down nav column with the brand header and close button.
+// Sections are drill-in branches (the drawer opens pre-drilled into the active
+// one), direct links are plain rows; leaf and direct-link taps close the
+// drawer, the back row and section rows keep it open.
 export const RailMobile = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
@@ -481,49 +482,102 @@ export const RailMobile = meta.story({
 });
 
 RailMobile.test(
-  'drawer shows the rail and the active section panel side by side',
+  'drawer is a single-column drill-down, matching the plain sidebar',
   async ({ canvas, userEvent, step }) => {
     const toggle = canvas.getByRole('button', {
       name: 'Navigation umschalten',
     });
+    // Panels stay mounted (inert when not active) — assert the showing level
+    // via `data-position`, and scope queries to the drawer since the top-bar
+    // breadcrumb mirrors leaf names as links.
+    const activePanelOf = (element: HTMLElement) =>
+      element.closest('[data-position]');
 
-    await step('toggle opens the drawer with both levels visible', async () => {
-      expect(toggle).toHaveAttribute('aria-expanded', 'false');
-      await userEvent.click(toggle);
+    await step(
+      'toggle opens the drawer pre-drilled into the active section',
+      async () => {
+        expect(toggle).toHaveAttribute('aria-expanded', 'false');
+        await userEvent.click(toggle);
 
-      expect(
-        await canvas.findByRole('navigation', { name: 'Hauptnavigation' })
-      ).toBeInTheDocument();
-      const panelNav = canvas.getByRole('navigation', { name: 'Tickets' });
-      expect(
-        within(panelNav).getByRole('link', { name: 'Meine Tickets' })
-      ).toBeInTheDocument();
-    });
+        const drawer = await canvas.findByRole('complementary', {
+          name: 'Seitenleiste',
+        });
+        expect(
+          within(drawer).getByRole('button', { name: 'Zurück zu Tickets' })
+        ).toBeInTheDocument();
+        expect(
+          activePanelOf(
+            within(drawer).getByRole('link', { name: 'Meine Tickets' })
+          )
+        ).toHaveAttribute('data-position', 'active');
+        // No side-by-side rail: sections are drilled-in regions, not a
+        // second nav landmark next to the list.
+        expect(
+          within(drawer).queryByRole('navigation', { name: 'Tickets' })
+        ).not.toBeInTheDocument();
+      }
+    );
 
-    await step('section tap swaps the panel in place', async () => {
-      await userEvent.click(canvas.getByRole('link', { name: 'Kontakte' }));
-
-      const kontakteNav = await canvas.findByRole('navigation', {
-        name: 'Kontakte',
+    await step('back returns to the rail-level list', async () => {
+      const drawer = canvas.getByRole('complementary', {
+        name: 'Seitenleiste',
       });
-      expect(
-        within(kontakteNav).getByRole('link', { name: 'Personen' })
-      ).toBeInTheDocument();
-      // The drawer stays open — only the panel retargeted.
+      await userEvent.click(
+        within(drawer).getByRole('button', { name: 'Zurück zu Tickets' })
+      );
+
+      await waitFor(() =>
+        expect(
+          activePanelOf(within(drawer).getByRole('link', { name: 'Übersicht' }))
+        ).toHaveAttribute('data-position', 'active')
+      );
       expect(toggle).toHaveAttribute('aria-expanded', 'true');
     });
 
+    await step(
+      'a section row drills in and keeps the drawer open',
+      async () => {
+        const drawer = canvas.getByRole('complementary', {
+          name: 'Seitenleiste',
+        });
+        await userEvent.click(
+          within(drawer).getByRole('link', { name: 'Kontakte' })
+        );
+
+        await waitFor(() =>
+          expect(
+            activePanelOf(
+              within(drawer).getByRole('link', { name: 'Personen' })
+            )
+          ).toHaveAttribute('data-position', 'active')
+        );
+        expect(toggle).toHaveAttribute('aria-expanded', 'true');
+      }
+    );
+
     await step('leaf tap navigates and closes the drawer', async () => {
-      await userEvent.click(canvas.getByRole('link', { name: 'Personen' }));
+      const drawer = canvas.getByRole('complementary', {
+        name: 'Seitenleiste',
+      });
+      await userEvent.click(
+        within(drawer).getByRole('link', { name: 'Personen' })
+      );
       await waitFor(() =>
         expect(toggle).toHaveAttribute('aria-expanded', 'false')
       );
     });
 
-    await step('a direct-link rail item closes the drawer too', async () => {
+    await step('a direct-link row closes the drawer too', async () => {
       await userEvent.click(toggle);
+      const drawer = await canvas.findByRole('complementary', {
+        name: 'Seitenleiste',
+      });
+      // Now on /kontakte/personen, so the drawer re-opens inside Kontakte.
       await userEvent.click(
-        await canvas.findByRole('link', { name: 'Berichte' })
+        within(drawer).getByRole('button', { name: 'Zurück zu Kontakte' })
+      );
+      await userEvent.click(
+        await within(drawer).findByRole('link', { name: 'Berichte' })
       );
       await waitFor(() =>
         expect(toggle).toHaveAttribute('aria-expanded', 'false')

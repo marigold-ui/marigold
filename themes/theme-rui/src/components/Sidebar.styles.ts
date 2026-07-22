@@ -13,14 +13,8 @@ import { type ThemeComponent, cva } from '@marigold/system';
  * Extra top space on section labels separates groups without dividers.
  */
 export const Sidebar: ThemeComponent<'Sidebar'> = {
-  overlay: cva({
-    base: [
-      // Partial (rail) drawer: dim the page so the exposed strip reads as a
-      // tap-to-dismiss backdrop. The full-width sheet has nothing to dim.
-      'data-partial:bg-overlay-backdrop',
-      'data-partial:entering:animate-fade-in data-partial:exiting:animate-fade-out',
-    ],
-  }),
+  // The full-width sheet covers the page, so there is nothing to dim.
+  overlay: cva({}),
   modal: cva({
     base: [
       'flex h-full *:flex-1',
@@ -28,12 +22,6 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // Mobile drawer floats over the page, so it takes overlay elevation; on
       // desktop the sidebar is structure and stays flat.
       'shadow-elevation-overlay',
-      // Partial (rail) sheet: hug the content so the backdrop strip stays
-      // exposed (`data-partial` sits on the overlay). With no active section
-      // (`data-panel=collapsed`, a direct-link page) it shrinks to the rail
-      // alone instead of reserving an empty panel column.
-      'in-data-partial:has-data-[panel=expanded]:w-[min(88vw,24rem)]',
-      'in-data-partial:has-data-[panel=collapsed]:w-fit',
       'entering:animate-slide-in-left',
       'exiting:animate-slide-out-left exiting:[--slide-out-duration:0.1s]',
       'motion-reduce:entering:animate-none motion-reduce:exiting:animate-none',
@@ -170,10 +158,10 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   railRoot: cva({
     base: ['overflow-hidden bg-background'],
   }),
-  // Column widths the component's `grid-cols` consumes. Two independent axes:
+  // Column widths the component's `grid-cols` consumes (desktop only — the
+  // mobile drawer renders a drill-down nav instead). Two independent axes:
   // `--rail-w` collapses the rail to an icon strip; `--panel-w` goes to 0 when
-  // no section panel shows. The mobile drawer reads only `--rail-w` (always
-  // expanded), so the collapsed value never applies there.
+  // no section panel shows.
   railLayout: cva({
     base: [
       '[--rail-w:var(--spacing-rail)] data-[state=collapsed]:[--rail-w:var(--spacing-rail-collapsed)]',
