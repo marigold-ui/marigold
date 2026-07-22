@@ -6,6 +6,7 @@ import { Button } from '../Button/Button';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { Drawer } from '../Drawer/Drawer';
 import { Inline } from '../Inline/Inline';
+import { Menu } from '../Menu/Menu';
 import { NumberField } from '../NumberField/NumberField';
 import { SearchField } from '../SearchField/SearchField';
 import { Select } from '../Select/Select';
@@ -149,6 +150,62 @@ Resize.test(
     await waitFor(() =>
       expect(canvas.queryByRole('button', { name: /price/i })).toBeNull()
     );
+  }
+);
+
+// Priority+ navigation: the links that no longer fit move into a "More"
+// menu. The consumer owns the item list, so `links.slice(visibleCount)`
+// is exactly the hidden set — priority is DOM order.
+const navLinks = [
+  'Dashboard',
+  'Events',
+  'Orders',
+  'Reports',
+  'Settings',
+  'Team',
+];
+
+export const PriorityNavigation = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <nav aria-label="Main" className="w-[480px]">
+      <OverflowRegion
+        indicator={({ visibleCount }) => (
+          <Menu label="More" aria-label="More pages">
+            {navLinks.slice(visibleCount).map(link => (
+              <Menu.Item key={link} id={link}>
+                {link}
+              </Menu.Item>
+            ))}
+          </Menu>
+        )}
+      >
+        {navLinks.map(link => (
+          <Button key={link} variant="ghost">
+            {link}
+          </Button>
+        ))}
+      </OverflowRegion>
+    </nav>
+  ),
+});
+
+PriorityNavigation.test(
+  'moves links that do not fit into the More menu',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    // Trailing links are hidden from the a11y tree, leading ones stay.
+    await waitFor(() =>
+      expect(canvas.queryByRole('button', { name: 'Team' })).toBeNull()
+    );
+    expect(canvas.getByRole('button', { name: 'Dashboard' })).toBeVisible();
+
+    // Every hidden link is reachable through the menu.
+    await userEvent.click(canvas.getByRole('button', { name: /more/i }));
+    expect(await canvas.findByRole('menuitem', { name: 'Team' })).toBeVisible();
+    expect(canvas.getByRole('menuitem', { name: 'Settings' })).toBeVisible();
+    // Visible links do not show up in the menu.
+    expect(canvas.queryByRole('menuitem', { name: 'Dashboard' })).toBeNull();
   }
 );
 

@@ -1,0 +1,62 @@
+---
+title: OverflowRegion
+description: Hide trailing items instead of wrapping when space runs out.
+badge: alpha
+---
+
+The `<OverflowRegion>` component keeps a row of elements on a single line. When there is not enough horizontal space, it hides its trailing items instead of wrapping them to a new line, and restores them as soon as space returns. Hidden items stay mounted, so they keep their state, but they are removed from painting, the tab order, and the accessibility tree.
+
+The region measures its own container, not the viewport. A row inside a narrow panel on a wide screen collapses correctly, which viewport-based media queries cannot do.
+
+## Usage
+
+Place the items as direct children, ordered by priority: the last child is hidden first when space runs out. Use the `indicator` render prop to show an element while items are hidden, such as a counter or a menu. The indicator only appears while at least one item is hidden.
+
+<ComponentDemo name="overflow-region-tags" />
+
+**Hiding is not a recovery strategy by itself.** Every hidden item must stay reachable through another surface. Always pair the region with an `indicator` that opens the hidden items, or with an external surface via [`onOverflowChange`](#external-surfaces). Never use the region to silently drop content.
+
+### Priority+ navigation
+
+For navigation and toolbars, render the hidden items into a menu. Since priority is DOM order, `items.slice(visibleCount)` is exactly the hidden set.
+
+<ComponentDemo name="overflow-region-priority-nav" />
+
+### External surfaces
+
+When the surface that holds the hidden items already exists outside the region — for example a filter panel that always contains the complete filter set — pin that trigger next to the region and use `onOverflowChange` to reflect the hidden count on it.
+
+Pinned elements are regular siblings of the region inside a non-wrapping row (such as [`<Inline noWrap>`](../layout/inline)): they keep their size while the region flexes and clips.
+
+<ComponentDemo name="overflow-region-external" />
+
+### Items must be direct children
+
+The region measures and hides each direct child individually. A single component that renders several elements counts as one item, so spread the items directly into the region instead of grouping them in a wrapper component or fragment.
+
+## Props
+
+<StorybookHintMessage component={'OverflowRegion'} />
+
+### OverflowRegion
+
+<AutoTypeTable path="OverflowRegion" name="OverflowRegionProps" />
+
+## Alternative components
+
+<ul>
+  <li>
+    [Inline](../layout/inline): If wrapping to a new line is acceptable, use
+    the default `<Inline>` behavior instead — it is simpler and needs no
+    recovery surface.
+  </li>
+  <li>
+    [TagGroup](../collection/tag): For tag input fields, `<TagGroup>` ships
+    its own show more/show less toggle based on a fixed count.
+  </li>
+  <li>
+    [Breadcrumbs](../navigation/breadcrumbs): Collapses from the middle
+    (keeping the first and current page) with a built-in ellipsis menu — use
+    it for paths instead of composing a region.
+  </li>
+</ul>
