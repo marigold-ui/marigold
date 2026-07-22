@@ -34,11 +34,11 @@ describe('examplePages', () => {
     expect(names).not.toContain('Security');
   });
 
-  it('recurses into a plain sidebar grouping and surfaces each child', () => {
-    // "Form" has no index child, so it is a grouping — each child is its own
+  it('recurses into a plain grouping section and surfaces each child', () => {
+    // "Forms" has no index leaf, so it is a grouping — each child is its own
     // demo rather than being collapsed away.
     const names = examplePages().map(page => page.name);
-    expect(names).not.toContain('Form');
+    expect(names).not.toContain('Forms');
     expect(names).toContain('Event Form');
     expect(names).toContain('Settings Form');
     expect(names).toContain('Auto-Save Settings');
