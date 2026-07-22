@@ -240,7 +240,7 @@ const PickVenuesBody = ({ initial, onConfirm }: PickBodyProps) => {
 };
 
 export default () => {
-  const [added, setAdded] = useState<Set<Key>>(new Set());
+  const [added, setAdded] = useState<Set<Key>>(() => new Set());
   const addedVenues = venues.filter(venue => added.has(venue.id));
 
   const removeVenue = (keys: Set<Key>) => {

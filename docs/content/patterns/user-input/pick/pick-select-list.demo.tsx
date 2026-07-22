@@ -247,7 +247,7 @@ const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
 };
 
 export default () => {
-  const [added, setAdded] = useState<Set<Key>>(new Set());
+  const [added, setAdded] = useState<Set<Key>>(() => new Set());
   const addedNames = people
     .filter(person => added.has(person.id))
     .map(person => person.name);

@@ -63,7 +63,7 @@ const events = [
 
 export default () => {
   const [search, setSearch] = useState('');
-  const [selected, setSelected] = useState<Selection>(new Set());
+  const [selected, setSelected] = useState<Selection>(() => new Set());
 
   const rows = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -106,9 +106,9 @@ export default () => {
             <Table.Column>Date</Table.Column>
             <Table.Column>Status</Table.Column>
           </Table.Header>
-          <Table.Body>
-            {rows.map(event => (
-              <Table.Row key={event.id} id={event.id}>
+          <Table.Body items={rows}>
+            {event => (
+              <Table.Row id={event.id}>
                 <Table.Cell>{event.name}</Table.Cell>
                 <Table.Cell>{event.date}</Table.Cell>
                 <Table.Cell>
@@ -119,7 +119,7 @@ export default () => {
                   </Badge>
                 </Table.Cell>
               </Table.Row>
-            ))}
+            )}
           </Table.Body>
         </Table>
       </Panel.Content>
