@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Children, useLayoutEffect, useRef } from 'react';
-import { cn, useClassNames } from '@marigold/system';
+import type { SpaceProp, SpacingTokens } from '@marigold/system';
+import { cn, createSpacingVar } from '@marigold/system';
 import { useOverflowRegion } from './useOverflowRegion';
 
 // Props
@@ -14,10 +15,7 @@ export interface OverflowRegionState {
   hiddenCount: number;
 }
 
-export interface OverflowRegionProps {
-  variant?: string;
-  size?: string;
-
+export interface OverflowRegionProps extends SpaceProp<SpacingTokens> {
   /**
    * The items, in priority order: the trailing items are hidden first when
    * the region runs out of horizontal space. Hidden items are made inert
@@ -58,18 +56,11 @@ export interface OverflowRegionProps {
  * items remain reachable.
  */
 export const OverflowRegion = ({
-  variant,
-  size,
+  space = 'related',
   children,
   indicator,
   onOverflowChange,
 }: OverflowRegionProps) => {
-  const classNames = useClassNames({
-    component: 'OverflowRegion',
-    variant,
-    size,
-  });
-
   const items = Children.toArray(children);
   const { regionProps, getItemProps, getIndicatorProps, visibleCount } =
     useOverflowRegion(items.length);
@@ -94,27 +85,21 @@ export const OverflowRegion = ({
   return (
     <div
       {...regionProps}
-      className={cn(regionProps.className, classNames.container)}
+      className={cn(regionProps.className, 'gap-(--space)')}
+      style={createSpacingVar('space', `${space}`)}
     >
       {items.map((item, index) => {
         const { className, ...itemProps } = getItemProps(index);
         // Children.toArray assigns stable keys to all children.
         const key = (item as { key?: string | null }).key ?? index;
         return (
-          <div
-            key={key}
-            {...itemProps}
-            className={cn(className, classNames.item)}
-          >
+          <div key={key} {...itemProps} className={className}>
             {item}
           </div>
         );
       })}
       {indicator != null && (
-        <div
-          {...indicatorProps}
-          className={cn(indicatorClassName, classNames.indicator)}
-        >
+        <div {...indicatorProps} className={indicatorClassName}>
           {typeof indicator === 'function' ? indicator(state) : indicator}
         </div>
       )}
