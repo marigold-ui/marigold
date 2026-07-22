@@ -164,6 +164,9 @@ export type { SearchInputProps } from './Input/SearchInput';
 export { Inset } from './Inset/Inset';
 export type { InsetProps } from './Inset/Inset';
 
+export { Keyboard } from './Keyboard/Keyboard';
+export type { KeyboardProps } from './Keyboard/Keyboard';
+
 export { Label } from './Label/Label';
 export type { LabelProps } from './Label/Label';
 
