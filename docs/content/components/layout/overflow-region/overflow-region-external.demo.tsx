@@ -5,9 +5,11 @@ import {
   Checkbox,
   Drawer,
   Inline,
+  NumberField,
   OverflowRegion,
   SearchField,
   Select,
+  Stack,
 } from '@marigold/components';
 import { DemoResizer } from '@/ui/DemoResizer';
 
@@ -46,11 +48,21 @@ export default () => {
           <Drawer closeButton size="xsmall">
             <Drawer.Title>All filters</Drawer.Title>
             <Drawer.Content>
-              <Checkbox.Group label="Category">
-                <Checkbox value="concerts" label="Concerts" />
-                <Checkbox value="festivals" label="Festivals" />
-                <Checkbox value="theater" label="Theater" />
-              </Checkbox.Group>
+              {/* The panel always renders the complete filter set. Nothing
+                  moves when quick filters demote, so every filter has a
+                  stable place in here. */}
+              <Stack space="group">
+                <Checkbox.Group label="Category">
+                  <Checkbox value="concerts" label="Concerts" />
+                  <Checkbox value="festivals" label="Festivals" />
+                  <Checkbox value="theater" label="Theater" />
+                </Checkbox.Group>
+                <Checkbox.Group label="Status">
+                  <Checkbox value="published" label="Published" />
+                  <Checkbox value="draft" label="Draft" />
+                </Checkbox.Group>
+                <NumberField label="Max. price" minValue={0} step={10} />
+              </Stack>
             </Drawer.Content>
           </Drawer>
         </Drawer.Trigger>

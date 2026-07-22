@@ -33,6 +33,8 @@ The same pattern applied to navigation is known as [Priority+](https://css-trick
 
 When the surface that holds the hidden items already exists outside the region, you do not need an indicator at all. A common example is a filter bar: the quick filters demote as space runs out, while a pinned "All filters" panel always contains the complete filter set. Use `onOverflowChange` to reflect the hidden count on the pinned trigger.
 
+Note that nothing is transferred into the panel. Because it always renders every filter, a demoted quick filter is simply also available there, in a stable place that does not depend on the current width. If you want a surface that shows only the hidden items, use the `indicator` render prop with a menu instead, as in the toolbar example above.
+
 Pinned elements are regular siblings of the region inside a non-wrapping row (such as [`<Inline noWrap>`](../layout/inline)). They keep their size while the region flexes and clips.
 
 <ComponentDemo name="overflow-region-external" />
