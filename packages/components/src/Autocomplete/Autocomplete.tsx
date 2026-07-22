@@ -229,7 +229,7 @@ const _Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
     ref
   ) => {
     const props: RAC.ComboBoxProps<object> = {
-      onSelectionChange: key => key !== null && onSubmit?.(null, key),
+      onSelectionChange: key => key !== null && onSubmit?.(key, null),
       defaultInputValue: defaultValue,
       inputValue: value,
       onInputChange: onChange,
