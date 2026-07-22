@@ -77,7 +77,7 @@ const AutocompleteInput = ({
         }
         if (e.key === 'Enter') {
           if (state?.selectionManager.focusedKey === null) {
-            onSubmit?.(state?.inputValue, null);
+            onSubmit?.(null, state?.inputValue);
           }
         }
       }}
