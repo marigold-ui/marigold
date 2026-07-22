@@ -27,7 +27,7 @@ export interface ErrorStateProps {
    */
   action?: ReactNode;
   /**
-   * Heading level of the title (h2–h6). Adjust it so the title fits into
+   * Heading level of the title (h2 to h6). Adjust it so the title fits into
    * the surrounding document outline.
    * @default 3
    */

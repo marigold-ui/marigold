@@ -16,46 +16,34 @@ const BillingErrorFallback = ({ resetErrorBoundary }: FallbackProps) => {
   useEffect(() => ref.current?.focus(), []);
 
   return (
-    <Page>
-      <Page.Header>
-        {/* The route title stays the h1 and names the <main> landmark. */}
-        <Title>Billing</Title>
-      </Page.Header>
-      <ErrorState
-        ref={ref}
-        tabIndex={-1}
-        headingLevel={2}
-        title="We can't load your billing data"
-        description="Something went wrong on our side. Your data is safe."
-        action={
-          <Button variant="primary" onPress={resetErrorBoundary}>
-            Try again
-          </Button>
-        }
-      />
-    </Page>
+    <ErrorState
+      ref={ref}
+      tabIndex={-1}
+      headingLevel={2}
+      title="We can't load your billing data"
+      description="Something went wrong on our side. Your data is safe."
+      action={
+        <Button variant="primary" onPress={resetErrorBoundary}>
+          Try again
+        </Button>
+      }
+    />
   );
 };
 
-const BillingPage = ({ broken }: { broken: boolean }) => {
+const BillingContent = ({ broken }: { broken: boolean }) => {
   if (broken) {
     throw new Error('Failed to fetch billing data');
   }
   return (
-    <Page>
-      <Page.Header>
-        <Title>Billing</Title>
-        <Description>Manage your plan and invoices.</Description>
-      </Page.Header>
-      <Panel>
-        <Panel.Header>
-          <Title>Current plan</Title>
-        </Panel.Header>
-        <Panel.Content>
-          <Text>You are on the Team plan.</Text>
-        </Panel.Content>
-      </Panel>
-    </Page>
+    <Panel>
+      <Panel.Header>
+        <Title>Current plan</Title>
+      </Panel.Header>
+      <Panel.Content>
+        <Text>You are on the Team plan.</Text>
+      </Panel.Content>
+    </Panel>
   );
 };
 
@@ -67,12 +55,19 @@ export default () => {
       <Button size="small" onPress={() => setBroken(true)}>
         Break this page
       </Button>
-      <ErrorBoundary
-        FallbackComponent={BillingErrorFallback}
-        onReset={() => setBroken(false)}
-      >
-        <BillingPage broken={broken} />
-      </ErrorBoundary>
+      <Page>
+        <Page.Header>
+          {/* The route title stays mounted, keeps the h1, and names the <main> landmark. */}
+          <Title>Billing</Title>
+          <Description>Manage your plan and invoices.</Description>
+        </Page.Header>
+        <ErrorBoundary
+          FallbackComponent={BillingErrorFallback}
+          onReset={() => setBroken(false)}
+        >
+          <BillingContent broken={broken} />
+        </ErrorBoundary>
+      </Page>
     </div>
   );
 };

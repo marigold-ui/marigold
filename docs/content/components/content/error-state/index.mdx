@@ -6,7 +6,7 @@ badge: beta
 
 The `<ErrorState>` component communicates that a page or region failed to render or load its data. It is the error sibling of [EmptyState](/components/content/empty-state): `EmptyState` says "nothing here, and that is fine", `ErrorState` says "this broke, and here is what you can do".
 
-It is designed as the fallback UI of an error boundary. The boundary itself stays application-side; see the [error states pattern](/patterns/feedback/error-states) for the full convention covering tiers, focus, and recovery.
+It is designed as the fallback UI of an error boundary. The boundary itself stays application-side. See the [error states pattern](/patterns/feedback/error-states) for the full convention covering tiers, focus, and recovery.
 
 ## Appearance
 
@@ -24,7 +24,7 @@ Use `<ErrorState>` when content is gone: an error boundary caught a render failu
 
 ### Content strategy
 
-The title states what failed; the description states what the user can do about it. No apologies, no stack traces, no blame. Offer retry only when retrying can actually succeed; for non-transient failures such as 403 or 404, offer an escape route instead. See the [retry microcopy guidance](/patterns/feedback/error-states#recovery-and-retry-microcopy).
+The title states what failed, the description states what the user can do about it. No apologies, no stack traces, no blame. Offer retry only when retrying can actually succeed. For non-transient failures such as 403 or 404, offer an escape route instead. See the [retry microcopy guidance](/patterns/feedback/error-states#recovery-and-retry-microcopy).
 
 <GuidelineTiles>
   <Do>

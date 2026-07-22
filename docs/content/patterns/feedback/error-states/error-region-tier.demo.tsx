@@ -12,7 +12,7 @@ const InvoicesFallback = ({ resetErrorBoundary }: FallbackProps) => (
     title="Invoices didn't load"
     description="You can retry. The rest of the page is unaffected."
     action={
-      <Button size="small" onPress={resetErrorBoundary}>
+      <Button variant="primary" size="small" onPress={resetErrorBoundary}>
         Try again
       </Button>
     }
