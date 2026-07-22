@@ -1,4 +1,5 @@
-import { expect, within } from 'storybook/test';
+import { useState } from 'react';
+import { expect, userEvent, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Copy, Download, Pencil, Trash2 } from '@marigold/icons';
 import { Button } from '../Button/Button';
@@ -11,6 +12,7 @@ import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { Title } from '../Title/Title';
 import { Page } from './Page';
+import { usePageFocus } from './usePageFocus';
 
 const meta = preview.meta({
   title: 'Components/Page',
@@ -356,4 +358,121 @@ export const ExternalLabel = meta.story({
       </Page>
     </>
   ),
+});
+
+// A component that persists across "routes": it calls `usePageFocus` with the
+// current route key so a route change moves focus to the page heading. It lives
+// inside `<Page>` (the hook reads the page context) and renders nothing.
+const RouteFocus = ({ routeKey }: { routeKey: string }) => {
+  usePageFocus(routeKey);
+  return null;
+};
+
+const ROUTES: Record<string, string> = {
+  '/billing': 'Billing',
+  '/team': 'Team members',
+};
+
+const RouteFocusHarness = () => {
+  const [route, setRoute] = useState('/billing');
+
+  return (
+    <>
+      <nav aria-label="Demo navigation" style={{ display: 'flex', gap: 8 }}>
+        {Object.entries(ROUTES).map(([path, label]) => (
+          <Button key={path} onPress={() => setRoute(path)}>
+            {`Open ${label}`}
+          </Button>
+        ))}
+      </nav>
+      <Page>
+        <RouteFocus routeKey={route} />
+        <Page.Header>
+          <Title>{ROUTES[route]}</Title>
+          <Description>You are viewing {ROUTES[route]}.</Description>
+        </Page.Header>
+        <Panel>
+          <Panel.Content>
+            <Text>Route: {route}</Text>
+          </Panel.Content>
+        </Panel>
+      </Page>
+    </>
+  );
+};
+
+/**
+ * `usePageFocus` moves focus to the page `<h1>` on a route change, the standard
+ * SPA technique for announcing navigation to screen-reader and keyboard users.
+ * The router is the source of the route signal — pass the current pathname to
+ * the hook from a component that persists across navigations (here, a small
+ * harness swaps the "route" via the nav buttons). The initial mount is skipped,
+ * so first paint never steals focus.
+ */
+export const FocusOnRouteChange = meta.story({
+  tags: ['component-test'],
+  render: () => <RouteFocusHarness />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // On first paint the initial heading must not be focused.
+    const billingHeading = canvas.getByRole('heading', {
+      level: 1,
+      name: 'Billing',
+    });
+    await expect(billingHeading).not.toHaveFocus();
+
+    // Navigating to another "route" moves focus to the new page heading.
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Open Team members' })
+    );
+
+    const teamHeading = canvas.getByRole('heading', {
+      level: 1,
+      name: 'Team members',
+    });
+    await expect(teamHeading).toHaveFocus();
+    // The heading is made programmatically focusable, not tabbable.
+    await expect(teamHeading).toHaveAttribute('tabindex', '-1');
+  },
+});
+
+/**
+ * When the page has no `<Title>` (named instead by an `aria-label`), there is no
+ * `<h1>` to move to, so `usePageFocus` is a no-op on route change: it never
+ * throws and never moves focus.
+ */
+const NoHeadingFocusHarness = () => {
+  const [route, setRoute] = useState('/billing');
+
+  return (
+    <>
+      <nav aria-label="Demo navigation" style={{ display: 'flex', gap: 8 }}>
+        <Button onPress={() => setRoute('/team')}>Change route</Button>
+      </nav>
+      <Page aria-label={ROUTES[route]}>
+        <RouteFocus routeKey={route} />
+        <Panel aria-label="Summary">
+          <Panel.Content>
+            <Text>Route: {route}</Text>
+          </Panel.Content>
+        </Panel>
+      </Page>
+    </>
+  );
+};
+
+export const FocusWithoutHeading = meta.story({
+  tags: ['component-test'],
+  render: () => <NoHeadingFocusHarness />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const changeRoute = canvas.getByRole('button', { name: 'Change route' });
+    await userEvent.click(changeRoute);
+
+    // No heading exists to receive focus, and focus is left where it was.
+    await expect(canvas.queryByRole('heading', { level: 1 })).toBeNull();
+    await expect(changeRoute).toHaveFocus();
+  },
 });
