@@ -31,14 +31,14 @@ describe('Sidebar.Rail — desktop', () => {
   test('renders the rail landmark and the active section panel', () => {
     render(<Rail.Component />);
 
-    expect(
-      screen.getByRole('navigation', { name: 'Hauptnavigation' })
-    ).toBeInTheDocument();
+    const rail = screen.getByRole('navigation', { name: 'Hauptnavigation' });
+    expect(rail).toBeInTheDocument();
     expect(
       screen.getByRole('navigation', { name: 'Tickets' })
     ).toBeInTheDocument();
     // A section rail item is the ancestor of the current page → aria-current="true".
-    expect(screen.getByRole('link', { name: 'Tickets' })).toHaveAttribute(
+    // Scope to the rail landmark: the breadcrumb mirrors section names as links.
+    expect(within(rail).getByRole('link', { name: 'Tickets' })).toHaveAttribute(
       'aria-current',
       'true'
     );
@@ -139,13 +139,14 @@ describe('Sidebar.Rail — Ctrl+B keyboard shortcut (non-meta, ctrlKey)', () => 
 describe('Sidebar.Rail — arrow-key navigation', () => {
   test('arrow keys move between tiles on top of flat tabbing', async () => {
     render(<Rail.Component />);
+    const rail = screen.getByRole('navigation', { name: 'Hauptnavigation' });
     await user.tab();
-    const uebersicht = screen.getByRole('link', { name: 'Übersicht' });
+    const uebersicht = within(rail).getByRole('link', { name: 'Übersicht' });
     expect(uebersicht).toHaveFocus();
 
     await user.keyboard('{ArrowDown}');
 
-    expect(screen.getByRole('link', { name: 'Tickets' })).toHaveFocus();
+    expect(within(rail).getByRole('link', { name: 'Tickets' })).toHaveFocus();
 
     await user.keyboard('{ArrowUp}');
 
@@ -178,6 +179,7 @@ describe('Sidebar.Rail — panel focus management', () => {
 
   test('re-clicking the active section on a collapsed panel expands and focuses it', async () => {
     render(<Rail.Component />);
+    const rail = screen.getByRole('navigation', { name: 'Hauptnavigation' });
     const toggle = screen.getByRole('button', {
       name: 'Navigation umschalten',
     });
@@ -185,7 +187,7 @@ describe('Sidebar.Rail — panel focus management', () => {
     await user.click(toggle);
     expect(toggle).toHaveAttribute('aria-expanded', 'false');
 
-    await user.click(screen.getByRole('link', { name: 'Tickets' }));
+    await user.click(within(rail).getByRole('link', { name: 'Tickets' }));
 
     expect(toggle).toHaveAttribute('aria-expanded', 'true');
     const heading = screen.getByRole('heading', { name: 'Tickets' });
@@ -429,7 +431,8 @@ describe('modified clicks & keyboard activation', () => {
 
   test('ctrl+click on the active section is not swallowed and does not toggle the panel', async () => {
     render(<Rail.Component />);
-    const tickets = screen.getByRole('link', { name: 'Tickets' });
+    const rail = screen.getByRole('navigation', { name: 'Hauptnavigation' });
+    const tickets = within(rail).getByRole('link', { name: 'Tickets' });
     const toggle = screen.getByRole('button', {
       name: 'Navigation umschalten',
     });

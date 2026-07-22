@@ -78,6 +78,37 @@ const pages: Record<string, string> = {
   '/profil': 'Profil',
 };
 
+// Ancestors for the breadcrumb trail: the section (and one nested subsection)
+// roots that group the leaf pages. They have no landing page of their own, so
+// each crumb links to the section's first leaf — the same target the rail item
+// would take you to.
+const sections: Record<string, { label: string; href: string }> = {
+  '/tickets': { label: 'Tickets', href: '/tickets/meine' },
+  '/tickets/archiv': { label: 'Archiv', href: '/tickets/archiv/geloest' },
+  '/veranstaltungen': {
+    label: 'Veranstaltungen',
+    href: '/veranstaltungen/kommende',
+  },
+  '/kontakte': { label: 'Kontakte', href: '/kontakte/personen' },
+  '/posteingang': { label: 'Posteingang', href: '/posteingang/konversationen' },
+  '/automatisierungen': {
+    label: 'Automatisierungen',
+    href: '/automatisierungen/regeln',
+  },
+  '/wissensdatenbank': {
+    label: 'Wissensdatenbank',
+    href: '/wissensdatenbank/artikel',
+  },
+  '/einstellungen': {
+    label: 'Einstellungen',
+    href: '/einstellungen/allgemein',
+  },
+  '/einstellungen/benachrichtigungen': {
+    label: 'Benachrichtigungen',
+    href: '/einstellungen/benachrichtigungen/email',
+  },
+};
+
 const RailShell = ({
   initialPath = '/tickets/meine',
 }: {
@@ -85,6 +116,20 @@ const RailShell = ({
 }) => {
   const [path, setPath] = useState(initialPath);
   const label = pages[path] ?? 'Seite';
+
+  // Breadcrumb trail from the current path: each segment becomes a crumb, so
+  // the bar reads "Tickets › Meine Tickets" or "Tickets › Archiv › Gelöst".
+  // It reflects the active section even when the rail is collapsed to icons.
+  const trail = path
+    .split('/')
+    .filter(Boolean)
+    .map((_segment, index, segments) => {
+      const key = '/' + segments.slice(0, index + 1).join('/');
+      const section = sections[key];
+      return section
+        ? { key, href: section.href, label: section.label }
+        : { key, href: key, label: pages[key] ?? 'Seite' };
+    });
 
   // The mobile drawer portals outside the story's `lang="de"` wrapper, which
   // silently disables `hyphens: auto` on the rail tiles. A real app sets the
@@ -250,9 +295,15 @@ const RailShell = ({
                   reservix
                 </Text>
                 <Sidebar.Toggle variant="rail" />
-                <Breadcrumbs>
-                  <Breadcrumbs.Item href="/uebersicht">Start</Breadcrumbs.Item>
-                  <Breadcrumbs.Item href={path}>{label}</Breadcrumbs.Item>
+                {/* Keep the whole trail visible (it is at most three levels)
+                    so the active section still reads when the rail collapses to
+                    icons, rather than auto-collapsing to an ellipsis. */}
+                <Breadcrumbs maxVisibleItems={4}>
+                  {trail.map(({ key, href, label: crumbLabel }) => (
+                    <Breadcrumbs.Item key={key} href={href}>
+                      {crumbLabel}
+                    </Breadcrumbs.Item>
+                  ))}
                 </Breadcrumbs>
               </TopNavigation.Start>
               <TopNavigation.End>
@@ -298,15 +349,15 @@ Rail.test(
   'shows two nav landmarks and swaps the panel on rail selection',
   async ({ canvas, userEvent, step }) => {
     // Rail landmark + the active section's panel landmark are both present.
-    expect(
-      canvas.getByRole('navigation', { name: 'Hauptnavigation' })
-    ).toBeInTheDocument();
+    const rail = canvas.getByRole('navigation', { name: 'Hauptnavigation' });
+    expect(rail).toBeInTheDocument();
     const ticketsNav = canvas.getByRole('navigation', { name: 'Tickets' });
     expect(ticketsNav).toBeInTheDocument();
 
     // The active section (from `current`) is marked on its rail item, and its
-    // sub-nav is what fills the panel.
-    expect(canvas.getByRole('link', { name: 'Tickets' })).toHaveAttribute(
+    // sub-nav is what fills the panel. Scope rail-item lookups to the rail
+    // landmark: the breadcrumb now mirrors the section names as links too.
+    expect(within(rail).getByRole('link', { name: 'Tickets' })).toHaveAttribute(
       'aria-current',
       'true'
     );
@@ -316,7 +367,7 @@ Rail.test(
 
     await step('rail items carry a visible label', async () => {
       // The label under the icon is the accessible name — no tooltip needed.
-      const uebersicht = canvas.getByRole('link', { name: 'Übersicht' });
+      const uebersicht = within(rail).getByRole('link', { name: 'Übersicht' });
       expect(uebersicht).toBeVisible();
       expect(uebersicht).toHaveTextContent('Übersicht');
     });
@@ -349,7 +400,9 @@ Rail.test(
     });
 
     await step('select another section → panel swaps', async () => {
-      await userEvent.click(canvas.getByRole('link', { name: 'Kontakte' }));
+      await userEvent.click(
+        within(rail).getByRole('link', { name: 'Kontakte' })
+      );
       const kontakteNav = await canvas.findByRole('navigation', {
         name: 'Kontakte',
       });
@@ -374,7 +427,9 @@ Rail.test(
     await step(
       'toggle stays live on a direct-link page (narrows the rail)',
       async () => {
-        await userEvent.click(canvas.getByRole('link', { name: 'Berichte' }));
+        await userEvent.click(
+          within(rail).getByRole('link', { name: 'Berichte' })
+        );
         const toggle = canvas.getByRole('button', {
           name: 'Navigation umschalten',
         });
@@ -386,7 +441,9 @@ Rail.test(
         expect(toggle).toHaveAttribute('aria-expanded', 'false');
 
         // Selecting a section from the collapsed rail re-expands the panel.
-        await userEvent.click(canvas.getByRole('link', { name: 'Tickets' }));
+        await userEvent.click(
+          within(rail).getByRole('link', { name: 'Tickets' })
+        );
         expect(toggle).toHaveAttribute('aria-expanded', 'true');
       }
     );
