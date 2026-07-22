@@ -89,7 +89,11 @@ export const PanelCollapsibleHeader = ({
         >
           <span className="min-w-0 flex-1">{children}</span>
         </Provider>
-        <MorphCaret expanded={isExpanded} />
+        <MorphCaret
+          size="16"
+          expanded={isExpanded}
+          className={classNames.collapsibleIcon}
+        />
       </Button>
     </Heading>
   );

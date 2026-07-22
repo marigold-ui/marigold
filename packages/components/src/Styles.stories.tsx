@@ -1,9 +1,13 @@
 import type { PropsWithChildren } from 'react';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { cn } from '@marigold/system';
 import { Headline } from './Headline/Headline';
 import { Inline } from './Inline/Inline';
+import { RouterProvider } from './RouterProvider/RouterProvider';
+import { Sidebar } from './Sidebar/Sidebar';
 import { Stack } from './Stack/Stack';
+import { Text } from './Text/Text';
 
 const meta = preview.meta({
   title: 'Styles/RUI',
@@ -20,13 +24,12 @@ const Base = ({
   </div>
 );
 
-// A boxed surface whose rows are split by the opaque functional border — the
-// same token as the SelectList frame and Table grid lines, so the structure
-// stays crisp against any state fill. Ink & wash: hover is the lighter wash
-// (bg-hover, charcoal-200); a selected row sits one step darker (bg-selected,
-// charcoal-300) with its indicator (the check here, a checkbox/radio in real
-// components) as the one opaque ink mark. Hovering a selected row swaps to the
-// hover wash while the indicator keeps carrying the selection.
+// Boxed surface with rows split by the opaque functional border (the same token
+// as the SelectList frame and Table grid lines), so structure stays crisp
+// against any state fill. Hover is the lighter wash (bg-hover); a selected row
+// sits one step darker (bg-selected), its indicator (✓ here) the one opaque ink
+// mark; hovering a selected row swaps to the hover wash while the indicator
+// keeps carrying the selection.
 const listItems = ['Item one', 'Item two', 'Item three', 'Item four'];
 
 const ListSurface = ({
@@ -40,7 +43,7 @@ const ListSurface = ({
 }) => (
   <div className="flex flex-col gap-1">
     <span className="text-secondary text-xs">{label}</span>
-    <div className="ui-surface shadow-elevation-border w-56 overflow-hidden text-sm">
+    <div className="ui-surface w-56 overflow-hidden text-sm">
       {listItems.map((item, i) => (
         <div
           key={item}
@@ -63,30 +66,41 @@ const ListSurface = ({
 export const Surface = meta.story({
   render: () => (
     <Stack space="group">
-      <Headline level="3">Shadow</Headline>
+      <Headline level="3">Elevation</Headline>
+      <p className="text-secondary max-w-prose text-sm">
+        One shadow tier remains: <code>shadow-elevation-overlay</code>, the
+        single signal for &ldquo;floats above the page&rdquo; (Dialog, Drawer,
+        Menu, Popover, Toast, ActionBar). Nothing in normal flow casts a shadow
+        — buttons are raised caps (<code>ui-soft</code> /{' '}
+        <code>ui-contrast</code>), fields are flat wells, and panels separate
+        from the page by fill.
+      </p>
       <Inline space="regular">
         <Base className="rounded-lg">plain</Base>
-        <Base className="shadow-elevation-border rounded-lg">border</Base>
-        <Base className="shadow-elevation-raised rounded-lg">raised</Base>
         <Base className="shadow-elevation-overlay rounded-lg">overlay</Base>
       </Inline>
       <Headline level="3">Surface</Headline>
       <Inline space="regular">
         <Base className="ui-surface">plain</Base>
-        <Base className="ui-surface shadow-elevation-border">border</Base>
-        <Base className="ui-surface shadow-elevation-raised">raised</Base>
         <Base className="ui-surface shadow-elevation-overlay">overlay</Base>
       </Inline>
+      <Headline level="3">Caps</Headline>
+      <p className="text-secondary max-w-prose text-sm">
+        The two modeled raised caps — no drop shadow, the cap itself is the
+        lift. <code>ui-contrast</code> is the dark bold cap (primary Button,
+        ActionBar); <code>ui-soft</code> is the light neutral cap (secondary
+        Button, Menu trigger). Each shown at rest and hover-flipped via{' '}
+        <code>--ui-background-color</code> (and <code>--soft-edge</code> for
+        soft).
+      </p>
       <Inline space="regular">
         <Base className="ui-contrast">contrast</Base>
-        <Base className="ui-contrast shadow-elevation-border">
-          contrast / border
+        <Base className="ui-contrast [--ui-background-color:oklch(from_var(--color-primary)_calc(l-0.15)_c_h)]">
+          contrast / hover
         </Base>
-        <Base className="ui-contrast shadow-elevation-raised">
-          contrast / raised
-        </Base>
-        <Base className="ui-contrast shadow-elevation-overlay">
-          contrast / overlay
+        <Base className="ui-soft">soft</Base>
+        <Base className="ui-soft [--soft-edge:var(--color-soft-edge-hover)] [--ui-background-color:var(--color-soft-hover)]">
+          soft / hover
         </Base>
       </Inline>
       <Headline level="3">Hairline</Headline>
@@ -107,10 +121,10 @@ export const Surface = meta.story({
         menus; <code>ui-state-hover-ghost</code> (<code>bg-current/10</code>)
         tints toward the current text color so a ghost item blends into any
         ground. The two boxes on the right push a selected / hover fill onto a
-        whole raised surface via <code>--ui-background-color</code>.
+        whole surface via <code>--ui-background-color</code>.
       </p>
       <Inline space="regular">
-        <div className="ui-surface shadow-elevation-border flex w-40 flex-col overflow-hidden text-sm">
+        <div className="ui-surface flex w-40 flex-col overflow-hidden text-sm">
           <div className="px-3 py-2">resting</div>
           <div className="bg-hover px-3 py-2">hover</div>
           <div className="bg-selected flex justify-between px-3 py-2">
@@ -119,11 +133,11 @@ export const Surface = meta.story({
           <div className="bg-focus-highlight px-3 py-2">focus</div>
           <div className="bg-current/10 px-3 py-2">ghost</div>
         </div>
-        <Base className="ui-surface shadow-elevation-raised [--ui-background-color:var(--color-selected)] [--ui-border-color:var(--color-foreground)]">
-          raised / selected
+        <Base className="ui-surface [--ui-background-color:var(--color-selected)] [--ui-border-color:var(--color-foreground)]">
+          fill / selected
         </Base>
-        <Base className="ui-surface shadow-elevation-raised [--ui-background-color:var(--color-hover)]">
-          raised / hover
+        <Base className="ui-surface [--ui-background-color:var(--color-hover)]">
+          fill / hover
         </Base>
       </Inline>
       <Headline level="3">Separators</Headline>
@@ -153,27 +167,16 @@ export const Surface = meta.story({
         themed parent surface does not bleed its colors into nested surfaces.
       </p>
       <Inline space="regular">
-        <div className="ui-surface shadow-elevation-raised flex h-32 w-64 flex-col items-center justify-center gap-2 [--ui-border-color:var(--color-destructive-accent)]">
+        <div className="ui-surface flex h-32 w-64 flex-col items-center justify-center gap-2 [--ui-border-color:var(--color-destructive-accent)]">
           <span className="text-xs">parent: --ui-border-color</span>
-          <div className="ui-surface shadow-elevation-border px-3 py-1 text-xs">
-            nested child
-          </div>
+          <div className="ui-surface px-3 py-1 text-xs">nested child</div>
         </div>
         <div className="ui-contrast flex h-32 w-64 flex-col items-center justify-center gap-2 [--ui-background-color:var(--color-access-master-accent)] [--ui-border-color:var(--color-access-master-accent)]">
           <span className="text-xs">parent: --ui-background-color</span>
-          <div className="ui-surface shadow-elevation-border text-foreground px-3 py-1 text-xs">
+          <div className="ui-surface text-foreground px-3 py-1 text-xs">
             nested child
           </div>
         </div>
-      </Inline>
-      <Headline level="3">UI State</Headline>
-      <Inline space="regular">
-        <Base className="ui-surface shadow-elevation-border ui-state-error">
-          border / error
-        </Base>
-        <Base className="ui-surface shadow-elevation-raised ui-state-error">
-          raised / error
-        </Base>
       </Inline>
       <Headline level="3">With Tailwind Classes</Headline>
       <Inline space="regular">
@@ -200,25 +203,169 @@ export const Surface = meta.story({
       <Headline level="3">Input</Headline>
       <Inline space="regular">
         <input
-          className="ui-surface shadow-elevation-border invalid:ui-state-error focus:ui-state-focus p-squish-relaxed text-sm"
+          className="ui-control invalid:ui-state-error focus:ui-state-focus p-squish-relaxed text-sm"
           placeholder="default"
         />
         <input
-          className="ui-surface shadow-elevation-border invalid:ui-state-error focus:ui-state-focus p-squish-relaxed text-sm"
+          className="ui-control invalid:ui-state-error focus:ui-state-focus p-squish-relaxed text-sm"
           placeholder="invalid"
           required
         />
         <input
-          className="ui-surface shadow-elevation-border disabled:ui-state-disabled focus:ui-state-focus p-squish-relaxed text-sm"
+          className="ui-control disabled:ui-state-disabled focus:ui-state-focus p-squish-relaxed text-sm"
           placeholder="disabled"
           disabled
         />
         <input
-          className="ui-surface shadow-elevation-border read-only:ui-state-readonly focus:ui-state-focus p-squish-relaxed text-sm"
+          className="ui-control read-only:ui-state-readonly focus:ui-state-focus p-squish-relaxed text-sm"
           placeholder="readonly"
           readOnly
         />
       </Inline>
     </Stack>
   ),
+});
+
+/**
+ * Legend swatch: a colour chip + the token + role it plays in the sidebar nav.
+ */
+const Tier = ({
+  swatch,
+  token,
+  children,
+}: PropsWithChildren<{ swatch: string; token: string }>) => (
+  <Inline space="related" alignY="center" noWrap>
+    <span className={`size-4 shrink-0 rounded ${swatch}`} />
+    <code className="text-xs">{token}</code>
+    <Text fontSize="xs" variant="muted">
+      {children}
+    </Text>
+  </Inline>
+);
+
+const NavSpecimen = () => (
+  <RouterProvider navigate={() => {}}>
+    <Sidebar.Provider defaultOpen>
+      <div className="flex h-[28rem]">
+        <Sidebar>
+          <Sidebar.Header>
+            <Text weight="bold" fontSize="lg">
+              Acme Inc.
+            </Text>
+          </Sidebar.Header>
+          <Sidebar.Nav current="/dashboard">
+            <Sidebar.Item href="/dashboard">Dashboard</Sidebar.Item>
+            <Sidebar.Item href="/analytics">Analytics</Sidebar.Item>
+            <Sidebar.Item id="management" textValue="Management">
+              Management
+              <Sidebar.Item href="/users">Users</Sidebar.Item>
+              <Sidebar.Item href="/teams">Teams</Sidebar.Item>
+              <Sidebar.Item href="/billing">Billing</Sidebar.Item>
+            </Sidebar.Item>
+            <Sidebar.GroupLabel>Settings</Sidebar.GroupLabel>
+            <Sidebar.Item href="/general">General</Sidebar.Item>
+            <Sidebar.Item href="/security">Security</Sidebar.Item>
+          </Sidebar.Nav>
+          <Sidebar.Footer>
+            <Text fontSize="xs">v2.4.0</Text>
+          </Sidebar.Footer>
+        </Sidebar>
+      </div>
+    </Sidebar.Provider>
+  </RouterProvider>
+);
+
+/**
+ * The sidebar navigation hierarchy: two charcoal tiers driven entirely by
+ * semantic tokens (no raw `charcoal-*`), the current page rendered as an inset
+ * rounded `selected` pill, and every row — nav items, section labels, and the
+ * drill-in back action — aligned to one shared content column.
+ */
+export const SidebarNavigation = meta.story({
+  parameters: { layout: 'fullscreen', surface: false },
+  render: () => (
+    <div className="p-4">
+      <Stack space="group">
+        <Headline level="3">Sidebar navigation</Headline>
+        <p className="text-secondary max-w-prose text-sm">
+          Hierarchy comes from two token-driven charcoal tiers plus the inset
+          active pill — never from raw colours. The section label stays a clear
+          tier through treatment (uppercase, smaller, heavier, tracked) rather
+          than a lighter colour, so it holds the WCAG AA 4.5:1 contrast floor.
+        </p>
+        <Inline space="section" alignY="top">
+          <div className="border-border/60 w-fit overflow-hidden rounded-lg border">
+            <NavSpecimen />
+          </div>
+          <Stack space="related">
+            <Tier swatch="bg-foreground" token="text-foreground">
+              active item + page titles (15.6:1)
+            </Tier>
+            <Tier swatch="bg-secondary" token="text-secondary">
+              idle items + section labels (4.97:1)
+            </Tier>
+            <Tier swatch="bg-selected" token="bg-selected">
+              active pill (charcoal-300)
+            </Tier>
+            <Tier swatch="bg-hover" token="bg-hover">
+              hover pill (charcoal-200)
+            </Tier>
+            <Tier swatch="bg-border border border-border" token="border-border">
+              the shell&apos;s one line — the sidebar divider (chevron anchor)
+            </Tier>
+          </Stack>
+        </Inline>
+      </Stack>
+    </div>
+  ),
+});
+
+/**
+ * Drilling into a branch reveals the back action. It shares the nav rows' pill
+ * geometry, so the back chevron sits on the same content column the nav text
+ * and section labels align to — this asserts that shared inset survives.
+ */
+export const SidebarBackAction = meta.story({
+  tags: ['component-test'],
+  parameters: { layout: 'fullscreen', surface: false },
+  render: () => (
+    <div className="p-4">
+      <Stack space="group">
+        <Headline level="3">Drill-in back action</Headline>
+        <div className="border-border/60 w-fit overflow-hidden rounded-lg border">
+          <NavSpecimen />
+        </div>
+      </Stack>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Drill into the "Management" branch to reveal the back action.
+    await userEvent.click(canvas.getByRole('link', { name: /Management/ }));
+
+    const back = await canvas.findByRole('button', { name: /Management/ });
+    const child = canvas.getByRole('link', { name: 'Users' });
+    // The drill-in reveals the panel through a transition, so wait for it to
+    // settle rather than racing the reveal (findByRole resolves as soon as the
+    // node enters the a11y tree, before it is painted visible).
+    await waitFor(async () => {
+      await expect(back).toBeVisible();
+      await expect(child).toBeVisible();
+    });
+
+    // The back action and the nav rows share one inset (mx-2 + px-2), so
+    // their content starts on the same column — the alignment we tuned.
+    const backStyle = getComputedStyle(back);
+    const childStyle = getComputedStyle(child);
+    await expect(backStyle.paddingLeft).toBe(childStyle.paddingLeft);
+    await expect(backStyle.marginLeft).toBe(childStyle.marginLeft);
+
+    // ...and the back label reads at the same weight as a nav item (the
+    // Button's default `font-medium` is reset).
+    const backLabel = within(back).getByText(/Management/);
+    await expect(getComputedStyle(backLabel).fontWeight).toBe(
+      childStyle.fontWeight
+    );
+  },
 });

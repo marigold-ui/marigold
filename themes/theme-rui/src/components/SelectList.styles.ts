@@ -17,8 +17,7 @@ export const SelectList: ThemeComponent<'SelectList'> = {
         // dividers should read as one weight, so both use the opaque --color-border.
         // (A translucent control ring would composite lighter than the opaque
         // dividers, so left/right wouldn't match top/bottom.)
-        default:
-          'ui-surface shadow-elevation-border [--ui-border-color:var(--color-border)]',
+        default: 'ui-surface [--ui-border-color:var(--color-border)]',
         bordered: '',
       },
     },
@@ -47,10 +46,10 @@ export const SelectList: ThemeComponent<'SelectList'> = {
         ],
         bordered: [
           'gap-2',
-          // Each item is its own raised control (ring + elevation in the
-          // box-shadow chain). This list is a scroll container, which clips
-          // box-shadow on both axes, so p-1 gives the rings room inside the
-          // scrollport (the padding box) instead of being cut at the edges.
+          // Each item is its own control; its ring lives in the box-shadow
+          // chain. This list is a scroll container, which clips box-shadow on
+          // both axes, so p-1 gives the rings room inside the scrollport (the
+          // padding box) instead of being cut at the edges.
           'p-1',
           '[--selectlist-item-px:var(--spacing-square-relaxed-x)]',
           '[--selectlist-item-py:var(--spacing-square-relaxed-y)]',
@@ -61,11 +60,11 @@ export const SelectList: ThemeComponent<'SelectList'> = {
   }),
   item: cva({
     base: [
-      'relative grid items-start content-center gap-x-3',
+      'group/option relative grid items-start content-center gap-x-3',
       'grid-cols-[auto_1fr_auto]',
       'grid-rows-[minmax(1.25rem,auto)_auto]',
       'text-sm font-medium text-foreground outline-none',
-      'cursor-default data-selection-mode:cursor-pointer',
+      'cursor-default not-disabled:data-selection-mode:cursor-pointer',
       'focus-visible:inset-ring-2 focus-visible:inset-ring-ring/50',
       'transition-[border,color]',
       'disabled:cursor-not-allowed disabled:text-disabled',
@@ -96,9 +95,9 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           'group-orientation-horizontal/list:@max-[40rem]/selectlist:not-last:border-b',
         ],
         bordered: [
-          // Each item is a raised control: dense control-border ring + bottom
-          // bevel + lift (the list pads itself so the ring isn't clipped).
-          'ui-control shadow-elevation-border min-h-14',
+          // Each item is a control: a dense control-border ring, flat (the list
+          // pads itself so the ring isn't clipped).
+          'ui-control min-h-14',
           // Selected just recolors the ring opaque, so its stroke keeps the same
           // geometry as the unselected rows.
           'selected:[--ui-border-color:var(--color-foreground)]',
@@ -115,7 +114,7 @@ export const SelectList: ThemeComponent<'SelectList'> = {
   }),
   label: cva({ base: 'col-start-2 row-start-1' }),
   description: cva({
-    base: 'col-start-2 row-start-2 text-xs font-normal text-secondary',
+    base: 'col-start-2 row-start-2 text-xs font-normal text-secondary group-disabled/option:text-disabled',
   }),
   indicator: cva({
     base: 'flex shrink-0 items-center justify-center row-start-1 col-start-1 self-center',

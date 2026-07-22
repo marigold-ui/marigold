@@ -188,21 +188,24 @@ export const BaseLoader = ({
   size,
   children,
   'aria-label': ariaLabel,
+  'aria-labelledby': ariaLabelledby,
   loaderType = 'circle',
   ...props
 }: BaseLoaderProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');
   const className = useClassNames({ component: 'Loader', variant, size });
 
+  // Localized label is only a fallback; let a consumer's label win.
+  const hasLabel = ariaLabel || ariaLabelledby || children;
+
   return (
     <ProgressBar
       className={className.container}
       isIndeterminate
       aria-label={
-        ariaLabel || children
-          ? ariaLabel
-          : stringFormatter.format('loadingMessage')
+        hasLabel ? ariaLabel : stringFormatter.format('loadingMessage')
       }
+      aria-labelledby={ariaLabelledby}
       {...props}
     >
       {loaderType === 'xloader' ? (

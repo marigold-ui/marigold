@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { LogOut, Settings, User } from '@marigold/icons';
 import { Badge } from '../Badge/Badge';
@@ -67,9 +67,32 @@ const UserMenu = () => (
   </ActionMenu>
 );
 
-const ShellFrame = ({ pageExtra }: { pageExtra?: React.ReactNode }) => {
+// A long nav group that forces the nav into its scrolling state, so the sticky
+// header/footer seams are exercised.
+const workspaceSections = Array.from({ length: 40 }, (_, i) => ({
+  href: `/section-${i + 1}`,
+  label: `Section ${i + 1}`,
+}));
+
+// Tall page content so the document scrolls under the sticky TopNavigation,
+// revealing its bottom-edge hairline (`ui-scroll-edge`).
+const reportPanels = Array.from({ length: 10 }, (_, i) => i + 1);
+
+const ShellFrame = ({
+  pageExtra,
+  longNav = false,
+  longPage = false,
+}: {
+  pageExtra?: React.ReactNode;
+  longNav?: boolean;
+  longPage?: boolean;
+}) => {
   const [currentPath, setCurrentPath] = useState('/dashboard');
-  const page = pages[currentPath];
+  // Fall back to a generic page for the synthesized long-nav routes.
+  const page = pages[currentPath] ?? {
+    label: 'Section',
+    description: 'A workspace section.',
+  };
 
   return (
     <RouterProvider navigate={setCurrentPath}>
@@ -93,6 +116,16 @@ const ShellFrame = ({ pageExtra }: { pageExtra?: React.ReactNode }) => {
             <Sidebar.GroupLabel>Settings</Sidebar.GroupLabel>
             <Sidebar.Item href="/general">General</Sidebar.Item>
             <Sidebar.Item href="/security">Security</Sidebar.Item>
+            {longNav && [
+              <Sidebar.GroupLabel key="workspace-label">
+                Workspace
+              </Sidebar.GroupLabel>,
+              ...workspaceSections.map(section => (
+                <Sidebar.Item key={section.href} href={section.href}>
+                  {section.label}
+                </Sidebar.Item>
+              )),
+            ]}
           </Sidebar.Nav>
           <Sidebar.Footer>
             <Text fontSize="xs">v1.0.0</Text>
@@ -144,6 +177,20 @@ const ShellFrame = ({ pageExtra }: { pageExtra?: React.ReactNode }) => {
             </Panel.Content>
           </Panel>
           {pageExtra}
+          {longPage &&
+            reportPanels.map(n => (
+              <Panel key={n}>
+                <Panel.Header>
+                  <Title>Report {n}</Title>
+                </Panel.Header>
+                <Panel.Content>
+                  <Text>
+                    Placeholder content so the page is tall enough to scroll
+                    under the top navigation.
+                  </Text>
+                </Panel.Content>
+              </Panel>
+            ))}
         </Page>
       </AppShell>
     </RouterProvider>
@@ -153,9 +200,11 @@ const ShellFrame = ({ pageExtra }: { pageExtra?: React.ReactNode }) => {
 export const Basic = meta.story({
   tags: ['component-test'],
   render: () => <ShellFrame />,
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
+});
 
+Basic.test(
+  'renders layout areas, labels main, toggles and navigates',
+  async ({ canvas, userEvent, step }) => {
     await step('Renders all layout areas', async () => {
       await expect(canvas.getByRole('complementary')).toBeInTheDocument();
       await expect(canvas.getByRole('banner')).toBeInTheDocument();
@@ -190,8 +239,8 @@ export const Basic = meta.story({
         canvas.getByRole('heading', { level: 1, name: 'Analytics' })
       ).toBeInTheDocument();
     });
-  },
-});
+  }
+);
 
 /**
  * Controlled sidebar state via an outer `Sidebar.Provider`. `<AppShell>`
@@ -207,8 +256,11 @@ export const ControlledSidebar = meta.story({
       </Sidebar.Provider>
     );
   },
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
+});
+
+ControlledSidebar.test(
+  'toggle drives the controlled sidebar state',
+  async ({ canvas, userEvent, step }) => {
     const toggle = canvas.getByRole('button', { name: /toggle navigation/i });
 
     await step('Sidebar starts closed (controlled)', async () => {
@@ -219,12 +271,12 @@ export const ControlledSidebar = meta.story({
       await userEvent.click(toggle);
       await expect(toggle).toHaveAttribute('aria-expanded', 'true');
     });
-  },
-});
+  }
+);
 
-// Regression for DST-1464. The `main` grid track was `1fr` (= `minmax(auto,
-// 1fr)`), so wide content pushed the column past the viewport. `<Page>`'s
-// `<main>` carries `min-w-0` so the track can shrink and clip overflow.
+// The `main` grid track is `1fr` (= `minmax(auto, 1fr)`), which lets wide
+// content push the column past the viewport unless it can shrink. `<Page>`'s
+// `<main>` carries `min-w-0` so the track shrinks and clips overflow instead.
 export const WideContentDoesNotOverflow = meta.story({
   tags: ['component-test'],
   render: () => (
@@ -265,12 +317,83 @@ export const WideContentDoesNotOverflow = meta.story({
       }
     />
   ),
-  play: async ({ canvasElement }) => {
-    const main = within(canvasElement).getByRole('main');
+});
+
+WideContentDoesNotOverflow.test(
+  'wide content does not push the main column past the viewport',
+  async ({ canvas }) => {
+    const main = canvas.getByRole('main');
     const grid = main.parentElement!;
     await expect(main.getBoundingClientRect().width).toBeLessThanOrEqual(
       grid.getBoundingClientRect().width
     );
     await expect(grid.scrollWidth).toBeLessThanOrEqual(grid.clientWidth);
-  },
+  }
+);
+
+/**
+ * Both scroll axes of the shell at once:
+ *
+ * - **Sidebar nav** overflows, so its sticky header and footer show their
+ *   scroll-revealed seams — seamless at rest; a hairline fades in under the
+ *   header as you scroll, and the footer keeps its top hairline until the list
+ *   bottoms out.
+ * - **Page content** is tall, so the document scrolls under the sticky
+ *   `TopNavigation`, which reveals its own bottom-edge hairline
+ *   (`ui-scroll-edge`) once content passes beneath it.
+ *
+ * Both are scroll-linked (not autonomous), so intentionally not gated by
+ * reduced-motion. In browsers without scroll-driven animations the sidebar
+ * seams fall back to an always-on hairline; the top bar stays borderless (its
+ * opaque background still separates it from passing content).
+ */
+export const ScrollingSidebar = meta.story({
+  tags: ['component-test'],
+  // A behavior test, not a visual one: the seam reveals are scroll-driven and
+  // can't be captured in a static Chromatic frame, and the 40-item + 10-panel
+  // layout would only add a large, noisy snapshot over what Basic already
+  // covers. The assertions below guard the behavior instead.
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: () => <ShellFrame longNav longPage />,
 });
+
+ScrollingSidebar.test(
+  'scrolls both axes: nav overflow keeps the footer seam, page scrolls under the top bar',
+  async ({ canvas }) => {
+    const nav = canvas.getByRole('navigation', { name: /app navigation/i });
+
+    // A long nav in a scroll container, so the sticky header/footer regions are
+    // actually exercised (the docs demos never scroll). Asserted
+    // viewport-independently: the nav scrolls its own overflow, and the tail of
+    // the long list is present.
+    await expect(getComputedStyle(nav).overflowY).toBe('auto');
+    await expect(
+      canvas.getByRole('link', { name: 'Section 40' })
+    ).toBeInTheDocument();
+    await expect(nav.scrollHeight).toBeGreaterThan(600);
+
+    // The footer shows its seam whenever nav content sits below it — which it
+    // does at load (nav rests at the top of an overflowing list). That holds
+    // both where scroll-driven animations run (the timeline pins the "content
+    // below" keyframe) and in the always-on fallback, so the box-shadow
+    // hairline is present here regardless of engine.
+    // Anchored on the footer's structural grid slot (owned by the Sidebar.Footer
+    // component) rather than a compiled theme class, so a theme-side style rename
+    // can't silently break the lookup.
+    const footer = canvas
+      .getByRole('complementary')
+      .querySelector<HTMLElement>('[class*="grid-area:footer"]');
+    await expect(footer).not.toBeNull();
+    await expect(getComputedStyle(footer!).boxShadow).not.toBe('none');
+
+    // And the page itself is tall enough to scroll under the sticky top bar —
+    // the precondition for the TopNavigation's own scroll-revealed edge (the
+    // reveal is a Chromium-only scroll-driven animation, verified visually; the
+    // test guards that the story actually exercises page scroll). The last
+    // filler panel renders below the fold.
+    await expect(canvas.getByText('Report 10')).toBeInTheDocument();
+    await expect(document.documentElement.scrollHeight).toBeGreaterThan(
+      window.innerHeight
+    );
+  }
+);

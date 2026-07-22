@@ -25,13 +25,13 @@ test('check classname slots', () => {
   const button = screen.getByRole('button');
 
   expect(button.className).toMatchInlineSnapshot(
-    `"shrink-0 outline-0 absolute cursor-pointer pr-1 text-secondary/80 right-2"`
+    `"shrink-0 outline-0 absolute cursor-pointer right-0 flex size-control items-center justify-center text-secondary/80"`
   );
   expect(container?.className).toMatchInlineSnapshot(
     `"group/field flex min-w-0 flex-col w-auto"`
   );
   expect(label.className).toMatchInlineSnapshot(
-    `"items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive-accent in-field:mb-1.5 inline-flex"`
+    `"items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled group-required/field:after:ui-required-indicator group-required/field:after:-ml-1 group-required/field:after:text-destructive-accent in-field:mb-1.5 inline-flex"`
   );
 });
 

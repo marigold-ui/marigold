@@ -106,6 +106,13 @@
 - Updated dependencies [724f0ce]
 - Updated dependencies [de34b15]
   - @marigold/system@18.0.0-beta.0
+
+## 1.3.45
+
+### Patch Changes
+
+- @marigold/system@17.9.1
+
 ## 1.3.44
 
 ### Patch Changes

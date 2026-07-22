@@ -657,6 +657,16 @@ so future components pick up the same behavior automatically. A`@remarks` tag on
 - Updated dependencies [724f0ce]
 - Updated dependencies [de34b15]
   - @marigold/system@18.0.0-beta.0
+
+## 17.9.1
+
+### Patch Changes
+
+- 76fca24: fix(DSTSUP-267): `FileField` appends files across selections when `multiple` is set
+
+  Previously, when `multiple` was set, selecting or dropping files in a second interaction replaced the existing selection instead of adding to it — only files chosen in a single action were kept. `FileField` now accumulates files across separate selections and drops, de-duplicating identical files (matched by name, size, and last-modified time). Behavior with `multiple` unset is unchanged: the latest single file still wins.
+  - @marigold/system@17.9.1
+
 ## 17.9.0
 
 ### Minor Changes

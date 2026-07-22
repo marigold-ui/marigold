@@ -1,32 +1,34 @@
 ---
 title: Menu
-description: Flexible component for constructing dynamic and customizable menus.
+description: A trigger that opens a list of commands a user can act on.
+badge: updated
 ---
 
-The `<Menu>` component allows you to define a menu element. It's useful when you want a list with options or actions.
+The `<Menu>` component presents a list of commands behind a trigger. Reach for it when you have actions a user can take, such as editing, sharing, or deleting, and you want to keep those options tucked away until they are needed.
 
-It is structured in two parts `<Menu>` and `<Menu.Item>`. The `<Menu>` contains the trigger and the button per default. You also can use the `<Menu.Section>` which you can use to separate the menu items from each other.
+A `<Menu>` owns its trigger button and opens a floating list of `<Menu.Item>`s. Group related items with a `<Menu.Section>` or a `<Divider>`, and use the [`<ActionMenu>`](/components/overlay/action-menu) companion when you want a compact kebab-style trigger for per-row or per-item actions.
 
-There is also a companion component called `<ActionMenu>` which you can use if you want to take some actions. You can have a look on how it works in the examples. It works quite similar to the normal `<Menu>` component. All you have to add are the `<Menu.Item>`s.
+On small screens a `<Menu>` opens as a bottom sheet instead of a floating list, so it stays comfortable to reach on touch.
+
+import { MenuAnatomy } from './menu-anatomy';
 
 ## Anatomy
 
-<ImageZoom
-  src="/menu/menu-anatomy.jpg"
-  alt="Anatomy of menu"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+<MenuAnatomy />
 
-- **Menu trigger:** The element, such as a button or icon, that opens or activates the menu.
-- **Section:** Menus are made up of a section or multiple sections.
-- **Section header:** Contains a heading to name a section of a group of similar menu items.
-- **Menu item:** Represent an individual option or action within a Menu component.
+- **Trigger:** The button that opens the menu.
+- **Section:** An optional group of related items with a header that names the group.
+- **Menu item:** A single command. It can carry a leading icon, a label, and a trailing keyboard-shortcut hint.
+- **Shortcut:** An optional `<Keyboard>` hint that shows the item's keyboard shortcut.
+- **Divider:** An optional `<Divider>` that separates groups without a label.
+- **Selected item:** In selection mode, the chosen item shows a checkmark and a highlighted row.
 
 ## Appearance
 
-<AppearanceDemo component={'Menu'} exclude={{ variant: ['destructive'] }} />
+<AppearanceDemo
+  component={'Menu'}
+  exclude={{ variant: ['destructive', 'master', 'admin'] }}
+/>
 
 <AppearanceTable component={'Menu'} />
 
@@ -41,85 +43,139 @@ The Menu component supports variants for both the trigger button and individual 
 
 **Menu item variants:**
 
-| Variant       | Description                                         | When to use                                                    |
-| ------------- | --------------------------------------------------- | -------------------------------------------------------------- |
-| `default`     | Standard menu item. This is the default variant.    | Regular menu actions like navigation, selection, or settings.  |
-| `destructive` | Red-colored menu item signaling a dangerous action. | Irreversible or high-impact actions like "Delete" or "Remove". |
+| Variant       | Description                                            | When to use                                                    |
+| ------------- | ------------------------------------------------------ | -------------------------------------------------------------- |
+| `default`     | Standard menu item. This is the default variant.       | Regular menu actions like navigation, selection, or settings.  |
+| `destructive` | Red-colored menu item signaling a dangerous action.    | Irreversible or high-impact actions like "Delete" or "Remove". |
+| `master`      | Menu item with a lock icon in the master access color. | Actions reserved for Reservix employees (master access).       |
+| `admin`       | Menu item with a key icon in the admin access color.   | Actions reserved for developers (admin access).                |
+
+The item variants apply to `<Menu.Item>`, not to the trigger. See the [Admin- and Mastermark pattern](/patterns/layout/admin-master-mark) for guidance on access marks.
 
 ## Usage
 
-In general, Menus are used to hide less frequently used or advanced options until users specifically need them. This keeps the interface clean and focused on essential elements.
+A menu keeps secondary or advanced actions out of the way until a user asks for them, which keeps the surrounding interface calm. Every item is a single command, so the user picks one, it runs, and the menu closes. Give the `<Menu>` an `onAction` handler and each `<Menu.Item>` an `id` so you can tell which command was chosen.
 
-Menus are ideal for interactive UI elements, it is distinct from `<Select>`, which is meant for form inputs and value selection.
+<ComponentDemo name="menu-action" />
 
-Menus can speed up interactions for advanced users who are already familiar with the application. These users often rely on shortcuts and context-specific actions to work more efficiently.
+Order items by how often they are used, put the most common ones first, and keep labels short and free of filler verbs.
 
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Write menu label that is clear, concise (max. 24 characters) and avoid
-      unnecessary verbs.
+      Order items by priority and put the most used actions at the top.
     </DoDescription>
   </Do>
-  <Do>
-    <DoDescription>
-      Organise your menu items based on priority, and put the most used items at
-      the start of the menu.
-    </DoDescription>
-  </Do>
+  <Dont>
+    <DontDescription>
+      Don't order items arbitrarily or bury a frequent action among rarely used
+      ones. It forces people to scan the whole menu to find it.
+    </DontDescription>
+  </Dont>
 </GuidelineTiles>
 
-### Simple menu with action
+### Menu vs Select
 
-In this example you can see a simple `<Menu>` with some items to select. it is used when you need to provide users with a set of options that will result in a specific action being performed.
+A menu and a [`<Select>`](/components/form/select) can look alike, but they do different jobs. A menu is a list of commands that act immediately, so choosing "Duplicate" duplicates something right away. A select is a form field that holds a value, so choosing "Germany" sets a country you submit later.
 
-<ComponentDemo name="menu-action" />
+Ask whether the choice does something now or stores a value for later. If it acts, use a menu. If it fills in a field, use a select.
 
-### Items with description
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use a menu for actions that run as soon as they are chosen.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use a menu to collect a value for a form. Use a
+      [Select](/components/form/select) so the choice is submitted with the
+      form.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
-For menu items that need a label and a secondary line, compose with `<TextValue>` and `<Description>`. The description is wired to the item's `aria-describedby` automatically and picks up the Menu theme's `description` slot styling.
+### Grouping related items
+
+A short menu needs no grouping, but once it holds several kinds of action the list gets harder to scan. Grouping breaks it into chunks a reader takes in at a glance, so they find the action they want without reading every row.
+
+Use a `<Menu.Section>` with a `title` when the groups have names worth showing, such as "Game day" and "Support" or "Edit" and "Share". The heading labels the group for everyone and gives assistive technology a named group to move through, which helps most when a menu is long or spans more than one topic. Reach for a `<Divider>` instead when the split is obvious and a label would only repeat what the items already say, such as setting a destructive "Delete" apart from the actions above it. A divider is a quiet break, not a named region.
+
+The two can work together: label the main groups with sections, then use a divider to set a standalone action such as Delete or Sign out apart from them. Keep grouping in proportion to the menu, though. A handful of items reads fine as one list, and splitting it into tiny groups adds structure no one needs.
+
+<ComponentDemo name="menu-grouping" />
+
+### Icons and keyboard shortcuts
+
+A leading icon lets people recognise a familiar action by its shape before they read the label, which speeds up scanning in a menu they open often. Reach for icons when an action has a well-known symbol, such as cut, copy, or paste. Give every item in a group an icon rather than only some, so the group reads as one set instead of a ragged mix, and skip icons for abstract actions where a vague or invented symbol slows recognition instead of helping it.
+
+A trailing keyboard-shortcut hint teaches the faster path and rewards repeat use, so the menu becomes a place where people pick up shortcuts rather than one they keep returning to. Show a hint only for an action that has a real, working key binding, and make it match the binding exactly. A hint for a shortcut the application does not handle is worse than none, because it teaches a key that does nothing.
+
+Compose a `<Menu.Item>` with an icon, a [`<TextValue>`](/components/content/text-value) label, and a [`<Keyboard>`](/components/content/keyboard) shortcut. Set `textValue` on the item so type-ahead matches the label rather than the shortcut text.
+
+<ComponentDemo name="menu-shortcuts" />
+
+### Adding a description line
+
+A label names an action, but it cannot always carry the action's consequence or tell two similar items apart. When the label alone would leave people guessing, add a [`<Description>`](/components/content/description) next to the `<TextValue>` label for a quiet second line that explains what the action does or warns what it costs, such as "Closes the editor after saving" or "Reverts unsaved edits. Cannot be undone."
+
+Use a description sparingly. It earns its place when it removes real doubt, so reserve it for the few items that need it rather than adding one to every row, where the extra text would slow scanning and bury the labels. Keep each one to a single line.
+
+The description is wired to the item's accessible description automatically, so a screen reader announces the label first and the detail after, with no `aria` attributes to set by hand.
 
 <ComponentDemo name="menu-description" />
 
-### Menu with sections
+### Toggling options
 
-When you have mutliple menu items that can be categorized under different headings. This is particularly useful in complext menus with many options, you can use `<Menu.Section>` and pass `title` for the group name.
+Sometimes a menu's own rows are settings to switch on and off rather than commands to run once, such as which columns a table shows, which layers are visible, or how a list is sorted. Set `selectionMode` to `"single"` or `"multiple"` and each row becomes a toggle. Use `"multiple"` for independent switches where any number can be on at once, which react-aria exposes as a `menuitemcheckbox` on each row, and `"single"` for a set where exactly one is active at a time, such as a sort order, where each row becomes a `menuitemradio`.
 
-<ComponentDemo name="menu-section" />
-
-### Disabled menu items
-
-In this example the `<Menu>` has set its prop `disabeldKeys`. So you can't interact with the `<Menu.Item>` anymore. Keep in mind, that you have to set an id to the `<Menu.Item>`.
-
-<ComponentDemo name="menu-disabled" />
-
-### Looking for the kebab-menu pattern?
-
-For quick, context-specific actions on an item or row, see [`<ActionMenu>`](/components/overlay/action-menu). It uses a ghost `<Button>` as its trigger, switches to a `<Tray>` on small screens, and follows the same `<Menu.Item>` API.
-
-The example below shows `<ActionMenu>` inside a table for per-row actions:
-
-<ComponentDemo name="menu-action-table" />
-
-### Menu item opens dialog
-
-This Example shows how to open a [`<Dialog>`](/components/dialog/) from a `<Menu.Item>`. It is useful when a menu action requires additional user input or confirmation. Selecting the item opens a `Dialog` where users can provide the necessary information or confirm their choice, making the interaction smooth and efficient.
-
-<ComponentDemo name="menu-open-dialog" />
-
-### Menu selection mode
-
-Use `multiple` selection mode when you want to allow users to select multiple options at once, providing flexibility in situations where multiple choices are valid and necessary.
-
-Here you can see how the `selectionMode` from `<Menu>` works. In this example the `selectionMode` is set to `multiple`. If you open the items you can see a selected item.
+Selected rows show a checkmark and a highlighted background, aligned like `<ListBox>`. The menu stays open as the user works, so they can flip several toggles in one visit instead of reopening it for each change.
 
 <ComponentDemo name="menu-selection" />
 
-### Destructive actions
+This is the one case where a menu row carries state, and it works because the whole row is the control. Clicking anywhere on the row flips the setting, and the checkmark only shows whether it is on. There is no separate switch inside the row to aim at, just the row itself.
 
-For actions that result in irreversible data loss, such as deleting an item or removing a user account, use the `"destructive"` variant on menu items to warn the user of the consequences. Always safeguard these actions with a confirmation dialog that clearly explains the outcome and requires an explicit second step to complete the process.
+The moment a row needs its own control beside the label, such as a switch to flip or a link to follow, it becomes content that holds controls rather than a single command, and a menu is the wrong container. A menu item cannot expose interactive children to a screen reader or to keyboard focus, so use a surface built for arbitrary content instead.
 
-<ComponentDemo name="menu-destructive" />
+### Confirming and collecting input
+
+Most menu items run the moment they are chosen, but some should pause first. When an action is destructive or needs more input, open a [`<Dialog>`](/components/overlay/dialog) from the item rather than acting straight away. Selecting the item closes the menu and opens the dialog, where the user confirms or fills in the details before anything happens.
+
+For irreversible actions, such as deleting a record or removing a member, do two things together. Mark the item with the `destructive` variant so its risk reads at a glance in the list, and open a confirmation dialog before the action runs so a mis-click cannot cause data loss. The variant is the warning and the dialog is the safeguard. The heavier the consequence, the more the confirmation should ask of the user, from a simple confirm button up to typing the name of the thing being deleted.
+
+Other actions are not dangerous but still need details before they can run, such as renaming an item or adding a label. Here the dialog collects that input and applies the change when the user confirms. It also keeps the menu short, since the item is only the entry point and the form lives in the dialog.
+
+The menu below opens a dialog both ways: "Rename" collects input, and "Delete" asks for confirmation.
+
+<ComponentDemo name="menu-dialog" />
+
+### Disabled items
+
+A disabled item is worth showing only when the action belongs in this menu but is not available right now and the user could make it available. "Paste" with an empty clipboard or "Undo" with nothing to undo are the classic cases. The item stays in its usual place so people learn where it lives, and its dimmed state signals that it exists but is not ready yet. A menu whose shape stays stable is easier to learn than one whose items appear and disappear.
+
+Reach for it sparingly. If an action never applies in the current context, or the user will never be allowed to run it, omit the item rather than leave a permanently dead row, which is only noise. When the reason for disabling is not obvious from the surrounding state, explain it, either in the item's description or nearby, because a disabled control with no explanation leaves people guessing why they cannot use it.
+
+A disabled item stays visible and is marked disabled for assistive technology, but it cannot be activated and does not fire `onAction`. Set it with `disabledKeys` on the `<Menu>`, which references each item by its `id`.
+
+<ComponentDemo name="menu-disabled" />
+
+### Kebab menus
+
+A kebab menu gathers the actions for one specific item, such as a table row, a card, or a list entry, behind a compact "⋮" trigger. Build it with the [`<ActionMenu>`](/components/overlay/action-menu) companion: it shows an icon-only trigger, drops into a bottom sheet on small screens, and takes the same `<Menu.Item>` API as `<Menu>`. Its `variant` sets how much the trigger stands out. Use `ghost` so it blends into a busy row, which is the usual choice for a kebab, or leave the default when it should read as a normal button.
+
+Reach for it when an item has more actions than you can or should show inline. Rather than crowd every row with buttons, keep the one or two primary actions visible and move the rest behind the kebab, so the row stays scannable and the actions still have a predictable home. This scales especially well in tables and long lists, where a full set of buttons on every row would be overwhelming.
+
+Because a kebab hides its actions behind an extra click, keep it for secondary actions and never bury a single primary action behind one, since a lone action should just be a button. Give the trigger an `aria-label` such as "Row actions", since an icon-only button has no visible text, and place the kebab in the same spot on every row so people learn where to find it.
+
+<ComponentDemo name="menu-action-table" />
+
+## Accessibility
+
+`<Menu>` follows the ARIA menu pattern. The trigger opens the list, the whole menu is a single tab stop, and users move between items with the arrow keys, jump with type-ahead, and activate with Enter or Space. Escape closes the menu and returns focus to the trigger.
+
+Because it is a menu, an item is a single command and cannot contain interactive children. Screen readers do not expose controls nested inside a `menuitem`, and keyboard focus never lands on them. For a panel whose rows carry their own switches, buttons, or links, use a surface built for arbitrary content instead of a `<Menu>`. Toggling a menu's own rows is the exception, handled by selection mode, where the row itself is the control (`menuitemcheckbox` or `menuitemradio`).
+
+Give the trigger a clear name through the `label` prop, or an `aria-label` when the trigger is icon-only.
 
 ## Props
 
@@ -136,3 +192,8 @@ For actions that result in irreversible data loss, such as deleting an item or r
 ### Menu.Section
 
 <AutoTypeTable path="Menu/MenuSection" name="MenuSectionProps" />
+
+## Alternative components
+
+- [Select](/components/form/select): Use when the choice sets a value for a form rather than running an action.
+- [ActionMenu](/components/overlay/action-menu): The kebab-style companion for per-row and per-item actions.

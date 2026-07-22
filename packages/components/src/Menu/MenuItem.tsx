@@ -1,61 +1,54 @@
 import type { ReactNode } from 'react';
-import { use, useMemo } from 'react';
 import type RAC from 'react-aria-components';
+import { KeyboardContext } from 'react-aria-components/Keyboard';
 import { MenuItem } from 'react-aria-components/Menu';
 import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
 import { useClassNames } from '@marigold/system';
+import { Check } from '../icons/Check';
+import { AccessIcon } from '../utils/AccessIcon';
+import { AccessLabel } from '../utils/AccessLabel';
+import { useMergedKeyboardSlot } from '../utils/useMergedKeyboardSlot';
+import { useMergedTextSlots } from '../utils/useMergedTextSlots';
 
 // Props
 // ---------------
 type RemovedProps = 'style' | 'className';
 export interface MenuItemProps extends Omit<RAC.MenuItemProps, RemovedProps> {
-  variant?: 'destructive' | 'default' | (string & {});
+  variant?: 'destructive' | 'default' | 'master' | 'admin' | (string & {});
   size?: string;
 }
-
-type SlottedContextValue = {
-  slots?: Record<string, { className?: string } & Record<string, unknown>>;
-};
 
 interface ItemChildrenProps {
   children: ReactNode;
   labelClassName?: string;
   descriptionClassName?: string;
+  keyboardClassName?: string;
 }
 
-// Merge (rather than replace) RAC-provided slot configs on TextContext so
-// nested `<TextValue>` / `<Description>` (or `<Text slot="label">` /
-// `<Text slot="description">`) inside a `Menu.Item` pick up our theme
-// classNames without losing RAC's slot wiring (most notably `id` for
-// `aria-describedby`).
+// Inject label/description/keyboard theme classNames into RAC's Text and
+// Keyboard contexts (merge, not replace, to keep aria-describedby wiring).
 const ItemChildren = ({
   children,
   labelClassName,
   descriptionClassName,
+  keyboardClassName,
 }: ItemChildrenProps) => {
-  const parentText = use(TextContext) as SlottedContextValue | undefined;
-  const parentTextSlots = parentText?.slots;
-
-  const textContextValue = useMemo(
-    () => ({
-      slots: {
-        ...parentTextSlots,
-        label: {
-          ...(parentTextSlots?.label ?? {}),
-          className: labelClassName,
-        },
-        description: {
-          ...(parentTextSlots?.description ?? {}),
-          className: descriptionClassName,
-        },
-      },
-    }),
-    [parentTextSlots, labelClassName, descriptionClassName]
-  );
+  const textValue = useMergedTextSlots({
+    label: labelClassName,
+    description: descriptionClassName,
+  });
+  const keyboardValue = useMergedKeyboardSlot(keyboardClassName);
 
   return (
-    <Provider values={[[TextContext, textContextValue]]}>{children}</Provider>
+    <Provider
+      values={[
+        [TextContext, textValue],
+        [KeyboardContext, keyboardValue],
+      ]}
+    >
+      {children}
+    </Provider>
   );
 };
 
@@ -66,12 +59,21 @@ const _MenuItem = ({ children, variant, size, ...props }: MenuItemProps) => {
   return (
     <MenuItem {...props} className={classNames.item}>
       {renderProps => (
-        <ItemChildren
-          labelClassName={classNames.label}
-          descriptionClassName={classNames.description}
-        >
-          {typeof children === 'function' ? children(renderProps) : children}
-        </ItemChildren>
+        <>
+          <AccessIcon variant={variant} />
+          {/* Checkmark only in selection mode; keeps command menus unchanged. */}
+          {renderProps.selectionMode !== 'none' && (
+            <Check size={16} strokeWidth="3" className="selection-indicator" />
+          )}
+          <ItemChildren
+            labelClassName={classNames.label}
+            descriptionClassName={classNames.description}
+            keyboardClassName={classNames.keyboard}
+          >
+            {typeof children === 'function' ? children(renderProps) : children}
+          </ItemChildren>
+          <AccessLabel variant={variant} />
+        </>
       )}
     </MenuItem>
   );

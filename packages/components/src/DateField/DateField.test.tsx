@@ -37,7 +37,7 @@ test('renders correctly', () => {
       style="--container-width: 100%; --field-width: 100%;"
     >
       <span
-        class="items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive-accent in-field:mb-1.5 inline-flex"
+        class="items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled group-required/field:after:ui-required-indicator group-required/field:after:-ml-1 group-required/field:after:text-destructive-accent in-field:mb-1.5 inline-flex"
         id="react-aria-_r_2_"
       >
         My Label
@@ -45,7 +45,7 @@ test('renders correctly', () => {
       <div
         aria-describedby="react-aria-description-0 react-aria-_r_4_"
         aria-labelledby="react-aria-_r_2_"
-        class="ui-control shadow-elevation-border h-control flex items-center disabled:ui-state-disabled group-read-only/field:ui-state-readonly has-focus:ui-state-focus has-invalid:ui-state-error has-focus:has-invalid:outline-destructive-accent/20 has-focus:has-invalid:[--ui-border-color:var(--color-destructive-accent)] w-(--field-width) max-w-full min-w-0 overflow-hidden"
+        class="ui-control h-control flex items-center disabled:ui-state-disabled group-read-only/field:ui-state-readonly has-focus:ui-state-focus has-invalid:ui-state-error has-focus:has-invalid:outline-destructive-accent/20 has-focus:has-invalid:[--ui-border-color:var(--color-destructive-accent)] w-(--field-width) max-w-full min-w-0 overflow-hidden"
         data-rac=""
         data-react-aria-pressable="true"
         id="react-aria-_r_1_"
