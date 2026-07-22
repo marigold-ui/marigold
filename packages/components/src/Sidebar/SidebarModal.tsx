@@ -46,7 +46,10 @@ export const SidebarModal = ({ children, ref }: SidebarModalProps) => {
           />
           <div
             className={cn(
-              "grid h-full grid-rows-[auto_1fr_auto] [grid-template-areas:'header'_'content'_'footer']",
+              // The header row never collapses below the top-bar height: with
+              // no `Sidebar.Header` the empty strip still holds the absolute
+              // close button clear of the first nav row.
+              "grid h-full grid-rows-[minmax(var(--spacing-topbar),auto)_1fr_auto] [grid-template-areas:'header'_'content'_'footer']",
               classNames.content
             )}
           >
