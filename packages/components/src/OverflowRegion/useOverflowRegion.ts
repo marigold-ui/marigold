@@ -44,8 +44,14 @@ export const useOverflowRegion = (itemCount: number) => {
     const region = regionRef.current;
     if (!region) return;
 
-    const available = region.getBoundingClientRect().width;
-    const gap = parseFloat(getComputedStyle(region).gap) || 0;
+    const regionStyle = getComputedStyle(region);
+    // Content-box width: the padding is only clip-edge slack (see the
+    // region's className), not space that items may occupy.
+    const available =
+      region.clientWidth -
+      (parseFloat(regionStyle.paddingLeft) || 0) -
+      (parseFloat(regionStyle.paddingRight) || 0);
+    const gap = parseFloat(regionStyle.gap) || 0;
     const width = (element: Element) => element.getBoundingClientRect().width;
 
     const items = Array.from(
@@ -126,8 +132,14 @@ export const useOverflowRegion = (itemCount: number) => {
   return {
     regionProps: {
       ref: observe,
-      // `relative` anchors the absolutely positioned (demoted) items.
-      className: 'relative flex min-w-0 flex-1 flex-nowrap overflow-clip',
+      // `relative` anchors the absolutely positioned (demoted) items. Only
+      // the x-axis is clipped so focus rings and border anti-aliasing stay
+      // intact vertically; the negative margin + padding pair moves the
+      // horizontal clip edge slightly outside the items (without changing
+      // the region's footprint) for the same reason. The measurement
+      // subtracts the padding, so items never occupy the slack.
+      className:
+        'relative -mx-1 flex min-w-0 flex-1 flex-nowrap overflow-x-clip px-1',
     },
     getItemProps: (index: number): OverflowRegionItemProps => ({
       'data-overflow-item': true,
