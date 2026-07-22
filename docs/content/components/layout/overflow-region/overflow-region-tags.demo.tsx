@@ -1,4 +1,5 @@
 import { Badge, OverflowRegion } from '@marigold/components';
+import { DemoResizer } from '@/ui/DemoResizer';
 
 const traits = [
   'outdoor',
@@ -12,10 +13,8 @@ const traits = [
   'cheap',
 ];
 
-// The container is deliberately narrow so the overflow behavior is visible
-// without resizing the browser.
 export default () => (
-  <div className="max-w-72">
+  <DemoResizer defaultWidth={300}>
     <OverflowRegion
       indicator={({ hiddenCount }) => <Badge>+{hiddenCount}</Badge>}
     >
@@ -23,5 +22,5 @@ export default () => (
         <Badge key={trait}>{trait}</Badge>
       ))}
     </OverflowRegion>
-  </div>
+  </DemoResizer>
 );
