@@ -8,8 +8,8 @@ brief: >-
   visible as a removable Tag.Group rail through every search and filter, so
   narrowing the list never drops a pick. The commit footer carries the staged
   count, and confirming persists the set on the report, which can be re-opened
-  pre-staged to edit. The width and density is the case a fullscreen dialog
-  serves better than a large one.
+  pre-staged to edit. It opens in a fullscreen dialog, the size this width and
+  density needs.
 patterns:
   - user-input/pick
 key_files:

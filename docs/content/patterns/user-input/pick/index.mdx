@@ -20,8 +20,6 @@ The two look alike because both use a search field and both end in a smaller set
 
 One picture keeps them apart. Filtering is turning a camera lens, you change what you _see_ and the collection itself stays put. Picking is filling a basket, you change what you _have_ and leave with it.
 
-The same split, side by side: filtering narrows the collection until the view itself is the answer, while picking enumerates records and commits them as a set carried out.
-
 <ImageZoom
   className="mx-auto"
   src="/pick/filter-vs-pick.svg"
@@ -46,14 +44,14 @@ Reach for a pick when the user has to assemble a set of records that lives somew
 
 The dialog is the default, but it is only one point on a spectrum. As the collection grows and the choice carries more weight, the right surface moves with it. Do not reach straight for a modal. Match the surface to how much picking the task really involves.
 
-| Situation                                     | Surface                                                                                            | Why it fits                                                                                                             |
-| --------------------------------------------- | -------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| A few options that are already on the page    | **Inline multi-select**, the [Multiple Selection](/patterns/user-input/multiple-selection) pattern | The options are already in front of the user, so anything heavier only adds clicks. Reach for this first.               |
-| A longer list that can still stay on the page | **Searchable field**, a [`<TagField>`](/components/form/tag-field)                                 | The field opens a popover of matches as the user types and shows the chosen ones as tags, all without leaving the page. |
-| A real find-and-collect task                  | **Dialog**, the default                                                                            | Room for search, filters, a selectable list, and a commit footer, focused over the page without navigating away.        |
-| A pick too big for a dialog                   | **Routed page**, the exception                                                                     | Use it when the pick needs its own URL, appears in several places, is used often, or outgrows what a dialog can hold.   |
+| Situation                                     | Surface                                                                                            | Why it fits                                                                                                                                                              |
+| --------------------------------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| A few options that are already on the page    | **Inline multi-select**, the [Multiple Selection](/patterns/user-input/multiple-selection) pattern | The options are already in front of the user, so anything heavier only adds clicks. Reach for this first.                                                                |
+| A longer list that can still stay on the page | **Searchable field**, a [`<TagField>`](/components/form/tag-field)                                 | The field opens a popover of matches as the user types and shows the chosen ones as tags, all without leaving the page.                                                  |
+| A real find-and-collect task                  | **Dialog**, the default                                                                            | Room for search, filters, a selectable list, and a commit footer, focused over the page without navigating away. Scales from `large` to `fullscreen` as the table grows. |
+| A pick that needs its own place               | **Routed page**, the exception                                                                     | Use it when the pick needs its own URL, appears in several places, or is used often. A pick that is merely large fits a `size="fullscreen"` dialog first.                |
 
-The direction is the through-line: keep the pick on the page while you can, move to a dialog once it becomes a task in its own right, and leave the page only when even a dialog is not enough.
+The direction is the through-line: keep the pick on the page while you can, move to a dialog once it becomes a task in its own right, and leave the page only when even a fullscreen dialog is not enough.
 
 One surface sits to the side of this progression: a transfer list, two panes with available records on the left and chosen ones on the right. It fits a pick where the user wants to watch the whole selection build up beside the source, but it is space-hungry and rarely earns its cost, so use it sparingly. Marigold has no dedicated component for it yet, so today it is a hand-built layout rather than a ready surface.
 
@@ -62,11 +60,13 @@ The searchable-field tier in action: a [`<TagField>`](/components/form/tag-field
 <ComponentDemo name="pick-tag-field" background="page" />
 
 <Callout type="info" title="Sizing a heavy pick">
-  Marigold's [`<Dialog>`](/components/overlay/dialog) tops out around 640px tall
-  and 1024px wide on desktop (`size="large"`). That is room enough for a search
-  field, a scrollable list, and a footer. For a content-heavy pick that needs
-  more, a `size="fullscreen"` dialog (in progress) fills the viewport, leaving a
-  routed page for a pick that needs its own URL or appears in several places.
+  A `size="large"` [`<Dialog>`](/components/overlay/dialog) gives about 640px of
+  height and 1024px of width on desktop, room enough for a search field, a
+  scrollable list, and a footer. When a pick carries a wide table or many rows
+  that a large dialog would cramp, `size="fullscreen"` fills the viewport, as
+  the [example](/examples/pick) does. Use a routed page only when the pick needs
+  its own URL or appears in several places. A pick that is simply large belongs
+  in a fullscreen dialog.
 </Callout>
 
 ## The pick dialog
@@ -77,7 +77,7 @@ A trigger in the host task opens the dialog, such as an "Add venues" button, and
 
 The matching records form the results collection, shown as a [`<Table>`](/components/collection/table) when they carry detail worth scanning, such as a city and a capacity, or a plain list when the label is all there is. Checking a row stages it. A commit footer ends the task, where a cancel action discards the staged set and a primary action commits it, carrying the staged count in its label, "Add 3 venues".
 
-The example below adds venues from a searchable, filterable, multi-select table, starting from nothing selected.
+The example below adds venues from a searchable, filterable, multi-select table.
 
 <ComponentDemo name="pick-dialog" background="page" />
 
@@ -86,7 +86,7 @@ A few details make the dialog trustworthy:
 - **Name the outcome in the commit button, and carry the count.** The primary action reads "Add 3 venues" rather than a generic "OK", so the user knows both what will happen and how much they are committing. Compose this button by hand from the staged count. The [`<ActionBar>`](/components/collection/actionbar) is built for floating bulk actions on a table, not for a dialog's commit footer, so it is the wrong fit here.
 - **Bound the selection when the task requires it.** Most picks need at least one record, so disable the commit until something is staged. An empty set can then never be committed by accident, and at zero the button reads "Add venues" and stays disabled rather than offering a clickable "Add 0 venues". If a pick also caps how many may be chosen, make the ceiling visible before it is reached, stop further checks once it is, and say why the rest are blocked, so the limit reads as a rule and not a bug.
 - **Never clear staged selections while filtering.** Typing in the search narrows the visible rows, but records staged earlier stay staged even when they scroll out of view. Clearing them on every keystroke would make the pick impossible. This is the same tension as the filter paradox in [Table Records](/patterns/user-input/table-record-management).
-- **Show records the way the user recognizes them.** When a record carries detail worth scanning, such as a city or a capacity, give the collection columns with a [`<Table>`](/components/collection/table) rather than a bare name. A plain list is enough when the label stands on its own.
+- **Show records the way the user recognizes them.** When a record carries detail worth scanning, such as a city or a capacity, show each attribute in its own [`<Table>`](/components/collection/table) column instead of a bare name. A plain list is enough when the label stands on its own.
 - **Offer select all for bulk picks.** A header control that selects every row, shown in a mixed state while the selection is partial, saves the user from working through a long list by hand. Keep it paired with search and filters so "all" applies to a sensibly narrowed set.
 - **Cancel discards, commit persists.** Closing or cancelling throws the staged set away with no consequence. Only the primary action carries the selection back to the task.
 
@@ -100,7 +100,7 @@ Only the collection changes. This pick grants a set of people access and carries
 
 ### Filters and empty states
 
-Search alone gets slow once the pool is large. Filter controls beside it, such as a status or type dropdown, narrow the visible rows alongside the search while the staged selection stays put. The rule still holds: neither the search nor a filter may clear what the user has already staged.
+Search alone gets slow once the pool is large, so filter controls sit beside it, narrowing the visible rows without disturbing the staged set.
 
 The danger is that narrowing can empty the list, and an empty table reads as "everything is gone." A count in the footer says how many are staged but not which, so do not lean on it alone. Keep the staged set visible as items. The demo above does this with a rail of removable tags that persists through every search and filter, so the user sees their picks survived and can drop any that no longer belong. Pair it with an empty state on [`<Table.Body>`](/components/collection/table) that says the staged set is intact instead of showing a blank table. If the source collection is empty from the start, say so at the trigger, or disable it, so the user never opens a dialog onto nothing.
 
@@ -114,9 +114,7 @@ So do not paginate the picker. Narrow it instead:
 - **Scroll what remains.** Put the results in a bounded [`<Scrollable>`](/components/layout/scrollable) region with a sticky [`<Table.Header>`](/components/collection/table), so the list scrolls in place while the search, the staged tags, and the commit footer stay fixed.
 - **Fetch on search for large or remote collections.** Load matches as the user types rather than pulling the whole collection down, and show a loading state while they arrive. The [Async Data Loading](/patterns/feedback/async-data-loading) pattern covers `useAsyncList` and search-as-you-type.
 
-Whatever the source size, track the staged picks independently of the loaded rows, so they survive scrolling, filtering, and re-fetching. The [example](/examples/pick) keeps its venues (about fifty across Germany, Austria, and Switzerland) in a scrollable, sticky-header table narrowed by search alongside type, region, and status filters, with a running result count. The table is wide, eleven columns from region and setting through rating, capacity, and day rate, so it already scrolls sideways inside a `size="large"` dialog. That width and density is exactly the case a `size="fullscreen"` dialog serves better. Anything staged stays in a tag rail and commits on confirm, even after it scrolls out of view or a filter hides it.
-
-When even a narrowed, scrollable list is too much for a dialog, that is the signal to move the whole pick to a routed page, not to add a pager to the overlay.
+Whatever the source size, track the staged picks independently of the loaded rows, so they survive scrolling, filtering, and re-fetching. The [example](/examples/pick) keeps its venues (about fifty across Germany, Austria, and Switzerland) in a scrollable, sticky-header table narrowed by search alongside type, region, and status filters, with a running result count. The table is wide, eleven columns from region and setting through rating, capacity, and day rate, so it opens in a `size="fullscreen"` dialog that fills the viewport, the surface this width and density needs. A `size="large"` dialog would leave the table scrolling sideways. Anything staged stays in a tag rail and commits on confirm, even after it scrolls out of view or a filter hides it.
 
 ## Filter, select, then act
 
@@ -126,7 +124,7 @@ At that point you have crossed from picking into the [Bulk Actions](/patterns/us
 
 <ComponentDemo name="pick-filter-select-act" background="page" />
 
-The flow lives here only as a signpost. Whenever a pick dialog is tempting for records already in view, ask what the selection is for. If you are operating on the records rather than gathering them to use elsewhere, stay on the page and follow Bulk Actions, which covers selection scope, confirmation, progress, and partial-failure feedback in full.
+The flow lives here only as a signpost. When the selection is for operating on the records rather than gathering them to use elsewhere, stay on the page and follow Bulk Actions, which covers selection scope, confirmation, progress, and partial-failure feedback in full.
 
 ## After the selection
 
@@ -141,7 +139,7 @@ The difference is not in the pick itself. The surface and the mechanism are the 
 
 ## Demo
 
-The example is a report that owns its picked venues: choose venues and the committed set persists as the report's content, ready to re-open and edit. That is the common afterlife, a set living on a host record. The transient case is the same pick and surface, with its set living in a shareable URL rather than on a record.
+The example is a report that owns its picked venues: choose venues and the committed set persists as the report's content, ready to re-open and edit.
 
 <DemoLinks
   demo="/examples/pick"
@@ -241,7 +239,3 @@ The example is a report that owns its picked venues: choose venues and the commi
     },
   ]}
 />
-
----
-
-- TODO: when `size="fullscreen"` lands (DST-1643, in review), switch the pick dialog demo + `/examples/pick` to it, drop "(in progress)" from the Sizing callout, and rescope the routed-page tier to picks that need their own URL or appear in several places (not merely "too tall for a dialog").

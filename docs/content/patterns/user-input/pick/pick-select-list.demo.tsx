@@ -7,7 +7,6 @@ import {
   EmptyState,
   Inline,
   Panel,
-  Scrollable,
   SearchField,
   Select,
   SelectList,
@@ -197,29 +196,30 @@ const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
 
           {/* People are labels with a supporting email, not a grid of columns,
               so the results collection is a SelectList rather than a Table.
-              Only the collection differs from the venue pick above. */}
-          <Scrollable height="288px">
-            <SelectList
-              aria-label="People"
-              selectionMode="multiple"
-              items={results}
-              selectedKeys={selected}
-              onChange={onChange}
-              emptyState={
-                <EmptyState
-                  title="No people match"
-                  description="Try a different search or team. Anyone you already staged stays listed above."
-                />
-              }
-            >
-              {(person: Person) => (
-                <SelectList.Option id={person.id} textValue={person.name}>
-                  <TextValue>{person.name}</TextValue>
-                  <Description>{person.email}</Description>
-                </SelectList.Option>
-              )}
-            </SelectList>
-          </Scrollable>
+              Only the collection differs from the venue pick above. The list is
+              its own boxed, scrolling surface, so it is not wrapped in a
+              Scrollable (which would clip its rounded frame); the dialog scrolls
+              instead. */}
+          <SelectList
+            aria-label="People"
+            selectionMode="multiple"
+            items={results}
+            selectedKeys={selected}
+            onChange={onChange}
+            emptyState={
+              <EmptyState
+                title="No people match"
+                description="Try a different search or team. Anyone you already staged stays listed above."
+              />
+            }
+          >
+            {(person: Person) => (
+              <SelectList.Option id={person.id} textValue={person.name}>
+                <TextValue>{person.name}</TextValue>
+                <Description>{person.email}</Description>
+              </SelectList.Option>
+            )}
+          </SelectList>
         </Stack>
       </Dialog.Content>
       <Dialog.Actions>

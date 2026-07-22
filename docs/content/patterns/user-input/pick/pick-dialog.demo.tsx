@@ -272,7 +272,8 @@ export default () => {
             <Button variant={addedVenues.length > 0 ? 'secondary' : 'primary'}>
               {addedVenues.length > 0 ? 'Edit selection' : 'Add venues'}
             </Button>
-            {/* Switch to size="fullscreen" for this content-heavy pick once that Dialog size ships. */}
+            {/* A modest pick fits a large dialog. The data-heavy
+                /examples/pick opens fullscreen instead. */}
             <Dialog size="large" closeButton>
               {({ close }) => (
                 <PickVenuesBody

@@ -271,8 +271,9 @@ export const PickVenuesDialog = ({
 }: PickVenuesDialogProps) => (
   <Dialog.Trigger>
     <Button variant="primary">{trigger}</Button>
-    {/* Switch to size="fullscreen" for this content-heavy pick once that Dialog size ships. */}
-    <Dialog size="large" closeButton>
+    {/* This pick is content-heavy (a wide table over ~50 rows), so it fills
+        the viewport with a fullscreen dialog. */}
+    <Dialog size="fullscreen" closeButton>
       {({ close }) => (
         <PickBody
           title={title}
