@@ -18,9 +18,9 @@ A typical use case is a toolbar: instead of wrapping to a second line and pushin
 
 <Callout title="Hiding is not a recovery strategy">
   Every hidden item must stay reachable through another surface. Always pair the
-  region with an `indicator` that opens the hidden items, or with an external
-  surface via [`onOverflowChange`](#external-surfaces). Never use the region to
-  silently drop content.
+  region with an `indicator` that opens the hidden items, or with an [external
+  surface](#external-surfaces) that always contains them. Never use the region
+  to silently drop content.
 </Callout>
 
 ### Priority+ navigation
@@ -31,13 +31,17 @@ The same pattern applied to navigation is known as [Priority+](https://css-trick
 
 ### External surfaces
 
-When the surface that holds the hidden items already exists outside the region, you do not need an indicator at all. A common example is a filter bar: the quick filters demote as space runs out, while a pinned "All filters" panel always contains the complete filter set. Use `onOverflowChange` to reflect the hidden count on the pinned trigger.
+When the surface that holds the hidden items already exists outside the region, you do not need an indicator at all. A common example is a filter bar: the quick filters demote as space runs out, while a pinned "All filters" panel always contains the complete filter set. The pinned trigger itself is the recovery surface.
 
 Note that nothing is transferred into the panel. Because it always renders every filter, a demoted quick filter is simply also available there, in a stable place that does not depend on the current width. If you want a surface that shows only the hidden items, use the `indicator` render prop with a menu instead, as in the toolbar example above.
+
+If the trigger carries a counter badge, count **applied** filters, never hidden ones. A number on a filter button conventionally reads as "n filters are active", so a count that changes while the user resizes the window misleads them about their data. Applied filters also cover the risky case: a filter that is active but currently demoted stays represented in the count.
 
 Pinned elements are regular siblings of the region inside a non-wrapping row (such as [`<Inline noWrap>`](../layout/inline)). They keep their size while the region flexes and clips.
 
 <ComponentDemo name="overflow-region-external" />
+
+For cases where you do need to react to demotions, for example to track them in analytics, `onOverflowChange` reports the region's state whenever the visible count changes.
 
 ### Items must be direct children
 
