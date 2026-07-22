@@ -51,16 +51,16 @@ export const SidebarModal = ({ children, partial, ref }: SidebarModalProps) => {
           // which the partial (rail) drawer exposes.
           className={cn('relative h-full [grid-area:sidebar]', classNames.root)}
         >
-          {/* The full-width sheet exposes no backdrop, so it needs an explicit
-              close control. The partial (rail) drawer dismisses via the exposed
-              backdrop or Escape instead — no floating button. */}
-          {!partial && (
-            <CloseButton
-              aria-label={stringFormatter.format('closeNavigation')}
-              className={cn('z-50', classNames.closeButton)}
-              onPress={toggleSidebar}
-            />
-          )}
+          {/* Both drawers carry the close button at the top-right. The `aside`
+              is `relative`, so it anchors to the drawer edge — on the partial
+              (rail) drawer that is the hugged sheet, not the exposed viewport.
+              The partial drawer can also be dismissed via the backdrop tap or
+              Escape. */}
+          <CloseButton
+            aria-label={stringFormatter.format('closeNavigation')}
+            className={cn('z-50', classNames.closeButton)}
+            onPress={toggleSidebar}
+          />
           <div
             className={cn(
               "grid h-full grid-rows-[auto_1fr_auto] [grid-template-areas:'header'_'content'_'footer']",

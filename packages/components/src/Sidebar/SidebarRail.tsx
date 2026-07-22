@@ -238,15 +238,14 @@ const SidebarRail = ({
 
   // Mobile: a miniature of the desktop layout — rail on the left, active
   // section's panel beside it. Section taps swap the panel; leaf links close
-  // the drawer.
+  // the drawer. The drawer hugs its content over a dimmed backdrop (`partial`):
+  // with a section it spans most of the screen (rail + panel), and on a
+  // direct-link page (no section) it shrinks to the rail alone instead of
+  // reserving an empty panel column.
   //
-  // On a page without an active section (a direct link like a dashboard) the
-  // drawer renders the rail alone and hugs its width — an empty panel column
-  // would read as broken, and mirroring the desktop (`--panel-w: 0`) is the
-  // consistent answer. The partial drawer also has no close button: the
-  // exposed, dimmed backdrop is the dismiss affordance (tap it or press
-  // Escape), matching the common nav-drawer-with-scrim pattern — see
-  // SidebarModal.
+  // It carries the same close button as the single-column drawer, anchored to
+  // the drawer's top-right. On a direct-link page the rail body reserves a
+  // top strip (`pt-topbar`) so the button never lands on the first tile.
   if (isMobile) {
     return (
       <SidebarModal ref={ref} partial>
@@ -264,7 +263,7 @@ const SidebarRail = ({
             'grid h-full min-h-0 [grid-area:content]',
             hasPanel
               ? 'grid-cols-[var(--rail-w)_1fr]'
-              : 'grid-cols-[var(--rail-w)]',
+              : 'pt-topbar grid-cols-[var(--rail-w)]',
             classNames.railLayout
           )}
         >
