@@ -24,13 +24,12 @@ const Base = ({
   </div>
 );
 
-// A boxed surface whose rows are split by the opaque functional border — the
-// same token as the SelectList frame and Table grid lines, so the structure
-// stays crisp against any state fill. Ink & wash: hover is the lighter wash
-// (bg-hover, charcoal-200); a selected row sits one step darker (bg-selected,
-// charcoal-300) with its indicator (the check here, a checkbox/radio in real
-// components) as the one opaque ink mark. Hovering a selected row swaps to the
-// hover wash while the indicator keeps carrying the selection.
+// Boxed surface with rows split by the opaque functional border (the same token
+// as the SelectList frame and Table grid lines), so structure stays crisp
+// against any state fill. Hover is the lighter wash (bg-hover); a selected row
+// sits one step darker (bg-selected), its indicator (✓ here) the one opaque ink
+// mark; hovering a selected row swaps to the hover wash while the indicator
+// keeps carrying the selection.
 const listItems = ['Item one', 'Item two', 'Item three', 'Item four'];
 
 const ListSurface = ({
@@ -44,7 +43,7 @@ const ListSurface = ({
 }) => (
   <div className="flex flex-col gap-1">
     <span className="text-secondary text-xs">{label}</span>
-    <div className="ui-surface shadow-elevation-border w-56 overflow-hidden text-sm">
+    <div className="ui-surface w-56 overflow-hidden text-sm">
       {listItems.map((item, i) => (
         <div
           key={item}
@@ -67,30 +66,41 @@ const ListSurface = ({
 export const Surface = meta.story({
   render: () => (
     <Stack space="group">
-      <Headline level="3">Shadow</Headline>
+      <Headline level="3">Elevation</Headline>
+      <p className="text-secondary max-w-prose text-sm">
+        One shadow tier remains: <code>shadow-elevation-overlay</code>, the
+        single signal for &ldquo;floats above the page&rdquo; (Dialog, Drawer,
+        Menu, Popover, Toast, ActionBar). Nothing in normal flow casts a shadow
+        — buttons are raised caps (<code>ui-soft</code> /{' '}
+        <code>ui-contrast</code>), fields are flat wells, and panels separate
+        from the page by fill.
+      </p>
       <Inline space="regular">
         <Base className="rounded-lg">plain</Base>
-        <Base className="shadow-elevation-border rounded-lg">border</Base>
-        <Base className="shadow-elevation-raised rounded-lg">raised</Base>
         <Base className="shadow-elevation-overlay rounded-lg">overlay</Base>
       </Inline>
       <Headline level="3">Surface</Headline>
       <Inline space="regular">
         <Base className="ui-surface">plain</Base>
-        <Base className="ui-surface shadow-elevation-border">border</Base>
-        <Base className="ui-surface shadow-elevation-raised">raised</Base>
         <Base className="ui-surface shadow-elevation-overlay">overlay</Base>
       </Inline>
+      <Headline level="3">Caps</Headline>
+      <p className="text-secondary max-w-prose text-sm">
+        The two modeled raised caps — no drop shadow, the cap itself is the
+        lift. <code>ui-contrast</code> is the dark bold cap (primary Button,
+        ActionBar); <code>ui-soft</code> is the light neutral cap (secondary
+        Button, Menu trigger). Each shown at rest and hover-flipped via{' '}
+        <code>--ui-background-color</code> (and <code>--soft-edge</code> for
+        soft).
+      </p>
       <Inline space="regular">
         <Base className="ui-contrast">contrast</Base>
-        <Base className="ui-contrast shadow-elevation-border">
-          contrast / border
+        <Base className="ui-contrast [--ui-background-color:oklch(from_var(--color-primary)_calc(l-0.15)_c_h)]">
+          contrast / hover
         </Base>
-        <Base className="ui-contrast shadow-elevation-raised">
-          contrast / raised
-        </Base>
-        <Base className="ui-contrast shadow-elevation-overlay">
-          contrast / overlay
+        <Base className="ui-soft">soft</Base>
+        <Base className="ui-soft [--soft-edge:var(--color-soft-edge-hover)] [--ui-background-color:var(--color-soft-hover)]">
+          soft / hover
         </Base>
       </Inline>
       <Headline level="3">Hairline</Headline>
@@ -111,10 +121,10 @@ export const Surface = meta.story({
         menus; <code>ui-state-hover-ghost</code> (<code>bg-current/10</code>)
         tints toward the current text color so a ghost item blends into any
         ground. The two boxes on the right push a selected / hover fill onto a
-        whole raised surface via <code>--ui-background-color</code>.
+        whole surface via <code>--ui-background-color</code>.
       </p>
       <Inline space="regular">
-        <div className="ui-surface shadow-elevation-border flex w-40 flex-col overflow-hidden text-sm">
+        <div className="ui-surface flex w-40 flex-col overflow-hidden text-sm">
           <div className="px-3 py-2">resting</div>
           <div className="bg-hover px-3 py-2">hover</div>
           <div className="bg-selected flex justify-between px-3 py-2">
@@ -123,11 +133,11 @@ export const Surface = meta.story({
           <div className="bg-focus-highlight px-3 py-2">focus</div>
           <div className="bg-current/10 px-3 py-2">ghost</div>
         </div>
-        <Base className="ui-surface shadow-elevation-raised [--ui-background-color:var(--color-selected)] [--ui-border-color:var(--color-foreground)]">
-          raised / selected
+        <Base className="ui-surface [--ui-background-color:var(--color-selected)] [--ui-border-color:var(--color-foreground)]">
+          fill / selected
         </Base>
-        <Base className="ui-surface shadow-elevation-raised [--ui-background-color:var(--color-hover)]">
-          raised / hover
+        <Base className="ui-surface [--ui-background-color:var(--color-hover)]">
+          fill / hover
         </Base>
       </Inline>
       <Headline level="3">Separators</Headline>
@@ -157,27 +167,16 @@ export const Surface = meta.story({
         themed parent surface does not bleed its colors into nested surfaces.
       </p>
       <Inline space="regular">
-        <div className="ui-surface shadow-elevation-raised flex h-32 w-64 flex-col items-center justify-center gap-2 [--ui-border-color:var(--color-destructive-accent)]">
+        <div className="ui-surface flex h-32 w-64 flex-col items-center justify-center gap-2 [--ui-border-color:var(--color-destructive-accent)]">
           <span className="text-xs">parent: --ui-border-color</span>
-          <div className="ui-surface shadow-elevation-border px-3 py-1 text-xs">
-            nested child
-          </div>
+          <div className="ui-surface px-3 py-1 text-xs">nested child</div>
         </div>
         <div className="ui-contrast flex h-32 w-64 flex-col items-center justify-center gap-2 [--ui-background-color:var(--color-access-master-accent)] [--ui-border-color:var(--color-access-master-accent)]">
           <span className="text-xs">parent: --ui-background-color</span>
-          <div className="ui-surface shadow-elevation-border text-foreground px-3 py-1 text-xs">
+          <div className="ui-surface text-foreground px-3 py-1 text-xs">
             nested child
           </div>
         </div>
-      </Inline>
-      <Headline level="3">UI State</Headline>
-      <Inline space="regular">
-        <Base className="ui-surface shadow-elevation-border ui-state-error">
-          border / error
-        </Base>
-        <Base className="ui-surface shadow-elevation-raised ui-state-error">
-          raised / error
-        </Base>
       </Inline>
       <Headline level="3">With Tailwind Classes</Headline>
       <Inline space="regular">
@@ -204,21 +203,21 @@ export const Surface = meta.story({
       <Headline level="3">Input</Headline>
       <Inline space="regular">
         <input
-          className="ui-surface shadow-elevation-border invalid:ui-state-error focus:ui-state-focus p-squish-relaxed text-sm"
+          className="ui-control invalid:ui-state-error focus:ui-state-focus p-squish-relaxed text-sm"
           placeholder="default"
         />
         <input
-          className="ui-surface shadow-elevation-border invalid:ui-state-error focus:ui-state-focus p-squish-relaxed text-sm"
+          className="ui-control invalid:ui-state-error focus:ui-state-focus p-squish-relaxed text-sm"
           placeholder="invalid"
           required
         />
         <input
-          className="ui-surface shadow-elevation-border disabled:ui-state-disabled focus:ui-state-focus p-squish-relaxed text-sm"
+          className="ui-control disabled:ui-state-disabled focus:ui-state-focus p-squish-relaxed text-sm"
           placeholder="disabled"
           disabled
         />
         <input
-          className="ui-surface shadow-elevation-border read-only:ui-state-readonly focus:ui-state-focus p-squish-relaxed text-sm"
+          className="ui-control read-only:ui-state-readonly focus:ui-state-focus p-squish-relaxed text-sm"
           placeholder="readonly"
           readOnly
         />
@@ -295,7 +294,7 @@ export const SidebarNavigation = meta.story({
           than a lighter colour, so it holds the WCAG AA 4.5:1 contrast floor.
         </p>
         <Inline space="section" alignY="top">
-          <div className="border-surface-border w-fit overflow-hidden rounded-lg border">
+          <div className="border-border/60 w-fit overflow-hidden rounded-lg border">
             <NavSpecimen />
           </div>
           <Stack space="related">
@@ -311,10 +310,7 @@ export const SidebarNavigation = meta.story({
             <Tier swatch="bg-hover" token="bg-hover">
               hover pill (charcoal-200)
             </Tier>
-            <Tier
-              swatch="bg-surface-border border border-surface-border"
-              token="border-surface-border"
-            >
+            <Tier swatch="bg-border border border-border" token="border-border">
               the shell&apos;s one line — the sidebar divider (chevron anchor)
             </Tier>
           </Stack>
@@ -336,7 +332,7 @@ export const SidebarBackAction = meta.story({
     <div className="p-4">
       <Stack space="group">
         <Headline level="3">Drill-in back action</Headline>
-        <div className="border-surface-border w-fit overflow-hidden rounded-lg border">
+        <div className="border-border/60 w-fit overflow-hidden rounded-lg border">
           <NavSpecimen />
         </div>
       </Stack>

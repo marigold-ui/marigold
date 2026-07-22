@@ -43,7 +43,13 @@ export type Theme = {
   root?: ComponentStyleFunction;
   components: {
     Accordion?: Record<
-      'container' | 'item' | 'header' | 'panel' | 'content' | 'icon',
+      | 'container'
+      | 'item'
+      | 'header'
+      | 'panel'
+      | 'content'
+      | 'icon'
+      | 'actions',
       ComponentStyleFunction<string, string>
     >;
     ActionBar?: Record<
@@ -138,6 +144,7 @@ export type Theme = {
       'input' | 'icon' | 'action',
       ComponentStyleFunction<string, string>
     >;
+    Keyboard?: ComponentStyleFunction<string, string>;
     Label?: ComponentStyleFunction<string, string>;
     List?: Record<'ol' | 'ul' | 'item', ComponentStyleFunction<string, string>>;
     Link?: ComponentStyleFunction<string, string>;
@@ -163,7 +170,13 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Menu?: Record<
-      'container' | 'section' | 'item' | 'button' | 'label' | 'description',
+      | 'container'
+      | 'section'
+      | 'item'
+      | 'button'
+      | 'label'
+      | 'description'
+      | 'keyboard',
       ComponentStyleFunction<string, string>
     >;
     Modal?: ComponentStyleFunction<string, string>;
@@ -179,6 +192,7 @@ export type Theme = {
       | 'collapsibleTitle'
       | 'collapsibleDescription'
       | 'collapsibleContent'
+      | 'collapsibleIcon'
       | 'footer',
       ComponentStyleFunction<string, string>
     >;
@@ -226,6 +240,7 @@ export type Theme = {
       | 'head'
       | 'column'
       | 'body'
+      | 'footer'
       | 'row'
       | 'cell'
       | 'dragHandle'
@@ -243,7 +258,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Tag?: Record<
-      'container' | 'tag' | 'listItems' | 'closeButton' | 'removeAll',
+      'container' | 'tag' | 'listItems' | 'closeButton' | 'showMore',
       ComponentStyleFunction<string, string>
     >;
     TagField?: Record<
@@ -298,6 +313,7 @@ export type Theme = {
       | 'calendarHeader'
       | 'calendarGrid'
       | 'calendarHeading'
+      | 'calendarPresets'
       | 'select',
       ComponentStyleFunction<string, string>
     >;
@@ -311,6 +327,7 @@ export type Theme = {
       | 'calendarHeader'
       | 'calendarGrid'
       | 'calendarHeading'
+      | 'calendarPresets'
       | 'select',
       ComponentStyleFunction<string, string>
     >;

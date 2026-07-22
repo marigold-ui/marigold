@@ -7,6 +7,8 @@ export interface CacheOptions {
   fresh?: boolean;
   offline?: boolean;
   ttlMs?: number;
+  /** Network timeout in ms for the underlying fetch (default 10s). */
+  timeoutMs?: number;
 }
 
 export interface CachedResult<T> {
@@ -109,13 +111,14 @@ export const fetchWithCache = async <T = string>(
     );
   }
 
+  const timeoutMs = options.timeoutMs ?? 10_000;
   let response: Response;
   try {
-    response = await fetch(url, { signal: AbortSignal.timeout(10_000) });
+    response = await fetch(url, { signal: AbortSignal.timeout(timeoutMs) });
   } catch (err) {
     if (err instanceof Error && err.name === 'TimeoutError') {
       throw new Error(
-        `Timed out fetching ${url} after 10s. Check your network or use --offline.`,
+        `Timed out fetching ${url} after ${Math.round(timeoutMs / 1000)}s. Check your network or use --offline.`,
         { cause: err }
       );
     }

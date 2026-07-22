@@ -18,16 +18,16 @@ export const calendarCellBase = [
 export const Calendar: ThemeComponent<'Calendar'> = {
   calendar: cva({
     base: [
-      'min-h-[350px] min-w-fit ui-surface shadow-elevation-border p-2',
+      'min-h-[350px] min-w-fit ui-surface p-2',
       // In a Popover (DatePicker) the Popover paints the overlay surface; the
-      // calendar drops its own border + elevation. Standalone keeps the border.
-      'group-data-trigger/popover:ring-0 group-data-trigger/popover:shadow-none',
+      // calendar drops its own ring. Standalone keeps it.
+      'group-data-trigger/popover:ring-0',
       // In a Tray
-      'group-[[role=dialog]]/tray:ring-0 group-[[role=dialog]]/tray:shadow-none group-[[role=dialog]]/tray:p-0 group-[[role=dialog]]/tray:place-self-center',
+      'group-[[role=dialog]]/tray:ring-0 group-[[role=dialog]]/tray:p-0 group-[[role=dialog]]/tray:place-self-center',
     ],
   }),
   calendarContainer: cva({ base: 'flex flex-col gap-4 sm:flex-row' }),
-  calendarMonth: cva({ base: 'min-w-[250px] sm:flex-1' }),
+  calendarMonth: cva({ base: 'min-w-0 sm:min-w-[250px] sm:flex-1' }),
   calendarCell: cva({
     base: [
       'size-9 rounded-lg',
@@ -54,6 +54,22 @@ export const Calendar: ThemeComponent<'Calendar'> = {
   calendarHeading: cva({
     base: 'text-sm font-medium',
   }),
+  calendarPresets: cva({
+    base: [
+      // Stack: full-width list above the grid on small screens.
+      'max-sm:w-full',
+      // Rail: fixed column left of the grid. Negative margins pull it flush
+      // against the calendar surface's padding so background and divider span
+      // the full height. The tray strips that padding, but the tray only
+      // shows on small screens where the stack layout applies.
+      'sm:w-40 sm:shrink-0 sm:self-stretch',
+      'sm:bg-muted sm:border-r sm:border-border',
+      'sm:-my-2 sm:-ml-2 sm:rounded-l-[inherit]',
+      '[&_[slot=description]]:text-secondary',
+      '[&_[data-selected]_[slot=description]]:text-foreground',
+      '[&_[data-disabled]_[slot=description]]:text-disabled',
+    ],
+  }),
   calendarListboxButton: cva({
     base: [
       'rounded-md text-sm font-medium transition-[color,box-shadow]',
@@ -61,13 +77,13 @@ export const Calendar: ThemeComponent<'Calendar'> = {
       'focus-visible:ui-state-focus outline-none',
       'cursor-pointer',
       'hover:ui-state-hover',
-      'aria-selected:bg-selected-bold aria-selected:text-selected-bold-foreground aria-selected:shadow-elevation-border aria-selected:hover:bg-selected-bold/90',
+      'aria-selected:bg-selected-bold aria-selected:text-selected-bold-foreground aria-selected:hover:bg-selected-bold/90',
     ],
   }),
   select: cva({
     base: [
       '[&_svg]:text-secondary',
-      'flex w-full px-3 py-2 rounded-lg shadow-elevation-border border border-control-border bg-surface text-sm text-foreground transition-shadow',
+      'flex w-full px-3 py-2 rounded-lg border border-control-border bg-surface text-sm text-foreground',
       'focus-visible:ui-state-focus outline-none',
       'h-control',
       'disabled:cursor-not-allowed disabled:text-disabled disabled:bg-disabled-surface',

@@ -92,6 +92,16 @@ describe('Panel.CollapsibleHeader', () => {
     expect(title.tagName).toBe('SPAN');
     expect(description.tagName).toBe('SPAN');
   });
+
+  test('renders the caret at 16px and text-secondary to match the Accordion chevron', () => {
+    render(<WithCollapsible.Component />);
+
+    const trigger = screen.getByRole('button', { name: /Advanced Options/ });
+    const caret = trigger.querySelector('svg')!;
+
+    expect(caret).toHaveAttribute('width', '16');
+    expect(caret).toHaveClass('text-secondary');
+  });
 });
 
 describe('Panel.CollapsibleHeader heading level', () => {

@@ -191,6 +191,33 @@ Detects Next.js or Vite, then:
 
 Edits are idempotent — re-running leaves files untouched. If a file shape can't be recognized, the CLI prints a manual fallback for that step instead of guessing.
 
+### `marigold doctor`
+
+Diagnose why Marigold isn't working in a project and print a checklist with actionable fixes. All checks read the filesystem only; the freshness check additionally makes a short, best-effort fetch of the docs manifest (skipped with `--offline`).
+
+```sh
+marigold doctor                 # run from your project root
+marigold doctor --format json   # structured report for AI agents / CI
+marigold doctor --offline       # skip the network; freshness uses the cache only
+```
+
+Flags:
+
+- `--format <name>` — `text` (default) or `json`
+- `--offline` — skip the network; the freshness check uses the cache only
+
+Checks, run against the current working directory:
+
+1. **Packages installed** — `@marigold/components`, `@marigold/system`, and a theme (`@marigold/theme-rui`) are declared.
+2. **Package versions aligned** — installed `@marigold/components` and `@marigold/system` match (they are released together).
+3. **Up to date** — installed versions are the latest published (best-effort; uses the cached manifest, skipped when offline).
+4. **MarigoldProvider wraps the app** — the root layout wraps the app in `<MarigoldProvider>` (following the Next.js `Providers` convention).
+5. **Theme passed to MarigoldProvider** — a `theme` prop is passed to the provider.
+6. **Tailwind configured for Marigold** — the CSS entry imports `tailwindcss` and `@marigold/theme-rui/theme.css`, declares `@source` for `node_modules/@marigold`, and the framework build plugin is wired up.
+7. **React version compatible** — installed React satisfies `@marigold/components`'s peer requirement.
+
+Only deterministic, definitely-broken findings (a missing core package, or a components/system version mismatch) are **errors**; everything heuristic is a **warning**. The command exits `1` only when there is an error, so it is safe to gate CI on. `--format json` emits `{ errors, warnings, passed, text }` — agents derive health from `errors.length === 0`.
+
 ### `marigold completion <shell>`
 
 Print a tab-completion script for `bash`, `zsh`, or `fish`. Source it once per
@@ -222,7 +249,7 @@ marigold telemetry disable
 marigold telemetry enable
 ```
 
-Telemetry is on by default and sent fire-and-forget via a detached background process — it never blocks the foreground command or surfaces network errors. Each event records: command name (`docs`/`list`/`search`/`examples`/`init`/`telemetry`), CLI version, Node version, platform, exit code, a coarse duration bucket (`0-100` / `100-500` / `500-2000` / `2000+` ms), cache hit/miss, a stable anonymous UUID, whether stdout is a TTY, whether the CLI was invoked by an AI agent (`CLAUDECODE`, `CURSOR_AGENT`, `VSCODE_AGENT`, `CODEX_SANDBOX`, or `AI_AGENT` env var set), and the flags passed (values redacted — only flag presence/enum value is kept; free-form `--search` terms are recorded as `used`, never the term itself).
+Telemetry is on by default and sent fire-and-forget via a detached background process — it never blocks the foreground command or surfaces network errors. Each event records: command name (`docs`/`list`/`search`/`examples`/`init`/`doctor`/`telemetry`), CLI version, Node version, platform, exit code, a coarse duration bucket (`0-100` / `100-500` / `500-2000` / `2000+` ms), cache hit/miss, a stable anonymous UUID, whether stdout is a TTY, whether the CLI was invoked by an AI agent (`CLAUDECODE`, `CURSOR_AGENT`, `VSCODE_AGENT`, `CODEX_SANDBOX`, or `AI_AGENT` env var set), and the flags passed (values redacted — only flag presence/enum value is kept; free-form `--search` terms are recorded as `used`, never the term itself).
 
 Telemetry is automatically suppressed when:
 

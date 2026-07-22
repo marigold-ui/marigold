@@ -23,5 +23,11 @@ export { runDocs } from './commands/docs.js';
 export { runList } from './commands/list.js';
 export { runExamples } from './commands/examples.js';
 export { runInit } from './commands/init.js';
+export {
+  runDoctor,
+  type RunDoctorOptions,
+  type RunDoctorResult,
+} from './commands/doctor.js';
+export type { DoctorReport, DoctorIssue } from './lib/doctor/index.js';
 export { runTelemetry } from './commands/telemetry.js';
 export { runCompletion, runCompleteSuggest } from './commands/completion.js';

@@ -91,7 +91,7 @@ test('inherits secondary baseline from ButtonGroup with no explicit variant', ()
     </ButtonGroup>
   );
 
-  expect(screen.getByTestId('link')).toHaveClass('shadow-elevation-border');
+  expect(screen.getByTestId('link')).toHaveClass('ui-soft');
   expect(screen.getByTestId('link')).not.toHaveClass(
     'hover:ui-state-hover-ghost'
   );

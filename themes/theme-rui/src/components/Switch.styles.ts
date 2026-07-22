@@ -31,7 +31,7 @@ export const Switch: ThemeComponent<'Switch'> = {
     base: [
       'size-3 group-selected/switch:translate-x-3',
       'pointer-events-none block rounded-full',
-      'bg-surface shadow-elevation-border',
+      'bg-surface',
       'ring-0 transition-transform duration-150 ease-out-quint',
       'translate-x-0',
     ],
