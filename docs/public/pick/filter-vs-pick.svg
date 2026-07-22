@@ -1,88 +1,133 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 560" width="880" height="560" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+  <style>
+    /* Light mode (default). Dark-mode overrides follow the OS setting, the
+       same mechanism the elevation and token-overview diagrams use, since an
+       SVG loaded as an image cannot see the page's theme class. */
+    .t-strong { fill: #1e1e1e; }
+    .t-label  { fill: #495057; }
+    .t-muted  { fill: #868e96; }
+    .surface       { fill: #ffffff; }
+    .surface-faint { fill: #f8f9fa; }
+    .stroke-card   { stroke: #adb5bd; }
+    .stroke-strong { stroke: #868e96; }
+    .bar       { fill: #adb5bd; }
+    .bar-muted { fill: #ced4da; }
+    .bar-faint { fill: #e9ecef; }
+    .checkbox   { fill: #ffffff; stroke: #adb5bd; }
+    .check-box  { fill: #1e1e1e; }
+    .check-mark { stroke: #ffffff; }
+    .tag     { fill: #e9ecef; stroke: #ced4da; }
+    .tag-bar { fill: #868e96; }
+    .icon-x  { stroke: #868e96; }
+    .arrow      { stroke: #868e96; }
+    .arrow-head { fill: #868e96; }
+    .divider    { stroke: #dee2e6; }
+    @media (prefers-color-scheme: dark) {
+      .t-strong { fill: #f1f3f5; }
+      .t-label  { fill: #ced4da; }
+      .t-muted  { fill: #adb5bd; }
+      .surface       { fill: #23272e; }
+      .surface-faint { fill: #1c2025; }
+      .stroke-card   { stroke: #495057; }
+      .stroke-strong { stroke: #6c757d; }
+      .bar       { fill: #6c757d; }
+      .bar-muted { fill: #565e66; }
+      .bar-faint { fill: #2f343b; }
+      .checkbox   { fill: #23272e; stroke: #6c757d; }
+      .check-box  { fill: #e9ecef; }
+      .check-mark { stroke: #1e1e1e; }
+      .tag     { fill: #2f343b; stroke: #495057; }
+      .tag-bar { fill: #adb5bd; }
+      .icon-x  { stroke: #adb5bd; }
+      .arrow      { stroke: #adb5bd; }
+      .arrow-head { fill: #adb5bd; }
+      .divider    { stroke: #343a40; }
+    }
+  </style>
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0 0 L10 5 L0 10 z" fill="#868e96" />
+      <path d="M0 0 L10 5 L0 10 z" class="arrow-head" />
     </marker>
   </defs>
 
   <!-- Divider between the two journeys -->
-  <line x1="440" y1="88" x2="440" y2="530" stroke="#dee2e6" stroke-width="2" stroke-dasharray="3 6" />
+  <line x1="440" y1="88" x2="440" y2="530" class="divider" stroke-width="2" stroke-dasharray="3 6" />
 
   <!-- ============ LEFT: Filter journey ============ -->
-  <text x="70" y="46" font-size="20" fill="#1e1e1e" font-weight="700">Filter journey</text>
-  <text x="70" y="67" font-size="13" fill="#868e96">Change what you see</text>
+  <text x="70" y="46" font-size="20" class="t-strong" font-weight="700">Filter journey</text>
+  <text x="70" y="67" font-size="13" class="t-muted">Change what you see</text>
 
   <!-- Stage 1: everything shown -->
-  <text x="70" y="100" font-size="13" fill="#495057">Everything shown</text>
-  <rect x="70" y="110" width="300" height="116" rx="8" fill="#ffffff" stroke="#adb5bd" stroke-width="1.5" />
-  <rect x="94" y="134" width="240" height="8" rx="4" fill="#adb5bd" />
-  <rect x="94" y="154" width="212" height="8" rx="4" fill="#adb5bd" />
-  <rect x="94" y="174" width="230" height="8" rx="4" fill="#adb5bd" />
-  <rect x="94" y="194" width="198" height="8" rx="4" fill="#adb5bd" />
+  <text x="70" y="100" font-size="13" class="t-label">Everything shown</text>
+  <rect x="70" y="110" width="300" height="116" rx="8" class="surface stroke-card" stroke-width="1.5" />
+  <rect x="94" y="134" width="240" height="8" rx="4" class="bar" />
+  <rect x="94" y="154" width="212" height="8" rx="4" class="bar" />
+  <rect x="94" y="174" width="230" height="8" rx="4" class="bar" />
+  <rect x="94" y="194" width="198" height="8" rx="4" class="bar" />
 
-  <path d="M220 230 L220 262" stroke="#868e96" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />
-  <text x="236" y="250" font-size="12" fill="#868e96" font-style="italic">narrow by criteria</text>
+  <path d="M220 230 L220 262" class="arrow" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />
+  <text x="236" y="250" font-size="12" class="t-muted" font-style="italic">narrow by criteria</text>
 
   <!-- Stage 2: non-matches hidden -->
-  <text x="70" y="286" font-size="13" fill="#495057">Non-matches hidden</text>
-  <rect x="70" y="296" width="300" height="124" rx="8" fill="#ffffff" stroke="#adb5bd" stroke-width="1.5" />
-  <rect x="94" y="320" width="240" height="8" rx="4" fill="#adb5bd" />
-  <rect x="94" y="344" width="210" height="8" rx="4" fill="#adb5bd" />
-  <rect x="94" y="368" width="228" height="8" rx="4" fill="#e9ecef" />
-  <rect x="94" y="392" width="196" height="8" rx="4" fill="#e9ecef" />
+  <text x="70" y="286" font-size="13" class="t-label">Non-matches hidden</text>
+  <rect x="70" y="296" width="300" height="124" rx="8" class="surface stroke-card" stroke-width="1.5" />
+  <rect x="94" y="320" width="240" height="8" rx="4" class="bar" />
+  <rect x="94" y="344" width="210" height="8" rx="4" class="bar" />
+  <rect x="94" y="368" width="228" height="8" rx="4" class="bar-faint" />
+  <rect x="94" y="392" width="196" height="8" rx="4" class="bar-faint" />
 
-  <path d="M220 424 L220 456" stroke="#868e96" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />
-  <text x="236" y="444" font-size="12" fill="#868e96" font-style="italic">no commit step</text>
+  <path d="M220 424 L220 456" class="arrow" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />
+  <text x="236" y="444" font-size="12" class="t-muted" font-style="italic">no commit step</text>
 
   <!-- Stage 3: the result (transient, dashed) -->
-  <rect x="70" y="468" width="300" height="62" rx="31" fill="#f8f9fa" stroke="#adb5bd" stroke-width="1.5" stroke-dasharray="5 4" />
-  <text x="220" y="496" font-size="14" fill="#1e1e1e" font-weight="600" text-anchor="middle">The view is the result</text>
-  <text x="220" y="515" font-size="12" fill="#868e96" text-anchor="middle">a shareable URL, gone when you leave</text>
+  <rect x="70" y="468" width="300" height="62" rx="31" class="surface-faint stroke-card" stroke-width="1.5" stroke-dasharray="5 4" />
+  <text x="220" y="496" font-size="14" class="t-strong" font-weight="600" text-anchor="middle">The view is the result</text>
+  <text x="220" y="515" font-size="12" class="t-muted" text-anchor="middle">a shareable URL, gone when you leave</text>
 
   <!-- ============ RIGHT: Pick journey ============ -->
-  <text x="510" y="46" font-size="20" fill="#1e1e1e" font-weight="700">Pick journey</text>
-  <text x="510" y="67" font-size="13" fill="#868e96">Change what you have</text>
+  <text x="510" y="46" font-size="20" class="t-strong" font-weight="700">Pick journey</text>
+  <text x="510" y="67" font-size="13" class="t-muted">Change what you have</text>
 
   <!-- Stage 1: nothing selected -->
-  <text x="510" y="100" font-size="13" fill="#495057">Nothing selected</text>
-  <rect x="510" y="110" width="300" height="116" rx="8" fill="#ffffff" stroke="#adb5bd" stroke-width="1.5" />
-  <rect x="534" y="131" width="14" height="14" rx="3" fill="#ffffff" stroke="#adb5bd" stroke-width="1.5" />
-  <rect x="560" y="134" width="220" height="8" rx="4" fill="#ced4da" />
-  <rect x="534" y="151" width="14" height="14" rx="3" fill="#ffffff" stroke="#adb5bd" stroke-width="1.5" />
-  <rect x="560" y="154" width="190" height="8" rx="4" fill="#ced4da" />
-  <rect x="534" y="171" width="14" height="14" rx="3" fill="#ffffff" stroke="#adb5bd" stroke-width="1.5" />
-  <rect x="560" y="174" width="210" height="8" rx="4" fill="#ced4da" />
-  <rect x="534" y="191" width="14" height="14" rx="3" fill="#ffffff" stroke="#adb5bd" stroke-width="1.5" />
-  <rect x="560" y="194" width="182" height="8" rx="4" fill="#ced4da" />
+  <text x="510" y="100" font-size="13" class="t-label">Nothing selected</text>
+  <rect x="510" y="110" width="300" height="116" rx="8" class="surface stroke-card" stroke-width="1.5" />
+  <rect x="534" y="131" width="14" height="14" rx="3" class="checkbox" stroke-width="1.5" />
+  <rect x="560" y="134" width="220" height="8" rx="4" class="bar-muted" />
+  <rect x="534" y="151" width="14" height="14" rx="3" class="checkbox" stroke-width="1.5" />
+  <rect x="560" y="154" width="190" height="8" rx="4" class="bar-muted" />
+  <rect x="534" y="171" width="14" height="14" rx="3" class="checkbox" stroke-width="1.5" />
+  <rect x="560" y="174" width="210" height="8" rx="4" class="bar-muted" />
+  <rect x="534" y="191" width="14" height="14" rx="3" class="checkbox" stroke-width="1.5" />
+  <rect x="560" y="194" width="182" height="8" rx="4" class="bar-muted" />
 
-  <path d="M660 230 L660 262" stroke="#868e96" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />
-  <text x="676" y="250" font-size="12" fill="#868e96" font-style="italic">check individually</text>
+  <path d="M660 230 L660 262" class="arrow" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />
+  <text x="676" y="250" font-size="12" class="t-muted" font-style="italic">check individually</text>
 
   <!-- Stage 2: staged set (checked rows + removable tags) -->
-  <text x="510" y="286" font-size="13" fill="#495057">Staged set</text>
-  <rect x="510" y="296" width="300" height="124" rx="8" fill="#ffffff" stroke="#adb5bd" stroke-width="1.5" />
-  <rect x="534" y="317" width="14" height="14" rx="3" fill="#1e1e1e" />
-  <path d="M537 324 L540 327 L545 321" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <rect x="560" y="320" width="210" height="8" rx="4" fill="#adb5bd" />
-  <rect x="534" y="341" width="14" height="14" rx="3" fill="#1e1e1e" />
-  <path d="M537 348 L540 351 L545 345" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-  <rect x="560" y="344" width="188" height="8" rx="4" fill="#adb5bd" />
+  <text x="510" y="286" font-size="13" class="t-label">Staged set</text>
+  <rect x="510" y="296" width="300" height="124" rx="8" class="surface stroke-card" stroke-width="1.5" />
+  <rect x="534" y="317" width="14" height="14" rx="3" class="check-box" />
+  <path d="M537 324 L540 327 L545 321" class="check-mark" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <rect x="560" y="320" width="210" height="8" rx="4" class="bar" />
+  <rect x="534" y="341" width="14" height="14" rx="3" class="check-box" />
+  <path d="M537 348 L540 351 L545 345" class="check-mark" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <rect x="560" y="344" width="188" height="8" rx="4" class="bar" />
   <!-- staged tags -->
-  <rect x="534" y="368" width="96" height="28" rx="14" fill="#e9ecef" stroke="#ced4da" stroke-width="1.5" />
-  <rect x="550" y="379" width="48" height="6" rx="3" fill="#868e96" />
-  <path d="M608 378 L616 390 M616 378 L608 390" stroke="#868e96" stroke-width="1.5" stroke-linecap="round" />
-  <rect x="642" y="368" width="96" height="28" rx="14" fill="#e9ecef" stroke="#ced4da" stroke-width="1.5" />
-  <rect x="658" y="379" width="48" height="6" rx="3" fill="#868e96" />
-  <path d="M716 378 L724 390 M724 378 L716 390" stroke="#868e96" stroke-width="1.5" stroke-linecap="round" />
+  <rect x="534" y="368" width="96" height="28" rx="14" class="tag" stroke-width="1.5" />
+  <rect x="550" y="379" width="48" height="6" rx="3" class="tag-bar" />
+  <path d="M608 378 L616 390 M616 378 L608 390" class="icon-x" stroke-width="1.5" stroke-linecap="round" />
+  <rect x="642" y="368" width="96" height="28" rx="14" class="tag" stroke-width="1.5" />
+  <rect x="658" y="379" width="48" height="6" rx="3" class="tag-bar" />
+  <path d="M716 378 L724 390 M724 378 L716 390" class="icon-x" stroke-width="1.5" stroke-linecap="round" />
 
-  <path d="M660 424 L660 456" stroke="#868e96" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />
-  <text x="676" y="444" font-size="12" fill="#868e96" font-style="italic">commit</text>
+  <path d="M660 424 L660 456" class="arrow" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />
+  <text x="676" y="444" font-size="12" class="t-muted" font-style="italic">commit</text>
 
   <!-- Stage 3: the result (persisted, solid) -->
-  <rect x="510" y="468" width="300" height="70" rx="10" fill="#ffffff" stroke="#868e96" stroke-width="2" />
-  <text x="660" y="493" font-size="14" fill="#1e1e1e" font-weight="600" text-anchor="middle">The set is carried out</text>
-  <rect x="548" y="505" width="110" height="24" rx="12" fill="#e9ecef" stroke="#ced4da" stroke-width="1.5" />
-  <rect x="562" y="514" width="64" height="6" rx="3" fill="#868e96" />
-  <rect x="666" y="505" width="110" height="24" rx="12" fill="#e9ecef" stroke="#ced4da" stroke-width="1.5" />
-  <rect x="680" y="514" width="64" height="6" rx="3" fill="#868e96" />
+  <rect x="510" y="468" width="300" height="70" rx="10" class="surface stroke-strong" stroke-width="2" />
+  <text x="660" y="493" font-size="14" class="t-strong" font-weight="600" text-anchor="middle">The set is carried out</text>
+  <rect x="548" y="505" width="110" height="24" rx="12" class="tag" stroke-width="1.5" />
+  <rect x="562" y="514" width="64" height="6" rx="3" class="tag-bar" />
+  <rect x="666" y="505" width="110" height="24" rx="12" class="tag" stroke-width="1.5" />
+  <rect x="680" y="514" width="64" height="6" rx="3" class="tag-bar" />
 </svg>
