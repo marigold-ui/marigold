@@ -125,8 +125,8 @@ export type Theme = {
       'container' | 'description',
       ComponentStyleFunction<string, string>
     >;
-    FilterBar?: Record<
-      'container' | 'region' | 'item' | 'badge',
+    OverflowRegion?: Record<
+      'container' | 'item' | 'indicator',
       ComponentStyleFunction<string, string>
     >;
     Headline?: ComponentStyleFunction<string, string>;
