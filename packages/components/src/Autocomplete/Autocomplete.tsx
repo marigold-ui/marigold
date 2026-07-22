@@ -29,7 +29,7 @@ interface AutocompleteInputProps {
    * A `value` will be passed if the submission is a custom value (e.g. a user types then presses enter).
    * If the input is a selected item, `value` will be `null`.
    */
-  onSubmit?: (value: string | null, key: Key | null) => void;
+  onSubmit?: (key: Key | null, value: string | null) => void;
 
   /**
    * Called when the clear button is pressed.
@@ -190,7 +190,7 @@ export interface AutocompleteProps
    * A `value` will be passed if the submission is a custom value (e.g. a user
    * types then presses enter). If the input is a selected item, `value` will be `null`.
    */
-  onSubmit?: (value: string | number | null, key: Key | null) => void;
+  onSubmit?: (key: Key | null, value: string | number | null) => void;
 }
 
 interface AutocompleteComponent extends ForwardRefExoticComponent<
