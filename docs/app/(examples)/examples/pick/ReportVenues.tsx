@@ -1,9 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { EmptyState, Inline, Panel, Table, Text } from '@marigold/components';
+import {
+  Badge,
+  EmptyState,
+  Inline,
+  Panel,
+  Table,
+  Text,
+} from '@marigold/components';
 import { PickVenuesDialog } from './PickVenuesDialog';
-import { venues } from './venues';
+import { statusVariant, venues } from './venues';
 
 export const ReportVenues = () => {
   // The report starts empty; picking builds the committed set, which then lives
@@ -40,16 +47,26 @@ export const ReportVenues = () => {
             <Table.Header>
               <Table.Column rowHeader>Venue</Table.Column>
               <Table.Column>City</Table.Column>
+              <Table.Column>Region</Table.Column>
               <Table.Column>Type</Table.Column>
-              <Table.Column>Capacity</Table.Column>
+              <Table.Column alignX="right">Capacity</Table.Column>
+              <Table.Column>Status</Table.Column>
+              <Table.Column alignX="right">Day rate</Table.Column>
             </Table.Header>
             <Table.Body items={chosen}>
               {venue => (
                 <Table.Row id={venue.id}>
                   <Table.Cell>{venue.name}</Table.Cell>
                   <Table.Cell>{venue.city}</Table.Cell>
+                  <Table.Cell>{venue.region}</Table.Cell>
                   <Table.Cell>{venue.type}</Table.Cell>
-                  <Table.Cell>{venue.capacity}</Table.Cell>
+                  <Table.Cell alignX="right">{venue.capacity}</Table.Cell>
+                  <Table.Cell>
+                    <Badge variant={statusVariant[venue.status]}>
+                      {venue.status}
+                    </Badge>
+                  </Table.Cell>
+                  <Table.Cell alignX="right">{venue.rate}</Table.Cell>
                 </Table.Row>
               )}
             </Table.Body>

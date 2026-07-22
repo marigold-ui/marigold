@@ -114,7 +114,7 @@ So do not paginate the picker. Narrow it instead:
 - **Scroll what remains.** Put the results in a bounded [`<Scrollable>`](/components/layout/scrollable) region with a sticky [`<Table.Header>`](/components/collection/table), so the list scrolls in place while the search, the staged tags, and the commit footer stay fixed.
 - **Fetch on search for large or remote collections.** Load matches as the user types rather than pulling the whole collection down, and show a loading state while they arrive. The [Async Data Loading](/patterns/feedback/async-data-loading) pattern covers `useAsyncList` and search-as-you-type.
 
-Whatever the source size, track the staged picks independently of the loaded rows, so they survive scrolling, filtering, and re-fetching. The [example](/examples/pick) keeps its venues in a scrollable, sticky-header table narrowed by search and a type filter. Anything staged stays in a tag rail and commits on confirm, even after it scrolls out of view or a filter hides it.
+Whatever the source size, track the staged picks independently of the loaded rows, so they survive scrolling, filtering, and re-fetching. The [example](/examples/pick) keeps its venues in a scrollable, sticky-header table narrowed by search alongside type, region, and status filters, with a running result count. That width and density is exactly the case a `size="fullscreen"` dialog serves better than the default `size="large"`. Anything staged stays in a tag rail and commits on confirm, even after it scrolls out of view or a filter hides it.
 
 When even a narrowed, scrollable list is too much for a dialog, that is the signal to move the whole pick to a routed page, not to add a pager to the overlay.
 

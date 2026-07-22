@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import type { Key } from '@react-types/shared';
 import type { Selection } from '@marigold/components';
 import {
+  Badge,
   Button,
   Dialog,
   EmptyState,
@@ -14,10 +15,22 @@ import {
   Stack,
   Table,
   Tag,
+  Text,
 } from '@marigold/components';
-import { venues } from './venues';
+import { statusVariant, venues } from './venues';
 
-const types = ['Club', 'Concert Hall', 'Open Air'];
+const types = ['Club', 'Concert Hall', 'Theater', 'Open Air', 'Arena'];
+const regions = [
+  'Berlin',
+  'Hamburg',
+  'Bavaria',
+  'North Rhine-Westphalia',
+  'Hesse',
+  'Baden-Württemberg',
+  'Lower Saxony',
+  'Rhineland-Palatinate',
+];
+const statuses = ['Available', 'Held', 'Booked'];
 
 interface PickBodyProps {
   title: string;
@@ -34,6 +47,8 @@ const PickBody = ({
 }: PickBodyProps) => {
   const [search, setSearch] = useState('');
   const [type, setType] = useState<Key | null>('all');
+  const [region, setRegion] = useState<Key | null>('all');
+  const [status, setStatus] = useState<Key | null>('all');
   const [selected, setSelected] = useState<Set<Key>>(() => new Set(initial));
 
   const results = useMemo(() => {
@@ -42,9 +57,13 @@ const PickBody = ({
       const matchesSearch =
         !query || `${venue.name} ${venue.city}`.toLowerCase().includes(query);
       const matchesType = type == null || type === 'all' || venue.type === type;
-      return matchesSearch && matchesType;
+      const matchesRegion =
+        region == null || region === 'all' || venue.region === region;
+      const matchesStatus =
+        status == null || status === 'all' || venue.status === status;
+      return matchesSearch && matchesType && matchesRegion && matchesStatus;
     });
-  }, [search, type]);
+  }, [search, type, region, status]);
 
   // React-aria only reports the currently visible (filtered) rows, and "select
   // all" means that visible set. Merge every change with the venues staged
@@ -74,13 +93,16 @@ const PickBody = ({
       <Dialog.Title>{title}</Dialog.Title>
       <Dialog.Content>
         <Stack space="regular">
+          {/* A real find-and-collect task: search plus several filter facets
+              narrow a wide, detail-rich table. This density is what outgrows a
+              large dialog and earns a fullscreen surface. */}
           <Inline space="related" alignY="input">
             <SearchField
               aria-label="Search venues"
               placeholder="Search by name or city"
               value={search}
               onChange={setSearch}
-              width={64}
+              width={56}
             />
             <Select
               aria-label="Filter by type"
@@ -95,7 +117,37 @@ const PickBody = ({
                 </Select.Option>
               ))}
             </Select>
+            <Select
+              aria-label="Filter by region"
+              value={region}
+              onChange={setRegion}
+              width={56}
+            >
+              <Select.Option id="all">All regions</Select.Option>
+              {regions.map(r => (
+                <Select.Option key={r} id={r}>
+                  {r}
+                </Select.Option>
+              ))}
+            </Select>
+            <Select
+              aria-label="Filter by status"
+              value={status}
+              onChange={setStatus}
+              width={40}
+            >
+              <Select.Option id="all">Any status</Select.Option>
+              {statuses.map(s => (
+                <Select.Option key={s} id={s}>
+                  {s}
+                </Select.Option>
+              ))}
+            </Select>
           </Inline>
+
+          <Text fontSize="sm">
+            {results.length} of {venues.length} venues
+          </Text>
 
           {/* The staged set stays visible as removable tags through every
               search and filter, so picks never scroll out of sight or vanish
@@ -128,15 +180,18 @@ const PickBody = ({
               <Table.Header sticky>
                 <Table.Column rowHeader>Venue</Table.Column>
                 <Table.Column>City</Table.Column>
+                <Table.Column>Region</Table.Column>
                 <Table.Column>Type</Table.Column>
-                <Table.Column>Capacity</Table.Column>
+                <Table.Column alignX="right">Capacity</Table.Column>
+                <Table.Column>Status</Table.Column>
+                <Table.Column alignX="right">Day rate</Table.Column>
               </Table.Header>
               <Table.Body
                 items={results}
                 emptyState={() => (
                   <EmptyState
                     title="No venues match"
-                    description="Try a different search or type. Staged venues stay listed above."
+                    description="Try a different search or filter. Staged venues stay listed above."
                   />
                 )}
               >
@@ -144,8 +199,15 @@ const PickBody = ({
                   <Table.Row id={venue.id}>
                     <Table.Cell>{venue.name}</Table.Cell>
                     <Table.Cell>{venue.city}</Table.Cell>
+                    <Table.Cell>{venue.region}</Table.Cell>
                     <Table.Cell>{venue.type}</Table.Cell>
-                    <Table.Cell>{venue.capacity}</Table.Cell>
+                    <Table.Cell alignX="right">{venue.capacity}</Table.Cell>
+                    <Table.Cell>
+                      <Badge variant={statusVariant[venue.status]}>
+                        {venue.status}
+                      </Badge>
+                    </Table.Cell>
+                    <Table.Cell alignX="right">{venue.rate}</Table.Cell>
                   </Table.Row>
                 )}
               </Table.Body>
