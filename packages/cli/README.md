@@ -26,9 +26,16 @@ deployment:
 # 1. Build the CLI
 pnpm --filter @marigold/cli build
 
-# 2. Symlink the built entry point into your global bin so `marigold ...`
-#    resolves to the local build (pnpm ≥10 removed `pnpm link --global`)
+# 2. Link it globally so `marigold ...` resolves to the local build.
+#
+#    pnpm ≥ 10 (this repo pins pnpm 11): `pnpm link --global` no longer
+#    exists; symlink the built entry point into your global bin instead:
 ln -sf "$(pwd)/packages/cli/dist/bin/marigold.mjs" "$(pnpm bin -g)/marigold"
+
+#    pnpm ≤ 9: the classic global link still works (note: inside this repo,
+#    corepack picks the pinned pnpm 11 from `packageManager`, so this only
+#    applies when your pnpm really is ≤ 9):
+cd packages/cli && pnpm link --global
 
 # 3. Point at a docs origin (preview or local). Create
 #    packages/cli/.env.local with:
@@ -41,7 +48,8 @@ marigold docs Button
 marigold list --category form
 
 # To remove the link:
-rm "$(pnpm bin -g)/marigold"
+rm "$(pnpm bin -g)/marigold"       # pnpm ≥ 10 (symlink)
+pnpm uninstall -g @marigold/cli    # pnpm ≤ 9 (global link)
 ```
 
 Without the global link, you can also run the built entry point directly:
