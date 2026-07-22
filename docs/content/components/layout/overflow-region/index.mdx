@@ -12,6 +12,8 @@ The region measures its own container, not the viewport. A row inside a narrow p
 
 Place the items as direct children, ordered by priority. The last child is hidden first when space runs out. Use the `indicator` render prop to show an element while items are hidden, such as a counter or a menu. The indicator only appears while at least one item is hidden.
 
+Items are spaced by the `space` prop. When the region sits inside a spacing-aware layout component such as [`<Inline>`](../layout/inline), it inherits that component's spacing automatically, so a nested row lines up with its surroundings without extra configuration. Set `space` explicitly to override, or when the region has no such parent.
+
 A typical use case is a toolbar: instead of wrapping to a second line and pushing the layout around, actions that no longer fit collapse into a "More" menu. Because priority is DOM order, `actions.slice(visibleCount)` is exactly the hidden set.
 
 <ComponentDemo name="overflow-region-toolbar" />

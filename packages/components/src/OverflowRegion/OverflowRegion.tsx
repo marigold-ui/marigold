@@ -15,7 +15,15 @@ export interface OverflowRegionState {
   hiddenCount: number;
 }
 
-export interface OverflowRegionProps extends SpaceProp<SpacingTokens> {
+export interface OverflowRegionProps {
+  /**
+   * Space between the items. Defaults to the spacing of a parent layout
+   * component (e.g. `<Inline space="…">`), inherited through the `--space`
+   * custom property, and falls back to the `related` token when the region
+   * has no such parent. Set it explicitly to override.
+   */
+  space?: SpaceProp<SpacingTokens>['space'];
+
   /**
    * The items, in priority order: the trailing items are hidden first when
    * the region runs out of horizontal space. Hidden items are made inert
@@ -56,7 +64,7 @@ export interface OverflowRegionProps extends SpaceProp<SpacingTokens> {
  * items remain reachable.
  */
 export const OverflowRegion = ({
-  space = 'related',
+  space,
   children,
   indicator,
   onOverflowChange,
@@ -85,8 +93,15 @@ export const OverflowRegion = ({
   return (
     <div
       {...regionProps}
-      className={cn(regionProps.className, 'gap-(--space)')}
-      style={createSpacingVar('space', `${space}`)}
+      className={cn(
+        regionProps.className,
+        // Inherit the row gap from a parent layout component (Inline, Stack,
+        // ...) that set `--space`; fall back to the `related` token when the
+        // region stands alone. An explicit `space` prop sets `--space` below
+        // and wins over both.
+        'gap-[var(--space,var(--spacing-related))]'
+      )}
+      style={space != null ? createSpacingVar('space', `${space}`) : undefined}
     >
       {items.map((item, index) => {
         const { className, ...itemProps } = getItemProps(index);
