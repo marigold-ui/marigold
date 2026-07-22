@@ -14,9 +14,11 @@ import {
   runTelemetry,
 } from '../commands/telemetry.js';
 import {
+  type DoctorFormat,
   EXAMPLES_SUBCOMMANDS,
   type SubcommandName,
   TOP_LEVEL_NAMES,
+  doctorFormatValues,
 } from '../lib/commands-spec.js';
 import type { Section } from '../lib/docs.js';
 import type { OutputFormat } from '../lib/format.js';
@@ -112,10 +114,11 @@ See https://www.marigold-ui.io for component documentation.
 const isOutputFormat = (v: string): v is OutputFormat =>
   v === 'markdown' || v === 'json' || v === 'plain';
 
-// Defined locally (not imported from ../commands/doctor.js) so the doctor module
-// — and its @babel/parser dependency — stays lazily loaded.
-const isDoctorFormat = (v: string): v is 'text' | 'json' =>
-  v === 'text' || v === 'json';
+// Derived from the shared enum in commands-spec.ts (babel-free) rather than
+// imported from ../commands/doctor.js, so the doctor module — and its
+// @babel/parser dependency — stays lazily loaded off the hot path.
+const isDoctorFormat = (v: string): v is DoctorFormat =>
+  (doctorFormatValues as readonly string[]).includes(v);
 
 const isSection = (v: string): v is Section =>
   v === 'props' || v === 'usage' || v === 'examples' || v === 'all';
@@ -392,15 +395,12 @@ export const main = async (
       });
     } else if (command === 'doctor') {
       const { positionals, values } = parseDoctorCommand(rest);
+      const format = values.format ?? 'text';
       // Record only { format }: the pending DST-1600 GDPR/ePrivacy review scopes
       // doctor telemetry to the output format alone, so --offline is not tracked.
       // Clamp to a known enum value so an invalid `--format` never leaks the raw
       // string into telemetry (validation below runs after telemetryArgs is set).
-      telemetryArgs = {
-        format: isDoctorFormat(values.format ?? 'text')
-          ? (values.format ?? 'text')
-          : 'invalid',
-      };
+      telemetryArgs = { format: isDoctorFormat(format) ? format : 'invalid' };
 
       if (positionals.length > 0) {
         fail('Usage: marigold doctor (takes no arguments)');
@@ -413,7 +413,7 @@ export const main = async (
       // keep off the docs/list hot path agents hammer.
       const { runDoctor } = await import('../commands/doctor.js');
       const result = await runDoctor({
-        format: (values.format as 'text' | 'json' | undefined) ?? 'text',
+        format: format as DoctorFormat,
         offline: values.offline,
       });
 

@@ -59,6 +59,8 @@ export const runDoctorChecks = (cwd: string): DoctorReport => {
       title: outcome.title,
       status: issue.severity,
       message: issue.message,
+      findings: outcome.findings,
+      headline: outcome.headline,
       suggestion: issue.suggestion,
     });
   }

@@ -1,7 +1,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { installCommand } from '../detect-project.js';
-import { CSS_ENTRY_CANDIDATES, firstExisting } from '../fs-utils.js';
+import {
+  CSS_ENTRY_CANDIDATES,
+  POSTCSS_CONFIG_CANDIDATES,
+  TAILWIND_POSTCSS_PLUGIN,
+  firstExisting,
+} from '../fs-utils.js';
 import { latestVersions } from './freshness.js';
 import {
   allDeps,
@@ -120,14 +125,16 @@ export const checkVersionFreshness = (ctx: DoctorContext): CheckOutcome => {
   const title = 'Up to date';
   if (outdated.length === 0) return { status: 'ok', title };
 
+  const findings = outdated.map(o => `${o.name} ${o.installed} → ${o.latest}`);
+  const headline = 'Newer version(s) available:';
   return {
     status: 'issue',
     title,
     check: 'version-freshness',
     severity: 'warning',
-    message: `Newer version(s) available: ${outdated
-      .map(o => `${o.name} ${o.installed} → ${o.latest}`)
-      .join(', ')}.`,
+    message: `${headline} ${findings.join('; ')}.`,
+    headline,
+    findings,
     suggestion: 'Upgrade your Marigold packages to the latest version.',
     details: { outdated },
   };
@@ -247,15 +254,7 @@ const buildWiringOk = (ctx: DoctorContext): boolean => {
     }
   };
   if (project.framework === 'nextjs') {
-    return read(
-      [
-        'postcss.config.mjs',
-        'postcss.config.js',
-        'postcss.config.cjs',
-        'postcss.config.ts',
-      ],
-      '@tailwindcss/postcss'
-    );
+    return read(POSTCSS_CONFIG_CANDIDATES, TAILWIND_POSTCSS_PLUGIN);
   }
   if (project.framework === 'vite') {
     return read(
@@ -307,12 +306,15 @@ export const checkTailwindConfig = (ctx: DoctorContext): CheckOutcome => {
 
   if (problems.length === 0) return { status: 'ok', title };
 
+  const headline = 'Tailwind setup looks incomplete:';
   return {
     status: 'issue',
     title,
     check: 'tailwind-config',
     severity: 'warning',
-    message: `Tailwind setup looks incomplete: ${problems.join('; ')}.`,
+    message: `${headline} ${problems.join('; ')}.`,
+    headline,
+    findings: problems,
     suggestion:
       'Run `marigold init` to configure Tailwind, or see the installation guide.',
     details: { problems },
@@ -348,18 +350,18 @@ export const checkReactPeer = (ctx: DoctorContext): CheckOutcome => {
 
   if (problems.length === 0) return { status: 'ok', title };
 
+  const findings = problems.map(p =>
+    p.installed
+      ? `${p.name} ${p.installed} does not satisfy ${COMPONENTS}'s peer requirement ${p.required}`
+      : `${p.name} is not installed (required ${p.required})`
+  );
   return {
     status: 'issue',
     title,
     check: 'react-peer',
     severity: 'warning',
-    message: problems
-      .map(p =>
-        p.installed
-          ? `${p.name} ${p.installed} does not satisfy ${COMPONENTS}'s peer requirement ${p.required}`
-          : `${p.name} is not installed (required ${p.required})`
-      )
-      .join('; '),
+    message: findings.join('; '),
+    findings,
     suggestion: 'Install a compatible React version.',
     details: { problems },
   };

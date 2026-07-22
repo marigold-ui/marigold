@@ -1,7 +1,8 @@
+import { type DoctorFormat, doctorFormatValues } from '../lib/commands-spec.js';
 import { runDoctorChecks } from '../lib/doctor/index.js';
 import { loadManifest } from '../lib/manifest.js';
 
-export type DoctorFormat = 'text' | 'json';
+export type { DoctorFormat };
 
 // Short, best-effort budget for warming the manifest cache. Doctor is a
 // diagnostic run, not a hot path, but it should never hang on a slow network —
@@ -22,7 +23,7 @@ export interface RunDoctorResult {
 }
 
 export const isDoctorFormat = (v: string): v is DoctorFormat =>
-  v === 'text' || v === 'json';
+  (doctorFormatValues as readonly string[]).includes(v);
 
 export const runDoctor = async (
   options: RunDoctorOptions = {}

@@ -4,6 +4,12 @@ export interface RenderRow {
   title: string;
   status: 'ok' | 'error' | 'warning';
   message?: string;
+  /** Individual findings, rendered as a bulleted list. When present these drive
+   * the human output directly; the joined `message` is kept only for the JSON
+   * report, so there is no string round-trip to parse back. */
+  findings?: string[];
+  /** Optional lead-in printed above the findings bullets. */
+  headline?: string;
   suggestion?: string;
 }
 
@@ -22,32 +28,18 @@ const glyph = (status: RenderRow['status']): string => {
 const highlightCode = (text: string): string =>
   text.replace(/`[^`]+`/g, match => pc.cyan(match));
 
-// A single check can pack several findings into one message joined by "; "
-// (e.g. the Tailwind and React-peer checks). For humans we break those into a
-// bulleted list with an optional "headline:" lead-in. The raw, unsplit message
-// is still preserved verbatim in the JSON report, so this is presentation only.
-const splitFindings = (
-  message: string
-): { headline?: string; items: string[] } => {
-  if (!message.includes('; ')) return { items: [message] };
-  const body = message.replace(/\.\s*$/, ''); // drop a single trailing period
-  const colon = body.indexOf(': ');
-  if (colon !== -1) {
-    return {
-      headline: body.slice(0, colon + 1),
-      items: body.slice(colon + 2).split('; '),
-    };
-  }
-  return { items: body.split('; ') };
-};
-
+// A single check can carry several findings (e.g. the Tailwind, freshness, and
+// React-peer checks). For humans we render them as a bulleted list under an
+// optional "headline:" lead-in, working from the structured `findings` array
+// rather than re-parsing the joined `message` string. A check with no explicit
+// findings renders its `message` as a single line.
 const renderIssue = (row: RenderRow, lines: string[]): void => {
   lines.push(`${glyph(row.status)} ${pc.bold(row.title)}`);
 
-  if (row.message) {
-    const { headline, items } = splitFindings(row.message);
-    if (headline) lines.push(`${INDENT}${highlightCode(headline)}`);
-    if (items.length === 1 && !headline) {
+  const items = row.findings ?? (row.message ? [row.message] : []);
+  if (items.length > 0) {
+    if (row.headline) lines.push(`${INDENT}${highlightCode(row.headline)}`);
+    if (items.length === 1 && !row.headline) {
       lines.push(`${INDENT}${highlightCode(items[0])}`);
     } else {
       for (const item of items) {

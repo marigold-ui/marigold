@@ -422,6 +422,24 @@ describe('runDoctor', () => {
     expect(r.warnings.map(w => w.check)).toContain('version-freshness');
   });
 
+  test('renders multiple outdated packages as separate bullets', async () => {
+    seedNext(dir); // components/system installed at 18.0.0
+    seedManifest({
+      '@marigold/components': '18.1.0',
+      '@marigold/system': '18.1.0',
+      '@marigold/theme-rui': '6.0.0',
+    });
+
+    const { output } = await run(); // text
+
+    // Each outdated package gets its own bullet under one headline. Regression
+    // guard: freshness joined findings with ', ' while the old splitter looked
+    // for '; ', so multiple packages collapsed into a single comma-run line.
+    expect(output).toContain('Newer version(s) available:');
+    expect(output).toContain('• @marigold/components 18.0.0 → 18.1.0');
+    expect(output).toContain('• @marigold/system 18.0.0 → 18.1.0');
+  });
+
   test('omits the freshness check when the manifest is not cached (offline)', async () => {
     seedNext(dir); // no seedManifest → empty cache
 
@@ -487,6 +505,24 @@ describe('runDoctor', () => {
       w => w.check === 'tailwind-config'
     );
     expect(tw?.message).toContain('v3');
+  });
+
+  test('keeps a single finding that itself contains "; " on one bullet', async () => {
+    seedNext(dir);
+    // A Tailwind v3 config yields exactly one finding whose own text contains
+    // "; " ("...requires Tailwind v4; you appear to be on v3"). The old string
+    // splitter broke that finding across two bullets; it must stay one.
+    write(dir, 'tailwind.config.js', 'module.exports = {};\n');
+
+    const { output } = await run(); // text
+    const bullets = output
+      .split('\n')
+      .filter(l => l.includes('•') && l.includes('Tailwind v4'));
+
+    expect(bullets).toHaveLength(1);
+    expect(bullets[0]).toContain(
+      "Marigold's theme requires Tailwind v4; you appear to be on v3"
+    );
   });
 
   test('warns when there is no CSS entry with Tailwind imports', async () => {

@@ -1,6 +1,6 @@
-// The `marigold doctor` diagnostic model. The report shape mirrors the sibling
-// `validate` command's ValidationReport (errors/warnings/passed/text) so the two
-// commands present a consistent contract to humans and AI agents.
+// The `marigold doctor` diagnostic model. The report follows an
+// errors/warnings/passed/text shape so it presents a consistent, machine-
+// readable contract to humans and AI agents.
 
 export type IssueSeverity = 'error' | 'warning';
 
@@ -35,13 +35,22 @@ export interface DoctorReport {
   text: string;
 }
 
+// Text-only presentation hints. A check that has several findings exposes them
+// as a `findings` array (plus an optional `headline` lead-in) so the human
+// renderer can bullet them directly; the JSON report keeps only the joined
+// `message`, so these never cross into `DoctorIssue`.
+export interface RenderHints {
+  findings?: string[];
+  headline?: string;
+}
+
 // A single check's outcome before it is split into the report's error/warning
 // arrays. `ok` = healthy (goes to `passed`); `skip` = could not be determined and
 // is omitted entirely (e.g. freshness while offline).
 export type CheckOutcome =
   | { status: 'ok'; title: string }
   | { status: 'skip' }
-  | ({ status: 'issue'; title: string } & DoctorIssue);
+  | ({ status: 'issue'; title: string } & DoctorIssue & RenderHints);
 
 export interface DoctorContext {
   cwd: string;
