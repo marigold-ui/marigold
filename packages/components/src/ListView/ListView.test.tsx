@@ -10,7 +10,7 @@ import {
   EmptyState,
   NotificationsFeed,
   ResourceListWithMenu,
-  SettingsList,
+  TeamRosterWithStatus,
   WithTitle,
 } from './ListView.stories';
 
@@ -46,21 +46,19 @@ describe('ListView', () => {
   });
 
   describe('keyboard navigation', () => {
-    test('arrow keys move focus between rows', async () => {
+    test('arrow keys move focus between rows, skipping the disabled row', async () => {
       render(<Basic.Component />);
 
       const rows = screen.getAllByRole('row');
       rows[0].focus();
       expect(rows[0]).toHaveFocus();
 
-      await user.keyboard('{ArrowDown}');
-      expect(rows[1]).toHaveFocus();
-
+      // rows[1] ("Budget draft") is in `disabledKeys` and is skipped.
       await user.keyboard('{ArrowDown}');
       expect(rows[2]).toHaveFocus();
 
       await user.keyboard('{ArrowUp}');
-      expect(rows[1]).toHaveFocus();
+      expect(rows[0]).toHaveFocus();
     });
 
     test('tab reaches a nested interactive control inside the focused row', async () => {
@@ -128,21 +126,21 @@ describe('ListView', () => {
       );
     });
 
-    test('settings list: toggles a switch in place', async () => {
+    test('settings-style toggle: switches a row control in place', async () => {
       // Arrange
-      render(<SettingsList.Component />);
-      const emailSwitch = screen.getByRole('switch', {
-        name: 'Email notifications',
+      render(<TeamRosterWithStatus.Component />);
+      const notifySwitch = screen.getByRole('switch', {
+        name: 'Notify Alex Kim',
       });
 
       // Assert (initial state)
-      expect(emailSwitch).not.toBeChecked();
+      expect(notifySwitch).not.toBeChecked();
 
       // Act
-      await user.click(emailSwitch);
+      await user.click(notifySwitch);
 
       // Assert
-      expect(emailSwitch).toBeChecked();
+      expect(notifySwitch).toBeChecked();
     });
   });
 
