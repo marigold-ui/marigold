@@ -92,7 +92,6 @@ export const ErrorState = ({
 
   return (
     <div className={classNames.container} {...props}>
-      {/* Placeholder until design delivers the final error illustration (DST-1641). */}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="151"
