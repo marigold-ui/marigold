@@ -243,6 +243,9 @@
   --spacing-group: --spacing(12);
   --spacing-section: --spacing(24);
 
+  /* Shared horizontal padding for the `ui-panel-*` overlay surfaces. */
+  --ui-panel-px: --spacing(6);
+
   /* Padding spacing */
   --spacing-padding-tight: --spacing(1);
   --spacing-padding-snug: --spacing(2);
