@@ -1,6 +1,6 @@
 export const AppFrameStructure = () => (
   <svg
-    viewBox="40 58 640 385"
+    viewBox="-30 58 710 385"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -245,6 +245,20 @@ export const AppFrameStructure = () => (
       <circle cx="530" cy="220" r="4" />
     </g>
 
+    {/* Sidebar bracket: groups Rail + Section panel as one Sidebar */}
+    <g
+      className="stroke-fd-primary transition-colors duration-300"
+      fill="none"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M 48 294 L 48 410" />
+      <path d="M 48 294 L 58 294" />
+      <path d="M 48 410 L 58 410" />
+      <path d="M 48 352 L 40 352" />
+    </g>
+
     {/* Labels */}
     <g
       fontFamily="ui-sans-serif, system-ui, sans-serif"
@@ -259,6 +273,15 @@ export const AppFrameStructure = () => (
           className="fill-fd-primary"
         >
           Top Navigation
+        </text>
+        <text
+          x="36"
+          y="356"
+          fontSize="14"
+          fontWeight="600"
+          className="fill-fd-primary"
+        >
+          Sidebar
         </text>
         <text
           x="150"
