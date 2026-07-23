@@ -1,5 +1,5 @@
 ---
-title: Error States
+title: Error Boundaries
 description: How a failed page or region presents itself, recovers, and stays accessible.
 badge: beta
 ---
@@ -10,19 +10,21 @@ Marigold ships the fallback UI, the [ErrorState](/components/content/error-state
 
 ## The two tiers
 
+A **tier** is the scope of what failed: the whole page, or a single region within it.
+
 Default to the **page tier**: one boundary at the route level, around the whole page. Add **region tiers** only where regions load independently and a partial page is still useful.
 
 - **Page tier**: the page's content is replaced. The user keeps orientation: you are still on Billing, it failed to load. The route title stays the h1 that names the `<main>` landmark, and the error title renders below at `headingLevel={2}`.
 - **Region tier**: a boundary wraps an individual [Panel](/components/layout/panel)'s content. The page header and sibling panels stay live. Only the failed region is replaced.
 
-At page tier, the fallback does not have to repeat the `Page.Header`. It only brings its own [Page](/components/layout/page) and header when the boundary replaces the whole page, as Next.js `error.tsx` does. When you control the boundary's placement, put it inside the `Page` below the `Page.Header`, and the fallback shrinks to the `ErrorState` alone. Both variants are shown below.
+At page tier, the fallback does not have to repeat the `Page.Header`. It only brings its own [Page](/components/layout/page) and header when the boundary replaces the whole page, as Next.js `error.tsx` does. When you control the boundary's placement, put it inside the `Page` below the `Page.Header`, and the fallback shrinks to the `ErrorState` alone.
 
-## Replaced vs. annotated
+## ErrorState vs. SectionMessage
 
-One rule decides between the two feedback components:
+One rule decides between `ErrorState` and [SectionMessage](/components/content/section-message):
 
 - Content is **gone** (the boundary caught, nothing renders): show a compact `ErrorState` inside the region.
-- Content is **still present** and you are annotating it (validation problems, partial failure, warnings): use a [SectionMessage](/components/content/section-message).
+- Content is **still present** and you are annotating it (validation problems, partial failure, warnings): use a `SectionMessage`.
 
 `ErrorState` replaces, `SectionMessage` comments.
 

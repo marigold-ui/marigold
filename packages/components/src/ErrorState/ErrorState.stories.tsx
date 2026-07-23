@@ -160,7 +160,7 @@ const BreakablePage = () => {
 };
 
 /**
- * Page tier from the error states pattern: the boundary sits below the
+ * Page tier from the error boundaries pattern: the boundary sits below the
  * `<Page.Header>`, so the route title stays mounted while the broken content
  * is swapped for the `<ErrorState>`.
  */
