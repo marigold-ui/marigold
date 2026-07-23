@@ -139,6 +139,12 @@ export type { FileTriggerProps } from './FileField/FileTrigger';
 export { FileField } from './FileField/FileField';
 export type { FileFieldProps } from './FileField/FileField';
 
+export { OverflowRegion } from './OverflowRegion/OverflowRegion';
+export type {
+  OverflowRegionProps,
+  OverflowRegionState,
+} from './OverflowRegion/OverflowRegion';
+
 export { Form } from './Form/Form';
 export type { FormProps } from './Form/Form';
 
@@ -163,6 +169,9 @@ export type { SearchInputProps } from './Input/SearchInput';
 
 export { Inset } from './Inset/Inset';
 export type { InsetProps } from './Inset/Inset';
+
+export { Keyboard } from './Keyboard/Keyboard';
+export type { KeyboardProps } from './Keyboard/Keyboard';
 
 export { Label } from './Label/Label';
 export type { LabelProps } from './Label/Label';

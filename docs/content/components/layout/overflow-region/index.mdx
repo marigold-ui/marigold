@@ -1,0 +1,135 @@
+---
+title: OverflowRegion
+description: Hide trailing items instead of wrapping when space runs out.
+badge: beta
+---
+
+The `<OverflowRegion>` component keeps a row of elements on a single line. When there is not enough horizontal space, it hides its trailing items instead of wrapping them to a new line, and restores them as soon as space returns. Hidden items stay mounted, so they keep their state, but they are removed from painting, the tab order, and the accessibility tree.
+
+The region measures its own container, not the viewport. A row inside a narrow panel on a wide screen collapses correctly, which viewport-based media queries cannot do. Every demo on this page sits in a resizable frame. Drag the handle on the right (or focus it and use the arrow keys) to see the row react.
+
+## Usage
+
+Place the items as direct children, ordered by priority. The last child is hidden first when space runs out. Use the `indicator` render prop to show an element while items are hidden, such as a counter or a menu. The indicator only appears while at least one item is hidden.
+
+Items are spaced by the `space` prop. When the region sits inside a spacing-aware layout component such as [`<Inline>`](../layout/inline), it inherits that component's spacing automatically, so a nested row lines up with its surroundings without extra configuration. Set `space` explicitly to override, or when the region has no such parent.
+
+A typical use case is a toolbar: instead of wrapping to a second line and pushing the layout around, actions that no longer fit collapse into a "More" menu. Because priority is DOM order, `actions.slice(visibleCount)` is exactly the hidden set.
+
+<ComponentDemo name="overflow-region-toolbar" />
+
+<Callout title="Hiding is not a recovery strategy">
+  Every hidden item must stay reachable through another surface. Always pair the
+  region with an `indicator` that opens the hidden items, or with an [external
+  surface](#external-surfaces) that always contains them. Never use the region
+  to silently drop content.
+</Callout>
+
+### Priority+ navigation
+
+The same pattern applied to navigation is known as [Priority+](https://css-tricks.com/the-priority-navigation-pattern/): the most important links stay visible and the rest move into a "More" menu. Order the links by importance and feed the hidden set to the menu so every page stays reachable.
+
+<ComponentDemo name="overflow-region-priority-nav" />
+
+### External surfaces
+
+When the surface that holds the hidden items already exists outside the region, you do not need an indicator at all. A common example is a filter bar: the quick filters demote as space runs out, while a pinned "All filters" panel always contains the complete filter set. The pinned trigger itself is the recovery surface.
+
+Note that nothing is transferred into the panel. Because it always renders every filter, a demoted quick filter is simply also available there, in a stable place that does not depend on the current width. If you want a surface that shows only the hidden items, use the `indicator` render prop with a menu instead, as in the toolbar example above.
+
+If the trigger carries a counter badge, count **applied** filters, never hidden ones. A number on a filter button conventionally reads as "n filters are active", so a count that changes while the user resizes the window misleads them about their data. Applied filters also cover the risky case: a filter that is active but currently demoted stays represented in the count.
+
+Pinned elements are regular siblings of the region inside a non-wrapping row (such as [`<Inline noWrap>`](../layout/inline)). They keep their size while the region flexes and clips.
+
+<ComponentDemo name="overflow-region-external" />
+
+For cases where you do need to react to demotions, for example to track them in analytics, `onOverflowChange` reports the region's state whenever the visible count changes.
+
+### Items must be direct children
+
+The region measures and hides each direct child individually. A single component that renders several elements counts as one item, so spread the items directly into the region instead of grouping them in a wrapper component or fragment.
+
+### Accessibility
+
+Hidden items are removed from painting, the tab order, and the accessibility tree (via `inert` and `aria-hidden`), so keyboard and screen reader users never land on an item they cannot see. Since the items stay mounted, entered values and open states survive being hidden and restored.
+
+The indicator is part of the row's natural tab order and only rendered while items are hidden. Make sure it has an accessible name that explains what it reveals, such as "More actions".
+
+## Props
+
+<StorybookHintMessage component={'OverflowRegion'} />
+
+### OverflowRegion
+
+<AutoTypeTable path="OverflowRegion" name="OverflowRegionProps" />
+
+## Alternative components
+
+<ul>
+  <li>
+    [Inline](../layout/inline): If wrapping to a new line is acceptable, use
+    the default `<Inline>` behavior instead. It is simpler and needs no
+    recovery surface.
+  </li>
+  <li>
+    [TagGroup](../collection/tag): For rows of tags, use `<TagGroup>` with
+    its `collapseAt` prop. It caps the visible tags at a fixed count behind a
+    "Show more" toggle and keeps the tags interactive. Compose a region with
+    a `+N` counter only for a read-only preview in a dense spot, such as a
+    table cell.
+  </li>
+  <li>
+    [Breadcrumbs](../navigation/breadcrumbs): Collapses from the middle
+    (keeping the first and current page) with a built-in ellipsis menu. Use
+    it for paths instead of composing a region.
+  </li>
+</ul>
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Building layouts',
+      href: '../../foundations/layouts',
+      caption: 'Learn how to build layouts.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 0 1-1.125-1.125v-3.75ZM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-8.25ZM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-2.25Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Inline',
+      href: '../layout/inline',
+      caption: 'Display children horizontally in a row.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M9 4.5v15m6-15v15m-10.875 0h15.75c.621 0 1.125-.504 1.125-1.125V5.625c0-.621-.504-1.125-1.125-1.125H4.125C3.504 4.5 3 5.004 3 5.625v12.75c0 .621.504 1.125 1.125 1.125Z"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>

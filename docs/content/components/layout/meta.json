@@ -9,6 +9,7 @@
     "grid",
     "inline",
     "inset",
+    "overflow-region",
     "page",
     "panel",
     "scrollable",
