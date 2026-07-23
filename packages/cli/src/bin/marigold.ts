@@ -68,6 +68,7 @@ ${pc.bold('Commands:')}
   examples <action>     Browse application patterns (list | get <slug>)
   init                  Set up Marigold in a project
   doctor                Diagnose a project's Marigold setup
+  migrate <version>     Apply codemods for a breaking Marigold release
   telemetry <action>    Manage telemetry (status|enable|disable)
   completion <shell>    Print shell completion script (bash|zsh|fish)
 
@@ -101,6 +102,10 @@ ${pc.bold('Init options:')}
 ${pc.bold('Doctor options:')}
   --format  <name>    text | json (default: text)
   --offline           Skip the network; use only the local cache
+
+${pc.bold('Migrate options:')}
+  [path]              Directory to migrate (default: current directory)
+  --dry-run           Report what would change without writing files
 
 ${pc.bold('Environment:')}
   MARIGOLD_DOCS_URL              Override docs site base URL
@@ -199,6 +204,15 @@ const parseDoctorCommand = (argv: string[]) =>
     options: {
       format: { type: 'string' },
       offline: { type: 'boolean', default: false },
+    },
+  });
+
+const parseMigrateCommand = (argv: string[]) =>
+  parseArgs({
+    args: argv,
+    allowPositionals: true,
+    options: {
+      'dry-run': { type: 'boolean', default: false },
     },
   });
 
@@ -419,6 +433,30 @@ export const main = async (
 
       writeOutput(result.output);
       if (result.hasErrors) exitCode = 1;
+    } else if (command === 'migrate') {
+      const { positionals, values } = parseMigrateCommand(rest);
+      const [version, targetPath] = positionals;
+
+      telemetryArgs = {
+        version: version ?? '',
+        ...(values['dry-run'] ? { dryRun: 'true' } : {}),
+      };
+
+      if (!version || positionals.length > 2) {
+        fail('Usage: marigold migrate <version> [path] [--dry-run]');
+      }
+
+      // Lazy-load: migrate pulls in @babel/parser and magic-string, which we
+      // keep off the docs/list hot path.
+      const { runMigrate } = await import('../commands/migrate.js');
+      const result = await runMigrate({
+        // accept both `18` and `v18`
+        version: version.startsWith('v') ? version : `v${version}`,
+        targetPath: targetPath ?? process.cwd(),
+        dryRun: values['dry-run'],
+      });
+
+      writeOutput(result.output);
     } else if (command === 'telemetry') {
       const [sub] = rest;
       telemetryArgs = sub ? { sub } : {};
