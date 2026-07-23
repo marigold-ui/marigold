@@ -3,7 +3,7 @@ import type { ThemeComponent } from '@marigold/system';
 
 export const Panel: ThemeComponent<'Panel'> = {
   root: cva({
-    base: 'rounded-surface shadow-elevation-raised [--panel-accent:currentColor]',
+    base: 'rounded-surface [--panel-accent:currentColor]',
     variants: {
       variant: {
         default: 'ui-surface',
@@ -54,5 +54,7 @@ export const Panel: ThemeComponent<'Panel'> = {
   collapsibleContent: cva({
     base: 'overflow-clip h-(--disclosure-panel-height) transition-[height] duration-250',
   }),
+  // Match the Accordion chevron: a muted caret. `MorphCaret` already bakes in `shrink-0`.
+  collapsibleIcon: cva({ base: 'pointer-events-none text-secondary' }),
   footer: cva({}),
 };

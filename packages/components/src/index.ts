@@ -55,6 +55,18 @@ export type { ButtonGroupProps } from './ButtonGroup/ButtonGroup';
 export { Calendar } from './Calendar/Calendar';
 export type { CalendarProps } from './Calendar/Calendar';
 
+export { useDatePresets, useDateRangePresets } from './Calendar/usePresets';
+export type { ResolvedPreset } from './Calendar/usePresets';
+export type {
+  BuiltInDatePresetKey,
+  BuiltInDateRangePresetKey,
+  CustomDatePreset,
+  CustomDateRangePreset,
+  DatePreset,
+  DateRange,
+  DateRangePreset,
+} from './Calendar/presets';
+
 export { Card } from './Card/Card';
 export type { CardProps } from './Card/Card';
 
@@ -151,6 +163,9 @@ export type { SearchInputProps } from './Input/SearchInput';
 
 export { Inset } from './Inset/Inset';
 export type { InsetProps } from './Inset/Inset';
+
+export { Keyboard } from './Keyboard/Keyboard';
+export type { KeyboardProps } from './Keyboard/Keyboard';
 
 export { Label } from './Label/Label';
 export type { LabelProps } from './Label/Label';
@@ -269,6 +284,7 @@ export type {
   TableRowProps,
   TableCellProps,
   TableEditableCellProps,
+  TableFooterProps,
   TableDropIndicatorProps,
   TableDragPreviewProps,
 } from './Table/Table';

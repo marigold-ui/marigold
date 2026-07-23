@@ -67,8 +67,8 @@ const UserMenu = () => (
   </ActionMenu>
 );
 
-// A long, self-contained nav group used to force the nav into its scrolling
-// state so the sticky header/footer seams can be seen (DST-1586 review).
+// A long nav group that forces the nav into its scrolling state, so the sticky
+// header/footer seams are exercised.
 const workspaceSections = Array.from({ length: 40 }, (_, i) => ({
   href: `/section-${i + 1}`,
   label: `Section ${i + 1}`,
@@ -274,9 +274,9 @@ ControlledSidebar.test(
   }
 );
 
-// Regression for DST-1464. The `main` grid track was `1fr` (= `minmax(auto,
-// 1fr)`), so wide content pushed the column past the viewport. `<Page>`'s
-// `<main>` carries `min-w-0` so the track can shrink and clip overflow.
+// The `main` grid track is `1fr` (= `minmax(auto, 1fr)`), which lets wide
+// content push the column past the viewport unless it can shrink. `<Page>`'s
+// `<main>` carries `min-w-0` so the track shrinks and clips overflow instead.
 export const WideContentDoesNotOverflow = meta.story({
   tags: ['component-test'],
   render: () => (
@@ -332,7 +332,7 @@ WideContentDoesNotOverflow.test(
 );
 
 /**
- * Both scroll axes of the shell at once (DST-1586):
+ * Both scroll axes of the shell at once:
  *
  * - **Sidebar nav** overflows, so its sticky header and footer show their
  *   scroll-revealed seams — seamless at rest; a hairline fades in under the
@@ -362,11 +362,10 @@ ScrollingSidebar.test(
   async ({ canvas }) => {
     const nav = canvas.getByRole('navigation', { name: /app navigation/i });
 
-    // The point of this story: a long nav rendered into a scroll container, so
-    // the sticky header/footer regions are actually exercised (the docs demos
-    // never scroll, so the seam behavior would otherwise go untested —
-    // DST-1586 review). Asserted viewport-independently: the nav scrolls its
-    // own overflow, and the tail of the long list is present.
+    // A long nav in a scroll container, so the sticky header/footer regions are
+    // actually exercised (the docs demos never scroll). Asserted
+    // viewport-independently: the nav scrolls its own overflow, and the tail of
+    // the long list is present.
     await expect(getComputedStyle(nav).overflowY).toBe('auto');
     await expect(
       canvas.getByRole('link', { name: 'Section 40' })

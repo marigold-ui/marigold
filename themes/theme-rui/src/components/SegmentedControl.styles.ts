@@ -69,7 +69,7 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
     ],
     variants: {
       variant: {
-        // Hover only brightens the label; the raised indicator is the background
+        // Hover only brightens the label; the moving indicator is the background
         // affordance. The focus ring is drawn on the indicator (see below), so the
         // cell suppresses its own outline here. (Ghost keeps it, having no thumb.)
         default:
@@ -98,8 +98,9 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
     base: 'absolute transition-[translate,width] duration-200 ease-out-quint group-has-[[data-focus-visible]]/segmented:transition-none motion-reduce:transition-none',
     variants: {
       variant: {
-        // Raised thumb styled like the secondary Button (ui-control +
-        // shadow-elevation-border). It fills its segment horizontally (left-0
+        // Flat control-surface thumb (ui-control): a well like the fields, not
+        // a raised cap — the moving thumb and selection do the work. It fills
+        // its segment horizontally (left-0
         // w-full) so adjacent thumbs meet with no gap; the 4px top/bottom margin is
         // the inset-y, and the 4px end margin comes from the track's p-1 — so the
         // between-gap (0) and the outer margin are set independently.
@@ -109,7 +110,7 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
         //   On the dark charcoal-300 track, control-border's ground-adaptive firming
         // over-darkens the edge, so the alpha is stepped down 0.08 (token-derived).
         default:
-          'inset-y-[4px] left-0 w-full ui-control shadow-elevation-border [--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_-_0.08))] group-has-[[data-focus-visible]]/segmented:outline-3 group-has-[[data-focus-visible]]/segmented:outline-solid group-has-[[data-focus-visible]]/segmented:outline-ring/50 group-has-[[data-focus-visible]]/segmented:outline-offset-1',
+          'inset-y-[4px] left-0 w-full ui-control [--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_-_0.08))] group-has-[[data-focus-visible]]/segmented:outline-3 group-has-[[data-focus-visible]]/segmented:outline-solid group-has-[[data-focus-visible]]/segmented:outline-ring/50 group-has-[[data-focus-visible]]/segmented:outline-offset-1',
         // Resembles a ghost Button's surface.
         ghost: 'inset-y-0 left-0 w-full rounded-surface ui-state-hover-ghost',
       },

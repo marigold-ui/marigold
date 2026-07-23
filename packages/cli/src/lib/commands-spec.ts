@@ -33,12 +33,20 @@ export const TELEMETRY_SUBCOMMANDS = telemetrySubValues;
 export const EXAMPLES_SUBCOMMANDS = examplesSubValues;
 export const COMPLETION_SHELLS = completionShellValues;
 
+// Single source of truth for `marigold doctor --format`. This module is
+// babel-free, so both the bin (which must stay off the lazy-load boundary that
+// keeps @babel/parser out of the hot path) and commands/doctor.ts derive their
+// guard/type from it instead of re-declaring the enum.
+export const doctorFormatValues = ['text', 'json'] as const;
+export type DoctorFormat = (typeof doctorFormatValues)[number];
+
 export type SubcommandName =
   | 'docs'
   | 'list'
   | 'search'
   | 'examples'
   | 'init'
+  | 'doctor'
   | 'telemetry'
   | 'completion';
 
@@ -87,6 +95,13 @@ export const SUBCOMMANDS: readonly SubcommandSpec[] = [
     flags: [
       { name: '--yes', type: 'boolean' },
       { name: '--skip-install', type: 'boolean' },
+    ],
+  },
+  {
+    name: 'doctor',
+    flags: [
+      { name: '--format', type: 'string', values: doctorFormatValues },
+      { name: '--offline', type: 'boolean' },
     ],
   },
   {
