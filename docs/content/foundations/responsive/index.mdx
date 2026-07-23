@@ -24,7 +24,7 @@ The scale comes from your theme's `screens` object (for example `{ sm: '40rem', 
 
 ## Responsive values in custom components
 
-Marigold's own components already adapt to screen size on their own, so you rarely need to handle it yourself. When you build a custom component or element whose value has to change with the breakpoint, Marigold provides two client-side hooks: [`useResponsiveValue`](#useresponsivevalue) and [`useSmallScreen`](#usesmallscreen). Both read the breakpoints from `theme.screens`, so they stay in sync with the scale above.
+Marigold's components already adapt to screen size on their own, so you rarely need to handle it yourself. When you build a custom component or element whose value has to change with the breakpoint, Marigold provides two client-side hooks: [`useResponsiveValue`](#useresponsivevalue) and [`useSmallScreen`](#usesmallscreen). Both read the breakpoints from `theme.screens`, so they stay in sync with the scale above.
 
 As a rule of thumb, reach for `useSmallScreen` when you only need a single mobile-versus-desktop split at `sm` (640px), and for `useResponsiveValue` when a value should change across several breakpoints.
 
@@ -36,30 +36,33 @@ import { useResponsiveValue, useSmallScreen } from '@marigold/system';
 
 ### useResponsiveValue
 
-`useResponsiveValue` maps an array of values onto the breakpoint scale and returns the one that matches the current screen size. The positions are ordered from the base range upward, so `[base, sm, md, lg, xl, 2xl]`. You can pass fewer entries than there are breakpoints, and the last entry then carries through to the wider ones.
+`useResponsiveValue` maps an array of values onto the breakpoint scale and returns the one that matches the current screen size. The positions are ordered from the base range upward, so `[base, sm, md, lg, xl, 2xl]`. You can pass fewer entries than the scale has steps, and the last entry then carries through to the wider ones.
 
 The second argument, `defaultIndex`, is the position used during server-side rendering and the first client paint, before the real viewport width is known. Point it at the value most first views will land on so the layout does not shift on hydration.
 
 Reach for it when a value should step through several breakpoints, for example:
 
-- The column count of a custom card or media grid, such as `useResponsiveValue([1, 2, 2, 3], 0)`.
-- How many items a custom list shows before it collapses the rest into a menu.
-- A per-breakpoint size or spacing token that a single Tailwind modifier cannot express.
+- How many months a `<Calendar>` shows side by side, fewer on small screens.
+- The column count of your own card or media grid, such as `useResponsiveValue([1, 2, 2, 3], 0)`.
+- A per-breakpoint `Button` `size`, for example larger touch targets on small screens.
 
 ```tsx
+import { Calendar } from '@marigold/components';
 import { useResponsiveValue } from '@marigold/system';
 
-const Gallery = ({ items }) => {
-  // 1 column at the base range, 2 from `sm`, 3 from `lg` and up
-  const columns = useResponsiveValue([1, 2, 2, 3], 0);
+const Availability = () => {
+  // One month on small screens, up to three side by side from `md` up
+  const months = useResponsiveValue<1 | 2 | 3>([1, 2, 3], 0);
 
-  return <CardGrid columns={columns} items={items} />;
+  return <Calendar visibleDuration={{ months }} />;
 };
 ```
 
-The demo below returns the name of the active breakpoint. Resize the window and the value updates as each breakpoint takes over.
+#### Try it
 
-<ComponentDemo name="tailwind-screen-size-with-hook" />
+Pick a breakpoint to see which value `useResponsiveValue` resolves to.
+
+<ComponentDemo name="tailwind-screen-size-with-hook" mode="preview" />
 
 ### useSmallScreen
 
@@ -72,19 +75,32 @@ Reach for it when a single 640px threshold is all you need, for example:
 - Reducing the number of visible segments in a custom breadcrumb or stepper.
 
 ```tsx
+import { Button } from '@marigold/components';
+import { Save } from '@marigold/icons';
 import { useSmallScreen } from '@marigold/system';
 
-const Toolbar = () => {
+const SaveButton = () => {
   const isSmallScreen = useSmallScreen();
 
-  // Icon-only actions on small screens, full labels from `sm` up
-  return isSmallScreen ? <CompactToolbar /> : <FullToolbar />;
+  // Icon-only button on small screens, icon plus label from `sm` up
+  return isSmallScreen ? (
+    <Button variant="primary" size="icon" aria-label="Save changes">
+      <Save />
+    </Button>
+  ) : (
+    <Button variant="primary">
+      <Save />
+      Save changes
+    </Button>
+  );
 };
 ```
 
-The demo below reflects the current value. Resize the window below 640px to see it flip.
+#### Try it
 
-<ComponentDemo name="use-small-screen" />
+Pick a breakpoint to see what `useSmallScreen` returns (`true` only below 640px).
+
+<ComponentDemo name="use-small-screen" mode="preview" />
 
 ## Minimum supported width
 
