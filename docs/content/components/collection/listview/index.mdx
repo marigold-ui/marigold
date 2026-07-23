@@ -33,7 +33,7 @@ A `<ListView>` is a labeled, non-form grid holding a stack of `<ListView.Item>` 
 
 Each row owns its own state and its own controls, so actions typically fire per row rather than as a batch. The rest of this section covers the row shapes `<ListView>` supports most often, and how to tell it apart from Marigold's other list-shaped components.
 
-### `<ListView>` vs. selection lists
+### `<ListView>` vs. `<SelectList>`
 
 `<ListView>`'s closest neighbor is [`<SelectList>`](/components/form/selectlist), where the row itself is the only focusable target. `<ListView>` gives each row its own `grid`/`row`/`gridcell` semantics instead, which is required once rows hold their own focusable controls.
 
