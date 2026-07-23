@@ -236,7 +236,11 @@ export const ResourceListWithMenu = meta.story({
           <ActionMenu.Item onAction={() => onShare('report')}>
             Share
           </ActionMenu.Item>
-          <ActionMenu.Item onAction={() => onDelete('report')}>
+          <ActionMenu.Item
+            variant="destructive"
+            size="icon"
+            onAction={() => onDelete('report')}
+          >
             Delete
           </ActionMenu.Item>
         </ActionMenu>
@@ -252,7 +256,11 @@ export const ResourceListWithMenu = meta.story({
           <ActionMenu.Item onAction={() => onShare('roadmap')}>
             Share
           </ActionMenu.Item>
-          <ActionMenu.Item onAction={() => onDelete('roadmap')}>
+          <ActionMenu.Item
+            variant="destructive"
+            size="icon"
+            onAction={() => onDelete('roadmap')}
+          >
             Delete
           </ActionMenu.Item>
         </ActionMenu>

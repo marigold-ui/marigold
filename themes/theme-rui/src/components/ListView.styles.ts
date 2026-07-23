@@ -43,6 +43,12 @@ export const ListView: ThemeComponent<'ListView'> = {
     base: 'text-xs font-normal text-secondary group-disabled/option:text-disabled',
   }),
   action: cva({
-    base: 'flex shrink-0 items-center justify-end gap-1',
+    // `[&>*]:shrink-0` protects each trailing control (Switch, Button,
+    // IconButton, ActionMenu trigger) from being squeezed by its siblings
+    // when the row is tight — without it, a ghost icon Button silently
+    // loses its square shape (invisible until its hover fill reveals the
+    // squashed box) to make room for a neighboring Switch that refuses to
+    // shrink below its own min-content floor.
+    base: 'flex shrink-0 items-center justify-end gap-1 [&>*]:shrink-0',
   }),
 };
