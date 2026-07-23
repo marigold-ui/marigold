@@ -45,7 +45,7 @@ export interface ErrorStateProps {
   tabIndex?: number;
   ref?: Ref<HTMLDivElement>;
   variant?: string;
-  size?: string;
+  size?: 'compact' | (string & {});
 }
 
 // Component
@@ -92,6 +92,7 @@ export const ErrorState = ({
 
   return (
     <div className={classNames.container} {...props}>
+      {/* Placeholder illustration, pending final design (DST-1641). */}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="151"
