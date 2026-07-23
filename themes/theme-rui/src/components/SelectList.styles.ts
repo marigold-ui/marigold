@@ -60,11 +60,11 @@ export const SelectList: ThemeComponent<'SelectList'> = {
   }),
   item: cva({
     base: [
-      'relative grid items-start content-center gap-x-3',
+      'group/option relative grid items-start content-center gap-x-3',
       'grid-cols-[auto_1fr_auto]',
       'grid-rows-[minmax(1.25rem,auto)_auto]',
       'text-sm font-medium text-foreground outline-none',
-      'cursor-default data-selection-mode:cursor-pointer',
+      'cursor-default not-disabled:data-selection-mode:cursor-pointer',
       'focus-visible:inset-ring-2 focus-visible:inset-ring-ring/50',
       'transition-[border,color]',
       'disabled:cursor-not-allowed disabled:text-disabled',
@@ -114,7 +114,7 @@ export const SelectList: ThemeComponent<'SelectList'> = {
   }),
   label: cva({ base: 'col-start-2 row-start-1' }),
   description: cva({
-    base: 'col-start-2 row-start-2 text-xs font-normal text-secondary',
+    base: 'col-start-2 row-start-2 text-xs font-normal text-secondary group-disabled/option:text-disabled',
   }),
   indicator: cva({
     base: 'flex shrink-0 items-center justify-center row-start-1 col-start-1 self-center',

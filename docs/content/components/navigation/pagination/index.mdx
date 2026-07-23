@@ -35,6 +35,8 @@ Pagination is used to divide large datasets into discrete pages, making them man
 
 Use pagination when the amount of dataset results would be too overwhelming for one page, either for the user or the system performance.
 
+Prefer pagination over infinite scrolling when users work on the data rather than browse it. A page is a stable, bounded view. Users can reason about "these rows", return to them, and select them for an action. Infinite scrolling suits passive browsing. For tables where users select rows and act on them it creates ambiguity, because "select all" could mean what is visible, what has loaded so far, or everything that matches the query. This is why task-oriented tables in Marigold paginate.
+
 Pagination is not a replacement for search, filter or sort functionality, but rather a complementary feature.
 
 <ComponentDemo name="pagination-full" />
@@ -161,6 +163,35 @@ The default text string for the label is "**Results per page**". Only change the
   </Dont>
 </GuidelineTiles>
 
+### Changing the page
+
+A page change replaces the visible rows, and everything on the screen that was derived from those rows must be re-derived or visibly reset. Row selection is the most common case: a selection made on one page must not silently survive onto another, where the checked rows are no longer visible. The [Bulk Actions](/patterns/user-input/bulk-actions#pagination) pattern covers how selection and pagination interact in detail.
+
+The dataset can also change underneath the current page. When records are deleted, the current page can end up past the last page, stranding the user on an empty view. Clamp the page index after the data changes, so the user lands on the new last page instead:
+
+```tsx
+const lastPage = Math.max(1, Math.ceil(totalItems / pageSize));
+if (page > lastPage) {
+  setPage(lastPage);
+}
+```
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Reset or re-derive any state that was based on the visible rows when the
+      page changes, and step back to the last page when the current page
+      empties.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't leave the user on a page that no longer exists or carry hidden
+      row-based state across a page change.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
 ### Summary: What decisions can product teams make?
 
 - The default amount of visible results per page
@@ -247,6 +278,28 @@ The `<Pagination>` component already meets all known relevant WCAG 2.2 AA standa
             strokeLinejoin="round"
             d="M3 8.25V18a2.25 2.25 0 0 0 2.25 2.25h13.5A2.25 2.25 0 0 0 21 18V8.25m-18 0V6a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6v2.25m-18 0h18M5.25 6h.008v.008H5.25V6ZM7.5 6h.008v.008H7.5V6Zm2.25 0h.008v.008H9.75V6Z"
           />
+        </svg>
+      ),
+    },
+    {
+      title: 'Bulk Actions',
+      href: '/patterns/user-input/bulk-actions',
+      caption:
+        'How row selection and pagination interact when users act on many records at once.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-6"
+        >
+          <rect x="3" y="9" width="18" height="7" rx="2" />
+          <path d="M7 12.5h.01" />
+          <path d="M11 12.5h6" />
         </svg>
       ),
     },

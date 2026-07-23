@@ -152,7 +152,21 @@ Users select rows in a table, an [ActionBar](/components/collection/actionbar) a
 
 The drawer keeps the selected rows visible so users can confirm the selection while editing. Bulk edit stays within the single-layer rule because the fields are flat and identical across all selected records: one form applied to N rows, not N forms or nested edits. The boundary is clean: single-verb bulk actions (delete, archive, assign) belong in the action bar, while multi-field bulk edit belongs in a drawer triggered from it. Destructive bulk actions still need a confirm dialog after the verb.
 
+The [Bulk Actions pattern](/patterns/user-input/bulk-actions#editing-multiple-fields) covers the full flow around this drawer, including how to handle mixed values across the selection, opt-in editing per field, and partial failures on save.
+
 <ComponentDemo name="drawer-bulk-edit" />
+
+### Full-width content
+
+By default, drawer content sits inside the drawer's horizontal padding, so its left and right edges line up with the title and actions. That shared edge is what keeps the drawer reading as one column.
+
+Some content reads best edge to edge: a grouped [Accordion](/components/navigation/accordion) of filter facets or settings sections, or a [Table](/components/collection/table) of records. Opt in with the `bleed` prop on `Drawer.Content`. It drops the horizontal padding so backgrounds and dividers reach the drawer edges, while edge-aware children inset their own text to stay aligned with the drawer title.
+
+<ComponentDemo name="drawer-bleed-accordion" />
+
+Drop an `<Accordion>` into a bled content area and its item dividers span the full width while the header and content stay aligned with the title. No extra prop is needed on the Accordion: it picks up the drawer's horizontal padding automatically, the same way `Table` cells do. This mirrors [`Panel.Content bleed`](/components/layout/panel#full-width-content).
+
+Reach for `bleed` only when the drawer body **is** a set of peer, equally weighted sections, such as grouped filters or a settings breakdown. For ordinary prose, a short form, or detail rows, keep the default padding so the content stays aligned as one column.
 
 ### Title and description
 
