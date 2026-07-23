@@ -1,5 +1,6 @@
 import type { HTMLAttributes, ReactNode, Ref } from 'react';
 import { use } from 'react';
+import { cn } from '@marigold/system';
 import { SidebarContext, SidebarProvider } from '../Sidebar/Context';
 
 // Props
@@ -54,7 +55,18 @@ export const AppShell = ({
   const grid = (
     <div
       ref={ref}
-      className="grid min-h-dvh grid-cols-[auto_1fr] grid-rows-[3.5rem_1fr] [grid-template-areas:'sidebar_header'_'sidebar_main']"
+      // The header row is `auto` — its height comes from `<TopNavigation>`.
+      // Single-column sidebar → sidebar-first (sidebar full height, top bar to
+      // its right). Two-level rail (detected via the aside's `data-rail`) →
+      // header-first: the top bar spans full width so its brand never moves
+      // when the panel collapses, and the rail hangs below it.
+      className={cn(
+        // --ui-viewport-height lets a bounded container (docs demos, embedded
+        // shells) stand in for the browser viewport the shell normally fills.
+        'grid min-h-[var(--ui-viewport-height,100dvh)] grid-cols-[auto_1fr] grid-rows-[auto_1fr]',
+        "[grid-template-areas:'sidebar_header'_'sidebar_main']",
+        "[&:has([data-rail])]:[grid-template-areas:'header_header'_'sidebar_main']"
+      )}
       {...props}
     >
       {children}

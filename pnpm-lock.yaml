@@ -589,6 +589,9 @@ importers:
       react-dom:
         specifier: 19.2.7
         version: 19.2.7(react@19.2.7)
+      react-error-boundary:
+        specifier: 6.1.2
+        version: 6.1.2(react@19.2.7)
       size-limit:
         specifier: ^12.1.0
         version: 12.1.0(jiti@2.7.0)

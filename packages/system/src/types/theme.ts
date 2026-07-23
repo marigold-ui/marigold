@@ -349,6 +349,10 @@ export type Theme = {
       'container' | 'title' | 'description' | 'action',
       ComponentStyleFunction<string, string>
     >;
+    ErrorState?: Record<
+      'container' | 'title' | 'description' | 'action',
+      ComponentStyleFunction<string, string>
+    >;
     ToggleButton?: Record<
       'group' | 'button',
       ComponentStyleFunction<string, string>
@@ -371,7 +375,17 @@ export type Theme = {
       | 'navPanel'
       | 'navLink'
       | 'backButton'
-      | 'content',
+      | 'content'
+      // Two-level rail (Sidebar.Rail): persistent rail + section panel
+      | 'railRoot'
+      | 'railLayout'
+      | 'railColumn'
+      | 'railToggle'
+      | 'rail'
+      | 'railItem'
+      | 'railFooter'
+      | 'panel'
+      | 'panelTitle',
       ComponentStyleFunction<string, string>
     >;
     TopNavigation?: Record<

@@ -21,7 +21,12 @@ import {
   type ViteConfigEditOutcome,
   editViteConfig,
 } from '../lib/edit-vite-config.js';
-import { exists, firstExisting } from '../lib/fs-utils.js';
+import {
+  POSTCSS_CONFIG_CANDIDATES,
+  TAILWIND_POSTCSS_PLUGIN,
+  exists,
+  firstExisting,
+} from '../lib/fs-utils.js';
 
 // Thrown when the user aborts the interactive wizard. `bin/marigold.ts`
 // catches by `.name` so the exit code becomes 130 (SIGINT convention) and
@@ -40,7 +45,7 @@ const MARIGOLD_PACKAGES = [
 ];
 
 const POSTCSS_CONFIG = `const config = {
-  plugins: ['@tailwindcss/postcss'],
+  plugins: ['${TAILWIND_POSTCSS_PLUGIN}'],
 };
 
 export default config;
@@ -156,16 +161,11 @@ const configureTailwindForFramework = (
   }
 
   if (framework === 'nextjs') {
-    const existingPostcss = firstExisting(cwd, [
-      'postcss.config.mjs',
-      'postcss.config.js',
-      'postcss.config.cjs',
-      'postcss.config.ts',
-    ]);
+    const existingPostcss = firstExisting(cwd, POSTCSS_CONFIG_CANDIDATES);
     if (existingPostcss) {
       const rel = relFromCwd(cwd, existingPostcss);
       const contents = fs.readFileSync(existingPostcss, 'utf8');
-      if (contents.includes('@tailwindcss/postcss')) {
+      if (contents.includes(TAILWIND_POSTCSS_PLUGIN)) {
         out.edits.push(`${rel} already configured`);
       } else {
         out.fallbacks.push(
