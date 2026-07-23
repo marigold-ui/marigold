@@ -83,12 +83,36 @@ The example below adds venues from a searchable, filterable, multi-select table.
 
 A few details make the dialog trustworthy:
 
-- **Name the outcome in the commit button, and carry the count.** The primary action reads "Add 3 venues" rather than a generic "OK", so the user knows both what will happen and how much they are committing. Compose this button by hand from the staged count. The [`<ActionBar>`](/components/collection/actionbar) is built for floating bulk actions on a table, not for a dialog's commit footer, so it is the wrong fit here.
-- **Bound the selection when the task requires it.** Most picks need at least one record, so disable the commit until something is staged. An empty set can then never be committed by accident, and at zero the button reads "Add venues" and stays disabled rather than offering a clickable "Add 0 venues". If a pick also caps how many may be chosen, make the ceiling visible before it is reached, stop further checks once it is, and say why the rest are blocked, so the limit reads as a rule and not a bug.
+- **Bound the selection when the task requires it.** Most picks need at least one record, so disable the commit until something is staged, and an empty set can then never be committed by accident. If a pick also caps how many may be chosen, make the ceiling visible before it is reached, stop further checks once it is, and say why the rest are blocked, so the limit reads as a rule and not a bug.
 - **Never clear staged selections while filtering.** Typing in the search narrows the visible rows, but records staged earlier stay staged even when they scroll out of view. Clearing them on every keystroke would make the pick impossible. This is the same tension as the filter paradox in [Table Records](/patterns/user-input/table-record-management).
 - **Show records the way the user recognizes them.** When a record carries detail worth scanning, such as a city or a capacity, show each attribute in its own [`<Table>`](/components/collection/table) column instead of a bare name. A plain list is enough when the label stands on its own.
 - **Offer select all for bulk picks.** A header control that selects every row, shown in a mixed state while the selection is partial, saves the user from working through a long list by hand. Keep it paired with search and filters so "all" applies to a sensibly narrowed set.
 - **Cancel discards, commit persists.** Closing or cancelling throws the staged set away with no consequence. Only the primary action carries the selection back to the task.
+
+### Naming the commit button
+
+The button that ends the pick performs one action: it commits the staged set and hands it to the host task, so label it with that action. A button that names its outcome tells the user what will happen when they press it, the same principle that makes "Add to cart" clearer than "Add" and "Publish" clearer than a dialog's "OK". Neutral words like "Next", "Continue", or "Done" only mark a step or an acknowledgement, so they fit a multi-step sequence rather than a commit, and "Filter" belongs to the [Filter](/patterns/user-input/filter) pattern, which narrows a view in place instead of committing a set.
+
+Name the outcome with the host task's own verb and carry the staged count, so the button says what pressing it does, the same reason a results button reads "Show 82 results" rather than "Show". The verb comes from the task, not the pick: "Add 3 venues" when the set joins a collection, "Assign 3 users" when it grants access, or "Save 3 venues" when the commit writes the set into a record the user keeps and edits, as the [example](/examples/pick) does.
+
+When nothing is staged, show the bare verb ("Add venues") disabled rather than a clickable "Add 0 venues", and compose the label by hand from the count so the wording and the number never disagree. The [`<ActionBar>`](/components/collection/actionbar) is built for a table's floating bulk actions, not a dialog's commit footer, so it is not the tool for this button.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Name the outcome and carry the count with the host task's verb, so the
+      label reads "Add 3 venues", "Assign 3 users", or "Save 3 venues" for a set
+      written into a record.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't label the commit with a generic "Next", "OK", or "Done", with
+      "Filter" from the other pattern, or with "Save" for a pick that only feeds
+      a view the user can discard.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 ### A list when the label is enough
 
