@@ -36,7 +36,7 @@ const HIDDEN = 'shrink-0 invisible absolute';
  * first client-side measurement (pre-paint, in a layout effect) settles the
  * visible count.
  */
-export const useOverflowRegion = (itemCount: number) => {
+export const useOverflowRegion = (itemCount: number, itemsKey?: string) => {
   // The region node lives in state (set by the ref callback below) so the
   // layout effect can depend on it directly, instead of reaching into a
   // plain ref from a second, separately triggered effect.
@@ -44,9 +44,12 @@ export const useOverflowRegion = (itemCount: number) => {
   const [visibleCount, setVisibleCount] = useState(itemCount);
 
   // (Re-)observe the region and its items whenever the node mounts or the
-  // item count changes -- a changed count means different children need
-  // their own observer entries. Runs before paint so the initial
-  // all-visible server markup is corrected without a flash.
+  // set of children changes. `itemsKey` is a signature of the children's
+  // keys, so replacing items with new keys (even at the same count) re-runs
+  // this effect and re-attaches the observer to the fresh wrapper nodes --
+  // otherwise the observer would keep watching the old, detached ones. Runs
+  // before paint so the initial all-visible server markup is corrected
+  // without a flash.
   //
   // Items are observed too, not just the region, to catch an item changing
   // its own size, e.g. a select growing with a longer value -- the
@@ -105,7 +108,7 @@ export const useOverflowRegion = (itemCount: number) => {
       observer.observe(child);
     }
     return () => observer.disconnect();
-  }, [region, itemCount]);
+  }, [region, itemCount, itemsKey]);
 
   const hidden = {
     className: HIDDEN,

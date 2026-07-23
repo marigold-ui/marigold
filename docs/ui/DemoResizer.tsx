@@ -103,6 +103,7 @@ export const DemoResizer = ({
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
         onKeyDown={onKeyDown}
         className="w-1.5 shrink-0 cursor-col-resize touch-none rounded-full bg-gray-300 outline-offset-2 hover:bg-gray-400 focus-visible:outline-2 focus-visible:outline-blue-600"
       />

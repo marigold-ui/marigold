@@ -1,4 +1,4 @@
-import { Button, Menu, OverflowRegion } from '@marigold/components';
+import { Link, Menu, OverflowRegion } from '@marigold/components';
 import { DemoResizer } from '@/ui/DemoResizer';
 
 const links = ['Dashboard', 'Events', 'Orders', 'Reports', 'Settings', 'Team'];
@@ -21,9 +21,9 @@ export default () => (
         )}
       >
         {links.map(link => (
-          <Button key={link} variant="ghost">
+          <Link key={link} href="#">
             {link}
-          </Button>
+          </Link>
         ))}
       </OverflowRegion>
     </nav>

@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Children, isValidElement, useLayoutEffect, useRef } from 'react';
 import type { SpaceProp, SpacingTokens } from '@marigold/system';
 import { cn, createSpacingVar } from '@marigold/system';
+import type { AriaRegionProps } from '@marigold/types';
 import { useOverflowRegion } from './useOverflowRegion';
 
 // Props
@@ -15,7 +16,7 @@ export interface OverflowRegionState {
   hiddenCount: number;
 }
 
-export interface OverflowRegionProps {
+export interface OverflowRegionProps extends AriaRegionProps {
   /**
    * Space between the items. Defaults to the spacing of a parent layout
    * component (e.g. `<Inline space="…">`), inherited through the `--space`
@@ -68,10 +69,18 @@ export const OverflowRegion = ({
   children,
   indicator,
   onOverflowChange,
+  ...props
 }: OverflowRegionProps) => {
   const items = Children.toArray(children);
+  // Signature of the children's keys. When it changes (items replaced or
+  // reordered, even at the same count) the hook re-attaches its observer to
+  // the fresh wrapper nodes. `Children.toArray` guarantees element keys;
+  // non-element children keep the same index-based wrapper, so `null` is fine.
+  const itemsKey = items
+    .map(item => (isValidElement(item) ? item.key : null))
+    .join('|');
   const { regionProps, getItemProps, getIndicatorProps, visibleCount } =
-    useOverflowRegion(items.length);
+    useOverflowRegion(items.length, itemsKey);
   const { className: indicatorClassName, ...indicatorProps } =
     getIndicatorProps();
 
@@ -81,8 +90,9 @@ export const OverflowRegion = ({
     hiddenCount: items.length - visibleCount,
   };
 
-  // Notify subscribers after paint, only when the visible count settles on
-  // a new value.
+  // Notify subscribers only when the visible count settles on a new value.
+  // This runs before paint (layout effect) so a consumer badging an external
+  // trigger updates in the same frame the row reflows, without a flicker.
   const previousVisibleRef = useRef(visibleCount);
   useLayoutEffect(() => {
     if (previousVisibleRef.current === visibleCount) return;
@@ -92,6 +102,7 @@ export const OverflowRegion = ({
 
   return (
     <div
+      {...props}
       {...regionProps}
       className={cn(
         regionProps.className,
