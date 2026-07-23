@@ -22,9 +22,9 @@ Because the scale is mobile-first, the range below `sm` (0 to 639px) is the unpr
 
 The scale comes from your theme's `screens` object (for example `{ sm: '40rem', md: '48rem', ... }`), which matches Tailwind v4's responsive modifiers like `sm:text-sm`. When a theme does not define `screens`, Marigold falls back to reading Tailwind v4's `--breakpoint-*` CSS custom properties.
 
-## Responsive values in custom components
+## Reacting to breakpoints
 
-Marigold's components already adapt to screen size on their own, so you rarely need to handle it yourself. When you build a custom component or element whose value has to change with the breakpoint, Marigold provides two client-side hooks: [`useResponsiveValue`](#useresponsivevalue) and [`useSmallScreen`](#usesmallscreen). Both read the breakpoints from `theme.screens`, so they stay in sync with the scale above.
+Marigold's components already adapt to screen size on their own, so you rarely need to handle it yourself. When you do need a value or behavior to change with the breakpoint in code, Marigold provides two client-side hooks: [`useResponsiveValue`](#useresponsivevalue) and [`useSmallScreen`](#usesmallscreen). Both read the breakpoints from `theme.screens`, so they stay in sync with the scale above.
 
 As a rule of thumb, reach for `useSmallScreen` when you only need a single mobile-versus-desktop split at `sm` (640px), and for `useResponsiveValue` when a value should change across several breakpoints.
 
