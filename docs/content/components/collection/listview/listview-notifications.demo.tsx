@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Button,
   Description,
@@ -7,31 +8,45 @@ import {
 } from '@marigold/components';
 import { X } from '@marigold/icons';
 
-export default () => (
-  <ListView aria-label="Notifications">
-    <ListView.Item id="build" textValue="Build finished — 2 minutes ago">
-      <TextValue>Build finished</TextValue>
-      <Description>2 minutes ago</Description>
-      <Switch aria-label="Mute this thread" />
-      <Button variant="ghost" size="icon" aria-label="Dismiss">
-        <X size={'50px'} className="size-4" />
-      </Button>
-    </ListView.Item>
-    <ListView.Item id="deploy" textValue="Deploy succeeded — 1 hour ago">
-      <TextValue>Deploy succeeded</TextValue>
-      <Description>1 hour ago</Description>
-      <Switch aria-label="Mute this thread" />
-      <Button size="icon" variant="ghost" aria-label="Dismiss">
-        <X />
-      </Button>
-    </ListView.Item>
-    <ListView.Item id="review" textValue="Review requested — yesterday">
-      <TextValue>Review requested</TextValue>
-      <Description>Yesterday</Description>
-      <Switch aria-label="Mute this thread" />
-      <Button size="icon" variant="ghost" aria-label="Dismiss">
-        <X />
-      </Button>
-    </ListView.Item>
-  </ListView>
-);
+interface Notification {
+  id: string;
+  title: string;
+  timestamp: string;
+}
+
+const initialNotifications: Notification[] = [
+  { id: 'build', title: 'Build finished', timestamp: '2 minutes ago' },
+  { id: 'deploy', title: 'Deploy succeeded', timestamp: '1 hour ago' },
+  { id: 'review', title: 'Review requested', timestamp: 'Yesterday' },
+];
+
+export default () => {
+  const [notifications, setNotifications] = useState(initialNotifications);
+
+  const dismiss = (id: string) =>
+    setNotifications(current => current.filter(item => item.id !== id));
+
+  return (
+    <ListView aria-label="Notifications">
+      {notifications.map(notification => (
+        <ListView.Item
+          key={notification.id}
+          id={notification.id}
+          textValue={`${notification.title} — ${notification.timestamp}`}
+        >
+          <TextValue>{notification.title}</TextValue>
+          <Description>{notification.timestamp}</Description>
+          <Switch aria-label="Mute this thread" />
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="Dismiss"
+            onPress={() => dismiss(notification.id)}
+          >
+            <X />
+          </Button>
+        </ListView.Item>
+      ))}
+    </ListView>
+  );
+};
