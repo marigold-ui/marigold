@@ -289,15 +289,22 @@
  * these.
  */
 @utility ui-panel-header {
-  @apply border-border border-b px-6 py-4;
+  @apply border-border border-b px-(--ui-panel-px) py-4;
 }
 
+/*
+ * NOTE: Drawer.Content's `bleed` branch (DrawerContent.tsx) hand-copies the
+ * non-horizontal parts of this utility (`overflow-y-auto py-4 outline-none`)
+ * because it must drop `px-(--ui-panel-px)` while keeping everything else. Only
+ * the horizontal axis is shared via the token; if the vertical padding, scroll
+ * or outline here change, update that branch too.
+ */
 @utility ui-panel-content {
-  @apply overflow-y-auto px-6 py-4 outline-none;
+  @apply overflow-y-auto px-(--ui-panel-px) py-4 outline-none;
 }
 
 @utility ui-panel-actions {
-  @apply border-border flex flex-row justify-end gap-3 border-t px-6 py-4;
+  @apply border-border flex flex-row justify-end gap-3 border-t px-(--ui-panel-px) py-4;
 }
 
 /* ========================= */

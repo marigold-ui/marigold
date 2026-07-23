@@ -4,6 +4,7 @@ import {
   LayoutDashboard,
   ListChecks,
   ListFilter,
+  MousePointerClick,
   Package,
 } from 'lucide-react';
 import type { NavNode, RailTile, ShellConfig } from '../_shared';
@@ -73,6 +74,15 @@ const tiles: RailTile[] = [
     slug: 'bulk-actions',
     docsHref: '/patterns/user-input/bulk-actions',
     docsLabel: 'Bulk Actions Guidelines',
+  },
+  {
+    kind: 'link',
+    id: 'pick',
+    label: 'Pick',
+    icon: <MousePointerClick />,
+    slug: 'pick',
+    docsHref: '/patterns/user-input/pick',
+    docsLabel: 'Pick Guidelines',
   },
   {
     kind: 'section',

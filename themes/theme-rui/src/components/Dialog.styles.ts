@@ -21,6 +21,7 @@ export const Dialog: ThemeComponent<'Dialog'> = {
         small: '',
         medium: '',
         large: '',
+        fullscreen: '',
       },
     },
   }),

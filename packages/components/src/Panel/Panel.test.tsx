@@ -331,8 +331,10 @@ describe('Panel.Content', () => {
 
     const table = screen.getByRole('grid', { name: 'Recent orders' });
     // The content wrapper is an ancestor of the table (RAC wraps the table in
-    // a ResizableTableContainer), so walk up to it.
-    const contentWrapper = table.closest('[class*="--bleed-px"]')!;
+    // a ResizableTableContainer), so walk up to it. Match the `--bleed-px`
+    // *declaration* (`--bleed-px:`) — the Table itself references the variable
+    // in a `var()` fallback, so a bare `--bleed-px` selector would match it.
+    const contentWrapper = table.closest('[class*="[--bleed-px:"]')!;
 
     expect(contentWrapper).not.toBeNull();
     expect(contentWrapper.className).not.toContain('px-(--panel-px)');

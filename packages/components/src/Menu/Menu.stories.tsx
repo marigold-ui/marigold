@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { expect, spyOn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Key } from '@react-types/shared';
-import { Delete } from '@marigold/icons';
+import { ClipboardPaste, Copy, Delete, Scissors } from '@marigold/icons';
 import { Description } from '../Description/Description';
+import { Divider } from '../Divider/Divider';
+import { Keyboard } from '../Keyboard/Keyboard';
 import { TextValue } from '../TextValue/TextValue';
 import { ActionMenu } from './ActionMenu';
 import { Menu } from './Menu';
@@ -331,6 +333,7 @@ Basic.test(
 );
 
 export const MultiSelection = meta.story({
+  tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   render: () => {
     const [selectedKeys, setSelected] = useState(new Set());
@@ -353,6 +356,29 @@ export const MultiSelection = meta.story({
       </>
     );
   },
+});
+
+MultiSelection.test(
+  'Exposes the checkbox role in an unchecked state',
+  async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Choose' }));
+
+    expect(
+      canvas.getByRole('menuitemcheckbox', { name: /Burger/ })
+    ).toHaveAttribute('aria-checked', 'false');
+  }
+);
+
+MultiSelection.test('Toggles selection on click', async ({ canvas }) => {
+  await userEvent.click(canvas.getByRole('button', { name: 'Choose' }));
+
+  await userEvent.click(
+    canvas.getByRole('menuitemcheckbox', { name: /Burger/ })
+  );
+
+  expect(
+    canvas.getByRole('menuitemcheckbox', { name: /Burger/ })
+  ).toHaveAttribute('aria-checked', 'true');
 });
 
 export const AccessSections = meta.story({
@@ -561,3 +587,53 @@ Mobile.test('Mobile Menu close with Escape', async ({ canvas, step }) => {
     });
   });
 });
+
+export const Advanced = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => (
+    <Menu {...args} label="Edit">
+      <Menu.Item id="cut">
+        <Scissors />
+        Cut
+        <Keyboard>⌘X</Keyboard>
+      </Menu.Item>
+      <Menu.Item id="copy">
+        <Copy />
+        Copy
+        <Keyboard>⌘C</Keyboard>
+      </Menu.Item>
+      <Menu.Item id="paste">
+        <ClipboardPaste />
+        Paste
+        <Keyboard>⌘V</Keyboard>
+      </Menu.Item>
+      <Divider />
+      <Menu.Item id="delete" variant="destructive">
+        <Delete />
+        Delete
+        <Keyboard>⌘⌫</Keyboard>
+      </Menu.Item>
+    </Menu>
+  ),
+});
+
+Advanced.test(
+  'Renders icons and a divider, and wires the shortcut to the item description',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Edit' }));
+
+    const copyItem = canvas.getByRole('menuitem', { name: /Copy/ });
+    const shortcut = canvas.getByText('⌘C');
+
+    expect(copyItem).toBeVisible();
+    expect(shortcut).toBeVisible();
+    expect(canvas.getByRole('separator')).toBeInTheDocument();
+
+    // The shortcut <kbd> is the item's accessible description via aria-describedby.
+    expect(shortcut.tagName).toBe('KBD');
+    expect(shortcut.id).toBeTruthy();
+    expect(copyItem.getAttribute('aria-describedby')).toContain(shortcut.id);
+  }
+);

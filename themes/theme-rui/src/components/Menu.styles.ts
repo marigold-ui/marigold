@@ -13,19 +13,20 @@ export const Menu: ThemeComponent<'Menu'> = {
       // The surrounding Popover (or Tray) paints the overlay surface; the menu
       // renders flat inside it.
       'w-full',
-      'text-foreground overflow-x-hidden p-1 outline-none overflow-y-auto',
+      'text-foreground overflow-x-hidden p-1 outline-none overflow-y-auto space-y-px',
+      // Breathing room around dividers (the shared <Divider> rendered between items).
+      '[&_[role=separator]]:my-1',
     ],
   }),
-  // Two-column grid: col 1 = optional icon, col 2 = label / description.
-  // `<TextValue>` (label slot) → col 2 row 1; `<Description>` → col 2 row 2.
-  // Plain children (text nodes, `<Badge>`, etc.) auto-place into the next
-  // free cell, so items with extra inline content beyond label/description
-  // should use explicit grid-area placement.
+  // Grid: col 1 = icon/checkmark, col 2 = label/description, col 3 = keyboard.
   item: cva({
     base: [
-      'group/option relative grid grid-cols-[auto_1fr] items-center [&:has(>svg)]:gap-x-2 cursor-pointer rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap max-sm:min-h-touch-target',
+      'group/option relative grid grid-cols-[auto_1fr_auto] items-center [&:has(>svg)]:gap-x-2 cursor-pointer rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap max-sm:min-h-touch-target',
       'disabled:cursor-not-allowed disabled:text-disabled',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4 [&_svg]:row-span-full [&_svg]:self-center',
+      // Selection visuals like ListBox: checkmark reserves col 1, row highlights on select. Don't also add a leading icon.
+      '[&_.selection-indicator]:invisible [&_.selection-indicator]:text-foreground [&_.selection-indicator]:opacity-100',
+      'selected:bg-selected selected:[&_.selection-indicator]:visible',
     ],
     variants: {
       variant: {
@@ -45,6 +46,10 @@ export const Menu: ThemeComponent<'Menu'> = {
   label: cva({ base: 'col-start-2 row-start-1' }),
   description: cva({
     base: 'col-start-2 row-start-2 text-secondary text-xs whitespace-normal group-disabled/option:text-disabled',
+  }),
+  // Shortcut hint, right-aligned in col 3 and vertically centered.
+  keyboard: cva({
+    base: 'col-start-3 row-span-full self-center justify-self-end ps-4 text-secondary text-xs',
   }),
   button: cva({
     base: [
