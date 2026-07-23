@@ -36,6 +36,7 @@ changed:
   - components/form/daterangepicker
   - components/form/file-field
   - components/form/textfield
+  - components/form/slider
   - components/overlay/menu
   - components/overlay/tooltip
   - components/overlay/dialog
@@ -51,6 +52,7 @@ changed:
   - components/actions/button-group
   - components/actions/link-button
   - components/actions/link
+  - components/actions/toggle-button
   - components/content/badge
   - components/content/divider
   - components/content/empty-state
@@ -65,53 +67,14 @@ changed:
 
 For the last years, Marigold's job was mostly to replace. Modernize an aging codebase, swap out legacy patterns, refresh a design that had started to show its years. v18.0.0 is where that chapter ends and a new one begins. We are done catching up. From here, the work is about craft. Shaping a design language that does not just look current, but is unmistakably its own.
 
-And this release opens that chapter loudly. v18 is by far the biggest release we have ever shipped: roughly 150 individual changes, five new components (`<SegmentedControl>`, `<DateRangePicker>`, `<RangeCalendar>`, `<Panel>`, `<ButtonGroup>`), a rebuilt app shell with a new `<Page>` primitive, a rethought token layer, and the first visible pass of Marigold's own visual identity in hairline surfaces, quiet elevation, and a redesigned sidebar. There is also a whole new tooling story for AI-assisted development, from a searchable CLI to an MCP server over the docs.
+And this release opens that chapter loudly. v18 is by far the biggest release we have ever shipped: well over a hundred changes across the system, five new components (`<SegmentedControl>`, `<DateRangePicker>`, `<RangeCalendar>`, `<Panel>`, `<ButtonGroup>`), a rebuilt app shell with a new `<Page>` primitive, a rethought token layer, and the first visible pass of Marigold's own visual identity in hairline surfaces, quiet elevation, and a redesigned sidebar. There is also a whole new tooling story for AI-assisted development, from a searchable CLI to an MCP server over the docs.
 
 It is a lot. Take your time with the breaking changes below. They all point in the same direction, and the app you end up with will be simpler for it.
 
-<Callout title="Before you upgrade" type="info">
+<Callout title="Before you upgrade" type="warning">
   Marigold v18 requires React 19. If you are still on React 18, upgrade React
   first, verify your app still builds, then bump Marigold.
 </Callout>
-
-## New components
-
-Five additions headline this release. `<Panel>` and `<ButtonGroup>` get their own deep dives in the Components section below. Here are the other newcomers.
-
-### `<SegmentedControl>`
-
-A compact, single-select control for view switching and quick filters. It is a real form field built on react-aria's radio primitives: `value` / `defaultValue` / `onChange`, `name` (submits like a radio group), `required`, `error` + `errorMessage`, `description`, `readOnly`, and validation all work exactly like the other Marigold form components.
-
-```tsx
-<SegmentedControl label="View" defaultValue="list">
-  <SegmentedControl.Option value="list">List</SegmentedControl.Option>
-  <SegmentedControl.Option value="grid">Grid</SegmentedControl.Option>
-</SegmentedControl>
-```
-
-Two variants ship with the RUI theme: `default` (a `bg-control` track with a raised thumb, mirroring `<Switch>`) and `ghost` (track-less, for dense toolbars). The selected segment is marked by an animated indicator that slides between options and respects `prefers-reduced-motion`. When the options exceed the available width, the control scrolls horizontally instead of compressing the segments, with a scroll-driven edge fade where supported. Use `width="full"` to make segments divide the available width equally.
-
-`<ToggleButtonGroup>` now logs a dev-only warning when used with `selectionMode`, steering single-select use cases towards `<SegmentedControl>`. It remains the right choice for independent on/off actions in toolbars.
-
-### `<DateRangePicker>` and `<RangeCalendar>`
-
-`<DateRangePicker>` lets users enter or select a start and end date through a single field, mirroring `<DatePicker>`'s API and behaviour. Two date inputs sit in one field group with a calendar button that opens a `<RangeCalendar>` in a popover on desktop and a tray on small screens. It supports per-input paste (ISO/EU/US formats), `granularity` for inline time segments, `visibleDuration` for up to three side-by-side months, and the usual Marigold field props (`disabled`, `readOnly`, `required`, `error`, `errorMessage`, `description`, `minValue`, `maxValue`, `dateUnavailable`, `width`).
-
-The underlying `<RangeCalendar>` is also available standalone (as an alpha component) for inline range selection, including non-contiguous ranges via `allowsNonContiguousRanges`. Multi-month calendars stack vertically below the `sm` breakpoint, and the same responsive stacking now applies to multi-month `<Calendar>` for parity.
-
-### Date presets
-
-`<Calendar>`, `<RangeCalendar>`, `<DatePicker>`, and `<DateRangePicker>` all accept a new `presets` prop for relative quick selections. On desktop the presets render as a list beside the calendar. On small screens the pickers switch their bottom sheet to the preset list in place.
-
-Built-in localized presets cover the common cases (`today`, `yesterday`, `tomorrow`, `this-week`, `next-7-days`, `next-30-days`, `last-7-days`, `last-30-days`, `this-month`, `this-quarter`), custom presets with value resolvers are supported, and `useDatePresets` / `useDateRangePresets` are exported for userland compositions.
-
-### `<Table.Footer>`
-
-`<Table>` gains a footer: a semantic `<tfoot>` rendered after `<Table.Body>` for summary rows like totals, counts, or averages, composed from `<Table.Row>` and `<Table.Cell>` just like the body. A `sticky` prop pins the footer to the bottom of the viewport while scrolling, mirroring sticky table headers.
-
-### `<Page>`
-
-The new `<main>` landmark for app screens, with sensible page padding and vertical rhythm built in. It ships as part of the reworked app shell, so it is covered in full under _`<AppShell>` replaces `<AppLayout>`_ below.
 
 ## Breaking Changes
 
@@ -189,9 +152,7 @@ Additional tokens join the semantic set to cover roles that were previously expr
 
 #### Status tokens restructured
 
-Previously the theme exposed **two** parallel sets of tokens for status colors. A "solid" variant (`--color-warning`, `--color-warning-foreground`) was meant for icons on accent fills. A "muted" variant (`--color-warning-muted`, `--color-warning-muted-foreground`, `--color-warning-muted-accent`) was used for almost everything else (badges, banners, section messages). In practice, the muted set was the one you reached for 95% of the time, and the solid set caused more confusion than value.
-
-The muted variant is now the default, and the `-muted-` segment has been dropped. Where the original bold variant is still useful (currently only for `destructive`), it moves to a `-bold` suffix.
+Status colors previously shipped as **two** parallel token sets: a solid variant for icons on accent fills, and a muted variant for everything else (badges, banners, section messages). The muted set did almost all the work, so it is now the default and the `-muted-` segment is dropped. Where the original bold variant is still useful (currently only for `destructive`), it moves to a `-bold` suffix.
 
 ```diff
 - <div className="bg-warning-muted text-warning-muted-foreground">
@@ -291,12 +252,16 @@ The reason this matters in real apps:
 - **Anchor links (`#section`), iOS status-bar tap (scroll-to-top), and native keyboard navigation** (`PgUp`, `PgDn`, `Space`, `Home`, `End`) all behave predictably.
 - **`IntersectionObserver` with the default root, `scroll-snap`, `position: sticky`, and `scroll-margin-top`** are all simpler when there is exactly one scroll container.
 
-**Migration.** Two patterns break:
+**Migration.** Two patterns break.
+
+First, reading the scroll position off the old main container:
 
 ```diff
 - const top = mainRef.current?.scrollTop;
 + const top = window.scrollY; // or document.documentElement.scrollTop
 ```
+
+Second, styles that assumed a viewport-bounded main region. Inside `<Page>` (the renamed `<AppLayout.Main>`), a child can no longer fill a fixed viewport height with `h-full`:
 
 ```diff
 - <Page>
@@ -307,7 +272,7 @@ The reason this matters in real apps:
 + </Page>
 ```
 
-Anything that read `scrollTop` from the old main container (or attached a scroll listener to it) needs to read from `window` / `document.documentElement` instead. Styles that assumed a viewport-bounded main region (`height: 100%` on direct children of the main area, for example) are no longer constrained. Switch to `min-h-dvh` or drop the constraint altogether.
+Anything that read `scrollTop` from the old main container (or attached a scroll listener to it) needs to read from `window` / `document.documentElement` instead. A `height: 100%` on direct children of the main area is no longer constrained, so switch it to `min-h-dvh` or drop the constraint altogether.
 
 A small known trade-off: a pure app-shell look using `position: sticky` can flicker briefly during iOS Safari momentum scroll, and sticky elements may show a one-frame repaint when overlays close. Both are cosmetic, neither affects correctness, and the behavioral wins above are worth it.
 
@@ -676,6 +641,37 @@ New components (`SegmentedControl`, `DateRangePicker`, `RangeCalendar`, the `Tab
 
 ## Components
 
+### `<SegmentedControl>`
+
+A compact, single-select control for view switching and quick filters. It is a real form field built on react-aria's radio primitives: `value` / `defaultValue` / `onChange`, `name` (submits like a radio group), `required`, `error` + `errorMessage`, `description`, `readOnly`, and validation all work exactly like the other Marigold form components.
+
+```tsx
+<SegmentedControl label="View" defaultValue="list">
+  <SegmentedControl.Option value="list">List</SegmentedControl.Option>
+  <SegmentedControl.Option value="grid">Grid</SegmentedControl.Option>
+</SegmentedControl>
+```
+
+Two variants ship with the RUI theme: `default` (a `bg-control` track with a raised thumb, mirroring `<Switch>`) and `ghost` (track-less, for dense toolbars). The selected segment is marked by an animated indicator that slides between options and respects `prefers-reduced-motion`. When the options exceed the available width, the control scrolls horizontally instead of compressing the segments, with a scroll-driven edge fade where supported. Use `width="full"` to make segments divide the available width equally.
+
+`<ToggleButtonGroup>` now logs a dev-only warning when used with `selectionMode`, steering single-select use cases towards `<SegmentedControl>`. It remains the right choice for independent on/off actions in toolbars.
+
+### `<DateRangePicker>` and `<RangeCalendar>`
+
+`<DateRangePicker>` lets users enter or select a start and end date through a single field, mirroring `<DatePicker>`'s API and behaviour. Two date inputs sit in one field group with a calendar button that opens a `<RangeCalendar>` in a popover on desktop and a tray on small screens. It supports per-input paste (ISO/EU/US formats), `granularity` for inline time segments, `visibleDuration` for up to three side-by-side months, and the usual Marigold field props (`disabled`, `readOnly`, `required`, `error`, `errorMessage`, `description`, `minValue`, `maxValue`, `dateUnavailable`, `width`).
+
+The underlying `<RangeCalendar>` is also available standalone (as an alpha component) for inline range selection, including non-contiguous ranges via `allowsNonContiguousRanges`. Multi-month calendars stack vertically below the `sm` breakpoint, and the same responsive stacking now applies to multi-month `<Calendar>` for parity.
+
+### Date presets
+
+`<Calendar>`, `<RangeCalendar>`, `<DatePicker>`, and `<DateRangePicker>` all accept a new `presets` prop for relative quick selections. On desktop the presets render as a list beside the calendar. On small screens the pickers switch their bottom sheet to the preset list in place.
+
+Built-in localized presets cover the common cases (`today`, `yesterday`, `tomorrow`, `this-week`, `next-7-days`, `next-30-days`, `last-7-days`, `last-30-days`, `this-month`, `this-quarter`), custom presets with value resolvers are supported, and `useDatePresets` / `useDateRangePresets` are exported for userland compositions.
+
+### `<Table.Footer>`
+
+`<Table>` gains a footer: a semantic `<tfoot>` rendered after `<Table.Body>` for summary rows like totals, counts, or averages, composed from `<Table.Row>` and `<Table.Cell>` just like the body. A `sticky` prop pins the footer to the bottom of the viewport while scrolling, mirroring sticky table headers.
+
 ### Slot-aware `<Button>` and `<ButtonGroup>`
 
 `<Button>` is now slot-aware: it adapts to the button container it sits in, so you reach for `<Button>` everywhere instead of learning a second action component. A Marigold-owned `ButtonContext` carries `variant`, `size`, and `disabled` down to the buttons nested inside a container, and a local prop on a button always wins over what the container sets.
@@ -927,6 +923,38 @@ If you maintain a custom theme, the `Menu` and `ListBox` theme entries now requi
 - **Alignment polish.** A labelled section `<Loader>` centers as one group instead of overflowing its box, the `<Table>` drag handle gets the shared cell edge padding so the grip lines up with its header, and a `<SelectList>` trailing action built from a Marigold `<Button>` / `<LinkButton>` / `<ActionMenu>` spans both rows and stays centered instead of stretching the title row.
 - **`<Panel.Collapsible>` caret parity.** The collapsible header caret now renders at 16px in `text-secondary`, matching the Accordion chevron, with the color themeable via a new `collapsibleIcon` slot.
 
+## Docs and examples
+
+v18 ships alongside a substantial pass over the documentation site, and, new this release, a proper toolchain for AI-assisted development.
+
+### Documentation that meets AI halfway
+
+- **`marigold search`.** The Marigold CLI gains a `search` command that finds components by what their docs actually say (title, description, headings, prose), returning ranked, snippet-bearing, deep-linked results in one call. It collapses the "list → guess → docs → retry" discovery loop coding agents run into a single query, with `--format json` for structured output. The CLI is now documented end to end on a new [Getting Started page](/getting-started/cli).
+- **An MCP server over the docs.** The docs site exposes an MCP (Model Context Protocol) server at `/mcp`, letting AI coding assistants (Claude Code, VS Code Copilot, and friends) semantically search the Marigold documentation through vector embeddings.
+- **Every docs page as markdown.** Each page is available as raw markdown at `<page-url>.md` (for example `/components/actions/button.md`), and the full page index at `/manifest.json`, both served as plain static assets. Prop tables in the markdown output now match the HTML exactly.
+
+### Docs, patterns, and examples
+
+- **Layouts foundation restructured** around `<Panel>` and the atomic primitives (`<Stack>`, `<Inline>`, `<Inset>`, `<Split>`, `<Center>`, `<Tiles>`, `<Columns>`). A new _Choosing the right layout_ decision table replaces the previous two-tier "structural vs atomic" framing, and the wireframe hero is now an annotated SVG anatomy diagram that matches the Panel and Sidebar anatomies. See [Layouts](/foundations/layouts).
+- **Elevation foundation rewritten** around the final surface model: background layers, the `ui-surface` / `ui-control` boundary, raised caps, and the single overlay shadow, with interactive demos, Do/Don't guidance, and a migration table for the retired `util-surface-*` utilities. See [Elevation](/foundations/elevation).
+- **New Panel documentation page**: MDX page, anatomy diagrams (header + collapsible), and a full set of demos covering appearance, variants, header actions, collapsible sections (incl. controlled and error states), footers, bleed content, danger-zone rows, and a side-by-side `Panel` vs `Card` comparison.
+- **A unified demo app at `/examples`** consolidates all pattern demos alongside a full app-shell example. Analytics, Billing, General, Security, Teams, and Users are real screens built from Marigold components, with `Panel` for page-level sections and `Card` reserved for repeating collection items. The examples are also discoverable from the docs ⌘K search.
+- **New Bulk Actions pattern and working example.** A full pattern page on letting users select many records and act on all of them at once (`<Table>` selection, `<ActionBar>`, confirmation dialogs, progress feedback, partial-failure handling), plus a complete working example at `/examples/bulk-actions` with a paginated events table, bulk edit through a `<Drawer>`, and toasts for every outcome.
+- **New Fetching and Mutations pattern** covering `@tanstack/react-query` with Marigold: hook encapsulation, query keys, loading taxonomy, error handling with `throwOnError`, toast feedback, optimistic updates, and destructive confirmation. The `/examples/filter` reference app now runs against a real API route to match.
+- **Full data management pattern at `/examples/filter`.** A venue browsing example demonstrating multi-criteria filtering coordinated through URL state via `nuqs`: a toolbar with search and filter controls, applied filter chips, and a paginated data table all driven by the same URL state.
+- **Settings form and event form pattern examples** at `/examples/settings-form` and `/examples/event-form`. The settings form demonstrates tabbed navigation, independent section saves with `<Panel>`, collapsible advanced fields, and a danger zone with confirmation dialogs. The event form shows a single-submit form with multiple `<Panel>` sections. The forms pattern documentation now includes a Panels subsection that links to both demos.
+- **Drawer documentation rewritten** around a defining principle (supplementary, in-context, light task) with a Drawer-vs-Dialog decision framework and six canonical use cases, each with demos.
+- **ActionBar fully documented and re-homed.** `<ActionBar>` gets complete, use-case-driven documentation (anatomy, Do/Don't, three demos, accessibility) and moves into the Collection section at [`/components/collection/actionbar`](/components/collection/actionbar) alongside `Table`, `Card`, and `Tag`, reframed around the bulk-selection context.
+- **Card repositioned as a Collection component**, leading with a `Card` vs `Table` comparison and an _Alternative components_ section that points to `Panel`, `Stack`, or `Tiles` when the content isn't a collection.
+- **Switch `variant="settings"` documented end to end**. A Button-style variant table under `## Appearance` summarises `default` and `settings`, the `Settings and preferences` section is rewritten with placement guidance, and a Callout reserves `variant="settings"` for auto-save surfaces. The reasoning lives in the docs: light-switch metaphor, `role="switch"` ARIA contract, and the conflict with explicit save semantics.
+- **Iconography documentation consolidated.** The former `/foundations/icons` and `/components/content/icon` pages now live together at [`/foundations/iconography`](/foundations/iconography), with principles, the icon catalog, the full legacy-to-Lucide name mapping, and the engineering API in one place.
+- **Form documentation restructured.** Three pages (Form Fields, Forms, Form Implementation) are consolidated into two: [Form Fields](/foundations/form-fields) as a foundation (anatomy, label, placeholder, help text, width, field states) and [Forms](/patterns/user-input/forms) as a pattern (layout together with validation, state management, react-hook-form, and async submission).
+- **New landmarks accessibility guide** paired with the `useLandmark` reference page.
+- **Installation guide revised** end to end, so a new project (human- or AI-driven) sets up without friction.
+- **Prop tables split into groups.** Each component page now shows the meaningful API props by default and tucks `aria-*` attributes and DOM event handlers into collapsible sections (Button drops from 112 visible props to 39). The machine-readable docs keep the full list.
+- **Toast guidance:** a new callout documents that `<ToastProvider>` should be mounted exactly once per app, since every toast shares one global queue.
+- **Documentation prose cleanup.** Em-dash and en-dash punctuation and prose semicolons across the component, foundation, and pattern docs are rewritten into plain sentences for easier reading.
+
 ## Design
 
 The token overhaul is the structural half of the design story. This release also ships the first visible pass of Marigold's own visual language across `@marigold/theme-rui`: a new model for how surfaces and controls draw their edges, a much quieter approach to elevation, and a redesigned sidebar. Existing imports of `theme.css` and `styles.css` continue to work as documented.
@@ -1021,38 +1049,6 @@ The theme's CSS now ships as four files with unambiguous roles:
 ### CSS exports declare a `style` condition
 
 Tailwind v4's CSS resolver uses `conditionNames: ["style"]`. Bare `.css` export entries without a matching condition fail under strict resolvers, so every `.css` subpath now declares both `style` and `default` targets. The unused `./*` JS catchall is removed.
-
-## Docs, examples, and tooling
-
-v18 ships alongside a substantial pass over the documentation site, and, new this release, a proper toolchain for AI-assisted development.
-
-### Documentation that meets AI halfway
-
-- **`marigold search`.** The Marigold CLI gains a `search` command that finds components by what their docs actually say (title, description, headings, prose), returning ranked, snippet-bearing, deep-linked results in one call. It collapses the "list → guess → docs → retry" discovery loop coding agents run into a single query, with `--format json` for structured output. The CLI is now documented end to end on a new [Getting Started page](/getting-started/cli).
-- **An MCP server over the docs.** The docs site exposes an MCP (Model Context Protocol) server at `/mcp`, letting AI coding assistants (Claude Code, VS Code Copilot, and friends) semantically search the Marigold documentation through vector embeddings.
-- **Every docs page as markdown.** Each page is available as raw markdown at `<page-url>.md` (for example `/components/actions/button.md`), and the full page index at `/manifest.json`, both served as plain static assets. Prop tables in the markdown output now match the HTML exactly.
-
-### Docs and examples
-
-- **Layouts foundation restructured** around `<Panel>` and the atomic primitives (`<Stack>`, `<Inline>`, `<Inset>`, `<Split>`, `<Center>`, `<Tiles>`, `<Columns>`). A new _Choosing the right layout_ decision table replaces the previous two-tier "structural vs atomic" framing, and the wireframe hero is now an annotated SVG anatomy diagram that matches the Panel and Sidebar anatomies. See [Layouts](/foundations/layouts).
-- **Elevation foundation rewritten** around the final surface model: background layers, the `ui-surface` / `ui-control` boundary, raised caps, and the single overlay shadow, with interactive demos, Do/Don't guidance, and a migration table for the retired `util-surface-*` utilities. See [Elevation](/foundations/elevation).
-- **New Panel documentation page**: MDX page, anatomy diagrams (header + collapsible), and a full set of demos covering appearance, variants, header actions, collapsible sections (incl. controlled and error states), footers, bleed content, danger-zone rows, and a side-by-side `Panel` vs `Card` comparison.
-- **A unified demo app at `/examples`** consolidates all pattern demos alongside a full app-shell example. Analytics, Billing, General, Security, Teams, and Users are real screens built from Marigold components, with `Panel` for page-level sections and `Card` reserved for repeating collection items. The examples are also discoverable from the docs ⌘K search.
-- **New Bulk Actions pattern and working example.** A full pattern page on letting users select many records and act on all of them at once (`<Table>` selection, `<ActionBar>`, confirmation dialogs, progress feedback, partial-failure handling), plus a complete working example at `/examples/bulk-actions` with a paginated events table, bulk edit through a `<Drawer>`, and toasts for every outcome.
-- **New Fetching and Mutations pattern** covering `@tanstack/react-query` with Marigold: hook encapsulation, query keys, loading taxonomy, error handling with `throwOnError`, toast feedback, optimistic updates, and destructive confirmation. The `/examples/filter` reference app now runs against a real API route to match.
-- **Full data management pattern at `/examples/filter`.** A venue browsing example demonstrating multi-criteria filtering coordinated through URL state via `nuqs`: a toolbar with search and filter controls, applied filter chips, and a paginated data table all driven by the same URL state.
-- **Settings form and event form pattern examples** at `/examples/settings-form` and `/examples/event-form`. The settings form demonstrates tabbed navigation, independent section saves with `<Panel>`, collapsible advanced fields, and a danger zone with confirmation dialogs. The event form shows a single-submit form with multiple `<Panel>` sections. The forms pattern documentation now includes a Panels subsection that links to both demos.
-- **Drawer documentation rewritten** around a defining principle (supplementary, in-context, light task) with a Drawer-vs-Dialog decision framework and six canonical use cases, each with demos.
-- **ActionBar fully documented and re-homed.** `<ActionBar>` gets complete, use-case-driven documentation (anatomy, Do/Don't, three demos, accessibility) and moves into the Collection section at [`/components/collection/actionbar`](/components/collection/actionbar) alongside `Table`, `Card`, and `Tag`, reframed around the bulk-selection context.
-- **Card repositioned as a Collection component**, leading with a `Card` vs `Table` comparison and an _Alternative components_ section that points to `Panel`, `Stack`, or `Tiles` when the content isn't a collection.
-- **Switch `variant="settings"` documented end to end**. A Button-style variant table under `## Appearance` summarises `default` and `settings`, the `Settings and preferences` section is rewritten with placement guidance, and a Callout reserves `variant="settings"` for auto-save surfaces. The reasoning lives in the docs: light-switch metaphor, `role="switch"` ARIA contract, and the conflict with explicit save semantics.
-- **Iconography documentation consolidated.** The former `/foundations/icons` and `/components/content/icon` pages now live together at [`/foundations/iconography`](/foundations/iconography), with principles, the icon catalog, the full legacy-to-Lucide name mapping, and the engineering API in one place.
-- **Form documentation restructured.** Three pages (Form Fields, Forms, Form Implementation) are consolidated into two: [Form Fields](/foundations/form-fields) as a foundation (anatomy, label, placeholder, help text, width, field states) and [Forms](/patterns/user-input/forms) as a pattern (layout together with validation, state management, react-hook-form, and async submission).
-- **New landmarks accessibility guide** paired with the `useLandmark` reference page.
-- **Installation guide revised** end to end, so a new project (human- or AI-driven) sets up without friction.
-- **Prop tables split into groups.** Each component page now shows the meaningful API props by default and tucks `aria-*` attributes and DOM event handlers into collapsible sections (Button drops from 112 visible props to 39). The machine-readable docs keep the full list.
-- **Toast guidance:** a new callout documents that `<ToastProvider>` should be mounted exactly once per app, since every toast shares one global queue.
-- **Documentation prose cleanup.** Em-dash and en-dash punctuation and prose semicolons across the component, foundation, and pattern docs are rewritten into plain sentences for easier reading.
 
 ## Dependency updates
 
