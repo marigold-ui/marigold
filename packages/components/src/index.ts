@@ -132,6 +132,9 @@ export type { DrawerProps } from './Drawer/Drawer';
 export { EmptyState } from './EmptyState/EmptyState';
 export type { EmptyStateProps } from './EmptyState/EmptyState';
 
+export { ErrorState } from './ErrorState/ErrorState';
+export type { ErrorStateProps } from './ErrorState/ErrorState';
+
 export { FieldBase } from './FieldBase/FieldBase';
 export type { FieldBaseProps } from './FieldBase/FieldBase';
 
