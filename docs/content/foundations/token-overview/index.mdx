@@ -111,6 +111,12 @@ The foundational layer: page background and text hierarchy.
       useFor: 'Help text, descriptions, input icons',
     },
     {
+      name: 'secondary-bold',
+      value: 'charcoal-700',
+      useFor:
+        'Emphatic secondary text that must out-rank quiet captions without reaching full foreground — e.g. idle sidebar nav labels above group labels',
+    },
+    {
       name: 'placeholder',
       value: 'charcoal-600',
       useFor: 'Placeholder text in empty inputs',
@@ -126,10 +132,12 @@ The foundational layer: page background and text hierarchy.
 ```
 
 <Callout title="No pairing needed">
-  `secondary` and `placeholder` are standalone text colors. They do not have a
-  paired background token. `secondary` is the industry standard name for this
-  role (Carbon, Material Design, Atlassian all use "secondary" for secondary
-  text).
+  `secondary`, `secondary-bold` and `placeholder` are standalone text colors.
+  They do not have a paired background token. `secondary` is the industry
+  standard name for this role (Carbon, Material Design, Atlassian all use
+  "secondary" for secondary text); `secondary-bold` follows the system's `-bold`
+  emphasis modifier (cf. `selected`/`selected-bold`) for text that sits between
+  `secondary` and `foreground`.
 </Callout>
 
 ### Primary

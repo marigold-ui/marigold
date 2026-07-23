@@ -5,6 +5,7 @@ import {
   useObjectRef,
   useRouter,
 } from '@react-aria/utils';
+import { activateOnEnterOrSpace, isModifiedClick } from './linkActivation';
 import { useRovingItem } from './useSidebarNav';
 
 export interface SidebarLinkProps {
@@ -46,9 +47,13 @@ export const SidebarLink = ({
       aria-current={ariaCurrent}
       onFocus={onFocus}
       onClick={e => {
+        // Browser-owned clicks (new tab/window) keep native anchor behavior;
+        // the side effects (drill-in, drawer close) stay with the current view.
+        if (href && isModifiedClick(e)) return;
         onPress?.();
         handleLinkClick(e, router, href, undefined);
       }}
+      onKeyDown={href ? undefined : activateOnEnterOrSpace}
     >
       {children}
     </a>
