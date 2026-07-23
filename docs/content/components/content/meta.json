@@ -6,6 +6,7 @@
     "empty-state",
     "error-state",
     "headline",
+    "keyboard",
     "list",
     "loader",
     "section-message",

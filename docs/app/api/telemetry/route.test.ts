@@ -37,14 +37,19 @@ describe('POST /api/telemetry', () => {
 
   // Mirrors the CLI's CommandName union in packages/cli/src/lib/telemetry.ts —
   // guards against the union and the server schema silently drifting apart.
-  it.each(['docs', 'list', 'search', 'examples', 'init', 'telemetry'])(
-    'accepts a %s command event',
-    async command => {
-      const res = await post(makeEvent(command));
+  it.each([
+    'docs',
+    'list',
+    'search',
+    'examples',
+    'init',
+    'doctor',
+    'telemetry',
+  ])('accepts a %s command event', async command => {
+    const res = await post(makeEvent(command));
 
-      expect(res.status).not.toBe(400);
-    }
-  );
+    expect(res.status).not.toBe(400);
+  });
 
   it('rejects an unknown command with 400', async () => {
     const res = await post(makeEvent('bogus'));

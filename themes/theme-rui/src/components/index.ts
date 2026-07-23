@@ -25,6 +25,7 @@ export { Input } from './Input.styles';
 export { Field } from './Field.styles';
 export { Headline } from './Headline.styles';
 export { HelpText } from './HelpText.styles';
+export { Keyboard } from './Keyboard.styles';
 export { Label } from './Label.styles';
 export { Link } from './Link.styles';
 export { List } from './List.styles';
