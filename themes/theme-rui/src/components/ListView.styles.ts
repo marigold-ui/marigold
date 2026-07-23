@@ -20,7 +20,7 @@ export const ListView: ThemeComponent<'ListView'> = {
   }),
   item: cva({
     base: [
-      'relative flex items-center gap-3',
+      'group/option relative flex items-center gap-3',
       'px-(--spacing-stretch-regular-x) py-(--spacing-stretch-regular-y)',
       'text-sm text-foreground outline-none',
       'transition-[border,color]',
@@ -39,7 +39,9 @@ export const ListView: ThemeComponent<'ListView'> = {
   content: cva({ base: 'flex min-w-0 flex-1 flex-col justify-center' }),
   label: cva({ base: '' }),
   title: cva({ base: '' }),
-  description: cva({ base: 'text-xs font-normal text-secondary' }),
+  description: cva({
+    base: 'text-xs font-normal text-secondary group-disabled/option:text-disabled',
+  }),
   action: cva({
     base: 'flex shrink-0 items-center justify-end gap-1',
   }),
