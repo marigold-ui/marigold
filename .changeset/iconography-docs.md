@@ -68,6 +68,7 @@ Old names from the legacy `@marigold/icons` set and their Lucide replacement. Na
 | Notification    | `MessageSquareWarning` |
 | Parking         | `CircleParking`        |
 | PDF             | `PDF` _(custom)_       |
+| Print           | `Printer`              |
 | Reports         | `FileText`             |
 | Required        | `Asterisk`             |
 | ResaleLogbook   | `BookOpenText`         |
