@@ -22,6 +22,7 @@ import {
   Form,
   Inline,
   NumberField,
+  OverflowRegion,
   Radio,
   SearchField,
   Select,
@@ -384,58 +385,62 @@ export const FilterBar = () => {
   };
 
   return (
-    <Inline space="related" alignX="between" alignY="center">
-      <Inline alignY="input" space="related">
-        <SearchField
-          aria-label="Search venues"
-          placeholder="Search venues"
-          width={56}
-          autoComplete="off"
-          defaultValue={search}
-          onSubmit={setSearch}
-          onClear={() => setSearch('')}
-        />
+    <Inline space="related" alignY="center" noWrap>
+      <SearchField
+        aria-label="Search venues"
+        placeholder="Search venues"
+        width={56}
+        autoComplete="off"
+        defaultValue={search}
+        onSubmit={setSearch}
+        onClear={() => setSearch('')}
+      />
+      {/* The quick filters live in a region that hides them one by one as the
+          bar narrows, so it never wraps to a second line. Every one of them
+          also lives in the panel behind "All filters", so a hidden quick
+          filter stays reachable. */}
+      <OverflowRegion>
         <TypeQuickFilter />
         <RatingQuickFilter />
         <AvailabilityQuickFilter />
-        <Drawer.Trigger open={open} onOpenChange={onOpenChange}>
-          <Button>
-            <ListFilter /> All filters
-            {activeCount > 0 && <Badge variant="primary">{activeCount}</Badge>}
-          </Button>
-          <Drawer closeButton>
-            <Form ref={formRef} onSubmit={onFilterSubmit} unstyled>
-              <Drawer.Title>Filter Venues</Drawer.Title>
-              <Drawer.Content>
-                {/* FilterForm is uncontrolled. Remount on URL state changes
+      </OverflowRegion>
+      <Drawer.Trigger open={open} onOpenChange={onOpenChange}>
+        <Button>
+          <ListFilter /> All filters
+          {activeCount > 0 && <Badge variant="primary">{activeCount}</Badge>}
+        </Button>
+        <Drawer closeButton>
+          <Form ref={formRef} onSubmit={onFilterSubmit} unstyled>
+            <Drawer.Title>Filter Venues</Drawer.Title>
+            <Drawer.Content>
+              {/* FilterForm is uncontrolled. Remount on URL state changes
                     so defaultValue picks up the latest filter values. */}
-                <div
-                  onChange={updateDraft}
-                  onPointerUp={updateDraft}
-                  onKeyUp={updateDraft}
-                >
-                  <FilterForm
-                    key={JSON.stringify(filter)}
-                    filter={filter}
-                    facets={facets}
-                    sectionCounts={sectionCounts}
-                    onDraftChange={updateDraft}
-                  />
-                </div>
-              </Drawer.Content>
-              <Drawer.Actions>
-                <Button slot="close">Close</Button>
-                {/* Previews the outcome before committing */}
-                <Button variant="primary" type="submit">
-                  {resultCount === undefined
-                    ? 'Apply'
-                    : `Show ${resultCount} result${resultCount === 1 ? '' : 's'}`}
-                </Button>
-              </Drawer.Actions>
-            </Form>
-          </Drawer>
-        </Drawer.Trigger>
-      </Inline>
+              <div
+                onChange={updateDraft}
+                onPointerUp={updateDraft}
+                onKeyUp={updateDraft}
+              >
+                <FilterForm
+                  key={JSON.stringify(filter)}
+                  filter={filter}
+                  facets={facets}
+                  sectionCounts={sectionCounts}
+                  onDraftChange={updateDraft}
+                />
+              </div>
+            </Drawer.Content>
+            <Drawer.Actions>
+              <Button slot="close">Close</Button>
+              {/* Previews the outcome before committing */}
+              <Button variant="primary" type="submit">
+                {resultCount === undefined
+                  ? 'Apply'
+                  : `Show ${resultCount} result${resultCount === 1 ? '' : 's'}`}
+              </Button>
+            </Drawer.Actions>
+          </Form>
+        </Drawer>
+      </Drawer.Trigger>
       <Inline alignY="center" space="related">
         <FetchingIndicator />
         <ResetDemo />

@@ -10,9 +10,12 @@ export interface OverflowRegionItemProps {
 
 const VISIBLE = 'shrink-0';
 // Demoted items leave the flex flow (`absolute`) so the indicator sits right
-// after the last visible item, but keep their layout (`invisible`, never
-// `display: none`) so their natural width stays measurable in place.
-const HIDDEN = 'shrink-0 invisible absolute';
+// after the last visible item, but keep their box (never `display: none`) so
+// their natural width stays measurable in place. `invisible` takes them out
+// of paint and the tab order, and `opacity-0` backs it up: a child can turn
+// `visibility` back on for itself and reappear (react-aria date segments do),
+// but opacity applies to the whole subtree and cannot be overridden.
+const HIDDEN = 'shrink-0 invisible opacity-0 absolute';
 
 /**
  * Measures how many of a row's items fit into the available width, so the
@@ -22,8 +25,9 @@ const HIDDEN = 'shrink-0 invisible absolute';
  * measured in place: nothing is `display: none`, so `getBoundingClientRect`
  * always reports real widths and no hidden measurement clone or transient
  * "show all" render pass is needed. Items that do not fit are hidden with
- * `visibility` and `inert`, which removes them from paint, tab order, and
- * the accessibility tree while keeping them measurable. Because the region
+ * `visibility`, `opacity` and `inert`, which removes them from paint, tab
+ * order, and the accessibility tree while keeping them measurable. Because the
+ * region
  * owns its width (`flex-1`) and hiding items does not change it, the resize
  * observer cannot re-trigger itself.
  *

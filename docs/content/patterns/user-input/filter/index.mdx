@@ -161,9 +161,11 @@ A single row only works when every control in it stays compact:
 - **No visible labels or helper text.** A label above a control or a `description` below it adds a second line and breaks the row's alignment. The search field carries a placeholder, a quick filter labels itself through its placeholder or selected value, and every control still needs an `aria-label`.
 - **Mind the width of always-visible options.** A [SegmentedControl](/components/form/segmented-control) scope switch pays for keeping its options visible with horizontal space, and its labels must never wrap or truncate. Keep it to a few short segments. When the row gets tight, a [Select](/components/form/select) offers the same choice at a fraction of the width.
 
+Let the row keep itself on one line with an [OverflowRegion](/components/layout/overflow-region). Put the quick filters inside it and pin the scope switch, search field, and "All filters" button around it. As the bar narrows, the region hides the quick filters from the end and brings them back as space returns, so the bar never wraps. Because the panel behind "All filters" always holds every filter, a hidden quick filter is still one click away. Drag the handle in the demo below to see the bar hold a single row at any width.
+
 <ComponentDemo name="filter-bar-layout" />
 
-When the quick filters outgrow the row, do not let the bar wrap. A second row pushes the data set down and shifts the layout whenever the bar changes. Demote the least-used quick filter back to the panel instead. Demotion is free, since the panel holds every filter anyway. The same logic covers narrow viewports: keep the search field and the "All filters" button, drop the quick filters, and everything stays reachable through the panel.
+Never let the bar wrap to a second row. A new row pushes the data set down and shifts the layout every time the bar changes. Hiding the overflow keeps the row steady, and the panel is the recovery surface for anything that no longer fits. The same approach carries down to small screens, where the region can hide every quick filter and leave only the search field and the "All filters" button.
 
 <GuidelineTiles>
   <Do>
