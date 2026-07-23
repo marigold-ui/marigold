@@ -47,17 +47,13 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: pnpm exec playwright install
 
-      - name: Cache Vite dep optimization
-        uses: actions/cache@v5
-        with:
-          path: node_modules/.vite
-          # Include the vitest/vite config in the key so changing the
-          # optimizeDeps include list actually busts the cache (otherwise a
-          # stale optimization is restored and the new deps are still
-          # discovered at runtime, re-introducing the re-optimization race).
-          key: vite-deps-unit-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'vite.config.ts', 'vitest.config.shared.ts') }}
-          restore-keys: |
-            vite-deps-unit-${{ runner.os }}-
+      # No node_modules/.vite cache here: the optimized-deps content depends on
+      # the source import graph (optimizeDeps.entries crawl), which lockfile- or
+      # config-based keys cannot capture. A stale restored cache passes Vite's
+      # own validity check and then re-optimizes mid-run when tests import a
+      # subpath the cache doesn't cover, breaking in-flight dynamic imports.
+      # Cold-start is safe: the entries crawl pre-bundles the full graph before
+      # tests run (verified in #5565).
 
       - name: Run Unit Tests
         run: pnpm vitest run --project=unit-tests --shard=${{ matrix.shard }}/${{ matrix.total }} --coverage --coverage.thresholds.100=false --coverage.thresholds.statements=0 --coverage.thresholds.branches=0 --coverage.thresholds.functions=0 --coverage.thresholds.lines=0
@@ -109,17 +105,8 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: pnpm exec playwright install
 
-      - name: Cache Vite dep optimization
-        uses: actions/cache@v5
-        with:
-          path: node_modules/.vite
-          # Include the vitest/vite config in the key so changing the
-          # optimizeDeps include list actually busts the cache (otherwise a
-          # stale optimization is restored and the new deps are still
-          # discovered at runtime, re-introducing the re-optimization race).
-          key: vite-deps-sb-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'vite.config.ts', 'vitest.config.shared.ts') }}
-          restore-keys: |
-            vite-deps-sb-${{ runner.os }}-
+      # No node_modules/.vite cache — see the unit-tests job for why a stale
+      # optimize cache is unsafe and cold-start is not.
 
       - name: Run Storybook Tests
         run: pnpm vitest run --project=storybook-tests --shard=${{ matrix.shard }}/${{ matrix.total }} --coverage --coverage.thresholds.100=false --coverage.thresholds.statements=0 --coverage.thresholds.branches=0 --coverage.thresholds.functions=0 --coverage.thresholds.lines=0
