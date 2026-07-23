@@ -27,11 +27,65 @@ import {
 import { stubMissingSlots } from '../lib/codemod/primitives/stub-missing-slots.js';
 import { swapExactClasses } from '../lib/codemod/primitives/swap-exact-classes.js';
 import type { Codemod, MigrationManifest } from '../lib/codemod/types.js';
+import {
+  declaredVersion,
+  installedVersion,
+  readPackageJson,
+} from '../lib/doctor/package-json.js';
+import { minVersionFromRange } from '../lib/doctor/version.js';
 import { highlightCode } from '../lib/format.js';
 import type { AnyNode } from '../lib/tsx-ast.js';
 import { parseTsx } from '../lib/tsx-ast.js';
 
 const MANIFESTS: Record<string, MigrationManifest> = { v18 };
+
+export interface DetectedMigration {
+  /** installed @marigold/components version (or the declared range minimum) */
+  installed: string;
+  /** where the version was read from */
+  source: 'node_modules' | 'package.json';
+  /** applicable migrations in run order, e.g. ['v18'] — empty: up to date */
+  versions: string[];
+}
+
+/**
+ * Detect the consumer's Marigold version by walking up from the target path
+ * (theme directories usually sit far below the repo root that owns
+ * node_modules), preferring the installed package over the declared range.
+ * Returns null when no @marigold/components is found at all.
+ */
+export const detectMigration = (
+  targetPath: string
+): DetectedMigration | null => {
+  const found = ((): Omit<DetectedMigration, 'versions'> | null => {
+    let dir = path.resolve(targetPath);
+    for (;;) {
+      const installed = installedVersion(dir, '@marigold/components');
+      if (installed) return { installed, source: 'node_modules' };
+      const declared = declaredVersion(
+        readPackageJson(path.join(dir, 'package.json')),
+        '@marigold/components'
+      );
+      const min = declared ? minVersionFromRange(declared) : null;
+      if (min) return { installed: min, source: 'package.json' };
+      const parent = path.dirname(dir);
+      if (parent === dir) return null;
+      dir = parent;
+    }
+  })();
+  if (!found) return null;
+
+  // Propose migrations targeting the installed major too (>=, not >): the
+  // documented procedure is "upgrade the packages, then migrate", so someone
+  // on 18.x is exactly who needs the v18 migration. Re-running is a no-op.
+  const major = Number.parseInt(found.installed, 10);
+  const versions = Object.keys(MANIFESTS)
+    .map(v => ({ v, target: Number.parseInt(v.replace(/^v/, ''), 10) }))
+    .filter(({ target }) => Number.isFinite(target) && target >= major)
+    .sort((a, b) => a.target - b.target)
+    .map(({ v }) => v);
+  return { ...found, versions };
+};
 
 export interface MigrateOptions {
   version: string;

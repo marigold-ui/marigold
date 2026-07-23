@@ -2,7 +2,7 @@ import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { existsSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { runMigrate } from './migrate.js';
+import { detectMigration, runMigrate } from './migrate.js';
 
 // End-to-end run against a miniature portal-shaped theme tree: standalone
 // theme, 4-space indent, one style file per component, barrel index.
@@ -48,6 +48,70 @@ const setupFixture = (): string => {
   );
   return root;
 };
+
+describe('detectMigration', () => {
+  const setupRepo = (version: string, installed = true): string => {
+    const root = mkdtempSync(path.join(os.tmpdir(), 'marigold-detect-'));
+    if (installed) {
+      const pkgDir = path.join(root, 'node_modules', '@marigold', 'components');
+      mkdirSync(pkgDir, { recursive: true });
+      writeFileSync(
+        path.join(pkgDir, 'package.json'),
+        JSON.stringify({ name: '@marigold/components', version })
+      );
+    } else {
+      writeFileSync(
+        path.join(root, 'package.json'),
+        JSON.stringify({ dependencies: { '@marigold/components': version } })
+      );
+    }
+    // the migration target usually sits far below the repo root
+    const target = path.join(root, 'src', 'theme');
+    mkdirSync(target, { recursive: true });
+    return target;
+  };
+
+  test('walks up to node_modules and proposes the applicable migration', () => {
+    const detected = detectMigration(setupRepo('17.9.1'));
+    expect(detected).toEqual({
+      installed: '17.9.1',
+      source: 'node_modules',
+      versions: ['v18'],
+    });
+  });
+
+  test('falls back to the declared range when nothing is installed', () => {
+    const detected = detectMigration(setupRepo('^17.0.0', false));
+    expect(detected).toEqual({
+      installed: '17.0.0',
+      source: 'package.json',
+      versions: ['v18'],
+    });
+  });
+
+  test('proposes the same-major migration (upgrade first, then migrate)', () => {
+    const detected = detectMigration(setupRepo('18.0.0-beta.4'));
+    expect(detected).toEqual({
+      installed: '18.0.0-beta.4',
+      source: 'node_modules',
+      versions: ['v18'],
+    });
+  });
+
+  test('reports up to date when the installed major is past every migration', () => {
+    const detected = detectMigration(setupRepo('19.0.0'));
+    expect(detected).toEqual({
+      installed: '19.0.0',
+      source: 'node_modules',
+      versions: [],
+    });
+  });
+
+  test('returns null when no @marigold/components exists anywhere', () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), 'marigold-detect-'));
+    expect(detectMigration(root)).toBeNull();
+  });
+});
 
 describe('runMigrate', () => {
   test('rejects unknown migration versions', () => {

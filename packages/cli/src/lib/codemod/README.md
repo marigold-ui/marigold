@@ -8,9 +8,14 @@ touching for a new release; everything release-specific lives in a manifest.
 ## Usage
 
 ```sh
-npx marigold migrate v18 [path] [--dry-run]
+npx marigold migrate [version] [path] [--dry-run]
 ```
 
+- `version` is optional: when omitted, the installed
+  `@marigold/components` is detected (walking up from the target path,
+  falling back to the declared package.json range) and the applicable
+  migration is proposed for interactive confirmation — Enter runs it.
+  Non-interactive sessions must pass the version explicitly.
 - `path` defaults to the current directory; point it at the consumer repo
   (or its theme directory) you want to migrate.
 - **Always run `--dry-run` first** and read the report.

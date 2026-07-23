@@ -68,7 +68,7 @@ ${pc.bold('Commands:')}
   examples <action>     Browse application patterns (list | get <slug>)
   init                  Set up Marigold in a project
   doctor                Diagnose a project's Marigold setup
-  migrate <version>     Apply codemods for a breaking Marigold release
+  migrate [version]     Apply codemods for a breaking Marigold release
   telemetry <action>    Manage telemetry (status|enable|disable)
   completion <shell>    Print shell completion script (bash|zsh|fish)
 
@@ -104,6 +104,9 @@ ${pc.bold('Doctor options:')}
   --offline           Skip the network; use only the local cache
 
 ${pc.bold('Migrate options:')}
+  [version]           Migration to run (e.g. v18). When omitted, the
+                      installed @marigold/components version is detected
+                      and the proposed migration confirmed interactively
   [path]              Directory to migrate (default: current directory)
   --dry-run           Report what would change without writing files
 
@@ -435,28 +438,76 @@ export const main = async (
       if (result.hasErrors) exitCode = 1;
     } else if (command === 'migrate') {
       const { positionals, values } = parseMigrateCommand(rest);
-      const [version, targetPath] = positionals;
+      // the version positional is optional: `migrate ./src` treats the first
+      // positional as a path, `migrate v18 ./src` as version + path
+      const looksLikeVersion = (p: string | undefined): p is string =>
+        p !== undefined && /^v?\d+$/.test(p);
+      const [first, second] = positionals;
+      const explicitVersion = looksLikeVersion(first) ? first : undefined;
+      const targetPath = (explicitVersion ? second : first) ?? process.cwd();
 
       telemetryArgs = {
-        version: version ?? '',
+        version: explicitVersion ?? 'auto',
         ...(values['dry-run'] ? { dryRun: 'true' } : {}),
       };
 
-      if (!version || positionals.length > 2) {
-        fail('Usage: marigold migrate <version> [path] [--dry-run]');
+      if (positionals.length > (explicitVersion ? 2 : 1)) {
+        fail('Usage: marigold migrate [version] [path] [--dry-run]');
       }
 
       // Lazy-load: migrate pulls in @babel/parser and magic-string, which we
       // keep off the docs/list hot path.
-      const { runMigrate } = await import('../commands/migrate.js');
-      const result = await runMigrate({
-        // accept both `18` and `v18`
-        version: version.startsWith('v') ? version : `v${version}`,
-        targetPath: targetPath ?? process.cwd(),
-        dryRun: values['dry-run'],
-      });
+      const { detectMigration, runMigrate } =
+        await import('../commands/migrate.js');
 
-      writeOutput(result.output);
+      let versions: string[];
+      if (explicitVersion) {
+        // accept both `18` and `v18`
+        versions = [
+          explicitVersion.startsWith('v')
+            ? explicitVersion
+            : `v${explicitVersion}`,
+        ];
+      } else {
+        const detected = detectMigration(targetPath);
+        if (!detected) {
+          fail(
+            `Could not find @marigold/components under ${targetPath} — pass the migration explicitly: marigold migrate v18 [path]`
+          );
+        }
+        if (detected.versions.length === 0) {
+          writeOutput(
+            `Detected @marigold/components ${detected.installed} (${detected.source}) — already up to date, no migration to run.`
+          );
+          return 0;
+        }
+        if (!process.stdout.isTTY) {
+          fail(
+            `Detected @marigold/components ${detected.installed} — would run ${detected.versions.join(', then ')}. ` +
+              `Non-interactive session: confirm by passing the version explicitly, e.g. marigold migrate ${detected.versions[0]} [path]`
+          );
+        }
+        const { confirm, isCancel } = await import('@clack/prompts');
+        const proceed = await confirm({
+          message:
+            `Detected @marigold/components ${detected.installed} (${detected.source}). ` +
+            `Run the ${detected.versions.join(', then the ')} migration${values['dry-run'] ? ' (dry run)' : ''}?`,
+        });
+        if (isCancel(proceed) || proceed !== true) {
+          writeOutput('Aborted — nothing changed.');
+          return 130;
+        }
+        versions = detected.versions;
+      }
+
+      for (const version of versions) {
+        const result = await runMigrate({
+          version,
+          targetPath,
+          dryRun: values['dry-run'],
+        });
+        writeOutput(result.output);
+      }
     } else if (command === 'telemetry') {
       const [sub] = rest;
       telemetryArgs = sub ? { sub } : {};
