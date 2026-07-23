@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { SegmentedControl } from '@marigold/components';
 import { cn } from '@marigold/system';
 
 const breakpoints = ['base', 'sm', 'md', 'lg', 'xl', '2xl'];
@@ -12,32 +13,26 @@ const gridCols: Record<number, string> = {
 
 // Pick a breakpoint to see the value `useResponsiveValue` resolves to there.
 export default () => {
-  const [index, setIndex] = useState(0);
-  const active = breakpoints[index];
-  const count = columns[index];
+  const [breakpoint, setBreakpoint] = useState('base');
+  const count = columns[breakpoints.indexOf(breakpoint)];
 
   return (
     <div className="flex w-full flex-col items-center gap-6">
-      <div className="flex flex-wrap justify-center gap-2">
-        {breakpoints.map((bp, i) => (
-          <button
-            key={bp}
-            type="button"
-            onClick={() => setIndex(i)}
-            className={cn(
-              'cursor-pointer rounded-md px-3 py-1 font-mono text-sm',
-              i === index
-                ? 'bg-lime-600 font-semibold text-white'
-                : 'bg-zinc-100 text-zinc-500 hover:bg-zinc-200'
-            )}
-          >
+      <SegmentedControl
+        aria-label="Breakpoint"
+        width="fit"
+        value={breakpoint}
+        onChange={setBreakpoint}
+      >
+        {breakpoints.map(bp => (
+          <SegmentedControl.Option key={bp} value={bp}>
             {bp}
-          </button>
+          </SegmentedControl.Option>
         ))}
-      </div>
+      </SegmentedControl>
       <p className="text-center font-mono text-sm text-zinc-500">
         useResponsiveValue([1, 2, 3, 3, 4, 4]) at{' '}
-        <span className="font-semibold text-zinc-700">{active}</span> →{' '}
+        <span className="font-semibold text-zinc-700">{breakpoint}</span> →{' '}
         <span className="text-lg font-bold text-zinc-900">{count}</span>
       </p>
       <div className={cn('grid w-full max-w-md gap-2', gridCols[count])}>
