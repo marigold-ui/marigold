@@ -4,7 +4,6 @@ import { Button, ErrorState, Panel, Text, Title } from '@marigold/components';
 
 const InvoicesFallback = ({ resetErrorBoundary }: FallbackProps) => (
   <ErrorState
-    size="compact"
     // Region tier: announce the failure, don't steal focus.
     role="alert"
     // Under the panel's h2.

@@ -88,23 +88,6 @@ WithRetry.test(
   }
 );
 
-export const Compact = meta.story({
-  render: args => (
-    <ErrorState
-      {...args}
-      size="compact"
-      role="alert"
-      title="Invoices didn't load"
-      description="You can retry. The rest of the page is unaffected."
-      action={
-        <Button variant="primary" size="small">
-          Try again
-        </Button>
-      }
-    />
-  ),
-});
-
 const PageErrorFallback = ({ resetErrorBoundary }: FallbackProps) => {
   // Page tier: the task the user was on is gone, so the fallback takes focus.
   const ref = useRef<HTMLDivElement>(null);

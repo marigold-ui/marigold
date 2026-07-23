@@ -45,7 +45,7 @@ export interface ErrorStateProps {
   tabIndex?: number;
   ref?: Ref<HTMLDivElement>;
   variant?: string;
-  size?: 'compact' | (string & {});
+  size?: string;
 }
 
 // Component

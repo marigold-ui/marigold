@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { createRef } from 'react';
 import { Provider } from 'react-aria-components/slots';
 import { ButtonContext } from '../Button/Context';
-import { Basic, Compact, WithRetry } from './ErrorState.stories';
+import { Basic, WithRetry } from './ErrorState.stories';
 
 test('renders with title and description', () => {
   render(<Basic.Component />);
@@ -33,11 +33,11 @@ test('supports configuring the heading level', () => {
 });
 
 test('passes role through to the container (region tier)', () => {
-  render(<Compact.Component />);
+  render(<Basic.Component role="alert" />);
 
   const alert = screen.getByRole('alert');
   expect(alert).toContainElement(
-    screen.getByRole('heading', { name: "Invoices didn't load" })
+    screen.getByRole('heading', { name: "We can't load this data" })
   );
 });
 

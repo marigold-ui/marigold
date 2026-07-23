@@ -23,7 +23,7 @@ At page tier, the fallback does not have to repeat the `Page.Header`. It only br
 
 One rule decides between `ErrorState` and [SectionMessage](/components/content/section-message):
 
-- Content is **gone** (the boundary caught, nothing renders): show a compact `ErrorState` inside the region.
+- Content is **gone** (the boundary caught, nothing renders): show an `ErrorState` inside the region.
 - Content is **still present** and you are annotating it (validation problems, partial failure, warnings): use a `SectionMessage`.
 
 `ErrorState` replaces, `SectionMessage` comments.
@@ -105,7 +105,7 @@ Try it out: breaking the page swaps the content for the fallback while the heade
 
 ## Region tier inside a Panel
 
-The boundary wraps only the panel's content. The fallback is a compact `ErrorState` with `role="alert"`, so the failure is announced without pulling the user out of a page that still works:
+The boundary wraps only the panel's content. The fallback is an `ErrorState` with `role="alert"`, so the failure is announced without pulling the user out of a page that still works:
 
 <ComponentDemo name="error-region-tier" />
 

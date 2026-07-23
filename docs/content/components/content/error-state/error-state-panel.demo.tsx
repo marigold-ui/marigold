@@ -7,7 +7,6 @@ export default () => (
     </Panel.Header>
     <Panel.Content>
       <ErrorState
-        size="compact"
         role="alert"
         headingLevel={3}
         title="Invoices didn't load"
