@@ -13,6 +13,13 @@ import { stripAnsi } from './strip-ansi.js';
 
 export type OutputFormat = 'markdown' | 'json' | 'plain';
 
+// Colorize `inline code` spans while keeping the surrounding backticks, so
+// piped / non-TTY output (tests, AI agents, files) stays byte-for-byte the
+// same and only interactive terminals gain color. Shared by the doctor and
+// migrate reports.
+export const highlightCode = (text: string): string =>
+  text.replace(/`[^`]+`/g, match => pc.cyan(match));
+
 const renderMarkdownToTerminal = (md: string): string => {
   const lines = md.split('\n');
   const out: string[] = [];
