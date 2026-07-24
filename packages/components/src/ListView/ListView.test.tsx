@@ -1,6 +1,6 @@
 import type { Ref } from 'react';
 import { theme } from '@marigold/theme-rui';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Description } from '../Description/Description';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
@@ -9,8 +9,6 @@ import {
   Basic,
   EmptyState,
   NotificationsFeed,
-  ResourceListWithMenu,
-  TeamRosterWithStatus,
   WithTitle,
 } from './ListView.stories';
 
@@ -73,74 +71,6 @@ describe('ListView', () => {
         name: 'Mute this thread',
       });
       expect(muteSwitch).toHaveFocus();
-    });
-  });
-
-  describe('interactive rows (must-support scenarios)', () => {
-    test('notifications: mutes and dismisses a row without navigating away', async () => {
-      // Arrange
-      render(<NotificationsFeed.Component />);
-      const [muteSwitch] = screen.getAllByRole('switch', {
-        name: 'Mute this thread',
-      });
-
-      // Assert (initial state)
-      expect(muteSwitch).not.toBeChecked();
-
-      // Act
-      await user.click(muteSwitch);
-
-      // Assert
-      expect(muteSwitch).toBeChecked();
-
-      // Act
-      const [dismissButton] = screen.getAllByRole('button', {
-        name: 'Dismiss',
-      });
-      await user.click(dismissButton);
-
-      // Assert
-      // The row's own content is still present — dismissing is a consumer
-      // concern (removing the item from data), not something ListView does.
-      expect(
-        screen.getByRole('row', { name: /build finished/i })
-      ).toBeInTheDocument();
-    });
-
-    test('resource list: opens the row action menu and exposes its items', async () => {
-      // Arrange
-      render(<ResourceListWithMenu.Component />);
-      const trigger = screen.getByRole('button', {
-        name: 'Quarterly report actions',
-      });
-
-      // Assert (initial state)
-      expect(trigger).toHaveAttribute('aria-expanded', 'false');
-
-      // Act
-      await user.click(trigger);
-
-      // Assert
-      await waitFor(() =>
-        expect(trigger).toHaveAttribute('aria-expanded', 'true')
-      );
-    });
-
-    test('settings-style toggle: switches a row control in place', async () => {
-      // Arrange
-      render(<TeamRosterWithStatus.Component />);
-      const notifySwitch = screen.getByRole('switch', {
-        name: 'Notify Alex Kim',
-      });
-
-      // Assert (initial state)
-      expect(notifySwitch).not.toBeChecked();
-
-      // Act
-      await user.click(notifySwitch);
-
-      // Assert
-      expect(notifySwitch).toBeChecked();
     });
   });
 

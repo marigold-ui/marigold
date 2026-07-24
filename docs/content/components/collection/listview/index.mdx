@@ -71,12 +71,9 @@ Reach for a row menu once a row's actions no longer fit as one or two icon butto
 
 ### Settings lists
 
-A row whose only control is a `<Switch>`, operated in place. No submit button, no navigation.
+Use `<ListView>` for settings that are one row per item in a data-driven collection, each row carrying its own `<Switch>`: enabling connected integrations, muting channels, toggling sync per device. The rows are rendered from data with a `.map`, so their number and identity aren't fixed when you author the screen.
 
-Use the `<ListView>` settings pattern when it's a flat list of independent
-on/off toggles that have nothing to do with each other, don't need
-validation, and each one fires its own save immediately when flipped (e.g. a
-notification preferences list).
+For a fixed set of app-level preferences authored by hand, use the [auto-save settings pattern](/patterns/user-input/forms#auto-save) instead: plain `<Switch>` controls in a `<Panel>`, the default for a preferences screen. `<ListView>` earns its place only when the toggles belong to items in a list, and even then it stays a list, not a form, the switches carry no submitted value.
 
 <ComponentDemo name="listview-settings" />
 
@@ -146,27 +143,6 @@ For rows with rich content, such as a wrapped label or an icon, set `textValue` 
 
 <TeaserList
   items={[
-    {
-      title: 'Popover',
-      href: '/components/overlay/popover',
-      caption: 'The notifications panel that motivated ListView.',
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width={24}
-          height={24}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <rect x="3" y="5" width="18" height="14" rx="2" />
-          <path d="M3 9h18" />
-        </svg>
-      ),
-    },
     {
       title: 'ActionBar',
       href: '/components/collection/actionbar',
