@@ -132,6 +132,9 @@ export type { DrawerProps } from './Drawer/Drawer';
 export { EmptyState } from './EmptyState/EmptyState';
 export type { EmptyStateProps } from './EmptyState/EmptyState';
 
+export { ErrorState } from './ErrorState/ErrorState';
+export type { ErrorStateProps } from './ErrorState/ErrorState';
+
 export { FieldBase } from './FieldBase/FieldBase';
 export type { FieldBaseProps } from './FieldBase/FieldBase';
 
@@ -163,6 +166,9 @@ export type { SearchInputProps } from './Input/SearchInput';
 
 export { Inset } from './Inset/Inset';
 export type { InsetProps } from './Inset/Inset';
+
+export { Keyboard } from './Keyboard/Keyboard';
+export type { KeyboardProps } from './Keyboard/Keyboard';
 
 export { Label } from './Label/Label';
 export type { LabelProps } from './Label/Label';
@@ -286,6 +292,8 @@ export type { SidebarProps } from './Sidebar/Sidebar';
 export type { SidebarProviderProps } from './Sidebar/Context';
 export type { SidebarNavProps } from './Sidebar/SidebarNav';
 export type { SidebarItemProps } from './Sidebar/SidebarItem';
+export type { SidebarRailProps } from './Sidebar/SidebarRail';
+export type { SidebarRailItemProps } from './Sidebar/SidebarRailItem';
 
 export { Tabs } from './Tabs/Tabs';
 export type { TabsProps } from './Tabs/Tabs';

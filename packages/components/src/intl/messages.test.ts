@@ -48,12 +48,21 @@ describe('intl messages', () => {
       expect(fn({ count: 2 })).toBe('2 weniger anzeigen');
     });
 
-    test('toggleNavigationTooltip interpolates shortcut', () => {
-      const fn = de.toggleNavigationTooltip as (
+    test('collapseSidebarTooltip interpolates shortcut', () => {
+      const fn = de.collapseSidebarTooltip as (
         vars: Record<string, string>
       ) => string;
       expect(fn({ shortcut: 'Ctrl+B' })).toBe(
-        'Navigation ein-/ausblenden (Ctrl+B)'
+        'Seitenleiste einklappen (Ctrl+B)'
+      );
+    });
+
+    test('expandSidebarTooltip interpolates shortcut', () => {
+      const fn = de.expandSidebarTooltip as (
+        vars: Record<string, string>
+      ) => string;
+      expect(fn({ shortcut: 'Ctrl+B' })).toBe(
+        'Seitenleiste ausklappen (Ctrl+B)'
       );
     });
 
@@ -92,11 +101,18 @@ describe('intl messages', () => {
       expect(fn({ count: 3 })).toBe('3 selected');
     });
 
-    test('toggleNavigationTooltip interpolates shortcut', () => {
-      const fn = en.toggleNavigationTooltip as (
+    test('collapseSidebarTooltip interpolates shortcut', () => {
+      const fn = en.collapseSidebarTooltip as (
         vars: Record<string, string>
       ) => string;
-      expect(fn({ shortcut: 'Ctrl+B' })).toBe('Toggle navigation (Ctrl+B)');
+      expect(fn({ shortcut: 'Ctrl+B' })).toBe('Collapse sidebar (Ctrl+B)');
+    });
+
+    test('expandSidebarTooltip interpolates shortcut', () => {
+      const fn = en.expandSidebarTooltip as (
+        vars: Record<string, string>
+      ) => string;
+      expect(fn({ shortcut: 'Ctrl+B' })).toBe('Expand sidebar (Ctrl+B)');
     });
 
     test('preset messages are strings', () => {

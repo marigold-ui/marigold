@@ -49,7 +49,10 @@ export default () => {
             <Table.Cell>{ticket.eventName}</Table.Cell>
             <Table.Cell>{ticket.status}</Table.Cell>
             <Table.Cell>
-              <ActionMenu>
+              <ActionMenu
+                variant="ghost"
+                aria-label={`Actions for ${ticket.eventName}`}
+              >
                 <Menu.Item
                   onAction={() => handleViewDetails(ticket)}
                   id="view-details"

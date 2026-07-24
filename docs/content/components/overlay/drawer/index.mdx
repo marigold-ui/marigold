@@ -156,6 +156,18 @@ The [Bulk Actions pattern](/patterns/user-input/bulk-actions#editing-multiple-fi
 
 <ComponentDemo name="drawer-bulk-edit" />
 
+### Full-width content
+
+By default, drawer content sits inside the drawer's horizontal padding, so its left and right edges line up with the title and actions. That shared edge is what keeps the drawer reading as one column.
+
+Some content reads best edge to edge: a grouped [Accordion](/components/navigation/accordion) of filter facets or settings sections, or a [Table](/components/collection/table) of records. Opt in with the `bleed` prop on `Drawer.Content`. It drops the horizontal padding so backgrounds and dividers reach the drawer edges, while edge-aware children inset their own text to stay aligned with the drawer title.
+
+<ComponentDemo name="drawer-bleed-accordion" />
+
+Drop an `<Accordion>` into a bled content area and its item dividers span the full width while the header and content stay aligned with the title. No extra prop is needed on the Accordion: it picks up the drawer's horizontal padding automatically, the same way `Table` cells do. This mirrors [`Panel.Content bleed`](/components/layout/panel#full-width-content).
+
+Reach for `bleed` only when the drawer body **is** a set of peer, equally weighted sections, such as grouped filters or a settings breakdown. For ordinary prose, a short form, or detail rows, keep the default padding so the content stays aligned as one column.
+
 ### Title and description
 
 `<Drawer.Title>` and `<Drawer.Description>` are slot-aware: the heading level, id, and `aria-labelledby` wiring are handled for you. `<Drawer.Header>` is an optional layout wrapper that groups a title and description into one header zone. For a title-only drawer, drop the title straight into `<Drawer>` without a header.

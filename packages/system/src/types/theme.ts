@@ -144,6 +144,7 @@ export type Theme = {
       'input' | 'icon' | 'action',
       ComponentStyleFunction<string, string>
     >;
+    Keyboard?: ComponentStyleFunction<string, string>;
     Label?: ComponentStyleFunction<string, string>;
     List?: Record<'ol' | 'ul' | 'item', ComponentStyleFunction<string, string>>;
     Link?: ComponentStyleFunction<string, string>;
@@ -158,7 +159,13 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Menu?: Record<
-      'container' | 'section' | 'item' | 'button' | 'label' | 'description',
+      | 'container'
+      | 'section'
+      | 'item'
+      | 'button'
+      | 'label'
+      | 'description'
+      | 'keyboard',
       ComponentStyleFunction<string, string>
     >;
     Modal?: ComponentStyleFunction<string, string>;
@@ -342,6 +349,10 @@ export type Theme = {
       'container' | 'title' | 'description' | 'action',
       ComponentStyleFunction<string, string>
     >;
+    ErrorState?: Record<
+      'container' | 'title' | 'description' | 'action',
+      ComponentStyleFunction<string, string>
+    >;
     ToggleButton?: Record<
       'group' | 'button',
       ComponentStyleFunction<string, string>
@@ -364,7 +375,17 @@ export type Theme = {
       | 'navPanel'
       | 'navLink'
       | 'backButton'
-      | 'content',
+      | 'content'
+      // Two-level rail (Sidebar.Rail): persistent rail + section panel
+      | 'railRoot'
+      | 'railLayout'
+      | 'railColumn'
+      | 'railToggle'
+      | 'rail'
+      | 'railItem'
+      | 'railFooter'
+      | 'panel'
+      | 'panelTitle',
       ComponentStyleFunction<string, string>
     >;
     TopNavigation?: Record<
