@@ -155,6 +155,52 @@ jobs:
         run: pnpm --filter @marigold/docs test
 
   # ---------------------------------------------------------------------------
+  # @marigold/cli tests (vitest node-mode, real Playwright renders).
+  # Excluded from the root unit-tests/storybook-tests projects (see
+  # vitest.config.shared.ts) because it needs a built @marigold/components
+  # (its checkers read dist/index.d.mts to derive the live component registry)
+  # and a built theme-rui (design-tokens checks read dist/theme.css) rather
+  # than the workspace source those browser-mode projects run against.
+  # ---------------------------------------------------------------------------
+  cli-tests:
+    name: CLI Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    env:
+      CI: true
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6.0.9
+      - name: Setup Node (using .node-version)
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Get Playwright version
+        id: playwright-version
+        run: echo "version=$(pnpm exec playwright --version)" >> $GITHUB_OUTPUT
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ steps.playwright-version.outputs.version }}-${{ runner.os }}
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: pnpm exec playwright install
+
+      - name: Build @marigold/components, theme packages, and @marigold/cli
+        run: pnpm build
+
+      - name: Run CLI tests
+        run: pnpm --filter @marigold/cli test
+
+  # ---------------------------------------------------------------------------
   # Merge coverage & report
   # ---------------------------------------------------------------------------
   coverage-report:

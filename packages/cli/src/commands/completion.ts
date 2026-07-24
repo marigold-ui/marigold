@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import {
   COMPLETION_SHELLS,
   EXAMPLES_SUBCOMMANDS,
@@ -64,6 +65,36 @@ export const runCompletion = (
   const script =
     shell === 'bash' ? BASH_SCRIPT : shell === 'zsh' ? ZSH_SCRIPT : FISH_SCRIPT;
   return { output: script, exitCode: 0 };
+};
+
+// Completes a filesystem path for `validate`'s file positional. Only
+// directories (suggested with a trailing slash, for further completion) and
+// `.tsx` files (the only input `validate` accepts) are suggested — this
+// mirrors what a shell's own filename completion would offer, for the
+// headless `marigold __complete` path and for shells that don't fall back to
+// their own file completion.
+const completeFilePath = (partial: string): string[] => {
+  // path.dirname('/a/b/') is '/a' (it treats a trailing slash as "no
+  // filename to strip, go up one more level"), which is wrong here — a
+  // trailing slash means "list THIS directory", not its parent. Splitting on
+  // the last '/' directly avoids that.
+  const lastSlash = partial.lastIndexOf('/');
+  const dir = lastSlash === -1 ? '.' : partial.slice(0, lastSlash) || '/';
+  const prefix = lastSlash === -1 ? partial : partial.slice(lastSlash + 1);
+  const dirPrefix = lastSlash === -1 ? '' : partial.slice(0, lastSlash + 1);
+
+  let entries: fs.Dirent[];
+  try {
+    entries = fs.readdirSync(dir, { withFileTypes: true });
+  } catch {
+    return [];
+  }
+
+  return entries
+    .filter(e => e.name.startsWith(prefix))
+    .filter(e => e.isDirectory() || e.name.endsWith('.tsx'))
+    .map(e => `${dirPrefix}${e.name}${e.isDirectory() ? '/' : ''}`)
+    .sort();
 };
 
 // Walk the words between the subcommand and the cursor, classifying each
@@ -158,6 +189,11 @@ export const computeSuggestions = (words: string[]): string[] => {
   if (sub.positionalKind === 'query') {
     // Free-form search query — nothing static to complete.
     return [];
+  }
+
+  if (sub.positionalKind === 'file') {
+    if (before.length > 0) return [];
+    return completeFilePath(last);
   }
 
   if (sub.name === 'completion') {

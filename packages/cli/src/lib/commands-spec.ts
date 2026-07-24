@@ -6,6 +6,7 @@ export type PositionalKind =
   | 'component'
   | 'category'
   | 'query'
+  | 'file'
   | 'telemetry-sub'
   | 'examples-sub';
 
@@ -24,6 +25,8 @@ export interface SubcommandSpec {
 }
 
 const formatValues = ['markdown', 'json', 'plain'] as const;
+const validateFormatValues = ['text', 'json'] as const;
+const validateChecksValues = ['technical', 'spatial', 'a11y', 'all'] as const;
 const sectionValues = ['props', 'usage', 'examples', 'all'] as const;
 const telemetrySubValues = ['status', 'enable', 'disable'] as const;
 const examplesSubValues = ['list', 'get'] as const;
@@ -45,6 +48,7 @@ export type SubcommandName =
   | 'list'
   | 'search'
   | 'examples'
+  | 'validate'
   | 'init'
   | 'doctor'
   | 'telemetry'
@@ -88,6 +92,14 @@ export const SUBCOMMANDS: readonly SubcommandSpec[] = [
       { name: '--format', type: 'string', values: formatValues },
       { name: '--fresh', type: 'boolean' },
       { name: '--offline', type: 'boolean' },
+    ],
+  },
+  {
+    name: 'validate',
+    positionalKind: 'file',
+    flags: [
+      { name: '--checks', type: 'string', values: validateChecksValues },
+      { name: '--format', type: 'string', values: validateFormatValues },
     ],
   },
   {

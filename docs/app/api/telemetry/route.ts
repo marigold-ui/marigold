@@ -1,21 +1,14 @@
 import { Redis } from '@upstash/redis';
 import { z } from 'zod';
 import { NextResponse } from 'next/server';
+import { TELEMETRY_COMMANDS } from './commands';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 const EventSchema = z.object({
   event: z.literal('cli_command'),
-  command: z.enum([
-    'docs',
-    'list',
-    'search',
-    'examples',
-    'init',
-    'doctor',
-    'telemetry',
-  ]),
+  command: z.enum(TELEMETRY_COMMANDS),
   cliVersion: z.string().max(32),
   nodeVersion: z.string().max(32),
   platform: z.string().max(32),

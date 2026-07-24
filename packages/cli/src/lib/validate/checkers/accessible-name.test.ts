@@ -1,0 +1,232 @@
+import { describe, expect, it } from 'vitest';
+import { tmpFile } from '../test-support/tmp.js';
+import { validateAccessibleName } from './accessible-name.js';
+
+const findDialog = (file: string) =>
+  validateAccessibleName(file).find(i => i.component === 'Dialog');
+
+describe('validateAccessibleName', () => {
+  it('flags a Dialog with content but no title or aria-label', () => {
+    const file = tmpFile(
+      'an-dialog-bare.tsx',
+      `import { Dialog, Button } from '@marigold/components';
+      const C = () => (
+        <Dialog>
+          <Button>Close</Button>
+        </Dialog>
+      );`
+    );
+    const issue = findDialog(file);
+    expect(issue).toBeDefined();
+    expect(issue?.severity).toBe('error');
+    expect(issue?.source).toBe('accessible-name');
+    expect(issue?.message).toContain('no accessible name');
+  });
+
+  it('accepts a Dialog with a Dialog.Title child', () => {
+    const file = tmpFile(
+      'an-dialog-title.tsx',
+      `import { Dialog } from '@marigold/components';
+      const C = () => (
+        <Dialog>
+          <Dialog.Title>Edit user</Dialog.Title>
+          <Dialog.Content>x</Dialog.Content>
+        </Dialog>
+      );`
+    );
+    expect(findDialog(file)).toBeUndefined();
+  });
+
+  it('accepts a Dialog with an aria-label', () => {
+    const file = tmpFile(
+      'an-dialog-aria.tsx',
+      `import { Dialog } from '@marigold/components';
+      const C = () => (
+        <Dialog aria-label="delete event">
+          <Dialog.Content>x</Dialog.Content>
+        </Dialog>
+      );`
+    );
+    expect(findDialog(file)).toBeUndefined();
+  });
+
+  it('does not flag a Dialog whose children are opaque (dynamic)', () => {
+    const file = tmpFile(
+      'an-dialog-dynamic.tsx',
+      `import { Dialog } from '@marigold/components';
+      const C = ({ children }: { children: React.ReactNode }) => (
+        <Dialog>{children}</Dialog>
+      );`
+    );
+    expect(findDialog(file)).toBeUndefined();
+  });
+
+  it('does not flag a Dialog whose opaque children are wrapped in a fragment', () => {
+    // Regression: `hasOpaqueDynamicChild` used to only recognize a JSX
+    // expression as a DIRECT child, not one wrapped in a fragment
+    // (`<>{children}</>` — an idiomatic pattern), so this false-positived as
+    // "no accessible name".
+    const file = tmpFile(
+      'an-dialog-dynamic-fragment.tsx',
+      `import { Dialog } from '@marigold/components';
+      const C = ({ children }: { children: React.ReactNode }) => (
+        <Dialog><>{children}</></Dialog>
+      );`
+    );
+    expect(findDialog(file)).toBeUndefined();
+  });
+
+  it('finds a Dialog.Title inside an inline render function', () => {
+    const file = tmpFile(
+      'an-dialog-renderfn.tsx',
+      `import { Dialog } from '@marigold/components';
+      const C = () => (
+        <Dialog>
+          {({ close }) => (
+            <>
+              <Dialog.Title>Hi</Dialog.Title>
+              <Dialog.Content>c</Dialog.Content>
+            </>
+          )}
+        </Dialog>
+      );`
+    );
+    expect(findDialog(file)).toBeUndefined();
+  });
+
+  it('does not flag a self-closing Dialog (composition reports that)', () => {
+    const file = tmpFile(
+      'an-dialog-selfclosing.tsx',
+      `import { Dialog } from '@marigold/components';
+      const C = () => <Dialog />;`
+    );
+    expect(findDialog(file)).toBeUndefined();
+  });
+
+  it('flags a Drawer with no accessible name', () => {
+    const file = tmpFile(
+      'an-drawer-bare.tsx',
+      `import { Drawer, Button } from '@marigold/components';
+      const C = () => (
+        <Drawer>
+          <Button>x</Button>
+        </Drawer>
+      );`
+    );
+    const issue = validateAccessibleName(file).find(
+      i => i.component === 'Drawer'
+    );
+    // Drawer.Title is documented optional, so this is inferred → warning.
+    expect(issue?.severity).toBe('warning');
+  });
+
+  it('labels the inner overlay independently of the outer title', () => {
+    const file = tmpFile(
+      'an-dialog-nested.tsx',
+      `import { Dialog } from '@marigold/components';
+      const C = () => (
+        <Dialog>
+          <Dialog.Title>Outer</Dialog.Title>
+          <Dialog.Content>
+            <Dialog>
+              <Dialog.Content>inner has no title</Dialog.Content>
+            </Dialog>
+          </Dialog.Content>
+        </Dialog>
+      );`
+    );
+    const issues = validateAccessibleName(file).filter(
+      i => i.component === 'Dialog'
+    );
+    expect(issues.length).toBe(1);
+  });
+
+  it('does not flag a Dialog with spread props (aria-label may be inside)', () => {
+    const file = tmpFile(
+      'an-dialog-spread.tsx',
+      `import { Dialog } from '@marigold/components';
+      const C = (props: any) => (
+        <Dialog {...props}>
+          <Dialog.Content>x</Dialog.Content>
+        </Dialog>
+      );`
+    );
+    expect(findDialog(file)).toBeUndefined();
+  });
+
+  it('ignores non-overlay components', () => {
+    const file = tmpFile(
+      'an-card.tsx',
+      `import { Card } from '@marigold/components';
+      const C = () => <Card><p>hi</p></Card>;`
+    );
+    expect(validateAccessibleName(file)).toEqual([]);
+  });
+
+  it('does not flag a local component that shares the Dialog name', () => {
+    // A project's own <Dialog> imported from a local module must not be
+    // required to carry an accessible name (regression: this was a
+    // false-positive error on non-Marigold overlays).
+    const file = tmpFile(
+      'an-local-dialog.tsx',
+      `import { Dialog } from './my-dialog';
+      const C = () => (
+        <Dialog>
+          <p>bare</p>
+        </Dialog>
+      );`
+    );
+    expect(validateAccessibleName(file)).toEqual([]);
+  });
+
+  it('still flags an aliased Marigold Dialog with no accessible name', () => {
+    const file = tmpFile(
+      'an-alias-dialog.tsx',
+      `import { Dialog as D } from '@marigold/components';
+      const C = () => (
+        <D>
+          <p>bare</p>
+        </D>
+      );`
+    );
+    const issue = validateAccessibleName(file).find(i => i.component === 'D');
+    expect(issue).toBeDefined();
+    expect(issue?.severity).toBe('error');
+  });
+
+  it('does not flag a Dialog whose title is delegated to a custom child component', () => {
+    // A project's own <DialogHeader> might render <Dialog.Title> internally —
+    // this static check cannot see into it, so it must not be flagged as a
+    // deterministic error (regression: this was a false-positive error on a
+    // pattern the checker genuinely cannot resolve).
+    const file = tmpFile(
+      'an-custom-header.tsx',
+      `import { Dialog } from '@marigold/components';
+      const DialogHeader = () => <Dialog.Title>Settings</Dialog.Title>;
+      const C = () => (
+        <Dialog>
+          <DialogHeader />
+        </Dialog>
+      );`
+    );
+    expect(findDialog(file)).toBeUndefined();
+  });
+
+  it('still flags a Dialog whose only child is a known Marigold component', () => {
+    // A known Marigold component (Button) never renders another overlay's
+    // title internally, so its presence must not suppress a genuine finding
+    // the way an unresolved custom component does.
+    const file = tmpFile(
+      'an-known-component-child.tsx',
+      `import { Dialog, Button } from '@marigold/components';
+      const C = () => (
+        <Dialog>
+          <Button>Close</Button>
+        </Dialog>
+      );`
+    );
+    const issue = findDialog(file);
+    expect(issue).toBeDefined();
+    expect(issue?.severity).toBe('error');
+  });
+});
