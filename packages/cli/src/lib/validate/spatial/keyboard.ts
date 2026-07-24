@@ -445,6 +445,19 @@ export const extractTabSequence = async (
   return { tabSequence, endedByBody, cycleSelector, reachedIndices };
 };
 
+// `data-mv-focusable` is only read back by `extractFocusStepData` during the
+// Tab walk above. Once that walk finishes, the attribute is a stale mutation
+// left on the live DOM — harmless only because keyboard is currently the last
+// spatial check and the page is torn down right after. Removing it here keeps
+// that from becoming a hazard for any future reordering, or a second keyboard
+// pass, that would otherwise read leftover indices.
+const clearFocusableMarkers = (page: Page): Promise<void> =>
+  page.evaluate(() => {
+    for (const el of document.querySelectorAll('[data-mv-focusable]')) {
+      el.removeAttribute('data-mv-focusable');
+    }
+  });
+
 const waitForLayout = (page: Page): Promise<void> =>
   page.evaluate(
     () =>
@@ -542,6 +555,7 @@ export const extractKeyboardA11yData = async (
   });
 
   const tabResult = await extractTabSequence(page, maxSteps, unfocusedByIndex);
+  await clearFocusableMarkers(page);
 
   const reachedGroups = new Set<string>();
   focusableElements.forEach((el, i) => {

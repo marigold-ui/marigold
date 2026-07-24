@@ -1,4 +1,4 @@
-import type { Page } from 'playwright';
+import type { ElementHandle, Page } from 'playwright';
 import type { ValidationIssue } from '../types.js';
 
 /**
@@ -164,8 +164,9 @@ export const extractContentOnHoverFocus = async (
       persistent: true,
     };
 
+    let trigger: ElementHandle<SVGElement | HTMLElement> | null = null;
     try {
-      const trigger = await page.$(c.trigger);
+      trigger = await page.$(c.trigger);
       if (!trigger) continue;
 
       // Reveal via focus first (keyboard path), fall back to hover.
@@ -177,7 +178,6 @@ export const extractContentOnHoverFocus = async (
       }
       o.revealed = await isVisible(page, c.tooltip);
       if (!o.revealed) {
-        await trigger.dispose();
         observations.push(o);
         continue;
       }
@@ -211,7 +211,6 @@ export const extractContentOnHoverFocus = async (
         }
       }
 
-      await trigger.dispose();
       // Reset state for the next candidate.
       await page.keyboard.press('Escape').catch(() => {});
       await page.mouse.move(0, 0).catch(() => {});
@@ -222,6 +221,11 @@ export const extractContentOnHoverFocus = async (
       await waitFrames(page);
     } catch {
       // Keep FP-safe defaults on any interaction error.
+    } finally {
+      // Dispose on every path — success, the early !revealed continue, and a
+      // thrown error alike — so a failure between acquiring the handle and
+      // the (now-removed) inline disposes can no longer leak it.
+      await trigger?.dispose().catch(() => {});
     }
 
     observations.push(o);

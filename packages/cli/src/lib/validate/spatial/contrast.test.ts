@@ -45,6 +45,12 @@ describe('parseColor', () => {
   it('parses #rgb shorthand', () => {
     expect(parseColor('#f80')).toEqual({ r: 255, g: 136, b: 0, a: 1 });
   });
+  it('returns null for an unparseable #rgb shorthand instead of NaN channels', () => {
+    // Must match the 6/8-digit branch's NaN guard: an indeterminate colour is
+    // null, never a truthy object with NaN channels feeding into a contrast
+    // ratio calculation.
+    expect(parseColor('#zzz')).toBeNull();
+  });
   it('parses #rrggbbaa', () => {
     const c = parseColor('#00000080');
     expect(c?.r).toBe(0);

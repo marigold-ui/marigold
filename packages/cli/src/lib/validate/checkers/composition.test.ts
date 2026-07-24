@@ -165,6 +165,60 @@ describe('validateComposition', () => {
     expect(tabsAsDialogChild).toBeUndefined();
   });
 
+  it('does not double-count sub-components from a nested same-name compound', () => {
+    // A confirm Dialog nested inside another Dialog's content is realistic
+    // (e.g. "discard unsaved changes?"). Its own Title/Content/Actions must
+    // not be misattributed to the outer Dialog's counts as duplicates.
+    const file = tmpFile(
+      'cv-nested-same-name.tsx',
+      `import { Dialog } from '@marigold/components';
+      const C = () => (
+        <Dialog>
+          <Dialog.Title>Settings</Dialog.Title>
+          <Dialog.Content>
+            <Dialog>
+              <Dialog.Title>Discard changes?</Dialog.Title>
+              <Dialog.Content>You have unsaved changes.</Dialog.Content>
+              <Dialog.Actions><button>Discard</button></Dialog.Actions>
+            </Dialog>
+          </Dialog.Content>
+          <Dialog.Actions><button>OK</button></Dialog.Actions>
+        </Dialog>
+      );`
+    );
+    const issues = validateComposition(file);
+    const duplicateWarning = issues.find(
+      i => i.component === 'Dialog' && i.severity === 'warning'
+    );
+    expect(duplicateWarning).toBeUndefined();
+  });
+
+  it('does not borrow the outer instance ancestor slot for an empty nested instance of the same compound', () => {
+    // The inner Dialog's ancestor chain passes through the outer Dialog's own
+    // <Dialog.Content> before reaching the outer <Dialog> boundary. That
+    // Content belongs to the outer instance, not the inner one — if it were
+    // wrongly borrowed via ancestor-climbing, this genuinely empty inner
+    // Dialog would escape the empty-compound error.
+    const file = tmpFile(
+      'cv-nested-ancestor.tsx',
+      `import { Dialog } from '@marigold/components';
+      const C = () => (
+        <Dialog>
+          <Dialog.Content>
+            <Dialog><p>bare</p></Dialog>
+          </Dialog.Content>
+        </Dialog>
+      );`
+    );
+    const issues = validateComposition(file);
+    const emptyErrors = issues.filter(
+      i =>
+        i.component === 'Dialog' &&
+        i.message.includes('without any of its sub-components')
+    );
+    expect(emptyErrors).toHaveLength(1);
+  });
+
   it('does not emit false warnings when children are dynamic', () => {
     // The contents of {children} cannot be analyzed statically, so a compound
     // with only dynamic children must not be flagged as empty or incomplete.

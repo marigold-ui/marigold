@@ -49,6 +49,35 @@
     "ts-morph": "^24.0.0",
     "typescript": "6.0.3"
   },
+  "peerDependencies": {
+    "@marigold/components": ">=18.0.0-beta.0",
+    "@marigold/theme-rui": ">=6.0.0-beta.0",
+    "@vitejs/plugin-react": ">=4.0.0",
+    "playwright": ">=1.40.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
+    "vite": ">=5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@marigold/theme-rui": {
+      "optional": true
+    },
+    "@vitejs/plugin-react": {
+      "optional": true
+    },
+    "playwright": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    },
+    "vite": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.0",
     "@babel/types": "8.0.4",

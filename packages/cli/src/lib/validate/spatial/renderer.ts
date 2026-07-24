@@ -8,7 +8,6 @@ import {
 import { type ViteDevServer, createLogger, createServer } from 'vite';
 import fs from 'node:fs';
 import { copyFile, mkdir, mkdtemp, rm } from 'node:fs/promises';
-import net from 'node:net';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildInstallScript } from './browser-helpers.js';
@@ -101,23 +100,6 @@ export type SharedRenderer = {
   close: () => Promise<void>;
 };
 
-const findFreePort = async (): Promise<number> =>
-  new Promise((resolve, reject) => {
-    const srv = net.createServer();
-    srv.unref();
-    srv.on('error', reject);
-    srv.listen(0, '127.0.0.1', () => {
-      const address = srv.address();
-      if (address && typeof address === 'object') {
-        const { port } = address;
-        srv.close(() => resolve(port));
-      } else {
-        srv.close();
-        reject(new Error('Could not allocate port for Vite dev server.'));
-      }
-    });
-  });
-
 const ensureCacheDir = async (): Promise<string> => {
   await mkdir(getCacheDir(), { recursive: true });
   return getCacheDir();
@@ -155,16 +137,19 @@ const linkProjectModules = (workDir: string, sourceFilePath: string): void => {
 };
 
 const startViteServer = async (workDir: string): Promise<ViteDevServer> => {
-  const port = await findFreePort();
-
   const server = await createServer({
     root: workDir,
     configFile: false,
     plugins: [react()],
     customLogger: createLogger('silent'),
     server: {
-      port,
-      strictPort: true,
+      // Let the OS assign a free ephemeral port at bind time (port: 0)
+      // instead of probing one, closing the probe, and re-binding it with
+      // strictPort — the probe-then-rebind gap is a TOCTOU race another
+      // process can win. `server.httpServer.address()` (read by the caller
+      // once listen() resolves) gives the actual bound port.
+      port: 0,
+      strictPort: false,
       host: '127.0.0.1',
       // Defense-in-depth for running untrusted generated code. The primary
       // control is the page-level route filter (below): it aborts every

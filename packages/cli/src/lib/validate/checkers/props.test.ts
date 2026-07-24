@@ -80,8 +80,17 @@ const C = () => <Accordion iconPosition="middle">x</Accordion>;`
   });
 
   it('does not flag dynamic variant expressions', () => {
-    const issues = validateProps(fixture('invalid-variant.tsx'));
-    expect(issues.every(i => i.message.includes('"abc"'))).toBe(true);
+    // A genuinely dynamic value (`variant={v}`) cannot be checked statically,
+    // so it must not be flagged — unlike the previous version of this test,
+    // which pointed at a fixture containing only a static invalid value and
+    // so passed regardless of whether the checker handled dynamic values.
+    const file = tmpFile(
+      'mv-dynamic-variant.tsx',
+      `import { Button } from '@marigold/components';
+const C = ({ v }: { v: string }) => <Button variant={v}>Save</Button>;`
+    );
+    const issues = validateProps(file);
+    expect(issues.filter(i => i.message.includes('variant'))).toEqual([]);
   });
 
   it('does not flag native HTML elements', () => {
