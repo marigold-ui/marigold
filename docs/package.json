@@ -1,6 +1,6 @@
 {
   "name": "@marigold/docs",
-  "version": "17.9.1",
+  "version": "17.9.2",
   "private": true,
   "scripts": {
     "build": "pnpm -w build:themes && pnpm build:assets && next build",

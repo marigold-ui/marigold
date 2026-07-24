@@ -1,5 +1,13 @@
 # @marigold/theme-rui
 
+## 5.5.2
+
+### Patch Changes
+
+- Updated dependencies [85e9a45]
+  - @marigold/components@17.9.2
+  - @marigold/system@17.9.2
+
 ## 5.5.1
 
 ### Patch Changes
