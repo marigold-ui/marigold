@@ -83,7 +83,6 @@ The example below adds venues from a searchable, filterable, multi-select table.
 
 A few details make the dialog trustworthy:
 
-- **Bound the selection when the task requires it.** Most picks need at least one record, so disable the commit until something is staged, and an empty set can then never be committed by accident. If a pick also caps how many may be chosen, make the ceiling visible before it is reached, stop further checks once it is, and say why the rest are blocked, so the limit reads as a rule and not a bug.
 - **Never clear staged selections while filtering.** Typing in the search narrows the visible rows, but records staged earlier stay staged even when they scroll out of view. Clearing them on every keystroke would make the pick impossible. This is the same tension as the filter paradox in [Table Records](/patterns/user-input/table-record-management).
 - **Show records the way the user recognizes them.** When a record carries detail worth scanning, such as a city or a capacity, show each attribute in its own [`<Table>`](/components/collection/table) column instead of a bare name. A plain list is enough when the label stands on its own.
 - **Offer select all for bulk picks.** A header control that selects every row, shown in a mixed state while the selection is partial, saves the user from working through a long list by hand. Keep it paired with search and filters so "all" applies to a sensibly narrowed set.
@@ -115,6 +114,14 @@ When nothing is staged, show the bare verb ("Add venues") disabled rather than a
     </DontDescription>
   </Dont>
 </GuidelineTiles>
+
+### Selection limits
+
+Some picks limit how many records the user may choose. Tell them the rule up front, before they hit it. A short line of helper text like "Pick at least three" or "Choose up to seven" sets the expectation, and a running count shows where they stand. Put that count on the staged-tag rail, which already lists the chosen records, so a label like "Staged (3 of 5)" shows the limit without adding a separate control.
+
+A minimum is the fewest the user may pick. Keep the commit button disabled until they reach it, so a set that is too small can never be committed by accident. Most picks need at least one record, so the [example](/examples/pick) disables its button while nothing is chosen. If a pick needs more than one, do the same, and let the helper text say how many more are still needed.
+
+A maximum is the most the user may pick. Show the limit before they reach it. Once they hit it, disable the rows they have not picked so they cannot add more, and say why, so the block reads as a rule and not a bug. Let them remove a choice at any time, even at the limit, so they can swap one for another instead of getting stuck.
 
 ### A list when the label is enough
 
