@@ -1,289 +1,235 @@
-# `marigold validate` — wie die Validierungs-Engine funktioniert
+# `marigold validate` — how the validation engine works
 
-Dieses Verzeichnis ist die komplette Implementierung von `marigold validate`. Der Befehl nimmt eine `.tsx`-Datei entgegen (typischerweise von einem LLM generierter Marigold-Code) und prüft sie auf drei Ebenen:
+This directory is the complete implementation of `marigold validate`. The command takes a `.tsx` file (typically LLM-generated Marigold code) and checks it on three levels:
 
-1. **Technisch (statisch)** — TypeScript-Kompilierung, Marigold-Props, Komposition, Barrierefreiheits-Konventionen. Läuft rein auf dem AST, ohne Browser.
-2. **Räumlich (dynamisch)** — Overlap, Overflow, Responsive-Verhalten, Design-Token-Konformität. Braucht einen echten Render in einem Headless-Browser.
-3. **Barrierefreiheit / a11y (dynamisch)** — axe-core, Kontrast, Tastatur-Navigation, Fokus-Sichtbarkeit, Hover/Focus-Inhalte. Braucht ebenfalls einen echten Render.
+1. **Technical (static)** — TypeScript compilation, Marigold props, composition, accessibility conventions. Runs purely on the AST, no browser involved.
+2. **Spatial (dynamic)** — overlap, overflow, responsive behavior, design-token compliance. Needs an actual render in a headless browser.
+3. **Accessibility / a11y (dynamic)** — axe-core, contrast, keyboard navigation, focus visibility, hover/focus content. Also needs an actual render.
 
-Ziel dieser Datei: Jeder, der hier etwas ändern, erweitern oder debuggen muss, soll ohne Vorwissen verstehen, **wie alles zusammenhängt** und **wo genau er ansetzen muss**.
+Goal of this file: anyone who needs to change, extend, or debug something here should be able to understand, without prior context, **how everything fits together** and **exactly where to make a change**.
 
 ---
 
-## 1. Der Einstiegspunkt
+## 1. The entry point
 
-Der CLI-Befehl (`packages/cli/src/commands/validate.ts` → `bin/marigold.ts`) ruft am Ende nur eine Funktion auf:
+The CLI command (`packages/cli/src/commands/validate.ts` → `bin/marigold.ts`) ultimately calls a single function:
 
 ```ts
 import { validate } from './lib/validate/index.js';
 
 const report = await validate(filePath, {
-  checks: ['technical', 'spatial', 'a11y'], // oder eine Teilmenge, oder 'all'
+  checks: ['technical', 'spatial', 'a11y'], // any subset of the three
   viewport: { width: 1280, height: 720 },
 });
 ```
 
-`validate()` (in [`index.ts`](./index.ts)) macht drei Dinge, in dieser Reihenfolge:
+This is the programmatic library API (`ValidateOptions.checks: ValidationCheck[]`), which accepts any subset. The CLI's own `--checks` flag is stricter — `commands/validate.ts::parseChecks` only accepts a single value or the literal `'all'`, not a comma-separated subset.
 
-1. **Technische Checks** laufen immer zuerst und synchron, ganz ohne Browser (`checkers/index.ts::runTechnicalChecks`).
-2. Wenn `spatial` oder `a11y` angefragt sind **und** die technischen Checks keinen fatalen Fehler ergeben haben (TypeScript-Fehler oder ein Laufzeitfehler des Validators selbst), wird **einmal** eine Playwright/Vite-Renderumgebung aufgebaut (`spatial/renderer.ts::createRenderer`) und die Datei gerendert.
-3. Auf dem gerenderten DOM laufen dann die räumlichen und a11y-Checks (`spatial/index.ts::runSpatialChecks`), alle im selben Render — es wird nicht mehrfach neu gerendert.
+`validate()` (in [`index.ts`](./index.ts)) does three things, in this order:
 
-Am Ende werden alle gefundenen `ValidationIssue`s zu einem `ValidationReport` zusammengefasst (`buildReport` in `index.ts`) und über `format.ts` in lesbaren Text (oder JSON) gebracht.
+1. **Technical checks** always run first and synchronously, with no browser at all (`checkers/index.ts::runTechnicalChecks`).
+2. If `spatial` or `a11y` were requested **and** the technical checks didn't produce a fatal error (a TypeScript error, or a runtime error in the validator itself), a Playwright/Vite render environment is set up **once** (`spatial/renderer.ts::createRenderer`) and the file is rendered.
+3. The spatial and a11y checks then run on the rendered DOM (`spatial/index.ts::runSpatialChecks`), all against the same render — the file is never re-rendered per check.
 
-### Wichtig: Die drei CLI-Flags sind gröber als die interne Steuerung
+At the end, every `ValidationIssue` found is collected into a `ValidationReport` (`buildReport` in `index.ts`) and turned into readable text (or JSON) via `format.ts`.
 
-`--checks technical|spatial|a11y|all` steuert nur zwei Flags nach außen (`enableSpatial`, `enableA11y`), aber intern hat `spatial/index.ts` mehr Schalter (`enableResponsive`, `enableKeyboardA11y`, `enableTextSpacing`, `enableRevealed`, `enableContentHoverFocus`), die **standardmäßig von den beiden groben Flags abgeleitet werden**:
+### Important: the `--checks` flag is coarser than the internal controls
 
-| Feiner Schalter           | Default (`??`)  | Läuft also bei CLI-Flag |
-| ------------------------- | --------------- | ----------------------- |
-| `enableResponsive`        | `enableSpatial` | `spatial`, `all`        |
-| `enableTextSpacing`       | `enableA11y`    | `a11y`, `all`           |
-| `enableRevealed`          | `enableA11y`    | `a11y`, `all`           |
-| `enableContentHoverFocus` | `enableA11y`    | `a11y`, `all`           |
-| `enableKeyboardA11y`      | `enableA11y`    | `a11y`, `all`           |
+`--checks technical|spatial|a11y|all` (one flag, four possible values) only exposes two booleans internally (`enableSpatial`, `enableA11y`), but internally `spatial/index.ts` has more switches (`enableResponsive`, `enableKeyboardA11y`, `enableTextSpacing`, `enableRevealed`, `enableContentHoverFocus`), which **default from the two coarse flags**:
 
-D. h. `--checks spatial` prüft auch Responsive-Verhalten, und `--checks a11y` prüft auch Tastatur-Navigation, Text-Spacing und Hover/Focus-Inhalte — nicht nur axe. Das ist so gewollt (diese Dinge brauchen alle denselben Render, es wäre verschwenderisch sie getrennt zu triggern), aber beim Debuggen "warum läuft Check X obwohl ich nur `--checks spatial` angegeben habe" ist genau das die Antwort.
+| Fine-grained switch       | Default (`??`)  | So it runs on CLI flag |
+| ------------------------- | --------------- | ---------------------- |
+| `enableResponsive`        | `enableSpatial` | `spatial`, `all`       |
+| `enableTextSpacing`       | `enableA11y`    | `a11y`, `all`          |
+| `enableRevealed`          | `enableA11y`    | `a11y`, `all`          |
+| `enableContentHoverFocus` | `enableA11y`    | `a11y`, `all`          |
+| `enableKeyboardA11y`      | `enableA11y`    | `a11y`, `all`          |
 
----
-
-## 2. Verzeichnisstruktur
-
-```
-lib/validate/
-├── index.ts              orchestriert alles: technical → render → spatial/a11y → Report
-├── types.ts               alle gemeinsamen Typen (ValidationIssue, ValidationReport, …)
-├── format.ts               formatiert den Report als lesbaren Text (formatForLLM)
-├── checkers/                statische (AST-basierte) Checks — kein Browser nötig
-│   ├── index.ts              orchestriert alle statischen Checker (runTechnicalChecks)
-│   ├── compiler.ts             echte TypeScript-Kompilierung der Datei
-│   ├── props.ts                 Props gegen die echten Marigold-Typen prüfen
-│   ├── composition.ts            Compound-Components richtig zusammengesetzt?
-│   ├── accessible-name.ts         Overlays (Dialog/Drawer) brauchen einen Titel/aria-label
-│   ├── required-ancestor.ts       Teile eines Compounds brauchen ihren Container
-│   ├── section-header.ts          <X.Section> braucht ein header-Prop
-│   ├── collection-id.ts            Collection-Items brauchen eine id
-│   ├── design-system-usage.ts      erfundene/nicht-existente Komponenten erkennen
-│   ├── layout-usage.ts             Flow-Layout mit nur einem Kind ist sinnlos
-│   ├── table-usage.ts              Formularfelder gehören nicht in eine <Table>
-│   ├── component-conventions.ts    Konventionen wie "ein primary Button pro Form"
-│   └── theme-variants.ts           Prop-Werte gegen echte Theme-Varianten prüfen
-├── spatial/                  dynamische (Browser-basierte) Checks
-│   ├── index.ts                orchestriert alle dynamischen Checks (runSpatialChecks)
-│   ├── renderer.ts               baut Vite-Dev-Server + Playwright-Browser auf/ab
-│   ├── cleanup-stack.ts           generisches LIFO-Teardown für Renderer-Ressourcen
-│   ├── browser-helpers.ts         DOM-Hilfsfunktionen, die in die Seite injiziert werden
-│   ├── bounding-box.ts             Bounding-Boxes aller Komponenten einsammeln
-│   ├── overlap.ts                  echte Überlappungen aus den Bounding-Boxes erkennen
-│   ├── overflow.ts                  Text-/Inhalts-Overflow und ungewolltes Wrapping
-│   ├── computed-styles.ts          berechnete CSS-Werte pro Element einsammeln
-│   ├── token-compliance.ts         berechnete Styles gegen Design-Tokens abgleichen
-│   ├── responsive.ts               Verhalten bei mehreren Viewport-Breiten
-│   ├── aom-extractor.ts             Accessibility-Object-Model + axe-core-Audit
-│   ├── non-text-contrast.ts        Kontrast von Rahmen/Flächen (WCAG 1.4.11)
-│   ├── contrast.ts                  reine Farb-/Kontrast-Mathematik (kein Browser)
-│   ├── focus-visible.ts             reiner Vorher/Nachher-Style-Vergleich für Fokus
-│   ├── keyboard.ts                  Tab-Reihenfolge, Fokus-Fallen, Pfeiltasten-Navigation
-│   ├── text-spacing.ts              WCAG 1.4.12 Text-Spacing-Override-Test
-│   ├── content-on-hover-focus.ts    WCAG 1.4.13 Hover/Focus-Inhalte (Tooltip etc.)
-│   └── interaction-driver.ts        öffnet Overlays generisch und lässt Checks darauf laufen
-├── helpers/                  gemeinsame Hilfsmodule für Checker UND spatial-Checks
-│   ├── source.ts                Datei einlesen + TS-AST parsen
-│   ├── ast.ts                    kleine AST-Helfer (statischer String-Wert, Spread erkannt, …)
-│   ├── jsx.ts                     Import-Statements einsammeln
-│   ├── components.ts               DIE Registry: lädt @marigold/components-Typen via ts-morph
-│   ├── resolve-theme.ts            findet die installierte @marigold/theme-rui
-│   ├── design-tokens.ts             lädt die CSS-Custom-Properties aus dem Theme
-│   └── component-locations.ts      ordnet dynamische Findings einer Zeile im Quelltext zu
-├── examples/                 Fixture-Dateien (.tsx), die in Tests als Testfälle gerendert/geparst werden
-├── test-support/
-│   └── tmp.ts                  Hilfsfunktion, um Testdateien in ein Tmp-Verzeichnis zu schreiben
-└── *.test.ts                  je eine Testdatei direkt neben der Datei, die sie testet
-```
-
-Faustregel: **jede Datei hat eine `*.test.ts`-Datei direkt daneben** (Unit-Tests) und rendernde Module haben zusätzlich eine `*.integration.test.ts` (braucht echten Chromium, überspringt sich selbst wenn keiner verfügbar ist — siehe Abschnitt 7).
+I.e. `--checks spatial` also checks responsive behavior, and `--checks a11y` also checks keyboard navigation, text spacing, and hover/focus content — not just axe. This is intentional (all of these need the same render, it would be wasteful to trigger them separately), but when debugging "why does check X run even though I only passed `--checks spatial`", this table is the answer.
 
 ---
 
-## 3. Technische Checks (`checkers/`)
+## 2. Technical checks (`checkers/`)
 
-Diese Checks laufen **synchron, ohne Browser**, direkt auf dem TypeScript-AST der Datei (`ts-morph` / `typescript`-Compiler-API). Orchestriert wird das in [`checkers/index.ts`](./checkers/index.ts) → `runTechnicalChecks(filePath, themePath?)`.
+These checks run **synchronously, without a browser**, directly on the file's TypeScript AST (`ts-morph` / the TypeScript compiler API). Orchestrated in [`checkers/index.ts`](./checkers/index.ts) → `runTechnicalChecks(filePath, themePath?)`.
 
-### Fehler-Isolation
+### Failure isolation
 
-Jeder Checker läuft einzeln durch `safeCheck()`. Wirft ein Checker eine Exception (z. B. weil er auf eine AST-Form trifft, an die der Autor nicht gedacht hat), wird daraus **eine einzelne Warning für genau diesen Checker** — die anderen Checker laufen trotzdem weiter. Das ist Absicht: ein kaputter Checker darf nie den ganzen technischen Durchlauf lahmlegen.
+Each checker runs individually through `safeCheck()` (the TypeScript compiler pass is the one exception — it has its own inline `try/catch` in `checkers/index.ts`, building the same failure shape by hand). If a checker throws (e.g. because it hit an AST shape its author didn't anticipate), it becomes **a single warning for just that checker** — the other checkers still run. This is intentional: a broken checker must never take down the entire technical pass.
 
-### Die einzelnen Checker
+### The individual checkers
 
-| Datei                      | Prüft                                                                                                                                                                                                                                                                                                                      | Quelle der Wahrheit                                                                                 |
-| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| `compiler.ts`              | Führt die Datei durch einen echten, isolierten TypeScript-Compiler-Lauf (strict mode). Fängt Syntaxfehler, Typfehler, falsche Imports — alles, was `tsc` auch fangen würde.                                                                                                                                                | TypeScript selbst                                                                                   |
-| `props.ts`                 | Vergleicht jedes JSX-Attribut einer Marigold-Komponente mit den echten Prop-Typen aus `helpers/components.ts`. Erkennt unbekannte Props, falsche Enum-Werte, HTML-Events statt React-Aria-Events (`onClick` statt `onPress`), DOM-Event-Objekte in value-basierten Handlern.                                               | `@marigold/components`-Typdeklarationen                                                             |
-| `composition.ts`           | Prüft Compound-Components (`<Dialog><Dialog.Title>…`) auf: komplett leere Nutzung (Error), doppelte Sub-Komponenten (Warning). Ignoriert dynamische Kinder (`{children}`) und Collections (Tabs, Select — die wiederholen ihre Items by design).                                                                           | `helpers/components.ts` (welche Sub-Komponenten gibt es, ist es eine Collection?)                   |
-| `accessible-name.ts`       | Overlays (Dialog, Drawer, Menu, …) brauchen einen Titel oder ein `aria-label` — sonst kann axe das zur Laufzeit gar nicht prüfen, weil das Overlay standardmäßig geschlossen ist und nie gerendert öffnet.                                                                                                                 | curated Liste + `helpers/components.ts`-Resolver                                                    |
-| `required-ancestor.ts`     | Manche Bausteine dürfen nur innerhalb eines bestimmten Containers stehen (z. B. `<Radio>` nur innerhalb `<Radio.Group>`).                                                                                                                                                                                                  | schema-abgeleitet + eine kleine curated Ausnahmeliste (siehe Kommentar `REQUIRED_ANCESTOR` im File) |
-| `section-header.ts`        | `<X.Section>` (Select, ComboBox, Autocomplete, TagField) verlangt laut Doku ein `header`-Prop — TypeScript selbst prüft das aus technischen Gründen nicht scharf genug.                                                                                                                                                    | curated (dokumentierte Anforderung)                                                                 |
-| `collection-id.ts`         | Statisch geschriebene Collection-Items brauchen eine `id`, damit `onAction`/`onSelectionChange` sie identifizieren können.                                                                                                                                                                                                 | schema-abgeleitet                                                                                   |
-| `design-system-usage.ts`   | Erkennt "halluzinierte" Komponenten — Namen, die wie eine Marigold-Komponente aussehen, aber gar nicht existieren (typisches LLM-Problem). Schlägt bei Bedarf die echte, ähnlich benannte Komponente vor.                                                                                                                  | `helpers/components.ts`-Registry                                                                    |
-| `layout-usage.ts`          | Ein Flow-Layout (`Stack`, `Inline`, `Columns`, `Grid`) mit nur einem Kind macht nichts — Ausnahmen sind Wrapper wie `Inset`/`Center`, deren Zweck genau das ist.                                                                                                                                                           | curated                                                                                             |
-| `table-usage.ts`           | Formularfelder gehören nicht direkt in eine `<Table>` — das ist ein Zeichen, dass die Tabelle für Formular-Layout zweckentfremdet wird.                                                                                                                                                                                    | curated                                                                                             |
-| `component-conventions.ts` | Eine Sammlung kleinerer Stil-Konventionen, z. B. nur ein `variant="primary"`-Button pro Form, Platzhalter-Texte, die wie ein "lädt gerade"-Label aussehen. Nutzt denselben Origin-Resolver wie `props.ts`, damit ein gleichnamiger lokaler `<Form>`/`<Button>` nicht fälschlich als Marigold-Komponente behandelt wird.    | curated                                                                                             |
-| `theme-variants.ts`        | Prüft Prop-Werte, die zwar laut TypeScript gültig sind (offener String-Typ), aber keiner echten Theme-Variante entsprechen (z. B. `size="huge"`, wenn das Theme nur `sm`/`md`/`lg` kennt). Läuft nur, wenn das Theme-Paket auf der Platte gefunden werden kann — sonst wird der Check komplett übersprungen (kein Fehler). | `*.styles.ts`-Dateien im installierten `@marigold/theme-rui`                                        |
+| File                       | Checks                                                                                                                                                                                                                                                                                                          | Source of truth                                                                                                                                                                                                                                                                                                                                 |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `compiler.ts`              | Runs the file through a real, isolated TypeScript compiler pass (strict mode). Catches syntax errors, type errors, wrong imports — everything `tsc` itself would catch.                                                                                                                                         | TypeScript itself                                                                                                                                                                                                                                                                                                                               |
+| `props.ts`                 | Compares every JSX attribute of a Marigold component against the real prop types from `helpers/components.ts`. Detects unknown props, invalid enum values, HTML events instead of React Aria events (`onClick` instead of `onPress`), DOM event objects passed into value-based handlers.                       | `@marigold/components` type declarations                                                                                                                                                                                                                                                                                                        |
+| `composition.ts`           | Checks compound components (`<Dialog><Dialog.Title>…`) for: completely empty usage (error), duplicate sub-components (warning). Ignores dynamic children (`{children}`) and collections (Tabs, Select — which repeat their items by design).                                                                    | `helpers/components.ts` (which sub-components exist, is it a collection?) for the general rule, plus several curated exception sets in the file itself for cases the type system can't express (e.g. `STATIC_COLLECTION_COMPOUNDS`, `SELF_POPULATING_COMPOUNDS`, `WRAPPER_SUBCOMPONENTS`, `OPTIONAL_SUBCOMPONENT_COMPOUNDS`, `REPEATABLE_SUBS`) |
+| `accessible-name.ts`       | Overlays (Dialog, Drawer, Menu, …) need a title or an `aria-label` — otherwise axe can't check this at runtime at all, because the overlay is closed by default and never opens during the render.                                                                                                              | curated list + `helpers/components.ts` resolver                                                                                                                                                                                                                                                                                                 |
+| `required-ancestor.ts`     | Some building blocks may only appear inside a specific container (e.g. `<Radio>` only inside `<Radio.Group>`).                                                                                                                                                                                                  | schema-derived + a small curated exception list (see the `REQUIRED_CONTAINER` comment in the file)                                                                                                                                                                                                                                              |
+| `section-header.ts`        | `<X.Section>` (Select, ComboBox, Autocomplete, TagField) requires a `header` prop per the docs — TypeScript itself doesn't enforce this strictly enough for technical reasons.                                                                                                                                  | curated (documented requirement), but gated through `getSubComponentProps` so it only fires for a sub-component that actually declares a `header` prop                                                                                                                                                                                          |
+| `collection-id.ts`         | Statically written collection items need an `id`, so `onAction`/`onSelectionChange` can identify them.                                                                                                                                                                                                          | curated (deliberately NOT schema-derived — nearly every component accepts a DOM `id`, so "does the sub-component declare an `id` prop" can't tell a real keyed item like `Menu.Item` apart from `Table.Cell`; see the file's own comment)                                                                                                       |
+| `design-system-usage.ts`   | Detects "hallucinated" components — names that look like a Marigold component but don't actually exist (a common LLM issue). Suggests the real, similarly-named component where possible.                                                                                                                       | `helpers/components.ts` registry                                                                                                                                                                                                                                                                                                                |
+| `layout-usage.ts`          | A flow layout (`Stack`, `Inline`, `Columns`, `Grid`) with only one child does nothing useful — exceptions are wrappers like `Inset`/`Center`, whose entire purpose is wrapping a single child.                                                                                                                  | curated                                                                                                                                                                                                                                                                                                                                         |
+| `table-usage.ts`           | Form fields don't belong directly inside a `<Table>` — a sign that the table is being misused for form layout. Also flags a `<SearchField>` nested inside a `<Table>` specifically (filter controls belong above the table, not inside a cell).                                                                 | curated                                                                                                                                                                                                                                                                                                                                         |
+| `component-conventions.ts` | A collection of smaller style conventions, e.g. only one `variant="primary"` button per form, placeholder text that looks like a "loading" label. Uses the same origin resolver as `props.ts`, so a same-named local `<Form>`/`<Button>` isn't mistakenly treated as a Marigold component.                      | curated                                                                                                                                                                                                                                                                                                                                         |
+| `theme-variants.ts`        | Checks prop values that are technically valid per TypeScript (an open string type) but don't correspond to a real theme variant (e.g. `size="huge"` when the theme only has `sm`/`md`/`lg`). Only runs if the theme package can actually be found on disk — otherwise the check is skipped entirely (no error). | `*.styles.ts` files in the installed `@marigold/theme-rui`                                                                                                                                                                                                                                                                                      |
 
-### Wie man einen neuen technischen Checker hinzufügt
+### How to add a new technical checker
 
-1. Neue Datei `checkers/mein-check.ts`, die eine Funktion `export const validateMeinCheck = (filePath: string): ValidationIssue[] => …` exportiert.
-2. Quelle parsen mit `parseSource(filePath)` aus `helpers/source.ts` (macht den TS-AST-Aufbau einheitlich, mit vernünftigen Fehlermeldungen).
-3. Neuen `IssueSource`-Wert in `types.ts` ergänzen (z. B. `'mein-check'`).
-4. In `checkers/index.ts` importieren, mit `safeCheck('mein-check', 'Mein Check', () => validateMeinCheck(filePath))` in `runTechnicalChecks` einhängen und (falls sinnvoll) einen `passed`-Eintrag ergänzen.
-5. Test-Datei `checkers/mein-check.test.ts` daneben anlegen — Muster: `tmpFile()` aus `test-support/tmp.ts` benutzen, um kleine Inline-Fixtures zu bauen, oder eine Fixture unter `examples/` anlegen, wenn mehrere Tests sie teilen.
+1. New file `checkers/my-check.ts` exporting a function `export const validateMyCheck = (filePath: string): ValidationIssue[] => …`.
+2. Parse the source with `parseSource(filePath)` from `helpers/source.ts` (keeps AST construction consistent, with sensible error messages).
+3. Add a new `IssueSource` value in `types.ts` (e.g. `'my-check'`).
+4. Import it in `checkers/index.ts`, wire it into `runTechnicalChecks` via `safeCheck('my-check', 'My Check', () => validateMyCheck(filePath))`, and add a `passed` entry where it makes sense.
+5. Add a `checkers/my-check.test.ts` file next to it — pattern: use `tmpFile()` from `test-support/tmp.ts` to build small inline fixtures, or add a fixture under `examples/` if multiple tests share it.
 
-**Wichtige Konvention, die sich durch alle Checker zieht:** Ein Tag gilt nur dann als "Marigold-Komponente", wenn er tatsächlich aus `@marigold/components` importiert wurde — nie rein nach Namen. Dafür gibt es `buildMarigoldTagResolver(source)` in `helpers/components.ts`. Ein lokal deklariertes `<Button>` oder ein `<Button>` aus `./ui/Button` darf NIE gegen das Marigold-Prop-Schema geprüft werden (das war mehrfach eine echte False-Positive-Quelle, siehe Git-History von `props.ts`/`composition.ts`/`component-conventions.ts`).
+**An important convention that runs through every checker:** a tag only counts as a "Marigold component" if it was actually imported from `@marigold/components` — never by name alone. That's what `buildMarigoldTagResolver(source)` in `helpers/components.ts` is for. A locally declared `<Button>`, or a `<Button>` from `./ui/Button`, must NEVER be validated against the Marigold prop schema (this has repeatedly been a real source of false positives — see the git history of `props.ts`/`composition.ts`/`component-conventions.ts`).
 
 ---
 
-## 4. Räumliche & dynamische Checks (`spatial/`)
+## 3. Spatial & dynamic checks (`spatial/`)
 
-Diese Checks brauchen einen **echten, gerenderten DOM** — dafür wird die zu prüfende Datei tatsächlich mit React gerendert, in einem Headless-Chromium, über einen lokalen Vite-Dev-Server. Orchestriert in [`spatial/index.ts`](./spatial/index.ts) → `runSpatialChecks()`.
+These checks need an **actual, rendered DOM** — the file under validation is genuinely rendered with React, in a headless Chromium, via a local Vite dev server. Orchestrated in [`spatial/index.ts`](./spatial/index.ts) → `runSpatialChecks()`.
 
-### 4.1 Die Render-Pipeline
+### 3.1 The render pipeline
 
 ```
 validate/index.ts
-  └─ spatial/renderer.ts :: createRenderer()      // startet EINEN Chromium-Browser
-       └─ renderer.render(filePath, viewport)      // pro Datei:
-            1. stageHarnessFiles()                    Harness-Dateien + Component.tsx
-                                                        in ein Tmp-Verzeichnis kopieren
-                                                        (harness/ liegt in packages/cli/src/harness)
-            2. linkProjectModules()                   node_modules des Zielprojekts
-                                                        per Symlink verfügbar machen
-            3. startViteServer()                       Vite-Dev-Server auf einem
-                                                        vom OS zugewiesenen Port starten
-            4. browser.newContext() + page.goto()      Seite öffnen, auf
-                                                        [data-validation-root="ready"] warten
-            5. cleanup-stack.ts                        alles wieder abbauen (Context,
-                                                        Server, Tmp-Verzeichnis), LIFO
+  └─ spatial/renderer.ts :: createRenderer()      // launches ONE Chromium browser
+       └─ renderer.render(filePath, viewport)      // per file:
+            1. stageHarnessFiles()                    copy harness files + Component.tsx
+                                                        into a tmp directory
+                                                        (harness/ lives in packages/cli/src/harness)
+            2. linkProjectModules()                   symlink the target project's
+                                                        node_modules in
+            3. startViteServer()                       start a Vite dev server on an
+                                                        OS-assigned port
+            4. browser.newContext() + page.goto()      open the page, wait for
+                                                        [data-validation-root="ready"]
+            5. cleanup-stack.ts                        tear everything back down (context,
+                                                        server, tmp directory), LIFO
 ```
 
-Die eigentliche gerenderte Komponente kommt aus [`packages/cli/src/harness/`](../../harness/):
+The actual rendered component comes from [`packages/cli/src/harness/`](../../harness/):
 
-- `entry.tsx` — sucht einen `default`- oder `App`-Export in der Zieldatei und rendert ihn. Wartet zwei `requestAnimationFrame`-Ticks (Layout muss erst wirklich fertig sein), bevor es das `data-validation-root="ready"`-Attribut setzt, auf das Playwright wartet.
-- `setup.tsx` — wickelt die Komponente in `<MarigoldProvider theme={theme}>` plus eine Error-Boundary, die Render-Fehler auf `window.__marigoldValidateRenderErrors` protokolliert statt die Seite crashen zu lassen.
+- `entry.tsx` — looks for a `default` or `App` export in the target file and renders it. Waits two `requestAnimationFrame` ticks (layout needs to genuinely settle) before setting the `data-validation-root="ready"` attribute that Playwright waits on.
+- `setup.tsx` — wraps the component in `<MarigoldProvider theme={theme}>` plus an error boundary that logs render errors onto `window.__marigoldValidateRenderErrors` instead of crashing the page.
 
-### 4.2 Sicherheits-Sandbox
+### 3.2 Security sandbox
 
-Die gerenderte Datei ist **nicht vertrauenswürdiger Code** (typischerweise LLM-generiert). Der Renderer (`renderer.ts`) schützt dagegen auf zwei Ebenen:
+The rendered file is **untrusted code** (typically LLM-generated). The renderer (`renderer.ts`) protects against that on two levels:
 
-- **Netzwerk:** `page.route('**/*')` blockiert jeden HTTP(S)-Request außer zum lokalen Vite-Server; `context.routeWebSocket('**/*', ws => ws.close())` schließt zusätzlich jeden WebSocket-Versuch (reines `page.route` deckt keine WebSockets ab).
-- **Dateisystem:** Vites `server.fs.deny` blockiert eine Denylist hochwertiger Ziele (`.env`, `.ssh/**`, `.aws/**`, private Keys, …) über Vites `/@fs`-Lesepfad. **Das ist eine Denylist, kein Allowlist** — der Kommentar direkt über `fs.deny` in `renderer.ts` erklärt genau, was dadurch noch NICHT abgedeckt ist und warum (Vite muss weiterhin seinen eigenen Client + die pnpm-`node_modules`-Symlinks lesen können).
+- **Network:** `page.route('**/*')` blocks every HTTP(S) request except to the local Vite server; `context.routeWebSocket('**/*', ws => ws.close())` additionally closes every WebSocket attempt (plain `page.route` doesn't cover WebSockets).
+- **Filesystem:** Vite's `server.fs.deny` blocks a denylist of high-value targets (`.env`, `.ssh/**`, `.aws/**`, private keys, …) via Vite's `/@fs` read path. **This is a denylist, not an allowlist** — the comment directly above `fs.deny` in `renderer.ts` explains exactly what this does NOT cover and why (Vite still needs to serve its own client and the pnpm `node_modules` symlinks).
 
-Wer an der Sandbox etwas ändert, sollte diesen Kommentar in `renderer.ts` zuerst lesen — die Abwägungen dort sind bewusst getroffen, nicht vergessen.
+Anyone changing the sandbox should read that comment in `renderer.ts` first — the tradeoffs there were made deliberately, not overlooked.
 
-### 4.3 Ressourcen-Aufräumen (`cleanup-stack.ts`)
+### 3.3 Resource cleanup (`cleanup-stack.ts`)
 
-Jede Ressource, die `renderer.ts` während eines Renders erzeugt (Browser-Context, Vite-Server, Tmp-Verzeichnis), wird **sofort bei Erzeugung** auf einen `CleanupStack` registriert (LIFO — zuletzt erzeugt, zuerst abgebaut). Das ist bewusst so und nicht "am Ende alles aufräumen", weil ein Timeout mitten im Aufbau sonst eine Ressource verwaist zurücklassen könnte, die erst NACH dem Timeout fertig erzeugt wurde. Siehe `cleanup-stack.test.ts` für die genauen Garantien (Reihenfolge, "alle abbauen auch wenn eine wirft", Re-Run-Sicherheit).
+Every resource `renderer.ts` creates during a render (browser context, Vite server, tmp directory) is registered on a `CleanupStack` **the instant it's created** (LIFO — last created, first torn down). This is deliberate, not "clean everything up at the end" — a timeout mid-setup could otherwise orphan a resource that only finished being created AFTER the timeout fired. See `cleanup-stack.test.ts` for the exact guarantees (ordering, "tear down all even if one throws", re-run safety).
 
-### 4.4 Die einzelnen dynamischen Checks
+### 3.4 The individual dynamic checks
 
-| Datei                                        | Prüft                                                                                                                                                                                                                                                                                                                                                                                            | Läuft bei                                  |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------ |
-| `bounding-box.ts` + `overlap.ts`             | Sammelt die Bounding-Box jeder Marigold-Komponente ein und erkennt echte visuelle Überlappungen (keine reinen Berührungen an der Kante).                                                                                                                                                                                                                                                         | `spatial`                                  |
-| `overflow.ts`                                | Erkennt Text-/Inhalts-Overflow und Zeilenumbrüche, die eigentlich nicht gewollt sind (z. B. abgeschnittener Text in einer zu kleinen Box).                                                                                                                                                                                                                                                       | `spatial`                                  |
-| `computed-styles.ts` + `token-compliance.ts` | Liest die tatsächlich berechneten CSS-Werte jeder Komponente aus und vergleicht sie gegen die echten Design-Tokens aus dem Theme — z. B. eine Hex-Farbe statt eines Farb-Tokens.                                                                                                                                                                                                                 | `spatial`                                  |
-| `responsive.ts`                              | Rendert bei mehreren Viewport-Breiten und prüft, ob Inhalte grundlos verschwinden, und berechnet die "Breiten-Auslastung" (wird der verfügbare Platz auf Desktop wirklich genutzt, oder bleibt das Layout im Mobil-Format hängen?).                                                                                                                                                              | `spatial` (und `enableResponsive`-Default) |
-| `aom-extractor.ts`                           | Baut das Accessibility Object Model (Rollen, Namen, States) aus der Seite und lässt zusätzlich einen echten `axe-core`-Audit laufen.                                                                                                                                                                                                                                                             | `a11y`                                     |
-| `non-text-contrast.ts` + `contrast.ts`       | WCAG 1.4.11 — Kontrast von Rahmen/Füllungen von UI-Komponenten (nicht Text!) gegen ihre Umgebung. `contrast.ts` ist die reine, Node-testbare Farb-Mathematik dahinter (kein Browser-Code).                                                                                                                                                                                                       | `a11y`                                     |
-| `focus-visible.ts`                           | Reiner Vergleich fokussiert-vs-unfokussiert Style-Fingerabdruck (WCAG 2.4.7) — wird von `keyboard.ts` während der Tab-Traversierung benutzt, nicht separat aufgerufen.                                                                                                                                                                                                                           | (Teil von `keyboard.ts`)                   |
-| `keyboard.ts`                                | Tab-Reihenfolge, unerreichbare Elemente, Fokus-Fallen (WCAG 2.1.2), Pfeiltasten-Navigation in Composite-Widgets, sichtbarer Fokusindikator.                                                                                                                                                                                                                                                      | `a11y` (`enableKeyboardA11y`-Default)      |
-| `text-spacing.ts`                            | WCAG 1.4.12 — Text darf nicht abgeschnitten werden, wenn Zeilenhöhe/Buchstaben-/Wortabstand vergrößert werden.                                                                                                                                                                                                                                                                                   | `a11y` (`enableTextSpacing`-Default)       |
-| `content-on-hover-focus.ts`                  | WCAG 1.4.13 — von Hover/Focus eingeblendete Inhalte (Tooltip, Popover) müssen schließbar (Escape), "hoverable" (Maus kann drauf bewegen ohne dass es verschwindet) und persistent (verschwindet nicht von selbst) sein. Kein öffentliches Tool automatisiert das — hier wird die Interaktion wirklich simuliert.                                                                                 | `a11y` (`enableContentHoverFocus`-Default) |
-| `interaction-driver.ts`                      | Generischer Mechanismus: findet alle interaktiven Trigger (Menü, Dialog, Listbox, Disclosure — generisch über das ARIA-Trigger-Kontrakt, nicht über Komponentennamen), öffnet sie nacheinander, lässt einen `onOpen`-Callback (i. d. R. axe + Kontrast) auf dem enthüllten Inhalt laufen, schließt wieder. So werden auch Inhalte geprüft, die beim initialen Render noch gar nicht im DOM sind. | `a11y` (`enableRevealed`-Default)          |
-| `browser-helpers.ts`                         | Keine eigene Prüfung — stellt DOM-Hilfsfunktionen (`cssPath`, `isHidden`, `focusFingerprint`, …) bereit, die per `buildInstallScript()` einmal in die Seite injiziert werden, damit jeder `page.evaluate`-Aufruf sie unter `window.__mv` wiederverwenden kann, statt sie in jedem Check neu zu definieren.                                                                                       | (Infrastruktur, kein Check)                |
+| File                                         | Checks                                                                                                                                                                                                                                                                                                                                                                       | Runs on                                        |
+| -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| `bounding-box.ts` + `overlap.ts`             | Collects the bounding box of every Marigold component and detects genuine visual overlaps (not just edges touching).                                                                                                                                                                                                                                                         | `spatial`                                      |
+| `overflow.ts`                                | Detects text/content overflow and line wrapping that isn't actually intended (e.g. text clipped inside a too-small box).                                                                                                                                                                                                                                                     | `spatial`                                      |
+| `computed-styles.ts` + `token-compliance.ts` | Reads the actual computed CSS values of every component and compares them against the real design tokens from the theme — e.g. a hex color instead of a color token.                                                                                                                                                                                                         | `spatial`                                      |
+| `responsive.ts`                              | Renders at multiple viewport widths and checks: content disappearing without reason, touch-target sizing at 320px (WCAG 2.5.8), horizontal-scroll/reflow overflow at the WCAG 1.4.10 320px condition, and computes "width utilization" (is the available space on desktop actually used, or does the layout stay stuck in a mobile shape?).                                  | `spatial` (and the `enableResponsive` default) |
+| `aom-extractor.ts`                           | Builds the accessibility object model (roles, names, states) from the page and additionally runs a real `axe-core` audit.                                                                                                                                                                                                                                                    | `a11y`                                         |
+| `non-text-contrast.ts` + `contrast.ts`       | WCAG 1.4.11 — contrast of borders/fills of UI components (not text!) against their surroundings. `contrast.ts` is the pure, Node-testable color math behind it (no browser code).                                                                                                                                                                                            | `a11y`                                         |
+| `focus-visible.ts`                           | Pure focused-vs-unfocused style fingerprint comparison (WCAG 2.4.7) — used by `keyboard.ts` during the tab traversal, not called separately.                                                                                                                                                                                                                                 | (part of `keyboard.ts`)                        |
+| `keyboard.ts`                                | Tab order, unreachable elements, keyboard traps (WCAG 2.1.2), arrow-key navigation in composite widgets, visible focus indicator, and whether the focused element is hidden behind sticky/fixed content (WCAG 2.4.11).                                                                                                                                                       | `a11y` (`enableKeyboardA11y` default)          |
+| `text-spacing.ts`                            | WCAG 1.4.12 — text must not be clipped when line height/letter/word spacing are increased.                                                                                                                                                                                                                                                                                   | `a11y` (`enableTextSpacing` default)           |
+| `content-on-hover-focus.ts`                  | WCAG 1.4.13 — content revealed by hover/focus (tooltip, popover) must be dismissable (Escape), hoverable (the pointer can move onto it without it vanishing), and persistent (doesn't disappear on its own). No public tool automates this — it genuinely simulates the interaction.                                                                                         | `a11y` (`enableContentHoverFocus` default)     |
+| `interaction-driver.ts`                      | Generic mechanism: finds every interactive trigger (menu, dialog, listbox, disclosure — generic via the ARIA trigger contract, not by component name), opens them one at a time, runs an `onOpen` callback (typically axe + contrast) against the revealed content, closes it again. This way, content that isn't in the DOM at all on the initial render also gets checked. | `a11y` (`enableRevealed` default)              |
+| `browser-helpers.ts`                         | No check of its own — provides DOM helper functions (`cssPath`, `isHidden`, `focusFingerprint`, …) that get injected into the page once via `buildInstallScript()`, so every `page.evaluate` call can reuse them under `window.__mv` instead of redefining them in every check.                                                                                              | (infrastructure, not a check)                  |
 
-### Fehler-Isolation (wie bei den technischen Checks)
+### Failure isolation (same as the technical checks)
 
-`spatial/index.ts` packt **jeden einzelnen** dieser Checks in sein eigenes `try/catch`. Schlägt z. B. `extractBoundingBoxes()` fehl, wird daraus eine einzelne Warning mit `source: 'overlap-detector'` — die anderen Blöcke (Token-Compliance, Overflow, Text-Spacing, a11y, Responsive, Keyboard) laufen trotzdem weiter. Das ist erst kürzlich für den `enableSpatial`-Block nachgezogen worden, damit er genauso robust ist wie der `enableA11y`-Block direkt darunter — beim Hinzufügen eines neuen Checks hier IMMER dieses Muster übernehmen.
+`spatial/index.ts` wraps **every single one** of these checks in its own `try/catch`. If `extractBoundingBoxes()` fails, for example, it becomes a single warning with `source: 'overlap-detector'` — the other blocks (token compliance, overflow, text spacing, a11y, responsive, keyboard) still run. This was recently retrofitted onto the `enableSpatial` block so it's exactly as robust as the `enableA11y` block right below it — always carry this pattern forward when adding a new check here.
 
-### Wie man einen neuen dynamischen Check hinzufügt
+### How to add a new dynamic check
 
-1. Neue Datei `spatial/mein-check.ts` mit zwei Teilen:
-   - `extractMeinCheckData(page: Page): Promise<MeinCheckDatum[]>` — läuft `page.evaluate(...)` und liefert reine Daten zurück (kein `ValidationIssue` direkt aus dem Browser — das würde bedeuten, `ValidationIssue`-Typen müssten im Browser-Kontext verfügbar sein, was sie nicht sind).
-   - `meinCheckToValidationIssues(data): ValidationIssue[]` — reine, Node-seitige Funktion, die die Rohdaten in Findings übersetzt. **Das ist die Funktion, die in `*.test.ts` unit-getestet wird** (kein Browser nötig) — siehe `non-text-contrast.test.ts` als Vorlage.
-2. In `spatial/index.ts` importieren und im passenden Block (`enableSpatial`/`enableA11y`/eigener Schalter) mit eigenem `try/catch` einhängen, analog zu den bestehenden Blöcken.
-3. Neuen `IssueSource`-Wert in `types.ts` ergänzen.
-4. Wenn der Check echtes Browser-Verhalten braucht, das sich nicht sinnvoll mocken lässt: eine `*.integration.test.ts` daneben, die sich selbst überspringt, wenn kein Chromium verfügbar ist (Muster: `beforeAll` versucht einen echten Render, setzt ein `renderWorks`-Flag, jeder Test prüft `if (!renderWorks) return ctx.skip()`).
-
----
-
-## 5. Gemeinsame Hilfsmodule (`helpers/`)
-
-| Datei                    | Zweck                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `source.ts`              | Einheitliches Einlesen + Parsen einer Quelldatei zu einem `ts.SourceFile`. Jeder Checker sollte hierüber gehen, nicht selbst `ts.createSourceFile` aufrufen.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `ast.ts`                 | Kleine, reine AST-Helfer, die von mehreren Checkern gebraucht werden: `staticStringValue` (String- oder Template-Literal-Wert eines JSX-Attributs, falls statisch bestimmbar), `hasSpreadAttribute`, `hasOpaqueDynamicChild`, `containsEventTargetAccess` (erkennt `param.target.value`-Zugriffe, gebunden an den konkreten Handler-Parameter).                                                                                                                                                                                                                                                |
-| `jsx.ts`                 | Sammelt Import-Statements eines Files ein (ohne Alias-Auflösung — dafür siehe `components.ts::buildMarigoldTagResolver`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `components.ts`          | **Die zentrale Registry.** Lädt die echten `.d.mts`-Typdeklarationen von `@marigold/components` über `ts-morph`, einmal pro Prozess gecacht. Daraus werden abgeleitet: welche Komponenten es gibt, welche Props sie haben (inkl. bekannter String-Literal-Werte), welche Sub-Komponenten ein Compound hat, ob eine Komponente eine "Collection" ist (hat sie/eine Sub-Komponente ein `items`-Prop?). Enthält außerdem `buildMarigoldTagResolver()` — siehe Abschnitt 3, die zentrale Regel, dass ein Tag nur nach echtem Import-Ursprung als Marigold-Komponente zählt, nie nach Namen allein. |
-| `resolve-theme.ts`       | Findet das Verzeichnis des installierten `@marigold/theme-rui`-Pakets (über `require.resolve` + Verifikation, dass das gefundene `package.json` wirklich zu `@marigold/theme-rui` gehört — nicht nur das nächstbeste `package.json` auf dem Pfad).                                                                                                                                                                                                                                                                                                                                             |
-| `design-tokens.ts`       | Lädt die tatsächlichen CSS-Custom-Properties (Design-Tokens) aus dem installierten Theme, damit `token-compliance.ts` reale Werte statt geratener Konstanten vergleichen kann.                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `component-locations.ts` | Dynamische Findings (aus `spatial/`) haben von Natur aus keine Quelltext-Zeile — sie kommen aus dem gerenderten DOM. Diese Datei ordnet sie nachträglich einer Zeile in der Originaldatei zu (per Komponentennamen-Treffer, mit Text-Fingerabdruck als Tie-Breaker bei mehreren gleichnamigen Vorkommen). Wird von `index.ts::enrichDynamicLocations` benutzt.                                                                                                                                                                                                                                 |
+1. New file `spatial/my-check.ts` with two parts:
+   - `extractMyCheckData(page: Page): Promise<MyCheckDatum[]>` — runs `page.evaluate(...)` and returns plain data (never a `ValidationIssue` directly from the browser — that would mean `ValidationIssue` types would need to be available in the browser context, which they aren't).
+   - `myCheckToValidationIssues(data): ValidationIssue[]` — a pure, Node-side function that turns the raw data into findings. **This is the function that gets unit-tested in `*.test.ts`** (no browser needed) — see `non-text-contrast.test.ts` as a template.
+2. Import it in `spatial/index.ts` and wire it into the appropriate block (`enableSpatial`/`enableA11y`/its own switch) with its own `try/catch`, matching the existing blocks.
+3. Add a new `IssueSource` value in `types.ts`.
+4. If the check needs real browser behavior that can't be meaningfully mocked: add a `*.integration.test.ts` next to it that self-skips when no Chromium is available (pattern: `beforeAll` attempts a real render, sets a `renderWorks` flag, every test checks `if (!renderWorks) return ctx.skip()`).
 
 ---
 
-## 6. Typen & Ausgabe
+## 4. Shared helper modules (`helpers/`)
+
+| File                     | Purpose                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `source.ts`              | Consistent reading + parsing of a source file into a `ts.SourceFile`. Every checker should go through this rather than calling `ts.createSourceFile` itself.                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `ast.ts`                 | Small, pure AST helpers needed by multiple checkers: `staticStringValue` (a JSX attribute's string- or template-literal value, if statically determinable), `hasAttrPresent`, `isPascalCase`, `hasSpreadAttribute`, `hasOpaqueDynamicChild`, `containsEventTargetAccess` (detects `param.target.value` access, bound to the specific handler parameter).                                                                                                                                                                                                                  |
+| `jsx.ts`                 | Collects a file's import statements (without alias resolution — for that, see `components.ts::buildMarigoldTagResolver`).                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `components.ts`          | **The central registry.** Loads the real `.d.mts` type declarations of `@marigold/components` via `ts-morph`, cached once per process. From this it derives: which components exist, what props they have (including known string-literal values), which sub-components a compound has, whether a component is a "collection" (does it or one of its sub-components have an `items` prop?). Also contains `buildMarigoldTagResolver()` — see section 2, the central rule that a tag only counts as a Marigold component by its actual import origin, never by name alone. |
+| `resolve-theme.ts`       | Locates the directory of the installed `@marigold/theme-rui` package (via `require.resolve` + verifying that the `package.json` found actually belongs to `@marigold/theme-rui` — not just the nearest `package.json` on the path).                                                                                                                                                                                                                                                                                                                                       |
+| `design-tokens.ts`       | Loads the actual CSS custom properties (design tokens) from the installed theme, so `token-compliance.ts` can compare against real values instead of guessed constants.                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `component-locations.ts` | Dynamic findings (from `spatial/`) inherently have no source line — they come from the rendered DOM. This file maps them back to a line in the original file afterwards. Marigold emits no name-bearing DOM attributes, so a component-name match often resolves nothing — the content fingerprint is actually the primary, reliable join key, not just a tie-breaker; the name match only helps in the rare case it does resolve, or to disambiguate when a fingerprint match is itself ambiguous. Used by `index.ts::enrichDynamicLocations`.                           |
+
+---
+
+## 5. Types & output
 
 ### `types.ts`
 
-Das zentrale Vokabular des ganzen Systems:
+The central vocabulary of the whole system:
 
-- **`ValidationIssue`** — ein einzelner Fund: `type` (technical/spatial/style/a11y), `severity` (error/warning), `source` (welcher Checker — muss hier als `IssueSource` ergänzt werden, wenn ein neuer Checker dazukommt), `component`, `message`, `suggestion`, optional `location` und `details`.
-- **`ValidationReport`** — das Gesamtergebnis: `errors`/`warnings` (partitioniert nach `severity`), `passed` (Liste bestandener Checks als Klartext), `text` (fertig formatiert), `metadata` (Renderzeit, gefundene Komponenten, welche Checks liefen, Coverage, Breiten-Auslastung).
-- **`ValidationCoverage`** — macht transparent, wie viel vom Code überhaupt statisch geprüft werden konnte: wie viele Enum-Prop-Werte waren statisch bestimmbar vs. dynamisch (nicht prüfbar), wie viele Spread-Attribute (`{...props}`) haben die Prop-Prüfung umgangen.
+- **`ValidationIssue`** — a single finding: `type` (technical/spatial/style/a11y), `severity` (error/warning), `source` (which checker — must be added here as an `IssueSource` when a new checker is added), `component`, `message`, `suggestion`, optional `location` and `details`.
+- **`ValidationReport`** — the overall result: `errors`/`warnings` (partitioned by `severity`), `passed` (a list of passed checks as plain text), `text` (fully formatted), `metadata` (render time, components found, which checks ran, coverage, width utilization).
+- **`ValidationCoverage`** — makes transparent how much of the code could actually be checked statically: how many enum prop values were statically determinable vs. dynamic (not checkable), how many spread attributes (`{...props}`) bypassed prop validation entirely.
 
-**Severity-Regel** (steht auch als Kommentar direkt bei `IssueSeverity`): `error` heißt "blockiert Korrektheit" (Typfehler, fehlende Pflicht-Props, fehlende Pflicht-Sub-Komponenten, kritische a11y-Verstöße, echte Überlappungen). `warning` heißt "wahrscheinlich verbesserungswürdig" (falsche Prop-Werte, fehlende optionale Sub-Komponenten, native statt Marigold-Komponente, ungültige Theme-Variante, Layout-Overflow). Diese Grenze ist bewusst gezogen: die Checks werden auch von automatisierten Korrekturschleifen (LLM-Agenten) benutzt, und ein `error`, der in Wahrheit ein False Positive ist, kann eine solche Schleife in eine falsche Richtung schicken. Deshalb gilt für JEDEN neuen `error`-Fund die Regel: **er muss deterministisch und False-Positive-frei sein** — im Zweifel `warning`.
+**Severity rule** (also documented as a comment right on `IssueSeverity`): `error` means "blocks correctness" (type errors, missing required props, missing required sub-components, critical a11y violations, component overlaps). `warning` means "likely improvable" (wrong prop values, missing optional sub-components, native instead of Marigold component, invalid theme variant, placeholder-only labels, layout wrapping/overflow). This line is drawn deliberately: these checks are also used by automated correction loops (LLM agents), and an `error` that turns out to be a false positive can send such a loop in the wrong direction. So for every new `error`-severity finding, the rule is: **it must be deterministic and false-positive-free** — when in doubt, use `warning`.
+
+Note the one place this comment is currently stale: `spatial/overlap.ts` hardcodes every overlap finding to `severity: 'warning'`, with its own comment explaining the choice (overlap is a threshold-based layout heuristic, so the severity policy deliberately keeps it a warning regardless of the `IssueSeverity` doc comment's example above). If you touch either file, reconcile this — don't just copy the stale example.
 
 ### `format.ts`
 
-`formatForLLM(report)` baut aus dem strukturierten Report den lesbaren `text`-Block (sortiert: erst nach `type`, dann `error` vor `warning`, dann alphabetisch nach Komponente). `formatValue()` darf dabei **niemals werfen**, egal was für ein `details`-Wert reinkommt (auch nicht bei bigint oder zirkulären Objekten) — das ist Teil des "throw-proof"-Vertrags des ganzen Systems (siehe Abschnitt 7).
+`formatForLLM(report)` turns the structured report into the readable `text` block (sorted: first by `type`, then `error` before `warning`, then alphabetically by component). `formatValue()` must **never throw**, no matter what kind of `details` value comes in (not even for a bigint or a circular object) — this is part of the whole system's "throw-proof" contract (see section 6).
 
 ---
 
-## 7. Zentrale Entwurfsprinzipien
+## 6. Core design principles
 
-Diese Prinzipien ziehen sich durch den gesamten Code und sollten bei jeder Änderung beachtet werden:
+These principles run through the entire codebase and should be kept in mind for any change:
 
-1. **False-Positive-Sicherheit vor Vollständigkeit.** Ein Check, der bei Unsicherheit lieber nichts meldet, ist besser als einer, der bei Unsicherheit rät. Das zieht sich durch: unklare Farben werden `null` (= "nicht bestimmbar", nie ein falscher Kontrastwert), dynamische Prop-Werte werden übersprungen statt geraten, ein einzelner unlesbarer Theme-File degradiert auf einen Teil-Fund statt den ganzen Check abzubrechen.
-2. **Kein Check darf einen anderen mitreißen.** Sowohl `checkers/index.ts` (`safeCheck`) als auch `spatial/index.ts` (pro-Block `try/catch`) isolieren jeden einzelnen Check. Ein Fehler in einem Checker wird zu einer einzelnen Warning für genau diesen Checker, nicht zum Totalausfall.
-3. **"Throw-proof"-Vertrag für `validate()`.** Der äußere Aufruf (`validate()` in `index.ts`) soll praktisch nie werfen — auch ein Renderfehler, ein Timeout oder ein fehlendes optionales Toolchain-Paket wird zu einem strukturierten `runtime`-Finding, nicht zu einer Exception. Das ist wichtig, weil `validate()` der programmatische Einstiegspunkt für automatisierte Korrekturschleifen ist, die auf ein Ergebnisobjekt angewiesen sind, nicht auf einen Crash.
-4. **Origin über Namen.** Ein JSX-Tag zählt nur dann als Marigold-Komponente, wenn er nachweislich aus `@marigold/components` importiert wurde (`buildMarigoldTagResolver`). Niemals rein nach Namensgleichheit prüfen — das war wiederholt eine reale Quelle von False Positives (lokale Komponenten oder Third-Party-Importe mit demselben Namen).
-5. **Alles ableiten, nichts hart kodieren, wo es geht.** Props, Sub-Komponenten, Collection-Status — all das kommt aus den echten `@marigold/components`-Typdeklarationen (`helpers/components.ts`), nicht aus Hand-gepflegten Listen. Wo eine Ausnahme sich NICHT aus dem Typsystem ableiten lässt (z. B. welche Compounds ihre Items self-populating rendern), steht eine kuratierte, kommentierte Konstante — und genau dort, direkt daneben, der Kommentar, WARUM sie nicht ableitbar ist.
-6. **Ressourcen sofort bei Erzeugung fürs Aufräumen registrieren**, nicht erst am Ende (`cleanup-stack.ts`). Sonst kann ein Timeout mitten im Aufbau eine Ressource verwaisen lassen.
-
----
-
-## 8. Tests
-
-- **Unit-Tests** (`*.test.ts`) — direkt neben der getesteten Datei, brauchen keinen Browser. Für Checker: `tmpFile()` aus `test-support/tmp.ts` für kleine Inline-Fixtures, oder eine Datei unter `examples/` für Fixtures, die mehrere Tests teilen.
-- **Integrationstests** (`*.integration.test.ts`) — brauchen einen echten Chromium. Überspringen sich selbst (`ctx.skip()`), wenn kein Browser verfügbar ist (z. B. ein CI-Runner ohne vorinstalliertes Playwright) — das Muster steht ganz oben in jeder dieser Dateien.
-- **`examples/`** — geteilte Fixture-Dateien: sowohl "gültiger" Code (sollte nichts melden) als auch absichtlich fehlerhafter Code (sollte einen bestimmten Fund auslösen), für Checks, die dieselbe Fixture aus mehreren Blickwinkeln testen.
-
-Alle Tests laufen über `pnpm --filter @marigold/cli test` (siehe `packages/cli/vitest.config.ts`). Wichtig: diese Konfiguration setzt `NO_COLOR=1`, damit CLI-Text-Ausgaben in Tests unabhängig davon, ob eine `CI`-Umgebungsvariable gesetzt ist (z. B. GitHub Actions), immer unkoloriert und damit deterministisch geprüft werden können.
+1. **False-positive safety over completeness.** A check that would rather report nothing when uncertain is better than one that guesses when uncertain. This shows up everywhere: unresolvable colors become `null` (= "indeterminate", never a wrong contrast value), dynamic prop values are skipped rather than guessed, a single unreadable theme file degrades to a partial finding instead of aborting the whole check.
+2. **No check may take another one down with it.** Both `checkers/index.ts` (`safeCheck`) and `spatial/index.ts` (per-block `try/catch`) isolate every individual check. An error in one checker becomes a single warning for just that checker, not a total failure.
+3. **A "throw-proof" contract for `validate()`.** The outer call (`validate()` in `index.ts`) is designed to practically never throw — even a render failure, a timeout, or a missing optional toolchain package becomes a structured `runtime` finding, not an exception. This matters because `validate()` is the programmatic entry point for automated correction loops that depend on a result object, not a crash.
+4. **Origin over name.** A JSX tag only counts as a Marigold component if it can be shown to have been imported from `@marigold/components` (`buildMarigoldTagResolver`). Never check by name equality alone — this has repeatedly been a real source of false positives (a local component or a third-party import sharing the same name).
+5. **Derive everything possible, hardcode nothing where it can be avoided.** Props, sub-components, collection status — all of that comes from the real `@marigold/components` type declarations (`helpers/components.ts`), not from hand-maintained lists. Where an exception genuinely can't be derived from the type system (e.g. which compounds render their items in a self-populating way), there's a curated, commented constant — and right next to it, a comment explaining WHY it can't be derived.
+6. **Register resources for cleanup the instant they're created**, not only at the end (`cleanup-stack.ts`). Otherwise a timeout mid-setup can orphan a resource.
 
 ---
 
-## 9. "Wo finde ich …?" — Schnellreferenz
+## 7. Tests
 
-| Ich will …                                                                 | … schau hier                                                                   |
-| -------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| einen neuen statischen Fehler-/Warnungstyp hinzufügen                      | `checkers/` (neue Datei) + `checkers/index.ts` + `types.ts::IssueSource`       |
-| einen neuen dynamischen (Render-)Fehler-/Warnungstyp hinzufügen            | `spatial/` (neue Datei) + `spatial/index.ts` + `types.ts::IssueSource`         |
-| verstehen, welche Props/Sub-Komponenten eine Marigold-Komponente hat       | `helpers/components.ts`                                                        |
-| verstehen, warum ein lokal/third-party importiertes Tag nicht geprüft wird | `helpers/components.ts::buildMarigoldTagResolver`                              |
-| die Sandbox/Sicherheitsgrenzen des Renders anpassen                        | `spatial/renderer.ts` (Kommentare bei `fs.deny`/`routeWebSocket` zuerst lesen) |
-| verstehen, wie/wann Ressourcen aufgeräumt werden                           | `spatial/cleanup-stack.ts`                                                     |
-| die Ausgabeformatierung (Text/JSON) ändern                                 | `format.ts`                                                                    |
-| verstehen, wie ein dynamischer Fund seiner Quelltextzeile zugeordnet wird  | `helpers/component-locations.ts`, `index.ts::enrichDynamicLocations`           |
-| die CLI-Flags (`--checks`, `--format`) nachvollziehen                      | `commands/validate.ts`, `bin/marigold.ts`                                      |
-| verstehen, wie die Komponente überhaupt gerendert wird                     | `harness/entry.tsx`, `harness/setup.tsx`                                       |
-| Design-Token-Werte für den Vergleich nachschlagen                          | `helpers/design-tokens.ts`                                                     |
-| Theme-Varianten-Daten nachschlagen                                         | `checkers/theme-variants.ts`, `helpers/resolve-theme.ts`                       |
-| verstehen, warum ein Fund `error` statt `warning` ist (oder umgekehrt)     | Abschnitt 6 oben, Kommentar bei `IssueSeverity` in `types.ts`                  |
+- **Unit tests** (`*.test.ts`) — right next to the file being tested, no browser needed. For checkers: use `tmpFile()` from `test-support/tmp.ts` for small inline fixtures, or a file under `examples/` for fixtures shared across multiple tests.
+- **Integration tests** (`*.integration.test.ts`) — need a real Chromium. Self-skip (`ctx.skip()`) when no browser is available (e.g. a CI runner without Playwright pre-installed) — the pattern is right at the top of each of these files.
+- **`examples/`** — shared fixture files: both "valid" code (should report nothing) and deliberately broken code (should trigger a specific finding), for checks that test the same fixture from multiple angles.
+
+All tests run via `pnpm --filter @marigold/cli test` (see `packages/cli/vitest.config.ts`). Important: that config sets `NO_COLOR=1`, so CLI text output in tests is always uncolored and therefore deterministic to assert on, regardless of whether a `CI` environment variable is set (e.g. on GitHub Actions).
+
+---
+
+## 8. "Where do I find …?" — quick reference
+
+| I want to …                                                              | … look here                                                                   |
+| ------------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
+| add a new static error/warning type                                      | `checkers/` (new file) + `checkers/index.ts` + `types.ts::IssueSource`        |
+| add a new dynamic (render-time) error/warning type                       | `spatial/` (new file) + `spatial/index.ts` + `types.ts::IssueSource`          |
+| find out which props/sub-components a Marigold component has             | `helpers/components.ts`                                                       |
+| understand why a locally/third-party-imported tag isn't checked          | `helpers/components.ts::buildMarigoldTagResolver`                             |
+| adjust the render sandbox/security boundaries                            | `spatial/renderer.ts` (read the comments at `fs.deny`/`routeWebSocket` first) |
+| understand how/when resources get cleaned up                             | `spatial/cleanup-stack.ts`                                                    |
+| change the output formatting (text/JSON)                                 | `format.ts`                                                                   |
+| understand how a dynamic finding gets mapped to its source line          | `helpers/component-locations.ts`, `index.ts::enrichDynamicLocations`          |
+| trace the CLI flags (`--checks`, `--format`)                             | `commands/validate.ts`, `bin/marigold.ts`                                     |
+| understand how the component actually gets rendered                      | `harness/entry.tsx`, `harness/setup.tsx`                                      |
+| look up design token values used for comparison                          | `helpers/design-tokens.ts`                                                    |
+| look up theme variant data                                               | `checkers/theme-variants.ts`, `helpers/resolve-theme.ts`                      |
+| understand why a finding is `error` instead of `warning` (or vice versa) | Section 5 above, the comment on `IssueSeverity` in `types.ts`                 |
