@@ -247,6 +247,78 @@ export const Profile = () => (
     expect(output).toContain('Tooltip[open]');
   });
 
+  test('returns a pre-analysis summary of the changes that fired', () => {
+    const root = setupFixture();
+
+    const { summary } = runMigrate({
+      version: 'v18',
+      targetPath: root,
+      dryRun: true,
+    });
+
+    expect(summary).toEqual([
+      {
+        name: 'restructure-to-slots',
+        description: expect.stringContaining('slot objects'),
+        files: 1,
+        changes: expect.any(Number),
+      },
+      {
+        name: 'swap-exact-classes',
+        description: expect.stringContaining('baseline'),
+        files: 1,
+        changes: 1,
+      },
+      // stub-missing-slots does not fire: the fixture Switch already has
+      // every v18 slot and the Card restructure stubs its own new slots
+      {
+        name: 'scaffold-components',
+        description: expect.stringContaining('create theme styles'),
+        files: 2, // BooleanField.styles.ts + the barrel index export
+        changes: 2,
+      },
+    ]);
+  });
+
+  test('only applies the selected changes; everything else stays untouched', () => {
+    const root = setupFixture();
+    const components = path.join(root, 'theme', 'components');
+    const cardBefore = readFileSync(
+      path.join(components, 'Card.styles.ts'),
+      'utf8'
+    );
+
+    runMigrate({
+      version: 'v18',
+      targetPath: root,
+      dryRun: false,
+      only: ['swap-exact-classes'],
+    });
+
+    expect(readFileSync(path.join(components, 'Card.styles.ts'), 'utf8')).toBe(
+      cardBefore
+    );
+    expect(
+      readFileSync(path.join(components, 'Switch.styles.ts'), 'utf8')
+    ).toContain(`'grid gap-x-2 items-center'`);
+    expect(existsSync(path.join(components, 'BooleanField.styles.ts'))).toBe(
+      false
+    );
+  });
+
+  test('rejects unknown names in only', () => {
+    const root = setupFixture();
+
+    expect(() =>
+      runMigrate({
+        version: 'v18',
+        targetPath: root,
+        dryRun: true,
+        only: ['swap-exact-clases'],
+      })
+    ).toThrow(/Unknown change\(s\): swap-exact-clases/);
+  });
+
   test('reports token findings in CSS files and component internals', () => {
     const root = setupFixture();
     writeFileSync(

@@ -96,11 +96,42 @@ export interface MigrateOptions {
   version: string;
   targetPath: string;
   dryRun: boolean;
+  /**
+   * Names of the changes to apply (codemod names plus 'scaffold-components').
+   * Report-only passes always run. Omitted: everything runs.
+   */
+  only?: readonly string[];
+}
+
+/** one selectable change of a migration, with its impact on the target */
+export interface CodemodSummary {
+  name: string;
+  description: string;
+  files: number;
+  changes: number;
 }
 
 export interface MigrateResult {
   output: string;
+  /** changes that fired on this target, in pipeline order — the
+   *  pre-analysis a caller can offer for selection via `only` */
+  summary: CodemodSummary[];
 }
+
+const SCAFFOLD = 'scaffold-components';
+
+// user-facing one-liners for the selectable changes (report-only passes are
+// not selectable: they are the safety net and always run)
+const DESCRIPTIONS: Record<string, string> = {
+  'restructure-to-slots': 'move single-style theme components to slot objects',
+  'swap-exact-classes': 'swap unchanged baseline styles to the new baseline',
+  'stub-missing-slots': 'stub new theme slots with empty cva()',
+  'rename-jsx-members': 'rename compound components (e.g. Tabs.TabPanel)',
+  'rename-jsx-props': 'rename component props (e.g. Inset space to p)',
+  'remove-jsx-props': 'remove props the target version dropped',
+  'rename-imports': 'rename moved exports (e.g. the icon renames)',
+  [SCAFFOLD]: 'create theme styles for components the target version requires',
+};
 
 const IGNORED_DIRS = new Set([
   'node_modules',
@@ -137,6 +168,8 @@ interface FileReport {
   warnings: string[];
   skips: string[];
   output: string;
+  /** change count per codemod name, for the pre-analysis summary */
+  perCodemod: Record<string, number>;
 }
 
 const edited = (report: FileReport): boolean => report.changes.length > 0;
@@ -152,6 +185,7 @@ const applyPipeline = (
     warnings: [],
     skips: [],
     output: source,
+    perCodemod: {},
   };
   for (const codemod of codemods) {
     // each transform re-parses its input when chained; babel parse is fast
@@ -165,6 +199,8 @@ const applyPipeline = (
     if (outcome.kind === 'edited') {
       report.output = outcome.output;
       report.changes.push(...outcome.changes);
+      report.perCodemod[codemod.name] =
+        (report.perCodemod[codemod.name] ?? 0) + outcome.changes.length;
     }
   }
   return report;
@@ -223,7 +259,7 @@ export const runMigrate = (options: MigrateOptions): MigrateResult => {
   // be mistaken for a customized slot), reports last. The JSX transforms are
   // independent of the theme ones; they anchor on @marigold/components.
   const tokenUsage = reportTokenUsage(manifest, definedTokens);
-  const codemods = [
+  const editCodemods = [
     restructureToSlots(manifest),
     swapExactClasses(manifest),
     stubMissingSlots(manifest),
@@ -231,6 +267,22 @@ export const runMigrate = (options: MigrateOptions): MigrateResult => {
     renameJsxProps(manifest),
     removeJsxProps(manifest),
     renameImports(manifest),
+  ];
+  if (options.only) {
+    const known = new Set([...editCodemods.map(c => c.name), SCAFFOLD]);
+    const unknown = options.only.filter(name => !known.has(name));
+    if (unknown.length > 0) {
+      throw new Error(
+        `Unknown change(s): ${unknown.join(', ')} (available: ${[...known].join(', ')})`
+      );
+    }
+  }
+  const active = options.only
+    ? editCodemods.filter(c => options.only!.includes(c.name))
+    : editCodemods;
+  const scaffoldEnabled = !options.only || options.only.includes(SCAFFOLD);
+  const codemods = [
+    ...active,
     reportDeadKeys(manifest),
     reportStructure(manifest),
     reportJsxUsage(manifest),
@@ -265,6 +317,7 @@ export const runMigrate = (options: MigrateOptions): MigrateResult => {
         warnings: outcome.warnings,
         skips: [],
         output: text,
+        perCodemod: {},
       });
     }
   }
@@ -273,7 +326,7 @@ export const runMigrate = (options: MigrateOptions): MigrateResult => {
   // files that require them, and register them in the local barrel file.
   const created: string[] = [];
   const scaffoldWarnings: string[] = [];
-  for (const entry of manifest.scaffolds) {
+  for (const entry of scaffoldEnabled ? manifest.scaffolds : []) {
     if (inventory.has(entry.name)) continue;
     const host = entry.requiredBy.map(c => inventory.get(c)).find(Boolean);
     if (!host) continue;
@@ -317,6 +370,7 @@ export const runMigrate = (options: MigrateOptions): MigrateResult => {
           warnings: [],
           skips: [],
           output: outcome.output,
+          perCodemod: { [SCAFFOLD]: outcome.changes.length },
         });
       }
     } else {
@@ -325,6 +379,31 @@ export const runMigrate = (options: MigrateOptions): MigrateResult => {
       );
     }
   }
+
+  // pre-analysis summary: which changes fired, aggregated across files, in
+  // pipeline order (scaffolds last) — offered to the caller for selection
+  const totals = new Map<string, { files: number; changes: number }>();
+  for (const report of reports) {
+    for (const [name, changes] of Object.entries(report.perCodemod)) {
+      const total = totals.get(name) ?? { files: 0, changes: 0 };
+      total.files += 1;
+      total.changes += changes;
+      totals.set(name, total);
+    }
+  }
+  if (created.length > 0) {
+    const total = totals.get(SCAFFOLD) ?? { files: 0, changes: 0 };
+    total.files += created.length;
+    total.changes += created.length;
+    totals.set(SCAFFOLD, total);
+  }
+  const summary: CodemodSummary[] = [...editCodemods.map(c => c.name), SCAFFOLD]
+    .filter(name => totals.has(name))
+    .map(name => ({
+      name,
+      description: DESCRIPTIONS[name] ?? '',
+      ...totals.get(name)!,
+    }));
 
   // render report. picocolors is TTY-aware: piped / test / agent output stays
   // byte-for-byte plain, only interactive terminals gain color.
@@ -357,7 +436,7 @@ export const runMigrate = (options: MigrateOptions): MigrateResult => {
     lines.push(
       `No files importing @marigold/system or @marigold/components found under ${root}.`
     );
-    return { output: lines.join('\n') };
+    return { output: lines.join('\n'), summary: [] };
   }
   for (const report of reports) {
     lines.push(pc.bold(path.relative(root, report.file)));
@@ -394,5 +473,5 @@ export const runMigrate = (options: MigrateOptions): MigrateResult => {
       )
     );
   }
-  return { output: lines.join('\n') };
+  return { output: lines.join('\n'), summary };
 };

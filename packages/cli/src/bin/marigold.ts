@@ -109,6 +109,9 @@ ${pc.bold('Migrate options:')}
                       and the proposed migration confirmed interactively
   [path]              Directory to migrate (default: current directory)
   --dry-run           Report what would change without writing files
+  --only <names>      Apply only these changes (comma-separated codemod
+                      names from the pre-analysis); skips the interactive
+                      selection. Warnings always run.
 
 ${pc.bold('Environment:')}
   MARIGOLD_DOCS_URL              Override docs site base URL
@@ -216,6 +219,7 @@ const parseMigrateCommand = (argv: string[]) =>
     allowPositionals: true,
     options: {
       'dry-run': { type: 'boolean', default: false },
+      only: { type: 'string' },
     },
   });
 
@@ -452,7 +456,9 @@ export const main = async (
       };
 
       if (positionals.length > (explicitVersion ? 2 : 1)) {
-        fail('Usage: marigold migrate [version] [path] [--dry-run]');
+        fail(
+          'Usage: marigold migrate [version] [path] [--dry-run] [--only <names>]'
+        );
       }
 
       // Lazy-load: migrate pulls in @babel/parser and magic-string, which we
@@ -500,11 +506,42 @@ export const main = async (
         versions = detected.versions;
       }
 
+      const only = values.only
+        ?.split(',')
+        .map(s => s.trim())
+        .filter(Boolean);
+
       for (const version of versions) {
-        const result = await runMigrate({
+        // pre-analysis: dry-run in memory, offer the fired changes for
+        // selection. Skipped for explicit --only / --dry-run / non-TTY runs.
+        let selected = only;
+        if (!selected && !values['dry-run'] && process.stdout.isTTY) {
+          const analysis = runMigrate({ version, targetPath, dryRun: true });
+          if (analysis.summary.length > 0) {
+            const { multiselect, isCancel } = await import('@clack/prompts');
+            const chosen = await multiselect({
+              message: `The ${version} migration fires these changes — deselect what you want to skip (warnings always run):`,
+              options: analysis.summary.map(s => ({
+                value: s.name,
+                label: s.name,
+                hint: `${s.description} — ${s.changes} change(s) in ${s.files} file(s)`,
+              })),
+              initialValues: analysis.summary.map(s => s.name),
+              required: false,
+            });
+            if (isCancel(chosen)) {
+              writeOutput('Aborted — nothing changed.');
+              return 130;
+            }
+            selected = chosen as string[];
+          }
+        }
+
+        const result = runMigrate({
           version,
           targetPath,
           dryRun: values['dry-run'],
+          only: selected,
         });
         writeOutput(result.output);
       }

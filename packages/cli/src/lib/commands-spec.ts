@@ -107,7 +107,10 @@ export const SUBCOMMANDS: readonly SubcommandSpec[] = [
   },
   {
     name: 'migrate',
-    flags: [{ name: '--dry-run', type: 'boolean' }],
+    flags: [
+      { name: '--dry-run', type: 'boolean' },
+      { name: '--only', type: 'string' },
+    ],
   },
   {
     name: 'telemetry',

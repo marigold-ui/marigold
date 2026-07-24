@@ -8,7 +8,7 @@ touching for a new release; everything release-specific lives in a manifest.
 ## Usage
 
 ```sh
-npx marigold migrate [version] [path] [--dry-run]
+npx marigold migrate [version] [path] [--dry-run] [--only <names>]
 ```
 
 - `version` is optional: when omitted, the installed
@@ -18,6 +18,14 @@ npx marigold migrate [version] [path] [--dry-run]
   Non-interactive sessions must pass the version explicitly.
 - `path` defaults to the current directory; point it at the consumer repo
   (or its theme directory) you want to migrate.
+- **Pre-analysis and selection**: before writing anything, an interactive
+  run analyzes the target (a dry run in memory) and lists the changes that
+  actually fire — name, description, change and file counts — as a
+  multiselect. Everything is preselected, so Enter applies the full
+  migration; deselect entries to skip them. Report-only passes (warnings)
+  are not selectable and always run. `--only
+swap-exact-classes,scaffold-components` applies the same subset
+  non-interactively (and skips the prompt).
 - **Always run `--dry-run` first** and read the report.
 - After a real run, run the consumer's typechecker: the slot Records in
   `@marigold/system`'s `Theme` type are exhaustive, so the typecheck is the
