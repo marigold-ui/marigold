@@ -119,6 +119,49 @@ Put `<Panel>`s directly inside `<Page>` for the common case. Reach for the optio
 - **No title:** If a page has no `<Title>`, pass an `aria-label` to `<Page>` so the `<main>` still has an accessible name.
 - **Heading outline:** `<Page>` sets the base heading level to `1`, so the page title renders as the `<h1>` and each `<Panel>` below it as an `<h2>` (Panel collapsibles as `<h3>`). The outline a screen-reader user skims to jump between sections falls out of these defaults, with no heading levels to set by hand.
 
+### Focus on route change
+
+On client-side navigation the browser does not reset focus the way a full page load does: it lingers on the link that was clicked, or falls back to `<body>`. Screen-reader and keyboard users then get no signal that the screen changed and are stranded at the top of the tab order. The standard fix is to move focus to the new screen's heading, so the page is announced and the next `Tab` continues from the top of the content.
+
+`usePageFocus` does this. Pass it the current route key (usually the pathname); on each change it makes the page `<h1>` programmatically focusable (`tabIndex={-1}`) and focuses it. The **first render is skipped**, so the initial load is left untouched, and it is a **no-op on a page with no `<h1>`** (an `aria-label`-only `<Page>`).
+
+`<Page>` is router-agnostic and cannot observe navigation on its own, so the route signal comes from your app router — the same [`RouterProvider`](/components/application/routerprovider) you already wire up for links. Call the hook from a component that persists across navigations (the layout / shell level), since the skip-first-render guard is per mount:
+
+```tsx
+import { Outlet, useLocation, useNavigate } from 'react-router';
+import {
+  Page,
+  RouterProvider,
+  Title,
+  usePageFocus,
+} from '@marigold/components';
+
+// Renders nothing; it just connects the route signal to the page heading.
+const PageFocus = ({ pathname }: { pathname: string }) => {
+  usePageFocus(pathname);
+  return null;
+};
+
+const AppLayout = () => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  return (
+    <RouterProvider navigate={navigate}>
+      <Page>
+        <PageFocus pathname={pathname} />
+        <Page.Header>
+          <Title>{/* the current screen's title */}</Title>
+        </Page.Header>
+        <Outlet />
+      </Page>
+    </RouterProvider>
+  );
+};
+```
+
+Because the guard is per mount, keep the hook mounted across routes rather than calling it from a screen that unmounts on every navigation — otherwise every route reads as a first render and focus never moves.
+
 ## Props
 
 {/* Storybook hint omitted while Page is beta: it has no story on the published Storybook (marigold-latest) the hint links to, so the link 404s. Restore when Page ships. */}
