@@ -75,6 +75,15 @@ export const validateRequiredAncestor = (
   // the file — which means the author forgot it entirely.
   const identifierTags = new Set<string>(); // <Menu>, <Radio>, …
   const dottedTags = new Set<string>(); // Menu.Item, Radio.Group, …
+  // Canonical (post-alias-resolution) counterparts of the two sets above. A
+  // REQUIRED_CONTAINER value (e.g. 'Radio.Group') is always the canonical
+  // name — checking it against the as-written sets above breaks the moment
+  // the container itself is imported under an alias (`{ RadioGroup as RG }`,
+  // or `{ Radio as R }` used for `<R.Group>`): the alias never textually
+  // matches the canonical name, so a genuinely-present container is missed
+  // and an error-severity false positive is raised.
+  const canonicalIdentifierTags = new Set<string>();
+  const canonicalDottedTags = new Set<string>();
   const elements: ElementInfo[] = [];
 
   const collect = (node: ts.Node): void => {
@@ -86,11 +95,17 @@ export const validateRequiredAncestor = (
       });
       if (ts.isIdentifier(tag)) {
         identifierTags.add(tag.text);
+        const original = resolver.get(tag.text);
+        if (original) canonicalIdentifierTags.add(original);
       } else if (
         ts.isPropertyAccessExpression(tag) &&
         ts.isIdentifier(tag.expression)
       ) {
         dottedTags.add(`${tag.expression.text}.${tag.name.text}`);
+        const originalRoot = resolver.get(tag.expression.text);
+        if (originalRoot) {
+          canonicalDottedTags.add(`${originalRoot}.${tag.name.text}`);
+        }
       }
     }
     ts.forEachChild(node, collect);
@@ -153,8 +168,8 @@ export const validateRequiredAncestor = (
       const container = original ? REQUIRED_CONTAINER[original] : undefined;
       if (
         container &&
-        !dottedTags.has(container) &&
-        !identifierTags.has(deDotted(container))
+        !canonicalDottedTags.has(container) &&
+        !canonicalIdentifierTags.has(deDotted(container))
       ) {
         issues.push({
           type: 'technical',

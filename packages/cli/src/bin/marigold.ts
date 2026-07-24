@@ -408,10 +408,15 @@ export const main = async (
       // this command's catch turns into a non-zero exit).
       const { positionals, values } = parseValidateCommand(rest);
       const [fileInput] = positionals;
+      const checks = values.checks ?? 'all';
+      const format = values.format ?? 'text';
 
+      // Clamp to a known enum value so an invalid flag never leaks the raw
+      // string into telemetry (validation below runs after telemetryArgs is
+      // set). Mirrors the doctor command's --format clamping.
       telemetryArgs = {
-        checks: values.checks ?? 'all',
-        format: values.format ?? 'text',
+        checks: isValidateChecks(checks) ? checks : 'invalid',
+        format: isValidateFormat(format) ? format : 'invalid',
       };
 
       if (!fileInput) fail('Usage: marigold validate <file.tsx>');

@@ -59,6 +59,9 @@
     "vite": ">=5.0.0"
   },
   "peerDependenciesMeta": {
+    "@marigold/components": {
+      "optional": true
+    },
     "@marigold/theme-rui": {
       "optional": true
     },

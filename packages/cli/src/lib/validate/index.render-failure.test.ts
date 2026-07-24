@@ -38,3 +38,34 @@ describe('validate() render-failure handling', () => {
     expect(report.metadata.checksRun).toContain('technical');
   });
 });
+
+describe('validate() toolchain-unavailable handling', () => {
+  it('reports a missing/unlaunchable render toolchain as a warning, not an error', async () => {
+    // Regression: createRenderer() failing (no Chromium, toolchain not
+    // installed) used to surface as the same severity 'error' as a genuine
+    // render crash — indistinguishable by exit code from a real defect in
+    // the file under test. It's an environment precondition instead.
+    vi.doMock('./spatial/renderer.js', () => ({
+      createRenderer: async () => {
+        throw new Error('Executable doesn’t exist (mock: no Chromium)');
+      },
+    }));
+    vi.resetModules();
+    const { validate: validateWithMock } = await import('./index.js');
+
+    const report = await validateWithMock(example('valid-button.tsx'), {
+      checks: ['technical', 'spatial'],
+      viewport: { width: 1280, height: 720 },
+    });
+
+    const runtimeIssue = [...report.errors, ...report.warnings].find(
+      i => i.source === 'runtime'
+    );
+    expect(runtimeIssue).toBeDefined();
+    expect(runtimeIssue?.severity).toBe('warning');
+    expect(report.errors.find(e => e.source === 'runtime')).toBeUndefined();
+
+    vi.doUnmock('./spatial/renderer.js');
+    vi.resetModules();
+  });
+});

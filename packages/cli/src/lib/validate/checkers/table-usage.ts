@@ -12,21 +12,24 @@ import type { SourceLocation, ValidationIssue } from '../types.js';
 // Marigold form-field components (curated — part of the design-system-specific
 // remainder). A field inside a <Table> means the table is being misused for
 // form layout (W8); form fields belong in Stack / Inline / Columns.
+//
+// Checkbox, Select, and Switch are deliberately EXCLUDED: a per-row selection
+// <Checkbox>, an inline per-row <Select> (bulk actions), and a per-row status
+// <Switch> are idiomatic, common data-table patterns — not a table misused
+// for form layout — and flagging them produced noisy false positives on
+// realistic tables.
 const FIELD_COMPONENTS = new Set([
   'TextField',
   'NumberField',
   'TextArea',
   'PasswordField',
-  'Select',
   'SelectList',
   'ComboBox',
   'MultiSelect',
   'Autocomplete',
-  'Checkbox',
   'CheckboxGroup',
   'Radio',
   'RadioGroup',
-  'Switch',
   'DatePicker',
   'DateField',
   'DateRangePicker',

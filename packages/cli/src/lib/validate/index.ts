@@ -24,6 +24,14 @@ export type {
 } from './types.js';
 export { isValidationCheck } from './types.js';
 
+// Thrown by the stub renderer's render() when the render toolchain (Playwright/
+// Vite/Chromium) itself could not be loaded or launched — an environment/setup
+// precondition, not a defect in the file being validated. `runWithRenderer`'s
+// catch checks for this specifically so it can report a `warning` instead of
+// an `error`: a missing Chromium on this machine must not read, by exit code,
+// as "the validated file is broken" to an automated correction loop.
+class RenderToolchainUnavailableError extends Error {}
+
 // Dynamic checks run on the rendered DOM and have no inherent source location.
 // These sources get joined back to the source via the component-location map.
 // Wall-clock ceiling for the whole dynamic check phase (all spatial/a11y
@@ -309,9 +317,16 @@ const runWithRenderer = async (
       }
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
+      // A missing/unlaunchable toolchain is an environment precondition, not
+      // a defect in the validated file — report it as a warning so it can't
+      // be mistaken for "this component is broken" by exit code alone. Any
+      // other render failure (a genuine crash, the CHECK_BUDGET_MS timeout)
+      // stays an error: that IS a real signal about the file under test.
+      const isToolchainUnavailable =
+        err instanceof RenderToolchainUnavailableError;
       issues.push({
         type: 'technical',
-        severity: 'error',
+        severity: isToolchainUnavailable ? 'warning' : 'error',
         source: 'runtime',
         component: 'Renderer',
         message: `Headless render failed: ${message}`,
@@ -346,19 +361,21 @@ export const validate = async (
     // No browser needed; build a stub renderer that throws if used.
     const stub: SharedRenderer = {
       render: () => {
-        throw new Error('Renderer not available for technical-only run.');
+        throw new RenderToolchainUnavailableError(
+          'Renderer not available for technical-only run.'
+        );
       },
       close: async () => undefined,
     };
     return runWithRenderer(filePath, options, stub);
   }
 
-  // The render toolchain ships as devDependencies (so the published CLI stays
-  // lean — see packages/cli/package.json) and Chromium may be absent.
+  // The render toolchain (playwright/vite/react/etc.) is an optional peer
+  // dependency (see packages/cli/package.json) and Chromium may be absent.
   // Load and launch it here; on any failure fall back to a renderer whose
-  // render() throws, so runWithRenderer records a structured `runtime` error
-  // (and still returns the technical findings) instead of throwing out of
-  // validate() — the programmatic entry point a correction loop calls.
+  // render() throws, so runWithRenderer records a structured `runtime`
+  // finding (and still returns the technical findings) instead of throwing
+  // out of validate() — the programmatic entry point a correction loop calls.
   let renderer: SharedRenderer;
   try {
     const { createRenderer } = await import('./spatial/renderer.js');
@@ -367,7 +384,7 @@ export const validate = async (
     const message = err instanceof Error ? err.message : String(err);
     renderer = {
       render: () => {
-        throw new Error(message);
+        throw new RenderToolchainUnavailableError(message);
       },
       close: async () => undefined,
     };
