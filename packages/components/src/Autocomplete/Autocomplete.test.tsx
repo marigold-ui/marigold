@@ -228,7 +228,20 @@ test('calls onSubmit with custom value on Enter when no option is focused', asyn
   const input = screen.getByRole('combobox');
   await user.type(input, 'custom value{Enter}');
 
-  expect(onSubmit).toHaveBeenCalled();
+  expect(onSubmit).toHaveBeenCalledWith(null, 'custom value');
+});
+
+test('calls onSubmit with the selected key when an option is chosen', async () => {
+  const onSubmit = vi.fn();
+  renderWithOverlay(<Basic.Component label="Label" onSubmit={onSubmit} />);
+
+  const input = screen.getByRole('combobox');
+  await user.type(input, 'ha');
+
+  const option = await screen.findByRole('option', { name: 'Harry Potter' });
+  await user.click(option);
+
+  expect(onSubmit).toHaveBeenCalledWith('Harry Potter', null);
 });
 
 describe('mobile view', () => {
