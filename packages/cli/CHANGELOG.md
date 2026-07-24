@@ -1,5 +1,18 @@
 # @marigold/cli
 
+## 0.5.0-beta.0
+
+### Minor Changes
+
+- 7fc3b53: feat(DST-1446): `marigold search` to find components by docs content
+
+  Adds `marigold search <query>`, which ranks components by matching the query against their docs content (title, description, section headings, and section prose), not just the component name. This collapses the "list → guess → docs → retry" discovery loop (3 to 5 calls) that AI agents run today into a single ranked, snippet-bearing, deep-linked result.
+
+  - **CLI:** new `loadSearchIndex()` / `searchComponentDocs()` library functions and a `search` command wrapping them, with `--limit`, `--format markdown|json|plain`, `--fresh` and `--offline` (reusing the existing cache and `sanitizeRemote` — no new dependencies). Scoring weights title ×3, description ×2, each matching heading ×2, and each matching section snippet ×1. Tab completion and telemetry cover the new command. No-match exits 0 (`[]` for `--format json`).
+  - **Docs:** `build-manifest.mjs` now also emits `public/component-search.json` — a content index over the component MDX (per-component `headings` plus prose-bearing `{ heading, snippet }` sections, with JSX/imports/code-fences stripped). It is written after `manifest.json` so a content-index bug can never block the manifest that `list`/`docs` depend on.
+
+- 946dc9f: feat(DST-1265): add `marigold doctor` — a read-only command that diagnoses a project's Marigold setup (package presence, `@marigold/components`/`@marigold/system` version match, latest-version freshness, that `MarigoldProvider` wraps the app and is actually imported, that its `theme` prop resolves to a real binding, Tailwind config, and React peer deps) and prints actionable fixes grouped by severity. The provider and theme checks verify the referenced identifiers are genuinely bound (imported or declared), so a `<MarigoldProvider theme={theme}>` whose import lines are missing is reported as broken instead of healthy. The freshness check makes a short, best-effort fetch of the docs manifest to learn the latest published versions (cached for 24h; skipped silently when offline or slow, and bypassed entirely with `--offline`). Supports `--format text|json` and `--offline`, and exits `1` only on deterministic errors (e.g. a `<MarigoldProvider>` that is rendered but never imported), so it is safe to gate CI on and easy for AI agents to consume.
+
 ## 0.4.0
 
 ### Minor Changes

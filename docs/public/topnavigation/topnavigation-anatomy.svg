@@ -15,16 +15,18 @@
     <!-- Start slot -->
     <rect x="12" y="8" width="120" height="40" rx="4"
           fill="#f9fafb" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4, 3" />
-    <text x="72" y="33" font-family="sans-serif" font-size="13px" fill="#6b7280"
-          text-anchor="middle">Sidebar Toggle</text>
+    <text x="44" y="33" font-family="sans-serif" font-size="13px" fill="#374151"
+          font-weight="600" text-anchor="middle">Logo</text>
+    <text x="98" y="33" font-family="sans-serif" font-size="13px" fill="#6b7280"
+          text-anchor="middle">Toggle</text>
 
     <!-- Middle slot -->
     <rect x="148" y="8" width="240" height="40" rx="4"
           fill="#f9fafb" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4, 3" />
-    <text x="202" y="33" font-family="sans-serif" font-size="12px" fill="#374151"
-          font-weight="500">Home</text>
-    <text x="260" y="33" font-family="sans-serif" font-size="12px" fill="#6b7280">Events</text>
-    <text x="324" y="33" font-family="sans-serif" font-size="12px" fill="#6b7280">Settings</text>
+    <text x="268" y="33" font-family="sans-serif" font-size="12px" text-anchor="middle">
+      <tspan fill="#6b7280">Home / Events / </tspan>
+      <tspan fill="#374151" font-weight="500">Settings</tspan>
+    </text>
     <!-- End slot -->
     <rect x="404" y="8" width="124" height="40" rx="4"
           fill="#f9fafb" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4, 3" />

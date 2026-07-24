@@ -1,4 +1,4 @@
-import { createContext, use, useMemo } from 'react';
+import { createContext, use, useEffect, useMemo } from 'react';
 import type { ReactNode } from 'react';
 import type { ComponentClassNames } from '@marigold/system';
 import { useClassNames, useSmallScreen } from '@marigold/system';
@@ -56,6 +56,19 @@ export const SidebarProvider = ({
     onOpenChange,
     isMobile,
   });
+
+  // Cmd+B / Ctrl+B. Always toggles — even on a direct-link page (no panel),
+  // collapse still narrows the rail to icons.
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'b' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        toggleSidebar();
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [toggleSidebar]);
 
   const value = useMemo(
     () => ({ state, toggleSidebar, isMobile, classNames }),

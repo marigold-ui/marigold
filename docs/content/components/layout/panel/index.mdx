@@ -16,7 +16,13 @@ Panels live inside a [`<Page>`](/components/layout/page) under a [`<Page.Header>
   stands in for one item in a list or grid. **Cards repeat. Panels don't.**
 </Callout>
 
-import { Layers, ListCollapse, ShieldCheck, SquareStack } from 'lucide-react';
+import {
+  Layers,
+  ListCollapse,
+  ShieldCheck,
+  SquareStack,
+  TriangleAlert,
+} from 'lucide-react';
 import { PanelAnatomy } from './panel-anatomy';
 import { PanelCollapsibleAnatomy } from './panel-collapsible-anatomy';
 import { PanelVsCard } from './panel-vs-card';
@@ -344,6 +350,12 @@ If the Panel lives under an existing `<h2>` on the page (inside a Tabs panel, fo
       href: '/patterns/admin-master-mark',
       caption: 'Placement guidance for master- and admin-only content.',
       icon: <ShieldCheck className="size-6" />,
+    },
+    {
+      title: 'Error boundaries',
+      href: '/patterns/feedback/error-boundaries',
+      caption: 'What a panel shows when its content fails to load.',
+      icon: <TriangleAlert className="size-6" />,
     },
     {
       title: 'Elevation',

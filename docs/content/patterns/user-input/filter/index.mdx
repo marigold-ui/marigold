@@ -8,6 +8,15 @@ import { FilterAnatomy } from './filter-anatomy';
 
 Filtering helps users focus on what matters by narrowing a data set to results that meet specific criteria. It is most valuable when the data set is too large or complex to scan in its entirety, and especially when several parameters or categories together can significantly narrow the results. Well-applied filters reduce information overload and let users find relevant items and complete tasks more efficiently.
 
+<Callout title="Filtering or picking?">
+  Filtering narrows a data set in place, and the narrowed view is the result the
+  user reads. When the goal is instead to collect individual records and carry
+  them into another task, such as adding venues to a report or granting a set of
+  people access, reach for the [Pick](/patterns/user-input/pick) pattern. Both
+  open with a search field, but a filter leaves the collection where it is,
+  while a pick takes a chosen set with it.
+</Callout>
+
 ## Structure
 
 The pattern keeps a consistent layout while the controls inside it adapt to the data set. It arranges five areas: a filter bar above the data set, an applied-filter summary, the data set itself, pagination below it, and a filter panel that slides in from the right.
@@ -58,6 +67,8 @@ Once you know which filters to offer, pick the control for each one. The right c
 | **Contains** | A keyword or partial match typed by the user. Use [SearchField](/components/form/search-field) in the filter bar, or a [TextField](/components/form/textfield) for a field inside the panel.                                                                                                                                                  | [SearchField](/components/form/search-field) |
 | **Date**     | A point in time or a span. Use a date picker for a single date, and prefer relative presets such as "Last 7 days" for ranges (see [Date Range Presets](#date-presets)). A custom range uses [RangeCalendar](/components/form/rangecalendar) (alpha).                                                                                          | [DatePicker](/components/form/datepicker)    |
 | **Boolean**  | A single on/off condition, such as "In stock only". A switch reads as an instant on/off and suits a quick filter in the filter bar. Inside the panel, a single checkbox does the same job.                                                                                                                                                    | [Switch](/components/form/switch)            |
+
+Selecting several values in a facet, such as multiple categories or statuses, is still filtering even though it can feel like ticking records off one by one. Those values are criteria that narrow the visible set, not records the user carries away. When the checkboxes stand for individual records that leave with the user, that is the [Pick](/patterns/user-input/pick) pattern instead.
 
 For these common shapes, prefer the dedicated form controls above: radio buttons and checkboxes communicate the selection rule visually before any interaction and match what users know from other applications. When the option set is too large to scan, reach for a searchable control instead. [ComboBox](/components/form/combobox) and [Autocomplete](/components/form/autocomplete) let users narrow a single choice by typing, and the list-based [SelectList](/components/form/selectlist) covers single or multiple selection for hundreds of options that benefit from virtualization.
 
