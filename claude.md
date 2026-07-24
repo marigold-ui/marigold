@@ -283,6 +283,7 @@ Run with `pnpm test:unit`.
 
 This project provides MCP servers for AI-assisted development:
 
+- **marigold-docs** (`https://www.marigold-ui.io/mcp`) — Semantic search over the Marigold documentation (`search_docs` tool). Reservix-internal, requires OAuth. See `docs/app/mcp/README.md` for how it works.
 - **Storybook** (`http://localhost:6006/mcp`) — Requires running Storybook (`pnpm sb`). Provides component discovery, documentation, and testing tools.
 - **React Aria** — Reference documentation for react-aria-components
 
