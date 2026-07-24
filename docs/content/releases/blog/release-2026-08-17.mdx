@@ -235,8 +235,6 @@ The app shell has been rebuilt from the ground up, and this is the biggest struc
 +  <Page>
 +    <Page.Header>
 +      <Title>Billing</Title>
-+      <Description>Manage your plan and invoices.</Description>
-+      <Button variant="primary">Upgrade plan</Button>
 +    </Page.Header>
 +    {content}
 +  </Page>
@@ -249,11 +247,9 @@ The app shell has been rebuilt from the ground up, and this is the biggest struc
 
 The reason this matters in real apps:
 
-- **Mobile URL bar.** Safari and Chrome on mobile only collapse the URL bar when the document scrolls. With an interior scroll container, you permanently lose ~8% of the screen. Page-level scroll gets it back.
-- **Pull-to-refresh** works again on mobile (interior scroll disables it).
-- **Browser scroll restoration** on back/forward only works reliably for the document, not interior containers. Interior scroll causes subtle "lost scroll position" bugs.
-- **`Cmd+F` find-in-page** scrolls the document, so matches outside the viewport now scroll into view correctly.
-- **Anchor links (`#section`), iOS status-bar tap (scroll-to-top), and native keyboard navigation** (`PgUp`, `PgDn`, `Space`, `Home`, `End`) all behave predictably.
+- **Mobile browsers behave again.** Safari and Chrome only collapse the URL bar when the document scrolls (an interior scroll container permanently costs ~8% of the screen), and pull-to-refresh works again.
+- **Browser scroll restoration** on back/forward only works reliably for the document, so interior scroll caused subtle "lost scroll position" bugs.
+- **`Cmd+F` find-in-page, anchor links (`#section`), iOS status-bar tap, and native keyboard scrolling** (`PgUp`, `PgDn`, `Space`, `Home`, `End`) all behave predictably.
 - **`IntersectionObserver` with the default root, `scroll-snap`, `position: sticky`, and `scroll-margin-top`** are all simpler when there is exactly one scroll container.
 
 **Migration.** Two patterns break.
@@ -276,8 +272,6 @@ Second, styles that assumed a viewport-bounded main region. Inside `<Page>` (the
 + </Page>
 ```
 
-Anything that read `scrollTop` from the old main container (or attached a scroll listener to it) needs to read from `window` / `document.documentElement` instead. A `height: 100%` on direct children of the main area is no longer constrained, so switch it to `min-h-dvh` or drop the constraint altogether.
-
 A small known trade-off: a pure app-shell look using `position: sticky` can flicker briefly during iOS Safari momentum scroll, and sticky elements may show a one-frame repaint when overlays close. Both are cosmetic, neither affects correctness, and the behavioral wins above are worth it.
 
 ### Retired `<Multiselect>`, migrate to `<TagField>`
@@ -289,7 +283,6 @@ A small known trade-off: a pure app-shell look using `position: sticky` can flic
 + <TagField label="Genres">
 +   <TagField.Option id="rock">Rock</TagField.Option>
 +   <TagField.Option id="jazz">Jazz</TagField.Option>
-+   <TagField.Option id="pop">Pop</TagField.Option>
 + </TagField>
 ```
 
@@ -302,16 +295,12 @@ The `open` prop has been removed from `<Tooltip>`. Controlled visibility now liv
 ```diff
 - <Tooltip open={isOpen} onOpenChange={setIsOpen}>
 -   <Tooltip.Trigger>
--     <Button>Info</Button>
--   </Tooltip.Trigger>
--   <Tooltip.Content>Hello</Tooltip.Content>
-- </Tooltip>
 + <Tooltip>
 +   <Tooltip.Trigger open={isOpen} onOpenChange={setIsOpen}>
-+     <Button>Info</Button>
-+   </Tooltip.Trigger>
-+   <Tooltip.Content>Hello</Tooltip.Content>
-+ </Tooltip>
+      <Button>Info</Button>
+    </Tooltip.Trigger>
+    <Tooltip.Content>Hello</Tooltip.Content>
+  </Tooltip>
 ```
 
 Uncontrolled usage is unchanged.
@@ -384,13 +373,7 @@ import type { Theme } from '@marigold/system';
 
 export const myTheme: Theme = {
   name: 'my-theme',
-  screens: {
-    sm: '40rem',
-    md: '48rem',
-    lg: '64rem',
-    xl: '80rem',
-    '2xl': '96rem',
-  },
+  screens: { sm: '40rem', md: '48rem', lg: '64rem', xl: '80rem' },
   // ...
 };
 ```
@@ -445,7 +428,7 @@ With `<Panel>` now covering page-level sections, `<Card>` is the right unit for 
 
 ### `<SelectList>` API standardized
 
-`<SelectList>` has been refined into a first-class form field for picking one or many items from a visible list of rich two-line rows. The component was never reached for in practice. The API was ambiguous, the visual treatment didn't distinguish it from `<ListBox>`, and it sat awkwardly between Radio and Checkbox groups and `<Select>`. v18 tightens the API, gives it a dedicated theme entry, and rewrites the docs around clear decision guidance.
+`<SelectList>` has been refined into a first-class form field for picking one or many items from a visible list of rich two-line rows. The old component was never reached for in practice: the API was ambiguous and the visual treatment didn't distinguish it from `<ListBox>`. v18 tightens the API, gives it a dedicated theme entry, and rewrites the docs around clear decision guidance.
 
 The new shape:
 
@@ -525,7 +508,7 @@ For icon-only actions use `<Button size="icon" aria-label="…">`, which also fi
 | `close={!isDismissed}`                          | `open={!isDismissed}`                                      |
 | `onCloseChange={setX}` (receives current value) | `onOpenChange={(open) => …}` (receives `false` on dismiss) |
 
-**`role="alert"` replaced by an `announce` prop.** The previous implementation announced only the `error` variant, and did so by mounting `role="alert"` together with its content, which the WAI-ARIA spec warns against, and which made announcements unreliable on some screen reader and browser combinations. `<SectionMessage announce>` now routes the message text through react-aria's persistent live announcer (`polite` for `info` / `success` / `warning`, `assertive` for `error`). `announce` defaults to `true` for `variant="error"` and `false` otherwise, so the common case behaves as before. Re-announce the same message by passing a changing `key`.
+**`role="alert"` replaced by an `announce` prop.** The previous implementation announced only the `error` variant by mounting `role="alert"` together with its content, which the WAI-ARIA spec warns against and which was unreliable on some screen reader and browser combinations. `<SectionMessage announce>` routes the message text through react-aria's persistent live announcer (`polite` for `info` / `success` / `warning`, `assertive` for `error`). `announce` defaults to `true` for `variant="error"` and `false` otherwise, so the common case behaves as before. Re-announce the same message by passing a changing `key`.
 
 **Migration:** tests or styles that located error messages via `getByRole('alert')` / `[role="alert"]` need a different selector. The message text still renders, only the wrapper role is gone. Consumers who wrapped a dynamic `<SectionMessage>` in their own live region can replace the wrapper with `announce`.
 
@@ -590,15 +573,8 @@ The package name stays the same (`@marigold/icons`), so the import path does not
 If you'd rather not touch call sites, alias on import:
 
 ```diff
-- import { Search, Check, Add, Ticket, Seat, Deal } from '@marigold/icons';
-+ import {
-+   Search,
-+   Check,
-+   Plus as Add,
-+   Ticket,
-+   Armchair as Seat,
-+   BadgePercent as Deal,
-+ } from '@marigold/icons';
+- import { Add, Seat, Deal } from '@marigold/icons';
++ import { Plus as Add, Armchair as Seat, BadgePercent as Deal } from '@marigold/icons';
 ```
 
 The full name mapping is included in the changelog and on the [Iconography](/foundations/iconography) page.
@@ -611,7 +587,7 @@ The full name mapping is included in the changelog and on the [Iconography](/fou
 
 - Always import from `@marigold/icons`, not from `lucide-react` directly. The package re-exports the entire Lucide catalogue along with the custom icons, so a single import path covers both.
 - For coloring, prefer Tailwind text utilities (`<TriangleAlert className="text-warning-accent" />`). Lucide reads the `color` prop as a literal CSS value, so `color="warning"` won't resolve a theme token. Reserve `color` / `fill` / `stroke` for literal values like `var(--color-…)` or hex codes.
-- 11 of the 13 custom icons are filled silhouettes wrapped with a small helper that defaults `fill` and `stroke` to `currentColor` and couples the `color`, `fill`, and `stroke` props so they move together. Pass `stroke` explicitly to differentiate. `Instagram` and `Twitter` are stroke-based outlines and follow Lucide's standard `color` → `stroke` behaviour.
+- 11 of the 13 custom icons are filled silhouettes whose `color`, `fill`, and `stroke` default to `currentColor` and move together (pass `stroke` explicitly to differentiate). `Instagram` and `Twitter` are stroke-based outlines with Lucide's standard `color` → `stroke` behaviour.
 - Icons get `aria-hidden="true"` automatically when rendered without children or an `aria-*` attribute. Provide `aria-label` for standalone meaningful icons.
 - The peer dependency narrows to `react: >=19.0.0` (the custom icon wrappers rely on React 19's ref-as-prop).
 
@@ -648,7 +624,7 @@ New components (`SegmentedControl`, `DateRangePicker`, `RangeCalendar`, the `Tab
 
 ### Two-level sidebar navigation
 
-`<Sidebar>` gains a second mode, and for full applications it is the new default: a persistent **rail** of icon-first top-level destinations next to a **panel** showing the active section's sub-navigation. A single column starts to strain once an app has several top-level sections that each carry their own sub-navigation. Everything either nests behind drill-downs, or the list grows past what users can scan. With `<Sidebar.Rail>`, both levels stay visible at once: switching sections is one click, and users never lose sight of where they are.
+`<Sidebar>` gains a second mode, and for full applications it is the new default: a persistent **rail** of icon-first top-level destinations next to a **panel** showing the active section's sub-navigation. A single column starts to strain once several top-level sections each carry their own sub-navigation. With `<Sidebar.Rail>`, both levels stay visible at once: switching sections is one click, and users never lose sight of where they are.
 
 The building block is `<Sidebar.RailItem>`. One wrapping a `<Sidebar.Nav>` is a section that fills the panel. One with only an `href` is a direct link that navigates immediately and shows no panel. One declared inside `<Sidebar.Footer>` pins to the bottom of the rail. Pass the current pathname to `<Sidebar.Rail current>` and both levels resolve at once (the matching page lights up in the panel, its section is marked on the rail), with a per-item `active` prop as the override for pages the URL cannot identify.
 
@@ -673,21 +649,16 @@ The building block is `<Sidebar.RailItem>`. One wrapping a `<Sidebar.Nav>` is a 
       </Sidebar.Footer>
     </Sidebar.Rail>
   </Sidebar>
-  <TopNavigation>
-    <TopNavigation.Start>
-      <Brand />
-      <Sidebar.Toggle variant="rail" />
-    </TopNavigation.Start>
-  </TopNavigation>
+  <TopNavigation>…</TopNavigation>
   <Page>…</Page>
 </AppShell>
 ```
 
 Collapsing works differently than in the single column, and better: the toggle (or Cmd/Ctrl+B) hides the **panel** while the rail narrows to an icon-only strip, so top-level navigation always stays one click away. On small screens the rail renders as the same single-column drawer as the plain sidebar: sections drill in (the drawer opens inside the active section), direct links are plain rows, and tapping a link closes the drawer.
 
-The shell adapts on its own. When `<AppShell>` contains a rail, it switches to a full-width top bar (pure CSS via `:has()`), so the brand never moves when the panel collapses. Place the brand and the new `<Sidebar.Toggle variant="rail" />` in the top navigation's start slot. Keyboard and screen reader support is thorough: the rail and the section panel are separate navigation landmarks, arrow keys and Home/End move across the rail on top of its flat tab order, the current page announces `aria-current="page"` while its section ancestor announces `aria-current="true"`, and the section panel's tab stop re-syncs to the current page when the route changes, so Tab re-enters at the active item. Collapsed, icon-only tiles reveal their label as a tooltip on hover or focus.
+The shell adapts on its own: with a rail present, `<AppShell>` switches to a full-width top bar (pure CSS via `:has()`), so the brand never moves when the panel collapses. Place the brand and the new `<Sidebar.Toggle variant="rail" />` in the top navigation's start slot. Accessibility is thorough: the rail and the section panel are separate navigation landmarks, arrow keys and Home/End move across the rail on top of its flat tab order, the current page announces `aria-current="page"` with its section marked on the rail, the panel's tab stop re-syncs to the current page when the route changes, and collapsed icon tiles reveal their label as a tooltip.
 
-For theming, the shell's shared measurements move into tokens: `--spacing-topbar` is the vertical datum shared by the top bar, the sidebar brand row, and the rail's sticky offset, `--spacing-rail` / `--spacing-rail-collapsed` / `--spacing-rail-panel` size the rail columns, and `--spacing-touch-target` guarantees the 44px minimum row height on small screens. Two related shell refinements land alongside: the `AppShell` header row is now sized `auto` instead of a fixed `3.5rem`, so a shell without a `<TopNavigation>` no longer reserves an empty header band, and the shell's viewport-height claims read a new `--ui-viewport-height` custom property (with a `100dvh` fallback), so you can render the whole shell inside a bounded container such as an embedded preview or demo.
+For theming, the shell's shared measurements move into tokens: `--spacing-topbar` (the vertical datum shared by the top bar, sidebar brand row, and rail sticky offset), `--spacing-rail` / `--spacing-rail-collapsed` / `--spacing-rail-panel` (the rail columns), and `--spacing-touch-target` (the 44px minimum row height on small screens). Alongside, the `AppShell` header row is now sized `auto`, so a shell without a `<TopNavigation>` no longer reserves an empty band, and a new `--ui-viewport-height` property (fallback `100dvh`) lets the shell render inside a bounded container such as an embedded demo.
 
 The [Sidebar documentation](/components/navigation/sidebar#two-level-navigation) covers the full model, including the anatomy and when to stay with a single column.
 
@@ -739,16 +710,7 @@ Built-in localized presets cover the common cases (`today`, `yesterday`, `tomorr
 </ButtonGroup>
 ```
 
-Slot-aware containers tune the cascade for their context. `<Panel.Header>` publishes a lower-emphasis `ghost` variant at `small` size and positions the buttons in its actions cell, so a labelled header action reads as chrome without you setting anything:
-
-```tsx
-<Panel.Header>
-  <Title>Organizer info</Title>
-  <Button>Edit</Button>
-</Panel.Header>
-```
-
-The same cascade drives `<ActionBar>` (see the breaking change above), `<SelectList.Option>` (a trailing in-row action reads as low-emphasis chrome automatically), and even `<TagGroup>`'s internal "Remove all" action. `<ActionMenu>`'s trigger participates too: it renders `secondary` on its own and `ghost` inside a header, option row, or group.
+Slot-aware containers tune the cascade for their context. `<Panel.Header>` publishes a lower-emphasis `ghost` variant at `small` size and positions the buttons in its actions cell, so a plain `<Button>Edit</Button>` dropped next to the `<Title>` reads as header chrome without you setting anything. The same cascade drives `<ActionBar>` (see the breaking change above), `<SelectList.Option>` (a trailing in-row action reads as low-emphasis chrome automatically), and even `<TagGroup>`'s internal "Remove all" action. `<ActionMenu>`'s trigger participates too: it renders `secondary` on its own and `ghost` inside a header, option row, or group.
 
 A button opts out of the cascade with `slot={null}`, and overlays (`Popover`, `Modal`, `Tray`, `Drawer`) reset the context at their content root, so a header or group cascade cannot leak through the portal into an overlay's own buttons.
 
@@ -789,9 +751,6 @@ Rounding out the family: `size="icon"` is now a public, documented part of the B
 
 ```tsx
 <Panel>
-  <Panel.Header>
-    <Title>Advanced settings</Title>
-  </Panel.Header>
   <Panel.Collapsible>
     <Panel.CollapsibleHeader>
       <Title>Webhooks</Title>
@@ -817,10 +776,6 @@ A new `collapsed` token is available across **every** spacing-accepting prop in 
   <Header />
   <Table />
 </Stack>
-
-<Inset p="collapsed">
-  <EdgeToEdgeContent />
-</Inset>
 ```
 
 The use case: wrappers that need to render without adding any spacing, for example an edge-to-edge `<Table>` inside a `<Panel>`. Before, you had to drop out of the semantic spacing system entirely and use numeric overrides whenever this came up. The token covers it directly.
@@ -871,19 +826,7 @@ Both boolean controls now take `error` and `errorMessage`. When `error` is set, 
 </Select>
 ```
 
-The callback also receives a second `details` argument with the selection `count`, which makes it easy to summarise a multi-select trigger instead of listing every value:
-
-```tsx
-<Select
-  label="Genres"
-  selectionMode="multiple"
-  renderValue={(items, { count }) => `${count} selected`}
->
-  …
-</Select>
-```
-
-`renderValue` now also works when options are provided as static `<Select.Option>` children (previously it was silently skipped unless the options came from the `items` prop).
+The callback also receives a second `details` argument with the selection `count`, so a multi-select trigger can render a summary like "3 selected" instead of listing every value. `renderValue` now also works when options are provided as static `<Select.Option>` children (previously it was silently skipped unless the options came from the `items` prop).
 
 ### `<Tag.Group>` `collapseAt`
 
@@ -923,10 +866,6 @@ Three additions to `<Accordion>`:
 Marigold re-exports React Aria's `useLandmark` hook (with its `AriaLandmarkRole` / `AriaLandmarkProps` types), so you can register custom regions as ARIA landmarks without adding `@react-aria/landmark` as a direct dependency. A new accessibility guide on landmarks and a dedicated `useLandmark` reference page accompany it.
 
 ```tsx
-import { useRef } from 'react';
-import { useLandmark } from '@marigold/components';
-
-const ref = useRef<HTMLElement>(null);
 const { landmarkProps } = useLandmark(
   { role: 'search', 'aria-label': 'Site search' },
   ref
@@ -988,7 +927,7 @@ If you maintain a custom theme, the `Menu` entry now also requires a `keyboard` 
 - **Numeric padding values.** `p={4}` on `<Panel>`, `<Card>`, and `<SelectList>` silently produced no padding (it resolved to a non-existent CSS variable). Numeric scale values now apply on both axes, and the resolution logic is shared through a single `resolveInsetAxes` helper so the bug class cannot reappear per component.
 - **Focus plus error outlines.** Compound fields now show the correct outline when focused and invalid at the same time.
 - **Mobile trays stack above drawers.** `<Select>` and `<Menu>` open their options in a bottom-sheet tray on small screens, and that tray now renders above an open `<Drawer>` instead of unreachably behind it.
-- **`<ProgressCircle>` and `<Loader>` accessible names.** A consumer-provided `aria-label` / `aria-labelledby` is respected instead of being overwritten by the generic localized "loading" message (which remains the fallback), and a fullscreen `<Loader>` with a custom `aria-labelledby` names its overlay dialog correctly. Named `size` tokens on `<ProgressCircle>` also resolve to valid numeric SVG dimensions now instead of emitting `width="defaultpx"` console errors.
+- **`<ProgressCircle>` and `<Loader>` accessible names.** A consumer-provided `aria-label` / `aria-labelledby` is respected instead of being overwritten by the generic localized "loading" message (still the fallback), and a fullscreen `<Loader>` names its overlay dialog correctly. Named `size` tokens on `<ProgressCircle>` also resolve to valid numeric SVG dimensions instead of emitting `width="defaultpx"` console errors.
 - **Multi-month calendars at non-default widths.** Three months at `width="1/2"` no longer overflow their wrapper, `width="full"` fills its column correctly, and `<RangeCalendar>` shrinks to fit narrow containers below the `sm` breakpoint instead of overflowing a narrow Panel.
 - **Date-picker popovers size to the calendar.** The shared `<Popover>` gains a `matchTriggerWidth` prop (default `true`, so field dropdowns are unchanged). `<DatePicker>` and `<DateRangePicker>` opt out so the calendar no longer stretches to the full field width.
 - **Disabled states actually look disabled.** The `<Slider>` track, fill, thumb, and value dim when disabled, item descriptions in `<SelectList>` / `<ListBox>` / `<Menu>` dim alongside their labels, and disabled items show the `not-allowed` cursor (including disabled `<TagField>`, which previously showed a text cursor).
@@ -1004,7 +943,7 @@ v18 ships alongside a substantial pass over the documentation site, and, new thi
 ### Documentation that meets AI halfway
 
 - **`marigold search`.** The Marigold CLI gains a `search` command that finds components by what their docs actually say (title, description, headings, prose), returning ranked, snippet-bearing, deep-linked results in one call. It collapses the "list → guess → docs → retry" discovery loop coding agents run into a single query, with `--format json` for structured output. The CLI is now documented end to end on a new [Getting Started page](/getting-started/cli).
-- **`marigold doctor`.** A read-only command that diagnoses a project's Marigold setup: package presence, version match between `@marigold/components` and `@marigold/system`, freshness against the latest release, that `MarigoldProvider` actually wraps the app and its `theme` prop resolves to a real binding, Tailwind config, and React peer deps. It prints actionable fixes grouped by severity, supports `--format text|json` and `--offline`, and exits non-zero only on deterministic errors, so it is safe to gate CI on and easy for agents to consume. The CLI also now runs correctly when invoked through a symlinked global bin.
+- **`marigold doctor`.** A read-only command that diagnoses a project's Marigold setup: package presence and version match, freshness against the latest release, that `MarigoldProvider` actually wraps the app and its `theme` resolves to a real binding, Tailwind config, and React peer deps. It prints actionable fixes grouped by severity, supports `--format text|json` and `--offline`, and exits non-zero only on deterministic errors, so it is safe to gate CI on. The CLI also now runs correctly through a symlinked global bin.
 - **An MCP server over the docs.** The docs site exposes an MCP (Model Context Protocol) server at `/mcp`, letting AI coding assistants (Claude Code, VS Code Copilot, and friends) semantically search the Marigold documentation through vector embeddings.
 - **Every docs page as markdown.** Each page is available as raw markdown at `<page-url>.md` (for example `/components/actions/button.md`), and the full page index at `/manifest.json`, both served as plain static assets. Prop tables in the markdown output now match the HTML exactly.
 
@@ -1015,14 +954,14 @@ v18 ships alongside a substantial pass over the documentation site, and, new thi
 - **New Panel documentation page**: MDX page, anatomy diagrams (header + collapsible), and a full set of demos covering appearance, variants, header actions, collapsible sections (incl. controlled and error states), footers, bleed content, danger-zone rows, and a side-by-side `Panel` vs `Card` comparison.
 - **A unified demo app at `/examples`** consolidates all pattern demos alongside a full app-shell example. Analytics, Billing, General, Security, Teams, and Users are real screens built from Marigold components, with `Panel` for page-level sections and `Card` reserved for repeating collection items. The examples are also discoverable from the docs ⌘K search.
 - **New Bulk Actions pattern and working example.** A full pattern page on letting users select many records and act on all of them at once (`<Table>` selection, `<ActionBar>`, confirmation dialogs, progress feedback, partial-failure handling), plus a complete working example at `/examples/bulk-actions` with a paginated events table, bulk edit through a `<Drawer>`, and toasts for every outcome.
-- **New Pick pattern and working example.** Picking is the counterpart to filtering: filtering narrows a view in place, picking finds records in a collection and commits them as a set. The new [Pick pattern](/patterns/user-input/pick) documents that distinction, a surface spectrum that scales with collection size (an inline multi-select, a searchable `<TagField>`, a `<Dialog>`, and a routed page as the exception), and the load-bearing practices: staged selections survive while search and filters narrow the list, the commit button bounds the selection and names the outcome, and the staged set stays visible as a removable `<Tag.Group>` rail. Four inline demos ship with the page, plus a complete example at `/examples/pick` where a fullscreen dialog picks from about fifty venues into a report that owns the committed set.
+- **New Pick pattern and working example.** Picking is the counterpart to filtering: filtering narrows a view in place, picking finds records and commits them as a set. The new [Pick pattern](/patterns/user-input/pick) documents that distinction, a surface spectrum that scales with collection size (inline multi-select, a searchable `<TagField>`, a `<Dialog>`, a routed page as the exception), and the load-bearing practices: staged selections survive narrowing, the commit button bounds the selection and names the outcome, and the staged set stays visible as a removable `<Tag.Group>` rail. The page ships four inline demos plus a complete example at `/examples/pick`.
 - **New Fetching and Mutations pattern** covering `@tanstack/react-query` with Marigold: hook encapsulation, query keys, loading taxonomy, error handling with `throwOnError`, toast feedback, optimistic updates, and destructive confirmation. The `/examples/filter` reference app now runs against a real API route to match.
 - **Full data management pattern at `/examples/filter`.** A venue browsing example demonstrating multi-criteria filtering coordinated through URL state via `nuqs`: a toolbar with search and filter controls, applied filter chips, and a paginated data table all driven by the same URL state.
 - **Settings form and event form pattern examples** at `/examples/settings-form` and `/examples/event-form`. The settings form demonstrates tabbed navigation, independent section saves with `<Panel>`, collapsible advanced fields, and a danger zone with confirmation dialogs. The event form shows a single-submit form with multiple `<Panel>` sections. The forms pattern documentation now includes a Panels subsection that links to both demos.
 - **Drawer documentation rewritten** around a defining principle (supplementary, in-context, light task) with a Drawer-vs-Dialog decision framework and six canonical use cases, each with demos.
 - **ActionBar fully documented and re-homed.** `<ActionBar>` gets complete, use-case-driven documentation (anatomy, Do/Don't, three demos, accessibility) and moves into the Collection section at [`/components/collection/actionbar`](/components/collection/actionbar) alongside `Table`, `Card`, and `Tag`, reframed around the bulk-selection context.
 - **Card repositioned as a Collection component**, leading with a `Card` vs `Table` comparison and an _Alternative components_ section that points to `Panel`, `Stack`, or `Tiles` when the content isn't a collection.
-- **Switch `variant="settings"` documented end to end**. A Button-style variant table under `## Appearance` summarises `default` and `settings`, the `Settings and preferences` section is rewritten with placement guidance, and a Callout reserves `variant="settings"` for auto-save surfaces. The reasoning lives in the docs: light-switch metaphor, `role="switch"` ARIA contract, and the conflict with explicit save semantics.
+- **Switch `variant="settings"` documented end to end**, with a variant table under `## Appearance`, rewritten placement guidance, and a Callout reserving `variant="settings"` for auto-save surfaces (the `role="switch"` ARIA contract conflicts with explicit save semantics).
 - **Iconography documentation consolidated.** The former `/foundations/icons` and `/components/content/icon` pages now live together at [`/foundations/iconography`](/foundations/iconography), with principles, the icon catalog, the full legacy-to-Lucide name mapping, and the engineering API in one place.
 - **Form documentation restructured.** Three pages (Form Fields, Forms, Form Implementation) are consolidated into two: [Form Fields](/foundations/form-fields) as a foundation (anatomy, label, placeholder, help text, width, field states) and [Forms](/patterns/user-input/forms) as a pattern (layout together with validation, state management, react-hook-form, and async submission).
 - **New landmarks accessibility guide** paired with the `useLandmark` reference page.
@@ -1060,7 +999,7 @@ The refreshed [Elevation](/foundations/elevation) foundation page walks through 
 
 The sidebar navigation now carries hierarchy with semantic tokens instead of raw charcoal values. The current page is an inset rounded pill, idle rows preview the pill on hover, and section labels read as their own tier through treatment (uppercase, smaller, heavier, tracked) while meeting WCAG AA contrast. Idle nav labels sit on the new `secondary-bold` ink (charcoal-700), a step darker than help text, so they clearly out-rank the quiet group-label captions. Navigation is denser too: rows sit at a fixed 30px height with a tighter horizontal inset, so more items fit per screen without losing the pill affordance.
 
-The app shell around it separates its regions on whitespace, and the structural lines that remain are plain, always-on borders: the sidebar divider, the sidebar header's edge, and the `TopNavigation` bottom border. An earlier iteration revealed those hairlines only while content scrolled underneath, but the scroll-driven seams did not earn their complexity in the shell and are gone (the Dialog header seam below stays, where the scroll signal actually carries information). The sidebar toggle icon also loses its springy overshoot and settles on the theme's standard `ease-out-quint` motion. And this is only the single-column story: the sidebar's new two-level rail mode is covered under _Components_ above.
+The app shell around it separates regions on whitespace, and the remaining structural lines are plain, always-on borders: the sidebar divider, the sidebar header's edge, and the `TopNavigation` bottom border. An earlier iteration revealed these only while content scrolled underneath, but the scroll-driven seams did not earn their complexity in the shell and are gone (the Dialog header seam below stays). The toggle icon also loses its springy overshoot and settles on the standard `ease-out-quint` motion. And this is only the single-column story: the new two-level rail mode is covered under _Components_ above.
 
 ### `<SectionMessage>` sits on a neutral surface
 
@@ -1070,7 +1009,7 @@ The app shell around it separates its regions on whitespace, and the structural 
 
 `<Dialog>` now uses the same `ui-panel-*` utilities as `<Drawer>`, `<Tray>`, and `<Sidebar>`. Its actions gain a `border-t` divider as an interaction-zone marker, and its content picks up consistent vertical padding. The responsive button stacking specific to Dialog stays as it was, and Drawer, Tray, and Sidebar are visually unchanged.
 
-On top of that, a long Dialog now signals that its body scrolls: the header is borderless at rest and fades in a bottom hairline once content scrolls beneath it, matching the sidebar's scroll-revealed seam. The mechanism is promoted to a reusable `ui-scroll-seam-*` primitive, and browsers without scroll-driven animations fall back to an always-on hairline.
+On top of that, a long Dialog now signals that its body scrolls: the header is borderless at rest and fades in a bottom hairline once content scrolls beneath it. The mechanism is a reusable `ui-scroll-seam-*` primitive, with an always-on hairline fallback for browsers without scroll-driven animations.
 
 ### Instant hover backgrounds
 
@@ -1104,7 +1043,7 @@ A round of smaller refinements across the control surfaces:
 - `html { scrollbar-gutter: stable }` prevents a 1px reflow when `@react-aria/overlays` locks the page.
 - `body { overflow-x: clip }` keeps any off-screen react-aria portal (such as the live-announcer node mounted at `top: -10000px; left: -10000px`) from expanding the document's scrollable area. `clip` instead of `hidden` so `position: sticky` on descendants keeps working.
 
-Body is intentionally not given `position: relative`. Doing so would make it the containing block for absolute overlays (Tooltip, Popover, Menu, Select dropdown), and react-aria's overlay positioning then double counts the page scroll offset when computing available space above the trigger. The result is overlays with a `top` placement flipping to `bottom` even when the viewport has plenty of headroom. The file's comment now warns that `position`, `transform`, `contain`, `filter`, `backdrop-filter`, or `will-change: transform` on `<body>` would reintroduce the bug.
+Body is intentionally not given `position: relative`: it would become the containing block for absolute overlays, and react-aria's positioning then double counts the page scroll offset, flipping `top` placements to `bottom` even with plenty of headroom. The file's comment warns that `position`, `transform`, `contain`, `filter`, `backdrop-filter`, or `will-change: transform` on `<body>` would reintroduce the bug.
 
 Both entry points (`theme.css` and `styles.css`) ship these rules, with the prefixer excluding `html` / `body` so they reach the document root while the rest of the bundle stays scoped to `[data-theme="rui"]`.
 
