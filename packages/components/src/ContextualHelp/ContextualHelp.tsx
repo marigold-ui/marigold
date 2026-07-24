@@ -1,40 +1,27 @@
+import type { ComponentProps, ReactNode, Ref } from 'react';
+import { useMemo } from 'react';
+import { Button } from 'react-aria-components/Button';
 import {
-  ComponentProps,
-  ForwardRefExoticComponent,
-  ReactNode,
-  RefAttributes,
-  forwardRef,
-} from 'react';
-import {
-  Button,
   Dialog,
   DialogTrigger as RACDialogTrigger,
-} from 'react-aria-components';
+} from 'react-aria-components/Dialog';
+import { TextContext } from 'react-aria-components/Text';
+import { Provider } from 'react-aria-components/slots';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
+import { ButtonContext, RESET_BUTTON_CONTEXT } from '../Button/Context';
 import { Popover } from '../Overlay/Popover';
 import { CircleQuestionMark } from '../icons/CircleQuestionMark';
 import { Info } from '../icons/Info';
 import { intlMessages } from '../intl/messages';
 import { ContextualHelpContent } from './ContextualHelpContent';
+import { ContextualHelpDescription } from './ContextualHelpDescription';
 import { ContextualHelpTitle } from './ContextualHelpTitle';
 
 const icons = {
   help: CircleQuestionMark,
   info: Info,
 };
-
-interface ContextualHelpComponent extends ForwardRefExoticComponent<
-  ContextualHelpProps & RefAttributes<HTMLInputElement>
-> {
-  /**
-   * Options for the Combobox.
-   */
-
-  Title: typeof ContextualHelpTitle;
-
-  Content: typeof ContextualHelpContent;
-}
 
 type RemovedProps = 'isOpen';
 interface DialogTriggerProps extends Omit<
@@ -96,71 +83,91 @@ export interface ContextualHelpProps {
   ariaLabel?: string;
 }
 
-export const _ContextualHelp = forwardRef<
-  HTMLButtonElement,
-  ContextualHelpProps
->(
-  (
-    {
-      children,
-      variant = 'help',
-      size,
-      width,
-      placement = 'bottom start',
-      offset = 0,
-      defaultOpen,
-      open,
-      onOpenChange,
-      ariaLabel,
-    },
-    ref
-  ) => {
-    const Icon = icons[variant];
-    const classNames = useClassNames({
-      component: 'ContextualHelp',
-      variant,
-      size,
-    });
-    const stringFormatter = useLocalizedStringFormatter(intlMessages);
+const ContextualHelpBase = ({
+  children,
+  variant = 'help',
+  size,
+  width,
+  placement = 'bottom start',
+  offset = 0,
+  defaultOpen,
+  open,
+  onOpenChange,
+  ariaLabel,
+  ref,
+}: ContextualHelpProps & { ref?: Ref<HTMLButtonElement> }) => {
+  const Icon = icons[variant];
+  const classNames = useClassNames({
+    component: 'ContextualHelp',
+    variant,
+    size,
+  });
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
-    return (
-      <DialogTrigger
-        defaultOpen={defaultOpen}
-        open={open}
-        onOpenChange={onOpenChange}
+  // Configure the `description` slot for the `<Description>` primitive
+  // (wrapped by `<ContextualHelp.Description>`). The title slot is NOT
+  // configured here on purpose: the RAC `<Dialog>` already publishes a
+  // `HeadingContext` that wires `aria-labelledby` to `<Heading slot="title">`;
+  // re-providing it would clobber that wiring.
+  const textProps = useMemo(
+    () => ({
+      slots: {
+        description: {
+          className: cn('[grid-area:description]', classNames.description),
+          elementType: 'p' as const,
+        },
+      },
+    }),
+    [classNames.description]
+  );
+
+  return (
+    <DialogTrigger
+      defaultOpen={defaultOpen}
+      open={open}
+      onOpenChange={onOpenChange}
+    >
+      <Button
+        ref={ref}
+        className={classNames.trigger}
+        aria-label={
+          ariaLabel ??
+          (variant === 'info'
+            ? stringFormatter.format('moreInfo')
+            : stringFormatter.format('help'))
+        }
       >
-        <Button
-          ref={ref}
-          className={classNames.trigger}
-          aria-label={
-            ariaLabel ??
-            (variant === 'info'
-              ? stringFormatter.format('moreInfo')
-              : stringFormatter.format('help'))
-          }
-        >
-          <Icon size={20} />
-        </Button>
+        <Icon size={20} />
+      </Button>
 
-        <Popover placement={placement} offset={offset}>
-          <Dialog
-            className={cn(
-              "grid [grid-template-areas:'title'_'content']",
-              classNames.container
-            )}
-            {...{
-              [`data-${width ?? 'medium'}`]: true,
-            }}
+      <Popover placement={placement} offset={offset}>
+        <Dialog
+          className={cn(
+            "grid [grid-template-areas:'title'_'description'_'content']",
+            classNames.container
+          )}
+          {...{
+            [`data-${width ?? 'medium'}`]: true,
+          }}
+        >
+          <Provider
+            values={[
+              [TextContext, textProps],
+              // Scope action buttons in the help content to a clean baseline,
+              // consistent with the `Popover`'s own `ResetButtonContext`.
+              [ButtonContext, RESET_BUTTON_CONTEXT],
+            ]}
           >
             {children}
-          </Dialog>
-        </Popover>
-      </DialogTrigger>
-    );
-  }
-) as ContextualHelpComponent;
+          </Provider>
+        </Dialog>
+      </Popover>
+    </DialogTrigger>
+  );
+};
 
-_ContextualHelp.Title = ContextualHelpTitle;
-_ContextualHelp.Content = ContextualHelpContent;
-
-export { _ContextualHelp as ContextualHelp };
+export const ContextualHelp = Object.assign(ContextualHelpBase, {
+  Title: ContextualHelpTitle,
+  Description: ContextualHelpDescription,
+  Content: ContextualHelpContent,
+});

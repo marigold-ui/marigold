@@ -98,16 +98,16 @@ export const UploadFile = meta.story({
 UploadFile.test(
   'Shows the uploaded file in the list',
   async ({ canvas, userEvent }) => {
+    // Arrange
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
     const fileA = makeFile('a.pdf', 'application/pdf', 2 * 1024 * 1024);
 
+    // Act
     await userEvent.upload(input, fileA);
 
-    await expect(
-      canvas.queryByText('a.pdf', { exact: true })
-    ).toBeInTheDocument();
+    // Assert
     await expect(canvas.queryByText('a.pdf', { exact: true })).toBeVisible();
   }
 );
@@ -122,16 +122,18 @@ UploadFile.test(
     },
   },
   async ({ canvas, userEvent }) => {
+    // Arrange
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
-
     const fileA = makeFile('abc.pdf', 'application/pdf', 2 * 1024 * 1024);
     const fileB = makeFile('test.txt', 'text/plain', 5 * 1024 * 1024);
     const fileC = makeFile('pic1.jpg', 'image/*', 0.5 * 1024 * 1024);
 
+    // Act
     await userEvent.upload(input, [fileA, fileB, fileC]);
 
+    // Assert
     await expect(canvas.getByText('abc.pdf')).toBeInTheDocument();
     await expect(canvas.getByText('test.txt')).toBeInTheDocument();
     await expect(canvas.getByText('pic1.jpg')).toBeInTheDocument();
@@ -140,6 +142,32 @@ UploadFile.test(
     await expect(canvas.getByText('0.50 MB')).toBeInTheDocument();
   }
 );
+
+export const Small = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Upload file (compact)',
+    size: 'small',
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <FileField width={'1/5'} {...args} />
+    </I18nProvider>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    // Arrange
+    const input = document.querySelector(
+      'input[type="file"]'
+    ) as HTMLInputElement;
+    const file = makeFile('compact.pdf', 'application/pdf', 1 * 1024 * 1024);
+
+    // Act
+    await userEvent.upload(input, file);
+
+    // Assert
+    await expect(canvas.getByText('compact.pdf')).toBeInTheDocument();
+  },
+});
 
 export const Disabled = meta.story({
   args: {
@@ -192,18 +220,18 @@ InForm.test(
   'Submits the uploaded file with the form',
   { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
+    // Arrange
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
-
     const file = makeFile('report.pdf', 'application/pdf', 1024 * 1024);
+
+    // Act
     await userEvent.upload(input, file);
+    await userEvent.click(canvas.getByRole('button', { name: 'Submit' }));
 
-    const submitButton = canvas.getByRole('button', { name: 'Submit' });
-    await userEvent.click(submitButton);
-    const result = canvas.getByTestId('submitted-files');
-
-    await expect(result).toBeInTheDocument();
+    // Assert
+    await expect(canvas.getByTestId('submitted-files')).toBeInTheDocument();
     await expect(
       canvas.getByText('report.pdf (1048576 bytes)')
     ).toBeInTheDocument();

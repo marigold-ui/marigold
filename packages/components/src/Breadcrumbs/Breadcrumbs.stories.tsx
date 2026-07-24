@@ -13,6 +13,9 @@ const meta = preview.meta({
       </div>
     ),
   ],
+  parameters: {
+    surface: false,
+  },
   argTypes: {
     variant: {
       control: 'radio',

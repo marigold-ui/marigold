@@ -1,13 +1,7 @@
-import { forwardRef } from 'react';
-import type {
-  ForwardRefExoticComponent,
-  ReactNode,
-  RefAttributes,
-} from 'react';
-import { Modal, ModalOverlay } from 'react-aria-components';
+import { isValidElement } from 'react';
+import type { ReactNode, Ref } from 'react';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn } from '@marigold/system';
-import { CloseButton } from '../CloseButton/CloseButton';
 import { intlMessages } from '../intl/messages';
 import { SidebarProvider, useSidebar } from './Context';
 import {
@@ -15,67 +9,48 @@ import {
   SidebarItem,
   SidebarSeparator,
 } from './SidebarItem';
+import { SidebarModal } from './SidebarModal';
 import { SidebarNav } from './SidebarNav';
+import { SidebarRail } from './SidebarRail';
+import { SidebarRailItem } from './SidebarRailItem';
 import { SidebarFooter, SidebarHeader } from './SidebarSlots';
 import { SidebarToggle } from './SidebarToggle';
+import { flattenChildren } from './collection';
+
+/** True when a `Sidebar.Rail` sits among the children (two-level mode). */
+const hasRailChild = (children: ReactNode): boolean =>
+  flattenChildren(children).some(
+    child =>
+      isValidElement(child) &&
+      // Brand check (not reference identity) — safe across HOCs and bundles,
+      // same as the other slot markers in the collection builders.
+      (child.type as { __SIDEBAR_RAIL__?: boolean }).__SIDEBAR_RAIL__ === true
+  );
 
 export interface SidebarProps {
-  /** The sidebar content, typically `Sidebar.Header`, `Sidebar.Nav`, and `Sidebar.Footer`. */
+  /**
+   * The sidebar content, typically `Sidebar.Header`, `Sidebar.Nav`, and
+   * `Sidebar.Footer`. With a `Sidebar.Rail` child (two-level mode), the rail
+   * renders its own layout and `<Sidebar>` becomes a pure passthrough.
+   */
   children?: ReactNode;
 }
 
-interface SidebarComponent extends ForwardRefExoticComponent<
-  SidebarProps & RefAttributes<HTMLElement>
-> {
-  Provider: typeof SidebarProvider;
-  Header: typeof SidebarHeader;
-  Footer: typeof SidebarFooter;
-  GroupLabel: typeof SidebarGroupLabel;
-  Nav: typeof SidebarNav;
-  Item: typeof SidebarItem;
-  Separator: typeof SidebarSeparator;
-  Toggle: typeof SidebarToggle;
-}
-
-const _Sidebar = forwardRef<HTMLElement, SidebarProps>(({ children }, ref) => {
-  const { isMobile, state, toggleSidebar, classNames } = useSidebar();
+const SidebarBase = ({
+  children,
+  ref,
+}: SidebarProps & { ref?: Ref<HTMLElement> }) => {
+  const { isMobile, state, classNames } = useSidebar();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
+  // Two-level mode: `Sidebar.Rail` renders its own aside (brand + rail + panel),
+  // so pass through and let it own the layout.
+  if (hasRailChild(children)) {
+    return <>{children}</>;
+  }
+
   if (isMobile) {
-    return (
-      <ModalOverlay
-        isOpen={state === 'expanded'}
-        onOpenChange={open => !open && toggleSidebar()}
-        className={cn(
-          'fixed inset-0 z-50 h-(--visual-viewport-height)',
-          classNames.overlay
-        )}
-        isDismissable
-      >
-        <Modal className={classNames.modal}>
-          <aside
-            ref={ref}
-            aria-label={stringFormatter.format('sidebar')}
-            data-state={state}
-            className={cn('h-full [grid-area:sidebar]', classNames.root)}
-          >
-            <CloseButton
-              aria-label={stringFormatter.format('closeNavigation')}
-              className={cn('z-50', classNames.closeButton)}
-              onPress={toggleSidebar}
-            />
-            <div
-              className={cn(
-                "grid h-full grid-rows-[auto_1fr_auto] [grid-template-areas:'header'_'content'_'footer']",
-                classNames.content
-              )}
-            >
-              {children}
-            </div>
-          </aside>
-        </Modal>
-      </ModalOverlay>
-    );
+    return <SidebarModal ref={ref}>{children}</SidebarModal>;
   }
 
   return (
@@ -83,7 +58,12 @@ const _Sidebar = forwardRef<HTMLElement, SidebarProps>(({ children }, ref) => {
       ref={ref}
       aria-label={stringFormatter.format('sidebar')}
       data-state={state}
-      className={cn('[grid-area:sidebar]', classNames.root)}
+      className={cn(
+        // --ui-viewport-height lets a bounded container (docs demos, embedded
+        // shells) stand in for the browser viewport the sidebar normally fills.
+        'sticky top-0 h-[var(--ui-viewport-height,100dvh)] self-start [grid-area:sidebar]',
+        classNames.root
+      )}
     >
       <div
         className={cn(
@@ -95,15 +75,17 @@ const _Sidebar = forwardRef<HTMLElement, SidebarProps>(({ children }, ref) => {
       </div>
     </aside>
   );
-}) as SidebarComponent;
+};
 
-_Sidebar.Provider = SidebarProvider;
-_Sidebar.Header = SidebarHeader;
-_Sidebar.Footer = SidebarFooter;
-_Sidebar.GroupLabel = SidebarGroupLabel;
-_Sidebar.Nav = SidebarNav;
-_Sidebar.Item = SidebarItem;
-_Sidebar.Separator = SidebarSeparator;
-_Sidebar.Toggle = SidebarToggle;
-
-export { _Sidebar as Sidebar };
+export const Sidebar = Object.assign(SidebarBase, {
+  Provider: SidebarProvider,
+  Header: SidebarHeader,
+  Footer: SidebarFooter,
+  GroupLabel: SidebarGroupLabel,
+  Nav: SidebarNav,
+  Item: SidebarItem,
+  Separator: SidebarSeparator,
+  Toggle: SidebarToggle,
+  Rail: SidebarRail,
+  RailItem: SidebarRailItem,
+});

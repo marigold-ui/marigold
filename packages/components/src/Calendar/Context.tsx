@@ -1,9 +1,7 @@
 import { createContext, use } from 'react';
-import {
-  CalendarStateContext,
-  type DateValue,
-  RangeCalendarStateContext,
-} from 'react-aria-components';
+import { CalendarStateContext } from 'react-aria-components/Calendar';
+import type { DateValue } from 'react-aria-components/Calendar';
+import { RangeCalendarStateContext } from 'react-aria-components/RangeCalendar';
 import type { ComponentClassNames } from '@marigold/system';
 
 export type CalendarSharedClassNames =

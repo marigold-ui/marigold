@@ -1,5 +1,5 @@
 import type RAC from 'react-aria-components';
-import { Tabs } from 'react-aria-components';
+import { Tabs } from 'react-aria-components/Tabs';
 import { useClassNames } from '@marigold/system';
 import { TabContext } from './Context';
 import { Tab } from './Tab';
@@ -34,16 +34,16 @@ const _Tabs = ({ disabled, variant, size, ...rest }: TabsProps) => {
     variant,
   });
   return (
-    <TabContext.Provider value={{ classNames }}>
+    <TabContext value={{ classNames }}>
       <Tabs {...props} className={classNames.container}>
         {props.children}
       </Tabs>
-    </TabContext.Provider>
+    </TabContext>
   );
 };
 
 _Tabs.List = TabList;
-_Tabs.TabPanel = TabPanel;
+_Tabs.Panel = TabPanel;
 _Tabs.Item = Tab;
 
 export { _Tabs as Tabs };

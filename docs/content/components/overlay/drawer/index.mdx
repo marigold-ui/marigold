@@ -148,15 +148,35 @@ The right shape is a drawer the user can pin or summon, not a modal or a popover
 
 ### Multi-field bulk edit
 
-Users select rows in a table, an [ActionBar](/components/actions/actionbar) appears, and one of its actions opens a drawer with a small form for editing several fields across the selection (for example, changing the date and venue across many events at once).
+Users select rows in a table, an [ActionBar](/components/collection/actionbar) appears, and one of its actions opens a drawer with a small form for editing several fields across the selection (for example, changing the date and venue across many events at once).
 
 The drawer keeps the selected rows visible so users can confirm the selection while editing. Bulk edit stays within the single-layer rule because the fields are flat and identical across all selected records: one form applied to N rows, not N forms or nested edits. The boundary is clean: single-verb bulk actions (delete, archive, assign) belong in the action bar, while multi-field bulk edit belongs in a drawer triggered from it. Destructive bulk actions still need a confirm dialog after the verb.
 
+The [Bulk Actions pattern](/patterns/user-input/bulk-actions#editing-multiple-fields) covers the full flow around this drawer, including how to handle mixed values across the selection, opt-in editing per field, and partial failures on save.
+
 <ComponentDemo name="drawer-bulk-edit" />
+
+### Full-width content
+
+By default, drawer content sits inside the drawer's horizontal padding, so its left and right edges line up with the title and actions. That shared edge is what keeps the drawer reading as one column.
+
+Some content reads best edge to edge: a grouped [Accordion](/components/navigation/accordion) of filter facets or settings sections, or a [Table](/components/collection/table) of records. Opt in with the `bleed` prop on `Drawer.Content`. It drops the horizontal padding so backgrounds and dividers reach the drawer edges, while edge-aware children inset their own text to stay aligned with the drawer title.
+
+<ComponentDemo name="drawer-bleed-accordion" />
+
+Drop an `<Accordion>` into a bled content area and its item dividers span the full width while the header and content stay aligned with the title. No extra prop is needed on the Accordion: it picks up the drawer's horizontal padding automatically, the same way `Table` cells do. This mirrors [`Panel.Content bleed`](/components/layout/panel#full-width-content).
+
+Reach for `bleed` only when the drawer body **is** a set of peer, equally weighted sections, such as grouped filters or a settings breakdown. For ordinary prose, a short form, or detail rows, keep the default padding so the content stays aligned as one column.
+
+### Title and description
+
+`<Drawer.Title>` and `<Drawer.Description>` are slot-aware: the heading level, id, and `aria-labelledby` wiring are handled for you. `<Drawer.Header>` is an optional layout wrapper that groups a title and description into one header zone. For a title-only drawer, drop the title straight into `<Drawer>` without a header.
+
+<ComponentDemo name="drawer-title-only" />
 
 ### Accessibility
 
-A drawer renders with the ARIA role `complementary` by default, which fits almost every use case in this guide. Two exceptions are worth knowing:
+A drawer renders with the ARIA role `complementary` by default, which fits almost every use case in this guide. The `role` prop accepts any [ARIA landmark role](/foundations/accessibility#landmarks), and two exceptions are worth knowing:
 
 - For a filter panel, consider `role="search"` to give screen-reader users a more precise landmark.
 - For long-lived activity panels, consider `role="region"` with an `aria-label` if the panel is part of the persistent layout.
@@ -190,7 +210,7 @@ On small screens, the drawer falls back to a modal sheet that traps focus inside
 ## Alternative components
 
 - [Dialog](/components/overlay/dialog): Use for modal, attention-required moments like confirmations, destructive actions, and parent-form quick-create.
-- [ActionBar](/components/actions/actionbar): Use for single-verb bulk actions on a selection (delete, archive, assign). Pair with a drawer when bulk-editing several fields.
+- [ActionBar](/components/collection/actionbar): Use for single-verb bulk actions on a selection (delete, archive, assign). Pair with a drawer when bulk-editing several fields.
 - [Menu](/components/overlay/menu): Use for a small set of toggles or quick choices, like table column settings, sort order, or density. A drawer is overkill when the controls are a handful of options that fit inline next to their trigger.
 - [Sidebar](/components/navigation/sidebar): Use for app-level navigation, not for in-context content alongside a record.
 

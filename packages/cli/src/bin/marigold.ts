@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import pc from 'picocolors';
-import { readFileSync } from 'node:fs';
+import { readFileSync, realpathSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
@@ -14,9 +14,11 @@ import {
   runTelemetry,
 } from '../commands/telemetry.js';
 import {
+  type DoctorFormat,
   EXAMPLES_SUBCOMMANDS,
   type SubcommandName,
   TOP_LEVEL_NAMES,
+  doctorFormatValues,
 } from '../lib/commands-spec.js';
 import type { Section } from '../lib/docs.js';
 import type { OutputFormat } from '../lib/format.js';
@@ -65,6 +67,7 @@ ${pc.bold('Commands:')}
   search <query>        Find components by what their docs say
   examples <action>     Browse application patterns (list | get <slug>)
   init                  Set up Marigold in a project
+  doctor                Diagnose a project's Marigold setup
   telemetry <action>    Manage telemetry (status|enable|disable)
   completion <shell>    Print shell completion script (bash|zsh|fish)
 
@@ -95,6 +98,10 @@ ${pc.bold('Init options:')}
   --yes               Skip confirmation prompts
   --skip-install      Don't run the package install step
 
+${pc.bold('Doctor options:')}
+  --format  <name>    text | json (default: text)
+  --offline           Skip the network; use only the local cache
+
 ${pc.bold('Environment:')}
   MARIGOLD_DOCS_URL              Override docs site base URL
   MARIGOLD_CACHE_TTL_MS          Override cache TTL in milliseconds
@@ -106,6 +113,12 @@ See https://www.marigold-ui.io for component documentation.
 
 const isOutputFormat = (v: string): v is OutputFormat =>
   v === 'markdown' || v === 'json' || v === 'plain';
+
+// Derived from the shared enum in commands-spec.ts (babel-free) rather than
+// imported from ../commands/doctor.js, so the doctor module — and its
+// @babel/parser dependency — stays lazily loaded off the hot path.
+const isDoctorFormat = (v: string): v is DoctorFormat =>
+  (doctorFormatValues as readonly string[]).includes(v);
 
 const isSection = (v: string): v is Section =>
   v === 'props' || v === 'usage' || v === 'examples' || v === 'all';
@@ -176,6 +189,16 @@ const parseInitCommand = (argv: string[]) =>
     options: {
       yes: { type: 'boolean', default: false },
       'skip-install': { type: 'boolean', default: false },
+    },
+  });
+
+const parseDoctorCommand = (argv: string[]) =>
+  parseArgs({
+    args: argv,
+    allowPositionals: true,
+    options: {
+      format: { type: 'string' },
+      offline: { type: 'boolean', default: false },
     },
   });
 
@@ -370,6 +393,32 @@ export const main = async (
         yes: values.yes,
         skipInstall: values['skip-install'],
       });
+    } else if (command === 'doctor') {
+      const { positionals, values } = parseDoctorCommand(rest);
+      const format = values.format ?? 'text';
+      // Record only { format }: the pending DST-1600 GDPR/ePrivacy review scopes
+      // doctor telemetry to the output format alone, so --offline is not tracked.
+      // Clamp to a known enum value so an invalid `--format` never leaks the raw
+      // string into telemetry (validation below runs after telemetryArgs is set).
+      telemetryArgs = { format: isDoctorFormat(format) ? format : 'invalid' };
+
+      if (positionals.length > 0) {
+        fail('Usage: marigold doctor (takes no arguments)');
+      }
+      if (values.format && !isDoctorFormat(values.format)) {
+        fail(`Invalid --format: ${values.format} (expected text or json)`);
+      }
+
+      // Lazy-load: doctor pulls in @babel/parser (provider detection), which we
+      // keep off the docs/list hot path agents hammer.
+      const { runDoctor } = await import('../commands/doctor.js');
+      const result = await runDoctor({
+        format: format as DoctorFormat,
+        offline: values.offline,
+      });
+
+      writeOutput(result.output);
+      if (result.hasErrors) exitCode = 1;
     } else if (command === 'telemetry') {
       const [sub] = rest;
       telemetryArgs = sub ? { sub } : {};
@@ -415,8 +464,17 @@ export const main = async (
 
 // Only auto-invoke when this module is the entry point (i.e. the user ran
 // `marigold ...`). When imported from tests, `main()` is awaited explicitly.
+// argv[1] is resolved through symlinks because global bins (npm -g, manual
+// links) are symlinks, while import.meta.url is always the realpath.
+const resolveEntry = (p: string): string => {
+  try {
+    return realpathSync(p);
+  } catch {
+    return path.resolve(p);
+  }
+};
 const isEntryPoint = process.argv[1]
-  ? fileURLToPath(import.meta.url) === path.resolve(process.argv[1])
+  ? fileURLToPath(import.meta.url) === resolveEntry(process.argv[1])
   : false;
 if (isEntryPoint) {
   main().then(

@@ -1,9 +1,10 @@
 import { Key, useState } from 'react';
-import { I18nProvider } from 'react-aria-components';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Description } from '../Description/Description';
 import { Stack } from '../Stack/Stack';
-import { Text } from '../Text/Text';
+import { TextValue } from '../TextValue/TextValue';
 import { ComboBox } from './ComboBox';
 
 const meta = preview.meta({
@@ -238,28 +239,29 @@ export const Controlled = meta.story({
 export const Sections = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    menuTrigger: 'focus',
+  },
   render: args => (
     <ComboBox {...args}>
       <ComboBox.Section header="Fantasy">
         <ComboBox.Option id="harry-potter" textValue="Harry Potter">
-          <Text slot="label">Harry Potter</Text>
-          <Text slot="description">About the boy who lived</Text>
+          <TextValue>Harry Potter</TextValue>
+          <Description>About the boy who lived</Description>
         </ComboBox.Option>
         <ComboBox.Option id="lord-of-the-rings" textValue="Lord of the Rings">
-          <Text slot="label">Lord of the Rings</Text>
-          <Text slot="description">In the lands of Middle earth</Text>
+          <TextValue>Lord of the Rings</TextValue>
+          <Description>In the lands of Middle earth</Description>
         </ComboBox.Option>
       </ComboBox.Section>
       <ComboBox.Section header="Sci-Fi">
-        <ComboBox.Option id="star-wars" textValue="Start Wars">
-          <Text slot="label">Start Wars</Text>
-          <Text slot="description">
-            A long time ago, in a galaxy far, far away
-          </Text>
+        <ComboBox.Option id="star-wars" textValue="Star Wars">
+          <TextValue>Star Wars</TextValue>
+          <Description>A long time ago, in a galaxy far, far away</Description>
         </ComboBox.Option>
         <ComboBox.Option id="star-trek" textValue="Star Trek">
-          <Text slot="label">Star Trek</Text>
-          <Text slot="description">What is this</Text>
+          <TextValue>Star Trek</TextValue>
+          <Description>What is this</Description>
         </ComboBox.Option>
       </ComboBox.Section>
     </ComboBox>
@@ -272,15 +274,24 @@ Sections.test(
     parameters: { chromatic: { disableSnapshot: false } },
   },
   async ({ canvas }) => {
-    await userEvent.click(
-      await canvas.findByRole('combobox', { name: 'Label' })
+    const combobox = await canvas.findByRole('combobox', { name: 'Label' });
+    await userEvent.click(combobox);
+    await waitFor(() =>
+      expect(combobox).toHaveAttribute('aria-expanded', 'true')
     );
-    await userEvent.keyboard('{arrowdown}');
+
     const s1 = await canvas.findByText('Fantasy');
     const s2 = await canvas.findByText('Sci-Fi');
 
     expect(s1).toBeVisible();
     expect(s2).toBeVisible();
+
+    const item = canvas.getByRole('option', { name: /Harry Potter/ });
+    const description = canvas.getByText('About the boy who lived');
+    expect(description.id).toBeTruthy();
+    expect(item.getAttribute('aria-describedby') ?? '').toContain(
+      description.id
+    );
   }
 );
 

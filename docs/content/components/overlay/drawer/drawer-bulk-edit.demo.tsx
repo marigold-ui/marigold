@@ -1,4 +1,3 @@
-import { Pencil } from 'lucide-react';
 import {
   ActionBar,
   Badge,
@@ -12,6 +11,7 @@ import {
   Text,
 } from '@marigold/components';
 import type { DrawerProps } from '@marigold/components';
+import { Pencil } from '@marigold/icons';
 
 const events = [
   {
@@ -53,10 +53,10 @@ export default function (props: DrawerProps) {
       actionBar={() => (
         <ActionBar>
           <Drawer.Trigger>
-            <ActionBar.Button>
+            <Button>
               <Pencil />
               Edit
-            </ActionBar.Button>
+            </Button>
             <Drawer {...props} size="medium">
               <Drawer.Title>Edit selected events</Drawer.Title>
               <Drawer.Content>

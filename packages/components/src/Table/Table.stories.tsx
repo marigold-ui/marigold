@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { I18nProvider, useDragAndDrop } from 'react-aria-components';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
+import { useDragAndDrop } from 'react-aria-components/useDragAndDrop';
 import { expect, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { SortDescriptor } from '@react-types/shared';
@@ -23,6 +24,7 @@ import { TableDragPreview } from './TableDragPreview';
 
 const meta = preview.meta({
   title: 'Components/Table',
+  parameters: { bleed: true },
   decorators: [
     Story => (
       <div id="storybook-root">
@@ -165,7 +167,7 @@ export const Basic = meta.story({
             <Table.Cell>
               <Stack space="0.5">
                 <Text weight="medium">{user.name}</Text>
-                <Text size="xs" color="muted-foreground">
+                <Text size="xs" color="secondary">
                   {user.handle}
                 </Text>
               </Stack>
@@ -394,7 +396,7 @@ export const WidthsAndOverflow = meta.story({
             </Table.Body>
           </Table>
         </div>
-        <p className="text-muted-foreground block text-xs">
+        <p className="text-secondary block text-xs">
           Column widths: ID 40px, Name min 100px, Status 100px, Location min
           100px, Balance min 80px.
         </p>
@@ -719,7 +721,7 @@ export const WithActions = meta.story({
             <Table.Cell>
               <Stack space="0.5">
                 <Text weight="medium">{user.name}</Text>
-                <Text size="xs" color="muted-foreground">
+                <Text size="xs" color="secondary">
                   {user.handle}
                 </Text>
               </Stack>
@@ -1827,5 +1829,126 @@ ColumnAlignment.test(
         expect(secondCellContent).toHaveClass('text-center');
       }
     );
+  }
+);
+
+export const FooterTotals = meta.story({
+  render: args => {
+    const totalBalance = users.reduce((sum, user) => sum + user.balance, 0);
+
+    return (
+      <Table aria-label="Users with totals" {...args}>
+        <Table.Header>
+          <Table.Column rowHeader>Name</Table.Column>
+          <Table.Column>Email</Table.Column>
+          <Table.Column>Location</Table.Column>
+          <Table.Column>Status</Table.Column>
+          <Table.Column alignX="right">Balance</Table.Column>
+        </Table.Header>
+        <Table.Body>
+          {users.map(user => (
+            <Table.Row key={user.email}>
+              <Table.Cell>{user.name}</Table.Cell>
+              <Table.Cell>{user.email}</Table.Cell>
+              <Table.Cell>{user.location}</Table.Cell>
+              <Table.Cell>
+                <Badge>{user.status}</Badge>
+              </Table.Cell>
+              <Table.Cell>
+                <NumericFormat
+                  style="currency"
+                  currency="EUR"
+                  value={user.balance}
+                />
+              </Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+        <Table.Footer>
+          <Table.Row>
+            <Table.Cell colSpan={4}>Total</Table.Cell>
+            <Table.Cell>
+              <NumericFormat
+                style="currency"
+                currency="EUR"
+                value={totalBalance}
+              />
+            </Table.Cell>
+          </Table.Row>
+        </Table.Footer>
+      </Table>
+    );
+  },
+});
+
+export const StickyFooter = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => {
+    const totalBalance = users.reduce((sum, user) => sum + user.balance, 0);
+
+    return (
+      <Scrollable height="300px">
+        <Table aria-label="Users with sticky totals" {...args}>
+          <Table.Header>
+            <Table.Column rowHeader>Name</Table.Column>
+            <Table.Column>Email</Table.Column>
+            <Table.Column>Location</Table.Column>
+            <Table.Column>Status</Table.Column>
+            <Table.Column alignX="right">Balance</Table.Column>
+          </Table.Header>
+          <Table.Body>
+            {users.map(user => (
+              <Table.Row key={user.email}>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>{user.location}</Table.Cell>
+                <Table.Cell>
+                  <Badge>{user.status}</Badge>
+                </Table.Cell>
+                <Table.Cell>
+                  <NumericFormat
+                    style="currency"
+                    currency="EUR"
+                    value={user.balance}
+                  />
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+          <Table.Footer sticky>
+            <Table.Row>
+              <Table.Cell colSpan={4}>Total</Table.Cell>
+              <Table.Cell>
+                <NumericFormat
+                  style="currency"
+                  currency="EUR"
+                  value={totalBalance}
+                />
+              </Table.Cell>
+            </Table.Row>
+          </Table.Footer>
+        </Table>
+      </Scrollable>
+    );
+  },
+});
+
+StickyFooter.test(
+  'Keeps the footer sticky while scrolling',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    const scrollContainer = canvas
+      .getByRole('grid')
+      .closest('.overflow-auto') as HTMLElement;
+
+    await step('Footer sticks to the bottom of the scroll viewport', () => {
+      const tfoot = canvas.getByText('Total').closest('tfoot') as HTMLElement;
+      expect(tfoot).toHaveClass('sticky', 'bottom-0');
+
+      const footerBottom = tfoot.getBoundingClientRect().bottom;
+      const containerBottom = scrollContainer.getBoundingClientRect().bottom;
+      expect(Math.abs(footerBottom - containerBottom)).toBeLessThan(5);
+    });
   }
 );

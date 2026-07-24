@@ -4,7 +4,7 @@ import { getAppearance } from '@/lib/utils';
 import type { Theme } from '@marigold/system';
 
 export interface AppearanceTableProps {
-  component: keyof Theme['components'];
+  component: keyof Theme['components'] | (string & {});
 }
 
 export const AppearanceTable = ({ component }: AppearanceTableProps) => {

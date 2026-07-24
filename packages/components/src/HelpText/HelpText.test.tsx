@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import { Input, Label, TextField } from 'react-aria-components';
+import { Input } from 'react-aria-components/Input';
+import { Label } from 'react-aria-components/Label';
+import { TextField } from 'react-aria-components/TextField';
 import { Basic } from './HelpText.stories';
 
 test('render nothing when no props provided', async () => {

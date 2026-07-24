@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { I18nProvider } from 'react-aria-components';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { renderWithOverlay } from '../test.utils';
 import { Basic } from './Loader.stories';
 
@@ -20,8 +20,9 @@ test('renders loader with different size', () => {
   // eslint-disable-next-line testing-library/no-node-access
   const icon = loader.querySelector('svg');
 
-  expect(loader).toHaveClass('size-36');
-  expect(icon).toHaveClass('size-full');
+  // The spinner carries the size; the container wraps it content-sized.
+  expect(loader).toHaveClass('size-fit');
+  expect(icon).toHaveClass('size-36');
 });
 
 test('render custom label', () => {
@@ -32,12 +33,28 @@ test('render custom label', () => {
   expect(label).toBeInTheDocument();
 });
 
+test('respects a consumer-provided aria-labelledby without a redundant aria-label', () => {
+  render(
+    <>
+      <span id="loader-label">Saving changes</span>
+      <Basic.Component aria-labelledby="loader-label" />
+    </>
+  );
+
+  const loader = screen.getByRole('progressbar');
+
+  expect(loader).toHaveAttribute('aria-labelledby', 'loader-label');
+  expect(loader).not.toHaveAttribute('aria-label');
+});
+
 test('inline uses "inverted" variant', () => {
   render(<Basic.Component mode="section">Loading...</Basic.Component>);
 
   const loader = screen.getByRole('progressbar');
 
-  expect(loader).toHaveClass('grid place-items-center text-secondary size-20');
+  expect(loader).toHaveClass(
+    'grid place-items-center gap-2 text-primary-foreground size-fit'
+  );
 });
 
 test('translate loading message to English', () => {
@@ -76,6 +93,32 @@ test('renders fullscreen loader with modal overlay', () => {
   expect(dialog).toBeInTheDocument();
 });
 
+test('fullscreen dialog is named by the loader fallback when no label is given', () => {
+  renderWithOverlay(<Basic.Component mode="fullscreen" />);
+
+  // The Dialog references the loader node, which carries the localized
+  // fallback label — so the modal is never left unnamed.
+  const dialog = screen.getByRole('dialog');
+
+  expect(dialog).toHaveAccessibleName('Loading...');
+});
+
+test('fullscreen dialog is named by a consumer-provided aria-labelledby', () => {
+  renderWithOverlay(
+    <>
+      <span id="loader-label">Saving changes</span>
+      <Basic.Component mode="fullscreen" aria-labelledby="loader-label" />
+    </>
+  );
+
+  // A consumer `aria-labelledby` suppresses the loader's own `aria-label`, and
+  // the accname spec won't follow a second `labelledby` hop — so the Dialog
+  // must reference the consumer's element directly to stay named.
+  const dialog = screen.getByRole('dialog');
+
+  expect(dialog).toHaveAccessibleName('Saving changes');
+});
+
 test('renders loader with loaderType circle', () => {
   render(<Basic.Component loaderType="circle" />);
 
@@ -90,9 +133,9 @@ test('renders loader with loaderType circle', () => {
     <svg
       aria-hidden="true"
       class="flex-none animate-rotate-spinner origin-center fill-none size-20"
-      height="defaultpx"
+      height="80px"
       role="img"
-      width="defaultpx"
+      width="80px"
     >
       <circle
         class="stroke-transparent"

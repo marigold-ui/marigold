@@ -4,7 +4,7 @@ import type RAC from 'react-aria-components';
 import {
   Table as RACTable,
   ResizableTableContainer,
-} from 'react-aria-components';
+} from 'react-aria-components/Table';
 import { cn, useClassNames } from '@marigold/system';
 import { useActionBar } from '../ActionBar/useActionBar';
 import type { Selection } from '../types';
@@ -15,6 +15,7 @@ import { TableColumn } from './TableColumn';
 import { renderDragPreview } from './TableDragPreview';
 import { renderDropIndicator } from './TableDropIndicator';
 import { TableEditableCell } from './TableEditableCell';
+import { TableFooter } from './TableFooter';
 import { TableHeader } from './TableHeader';
 import { TableRow } from './TableRow';
 
@@ -85,7 +86,7 @@ const _Table = ({
     });
 
   return (
-    <TableContext.Provider value={ctx}>
+    <TableContext value={ctx}>
       <ResizableTableContainer
         className="w-full"
         style={{
@@ -107,7 +108,7 @@ const _Table = ({
         />
         {actionBarOverlay}
       </ResizableTableContainer>
-    </TableContext.Provider>
+    </TableContext>
   );
 };
 
@@ -118,6 +119,7 @@ const Table = Object.assign(_Table, {
   Row: TableRow,
   Cell: TableCell,
   EditableCell: TableEditableCell,
+  Footer: TableFooter,
 
   // Drag and Drop
   renderDropIndicator: renderDropIndicator,
@@ -136,3 +138,4 @@ export type { TableCellProps } from './TableCell';
 export type { TableDropIndicatorProps } from './TableDropIndicator';
 export type { TableDragPreviewProps } from './TableDragPreview';
 export type { TableEditableCellProps } from './TableEditableCell';
+export type { TableFooterProps } from './TableFooter';

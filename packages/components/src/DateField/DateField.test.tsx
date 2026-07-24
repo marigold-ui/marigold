@@ -2,26 +2,8 @@ import { CalendarDate } from '@internationalized/date';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
+import { firePaste } from '../firePaste';
 import { Basic } from './DateField.stories';
-
-/**
- * Dispatches a paste event with the given text on an element.
- * In a real browser, `userEvent.paste()` may not trigger React's onPaste
- * handler on ancestor elements reliably. We use Object.defineProperty
- * because Firefox's ClipboardEvent constructor ignores the clipboardData option.
- */
-const firePaste = (element: Element, text: string) => {
-  const pasteEvent = new Event('paste', {
-    bubbles: true,
-    cancelable: true,
-  });
-  Object.defineProperty(pasteEvent, 'clipboardData', {
-    value: {
-      getData: () => text,
-    },
-  });
-  element.dispatchEvent(pasteEvent);
-};
 
 let onBlurSpy = vi.fn();
 let onFocusChangeSpy = vi.fn();
@@ -55,46 +37,46 @@ test('renders correctly', () => {
       style="--container-width: 100%; --field-width: 100%;"
     >
       <span
-        class="items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled-foreground group-required/field:after:ui-required-indicator group-required/field:after:-ml-1 group-required/field:after:text-destructive in-field:mb-1.5 inline-flex"
-        id="react-aria-_r_1_"
+        class="items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled group-required/field:after:ui-required-indicator group-required/field:after:-ml-1 group-required/field:after:text-destructive-accent in-field:mb-1.5 inline-flex"
+        id="react-aria-_r_2_"
       >
         My Label
       </span>
       <div
-        aria-describedby="react-aria-description-0 react-aria-_r_3_"
-        aria-labelledby="react-aria-_r_1_"
-        class="ui-surface shadow-elevation-border h-input flex items-center disabled:ui-state-disabled group-read-only/field:ui-state-readonly has-focus:ui-state-focus has-invalid:ui-state-error has-focus:has-invalid:outline-destructive/20 has-focus:has-invalid:[--ui-border-color:var(--color-destructive)] w-(--field-width) max-w-full min-w-0 overflow-hidden"
+        aria-describedby="react-aria-description-0 react-aria-_r_4_"
+        aria-labelledby="react-aria-_r_2_"
+        class="ui-control h-control flex items-center disabled:ui-state-disabled group-read-only/field:ui-state-readonly has-focus:ui-state-focus has-invalid:ui-state-error has-focus:has-invalid:outline-destructive-accent/20 has-focus:has-invalid:[--ui-border-color:var(--color-destructive-accent)] w-(--field-width) max-w-full min-w-0 overflow-hidden"
         data-rac=""
         data-react-aria-pressable="true"
-        id="react-aria-_r_0_"
+        id="react-aria-_r_1_"
         role="group"
         style="unicode-bidi: isolate;"
       >
         <div
-          aria-describedby="react-aria-description-0 react-aria-_r_3_"
-          aria-labelledby="react-aria-_r_1_"
+          aria-describedby="react-aria-description-0 react-aria-_r_4_"
+          aria-labelledby="react-aria-_r_2_"
           class="flex flex-1 items-center ui-input cursor-text"
           data-rac=""
           data-react-aria-pressable="true"
-          id="react-aria-_r_0_"
+          id="react-aria-_r_1_"
           role="group"
           style="unicode-bidi: isolate;"
         >
           <span
-            aria-describedby="react-aria-description-0 react-aria-_r_3_"
+            aria-describedby="react-aria-description-0 react-aria-_r_4_"
             aria-label="Tag, "
-            aria-labelledby="react-aria-_r_5_ react-aria-_r_1_"
+            aria-labelledby="react-aria-_r_6_ react-aria-_r_2_"
             aria-valuemax="31"
             aria-valuemin="1"
             aria-valuenow="1"
             aria-valuetext="1"
             autocorrect="off"
-            class="group/segment inline rounded leading-none whitespace-pre p-0.5 outline-0 caret-transparent text-foreground data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0 data-focused:bg-stone-300 data-focused:text-foreground data-focused:data-placeholder:text-foreground disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:text-destructive invalid:data-focused:bg-destructive invalid:data-focused:text-destructive-foreground invalid:data-focused:data-placeholder:text-destructive-foreground"
+            class="group/segment inline rounded leading-none whitespace-pre p-0.5 outline-0 caret-transparent text-foreground data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0 data-focused:bg-focus-highlight-bold data-focused:text-foreground data-focused:data-placeholder:text-foreground disabled:cursor-not-allowed disabled:text-disabled disabled:bg-disabled-surface data-placeholder:disabled:text-disabled invalid:text-destructive-accent invalid:data-focused:bg-destructive-bold invalid:data-focused:text-destructive-bold-foreground invalid:data-focused:data-placeholder:text-destructive-bold-foreground"
             contenteditable="true"
             data-rac=""
             data-type="day"
             enterkeyhint="next"
-            id="react-aria-_r_5_"
+            id="react-aria-_r_6_"
             inputmode="numeric"
             role="spinbutton"
             spellcheck="false"
@@ -111,7 +93,7 @@ test('renders correctly', () => {
           </span>
           <span
             aria-hidden="true"
-            class="group/segment inline rounded leading-none whitespace-pre p-0.5 outline-0 caret-transparent text-foreground data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0 data-focused:bg-stone-300 data-focused:text-foreground data-focused:data-placeholder:text-foreground disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:text-destructive invalid:data-focused:bg-destructive invalid:data-focused:text-destructive-foreground invalid:data-focused:data-placeholder:text-destructive-foreground"
+            class="group/segment inline rounded leading-none whitespace-pre p-0.5 outline-0 caret-transparent text-foreground data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0 data-focused:bg-focus-highlight-bold data-focused:text-foreground data-focused:data-placeholder:text-foreground disabled:cursor-not-allowed disabled:text-disabled disabled:bg-disabled-surface data-placeholder:disabled:text-disabled invalid:text-destructive-accent invalid:data-focused:bg-destructive-bold invalid:data-focused:text-destructive-bold-foreground invalid:data-focused:data-placeholder:text-destructive-bold-foreground"
             data-rac=""
             data-type="literal"
           >
@@ -125,18 +107,18 @@ test('renders correctly', () => {
           </span>
           <span
             aria-label="Monat, "
-            aria-labelledby="react-aria-_r_9_ react-aria-_r_1_"
+            aria-labelledby="react-aria-_r_a_ react-aria-_r_2_"
             aria-valuemax="12"
             aria-valuemin="1"
             aria-valuenow="1"
             aria-valuetext="1 – Januar"
             autocorrect="off"
-            class="group/segment inline rounded leading-none whitespace-pre p-0.5 outline-0 caret-transparent text-foreground data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0 data-focused:bg-stone-300 data-focused:text-foreground data-focused:data-placeholder:text-foreground disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:text-destructive invalid:data-focused:bg-destructive invalid:data-focused:text-destructive-foreground invalid:data-focused:data-placeholder:text-destructive-foreground"
+            class="group/segment inline rounded leading-none whitespace-pre p-0.5 outline-0 caret-transparent text-foreground data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0 data-focused:bg-focus-highlight-bold data-focused:text-foreground data-focused:data-placeholder:text-foreground disabled:cursor-not-allowed disabled:text-disabled disabled:bg-disabled-surface data-placeholder:disabled:text-disabled invalid:text-destructive-accent invalid:data-focused:bg-destructive-bold invalid:data-focused:text-destructive-bold-foreground invalid:data-focused:data-placeholder:text-destructive-bold-foreground"
             contenteditable="true"
             data-rac=""
             data-type="month"
             enterkeyhint="next"
-            id="react-aria-_r_9_"
+            id="react-aria-_r_a_"
             inputmode="numeric"
             role="spinbutton"
             spellcheck="false"
@@ -153,7 +135,7 @@ test('renders correctly', () => {
           </span>
           <span
             aria-hidden="true"
-            class="group/segment inline rounded leading-none whitespace-pre p-0.5 outline-0 caret-transparent text-foreground data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0 data-focused:bg-stone-300 data-focused:text-foreground data-focused:data-placeholder:text-foreground disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:text-destructive invalid:data-focused:bg-destructive invalid:data-focused:text-destructive-foreground invalid:data-focused:data-placeholder:text-destructive-foreground"
+            class="group/segment inline rounded leading-none whitespace-pre p-0.5 outline-0 caret-transparent text-foreground data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0 data-focused:bg-focus-highlight-bold data-focused:text-foreground data-focused:data-placeholder:text-foreground disabled:cursor-not-allowed disabled:text-disabled disabled:bg-disabled-surface data-placeholder:disabled:text-disabled invalid:text-destructive-accent invalid:data-focused:bg-destructive-bold invalid:data-focused:text-destructive-bold-foreground invalid:data-focused:data-placeholder:text-destructive-bold-foreground"
             data-rac=""
             data-type="literal"
           >
@@ -167,18 +149,18 @@ test('renders correctly', () => {
           </span>
           <span
             aria-label="Jahr, "
-            aria-labelledby="react-aria-_r_d_ react-aria-_r_1_"
+            aria-labelledby="react-aria-_r_e_ react-aria-_r_2_"
             aria-valuemax="9999"
             aria-valuemin="1"
             aria-valuenow="2026"
             aria-valuetext="2026"
             autocorrect="off"
-            class="group/segment inline rounded leading-none whitespace-pre p-0.5 outline-0 caret-transparent text-foreground data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0 data-focused:bg-stone-300 data-focused:text-foreground data-focused:data-placeholder:text-foreground disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled data-placeholder:disabled:text-disabled-foreground invalid:text-destructive invalid:data-focused:bg-destructive invalid:data-focused:text-destructive-foreground invalid:data-focused:data-placeholder:text-destructive-foreground"
+            class="group/segment inline rounded leading-none whitespace-pre p-0.5 outline-0 caret-transparent text-foreground data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0 data-focused:bg-focus-highlight-bold data-focused:text-foreground data-focused:data-placeholder:text-foreground disabled:cursor-not-allowed disabled:text-disabled disabled:bg-disabled-surface data-placeholder:disabled:text-disabled invalid:text-destructive-accent invalid:data-focused:bg-destructive-bold invalid:data-focused:text-destructive-bold-foreground invalid:data-focused:data-placeholder:text-destructive-bold-foreground"
             contenteditable="true"
             data-rac=""
             data-type="year"
             enterkeyhint="next"
-            id="react-aria-_r_d_"
+            id="react-aria-_r_e_"
             inputmode="numeric"
             role="spinbutton"
             spellcheck="false"
@@ -204,11 +186,11 @@ test('renders correctly', () => {
         />
       </div>
       <div
-        class="in-field:mt-1 text-xs text-muted-foreground group-disabled/field:text-disabled-foreground group-invalid/field:text-destructive has-[+_[aria-hidden=true]]:mb-0"
+        class="in-field:mt-1 text-xs text-secondary group-disabled/field:text-disabled group-invalid/field:text-destructive-accent has-[+_[aria-hidden=true]]:mb-0"
       >
         <span
           class="react-aria-Text"
-          id="react-aria-_r_3_"
+          id="react-aria-_r_4_"
           slot="description"
         >
           This is a help text description

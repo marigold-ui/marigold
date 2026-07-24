@@ -1,5 +1,5 @@
-import { Button } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { Button } from 'react-aria-components/Button';
 import { cn, useClassNames } from '@marigold/system';
 
 interface IconButtonProps extends RAC.ButtonProps {

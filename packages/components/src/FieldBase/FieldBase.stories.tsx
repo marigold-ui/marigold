@@ -158,8 +158,8 @@ export const LayoutVariations = meta.story({
           <Inline alignX="left" space={4} alignY="input" noWrap>
             <TextField label="Width default" />
             <Select
-              label="Width fit"
-              width={'fit'}
+              label="Width 48"
+              width={48}
               description="This is a very very very very very very very very loooooong help text description"
             >
               <Select.Option id="us">United States</Select.Option>
@@ -171,8 +171,8 @@ export const LayoutVariations = meta.story({
           <Stack space={4}>
             <TextField label="Width default" />
             <Select
-              label="Width fit"
-              width={'fit'}
+              label="Width 48"
+              width={48}
               description="This is a very very very very very very very very loooooong help text description"
             >
               <Select.Option id="us">United States</Select.Option>

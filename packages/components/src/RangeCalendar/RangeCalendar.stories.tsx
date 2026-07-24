@@ -1,9 +1,16 @@
-import { CalendarDate, isWeekend } from '@internationalized/date';
+import {
+  CalendarDate,
+  getLocalTimeZone,
+  isSameDay,
+  isWeekend,
+  today,
+} from '@internationalized/date';
 import { useState } from 'react';
-import { DateValue, I18nProvider, RangeValue } from 'react-aria-components';
+import { DateValue, I18nProvider } from 'react-aria-components';
 import { expect, fn, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { useLocale } from '@react-aria/i18n';
+import type { RangeValue } from '@react-types/shared';
 import { RangeCalendar } from './RangeCalendar';
 
 const meta = preview.meta({
@@ -470,3 +477,195 @@ export const ThreeMonthsMobile = meta.story({
   },
   render: args => <RangeCalendar {...args} />,
 });
+
+export const Presets = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    'aria-label': 'Period',
+    onChange: fn(),
+    // A fixed month in the past keeps the Chromatic baseline off the moving
+    // current month and its "today" cell.
+    defaultValue: {
+      start: new CalendarDate(2026, 3, 9),
+      end: new CalendarDate(2026, 3, 15),
+    },
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <RangeCalendar
+        {...args}
+        presets={[
+          'today',
+          'this-week',
+          'next-7-days',
+          'next-30-days',
+          'this-month',
+          'this-quarter',
+          {
+            label: 'January 2027',
+            value: {
+              start: new CalendarDate(2027, 1, 1),
+              end: new CalendarDate(2027, 1, 31),
+            },
+          },
+        ]}
+      />
+    </I18nProvider>
+  ),
+});
+
+Presets.test('presets render as a labeled listbox', async ({ canvas }) => {
+  const listbox = canvas.getByRole('listbox', { name: 'Quick selection' });
+  const option = canvas.getByRole('option', { name: 'This quarter' });
+
+  await expect(listbox).toBeVisible();
+  await expect(option).toBeVisible();
+});
+
+Presets.test(
+  'selecting a built-in preset sets the range and marks the option selected',
+  async ({ args, canvas, userEvent }) => {
+    const option = canvas.getByRole('option', { name: 'Next 7 days' });
+
+    await userEvent.click(option);
+    const [range] = (args.onChange as ReturnType<typeof fn>).mock.calls[0];
+    const now = today(getLocalTimeZone());
+
+    await expect(args.onChange).toHaveBeenCalledTimes(1);
+    await expect(isSameDay(range.start, now)).toBe(true);
+    await expect(isSameDay(range.end, now.add({ days: 6 }))).toBe(true);
+    await expect(option).toHaveAttribute('aria-selected', 'true');
+  }
+);
+
+Presets.test(
+  'selecting the "today" preset sets a single-day range',
+  async ({ args, canvas, userEvent }) => {
+    const option = canvas.getByRole('option', { name: 'Today' });
+
+    await userEvent.click(option);
+    const [range] = (args.onChange as ReturnType<typeof fn>).mock.calls[0];
+    const now = today(getLocalTimeZone());
+
+    await expect(args.onChange).toHaveBeenCalledTimes(1);
+    await expect(isSameDay(range.start, now)).toBe(true);
+    await expect(isSameDay(range.end, now)).toBe(true);
+  }
+);
+
+Presets.test(
+  'selecting a preset jumps the visible month to its range',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('option', { name: 'January 2027' }));
+
+    await expect(
+      canvas.getByRole('button', { name: 'Jan' })
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByRole('button', { name: '2027' })
+    ).toBeInTheDocument();
+  }
+);
+
+export const PresetsWithMinValue = meta.story({
+  tags: ['component-test'],
+  // The story is relative to today by design (minValue: today disables the
+  // "Last 7 days" preset), so its snapshot would diff in Chromatic every
+  // day. The play assertions below cover the disabled state.
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    'aria-label': 'Period',
+    minValue: today(getLocalTimeZone()),
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <RangeCalendar {...args} presets={['last-7-days', 'next-7-days']} />
+    </I18nProvider>
+  ),
+});
+
+PresetsWithMinValue.test(
+  'a preset outside minValue/maxValue is disabled',
+  async ({ canvas }) => {
+    const pastOption = canvas.getByRole('option', {
+      name: 'Last 7 days',
+    });
+    const futureOption = canvas.getByRole('option', { name: 'Next 7 days' });
+
+    await expect(pastOption).toHaveAttribute('aria-disabled', 'true');
+    await expect(futureOption).not.toHaveAttribute('aria-disabled');
+  }
+);
+
+// Small screens swap the rail for a "Quick selection" row that opens the
+// preset list in a tray. Fixed preset values (instead of the relative
+// built-ins) keep the resolved-date sublabels and the visible month stable,
+// so Chromatic can snapshot the open tray without daily diffs.
+export const PresetsMobile = meta.story({
+  tags: ['component-test'],
+  // Chromatic ignores the Storybook viewport global and captures at its
+  // 1200px default, where the small-screen UI (and this story's play)
+  // doesn't exist. Pin its capture to phone width.
+  parameters: { chromatic: { disableSnapshot: true, viewports: [320] } },
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
+  args: {
+    'aria-label': 'Period',
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <RangeCalendar
+        {...args}
+        defaultValue={{
+          start: new CalendarDate(2027, 1, 5),
+          end: new CalendarDate(2027, 1, 11),
+        }}
+        presets={[
+          {
+            label: 'Kickoff week',
+            value: {
+              start: new CalendarDate(2027, 1, 5),
+              end: new CalendarDate(2027, 1, 11),
+            },
+          },
+          {
+            label: 'Review week',
+            value: {
+              start: new CalendarDate(2027, 1, 19),
+              end: new CalendarDate(2027, 1, 25),
+            },
+          },
+          {
+            label: 'Release month',
+            value: {
+              start: new CalendarDate(2027, 2, 1),
+              end: new CalendarDate(2027, 2, 28),
+            },
+          },
+        ]}
+      />
+    </I18nProvider>
+  ),
+});
+
+PresetsMobile.test(
+  'opens the quick selection tray',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Quick selection' })
+    );
+    const tray = await canvas.findByRole('dialog');
+
+    await expect(
+      within(tray).getByRole('listbox', { name: 'Quick selection' })
+    ).toBeVisible();
+    // The preset matching the calendar value shows as selected.
+    await expect(
+      within(tray).getByRole('option', { name: 'Kickoff week' })
+    ).toHaveAttribute('aria-selected', 'true');
+  }
+);

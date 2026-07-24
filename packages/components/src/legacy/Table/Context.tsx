@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, use } from 'react';
 import { TableState } from '@react-stately/table';
 
 export interface TableContextProps {
@@ -18,4 +18,4 @@ export interface TableContextProps {
 }
 
 export const TableContext = createContext<TableContextProps>({} as any);
-export const useTableContext = () => useContext(TableContext);
+export const useTableContext = () => use(TableContext);

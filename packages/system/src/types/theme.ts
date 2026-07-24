@@ -43,16 +43,17 @@ export type Theme = {
   root?: ComponentStyleFunction;
   components: {
     Accordion?: Record<
-      'container' | 'item' | 'header' | 'panel' | 'content' | 'icon',
+      | 'container'
+      | 'item'
+      | 'header'
+      | 'panel'
+      | 'content'
+      | 'icon'
+      | 'actions',
       ComponentStyleFunction<string, string>
     >;
     ActionBar?: Record<
-      | 'container'
-      | 'selection'
-      | 'count'
-      | 'toolbar'
-      | 'clearButton'
-      | 'actionButton',
+      'container' | 'selection' | 'count' | 'toolbar' | 'clearButton',
       ComponentStyleFunction<string, string>
     >;
     Badge?: ComponentStyleFunction<string, string>;
@@ -63,14 +64,23 @@ export type Theme = {
     >;
 
     Button?: ComponentStyleFunction<string, string>;
-    Card?: ComponentStyleFunction<string, string>;
+    Card?: Record<
+      | 'container'
+      | 'header'
+      | 'title'
+      | 'description'
+      | 'content'
+      | 'footer'
+      | 'media',
+      ComponentStyleFunction<string, string>
+    >;
     CloseButton?: ComponentStyleFunction<string, string>;
     Collapsible?: Record<
       'container' | 'trigger' | 'content',
       ComponentStyleFunction<string, string>
     >;
     ContextualHelp?: Record<
-      'trigger' | 'container' | 'title' | 'content',
+      'trigger' | 'container' | 'title' | 'description' | 'content',
       ComponentStyleFunction<string, string>
     >;
     DateField?: Record<
@@ -78,7 +88,13 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Dialog?: Record<
-      'closeButton' | 'container' | 'header' | 'content' | 'actions' | 'title',
+      | 'closeButton'
+      | 'container'
+      | 'header'
+      | 'content'
+      | 'actions'
+      | 'title'
+      | 'description',
       ComponentStyleFunction<string, string>
     >;
     Divider?: ComponentStyleFunction<string, string>;
@@ -88,6 +104,7 @@ export type Theme = {
       | 'container'
       | 'header'
       | 'title'
+      | 'description'
       | 'content'
       | 'actions',
       ComponentStyleFunction<string, string>
@@ -98,11 +115,16 @@ export type Theme = {
       | 'dragHandle'
       | 'header'
       | 'title'
+      | 'description'
       | 'content'
       | 'actions',
       ComponentStyleFunction<string, string>
     >;
     Field?: ComponentStyleFunction<string, string>;
+    BooleanField?: Record<
+      'container' | 'description',
+      ComponentStyleFunction<string, string>
+    >;
     Headline?: ComponentStyleFunction<string, string>;
     Popover?: ComponentStyleFunction<string, string>;
     HelpText?: Record<
@@ -122,29 +144,49 @@ export type Theme = {
       'input' | 'icon' | 'action',
       ComponentStyleFunction<string, string>
     >;
+    Keyboard?: ComponentStyleFunction<string, string>;
     Label?: ComponentStyleFunction<string, string>;
     List?: Record<'ol' | 'ul' | 'item', ComponentStyleFunction<string, string>>;
     Link?: ComponentStyleFunction<string, string>;
     ListBox?: Record<
-      'container' | 'list' | 'item' | 'section' | 'header',
+      | 'container'
+      | 'list'
+      | 'item'
+      | 'section'
+      | 'header'
+      | 'label'
+      | 'description',
       ComponentStyleFunction<string, string>
     >;
     Menu?: Record<
-      'container' | 'section' | 'item' | 'button',
+      | 'container'
+      | 'section'
+      | 'item'
+      | 'button'
+      | 'label'
+      | 'description'
+      | 'keyboard',
       ComponentStyleFunction<string, string>
     >;
     Modal?: ComponentStyleFunction<string, string>;
-    MultiSelect?: Record<
-      | 'container'
-      | 'closeButton'
-      | 'field'
-      | 'input'
-      | 'icon'
-      | 'listContainer'
-      | 'list'
-      | 'option'
-      | 'tag'
-      | 'valueContainer',
+    Panel?: Record<
+      | 'root'
+      | 'header'
+      | 'title'
+      | 'description'
+      | 'actions'
+      | 'content'
+      | 'collapsible'
+      | 'collapsibleHeader'
+      | 'collapsibleTitle'
+      | 'collapsibleDescription'
+      | 'collapsibleContent'
+      | 'collapsibleIcon'
+      | 'footer',
+      ComponentStyleFunction<string, string>
+    >;
+    Page?: Record<
+      'root' | 'header' | 'title' | 'description' | 'actions' | 'content',
       ComponentStyleFunction<string, string>
     >;
     Pagination?: Record<
@@ -164,12 +206,22 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;
+    SelectList?: Record<
+      | 'container'
+      | 'list'
+      | 'item'
+      | 'label'
+      | 'description'
+      | 'indicator'
+      | 'action',
+      ComponentStyleFunction<string, string>
+    >;
     NumberField?: Record<
       'group' | 'stepper' | 'input',
       ComponentStyleFunction<string, string>
     >;
     SectionMessage?: Record<
-      'container' | 'icon' | 'title' | 'content' | 'close',
+      'container' | 'icon' | 'title' | 'description' | 'content',
       ComponentStyleFunction<string, string>
     >;
     Table?: Record<
@@ -177,6 +229,7 @@ export type Theme = {
       | 'head'
       | 'column'
       | 'body'
+      | 'footer'
       | 'row'
       | 'cell'
       | 'dragHandle'
@@ -194,7 +247,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Tag?: Record<
-      'container' | 'tag' | 'listItems' | 'closeButton' | 'removeAll',
+      'container' | 'tag' | 'listItems' | 'closeButton' | 'showMore',
       ComponentStyleFunction<string, string>
     >;
     TagField?: Record<
@@ -223,8 +276,19 @@ export type Theme = {
       | 'action',
       ComponentStyleFunction<string, string>
     >;
+    // `tabsListScroll` is the scroll container for the tab row and owns the
+    // `overflow-x`. It is required and paired with `tabsList`: when `tabsList`
+    // is wider than its container (e.g. `w-max`) the row scrolls, otherwise it
+    // overflows the page. Making the slot required means a theme cannot ship
+    // `tabsList` without the scroll container that makes it behave. See
+    // theme-rui's Tabs.styles.ts.
     Tabs?: Record<
-      'container' | 'tabsList' | 'tabpanel' | 'tab' | 'tabIndicator',
+      | 'container'
+      | 'tabsList'
+      | 'tabsListScroll'
+      | 'tabpanel'
+      | 'tab'
+      | 'tabIndicator',
       ComponentStyleFunction<string, string>
     >;
     Underlay?: ComponentStyleFunction<string, string>;
@@ -238,6 +302,7 @@ export type Theme = {
       | 'calendarHeader'
       | 'calendarGrid'
       | 'calendarHeading'
+      | 'calendarPresets'
       | 'select',
       ComponentStyleFunction<string, string>
     >;
@@ -251,6 +316,7 @@ export type Theme = {
       | 'calendarHeader'
       | 'calendarGrid'
       | 'calendarHeading'
+      | 'calendarPresets'
       | 'select',
       ComponentStyleFunction<string, string>
     >;
@@ -283,8 +349,16 @@ export type Theme = {
       'container' | 'title' | 'description' | 'action',
       ComponentStyleFunction<string, string>
     >;
+    ErrorState?: Record<
+      'container' | 'title' | 'description' | 'action',
+      ComponentStyleFunction<string, string>
+    >;
     ToggleButton?: Record<
       'group' | 'button',
+      ComponentStyleFunction<string, string>
+    >;
+    SegmentedControl?: Record<
+      'group' | 'list' | 'field' | 'option' | 'indicator',
       ComponentStyleFunction<string, string>
     >;
     Sidebar?: Record<
@@ -301,7 +375,17 @@ export type Theme = {
       | 'navPanel'
       | 'navLink'
       | 'backButton'
-      | 'content',
+      | 'content'
+      // Two-level rail (Sidebar.Rail): persistent rail + section panel
+      | 'railRoot'
+      | 'railLayout'
+      | 'railColumn'
+      | 'railToggle'
+      | 'rail'
+      | 'railItem'
+      | 'railFooter'
+      | 'panel'
+      | 'panelTitle',
       ComponentStyleFunction<string, string>
     >;
     TopNavigation?: Record<

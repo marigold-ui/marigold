@@ -1,5 +1,5 @@
 import { FormEvent, useState } from 'react';
-import { I18nProvider } from 'react-aria-components';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';

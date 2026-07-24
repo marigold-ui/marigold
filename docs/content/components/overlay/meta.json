@@ -1,3 +1,11 @@
 {
-  "pages": ["contextual-help", "dialog", "drawer", "menu", "toast", "tooltip"]
+  "pages": [
+    "action-menu",
+    "contextual-help",
+    "dialog",
+    "drawer",
+    "menu",
+    "toast",
+    "tooltip"
+  ]
 }

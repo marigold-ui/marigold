@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import RAC, { DropZone } from 'react-aria-components';
+import type RAC from 'react-aria-components';
+import { DropZone } from 'react-aria-components/DropZone';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, type FieldBaseProps } from '../FieldBase/FieldBase';
@@ -20,7 +21,7 @@ export interface FileFieldProps
     Omit<RAC.DropZoneProps, RemovedProps>,
     Pick<FieldBaseProps<'input'>, 'label'> {
   variant?: string;
-  size?: string;
+  size?: 'default' | 'small' | (string & {});
 
   /**
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
@@ -62,6 +63,8 @@ export const FileField = ({
   width,
   label,
   name,
+  size,
+  variant,
   ...props
 }: FileFieldProps) => {
   const [files, setFiles] = useState<File[] | null>(null);
@@ -125,7 +128,11 @@ export const FileField = ({
 
   const classNames = useClassNames({
     component: 'FileField',
+    size,
+    variant,
   });
+
+  const isSmall = size === 'small';
 
   return (
     /* @ts-expect-error type intrinsic elements ("div") are not working correctly */
@@ -136,42 +143,57 @@ export const FileField = ({
       className={classNames.container}
       {...props}
     >
-      <DropZone
-        onDrop={handleDrop}
-        isDisabled={disabled}
-        className={classNames.dropZone}
-        data-testid="dropzone"
-        {...props}
-      >
-        <div className={classNames.dropZoneContent}>
-          <p className={classNames.dropZoneLabel}>{dropZoneLabel}</p>
+      <div className="flex w-(--field-width) max-w-full min-w-0 flex-col gap-2">
+        {isSmall ? (
           <FileTrigger
             {...fileTriggerProps}
             label={buttonLabel}
             disabled={disabled}
+            size={size}
+            fullWidth
           />
-        </div>
-      </DropZone>
-      {files?.map(file => (
-        <FileField.Item
-          key={fileKey(file)}
-          onRemove={() =>
-            updateFiles(prev => prev.filter(f => fileKey(f) !== fileKey(file)))
-          }
-        >
-          <div className={cn('[grid-area:label]', classNames.itemLabel)}>
-            {file.name}
-          </div>
-          <div
-            className={cn(
-              '[grid-area:description]',
-              classNames.itemDescription
-            )}
+        ) : (
+          <DropZone
+            onDrop={handleDrop}
+            isDisabled={disabled}
+            className={classNames.dropZone}
+            data-testid="dropzone"
+            {...props}
           >
-            {(file.size / 1024 / 1024).toFixed(2)} MB
-          </div>
-        </FileField.Item>
-      ))}
+            <div className={classNames.dropZoneContent}>
+              <p className={classNames.dropZoneLabel}>{dropZoneLabel}</p>
+              <FileTrigger
+                {...fileTriggerProps}
+                label={buttonLabel}
+                disabled={disabled}
+              />
+            </div>
+          </DropZone>
+        )}
+        {files?.map(file => (
+          <FileField.Item
+            key={fileKey(file)}
+            size={size}
+            onRemove={() =>
+              updateFiles(prev =>
+                prev.filter(f => fileKey(f) !== fileKey(file))
+              )
+            }
+          >
+            <div className={cn('[grid-area:label]', classNames.itemLabel)}>
+              {file.name}
+            </div>
+            <div
+              className={cn(
+                '[grid-area:description]',
+                classNames.itemDescription
+              )}
+            >
+              {(file.size / 1024 / 1024).toFixed(2)} MB
+            </div>
+          </FileField.Item>
+        ))}
+      </div>
       {name && (
         <input
           type="file"

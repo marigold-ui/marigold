@@ -63,6 +63,12 @@ const meta = preview.meta({
       },
       description: 'Description text',
     },
+    errorMessage: {
+      control: {
+        type: 'text',
+      },
+      description: 'Error message shown when `error` is set',
+    },
   },
   args: {
     readOnly: false,
@@ -117,5 +123,28 @@ Basic.test(
 
     expect(description).toBeInTheDocument();
     expect(checkboxDescribedBy).toBe(helpTextId);
+  }
+);
+
+export const WithError = meta.story({
+  tags: ['component-test'],
+  args: {
+    error: true,
+    errorMessage: 'This selection is required',
+    description: 'This is a description',
+  },
+});
+
+WithError.test(
+  'Error message replaces the description',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const checkbox = await canvas.findByRole('checkbox');
+
+    // The error message replaces the description when `error` is set.
+    expect(canvas.queryByText('This is a description')).not.toBeInTheDocument();
+    await expect(checkbox).toHaveAccessibleDescription(
+      'This selection is required'
+    );
   }
 );

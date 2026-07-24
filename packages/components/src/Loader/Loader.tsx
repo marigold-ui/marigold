@@ -1,4 +1,5 @@
-import { Dialog, Modal } from 'react-aria-components';
+import { Dialog } from 'react-aria-components/Dialog';
+import { Modal } from 'react-aria-components/Modal';
 import { useId } from '@react-aria/utils';
 import { useClassNames } from '@marigold/system';
 import { Underlay } from '../Overlay/Underlay';
@@ -16,22 +17,32 @@ export interface LoaderProps extends BaseLoaderProps {
    */
   mode?: 'fullscreen' | 'section';
   /**
-   * Selects the visual style of the loading indicator shown when loading is true. Accepts `xloader` or `cycle`.
-   * @default cycle
+   * Selects the visual style of the loading indicator shown when loading is true. Accepts `xloader` or `circle`.
+   * @default circle
    */
   loaderType?: LoaderVisualType;
 }
 
 // Full Screen
 // ---------------
-const LoaderFullScreen = (props: BaseLoaderProps) => {
+const LoaderFullScreen = ({
+  'aria-labelledby': ariaLabelledby,
+  ...props
+}: BaseLoaderProps) => {
   const id = useId();
 
+  // The Dialog derives its accessible name from the loader. When the consumer
+  // supplies their own `aria-labelledby`, point the Dialog straight at that
+  // element: the intermediate loader node can't relay a second `labelledby`
+  // hop (the accessible-name spec does not follow `aria-labelledby` on a node
+  // reached via `aria-labelledby`), so referencing `id` would leave the Dialog
+  // unnamed. Otherwise reference the loader node, which carries the localized
+  // (or consumer `aria-label`) fallback.
   return (
     <Underlay defaultOpen keyboardDismissable variant="modal">
       <Modal className="grid h-(--visual-viewport-height) cursor-progress place-items-center">
-        <Dialog className="outline-0" aria-labelledby={id}>
-          <BaseLoader id={id} {...props} />
+        <Dialog className="outline-0" aria-labelledby={ariaLabelledby ?? id}>
+          <BaseLoader id={id} aria-labelledby={ariaLabelledby} {...props} />
         </Dialog>
       </Modal>
     </Underlay>

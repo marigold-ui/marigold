@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Heading } from 'react-aria-components';
+import { Heading } from 'react-aria-components/Heading';
 import { cn, useClassNames } from '@marigold/system';
 
 export interface ContextualHelpTitleProps {
@@ -20,7 +20,9 @@ export const ContextualHelpTitle = ({
   });
 
   return (
-    <Heading className={cn('[grid-area:title]', classNames.title)}>
+    // `slot="title"` lets the surrounding RAC `<Dialog>` wire its
+    // `aria-labelledby` to this heading (same pattern as `DialogTitle`).
+    <Heading slot="title" className={cn('[grid-area:title]', classNames.title)}>
       {children}
     </Heading>
   );

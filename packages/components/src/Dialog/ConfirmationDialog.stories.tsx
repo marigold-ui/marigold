@@ -17,6 +17,7 @@ const meta = preview.meta({
       </div>
     ),
   ],
+  parameters: { surface: false },
 });
 
 export const Basic = meta.story({

@@ -1,5 +1,5 @@
 import type RAC from 'react-aria-components';
-import { TableBody as RACTableBody } from 'react-aria-components';
+import { TableBody as RACTableBody } from 'react-aria-components/Table';
 import { cn } from '@marigold/system';
 import { useTableContext } from './Context';
 

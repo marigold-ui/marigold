@@ -10,11 +10,18 @@ export interface FileFieldItemProps {
    * Called when the close button is pressed to remove this item.
    */
   onRemove?: () => void;
+
+  size?: 'default' | 'small' | (string & {});
 }
 
-export const FileFieldItem = ({ children, onRemove }: FileFieldItemProps) => {
+export const FileFieldItem = ({
+  children,
+  onRemove,
+  size,
+}: FileFieldItemProps) => {
   const classNames = useClassNames({
     component: 'FileField',
+    size,
   });
   const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');
   return (

@@ -8,8 +8,9 @@ const meta = preview.meta({
   argTypes: {
     variant: {
       control: {
-        type: 'text',
+        type: 'radio',
       },
+      options: [undefined, 'settings'],
       description: 'Switch variant style',
     },
     label: {
@@ -24,10 +25,9 @@ const meta = preview.meta({
     },
     size: {
       control: {
-        type: 'radio',
+        type: 'text',
       },
-      options: ['large', 'none'],
-      description: 'The sizes for switch.',
+      description: 'The size of the switch.',
     },
     width: {
       control: {
@@ -45,6 +45,36 @@ const meta = preview.meta({
         defaultValue: { summary: 'false' },
       },
     },
+    description: {
+      control: {
+        type: 'text',
+      },
+      description: 'A helpful text below the switch',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'undefined' },
+      },
+    },
+    error: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Whether the switch is invalid',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    errorMessage: {
+      control: {
+        type: 'text',
+      },
+      description: 'An error message shown when `error` is set',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'undefined' },
+      },
+    },
     selected: {
       control: {
         type: 'boolean',
@@ -60,11 +90,20 @@ const meta = preview.meta({
     label: 'Default Switch',
     disabled: false,
     defaultSelected: false,
+    error: false,
   },
 });
 
 export const Basic = meta.story({
   tags: ['component-test'],
+});
+
+export const Settings = meta.story({
+  args: {
+    variant: 'settings',
+    label: 'Email notifications',
+    description: 'Receive email notifications when someone mentions you',
+  },
 });
 
 Basic.test('Toggles on when clicked', async ({ canvas, userEvent }) => {
@@ -103,5 +142,46 @@ Basic.test(
     await userEvent.click(input);
 
     await expect(input.checked).toBeFalsy();
+  }
+);
+
+export const WithDescription = meta.story({
+  tags: ['component-test'],
+  args: {
+    description: 'This is a description',
+  },
+});
+
+WithDescription.test(
+  'Description is set and accessible',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const switchEl = await canvas.findByRole('switch');
+
+    expect(canvas.getByText('This is a description')).toBeInTheDocument();
+    await expect(switchEl).toHaveAccessibleDescription('This is a description');
+  }
+);
+
+export const WithError = meta.story({
+  tags: ['component-test'],
+  args: {
+    error: true,
+    errorMessage: 'This setting is required',
+    description: 'This is a description',
+  },
+});
+
+WithError.test(
+  'Error message replaces the description',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const switchEl = await canvas.findByRole('switch');
+
+    // The error message replaces the description when `error` is set.
+    expect(canvas.queryByText('This is a description')).not.toBeInTheDocument();
+    await expect(switchEl).toHaveAccessibleDescription(
+      'This setting is required'
+    );
   }
 );

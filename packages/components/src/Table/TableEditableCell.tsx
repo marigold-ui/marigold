@@ -5,7 +5,9 @@ import type {
   RefObject,
 } from 'react';
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { Button, Cell, Popover, useTableOptions } from 'react-aria-components';
+import { Button } from 'react-aria-components/Button';
+import { Popover } from 'react-aria-components/Popover';
+import { Cell, useTableOptions } from 'react-aria-components/Table';
 import { FocusScope } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import {

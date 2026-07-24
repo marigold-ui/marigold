@@ -8,6 +8,9 @@ import { Button } from './Button';
 const meta = preview.meta({
   title: 'Components/Button',
   component: Button,
+  parameters: {
+    surface: false,
+  },
   argTypes: {
     disabled: {
       control: {
@@ -103,6 +106,7 @@ Basic.test(
 export const ButtonVariants = meta.story({
   tags: ['component-test'],
   parameters: {
+    surface: 'both',
     controls: { exclude: ['variant', 'children', 'loading'] },
   },
   args: {
@@ -137,7 +141,7 @@ export const ButtonVariants = meta.story({
 export const GhostOnBackground = meta.story({
   render: args => (
     <Stack space={4}>
-      <div className="bg-brand text-brand-foreground flex items-center justify-center rounded p-8">
+      <div className="bg-primary text-primary-foreground flex items-center justify-center rounded p-8">
         <Button {...args} variant="ghost">
           Ghost on Dark
         </Button>

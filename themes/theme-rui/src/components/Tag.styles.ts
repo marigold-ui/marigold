@@ -1,5 +1,13 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
+const linkAction = [
+  'inline whitespace-nowrap font-medium transition-[color,box-shadow,transform] rounded-md',
+  'ui-press',
+  'focus-visible:ui-state-focus outline-none',
+  'cursor-pointer',
+  'text-link text-xs ui-touch-hitbox',
+];
+
 export const Tag: ThemeComponent<'Tag'> = {
   container: cva({
     base: [
@@ -11,18 +19,23 @@ export const Tag: ThemeComponent<'Tag'> = {
   tag: cva({
     base: [
       'relative inline-flex items-center gap-1.75',
-      'ui-surface shadow-elevation-border',
+      'ui-control',
+      // Inside a TagField the frame is already an input-styled control, so a chip
+      // with the same control ring reads as an input nested in an input. A Tag in
+      // the trigger lightens its ring a step (token-derived), leaving a quieter
+      // chip that still reads as a removable token.
+      'in-[.tagfield-trigger]:[--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_-_0.10))]',
       'font-medium text-xs',
       'h-6 px-2 cursor-default',
-      'selected:text-brand-foreground selected:[--ui-background-color:var(--color-brand)]',
-      'data-disabled:cursor-not-allowed data-disabled:text-disabled-foreground data-disabled:bg-disabled',
+      'selected:text-selected-bold-foreground selected:[--ui-background-color:var(--color-selected-bold)]',
+      'data-disabled:cursor-not-allowed data-disabled:text-disabled data-disabled:bg-disabled-surface',
       'focus-visible:ui-state-focus outline-none',
     ],
   }),
   closeButton: cva({
     base: [
       'size-4',
-      'disabled:bg-disabled disabled:text-disabled-foreground disabled:cursor-not-allowed',
+      'disabled:bg-disabled-surface disabled:text-disabled disabled:cursor-not-allowed',
     ],
   }),
   listItems: cva({
@@ -32,13 +45,7 @@ export const Tag: ThemeComponent<'Tag'> = {
       'mb-0',
     ],
   }),
-  removeAll: cva({
-    base: [
-      'inline whitespace-nowrap font-medium transition-[color,box-shadow,transform] rounded-md',
-      'ui-press',
-      'focus-visible:ui-state-focus outline-none',
-      'cursor-pointer',
-      'text-link text-xs ui-touch-hitbox',
-    ],
+  showMore: cva({
+    base: linkAction,
   }),
 };

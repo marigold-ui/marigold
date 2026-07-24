@@ -1,13 +1,16 @@
-import type { ReactNode } from 'react';
-import { forwardRef } from 'react';
+import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Button } from 'react-aria-components';
+import { Button } from 'react-aria-components/Button';
+import { useContextProps } from 'react-aria-components/slots';
 import { cn, useClassNames } from '@marigold/system';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
+import type { SlotProps } from '../types';
+import { ButtonContext, type ButtonContextValue } from './Context';
 
 type RemovedProps = 'isDisabled' | 'isPending' | 'className' | 'style';
 
-export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
+export interface ButtonProps
+  extends Omit<RAC.ButtonProps, RemovedProps>, SlotProps {
   variant?:
     | 'primary'
     | 'secondary'
@@ -18,7 +21,9 @@ export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
     | (string & {});
 
   /**
-   * @internal
+   * The size of the button. `icon` renders a square, icon-only button and
+   * composes with any `variant` (e.g. `variant="ghost" size="icon"`).
+   * @default 'default'
    */
   size?: 'default' | 'small' | 'large' | 'icon' | (string & {});
 
@@ -42,44 +47,61 @@ export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
    * This disables press and hover events while retaining focusability, and announces the loading state to screen readers.
    */
   loading?: RAC.ButtonProps['isPending'];
+  ref?: Ref<HTMLButtonElement>;
 }
 
-const _Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    { children, variant, size, disabled, loading, fullWidth, ...props },
-    ref
-  ) => {
-    const classNames = useClassNames({
-      component: 'Button',
-      variant,
-      size,
-    });
+const _Button = ({ ref: refProp, ...inputProps }: ButtonProps) => {
+  // Consume the Marigold `ButtonContext` (NOT RAC's) so a bare `<Button>`
+  // adapts inside `<ButtonGroup>`/`<Panel.Header>`. A local prop always wins;
+  // `slot={null}` opts out, any other `slot` forwards to RAC's `<Button>`.
+  const [merged, ref] = useContextProps(
+    inputProps as ButtonContextValue,
+    refProp,
+    ButtonContext
+  );
 
-    return (
-      <Button
-        {...props}
-        ref={ref}
-        className={cn(
-          classNames,
-          fullWidth ? 'w-full' : undefined,
-          loading && 'cursor-progress!'
-        )}
-        isPending={loading}
-        isDisabled={disabled}
-      >
-        {loading ? (
-          <>
-            <span className="absolute">
-              <ProgressCircle />
-            </span>
-            <span className="invisible flex gap-[inherit]">{children}</span>
-          </>
-        ) : (
-          children
-        )}
-      </Button>
-    );
-  }
-);
+  const {
+    children,
+    variant,
+    size,
+    disabled,
+    loading,
+    fullWidth,
+    className,
+    ...props
+  } = merged;
+
+  const classNames = useClassNames({
+    component: 'Button',
+    variant,
+    size,
+  });
+
+  return (
+    <Button
+      {...props}
+      ref={ref}
+      className={cn(
+        className,
+        classNames,
+        fullWidth ? 'w-full' : undefined,
+        loading && 'cursor-progress!'
+      )}
+      isPending={loading}
+      isDisabled={disabled}
+    >
+      {loading ? (
+        <>
+          <span className="absolute">
+            <ProgressCircle />
+          </span>
+          <span className="invisible flex gap-[inherit]">{children}</span>
+        </>
+      ) : (
+        children
+      )}
+    </Button>
+  );
+};
 
 export { _Button as Button };

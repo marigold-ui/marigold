@@ -33,6 +33,8 @@ const theme: Theme = {
       item: cva({}),
       section: cva({}),
       header: cva({}),
+      label: cva({}),
+      description: cva({}),
     },
     Field: cva({}),
     IconButton: cva({}),
@@ -44,6 +46,7 @@ const theme: Theme = {
       content: cva({}),
       actions: cva({}),
       title: cva({}),
+      description: cva({}),
     },
   },
 };

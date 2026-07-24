@@ -16,6 +16,22 @@ The `<RangeCalendar>` component...
 
 ## Usage
 
+### Quick select presets
+
+Use the `presets` prop to offer common ranges as a one-click list beside the calendar, such as "This week" or "Last 30 days" for a reporting period. Built-in keys ship with localized labels and correct date math, and custom presets take a `label` plus a range value or a resolver function. Presets that fall outside `minValue`/`maxValue` or cover an unavailable date are disabled.
+
+Besides the range keys, the single-date built-ins (`today`, `yesterday`, `tomorrow`) also work here and select a one-day range. Range keys such as `this-week` are not available on [DatePicker](/components/form/datepicker) and [Calendar](/components/form/calendar), which accept only the single-date built-ins.
+
+For custom presets, pass `value` as a function when the range is relative to now (for example "Next 14 days"), so it resolves at selection time instead of when the view first rendered. A plain value is right for fixed ranges. If you provide several custom presets, give each a unique `id`: it defaults to the `label`, so two presets sharing a label would collide.
+
+<ComponentDemo name="range-calendar-presets" />
+
+<Callout title="Quick select on narrow screens" type="warning">
+  On small screens the calendar grid renders first, topped by a "Quick
+  selection" row. Tapping it opens the preset list in a bottom sheet, and
+  picking a preset applies it and closes the sheet.
+</Callout>
+
 ## Props
 
 <StorybookHintMessage component={'RangeCalendar'} />

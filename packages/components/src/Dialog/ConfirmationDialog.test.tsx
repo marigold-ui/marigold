@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { I18nProvider } from 'react-aria-components';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { renderWithOverlay } from '../test.utils';
 import { Basic } from './ConfirmationDialog.stories';
 

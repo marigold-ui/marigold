@@ -1,0 +1,97 @@
+---
+title: TextValue
+description: Inline label primitive for selection items.
+badge: alpha
+---
+
+The `<TextValue>` component is a small inline label designed for selection items such as `<Select.Option>`, `<Menu.Item>`, `<ListBox.Item>`, and `<ComboBox.Item>`. By marking the label explicitly, screen readers announce the right text and keyboard typeahead lands on the right item without any extra wiring.
+
+import { TextValueAnatomy } from './text-value-anatomy';
+
+## Anatomy
+
+<TextValueAnatomy />
+
+A `<TextValue>` is a single inline label with no parts of its own. It sits inside a selection item and marks the text that names the option.
+
+## Appearance
+
+`<TextValue>` carries no styling of its own. Its appearance comes entirely from the surrounding selection item, which keeps the look consistent across menus, selects, and lists. Pair it with [`<Description>`](/components/content/description) when the item also needs a help line.
+
+Styling is inferred automatically from the surrounding context. See [Slot-Driven Composition](/foundations/component-principles#slot-driven-composition) for how this works.
+
+## Usage
+
+`<TextValue>` exists to mark the label inside a selection item when the item's content is more than a plain string. As soon as an option contains an avatar, an icon, a badge, or any non-text node, there is no longer a single unambiguous text node the option can use as its accessible name. `<TextValue>` marks that text explicitly, so screen readers announce the right name and keyboard typeahead matches the visible label.
+
+Reach for `<TextValue>` when:
+
+- the option's children include images, icons, or layout components like `<Inline>` or `<Stack>`,
+- the option pairs a label with a `<Description>` help line, or
+- you want the label to drive typeahead independently from supporting copy.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Keep `<TextValue>` content to a short label that names the option, like
+      'Admin', 'Archived', or 'Newest first'. Screen readers announce it and
+      keyboard typeahead matches against it.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't reach for `<TextValue>` when:
+
+      - an option's children are a single string, the selection item already
+        uses that as the accessible name, or
+      - you need paragraph text or arbitrary inline strings, use
+        [`<Text>`](/components/content/text) instead.
+    </DontDescription>
+
+  </Dont>
+</GuidelineTiles>
+
+### With a description
+
+Place a `<Description>` next to the `<TextValue>` inside a selection item to add a one-line help line below the label. The label drives the option's accessible name and typeahead. The description sits below it.
+
+<ComponentDemo name="text-value-with-description" />
+
+### With a complex layout
+
+When option content includes images, icons, or layout components like `<Inline>`, keep `<TextValue>` around the label text only and let the layout wrap around it. Set the option's `textValue` prop so typeahead has a plain string to match even when the label sits behind layout.
+
+Pass `renderValue` to `<Select>` to control what the trigger shows once an option is selected. Without it the trigger renders the option's full layout, which rarely looks right inside a single-line button.
+
+<ComponentDemo name="text-value-in-menu" />
+
+### Driving typeahead
+
+Filtering inside a `<ComboBox>` follows the option's label, not its supporting copy. `<TextValue>` marks that label, so typing a fragment of a description won't match. Only the label is searched.
+
+<ComponentDemo name="text-value-typeahead" />
+
+<Callout title="Set `textValue` on each ComboBox option" type="warn">
+  A `<ComboBox>` shows the selected value inside a text input, which can only display a string. When the option's children are more than plain text, set the `textValue` prop on the option to the label string. Without it, the input falls back to stringifying the children and renders `[object Object]`. The `textValue` prop also drives keyboard typeahead.
+</Callout>
+
+### Custom styling
+
+`<TextValue>` carries no styling of its own. It picks up its look from the surrounding selection item, which keeps menus, selects, and lists feeling consistent. That works for most cases, but it also means the label can't be made larger, bolder, or visually distinct from the rest of the option content.
+
+When an option grows into a richer layout where the title should be the loudest element, set the `textValue` prop on the option instead. It accepts a plain string that becomes the option's accessible name and the source for keyboard typeahead, while leaving the children free to render any layout and typography. Pair it with `renderValue` on the parent to bring the name back into the trigger once selected.
+
+<ComponentDemo name="text-value-prop" />
+
+## Props
+
+<StorybookHintMessage component={'TextValue'} />
+
+### TextValue
+
+<AutoTypeTable path="TextValue" name="TextValueProps" />
+
+## Alternative components
+
+- [Text](/components/content/text): Use for paragraph text and body copy.
+- [Description](/components/content/description): The help-line partner inside selection items.

@@ -1,9 +1,7 @@
 import type { ReactNode } from 'react';
-import { useContext } from 'react';
-import {
-  ComboBoxStateContext,
-  Button as RACButton,
-} from 'react-aria-components';
+import { use } from 'react';
+import { Button as RACButton } from 'react-aria-components/Button';
+import { ComboBoxStateContext } from 'react-aria-components/ComboBox';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
 import { Button } from '../Button/Button';
@@ -30,7 +28,7 @@ interface MobileComboBoxProps {
 // Trigger Display (for Mobile mode)
 // ---------------
 const MobileComboBoxTrigger = ({ placeholder }: MobileComboBoxTriggerProps) => {
-  const state = useContext(ComboBoxStateContext);
+  const state = use(ComboBoxStateContext);
   const inputClassNames = useClassNames({ component: 'Input' });
   const comboBoxClassNames = useClassNames({ component: 'ComboBox' });
   const displayText = state?.selectedItem?.textValue || '';
@@ -47,15 +45,13 @@ const MobileComboBoxTrigger = ({ placeholder }: MobileComboBoxTriggerProps) => {
           inputClassNames.input
         )}
       >
-        {displayText || (
-          <span className="text-muted-foreground">{placeholder}</span>
-        )}
+        {displayText || <span className="text-secondary">{placeholder}</span>}
       </span>
       <span
         className={cn(
-          'absolute right-2 cursor-pointer',
+          'absolute cursor-pointer',
           inputClassNames.action,
-          comboBoxClassNames
+          comboBoxClassNames.icon
         )}
       >
         <ChevronsVertical size="16" />

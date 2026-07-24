@@ -29,10 +29,12 @@ mock_data:
         parking: number[];
       }>;
 key_files:
-  - utils.tsx
-  - toolbar.tsx
-  - applied-filter.tsx
-  - venues-view.tsx
+  - VenuesTable.tsx
+  - Toolbar.tsx
+  - AppliedFilter.tsx
+  - VenuesPagination.tsx
+  - FetchingIndicator.tsx
+  - csv.ts
 scaffolding_files:
   - page.tsx
 peer_deps:

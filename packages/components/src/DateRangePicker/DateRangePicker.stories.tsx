@@ -1,12 +1,18 @@
-import { CalendarDate } from '@internationalized/date';
+import {
+  CalendarDate,
+  getLocalTimeZone,
+  isSameDay,
+  today,
+} from '@internationalized/date';
 import { useState } from 'react';
 import type { DateValue } from 'react-aria-components';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
-import { expect, spyOn, waitFor } from 'storybook/test';
+import { expect, fn, spyOn, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import type { RangeValue } from '@react-types/shared';
 import { theme } from '../../../../themes/theme-rui/src/index.js';
 import { Stack } from '../Stack/Stack';
+import { firePaste } from '../firePaste';
 import { DateRangePicker } from './DateRangePicker';
 
 const smallScreenQuery = `(width < ${theme.screens?.sm})`;
@@ -246,17 +252,6 @@ Basic.test(
 Basic.test(
   'pastes dates into the start and end inputs',
   async ({ canvas, step }: any) => {
-    const firePaste = (element: Element, text: string) => {
-      const pasteEvent = new Event('paste', {
-        bubbles: true,
-        cancelable: true,
-      });
-      Object.defineProperty(pasteEvent, 'clipboardData', {
-        value: { getData: () => text },
-      });
-      element.dispatchEvent(pasteEvent);
-    };
-
     // 6 segments total: 3 for start, 3 for end (day granularity).
     const segments = canvas.getAllByRole('spinbutton');
 
@@ -322,5 +317,124 @@ Mobile.test(
     });
 
     releasePointerCaptureMock.mockRestore();
+  }
+);
+
+export const Presets = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Period',
+    onChange: fn(),
+  },
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <DateRangePicker
+        {...args}
+        presets={['today', 'next-7-days', 'this-month']}
+      />
+    </I18nProvider>
+  ),
+});
+
+Presets.test(
+  'selecting a preset applies the range and keeps the popover open',
+  async ({ args, canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button'));
+    const dialog = await canvas.findByRole('dialog');
+    const option = within(dialog).getByRole('option', {
+      name: 'Next 7 days',
+    });
+
+    await userEvent.click(option);
+    const [range] = (args.onChange as ReturnType<typeof fn>).mock.calls[0];
+    const now = today(getLocalTimeZone());
+
+    await expect(args.onChange).toHaveBeenCalledTimes(1);
+    await expect(isSameDay(range.start, now)).toBe(true);
+    await expect(isSameDay(range.end, now.add({ days: 6 }))).toBe(true);
+    // The popover must stay open so keyboard users can keep adjusting.
+    await expect(dialog).toBeVisible();
+    await expect(option).toHaveAttribute('aria-selected', 'true');
+  }
+);
+
+// Inside the small-screen picker tray, "Quick selection" swaps the grid for
+// the preset list in place. Fixed preset values (instead of the relative
+// built-ins) keep the resolved-date sublabels and the visible month stable,
+// so Chromatic can snapshot the open preset view without daily diffs.
+export const PresetsMobile = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
+  // Chromatic ignores the Storybook viewport global and captures at its
+  // 1200px default, where the small-screen UI (and this story's play)
+  // doesn't exist. Pin its capture to phone width.
+  parameters: { chromatic: { disableSnapshot: true, viewports: [320] } },
+  args: {
+    label: 'Period',
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <DateRangePicker
+        {...args}
+        defaultValue={{
+          start: new CalendarDate(2027, 3, 2),
+          end: new CalendarDate(2027, 3, 8),
+        }}
+        presets={[
+          {
+            label: 'Kickoff week',
+            value: {
+              start: new CalendarDate(2027, 3, 2),
+              end: new CalendarDate(2027, 3, 8),
+            },
+          },
+          {
+            label: 'Review week',
+            value: {
+              start: new CalendarDate(2027, 3, 16),
+              end: new CalendarDate(2027, 3, 22),
+            },
+          },
+          {
+            label: 'Release month',
+            value: {
+              start: new CalendarDate(2027, 4, 1),
+              end: new CalendarDate(2027, 4, 30),
+            },
+          },
+        ]}
+      />
+    </I18nProvider>
+  ),
+});
+
+PresetsMobile.test(
+  'switches the tray to the quick selection view',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button'));
+    const tray = await canvas.findByRole('dialog');
+    await within(tray).findByRole('grid');
+
+    await userEvent.click(
+      within(tray).getByRole('button', { name: 'Quick selection' })
+    );
+
+    // The preset list replaces the grid inside the same tray, topped by a
+    // Back row.
+    await expect(
+      within(tray).getByRole('listbox', { name: 'Quick selection' })
+    ).toBeVisible();
+    await expect(
+      within(tray).getByRole('button', { name: 'Back' })
+    ).toBeVisible();
+    await expect(within(tray).queryByRole('grid')).not.toBeInTheDocument();
+    // The preset matching the picker value shows as selected.
+    await expect(
+      within(tray).getByRole('option', { name: 'Kickoff week' })
+    ).toHaveAttribute('aria-selected', 'true');
   }
 );

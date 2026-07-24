@@ -16,6 +16,8 @@ import {
   WithActiveBranch,
 } from './Sidebar.stories';
 
+const smallScreenQuery = `(width < ${theme.screens!.sm})`;
+
 // Testing Library has no API for querying ancestor elements.
 // eslint-disable-next-line testing-library/no-node-access
 const closest = (el: HTMLElement, sel: string) => el.closest(sel);
@@ -372,7 +374,7 @@ test('controlled mode re-opens via onOpenChange', async () => {
 });
 
 test('mobile renders sheet overlay', () => {
-  window.matchMedia = mockMatchMedia(['(width < 640px)']);
+  window.matchMedia = mockMatchMedia([smallScreenQuery]);
   ensureOverlayContainer();
 
   render(<Basic.Component />);
@@ -385,7 +387,7 @@ test('mobile renders sheet overlay', () => {
 
 test('mobile toggle opens sheet, close button closes it', async () => {
   const mobileUser = userEvent.setup();
-  window.matchMedia = mockMatchMedia(['(width < 640px)']);
+  window.matchMedia = mockMatchMedia([smallScreenQuery]);
   ensureOverlayContainer();
 
   render(<Basic.Component />);
@@ -416,7 +418,7 @@ test('mobile toggle opens sheet, close button closes it', async () => {
 
 test('mobile closes sheet when leaf nav item is clicked', async () => {
   const mobileUser = userEvent.setup();
-  window.matchMedia = mockMatchMedia(['(width < 640px)']);
+  window.matchMedia = mockMatchMedia([smallScreenQuery]);
   ensureOverlayContainer();
 
   render(<Basic.Component />);
@@ -439,7 +441,7 @@ test('mobile closes sheet when leaf nav item is clicked', async () => {
 
 test('mobile closes sheet when overlay backdrop is clicked', async () => {
   const mobileUser = userEvent.setup();
-  window.matchMedia = mockMatchMedia(['(width < 640px)']);
+  window.matchMedia = mockMatchMedia([smallScreenQuery]);
   ensureOverlayContainer();
 
   render(<Basic.Component />);
@@ -462,7 +464,7 @@ test('mobile closes sheet when overlay backdrop is clicked', async () => {
 
 test('mobile keeps sheet open when branch item is clicked', async () => {
   const mobileUser = userEvent.setup();
-  window.matchMedia = mockMatchMedia(['(width < 640px)']);
+  window.matchMedia = mockMatchMedia([smallScreenQuery]);
   ensureOverlayContainer();
 
   render(<Basic.Component />);
@@ -1094,5 +1096,136 @@ describe('Sidebar.Nav `current` integration', () => {
 
     expect(linkByText('Overview')).toHaveAttribute('aria-current', 'page');
     expect(linkByText('Analytics')).not.toHaveAttribute('aria-current');
+  });
+});
+
+describe('link activation', () => {
+  test('an onPress-only item activates with Enter and Space', async () => {
+    const handlePress = vi.fn();
+    render(
+      <RouterProvider navigate={() => {}}>
+        <MarigoldProvider theme={theme}>
+          <Sidebar.Provider>
+            <Sidebar>
+              <Sidebar.Nav>
+                <Sidebar.Item href="/home">Home</Sidebar.Item>
+                <Sidebar.Item onPress={handlePress}>Log out</Sidebar.Item>
+              </Sidebar.Nav>
+            </Sidebar>
+          </Sidebar.Provider>
+        </MarigoldProvider>
+      </RouterProvider>
+    );
+
+    // No href → rendered as <a role="button">, which gets no native
+    // keyboard activation from the browser.
+    const item = screen.getByRole('button', { name: 'Log out' });
+    item.focus();
+
+    await user.keyboard('{Enter}');
+
+    expect(handlePress).toHaveBeenCalledTimes(1);
+
+    await user.keyboard(' ');
+
+    expect(handlePress).toHaveBeenCalledTimes(2);
+  });
+
+  test('a modified click leaves navigation to the browser and skips side effects', async () => {
+    const navigate = vi.fn();
+    render(
+      <RouterProvider navigate={navigate}>
+        <MarigoldProvider theme={theme}>
+          <Sidebar.Provider>
+            <Sidebar>
+              <Sidebar.Nav>
+                <Sidebar.Item id="settings" textValue="Settings">
+                  Settings
+                  <Sidebar.Item href="/general">General</Sidebar.Item>
+                </Sidebar.Item>
+              </Sidebar.Nav>
+            </Sidebar>
+          </Sidebar.Provider>
+        </MarigoldProvider>
+      </RouterProvider>
+    );
+
+    // The branch trigger wraps its text in a span, so query by role (the
+    // root panel is active, not inert).
+    const trigger = screen.getByRole('link', { name: 'Settings' });
+    // Observe (last in the bubble chain) whether anything upstream prevented
+    // the browser's default new-tab open; then prevent it ourselves so jsdom
+    // does not attempt a real navigation.
+    let prevented: boolean | null = null;
+    const observe = (e: MouseEvent) => {
+      prevented = e.defaultPrevented;
+      e.preventDefault();
+    };
+    document.addEventListener('click', observe);
+
+    await user.keyboard('{Control>}');
+    await user.click(trigger);
+    await user.keyboard('{/Control}');
+    document.removeEventListener('click', observe);
+
+    // The browser owns the click: no client routing, no drill-in.
+    expect(prevented).toBe(false);
+    expect(navigate).not.toHaveBeenCalled();
+    const rootPanel = closest(trigger, '[data-position]');
+    expect(rootPanel).toHaveAttribute('data-position', 'active');
+  });
+});
+
+describe('roving tab stop follows the route', () => {
+  const Nav = ({ current }: { current: string }) => (
+    <RouterProvider navigate={() => {}}>
+      <MarigoldProvider theme={theme}>
+        <Sidebar.Provider>
+          <Sidebar>
+            <Sidebar.Nav current={current}>
+              <Sidebar.Item href="/a">A</Sidebar.Item>
+              <Sidebar.Item href="/b">B</Sidebar.Item>
+              <Sidebar.Item href="/c">C</Sidebar.Item>
+            </Sidebar.Nav>
+          </Sidebar>
+        </Sidebar.Provider>
+      </MarigoldProvider>
+    </RouterProvider>
+  );
+
+  test('an external route change re-syncs the tab stop to the current page', async () => {
+    const { rerender } = render(<Nav current="/a" />);
+    // The current page is the panel's single tab stop.
+    expect(screen.getByRole('link', { name: 'A' })).toHaveAttribute(
+      'tabindex',
+      '0'
+    );
+
+    await user.tab();
+    await user.keyboard('{ArrowDown}{ArrowDown}');
+
+    // The user has roved focus down; that item takes over the tab stop.
+    expect(screen.getByRole('link', { name: 'C' })).toHaveFocus();
+    expect(screen.getByRole('link', { name: 'C' })).toHaveAttribute(
+      'tabindex',
+      '0'
+    );
+    expect(screen.getByRole('link', { name: 'A' })).toHaveAttribute(
+      'tabindex',
+      '-1'
+    );
+
+    rerender(<Nav current="/b" />);
+
+    // Navigating elsewhere moves the tab stop to the new current page, not the
+    // stale roved item.
+    expect(screen.getByRole('link', { name: 'B' })).toHaveAttribute(
+      'tabindex',
+      '0'
+    );
+    expect(screen.getByRole('link', { name: 'C' })).toHaveAttribute(
+      'tabindex',
+      '-1'
+    );
   });
 });

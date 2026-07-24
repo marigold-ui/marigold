@@ -1,7 +1,8 @@
-import { ReactNode, forwardRef } from 'react';
+import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { SwitchButton, SwitchField } from 'react-aria-components';
+import { SwitchButton, SwitchField } from 'react-aria-components/Switch';
 import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
+import { BooleanField } from '../FieldBase/BooleanField';
 import { Label } from '../Label/Label';
 
 type RemovedProps =
@@ -11,6 +12,7 @@ type RemovedProps =
   | 'isDisabled'
   | 'isReadOnly'
   | 'isSelected'
+  | 'isInvalid'
   | 'slot';
 
 export interface SwitchProps extends Omit<RAC.SwitchFieldProps, RemovedProps> {
@@ -21,6 +23,23 @@ export interface SwitchProps extends Omit<RAC.SwitchFieldProps, RemovedProps> {
    * Set the label of the switch.
    */
   label?: ReactNode;
+
+  /**
+   * A helpful text.
+   */
+  description?: ReactNode;
+
+  /**
+   * If `true`, the switch is considered invalid and, if set, the `errorMessage`
+   * is shown instead of the `description`.
+   * @default false
+   */
+  error?: RAC.SwitchFieldProps['isInvalid'];
+
+  /**
+   * An error message shown when `error` is set.
+   */
+  errorMessage?: ReactNode;
 
   /**
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
@@ -48,55 +67,61 @@ export interface SwitchProps extends Omit<RAC.SwitchFieldProps, RemovedProps> {
    * @default false
    */
   selected?: RAC.SwitchFieldProps['isSelected'];
+  ref?: Ref<HTMLLabelElement>;
 }
 
-const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
-  (
-    {
-      variant,
-      size,
-      width = 'full',
-      label,
-      selected,
-      disabled,
-      readOnly,
-      ...rest
-    },
-    ref
-  ) => {
-    const classNames = useClassNames({ component: 'Switch', size, variant });
-    const props = {
-      isDisabled: disabled,
-      isReadOnly: readOnly,
-      isSelected: selected,
-      ...rest,
-    } satisfies RAC.SwitchFieldProps;
-    return (
-      // Width is split across two levels: the outer SwitchField sizes itself to
-      // the `width` prop via the `--width` CSS variable, and the inner
-      // SwitchButton fills that width with `w-full`.
-      <SwitchField
-        {...props}
-        className="w-(--width)"
+const _Switch = ({
+  variant,
+  size,
+  width = 'full',
+  label,
+  description,
+  error,
+  errorMessage,
+  selected,
+  disabled,
+  readOnly,
+  ref,
+  ...rest
+}: SwitchProps) => {
+  const classNames = useClassNames({ component: 'Switch', size, variant });
+  const props = {
+    isDisabled: disabled,
+    isReadOnly: readOnly,
+    isSelected: selected,
+    ...rest,
+  } satisfies RAC.SwitchFieldProps;
+  return (
+    // The `SwitchButton` (the rendered `label`) carries the width, matching the
+    // standalone layout.
+    <BooleanField
+      as={SwitchField}
+      description={description}
+      errorMessage={errorMessage}
+      error={error}
+      variant={variant}
+      size={size}
+      {...props}
+    >
+      <SwitchButton
+        ref={ref}
+        className={cn('group/switch w-(--width)', classNames.container)}
         style={createWidthVar('width', width)}
       >
-        <SwitchButton
-          ref={ref}
-          className={cn(
-            'group/switch flex w-full items-center gap-[1ch]',
-            classNames.container
-          )}
-        >
-          {label && <Label elementType="span">{label}</Label>}
-          <div className="relative">
-            <div className={classNames.track}>
-              <div className={classNames.thumb} />
-            </div>
+        {variant === 'settings' && label && (
+          <Label elementType="span">{label}</Label>
+        )}
+        <div className="relative">
+          <div className={classNames.track}>
+            <div className={classNames.thumb} />
           </div>
-        </SwitchButton>
-      </SwitchField>
-    );
-  }
-);
+        </div>
+        {variant !== 'settings' && label && (
+          <Label elementType="span">{label}</Label>
+        )}
+      </SwitchButton>
+    </BooleanField>
+  );
+};
 
 export { _Switch as Switch };

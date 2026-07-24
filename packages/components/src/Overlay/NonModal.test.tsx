@@ -1,12 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import type { UserEvent } from '@testing-library/user-event';
 import userEvent from '@testing-library/user-event';
-import {
-  Button,
-  Dialog,
-  DialogTrigger,
-  Pressable,
-} from 'react-aria-components';
+import { Button } from 'react-aria-components/Button';
+import { Dialog, DialogTrigger } from 'react-aria-components/Dialog';
+import { Pressable } from 'react-aria-components/Pressable';
 import { vi } from 'vitest';
 import { OverlayContainerProvider } from '../Provider/OverlayContainerProvider';
 import type { NonModalProps } from './NonModal';

@@ -1,11 +1,11 @@
-import { ReactNode, createContext, useContext } from 'react';
+import { ReactNode, createContext, use } from 'react';
 import { defaultTheme } from '../defaultTheme';
 import { Theme } from '../types/theme';
 
 const InternalContext = createContext<Theme>(defaultTheme);
 
 export const useTheme = () => {
-  const theme = useContext(InternalContext);
+  const theme = use(InternalContext);
 
   return theme;
 };
@@ -31,8 +31,8 @@ export function ThemeProvider<T extends Theme>({
   className,
 }: ThemeProviderProps<T>) {
   return (
-    <InternalContext.Provider value={theme}>
+    <InternalContext value={theme}>
       <div className={className}>{children}</div>
-    </InternalContext.Provider>
+    </InternalContext>
   );
 }

@@ -3,55 +3,55 @@ import { UserRoundPlus } from 'lucide-react';
 import {
   Badge,
   Button,
-  Headline,
-  Inline,
-  Stack,
+  Description,
+  Panel,
   Table,
   Text,
+  Title,
 } from '@marigold/components';
 
 export const UserTable = () => (
-  <Stack space={6}>
-    <Inline space={4} alignY="center" alignX="between">
-      <Stack>
-        <Headline level="2">Users</Headline>
-        <Text variant="muted" weight="light">
-          A list of all the users in your account including their name, title,
-          email and role.
-        </Text>
-      </Stack>
-      <Button variant="primary">
-        <UserRoundPlus /> Add user
+  <Panel>
+    <Panel.Header>
+      <Title>Users</Title>
+      <Description>
+        A list of all the users in your account including their name, title,
+        email and role.
+      </Description>
+      <Button size="icon" aria-label="Add user">
+        <UserRoundPlus />
       </Button>
-    </Inline>
-    <Table
-      selectionMode="multiple"
-      defaultSelectedKeys={[people[0].id, people[1].id]}
-    >
-      <Table.Header>
-        <Table.Column rowHeader>Name</Table.Column>
-        <Table.Column>Email</Table.Column>
-        <Table.Column>Status</Table.Column>
-        <Table.Column>Role</Table.Column>
-        <Table.Column alignX="right">&nbsp;</Table.Column>
-      </Table.Header>
-      <Table.Body>
-        {people.map(person => (
-          <Table.Row key={person.id}>
-            <Table.Cell>
-              <Text weight="semibold">{person.name}</Text>
-            </Table.Cell>
-            <Table.Cell>{person.email}</Table.Cell>
-            <Table.Cell>
-              <Badge variant="success">active</Badge>
-            </Table.Cell>
-            <Table.Cell>{person.position}</Table.Cell>
-            <Table.Cell>
-              <Button>Edit</Button>
-            </Table.Cell>
-          </Table.Row>
-        ))}
-      </Table.Body>
-    </Table>
-  </Stack>
+    </Panel.Header>
+    <Panel.Content bleed>
+      <Table
+        selectionMode="multiple"
+        defaultSelectedKeys={[people[0].id, people[1].id]}
+      >
+        <Table.Header>
+          <Table.Column rowHeader>Name</Table.Column>
+          <Table.Column>Email</Table.Column>
+          <Table.Column>Status</Table.Column>
+          <Table.Column>Role</Table.Column>
+          <Table.Column alignX="right">&nbsp;</Table.Column>
+        </Table.Header>
+        <Table.Body>
+          {people.map(person => (
+            <Table.Row key={person.id}>
+              <Table.Cell>
+                <Text weight="semibold">{person.name}</Text>
+              </Table.Cell>
+              <Table.Cell>{person.email}</Table.Cell>
+              <Table.Cell>
+                <Badge variant="success">active</Badge>
+              </Table.Cell>
+              <Table.Cell>{person.position}</Table.Cell>
+              <Table.Cell>
+                <Button>Edit</Button>
+              </Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    </Panel.Content>
+  </Panel>
 );

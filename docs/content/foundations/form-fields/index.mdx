@@ -3,34 +3,19 @@ title: Form Fields
 description: Comprehensive guide for working with form fields
 ---
 
-Form components are individual elements that make up a form, such as text fields, checkboxes, radio buttons, select fields, text areas and buttons. They allow user input, selection and actions.
+Form fields are the input controls that collect data in a form, such as text fields, checkboxes, radio buttons, select fields, and text areas. Buttons are part of a form too, but they trigger actions rather than capture input. See the [Forms](/patterns/user-input/forms) pattern for guidance on submit and other actions.
 
-Marigold has a set of form components that you can use to build your form.
+Browse the full set of form components in the sidebar under **Components → Form**.
 
-- [Autocomplete](/components/form/autocomplete)
-- [Button](/components/actions/button)
-- [Calendar](/components/form/calendar)
-- [Checkbox](/components/form/checkbox)
-- [ComboBox](/components/form/combobox)
-- [DateField](/components/form/datefield)
-- [DatePicker](/components/form/datepicker)
-- [Multiselect](/components/form/multiselect)
-- [NumberField](/components/form/number-field)
-- [Radio](/components/form/radio)
-- [SearchField](/components/form/search-field)
-- [Select](/components/form/select)
-- [Slider](/components/form/slider)
-- [Switch](/components/form/switch)
-- [TextArea](/components/form/text-area)
-- [TextField](/components/form/text-field)
+import { FormFieldAnatomy } from './form-field-anatomy';
 
 ## Anatomy
 
-An accessible form field includes a clear label associated with its corresponding form control (`<input>`, `<select>`, ...). Additional guidance is provided by a help text, which can give additional context or instructions or display a descriptive messages.
+<FormFieldAnatomy />
 
-<ImageZoom src="/field.png" alt="Anatomy of a field" width={300} height={150} />
+An accessible form field includes a clear label associated with its corresponding form control (`<input>`, `<select>`, ...). Additional guidance is provided by the help text, which can give extra context or instructions.
 
-Marigold's form components allow to set these properties like shown below. All form components allow to set a `label`, `description` and `errorMessages` besides some additional control-specific props.
+Marigold's form components let you set these through the `label`, `description` (which renders as the help text), and `errorMessages` props, alongside any control-specific props. The help text slot doubles as the error message slot when validation fails.
 
 ## Usage
 
@@ -94,7 +79,7 @@ Help Text should be used to provide additional clarification or instructions whe
 
 The width of form fields can be adjusted based on the context and design requirements. Marigold's form components support a `width` prop that allows you to set the width of the field using keywords (`fit`, `full`, `auto`), scales (`32`, `64`, `96`), or fraction values (`1/2`, `2/3`, etc.).
 
-Scale values may be passed either as a number or as the equivalent string — both `width={32}` and `width="32"` are valid and produce the same result. The same applies to spacing-scale props on layout components (`space`, `spaceX`, `spaceY`, `pl`, `pr`, `pt`, `pb`).
+Scale values may be passed either as a number or as the equivalent string. Both `width={32}` and `width="32"` are valid and produce the same result. The same applies to spacing-scale props on layout components (`space`, `spaceX`, `spaceY`, `pl`, `pr`, `pt`, `pb`).
 
 Numeric values map to the spacing scale, **not** pixels: `width={64}` resolves to `calc(var(--spacing) * 64)`, roughly `16rem` (256px), not 64px. The `width` prop sizes the field element directly, so no wrapper element is needed.
 
@@ -111,7 +96,7 @@ For fraction values, the field will take up the specified fraction of the width 
 
 ### Field States
 
-Form components often exist in various states to indicate how they should behave or be interacted with. These states provide important context for users and ensure proper handling of inputs in different senarios. Below are the common field states used in forms.
+Form components often exist in various states to indicate how they should behave or be interacted with. These states provide important context for users and ensure proper handling of inputs in different scenarios. Below are the common field states used in forms.
 
 #### Disabled State
 
@@ -137,89 +122,15 @@ Read-only fields display data that users can view but not modify. They are commo
 
 <ComponentDemo file="./form-fields-readonly-state.demo.tsx" />
 
-### Validation
-
-Form validation is a crucial aspect of web development, ensuring that user input meets the required criteria before it is processed. Validation helps maintain data accuracy, consistency, and security by guiding users to correct any errors in their inputs.
-
-HTML forms enable developers to collect and submit user input on web pages, and they include built-in validation mechanisms through attributes like `required` and input types such as `email` or `number`. These attributes allow browsers to provide immediate feedback when inputs are invalid, improving the user experience.
-
-Marigold's components seamlessly integrate with HTML forms, offering a developer-friendly solution for input data validation. It supports native attributes like `required` and validation based on input types. Additionally, Marigold's form elements allow custom validation functions to extend the browser's validation capabilities.
-
-#### Built-in / native form validation
-
-The most straightforward way to validate user input is to use the built-in [constraint validation](https://developer.mozilla.org/en-US/docs/Web/HTML/Constraint_validation). Marigold's form components work seamlessly with this API, allowing you to set constraints for each field. The browser will check these constraints on blur (user leaves the field) or when the form is submitted.
-
-Marigold's form components utilize the same API as native HTML forms. Yet, the browser won't display error messages; instead, they will be styled to seamlessly blend with the overall design.
-
-Here is an email subscription form. If you submit it without entering an email address or if the entered email address is invalid, an error will be displayed:
-
-<ComponentDemo file="./validation-base.demo.tsx" />
-
-#### Custom message
-
-While browser-provided error messages are helpful, they might not be very descriptive. In such instances, you have the flexibility to override them by using a function with the `errorMessages` prop of the field. This allows you to display custom error messages tailored to better describe the occured error.
-
-The example below customizes the default error messages for an unfilled required field. It's important to note that you only need to override the messages you want to; any unmodified aspects will fallback to the browser-provided messages.
-
-<ComponentDemo file="./validation-custom-message.demo.tsx" />
-
-#### Custom validation
-
-When the native validation options are insufficient or not ideal, it's also possible to entirely override them and implement a custom validation method by using the `validate` prop of a field. Ensure that the prop is assigned a function that returns one or more error messages. If there are multiple error messages, they should be provided as a string array.
-
-The below example demonstrates a more sophisticated method for validating email addresses. The validation will always display the custom error messages. There is no separate message if the field is left empty.
-
-<ComponentDemo file="./validation-custom-validation.demo.tsx" />
-
-#### Real-time Validation
-
-By default, validation errors are shown to the user after the value is confirmed, for example, when they click away (on blur) or upon submitting the form. This prevents the user from being confused by irrelevant errors while they are still in the process of entering a value.
-
-In specific situations though, choosing real-time validation proves beneficial, for example when enforcing certain password requirements. To enable real-time validation, [control the field](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components) and configure the `error` and `errorMessages` props accordingly.
-
-Here's an example where real-time validation is employed to check password requirements, immediately informing the user when a criteria is met.
-
-<ComponentDemo file="./validation-realtime.demo.tsx" />
-
-#### Handling Server Errors
-
-Server-side validation is essential alongside client-side validation to ensure robust and secure applications. While client-side validation offers immediate feedback and a smoother user experience, server-side validation is crucial for maintaining data integrity and security.
-
-Marigold supports displaying server validation errors via the `validationErrors` prop on the `<Form>` component. The errors should be an object, where each field's `name`is mapped to a string or array of strings representing error messages. The errors are immediately shown to the user upon setting the `validationErrors` and are cleared when the user modifies the field's value.
-
-The subscription example now involves sending and receiving the provided email to and from the server. While most email subscriptions will be successful, attempting to use `support@reservix.de` serves as a negative example, triggering an error response from the server.
-
-<ComponentDemo file="./validation-server-error.demo.tsx" />
-
 ## Related
 
 <TeaserList
   items={[
     {
-      title: 'Form implementation guide',
-      href: '../../patterns/user-input/form-implementation',
-      caption: 'Learn how to build forms.',
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width={24}
-          height={24}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
-          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
-        </svg>
-      ),
-    },
-    {
       title: 'Forms',
       href: '../../patterns/user-input/forms',
-      caption: 'Here you can find a comprehensive guide for structuring forms.',
+      caption:
+        'A comprehensive guide for structuring, validating, and submitting forms.',
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"

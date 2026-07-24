@@ -1,5 +1,361 @@
 # @marigold/system
 
+## 18.0.0-beta.4
+
+### Major Changes
+
+- c20abe3: feat(DST-1282): scroll the Tabs row horizontally when it overflows
+
+  When more tabs are rendered than fit the available width, `Tabs.List` now scrolls
+  horizontally instead of wrapping onto multiple lines or pushing the page wide. Tabs
+  keep their natural width (`shrink-0`) and snap gently into place (`proximity`) as you
+  scroll, with the adjacent tab kept peeking past the edge so the scrollability stays
+  discoverable. A vertical mouse wheel scrolls the row horizontally (pointer users
+  without a trackpad), without hijacking normal page scroll. Horizontal overscroll is
+  contained so it does not trigger browser back/forward gestures, and scrolling is
+  smooth for users who allow motion. On browsers that support scroll-driven animations
+  the overflowing edges fade out (`ui-scroll-mask-x`); elsewhere it falls back to a
+  plain scroll container. When all tabs fit, nothing changes visually.
+
+  The sliding selection indicator stays correct while react-aria scrolls an off-screen
+  tab into view (the scroll container is a `layoutScroll` motion element). No runtime
+  API change.
+
+  **Breaking change (`@marigold/system`):** the `Tabs` theme `Record` gains a new
+  required `tabsListScroll` slot. It is deliberately required so a theme cannot ship
+  `tabsList` (whose `w-max` triggers the overflow) without the scroll container that
+  makes it behave. Custom themes that define a `Tabs` block must add a `tabsListScroll`
+  entry to type-check.
+
+- 8418ee7: refactor(DST-1548): rename `Card.Body` to `Card.Content`
+
+  Aligns the Card body sub-component with `Panel.Content` and `Page.Content` so all three container primitives expose the main body region under one name.
+
+  **Breaking change:** `Card.Body` (`CardBody`) is removed. Rename usages to `Card.Content`:
+
+  ```diff
+  - <Card.Body>...</Card.Body>
+  + <Card.Content>...</Card.Content>
+  ```
+
+  The `bleed` prop and padding behavior are unchanged. The internal `data-card-body` attribute has been removed to match `Panel.Content`.
+
+  The `Card` theme slot key is renamed from `body` to `content` in the `@marigold/system` `Theme` type and in `@marigold/theme-rui`. Theme authors overriding this slot must rename their key accordingly.
+
+- 106821a: feat(DST-990): enrich `<Menu>` with selection visuals, keyboard shortcuts, and dividers
+
+  `<Menu>` gains richer building blocks for advanced menus:
+
+  - **Selected-item visuals.** In `selectionMode="single"` or `"multiple"`, items show a leading checkmark and a highlighted row, aligned like `<ListBox>`. Command menus (no `selectionMode`) render exactly as before.
+  - **Keyboard-shortcut hints** via a new shared `<Keyboard>` primitive (a sibling to `<TextValue>` and `<Description>`). It renders a `<kbd>` key-cap on its own and adapts to its container, so inside a `Menu.Item` it becomes a muted, right-aligned hint wired to react-aria's `aria-describedby`.
+  - **Dividers.** Drop the shared `<Divider>` between `<Menu.Item>`s to separate groups with a `role="separator"` line.
+
+  **Breaking (`@marigold/system`):** the `Menu` record in the `Theme` type now requires a `keyboard` key. Custom themes implementing `Menu` must add it to keep compiling. All `@marigold/components` additions are backward compatible.
+
+### Minor Changes
+
+- d72b30a: feat(DST-765): add `<SegmentedControl>` component
+
+  Adds a new `<SegmentedControl>` for compact, single-select view switching and quick filters. It is built on react-aria's `RadioGroup` / `RadioField` / `RadioButton` with a `SelectionIndicator`, so it is a real form field: `value` / `defaultValue` / `onChange`, the `name` attribute (submits like a radio group), `required`, `error` + `errorMessage`, `description`, `readOnly`, and validation all work exactly like the other Marigold form components (label/description/error route through `<FieldBase>`). The selected segment is marked by an animated indicator that slides between options.
+
+  Options are declared via the compound API `SegmentedControl.Option` (also exported as `SegmentedControlOption`), each with a `value`:
+
+  ```jsx
+  <SegmentedControl label="View" defaultValue="list">
+    <SegmentedControl.Option value="list">List</SegmentedControl.Option>
+    <SegmentedControl.Option value="grid">Grid</SegmentedControl.Option>
+  </SegmentedControl>
+  ```
+
+  Two variants — `default` (a `bg-control` track with a raised `ui-surface` thumb, mirroring the `Switch`) and `ghost` (track-less, with a translucent ghost-Button-style indicator for dense toolbars) — at a single `default` size (matching the `h-control` Input height). Hover and focus reuse the shared `ui-*` utilities (`ui-state-focus`, `ui-state-hover-ghost`); the indicator slides between options (`ease-out-quint`) and respects `prefers-reduced-motion`.
+
+  To make segments divide the available width equally, use the standard `width` prop — e.g. `width="full"`. There is no separate `fullWidth` prop.
+
+  When the options exceed the available width the control scrolls horizontally instead of compressing the segments, keeping the selected option scrolled into view (reduced-motion aware). A scroll-driven edge fade signals there is more to scroll where supported, falling back to a native scrollbar otherwise.
+
+  `ToggleButtonGroup` now logs a dev-only warning when used with `selectionMode`, steering single-select use cases towards `SegmentedControl` (it remains for independent on/off actions in toolbars).
+
+  [DST-765](https://reservix.atlassian.net/browse/DST-765)
+
+- 9b613e6: feat(DST-1369): adopt the slot-configuration pattern in `Dialog`, `Drawer`, and `Tray`
+
+  The three overlay components now follow the same slot-configuration pattern as `Panel` and `Card`. Each publishes the slot contexts at its root, so the title, description, and action primitives pick up the overlay's theme classes wherever they are dropped:
+
+  - `Dialog.Title` / `Drawer.Title` / `Tray.Title` are thin wrappers over `<Title slot="title">`.
+  - New `Dialog.Description` / `Drawer.Description` / `Tray.Description` wrap `<Description slot="description">`.
+  - New `Dialog.Header` / `Drawer.Header` / `Tray.Header` are **optional** layout wrappers that group a title and description. A bare `<Title slot="title">` (or `<*.Title>`) without a header is a first-class, accessible authoring form — `aria-labelledby` resolves to it automatically.
+
+  The compound-component API is unchanged. The `<header>` element that previously wrapped the title is gone; the title now carries the header chrome directly, with no change to the rendered visuals.
+
+- 0637671: Extract `resolveInsetAxes` helper to centralise inset-padding axis resolution.
+
+  The `p` → `px`/`py` resolution logic (branching on whether the value is a numeric scale or a named token) was copy-pasted across `Page`, `Panel`, and `Card`. This duplication caused the `<Card p={number}>` silent bug (resolving to a non-existent `var(--spacing-4-x)`), the same class of bug that had already been fixed independently in `Panel` (DST-1501) and `Page` (DST-1360).
+
+  - Adds `resolveInsetAxes({ p, px, py, defaultInset })` to `@marigold/system` alongside `createSpacingVar`.
+  - Adopts the helper in `Card`, `Panel`, and `Page`, fixing the live `<Card p={number}>` bug as part of the refactor.
+  - Fixes the same numeric-`p` bug in `SelectList` (inline, since its conditional-axis pattern differs).
+
+- dd044be: Add relative date presets to `Calendar`, `RangeCalendar`, `DatePicker`, and `DateRangePicker` via a new `presets` prop. On desktop the presets render as a quick-selection list beside the calendar. On small screens the grid renders first with a "Quick selection" row: inline calendars open the preset list in a bottom sheet, while the pickers switch their existing sheet to the list in place. Ships built-in localized presets (`today`, `yesterday`, `tomorrow`, `this-week`, `next-7-days`, `next-30-days`, `last-7-days`, `last-30-days`, `this-month`, `this-quarter`), supports custom presets with value resolvers, and exports `useDatePresets`/`useDateRangePresets` for userland compositions.
+- 40b006e: fix(DST-1630): match the Panel collapsible header caret to the Accordion chevron. It rendered at the default 24px in the foreground color, while Accordion uses a 16px `text-secondary` caret, so the two collapsible patterns looked inconsistent. The Panel caret now renders at 16px and its color is driven by a new themeable `collapsibleIcon` slot (defaulting to `text-secondary` in the RUI theme).
+- 766a46b: feat(DST-1370): migrate `ContextualHelp`, `SectionMessage`, and `EmptyState` to the slot-configuration pattern
+
+  - `SectionMessage.Title` now renders a semantic heading (`<h3>` by default) instead of a `<div>`, fixing an a11y gap. The level is configurable via the new `headingLevel` prop on `<SectionMessage>`. When a title is present, the container becomes a `role="group"` labelled by the title via `aria-labelledby`.
+  - New `<SectionMessage.Description>` sub-component for a short summary between title and content.
+  - `ContextualHelp.Title` now uses `slot="title"`, so the popover dialog gets a proper `aria-labelledby`. The title tag changes from `<h3>` to `<h2>` (same as `Dialog.Title`); visual appearance is unchanged.
+  - New `<ContextualHelp.Description>` sub-component.
+  - The `Theme` type now requires a `description` key on the `SectionMessage` and `ContextualHelp` style records; themes defining styles for these components must add it.
+  - `EmptyState`'s `title` now renders as a semantic heading (`<h3>` by default, configurable via the new `headingLevel` prop), and its `description` renders through the `<Description>` primitive (same DOM as before, now sitting 4px below the title to match the description rhythm of the other components). The flat-props API is unchanged.
+  - All three roots now also publish a `ButtonContext`, completing the slot-configuration set. It scopes action buttons (e.g. those placed in `SectionMessage.Content`, the `EmptyState` `action`, or `ContextualHelp` content) to a clean baseline so they never inherit a surrounding container's button cascade (such as a `Panel.Header`'s ghost/small look). No variant or positioning is imposed, so existing usage renders unchanged.
+
+### Patch Changes
+
+- d72f464: feat(DST-1360): introduce `AppShell`, `Page`, `Page.Header`, and `Page.Content`; remove `AppLayout`
+
+  Renames `AppLayout` to `AppShell` and removes its three pass-through subcomponents (`AppLayout.Sidebar`, `AppLayout.Header`, `AppLayout.Main`) — `<Sidebar>`, `<TopNavigation>`, and `<Page>` now sit directly inside `<AppShell>` (each owns its grid area, so child order does not matter). `AppShell` absorbs `Sidebar.Provider` via the `defaultSidebarOpen` prop; render your own `<Sidebar.Provider>` around `<AppShell>` for controlled state, `variant`, or `size` and it is detected and used instead of the internal one.
+
+  Adds `<Page>` — the `<main>` landmark with page padding (`p`, or `px`/`py`; default `square-relaxed`) and vertical rhythm between sections (`space`; default `group`). The page's `<main>` is named by its `<h1>` via `aria-labelledby`; when there is no `<Title>`, pass `aria-label` (or your own `aria-labelledby`) instead. With none of these, `<Page>` warns in development so the landmark is never silently unnamed. Like `<Panel>`, `<Page>` forwards standard HTML attributes (`id`, `data-*`, event handlers) and a `ref` to its `<main>`.
+
+  Adds `<Page.Header>` — a slot-based title/description/actions header that mirrors `Panel.Header` — and an optional `<Page.Content>` (with its own `space`) for when the rhythm between sections should differ from the header-to-content gap. The page heading outline now falls out of the defaults: `<Title>` in `Page.Header` is an `h1`, `<Title>` in `Panel.Header` an `h2`, `<Title>` in `Panel.Collapsible` an `h3` (override per `<Page>` with `headingLevel`).
+
+  **Migration:**
+
+  ```diff
+  -<Sidebar.Provider defaultOpen>
+  -  <AppLayout>
+  -    <AppLayout.Sidebar>…</AppLayout.Sidebar>
+  -    <AppLayout.Header>…</AppLayout.Header>
+  -    <AppLayout.Main>{content}</AppLayout.Main>
+  -  </AppLayout>
+  -</Sidebar.Provider>
+  +<AppShell defaultSidebarOpen>
+  +  <Sidebar>…</Sidebar>
+  +  <TopNavigation>…</TopNavigation>
+  +  <Page>
+  +    <Page.Header>
+  +      <Title>Billing</Title>
+  +      <Description>Manage your plan and invoices.</Description>
+  +      <Button variant="primary">Upgrade plan</Button>
+  +    </Page.Header>
+  +    {content}
+  +  </Page>
+  +</AppShell>
+  ```
+
+- 586ffd1: refactor(DST-1546): replace the bespoke TagGroup "Remove all" wrapper with a plain `<Button>` via a `ButtonContext` cascade
+
+  `TagGroup` now provides a `link`/`small` `ButtonContext` around its internal
+  `RemoveAll` render, so the "Remove all" action is a bare Marigold `<Button>`
+  instead of the raw react-aria `Button` with hand-rolled link styling. This
+  mirrors the cascade pattern already used by `ActionBar` and `Panel.Header`.
+
+  The change is internal-only. `TagGroupRemoveAll` is not part of the public API
+  (`TagGroup` renders it itself), the authoring API (`removeAll` / `onRemove`) is
+  unchanged, and there is no behavioral or accessibility change.
+
+  The redundant `removeAll` theme style is removed from `Tag.styles.ts` (the
+  `link` variant at `size="small"` reproduces it), and the now-unused `removeAll`
+  key is dropped from the `Tag` theme type.
+
+## 18.0.0-beta.3
+
+### Minor Changes
+
+- 141a2cc: feat(DST-1373): adopt the slot-configuration pattern in `Card`
+
+  `Card.Header` is now a slot provider: drop a `<Title>` and an optional `<Description>` directly inside it and the header wires up the heading level, id, accessible name, and theme classes automatically. A bare `<Title>` placed directly inside `<Card>` (no `Card.Header` wrapper) is also picked up by the root, so title-only cards can skip the header and still get the right padding and `aria-labelledby` wiring. `<Card>` itself now renders an `<article>` landmark and is automatically labelled by its `<Title>` via `aria-labelledby`, or by an explicit `aria-label`. A new `headingLevel` prop (default `3`) controls the underlying heading tag for the document outline.
+
+  The theme `Card` slot map gains `title` and `description` entries — the typography previously carried on the `header` slot has moved to `title`. Variant text color now flows through a new `--card-accent` CSS custom property, so `master` and `admin` cards pick up the matching accent automatically. Raw `<Stack>` / `<Headline>` composition inside `Card.Header` still renders but does not pick up the slot wiring; prefer `<Title>` / `<Description>` going forward.
+
+- 0760ecc: refactor(DST-1374): use `<TextValue>` and `<Description>` for selection-container items
+
+  Consumer-facing JSX in component stories and documentation demos for `<Select>`, `<SelectList>`, `<ListBox>`, `<Menu>`, `<ComboBox>`, and `<Autocomplete>` now composes item content with the `<TextValue>` and `<Description>` primitives instead of hand-written `<Text slot="label">` / `<Text slot="description">`. The primitives are drop-in replacements that render the same RAC `<Text>` with the same default slot values, so rendering, `aria-describedby` wiring, and accessibility are identical.
+
+  `<Menu.Item>` gains first-class `label` and `description` theme slots, mirroring `<SelectList.Option>`. `MenuItem` merges the Marigold theme classNames into RAC's `TextContext` so nested `<TextValue>` / `<Description>` pick up Menu styling without losing RAC's slot wiring. Menu items adopt a two-column grid layout (icon column + content column) so descriptions render below labels; existing plain-text and icon+text menu items are unaffected.
+
+  The `Menu` theme type in `@marigold/system` is extended with required `label` and `description` slot keys. Consumers maintaining a custom theme that overrides `Menu` will need to add these two slots to satisfy the type. `@marigold/theme-rui` is updated accordingly in this release.
+
+  No public API change on `Select.Option`, `SelectList.Option`, `ListBox.Item`, `Menu.Item`, `ComboBox.Option`, or `Autocomplete.Option`.
+
+- 4d20fb6: feat(DST-1483): remove ActionButton in favor of a slot-aware Button (rename ActionGroup → ButtonGroup)
+
+  The beta-only `<ActionButton>` is removed. `<Button>` is now slot-aware: it adapts
+  automatically inside a button container, so you write `<Button>` everywhere instead
+  of learning a second button component.
+  - `<ActionButton>` is removed. Use `<Button>`; it adapts inside `<ButtonGroup>` and
+    `<Panel.Header>`. Opt a button out of the cascade with `slot={null}`.
+  - `<ActionGroup>` is renamed to `<ButtonGroup>`, mirroring the existing
+    `ToggleButtonGroup → ToggleButtonContext → ToggleButton` trio.
+  - A single Marigold-owned `ButtonContext` drives the cascade (replaces
+    `ActionButtonContext` + `ActionGroupContext`). RAC's own `ButtonContext`
+    (`close`/`increment`/`decrement` slots) is untouched.
+  - **Uniform precedence:** a local prop (`variant`, `size`, `disabled`) always wins
+    over the container. This drops the former `ActionGroup` `size`-group-wins outlier.
+  - `<ButtonGroup>` cascades `variant: 'secondary'` when unset, the same baseline
+    as a standalone `<Button>`. Slot-aware parents override it where they want
+    lower emphasis: `<Panel.Header>` cascades `variant: 'ghost'` + `size: 'small'`,
+    so a labelled header action stays readable. An icon-only action (a bare-icon
+    `<Button>`, an `<ActionMenu>` kebab) sets `size="icon"` to render as a square.
+  - `<ButtonGroup>` now owns a structural `flex gap-1` layout (orientation-aware), so
+    a standalone cluster is spaced correctly — `<ActionGroup>` had no layout of its
+    own. A container's positional className (e.g. Panel's `[grid-area:actions]`) still
+    rides along and positions the group.
+  - Overlays (`Popover`, `Modal`, `Tray`, `Drawer`) reset `ButtonContext` at their
+    content root, so a header/group cascade can't leak through the portal into an
+    overlay's `slot="close"` or `Dialog.Actions` buttons.
+  - `<SelectList.Option>` cascades `variant: 'ghost'` to a nested `<Button>`,
+    `<LinkButton>`, or `<ActionMenu>`, so a trailing in-row action reads as
+    low-emphasis chrome without an explicit `variant`.
+
+  **Migration**
+  - `<ActionButton>` → `<Button>` (its `default` variant maps to `variant="ghost"`).
+  - `<ActionGroup>` → `<ButtonGroup>`.
+  - `ActionButtonContext` / `ActionGroupContext` → `ButtonContext`.
+  - `<ActionMenu>` keeps its public name. Its trigger is now a slot-aware `<Button>`
+    that inherits the cascade instead of hardcoding a variant: it renders `secondary`
+    on its own (the standalone `<Button>` baseline, matching the pre-unification look)
+    and `ghost` inside `<Panel.Header>`, `<SelectList.Option>`, or a `<ButtonGroup>`.
+    A `variant` set on the `<ActionMenu>` still wins.
+
+- 334688e: chore(DST-1364): migrate `ListBox` item label/description styling off descendant selectors
+
+  `ListBox` now exposes `label` and `description` as first-class theme entries, and `ListBox.Item` injects their classNames into react-aria's `TextContext` (merging rather than replacing, so RAC's `aria-describedby` wiring is preserved) instead of styling `[slot=description]` via a descendant selector on `item`. This also benefits `Select.Option`, `ComboBox.Option`, and `Autocomplete.Option`, which re-export `ListBox.Item`.
+
+  The `Theme` type in `@marigold/system` now requires `label` and `description` keys on the `ListBox` record, so custom themes implementing `ListBox` must add these entries. No public API change in `@marigold/components`; visually identical except `description` now explicitly sets `font-normal` (parity with `SelectList`).
+
+## 18.0.0-beta.2
+
+### Minor Changes
+
+- 9a407ef: feat([DST-753]): `SectionMessage` exposes an `announce` prop and uses react-aria's `LiveAnnouncer` to notify assistive technology.
+
+  **What changed (DST-753):**
+  - `<SectionMessage>` accepts a new `announce?: boolean` prop. When set, the message text is sent to a shared, always-mounted live region maintained by `@react-aria/live-announcer`. Priority is `polite` for `info` / `success` / `warning` and `assertive` for `error`.
+  - `announce` defaults to `true` for `variant="error"` and `false` for all other variants, preserving today's behavior for the common error case while letting consumers opt in for confirmations and informational updates.
+  - The wrapper element no longer carries `role="alert"` for the error variant. Announcements are now delegated to the singleton live announcer instead.
+  - Re-announcing the same message uses the React `key` pattern: pass a changing `key` to force a remount.
+
+  **Why:**
+
+  The previous implementation only announced the `error` variant, and it did so by adding `role="alert"` to a conditionally rendered element. Per the WAI-ARIA spec and MDN guidance, `role="alert"` should be on an element that already exists in the DOM before its content is injected, and it should not contain interactive elements. Marigold's `SectionMessage` violated both constraints (the alert was mounted together with its content, and it can contain close buttons and action links), making announcements unreliable on some screen reader / browser combinations.
+
+  The new implementation uses `@react-aria/live-announcer`, which maintains persistent polite and assertive live regions at the document root. This is the same mechanism used across React Spectrum and avoids the conditional-rendering and interactive-content pitfalls of inline `role="alert"`. It also unifies the API: opt in to announcement for any variant with a single prop.
+
+  **Additional cleanup bundled with this release (beyond DST-753):**
+  - **Close button now matches the rest of the system.** The previous theme defined a `close` slot for `SectionMessage` with bespoke overrides (`size-8`, `[&_svg]:size-6`, `text-foreground`, negative margins) that produced a visibly larger close button than every other close button in the design system. The component now renders the shared `<CloseButton>` with no overrides, so it gets the same 16px icon, focus ring, hover-opacity, and rounded-full styling as Dialog, Drawer, etc. The `close` slot has been removed from the `SectionMessage` theme type.
+  - **Component cleanup.** Dropped a stale `useButton(props, buttonRef)` call that was applying div-level props to a button, the unused `buttonRef`, and the `{...buttonProps}` spread on `<CloseButton>`. The `Button` inside `CloseButton` already provides all keyboard/press semantics.
+  - **Theme variant order normalized.** `info` (the default) is now listed first across the `container`, `content`, and `icon` slots in `theme-rui`, matching the variant table in the docs and the existing `defaultVariants` setting.
+
+  **Docs:**
+  - New anatomy SVG matching the Card / Sidebar / SelectList style; title and close button marked as optional, with content rules (no period in title, don't repeat title in body).
+  - Two realistic announcement demos: a bulk-archive form (polite, with RAC `validate` and the `key` re-announce pattern) and a server-availability save error (assertive).
+  - Added focus-management guidance for dynamic appearance and post-dismiss.
+  - Added form-summary placement rule pairing `<SectionMessage>` with field-level validation.
+  - Added action constraints (one primary action, verb+noun labels, descriptive link text).
+  - Added two-line body rule with a link-out overflow pattern for longer content.
+  - Folded the previous Position subsection into Usage; removed redundant Do/Don't tiles; renamed subsections to Dismissal / Actions / Announcements.
+  - Drive-by: typo fix in the `feedback-messages` pattern doc.
+
+  **Migration:**
+  - Code relying on `getByRole('alert')` or `[role="alert"]` selectors to find rendered `SectionMessage` error nodes needs to be updated. The message text itself is still rendered as before; only the wrapper role is gone.
+  - Consumers who previously wrapped a dynamic `<SectionMessage>` in their own `<div role="status">` or `<div aria-live="polite">` can replace that wrapper with `<SectionMessage announce>`.
+  - Custom themes that defined a `SectionMessage.close` slot will now see a type error. Remove the slot. Close button styling now flows entirely from the `CloseButton` theme.
+  - The SectionMessage's close button is visually smaller after this release (matches every other close button in Marigold). If you previously relied on the larger size, that was an inconsistency, not a feature.
+
+## 18.0.0-beta.1
+
+### Minor Changes
+
+- 727163c: feat([DST-1134]): add `<RangeCalendar>` component (alpha)
+
+  Adds a new `<RangeCalendar>` for selecting a contiguous or non-contiguous date range, built on react-aria's `<RangeCalendar>` with Marigold conventions (`disabled`, `readOnly`, `error`, `dateUnavailable`, `allowsNonContiguousRanges`). Supports up to three side-by-side months via `visibleDuration`, stacking vertically below the `sm` breakpoint; the same responsive stacking now applies to multi-month `<Calendar>` for parity. `description` and `errorMessage` route through `<FieldBase>` so the help/error UI matches the rest of the form-component family (TriangleAlert icon + HelpText container). Ships as an alpha component with a stub docs page under the form section.
+
+  [DST-1134](https://reservix.atlassian.net/browse/DST-1134)
+
+- 4742e8e: feat([DST-901]): styleProps for `width`, `maxWidth`, `height`, `space`, `spaceX`, `spaceY`, `pr`, `pl`, `pt`, `pb` now accept both numeric scale values (`4`) and their string equivalents (`"4"`). The public types are now declarative (`Scale | Fraction | WidthKeyword`, etc.) instead of being derived from the internal class-name maps.
+
+  Components that previously resolved `width`, `maxWidth`, and `height` via class-name lookup (Form, Calendar, legacy Table column header / select-all cell, Slider, Scrollable, Switch, Grid) now resolve them through CSS custom properties (`createWidthVar` / `createHeightVar`) targeting `--width`, `--max-width`, `--height`. Those variables — along with `--container-width` and `--field-width` already used by `FieldBase` — are registered as non-inheriting (`@property … inherits: false`) in the RUI theme so they cannot leak into descendants.
+
+  `createWidthVar` gained support for the previously missing keywords (`svh`, `lvh`, `dvh`, `px`, `container`), and a new `createHeightVar` helper was added. Both share a common factory and a base keyword set, so they remain trivially in sync.
+
+  The runtime class-name maps `width`, `maxWidth`, `height`, `gapSpace`, `paddingSpace`, `paddingSpaceX`, `paddingSpaceY`, `paddingRight`, `paddingLeft`, `paddingTop`, `paddingBottom` are no longer exported from `@marigold/system`. These were internal utilities consumed only by `@marigold/components`. Use the prop types (`WidthProp`, `HeightProp`, …) and the CSS-var helpers (`createWidthVar`, `createHeightVar`, `createSpacingVar`) instead. The corresponding TypeScript prop types are unchanged.
+
+### Patch Changes
+
+- 2d9d6fd: feat(DST-1366): introduce slot-configurable primitives
+
+  Adds three text-bearing role primitives — `Title`, `Description`, `TextValue` — and three action primitives — `ActionButton`, `ActionGroup`, `ActionMenu` — that participate in slot-keyed context. Text/heading slots use React Aria's `HeadingContext` / `TextContext` directly; action slots use Marigold-owned contexts (`ActionButtonContext`, `ActionGroupContext`, `ActionMenuContext`) consumed via `useContextProps`.
+
+  `Title` wraps RAC's `<Heading>` with `slot="title"` and `level={2}` as defaults, both overridable by `HeadingContext`. The `level` precedence is default ← context ← local, so a container can publish `{ level: 4 }` and drive a stretch of nested `<Title>`s to `<h4>` without each call site setting it. `Description` and `TextValue` forward straight to RAC's `<Text>` with `slot="description"` and `slot="label"` defaults respectively, letting `<Text>` consume `TextContext` on its own. None of the three carry typography props. Styling cascades from the surrounding container (or selection item) via `HeadingContext` / `TextContext`. Consumers drop these into containers without any `slot` wiring. The container provides level, layout (e.g. a grid area), size, variant, color, and any other styling through a single `Provider`.
+
+  `ActionGroup` is its own top-level component (own folder, own docs page, own Storybook entry) — there is no `ActionButton.Group` compound. It cascades `size`, `variant`, and `disabled` to nested `<ActionButton>`, `<LinkButton>`, and `<ActionMenu>` triggers via `ActionGroupContext`, with explicit per-prop precedence:
+  - `size`: group wins (visual uniformity within a cluster).
+  - `variant`: local wins (so a single destructive action can sit inside an otherwise uniform group).
+  - `disabled`: local wins; the group provides the default. Writing `disabled={false}` on a child re-enables it inside an otherwise-disabled group.
+
+  `ActionMenu` is rebuilt to compose its own `MenuTrigger` + `<ActionButton>` + `Popover` / `Tray` + RAC `Menu` rather than delegating to Marigold's `Menu`. The trigger uses `<ActionButton>` so an outer `ActionButtonContext` cascades to it. Marigold's `Menu` is untouched.
+
+  `LinkButton` is now slot-aware: it picks up `ActionButtonContext` and `ActionGroupContext` so a navigating action can sit alongside `<ActionButton>` inside an `<ActionGroup>` and inherit the same cascade. A `destructive-ghost` variant is added to match `<ActionButton>`. Context is consumed read-only (via `useSlottedContext`) to sidestep the anchor/button ref-type mismatch that `useContextProps` would have created. The read-only consumption now also absorbs `className` from `ActionButtonContext` (mirroring `<ActionButton>`'s `useContextProps`-driven className merge) so positional classes published by a parent container — e.g. a grid-area class injected via `ActionButtonContext` — reach the rendered anchor. This lets `<LinkButton>` participate in container-driven layouts the same way `<ActionButton>` does.
+
+  The container-driven layout pattern this enables comes with a corresponding convention: **positional `className` flows through slot contexts and is absorbed at the first layout boundary**. `<ActionGroup>` enforces the convention at its own boundary by scrubbing `ActionButtonContext` for its descendants — it republishes an empty value so nested `<ActionButton>`s and `<LinkButton>`s do not individually re-claim a positional class that was meant for the group as a whole. Cascading props (`size`, `variant`, `disabled`) still reach the children via `ActionGroupContext`, which they read independently. This convention scales to every future container that adopts the slot-configuration pattern.
+
+  `<ActionBar>`'s legacy top-level `ActionButton` slot is internalized and re-exposed as `ActionBar.Button`. Existing consumers that already use `<ActionBar.Button>` are unaffected.
+
+  Typography prep: `Headline` exports `HeadlineSize`, `Text` exports `TextSize` and `TextVariant`. The aliases aren't yet consumed by other primitives, but exposing them now lets a future typography-token PR replace runtime classes without rewriting consumer-facing prop types.
+
+## 18.0.0-beta.0
+
+### Major Changes
+
+- adb8a18: feat(DST-1237): theme-owned breakpoints with CSS fallback
+
+  Breakpoint resolution is now theme-driven: `useSmallScreen` and `useResponsiveValue` read `theme.screens` from the ThemeProvider context instead of relying on hardcoded values in `defaultTheme`. If no theme provides screens, the hooks fall back to reading Tailwind v4's `--breakpoint-*` CSS custom properties.
+  - Added `screens` to `@marigold/theme-rui` (matches Tailwind v4 defaults)
+  - Removed `screens` from `defaultTheme` in `@marigold/system`
+  - Added `resolveScreens` utility for theme-first, CSS-fallback resolution
+
+- f629319: refactor([DST-1283]): **Breaking Change** — Remove `<Multiselect>` (and the `react-select` dependency) from `@marigold/components`.
+
+  Use `<TagField>` instead.
+
+- 724f0ce: refa([DST-1162]): **Breaking changes**: The `Card` component has been refactored into a compound component pattern.
+
+  **What changed:**
+  - The previous prop-based API (`padding`, `space`, etc.) has been removed.
+  - Content must now be composed using explicit sub-components: `Card.Header`, `Card.Body`, `Card.Footer`, and `Card.Preview`.
+  - A `CardContext` is now required — sub-components will throw an error if used outside of a `<Card>`.
+
+  **Migration:**
+
+  ```tsx
+  // Before
+  <Card>
+    <SomeContent />
+  </Card>
+
+  // After
+  <Card>
+    <Card.Header>Title</Card.Header>
+    <Card.Body><SomeContent /></Card.Body>
+    <Card.Footer>Actions</Card.Footer>
+  </Card>
+  ```
+
+### Minor Changes
+
+- 93f9ef1: feat(DST-1257): add universal `none` spacing token
+  - Introduce `NoSpacingToken = 'none'` shared across all spacing token families
+  - Add `'none'` to `SpacingTokens`, `PaddingSpacingTokens`, and `InsetSpacingTokens`
+  - Add `--spacing-none: --spacing(0)` CSS custom property to the theme
+
+  `'none'` now works wherever a spacing token is accepted: `Stack`/`Inline` gap (`space="none"`), `Inset` axis padding (`spaceX="none"` / `spaceY="none"`), and `Inset` recipes (`space="none"`) — useful for wrappers that should render without adding any spacing (e.g. an edge-to-edge `Table` inside a containing component).
+
+- 8326bf7: feat(DST-1326): introduce `Panel.CollapsibleHeader`, `Panel.CollapsibleTitle`, and `Panel.CollapsibleDescription`. The collapsible mirrors `Panel.Header` — a header wrapper with a title plus an optional description — and the whole visual surface is a single click target: title and description render as spans inside the trigger `<button>`, with the accessible name wired via `aria-labelledby` and the description via `aria-describedby`. The chevron icon uses a reusable `MorphCaret` that animates via SVG path morphing (honours `prefers-reduced-motion`).
+
+### Patch Changes
+
+- 20a42b0: Rename universal spacing token from `none` to `collapsed` to avoid a Tailwind v4 collision. `--spacing-none` inside `@theme static` caused `leading-none` to resolve to `0` instead of `line-height: 1`. The new name `collapsed` is a semantic design term (cf. CSS margin collapse) that reads naturally in both gap (`space="collapsed"`) and padding (`inset="collapsed"`) contexts.
+- de34b15: chore(deps): update `react-aria-components`, `@react-aria/*`, `@react-stately/*`, `@react-types/*`, and `@internationalized/*` packages to their latest versions.
+
 ## 17.9.1
 
 ## 17.9.0

@@ -2,7 +2,10 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const ToggleButton: ThemeComponent<'ToggleButton'> = {
   group: cva({
-    base: 'group inline-flex ui-surface shadow-elevation-border',
+    // No `overflow-hidden`. The end segments round their own outer corners to
+    // match the frame (below), so nothing needs clipping, and clipping is what
+    // cut off a full-height segment's focus ring (DST-1597).
+    base: 'group inline-flex ui-control',
     variants: {
       size: {
         default: 'text-sm',
@@ -17,17 +20,25 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
   button: cva({
     base: [
       'ui-button-base gap-2',
+      // Standalone toggle = a control surface. In a group the group owns the
+      // control boundary, so the segment drops its own ring (below).
+      'ui-control',
 
-      // ToggleButton-specific styles
-      'ui-surface shadow-elevation-border',
-      'hover:[--ui-background-color:var(--color-hover)] hover:text-foreground',
-      'disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)]',
-      'selected:[--ui-background-color:var(--color-input)] selected:shadow-none',
+      // States
+      'hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_+_0.12))] hover:text-foreground',
+      'selected:[--ui-background-color:var(--color-selected-bold)] selected:text-selected-bold-foreground',
+      // Disabled comes from ui-button-base (disabled:ui-state-disabled), same as Button.
 
-      // Group-specific styles for ToggleButtonGroup
-      'in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0',
-      'in-[.group]:first:rounded-l-surface',
-      'in-[.group]:last:rounded-r-surface in-[.group]:last:border-r-0',
+      // In a group, segments share the group's frame + ring, so they drop their
+      // own ring. An opaque right border (--color-border,
+      // the divider token) draws the 1px separator between segments, removed on
+      // the last. The end segments round their outer corners to match the frame
+      // so the group needs no overflow clip. Border lives here, not
+      // ui-button-base.
+      'in-[.group]:rounded-none in-[.group]:first:rounded-l-surface in-[.group]:last:rounded-r-surface in-[.group]:ring-0 in-[.group]:shadow-none in-[.group]:border-r in-[.group]:border-r-border in-[.group]:last:border-r-0 in-[.group]:hover:[--ui-border-color:initial]',
+      // Focus. With the group no longer clipping, the standard ui-state-focus
+      // outline (from ui-button-base) renders unclipped. Lift it above the
+      // neighbouring segments so the full ring shows. (DST-1597)
       'in-[.group]:focus-visible:z-10',
     ],
     variants: {
@@ -43,15 +54,15 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
     compoundVariants: [
       {
         size: 'default',
-        class: 'h-button px-4 py-2 [&_svg]:size-4',
+        class: 'h-control px-4 py-2 [&_svg]:size-4',
       },
       {
         size: 'small',
-        class: 'h-button-small px-3 [&_svg]:size-3.5',
+        class: 'h-control-small px-3 [&_svg]:size-3.5',
       },
       {
         size: 'icon',
-        class: 'size-button [&_svg]:size-4',
+        class: 'size-control [&_svg]:size-4',
       },
     ],
   }),

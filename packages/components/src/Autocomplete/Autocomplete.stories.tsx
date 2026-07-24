@@ -1,10 +1,11 @@
 import { screen } from '@testing-library/react';
 import { useState } from 'react';
-import { Text } from 'react-aria-components';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Center } from '../Center/Center';
+import { Description } from '../Description/Description';
 import { Stack } from '../Stack/Stack';
+import { TextValue } from '../TextValue/TextValue';
 import { Autocomplete } from './Autocomplete';
 
 const meta = preview.meta({
@@ -81,8 +82,8 @@ export const Basic = meta.story({
   render: args => (
     <Autocomplete {...args}>
       <Autocomplete.Option id="Harry Potter" textValue="Harry Potter">
-        <Text slot="label">Harry Potter</Text>
-        <Text slot="description">best series ever</Text>
+        <TextValue>Harry Potter</TextValue>
+        <Description>best series ever</Description>
       </Autocomplete.Option>
       <Autocomplete.Option id="Lord of the Rings">
         Lord of the Rings

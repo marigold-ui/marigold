@@ -5,8 +5,8 @@
     "extendTheme",
     "parseFormData",
     "useAsyncListData",
+    "useLandmark",
     "useListData",
-    "useResponsiveValue",
     "useTheme",
     "visually-hidden"
   ]

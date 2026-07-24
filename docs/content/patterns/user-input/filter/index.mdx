@@ -30,6 +30,15 @@ The image below shows the main areas of the pattern, their placement within the 
 
 Filters are most valuable when a data set is too large or complex for users to easily scan in its entirety. They become especially useful when multiple parameters or categories can significantly narrow the results. Well-applied filters streamline the process of finding relevant items, reduce information overload, and enable users to complete tasks more efficiently.
 
+<Callout title="Filtering or picking?">
+  Filtering narrows a data set in place, and the narrowed view is the result the
+  user reads. When the goal is instead to collect individual records and carry
+  them into another task, such as adding venues to a report or granting a set of
+  people access, reach for the [Pick](/patterns/user-input/pick) pattern. Both
+  open with a search field, but a filter leaves the collection where it is,
+  while a pick takes a chosen set with it.
+</Callout>
+
 ### Types and Formats
 
 Filters can be presented in several formats depending on the type of data and how users are expected to interact with it. The choice of filter type should reflect the nature of the data, the available space in the interface, and the intended user workflow. Common types include:
@@ -41,6 +50,8 @@ Filters can be presented in several formats depending on the type of data and ho
 | **Range**    | Lets users choose values within a continuous range, making it ideal for filtering quantities, prices, or measurements. Sliders provide an intuitive way to adjust values without manual input.            | [Slider](/components/form/slider)            |
 | **Min/Max**  | Provides precise control over numeric ranges by allowing exact lower and upper limits to be entered. This is useful when accuracy is important.                                                           | [NumberField](/components/form/number-field) |
 | **Contains** | Filters items based on specific words or phrases entered by the user. This method is valuable for keyword searches or partial matches.                                                                    | [TextField](/components/form/text-field)     |
+
+Selecting several values in a facet, such as multiple categories or statuses, is still filtering even though it can feel like ticking records off one by one. Those values are criteria that narrow the visible set, not records the user carries away. When the checkboxes stand for individual records that leave with the user, that is the [Pick](/patterns/user-input/pick) pattern instead.
 
 ### Creating Effective Filters
 
@@ -157,6 +168,12 @@ When an applied filter contains a large number of values, avoid grouping them al
 // TODO: should we make a helps to create these labels? this could also do i18n
 ```
 
+### Collapsing Applied Filters
+
+With several filters active, stacked rows of applied filter tags can push the data set out of the viewport and make the applied filters area harder to scan. Use the [`collapseAt`](/components/collection/tag#props) prop on `Tag.Group` to show only the most recent filters and collapse the rest behind a "Show more" toggle, keeping the row height predictable. The example below collapses after 3 filters.
+
+<ComponentDemo name="filter-applied-filter-collapse" />
+
 ### Reverting Filters
 
 When applied filters result in no displayed results, for example when criteria are too restrictive, conflicting, or simply no longer relevant, it is important to offer quick and accessible ways to revert them. This prevents users from becoming stuck or frustrated and allows them to continue exploring the data set with minimal effort.
@@ -197,6 +214,13 @@ With filters included in the URL, it is also possible to enable the browser's fo
   demo="/examples/filter"
   code="https://github.com/marigold-ui/marigold/tree/main/docs/app/(examples)/examples/filter"
 />
+
+<Callout title="Fetching the data">
+  The example filters, sorts and paginates on the server and fetches with React
+  Query, deriving the query key from the same URL state. See the [Fetching and
+  Mutations](/patterns/data/fetching-and-mutations) pattern for how that is
+  wired up.
+</Callout>
 
 ---
 

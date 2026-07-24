@@ -131,7 +131,7 @@ export const EmployeeOnboarding = meta.story({
                   maximumFractionDigits: 2,
                 }}
               />
-              <Select label="Currency" width="fit" defaultValue="eur">
+              <Select label="Currency" width={24} defaultValue="eur">
                 <Select.Option id="eur">EUR</Select.Option>
                 <Select.Option id="usd">USD</Select.Option>
                 <Select.Option id="gbp">GBP</Select.Option>

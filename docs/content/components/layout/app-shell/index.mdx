@@ -1,0 +1,157 @@
+---
+title: AppShell
+description: The layout frame of an application with sidebar navigation, a top bar, and the page content.
+badge: beta
+---
+
+`<AppShell>` gives an application its frame: a sidebar for navigation, a top bar for orientation and utility actions, and the scrollable page content. It keeps navigation and header in view while users scroll and work, so they always know where they are and how to get elsewhere. Use it once at the root of an application and place [`<Sidebar>`](/components/navigation/sidebar), [`<TopNavigation>`](/components/navigation/topnavigation), and [`<Page>`](/components/layout/page) directly as children. Each child owns its own area of the layout, so the order does not matter and there are no wrapper sub-components.
+
+The frame comes in two arrangements. `<AppShell>` picks the right one based on the sidebar you compose, so there is no prop to set:
+
+- **Rail shell:** With [two-level navigation](/components/navigation/sidebar#two-level-navigation) (`Sidebar.Rail`), the top bar spans the full viewport width and the rail hangs below it. The brand holds the fixed top-left spot and never moves when the section panel collapses. This is the recommended layout for applications with several sections that each carry their own sub-navigation.
+- **Sidebar-first shell:** With a single-column `<Sidebar>`, the sidebar runs the full viewport height and the header sits beside it.
+
+<Callout title="Looking for composition guidance?">
+  This page covers the component API. For a step-by-step guide on where to place
+  content, how to wire up navigation, and responsive strategy, see the [App
+  Frame pattern](/patterns/layout/app-frame).
+</Callout>
+
+## Usage
+
+The default shell pairs a `Sidebar.Rail` with a full-width top bar. The brand and the panel toggle live in the top bar's start slot. Below the bar, the rail carries the app's sections and the panel next to it shows the navigation of the active section.
+
+```tsx
+<AppShell>
+  <Sidebar>
+    <Sidebar.Rail current={path}>
+      <Sidebar.RailItem icon={<Ticket />} id="tickets">
+        Tickets
+        <Sidebar.Nav aria-label="Tickets">{/* Section items */}</Sidebar.Nav>
+      </Sidebar.RailItem>
+      {/* An item with only an `href` is a direct link without a panel */}
+      <Sidebar.RailItem icon={<BarChart3 />} href="/reports">
+        Reports
+      </Sidebar.RailItem>
+    </Sidebar.Rail>
+  </Sidebar>
+  <TopNavigation>
+    <TopNavigation.Start>
+      {/* Logo */}
+      <Sidebar.Toggle variant="rail" />
+      {/* Breadcrumbs */}
+    </TopNavigation.Start>
+    <TopNavigation.End>{/* User menu */}</TopNavigation.End>
+  </TopNavigation>
+  <Page>
+    <Page.Header>{/* Title, description, actions */}</Page.Header>
+    {/* Panels and page content */}
+  </Page>
+</AppShell>
+```
+
+<ComponentDemo name="app-shell-rail" background="page" />
+
+See [two-level navigation](/components/navigation/sidebar#two-level-navigation) for a detailed look at the rail's behavior, including collapsing, active states, and the mobile drawer.
+
+### Single-column sidebar
+
+Not every application needs the rail's second level. Compose a single-column `<Sidebar>` instead when one or more of the following apply:
+
+- **Flat navigation:** The app is a plain list of pages without sub-navigation per section. A rail panel would sit mostly empty and every destination would move one click further away.
+- **Few sections:** The rail works best for a stable set of roughly 4 to 9 sections. With fewer, a single column shows everything at once.
+- **No recognizable iconography:** Rail tiles are icon-first and `icon` is required. If the sections lack distinct, self-evident icons, a text column scans better than tiles that users have to decode.
+- **Horizontal budget:** Rail plus panel occupy about 22rem, while the single column needs 16rem. Data-dense screens such as wide tables or editors may need that difference.
+- **Occasional nesting:** One or two nested groups are covered by the single column's built-in [drill-down](/components/navigation/sidebar#drill-down-navigation). Reserve the rail for applications where every section owns a persistent second level.
+
+With a single-column sidebar the shell switches to the sidebar-first grid. The sidebar runs the full viewport height and carries the brand in its header, while the top bar starts next to it.
+
+```tsx
+<AppShell defaultSidebarOpen>
+  <Sidebar>
+    <Sidebar.Header>{/* Logo */}</Sidebar.Header>
+    <Sidebar.Nav>{/* Navigation items */}</Sidebar.Nav>
+  </Sidebar>
+  <TopNavigation>
+    <TopNavigation.Start>{/* Toggle */}</TopNavigation.Start>
+    <TopNavigation.Middle>{/* Breadcrumbs, search */}</TopNavigation.Middle>
+    <TopNavigation.End>{/* User menu */}</TopNavigation.End>
+  </TopNavigation>
+  <Page>
+    <Page.Header>{/* Title, description, actions */}</Page.Header>
+    {/* Panels and page content */}
+  </Page>
+</AppShell>
+```
+
+<ComponentDemo name="app-shell-basic" background="page" />
+
+### Sidebar state
+
+`<AppShell>` manages the sidebar's open/collapsed state for you. It wraps its children in a `Sidebar.Provider` internally. Pass `defaultSidebarOpen` to start expanded. The sidebar toggle in the header and the sidebar share this state automatically, with no provider boilerplate.
+
+For **controlled** sidebar state (`open` / `onOpenChange`) or to set the sidebar's `variant` / `size`, render your own [`<Sidebar.Provider>`](/components/navigation/sidebar) _around_ `<AppShell>`. `<AppShell>` detects the outer provider and uses it instead of creating its own:
+
+```tsx
+<Sidebar.Provider open={open} onOpenChange={setOpen}>
+  <AppShell>{/* … */}</AppShell>
+</Sidebar.Provider>
+```
+
+### Scrolling
+
+The page itself scrolls. `<AppShell>` does not create an interior scroll container. The sidebar and header stick to the viewport via `position: sticky`, so they stay visible as the user scrolls the page. The sidebar's navigation area scrolls independently when it has too many items to fit, which the [Sidebar](/components/navigation/sidebar) component handles internally.
+
+Page-level scroll keeps native browser behaviour (mobile URL-bar collapse, pull-to-refresh, scroll restoration on back/forward, `Cmd+F` find-in-page, and anchor links) working without extra wiring.
+
+By default the shell claims the full viewport height. To render it inside a bounded container instead, for example an embedded preview, set the `--ui-viewport-height` custom property on a wrapper element. The shell and its sidebar then size against that value instead of `100dvh`. The demos on this page use it to fit the preview pane.
+
+<GuidelineTiles>
+  <Dont>
+    <DontDescription>
+      <ul>
+        <li>Don't nest `<AppShell>` inside other layout containers</li>
+        <li>Don't put page content directly in `<AppShell>`. Wrap it in a `<Page>` so it gets the `main` landmark, padding, and rhythm</li>
+        <li>Don't use `<AppShell>` for simple pages that only need a header or only a sidebar</li>
+      </ul>
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Accessibility
+
+- **Landmarks:** `<Page>` renders `<main>` and `<Sidebar>` renders `<aside>`, so both appear in the screen reader's landmark list automatically. Wrap them with [`useLandmark`](/components/hooks-and-utils/useLandmark) to add them to the `F6` cycle. See the [Landmarks foundation](/foundations/accessibility#landmarks) for details.
+- **Stacking order:** The header uses `z-index: 1` to ensure it stays above the page content during scroll.
+
+<Callout title="Note">
+  `<AppShell>` is a structural layout component. Accessibility features like keyboard navigation, focus management, and ARIA attributes are provided by the components placed inside it. See [Sidebar](/components/navigation/sidebar#accessibility) and [TopNavigation](/components/navigation/topnavigation#accessibility) for their accessibility details.
+</Callout>
+
+## Props
+
+{/* Storybook hint omitted while AppShell is beta: it has no story on the published Storybook (marigold-latest) the hint links to, so the link 404s. Restore when AppShell ships. */}
+
+### AppShell
+
+<AutoTypeTable path="AppShell" name="AppShellProps" />
+
+## Related components
+
+<ul>
+  <li>
+    [Page](/components/layout/page): The content area inside `<AppShell>`,
+    providing the `main` landmark, padding, and vertical rhythm.
+  </li>
+  <li>
+    [Sidebar](/components/navigation/sidebar): Use standalone when you only need
+    side navigation without a fixed header bar.
+  </li>
+  <li>
+    [TopNavigation](/components/navigation/topnavigation): Use standalone for a
+    horizontal navigation bar without a sidebar.
+  </li>
+  <li>
+    [Grid](/components/layout/grid): Use for custom grid layouts that don't
+    follow the L-shape pattern.
+  </li>
+</ul>

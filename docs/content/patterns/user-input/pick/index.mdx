@@ -1,0 +1,241 @@
+---
+title: Pick
+description: Find and collect records from a collection, then commit them as a set.
+badge: alpha
+---
+
+Some tasks are not about narrowing what is already on screen. They are about going to a collection, finding the right records, and bringing a chosen few back into the task at hand. Adding performers to an event, choosing venues for a report, granting a set of users access: each starts from nothing selected and ends with a committed set. This is picking, and it is a different pattern from [filtering](/patterns/user-input/filter).
+
+## Filter vs Pick
+
+The two look alike because both use a search field and both end in a smaller set. The difference is the mechanism. Filtering narrows a visible dataset by criteria, and the narrowed view is the result. Picking enumerates individual records from a collection and commits them, and the committed set is the result, carried somewhere else. One question separates them: how does the smaller set come about? If the user sets criteria such as type, date, or status, it is a filter. If the user checks individual records one by one, it is a pick. One case looks deceptive: ticking values in a facet filter, such as brand, size, or category, feels like checking records off one by one, but those values are criteria, so it stays a filter.
+
+| Aspect          | Filter                                                               | Pick                                                                    |
+| --------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| **Result**      | The same collection with non-matches hidden. The view is the answer. | A committed set of records, used somewhere else.                        |
+| **Mechanism**   | Narrow by criteria. Everything is shown by default.                  | Enumerate individual records. Nothing is selected by default.           |
+| **Commit**      | Continuous and reversible, with no point of no return.               | An explicit step. Cancelling discards the whole set.                    |
+| **Modality**    | Usually non-modal, the view stays in place.                          | The heavier the pick, the more it leans modal or takes its own surface. |
+| **Destination** | The URL as query state, gone once you leave.                         | The host task, as a shareable URL or a saved record.                    |
+
+One picture keeps them apart. Filtering is turning a camera lens, you change what you _see_ and the collection itself stays put. Picking is filling a basket, you change what you _have_ and leave with it.
+
+<ImageZoom
+  className="mx-auto"
+  src="/pick/filter-vs-pick.svg"
+  alt="Two side-by-side flows: a filter journey that narrows a collection until the view is the result, and a pick journey that checks records and commits them as a set"
+  width="700"
+  height="446"
+/>
+
+<Callout type="warning" title="When not to use a pick">
+  Picking is for choosing records, not changing them. To create or edit a
+  record's fields, use a drawer as described in the [Table
+  Records](/patterns/user-input/table-record-management) pattern. To narrow a
+  dataset that is already on screen, use the
+  [Filter](/patterns/user-input/filter) pattern. And to act on rows the user is
+  already looking at, stay on the page with the filter, select, act approach
+  below rather than opening a dialog.
+</Callout>
+
+## Choose the surface by collection size
+
+Reach for a pick when the user has to assemble a set of records that lives somewhere other than the current screen. The records may be too many to show inline, they may sit in a separate collection, or choosing them may deserve its own focused space. Every pick has the same shape: it begins with nothing selected, the user finds and stages records, and it ends when they commit the set or discard it.
+
+The dialog is the default, but it is only one point on a spectrum. As the collection grows and the choice carries more weight, the right surface moves with it. Do not reach straight for a modal. Match the surface to how much picking the task really involves.
+
+| Situation                                     | Surface                                                                                            | Why it fits                                                                                                                                                              |
+| --------------------------------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| A few options that are already on the page    | **Inline multi-select**, the [Multiple Selection](/patterns/user-input/multiple-selection) pattern | The options are already in front of the user, so anything heavier only adds clicks. Reach for this first.                                                                |
+| A longer list that can still stay on the page | **Searchable field**, a [`<TagField>`](/components/form/tag-field)                                 | The field opens a popover of matches as the user types and shows the chosen ones as tags, all without leaving the page.                                                  |
+| A real find-and-collect task                  | **Dialog**, the default                                                                            | Room for search, filters, a selectable list, and a commit footer, focused over the page without navigating away. Scales from `large` to `fullscreen` as the table grows. |
+| A pick that needs its own place               | **Routed page**, the exception                                                                     | Use it when the pick needs its own URL, appears in several places, or is used often. A pick that is merely large fits a `size="fullscreen"` dialog first.                |
+
+The direction is the through-line: keep the pick on the page while you can, move to a dialog once it becomes a task in its own right, and leave the page only when even a fullscreen dialog is not enough.
+
+One surface sits to the side of this progression: a transfer list, two panes with available records on the left and chosen ones on the right. It fits a pick where the user wants to watch the whole selection build up beside the source, but it is space-hungry and rarely earns its cost, so use it sparingly. Marigold has no dedicated component for it yet, so today it is a hand-built layout rather than a ready surface.
+
+The searchable-field tier in action: a [`<TagField>`](/components/form/tag-field) picks the performers for an event. Type to filter the roster, choose from the popover, and each pick becomes a removable tag. The selection is the committed set, so there is no separate commit step and the user never leaves the page. This is the whole tier below the dialog: names the user recognizes, no detail worth a table, and a collection small enough to stay in a field.
+
+<ComponentDemo name="pick-tag-field" background="page" />
+
+<Callout type="info" title="Sizing a heavy pick">
+  A `size="large"` [`<Dialog>`](/components/overlay/dialog) gives about 640px of
+  height and 1024px of width on desktop, room enough for a search field, a
+  scrollable list, and a footer. When a pick carries a wide table or many rows
+  that a large dialog would cramp, `size="fullscreen"` fills the viewport, as
+  the [example](/examples/pick) does. Use a routed page only when the pick needs
+  its own URL or appears in several places. A pick that is simply large belongs
+  in a fullscreen dialog.
+</Callout>
+
+## The pick dialog
+
+The dialog is the pattern's default surface and the most composed, so it is worth walking through part by part. It gathers a pick into one focused place that floats over the page rather than navigating away, its parts stacked in a predictable order from the trigger that opens it down to the footer that ends it.
+
+A trigger in the host task opens the dialog, such as an "Add venues" button, and nothing is staged until the user opens it and commits. Inside, a title names what is being picked, such as "Select venues". Below the title, a [`<SearchField>`](/components/form/search-field) finds records by name as the user types and narrows the visible rows without touching what is already staged. Optional filter controls sit beside it, criteria such as status or type that slice a large pool further.
+
+The matching records form the results collection, shown as a [`<Table>`](/components/collection/table) when they carry detail worth scanning, such as a city and a capacity, or a plain list when the label is all there is. Checking a row stages it. A commit footer ends the task, where a cancel action discards the staged set and a primary action commits it, carrying the staged count in its label, "Add 3 venues".
+
+The example below adds venues from a searchable, filterable, multi-select table.
+
+<ComponentDemo name="pick-dialog" background="page" />
+
+A few details make the dialog trustworthy:
+
+- **Name the outcome in the commit button, and carry the count.** The primary action reads "Add 3 venues" rather than a generic "OK", so the user knows both what will happen and how much they are committing. Compose this button by hand from the staged count. The [`<ActionBar>`](/components/collection/actionbar) is built for floating bulk actions on a table, not for a dialog's commit footer, so it is the wrong fit here.
+- **Bound the selection when the task requires it.** Most picks need at least one record, so disable the commit until something is staged. An empty set can then never be committed by accident, and at zero the button reads "Add venues" and stays disabled rather than offering a clickable "Add 0 venues". If a pick also caps how many may be chosen, make the ceiling visible before it is reached, stop further checks once it is, and say why the rest are blocked, so the limit reads as a rule and not a bug.
+- **Never clear staged selections while filtering.** Typing in the search narrows the visible rows, but records staged earlier stay staged even when they scroll out of view. Clearing them on every keystroke would make the pick impossible. This is the same tension as the filter paradox in [Table Records](/patterns/user-input/table-record-management).
+- **Show records the way the user recognizes them.** When a record carries detail worth scanning, such as a city or a capacity, show each attribute in its own [`<Table>`](/components/collection/table) column instead of a bare name. A plain list is enough when the label stands on its own.
+- **Offer select all for bulk picks.** A header control that selects every row, shown in a mixed state while the selection is partial, saves the user from working through a long list by hand. Keep it paired with search and filters so "all" applies to a sensibly narrowed set.
+- **Cancel discards, commit persists.** Closing or cancelling throws the staged set away with no consequence. Only the primary action carries the selection back to the task.
+
+### A list when the label is enough
+
+Not every pick needs a table. When you choose a record by its name, with at most a supporting line and no grid of comparable detail to scan across rows, a [`<SelectList>`](/components/form/selectlist) is the lighter collection: a multi-select list, checked to stage and committed the same way. An option can still carry a little more than a bare label, such as a name over an email, and it stays a list. Reach for a [`<Table>`](/components/collection/table) only once the records carry several attributes worth comparing side by side.
+
+<ComponentDemo name="pick-select-list" background="page" />
+
+Only the collection changes. This pick grants a set of people access and carries the same search, filter, removable staged-tag rail, and empty state as the venue dialog above. What differs is the results collection: a list of people, each a name over an email, instead of a table, since there is no grid of per-row detail to compare.
+
+### Filters and empty states
+
+Search alone gets slow once the pool is large, so filter controls sit beside it, narrowing the visible rows without disturbing the staged set.
+
+The danger is that narrowing can empty the list, and an empty table reads as "everything is gone." A count in the footer says how many are staged but not which, so do not lean on it alone. Keep the staged set visible as items. The demo above does this with a rail of removable tags that persists through every search and filter, so the user sees their picks survived and can drop any that no longer belong. Pair it with an empty state on [`<Table.Body>`](/components/collection/table) that says the staged set is intact instead of showing a blank table. If the source collection is empty from the start, say so at the trigger, or disable it, so the user never opens a dialog onto nothing.
+
+### Large and async collections
+
+A pick can face hundreds or thousands of records that should not all sit in the browser at once. The instinct is to paginate, but pagination is a tool for _browsing_ a large dataset, not for _picking_ from it. It splits the collection into discrete pages, while a pick has to accumulate a set across the whole collection, so the staged selection ends up spread over pages the user cannot see. That is the "act only on what you can see" risk the [Bulk Actions](/patterns/user-input/bulk-actions) pattern guards against, and a pick cannot resolve it the way bulk actions do, by clearing the selection on every page change, because accumulating the set is the whole point.
+
+So do not paginate the picker. Narrow it instead:
+
+- **Lead with search and filters.** They cut a large pool down to a set small enough to scan, which paging never does.
+- **Scroll what remains.** Put the results in a bounded [`<Scrollable>`](/components/layout/scrollable) region so the search, the staged tags, and the commit footer around it stay fixed while only the results scroll. When those results are a [`<Table>`](/components/collection/table), make its [`<Table.Header>`](/components/collection/table) sticky so the column labels stay visible too.
+- **Fetch on search for large or remote collections.** Load matches as the user types rather than pulling the whole collection down, and show a loading state while they arrive. The [Async Data Loading](/patterns/feedback/async-data-loading) pattern covers `useAsyncList` and search-as-you-type.
+
+Whatever the source size, track the staged picks independently of the loaded rows, so they survive scrolling, filtering, and re-fetching. The [example](/examples/pick) keeps its venues (about fifty across Germany, Austria, and Switzerland) in a scrollable, sticky-header table narrowed by search alongside type, region, and status filters, with a running result count. The table is wide, eleven columns from region and setting through rating, capacity, and day rate, so it opens in a `size="fullscreen"` dialog that fills the viewport, the surface this width and density needs. A `size="large"` dialog would leave the table scrolling sideways. Anything staged stays in a tag rail and commits on confirm, even after it scrolls out of view or a filter hides it.
+
+## Filter, select, then act
+
+Sometimes the records are already on the page and the user only needs to act on a few of them. There is no separate collection to visit, so opening a dialog would be a detour. Keep the user on the page: let them filter the table down, select the rows that matter, and act through an [`<ActionBar>`](/components/collection/actionbar).
+
+At that point you have crossed from picking into the [Bulk Actions](/patterns/user-input/bulk-actions) pattern, and the two are easy to confuse because they share a mechanism: both enumerate records one by one rather than narrowing by criteria. What separates them is what the selection is for. A pick gathers a set and carries it into another task, such as a report or an event's line-up, so the set is the deliverable and it outlives the selection. Bulk actions run an operation on the selected records themselves, such as archive or assign, so the operation is the deliverable and the selection is cleared once it finishes.
+
+<ComponentDemo name="pick-filter-select-act" background="page" />
+
+The flow lives here only as a signpost. When the selection is for operating on the records rather than gathering them to use elsewhere, stay on the page and follow Bulk Actions, which covers selection scope, confirmation, progress, and partial-failure feedback in full.
+
+## After the selection
+
+The commit hands the set back to the host task, which has to show it. Echo the chosen records where the pick was triggered, as a rail of removable [`<Tag.Group>`](/components/collection/tag) tags or a short list, so the result stays visible without reopening the dialog. Removing a tag drops that record in place, while the trigger becomes an "Edit selection" button that reopens the pick with the set already staged. Because it reopens staged rather than empty, editing a pick feels the same as making one. The venue demo above does both.
+
+A committed pick has an afterlife, and the two kinds need different care.
+
+- **A transient view.** The pick produces a view that lasts only as long as the user looks at it, such as a filtered dashboard built from the chosen records. Encode the picked IDs in the URL so the view is shareable and survives a refresh, and let the user discard it freely. Nothing is lost by leaving.
+- **A persisted record.** The pick is written into something durable, such as a report that freezes the chosen records or a group whose membership is saved. Here leaving does lose work, so confirm before discarding staged changes and make the commit deliberate.
+
+The difference is not in the pick itself. The surface and the mechanism are the same. It is in what happens to the set afterward, which is why one pattern serves both.
+
+## Demo
+
+The example is a report that owns its picked venues: choose venues and the committed set persists as the report's content, ready to re-open and edit.
+
+<DemoLinks
+  demo="/examples/pick"
+  code="https://github.com/marigold-ui/marigold/tree/main/docs/app/(examples)/examples/pick"
+/>
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Multiple Selection',
+      href: '/patterns/user-input/multiple-selection',
+      caption:
+        'Choose several options that are already on screen, the inline tier of picking.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-6"
+        >
+          <path d="m3 8 2 2 3-3" />
+          <path d="m3 16 2 2 3-3" />
+          <path d="M13 9h8" />
+          <path d="M13 17h8" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Filter',
+      href: '/patterns/user-input/filter',
+      caption:
+        'Narrow the records on display by criteria instead of enumerating them.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Bulk Actions',
+      href: '/patterns/user-input/bulk-actions',
+      caption:
+        'Run one operation across many selected records in place, the on-page counterpart to a pick.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-6"
+        >
+          <rect x="3" y="9" width="18" height="7" rx="2" />
+          <path d="M7 12.5h.01" />
+          <path d="M11 12.5h6" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Table Records',
+      href: '/patterns/user-input/table-record-management',
+      caption:
+        'Create, correct, and maintain records once they are in the table.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="size-6"
+        >
+          <path
+            fillRule="evenodd"
+            d="M1.5 5.625c0-1.036.84-1.875 1.875-1.875h17.25c1.035 0 1.875.84 1.875 1.875v12.75c0 1.035-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 0 1 1.5 18.375V5.625ZM21 9.375A.375.375 0 0 0 20.625 9h-7.5a.375.375 0 0 0-.375.375v1.5c0 .207.168.375.375.375h7.5a.375.375 0 0 0 .375-.375v-1.5Zm0 3.75a.375.375 0 0 0-.375-.375h-7.5a.375.375 0 0 0-.375.375v1.5c0 .207.168.375.375.375h7.5a.375.375 0 0 0 .375-.375v-1.5Zm0 3.75a.375.375 0 0 0-.375-.375h-7.5a.375.375 0 0 0-.375.375v1.5c0 .207.168.375.375.375h7.5a.375.375 0 0 0 .375-.375v-1.5ZM10.875 18.75a.375.375 0 0 0 .375-.375v-1.5a.375.375 0 0 0-.375-.375h-7.5a.375.375 0 0 0-.375.375v1.5c0 .207.168.375.375.375h7.5ZM3.375 15h7.5a.375.375 0 0 0 .375-.375v-1.5a.375.375 0 0 0-.375-.375h-7.5a.375.375 0 0 0-.375.375v1.5c0 .207.168.375.375.375Zm0-3.75h7.5a.375.375 0 0 0 .375-.375v-1.5A.375.375 0 0 0 10.875 9h-7.5A.375.375 0 0 0 3 9.375v1.5c0 .207.168.375.375.375Z"
+            clipRule="evenodd"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>

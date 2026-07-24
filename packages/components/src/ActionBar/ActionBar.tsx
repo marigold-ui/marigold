@@ -1,7 +1,8 @@
 import * as m from 'motion/react-m';
-import type { ForwardRefExoticComponent, ReactNode } from 'react';
-import { forwardRef, useLayoutEffect, useRef, useState } from 'react';
-import { Toolbar } from 'react-aria-components';
+import type { ReactNode, Ref } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
+import { Toolbar } from 'react-aria-components/Toolbar';
+import { Provider } from 'react-aria-components/slots';
 import { FocusScope } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useKeyboard } from '@react-aria/interactions';
@@ -12,17 +13,20 @@ import {
   useResizeObserver,
 } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
+import { ButtonContext } from '../Button/Context';
 import { IconButton } from '../IconButton/IconButton';
 import { X } from '../icons/X';
 import { intlMessages } from '../intl/messages';
 import { MotionFeatures } from '../lazyMotion';
 import { useActionBarContext } from './ActionBarContext';
-import { ActionButton } from './ActionButton';
-import type { ActionButtonProps } from './ActionButton';
+
+// Cascade a ghost/default look onto plain `<Button>` children; a local
+// `variant`/`size` still wins, so an icon-only action opts into `size="icon"`.
+const actionButtonContext = { variant: 'ghost', size: 'default' } as const;
 
 export interface ActionBarProps {
   /**
-   * A list of ActionButtons to display.
+   * The action buttons to display.
    */
   children?: ReactNode;
 
@@ -54,12 +58,6 @@ export interface ActionBarProps {
   size?: string;
 }
 
-interface ActionBarComponent extends ForwardRefExoticComponent<
-  ActionBarProps & React.RefAttributes<HTMLDivElement>
-> {
-  Button: typeof ActionButton;
-}
-
 // Inner
 // ---------------
 interface ActionBarInnerProps {
@@ -72,170 +70,163 @@ interface ActionBarInnerProps {
   size?: string;
 }
 
-const ActionBarInner = forwardRef<HTMLDivElement, ActionBarInnerProps>(
-  (
-    { id, children, onClearSelection, lastCount, isExiting, variant, size },
-    forwardedRef
-  ) => {
-    const internalRef = useRef<HTMLDivElement>(null);
-    const ref = (forwardedRef ??
-      internalRef) as React.RefObject<HTMLDivElement | null>;
-    const isEntering = useEnterAnimation(ref);
+const ActionBarInner = ({
+  id,
+  children,
+  onClearSelection,
+  lastCount,
+  isExiting,
+  variant,
+  size,
+  ref: forwardedRef,
+}: ActionBarInnerProps & { ref?: Ref<HTMLDivElement> }) => {
+  const internalRef = useRef<HTMLDivElement>(null);
+  const ref = (forwardedRef ??
+    internalRef) as React.RefObject<HTMLDivElement | null>;
+  const isEntering = useEnterAnimation(ref);
 
-    const classNames = useClassNames({
-      component: 'ActionBar',
-      variant,
-      size,
-    });
-    const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const classNames = useClassNames({
+    component: 'ActionBar',
+    variant,
+    size,
+  });
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
-    const {
-      keyboardProps: { onKeyDown, onKeyUp },
-    } = useKeyboard({
-      onKeyDown: e => {
-        if (e.key === 'Escape' && onClearSelection) {
-          e.preventDefault();
-          onClearSelection();
-        }
-      },
-    });
+  const {
+    keyboardProps: { onKeyDown, onKeyUp },
+  } = useKeyboard({
+    onKeyDown: e => {
+      if (e.key === 'Escape' && onClearSelection) {
+        e.preventDefault();
+        onClearSelection();
+      }
+    },
+  });
 
-    return (
-      <FocusScope restoreFocus>
-        <MotionFeatures>
-          <m.div
-            layout
-            ref={ref}
-            id={id}
-            onKeyDown={onKeyDown}
-            onKeyUp={onKeyUp}
-            className={cn(
-              classNames.container,
-              'sticky bottom-(--actionbar-offset,8px) z-30 mx-auto w-max'
+  return (
+    <FocusScope restoreFocus>
+      <MotionFeatures>
+        <m.div
+          layout
+          ref={ref}
+          id={id}
+          onKeyDown={onKeyDown}
+          onKeyUp={onKeyUp}
+          className={cn(
+            classNames.container,
+            'sticky bottom-(--actionbar-offset,8px) z-30 mx-auto w-max'
+          )}
+          transition={{
+            layout: { type: 'spring', stiffness: 500, damping: 30, mass: 0.5 },
+          }}
+          data-entering={isEntering || undefined}
+          data-exiting={isExiting || undefined}
+        >
+          <div className={classNames.selection}>
+            {onClearSelection && (
+              <IconButton
+                aria-label={stringFormatter.format('clearSelectionAriaLabel')}
+                onPress={onClearSelection}
+                className={classNames.clearButton}
+              >
+                <X />
+              </IconButton>
             )}
-            transition={{
-              layout: {
-                type: 'spring',
-                stiffness: 500,
-                damping: 30,
-                mass: 0.5,
-              },
-            }}
-            data-entering={isEntering || undefined}
-            data-exiting={isExiting || undefined}
-          >
-            <div className={classNames.selection}>
-              {onClearSelection && (
-                <IconButton
-                  aria-label={stringFormatter.format('clearSelectionAriaLabel')}
-                  onPress={onClearSelection}
-                  className={classNames.clearButton}
-                >
-                  <X />
-                </IconButton>
-              )}
 
-              <div className={classNames.count}>
-                {lastCount === 'all'
-                  ? stringFormatter.format('selectedAll')
-                  : stringFormatter.format('selectedCount', {
-                      count: lastCount,
-                    })}
-              </div>
+            <div className={classNames.count}>
+              {lastCount === 'all'
+                ? stringFormatter.format('selectedAll')
+                : stringFormatter.format('selectedCount', {
+                    count: lastCount,
+                  })}
             </div>
+          </div>
 
+          <Provider values={[[ButtonContext, actionButtonContext]]}>
             <Toolbar
               className={classNames.toolbar}
               aria-label={stringFormatter.format('bulkActionsAriaLabel')}
             >
               {children}
             </Toolbar>
-          </m.div>
-        </MotionFeatures>
+          </Provider>
+        </m.div>
+      </MotionFeatures>
 
-        {/* Screen reader announcement when ActionBar appears */}
-        {!isExiting && (
-          <div className="sr-only" role="status" aria-live="polite">
-            {stringFormatter.format('actionsAvailable')}
-          </div>
-        )}
-      </FocusScope>
-    );
-  }
-);
+      {/* Screen reader announcement when ActionBar appears */}
+      {!isExiting && (
+        <div className="sr-only" role="status" aria-live="polite">
+          {stringFormatter.format('actionsAvailable')}
+        </div>
+      )}
+    </FocusScope>
+  );
+};
 
 // Outer
 // ---------------
-const _ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(
-  (
-    {
-      children,
-      id,
-      onClearSelection: onClearSelectionProp,
-      selectedItemCount: selectedItemCountProp,
-      variant,
-      size,
+const ActionBar = ({
+  children,
+  id,
+  onClearSelection: onClearSelectionProp,
+  selectedItemCount: selectedItemCountProp,
+  variant,
+  size,
+  ref: forwardedRef,
+}: ActionBarProps & { ref?: Ref<HTMLDivElement> }) => {
+  const context = useActionBarContext();
+  const selectedItemCount =
+    selectedItemCountProp ?? context?.selectedItemCount ?? 0;
+  const onClearSelection = onClearSelectionProp ?? context?.onClearSelection;
+  const onHeightChange = context?.onHeightChange;
+  const isSSR = useIsSSR();
+
+  // Internal ref for exit animation
+  const internalRef = useRef<HTMLDivElement>(null);
+  const ref = (forwardedRef ??
+    internalRef) as React.RefObject<HTMLDivElement | null>;
+
+  const isOpen = selectedItemCount !== 0;
+  const isExiting = useExitAnimation(ref, isOpen);
+  const shouldRender = !isSSR && (isOpen || isExiting);
+
+  // Report measured height back to useActionBar via context
+  useResizeObserver({
+    ref,
+    onResize: () => {
+      onHeightChange?.(ref.current?.offsetHeight ?? 0);
     },
-    forwardedRef
-  ) => {
-    const context = useActionBarContext();
-    const selectedItemCount =
-      selectedItemCountProp ?? context?.selectedItemCount ?? 0;
-    const onClearSelection = onClearSelectionProp ?? context?.onClearSelection;
-    const onHeightChange = context?.onHeightChange;
-    const isSSR = useIsSSR();
+  });
 
-    // Internal ref for exit animation
-    const internalRef = useRef<HTMLDivElement>(null);
-    const ref = (forwardedRef ??
-      internalRef) as React.RefObject<HTMLDivElement | null>;
+  useLayoutEffect(() => {
+    if (shouldRender) return;
+    onHeightChange?.(0);
+  }, [shouldRender, onHeightChange]);
 
-    const isOpen = selectedItemCount !== 0;
-    const isExiting = useExitAnimation(ref, isOpen);
-    const shouldRender = !isSSR && (isOpen || isExiting);
-
-    // Report measured height back to useActionBar via context
-    useResizeObserver({
-      ref,
-      onResize: () => {
-        onHeightChange?.(ref.current?.offsetHeight ?? 0);
-      },
-    });
-
-    useLayoutEffect(() => {
-      if (shouldRender) return;
-      onHeightChange?.(0);
-    }, [shouldRender, onHeightChange]);
-
-    // Retain last count so we don't flash "0 selected" during exit animation
-    const [lastCount, setLastCount] = useState(selectedItemCount);
-    if (selectedItemCount !== 0 && selectedItemCount !== lastCount) {
-      setLastCount(selectedItemCount);
-    }
-
-    // Nothing to render
-    if (!shouldRender) {
-      return null;
-    }
-
-    return (
-      <ActionBarInner
-        ref={ref}
-        id={id}
-        onClearSelection={onClearSelection}
-        lastCount={lastCount}
-        isExiting={isExiting}
-        variant={variant}
-        size={size}
-      >
-        {children}
-      </ActionBarInner>
-    );
+  // Retain last count so we don't flash "0 selected" during exit animation
+  const [lastCount, setLastCount] = useState(selectedItemCount);
+  if (selectedItemCount !== 0 && selectedItemCount !== lastCount) {
+    setLastCount(selectedItemCount);
   }
-);
 
-const ActionBar = _ActionBar as ActionBarComponent;
-ActionBar.Button = ActionButton;
+  // Nothing to render
+  if (!shouldRender) {
+    return null;
+  }
+
+  return (
+    <ActionBarInner
+      ref={ref}
+      id={id}
+      onClearSelection={onClearSelection}
+      lastCount={lastCount}
+      isExiting={isExiting}
+      variant={variant}
+      size={size}
+    >
+      {children}
+    </ActionBarInner>
+  );
+};
 
 export { ActionBar };
-export type { ActionButtonProps };

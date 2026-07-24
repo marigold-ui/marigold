@@ -1,14 +1,13 @@
 'use client';
 
-import { ArrowLeft, LifeBuoy } from 'lucide-react';
+import { BookOpen, LifeBuoy } from 'lucide-react';
 import type { PropsWithChildren, ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import {
-  AppLayout,
+  AppShell,
   Badge,
   Breadcrumbs,
   Inline,
-  LinkButton,
   RouterProvider,
   Sidebar,
   Stack,
@@ -16,22 +15,35 @@ import {
   TopNavigation,
 } from '@marigold/components';
 import { Logo } from '@/ui/Logo';
-import type { NavNode, NavSection, ShellConfig } from './shell-types';
+import type { NavNode, RailTile, ShellConfig } from './shell-types';
 import { UserMenu } from './user-menu';
 
 type LeafItem = Extract<NavNode, { kind: 'Item'; slug: string }>;
+type Ancestor = { label: string; slug?: string };
+
+// First reachable leaf of a branch — the target an ancestor crumb links to,
+// so every crumb in the trail is a real place (no dead `#` links).
+const firstLeafSlug = (item: NavNode): string | undefined => {
+  if (item.kind !== 'Item') return undefined;
+  if (!item.children) return item.slug;
+  for (const child of item.children) {
+    const slug = firstLeafSlug(child);
+    if (slug !== undefined) return slug;
+  }
+  return undefined;
+};
 
 const findLeaf = (
   items: NavNode[],
   predicate: (leaf: LeafItem) => boolean,
-  ancestors: string[] = []
-): { leaf: LeafItem; ancestors: string[] } | null => {
+  ancestors: Ancestor[] = []
+): { leaf: LeafItem; ancestors: Ancestor[] } | null => {
   for (const item of items) {
     if (item.kind !== 'Item') continue;
     if (item.children) {
       const found = findLeaf(item.children, predicate, [
         ...ancestors,
-        item.label,
+        { label: item.label, slug: firstLeafSlug(item) },
       ]);
       if (found) return found;
     } else if (predicate(item)) {
@@ -41,12 +53,50 @@ const findLeaf = (
   return null;
 };
 
-const findActive = (sections: NavSection[], slug: string) => {
-  for (const section of sections) {
-    const found = findLeaf(section.items, leaf => leaf.slug === slug);
-    if (found) return { section, ...found };
+// The tile's landing page: a link tile is its own destination; a section tile
+// lands on its first leaf (mirroring how `Sidebar.RailItem` resolves its href).
+const tileLanding = (tile: RailTile, base: string): string => {
+  if (tile.kind === 'link') return `${base}/${tile.slug}`;
+  for (const item of tile.items) {
+    const slug = firstLeafSlug(item);
+    if (slug !== undefined) return slug ? `${base}/${slug}` : base;
   }
-  return { section: sections[0], leaf: undefined, ancestors: [] as string[] };
+  return base;
+};
+
+// Match the slug against the tiles' destinations, falling back to progressively
+// shorter path prefixes. A drill-in like `users/token` has no leaf of its own,
+// so it resolves to the parent `users` leaf and returns the leftover segments as
+// `trailing` — the parent stays highlighted and the trailing segments become
+// extra crumbs.
+const findActive = (tiles: RailTile[], slug: string) => {
+  const segments = slug.split('/');
+  for (let end = segments.length; end >= 1; end--) {
+    const candidate = segments.slice(0, end).join('/');
+    for (const tile of tiles) {
+      if (tile.kind === 'link') {
+        if (tile.slug === candidate) {
+          return {
+            tile,
+            leaf: undefined,
+            ancestors: [] as Ancestor[],
+            trailing: segments.slice(end),
+          };
+        }
+        continue;
+      }
+      const found = findLeaf(tile.items, leaf => leaf.slug === candidate);
+      if (found) {
+        return { tile, ...found, trailing: segments.slice(end) };
+      }
+    }
+  }
+  return {
+    tile: tiles[0],
+    leaf: undefined,
+    ancestors: [] as Ancestor[],
+    trailing: [] as string[],
+  };
 };
 
 const renderNav = (items: NavNode[], base: string): ReactNode[] =>
@@ -80,9 +130,9 @@ const renderNav = (items: NavNode[], base: string): ReactNode[] =>
   });
 
 const UserSection = () => (
-  <Inline space={2} alignY="center" noWrap>
+  <Inline space="related" alignY="center" noWrap>
     <Stack>
-      <Inline space={1} alignY="center" noWrap>
+      <Inline space="tight" alignY="center" noWrap>
         <Text size="sm" weight="bold">
           Jane Doe
         </Text>
@@ -104,71 +154,119 @@ export const ShellLayout = ({
   const router = useRouter();
 
   const slug = pathname.replace(config.base, '').replace(/^\//, '');
-  const { leaf, ancestors } = findActive(config.sections, slug);
+  const { tile, leaf, ancestors, trailing } = findActive(config.tiles, slug);
+  const leafHref = leaf?.slug ? `${config.base}/${leaf.slug}` : config.base;
+  // The contextual docs backlink: a link tile carries its own docs reference,
+  // a section tile takes it from the active leaf.
+  const docsHref =
+    (tile.kind === 'link' ? tile.docsHref : leaf?.docsHref) ?? '/';
 
   return (
     <RouterProvider navigate={href => router.push(href)}>
       <Sidebar.Provider defaultOpen>
-        <AppLayout>
-          <AppLayout.Sidebar>
-            <Sidebar.Header>
-              <Inline space={2} alignY="center" noWrap>
+        <AppShell>
+          <Sidebar>
+            <Sidebar.Rail current={pathname}>
+              {/* Brand for the mobile drawer — on desktop it lives in the top bar. */}
+              <Sidebar.Header>
+                <Inline space="related" alignY="center" noWrap>
+                  <Logo className="size-8 shrink-0" />
+                  <Text weight="bold" fontSize="lg">
+                    Examples
+                  </Text>
+                </Inline>
+              </Sidebar.Header>
+              {config.tiles.map(item =>
+                item.kind === 'link' ? (
+                  <Sidebar.RailItem
+                    key={item.id}
+                    id={item.id}
+                    icon={item.icon}
+                    href={`${config.base}/${item.slug}`}
+                  >
+                    {item.label}
+                  </Sidebar.RailItem>
+                ) : (
+                  <Sidebar.RailItem key={item.id} id={item.id} icon={item.icon}>
+                    {item.label}
+                    <Sidebar.Nav aria-label={item.label}>
+                      {renderNav(item.items, config.base)}
+                    </Sidebar.Nav>
+                  </Sidebar.RailItem>
+                )
+              )}
+              <Sidebar.Footer>
+                {/* Pinned tiles: the docs backlink follows the active demo. */}
+                <Sidebar.RailItem id="docs" icon={<BookOpen />} href={docsHref}>
+                  Docs
+                </Sidebar.RailItem>
+                <Sidebar.RailItem
+                  id="help"
+                  icon={<LifeBuoy />}
+                  href="/getting-started/get-in-touch"
+                >
+                  Help
+                </Sidebar.RailItem>
+              </Sidebar.Footer>
+            </Sidebar.Rail>
+          </Sidebar>
+          <TopNavigation>
+            <TopNavigation.Start>
+              {/* The bar spans the full width; the brand holds the fixed
+                  top-left spot and never moves when the panel collapses. */}
+              <Inline space="related" alignY="center" noWrap>
                 <Logo className="size-8 shrink-0" />
                 <Text weight="bold" fontSize="lg">
                   Examples
                 </Text>
               </Inline>
-            </Sidebar.Header>
-            <Sidebar.Nav current={pathname}>
-              {config.sections.map((section, i) => [
-                ...(i > 0
-                  ? [<Sidebar.Separator key={`sep-${section.label}`} />]
-                  : []),
-                <Sidebar.GroupLabel key={`label-${section.label}`}>
-                  {section.label}
-                </Sidebar.GroupLabel>,
-                ...renderNav(section.items, config.base),
-              ])}
-            </Sidebar.Nav>
-            <Sidebar.Footer>
-              <Stack space={2} alignX="left">
-                <LinkButton href={leaf?.docsHref ?? '/'} variant="ghost">
-                  <ArrowLeft />
-                  {`Go to ${leaf?.docsLabel ?? 'documentation'}`}
-                </LinkButton>
-                <LinkButton
-                  href="/getting-started/get-in-touch"
-                  variant="ghost"
-                >
-                  <LifeBuoy />
-                  Get in touch
-                </LinkButton>
-              </Stack>
-            </Sidebar.Footer>
-          </AppLayout.Sidebar>
-          <AppLayout.Header>
-            <TopNavigation.Start>
-              <Sidebar.Toggle />
-            </TopNavigation.Start>
-            <TopNavigation.Middle>
+              <Sidebar.Toggle variant="rail" />
               <Breadcrumbs>
-                <Breadcrumbs.Item href="#">Home</Breadcrumbs.Item>
-                {ancestors.map(label => (
-                  <Breadcrumbs.Item key={label} href="#">
-                    {label}
+                {/* The active tile leads the trail so the location stays
+                    readable when the rail is collapsed to icons. On the
+                    landing page it can share its href with the leaf crumb,
+                    so crumbs are keyed by role, not href. */}
+                <Breadcrumbs.Item
+                  key={`tile-${tile.id}`}
+                  href={tileLanding(tile, config.base)}
+                >
+                  {tile.label}
+                </Breadcrumbs.Item>
+                {ancestors
+                  // Every ancestor crumb links to its first real page; a
+                  // branch without one has nowhere to go and drops out.
+                  .filter(ancestor => ancestor.slug)
+                  .map(ancestor => (
+                    <Breadcrumbs.Item
+                      key={`ancestor-${ancestor.label}`}
+                      href={`${config.base}/${ancestor.slug}`}
+                    >
+                      {ancestor.label}
+                    </Breadcrumbs.Item>
+                  ))}
+                {leaf && (
+                  // On a drill-in the leaf becomes a real link back to the list.
+                  <Breadcrumbs.Item key="leaf" href={leafHref}>
+                    {leaf.label}
+                  </Breadcrumbs.Item>
+                )}
+                {trailing.map((segment, index) => (
+                  <Breadcrumbs.Item
+                    key={`trailing-${segment}`}
+                    // The last trailing segment is the page we are on.
+                    href={index === trailing.length - 1 ? pathname : '#'}
+                  >
+                    {config.resolveLabel?.(segment) ?? segment}
                   </Breadcrumbs.Item>
                 ))}
-                {leaf && (
-                  <Breadcrumbs.Item href="#">{leaf.label}</Breadcrumbs.Item>
-                )}
               </Breadcrumbs>
-            </TopNavigation.Middle>
+            </TopNavigation.Start>
             <TopNavigation.End>
               <UserSection />
             </TopNavigation.End>
-          </AppLayout.Header>
-          <AppLayout.Main>{children}</AppLayout.Main>
-        </AppLayout>
+          </TopNavigation>
+          {children}
+        </AppShell>
       </Sidebar.Provider>
     </RouterProvider>
   );
