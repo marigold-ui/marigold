@@ -47,6 +47,7 @@ export type SubcommandName =
   | 'examples'
   | 'init'
   | 'doctor'
+  | 'migrate'
   | 'telemetry'
   | 'completion';
 
@@ -102,6 +103,13 @@ export const SUBCOMMANDS: readonly SubcommandSpec[] = [
     flags: [
       { name: '--format', type: 'string', values: doctorFormatValues },
       { name: '--offline', type: 'boolean' },
+    ],
+  },
+  {
+    name: 'migrate',
+    flags: [
+      { name: '--dry-run', type: 'boolean' },
+      { name: '--only', type: 'string' },
     ],
   },
   {

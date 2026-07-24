@@ -1,0 +1,403 @@
+import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync } from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { detectMigration, runMigrate } from './migrate.js';
+
+// End-to-end run against a miniature portal-shaped theme tree: standalone
+// theme, 4-space indent, one style file per component, barrel index.
+
+const CARD = `import { cva, ThemeComponent } from '@marigold/system';
+
+export const Card: ThemeComponent<'Card'> = cva({
+    base: ['bg-white rounded-xs'],
+    variants: {
+        variant: {
+            default: 'p-2'
+        }
+    }
+});
+`;
+
+const SWITCH = `import { cva, ThemeComponent } from '@marigold/system';
+
+export const Switch: ThemeComponent<'Switch'> = {
+    container: cva({
+        base: 'disabled:cursor-not-allowed disabled:text-disabled-foreground'
+    }),
+    track: cva({ base: 'flex h-6 w-10' }),
+    thumb: cva({ base: 'block size-5' })
+};
+`;
+
+const INDEX = `export * from './Card.styles';
+export * from './Switch.styles';
+`;
+
+const setupFixture = (): string => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'marigold-migrate-'));
+  const components = path.join(root, 'theme', 'components');
+  mkdirSync(components, { recursive: true });
+  writeFileSync(path.join(components, 'Card.styles.ts'), CARD);
+  writeFileSync(path.join(components, 'Switch.styles.ts'), SWITCH);
+  writeFileSync(path.join(components, 'index.ts'), INDEX);
+  // decoy that must be ignored: no @marigold/system import
+  writeFileSync(
+    path.join(root, 'theme', 'unrelated.ts'),
+    `export const x = 1;\n`
+  );
+  return root;
+};
+
+describe('detectMigration', () => {
+  const setupRepo = (version: string, installed = true): string => {
+    const root = mkdtempSync(path.join(os.tmpdir(), 'marigold-detect-'));
+    if (installed) {
+      const pkgDir = path.join(root, 'node_modules', '@marigold', 'components');
+      mkdirSync(pkgDir, { recursive: true });
+      writeFileSync(
+        path.join(pkgDir, 'package.json'),
+        JSON.stringify({ name: '@marigold/components', version })
+      );
+    } else {
+      writeFileSync(
+        path.join(root, 'package.json'),
+        JSON.stringify({ dependencies: { '@marigold/components': version } })
+      );
+    }
+    // the migration target usually sits far below the repo root
+    const target = path.join(root, 'src', 'theme');
+    mkdirSync(target, { recursive: true });
+    return target;
+  };
+
+  test('walks up to node_modules and proposes the applicable migration', () => {
+    const detected = detectMigration(setupRepo('17.9.1'));
+    expect(detected).toEqual({
+      installed: '17.9.1',
+      source: 'node_modules',
+      versions: ['v18'],
+    });
+  });
+
+  test('falls back to the declared range when nothing is installed', () => {
+    const detected = detectMigration(setupRepo('^17.0.0', false));
+    expect(detected).toEqual({
+      installed: '17.0.0',
+      source: 'package.json',
+      versions: ['v18'],
+    });
+  });
+
+  test('proposes the same-major migration (upgrade first, then migrate)', () => {
+    const detected = detectMigration(setupRepo('18.0.0-beta.4'));
+    expect(detected).toEqual({
+      installed: '18.0.0-beta.4',
+      source: 'node_modules',
+      versions: ['v18'],
+    });
+  });
+
+  test('reports up to date when the installed major is past every migration', () => {
+    const detected = detectMigration(setupRepo('19.0.0'));
+    expect(detected).toEqual({
+      installed: '19.0.0',
+      source: 'node_modules',
+      versions: [],
+    });
+  });
+
+  test('returns null when no @marigold/components exists anywhere', () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), 'marigold-detect-'));
+    expect(detectMigration(root)).toBeNull();
+  });
+});
+
+describe('runMigrate', () => {
+  test('rejects unknown migration versions', () => {
+    expect(() =>
+      runMigrate({ version: 'v99', targetPath: '.', dryRun: true })
+    ).toThrow(/Unknown migration 'v99'/);
+  });
+
+  test('dry run reports changes without writing anything', () => {
+    const root = setupFixture();
+    const cardPath = path.join(root, 'theme', 'components', 'Card.styles.ts');
+    const before = readFileSync(cardPath, 'utf8');
+
+    const { output } = runMigrate({
+      version: 'v18',
+      targetPath: root,
+      dryRun: true,
+    });
+
+    expect(output).toContain('(dry run)');
+    expect(output).toContain('Card: moved existing styles into');
+    expect(output).toContain('Switch.container: swapped baseline styles');
+    expect(output).toContain('would create 1 file(s)');
+    expect(readFileSync(cardPath, 'utf8')).toBe(before);
+    expect(
+      existsSync(
+        path.join(root, 'theme', 'components', 'BooleanField.styles.ts')
+      )
+    ).toBe(false);
+  });
+
+  test('applies edits, scaffolds required components, updates the barrel', () => {
+    const root = setupFixture();
+    const components = path.join(root, 'theme', 'components');
+
+    const { output } = runMigrate({
+      version: 'v18',
+      targetPath: root,
+      dryRun: false,
+    });
+
+    const card = readFileSync(path.join(components, 'Card.styles.ts'), 'utf8');
+    expect(card).toContain('container: cva({');
+    expect(card).toContain('media: cva({}),');
+
+    const switchSource = readFileSync(
+      path.join(components, 'Switch.styles.ts'),
+      'utf8'
+    );
+    expect(switchSource).toContain(`'grid gap-x-2 items-center'`);
+
+    const scaffold = readFileSync(
+      path.join(components, 'BooleanField.styles.ts'),
+      'utf8'
+    );
+    expect(scaffold).toContain(`ThemeComponent<'BooleanField'>`);
+
+    const index = readFileSync(path.join(components, 'index.ts'), 'utf8');
+    expect(index).toContain(`export * from './BooleanField.styles';`);
+
+    expect(output).toContain('created');
+    expect(output).toContain('Run your typechecker');
+  });
+
+  test('is idempotent: a second run changes nothing', () => {
+    const root = setupFixture();
+    runMigrate({ version: 'v18', targetPath: root, dryRun: false });
+    const components = path.join(root, 'theme', 'components');
+    const snapshot = ['Card.styles.ts', 'Switch.styles.ts', 'index.ts'].map(f =>
+      readFileSync(path.join(components, f), 'utf8')
+    );
+
+    const { output } = runMigrate({
+      version: 'v18',
+      targetPath: root,
+      dryRun: false,
+    });
+
+    expect(
+      ['Card.styles.ts', 'Switch.styles.ts', 'index.ts'].map(f =>
+        readFileSync(path.join(components, f), 'utf8')
+      )
+    ).toEqual(snapshot);
+    expect(output).toContain('Edited 0 file(s)');
+  });
+
+  test('reports when no Marigold imports are found', () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), 'marigold-migrate-'));
+    writeFileSync(path.join(root, 'app.ts'), `export const x = 1;\n`);
+
+    const { output } = runMigrate({
+      version: 'v18',
+      targetPath: root,
+      dryRun: true,
+    });
+
+    expect(output).toContain('No files importing');
+  });
+
+  test('applies safe application-code codemods alongside theme codemods', () => {
+    const root = setupFixture();
+    const appFile = path.join(root, 'app', 'Profile.tsx');
+    mkdirSync(path.dirname(appFile), { recursive: true });
+    writeFileSync(
+      appFile,
+      `import { Inset, Tabs, TextField, Tooltip } from '@marigold/components';
+
+export const Profile = () => (
+  <Inset space={4}>
+    <Tabs>
+      <Tabs.TabPanel id="a">
+        <TextField label="Age" min={0} />
+        <Tooltip open>hint</Tooltip>
+      </Tabs.TabPanel>
+    </Tabs>
+  </Inset>
+);
+`
+    );
+
+    const { output } = runMigrate({
+      version: 'v18',
+      targetPath: root,
+      dryRun: false,
+    });
+
+    const app = readFileSync(appFile, 'utf8');
+    expect(app).toContain('<Inset p={4}>');
+    expect(app).toContain('<Tabs.Panel id="a">');
+    expect(app).toContain('</Tabs.Panel>');
+    expect(app).toContain('<TextField label="Age" />');
+    expect(app).toContain('<Tooltip open>'); // warning only, never edited
+    expect(output).toContain('Tooltip[open]');
+  });
+
+  test('scans .jsx and .js application files too', () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), 'marigold-migrate-'));
+    const appFile = path.join(root, 'App.jsx');
+    writeFileSync(
+      appFile,
+      `import { Pickup } from '@marigold/icons';
+export const App = () => <Pickup />;
+`
+    );
+
+    runMigrate({ version: 'v18', targetPath: root, dryRun: false });
+
+    expect(readFileSync(appFile, 'utf8')).toContain('<Store />');
+  });
+
+  test('reports a file-level parse error once, not per codemod', () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), 'marigold-migrate-'));
+    writeFileSync(
+      path.join(root, 'broken.tsx'),
+      `import { Inset } from '@marigold/components';
+const = broken(;
+`
+    );
+
+    const { output } = runMigrate({
+      version: 'v18',
+      targetPath: root,
+      dryRun: true,
+    });
+
+    expect(output.match(/parse error/g)).toHaveLength(1);
+  });
+
+  test('returns a pre-analysis summary of the changes that fired', () => {
+    const root = setupFixture();
+
+    const { summary } = runMigrate({
+      version: 'v18',
+      targetPath: root,
+      dryRun: true,
+    });
+
+    expect(summary).toEqual([
+      {
+        name: 'restructure-to-slots',
+        description: expect.stringContaining('slot objects'),
+        files: 1,
+        changes: expect.any(Number),
+      },
+      {
+        name: 'swap-exact-classes',
+        description: expect.stringContaining('baseline'),
+        files: 1,
+        changes: 1,
+      },
+      // stub-missing-slots does not fire: the fixture Switch already has
+      // every v18 slot and the Card restructure stubs its own new slots
+      {
+        name: 'scaffold-components',
+        description: expect.stringContaining('create theme styles'),
+        files: 2, // BooleanField.styles.ts + the barrel index export
+        changes: 2,
+      },
+    ]);
+  });
+
+  test('only applies the selected changes; everything else stays untouched', () => {
+    const root = setupFixture();
+    const components = path.join(root, 'theme', 'components');
+    const cardBefore = readFileSync(
+      path.join(components, 'Card.styles.ts'),
+      'utf8'
+    );
+
+    runMigrate({
+      version: 'v18',
+      targetPath: root,
+      dryRun: false,
+      only: ['swap-exact-classes'],
+    });
+
+    expect(readFileSync(path.join(components, 'Card.styles.ts'), 'utf8')).toBe(
+      cardBefore
+    );
+    expect(
+      readFileSync(path.join(components, 'Switch.styles.ts'), 'utf8')
+    ).toContain(`'grid gap-x-2 items-center'`);
+    expect(existsSync(path.join(components, 'BooleanField.styles.ts'))).toBe(
+      false
+    );
+  });
+
+  test('rejects unknown names in only', () => {
+    const root = setupFixture();
+
+    expect(() =>
+      runMigrate({
+        version: 'v18',
+        targetPath: root,
+        dryRun: true,
+        only: ['swap-exact-clases'],
+      })
+    ).toThrow(/Unknown change\(s\): swap-exact-clases/);
+  });
+
+  test('reports token findings in CSS files and component internals', () => {
+    const root = setupFixture();
+    writeFileSync(
+      path.join(root, 'theme', 'tokens.css'),
+      `:root { --color-brand: #f80; }
+.help { color: var(--color-muted-foreground); }
+`
+    );
+    writeFileSync(
+      path.join(root, 'List.tsx'),
+      `import { SelectList } from '@marigold/components';
+export const List = () => <SelectList aria-label="x" />;
+`
+    );
+
+    const { output } = runMigrate({
+      version: 'v18',
+      targetPath: root,
+      dryRun: true,
+    });
+
+    expect(output).toContain('`muted-foreground` token was renamed');
+    expect(output).not.toContain('`--color-brand`'); // defined by the consumer
+    expect(output).toContain('SelectList: its v18 implementation hardcodes');
+  });
+
+  test('does not warn about added tokens when the consumer uses theme-rui', () => {
+    const root = setupFixture();
+    writeFileSync(
+      path.join(root, 'setup.ts'),
+      `import '@marigold/theme-rui/styles.css';
+`
+    );
+    writeFileSync(
+      path.join(root, 'List.tsx'),
+      `import { SelectList } from '@marigold/components';
+export const List = () => <SelectList aria-label="x" />;
+`
+    );
+
+    const { output } = runMigrate({
+      version: 'v18',
+      targetPath: root,
+      dryRun: true,
+    });
+
+    expect(output).not.toContain('hardcodes');
+  });
+});
