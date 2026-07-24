@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { type ComponentProps, useMemo, useState } from 'react';
 import type { Key } from '@react-types/shared';
 import type { Selection } from '@marigold/components';
 import {
@@ -17,27 +17,98 @@ import {
   Tag,
   Text,
 } from '@marigold/components';
-import { statusVariant, venues } from './venues';
+import { type Venue, statusVariant, venues } from './venues';
 
-const types = ['Club', 'Concert Hall', 'Theater', 'Open Air', 'Arena'];
-const regions = [
-  'Berlin',
-  'Hamburg',
-  'Bavaria',
-  'North Rhine-Westphalia',
-  'Hesse',
-  'Baden-Württemberg',
-  'Lower Saxony',
-  'Rhineland-Palatinate',
-  'Saxony',
-  'Vienna',
-  'Upper Austria',
-  'Salzburg',
-  'Tyrol',
-  'Zurich',
-  'Basel-Stadt',
+// Type and region options are derived from the data so they never drift from
+// it: every option maps to real venues, and every venue value is selectable.
+const unique = (key: 'type' | 'region') => [
+  ...new Set(venues.map(venue => venue[key])),
 ];
+const types = unique('type');
+const regions = unique('region');
+// Status stays explicit to keep its lifecycle order (Available, Held, Booked).
 const statuses = ['Available', 'Held', 'Booked'];
+
+type FacetKey = 'type' | 'region' | 'status';
+
+interface VenueFilters {
+  query: string;
+  type: Key | null;
+  region: Key | null;
+  status: Key | null;
+}
+
+// Does a venue match the active filters? `exclude` skips one facet so a facet's
+// own options can be counted against the other filters.
+const matchesVenue = (
+  venue: Venue,
+  filters: VenueFilters,
+  exclude?: FacetKey
+) => {
+  const { query, type, region, status } = filters;
+  return (
+    (!query || `${venue.name} ${venue.city}`.toLowerCase().includes(query)) &&
+    (exclude === 'type' ||
+      type == null ||
+      type === 'all' ||
+      venue.type === type) &&
+    (exclude === 'region' ||
+      region == null ||
+      region === 'all' ||
+      venue.region === region) &&
+    (exclude === 'status' ||
+      status == null ||
+      status === 'all' ||
+      venue.status === status)
+  );
+};
+
+interface FilterSelectProps {
+  label: string;
+  allLabel: string;
+  value: Key | null;
+  onChange: (key: Key | null) => void;
+  options: string[];
+  counts: Record<string, number>;
+  width: ComponentProps<typeof Select>['width'];
+}
+
+// A filter whose options carry their result count and disable at zero, so the
+// user sees where results are and never picks a dead-end combination. The
+// current value is never disabled, so a filter can always be changed back.
+const FilterSelect = ({
+  label,
+  allLabel,
+  value,
+  onChange,
+  options,
+  counts,
+  width,
+}: FilterSelectProps) => {
+  const total = Object.values(counts).reduce((sum, n) => sum + n, 0);
+  const disabledKeys = options.filter(
+    option => (counts[option] ?? 0) === 0 && option !== value
+  );
+  const trigger = value == null || value === 'all' ? allLabel : String(value);
+  return (
+    <Select
+      aria-label={label}
+      value={value}
+      onChange={onChange}
+      width={width}
+      disabledKeys={disabledKeys}
+      // Keep the count out of the collapsed trigger; it belongs in the list.
+      renderValue={() => trigger}
+    >
+      <Select.Option id="all">{`${allLabel} (${total})`}</Select.Option>
+      {options.map(option => (
+        <Select.Option key={option} id={option}>
+          {`${option} (${counts[option] ?? 0})`}
+        </Select.Option>
+      ))}
+    </Select>
+  );
+};
 
 interface PickBodyProps {
   title: string;
@@ -59,17 +130,37 @@ const PickBody = ({
   const [selected, setSelected] = useState<Set<Key>>(() => new Set(initial));
 
   const results = useMemo(() => {
-    const query = search.trim().toLowerCase();
-    return venues.filter(venue => {
-      const matchesSearch =
-        !query || `${venue.name} ${venue.city}`.toLowerCase().includes(query);
-      const matchesType = type == null || type === 'all' || venue.type === type;
-      const matchesRegion =
-        region == null || region === 'all' || venue.region === region;
-      const matchesStatus =
-        status == null || status === 'all' || venue.status === status;
-      return matchesSearch && matchesType && matchesRegion && matchesStatus;
-    });
+    const filters: VenueFilters = {
+      query: search.trim().toLowerCase(),
+      type,
+      region,
+      status,
+    };
+    return venues.filter(venue => matchesVenue(venue, filters));
+  }, [search, type, region, status]);
+
+  // Faceted counts: how many venues each option yields under the other active
+  // filters, so options can show a count and disable at zero. Each facet is
+  // counted with its own constraint excluded, so its options reflect the rest.
+  const counts = useMemo(() => {
+    const filters: VenueFilters = {
+      query: search.trim().toLowerCase(),
+      type,
+      region,
+      status,
+    };
+    const byType: Record<string, number> = {};
+    const byRegion: Record<string, number> = {};
+    const byStatus: Record<string, number> = {};
+    for (const venue of venues) {
+      if (matchesVenue(venue, filters, 'type'))
+        byType[venue.type] = (byType[venue.type] ?? 0) + 1;
+      if (matchesVenue(venue, filters, 'region'))
+        byRegion[venue.region] = (byRegion[venue.region] ?? 0) + 1;
+      if (matchesVenue(venue, filters, 'status'))
+        byStatus[venue.status] = (byStatus[venue.status] ?? 0) + 1;
+    }
+    return { type: byType, region: byRegion, status: byStatus };
   }, [search, type, region, status]);
 
   // React-aria only reports the currently visible (filtered) rows, and "select
@@ -111,45 +202,33 @@ const PickBody = ({
               onChange={setSearch}
               width={56}
             />
-            <Select
-              aria-label="Filter by type"
+            <FilterSelect
+              label="Filter by type"
+              allLabel="All types"
               value={type}
               onChange={setType}
+              options={types}
+              counts={counts.type}
               width={40}
-            >
-              <Select.Option id="all">All types</Select.Option>
-              {types.map(t => (
-                <Select.Option key={t} id={t}>
-                  {t}
-                </Select.Option>
-              ))}
-            </Select>
-            <Select
-              aria-label="Filter by region"
+            />
+            <FilterSelect
+              label="Filter by region"
+              allLabel="All regions"
               value={region}
               onChange={setRegion}
+              options={regions}
+              counts={counts.region}
               width={56}
-            >
-              <Select.Option id="all">All regions</Select.Option>
-              {regions.map(r => (
-                <Select.Option key={r} id={r}>
-                  {r}
-                </Select.Option>
-              ))}
-            </Select>
-            <Select
-              aria-label="Filter by status"
+            />
+            <FilterSelect
+              label="Filter by status"
+              allLabel="Any status"
               value={status}
               onChange={setStatus}
+              options={statuses}
+              counts={counts.status}
               width={40}
-            >
-              <Select.Option id="all">Any status</Select.Option>
-              {statuses.map(s => (
-                <Select.Option key={s} id={s}>
-                  {s}
-                </Select.Option>
-              ))}
-            </Select>
+            />
           </Inline>
 
           {/* The staged set stays visible as removable tags through every
