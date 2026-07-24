@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import pc from 'picocolors';
-import { readFileSync } from 'node:fs';
+import { readFileSync, realpathSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
@@ -590,8 +590,17 @@ export const main = async (
 
 // Only auto-invoke when this module is the entry point (i.e. the user ran
 // `marigold ...`). When imported from tests, `main()` is awaited explicitly.
+// argv[1] is resolved through symlinks because global bins (npm -g, manual
+// links) are symlinks, while import.meta.url is always the realpath.
+const resolveEntry = (p: string): string => {
+  try {
+    return realpathSync(p);
+  } catch {
+    return path.resolve(p);
+  }
+};
 const isEntryPoint = process.argv[1]
-  ? fileURLToPath(import.meta.url) === path.resolve(process.argv[1])
+  ? fileURLToPath(import.meta.url) === resolveEntry(process.argv[1])
   : false;
 if (isEntryPoint) {
   main().then(

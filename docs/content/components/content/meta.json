@@ -4,6 +4,7 @@
     "description",
     "divider",
     "empty-state",
+    "error-state",
     "headline",
     "keyboard",
     "list",

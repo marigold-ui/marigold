@@ -17,7 +17,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
   }),
   item: cva({
     base: [
-      'group/option relative grid grid-cols-[auto_1fr] items-center gap-x-2 rounded-md px-2 py-1.5 text-sm text-foreground max-sm:min-h-11',
+      'group/option relative grid grid-cols-[auto_1fr] items-center gap-x-2 rounded-md px-2 py-1.5 text-sm text-foreground max-sm:min-h-touch-target',
       '[&_.selection-indicator>svg]:invisible [&_.selection-indicator>svg]:block',
       'selected:bg-selected selected:[&_.selection-indicator>svg]:visible',
       'hover:ui-state-hover',
