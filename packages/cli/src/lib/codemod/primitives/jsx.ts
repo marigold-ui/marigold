@@ -5,7 +5,7 @@ import {
   jsxOpeningName,
   walk,
 } from '../../tsx-ast.js';
-import { MARIGOLD_COMPONENTS } from '../anchor.js';
+import { MARIGOLD_COMPONENTS, MARIGOLD_SYSTEM } from '../anchor.js';
 import { parseOr } from '../engine.js';
 import type { Codemod, CodemodOutcome, MigrationManifest } from '../types.js';
 
@@ -120,6 +120,10 @@ const isNamePosition = (n: AnyNode, parent: AnyNode | null): boolean => {
     case 'MemberExpression':
     case 'OptionalMemberExpression':
       return parent.property === n && !computed;
+    case 'JSXMemberExpression':
+      // `<Icons.Pickup />` — the property names a key on `Icons`, not the
+      // import binding; only the object side references a binding
+      return parent.property === n;
     case 'ObjectProperty':
     case 'ObjectMethod':
     case 'ClassProperty':
@@ -210,7 +214,26 @@ export const renameImports = (manifest: MigrationManifest): Codemod => {
         const usages = new Map<string, AnyNode[]>(); // renameable references
         const shadowed = new Set<string>();
         const namesInFile = new Set<string>();
+        const reexported = new Set<string>(); // `export { Pickup }` locals
+        const exportsFrom: AnyNode[] = []; // `export { ... } from '<pkg>'`
         walk(file, (n, parent) => {
+          if (n.type === 'ExportNamedDeclaration') {
+            if (n.source) {
+              exportsFrom.push(n);
+            } else {
+              // a bare re-export references the local binding by name — a
+              // direct rename would leave it pointing at nothing
+              for (const spec of (n.specifiers as AnyNode[] | undefined) ??
+                []) {
+                const local = (spec.local as { name?: string } | undefined)
+                  ?.name;
+                if (spec.type === 'ExportSpecifier' && local) {
+                  reexported.add(local);
+                }
+              }
+            }
+            return;
+          }
           if (n.type !== 'Identifier' && n.type !== 'JSXIdentifier') return;
           const name = (n as { name?: string }).name;
           if (!name) return;
@@ -263,9 +286,11 @@ export const renameImports = (manifest: MigrationManifest): Codemod => {
 
             const aliasReason = namesInFile.has(entry.to)
               ? `\`${entry.to}\` is already used in this file`
-              : shadowed.has(entry.from)
-                ? `\`${entry.from}\` is re-declared or used as a shorthand property here`
-                : null;
+              : reexported.has(entry.from)
+                ? `\`${entry.from}\` is re-exported from this file`
+                : shadowed.has(entry.from)
+                  ? `\`${entry.from}\` is re-declared or used as a shorthand property here`
+                  : null;
 
             if (aliasReason) {
               s.overwrite(
@@ -292,8 +317,81 @@ export const renameImports = (manifest: MigrationManifest): Codemod => {
             );
           }
         }
+
+        // `export { Pickup } from '@marigold/icons'`: the specifier reads
+        // the package's export directly, so the local walk above never sees
+        // it. Rewrite to `Store as Pickup` — the public name downstream
+        // consumers import must survive.
+        for (const decl of exportsFrom) {
+          const src = (decl.source as { value?: string } | undefined)?.value;
+          const renames = src ? byPackage.get(src) : undefined;
+          if (!renames) continue;
+          for (const spec of (decl.specifiers as AnyNode[] | undefined) ?? []) {
+            if (spec.type !== 'ExportSpecifier') continue;
+            const local = spec.local as AnyNode; // name in the source package
+            const localName = (local as { name?: string }).name;
+            const entry = localName ? renames.get(localName) : undefined;
+            if (!entry) continue;
+            const note = entry.note ? ` (${entry.note})` : '';
+            const exportedName = (
+              spec.exported as { name?: string } | undefined
+            )?.name;
+            if (exportedName === localName) {
+              s.overwrite(
+                spec.start as number,
+                spec.end as number,
+                `${entry.to} as ${entry.from}`
+              );
+              changes.push(
+                `${src}: \`${entry.from}\` is now \`${entry.to}\` — re-exported as \`${entry.to} as ${entry.from}\` to keep the public name${note}`
+              );
+            } else {
+              // already aliased (`export { Pickup as Foo }`): only the
+              // source-side name changes
+              s.overwrite(local.start as number, local.end as number, entry.to);
+              changes.push(
+                `${src}: \`${entry.from}\` is now \`${entry.to}\` (public name \`${exportedName}\` kept)${note}`
+              );
+            }
+          }
+        }
         if (changes.length === 0) return { kind: 'unchanged', warnings: [] };
         return { kind: 'edited', output: s.toString(), changes, warnings: [] };
+      }),
+  };
+};
+
+/**
+ * Report-only: namespace imports (`import * as X`) of packages this
+ * migration changes. No codemod can follow `X.*` usages — theme anchoring,
+ * prop renames and import renames all silently miss them — so the file
+ * needs a manual review against the release notes.
+ */
+export const reportNamespaceImports = (
+  manifest: MigrationManifest
+): Codemod => {
+  const affected = new Set([
+    MARIGOLD_COMPONENTS,
+    MARIGOLD_SYSTEM,
+    ...manifest.jsx.importRenames.map(e => e.package),
+  ]);
+  return {
+    name: 'report-namespace-imports',
+    apply: source =>
+      parseOr(source, file => {
+        const warnings: string[] = [];
+        for (const imp of collectImports(file)) {
+          const src = (imp.source as { value?: string } | undefined)?.value;
+          if (!src || !affected.has(src)) continue;
+          for (const spec of (imp.specifiers as AnyNode[] | undefined) ?? []) {
+            if (spec.type !== 'ImportNamespaceSpecifier') continue;
+            const local = (spec.local as { name?: string } | undefined)?.name;
+            warnings.push(
+              `\`import * as ${local} from '${src}'\`: the codemods cannot follow namespace imports — review the \`${local}.*\` usages against the ${manifest.version} changes manually`
+            );
+          }
+        }
+        return { kind: 'unchanged', warnings };
       }),
   };
 };

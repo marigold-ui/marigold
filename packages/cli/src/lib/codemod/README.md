@@ -70,7 +70,8 @@ The pipeline order matters and is fixed in `commands/migrate.ts`:
 4. `rename-jsx-members` / `rename-jsx-props` / `remove-jsx-props`: safe
    application-code edits (see below).
 5. `report-dead-keys` / `report-structure` / `report-jsx-usage` /
-   `report-token-dependencies` / `report-token-usage`: report-only passes.
+   `report-namespace-imports` / `report-token-dependencies` /
+   `report-token-usage`: report-only passes.
 
 Scaffolding (new components like `BooleanField`) runs last, per manifest
 entry, next to the theme file of a component that requires it, and registers
@@ -92,7 +93,9 @@ The anchor here is the **import**: a JSX element only counts as a Marigold
 component when its (possibly aliased) name is imported from
 `@marigold/components`. Only explicit JSX attributes are touched; props
 hidden behind spreads are unreachable by design and left to the consumer's
-typecheck.
+typecheck. Namespace imports (`import * as X`) of migration-affected
+packages cannot be followed by any codemod and raise a warning instead
+(`report-namespace-imports`).
 
 **Renamed exports** (the v18 icon migration, driven by the manifest's
 `jsx.importRenames` and the official mapping table in
@@ -100,10 +103,13 @@ typecheck.
 every usage (`<Pickup />` becomes `<Store />`) — when the file provably
 allows it. Member accesses, object keys, and attribute names with the same
 spelling are never touched. When a direct rename is not provably safe (the
-old name is shadowed or used as a shorthand property, or the new name
-already exists in the file), the specifier falls back to the
-release-notes-blessed alias form (`Store as Pickup`), which keeps every
-call site valid, and the report names the reason. Re-running is a no-op
+old name is shadowed or used as a shorthand property, re-exported from the
+file, or the new name already exists in the file), the specifier falls back
+to the release-notes-blessed alias form (`Store as Pickup`), which keeps
+every call site — including `export { Pickup }` — valid, and the report
+names the reason. Direct re-exports (`export { Pickup } from
+'@marigold/icons'`) are rewritten to `export { Store as Pickup }`, so the
+public name downstream consumers import survives. Re-running is a no-op
 either way.
 
 Everything that needs a structural JSX move or a design decision is a
@@ -121,8 +127,8 @@ browser, so the manifest's `tokens` section drives report-only checks
 (`primitives/tokens.ts`). Three kinds of breakage are covered:
 
 - **Old tokens still referenced** (`tokens.renamed`): a plain text scan over
-  every `.ts`/`.tsx`/`.css` file under the target, not just Marigold
-  importers, for color utilities (`bg-brand`) and raw custom properties
+  every `.ts`/`.tsx`/`.js`/`.jsx`/`.css` file under the target, not just
+  Marigold importers, for color utilities (`bg-brand`) and raw custom properties
   (`var(--color-brand)`) whose token the target version renamed or removed.
   The warning names the replacement (`bg-primary`) when there is one. This
   bites consumers whose CSS is built on Marigold's token vocabulary.

@@ -14,6 +14,7 @@ import {
   renameJsxMembers,
   renameJsxProps,
   reportJsxUsage,
+  reportNamespaceImports,
 } from '../lib/codemod/primitives/jsx.js';
 import {
   reportDeadKeys,
@@ -152,9 +153,9 @@ const collectSourceFiles = (dir: string): string[] => {
       if (IGNORED_DIRS.has(entry.name) || entry.name.startsWith('.')) continue;
       out.push(...collectSourceFiles(path.join(dir, entry.name)));
     } else if (
-      /\.(tsx?|css)$/.test(entry.name) &&
+      /\.(tsx?|jsx?|css)$/.test(entry.name) &&
       !entry.name.endsWith('.d.ts') &&
-      !entry.name.endsWith('.min.css') // minified = build artifact
+      !/\.min\.(css|js)$/.test(entry.name) // minified = build artifact
     ) {
       out.push(path.join(dir, entry.name));
     }
@@ -192,7 +193,10 @@ const applyPipeline = (
     // and shared-AST plumbing is not worth it
     const outcome = codemod.apply(report.output);
     if (outcome.kind === 'skipped') {
-      report.skips.push(`${codemod.name}: ${outcome.reason}`);
+      // one parse error hits every parsing codemod — report it once
+      if (!report.skips.some(skip => skip.endsWith(outcome.reason))) {
+        report.skips.push(`${codemod.name}: ${outcome.reason}`);
+      }
       continue;
     }
     report.warnings.push(...outcome.warnings);
@@ -286,6 +290,7 @@ export const runMigrate = (options: MigrateOptions): MigrateResult => {
     reportDeadKeys(manifest),
     reportStructure(manifest),
     reportJsxUsage(manifest),
+    reportNamespaceImports(manifest),
     reportTokenDependencies(manifest, definedTokens),
     tokenUsage,
   ];

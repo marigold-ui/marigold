@@ -120,12 +120,12 @@ describe('runMigrate', () => {
     ).toThrow(/Unknown migration 'v99'/);
   });
 
-  test('dry run reports changes without writing anything', async () => {
+  test('dry run reports changes without writing anything', () => {
     const root = setupFixture();
     const cardPath = path.join(root, 'theme', 'components', 'Card.styles.ts');
     const before = readFileSync(cardPath, 'utf8');
 
-    const { output } = await runMigrate({
+    const { output } = runMigrate({
       version: 'v18',
       targetPath: root,
       dryRun: true,
@@ -143,11 +143,11 @@ describe('runMigrate', () => {
     ).toBe(false);
   });
 
-  test('applies edits, scaffolds required components, updates the barrel', async () => {
+  test('applies edits, scaffolds required components, updates the barrel', () => {
     const root = setupFixture();
     const components = path.join(root, 'theme', 'components');
 
-    const { output } = await runMigrate({
+    const { output } = runMigrate({
       version: 'v18',
       targetPath: root,
       dryRun: false,
@@ -176,15 +176,15 @@ describe('runMigrate', () => {
     expect(output).toContain('Run your typechecker');
   });
 
-  test('is idempotent: a second run changes nothing', async () => {
+  test('is idempotent: a second run changes nothing', () => {
     const root = setupFixture();
-    await runMigrate({ version: 'v18', targetPath: root, dryRun: false });
+    runMigrate({ version: 'v18', targetPath: root, dryRun: false });
     const components = path.join(root, 'theme', 'components');
     const snapshot = ['Card.styles.ts', 'Switch.styles.ts', 'index.ts'].map(f =>
       readFileSync(path.join(components, f), 'utf8')
     );
 
-    const { output } = await runMigrate({
+    const { output } = runMigrate({
       version: 'v18',
       targetPath: root,
       dryRun: false,
@@ -198,11 +198,11 @@ describe('runMigrate', () => {
     expect(output).toContain('Edited 0 file(s)');
   });
 
-  test('reports when no Marigold imports are found', async () => {
+  test('reports when no Marigold imports are found', () => {
     const root = mkdtempSync(path.join(os.tmpdir(), 'marigold-migrate-'));
     writeFileSync(path.join(root, 'app.ts'), `export const x = 1;\n`);
 
-    const { output } = await runMigrate({
+    const { output } = runMigrate({
       version: 'v18',
       targetPath: root,
       dryRun: true,
@@ -211,7 +211,7 @@ describe('runMigrate', () => {
     expect(output).toContain('No files importing');
   });
 
-  test('applies safe application-code codemods alongside theme codemods', async () => {
+  test('applies safe application-code codemods alongside theme codemods', () => {
     const root = setupFixture();
     const appFile = path.join(root, 'app', 'Profile.tsx');
     mkdirSync(path.dirname(appFile), { recursive: true });
@@ -232,7 +232,7 @@ export const Profile = () => (
 `
     );
 
-    const { output } = await runMigrate({
+    const { output } = runMigrate({
       version: 'v18',
       targetPath: root,
       dryRun: false,
@@ -245,6 +245,39 @@ export const Profile = () => (
     expect(app).toContain('<TextField label="Age" />');
     expect(app).toContain('<Tooltip open>'); // warning only, never edited
     expect(output).toContain('Tooltip[open]');
+  });
+
+  test('scans .jsx and .js application files too', () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), 'marigold-migrate-'));
+    const appFile = path.join(root, 'App.jsx');
+    writeFileSync(
+      appFile,
+      `import { Pickup } from '@marigold/icons';
+export const App = () => <Pickup />;
+`
+    );
+
+    runMigrate({ version: 'v18', targetPath: root, dryRun: false });
+
+    expect(readFileSync(appFile, 'utf8')).toContain('<Store />');
+  });
+
+  test('reports a file-level parse error once, not per codemod', () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), 'marigold-migrate-'));
+    writeFileSync(
+      path.join(root, 'broken.tsx'),
+      `import { Inset } from '@marigold/components';
+const = broken(;
+`
+    );
+
+    const { output } = runMigrate({
+      version: 'v18',
+      targetPath: root,
+      dryRun: true,
+    });
+
+    expect(output.match(/parse error/g)).toHaveLength(1);
   });
 
   test('returns a pre-analysis summary of the changes that fired', () => {

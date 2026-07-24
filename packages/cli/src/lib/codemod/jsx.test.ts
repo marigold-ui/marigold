@@ -5,6 +5,7 @@ import {
   renameJsxMembers,
   renameJsxProps,
   reportJsxUsage,
+  reportNamespaceImports,
 } from './primitives/jsx.js';
 import { assertEdited } from './test-helpers.js';
 import type { CodemodOutcome } from './types.js';
@@ -151,6 +152,55 @@ export const x = config.Pickup;
     expect(result.output).toContain('<Store />');
   });
 
+  test('does not touch JSX member properties with the old name', () => {
+    const source = `import { Pickup } from '@marigold/icons';
+const Icons = { Pickup: () => null };
+export const App = () => (
+  <div>
+    <Icons.Pickup />
+    <Pickup />
+  </div>
+);
+`;
+    const result = renameImports(v18).apply(source);
+
+    assertEdited(result);
+    expect(result.output).toContain(`import { Store } from '@marigold/icons';`);
+    expect(result.output).toContain('<Icons.Pickup />');
+    expect(result.output).toContain('<Store />');
+  });
+
+  test('falls back to an alias when the old name is re-exported', () => {
+    const source = `import { Pickup } from '@marigold/icons';
+export { Pickup };
+export const App = () => <Pickup />;
+`;
+    const result = renameImports(v18).apply(source);
+
+    assertEdited(result);
+    expect(result.output).toContain(
+      `import { Store as Pickup } from '@marigold/icons';`
+    );
+    expect(result.output).toContain('export { Pickup };');
+    expect(result.output).toContain('<Pickup />');
+    expect(result.changes[0]).toContain('re-exported from this file');
+  });
+
+  test('rewrites re-exports from the package, keeping the public name', () => {
+    const source = `export { Pickup } from '@marigold/icons';
+export { Email as MailIcon } from '@marigold/icons';
+`;
+    const result = renameImports(v18).apply(source);
+
+    assertEdited(result);
+    expect(result.output).toContain(
+      `export { Store as Pickup } from '@marigold/icons';`
+    );
+    expect(result.output).toContain(
+      `export { Mail as MailIcon } from '@marigold/icons';`
+    );
+  });
+
   test('falls back to an alias when the new name already exists in the file', () => {
     const source = `import { Pickup } from '@marigold/icons';
 import { Store } from './my-store';
@@ -222,8 +272,33 @@ export const App = () => <Store />;
     const aliased = `import { Store as Pickup } from '@marigold/icons';
 export const App = () => <Pickup />;
 `;
+    const reexported = `export { Store as Pickup } from '@marigold/icons';
+`;
     expect(renameImports(v18).apply(direct).kind).toBe('unchanged');
     expect(renameImports(v18).apply(aliased).kind).toBe('unchanged');
+    expect(renameImports(v18).apply(reexported).kind).toBe('unchanged');
+  });
+});
+
+describe('report-namespace-imports', () => {
+  test('warns on namespace imports of migration-affected packages', () => {
+    const source = `import * as Icons from '@marigold/icons';
+export const App = () => <Icons.Pickup />;
+`;
+    const warnings = warningsOf(reportNamespaceImports(v18).apply(source));
+
+    expect(warnings).toEqual([
+      expect.stringContaining(
+        "`import * as Icons from '@marigold/icons'`: the codemods cannot follow namespace imports"
+      ),
+    ]);
+  });
+
+  test('stays silent for unaffected packages', () => {
+    const source = `import * as path from 'node:path';
+export const join = path.join;
+`;
+    expect(warningsOf(reportNamespaceImports(v18).apply(source))).toEqual([]);
   });
 });
 
