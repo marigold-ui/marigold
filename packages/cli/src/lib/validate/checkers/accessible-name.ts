@@ -4,6 +4,7 @@ import {
   hasAttrPresent,
   hasOpaqueDynamicChild,
   hasSpreadAttribute,
+  isPascalCase,
 } from '../helpers/ast.js';
 import { buildMarigoldTagResolver } from '../helpers/components.js';
 import { parseSource } from '../helpers/source.js';
@@ -80,6 +81,46 @@ const hasTitleDescendant = (
   return found;
 };
 
+// A custom (non-Marigold) child component might delegate the title to
+// something this static check cannot see into — e.g. a project's own
+// `<DialogHeader>` that renders `<Dialog.Title>` internally. Its presence is
+// treated as indeterminate, the same way an opaque `{expression}` child is:
+// this only relaxes the check for a component whose origin the resolver
+// can't identify (a real user-authored wrapper), not for a known Marigold
+// component (e.g. `<Button>`), which would never render another overlay's
+// title and must not silently suppress a genuine finding.
+const hasUnresolvedComponentChild = (
+  node: ts.JsxElement,
+  component: string,
+  resolver: Map<string, string>
+): boolean => {
+  let found = false;
+
+  const walk = (current: ts.Node): void => {
+    if (found) return;
+
+    if (current !== node) {
+      const tag = ts.isJsxElement(current)
+        ? current.openingElement.tagName
+        : ts.isJsxSelfClosingElement(current)
+          ? current.tagName
+          : undefined;
+      if (tag && ts.isIdentifier(tag)) {
+        if (tag.text === component) return; // nested overlay
+        if (isPascalCase(tag.text) && resolver.get(tag.text) === undefined) {
+          found = true;
+          return;
+        }
+      }
+    }
+
+    ts.forEachChild(current, walk);
+  };
+
+  walk(node);
+  return found;
+};
+
 export const validateAccessibleName = (filePath: string): ValidationIssue[] => {
   const source = parseSource(filePath);
   const relFile = path.relative(process.cwd(), filePath);
@@ -108,7 +149,9 @@ export const validateAccessibleName = (filePath: string): ValidationIssue[] => {
           // Matched against `tag.text` (as written), not `overlay.component`,
           // so an aliased import (`{ Dialog as D }`) still finds `<D.Title>`.
           const titled = hasTitleDescendant(node, tag.text, overlay.titleSub);
-          const opaque = hasOpaqueDynamicChild(node);
+          const opaque =
+            hasOpaqueDynamicChild(node) ||
+            hasUnresolvedComponentChild(node, tag.text, resolver);
 
           if (!named && !titled && !opaque) {
             const { line, character } = source.getLineAndCharacterOfPosition(

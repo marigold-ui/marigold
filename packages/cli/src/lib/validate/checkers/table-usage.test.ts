@@ -145,6 +145,65 @@ describe('validateTableUsage — Table misuse (W8/W9)', () => {
     expect(issue?.severity).toBe('warning');
   });
 
+  it('does not flag a per-row selection Checkbox inside a Table', () => {
+    // A row-selection checkbox is an idiomatic data-table pattern, not the
+    // table-misused-for-form-layout misuse this check targets.
+    const file = tmpFile(
+      'tu-row-checkbox.tsx',
+      `import { Table, Checkbox } from '@marigold/components';
+      const C = () => (
+        <Table aria-label="t">
+          <Table.Body>
+            <Table.Row>
+              <Table.Cell><Checkbox aria-label="select row" /></Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+      );`
+    );
+    expect(
+      validateTableUsage(file).filter(i => i.component === 'Checkbox')
+    ).toEqual([]);
+  });
+
+  it('does not flag an inline per-row Select inside a Table', () => {
+    const file = tmpFile(
+      'tu-row-select.tsx',
+      `import { Table, Select } from '@marigold/components';
+      const C = () => (
+        <Table aria-label="t">
+          <Table.Body>
+            <Table.Row>
+              <Table.Cell><Select label="action" /></Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+      );`
+    );
+    expect(
+      validateTableUsage(file).filter(i => i.component === 'Select')
+    ).toEqual([]);
+  });
+
+  it('does not flag an inline per-row Switch inside a Table', () => {
+    const file = tmpFile(
+      'tu-row-switch.tsx',
+      `import { Table, Switch } from '@marigold/components';
+      const C = () => (
+        <Table aria-label="t">
+          <Table.Body>
+            <Table.Row>
+              <Table.Cell><Switch aria-label="active" /></Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+      );`
+    );
+    expect(
+      validateTableUsage(file).filter(i => i.component === 'Switch')
+    ).toEqual([]);
+  });
+
   it('does not flag a form field outside any Table', () => {
     const file = tmpFile(
       'tu-field-ok.tsx',

@@ -146,4 +146,36 @@ describe('validateRequiredAncestor', () => {
     expect(issue).toBeDefined();
     expect(issue?.severity).toBe('error');
   });
+
+  it('does not flag an aliased Radio inside an aliased RadioGroup', () => {
+    // Regression: the container check used to compare the CANONICAL
+    // container name ('Radio.Group') against the as-written tag sets, so an
+    // aliased container (`RadioGroup as RG`) never textually matched and a
+    // genuinely-present group was missed — a false-positive error.
+    const file = tmpFile(
+      'ra-alias-radio-and-group.tsx',
+      `import { Radio as R, RadioGroup as RG } from '@marigold/components';
+      const C = () => (
+        <RG label="pick">
+          <R value="a">A</R>
+          <R value="b">B</R>
+        </RG>
+      );`
+    );
+    expect(validateRequiredAncestor(file)).toEqual([]);
+  });
+
+  it('does not flag an aliased Radio inside a dotted, aliased <Radio.Group>', () => {
+    const file = tmpFile(
+      'ra-alias-radio-and-dotted-group.tsx',
+      `import { Radio as R } from '@marigold/components';
+      const C = () => (
+        <R.Group label="pick">
+          <R value="a">A</R>
+          <R value="b">B</R>
+        </R.Group>
+      );`
+    );
+    expect(validateRequiredAncestor(file)).toEqual([]);
+  });
 });

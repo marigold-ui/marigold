@@ -193,4 +193,40 @@ describe('validateAccessibleName', () => {
     expect(issue).toBeDefined();
     expect(issue?.severity).toBe('error');
   });
+
+  it('does not flag a Dialog whose title is delegated to a custom child component', () => {
+    // A project's own <DialogHeader> might render <Dialog.Title> internally —
+    // this static check cannot see into it, so it must not be flagged as a
+    // deterministic error (regression: this was a false-positive error on a
+    // pattern the checker genuinely cannot resolve).
+    const file = tmpFile(
+      'an-custom-header.tsx',
+      `import { Dialog } from '@marigold/components';
+      const DialogHeader = () => <Dialog.Title>Settings</Dialog.Title>;
+      const C = () => (
+        <Dialog>
+          <DialogHeader />
+        </Dialog>
+      );`
+    );
+    expect(findDialog(file)).toBeUndefined();
+  });
+
+  it('still flags a Dialog whose only child is a known Marigold component', () => {
+    // A known Marigold component (Button) never renders another overlay's
+    // title internally, so its presence must not suppress a genuine finding
+    // the way an unresolved custom component does.
+    const file = tmpFile(
+      'an-known-component-child.tsx',
+      `import { Dialog, Button } from '@marigold/components';
+      const C = () => (
+        <Dialog>
+          <Button>Close</Button>
+        </Dialog>
+      );`
+    );
+    const issue = findDialog(file);
+    expect(issue).toBeDefined();
+    expect(issue?.severity).toBe('error');
+  });
 });

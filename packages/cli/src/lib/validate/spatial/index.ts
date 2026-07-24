@@ -149,13 +149,40 @@ export type SpatialOptions = {
   viewport: Viewport;
 };
 
+// Wall-clock ceiling for the whole inspection phase below (every page.evaluate/
+// interaction call across every check), separate from the renderer's own
+// setup+mount budget (RENDER_BUDGET_MS in renderer.ts, which stops bounding
+// once render() returns a handle). page.evaluate has no default timeout, so
+// generated code that mounts cleanly but spins the main thread afterwards
+// (an infinite rAF loop, a runaway effect) would otherwise wedge every check
+// below indefinitely — and since `handle.close()` only runs in this
+// function's own `finally`, a wedged page means that finally never runs
+// either, leaking the page/context/dev-server. Racing the whole phase against
+// this budget guarantees runSpatialChecks always settles and its handle
+// always gets torn down, even when the page itself never responds again.
+const INSPECTION_BUDGET_MS = 60_000;
+
 export const runSpatialChecks = async (
   filePath: string,
   options: SpatialOptions,
   renderer: SharedRenderer
 ): Promise<SpatialResult> => {
   const handle = await renderer.render(filePath, options.viewport);
-  try {
+
+  let budgetTimer: ReturnType<typeof setTimeout> | undefined;
+  const budget = new Promise<never>((_, reject) => {
+    budgetTimer = setTimeout(
+      () =>
+        reject(
+          new Error(
+            `Inspection phase exceeded ${INSPECTION_BUDGET_MS}ms budget`
+          )
+        ),
+      INSPECTION_BUDGET_MS
+    );
+  });
+
+  const inspect = async (): Promise<SpatialResult> => {
     const { page } = handle.result;
 
     const spatialIssues: ValidationIssue[] = [];
@@ -208,9 +235,15 @@ export const runSpatialChecks = async (
         );
       } catch (err) {
         if (err instanceof ThemeCssNotFoundError) {
+          // An unbuilt/unresolvable theme is an environment precondition,
+          // not a defect in the file being validated — the static
+          // theme-variants checker already treats the same condition as a
+          // silent skip (checkers/index.ts). Match that with a warning
+          // rather than an error so a missing theme build can't fail the
+          // exit code the way a real finding would.
           styleIssues.push({
             type: 'style',
-            severity: 'error',
+            severity: 'warning',
             source: 'token-compliance',
             component: 'theme',
             message: err.message,
@@ -423,7 +456,26 @@ export const runSpatialChecks = async (
       renderTimeMs: handle.result.renderTimeMs,
       widthUtilization,
     };
-  } finally {
+  };
+
+  const inspectPromise = inspect();
+  // If the budget wins the race below, inspectPromise rejects later with no
+  // local awaiter; mark it handled so a wedged page's eventual rejection
+  // never surfaces as an unhandled promise rejection.
+  inspectPromise.catch(() => {});
+
+  try {
+    const result = await Promise.race([inspectPromise, budget]);
     await handle.close();
+    return result;
+  } catch (err) {
+    // Force the handle closed now — a wedged page.evaluate would otherwise
+    // keep the browser context (and the underlying Vite server/temp dir)
+    // open indefinitely, since inspect() itself never reaches the point
+    // where it would close it.
+    await handle.close().catch(() => {});
+    throw err;
+  } finally {
+    clearTimeout(budgetTimer);
   }
 };

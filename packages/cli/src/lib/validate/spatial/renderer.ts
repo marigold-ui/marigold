@@ -203,6 +203,14 @@ const startViteServer = async (workDir: string): Promise<ViteDevServer> => {
   });
   try {
     await Promise.race([server.listen(), timeout]);
+  } catch (err) {
+    // If the startup timeout wins the race, this function throws before ever
+    // returning `server` to the caller — so the caller's own
+    // `cleanup.push(() => server.close())` (registered only after a
+    // successful return) never runs, and the bound socket/watchers leak.
+    // Close it here, on the throwing path itself.
+    await server.close().catch(() => {});
+    throw err;
   } finally {
     clearTimeout(timeoutId);
   }
