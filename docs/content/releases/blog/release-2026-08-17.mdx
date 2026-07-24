@@ -10,6 +10,7 @@ changed:
   - foundations/iconography
   - foundations/form-fields
   - foundations/accessibility
+  - foundations/responsive
   - components/layout/app-shell
   - components/layout/page
   - components/layout/panel
@@ -56,18 +57,21 @@ changed:
   - components/content/badge
   - components/content/divider
   - components/content/empty-state
+  - components/content/error-state
+  - components/content/keyboard
   - components/content/section-message
   - components/content/loader
   - components/hooks-and-utils/useLandmark
   - patterns/user-input/forms
   - patterns/user-input/bulk-actions
   - patterns/user-input/filter
+  - patterns/user-input/pick
   - patterns/data/fetching-and-mutations
 ---
 
 For the last years, Marigold's job was mostly to replace. Modernize an aging codebase, swap out legacy patterns, refresh a design that had started to show its years. v18.0.0 is where that chapter ends and a new one begins. We are done catching up. From here, the work is about craft. Shaping a design language that does not just look current, but is unmistakably its own.
 
-And this release opens that chapter loudly. v18 is by far the biggest release we have ever shipped: well over a hundred changes across the system, five new components (`<SegmentedControl>`, `<DateRangePicker>`, `<RangeCalendar>`, `<Panel>`, `<ButtonGroup>`), a rebuilt app shell with a new `<Page>` primitive, a rethought token layer, and the first visible pass of Marigold's own visual identity in hairline surfaces, quiet elevation, and a redesigned sidebar. There is also a whole new tooling story for AI-assisted development, from a searchable CLI to an MCP server over the docs.
+And this release opens that chapter loudly. v18 is by far the biggest release we have ever shipped: well over a hundred changes across the system, six new components (`<SegmentedControl>`, `<DateRangePicker>`, `<RangeCalendar>`, `<Panel>`, `<ButtonGroup>`, `<ErrorState>`), a rebuilt app shell with a new `<Page>` primitive and a two-level sidebar built around a persistent navigation rail, the new default shape for full applications. Under it sits a rethought token layer and the first visible pass of Marigold's own visual identity in hairline surfaces, quiet elevation, and a redesigned sidebar. There is also a whole new tooling story for AI-assisted development, from a searchable CLI to an MCP server over the docs.
 
 It is a lot. Take your time with the breaking changes below. They all point in the same direction, and the app you end up with will be simpler for it.
 
@@ -631,6 +635,7 @@ Several of the changes above touch the `Theme` type. If you maintain a custom th
 | Add a `BooleanField` component                                    | `Switch` / `Checkbox` descriptions             |
 | Add a `SelectList` entry (`label`, `description`, `action` slots) | SelectList standardization                     |
 | Add `label` and `description` slots to `Menu` and `ListBox`       | First-class item label/description styling     |
+| Add a `keyboard` slot to `Menu`                                   | Keyboard-shortcut hints in menu items          |
 | Add a `description` slot to `SectionMessage` and `ContextualHelp` | New `Description` sub-components               |
 | Remove the `SectionMessage` `close` slot                          | Close button now uses the shared `CloseButton` |
 | Rename the `Card` slot key `body` → `content`                     | `Card.Body` → `Card.Content`                   |
@@ -640,6 +645,51 @@ Several of the changes above touch the `Theme` type. If you maintain a custom th
 New components (`SegmentedControl`, `DateRangePicker`, `RangeCalendar`, the `Table` `footer` slot, `Panel`'s `collapsibleIcon` slot) ship their own theme entries in `@marigold/theme-rui`, and themes that extend it inherit them automatically.
 
 ## Components
+
+### Two-level sidebar navigation
+
+`<Sidebar>` gains a second mode, and for full applications it is the new default: a persistent **rail** of icon-first top-level destinations next to a **panel** showing the active section's sub-navigation. A single column starts to strain once an app has several top-level sections that each carry their own sub-navigation. Everything either nests behind drill-downs, or the list grows past what users can scan. With `<Sidebar.Rail>`, both levels stay visible at once: switching sections is one click, and users never lose sight of where they are.
+
+The building block is `<Sidebar.RailItem>`. One wrapping a `<Sidebar.Nav>` is a section that fills the panel. One with only an `href` is a direct link that navigates immediately and shows no panel. One declared inside `<Sidebar.Footer>` pins to the bottom of the rail. Pass the current pathname to `<Sidebar.Rail current>` and both levels resolve at once (the matching page lights up in the panel, its section is marked on the rail), with a per-item `active` prop as the override for pages the URL cannot identify.
+
+```tsx
+<AppShell>
+  <Sidebar>
+    <Sidebar.Rail current={pathname}>
+      <Sidebar.RailItem icon={<Ticket />} id="tickets">
+        Tickets
+        <Sidebar.Nav aria-label="Tickets">
+          <Sidebar.Item href="/tickets/open">Open</Sidebar.Item>
+          <Sidebar.Item href="/tickets/archive">Archive</Sidebar.Item>
+        </Sidebar.Nav>
+      </Sidebar.RailItem>
+      <Sidebar.RailItem icon={<BarChart3 />} href="/reports">
+        Reports
+      </Sidebar.RailItem>
+      <Sidebar.Footer>
+        <Sidebar.RailItem icon={<LifeBuoy />} href="/help">
+          Help
+        </Sidebar.RailItem>
+      </Sidebar.Footer>
+    </Sidebar.Rail>
+  </Sidebar>
+  <TopNavigation>
+    <TopNavigation.Start>
+      <Brand />
+      <Sidebar.Toggle variant="rail" />
+    </TopNavigation.Start>
+  </TopNavigation>
+  <Page>…</Page>
+</AppShell>
+```
+
+Collapsing works differently than in the single column, and better: the toggle (or Cmd/Ctrl+B) hides the **panel** while the rail narrows to an icon-only strip, so top-level navigation always stays one click away. On small screens the rail renders as the same single-column drawer as the plain sidebar: sections drill in (the drawer opens inside the active section), direct links are plain rows, and tapping a link closes the drawer.
+
+The shell adapts on its own. When `<AppShell>` contains a rail, it switches to a full-width top bar (pure CSS via `:has()`), so the brand never moves when the panel collapses. Place the brand and the new `<Sidebar.Toggle variant="rail" />` in the top navigation's start slot. Keyboard and screen reader support is thorough: the rail and the section panel are separate navigation landmarks, arrow keys and Home/End move across the rail on top of its flat tab order, the current page announces `aria-current="page"` while its section ancestor announces `aria-current="true"`, and the section panel's tab stop re-syncs to the current page when the route changes, so Tab re-enters at the active item. Collapsed, icon-only tiles reveal their label as a tooltip on hover or focus.
+
+For theming, the shell's shared measurements move into tokens: `--spacing-topbar` is the vertical datum shared by the top bar, the sidebar brand row, and the rail's sticky offset, `--spacing-rail` / `--spacing-rail-collapsed` / `--spacing-rail-panel` size the rail columns, and `--spacing-touch-target` guarantees the 44px minimum row height on small screens. Two related shell refinements land alongside: the `AppShell` header row is now sized `auto` instead of a fixed `3.5rem`, so a shell without a `<TopNavigation>` no longer reserves an empty header band, and the shell's viewport-height claims read a new `--ui-viewport-height` custom property (with a `100dvh` fallback), so you can render the whole shell inside a bounded container such as an embedded preview or demo.
+
+The [Sidebar documentation](/components/navigation/sidebar#two-level-navigation) covers the full model, including the anatomy and when to stay with a single column.
 
 ### `<SegmentedControl>`
 
@@ -671,6 +721,10 @@ Built-in localized presets cover the common cases (`today`, `yesterday`, `tomorr
 ### `<Table.Footer>`
 
 `<Table>` gains a footer: a semantic `<tfoot>` rendered after `<Table.Body>` for summary rows like totals, counts, or averages, composed from `<Table.Row>` and `<Table.Cell>` just like the body. A `sticky` prop pins the footer to the bottom of the viewport while scrolling, mirroring sticky table headers.
+
+### `<ErrorState>`
+
+`<EmptyState>` gets an error sibling. `<ErrorState>` shares the same anatomy (`title`, `description`, `action`, and a `headingLevel` prop) and adds typed DOM passthrough (`role`, `tabIndex`, `ref`), so it drops straight into error-boundary fallbacks that need to be focusable or announced.
 
 ### Slot-aware `<Button>` and `<ButtonGroup>`
 
@@ -782,6 +836,14 @@ The three overlay components adopt the same slot-configuration pattern as `<Pane
 - New `Dialog.Header` / `Drawer.Header` / `Tray.Header` are **optional** layout wrappers that group a title and description. A bare `<Title>` without a header remains a first-class, accessible authoring form, and `aria-labelledby` resolves to it automatically.
 
 The compound-component API is unchanged. The `<header>` element that previously wrapped the title is gone, and the title now carries the header chrome directly, with no change to the rendered visuals.
+
+### Fullscreen `<Dialog>`
+
+`<Dialog>` gains a `fullscreen` size that fills the viewport (minus a small margin) at every breakpoint. It gives content-heavy tasks room for search, filters, and a long scrollable list while the title and actions stay fixed. The new [Pick pattern](/patterns/user-input/pick) example uses it to pick from a collection of about fifty venues. The existing `xsmall` / `small` / `medium` / `large` sizes are unchanged.
+
+### `<Drawer.Content>` learns `bleed`
+
+`<Drawer.Content bleed>` drops the Drawer's horizontal content padding and publishes the same `--bleed-px` custom property as a bled `<Panel.Content>`. Edge-aware children stay aligned with the Drawer title while their dividers and hover backgrounds reach the Drawer edges: `<Accordion>` reads the property directly, and `<Table>`'s edge-cell padding falls back to it too. Without `bleed`, nothing changes.
 
 ### Semantic headings for `<ContextualHelp>` and `<EmptyState>`
 
@@ -906,6 +968,16 @@ Items inside `<Select>`, `<SelectList>`, `<ListBox>`, `<Menu>`, `<ComboBox>`, an
 
 If you maintain a custom theme, the `Menu` and `ListBox` theme entries now require `label` and `description` slot keys. Add them, or `<Menu>` and `<ListBox>` items will fail the theme type check.
 
+### `<Menu>` learns selection visuals, shortcuts, and dividers
+
+Three additions give `<Menu>` the building blocks for advanced menus:
+
+- **Selected items are visible.** In `selectionMode="single"` or `"multiple"`, items show a leading checkmark and a highlighted row, aligned like `<ListBox>`. Command menus (no `selectionMode`) render exactly as before.
+- **Keyboard-shortcut hints.** A new shared `<Keyboard>` primitive (a sibling to `<TextValue>` and `<Description>`) renders a `<kbd>` key-cap on its own and adapts to its container. Inside a `<Menu.Item>` it becomes a muted, right-aligned hint wired to the item through `aria-describedby`.
+- **Dividers.** Drop the shared `<Divider>` between `<Menu.Item>`s to separate groups with a `role="separator"` line.
+
+If you maintain a custom theme, the `Menu` entry now also requires a `keyboard` slot key (it is part of the theme checklist under Breaking Changes).
+
 ### Fixes
 
 - **Wide content overflow in the app shell.** Wide content (most visibly a `<Select selectionMode="multiple">` with several long selected items) no longer pushes the main column past the viewport. The main grid track now sets `min-w-0`, so it can shrink and children like a truncated Select trigger clip at the right place.
@@ -922,6 +994,8 @@ If you maintain a custom theme, the `Menu` and `ListBox` theme entries now requi
 - **Disabled states actually look disabled.** The `<Slider>` track, fill, thumb, and value dim when disabled, item descriptions in `<SelectList>` / `<ListBox>` / `<Menu>` dim alongside their labels, and disabled items show the `not-allowed` cursor (including disabled `<TagField>`, which previously showed a text cursor).
 - **Alignment polish.** A labelled section `<Loader>` centers as one group instead of overflowing its box, the `<Table>` drag handle gets the shared cell edge padding so the grip lines up with its header, and a `<SelectList>` trailing action built from a Marigold `<Button>` / `<LinkButton>` / `<ActionMenu>` spans both rows and stays centered instead of stretching the title row.
 - **`<Panel.Collapsible>` caret parity.** The collapsible header caret now renders at 16px in `text-secondary`, matching the Accordion chevron, with the color themeable via a new `collapsibleIcon` slot.
+- **Slider thumb clipping.** The `<Slider>` thumb is centered on the track position, so at its min and max values it overhung the track ends by half its width, and scroll containers such as `Drawer.Content` sliced the overhang off into a half circle. The track is now inset by half the thumb width so the thumb always stays inside the Slider's own box.
+- **Date presets in trays.** The preset quick-selection rows now span edge-to-edge on small screens and line up with the tray's navigation row, instead of sitting inset by the listbox's focus-ring gutter.
 
 ## Docs and examples
 
@@ -930,6 +1004,7 @@ v18 ships alongside a substantial pass over the documentation site, and, new thi
 ### Documentation that meets AI halfway
 
 - **`marigold search`.** The Marigold CLI gains a `search` command that finds components by what their docs actually say (title, description, headings, prose), returning ranked, snippet-bearing, deep-linked results in one call. It collapses the "list → guess → docs → retry" discovery loop coding agents run into a single query, with `--format json` for structured output. The CLI is now documented end to end on a new [Getting Started page](/getting-started/cli).
+- **`marigold doctor`.** A read-only command that diagnoses a project's Marigold setup: package presence, version match between `@marigold/components` and `@marigold/system`, freshness against the latest release, that `MarigoldProvider` actually wraps the app and its `theme` prop resolves to a real binding, Tailwind config, and React peer deps. It prints actionable fixes grouped by severity, supports `--format text|json` and `--offline`, and exits non-zero only on deterministic errors, so it is safe to gate CI on and easy for agents to consume. The CLI also now runs correctly when invoked through a symlinked global bin.
 - **An MCP server over the docs.** The docs site exposes an MCP (Model Context Protocol) server at `/mcp`, letting AI coding assistants (Claude Code, VS Code Copilot, and friends) semantically search the Marigold documentation through vector embeddings.
 - **Every docs page as markdown.** Each page is available as raw markdown at `<page-url>.md` (for example `/components/actions/button.md`), and the full page index at `/manifest.json`, both served as plain static assets. Prop tables in the markdown output now match the HTML exactly.
 
@@ -940,6 +1015,7 @@ v18 ships alongside a substantial pass over the documentation site, and, new thi
 - **New Panel documentation page**: MDX page, anatomy diagrams (header + collapsible), and a full set of demos covering appearance, variants, header actions, collapsible sections (incl. controlled and error states), footers, bleed content, danger-zone rows, and a side-by-side `Panel` vs `Card` comparison.
 - **A unified demo app at `/examples`** consolidates all pattern demos alongside a full app-shell example. Analytics, Billing, General, Security, Teams, and Users are real screens built from Marigold components, with `Panel` for page-level sections and `Card` reserved for repeating collection items. The examples are also discoverable from the docs ⌘K search.
 - **New Bulk Actions pattern and working example.** A full pattern page on letting users select many records and act on all of them at once (`<Table>` selection, `<ActionBar>`, confirmation dialogs, progress feedback, partial-failure handling), plus a complete working example at `/examples/bulk-actions` with a paginated events table, bulk edit through a `<Drawer>`, and toasts for every outcome.
+- **New Pick pattern and working example.** Picking is the counterpart to filtering: filtering narrows a view in place, picking finds records in a collection and commits them as a set. The new [Pick pattern](/patterns/user-input/pick) documents that distinction, a surface spectrum that scales with collection size (an inline multi-select, a searchable `<TagField>`, a `<Dialog>`, and a routed page as the exception), and the load-bearing practices: staged selections survive while search and filters narrow the list, the commit button bounds the selection and names the outcome, and the staged set stays visible as a removable `<Tag.Group>` rail. Four inline demos ship with the page, plus a complete example at `/examples/pick` where a fullscreen dialog picks from about fifty venues into a report that owns the committed set.
 - **New Fetching and Mutations pattern** covering `@tanstack/react-query` with Marigold: hook encapsulation, query keys, loading taxonomy, error handling with `throwOnError`, toast feedback, optimistic updates, and destructive confirmation. The `/examples/filter` reference app now runs against a real API route to match.
 - **Full data management pattern at `/examples/filter`.** A venue browsing example demonstrating multi-criteria filtering coordinated through URL state via `nuqs`: a toolbar with search and filter controls, applied filter chips, and a paginated data table all driven by the same URL state.
 - **Settings form and event form pattern examples** at `/examples/settings-form` and `/examples/event-form`. The settings form demonstrates tabbed navigation, independent section saves with `<Panel>`, collapsible advanced fields, and a danger zone with confirmation dialogs. The event form shows a single-submit form with multiple `<Panel>` sections. The forms pattern documentation now includes a Panels subsection that links to both demos.
@@ -950,6 +1026,7 @@ v18 ships alongside a substantial pass over the documentation site, and, new thi
 - **Iconography documentation consolidated.** The former `/foundations/icons` and `/components/content/icon` pages now live together at [`/foundations/iconography`](/foundations/iconography), with principles, the icon catalog, the full legacy-to-Lucide name mapping, and the engineering API in one place.
 - **Form documentation restructured.** Three pages (Form Fields, Forms, Form Implementation) are consolidated into two: [Form Fields](/foundations/form-fields) as a foundation (anatomy, label, placeholder, help text, width, field states) and [Forms](/patterns/user-input/forms) as a pattern (layout together with validation, state management, react-hook-form, and async submission).
 - **New landmarks accessibility guide** paired with the `useLandmark` reference page.
+- **Responsive hooks in one place.** The `useResponsiveValue` and `useSmallScreen` documentation moves into the [Responsive Design](/foundations/responsive) foundations page, with a combined import block and an interactive breakpoint picker for each hook. The standalone `useResponsiveValue` page is gone. Both hooks read breakpoints from `theme.screens` with a `--breakpoint-*` CSS fallback (see _Theme-owned breakpoints_ under Breaking Changes).
 - **Installation guide revised** end to end, so a new project (human- or AI-driven) sets up without friction.
 - **Prop tables split into groups.** Each component page now shows the meaningful API props by default and tucks `aria-*` attributes and DOM event handlers into collapsible sections (Button drops from 112 visible props to 39). The machine-readable docs keep the full list.
 - **Toast guidance:** a new callout documents that `<ToastProvider>` should be mounted exactly once per app, since every toast shares one global queue.
@@ -981,9 +1058,9 @@ The refreshed [Elevation](/foundations/elevation) foundation page walks through 
 
 ### A redesigned sidebar
 
-The sidebar navigation now carries hierarchy with semantic tokens instead of raw charcoal values. The current page is an inset rounded pill, idle rows sit a step lighter on `secondary` and preview the pill on hover, and section labels read as their own tier through treatment (uppercase, smaller, heavier, tracked) while meeting WCAG AA contrast. Navigation is denser too: rows sit at a fixed 30px height with a tighter horizontal inset, so more items fit per screen without losing the pill affordance.
+The sidebar navigation now carries hierarchy with semantic tokens instead of raw charcoal values. The current page is an inset rounded pill, idle rows preview the pill on hover, and section labels read as their own tier through treatment (uppercase, smaller, heavier, tracked) while meeting WCAG AA contrast. Idle nav labels sit on the new `secondary-bold` ink (charcoal-700), a step darker than help text, so they clearly out-rank the quiet group-label captions. Navigation is denser too: rows sit at a fixed 30px height with a tighter horizontal inset, so more items fit per screen without losing the pill affordance.
 
-The app shell around it keeps exactly one structural line, the sidebar divider. The sidebar header/footer hairlines and the `TopNavigation` bottom border are gone, so regions separate on whitespace and the content panels carry the structure. The sticky `TopNavigation` reveals a bottom hairline only once page content scrolls underneath it, and the sidebar's own sticky header and footer reveal a seam while the nav scrolls behind them (a scroll-driven progressive enhancement, with browsers that lack support falling back to an always-on hairline). The sidebar toggle icon also loses its springy overshoot and settles on the theme's standard `ease-out-quint` motion.
+The app shell around it separates its regions on whitespace, and the structural lines that remain are plain, always-on borders: the sidebar divider, the sidebar header's edge, and the `TopNavigation` bottom border. An earlier iteration revealed those hairlines only while content scrolled underneath, but the scroll-driven seams did not earn their complexity in the shell and are gone (the Dialog header seam below stays, where the scroll signal actually carries information). The sidebar toggle icon also loses its springy overshoot and settles on the theme's standard `ease-out-quint` motion. And this is only the single-column story: the sidebar's new two-level rail mode is covered under _Components_ above.
 
 ### `<SectionMessage>` sits on a neutral surface
 
