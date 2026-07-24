@@ -158,6 +158,17 @@ export type Theme = {
       | 'description',
       ComponentStyleFunction<string, string>
     >;
+    ListView?: Record<
+      | 'list'
+      | 'item'
+      | 'leading'
+      | 'content'
+      | 'label'
+      | 'description'
+      | 'title'
+      | 'action',
+      ComponentStyleFunction<string, string>
+    >;
     Menu?: Record<
       | 'container'
       | 'section'

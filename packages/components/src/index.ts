@@ -184,6 +184,11 @@ export type { ListProps } from './List/List';
 
 export { ListBox } from './ListBox/ListBox';
 export type { ListBoxProps } from './ListBox/ListBox';
+
+export { ListView } from './ListView/ListView';
+export type { ListViewProps } from './ListView/ListView';
+export type { ListViewItemProps } from './ListView/ListViewItem';
+
 export { ActionMenu } from './Menu/ActionMenu';
 export type { ActionMenuProps } from './Menu/ActionMenu';
 export { ActionMenuContext } from './Menu/ActionMenuContext';

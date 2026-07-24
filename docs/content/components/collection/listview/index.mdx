@@ -1,0 +1,189 @@
+---
+title: ListView
+description: Show a collection of items as a list, with optional per-row controls.
+badge: beta
+---
+
+import { ListViewAnatomy } from './listview-anatomy';
+
+A `<ListView>` is a collection of items, shown as rows in a list. Each row can optionally hold its own controls, like a `<Switch>` or `<ActionMenu>`.
+
+## Anatomy
+
+A `<ListView>` is a labeled, non-form grid holding a stack of `<ListView.Item>` rows. Each row is authored as flat children: an optional leading icon or image, the row's text (`<TextValue>`/`<Description>`, or `<Title>` for a heading-like row), and optional trailing controls.
+
+<ListViewAnatomy />
+
+- **List:** The grid container. Requires `aria-label` or `aria-labelledby`.
+- **Item:** A single row (`role="row"`). Not selectable or toggleable by ListView itself.
+- **Leading content:** An optional icon or image before the row's text.
+- **Text value:** The row's primary text, authored with `<TextValue>` (or `<Title>` for a heading-like row; see [Accessibility](#accessibility)).
+- **Description:** Optional secondary text below the text value.
+- **Trailing controls:** One or more interactive controls, such as a `<Switch>` or `<ActionMenu>`, positioned at the end of the row.
+
+## Appearance
+
+<AppearanceDemo component="ListView" />
+
+<AppearanceTable component="ListView" />
+
+## Usage
+
+`<ListView>` shows up wherever a list needs to stay interactive after it renders, flipping a setting or sharing a document without leaving the page. It fits rows that need their own controls, like a switch or a menu, operated directly instead of through a link to another screen.
+
+Each row owns its own state and its own controls, so actions typically fire per row rather than as a batch. The rest of this section covers the row shapes `<ListView>` supports most often, and how to tell it apart from Marigold's other list-shaped components.
+
+### `<ListView>` vs. `<SelectList>`
+
+`<ListView>`'s closest neighbor is [`<SelectList>`](/components/form/selectlist), where the row itself is the only focusable target. `<ListView>` gives each row its own `grid`/`row`/`gridcell` semantics instead, which is required once rows hold their own focusable controls.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Reach for `<ListView>` over `<SelectList>` once a row needs its own
+      focusable button, switch, or menu, `<SelectList>` rows are only
+      clickable as a whole and can't host separate controls.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use `<ListView>` when clicking a row picks a value, 
+      selection is `<SelectList>`'s job, not `<ListView>`'s.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Notifications and activity feeds
+
+A build finished, a review was requested, a deploy succeeded: notification and activity feeds surface a stream of events that people scan for what's new, then act on immediately, muting a noisy thread or dismissing a stale one, without opening the item or leaving the page.
+
+Reach for `<ListView>` here because each row needs its own controls, a `<Switch>` to mute or a `<Button>` to dismiss, operated in place. That's the line between this and a plain list: the action stays scoped to the row instead of sending the reader to a details screen. Give each row a short label for the event and whatever supporting detail helps the reader act, such as when it happened.
+
+<ComponentDemo name="listview-notifications" />
+
+### Resource lists with a row menu
+
+When a row needs more than one action (rename, share, delete), group them behind a single `<ActionMenu>` instead of placing multiple icon buttons side by side. This is the shape most file managers, document lists, and team member lists take: each row names a resource, and the row menu is the only way to act on it.
+
+Reach for a row menu once a row's actions no longer fit as one or two icon buttons, or once the action set differs per row (a shared file might offer "leave", an owned one "delete"). `<ListView>` gives the menu trigger its own `gridcell`, so arrow-key navigation lands on the trigger without also making the row itself selectable.
+
+<ComponentDemo name="listview-resource-menu" />
+
+### Settings lists
+
+Use `<ListView>` for settings that are one row per item in a data-driven collection, each row carrying its own `<Switch>`: enabling connected integrations, muting channels, toggling sync per device. The rows are rendered from data with a `.map`, so their number and identity aren't fixed when you author the screen.
+
+For a fixed set of app-level preferences authored by hand, use the [auto-save settings pattern](/patterns/user-input/forms#auto-save) instead: plain `<Switch>` controls in a `<Panel>`, the default for a preferences screen. `<ListView>` earns its place only when the toggles belong to items in a list, and even then it stays a list, not a form, the switches carry no submitted value.
+
+<ComponentDemo name="listview-settings" />
+
+### Empty state
+
+Every list eventually has nothing to show, whether that's a notification feed with nothing new, a resource list cleared out, or a settings list filtered down to no matches. Render a placeholder via the `emptyState` prop instead of leaving the grid blank.
+
+<ComponentDemo name="listview-empty-state" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Explain why the list is empty and provide a clear next action when one
+      exists.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't leave the list area blank. An empty surface gives users no signal
+      whether the system is loading, broken, or simply empty.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+## Accessibility
+
+`<ListView>` is fully keyboard accessible:
+
+- Arrow keys move focus between rows.
+- Tab reaches any interactive control inside the focused row.
+- Rows are never selectable or toggleable by `<ListView>` itself. Operating a nested control is the only interaction a row exposes.
+
+Always give the list an `aria-label`, or pass `aria-labelledby` when a heading nearby already names it.
+
+For rows with rich content, such as a wrapped label or an icon, set `textValue` on the item. Screen readers use it as the row's accessible name.
+
+<Callout title="Author row text with the dedicated slot components">
+  Use `<TextValue>` and `<Description>`, never a raw `<Text slot="…">`.
+  `<ListView.Item>` provides the matching slot contexts internally, so these
+  thin wrappers resolve correctly without any extra wiring.
+</Callout>
+
+`<Title>` renders a real `<h1>`–`<h6>`. A list must not emit one document heading per row; that destroys the heading outline for screen reader users navigating by heading. `<ListView.Item>` forces every nested `<Title>` to render as a `<span>` instead, so it's safe to reach for when a row is genuinely heading-like. The default row text remains `<TextValue>`.
+
+## Props
+
+<StorybookHintMessage component={'ListView'} />
+
+### ListView
+
+<AutoTypeTable path="ListView" name="ListViewProps" />
+
+### ListView.Item
+
+<AutoTypeTable path="ListView/ListViewItem" name="ListViewItemProps" />
+
+## Alternative components
+
+- [List](/components/content/list): Use for a static, presentational list with no roles, keyboard model, or interactive rows.
+- [SelectList](/components/form/selectlist): Use when the selection becomes a submitted form value.
+- [Select](/components/form/select): Use for a compact single/multi-select form field.
+- [Table](/components/collection/table): Use when each row is a record with multiple columns of structured data to compare, not a flat list of operable items.
+- [Menu](/components/overlay/menu): Use for a set of commands that close the surface on activation.
+- [Card](/components/collection/card): Use to present one item, like an event or a product, as a self-contained visual unit.
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'ActionBar',
+      href: '/components/collection/actionbar',
+      caption: 'Bulk actions on top of a selection.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <path d="M3 15h18" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Form fields',
+      href: '../../foundations/form-fields',
+      caption: 'How form fields work in Marigold, and why ListView is not one.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+  ]}
+/>
