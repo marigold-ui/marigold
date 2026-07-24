@@ -88,6 +88,17 @@ export const Basic = meta.story({
   ),
 });
 
+export const WithOwnWidth = meta.story({
+  render: () => (
+    <Radio.Group label="Label">
+      <Radio value="1" width="1/2">
+        Option 1
+      </Radio>
+      <Radio value="2">Option 2</Radio>
+    </Radio.Group>
+  ),
+});
+
 export const Error = meta.story({
   render: args => (
     <Radio.Group errorMessage="Das ist ein Error" error {...args}>
