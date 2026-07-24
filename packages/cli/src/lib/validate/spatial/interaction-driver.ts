@@ -286,7 +286,7 @@ export const driveInteractions = async (
   const states: RevealedState[] = [];
   const issues: ValidationIssue[] = [];
 
-  const baseline = new Set(await visibleOverlays(page));
+  let baseline = new Set(await visibleOverlays(page));
 
   for (const trigger of triggers) {
     try {
@@ -317,6 +317,15 @@ export const driveInteractions = async (
       states.push({ trigger, revealedRootSelector: null, revealedRole: null });
     } finally {
       await restore(page);
+      // Recompute rather than reuse the loop-invariant baseline: if restore()
+      // (Escape) failed to close this trigger's overlay — realistic for a
+      // <details>/Disclosure or a popovertarget popover that ignores Escape —
+      // the next iteration must see it as already-present, not misattribute
+      // it as the next trigger's own revealed root. Falls back to the prior
+      // baseline on failure so one flaky read can't abort the sweep.
+      baseline = new Set(
+        await visibleOverlays(page).catch(() => [...baseline])
+      );
     }
   }
 

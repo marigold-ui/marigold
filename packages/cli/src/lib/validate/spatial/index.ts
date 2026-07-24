@@ -8,7 +8,11 @@ import {
   extractAOM,
   runAxeAudit,
 } from './aom-extractor.js';
-import { extractBoundingBoxes, flattenBounds } from './bounding-box.js';
+import {
+  type ComponentBounds,
+  extractBoundingBoxes,
+  flattenBounds,
+} from './bounding-box.js';
 import {
   FALLBACK_PROPERTIES,
   extractComputedStyles,
@@ -163,12 +167,30 @@ export const runSpatialChecks = async (
     let widthUtilization: number | null = null;
 
     if (options.enableSpatial) {
-      const bounds = await extractBoundingBoxes(page);
-      const overlaps = detectOverlaps(bounds);
-      spatialIssues.push(...overlapIssuesToValidationIssues(overlaps));
+      // Each sub-check gets its own try/catch (matching the a11y block below)
+      // so, e.g., a bounding-box extraction failure can't silently discard the
+      // token-compliance and overflow findings too — or worse, abort every
+      // later block (text-spacing, a11y, responsive, keyboard) in this
+      // function, collapsing them all into one generic runtime error.
+      let flat: ComponentBounds[] = [];
+      try {
+        const bounds = await extractBoundingBoxes(page);
+        const overlaps = detectOverlaps(bounds);
+        spatialIssues.push(...overlapIssuesToValidationIssues(overlaps));
 
-      const flat = flattenBounds(bounds);
-      componentsFound = Array.from(new Set(flat.map(b => b.component)));
+        flat = flattenBounds(bounds);
+        componentsFound = Array.from(new Set(flat.map(b => b.component)));
+      } catch (err) {
+        spatialIssues.push({
+          type: 'spatial',
+          severity: 'warning',
+          source: 'overlap-detector',
+          component: 'page',
+          message: `Bounding-box/overlap check failed: ${err instanceof Error ? err.message : String(err)}`,
+          suggestion:
+            'The overlap detection check could not complete. This may indicate a page rendering issue.',
+        });
+      }
 
       try {
         const trackedProps = getTrackedProperties();
@@ -200,9 +222,25 @@ export const runSpatialChecks = async (
         }
       }
 
-      const overflowData = await extractOverflowData(page);
-      spatialIssues.push(...wrappingToValidationIssues(overflowData.wrapping));
-      spatialIssues.push(...overflowToValidationIssues(overflowData.overflows));
+      try {
+        const overflowData = await extractOverflowData(page);
+        spatialIssues.push(
+          ...wrappingToValidationIssues(overflowData.wrapping)
+        );
+        spatialIssues.push(
+          ...overflowToValidationIssues(overflowData.overflows)
+        );
+      } catch (err) {
+        spatialIssues.push({
+          type: 'spatial',
+          severity: 'warning',
+          source: 'overflow-detector',
+          component: 'page',
+          message: `Overflow/wrapping check failed: ${err instanceof Error ? err.message : String(err)}`,
+          suggestion:
+            'The overflow/wrapping check could not complete. This may indicate a page rendering issue.',
+        });
+      }
     }
 
     if (options.enableTextSpacing ?? options.enableA11y) {

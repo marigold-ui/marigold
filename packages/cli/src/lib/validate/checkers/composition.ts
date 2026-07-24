@@ -14,7 +14,8 @@ const collectSubComponentUsages = (
   node: ts.Node,
   parentName: string,
   compoundParents: Set<string>,
-  counts: Map<string, number>
+  counts: Map<string, number>,
+  isCollectionParent: boolean
 ): void => {
   const checkTag = (tagName: ts.JsxTagNameExpression): void => {
     if (
@@ -33,17 +34,30 @@ const collectSubComponentUsages = (
 
   if (ts.isJsxElement(node)) {
     const tag = node.openingElement.tagName;
+    // Stop descending into any nested compound instance so its sub-components
+    // aren't misattributed to the outer one being checked — including a
+    // same-name nested instance (e.g. a confirm <Dialog> inside another
+    // <Dialog>'s content), which used to be exempted and double-counted.
+    // Collection compounds are the exception: they are designed to hold
+    // legitimately nested same-name instances (e.g. a master-detail <Table>
+    // nested inside a <Table> row), so descent continues there.
     if (
       ts.isIdentifier(tag) &&
       compoundParents.has(tag.text) &&
-      tag.text !== parentName
+      (tag.text !== parentName || !isCollectionParent)
     ) {
       return;
     }
   }
 
   ts.forEachChild(node, child =>
-    collectSubComponentUsages(child, parentName, compoundParents, counts)
+    collectSubComponentUsages(
+      child,
+      parentName,
+      compoundParents,
+      counts,
+      isCollectionParent
+    )
   );
 };
 
@@ -121,10 +135,25 @@ const collectAncestorSubComponents = (
   while (current) {
     if (ts.isJsxElement(current)) {
       const tag = current.openingElement.tagName;
+      // Stop at the nearest enclosing <parentName> instance: anything above
+      // it belongs to a different (outer) instance of the same compound, not
+      // the one being checked (e.g. a nested <Dialog> inside another
+      // <Dialog>'s content must not inherit the outer instance's ancestors).
+      if (ts.isIdentifier(tag) && tag.text === parentName) {
+        break;
+      }
+      // Only wrapper sub-components (Group/Trigger) are legitimately found as
+      // an ancestor of the instance they wrap (e.g. <Dialog.Trigger><Dialog>
+      // ...</Dialog></Dialog.Trigger>). A forward child-slot
+      // (Content/Title/Actions) is never really an ancestor of its own
+      // compound instance — if one shows up here it's the *outer* dialog's
+      // slot wrapping a nested same-name Dialog, and attributing it to the
+      // inner instance would be a false duplicate.
       if (
         ts.isPropertyAccessExpression(tag) &&
         ts.isIdentifier(tag.expression) &&
-        tag.expression.text === parentName
+        tag.expression.text === parentName &&
+        WRAPPER_SUBCOMPONENTS.has(tag.name.text)
       ) {
         const sub = tag.name.text;
         counts.set(sub, (counts.get(sub) ?? 0) + 1);
@@ -230,6 +259,7 @@ export const validateComposition = (filePath: string): ValidationIssue[] => {
         const spread = hasSpread(
           node as ts.JsxElement | ts.JsxSelfClosingElement
         );
+        const collectionLike = isCollectionCompound(original);
 
         const counts = new Map<string, number>();
         collectAncestorSubComponents(node, componentName, counts);
@@ -240,7 +270,8 @@ export const validateComposition = (filePath: string): ValidationIssue[] => {
               child,
               componentName,
               compoundParents,
-              counts
+              counts,
+              collectionLike
             );
           }
         }
@@ -255,7 +286,6 @@ export const validateComposition = (filePath: string): ValidationIssue[] => {
         };
 
         const found = [...counts.keys()];
-        const collectionLike = isCollectionCompound(original);
 
         // Only a completely empty compound is an unambiguous error. Partial
         // "missing sub-component" findings are too often optional to flag

@@ -129,9 +129,21 @@ export const extractNonTextContrast = async (
         const isOpaqueBackground = (colorStr: string): boolean => {
           const m = colorStr.match(/rgba?\(([^)]+)\)/);
           if (!m) return false;
-          const parts = m[1].split(',').map(s => s.trim());
+          // Accept both "r, g, b, a" and the space form "r g b / a" — modern
+          // Chromium can emit either from getComputedStyle. A comma-only split
+          // mis-parses the space form as a single part, always reading as
+          // opaque and stopping the ancestor walk at a translucent scrim.
+          // Mirrors contrast.ts::parseColor's part-splitting.
+          const parts = m[1]
+            .replace('/', ' ')
+            .split(/[\s,]+/)
+            .filter(Boolean);
           if (parts.length < 4) return true; // rgb(...) has no alpha channel: opaque
-          return parseFloat(parts[3]) >= 1;
+          const alphaStr = parts[3];
+          const alpha = alphaStr.endsWith('%')
+            ? parseFloat(alphaStr) / 100
+            : parseFloat(alphaStr);
+          return alpha >= 1;
         };
 
         // Walk ancestors collecting background colours up to the first opaque one;

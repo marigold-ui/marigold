@@ -9,7 +9,8 @@ export const staticStringValue = (
   if (
     ts.isJsxExpression(init) &&
     init.expression &&
-    ts.isStringLiteral(init.expression)
+    (ts.isStringLiteral(init.expression) ||
+      ts.isNoSubstitutionTemplateLiteral(init.expression))
   ) {
     return init.expression.text;
   }

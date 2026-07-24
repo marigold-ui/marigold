@@ -38,7 +38,11 @@ export const parseColor = (input: string): RGBA | null => {
     const hex = value.slice(1);
     const expand = (s: string): number => parseInt(s + s, 16);
     if (hex.length === 3) {
-      return { r: expand(hex[0]), g: expand(hex[1]), b: expand(hex[2]), a: 1 };
+      const r = expand(hex[0]);
+      const g = expand(hex[1]);
+      const b = expand(hex[2]);
+      if ([r, g, b].some(Number.isNaN)) return null;
+      return { r, g, b, a: 1 };
     }
     if (hex.length === 6 || hex.length === 8) {
       const r = parseInt(hex.slice(0, 2), 16);
