@@ -86,7 +86,7 @@ Mobile navigation should prioritize simplicity. Reduce the number of visible ite
 
 The `<TopNavigation>` itself does not handle responsive behavior. The components placed inside it are responsible for adapting to different screen sizes. On small screens:
 
-- **Collapse non-essential items:** Hide labels and show icon-only actions. Use `useResponsiveValue()` or `useSmallScreen()` to control visibility at each breakpoint.
+- **Collapse non-essential items:** Hide labels and show icon-only actions. Use [`useResponsiveValue()`](/foundations/responsive#useresponsivevalue) or [`useSmallScreen()`](/foundations/responsive#usesmallscreen) to control visibility at each breakpoint.
 - **Breadcrumbs:** Use fewer segments on small screens. The [Breadcrumbs](/components/navigation/breadcrumbs) component supports collapsing via the `maxVisibleItems` prop.
 
 ## Accessibility
