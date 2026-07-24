@@ -504,6 +504,52 @@ const C = () => (
     expect(dialogError).toBeDefined();
   });
 
+  it('does not flag a compound whose sub-components are delegated to a custom child', () => {
+    // A project's own <DialogBody> might render <Dialog.Content>/
+    // <Dialog.Title> internally — this static check cannot see into it, so
+    // it must not be flagged as a deterministic error (regression: this was
+    // a false-positive error on a pattern the checker genuinely cannot
+    // resolve, common for LLM-generated code that factors compounds this way).
+    const file = tmpFile(
+      'cv-custom-child.tsx',
+      `import { Dialog } from '@marigold/components';
+      const DialogBody = () => (
+        <>
+          <Dialog.Title>Settings</Dialog.Title>
+          <Dialog.Content>…</Dialog.Content>
+        </>
+      );
+      const C = () => (
+        <Dialog>
+          <DialogBody />
+        </Dialog>
+      );`
+    );
+    const dialogError = validateComposition(file).find(
+      i => i.component === 'Dialog' && i.severity === 'error'
+    );
+    expect(dialogError).toBeUndefined();
+  });
+
+  it('still errors on a compound whose only child is a known Marigold component', () => {
+    // A known Marigold component (Button) never renders another compound's
+    // sub-components internally, so its presence must not suppress a
+    // genuine finding the way an unresolved custom component does.
+    const file = tmpFile(
+      'cv-known-component-child.tsx',
+      `import { Dialog, Button } from '@marigold/components';
+      const C = () => (
+        <Dialog>
+          <Button>Close</Button>
+        </Dialog>
+      );`
+    );
+    const dialogError = validateComposition(file).find(
+      i => i.component === 'Dialog' && i.severity === 'error'
+    );
+    expect(dialogError).toBeDefined();
+  });
+
   // Finding #3: spread guard suppresses the empty-compound error.
   it('does not flag a self-closing compound with spread attributes', () => {
     const file = tmpFile(

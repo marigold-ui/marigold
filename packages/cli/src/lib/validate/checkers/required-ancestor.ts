@@ -150,7 +150,13 @@ export const validateRequiredAncestor = (
       ) {
         issues.push({
           type: 'technical',
-          severity: 'error',
+          // Warning, not error: this rule is deliberately file-scoped (see
+          // the comment above `identifierTags`), so a file that exports
+          // `<${root}.${sub}>` usages for composition into a `<${root}>`
+          // defined elsewhere — a real cross-file factoring pattern —
+          // false-positives here. The project's own rule is that an `error`
+          // must be false-positive-free; this can't guarantee that.
+          severity: 'warning',
           source: 'required-ancestor',
           component: `${root}.${sub}`,
           message: `<${root}.${sub}> is used without a <${root}> container anywhere in the file. Compound parts must be rendered inside their root component.`,
@@ -173,7 +179,11 @@ export const validateRequiredAncestor = (
       ) {
         issues.push({
           type: 'technical',
-          severity: 'error',
+          // Warning, not error — same file-scoped-heuristic reasoning as the
+          // schema-derived branch above: a file that exports `<${tag.text}>`
+          // usages for composition into a container defined elsewhere would
+          // otherwise false-positive at error severity.
+          severity: 'warning',
           source: 'required-ancestor',
           component: tag.text,
           message: `<${tag.text}> is used without a <${container}> anywhere in the file. It must be grouped inside a <${container}>.`,

@@ -1,6 +1,10 @@
 import ts from 'typescript';
 import path from 'node:path';
-import { hasOpaqueDynamicChild, hasSpreadAttribute } from '../helpers/ast.js';
+import {
+  hasOpaqueDynamicChild,
+  hasSpreadAttribute,
+  isPascalCase,
+} from '../helpers/ast.js';
 import {
   buildMarigoldTagResolver,
   getSubComponents,
@@ -173,6 +177,48 @@ const hasSpread = (node: ts.JsxElement | ts.JsxSelfClosingElement): boolean =>
       : node.openingElement.attributes
   );
 
+// A custom (non-Marigold) child component might render the sub-components
+// internally in a way this static check cannot see into — e.g. a project's
+// own `<DialogBody>` that renders `<Dialog.Content>`/`<Dialog.Title>`
+// internally. Its presence is treated as indeterminate, the same way an
+// opaque `{expression}` child already is: this only relaxes the check for a
+// component whose origin the resolver can't identify (a real user-authored
+// wrapper), not for a known Marigold component, which would never render
+// another compound's sub-components and must not silently suppress a
+// genuine finding. Mirrors accessible-name.ts's hasUnresolvedComponentChild.
+const hasUnresolvedComponentChild = (
+  node: ts.JsxElement,
+  resolver: Map<string, string>
+): boolean => {
+  let found = false;
+
+  const walk = (current: ts.Node): void => {
+    if (found) return;
+
+    if (current !== node) {
+      const tag = ts.isJsxElement(current)
+        ? current.openingElement.tagName
+        : ts.isJsxSelfClosingElement(current)
+          ? current.tagName
+          : undefined;
+      if (
+        tag &&
+        ts.isIdentifier(tag) &&
+        isPascalCase(tag.text) &&
+        resolver.get(tag.text) === undefined
+      ) {
+        found = true;
+        return;
+      }
+    }
+
+    ts.forEachChild(current, walk);
+  };
+
+  walk(node);
+  return found;
+};
+
 export const validateComposition = (filePath: string): ValidationIssue[] => {
   const source = parseSource(filePath);
 
@@ -259,6 +305,9 @@ export const validateComposition = (filePath: string): ValidationIssue[] => {
         const spread = hasSpread(
           node as ts.JsxElement | ts.JsxSelfClosingElement
         );
+        const hasUnresolvedChild =
+          !isSelfClosing &&
+          hasUnresolvedComponentChild(node as ts.JsxElement, resolver);
         const collectionLike = isCollectionCompound(original);
 
         const counts = new Map<string, number>();
@@ -297,6 +346,7 @@ export const validateComposition = (filePath: string): ValidationIssue[] => {
           found.length === 0 &&
           !isDynamic &&
           !spread &&
+          !hasUnresolvedChild &&
           !SELF_POPULATING_COMPOUNDS.has(original) &&
           !OPTIONAL_SUBCOMPONENT_COMPOUNDS.has(original)
         ) {

@@ -169,6 +169,41 @@ describe('validateComponentConventions — manual loading-label (W10)', () => {
       )
     ).toEqual([]);
   });
+
+  it('W10: does not flag an ordinary "Send"/"Sent" confirmation toggle', () => {
+    // Regression: "Send" (English imperative) and "Senden" (German
+    // infinitive) are both extremely common resting-state button labels, not
+    // exclusively loading indicators. This ternary toggles between a
+    // confirmation state and the resting label — unrelated to a loading
+    // state — and used to false-positive on the "Send" branch.
+    const file = tmpFile(
+      'cc-loadlabel-send-resting.tsx',
+      `import { Button } from '@marigold/components';
+      const C = ({ sent }: { sent: boolean }) => (
+        <Button>{sent ? 'Sent' : 'Send'}</Button>
+      );`
+    );
+    expect(
+      validateComponentConventions(file).filter(
+        i => i.details?.manualLoadingLabel
+      )
+    ).toEqual([]);
+  });
+
+  it('W10: does not flag an ordinary German "Senden"/"Gesendet" confirmation toggle', () => {
+    const file = tmpFile(
+      'cc-loadlabel-senden-resting.tsx',
+      `import { Button } from '@marigold/components';
+      const C = ({ sent }: { sent: boolean }) => (
+        <Button>{sent ? 'Gesendet' : 'Senden'}</Button>
+      );`
+    );
+    expect(
+      validateComponentConventions(file).filter(
+        i => i.details?.manualLoadingLabel
+      )
+    ).toEqual([]);
+  });
 });
 
 describe('validateComponentConventions — origin resolution (W7/W10)', () => {

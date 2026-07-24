@@ -23,6 +23,21 @@ describe('loadDesignTokens', () => {
     const second = loadDesignTokens();
     expect(first).toBe(second);
   });
+
+  it('captures a multi-line shadow token in full, not just its first layer', () => {
+    // Regression: theme-rui writes multi-layer shadow tokens
+    // (--shadow-elevation-overlay, -raised) across several lines, terminated
+    // by a single trailing `;`. The value pattern used to exclude newlines,
+    // so the captured value was truncated at the first line break — just
+    // the first shadow layer, with its trailing comma.
+    const tokens = loadDesignTokens();
+    const overlay = tokens['shadow-elevation-overlay'];
+    expect(overlay).toBeDefined();
+    // A single-layer capture would end right after the first comma-joined
+    // layer; the real token has (at least) six comma-separated layers.
+    expect(overlay.split(',').length).toBeGreaterThan(1);
+    expect(overlay.trim().endsWith(',')).toBe(false);
+  });
 });
 
 describe('resolveCssImports', () => {
