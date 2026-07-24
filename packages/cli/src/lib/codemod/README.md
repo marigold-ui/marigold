@@ -61,8 +61,8 @@ The pipeline order matters and is fixed in `commands/migrate.ts`:
    dropped slot keys are reported.
 4. `rename-jsx-members` / `rename-jsx-props` / `remove-jsx-props`: safe
    application-code edits (see below).
-5. `report-dead-keys` / `report-structure` / `report-jsx-usage`: report-only
-   passes.
+5. `report-dead-keys` / `report-structure` / `report-jsx-usage` /
+   `report-token-dependencies` / `report-token-usage`: report-only passes.
 
 Scaffolding (new components like `BooleanField`) runs last, per manifest
 entry, next to the theme file of a component that requires it, and registers
@@ -106,6 +106,45 @@ last one is deliberately NOT auto-removed: the `size` prop still exists in
 v18 and a standalone theme may define its own size variants; only the
 default theme dropped `large`.
 
+## Design tokens
+
+Token breakage compiles and typechecks fine and only shows up in the
+browser, so the manifest's `tokens` section drives report-only checks
+(`primitives/tokens.ts`). Three kinds of breakage are covered:
+
+- **Old tokens still referenced** (`tokens.renamed`): a plain text scan over
+  every `.ts`/`.tsx`/`.css` file under the target, not just Marigold
+  importers, for color utilities (`bg-brand`) and raw custom properties
+  (`var(--color-brand)`) whose token the target version renamed or removed.
+  The warning names the replacement (`bg-primary`) when there is one. This
+  bites consumers whose CSS is built on Marigold's token vocabulary.
+- **New tokens required but not defined** (`tokens.added` and
+  `tokens.componentDependencies`): some component implementations hardcode
+  new tokens (in v18: the `SelectList` selection indicator uses
+  `selected-bold`/`disabled-surface`); these classes bypass the theme layer,
+  so a standalone theme without the token renders them invisibly unstyled.
+  Files importing such a component get a warning, and the text scan also
+  flags any direct use of an undefined new token.
+- **Repurposed tokens** (`tokens.repurposed`): tokens that kept their name
+  but changed meaning, which no rename scan can see. In v18: `disabled`
+  flipped from background to text color (the background moved to
+  `disabled-surface`), `secondary` from a near-white surface to the
+  secondary text color, and the four status tokens plus their
+  `-foreground`s from solid accents to muted surfaces. Consumers who
+  _define_ such a token get a warning at the definition site with the
+  remap recipe (e.g. move your `--color-disabled` value to
+  `--color-disabled-surface`, take the old `-foreground` value for
+  `--color-disabled`), silenced once the `settledBy` token appears in
+  their CSS. Consumers who do not define it get warnings on old-role
+  utilities (`bg-disabled`) and raw `var()` reads, since Marigold's value
+  changed underneath them.
+
+Suppression makes this quiet where it should be: a token counts as defined
+when the consumer's own CSS declares `--color-<name>`, and consumers that
+import `@marigold/theme-rui` get every added token by construction. Only
+dangling references warn. Minified CSS (`*.min.css`) and `vendor/` are
+skipped as build artifacts.
+
 ## What is important (invariants)
 
 1. **Never override, only add.** Consumer class strings survive
@@ -145,6 +184,14 @@ Per-version work should be data entry, not transform code:
      styles (`container` is the default).
    - `structureWarnings`: hand-written texts for DOM changes that break
      consumer CSS selectors. Not auto-fixable, but must not go unannounced.
+   - `tokens`: `renamed` from the release notes' rename tables, `added` from
+     the `--color-*` diff of the two theme-rui token files, and
+     `componentDependencies` from a grep of `packages/components/src` for
+     utilities referencing added tokens. All three are mechanical and
+     codegen-able (DST-1650). `repurposed` candidates are also mechanically
+     detectable (a token whose utility-prefix histogram or resolved value
+     shifts between the two theme-rui versions), but the recipes are
+     hand-written: explaining a role move needs human words.
    - Warning links: point at the **source in this repo**, as GitHub
      permalinks pinned to a commit SHA or release tag (never a branch name:
      line numbers rot). Link the line that answers "what do I replace this
@@ -182,3 +229,12 @@ general abstraction from a single example is how wrong abstractions happen.
 - HTML-structure changes are report-only by design: consumers with their own
   CSS against Marigold's DOM (e.g. generated BEM selectors) must review the
   named components manually.
+- Repurposed tokens whose _role_ stayed the same (v17 `bg-warning` was a
+  solid fill, v18 `bg-warning` is a muted surface — both backgrounds) are
+  only detectable at definition sites and raw `var()` reads. A utility
+  usage like `bg-warning` is valid in both versions, so no scan can tell
+  whether the visual change is intended; the release notes cover that
+  review.
+- The token scan matches a curated list of color-utility prefixes; an exotic
+  utility (`border-x-brand`) slips through. Report-only, so the cost of a
+  miss is one undetected warning, never a wrong edit.

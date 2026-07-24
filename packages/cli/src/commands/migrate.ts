@@ -26,6 +26,11 @@ import {
 } from '../lib/codemod/primitives/scaffold-component.js';
 import { stubMissingSlots } from '../lib/codemod/primitives/stub-missing-slots.js';
 import { swapExactClasses } from '../lib/codemod/primitives/swap-exact-classes.js';
+import {
+  definedTokensIn,
+  reportTokenDependencies,
+  reportTokenUsage,
+} from '../lib/codemod/primitives/tokens.js';
 import type { Codemod, MigrationManifest } from '../lib/codemod/types.js';
 import {
   declaredVersion,
@@ -99,6 +104,7 @@ export interface MigrateResult {
 
 const IGNORED_DIRS = new Set([
   'node_modules',
+  'vendor', // Composer's node_modules
   'dist',
   'build',
   'coverage',
@@ -114,7 +120,11 @@ const collectSourceFiles = (dir: string): string[] => {
     if (entry.isDirectory()) {
       if (IGNORED_DIRS.has(entry.name) || entry.name.startsWith('.')) continue;
       out.push(...collectSourceFiles(path.join(dir, entry.name)));
-    } else if (/\.tsx?$/.test(entry.name) && !entry.name.endsWith('.d.ts')) {
+    } else if (
+      /\.(tsx?|css)$/.test(entry.name) &&
+      !entry.name.endsWith('.d.ts') &&
+      !entry.name.endsWith('.min.css') // minified = build artifact
+    ) {
       out.push(path.join(dir, entry.name));
     }
   }
@@ -170,13 +180,28 @@ export const runMigrate = (options: MigrateOptions): MigrateResult => {
 
   // read each candidate once; every later pass works on this snapshot
   const root = path.resolve(options.targetPath);
+  const texts = new Map<string, string>();
+  for (const file of collectSourceFiles(root).sort()) {
+    texts.set(file, readFileSync(file, 'utf8'));
+  }
   // '@marigold/' covers system (themes), components (JSX) and icons (imports)
   const sources = new Map<string, string>();
-  for (const file of collectSourceFiles(root).sort()) {
-    const source = readFileSync(file, 'utf8');
-    if (source.includes('@marigold/')) {
-      sources.set(file, source);
+  for (const [file, text] of texts) {
+    if (!file.endsWith('.css') && text.includes('@marigold/')) {
+      sources.set(file, text);
     }
+  }
+
+  // The consumer's token vocabulary: `--color-*` definitions in their CSS.
+  // Token warnings are suppressed per defined token — a theme built on
+  // Marigold's token CSS defines every added token by construction.
+  const definedTokens = new Set<string>();
+  for (const [file, text] of texts) {
+    if (!file.endsWith('.css')) continue;
+    for (const token of definedTokensIn(text)) definedTokens.add(token);
+  }
+  if ([...texts.values()].some(t => t.includes('@marigold/theme-rui'))) {
+    for (const token of manifest.tokens.added) definedTokens.add(token);
   }
 
   // pass 1: inventory of theme components across the consumer tree
@@ -197,6 +222,7 @@ export const runMigrate = (options: MigrateOptions): MigrateResult => {
   // becomes a slot object), swap before stubbing (a stubbed cva({}) must not
   // be mistaken for a customized slot), reports last. The JSX transforms are
   // independent of the theme ones; they anchor on @marigold/components.
+  const tokenUsage = reportTokenUsage(manifest, definedTokens);
   const codemods = [
     restructureToSlots(manifest),
     swapExactClasses(manifest),
@@ -208,6 +234,8 @@ export const runMigrate = (options: MigrateOptions): MigrateResult => {
     reportDeadKeys(manifest),
     reportStructure(manifest),
     reportJsxUsage(manifest),
+    reportTokenDependencies(manifest, definedTokens),
+    tokenUsage,
   ];
   const reports: FileReport[] = [];
   for (const [file, source] of sources) {
@@ -221,6 +249,23 @@ export const runMigrate = (options: MigrateOptions): MigrateResult => {
     }
     if (edited(report) && !options.dryRun) {
       writeFileSync(file, report.output);
+    }
+  }
+
+  // pass 2.5: token references live anywhere, not only in @marigold
+  // importers (own token CSS, generated CSS, plain components) — text-scan
+  // the files the pipeline did not see.
+  for (const [file, text] of texts) {
+    if (sources.has(file)) continue;
+    const outcome = tokenUsage.apply(text);
+    if (outcome.kind !== 'skipped' && outcome.warnings.length > 0) {
+      reports.push({
+        file,
+        changes: [],
+        warnings: outcome.warnings,
+        skips: [],
+        output: text,
+      });
     }
   }
 

@@ -541,4 +541,147 @@ export const v18: MigrationManifest = {
       },
     ],
   },
+  tokens: {
+    // Renames: the official tables in the v18 release notes (semantic
+    // renames + the status-token `-muted-` drop). `disabled-foreground` and
+    // `hover-foreground` follow theme-rui's own replacement (see the v17->v18
+    // diff of themes/theme-rui). `null` = removed without a 1:1 replacement:
+    // `input` split into `control`/`control-border`, and the old `secondary`
+    // button pair was rebuilt on the `soft` tokens.
+    renamed: {
+      brand: 'primary',
+      'brand-foreground': 'primary-foreground',
+      'muted-foreground': 'secondary',
+      focus: 'focus-highlight',
+      'destructive-muted': 'destructive',
+      'destructive-muted-foreground': 'destructive-foreground',
+      'destructive-muted-accent': 'destructive-accent',
+      'info-muted': 'info',
+      'info-muted-foreground': 'info-foreground',
+      'info-muted-accent': 'info-accent',
+      'success-muted': 'success',
+      'success-muted-foreground': 'success-foreground',
+      'success-muted-accent': 'success-accent',
+      'warning-muted': 'warning',
+      'warning-muted-foreground': 'warning-foreground',
+      'warning-muted-accent': 'warning-accent',
+      'disabled-foreground': 'disabled',
+      'hover-foreground': 'foreground',
+      input: null,
+      'secondary-foreground': null,
+    },
+    // `--color-*` diff: v17.9.1 theme.css -> v18 tokens.css (both theme-rui)
+    added: [
+      'access-admin-accent',
+      'access-master-accent',
+      'charcoal-50',
+      'charcoal-100',
+      'charcoal-200',
+      'charcoal-300',
+      'charcoal-400',
+      'charcoal-500',
+      'charcoal-600',
+      'charcoal-700',
+      'charcoal-800',
+      'charcoal-900',
+      'charcoal-950',
+      'control',
+      'control-border',
+      'destructive-accent',
+      'destructive-bold',
+      'destructive-bold-foreground',
+      'disabled-border',
+      'disabled-surface',
+      'focus-highlight',
+      'focus-highlight-bold',
+      'info-accent',
+      'overlay-backdrop',
+      'primary',
+      'primary-foreground',
+      'selected-bold',
+      'selected-bold-foreground',
+      'soft',
+      'soft-edge',
+      'soft-edge-hover',
+      'soft-hover',
+      'success-accent',
+      'warning-accent',
+    ],
+    // Same name, new meaning. Verified against the token values in v17.9.1
+    // theme.css vs v18 tokens.css: `disabled` flipped bg->text (stone-200 ->
+    // charcoal-400), `secondary` flipped surface->text (stone-50 ->
+    // charcoal-600), and the four status tokens plus their `-foreground`s
+    // flipped solid->muted (e.g. warning yellow-400 -> yellow-100,
+    // foregrounds white -> *-950). `selected` and `hover` kept their role
+    // (values only modernized) and are deliberately NOT listed.
+    repurposed: {
+      disabled: {
+        recipe:
+          'v17 used it as the disabled background, v18 uses it as the disabled text color; move your value to `--color-disabled-surface`, give `--color-disabled` your old `--color-disabled-foreground` value, then review your `bg-disabled` usages',
+        settledBy: 'disabled-surface',
+        oldRolePrefixes: ['bg'],
+      },
+      secondary: {
+        recipe:
+          'v17 used it as a near-white surface, v18 uses it as the secondary text color (the old `muted-foreground` role); give it your old `--color-muted-foreground` value — the surface role moved to the `soft` token',
+        settledBy: 'soft',
+        oldRolePrefixes: ['bg'],
+      },
+      destructive: {
+        recipe:
+          'v17 was the solid accent (red-600), v18 is the muted surface (your old `destructive-muted` value); the solid accent moved to `destructive-bold`',
+        settledBy: 'destructive-bold',
+      },
+      'destructive-foreground': {
+        recipe:
+          'v17 was white text on the solid accent, v18 is dark text on the muted surface (your old `destructive-muted-foreground` value)',
+        settledBy: 'destructive-bold',
+      },
+      success: {
+        recipe:
+          'v17 was the solid accent (green-500), v18 is the muted surface (your old `success-muted` value); rebuild solid fills with a scale color or a `-bold` theme variant',
+        settledBy: 'success-accent',
+      },
+      'success-foreground': {
+        recipe:
+          'v17 was white text on the solid accent, v18 is dark text on the muted surface (your old `success-muted-foreground` value)',
+        settledBy: 'success-accent',
+      },
+      warning: {
+        recipe:
+          'v17 was the solid accent (yellow-400), v18 is the muted surface (your old `warning-muted` value); rebuild solid fills with a scale color or a `-bold` theme variant',
+        settledBy: 'warning-accent',
+      },
+      'warning-foreground': {
+        recipe:
+          'v17 was white text on the solid accent, v18 is dark text on the muted surface (your old `warning-muted-foreground` value)',
+        settledBy: 'warning-accent',
+      },
+      info: {
+        recipe:
+          'v17 was the solid accent (blue-500), v18 is the muted surface (your old `info-muted` value); rebuild solid fills with a scale color or a `-bold` theme variant',
+        settledBy: 'info-accent',
+      },
+      'info-foreground': {
+        recipe:
+          'v17 was white text on the solid accent, v18 is dark text on the muted surface (your old `info-muted-foreground` value)',
+        settledBy: 'info-accent',
+      },
+    },
+    // grep of packages/components/src for `added`-token utilities: only the
+    // SelectList selection indicator hardcodes new tokens (codegen should
+    // re-run that scan per release)
+    componentDependencies: {
+      SelectList: {
+        tokens: [
+          'selected-bold',
+          'selected-bold-foreground',
+          'disabled-surface',
+        ],
+        url: 'https://github.com/marigold-ui/marigold/blob/946dc9f30/packages/components/src/SelectList/SelectionIndicator.tsx#L18-L26',
+      },
+    },
+    referenceUrl:
+      'https://github.com/marigold-ui/marigold/blob/946dc9f30/docs/content/releases/blog/release-2026-06-30.mdx#L86-L135',
+  },
 };

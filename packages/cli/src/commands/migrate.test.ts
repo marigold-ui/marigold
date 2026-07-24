@@ -246,4 +246,53 @@ export const Profile = () => (
     expect(app).toContain('<Tooltip open>'); // warning only, never edited
     expect(output).toContain('Tooltip[open]');
   });
+
+  test('reports token findings in CSS files and component internals', () => {
+    const root = setupFixture();
+    writeFileSync(
+      path.join(root, 'theme', 'tokens.css'),
+      `:root { --color-brand: #f80; }
+.help { color: var(--color-muted-foreground); }
+`
+    );
+    writeFileSync(
+      path.join(root, 'List.tsx'),
+      `import { SelectList } from '@marigold/components';
+export const List = () => <SelectList aria-label="x" />;
+`
+    );
+
+    const { output } = runMigrate({
+      version: 'v18',
+      targetPath: root,
+      dryRun: true,
+    });
+
+    expect(output).toContain('`muted-foreground` token was renamed');
+    expect(output).not.toContain('`--color-brand`'); // defined by the consumer
+    expect(output).toContain('SelectList: its v18 implementation hardcodes');
+  });
+
+  test('does not warn about added tokens when the consumer uses theme-rui', () => {
+    const root = setupFixture();
+    writeFileSync(
+      path.join(root, 'setup.ts'),
+      `import '@marigold/theme-rui/styles.css';
+`
+    );
+    writeFileSync(
+      path.join(root, 'List.tsx'),
+      `import { SelectList } from '@marigold/components';
+export const List = () => <SelectList aria-label="x" />;
+`
+    );
+
+    const { output } = runMigrate({
+      version: 'v18',
+      targetPath: root,
+      dryRun: true,
+    });
+
+    expect(output).not.toContain('hardcodes');
+  });
 });

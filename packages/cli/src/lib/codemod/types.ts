@@ -108,6 +108,62 @@ export interface JsxChanges {
   warnings: JsxUsageWarning[];
 }
 
+export interface TokenDependency {
+  /** target-version tokens the component's implementation hardcodes */
+  tokens: readonly string[];
+  /** permalink to the hardcoded classes in the component source */
+  url?: string;
+}
+
+/**
+ * A token that kept its name but changed meaning (role or value) in the
+ * target version — the case no rename scan can see. Detected two ways:
+ * consumers who define the token get a definition-site warning with the
+ * remap recipe; consumers who don't (the value comes from Marigold's CSS)
+ * get warnings on old-role utilities and raw `var()` reads.
+ */
+export interface RepurposedToken {
+  /** hand-written remap explanation, phrased to work in both warnings */
+  recipe: string;
+  /**
+   * Token whose presence in the consumer CSS marks the remap as done —
+   * definition-site warnings stop once it is defined.
+   */
+  settledBy?: string;
+  /**
+   * Utility prefixes that indicate the OLD role (e.g. `bg` for v17
+   * `disabled`). Only meaningful when the role itself flipped; a pure
+   * value flip (v17 `warning`) leaves this unset and is only detectable
+   * at definition sites and raw `var()` reads.
+   */
+  oldRolePrefixes?: readonly string[];
+}
+
+/**
+ * Design-token (`--color-*`) changes of the target version. Report-only:
+ * token classes live in consumer-owned CSS and class strings, so every
+ * finding is a warning, never an edit.
+ */
+export interface TokenChanges {
+  /**
+   * Old token name -> new name, or `null` when the token was removed
+   * without a 1:1 replacement. Source of truth: the release notes.
+   */
+  renamed: Record<string, string | null>;
+  /** token names the target version introduced */
+  added: readonly string[];
+  /** tokens that kept their name but changed meaning */
+  repurposed: Record<string, RepurposedToken>;
+  /**
+   * Components whose implementation hardcodes `added` tokens (not
+   * themeable via the consumer theme) — a standalone theme missing the
+   * token renders them partially unstyled.
+   */
+  componentDependencies: Record<string, TokenDependency>;
+  /** permalink to the official token-change documentation */
+  referenceUrl?: string;
+}
+
 export interface MigrationManifest {
   schemaVersion: 1;
   version: string;
@@ -124,6 +180,7 @@ export interface MigrationManifest {
   swaps: SwapEntry[];
   structureWarnings: StructureWarning[];
   jsx: JsxChanges;
+  tokens: TokenChanges;
   /**
    * Pinned base URL of the default theme's component style sources
    * (`<url>/<Component>.styles.ts`), used in reports as the reference for

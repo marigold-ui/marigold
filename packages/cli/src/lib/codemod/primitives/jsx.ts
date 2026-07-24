@@ -33,7 +33,7 @@ const attrName = (attr: AnyNode): string | null =>
   null;
 
 /** local names for the manifest's component names, only when imported */
-const localsFor = (file: AnyNode, components: Iterable<string>) => {
+export const localsFor = (file: AnyNode, components: Iterable<string>) => {
   const wanted = new Set(components);
   const locals = new Map<string, string>(); // local -> canonical name
   for (const imp of collectImports(file)) {
