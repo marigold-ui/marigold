@@ -93,16 +93,18 @@ A few details make the dialog trustworthy:
 
 The button that ends the pick performs one action: it commits the staged set and hands it to the host task, so label it with that action. A button that names its outcome tells the user what will happen when they press it, the same principle that makes "Add to cart" clearer than "Add" and "Publish" clearer than a dialog's "OK". Neutral words like "Next", "Continue", or "Done" only mark a step or an acknowledgement, so they fit a multi-step sequence rather than a commit, and "Filter" belongs to the [Filter](/patterns/user-input/filter) pattern, which narrows a view in place instead of committing a set.
 
-Name the outcome with the host task's own verb and carry the staged count, so the button says what pressing it does, the same reason a results button reads "Show 82 results" rather than "Show". The verb comes from the task, not the pick: "Add 3 venues" when the set joins a collection, "Assign 3 users" when it grants access, or "Save 3 venues" when the commit writes the set into a record the user keeps and edits, as the [example](/examples/pick) does.
+Name the outcome with the host task's own verb, so the button says what pressing it does, the same reason a results button reads "Show 82 results" rather than "Show". The verb comes from the task, not the pick: "Add venues" when the set joins a collection, "Assign users" when it grants access, or "Save venues" when the commit writes the set into a record the user keeps and edits, as the [example](/examples/pick) does.
 
-When nothing is staged, show the bare verb ("Add venues") disabled rather than a clickable "Add 0 venues", and compose the label by hand from the count so the wording and the number never disagree. The [`<ActionBar>`](/components/collection/actionbar) is built for a table's floating bulk actions, not a dialog's commit footer, so it is not the tool for this button.
+The staged count is status, not the action, so its home is the rail of removable tags that already shows the set. Echoing it in the label, "Add 3 venues", is the clearest default when the count stays short and mirrors the trigger that opened the dialog, "Add venues". Let the rail carry the count alone, and keep the button a bare verb, when the label would run long or when the pick sets a minimum or maximum, since a limit like "3 of 5" reads as a rule beside the set rather than as part of the button's verb.
+
+When nothing is staged, show the bare verb ("Add venues") disabled rather than a clickable "Add 0 venues". When the label does carry the count, compose it by hand from the staged set so the wording and the number never disagree. The [`<ActionBar>`](/components/collection/actionbar) is built for a table's floating bulk actions, not a dialog's commit footer, so it is not the tool for this button.
 
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Name the outcome and carry the count with the host task's verb, so the
-      label reads "Add 3 venues", "Assign 3 users", or "Save 3 venues" for a set
-      written into a record.
+      Name the outcome with the host task's verb, and let the staged-tag rail
+      carry the count. Echo it in the label, "Add 3 venues", when that keeps the
+      button short and mirrors the trigger.
     </DoDescription>
   </Do>
   <Dont>
