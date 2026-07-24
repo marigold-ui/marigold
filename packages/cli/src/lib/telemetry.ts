@@ -15,6 +15,7 @@ export type CommandName =
   | 'examples'
   | 'validate'
   | 'init'
+  | 'doctor'
   | 'telemetry';
 
 export interface TelemetryEvent {

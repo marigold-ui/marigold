@@ -87,13 +87,20 @@ export const ProgressCircleSvg = ({
 
 export const ProgressCircle = ({
   size = '16',
+  'aria-label': ariaLabel,
+  'aria-labelledby': ariaLabelledby,
   ...props
 }: ProgressCircleProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  // Localized label is only a fallback; let a consumer's label win.
+  const hasLabel = ariaLabel || ariaLabelledby;
   return (
     <ProgressBar
+      aria-label={
+        hasLabel ? ariaLabel : stringFormatter.format('loadingMessage')
+      }
+      aria-labelledby={ariaLabelledby}
       {...props}
-      aria-label={stringFormatter.format('loadingMessage')}
       isIndeterminate
     >
       <ProgressCircleSvg size={size} />

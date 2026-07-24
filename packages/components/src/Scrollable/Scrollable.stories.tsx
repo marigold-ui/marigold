@@ -58,8 +58,8 @@ export const Basic = meta.story({
 
 export const Horizontal = meta.story({
   render: args => (
-    <Scrollable {...args}>
-      <div className="flex gap-2">
+    <Scrollable width="1/2" {...args}>
+      <div className="inline-flex gap-2">
         <Card>
           <Card.Content>
             <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />

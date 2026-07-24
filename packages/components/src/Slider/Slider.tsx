@@ -96,7 +96,18 @@ const _Slider = <T extends number | number[]>({
       </SliderOutput>
 
       <SliderTrack
-        className={cn('relative col-span-2 h-2 w-full', classNames.track)}
+        className={cn(
+          'relative col-span-2 h-2 w-full',
+          classNames.track,
+          // Inset the track by half the thumb width (thumb is `size-5` → 10px)
+          // so the thumb stays within the Slider's own box at the min/max
+          // positions. Without this the thumb overhangs the track ends and
+          // gets clipped by any ancestor scroll container (e.g.
+          // `Drawer.Content`, whose `overflow-y: auto` promotes `overflow-x`
+          // to a clipping value). `w-auto` lets the grid item stretch to the
+          // column minus the margin.
+          'mx-2.5 w-auto'
+        )}
       >
         {({ state }) => (
           <>

@@ -27,7 +27,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     ],
   }),
   calendarContainer: cva({ base: 'flex flex-col gap-4 sm:flex-row' }),
-  calendarMonth: cva({ base: 'min-w-[250px] sm:flex-1' }),
+  calendarMonth: cva({ base: 'min-w-0 sm:min-w-[250px] sm:flex-1' }),
   calendarCell: cva({
     base: [
       'size-9 rounded-lg',
@@ -53,6 +53,22 @@ export const Calendar: ThemeComponent<'Calendar'> = {
   }),
   calendarHeading: cva({
     base: 'text-sm font-medium',
+  }),
+  calendarPresets: cva({
+    base: [
+      // Stack: full-width list above the grid on small screens.
+      'max-sm:w-full',
+      // Rail: fixed column left of the grid. Negative margins pull it flush
+      // against the calendar surface's padding so background and divider span
+      // the full height. The tray strips that padding, but the tray only
+      // shows on small screens where the stack layout applies.
+      'sm:w-40 sm:shrink-0 sm:self-stretch',
+      'sm:bg-muted sm:border-r sm:border-border',
+      'sm:-my-2 sm:-ml-2 sm:rounded-l-[inherit]',
+      '[&_[slot=description]]:text-secondary',
+      '[&_[data-selected]_[slot=description]]:text-foreground',
+      '[&_[data-disabled]_[slot=description]]:text-disabled',
+    ],
   }),
   calendarListboxButton: cva({
     base: [

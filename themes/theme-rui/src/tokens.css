@@ -60,6 +60,7 @@
     300 -- control fill, borders, scrollbar, selected bg, soft cap edge hover
     400 -- disabled (text)
     600 -- focus ring, secondary (text), placeholder
+    700 -- secondary-bold (text): emphasized body/idle nav labels
     900 -- primary text
     950 -- primary action, scrollbar hover
   */
@@ -68,6 +69,10 @@
   --color-background: var(--color-charcoal-100);
   --color-foreground: var(--color-charcoal-900);
   --color-secondary: var(--color-charcoal-600);
+  /* Emphatic sibling of `secondary` (cf. `selected`/`selected-bold`): text that
+     must out-rank quiet captions without reaching full-strength `foreground` —
+     e.g. idle, interactive sidebar nav labels sitting above `groupLabel`s. */
+  --color-secondary-bold: var(--color-charcoal-700);
   --color-placeholder: var(--color-charcoal-600);
 
   /* --- Primary --- */
@@ -233,6 +238,23 @@
   --spacing-control-large: 2.5rem;
   --spacing-container: 50rem;
 
+  /* Minimum touch-target height (WCAG 2.5.8 / platform guidelines: 44px).
+   * List rows that are pointer-sized on desktop (menu options, listbox
+   * options, sidebar nav rows) grow to this on small screens, where they are
+   * operated by finger — e.g. inside a Tray or the mobile nav drawer. */
+  --spacing-touch-target: 2.75rem;
+
+  /* The app shell's shared vertical datum: the top bar's height, the
+   * sidebar's brand row, and the rail's sticky offset all derive from it. */
+  --spacing-topbar: 3.5rem;
+
+  /* The two-level sidebar's column widths: the rail (expanded / icon-only
+   * collapsed) and the section panel beside it. The rail tiles' fixed label
+   * width is derived from the expanded value. */
+  --spacing-rail: 6.5rem;
+  --spacing-rail-collapsed: 4rem;
+  --spacing-rail-panel: 15.5rem;
+
   /* Universal: no spacing (works for gap, padding, and inset recipes) */
   --spacing-collapsed: --spacing(0);
 
@@ -242,6 +264,9 @@
   --spacing-regular: --spacing(6);
   --spacing-group: --spacing(12);
   --spacing-section: --spacing(24);
+
+  /* Shared horizontal padding for the `ui-panel-*` overlay surfaces. */
+  --ui-panel-px: --spacing(6);
 
   /* Padding spacing */
   --spacing-padding-tight: --spacing(1);

@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-rui",
-  "version": "6.0.0-beta.3",
+  "version": "6.0.0-beta.4",
   "description": "Marigold RUI Theme",
   "license": "MIT",
   "keywords": [
@@ -83,7 +83,7 @@
     "postcss-prefix-selector": "2.1.1",
     "shx": "^0.4.0",
     "tailwindcss": "4.3.2",
-    "tsdown": "0.22.3",
+    "tsdown": "0.22.9",
     "typescript": "6.0.3"
   },
   "dependencies": {

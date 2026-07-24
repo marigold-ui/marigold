@@ -8,7 +8,7 @@ In data heavy applications the table is where the work happens. A user scans it 
 
 This pattern starts from those tasks. For each, it describes the user's situation, the problems that come with it, and the interaction that solves them with the [`<Table>`](/components/collection/table) and [`<Drawer>`](/components/overlay/drawer) components. It also covers the moments where the table's own features, such as filters and sorting, work against the user. The focus is the interaction shell around a record, meaning how the user opens, fills, and saves it.
 
-For building the forms themselves, see the [Forms](/patterns/user-input/forms) pattern. For narrowing which records are shown, see the [Filter](/patterns/user-input/filter) pattern.
+For building the forms themselves, see the [Forms](/patterns/user-input/forms) pattern. For narrowing which records are shown, see the [Filter](/patterns/user-input/filter) pattern. For acting on many records at once instead of one at a time, see the [Bulk Actions](/patterns/user-input/bulk-actions) pattern.
 
 ## Match the approach to the task
 
@@ -34,7 +34,8 @@ The drawer is the default for anything beyond a single field. Reach for a full p
   A dialog blocks the table behind it, which is exactly the context people rely
   on during data entry. Dialogs also create nested scrolling once a form grows.
   Keep dialogs for confirmations, such as asking before a delete, and use a
-  drawer for everything else.
+  drawer for record creation and editing. To _select_ a subset of records rather
+  than edit them, see the [Pick](/patterns/user-input/pick) pattern.
 </Callout>
 
 ## Fixing a single value
@@ -130,6 +131,8 @@ The demo below starts filtered to active venues. Opening the form inherits that 
 
 Two things to avoid. Do not let the record vanish silently, because that destroys trust. And do not clear all filters after a save, because that throws away the workspace the user set up. Temporarily exempting the new row from the filters (a ghost row) is another option, but it adds complexity and can confuse people who do not understand why a non matching record is showing, so it is not recommended as the default.
 
+The same principle governs picking from a dialog. An in-dialog search or filter must never clear the selections a user has already staged. See the [Pick](/patterns/user-input/pick) pattern for how a picker keeps staged selections while the visible list narrows.
+
 **Displaced by sorting or pagination.** If the table is sorted alphabetically and the user creates "Zebra Corp", the record belongs near the end of the data, perhaps many pages away. A user sitting on page one will not see it appear, and the save once again looks like it failed.
 
 Confirm the save with a [`<Toast>`](/components/overlay/toast) such as "Zebra Corp created", and consider giving the toast an action that jumps to the record's position. Do not temporarily override the sort to force the new record to the top, because that hides the real sort state and confuses the next interaction. During a "Save and add another" loop, keep the toast brief so it does not interrupt the rhythm of entry.
@@ -150,6 +153,28 @@ For the form layout and progressive disclosure details, see the [Forms](/pattern
 
 <TeaserList
   items={[
+    {
+      title: 'Bulk Actions',
+      href: '/patterns/user-input/bulk-actions',
+      caption:
+        'Select many records and act on all of them at once, from selection scope to partial-failure feedback.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-6"
+        >
+          <rect x="3" y="9" width="18" height="7" rx="2" />
+          <path d="M7 12.5h.01" />
+          <path d="M11 12.5h6" />
+        </svg>
+      ),
+    },
     {
       title: 'Forms',
       href: '/patterns/user-input/forms',

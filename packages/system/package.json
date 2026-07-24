@@ -1,6 +1,6 @@
 {
   "name": "@marigold/system",
-  "version": "18.0.0-beta.3",
+  "version": "18.0.0-beta.4",
   "description": "Marigold System Library",
   "license": "MIT",
   "keywords": [
@@ -58,7 +58,7 @@
     "postcss": "8.5.16",
     "react": "19.2.7",
     "tailwindcss": "4.3.2",
-    "tsdown": "0.22.3"
+    "tsdown": "0.22.9"
   },
   "scripts": {
     "build": "tsdown src/index.ts",

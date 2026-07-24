@@ -36,7 +36,7 @@ const TableRow = <T extends object>({
   return (
     <Row id={id} className={cn('group/row', classNames.row)} {...otherProps}>
       {allowsDragging && (
-        <Cell>
+        <Cell className={classNames.cell}>
           <Button
             slot="drag"
             className={cn(
