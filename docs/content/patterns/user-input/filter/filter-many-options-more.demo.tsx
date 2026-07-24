@@ -3,7 +3,7 @@ import { Checkbox } from '@marigold/components';
 export default () => (
   <Checkbox.Group
     label="Genre"
-    collapseAt={5}
+    collapseAt={5} // [!code highlight]
     defaultValue={['rock', 'hiphop']}
   >
     <Checkbox value="pop" label="Pop" />

@@ -18,7 +18,7 @@ import {
   VisuallyHidden,
 } from '@marigold/components';
 import { Download, Star, Trash2 } from '@marigold/icons';
-import { NumericFormat } from '@marigold/system';
+import { DateFormat, NumericFormat } from '@marigold/system';
 import { exportVenuesToCsv } from './csv';
 import { useDeleteVenue } from './hooks/useDeleteVenue';
 import { useFilter } from './hooks/useFilter';
@@ -166,6 +166,13 @@ const VenueRow = ({
       </Inline>
     </Table.Cell>
     <Table.Cell>
+      {/* Local midnight, so the shown day never shifts across timezones. */}
+      <DateFormat
+        value={new Date(`${venue.nextAvailable}T00:00:00`)}
+        dateStyle="medium"
+      />
+    </Table.Cell>
+    <Table.Cell>
       <Button
         variant="ghost"
         size="small"
@@ -245,6 +252,7 @@ export const VenuesTable = () => {
           <Table.Column id="rating" alignX="right">
             Rating
           </Table.Column>
+          <Table.Column id="available">Available</Table.Column>
           <Table.Column id="actions">
             <VisuallyHidden>Actions</VisuallyHidden>
           </Table.Column>

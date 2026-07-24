@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import { useIsInsideOverlayHeader } from '../utils/OverlayHeaderContext';
 import { Description } from '../Description/Description';
+import { useIsInsideOverlayHeader } from '../utils/OverlayHeaderContext';
 
 export interface DrawerDescriptionProps {
   /**

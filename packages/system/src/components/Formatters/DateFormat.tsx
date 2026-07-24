@@ -18,7 +18,8 @@ export const DateFormat = ({ value, tabular, ...props }: DateFormatProps) => {
   });
 
   return (
-    <span className={tabular ? 'tabular-nums' : ''}>
+    // Intl output can legitimately differ between server and client ICU/locale.
+    <span suppressHydrationWarning className={tabular ? 'tabular-nums' : ''}>
       {Array.isArray(value)
         ? formatter.formatRange(value[0], value[1])
         : formatter.format(value)}

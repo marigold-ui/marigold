@@ -43,7 +43,11 @@ export const NumericFormat = ({
     ...props,
   });
   return (
-    <span className={tabular ? 'tabular-nums' : undefined}>
+    // Intl output can legitimately differ between server and client ICU/locale.
+    <span
+      suppressHydrationWarning
+      className={tabular ? 'tabular-nums' : undefined}
+    >
       {Array.isArray(value)
         ? formatter.formatRange(value[0], value[1])
         : formatter.format(value)}

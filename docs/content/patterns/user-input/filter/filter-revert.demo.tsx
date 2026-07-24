@@ -1,6 +1,6 @@
 import type { Key } from 'react';
 import { useState } from 'react';
-import { Button, Stack, Tag, Text } from '@marigold/components';
+import { Button, Stack, Tag } from '@marigold/components';
 
 const items = [
   {
@@ -26,23 +26,21 @@ export default () => {
 
   return (
     <Stack space={6} alignX="right">
-      <Tag.Group
-        label="Applied Filters"
-        items={filter}
-        onRemove={onRemove}
-        removeAll
-        emptyState={() => (
-          <Text variant="muted" fontSize="sm" fontStyle="italic">
-            None
-          </Text>
-        )}
-      >
-        {filter.map(item => (
-          <Tag key={item.id} id={item.id}>
-            {item.name}
-          </Tag>
-        ))}
-      </Tag.Group>
+      {/* Rendered only while filters are active, no placeholder at rest */}
+      {filter.length > 0 && (
+        <Tag.Group
+          label="Applied Filters"
+          items={filter}
+          onRemove={onRemove}
+          removeAll
+        >
+          {filter.map(item => (
+            <Tag key={item.id} id={item.id}>
+              {item.name}
+            </Tag>
+          ))}
+        </Tag.Group>
+      )}
 
       <Button size="small" onPress={() => setFilter(items)}>
         Reset Demo

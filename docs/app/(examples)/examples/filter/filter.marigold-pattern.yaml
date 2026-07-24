@@ -1,8 +1,11 @@
-title: Filterable data table with applied-filter chips
+title: Filterable data table with quick filters and applied-filter chips
 brief: >-
-  A searchable, filterable venues table with a Drawer-based filter form and
-  removable "applied filter" chips. Filter and search state is synced to the URL
-  query string so views are shareable and survive reloads.
+  A searchable, filterable venues table with instant quick filters in the
+  filter bar (multi-select and single-select Selects), a Drawer-based filter
+  form grouped into Accordion sections with active-count badges, live
+  per-option counts and a "Show N results" preview on Apply, and removable
+  "applied filter" chips. Filter and search state is synced to the URL query
+  string so views are shareable and survive reloads.
 patterns:
   - user-input/filter
 mock_data:
@@ -14,6 +17,7 @@ mock_data:
       export const venueTraits: readonly string[];
       export const amenitiesOptions: readonly string[];
       export const parkingOptions: readonly string[];
+      export const seatingTypeOptions: readonly string[];
       export const venues: Array<{
         id: string;
         name: string;
@@ -27,10 +31,11 @@ mock_data:
         traits: string[];
         amenities: number[];
         parking: number[];
+        seatingTypes: number[];
       }>;
 key_files:
   - VenuesTable.tsx
-  - Toolbar.tsx
+  - FilterBar.tsx
   - AppliedFilter.tsx
   - VenuesPagination.tsx
   - FetchingIndicator.tsx
