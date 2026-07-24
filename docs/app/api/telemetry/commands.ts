@@ -8,5 +8,6 @@ export const TELEMETRY_COMMANDS = [
   'examples',
   'validate',
   'init',
+  'doctor',
   'telemetry',
 ] as const;
