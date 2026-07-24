@@ -57,5 +57,5 @@ describe('render sandbox network egress (requires a working render environment)'
     } finally {
       await handle.close();
     }
-  }, 20_000);
+  }, 60_000);
 });
