@@ -1,5 +1,15 @@
 # @marigold/docs
 
+## 17.9.2
+
+### Patch Changes
+
+- Updated dependencies [85e9a45]
+  - @marigold/components@17.9.2
+  - @marigold/theme-rui@5.5.2
+  - @marigold/system@17.9.2
+  - @marigold/icons@1.3.46
+
 ## 17.9.1
 
 ### Patch Changes
