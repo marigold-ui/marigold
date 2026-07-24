@@ -269,18 +269,50 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
       });
       cleanup.push(() => context.close());
 
-      // page.route only intercepts HTTP(S); a WebSocket (or WebRTC data
-      // channel) opened by untrusted generated code would bypass it entirely.
-      // Close every WebSocket connection attempt so the network sandbox below
-      // actually covers all egress, not just fetch/XHR/navigation.
+      // A WebSocket or a WebRTC data channel opened by untrusted generated
+      // code would bypass an HTTP-only filter entirely. Close every WebSocket
+      // connection attempt so the network sandbox below actually covers more
+      // than just fetch/XHR/navigation.
       await context.routeWebSocket('**/*', ws => ws.close());
 
+      // WebRTC (RTCPeerConnection) is a separate egress path page.route and
+      // routeWebSocket cannot see: it can establish a P2P/STUN connection
+      // over UDP and leak the host's real IP even through a proxy. There is
+      // no Playwright-level filter for it, so neuter the constructor itself
+      // before any page script runs.
+      await context.addInitScript(() => {
+        const w = window as unknown as Record<string, unknown>;
+        w.RTCPeerConnection = undefined;
+        w.RTCDataChannel = undefined;
+      });
+
       const page = await context.newPage();
+
+      // Deny popups outright (window.open, target="_blank", a trusted click
+      // fired by the interaction driver). Registered only AFTER the main
+      // page above is created, so this never fires for `page` itself — it
+      // would otherwise close the very page we just created. A popup Page
+      // starts with no route handler of its own, so it would otherwise reach
+      // the open network even with the context-level route below in place —
+      // Playwright applies `context.route` to pages that exist at the time
+      // it's registered plus ones created afterwards, but a route handler
+      // still only takes effect once the new page's initial navigation is
+      // underway, leaving a window for a popup to slip through. Closing it
+      // immediately removes that window rather than relying on timing.
+      context.on('page', p => {
+        if (p === page) return;
+        p.close().catch(() => {});
+      });
 
       // Only the dev server's own origin may load. Untrusted generated code must
       // not reach other local services (SSRF), so no other port and no
       // `localhost` alias are allowed — everything else is aborted.
-      await page.route('**/*', route => {
+      // Registered on the CONTEXT, not the page: `page.route` only ever
+      // covers the single Page it was called on, so a popup (a new Page)
+      // would otherwise inherit no filter at all and reach the open network
+      // — `context.route` covers every page in the context, present and
+      // future, closing that gap.
+      await context.route('**/*', route => {
         const url = route.request().url();
         if (url === serverOrigin || url.startsWith(serverOrigin + '/')) {
           return route.continue();

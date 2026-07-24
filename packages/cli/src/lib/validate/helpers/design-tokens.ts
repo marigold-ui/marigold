@@ -6,7 +6,12 @@ export type DesignTokenMap = Record<string, string>;
 
 let cachedTokens: DesignTokenMap | null = null;
 
-const TOKEN_DECL = /--([a-zA-Z0-9_-]+):\s*([^;}\n]+);?/g;
+// The value class deliberately does NOT exclude newlines: a multi-layer
+// shadow token (--shadow-elevation-overlay: 0px 0px … , 0px 1px … , …) is
+// written across several lines in theme-rui's source, terminated by a single
+// trailing `;` — excluding `\n` here truncated the value at the first line
+// break, capturing only whitespace instead of the shadow layers.
+const TOKEN_DECL = /--([a-zA-Z0-9_-]+):\s*([^;}]+);?/g;
 
 // Matches a local (`./`, `../`) `@import`, either the bare-string form
 // (`@import './x.css';`) or the `url(...)` form (`@import url('./x.css');`),

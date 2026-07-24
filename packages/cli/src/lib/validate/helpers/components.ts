@@ -163,7 +163,8 @@ const propertiesFromType = (type: Type): ComponentPropInfo[] => {
 const extractPropsFor = (
   source: SourceFile,
   exports: ReadonlyMap<string, ExportedDeclarations[]>,
-  componentName: string
+  componentName: string,
+  declarations: ExportedDeclarations[]
 ): ComponentPropInfo[] => {
   const propsName = `${componentName}Props`;
 
@@ -177,6 +178,25 @@ const extractPropsFor = (
 
   const alias = source.getTypeAlias(propsName);
   if (alias) return propertiesFromType(alias.getType());
+
+  // No separately-exported `${componentName}Props` — some components (e.g.
+  // CloseButton, IconButton, Split, VisuallyHidden) declare their prop type
+  // inline as the component function's own parameter type instead of a named
+  // export. Fall back to the call signature's first parameter, mirroring
+  // extractSubComponentData's identical fallback below for sub-components.
+  // Without this, these components silently resolved to `props: []`, and
+  // props.ts's `props.length > 0` guard then skipped prop validation for
+  // them entirely — a silent false negative on real, checkable components.
+  for (const decl of declarations) {
+    const signatures = decl.getType().getCallSignatures();
+    if (signatures.length === 0) continue;
+    const params = signatures[0].getParameters();
+    if (params.length === 0) continue;
+    const paramDecl = params[0].getDeclarations()[0];
+    if (!paramDecl) continue;
+    const props = propertiesFromType(paramDecl.getType());
+    if (props.length > 0) return props;
+  }
 
   return [];
 };
@@ -233,7 +253,12 @@ export const loadMarigoldRegistry = (): Map<string, ComponentInfo> => {
     );
     if (!isCallable) continue;
 
-    const props = extractPropsFor(source, allExports, exportedName);
+    const props = extractPropsFor(
+      source,
+      allExports,
+      exportedName,
+      declarations
+    );
     const subData = extractSubComponentData(declarations);
     const hasItems = (list: ComponentPropInfo[]): boolean =>
       list.some(p => p.name === 'items');

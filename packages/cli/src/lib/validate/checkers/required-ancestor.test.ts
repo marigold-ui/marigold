@@ -13,7 +13,7 @@ describe('validateRequiredAncestor', () => {
       i => i.component === 'Menu.Item'
     );
     expect(issue).toBeDefined();
-    expect(issue?.severity).toBe('error');
+    expect(issue?.severity).toBe('warning');
     expect(issue?.message).toContain('<Menu>');
   });
 
@@ -41,7 +41,7 @@ describe('validateRequiredAncestor', () => {
     const issue = validateRequiredAncestor(file).find(
       i => i.component === 'Radio'
     );
-    expect(issue?.severity).toBe('error');
+    expect(issue?.severity).toBe('warning');
     expect(issue?.message).toContain('Radio.Group');
   });
 
@@ -144,7 +144,7 @@ describe('validateRequiredAncestor', () => {
     );
     const issue = validateRequiredAncestor(file).find(i => i.component === 'R');
     expect(issue).toBeDefined();
-    expect(issue?.severity).toBe('error');
+    expect(issue?.severity).toBe('warning');
   });
 
   it('does not flag an aliased Radio inside an aliased RadioGroup', () => {

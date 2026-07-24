@@ -35,6 +35,24 @@ describe('validateProps', () => {
     expect(issue?.suggestion).toMatch(/Replace "isRequired" with "required"/);
   });
 
+  it('flags an unknown prop on IconButton, whose prop type is inline rather than a separately-exported *Props interface', () => {
+    // Regression: IconButton (and 17 other real components — CloseButton,
+    // VisuallyHidden, Split, …) used to resolve to `props: []` because their
+    // prop type is declared inline as the function's own parameter, not a
+    // separately-exported `${Name}Props` interface. props.ts's
+    // `props.length > 0` guard then skipped prop validation entirely, so an
+    // invalid prop like this silently passed with zero findings.
+    const file = tmpFile(
+      'iconbutton-typo.tsx',
+      `import { IconButton } from '@marigold/components';
+      const C = () => <IconButton totallyBogusProp="x">icon</IconButton>;`
+    );
+    const issue = validateProps(file).find(i => i.component === 'IconButton');
+    expect(issue).toBeDefined();
+    expect(issue?.message).toContain('totallyBogusProp');
+    expect(issue?.severity).toBe('error');
+  });
+
   it('reports one issue per invalid prop', () => {
     const issues = validateProps(fixture('invalid-props.tsx'));
     expect(issues).toHaveLength(2);

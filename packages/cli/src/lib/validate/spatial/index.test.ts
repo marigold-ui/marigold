@@ -4,14 +4,15 @@ import { ThemeCssNotFoundError } from '../helpers/design-tokens.js';
 import { runSpatialChecks } from './index.js';
 import type { RenderHandle, SharedRenderer } from './renderer.js';
 
+const getTrackedProperties = vi.fn(() => {
+  throw new ThemeCssNotFoundError();
+});
 vi.mock('../helpers/design-tokens.js', async importOriginal => {
   const actual =
     await importOriginal<typeof import('../helpers/design-tokens.js')>();
   return {
     ...actual,
-    getTrackedProperties: () => {
-      throw new actual.ThemeCssNotFoundError();
-    },
+    getTrackedProperties: () => getTrackedProperties(),
   };
 });
 
@@ -73,6 +74,40 @@ describe('runSpatialChecks', () => {
     expect(themeIssue).toBeDefined();
     expect(themeIssue?.severity).toBe('warning');
     expect(themeIssue?.message).toContain(new ThemeCssNotFoundError().message);
+  });
+
+  it('isolates a non-theme token-compliance failure as a warning instead of aborting every later check', async () => {
+    // Regression: the token-compliance block used to `throw err` for any
+    // failure other than ThemeCssNotFoundError, escalating a transient
+    // page.evaluate hiccup ("Execution context was destroyed") to a gating
+    // error and discarding every check after it (overflow, a11y, responsive,
+    // keyboard…) — the one sub-check in this function that didn't match the
+    // per-check isolation every sibling block already has.
+    getTrackedProperties.mockImplementationOnce(() => {
+      throw new Error('Execution context was destroyed');
+    });
+
+    const result = await runSpatialChecks(
+      'irrelevant.tsx',
+      {
+        enableSpatial: true,
+        enableA11y: false,
+        enableResponsive: false,
+        enableKeyboardA11y: false,
+        enableTextSpacing: false,
+        enableRevealed: false,
+        enableContentHoverFocus: false,
+        viewport: { width: 1280, height: 720 },
+      },
+      fakeRenderer()
+    );
+
+    const tokenIssue = result.styleIssues.find(
+      i => i.source === 'token-compliance'
+    );
+    expect(tokenIssue).toBeDefined();
+    expect(tokenIssue?.severity).toBe('warning');
+    expect(tokenIssue?.message).toContain('Execution context was destroyed');
   });
 
   it('times out and force-closes the handle when a check hangs past the inspection budget', async () => {
