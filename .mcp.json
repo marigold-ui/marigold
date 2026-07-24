@@ -10,7 +10,7 @@
     },
     "marigold-docs": {
       "type": "http",
-      "url": "https://marigold-docs-git-dst-1166-mcp-server-integration-marigold.vercel.app/mcp",
+      "url": "https://www.marigold-ui.io/mcp",
       "oauth": {
         "clientId": "dst-marigold-docs-mcp",
         "callbackPort": 6749
