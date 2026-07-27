@@ -28,6 +28,13 @@ const MAX_BODY_BYTES = 4 * 1024;
 // abuse on the public POST endpoint to a knowable share of the Upstash quota.
 const RATE_LIMIT_PER_DAY = 1000;
 const SECONDS_PER_DAY = 24 * 60 * 60;
+// How long a day's raw event list is retained before Redis expires it.
+// Without this, `telemetry:YYYY-MM-DD` keys accumulate forever — one new key
+// every day, none of them ever read back out by anything in this repo — an
+// unbounded storage leak against the Upstash quota. 90 days is generous for
+// whatever aggregation job eventually reads these, while still bounding
+// growth to a known number of days' worth of events.
+const EVENT_RETENTION_SECONDS = 90 * SECONDS_PER_DAY;
 
 const dateKey = (): string => {
   const now = new Date();
@@ -88,7 +95,11 @@ export async function POST(request: Request) {
       ...parsed.data,
       receivedAt: new Date().toISOString(),
     };
-    await client.lpush(dateKey(), JSON.stringify(payload));
+    // EXPIRE only on the day's first event (mirrors the rate-limit key above)
+    // so the TTL is set once relative to the day's first write, not pushed
+    // out further by every subsequent event that lands in the same list.
+    const length = await client.lpush(dateKey(), JSON.stringify(payload));
+    if (length === 1) await client.expire(dateKey(), EVENT_RETENTION_SECONDS);
   } catch {
     // Never leak backend errors; telemetry must not break the caller.
   }
