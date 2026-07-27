@@ -1,6 +1,7 @@
 import ts from 'typescript';
 import path from 'node:path';
 import {
+  getJsxTagRootIdentifier,
   hasOpaqueDynamicChild,
   hasSpreadAttribute,
   isPascalCase,
@@ -201,11 +202,11 @@ const hasUnresolvedComponentChild = (
         : ts.isJsxSelfClosingElement(current)
           ? current.tagName
           : undefined;
+      const root = tag && getJsxTagRootIdentifier(tag);
       if (
-        tag &&
-        ts.isIdentifier(tag) &&
-        isPascalCase(tag.text) &&
-        resolver.get(tag.text) === undefined
+        root &&
+        isPascalCase(root.text) &&
+        resolver.get(root.text) === undefined
       ) {
         found = true;
         return;

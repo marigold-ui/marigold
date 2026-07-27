@@ -212,6 +212,26 @@ describe('validateAccessibleName', () => {
     expect(findDialog(file)).toBeUndefined();
   });
 
+  it('does not flag a Dialog whose title is delegated via a dotted custom child', () => {
+    // Same unresolved-delegate pattern as above, but the custom child is
+    // accessed through a dotted tag (an object-grouped local or a namespace
+    // import) rather than a bare Identifier — the root of the dotted access
+    // ("UI") is what must be checked against the resolver, not the tag itself.
+    const file = tmpFile(
+      'an-dotted-custom-header.tsx',
+      `import { Dialog } from '@marigold/components';
+      const UI = {
+        Header: () => <Dialog.Title>Settings</Dialog.Title>,
+      };
+      const C = () => (
+        <Dialog>
+          <UI.Header />
+        </Dialog>
+      );`
+    );
+    expect(findDialog(file)).toBeUndefined();
+  });
+
   it('still flags a Dialog whose only child is a known Marigold component', () => {
     // A known Marigold component (Button) never renders another overlay's
     // title internally, so its presence must not suppress a genuine finding

@@ -531,6 +531,29 @@ const C = () => (
     expect(dialogError).toBeUndefined();
   });
 
+  it('does not flag a compound whose sub-components are delegated via a dotted custom child', () => {
+    // Same unresolved-delegate pattern as above, but the custom child is
+    // accessed through a dotted tag (an object-grouped local or a namespace
+    // import) rather than a bare Identifier — the root of the dotted access
+    // ("UI") is what must be checked against the resolver, not the tag itself.
+    const file = tmpFile(
+      'cv-dotted-custom-child.tsx',
+      `import { Dialog } from '@marigold/components';
+      const UI = {
+        Header: () => <Dialog.Title>Settings</Dialog.Title>,
+      };
+      const C = () => (
+        <Dialog>
+          <UI.Header />
+        </Dialog>
+      );`
+    );
+    const dialogError = validateComposition(file).find(
+      i => i.component === 'Dialog' && i.severity === 'error'
+    );
+    expect(dialogError).toBeUndefined();
+  });
+
   it('still errors on a compound whose only child is a known Marigold component', () => {
     // A known Marigold component (Button) never renders another compound's
     // sub-components internally, so its presence must not suppress a

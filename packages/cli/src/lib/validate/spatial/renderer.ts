@@ -228,7 +228,10 @@ const startViteServer = async (workDir: string): Promise<ViteDevServer> => {
 const RENDER_BUDGET_MS = 45_000;
 
 export const createRenderer = async (): Promise<SharedRenderer> => {
-  const browser: Browser = await chromium.launch();
+  // Playwright already defaults launch's own timeout to 30s, but every other
+  // async step in this file states its bound explicitly rather than relying
+  // on an undocumented-from-this-file default — do the same here.
+  const browser: Browser = await chromium.launch({ timeout: 30_000 });
 
   const render = async (
     filePath: string,
@@ -350,27 +353,36 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
       // the real readiness signal. 'networkidle' additionally waits for
       // in-flight requests to settle for 500ms, which a cold Vite pre-bundle
       // of a heavy import graph (e.g. Dialog's overlay/focus-scope deps) can
-      // keep trickling past under CI load — burning its own 30s timeout
-      // before the module has even finished evaluating.
-      await page.goto(url, { waitUntil: 'load', timeout: 30_000 });
+      // keep trickling past under CI load — burning its own timeout before
+      // the module has even finished evaluating.
+      //
+      // This and the two waits below are individually capped at
+      // RENDER_BUDGET_MS rather than some tighter fixed value: the
+      // Promise.race against `budget` further down already bounds build() as
+      // a whole at RENDER_BUDGET_MS, so that's the real hang-detector for a
+      // genuinely stuck render. A per-op timeout tighter than that adds no
+      // extra protection — it can only fire *before* the real backstop would,
+      // on a legitimately (if unusually) slow step under CPU contention,
+      // turning a healthy-but-slow render into a false failure.
+      await page.goto(url, { waitUntil: 'load', timeout: RENDER_BUDGET_MS });
 
       // Wait for the harness "ready" marker, but fail fast if Vite reports a
       // compile/resolve error instead. The harness imports the target file
       // statically, so if the file (or one of its imports) cannot be resolved —
       // the common case for a file that pulls in local modules the single-file
       // sandbox never stages — the module never runs, "ready" never appears, and
-      // this would otherwise burn the full 30s. Vite injects a
+      // this would otherwise burn the full timeout. Vite injects a
       // <vite-error-overlay> for exactly those errors; a React *render* error is
       // caught by the harness boundary and still sets "ready", so it is
-      // unaffected. Timeout stays 30s as a backstop for a genuinely slow render.
+      // unaffected.
       const readyPromise = page.waitForSelector(
         '[data-validation-root="ready"]',
-        { timeout: 30_000 }
+        { timeout: RENDER_BUDGET_MS }
       );
       const overlayPromise = page
         .waitForSelector('vite-error-overlay', {
           state: 'attached',
-          timeout: 30_000,
+          timeout: RENDER_BUDGET_MS,
         })
         .then(() => {
           throw new Error(

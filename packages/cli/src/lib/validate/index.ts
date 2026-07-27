@@ -34,9 +34,21 @@ class RenderToolchainUnavailableError extends Error {}
 
 // Dynamic checks run on the rendered DOM and have no inherent source location.
 // These sources get joined back to the source via the component-location map.
-// Wall-clock ceiling for the whole dynamic check phase (all spatial/a11y
-// page.evaluate work), separate from the renderer's setup+mount budget.
-const CHECK_BUDGET_MS = 60_000;
+// Outer backstop around the whole render+check call below (runSpatialChecks:
+// renderer.render() then the inspection phase). It is NOT the check phase's
+// own budget — that's INSPECTION_BUDGET_MS in spatial/index.ts, which starts
+// its own clock only after render() has already returned, same as
+// RENDER_BUDGET_MS in renderer.ts bounds only render() itself. Both of those
+// are already correctly scoped and carry their own timeout errors. This one
+// wraps the combined call, so it must exceed their sum (45s + 60s) with
+// margin — sized below that, it could fire mid-render on a legitimately
+// slow-but-healthy component (e.g. a heavy import graph under load), well
+// before either inner budget gets a chance to do its job, and report a false
+// runtime error against valid code. Kept as a literal (not imported from
+// renderer.ts/spatial/index.ts) so this module — and by extension a bare
+// `import '@marigold/cli'` — never eagerly pulls in the render toolchain;
+// keep in sync with those two constants by hand if either changes.
+const CHECK_BUDGET_MS = 110_000;
 
 const DYNAMIC_SOURCES = new Set([
   'overlap-detector',
@@ -214,6 +226,7 @@ const runWithRenderer = async (
       // axe), which is an optional dependency. A missing toolchain therefore
       // surfaces here as a caught runtime error, not an import-time crash.
       const { runSpatialChecks } = await import('./spatial/index.js');
+      const renderPhaseStart = Date.now();
       // The renderer's own budget only bounds setup+mount. The check phase runs
       // page.evaluate bodies, which Playwright does not time-bound, so a
       // component that only enters an infinite loop AFTER mount could hang here.
@@ -221,13 +234,17 @@ const runWithRenderer = async (
       // and surfaces as a runtime error (the context is torn down in validate()).
       let checkTimer: ReturnType<typeof setTimeout> | undefined;
       const checkBudget = new Promise<never>((_, reject) => {
-        checkTimer = setTimeout(
-          () =>
-            reject(
-              new Error(`Render checks exceeded ${CHECK_BUDGET_MS}ms budget`)
-            ),
-          CHECK_BUDGET_MS
-        );
+        checkTimer = setTimeout(() => {
+          // This backstop firing means neither renderer.ts's nor
+          // spatial/index.ts's own (better-informed) budget error got a
+          // chance to — attach wall-clock elapsed time so the report still
+          // reflects real duration instead of the 0 initializer.
+          const err: RenderTimingError = new Error(
+            `Render checks exceeded ${CHECK_BUDGET_MS}ms budget`
+          );
+          err.renderTimeMs = Date.now() - renderPhaseStart;
+          reject(err);
+        }, CHECK_BUDGET_MS);
       });
       const spatialPromise = runSpatialChecks(
         absolute,

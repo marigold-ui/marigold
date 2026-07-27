@@ -36,7 +36,11 @@ import {
   wrappingToValidationIssues,
 } from './overflow.js';
 import { detectOverlaps, overlapIssuesToValidationIssues } from './overlap.js';
-import { type SharedRenderer, type Viewport } from './renderer.js';
+import {
+  type RenderTimingError,
+  type SharedRenderer,
+  type Viewport,
+} from './renderer.js';
 import {
   extractResponsiveSnapshots,
   responsiveToValidationIssues,
@@ -489,6 +493,13 @@ export const runSpatialChecks = async (
     // open indefinitely, since inspect() itself never reaches the point
     // where it would close it.
     await handle.close().catch(() => {});
+    // The render already completed by the time inspect() started (`handle`
+    // exists), so its real elapsed time is known even when the inspection
+    // phase itself times out — attach it so the caller doesn't report a
+    // timed-out-but-otherwise-healthy render as 0ms.
+    if (err instanceof Error) {
+      (err as RenderTimingError).renderTimeMs = handle.result.renderTimeMs;
+    }
     throw err;
   } finally {
     clearTimeout(budgetTimer);

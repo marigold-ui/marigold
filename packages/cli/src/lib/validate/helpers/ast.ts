@@ -38,6 +38,22 @@ export const isPascalCase = (name: string): boolean =>
 export const hasSpreadAttribute = (attrs: ts.JsxAttributes): boolean =>
   attrs.properties.some(ts.isJsxSpreadAttribute);
 
+// A JSX tag name is an Identifier (`<Foo>`) or a dotted access (`<Foo.Bar>`,
+// `<Foo.Bar.Baz>`). The import resolver only ever tracks top-level import
+// bindings, so a dotted tag's origin is decided by its leftmost identifier
+// (`Foo`) — `Foo.Bar` from a namespace import or a locally grouped object
+// (`const Foo = { Bar: ... }`) is exactly as unresolvable as a bare `<Foo>`
+// would be.
+export const getJsxTagRootIdentifier = (
+  tag: ts.JsxTagNameExpression
+): ts.Identifier | undefined => {
+  let current: ts.JsxTagNameExpression | ts.Expression = tag;
+  while (ts.isPropertyAccessExpression(current)) {
+    current = current.expression;
+  }
+  return ts.isIdentifier(current) ? current : undefined;
+};
+
 const isOpaqueExpressionChild = (child: ts.JsxChild): boolean =>
   ts.isJsxExpression(child) &&
   child.expression !== undefined &&

@@ -251,8 +251,39 @@ const activate = async (page: Page, trigger: Trigger): Promise<void> => {
   await waitForLayout(page);
 };
 
-const restore = async (page: Page): Promise<void> => {
+const isDisclosureStillOpen = (
+  page: Page,
+  selector: string
+): Promise<boolean> =>
+  page
+    .evaluate(sel => {
+      const el = document.querySelector(sel);
+      if (!el) return false;
+      if (el.getAttribute('aria-expanded') === 'true') return true;
+      const details = el.closest('details');
+      return details ? details.open : false;
+    }, selector)
+    .catch(() => false);
+
+const restore = async (page: Page, trigger: Trigger): Promise<void> => {
   await page.keyboard.press('Escape').catch(() => {});
+  await waitForLayout(page);
+  if (trigger.kind !== 'disclosure') return;
+  // Escape does not close a native <details>/<summary> (or an
+  // aria-expanded-based) disclosure — the browser only toggles it via a real
+  // click/Enter on the trigger itself — so it would otherwise stay expanded
+  // for the rest of the sweep, skewing every downstream check (responsive
+  // layout, tab order, hover/focus content) with content that isn't part of
+  // the component's default collapsed state. Re-click the trigger to toggle
+  // it back closed, but only if it's actually still open.
+  if (!(await isDisclosureStillOpen(page, trigger.selector))) return;
+  const handle = await page.$(trigger.selector);
+  if (!handle) return;
+  try {
+    await handle.click({ timeout: 1000 }).catch(() => {});
+  } finally {
+    await handle.dispose();
+  }
   await waitForLayout(page);
 };
 
@@ -316,7 +347,7 @@ export const driveInteractions = async (
     } catch {
       states.push({ trigger, revealedRootSelector: null, revealedRole: null });
     } finally {
-      await restore(page);
+      await restore(page, trigger);
       // Recompute rather than reuse the loop-invariant baseline: if restore()
       // (Escape) failed to close this trigger's overlay — realistic for a
       // <details>/Disclosure or a popovertarget popover that ignores Escape —

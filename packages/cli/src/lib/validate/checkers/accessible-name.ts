@@ -1,6 +1,7 @@
 import ts from 'typescript';
 import path from 'node:path';
 import {
+  getJsxTagRootIdentifier,
   hasAttrPresent,
   hasOpaqueDynamicChild,
   hasSpreadAttribute,
@@ -105,9 +106,14 @@ const hasUnresolvedComponentChild = (
         : ts.isJsxSelfClosingElement(current)
           ? current.tagName
           : undefined;
-      if (tag && ts.isIdentifier(tag)) {
-        if (tag.text === component) return; // nested overlay
-        if (isPascalCase(tag.text) && resolver.get(tag.text) === undefined) {
+      if (tag) {
+        if (ts.isIdentifier(tag) && tag.text === component) return; // nested overlay
+        const root = getJsxTagRootIdentifier(tag);
+        if (
+          root &&
+          isPascalCase(root.text) &&
+          resolver.get(root.text) === undefined
+        ) {
           found = true;
           return;
         }

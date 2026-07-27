@@ -1,8 +1,31 @@
 import ts from 'typescript';
 import { describe, expect, it } from 'vitest';
 import { tmpFile } from '../test-support/tmp.js';
-import { staticStringValue } from './ast.js';
+import { getJsxTagRootIdentifier, staticStringValue } from './ast.js';
 import { parseSource } from './source.js';
+
+// Grabs the tagName of the first JSX element/self-closing element in the
+// file — enough to exercise `getJsxTagRootIdentifier` against a real parsed
+// AST without pulling in a whole checker.
+const findFirstTag = (
+  source: ts.SourceFile
+): ts.JsxTagNameExpression | undefined => {
+  let found: ts.JsxTagNameExpression | undefined;
+  const visit = (node: ts.Node): void => {
+    if (found) return;
+    if (ts.isJsxElement(node)) {
+      found = node.openingElement.tagName;
+      return;
+    }
+    if (ts.isJsxSelfClosingElement(node)) {
+      found = node.tagName;
+      return;
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(source);
+  return found;
+};
 
 // Grabs the first JSX attribute named `name` anywhere in the file — enough to
 // exercise `staticStringValue` against a real parsed AST without pulling in a
@@ -85,5 +108,31 @@ describe('staticStringValue', () => {
       tmpFile('ast-boolean-attr.tsx', `const C = () => <Button disabled />;`)
     );
     expect(staticStringValue(findAttr(source, 'disabled')!)).toBeUndefined();
+  });
+});
+
+describe('getJsxTagRootIdentifier', () => {
+  it('returns the identifier itself for a bare tag', () => {
+    const source = parseSource(
+      tmpFile('ast-root-bare.tsx', `const C = () => <Button />;`)
+    );
+    expect(getJsxTagRootIdentifier(findFirstTag(source)!)?.text).toBe('Button');
+  });
+
+  it('returns the leftmost identifier for a dotted tag', () => {
+    const source = parseSource(
+      tmpFile('ast-root-dotted.tsx', `const C = () => <Dialog.Title />;`)
+    );
+    expect(getJsxTagRootIdentifier(findFirstTag(source)!)?.text).toBe('Dialog');
+  });
+
+  it('returns the leftmost identifier for a doubly-dotted tag', () => {
+    const source = parseSource(
+      tmpFile(
+        'ast-root-double-dotted.tsx',
+        `const C = () => <UI.Dialog.Title />;`
+      )
+    );
+    expect(getJsxTagRootIdentifier(findFirstTag(source)!)?.text).toBe('UI');
   });
 });
