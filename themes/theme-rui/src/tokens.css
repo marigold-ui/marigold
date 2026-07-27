@@ -46,6 +46,44 @@
   --color-charcoal-900: oklch(0.22 0.008 54);
   --color-charcoal-950: oklch(0.15 0.008 54);
 
+  /* charcoal alpha ramps (state & hierarchy washes)
+
+     An alpha fill only adapts *within* one polarity: a dark-base wash darkens
+     whatever it sits on, so it rides light grounds and vanishes on dark ones; a
+     light-base wash does the reverse. Neither crosses over. Hence two ramps,
+     not one -- ramp A is the default (white surface, charcoal-100 page), ramp B
+     takes over on the charcoal-900 contrast surface.
+
+     The two ramps are NOT the same alphas. They are solved so each step lands
+     on the same fill-vs-ground contrast on its own grounds, because a wash over
+     a dark ground needs less alpha to read at the same strength:
+
+       step   ramp A    ramp B    fill-vs-ground
+       a-50   0.02      0.02      1.04:1
+       a-100  0.05      0.045     1.11:1
+       a-200  0.11      0.085     1.27:1
+       a-300  0.19      0.14      1.52:1
+
+     Four steps, not five: there are exactly four wash jobs in the system
+     (muted, focus-highlight, hover, selected). Add a rung when a fifth job
+     turns up, not before.
+
+     These deliberately sit under 3:1 -- a wash is reinforcement, never the sole
+     signal for a state (R7). The opaque "bold" tokens (selected-bold, control,
+     soft, primary) are the markers and stay opaque. */
+
+  /* Ramp A -- dark base. Rides light grounds. */
+  --color-charcoal-a-50: oklch(from var(--color-charcoal-950) l c h / 0.02);
+  --color-charcoal-a-100: oklch(from var(--color-charcoal-950) l c h / 0.05);
+  --color-charcoal-a-200: oklch(from var(--color-charcoal-950) l c h / 0.11);
+  --color-charcoal-a-300: oklch(from var(--color-charcoal-950) l c h / 0.19);
+
+  /* Ramp B -- light base. Rides dark grounds. */
+  --color-charcoal-b-50: oklch(from var(--color-white) l c h / 0.02);
+  --color-charcoal-b-100: oklch(from var(--color-white) l c h / 0.045);
+  --color-charcoal-b-200: oklch(from var(--color-white) l c h / 0.085);
+  --color-charcoal-b-300: oklch(from var(--color-white) l c h / 0.14);
+
   /* ====================== */
   /*    SEMANTIC COLORS     */
   /* ====================== */
@@ -79,7 +117,26 @@
   --color-primary: var(--color-charcoal-900);
   --color-primary-foreground: var(--color-charcoal-50);
 
+  /* --- Wash Fills (per-ground indirection) --- */
+  /* The seam between "which ramp" and "which job". Defaults to ramp A; a dark
+     ground repoints these four to ramp B once and every wash beneath it flips
+     polarity with no component-level change.
+
+     These must INHERIT -- that is the whole mechanism. Do not register them
+     with `@property { inherits: false }` the way --ui-background-color and its
+     siblings are: those are deliberately non-inheriting so a themed parent
+     surface cannot bleed into nested surfaces, which is the exact opposite of
+     what a per-ground flip needs. */
+  --color-fill-50: var(--color-charcoal-a-50);
+  --color-fill-100: var(--color-charcoal-a-100);
+  --color-fill-200: var(--color-charcoal-a-200);
+  --color-fill-300: var(--color-charcoal-a-300);
+
   /* --- Neutral Backgrounds & States --- */
+  /* NOTE: still the opaque charcoal rungs. Repointing these onto --color-fill-*
+     is the next step of DST-1590 and is where all the visual risk lives; the
+     ramp above ships first, additively, so `Styles/Alpha` can baseline against
+     today's colours. */
   --color-muted: var(--color-charcoal-50);
   --color-control: var(--color-charcoal-300);
   --color-hover: var(--color-charcoal-200);
