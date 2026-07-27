@@ -73,15 +73,15 @@ export const validateRequiredAncestor = (
   // a helper, so an ancestor-only walk would raise false positives. We only
   // flag the unambiguous error — the required container appears *nowhere* in
   // the file — which means the author forgot it entirely.
-  const identifierTags = new Set<string>(); // <Menu>, <Radio>, …
-  const dottedTags = new Set<string>(); // Menu.Item, Radio.Group, …
-  // Canonical (post-alias-resolution) counterparts of the two sets above. A
-  // REQUIRED_CONTAINER value (e.g. 'Radio.Group') is always the canonical
-  // name — checking it against the as-written sets above breaks the moment
-  // the container itself is imported under an alias (`{ RadioGroup as RG }`,
-  // or `{ Radio as R }` used for `<R.Group>`): the alias never textually
-  // matches the canonical name, so a genuinely-present container is missed
-  // and an error-severity false positive is raised.
+  //
+  // Keyed by CANONICAL name (post-alias-resolution), not as-written text: a
+  // REQUIRED_CONTAINER/HOST_PROVIDES value (e.g. 'Radio.Group', 'Menu') is
+  // always canonical — checking it against as-written tags breaks the moment
+  // either side is imported under an alias (`{ RadioGroup as RG }`, `{ Radio
+  // as R }` used for `<R.Group>`, `{ ActionMenu as AM }`, or `{ Menu as M }`
+  // used for `<M.Item>`): the alias never textually matches the canonical
+  // name, so a genuinely-present container/host is missed and a false
+  // positive is raised on valid, idiomatic (if aliased) code.
   const canonicalIdentifierTags = new Set<string>();
   const canonicalDottedTags = new Set<string>();
   const elements: ElementInfo[] = [];
@@ -94,14 +94,12 @@ export const validateRequiredAncestor = (
         tag,
       });
       if (ts.isIdentifier(tag)) {
-        identifierTags.add(tag.text);
         const original = resolver.get(tag.text);
         if (original) canonicalIdentifierTags.add(original);
       } else if (
         ts.isPropertyAccessExpression(tag) &&
         ts.isIdentifier(tag.expression)
       ) {
-        dottedTags.add(`${tag.expression.text}.${tag.name.text}`);
         const originalRoot = resolver.get(tag.expression.text);
         if (originalRoot) {
           canonicalDottedTags.add(`${originalRoot}.${tag.name.text}`);
@@ -114,14 +112,23 @@ export const validateRequiredAncestor = (
 
   // Roots that are present either literally (`<Sidebar>`) or because a host
   // that renders them internally appears in the file. A host is usually a
-  // flat component (`<ActionMenu>`, checked via identifierTags below), but a
-  // HOST_PROVIDES key can itself be a dotted sub-component (`<X.Y>`), checked
-  // via dottedTags — no current entry uses that form (the one that used to,
-  // `AppLayout.Sidebar`, was removed with AppLayout itself), so that branch
-  // has no exerciser today, but it stays correct for a host written that way.
-  const satisfiedRoots = new Set(identifierTags);
+  // flat component (`<ActionMenu>`, checked via canonicalIdentifierTags
+  // below), but a HOST_PROVIDES key can itself be a dotted sub-component
+  // (`<X.Y>`), checked via canonicalDottedTags — no current entry uses that
+  // form (the one that used to, `AppLayout.Sidebar`, was removed with
+  // AppLayout itself), so that branch has no exerciser today, but it stays
+  // correct for a host written that way.
+  //
+  // Built from the CANONICAL sets, not the as-written ones: HOST_PROVIDES'
+  // keys/values are always canonical names (e.g. 'ActionMenu'/'Menu'), so
+  // checking them against as-written tags breaks the moment either the host
+  // or the root is imported under an alias (`ActionMenu as AM`, or `Menu as
+  // M` used as `<M.Item>`) — the alias never textually matches the canonical
+  // name, silently dropping a genuinely-present host/root and raising a
+  // false positive on valid, idiomatic (if aliased) code.
+  const satisfiedRoots = new Set(canonicalIdentifierTags);
   for (const [host, providedRoot] of Object.entries(HOST_PROVIDES)) {
-    if (dottedTags.has(host) || identifierTags.has(host)) {
+    if (canonicalDottedTags.has(host) || canonicalIdentifierTags.has(host)) {
       satisfiedRoots.add(providedRoot);
     }
   }
@@ -146,12 +153,12 @@ export const validateRequiredAncestor = (
         originalRoot !== undefined &&
         isCompoundComponent(originalRoot) &&
         isMarigoldSubComponent(originalRoot, sub) &&
-        !satisfiedRoots.has(root)
+        !satisfiedRoots.has(originalRoot)
       ) {
         issues.push({
           type: 'technical',
           // Warning, not error: this rule is deliberately file-scoped (see
-          // the comment above `identifierTags`), so a file that exports
+          // the comment above `canonicalIdentifierTags`), so a file that exports
           // `<${root}.${sub}>` usages for composition into a `<${root}>`
           // defined elsewhere — a real cross-file factoring pattern —
           // false-positives here. The project's own rule is that an `error`

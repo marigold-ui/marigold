@@ -90,6 +90,45 @@ describe('validateRequiredAncestor', () => {
     expect(issues).toEqual([]);
   });
 
+  it('accepts Menu.Item inside an aliased ActionMenu host', () => {
+    // Regression: HOST_PROVIDES used to be checked against the as-written
+    // tag text ('ActionMenu'), which never matches when the host is imported
+    // under an alias — the file only ever writes <AM>, so the host was never
+    // recognized as present and Menu.Item false-positived.
+    const file = tmpFile(
+      'ra-aliased-actionmenu-host.tsx',
+      `import { ActionMenu as AM, Menu } from '@marigold/components';
+      const C = () => (
+        <AM>
+          <Menu.Item id="view">View</Menu.Item>
+        </AM>
+      );`
+    );
+    const issues = validateRequiredAncestor(file).filter(
+      i => i.component === 'Menu.Item'
+    );
+    expect(issues).toEqual([]);
+  });
+
+  it('accepts an aliased Menu.Item inside an ActionMenu host', () => {
+    // Regression: the other direction of the same bug — the provided root
+    // ('Menu', canonical) was added to a set keyed by as-written text, then
+    // compared against the as-written root of <M.Item> ('M'), never matching.
+    const file = tmpFile(
+      'ra-aliased-menu-root.tsx',
+      `import { ActionMenu, Menu as M } from '@marigold/components';
+      const C = () => (
+        <ActionMenu>
+          <M.Item id="view">View</M.Item>
+        </ActionMenu>
+      );`
+    );
+    const issues = validateRequiredAncestor(file).filter(
+      i => i.component === 'M.Item'
+    );
+    expect(issues).toEqual([]);
+  });
+
   it('does not flag provider sub-components', () => {
     const file = tmpFile(
       'ra-provider.tsx',
