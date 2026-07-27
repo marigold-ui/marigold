@@ -98,12 +98,12 @@ export const WithOwnWidth = meta.story({
       },
     },
   },
-  render: () => (
+  render: args => (
     // The tint marks the radio field — the element `width` actually sizes.
     // Without it the demo looks unchanged, since a radio dot and its label
     // never fill their container on their own.
     <div className="w-96 [&_[data-rac]:has(>label)]:bg-slate-200">
-      <Radio.Group label="Label">
+      <Radio.Group {...args}>
         <Radio value="1" width="1/2">
           Option 1
         </Radio>
