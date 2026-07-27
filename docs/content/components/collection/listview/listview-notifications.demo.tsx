@@ -2,6 +2,7 @@ import { useState } from 'react';
 import {
   Button,
   Description,
+  EmptyState,
   ListView,
   Switch,
   TextValue,
@@ -27,7 +28,15 @@ export default () => {
     setNotifications(current => current.filter(item => item.id !== id));
 
   return (
-    <ListView aria-label="Notifications">
+    <ListView
+      aria-label="Notifications"
+      emptyState={
+        <EmptyState
+          title="You're all caught up"
+          description="New notifications will show up here."
+        />
+      }
+    >
       {notifications.map(notification => (
         <ListView.Item
           key={notification.id}

@@ -71,9 +71,9 @@ Reach for a row menu once a row's actions no longer fit as one or two icon butto
 
 ### Settings lists
 
-Use `<ListView>` for settings that are one row per item in a data-driven collection, each row carrying its own `<Switch>`: enabling connected integrations, muting channels, toggling sync per device. The rows are rendered from data with a `.map`, so their number and identity aren't fixed when you author the screen.
+The rule is which toggles you have. Use `<ListView>` when the toggles come from a list of things you don't know ahead of time, rendered from data: connected integrations, muted channels, per-device sync. Each row is one item in that list, carrying its own `<Switch>` that acts immediately. It stays a list, not a form, the switches carry no submitted value.
 
-For a fixed set of app-level preferences authored by hand, use the [auto-save settings pattern](/patterns/user-input/forms#auto-save) instead: plain `<Switch>` controls in a `<Panel>`, the default for a preferences screen. `<ListView>` earns its place only when the toggles belong to items in a list, and even then it stays a list, not a form, the switches carry no submitted value.
+Use the [auto-save settings pattern](/patterns/user-input/forms#auto-save) instead when you can write every toggle by hand and the set is fixed: account-level preferences like email or notifications. Those are plain `<Switch>` controls in a `<Panel>`, and they're a form.
 
 <ComponentDemo name="listview-settings" />
 
