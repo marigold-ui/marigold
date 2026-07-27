@@ -17,7 +17,8 @@ import type { Codemod, MigrationManifest } from '../types.js';
 export const stubMissingSlots = (manifest: MigrationManifest): Codemod =>
   themeCodemod(
     'stub-missing-slots',
-    ({ component, init, source, s, unit, changes, warnings }) => {
+    'stub new theme slots with empty cva()',
+    ({ component, init, source, s, unit, cva, changes, warnings }) => {
       const slots = manifest.slots[component];
       if (!Array.isArray(slots) || init.type !== 'ObjectExpression') return;
 
@@ -55,7 +56,9 @@ export const stubMissingSlots = (manifest: MigrationManifest): Codemod =>
 
       const base = lineIndentAt(source, init.start as number);
       const inner = base + unit;
-      const stubs = missing.map(slot => stubSlotLine(slot, inner)).join('\n');
+      const stubs = missing
+        .map(slot => stubSlotLine(slot, inner, cva))
+        .join('\n');
 
       if (props.length === 0) {
         s.overwrite(

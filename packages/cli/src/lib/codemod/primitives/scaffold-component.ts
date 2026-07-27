@@ -49,6 +49,7 @@ export const addIndexExport = (
   context?: string
 ): Codemod => ({
   name: 'add-index-export',
+  description: 'register a scaffolded component in the theme barrel',
   apply: (source): CodemodOutcome => {
     const exportLine = `export * from './${moduleBase}';`;
     if (source.includes(`'./${moduleBase}'`)) {

@@ -443,11 +443,15 @@ export const main = async (
     } else if (command === 'migrate') {
       const { positionals, values } = parseMigrateCommand(rest);
       // the version positional is optional: `migrate ./src` treats the first
-      // positional as a path, `migrate v18 ./src` as version + path
-      const looksLikeVersion = (p: string | undefined): p is string =>
-        p !== undefined && /^v?\d+$/.test(p);
+      // positional as a path, `migrate v18 ./src` as version + path. Both
+      // `18` and `v18` name a migration.
       const [first, second] = positionals;
-      const explicitVersion = looksLikeVersion(first) ? first : undefined;
+      const explicitVersion =
+        first !== undefined && /^v?\d+$/.test(first)
+          ? first.startsWith('v')
+            ? first
+            : `v${first}`
+          : undefined;
       const targetPath = (explicitVersion ? second : first) ?? process.cwd();
 
       telemetryArgs = {
@@ -455,6 +459,19 @@ export const main = async (
         ...(values['dry-run'] ? { dryRun: 'true' } : {}),
       };
 
+      // A version-ish first positional that is not an exact major is a typo,
+      // not a directory. Checked before the count below, which would
+      // otherwise swallow `migrate 18.1 ./src` as "too many paths".
+      if (
+        !explicitVersion &&
+        first !== undefined &&
+        /^v?\d+\.[\d.]*$/.test(first)
+      ) {
+        fail(
+          `Unknown migration '${first}' — migrations are named by major version. ` +
+            `Did you mean v${Number.parseInt(first.replace(/^v/, ''), 10)}?`
+        );
+      }
       if (positionals.length > (explicitVersion ? 2 : 1)) {
         fail(
           'Usage: marigold migrate [version] [path] [--dry-run] [--only <names>]'
@@ -463,88 +480,17 @@ export const main = async (
 
       // Lazy-load: migrate pulls in @babel/parser and magic-string, which we
       // keep off the docs/list hot path.
-      const { detectMigration, runMigrate } =
-        await import('../commands/migrate.js');
-
-      let versions: string[];
-      if (explicitVersion) {
-        // accept both `18` and `v18`
-        versions = [
-          explicitVersion.startsWith('v')
-            ? explicitVersion
-            : `v${explicitVersion}`,
-        ];
-      } else {
-        const detected = detectMigration(targetPath);
-        if (!detected) {
-          fail(
-            `Could not find @marigold/components under ${targetPath} — pass the migration explicitly: marigold migrate v18 [path]`
-          );
-        }
-        if (detected.versions.length === 0) {
-          writeOutput(
-            `Detected @marigold/components ${detected.installed} (${detected.source}) — already up to date, no migration to run.`
-          );
-          return 0;
-        }
-        if (!process.stdout.isTTY) {
-          fail(
-            `Detected @marigold/components ${detected.installed} — would run ${detected.versions.join(', then ')}. ` +
-              `Non-interactive session: confirm by passing the version explicitly, e.g. marigold migrate ${detected.versions[0]} [path]`
-          );
-        }
-        const { confirm, isCancel } = await import('@clack/prompts');
-        const proceed = await confirm({
-          message:
-            `Detected @marigold/components ${detected.installed} (${detected.source}). ` +
-            `Run the ${detected.versions.join(', then the ')} migration${values['dry-run'] ? ' (dry run)' : ''}?`,
-        });
-        if (isCancel(proceed) || proceed !== true) {
-          writeOutput('Aborted — nothing changed.');
-          return 130;
-        }
-        versions = detected.versions;
-      }
-
-      const only = values.only
-        ?.split(',')
-        .map(s => s.trim())
-        .filter(Boolean);
-
-      for (const version of versions) {
-        // pre-analysis: dry-run in memory, offer the fired changes for
-        // selection. Skipped for explicit --only / --dry-run / non-TTY runs.
-        let selected = only;
-        if (!selected && !values['dry-run'] && process.stdout.isTTY) {
-          const analysis = runMigrate({ version, targetPath, dryRun: true });
-          if (analysis.summary.length > 0) {
-            const { multiselect, isCancel } = await import('@clack/prompts');
-            const chosen = await multiselect({
-              message: `The ${version} migration fires these changes — deselect what you want to skip (warnings always run):`,
-              options: analysis.summary.map(s => ({
-                value: s.name,
-                label: s.name,
-                hint: `${s.description} — ${s.changes} change(s) in ${s.files} file(s)`,
-              })),
-              initialValues: analysis.summary.map(s => s.name),
-              required: false,
-            });
-            if (isCancel(chosen)) {
-              writeOutput('Aborted — nothing changed.');
-              return 130;
-            }
-            selected = chosen as string[];
-          }
-        }
-
-        const result = runMigrate({
-          version,
-          targetPath,
-          dryRun: values['dry-run'],
-          only: selected,
-        });
-        writeOutput(result.output);
-      }
+      const { runMigrateCommand } = await import('../commands/migrate.js');
+      exitCode = await runMigrateCommand({
+        version: explicitVersion,
+        targetPath,
+        dryRun: values['dry-run'],
+        only: values.only
+          ?.split(',')
+          .map(s => s.trim())
+          .filter(Boolean),
+        write: writeOutput,
+      });
     } else if (command === 'telemetry') {
       const [sub] = rest;
       telemetryArgs = sub ? { sub } : {};

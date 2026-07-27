@@ -29,8 +29,7 @@ const jsxAttributes = (opening: AnyNode | undefined): AnyNode[] =>
   );
 
 const attrName = (attr: AnyNode): string | null =>
-  (attr.name as AnyNode | undefined as { name?: string } | undefined)?.name ??
-  null;
+  (attr.name as { name?: string } | undefined)?.name ?? null;
 
 /** local names for the manifest's component names, only when imported */
 export const localsFor = (file: AnyNode, components: Iterable<string>) => {
@@ -51,17 +50,46 @@ export const localsFor = (file: AnyNode, components: Iterable<string>) => {
   return locals;
 };
 
-/** Renames props on Marigold components, e.g. Inset `space` to `p`. */
-export const renameJsxProps = (manifest: MigrationManifest): Codemod => ({
-  name: 'rename-jsx-props',
-  apply: source =>
-    parseOr(source, file => {
-      const locals = localsFor(
-        file,
-        manifest.jsx.renames.map(e => e.component)
-      );
-      if (locals.size === 0) return { kind: 'unchanged', warnings: [] };
+export interface JsxVisit {
+  file: AnyNode;
+  source: string;
+  /** local name -> canonical component name, for the components asked for */
+  locals: Map<string, string>;
+}
 
+/**
+ * The shared frame of the primitives anchored on @marigold/components: skip
+ * without parsing when the file cannot import the package at all, parse-or-
+ * skip, resolve the manifest's components to their local names, and skip
+ * again when this file imports none of them.
+ */
+const jsxCodemod = (
+  meta: { name: string; description: string },
+  components: string[],
+  run: (ctx: JsxVisit) => CodemodOutcome
+): Codemod => ({
+  ...meta,
+  apply: source => {
+    if (!source.includes(MARIGOLD_COMPONENTS)) {
+      return { kind: 'unchanged', warnings: [] };
+    }
+    return parseOr(source, file => {
+      const locals = localsFor(file, components);
+      if (locals.size === 0) return { kind: 'unchanged', warnings: [] };
+      return run({ file, source, locals });
+    });
+  },
+});
+
+/** Renames props on Marigold components, e.g. Inset `space` to `p`. */
+export const renameJsxProps = (manifest: MigrationManifest): Codemod =>
+  jsxCodemod(
+    {
+      name: 'rename-jsx-props',
+      description: 'rename component props (e.g. Inset space to p)',
+    },
+    manifest.jsx.renames.map(e => e.component),
+    ({ file, source, locals }) => {
       const s = new MagicString(source);
       const changes: string[] = [];
       for (const el of jsxElements(file)) {
@@ -87,8 +115,8 @@ export const renameJsxProps = (manifest: MigrationManifest): Codemod => ({
       }
       if (changes.length === 0) return { kind: 'unchanged', warnings: [] };
       return { kind: 'edited', output: s.toString(), changes, warnings: [] };
-    }),
-});
+    }
+  );
 
 const wrapValueInArray = (
   s: MagicString,
@@ -169,14 +197,10 @@ const isBindingPosition = (n: AnyNode, parent: AnyNode | null): boolean => {
     case 'RestElement':
     case 'AssignmentPattern':
       return true;
+    // A plain function param (`function f(Pickup) {}`) is deliberately not
+    // listed: it produces a correct uniform alpha-rename, and a collision
+    // with the target name is caught by `namesInFile` independently.
     default:
-      if (
-        (parent.type === 'FunctionDeclaration' ||
-          parent.type === 'FunctionExpression') &&
-        ((parent.params as AnyNode[]) ?? []).includes(n)
-      ) {
-        return true;
-      }
       return false;
   }
 };
@@ -203,10 +227,18 @@ export const renameImports = (manifest: MigrationManifest): Codemod => {
     byPackage.set(entry.package, forPackage);
   }
 
+  const packages = [...byPackage.keys()];
+
   return {
     name: 'rename-imports',
-    apply: source =>
-      parseOr(source, file => {
+    description: 'rename moved exports (e.g. the icon renames)',
+    apply: source => {
+      // these anchor on their own packages (@marigold/icons), not on
+      // @marigold/components, so they cannot use the jsxCodemod frame
+      if (!packages.some(pkg => source.includes(pkg))) {
+        return { kind: 'unchanged', warnings: [] };
+      }
+      return parseOr(source, file => {
         const s = new MagicString(source);
         const changes: string[] = [];
 
@@ -357,7 +389,8 @@ export const renameImports = (manifest: MigrationManifest): Codemod => {
         }
         if (changes.length === 0) return { kind: 'unchanged', warnings: [] };
         return { kind: 'edited', output: s.toString(), changes, warnings: [] };
-      }),
+      });
+    },
   };
 };
 
@@ -377,8 +410,12 @@ export const reportNamespaceImports = (
   ]);
   return {
     name: 'report-namespace-imports',
-    apply: source =>
-      parseOr(source, file => {
+    description: 'report namespace imports the codemods cannot follow',
+    apply: source => {
+      if (![...affected].some(pkg => source.includes(pkg))) {
+        return { kind: 'unchanged', warnings: [] };
+      }
+      return parseOr(source, file => {
         const warnings: string[] = [];
         for (const imp of collectImports(file)) {
           const src = (imp.source as { value?: string } | undefined)?.value;
@@ -392,21 +429,20 @@ export const reportNamespaceImports = (
           }
         }
         return { kind: 'unchanged', warnings };
-      }),
+      });
+    },
   };
 };
 
 /** Renames compound members, e.g. Tabs.TabPanel to Tabs.Panel. */
-export const renameJsxMembers = (manifest: MigrationManifest): Codemod => ({
-  name: 'rename-jsx-members',
-  apply: source =>
-    parseOr(source, file => {
-      const locals = localsFor(
-        file,
-        manifest.jsx.memberRenames.map(e => e.object)
-      );
-      if (locals.size === 0) return { kind: 'unchanged', warnings: [] };
-
+export const renameJsxMembers = (manifest: MigrationManifest): Codemod =>
+  jsxCodemod(
+    {
+      name: 'rename-jsx-members',
+      description: 'rename compound components (e.g. Tabs.TabPanel)',
+    },
+    manifest.jsx.memberRenames.map(e => e.object),
+    ({ file, locals, source }) => {
       const s = new MagicString(source);
       const changes: string[] = [];
       const renameTag = (tag: AnyNode | undefined, to: string): void => {
@@ -442,20 +478,18 @@ export const renameJsxMembers = (manifest: MigrationManifest): Codemod => ({
       }
       if (changes.length === 0) return { kind: 'unchanged', warnings: [] };
       return { kind: 'edited', output: s.toString(), changes, warnings: [] };
-    }),
-});
+    }
+  );
 
 /** Removes props the target version dropped, e.g. TextField min/max. */
-export const removeJsxProps = (manifest: MigrationManifest): Codemod => ({
-  name: 'remove-jsx-props',
-  apply: source =>
-    parseOr(source, file => {
-      const locals = localsFor(
-        file,
-        manifest.jsx.removals.map(e => e.component)
-      );
-      if (locals.size === 0) return { kind: 'unchanged', warnings: [] };
-
+export const removeJsxProps = (manifest: MigrationManifest): Codemod =>
+  jsxCodemod(
+    {
+      name: 'remove-jsx-props',
+      description: 'remove props the target version dropped',
+    },
+    manifest.jsx.removals.map(e => e.component),
+    ({ file, locals, source }) => {
       const s = new MagicString(source);
       const changes: string[] = [];
       for (const el of jsxElements(file)) {
@@ -477,25 +511,23 @@ export const removeJsxProps = (manifest: MigrationManifest): Codemod => ({
       }
       if (changes.length === 0) return { kind: 'unchanged', warnings: [] };
       return { kind: 'edited', output: s.toString(), changes, warnings: [] };
-    }),
-});
+    }
+  );
 
 /**
  * Report-only: usages that need a human decision (removed components,
  * props that moved structurally, design decisions). Value-conditional
  * entries also warn when the value cannot be verified statically.
  */
-export const reportJsxUsage = (manifest: MigrationManifest): Codemod => ({
-  name: 'report-jsx-usage',
-  apply: (source): CodemodOutcome =>
-    parseOr(source, file => {
+export const reportJsxUsage = (manifest: MigrationManifest): Codemod =>
+  jsxCodemod(
+    {
+      name: 'report-jsx-usage',
+      description: 'report usages that need a human decision',
+    },
+    manifest.jsx.warnings.map(e => e.component),
+    ({ file, locals }) => {
       const warnings: string[] = [];
-      const locals = localsFor(
-        file,
-        manifest.jsx.warnings.map(e => e.component)
-      );
-      if (locals.size === 0) return { kind: 'unchanged', warnings };
-
       const imported = new Set(locals.values());
       for (const entry of manifest.jsx.warnings) {
         if (!entry.prop && imported.has(entry.component)) {
@@ -525,5 +557,5 @@ export const reportJsxUsage = (manifest: MigrationManifest): Codemod => ({
         }
       }
       return { kind: 'unchanged', warnings };
-    }),
-});
+    }
+  );

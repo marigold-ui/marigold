@@ -1,5 +1,11 @@
 export interface Codemod {
   name: string;
+  /**
+   * User-facing one-liner, shown next to `name` in the interactive change
+   * selection. Required so it cannot drift away from the codemod it
+   * describes (a runner-side lookup by name silently degrades on a typo).
+   */
+  description: string;
   apply: (source: string) => CodemodOutcome;
 }
 

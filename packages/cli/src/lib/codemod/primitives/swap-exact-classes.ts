@@ -50,6 +50,7 @@ export const swapExactClasses = (manifest: MigrationManifest): Codemod => {
 
   return themeCodemod(
     'swap-exact-classes',
+    'swap unchanged baseline styles to the new baseline',
     ({ component, init, file, source, s, unit, changes, warnings }) => {
       const entries = resolved.get(component);
       if (!entries || init.type !== 'ObjectExpression') return;
@@ -97,7 +98,7 @@ export const swapExactClasses = (manifest: MigrationManifest): Codemod => {
 
         // Render the change as a token diff (the report colorizes -/+ lines)
         // so renamed tokens and new layout utilities are visible at a glance.
-        // ponytail: added utilities are flagged for manual verification; the
+        // Note: added utilities are flagged for manual verification; the
         // upgrade path is resolving them against the consumer's actual CSS.
         if (entry.added.length > 0 || entry.removed.length > 0) {
           warnings.push(

@@ -1,3 +1,5 @@
+import { escapeRegex } from '../../regex.js';
+import { MARIGOLD_COMPONENTS } from '../anchor.js';
 import { codeList, parseOr } from '../engine.js';
 import type { Codemod, MigrationManifest } from '../types.js';
 import { localsFor } from './jsx.js';
@@ -24,19 +26,16 @@ export const definedTokensIn = (css: string): string[] =>
 // Utility prefixes that take a color token (`bg-brand`). A curated list
 // keeps text scanning honest: matching bare `-brand` suffixes would also
 // hit variants and unrelated identifiers.
-// ponytail: covers the color utilities Marigold themes actually use; extend
-// the list when a consumer surfaces one we missed.
+// Note: covers the color utilities Marigold themes actually use; extend the
+// list when a consumer surfaces one we missed.
 const COLOR_PREFIXES =
   'bg|text|border|ring|inset-ring|outline|fill|stroke|decoration|divide|accent|caret|shadow|from|via|to|placeholder';
-
-const escapeRegExp = (name: string): string =>
-  name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 /** longest name first, so `warning-muted-foreground` beats `muted-foreground` */
 const alternation = (names: string[]): string =>
   [...names]
     .sort((a, b) => b.length - a.length)
-    .map(escapeRegExp)
+    .map(escapeRegex)
     .join('|');
 
 /**
@@ -145,7 +144,7 @@ export const reportTokenUsage = (
     .map(
       ([token, entry]) =>
         new RegExp(
-          `\\b(?:${entry.oldRolePrefixes!.join('|')})-(${escapeRegExp(token)})(?![\\w-])`,
+          `\\b(?:${entry.oldRolePrefixes!.join('|')})-(${escapeRegex(token)})(?![\\w-])`,
           'g'
         )
     );
@@ -160,6 +159,7 @@ export const reportTokenUsage = (
 
   return {
     name: 'report-token-usage',
+    description: 'report design-token references that break in this version',
     apply: source => {
       const warnings: string[] = [];
       for (const [ref, finding] of collectFindings(source, oldPatterns)) {
@@ -212,8 +212,13 @@ export const reportTokenDependencies = (
 
   return {
     name: 'report-token-dependencies',
+    description: 'report tokens the new component internals hardcode',
     apply: source => {
-      if (pending.length === 0) return { kind: 'unchanged', warnings: [] };
+      // same anchor as the jsx primitives: no import of the package, no
+      // component to warn about, so there is nothing to parse for
+      if (pending.length === 0 || !source.includes(MARIGOLD_COMPONENTS)) {
+        return { kind: 'unchanged', warnings: [] };
+      }
       return parseOr(source, file => {
         const warnings: string[] = [];
         const imported = new Set(

@@ -37,6 +37,8 @@ export interface ThemeVisit {
   source: string;
   s: MagicString;
   unit: string;
+  /** local name of `cva` in this file — aliased imports keep their alias */
+  cva: string;
   changes: string[];
   warnings: string[];
 }
@@ -46,14 +48,17 @@ export interface ThemeVisit {
  * anchor requires a literal `ThemeComponent` import), parse-or-skip, one
  * MagicString, a visit per anchored component, and the uniform
  * unchanged/edited outcome. `ensureCva` adds the cva import when edits
- * introduced stubs.
+ * introduced stubs. A visit that only pushes warnings makes this a
+ * report-only pass: the outcome stays `unchanged` and carries them.
  */
 export const themeCodemod = (
   name: string,
+  description: string,
   visit: (ctx: ThemeVisit) => void,
   options: { ensureCva?: boolean } = {}
 ): Codemod => ({
   name,
+  description,
   apply: source => {
     if (!source.includes('ThemeComponent')) {
       return { kind: 'unchanged', warnings: [] };
@@ -61,10 +66,23 @@ export const themeCodemod = (
     return parseOr(source, file => {
       const s = new MagicString(source);
       const unit = detectIndentUnit(source);
+      // stubs must call cva under the name this file imports it as; the
+      // import is only inserted below, when edits actually happened
+      const cva = marigoldLocalName(file, 'cva') ?? 'cva';
       const changes: string[] = [];
       const warnings: string[] = [];
       for (const { component, init } of findThemeComponents(file)) {
-        visit({ component, init, file, source, s, unit, changes, warnings });
+        visit({
+          component,
+          init,
+          file,
+          source,
+          s,
+          unit,
+          cva,
+          changes,
+          warnings,
+        });
       }
       if (changes.length === 0) return { kind: 'unchanged', warnings };
       if (options.ensureCva) ensureCvaImport(s, file);
@@ -83,8 +101,7 @@ export const classStringsIn = (node: AnyNode): string[] => {
   walk(node, n => {
     if (
       n.type === 'ObjectProperty' &&
-      (n.key as AnyNode | undefined as { name?: string } | undefined)?.name ===
-        'defaultVariants'
+      (n.key as { name?: string } | undefined)?.name === 'defaultVariants'
     ) {
       return false;
     }
@@ -158,8 +175,11 @@ export const codeList = (names: string[]): string =>
   names.map(name => `\`${name}\``).join(', ');
 
 /** the empty-stub property line shared by restructure and stubbing */
-export const stubSlotLine = (slot: string, indent: string): string =>
-  `${indent}${asPropertyKey(slot)}: cva({}),`;
+export const stubSlotLine = (
+  slot: string,
+  indent: string,
+  cva: string
+): string => `${indent}${asPropertyKey(slot)}: ${cva}({}),`;
 
 /** deep link to the default theme's styles for a component, if configured */
 export const stylesReference = (

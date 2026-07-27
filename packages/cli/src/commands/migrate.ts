@@ -119,20 +119,12 @@ export interface MigrateResult {
   summary: CodemodSummary[];
 }
 
+// Scaffolding is a pipeline phase rather than a Codemod (it creates files
+// instead of editing one), so unlike the codemods it carries its selection
+// name and description here.
 const SCAFFOLD = 'scaffold-components';
-
-// user-facing one-liners for the selectable changes (report-only passes are
-// not selectable: they are the safety net and always run)
-const DESCRIPTIONS: Record<string, string> = {
-  'restructure-to-slots': 'move single-style theme components to slot objects',
-  'swap-exact-classes': 'swap unchanged baseline styles to the new baseline',
-  'stub-missing-slots': 'stub new theme slots with empty cva()',
-  'rename-jsx-members': 'rename compound components (e.g. Tabs.TabPanel)',
-  'rename-jsx-props': 'rename component props (e.g. Inset space to p)',
-  'remove-jsx-props': 'remove props the target version dropped',
-  'rename-imports': 'rename moved exports (e.g. the icon renames)',
-  [SCAFFOLD]: 'create theme styles for components the target version requires',
-};
+const SCAFFOLD_DESCRIPTION =
+  'create theme styles for components the target version requires';
 
 const IGNORED_DIRS = new Set([
   'node_modules',
@@ -402,13 +394,12 @@ export const runMigrate = (options: MigrateOptions): MigrateResult => {
     total.changes += created.length;
     totals.set(SCAFFOLD, total);
   }
-  const summary: CodemodSummary[] = [...editCodemods.map(c => c.name), SCAFFOLD]
-    .filter(name => totals.has(name))
-    .map(name => ({
-      name,
-      description: DESCRIPTIONS[name] ?? '',
-      ...totals.get(name)!,
-    }));
+  const summary: CodemodSummary[] = [
+    ...editCodemods.map(c => ({ name: c.name, description: c.description })),
+    { name: SCAFFOLD, description: SCAFFOLD_DESCRIPTION },
+  ]
+    .filter(({ name }) => totals.has(name))
+    .map(entry => ({ ...entry, ...totals.get(entry.name)! }));
 
   // render report. picocolors is TTY-aware: piped / test / agent output stays
   // byte-for-byte plain, only interactive terminals gain color.
@@ -479,4 +470,100 @@ export const runMigrate = (options: MigrateOptions): MigrateResult => {
     );
   }
   return { output: lines.join('\n'), summary };
+};
+
+/** a prompt has to be shown AND answered, so both ends must be a terminal */
+const canPrompt = (): boolean =>
+  Boolean(process.stdout.isTTY && process.stdin.isTTY);
+
+export interface MigrateCommandOptions {
+  /** migration to run (`v18`); omitted: detect it and confirm interactively */
+  version?: string;
+  targetPath: string;
+  dryRun: boolean;
+  /** `--only` names; skips the interactive change selection */
+  only?: readonly string[];
+  /** where reports and status messages go */
+  write: (output: string) => void;
+  /** override the TTY check (tests) */
+  interactive?: boolean;
+}
+
+/**
+ * The `marigold migrate` flow: resolve which migration(s) to run (explicit,
+ * or detected from the target and confirmed), offer the changes that fire
+ * for deselection, then apply. Prompts happen only on a real terminal; every
+ * non-interactive path either runs unattended or throws with instructions.
+ * Returns the exit code (130 when the user aborted a prompt).
+ */
+export const runMigrateCommand = async (
+  options: MigrateCommandOptions
+): Promise<number> => {
+  const { targetPath, dryRun, only, write } = options;
+  const interactive = options.interactive ?? canPrompt();
+
+  let versions: string[];
+  if (options.version) {
+    versions = [options.version];
+  } else {
+    const detected = detectMigration(targetPath);
+    if (!detected) {
+      throw new Error(
+        `Could not find @marigold/components under ${targetPath} — pass the migration explicitly: marigold migrate v18 [path]`
+      );
+    }
+    if (detected.versions.length === 0) {
+      write(
+        `Detected @marigold/components ${detected.installed} (${detected.source}) — already up to date, no migration to run.`
+      );
+      return 0;
+    }
+    if (!interactive) {
+      throw new Error(
+        `Detected @marigold/components ${detected.installed} — would run ${detected.versions.join(', then ')}. ` +
+          `Non-interactive session: confirm by passing the version explicitly, e.g. marigold migrate ${detected.versions[0]} [path]`
+      );
+    }
+    const { confirm, isCancel } = await import('@clack/prompts');
+    const proceed = await confirm({
+      message:
+        `Detected @marigold/components ${detected.installed} (${detected.source}). ` +
+        `Run the ${detected.versions.join(', then the ')} migration${dryRun ? ' (dry run)' : ''}?`,
+    });
+    if (isCancel(proceed) || proceed !== true) {
+      write('Aborted — nothing changed.');
+      return 130;
+    }
+    versions = detected.versions;
+  }
+
+  for (const version of versions) {
+    // pre-analysis: dry-run in memory, offer the fired changes for
+    // selection. Skipped for explicit --only / --dry-run / non-TTY runs.
+    let selected = only;
+    if (!selected && !dryRun && interactive) {
+      const analysis = runMigrate({ version, targetPath, dryRun: true });
+      if (analysis.summary.length > 0) {
+        const { multiselect, isCancel } = await import('@clack/prompts');
+        const chosen = await multiselect({
+          message: `The ${version} migration fires these changes — deselect what you want to skip (warnings always run):`,
+          options: analysis.summary.map(s => ({
+            value: s.name,
+            label: s.name,
+            hint: `${s.description} — ${s.changes} change(s) in ${s.files} file(s)`,
+          })),
+          initialValues: analysis.summary.map(s => s.name),
+          required: false,
+        });
+        if (isCancel(chosen)) {
+          write('Aborted — nothing changed.');
+          return 130;
+        }
+        selected = chosen as string[];
+      }
+    }
+
+    write(runMigrate({ version, targetPath, dryRun, only: selected }).output);
+  }
+  return 0;
 };

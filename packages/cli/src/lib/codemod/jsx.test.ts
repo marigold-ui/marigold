@@ -34,6 +34,7 @@ export const App = () => (
     const source = `import { Inset } from './my-components';
 export const App = () => <Inset space={4} />;
 `;
+
     expect(renameJsxProps(v18).apply(source).kind).toBe('unchanged');
   });
 
@@ -103,6 +104,7 @@ export const App = () => (
     const source = `import { Tabs } from 'other-lib';
 export const App = () => <Tabs.TabPanel>content</Tabs.TabPanel>;
 `;
+
     expect(renameJsxMembers(v18).apply(source).kind).toBe('unchanged');
   });
 });
@@ -262,6 +264,7 @@ export const App = () => <CircleChecked />;
 import { Email } from 'other-icons';
 export const App = () => <Clock />;
 `;
+
     expect(renameImports(v18).apply(source).kind).toBe('unchanged');
   });
 
@@ -274,6 +277,7 @@ export const App = () => <Pickup />;
 `;
     const reexported = `export { Store as Pickup } from '@marigold/icons';
 `;
+
     expect(renameImports(v18).apply(direct).kind).toBe('unchanged');
     expect(renameImports(v18).apply(aliased).kind).toBe('unchanged');
     expect(renameImports(v18).apply(reexported).kind).toBe('unchanged');
@@ -298,6 +302,7 @@ export const App = () => <Icons.Pickup />;
     const source = `import * as path from 'node:path';
 export const join = path.join;
 `;
+
     expect(warningsOf(reportNamespaceImports(v18).apply(source))).toEqual([]);
   });
 });

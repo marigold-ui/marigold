@@ -20,6 +20,7 @@ describe('definedTokensIn', () => {
 }
 .x { color: var(--color-brand); }
 `;
+
     expect(definedTokensIn(css)).toEqual(['brand', 'disabled-surface']);
   });
 });

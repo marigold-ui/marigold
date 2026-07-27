@@ -65,6 +65,7 @@ describe('anchor', () => {
     const source = `import { cva, ThemeComponent } from 'other-system';
 export const Switch: ThemeComponent<'Switch'> = { container: cva({}) };
 `;
+
     expect(findThemeComponents(parse(source))).toEqual([]);
   });
 
@@ -72,6 +73,7 @@ export const Switch: ThemeComponent<'Switch'> = { container: cva({}) };
     const source = `import { ThemeComponent as TC, cva } from '@marigold/system';
 export const Badge: TC<'Badge'> = cva({});
 `;
+
     expect(findThemeComponents(parse(source)).map(d => d.component)).toEqual([
       'Badge',
     ]);

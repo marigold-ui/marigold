@@ -16,7 +16,8 @@ import type { Codemod, MigrationManifest } from '../types.js';
 export const restructureToSlots = (manifest: MigrationManifest): Codemod =>
   themeCodemod(
     'restructure-to-slots',
-    ({ component, init, source, s, unit, changes, warnings }) => {
+    'move single-style theme components to slot objects',
+    ({ component, init, source, s, unit, cva, changes, warnings }) => {
       const slots = manifest.slots[component];
       if (!Array.isArray(slots)) return;
       if (init.type === 'ObjectExpression') return; // already slotted
@@ -37,7 +38,7 @@ export const restructureToSlots = (manifest: MigrationManifest): Codemod =>
       const inner = base + unit;
       const stubs = slots
         .filter(slot => slot !== primary)
-        .map(slot => stubSlotLine(slot, inner))
+        .map(slot => stubSlotLine(slot, inner, cva))
         .join('\n');
       const original = source.slice(start, end);
       s.overwrite(

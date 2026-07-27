@@ -233,6 +233,7 @@ export const v18: MigrationManifest = {
       'itemRemove',
     ],
     EmptyState: ['container', 'title', 'description', 'action'],
+    ErrorState: ['container', 'title', 'description', 'action'],
     ToggleButton: ['group', 'button'],
     SegmentedControl: ['group', 'list', 'field', 'option', 'indicator'],
     Sidebar: [
@@ -250,6 +251,16 @@ export const v18: MigrationManifest = {
       'navLink',
       'backButton',
       'content',
+      // two-level rail (Sidebar.Rail): persistent rail + section panel
+      'railRoot',
+      'railLayout',
+      'railColumn',
+      'railToggle',
+      'rail',
+      'railItem',
+      'railFooter',
+      'panel',
+      'panelTitle',
     ],
     TopNavigation: ['container', 'start', 'middle', 'end'],
   },
@@ -465,7 +476,7 @@ export const v18: MigrationManifest = {
         package: '@marigold/icons',
         from: 'Print',
         to: 'Printer',
-        note: 'missing from the official mapping table — Printer is the Lucide equivalent',
+        note: 'added to the official mapping table in this PR — Printer is the Lucide equivalent',
       },
     ],
     removals: [

@@ -2,7 +2,14 @@ import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { existsSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { detectMigration, runMigrate } from './migrate.js';
+import { detectMigration, runMigrate, runMigrateCommand } from './migrate.js';
+
+const prompts = vi.hoisted(() => ({
+  confirm: vi.fn(),
+  multiselect: vi.fn(),
+  isCancel: vi.fn(() => false),
+}));
+vi.mock('@clack/prompts', () => prompts);
 
 // End-to-end run against a miniature portal-shaped theme tree: standalone
 // theme, 4-space indent, one style file per component, barrel index.
@@ -73,6 +80,7 @@ describe('detectMigration', () => {
 
   test('walks up to node_modules and proposes the applicable migration', () => {
     const detected = detectMigration(setupRepo('17.9.1'));
+
     expect(detected).toEqual({
       installed: '17.9.1',
       source: 'node_modules',
@@ -82,6 +90,7 @@ describe('detectMigration', () => {
 
   test('falls back to the declared range when nothing is installed', () => {
     const detected = detectMigration(setupRepo('^17.0.0', false));
+
     expect(detected).toEqual({
       installed: '17.0.0',
       source: 'package.json',
@@ -91,6 +100,7 @@ describe('detectMigration', () => {
 
   test('proposes the same-major migration (upgrade first, then migrate)', () => {
     const detected = detectMigration(setupRepo('18.0.0-beta.4'));
+
     expect(detected).toEqual({
       installed: '18.0.0-beta.4',
       source: 'node_modules',
@@ -100,6 +110,7 @@ describe('detectMigration', () => {
 
   test('reports up to date when the installed major is past every migration', () => {
     const detected = detectMigration(setupRepo('19.0.0'));
+
     expect(detected).toEqual({
       installed: '19.0.0',
       source: 'node_modules',
@@ -109,6 +120,7 @@ describe('detectMigration', () => {
 
   test('returns null when no @marigold/components exists anywhere', () => {
     const root = mkdtempSync(path.join(os.tmpdir(), 'marigold-detect-'));
+
     expect(detectMigration(root)).toBeNull();
   });
 });
@@ -399,5 +411,144 @@ export const List = () => <SelectList aria-label="x" />;
     });
 
     expect(output).not.toContain('hardcodes');
+  });
+});
+
+describe('runMigrateCommand', () => {
+  // a fixture whose Marigold version is discoverable, so the command can be
+  // driven through detection + confirmation instead of an explicit version
+  const setupDetectable = (version: string): string => {
+    const root = setupFixture();
+    writeFileSync(
+      path.join(root, 'package.json'),
+      JSON.stringify({ dependencies: { '@marigold/components': version } })
+    );
+    return root;
+  };
+
+  beforeEach(() => {
+    prompts.isCancel.mockReturnValue(false);
+  });
+
+  test('runs the explicitly named migration without prompting', async () => {
+    const root = setupFixture();
+    const written: string[] = [];
+
+    const code = await runMigrateCommand({
+      version: 'v18',
+      targetPath: root,
+      dryRun: true,
+      write: output => written.push(output),
+      interactive: false,
+    });
+
+    expect(code).toBe(0);
+    expect(written.join('\n')).toContain('marigold migrate v18 (dry run)');
+    expect(prompts.confirm).not.toHaveBeenCalled();
+  });
+
+  test('refuses to auto-detect without a terminal to confirm in', async () => {
+    const root = setupDetectable('17.9.1');
+
+    const run = runMigrateCommand({
+      targetPath: root,
+      dryRun: true,
+      write: () => {},
+      interactive: false,
+    });
+
+    await expect(run).rejects.toThrow(/Non-interactive session/);
+  });
+
+  test('reports a target that has no migration left to run', async () => {
+    const root = setupDetectable('19.0.0');
+    const written: string[] = [];
+
+    const code = await runMigrateCommand({
+      targetPath: root,
+      dryRun: true,
+      write: output => written.push(output),
+      interactive: true,
+    });
+
+    expect(code).toBe(0);
+    expect(written.join('\n')).toContain('already up to date');
+  });
+
+  test('fails when the target has no Marigold at all', async () => {
+    const root = setupFixture();
+
+    const run = runMigrateCommand({
+      targetPath: root,
+      dryRun: true,
+      write: () => {},
+      interactive: true,
+    });
+
+    await expect(run).rejects.toThrow(/Could not find @marigold\/components/);
+  });
+
+  test('aborts with 130 when the detected migration is declined', async () => {
+    const root = setupDetectable('17.9.1');
+    const written: string[] = [];
+    prompts.confirm.mockResolvedValue(false);
+
+    const code = await runMigrateCommand({
+      targetPath: root,
+      dryRun: false,
+      write: output => written.push(output),
+      interactive: true,
+    });
+
+    expect(code).toBe(130);
+    expect(written).toEqual(['Aborted — nothing changed.']);
+  });
+
+  test('applies only the changes left selected in the multiselect', async () => {
+    const root = setupDetectable('17.9.1');
+    const components = path.join(root, 'theme', 'components');
+    const cardBefore = readFileSync(
+      path.join(components, 'Card.styles.ts'),
+      'utf8'
+    );
+    prompts.confirm.mockResolvedValue(true);
+    prompts.multiselect.mockResolvedValue(['swap-exact-classes']);
+
+    await runMigrateCommand({
+      targetPath: root,
+      dryRun: false,
+      write: () => {},
+      interactive: true,
+    });
+
+    expect(readFileSync(path.join(components, 'Card.styles.ts'), 'utf8')).toBe(
+      cardBefore
+    );
+    expect(
+      readFileSync(path.join(components, 'Switch.styles.ts'), 'utf8')
+    ).toContain(`'grid gap-x-2 items-center'`);
+  });
+
+  test('offers every change that fired, described, for selection', async () => {
+    const root = setupDetectable('17.9.1');
+    prompts.confirm.mockResolvedValue(true);
+    prompts.multiselect.mockResolvedValue([]);
+
+    await runMigrateCommand({
+      targetPath: root,
+      dryRun: false,
+      write: () => {},
+      interactive: true,
+    });
+
+    expect(prompts.multiselect).toHaveBeenCalledWith(
+      expect.objectContaining({
+        options: [
+          expect.objectContaining({ value: 'restructure-to-slots' }),
+          expect.objectContaining({ value: 'swap-exact-classes' }),
+          expect.objectContaining({ value: 'scaffold-components' }),
+        ],
+      })
+    );
   });
 });

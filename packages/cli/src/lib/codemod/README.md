@@ -212,7 +212,13 @@ Per-version work should be data entry, not transform code:
      with", e.g. the prop type that excludes the removed value. Codegen
      should re-resolve line numbers against the release tag.
 2. Register it in `MANIFESTS` in `commands/migrate.ts`.
-3. Acceptance test: `--dry-run` against a real consumer repo and read every
+3. Point `manifests/theme-drift.test.ts` at the new manifest. It compares
+   `slots` against the live `Theme` type in `@marigold/system` and is the
+   re-check trigger until DST-1650's codegen lands: a hand-written manifest
+   silently falls behind every component merged after it was authored (v18's
+   `Sidebar` rail slots and `ErrorState` did exactly that), which costs
+   consumers their stubs and produces false "not themeable" warnings.
+4. Acceptance test: `--dry-run` against a real consumer repo and read every
    line of the report.
 
 A change that no primitive can express gets a **one-off transform** for that
@@ -226,6 +232,13 @@ general abstraction from a single example is how wrong abstractions happen.
   must return `edited | unchanged | skipped` plus warnings, re-parse its own
   input (transforms are chained by re-parsing; babel parse is fast), and
   uphold the invariants above.
+- A `Codemod` carries its own `description` (the one-liner the interactive
+  selection shows), so name and description cannot drift apart.
+- Build on a shared frame rather than repeating it: `themeCodemod` in
+  `engine.ts` for anything anchored on `ThemeComponent` (a visit that only
+  pushes warnings makes it a report-only pass), `jsxCodemod` in
+  `primitives/jsx.ts` for anything anchored on `@marigold/components`. Both
+  short-circuit before parsing on files that cannot match.
 - Add fixture tests in `codemod.test.ts`. Fixtures are consumer-shaped
   (4-space indent, single quotes, portal-style files), and byte-preservation
   is asserted on the fixture's class strings.
