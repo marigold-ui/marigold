@@ -29,7 +29,7 @@ const OrderList = () => (
     <Headline level={2}>Orders</Headline>
     <Table aria-label="Orders" selectionMode="none">
       <Table.Header>
-        <Table.Column>Order</Table.Column>
+        <Table.Column rowHeader>Order</Table.Column>
         <Table.Column>Customer</Table.Column>
         <Table.Column>Total</Table.Column>
       </Table.Header>
@@ -81,7 +81,7 @@ export default () => {
   return (
     <RouterProvider navigate={setCurrentPath}>
       <Sidebar.Provider>
-        <div className="flex h-100">
+        <div className="flex h-100 [--ui-viewport-height:25rem]">
           <Sidebar>
             <Sidebar.Header>
               <Text weight="bold">My App</Text>

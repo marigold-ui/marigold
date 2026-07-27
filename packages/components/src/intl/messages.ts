@@ -30,6 +30,7 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     pageNext: 'Nächste Seite',
     pageOfTotal: vars => `Seite ${vars?.current} von ${vars?.total}`,
     pagePrevious: 'Vorherige Seite',
+    railNavigation: 'Hauptnavigation',
     presetLast7Days: 'Letzte 7 Tage',
     presetLast30Days: 'Letzte 30 Tage',
     presetNext7Days: 'Nächste 7 Tage',
@@ -54,8 +55,10 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     showMore: 'Mehr anzeigen',
     showMoreCount: vars => `${vars?.count} weitere anzeigen`,
     toggleNavigation: 'Navigation umschalten',
-    toggleNavigationTooltip: (vars: Variables) =>
-      `Navigation ein-/ausblenden (${vars?.shortcut})`,
+    collapseSidebarTooltip: (vars: Variables) =>
+      `Seitenleiste einklappen (${vars?.shortcut})`,
+    expandSidebarTooltip: (vars: Variables) =>
+      `Seitenleiste ausklappen (${vars?.shortcut})`,
     uploadLabel: 'Hochladen',
   },
   'en-US': {
@@ -86,6 +89,7 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     pageNext: 'Next page',
     pageOfTotal: vars => `Page ${vars?.current} of ${vars?.total}`,
     pagePrevious: 'Previous page',
+    railNavigation: 'Primary navigation',
     presetLast7Days: 'Last 7 days',
     presetLast30Days: 'Last 30 days',
     presetNext7Days: 'Next 7 days',
@@ -110,8 +114,10 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     showMore: 'Show more',
     showMoreCount: vars => `Show ${vars?.count} more`,
     toggleNavigation: 'Toggle navigation',
-    toggleNavigationTooltip: (vars: Variables) =>
-      `Toggle navigation (${vars?.shortcut})`,
+    collapseSidebarTooltip: (vars: Variables) =>
+      `Collapse sidebar (${vars?.shortcut})`,
+    expandSidebarTooltip: (vars: Variables) =>
+      `Expand sidebar (${vars?.shortcut})`,
     uploadLabel: 'Upload',
   },
 };

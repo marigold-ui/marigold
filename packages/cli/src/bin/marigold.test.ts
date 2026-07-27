@@ -30,6 +30,10 @@ vi.mock('../commands/search.js', () => ({
   runSearch: vi.fn(async () => ({ output: 'search output', cacheHit: false })),
 }));
 
+vi.mock('../commands/doctor.js', () => ({
+  runDoctor: vi.fn(async () => ({ output: 'doctor output', hasErrors: false })),
+}));
+
 let stdoutSpy: ReturnType<typeof vi.spyOn>;
 let stderrSpy: ReturnType<typeof vi.spyOn>;
 
@@ -208,5 +212,41 @@ describe('main() — search command', () => {
 
     expect(code).toBe(1);
     expect(emitMock.mock.calls[0][0]).toMatchObject({ exitCode: 1 });
+  });
+});
+
+describe('main() — doctor command', () => {
+  test('dispatches doctor and records the format in telemetry', async () => {
+    const code = await main(['doctor']);
+
+    expect(code).toBe(0);
+    expect(emitMock).toHaveBeenCalledTimes(1);
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      command: 'doctor',
+      exitCode: 0,
+      args: expect.objectContaining({ format: 'text' }),
+    });
+  });
+
+  test('fails on an unexpected positional', async () => {
+    const code = await main(['doctor', 'foo']);
+
+    expect(code).toBe(1);
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      command: 'doctor',
+      exitCode: 1,
+    });
+  });
+
+  test('clamps an invalid --format to `invalid` in telemetry', async () => {
+    const code = await main(['doctor', '--format', 'banana']);
+
+    expect(code).toBe(1);
+    // The raw string must never reach telemetry — it is clamped to an enum.
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      command: 'doctor',
+      exitCode: 1,
+      args: expect.objectContaining({ format: 'invalid' }),
+    });
   });
 });
