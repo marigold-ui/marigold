@@ -303,7 +303,11 @@ export const runMigrate = (options: MigrateOptions): MigrateResult => {
 
   // pass 2.5: token references live anywhere, not only in @marigold
   // importers (own token CSS, generated CSS, plain components) — text-scan
-  // the files the pipeline did not see.
+  // the files the pipeline did not see. This is the exact complement of
+  // `sources`, so tightening that filter shifts files between the two passes
+  // and can never narrow token coverage. The scan stays inside the pipeline
+  // for the files it does cover, because there it runs on the post-edit text
+  // and so sees classes `swap-exact-classes` just introduced.
   for (const [file, text] of texts) {
     if (sources.has(file)) continue;
     const outcome = tokenUsage.apply(text);
