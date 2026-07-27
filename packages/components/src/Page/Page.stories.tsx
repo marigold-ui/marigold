@@ -444,7 +444,10 @@ export const FocusOnRouteChange = meta.story({
 /**
  * When the page has no `<Title>` (named instead by an `aria-label`), there is no
  * `<h1>` to move to, so `usePageFocus` is a no-op on route change: it never
- * throws and never moves focus.
+ * throws and never moves focus. The nav buttons toggle between both "routes"
+ * (like `FocusOnRouteChange` above) and the panel spells out in large text
+ * which one is active, so the route change itself is obvious even though
+ * focus deliberately never moves off the clicked button.
  */
 const NoHeadingFocusHarness = () => {
   const [route, setRoute] = useState('/billing');
@@ -453,14 +456,22 @@ const NoHeadingFocusHarness = () => {
     <>
       <nav aria-label="Demo navigation">
         <Inline space={2}>
-          <Button onPress={() => setRoute('/team')}>Change route</Button>
+          {Object.entries(ROUTES).map(([path, label]) => (
+            <Button key={path} onPress={() => setRoute(path)}>
+              {`Open ${label}`}
+            </Button>
+          ))}
         </Inline>
       </nav>
       <Page aria-label={ROUTES[route]}>
         <RouteFocus routeKey={route} />
         <Panel aria-label="Summary">
           <Panel.Content>
-            <Text>Route: {route}</Text>
+            <Title>{ROUTES[route]}</Title>
+            <Text>
+              Route changed to {route}, but there is no page heading, so focus
+              stays on the nav button you just clicked.
+            </Text>
           </Panel.Content>
         </Panel>
       </Page>
@@ -475,11 +486,16 @@ export const FocusWithoutHeading = meta.story({
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const changeRoute = canvas.getByRole('button', { name: 'Change route' });
-    await userEvent.click(changeRoute);
+    const openTeam = canvas.getByRole('button', { name: 'Open Team members' });
+    await userEvent.click(openTeam);
 
-    // No heading exists to receive focus, and focus is left where it was.
+    // The route did change (the panel now names the new section)...
+    await expect(
+      canvas.getByRole('heading', { level: 2, name: 'Team members' })
+    ).toBeInTheDocument();
+
+    // ...but no page heading exists to receive focus, so it's left where it was.
     await expect(canvas.queryByRole('heading', { level: 1 })).toBeNull();
-    await expect(changeRoute).toHaveFocus();
+    await expect(openTeam).toHaveFocus();
   },
 });
