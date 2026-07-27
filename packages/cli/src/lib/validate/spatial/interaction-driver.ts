@@ -220,6 +220,20 @@ const discoverTriggers = (page: Page): Promise<Trigger[]> =>
         .filter((t): t is Trigger => t !== null)
     );
 
+const isDisclosureStillOpen = (
+  page: Page,
+  selector: string
+): Promise<boolean> =>
+  page
+    .evaluate(sel => {
+      const el = document.querySelector(sel);
+      if (!el) return false;
+      if (el.getAttribute('aria-expanded') === 'true') return true;
+      const details = el.closest('details');
+      return details ? details.open : false;
+    }, selector)
+    .catch(() => false);
+
 const activate = async (page: Page, trigger: Trigger): Promise<void> => {
   const handle = await page.$(trigger.selector);
   if (!handle) return;
@@ -237,7 +251,17 @@ const activate = async (page: Page, trigger: Trigger): Promise<void> => {
       // the harness away from the rendered component.
       await page.keyboard.press('Enter').catch(() => {});
       await waitForLayout(page);
-      const stillClosed = (await visibleOverlays(page)).length === 0;
+      // A disclosure's revealed panel (e.g. Marigold's Accordion, built on
+      // react-aria-components' Disclosure) commonly carries role="group" —
+      // not one of OVERLAY_ROLES — so visibleOverlays() never sees it opening
+      // and would read "still closed" even after Enter genuinely opened it,
+      // triggering the click-fallback below and immediately toggling it back
+      // closed. Ask the disclosure's own expanded state directly instead, the
+      // same way restore()'s isDisclosureStillOpen check does.
+      const stillClosed =
+        trigger.kind === 'disclosure'
+          ? !(await isDisclosureStillOpen(page, trigger.selector))
+          : (await visibleOverlays(page)).length === 0;
       if (stillClosed) {
         const isNavLink = await handle
           .evaluate(el => el.tagName === 'A' && el.hasAttribute('href'))
@@ -250,20 +274,6 @@ const activate = async (page: Page, trigger: Trigger): Promise<void> => {
   }
   await waitForLayout(page);
 };
-
-const isDisclosureStillOpen = (
-  page: Page,
-  selector: string
-): Promise<boolean> =>
-  page
-    .evaluate(sel => {
-      const el = document.querySelector(sel);
-      if (!el) return false;
-      if (el.getAttribute('aria-expanded') === 'true') return true;
-      const details = el.closest('details');
-      return details ? details.open : false;
-    }, selector)
-    .catch(() => false);
 
 const restore = async (page: Page, trigger: Trigger): Promise<void> => {
   await page.keyboard.press('Escape').catch(() => {});

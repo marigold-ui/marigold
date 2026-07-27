@@ -152,6 +152,23 @@ export default App;`
     expect(issues.find(i => i.component === 'Component')).toBeUndefined();
   });
 
+  it('does not flag a component name bound via a catch clause destructuring', () => {
+    const file = tmpFile(
+      'dsu-catch-destructured.tsx',
+      `const risky = () => ({ Component: () => null });
+const App = () => {
+  try {
+    return risky();
+  } catch ({ Component }: any) {
+    return <Component />;
+  }
+};
+export default App;`
+    );
+    const issues = validateDesignSystemUsage(file);
+    expect(issues.find(i => i.component === 'Component')).toBeUndefined();
+  });
+
   it('does not flag an aliased import of a real Marigold component', () => {
     // Regression: `{ Button as Btn }` used to be treated as hallucinated
     // because the bare-name registry lookup doesn't know the local alias.

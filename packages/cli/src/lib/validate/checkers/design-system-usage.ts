@@ -234,6 +234,13 @@ const collectLocalDeclarations = (source: ts.SourceFile): Set<string> => {
       }
     }
 
+    // catch ({ Component }) { <Component /> } — the same class of omission
+    // as the for-loop case above: a catch binding can destructure too, and
+    // isn't a VariableStatement/VariableDeclarationList either.
+    if (ts.isCatchClause(node) && node.variableDeclaration) {
+      collectBindingNames(node.variableDeclaration.name, locals);
+    }
+
     ts.forEachChild(node, walk);
   };
 
