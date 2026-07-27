@@ -55,9 +55,15 @@ The direction is the through-line: keep the pick on the page while you can, move
 
 One surface sits to the side of this progression: a transfer list, two panes with available records on the left and chosen ones on the right. It fits a pick where the user wants to watch the whole selection build up beside the source, but it is space-hungry and rarely earns its cost, so use it sparingly. Marigold has no dedicated component for it yet, so today it is a hand-built layout rather than a ready surface.
 
-The searchable-field tier in action: a [`<TagField>`](/components/form/tag-field) picks the performers for an event. Type to filter the roster, choose from the popover, and each pick becomes a removable tag. The selection is the committed set, so there is no separate commit step and the user never leaves the page. This is the whole tier below the dialog: names the user recognizes, no detail worth a table, and a collection small enough to stay in a field.
+Staying on the page comes in two shapes, and the right one depends on how the options are best shown. A searchable field suits a collection the user knows by name and long enough that scrolling would be slower than typing. An inline list suits a set short enough to show in full, and it wins whenever the user needs to see every option and its state before choosing.
+
+The searchable-field shape: a [`<TagField>`](/components/form/tag-field) picks the performers for an event. Type to filter the roster, choose from the popover, and each pick becomes a removable tag. The selection is the committed set, so there is no separate commit step and the user never leaves the page.
 
 <ComponentDemo name="pick-tag-field" background="page" />
+
+The inline-list shape shows every option at once, which is exactly what some picks need. Here the user assembles a season subscription, an Abonnement, from a concert series: each date shows its time and venue, and sold-out dates are visibly disabled, so the user sees what is gone before choosing rather than discovering it in a search. The set is short enough to sit on the page, so the whole pick, the list and its commit, happens in place.
+
+<ComponentDemo name="pick-abonnement-dates" background="page" />
 
 <Callout type="info" title="Sizing a heavy pick">
   A `size="large"` [`<Dialog>`](/components/overlay/dialog) gives about 640px of
