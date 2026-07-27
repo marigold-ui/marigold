@@ -78,4 +78,8 @@ const SidebarNav = ({
   );
 };
 
+// Brand so the rail collection builder can pick a section's nested nav out of a
+// RailItem's children (safe across HOCs and bundles).
+SidebarNav.__SIDEBAR_NAV__ = true as const;
+
 export { SidebarNav };

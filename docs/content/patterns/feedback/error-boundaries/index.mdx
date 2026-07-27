@@ -1,0 +1,130 @@
+---
+title: Error Boundaries
+description: How a failed page or region presents itself, recovers, and stays accessible.
+badge: beta
+---
+
+Every application eventually hits the question: what does this page look like when it throws? This pattern answers it once, so consuming teams do not have to.
+
+Marigold ships the fallback UI, the [ErrorState](/components/content/error-state) component, and this convention. The error boundary itself stays application-side: React error boundaries are framework territory (Next.js `error.tsx`, React Router `errorElement`, or [react-error-boundary](https://github.com/bvaughn/react-error-boundary) in plain React), and Marigold does not compete with them.
+
+## The two tiers
+
+A **tier** is the scope of what failed: the whole page, or a single region within it.
+
+Default to the **page tier**: one boundary at the route level, around the whole page. Add **region tiers** only where regions load independently and a partial page is still useful.
+
+- **Page tier**: the page's content is replaced. The user keeps orientation: you are still on Billing, it failed to load. The route title stays the h1 that names the `<main>` landmark, and the error title renders below at `headingLevel={2}`.
+- **Region tier**: a boundary wraps an individual [Panel](/components/layout/panel)'s content. The page header and sibling panels stay live. Only the failed region is replaced.
+
+At page tier, the fallback does not have to repeat the `Page.Header`. It only brings its own [Page](/components/layout/page) and header when the boundary replaces the whole page, as Next.js `error.tsx` does. When you control the boundary's placement, put it inside the `Page` below the `Page.Header`, and the fallback shrinks to the `ErrorState` alone.
+
+## ErrorState vs. SectionMessage
+
+One rule decides between `ErrorState` and [SectionMessage](/components/content/section-message):
+
+- Content is **gone** (the boundary caught, nothing renders): show an `ErrorState` inside the region.
+- Content is **still present** and you are annotating it (validation problems, partial failure, warnings): use a `SectionMessage`.
+
+`ErrorState` replaces, `SectionMessage` comments.
+
+## Page tier with Next.js App Router
+
+Every route segment can have an `error.tsx`. It receives the caught `error` and a `reset` callback, and it remounts on navigation, so stale errors clear themselves.
+
+Here the fallback renders its own `Page` and `Page.Header`, because `error.tsx` replaces the whole page and takes the `<main>` landmark and the h1 with it. If your `Page` and its header live in the segment's `layout.tsx`, they survive the error, and the fallback is just the focused `ErrorState`:
+
+```tsx
+// app/billing/error.tsx
+'use client';
+
+import { useEffect, useRef } from 'react';
+import { Button, ErrorState, Page, Title } from '@marigold/components';
+
+export default function BillingError({
+  reset,
+}: {
+  error: Error;
+  reset: () => void;
+}) {
+  // The page tier fallback takes focus: the task the user was on is gone.
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => ref.current?.focus(), []);
+
+  return (
+    <Page>
+      <Page.Header>
+        {/* The route title stays the h1 and names the <main> landmark. */}
+        <Title>Billing</Title>
+      </Page.Header>
+      <ErrorState
+        ref={ref}
+        tabIndex={-1}
+        headingLevel={2}
+        title="We can't load your billing data"
+        description="Something went wrong on our side. Your data is safe."
+        action={
+          <Button variant="primary" onPress={reset}>
+            Try again
+          </Button>
+        }
+      />
+    </Page>
+  );
+}
+```
+
+## Page tier with react-error-boundary
+
+In plain React or React Router, you place the boundary yourself. Put it inside the `Page`, below the `Page.Header`: the header and route title stay mounted, and the fallback is only the `ErrorState`, no duplicated header.
+
+The `resetKeys` line is not optional: a boundary that stays mounted across client-side navigation keeps showing a stale error after the user navigates away and back. Reset on navigation:
+
+```tsx
+import { ErrorBoundary } from 'react-error-boundary';
+import { useLocation } from 'react-router';
+
+const { pathname } = useLocation();
+
+<Page>
+  <Page.Header>
+    <Title>Billing</Title>
+  </Page.Header>
+  <ErrorBoundary
+    FallbackComponent={BillingErrorFallback}
+    resetKeys={[pathname]}
+  >
+    <BillingContent />
+  </ErrorBoundary>
+</Page>;
+```
+
+Try it out: breaking the page swaps the content for the fallback while the header keeps the route title as the h1, and focus moves to the error state.
+
+<ComponentDemo name="error-page-tier" />
+
+## Region tier inside a Panel
+
+The boundary wraps only the panel's content. The fallback is an `ErrorState` with `role="alert"`, so the failure is announced without pulling the user out of a page that still works:
+
+<ComponentDemo name="error-region-tier" />
+
+## Recovery and retry microcopy
+
+Retry-first: the `action` slot carries a primary "Try again" button wired to the host boundary's reset (`reset()` in `error.tsx`, `resetErrorBoundary` in react-error-boundary).
+
+Offer retry only when it is honest, meaning a retry can plausibly succeed (network hiccups, timeouts, transient server errors). For non-transient failures, retry is a lie that costs the user a second failure. Offer an escape route instead:
+
+- **403**: "You don't have access to this page." Action: a link back, or to the dashboard.
+- **404**: "This page doesn't exist." Action: a link to the closest existing parent.
+
+Write the title as the thing that failed ("Invoices didn't load"), the description as what the user can do about it. No apologies, no stack traces, no status codes in the copy.
+
+## Accessibility contract
+
+- Exactly one `<main>`, always named: either the `Page` with the route `Title` stays mounted above the boundary, or the fallback renders its own.
+- Heading outline stays intact: h1 route title, h2 page-tier error, h3 region-tier error under a panel's h2.
+- Page tier: focus moves to the fallback on mount (`<ErrorState ref={ref} tabIndex={-1}>`, focused from an effect).
+- Region tier: `role="alert"` announces without moving focus.
+- Retry is a real `Button`, the first interactive element after the focus target.
+- The error is not conveyed by color alone: illustration plus explicit title and description.

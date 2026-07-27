@@ -1,5 +1,152 @@
 # @marigold/docs
 
+## 18.0.0-beta.4
+
+### Major Changes
+
+- fc8ca13: refa([DST-1549]): **Breaking change**: Rename compound member `Tabs.TabPanel` → `Tabs.Panel`
+
+  `Tabs` now exposes `.List`, `.Item`, and `.Panel`, so every compound member follows
+  one predictable naming rule. `<Tabs.TabPanel>` is removed (hard rename, no deprecated alias).
+
+  **Migration:**
+
+  | Before                   | After                 |
+  | ------------------------ | --------------------- |
+  | `<Tabs.TabPanel id="…">` | `<Tabs.Panel id="…">` |
+
+### Minor Changes
+
+- 7fc3b53: feat(DST-1446): `marigold search` to find components by docs content
+
+  Adds `marigold search <query>`, which ranks components by matching the query against their docs content (title, description, section headings, and section prose), not just the component name. This collapses the "list → guess → docs → retry" discovery loop (3 to 5 calls) that AI agents run today into a single ranked, snippet-bearing, deep-linked result.
+
+  - **CLI:** new `loadSearchIndex()` / `searchComponentDocs()` library functions and a `search` command wrapping them, with `--limit`, `--format markdown|json|plain`, `--fresh` and `--offline` (reusing the existing cache and `sanitizeRemote` — no new dependencies). Scoring weights title ×3, description ×2, each matching heading ×2, and each matching section snippet ×1. Tab completion and telemetry cover the new command. No-match exits 0 (`[]` for `--format json`).
+  - **Docs:** `build-manifest.mjs` now also emits `public/component-search.json` — a content index over the component MDX (per-component `headings` plus prose-bearing `{ heading, snippet }` sections, with JSX/imports/code-fences stripped). It is written after `manifest.json` so a content-index bug can never block the manifest that `list`/`docs` depend on.
+
+- 762989f: docs(DST-1198): add Fetching and Mutations pattern for `@tanstack/react-query` + Marigold
+
+  Adds a new `Data` pattern group with a `Fetching and Mutations` page covering hook encapsulation, centralized query keys, the `isLoading` vs `useIsFetching` loading taxonomy, error handling and retries via `throwOnError` with an error boundary, toast feedback, optimistic updates, and destructive confirmation with `useConfirmation`. It also points to React Server Components and Server Actions as the alternative paradigm.
+
+  The `/examples/filter` reference app now fetches from a real stateless `/api/venues` route handler: search, filter, sort and pagination run on the server, the query key is derived from the existing URL (nuqs) state, and rows can be deleted with confirmation and optimistic updates. Deletions are tracked per visitor on the client so the demo stays isolated and resets on reload.
+
+### Patch Changes
+
+- a912c89: Improve spacing between sidebar navigation sections for better visual separation.
+- 6d7b6c6: docs(DST-1383): add the Bulk Actions pattern
+
+  New user-input pattern page documenting how to let users select many records in a collection and act on all of them at once, built by composing existing Marigold components (`<Table>` selection, `<ActionBar>`, `<Dialog>` via `useConfirmation`, `<Drawer>`, `<Toast>`). Covers the full flow in build order: when (not) to use the pattern, structure, choosing actions, selection and its visible-scope boundary, direct actions, confirming destructive actions, multi-field bulk edit, progress feedback, and result/partial-failure handling. Includes an anatomy diagram, seven inline demos, Do/Don't guidance, an accessibility section, and an implementation section with the load-bearing practices (derive the acted-on set once, clear selection on scope change, keep failed records selected, re-key the bulk-edit form).
+
+  [DST-1383](https://reservix.atlassian.net/browse/DST-1383)
+
+- 6d7b6c6: docs(DST-1384): add the Bulk Actions working example
+
+  New full-page example at `/examples/bulk-actions` that wires the whole bulk-actions pattern together as one real product surface: a paginated, searchable events table with page-bounded selection, a floating `ActionBar` (Publish, Edit, Export, overflow menu, Delete), direct publish with a deterministic partial-failure path whose failed records stay selected and are fixable via the bulk-edit `Drawer` (mixed values, explicit price opt-in, re-keyed per selection), a destructive confirm `Dialog` with count and reservation impact, button-loading and running-count progress, and toasts for every outcome. Backed by a stateless `/api/events` route plus a `/api/events/bulk` authorizer; all session changes are client-owned and ride along in the query key, so filters always see the visitor's world. Search, status filter, and page persist in the URL via nuqs. The pattern page's `DemoLinks` now resolves and its "in progress" callout is gone.
+
+  [DST-1384](https://reservix.atlassian.net/browse/DST-1384)
+
+- c5bfbb1: docs(DST-1405): document the Marigold CLI on the docs site
+
+  Adds a new **CLI** page under Getting Started (`/getting-started/cli`). The single page covers installation (npm / pnpm / npx), usage with AI agents, every command (`docs`, `list`, `examples`, `init`, `completion`, `telemetry`) with flags and examples, and configuration (environment variables and per-OS cache / config locations). Content mirrors `packages/cli/README.md`.
+
+  Cross-links were added from the Installation page (`marigold init` as a faster setup path) and the Usage with AI page (the AI-agents section of the new CLI page).
+
+- 21e79b7: docs(DST-1465): position Card among Collection components and link out to alternatives
+
+  Reframes the Card docs to lead with Card's Collection identity. Adds a `Card vs Table` in-category comparison with a new `CardVsTableMockup` illustration, a `When the content isn't a collection` section pointing to Panel, Stack, and Tiles, and a top-level `Alternative components` section that links out to the right component for each case.
+
+- 5b9e78d: docs(DST-1474): write the ActionBar component documentation
+
+  Replaces the boilerplate ActionBar page with full, use-case-driven documentation: an intro that frames it as a bulk-action toolbar for the current selection in a collection, an anatomy diagram, Do/Don't guidance, and three demos (bulk actions in a `<Table>` via the `actionBar` render prop, bulk editing through a `<Drawer>`, and driving the bar from custom selection state outside a Table). Adds an accessibility section covering the labelled toolbar, the live-region announcement, Escape-to-clear, and focus restoration.
+
+  [DST-1474](https://reservix.atlassian.net/browse/DST-1474)
+
+- 4f9cd66: docs(DST-1532): add the Pick pattern with demos and a working example
+
+  New user-input pattern page documenting picking: finding records in a collection and committing them as a set, the counterpart to filtering, which narrows a view in place. Covers the Filter-vs-Pick distinction, a surface spectrum that scales to collection size (inline multi-select, a searchable `<TagField>`, a `<Dialog>`, and a routed page as the exception), and the load-bearing practices: preserve staged selections while search and filters narrow the list, bound the selection and name the outcome in the commit button, keep the staged set visible as a removable `<Tag.Group>` rail, and narrow rather than paginate large or async collections. Ships four inline demos (`<TagField>`, a multi-select `<Table>` dialog, a `<SelectList>` variant, and an on-page filter-select-act signpost) plus a full `/examples/pick` example: a `size="fullscreen"` dialog that picks from about fifty venues into a report that owns the committed set. Cross-references the pattern from the Filter and Table Records pages.
+
+  [DST-1532](https://reservix.atlassian.net/browse/DST-1532)
+
+- d257bff: feat(DST-1574): surface example apps in the docs ⌘K search
+
+  The interactive example demos are now discoverable from the docs command menu. Typing an example's name — or just "example" — lists the standalone demos (App Shell, Filter, Event Form, Settings Form, Auto-Save Settings, Inventory) as "Example: …" quick actions. Internal screens of a larger demo (e.g. the App Shell's Billing/Users/Teams pages) are intentionally not surfaced as separate examples.
+
+- 4a75d68: docs(DST-1623): note that `<ToastProvider>` should be mounted once
+
+  Every toast shares one global queue (React Aria's model: a single `ToastRegion` per queue), so one `<ToastProvider>` renders them all and `addToast` works from anywhere. Mounting more than one renders every toast per provider and creates duplicate notification `region` landmarks. React Aria surfaces this via its duplicate-landmark-label warning and does not dedupe. Added a callout on the Toast page documenting the "mount once" guidance.
+
+  [DST-1623](https://reservix.atlassian.net/browse/DST-1623)
+
+- Updated dependencies [c789dee]
+- Updated dependencies [28c4e40]
+- Updated dependencies [9918172]
+- Updated dependencies [f1990eb]
+- Updated dependencies [d72b30a]
+- Updated dependencies [be0eeb9]
+- Updated dependencies [9b613e6]
+- Updated dependencies [cff8f37]
+- Updated dependencies [e9996ef]
+- Updated dependencies [0b7f87f]
+- Updated dependencies [c20abe3]
+- Updated dependencies [13a1982]
+- Updated dependencies [d72f464]
+- Updated dependencies [9fd4000]
+- Updated dependencies [f715905]
+- Updated dependencies [0637671]
+- Updated dependencies [e686474]
+- Updated dependencies [c799448]
+- Updated dependencies [dd044be]
+- Updated dependencies [50d8339]
+- Updated dependencies [ecd739f]
+- Updated dependencies [2fc7b96]
+- Updated dependencies [586ffd1]
+- Updated dependencies [af7767c]
+- Updated dependencies [8418ee7]
+- Updated dependencies [fc8ca13]
+- Updated dependencies [f1990eb]
+- Updated dependencies [508ec2c]
+- Updated dependencies [2a275bb]
+- Updated dependencies [ae6644d]
+- Updated dependencies [e911844]
+- Updated dependencies [f69ba1c]
+- Updated dependencies [90d8af7]
+- Updated dependencies [136a4be]
+- Updated dependencies [018c055]
+- Updated dependencies [018c055]
+- Updated dependencies [018c055]
+- Updated dependencies [c30f224]
+- Updated dependencies [0e4b915]
+- Updated dependencies [51484fd]
+- Updated dependencies [51484fd]
+- Updated dependencies [b6666b4]
+- Updated dependencies [66a22e8]
+- Updated dependencies [7605d46]
+- Updated dependencies [40b006e]
+- Updated dependencies [f817023]
+- Updated dependencies [5d0b6c0]
+- Updated dependencies [e5701c4]
+- Updated dependencies [a34b353]
+- Updated dependencies [306fe23]
+- Updated dependencies [199e066]
+- Updated dependencies [106821a]
+- Updated dependencies [3231866]
+- Updated dependencies [40e6b21]
+- Updated dependencies [867f3cc]
+- Updated dependencies [b954ab2]
+- Updated dependencies [2b3e286]
+- Updated dependencies [d0bb11c]
+- Updated dependencies [b41a3e3]
+- Updated dependencies [be0eeb9]
+- Updated dependencies [be0eeb9]
+- Updated dependencies [ccd3bb3]
+- Updated dependencies [766a46b]
+- Updated dependencies [0e3971a]
+- Updated dependencies [4d44517]
+  - @marigold/components@18.0.0-beta.4
+  - @marigold/theme-rui@6.0.0-beta.4
+  - @marigold/system@18.0.0-beta.4
+  - @marigold/icons@2.0.0-beta.4
+
 ## 18.0.0-beta.3
 
 ### Patch Changes
