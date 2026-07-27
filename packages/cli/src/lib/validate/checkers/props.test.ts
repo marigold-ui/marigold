@@ -291,6 +291,42 @@ const C = ({ v }: { v: string }) => <Button variant={v}>Save</Button>;`
     expect(issue?.severity).toBe('error');
   });
 
+  it('does not flag Input onChange with e.target.value — it inherits the native DOM ChangeEvent, not a value-based signature', () => {
+    const file = tmpFile(
+      'mv-input-onchange.tsx',
+      `import { Input } from '@marigold/components';
+      const C = () => (
+        <Input onChange={(e) => console.log(e.target.value)} />
+      );`
+    );
+    const issues = validateProps(file);
+    const flagged = issues.find(
+      i =>
+        i.component === 'Input' &&
+        (i.details as { pattern?: string } | undefined)?.pattern ===
+          'event-target-access'
+    );
+    expect(flagged).toBeUndefined();
+  });
+
+  it('does not flag SearchInput onChange with e.target.value for the same reason', () => {
+    const file = tmpFile(
+      'mv-search-input-onchange.tsx',
+      `import { SearchInput } from '@marigold/components';
+      const C = () => (
+        <SearchInput onChange={(e) => console.log(e.target.value)} />
+      );`
+    );
+    const issues = validateProps(file);
+    const flagged = issues.find(
+      i =>
+        i.component === 'SearchInput' &&
+        (i.details as { pattern?: string } | undefined)?.pattern ===
+          'event-target-access'
+    );
+    expect(flagged).toBeUndefined();
+  });
+
   it('does not flag event target pattern on non-Marigold components', () => {
     const file = tmpFile(
       'mv-native-onchange.tsx',

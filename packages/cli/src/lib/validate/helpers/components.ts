@@ -236,6 +236,25 @@ const extractSubComponentData = (
   return { names: [...new Set(names)], props };
 };
 
+// A real `@marigold/components` dist/index.d.mts exports well over a hundred
+// components — this is the same floor `components.test.ts` asserts against
+// the actual build. A *present-but-partial* dist (loads without throwing, but
+// a ts-morph upgrade or a broken/truncated build silently drops most exports)
+// would otherwise leave the registry near-empty without ever signaling
+// failure — and every checker that resolves tags through it (design-system-
+// usage, props, composition, …) would then read every genuine Marigold
+// import as unresolvable, mass-erroring valid code as hallucinated. Treating
+// an implausibly small registry as a load failure routes it through the same
+// safeCheck degrade-to-warning path as a missing dist already gets, instead
+// of silently producing wrong results from a "successful" load.
+const MIN_PLAUSIBLE_REGISTRY_SIZE = 20;
+
+// Exported so the threshold itself is unit-testable without needing to
+// fabricate a truncated dist/index.d.mts to exercise loadMarigoldRegistry
+// end-to-end.
+export const isImplausiblySmallRegistry = (size: number): boolean =>
+  size <= MIN_PLAUSIBLE_REGISTRY_SIZE;
+
 export const loadMarigoldRegistry = (): Map<string, ComponentInfo> => {
   if (cachedRegistry) return cachedRegistry;
 
@@ -269,6 +288,12 @@ export const loadMarigoldRegistry = (): Map<string, ComponentInfo> => {
       subComponentProps: subData.props,
       collection: hasItems(props) || [...subData.props.values()].some(hasItems),
     });
+  }
+
+  if (isImplausiblySmallRegistry(registry.size)) {
+    throw new Error(
+      `@marigold/components dist/index.d.mts loaded but yielded only ${registry.size} component(s) — a real build exports well over a hundred, so this dist looks truncated or malformed. Rebuild with \`pnpm --filter @marigold/components build\`.`
+    );
   }
 
   cachedRegistry = registry;

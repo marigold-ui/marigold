@@ -37,7 +37,18 @@ export const resolveCssImports = (
   if (seen.has(absolute)) return '';
   seen.add(absolute);
   const dir = path.dirname(absolute);
-  const raw = fs.readFileSync(absolute, 'utf-8');
+  // A present-but-malformed dist (a `theme.css` that survives the top-level
+  // existence check in `loadDesignTokens` but `@import`s a partial that's
+  // missing or renamed) must degrade like `loadThemeVariants` does per-file,
+  // not throw an uncaught ENOENT out of the whole token load. Skipping just
+  // this partial means its tokens are absent from the map rather than the
+  // entire design-tokens check aborting over one bad file.
+  let raw: string;
+  try {
+    raw = fs.readFileSync(absolute, 'utf-8');
+  } catch {
+    return '';
+  }
   return raw.replace(
     LOCAL_IMPORT,
     (_match, urlPath: string | undefined, quotedPath: string | undefined) =>

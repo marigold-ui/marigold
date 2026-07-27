@@ -166,10 +166,15 @@ const startViteServer = async (workDir: string): Promise<ViteDevServer> => {
       // render must still serve Vite's own client, the react-refresh runtime,
       // and the symlinked node_modules (whose pnpm realpath points back into the
       // repo) — pinning `allow` to a tight set silently breaks the render across
-      // pnpm/npm layouts. So `fs.deny` only blocks the highest-value secrets
-      // below; a same-origin `/@fs/<abs>` read of another non-denylisted file
-      // the process user can read (e.g. ~/.aws/credentials, ~/.ssh/config,
-      // arbitrary *.yaml) is NOT prevented here. That residual exposure is
+      // pnpm/npm layouts. `fs.strict` plus the default `fs.allow` already confine
+      // any `/@fs/<abs>` read to the workspace root, and the deny list below
+      // covers the highest-value secrets a same-origin read could otherwise
+      // reach there (`.aws/`, `.ssh/`, `.env*`, key/cert files, `.npmrc`). The
+      // real residual is narrower than "anything outside the deny list": any
+      // OTHER readable file inside the workspace root that doesn't match a deny
+      // glob (e.g. an unrelated package's source, a stray `*.yaml`), plus the
+      // fact that Vite's glob-based `fs.deny` has a documented history of
+      // query-string/URL-encoding bypasses on `/@fs/` requests. That residual is
       // bounded by the threat model — the CLI renders the user's own generated
       // component, in their own environment, single-file, and the process exits
       // right after — and by the network block that stops exfiltration. Tighten
@@ -283,15 +288,25 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
       // than just fetch/XHR/navigation.
       await context.routeWebSocket('**/*', ws => ws.close());
 
-      // WebRTC (RTCPeerConnection) is a separate egress path page.route and
-      // routeWebSocket cannot see: it can establish a P2P/STUN connection
-      // over UDP and leak the host's real IP even through a proxy. There is
-      // no Playwright-level filter for it, so neuter the constructor itself
-      // before any page script runs.
+      // WebRTC (RTCPeerConnection) and dedicated/shared Web Workers are
+      // separate egress paths `context.route`/`routeWebSocket` cannot see:
+      // - RTCPeerConnection can establish a P2P/STUN connection over UDP and
+      //   leak the host's real IP even through a proxy.
+      // - A Worker/SharedWorker runs its own global scope with its own
+      //   fetch/XHR/WebSocket, which the route filters above never attach to
+      //   — untrusted code could `new Worker(...)` a blob URL and exfiltrate
+      //   straight from inside it, bypassing the HTTP-only page-level filter
+      //   entirely.
+      // There is no Playwright-level filter for either, so neuter the
+      // constructors themselves before any page script runs — removing the
+      // ability to create one in the first place, rather than trying to
+      // sandbox it after the fact.
       await context.addInitScript(() => {
         const w = window as unknown as Record<string, unknown>;
         w.RTCPeerConnection = undefined;
         w.RTCDataChannel = undefined;
+        w.Worker = undefined;
+        w.SharedWorker = undefined;
       });
 
       const page = await context.newPage();
@@ -349,12 +364,13 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
       page.on('pageerror', err => pageErrors.push(err.message));
 
       const url = `${serverOrigin}/`;
-      // 'load' rather than 'networkidle': the ready-marker wait right below is
-      // the real readiness signal. 'networkidle' additionally waits for
-      // in-flight requests to settle for 500ms, which a cold Vite pre-bundle
-      // of a heavy import graph (e.g. Dialog's overlay/focus-scope deps) can
-      // keep trickling past under CI load — burning its own timeout before
-      // the module has even finished evaluating.
+      // 'commit' rather than 'networkidle': the ready-marker wait right below
+      // is the real readiness signal, so goto only needs to get the document
+      // committed and start loading. 'networkidle' never reliably settles here
+      // at all — the sandbox's own `context.routeWebSocket` above force-closes
+      // Vite's HMR WebSocket, so the client keeps retrying the connection,
+      // which counts as ongoing network activity and can burn goto's entire
+      // timeout before the module has even finished evaluating.
       //
       // This and the two waits below are individually capped at
       // RENDER_BUDGET_MS rather than some tighter fixed value: the
@@ -364,7 +380,7 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
       // extra protection — it can only fire *before* the real backstop would,
       // on a legitimately (if unusually) slow step under CPU contention,
       // turning a healthy-but-slow render into a false failure.
-      await page.goto(url, { waitUntil: 'load', timeout: RENDER_BUDGET_MS });
+      await page.goto(url, { waitUntil: 'commit', timeout: RENDER_BUDGET_MS });
 
       // Wait for the harness "ready" marker, but fail fast if Vite reports a
       // compile/resolve error instead. The harness imports the target file

@@ -12,17 +12,20 @@ const fixture = (name: string): string =>
 
 let tmpSeq = 0;
 // Each call gets a fresh, unique theme dir so the module-level cache (keyed on
-// the resolved dir path) never serves a stale map across tests.
-const makeThemeDir = (): string => {
+// the resolved dir path) never serves a stale map across tests, and so
+// Node's own `require` cache (keyed by resolved file path) never does either.
+const makeThemeDir = (
+  appearances: Record<string, Record<string, string[]>>
+): string => {
   const dir = fs.mkdtempSync(
     path.join(os.tmpdir(), `tv-theme-${Date.now()}-${tmpSeq++}-`)
   );
-  fs.mkdirSync(path.join(dir, 'src', 'components'), { recursive: true });
+  fs.mkdirSync(path.join(dir, 'dist'), { recursive: true });
+  fs.writeFileSync(
+    path.join(dir, 'dist', 'appearances.cjs'),
+    `exports.appearances = ${JSON.stringify(appearances)};`
+  );
   return dir;
-};
-
-const writeStyle = (dir: string, name: string, content: string): void => {
-  fs.writeFileSync(path.join(dir, 'src', 'components', name), content);
 };
 
 const tmpJsx = (content: string): string => {
@@ -56,48 +59,51 @@ describe('theme variant check (auto-resolve)', () => {
   });
 });
 
-describe('theme variant check (object-of-cva FP guard, finding #5B)', () => {
-  it('does not flag an internal style group key as a JSX prop', () => {
-    const dir = makeThemeDir();
-    writeStyle(
-      dir,
-      'Menu.styles.ts',
-      `import { cva } from 'class-variance-authority';
-export const Menu = {
-  item: cva({ variants: { variant: { default: '', destructive: '' } } }),
-};`
-    );
+describe('theme variant check (values sourced from dist/appearances.cjs)', () => {
+  // Regression: theme-rui's *.styles.ts sources never ship in a published
+  // install (files: ["dist"]) — the CLI's primary real-world environment —
+  // so this check used to silently find nothing there. dist/appearances.cjs
+  // is theme-rui's own build output and DOES ship.
+  it('flags a value not present in the appearances data', () => {
+    const dir = makeThemeDir({ Foo: { tone: ['a', 'b'] } });
     const jsx = tmpJsx(
-      `import { Menu } from '@marigold/components';
-const C = () => <Menu variant="ghost" />;`
+      `import { Foo } from '@marigold/components';
+const C = () => <Foo tone="z" />;`
     );
     const issues = validateThemeVariants(jsx, dir);
-    const themeIssue = issues.find(i =>
+    const issue = issues.find(i =>
       i.message.includes('does not exist in the theme')
     );
-    expect(themeIssue).toBeUndefined();
+    expect(issue).toBeDefined();
+    expect(issue?.message).toContain('z');
+  });
+
+  it('does not flag a value present in the appearances data', () => {
+    const dir = makeThemeDir({ Foo: { tone: ['a', 'b'] } });
+    const jsx = tmpJsx(
+      `import { Foo } from '@marigold/components';
+const C = () => <Foo tone="a" />;`
+    );
+    const issues = validateThemeVariants(jsx, dir);
+    expect(
+      issues.find(i => i.message.includes('does not exist in the theme'))
+    ).toBeUndefined();
+  });
+
+  it('skips a dimension with an empty value list (component has no variant of that kind)', () => {
+    const dir = makeThemeDir({ Foo: { tone: [] } });
+    const jsx = tmpJsx(
+      `import { Foo } from '@marigold/components';
+const C = () => <Foo tone="anything" />;`
+    );
+    const issues = validateThemeVariants(jsx, dir);
+    expect(
+      issues.find(i => i.message.includes('does not exist in the theme'))
+    ).toBeUndefined();
   });
 });
 
-describe('theme variant loading degrades gracefully (per-file I/O)', () => {
-  it('skips an unreadable .styles.ts and still loads the readable ones', () => {
-    const dir = makeThemeDir();
-    writeStyle(
-      dir,
-      'Button.styles.ts',
-      `import { cva } from 'class-variance-authority';
-export const Button = cva({ variants: { variant: { primary: '' } } });`
-    );
-    // A directory named like a style file makes ts.sys.readFile return
-    // undefined, so parseSource throws — exactly the unreadable-file case. It
-    // must be skipped, not abort the whole load.
-    fs.mkdirSync(path.join(dir, 'src', 'components', 'Broken.styles.ts'));
-
-    const map = loadThemeVariants(dir);
-    expect(map.get('Button')?.get('variant')).toEqual(['primary']);
-    expect(map.has('Broken')).toBe(false);
-  });
-
+describe('theme variant loading degrades gracefully', () => {
   it('returns an empty map for a themePath that does not exist', () => {
     const missing = path.join(
       os.tmpdir(),
@@ -106,51 +112,26 @@ export const Button = cva({ variants: { variant: { primary: '' } } });`
     expect(() => loadThemeVariants(missing)).not.toThrow();
     expect(loadThemeVariants(missing).size).toBe(0);
   });
-});
 
-describe('theme variant check (compoundVariants union, finding #5A)', () => {
-  it('accepts a value that only appears in compoundVariants', () => {
-    const dir = makeThemeDir();
-    writeStyle(
-      dir,
-      'Foo.styles.ts',
-      `import { cva } from 'class-variance-authority';
-export const Foo = cva({
-  variants: { tone: { a: '' } },
-  compoundVariants: [{ tone: 'b', class: 'x' }],
-});`
+  it('returns an empty map when dist/appearances.cjs does not exist (pre-appearances-build theme-rui)', () => {
+    const dir = fs.mkdtempSync(
+      path.join(os.tmpdir(), `tv-no-appearances-${Date.now()}-${tmpSeq++}-`)
     );
-    const okJsx = tmpJsx(
-      `import { Foo } from '@marigold/components';
-const C = () => <Foo tone="b" />;`
-    );
-    const okIssues = validateThemeVariants(okJsx, dir);
-    expect(
-      okIssues.find(i => i.message.includes('does not exist in the theme'))
-    ).toBeUndefined();
+    expect(() => loadThemeVariants(dir)).not.toThrow();
+    expect(loadThemeVariants(dir).size).toBe(0);
   });
 
-  it('still flags a value that is in neither variants nor compoundVariants', () => {
-    const dir = makeThemeDir();
-    writeStyle(
-      dir,
-      'Foo.styles.ts',
-      `import { cva } from 'class-variance-authority';
-export const Foo = cva({
-  variants: { tone: { a: '' } },
-  compoundVariants: [{ tone: 'b', class: 'x' }],
-});`
+  it('returns an empty map when dist/appearances.cjs is malformed', () => {
+    const dir = fs.mkdtempSync(
+      path.join(os.tmpdir(), `tv-malformed-${Date.now()}-${tmpSeq++}-`)
     );
-    const badJsx = tmpJsx(
-      `import { Foo } from '@marigold/components';
-const C = () => <Foo tone="z" />;`
+    fs.mkdirSync(path.join(dir, 'dist'), { recursive: true });
+    fs.writeFileSync(
+      path.join(dir, 'dist', 'appearances.cjs'),
+      'this is not valid javascript {{{'
     );
-    const badIssues = validateThemeVariants(badJsx, dir);
-    const issue = badIssues.find(i =>
-      i.message.includes('does not exist in the theme')
-    );
-    expect(issue).toBeDefined();
-    expect(issue?.message).toContain('z');
+    expect(() => loadThemeVariants(dir)).not.toThrow();
+    expect(loadThemeVariants(dir).size).toBe(0);
   });
 });
 
@@ -159,13 +140,7 @@ describe('theme variant check — origin resolution', () => {
     // A project's own <Foo> imported from a local module must not be held to
     // the theme's variant contract (regression: this was a false-positive
     // warning matching purely by tag name).
-    const dir = makeThemeDir();
-    writeStyle(
-      dir,
-      'Foo.styles.ts',
-      `import { cva } from 'class-variance-authority';
-export const Foo = cva({ variants: { tone: { a: '' } } });`
-    );
+    const dir = makeThemeDir({ Foo: { tone: ['a'] } });
     const localJsx = tmpJsx(
       `import { Foo } from './my-foo';
 const C = () => <Foo tone="not-a-real-tone" />;`
@@ -177,13 +152,7 @@ const C = () => <Foo tone="not-a-real-tone" />;`
   });
 
   it('still flags an aliased Marigold import against the theme', () => {
-    const dir = makeThemeDir();
-    writeStyle(
-      dir,
-      'Foo.styles.ts',
-      `import { cva } from 'class-variance-authority';
-export const Foo = cva({ variants: { tone: { a: '' } } });`
-    );
+    const dir = makeThemeDir({ Foo: { tone: ['a'] } });
     const aliasJsx = tmpJsx(
       `import { Foo as F } from '@marigold/components';
 const C = () => <F tone="z" />;`

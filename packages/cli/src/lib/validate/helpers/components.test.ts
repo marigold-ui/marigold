@@ -5,6 +5,7 @@ import {
   buildMarigoldTagResolver,
   getComponentProps,
   isCompoundComponent,
+  isImplausiblySmallRegistry,
   isMarigoldComponent,
   loadMarigoldRegistry,
 } from './components.js';
@@ -31,6 +32,19 @@ describe('loadMarigoldRegistry (registry source of truth)', () => {
     for (const name of ['Button', 'TextField', 'Form']) {
       expect(isMarigoldComponent(name)).toBe(true);
     }
+  });
+
+  it('throws instead of silently caching a present-but-implausibly-small registry', () => {
+    // A truncated/malformed dist/index.d.mts (a ts-morph upgrade or a broken
+    // build that drops most exports without failing outright) must not be
+    // treated as a valid, cacheable registry — every checker resolving tags
+    // through it would otherwise read every genuine Marigold import as
+    // unresolvable and mass-error valid code as hallucinated. Verified via
+    // the same threshold loadMarigoldRegistry itself checks, since fabricating
+    // an actual truncated dist to exercise this end-to-end isn't practical.
+    expect(isImplausiblySmallRegistry(0)).toBe(true);
+    expect(isImplausiblySmallRegistry(20)).toBe(true);
+    expect(isImplausiblySmallRegistry(21)).toBe(false);
   });
 
   it('derives Button props including variant and the React Aria onPress', () => {

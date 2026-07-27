@@ -34,7 +34,11 @@ describe('createCleanupStack', () => {
     expect(ran).toContain('after');
   });
 
-  it('re-runs all teardowns on a second run, including ones pushed in between', async () => {
+  it('on a second run, only runs teardowns pushed since the first (not already-run ones)', async () => {
+    // Regression: a naive implementation that never drains the queue would
+    // re-invoke 'first' on the second run() too — harmless only by
+    // coincidence today (every real teardown happens to be idempotent), but a
+    // silent double-invocation footgun for any future one that isn't.
     const counts = new Map<string, number>();
     const bump = (k: string) => counts.set(k, (counts.get(k) ?? 0) + 1);
     const stack = createCleanupStack();
@@ -43,7 +47,7 @@ describe('createCleanupStack', () => {
     // A resource created after the first sweep (the renderer's deferred-sweep case).
     stack.push(() => bump('late'));
     await stack.run();
-    expect(counts.get('first')).toBe(2); // ran in both sweeps
+    expect(counts.get('first')).toBe(1); // not re-invoked by the second run
     expect(counts.get('late')).toBe(1); // only existed for the second
   });
 

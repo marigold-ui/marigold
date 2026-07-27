@@ -42,8 +42,17 @@ const ENVIRONMENT_ERROR_CODES = new Set([
 
 // Strip TS suppress directives so the compiler always sees real type errors,
 // even in AI-generated files that use them as a crutch.
+//
+// `^[ \t]*`, not `^\s*` — `\s` also matches `\n`, so with a blank line right
+// before the directive, `^\s*` would greedily consume that blank line's own
+// newline as part of the match (backtracking to align `//` with the
+// directive), and removing the whole match then deletes a newline that
+// wasn't part of the directive at all. Every line after the diagnostic's real
+// position was reported at position - 1 whenever a directive was preceded by
+// a blank line. `[ \t]*` only absorbs same-line indentation, so the line
+// count — and every diagnostic's line number — stays exactly as written.
 const stripTsSuppressDirectives = (text: string): string =>
-  text.replace(/^\s*\/\/\s*@ts-(?:nocheck|ignore|expect-error)[^\n]*/gm, '');
+  text.replace(/^[ \t]*\/\/\s*@ts-(?:nocheck|ignore|expect-error)[^\n]*/gm, '');
 
 const diagnosticToIssue = (
   diagnostic: ts.Diagnostic,

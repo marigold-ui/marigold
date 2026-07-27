@@ -19,14 +19,18 @@ import type { ValidationCoverage, ValidationIssue } from '../types.js';
 // React Aria value-based handlers that pass a value, not a DOM event.
 // If the handler body accesses .target.value or .target.checked, it's wrong.
 //
-// Error-severity, so the premise (NONE of these ever forward a DOM event) must
-// be FP-free. Verified against the react-aria source these all resolve to:
+// Error-severity, so the premise must be FP-free — checked below against the
+// component's OWN declared prop type, not assumed from the handler name
+// alone. Most Marigold components wrap react-aria-components and *rename*
+// these handlers to `onChange` (e.g. ComboBox onChange ≙ onInputChange),
+// which is genuinely always value-based:
 //   @react-types/shared ValueBase.onChange?: (value: C) => void
 //   @react-types/shared onSelectionChange?: (key: Key | null | Selection) => void
 //   ComboBox onInputChange?: (value: string) => void
-// Marigold wraps react-aria-components and only ever *renames* these handlers
-// to `onChange` (e.g. ComboBox onChange ≙ onInputChange) — always value-based,
-// never a raw ChangeEvent. So `e.target.value` inside one is unambiguously a bug.
+// But Marigold's low-level native wrappers (Input, SearchInput) inherit the
+// native DOM `onChange: ChangeEventHandler<...>` as-is — a real ChangeEvent,
+// not a value. So the handler *name* being in this set is necessary but not
+// sufficient; the type-based gate right below it is what makes this FP-free.
 const VALUE_BASED_HANDLERS = new Set([
   'onChange',
   'onSelectionChange',
@@ -189,7 +193,21 @@ export const validateProps = (
 
       // Value-based handler signature check: detect DOM event patterns
       // like e.target.value in handlers that receive a value, not an event.
-      if (VALUE_BASED_HANDLERS.has(name) && attr.initializer) {
+      // Marigold *usually* renames these to a value-based signature, but its
+      // low-level native wrappers (Input, SearchInput) inherit the native DOM
+      // `onChange: ChangeEventHandler<...>` as-is — so the premise only holds
+      // when the component's own declared prop type actually confirms it,
+      // not for every component with a matching handler *name*.
+      const valueHandlerPropInfo = validProps.find(p => p.name === name);
+      // Plain substring, not a word-boundary match: real declared types are
+      // camelCase compounds like `ChangeEventHandler<HTMLInputElement>` with
+      // no boundary between "Change" and "Event" for `\bEvent\b` to find.
+      const looksEventBased = /Event/.test(valueHandlerPropInfo?.type ?? '');
+      if (
+        VALUE_BASED_HANDLERS.has(name) &&
+        !looksEventBased &&
+        attr.initializer
+      ) {
         const init = ts.isJsxExpression(attr.initializer)
           ? attr.initializer.expression
           : undefined;
@@ -205,8 +223,7 @@ export const validateProps = (
             ? firstParam.name.text
             : undefined;
         if (fn && paramName && containsEventTargetAccess(fn.body, paramName)) {
-          const propInfo = validProps.find(p => p.name === name);
-          const paramType = propInfo?.type ?? 'value';
+          const paramType = valueHandlerPropInfo?.type ?? 'value';
           issues.push({
             type: 'technical',
             severity: 'error',

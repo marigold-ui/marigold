@@ -84,6 +84,19 @@ describe('resolveCssImports', () => {
     expect(resolved).toContain(`@import 'some-package/tokens.css';`);
     expect(resolved).toContain('--color-primary: #123456;');
   });
+
+  it('degrades a missing/renamed imported partial instead of throwing', () => {
+    // A present-but-malformed theme.css (survives loadDesignTokens' own
+    // existence check) that @imports a partial which doesn't exist — must
+    // skip that partial, not throw an uncaught ENOENT out of the whole load.
+    const entry = tmpFile(
+      'rci-missing-partial/theme.css',
+      `@import './does-not-exist.css';\n--color-primary: #123456;`
+    );
+    expect(() => resolveCssImports(entry)).not.toThrow();
+    const resolved = resolveCssImports(entry);
+    expect(resolved).toContain('--color-primary: #123456;');
+  });
 });
 
 describe('extractTokenScopes', () => {

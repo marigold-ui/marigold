@@ -152,9 +152,30 @@ const buildImportMap = (source: ts.SourceFile): Map<string, string> => {
   return map;
 };
 
+// Recursively collects every identifier a binding name introduces — a bare
+// Identifier, or (for a destructured const/param) every name bound inside an
+// object/array binding pattern, however deeply nested or renamed
+// (`{ as: Component }` binds "Component", not "as").
+const collectBindingNames = (name: ts.BindingName, out: Set<string>): void => {
+  if (ts.isIdentifier(name)) {
+    out.add(name.text);
+    return;
+  }
+  for (const element of name.elements) {
+    if (ts.isOmittedExpression(element)) continue; // array hole: `const [, Second] = pair`
+    collectBindingNames(element.name, out);
+  }
+};
+
 /**
- * Collect the set of locally declared PascalCase identifiers
- * (function declarations, arrow-function consts, class declarations).
+ * Collect the set of locally declared PascalCase identifiers: function/class
+ * declarations, const/let/var bindings (including destructured
+ * `const { Provider } = …` / `const [First, Second] = …`), and function
+ * parameters (including destructured ones, e.g. a HOC's `function
+ * Wrap(Component)` or a render-prop-style `({ as: Component }) => …`) — all
+ * equally legitimate ways a component name gets bound locally rather than
+ * imported, and none of them should read as an undeclared/hallucinated
+ * component.
  */
 const collectLocalDeclarations = (source: ts.SourceFile): Set<string> => {
   const locals = new Set<string>();
@@ -170,12 +191,21 @@ const collectLocalDeclarations = (source: ts.SourceFile): Set<string> => {
       locals.add(node.name.text);
     }
 
-    // const MyComponent = ...
+    // const MyComponent = ...; const { Provider } = ...; const [First, Second] = pair;
     if (ts.isVariableStatement(node)) {
       for (const decl of node.declarationList.declarations) {
-        if (ts.isIdentifier(decl.name)) {
-          locals.add(decl.name.text);
-        }
+        collectBindingNames(decl.name, locals);
+      }
+    }
+
+    if (
+      ts.isFunctionDeclaration(node) ||
+      ts.isFunctionExpression(node) ||
+      ts.isArrowFunction(node) ||
+      ts.isMethodDeclaration(node)
+    ) {
+      for (const param of node.parameters) {
+        collectBindingNames(param.name, locals);
       }
     }
 

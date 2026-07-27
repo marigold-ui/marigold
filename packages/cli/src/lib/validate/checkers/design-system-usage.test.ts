@@ -75,6 +75,66 @@ export default App;`
     expect(myCardIssue).toBeUndefined();
   });
 
+  it('does not flag a component name bound via object destructuring', () => {
+    // Regression: `collectLocalDeclarations` used to only recognize a bare
+    // `const MyCard = ...`, so `const { Provider } = useContext(Ctx)` fell
+    // through as an undeclared/hallucinated component.
+    const file = tmpFile(
+      'dsu-destructured-const.tsx',
+      `import { useContext } from 'react';
+const Ctx = { Provider: () => null } as any;
+const App = () => {
+  const { Provider } = useContext(Ctx);
+  return <Provider />;
+};
+export default App;`
+    );
+    const issues = validateDesignSystemUsage(file);
+    expect(issues.find(i => i.component === 'Provider')).toBeUndefined();
+  });
+
+  it('does not flag a component name bound via array destructuring', () => {
+    const file = tmpFile(
+      'dsu-array-destructured-const.tsx',
+      `const pair = [() => null, () => null] as any;
+const App = () => {
+  const [First, Second] = pair;
+  return (
+    <>
+      <First />
+      <Second />
+    </>
+  );
+};
+export default App;`
+    );
+    const issues = validateDesignSystemUsage(file);
+    expect(issues.find(i => i.component === 'First')).toBeUndefined();
+    expect(issues.find(i => i.component === 'Second')).toBeUndefined();
+  });
+
+  it('does not flag a component name bound via a function parameter', () => {
+    const file = tmpFile(
+      'dsu-param-bound-component.tsx',
+      `function Wrap(Component: any) {
+  return <Component />;
+}
+export default Wrap;`
+    );
+    const issues = validateDesignSystemUsage(file);
+    expect(issues.find(i => i.component === 'Component')).toBeUndefined();
+  });
+
+  it('does not flag a component name bound via a destructured, renamed arrow-function parameter', () => {
+    const file = tmpFile(
+      'dsu-destructured-param-renamed.tsx',
+      `const Wrap = ({ as: Component }: any) => <Component />;
+export default Wrap;`
+    );
+    const issues = validateDesignSystemUsage(file);
+    expect(issues.find(i => i.component === 'Component')).toBeUndefined();
+  });
+
   it('does not flag an aliased import of a real Marigold component', () => {
     // Regression: `{ Button as Btn }` used to be treated as hallucinated
     // because the bare-name registry lookup doesn't know the local alias.

@@ -52,6 +52,22 @@ export default x;`
     expect(result.issues.length).toBeGreaterThan(0);
   });
 
+  it('reports the correct line number when a directive is preceded by a blank line', () => {
+    // Regression: stripping the directive used to consume the preceding
+    // blank line's own newline too, shifting every line after it up by one.
+    const file = tmpFile(
+      'cv-ts-ignore-blank-line.tsx',
+      `const a = 1;
+
+// @ts-ignore
+const x: number = "not a number";
+export default x;`
+    );
+    const result = compileFile(file);
+    expect(result.ok).toBe(false);
+    expect(result.issues[0]?.location?.line).toBe(4);
+  });
+
   it('catches errors even when @ts-expect-error is present', () => {
     const file = tmpFile(
       'cv-ts-expect-error.tsx',
