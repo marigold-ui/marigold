@@ -208,7 +208,6 @@ export type { PageProps } from './Page/Page';
 export type { PageHeaderProps } from './Page/PageHeader';
 export type { PageContentProps } from './Page/PageContent';
 export { usePageFocus } from './Page/usePageFocus';
-export type { UsePageFocusOptions } from './Page/usePageFocus';
 
 export { Panel } from './Panel/Panel';
 export type { PanelProps } from './Panel/Panel';

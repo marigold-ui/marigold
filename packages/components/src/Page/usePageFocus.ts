@@ -1,17 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { usePageContext } from './Context';
 
-export interface UsePageFocusOptions {
-  /**
-   * When `false`, the hook is inert: route changes do not move focus. Lets a
-   * consumer keep the hook mounted while gating the behaviour (e.g. respecting a
-   * "reduce motion / reduce focus jumps" preference) without conditionally
-   * calling the hook.
-   * @default true
-   */
-  enabled?: boolean;
-}
-
 /**
  * Move focus to the page's `<h1>` when the route changes, the standard
  * single-page-app technique for announcing a navigation to screen-reader and
@@ -47,22 +36,20 @@ export interface UsePageFocusOptions {
  * </RouterProvider>
  * ```
  */
-export const usePageFocus = (
-  routeKey: string,
-  { enabled = true }: UsePageFocusOptions = {}
-) => {
+export const usePageFocus = (routeKey: string) => {
   const { titleId } = usePageContext();
-  const isInitialMountRef = useRef(true);
+  const previousRouteKeyRef = useRef(routeKey);
 
   useEffect(() => {
-    // Skip the first run so the initial page load is left untouched; only a
-    // subsequent route change should move focus.
-    if (isInitialMountRef.current) {
-      isInitialMountRef.current = false;
-      return;
-    }
-
-    if (!enabled) {
+    // Only act once the route key actually changes. Tracking the previous key
+    // (rather than an "is this the first run" flag) keeps the skip resilient to
+    // React StrictMode's dev-only setup → cleanup → setup remount: refs survive
+    // that remount, so a boolean flipped to `false` on the first setup would
+    // read as "not the first run" on the second setup and steal focus on the
+    // initial page load.
+    const changed = previousRouteKeyRef.current !== routeKey;
+    previousRouteKeyRef.current = routeKey;
+    if (!changed) {
       return;
     }
 
@@ -77,5 +64,5 @@ export const usePageFocus = (
     // without adding it to the tab order (`tabIndex={-1}`), then focus it.
     heading.tabIndex = -1;
     heading.focus();
-  }, [routeKey, titleId, enabled]);
+  }, [routeKey, titleId]);
 };

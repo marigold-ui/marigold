@@ -125,7 +125,7 @@ On client-side navigation the browser does not reset focus the way a full page l
 
 `usePageFocus` does this. Pass it the current route key (usually the pathname); on each change it makes the page `<h1>` programmatically focusable (`tabIndex={-1}`) and focuses it. The **first render is skipped**, so the initial load is left untouched, and it is a **no-op on a page with no `<h1>`** (an `aria-label`-only `<Page>`).
 
-`<Page>` is router-agnostic and cannot observe navigation on its own, so the route signal comes from your app router — the same [`RouterProvider`](/components/application/routerprovider) you already wire up for links. Call the hook from a component that persists across navigations (the layout / shell level), since the skip-first-render guard is per mount:
+`<Page>` is router-agnostic and cannot observe navigation on its own, so the route signal comes from your app router (the same [`RouterProvider`](/components/application/routerprovider) you already wire up for links). Call the hook from a component that persists across navigations (the layout / shell level), since the skip-first-render guard is per mount:
 
 ```tsx
 import { Outlet, useLocation, useNavigate } from 'react-router';
@@ -160,7 +160,7 @@ const AppLayout = () => {
 };
 ```
 
-Because the guard is per mount, keep the hook mounted across routes rather than calling it from a screen that unmounts on every navigation — otherwise every route reads as a first render and focus never moves.
+Because the guard is per mount, keep the hook mounted across routes rather than calling it from a screen that unmounts on every navigation, otherwise every route reads as a first render and focus never moves.
 
 ## Props
 

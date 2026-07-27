@@ -5,6 +5,7 @@ import { Copy, Download, Pencil, Trash2 } from '@marigold/icons';
 import { Button } from '../Button/Button';
 import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Description } from '../Description/Description';
+import { Inline } from '../Inline/Inline';
 import { LinkButton } from '../LinkButton/LinkButton';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Panel } from '../Panel/Panel';
@@ -378,12 +379,14 @@ const RouteFocusHarness = () => {
 
   return (
     <>
-      <nav aria-label="Demo navigation" style={{ display: 'flex', gap: 8 }}>
-        {Object.entries(ROUTES).map(([path, label]) => (
-          <Button key={path} onPress={() => setRoute(path)}>
-            {`Open ${label}`}
-          </Button>
-        ))}
+      <nav aria-label="Demo navigation">
+        <Inline space={2}>
+          {Object.entries(ROUTES).map(([path, label]) => (
+            <Button key={path} onPress={() => setRoute(path)}>
+              {`Open ${label}`}
+            </Button>
+          ))}
+        </Inline>
       </nav>
       <Page>
         <RouteFocus routeKey={route} />
@@ -411,6 +414,7 @@ const RouteFocusHarness = () => {
  */
 export const FocusOnRouteChange = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => <RouteFocusHarness />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -447,8 +451,10 @@ const NoHeadingFocusHarness = () => {
 
   return (
     <>
-      <nav aria-label="Demo navigation" style={{ display: 'flex', gap: 8 }}>
-        <Button onPress={() => setRoute('/team')}>Change route</Button>
+      <nav aria-label="Demo navigation">
+        <Inline space={2}>
+          <Button onPress={() => setRoute('/team')}>Change route</Button>
+        </Inline>
       </nav>
       <Page aria-label={ROUTES[route]}>
         <RouteFocus routeKey={route} />
@@ -464,6 +470,7 @@ const NoHeadingFocusHarness = () => {
 
 export const FocusWithoutHeading = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => <NoHeadingFocusHarness />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
