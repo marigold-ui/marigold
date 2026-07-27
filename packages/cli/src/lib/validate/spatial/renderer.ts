@@ -95,6 +95,11 @@ export type RenderHandle = {
   close: () => Promise<void>;
 };
 
+// A render failure still carries how long it ran for, attached here so the
+// caller's metadata isn't stuck reporting 0ms for a render that actually
+// spent real wall-clock time before timing out.
+export type RenderTimingError = Error & { renderTimeMs?: number };
+
 export type SharedRenderer = {
   render: (filePath: string, viewport: Viewport) => Promise<RenderHandle>;
   close: () => Promise<void>;
@@ -341,7 +346,13 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
       page.on('pageerror', err => pageErrors.push(err.message));
 
       const url = `${serverOrigin}/`;
-      await page.goto(url, { waitUntil: 'networkidle', timeout: 30_000 });
+      // 'load' rather than 'networkidle': the ready-marker wait right below is
+      // the real readiness signal. 'networkidle' additionally waits for
+      // in-flight requests to settle for 500ms, which a cold Vite pre-bundle
+      // of a heavy import graph (e.g. Dialog's overlay/focus-scope deps) can
+      // keep trickling past under CI load — burning its own 30s timeout
+      // before the module has even finished evaluating.
+      await page.goto(url, { waitUntil: 'load', timeout: 30_000 });
 
       // Wait for the harness "ready" marker, but fail fast if Vite reports a
       // compile/resolve error instead. The harness imports the target file
@@ -413,6 +424,12 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
       // bounded (startup/goto/selector timeouts), so schedule one more teardown
       // once it finally settles — without blocking the caller on those timeouts.
       buildPromise.then(handle => handle.close()).catch(() => cleanup.run());
+      // The caller (validate/index.ts) reports render failures as an issue but
+      // still needs real elapsed time for its metadata — attach it here so a
+      // timed-out render doesn't get reported as taking 0ms.
+      if (err instanceof Error) {
+        (err as RenderTimingError).renderTimeMs = Date.now() - start;
+      }
       throw err;
     } finally {
       clearTimeout(budgetTimer);

@@ -6,7 +6,7 @@ import {
   buildComponentLocationMap,
   buildTextFingerprintMap,
 } from './helpers/component-locations.js';
-import type { SharedRenderer } from './spatial/renderer.js';
+import type { RenderTimingError, SharedRenderer } from './spatial/renderer.js';
 import {
   type ValidateOptions,
   type ValidationCheck,
@@ -317,6 +317,14 @@ const runWithRenderer = async (
       }
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
+      // A render that failed partway still ran for real wall-clock time —
+      // report it instead of leaving the metadata stuck at its 0 initializer.
+      if (
+        err instanceof Error &&
+        typeof (err as RenderTimingError).renderTimeMs === 'number'
+      ) {
+        renderTimeMs = (err as RenderTimingError).renderTimeMs as number;
+      }
       // A missing/unlaunchable toolchain is an environment precondition, not
       // a defect in the validated file — report it as a warning so it can't
       // be mistaken for "this component is broken" by exit code alone. Any
