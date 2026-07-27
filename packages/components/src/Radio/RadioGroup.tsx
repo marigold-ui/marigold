@@ -182,7 +182,7 @@ const _RadioGroup = ({
           orientation === 'vertical' ? 'flex-col' : 'flex-row'
         )}
       >
-        <RadioGroupContext value={{ width, variant, size }}>
+        <RadioGroupContext value={{ variant, size }}>
           {visibleChildren}
           <CollapsibleGroup>{collapsedChildren}</CollapsibleGroup>
         </RadioGroupContext>
