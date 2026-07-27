@@ -6,7 +6,11 @@ badge: beta
 
 import { ListViewAnatomy } from './listview-anatomy';
 
-A `<ListView>` is a collection of items, shown as rows in a list. Each row can optionally hold its own controls, like a `<Switch>` or `<ActionMenu>`.
+`<ListView>` is a collection component that shows items as rows in a list, each of which can hold its own controls, like a `<Switch>` or `<ActionMenu>`. It stops short of selection and drag and drop, which lets `<ListView>` distinguish row content from row actions, a fit for use cases such as file managers, notification feeds, and settings lists.
+
+Rows are usually rendered from a data array rather than hardcoded, so `<ListView>` can reflect an external data source and update as that data changes, as in the notifications, resource list, and settings examples below.
+
+Each row's key comes from the `id` on its underlying data, pass a matching `id` to `<ListView.Item>` so `<ListView>` can track the row correctly as the data changes. Reach for [`<SelectList>`](/components/form/selectlist) instead when picking a row should set a value.
 
 ## Anatomy
 

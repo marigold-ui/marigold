@@ -1,65 +1,98 @@
 import { useState } from 'react';
-import { Description, ListView, Switch, TextValue } from '@marigold/components';
+import {
+  ActionMenu,
+  Button,
+  Description,
+  EmptyState,
+  ListView,
+  Switch,
+  TextValue,
+} from '@marigold/components';
+import { GiftCard, Resale, TicketInsurance, Turnstile } from '@marigold/icons';
 
-interface Integration {
+interface AddOn {
   id: string;
   name: string;
   detail: string;
   enabled: boolean;
+  icon: typeof TicketInsurance;
 }
 
-const initialIntegrations: Integration[] = [
+const initialAddOns: AddOn[] = [
   {
-    id: 'slack',
-    name: 'Slack',
-    detail: 'Post alerts to #releases',
+    id: 'insurance',
+    name: 'Ticket Insurance',
+    detail: 'Offer refund protection at checkout',
     enabled: true,
+    icon: TicketInsurance,
   },
   {
-    id: 'github',
-    name: 'GitHub',
-    detail: 'Sync issues and pull requests',
+    id: 'resale',
+    name: 'Resale',
+    detail: 'Let ticket holders resell through the official marketplace',
     enabled: true,
+    icon: Resale,
   },
   {
-    id: 'jira',
-    name: 'Jira',
-    detail: 'Create tickets from reports',
+    id: 'gift-card',
+    name: 'Gift Cards',
+    detail: 'Accept gift cards as a payment method',
     enabled: false,
+    icon: GiftCard,
   },
   {
-    id: 'figma',
-    name: 'Figma',
-    detail: 'Embed design previews',
+    id: 'turnstile',
+    name: 'Turnstile Entry',
+    detail: 'Scan tickets at the gate on event day',
     enabled: false,
+    icon: Turnstile,
   },
 ];
 
 export default () => {
-  const [integrations, setIntegrations] = useState(initialIntegrations);
+  const [addOns, setAddOns] = useState(initialAddOns);
 
   const toggle = (id: string) =>
-    setIntegrations(current =>
+    setAddOns(current =>
       current.map(item =>
         item.id === id ? { ...item, enabled: !item.enabled } : item
       )
     );
 
+  const remove = (id: string) =>
+    setAddOns(current => current.filter(item => item.id !== id));
+
   return (
-    <ListView aria-label="Integrations">
-      {integrations.map(integration => (
-        <ListView.Item
-          key={integration.id}
-          id={integration.id}
-          textValue={integration.name}
-        >
-          <TextValue>{integration.name}</TextValue>
-          <Description>{integration.detail}</Description>
+    <ListView
+      aria-label="Checkout add-ons"
+      emptyState={
+        <EmptyState
+          title="No add-ons enabled"
+          description="Turn on an add-on to offer it at checkout."
+          action={
+            <Button onPress={() => setAddOns(initialAddOns)}>
+              Restore defaults
+            </Button>
+          }
+        />
+      }
+    >
+      {addOns.map(({ id, name, detail, enabled, icon: Icon }) => (
+        <ListView.Item key={id} id={id} textValue={name}>
+          <Icon size={20} />
+          <TextValue>{name}</TextValue>
+          <Description>{detail}</Description>
           <Switch
-            aria-label={`Enable ${integration.name}`}
-            selected={integration.enabled}
-            onChange={() => toggle(integration.id)}
+            aria-label={`Enable ${name}`}
+            selected={enabled}
+            onChange={() => toggle(id)}
           />
+          <ActionMenu aria-label={`${name} actions`}>
+            <ActionMenu.Item>Configure</ActionMenu.Item>
+            <ActionMenu.Item variant="destructive" onAction={() => remove(id)}>
+              Remove
+            </ActionMenu.Item>
+          </ActionMenu>
         </ListView.Item>
       ))}
     </ListView>
