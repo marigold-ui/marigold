@@ -1,4 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import { tmpFile } from '../test-support/tmp.js';
 import {
   ThemeCssNotFoundError,
@@ -83,6 +86,28 @@ describe('resolveCssImports', () => {
     const resolved = resolveCssImports(entry);
     expect(resolved).toContain(`@import 'some-package/tokens.css';`);
     expect(resolved).toContain('--color-primary: #123456;');
+  });
+
+  it('propagates a non-ENOENT read failure instead of silently swallowing it', () => {
+    // Only ENOENT (missing/renamed partial) is the intended degrade case.
+    // An EACCES (or similar) on a file that DOES exist is a real environment
+    // misconfiguration — must still surface (the caller already handles it:
+    // spatial/index.ts's token-compliance check wraps any other error in its
+    // own generic catch-all warning), not disappear into an empty map with
+    // no signal at all.
+    const dir = fs.mkdtempSync(
+      path.join(os.tmpdir(), `rci-unreadable-${Date.now()}-`)
+    );
+    const unreadable = path.join(dir, 'unreadable.css');
+    fs.writeFileSync(unreadable, '--color-primary: #123456;');
+    fs.chmodSync(unreadable, 0o000);
+    try {
+      expect(() => resolveCssImports(unreadable)).toThrow(
+        expect.objectContaining({ code: 'EACCES' })
+      );
+    } finally {
+      fs.chmodSync(unreadable, 0o644); // restore so the tmp dir can be cleaned up
+    }
   });
 
   it('degrades a missing/renamed imported partial instead of throwing', () => {

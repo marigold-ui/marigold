@@ -43,11 +43,21 @@ export const resolveCssImports = (
   // not throw an uncaught ENOENT out of the whole token load. Skipping just
   // this partial means its tokens are absent from the map rather than the
   // entire design-tokens check aborting over one bad file.
+  //
+  // Narrowed to ENOENT specifically, not a blanket catch: this same function
+  // also reads the top-level `theme.css` (already existence-checked, but not
+  // permission-checked, by `resolveThemeCss`), so a genuine EACCES/EISDIR on
+  // that entry file — a real environment misconfiguration, not "this partial
+  // doesn't exist" — must still surface. It already would as a warning
+  // (`token-compliance` in spatial/index.ts wraps every other error in its
+  // own generic catch-all), not crash validate(); swallowing it here instead
+  // would silently produce an empty token map with no signal at all.
   let raw: string;
   try {
     raw = fs.readFileSync(absolute, 'utf-8');
-  } catch {
-    return '';
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code === 'ENOENT') return '';
+    throw err;
   }
   return raw.replace(
     LOCAL_IMPORT,

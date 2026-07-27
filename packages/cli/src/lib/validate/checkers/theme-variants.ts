@@ -61,6 +61,15 @@ let cachedDir: string | null = null;
 // `--theme-path` override pointing at a different theme-rui build works the
 // same way auto-resolution does. The CJS build, not the ESM one, so this
 // stays a synchronous function like every other technical checker.
+//
+// Known fidelity gap: as of writing, theme-rui's `build-appearances.mjs`
+// only reads each component's `variants` object — it does not (yet) union in
+// a value that appears ONLY inside a `compoundVariants` rule, the way this
+// checker's removed cva-parsing logic used to. No real theme-rui component
+// currently has such a value (verified against every `compoundVariants`
+// usage in `themes/theme-rui/src/components`), and that build script has no
+// test coverage against this regressing either — worth a follow-up in
+// theme-rui if a future component variant introduces one.
 type Appearances = Record<string, Record<string, string[]>>;
 
 export const loadThemeVariants = (themeDir: string): ThemeVariantMap => {

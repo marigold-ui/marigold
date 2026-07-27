@@ -379,7 +379,13 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
       // genuinely stuck render. A per-op timeout tighter than that adds no
       // extra protection — it can only fire *before* the real backstop would,
       // on a legitimately (if unusually) slow step under CPU contention,
-      // turning a healthy-but-slow render into a false failure.
+      // turning a healthy-but-slow render into a false failure. Trade-off:
+      // since the outer `budget` timer starts before any of setup/goto/wait
+      // runs, it now always wins a genuine hang before these per-op timeouts
+      // would — so every hang surfaces as the generic "Render exceeded
+      // 45000ms budget" rather than pinpointing which specific wait stalled.
+      // Accepted: a slightly less specific error message for a real hang, in
+      // exchange for the false-failure fix above.
       await page.goto(url, { waitUntil: 'commit', timeout: RENDER_BUDGET_MS });
 
       // Wait for the harness "ready" marker, but fail fast if Vite reports a

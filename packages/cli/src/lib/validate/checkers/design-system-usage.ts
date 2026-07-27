@@ -170,12 +170,21 @@ const collectBindingNames = (name: ts.BindingName, out: Set<string>): void => {
 /**
  * Collect the set of locally declared PascalCase identifiers: function/class
  * declarations, const/let/var bindings (including destructured
- * `const { Provider } = …` / `const [First, Second] = …`), and function
- * parameters (including destructured ones, e.g. a HOC's `function
- * Wrap(Component)` or a render-prop-style `({ as: Component }) => …`) — all
- * equally legitimate ways a component name gets bound locally rather than
- * imported, and none of them should read as an undeclared/hallucinated
- * component.
+ * `const { Provider } = …` / `const [First, Second] = …` / a for...of/for...in
+ * loop variable), and function parameters (including destructured ones, e.g.
+ * a HOC's `function Wrap(Component)` or a render-prop-style
+ * `({ as: Component }) => …`) — all equally legitimate ways a component name
+ * gets bound locally rather than imported, and none of them should read as an
+ * undeclared/hallucinated component.
+ *
+ * Deliberately flat across the whole file, not scoped to where each binding
+ * is actually visible: a name bound in one function is also treated as
+ * "locally declared" for an unrelated same-named usage elsewhere. This is a
+ * false-negative risk (an unrelated `Component` parameter could mask a
+ * genuinely hallucinated `<Component>` import elsewhere in the same file),
+ * accepted as the safer direction — the alternative, scope-aware resolution,
+ * risks the opposite: a false-positive ERROR on a legitimate nested closure,
+ * which this checker's error-severity findings cannot tolerate at all.
  */
 const collectLocalDeclarations = (source: ts.SourceFile): Set<string> => {
   const locals = new Set<string>();
@@ -206,6 +215,22 @@ const collectLocalDeclarations = (source: ts.SourceFile): Set<string> => {
     ) {
       for (const param of node.parameters) {
         collectBindingNames(param.name, locals);
+      }
+    }
+
+    // for (const { Component } of items) { ... } / for...in / a C-style
+    // for's own initializer — none of these are a VariableStatement (that
+    // node only covers a bare `const x = ...;` statement), so without this
+    // they fell through as an undeclared/hallucinated component.
+    if (
+      (ts.isForOfStatement(node) ||
+        ts.isForInStatement(node) ||
+        ts.isForStatement(node)) &&
+      node.initializer &&
+      ts.isVariableDeclarationList(node.initializer)
+    ) {
+      for (const decl of node.initializer.declarations) {
+        collectBindingNames(decl.name, locals);
       }
     }
 
