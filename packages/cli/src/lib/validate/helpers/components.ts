@@ -475,12 +475,15 @@ export const getHandlerShadows = (
 // alias props. Probing the real @marigold/components .d.mts, the only auto-pairs
 // the old loop produced were `open`/`isOpen` and `dismissable`/`isDismissable`
 // (Modal — both are genuine Marigold convenience aliases, so warning was a false
-// positive) and `readOnly`/`isReadOnly` (the documented React Aria naming
-// convention). Only the latter is a real shadow. Add new pairs here only when
-// backed by docs; when unsure, leave them out (these are warnings — err fewer).
-const BOOLEAN_PREFERRED_ALTERNATIVES: ReadonlyArray<[string, string]> = [
-  ['readOnly', 'isReadOnly'],
-];
+// positive) and `readOnly`/`isReadOnly` on RadioGroup — which turned out to be
+// the SAME kind of false positive, just inverted: `RadioGroup`'s own
+// `RemovedProps` omits `isDisabled`/`isInvalid`/`isRequired`/`isSelected` but
+// not `isReadOnly`, so `isReadOnly` is a leaked, undocumented RAC prop, and
+// `readOnly` is RadioGroup's own documented public API — the rule had the
+// preferred direction backwards. No pair currently in the real registry
+// belongs on this list; add one only when it's confirmed to be the
+// intentionally-exposed RAC prop, not a leak through a missing `Omit`.
+const BOOLEAN_PREFERRED_ALTERNATIVES: ReadonlyArray<[string, string]> = [];
 
 /**
  * For a component, find boolean prop pairs from the doc-justified allowlist

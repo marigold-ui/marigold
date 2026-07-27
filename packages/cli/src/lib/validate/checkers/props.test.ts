@@ -171,14 +171,18 @@ const C = ({ v }: { v: string }) => <Button variant={v}>Save</Button>;`
     expect(issue).toBeUndefined();
   });
 
-  it('flags readOnly on RadioGroup and suggests isReadOnly', () => {
+  it('does not flag readOnly on RadioGroup (it is the documented prop, not a shadow)', () => {
+    // Regression: `readOnly`/`isReadOnly` used to be on the
+    // BOOLEAN_PREFERRED_ALTERNATIVES allowlist, telling users to replace
+    // RadioGroup's own documented `readOnly` prop with `isReadOnly` — a RAC
+    // prop that only leaks through because RadioGroup's `RemovedProps` omits
+    // it, not something intentionally exposed. That was backwards, so the
+    // pair was removed.
     const issues = validateProps(fixture('boolean-shadows.tsx'));
     const issue = issues.find(
       i => i.component === 'RadioGroup' && i.message.includes('readOnly')
     );
-    expect(issue).toBeDefined();
-    expect(issue?.severity).toBe('warning');
-    expect(issue?.suggestion).toMatch(/isReadOnly/);
+    expect(issue).toBeUndefined();
   });
 
   it('does not flag className, style, id, data-testid, children', () => {

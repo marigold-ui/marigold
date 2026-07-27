@@ -455,8 +455,7 @@ export const main = async (
         format: (values.format as ValidateFormat | undefined) ?? 'text',
       });
 
-      process.stdout.write(result.output);
-      if (!result.output.endsWith('\n')) process.stdout.write('\n');
+      writeOutput(result.output);
       exitCode = result.hasErrors ? 1 : 0;
     } else if (command === 'init') {
       const { values } = parseInitCommand(rest);

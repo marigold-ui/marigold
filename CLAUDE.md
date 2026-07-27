@@ -21,6 +21,7 @@ When you don't yet know the component name, start with `search`. It ranks compon
 - `marigold list --category form` — discover form components
 - `marigold list --search date` — filter by name (substring; use `search` for content)
 - `marigold doctor --format json` — diagnose a project's Marigold setup (packages, versions, provider, theme, Tailwind, React peer deps) when components render unstyled or throw; returns `{ errors, warnings, passed, text }` so you can apply the suggested fixes
+- `marigold validate <file.tsx> --checks all --format json` — check a generated/edited Marigold component file against the design system's rules (hallucinated components, invalid props, missing compound parts, raw HTML vs. components, rendered a11y/layout issues); exits non-zero only on an error, so it's safe to loop on until clean
 
 The CLI fetches from the Marigold docs site, caches for 24h, and works offline (`--offline`). For AI use, prefer `--format json` — it returns a structured payload instead of formatted markdown.
 

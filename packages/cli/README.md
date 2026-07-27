@@ -245,6 +245,27 @@ Checks, run against the current working directory:
 
 Only deterministic, definitely-broken findings (a missing core package, or a components/system version mismatch) are **errors**; everything heuristic is a **warning**. The command exits `1` only when there is an error, so it is safe to gate CI on. `--format json` emits `{ errors, warnings, passed, text }` — agents derive health from `errors.length === 0`.
 
+### `marigold validate <file.tsx>`
+
+Check a single Marigold component file against the design system's rules and print the problems found — the checks a compiler can't catch: a hallucinated component, a required compound part missing, raw HTML used where a component exists, a control with no accessible name, overlapping elements, and more.
+
+```sh
+marigold validate src/components/Card.tsx --checks all
+marigold validate src/components/Card.tsx --checks technical --format json
+```
+
+Flags:
+
+- `--checks <name>` — `technical`, `spatial`, `a11y`, or `all` (default: `all`)
+- `--format <name>` — `text` (default) or `json`
+
+Validation runs in two passes:
+
+- **Static (TypeScript/AST)** — always runs on a single `.tsx` file: compiler errors, invalid props/event handlers, compound composition, raw HTML vs. components, section headers, collection ids, component conventions.
+- **Dynamic (rendered in a headless browser)** — needs a self-contained file (only imports from packages like `@marigold/components`/`react`, no local files) and Chromium installed: DOM overlap, token compliance, responsive width, keyboard access, text spacing, contrast, focus visibility, and an axe accessibility audit. Skipped (with a single warning, not a crash) when the render toolchain or Chromium isn't available.
+
+Something is an **error** only if it's deterministic and free of false positives (compile failure, hallucinated component, missing required part, a DOM-event handler on a controlled component); everything else — including all rendered/a11y findings — is a **warning**. The command exits `1` only on an error, so it's safe to run inside an automatic fix loop. Set `MARIGOLD_VALIDATE_DISABLED=1` to skip validation with a clear message in environments without a browser setup.
+
 ### `marigold completion <shell>`
 
 Print a tab-completion script for `bash`, `zsh`, or `fish`. Source it once per

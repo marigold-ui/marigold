@@ -23,6 +23,14 @@ const viewport = { width: 1280, height: 720 };
 const WS_TARGET_PORT = 58211;
 const WS_MAGIC_GUID = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
 
+// Thrown when WS_TARGET_PORT is still busy after every retry — a stray
+// process holding the port is an environment problem, not a real assertion
+// failure, so callers catch this specifically and skip rather than fail.
+class PortBusyError extends Error {}
+
+const PORT_BIND_RETRIES = 5;
+const PORT_BIND_RETRY_DELAY_MS = 200;
+
 // The minimal server-side half of the RFC 6455 opening handshake — enough to
 // make a real client's `onopen` fire, nothing more (no frame parsing/echo;
 // the fixture only observes open/close/error, never sends or expects a
@@ -32,7 +40,9 @@ const WS_MAGIC_GUID = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
 // can't tell "the sandbox blocked this" apart from "nothing was listening
 // anyway" — the same gap this fixture used to have, and the reason it must
 // be provably capable of accepting the handshake absent the sandbox.
-const startWsHandshakeServer = (): Promise<{ close: () => Promise<void> }> =>
+const startWsHandshakeServer = (
+  retriesLeft = PORT_BIND_RETRIES
+): Promise<{ close: () => Promise<void> }> =>
   new Promise((resolve, reject) => {
     const server = http.createServer();
     // The upgraded raw socket bypasses http.Server's normal request
@@ -64,7 +74,32 @@ const startWsHandshakeServer = (): Promise<{ close: () => Promise<void> }> =>
           `Sec-WebSocket-Accept: ${accept}\r\n\r\n`
       );
     });
-    server.on('error', reject);
+    server.on('error', err => {
+      // The fixture targets a fixed port on purpose (it must match
+      // websocket-attempt.tsx's hardcoded target), so a stray process still
+      // holding it from a prior interrupted run cannot be worked around by
+      // picking a different port. Retry with a short backoff instead of
+      // failing outright; only give up (as a distinguishable error, so
+      // callers can skip instead of fail) once retries are exhausted.
+      if (
+        (err as NodeJS.ErrnoException).code === 'EADDRINUSE' &&
+        retriesLeft > 0
+      ) {
+        setTimeout(() => {
+          startWsHandshakeServer(retriesLeft - 1).then(resolve, reject);
+        }, PORT_BIND_RETRY_DELAY_MS);
+        return;
+      }
+      if ((err as NodeJS.ErrnoException).code === 'EADDRINUSE') {
+        reject(
+          new PortBusyError(
+            `Port ${WS_TARGET_PORT} still in use after ${PORT_BIND_RETRIES} retries`
+          )
+        );
+        return;
+      }
+      reject(err);
+    });
     server.listen(WS_TARGET_PORT, '127.0.0.1', () =>
       resolve({
         close: () =>
@@ -102,13 +137,18 @@ describe('render sandbox network egress (requires a working render environment)'
     wsServer = undefined;
   });
 
-  it('sanity check: the local target genuinely accepts a WebSocket handshake', async () => {
+  it('sanity check: the local target genuinely accepts a WebSocket handshake', async ctx => {
     // Proves the positive control itself is real — independent of the
     // renderer/sandbox entirely — using Node's own WebSocket client directly
     // against the same server and port the fixture targets. Without this,
     // a bug in startWsHandshakeServer could silently turn the main test back
     // into a vacuous one.
-    wsServer = await startWsHandshakeServer();
+    try {
+      wsServer = await startWsHandshakeServer();
+    } catch (err) {
+      if (err instanceof PortBusyError) return ctx.skip();
+      throw err;
+    }
     const socket = new WebSocket(`ws://127.0.0.1:${WS_TARGET_PORT}/`);
     try {
       await new Promise<void>((resolve, reject) => {
@@ -128,7 +168,12 @@ describe('render sandbox network egress (requires a working render environment)'
 
   it('closes a WebSocket opened by the rendered component instead of letting it connect', async ctx => {
     if (!renderWorks || !renderer) return ctx.skip();
-    wsServer = await startWsHandshakeServer();
+    try {
+      wsServer = await startWsHandshakeServer();
+    } catch (err) {
+      if (err instanceof PortBusyError) return ctx.skip();
+      throw err;
+    }
 
     const handle = await renderer.render(
       example('websocket-attempt.tsx'),

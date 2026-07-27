@@ -453,7 +453,7 @@ export const validateDesignSystemUsage = (
             source: 'design-system-usage',
             component: tagText,
             message: `className on the Marigold component <${tagText}> bypasses the design system. Marigold components are styled through their own props (variant, size, space, …).`,
-            suggestion: `Remove className from <${tagText}> and use its built-in props, or move the utility classes onto a wrapping native element.`,
+            suggestion: `Remove className from <${tagText}> and use its built-in props.`,
             location: {
               file: relFile,
               line: line + 1,

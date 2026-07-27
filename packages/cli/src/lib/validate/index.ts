@@ -160,6 +160,14 @@ const partition = (
   return { errors, warnings };
 };
 
+// A path relative to cwd reads better than an absolute one — except when the
+// file is outside cwd, where `path.relative` produces a `../../../../..`
+// chain that is harder to read than the absolute path it's relative to.
+const displayPath = (filePath: string): string => {
+  const rel = path.relative(process.cwd(), filePath);
+  return rel.startsWith('..') ? filePath : rel;
+};
+
 const buildReport = (
   filePath: string,
   issues: ValidationIssue[],
@@ -168,7 +176,7 @@ const buildReport = (
 ): ValidationReport => {
   const { errors, warnings } = partition(issues);
   const stub: Omit<ValidationReport, 'text'> = {
-    file: path.relative(process.cwd(), filePath),
+    file: displayPath(filePath),
     errors,
     warnings,
     passed,

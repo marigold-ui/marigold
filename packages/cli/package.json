@@ -46,7 +46,7 @@
     "ci-info": "4.4.0",
     "magic-string": "0.30.21",
     "picocolors": "1.1.1",
-    "ts-morph": "^24.0.0",
+    "ts-morph": "24.0.0",
     "typescript": "6.0.3"
   },
   "peerDependencies": {
