@@ -169,6 +169,27 @@ export default App;`
     expect(issues.find(i => i.component === 'Component')).toBeUndefined();
   });
 
+  it('does not flag a component name bound via a class constructor parameter', () => {
+    // Regression: a class constructor is ts.SyntaxKind.Constructor, a node
+    // kind distinct from MethodDeclaration — ts.isMethodDeclaration() returns
+    // false for it, so its destructured params fell through as undeclared.
+    const file = tmpFile(
+      'dsu-constructor-destructured.tsx',
+      `class Wrapper extends React.Component {
+  constructor({ Fallback }: any) {
+    super({});
+    this.fallback = <Fallback />;
+  }
+  render() {
+    return this.fallback;
+  }
+}
+export default Wrapper;`
+    );
+    const issues = validateDesignSystemUsage(file);
+    expect(issues.find(i => i.component === 'Fallback')).toBeUndefined();
+  });
+
   it('does not flag an aliased import of a real Marigold component', () => {
     // Regression: `{ Button as Btn }` used to be treated as hallucinated
     // because the bare-name registry lookup doesn't know the local alias.

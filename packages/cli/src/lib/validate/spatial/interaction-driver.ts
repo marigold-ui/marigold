@@ -234,6 +234,41 @@ const isDisclosureStillOpen = (
     }, selector)
     .catch(() => false);
 
+// The disclosure's own revealed content, found the same way a browser/AT
+// would: its aria-controls target if it declares one, else (native
+// <summary>/<details>, which carries no aria-controls) the enclosing
+// <details> itself. Unlike a tab's aria-controls — which names an
+// always-present panel regardless of interaction, so it can't be trusted as
+// a signal of "did this just open" — a disclosure's aria-controls target
+// starts collapsed/hidden and is unambiguously its own panel, so it's safe
+// to use directly here instead of through the OVERLAY_ROLES/visibleOverlays
+// mechanism (which doesn't recognize the role="group" a disclosure panel
+// commonly carries, e.g. Marigold's Accordion).
+const disclosureRevealedRoot = (
+  page: Page,
+  trigger: Trigger
+): Promise<string | null> =>
+  page
+    .evaluate(
+      ({ selector, controls }) => {
+        const mv = (
+          window as unknown as {
+            __mv: Record<string, (...args: unknown[]) => unknown>;
+          }
+        ).__mv;
+        const cssPath = mv.cssPath as (el: Element) => string;
+        if (controls) {
+          const target = document.querySelector(controls);
+          if (target) return cssPath(target);
+        }
+        const el = document.querySelector(selector);
+        const details = el?.closest('details');
+        return details ? cssPath(details) : null;
+      },
+      { selector: trigger.selector, controls: trigger.controls }
+    )
+    .catch(() => null);
+
 const activate = async (page: Page, trigger: Trigger): Promise<void> => {
   const handle = await page.$(trigger.selector);
   if (!handle) return;
@@ -332,13 +367,25 @@ export const driveInteractions = async (
   for (const trigger of triggers) {
     try {
       await activate(page, trigger);
-      const after = await visibleOverlays(page);
-      // Only a genuinely NEW overlay (an overlay-role element absent from the
-      // baseline) counts as revealed. The aria-controls target is deliberately
-      // NOT used as a fallback: it can point at an always-present element (e.g.
-      // a tab panel already in the DOM), which would misattribute its findings
-      // to interaction.
-      const fresh = after.find(sel => !baseline.has(sel)) ?? null;
+      // Disclosures take a separate path: visibleOverlays()/OVERLAY_ROLES
+      // doesn't recognize the role="group" a disclosure panel (e.g.
+      // Marigold's Accordion) commonly carries, so it can never see one
+      // open — ask the disclosure's own expanded state directly instead,
+      // same as activate()/restore() already do.
+      let fresh: string | null;
+      if (trigger.kind === 'disclosure') {
+        fresh = (await isDisclosureStillOpen(page, trigger.selector))
+          ? await disclosureRevealedRoot(page, trigger)
+          : null;
+      } else {
+        const after = await visibleOverlays(page);
+        // Only a genuinely NEW overlay (an overlay-role element absent from
+        // the baseline) counts as revealed. The aria-controls target is
+        // deliberately NOT used as a fallback here: for a tab it can point
+        // at an always-present element already in the DOM, which would
+        // misattribute its findings to interaction.
+        fresh = after.find(sel => !baseline.has(sel)) ?? null;
+      }
       let revealedRole: string | null = null;
       if (fresh) {
         revealedRole = await page

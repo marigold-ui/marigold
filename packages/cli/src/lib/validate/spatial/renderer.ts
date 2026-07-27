@@ -322,9 +322,23 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
       // still only takes effect once the new page's initial navigation is
       // underway, leaving a window for a popup to slip through. Closing it
       // immediately removes that window rather than relying on timing.
+      //
+      // Only pages with a non-null `opener()` are genuine popups — that's
+      // exactly what distinguishes "opened via window.open()/target=_blank
+      // from inside `page`" from a page the *Node side* creates directly via
+      // `context.newPage()`. The a11y audit relies on the latter: axe-core's
+      // playwright driver (`AxeBuilder.analyze()` -> `finishRun()`) opens its
+      // own blank `context.newPage()` to aggregate cross-frame results, and
+      // closing that page out from under it — as an unconditional `p !==
+      // page` check used to — makes every axe audit fail with "Target page,
+      // context or browser has been closed".
       context.on('page', p => {
         if (p === page) return;
-        p.close().catch(() => {});
+        p.opener()
+          .then(opener => {
+            if (opener === page) p.close().catch(() => {});
+          })
+          .catch(() => {});
       });
 
       // Only the dev server's own origin may load. Untrusted generated code must
@@ -359,6 +373,22 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
         // error boundary. Ignore them so a blocked image cannot mark an
         // otherwise valid render as failed.
         if (/Failed to load resource|net::ERR_/i.test(text)) return;
+        // The sandbox's own `context.routeWebSocket` above (necessarily)
+        // closes every WebSocket, including Vite's own HMR client's — which
+        // then logs its own reconnect failure, and the browser itself logs
+        // the underlying connection failure too. With its transport gone,
+        // Vite's client also can't forward the page's own runtime errors
+        // back over HMR and logs that failure as a THIRD console.error (see
+        // client.mjs's sendError -> "Failed to send error to Vite server:").
+        // All three fire on every single render regardless of the user's
+        // code, so surfacing them as "Console error during render" would be
+        // pure sandbox self-noise, not a signal about the code under test.
+        if (
+          /^\[vite\] failed to connect to websocket/i.test(text) ||
+          /^WebSocket connection to .* failed/i.test(text) ||
+          /^Failed to send error to Vite server:/i.test(text)
+        )
+          return;
         consoleErrors.push(text);
       });
       page.on('pageerror', err => pageErrors.push(err.message));

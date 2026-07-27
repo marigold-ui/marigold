@@ -207,11 +207,16 @@ const collectLocalDeclarations = (source: ts.SourceFile): Set<string> => {
       }
     }
 
+    // A class constructor is its own distinct node kind (ts.SyntaxKind.
+    // Constructor) — ts.isMethodDeclaration() returns false for it, so
+    // without this a constructor's destructured params (e.g. `constructor({
+    // Fallback }: Props)`) fell through as undeclared/hallucinated.
     if (
       ts.isFunctionDeclaration(node) ||
       ts.isFunctionExpression(node) ||
       ts.isArrowFunction(node) ||
-      ts.isMethodDeclaration(node)
+      ts.isMethodDeclaration(node) ||
+      ts.isConstructorDeclaration(node)
     ) {
       for (const param of node.parameters) {
         collectBindingNames(param.name, locals);

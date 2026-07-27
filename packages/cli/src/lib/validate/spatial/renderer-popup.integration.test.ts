@@ -61,4 +61,30 @@ describe('render sandbox network egress (requires a working render environment)'
       await handle.close();
     }
   }, 60_000);
+
+  it("does not close a page opened directly on the context (e.g. axe-core's own finishRun helper page)", async ctx => {
+    if (!renderWorks || !renderer) return ctx.skip();
+
+    // Regression: the popup-closer used to close ANY page other than the
+    // main one, with no way to tell "a popup the rendered component opened"
+    // apart from "a page opened directly by Node-side code" — which is
+    // exactly what @axe-core/playwright's AxeBuilder.analyze() does
+    // internally (a `context.newPage()` to aggregate cross-frame results),
+    // making every a11y audit fail with "Target page, context or browser
+    // has been closed". A page opened via `context.newPage()` (as opposed
+    // to `window.open()`/`target="_blank"` from inside the rendered page)
+    // has a null `opener()` — that's what must distinguish the two.
+    const handle = await renderer.render(example('valid-button.tsx'), viewport);
+    try {
+      const helperPage = await handle.result.page.context().newPage();
+      try {
+        await helperPage.waitForTimeout(500);
+        expect(helperPage.isClosed()).toBe(false);
+      } finally {
+        await helperPage.close().catch(() => {});
+      }
+    } finally {
+      await handle.close();
+    }
+  }, 60_000);
 });
