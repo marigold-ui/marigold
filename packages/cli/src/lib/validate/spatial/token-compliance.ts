@@ -103,17 +103,28 @@ export const snapshotBrowserDefaults = async (
   return defaultValues;
 };
 
+// Anchored (`^`), and matched only against the selector's LAST segment: a
+// cssPath is a full ancestor chain (`div:nth-child(1) > svg:nth-child(1)`,
+// browser-helpers.ts::cssPath), and an unanchored match against the whole
+// string would fire whenever ANY ancestor happens to be a native tag — which
+// is true of almost every real element (a wrapping div/span/p is ubiquitous)
+// — making this gate close to a no-op instead of restricting the exemption
+// to elements whose OWN tag is native, as intended.
 const NATIVE_ELEMENT_PATTERN = new RegExp(
-  `\\b(${NATIVE_ELEMENTS.join('|')}):nth-child`
+  `^(${NATIVE_ELEMENTS.join('|')}):nth-child`
 );
 
-const isBrowserDefault = (
+// Exported so the leaf-only matching fix is directly unit-testable without
+// needing a live browser (isBrowserDefault is otherwise only exercised via
+// checkTokenCompliance, which requires a real Page).
+export const isBrowserDefault = (
   selector: string,
   property: string,
   value: string,
   browserDefaults: Map<string, Set<string>>
 ): boolean => {
-  if (!NATIVE_ELEMENT_PATTERN.test(selector)) return false;
+  const leaf = selector.split(' > ').pop() ?? selector;
+  if (!NATIVE_ELEMENT_PATTERN.test(leaf)) return false;
   return browserDefaults.get(property)?.has(value) ?? false;
 };
 
@@ -228,8 +239,17 @@ const isTokenizedViaReverseMap = (
   return parts.every(part => SKIP_VALUES.has(part) || propMap.has(part));
 };
 
-const HARDCODED_VALUE =
-  /(?:#[0-9a-fA-F]{3,8}|rgba?\(|hsla?\(|oklch\(|lch\(|hwb\(|lab\(|color\(|\d+(?:px|em|rem|ch|vw|vh)\b)/;
+// The unit suffix is optional: font-weight and (unitless) line-height — both
+// in TOKENIZABLE_INLINE_PROPERTIES below — are the only tokenizable
+// properties whose valid values are bare numbers (`fontWeight: 700`,
+// `lineHeight: 1.5`), and without this branch those extremely common
+// hardcoded forms were invisible to this regex entirely. A trailing `%` is
+// also covered (e.g. `padding: 5%`). Uses a lookahead instead of `\b` at the
+// end since `\b` doesn't reliably assert after a non-word character like `%`.
+// Exported for direct unit testing — otherwise only exercised transitively
+// via detectHardcodedInlineStyles, which requires a real Page.
+export const HARDCODED_VALUE =
+  /(?:#[0-9a-fA-F]{3,8}|rgba?\(|hsla?\(|oklch\(|lch\(|hwb\(|lab\(|color\(|\d+(?:\.\d+)?(?:px|em|rem|ch|vw|vh|%)?(?=\D|$))/;
 
 // Only properties where a design token is the expected source of the value.
 // Layout/positioning properties (transform, width, top, ...) and CSS custom

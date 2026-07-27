@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
+  HARDCODED_VALUE,
   checkTokenCompliance,
+  isBrowserDefault,
   isComputedTokenCandidate,
   isTokenCheckableSnapshot,
   isVisuallyHiddenInlineStyle,
@@ -73,5 +75,64 @@ describe('isVisuallyHiddenInlineStyle', () => {
       false
     );
     expect(isVisuallyHiddenInlineStyle('padding:8px')).toBe(false);
+  });
+});
+
+describe('isBrowserDefault', () => {
+  const defaults = new Map([['color', new Set(['rgb(0, 0, 238)'])]]);
+
+  it('applies the exemption when the LEAF element is native', () => {
+    expect(
+      isBrowserDefault(
+        'div:nth-child(1) > a:nth-child(2)',
+        'color',
+        'rgb(0, 0, 238)',
+        defaults
+      )
+    ).toBe(true);
+  });
+
+  it('does not apply the exemption when only an ANCESTOR is native, not the leaf', () => {
+    // Regression: an unanchored match against the whole selector chain fired
+    // here purely because of the ancestor <div> — even though the leaf
+    // (<svg>, not a native form/text element) is what the value actually
+    // belongs to. A real off-token color on a non-native leaf must still be
+    // checkable, not silently exempted by an unrelated ancestor.
+    expect(
+      isBrowserDefault(
+        'div:nth-child(1) > svg:nth-child(1)',
+        'color',
+        'rgb(0, 0, 238)',
+        defaults
+      )
+    ).toBe(false);
+  });
+});
+
+describe('HARDCODED_VALUE', () => {
+  it('matches a bare numeric font-weight/line-height literal', () => {
+    // Regression: font-weight and line-height are tokenizable properties
+    // whose valid values are unitless numbers (`fontWeight: 700`,
+    // `lineHeight: 1.5`) — the single most common hardcoded form for either
+    // — but the regex previously required a length-unit suffix, so neither
+    // was ever detected.
+    expect(HARDCODED_VALUE.test('700')).toBe(true);
+    expect(HARDCODED_VALUE.test('1.5')).toBe(true);
+  });
+
+  it('matches a percentage value', () => {
+    expect(HARDCODED_VALUE.test('5%')).toBe(true);
+  });
+
+  it('still matches the existing unit/color/function forms', () => {
+    expect(HARDCODED_VALUE.test('4px')).toBe(true);
+    expect(HARDCODED_VALUE.test('#ff0000')).toBe(true);
+    expect(HARDCODED_VALUE.test('rgba(0, 0, 0, 0.5)')).toBe(true);
+  });
+
+  it('does not match a CSS variable reference or a bare keyword', () => {
+    expect(HARDCODED_VALUE.test('var(--color-primary)')).toBe(false);
+    expect(HARDCODED_VALUE.test('normal')).toBe(false);
+    expect(HARDCODED_VALUE.test('bold')).toBe(false);
   });
 });

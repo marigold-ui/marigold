@@ -130,29 +130,41 @@ const sweepStaleTelemetryTmpFiles = (): void => {
 };
 
 export const emit = (options: EmitOptions): void => {
-  if (isTelemetryDisabled()) return;
-
-  sweepStaleTelemetryTmpFiles();
-
-  const event: TelemetryEvent = {
-    event: 'cli_command',
-    command: options.command,
-    cliVersion: options.cliVersion,
-    nodeVersion: process.version,
-    platform: process.platform,
-    isTTY: Boolean(process.stdout.isTTY),
-    isAIAgent: detectAIAgent(),
-    durationBucket: bucketDuration(Date.now() - options.startedAt),
-    exitCode: options.exitCode,
-    cacheHit: options.cacheHit,
-    args: options.args,
-    anonymousId: anonymousId(),
-  };
-
-  const script = findSenderScript();
-  if (!script) return;
-
+  // The whole body, not just the file-write/spawn below: anonymousId() can
+  // also throw (it lazily calls writeConfig() on a first run or a wiped
+  // config dir, which has no try/catch of its own — unlike readConfig()).
+  // On a read-only/unwritable config dir (a sandboxed CI/agent runner, a
+  // locked-down container) that throw would otherwise propagate out of
+  // emit() uncaught, turning an unrelated command's own clean exit into a
+  // crash — exactly what this function's "must never break the CLI"
+  // contract promises not to do. setTelemetryEnabled() is deliberately NOT
+  // covered by this same guard: it backs the explicit `marigold telemetry
+  // enable/disable` command, whose entire purpose is persisting that choice,
+  // so a write failure there should surface to the user rather than silently
+  // pretend to have succeeded.
   try {
+    if (isTelemetryDisabled()) return;
+
+    sweepStaleTelemetryTmpFiles();
+
+    const event: TelemetryEvent = {
+      event: 'cli_command',
+      command: options.command,
+      cliVersion: options.cliVersion,
+      nodeVersion: process.version,
+      platform: process.platform,
+      isTTY: Boolean(process.stdout.isTTY),
+      isAIAgent: detectAIAgent(),
+      durationBucket: bucketDuration(Date.now() - options.startedAt),
+      exitCode: options.exitCode,
+      cacheHit: options.cacheHit,
+      args: options.args,
+      anonymousId: anonymousId(),
+    };
+
+    const script = findSenderScript();
+    if (!script) return;
+
     const tmpFile = path.join(
       os.tmpdir(),
       `marigold-telemetry-${process.pid}-${Date.now()}.json`
