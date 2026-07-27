@@ -155,6 +155,50 @@ export const GhostOnBackground = meta.story({
   ),
 });
 
+/**
+ * A ghost Button in every state, on each ground it actually lands on.
+ *
+ * `GhostOnBackground` above covers the resting state; the inactive ones behave
+ * differently, because `ui-state-disabled` paints the opaque
+ * `--color-disabled-surface`. That fill is calibrated for a white surface, so on
+ * `bg-background` it matches the page exactly and on `bg-primary` it reads as a
+ * light block. Snapshotted so both stay visible in VRT; see DST-1590.
+ */
+export const GhostStatesOnBackground = meta.story({
+  parameters: {
+    controls: { exclude: ['variant', 'loading', 'disabled', 'children'] },
+  },
+  render: args => {
+    const states = (
+      <>
+        <Button {...args} variant="ghost">
+          Rest
+        </Button>
+        <Button {...args} variant="ghost" disabled>
+          Disabled
+        </Button>
+        <Button {...args} variant="ghost" loading>
+          Loading
+        </Button>
+      </>
+    );
+
+    return (
+      <Stack space={4}>
+        <div className="bg-surface flex items-center gap-3 rounded border p-6">
+          {states}
+        </div>
+        <div className="bg-background text-foreground flex items-center gap-3 rounded border p-6">
+          {states}
+        </div>
+        <div className="bg-primary text-primary-foreground flex items-center gap-3 rounded p-6">
+          {states}
+        </div>
+      </Stack>
+    );
+  },
+});
+
 export const FullWidth = meta.story({
   args: {
     fullWidth: true,

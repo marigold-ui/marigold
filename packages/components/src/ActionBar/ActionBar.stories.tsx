@@ -110,6 +110,65 @@ export const WithoutClearButton = meta.story({
   ),
 });
 
+/**
+ * Inactive states on the ActionBar's dark `ui-contrast` ground.
+ *
+ * The bar cascades `variant="ghost"` onto its plain `<Button>` children, and a
+ * ghost Button takes its disabled/pending fill from `ui-state-disabled` — which
+ * paints the opaque, white-calibrated `--color-disabled-surface`. On this ground
+ * that reads as a light block rather than a receding one. Kept as a snapshot so
+ * the regression is visible in VRT; see DST-1590.
+ */
+export const DisabledAndLoading = meta.story({
+  tags: ['component-test'],
+  args: {
+    selectedItemCount: 2,
+  },
+  render: args => (
+    <ActionBar {...args}>
+      <Button onPress={fn()}>
+        <Pencil />
+        Edit
+      </Button>
+      <Button disabled>
+        <Copy />
+        Copy
+      </Button>
+      <Button loading>
+        <Trash2 />
+        Delete
+      </Button>
+    </ActionBar>
+  ),
+  play: async ({ canvas, step }) => {
+    await step('the enabled action stays operable', async () => {
+      await expect(canvas.getByRole('button', { name: 'Edit' })).toBeEnabled();
+    });
+
+    await step('the disabled action is not operable', async () => {
+      await expect(canvas.getByRole('button', { name: 'Copy' })).toBeDisabled();
+    });
+
+    await step(
+      'the loading action is marked pending, not disabled',
+      async () => {
+        // Queried by state rather than by name: `loading` swaps the label for a
+        // `visibility: hidden` copy, so a pending Button currently has *no*
+        // accessible name (WCAG 4.1.2). That is a Button-level defect, tracked
+        // separately — asserting the name here would lock the bug in.
+        const pending = canvas
+          .getAllByRole('button')
+          .find(button => button.hasAttribute('data-pending'))!;
+
+        // `loading` maps to RAC's `isPending`, which keeps the button focusable
+        // and marks it `aria-disabled` rather than removing it from the tree.
+        await expect(pending).toHaveAttribute('aria-disabled', 'true');
+        await expect(pending).toHaveAttribute('tabindex', '0');
+      }
+    );
+  },
+});
+
 const users = [
   {
     name: 'Hans Müller',
