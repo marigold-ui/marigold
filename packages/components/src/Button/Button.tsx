@@ -95,7 +95,14 @@ const _Button = ({ ref: refProp, ...inputProps }: ButtonProps) => {
           <span className="absolute">
             <ProgressCircle />
           </span>
-          <span className="invisible flex gap-[inherit]">{children}</span>
+          {/* The label stays mounted so the button keeps its width while the
+              spinner is overlaid. It must be hidden with `opacity-0`, not
+              `invisible`: `visibility: hidden` drops the subtree from the
+              accessibility tree, leaving the button with no accessible name
+              while pending (WCAG 4.1.2) — the spinner's own `aria-label` is a
+              child widget's name and does not substitute. `opacity: 0` reserves
+              the exact same layout box but keeps the name. See DST-1660. */}
+          <span className="flex gap-[inherit] opacity-0">{children}</span>
         </>
       ) : (
         children
