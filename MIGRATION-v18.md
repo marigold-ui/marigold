@@ -198,7 +198,11 @@ dropped. Only `destructive` keeps a strong solid variant, moved to `-bold`.
 +   <TriangleAlert className="text-warning-accent" />
 ```
 
-The same pattern applies across `success`, `warning`, `info`, `destructive`.
+The same pattern applies across `success`, `warning`, `info`, `destructive`. If you
+relied on an old solid token (`bg-warning`, `bg-info`) to render a filled accent
+shape, rebuild it with a scale color (`bg-yellow-400`) or a `-bold` theme variant.
+For destructive, the strong solid is still available as `bg-destructive-bold` /
+`text-destructive-bold-foreground` for primary destructive actions.
 
 **Repurposed tokens (same name, new meaning).** No rename scan can see these, so
 review them by hand:
@@ -238,6 +242,14 @@ the page. The `util-surface-*` utilities (deprecated in v17.0.0) and the
 - <div className="util-surface-raised">
 + <div className="ui-surface">
 ```
+
+**Boundary tokens.** The two boundaries of the new model are `surface-border` (the
+decorative surface rim) and `control-border` (the functional control edge).
+`--color-border` narrows to structural lines only (dividers, grid lines, table
+rules). If you used `border-border` for a card or control boundary, switch to
+`ui-surface` / `ui-control` (which carry the ring for you) or to the `surface-border`
+/ `control-border` tokens. The modal, drawer, and tray scrim also moved from a raw
+`bg-black/50` to a new `overlay-backdrop` token, so a custom theme can tune it.
 
 **Gotchas.** If you reference `--shadow-elevation-border` or `-raised` in custom
 CSS, move to a flat `ui-surface` (in-flow) or `shadow-elevation-overlay`
