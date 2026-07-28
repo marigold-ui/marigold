@@ -142,10 +142,7 @@ function search(queryVec: Float32Array, vs: VectorStore, limit: number) {
 // ─── Telemetry ────────────────────────────────────────────────────────────────
 
 // One-way HMAC of the caller's Keycloak `sub` claim — never the raw claim,
-// which identifies a Reservix employee. Returns null (skip emitting telemetry
-// for this call) when the secret isn't configured, mirroring the existing
-// "Redis unconfigured → skip silently" behavior in the telemetry route rather
-// than falling back to an unkeyed hash.
+// which identifies a Reservix employee.
 const hashCallerId = (sub: string): string | null => {
   const secret = process.env.MCP_TELEMETRY_HASH_SECRET;
   if (!secret) return null;
@@ -215,37 +212,18 @@ const SEARCH_DOCS_SCHEMA = {
     ),
 };
 
-// Exported separately from the MCP tool registration below so it can be unit
-// tested directly. Driving this through the real MCP transport/auth chain in
-// a test hits a module-load-time OIDC/JWKS config that can't be worked around
-// by mocking `jose` alone (verifyToken's own try/catch swallows the resulting
-// invalid-URL error and just returns undefined, which 401s before this ever
-// runs) — calling the exported function directly sidesteps that chain
-// entirely, which isn't what this ticket needs to verify anyway.
+// Exported separately from the MCP tool registration below so it's
+// unit-testable without going through the full MCP transport/auth chain.
 export const searchDocsHandler = async (
   { query, limit }: { query: string; limit: number },
   extra: { authInfo?: AuthInfo }
 ) => {
   const startedAt = Date.now();
 
-  // Fire telemetry via `after()` — runs once the response has been sent, so
-  // it never delays the actual search response. `latencyMs` and the rest of
-  // the event are computed and built into a plain object BEFORE calling
-  // after() — not inside its callback, where Date.now() would measure time
-  // until the deferred callback happens to run (post-response) rather than
-  // the actual embed+search duration, and where the closure would otherwise
-  // keep this whole call's scope (including `extra`'s raw AuthInfo) alive for
-  // as long as the deferred write takes instead of just the small event.
-  //
-  // The whole thing is wrapped in its own try/catch so nothing here can ever
-  // affect the response above it — even a synchronous throw from after()
-  // itself (it requires an active request scope and can throw outside one)
-  // is swallowed rather than propagating into the surrounding try/catch and
-  // turning a successful search into a reported failure, or vice versa.
-  // Skipped entirely (no event emitted) when there's no caller sub or no
-  // hash secret configured, mirroring the telemetry route's own
-  // "unconfigured → skip silently" behavior rather than logging a
-  // partial/insecure event.
+  // Fires via `after()` so it never delays the search response. The event is
+  // built before calling after(), not inside its callback, so latencyMs
+  // reflects the actual embed+search duration rather than whenever the
+  // deferred callback happens to run.
   const emitTelemetry = (
     success: boolean,
     topMatch?: { file: string; heading: string }

@@ -1,10 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { TelemetryEvent } from './schema';
 
-// This rate-limit/persist logic previously lived inline in route.ts and had
-// zero direct test coverage (route.test.ts only ever exercised the
-// "unconfigured" branch). Now that it's its own module, mock @upstash/redis
-// to exercise the recorded/rate-limited/error branches directly.
 const incr = vi.fn();
 const expireMock = vi.fn();
 const lpush = vi.fn();
