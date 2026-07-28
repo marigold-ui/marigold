@@ -49,7 +49,16 @@ export default mergeConfig(
           },
           test: {
             name: 'unit-tests',
-            exclude: ['**/*.stories.tsx'],
+            // Setting `exclude` replaces Vitest's defaults rather than extending
+            // them, so anything that needs filtering has to be listed here.
+            // `.claude/worktrees/` holds full checkouts of other branches, whose
+            // test files would otherwise be collected alongside this one's.
+            exclude: [
+              '**/*.stories.tsx',
+              '**/node_modules/**',
+              '**/dist/**',
+              '**/.claude/**',
+            ],
             setupFiles: ['./vitest.setup.ts'],
             globals: true,
             // Retry once to handle transient vitest browser-mode import errors in CI
