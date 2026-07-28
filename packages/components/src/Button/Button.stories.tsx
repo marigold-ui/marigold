@@ -167,6 +167,10 @@ export const Loading = meta.story({
   tags: ['component-test'],
   parameters: {
     controls: { exclude: ['loading'] },
+    // The idle state is a plain primary button — already covered by `Basic` and
+    // `ButtonVariants`. The pending state is the one worth a baseline, so the
+    // snapshot lives on the test below that actually reaches it.
+    chromatic: { disableSnapshot: true },
   },
   render: ({ children, ...args }) => {
     const [loading, setLoading] = useState<boolean | undefined>(false);
@@ -196,7 +200,9 @@ Loading.test(
   'Shows a spinner while loading',
   {
     parameters: {
-      chromatic: { disableSnapshot: true },
+      // The one place the pending state gets a visual baseline: spinner
+      // overlaid, label held at `opacity-0` so the width doesn't change.
+      chromatic: { disableSnapshot: false },
     },
   },
   async ({ canvas }) => {
