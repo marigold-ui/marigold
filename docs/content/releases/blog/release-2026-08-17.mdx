@@ -18,6 +18,7 @@ changed:
   - components/layout/stack
   - components/layout/inline
   - components/layout/container
+  - components/layout/overflow-region
   - components/collection/card
   - components/collection/table
   - components/collection/actionbar
@@ -71,7 +72,7 @@ changed:
 
 For the last years, Marigold's job was mostly to replace. Modernize an aging codebase, swap out legacy patterns, refresh a design that had started to show its years. v18.0.0 is where that chapter ends and a new one begins. We are done catching up. From here, the work is about craft. Shaping a design language that does not just look current, but is unmistakably its own.
 
-And this release opens that chapter loudly. v18 is by far the biggest release we have ever shipped: well over a hundred changes across the system, six new components (`<SegmentedControl>`, `<DateRangePicker>`, `<RangeCalendar>`, `<Panel>`, `<ButtonGroup>`, `<ErrorState>`), a rebuilt app shell with a new `<Page>` primitive and a two-level sidebar built around a persistent navigation rail, the new default shape for full applications. Under it sits a rethought token layer and the first visible pass of Marigold's own visual identity in hairline surfaces, quiet elevation, and a redesigned sidebar. There is also a whole new tooling story for AI-assisted development, from a searchable CLI to an MCP server over the docs.
+And this release opens that chapter loudly. v18 is by far the biggest release we have ever shipped: well over a hundred changes across the system, seven new components (`<SegmentedControl>`, `<DateRangePicker>`, `<RangeCalendar>`, `<Panel>`, `<ButtonGroup>`, `<ErrorState>`, `<OverflowRegion>`), a rebuilt app shell with a new `<Page>` primitive and a two-level sidebar built around a persistent navigation rail, the new default shape for full applications. Under it sits a rethought token layer and the first visible pass of Marigold's own visual identity in hairline surfaces, quiet elevation, and a redesigned sidebar. There is also a whole new tooling story for AI-assisted development, from a searchable CLI to an MCP server over the docs.
 
 It is a lot. Take your time with the breaking changes below. They all point in the same direction, and the app you end up with will be simpler for it.
 
@@ -697,6 +698,27 @@ Built-in localized presets cover the common cases (`today`, `yesterday`, `tomorr
 
 `<EmptyState>` gets an error sibling. `<ErrorState>` shares the same anatomy (`title`, `description`, `action`, and a `headingLevel` prop) and adds typed DOM passthrough (`role`, `tabIndex`, `ref`), so it drops straight into error-boundary fallbacks that need to be focusable or announced.
 
+### `<OverflowRegion>`
+
+A layout primitive for rows that must stay on one line. When horizontal space runs out, `<OverflowRegion>` hides its trailing items instead of wrapping them, and restores them as space returns. Items are ordered by priority through DOM order, so the last child is the first to go.
+
+```tsx
+<Inline noWrap space="related">
+  <SearchField aria-label="Search" />
+  <OverflowRegion
+    indicator={({ hiddenCount }) => <MoreMenu count={hiddenCount} />}
+  >
+    <Select aria-label="Category" placeholder="Category" />
+    <Select aria-label="Status" placeholder="Status" />
+    <Select aria-label="Price" placeholder="Price" />
+  </OverflowRegion>
+</Inline>
+```
+
+The region measures its own container rather than the viewport, so a row inside a narrow panel on a wide screen collapses correctly, which media queries cannot do. Hidden items stay mounted and keep their state, but are removed from painting, the tab order, and the accessibility tree via `inert` and `aria-hidden`. Spacing is inherited from a parent layout component such as `<Inline>` and can be overridden with `space`.
+
+Hiding is not a recovery strategy on its own. Pair the region with the `indicator` render prop (a "More" menu or counter, rendered only while items are hidden) or with an external surface that always holds the full set, using `onOverflowChange` to react to demotions. See the [OverflowRegion documentation](/components/layout/overflow-region) for the toolbar, Priority+ navigation, and filter bar recipes.
+
 ### Slot-aware `<Button>` and `<ButtonGroup>`
 
 `<Button>` is now slot-aware: it adapts to the button container it sits in, so you reach for `<Button>` everywhere instead of learning a second action component. A Marigold-owned `ButtonContext` carries `variant`, `size`, and `disabled` down to the buttons nested inside a container, and a local prop on a button always wins over what the container sets.
@@ -956,7 +978,8 @@ v18 ships alongside a substantial pass over the documentation site, and, new thi
 - **New Bulk Actions pattern and working example.** A full pattern page on letting users select many records and act on all of them at once (`<Table>` selection, `<ActionBar>`, confirmation dialogs, progress feedback, partial-failure handling), plus a complete working example at `/examples/bulk-actions` with a paginated events table, bulk edit through a `<Drawer>`, and toasts for every outcome.
 - **New Pick pattern and working example.** Picking is the counterpart to filtering: filtering narrows a view in place, picking finds records and commits them as a set. The new [Pick pattern](/patterns/user-input/pick) documents that distinction, a surface spectrum that scales with collection size (inline multi-select, a searchable `<TagField>`, a `<Dialog>`, a routed page as the exception), and the load-bearing practices: staged selections survive narrowing, the commit button bounds the selection and names the outcome, and the staged set stays visible as a removable `<Tag.Group>` rail. The page ships four inline demos plus a complete example at `/examples/pick`.
 - **New Fetching and Mutations pattern** covering `@tanstack/react-query` with Marigold: hook encapsulation, query keys, loading taxonomy, error handling with `throwOnError`, toast feedback, optimistic updates, and destructive confirmation. The `/examples/filter` reference app now runs against a real API route to match.
-- **Full data management pattern at `/examples/filter`.** A venue browsing example demonstrating multi-criteria filtering coordinated through URL state via `nuqs`: a toolbar with search and filter controls, applied filter chips, and a paginated data table all driven by the same URL state.
+- **Filter pattern promoted to beta.** The [Filter pattern](/patterns/user-input/filter) is rewritten end to end and moves from alpha to beta. It now covers the full lifecycle: choosing which filters to offer, picking a control per filter type, instant versus batched applying, designing option lists (search, counts, select all, exclusions), and scaling up through quick filters and a grouped panel. Load-bearing additions are the two-tier hierarchy (a few high-value quick filters in the bar, the canonical set behind "All filters"), a single-row bar layout held together by `<OverflowRegion>`, a scope switch framed apart from the filter cluster, applied-filter labels with an active count that counts _applied_ filters rather than hidden ones, small-screen behaviour, and an implementation chapter on URL state, pagination resets, draft previews, and browser history. Eighteen inline demos and a themed inline SVG anatomy diagram replace the previous static screenshots.
+- **Full data management example at `/examples/filter`.** A venue browsing app demonstrating multi-criteria filtering coordinated through URL state via `nuqs`: a single-row filter bar (scope switch, search, quick filters inside an `<OverflowRegion>`, and a pinned "All filters" panel), applied filter chips, a draft preview of the pending result count, and a paginated data table all driven by the same URL state and a real API route.
 - **Settings form and event form pattern examples** at `/examples/settings-form` and `/examples/event-form`. The settings form demonstrates tabbed navigation, independent section saves with `<Panel>`, collapsible advanced fields, and a danger zone with confirmation dialogs. The event form shows a single-submit form with multiple `<Panel>` sections. The forms pattern documentation now includes a Panels subsection that links to both demos.
 - **Drawer documentation rewritten** around a defining principle (supplementary, in-context, light task) with a Drawer-vs-Dialog decision framework and six canonical use cases, each with demos.
 - **ActionBar fully documented and re-homed.** `<ActionBar>` gets complete, use-case-driven documentation (anatomy, Do/Don't, three demos, accessibility) and moves into the Collection section at [`/components/collection/actionbar`](/components/collection/actionbar) alongside `Table`, `Card`, and `Tag`, reframed around the bulk-selection context.
