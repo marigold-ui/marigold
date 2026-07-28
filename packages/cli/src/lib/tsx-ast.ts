@@ -32,12 +32,13 @@ const SKIP_KEYS = new Set([
 
 export const walk = (
   node: unknown,
-  visitor: (n: AnyNode, parent: AnyNode | null) => void,
+  visitor: (n: AnyNode, parent: AnyNode | null) => void | boolean,
   parent: AnyNode | null = null
 ): void => {
   if (!node || typeof node !== 'object') return;
   const n = node as AnyNode;
-  if (typeof n.type === 'string') visitor(n, parent);
+  // a visitor may return false to skip the node's children
+  if (typeof n.type === 'string' && visitor(n, parent) === false) return;
   for (const key of Object.keys(n)) {
     if (SKIP_KEYS.has(key)) continue;
     const value = n[key];

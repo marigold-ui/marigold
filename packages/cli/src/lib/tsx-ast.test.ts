@@ -152,7 +152,9 @@ describe('findRenderArgument', () => {
 describe('walk', () => {
   test('ignores non-object nodes without throwing', () => {
     const seen: string[] = [];
-    walk(ast(`const a = 1;`), n => seen.push(n.type));
+    walk(ast(`const a = 1;`), n => {
+      seen.push(n.type);
+    });
     expect(seen).toContain('VariableDeclaration');
     // primitives (numbers, strings) inside the tree are skipped, not visited
     expect(seen).not.toContain('1');

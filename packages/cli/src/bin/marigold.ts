@@ -68,6 +68,7 @@ ${pc.bold('Commands:')}
   examples <action>     Browse application patterns (list | get <slug>)
   init                  Set up Marigold in a project
   doctor                Diagnose a project's Marigold setup
+  migrate [version]     Apply codemods for a breaking Marigold release
   telemetry <action>    Manage telemetry (status|enable|disable)
   completion <shell>    Print shell completion script (bash|zsh|fish)
 
@@ -101,6 +102,16 @@ ${pc.bold('Init options:')}
 ${pc.bold('Doctor options:')}
   --format  <name>    text | json (default: text)
   --offline           Skip the network; use only the local cache
+
+${pc.bold('Migrate options:')}
+  [version]           Migration to run (e.g. v18). When omitted, the
+                      installed @marigold/components version is detected
+                      and the proposed migration confirmed interactively
+  [path]              Directory to migrate (default: current directory)
+  --dry-run           Report what would change without writing files
+  --only <names>      Apply only these changes (comma-separated codemod
+                      names from the pre-analysis); skips the interactive
+                      selection. Warnings always run.
 
 ${pc.bold('Environment:')}
   MARIGOLD_DOCS_URL              Override docs site base URL
@@ -199,6 +210,16 @@ const parseDoctorCommand = (argv: string[]) =>
     options: {
       format: { type: 'string' },
       offline: { type: 'boolean', default: false },
+    },
+  });
+
+const parseMigrateCommand = (argv: string[]) =>
+  parseArgs({
+    args: argv,
+    allowPositionals: true,
+    options: {
+      'dry-run': { type: 'boolean', default: false },
+      only: { type: 'string' },
     },
   });
 
@@ -419,6 +440,57 @@ export const main = async (
 
       writeOutput(result.output);
       if (result.hasErrors) exitCode = 1;
+    } else if (command === 'migrate') {
+      const { positionals, values } = parseMigrateCommand(rest);
+      // the version positional is optional: `migrate ./src` treats the first
+      // positional as a path, `migrate v18 ./src` as version + path. Both
+      // `18` and `v18` name a migration.
+      const [first, second] = positionals;
+      const explicitVersion =
+        first !== undefined && /^v?\d+$/.test(first)
+          ? first.startsWith('v')
+            ? first
+            : `v${first}`
+          : undefined;
+      const targetPath = (explicitVersion ? second : first) ?? process.cwd();
+
+      telemetryArgs = {
+        version: explicitVersion ?? 'auto',
+        ...(values['dry-run'] ? { dryRun: 'true' } : {}),
+      };
+
+      // A version-ish first positional that is not an exact major is a typo,
+      // not a directory. Checked before the count below, which would
+      // otherwise swallow `migrate 18.1 ./src` as "too many paths".
+      if (
+        !explicitVersion &&
+        first !== undefined &&
+        /^v?\d+\.[\d.]*$/.test(first)
+      ) {
+        fail(
+          `Unknown migration '${first}' — migrations are named by major version. ` +
+            `Did you mean v${Number.parseInt(first.replace(/^v/, ''), 10)}?`
+        );
+      }
+      if (positionals.length > (explicitVersion ? 2 : 1)) {
+        fail(
+          'Usage: marigold migrate [version] [path] [--dry-run] [--only <names>]'
+        );
+      }
+
+      // Lazy-load: migrate pulls in @babel/parser and magic-string, which we
+      // keep off the docs/list hot path.
+      const { runMigrateCommand } = await import('../commands/migrate.js');
+      exitCode = await runMigrateCommand({
+        version: explicitVersion,
+        targetPath,
+        dryRun: values['dry-run'],
+        only: values.only
+          ?.split(',')
+          .map(s => s.trim())
+          .filter(Boolean),
+        write: writeOutput,
+      });
     } else if (command === 'telemetry') {
       const [sub] = rest;
       telemetryArgs = sub ? { sub } : {};
