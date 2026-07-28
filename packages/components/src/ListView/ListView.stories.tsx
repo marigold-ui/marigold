@@ -1,3 +1,4 @@
+import { Building2 } from '@marigold/icons';
 import { expect, fn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
@@ -292,41 +293,110 @@ ResourceListWithMenu.test(
   }
 );
 
-export const WithTitle = meta.story({
+// `<Title>` is for a row whose primary text genuinely names a whole
+// section, not a single fact within one — a workspace switcher is that
+// case: each row is an entry point into its own dashboard, so the
+// workspace name carries heading semantics, not just a label. Pairing it
+// with a leading icon, two lines of metadata, and a row menu also shows
+// `<Title>` composes with the same complex row shapes `<TextValue>` does.
+const onOpenWorkspace = fn();
+const onWorkspaceSettings = fn();
+const onLeaveWorkspace = fn();
+
+export const WithDescription = meta.story({
   tags: ['component-test'],
   parameters: {
     docs: {
       description: {
         story:
           "Rows can use `<Title>` instead of `<TextValue>` when the row's " +
-          'primary text is genuinely heading-like. It still renders as a ' +
-          '`<span>`, not an `<hN>` — visually identical to `<TextValue>` — ' +
-          "so this isn't about adding a description, it's about which " +
-          "semantics the row's primary text carries. See " +
+          'primary text genuinely names a whole section, not a single ' +
+          "fact within one — here, each row is a workspace that's its own " +
+          'dashboard, not just a filename or a person. `<Title>` still ' +
+          'renders as a `<span>`, not an `<hN>` — visually identical to ' +
+          "`<TextValue>` — so this isn't about how it looks, it's about " +
+          "which semantics the row's primary text carries. See " +
           '[Accessibility](#accessibility) for when to reach for it.',
       },
     },
   },
   render: args => (
-    <ListView {...args} aria-label="Team members">
-      <ListView.Item id="jane" textValue="Jane Cooper">
-        <Title>Jane Cooper</Title>
-        <Description>Design lead</Description>
+    <ListView {...args} aria-label="Workspaces">
+      <ListView.Item
+        id="acme"
+        textValue="Acme Inc — Enterprise plan — 24 members"
+      >
+        <Building2 aria-hidden size={20} color="#6366F1" />
+        <Title>Acme Inc</Title>
+        <Description>Enterprise plan</Description>
+        <Description>24 members</Description>
+        <ActionMenu aria-label="Acme Inc actions">
+          <ActionMenu.Item onAction={() => onOpenWorkspace('acme')}>
+            Open
+          </ActionMenu.Item>
+          <ActionMenu.Item onAction={() => onWorkspaceSettings('acme')}>
+            Settings
+          </ActionMenu.Item>
+          <ActionMenu.Item
+            variant="destructive"
+            size="icon"
+            onAction={() => onLeaveWorkspace('acme')}
+          >
+            Leave
+          </ActionMenu.Item>
+        </ActionMenu>
       </ListView.Item>
-      <ListView.Item id="alex" textValue="Alex Kim">
-        <Title>Alex Kim</Title>
-        <Description>Engineer</Description>
+      <ListView.Item
+        id="globex"
+        textValue="Globex Corp — Team plan — 8 members"
+      >
+        <Building2 aria-hidden size={20} color="#059669" />
+        <Title>Globex Corp</Title>
+        <Description>Team plan</Description>
+        <Description>8 members</Description>
+        <ActionMenu aria-label="Globex Corp actions">
+          <ActionMenu.Item onAction={() => onOpenWorkspace('globex')}>
+            Open
+          </ActionMenu.Item>
+          <ActionMenu.Item onAction={() => onWorkspaceSettings('globex')}>
+            Settings
+          </ActionMenu.Item>
+          <ActionMenu.Item
+            variant="destructive"
+            size="icon"
+            onAction={() => onLeaveWorkspace('globex')}
+          >
+            Leave
+          </ActionMenu.Item>
+        </ActionMenu>
       </ListView.Item>
     </ListView>
   ),
 });
 
-WithTitle.test(
-  'renders `<Title>` rows as spans, not document headings',
+WithDescription.test(
+  'renders `<Title>` rows as spans, not document headings, with the rest of the row still operable',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas }) => {
+  async ({ canvas, step }) => {
+    onLeaveWorkspace.mockClear();
+
     expect(canvas.queryAllByRole('heading')).toHaveLength(0);
-    expect(await canvas.findByText('Jane Cooper')).toBeInTheDocument();
+    expect(await canvas.findByText('Acme Inc')).toBeInTheDocument();
+    expect(canvas.getByText('24 members')).toBeInTheDocument();
+
+    await step('the row menu opens and fires an action', async () => {
+      const trigger = canvas.getByRole('button', { name: 'Acme Inc actions' });
+      await userEvent.click(trigger);
+      await waitFor(() =>
+        expect(trigger).toHaveAttribute('aria-expanded', 'true')
+      );
+
+      const leaveItem = await canvas.findByRole('menuitem', {
+        name: 'Leave',
+      });
+      await userEvent.click(leaveItem);
+      expect(onLeaveWorkspace).toHaveBeenCalledWith('acme');
+    });
   }
 );
 

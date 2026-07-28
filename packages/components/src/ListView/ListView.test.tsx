@@ -9,7 +9,7 @@ import {
   Basic,
   EmptyState,
   NotificationsFeed,
-  WithTitle,
+  WithDescription,
 } from './ListView.stories';
 
 const user = userEvent.setup({ pointerEventsCheck: 0 });
@@ -110,10 +110,10 @@ describe('ListView', () => {
 
   describe('Title as span', () => {
     test('a row using <Title> does not emit a document heading', () => {
-      render(<WithTitle.Component />);
+      render(<WithDescription.Component />);
 
       expect(screen.queryAllByRole('heading')).toHaveLength(0);
-      expect(screen.getByText('Jane Cooper').tagName).toBe('SPAN');
+      expect(screen.getByText('Acme Inc').tagName).toBe('SPAN');
     });
   });
 });
