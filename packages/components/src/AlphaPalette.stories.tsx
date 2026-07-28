@@ -160,12 +160,11 @@ const readToken = (token: string) =>
  *
  * Deliberately absent: a threshold for hover. 1.4.11 covers information
  * required to *identify* a component or state, and a control is identifiable
- * without its hover feedback — so hover has no ratio floor. Focus does (3:1,
- * via 1.4.11; WCAG 2.2 SC 2.4.13 Focus Appearance restates it at AAA — *not*
- * 2.4.11, which is Focus Not Obscured), but no wash can serve as a focus
- * indicator: reaching 3:1 needs
- * α ≈ 0.435 on white, over twice the R5 budget and darker than `selected`.
- * Focus indication belongs to `ui-state-focus`, not to this ramp.
+ * without its hover feedback — so hover has no ratio floor. Focus does: 3:1 via
+ * 1.4.11, restated at AAA by WCAG 2.2 SC 2.4.13 Focus Appearance — *not* 2.4.11,
+ * which is Focus Not Obscured. But no wash can serve as a focus indicator:
+ * reaching 3:1 needs α ≈ 0.435 on white, over twice the R5 budget and darker
+ * than `selected`. Focus indication belongs to `ui-state-focus`, not this ramp.
  */
 const WCAG = { TEXT: 4.5, MARKER: 3 } as const;
 
@@ -788,6 +787,73 @@ ComponentStates.test(
         disabledText,
         `disabled text on ${ground.id} is ${disabledText.toFixed(2)}:1 against a resting ${restText.toFixed(2)}:1 — not a visible step down`
       ).toBeLessThan(restText / 1.5);
+    }
+  }
+);
+
+ComponentStates.test(
+  'no SegmentedControl segment ever wears two washes at once',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    // R4 against the real component rather than a specimen. `Stacking` proves the
+    // hazard exists in the abstract; this proves the one place in the system that
+    // actually had it does not any more.
+    //
+    // The ghost SelectionIndicator (z-0) and the RadioButton (z-10) are
+    // overlapping siblings inside one segment, so a `hover:` on the option used to
+    // land on top of the indicator's wash: two `bg-current/10` layers composing to
+    // an effective 0.19, measured 1.23 -> 1.50:1 on white. The option is now
+    // gated on `not-selected:` and the indicator owns the combined value.
+    for (const ground of GROUNDS) {
+      const group = canvasElement.querySelector<HTMLElement>(
+        `[data-ground="${ground.id}"] [aria-label="Ghost"]`
+      );
+      await expect(
+        group,
+        `no ghost SegmentedControl on ${ground.id}`
+      ).not.toBeNull();
+
+      const segments = [
+        ...group!.querySelectorAll<HTMLElement>('[data-rac]'),
+      ].filter(el => el.className.includes('inline-flex shrink-0'));
+      await expect(segments.length, `expected 2 segments on ${ground.id}`).toBe(
+        2
+      );
+
+      const washesIn = (segment: HTMLElement) =>
+        [...segment.querySelectorAll<HTMLElement>('*')].filter(paintsOwnFill);
+      const selected = segments.find(s => s.dataset.selected === 'true')!;
+      const restRatio = measureFillOnGround(
+        washesIn(selected)[0]!,
+        ground.solid
+      );
+
+      for (const segment of segments) {
+        const option = segment.querySelector<HTMLElement>('label')!;
+        await userEvent.hover(option);
+
+        // The invariant. Two layers is the bug, whatever they measure.
+        await expect(
+          washesIn(segment).length,
+          `${segment.dataset.selected === 'true' ? 'selected' : 'unselected'} segment on ${ground.id} paints ${washesIn(segment).length} washes at once`
+        ).toBeLessThanOrEqual(1);
+      }
+
+      // Non-vacuity: hovering the selected segment has to actually *do* something,
+      // or "at most one wash" would hold just as well for a component whose hover
+      // silently stopped working — which is exactly what happened when this was
+      // first written with `group-hover`, a variant the RAC plugin rewrites to
+      // require `[data-hovered]` on the group, which the field never receives.
+      await userEvent.hover(selected.querySelector<HTMLElement>('label')!);
+      const hoverRatio = measureFillOnGround(
+        washesIn(selected)[0]!,
+        ground.solid
+      );
+
+      await expect(
+        hoverRatio,
+        `hovering the selected segment on ${ground.id} left its wash at ${hoverRatio.toFixed(3)}:1 — the combined value never fired`
+      ).toBeGreaterThan(restRatio);
     }
   }
 );

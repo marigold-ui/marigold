@@ -203,6 +203,15 @@
      ~2:1 on white, short of WCAG 1.4.11's 3:1 — a deliberate design call; the
      focus ring stays the perceivable affordance. State overrides stay opaque. */
   --color-control-border: oklch(from var(--color-charcoal-950) l c h / 0.26);
+  /* The same edge where it sits *on* a control-coloured track rather than on a
+     page or surface. --color-control-border is translucent so it firms up as its
+     ground darkens, which over-darkens it against charcoal-300; stepping the
+     alpha down 0.08 restores the intended weight. Lived inline in
+     SegmentedControl.styles.ts as a hand-rolled calc() — it is a property of the
+     token pair, not of that component, so it belongs here. */
+  --color-control-border-on-control: oklch(
+    from var(--color-control-border) l c h / calc(alpha - 0.08)
+  );
   --color-ring: var(--color-charcoal-600);
 
   /* --- Soft (raised control cap: secondary Button, Menu trigger) --- */

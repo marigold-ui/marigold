@@ -277,6 +277,27 @@
 }
 
 /*
+ * Hover on an element that is *already* wearing the ghost wash — the explicit
+ * combined value R4 asks for, so the two states never stack.
+ *
+ * SegmentedControl is the case: its ghost SelectionIndicator (z-0) and its
+ * RadioButton (z-10) are overlapping siblings inside one segment, so hovering
+ * the selected segment used to paint `bg-current/10` twice. Two 10% layers
+ * compose to 1 - 0.9^2 = 0.19, measured at 1.23 -> 1.50:1 on white — a hover
+ * arriving at the weight of a selection.
+ *
+ * 0.15 rather than the 0.19 the stack happened to produce: 0.19 is inside the
+ * R5 light-ground budget (0.20) but over the dark-ground one (0.15), and on a
+ * correctly-inked contrast ground the stack measures 1.79:1. One value has to
+ * satisfy both polarities, because `bg-current` derives its own.
+ *
+ * Measured: 1.36 / 1.36 / 1.55 across the three grounds.
+ */
+@utility ui-state-selected-hover-ghost {
+  @apply bg-current/15;
+}
+
+/*
  * Applies a consistent visual style for readonly elements.
  */
 @utility ui-state-readonly {

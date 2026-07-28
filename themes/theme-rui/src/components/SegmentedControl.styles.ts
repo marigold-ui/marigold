@@ -48,8 +48,12 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
   // Positioning context for each segment; holds the sliding indicator. `shrink-0`
   // keeps each option at natural width so the row overflows (scrolls) instead of
   // compressing.
+  // `group/segment` so the indicator can react to hover on the segment. The
+  // indicator is the only thing that washes a selected segment (see `option`),
+  // so it has to see the hover itself rather than let the option paint a second
+  // layer on top of it.
   field: cva({
-    base: 'relative inline-flex shrink-0',
+    base: 'group/segment relative inline-flex shrink-0',
   }),
   // The clickable segment (a radio rendered as a button).
   option: cva({
@@ -74,9 +78,13 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
         // cell suppresses its own outline here. (Ghost keeps it, having no thumb.)
         default:
           'not-selected:hover:text-foreground focus-visible:outline-none',
-        // Track-less: hover is a translucent overlay, applied on the selected item
-        // too so it stays covered while the indicator slides in (matches Tabs).
-        ghost: 'hover:ui-state-hover-ghost',
+        // Track-less: hover is a translucent overlay. Only while *unselected* —
+        // a selected segment already carries the indicator's wash beneath it
+        // (z-0 vs this cell's z-10), and painting here as well stacked two 10%
+        // layers into an effective 0.19, measured 1.23 -> 1.50:1 on white. The
+        // indicator now owns the selected-and-hovered case, so the feedback
+        // survives without the stack.
+        ghost: 'not-selected:hover:ui-state-hover-ghost',
       },
       size: {
         // The thumb fills the segment, so px is the label's padding inside it.
@@ -108,11 +116,19 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
         // thumb exactly (offset-1 = flush with the thumb's 1px ring). Selection
         // follows focus, so the focused option is always the one under this thumb.
         //   On the dark charcoal-300 track, control-border's ground-adaptive firming
-        // over-darkens the edge, so the alpha is stepped down 0.08 (token-derived).
+        // over-darkens the edge, so it takes the stepped-down pair token
+        // (--color-control-border-on-control, 0.26 -> 0.18).
         default:
-          'inset-y-[4px] left-0 w-full ui-control [--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_-_0.08))] group-has-[[data-focus-visible]]/segmented:outline-3 group-has-[[data-focus-visible]]/segmented:outline-solid group-has-[[data-focus-visible]]/segmented:outline-ring/50 group-has-[[data-focus-visible]]/segmented:outline-offset-1',
-        // Resembles a ghost Button's surface.
-        ghost: 'inset-y-0 left-0 w-full rounded-surface ui-state-hover-ghost',
+          'inset-y-[4px] left-0 w-full ui-control [--ui-border-color:var(--color-control-border-on-control)] group-has-[[data-focus-visible]]/segmented:outline-3 group-has-[[data-focus-visible]]/segmented:outline-solid group-has-[[data-focus-visible]]/segmented:outline-ring/50 group-has-[[data-focus-visible]]/segmented:outline-offset-1',
+        // Resembles a ghost Button's surface. Carries the hover too, because it
+        // is the layer that is always beneath the selected segment — one wash
+        // per element, with an explicit combined value rather than two stacked.
+        // `group-has-[[data-hovered]]`, not `group-hover`: the RAC plugin rewrites
+        // `group-hover` to require `[data-hovered]` on the group itself, and the
+        // field is a RAC element that never receives it — only the option inside
+        // it does. Same reason the focus ring above reaches for `group-has-`.
+        ghost:
+          'inset-y-0 left-0 w-full rounded-surface ui-state-hover-ghost group-has-[[data-hovered]]/segment:ui-state-selected-hover-ghost',
       },
     },
     defaultVariants: {
