@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Copy, Download, Pencil, Trash2 } from '@marigold/icons';
 import { Button } from '../Button/Button';
@@ -411,44 +411,16 @@ const RouteFocusHarness = () => {
  * the hook from a component that persists across navigations (here, a small
  * harness swaps the "route" via the nav buttons). The initial mount is skipped,
  * so first paint never steals focus.
+ *
+ * The focus-management behaviour itself is covered by unit tests in
+ * `usePageFocus.test.tsx`, which render this story's `.Component`.
  */
 export const FocusOnRouteChange = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   render: () => <RouteFocusHarness />,
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    // On first paint the initial heading must not be focused.
-    const billingHeading = canvas.getByRole('heading', {
-      level: 1,
-      name: 'Billing',
-    });
-    await expect(billingHeading).not.toHaveFocus();
-
-    // Navigating to another "route" moves focus to the new page heading.
-    await userEvent.click(
-      canvas.getByRole('button', { name: 'Open Team members' })
-    );
-
-    const teamHeading = canvas.getByRole('heading', {
-      level: 1,
-      name: 'Team members',
-    });
-    await expect(teamHeading).toHaveFocus();
-    // The heading is made programmatically focusable, not tabbable.
-    await expect(teamHeading).toHaveAttribute('tabindex', '-1');
-  },
 });
 
-/**
- * When the page has no `<Title>` (named instead by an `aria-label`), there is no
- * `<h1>` to move to, so `usePageFocus` is a no-op on route change: it never
- * throws and never moves focus. The nav buttons toggle between both "routes"
- * (like `FocusOnRouteChange` above) and the panel spells out in large text
- * which one is active, so the route change itself is obvious even though
- * focus deliberately never moves off the clicked button.
- */
 const NoHeadingFocusHarness = () => {
   const [route, setRoute] = useState('/billing');
 
@@ -465,9 +437,11 @@ const NoHeadingFocusHarness = () => {
       </nav>
       <Page aria-label={ROUTES[route]}>
         <RouteFocus routeKey={route} />
-        <Panel aria-label="Summary">
-          <Panel.Content>
+        <Panel>
+          <Panel.Header>
             <Title>{ROUTES[route]}</Title>
+          </Panel.Header>
+          <Panel.Content>
             <Text>
               Route changed to {route}, but there is no page heading, so focus
               stays on the nav button you just clicked.
@@ -479,23 +453,19 @@ const NoHeadingFocusHarness = () => {
   );
 };
 
+/**
+ * When the page has no `<Title>` (named instead by an `aria-label`), there is no
+ * `<h1>` to move to, so `usePageFocus` is a no-op on route change: it never
+ * throws and never moves focus. The nav buttons toggle between both "routes"
+ * (like `FocusOnRouteChange` above) and the panel names itself by its own
+ * `<Title>`, so the route change itself is obvious even though focus
+ * deliberately never moves off the clicked button.
+ *
+ * The no-op behaviour is covered by unit tests in `usePageFocus.test.tsx`,
+ * which render this story's `.Component`.
+ */
 export const FocusWithoutHeading = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   render: () => <NoHeadingFocusHarness />,
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    const openTeam = canvas.getByRole('button', { name: 'Open Team members' });
-    await userEvent.click(openTeam);
-
-    // The route did change (the panel now names the new section)...
-    await expect(
-      canvas.getByRole('heading', { level: 2, name: 'Team members' })
-    ).toBeInTheDocument();
-
-    // ...but no page heading exists to receive focus, so it's left where it was.
-    await expect(canvas.queryByRole('heading', { level: 1 })).toBeNull();
-    await expect(openTeam).toHaveFocus();
-  },
 });

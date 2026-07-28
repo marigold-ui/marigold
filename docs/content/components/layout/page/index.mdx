@@ -162,6 +162,8 @@ const AppLayout = () => {
 
 Because the guard is per mount, keep the hook mounted across routes rather than calling it from a screen that unmounts on every navigation, otherwise every route reads as a first render and focus never moves.
 
+The heading lookup happens synchronously when the effect runs, so the `<h1>` must already be in the DOM at that point. If a route's `<Title>` renders behind a `React.lazy` + `<Suspense>` boundary, it can still be loading when the effect fires, and focus silently never moves. Hoist the title (or the route signal) above the Suspense boundary for routes that lazy-load their content.
+
 ## Props
 
 {/* Storybook hint omitted while Page is beta: it has no story on the published Storybook (marigold-latest) the hint links to, so the link 404s. Restore when Page ships. */}

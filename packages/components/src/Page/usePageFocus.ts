@@ -18,6 +18,12 @@ import { usePageContext } from './Context';
  * is per-mount, call it from a component that persists across navigations (the
  * layout / shell level), not one that remounts on every route.
  *
+ * The heading lookup happens synchronously when the effect runs, so the `<h1>`
+ * must already be mounted at that point. A route's `<Title>` rendered behind a
+ * `React.lazy` + `<Suspense>` boundary can still be loading when this fires, in
+ * which case focus silently stays put; hoist the title (or the route signal)
+ * above the boundary if a route lazy-loads its content.
+ *
  * @param routeKey - A value that changes on navigation, usually the pathname.
  *
  * @example
@@ -36,6 +42,9 @@ import { usePageContext } from './Context';
  * </RouterProvider>
  * ```
  */
+// TODO(follow-up): every consumer writes the same null-rendering wrapper to
+// call this hook. A `routeKey` prop directly on <Page> would remove that
+// boilerplate (raised in review, out of scope for DST-1492).
 export const usePageFocus = (routeKey: string) => {
   const { titleId } = usePageContext();
   const previousRouteKeyRef = useRef(routeKey);
@@ -57,6 +66,9 @@ export const usePageFocus = (routeKey: string) => {
     // has no `<Title>` there is nothing to focus, so this is a no-op.
     const heading = document.getElementById(titleId);
     if (!heading) {
+      // TODO(follow-up): fall back to focusing <Page>'s <main> here instead of
+      // leaving focus wherever it was (raised in review, deliberately out of
+      // scope for DST-1492 — the no-op is intentional and covered by a test).
       return;
     }
 
