@@ -162,8 +162,15 @@ export const FullWidth = meta.story({
 });
 
 export const Loading = meta.story({
+  // Required for the `Loading.test(...)` blocks below to be picked up by the
+  // test runner — without it they are silently never executed.
+  tags: ['component-test'],
   parameters: {
     controls: { exclude: ['loading'] },
+    // The idle state is a plain primary button — already covered by `Basic` and
+    // `ButtonVariants`. The pending state is the one worth a baseline, so the
+    // snapshot lives on the test below that actually reaches it.
+    chromatic: { disableSnapshot: true },
   },
   render: ({ children, ...args }) => {
     const [loading, setLoading] = useState<boolean | undefined>(false);
@@ -193,7 +200,9 @@ Loading.test(
   'Shows a spinner while loading',
   {
     parameters: {
-      chromatic: { disableSnapshot: true },
+      // The one place the pending state gets a visual baseline: spinner
+      // overlaid, label held at `opacity-0` so the width doesn't change.
+      chromatic: { disableSnapshot: false },
     },
   },
   async ({ canvas }) => {
@@ -203,5 +212,28 @@ Loading.test(
 
     await expect(await canvas.findByRole('progressbar')).toBeInTheDocument();
     await expect(button).toHaveAttribute('data-pending', 'true');
+  }
+);
+
+Loading.test(
+  'Keeps its accessible name while loading',
+  {
+    parameters: {
+      chromatic: { disableSnapshot: true },
+    },
+  },
+  async ({ canvas }) => {
+    // The label is hidden with `opacity-0` rather than `invisible` precisely so
+    // it survives here: `visibility: hidden` would drop it from the
+    // accessibility tree and leave a pending button anonymous (WCAG 4.1.2).
+    // Querying *by name* is the assertion — don't relax it to a state query.
+    const button = canvas.getByRole('button', { name: 'Submit' });
+
+    await userEvent.click(button);
+
+    await expect(await canvas.findByRole('progressbar')).toBeInTheDocument();
+    await expect(
+      canvas.getByRole('button', { name: 'Submit' })
+    ).toHaveAttribute('data-pending', 'true');
   }
 );
