@@ -2,7 +2,10 @@ import { type ThemeComponent, cva } from '@marigold/system';
 
 export const ListView: ThemeComponent<'ListView'> = {
   list: cva({
-    base: ['w-full outline-0 flex flex-col'],
+    base: [
+      'w-full outline-0 flex flex-col',
+      '[--listview-item-px:var(--spacing-stretch-regular-x)]',
+    ],
     variants: {
       // `default` is a bounded surface of its own (ring, shadow, radius).
       // `plain` drops that frame — divider lines only — so the list can sit
@@ -13,7 +16,18 @@ export const ListView: ThemeComponent<'ListView'> = {
           'divide-y divide-border ui-surface shadow-elevation-border',
           '[--listview-item-radius:calc(var(--radius-surface)-1px)]',
         ],
-        plain: 'divide-y divide-border',
+        // Only `plain` is edge-aware. A bled `Panel.Content` /
+        // `Panel.CollapsibleContent` / `Drawer.Content` publishes `--bleed-px`
+        // (its own `--panel-px`), and a nested `plain` list adopts it as its
+        // row padding: dividers and hover fill reach the container border while
+        // the row text lines up with the container title, mirroring Table and
+        // Accordion. Outside a bled container the fallback keeps the standalone
+        // padding. `default` deliberately opts out — it carries its own frame,
+        // so it shouldn't inherit the container's edge inset.
+        plain: [
+          'divide-y divide-border',
+          '[--listview-item-px:var(--bleed-px,var(--spacing-stretch-regular-x))]',
+        ],
       },
     },
     defaultVariants: { variant: 'default' },
@@ -21,7 +35,10 @@ export const ListView: ThemeComponent<'ListView'> = {
   item: cva({
     base: [
       'group/option relative flex items-center gap-3',
-      'px-(--spacing-stretch-regular-x) py-(--spacing-stretch-regular-y)',
+      // `--listview-item-px` is set per variant on the list (see above): the
+      // standalone padding by default, a bled container's `--bleed-px` for
+      // `plain`.
+      'px-(--listview-item-px) py-(--spacing-stretch-regular-y)',
       'text-sm text-foreground outline-none',
       'transition-[border,color]',
       'hover:ui-state-hover',

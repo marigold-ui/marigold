@@ -1,11 +1,16 @@
+import {
+  Dialog as RACDialog,
+  DialogTrigger as RACDialogTrigger,
+} from 'react-aria-components/Dialog';
 import { Building2 } from '@marigold/icons';
 import { expect, fn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
-import { Card } from '../Card/Card';
 import { Description } from '../Description/Description';
 import { EmptyState as EmptyStateComponent } from '../EmptyState/EmptyState';
 import { ActionMenu } from '../Menu/ActionMenu';
+import { Popover } from '../Overlay/Popover';
+import { Panel } from '../Panel/Panel';
 import { Switch } from '../Switch/Switch';
 import { TextValue } from '../TextValue/TextValue';
 import { Title } from '../Title/Title';
@@ -492,29 +497,115 @@ TeamRosterWithStatus.test(
   }
 );
 
-// `variant="plain"` drops the default surface (ring, shadow, radius) so the
-// list can sit flush inside a container that already provides its own frame
-// — a Popover, a Panel, or here, a Card. `bleed` lets the list's own dividers
-// span the Card's full width instead of stopping at its padding.
-export const EmbeddedInCard = meta.story({
+// `variant="plain"` drops the list's own surface (ring, shadow, radius) so it
+// can sit inside a container that already provides one.
+//
+// A `<Popover>` is the simplest such container: it owns the overlay surface
+// (fill, rim, elevation) and carries no padding of its own, so a `plain` list
+// fills it edge-to-edge with nothing further to configure. This is the
+// DST-1485 notifications panel the component was built for.
+//
+// The `<DialogTrigger>`/`<Dialog>` pair comes from react-aria-components
+// because Marigold's `<Popover>` doesn't yet expose a trigger-based
+// composition of its own; `<ContextualHelp>` builds its popover the same way.
+// `<Dialog>` isn't decorative here — it's what moves focus into the overlay on
+// open and restores it to the trigger on close.
+const onNotificationDismiss = fn();
+
+export const InPopover = meta.story({
+  // No `component-test` tag: the story runner can't see the popover's portaled
+  // content from the story canvas, so an interaction test here would only
+  // exercise the runner. Row interaction is already covered by
+  // `NotificationsFeed`; this story exists to show the composition.
+  // The trigger is a bare button on the page, not content inside a Panel.
+  parameters: { surface: false },
   render: () => (
-    <Card>
-      <Card.Header>
-        <Title>Notifications</Title>
-      </Card.Header>
-      <Card.Content bleed>
-        <ListView variant="plain" aria-label="Notifications">
-          <ListView.Item id="build" textValue="Build finished">
-            <TextValue>Build finished</TextValue>
-            <Description>2 minutes ago</Description>
+    <RACDialogTrigger defaultOpen>
+      <Button>Notifications</Button>
+      <Popover placement="bottom start" matchTriggerWidth={false}>
+        <RACDialog aria-label="Notifications" className="w-80 outline-none">
+          <ListView variant="plain" aria-label="Notifications">
+            <ListView.Item id="build" textValue="Build finished">
+              <TextValue>Build finished</TextValue>
+              <Description>2 minutes ago</Description>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="Dismiss build finished"
+                onPress={() => onNotificationDismiss('build')}
+              >
+                <X />
+              </Button>
+            </ListView.Item>
+            <ListView.Item id="review" textValue="Review requested">
+              <TextValue>Review requested</TextValue>
+              <Description>18 minutes ago</Description>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="Dismiss review requested"
+                onPress={() => onNotificationDismiss('review')}
+              >
+                <X />
+              </Button>
+            </ListView.Item>
+            <ListView.Item id="deploy" textValue="Deploy succeeded">
+              <TextValue>Deploy succeeded</TextValue>
+              <Description>1 hour ago</Description>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="Dismiss deploy succeeded"
+                onPress={() => onNotificationDismiss('deploy')}
+              >
+                <X />
+              </Button>
+            </ListView.Item>
+          </ListView>
+        </RACDialog>
+      </Popover>
+    </RACDialogTrigger>
+  ),
+});
+
+// A `<Panel>` (or `<Card>`, or `<Drawer>`) does carry horizontal padding, so
+// pair `plain` with the container's `bleed`. The list then reads its row
+// padding from the `--bleed-px` a bled container publishes: dividers and hover
+// fill reach the Panel border while the row text stays aligned with the Panel
+// title, the same way `<Table>` and `<Accordion>` behave.
+const onIntegrationToggle = fn();
+
+export const InPanel = meta.story({
+  // The story supplies its own titled Panel, so opt out of the decorator's.
+  parameters: { surface: false },
+  render: () => (
+    <Panel>
+      <Panel.Header>
+        <Title>Integrations</Title>
+        <Description>Turn a connection on to start syncing.</Description>
+      </Panel.Header>
+      <Panel.Content bleed>
+        <ListView variant="plain" aria-label="Integrations">
+          <ListView.Item id="slack" textValue="Slack">
+            <TextValue>Slack</TextValue>
+            <Description>Post updates to #releases</Description>
+            <Switch
+              aria-label="Enable Slack"
+              selected
+              onChange={selected => onIntegrationToggle('slack', selected)}
+            />
           </ListView.Item>
-          <ListView.Item id="deploy" textValue="Deploy succeeded">
-            <TextValue>Deploy succeeded</TextValue>
-            <Description>1 hour ago</Description>
+          <ListView.Item id="github" textValue="GitHub">
+            <TextValue>GitHub</TextValue>
+            <Description>Link commits to tickets</Description>
+            <Switch
+              aria-label="Enable GitHub"
+              onChange={selected => onIntegrationToggle('github', selected)}
+            />
           </ListView.Item>
         </ListView>
-      </Card.Content>
-    </Card>
+      </Panel.Content>
+    </Panel>
   ),
 });
 
