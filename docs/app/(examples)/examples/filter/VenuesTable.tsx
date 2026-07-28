@@ -69,23 +69,23 @@ const NoDataEmptyState = () => (
 // Co-located skeleton that mirrors the table's row rhythm. Shown only for the
 // initial fetch (`isLoading`); background refetches keep the previous rows on
 // screen and surface activity through FetchingIndicator instead.
+//
+// Purely visual (`aria-hidden`): the loading text is announced by the live
+// region in VenuesTable, which outlives this subtree. See the note there.
 export const VenuesTableSkeleton = ({ rows = 5 }: { rows?: number }) => (
-  <>
-    <VisuallyHidden role="status">Loading venues…</VisuallyHidden>
-    <div aria-hidden>
-      <Stack space={4}>
-        {Array.from({ length: rows }, (_, i) => `skeleton-${i}`).map(key => (
-          <Inline key={key} space={6} alignY="center">
-            <div className="h-4 w-1/4 animate-pulse rounded bg-current/10" />
-            <div className="h-4 w-1/6 animate-pulse rounded bg-current/10" />
-            <div className="h-4 grow animate-pulse rounded bg-current/10" />
-            <div className="h-4 w-16 animate-pulse rounded bg-current/10" />
-            <div className="h-4 w-12 animate-pulse rounded bg-current/10" />
-          </Inline>
-        ))}
-      </Stack>
-    </div>
-  </>
+  <div aria-hidden>
+    <Stack space={4}>
+      {Array.from({ length: rows }, (_, i) => `skeleton-${i}`).map(key => (
+        <Inline key={key} space={6} alignY="center">
+          <div className="h-4 w-1/4 animate-pulse rounded bg-current/10" />
+          <div className="h-4 w-1/6 animate-pulse rounded bg-current/10" />
+          <div className="h-4 grow animate-pulse rounded bg-current/10" />
+          <div className="h-4 w-16 animate-pulse rounded bg-current/10" />
+          <div className="h-4 w-12 animate-pulse rounded bg-current/10" />
+        </Inline>
+      ))}
+    </Stack>
+  </div>
 );
 
 // Renders up to `max` badges and collapses the rest into a single "+N" badge,
@@ -195,83 +195,91 @@ export const VenuesTable = () => {
   const [sort, setSort] = useSort();
   const { deleteVenue, isDeleting } = useDeleteVenue();
 
-  if (isLoading) {
-    return <VenuesTableSkeleton rows={pageSize} />;
-  }
-
-  const summary = `${totalItems} venue${totalItems === 1 ? '' : 's'}`;
+  // A live region is announced when the text inside an already present node
+  // changes. Mounting the container together with its text is a known failure
+  // mode, where NVDA and JAWS on Chrome can drop that first announcement. So
+  // this region stays mounted across the loading, loaded, and filtered states
+  // and only its text content is swapped, never the node itself.
+  const status = isLoading
+    ? 'Loading venues…'
+    : `${totalItems} venue${totalItems === 1 ? '' : 's'}`;
 
   return (
     <div id={VENUES_REGION_ID} className="scroll-mt-4">
-      <VisuallyHidden role="status">{summary}</VisuallyHidden>
-      <Table
-        aria-label="Venue list"
-        selectionMode="multiple"
-        sortDescriptor={sort}
-        onSortChange={d =>
-          setSort({
-            // RAC types `column` as `Key` (string | number); the cast is
-            // safe because the value can only be one of our Table.Column ids.
-            column: d.column as VenueSortDescriptor['column'],
-            direction: d.direction,
-          })
-        }
-        actionBar={selectedKeys => (
-          <ActionBar>
-            <Button
-              onPress={async () => {
-                // "Select all" can span pages, so fetch the full matching set
-                // (same query, no pagination) before exporting.
-                const selected =
-                  selectedKeys === 'all'
-                    ? (await fetchVenues({ ...params, pageSize: 'all' })).items
-                    : items.filter(v => selectedKeys.has(v.id));
-                exportVenuesToCsv(selected);
-              }}
-            >
-              <Download /> Export CSV
-            </Button>
-          </ActionBar>
-        )}
-      >
-        <Table.Header>
-          <Table.Column id="name" rowHeader allowsSorting>
-            Name
-          </Table.Column>
-          <Table.Column id="type">Type</Table.Column>
-          <Table.Column id="address">Address</Table.Column>
-          <Table.Column id="capacity" alignX="right" allowsSorting>
-            Capacity
-          </Table.Column>
-          <Table.Column id="price" alignX="right" allowsSorting>
-            Max. Price
-          </Table.Column>
-          <Table.Column id="traits">Traits</Table.Column>
-          <Table.Column id="amenities">Amenities</Table.Column>
-          <Table.Column id="parking">Parking</Table.Column>
-          <Table.Column id="rating" alignX="right">
-            Rating
-          </Table.Column>
-          <Table.Column id="available">Available</Table.Column>
-          <Table.Column id="actions">
-            <VisuallyHidden>Actions</VisuallyHidden>
-          </Table.Column>
-        </Table.Header>
-        <Table.Body
-          emptyState={() =>
-            isFiltered ? <FilterEmptyState /> : <NoDataEmptyState />
+      <VisuallyHidden role="status">{status}</VisuallyHidden>
+      {isLoading ? (
+        <VenuesTableSkeleton rows={pageSize} />
+      ) : (
+        <Table
+          aria-label="Venue list"
+          selectionMode="multiple"
+          sortDescriptor={sort}
+          onSortChange={d =>
+            setSort({
+              // RAC types `column` as `Key` (string | number); the cast is
+              // safe because the value can only be one of our Table.Column ids.
+              column: d.column as VenueSortDescriptor['column'],
+              direction: d.direction,
+            })
           }
+          actionBar={selectedKeys => (
+            <ActionBar>
+              <Button
+                onPress={async () => {
+                  // "Select all" can span pages, so fetch the full matching set
+                  // (same query, no pagination) before exporting.
+                  const selected =
+                    selectedKeys === 'all'
+                      ? (await fetchVenues({ ...params, pageSize: 'all' }))
+                          .items
+                      : items.filter(v => selectedKeys.has(v.id));
+                  exportVenuesToCsv(selected);
+                }}
+              >
+                <Download /> Export CSV
+              </Button>
+            </ActionBar>
+          )}
         >
-          {items.map(venue => (
-            <VenueRow
-              key={venue.id}
-              venue={venue}
-              onDelete={deleteVenue}
-              deleteDisabled={isDeleting}
-            />
-          ))}
-        </Table.Body>
-      </Table>
+          <Table.Header>
+            <Table.Column id="name" rowHeader allowsSorting>
+              Name
+            </Table.Column>
+            <Table.Column id="type">Type</Table.Column>
+            <Table.Column id="address">Address</Table.Column>
+            <Table.Column id="capacity" alignX="right" allowsSorting>
+              Capacity
+            </Table.Column>
+            <Table.Column id="price" alignX="right" allowsSorting>
+              Max. Price
+            </Table.Column>
+            <Table.Column id="traits">Traits</Table.Column>
+            <Table.Column id="amenities">Amenities</Table.Column>
+            <Table.Column id="parking">Parking</Table.Column>
+            <Table.Column id="rating" alignX="right">
+              Rating
+            </Table.Column>
+            <Table.Column id="available">Available</Table.Column>
+            <Table.Column id="actions">
+              <VisuallyHidden>Actions</VisuallyHidden>
+            </Table.Column>
+          </Table.Header>
+          <Table.Body
+            emptyState={() =>
+              isFiltered ? <FilterEmptyState /> : <NoDataEmptyState />
+            }
+          >
+            {items.map(venue => (
+              <VenueRow
+                key={venue.id}
+                venue={venue}
+                onDelete={deleteVenue}
+                deleteDisabled={isDeleting}
+              />
+            ))}
+          </Table.Body>
+        </Table>
+      )}
     </div>
   );
 };
