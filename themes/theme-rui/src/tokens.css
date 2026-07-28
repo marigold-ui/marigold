@@ -144,6 +144,21 @@
   --color-selected: var(--color-charcoal-300);
   --color-selected-bold: var(--color-charcoal-900);
   --color-selected-bold-foreground: var(--color-charcoal-50);
+  /* A focus *tint*, not a focus *indicator*. The name has misled at least once,
+     so: this wash accompanies a focus ring, it cannot replace one.
+
+     Measured against its own ground, `focus-highlight` is 1.11:1 on white and
+     1.00:1 on the page -- literally invisible there -- and the -bold sibling
+     reaches 1.52:1. WCAG 2.4.11 Focus Appearance wants 3:1, and no wash can get
+     there: solving for it needs alpha ~= 0.435 on white, over twice the R5
+     budget and darker than `selected`, so it would read as a selection rather
+     than a focus. The perceivable affordance is `ui-state-focus`, whose ring is
+     drawn from `--color-ring`.
+
+     Not renamed to `--color-focus-tint` only because the token is public API
+     and the rename is breaking; if a breaking theme change rides along, take it
+     then. Consumers that lean on this wash *instead of* a ring are tracked in
+     DST-1661 -- Menu items have no ring at all. */
   --color-focus-highlight: var(--color-charcoal-100);
   --color-focus-highlight-bold: var(--color-charcoal-300);
 

@@ -147,6 +147,46 @@ const readToken = (token: string) =>
   getComputedStyle(document.documentElement).getPropertyValue(token).trim();
 
 /**
+ * WCAG thresholds this file asserts against.
+ *
+ * `TEXT` is 1.4.3 Contrast (Minimum) for normal-size text.
+ *
+ * `MARKER` is 1.4.11 Non-text Contrast — the bar for visual information
+ * *required to identify* a component or state. Washes are asserted to stay
+ * **below** it, which is not a typo: a wash is reinforcement, and anything that
+ * clears 3:1 is strong enough to be mistaken for the marker itself. Crossing
+ * the line means someone has repurposed a wash as a state indicator and should
+ * be reaching for the opaque bold tier instead.
+ *
+ * Deliberately absent: a threshold for hover. 1.4.11 covers information
+ * required to *identify* a component or state, and a control is identifiable
+ * without its hover feedback — so hover has no ratio floor. Focus does (2.4.11,
+ * 3:1), but no wash can serve as a focus indicator: reaching 3:1 needs
+ * α ≈ 0.435 on white, over twice the R5 budget and darker than `selected`.
+ * Focus indication belongs to `ui-state-focus`, not to this ramp.
+ */
+const WCAG = { TEXT: 4.5, MARKER: 3 } as const;
+
+/** Contrast of an element's own text against its own composited fill. */
+const measureTextOnFill = (element: HTMLElement, groundToken: string) => {
+  const ground = readToken(groundToken);
+  const { backgroundColor, color } = getComputedStyle(element);
+  const fill = composite(ground, backgroundColor);
+
+  return contrastRatio(composite(`rgb(${fill.join(',')})`, color), fill);
+};
+
+/** Contrast of an element's composited fill against the bare ground. */
+const measureFillOnGround = (element: HTMLElement, groundToken: string) => {
+  const ground = readToken(groundToken);
+
+  return contrastRatio(
+    composite(ground, getComputedStyle(element).backgroundColor),
+    composite(ground, 'transparent')
+  );
+};
+
+/**
  * Measures every `[data-swatch]` inside `children` against the ground it sits
  * on, once, after layout — writing the result to `data-ratio` and into the
  * swatch's readout node.
@@ -172,11 +212,7 @@ const Measured = ({ children }: PropsWithChildren) => {
         swatch.closest<HTMLElement>('[data-ground]')?.dataset.groundSolid;
       if (!groundToken) continue;
 
-      const ground = readToken(groundToken);
-      const ratio = contrastRatio(
-        composite(ground, getComputedStyle(swatch).backgroundColor),
-        composite(ground, 'transparent')
-      );
+      const ratio = measureFillOnGround(swatch, groundToken);
 
       swatch.dataset.ratio = ratio.toFixed(3);
       const readout = swatch.querySelector<HTMLElement>('[data-ratio-out]');
@@ -580,6 +616,118 @@ ComponentStates.test(
       });
 
       await userEvent.unhover(rest);
+    }
+  }
+);
+
+/**
+ * The grounds whose washes are expected to be legible today.
+ *
+ * The contrast ground is excluded on purpose and asserted separately below —
+ * it is broken on `beta-release`, and the exclusion is what keeps that fact
+ * from being quietly swallowed.
+ */
+const LIGHT_GROUNDS = GROUNDS.filter(ground => ground.id !== 'contrast');
+
+/**
+ * Every wash row on a given ground, across *all* of the story's ground blocks.
+ *
+ * A descendant selector rather than `querySelector` on the panel: the story
+ * renders several `<Grounds>` blocks, so there are multiple elements carrying
+ * `data-ground="surface"` and only one of them holds the wash rows. Resolving
+ * just the first found the Ghost Button block, matched nothing, and every loop
+ * below ran zero times and passed.
+ */
+const washesOn = (root: HTMLElement, groundId: string) => [
+  ...root.querySelectorAll<HTMLElement>(
+    `[data-ground="${groundId}"] [data-wash]`
+  ),
+];
+
+ComponentStates.test(
+  'text on every wash clears WCAG 1.4.3 on the light grounds',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    for (const ground of LIGHT_GROUNDS) {
+      const washes = washesOn(canvasElement, ground.id);
+
+      // Non-vacuity guard. An empty NodeList makes every assertion below
+      // unreachable and the test green — which is exactly how the first
+      // version of this shipped.
+      await expect(washes.length, `found no wash rows on ${ground.id}`).toBe(
+        WASHES.length
+      );
+
+      for (const wash of washes) {
+        const ratio = measureTextOnFill(wash, ground.solid);
+
+        await expect(
+          ratio,
+          `${wash.dataset.wash} on ${ground.id}: text measures ${ratio.toFixed(2)}:1`
+        ).toBeGreaterThanOrEqual(WCAG.TEXT);
+      }
+    }
+  }
+);
+
+ComponentStates.test(
+  'text on the contrast ground is still broken — remove this when it is fixed',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    const washes = washesOn(canvasElement, 'contrast');
+
+    await expect(washes.length, 'found no wash rows on contrast').toBe(
+      WASHES.length
+    );
+
+    // This is a characterisation test, not an endorsement. Today's washes are
+    // opaque and white-calibrated, so on a charcoal-900 ground they paint
+    // near-white blocks under inherited near-white text: measured 1.00 / 1.06 /
+    // 1.21 / 1.47:1, an unambiguous 1.4.3 failure that is live in production.
+    //
+    // Asserting the failure rather than skipping it means Phase 2 cannot land
+    // silently: repointing the semantics onto the ramp will break this test,
+    // and the fix is to delete it and fold the contrast ground back into
+    // LIGHT_GROUNDS above (renaming it, at that point, to all of them).
+    for (const wash of washes) {
+      const ratio = measureTextOnFill(wash, '--color-primary');
+
+      await expect(
+        ratio,
+        `${wash.dataset.wash} unexpectedly passes on contrast (${ratio.toFixed(2)}:1) — if Phase 2 landed, delete this test`
+      ).toBeLessThan(WCAG.TEXT);
+    }
+  }
+);
+
+Ramp.test(
+  'no ramp step is strong enough to pass as a state marker',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    // R7 as an executable invariant. A wash reinforces a state; the thing that
+    // *identifies* it — a checkmark, a weight change, an opaque bold fill — has
+    // to carry 3:1 on its own. Every consumer checked pairs `selected` with one
+    // (ListBox and Menu reveal a checkmark, Sidebar adds font-medium, Table
+    // rows delegate to the checkbox), and this guards the other half of that
+    // bargain: if a step ever climbs past 3:1 it has stopped being a wash, and
+    // whoever needs that weight wants the bold tier instead.
+    for (const ground of GROUNDS) {
+      const panel = canvasElement.querySelector<HTMLElement>(
+        `[data-ground="${ground.id}"]`
+      )!;
+      const native = ground.id === 'contrast' ? 'b' : 'a';
+
+      for (const rung of RAMP) {
+        const swatch = panel.querySelector<HTMLElement>(
+          `[data-swatch="${native}-${rung.step}"]`
+        )!;
+        const ratio = measureFillOnGround(swatch, ground.solid);
+
+        await expect(
+          ratio,
+          `${native}-${rung.step} on ${ground.id} reaches ${ratio.toFixed(2)}:1 — too strong for a wash`
+        ).toBeLessThan(WCAG.MARKER);
+      }
     }
   }
 );
