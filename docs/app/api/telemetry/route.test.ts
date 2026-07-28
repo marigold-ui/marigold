@@ -5,23 +5,20 @@ import { POST } from './route';
 // Constructed once and reused: getRedis() caches its client at module scope,
 // so every later call returns this same instance — beforeEach resets the spies,
 // not the cached client. Hoisted by vitest above the `./route` import so the
-// mock is in place before route.ts resolves '@upstash/redis'.
+// mock is in place before record.ts resolves '@upstash/redis'.
 const redisMock = {
   incr: vi.fn(),
   expire: vi.fn(),
   lpush: vi.fn(),
 };
 vi.mock('@upstash/redis', () => ({
-  // route.ts constructs this with `new Redis(...)` — an arrow function can't
+  // record.ts constructs this with `new Redis(...)` — an arrow function can't
   // be invoked as a constructor, so this needs a real function/class.
   Redis: vi.fn(function RedisMock() {
     return redisMock;
   }),
 }));
 
-// Build a valid telemetry event. The `command` field is the only thing each
-// test varies; everything else is a known-good payload that satisfies
-// EventSchema so we isolate the command-enum contract.
 const makeEvent = (command: string) => ({
   event: 'cli_command',
   command,
@@ -35,8 +32,6 @@ const makeEvent = (command: string) => ({
   anonymousId: '00000000-0000-4000-8000-000000000000',
 });
 
-// Build a valid mcp_tool_call event. Mirrors makeEvent's "vary one field"
-// approach — `tool` is the only thing tests below change.
 const makeMcpEvent = (tool: string) => ({
   event: 'mcp_tool_call',
   tool,
@@ -58,9 +53,7 @@ const post = (body: unknown) =>
 
 describe('POST /api/telemetry', () => {
   beforeEach(() => {
-    // Redis is unconfigured in tests, so a valid event is accepted with 204
-    // (the route returns 204 when getRedis() yields null). This lets us assert
-    // schema acceptance without a backend.
+    // Redis is unconfigured in tests, so a valid event is accepted with 204.
     vi.stubEnv('KV_REST_API_URL', '');
     vi.stubEnv('KV_REST_API_TOKEN', '');
   });

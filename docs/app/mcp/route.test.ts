@@ -4,22 +4,9 @@ import crypto from 'node:crypto';
 import { after } from 'next/server';
 import { searchDocsHandler } from './route';
 
-// First test file for this route. Scope is deliberately narrow: verify the
-// telemetry wiring added around `search_docs` (DST-1625), not a full
-// pre-existing-code backfill. Driving this through the real exported
-// GET/POST handlers would require simulating full MCP tools/call JSON-RPC
-// framing AND working around a module-load-time OIDC/JWKS config that throws
-// before auth even completes in a test environment — see the comment on
-// `searchDocsHandler`'s export in route.ts. Testing the exported function
-// directly sidesteps all of that.
-
 // vi.mock factories are hoisted above all imports/consts in this file, so
-// anything they reference must go through vi.hoisted() to avoid a
-// "cannot access before initialization" error.
+// anything they reference must go through vi.hoisted().
 const { send, recordTelemetryEvent, mockChunks } = vi.hoisted(() => {
-  // Two toy 2-dimensional chunks: the first exactly matches the mock query
-  // embedding ([1, 0]) and should score highest; the second is orthogonal and
-  // should score lowest — makes the "top match" deterministic.
   const encodeEmbedding = (values: number[]): string => {
     const buf = Buffer.alloc(values.length * 4);
     values.forEach((v, i) => buf.writeFloatLE(v, i * 4));
@@ -158,7 +145,9 @@ describe('searchDocsHandler', () => {
     // this artificial delay; computed beforehand, it stays small regardless
     // of when the callback runs.
     vi.mocked(after).mockImplementationOnce(task => {
-      setTimeout(task, 50);
+      setTimeout(() => {
+        if (typeof task === 'function') task();
+      }, 50);
     });
 
     await searchDocsHandler({ query: 'button', limit: 3 }, { authInfo });

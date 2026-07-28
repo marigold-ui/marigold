@@ -1,11 +1,7 @@
 import { Redis } from '@upstash/redis';
 import { EventSchema, type TelemetryEvent } from './schema';
 
-// Per-caller daily quota. Telemetry is fire-and-forget from every caller
-// (CLI process, MCP tool call), so the legit upper bound is "one event per
-// invocation"; 1000/day leaves ample headroom for power users (CI is
-// auto-suppressed on the CLI side) while still bounding abuse on the public
-// POST endpoint to a knowable share of the Upstash quota.
+// Per-caller daily quota, bounding abuse on the public POST endpoint.
 const RATE_LIMIT_PER_DAY = 1000;
 const SECONDS_PER_DAY = 24 * 60 * 60;
 // How long a day's raw event list is retained before Redis expires it.
@@ -23,9 +19,7 @@ const dateKey = (): string => {
 };
 
 // Prefixed per event source so the rate-limit keyspace stays greppable by
-// caller type. Not load-bearing for correctness — a CLI anonymousId (36-char
-// UUID) and an MCP hashedCallerId (64-char hex digest) can never collide as
-// strings — but cheap insurance against either format changing later.
+// caller type.
 const rateLimitIdOf = (event: TelemetryEvent): string =>
   event.event === 'cli_command'
     ? `cli:${event.anonymousId}`
@@ -53,12 +47,9 @@ export type RecordResult =
 export async function recordTelemetryEvent(
   event: TelemetryEvent
 ): Promise<RecordResult> {
-  // Defense-in-depth: the HTTP route already validates via EventSchema
-  // before calling this, but an in-process caller (the MCP route) builds its
-  // event by hand and only satisfies TelemetryEvent at compile time — a
-  // future narrowed constraint in schema.ts (e.g. a shorter .max()) wouldn't
-  // be caught by TypeScript. Re-validating here means every caller gets the
-  // same runtime guarantee, not just the HTTP one.
+  // Defense-in-depth: an in-process caller (the MCP route) builds its event
+  // by hand and only satisfies TelemetryEvent at compile time, not Zod's
+  // runtime constraints.
   if (!EventSchema.safeParse(event).success) {
     return 'error';
   }
