@@ -621,15 +621,6 @@ ComponentStates.test(
 );
 
 /**
- * The grounds whose washes are expected to be legible today.
- *
- * The contrast ground is excluded on purpose and asserted separately below —
- * it is broken on `beta-release`, and the exclusion is what keeps that fact
- * from being quietly swallowed.
- */
-const LIGHT_GROUNDS = GROUNDS.filter(ground => ground.id !== 'contrast');
-
-/**
  * Every wash row on a given ground, across *all* of the story's ground blocks.
  *
  * A descendant selector rather than `querySelector` on the panel: the story
@@ -645,10 +636,15 @@ const washesOn = (root: HTMLElement, groundId: string) => [
 ];
 
 ComponentStates.test(
-  'text on every wash clears WCAG 1.4.3 on the light grounds',
+  'text on every wash clears WCAG 1.4.3 on every ground',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvasElement }) => {
-    for (const ground of LIGHT_GROUNDS) {
+    // Every ground, contrast included. Before the polarity flip this loop ran
+    // over the two light grounds only, because the opaque white-calibrated
+    // rungs painted near-white blocks on charcoal-900 and the inherited light
+    // text on them measured 1.00 / 1.06 / 1.21 / 1.47:1. The characterisation
+    // test that pinned that failure has been deleted; this is what replaces it.
+    for (const ground of GROUNDS) {
       const washes = washesOn(canvasElement, ground.id);
 
       // Non-vacuity guard. An empty NodeList makes every assertion below
@@ -671,31 +667,37 @@ ComponentStates.test(
 );
 
 ComponentStates.test(
-  'text on the contrast ground is still broken — remove this when it is fixed',
+  'each ground gets the wash polarity it can actually show',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvasElement }) => {
-    const washes = washesOn(canvasElement, 'contrast');
-
-    await expect(washes.length, 'found no wash rows on contrast').toBe(
-      WASHES.length
-    );
-
-    // This is a characterisation test, not an endorsement. Today's washes are
-    // opaque and white-calibrated, so on a charcoal-900 ground they paint
-    // near-white blocks under inherited near-white text: measured 1.00 / 1.06 /
-    // 1.21 / 1.47:1, an unambiguous 1.4.3 failure that is live in production.
+    // The flip is a cascade trick — `ui-contrast` restates the wash tokens
+    // against ramp B and descendants inherit them — so it is worth asserting it
+    // actually reaches the washes rather than trusting the cascade. A dark-base
+    // wash on a dark ground lands at ~1.01:1; a light-base one on a light
+    // ground the same. Both directions have to clear that floor to prove the
+    // right ramp is in play.
     //
-    // Asserting the failure rather than skipping it means Phase 2 cannot land
-    // silently: repointing the semantics onto the ramp will break this test,
-    // and the fix is to delete it and fold the contrast ground back into
-    // LIGHT_GROUNDS above (renaming it, at that point, to all of them).
-    for (const wash of washes) {
-      const ratio = measureTextOnFill(wash, '--color-primary');
+    // This assertion is why the flip is written the way it is: the first draft
+    // put a shared `--color-fill-*` seam in :root and repointed only that, and
+    // this test caught it at 1.01:1 on contrast. A `var()` in a custom-property
+    // declaration resolves where the declaration lives, not where it is read.
+    const INVISIBLE = 1.02;
 
-      await expect(
-        ratio,
-        `${wash.dataset.wash} unexpectedly passes on contrast (${ratio.toFixed(2)}:1) — if Phase 2 landed, delete this test`
-      ).toBeLessThan(WCAG.TEXT);
+    for (const ground of GROUNDS) {
+      const washes = washesOn(canvasElement, ground.id);
+
+      await expect(washes.length, `found no wash rows on ${ground.id}`).toBe(
+        WASHES.length
+      );
+
+      for (const wash of washes) {
+        const ratio = measureFillOnGround(wash, ground.solid);
+
+        await expect(
+          ratio,
+          `${wash.dataset.wash} on ${ground.id} is ${ratio.toFixed(2)}:1 — the wrong polarity reached it`
+        ).toBeGreaterThan(INVISIBLE);
+      }
     }
   }
 );
@@ -771,25 +773,37 @@ ComponentStates.test(
  * hovered selected option pays the wash twice.
  */
 export const Stacking = meta.story({
+  tags: ['component-test'],
   render: () => (
     <Stack space="group">
       <Headline level="3">Stacking</Headline>
       <Note>
         Two washes on one element composite to a third value that belongs to no
-        step of the ramp. Co-occurring states need an explicit combined token,
-        not two fills — and the trap is overlapping siblings, not just nesting.
+        step of the ramp. <code>hover</code> twice measures 1.60:1 on the light
+        grounds and 1.66:1 here, past <code>selected</code>&rsquo;s 1.52:1 top
+        rung; <code>hover</code> over an actually-selected row reaches 1.91:1, a
+        quarter beyond it. Co-occurring states need an explicit combined token,
+        not two fills, and the trap is overlapping siblings as much as nesting.
       </Note>
       <Grounds>
         {() => (
           <div className="grid grid-cols-2 gap-2 text-xs">
-            <div className="bg-charcoal-a-200 rounded px-3 py-4 text-center">
+            {/* `bg-hover`, not a raw ramp class: the real trap is a semantic
+                wash nested in the same semantic wash, and using the token means
+                these specimens flip polarity with the ground like everything
+                else. Hardcoding `bg-charcoal-a-200` here made the contrast
+                column demonstrate the wrong polarity instead of stacking. */}
+            <div
+              data-stack="single"
+              className="bg-hover rounded px-3 py-4 text-center"
+            >
               single
-              <div className="opacity-60">a-200</div>
+              <div className="opacity-60">hover</div>
             </div>
-            <div className="bg-charcoal-a-200 rounded text-center">
-              <div className="bg-charcoal-a-200 rounded px-3 py-4">
+            <div className="bg-hover rounded text-center">
+              <div data-stack="double" className="bg-hover rounded px-3 py-4">
                 stacked
-                <div className="opacity-60">a-200 × 2</div>
+                <div className="opacity-60">hover × 2</div>
               </div>
             </div>
           </div>
@@ -798,6 +812,88 @@ export const Stacking = meta.story({
     </Stack>
   ),
 });
+
+/**
+ * Contrast of a specimen against its ground, counting *every* wash between the
+ * two rather than only the specimen's own.
+ *
+ * `measureFillOnGround` deliberately reads one layer, which is what the ramp
+ * tests want. Stacking is the case where that is the wrong answer: the whole
+ * point is the layer the parent contributes.
+ */
+const measureStackOnGround = (element: HTMLElement, groundToken: string) => {
+  const ground = readToken(groundToken);
+  const layers: string[] = [];
+
+  for (
+    let node: HTMLElement | null = element;
+    node && !node.dataset.ground;
+    node = node.parentElement
+  ) {
+    const background = getComputedStyle(node).backgroundColor;
+    if (background !== 'rgba(0, 0, 0, 0)' && background !== 'transparent') {
+      layers.unshift(background);
+    }
+  }
+
+  const stacked = layers.reduce<string | Rgb>(
+    (below, layer) =>
+      composite(
+        typeof below === 'string' ? below : `rgb(${below.join(',')})`,
+        layer
+      ),
+    ground
+  );
+
+  return contrastRatio(stacked as Rgb, composite(ground, 'transparent'));
+};
+
+Stacking.test(
+  'a stacked wash overshoots the top rung, which is why R6 forbids it',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    // This guards the reason for the rule, not the rule itself. Repointing the
+    // semantics onto the ramp is what made stacking possible at all — while the
+    // washes were opaque, a nested one simply covered its parent. Now alphas
+    // multiply: 1 - (1 - 0.11)² = 0.208, past a-300's 0.19.
+    //
+    // If someone ever "fixes" the overshoot by lowering the alphas, the ramp's
+    // contrast targets break and the Ramp tests catch that. This test catches
+    // the opposite mistake: quietly assuming two washes are safe to nest.
+    for (const ground of GROUNDS) {
+      const single = canvasElement.querySelector<HTMLElement>(
+        `[data-ground="${ground.id}"] [data-stack="single"]`
+      );
+      const double = canvasElement.querySelector<HTMLElement>(
+        `[data-ground="${ground.id}"] [data-stack="double"]`
+      );
+
+      await expect(single, `no single specimen on ${ground.id}`).not.toBeNull();
+      await expect(
+        double,
+        `no stacked specimen on ${ground.id}`
+      ).not.toBeNull();
+
+      const topRung = RAMP.at(-1)!.target;
+      const alone = measureStackOnGround(single!, ground.solid);
+      const stacked = measureStackOnGround(double!, ground.solid);
+
+      // Non-vacuity: if the helper failed to see the parent's layer both
+      // specimens would measure the same and the assertion below would be
+      // asserting nothing.
+      await expect(
+        stacked,
+        `stacked and single both measure ${alone.toFixed(2)}:1 on ${ground.id} — the parent wash was not counted`
+      ).toBeGreaterThan(alone);
+
+      // The stacked pair reads as a rung the ramp does not have.
+      await expect(
+        stacked,
+        `stacked a-200 measures ${stacked.toFixed(2)}:1 on ${ground.id} — expected it to overshoot the ${topRung}:1 top rung`
+      ).toBeGreaterThan(topRung);
+    }
+  }
+);
 
 /* ------------------------------------------------------------------ *
  * The open decision

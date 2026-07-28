@@ -117,54 +117,72 @@
   --color-primary: var(--color-charcoal-900);
   --color-primary-foreground: var(--color-charcoal-50);
 
-  /* --- Wash Fills (per-ground indirection) --- */
-  /* The seam between "which ramp" and "which job". Defaults to ramp A; a dark
-     ground repoints these four to ramp B once and every wash beneath it flips
-     polarity with no component-level change.
-
-     These must INHERIT -- that is the whole mechanism. Do not register them
-     with `@property { inherits: false }` the way --ui-background-color and its
-     siblings are: those are deliberately non-inheriting so a themed parent
-     surface cannot bleed into nested surfaces, which is the exact opposite of
-     what a per-ground flip needs. */
-  --color-fill-50: var(--color-charcoal-a-50);
-  --color-fill-100: var(--color-charcoal-a-100);
-  --color-fill-200: var(--color-charcoal-a-200);
-  --color-fill-300: var(--color-charcoal-a-300);
-
   /* --- Neutral Backgrounds & States --- */
-  /* NOTE: still the opaque charcoal rungs. Repointing these onto --color-fill-*
-     is the next step of DST-1590 and is where all the visual risk lives; the
-     ramp above ships first, additively, so `Styles/Alpha` can baseline against
-     today's colours. */
-  --color-muted: var(--color-charcoal-50);
-  --color-control: var(--color-charcoal-300);
-  --color-hover: var(--color-charcoal-200);
+  /* The four wash jobs, now on the ramp. On white this is a no-op by
+     construction -- the alphas were solved to the rungs these tokens used to
+     name, and measure within 0.007 of them. What it buys is the other two
+     grounds:
 
-  --color-selected: var(--color-charcoal-300);
+       job               white          page           contrast
+       muted             1.042 -> 1.044  1.061 -> 1.046  16.58 -> 1.057
+       focus-highlight   1.106 -> 1.110  1.000 -> 1.115  15.62 -> 1.123
+       hover             1.266 -> 1.269  1.144 -> 1.269  13.65 -> 1.268
+       selected          1.531 -> 1.524  1.384 -> 1.519  11.28 -> 1.535
+
+     Two bugs fall out of that table. `focus-highlight` was charcoal-100 and so
+     is `background`, so a focus highlight on the page ground was 1.000:1 --
+     absent, not weak. And on the contrast ground the opaque light rungs did not
+     vanish, they blew out: 11-16:1 paints a near-white bar on a dark surface,
+     which is why light text sitting on one measured 1.00-1.47:1.
+
+     `control` stays opaque: it is a bold marker, not a wash (R7).
+
+     These name ramp A directly. There is no `--color-fill-*` seam between the
+     two, and there cannot be one: a `var()` inside a custom-property
+     declaration is substituted where that declaration applies, so a
+     `--color-muted: var(--color-fill-50)` written here resolves against :root's
+     fill and descendants inherit the already-resolved colour. Repointing
+     `--color-fill-50` further down the tree changes nothing. A dark ground
+     therefore has to restate these five tokens itself -- see the polarity flip
+     in `ui-contrast`. */
+  --color-muted: var(--color-charcoal-a-50);
+  --color-control: var(--color-charcoal-300);
+  --color-hover: var(--color-charcoal-a-200);
+
+  --color-selected: var(--color-charcoal-a-300);
   --color-selected-bold: var(--color-charcoal-900);
   --color-selected-bold-foreground: var(--color-charcoal-50);
   /* A focus *tint*, not a focus *indicator*. The name has misled at least once,
      so: this wash accompanies a focus ring, it cannot replace one.
 
-     Measured against its own ground, `focus-highlight` is 1.11:1 on white and
-     1.00:1 on the page -- literally invisible there -- and the -bold sibling
-     reaches 1.52:1. WCAG 2.4.11 Focus Appearance wants 3:1, and no wash can get
-     there: solving for it needs alpha ~= 0.435 on white, over twice the R5
-     budget and darker than `selected`, so it would read as a selection rather
-     than a focus. The perceivable affordance is `ui-state-focus`, whose ring is
-     drawn from `--color-ring`.
+     On the ramp it measures 1.11:1 on white and 1.12:1 on the page; before the
+     repoint the page case was 1.00:1, because the old value and `background`
+     were the same charcoal rung. The -bold sibling reaches 1.52:1. A focus
+     indicator needs 3:1 (WCAG 1.4.11), and no wash can get there: solving for
+     it needs alpha ~= 0.435 on white, over twice the R5 budget and darker than
+     `selected`, so it would read as a selection rather than a focus. The
+     perceivable affordance is a ring -- `ui-state-focus` for framed controls,
+     `ui-state-focus-item` for borderless rows -- drawn from `--color-ring`.
 
      Not renamed to `--color-focus-tint` only because the token is public API
      and the rename is breaking; if a breaking theme change rides along, take it
-     then. Consumers that lean on this wash *instead of* a ring are tracked in
-     DST-1661 -- Menu items have no ring at all. */
-  --color-focus-highlight: var(--color-charcoal-100);
-  --color-focus-highlight-bold: var(--color-charcoal-300);
+     then. Consumers that leant on this wash *instead of* a ring were tracked in
+     DST-1661 (Menu, FileField). */
+  --color-focus-highlight: var(--color-charcoal-a-100);
+  --color-focus-highlight-bold: var(--color-charcoal-a-300);
 
   /* --- Disabled --- */
+  /* Deliberately still opaque while the four wash jobs move to the ramp.
+     Disabled is not a wash question, it is the veil-vs-reset question: does a
+     disabled control get a translucent veil laid over whatever it was, or get
+     reset to a flat neutral? `Styles/Alpha -> DisabledVeilVsReset` exists so
+     that can be settled by looking. Until it is, this stays where it was.
+
+     Worth knowing when it is settled: `disabled-surface` is charcoal-100, the
+     same rung as `background`, so a disabled fill on the page ground measures
+     1.000:1 -- the same collision the repoint just fixed for
+     `focus-highlight`. Today disabled is carried by text dimming alone there. */
   --color-disabled: var(--color-charcoal-400);
-  /* Disabled controls recede: a lighter fill and edge than an enabled control. */
   --color-disabled-surface: var(--color-charcoal-100);
   --color-disabled-border: var(--color-charcoal-300);
 

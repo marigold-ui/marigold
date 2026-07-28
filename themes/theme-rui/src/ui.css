@@ -111,6 +111,28 @@
   @apply rounded-surface relative transition-[box-shadow];
   @apply text-primary-foreground;
 
+  /* Polarity flip. A dark-base wash has nothing to darken on a dark ground, so
+     every wash job is restated here against ramp B. Descendants inherit these,
+     so a hover, selection or focus tint anywhere beneath a contrast surface
+     flips with no component-level change.
+
+     Restating all five is not redundancy, it is the only thing that works.
+     `var()` inside a custom-property declaration is substituted where that
+     declaration applies, so the tempting one-line version -- a shared
+     `--color-fill-*` seam repointed here -- resolves `--color-muted` against
+     :root and descendants inherit the already-resolved ramp A colour. That seam
+     existed in the first draft of DST-1590 and measured 1.01:1 here, which is
+     ramp A on a dark ground: invisible. Add a rung, add a line.
+
+     Before the flip, the opaque light rungs landed at 11-16:1 against this
+     ground -- a near-white bar, on which the surface's own light text measured
+     1.00-1.47:1. Ramp B puts them at 1.06-1.54. */
+  --color-muted: var(--color-charcoal-b-50);
+  --color-focus-highlight: var(--color-charcoal-b-100);
+  --color-focus-highlight-bold: var(--color-charcoal-b-300);
+  --color-hover: var(--color-charcoal-b-200);
+  --color-selected: var(--color-charcoal-b-300);
+
   /* Read --ui-border-color first (falling back to the derived dark edge) so state
      overrides recolor the ring here exactly as on a plain ui-frame — otherwise a
      disabled/focused/invalid contrast surface keeps its dark outline. */
