@@ -221,6 +221,11 @@ codemod scans and warns but never edits token values. Those values are yours.
 update those too. New hover utilities `ui-state-hover` and `ui-state-hover-ghost`
 replace hand-copied `hover:bg-*` patterns. Prefer them in custom components.
 
+The rename table above covers semantic tokens. Palette-scale utilities such as
+`text-brand-400` or `text-accent-500` are not a 1:1 rename, so review them by hand.
+The `brand` and `accent` palettes were reworked in v18. Map each to the nearest
+semantic token (for example `text-primary`) or a `charcoal` step.
+
 ### A1.2 Elevation utilities and shadow tiers removed (`util-surface-*`) `[flagged]` `[manual]`
 
 **What changed.** The elevation model was rebuilt. Nothing in normal document flow
@@ -677,6 +682,10 @@ keeps every call site valid:
 | `Thumb`           | `ThumbsUp`             | `Underlined`             | `Underline`             |
 | `Deal`            | `BadgePercent`         | `Zoom`                   | `ZoomIn`                |
 | `Print`           | `Printer`              |                          |                         |
+
+`Close` and `Print` are not in the official mapping table but map to their Lucide
+equivalents, `X` and `Printer`. If you hit an old icon name that is not listed
+above, use its Lucide name. The import still comes from `@marigold/icons`.
 
 ## A8. Removed
 
