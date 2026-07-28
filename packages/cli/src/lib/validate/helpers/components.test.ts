@@ -1,5 +1,8 @@
 import ts from 'typescript';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import os from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
   __resetRegistryCacheForTests,
   buildMarigoldTagResolver,
@@ -8,7 +11,10 @@ import {
   isImplausiblySmallRegistry,
   isMarigoldComponent,
   loadMarigoldRegistry,
+  setComponentResolutionRoot,
 } from './components.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // The registry is the source of truth for every ERROR-severity prop check, yet
 // it is otherwise only exercised transitively. A ts-morph/TypeScript upgrade or
@@ -80,6 +86,35 @@ describe('loadMarigoldRegistry (registry source of truth)', () => {
     const props = getComponentProps('IconButton') ?? [];
     expect(props.length).toBeGreaterThan(0);
     expect(props.some(p => p.name === 'variant')).toBe(true);
+  });
+});
+
+describe('component resolution root', () => {
+  afterEach(() => {
+    setComponentResolutionRoot(process.cwd());
+    __resetRegistryCacheForTests();
+  });
+
+  it('falls back to CLI-relative resolution when the given root has no @marigold/components of its own', () => {
+    // The registry loader is CLI-relative by default; setComponentResolutionRoot
+    // lets it prefer the validated file's own project first. A bare tmp dir
+    // (no node_modules at all) must not break resolution — it should fall
+    // through to the CLI's own copy, the same as before this option existed.
+    setComponentResolutionRoot(os.tmpdir());
+    __resetRegistryCacheForTests();
+    expect(() => loadMarigoldRegistry()).not.toThrow();
+    expect(loadMarigoldRegistry().size).toBeGreaterThan(20);
+  });
+
+  it('resolves from a project-relative root when one is given', () => {
+    // packages/cli itself has @marigold/components as a real dependency
+    // (unlike the workspace root), so pointing the root there exercises the
+    // project-relative path itself, not just its fallback.
+    const cliPackageDir = path.resolve(__dirname, '..', '..', '..', '..');
+    setComponentResolutionRoot(cliPackageDir);
+    __resetRegistryCacheForTests();
+    expect(() => loadMarigoldRegistry()).not.toThrow();
+    expect(loadMarigoldRegistry().size).toBeGreaterThan(20);
   });
 });
 

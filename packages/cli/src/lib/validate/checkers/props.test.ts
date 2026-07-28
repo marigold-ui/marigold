@@ -174,13 +174,37 @@ const C = ({ v }: { v: string }) => <Button variant={v}>Save</Button>;`
     expect(issue).toBeUndefined();
   });
 
-  it('does not flag className, style, id, data-testid, children', () => {
+  it('does not flag id, data-testid, children (universal props)', () => {
     const file = tmpFile(
       'mv-common-props.tsx',
       `import { Button } from '@marigold/components';
       const C = () => (
-        <Button className="x" style={{}} id="btn" data-testid="btn">click</Button>
+        <Button id="btn" data-testid="btn">click</Button>
       );`
+    );
+    expect(validateProps(file)).toEqual([]);
+  });
+
+  it('warns on className/style for a component that removed them (Button)', () => {
+    const file = tmpFile(
+      'mv-style-escape.tsx',
+      `import { Button } from '@marigold/components';
+      const C = () => (
+        <Button className="x" style={{}}>click</Button>
+      );`
+    );
+    const issues = validateProps(file);
+    expect(issues).toHaveLength(2);
+    expect(issues.every(i => i.severity === 'warning')).toBe(true);
+    expect(issues.map(i => i.message).join(' ')).toMatch(/className/);
+    expect(issues.map(i => i.message).join(' ')).toMatch(/style/);
+  });
+
+  it('does not flag className/style on a component that deliberately keeps it (CloseButton)', () => {
+    const file = tmpFile(
+      'mv-style-escape-allowed.tsx',
+      `import { CloseButton } from '@marigold/components';
+      const C = () => <CloseButton className="x" style={{}} />;`
     );
     expect(validateProps(file)).toEqual([]);
   });

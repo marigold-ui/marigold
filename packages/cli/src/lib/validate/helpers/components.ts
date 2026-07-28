@@ -34,10 +34,38 @@ export type ComponentInfo = {
 
 const require = createRequire(import.meta.url);
 
+// Set once per `validate()` invocation (from the file being validated) so
+// resolution below prefers the target project's own dependency tree over the
+// CLI's. Without this, a globally-installed `marigold` resolves
+// `@marigold/components` relative to itself — which it never has as a
+// dependency — and every static check silently degrades instead of finding
+// the project's real copy.
+let resolutionRoot: string | undefined;
+
+export const setComponentResolutionRoot = (dir: string): void => {
+  resolutionRoot = dir;
+};
+
 let cachedRegistry: Map<string, ComponentInfo> | null = null;
 let cachedSource: SourceFile | null = null;
 
 const COMPONENT_NAME_PATTERN = /^[A-Z][A-Za-z0-9]*$/;
+
+const resolveMarigoldComponentsEntry = (): string => {
+  if (resolutionRoot) {
+    try {
+      return require.resolve('@marigold/components', {
+        paths: [resolutionRoot],
+      });
+    } catch {
+      // Not resolvable from the target project either — fall through to the
+      // CLI-relative attempt below (covers running validate from inside the
+      // monorepo against its own fixtures, where there is no separate
+      // project tree to resolve from).
+    }
+  }
+  return require.resolve('@marigold/components');
+};
 
 const findMarigoldComponentsDts = (): string => {
   // `@marigold/components` does not expose `package.json` in its `exports`
@@ -45,7 +73,7 @@ const findMarigoldComponentsDts = (): string => {
   // package directory, then use the canonical dist path.
   let entry: string;
   try {
-    entry = require.resolve('@marigold/components');
+    entry = resolveMarigoldComponentsEntry();
   } catch {
     throw new Error(
       '@marigold/components is not installed (or not resolvable from here). The validator derives its component schema from its type declarations — install it with `pnpm add @marigold/components`.'

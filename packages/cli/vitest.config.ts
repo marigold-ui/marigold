@@ -7,6 +7,14 @@ export default defineConfig({
     include: ['src/**/*.test.ts'],
     globals: true,
     pool: 'forks',
+    // Each *.integration.test.ts launches its own Chromium + Vite dev server
+    // (spatial/renderer.ts). Unbounded file parallelism runs several of these
+    // concurrently, and the CPU contention on a shared runner pushes renders
+    // past RENDER_BUDGET_MS, surfacing as a flaky runtime error rather than a
+    // real regression. Capping concurrency keeps these serialized enough to
+    // stay under budget without serializing the whole (mostly fast, unit)
+    // suite.
+    maxWorkers: 2,
     testTimeout: 60_000,
     // picocolors treats any truthy `CI` env var as color support, so CLI
     // output that's plain-text locally comes back interspersed with ANSI

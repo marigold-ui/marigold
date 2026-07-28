@@ -170,6 +170,25 @@ describe('formatForLLM', () => {
     expect(() => formatForLLM(report)).not.toThrow();
   });
 
+  it('caps a truncated array detail at MAX_DETAIL_LENGTH', () => {
+    const report = sampleReport();
+    // 8 long strings survive the >8-element truncation, but their combined
+    // JSON is still well past the length cap — the array branch must apply
+    // the same cap the plain-value branch does.
+    report.errors[0].details = {
+      items: Array.from({ length: 9 }, (_, i) =>
+        `very-long-value-${i}`.repeat(10)
+      ),
+    };
+    const md = formatForLLM(report);
+    const dataLine = md.split('\n').find(l => l.trim().startsWith('data:'));
+    expect(dataLine).toBeDefined();
+    // prefix + capped value (<=120) + the closing brace from formatIssue's template
+    expect(dataLine!.length).toBeLessThanOrEqual(
+      '  data: {items='.length + 120 + '}'.length
+    );
+  });
+
   it('includes checks run line', () => {
     const md = formatForLLM(sampleReport());
     expect(md).toContain('checks run: technical, a11y');

@@ -4,9 +4,32 @@ import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 
+// Set once per `validate()` invocation (from the file being validated) —
+// mirrors helpers/components.ts::setComponentResolutionRoot. Without it, a
+// globally-installed `marigold` resolves `@marigold/theme-rui` relative to
+// itself instead of the target project, which never has it as a dependency.
+let resolutionRoot: string | undefined;
+
+export const setThemeResolutionRoot = (dir: string): void => {
+  resolutionRoot = dir;
+};
+
+const resolveThemeRuiEntry = (): string => {
+  if (resolutionRoot) {
+    try {
+      return require.resolve('@marigold/theme-rui', {
+        paths: [resolutionRoot],
+      });
+    } catch {
+      // Fall through to the CLI-relative attempt below.
+    }
+  }
+  return require.resolve('@marigold/theme-rui');
+};
+
 export const resolveThemeDir = (): string | null => {
   try {
-    const entry = require.resolve('@marigold/theme-rui');
+    const entry = resolveThemeRuiEntry();
     let dir = path.dirname(entry);
     while (dir !== path.dirname(dir)) {
       const pkg = path.join(dir, 'package.json');

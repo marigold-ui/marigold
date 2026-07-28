@@ -37,15 +37,15 @@ const VALUE_BASED_HANDLERS = new Set([
   'onInputChange',
 ]);
 
-const COMMON_PROPS = new Set([
-  'key',
-  'ref',
-  'children',
-  'className',
-  'style',
-  'data-testid',
-  'id',
-]);
+const COMMON_PROPS = new Set(['key', 'ref', 'children', 'data-testid', 'id']);
+
+// CLAUDE.md: components are authored to remove `className`/`style` and
+// expose theming through `variant`/`size` instead — so unlike COMMON_PROPS,
+// these are NOT blanket-allowed. A handful of components (e.g. CloseButton)
+// deliberately keep one anyway; `validSet` (the component's real declared
+// props) is checked first, so those stay unflagged. This only fires for the
+// components that followed the convention and actually removed it.
+const STYLE_ESCAPE_PROPS = new Set(['className', 'style']);
 
 const suggestProp = (used: string, valid: string[]): string | undefined => {
   // Guard the empty name: `used[0]` below would throw on '' and the throw would
@@ -141,6 +141,19 @@ export const validateProps = (
       };
 
       if (!validSet.has(name)) {
+        if (STYLE_ESCAPE_PROPS.has(name)) {
+          issues.push({
+            type: 'technical',
+            severity: 'warning',
+            source: 'prop-validator',
+            component: displayName,
+            message: `Prop "${name}" on <${displayName}> bypasses the design system's theming.`,
+            suggestion: `Marigold components don't expose "className"/"style" — use the component's own theming props (e.g. "variant", "size") instead.`,
+            location,
+            details: { used: name },
+          });
+          continue;
+        }
         const suggested = suggestProp(name, validNames);
         issues.push({
           type: 'technical',

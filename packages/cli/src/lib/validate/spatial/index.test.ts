@@ -158,4 +158,40 @@ describe('runSpatialChecks', () => {
       vi.useRealTimers();
     }
   });
+
+  it('returns the successful result even when closing the handle afterward rejects', async () => {
+    const renderer: SharedRenderer = {
+      render: async () => ({
+        result: {
+          page: {} as Page,
+          context: {} as never,
+          consoleErrors: [],
+          pageErrors: [],
+          renderErrors: [],
+          renderTimeMs: 1,
+        },
+        close: async () => {
+          throw new Error('context already closed');
+        },
+      }),
+      close: async () => undefined,
+    };
+
+    const result = await runSpatialChecks(
+      'irrelevant.tsx',
+      {
+        enableSpatial: true,
+        enableA11y: false,
+        enableResponsive: false,
+        enableKeyboardA11y: false,
+        enableTextSpacing: false,
+        enableRevealed: false,
+        enableContentHoverFocus: false,
+        viewport: { width: 1280, height: 720 },
+      },
+      renderer
+    );
+
+    expect(result.renderTimeMs).toBe(1);
+  });
 });

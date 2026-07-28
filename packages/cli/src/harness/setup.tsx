@@ -6,6 +6,7 @@ import {
 } from 'react';
 import { MarigoldProvider } from '@marigold/components';
 import theme from '@marigold/theme-rui';
+// @ts-expect-error - CSS side-effect import handled by Vite bundler
 import '@marigold/theme-rui/styles.css';
 
 type CapturedRenderError = {

@@ -32,10 +32,15 @@ export const parseChecks = (input: string): ValidationCheck[] => {
 export const runValidate = async (
   options: RunValidateOptions
 ): Promise<RunValidateResult> => {
+  // Skipped, not failed: an automated correction loop gates on the exit
+  // code, and "validation is turned off" must not read as "this file is
+  // broken" the way a thrown error (exit 1) would.
   if (process.env.MARIGOLD_VALIDATE_DISABLED === '1') {
-    throw new Error(
-      'marigold validate is disabled in this configuration (MARIGOLD_VALIDATE_DISABLED=1).'
-    );
+    return {
+      output:
+        'marigold validate is disabled in this configuration (MARIGOLD_VALIDATE_DISABLED=1). Skipping.',
+      hasErrors: false,
+    };
   }
 
   if (!options.file) {

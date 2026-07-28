@@ -31,7 +31,6 @@
     "**/node_modules/*",
     "docs/**/*",
     ".claude/**/*",
-    "**/harness/*",
     "**/validate/examples/*"
   ]
 }

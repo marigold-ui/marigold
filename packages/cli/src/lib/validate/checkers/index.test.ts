@@ -107,4 +107,43 @@ describe('runTechnicalChecks', () => {
     vi.doUnmock('./table-usage.js');
     vi.resetModules();
   });
+
+  it('reports one clear error (not N downgraded warnings) when the component registry is unavailable', async () => {
+    vi.resetModules();
+    vi.doMock('../helpers/components.js', async importOriginal => {
+      const actual =
+        await importOriginal<typeof import('../helpers/components.js')>();
+      return {
+        ...actual,
+        loadMarigoldRegistry: () => {
+          throw new Error('@marigold/components is not installed');
+        },
+      };
+    });
+    const { runTechnicalChecks: runWithMock } = await import('./index.js');
+
+    const result = runWithMock(fixture('valid-button.tsx'));
+
+    // Exactly one clear, error-severity finding for the real cause...
+    const registryErrors = result.issues.filter(
+      i => i.severity === 'error' && i.source === 'runtime'
+    );
+    expect(registryErrors).toHaveLength(1);
+    expect(registryErrors[0].message).toContain(
+      '@marigold/components is not installed'
+    );
+    // ...not a pile of per-checker warnings for the same root cause.
+    expect(
+      result.issues.some(
+        i => i.severity === 'warning' && i.message.includes('check failed')
+      )
+    ).toBe(false);
+    // A file that could not actually be checked must not report clean passes
+    // for the checks that never ran.
+    expect(result.passed).not.toContain('All Marigold props are valid');
+    expect(result.passed).not.toContain('Component composition');
+
+    vi.doUnmock('../helpers/components.js');
+    vi.resetModules();
+  });
 });

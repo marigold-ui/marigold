@@ -26,16 +26,17 @@ const formatValue = (v: unknown): string => {
   // functions and symbols, and it THROWS on a bigint or a circular object.
   // Render/a11y findings carry optional detail fields (e.g. an axe violation
   // with no `impact`), so fall back to String(v) in either case.
+  const capLength = (s: string): string =>
+    s.length > MAX_DETAIL_LENGTH ? s.slice(0, MAX_DETAIL_LENGTH - 1) + '…' : s;
+
   try {
     if (Array.isArray(v) && v.length > 8) {
       const truncated = JSON.stringify(v.slice(0, 8));
-      return truncated.slice(0, -1) + ', …]';
+      return capLength(truncated.slice(0, -1) + ', …]');
     }
     const s = JSON.stringify(v);
     if (s === undefined) return String(v);
-    return s.length > MAX_DETAIL_LENGTH
-      ? s.slice(0, MAX_DETAIL_LENGTH - 1) + '…'
-      : s;
+    return capLength(s);
   } catch {
     return String(v);
   }

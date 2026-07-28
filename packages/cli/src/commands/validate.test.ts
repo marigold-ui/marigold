@@ -24,10 +24,10 @@ describe('runValidate', () => {
     delete process.env.MARIGOLD_VALIDATE_DISABLED;
   });
 
-  it('throws when disabled via MARIGOLD_VALIDATE_DISABLED', async () => {
+  it('skips cleanly (hasErrors: false) when disabled via MARIGOLD_VALIDATE_DISABLED', async () => {
     process.env.MARIGOLD_VALIDATE_DISABLED = '1';
-    await expect(runValidate({ file: 'anything.tsx' })).rejects.toThrow(
-      /disabled/i
-    );
+    const result = await runValidate({ file: 'anything.tsx' });
+    expect(result.hasErrors).toBe(false);
+    expect(result.output).toMatch(/disabled/i);
   });
 });

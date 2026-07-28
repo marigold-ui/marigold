@@ -1,9 +1,9 @@
-import { StrictMode } from 'react';
+import { type ComponentType, StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import * as ComponentModule from './Component.js';
 import { RenderHarness } from './setup.js';
 
-type AnyComponent = React.ComponentType;
+type AnyComponent = ComponentType;
 
 const findComponent = (
   mod: Record<string, unknown>

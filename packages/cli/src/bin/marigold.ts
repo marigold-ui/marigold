@@ -425,8 +425,8 @@ export const main = async (
       cacheHit = result.cacheHit;
     } else if (command === 'validate') {
       // MARIGOLD_VALIDATE_DISABLED is enforced in one place — runValidate — so
-      // the CLI and programmatic callers behave identically (it throws, which
-      // this command's catch turns into a non-zero exit).
+      // the CLI and programmatic callers behave identically: it returns
+      // hasErrors: false, so this exits 0 like any other clean run.
       const { positionals, values } = parseValidateCommand(rest);
       const [fileInput] = positionals;
       const checks = values.checks ?? 'all';

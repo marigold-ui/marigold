@@ -481,15 +481,8 @@ export const runSpatialChecks = async (
   inspectPromise.catch(() => {});
 
   try {
-    const result = await Promise.race([inspectPromise, budget]);
-    await handle.close();
-    return result;
+    return await Promise.race([inspectPromise, budget]);
   } catch (err) {
-    // Force the handle closed now — a wedged page.evaluate would otherwise
-    // keep the browser context (and the underlying Vite server/temp dir)
-    // open indefinitely, since inspect() itself never reaches the point
-    // where it would close it.
-    await handle.close().catch(() => {});
     // The render already completed by the time inspect() started (`handle`
     // exists), so its real elapsed time is known even when the inspection
     // phase itself times out — attach it so the caller doesn't report a
@@ -500,5 +493,12 @@ export const runSpatialChecks = async (
     throw err;
   } finally {
     clearTimeout(budgetTimer);
+    // Always closed here, success or failure, and swallowed: a wedged
+    // page.evaluate would otherwise keep the browser context (and the
+    // underlying Vite server/temp dir) open indefinitely, since inspect()
+    // itself never reaches the point where it would close it — and a
+    // rejecting close() on the success path must not overwrite an already-
+    // computed, genuinely successful result with a thrown error.
+    await handle.close().catch(() => {});
   }
 };
