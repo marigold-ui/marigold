@@ -33,7 +33,9 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
       'shrink-0 size-8 rounded-full cursor-pointer transition-[color]',
       'hover:ui-state-hover-ghost',
       'focus-visible:ui-state-focus outline-none',
-      'disabled:ui-state-disabled',
+      // Borderless round button on a dark bar: the disabled reset would paint an
+      // opaque near-white circle. See `ui-state-disabled`.
+      'disabled:ui-state-disabled [--ui-disabled-fill:transparent]',
       '[&_svg]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0',
     ],
   }),

@@ -160,8 +160,10 @@ const readToken = (token: string) =>
  *
  * Deliberately absent: a threshold for hover. 1.4.11 covers information
  * required to *identify* a component or state, and a control is identifiable
- * without its hover feedback — so hover has no ratio floor. Focus does (2.4.11,
- * 3:1), but no wash can serve as a focus indicator: reaching 3:1 needs
+ * without its hover feedback — so hover has no ratio floor. Focus does (3:1,
+ * via 1.4.11; WCAG 2.2 SC 2.4.13 Focus Appearance restates it at AAA — *not*
+ * 2.4.11, which is Focus Not Obscured), but no wash can serve as a focus
+ * indicator: reaching 3:1 needs
  * α ≈ 0.435 on white, over twice the R5 budget and darker than `selected`.
  * Focus indication belongs to `ui-state-focus`, not to this ramp.
  */
@@ -175,6 +177,27 @@ const measureTextOnFill = (element: HTMLElement, groundToken: string) => {
 
   return contrastRatio(composite(`rgb(${fill.join(',')})`, color), fill);
 };
+
+/**
+ * Whether an element paints a background of its own at all.
+ *
+ * Deliberately not a contrast measurement. `--color-disabled-surface` is
+ * charcoal-100 and so is `--color-background`, so on the page ground the old
+ * broken behaviour — painting an opaque fill onto a control that had none —
+ * measured 1.000:1 against its ground, identical to painting nothing. A ratio
+ * assertion cannot tell those apart and would pass on the bug.
+ *
+ * Tested against the serialized value rather than by compositing. Compositing
+ * the fill over two different grounds and comparing looks more rigorous but is
+ * browser-dependent: Firefox serializes `bg-current/10` in a form the canvas
+ * cannot parse, so `fillStyle` silently keeps its previous value and a control
+ * that *does* paint reads as if it paints nothing. A fully transparent
+ * background always serializes one of these two ways.
+ */
+const paintsOwnFill = (element: HTMLElement) =>
+  !/^(transparent|rgba\(0,\s*0,\s*0,\s*0\))$/.test(
+    getComputedStyle(element).backgroundColor.trim()
+  );
 
 /** Contrast of an element's composited fill against the bare ground. */
 const measureFillOnGround = (element: HTMLElement, groundToken: string) => {
@@ -698,6 +721,73 @@ ComponentStates.test(
           `${wash.dataset.wash} on ${ground.id} is ${ratio.toFixed(2)}:1 — the wrong polarity reached it`
         ).toBeGreaterThan(INVISIBLE);
       }
+    }
+  }
+);
+
+ComponentStates.test(
+  'disabling a control with no resting fill does not give it one',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    // The originating DST-1590 defect. `ui-state-disabled` treats its fill as a
+    // *reset* — replace the control's surface with a flat neutral so a tinted
+    // control desaturates. On a ghost control there is no surface to replace, so
+    // it added one, and an opaque light neutral cannot sit on an arbitrary
+    // ground: on contrast it painted 15.62:1 with 2.08:1 text.
+    //
+    // Asserted as "paints no fill" rather than as a ratio on purpose — see
+    // `paintsOwnFill`. On the page ground the bug measured 1.000:1, so a ratio
+    // assertion would have passed on it.
+    for (const ground of GROUNDS) {
+      // First `[data-ground]` per id is the ghost Button row.
+      const row = canvasElement.querySelector<HTMLElement>(
+        `[data-ground="${ground.id}"]`
+      );
+      await expect(row, `no ghost Button row on ${ground.id}`).not.toBeNull();
+
+      const panel = within(row!);
+      const rest = panel.getByRole('button', { name: 'Rest' });
+      const disabled = panel.getByRole('button', { name: 'Disabled' });
+      // Queried by attribute, not by name: a pending Button currently has no
+      // accessible name at all (DST-1660). Swap this for a name lookup once
+      // that lands.
+      const loading = row!.querySelector<HTMLElement>('button[data-pending]');
+      await expect(loading, `no loading Button on ${ground.id}`).not.toBeNull();
+
+      // Non-vacuity: the helper has to be able to *see* a fill, or the two
+      // assertions below hold for a broken helper as readily as a fixed control.
+      const forced = row!.querySelector<HTMLElement>(
+        '[class*="ui-state-hover-ghost"] > button'
+      );
+      await expect(
+        forced,
+        `no forced-hover specimen on ${ground.id}`
+      ).not.toBeNull();
+      await expect(
+        paintsOwnFill(forced!),
+        `the forced-hover specimen on ${ground.id} paints nothing, so this test proves nothing`
+      ).toBe(true);
+
+      for (const [label, control] of [
+        ['disabled', disabled],
+        ['loading', loading!],
+      ] as const) {
+        await expect(
+          paintsOwnFill(control),
+          `${label} ghost Button on ${ground.id} paints a fill it has no resting equivalent for`
+        ).toBe(false);
+      }
+
+      // The state still has to be perceivable, and with no fill it rides
+      // entirely on the text. Measured: 17.28 -> 2.31 on white, 15.62 -> 2.08 on
+      // page, 16.57 -> 7.49 on contrast.
+      const restText = measureTextOnFill(rest, ground.solid);
+      const disabledText = measureTextOnFill(disabled, ground.solid);
+
+      await expect(
+        disabledText,
+        `disabled text on ${ground.id} is ${disabledText.toFixed(2)}:1 against a resting ${restText.toFixed(2)}:1 — not a visible step down`
+      ).toBeLessThan(restText / 1.5);
     }
   }
 );

@@ -18,13 +18,18 @@ export const Button: ThemeComponent<'Button'> = cva({
         'hover:[--ui-background-color:var(--color-soft-hover)] hover:[--soft-edge:var(--color-soft-edge-hover)]',
         'expanded:[--ui-background-color:var(--color-soft-hover)] expanded:[--soft-edge:var(--color-soft-edge-hover)]',
       ],
-      ghost: 'hover:ui-state-hover-ghost',
+      // No resting fill, so the disabled reset must not add one -- see
+      // `ui-state-disabled`. Set unprefixed rather than under `disabled:` so it
+      // covers `pending:` too, and so it cannot lose a cascade race with the
+      // `disabled:ui-state-disabled` that arrives via `ui-interactive`.
+      ghost: 'hover:ui-state-hover-ghost [--ui-disabled-fill:transparent]',
       destructive: [
         'ui-contrast-destructive',
         'hover:[--ui-background-color:oklch(from_var(--color-destructive-bold)_calc(l-0.15)_c_h)]',
       ],
-      'destructive-ghost': 'text-destructive-accent hover:ui-state-hover-ghost',
-      link: 'text-link ui-touch-hitbox',
+      'destructive-ghost':
+        'text-destructive-accent hover:ui-state-hover-ghost [--ui-disabled-fill:transparent]',
+      link: 'text-link ui-touch-hitbox [--ui-disabled-fill:transparent]',
     },
     size: {
       default: 'text-sm',

@@ -225,10 +225,32 @@
 
 /*
  * Applies a consistent visual style for disabled elements.
+ *
+ * The fill is a *reset*: it replaces the control's own surface with a flat
+ * neutral so a tinted control desaturates and reads as out of play. Measured on
+ * a destructive Panel it strips 92% of the chroma (0.032 -> 0.0025), which is
+ * the whole point.
+ *
+ * That only makes sense for a control that has a surface to begin with. On a
+ * ghost or link control -- no resting fill -- it *adds* one, and an opaque
+ * light neutral cannot sit on an arbitrary ground: on `ui-contrast` it painted
+ * a near-white pill at 15.62:1 carrying 2.08:1 text. Those controls set
+ * `--ui-disabled-fill: transparent` and keep the rest of the treatment; the
+ * state then rides on `text-disabled`, which is a large step down on every
+ * ground (17.28 -> 2.31 on white, 16.57 -> 7.49 on contrast).
+ *
+ * An alpha veil is not the answer here. It preserves the fill it sits on, so on
+ * `ui-contrast` -- where polarity flips to the light-base ramp -- a veil over a
+ * light tinted fill changes it by 1.01:1, i.e. not at all. Polarity derived from
+ * the ground is the wrong input for a control carrying its own opaque fill.
  */
+@property --ui-disabled-fill {
+  syntax: '*';
+  inherits: false;
+}
 @utility ui-state-disabled {
   @apply text-disabled cursor-not-allowed;
-  background: var(--color-disabled-surface);
+  background: var(--ui-disabled-fill, var(--color-disabled-surface));
   background-clip: border-box;
   /* Dim the boundary rather than remove it: a borderless input reads as broken.
      Recolor the ring to the light disabled-border for a soft, receding edge. */
