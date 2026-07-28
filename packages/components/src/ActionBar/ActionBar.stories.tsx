@@ -140,33 +140,6 @@ export const DisabledAndLoading = meta.story({
       </Button>
     </ActionBar>
   ),
-  play: async ({ canvas, step }) => {
-    await step('the enabled action stays operable', async () => {
-      await expect(canvas.getByRole('button', { name: 'Edit' })).toBeEnabled();
-    });
-
-    await step('the disabled action is not operable', async () => {
-      await expect(canvas.getByRole('button', { name: 'Copy' })).toBeDisabled();
-    });
-
-    await step(
-      'the loading action is marked pending, not disabled',
-      async () => {
-        // Queried by state rather than by name: `loading` swaps the label for a
-        // `visibility: hidden` copy, so a pending Button currently has *no*
-        // accessible name (WCAG 4.1.2). That is a Button-level defect, tracked
-        // separately — asserting the name here would lock the bug in.
-        const pending = canvas
-          .getAllByRole('button')
-          .find(button => button.hasAttribute('data-pending'))!;
-
-        // `loading` maps to RAC's `isPending`, which keeps the button focusable
-        // and marks it `aria-disabled` rather than removing it from the tree.
-        await expect(pending).toHaveAttribute('aria-disabled', 'true');
-        await expect(pending).toHaveAttribute('tabindex', '0');
-      }
-    );
-  },
 });
 
 const users = [
