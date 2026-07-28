@@ -332,6 +332,113 @@ Basic.test(
   }
 );
 
+// WCAG 1.4.11: visual information required to identify a state needs 3:1
+// against adjacent colors. A focus indicator is such a state.
+const WCAG_NON_TEXT = 3;
+
+/**
+ * Every painted background from the page down to `element`, bottom layer first.
+ * Walked rather than assumed: menu items are transparent, the Menu container is
+ * transparent, and the Popover is what actually paints the surface.
+ */
+const paintedGround = (element: HTMLElement | null) => {
+  const layers: string[] = [];
+  for (let node = element; node; node = node.parentElement) {
+    const background = getComputedStyle(node).backgroundColor;
+    if (background !== 'rgba(0, 0, 0, 0)' && background !== 'transparent') {
+      layers.unshift(background);
+    }
+  }
+  return layers;
+};
+
+/**
+ * Composite the layers onto white and read the pixel back, so alpha, oklch and
+ * color-space conversion are resolved by the browser instead of by us.
+ */
+const flatten = (layers: string[]) => {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1;
+  canvas.height = 1;
+  const context = canvas.getContext('2d', { willReadFrequently: true })!;
+  context.fillStyle = '#fff';
+  context.fillRect(0, 0, 1, 1);
+  for (const layer of layers) {
+    context.fillStyle = layer;
+    context.fillRect(0, 0, 1, 1);
+  }
+  const [r, g, b] = context.getImageData(0, 0, 1, 1).data;
+  return [r!, g!, b!] as const;
+};
+
+const contrast = (a: readonly number[], b: readonly number[]) => {
+  const luminance = (rgb: readonly number[]) => {
+    const [r, g, b] = rgb.map(value => {
+      const channel = value! / 255;
+      return channel <= 0.03928
+        ? channel / 12.92
+        : ((channel + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * r! + 0.7152 * g! + 0.0722 * b!;
+  };
+  const [high, low] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (high! + 0.05) / (low! + 0.05);
+};
+
+Basic.test(
+  'Keyboard focus draws a ring that clears 3:1 against both adjacent colors',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Hogwarts Houses' })
+    );
+    await userEvent.keyboard('{ArrowDown}');
+
+    const item = await waitFor(() => {
+      const focused = canvas
+        .getByRole('menu')
+        .querySelector<HTMLElement>('[data-focus-visible]');
+      expect(focused).not.toBeNull();
+      return focused!;
+    });
+
+    // The background wash measures ~1.11:1 on its own and, because focus
+    // follows the mouse in a menu, it also fires on hover. It cannot be the
+    // indicator. Assert the ring is a separate, real layer.
+    const { boxShadow } = getComputedStyle(item);
+    const ring = boxShadow
+      .split(/,(?![^(]*\))/)
+      .map(shadow => shadow.trim())
+      .find(shadow => shadow.includes('inset'));
+    expect(
+      ring,
+      `no inset focus ring in box-shadow: ${boxShadow}`
+    ).toBeTruthy();
+
+    const ringColor = ring!.match(
+      /(?:oklch|oklab|rgba?|color)\([^)]*\)|#[0-9a-f]{3,8}/i
+    )?.[0];
+    expect(ringColor, `no color found in shadow: ${ring}`).toBeTruthy();
+
+    // WCAG's "adjacent colors": the row's own fill inside the ring, and the
+    // menu surface outside it.
+    const inside = paintedGround(item);
+    const outside = paintedGround(item.parentElement);
+    expect(inside.length).toBeGreaterThan(outside.length);
+
+    for (const [side, ground] of [
+      ['inside (row fill)', inside],
+      ['outside (menu surface)', outside],
+    ] as const) {
+      const ratio = contrast(flatten([...ground, ringColor!]), flatten(ground));
+      expect(
+        ratio,
+        `focus ring vs ${side} is ${ratio.toFixed(2)}:1, needs ${WCAG_NON_TEXT}:1`
+      ).toBeGreaterThanOrEqual(WCAG_NON_TEXT);
+    }
+  }
+);
+
 export const MultiSelection = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
