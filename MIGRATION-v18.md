@@ -408,7 +408,42 @@ padding, so wrap body content in `<Card.Content>`.
 **Gotchas.** `<Card>` now renders an `<article>` landmark labelled by its `<Title>`.
 A `headingLevel` prop (default 3) sets the heading tag.
 
-### A3.3 `<Inset>` padding props renamed `[auto]`
+### A3.3 Beta adopters only: `<Panel>` header sub-components `[manual]` (beta only)
+
+**What changed.** `<Panel>` is new in v18, so a v17 app has nothing to migrate
+here. Skip this unless you built against the v18 beta. During the beta,
+`Panel.Header` adopted the slot-configuration pattern and its paired
+sub-components were removed in favor of the slot-aware primitives. `Panel.Title`
+and `Panel.Description` become plain `<Title>` and `<Description>`, and the
+`Panel.HeaderActions` wrapper is dropped so the action primitives (a `<Button>`,
+`<ButtonGroup>`, or `<ActionMenu>`) sit directly in `Panel.Header`, where they are
+slot-aware and claim the actions cell. `Panel.CollapsibleHeader` follows the same
+rule: `Panel.CollapsibleTitle` and `Panel.CollapsibleDescription` become `<Title>`
+and `<Description>` nested inside it.
+
+```diff
+- <Panel>
+-   <Panel.Header>
+-     <Panel.Title>Payment method</Panel.Title>
+-     <Panel.Description>Visa ending in 4242</Panel.Description>
+-     <Panel.HeaderActions>
+-       <Button>Edit</Button>
+-     </Panel.HeaderActions>
+-   </Panel.Header>
+- </Panel>
++ <Panel>
++   <Panel.Header>
++     <Title>Payment method</Title>
++     <Description>Visa ending in 4242</Description>
++     <Button>Edit</Button>
++   </Panel.Header>
++ </Panel>
+```
+
+**Gotchas.** A title-only panel needs no `Panel.Header`. Drop a `<Title>` straight
+into `<Panel>` and the region label still resolves.
+
+### A3.4 `<Inset>` padding props renamed `[auto]`
 
 **What changed.** `space` → `p`, `spaceX` → `px`, `spaceY` → `py`, aligning with
 `<Panel>`. Across the system `space` now always means gap between children and
