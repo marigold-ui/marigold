@@ -8,6 +8,7 @@ import {
   Inline,
   Panel,
   SearchField,
+  SectionMessage,
   Select,
   SelectList,
   Stack,
@@ -110,6 +111,8 @@ const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
   const [search, setSearch] = useState('');
   const [team, setTeam] = useState<Key | null>('all');
   const [selected, setSelected] = useState<Set<Key>>(() => new Set(initial));
+  // Keep the commit active. An empty press reveals a message instead of committing.
+  const [attemptedEmpty, setAttemptedEmpty] = useState(false);
 
   const results = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -151,6 +154,18 @@ const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
       <Dialog.Title>Select people</Dialog.Title>
       <Dialog.Content>
         <Stack space={4}>
+          {/* An empty press reveals this instead of committing. It announces
+              itself to assistive tech and clears once a person is staged. */}
+          <SectionMessage
+            variant="error"
+            open={attemptedEmpty && staged.length === 0}
+          >
+            <SectionMessage.Title>No one staged yet</SectionMessage.Title>
+            <SectionMessage.Content>
+              Tick at least one person to grant access.
+            </SectionMessage.Content>
+          </SectionMessage>
+
           {/* Search and the team filter narrow the visible rows together;
               neither touches the staged selection tracked in `selected`. */}
           <Inline space={2} alignY="input">
@@ -231,11 +246,17 @@ const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
         <Button variant="secondary" slot="close">
           Cancel
         </Button>
-        {/* At least one person is required, so an empty set can never commit. */}
+        {/* Stays active. An empty press is refused with the message above
+            rather than blocked by a disabled control. */}
         <Button
           variant="primary"
-          disabled={staged.length === 0}
-          onPress={() => onConfirm(selected)}
+          onPress={() => {
+            if (staged.length === 0) {
+              setAttemptedEmpty(true);
+              return;
+            }
+            onConfirm(selected);
+          }}
         >
           {staged.length === 0
             ? 'Add people'

@@ -4,6 +4,7 @@ import {
   Button,
   Description,
   Panel,
+  SectionMessage,
   SelectList,
   Stack,
   Text,
@@ -76,6 +77,8 @@ const concerts: Concert[] = [
 export default () => {
   const [selected, setSelected] = useState<Set<Key>>(() => new Set());
   const [subscribed, setSubscribed] = useState<Concert[] | null>(null);
+  // Keep the commit active. An empty press reveals a message instead of committing.
+  const [attemptedEmpty, setAttemptedEmpty] = useState(false);
 
   const count = selected.size;
   const chosen = concerts.filter(concert => selected.has(concert.id));
@@ -84,6 +87,15 @@ export default () => {
     <Panel aria-label="Season subscription">
       <Panel.Content>
         <Stack space={4}>
+          {/* An empty press reveals this instead of committing. It announces
+              itself to assistive tech and clears once a concert is chosen. */}
+          <SectionMessage variant="error" open={attemptedEmpty && count === 0}>
+            <SectionMessage.Title>No concerts chosen yet</SectionMessage.Title>
+            <SectionMessage.Content>
+              Choose at least one concert for your season pass.
+            </SectionMessage.Content>
+          </SectionMessage>
+
           {/* The whole pick lives on the page: no dialog, just the list and
               the commit. The list stays in a stretching Stack so it
               fills the panel; sold-out dates carry `disabled` so they can never
@@ -130,12 +142,18 @@ export default () => {
                 : `${count} concert${count === 1 ? '' : 's'} in your season pass.`}
             </Text>
 
-            {/* Verb-only commit, disabled only while nothing is chosen. The
-                count lives in the line above, not in the label. */}
+            {/* Verb-only commit that stays active. The count lives in the line
+                above, not in the label, and an empty press surfaces the message
+                at the top of the panel. */}
             <Button
               variant="primary"
-              disabled={count === 0}
-              onPress={() => setSubscribed(chosen)}
+              onPress={() => {
+                if (count === 0) {
+                  setAttemptedEmpty(true);
+                  return;
+                }
+                setSubscribed(chosen);
+              }}
             >
               Add to subscription
             </Button>

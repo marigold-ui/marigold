@@ -11,6 +11,7 @@ import {
   Inline,
   Scrollable,
   SearchField,
+  SectionMessage,
   Select,
   Stack,
   Table,
@@ -128,6 +129,8 @@ const PickBody = ({
   const [region, setRegion] = useState<Key | null>('all');
   const [status, setStatus] = useState<Key | null>('all');
   const [selected, setSelected] = useState<Set<Key>>(() => new Set(initial));
+  // Keep the commit active. An empty press reveals a message instead of committing.
+  const [attemptedEmpty, setAttemptedEmpty] = useState(false);
 
   const results = useMemo(() => {
     const filters: VenueFilters = {
@@ -191,6 +194,18 @@ const PickBody = ({
       <Dialog.Title>{title}</Dialog.Title>
       <Dialog.Content>
         <Stack space="regular">
+          {/* An empty press reveals this instead of committing. It announces
+              itself to assistive tech and clears once a venue is staged. */}
+          <SectionMessage
+            variant="error"
+            open={attemptedEmpty && ids.length === 0}
+          >
+            <SectionMessage.Title>Nothing staged yet</SectionMessage.Title>
+            <SectionMessage.Content>
+              Tick at least one venue to add it to the report.
+            </SectionMessage.Content>
+          </SectionMessage>
+
           {/* A real find-and-collect task: search plus several filter facets
               narrow a wide, detail-rich table. This density is what outgrows a
               large dialog and earns a fullscreen surface. */}
@@ -316,11 +331,17 @@ const PickBody = ({
         <Button variant="secondary" slot="close">
           Cancel
         </Button>
-        {/* At least one venue is required, so an empty set can never commit. */}
+        {/* Stays active. An empty press is refused with the message above
+            rather than blocked by a disabled control. */}
         <Button
           variant="primary"
-          disabled={ids.length === 0}
-          onPress={() => onConfirm(ids)}
+          onPress={() => {
+            if (ids.length === 0) {
+              setAttemptedEmpty(true);
+              return;
+            }
+            onConfirm(ids);
+          }}
         >
           {ids.length === 0
             ? `${confirmLabel} venues`
