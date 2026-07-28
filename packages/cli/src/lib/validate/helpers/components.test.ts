@@ -72,13 +72,11 @@ describe('loadMarigoldRegistry (registry source of truth)', () => {
   });
 
   it('derives props for a component whose prop type is inline, not a separately-exported *Props interface', () => {
-    // Regression: IconButton declares its prop type inline as its own
-    // function parameter (`interface IconButtonProps` is NOT exported from
-    // @marigold/components) instead of a separately-exported `IconButtonProps`.
-    // extractPropsFor used to only look for the latter, so this — and 17
-    // other real components (CloseButton, VisuallyHidden, Split, …) —
-    // silently resolved to `props: []`, which made props.ts's
-    // `props.length > 0` guard skip prop validation for them entirely.
+    // IconButton declares its prop type inline as its own function parameter
+    // (`interface IconButtonProps` is NOT exported from @marigold/components)
+    // instead of a separately-exported `IconButtonProps`, exercising
+    // extractPropsFor's call-signature fallback (also relevant to CloseButton,
+    // VisuallyHidden, Split, …).
     const props = getComponentProps('IconButton') ?? [];
     expect(props.length).toBeGreaterThan(0);
     expect(props.some(p => p.name === 'variant')).toBe(true);

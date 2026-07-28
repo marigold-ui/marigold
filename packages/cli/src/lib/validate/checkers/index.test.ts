@@ -83,10 +83,6 @@ describe('runTechnicalChecks', () => {
   });
 
   it("isolates a checker that throws instead of discarding every other checker's findings", async () => {
-    // Regression: previously only the whole runTechnicalChecks call was
-    // guarded, so one checker throwing on an unexpected AST shape silently
-    // wiped out every other checker's results (prop errors, compiler errors,
-    // composition errors, everything) for the file.
     vi.resetModules();
     vi.doMock('./table-usage.js', () => ({
       validateTableUsage: () => {

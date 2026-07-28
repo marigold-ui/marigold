@@ -35,10 +35,10 @@ describe('createCleanupStack', () => {
   });
 
   it('on a second run, only runs teardowns pushed since the first (not already-run ones)', async () => {
-    // Regression: a naive implementation that never drains the queue would
-    // re-invoke 'first' on the second run() too — harmless only by
-    // coincidence today (every real teardown happens to be idempotent), but a
-    // silent double-invocation footgun for any future one that isn't.
+    // A naive implementation that never drains the queue would re-invoke
+    // 'first' on the second run() too — harmless only by coincidence today
+    // (every real teardown happens to be idempotent), but a silent
+    // double-invocation footgun for any future one that isn't.
     const counts = new Map<string, number>();
     const bump = (k: string) => counts.set(k, (counts.get(k) ?? 0) + 1);
     const stack = createCleanupStack();

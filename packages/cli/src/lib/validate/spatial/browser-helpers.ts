@@ -4,8 +4,7 @@
  * The functions here are the SINGLE SOURCE OF TRUTH for the DOM utilities that
  * the `page.evaluate` bodies need. They are serialized into the page via
  * {@link buildInstallScript} so that any `page.evaluate` body can call them as
- * `window.__mv.*` instead of re-inlining its own copy (the pattern the older
- * checks used, which led to duplicated "keep in sync" blocks).
+ * `window.__mv.*` instead of re-inlining its own copy.
  *
  * HARD CONSTRAINT: every function that gets serialized must be self-contained —
  * no closure over module scope, no imports, no TS-only runtime constructs.
@@ -13,8 +12,7 @@
  */
 
 // Stable structural selector for an element, used to correlate findings across
-// passes and to point a human/agent at the node. Mirrors the definition the
-// renderer previously inlined as window.__cssPath.
+// passes and to point a human/agent at the node.
 export const cssPath = (el: Element): string => {
   const parts: string[] = [];
   let cur: Element | null = el;

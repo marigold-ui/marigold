@@ -18,7 +18,7 @@ declare global {
 // A fixture that targets an external host that simply refuses the handshake
 // on its own (nothing is listening there) can't tell "the sandbox blocked
 // this" apart from "the target was never reachable regardless" — the test
-// would pass either way, which is exactly what this fixture used to do.
+// would pass either way.
 const WebSocketAttempt = () => {
   const [status, setStatus] = useState<'pending' | 'open' | 'closed' | 'error'>(
     'pending'

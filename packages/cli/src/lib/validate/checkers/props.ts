@@ -55,12 +55,10 @@ const suggestProp = (used: string, valid: string[]): string | undefined => {
   for (const v of valid) {
     if (v.toLowerCase() === lower) return v;
   }
-  // Strip is-prefix: isRequired → required
   const stripped = used.replace(/^is/, '').toLowerCase();
   for (const v of valid) {
     if (v.toLowerCase() === stripped) return v;
   }
-  // Add is-prefix: disabled → isDisabled
   const isPrefixed = (
     'is' +
     used[0].toUpperCase() +
@@ -159,7 +157,6 @@ export const validateProps = (
         continue;
       }
 
-      // Event handler shadow: HTML handler used when a React Aria equivalent exists
       const ariaHandler = handlerShadows.get(name);
       if (ariaHandler) {
         issues.push({
@@ -175,7 +172,6 @@ export const validateProps = (
         continue;
       }
 
-      // Boolean shadow: HTML prop used when an is-prefixed React Aria equivalent exists
       const ariaBool = booleanShadows.get(name);
       if (ariaBool) {
         issues.push({
@@ -191,13 +187,6 @@ export const validateProps = (
         continue;
       }
 
-      // Value-based handler signature check: detect DOM event patterns
-      // like e.target.value in handlers that receive a value, not an event.
-      // Marigold *usually* renames these to a value-based signature, but its
-      // low-level native wrappers (Input, SearchInput) inherit the native DOM
-      // `onChange: ChangeEventHandler<...>` as-is — so the premise only holds
-      // when the component's own declared prop type actually confirms it,
-      // not for every component with a matching handler *name*.
       const valueHandlerPropInfo = validProps.find(p => p.name === name);
       // Plain substring, not a word-boundary match: real declared types are
       // camelCase compounds like `ChangeEventHandler<HTMLInputElement>` with
@@ -281,7 +270,6 @@ export const validateProps = (
         if (!resolved) return ts.forEachChild(node, visit);
         const props = getComponentProps(resolved);
         if (props && props.length > 0) {
-          // Display the tag as written (e.g. <Btn>), validate against `resolved`.
           checkAttributes(tag.text, resolved, props, node.attributes);
         }
       } else if (

@@ -78,9 +78,8 @@ describe('classifyTrigger', () => {
   });
 
   it('classifies a resolvable aria-describedby as a hover-activated popover', () => {
-    // Regression: this was the one Activation value ('hover') that no code
-    // path ever returned, so hover-revealed content (tooltips) was never
-    // discovered by the interaction driver.
+    // The only path that yields 'hover' — hover-revealed content (tooltips)
+    // must be discoverable by the interaction driver.
     expect(
       classifyTrigger(sig({ hasResolvableAriaDescribedBy: true }))
     ).toEqual({ kind: 'popover', activation: 'hover' });

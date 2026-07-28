@@ -36,12 +36,6 @@ describe('validateProps', () => {
   });
 
   it('flags an unknown prop on IconButton, whose prop type is inline rather than a separately-exported *Props interface', () => {
-    // Regression: IconButton (and 17 other real components — CloseButton,
-    // VisuallyHidden, Split, …) used to resolve to `props: []` because their
-    // prop type is declared inline as the function's own parameter, not a
-    // separately-exported `${Name}Props` interface. props.ts's
-    // `props.length > 0` guard then skipped prop validation entirely, so an
-    // invalid prop like this silently passed with zero findings.
     const file = tmpFile(
       'iconbutton-typo.tsx',
       `import { IconButton } from '@marigold/components';
@@ -99,9 +93,7 @@ const C = () => <Accordion iconPosition="middle">x</Accordion>;`
 
   it('does not flag dynamic variant expressions', () => {
     // A genuinely dynamic value (`variant={v}`) cannot be checked statically,
-    // so it must not be flagged — unlike the previous version of this test,
-    // which pointed at a fixture containing only a static invalid value and
-    // so passed regardless of whether the checker handled dynamic values.
+    // so it must not be flagged.
     const file = tmpFile(
       'mv-dynamic-variant.tsx',
       `import { Button } from '@marigold/components';
@@ -150,9 +142,8 @@ const C = ({ v }: { v: string }) => <Button variant={v}>Save</Button>;`
   it('does not flag onChange on Select (Marigold exposes onChange as its public prop)', () => {
     // Marigold renames the React Aria selection handler to `onChange` as its
     // documented API (Select.stories use `onChange={...}`), so `onChange` is
-    // correct usage, not a shadow of `onSelectionChange`. Flagging it was a
-    // false positive — the same rename pattern as ComboBox (onInputChange) and
-    // <Button disabled> (isDisabled).
+    // correct usage, not a shadow of `onSelectionChange` — the same rename
+    // pattern as ComboBox (onInputChange) and <Button disabled> (isDisabled).
     const issues = validateProps(fixture('event-handler-shadows.tsx'));
     const shadow = issues.find(
       i =>
@@ -172,12 +163,10 @@ const C = ({ v }: { v: string }) => <Button variant={v}>Save</Button>;`
   });
 
   it('does not flag readOnly on RadioGroup (it is the documented prop, not a shadow)', () => {
-    // Regression: `readOnly`/`isReadOnly` used to be on the
-    // BOOLEAN_PREFERRED_ALTERNATIVES allowlist, telling users to replace
-    // RadioGroup's own documented `readOnly` prop with `isReadOnly` — a RAC
-    // prop that only leaks through because RadioGroup's `RemovedProps` omits
-    // it, not something intentionally exposed. That was backwards, so the
-    // pair was removed.
+    // `isReadOnly` only leaks through RadioGroup's type because its
+    // `RemovedProps` omits it, not because it's an intentionally exposed RAC
+    // prop — the BOOLEAN_PREFERRED_ALTERNATIVES allowlist must not pair it
+    // with RadioGroup's own documented `readOnly` prop.
     const issues = validateProps(fixture('boolean-shadows.tsx'));
     const issue = issues.find(
       i => i.component === 'RadioGroup' && i.message.includes('readOnly')
@@ -403,7 +392,6 @@ const C = (props: any) => <Button {...props}>X</Button>;`
     expect(coverage.spreadPropsBypassed).toBeGreaterThanOrEqual(1);
   });
 
-  // Finding #1: tag resolution through the import map.
   it('does not flag props on a local component shadowing a Marigold name', () => {
     const file = tmpFile(
       'mv-local-shadow.tsx',
@@ -457,7 +445,6 @@ const C = () => (
     expect(sError).toBeUndefined();
   });
 
-  // Finding #6: boolean-shadow allowlist must not over-fire.
   it('does not flag open or dismissable on Modal as boolean shadows', () => {
     const file = tmpFile(
       'mv-modal-aliases.tsx',

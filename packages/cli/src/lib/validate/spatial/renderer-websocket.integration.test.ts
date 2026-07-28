@@ -38,8 +38,8 @@ const PORT_BIND_RETRY_DELAY_MS = 200;
 // positive control: a bare `http` server with no 'upgrade' handling would
 // refuse the request outright, and a target that refuses *unconditionally*
 // can't tell "the sandbox blocked this" apart from "nothing was listening
-// anyway" — the same gap this fixture used to have, and the reason it must
-// be provably capable of accepting the handshake absent the sandbox.
+// anyway" — which is why it must be provably capable of accepting the
+// handshake absent the sandbox.
 const startWsHandshakeServer = (
   retriesLeft = PORT_BIND_RETRIES
 ): Promise<{ close: () => Promise<void> }> =>

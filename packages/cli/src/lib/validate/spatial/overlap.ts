@@ -95,11 +95,9 @@ const isIntentionalOverlay = (
   if (aPositioned && a.zIndex > b.zIndex) return true;
   if (bPositioned && b.zIndex > a.zIndex) return true;
 
-  // Overlay roles (tooltip, dialog, menu, etc.)
   if (a.role && OVERLAY_ROLES.has(a.role)) return true;
   if (b.role && OVERLAY_ROLES.has(b.role)) return true;
 
-  // Badge pattern: small element on top of a much larger one
   const areaA = areaOf(a);
   const areaB = areaOf(b);
   if (areaA > 0 && areaB > 0) {

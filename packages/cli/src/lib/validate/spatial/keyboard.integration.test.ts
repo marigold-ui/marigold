@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validate } from '../index.js';
 
-// Integration coverage for the arrow-key-navigation orientation fix: the real
+// Integration coverage for arrow-key navigation orientation: the real
 // key-press/focus-check loop drives an actual keyboard event against a live
 // page, which only a real render can verify. Same self-skip rationale as
 // renderer.integration.test.ts: a real render needs a working Chromium, which

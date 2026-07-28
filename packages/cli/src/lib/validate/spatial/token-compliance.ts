@@ -114,9 +114,9 @@ const NATIVE_ELEMENT_PATTERN = new RegExp(
   `^(${NATIVE_ELEMENTS.join('|')}):nth-child`
 );
 
-// Exported so the leaf-only matching fix is directly unit-testable without
-// needing a live browser (isBrowserDefault is otherwise only exercised via
-// checkTokenCompliance, which requires a real Page).
+// Exported for direct unit testing without a live browser (isBrowserDefault is
+// otherwise only exercised via checkTokenCompliance, which requires a real
+// Page).
 export const isBrowserDefault = (
   selector: string,
   property: string,

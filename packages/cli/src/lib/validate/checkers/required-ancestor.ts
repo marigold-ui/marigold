@@ -11,9 +11,9 @@ import type { ValidationIssue } from '../types.js';
 // A bare item the docs require to live inside a named container, even though
 // that container is not part of its dotted name — the inverse of the
 // schema-derived rule below, so it must be listed explicitly. Only rules with
-// an explicit, prescriptive doc statement belong here. (Tag was a candidate but
-// its doc text only *describes* a tag group — standalone removable tags are a
-// real pattern — so it is deliberately omitted.)
+// an explicit, prescriptive doc statement belong here. (Tag is deliberately
+// omitted: its doc text only *describes* a tag group, and standalone
+// removable tags are a real pattern.)
 //   Radio — "The <Radio> should never be used alone … the <Radio.Group> should
 //     be wrapped around the <Radio>." (marigold-ui.io/components/form/radio)
 export const REQUIRED_CONTAINER: Readonly<Record<string, string>> = {
@@ -27,10 +27,6 @@ export const REQUIRED_CONTAINER: Readonly<Record<string, string>> = {
 //     <ActionMenu> rather than <Menu> (marigold-ui.io/components/overlay/menu).
 // Hosts may be written either as a dotted sub (`X.Y`) or a flat component
 // (`ActionMenu`); when the host appears, its provided root counts as present.
-// AppLayout (which used this pattern for its Sidebar/Header) was replaced by
-// AppShell (DST-1360), which has no compound sub-components at all — its docs
-// have callers place <Sidebar>, <TopNavigation>, and <Page> as flat children
-// directly, so no HOST_PROVIDES entry is needed for it.
 export const HOST_PROVIDES: Readonly<Record<string, string>> = {
   ActionMenu: 'Menu',
 };
@@ -63,8 +59,8 @@ export const validateRequiredAncestor = (
   // Only treat a tag as a Marigold component when it is actually imported from
   // @marigold/components. A locally declared or third-party component that
   // happens to share a Marigold name must not be held to Marigold's
-  // required-ancestor rules — that was a false-positive error. Mirrors the
-  // origin guard the composition checker uses.
+  // required-ancestor rules. Mirrors the origin guard the composition checker
+  // uses.
   const resolver = buildMarigoldTagResolver(source);
 
   // First pass: catalogue every JSX element in the file. The detached-usage
@@ -115,9 +111,8 @@ export const validateRequiredAncestor = (
   // flat component (`<ActionMenu>`, checked via canonicalIdentifierTags
   // below), but a HOST_PROVIDES key can itself be a dotted sub-component
   // (`<X.Y>`), checked via canonicalDottedTags — no current entry uses that
-  // form (the one that used to, `AppLayout.Sidebar`, was removed with
-  // AppLayout itself), so that branch has no exerciser today, but it stays
-  // correct for a host written that way.
+  // form, so that branch has no exerciser today, but it stays correct for a
+  // host written that way.
   //
   // Built from the CANONICAL sets, not the as-written ones: HOST_PROVIDES'
   // keys/values are always canonical names (e.g. 'ActionMenu'/'Menu'), so

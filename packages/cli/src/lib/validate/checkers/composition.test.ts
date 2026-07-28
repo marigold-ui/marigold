@@ -29,9 +29,6 @@ describe('validateComposition', () => {
   });
 
   it('does not flag a local component that shares a Marigold compound name', () => {
-    // A project's own <Sidebar> imported from a local module must not be
-    // required to carry Marigold's Sidebar sub-components (regression: this was
-    // a false-positive "used without sub-components" error).
     const file = tmpFile(
       'cv-local-sidebar.tsx',
       `import { Sidebar } from './my-sidebar';
@@ -220,8 +217,6 @@ describe('validateComposition', () => {
   });
 
   it('does not emit false warnings when children are dynamic', () => {
-    // The contents of {children} cannot be analyzed statically, so a compound
-    // with only dynamic children must not be flagged as empty or incomplete.
     const file = tmpFile(
       'cv-dynamic.tsx',
       `import { Dialog } from '@marigold/components';
@@ -234,12 +229,12 @@ describe('validateComposition', () => {
   });
 
   it('does not emit false warnings when dynamic children are wrapped in a fragment', () => {
-    // Regression: `hasOpaqueDynamicChild` used to only recognize a JSX
-    // expression as a DIRECT child, not one wrapped in a fragment
-    // (`<>{children}</>` — an idiomatic pattern). Since the fragment's own
-    // children are otherwise statically empty of any `<Table.X>` tag, the
-    // "used without any of its sub-components" error used to fire even
-    // though the content is genuinely dynamic.
+    // `hasOpaqueDynamicChild` also recognizes a JSX expression wrapped in a
+    // fragment (`<>{children}</>` — an idiomatic pattern), not just a direct
+    // child: the fragment's own children are otherwise statically empty of
+    // any `<Table.X>` tag, so without this the "used without any of its
+    // sub-components" error would fire even though the content is genuinely
+    // dynamic.
     const file = tmpFile(
       'cv-dynamic-fragment.tsx',
       `import { Table } from '@marigold/components';
@@ -453,7 +448,6 @@ const C = () => (
     expect(smError).toBeUndefined();
   });
 
-  // Finding #2: opaque dynamic children suppress the empty-compound error.
   it('does not flag a compound with a non-iteration call child {renderContent()}', () => {
     const file = tmpFile(
       'cv-render-call.tsx',
@@ -507,9 +501,7 @@ const C = () => (
   it('does not flag a compound whose sub-components are delegated to a custom child', () => {
     // A project's own <DialogBody> might render <Dialog.Content>/
     // <Dialog.Title> internally — this static check cannot see into it, so
-    // it must not be flagged as a deterministic error (regression: this was
-    // a false-positive error on a pattern the checker genuinely cannot
-    // resolve, common for LLM-generated code that factors compounds this way).
+    // it must not be flagged as a deterministic error.
     const file = tmpFile(
       'cv-custom-child.tsx',
       `import { Dialog } from '@marigold/components';
@@ -573,7 +565,6 @@ const C = () => (
     expect(dialogError).toBeDefined();
   });
 
-  // Finding #3: spread guard suppresses the empty-compound error.
   it('does not flag a self-closing compound with spread attributes', () => {
     const file = tmpFile(
       'cv-spread-attr.tsx',

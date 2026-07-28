@@ -5,9 +5,8 @@ export type ComputedStyleSnapshot = {
   selector: string;
   component: string;
   fingerprint: string;
-  // True when the element is in a disabled state. A disabled control's colors
-  // are a state treatment (the browser/theme applies an alpha/opacity), not an
-  // author-chosen value, so its computed color must not be token-checked.
+  // True when the element is in a disabled state — its computed colors are a
+  // browser/theme state treatment, not an author-chosen value.
   disabled?: boolean;
   styles: Record<string, string>;
 };

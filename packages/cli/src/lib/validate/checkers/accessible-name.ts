@@ -135,8 +135,8 @@ export const validateAccessibleName = (filePath: string): ValidationIssue[] => {
   // Only treat a tag as a Marigold overlay when it is actually imported from
   // @marigold/components. A locally declared or third-party component that
   // happens to share an overlay's name (e.g. a project's own `Dialog`) must
-  // not be required to carry an accessible name — that was a false-positive
-  // error. Mirrors the origin guard the composition checker uses.
+  // not be required to carry an accessible name. Mirrors the origin guard the
+  // composition checker uses.
   const resolver = buildMarigoldTagResolver(source);
 
   const check = (node: ts.Node): void => {

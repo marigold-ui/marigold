@@ -182,9 +182,6 @@ describe('computeSuggestions — static surface', () => {
 });
 
 describe('computeSuggestions — file positional (validate)', () => {
-  // Regression: `validate`'s file positional had no completion case at all —
-  // it fell through to the catch-all `return []`, so `marigold validate
-  // <TAB>` suggested nothing.
   test('lists .tsx files and directories, ignoring other file types', () => {
     fs.writeFileSync(path.join(tmpDir, 'Button.tsx'), '');
     fs.writeFileSync(path.join(tmpDir, 'README.md'), '');
@@ -350,9 +347,6 @@ describe('runCompletion', () => {
   });
 
   test('zsh script does not shadow the completion-provided `words` array', () => {
-    // Regression guard: an earlier version did `local -a words` inside the
-    // function, which shadowed zsh's outer `words` and made every TAB press
-    // suggest top-level subcommands instead of component names.
     const r = runCompletion('zsh');
 
     expect(r.output).not.toMatch(/local\s+-a\s+words\b/);

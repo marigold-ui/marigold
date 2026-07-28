@@ -93,10 +93,6 @@ describe('POST /api/telemetry (with Redis configured)', () => {
     );
 
   it("expires the day's event list on its first event, so it doesn't retain data forever", async () => {
-    // Regression: the daily event-storage key (telemetry:YYYY-MM-DD) used to
-    // have no TTL at all — unlike the rate-limit key right next to it, which
-    // always got one — so a new key accumulated every day, forever, with
-    // nothing in the repo that ever reads or trims them.
     const res = await post(makeEvent('validate'));
 
     expect(res.status).toBe(204);

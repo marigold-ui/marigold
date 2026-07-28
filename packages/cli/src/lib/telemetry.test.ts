@@ -47,13 +47,10 @@ describe('emit', () => {
   });
 
   it('never throws, even when the config dir cannot be created (anonymousId -> writeConfig failure)', () => {
-    // Regression: anonymousId() lazily calls writeConfig() on a first run
-    // (no cached anonymousId yet), and writeConfig() has no try/catch of its
-    // own (unlike readConfig()). That throw used to escape emit() entirely —
-    // only the tmp-file-write/spawn part below it was wrapped, not the
-    // event-construction part that calls anonymousId(). It would turn an
-    // unrelated command's own clean, successful run into a crash the moment
-    // background telemetry tried to record it.
+    // anonymousId() lazily calls writeConfig() on a first run (no cached
+    // anonymousId yet), and writeConfig() has no try/catch of its own (unlike
+    // readConfig()) — a config-dir write failure there must not turn an
+    // unrelated command's clean, successful run into a crash.
     expect(() =>
       emit({
         command: 'validate',

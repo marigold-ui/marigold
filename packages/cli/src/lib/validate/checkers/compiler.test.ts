@@ -53,8 +53,6 @@ export default x;`
   });
 
   it('reports the correct line number when a directive is preceded by a blank line', () => {
-    // Regression: stripping the directive used to consume the preceding
-    // blank line's own newline too, shifting every line after it up by one.
     const file = tmpFile(
       'cv-ts-ignore-blank-line.tsx',
       `const a = 1;

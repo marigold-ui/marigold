@@ -42,11 +42,11 @@ const returnsJsx = (fn: ts.FunctionLikeDeclaration): boolean => {
 // do, so "wird" (the passive-progressive auxiliary in "wird gesendet"/"wird
 // geladen"/"wird gespeichert") is the reliable loading signal there — any
 // bare verb stem risks colliding with a normal resting-state label. A
-// `send`-based stem used to be included here, but "Send"/"Senden" (English
+// `send`-based stem is deliberately omitted: "Send"/"Senden" (English
 // imperative / German infinitive) are both extremely common non-loading
 // button labels — e.g. `<Button>{sent ? 'Sent' : 'Send'}</Button>`, a
-// completely ordinary confirmation toggle unrelated to a loading state,
-// false-positived on the resting "Send" branch. Deliberately omitted.
+// completely ordinary confirmation toggle unrelated to a loading state —
+// and would collide with the resting "Send" branch.
 const LOADING_LABEL =
   /\b(saving|loading|submitting|sending|please wait|wird|lädt|speichert)\b/i;
 

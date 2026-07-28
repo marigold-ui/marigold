@@ -152,10 +152,9 @@ const buildImportMap = (source: ts.SourceFile): Map<string, string> => {
   return map;
 };
 
-// Recursively collects every identifier a binding name introduces — a bare
-// Identifier, or (for a destructured const/param) every name bound inside an
-// object/array binding pattern, however deeply nested or renamed
-// (`{ as: Component }` binds "Component", not "as").
+// Recursively walks a binding pattern, collecting every identifier it
+// introduces, however deeply nested or renamed (`{ as: Component }` binds
+// "Component", not "as").
 const collectBindingNames = (name: ts.BindingName, out: Set<string>): void => {
   if (ts.isIdentifier(name)) {
     out.add(name.text);
@@ -168,13 +167,8 @@ const collectBindingNames = (name: ts.BindingName, out: Set<string>): void => {
 };
 
 /**
- * Collect the set of locally declared PascalCase identifiers: function/class
- * declarations, const/let/var bindings (including destructured
- * `const { Provider } = …` / `const [First, Second] = …` / a for...of/for...in
- * loop variable), and function parameters (including destructured ones, e.g.
- * a HOC's `function Wrap(Component)` or a render-prop-style
- * `({ as: Component }) => …`) — all equally legitimate ways a component name
- * gets bound locally rather than imported, and none of them should read as an
+ * Collects every locally declared PascalCase identifier — declarations,
+ * bindings, and destructured parameters — so none of them read as an
  * undeclared/hallucinated component.
  *
  * Deliberately flat across the whole file, not scoped to where each binding
@@ -190,17 +184,14 @@ const collectLocalDeclarations = (source: ts.SourceFile): Set<string> => {
   const locals = new Set<string>();
 
   const walk = (node: ts.Node): void => {
-    // function MyComponent() { ... }
     if (ts.isFunctionDeclaration(node) && node.name) {
       locals.add(node.name.text);
     }
 
-    // class MyComponent { ... }
     if (ts.isClassDeclaration(node) && node.name) {
       locals.add(node.name.text);
     }
 
-    // const MyComponent = ...; const { Provider } = ...; const [First, Second] = pair;
     if (ts.isVariableStatement(node)) {
       for (const decl of node.declarationList.declarations) {
         collectBindingNames(decl.name, locals);
@@ -283,10 +274,6 @@ export const validateDesignSystemUsage = (
   // name.
   const resolver = buildMarigoldTagResolver(source);
 
-  // A tag is a *real* Marigold component only if it resolves through an
-  // actual `@marigold/components` import — not shadowed by a local
-  // declaration and not imported from a non-Marigold module, and correctly
-  // recognized even when imported under an alias.
   const isRealMarigoldComponent = (name: string): boolean =>
     resolver.get(name) !== undefined;
 
@@ -333,11 +320,6 @@ export const validateDesignSystemUsage = (
             details: { htmlElement: tagName },
           });
         } else if (isPascalCase(tagName)) {
-          // Check for hallucinated Marigold components. Resolved through the
-          // import-aware resolver (not a bare `isMarigoldComponent(tagName)`
-          // lookup) so an aliased import (`{ Button as Btn }`) is recognized
-          // as real — a bare-name lookup would find no registry entry for
-          // "Btn" and fall through to the hallucinated-component error below.
           if (resolver.get(tagName) !== undefined) {
             // Valid Marigold component (possibly aliased) — skip
           } else if (localDeclarations.has(tagName)) {
@@ -437,9 +419,6 @@ export const validateDesignSystemUsage = (
         if (!ts.isJsxAttribute(attr)) continue;
         if (!ts.isIdentifier(attr.name)) continue;
 
-        // className on a Marigold component bypasses the design system. Marigold
-        // components are styled through their own props (variant, size, space,
-        // …); Tailwind className belongs only on native containers.
         if (attr.name.text === 'className' && isMarigoldTag) {
           const tagText = ts.isIdentifier(node.tagName)
             ? node.tagName.text

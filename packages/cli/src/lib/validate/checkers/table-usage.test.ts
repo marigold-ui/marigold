@@ -44,9 +44,6 @@ describe('validateTableUsage — rowHeader (W3)', () => {
   });
 
   it('does not flag a local component that shares the Table name', () => {
-    // A project's own <Table> imported from a local module must not be held
-    // to the rowHeader rule (regression: this was a false-positive warning
-    // on non-Marigold components).
     const file = tmpFile(
       'tu-local-table.tsx',
       `import { Table } from './my-table';
@@ -219,8 +216,6 @@ describe('validateTableUsage — Table misuse (W8/W9)', () => {
   });
 
   it('does not flag a local component that shares the TextField name inside a local Table', () => {
-    // Neither the field nor its ancestor table is a real Marigold import —
-    // regression: the field-in-table rule used to match both by bare name.
     const file = tmpFile(
       'tu-local-field.tsx',
       `import { Table } from './my-table';

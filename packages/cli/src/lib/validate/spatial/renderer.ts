@@ -328,10 +328,10 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
       // from inside `page`" from a page the *Node side* creates directly via
       // `context.newPage()`. The a11y audit relies on the latter: axe-core's
       // playwright driver (`AxeBuilder.analyze()` -> `finishRun()`) opens its
-      // own blank `context.newPage()` to aggregate cross-frame results, and
-      // closing that page out from under it — as an unconditional `p !==
-      // page` check used to — makes every axe audit fail with "Target page,
-      // context or browser has been closed".
+      // own blank `context.newPage()` to aggregate cross-frame results; an
+      // unconditional `p !== page` check would close that page out from
+      // under it, making every axe audit fail with "Target page, context or
+      // browser has been closed".
       context.on('page', p => {
         if (p === page) return;
         p.opener()
@@ -415,7 +415,8 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
       // would — so every hang surfaces as the generic "Render exceeded
       // 45000ms budget" rather than pinpointing which specific wait stalled.
       // Accepted: a slightly less specific error message for a real hang, in
-      // exchange for the false-failure fix above.
+      // exchange for never turning a healthy-but-slow render into a false
+      // failure.
       await page.goto(url, { waitUntil: 'commit', timeout: RENDER_BUDGET_MS });
 
       // Wait for the harness "ready" marker, but fail fast if Vite reports a

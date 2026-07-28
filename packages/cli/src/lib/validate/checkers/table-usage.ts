@@ -16,7 +16,7 @@ import type { SourceLocation, ValidationIssue } from '../types.js';
 // Checkbox, Select, and Switch are deliberately EXCLUDED: a per-row selection
 // <Checkbox>, an inline per-row <Select> (bulk actions), and a per-row status
 // <Switch> are idiomatic, common data-table patterns — not a table misused
-// for form layout — and flagging them produced noisy false positives on
+// for form layout — and flagging them would produce noisy false positives on
 // realistic tables.
 const FIELD_COMPONENTS = new Set([
   'TextField',

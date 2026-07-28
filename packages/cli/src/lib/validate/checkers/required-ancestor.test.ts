@@ -91,10 +91,6 @@ describe('validateRequiredAncestor', () => {
   });
 
   it('accepts Menu.Item inside an aliased ActionMenu host', () => {
-    // Regression: HOST_PROVIDES used to be checked against the as-written
-    // tag text ('ActionMenu'), which never matches when the host is imported
-    // under an alias — the file only ever writes <AM>, so the host was never
-    // recognized as present and Menu.Item false-positived.
     const file = tmpFile(
       'ra-aliased-actionmenu-host.tsx',
       `import { ActionMenu as AM, Menu } from '@marigold/components';
@@ -111,9 +107,6 @@ describe('validateRequiredAncestor', () => {
   });
 
   it('accepts an aliased Menu.Item inside an ActionMenu host', () => {
-    // Regression: the other direction of the same bug — the provided root
-    // ('Menu', canonical) was added to a set keyed by as-written text, then
-    // compared against the as-written root of <M.Item> ('M'), never matching.
     const file = tmpFile(
       'ra-aliased-menu-root.tsx',
       `import { ActionMenu, Menu as M } from '@marigold/components';
@@ -155,9 +148,6 @@ describe('validateRequiredAncestor', () => {
   });
 
   it('does not flag a local component that shares the Radio name', () => {
-    // A project's own <Radio> imported from a local module must not be
-    // required to carry Marigold's Radio.Group (regression: this was a
-    // false-positive error on non-Marigold components).
     const file = tmpFile(
       'ra-local-radio.tsx',
       `import { Radio } from './my-radio';
@@ -187,10 +177,6 @@ describe('validateRequiredAncestor', () => {
   });
 
   it('does not flag an aliased Radio inside an aliased RadioGroup', () => {
-    // Regression: the container check used to compare the CANONICAL
-    // container name ('Radio.Group') against the as-written tag sets, so an
-    // aliased container (`RadioGroup as RG`) never textually matched and a
-    // genuinely-present group was missed — a false-positive error.
     const file = tmpFile(
       'ra-alias-radio-and-group.tsx',
       `import { Radio as R, RadioGroup as RG } from '@marigold/components';

@@ -3,8 +3,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validate } from '../index.js';
 
-// Integration coverage for the `display:contents` false-positive fix in the
-// "disappeared component" check: the real selfHidden computation runs inside
+// Integration coverage for `display:contents` handling in the "disappeared
+// component" check: the real selfHidden computation runs inside
 // page.evaluate against live computed styles, which only a real render can
 // verify. Same self-skip rationale as renderer.integration.test.ts: a real
 // render needs a working Chromium, which isn't available on a bare CI runner.

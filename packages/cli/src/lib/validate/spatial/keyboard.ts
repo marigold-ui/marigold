@@ -617,8 +617,8 @@ export const keyboardA11yToValidationIssues = (
     issues.push({
       type: 'a11y',
       // Warning, not error: reachability is measured at runtime via a simulated
-      // Tab walk (dynamic, with a history of false "unreachable" results), so it
-      // is not a deterministic, false-positive-free violation. See severity policy.
+      // Tab walk (dynamic), so it is not a deterministic, false-positive-free
+      // violation. See severity policy.
       severity: 'warning',
       source: 'keyboard-a11y',
       component: el.component,

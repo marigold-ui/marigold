@@ -164,9 +164,8 @@ describe('formatForLLM', () => {
 
   it('does not crash on a >8-element array containing a bigint', () => {
     const report = sampleReport();
-    // The array-truncation branch used to sit outside the bigint-safe
-    // try/catch, so this exact shape (long array, unstringifiable element)
-    // crashed the formatter.
+    // Long array (truncation branch) containing an unstringifiable element —
+    // both code paths must stay inside the bigint-safe try/catch.
     report.errors[0].details = { items: [1, 2, 3, 4, 5, 6, 7, 8, BigInt(9)] };
     expect(() => formatForLLM(report)).not.toThrow();
   });

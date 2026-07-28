@@ -7,9 +7,9 @@ export type CleanupStack = {
   // resource created is torn down first) and settle-all semantics: one
   // failing teardown never prevents the others from running, and never
   // rejects. Safe to call more than once — a teardown pushed between two
-  // run() calls is included in the second (which is what the renderer's
-  // deferred sweep relies on), but one already run is NOT re-invoked, so a
-  // future non-idempotent teardown can't be silently double-run.
+  // run() calls is included in the second, but one already run is NOT
+  // re-invoked, so a future non-idempotent teardown can't be silently
+  // double-run.
   run: () => Promise<void>;
 };
 

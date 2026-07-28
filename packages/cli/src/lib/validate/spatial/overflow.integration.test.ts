@@ -3,20 +3,19 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validate } from '../index.js';
 
-// Integration coverage for the auto-fit/auto-fill grid detection fix: the
-// real `declaresAutoFitGrid` (overflow.ts) has to scan stylesheet rules
-// against a live DOM, which only a real render can verify — a unit test
-// feeding a pre-resolved `gridTemplateColumns` string (as this suite used to)
-// never exercises it. Same self-skip rationale as renderer.integration.test.ts:
-// a real render needs a working Chromium, which isn't available on a bare CI
-// runner.
+// Integration coverage for auto-fit/auto-fill grid detection: the real
+// `declaresAutoFitGrid` (overflow.ts) has to scan stylesheet rules against a
+// live DOM, which only a real render can verify — a unit test feeding a
+// pre-resolved `gridTemplateColumns` string never exercises it. Same
+// self-skip rationale as renderer.integration.test.ts: a real render needs a
+// working Chromium, which isn't available on a bare CI runner.
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const example = (name: string): string =>
   path.join(__dirname, '..', 'examples', name);
 
 // Narrow enough that 8 x 150px tiles cannot fit on one row, forcing the
-// auto-fit grid to wrap into multiple rows — the exact condition the fix
-// targets.
+// auto-fit grid to wrap into multiple rows — the exact condition this test
+// needs to trigger.
 const viewport = { width: 400, height: 720 };
 
 let renderWorks = false;

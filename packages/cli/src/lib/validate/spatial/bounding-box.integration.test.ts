@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validate } from '../index.js';
 
-// Integration coverage for the visibility:hidden bounding-box fix: the real
+// Integration coverage for visibility:hidden bounding-box handling: the real
 // extractBoundingBoxes walk runs inside page.evaluate against live computed
 // styles, which only a real render can verify. Same self-skip rationale as
 // renderer.integration.test.ts: a real render needs a working Chromium, which

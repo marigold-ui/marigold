@@ -20,9 +20,6 @@ describe('validateLayoutUsage (W1 — single-child flow layout)', () => {
   });
 
   it('does not flag a local component that shares the Stack name', () => {
-    // A project's own <Stack> imported from a local module must not be held
-    // to the single-child flow-layout rule (regression: this was a
-    // false-positive warning on non-Marigold components).
     const file = tmpFile(
       'lu-local-stack.tsx',
       `import { Stack } from './my-stack';

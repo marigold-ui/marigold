@@ -76,9 +76,6 @@ export default App;`
   });
 
   it('does not flag a component name bound via object destructuring', () => {
-    // Regression: `collectLocalDeclarations` used to only recognize a bare
-    // `const MyCard = ...`, so `const { Provider } = useContext(Ctx)` fell
-    // through as an undeclared/hallucinated component.
     const file = tmpFile(
       'dsu-destructured-const.tsx',
       `import { useContext } from 'react';
@@ -170,9 +167,6 @@ export default App;`
   });
 
   it('does not flag a component name bound via a class constructor parameter', () => {
-    // Regression: a class constructor is ts.SyntaxKind.Constructor, a node
-    // kind distinct from MethodDeclaration — ts.isMethodDeclaration() returns
-    // false for it, so its destructured params fell through as undeclared.
     const file = tmpFile(
       'dsu-constructor-destructured.tsx',
       `class Wrapper extends React.Component {
@@ -191,8 +185,6 @@ export default Wrapper;`
   });
 
   it('does not flag an aliased import of a real Marigold component', () => {
-    // Regression: `{ Button as Btn }` used to be treated as hallucinated
-    // because the bare-name registry lookup doesn't know the local alias.
     const file = tmpFile(
       'dsu-alias-button.tsx',
       `import { Button as Btn } from '@marigold/components';
@@ -205,9 +197,6 @@ export default App;`
   });
 
   it('does not flag a valid sub-component accessed through an aliased parent', () => {
-    // Regression: `<S.Option>` (aliased `{ Select as S }`) used to be flagged
-    // as a hallucinated sub-component because the registry lookup used the
-    // local alias "S" instead of the resolved name "Select".
     const file = tmpFile(
       'dsu-alias-select-option.tsx',
       `import { Select as S } from '@marigold/components';
@@ -345,7 +334,6 @@ export default App;`
     expect(svgChildIssues).toEqual([]);
   });
 
-  // Finding #4: documented escape hatches must not be flagged.
   it('does not flag <form> as raw HTML', () => {
     const issues = validateDesignSystemUsage(fixture('complex-form.tsx'));
     const formIssue = issues.find(i => i.component === 'form');

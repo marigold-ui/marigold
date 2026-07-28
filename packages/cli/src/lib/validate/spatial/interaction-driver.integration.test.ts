@@ -5,12 +5,12 @@ import { fileURLToPath } from 'node:url';
 import { driveInteractions } from './interaction-driver.js';
 import { type SharedRenderer, createRenderer } from './renderer.js';
 
-// Integration coverage for the disclosure-detection fix: driving a real
-// Accordion (built on react-aria-components' Disclosure, whose panel renders
+// Integration coverage for disclosure detection: driving a real Accordion
+// (built on react-aria-components' Disclosure, whose panel renders
 // role="group") only reproduces through an actual render — OVERLAY_ROLES not
-// including "group" is exactly the gap this regression test targets. Same
-// self-skip rationale as renderer.integration.test.ts: a real render needs a
-// working Chromium, which isn't available on a bare CI runner.
+// including "group" is exactly the gap this test targets. Same self-skip
+// rationale as renderer.integration.test.ts: a real render needs a working
+// Chromium, which isn't available on a bare CI runner.
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const example = (name: string): string =>
   path.join(__dirname, '..', 'examples', name);
@@ -55,10 +55,11 @@ describe('driveInteractions disclosure detection (requires a working render envi
 
       const disclosureState = states.find(s => s.trigger.kind === 'disclosure');
       expect(disclosureState).toBeDefined();
-      // Regression: visibleOverlays()/OVERLAY_ROLES doesn't include "group",
-      // so this used to stay null even though Enter/click genuinely opened
-      // the panel — meaning onOpen (and the extra contrast/axe checks it
-      // drives) never ran for Marigold's Accordion at all.
+      // visibleOverlays()/OVERLAY_ROLES doesn't include "group", so without
+      // the disclosure-specific detection path this would stay null even
+      // though Enter/click genuinely opened the panel — meaning onOpen (and
+      // the extra contrast/axe checks it drives) would never run for
+      // Marigold's Accordion at all.
       expect(disclosureState?.revealedRootSelector).not.toBeNull();
       expect(disclosureState?.revealedRole).toBe('group');
       expect(opened).toHaveLength(1);

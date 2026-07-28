@@ -42,10 +42,10 @@ const collectSubComponentUsages = (
     // Stop descending into any nested compound instance so its sub-components
     // aren't misattributed to the outer one being checked — including a
     // same-name nested instance (e.g. a confirm <Dialog> inside another
-    // <Dialog>'s content), which used to be exempted and double-counted.
-    // Collection compounds are the exception: they are designed to hold
-    // legitimately nested same-name instances (e.g. a master-detail <Table>
-    // nested inside a <Table> row), so descent continues there.
+    // <Dialog>'s content). Collection compounds are the exception: they are
+    // designed to hold legitimately nested same-name instances (e.g. a
+    // master-detail <Table> nested inside a <Table> row), so descent
+    // continues there.
     if (
       ts.isIdentifier(tag) &&
       compoundParents.has(tag.text) &&
@@ -229,8 +229,8 @@ export const validateComposition = (filePath: string): ValidationIssue[] => {
   // Only treat a tag as a Marigold compound when it is actually imported from
   // @marigold/components. A locally declared or third-party component that
   // happens to share a Marigold name (e.g. a project's own `Sidebar`) must not
-  // be required to carry Marigold sub-components — that was a false-positive
-  // error. Mirrors the origin guard the prop checker uses.
+  // be required to carry Marigold sub-components. Mirrors the origin guard
+  // the prop checker uses.
   const resolver = buildMarigoldTagResolver(source);
   // Resolve through the resolver so an aliased import (`{ Accordion as Acc }`)
   // is checked against its real Marigold name, not the local alias (which the

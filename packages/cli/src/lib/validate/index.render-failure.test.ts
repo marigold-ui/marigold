@@ -7,9 +7,7 @@ import { validate } from './index.js';
 // mocked so createRenderer yields a renderer whose render() rejects. This covers
 // the gating behaviour in index.ts — a render failure must surface as a `runtime`
 // ERROR (which steers the correction loop) while the technical findings are
-// still returned, and validate() must NOT throw. Previously only the
-// self-skipping render integration test touched this path, so it never ran on a
-// bare CI runner.
+// still returned, and validate() must NOT throw.
 vi.mock('./spatial/renderer.js', () => ({
   createRenderer: async () => ({
     render: async () => {
@@ -41,10 +39,10 @@ describe('validate() render-failure handling', () => {
 
 describe('validate() toolchain-unavailable handling', () => {
   it('reports a missing/unlaunchable render toolchain as a warning, not an error', async () => {
-    // Regression: createRenderer() failing (no Chromium, toolchain not
-    // installed) used to surface as the same severity 'error' as a genuine
-    // render crash — indistinguishable by exit code from a real defect in
-    // the file under test. It's an environment precondition instead.
+    // createRenderer() failing (no Chromium, toolchain not installed) is an
+    // environment precondition, not a genuine render crash — it must surface
+    // as a warning, distinguishable by severity from a real defect in the
+    // file under test.
     vi.doMock('./spatial/renderer.js', () => ({
       createRenderer: async () => {
         throw new Error('Executable doesn’t exist (mock: no Chromium)');

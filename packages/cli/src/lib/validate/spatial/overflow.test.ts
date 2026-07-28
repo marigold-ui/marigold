@@ -314,14 +314,12 @@ describe('isCollapsedVisibleChild (zero-width-child guard)', () => {
   });
 });
 
-// NOTE: `isWrappingGrid detection (extractOverflowData logic)` used to live
-// here as a standalone reimplementation of the auto-fit/auto-fill detection
-// (`gridCols.includes('auto-fit')`), asserted against a hand-fed pre-resolved
-// string. That never exercised the real code and gave false confidence: in an
-// actual browser, `getComputedStyle().gridTemplateColumns` for
-// `repeat(auto-fit, minmax(...))` resolves to a USED value — a list of
-// concrete pixel track sizes — which never contains the literal "auto-fit"/
-// "auto-fill" keyword. The real detection (`declaresAutoFitGrid` in
-// overflow.ts) instead scans stylesheet rules for the *specified* value, which
-// can only be verified against a real rendered page — see the render-sandbox
-// integration test in overflow.integration.test.ts.
+// NOTE: auto-fit/auto-fill grid detection cannot be unit-tested against a
+// hand-fed `gridTemplateColumns` string: in an actual browser,
+// `getComputedStyle().gridTemplateColumns` for `repeat(auto-fit,
+// minmax(...))` resolves to a USED value — a list of concrete pixel track
+// sizes — which never contains the literal "auto-fit"/"auto-fill" keyword.
+// The real detection (`declaresAutoFitGrid` in overflow.ts) instead scans
+// stylesheet rules for the *specified* value, which can only be verified
+// against a real rendered page — see the render-sandbox integration test in
+// overflow.integration.test.ts.

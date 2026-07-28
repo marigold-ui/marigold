@@ -28,11 +28,8 @@ describe('loadDesignTokens', () => {
   });
 
   it('captures a multi-line shadow token in full, not just its first layer', () => {
-    // Regression: theme-rui writes multi-layer shadow tokens
-    // (--shadow-elevation-overlay, -raised) across several lines, terminated
-    // by a single trailing `;`. The value pattern used to exclude newlines,
-    // so the captured value was truncated at the first line break — just
-    // the first shadow layer, with its trailing comma.
+    // theme-rui writes multi-layer shadow tokens (--shadow-elevation-overlay,
+    // -raised) across several lines, terminated by a single trailing `;`.
     const tokens = loadDesignTokens();
     const overlay = tokens['shadow-elevation-overlay'];
     expect(overlay).toBeDefined();

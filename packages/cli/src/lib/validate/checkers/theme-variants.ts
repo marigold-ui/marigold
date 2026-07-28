@@ -48,28 +48,25 @@ let cachedDir: string | null = null;
 // values via `cva(...)`, but they never ship in a published install —
 // theme-rui's package.json declares `files: ["dist"]`, and the CLI's primary
 // real-world environment IS a published install (an AI agent working in a
-// consumer project, not this monorepo). Parsing those sources previously
-// meant this check silently found nothing outside the monorepo. theme-rui's
-// own build (`scripts/build-appearances.mjs`) already resolves every
-// component's variant/size values into `dist/appearances.{cjs,mjs}`
-// (published publicly as the `@marigold/theme-rui/appearances` subpath) —
-// reading THAT instead means this check actually works in the CLI's primary
-// environment, and moves the responsibility for correctly resolving cva
-// variants (including compoundVariants, object-of-cva internal slots, etc.)
-// onto theme-rui's own build script rather than re-implementing it here.
-// `require`d directly by resolved path (not the package specifier) so a
-// `--theme-path` override pointing at a different theme-rui build works the
-// same way auto-resolution does. The CJS build, not the ESM one, so this
-// stays a synchronous function like every other technical checker.
+// consumer project, not this monorepo). theme-rui's own build
+// (`scripts/build-appearances.mjs`) already resolves every component's
+// variant/size values into `dist/appearances.{cjs,mjs}` (published publicly
+// as the `@marigold/theme-rui/appearances` subpath) — reading THAT instead
+// means this check actually works in the CLI's primary environment, and
+// moves the responsibility for correctly resolving cva variants (including
+// compoundVariants, object-of-cva internal slots, etc.) onto theme-rui's own
+// build script rather than re-implementing it here. `require`d directly by
+// resolved path (not the package specifier) so a `--theme-path` override
+// pointing at a different theme-rui build works the same way auto-resolution
+// does. The CJS build, not the ESM one, so this stays a synchronous function
+// like every other technical checker.
 //
-// Known fidelity gap: as of writing, theme-rui's `build-appearances.mjs`
-// only reads each component's `variants` object — it does not (yet) union in
-// a value that appears ONLY inside a `compoundVariants` rule, the way this
-// checker's removed cva-parsing logic used to. No real theme-rui component
-// currently has such a value (verified against every `compoundVariants`
-// usage in `themes/theme-rui/src/components`), and that build script has no
-// test coverage against this regressing either — worth a follow-up in
-// theme-rui if a future component variant introduces one.
+// Known fidelity gap: theme-rui's `build-appearances.mjs` only reads each
+// component's `variants` object — it does not union in a value that appears
+// ONLY inside a `compoundVariants` rule. No real theme-rui component
+// currently has such a value, and that build script has no test coverage
+// against this regressing either — worth a follow-up in theme-rui if a
+// future component variant introduces one.
 type Appearances = Record<string, Record<string, string[]>>;
 
 export const loadThemeVariants = (themeDir: string): ThemeVariantMap => {
@@ -96,8 +93,7 @@ export const loadThemeVariants = (themeDir: string): ThemeVariantMap => {
       if (dimMap.size > 0) result.set(componentName, dimMap);
     }
   } catch {
-    // themePath vanished, is unreadable, predates the appearances build
-    // output, or is malformed — return whatever was gathered (empty).
+    // no-op: fall through to whatever was gathered (empty)
   }
 
   cachedMap = result;

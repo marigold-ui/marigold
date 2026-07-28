@@ -76,9 +76,6 @@ describe('validateSectionHeader', () => {
   });
 
   it('does not flag a local component that shares the Select name', () => {
-    // A project's own <Select> imported from a local module must not be held
-    // to Marigold's required-header rule for `.Section` (regression: this was
-    // a false-positive error on non-Marigold components).
     const file = tmpFile(
       'sh-local-select.tsx',
       `import { Select } from './my-select';

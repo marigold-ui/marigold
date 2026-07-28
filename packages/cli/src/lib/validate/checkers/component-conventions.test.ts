@@ -153,9 +153,8 @@ describe('validateComponentConventions — manual loading-label (W10)', () => {
   });
 
   it('W10: does not flag an ordinary label that merely contains the "sende" stem', () => {
-    // "Absenden" (German for "Submit") contains "senden", which contains
-    // "sende" as a substring — the unanchored regex used to false-positive on
-    // this, a regular non-loading label.
+    // "Absenden" (German for "Submit") contains "senden" as a substring — the
+    // \b word-boundary anchors in LOADING_LABEL must not match inside it.
     const file = tmpFile(
       'cc-loadlabel-substring.tsx',
       `import { Button } from '@marigold/components';
@@ -171,11 +170,6 @@ describe('validateComponentConventions — manual loading-label (W10)', () => {
   });
 
   it('W10: does not flag an ordinary "Send"/"Sent" confirmation toggle', () => {
-    // Regression: "Send" (English imperative) and "Senden" (German
-    // infinitive) are both extremely common resting-state button labels, not
-    // exclusively loading indicators. This ternary toggles between a
-    // confirmation state and the resting label — unrelated to a loading
-    // state — and used to false-positive on the "Send" branch.
     const file = tmpFile(
       'cc-loadlabel-send-resting.tsx',
       `import { Button } from '@marigold/components';

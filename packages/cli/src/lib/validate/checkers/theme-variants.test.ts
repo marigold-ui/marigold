@@ -60,10 +60,6 @@ describe('theme variant check (auto-resolve)', () => {
 });
 
 describe('theme variant check (values sourced from dist/appearances.cjs)', () => {
-  // Regression: theme-rui's *.styles.ts sources never ship in a published
-  // install (files: ["dist"]) — the CLI's primary real-world environment —
-  // so this check used to silently find nothing there. dist/appearances.cjs
-  // is theme-rui's own build output and DOES ship.
   it('flags a value not present in the appearances data', () => {
     const dir = makeThemeDir({ Foo: { tone: ['a', 'b'] } });
     const jsx = tmpJsx(
@@ -137,9 +133,6 @@ describe('theme variant loading degrades gracefully', () => {
 
 describe('theme variant check — origin resolution', () => {
   it('does not flag a local component that shares a themed component name', () => {
-    // A project's own <Foo> imported from a local module must not be held to
-    // the theme's variant contract (regression: this was a false-positive
-    // warning matching purely by tag name).
     const dir = makeThemeDir({ Foo: { tone: ['a'] } });
     const localJsx = tmpJsx(
       `import { Foo } from './my-foo';

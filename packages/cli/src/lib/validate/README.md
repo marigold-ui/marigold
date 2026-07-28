@@ -82,7 +82,7 @@ Each checker runs individually through `safeCheck()` (the TypeScript compiler pa
 4. Import it in `checkers/index.ts`, wire it into `runTechnicalChecks` via `safeCheck('my-check', 'My Check', () => validateMyCheck(filePath))`, and add a `passed` entry where it makes sense.
 5. Add a `checkers/my-check.test.ts` file next to it — pattern: use `tmpFile()` from `test-support/tmp.ts` to build small inline fixtures, or add a fixture under `examples/` if multiple tests share it.
 
-**An important convention that runs through every checker:** a tag only counts as a "Marigold component" if it was actually imported from `@marigold/components` — never by name alone. That's what `buildMarigoldTagResolver(source)` in `helpers/components.ts` is for. A locally declared `<Button>`, or a `<Button>` from `./ui/Button`, must NEVER be validated against the Marigold prop schema (this has repeatedly been a real source of false positives — see the git history of `props.ts`/`composition.ts`/`component-conventions.ts`).
+**An important convention that runs through every checker:** a tag only counts as a "Marigold component" if it was actually imported from `@marigold/components` — never by name alone. That's what `buildMarigoldTagResolver(source)` in `helpers/components.ts` is for. A locally declared `<Button>`, or a `<Button>` from `./ui/Button`, must NEVER be validated against the Marigold prop schema — this has repeatedly been a real source of false positives.
 
 ---
 
@@ -146,7 +146,7 @@ Every resource `renderer.ts` creates during a render (browser context, Vite serv
 
 ### Failure isolation (same as the technical checks)
 
-`spatial/index.ts` wraps **every single one** of these checks in its own `try/catch`. If `extractBoundingBoxes()` fails, for example, it becomes a single warning with `source: 'overlap-detector'` — the other blocks (token compliance, overflow, text spacing, a11y, responsive, keyboard) still run. This was recently retrofitted onto the `enableSpatial` block so it's exactly as robust as the `enableA11y` block right below it — always carry this pattern forward when adding a new check here.
+`spatial/index.ts` wraps **every single one** of these checks in its own `try/catch`. If `extractBoundingBoxes()` fails, for example, it becomes a single warning with `source: 'overlap-detector'` — the other blocks (token compliance, overflow, text spacing, a11y, responsive, keyboard) still run. The `enableSpatial` block is exactly as robust as the `enableA11y` block right below it — always carry this pattern forward when adding a new check here.
 
 ### How to add a new dynamic check
 

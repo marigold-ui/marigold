@@ -40,11 +40,11 @@ describe('render integration (requires a working render environment)', () => {
     // No runtime render error (crash / fallback / failed harness).
     expect(report.errors.some(e => e.source === 'runtime')).toBe(false);
     expect(report.metadata.componentsFound.length).toBeGreaterThan(0);
-    // Regression: the sandbox's own `context.routeWebSocket` (necessarily)
-    // closes Vite's HMR client's WebSocket on every single render, which
-    // used to surface as "Console error during render" noise about Vite's
-    // own reconnect/error-reporting failures — unrelated to the component
-    // under test — on every render regardless of its content.
+    // The sandbox's own `context.routeWebSocket` (necessarily) closes Vite's
+    // HMR client's WebSocket on every single render, which would otherwise
+    // surface as "Console error during render" noise about Vite's own
+    // reconnect/error-reporting failures — unrelated to the component under
+    // test — on every render regardless of its content.
     expect(
       report.warnings.some(
         w => w.component === 'Console' && /vite|websocket/i.test(w.message)

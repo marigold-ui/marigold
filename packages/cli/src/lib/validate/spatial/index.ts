@@ -255,12 +255,9 @@ export const runSpatialChecks = async (
               'Build the theme package first, then re-run validation.',
           });
         } else {
-          // Was `throw err` — the one sub-check that escalated any other
-          // failure to a gating error and dropped every later block (axe,
-          // contrast, responsive, keyboard…) in this function. A transient
-          // page.evaluate hiccup (e.g. "Execution context was destroyed")
-          // must not take the whole inspection phase down with it — matches
-          // every sibling try/catch in this function.
+          // A transient page.evaluate hiccup (e.g. "Execution context was
+          // destroyed") must not take the whole inspection phase down with
+          // it — matches every sibling try/catch in this function.
           const message = err instanceof Error ? err.message : String(err);
           styleIssues.push({
             type: 'style',

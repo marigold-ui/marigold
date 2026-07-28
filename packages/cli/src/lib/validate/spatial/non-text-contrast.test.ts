@@ -98,13 +98,10 @@ describe('nonTextContrastToValidationIssues', () => {
   });
 
   it('flattens through a translucent scrim to a genuinely opaque grandparent', () => {
-    // Regression: the browser-side ancestor walk used to stop at the FIRST
-    // non-fully-transparent layer (even a translucent one), so a real opaque
-    // backdrop sitting beneath a translucent scrim/tint was never collected —
-    // flattenBackground then saw no a>=1 layer and returned null
-    // (indeterminate), silently skipping a genuine 1.4.11 violation. With
-    // both layers collected (top: translucent scrim, bottom: opaque white),
-    // the violation must be reported.
+    // A translucent scrim/tint above a genuinely opaque backdrop must not
+    // stop flattenBackground from finding that opaque layer — with both
+    // layers collected (top: translucent scrim, bottom: opaque white), the
+    // violation must still be reported.
     const issues = nonTextContrastToValidationIssues([
       {
         ...base,

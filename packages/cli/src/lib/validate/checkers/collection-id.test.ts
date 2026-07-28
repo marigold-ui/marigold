@@ -39,7 +39,7 @@ describe('validateCollectionId', () => {
       );`
     );
     // Table.Cell / Table.Column / Table.Row are NOT keyed collection items —
-    // they accept a DOM id but must not be flagged (was the FP source).
+    // they accept a DOM id but must not be flagged.
     expect(validateCollectionId(file)).toEqual([]);
   });
 
@@ -113,9 +113,6 @@ describe('validateCollectionId', () => {
   });
 
   it('does not flag a local component that shares the Select name', () => {
-    // A project's own <Select> imported from a local module must not be held
-    // to Marigold's keyed-collection-id rule (regression: this was a
-    // false-positive warning on non-Marigold components).
     const file = tmpFile(
       'cid-local-select.tsx',
       `import { Select } from './my-select';

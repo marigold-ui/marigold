@@ -4,9 +4,9 @@ import { tmpFile } from './test-support/tmp.js';
 
 describe('validate() report.file path display', () => {
   it('falls back to the absolute path instead of a long ../../.. chain when the file is outside cwd', async () => {
-    // Regression: `path.relative(process.cwd(), filePath)` used unconditionally
-    // produces a `../../../../../../tmp/...` chain for any file outside cwd
-    // (as tmpFile()'s os.tmpdir()-based fixtures always are), which is harder
+    // `path.relative(process.cwd(), filePath)` alone would produce a
+    // `../../../../../../tmp/...` chain for any file outside cwd (as
+    // tmpFile()'s os.tmpdir()-based fixtures always are), which is harder
     // to read than just showing the absolute path.
     const file = tmpFile(
       'report-path-outside-cwd.tsx',

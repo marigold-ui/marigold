@@ -223,8 +223,7 @@ export const extractContentOnHoverFocus = async (
       // Keep FP-safe defaults on any interaction error.
     } finally {
       // Dispose on every path — success, the early !revealed continue, and a
-      // thrown error alike — so a failure between acquiring the handle and
-      // the (now-removed) inline disposes can no longer leak it.
+      // thrown error alike — so the handle can never leak.
       await trigger?.dispose().catch(() => {});
     }
 

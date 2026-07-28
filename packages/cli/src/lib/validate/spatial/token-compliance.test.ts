@@ -93,10 +93,10 @@ describe('isBrowserDefault', () => {
   });
 
   it('does not apply the exemption when only an ANCESTOR is native, not the leaf', () => {
-    // Regression: an unanchored match against the whole selector chain fired
-    // here purely because of the ancestor <div> — even though the leaf
-    // (<svg>, not a native form/text element) is what the value actually
-    // belongs to. A real off-token color on a non-native leaf must still be
+    // An unanchored match against the whole selector chain would fire here
+    // purely because of the ancestor <div> — even though the leaf (<svg>,
+    // not a native form/text element) is what the value actually belongs
+    // to. A real off-token color on a non-native leaf must still be
     // checkable, not silently exempted by an unrelated ancestor.
     expect(
       isBrowserDefault(
@@ -111,11 +111,10 @@ describe('isBrowserDefault', () => {
 
 describe('HARDCODED_VALUE', () => {
   it('matches a bare numeric font-weight/line-height literal', () => {
-    // Regression: font-weight and line-height are tokenizable properties
-    // whose valid values are unitless numbers (`fontWeight: 700`,
-    // `lineHeight: 1.5`) — the single most common hardcoded form for either
-    // — but the regex previously required a length-unit suffix, so neither
-    // was ever detected.
+    // font-weight and line-height are tokenizable properties whose valid
+    // values are unitless numbers (`fontWeight: 700`, `lineHeight: 1.5`) —
+    // the single most common hardcoded form for either — so the regex must
+    // match a bare number, not just one with a length-unit suffix.
     expect(HARDCODED_VALUE.test('700')).toBe(true);
     expect(HARDCODED_VALUE.test('1.5')).toBe(true);
   });

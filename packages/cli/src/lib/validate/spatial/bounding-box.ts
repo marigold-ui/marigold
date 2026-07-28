@@ -14,9 +14,6 @@ export type ComponentBounds = {
   zIndex: number;
   position: string;
   role: string | null;
-  // Computed `transform` value. A non-`none` transform (translate/scale nudge,
-  // animation, transform-positioned popper/badge) makes a visual overlap with
-  // an anchor intentional, so overlap detection treats it as an overlay.
   transform: string;
   children: ComponentBounds[];
 };

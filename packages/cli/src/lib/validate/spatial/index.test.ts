@@ -48,11 +48,11 @@ const fakeRenderer = (): SharedRenderer => {
 
 describe('runSpatialChecks', () => {
   it('reports a missing/unbuilt theme as a warning, not an error', async () => {
-    // Regression: an unbuilt theme (ThemeCssNotFoundError from
-    // getTrackedProperties) used to surface as severity 'error' here, even
-    // though the static theme-variants checker treats the exact same
-    // condition as a silent skip — an environment precondition must not fail
-    // the exit code the way a real finding would.
+    // An unbuilt theme (ThemeCssNotFoundError from getTrackedProperties) is
+    // an environment precondition, not a defect in the file under test — the
+    // static theme-variants checker treats the same condition as a silent
+    // skip, so this must surface as a warning, never an error that fails the
+    // exit code.
     const result = await runSpatialChecks(
       'irrelevant.tsx',
       {
@@ -77,12 +77,11 @@ describe('runSpatialChecks', () => {
   });
 
   it('isolates a non-theme token-compliance failure as a warning instead of aborting every later check', async () => {
-    // Regression: the token-compliance block used to `throw err` for any
-    // failure other than ThemeCssNotFoundError, escalating a transient
-    // page.evaluate hiccup ("Execution context was destroyed") to a gating
-    // error and discarding every check after it (overflow, a11y, responsive,
-    // keyboard…) — the one sub-check in this function that didn't match the
-    // per-check isolation every sibling block already has.
+    // A transient page.evaluate hiccup (e.g. "Execution context was
+    // destroyed") in the token-compliance block must not escalate to a
+    // gating error that discards every check after it (overflow, a11y,
+    // responsive, keyboard…) — matches the per-check isolation every sibling
+    // block has.
     getTrackedProperties.mockImplementationOnce(() => {
       throw new Error('Execution context was destroyed');
     });
@@ -111,11 +110,11 @@ describe('runSpatialChecks', () => {
   });
 
   it('times out and force-closes the handle when a check hangs past the inspection budget', async () => {
-    // Regression: page.evaluate has no default timeout, so generated code
-    // that spins the main thread after mount used to wedge every check
-    // (and, since handle.close() only ran in this function's own `finally`,
-    // never actually reached that finally either) — leaking the render
-    // handle forever instead of settling.
+    // page.evaluate has no default timeout, so generated code that spins the
+    // main thread after mount could otherwise wedge every check indefinitely
+    // — and since handle.close() only runs in this function's own `finally`,
+    // a wedged check means that finally never runs either, leaking the
+    // render handle forever instead of settling.
     vi.useFakeTimers();
     try {
       extractBoundingBoxes.mockImplementationOnce(() => new Promise(() => {}));

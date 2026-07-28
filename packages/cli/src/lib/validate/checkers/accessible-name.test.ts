@@ -62,10 +62,6 @@ describe('validateAccessibleName', () => {
   });
 
   it('does not flag a Dialog whose opaque children are wrapped in a fragment', () => {
-    // Regression: `hasOpaqueDynamicChild` used to only recognize a JSX
-    // expression as a DIRECT child, not one wrapped in a fragment
-    // (`<>{children}</>` — an idiomatic pattern), so this false-positived as
-    // "no accessible name".
     const file = tmpFile(
       'an-dialog-dynamic-fragment.tsx',
       `import { Dialog } from '@marigold/components';
@@ -164,9 +160,6 @@ describe('validateAccessibleName', () => {
   });
 
   it('does not flag a local component that shares the Dialog name', () => {
-    // A project's own <Dialog> imported from a local module must not be
-    // required to carry an accessible name (regression: this was a
-    // false-positive error on non-Marigold overlays).
     const file = tmpFile(
       'an-local-dialog.tsx',
       `import { Dialog } from './my-dialog';
@@ -197,8 +190,7 @@ describe('validateAccessibleName', () => {
   it('does not flag a Dialog whose title is delegated to a custom child component', () => {
     // A project's own <DialogHeader> might render <Dialog.Title> internally —
     // this static check cannot see into it, so it must not be flagged as a
-    // deterministic error (regression: this was a false-positive error on a
-    // pattern the checker genuinely cannot resolve).
+    // deterministic error.
     const file = tmpFile(
       'an-custom-header.tsx',
       `import { Dialog } from '@marigold/components';

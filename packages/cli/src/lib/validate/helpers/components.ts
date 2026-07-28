@@ -14,14 +14,9 @@ export type ComponentPropInfo = {
   type: string;
   optional: boolean;
   // String literal values extracted from the union type, if any.
-  // Populated when the type is a union that contains at least one string
-  // literal — e.g. 'primary' | 'secondary' | (string & {}).
   knownValues?: string[];
-  // True when the union also contains a widening member such as
-  // `(string & {})` or plain `string`. The literals are then suggestions,
-  // not a closed contract — a value outside them does not violate the type,
-  // so the prop validator must not report it as an error. The theme-variant
-  // check covers those props with a warning instead.
+  // True when the union also allows arbitrary strings, so `knownValues` is a
+  // set of suggestions rather than a closed contract.
   openValues?: boolean;
 };
 
@@ -471,18 +466,15 @@ export const getHandlerShadows = (
 
 // Boolean prop pairs where the non-prefixed HTML-ism should be replaced by the
 // is-prefixed React Aria prop. This is a doc-justified ALLOWLIST, not an
-// auto-derived `x`/`isX` pair list: auto-derivation over-fires on legitimate
-// alias props. Probing the real @marigold/components .d.mts, the only auto-pairs
-// the old loop produced were `open`/`isOpen` and `dismissable`/`isDismissable`
-// (Modal — both are genuine Marigold convenience aliases, so warning was a false
-// positive) and `readOnly`/`isReadOnly` on RadioGroup — which turned out to be
-// the SAME kind of false positive, just inverted: `RadioGroup`'s own
-// `RemovedProps` omits `isDisabled`/`isInvalid`/`isRequired`/`isSelected` but
-// not `isReadOnly`, so `isReadOnly` is a leaked, undocumented RAC prop, and
-// `readOnly` is RadioGroup's own documented public API — the rule had the
-// preferred direction backwards. No pair currently in the real registry
-// belongs on this list; add one only when it's confirmed to be the
-// intentionally-exposed RAC prop, not a leak through a missing `Omit`.
+// auto-derived `x`/`isX` pair list: auto-deriving from "both names exist on
+// the type" over-fires on legitimate alias props — e.g. Modal's `open`/
+// `isOpen` and `dismissable`/`isDismissable` are both genuine convenience
+// aliases, not an HTML-ism to replace; and RadioGroup's `isReadOnly` is
+// itself a leaked, undocumented RAC prop while `readOnly` is the documented
+// public API, the opposite direction from what auto-derivation would assume.
+// No pair currently in the real registry belongs on this list; add one only
+// when it's confirmed to be the intentionally-exposed RAC prop, not a leak
+// through a missing `Omit`.
 const BOOLEAN_PREFERRED_ALTERNATIVES: ReadonlyArray<[string, string]> = [];
 
 /**
