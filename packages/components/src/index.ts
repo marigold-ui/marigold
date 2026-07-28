@@ -142,6 +142,12 @@ export type { FileTriggerProps } from './FileField/FileTrigger';
 export { FileField } from './FileField/FileField';
 export type { FileFieldProps } from './FileField/FileField';
 
+export { OverflowRegion } from './OverflowRegion/OverflowRegion';
+export type {
+  OverflowRegionProps,
+  OverflowRegionState,
+} from './OverflowRegion/OverflowRegion';
+
 export { Form } from './Form/Form';
 export type { FormProps } from './Form/Form';
 
