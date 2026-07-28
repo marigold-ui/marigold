@@ -17,13 +17,9 @@ const CliCommandEventSchema = z.object({
   anonymousId: z.string().uuid(),
 });
 
-// MCP tool telemetry — one event per tool call. `tool` is its own field
-// (rather than folding the tool name into `event`) so a second MCP tool can
-// extend this schema later without introducing a new event type.
-// `hashedCallerId` is a one-way HMAC-SHA256 digest of the caller's Keycloak
-// `sub` claim — never the raw claim, which would identify a Reservix
-// employee. `topMatchFile`/`topMatchHeading` are absent when the call failed
-// or returned no results.
+// MCP tool telemetry — one event per tool call. `hashedCallerId` is a
+// one-way HMAC-SHA256 digest of the caller's Keycloak `sub` claim — never
+// the raw claim, which would identify a Reservix employee.
 const McpToolCallEventSchema = z.object({
   event: z.literal('mcp_tool_call'),
   tool: z.literal('search_docs'),
