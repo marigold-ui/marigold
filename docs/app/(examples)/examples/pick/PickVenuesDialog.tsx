@@ -196,7 +196,15 @@ const PickBody = ({
 
   return (
     <>
-      <Dialog.Title>{title}</Dialog.Title>
+      {/* State the one-venue minimum up front as the dialog's accessible
+          description, so it is announced to a screen reader on the table or
+          footer instead of only being read in visual order. */}
+      <Dialog.Header>
+        <Dialog.Title>{title}</Dialog.Title>
+        <Dialog.Description>
+          Pick at least one venue to add it to the report.
+        </Dialog.Description>
+      </Dialog.Header>
       <Dialog.Content>
         <Stack space="regular">
           {/* An empty press reveals this instead of committing, and the key
@@ -212,12 +220,6 @@ const PickBody = ({
               Tick at least one venue to add it to the report.
             </SectionMessage.Content>
           </SectionMessage>
-
-          {/* State the one-venue minimum up front, so the rule is known before
-              the footer rather than only on a refused press. */}
-          <Text variant="muted" fontSize="sm">
-            Pick at least one venue to add it to the report.
-          </Text>
 
           {/* A real find-and-collect task: search plus several filter facets
               narrow a wide, detail-rich table. This density is what outgrows a

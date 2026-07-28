@@ -154,7 +154,15 @@ const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
 
   return (
     <>
-      <Dialog.Title>Select people</Dialog.Title>
+      {/* State the one-person minimum up front as the dialog's accessible
+          description, so it is announced to a screen reader on the list or
+          footer instead of only being read in visual order. */}
+      <Dialog.Header>
+        <Dialog.Title>Select people</Dialog.Title>
+        <Dialog.Description>
+          Pick at least one person to grant access.
+        </Dialog.Description>
+      </Dialog.Header>
       <Dialog.Content>
         <Stack space={4}>
           {/* An empty press reveals this instead of committing, and the key
@@ -170,12 +178,6 @@ const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
               Tick at least one person to grant access.
             </SectionMessage.Content>
           </SectionMessage>
-
-          {/* State the one-person minimum up front, so the rule is known before
-              the footer rather than only on a refused press. */}
-          <Text variant="muted" fontSize="sm">
-            Pick at least one person to grant access.
-          </Text>
 
           {/* Search and the team filter narrow the visible rows together;
               neither touches the staged selection tracked in `selected`. */}

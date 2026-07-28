@@ -142,7 +142,15 @@ const PickVenuesBody = ({ initial, onConfirm }: PickBodyProps) => {
 
   return (
     <>
-      <Dialog.Title>Select venues</Dialog.Title>
+      {/* State the one-venue minimum up front as the dialog's accessible
+          description, so it is announced to a screen reader on the table or
+          footer instead of only being read in visual order. */}
+      <Dialog.Header>
+        <Dialog.Title>Select venues</Dialog.Title>
+        <Dialog.Description>
+          Pick at least one venue to add it.
+        </Dialog.Description>
+      </Dialog.Header>
       <Dialog.Content>
         <Stack space={4}>
           {/* An empty press reveals this instead of committing, and the key
@@ -158,12 +166,6 @@ const PickVenuesBody = ({ initial, onConfirm }: PickBodyProps) => {
               Tick at least one venue to add it.
             </SectionMessage.Content>
           </SectionMessage>
-
-          {/* State the one-venue minimum up front, so the rule is known before
-              the footer rather than only on a refused press. */}
-          <Text variant="muted" fontSize="sm">
-            Pick at least one venue to add it.
-          </Text>
 
           {/* Search and the type filter narrow the visible rows together;
               neither touches the staged selection tracked in `selected`. */}
