@@ -10,8 +10,16 @@ const require = createRequire(import.meta.url);
 // itself instead of the target project, which never has it as a dependency.
 let resolutionRoot: string | undefined;
 
-export const setThemeResolutionRoot = (dir: string): void => {
+// Not the public entry point — design-tokens.ts depends on resolveThemeCss()
+// below, so it wraps this to also invalidate its own root-keyed caches on a
+// change. Callers should use design-tokens.ts's setThemeResolutionRoot
+// instead (importing it here directly would be a resolve-theme →
+// design-tokens → resolve-theme cycle). Returns whether the root actually
+// changed, so the wrapper only resets its caches when it needs to.
+export const setThemeResolutionRootRaw = (dir: string): boolean => {
+  if (dir === resolutionRoot) return false;
   resolutionRoot = dir;
+  return true;
 };
 
 const resolveThemeRuiEntry = (): string => {

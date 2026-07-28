@@ -165,8 +165,8 @@ const C = ({ v }: { v: string }) => <Button variant={v}>Save</Button>;`
   it('does not flag readOnly on RadioGroup (it is the documented prop, not a shadow)', () => {
     // `isReadOnly` only leaks through RadioGroup's type because its
     // `RemovedProps` omits it, not because it's an intentionally exposed RAC
-    // prop — the BOOLEAN_PREFERRED_ALTERNATIVES allowlist must not pair it
-    // with RadioGroup's own documented `readOnly` prop.
+    // prop — `readOnly` is in RadioGroup's own `validSet`, so it stays
+    // unflagged through the normal per-component prop check regardless.
     const issues = validateProps(fixture('boolean-shadows.tsx'));
     const issue = issues.find(
       i => i.component === 'RadioGroup' && i.message.includes('readOnly')

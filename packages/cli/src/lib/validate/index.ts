@@ -7,7 +7,7 @@ import {
   buildTextFingerprintMap,
 } from './helpers/component-locations.js';
 import { setComponentResolutionRoot } from './helpers/components.js';
-import { setThemeResolutionRoot } from './helpers/resolve-theme.js';
+import { setThemeResolutionRoot } from './helpers/design-tokens.js';
 import type { RenderTimingError, SharedRenderer } from './spatial/renderer.js';
 import {
   type ValidateOptions,

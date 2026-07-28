@@ -1,10 +1,20 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { resolveThemeCss } from './resolve-theme.js';
+import { resolveThemeCss, setThemeResolutionRootRaw } from './resolve-theme.js';
 
 export type DesignTokenMap = Record<string, string>;
 
 let cachedTokens: DesignTokenMap | null = null;
+
+// The public entry point (checkers/index.ts and index.ts import this, not
+// resolve-theme.js directly): resolveThemeCss() below is keyed on
+// resolve-theme.ts's root, and this module caches its own derived result
+// globally with no key of its own — so a root change has to invalidate
+// cachedTokens/cachedFamilies too, or a second project validated in the same
+// process silently reads back the first project's tokens.
+export const setThemeResolutionRoot = (dir: string): void => {
+  if (setThemeResolutionRootRaw(dir)) resetDesignTokenCache();
+};
 
 // The value class deliberately does NOT exclude newlines: a multi-layer
 // shadow token (--shadow-elevation-overlay: 0px 0px … , 0px 1px … , …) is
@@ -224,7 +234,7 @@ export const getTrackedProperties = (): string[] => {
   return [...properties];
 };
 
-export const __resetDesignTokenCacheForTests = (): void => {
+export const resetDesignTokenCache = (): void => {
   cachedTokens = null;
   cachedFamilies = null;
 };

@@ -17,7 +17,7 @@ vi.mock('./helpers/components.js', async importOriginal => ({
   ...(await importOriginal()),
   setComponentResolutionRoot,
 }));
-vi.mock('./helpers/resolve-theme.js', async importOriginal => ({
+vi.mock('./helpers/design-tokens.js', async importOriginal => ({
   ...(await importOriginal()),
   setThemeResolutionRoot,
 }));

@@ -90,11 +90,18 @@ const completeFilePath = (partial: string): string[] => {
     return [];
   }
 
-  return entries
-    .filter(e => e.name.startsWith(prefix))
-    .filter(e => e.isDirectory() || e.name.endsWith('.tsx'))
-    .map(e => `${dirPrefix}${e.name}${e.isDirectory() ? '/' : ''}`)
-    .sort();
+  return (
+    entries
+      .filter(e => e.name.startsWith(prefix))
+      // A shell's own filename completion hides dotfiles unless the user
+      // already typed a leading '.' — startsWith(prefix) alone doesn't, so an
+      // empty prefix (e.g. `marigold validate <TAB>` at a repo root) would
+      // otherwise offer .git/, .claude/, .github/, node_modules/.
+      .filter(e => prefix.startsWith('.') || !e.name.startsWith('.'))
+      .filter(e => e.isDirectory() || e.name.endsWith('.tsx'))
+      .map(e => `${dirPrefix}${e.name}${e.isDirectory() ? '/' : ''}`)
+      .sort()
+  );
 };
 
 // Walk the words between the subcommand and the cursor, classifying each

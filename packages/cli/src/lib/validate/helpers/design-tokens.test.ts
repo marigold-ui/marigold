@@ -2,17 +2,21 @@ import { afterEach, describe, expect, it } from 'vitest';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { tmpFile } from '../test-support/tmp.js';
 import {
   ThemeCssNotFoundError,
-  __resetDesignTokenCacheForTests,
   extractTokenScopes,
   loadDesignTokens,
+  resetDesignTokenCache,
   resolveCssImports,
+  setThemeResolutionRoot,
 } from './design-tokens.js';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 afterEach(() => {
-  __resetDesignTokenCacheForTests();
+  resetDesignTokenCache();
 });
 
 describe('loadDesignTokens', () => {
@@ -155,6 +159,45 @@ describe('extractTokenScopes', () => {
     expect(scoped).toContain('--a: 1');
     expect(scoped).toContain('--b: 2');
     expect(scoped).toContain('--c: 3');
+  });
+});
+
+describe('setThemeResolutionRoot', () => {
+  // packages/cli has @marigold/theme-rui as a real dependency (unlike the
+  // workspace root), so pointing the root there exercises the
+  // project-relative resolution path, not just its fallback.
+  const cliPackageDir = path.resolve(__dirname, '..', '..', '..', '..');
+
+  afterEach(() => {
+    setThemeResolutionRoot(process.cwd());
+    resetDesignTokenCache();
+  });
+
+  it('invalidates the cached tokens when the resolution root actually changes', () => {
+    // Same bug shape as helpers/components.ts's setComponentResolutionRoot:
+    // validate() can run against two different projects in one process, and
+    // loadDesignTokens() memoizes globally with no key on the root.
+    setThemeResolutionRoot(os.tmpdir());
+    resetDesignTokenCache();
+    const first = loadDesignTokens();
+
+    setThemeResolutionRoot(cliPackageDir);
+    const second = loadDesignTokens();
+
+    // Different object instance proves the switch rebuilt the token map
+    // instead of handing back the first root's cached result.
+    expect(second).not.toBe(first);
+  });
+
+  it('does not rebuild the cache when the root is set to its current value', () => {
+    setThemeResolutionRoot(cliPackageDir);
+    resetDesignTokenCache();
+    const first = loadDesignTokens();
+
+    setThemeResolutionRoot(cliPackageDir);
+    const second = loadDesignTokens();
+
+    expect(second).toBe(first);
   });
 });
 

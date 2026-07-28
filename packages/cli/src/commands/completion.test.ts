@@ -192,6 +192,18 @@ describe('computeSuggestions — file positional (validate)', () => {
     expect(out).toEqual([`${tmpDir}/Button.tsx`, `${tmpDir}/src/`]);
   });
 
+  test('hides dotfiles/dot-directories on an empty prefix, but offers them once the user types a leading dot', () => {
+    fs.writeFileSync(path.join(tmpDir, 'Button.tsx'), '');
+    fs.mkdirSync(path.join(tmpDir, '.git'));
+
+    expect(computeSuggestions(['validate', `${tmpDir}/`])).toEqual([
+      `${tmpDir}/Button.tsx`,
+    ]);
+    expect(computeSuggestions(['validate', `${tmpDir}/.`])).toEqual([
+      `${tmpDir}/.git/`,
+    ]);
+  });
+
   test('filters by the partial filename prefix', () => {
     fs.writeFileSync(path.join(tmpDir, 'Button.tsx'), '');
     fs.writeFileSync(path.join(tmpDir, 'Badge.tsx'), '');

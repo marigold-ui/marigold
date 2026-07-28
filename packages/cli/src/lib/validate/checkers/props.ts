@@ -7,7 +7,6 @@ import {
 import {
   type ComponentPropInfo,
   buildMarigoldTagResolver,
-  getBooleanShadows,
   getComponentProps,
   getHandlerShadows,
   getSubComponentProps,
@@ -97,7 +96,6 @@ export const validateProps = (
     // suffix). `displayName` is kept for messages so they read as written.
     const baseName = resolvedName.split('.')[0];
     const handlerShadows = getHandlerShadows(baseName);
-    const booleanShadows = getBooleanShadows(baseName);
 
     for (const attr of attrs.properties) {
       if (ts.isJsxSpreadAttribute(attr)) {
@@ -181,21 +179,6 @@ export const validateProps = (
           suggestion: `Replace "${name}" with "${ariaHandler}".`,
           location,
           details: { used: name, preferred: ariaHandler },
-        });
-        continue;
-      }
-
-      const ariaBool = booleanShadows.get(name);
-      if (ariaBool) {
-        issues.push({
-          type: 'technical',
-          severity: 'warning',
-          source: 'prop-validator',
-          component: displayName,
-          message: `Prop "${name}" on <${displayName}> shadows the React Aria prop "${ariaBool}".`,
-          suggestion: `Replace "${name}" with "${ariaBool}".`,
-          location,
-          details: { used: name, preferred: ariaBool },
         });
         continue;
       }

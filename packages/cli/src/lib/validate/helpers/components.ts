@@ -503,40 +503,17 @@ export const getHandlerShadows = (
   return shadows;
 };
 
-// Boolean prop pairs where the non-prefixed HTML-ism should be replaced by the
-// is-prefixed React Aria prop. This is a doc-justified ALLOWLIST, not an
-// auto-derived `x`/`isX` pair list: auto-deriving from "both names exist on
-// the type" over-fires on legitimate alias props — e.g. Modal's `open`/
-// `isOpen` and `dismissable`/`isDismissable` are both genuine convenience
-// aliases, not an HTML-ism to replace; and RadioGroup's `isReadOnly` is
-// itself a leaked, undocumented RAC prop while `readOnly` is the documented
-// public API, the opposite direction from what auto-derivation would assume.
-// No pair currently in the real registry belongs on this list; add one only
-// when it's confirmed to be the intentionally-exposed RAC prop, not a leak
-// through a missing `Omit`.
-const BOOLEAN_PREFERRED_ALTERNATIVES: ReadonlyArray<[string, string]> = [];
-
-/**
- * For a component, find boolean prop pairs from the doc-justified allowlist
- * where BOTH the HTML-ism and its is-prefixed React Aria equivalent exist.
- * Returns a map of htmlProp → reactAriaProp (e.g. readOnly → isReadOnly).
- */
-export const getBooleanShadows = (
-  componentName: string
-): Map<string, string> => {
-  const info = loadMarigoldRegistry().get(componentName);
-  if (!info) return new Map();
-
-  const propNames = new Set(info.props.map(p => p.name));
-  const shadows = new Map<string, string>();
-
-  for (const [htmlProp, ariaProp] of BOOLEAN_PREFERRED_ALTERNATIVES) {
-    if (propNames.has(htmlProp) && propNames.has(ariaProp)) {
-      if (!shadows.has(htmlProp)) {
-        shadows.set(htmlProp, ariaProp);
-      }
-    }
-  }
-
-  return shadows;
-};
+// A boolean-prop equivalent of getHandlerShadows above (x → isX) doesn't
+// currently exist: it was tried as a doc-justified ALLOWLIST rather than an
+// auto-derived pair list (auto-deriving from "both names exist on the type"
+// over-fires on legitimate alias props — e.g. Modal's `open`/`isOpen` and
+// `dismissable`/`isDismissable` are both genuine convenience aliases, not an
+// HTML-ism to replace; and RadioGroup's `isReadOnly` is itself a leaked,
+// undocumented RAC prop while `readOnly` is the documented public API, the
+// opposite direction from what auto-derivation would assume), but no pair in
+// the real registry ever qualified, so the mechanism had zero live cases.
+// Re-add (mirroring getHandlerShadows's shape) only once a genuine pair shows
+// up — `boolean-shadows.tsx` and props.test.ts's RadioGroup case keep
+// guarding the regression this was meant to catch either way, since
+// `readOnly` is in RadioGroup's own `validSet` and stays unflagged through
+// the normal per-component prop check with or without this.

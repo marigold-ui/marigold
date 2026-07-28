@@ -3,10 +3,8 @@ import {
   loadMarigoldRegistry,
   setComponentResolutionRoot,
 } from '../helpers/components.js';
-import {
-  resolveThemeDir,
-  setThemeResolutionRoot,
-} from '../helpers/resolve-theme.js';
+import { setThemeResolutionRoot } from '../helpers/design-tokens.js';
+import { resolveThemeDir } from '../helpers/resolve-theme.js';
 import {
   type IssueSource,
   type ValidationCoverage,

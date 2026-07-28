@@ -82,11 +82,15 @@ export async function POST(request: Request) {
   }
 
   try {
-    // Per-anonymousId daily quota. INCR returns the new count atomically;
-    // EXPIRE only on first hit so the TTL doesn't get pushed out forever.
+    // Per-anonymousId daily quota. INCR returns the new count atomically.
+    // EXPIRE with NX sets the TTL only if the key doesn't already have
+    // one — idempotent, so a failed EXPIRE on the first hit (a network
+    // blip) is retried by every later call, unlike a `count === 1` gate
+    // where that failure would go unnoticed and unretried for the rest of
+    // the day, leaving the key with no TTL at all.
     const rlKey = rateLimitKey(parsed.data.anonymousId);
     const count = await client.incr(rlKey);
-    if (count === 1) await client.expire(rlKey, SECONDS_PER_DAY);
+    await client.expire(rlKey, SECONDS_PER_DAY, 'NX');
     if (count > RATE_LIMIT_PER_DAY) {
       return new NextResponse(null, { status: 429 });
     }
@@ -95,11 +99,11 @@ export async function POST(request: Request) {
       ...parsed.data,
       receivedAt: new Date().toISOString(),
     };
-    // EXPIRE only on the day's first event (mirrors the rate-limit key above)
-    // so the TTL is set once relative to the day's first write, not pushed
-    // out further by every subsequent event that lands in the same list.
-    const length = await client.lpush(dateKey(), JSON.stringify(payload));
-    if (length === 1) await client.expire(dateKey(), EVENT_RETENTION_SECONDS);
+    // Same NX idempotency as the rate-limit key above: retried by every
+    // later event in the day if the first EXPIRE call fails, and never
+    // pushes the retention window out regardless of how many times it runs.
+    await client.lpush(dateKey(), JSON.stringify(payload));
+    await client.expire(dateKey(), EVENT_RETENTION_SECONDS, 'NX');
   } catch {
     // Never leak backend errors; telemetry must not break the caller.
   }

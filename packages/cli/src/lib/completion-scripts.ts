@@ -30,7 +30,12 @@ _marigold() {
   local -a comp_words
   comp_words=("\${(@)words[2,$CURRENT]}")
   local -a completions
-  completions=("\${(@f)$(marigold __complete -- "\${comp_words[@]}" 2>/dev/null)}")
+  # Quoting the whole "(@f)$(...)" element keeps an empty trailing field, so
+  # empty output becomes a one-element array containing "" rather than an
+  # empty array — the \${#completions} == 0 check below would never fire.
+  # Quoting only the inner command substitution, with the (f) flag left
+  # unquoted, makes zsh discard that empty field instead.
+  completions=(\${(f)"$(marigold __complete -- "\${comp_words[@]}" 2>/dev/null)"})
   # No matches from our own completer (e.g. \`validate\`'s file positional,
   # which it does not resolve) — fall back to zsh's file completion instead
   # of showing nothing.

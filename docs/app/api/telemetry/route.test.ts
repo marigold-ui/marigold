@@ -99,18 +99,25 @@ describe('POST /api/telemetry (with Redis configured)', () => {
     expect(redisMock.lpush).toHaveBeenCalledTimes(1);
     const calls = dayKeyExpireCalls();
     expect(calls).toHaveLength(1);
-    const [dayKey, ttlSeconds] = calls[0];
+    const [dayKey, ttlSeconds, option] = calls[0];
     expect(dayKey).toBe(redisMock.lpush.mock.calls.at(-1)![0]);
     expect(ttlSeconds).toBe(90 * 24 * 60 * 60);
+    expect(option).toBe('NX');
   });
 
-  it('does not re-expire the list on every subsequent event that same day', async () => {
+  it('calls EXPIRE NX on every event, not just the first, so a failed first-event EXPIRE is retried', async () => {
+    // NX makes this idempotent server-side (a no-op once the key already has
+    // a TTL), so calling it unconditionally — rather than gating on
+    // `lpush`'s return value being 1 — never pushes the retention window
+    // out, and a first-event EXPIRE that failed (e.g. a network blip) is
+    // retried by every later event instead of leaving the key with no TTL
+    // for the rest of the day.
     redisMock.lpush.mockResolvedValueOnce(1).mockResolvedValueOnce(2);
 
     await post(makeEvent('validate'));
     await post(makeEvent('validate'));
 
     expect(redisMock.lpush).toHaveBeenCalledTimes(2);
-    expect(dayKeyExpireCalls()).toHaveLength(1); // only the first event's push
+    expect(dayKeyExpireCalls()).toHaveLength(2);
   });
 });
