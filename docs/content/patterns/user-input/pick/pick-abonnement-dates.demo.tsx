@@ -77,8 +77,9 @@ const concerts: Concert[] = [
 export default () => {
   const [selected, setSelected] = useState<Set<Key>>(() => new Set());
   const [subscribed, setSubscribed] = useState<Concert[] | null>(null);
-  // Keep the commit active. An empty press reveals a message instead of committing.
-  const [attemptedEmpty, setAttemptedEmpty] = useState(false);
+  // Keep the commit active. Counts refused empty presses, which keys the error
+  // so each press re-announces, and resets on any selection change.
+  const [emptyAttempts, setEmptyAttempts] = useState(0);
 
   const count = selected.size;
   const chosen = concerts.filter(concert => selected.has(concert.id));
@@ -87,9 +88,14 @@ export default () => {
     <Panel aria-label="Season subscription">
       <Panel.Content>
         <Stack space={4}>
-          {/* An empty press reveals this instead of committing. It announces
-              itself to assistive tech and clears once a concert is chosen. */}
-          <SectionMessage variant="error" open={attemptedEmpty && count === 0}>
+          {/* An empty press reveals this instead of committing, and the key
+              remounts it so each refused press re-announces. Any selection
+              change resets the counter and hides it. */}
+          <SectionMessage
+            key={emptyAttempts}
+            variant="error"
+            open={emptyAttempts > 0 && count === 0}
+          >
             <SectionMessage.Title>No concerts chosen yet</SectionMessage.Title>
             <SectionMessage.Content>
               Choose at least one concert for your season pass.
@@ -103,13 +109,15 @@ export default () => {
               confirmation until the user commits again. */}
           <SelectList
             label="Choose your concerts"
-            description="Add concerts to your season subscription. Sold-out dates can't be added."
+            description="Choose at least one concert for your season pass. Sold-out dates can't be added."
             selectionMode="multiple"
             items={concerts}
             selectedKeys={selected}
             onChange={keys => {
               setSelected(new Set(keys));
               setSubscribed(null);
+              // Any selection change clears a pending empty-press error.
+              setEmptyAttempts(0);
             }}
           >
             {(concert: Concert) => (
@@ -149,7 +157,7 @@ export default () => {
               variant="primary"
               onPress={() => {
                 if (count === 0) {
-                  setAttemptedEmpty(true);
+                  setEmptyAttempts(n => n + 1);
                   return;
                 }
                 setSubscribed(chosen);

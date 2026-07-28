@@ -22,9 +22,11 @@ import { type Venue, statusVariant, venues } from './venues';
 
 // Type and region options are derived from the data so they never drift from
 // it: every option maps to real venues, and every venue value is selectable.
-const unique = (key: 'type' | 'region') => [
-  ...new Set(venues.map(venue => venue[key])),
-];
+// Sorted so the option order is stable and predictable.
+const unique = (key: 'type' | 'region') =>
+  [...new Set(venues.map(venue => venue[key]))].sort((a, b) =>
+    a.localeCompare(b)
+  );
 const types = unique('type');
 const regions = unique('region');
 // Status stays explicit to keep its lifecycle order (Available, Held, Booked).
@@ -129,8 +131,9 @@ const PickBody = ({
   const [region, setRegion] = useState<Key | null>('all');
   const [status, setStatus] = useState<Key | null>('all');
   const [selected, setSelected] = useState<Set<Key>>(() => new Set(initial));
-  // Keep the commit active. An empty press reveals a message instead of committing.
-  const [attemptedEmpty, setAttemptedEmpty] = useState(false);
+  // Keep the commit active. Counts refused empty presses, which keys the error
+  // so each press re-announces, and resets on any selection change.
+  const [emptyAttempts, setEmptyAttempts] = useState(0);
 
   const results = useMemo(() => {
     const filters: VenueFilters = {
@@ -170,6 +173,8 @@ const PickBody = ({
   // all" means that visible set. Merge every change with the venues staged
   // under other filters so narrowing the list never drops staged picks.
   const onSelectionChange = (keys: Selection) => {
+    // Any selection change clears a pending empty-press error.
+    setEmptyAttempts(0);
     const visibleIds = new Set<Key>(results.map(venue => venue.id));
     setSelected(prev => {
       const offView = [...prev].filter(key => !visibleIds.has(key));
@@ -194,17 +199,25 @@ const PickBody = ({
       <Dialog.Title>{title}</Dialog.Title>
       <Dialog.Content>
         <Stack space="regular">
-          {/* An empty press reveals this instead of committing. It announces
-              itself to assistive tech and clears once a venue is staged. */}
+          {/* An empty press reveals this instead of committing, and the key
+              remounts it so each refused press re-announces. Any selection
+              change resets the counter and hides it. */}
           <SectionMessage
+            key={emptyAttempts}
             variant="error"
-            open={attemptedEmpty && ids.length === 0}
+            open={emptyAttempts > 0 && ids.length === 0}
           >
             <SectionMessage.Title>Nothing staged yet</SectionMessage.Title>
             <SectionMessage.Content>
               Tick at least one venue to add it to the report.
             </SectionMessage.Content>
           </SectionMessage>
+
+          {/* State the one-venue minimum up front, so the rule is known before
+              the footer rather than only on a refused press. */}
+          <Text variant="muted" fontSize="sm">
+            Pick at least one venue to add it to the report.
+          </Text>
 
           {/* A real find-and-collect task: search plus several filter facets
               narrow a wide, detail-rich table. This density is what outgrows a
@@ -337,7 +350,7 @@ const PickBody = ({
           variant="primary"
           onPress={() => {
             if (ids.length === 0) {
-              setAttemptedEmpty(true);
+              setEmptyAttempts(n => n + 1);
               return;
             }
             onConfirm(ids);

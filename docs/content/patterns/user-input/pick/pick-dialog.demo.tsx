@@ -100,8 +100,9 @@ const PickVenuesBody = ({ initial, onConfirm }: PickBodyProps) => {
   const [search, setSearch] = useState('');
   const [type, setType] = useState<Key | null>('all');
   const [selected, setSelected] = useState<Set<Key>>(() => new Set(initial));
-  // Keep the commit active. An empty press reveals a message instead of committing.
-  const [attemptedEmpty, setAttemptedEmpty] = useState(false);
+  // Keep the commit active. Counts refused empty presses, which keys the error
+  // so each press re-announces, and resets on any selection change.
+  const [emptyAttempts, setEmptyAttempts] = useState(0);
 
   const results = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -117,6 +118,8 @@ const PickVenuesBody = ({ initial, onConfirm }: PickBodyProps) => {
   // concrete set at the boundary, keeping venues staged under other filters, so
   // narrowing the list never changes what is committed.
   const onSelectionChange = (keys: Selection) => {
+    // Any selection change clears a pending empty-press error.
+    setEmptyAttempts(0);
     const visibleIds = new Set<Key>(results.map(venue => venue.id));
     setSelected(prev => {
       const offView = [...prev].filter(key => !visibleIds.has(key));
@@ -142,17 +145,25 @@ const PickVenuesBody = ({ initial, onConfirm }: PickBodyProps) => {
       <Dialog.Title>Select venues</Dialog.Title>
       <Dialog.Content>
         <Stack space={4}>
-          {/* An empty press reveals this instead of committing. It announces
-              itself to assistive tech and clears once a venue is staged. */}
+          {/* An empty press reveals this instead of committing, and the key
+              remounts it so each refused press re-announces. Any selection
+              change resets the counter and hides it. */}
           <SectionMessage
+            key={emptyAttempts}
             variant="error"
-            open={attemptedEmpty && staged.length === 0}
+            open={emptyAttempts > 0 && staged.length === 0}
           >
             <SectionMessage.Title>Nothing staged yet</SectionMessage.Title>
             <SectionMessage.Content>
               Tick at least one venue to add it.
             </SectionMessage.Content>
           </SectionMessage>
+
+          {/* State the one-venue minimum up front, so the rule is known before
+              the footer rather than only on a refused press. */}
+          <Text variant="muted" fontSize="sm">
+            Pick at least one venue to add it.
+          </Text>
 
           {/* Search and the type filter narrow the visible rows together;
               neither touches the staged selection tracked in `selected`. */}
@@ -245,7 +256,7 @@ const PickVenuesBody = ({ initial, onConfirm }: PickBodyProps) => {
           variant="primary"
           onPress={() => {
             if (staged.length === 0) {
-              setAttemptedEmpty(true);
+              setEmptyAttempts(n => n + 1);
               return;
             }
             onConfirm(selected);
