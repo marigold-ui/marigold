@@ -26,10 +26,9 @@ const HIDDEN = 'shrink-0 invisible opacity-0 absolute';
  * always reports real widths and no hidden measurement clone or transient
  * "show all" render pass is needed. Items that do not fit are hidden with
  * `visibility`, `opacity` and `inert`, which removes them from paint, tab
- * order, and the accessibility tree while keeping them measurable. Because the
- * region
- * owns its width (`flex-1`) and hiding items does not change it, the resize
- * observer cannot re-trigger itself.
+ * order, and the accessibility tree while keeping them measurable. Because
+ * the region owns its width (`flex-1`) and hiding items does not change it,
+ * the resize observer cannot re-trigger itself.
  *
  * When an indicator is present, its width is reserved as soon as at least
  * one item is demoted, so the indicator never causes a second demotion
