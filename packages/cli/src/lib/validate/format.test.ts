@@ -187,6 +187,9 @@ describe('formatForLLM', () => {
     expect(dataLine!.length).toBeLessThanOrEqual(
       '  data: {items='.length + 120 + '}'.length
     );
+    // The cap must trim the JSON body, not the ', …]' suffix — the value must
+    // still end with the array's closing bracket, not a mid-suffix cut.
+    expect(dataLine).toMatch(/, …\]}$/);
   });
 
   it('includes checks run line', () => {

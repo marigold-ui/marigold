@@ -31,8 +31,15 @@ const formatValue = (v: unknown): string => {
 
   try {
     if (Array.isArray(v) && v.length > 8) {
-      const truncated = JSON.stringify(v.slice(0, 8));
-      return capLength(truncated.slice(0, -1) + ', …]');
+      // Cap the inner JSON first, leaving room for the ', …]' suffix, then
+      // append it — capping the already-suffixed string can slice off the
+      // closing bracket instead of the JSON body.
+      const suffix = ', …]';
+      const inner = JSON.stringify(v.slice(0, 8)).slice(0, -1);
+      const budget = MAX_DETAIL_LENGTH - suffix.length;
+      const cappedInner =
+        inner.length > budget ? inner.slice(0, budget - 1) + '…' : inner;
+      return cappedInner + suffix;
     }
     const s = JSON.stringify(v);
     if (s === undefined) return String(v);

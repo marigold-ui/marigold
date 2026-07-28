@@ -76,12 +76,87 @@ const safeCheck = (
   }
 };
 
+type FileCheck = {
+  source: IssueSource;
+  label: string;
+  passedLabel: string;
+  run: (filePath: string) => ValidationIssue[];
+};
+
+// Every registry-dependent checker whose only input is the file path. Each
+// entry drives both the `registryIssue`-gated run and its `passed` line from
+// one place, so adding a checker here can't forget either half — the gap
+// this table replaced was ten call sites repeating `registryIssue ? [] :
+// safeCheck(...)` and a second, separately-spelled-out list for `passed`.
+// prop-validator (needs `coverage`) and theme-variant-validator (needs a
+// resolved theme path) don't fit this shape and stay special-cased below.
+const FILE_CHECKS: readonly FileCheck[] = [
+  {
+    source: 'composition-validator',
+    label: 'Composition',
+    passedLabel: 'Component composition',
+    run: validateComposition,
+  },
+  {
+    source: 'accessible-name',
+    label: 'Accessible name',
+    passedLabel: 'Overlay accessible names',
+    run: validateAccessibleName,
+  },
+  {
+    source: 'required-ancestor',
+    label: 'Required ancestor',
+    passedLabel: 'Compound component placement',
+    run: validateRequiredAncestor,
+  },
+  {
+    source: 'section-header',
+    label: 'Section header',
+    passedLabel: 'Section headers',
+    run: validateSectionHeader,
+  },
+  {
+    source: 'collection-id',
+    label: 'Collection id',
+    passedLabel: 'Collection item ids',
+    run: validateCollectionId,
+  },
+  {
+    source: 'design-system-usage',
+    label: 'Design system usage',
+    passedLabel: 'Design system usage',
+    run: validateDesignSystemUsage,
+  },
+  {
+    source: 'layout-usage',
+    label: 'Layout usage',
+    passedLabel: 'Layout usage',
+    run: validateLayoutUsage,
+  },
+  {
+    source: 'table-usage',
+    label: 'Table usage',
+    passedLabel: 'Table usage',
+    run: validateTableUsage,
+  },
+  {
+    source: 'component-conventions',
+    label: 'Component conventions',
+    passedLabel: 'Component conventions',
+    run: validateComponentConventions,
+  },
+];
+
 export const runTechnicalChecks = (
   filePath: string,
   themePath?: string | false
 ): TechnicalResult => {
   const coverage = emptyCoverage();
   const projectDir = path.dirname(filePath);
+  // validate() (index.ts) already sets both roots unconditionally before
+  // dispatching here. Repeated for callers that invoke runTechnicalChecks
+  // directly (e.g. its own tests) without going through validate() — a no-op
+  // when the root hasn't changed, so this costs nothing on the normal path.
   setComponentResolutionRoot(projectDir);
   setThemeResolutionRoot(projectDir);
 
@@ -142,51 +217,12 @@ export const runTechnicalChecks = (
         )
       : compileResult.issues;
 
-  const compositionIssues = registryIssue
-    ? []
-    : safeCheck('composition-validator', 'Composition', () =>
-        validateComposition(filePath)
-      );
-  const accessibleNameIssues = registryIssue
-    ? []
-    : safeCheck('accessible-name', 'Accessible name', () =>
-        validateAccessibleName(filePath)
-      );
-  const requiredAncestorIssues = registryIssue
-    ? []
-    : safeCheck('required-ancestor', 'Required ancestor', () =>
-        validateRequiredAncestor(filePath)
-      );
-  const sectionHeaderIssues = registryIssue
-    ? []
-    : safeCheck('section-header', 'Section header', () =>
-        validateSectionHeader(filePath)
-      );
-  const collectionIdIssues = registryIssue
-    ? []
-    : safeCheck('collection-id', 'Collection id', () =>
-        validateCollectionId(filePath)
-      );
-  const dsUsageIssues = registryIssue
-    ? []
-    : safeCheck('design-system-usage', 'Design system usage', () =>
-        validateDesignSystemUsage(filePath)
-      );
-  const layoutUsageIssues = registryIssue
-    ? []
-    : safeCheck('layout-usage', 'Layout usage', () =>
-        validateLayoutUsage(filePath)
-      );
-  const tableUsageIssues = registryIssue
-    ? []
-    : safeCheck('table-usage', 'Table usage', () =>
-        validateTableUsage(filePath)
-      );
-  const componentConventionIssues = registryIssue
-    ? []
-    : safeCheck('component-conventions', 'Component conventions', () =>
-        validateComponentConventions(filePath)
-      );
+  const fileCheckResults = FILE_CHECKS.map(check => ({
+    check,
+    issues: registryIssue
+      ? []
+      : safeCheck(check.source, check.label, () => check.run(filePath)),
+  }));
 
   const effectiveThemePath =
     themePath === false ? null : (themePath ?? resolveThemeDir());
@@ -201,15 +237,7 @@ export const runTechnicalChecks = (
     ...compilerIssues,
     ...(registryIssue ? [registryIssue] : []),
     ...propIssues,
-    ...compositionIssues,
-    ...accessibleNameIssues,
-    ...requiredAncestorIssues,
-    ...sectionHeaderIssues,
-    ...collectionIdIssues,
-    ...dsUsageIssues,
-    ...layoutUsageIssues,
-    ...tableUsageIssues,
-    ...componentConventionIssues,
+    ...fileCheckResults.flatMap(r => r.issues),
     ...themeIssues,
   ];
   const passed: string[] = [];
@@ -217,18 +245,9 @@ export const runTechnicalChecks = (
   if (compilerIssues.length === 0) passed.push('TypeScript compilation');
   if (!registryIssue) {
     if (propIssues.length === 0) passed.push('All Marigold props are valid');
-    if (compositionIssues.length === 0) passed.push('Component composition');
-    if (accessibleNameIssues.length === 0)
-      passed.push('Overlay accessible names');
-    if (requiredAncestorIssues.length === 0)
-      passed.push('Compound component placement');
-    if (sectionHeaderIssues.length === 0) passed.push('Section headers');
-    if (collectionIdIssues.length === 0) passed.push('Collection item ids');
-    if (dsUsageIssues.length === 0) passed.push('Design system usage');
-    if (layoutUsageIssues.length === 0) passed.push('Layout usage');
-    if (tableUsageIssues.length === 0) passed.push('Table usage');
-    if (componentConventionIssues.length === 0)
-      passed.push('Component conventions');
+    for (const { check, issues: checkIssues } of fileCheckResults) {
+      if (checkIssues.length === 0) passed.push(check.passedLabel);
+    }
     if (effectiveThemePath && themeIssues.length === 0)
       passed.push('Theme variant compliance');
   }

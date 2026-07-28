@@ -32,13 +32,20 @@ export const parseChecks = (input: string): ValidationCheck[] => {
 export const runValidate = async (
   options: RunValidateOptions
 ): Promise<RunValidateResult> => {
+  const format = options.format ?? 'text';
+
   // Skipped, not failed: an automated correction loop gates on the exit
   // code, and "validation is turned off" must not read as "this file is
-  // broken" the way a thrown error (exit 1) would.
+  // broken" the way a thrown error (exit 1) would. The payload still has to
+  // honor --format: a json consumer parsing this output would otherwise
+  // throw on a plain English sentence.
   if (process.env.MARIGOLD_VALIDATE_DISABLED === '1') {
+    const reason = 'MARIGOLD_VALIDATE_DISABLED=1';
     return {
       output:
-        'marigold validate is disabled in this configuration (MARIGOLD_VALIDATE_DISABLED=1). Skipping.',
+        format === 'json'
+          ? JSON.stringify({ skipped: true, reason })
+          : `marigold validate is disabled in this configuration (${reason}). Skipping.`,
       hasErrors: false,
     };
   }
@@ -50,7 +57,6 @@ export const runValidate = async (
   }
 
   const checks = parseChecks(options.checks ?? 'all');
-  const format = options.format ?? 'text';
 
   const report = await validate(options.file, {
     checks,

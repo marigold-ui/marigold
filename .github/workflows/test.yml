@@ -189,10 +189,18 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ steps.playwright-version.outputs.version }}-${{ runner.os }}
+          # Distinct from the other jobs' `playwright-<version>-<os>` key: this
+          # job only ever installs Chromium (see below), so it must not share
+          # a cache slot with unit-tests/storybook-tests — whichever job's
+          # cache-save wins that shared key on a cold run would otherwise
+          # leave the other jobs restoring a Chromium-only cache and missing
+          # firefox/webkit on every run after.
+          key: playwright-${{ steps.playwright-version.outputs.version }}-${{ runner.os }}-chromium
       - name: Install Playwright browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: pnpm exec playwright install
+        # spatial/renderer.ts only ever launches Chromium — firefox/webkit
+        # would be pure cold-cache cost with nothing in this job using them.
+        run: pnpm exec playwright install chromium
 
       - name: Build @marigold/components, theme packages, and @marigold/cli
         run: pnpm build

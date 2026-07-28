@@ -4,13 +4,13 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  __resetRegistryCacheForTests,
   buildMarigoldTagResolver,
   getComponentProps,
   isCompoundComponent,
   isImplausiblySmallRegistry,
   isMarigoldComponent,
   loadMarigoldRegistry,
+  resetComponentRegistryCache,
   setComponentResolutionRoot,
 } from './components.js';
 
@@ -24,7 +24,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // brittle exact counts or the full value set of any prop.
 describe('loadMarigoldRegistry (registry source of truth)', () => {
   beforeEach(() => {
-    __resetRegistryCacheForTests();
+    resetComponentRegistryCache();
   });
 
   it('loads a non-empty registry of Marigold components', () => {
@@ -90,9 +90,14 @@ describe('loadMarigoldRegistry (registry source of truth)', () => {
 });
 
 describe('component resolution root', () => {
+  // packages/cli itself has @marigold/components as a real dependency
+  // (unlike the workspace root), so pointing the root there exercises the
+  // project-relative path itself, not just its fallback.
+  const cliPackageDir = path.resolve(__dirname, '..', '..', '..', '..');
+
   afterEach(() => {
     setComponentResolutionRoot(process.cwd());
-    __resetRegistryCacheForTests();
+    resetComponentRegistryCache();
   });
 
   it('falls back to CLI-relative resolution when the given root has no @marigold/components of its own', () => {
@@ -101,20 +106,47 @@ describe('component resolution root', () => {
     // (no node_modules at all) must not break resolution — it should fall
     // through to the CLI's own copy, the same as before this option existed.
     setComponentResolutionRoot(os.tmpdir());
-    __resetRegistryCacheForTests();
+    resetComponentRegistryCache();
     expect(() => loadMarigoldRegistry()).not.toThrow();
     expect(loadMarigoldRegistry().size).toBeGreaterThan(20);
   });
 
   it('resolves from a project-relative root when one is given', () => {
-    // packages/cli itself has @marigold/components as a real dependency
-    // (unlike the workspace root), so pointing the root there exercises the
-    // project-relative path itself, not just its fallback.
-    const cliPackageDir = path.resolve(__dirname, '..', '..', '..', '..');
     setComponentResolutionRoot(cliPackageDir);
-    __resetRegistryCacheForTests();
+    resetComponentRegistryCache();
     expect(() => loadMarigoldRegistry()).not.toThrow();
     expect(loadMarigoldRegistry().size).toBeGreaterThan(20);
+  });
+
+  it('invalidates the cached registry when the resolution root actually changes', () => {
+    // validate() is a programmatic engine, not just a one-shot CLI call — an
+    // agent correction loop can validate files from two different projects in
+    // the same process. Without invalidation, the second project's caller
+    // would silently read back the first project's memoized registry.
+    setComponentResolutionRoot(os.tmpdir());
+    resetComponentRegistryCache();
+    const first = loadMarigoldRegistry();
+
+    setComponentResolutionRoot(cliPackageDir);
+    const second = loadMarigoldRegistry();
+
+    // Different Map instance proves the switch rebuilt the registry instead
+    // of handing back the first root's cached result (both roots happen to
+    // resolve to the same real dist, so content equality alone wouldn't
+    // distinguish "rebuilt" from "reused").
+    expect(second).not.toBe(first);
+    expect(second.size).toBeGreaterThan(20);
+  });
+
+  it('does not rebuild the cache when the root is set to its current value', () => {
+    setComponentResolutionRoot(cliPackageDir);
+    resetComponentRegistryCache();
+    const first = loadMarigoldRegistry();
+
+    setComponentResolutionRoot(cliPackageDir);
+    const second = loadMarigoldRegistry();
+
+    expect(second).toBe(first);
   });
 });
 

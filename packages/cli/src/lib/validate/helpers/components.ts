@@ -42,8 +42,19 @@ const require = createRequire(import.meta.url);
 // the project's real copy.
 let resolutionRoot: string | undefined;
 
+// `validate()` is also a programmatic engine, not just a one-shot CLI call —
+// an agent correction loop can validate files from two different projects in
+// the same process. The registry/source/sub-component caches below are keyed
+// on nothing but "has loadMarigoldRegistry() ever run", so a plain
+// `resolutionRoot = dir` here would let the second project's caller silently
+// read back the first project's registry. Clearing the caches whenever the
+// root actually changes keys them on the root implicitly, at effectively no
+// cost to the common one-root-per-process case (the check below is then
+// always a no-op).
 export const setComponentResolutionRoot = (dir: string): void => {
+  if (dir === resolutionRoot) return;
   resolutionRoot = dir;
+  resetComponentRegistryCache();
 };
 
 let cachedRegistry: Map<string, ComponentInfo> | null = null;
@@ -394,7 +405,7 @@ export const findSubComponentSuggestion = (
   tagName: string
 ): string[] | undefined => buildSubComponentLookup().get(tagName);
 
-export const __resetRegistryCacheForTests = (): void => {
+export const resetComponentRegistryCache = (): void => {
   cachedRegistry = null;
   cachedSource = null;
   cachedSubComponentLookup = null;

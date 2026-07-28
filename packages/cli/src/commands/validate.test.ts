@@ -30,4 +30,15 @@ describe('runValidate', () => {
     expect(result.hasErrors).toBe(false);
     expect(result.output).toMatch(/disabled/i);
   });
+
+  it('emits parseable JSON (not an English sentence) when disabled with --format json', async () => {
+    process.env.MARIGOLD_VALIDATE_DISABLED = '1';
+    const result = await runValidate({ file: 'anything.tsx', format: 'json' });
+    expect(result.hasErrors).toBe(false);
+    expect(() => JSON.parse(result.output)).not.toThrow();
+    expect(JSON.parse(result.output)).toEqual({
+      skipped: true,
+      reason: 'MARIGOLD_VALIDATE_DISABLED=1',
+    });
+  });
 });

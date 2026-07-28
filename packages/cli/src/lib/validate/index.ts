@@ -6,6 +6,8 @@ import {
   buildComponentLocationMap,
   buildTextFingerprintMap,
 } from './helpers/component-locations.js';
+import { setComponentResolutionRoot } from './helpers/components.js';
+import { setThemeResolutionRoot } from './helpers/resolve-theme.js';
 import type { RenderTimingError, SharedRenderer } from './spatial/renderer.js';
 import {
   type ValidateOptions,
@@ -191,6 +193,15 @@ const runWithRenderer = async (
   renderer: SharedRenderer
 ): Promise<ValidationReport> => {
   const absolute = path.resolve(filePath);
+  // Set unconditionally, before any check dispatch below — not just inside
+  // the `technical` branch. resolveThemeCss() (helpers/design-tokens.ts) is
+  // consumed by the spatial checks too, so a `--checks spatial`/`--checks
+  // a11y` run with no `technical` in the set still needs the target
+  // project's own `@marigold/theme-rui`/`@marigold/components`, not the
+  // CLI's. Correctness must not depend on `technical` happening to run first
+  // under `--checks all`.
+  setComponentResolutionRoot(path.dirname(absolute));
+  setThemeResolutionRoot(path.dirname(absolute));
   const checks = new Set<ValidationCheck>(options.checks);
   const issues: ValidationIssue[] = [];
   const passed: string[] = [];
