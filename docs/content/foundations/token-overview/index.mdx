@@ -38,17 +38,13 @@ Many tokens come in pairs: a background token and a `-foreground` token for text
 
 **Tokens without a foreground pair:**
 
-- `muted`: uses `text-foreground` (the tint is light enough for regular text)
-- `hover`: uses `text-foreground`
-- `selected`: no explicit text color set on selection
-- `focus-highlight`: no explicit text color set on focus
-- `focus-highlight-bold`: uses `text-foreground` (the stronger tint still meets contrast with regular text)
+- `muted`, `hover`, `selected`, `focus-highlight`, `focus-highlight-bold`: the state washes. These are translucent and take whatever text color the ground already provides — but see [State fills and the alpha ramp](#state-fills-and-the-alpha-ramp), because "no foreground pair" does not mean "any text works". Body `text-foreground` is safe on all of them; `text-secondary` is not safe on `selected`
 - `surface`: uses `text-foreground` or `text-secondary`
 - `soft`: uses `text-foreground` (the near-white cap is light enough for regular text)
 - `secondary`, `placeholder`: these ARE text tokens, not backgrounds
 - `disabled`: primarily a text token. When a background is needed, pair with `bg-disabled-surface` (see [Disabled](#disabled) for details)
 
-These tokens do not need a dedicated foreground color because they already meet WCAG/APCA contrast requirements with `text-foreground` or their respective text tokens.
+These tokens do not need a dedicated foreground color because `text-foreground` already clears contrast requirements on all of them. That guarantee covers `text-foreground` specifically — a dimmer text token on top of a wash has to be measured, not assumed (see [R8](#rules-for-alpha-tokens)).
 
 <GuidelineTiles>
   <Do>
@@ -71,6 +67,75 @@ These tokens do not need a dedicated foreground color because they already meet 
   action/interaction color (buttons, selections). A theme could change `primary`
   to blue while `foreground` stays dark.
 </Callout>
+
+## State fills and the alpha ramp
+
+Four tokens fill an element to signal a state rather than to mean something: `muted`, `focus-highlight`, `hover`, and `selected`. These are **washes**. They are translucent, and they are drawn from a dedicated alpha ramp rather than from the opaque charcoal steps, so that the same token reads correctly on a white card, on the gray page, and on a dark `ui-contrast` bar.
+
+There are two ramps, because a wash has to darken a light ground and lighten a dark one:
+
+| Rung    | Ramp A — dark base | Ramp B — light base | Fill vs. ground |
+| ------- | ------------------ | ------------------- | --------------- |
+| `a-50`  | 2%                 | 2%                  | 1.04:1          |
+| `a-100` | 5%                 | 4.5%                | 1.11:1          |
+| `a-200` | 11%                | 8.5%                | 1.27:1          |
+| `a-300` | 19%                | 14%                 | 1.52:1          |
+
+Ramp A is `charcoal-950` at those alphas and rides light grounds. Ramp B is `white` and rides dark grounds. The alphas differ between the two on purpose: a wash over a dark ground needs less alpha to read at the same strength, so each rung is solved to land on the same fill-vs-ground contrast within its own polarity. Equal _delta_ is the contract — the two ramps will never produce matching pixels, and they are not meant to.
+
+The four jobs map onto the rungs one each: `muted` → `a-50`, `focus-highlight` → `a-100`, `hover` → `a-200`, `selected` → `a-300`. `focus-highlight-bold` reuses `a-300`. There are four rungs because there are four jobs; add a rung when a fifth job turns up, not before.
+
+<Callout title="On a dark ground the tokens are restated, not repointed">
+  `ui-contrast` restates all five wash tokens against ramp B, and descendants
+  inherit them — so a hover, selection, or focus tint anywhere beneath a
+  contrast surface flips with no component-level change. It has to restate each
+  one individually. The tempting shorter version — a shared `--color-fill-*`
+  seam repointed once — does not work, because a `var()` inside a
+  custom-property declaration is substituted where that *declaration* applies,
+  not where the token is used. `--color-muted: var(--color-fill-50)` written at
+  the root resolves against the root's ramp, and descendants inherit the
+  already-resolved color. That seam was in the first draft and measured 1.01:1
+  on a dark ground, i.e. invisible.
+</Callout>
+
+Alongside the five washes, `ui-contrast` applies `text-primary-foreground` and restates `secondary` (to `charcoal-500`, 4.74:1 on that ground). It deliberately does **not** restate `foreground`, because `ui-soft` applies `text-foreground` and a soft-capped control nested in a contrast region would end up with light text on a near-white cap — components pinning `text-foreground` for emphasis should reach for `text-inherit` instead. `secondary-bold` is also not restated, so `text-secondary-bold` under a contrast surface would measure 2.04:1. No component does that today, but don't be the first.
+
+### Rules for alpha tokens
+
+These nine rules govern when a token may be translucent and how to use one. They are numbered because the theme source and the alpha test suite cite them by number.
+
+**R1 — Alpha for the hierarchy layer; opaque for the meaning layer.** Alpha is for state fills, decorative rims, control edges, shadows, overlays, and scrims. Opaque is for text, the focus ring, status and access colors, structural lines that cross, and solid selection markers.
+
+**R2 — Every alpha token carries a polarity.** Dark-base adapts across light grounds; light-base across dark grounds. Neither crosses over. A token is only "ground-adaptive" inside its own polarity, so say which one it belongs to.
+
+**R3 — Derive polarity from the ink, not the surface.** Where an element has its own text color, prefer `bg-current/α`: `currentColor` already flips with the ground, so the element needs to know nothing about where it sits. Where it does not, the ground's own utility restates the wash tokens and everything beneath inherits the flip.
+
+**R4 — One alpha per element; never stack.** Two translucent layers composite multiplicatively — 10% over 10% is an effective 19%, which turns a hover into something with the weight of a selection. Co-occurring states resolve to a single combined token. Watch overlapping siblings, not just nesting.
+
+**R5 — Budget: ≤ 20% on light grounds, ≤ 15% on dark.** Inside those bands the perceived delta stays stable across a range of grounds. Past them, alpha starts behaving like the absolute color it was meant to replace.
+
+**R6 — Never CSS `opacity` for a state.** Color-level alpha only. `opacity` fades text and icons along with the fill and silently destroys contrast; it is the most common way alpha tokens fail an audit.
+
+**R7 — A state fill is reinforcement, never the only signal.** The ramp sits deliberately under the 3:1 non-text threshold — the top rung reaches 1.52:1. Anything signalling selection also carries an icon, a weight change, or an ARIA state.
+
+**R8 — Text never goes alpha, and text _on_ a wash gets re-measured.** A wash changes what its own text sits on. `text-secondary` on `bg-selected` measures 3.59 / 3.26 / 3.09:1 on the surface, page, and contrast grounds — it fails WCAG 1.4.3 on all three. Selected rows take `text-foreground` (11.27:1); where a dimmer label is genuinely wanted, `text-secondary-bold` clears it at 5.52:1 on light grounds.
+
+**R9 — Tune α to a contrast target, not to a matching hex.** Solve each rung for the ratio it must hit on its own grounds, and accept that the two polarities produce different colors.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use `bg-current/α` for elements that float over grounds the theme can't
+      predict, and the wash tokens for elements whose ground it knows.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't stack two washes on one element, and don't reach for CSS `opacity`
+      to express a state — it drags text contrast down with the fill.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 ## Tokens in context
 
@@ -212,7 +277,7 @@ Some elements need a subtle visual distinction from the white surface they sit o
   tokens={[
     {
       name: 'muted',
-      value: 'charcoal-50',
+      value: 'charcoal-a-50 (charcoal-950 / 2%)',
       useFor: 'Subtle tint for readonly inputs, badges, secondary highlights',
     },
   ]}
@@ -348,7 +413,7 @@ Selection tells users which item has already been chosen. Not every selection lo
   tokens={[
     {
       name: 'selected',
-      value: 'charcoal-300',
+      value: 'charcoal-a-300 (charcoal-950 / 19%)',
       useFor:
         'Selection wash for list items (SelectList, ListBox, Sidebar), one step darker than hover, paired with the row indicator',
     },
@@ -401,20 +466,32 @@ Selection tells users which item has already been chosen. Not every selection lo
 
 ### Focus highlight
 
-Focus highlight marks the item the user is currently navigating to via keyboard. Unlike selection, which shows a confirmed choice, focus indicates where the user's cursor is right now. Two intensities handle different contexts: a subtle tint for menu items and drop zones, and a bolder fill for inline segments like date fields where the focused part needs to stand out clearly.
+Focus highlight accompanies the item the user is currently navigating to via keyboard. Unlike selection, which shows a confirmed choice, focus indicates where the user's cursor is right now. Two intensities handle different contexts: a subtle tint for menu items and drop zones, and a bolder fill for inline segments like date fields where the focused part needs to stand out clearly.
+
+<Callout title="A focus tint, not a focus indicator">
+  Despite the name, neither token can serve as the focus indicator. Both are
+  washes, and every wash sits deliberately below the 3:1 threshold WCAG 1.4.11
+  asks of a non-text indicator: `focus-highlight` measures 1.11:1 on a white
+  surface and `focus-highlight-bold` reaches 1.52:1. Solving a wash for 3:1
+  would need roughly 44% alpha — over twice the budget, and darker than
+  `selected`, so it would read as a selection rather than a focus. The
+  perceivable affordance is always a ring: `ui-state-focus` for framed controls,
+  `ui-state-focus-item` for borderless rows, both drawn from `ring`. Use these
+  tokens **with** a ring, never instead of one.
+</Callout>
 
 <TokenTable
   tokens={[
     {
       name: 'focus-highlight',
-      value: 'charcoal-100',
+      value: 'charcoal-a-100 (charcoal-950 / 5%)',
       useFor:
-        'Subtle focus background for keyboard navigation (Menu, FileField)',
+        'Subtle focus tint accompanying a focus ring (Menu, FileField). Not a focus indicator on its own',
     },
     {
       name: 'focus-highlight-bold',
-      value: 'charcoal-300',
-      useFor: 'Strong focus background for inline segments (DateField)',
+      value: 'charcoal-a-300 (charcoal-950 / 19%)',
+      useFor: 'Stronger focus tint for inline segments (DateField)',
     },
   ]}
 />
@@ -446,48 +523,55 @@ Focus highlight marks the item the user is currently navigating to via keyboard.
 
 ### Hover
 
-Hover feedback tells users that an element is interactive. Unlike disabled or selected states, hover is momentary and must feel lightweight. Two patterns handle different contexts depending on the surface the element sits on: a **solid** tint for elements on white surfaces, and a **translucent** overlay for elements that float over varying backgrounds.
+Hover feedback tells users that an element is interactive. Unlike disabled or selected states, hover is momentary and must feel lightweight. Two patterns handle different contexts, and both are translucent — what differs is **where each one gets its polarity from** (see [State fills and the alpha ramp](#state-fills-and-the-alpha-ramp)).
 
 <TokenTable
   tokens={[
     {
       name: 'hover',
-      value: 'charcoal-200',
+      value: 'charcoal-a-200 (charcoal-950 / 11%)',
       useFor: 'Hover background for menu items, list options, sidebar links',
     },
   ]}
 />
 
 <Callout title="Why two hover patterns?">
-  Elements on white surfaces (list items, table rows, menu items) need a solid
-  background tint to stand out. But ghost buttons, tabs, and action bar buttons
-  sit on varying backgrounds, so a solid color would clash. Instead they use a
-  translucent overlay (`bg-current/10`) that adapts to any context. The two
-  utilities `ui-state-hover` and `ui-state-hover-ghost` bundle the correct
-  styles for each case.
+  `ui-state-hover` uses the `hover` token, which is fixed to one polarity per
+  ground: dark-base on light grounds, flipped to light-base under `ui-contrast`.
+  That is right for elements whose ground the theme knows — list items, table
+  rows, menu items, sidebar links. `ui-state-hover-ghost` instead derives its
+  polarity from the element's own ink (`bg-current/10`), which is what ghost
+  buttons, tabs, and ActionBar buttons need: they sit on grounds the token layer
+  cannot predict, and `currentColor` already flips with the ground.
 </Callout>
 
 ```tsx
-// Solid hover: list items, table rows, menu items, sidebar links
+// Ground-derived hover: list items, table rows, menu items, sidebar links
 <div className="hover:ui-state-hover" />
 
-// Ghost hover: ghost buttons, tabs, action bar buttons
+// Ink-derived hover: ghost buttons, tabs, action bar buttons
 <div className="hover:ui-state-hover-ghost" />
+
+// A selection layer that must also carry hover: one combined value, not two
+<div className="ui-state-hover-ghost hover:ui-state-selected-hover-ghost" />
 ```
 
 The `ui-state-hover` utility applies `bg-hover` with `text-foreground`. The `ui-state-hover-ghost` utility applies `bg-current/10`, a 10% translucent overlay of the current text color.
 
+`ui-state-selected-hover-ghost` exists because hover and selection can be true at once, and R4 forbids stacking them. It applies `bg-current/15` as a single layer. Letting the two compose instead yields an effective 19%, which is above the dark-ground budget and reads with the weight of a selection rather than a hover.
+
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Use `ui-state-hover` for items on white surfaces like list items, table
-      rows, and menu items.
+      Use `ui-state-hover` for items whose ground the theme knows, like list
+      items, table rows, menu items, and sidebar links.
     </DoDescription>
   </Do>
   <Dont>
     <DontDescription>
       Don't use `ui-state-hover` on ghost buttons or tabs. Use
-      `ui-state-hover-ghost` instead so the hover adapts to any background.
+      `ui-state-hover-ghost` instead so the hover derives its polarity from the
+      element's own ink.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
@@ -505,7 +589,7 @@ Disabled elements must look visually inactive so users don't try to interact wit
     },
     {
       name: 'disabled-surface',
-      value: 'charcoal-200',
+      value: 'charcoal-100',
       useFor:
         'Disabled background for full controls (paired with text-disabled)',
     },
