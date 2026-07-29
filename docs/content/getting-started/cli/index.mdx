@@ -1,7 +1,7 @@
 ---
 title: Marigold CLI
 description: Component docs, discovery, and project setup, straight from the terminal.
-badge: new
+badge: updated
 ---
 
 The **`@marigold/cli`** package brings the Marigold documentation into your terminal: fetch component docs, discover components and pages, scaffold Marigold into an existing project, and more. It's useful on its own and is built to ground AI coding agents on the canonical component API.
@@ -239,6 +239,41 @@ It checks, against the current working directory:
   warning. `marigold doctor` exits `1` only when there is an error. `--format
   json` emits `{ errors, warnings, passed, text }`, so an agent can derive
   health from `errors.length === 0` and act on each `suggestion`.
+</Callout>
+
+### marigold migrate
+
+Apply codemods for a breaking Marigold release, to your theme files and your application code. Run it after upgrading `@marigold/components`, from your project root.
+
+```bash
+marigold migrate v18                          # migrate the current directory
+marigold migrate v18 ./src --dry-run          # report what would change, write nothing
+marigold migrate                              # detect the installed version and confirm
+marigold migrate v18 --only rename-imports    # apply a subset, non-interactively
+```
+
+| Flag             | Description                                                             | Default |
+| ---------------- | ----------------------------------------------------------------------- | ------- |
+| `--dry-run`      | Report what would change without writing files                          |         |
+| `--only <names>` | Apply only these changes (comma-separated), skipping the selection step |         |
+
+Both positionals are optional. Without a version, the installed `@marigold/components` is detected and the applicable migration is proposed for confirmation. Without a path, the current directory is used.
+
+It anchors on imports rather than on file names or directory layout, so it works whatever your project structure is:
+
+1. **Theme files** (anchored on `ThemeComponent<'X'>` from `@marigold/system`): restructures single-style components into the slot shape the new version requires, moving your classes verbatim, swaps a baseline style only when it still matches the old baseline byte for byte (proof you never customized it), stubs new slots as `cva({})`, and scaffolds theme files for components the new version requires.
+2. **Application code** (anchored on `@marigold/components` and `@marigold/icons`): renamed exports such as the icon migration, renamed compound components, renamed and removed props.
+3. **Design tokens**: report-only, since token values are yours. Covers renamed or removed tokens you still reference, new tokens that component internals hardcode but your CSS does not define, and tokens that kept their name but changed meaning.
+
+Anything that cannot be decided from the source, a spread that hides slots, a customized style, a DOM change your own CSS may target, becomes a warning pointing at the release notes, never a guess.
+
+<Callout title="Dry run first">
+  `--dry-run` prints the full report and writes nothing. Interactive runs
+  pre-analyze the project and list the changes that actually fire, so you can
+  deselect any of them before applying; report-only checks always run. Applying
+  twice is a no-op, so a partial run can be completed later. After an applied
+  run, your typechecker is the completeness check: the slot `Record`s in
+  `@marigold/system` are exhaustive.
 </Callout>
 
 ### marigold completion
