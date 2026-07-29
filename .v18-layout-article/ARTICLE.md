@@ -99,11 +99,11 @@ Wer nur wissen wollte, wie eine Seite aufgebaut ist, kann hier aufhören. Der Re
 
 ## Teil 2: Was das für den Entwurf bedeutet
 
-### Panel für die Gliederung, Primitive für alles darin
+### Panel für die Gliederung, Layout-Bausteine für alles darin
 
-Die Arbeitsregel ist kurz: **Panel gliedert die Seite, alles innerhalb wird mit Layout-Primitiven angeordnet.** Primitive sind unsichtbare Bausteine mit einer Aufgabe: `Stack` stapelt untereinander, `Inline` reiht nebeneinander, `Columns` teilt in Spalten, `Inset` gibt Innenabstand.
+Die Arbeitsregel ist kurz: **Panel gliedert die Seite, alles innerhalb wird mit Layout-Bausteinen angeordnet.** Diese Bausteine sind unsichtbar und haben jeweils genau eine Aufgabe: `Stack` stapelt untereinander, `Inline` reiht nebeneinander, `Columns` teilt in Spalten, `Inset` gibt Innenabstand. In der Doku stehen sie unter „Layout Primitives".
 
-Panel besitzt die Fläche, den Titel und den Rahmen um den Inhalt. Es bestimmt nicht, wie der Inhalt darin angeordnet ist. Das ist die Aufgabe der Primitive, und die funktionieren innerhalb eines Panels genauso wie außerhalb.
+Panel besitzt die Fläche, den Titel und den Rahmen um den Inhalt. Es bestimmt nicht, wie der Inhalt darin angeordnet ist. Das übernehmen die Layout-Bausteine, und die funktionieren innerhalb eines Panels genauso wie außerhalb.
 
 Daraus folgt eine Regel, die im Entwurf oft übersehen wird: **Ein Element bringt keinen Außenabstand mit.** Ein Button weiß nicht, was neben ihm steht. Der Abstand zwischen zwei Elementen wird immer von dem Baustein entschieden, der beide enthält. Wer im Entwurf Abstände an ein einzelnes Element klebt, beschreibt etwas, das das System nicht bauen kann, ohne die Wiederverwendbarkeit aufzugeben.
 
@@ -141,7 +141,7 @@ Fast jede Seite in einer Anwendung ist eine von fünf Formen. Alle bestehen aus 
 
 ![Einstellungsform](assets/v18-settings-general.png)
 
-Die Detailform lohnt es sich zu verinnerlichen, weil sie am häufigsten falsch gebaut wird. Der Inhalt steht links, Status und Kennzahlen in einer schmalen Spalte rechts, etwa zwei Drittel zu einem Drittel. Auf schmalen Bildschirmen fällt die rechte Spalte unter die linke.
+Die Detailform lohnt es sich besonders anzuschauen, weil sie am häufigsten vorkommt und dabei den meisten Spielraum lässt. Der Inhalt steht links, Status und Kennzahlen in einer schmalen Spalte rechts, etwa zwei Drittel zu einem Drittel. Auf schmalen Bildschirmen fällt die rechte Spalte unter die linke.
 
 Die schmale Spalte verdient ihren Platz aber nur, wenn es wirklich etwas zusammenzufassen gibt: Status, Verantwortliche, wichtige Daten, Anzahlen. Steht dort am Ende nur ein einzelnes Etikett, wirkt sie wie eine leere Randspalte. Dann gehören die Angaben in den Inhalt.
 
@@ -149,7 +149,7 @@ Die schmale Spalte verdient ihren Platz aber nur, wenn es wirklich etwas zusamme
 
 Für die Übergabe an die Entwicklung heißt das: Die Struktur ist die eigentliche Information. Also nicht Abstände in Pixeln, sondern „eine Seite mit dem Titel *Einzeltermin bearbeiten*, darunter vier Panels: Basisdaten, Tickets, Besucherinformation, Finanzen. Speichern und Abbrechen liegen außerhalb der Panels am Seitenende."
 
-Damit ist alles gesagt, was gebraucht wird. Abstände, Innenabstände, Überschriftenebenen und Umbruchverhalten kommen aus dem System und müssen nicht mitgeliefert werden.
+Abstände, Innenabstände, Überschriftenebenen und Umbruchverhalten kommen aus dem System und müssen nicht mitgeliefert werden. Das soll die Übergabe an die Entwicklung leichter machen: weniger Details, die abgestimmt und geprüft werden müssen, und dafür mehr Zeit für die Fragen, bei denen es wirklich um das Produkt geht. Genauso hilft es im Gespräch untereinander. Wenn alle von „Panel" und „Seitentitel" sprechen, meinen alle dasselbe, und Rückfragen wie „welcher Abschnitt genau?" fallen weg.
 
 ---
 

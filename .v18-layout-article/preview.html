@@ -263,9 +263,9 @@
 
   <h2>Teil 2: Was das für den Entwurf bedeutet</h2>
 
-  <h3>Panel für die Gliederung, Primitive für alles darin</h3>
-  <p>Die Arbeitsregel ist kurz: <strong>Panel gliedert die Seite, alles innerhalb wird mit Layout-Primitiven angeordnet.</strong> Primitive sind unsichtbare Bausteine mit einer Aufgabe: <code>Stack</code> stapelt untereinander, <code>Inline</code> reiht nebeneinander, <code>Columns</code> teilt in Spalten, <code>Inset</code> gibt Innenabstand.</p>
-  <p>Panel besitzt die Fläche, den Titel und den Rahmen um den Inhalt. Es bestimmt nicht, wie der Inhalt darin angeordnet ist. Das ist die Aufgabe der Primitive, und die funktionieren innerhalb eines Panels genauso wie außerhalb.</p>
+  <h3>Panel für die Gliederung, Layout-Bausteine für alles darin</h3>
+  <p>Die Arbeitsregel ist kurz: <strong>Panel gliedert die Seite, alles innerhalb wird mit Layout-Bausteinen angeordnet.</strong> Diese Bausteine sind unsichtbar und haben jeweils genau eine Aufgabe: <code>Stack</code> stapelt untereinander, <code>Inline</code> reiht nebeneinander, <code>Columns</code> teilt in Spalten, <code>Inset</code> gibt Innenabstand. In der Doku stehen sie unter „Layout Primitives“.</p>
+  <p>Panel besitzt die Fläche, den Titel und den Rahmen um den Inhalt. Es bestimmt nicht, wie der Inhalt darin angeordnet ist. Das übernehmen die Layout-Bausteine, und die funktionieren innerhalb eines Panels genauso wie außerhalb.</p>
   <p>Daraus folgt eine Regel, die im Entwurf oft übersehen wird: <strong>Ein Element bringt keinen Außenabstand mit.</strong> Ein Button weiß nicht, was neben ihm steht. Der Abstand zwischen zwei Elementen wird immer von dem Baustein entschieden, der beide enthält. Wer im Entwurf Abstände an ein einzelnes Element klebt, beschreibt etwas, das das System nicht bauen kann, ohne die Wiederverwendbarkeit aufzugeben.</p>
 
   <h3>Panel oder Card?</h3>
@@ -311,7 +311,7 @@
     <figcaption>Einstellungen: gestapelte Formular-Panels, jedes mit einem Thema.</figcaption>
   </figure>
 
-  <p>Die Detailform lohnt es sich zu verinnerlichen, weil sie am häufigsten falsch gebaut wird. Der Inhalt steht links, Status und Kennzahlen in einer schmalen Spalte rechts, etwa zwei Drittel zu einem Drittel. Auf schmalen Bildschirmen fällt die rechte Spalte unter die linke.</p>
+  <p>Die Detailform lohnt es sich besonders anzuschauen, weil sie am häufigsten vorkommt und dabei den meisten Spielraum lässt. Der Inhalt steht links, Status und Kennzahlen in einer schmalen Spalte rechts, etwa zwei Drittel zu einem Drittel. Auf schmalen Bildschirmen fällt die rechte Spalte unter die linke.</p>
   <p>Die schmale Spalte verdient ihren Platz aber nur, wenn es wirklich etwas zusammenzufassen gibt: Status, Verantwortliche, wichtige Daten, Anzahlen. Steht dort am Ende nur ein einzelnes Etikett, wirkt sie wie eine leere Randspalte. Dann gehören die Angaben in den Inhalt.</p>
 
   <h3>Was in die Übergabe gehört</h3>
@@ -319,7 +319,7 @@
   <div class="panel">
     <p>„Eine Seite mit dem Titel <em>Einzeltermin bearbeiten</em>, darunter vier Panels: Basisdaten, Tickets, Besucherinformation, Finanzen. Speichern und Abbrechen liegen außerhalb der Panels am Seitenende.“</p>
   </div>
-  <p>Damit ist alles gesagt, was gebraucht wird. Abstände, Innenabstände, Überschriftenebenen und Umbruchverhalten kommen aus dem System und müssen nicht mitgeliefert werden.</p>
+  <p>Abstände, Innenabstände, Überschriftenebenen und Umbruchverhalten kommen aus dem System und müssen nicht mitgeliefert werden. Das soll die Übergabe an die Entwicklung leichter machen: weniger Details, die abgestimmt und geprüft werden müssen, und dafür mehr Zeit für die Fragen, bei denen es wirklich um das Produkt geht. Genauso hilft es im Gespräch untereinander. Wenn alle von „Panel“ und „Seitentitel“ sprechen, meinen alle dasselbe, und Rückfragen wie „welcher Abschnitt genau?“ fallen weg.</p>
 
   <hr>
 
