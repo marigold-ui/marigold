@@ -1004,6 +1004,109 @@ const measureStackOnGround = (element: HTMLElement, groundToken: string) => {
   return contrastRatio(stacked as Rgb, composite(ground, 'transparent'));
 };
 
+/**
+ * Contrast of a SegmentedControl label against everything painted beneath it.
+ *
+ * Needs its own helper because the layer that matters most is not an ancestor:
+ * the selected segment's wash comes from `SelectionIndicator`, a *sibling* of the
+ * label, so an ancestor walk alone reports the label as sitting on the bare
+ * ground. The default variant also stacks two opaque layers a walk does find —
+ * the `bg-control` track and the `ui-control` thumb.
+ *
+ * The ground is read from its token rather than off the element, because
+ * `ui-contrast` paints a radial glow whose first colour stop is a highlight, not
+ * the base — sampling that reported a light ground and turned real passes into
+ * apparent failures.
+ */
+const measureSegmentLabel = (label: HTMLElement, groundToken: string) => {
+  const ground = readToken(groundToken);
+  const layers: string[] = [];
+
+  for (
+    let node: HTMLElement | null = label.parentElement;
+    node && !node.dataset.ground;
+    node = node.parentElement
+  ) {
+    const background = getComputedStyle(node).backgroundColor;
+    if (background !== 'rgba(0, 0, 0, 0)' && background !== 'transparent') {
+      layers.unshift(background);
+    }
+  }
+
+  const indicator = [...(label.parentElement?.children ?? [])].find(
+    (child): child is HTMLElement =>
+      child instanceof HTMLElement && child !== label
+  );
+  if (indicator) {
+    const background = getComputedStyle(indicator).backgroundColor;
+    if (background !== 'rgba(0, 0, 0, 0)' && background !== 'transparent') {
+      layers.push(background);
+    }
+  }
+
+  const fill = layers.reduce<Rgb>(
+    (below, layer) => composite(`rgb(${below.join(',')})`, layer),
+    composite(ground, 'transparent')
+  );
+
+  return contrastRatio(
+    composite(`rgb(${fill.join(',')})`, getComputedStyle(label).color),
+    fill
+  );
+};
+
+ComponentStates.test(
+  'every SegmentedControl label clears WCAG 1.4.3 on every ground',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    // Three failures used to live here, and they had three different causes.
+    //
+    // `selected:text-foreground` named the light-ground ink, so on a contrast
+    // surface the selected ghost label was dark-on-dark at 1.32:1. The ghost
+    // variant now inherits the ground's own ink instead of naming one.
+    //
+    // `text-secondary` is charcoal-600 everywhere, measuring 3.14:1 on a contrast
+    // ground. `ui-contrast` now restates it, the same mechanism the washes use.
+    //
+    // And on the default variant both labels sit on the opaque charcoal-300
+    // track, where plain secondary is 3.59:1 — failing on *every* ground, the
+    // "never `--color-secondary` on a fill" case in DST-1590's criteria. That
+    // variant takes `text-secondary-bold` (5.53:1), and keeps naming dark ink
+    // outright, because an opaque light track is what is beneath it on any ground.
+    for (const ground of GROUNDS) {
+      // Not the first panel for this ground — that one is the ghost Button row.
+      const panel = [
+        ...canvasElement.querySelectorAll<HTMLElement>(
+          `[data-ground="${ground.id}"]`
+        ),
+      ].find(element => element.querySelector('[role="radiogroup"]'));
+      await expect(
+        panel,
+        `no SegmentedControl panel on ${ground.id}`
+      ).toBeTruthy();
+
+      const labels = panel!.querySelectorAll<HTMLElement>('label');
+
+      // Non-vacuity. Two variants, two segments each; a selector that matched
+      // nothing would otherwise make every assertion below unreachable, and an
+      // earlier draft of this measurement reported a clean pass over zero rows.
+      await expect(
+        labels.length,
+        `expected 4 segment labels on ${ground.id}, found ${labels.length}`
+      ).toBe(4);
+
+      for (const label of labels) {
+        const ratio = measureSegmentLabel(label, ground.solid);
+
+        await expect(
+          ratio,
+          `"${label.textContent?.trim()}" on ${ground.id} measures ${ratio.toFixed(2)}:1`
+        ).toBeGreaterThanOrEqual(WCAG.TEXT);
+      }
+    }
+  }
+);
+
 Stacking.test(
   'a stacked wash overshoots the top rung, which is why R6 forbids it',
   { parameters: { chromatic: { disableSnapshot: true } } },

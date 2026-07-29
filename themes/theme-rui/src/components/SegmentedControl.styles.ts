@@ -63,8 +63,9 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
       // Only the label color animates; bg stays out of the transition (instant-bg
       // convention, DST-1436). No press scale — the sliding indicator is the feedback.
       'cursor-pointer outline-none transition-[color]',
-      // Text is muted by default and turns to the foreground color on selection.
-      'text-secondary selected:text-foreground',
+      // Label colours are per-variant, not shared: the two variants put the label
+      // on different things — ghost on the ground itself, default on an opaque
+      // light track — so the ink that works differs. See the variants below.
       // Keyboard focus ring, inset 2px. This is the ghost variant's ring (no thumb,
       // so it hugs the cell); the default variant suppresses it and draws the ring
       // on the indicator instead.
@@ -76,15 +77,31 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
         // Hover only brightens the label; the moving indicator is the background
         // affordance. The focus ring is drawn on the indicator (see below), so the
         // cell suppresses its own outline here. (Ghost keeps it, having no thumb.)
+        //
+        // Every label here sits on light — the selected one on the opaque
+        // `ui-control` thumb, the rest on the `bg-control` track — so both name
+        // dark ink outright. Ground-independent, because what is beneath them is.
+        //
+        // `text-secondary-bold`, not `text-secondary`: on the charcoal-300 track
+        // plain secondary measures 3.59:1 and fails 1.4.3 on *every* ground, which
+        // is the "never `--color-secondary` on a fill" case in DST-1590's
+        // acceptance criteria. secondary-bold is 5.53:1 and still clearly dimmer
+        // than the selected label's 11.28:1.
         default:
-          'not-selected:hover:text-foreground focus-visible:outline-none',
-        // Track-less: hover is a translucent overlay. Only while *unselected* —
-        // a selected segment already carries the indicator's wash beneath it
-        // (z-0 vs this cell's z-10), and painting here as well stacked two 10%
-        // layers into an effective 0.19, measured 1.23 -> 1.50:1 on white. The
-        // indicator now owns the selected-and-hovered case, so the feedback
-        // survives without the stack.
-        ghost: 'not-selected:hover:ui-state-hover-ghost',
+          'text-secondary-bold not-selected:hover:text-foreground selected:text-foreground focus-visible:outline-none',
+        // Track-less, so labels sit on the ground itself and take its own ink.
+        // `text-inherit` for selected rather than `text-foreground`: naming the
+        // light-ground token pinned dark text on a contrast surface, 1.32:1.
+        // `text-secondary` for the rest, which `ui-contrast` restates so it flips
+        // with the ground (5.50 / 4.97 / 4.74).
+        //
+        // Hover is a translucent overlay, and only while *unselected* — a selected
+        // segment already carries the indicator's wash beneath it (z-0 vs this
+        // cell's z-10), and painting here as well stacked two 10% layers into an
+        // effective 0.19, measured 1.23 -> 1.50:1 on white. The indicator owns the
+        // selected-and-hovered case now, so the feedback survives without a stack.
+        ghost:
+          'text-secondary not-selected:hover:ui-state-hover-ghost selected:text-inherit',
       },
       size: {
         // The thumb fills the segment, so px is the label's padding inside it.

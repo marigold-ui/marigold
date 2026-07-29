@@ -111,6 +111,27 @@
   @apply rounded-surface relative transition-[box-shadow];
   @apply text-primary-foreground;
 
+  /* `text-primary-foreground` only fixes text that inherits. A component that
+     names `text-secondary` outright kept the light-ground value -- charcoal-600,
+     measured 3.14:1 here, a 1.4.3 failure. Restated for the same reason and by
+     the same mechanism as the washes below.
+
+     charcoal-500 (4.74:1), not charcoal-400 (7.49:1): --color-disabled already
+     resolves to charcoal-400 exactly, so the comfortable-looking choice would
+     make a merely-secondary label indistinguishable from a disabled one on this
+     ground. 500 keeps 1.58:1 between them.
+
+     Chosen by lightness rather than by ratio, to mirror the relationship the
+     token has on light grounds: foreground L 0.22 -> secondary L 0.52 is 0.30
+     toward the ground, and 0.985 - 0.30 lands between rungs 400 and 500.
+
+     Deliberately *not* restating --color-foreground. `ui-soft` applies
+     `text-foreground`, so a soft-capped control nested in a contrast region
+     would get light text on a near-white cap. Components that pin
+     `text-foreground` for emphasis should reach for `text-inherit` instead --
+     see SegmentedControl's option. */
+  --color-secondary: var(--color-charcoal-500);
+
   /* Polarity flip. A dark-base wash has nothing to darken on a dark ground, so
      every wash job is restated here against ramp B. Descendants inherit these,
      so a hover, selection or focus tint anywhere beneath a contrast surface
