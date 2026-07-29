@@ -2,7 +2,7 @@
 
 _Entwurf für Review (DST-1571). Folgeartikel zu „Das visuelle Fundament von Marigold v18". Noch nicht veröffentlicht._
 
-Im letzten Artikel ging es um Farben, Flächen und Schatten, also darum, wie unsere Oberflächen aussehen. Diesmal geht es eine Ebene höher: wie eine Seite überhaupt aufgebaut ist. Das ist der Teil von v18, der am meisten verändert, wie wir Screens entwerfen und bauen.
+Im letzten Artikel ging es um Farben, Flächen und Schatten, also darum, wie unsere Oberflächen aussehen. Diesmal geht es eine Ebene höher: um den Aufbau einer Seite. Das ist der Teil von v18, der am meisten daran ändert, wie wir entwerfen und entwickeln.
 
 Ein Bild vorweg, das den ganzen Artikel zusammenfasst: **erst die Räume, dann die Möbel.** Der Rahmen einer Anwendung ist das Gebäude. Eine Seite ist ein Raum darin. Panels sind die benannten Bereiche im Raum. Und was in einem Bereich steht, sind die Möbel.
 
@@ -16,15 +16,17 @@ Der Artikel ist in drei Teilen aufgebaut. **Teil 1** erklärt den Aufbau einer S
 
 ### Vorher gab es kein gemeinsames Modell
 
-Bisher hat jedes Produkt seinen Seitenaufbau selbst erfunden. Es gab Bausteine für Buttons, Felder und Tabellen, aber keinen für „eine Seite". Also hat jeder Screen die Grundfragen neu beantwortet: Wo steht der Titel? Wie weit ist der Abstand nach oben? Kommt die Hauptaktion oben rechts hin oder unten? Wie werden Abschnitte voneinander getrennt, und heißen sie überhaupt irgendwie?
+Bisher hat jedes Produkt seinen Seitenaufbau selbst festgelegt. Es gab Bausteine für Buttons, Felder und Tabellen, aber keinen für „eine Seite". Also hat jede Seite die Grundfragen neu beantwortet: Wo steht der Titel? Wie weit ist der Abstand nach oben? Kommt die Hauptaktion oben rechts hin oder unten? Wie werden Abschnitte voneinander getrennt, und heißen sie überhaupt irgendwie?
 
 Das Ergebnis sieht man hier. Unter dem Titel liegt ein Stapel Bedienelemente: ein Schalter, ein Suchfeld, eine Schnellwahl, dazwischen die Hauptaktion. Danach folgt eine Tabelle, die direkt auf dem Seitenhintergrund liegt. Nichts davon ist als Bereich benannt.
 
 ![Veranstaltungsübersicht: Bedienelemente ohne benannte Bereiche unter dem Titel](assets/core-before-veranstaltungen.png)
 
-Das war kein Fehler, den irgendwer gemacht hat. Es gab schlicht kein gemeinsames Modell, an dem man sich orientieren konnte, also hat jedes Team eins erfunden. Genau diese Lücke füllt v18.
+Das war kein Fehler, den irgendwer gemacht hat. Es gab schlicht kein gemeinsames Modell, an dem man sich orientieren konnte, also hat jedes Team eine eigene Lösung gefunden. Genau diese Lücke füllt v18.
 
 ### Der Rahmen bleibt, der Inhalt wechselt
+
+v18 beantwortet diese Fragen einmal, und zwar mit drei Ebenen, die ineinander liegen: dem Rahmen der Anwendung, der Seite darin, und den benannten Bereichen auf der Seite. Jede Ebene hat eine klare Aufgabe, und keine übernimmt die Aufgabe einer anderen. Das ist der ganze Kern des Layout-Systems. Gehen wir die drei Ebenen von außen nach innen durch.
 
 Ganz außen sitzt der **App-Rahmen**: Navigation links, eine Kopfzeile oben, der Inhalt darunter. Der Rahmen bleibt stehen, während man durch die Anwendung navigiert. Nur der Inhaltsbereich wechselt.
 
@@ -39,6 +41,8 @@ Auf schmalen Bildschirmen wird die Navigation zu einer Fläche, die sich über d
 ![Navigation auf schmalem Bildschirm](assets/nav-mobile-sheet.png)
 
 ![Seiteninhalt auf schmalem Bildschirm](assets/nav-mobile-page.png)
+
+Die neue Navigation kommt allerdings nicht zusammen mit dem Rest von v18. Wann sie kommt und warum getrennt, steht weiter unten unter „Wann kommt das?".
 
 Wichtig ist außerdem etwas, das man nicht sieht: Die Seite scrollt wie eine ganz normale Webseite, nicht in einem eigenen Kasten. Deshalb funktionieren Dinge, die man von jeder Website erwartet: Suchen mit `Cmd+F`, der Zurück-Button, Links, die an die richtige Stelle springen.
 
@@ -56,32 +60,38 @@ Unter dem Seitenkopf liegen **Panels**. Ein Panel ist ein benannter Bereich, der
 
 Der Unterschied zur Karte ist wichtig, weil beide gleich aussehen: Eine Karte steht für einen Eintrag, der sich wiederholt, etwa eine Veranstaltung in einer Liste. Ein Panel gibt es pro Bereich genau einmal. **Karten wiederholen sich, Panels nicht.**
 
-### Ein Team hat schon angefangen
+### Wir haben uns schon herangetastet
 
-Das Muster gab es intern schon, bevor es einen Namen hatte. Auf der Seite zum Bearbeiten eines Einzeltermins ist genau das gebaut: Abschnitte mit Titel, jeder mit einem Thema, jeweils auf einer eigenen weißen Fläche.
+Das Muster ist nicht neu. An mehreren Stellen in unseren Systemen haben wir uns in genau diese Richtung vorgearbeitet, lange bevor es einen Namen dafür gab. Ein Beispiel, das viele kennen, ist die Seite zum Bearbeiten eines Einzeltermins: Abschnitte mit Titel, jeder mit einem Thema, jeweils auf einer eigenen weißen Fläche.
 
 ![Abschnitt „Tickets" auf der Einzeltermin-Seite](assets/core-event-panel-tickets.png)
 
-Technisch ist dieser Abschnitt eine Card, denn ein Panel gab es damals nicht. Das Team hatte also nicht die Wahl und hat die Card zum Seitenabschnitt umgebaut. v18 gibt dem Ding endlich seinen richtigen Namen und den passenden Aufbau.
+Technisch ist dieser Abschnitt eine Card, denn ein Panel gab es damals noch nicht. Also wurde die Card zum Seitenabschnitt umgebaut, weil sie das Nächstliegende war. v18 gibt dem Ding endlich seinen richtigen Namen und den passenden Aufbau.
 
 Dasselbe im Überspielungstool, dort mit zwei Bereichen nebeneinander. Beide haben einen Titel, eine Zeile mit der Anzahl darunter, ihre eigenen Filter und einen leeren Zustand mit einem Hinweis, was zu tun ist.
 
 ![Überspielungstool: zwei benannte Bereiche nebeneinander](assets/core-after-wizard-bundles.png)
 
-Diese Beispiele sind der eigentliche Beleg dafür, dass v18 nichts Neues erfindet. Mehrere Teams sind unabhängig voneinander bei derselben Form gelandet, weil das die Form ist, die die Aufgabe verlangt. Das Layout-System schreibt sie auf und gibt sie allen anderen mit.
+Diese Beispiele sind der eigentliche Beleg dafür, dass v18 nichts Neues erfindet. An verschiedenen Stellen sind wir unabhängig voneinander bei derselben Form gelandet, weil das die Form ist, die die Aufgabe verlangt. Das Layout-System schreibt sie auf und macht sie überall verfügbar.
 
 ### Was das im Alltag bringt
 
-- **Weniger Erklärbedarf.** Wer einen Screen verstanden hat, versteht die anderen auch. Der Rahmen springt nicht von Produkt zu Produkt.
+- **Weniger Erklärbedarf.** Wer eine Seite verstanden hat, versteht die anderen auch. Der Rahmen springt nicht von Produkt zu Produkt.
 - **Bereiche haben Namen.** Im Support kann man sagen „im Bereich Tickets" statt „ungefähr in der Mitte weiter runter scrollen".
 - **Barrierefreiheit fällt mit ab.** Screenreader navigieren genau über solche benannten Bereiche und über die Überschriften-Struktur einer Seite. Beides entsteht automatisch, wenn ein Bereich einen Titel bekommt. Das ist auch für Ausschreibungen relevant, in denen Barrierefreiheit abgefragt wird.
-- **Neue Screens gehen schneller.** Niemand baut den Seitenrahmen noch mal neu.
+- **Neue Seiten gehen schneller.** Niemand baut den Seitenrahmen noch mal neu.
 
 ### Wann kommt das?
 
-Beim Aussehen war es einfach: v18 kommt Mitte August, danach sieht alles frischer aus, und funktional ändert sich nichts.
+Hier lohnt es sich, genau zu lesen, weil drei Dinge zu drei verschiedenen Zeitpunkten kommen.
 
-Beim Layout ist es anders, und das ist wichtig für alle, die mit Kunden sprechen. Der neue Aufbau kommt **Screen für Screen**, nicht mit einem Schlag. Ein Produkt kann Panels einsetzen und weiterhin im alten Rahmen laufen, so wie es die Einzeltermin-Seite heute tut. Es gibt also keinen Tag, an dem plötzlich alle Seiten anders aussehen, sondern eine Reihe von Umbauten über die nächsten Releases. Wo umgebaut wird, ändern sich Anordnung und Abstände sichtbar, weil genau das der Punkt ist.
+**Das Aussehen** kommt Mitte August ins Reservix-System, also die neuen Farben, Flächen und Schatten aus dem letzten Artikel. Die anderen Systeme ziehen danach nach. Funktional ändert sich dabei nichts.
+
+**Der Seitenaufbau mit Panels** kommt Seite für Seite, nicht mit einem Schlag. Ein Produkt kann Panels einsetzen und dabei weiterhin im bisherigen Rahmen laufen, so wie es die Einzeltermin-Seite heute schon tut. Es gibt also keinen Tag, an dem plötzlich alle Seiten anders aussehen, sondern eine Reihe von Umbauten über die nächsten Releases. Wo umgebaut wird, ändern sich Anordnung und Abstände sichtbar, weil genau das der Punkt ist.
+
+**Die neue Navigation** ist von beidem ausgenommen und kommt später, nach dem Weihnachtsgeschäft. Die Navigation ist einer der wichtigsten Faktoren in unseren Systemen und besonders im Reservix-System: Wer täglich damit arbeitet, greift blind nach den richtigen Stellen. Deshalb führen wir sie getrennt vom Rest ein, statt sie in einem großen Release mitlaufen zu lassen. Voraussichtlich wird es sie zuerst als Opt-in geben, so dass jede und jeder selbst entscheiden kann, wann umgestellt wird.
+
+Einige von euch haben die neue Navigation schon getestet. Danke dafür, euer Feedback ist eingebaut. Bevor sie an den Start geht, wird sie noch einmal auf Herz und Nieren geprüft.
 
 Wer nur wissen wollte, wie eine Seite aufgebaut ist, kann hier aufhören. Der Rest geht ins Detail.
 
@@ -179,7 +189,7 @@ Rahmen und Seite sind in v18 als Beta gekennzeichnet. Sie funktionieren und sind
 
 ## Zum Weiterlesen
 
-Die vollständige Referenz steht in der Beta-Dokumentation: [Layouts](https://marigold-docs-git-beta-release-marigold.vercel.app/foundations/layouts) für die Grundlagen, [App Frame](https://marigold-docs-git-beta-release-marigold.vercel.app/patterns/layout/app-frame) für den Aufbau einer Anwendung, [Panel](https://marigold-docs-git-beta-release-marigold.vercel.app/components/layout/panel) für alle Details zu Titel, Aktionen, Varianten und Abständen. Die Beispielseiten unter [Examples](https://marigold-docs-git-beta-release-marigold.vercel.app/examples) sind vollständige Screens, durch die man klicken kann.
+Die vollständige Referenz steht in der Beta-Dokumentation: [Layouts](https://marigold-docs-git-beta-release-marigold.vercel.app/foundations/layouts) für die Grundlagen, [App Frame](https://marigold-docs-git-beta-release-marigold.vercel.app/patterns/layout/app-frame) für den Aufbau einer Anwendung, [Panel](https://marigold-docs-git-beta-release-marigold.vercel.app/components/layout/panel) für alle Details zu Titel, Aktionen, Varianten und Abständen. Die Beispielseiten unter [Examples](https://marigold-docs-git-beta-release-marigold.vercel.app/examples) sind vollständige Seiten, durch die man klicken kann.
 
 Zum Schluss dieselbe Beobachtung wie beim visuellen Fundament: Ein gutes Layout fällt nicht auf. Man merkt es daran, dass man auf einer neuen Seite nicht überlegen muss, wo man ist und was man als Nächstes tun soll.
 
@@ -187,7 +197,8 @@ Zum Schluss dieselbe Beobachtung wie beim visuellen Fundament: Ein gutes Layout 
 
 _Vor der Veröffentlichung zu klären:_
 
-- _Team der Einzeltermin-Seite und des Überspielungstools vorab informieren, beide werden namentlich als positives Beispiel genannt._
 - _Screenshots stammen aus dem Test-Mandanten „Test-Design System" auf Stage, keine echten Kundendaten._
 - _Doku-Links zeigen auf die Beta-Deployment-URL und müssen zum Launch auf marigold-ui.io umgestellt werden._
 - _Master- und Admin-Markierungen sind auf zwei Screenshots sichtbar, werden im Text aber bewusst nicht erklärt._
+- _Termin „nach dem Weihnachtsgeschäft" für die Navigation: genauer fassen, sobald bekannt?_
+- _Opt-in für die Navigation ist als „voraussichtlich" formuliert. Vor der Veröffentlichung bestätigen._
