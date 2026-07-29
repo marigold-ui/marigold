@@ -8,6 +8,7 @@ import {
   Inline,
   Panel,
   SearchField,
+  SectionMessage,
   Select,
   SelectList,
   Stack,
@@ -110,6 +111,9 @@ const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
   const [search, setSearch] = useState('');
   const [team, setTeam] = useState<Key | null>('all');
   const [selected, setSelected] = useState<Set<Key>>(() => new Set(initial));
+  // Keep the commit active. Counts refused empty presses, which keys the error
+  // so each press re-announces, and resets on any selection change.
+  const [emptyAttempts, setEmptyAttempts] = useState(0);
 
   const results = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -127,6 +131,8 @@ const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
   // staged keys that are currently filtered out of view, so narrowing the list
   // by search or team never drops what is already staged.
   const onChange = (keys: Key[]) => {
+    // Any selection change clears a pending empty-press error.
+    setEmptyAttempts(0);
     const visibleIds = new Set<Key>(results.map(person => person.id));
     setSelected(prev => {
       const offView = [...prev].filter(key => !visibleIds.has(key));
@@ -148,9 +154,31 @@ const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
 
   return (
     <>
-      <Dialog.Title>Select people</Dialog.Title>
+      {/* State the one-person minimum up front as the dialog's accessible
+          description, so it is announced to a screen reader on the list or
+          footer instead of only being read in visual order. */}
+      <Dialog.Header>
+        <Dialog.Title>Select people</Dialog.Title>
+        <Dialog.Description>
+          Pick at least one person to grant access.
+        </Dialog.Description>
+      </Dialog.Header>
       <Dialog.Content>
         <Stack space={4}>
+          {/* An empty press reveals this instead of committing, and the key
+              remounts it so each refused press re-announces. Any selection
+              change resets the counter and hides it. */}
+          <SectionMessage
+            key={emptyAttempts}
+            variant="error"
+            open={emptyAttempts > 0 && staged.length === 0}
+          >
+            <SectionMessage.Title>No one staged yet</SectionMessage.Title>
+            <SectionMessage.Content>
+              Tick at least one person to grant access.
+            </SectionMessage.Content>
+          </SectionMessage>
+
           {/* Search and the team filter narrow the visible rows together;
               neither touches the staged selection tracked in `selected`. */}
           <Inline space={2} alignY="input">
@@ -231,11 +259,17 @@ const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
         <Button variant="secondary" slot="close">
           Cancel
         </Button>
-        {/* At least one person is required, so an empty set can never commit. */}
+        {/* Stays active. An empty press is refused with the message above
+            rather than blocked by a disabled control. */}
         <Button
           variant="primary"
-          disabled={staged.length === 0}
-          onPress={() => onConfirm(selected)}
+          onPress={() => {
+            if (staged.length === 0) {
+              setEmptyAttempts(n => n + 1);
+              return;
+            }
+            onConfirm(selected);
+          }}
         >
           {staged.length === 0
             ? 'Add people'

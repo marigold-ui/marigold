@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import type { Framework } from './detect-project.js';
 import { CSS_ENTRY_CANDIDATES, exists } from './fs-utils.js';
+import { escapeRegex } from './regex.js';
 
 export type CssEditOutcome =
   | { kind: 'edited'; path: string; created: boolean; added: string[] }
@@ -33,8 +34,6 @@ const computeSourcePath = (cssAbs: string, cwd: string): string => {
   );
   return rel.startsWith('.') ? rel : `./${rel}`;
 };
-
-const escapeRegex = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 const hasImport = (contents: string, target: string): boolean =>
   new RegExp(`@import\\s+["']${escapeRegex(target)}["'];?`, 'm').test(contents);
