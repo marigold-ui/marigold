@@ -112,6 +112,8 @@ These nine rules govern when a token may be translucent and how to use one. They
 
 **R4 — One alpha per element; never stack.** Two translucent layers composite multiplicatively — 10% over 10% is an effective 19%, which turns a hover into something with the weight of a selection. Co-occurring states resolve to a single combined token. Watch overlapping siblings, not just nesting.
 
+Stacking needs two _elements_. Two washes on the same element both set `background-color`, so the cascade picks one and nothing composites — and the winner must be the persistent state, never the momentary one. `selected` beats `hover` and `focus-highlight` today. Note that this means the losing state becomes invisible, and at the top rung that cannot be fixed with a combined token: `selected` is 19% against R5's 20% ceiling, so a "selected + hover" wash would be 0.038 of contrast stronger than plain `selected`. Where the swallowed state is a focus indicator, the answer is a ring, not a wash.
+
 **R5 — Budget: ≤ 20% on light grounds, ≤ 15% on dark.** Inside those bands the perceived delta stays stable across a range of grounds. Past them, alpha starts behaving like the absolute color it was meant to replace.
 
 **R6 — Never CSS `opacity` for a state.** Color-level alpha only. `opacity` fades text and icons along with the fill and silently destroys contrast; it is the most common way alpha tokens fail an audit.

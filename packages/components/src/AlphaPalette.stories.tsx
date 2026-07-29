@@ -10,6 +10,7 @@ import { cn } from '@marigold/system';
 import { Button } from './Button/Button';
 import { Headline } from './Headline/Headline';
 import { Inline } from './Inline/Inline';
+import { ListBox } from './ListBox/ListBox';
 import { SegmentedControl } from './SegmentedControl/SegmentedControl';
 import { Stack } from './Stack/Stack';
 
@@ -934,12 +935,40 @@ export const Stacking = meta.story({
     <Stack space="group">
       <Headline level="3">Stacking</Headline>
       <Note>
-        Two washes on one element composite to a third value that belongs to no
-        step of the ramp. <code>hover</code> twice measures 1.60:1 on the light
-        grounds and 1.66:1 here, past <code>selected</code>&rsquo;s 1.52:1 top
-        rung; <code>hover</code> over an actually-selected row reaches 1.91:1, a
-        quarter beyond it. Co-occurring states need an explicit combined token,
-        not two fills, and the trap is overlapping siblings as much as nesting.
+        Two washes on <em>separate elements</em> composite to a third value that
+        belongs to no step of the ramp. <code>hover</code> twice measures 1.60:1
+        on the light grounds and 1.66:1 here, past <code>selected</code>&rsquo;s
+        1.52:1 top rung. The trap is overlapping siblings as much as nesting —
+        neither needs a parent/child relationship to bite.
+      </Note>
+      <Note>
+        Two washes on <em>one</em> element cannot stack: both set{' '}
+        <code>background-color</code>, so the cascade picks a winner instead of
+        compositing. Measured on the real components, <code>selected</code> wins
+        — <code>selected:bg-selected hover:ui-state-hover</code> on a hovered
+        selected row stays at 0.19, and a checked, keyboard-focused Menu item
+        keeps 0.19 rather than dropping to <code>focus-highlight</code>&rsquo;s
+        0.05. That is the right winner — were it the other way round, a hovered
+        selection would read at <code>hover</code>&rsquo;s 1.27:1 and so look{' '}
+        <em>less</em> selected while the pointer sat on it.{' '}
+        <code>CoOccurringStates</code> locks it in.
+      </Note>
+      <Note>
+        No combined token can fix the loser going invisible, which is why none
+        is proposed: <code>selected</code> is already the top rung at 0.19
+        against an R5 light budget of 0.20 (0.14 against 0.15 on dark). The
+        entire headroom buys 0.038 of contrast. The ghost case had room — 0.10
+        to 0.15 — which is why <code>ui-state-selected-hover-ghost</code> exists
+        and its ramp equivalent cannot.
+      </Note>
+      <Note>
+        For hover that is cosmetic. For <code>Menu</code> it is not: it draws no
+        focus ring, so on a checked item keyboard focus becomes{' '}
+        <em>entirely</em> invisible — measured <code>outline: none</code>,{' '}
+        <code>box-shadow: none</code>, and a background identical to the
+        unfocused row. That is a WCAG 2.4.7 failure, and the fix is a ring
+        rather than a wash, which is DST-1661&rsquo;s scope (Menu leaning on the
+        tint instead of an indicator) and not something a token can resolve.
       </Note>
       <Grounds>
         {() => (
@@ -1108,7 +1137,7 @@ ComponentStates.test(
 );
 
 Stacking.test(
-  'a stacked wash overshoots the top rung, which is why R6 forbids it',
+  'a stacked wash overshoots the top rung, which is why R4 forbids it',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvasElement }) => {
     // This guards the reason for the rule, not the rule itself. Repointing the
@@ -1150,6 +1179,120 @@ Stacking.test(
         stacked,
         `stacked a-200 measures ${stacked.toFixed(2)}:1 on ${ground.id} — expected it to overshoot the ${topRung}:1 top rung`
       ).toBeGreaterThan(topRung);
+    }
+  }
+);
+
+/* ------------------------------------------------------------------ *
+ * Co-occurring states
+ * ------------------------------------------------------------------ */
+
+/**
+ * The other half of R4, and the half that is easy to get backwards.
+ *
+ * `Stacking` covers two washes on two elements, where the alphas multiply. This
+ * covers two washes on *one* element, where they cannot: `bg-selected` and
+ * `bg-hover` both set `background-color`, so the cascade picks one and the other
+ * is discarded. Nothing composites, and no combined token is needed.
+ *
+ * What matters is *which* one wins, and that is decided by Tailwind's variant
+ * emission order rather than by anything this theme states. Today `selected`
+ * wins, which is correct: a momentary hover must not weaken a persistent
+ * selection. Reordering variants upstream could silently flip it, turning
+ * a hovered selected row from 0.19 down to `hover`'s 0.11 — a selection that
+ * looks *less* selected while the pointer is over it. That is what this asserts.
+ *
+ * The reason the fix is not "add a combined selected+hover token": `selected`
+ * is already the top rung at 0.19, and R5's light-ground budget is 0.20. The
+ * whole available headroom buys 0.038 of contrast. So the weaker state going
+ * invisible here is forced by the budget, not an oversight — the opposite
+ * conclusion from the ghost case, where 0.10 -> 0.15 had room to spare and
+ * `ui-state-selected-hover-ghost` exists because of it.
+ */
+export const CoOccurringStates = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <Stack space="group">
+      <Headline level="3">Co-occurring states</Headline>
+      <Note>
+        A selected row, hovered. Both <code>selected:bg-selected</code> and{' '}
+        <code>hover:ui-state-hover</code> match the same element, so one wins
+        outright. <code>selected</code> has to be the winner: hover is
+        momentary, selection is not.
+      </Note>
+      <Grounds>
+        {() => (
+          <ListBox
+            aria-label="Co-occurring states"
+            selectionMode="single"
+            defaultSelectedKeys={['selected']}
+          >
+            <ListBox.Item id="selected">Selected</ListBox.Item>
+            <ListBox.Item id="plain">Not selected</ListBox.Item>
+          </ListBox>
+        )}
+      </Grounds>
+    </Stack>
+  ),
+});
+
+CoOccurringStates.test(
+  'hovering a selected row never weakens the selection',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    for (const ground of GROUNDS) {
+      const panel = canvasElement.querySelector<HTMLElement>(
+        `[data-ground="${ground.id}"]`
+      );
+      await expect(panel, `no ${ground.id} panel`).not.toBeNull();
+
+      const selected = panel!.querySelector<HTMLElement>(
+        '[role="option"][aria-selected="true"]'
+      );
+      const plain = panel!.querySelector<HTMLElement>(
+        '[role="option"][aria-selected="false"]'
+      );
+
+      // Non-vacuity: querying the wrong panel, or a ListBox that rendered
+      // without a selection, would otherwise make every assertion below pass by
+      // finding nothing to check.
+      await expect(
+        selected,
+        `no selected option on ${ground.id}`
+      ).not.toBeNull();
+      await expect(
+        plain,
+        `no unselected option on ${ground.id}`
+      ).not.toBeNull();
+
+      const restingSelected = measureFillOnGround(selected!, ground.solid);
+
+      // The hover utility has to be live, or "selected wins" proves nothing.
+      // It fires off RAC's `[data-hovered]`, not CSS `:hover` — `userEvent.hover`
+      // dispatches pointer events, which set the attribute but never put the
+      // element into the real `:hover` state. A perturbation written against
+      // `:hover` is unreachable here and passes while proving nothing.
+      await userEvent.hover(plain!);
+      const hoveredPlain = measureFillOnGround(plain!, ground.solid);
+      await expect(
+        hoveredPlain,
+        `hover paints nothing on an unselected row on ${ground.id} — the utility is not live, so this test cannot see a cascade winner`
+      ).toBeGreaterThan(1.01);
+
+      await userEvent.hover(selected!);
+      const hoveredSelected = measureFillOnGround(selected!, ground.solid);
+
+      // The invariant: the persistent state keeps the ground, whatever the
+      // momentary one would have painted.
+      await expect(
+        hoveredSelected,
+        `hovering the selected row on ${ground.id} moved it from ${restingSelected.toFixed(2)}:1 to ${hoveredSelected.toFixed(2)}:1 — a co-occurring hover must not repaint a selection`
+      ).toBeCloseTo(restingSelected, 2);
+
+      await expect(
+        hoveredSelected,
+        `hovered selected row on ${ground.id} measures ${hoveredSelected.toFixed(2)}:1, at or below the ${hoveredPlain.toFixed(2)}:1 of a merely-hovered row`
+      ).toBeGreaterThan(hoveredPlain);
     }
   }
 );
