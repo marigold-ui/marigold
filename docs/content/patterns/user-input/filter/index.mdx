@@ -27,7 +27,7 @@ The pattern keeps a consistent layout while the controls inside it adapt to the 
 - **Applied Filter:** Lists the filters currently in use and offers a single action to clear them all.
 - **Data Set:** The collection being filtered, shown as a [table](/components/collection/table), [tiles](/components/layout/tiles), or [cards](/components/content/card). It takes up most of the layout.
 - **Pagination:** Splits the filtered results into pages, below the data set.
-- **Filter Panel:** Slides in from the right and holds the filter controls. It overlaps the content without blocking it, so the data set stays visible while filtering.
+- **Filter Panel:** A [Drawer](/components/overlay/drawer) that slides in from the right and holds the filter controls. It overlaps the content without blocking it, so the data set stays visible while filtering. "Panel" below always means this Drawer.
 
 The demo shows the areas working together in miniature: the search sits in the filter bar, the panel collects filter changes behind the _Filter_ button and commits them with _Apply_, and applied filters appear as removable tags.
 
@@ -91,7 +91,7 @@ For the panel's commit control, label it clearly and tell users what they are co
 
 ## Designing Options
 
-These guidelines cover the individual options inside a filter: how to keep long or complex option lists usable, surface counts, and handle bulk or excluded values.
+This section is about one filter's own choices — the cities in a City filter, not the filters in the panel. These guidelines cover how to keep a long or complex option list usable, surface counts, and handle bulk or excluded values.
 
 ### Many Options
 
@@ -120,6 +120,8 @@ Dynamic counts also need the right query per option. For a filter that matches *
 Pairing counts in the panel with a clear applied filter summary gives users confidence that their selections match their intent.
 
 ### Select All
+
+This "Select all" checks every **option** in one filter — every city in a City filter — which widens the result set. It is not the row-level "select all" that starts a bulk operation; for that, see [Bulk Actions](/patterns/user-input/bulk-actions). The words are the same, the object is not: here it changes what you see, there it chooses what you act on.
 
 In multi-select filters, leaving everything unchecked typically means all results are shown, so a "Select all" option is not always required. It earns its place in long lists where users often want nearly everything, or when a parent-child structure enables bulk toggling, making the common "all except a few" pattern easier to achieve.
 
