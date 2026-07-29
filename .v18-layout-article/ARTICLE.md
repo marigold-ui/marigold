@@ -89,9 +89,9 @@ Hier lohnt es sich, genau zu lesen, weil drei Dinge zu drei verschiedenen Zeitpu
 
 **Der Seitenaufbau mit Panels** kommt Seite für Seite, nicht mit einem Schlag. Ein Produkt kann Panels einsetzen und dabei weiterhin im bisherigen Rahmen laufen, so wie es die Einzeltermin-Seite heute schon tut. Es gibt also keinen Tag, an dem plötzlich alle Seiten anders aussehen, sondern eine Reihe von Umbauten über die nächsten Releases. Wo umgebaut wird, ändern sich Anordnung und Abstände sichtbar, weil genau das der Punkt ist.
 
-**Die neue Navigation** ist von beidem ausgenommen und kommt später, nach dem Weihnachtsgeschäft. Die Navigation ist einer der wichtigsten Faktoren in unseren Systemen und besonders im Reservix-System: Wer täglich damit arbeitet, greift blind nach den richtigen Stellen. Deshalb führen wir sie getrennt vom Rest ein, statt sie in einem großen Release mitlaufen zu lassen. Voraussichtlich wird es sie zuerst als Opt-in geben, so dass jede und jeder selbst entscheiden kann, wann umgestellt wird.
+**Die neue Navigation** ist von beidem ausgenommen und kommt im ersten Quartal 2027, zunächst als Opt-in. Die Navigation ist einer der wichtigsten Faktoren in unseren Systemen und besonders im Reservix-System: Wer täglich damit arbeitet, greift blind nach den richtigen Stellen. Deshalb führen wir sie getrennt vom Rest ein, statt sie in einem großen Release mitlaufen zu lassen. Und weil sie als Opt-in startet, entscheidet jede und jeder selbst, wann umgestellt wird.
 
-Einige von euch haben die neue Navigation schon getestet. Danke dafür, euer Feedback ist eingebaut. Bevor sie an den Start geht, wird sie noch einmal auf Herz und Nieren geprüft.
+Einige von euch haben die neue Navigation schon getestet. Danke dafür, euer Feedback ist eingebaut. Bis zum Rollout wird intern weiter getestet, deutlich früher also als das erste Quartal: Bevor die Navigation an den Start geht, wird sie noch einmal auf Herz und Nieren geprüft.
 
 Wer nur wissen wollte, wie eine Seite aufgebaut ist, kann hier aufhören. Der Rest geht ins Detail.
 
@@ -200,5 +200,4 @@ _Vor der Veröffentlichung zu klären:_
 - _Screenshots stammen aus dem Test-Mandanten „Test-Design System" auf Stage, keine echten Kundendaten._
 - _Doku-Links zeigen auf die Beta-Deployment-URL und müssen zum Launch auf marigold-ui.io umgestellt werden._
 - _Master- und Admin-Markierungen sind auf zwei Screenshots sichtbar, werden im Text aber bewusst nicht erklärt._
-- _Termin „nach dem Weihnachtsgeschäft" für die Navigation: genauer fassen, sobald bekannt?_
-- _Opt-in für die Navigation ist als „voraussichtlich" formuliert. Vor der Veröffentlichung bestätigen._
+- _Navigation ist mit „erstes Quartal 2027, zunächst als Opt-in" angegeben. Vor der Veröffentlichung gegen den aktuellen Plan abgleichen._
