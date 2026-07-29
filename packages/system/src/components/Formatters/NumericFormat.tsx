@@ -43,7 +43,16 @@ export const NumericFormat = ({
     ...props,
   });
   return (
-    // Intl output can legitimately differ between server and client ICU/locale.
+    // Same reasoning as DateFormat: Intl output legitimately differs between
+    // server and client (locale fallback plus Node-vs-browser ICU, which shows
+    // up here as currency spacing and grouping separators). Suppressed globally
+    // rather than behind a prop because the mismatch is the default for SSR
+    // consumers who have not pinned a locale.
+    //
+    // Bounded, not blanket: the suppression works one level deep, covering this
+    // span's attributes and its direct text child only. That child is entirely
+    // formatter output. Wrapping the value in another element would move it out
+    // from under the suppression.
     <span
       suppressHydrationWarning
       className={tabular ? 'tabular-nums' : undefined}

@@ -15,9 +15,14 @@ mock_data:
       // `venueTypes`; `amenities`/`parking` index into their option arrays.
       export const venueTypes: readonly string[];
       export const venueTraits: readonly string[];
+      export const venueCities: readonly string[];
       export const amenitiesOptions: readonly string[];
       export const parkingOptions: readonly string[];
       export const seatingTypeOptions: readonly string[];
+      // Upper bounds for the capacity and price sliders. Also the "no filter"
+      // sentinels: a value at the maximum is treated as unset.
+      export const MAX_CAPACITY: number;
+      export const MAX_PRICE: number;
       export const venues: Array<{
         id: string;
         name: string;
@@ -32,7 +37,67 @@ mock_data:
         amenities: number[];
         parking: number[];
         seatingTypes: number[];
+        /** Next available date as an ISO date (`YYYY-MM-DD`). */
+        nextAvailable: string;
       }>;
+      export type Venue = (typeof venues)[number];
+  - alias: '@/lib/data/venues-query'
+    shape: |
+      // The query contract between the table and whatever serves it. In this
+      // example an in-memory module implements it behind a route handler;
+      // replace it with your own backend call. Every field is optional and
+      // every "empty" value (`0`, `[]`, a maximum) means "no filter", so the
+      // URL stays clean when a dimension is unused.
+      import type { Venue } from '@/lib/data/venues';
+
+      export type VenueSortColumn = 'name' | 'capacity' | 'price';
+      export type VenueSortDirection = 'ascending' | 'descending';
+
+      export interface VenueQueryParams {
+        /** Free-text search, matched against the venue name. */
+        q?: string;
+        /** Minimum capacity. `0` means "no capacity filter". */
+        capacity?: number;
+        /** Maximum price. `MAX_PRICE` means "no price filter". */
+        price?: number;
+        /** Minimum rating. `0` means "no rating filter". */
+        rating?: number;
+        traits?: string[];
+        city?: string[];
+        /** `[start, end]` ISO dates; anything but a pair means "no filter". */
+        available?: string[];
+        /** Option indexes into the matching `*Options` array. */
+        types?: number[];
+        amenities?: number[];
+        parking?: number[];
+        seating?: number[];
+        column?: VenueSortColumn;
+        direction?: VenueSortDirection;
+        /** 1-based page. */
+        page?: number;
+        /** Page size, or `'all'` to skip pagination (the CSV export uses it). */
+        pageSize?: number | 'all';
+        /** Ids to drop before anything else runs, so deletes stay client-side. */
+        exclude?: string[];
+      }
+
+      export interface VenueQueryResult {
+        items: Venue[];
+        totalItems: number;
+        totalPages: number;
+        safePage: number;
+        pageSize: number;
+      }
+
+      /** Per-option result counts that drive the filter panel's live previews. */
+      export interface VenueFacets {
+        types: number[];
+        amenities: number[];
+        parking: number[];
+        seating: number[];
+        /** Keyed by minimum-rating tier. */
+        rating: Record<string, number>;
+      }
 key_files:
   - VenuesTable.tsx
   - FilterBar.tsx
@@ -43,7 +108,9 @@ key_files:
 scaffolding_files:
   - page.tsx
 peer_deps:
+  - '@internationalized/date'
   - '@marigold/icons'
   - '@marigold/system'
+  - '@tanstack/react-query'
   - nuqs
-  - zod
+  - react-error-boundary
