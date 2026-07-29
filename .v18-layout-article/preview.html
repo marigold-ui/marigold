@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RUI: Das Layout-System von Marigold v18 — Entwurf</title>
+<style>
+  :root {
+    --ink: #172b4d;
+    --ink-subtle: #6b778c;
+    --link: #0052cc;
+    --border: #dfe1e6;
+    --bg: #ffffff;
+    --chrome: #f4f5f7;
+    --info-bg: #deebff;
+    --info-border: #0052cc;
+    --note-bg: #fffae6;
+    --note-border: #ffab00;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--chrome);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.714;
+  }
+  .topbar {
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--ink-subtle);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .logo {
+    width: 24px; height: 24px; border-radius: 4px;
+    background: var(--link); color: #fff;
+    display: grid; place-items: center;
+    font-size: 12px; font-weight: 700;
+  }
+  .topbar a { color: var(--ink-subtle); text-decoration: none; }
+  .topbar a:hover { text-decoration: underline; }
+  .sheet {
+    background: var(--bg);
+    max-width: 1024px;
+    margin: 24px auto 64px;
+    padding: 40px 56px 72px;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(9,30,66,.25), 0 0 1px rgba(9,30,66,.13);
+  }
+  .breadcrumbs { font-size: 12px; color: var(--ink-subtle); margin-bottom: 8px; }
+  .breadcrumbs span { margin: 0 6px; }
+  h1 {
+    font-size: 29px; line-height: 1.2; font-weight: 500;
+    letter-spacing: -.01em; margin: 0 0 4px;
+  }
+  .byline {
+    font-size: 14px; color: var(--ink-subtle);
+    display: flex; align-items: center; gap: 8px;
+    padding-bottom: 20px; margin-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  .avatar {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: #6554c0; color: #fff;
+    display: grid; place-items: center; font-size: 11px; font-weight: 600;
+  }
+  h2 {
+    font-size: 24px; font-weight: 500; line-height: 1.25;
+    margin: 40px 0 8px; letter-spacing: -.008em;
+  }
+  h3 { font-size: 20px; font-weight: 600; line-height: 1.3; margin: 32px 0 8px; }
+  p { margin: 0 0 16px; }
+  a { color: var(--link); }
+  strong { font-weight: 600; }
+  code {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+    font-size: .85em; background: var(--chrome);
+    border: 1px solid var(--border); border-radius: 3px; padding: 1px 4px;
+  }
+  hr { border: 0; border-top: 2px solid var(--border); margin: 40px 0; }
+  ul { margin: 0 0 16px; padding-left: 24px; }
+  li { margin-bottom: 6px; }
+  figure {
+    margin: 24px 0;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    background: var(--chrome);
+  }
+  figure img { display: block; width: 100%; height: auto; }
+  figcaption {
+    font-size: 12px; color: var(--ink-subtle);
+    padding: 8px 12px; background: var(--bg);
+    border-top: 1px solid var(--border);
+  }
+  .table-scroll { overflow-x: auto; margin: 0 0 24px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td {
+    border: 1px solid var(--border);
+    padding: 8px 12px; text-align: left; vertical-align: top;
+  }
+  th { background: var(--chrome); font-weight: 600; }
+  .panel {
+    border-radius: 3px; padding: 14px 16px; margin: 24px 0;
+    border-left: 3px solid var(--info-border); background: var(--info-bg);
+    font-size: 15px;
+  }
+  .panel.note { border-left-color: var(--note-border); background: var(--note-bg); }
+  .panel :last-child { margin-bottom: 0; }
+  .panel-title { font-weight: 600; margin-bottom: 4px; }
+  .lede { font-size: 17px; }
+  .checklist { font-size: 14px; color: var(--ink-subtle); }
+  @media (max-width: 800px) {
+    .sheet { margin: 0; padding: 24px 20px 48px; border-radius: 0; }
+    h1 { font-size: 24px; }
+    h2 { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">DST</div>
+  <a href="#">Design-System-Team</a>
+  <span>/</span>
+  <a href="#">Blog</a>
+</div>
+
+<article class="sheet">
+  <div class="breadcrumbs">Design-System-Team<span>/</span>Blog<span>/</span>Entwurf</div>
+  <h1>RUI: Das Layout-System von Marigold v18</h1>
+  <div class="byline">
+    <div class="avatar">SS</div>
+    <div>Sebastian Sebald &middot; Entwurf, noch nicht veröffentlicht</div>
+  </div>
+
+  <div class="panel note">
+    <div class="panel-title">Entwurf für Review (DST-1571)</div>
+    <p>Folgeartikel zu „Das visuelle Fundament von Marigold v18“. Die offenen Punkte für die Veröffentlichung stehen am Ende der Seite.</p>
+  </div>
+
+  <p class="lede">Im letzten Artikel ging es um Farben, Flächen und Schatten, also darum, wie unsere Oberflächen aussehen. Diesmal geht es eine Ebene höher: wie eine Seite überhaupt aufgebaut ist. Das ist der Teil von v18, der am meisten verändert, wie wir Screens entwerfen und bauen.</p>
+
+  <p>Ein Bild vorweg, das den ganzen Artikel zusammenfasst: <strong>erst die Räume, dann die Möbel.</strong> Der Rahmen einer Anwendung ist das Gebäude. Eine Seite ist ein Raum darin. Panels sind die benannten Bereiche im Raum. Und was in einem Bereich steht, sind die Möbel.</p>
+
+  <figure>
+    <img src="assets/v18-concept-structure.png" alt="Rahmen, Seite und Panels als verschachtelte Struktur">
+    <figcaption>Rahmen, Seite, Panels: drei Ebenen, die ineinander liegen.</figcaption>
+  </figure>
+
+  <p>Der Artikel ist in drei Teilen aufgebaut. <strong>Teil 1</strong> erklärt den Aufbau einer Seite und ist für alle interessant, die mit unseren Produkten arbeiten, auch ohne Design- oder Entwicklungshintergrund. <strong>Teil 2</strong> geht ins Detail und richtet sich an Designerinnen und Designer. <strong>Teil 3</strong> erklärt, warum wir uns so entschieden haben, inklusive der Stellen, an denen wir uns bewusst gegen den Standard anderer Systeme gestellt haben.</p>
+
+  <hr>
+
+  <h2>Teil 1: Wie eine Seite in Marigold aufgebaut ist</h2>
+
+  <h3>Vorher gab es kein gemeinsames Modell</h3>
+  <p>Bisher hat jedes Produkt seinen Seitenaufbau selbst erfunden. Es gab Bausteine für Buttons, Felder und Tabellen, aber keinen für „eine Seite“. Also hat jeder Screen die Grundfragen neu beantwortet: Wo steht der Titel? Wie weit ist der Abstand nach oben? Kommt die Hauptaktion oben rechts hin oder unten? Wie werden Abschnitte voneinander getrennt, und heißen sie überhaupt irgendwie?</p>
+  <p>Das Ergebnis sieht man hier. Unter dem Titel liegt ein Stapel Bedienelemente: ein Schalter, ein Suchfeld, eine Schnellwahl, dazwischen die Hauptaktion. Danach folgt eine Tabelle, die direkt auf dem Seitenhintergrund liegt. Nichts davon ist als Bereich benannt.</p>
+
+  <figure>
+    <img src="assets/core-before-veranstaltungen.png" alt="Veranstaltungsübersicht ohne benannte Bereiche">
+    <figcaption>Eine typische Seite ohne gemeinsames Seitenmodell: Titel, darunter Bedienelemente in unterschiedlichen Breiten, dann eine Tabelle ohne eigene Fläche.</figcaption>
+  </figure>
+
+  <div class="panel">
+    <p>Das war kein Fehler, den irgendwer gemacht hat. Es gab schlicht kein gemeinsames Modell, an dem man sich orientieren konnte, also hat jedes Team eins erfunden. Genau diese Lücke füllt v18.</p>
+  </div>
+
+  <h3>Der Rahmen bleibt, der Inhalt wechselt</h3>
+  <p>Ganz außen sitzt der <strong>App-Rahmen</strong>: Navigation links, eine Kopfzeile oben, der Inhalt darunter. Der Rahmen bleibt stehen, während man durch die Anwendung navigiert. Nur der Inhaltsbereich wechselt.</p>
+
+  <figure>
+    <img src="assets/v18-dashboard.png" alt="Der v18-Rahmen mit Navigation, Kopfzeile und Inhaltsbereich">
+    <figcaption>Der Rahmen: Navigation links, Kopfzeile oben mit Pfad und Nutzermenü, darunter die Seite mit Titel, Hauptaktion und Panels.</figcaption>
+  </figure>
+
+  <p>Die Navigation hat zwei Ebenen: eine schmale Leiste mit Symbolen für die Hauptbereiche und daneben eine Spalte mit den Links des aktuellen Bereichs. Klappt man die Spalte zu, bleiben die Symbole stehen. Man gewinnt Platz, ohne die Orientierung zu verlieren.</p>
+
+  <figure>
+    <img src="assets/nav-collapsed-rail.png" alt="Zugeklappte Navigation, Symbolleiste bleibt sichtbar">
+    <figcaption>Zugeklappt: die Symbole der Hauptbereiche bleiben stehen, der Inhalt wird breiter.</figcaption>
+  </figure>
+
+  <p>Auf schmalen Bildschirmen wird die Navigation zu einer Fläche, die sich über die Seite legt, und der Inhalt läuft einspaltig darunter.</p>
+
+  <figure>
+    <img src="assets/nav-mobile-sheet.png" alt="Navigation auf schmalem Bildschirm">
+    <figcaption>Auf dem Handy legt sich die Navigation über die Seite, inklusive Gruppen und zweiter Ebene.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="assets/nav-mobile-page.png" alt="Seiteninhalt auf schmalem Bildschirm">
+    <figcaption>Der Inhalt einspaltig: Der Seitenkopf bricht um, das Panel behält Titel und Beschreibung.</figcaption>
+  </figure>
+
+  <p>Wichtig ist außerdem etwas, das man nicht sieht: Die Seite scrollt wie eine ganz normale Webseite, nicht in einem eigenen Kasten. Deshalb funktionieren Dinge, die man von jeder Website erwartet: Suchen mit <code>Cmd+F</code>, der Zurück-Button, Links, die an die richtige Stelle springen.</p>
+
+  <h3>Die Seite: ein Titel, eine Hauptaktion</h3>
+  <p>Im Rahmen liegt die <strong>Seite</strong>. Jede Seite hat denselben Anfang: einen Titel, der sagt, wo man ist, optional einen Satz zur Erklärung, und rechts daneben die eine Aktion, um die es auf dieser Seite hauptsächlich geht.</p>
+  <p>Zwei Dinge stehen bewusst <strong>nicht</strong> im Seitenkopf. Der Pfad, an dem man ablesen kann, wo man sich in der Anwendung befindet, gehört zum Rahmen, nicht zur Seite. Und der Status eines Objekts, also etwa „aktiv“ oder „gesperrt“, steht im Inhalt, nicht neben dem Titel. Bei Detailseiten hat sich dafür eine schmale Spalte rechts etabliert, die den Status und die wichtigsten Fakten trägt.</p>
+
+  <figure>
+    <img src="assets/v18-detail-user.png" alt="Detailseite mit schmaler Übersichtsspalte">
+    <figcaption>Detailseite: Inhalt links, Status und Kennzahlen in einer schmalen Spalte rechts.</figcaption>
+  </figure>
+
+  <h3>Panels: benannte Bereiche</h3>
+  <p>Unter dem Seitenkopf liegen <strong>Panels</strong>. Ein Panel ist ein benannter Bereich, der ein Thema bündelt: „Basisdaten“, „Tickets“, „Abrechnung“. Eine typische Seite besteht aus einer Handvoll davon. Das macht aus einer langen Liste von Feldern eine Seite, die man überfliegen kann: Man liest die Überschriften, findet seinen Bereich und liest nur dort weiter.</p>
+  <p>Der Unterschied zur Karte ist wichtig, weil beide gleich aussehen: Eine Karte steht für einen Eintrag, der sich wiederholt, etwa eine Veranstaltung in einer Liste. Ein Panel gibt es pro Bereich genau einmal. <strong>Karten wiederholen sich, Panels nicht.</strong></p>
+
+  <h3>Ein Team hat schon angefangen</h3>
+  <p>Das Muster gab es intern schon, bevor es einen Namen hatte. Auf der Seite zum Bearbeiten eines Einzeltermins ist genau das gebaut: Abschnitte mit Titel, jeder mit einem Thema, jeweils auf einer eigenen weißen Fläche.</p>
+
+  <figure>
+    <img src="assets/core-event-panel-tickets.png" alt="Abschnitt Tickets auf der Einzeltermin-Seite">
+    <figcaption>Ein Abschnitt der Einzeltermin-Seite: Titel, Felder, und am Ende ein einziger einklappbarer Teil für die erweiterten Einstellungen.</figcaption>
+  </figure>
+
+  <p>Technisch ist dieser Abschnitt eine Card, denn ein Panel gab es damals nicht. Das Team hatte also nicht die Wahl und hat die Card zum Seitenabschnitt umgebaut. v18 gibt dem Ding endlich seinen richtigen Namen und den passenden Aufbau.</p>
+  <p>Dasselbe im Überspielungstool, dort mit zwei Bereichen nebeneinander. Beide haben einen Titel, eine Zeile mit der Anzahl darunter, ihre eigenen Filter und einen leeren Zustand mit einem Hinweis, was zu tun ist.</p>
+
+  <figure>
+    <img src="assets/core-after-wizard-bundles.png" alt="Überspielungstool mit zwei benannten Bereichen">
+    <figcaption>Zwei benannte Bereiche nebeneinander, jeder mit Titel, Anzahl, eigenen Filtern und leerem Zustand.</figcaption>
+  </figure>
+
+  <p>Diese Beispiele sind der eigentliche Beleg dafür, dass v18 nichts Neues erfindet. Mehrere Teams sind unabhängig voneinander bei derselben Form gelandet, weil das die Form ist, die die Aufgabe verlangt. Das Layout-System schreibt sie auf und gibt sie allen anderen mit.</p>
+
+  <h3>Was das im Alltag bringt</h3>
+  <ul>
+    <li><strong>Weniger Erklärbedarf.</strong> Wer einen Screen verstanden hat, versteht die anderen auch. Der Rahmen springt nicht von Produkt zu Produkt.</li>
+    <li><strong>Bereiche haben Namen.</strong> Im Support kann man sagen „im Bereich Tickets“ statt „ungefähr in der Mitte weiter runter scrollen“.</li>
+    <li><strong>Barrierefreiheit fällt mit ab.</strong> Screenreader navigieren genau über solche benannten Bereiche und über die Überschriften-Struktur einer Seite. Beides entsteht automatisch, wenn ein Bereich einen Titel bekommt. Das ist auch für Ausschreibungen relevant, in denen Barrierefreiheit abgefragt wird.</li>
+    <li><strong>Neue Screens gehen schneller.</strong> Niemand baut den Seitenrahmen noch mal neu.</li>
+  </ul>
+
+  <h3>Wann kommt das?</h3>
+  <p>Beim Aussehen war es einfach: v18 kommt Mitte August, danach sieht alles frischer aus, und funktional ändert sich nichts.</p>
+
+  <div class="panel note">
+    <div class="panel-title">Für alle, die mit Kunden sprechen</div>
+    <p>Beim Layout ist es anders. Der neue Aufbau kommt <strong>Screen für Screen</strong>, nicht mit einem Schlag. Ein Produkt kann Panels einsetzen und weiterhin im alten Rahmen laufen, so wie es die Einzeltermin-Seite heute tut. Es gibt also keinen Tag, an dem plötzlich alle Seiten anders aussehen, sondern eine Reihe von Umbauten über die nächsten Releases. Wo umgebaut wird, ändern sich Anordnung und Abstände sichtbar, weil genau das der Punkt ist.</p>
+  </div>
+
+  <p>Wer nur wissen wollte, wie eine Seite aufgebaut ist, kann hier aufhören. Der Rest geht ins Detail.</p>
+
+  <hr>
+
+  <h2>Teil 2: Was das für den Entwurf bedeutet</h2>
+
+  <h3>Panel für die Gliederung, Primitive für alles darin</h3>
+  <p>Die Arbeitsregel ist kurz: <strong>Panel gliedert die Seite, alles innerhalb wird mit Layout-Primitiven angeordnet.</strong> Primitive sind unsichtbare Bausteine mit einer Aufgabe: <code>Stack</code> stapelt untereinander, <code>Inline</code> reiht nebeneinander, <code>Columns</code> teilt in Spalten, <code>Inset</code> gibt Innenabstand.</p>
+  <p>Panel besitzt die Fläche, den Titel und den Rahmen um den Inhalt. Es bestimmt nicht, wie der Inhalt darin angeordnet ist. Das ist die Aufgabe der Primitive, und die funktionieren innerhalb eines Panels genauso wie außerhalb.</p>
+  <p>Daraus folgt eine Regel, die im Entwurf oft übersehen wird: <strong>Ein Element bringt keinen Außenabstand mit.</strong> Ein Button weiß nicht, was neben ihm steht. Der Abstand zwischen zwei Elementen wird immer von dem Baustein entschieden, der beide enthält. Wer im Entwurf Abstände an ein einzelnes Element klebt, beschreibt etwas, das das System nicht bauen kann, ohne die Wiederverwendbarkeit aufzugeben.</p>
+
+  <h3>Panel oder Card?</h3>
+  <p>Die Frage kommt regelmäßig, weil beide gleich aussehen: weiße Fläche, feiner Rahmen, kein Schatten. Der Unterschied liegt nicht im Aussehen, sondern in der Rolle.</p>
+  <p>Die Prüffrage: <strong>Wiederholt sich das Element beim Scrollen?</strong> Eine Veranstaltung, ein Produkt, ein Teammitglied kommen mehrfach vor, jeweils in derselben Form. Das ist eine Card. „Basisdaten“ oder „Abrechnung“ gibt es pro Seite einmal, mit eigenem Titel und eigenen Aktionen. Das ist ein Panel.</p>
+  <p>Aus der Rolle folgt der Rest: Panels tragen Titel, die zur Gliederung der Seite gehören, und werden dadurch zu Bereichen, die Screenreader ansteuern können. Cards sind Einträge in einer Sammlung und brauchen das nicht.</p>
+
+  <h3>Breite wird pro Fläche entschieden, nicht pro Seite</h3>
+  <p>Eine Seite gibt keine Maximalbreite vor. Stattdessen entscheidet jede Fläche für sich: Formularabschnitte werden auf eine angenehme Lesebreite begrenzt, datenreiche Flächen wie Tabellen laufen über die volle Breite.</p>
+  <p>Das klingt nach einem Detail, ist aber der Unterschied zu Systemen, die einen Schalter auf Seitenebene anbieten, „schmal“ oder „volle Breite“. Eine echte Seite mischt beides: ein kurzes Formular oben, darunter eine breite Tabelle. Ein Schalter auf Seitenebene erzwingt eine Entscheidung für die ganze Seite und liegt dann bei der Hälfte des Inhalts daneben.</p>
+  <p>Auf der Einzeltermin-Seite kann man das nachsehen: Die Formularabschnitte sind auf eine Lesebreite begrenzt, obwohl die Seite viel breiter ist. Genau das ist gemeint.</p>
+
+  <h3>Die fünf Seitenformen</h3>
+  <p>Fast jede Seite in einer Anwendung ist eine von fünf Formen. Alle bestehen aus denselben Bausteinen. Unterschiedlich ist nur, wie viele Flächen es gibt, wie sie angeordnet sind und wie breit sie laufen.</p>
+
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr><th>Form</th><th>Wofür</th><th>Aufbau</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Liste</strong></td><td>Eine Sammlung durchsuchen und filtern</td><td>Ein Panel über die volle Breite mit Filtern und Tabelle</td></tr>
+        <tr><td><strong>Detail</strong></td><td>Ein Objekt mit Status und Kennzahlen</td><td>Zwei Spalten: Inhalt links, schmale Übersicht rechts</td></tr>
+        <tr><td><strong>Formular</strong></td><td>Etwas anlegen oder bearbeiten</td><td>Panels auf Lesebreite, Hauptaktion am Ende</td></tr>
+        <tr><td><strong>Einstellungen</strong></td><td>Konfiguration in Gruppen, oft mit Tabs</td><td>Tabs unter dem Seitenkopf, darin gestapelte Formular-Panels</td></tr>
+        <tr><td><strong>Übersicht</strong></td><td>Kennzahlen auf einen Blick</td><td>Panels und Cards in Spalten oder als Raster</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <figure>
+    <img src="assets/v18-list-filter.png" alt="Listenform">
+    <figcaption>Liste: ein Panel über die volle Breite, darin Filter und Tabelle.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="assets/v18-form-event.png" alt="Formularform">
+    <figcaption>Formular: Panels auf Lesebreite, auch wenn die Seite breiter ist.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="assets/v18-settings-general.png" alt="Einstellungsform">
+    <figcaption>Einstellungen: gestapelte Formular-Panels, jedes mit einem Thema.</figcaption>
+  </figure>
+
+  <p>Die Detailform lohnt es sich zu verinnerlichen, weil sie am häufigsten falsch gebaut wird. Der Inhalt steht links, Status und Kennzahlen in einer schmalen Spalte rechts, etwa zwei Drittel zu einem Drittel. Auf schmalen Bildschirmen fällt die rechte Spalte unter die linke.</p>
+  <p>Die schmale Spalte verdient ihren Platz aber nur, wenn es wirklich etwas zusammenzufassen gibt: Status, Verantwortliche, wichtige Daten, Anzahlen. Steht dort am Ende nur ein einzelnes Etikett, wirkt sie wie eine leere Randspalte. Dann gehören die Angaben in den Inhalt.</p>
+
+  <h3>Was in die Übergabe gehört</h3>
+  <p>Für die Übergabe an die Entwicklung heißt das: Die Struktur ist die eigentliche Information. Also nicht Abstände in Pixeln, sondern:</p>
+  <div class="panel">
+    <p>„Eine Seite mit dem Titel <em>Einzeltermin bearbeiten</em>, darunter vier Panels: Basisdaten, Tickets, Besucherinformation, Finanzen. Speichern und Abbrechen liegen außerhalb der Panels am Seitenende.“</p>
+  </div>
+  <p>Damit ist alles gesagt, was gebraucht wird. Abstände, Innenabstände, Überschriftenebenen und Umbruchverhalten kommen aus dem System und müssen nicht mitgeliefert werden.</p>
+
+  <hr>
+
+  <h2>Teil 3: Warum wir uns so entschieden haben</h2>
+  <p>Vier Entscheidungen fallen auf, wenn man Marigold mit anderen Systemen vergleicht. Alle vier sind bewusst getroffen.</p>
+
+  <p><strong>Keine Maximalbreite auf Seitenebene.</strong> Begründung siehe oben: Eine Seite mischt schmalen und breiten Inhalt, deshalb entscheidet die Fläche und nicht die Seite.</p>
+  <p><strong>Der Pfad gehört zum Rahmen, nicht zum Seitenkopf.</strong> Er beschreibt, wo eine Seite in der Anwendung liegt, nicht, was diese Seite ist. Deshalb sitzt er oben in der Kopfzeile, die beim Navigieren stehen bleibt, und nicht im Titelblock der Seite, wie es viele Systeme machen.</p>
+  <p><strong>Kein Platz für Status im Seitenkopf.</strong> Der Seitenkopf trägt Titel, Beschreibung und die eine Hauptaktion. Nimmt man Status-Etiketten und Kennzahlen dazu, verschwindet die Aktion, wegen der die Seite geöffnet wurde, in einer Reihe von Kleinteilen. Deshalb gibt es dafür bewusst keinen Platz, sondern die schmale Übersichtsspalte.</p>
+  <p><strong>Die Seite scrollt, nicht ein Kasten darin.</strong> Ein eigener Scroll-Bereich im Inhalt sieht ordentlich aus und kostet lauter Kleinigkeiten, die Browser sonst geschenkt mitbringen: Suchen im Text, Zurückkehren an die vorherige Scroll-Position, Sprungmarken, das Zusammenklappen der Adressleiste auf dem Handy.</p>
+
+  <h3>Der Nebeneffekt, der am meisten wert ist</h3>
+  <p>Panels sind nicht nur optische Abschnitte. Ein Panel mit Titel wird zu einem benannten Bereich im Dokument, und sein Titel wird zu einer Überschrift auf der richtigen Ebene: Der Seitentitel ist die erste Ebene, jedes Panel die zweite, ein eingeklappter Teil darin die dritte.</p>
+  <p>Diese Struktur ist genau das, worüber Screenreader navigieren. Bisher musste das jemand bewusst herstellen, und in der Praxis passierte es selten. Jetzt entsteht es, weil jemand einem Bereich einen Namen gibt, und das ist eine inhaltliche Entscheidung, keine technische.</p>
+  <p>Deshalb ist es auch ein Argument nach außen: Wer nach Barrierefreiheit fragt, fragt unter anderem nach genau dieser Struktur.</p>
+
+  <h3>Eine Stelle, die noch nicht entschieden ist</h3>
+  <p>Ein Punkt ist offen, und es lohnt nicht, das zu verstecken. Sehr lange Formulare bestehen häufig aus vielen eingeklappten Abschnitten. Die untere Hälfte der Einzeltermin-Seite sieht so aus:</p>
+
+  <figure>
+    <img src="assets/core-event-collapsed-stack.png" alt="Mehrere eingeklappte Abschnitte, darunter Speichern und Abbrechen">
+    <figcaption>Mehrere eingeklappte Abschnitte untereinander. Speichern und Abbrechen liegen außerhalb der Abschnitte, auf Seitenebene.</figcaption>
+  </figure>
+
+  <p>Das ist praktisch, weil man sonst endlos scrollt. Gleichzeitig ist es eine Seite, die man erst aufklappen muss, um zu sehen, was auf ihr steht. Unsere Empfehlung ist bisher: pro Panel höchstens ein eingeklappter Teil, und zwar für den Rand des Themas, nicht für das Thema selbst. Für eine Reihe gleichrangiger Klapp-Abschnitte gibt es ein eigenes Element, das Accordion.</p>
+  <p>Für Formulare in dieser Länge ist die Frage aber ehrlich gesagt noch nicht beantwortet. Wer gerade so eine Seite baut: Sprecht uns an, dann lösen wir das am konkreten Fall statt in der Theorie.</p>
+
+  <h3>Was noch nicht fertig ist</h3>
+  <p>Rahmen und Seite sind in v18 als Beta gekennzeichnet. Sie funktionieren und sind im Einsatz, die Schnittstelle kann sich aber noch ändern. Panel ist stabiler und die naheliegende Stelle, um anzufangen: Man kann eine bestehende Seite in benannte Bereiche gliedern, ohne den Rahmen anzufassen.</p>
+
+  <h2>Zum Weiterlesen</h2>
+  <p>Die vollständige Referenz steht in der Beta-Dokumentation: <a href="https://marigold-docs-git-beta-release-marigold.vercel.app/foundations/layouts">Layouts</a> für die Grundlagen, <a href="https://marigold-docs-git-beta-release-marigold.vercel.app/patterns/layout/app-frame">App Frame</a> für den Aufbau einer Anwendung, <a href="https://marigold-docs-git-beta-release-marigold.vercel.app/components/layout/panel">Panel</a> für alle Details zu Titel, Aktionen, Varianten und Abständen. Die Beispielseiten unter <a href="https://marigold-docs-git-beta-release-marigold.vercel.app/examples">Examples</a> sind vollständige Screens, durch die man klicken kann.</p>
+  <p>Zum Schluss dieselbe Beobachtung wie beim visuellen Fundament: Ein gutes Layout fällt nicht auf. Man merkt es daran, dass man auf einer neuen Seite nicht überlegen muss, wo man ist und was man als Nächstes tun soll.</p>
+
+  <hr>
+
+  <div class="panel note checklist">
+    <div class="panel-title">Vor der Veröffentlichung zu klären (intern, vor dem Publizieren entfernen)</div>
+    <ul>
+      <li>Team der Einzeltermin-Seite und des Überspielungstools vorab informieren, beide werden namentlich als positives Beispiel genannt.</li>
+      <li>Screenshots stammen aus dem Test-Mandanten „Test-Design System“ auf Stage, keine echten Kundendaten.</li>
+      <li>Doku-Links zeigen auf die Beta-Deployment-URL und müssen zum Launch auf marigold-ui.io umgestellt werden.</li>
+      <li>Master- und Admin-Markierungen sind auf zwei Screenshots sichtbar, werden im Text aber bewusst nicht erklärt.</li>
+      <li>Namen der beiden Teams im Abschnitt „Ein Team hat schon angefangen“ ergänzen.</li>
+    </ul>
+  </div>
+
+</article>
+
+</body>
+</html>
