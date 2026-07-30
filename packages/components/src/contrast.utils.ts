@@ -29,16 +29,24 @@ export const paintedGround = (element: HTMLElement | null) => {
   return layers;
 };
 
+export type Rgb = readonly [number, number, number];
+
 /**
- * Composite the layers onto white and read the pixel back, so alpha, oklch and
- * color-space conversion are resolved by the browser instead of by us.
+ * Paint `layers` bottom-first over `base` and read the pixel back, so alpha,
+ * oklch and color-space conversion are all resolved by the browser instead of
+ * being reimplemented here — which matters for `oklch()`, where a hand-rolled
+ * conversion is exactly the kind of thing that looks right and is quietly wrong.
+ *
+ * `base` is explicit rather than always white, because the two callers need
+ * different things: a walked DOM stack bottoms out at the page (white), while a
+ * measured ground *is* the base and must not be lightened by one underneath it.
  */
-export const flatten = (layers: string[]) => {
+export const paintOver = (base: string, layers: string[]): Rgb => {
   const canvas = document.createElement('canvas');
   canvas.width = 1;
   canvas.height = 1;
   const context = canvas.getContext('2d', { willReadFrequently: true })!;
-  context.fillStyle = '#fff';
+  context.fillStyle = base;
   context.fillRect(0, 0, 1, 1);
   for (const layer of layers) {
     context.fillStyle = layer;
@@ -48,16 +56,32 @@ export const flatten = (layers: string[]) => {
   return [r!, g!, b!] as const;
 };
 
+/** A walked background stack, composited onto the page's white. */
+export const flatten = (layers: string[]) => paintOver('#fff', layers);
+
+/** A single translucent fill over an already-opaque ground. */
+export const composite = (ground: string, fill: string) =>
+  paintOver(ground, [fill]);
+
+/** Serialize back into something `fillStyle` accepts, for folding layer by layer. */
+export const rgbString = (rgb: Rgb) => `rgb(${rgb.join(',')})`;
+
+/**
+ * WCAG 2.x relative luminance. The 0.03928 breakpoint is the one the WCAG text
+ * gives; sRGB itself says 0.04045. They differ only for channels in a ~0.3/255
+ * window, but keep this the WCAG figure since these are conformance assertions.
+ */
+const luminance = (rgb: readonly number[]) => {
+  const [r, g, b] = rgb.map(value => {
+    const channel = value! / 255;
+    return channel <= 0.03928
+      ? channel / 12.92
+      : ((channel + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * r! + 0.7152 * g! + 0.0722 * b!;
+};
+
 export const contrast = (a: readonly number[], b: readonly number[]) => {
-  const luminance = (rgb: readonly number[]) => {
-    const [r, g, b] = rgb.map(value => {
-      const channel = value! / 255;
-      return channel <= 0.03928
-        ? channel / 12.92
-        : ((channel + 0.055) / 1.055) ** 2.4;
-    });
-    return 0.2126 * r! + 0.7152 * g! + 0.0722 * b!;
-  };
   const [high, low] = [luminance(a), luminance(b)].sort((x, y) => y - x);
   return (high! + 0.05) / (low! + 0.05);
 };

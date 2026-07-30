@@ -13,6 +13,12 @@ import { Inline } from './Inline/Inline';
 import { ListBox } from './ListBox/ListBox';
 import { SegmentedControl } from './SegmentedControl/SegmentedControl';
 import { Stack } from './Stack/Stack';
+import {
+  type Rgb,
+  composite,
+  contrast as contrastRatio,
+  rgbString,
+} from './contrast.utils';
 
 const meta = preview.meta({
   title: 'Styles/Alpha',
@@ -102,48 +108,6 @@ const Note = ({ children }: PropsWithChildren) => (
  * Measurement
  * ------------------------------------------------------------------ */
 
-/**
- * Composite `fill` over `ground` the way the browser would, and return the
- * resulting 8-bit RGB.
- *
- * Painting both onto a 1x1 canvas hands the colour parsing, the colour-space
- * conversion and the source-over blend to the engine rather than
- * reimplementing any of the three here — which matters for `oklch()`, where a
- * hand-rolled conversion is exactly the kind of thing that looks right and is
- * quietly wrong.
- */
-const composite = (ground: string, fill: string) => {
-  const canvas = document.createElement('canvas');
-  canvas.width = 1;
-  canvas.height = 1;
-
-  const ctx = canvas.getContext('2d', { willReadFrequently: true })!;
-  ctx.fillStyle = ground;
-  ctx.fillRect(0, 0, 1, 1);
-  ctx.fillStyle = fill;
-  ctx.fillRect(0, 0, 1, 1);
-
-  const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
-  return [r!, g!, b!] as const;
-};
-
-type Rgb = readonly [number, number, number];
-
-/** WCAG 2.1 relative luminance. */
-const luminance = ([r, g, b]: Rgb) => {
-  const [rl, gl, bl] = [r, g, b].map(channel => {
-    const c = channel / 255;
-    return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
-  });
-  return 0.2126 * rl! + 0.7152 * gl! + 0.0722 * bl!;
-};
-
-/** WCAG 2.1 contrast ratio between two composited colours. */
-const contrastRatio = (a: Rgb, b: Rgb) => {
-  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
-  return (hi! + 0.05) / (lo! + 0.05);
-};
-
 const readToken = (token: string) =>
   getComputedStyle(document.documentElement).getPropertyValue(token).trim();
 
@@ -175,7 +139,7 @@ const measureTextOnFill = (element: HTMLElement, groundToken: string) => {
   const { backgroundColor, color } = getComputedStyle(element);
   const fill = composite(ground, backgroundColor);
 
-  return contrastRatio(composite(`rgb(${fill.join(',')})`, color), fill);
+  return contrastRatio(composite(rgbString(fill), color), fill);
 };
 
 /**
@@ -1023,10 +987,7 @@ const measureStackOnGround = (element: HTMLElement, groundToken: string) => {
 
   const stacked = layers.reduce<string | Rgb>(
     (below, layer) =>
-      composite(
-        typeof below === 'string' ? below : `rgb(${below.join(',')})`,
-        layer
-      ),
+      composite(typeof below === 'string' ? below : rgbString(below), layer),
     ground
   );
 
@@ -1074,12 +1035,12 @@ const measureSegmentLabel = (label: HTMLElement, groundToken: string) => {
   }
 
   const fill = layers.reduce<Rgb>(
-    (below, layer) => composite(`rgb(${below.join(',')})`, layer),
+    (below, layer) => composite(rgbString(below), layer),
     composite(ground, 'transparent')
   );
 
   return contrastRatio(
-    composite(`rgb(${fill.join(',')})`, getComputedStyle(label).color),
+    composite(rgbString(fill), getComputedStyle(label).color),
     fill
   );
 };
@@ -1365,7 +1326,19 @@ const POLARITY_INVENTORY = [
    * something to slip into a token refactor. Moving one to `flips` is the fix.
    */
   // 2.05:1 over `selected`, 2.79:1 over `focus-highlight`, against the 3:1 of
-  // WCAG 1.4.11. Latent until DST-1661 lands a consumer (`ui-state-focus-item`).
+  // WCAG 1.4.11.
+  //
+  // DST-1661 has landed `ui-state-focus-item`, so a full-opacity consumer now
+  // exists — but neither of its two callers can reach this ground yet: a Menu
+  // item renders inside a portalled Popover, and no theme component puts a
+  // FileField in a contrast region. What *is* live is `ActionBar.container`,
+  // whose bordered `ui-state-focus` flips this token at full opacity: 3.14:1
+  // against its own ground. That passes 1.4.11 by 5%, and the lightest wash
+  // (`b-50`) would already drop it to 2.99:1.
+  //
+  // Restating fixes it comfortably — charcoal-300 is 7.38:1 at its worst,
+  // charcoal-500 still 3.10:1. DST-1662 migrating Sidebar/ListBox/Table onto
+  // `ui-state-focus-item` is what makes it urgent rather than latent.
   { token: '--color-ring', polarity: 'gap' },
   // 2.04:1 on the bare ground, 1.33:1 on `selected`. No consumer nests under a
   // contrast surface today.

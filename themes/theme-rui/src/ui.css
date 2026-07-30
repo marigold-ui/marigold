@@ -233,6 +233,13 @@
  * utility only carries its weight on something that has a border to flip
  * (ui-frame / ui-surface / ui-control). On a borderless row it silently
  * degrades to the halo. Use ui-state-focus-item there instead.
+ *
+ * On the contrast ground that degraded halo is worse still: 1.71:1 against the
+ * bar, 1.12:1 once a `selected` wash sits under it. And no ring color rescues
+ * it -- at /50 over a dark ground even charcoal-200 tops out at 2.84:1, because
+ * a half-transparent outline cannot get far enough from what it sits on. This is
+ * ActionBar's clearButton today (borderless, inside ui-contrast); the fix is the
+ * utility below, not a different --color-ring. Tracked in DST-1662.
  */
 @utility ui-state-focus {
   @apply outline-ring/50 outline-3 outline-offset-0 outline-solid;
