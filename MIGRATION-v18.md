@@ -358,6 +358,12 @@ fixed viewport height with `h-full`:
 + <div className="min-h-dvh">…</div>
 ```
 
+**`<Page>` needs an accessible name.** The `<main>` landmark is named by the page
+`<Title>` via `aria-labelledby`. A mechanical `AppLayout.Main` → `<Page>` swap that
+carries no `<Page.Header>` leaves it unnamed, and `<Page>` `console.error`s in
+development to say so. Either render a `<Title>` inside the page or pass
+`aria-label` to `<Page>`.
+
 **Why.** One scroll container fixes mobile URL-bar collapse, browser scroll
 restoration, `Cmd+F`, anchor links, and `IntersectionObserver`. Render your own
 `<Sidebar.Provider>` around `<AppShell>` if you need controlled sidebar state. It
@@ -473,13 +479,16 @@ use the new `variant="settings"`. `<Switch>` also accepts a `description` prop a
 passes `name` through to the input.
 
 ```diff
-- <Switch size="large">Email notifications</Switch>
+- <Switch size="large" label="Email notifications" />
 + <Switch
 +   label="Email notifications"
 +   description="Receive a summary every Monday"
 +   variant="settings"
 + />
 ```
+
+Only `size="large"` actually breaks. `variant="settings"` and `description` are new
+opt-ins, not requirements: `<Switch label="Email notifications" />` keeps working.
 
 **Gotchas.** The codemod flags `size="large"` rather than removing it, because a
 standalone theme may still define its own size variants. The DOM changed (grid
@@ -500,7 +509,7 @@ its `react-select` dependency. Use `<TagField>`, which has a different API.
 ```
 
 **Gotchas.** The API differs enough that the codemod will not attempt it. See the
-[TagField docs](/components/form/tag-field) for controlled selection, disabled
+[TagField docs](https://www.marigold-ui.io/components/form/tag-field) for controlled selection, disabled
 keys, sections, and empty states.
 
 ### A4.3 `<SelectList>` API standardized `[auto]` (`Item`→`Option`) `[flagged]` (`onChange`) `[manual]` (content)
@@ -585,6 +594,10 @@ must remove the `SectionMessage.close` slot (see B6).
 - **`Button` `variant="icon"`** was never a real variant. Use `size="icon"`
   (composes with any variant, e.g. `variant="ghost" size="icon"`).
 - **`Label`** no longer exposes `style`.
+- **`Loader` `loaderType`**: the v17 JSDoc documented a `cycle` value that never
+  existed. The type only ever accepted `xloader` and `circle` (default `circle`),
+  so this is a doc fix, not a code change. Unrelated to the `Spinner` → `Loader`
+  icon rename in A7.1.
 
 ```diff
 - <FileTrigger acceptedFileType="image/png" />
@@ -718,9 +731,12 @@ keeps every call site valid:
 | `Deal`            | `BadgePercent`         | `Zoom`                   | `ZoomIn`                |
 | `Print`           | `Printer`              |                          |                         |
 
-`Close` and `Print` are not in the official mapping table but map to their Lucide
-equivalents, `X` and `Printer`. If you hit an old icon name that is not listed
-above, use its Lucide name. The import still comes from `@marigold/icons`.
+`Close` is not in the official mapping table; it maps to Lucide's `X`. Three legacy
+names have no Lucide equivalent and each needs a decision: `PauseAlt` →
+`CirclePause`, `PlayAlt` → `CirclePlay`, and `Whatsapp` is gone with no replacement
+(Lucide dropped brand icons and it is not among the 13 retained ones, so vendor the
+SVG if you still need it). For any other old icon name not listed above, use its
+Lucide name. The import still comes from `@marigold/icons`.
 
 ## A8. Removed
 
@@ -927,5 +943,5 @@ declares a `style` export condition. Import `theme.css` for a full app or
 
 ---
 
-_Source of truth for this guide: the [v18.0.0 release notes](/releases/blog/release-2026-08-17),
+_Source of truth for this guide: the [v18.0.0 release notes](https://www.marigold-ui.io/releases/blog/release-2026-08-17),
 the `marigold migrate v18` codemod, and `marigold docs <Component>`._
