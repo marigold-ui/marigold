@@ -16,14 +16,22 @@ import {
 import {
   type DoctorFormat,
   EXAMPLES_SUBCOMMANDS,
+  FORMAT_VALUES,
+  SECTION_VALUES,
   type SubcommandName,
+  TELEMETRY_SUBCOMMANDS,
   TOP_LEVEL_NAMES,
   doctorFormatValues,
 } from '../lib/commands-spec.js';
 import type { Section } from '../lib/docs.js';
 import type { OutputFormat } from '../lib/format.js';
 import { nearest } from '../lib/suggest.js';
-import { emit } from '../lib/telemetry.js';
+import {
+  TELEMETRY_NOTICE_URL,
+  emit,
+  enumArg,
+  slugArg,
+} from '../lib/telemetry.js';
 
 // Package root: dist/bin/marigold.mjs → ../.. = packages/cli/
 const packageRoot = path.join(
@@ -119,6 +127,11 @@ ${pc.bold('Environment:')}
   MARIGOLD_CACHE_TTL_MS          Override cache TTL in milliseconds
   MARIGOLD_TELEMETRY_DISABLED=1  Opt out of telemetry
   DO_NOT_TRACK=1                 Opt out of telemetry (standard)
+
+${pc.bold('Telemetry:')}
+  Anonymous, identifier-free usage data is reported by default so we can see
+  which commands and components matter. Opt out with "marigold telemetry
+  disable". What is collected: ${TELEMETRY_NOTICE_URL}
 
 See https://www.marigold-ui.io for component documentation.
 `;
@@ -275,11 +288,13 @@ export const main = async (
       const [componentInput] = positionals;
 
       // Record telemetry args before validation so failed runs still report
-      // which flags were supplied.
+      // which flags were supplied. Values go through the clamps in
+      // lib/telemetry so an invalid or free-form input is reported as
+      // 'invalid' rather than echoed back verbatim.
       telemetryArgs = {
-        component: componentInput ?? '',
-        section: values.section ?? 'all',
-        format: values.format ?? 'markdown',
+        component: slugArg(componentInput),
+        section: enumArg(values.section, SECTION_VALUES, 'all'),
+        format: enumArg(values.format, FORMAT_VALUES, 'markdown'),
         ...(values.fresh ? { fresh: 'true' } : {}),
         ...(values.offline ? { offline: 'true' } : {}),
       };
@@ -306,8 +321,8 @@ export const main = async (
       const { values } = parseListCommand(rest);
 
       telemetryArgs = {
-        format: values.format ?? 'markdown',
-        ...(values.category ? { category: values.category } : {}),
+        format: enumArg(values.format, FORMAT_VALUES, 'markdown'),
+        ...(values.category ? { category: slugArg(values.category) } : {}),
         ...(values.search ? { search: 'used' } : {}),
         ...(values.fresh ? { fresh: 'true' } : {}),
         ...(values.offline ? { offline: 'true' } : {}),
@@ -334,9 +349,9 @@ export const main = async (
       const query = positionals.join(' ').trim();
 
       telemetryArgs = {
-        format: values.format ?? 'markdown',
+        format: enumArg(values.format, FORMAT_VALUES, 'markdown'),
         ...(query ? { query: 'used' } : {}),
-        ...(values.limit ? { limit: values.limit } : {}),
+        ...(values.limit ? { limit: slugArg(values.limit) } : {}),
         ...(values.fresh ? { fresh: 'true' } : {}),
         ...(values.offline ? { offline: 'true' } : {}),
       };
@@ -368,9 +383,9 @@ export const main = async (
       const [sub, slug] = positionals;
 
       telemetryArgs = {
-        sub: sub ?? '',
-        format: values.format ?? 'markdown',
-        ...(slug ? { slug } : {}),
+        sub: enumArg(sub, EXAMPLES_SUBCOMMANDS, ''),
+        format: enumArg(values.format, FORMAT_VALUES, 'markdown'),
+        ...(slug ? { slug: slugArg(slug) } : {}),
         ...(values.fresh ? { fresh: 'true' } : {}),
         ...(values.offline ? { offline: 'true' } : {}),
       };
@@ -494,7 +509,9 @@ export const main = async (
       });
     } else if (command === 'telemetry') {
       const [sub] = rest;
-      telemetryArgs = sub ? { sub } : {};
+      telemetryArgs = sub
+        ? { sub: enumArg(sub, TELEMETRY_SUBCOMMANDS, '') }
+        : {};
       if (!sub || !isTelemetrySub(sub)) {
         fail('Usage: marigold telemetry <status|enable|disable>');
       }

@@ -39,11 +39,21 @@ export const configDir = (): string =>
 
 export interface UserConfig {
   telemetryEnabled?: boolean;
-  anonymousId?: string;
   // Set once the first-run telemetry disclosure has been printed, so the notice
-  // shows exactly once per machine (matches the .NET SDK opt-out model).
+  // shows exactly once per machine.
   telemetryNoticeShown?: boolean;
 }
+
+// Keys this CLI has written in the past but no longer uses. `readConfig` strips
+// them so a stale value can never be read back or re-persisted.
+//
+// `anonymousId` was a persistent per-machine UUID sent with every telemetry
+// event. It made the payload personal data under GDPR (a pseudonymous
+// identifier is not anonymous, Recital 26) and turned the config write into
+// "storage on terminal equipment" requiring consent under ePrivacy Art. 5(3) /
+// § 25 TDDDG. Telemetry is now identifier-free, so the key is dropped on the
+// next config read.
+const REMOVED_CONFIG_KEYS = ['anonymousId'] as const;
 
 const configFile = () => path.join(configDir(), 'config.json');
 
@@ -51,10 +61,23 @@ export const readConfig = (): UserConfig => {
   try {
     const raw = fs.readFileSync(configFile(), 'utf8');
     const parsed = JSON.parse(raw) as unknown;
-    if (parsed && typeof parsed === 'object') {
-      return parsed as UserConfig;
+    if (!parsed || typeof parsed !== 'object') return {};
+
+    const config = { ...parsed } as UserConfig & Record<string, unknown>;
+    const stale = REMOVED_CONFIG_KEYS.filter(key => key in config);
+    if (stale.length === 0) return config;
+
+    // Erase retired keys from the in-memory config so they can never be read
+    // back, then rewrite the file to remove them from disk too. This is a write
+    // from a read path, but it fires at most once per machine (the next read
+    // finds nothing stale) and self-heals configs written by older versions.
+    for (const key of stale) delete config[key];
+    try {
+      writeConfig(config);
+    } catch {
+      // Read must still succeed if the prune write fails (read-only FS, etc).
     }
-    return {};
+    return config;
   } catch {
     return {};
   }
