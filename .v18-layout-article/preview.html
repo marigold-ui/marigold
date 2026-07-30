@@ -239,10 +239,12 @@
 
   <h3>Was das im Alltag bringt</h3>
   <ul>
+    <li><strong>Schneller am Ziel.</strong> Wer den ganzen Tag im System arbeitet, sucht nicht, sondern springt. „Finanzen“ ist ein eigener Bereich mit demselben Namen an derselben Stelle: Überschriften überfliegen, hin, erledigt. Bei hundert Vorgängen am Tag summiert sich das.</li>
+    <li><strong>Weniger Fehlgriffe.</strong> Aktionen stehen in dem Bereich, auf den sie sich beziehen. Wenn „Löschen“ im Bereich „Tickets“ sitzt, ist klar, worauf es sich bezieht, und nicht auf halber Seitenhöhe zu erraten.</li>
     <li><strong>Weniger Erklärbedarf.</strong> Wer eine Seite verstanden hat, versteht die anderen auch. Der Rahmen springt nicht von Produkt zu Produkt.</li>
-    <li><strong>Bereiche haben Namen.</strong> Im Support kann man sagen „im Bereich Tickets“ statt „ungefähr in der Mitte weiter runter scrollen“.</li>
-    <li><strong>Barrierefreiheit fällt mit ab.</strong> Screenreader navigieren genau über solche benannten Bereiche und über die Überschriften-Struktur einer Seite. Beides entsteht automatisch, wenn ein Bereich einen Titel bekommt. Das ist auch für Ausschreibungen relevant, in denen Barrierefreiheit abgefragt wird.</li>
+    <li><strong>Bereiche haben Namen.</strong> Im Support kann man sagen „im Bereich Tickets“ statt „ungefähr in der Mitte weiter runter scrollen“. Dasselbe gilt für Schulungsunterlagen: Namen bleiben gültig, wenn sich die Anordnung später ändert.</li>
     <li><strong>Neue Seiten gehen schneller.</strong> Niemand baut den Seitenrahmen noch mal neu.</li>
+    <li><strong>Barrierefreiheit fällt mit ab.</strong> Die benannten Bereiche und die Überschriften-Struktur einer Seite sind genau das, worüber Screenreader navigieren. Beides entsteht automatisch, sobald ein Bereich einen Titel hat.</li>
   </ul>
 
   <h3>Wann kommt das?</h3>
@@ -324,17 +326,20 @@
   <hr>
 
   <h2>Teil 3: Warum wir uns so entschieden haben</h2>
-  <p>Vier Entscheidungen fallen auf, wenn man Marigold mit anderen Systemen vergleicht. Alle vier sind bewusst getroffen.</p>
+  <h3>Der Kern: eine Seite besteht aus benannten Bereichen</h3>
+  <p>v18 hat viele Teile, aber wenn man einen Satz mitnimmt, dann diesen: <strong>Eine Seite besteht aus benannten Bereichen.</strong> Alles andere im Layout-System ist die Folge davon. Die Seite selbst ist kein Bereich, sondern die Bühne, deshalb trägt sie nur einen Titel und eine Hauptaktion. Jeder Bereich hat einen Namen, weil er ein Thema bündelt. Aktionen gehören zu dem Bereich, auf den sie sich beziehen, nicht an den Seitenrand. Und weil das überall gleich funktioniert, trägt die Struktur über Produkte hinweg.</p>
+  <p>Warum das bei uns besonders zählt: Unsere Systeme sind Arbeitsgeräte. Niemand öffnet das Reservix-System einmal und schaut sich um, sondern Menschen arbeiten dort acht Stunden am Tag und wiederholen dieselben Vorgänge hundertmal. Für sie ist der Seitenaufbau keine Optik, sondern Bedienung. Wer das Kontingent eines Termins ändern will, will nicht die Seite lesen, sondern zu „Tickets“. Genau das machen benannte Bereiche möglich: Überschriften überfliegen, in den richtigen Bereich springen, dort arbeiten, weiter. Das sind ein paar Sekunden pro Vorgang, und Sekunden pro Vorgang sind bei dieser Art Arbeit die Währung.</p>
+  <p>Dazu kommt, dass eine Seite mit benannten Bereichen beschreibbar wird. „Im Bereich Finanzen, das zweite Feld“ funktioniert am Telefon, im Support-Ticket, in der Schulungsunterlage und in der Abstimmung untereinander. Vorher haben wir Positionen beschrieben, „unten links, unter der Tabelle“, und Positionen ändern sich beim nächsten Umbau. Namen bleiben.</p>
 
-  <p><strong>Keine Maximalbreite auf Seitenebene.</strong> Begründung siehe oben: Eine Seite mischt schmalen und breiten Inhalt, deshalb entscheidet die Fläche und nicht die Seite.</p>
-  <p><strong>Der Pfad gehört zum Rahmen, nicht zum Seitenkopf.</strong> Er beschreibt, wo eine Seite in der Anwendung liegt, nicht, was diese Seite ist. Deshalb sitzt er oben in der Kopfzeile, die beim Navigieren stehen bleibt, und nicht im Titelblock der Seite, wie es viele Systeme machen.</p>
-  <p><strong>Kein Platz für Status im Seitenkopf.</strong> Der Seitenkopf trägt Titel, Beschreibung und die eine Hauptaktion. Nimmt man Status-Etiketten und Kennzahlen dazu, verschwindet die Aktion, wegen der die Seite geöffnet wurde, in einer Reihe von Kleinteilen. Deshalb gibt es dafür bewusst keinen Platz, sondern die schmale Übersichtsspalte.</p>
-  <p><strong>Die Seite scrollt, nicht ein Kasten darin.</strong> Ein eigener Scroll-Bereich im Inhalt sieht ordentlich aus und kostet lauter Kleinigkeiten, die Browser sonst geschenkt mitbringen: Suchen im Text, Zurückkehren an die vorherige Scroll-Position, Sprungmarken, das Zusammenklappen der Adressleiste auf dem Handy.</p>
+  <h3>Vier Festlegungen, die auffallen</h3>
+  <p>Vergleicht man Marigold mit anderen Systemen, fallen vier Festlegungen auf. Alle vier sind bewusst getroffen.</p>
 
-  <h3>Der Nebeneffekt, der am meisten wert ist</h3>
-  <p>Panels sind nicht nur optische Abschnitte. Ein Panel mit Titel wird zu einem benannten Bereich im Dokument, und sein Titel wird zu einer Überschrift auf der richtigen Ebene: Der Seitentitel ist die erste Ebene, jedes Panel die zweite, ein eingeklappter Teil darin die dritte.</p>
-  <p>Diese Struktur ist genau das, worüber Screenreader navigieren. Bisher musste das jemand bewusst herstellen, und in der Praxis passierte es selten. Jetzt entsteht es, weil jemand einem Bereich einen Namen gibt, und das ist eine inhaltliche Entscheidung, keine technische.</p>
-  <p>Deshalb ist es auch ein Argument nach außen: Wer nach Barrierefreiheit fragt, fragt unter anderem nach genau dieser Struktur.</p>
+  <p><strong>Panel ist der Standard für Abschnitte, nicht die Card.</strong> Viele Systeme kennen nur die Card und benutzen sie für beides: für den wiederkehrenden Eintrag in einer Liste und für den Abschnitt einer Seite. Dann bedeutet dieselbe weiße Fläche einmal „eines von vielen“ und einmal „ein Teil dieser Seite“, und man muss erst lesen, um zu wissen, was gemeint ist. Wir trennen die beiden, damit die Fläche selbst schon die Auskunft gibt: Ein Panel ist ein Teil dieser Seite und hat immer einen Namen, eine Card ist eines von vielen.</p>
+  <p><strong>Keine Maximalbreite auf Seitenebene.</strong> Begründung wie oben: Eine Seite mischt schmalen und breiten Inhalt, deshalb entscheidet die einzelne Fläche über ihre Breite und nicht die Seite über alles darauf. Andere Systeme lösen das mit einem Schalter am Seitenkopf, der dann für alles auf der Seite gilt, und damit ist eine der beiden Sorten Inhalt immer falsch bedient.</p>
+  <p><strong>Eine Hauptaktion pro Seite, alles andere gehört in seinen Bereich.</strong> Der Seitenkopf trägt Titel, Beschreibung und die eine Aktion, wegen der die Seite geöffnet wurde. Status-Etiketten und Kennzahlen bekommen dort bewusst keinen Platz, weil die Aktion sonst in einer Reihe von Kleinteilen verschwindet; sie stehen in der schmalen Übersichtsspalte. Und was nur einen Bereich betrifft, steht in diesem Bereich, damit sichtbar bleibt, worauf sich „Löschen“ bezieht.</p>
+  <p><strong>Die Seite scrollt, nicht ein Kasten darin.</strong> Ein eigener Scroll-Bereich im Inhalt sieht ordentlich aus und kostet lauter Kleinigkeiten, die der Browser sonst geschenkt mitbringt: Suchen im Text, Zurückkehren an die vorherige Scroll-Position, Sprungmarken, das Zusammenklappen der Adressleiste auf dem Handy.</p>
+
+  <p>Eine kleinere Festlegung noch am Rand, weil die Frage regelmäßig kommt: Der Pfad, der zeigt, wo man sich befindet, sitzt in der Kopfzeile des Rahmens und nicht im Seitenkopf. Er beschreibt, wo eine Seite liegt, nicht, was sie ist.</p>
 
   <h3>Eine Stelle, die noch nicht entschieden ist</h3>
   <p>Ein Punkt ist offen, und es lohnt nicht, das zu verstecken. Sehr lange Formulare bestehen häufig aus vielen eingeklappten Abschnitten. Die untere Hälfte der Einzeltermin-Seite sieht so aus:</p>
