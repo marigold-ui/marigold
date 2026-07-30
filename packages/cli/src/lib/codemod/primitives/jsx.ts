@@ -42,7 +42,7 @@ const staticAttrValue = (value: AnyNode | undefined): string | null => {
       ? (value.expression as AnyNode | undefined)
       : value;
   return node?.type === 'StringLiteral' || node?.type === 'NumericLiteral'
-    ? String((node as { value: string | number }).value)
+    ? String(node.value)
     : null;
 };
 
