@@ -1298,6 +1298,274 @@ CoOccurringStates.test(
 );
 
 /* ------------------------------------------------------------------ *
+ * Polarity inventory
+ * ------------------------------------------------------------------ */
+
+/**
+ * Every neutral token, classified by what it is supposed to do when the ground
+ * flips — and asserted against what it actually does.
+ *
+ * This exists because the restatement mechanism is opt-in per token with nothing
+ * enforcing completeness. `ui-contrast` flips the five washes and `secondary`
+ * because those were in DST-1590's scope; the tokens nobody thought about stayed
+ * on their light-ground values and went quietly wrong on a dark one. `ring` is
+ * the clearest case: charcoal-600 over `selected` measures 2.05:1 against the
+ * 3:1 that WCAG 1.4.11 asks of a focus indicator.
+ *
+ * Only the *neutral* layer is listed. Status and access colors carry meaning
+ * rather than hierarchy, so they are ground-independent by construction (R1).
+ *
+ * Adding a neutral token without classifying it here fails this test. That is
+ * the point: the failure mode being closed is "add a token, forget a line".
+ */
+const POLARITY_INVENTORY = [
+  /* --- Restated under ui-contrast. These must flip. --- */
+  { token: '--color-muted', polarity: 'flips' },
+  { token: '--color-hover', polarity: 'flips' },
+  { token: '--color-selected', polarity: 'flips' },
+  { token: '--color-focus-highlight', polarity: 'flips' },
+  { token: '--color-focus-highlight-bold', polarity: 'flips' },
+  { token: '--color-secondary', polarity: 'flips' },
+
+  /* --- Ground-independent by design. --- */
+  // Ground tokens: a contrast region *is* the ground, so nothing beneath it
+  // reaches for these to describe where it sits.
+  { token: '--color-background', polarity: 'stable' },
+  { token: '--color-surface', polarity: 'stable' },
+  { token: '--color-primary', polarity: 'stable' },
+  { token: '--color-primary-foreground', polarity: 'stable' },
+  // Deliberately not restated: `ui-soft` applies `text-foreground`, so flipping
+  // it would put light text on a near-white cap. Components pinning it for
+  // emphasis use `text-inherit`. Documented in ui.css.
+  { token: '--color-foreground', polarity: 'stable' },
+  // Opaque markers — the meaning layer, which R1 keeps opaque. Each is
+  // deliberately light on any ground, so a dark ground needs no flip.
+  { token: '--color-control', polarity: 'stable' },
+  { token: '--color-soft', polarity: 'stable' },
+  { token: '--color-soft-hover', polarity: 'stable' },
+  { token: '--color-soft-edge', polarity: 'stable' },
+  { token: '--color-soft-edge-hover', polarity: 'stable' },
+  { token: '--color-border', polarity: 'stable' },
+  { token: '--color-disabled', polarity: 'stable' },
+  { token: '--color-disabled-border', polarity: 'stable' },
+  { token: '--color-scrollbar', polarity: 'stable' },
+  { token: '--color-destructive-bold-foreground', polarity: 'stable' },
+  // Always painted over the page, never nested inside a contrast region.
+  { token: '--color-overlay-backdrop', polarity: 'stable' },
+  // Opaque near-white fill. Wrong on a dark ground, but `ui-state-disabled`
+  // already exposes `--ui-disabled-fill` for exactly that, and ActionBar's
+  // clearButton sets it to `transparent`. The escape hatch is the contract.
+  { token: '--color-disabled-surface', polarity: 'stable' },
+
+  /* --- Known gaps: ground-dependent, not restated. ---
+   *
+   * Each is measured against the contrast ground. They are listed rather than
+   * fixed because flipping any of them changes rendered appearance on every
+   * contrast surface, which is a design call with VRT consequences — not
+   * something to slip into a token refactor. Moving one to `flips` is the fix.
+   */
+  // 2.05:1 over `selected`, 2.79:1 over `focus-highlight`, against the 3:1 of
+  // WCAG 1.4.11. Latent until DST-1661 lands a consumer (`ui-state-focus-item`).
+  { token: '--color-ring', polarity: 'gap' },
+  // 2.04:1 on the bare ground, 1.33:1 on `selected`. No consumer nests under a
+  // contrast surface today.
+  { token: '--color-secondary-bold', polarity: 'gap' },
+  // 3.14:1, and this one is text, so the floor is 4.5:1. No fields sit inside a
+  // contrast region today.
+  { token: '--color-placeholder', polarity: 'gap' },
+  // Dark-base alphas: on a dark ground they darken what is already dark and
+  // vanish. Cosmetic — a rim that recedes rather than an affordance that fails.
+  { token: '--color-surface-border', polarity: 'gap' },
+  { token: '--color-control-border', polarity: 'gap' },
+  { token: '--color-control-border-on-control', polarity: 'gap' },
+  // 1.00:1 — charcoal-900 on a charcoal-900 ground. A checked Checkbox or an ON
+  // Switch inside a contrast region would be invisible.
+  { token: '--color-selected-bold', polarity: 'gap' },
+  { token: '--color-selected-bold-foreground', polarity: 'stable' },
+  // 1.14:1. Live: ActionBar's toolbar is `overflow-x-auto`, so hovering its
+  // scrollbar makes the thumb disappear into the bar.
+  { token: '--color-scrollbar-hover', polarity: 'gap' },
+] as const;
+
+/**
+ * Reads what a token actually paints, rather than comparing the declaration
+ * text. Assigning `var(--token)` to a probe and reading back
+ * `backgroundColor` hands resolution to the engine and returns a normalised
+ * `rgb()/rgba()` string, so `oklch(from …)` chains and multi-hop `var()`
+ * indirection both collapse to the colour that reaches the screen.
+ */
+const paintedValue = (probe: HTMLElement, token: string) => {
+  probe.style.backgroundColor = '';
+  probe.style.backgroundColor = `var(${token})`;
+  return getComputedStyle(probe).backgroundColor;
+};
+
+/**
+ * The polarity audit for the whole neutral layer.
+ *
+ * Rendered as swatches per ground so the flip is reviewable by eye, and asserted
+ * below so it cannot regress silently.
+ */
+export const PolarityInventory = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <Stack space="group">
+      <Headline level="3">Polarity inventory</Headline>
+      <Note>
+        Every neutral token on all three grounds. A token that <em>flips</em> is
+        restated by <code>ui-contrast</code>; one that is <em>stable</em> is
+        ground-independent on purpose; a <em>gap</em> is ground-dependent and
+        not restated yet. The accompanying test asserts each token behaves as
+        classified, so a new token cannot join the theme unclassified.
+      </Note>
+      <Grounds>
+        {() => (
+          <div className="grid grid-cols-2 gap-1">
+            <span data-token-probe className="hidden" />
+            {POLARITY_INVENTORY.map(({ token, polarity: kind }) => (
+              <span
+                key={token}
+                className="flex items-center gap-1.5 text-[10px]"
+                title={`${token} — ${kind}`}
+              >
+                <span
+                  data-swatch={token}
+                  className="ring-border/40 size-4 shrink-0 rounded-sm ring-1"
+                  style={{ backgroundColor: `var(${token})` }}
+                />
+                <span className="truncate opacity-70">
+                  {token.replace('--color-', '')}
+                </span>
+              </span>
+            ))}
+          </div>
+        )}
+      </Grounds>
+    </Stack>
+  ),
+});
+
+PolarityInventory.test(
+  'every neutral token behaves as its polarity classification says',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    const probeIn = canvasElement.querySelector<HTMLElement>(
+      '[data-ground="contrast"] [data-token-probe]'
+    );
+    const probeOut = canvasElement.querySelector<HTMLElement>(
+      '[data-ground="surface"] [data-token-probe]'
+    );
+
+    await expect(probeIn, 'no probe inside the contrast ground').not.toBeNull();
+    await expect(probeOut, 'no probe on the surface ground').not.toBeNull();
+
+    for (const { token, polarity: kind } of POLARITY_INVENTORY) {
+      const inside = paintedValue(probeIn!, token);
+      const outside = paintedValue(probeOut!, token);
+
+      // Non-vacuity: an unknown token resolves to the empty string and every
+      // comparison below would compare '' with '' and pass. Matched loosely on
+      // purpose — per CSS Color 4 a computed color keeps its authored color
+      // space, so these come back as `oklch(...)` in Firefox rather than `rgb()`.
+      await expect(
+        outside,
+        `${token} resolved to nothing on the surface ground — is it still a token?`
+      ).toMatch(/^(rgb|rgba|oklch|oklab|hsl|color|#)/);
+
+      if (kind === 'flips') {
+        await expect(
+          inside,
+          `${token} is classified 'flips' but resolves to ${inside} on both grounds — ui-contrast is not restating it`
+        ).not.toBe(outside);
+      } else {
+        await expect(
+          inside,
+          `${token} is classified '${kind}' but ui-contrast changed it from ${outside} to ${inside}. If that flip is intended, reclassify it as 'flips'`
+        ).toBe(outside);
+      }
+    }
+  }
+);
+
+PolarityInventory.test(
+  'the inventory covers every neutral token the theme declares',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async () => {
+    // The guard that makes the classification above complete rather than a
+    // snapshot of what someone happened to think of. Walks the theme's own
+    // custom properties and requires each neutral one to be classified.
+    //
+    // Neutral means "derives from the charcoal scale or from white" — the
+    // hierarchy layer, which is the layer whose meaning inverts with the ground
+    // (R1). Status and access colors are excluded because they carry meaning.
+    const classified = new Set<string>(
+      POLARITY_INVENTORY.map(entry => entry.token)
+    );
+
+    // Palette rungs, not semantic tokens. Tested by shape rather than by family
+    // name because Tailwind v4 ships its own full default palette in `@theme`
+    // (gray-*, zinc-*, stone-* …) alongside this theme's charcoal. Every
+    // semantic token here is named by role and none ends in a digit.
+    const PALETTE_RUNG = /-\d+$/;
+
+    const declared = new Set<string>();
+
+    // Recursive, because Tailwind v4 emits the theme inside `@layer theme`. A
+    // flat walk over `sheet.cssRules` sees only the CSSLayerBlockRule and finds
+    // nothing — which is what the non-vacuity assertion below exists to catch.
+    const collect = (rules: CSSRuleList) => {
+      for (const rule of Array.from(rules)) {
+        if (rule instanceof CSSStyleRule) {
+          // `:root` blocks only — a token restated inside a utility is a flip,
+          // not a declaration.
+          if (!rule.selectorText.includes(':root')) continue;
+          for (const prop of Array.from(rule.style)) {
+            if (!prop.startsWith('--color-')) continue;
+            if (PALETTE_RUNG.test(prop)) continue;
+            // Neutral-derived only: charcoal, white, or a bare oklch literal in
+            // the neutral hue. Status and access tokens resolve to the chromatic
+            // families and drop out here — they carry meaning, not hierarchy,
+            // so they are ground-independent by construction (R1).
+            const value = rule.style.getPropertyValue(prop);
+            if (!/charcoal|--color-white|oklch\(/.test(value)) continue;
+            declared.add(prop);
+          }
+          continue;
+        }
+        // @layer / @media / @supports and friends.
+        const nested = (rule as CSSGroupingRule).cssRules as
+          | CSSRuleList
+          | undefined;
+        if (nested) collect(nested);
+      }
+    };
+
+    for (const sheet of Array.from(document.styleSheets)) {
+      try {
+        collect(sheet.cssRules);
+      } catch {
+        continue; // cross-origin sheet, nothing to read
+      }
+    }
+
+    // Non-vacuity: if the sheet walk finds nothing, everything below passes.
+    await expect(
+      declared.size,
+      'found no neutral token declarations to check — the stylesheet walk is broken, not the theme'
+    ).toBeGreaterThan(20);
+
+    const unclassified = Array.from(declared)
+      .filter(token => !classified.has(token))
+      .sort();
+
+    await expect(
+      unclassified,
+      `these neutral tokens are not in POLARITY_INVENTORY: ${unclassified.join(', ')}. Decide whether each should flip under ui-contrast, then classify it.`
+    ).toEqual([]);
+  }
+);
+
+/* ------------------------------------------------------------------ *
  * The open decision
  * ------------------------------------------------------------------ */
 
