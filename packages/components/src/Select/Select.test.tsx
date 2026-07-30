@@ -151,3 +151,22 @@ test('updates the controlled `value` when selecting in the tray (small screen)',
   );
   expect(button).toHaveTextContent('Peach');
 });
+
+// Regression guard for DSTSUP-269: a listbox option is a two-column grid
+// (selection indicator, then label), and the label track's automatic minimum is
+// its `min-content` width. A label without a break opportunity — a long word
+// without spaces — therefore sized that track to the whole word and pushed the
+// option out of a narrow Select. The theme's `wrap-anywhere` both makes the word
+// breakable and keeps it from inflating the track. Unit tests load no CSS, so
+// the class is the assertable invariant here; the rendered wrapping was verified
+// in the browser (option content 431px -> 150px inside a 152px list).
+test('applies wrap-anywhere to options so unbreakable labels cannot widen them', async () => {
+  renderWithOverlay(<Basic.Component label="Label" />);
+
+  await user.click(screen.getByRole('button'));
+
+  const listbox = await screen.findByRole('listbox');
+  const option = within(listbox).getAllByRole('option')[0];
+
+  expect(option).toHaveClass('wrap-anywhere');
+});

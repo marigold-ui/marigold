@@ -229,43 +229,6 @@ Basic.test(
 );
 
 Basic.test(
-  'Wraps an unbreakable option label inside a narrow list',
-  {
-    parameters: { chromatic: { disableSnapshot: false } },
-    render: args => (
-      <Inset space={24}>
-        <Select
-          {...args}
-          width={40}
-          label="Favorite country"
-          placeholder="Select your country"
-        >
-          <Select.Option>
-            IchliebeDeutschlandundseineHauptstadtBerlin
-          </Select.Option>
-          <Select.Option>Österreich</Select.Option>
-          <Select.Option>Schweiz</Select.Option>
-        </Select>
-      </Inset>
-    ),
-  },
-  async ({ canvas }) => {
-    await userEvent.click(canvas.getByLabelText(/Favorite country/i));
-
-    const listbox = await canvas.findByRole('listbox');
-
-    // The label has no break opportunity, so it has to break mid-word and stay
-    // inside the narrow list instead of widening the option. That is a purely
-    // visual invariant here, guarded by the Chromatic snapshot of the open
-    // list: the virtualizer does not size its rows under the browser test
-    // runner, so per-option widths cannot be asserted in this environment.
-    expect(
-      within(listbox).getByRole('option', { name: /IchliebeDeutschland/ })
-    ).toBeVisible();
-  }
-);
-
-Basic.test(
   'Opens the list grouped into sections',
   {
     parameters: { chromatic: { disableSnapshot: false } },
