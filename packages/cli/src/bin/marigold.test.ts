@@ -250,3 +250,20 @@ describe('main() — doctor command', () => {
     });
   });
 });
+
+describe('main() — migrate command', () => {
+  // The version positional is optional, so a mistyped version is otherwise
+  // indistinguishable from a path. The hint has to be checked before the
+  // positional-count validation, which would reject this as "too many paths".
+  test('names the migration a version-ish positional probably meant', async () => {
+    const code = await main(['migrate', '18.1', './src']);
+
+    expect(code).toBe(1);
+    expect(stderrSpy.mock.calls.flat().join('')).toContain('Did you mean v18?');
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      command: 'migrate',
+      exitCode: 1,
+      args: expect.objectContaining({ version: 'auto' }),
+    });
+  });
+});

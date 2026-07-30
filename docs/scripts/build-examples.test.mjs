@@ -44,7 +44,10 @@ const writeExample = (slug, { sidecar, files = {} }) => {
     fs.writeFileSync(path.join(dir, `${slug}.marigold-pattern.yaml`), sidecar);
   }
   for (const [name, source] of Object.entries(files)) {
-    fs.writeFileSync(path.join(dir, name), source);
+    // `name` may be a nested path (e.g. 'hooks/useFilter.ts').
+    const file = path.join(dir, name);
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, source);
   }
 };
 
@@ -101,7 +104,7 @@ describe('buildExamples — happy path', () => {
     expect(readJson('examples.json').examples).toHaveLength(1);
   });
 
-  test('maps sidecar fields and collects only top-level .ts/.tsx source', () => {
+  test('maps sidecar fields and collects .ts/.tsx source', () => {
     writeExample('filter', {
       sidecar: VALID_SIDECAR,
       files: {
@@ -120,6 +123,52 @@ describe('buildExamples — happy path', () => {
     expect(payload.mockData[0].alias).toBe('@/lib/data/venues');
     // sorted, .md and the sidecar itself excluded
     expect(payload.files.map(f => f.path)).toEqual(['page.tsx', 'utils.tsx']);
+  });
+
+  test('collects nested source so the payload can actually be built', () => {
+    // The filter example keeps its hooks in `hooks/` and every key file imports
+    // from `./hooks/…`. A top-level-only walk shipped those importers without
+    // their imports, which no consumer could compile.
+    writeExample('filter', {
+      sidecar: VALID_SIDECAR,
+      files: {
+        'utils.tsx': "export { useFilter } from './hooks/useFilter';",
+        'page.tsx': 'export default () => null;',
+        'hooks/useFilter.ts': 'export const useFilter = () => null;',
+        'hooks/nested/deep.ts': 'export const deep = 1;',
+        'hooks/notes.md': '# ignore me',
+      },
+    });
+
+    buildExamples(opts());
+    const payload = readJson('examples/filter.json');
+
+    // POSIX separators regardless of platform, so the paths match the import
+    // specifiers in the sources above.
+    expect(payload.files.map(f => f.path)).toEqual([
+      'hooks/nested/deep.ts',
+      'hooks/useFilter.ts',
+      'page.tsx',
+      'utils.tsx',
+    ]);
+    expect(
+      payload.files.find(f => f.path === 'hooks/useFilter.ts').source
+    ).toBe('export const useFilter = () => null;');
+  });
+
+  test('accepts a key_files entry pointing into a subdirectory', () => {
+    writeExample('filter', {
+      sidecar: VALID_SIDECAR.replace('  - utils.tsx', '  - hooks/useFilter.ts'),
+      files: {
+        'page.tsx': 'export default () => null;',
+        'hooks/useFilter.ts': 'export const useFilter = () => null;',
+      },
+    });
+
+    expect(() => buildExamples(opts())).not.toThrow();
+    expect(readJson('examples/filter.json').keyFiles).toEqual([
+      'hooks/useFilter.ts',
+    ]);
   });
 
   test('skips folders without a sidecar instead of failing', () => {

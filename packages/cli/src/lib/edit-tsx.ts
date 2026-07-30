@@ -15,7 +15,7 @@ export type TsxEditOutcome =
   | { kind: 'unchanged'; reason: string }
   | { kind: 'skipped'; reason: string };
 
-const insertImport = (
+export const insertImport = (
   s: MagicString,
   file: AnyNode,
   imports: AnyNode[],

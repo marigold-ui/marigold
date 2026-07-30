@@ -7,6 +7,13 @@ import { Description } from '../Description/Description';
 import { Divider } from '../Divider/Divider';
 import { Keyboard } from '../Keyboard/Keyboard';
 import { TextValue } from '../TextValue/TextValue';
+import {
+  WCAG_NON_TEXT,
+  contrast,
+  flatten,
+  insetFocusRing,
+  paintedGround,
+} from '../contrast.utils';
 import { ActionMenu } from './ActionMenu';
 import { Menu } from './Menu';
 
@@ -329,6 +336,65 @@ Basic.test(
     expect(alertMock).not.toHaveBeenCalledWith('pizza');
 
     alertMock.mockRestore();
+  }
+);
+
+Basic.test(
+  'Keyboard focus draws a ring that clears 3:1 against both adjacent colors',
+  // Snapshot on, unlike the other Basic tests: this is the one interaction in
+  // the file that produces :focus-visible, so it is the only baseline that
+  // shows the ring. Every snapshotted test elsewhere drives the UI with
+  // `click` alone. The assertions below catch token and utility regressions;
+  // the snapshot catches the ring being clipped, doubled or misaligned.
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Hogwarts Houses' })
+    );
+    await userEvent.keyboard('{ArrowDown}');
+
+    const item = await waitFor(() => {
+      const focused = canvas
+        .getByRole('menu')
+        .querySelector<HTMLElement>('[data-focus-visible]');
+      expect(focused).not.toBeNull();
+      return focused!;
+    });
+
+    // The background wash measures ~1.11:1 on its own and, because focus
+    // follows the mouse in a menu, it also fires on hover. It cannot be the
+    // indicator. Assert the ring is a separate, real layer.
+    const { boxShadow, ring, color: ringColor } = insetFocusRing(item);
+    expect(
+      ring,
+      `no inset focus ring in box-shadow: ${boxShadow}`
+    ).toBeTruthy();
+    expect(ringColor, `no color found in shadow: ${ring}`).toBeTruthy();
+
+    // WCAG's "adjacent colors": the row's own fill inside the ring, and the
+    // menu surface outside it.
+    const inside = paintedGround(item);
+    const outside = paintedGround(item.parentElement);
+
+    // Guard on `paintedGround`, not on the wash. If the walk came back empty,
+    // `flatten` would silently fall back to bare white and the ratios below
+    // would be measured against a ground that is not on screen -- passing
+    // against nothing, the DST-1590 failure mode. Asserting the walk found a
+    // real fill covers that without pinning the wash in place: the wash is the
+    // roving cursor, not the indicator, so this test stays honest if it is
+    // ever restyled or dropped.
+    expect(outside.length).toBeGreaterThan(0);
+
+    for (const [side, ground] of [
+      ['inside (row fill)', inside],
+      ['outside (menu surface)', outside],
+    ] as const) {
+      const ratio = contrast(flatten([...ground, ringColor!]), flatten(ground));
+      expect(
+        ratio,
+        `focus ring vs ${side} is ${ratio.toFixed(2)}:1, needs ${WCAG_NON_TEXT}:1`
+      ).toBeGreaterThanOrEqual(WCAG_NON_TEXT);
+    }
   }
 );
 
