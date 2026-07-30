@@ -327,14 +327,15 @@ export const B = () => <Select width="full" />;
     expect(warnings[0]).toContain('width="fit"');
   });
 
-  test('stays quiet for literals wrapped in an expression container', () => {
+  test('resolves literals in an expression container, warns on dynamic ones', () => {
     const source = `import { Select } from '@marigold/components';
 export const A = () => <Select width={20} />;
 export const B = () => <Select width={'1/2'} />;
 export const C = () => <Select width={'fit'} />;
+export const D = ({ w }: { w: string }) => <Select width={w} />;
 `;
     const warnings = warningsOf(reportJsxUsage(v18).apply(source));
-    expect(warnings).toHaveLength(1);
+    expect(warnings).toHaveLength(2);
     expect(warnings[0]).toContain('width="fit"');
   });
 

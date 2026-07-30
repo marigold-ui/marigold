@@ -33,8 +33,9 @@ const attrName = (attr: AnyNode): string | null =>
 
 /**
  * The statically known value of a JSX attribute, or null when it cannot be
- * resolved. A literal wrapped in an expression container (`width={20}`,
- * `width={'1/2'}`) is just as knowable as a bare `width="fit"`.
+ * resolved. A string or number literal wrapped in an expression container
+ * (`width={20}`, `width={'1/2'}`) is just as knowable as a bare `width="fit"`.
+ * Everything else, template literals included, stays unresolved and warns.
  */
 const staticAttrValue = (value: AnyNode | undefined): string | null => {
   const node =
