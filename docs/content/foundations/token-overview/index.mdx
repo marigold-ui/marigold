@@ -502,14 +502,18 @@ Focus highlight accompanies the item the user is currently navigating to via key
 
 <Callout title="A focus tint, not a focus indicator">
   Despite the name, neither token can serve as the focus indicator. Both are
-  washes, and every wash sits deliberately below the 3:1 threshold WCAG 1.4.11
+  washes, and every wash sits deliberately below the 3:1 threshold [WCAG
+  1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)
   asks of a non-text indicator: `focus-highlight` measures 1.11:1 on a white
   surface and `focus-highlight-bold` reaches 1.52:1. Solving a wash for 3:1
   would need roughly 44% alpha — over twice the budget, and darker than
-  `selected`, so it would read as a selection rather than a focus. The
-  perceivable affordance is always a ring: `ui-state-focus` for framed controls,
-  `ui-state-focus-item` for borderless rows, both drawn from `ring`. Use these
-  tokens **with** a ring, never instead of one.
+  `selected`, so it would read as a selection rather than a focus. In a menu the
+  tint is doubly unreliable, because focus follows the mouse there and the same
+  wash fires on hover. The perceivable affordance is always a ring:
+  `ui-state-focus` for framed controls, `ui-state-focus-item` for borderless
+  rows, both drawn from `ring`. Let the tint track the cursor and the ring prove
+  where keyboard focus actually is — use these tokens **with** a ring, never
+  instead of one.
 </Callout>
 
 <TokenTable
@@ -529,8 +533,8 @@ Focus highlight accompanies the item the user is currently navigating to via key
 />
 
 ```tsx
-// Subtle focus: menu items, file drop zones
-<div className="data-focused:bg-focus-highlight" />
+// Subtle tint plus the ring that carries the indicator: menu items, drop zones
+<div className="focus-visible:bg-focus-highlight focus-visible:ui-state-focus-item" />
 
 // Bold focus: inline segments like date fields
 <div className="data-focused:bg-focus-highlight-bold" />
@@ -544,6 +548,14 @@ Focus highlight accompanies the item the user is currently navigating to via key
       focused part needs stronger contrast.
     </DoDescription>
   </Do>
+  <Dont>
+    <DontDescription>
+      Don't let a focus highlight be the only focus indicator. On its own it
+      lands at 1.11:1 — 1.05:1 where a caller halves it, as FileField does — and
+      in a menu it also fires on hover. Add `ui-state-focus` or
+      `ui-state-focus-item` alongside it.
+    </DontDescription>
+  </Dont>
   <Dont>
     <DontDescription>
       Don't use `bg-selected` for focus states. Selection and focus are

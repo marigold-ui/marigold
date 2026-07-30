@@ -1,9 +1,16 @@
 import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
-import { expect } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
+import {
+  WCAG_NON_TEXT,
+  contrast,
+  flatten,
+  insetFocusRing,
+  paintedGround,
+} from '../contrast.utils';
 import { FileField } from './FileField';
 import { makeFile } from './makeFile';
 
@@ -84,6 +91,55 @@ Basic.test(
     await expect(
       canvas.queryByRole('button', { name: 'Upload' })
     ).toHaveTextContent('Upload');
+  }
+);
+
+Basic.test(
+  'Keyboard focus draws a ring that clears 3:1 against both adjacent colors',
+  // Snapshot on: this is the only baseline that shows the drop zone's focus
+  // ring, and it is the change in DST-1661 that had neither a test nor a
+  // snapshot behind it.
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    // One Tab reaches the drop zone. Note the element that takes DOM focus is
+    // RAC's own 0x0 proxy `<button aria-label="DropZone">` *inside* the zone --
+    // the styled div is never focused itself and carries `data-focus-visible`
+    // instead, which is what the theme's `focus-visible:` variant matches
+    // (`tailwindcss-react-aria-components` remaps it). Assert on the div.
+    await userEvent.tab();
+
+    const dropZone = await waitFor(() => {
+      const focused = canvas
+        .getByText('Drop files here')
+        .closest<HTMLElement>('[data-focus-visible]');
+      expect(focused).not.toBeNull();
+      return focused!;
+    });
+
+    const { boxShadow, ring, color: ringColor } = insetFocusRing(dropZone);
+    expect(
+      ring,
+      `no inset focus ring in box-shadow: ${boxShadow}`
+    ).toBeTruthy();
+    expect(ringColor, `no color found in shadow: ${ring}`).toBeTruthy();
+
+    // The tint alone composites to ~1.05:1 against the surface, so the ring has
+    // to carry the indicator on both sides: the tinted fill inside it and the
+    // untinted surface outside.
+    const inside = paintedGround(dropZone);
+    const outside = paintedGround(dropZone.parentElement);
+    expect(outside.length).toBeGreaterThan(0);
+
+    for (const [side, ground] of [
+      ['inside (focus tint)', inside],
+      ['outside (surface)', outside],
+    ] as const) {
+      const ratio = contrast(flatten([...ground, ringColor!]), flatten(ground));
+      expect(
+        ratio,
+        `focus ring vs ${side} is ${ratio.toFixed(2)}:1, needs ${WCAG_NON_TEXT}:1`
+      ).toBeGreaterThanOrEqual(WCAG_NON_TEXT);
+    }
   }
 );
 
