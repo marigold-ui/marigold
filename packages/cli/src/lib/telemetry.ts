@@ -1,6 +1,5 @@
 import ci from 'ci-info';
 import { spawn } from 'node:child_process';
-import crypto from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -19,6 +18,15 @@ export type CommandName =
   | 'migrate'
   | 'telemetry';
 
+// Deliberately identifier-free: no per-machine UUID, no session ID, no IP is
+// persisted server-side. Every field below is a low-cardinality property of the
+// *invocation*, not of the user, so events cannot be linked into a per-user
+// history. That keeps the payload outside "personal data" (GDPR Art. 4(1)) and
+// keeps the CLI from storing an identifier on the user's device, which would
+// require consent under ePrivacy Art. 5(3) / § 25 TDDDG.
+//
+// The cost of this is real and accepted: we can count invocations, not people.
+// Unique-user numbers come from npm download stats instead.
 export interface TelemetryEvent {
   event: 'cli_command';
   command: CommandName;
@@ -31,8 +39,34 @@ export interface TelemetryEvent {
   exitCode: number;
   cacheHit?: boolean;
   args?: Record<string, string>;
-  anonymousId: string;
 }
+
+// `args` must stay low-cardinality and must never echo prose a user typed. The
+// two helpers below are the only sanctioned way to build it, so an unvalidated
+// value can't reach the wire by omission at a call site.
+
+// Identifier-shaped values only — component names, page/example slugs,
+// categories. Anything else (a stray sentence, a path, an over-long string)
+// collapses to 'invalid' rather than being forwarded verbatim.
+const SLUG_PATTERN = /^[A-Za-z0-9][A-Za-z0-9/._-]{0,63}$/;
+
+export const slugArg = (value: string | undefined): string => {
+  if (!value) return '';
+  return SLUG_PATTERN.test(value) ? value : 'invalid';
+};
+
+// Clamp a flag to its documented enum. Call sites record telemetry args before
+// validation (so failed runs still report which flags were supplied), which
+// previously meant a mistyped `--format=jsonn` was sent as-is; now it lands as
+// 'invalid'.
+export const enumArg = (
+  value: string | undefined,
+  allowed: readonly string[],
+  fallback: string
+): string => {
+  if (value === undefined) return fallback;
+  return allowed.includes(value) ? value : 'invalid';
+};
 
 const bucketDuration = (ms: number): TelemetryEvent['durationBucket'] => {
   if (ms < 100) return '0-100';
@@ -62,10 +96,6 @@ export const isTelemetryDisabled = (): boolean => {
 export const setTelemetryEnabled = (enabled: boolean): void => {
   const config = readConfig();
   config.telemetryEnabled = enabled;
-  // Only mint an anonymous ID when opting in. `anonymousId()` lazy-mints on
-  // `emit()` for the on-by-default path; opting out should never leave an
-  // identifier on disk.
-  if (enabled && !config.anonymousId) config.anonymousId = crypto.randomUUID();
   writeConfig(config);
 };
 
@@ -76,14 +106,6 @@ export const telemetryStatus = ():
   if (ci.isCI) return 'ci-suppressed';
   const config = readConfig();
   return config.telemetryEnabled === false ? 'disabled' : 'enabled';
-};
-
-const anonymousId = (): string => {
-  const config = readConfig();
-  if (config.anonymousId) return config.anonymousId;
-  const id = crypto.randomUUID();
-  writeConfig({ ...config, anonymousId: id });
-  return id;
 };
 
 export interface EmitOptions {
@@ -127,18 +149,27 @@ const sweepStaleTelemetryTmpFiles = (): void => {
   }
 };
 
-// First-run disclosure. Because telemetry is opt-out, the CLI must tell the
-// user — once — that it collects anonymous usage data and how to turn it off.
-// This mirrors the .NET SDK model (on by default, but a mandatory first-run
-// notice). Printed to stderr so it never pollutes stdout/JSON output that AI
-// agents parse. The "shown" flag is persisted only after an actual print on a
-// TTY: this CLI is called mostly by non-interactive agents, so persisting on a
-// silent run would burn the one-time notice before any human ever saw it.
+// The disclosure lives in the `marigold telemetry` section of the CLI page
+// rather than on a page of its own — a standalone privacy page is one nobody
+// navigates to, whereas this anchor sits where people already are when they
+// look up the command.
+export const TELEMETRY_NOTICE_URL =
+  'https://www.marigold-ui.io/getting-started/cli#marigold-telemetry';
+
+// First-run disclosure for interactive users. Printed to stderr so it never
+// pollutes stdout/JSON output that AI agents parse, and only on a TTY — a
+// notice written into a pipe is read by nobody, so persisting the "shown" flag
+// on a silent run would burn the one-time disclosure without informing anyone.
 //
-// Returns true when the notice was just shown on this run, so the caller can
-// suppress telemetry for that invocation — no data point is sent before the
-// user has seen the disclosure and had a chance to opt out (consent before
-// collection). Tracking begins on the next invocation.
+// Non-interactive runs are covered instead by the always-available surfaces:
+// `marigold --help`, the README, and the linked telemetry page. That split is
+// only defensible because the payload carries no identifier — see
+// `TelemetryEvent`. If an identifying field is ever added back, this notice
+// stops being sufficient and the default must flip to opt-in.
+//
+// Every claim here must stay true to what `emit()` actually sends. Returns true
+// when the notice was just shown, so the caller can skip tracking that one
+// invocation and let the reader opt out before anything is sent.
 const showFirstRunNoticeIfNeeded = (): boolean => {
   try {
     const config = readConfig();
@@ -148,11 +179,15 @@ const showFirstRunNoticeIfNeeded = (): boolean => {
     process.stderr.write(
       [
         '',
-        'Marigold CLI collects anonymous usage data to help improve the tool.',
-        'No code, arguments, file contents, or personal data are collected.',
+        'Marigold CLI reports anonymous usage data to help improve the tool:',
+        'the command run, its flags, which component or page you asked for,',
+        'CLI/Node version, OS, exit code, and a coarse duration bucket.',
+        'No identifier is attached, so runs cannot be linked to you or to each',
+        'other. Search terms, file contents, and code are never sent.',
+        `Details: ${TELEMETRY_NOTICE_URL}`,
         'Opt out any time: `marigold telemetry disable` or DO_NOT_TRACK=1',
         '',
-      ].join('\n')
+      ].join('\n') + '\n'
     );
     writeConfig({ ...config, telemetryNoticeShown: true });
     return true;
@@ -163,9 +198,9 @@ const showFirstRunNoticeIfNeeded = (): boolean => {
 };
 
 export const emit = (options: EmitOptions): void => {
-  // The whole body, not just the write/spawn below: anonymousId() lazily calls
-  // writeConfig(), which has no guard of its own, so an unwritable config dir
-  // would propagate out of emit() and crash an unrelated command.
+  // The whole body, not just the write/spawn below: showFirstRunNoticeIfNeeded()
+  // calls writeConfig(), which has no guard of its own, so an unwritable config
+  // dir would propagate out of emit() and crash an unrelated command.
   // setTelemetryEnabled() is deliberately NOT covered — it backs the explicit
   // enable/disable command, where a write failure must surface to the user.
   try {
@@ -189,7 +224,6 @@ export const emit = (options: EmitOptions): void => {
       exitCode: options.exitCode,
       cacheHit: options.cacheHit,
       args: options.args,
-      anonymousId: anonymousId(),
     };
 
     const script = findSenderScript();
