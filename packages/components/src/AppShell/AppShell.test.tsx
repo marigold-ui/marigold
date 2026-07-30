@@ -22,7 +22,7 @@ describe('AppShell', () => {
   test('does not create an interior scroll container on main', () => {
     render(<Basic.Component />);
 
-    // Scroll lives on the document since DST-1351; main must not scroll.
+    // Scroll lives on the document; main must not scroll.
     expect(screen.getByRole('main')).not.toHaveClass('overflow-y-auto');
   });
 

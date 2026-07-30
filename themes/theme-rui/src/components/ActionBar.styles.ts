@@ -7,7 +7,7 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
       'flex items-center justify-between justify-items-center gap-16',
       'px-6 py-3',
       'shadow-elevation-overlay',
-      'ui-surface-contrast',
+      'ui-contrast',
       'rounded-full font-medium',
       'focus-visible:ui-state-focus outline-none disabled:ui-state-disabled',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0',

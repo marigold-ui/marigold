@@ -1,14 +1,19 @@
 ---
 title: Card
 description: Represents one item in a collection.
+badge: updated
 ---
 
 import { CardAnatomy } from './card-anatomy';
-import { DoNestedMockup, DontNestedMockup } from './card-usage-guidelines';
+import {
+  CardVsTableMockup,
+  DoNestedMockup,
+  DontNestedMockup,
+} from './card-usage-guidelines';
 
-A `<Card>` represents one item in a collection, such as an event preview, a venue tile, or a product summary, that repeats next to similar siblings in a grid or list. Each card groups related content (image, title, content, actions) into a single, self-contained unit and sets it apart from the page through elevation or tinting.
+A `<Card>` represents one item in a collection, such as an event preview, a venue tile, or a product summary, that repeats next to similar siblings in a grid or list. Each card groups related content (image, title, content, actions) into a single, self-contained unit and sets it apart from the page through fill or tinting: a white card sits on the gray page background with a quiet rim, not a drop shadow.
 
-`<Card>` renders an `<article>` landmark. When a `<Title>` is present, the card is automatically labelled by it via `aria-labelledby`. Otherwise pass `aria-label` to give the card an accessible name.
+`<Card>` renders an `<article>` landmark, labelled by its `<Title>` so the card stays identifiable to assistive tech.
 
 ## Anatomy
 
@@ -23,21 +28,49 @@ The card component is a compound component made up of several sub-components tha
 
 ## Appearance
 
-<AppearanceDemo component={'Card'} />
+<AppearanceDemo component={'Card'} background="page" />
 
 <AppearanceTable component={'Card'} />
 
 The card component supports variants for general content grouping as well as access-level marking.
 
-| Variant   | Description                                                      | When to use                                                                                      |
-| --------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| `default` | Standard card with a raised shadow. This is the default variant. | General-purpose content grouping like articles, profiles, or summaries.                          |
-| `admin`   | Card with admin-specific border and background tint.             | Grouping content visible only to admin users. [Learn more.](/patterns/layout/admin-master-mark)  |
-| `master`  | Card with master-specific border and background tint.            | Grouping content visible only to master users. [Learn more.](/patterns/layout/admin-master-mark) |
+| Variant   | Description                                                                                                                             | When to use                                                                                      |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `default` | Standard card — set off from the gray page by its lighter fill and a subtle rim rather than a drop shadow. This is the default variant. | General-purpose content grouping like articles, profiles, or summaries.                          |
+| `admin`   | Card with admin-specific border and background tint.                                                                                    | Grouping content visible only to admin users. [Learn more.](/patterns/layout/admin-master-mark)  |
+| `master`  | Card with master-specific border and background tint.                                                                                   | Grouping content visible only to master users. [Learn more.](/patterns/layout/admin-master-mark) |
 
 ## Usage
 
-A card represents one item in a set. Reach for it when the same type of item repeats in a grid or list (events, products, venues, team members) and each entry links to its own detail view. Repetition is the core case. If the element doesn't repeat, a card is probably the wrong tool. If the items need sorting, filtering, or bulk actions, [`<Table>`](../table) is a better fit. For a named, non-repeating page region like "Billing" or "Team members", use [`<Panel>`](../../layout/panel) instead.
+A `<Card>` displays one item in a repeating set, such as an event, a product, a venue, or a team member, where each entry has its own visual identity and links to its own detail view. Repetition is the core case. If the element doesn't repeat, a card is probably the wrong tool.
+
+`<Card>` is one of Marigold's Collection components, alongside [`<Table>`](../table). The rest of this section helps you decide when a card is the right choice, when another Collection component or a Layout primitive fits better, and how to build and lay out cards once you've settled on one.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use a Layout primitive for content that doesn't repeat: [`<Panel>`](../../layout/panel)
+      for a named region like "Billing", [`<Stack>`](../../layout/stack) for topic-grouped
+      content, [`<Tiles>`](../../layout/tiles) for a reflowing grid of blocks.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't reach for `<Card>` when the content isn't a collection. A single,
+      non-repeating region isn't a card.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+Panel covers the reverse in its [Panel vs Card](../../layout/panel#panel-vs-card) section.
+
+### Card vs Table
+
+`<Card>` and [`<Table>`](../table) are both Collection components. They both display one item in a repeating set, so the choice between them is about display shape, not category.
+
+<CardVsTableMockup />
+
+Reach for [`<Table>`](../table) when items share the same fields and the user's task is comparison, sorting, filtering, or [bulk action](/patterns/user-input/bulk-actions). Reach for `<Card>` when each item is recognized by its own visuals and links to a detail view, not by its position in a row.
 
 ### Selectable cards
 
@@ -158,9 +191,41 @@ Every slot is inset with `p="square-regular"`, mirroring `Panel`. Use `square-lo
 
 ## Accessibility
 
-- `<Card>` renders an `<article>` landmark. When a `<Title>` is present, the article is automatically labelled by it (`aria-labelledby`). Otherwise pass `aria-label` to give the card an accessible name.
-- Always give a card an accessible name. A `<Card>` with neither a `<Title>` nor an `aria-label` produces an **unnamed** `article` landmark, which screen reader users cannot identify. In development, Card logs a `console.warn` when both are missing.
-- The heading level is configurable via the `headingLevel` prop on `<Card>` (default `3`). Choose the level that fits the card's depth in the document outline.
+Card renders an `<article>` and wires up its accessible name and heading level, so most of the work is handled for you. Give every card a name, pick the heading level that fits the page, and add list semantics when cards repeat in a grid.
+
+### Labeling
+
+`<Card>` renders an `<article>` landmark. When a `<Title>` is present, the article is automatically labelled by it (`aria-labelledby`). Otherwise pass `aria-label` on the `<Card>` to give it an accessible name.
+
+Always give a card a name. A `<Card>` with neither a `<Title>` nor an `aria-label` produces an **unnamed** `article` landmark, which screen reader users cannot identify. In development, Card logs a `console.warn` when both are missing.
+
+### Heading levels
+
+The card's heading level comes from the `headingLevel` prop on `<Card>` (default `3`). The default assumes a card grid living under a section-level `<h2>`, so a card title at `<h3>` keeps the document outline clean: page heading, then section heading, then card title.
+
+If the grid sits deeper in the page, inside a `<Tabs>` panel or a `<Panel headingLevel={3}>`, step the card title down with `<Card headingLevel={4}>` so the outline still nests correctly.
+
+### Collection semantics
+
+A card rarely appears alone. The canonical use is a grid of cards, and a repeating collection is semantically a list. Because `<Tiles>` accepts a `role` and an `aria-label`, mark the grid as a list and wrap each card in an element with `role="listitem"`. Assistive technology then announces the item count and lets the user step through the set:
+
+```tsx
+<Tiles
+  role="list"
+  aria-label="Venues"
+  space="regular"
+  tilesWidth="240px"
+  stretch
+>
+  {venues.map(venue => (
+    <div role="listitem" key={venue.id}>
+      <Card>…</Card>
+    </div>
+  ))}
+</Tiles>
+```
+
+The roles are set explicitly rather than on native `<ul>` and `<li>` tags. A `<ul>` styled as a grid usually carries `list-style: none`, and in Safari that removes the list's semantics. An explicit `role="list"` on the `<Tiles>` grid is not affected, so the list markup holds. Since `<Card>` is not polymorphic today, the list structure lives on the wrapper, not on the card. The card grid demo earlier on this page shows the per-card composition. Wrap that grid as shown here to add the collection semantics.
 
 ## Props
 
@@ -185,6 +250,50 @@ Every slot is inset with `p="square-regular"`, mirroring `Panel`. Use `square-lo
 ### Card.Footer
 
 <AutoTypeTable path="Card/CardFooter" name="CardFooterProps" />
+
+## Alternative components
+
+When your content isn't a good fit for a card, one of these is usually the right answer.
+
+**Another Collection component**
+
+<ul>
+  <li>
+    [`<Table>`](/components/collection/table): The other Collection component. Reach for it when
+    items share the same fields and the task is comparison, sorting, or bulk
+    action.
+  </li>
+</ul>
+
+**When the content isn't a collection**
+
+<ul>
+  <li>
+    [`<Panel>`](/components/layout/panel): A unique, named page region like "Billing"
+    or "Team members".
+  </li>
+  <li>
+    [`<Stack>`](/components/layout/stack): Content that shares a topic but has no
+    per-item identity.
+  </li>
+  <li>
+    [`<Tiles>`](/components/layout/tiles): A reflowing grid of layout blocks rather
+    than collection items.
+  </li>
+  <li>
+    [`<List>`](/components/content/list): A simple ordered or unordered list of items.
+  </li>
+</ul>
+
+**When cards are selectable options**
+
+<ul>
+  <li>
+    [`<SelectList>`](/components/form/selectlist#options-as-cards): Card-shaped options
+    the user selects in a form, with selection state and keyboard support built
+    in.
+  </li>
+</ul>
 
 ## Related
 

@@ -21,7 +21,9 @@ export interface ButtonProps
     | (string & {});
 
   /**
-   * @internal
+   * The size of the button. `icon` renders a square, icon-only button and
+   * composes with any `variant` (e.g. `variant="ghost" size="icon"`).
+   * @default 'default'
    */
   size?: 'default' | 'small' | 'large' | 'icon' | (string & {});
 

@@ -5,7 +5,9 @@ import type { IconProps } from '../icons/Icons.types';
 
 const CHEVRON_LEFT = 'M 16 15 L 13 12 L 16 9';
 const CHEVRON_RIGHT = 'M 13 15 L 16 12 L 13 9';
-const SPRING_BEZIER = 'cubic-bezier(0.34, 1.56, 0.64, 1)';
+// ease-out-quint: fast start, smooth settle — no overshoot, matching the
+// theme's motion register (real objects decelerate, they don't bounce).
+const SETTLE_BEZIER = 'cubic-bezier(0.22, 1, 0.36, 1)';
 const HOVER_BEZIER = 'cubic-bezier(0.33, 1, 0.68, 1)';
 
 export interface SidebarToggleIconProps extends IconProps {
@@ -46,7 +48,7 @@ export const SidebarToggleIcon = ({
           transform: expanded ? 'translateX(0)' : 'translateX(-3px)',
           transition: reducedMotion
             ? 'none'
-            : `transform 200ms ${SPRING_BEZIER}, translate 150ms ${HOVER_BEZIER}`,
+            : `transform 200ms ${SETTLE_BEZIER}, translate 150ms ${HOVER_BEZIER}`,
         }}
       >
         <path d="M9 4v16" />
@@ -68,7 +70,7 @@ export const SidebarToggleIcon = ({
           style={
             {
               d: `path("${expanded ? CHEVRON_LEFT : CHEVRON_RIGHT}")`,
-              transition: reducedMotion ? 'none' : `d 200ms ${SPRING_BEZIER}`,
+              transition: reducedMotion ? 'none' : `d 200ms ${SETTLE_BEZIER}`,
             } as CSSProperties
           }
         />

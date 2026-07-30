@@ -13,7 +13,11 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     ],
     variants: {
       variant: {
-        default: 'ui-surface shadow-elevation-border',
+        // A default SelectList is a boxed list: its frame edge and the internal row
+        // dividers should read as one weight, so both use the opaque --color-border.
+        // (A translucent control ring would composite lighter than the opaque
+        // dividers, so left/right wouldn't match top/bottom.)
+        default: 'ui-surface [--ui-border-color:var(--color-border)]',
         bordered: '',
       },
     },
@@ -42,6 +46,11 @@ export const SelectList: ThemeComponent<'SelectList'> = {
         ],
         bordered: [
           'gap-2',
+          // Each item is its own control; its ring lives in the box-shadow
+          // chain. This list is a scroll container, which clips box-shadow on
+          // both axes, so p-1 gives the rings room inside the scrollport (the
+          // padding box) instead of being cut at the edges.
+          'p-1',
           '[--selectlist-item-px:var(--spacing-square-relaxed-x)]',
           '[--selectlist-item-py:var(--spacing-square-relaxed-y)]',
         ],
@@ -51,11 +60,11 @@ export const SelectList: ThemeComponent<'SelectList'> = {
   }),
   item: cva({
     base: [
-      'relative grid items-start content-center gap-x-3',
+      'group/option relative grid items-start content-center gap-x-3',
       'grid-cols-[auto_1fr_auto]',
       'grid-rows-[minmax(1.25rem,auto)_auto]',
       'text-sm font-medium text-foreground outline-none',
-      'cursor-default data-selection-mode:cursor-pointer',
+      'cursor-default not-disabled:data-selection-mode:cursor-pointer',
       'focus-visible:inset-ring-2 focus-visible:inset-ring-ring/50',
       'transition-[border,color]',
       'disabled:cursor-not-allowed disabled:text-disabled',
@@ -71,6 +80,9 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           'selected:bg-selected hover:ui-state-hover',
           'group-orientation-vertical/list:first:rounded-t-(--selectlist-item-radius) group-orientation-vertical/list:last:rounded-b-(--selectlist-item-radius)',
           'group-orientation-horizontal/list:first:rounded-l-(--selectlist-item-radius) group-orientation-horizontal/list:last:rounded-r-(--selectlist-item-radius)',
+          // Dividers use the opaque structural --color-border (like Table grid
+          // lines): darker than every wash, so they stay crisp against rest,
+          // hover, and the selected fill alike.
           'group-orientation-vertical/list:not-last:border-b group-orientation-vertical/list:not-last:border-border',
           'group-orientation-horizontal/list:not-last:border-r group-orientation-horizontal/list:not-last:border-border',
           // Container-query flip: in narrow containers, swap horizontal
@@ -83,9 +95,17 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           'group-orientation-horizontal/list:@max-[40rem]/selectlist:not-last:border-b',
         ],
         bordered: [
-          'ui-surface shadow-elevation-border min-h-14',
-          'selected:[--ui-border-color:var(--color-foreground)] selected:inset-shadow-[0_0_0_0.5px_var(--ui-border-color)]',
-          'disabled:selected:[--ui-border-color:var(--color-border)] disabled:selected:inset-shadow-none',
+          // Each item is a control: a dense control-border ring, flat (the list
+          // pads itself so the ring isn't clipped).
+          'ui-control min-h-14',
+          // Selected just recolors the ring opaque, so its stroke keeps the same
+          // geometry as the unselected rows.
+          'selected:[--ui-border-color:var(--color-foreground)]',
+          'disabled:selected:[--ui-border-color:var(--color-control-border)]',
+          // Keyboard focus lands on the already-selected row (selection follows
+          // focus): keep the inner ring in the selected border color instead of
+          // flipping to the focus color, so the row still reads as selected.
+          'selected:focus-visible:inset-ring-(color:--ui-border-color)',
           'hover:[--ui-background-color:var(--color-hover)]',
         ],
       },
@@ -94,7 +114,7 @@ export const SelectList: ThemeComponent<'SelectList'> = {
   }),
   label: cva({ base: 'col-start-2 row-start-1' }),
   description: cva({
-    base: 'col-start-2 row-start-2 text-xs font-normal text-secondary',
+    base: 'col-start-2 row-start-2 text-xs font-normal text-secondary group-disabled/option:text-disabled',
   }),
   indicator: cva({
     base: 'flex shrink-0 items-center justify-center row-start-1 col-start-1 self-center',

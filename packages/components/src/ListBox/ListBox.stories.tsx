@@ -60,6 +60,26 @@ WithDescription.test(
   }
 );
 
+export const DisabledWithDescription = meta.story({
+  render: args => (
+    <ListBox
+      aria-labelledby="listbox"
+      selectionMode="single"
+      disabledKeys={['restricted']}
+      {...args}
+    >
+      <ListBox.Item id="public" textValue="Public">
+        <TextValue>Public</TextValue>
+        <Description>Anyone with the link can view.</Description>
+      </ListBox.Item>
+      <ListBox.Item id="restricted" textValue="Restricted">
+        <TextValue>Restricted</TextValue>
+        <Description>Only people you invite can view.</Description>
+      </ListBox.Item>
+    </ListBox>
+  ),
+});
+
 export const WithSections = meta.story({
   render: args => (
     <ListBox aria-labelledby="listbox" selectionMode="single" {...args}>

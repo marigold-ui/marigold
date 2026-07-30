@@ -4,9 +4,9 @@ export const Table: ThemeComponent<'Table'> = {
   table: cva({
     base: [
       'text-sm bg-surface',
-      // Edge padding for Panel integration — resolves to --panel-px
-      // when inside a Panel with bleed, otherwise falls back to --cell-x-padding
-      '[--cell-edge-padding:var(--panel-px,var(--cell-x-padding))]',
+      // Edge padding: Panel's `--panel-px`, then a bled container's
+      // `--bleed-px`, then the standalone cell default.
+      '[--cell-edge-padding:var(--panel-px,var(--bleed-px,var(--cell-x-padding)))]',
     ],
     variants: {
       variant: {
@@ -99,6 +99,15 @@ export const Table: ThemeComponent<'Table'> = {
 
   // <tbody>
   body: cva({}),
+
+  // <tfoot>
+  footer: cva({
+    base: [
+      'bg-surface/90 border-border border-t',
+      '**:[[role=gridcell]]:font-semibold **:[[role=rowheader]]:font-semibold',
+    ],
+  }),
+
   cell: cva({
     base: [
       'px-(--cell-x-padding) py-(--cell-y-padding)',

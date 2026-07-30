@@ -30,11 +30,19 @@ test('renders the info variant correctly', () => {
   `);
 });
 
-test('shows the lock svg', () => {
+// Icon rendering is covered by the Basic story test.
+test('master variant announces its visible text only', () => {
   render(<Basic.Component />);
+  const master = screen.getAllByText('Status')[VARIANT_ORDER.indexOf('master')];
 
-  // the master and admin variants both render a lock icon
-  const svgs = screen.getAllByTestId('lock-icon');
+  // The badge's visible text already is the access level — no hidden access
+  // label may be added, or AT would announce "Status Master"-style doubles.
+  expect(master).toHaveTextContent(/^Status$/);
+});
 
-  expect(svgs.length).toBe(2);
+test('admin variant announces its visible text only', () => {
+  render(<Basic.Component />);
+  const admin = screen.getAllByText('Status')[VARIANT_ORDER.indexOf('admin')];
+
+  expect(admin).toHaveTextContent(/^Status$/);
 });

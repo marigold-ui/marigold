@@ -17,7 +17,7 @@ export const Badge: ThemeComponent<'Badge'> = cva({
       admin:
         'text-access-admin-foreground border border-access-admin-accent bg-access-admin',
       master:
-        'text-access-master-foreground bg-access-master border border-access-master-accent ',
+        'text-access-master-foreground bg-access-master border border-access-master-accent',
     },
   },
   defaultVariants: {

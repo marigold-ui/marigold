@@ -79,6 +79,12 @@ It's also best to avoid multi-step processes or requiring users to navigate with
 
 Lastly, avoid asking users to make decisions that require information not accessible in the dialog, such as needing to check a different page or document to proceed, since this can frustrate users and disrupt their workflow.
 
+### Sizes
+
+The `size` prop controls how much space a dialog takes. Most dialogs use one of the default sizes (`xsmall` to `large`, defaulting to `small`), which cap the width and let the dialog hug its content.
+
+Use `fullscreen` for content-heavy tasks, such as multi-column pickers or dense tables, where a boxed dialog would cramp the content. It fills the viewport minus a small margin at every breakpoint and keeps the title and actions pinned while only the content scrolls. Prefer a smaller size for focused, single-task dialogs like confirmations or short forms.
+
 ### Dismissal
 
 When a dialog is open, users cannot interact with the rest of the page until the dialog is closed. To accommodate both mouse and keyboard users, the `<Dialog>` provides multiple ways to close it:

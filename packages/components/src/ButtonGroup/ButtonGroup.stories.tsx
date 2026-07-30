@@ -112,6 +112,22 @@ export const WithActionMenu = meta.story({
     <ButtonGroup aria-label="With ActionMenu" size="small" variant="ghost">
       <Button aria-label="Edit">Edit</Button>
       <Button aria-label="Duplicate">Duplicate</Button>
+      <ActionMenu aria-label="More actions">
+        <ActionMenu.Item id="archive">Archive</ActionMenu.Item>
+        <ActionMenu.Item id="delete">Delete</ActionMenu.Item>
+      </ActionMenu>
+    </ButtonGroup>
+  ),
+});
+
+// Fixture for the "local size wins" unit test, so not snapshotted. The ActionMenu
+// sets an explicit `size="large"` that must beat the group's `small`, which
+// `WithActionMenu` (its trigger inherits the group size) can't assert.
+export const ActionMenuLocalSize = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: () => (
+    <ButtonGroup aria-label="Item actions" size="small" variant="ghost">
+      <Button aria-label="Edit">Edit</Button>
       <ActionMenu aria-label="More actions" size="large">
         <ActionMenu.Item id="archive">Archive</ActionMenu.Item>
         <ActionMenu.Item id="delete">Delete</ActionMenu.Item>

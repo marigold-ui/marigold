@@ -3,6 +3,7 @@ import { Provider } from 'react-aria-components/slots';
 import { Basic as ButtonBasic } from '../Button/Button.stories';
 import { ButtonContext } from '../Button/Context';
 import {
+  ActionMenuLocalSize,
   Basic,
   CascadePrecedence,
   DisabledCascade,
@@ -83,12 +84,22 @@ describe('cascade precedence (local always wins)', () => {
   });
 });
 
-test('ActionMenu trigger inside ButtonGroup follows local-wins size precedence', () => {
+test('ActionMenu trigger inside ButtonGroup inherits the group size', () => {
   render(<WithActionMenu.Component />);
 
   const menuTrigger = screen.getByRole('button', { name: 'More actions' });
 
-  // ActionMenu sets `size="large"` locally, which wins over the group's `small`.
+  // With no local size, the ActionMenu trigger inherits the group's `small`.
+  expect(menuTrigger).toHaveClass('h-control-small');
+  expect(menuTrigger).not.toHaveClass('h-control-large');
+});
+
+test('ActionMenu trigger inside ButtonGroup follows local-wins size precedence', () => {
+  render(<ActionMenuLocalSize.Component />);
+
+  const menuTrigger = screen.getByRole('button', { name: 'More actions' });
+
+  // An explicit local `size` on the ActionMenu wins over the group's `small`.
   expect(menuTrigger).toHaveClass('h-control-large');
   expect(menuTrigger).not.toHaveClass('h-control-small');
 });

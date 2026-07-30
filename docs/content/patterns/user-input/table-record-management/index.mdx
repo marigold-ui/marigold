@@ -8,7 +8,7 @@ In data heavy applications the table is where the work happens. A user scans it 
 
 This pattern starts from those tasks. For each, it describes the user's situation, the problems that come with it, and the interaction that solves them with the [`<Table>`](/components/collection/table) and [`<Drawer>`](/components/overlay/drawer) components. It also covers the moments where the table's own features, such as filters and sorting, work against the user. The focus is the interaction shell around a record, meaning how the user opens, fills, and saves it.
 
-For building the forms themselves, see the [Forms](/patterns/user-input/forms) pattern. For narrowing which records are shown, see the [Filter](/patterns/user-input/filter) pattern.
+For building the forms themselves, see the [Forms](/patterns/user-input/forms) pattern. For narrowing which records are shown, see the [Filter](/patterns/user-input/filter) pattern. For acting on many records at once instead of one at a time, see the [Bulk Actions](/patterns/user-input/bulk-actions) pattern.
 
 ## Match the approach to the task
 
@@ -150,6 +150,28 @@ For the form layout and progressive disclosure details, see the [Forms](/pattern
 
 <TeaserList
   items={[
+    {
+      title: 'Bulk Actions',
+      href: '/patterns/user-input/bulk-actions',
+      caption:
+        'Select many records and act on all of them at once, from selection scope to partial-failure feedback.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-6"
+        >
+          <rect x="3" y="9" width="18" height="7" rx="2" />
+          <path d="M7 12.5h.01" />
+          <path d="M11 12.5h6" />
+        </svg>
+      ),
+    },
     {
       title: 'Forms',
       href: '/patterns/user-input/forms',

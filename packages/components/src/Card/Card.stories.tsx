@@ -1,6 +1,6 @@
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
-import { Badge, Button, Stack, Text } from '@marigold/components';
+import { Badge, Button, Inline, Stack, Text } from '@marigold/components';
 import { Description } from '../Description/Description';
 import { Title } from '../Title/Title';
 import { Card } from './Card';
@@ -280,8 +280,10 @@ export const MasterAndAdmin = meta.story({
     <Stack space={5}>
       <Card {...args} variant="master">
         <Card.Header>
-          <Title>Master Access</Title>
-          <Badge variant="master">Master</Badge>
+          <Inline space={2} alignY="center">
+            <Title>Master Access</Title>
+            <Badge variant="master">Master</Badge>
+          </Inline>
         </Card.Header>
         <Card.Content>
           <Text>
@@ -293,8 +295,10 @@ export const MasterAndAdmin = meta.story({
       </Card>
       <Card {...args} variant="admin">
         <Card.Header>
-          <Title>Admin Access</Title>
-          <Badge variant="admin">Admin</Badge>
+          <Inline space={2} alignY="center">
+            <Title>Admin Access</Title>
+            <Badge variant="admin">Admin</Badge>
+          </Inline>
         </Card.Header>
         <Card.Content>
           <Text>

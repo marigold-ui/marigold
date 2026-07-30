@@ -1,11 +1,19 @@
+import { useMemo, useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
+import type { Key, Selection } from '@react-types/shared';
 import { Copy, Download, Pencil, Trash2 } from '@marigold/icons';
 import { Button } from '../Button/Button';
 import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Description } from '../Description/Description';
+import { EmptyState } from '../EmptyState/EmptyState';
 import { Form } from '../Form/Form';
+import { Inline } from '../Inline/Inline';
 import { ActionMenu } from '../Menu/ActionMenu';
+import { SearchField } from '../SearchField/SearchField';
+import { Select } from '../Select/Select';
+import { Table } from '../Table/Table';
+import { Tag } from '../TagGroup/Tag';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import { Title } from '../Title/Title';
@@ -28,7 +36,7 @@ const meta = preview.meta({
         type: 'radio',
       },
       description: 'Size of the dialog',
-      options: ['default', 'xsmall', 'small', 'medium', 'large'],
+      options: ['default', 'xsmall', 'small', 'medium', 'large', 'fullscreen'],
       table: {
         type: { summary: 'string' },
       },
@@ -123,6 +131,371 @@ export const WithFormValidation = meta.story({
     </Dialog.Trigger>
   ),
 });
+
+const fullscreenVenues = [
+  {
+    id: 'astra',
+    name: 'Astra Kulturhaus',
+    city: 'Berlin',
+    capacity: '1,500',
+    type: 'Club',
+  },
+  {
+    id: 'gruenspan',
+    name: 'Grünspan',
+    city: 'Hamburg',
+    capacity: '1,200',
+    type: 'Club',
+  },
+  {
+    id: 'backstage',
+    name: 'Backstage',
+    city: 'Munich',
+    capacity: '900',
+    type: 'Club',
+  },
+  {
+    id: 'zakk',
+    name: 'zakk',
+    city: 'Dusseldorf',
+    capacity: '1,000',
+    type: 'Club',
+  },
+  {
+    id: 'batschkapp',
+    name: 'Batschkapp',
+    city: 'Frankfurt',
+    capacity: '1,500',
+    type: 'Club',
+  },
+  {
+    id: 'conne-island',
+    name: 'Conne Island',
+    city: 'Leipzig',
+    capacity: '1,100',
+    type: 'Club',
+  },
+  {
+    id: 'palladium',
+    name: 'Palladium',
+    city: 'Cologne',
+    capacity: '4,000',
+    type: 'Concert Hall',
+  },
+  {
+    id: 'capitol',
+    name: 'Capitol',
+    city: 'Hanover',
+    capacity: '1,350',
+    type: 'Concert Hall',
+  },
+  {
+    id: 'longhorn',
+    name: 'LKA Longhorn',
+    city: 'Stuttgart',
+    capacity: '1,100',
+    type: 'Concert Hall',
+  },
+  {
+    id: 'alte-oper',
+    name: 'Alte Oper',
+    city: 'Frankfurt',
+    capacity: '2,500',
+    type: 'Concert Hall',
+  },
+  {
+    id: 'laeiszhalle',
+    name: 'Laeiszhalle',
+    city: 'Hamburg',
+    capacity: '2,000',
+    type: 'Concert Hall',
+  },
+  {
+    id: 'waldbuehne',
+    name: 'Waldbühne',
+    city: 'Berlin',
+    capacity: '22,000',
+    type: 'Open Air',
+  },
+  {
+    id: 'loreley',
+    name: 'Loreley',
+    city: 'St. Goarshausen',
+    capacity: '15,000',
+    type: 'Open Air',
+  },
+  {
+    id: 'zitadelle',
+    name: 'Zitadelle',
+    city: 'Berlin',
+    capacity: '8,000',
+    type: 'Open Air',
+  },
+  {
+    id: 'kesselhaus',
+    name: 'Kesselhaus Open Air',
+    city: 'Augsburg',
+    capacity: '3,500',
+    type: 'Open Air',
+  },
+  {
+    id: 'schauspielhaus',
+    name: 'Schauspielhaus',
+    city: 'Bochum',
+    capacity: '800',
+    type: 'Theatre',
+  },
+  {
+    id: 'deutsches-theater',
+    name: 'Deutsches Theater',
+    city: 'Berlin',
+    capacity: '600',
+    type: 'Theatre',
+  },
+  {
+    id: 'thalia',
+    name: 'Thalia Theater',
+    city: 'Hamburg',
+    capacity: '1,000',
+    type: 'Theatre',
+  },
+  {
+    id: 'residenz',
+    name: 'Residenztheater',
+    city: 'Munich',
+    capacity: '900',
+    type: 'Theatre',
+  },
+  {
+    id: 'lanxess',
+    name: 'Lanxess Arena',
+    city: 'Cologne',
+    capacity: '18,000',
+    type: 'Arena',
+  },
+  {
+    id: 'barclays',
+    name: 'Barclays Arena',
+    city: 'Hamburg',
+    capacity: '16,000',
+    type: 'Arena',
+  },
+  {
+    id: 'olympiahalle',
+    name: 'Olympiahalle',
+    city: 'Munich',
+    capacity: '15,500',
+    type: 'Arena',
+  },
+  {
+    id: 'festhalle',
+    name: 'Festhalle',
+    city: 'Frankfurt',
+    capacity: '13,000',
+    type: 'Arena',
+  },
+  {
+    id: 'sap-garden',
+    name: 'SAP Garden',
+    city: 'Munich',
+    capacity: '11,500',
+    type: 'Arena',
+  },
+];
+
+const fullscreenVenueTypes = [
+  'Club',
+  'Concert Hall',
+  'Open Air',
+  'Theatre',
+  'Arena',
+];
+
+interface FullscreenPickProps {
+  size?: string;
+  dismissable?: boolean;
+  keyboardDismissable?: boolean;
+}
+
+// A content-heavy pick, the case the `fullscreen` size exists for.
+const FullscreenPick = ({ size, ...args }: FullscreenPickProps) => {
+  const [search, setSearch] = useState('');
+  const [type, setType] = useState<Key | null>('all');
+  const [selected, setSelected] = useState<Set<Key>>(() => new Set());
+
+  const results = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    return fullscreenVenues.filter(venue => {
+      const matchesSearch =
+        !query || `${venue.name} ${venue.city}`.toLowerCase().includes(query);
+      const matchesType = type == null || type === 'all' || venue.type === type;
+      return matchesSearch && matchesType;
+    });
+  }, [search, type]);
+
+  // Keep venues staged even while a search or filter hides them from view.
+  const onSelectionChange = (keys: Selection) => {
+    const visibleIds = new Set(results.map(venue => venue.id));
+    setSelected(prev => {
+      const offView = [...prev].filter(key => !visibleIds.has(String(key)));
+      const visible = keys === 'all' ? [...visibleIds] : [...keys];
+      return new Set<Key>([...offView, ...visible]);
+    });
+  };
+
+  const unstage = (keys: Set<Key>) => {
+    setSelected(prev => {
+      const next = new Set<Key>(prev);
+      keys.forEach(key => next.delete(key));
+      return next;
+    });
+  };
+
+  const staged = fullscreenVenues.filter(venue => selected.has(venue.id));
+
+  return (
+    <Dialog.Trigger {...args}>
+      <Button variant="primary">Select venues</Button>
+      <Dialog size={size} closeButton>
+        <Dialog.Title>Select venues</Dialog.Title>
+        <Dialog.Content>
+          <div className="flex h-full min-h-0 flex-col gap-4">
+            <Inline space={2} alignY="input">
+              <SearchField
+                aria-label="Search venues"
+                placeholder="Search by name or city"
+                value={search}
+                onChange={setSearch}
+                width={64}
+              />
+              <Select
+                aria-label="Filter by type"
+                value={type}
+                onChange={setType}
+                width={40}
+              >
+                <Select.Option id="all">All types</Select.Option>
+                {fullscreenVenueTypes.map(t => (
+                  <Select.Option key={t} id={t}>
+                    {t}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Inline>
+
+            {staged.length > 0 && (
+              <Tag.Group
+                label={`Staged (${staged.length})`}
+                selectionMode="none"
+                onRemove={unstage}
+              >
+                {staged.map(venue => (
+                  <Tag key={venue.id} id={venue.id}>
+                    {venue.name}
+                  </Tag>
+                ))}
+              </Tag.Group>
+            )}
+
+            {/* Plain scroll container with no accessible role, so tests assert its scroll via this testid rather than getByRole. */}
+            <div
+              className="min-h-0 flex-1 overflow-auto"
+              data-testid="venue-list"
+            >
+              <Table
+                aria-label="Venues"
+                selectionMode="multiple"
+                selectedKeys={selected}
+                onSelectionChange={onSelectionChange}
+              >
+                <Table.Header sticky>
+                  <Table.Column rowHeader>Venue</Table.Column>
+                  <Table.Column>City</Table.Column>
+                  <Table.Column>Type</Table.Column>
+                  <Table.Column>Capacity</Table.Column>
+                </Table.Header>
+                <Table.Body
+                  items={results}
+                  emptyState={() => (
+                    <EmptyState
+                      title="No venues match"
+                      description="Try a different search or type. Anything you already staged stays listed above."
+                    />
+                  )}
+                >
+                  {venue => (
+                    <Table.Row id={venue.id}>
+                      <Table.Cell>{venue.name}</Table.Cell>
+                      <Table.Cell>{venue.city}</Table.Cell>
+                      <Table.Cell>{venue.type}</Table.Cell>
+                      <Table.Cell>{venue.capacity}</Table.Cell>
+                    </Table.Row>
+                  )}
+                </Table.Body>
+              </Table>
+            </div>
+          </div>
+        </Dialog.Content>
+        <Dialog.Actions>
+          <Button variant="secondary" slot="close">
+            Cancel
+          </Button>
+          <Button variant="primary" slot="close">
+            Add {staged.length} {staged.length === 1 ? 'venue' : 'venues'}
+          </Button>
+        </Dialog.Actions>
+      </Dialog>
+    </Dialog.Trigger>
+  );
+};
+
+export const Fullscreen = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { size: 'fullscreen' },
+  render: args => <FullscreenPick {...args} />,
+});
+
+// The one snapshot for the fullscreen size: the open dialog filling the viewport.
+Fullscreen.test(
+  'fills the viewport',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Select venues' })
+    );
+
+    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+
+    const rect = canvas.getByRole('dialog').getBoundingClientRect();
+    expect(rect.width).toBeGreaterThan(window.innerWidth * 0.8);
+    expect(rect.height).toBeGreaterThan(window.innerHeight * 0.8);
+  }
+);
+
+Fullscreen.test(
+  'scrolls the table region, not the header area or the dialog',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Select venues' })
+    );
+
+    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+
+    const dialog = canvas.getByRole('dialog');
+    const content = canvas.getByTestId('dialog-content');
+    const list = canvas.getByTestId('venue-list');
+
+    // Only the table region scrolls (the long venue list overflows it)...
+    expect(list.scrollHeight).toBeGreaterThan(list.clientHeight);
+    // ...the search/filter/tags area fits without scrolling...
+    expect(content.scrollHeight).toBeLessThanOrEqual(content.clientHeight + 1);
+    // ...and the dialog surface itself is clipped, so it can never scroll.
+    expect(getComputedStyle(dialog).overflowY).toBe('hidden');
+  }
+);
 
 export const VeryLongContent = meta.story({
   tags: ['component-test'],

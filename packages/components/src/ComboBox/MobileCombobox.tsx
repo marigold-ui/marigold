@@ -49,9 +49,9 @@ const MobileComboBoxTrigger = ({ placeholder }: MobileComboBoxTriggerProps) => {
       </span>
       <span
         className={cn(
-          'absolute right-2 cursor-pointer',
+          'absolute cursor-pointer',
           inputClassNames.action,
-          comboBoxClassNames
+          comboBoxClassNames.icon
         )}
       >
         <ChevronsVertical size="16" />

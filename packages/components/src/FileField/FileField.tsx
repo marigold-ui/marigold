@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type RAC from 'react-aria-components';
 import { DropZone } from 'react-aria-components/DropZone';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
@@ -7,7 +7,7 @@ import { FieldBase, type FieldBaseProps } from '../FieldBase/FieldBase';
 import { intlMessages } from '../intl/messages';
 import { FileFieldItem } from './FileFieldItem';
 import { FileTrigger } from './FileTrigger';
-import { isFileDropItem, normalizeAndLimitFiles } from './fileUtils';
+import { fileKey, isFileDropItem, normalizeAndLimitFiles } from './fileUtils';
 
 type RemovedProps =
   | 'className'
@@ -73,19 +73,37 @@ export const FileField = ({
   const dropZoneLabel = stringFormatter.format('dropZoneLabel');
   const buttonLabel = stringFormatter.format('uploadLabel');
 
-  const syncHiddenInput = (newFiles: File[] | null) => {
+  // Single place that mutates the selection. Takes an updater so it derives
+  // from the latest state, not a stale closure - concurrent async drops can't
+  // clobber each other. The hidden input is synced from `files` in an effect
+  // below, so this updater stays pure.
+  const updateFiles = (update: (prev: File[]) => File[]) => {
+    setFiles(prev => update(prev ?? []));
+  };
+
+  // Mirror the current selection onto the hidden form input whenever it
+  // changes, driven by the committed `files` state (single source of truth).
+  useEffect(() => {
     if (!hiddenInputRef.current || !name || typeof DataTransfer === 'undefined')
       return;
     const dt = new DataTransfer();
-    newFiles?.forEach(f => dt.items.add(f));
+    files?.forEach(f => dt.items.add(f));
     hiddenInputRef.current.files = dt.files;
+  }, [files, name]);
+
+  const mergeFiles = (incoming: File[]) => {
+    // When multiple is set, add to the existing selection instead of
+    // replacing it, so files picked in separate interactions accumulate.
+    updateFiles(prev =>
+      normalizeAndLimitFiles(multiple ? [...prev, ...incoming] : incoming, {
+        accept,
+        multiple,
+      })
+    );
   };
 
   const handleSelect: RAC.FileTriggerProps['onSelect'] = files => {
-    const list = files ? Array.from(files) : [];
-    const normalized = normalizeAndLimitFiles(list, { accept, multiple });
-    setFiles(normalized);
-    syncHiddenInput(normalized);
+    mergeFiles(files ? Array.from(files) : []);
   };
 
   const handleDrop: RAC.DropZoneProps['onDrop'] = async e => {
@@ -95,9 +113,7 @@ export const FileField = ({
         .map(item => (item as RAC.FileDropItem).getFile());
       const raw = await Promise.all(filePromises);
       const files = raw.filter(Boolean) as File[];
-      const normalized = normalizeAndLimitFiles(files, { accept, multiple });
-      setFiles(normalized);
-      syncHiddenInput(normalized);
+      mergeFiles(files);
     } catch {
       // Intentionally ignore - dropped files that can't be read are skipped.
       // User sees no file appear, which is acceptable UX for invalid drops.
@@ -154,15 +170,15 @@ export const FileField = ({
             </div>
           </DropZone>
         )}
-        {files?.map((file, index) => (
+        {files?.map(file => (
           <FileField.Item
-            key={index}
+            key={fileKey(file)}
             size={size}
-            onRemove={() => {
-              const updated = (files ?? []).filter((_, i) => i !== index);
-              setFiles(updated);
-              syncHiddenInput(updated);
-            }}
+            onRemove={() =>
+              updateFiles(prev =>
+                prev.filter(f => fileKey(f) !== fileKey(file))
+              )
+            }
           >
             <div className={cn('[grid-area:label]', classNames.itemLabel)}>
               {file.name}

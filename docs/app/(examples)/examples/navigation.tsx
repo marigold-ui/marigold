@@ -20,7 +20,6 @@ const layout: NavSection = {
           label: 'Analytics',
           ...appShellDocs,
         },
-        { kind: 'Separator' },
         {
           kind: 'Item',
           label: 'Management',
@@ -57,6 +56,13 @@ const userInput: NavSection = {
       label: 'Filter',
       docsHref: '/patterns/user-input/filter',
       docsLabel: 'Filter Guidelines',
+    },
+    {
+      kind: 'Item',
+      slug: 'bulk-actions',
+      label: 'Bulk Actions',
+      docsHref: '/patterns/user-input/bulk-actions',
+      docsLabel: 'Bulk Actions Guidelines',
     },
     {
       kind: 'Item',

@@ -20,18 +20,31 @@ import type { NavNode, NavSection, ShellConfig } from './shell-types';
 import { UserMenu } from './user-menu';
 
 type LeafItem = Extract<NavNode, { kind: 'Item'; slug: string }>;
+type Ancestor = { label: string; slug?: string };
+
+// First reachable leaf of a branch — the target an ancestor crumb links to,
+// so every crumb in the trail is a real place (no dead `#` links).
+const firstLeafSlug = (item: NavNode): string | undefined => {
+  if (item.kind !== 'Item') return undefined;
+  if (!item.children) return item.slug;
+  for (const child of item.children) {
+    const slug = firstLeafSlug(child);
+    if (slug !== undefined) return slug;
+  }
+  return undefined;
+};
 
 const findLeaf = (
   items: NavNode[],
   predicate: (leaf: LeafItem) => boolean,
-  ancestors: string[] = []
-): { leaf: LeafItem; ancestors: string[] } | null => {
+  ancestors: Ancestor[] = []
+): { leaf: LeafItem; ancestors: Ancestor[] } | null => {
   for (const item of items) {
     if (item.kind !== 'Item') continue;
     if (item.children) {
       const found = findLeaf(item.children, predicate, [
         ...ancestors,
-        item.label,
+        { label: item.label, slug: firstLeafSlug(item) },
       ]);
       if (found) return found;
     } else if (predicate(item)) {
@@ -59,7 +72,7 @@ const findActive = (sections: NavSection[], slug: string) => {
   return {
     section: sections[0],
     leaf: undefined,
-    ancestors: [] as string[],
+    ancestors: [] as Ancestor[],
     trailing: [] as string[],
   };
 };
@@ -124,71 +137,90 @@ export const ShellLayout = ({
 
   return (
     <RouterProvider navigate={href => router.push(href)}>
-      <AppShell defaultSidebarOpen>
-        <Sidebar>
-          <Sidebar.Header>
-            <Inline space="related" alignY="center" noWrap>
-              <Logo className="size-8 shrink-0" />
-              <Text weight="bold" fontSize="lg">
-                Examples
-              </Text>
-            </Inline>
-          </Sidebar.Header>
-          <Sidebar.Nav current={pathname}>
-            {config.sections.map((section, i) => [
-              ...(i > 0
-                ? [<Sidebar.Separator key={`sep-${section.label}`} />]
-                : []),
-              <Sidebar.GroupLabel key={`label-${section.label}`}>
-                {section.label}
-              </Sidebar.GroupLabel>,
-              ...renderNav(section.items, config.base),
-            ])}
-          </Sidebar.Nav>
-          <Sidebar.Footer>
-            <Stack space="related" alignX="left">
-              <LinkButton href={leaf?.docsHref ?? '/'} variant="ghost">
-                <ArrowLeft />
-                {`Go to ${leaf?.docsLabel ?? 'documentation'}`}
-              </LinkButton>
-              <LinkButton href="/getting-started/get-in-touch" variant="ghost">
-                <LifeBuoy />
-                Get in touch
-              </LinkButton>
-            </Stack>
-          </Sidebar.Footer>
-        </Sidebar>
-        <TopNavigation>
-          <TopNavigation.Start>
-            <Sidebar.Toggle />
-          </TopNavigation.Start>
-          <TopNavigation.Middle>
-            <Breadcrumbs>
-              <Breadcrumbs.Item href="#">Home</Breadcrumbs.Item>
-              {ancestors.map(label => (
-                <Breadcrumbs.Item key={label} href="#">
-                  {label}
-                </Breadcrumbs.Item>
-              ))}
-              {leaf && (
-                // On a drill-in the leaf becomes a real link back to the list.
-                <Breadcrumbs.Item href={trailing.length ? leafHref : '#'}>
-                  {leaf.label}
-                </Breadcrumbs.Item>
-              )}
-              {trailing.map(segment => (
-                <Breadcrumbs.Item key={segment} href="#">
-                  {config.resolveLabel?.(segment) ?? segment}
-                </Breadcrumbs.Item>
-              ))}
-            </Breadcrumbs>
-          </TopNavigation.Middle>
-          <TopNavigation.End>
-            <UserSection />
-          </TopNavigation.End>
-        </TopNavigation>
-        {children}
-      </AppShell>
+      <Sidebar.Provider defaultOpen>
+        <AppShell>
+          <Sidebar>
+            <Sidebar.Header>
+              <Inline space="related" alignY="center" noWrap>
+                <Logo className="size-8 shrink-0" />
+                <Text weight="bold" fontSize="lg">
+                  Examples
+                </Text>
+              </Inline>
+            </Sidebar.Header>
+            <Sidebar.Nav current={pathname}>
+              {config.sections.map(section => [
+                <Sidebar.GroupLabel key={`label-${section.label}`}>
+                  {section.label}
+                </Sidebar.GroupLabel>,
+                ...renderNav(section.items, config.base),
+              ])}
+            </Sidebar.Nav>
+            <Sidebar.Footer>
+              <Stack space="related" alignX="left">
+                <LinkButton
+                  href={leaf?.docsHref ?? '/'}
+                  variant="ghost"
+                  size="small"
+                >
+                  <ArrowLeft />
+                  {`Go to ${leaf?.docsLabel ?? 'documentation'}`}
+                </LinkButton>
+                <LinkButton
+                  href="/getting-started/get-in-touch"
+                  variant="ghost"
+                  size="small"
+                >
+                  <LifeBuoy />
+                  Get in touch
+                </LinkButton>
+              </Stack>
+            </Sidebar.Footer>
+          </Sidebar>
+          <TopNavigation>
+            <TopNavigation.Start>
+              <Sidebar.Toggle />
+            </TopNavigation.Start>
+            <TopNavigation.Middle>
+              <Breadcrumbs>
+                {ancestors
+                  // The trail names places, not structure: a self-contained
+                  // app's root branch (its first leaf is the index, slug '')
+                  // is already named by the sidebar header, so it drops out —
+                  // every remaining ancestor links to its first real page.
+                  .filter(ancestor => ancestor.slug)
+                  .map(ancestor => (
+                    <Breadcrumbs.Item
+                      key={ancestor.label}
+                      href={`${config.base}/${ancestor.slug}`}
+                    >
+                      {ancestor.label}
+                    </Breadcrumbs.Item>
+                  ))}
+                {leaf && (
+                  // On a drill-in the leaf becomes a real link back to the list.
+                  <Breadcrumbs.Item href={leafHref}>
+                    {leaf.label}
+                  </Breadcrumbs.Item>
+                )}
+                {trailing.map((segment, index) => (
+                  <Breadcrumbs.Item
+                    key={segment}
+                    // The last trailing segment is the page we are on.
+                    href={index === trailing.length - 1 ? pathname : '#'}
+                  >
+                    {config.resolveLabel?.(segment) ?? segment}
+                  </Breadcrumbs.Item>
+                ))}
+              </Breadcrumbs>
+            </TopNavigation.Middle>
+            <TopNavigation.End>
+              <UserSection />
+            </TopNavigation.End>
+          </TopNavigation>
+          {children}
+        </AppShell>
+      </Sidebar.Provider>
     </RouterProvider>
   );
 };

@@ -4,9 +4,9 @@ import { ListBoxItem } from 'react-aria-components/ListBox';
 import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
 import { cn } from '@marigold/system';
-import { Check } from '../icons/Check';
 import { useMergedTextSlots } from '../utils/useMergedTextSlots';
 import { useListBoxContext } from './Context';
+import { SelectionIndicator } from './SelectionIndicator';
 
 export type ListBoxItemProps = Omit<
   RAC.ListBoxItemProps,
@@ -42,10 +42,7 @@ const ItemChildren = ({
 
   return (
     <Provider values={[[TextContext, value]]}>
-      <div className="selection-indicator contents">
-        <Check size={16} strokeWidth="3" className="hidden" />
-        {children}
-      </div>
+      <SelectionIndicator>{children}</SelectionIndicator>
     </Provider>
   );
 };

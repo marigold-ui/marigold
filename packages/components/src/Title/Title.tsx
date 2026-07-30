@@ -1,4 +1,9 @@
-import type { ElementType, ReactNode, Ref } from 'react';
+import {
+  type ElementType,
+  type ReactNode,
+  type Ref,
+  createElement,
+} from 'react';
 import {
   Heading,
   HeadingContext,
@@ -52,12 +57,10 @@ const _Title = ({ ref: refProp, ...inputProps }: TitleProps) => {
   const { level = 2, slot: _slot, children, as, ...props } = merged;
 
   if (as) {
-    const Element = as as ElementType;
-    return (
-      <Element ref={ref} {...props}>
-        {children}
-      </Element>
-    );
+    // Render the dynamic element via `createElement` rather than a
+    // capitalized JSX component variable, which would otherwise trip
+    // `@eslint-react/static-components` for creating a component during render.
+    return createElement(as as ElementType, { ref, ...props }, children);
   }
 
   return (

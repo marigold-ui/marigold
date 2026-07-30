@@ -47,6 +47,7 @@ const InnerDialog = ({
     size,
   });
   const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
+  const isFullscreen = size === 'fullscreen';
 
   if (
     process.env.NODE_ENV !== 'production' &&
@@ -89,9 +90,17 @@ const InnerDialog = ({
         !ariaLabel && hasTitle ? titleId : props['aria-labelledby']
       }
       className={cn(
-        'relative mx-auto max-h-[80vh] max-w-[90vw] outline-hidden',
+        'relative mx-auto outline-hidden',
+        // Fullscreen fills the Modal box, other sizes hug their content.
+        isFullscreen
+          ? 'size-full max-h-full max-w-full'
+          : 'max-h-[80vh] max-w-[90vw]',
         "grid [grid-template-areas:'title'_'content'_'actions']",
-        classNames.container
+        classNames.container,
+        // Clip the surface and pin the rows so only the content row scrolls, not the dialog.
+        // The trailing `grid` is load-bearing. It beats the container's `flex` via twMerge last-wins.
+        isFullscreen &&
+          'grid grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden'
       )}
     >
       {closeButton && (
@@ -121,7 +130,7 @@ export interface DialogProps
     Omit<RAC.DialogProps, 'className' | 'style' | 'render'>,
     Pick<ModalProps, 'open' | 'onOpenChange'> {
   variant?: string;
-  size?: 'xsmall' | 'small' | 'medium' | 'large' | (string & {});
+  size?: 'xsmall' | 'small' | 'medium' | 'large' | 'fullscreen' | (string & {});
   /**
    * Show the close button.
    */

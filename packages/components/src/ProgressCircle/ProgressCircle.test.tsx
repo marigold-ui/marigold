@@ -83,3 +83,36 @@ test('has aria label', () => {
 
   expect(progressCircle).toHaveAttribute('aria-label', 'Loading...');
 });
+
+test('respects a consumer-provided aria-label', () => {
+  render(<Basic.Component aria-label="Sending reminders" />);
+
+  const progressCircle = screen.getByRole('progressbar');
+
+  expect(progressCircle).toHaveAttribute('aria-label', 'Sending reminders');
+});
+
+test('falls back to the localized label when aria-label is explicitly undefined', () => {
+  // A conditional label (`aria-label={cond ? '…' : undefined}`) puts the key
+  // `aria-label: undefined` into props. The fallback must still apply so the
+  // progressbar always has an accessible name.
+  render(<Basic.Component aria-label={undefined} />);
+
+  const progressCircle = screen.getByRole('progressbar');
+
+  expect(progressCircle).toHaveAttribute('aria-label', 'Loading...');
+});
+
+test('respects a consumer-provided aria-labelledby without a redundant aria-label', () => {
+  render(
+    <>
+      <span id="progress-label">Sending reminders</span>
+      <Basic.Component aria-labelledby="progress-label" />
+    </>
+  );
+
+  const progressCircle = screen.getByRole('progressbar');
+
+  expect(progressCircle).toHaveAttribute('aria-labelledby', 'progress-label');
+  expect(progressCircle).not.toHaveAttribute('aria-label');
+});

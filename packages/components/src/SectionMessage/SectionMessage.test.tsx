@@ -154,14 +154,14 @@ test('allow to close message with button in message', async () => {
 
 test('support controlled dismiss message', async () => {
   const Controlled = () => {
-    const [close, setClose] = useState(false);
+    const [open, setOpen] = useState(true);
 
     return (
       <Basic.Component
         data-testid="messages"
         closeButton
-        close={!close}
-        onCloseChange={setClose}
+        open={open}
+        onOpenChange={setOpen}
       />
     );
   };
@@ -173,5 +173,26 @@ test('support controlled dismiss message', async () => {
   expect(button).toBeInTheDocument();
 
   await user.click(button);
+  expect(message[0]).not.toBeInTheDocument();
+});
+
+test('support uncontrolled dismiss message with onOpenChange listener', async () => {
+  const onOpenChange = vi.fn();
+
+  render(
+    <Basic.Component
+      data-testid="messages"
+      closeButton
+      onOpenChange={onOpenChange}
+    />
+  );
+  const message = screen.getAllByTestId(/messages/);
+  const button = screen.getAllByRole('button')[0];
+
+  expect(message[0]).toBeInTheDocument();
+
+  await user.click(button);
+
+  expect(onOpenChange).toHaveBeenCalledWith(false);
   expect(message[0]).not.toBeInTheDocument();
 });

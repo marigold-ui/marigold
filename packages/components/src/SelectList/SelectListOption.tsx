@@ -1,16 +1,12 @@
 import type { ReactNode, Ref } from 'react';
-import { use, useMemo } from 'react';
+import { useMemo } from 'react';
 import type RAC from 'react-aria-components';
-import { ButtonContext } from 'react-aria-components/Button';
 import { GridListItem as RACGridListItem } from 'react-aria-components/GridList';
 import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
 import { cn } from '@marigold/system';
 import { ButtonContext as MarigoldButtonContext } from '../Button/Context';
-import {
-  type SlottedContextValue,
-  useMergedTextSlots,
-} from '../utils/useMergedTextSlots';
+import { useMergedTextSlots } from '../utils/useMergedTextSlots';
 import { useSelectListContext } from './Context';
 import { SelectionIndicator } from './SelectionIndicator';
 
@@ -36,42 +32,29 @@ interface OptionChildrenProps {
   actionClassName?: string;
 }
 
-// Stable identity so `buttonContextValue`'s `useMemo` isn't invalidated each
-// render when there's no parent context.
-const EMPTY_BUTTON_CTX: SlottedContextValue = {};
-
-// A trailing action in an option is low-emphasis chrome, so a nested Marigold
-// `<Button>`/`<LinkButton>`/`<ActionMenu>` defaults to `ghost` (a local
-// `variant` still wins).
-const OPTION_BUTTON_CASCADE = { variant: 'ghost' };
-
-// Merge (not replace) RAC's slot configs on Text/Button contexts so nested
-// slotted children pick up our theme classNames without losing RAC's wiring.
+// Inject the option's theme slot classNames: merge into RAC's TextContext (to keep aria wiring) and cascade the action slot class + `ghost` via Marigold's ButtonContext.
 const OptionChildren = ({
   children,
   labelClassName,
   descriptionClassName,
   actionClassName,
 }: OptionChildrenProps) => {
-  const parentButton = use(ButtonContext) as SlottedContextValue | undefined;
-  const parentButtonValue = parentButton ?? EMPTY_BUTTON_CTX;
-
   const textContextValue = useMergedTextSlots({
     label: labelClassName,
     description: descriptionClassName,
   });
 
-  const buttonContextValue = useMemo(
-    () => ({ ...parentButtonValue, className: actionClassName }),
-    [parentButtonValue, actionClassName]
+  // Marigold Button/LinkButton/ActionMenu read the Marigold ButtonContext, so the action slot className and the `ghost` default live here. A local `variant` still wins.
+  const marigoldButtonContextValue = useMemo(
+    () => ({ variant: 'ghost', className: actionClassName }),
+    [actionClassName]
   );
 
   return (
     <Provider
       values={[
         [TextContext, textContextValue],
-        [ButtonContext, buttonContextValue],
-        [MarigoldButtonContext, OPTION_BUTTON_CASCADE],
+        [MarigoldButtonContext, marigoldButtonContextValue],
       ]}
     >
       {children}

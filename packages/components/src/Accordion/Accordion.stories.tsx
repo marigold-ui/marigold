@@ -11,6 +11,7 @@ import { Columns } from '../Columns/Columns';
 import { Headline } from '../Headline/Headline';
 import { Inline } from '../Inline/Inline';
 import { NumberField } from '../NumberField/NumberField';
+import { Scrollable } from '../Scrollable/Scrollable';
 import { Split } from '../Split/Split';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
@@ -270,6 +271,16 @@ export const Disabled = meta.story({
   ),
 });
 
+const stickyHeaderActions = (
+  <Inline space={2}>
+    <Button onPress={() => alert('Do NOT click! Come on!')}>Delete</Button>
+    <Button onPress={() => alert('Do NOT click! Come on!')}>Edit</Button>
+  </Inline>
+);
+
+const stickyScrollParagraph =
+  'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.';
+
 export const StickyHeader = meta.story({
   parameters: {
     controls: { exclude: ['iconPosition'] },
@@ -282,17 +293,9 @@ export const StickyHeader = meta.story({
       iconPosition={'left'}
     >
       <Accordion.Item id="1">
-        <Inline alignX="between">
-          <Accordion.Header>Symfonie Abo 2025/2026</Accordion.Header>
-          <Inline space={2}>
-            <Button onPress={() => alert('Do NOT click! Come on!')}>
-              Delete
-            </Button>
-            <Button onPress={() => alert('Do NOT click! Come on!')}>
-              Edit
-            </Button>
-          </Inline>
-        </Inline>
+        <Accordion.Header actions={stickyHeaderActions}>
+          Symfonie Abo 2025/2026
+        </Accordion.Header>
         <Accordion.Content>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
           nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
@@ -742,17 +745,9 @@ export const StickyHeader = meta.story({
         </Accordion.Content>
       </Accordion.Item>
       <Accordion.Item id="2">
-        <Inline alignX="between">
-          <Accordion.Header>Scroll Me Abo Season 25/26</Accordion.Header>
-          <Inline space={2}>
-            <Button onPress={() => alert('Do NOT click! Come on!')}>
-              Delete
-            </Button>
-            <Button onPress={() => alert('Do NOT click! Come on!')}>
-              Edit
-            </Button>
-          </Inline>
-        </Inline>
+        <Accordion.Header actions={stickyHeaderActions}>
+          Scroll Me Abo Season 25/26
+        </Accordion.Header>
         <Accordion.Content>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
           nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
@@ -878,6 +873,73 @@ export const StickyHeader = meta.story({
     </Accordion>
   ),
 });
+
+export const StickyHeaderScrollContainer = meta.story({
+  tags: ['component-test'],
+  parameters: {
+    controls: { exclude: ['iconPosition'] },
+    chromatic: { disableSnapshot: true },
+  },
+  render: args => (
+    <Scrollable height="150px">
+      <Accordion
+        {...args}
+        stickyHeader
+        iconPosition="left"
+        defaultExpandedKeys={['1']}
+      >
+        <Accordion.Item id="1">
+          <Accordion.Header actions={stickyHeaderActions}>
+            Symfonie Abo 2025/2026
+          </Accordion.Header>
+          <Accordion.Content>
+            <Stack space={4}>
+              <Text>
+                Scroll inside this box: the header stays pinned to the top while
+                the text below moves underneath it.
+              </Text>
+              <Text>{stickyScrollParagraph}</Text>
+              <Text>{stickyScrollParagraph}</Text>
+              <Text>{stickyScrollParagraph}</Text>
+              <Text>{stickyScrollParagraph}</Text>
+              <Text>{stickyScrollParagraph}</Text>
+              <Text>{stickyScrollParagraph}</Text>
+            </Stack>
+          </Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+    </Scrollable>
+  ),
+});
+
+StickyHeaderScrollContainer.test(
+  'keeps the header pinned to the top of the scroll container while scrolling',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const trigger = canvas.getByRole('button', {
+      name: /Symfonie Abo 2025\/2026/i,
+    });
+
+    // `Scrollable` is the nearest `.overflow-auto` ancestor; the accordion's
+    // own header wrapper is the nearest `.sticky` ancestor (closer than
+    // `Scrollable`, which also carries `sticky`).
+    const scrollContainer = trigger.closest('.overflow-auto') as HTMLElement;
+    const stickyWrapper = trigger.closest('.sticky') as HTMLElement;
+
+    expect(scrollContainer.scrollHeight).toBeGreaterThan(
+      scrollContainer.clientHeight
+    );
+
+    scrollContainer.scrollTop = 120;
+    expect(scrollContainer.scrollTop).toBeGreaterThan(0);
+
+    // With the fix the header clamps to the top of the scroll viewport instead
+    // of scrolling away with the panel content.
+    const headerTop = stickyWrapper.getBoundingClientRect().top;
+    const containerTop = scrollContainer.getBoundingClientRect().top;
+    expect(Math.abs(headerTop - containerTop)).toBeLessThan(5);
+  }
+);
 
 export const IconPositionLeft = meta.story({
   parameters: {

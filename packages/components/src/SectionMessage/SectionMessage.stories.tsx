@@ -1,4 +1,5 @@
-import { expect } from 'storybook/test';
+import { useState } from 'react';
+import { expect, userEvent, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
@@ -98,24 +99,12 @@ WithDescription.test(
     // Element type comes from the root's `TextContext` slot config.
     await expect(description.tagName).toBe('P');
 
-    // The description renders through the muted `description` slot, whose
-    // class pulls its color from the variant-driven
-    // `--section-message-description` variable (at 80% opacity) instead of
-    // inheriting the title's full variant foreground. Asserting on the class
-    // pins this behaviour without depending on a resolved color string.
-    await expect(description.className).toContain(
-      'text-(--section-message-description)'
-    );
-
-    // The variant's variable assignment must win the cascade over the
-    // container's `currentColor` fallback (both are same-specificity
-    // arbitrary properties; this pins Tailwind's emit order).
-    const container = heading.parentElement!;
-    await expect(
-      getComputedStyle(container)
-        .getPropertyValue('--section-message-description')
-        .trim()
-    ).not.toBe('currentColor');
+    // The description renders through the muted `description` slot. On the
+    // neutral (Toast-aligned) surface it uses `text-secondary` rather than a
+    // variant-tinted color, so standard text reads consistently across
+    // variants. Asserting on the class pins this without depending on a
+    // resolved color string.
+    await expect(description.className).toContain('text-secondary');
   }
 );
 
@@ -136,6 +125,26 @@ export const WithAction = meta.story({
   ),
 });
 
+// Snapshot enabled: this is the only Chromatic-covered story that renders the
+// non-default variants, so the eventual merge-to-`main` VRT run captures the
+// success/warning/error borders (and the no-close-button layout) too.
+export const AllVariants = meta.story({
+  render: args => (
+    <Stack space={4}>
+      {(['info', 'success', 'warning', 'error'] as const).map(variant => (
+        <SectionMessage key={variant} {...args} variant={variant}>
+          <SectionMessage.Title>
+            {variant[0].toUpperCase() + variant.slice(1)}
+          </SectionMessage.Title>
+          <SectionMessage.Content>
+            <Text>This is a {variant} message.</Text>
+          </SectionMessage.Content>
+        </SectionMessage>
+      ))}
+    </Stack>
+  ),
+});
+
 export const MultiLineTitle = meta.story({
   render: args => (
     <div className="w-60">
@@ -150,3 +159,107 @@ export const MultiLineTitle = meta.story({
     </div>
   ),
 });
+
+export const ControlledSectionMessage = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true }, surface: false },
+  render: args => {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <Stack space={4} alignX="left">
+        <Button variant="secondary" onPress={() => setOpen(true)}>
+          Show message
+        </Button>
+        <SectionMessage
+          {...args}
+          variant="success"
+          closeButton
+          open={open}
+          onOpenChange={setOpen}
+        >
+          <SectionMessage.Title>Item deleted</SectionMessage.Title>
+          <SectionMessage.Content>
+            The item was removed successfully. Dismiss this message or press the
+            button again to bring it back.
+          </SectionMessage.Content>
+        </SectionMessage>
+      </Stack>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Not shown until "Show message" is pressed.
+    await expect(
+      canvas.queryByRole('heading', { name: 'Item deleted' })
+    ).not.toBeInTheDocument();
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Show message' }));
+
+    const heading = canvas.getByRole('heading', { name: 'Item deleted' });
+    await expect(heading).toBeInTheDocument();
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Close' }));
+
+    await expect(
+      canvas.queryByRole('heading', { name: 'Item deleted' })
+    ).not.toBeInTheDocument();
+  },
+});
+export const WithoutTitle = meta.story({
+  tags: ['component-test'],
+  args: { closeButton: true },
+  render: args => (
+    <SectionMessage {...args}>
+      <SectionMessage.Content>
+        <Text>Hello, I am a simple message without a title.</Text>
+      </SectionMessage.Content>
+    </SectionMessage>
+  ),
+});
+
+WithoutTitle.test(
+  'aligns the leading icon and close button with the first content line',
+  {
+    parameters: { chromatic: { disableSnapshot: true }, surface: false },
+  },
+  async ({ canvas, canvasElement }) => {
+    const content = canvas.getByText(
+      'Hello, I am a simple message without a title.'
+    );
+    const closeButton = canvas.getByRole('button');
+    const icon = canvasElement.querySelector('[class*="grid-area:icon"]')!;
+
+    const centerY = (el: Element) => {
+      const { top, bottom } = el.getBoundingClientRect();
+      return (top + bottom) / 2;
+    };
+
+    // With no title the first line is the content itself. The leading icon and
+    // the close button must center on that line rather than float above it: the
+    // 24px close box used to inflate the grid row and sit ~2-4px high. The 2px
+    // tolerance absorbs sub-pixel rounding.
+    await expect(
+      Math.abs(centerY(icon) - centerY(content))
+    ).toBeLessThanOrEqual(2);
+    await expect(
+      Math.abs(centerY(closeButton) - centerY(content))
+    ).toBeLessThanOrEqual(2);
+  }
+);
+
+WithoutTitle.test(
+  'dismisses the message when the close button is pressed',
+  {
+    parameters: { chromatic: { disableSnapshot: true }, surface: false },
+  },
+  async ({ canvas }) => {
+    const message = 'Hello, I am a simple message without a title.';
+    const closeButton = canvas.getByRole('button');
+
+    await userEvent.click(closeButton);
+
+    await expect(canvas.queryByText(message)).not.toBeInTheDocument();
+  }
+);

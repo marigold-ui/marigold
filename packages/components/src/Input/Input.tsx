@@ -48,7 +48,7 @@ const _Input = ({
       ? cloneElement(action, {
           ...action.props,
           className: cn(
-            'absolute right-0 cursor-pointer',
+            'absolute cursor-pointer',
             classNames.action,
             action.props.className
           ),

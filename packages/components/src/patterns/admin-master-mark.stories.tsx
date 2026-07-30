@@ -1,6 +1,9 @@
 import preview from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Checkbox } from '../Checkbox/Checkbox';
+import { Inline } from '../Inline/Inline';
+import { Link } from '../Link/Link';
+import { ActionMenu } from '../Menu/ActionMenu';
 import { Radio } from '../Radio/Radio';
 import { Stack } from '../Stack/Stack';
 import { Table } from '../Table/Table';
@@ -89,5 +92,69 @@ export const Form = meta.story({
         </Radio.Group>
       </Stack>
     </div>
+  ),
+});
+
+export const InlineTableActions = meta.story({
+  render: () => (
+    <Table aria-label="Filialen">
+      <Table.Header>
+        <Table.Column rowHeader>Filiale</Table.Column>
+        <Table.Column>Aktionen</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row key="1">
+          <Table.Cell>Freiburg Süd</Table.Cell>
+          <Table.Cell>
+            <Inline space={4} alignY="center">
+              <Link href="#">bearbeiten</Link>
+              <Link href="#" variant="master">
+                verschieben
+              </Link>
+              <Link href="#" variant="master">
+                TSE anbinden
+              </Link>
+              <Link href="#">löschen</Link>
+            </Inline>
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row key="2">
+          <Table.Cell>Freiburg Nord</Table.Cell>
+          <Table.Cell>
+            <Inline space={4} alignY="center">
+              <Link href="#">bearbeiten</Link>
+              <Link href="#" variant="admin">
+                freigeben
+              </Link>
+            </Inline>
+          </Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  ),
+});
+
+export const MenuWithSections = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: () => (
+    <ActionMenu aria-label="Filial-Aktionen">
+      <ActionMenu.Item id="edit">Bearbeiten</ActionMenu.Item>
+      <ActionMenu.Section title="Master-Aktionen">
+        <ActionMenu.Item id="move" variant="master">
+          Verschieben
+        </ActionMenu.Item>
+        <ActionMenu.Item id="tse" variant="master">
+          TSE anbinden
+        </ActionMenu.Item>
+        <ActionMenu.Item id="delete" variant="master">
+          Löschen
+        </ActionMenu.Item>
+      </ActionMenu.Section>
+      <ActionMenu.Section title="Admin-Aktionen">
+        <ActionMenu.Item id="release" variant="admin">
+          Freigeben
+        </ActionMenu.Item>
+      </ActionMenu.Section>
+    </ActionMenu>
   ),
 });

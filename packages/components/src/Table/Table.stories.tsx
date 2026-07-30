@@ -1831,3 +1831,124 @@ ColumnAlignment.test(
     );
   }
 );
+
+export const FooterTotals = meta.story({
+  render: args => {
+    const totalBalance = users.reduce((sum, user) => sum + user.balance, 0);
+
+    return (
+      <Table aria-label="Users with totals" {...args}>
+        <Table.Header>
+          <Table.Column rowHeader>Name</Table.Column>
+          <Table.Column>Email</Table.Column>
+          <Table.Column>Location</Table.Column>
+          <Table.Column>Status</Table.Column>
+          <Table.Column alignX="right">Balance</Table.Column>
+        </Table.Header>
+        <Table.Body>
+          {users.map(user => (
+            <Table.Row key={user.email}>
+              <Table.Cell>{user.name}</Table.Cell>
+              <Table.Cell>{user.email}</Table.Cell>
+              <Table.Cell>{user.location}</Table.Cell>
+              <Table.Cell>
+                <Badge>{user.status}</Badge>
+              </Table.Cell>
+              <Table.Cell>
+                <NumericFormat
+                  style="currency"
+                  currency="EUR"
+                  value={user.balance}
+                />
+              </Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+        <Table.Footer>
+          <Table.Row>
+            <Table.Cell colSpan={4}>Total</Table.Cell>
+            <Table.Cell>
+              <NumericFormat
+                style="currency"
+                currency="EUR"
+                value={totalBalance}
+              />
+            </Table.Cell>
+          </Table.Row>
+        </Table.Footer>
+      </Table>
+    );
+  },
+});
+
+export const StickyFooter = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => {
+    const totalBalance = users.reduce((sum, user) => sum + user.balance, 0);
+
+    return (
+      <Scrollable height="300px">
+        <Table aria-label="Users with sticky totals" {...args}>
+          <Table.Header>
+            <Table.Column rowHeader>Name</Table.Column>
+            <Table.Column>Email</Table.Column>
+            <Table.Column>Location</Table.Column>
+            <Table.Column>Status</Table.Column>
+            <Table.Column alignX="right">Balance</Table.Column>
+          </Table.Header>
+          <Table.Body>
+            {users.map(user => (
+              <Table.Row key={user.email}>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>{user.location}</Table.Cell>
+                <Table.Cell>
+                  <Badge>{user.status}</Badge>
+                </Table.Cell>
+                <Table.Cell>
+                  <NumericFormat
+                    style="currency"
+                    currency="EUR"
+                    value={user.balance}
+                  />
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+          <Table.Footer sticky>
+            <Table.Row>
+              <Table.Cell colSpan={4}>Total</Table.Cell>
+              <Table.Cell>
+                <NumericFormat
+                  style="currency"
+                  currency="EUR"
+                  value={totalBalance}
+                />
+              </Table.Cell>
+            </Table.Row>
+          </Table.Footer>
+        </Table>
+      </Scrollable>
+    );
+  },
+});
+
+StickyFooter.test(
+  'Keeps the footer sticky while scrolling',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    const scrollContainer = canvas
+      .getByRole('grid')
+      .closest('.overflow-auto') as HTMLElement;
+
+    await step('Footer sticks to the bottom of the scroll viewport', () => {
+      const tfoot = canvas.getByText('Total').closest('tfoot') as HTMLElement;
+      expect(tfoot).toHaveClass('sticky', 'bottom-0');
+
+      const footerBottom = tfoot.getBoundingClientRect().bottom;
+      const containerBottom = scrollContainer.getBoundingClientRect().bottom;
+      expect(Math.abs(footerBottom - containerBottom)).toBeLessThan(5);
+    });
+  }
+);
