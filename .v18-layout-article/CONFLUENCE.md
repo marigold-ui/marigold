@@ -1,12 +1,10 @@
-# RUI: Das Layout-System von Marigold v18
-
-_Entwurf für Review (DST-1571). Folgeartikel zu „Das visuelle Fundament von Marigold v18". Noch nicht veröffentlicht._
+> **Entwurf für Review – noch nicht veröffentlicht.** Ticket: DST-1571. Folgeartikel zu „RUI: Das visuelle Fundament von Marigold v18". Die Screenshots sind noch nicht eingefügt: An jeder Stelle steht ein Platzhalter mit dem Dateinamen. Die offenen Punkte für die Veröffentlichung stehen am Ende der Seite.
 
 Im letzten Artikel ging es um Farben, Flächen und Schatten, also darum, wie unsere Oberflächen aussehen. Diesmal geht es eine Ebene höher: um den Aufbau einer Seite. Das ist der Teil von v18, der am meisten daran ändert, wie wir entwerfen und entwickeln.
 
 Ein Bild vorweg, das den ganzen Artikel zusammenfasst: **erst die Räume, dann die Möbel.** Der Rahmen einer Anwendung ist das Gebäude. Eine Seite ist ein Raum darin. Panels sind die benannten Bereiche im Raum. Und was in einem Bereich steht, sind die Möbel.
 
-![Rahmen, Seite und Panels als verschachtelte Struktur](assets/v18-concept-structure.png)
+**[Bild: v18-concept-structure.png — Rahmen, Seite und Panels als verschachtelte Struktur]**
 
 Der Artikel ist in drei Teilen aufgebaut. **Teil 1** erklärt den Aufbau einer Seite und ist für alle interessant, die mit unseren Produkten arbeiten, auch ohne Design- oder Entwicklungshintergrund. **Teil 2** geht ins Detail und richtet sich an Designerinnen und Designer. **Teil 3** erklärt, warum wir uns so entschieden haben, inklusive der Stellen, an denen wir uns bewusst gegen den Standard anderer Systeme gestellt haben.
 
@@ -20,7 +18,7 @@ Bisher hat jedes Produkt seinen Seitenaufbau selbst festgelegt. Es gab Bausteine
 
 Das Ergebnis sieht man hier. Unter dem Titel liegt ein Stapel Bedienelemente: ein Schalter, ein Suchfeld, eine Schnellwahl, dazwischen die Hauptaktion. Danach folgt eine Tabelle, die direkt auf dem Seitenhintergrund liegt. Nichts davon ist als Bereich benannt.
 
-![Veranstaltungsübersicht: Bedienelemente ohne benannte Bereiche unter dem Titel](assets/core-before-veranstaltungen.png)
+**[Bild: core-before-veranstaltungen.png — Veranstaltungsübersicht: Bedienelemente ohne benannte Bereiche unter dem Titel]**
 
 Das war kein Fehler, den irgendwer gemacht hat. Es gab schlicht kein gemeinsames Modell, an dem man sich orientieren konnte, also hat jedes Team eine eigene Lösung gefunden. Genau diese Lücke füllt v18.
 
@@ -30,17 +28,17 @@ v18 beantwortet diese Fragen einmal, und zwar mit drei Ebenen, die ineinander li
 
 Ganz außen sitzt der **App-Rahmen**: Navigation links, eine Kopfzeile oben, der Inhalt darunter. Der Rahmen bleibt stehen, während man durch die Anwendung navigiert. Nur der Inhaltsbereich wechselt.
 
-![Der v18-Rahmen mit Navigation, Kopfzeile und Inhaltsbereich](assets/v18-dashboard.png)
+**[Bild: v18-dashboard.png — Der v18-Rahmen mit Navigation, Kopfzeile und Inhaltsbereich]**
 
 Die Navigation hat zwei Ebenen: eine schmale Leiste mit Symbolen für die Hauptbereiche und daneben eine Spalte mit den Links des aktuellen Bereichs. Klappt man die Spalte zu, bleiben die Symbole stehen. Man gewinnt Platz, ohne die Orientierung zu verlieren.
 
-![Zugeklappte Navigation: die Symbolleiste bleibt sichtbar](assets/nav-collapsed-rail.png)
+**[Bild: nav-collapsed-rail.png — Zugeklappte Navigation: die Symbolleiste bleibt sichtbar]**
 
 Auf schmalen Bildschirmen wird die Navigation zu einer Fläche, die sich über die Seite legt, und der Inhalt läuft einspaltig darunter.
 
-![Navigation auf schmalem Bildschirm](assets/nav-mobile-sheet.png)
+**[Bild: nav-mobile-sheet.png — Navigation auf schmalem Bildschirm]**
 
-![Seiteninhalt auf schmalem Bildschirm](assets/nav-mobile-page.png)
+**[Bild: nav-mobile-page.png — Seiteninhalt auf schmalem Bildschirm]**
 
 Die neue Navigation kommt allerdings nicht zusammen mit dem Rest von v18. Wann sie kommt und warum getrennt, steht weiter unten unter „Wann kommt das?".
 
@@ -52,7 +50,7 @@ Im Rahmen liegt die **Seite**. Jede Seite hat denselben Anfang: einen Titel, der
 
 Zwei Dinge stehen bewusst **nicht** im Seitenkopf. Der Pfad, an dem man ablesen kann, wo man sich in der Anwendung befindet, gehört zum Rahmen, nicht zur Seite. Und der Status eines Objekts, also etwa „aktiv" oder „gesperrt", steht im Inhalt, nicht neben dem Titel. Bei Detailseiten hat sich dafür eine schmale Spalte rechts etabliert, die den Status und die wichtigsten Fakten trägt.
 
-![Detailseite: Inhalt links, Status und Kennzahlen in einer schmalen Spalte rechts](assets/v18-detail-user.png)
+**[Bild: v18-detail-user.png — Detailseite: Inhalt links, Status und Kennzahlen in einer schmalen Spalte rechts]**
 
 ### Panels: benannte Bereiche
 
@@ -64,25 +62,25 @@ Der Unterschied zur Karte ist wichtig, weil beide gleich aussehen: Eine Karte st
 
 Das Muster ist nicht neu. An mehreren Stellen in unseren Systemen haben wir uns in genau diese Richtung vorgearbeitet, lange bevor es einen Namen dafür gab. Ein Beispiel, das viele kennen, ist die Seite zum Bearbeiten eines Einzeltermins: Abschnitte mit Titel, jeder mit einem Thema, jeweils auf einer eigenen weißen Fläche.
 
-![Abschnitt „Tickets" auf der Einzeltermin-Seite](assets/core-event-panel-tickets.png)
+**[Bild: core-event-panel-tickets.png — Abschnitt „Tickets" auf der Einzeltermin-Seite]**
 
 Technisch ist dieser Abschnitt eine Card, denn ein Panel gab es damals noch nicht. Also wurde die Card zum Seitenabschnitt umgebaut, weil sie das Nächstliegende war. v18 gibt dem Ding endlich seinen richtigen Namen und den passenden Aufbau.
 
 Und genau das ist inzwischen passiert. In der v18-Beta läuft dieselbe Seite auf dem echten Panel:
 
-![Derselbe Abschnitt „Tickets", in der v18-Beta als echtes Panel](assets/core-beta-panel-tickets.png)
+**[Bild: core-beta-panel-tickets.png — Derselbe Abschnitt „Tickets", in der v18-Beta als echtes Panel]**
 
 Der Unterschied ist mit Absicht kaum zu sehen, denn die Card war ja schon ein Panel in allem außer dem Namen. Wichtig ist, was darunter passiert: „Tickets" ist jetzt eine Überschrift in der Gliederung der Seite, der Abschnitt ist ein benannter Bereich, und die Breite kommt vom Panel und nicht von der Seite.
 
 So sieht die Seite im Ganzen aus. Oben der Pfad, darunter der Seitentitel, darunter die Panels:
 
-![Die Einzeltermin-Seite in der v18-Beta](assets/core-beta-event-page.png)
+**[Bild: core-beta-event-page.png — Die Einzeltermin-Seite in der v18-Beta]**
 
 Diese Seite ist gleichzeitig der Beleg dafür, dass die Umstellung Seite für Seite gehen kann: Sie nutzt Seite und Panels aus v18, während der Rahmen um sie herum und die Navigation unverändert die bisherigen sind.
 
 Dasselbe im Überspielungstool, dort mit zwei Bereichen nebeneinander. Beide haben einen Titel, eine Zeile mit der Anzahl darunter, ihre eigenen Filter und einen leeren Zustand mit einem Hinweis, was zu tun ist.
 
-![Überspielungstool: zwei benannte Bereiche nebeneinander](assets/core-after-wizard-bundles.png)
+**[Bild: core-after-wizard-bundles.png — Überspielungstool: zwei benannte Bereiche nebeneinander]**
 
 Diese Beispiele sind der eigentliche Beleg dafür, dass v18 nichts Neues erfindet. An verschiedenen Stellen sind wir unabhängig voneinander bei derselben Form gelandet, weil das die Form ist, die die Aufgabe verlangt. Das Layout-System schreibt sie auf und macht sie überall verfügbar.
 
@@ -149,11 +147,11 @@ Fast jede Seite in einer Anwendung ist eine von fünf Formen. Alle bestehen aus 
 | **Einstellungen** | Konfiguration in Gruppen, oft mit Tabs | Tabs unter dem Seitenkopf, darin gestapelte Formular-Panels |
 | **Übersicht** | Kennzahlen auf einen Blick | Panels und Cards in Spalten oder als Raster |
 
-![Listenform](assets/v18-list-filter.png)
+**[Bild: v18-list-filter.png — Listenform]**
 
-![Formularform](assets/v18-form-event.png)
+**[Bild: v18-form-event.png — Formularform]**
 
-![Einstellungsform](assets/v18-settings-general.png)
+**[Bild: v18-settings-general.png — Einstellungsform]**
 
 Die Detailform lohnt es sich besonders anzuschauen, weil sie am häufigsten vorkommt und dabei den meisten Spielraum lässt. Der Inhalt steht links, Status und Kennzahlen in einer schmalen Spalte rechts, etwa zwei Drittel zu einem Drittel. Auf schmalen Bildschirmen fällt die rechte Spalte unter die linke.
 
@@ -195,7 +193,7 @@ Eine kleinere Festlegung noch am Rand, weil die Frage regelmäßig kommt: Der Pf
 
 Ein Punkt ist offen, und es lohnt nicht, das zu verstecken. Sehr lange Formulare bestehen häufig aus vielen eingeklappten Abschnitten. Die untere Hälfte der Einzeltermin-Seite sieht so aus:
 
-![Mehrere eingeklappte Panels, darunter Speichern und Abbrechen](assets/core-beta-collapsed-stack.png)
+**[Bild: core-beta-collapsed-stack.png — Mehrere eingeklappte Panels in der v18-Beta, darunter Speichern und Abbrechen]**
 
 Das ist praktisch, weil man sonst endlos scrollt. Gleichzeitig ist es eine Seite, die man erst aufklappen muss, um zu sehen, was auf ihr steht. Unsere Empfehlung ist bisher: pro Panel höchstens ein eingeklappter Teil, und zwar für den Rand des Themas, nicht für das Thema selbst. Für eine Reihe gleichrangiger Klapp-Abschnitte gibt es ein eigenes Element, das Accordion.
 
@@ -213,9 +211,13 @@ Zum Schluss dieselbe Beobachtung wie beim visuellen Fundament: Ein gutes Layout 
 
 ---
 
-_Vor der Veröffentlichung zu klären:_
+### Intern: vor der Veröffentlichung zu klären
 
-- _Screenshots stammen aus dem Test-Mandanten „Test-Design System" auf Stage, keine echten Kundendaten._
-- _Doku-Links zeigen auf die Beta-Deployment-URL und müssen zum Launch auf marigold-ui.io umgestellt werden._
-- _Master- und Admin-Markierungen sind auf zwei Screenshots sichtbar, werden im Text aber bewusst nicht erklärt._
-- _Navigation ist mit „erstes Quartal 2027, zunächst als Opt-in" angegeben. Vor der Veröffentlichung gegen den aktuellen Plan abgleichen._
+*Dieser Abschnitt wird vor dem Publizieren entfernt.*
+
+- Screenshots stammen aus dem Test-Mandanten „Test-Design System" auf Stage, keine echten Kundendaten.
+- Doku-Links zeigen auf die Beta-Deployment-URL und müssen zum Launch auf marigold-ui.io umgestellt werden.
+- Master- und Admin-Markierungen sind auf zwei Screenshots sichtbar, werden im Text aber bewusst nicht erklärt.
+- Navigation ist mit „erstes Quartal 2027, zunächst als Opt-in" angegeben. Vor der Veröffentlichung gegen den aktuellen Plan abgleichen.
+- Die Bilder liegen im Repo unter `.v18-layout-article/assets/` (Branch `worktree-dst-1571-designer-layout-article`) und müssen an die markierten Stellen eingefügt werden.
+- Die drei `core-beta-*`-Screenshots stammen aus der Review-App (`chore-marigold-18-beta`), Test-Mandant 29187. `core-beta-events-list.png` liegt zusätzlich bereit, ist aber aktuell nicht eingebunden.

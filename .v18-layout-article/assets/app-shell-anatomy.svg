@@ -1,16 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" fill="none">
-  <!-- Background -->
-  <rect x="1" y="1" width="598" height="398" rx="8" stroke="#E2E8F0" stroke-width="2" fill="#F8FAFC"/>
-
-  <!-- Sidebar -->
-  <rect x="16" y="16" width="150" height="368" rx="6" fill="#CBD5E1" stroke="#94A3B8" stroke-width="1.5"/>
-  <text x="91" y="204" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#334155">Sidebar</text>
-
-  <!-- Top Navigation -->
-  <rect x="182" y="16" width="402" height="56" rx="6" fill="#CBD5E1" stroke="#94A3B8" stroke-width="1.5"/>
-  <text x="383" y="50" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#334155">Top Navigation</text>
-
-  <!-- Main -->
-  <rect x="182" y="88" width="402" height="296" rx="6" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="6 3"/>
-  <text x="383" y="240" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#334155">Main</text>
-</svg>
+<svg fill="none" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg"><rect fill="#f8fafc" height="398" rx="8" stroke="#e2e8f0" stroke-width="2" width="598" x="1" y="1"/><rect fill="#cbd5e1" height="368" rx="6" stroke="#94a3b8" stroke-width="1.5" width="150" x="16" y="16"/><text fill="#334155" font-family="system-ui, sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="91" y="204">Sidebar</text><rect fill="#cbd5e1" height="56" rx="6" stroke="#94a3b8" stroke-width="1.5" width="402" x="182" y="16"/><text fill="#334155" font-family="system-ui, sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="383" y="50">Top Navigation</text><rect fill="#e2e8f0" height="296" rx="6" stroke="#94a3b8" stroke-dasharray="6 3" stroke-width="1.5" width="402" x="182" y="88"/><text fill="#334155" font-family="system-ui, sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="383" y="240">Main</text></svg>
