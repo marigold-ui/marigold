@@ -1,3 +1,5 @@
+> **Nicht mehr gepflegt.** Diese Datei war die Vorlage für die Confluence-Seite [DST » DRAFT](https://reservix.atlassian.net/wiki/spaces/DST/pages/4980703245/DRAFT). Ab dem 30.07.2026 wird nur noch dort weitergearbeitet. Stand: Commit `38981a87d`.
+
 > **Entwurf für Review – noch nicht veröffentlicht.** Ticket: DST-1571. Folgeartikel zu „RUI: Das visuelle Fundament von Marigold v18". Die Screenshots sind noch nicht eingefügt: An jeder Stelle steht ein Platzhalter mit dem Dateinamen. Die offenen Punkte für die Veröffentlichung stehen am Ende der Seite.
 
 Im letzten Artikel ging es um Farben, Flächen und Schatten, also darum, wie unsere Oberflächen aussehen. Diesmal geht es eine Ebene höher: um den Aufbau einer Seite. Das ist der Teil von v18, der am meisten daran ändert, wie wir entwerfen und entwickeln.

@@ -2,6 +2,8 @@
 
 _Entwurf für Review (DST-1571). Folgeartikel zu „Das visuelle Fundament von Marigold v18". Noch nicht veröffentlicht._
 
+> **Nicht mehr gepflegt.** Ab dem 30.07.2026 wird nur noch die Confluence-Seite aktualisiert: [DST » DRAFT](https://reservix.atlassian.net/wiki/spaces/DST/pages/4980703245/DRAFT). Diese Datei ist der Stand von Commit `38981a87d` und dient nur noch als Archiv samt Bildern unter `assets/`.
+
 Im letzten Artikel ging es um Farben, Flächen und Schatten, also darum, wie unsere Oberflächen aussehen. Diesmal geht es eine Ebene höher: um den Aufbau einer Seite. Das ist der Teil von v18, der am meisten daran ändert, wie wir entwerfen und entwickeln.
 
 Ein Bild vorweg, das den ganzen Artikel zusammenfasst: **erst die Räume, dann die Möbel.** Der Rahmen einer Anwendung ist das Gebäude. Eine Seite ist ein Raum darin. Panels sind die benannten Bereiche im Raum. Und was in einem Bereich steht, sind die Möbel.
