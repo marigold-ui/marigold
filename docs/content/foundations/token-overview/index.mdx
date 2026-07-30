@@ -122,7 +122,26 @@ Alongside the five washes, `ui-contrast` applies `text-primary-foreground` and r
   decision rather than a token edit.
 </Callout>
 
-Not every ground-dependent token is restated. `secondary-bold` is not, so `text-secondary-bold` under a contrast surface measures 2.04:1 (Lc 12); nor are `placeholder` (3.14:1, and it is text), `ring` (2.05:1 over `selected`, against the 3:1 a focus indicator needs), `selected-bold` (1.00:1 — charcoal-900 on a charcoal-900 ground), `scrollbar-hover` (1.14:1), or the three translucent edge tokens, which are dark-base alphas and so recede into a dark ground instead of drawing an edge. Only the scrollbar has a consumer nested under a contrast surface today — ActionBar's toolbar scrolls, so hovering its thumb makes it disappear into the bar. Rather than leave that as folklore, the theme carries a **polarity inventory**: every neutral token is classified as flipping, deliberately stable, or a known gap, and a test asserts each behaves as classified. Adding a neutral token without classifying it fails that test — which is the point, since "add a token, forget a line" is how this list got long in the first place.
+The washes were not the only ground-dependent tokens — only the ones the ramp forced a decision on. To find the rest, the theme carries a **polarity inventory**: every neutral token is classified as either flipping under `ui-contrast` or deliberately stable, and a test asserts each behaves as classified. Adding a neutral token without classifying it fails that test, which is the point — "add a token, forget a line" is how the gaps appeared in the first place.
+
+Working through it turned up three real failures, all now restated: `selected-bold` at 1.00:1 (charcoal-900 on a charcoal-900 ground, so a checked Checkbox or an ON Switch was invisible), `scrollbar-hover` at 1.14:1 (live — ActionBar's toolbar scrolls, so hovering its thumb made it disappear into the bar), and the inset focus ring at 2.05:1 over `selected`.
+
+### What may flip, and what must not
+
+The rest of the inventory is stable for one of two structural reasons, and they are worth stating because they decide the question for any future token.
+
+**A token painted on an element's own opaque fill must not flip.** `ui-contrast` does not restate `surface`, so a field nested in a contrast region is still a white well. `placeholder` sits in that well at 5.52:1 and would be destroyed by a flip; so would `control-border` and its `-on-control` sibling, which trace the edge of a light control against a light track. This is the same reason `foreground` is deliberately not restated. `secondary-bold` is the sharpest case: it has two consumers, both on opaque light — Sidebar nav labels and the SegmentedControl label on its `charcoal-300` track — and no palette rung satisfies both polarities, 8.48:1 on white against 2.04:1 on the bar. It is a light-context ink by construction; use `secondary`, which does flip, for text that sits on the ground.
+
+**A token painted at or outside an element's edge cannot flip either**, because `ui-contrast` is used two ways: as a **region** (ActionBar), where descendants really do sit on the dark ground, and as a **cap on a single control** (the primary and destructive Button), where the fill is dark but the focus halo and the boundary are painted against the light page. A restatement inherits and cannot tell those apart. That is why `ring` stays `charcoal-600`: the mid-tone is the point, clearing 3:1 on both polarities at a boundary (4.99:1 against the page, 3.14:1 against a dark cap). Flipping it to `charcoal-200` would take the Button's halo to 1.07:1.
+
+Inset paint has no such ambiguity — it lands strictly inside the region — so the ring is split in two. `ring` covers the outset halo and the border recolor; `ring-inset` is what `ui-state-focus-item` draws, and it flips to `charcoal-200` (8.92:1 over a washed dark ground). The split is not cosmetic: no single value clears 3:1 on every backdrop of both polarities, because an inset ring has to survive both the `a-300` wash on the page and the `b-300` wash on the bar. The best any rung manages is 2.16:1.
+
+<Callout title="The criterion is what a token is painted on">
+  Not which ground its component happens to sit over. Every entry that once read
+  as an unfixed gap turned out to be one of two things: a genuine failure, or a
+  token measured against a ground it is never painted on. Getting that
+  distinction right is what let the list close rather than grow.
+</Callout>
 
 ### Rules for alpha tokens
 
@@ -363,7 +382,13 @@ Some controls have no border to define them. The switch track is the clearest ex
 
 ```tsx
 // Switch track: control when off, selected-bold when on
-<div className="bg-control group-selected/switch:bg-selected-bold" />
+<div className="bg-control group-selected/switch:bg-selected-bold">
+  {/* The thumb takes the ink token for the ON track, not `bg-surface`, so it
+      travels with the fill it sits on. `selected-bold` flips to near-white on a
+      contrast ground, where a white thumb measured 1.04:1 — the puck vanished,
+      and with it the position cue that carries the state. */}
+  <span className="bg-selected-bold-foreground" />
+</div>
 ```
 
 <Callout title="Not a default for all controls">
@@ -451,13 +476,14 @@ Selection tells users which item has already been chosen. Not every selection lo
     },
     {
       name: 'selected-bold',
-      value: 'charcoal-900',
+      value: 'charcoal-900 (charcoal-50 on a contrast ground)',
       useFor: 'Binary selection (Checkbox, Radio, Switch, ToggleButton)',
     },
     {
       name: 'selected-bold-foreground',
-      value: 'charcoal-50',
-      useFor: 'Text and icons on selected-bold backgrounds',
+      value: 'charcoal-50 (charcoal-900 on a contrast ground)',
+      useFor:
+        'Text and icons on selected-bold backgrounds. Flips with its fill, or the checkmark vanishes into the box',
     },
   ]}
 />
@@ -706,7 +732,14 @@ Every boundary token in one place. Marigold draws element edges with five tokens
     {
       name: 'ring',
       value: 'charcoal-600',
-      useFor: 'Focus ring outline color for keyboard navigation',
+      useFor:
+        'Focus ring drawn at or outside an element edge — the ui-state-focus halo and border recolor',
+    },
+    {
+      name: 'ring-inset',
+      value: 'charcoal-600 (charcoal-200 on a contrast ground)',
+      useFor:
+        'Focus ring drawn inset, for borderless rows (ui-state-focus-item). The only one of the pair that flips',
     },
   ]}
 />
@@ -948,8 +981,9 @@ Custom scrollbar tokens keep scrollbars visually consistent with the rest of the
     },
     {
       name: 'scrollbar-hover',
-      value: 'charcoal-950',
-      useFor: 'Scrollbar thumb on hover',
+      value: 'charcoal-950 (charcoal-50 on a contrast ground)',
+      useFor:
+        'Scrollbar thumb on hover. Steps away from the ground, so it darkens on light and lightens on dark',
     },
     {
       name: 'scrollbar-track',

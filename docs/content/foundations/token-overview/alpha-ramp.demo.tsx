@@ -35,9 +35,15 @@ interface Ground {
 
 /**
  * The three grounds a wash has to ride, with the ink each one actually puts on
- * top. The contrast row lists what `ui-contrast` really resolves to, including
- * `secondary-bold`, which it does *not* restate — so the failure shows up here
- * rather than staying a footnote.
+ * top — resolved as `ui-contrast` really resolves it, not as the root declares
+ * it.
+ *
+ * The ink lists differ per ground on purpose, because the inks differ.
+ * `secondary-bold` appears on the two light grounds (Sidebar nav labels) and not
+ * on the contrast one: it is a light-context ink that `ui-contrast` deliberately
+ * does not restate, since its other consumer sits on an opaque light track. Text
+ * on a contrast ground uses `secondary`, which does flip. Listing it here would
+ * measure a combination the theme tells you not to write.
  */
 const GROUNDS: Ground[] = [
   {
@@ -73,7 +79,7 @@ const GROUNDS: Ground[] = [
     inks: [
       { label: 'primary-foreground', rgb: charcoal['50'].rgb },
       { label: 'secondary (restated)', rgb: charcoal['500'].rgb },
-      { label: 'secondary-bold (not restated)', rgb: charcoal['700'].rgb },
+      { label: 'disabled', rgb: charcoal['400'].rgb },
     ],
   },
 ];

@@ -32,7 +32,12 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
       'inline-flex items-center justify-center',
       'shrink-0 size-8 rounded-full cursor-pointer transition-[color]',
       'hover:ui-state-hover-ghost',
-      'focus-visible:ui-state-focus outline-none',
+      // Borderless, so `ui-state-focus` had nothing to recolor and degraded to
+      // its halo alone — 1.71:1 against the bar, 1.12:1 once the hover wash sat
+      // under it. No ring color fixes that: at the /50 the halo uses, even
+      // charcoal-200 tops out at 2.84:1 over a dark ground. `ui-state-focus-item`
+      // is full-opacity and inset, which reads 8.92:1 here.
+      'focus-visible:ui-state-focus-item outline-none',
       // Borderless round button on a dark bar: the disabled reset would paint an
       // opaque near-white circle. See `ui-state-disabled`.
       'disabled:ui-state-disabled [--ui-disabled-fill:transparent]',

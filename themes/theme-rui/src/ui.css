@@ -154,6 +154,45 @@
   --color-hover: var(--color-charcoal-b-200);
   --color-selected: var(--color-charcoal-b-300);
 
+  /* The washes above are not the only ground-dependent tokens; they were just
+     the ones the ramp forced a decision on. These three are opaque, and each was
+     measured against a ground it turned out to be painted directly onto:
+
+       --color-selected-bold    1.00:1  charcoal-900 on a charcoal-900 ground:
+                                        a checked Checkbox or an ON Switch here
+                                        was invisible.
+       --color-scrollbar-hover  1.14:1  live -- ActionBar's toolbar is
+                                        `overflow-x-auto`, so hovering the thumb
+                                        made it vanish into the bar.
+       --color-ring-inset       2.05:1  over `selected`, against 1.4.11's 3:1.
+
+     `selected-bold` mirrors its light-ground value rather than merely clearing
+     the floor: charcoal-900 is the near-black extreme against a light ground, so
+     charcoal-50 is the near-white extreme against a dark one (10.83:1). Its ink
+     has to travel with it, or the checkmark disappears into the box it sits in.
+
+     Only charcoal-500 would have satisfied the ground *and* the Switch's white
+     thumb without touching a component (3.10 / 3.65:1) — both thin, and a mid
+     grey reads as half-on rather than on. The thumb moves to
+     `selected-bold-foreground` instead, which is by definition the ink for this
+     fill and so flips with it; see Switch.styles.ts.
+
+     `scrollbar-hover` follows the same rule as the light ground: hover steps
+     *away* from the ground. Away from white is charcoal-950; away from a dark
+     bar is charcoal-50, which also keeps it lighter than the charcoal-300 idle
+     thumb, so hover still reads as "more".
+
+     Not restated, deliberately: `--color-ring` (see its comment in tokens.css --
+     the cap case forbids it), `--color-placeholder`, `--color-secondary-bold`
+     and the border tokens. Those are painted on an element's *own* opaque light
+     fill -- a field well, the SegmentedControl track -- which this utility does
+     not restate, so flipping them would break the very case they serve. Same
+     reason `--color-foreground` stays put. */
+  --color-selected-bold: var(--color-charcoal-50);
+  --color-selected-bold-foreground: var(--color-charcoal-900);
+  --color-scrollbar-hover: var(--color-charcoal-50);
+  --color-ring-inset: var(--color-charcoal-200);
+
   /* Read --ui-border-color first (falling back to the derived dark edge) so state
      overrides recolor the ring here exactly as on a plain ui-frame — otherwise a
      disabled/focused/invalid contrast surface keeps its dark outline. */
@@ -250,9 +289,15 @@
  * Keyboard focus for borderless rows: menu items, list options, table rows --
  * anything that has no --ui-border-color for ui-state-focus to recolor.
  *
- * Full-opacity --color-ring, because this ring *is* the whole indicator: 4.97:1
- * over focus-highlight, 3.59:1 over selected, 3.14:1 on the contrast ground.
- * At the /50 ui-state-focus uses it would land at 2.01:1 and fail.
+ * Full-opacity --color-ring-inset, because this ring *is* the whole indicator:
+ * 4.97:1 over focus-highlight, 3.59:1 over selected, 8.92:1 over the washed
+ * contrast ground. At the /50 ui-state-focus uses it would land at 2.01:1 and
+ * fail.
+ *
+ * --color-ring-inset rather than --color-ring: inset paint lands strictly inside
+ * a region, so it is safe for `ui-contrast` to flip -- and it has to, because
+ * charcoal-600 measures 2.05:1 over a `selected` wash on the dark ground. The
+ * outset halo above cannot flip; see the token's comment in tokens.css.
  *
  * Inset rather than outline: rows live inside overflow-hidden, rounded overlays
  * (Popover paints the rim, the Menu inside it is only p-1 off the edge), so an
@@ -263,7 +308,7 @@
  * roving pointer/keyboard cursor, this proves where keyboard focus actually is.
  */
 @utility ui-state-focus-item {
-  @apply inset-ring-ring inset-ring-2;
+  @apply inset-ring-2 inset-ring-[var(--color-ring-inset)];
 }
 
 /*

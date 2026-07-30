@@ -214,6 +214,27 @@
   );
   --color-ring: var(--color-charcoal-600);
 
+  /* The same ring where it is drawn *inset*, for `ui-state-focus-item`.
+     Identical here; it exists so `ui-contrast` can flip it, which
+     `--color-ring` itself must not be.
+
+     Geometry decides which of the two a consumer wants, and it is a real
+     distinction rather than a naming preference. `ui-contrast` is applied two
+     ways: as a *region* (ActionBar), where descendants sit on the dark ground
+     and an inherited restatement is correct; and as a *cap on one control* (the
+     primary and destructive Button), where the fill is dark but the focus halo
+     and the boundary are painted against the light page. A restatement cannot
+     tell those apart, so anything drawn at or outside an element's edge has to
+     stay ground-independent — charcoal-600 is a mid-tone precisely so it clears
+     3:1 on both polarities there (4.99:1 against the page, 3.14:1 against a dark
+     cap). Restating it would take the Button's halo to 1.07:1.
+
+     Inset paint has no such problem: it lands strictly inside the region, so it
+     may flip. It has to, because no single value clears 3:1 on every backdrop of
+     both polarities — the best any rung manages is 2.16:1, since an inset ring
+     must survive both the a-300 wash on the page and the b-300 wash on the bar. */
+  --color-ring-inset: var(--color-ring);
+
   /* --- Soft (raised control cap: secondary Button, Menu trigger) --- */
   /* The light counterpart to the dark contrast surface: a near-white convex
      cap. The fill is a literal just above rung 50 so the cap reads a touch

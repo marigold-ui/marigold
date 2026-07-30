@@ -1267,11 +1267,22 @@ CoOccurringStates.test(
  * flips — and asserted against what it actually does.
  *
  * This exists because the restatement mechanism is opt-in per token with nothing
- * enforcing completeness. `ui-contrast` flips the five washes and `secondary`
- * because those were in DST-1590's scope; the tokens nobody thought about stayed
- * on their light-ground values and went quietly wrong on a dark one. `ring` is
- * the clearest case: charcoal-600 over `selected` measures 2.05:1 against the
- * 3:1 that WCAG 1.4.11 asks of a focus indicator.
+ * enforcing completeness. `ui-contrast` first flipped the five washes and
+ * `secondary`, because those were in DST-1590's scope; the tokens nobody thought
+ * about stayed on their light-ground values and went quietly wrong on a dark one.
+ * Working through the list turned up three real failures — `selected-bold` at
+ * 1.00:1, `scrollbar-hover` at 1.14:1 and the inset focus ring at 2.05:1 — all
+ * now restated.
+ *
+ * There are deliberately only two classifications. An earlier revision had a
+ * third, `gap`, for "ground-dependent and not restated yet", and every entry in
+ * it turned out to be one of two things: a genuine failure (now fixed) or a token
+ * measured against a ground it is never painted on. The criterion that replaced
+ * it is what a token is painted *on*, not which ground its component sits over —
+ * paint that lands on an element's own opaque fill must not flip, and paint at or
+ * outside an element's edge cannot, because `ui-contrast` is both a region and a
+ * single-control cap. Without that distinction there is no honest way to leave a
+ * token unresolved, which is the intent.
  *
  * Only the *neutral* layer is listed. Status and access colors carry meaning
  * rather than hierarchy, so they are ground-independent by construction (R1).
@@ -1287,6 +1298,24 @@ const POLARITY_INVENTORY = [
   { token: '--color-focus-highlight', polarity: 'flips' },
   { token: '--color-focus-highlight-bold', polarity: 'flips' },
   { token: '--color-secondary', polarity: 'flips' },
+  // Opaque, and each was measured against a ground it is painted directly onto.
+  // 1.00:1 — charcoal-900 on a charcoal-900 ground — so a checked Checkbox or an
+  // ON Switch inside a contrast region was invisible. Mirrors its light-ground
+  // extreme rather than merely clearing the floor: near-black on light becomes
+  // near-white on dark, 10.83:1.
+  { token: '--color-selected-bold', polarity: 'flips' },
+  // Travels with the fill above, or the checkmark disappears into its own box.
+  { token: '--color-selected-bold-foreground', polarity: 'flips' },
+  // 1.14:1, and live: ActionBar's toolbar is `overflow-x-auto`, so hovering the
+  // thumb made it vanish into the bar. Same rule as the light ground — hover
+  // steps *away* from the ground, which on a dark bar means lighter, and keeps
+  // it lighter than the charcoal-300 idle thumb so hover still reads as "more".
+  { token: '--color-scrollbar-hover', polarity: 'flips' },
+  // The inset half of the focus ring, 2.05:1 over `selected` before the flip.
+  // Split from `--color-ring` because geometry decides whether a flip is safe:
+  // inset paint lands strictly inside the region, outset paint does not. See
+  // `--color-ring` below.
+  { token: '--color-ring-inset', polarity: 'flips' },
 
   /* --- Ground-independent by design. --- */
   // Ground tokens: a contrast region *is* the ground, so nothing beneath it
@@ -1318,46 +1347,45 @@ const POLARITY_INVENTORY = [
   // clearButton sets it to `transparent`. The escape hatch is the contract.
   { token: '--color-disabled-surface', polarity: 'stable' },
 
-  /* --- Known gaps: ground-dependent, not restated. ---
+  /* --- Ground-independent because they are never painted on the ground. ---
    *
-   * Each is measured against the contrast ground. They are listed rather than
-   * fixed because flipping any of them changes rendered appearance on every
-   * contrast surface, which is a design call with VRT consequences — not
-   * something to slip into a token refactor. Moving one to `flips` is the fix.
+   * These read as failures if you measure them against the contrast ground, and
+   * an earlier revision of this list did exactly that. They are not painted onto
+   * it: each lands on an element's *own* opaque light fill — a field's
+   * `--color-surface` well, the SegmentedControl's `--color-control` track —
+   * which `ui-contrast` does not restate. Flipping them would break the very
+   * case they exist for. `--color-foreground` above is stable for this reason.
+   *
+   * So the criterion is what a token is painted *on*, not which ground the
+   * component happens to sit over.
    */
-  // 2.05:1 over `selected`, 2.79:1 over `focus-highlight`, against the 3:1 of
-  // WCAG 1.4.11.
-  //
-  // DST-1661 has landed `ui-state-focus-item`, so a full-opacity consumer now
-  // exists — but neither of its two callers can reach this ground yet: a Menu
-  // item renders inside a portalled Popover, and no theme component puts a
-  // FileField in a contrast region. What *is* live is `ActionBar.container`,
-  // whose bordered `ui-state-focus` flips this token at full opacity: 3.14:1
-  // against its own ground. That passes 1.4.11 by 5%, and the lightest wash
-  // (`b-50`) would already drop it to 2.99:1.
-  //
-  // Restating fixes it comfortably — charcoal-300 is 7.38:1 at its worst,
-  // charcoal-500 still 3.10:1. DST-1662 migrating Sidebar/ListBox/Table onto
-  // `ui-state-focus-item` is what makes it urgent rather than latent.
-  { token: '--color-ring', polarity: 'gap' },
-  // 2.04:1 on the bare ground, 1.33:1 on `selected`. No consumer nests under a
-  // contrast surface today.
-  { token: '--color-secondary-bold', polarity: 'gap' },
-  // 3.14:1, and this one is text, so the floor is 4.5:1. No fields sit inside a
-  // contrast region today.
-  { token: '--color-placeholder', polarity: 'gap' },
-  // Dark-base alphas: on a dark ground they darken what is already dark and
-  // vanish. Cosmetic — a rim that recedes rather than an affordance that fails.
-  { token: '--color-surface-border', polarity: 'gap' },
-  { token: '--color-control-border', polarity: 'gap' },
-  { token: '--color-control-border-on-control', polarity: 'gap' },
-  // 1.00:1 — charcoal-900 on a charcoal-900 ground. A checked Checkbox or an ON
-  // Switch inside a contrast region would be invisible.
-  { token: '--color-selected-bold', polarity: 'gap' },
-  { token: '--color-selected-bold-foreground', polarity: 'stable' },
-  // 1.14:1. Live: ActionBar's toolbar is `overflow-x-auto`, so hovering its
-  // scrollbar makes the thumb disappear into the bar.
-  { token: '--color-scrollbar-hover', polarity: 'gap' },
+  // Only ever inside a field, whose `ui-frame` paints an opaque `--color-surface`
+  // regardless of ground: 5.52:1 there. Never touches the ground.
+  { token: '--color-placeholder', polarity: 'stable' },
+  // Two consumers, both on opaque light: Sidebar nav labels (a light surface) and
+  // the SegmentedControl default label on the charcoal-300 track, 5.54:1. No rung
+  // satisfies both polarities — 8.48:1 on white against 2.04:1 on the bar — so
+  // this is a light-context ink by construction, not an unfixed gap. A contrast
+  // region must not place it directly on the ground; `--color-secondary` (which
+  // does flip) is the token for that.
+  { token: '--color-secondary-bold', polarity: 'stable' },
+  // Dark-base alphas on an element's own light fill: `ui-frame`'s ring sits on
+  // the surface it paints, and the SegmentedControl thumb's edge on its own
+  // track. ~1.8:1 and ~1.5:1, deliberately below 1.4.11 — never load-bearing, the
+  // focus ring is the affordance. A standalone `Divider` on a contrast ground
+  // does recede, which is a decorative loss with no floor to fail.
+  { token: '--color-surface-border', polarity: 'stable' },
+  { token: '--color-control-border', polarity: 'stable' },
+  { token: '--color-control-border-on-control', polarity: 'stable' },
+  // Stays charcoal-600, and the mid-tone is the point rather than an oversight.
+  // `ui-state-focus` draws it at and outside an element's edge, and `ui-contrast`
+  // is applied both as a region (ActionBar) and as a cap on a single control (the
+  // primary Button) whose halo lands on the light page. A restatement cannot tell
+  // those apart, so this value has to clear both polarities at a boundary: 4.99:1
+  // against the page, 3.14:1 against a dark cap. Flipping it to charcoal-200 would
+  // take the Button's halo to 1.07:1. The inset half flips instead — see
+  // `--color-ring-inset` above.
+  { token: '--color-ring', polarity: 'stable' },
 ] as const;
 
 /**
@@ -1387,8 +1415,10 @@ export const PolarityInventory = meta.story({
       <Note>
         Every neutral token on all three grounds. A token that <em>flips</em> is
         restated by <code>ui-contrast</code>; one that is <em>stable</em> is
-        ground-independent on purpose; a <em>gap</em> is ground-dependent and
-        not restated yet. The accompanying test asserts each token behaves as
+        ground-independent on purpose — either because it is painted on an
+        element's own opaque fill, or because it is drawn at an element's edge,
+        where a flip cannot tell a contrast <em>region</em> from a contrast{' '}
+        <em>cap</em>. The accompanying test asserts each token behaves as
         classified, so a new token cannot join the theme unclassified.
       </Note>
       <Grounds>
@@ -1456,6 +1486,75 @@ PolarityInventory.test(
           `${token} is classified '${kind}' but ui-contrast changed it from ${outside} to ${inside}. If that flip is intended, reclassify it as 'flips'`
         ).toBe(outside);
       }
+    }
+  }
+);
+
+/**
+ * The direction guard.
+ *
+ * The test above proves a `flips` token *changes* under `ui-contrast`. It cannot
+ * prove it changed the right way: restating `--color-selected-bold` to
+ * charcoal-700 would flip, and measure 1.33:1. So the opaque markers that were
+ * restated are asserted against the ground they are painted onto.
+ *
+ * This is the other half of R7. The washes are asserted to stay *below*
+ * `WCAG.MARKER` because a wash is reinforcement; the opaque bold tier is the
+ * marker itself, so it is asserted to stay above it.
+ */
+PolarityInventory.test(
+  'every restated opaque marker clears its floor on the ground it lands on',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    const MARKERS = [
+      '--color-selected-bold',
+      '--color-scrollbar-hover',
+      '--color-ring-inset',
+    ];
+
+    for (const ground of GROUNDS) {
+      const probe = canvasElement.querySelector<HTMLElement>(
+        `[data-ground="${ground.id}"] [data-token-probe]`
+      );
+      await expect(probe, `no probe on the ${ground.id} ground`).not.toBeNull();
+
+      const solid = readToken(ground.solid);
+      // Both backdrops a marker can land on: the bare ground, and the ground
+      // under the strongest wash — a checked Checkbox on a selected row.
+      const backdrops: [string, Rgb][] = [
+        ['bare', composite(solid, 'transparent')],
+        [
+          'under `selected`',
+          composite(solid, paintedValue(probe!, '--color-selected')),
+        ],
+      ];
+
+      for (const token of MARKERS) {
+        const painted = paintedValue(probe!, token);
+        for (const [where, backdrop] of backdrops) {
+          const ratio = contrastRatio(
+            composite(rgbString(backdrop), painted),
+            backdrop
+          );
+          await expect(
+            ratio,
+            `${token} measures ${ratio.toFixed(2)}:1 on the ${ground.id} ground ${where} — a marker needs ${WCAG.MARKER}:1 (WCAG 1.4.11)`
+          ).toBeGreaterThanOrEqual(WCAG.MARKER);
+        }
+      }
+
+      // The ink has to travel with its fill, or the checkmark vanishes into the
+      // box. Text floor, because a Calendar day number uses this pair.
+      const fill = composite(
+        solid,
+        paintedValue(probe!, '--color-selected-bold')
+      );
+      const ink = paintedValue(probe!, '--color-selected-bold-foreground');
+      const inkRatio = contrastRatio(composite(rgbString(fill), ink), fill);
+      await expect(
+        inkRatio,
+        `selected-bold-foreground measures ${inkRatio.toFixed(2)}:1 on selected-bold on the ${ground.id} ground — needs ${WCAG.TEXT}:1`
+      ).toBeGreaterThanOrEqual(WCAG.TEXT);
     }
   }
 );
