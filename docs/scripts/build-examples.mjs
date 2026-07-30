@@ -73,25 +73,44 @@ const findSidecar = dir => {
   return entry ? path.join(dir, entry) : null;
 };
 
-// Reads only the top-level source files of an example folder. All examples are
-// flat by convention; if one ever nests source in a subfolder, those files are
-// not collected (and a `key_files` entry pointing into a subdir would fail
-// checkFileRefs). Make this a recursive walk if that convention changes.
-const readSourceFiles = dir =>
-  fs
-    .readdirSync(dir, { withFileTypes: true })
-    .filter(
-      entry =>
+// Reads every source file in an example folder, nested ones included. Examples
+// are no longer flat: the filter example keeps its ten hooks in `hooks/`, and
+// every one of its key files imports from `./hooks/…`. Collecting only the top
+// level shipped a payload whose sources referenced modules that were not in it
+// — a snippet nothing could build. Paths are POSIX-relative to the example
+// root so they line up with the import specifiers and with `key_files` refs.
+const readSourceFiles = dir => {
+  const collected = [];
+  const walk = current => {
+    for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
+      const child = path.join(current, entry.name);
+      if (entry.isDirectory()) {
+        walk(child);
+        continue;
+      }
+      if (
         entry.isFile() &&
         !entry.name.endsWith(SIDECAR_SUFFIX) &&
         SOURCE_EXTENSIONS.includes(path.extname(entry.name))
-    )
-    .map(entry => entry.name)
-    .sort()
-    .map(name => ({
-      path: name,
-      source: fs.readFileSync(path.join(dir, name), 'utf8'),
+      ) {
+        collected.push({
+          path: path.relative(dir, child).split(path.sep).join('/'),
+          absolute: child,
+        });
+      }
+    }
+  };
+  walk(dir);
+
+  // Plain codepoint order rather than localeCompare, so the payload is
+  // byte-identical regardless of the build machine's locale.
+  return collected
+    .sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0))
+    .map(entry => ({
+      path: entry.path,
+      source: fs.readFileSync(entry.absolute, 'utf8'),
     }));
+};
 
 const fail = message => {
   throw new BuildError(message);
