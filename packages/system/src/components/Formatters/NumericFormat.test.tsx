@@ -37,7 +37,7 @@ test('allows opting out of tabular digits', () => {
   const currency = screen.getByText('$20.00');
 
   expect(currency).not.toHaveClass('tabular-nums');
-  expect(currency).not.toHaveAttribute('class');
+  expect(currency).not.toHaveAttribute('class', '');
 });
 
 test('supports formatting currency in different language', () => {

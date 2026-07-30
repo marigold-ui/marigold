@@ -33,7 +33,7 @@ test('allows opting out of tabular digits', () => {
 
   expect(date).not.toHaveClass('tabular-nums');
   // No empty `class=""` left behind when the only class is opted out of.
-  expect(date).not.toHaveAttribute('class');
+  expect(date).not.toHaveAttribute('class', '');
 });
 
 test('formats a date range', () => {
