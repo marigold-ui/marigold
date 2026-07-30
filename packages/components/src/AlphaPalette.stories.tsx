@@ -1298,6 +1298,15 @@ const POLARITY_INVENTORY = [
   { token: '--color-focus-highlight', polarity: 'flips' },
   { token: '--color-focus-highlight-bold', polarity: 'flips' },
   { token: '--color-secondary', polarity: 'flips' },
+  // charcoal-400, not the charcoal-500 this shipped with. 500 was Lc 36 against
+  // secondary's own Lc 78 on white, and left `disabled` (7.51:1) reading louder
+  // than secondary (4.75:1) — inverted from the light ground.
+  //
+  // Disabled was mis-mirrored in the same place: charcoal-400 is a deliberately
+  // quiet 2.31:1 on white and a shouting 7.51:1 here. charcoal-600 restores the
+  // quiet at 3.14:1, and moving it is also what frees charcoal-400 for secondary,
+  // which had been rejected only because the two rungs collided exactly.
+  { token: '--color-disabled', polarity: 'flips' },
   // Opaque, and each was measured against a ground it is painted directly onto.
   // 1.00:1 — charcoal-900 on a charcoal-900 ground — so a checked Checkbox or an
   // ON Switch inside a contrast region was invisible. Mirrors its light-ground
@@ -1336,7 +1345,6 @@ const POLARITY_INVENTORY = [
   { token: '--color-soft-edge', polarity: 'stable' },
   { token: '--color-soft-edge-hover', polarity: 'stable' },
   { token: '--color-border', polarity: 'stable' },
-  { token: '--color-disabled', polarity: 'stable' },
   { token: '--color-disabled-border', polarity: 'stable' },
   { token: '--color-scrollbar', polarity: 'stable' },
   { token: '--color-destructive-bold-foreground', polarity: 'stable' },
@@ -1425,6 +1433,13 @@ export const PolarityInventory = meta.story({
         {() => (
           <div className="grid grid-cols-2 gap-1">
             <span data-token-probe className="hidden" />
+            {/* A nested opaque light surface. `ui-contrast` flips tokens for its
+                descendants, and `ui-frame` has to flip them back — a Panel or a
+                SelectList inside a contrast region is white, so ramp B would tint
+                white with white. The probe inside is how the reset is asserted. */}
+            <span className="ui-frame hidden">
+              <span data-reset-probe className="hidden" />
+            </span>
             {POLARITY_INVENTORY.map(({ token, polarity: kind }) => (
               <span
                 key={token}
@@ -1486,6 +1501,68 @@ PolarityInventory.test(
           `${token} is classified '${kind}' but ui-contrast changed it from ${outside} to ${inside}. If that flip is intended, reclassify it as 'flips'`
         ).toBe(outside);
       }
+    }
+  }
+);
+
+/**
+ * The completeness guard for `ui-polarity-reset`.
+ *
+ * `ui-contrast` restates the ground-dependent tokens and `ui-polarity-reset`
+ * restates them back, which means the same list is written twice in `ui.css`.
+ * Duplication like that rots by default, so it is asserted instead of trusted:
+ * every token classified `flips` must resolve, inside a `ui-frame` nested in a
+ * contrast region, to exactly the value it has at the root.
+ *
+ * Adding a restatement to `ui-contrast` without adding the reset fails here. So
+ * does the reverse.
+ */
+PolarityInventory.test(
+  'a nested light surface resets every token ui-contrast flipped',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    const probeRoot = canvasElement.querySelector<HTMLElement>(
+      '[data-ground="surface"] [data-token-probe]'
+    );
+    const probeReset = canvasElement.querySelector<HTMLElement>(
+      '[data-ground="contrast"] [data-reset-probe]'
+    );
+    const probeContrast = canvasElement.querySelector<HTMLElement>(
+      '[data-ground="contrast"] [data-token-probe]'
+    );
+
+    await expect(probeRoot, 'no probe on the surface ground').not.toBeNull();
+    await expect(
+      probeReset,
+      'no probe inside the nested ui-frame on the contrast ground'
+    ).not.toBeNull();
+
+    const flipping = POLARITY_INVENTORY.filter(
+      entry => entry.polarity === 'flips'
+    );
+    // Non-vacuity: if the filter or the selector ever comes back empty this test
+    // passes against nothing.
+    await expect(
+      flipping.length,
+      'no tokens classified as flipping — the assertion below would be vacuous'
+    ).toBeGreaterThan(5);
+
+    for (const { token } of flipping) {
+      const atRoot = paintedValue(probeRoot!, token);
+      const inContrast = paintedValue(probeContrast!, token);
+      const afterReset = paintedValue(probeReset!, token);
+
+      // Guards the guard: if ui-contrast stopped flipping this token, the reset
+      // would trivially "match" the root and tell us nothing.
+      await expect(
+        inContrast,
+        `${token} is classified 'flips' but ui-contrast did not change it`
+      ).not.toBe(atRoot);
+
+      await expect(
+        afterReset,
+        `${token} is ${afterReset} inside a ui-frame nested in a contrast region, but ${atRoot} at the root — ui-polarity-reset is missing it, so a nested light surface keeps the dark-ground value`
+      ).toBe(atRoot);
     }
   }
 );

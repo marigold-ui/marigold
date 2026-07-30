@@ -78,8 +78,8 @@ const GROUNDS: Ground[] = [
     polarity: 'b',
     inks: [
       { label: 'primary-foreground', rgb: charcoal['50'].rgb },
-      { label: 'secondary (restated)', rgb: charcoal['500'].rgb },
-      { label: 'disabled', rgb: charcoal['400'].rgb },
+      { label: 'secondary (restated)', rgb: charcoal['400'].rgb },
+      { label: 'disabled (restated)', rgb: charcoal['600'].rgb },
     ],
   },
 ];

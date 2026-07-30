@@ -106,20 +106,23 @@ Two things are worth reading off that table. The wash column is a _band_, not a 
   on a dark ground, i.e. invisible.
 </Callout>
 
-Alongside the five washes, `ui-contrast` applies `text-primary-foreground` and restates `secondary` (to `charcoal-500`, 4.75:1 on that ground). It deliberately does **not** restate `foreground`, because `ui-soft` applies `text-foreground` and a soft-capped control nested in a contrast region would end up with light text on a near-white cap — components pinning `text-foreground` for emphasis should reach for `text-inherit` instead.
+Alongside the five washes, `ui-contrast` applies `text-primary-foreground` and restates the two text tokens that sit on the ground: `secondary` to `charcoal-400` (7.51:1) and `disabled` to `charcoal-600` (3.14:1). It deliberately does **not** restate `foreground` — components pinning `text-foreground` for emphasis should reach for `text-inherit` instead.
 
-<Callout title="Open question: charcoal-500 passes WCAG and fails APCA">
-  The `secondary` restatement was chosen by lightness offset, mirroring how the
-  token sits relative to `foreground` on light grounds, and it clears AA at
-  4.75:1. On the APCA scale it is **Lc 36** — well under the Lc 60 floor for
-  body text, and less than half the Lc 78 that plain `secondary` achieves on
-  white. Even `charcoal-400`, a WCAG AAA pass at 7.51:1, only reaches Lc 55.
-  Matching the *perceptual* relationship instead lands on `charcoal-300`: Lc 77
-  on the dark ground against secondary's Lc 78 on white, and still 1.51:1 away
-  from `disabled`, which is the collision that ruled `charcoal-400` out. This is
-  the clearest case in the system of WCAG 2.x over-rating a light-on-dark pair.
-  Unresolved — changing it alters every contrast surface, so it needs a design
-  decision rather than a token edit.
+<Callout title="Why those two moved together">
+  `secondary` was first restated to `charcoal-500` by lightness offset, mirroring
+  how the token sits relative to `foreground` on light grounds. That clears AA at
+  4.75:1, but it measures **Lc 36** on APCA against the **Lc 78** plain
+  `secondary` reaches on white — and it left an inversion, because `disabled`
+  measured 7.51:1 here, so a *disabled* label read louder than a merely secondary
+  one. Exactly backwards from the light ground.
+
+`disabled` turned out to be the mis-mirrored one: `charcoal-400` is a
+deliberately quiet 2.31:1 on white and a shouting 7.51:1 here. Moving it to
+`charcoal-600` restores that quiet at 3.14:1 — and frees `charcoal-400` for
+`secondary`, which had been ruled out only because the two rungs collided
+exactly. The result is Lc 55 for secondary, 2.21:1 from the primary text
+(3.14:1 on light) and 2.39:1 from disabled.
+
 </Callout>
 
 The washes were not the only ground-dependent tokens — only the ones the ramp forced a decision on. To find the rest, the theme carries a **polarity inventory**: every neutral token is classified as either flipping under `ui-contrast` or deliberately stable, and a test asserts each behaves as classified. Adding a neutral token without classifying it fails that test, which is the point — "add a token, forget a line" is how the gaps appeared in the first place.
@@ -131,6 +134,16 @@ Working through it turned up three real failures, all now restated: `selected-bo
 The rest of the inventory is stable for one of two structural reasons, and they are worth stating because they decide the question for any future token.
 
 **A token painted on an element's own opaque fill must not flip.** `ui-contrast` does not restate `surface`, so a field nested in a contrast region is still a white well. `placeholder` sits in that well at 5.52:1 and would be destroyed by a flip; so would `control-border` and its `-on-control` sibling, which trace the edge of a light control against a light track. This is the same reason `foreground` is deliberately not restated. `secondary-bold` is the sharpest case: it has two consumers, both on opaque light — Sidebar nav labels and the SegmentedControl label on its `charcoal-300` track — and no palette rung satisfies both polarities, 8.48:1 on white against 2.04:1 on the bar. It is a light-context ink by construction; use `secondary`, which does flip, for text that sits on the ground.
+
+The corollary is that a token which _does_ flip has to be flipped **back** wherever a descendant paints its own opaque light fill — a Panel or a SelectList nested inside a contrast region is a white surface, and the dark-ground values are as wrong there as the light-ground ones were on the bar. The washes are the sharpest case: ramp B is a _light_-base alpha, so a hover or selection inside a nested white surface would tint white with white and vanish. `ui-polarity-reset` is the inverse of `ui-contrast` and does exactly that; `ui-frame`, `ui-soft` and `ui-state-disabled` all apply it, because each paints such a fill. The theme was already doing a one-property version — `ui-soft` applied `text-foreground` by hand to undo `text-primary-foreground`.
+
+<Callout title="The two lists are kept in step by a test, not by discipline">
+  `ui-contrast` restates a token and `ui-polarity-reset` restates it back, which
+  means the same list is written twice. A test asserts that every token
+  classified as flipping resolves, inside a `ui-frame` nested in a contrast
+  region, to exactly its root value — so adding a restatement without adding the
+  reset fails, and so does the reverse.
+</Callout>
 
 **A token painted at or outside an element's edge cannot flip either**, because `ui-contrast` is used two ways: as a **region** (ActionBar), where descendants really do sit on the dark ground, and as a **cap on a single control** (the primary and destructive Button), where the fill is dark but the focus halo and the boundary are painted against the light page. A restatement inherits and cannot tell those apart. That is why `ring` stays `charcoal-600`: the mid-tone is the point, clearing 3:1 on both polarities at a boundary (4.99:1 against the page, 3.14:1 against a dark cap). Flipping it to `charcoal-200` would take the Button's halo to 1.07:1.
 
@@ -221,7 +234,7 @@ The foundational layer: page background and text hierarchy.
     { name: 'foreground', value: 'charcoal-900', useFor: 'Primary body text' },
     {
       name: 'secondary',
-      value: 'charcoal-600',
+      value: 'charcoal-600 (charcoal-400 on a contrast ground)',
       useFor: 'Help text, descriptions, input icons',
     },
     {
@@ -654,8 +667,9 @@ Disabled elements must look visually inactive so users don't try to interact wit
   tokens={[
     {
       name: 'disabled',
-      value: 'charcoal-400',
-      useFor: 'Disabled text color, works standalone on white backgrounds',
+      value: 'charcoal-400 (charcoal-600 on a contrast ground)',
+      useFor:
+        'Disabled text color. Deliberately quiet — 2.31:1 on white, and restated so it stays that quiet on a dark ground',
     },
     {
       name: 'disabled-surface',
