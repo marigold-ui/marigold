@@ -21,6 +21,14 @@ import { useListViewContext } from './Context';
 // lets a bare `<Switch>` land in the trailing slot even though — unlike
 // `Button`/`IconButton`/`ActionMenu` — it doesn't consume `ButtonContext` and
 // so can't be positioned purely via context-injected className.
+//
+// Matching on `child.type` identity brings two constraints with it:
+//   - Only a direct `<TextValue>`/`<Description>`/`<Title>` element is seen as
+//     text. One wrapped in a fragment, `memo()`, or a consumer component isn't
+//     recognised, so it lands in `leading`/`trailing` instead of `content`.
+//   - `content` spans the first through the last text child, so a control
+//     placed between two text children is swallowed into `content` rather than
+//     `trailing`. Author trailing controls after all text children.
 const TEXT_TYPES = new Set<unknown>([TextValue, Description, Title]);
 
 const isTextChild = (child: ReactNode) =>

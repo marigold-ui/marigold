@@ -20,6 +20,16 @@ import { ListView } from './ListView';
 const meta = preview.meta({
   title: 'Components/ListView',
   component: ListView,
+  // A row's `<ActionMenu>`/`<Popover>` portals into "storybook-root" (see the
+  // global `OverlayContainerProvider`); this decorator provides that container
+  // so those overlays mount inside the story canvas during tests.
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     variant: {
       control: { type: 'select' },
