@@ -89,10 +89,14 @@
  * This generalizes that.
  *
  * Custom properties only, deliberately: text color is left to the caller so this
- * can also be applied where the ink is *not* `foreground`. `ui-state-disabled`
- * needs the token reset (it paints an opaque `--color-disabled-surface` fill) but
- * must keep `text-disabled`, and bundling `text-foreground` here would make the
- * two fight over the same declaration.
+ * can also be applied where the ink is *not* `foreground`, and so applying it
+ * never forecloses on a caller's own ink.
+ *
+ * Belongs on utilities that paint a *surface*. Notably not on
+ * `ui-state-disabled`, which paints an opaque light fill of its own but pairs it
+ * with `--color-disabled-surface-foreground` directly -- declaring
+ * `--color-disabled` there would destroy the value its fill-less branch has to
+ * inherit. See `ui-state-disabled`.
  *
  * Limitation worth knowing: a caller that overrides `--ui-background-color` to a
  * translucent wash or a dark fill is no longer an opaque light surface, and the
@@ -193,12 +197,13 @@
      label shouting on a dark bar, and out-ranking `secondary`. charcoal-600 puts
      it at 3.14:1, which is the quiet the light ground has.
 
-     This is only correct because `ui-polarity-reset` exists. `ui-state-disabled`
-     pairs `text-disabled` with an opaque `--color-disabled-surface` fill, and a
-     field or option nested in a light surface keeps its light ground too -- in
-     both of those places this token must *not* flip, and the reset is what puts
-     it back. Without it, a disabled Button in a contrast region would go from
-     2.18:1 to 4.76:1 and stop reading as disabled at all. */
+     Flipping this token is only safe because the two places a disabled ink is
+     *not* ground-dependent are both handled elsewhere. A field or option nested
+     in a light surface keeps its light ground, which `ui-polarity-reset` puts
+     back. And a control painting its own opaque `--color-disabled-surface` takes
+     that fill's paired ink instead of this token -- see `ui-state-disabled`.
+     Without either, a disabled Button in a contrast region would land near 5:1
+     on its own near-white fill and stop reading as disabled at all. */
   --color-disabled: var(--color-charcoal-600);
 
   /* Polarity flip. A dark-base wash has nothing to darken on a dark ground, so
@@ -407,43 +412,76 @@
  * That only makes sense for a control that has a surface to begin with. On a
  * ghost or link control -- no resting fill -- it *adds* one, and an opaque
  * light neutral cannot sit on an arbitrary ground: on `ui-contrast` it painted
- * a near-white pill at 15.62:1 carrying 2.08:1 text. Those controls set
- * `--ui-disabled-fill: transparent` and keep the rest of the treatment; the
- * state then rides on `text-disabled`, which is a large step down on every
- * ground (17.28 -> 2.31 on white, 16.57 -> 7.49 on contrast).
+ * a near-white pill at 15.62:1 carrying 2.08:1 text. Those controls take
+ * `ui-state-disabled-ghost`, which points both seams below at the fill-less
+ * reading and keeps the rest of the treatment.
  *
- * An alpha veil is not the answer here. It preserves the fill it sits on, so on
- * `ui-contrast` -- where polarity flips to the light-base ramp -- a veil over a
- * light tinted fill changes it by 1.01:1, i.e. not at all. Polarity derived from
- * the ground is the wrong input for a control carrying its own opaque fill.
+ * An alpha veil is not the answer for the filled branch. It preserves the fill
+ * it sits on, so on `ui-contrast` -- where polarity flips to the light-base
+ * ramp -- a veil over a light tinted fill changes it by 1.01:1, i.e. not at all.
+ * Polarity derived from the ground is the wrong input for a control carrying its
+ * own opaque fill.
+ *
+ * Both branches are reached through *seams* rather than through two competing
+ * utilities, because a call site cannot subtract one. `ui-interactive` applies
+ * `disabled:ui-state-disabled` to every button-like control, and ActionBar's
+ * clearButton is an IconButton wearing ActionBar's classes on top -- so both
+ * sources land on one element and whichever loses the cascade still leaves its
+ * declarations behind. A var read at use time is the only order-independent
+ * lever, which is why the fill has always been one and why the ink is now one too.
  */
 @property --ui-disabled-fill {
   syntax: '*';
   inherits: false;
 }
+/* Not inherited, so a disabled control nested in a disabled one is unaffected. */
+@property --ui-disabled-ink {
+  syntax: '*';
+  inherits: false;
+}
 @utility ui-state-disabled {
-  /* Paints an opaque light fill, so the ground beneath the ink is light again and
-     the tokens reset with it. Without this, `--color-disabled`'s flip on a
-     contrast ground would land on this fill too and take a disabled control from
-     2.18:1 to 4.76:1 -- legible enough to stop reading as disabled.
-
-     Before `text-disabled`, so that wins: both flatten into one rule, so source
-     order decides which color the ink takes.
-
-     A caller setting `--ui-disabled-fill: transparent` (ghost Button, ActionBar's
-     clearButton) paints nothing and so is not a light surface -- there the reset
-     is wrong in principle, and simply preserves the pre-existing behavior rather
-     than improving on it. Tracked with the veil-vs-reset question. */
-  @apply ui-polarity-reset;
-  @apply text-disabled cursor-not-allowed;
+  @apply cursor-not-allowed;
   background: var(--ui-disabled-fill, var(--color-disabled-surface));
   background-clip: border-box;
+
+  /* Not `text-disabled`. `--color-disabled` is ground-dependent -- `ui-contrast`
+     flips it to charcoal-600 -- but the *default* branch here paints its own
+     opaque charcoal-100 fill, so its ink is fixed by that fill and not by the
+     ground the control sits on. Hence the paired token, and hence no
+     `ui-polarity-reset` on this utility: leaving `--color-disabled` undeclared
+     on the element is what lets the ghost branch below read the ancestor's
+     value. Were the reset applied here, that value would be gone -- an element
+     cannot both set a custom property and defer to the one it inherited. */
+  color: var(--ui-disabled-ink, var(--color-disabled-surface-foreground));
+
   /* Dim the boundary rather than remove it: a borderless input reads as broken.
      Recolor the ring to the light disabled-border for a soft, receding edge. */
   --ui-border-color: var(--color-disabled-border);
   /* No top highlight when disabled. Zeroing `--tw-inset-shadow` is reliable where a
      raw `box-shadow: none` lost the cascade to the surface utilities' box-shadow. */
   @apply inset-shadow-none;
+}
+
+/*
+ * The fill-less reading of the above: ghost and link Button, ActionBar's
+ * clearButton. Pure seam-setting, so apply it *unprefixed* -- it then covers
+ * `disabled:` and `pending:` alike and cannot lose a cascade race with the
+ * `ui-state-disabled` that arrives via `ui-interactive`.
+ *
+ * Painting nothing means the ground is whatever the ancestor established, so the
+ * ink inherits rather than asserts. That is what makes this branch correct on
+ * every ground with no per-ground restatement: charcoal-600 directly inside a
+ * contrast region, charcoal-400 once a Panel or SelectList has reset for it.
+ *
+ * Only the fill used to be pointed here. The ink came from `ui-state-disabled`'s
+ * polarity reset, which asserts a light ground a transparent control does not
+ * have: a disabled clearButton on the dark bar read only 2.2x down from its
+ * enabled ink, where the same control on white drops 7.5x. Deferring puts it at
+ * 5.3x.
+ */
+@utility ui-state-disabled-ghost {
+  --ui-disabled-fill: transparent;
+  --ui-disabled-ink: var(--color-disabled);
 }
 
 /*

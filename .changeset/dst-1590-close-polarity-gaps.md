@@ -30,10 +30,35 @@ that paints its own opaque light fill — a Panel or a SelectList nested in a
 contrast region is a white surface — needs the light-ground values back, and the
 washes make that acute: ramp B is a *light*-base alpha, so a hover or selection
 inside a nested white surface would tint white with white and vanish. Applied by
-`ui-frame`, `ui-soft` and `ui-state-disabled`, each of which paints such a fill.
-`ui-soft` was already doing a one-property version by hand (`text-foreground`, to
-undo `text-primary-foreground`). A test asserts the reset covers every token
+`ui-frame` and `ui-soft`, each of which paints such a fill. `ui-soft` was already
+doing a one-property version by hand (`text-foreground`, to undo
+`text-primary-foreground`). A test asserts the reset covers every token
 `ui-contrast` restates, so the two lists cannot drift.
+
+**New token and utility for the two readings of `ui-state-disabled`:** a control
+with no resting fill (ghost and link Button, ActionBar's clear button) already
+redirected the fill away from the opaque, white-calibrated
+`--color-disabled-surface`. Its *ink* still came from the light-ground value,
+asserting a ground a transparent control does not have — a disabled clear button
+on the dark bar sat only 2.2x below its enabled ink, where the same control on
+white drops 7.5x, so it read as very nearly enabled. It now defers to the ground
+and lands 5.3x down.
+
+- `--color-disabled-surface-foreground` (charcoal-400) is the ink for
+  `disabled-surface`, following the usual `X` + `X-foreground` pairing. Same rung
+  as `--color-disabled` and identical on every ground, because it lands on the
+  opaque fill rather than on the ground. `--color-disabled` remains the
+  ground-dependent one. Existing consumers of `text-disabled` are unaffected.
+- `ui-state-disabled-ghost` points `ui-state-disabled`'s fill *and* ink at the
+  fill-less reading. Apply it unprefixed: `ui-interactive` gives every
+  button-like control `disabled:ui-state-disabled`, and ActionBar's clear button
+  is an IconButton wearing ActionBar's classes on top, so a call site cannot
+  subtract that utility — only redirect what it reads.
+
+`ui-state-disabled` therefore no longer applies `ui-polarity-reset`; it names the
+paired ink directly. Declaring `--color-disabled` there is what destroyed the
+value the fill-less branch has to inherit, since an element cannot both set a
+custom property and defer to the one it inherited.
 
 **Text tokens on a contrast ground:** `secondary` moves from charcoal-500 to
 charcoal-400 and `disabled` from charcoal-400 to charcoal-600. charcoal-500 was

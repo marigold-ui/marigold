@@ -186,6 +186,14 @@
   --color-disabled-surface: var(--color-charcoal-100);
   --color-disabled-border: var(--color-charcoal-300);
 
+  /* The ink for `disabled-surface`, following the theme's `X` + `X-foreground`
+     pairing. Same rung as `--color-disabled` above, and that is the point rather
+     than a duplication: `--color-disabled` is ground-dependent and `ui-contrast`
+     flips it, while this one is fixed by the opaque light fill it names, so it is
+     the same on every ground. `ui-state-disabled` reads this instead of
+     `--color-disabled` for exactly that reason. */
+  --color-disabled-surface-foreground: var(--color-charcoal-400);
+
   /* --- Structural Lines --- */
   /* Structural lines: dividers, grid lines, section rules, table grids. Opaque
      on purpose — where translucent strokes cross, the alpha stacks and

@@ -42,7 +42,7 @@ Many tokens come in pairs: a background token and a `-foreground` token for text
 - `surface`: uses `text-foreground` or `text-secondary`
 - `soft`: uses `text-foreground` (the near-white cap is light enough for regular text)
 - `secondary`, `placeholder`: these ARE text tokens, not backgrounds
-- `disabled`: primarily a text token. When a background is needed, pair with `bg-disabled-surface` (see [Disabled](#disabled) for details)
+- `disabled`: a text token, for a disabled ink that lands on the ground. A disabled control that paints a background is the ordinary pair, `bg-disabled-surface` + `text-disabled-surface-foreground` (see [Disabled](#disabled) for why there are two)
 
 These tokens do not need a dedicated foreground color because `text-foreground` already clears contrast requirements on all of them. That guarantee covers `text-foreground` specifically — a dimmer text token on top of a wash has to be measured, not assumed (see [R8](#rules-for-alpha-tokens)).
 
@@ -135,7 +135,9 @@ The rest of the inventory is stable for one of two structural reasons, and they 
 
 **A token painted on an element's own opaque fill must not flip.** `ui-contrast` does not restate `surface`, so a field nested in a contrast region is still a white well. `placeholder` sits in that well at 5.52:1 and would be destroyed by a flip; so would `control-border` and its `-on-control` sibling, which trace the edge of a light control against a light track. This is the same reason `foreground` is deliberately not restated. `secondary-bold` is the sharpest case: it has two consumers, both on opaque light — Sidebar nav labels and the SegmentedControl label on its `charcoal-300` track — and no palette rung satisfies both polarities, 8.48:1 on white against 2.04:1 on the bar. It is a light-context ink by construction; use `secondary`, which does flip, for text that sits on the ground.
 
-The corollary is that a token which _does_ flip has to be flipped **back** wherever a descendant paints its own opaque light fill — a Panel or a SelectList nested inside a contrast region is a white surface, and the dark-ground values are as wrong there as the light-ground ones were on the bar. The washes are the sharpest case: ramp B is a _light_-base alpha, so a hover or selection inside a nested white surface would tint white with white and vanish. `ui-polarity-reset` is the inverse of `ui-contrast` and does exactly that; `ui-frame`, `ui-soft` and `ui-state-disabled` all apply it, because each paints such a fill. The theme was already doing a one-property version — `ui-soft` applied `text-foreground` by hand to undo `text-primary-foreground`.
+The corollary is that a token which _does_ flip has to be flipped **back** wherever a descendant paints its own opaque light fill — a Panel or a SelectList nested inside a contrast region is a white surface, and the dark-ground values are as wrong there as the light-ground ones were on the bar. The washes are the sharpest case: ramp B is a _light_-base alpha, so a hover or selection inside a nested white surface would tint white with white and vanish. `ui-polarity-reset` is the inverse of `ui-contrast` and does exactly that; `ui-frame` and `ui-soft` both apply it, because each paints such a fill. The theme was already doing a one-property version — `ui-soft` applied `text-foreground` by hand to undo `text-primary-foreground`.
+
+A control painting its own fill can also reach the same end by naming the ink after the fill rather than after the ground, which is what `disabled-surface-foreground` is for (see [Disabled](#disabled)). That is the better move where the control has a _fill-less_ reading too: resetting the token would leave the fill-less branch with no ground value left to inherit, since an element cannot both set a custom property and defer to the one it inherited.
 
 <Callout title="The two lists are kept in step by a test, not by discipline">
   `ui-contrast` restates a token and `ui-polarity-reset` restates it back, which
@@ -669,13 +671,19 @@ Disabled elements must look visually inactive so users don't try to interact wit
       name: 'disabled',
       value: 'charcoal-400 (charcoal-600 on a contrast ground)',
       useFor:
-        'Disabled text color. Deliberately quiet — 2.31:1 on white, and restated so it stays that quiet on a dark ground',
+        'Disabled text color where the ink lands on the ground: labels, help text, and controls with no fill of their own. Deliberately quiet — 2.31:1 on white, and restated so it stays that quiet on a dark ground',
     },
     {
       name: 'disabled-surface',
       value: 'charcoal-100',
       useFor:
-        'Disabled background for full controls (paired with text-disabled)',
+        'Disabled background for full controls (paired with text-disabled-surface-foreground)',
+    },
+    {
+      name: 'disabled-surface-foreground',
+      value: 'charcoal-400',
+      useFor:
+        'Ink for that fill. Same rung as disabled, and the same on every ground — it lands on the opaque fill, not on the ground, so it must not flip with it',
     },
     {
       name: 'disabled-border',
@@ -686,23 +694,29 @@ Disabled elements must look visually inactive so users don't try to interact wit
   ]}
 />
 
-Most token pairs follow the pattern `bg-X` + `text-X-foreground`. Disabled is different because `disabled` is primarily a **text** color, not a background. Many disabled elements only need dimmed text on a white surface (labels, menu items, help text). Only full controls like inputs and buttons need a gray background on top of that. So `disabled-surface` is the optional background add-on, while `disabled` itself is the text color. The pair is `bg-disabled-surface` + `text-disabled`, reversed from the usual direction.
+Disabled is unusual in having **two** inks, and which one you want follows the rule from [What may flip, and what must not](#what-may-flip-and-what-must-not): use the token named after whatever the ink is painted on.
+
+- A disabled label, or a control with no fill of its own, puts its ink straight onto the ground. That is `text-disabled`, and it flips with the ground.
+- A disabled input or button paints an opaque `disabled-surface` first, so its ink lands on that fill and is fixed by it. That is `text-disabled-surface-foreground` — the ordinary `bg-X` + `text-X-foreground` pair.
+
+The two rungs are equal at the root, so on a light ground the choice is invisible. On a contrast ground it decides whether the control still reads as out of play.
 
 ```tsx
 // Text-only disabled (labels, help text, menu items)
 <span className="text-disabled cursor-not-allowed">Disabled label</span>
 
 // Full disabled control (inputs, buttons)
-<input className="bg-disabled-surface text-disabled cursor-not-allowed" />
+<input className="bg-disabled-surface text-disabled-surface-foreground cursor-not-allowed" />
 ```
 
-The `ui-state-disabled` utility bundles background, text, and cursor into one class. Its edge is the `disabled-border` token, listed with the other boundaries under [Borders](#borders).
+The `ui-state-disabled` utility bundles background, ink, and cursor into one class and defaults to the filled reading. A control with no resting fill — a ghost or link Button, ActionBar's clear button — adds `ui-state-disabled-ghost` alongside it, which points the utility's fill and ink at the fill-less reading. Its edge is the `disabled-border` token, listed with the other boundaries under [Borders](#borders).
 
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Use `bg-disabled-surface` with `text-disabled` for disabled controls like
-      inputs and buttons.
+      Use `bg-disabled-surface` with `text-disabled-surface-foreground` for
+      disabled controls like inputs and buttons, and plain `text-disabled` where
+      the ink lands on the ground.
     </DoDescription>
   </Do>
   <Dont>

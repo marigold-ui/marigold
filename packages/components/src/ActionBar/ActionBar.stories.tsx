@@ -113,11 +113,13 @@ export const WithoutClearButton = meta.story({
 /**
  * Inactive states on the ActionBar's dark `ui-contrast` ground.
  *
- * The bar cascades `variant="ghost"` onto its plain `<Button>` children, and a
- * ghost Button takes its disabled/pending fill from `ui-state-disabled` — which
- * paints the opaque, white-calibrated `--color-disabled-surface`. On this ground
- * that reads as a light block rather than a receding one. Kept as a snapshot so
- * the regression is visible in VRT; see DST-1590.
+ * The bar cascades `variant="ghost"` onto its plain `<Button>` children, so both
+ * the disabled and the pending action here take the fill-less reading of
+ * `ui-state-disabled`: no opaque `--color-disabled-surface` block, and an ink
+ * that defers to the ground instead of being pinned to a fill that is not there.
+ * On this ground that is charcoal-600, 5.3x down from the enabled ink — where the
+ * white-calibrated ink it used to inherit was only 2.2x down and read as very
+ * nearly enabled. See DST-1590.
  */
 export const DisabledAndLoading = meta.story({
   tags: ['component-test'],

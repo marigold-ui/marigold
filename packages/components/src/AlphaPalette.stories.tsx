@@ -1351,9 +1351,14 @@ const POLARITY_INVENTORY = [
   // Always painted over the page, never nested inside a contrast region.
   { token: '--color-overlay-backdrop', polarity: 'stable' },
   // Opaque near-white fill. Wrong on a dark ground, but `ui-state-disabled`
-  // already exposes `--ui-disabled-fill` for exactly that, and ActionBar's
-  // clearButton sets it to `transparent`. The escape hatch is the contract.
+  // exposes seams for exactly that and `ui-state-disabled-ghost` points them at
+  // the fill-less reading. The escape hatch is the contract.
   { token: '--color-disabled-surface', polarity: 'stable' },
+  // Its paired ink, and stable for the same reason: fixed by the light fill it
+  // names rather than by the ground the control sits on. `--color-disabled` is
+  // the ground-dependent one and flips; these two rungs are equal at the root on
+  // purpose. Asserted by 'a fill-less disabled control takes its ink...' below.
+  { token: '--color-disabled-surface-foreground', polarity: 'stable' },
 
   /* --- Ground-independent because they are never painted on the ground. ---
    *
@@ -1440,6 +1445,16 @@ export const PolarityInventory = meta.story({
             <span className="ui-frame hidden">
               <span data-reset-probe className="hidden" />
             </span>
+            {/* The two readings of `ui-state-disabled`. Both probes carry the
+                filled utility, because that is how a real control gets it — from
+                `ui-interactive` — and the ghost one adds only the seams a call
+                site is able to set on top. So what is asserted is the collision
+                as it actually occurs, not an idealised element. */}
+            <span data-disabled-filled className="ui-state-disabled hidden" />
+            <span
+              data-disabled-ghost
+              className="ui-state-disabled ui-state-disabled-ghost hidden"
+            />
             {POLARITY_INVENTORY.map(({ token, polarity: kind }) => (
               <span
                 key={token}
@@ -1568,10 +1583,96 @@ PolarityInventory.test(
 );
 
 /**
+ * The two readings of `ui-state-disabled`, asserted as a step down rather than
+ * as a floor.
+ *
+ * Disabled text is exempt from 1.4.3, so there is no ratio it has to clear — what
+ * makes it read as disabled is the *distance* from the enabled ink on the same
+ * ground. The theme achieves 7.5x on the light grounds and 5.3x on the contrast
+ * one; the bug this replaced achieved 2.2x, because a transparent control was
+ * inheriting a polarity reset that asserted a light ground it did not have. The
+ * 3x floor sits between those, so it is a real guard and not a restatement of
+ * whatever the code happens to do.
+ *
+ * The complement is asserted too: the *filled* branch must be identical on all
+ * three grounds, because it paints its own opaque fill and its ink is pinned by
+ * that fill. One branch must track the ground and the other must ignore it, and
+ * measuring only one of those would let the seams be wired backwards.
+ */
+PolarityInventory.test(
+  'a fill-less disabled control takes its ink from the ground, a filled one from its fill',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    const inks = new Map<string, { filled: string; ghost: string }>();
+
+    for (const ground of GROUNDS) {
+      const scope = canvasElement.querySelector<HTMLElement>(
+        `[data-ground="${ground.id}"]`
+      );
+      await expect(scope, `no ${ground.id} ground`).not.toBeNull();
+
+      const filled = scope!.querySelector<HTMLElement>(
+        '[data-disabled-filled]'
+      );
+      const ghost = scope!.querySelector<HTMLElement>('[data-disabled-ghost]');
+      await expect(filled, `no filled probe on ${ground.id}`).not.toBeNull();
+      await expect(ghost, `no ghost probe on ${ground.id}`).not.toBeNull();
+
+      // `paintsOwnFill` rather than a ratio: `--color-disabled-surface` is
+      // charcoal-100 and so is the page ground, so painting the fill there
+      // measures 1.000:1 — indistinguishable from painting nothing.
+      await expect(
+        paintsOwnFill(filled!),
+        `the filled disabled branch paints no fill at all on the ${ground.id} ground`
+      ).toBe(true);
+      await expect(
+        paintsOwnFill(ghost!),
+        `the fill-less disabled branch still paints a fill on the ${ground.id} ground — --ui-disabled-fill is not reaching it`
+      ).toBe(false);
+
+      const groundColor = readToken(ground.solid);
+      const bare = composite(groundColor, 'transparent');
+      const ratioOn = (color: string) =>
+        contrastRatio(composite(groundColor, color), bare);
+
+      // The enabled ink is read off the ground itself, which carries it:
+      // `text-foreground` on the light grounds, `text-primary-foreground` via
+      // `ui-contrast` on the dark one.
+      const step =
+        ratioOn(getComputedStyle(scope!).color) /
+        ratioOn(getComputedStyle(ghost!).color);
+
+      await expect(
+        step,
+        `a fill-less disabled control steps down only ${step.toFixed(1)}x from the enabled ink on the ${ground.id} ground — it needs 3x to read as out of play`
+      ).toBeGreaterThan(3);
+
+      inks.set(ground.id, {
+        filled: getComputedStyle(filled!).color,
+        ghost: getComputedStyle(ghost!).color,
+      });
+    }
+
+    const filledInks = new Set([...inks.values()].map(ink => ink.filled));
+    await expect(
+      filledInks.size,
+      `the filled disabled ink varies by ground (${[...filledInks].join(' / ')}), but it is painted on its own fill and must not — is it reading --color-disabled instead of --color-disabled-surface-foreground?`
+    ).toBe(1);
+
+    // Non-vacuity for the step assertions above: they would also pass if both
+    // branches were wired to the same ground-tracking value.
+    await expect(
+      inks.get('contrast')!.ghost,
+      'the fill-less disabled ink is the same on the contrast and surface grounds — it is not deferring to its ground'
+    ).not.toBe(inks.get('surface')!.ghost);
+  }
+);
+
+/**
  * The direction guard.
  *
- * The test above proves a `flips` token *changes* under `ui-contrast`. It cannot
- * prove it changed the right way: restating `--color-selected-bold` to
+ * The classification test proves a `flips` token *changes* under `ui-contrast`.
+ * It cannot prove it changed the right way: restating `--color-selected-bold` to
  * charcoal-700 would flip, and measure 1.33:1. So the opaque markers that were
  * restated are asserted against the ground they are painted onto.
  *

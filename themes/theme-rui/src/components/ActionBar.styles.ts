@@ -38,9 +38,11 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
       // charcoal-200 tops out at 2.84:1 over a dark ground. `ui-state-focus-item`
       // is full-opacity and inset, which reads 8.92:1 here.
       'focus-visible:ui-state-focus-item outline-none',
-      // Borderless round button on a dark bar: the disabled reset would paint an
-      // opaque near-white circle. See `ui-state-disabled`.
-      'disabled:ui-state-disabled [--ui-disabled-fill:transparent]',
+      // Borderless round button on a dark bar: the filled disabled treatment
+      // would paint an opaque near-white circle and pin its ink to that fill.
+      // Unprefixed, because the `disabled:ui-state-disabled` this has to redirect
+      // arrives from IconButton's `ui-button-base`, not from here.
+      'ui-state-disabled-ghost',
       '[&_svg]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0',
     ],
   }),
