@@ -12,6 +12,34 @@ test('renders Currency', () => {
   expect(currency).toBeInTheDocument();
 });
 
+test('uses tabular digits by default', () => {
+  render(
+    <I18nProvider locale="en-US">
+      <NumericFormat style="currency" currency="USD" value={20} />
+    </I18nProvider>
+  );
+
+  expect(screen.getByText('$20.00')).toHaveClass('tabular-nums');
+});
+
+test('allows opting out of tabular digits', () => {
+  render(
+    <I18nProvider locale="en-US">
+      <NumericFormat
+        style="currency"
+        currency="USD"
+        value={20}
+        tabular={false}
+      />
+    </I18nProvider>
+  );
+
+  const currency = screen.getByText('$20.00');
+
+  expect(currency).not.toHaveClass('tabular-nums');
+  expect(currency).not.toHaveAttribute('class');
+});
+
 test('supports formatting currency in different language', () => {
   render(
     <I18nProvider locale="de-DE">
