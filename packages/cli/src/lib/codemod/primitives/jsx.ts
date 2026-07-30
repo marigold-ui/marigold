@@ -31,6 +31,21 @@ const jsxAttributes = (opening: AnyNode | undefined): AnyNode[] =>
 const attrName = (attr: AnyNode): string | null =>
   (attr.name as { name?: string } | undefined)?.name ?? null;
 
+/**
+ * The statically known value of a JSX attribute, or null when it cannot be
+ * resolved. A literal wrapped in an expression container (`width={20}`,
+ * `width={'1/2'}`) is just as knowable as a bare `width="fit"`.
+ */
+const staticAttrValue = (value: AnyNode | undefined): string | null => {
+  const node =
+    value?.type === 'JSXExpressionContainer'
+      ? (value.expression as AnyNode | undefined)
+      : value;
+  return node?.type === 'StringLiteral' || node?.type === 'NumericLiteral'
+    ? String((node as { value: string | number }).value)
+    : null;
+};
+
 /** local names for the manifest's component names, only when imported */
 export const localsFor = (file: AnyNode, components: Iterable<string>) => {
   const wanted = new Set(components);
@@ -543,12 +558,10 @@ export const reportJsxUsage = (manifest: MigrationManifest): Codemod =>
           if (entry.component !== component || !entry.prop) continue;
           for (const attr of jsxAttributes(opening)) {
             if (attrName(attr) !== entry.prop) continue;
-            const value = attr.value as AnyNode | undefined;
             if (entry.value !== undefined) {
-              const literal =
-                value?.type === 'StringLiteral'
-                  ? ((value as { value?: string }).value ?? null)
-                  : null;
+              const literal = staticAttrValue(
+                attr.value as AnyNode | undefined
+              );
               // a non-literal value cannot be ruled out statically: warn too
               if (literal !== null && literal !== entry.value) continue;
             }

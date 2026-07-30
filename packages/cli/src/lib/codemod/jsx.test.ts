@@ -327,6 +327,17 @@ export const B = () => <Select width="full" />;
     expect(warnings[0]).toContain('width="fit"');
   });
 
+  test('stays quiet for literals wrapped in an expression container', () => {
+    const source = `import { Select } from '@marigold/components';
+export const A = () => <Select width={20} />;
+export const B = () => <Select width={'1/2'} />;
+export const C = () => <Select width={'fit'} />;
+`;
+    const warnings = warningsOf(reportJsxUsage(v18).apply(source));
+    expect(warnings).toHaveLength(1);
+    expect(warnings[0]).toContain('width="fit"');
+  });
+
   test('warns when a conditional value cannot be verified statically', () => {
     const source = `import { Switch } from '@marigold/components';
 export const App = ({ size }: { size: string }) => <Switch size={size} />;
