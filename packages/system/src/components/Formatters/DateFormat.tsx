@@ -12,7 +12,11 @@ export interface DateFormatProps extends DateFormatterOptions {
   tabular?: boolean;
 }
 
-export const DateFormat = ({ value, tabular, ...props }: DateFormatProps) => {
+export const DateFormat = ({
+  value,
+  tabular = true,
+  ...props
+}: DateFormatProps) => {
   const formatter = useDateFormatter({
     ...props,
   });
@@ -31,7 +35,10 @@ export const DateFormat = ({ value, tabular, ...props }: DateFormatProps) => {
     // composed inside it. That child is entirely formatter output, which is
     // exactly what varies. Keep it that way — wrapping the value in another
     // element would move the real output out from under the suppression.
-    <span suppressHydrationWarning className={tabular ? 'tabular-nums' : ''}>
+    <span
+      suppressHydrationWarning
+      className={tabular ? 'tabular-nums' : undefined}
+    >
       {Array.isArray(value)
         ? formatter.formatRange(value[0], value[1])
         : formatter.format(value)}
