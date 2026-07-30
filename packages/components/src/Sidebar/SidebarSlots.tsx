@@ -16,7 +16,8 @@ export const SidebarHeader = ({
     <div
       ref={ref}
       className={cn(
-        'flex h-14 items-center [grid-area:header]',
+        // Height comes from the theme's header recipe (h-topbar).
+        'flex items-center [grid-area:header]',
         classNames.header
       )}
     >
@@ -36,3 +37,8 @@ export const SidebarFooter = ({
     </div>
   );
 };
+
+// Brands so the rail collection builder can pick the brand/footer slots out of a
+// `Sidebar.Rail`'s children.
+SidebarHeader.__SIDEBAR_HEADER__ = true as const;
+SidebarFooter.__SIDEBAR_FOOTER__ = true as const;

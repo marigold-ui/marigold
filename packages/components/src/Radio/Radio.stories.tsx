@@ -88,6 +88,31 @@ export const Basic = meta.story({
   ),
 });
 
+export const WithOwnWidth = meta.story({
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'An individual `Radio` can set its own `width`. The tinted boxes mark ' +
+          'each radio field: the first spans half the group, the second the full width.',
+      },
+    },
+  },
+  render: args => (
+    // The tint marks the radio field — the element `width` actually sizes.
+    // Without it the demo looks unchanged, since a radio dot and its label
+    // never fill their container on their own.
+    <div className="w-96 [&_[data-rac]:has(>label)]:bg-slate-200">
+      <Radio.Group {...args}>
+        <Radio value="1" width="1/2">
+          Option 1
+        </Radio>
+        <Radio value="2">Option 2</Radio>
+      </Radio.Group>
+    </div>
+  ),
+});
+
 export const Error = meta.story({
   render: args => (
     <Radio.Group errorMessage="Das ist ein Error" error {...args}>

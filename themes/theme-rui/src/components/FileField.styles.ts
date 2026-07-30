@@ -6,7 +6,11 @@ export const FileField: ThemeComponent<'FileField'> = {
     base: [
       'relative overflow-hidden transition-[color,background]',
       'data-[drop-target=true]:bg-muted',
-      'focus-visible:bg-focus-highlight/50',
+      // The tint alone composites to ~1.05:1 against the surface -- it reads as
+      // a warmth, not as focus. The ring is the indicator; the tint stays as its
+      // accompaniment. The dashed border is decorative and never flips, so
+      // ui-state-focus would have nothing to recolor here.
+      'focus-visible:bg-focus-highlight/50 focus-visible:ui-state-focus-item',
     ],
     variants: {
       size: {

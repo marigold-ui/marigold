@@ -4,6 +4,11 @@ description: A composition pattern for building the application frame with persi
 badge: alpha
 ---
 
+import {
+  AppFrameStructure,
+  AppFrameStructureSingle,
+} from './app-frame-structure';
+
 Most business applications share a common frame: a sidebar for navigation, a top bar for context and actions, and a scrollable content area. The App Frame pattern shows how to compose this frame using [`<AppShell>`](/components/layout/app-shell), [`<Page>`](/components/layout/page), and [`<Page.Header>`](/components/layout/page#header), covering content placement decisions, the heading outline, action hierarchy, and responsive strategy.
 
 <Callout title="Looking for the component API?">
@@ -14,36 +19,36 @@ Most business applications share a common frame: a sidebar for navigation, a top
 
 ## Structure
 
-The app frame divides the screen into three areas. The diagram below shows how they are arranged, and the code snippet shows how the components map to each area.
+The app frame divides the screen into a top bar, the sidebar area, and the page. The diagram below shows the default arrangement with [two-level navigation](/components/navigation/sidebar#two-level-navigation), and the code snippet shows how the components map to each area.
 
-<ImageZoom
-  className="mx-auto"
-  src="/app-shell/app-shell-anatomy.svg"
-  alt="App Frame Anatomy"
-  width="600"
-  height="400"
-/>
+<AppFrameStructure />
 
-- **Sidebar:** Sits on the left and spans the full height. It holds the application logo, primary navigation links, grouped sections, and an optional footer. Users can collapse or expand it with a toggle button.
-- **Top Navigation:** Stretches across the top next to the sidebar. It should provide the sidebar toggle, breadcrumbs for orientation, and user-related controls such as account menus or status indicators.
+- **Top Navigation:** Stretches across the full width of the viewport. Its start slot holds the application logo, the panel toggle, and breadcrumbs for orientation. The end slot carries user-related controls such as account menus or status indicators.
+- **Rail:** The narrow strip below the top bar with the app's top-level sections. It stays visible at all times, so switching sections is always one click away.
+- **Section panel:** Shows the navigation of the active section next to the rail. Users can collapse it with the toggle to give the content more room. Rail and panel together are composed through [`<Sidebar>`](/components/navigation/sidebar).
 - **Page:** Takes up the remaining space. This is the scrollable content area. Wrap it in a [`<Page>`](/components/layout/page), which renders the `main` landmark and owns the page's padding and rhythm. A page is a [`<Page.Header>`](/components/layout/page#header) followed by [`<Panel>`](/components/layout/panel)s.
 
-[`RouterProvider`](/components/application/routerprovider) handles page navigation and `AppShell` positions everything on a CSS Grid. `AppShell` manages the sidebar's open/collapsed state internally (via `defaultSidebarOpen`), so the toggle in the header and the sidebar share state with no provider boilerplate.
+[`RouterProvider`](/components/application/routerprovider) handles page navigation and `AppShell` positions everything on a CSS Grid. `AppShell` manages the sidebar's open/collapsed state internally, so the toggle in the header and the sidebar share state with no provider boilerplate.
 
 ```tsx
 <RouterProvider navigate={navigate}>
-  <AppShell defaultSidebarOpen>
+  <AppShell>
     <Sidebar>
-      <Sidebar.Header>...</Sidebar.Header>
-      <Sidebar.Nav>...</Sidebar.Nav>
-      <Sidebar.Footer>...</Sidebar.Footer>
+      <Sidebar.Rail current={path}>
+        <Sidebar.RailItem icon={<Ticket />} id="tickets">
+          Tickets
+          <Sidebar.Nav aria-label="Tickets">{/* Section items */}</Sidebar.Nav>
+        </Sidebar.RailItem>
+        {/* More sections and direct links */}
+      </Sidebar.Rail>
     </Sidebar>
     <TopNavigation>
       <TopNavigation.Start>
-        <Sidebar.Toggle />
+        {/* Logo */}
+        <Sidebar.Toggle variant="rail" />
+        {/* Breadcrumbs */}
       </TopNavigation.Start>
-      <TopNavigation.Middle>...</TopNavigation.Middle>
-      <TopNavigation.End>...</TopNavigation.End>
+      <TopNavigation.End>{/* User menu */}</TopNavigation.End>
     </TopNavigation>
     <Page>
       <Page.Header>
@@ -60,13 +65,17 @@ The app frame divides the screen into three areas. The diagram below shows how t
 
 The order of `<Sidebar>`, `<TopNavigation>`, and `<Page>` inside `AppShell` doesn't matter since the grid template handles positioning. For controlled sidebar state, render your own `<Sidebar.Provider>` around `<AppShell>`. See the [AppShell docs](/components/layout/app-shell).
 
+Applications with flat navigation can swap the rail for a single-column `<Sidebar>`. The shell then switches to the sidebar-first arrangement. The sidebar runs the full viewport height and carries the logo in its header, while the top bar starts beside it. See [Single-column sidebar](/components/layout/app-shell#single-column-sidebar) for guidance on when the single column is the better fit.
+
+<AppFrameStructureSingle />
+
 ### Where things go
 
 Each area has a clear purpose. Mixing responsibilities between them makes the layout harder to use and harder to maintain.
 
-- **Logo placement:** Put the application logo or name in the sidebar header, not in the top navigation. The sidebar is the persistent brand anchor. The top navigation is for orientation and utility actions.
-- **Primary navigation:** All section-level links belong in the sidebar. Use groups (`<Sidebar.GroupLabel>`) and separators (`<Sidebar.Separator>`) to organize them. See the [Sidebar docs](/components/navigation/sidebar) for drill-down navigation and detail page patterns.
-- **Top navigation:** The top navigation exists primarily for [breadcrumbs](/components/navigation/breadcrumbs) and [search](/components/form/search-field). Breadcrumbs go in the middle slot to show users where they are in the hierarchy. A search field can replace or complement them when global search is a core workflow. Don't place tabs, links, or secondary navigation here. That's what the sidebar is for. See the [TopNavigation docs](/components/navigation/topnavigation) for further information.
+- **Logo placement:** In the default shell the full-width top bar is the brand anchor, so the logo lives in `TopNavigation.Start` ahead of `<Sidebar.Toggle variant="rail" />`, as shown in the example above. With a single-column sidebar, the sidebar takes over that role. Put the logo or application name in its header and keep the top navigation focused on orientation and utility actions.
+- **Primary navigation:** All section-level links belong in the sidebar. With [two-level navigation](/components/navigation/sidebar#two-level-navigation) the sections live on the rail and each section's links in its panel. In a single column, use groups (`<Sidebar.GroupLabel>`) and separators (`<Sidebar.Separator>`) to organize them. See the [Sidebar docs](/components/navigation/sidebar) for drill-down navigation and detail page patterns.
+- **Top navigation:** Beyond the logo and the toggle, the top navigation exists primarily for [breadcrumbs](/components/navigation/breadcrumbs) and [search](/components/form/search-field). In the default shell breadcrumbs follow the toggle in the start slot, and with a single-column sidebar they go in the middle slot. A search field can replace or complement them when global search is a core workflow. Don't place tabs, links, or secondary navigation here. That's what the sidebar is for. See the [TopNavigation docs](/components/navigation/topnavigation) for further information.
 - **Breadcrumbs, not in the page header:** Breadcrumbs describe where a page sits in the app, so they belong to the frame (which persists across navigation) rather than to `<Page.Header>`, which describes the page itself. This is why Marigold places them in `<TopNavigation>` rather than the page header, unlike systems that fold breadcrumbs into the page title block.
 - **Utility actions (top navigation, right side):** The end of the top navigation is reserved for user-facing utilities like account menus, notification badges, or status indicators. Keep it concise. Too many items cause the navigation to overflow on smaller screens.
 
@@ -74,10 +83,11 @@ Each area has a clear purpose. Mixing responsibilities between them makes the la
   <Do>
     <DoDescription>
       <ul>
-        <li>Place the logo in the sidebar header.</li>
         <li>
-          Use breadcrumbs in the top navigation middle slot for page context.
+          Place the logo in the top navigation's start slot (with a
+          single-column sidebar: in the sidebar header).
         </li>
+        <li>Use breadcrumbs in the top navigation for page context.</li>
         <li>Keep header content concise so it adapts to different widths.</li>
         <li>Use the sidebar exclusively for navigation links and groups.</li>
       </ul>
@@ -105,12 +115,13 @@ Each area has a clear purpose. Mixing responsibilities between them makes the la
 
 Each app frame slot renders semantic HTML, so the screen reader's landmark list reflects the layout automatically.
 
-| Slot              | Landmark        |
-| ----------------- | --------------- |
-| `<TopNavigation>` | `banner`        |
-| `<Sidebar>`       | `complementary` |
-| `<Sidebar.Nav>`   | `navigation`    |
-| `<Page>`          | `main`          |
+| Slot              | Landmark                                                                       |
+| ----------------- | ------------------------------------------------------------------------------ |
+| `<TopNavigation>` | `banner`                                                                       |
+| `<Sidebar>`       | `complementary`                                                                |
+| `<Sidebar.Nav>`   | `navigation`                                                                   |
+| `<Sidebar.Rail>`  | `complementary` containing two `navigation` landmarks (rail and section panel) |
+| `<Page>`          | `main`                                                                         |
 
 The `<main>` landmark is labelled by the page `<h1>` from `<Page.Header>`, so screen-reader landmark navigation announces the page by its title. When you compose multiple navigation regions inside the header (e.g. `<TopNavigation.Middle>` plus `<TopNavigation.End>`), give each a distinct `aria-label` so they can be told apart. Each [`<Panel>`](/components/layout/panel) inside `<Page>` adds its own `region` landmark, labelled by its title.
 
@@ -118,7 +129,7 @@ The `<main>` landmark is labelled by the page `<h1>` from `<Page.Header>`, so sc
 
 ### Responsive behavior
 
-`<AppShell>` always renders the L-shape grid and doesn't change at breakpoints. Responsive behavior comes from the components inside it. The sidebar collapses on desktop and becomes a modal sheet on mobile. The top navigation adapts its content at smaller widths. See the [Sidebar](/components/navigation/sidebar#collapsing) and [TopNavigation](/components/navigation/topnavigation#mobile-navigation) docs for details.
+`<AppShell>` always renders its grid and doesn't change at breakpoints. Responsive behavior comes from the components inside it. The sidebar collapses on desktop and becomes a modal sheet on mobile. With [two-level navigation](/components/navigation/sidebar#two-level-navigation) the drawer is the same single-column sheet — sections drill in, opened at the active section. The top navigation adapts its content at smaller widths. See the [Sidebar](/components/navigation/sidebar#collapsing) and [TopNavigation](/components/navigation/topnavigation#mobile-navigation) docs for details.
 
 ## Page structure
 

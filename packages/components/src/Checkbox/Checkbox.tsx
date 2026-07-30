@@ -21,8 +21,8 @@ const Icon = ({ className, checked, indeterminate, ...props }: IconProps) => {
       className={cn(
         'flex shrink-0 grow-0 basis-4 items-center justify-center',
         'h-4 w-4 p-px',
-        'bg-white',
-        'rounded-[3px] border border-solid border-black',
+        'bg-surface',
+        'border-control-border rounded-[3px] border border-solid',
         className
       )}
       {...props}

@@ -1,4 +1,4 @@
-import { Children, isValidElement } from 'react';
+import { Children, Fragment, isValidElement } from 'react';
 import type { ReactElement, ReactNode } from 'react';
 import type { SidebarGroupLabelProps, SidebarItemProps } from './SidebarItem';
 
@@ -54,11 +54,31 @@ const isSidebarGroupLabel = (
     .__SIDEBAR_GROUP_LABEL__ === true;
 
 /**
+ * Flatten children like `Children.toArray`, but additionally unwrap
+ * `<Fragment>`s: `toArray` treats a fragment as a single opaque element, so
+ * nav items wrapped in one (e.g. returned from a helper as `<>…</>`) would
+ * silently fall through the type guards and vanish from the collection.
+ */
+export const flattenChildren = (children: ReactNode): ReactNode[] => {
+  const result: ReactNode[] = [];
+  for (const child of Children.toArray(children)) {
+    if (isValidElement(child) && child.type === Fragment) {
+      result.push(
+        ...flattenChildren((child.props as { children?: ReactNode }).children)
+      );
+    } else {
+      result.push(child);
+    }
+  }
+  return result;
+};
+
+/**
  * Extract a text value from children. If any child is a string,
  * concatenate them. Otherwise return empty string (user should
  * provide textValue explicitly).
  */
-const extractTextValue = (children: readonly ReactNode[]): string => {
+export const extractTextValue = (children: readonly ReactNode[]): string => {
   let text = '';
   for (const child of children) {
     if (typeof child === 'string') {
@@ -79,7 +99,7 @@ const separateChildren = (
   const itemChildren: ReactNode[] = [];
   const triggerContent: ReactNode[] = [];
 
-  const flat = Children.toArray(children);
+  const flat = flattenChildren(children);
   for (const child of flat) {
     if (
       isSidebarItem(child) ||
@@ -95,7 +115,7 @@ const separateChildren = (
   return { itemChildren, triggerContent };
 };
 
-const firstLeafHref = (nodes: SidebarNode[]): string | undefined => {
+export const firstLeafHref = (nodes: SidebarNode[]): string | undefined => {
   for (const node of nodes) {
     if (node.type !== 'item') continue;
     if (node.children.length === 0) return node.href;
@@ -137,7 +157,7 @@ export const normalizePath = (path: string): string => {
   return trimmed === '' ? '/' : trimmed;
 };
 
-const collectLeaves = (nodes: SidebarNode[]): SidebarItemNode[] => {
+export const collectLeaves = (nodes: SidebarNode[]): SidebarItemNode[] => {
   const result: SidebarItemNode[] = [];
   for (const node of nodes) {
     if (node.type !== 'item') continue;
@@ -151,26 +171,22 @@ const collectLeaves = (nodes: SidebarNode[]): SidebarItemNode[] => {
 };
 
 /**
- * Resolve the set of active leaf keys for a given `current` value.
+ * Core longest-prefix matcher over a flat list of leaves. Shared by the
+ * single-column nav (`resolveCurrent`) and the rail (`resolveActiveRail`), so
+ * both resolve active state identically.
  *
  * String mode rules:
- *   1. Normalize the input (strip query/hash, trim trailing slash).
- *   2. Walk leaves only — branches participate via `findActiveBranch`.
- *   3. Exact match wins first.
- *   4. Otherwise, longest segment-prefix match (`current` starts with `href + '/'`).
- *   5. Root (`/`) is exact-only — never acts as a prefix.
- *   6. Equal-length matches: first in document order wins.
+ *   1. Exact match wins first.
+ *   2. Otherwise, longest segment-prefix match (`current` starts with `href + '/'`).
+ *   3. Root (`/`) is exact-only — never acts as a prefix.
+ *   4. Equal-length matches: first in document order wins.
  *
  * Function mode: predicate is called per leaf with `(href, key)`.
  */
-export const resolveCurrent = (
-  collection: SidebarCollection,
-  current: SidebarCurrent | undefined
+export const matchLeaves = (
+  leaves: readonly { key: string; href?: string }[],
+  current: SidebarCurrent
 ): Set<string> => {
-  if (current === undefined) return new Set();
-
-  const leaves = collectLeaves(collection.rootNodes);
-
   if (typeof current === 'function') {
     const set = new Set<string>();
     for (const leaf of leaves) {
@@ -180,26 +196,6 @@ export const resolveCurrent = (
   }
 
   const target = normalizePath(current);
-
-  if (process.env.NODE_ENV !== 'production') {
-    const seen = new Map<string, string>();
-    for (const leaf of leaves) {
-      if (!leaf.href) continue;
-      const href = normalizePath(leaf.href);
-      const existing = seen.get(href);
-      if (existing !== undefined) {
-        // eslint-disable-next-line no-console
-        console.error(
-          `[Sidebar] Multiple leaf items share the same href "${href}" ` +
-            `(keys: "${existing}", "${leaf.key}"). Active state matching ` +
-            `will pick the first item in document order. Each leaf nav ` +
-            `item should have a unique href.`
-        );
-      } else {
-        seen.set(href, leaf.key);
-      }
-    }
-  }
 
   let exact: string | null = null;
   let best: { key: string; len: number } | null = null;
@@ -221,6 +217,59 @@ export const resolveCurrent = (
   }
 
   return new Set(exact ? [exact] : best ? [best.key] : []);
+};
+
+/**
+ * Dev-only guard against leaves that resolve to the same normalized href —
+ * `matchLeaves` would silently pick the first in document order. Shared by
+ * the single-column nav (`resolveCurrent`) and the rail (`resolveActiveRail`);
+ * `format` renders the collision in the caller's vocabulary (leaf keys vs
+ * rail items).
+ */
+export const warnDuplicateHrefs = (
+  leaves: readonly { key: string; href?: string }[],
+  format: (href: string, firstKey: string, duplicateKey: string) => string
+): void => {
+  if (process.env.NODE_ENV === 'production') return;
+
+  const seen = new Map<string, string>();
+  for (const leaf of leaves) {
+    if (!leaf.href) continue;
+    const href = normalizePath(leaf.href);
+    const existing = seen.get(href);
+    if (existing !== undefined) {
+      console.error(format(href, existing, leaf.key));
+    } else {
+      seen.set(href, leaf.key);
+    }
+  }
+};
+
+/**
+ * Resolve the set of active leaf keys for a given `current` value. Walks leaves
+ * only — branches participate via `findActiveBranch`. See `matchLeaves` for the
+ * matching rules.
+ */
+export const resolveCurrent = (
+  collection: SidebarCollection,
+  current: SidebarCurrent | undefined
+): Set<string> => {
+  if (current === undefined) return new Set();
+
+  const leaves = collectLeaves(collection.rootNodes);
+
+  if (typeof current !== 'function') {
+    warnDuplicateHrefs(
+      leaves,
+      (href, first, duplicate) =>
+        `[Sidebar] Multiple leaf items share the same href "${href}" ` +
+        `(keys: "${first}", "${duplicate}"). Active state matching ` +
+        `will pick the first item in document order. Each leaf nav ` +
+        `item should have a unique href.`
+    );
+  }
+
+  return matchLeaves(leaves, current);
 };
 
 /**
@@ -330,7 +379,7 @@ const buildNodes = (
 export const buildCollection = (children: ReactNode): SidebarCollection => {
   const counter = { value: 0 };
   const index = new Map<string, SidebarNode>();
-  const rootNodes = buildNodes(Children.toArray(children), counter, index);
+  const rootNodes = buildNodes(flattenChildren(children), counter, index);
 
   return {
     rootNodes,

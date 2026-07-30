@@ -8,6 +8,7 @@ import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { type ComponentType, type ReactNode } from 'react';
 import {
+  I18nProvider,
   MarigoldProvider,
   OverlayContainerProvider,
 } from '@marigold/components';
@@ -78,17 +79,20 @@ const Preview = ({
       className="flex w-full flex-col justify-center overflow-hidden [&>*:first-child]:flex [&>*:first-child]:place-items-center"
     >
       <OverlayContainerProvider container="portalContainer">
-        <MarigoldProvider
-          theme={ruiTheme}
-          className={cn(
-            'min-h-37.5 w-full',
-            background === 'page' ? 'bg-background' : 'bg-white'
-          )}
-        >
-          <div className="not-prose w-full overflow-x-auto p-4">
-            <Demo />
-          </div>
-        </MarigoldProvider>
+        {/* Pin the locale so demos render identically on server and client. */}
+        <I18nProvider locale="en-US">
+          <MarigoldProvider
+            theme={ruiTheme}
+            className={cn(
+              'min-h-37.5 w-full',
+              background === 'page' ? 'bg-background' : 'bg-white'
+            )}
+          >
+            <div className="not-prose w-full overflow-x-auto p-4">
+              <Demo />
+            </div>
+          </MarigoldProvider>
+        </I18nProvider>
       </OverlayContainerProvider>
     </div>
   );

@@ -22,17 +22,50 @@ const componentsPkgPath = path.join(
   'package.json'
 );
 
+// Public packages whose installed versions `marigold doctor` compares against
+// the latest published versions to flag out-of-date installs.
+const PUBLIC_PACKAGES = {
+  '@marigold/components': componentsPkgPath,
+  '@marigold/system': path.join(
+    rootDir,
+    '..',
+    'packages',
+    'system',
+    'package.json'
+  ),
+  '@marigold/theme-rui': path.join(
+    rootDir,
+    '..',
+    'themes',
+    'theme-rui',
+    'package.json'
+  ),
+};
+
 const BASE_URL = 'https://www.marigold-ui.io';
 const EXCLUDED_PREFIXES = ['releases'];
 const EXCLUDED_SEGMENTS = ['__internal__'];
 
-const readComponentsVersion = () => {
+const readVersionAt = absPath => {
   try {
-    const pkg = JSON.parse(fs.readFileSync(componentsPkgPath, 'utf-8'));
+    const pkg = JSON.parse(fs.readFileSync(absPath, 'utf-8'));
     return typeof pkg.version === 'string' ? pkg.version : null;
   } catch {
     return null;
   }
+};
+
+const readComponentsVersion = () => readVersionAt(componentsPkgPath);
+
+// Map of public package name → published version, omitting any that can't be
+// read. Consumed by `marigold doctor`'s freshness check via manifest.packages.
+const readPackageVersions = () => {
+  const out = {};
+  for (const [name, absPath] of Object.entries(PUBLIC_PACKAGES)) {
+    const version = readVersionAt(absPath);
+    if (version) out[name] = version;
+  }
+  return out;
 };
 
 const findMdxFiles = (dir, files = []) => {
@@ -230,6 +263,7 @@ const buildManifest = files => {
       version: readComponentsVersion(),
       generatedAt: new Date().toISOString(),
       baseUrl: BASE_URL,
+      packages: readPackageVersions(),
       pages: entries,
     })
   );

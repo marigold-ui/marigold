@@ -14,6 +14,8 @@ export type CommandName =
   | 'search'
   | 'examples'
   | 'init'
+  | 'doctor'
+  | 'migrate'
   | 'telemetry';
 
 export interface TelemetryEvent {

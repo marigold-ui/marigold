@@ -1,0 +1,22 @@
+title: Pick records from a collection into a report
+brief: >-
+  A report that owns the venues picked for it. A trigger opens a Dialog with a
+  search field, three filter facets (type, region, status), a running result
+  count, and a wide eleven-column multi-select Table (region, country,
+  setting, capacity, rating, upcoming events, status badge, day rate) over about
+  fifty venues in a bounded, sticky Scrollable region. Staged venues stay
+  visible as a removable Tag.Group rail through every search and filter, so
+  narrowing the list never drops a pick. The commit footer carries the staged
+  count, and confirming persists the set on the report, which can be re-opened
+  pre-staged to edit. It opens in a fullscreen dialog, the size this width and
+  density needs.
+patterns:
+  - user-input/pick
+key_files:
+  - PickVenuesDialog.tsx
+  - ReportVenues.tsx
+  - venues.ts
+scaffolding_files:
+  - page.tsx
+peer_deps:
+  - '@react-types/shared'
