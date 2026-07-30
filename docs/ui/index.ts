@@ -21,3 +21,4 @@ export * from './VisualSpacing';
 export * from './DemoResizer';
 export * from './FadeContainer';
 export * from './Wireframe';
+export * from './ContrastLegend';

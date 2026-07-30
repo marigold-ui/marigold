@@ -85,6 +85,14 @@ Ramp A is `charcoal-950` at those alphas and rides light grounds. Ramp B is `whi
 
 The four jobs map onto the rungs one each: `muted` → `a-50`, `focus-highlight` → `a-100`, `hover` → `a-200`, `selected` → `a-300`. `focus-highlight-bold` reuses `a-300`. There are four rungs because there are four jobs; add a rung when a fifth job turns up, not before.
 
+### Measured on both grounds and both scales
+
+Every rung on every ground, with the wash measured against what it sits on and each ink measured on the composited wash. Both contrast models are reported, for the same reason the [charcoal matrix](#contrast-matrix) reports both: **WCAG 2.x** is the conformance target that 1.4.3 and 1.4.11 are written against, and **APCA** is the perceptual model from the WCAG 3 effort. They disagree most on light-on-dark pairs — exactly what ramp B creates — so the disagreements are where to look.
+
+<ComponentDemo file="./alpha-ramp.demo.tsx" mode="preview" />
+
+Two things are worth reading off that table. The wash column is a _band_, not a score to maximise: a wash is meant to be visible without reading as an indicator, so higher is not better. And on the contrast ground the whole ramp falls under APCA's low clip — APCA declines to call it contrast at all. That is not a defect in the ramp; it is R7 stated in stronger terms than WCAG can manage.
+
 <Callout title="On a dark ground the tokens are restated, not repointed">
   `ui-contrast` restates all five wash tokens against ramp B, and descendants
   inherit them — so a hover, selection, or focus tint anywhere beneath a
@@ -98,7 +106,23 @@ The four jobs map onto the rungs one each: `muted` → `a-50`, `focus-highlight`
   on a dark ground, i.e. invisible.
 </Callout>
 
-Alongside the five washes, `ui-contrast` applies `text-primary-foreground` and restates `secondary` (to `charcoal-500`, 4.74:1 on that ground). It deliberately does **not** restate `foreground`, because `ui-soft` applies `text-foreground` and a soft-capped control nested in a contrast region would end up with light text on a near-white cap — components pinning `text-foreground` for emphasis should reach for `text-inherit` instead. `secondary-bold` is also not restated, so `text-secondary-bold` under a contrast surface would measure 2.04:1. No component does that today, but don't be the first.
+Alongside the five washes, `ui-contrast` applies `text-primary-foreground` and restates `secondary` (to `charcoal-500`, 4.75:1 on that ground). It deliberately does **not** restate `foreground`, because `ui-soft` applies `text-foreground` and a soft-capped control nested in a contrast region would end up with light text on a near-white cap — components pinning `text-foreground` for emphasis should reach for `text-inherit` instead.
+
+<Callout title="Open question: charcoal-500 passes WCAG and fails APCA">
+  The `secondary` restatement was chosen by lightness offset, mirroring how the
+  token sits relative to `foreground` on light grounds, and it clears AA at
+  4.75:1. On the APCA scale it is **Lc 36** — well under the Lc 60 floor for
+  body text, and less than half the Lc 78 that plain `secondary` achieves on
+  white. Even `charcoal-400`, a WCAG AAA pass at 7.51:1, only reaches Lc 55.
+  Matching the *perceptual* relationship instead lands on `charcoal-300`: Lc 77
+  on the dark ground against secondary's Lc 78 on white, and still 1.51:1 away
+  from `disabled`, which is the collision that ruled `charcoal-400` out. This is
+  the clearest case in the system of WCAG 2.x over-rating a light-on-dark pair.
+  Unresolved — changing it alters every contrast surface, so it needs a design
+  decision rather than a token edit.
+</Callout>
+
+Not every ground-dependent token is restated. `secondary-bold` is not, so `text-secondary-bold` under a contrast surface measures 2.04:1 (Lc 12); nor are `placeholder` (3.14:1, and it is text), `ring` (2.05:1 over `selected`, against the 3:1 a focus indicator needs), `selected-bold` (1.00:1 — charcoal-900 on a charcoal-900 ground), `scrollbar-hover` (1.14:1), or the three translucent edge tokens, which are dark-base alphas and so recede into a dark ground instead of drawing an edge. Only the scrollbar has a consumer nested under a contrast surface today — ActionBar's toolbar scrolls, so hovering its thumb makes it disappear into the bar. Rather than leave that as folklore, the theme carries a **polarity inventory**: every neutral token is classified as flipping, deliberately stable, or a known gap, and a test asserts each behaves as classified. Adding a neutral token without classifying it fails that test — which is the point, since "add a token, forget a line" is how this list got long in the first place.
 
 ### Rules for alpha tokens
 
@@ -112,17 +136,21 @@ These nine rules govern when a token may be translucent and how to use one. They
 
 **R4 — One alpha per element; never stack.** Two translucent layers composite multiplicatively — 10% over 10% is an effective 19%, which turns a hover into something with the weight of a selection. Co-occurring states resolve to a single combined token. Watch overlapping siblings, not just nesting.
 
-Stacking needs two _elements_. Two washes on the same element both set `background-color`, so the cascade picks one and nothing composites — and the winner must be the persistent state, never the momentary one. `selected` beats `hover` and `focus-highlight` today. Note that this means the losing state becomes invisible, and at the top rung that cannot be fixed with a combined token: `selected` is 19% against R5's 20% ceiling, so a "selected + hover" wash would be 0.038 of contrast stronger than plain `selected`. Where the swallowed state is a focus indicator, the answer is a ring, not a wash.
+Stacking needs two _elements_. Two washes on the same element both set `background-color`, so the cascade picks one and nothing composites — and the winner must be the persistent state, never the momentary one. `selected` beats `hover` and `focus-highlight` today, and a test asserts it, because which one wins is decided by Tailwind's variant emission order rather than by anything this theme states.
 
-**R5 — Budget: ≤ 20% on light grounds, ≤ 15% on dark.** Inside those bands the perceived delta stays stable across a range of grounds. Past them, alpha starts behaving like the absolute color it was meant to replace.
+That means the losing state becomes invisible, and at the top rung a combined token does not rescue it. Within R5 there is almost nothing left to spend: `selected` is 19% against a 20% ceiling, which buys 0.038 of contrast. But R5 is a convention (see below), so the load-bearing reason is not the budget — it is that a hovered selection _should not_ grow. Hover is momentary and selection is not, so a wash that strengthens under the pointer makes the transient state the loudest thing on the row. The ghost pair went the other way (`ui-state-selected-hover-ghost`, 10% → 15%) because there the selection layer is the only layer, so it has to carry both. Where the swallowed state is a focus indicator, the answer is a ring, not a wash.
+
+**R5 — Budget: ≤ 20% on light grounds, ≤ 15% on dark.** A convention, not a measured cliff. Nothing changes at the ceiling: the cross-ground spread that matters — one alpha serving both light grounds — grows smoothly from 1.0% of the delta at 2% alpha to 1.4% at 19%, 1.5% at 20% and 1.8% at 30%. What the band buys is margin. Solving a wash for the 3:1 of a real indicator needs α ≈ 44% on light grounds and ≈ 33% on dark, so the budget holds every rung at roughly half the alpha at which a wash would stop being a wash. Read it as the line past which you should be reaching for an opaque token, not as a point where the math breaks.
 
 **R6 — Never CSS `opacity` for a state.** Color-level alpha only. `opacity` fades text and icons along with the fill and silently destroys contrast; it is the most common way alpha tokens fail an audit.
 
-**R7 — A state fill is reinforcement, never the only signal.** The ramp sits deliberately under the 3:1 non-text threshold — the top rung reaches 1.52:1. Anything signalling selection also carries an icon, a weight change, or an ARIA state.
+**R7 — A state fill is reinforcement, never the only signal.** The ramp sits deliberately under the 3:1 non-text threshold — the top rung reaches 1.52:1. APCA says it more bluntly: the strongest rung anywhere measures Lc 25, under the Lc 30 that APCA asks of a control or focus indicator, and on the contrast ground the entire ramp falls below its low clip. Since APCA treats Lc 15 as the point below which many users will not see an element at all, a wash is not merely insufficient on its own — for some users it is not there. Anything signalling selection also carries an icon, a weight change, or an ARIA state.
 
-**R8 — Text never goes alpha, and text _on_ a wash gets re-measured.** A wash changes what its own text sits on. `text-secondary` on `bg-selected` measures 3.59 / 3.26 / 3.09:1 on the surface, page, and contrast grounds — it fails WCAG 1.4.3 on all three. Selected rows take `text-foreground` (11.27:1); where a dimmer label is genuinely wanted, `text-secondary-bold` clears it at 5.52:1 on light grounds.
+**R8 — Text never goes alpha, and text _on_ a wash gets re-measured.** A wash changes what its own text sits on. `text-secondary` on `bg-selected` measures 3.60 / 3.27 / 3.10:1 on the surface, page, and contrast grounds — it fails WCAG 1.4.3 on all three, and APCA agrees at Lc 51 / 45 / 30. Selected rows take `text-foreground` (11.31:1, Lc 77).
 
-**R9 — Tune α to a contrast target, not to a matching hex.** Solve each rung for the ratio it must hit on its own grounds, and accept that the two polarities produce different colors.
+Where a dimmer label is genuinely wanted, `text-secondary-bold` clears WCAG on light grounds — but only just, and not on both scales: on the page ground at `a-300` it is 5.02:1, which passes AA, against Lc 57, which misses APCA's Lc 60 floor for body text. Prefer `text-foreground` on the top rung and keep `secondary-bold` for `a-50` and `a-100`.
+
+**R9 — Tune α to a contrast target, not to a matching hex.** Solve each rung for the ratio it must hit on its own grounds, and accept that the two polarities produce different colors. Check the solve on both scales: a target met in WCAG 2.x alone can still be perceptually thin on a dark ground, which is exactly how the `secondary` restatement above ended up at Lc 36.
 
 <GuidelineTiles>
   <Do>
@@ -404,11 +432,13 @@ The secondary Button and the Menu trigger don't wear a boundary at all. They're 
 Selection tells users which item has already been chosen. Not every selection looks the same though. Binary controls like checkboxes and switches flip between on and off, so they use `bg-selected-bold` with `text-selected-bold-foreground` for a strong, inverted style that clearly communicates the on/off state. List-based components use the quieter `bg-selected` wash paired with the row's own indicator (the checkbox, radio, or check icon), which carries the selection boundary and its WCAG 1.4.11 contrast. The wash sits one step darker than the `hover` fill, so a committed row reads heavier than one the cursor merely floats over.
 
 <Callout title="Known issue: secondary text on the selected wash">
-  Because `bg-selected` is `charcoal-300`, secondary description text
-  (`text-secondary`, `charcoal-600`) on a selected row lands at 3.6:1, below the
-  4.5:1 AA minimum. Selection is carried by the indicator, so the failure is
-  limited to the description subtext. The fix is to render selected-row
-  descriptions in `text-foreground`, or to move the fill onto an alpha ramp.
+  Secondary description text (`text-secondary`) on a selected row lands at
+  3.60:1, below the 4.5:1 AA minimum — and moving the fill onto the alpha ramp
+  did not change that, because the rung was solved to match the opaque value it
+  replaced. Selection is carried by the indicator, so the failure is limited to
+  the description subtext. Render selected-row descriptions in `text-foreground`
+  (11.31:1) instead. See [R8](#rules-for-alpha-tokens) for the full picture,
+  including why `text-secondary-bold` is not a safe substitute on this rung.
 </Callout>
 
 <TokenTable

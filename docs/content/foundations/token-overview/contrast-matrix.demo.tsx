@@ -1,132 +1,29 @@
 'use client';
 
-const steps = [
-  '50',
-  '100',
-  '200',
-  '300',
-  '400',
-  '500',
-  '600',
-  '700',
-  '800',
-  '900',
-  '950',
-] as const;
+import {
+  CHARCOAL_STEPS,
+  apcaBadgeColor,
+  apcaLc,
+  charcoal,
+  wcagBadgeColor,
+  wcagRatio,
+} from '@/lib/contrast';
+import { ContrastLegend } from '@/ui/ContrastLegend';
 
-// oklch to sRGB conversion (from the reference implementation)
-function oklchToRgb(L: number, C: number, h: number): [number, number, number] {
-  const hr = (h * Math.PI) / 180;
-  const a = C * Math.cos(hr);
-  const b = C * Math.sin(hr);
-  const l_ = L + 0.3963377774 * a + 0.2158037573 * b;
-  const m_ = L - 0.1055613458 * a - 0.0638541728 * b;
-  const s_ = L - 0.0894841775 * a - 1.291485548 * b;
-  const l = l_ * l_ * l_;
-  const m = m_ * m_ * m_;
-  const s = s_ * s_ * s_;
-  const rLin = 4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s;
-  const gLin = -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s;
-  const bLin = -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s;
-  const gamma = (c: number) => {
-    const abs = Math.abs(c);
-    const r =
-      abs > 0.0031308 ? 1.055 * Math.pow(abs, 1 / 2.4) - 0.055 : 12.92 * abs;
-    return c < 0 ? -r : r;
-  };
-  return [
-    Math.max(0, Math.min(255, Math.round(gamma(rLin) * 255))),
-    Math.max(0, Math.min(255, Math.round(gamma(gLin) * 255))),
-    Math.max(0, Math.min(255, Math.round(gamma(bLin) * 255))),
-  ];
-}
+const cell = {
+  padding: '6px 4px',
+  minWidth: 65,
+  textAlign: 'center',
+} as const;
 
-function rgbToHex(r: number, g: number, b: number) {
-  return (
-    '#' +
-    [r, g, b]
-      .map(x =>
-        Math.max(0, Math.min(255, Math.round(x)))
-          .toString(16)
-          .padStart(2, '0')
-      )
-      .join('')
-  );
-}
-
-// Charcoal scale: oklch(L, C, 54)
-const charcoal: Record<string, { L: number; C: number }> = {
-  '50': { L: 0.985, C: 0.002 },
-  '100': { L: 0.965, C: 0.003 },
-  '200': { L: 0.92, C: 0.004 },
-  '300': { L: 0.86, C: 0.005 },
-  '400': { L: 0.74, C: 0.006 },
-  '500': { L: 0.62, C: 0.007 },
-  '600': { L: 0.52, C: 0.008 },
-  '700': { L: 0.42, C: 0.008 },
-  '800': { L: 0.32, C: 0.008 },
-  '900': { L: 0.22, C: 0.008 },
-  '950': { L: 0.15, C: 0.008 },
-};
-
-const colors = Object.fromEntries(
-  steps.map(s => {
-    const { L, C } = charcoal[s];
-    const rgb = oklchToRgb(L, C, 54);
-    return [s, { rgb, hex: rgbToHex(...rgb) }];
-  })
-) as Record<string, { rgb: [number, number, number]; hex: string }>;
-
-// WCAG 2.1 relative luminance
-function getWCAGLuminance(r: number, g: number, b: number) {
-  const f = (v: number) => {
-    v /= 255;
-    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
-  };
-  return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
-}
-
-function calculateWCAG(
-  rgb1: [number, number, number],
-  rgb2: [number, number, number]
-) {
-  const l1 = getWCAGLuminance(...rgb1);
-  const l2 = getWCAGLuminance(...rgb2);
-  return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
-}
-
-// APCA contrast (simplified)
-function getLuminance(r: number, g: number, b: number) {
-  return (
-    0.2126 * Math.pow(r / 255, 2.4) +
-    0.7152 * Math.pow(g / 255, 2.4) +
-    0.0722 * Math.pow(b / 255, 2.4)
-  );
-}
-
-function calculateAPCA(
-  text: [number, number, number],
-  bg: [number, number, number]
-) {
-  const Yt = getLuminance(...text);
-  const Yb = getLuminance(...bg);
-  const c = (Math.pow(Yb, 0.56) - Math.pow(Yt, 0.57)) * 1.14;
-  return Math.abs(c) < 0.1 ? 0 : c * 100;
-}
-
-function apcaBadgeColor(score: number) {
-  if (score >= 75) return 'rgba(16,185,129,0.25)';
-  if (score >= 60) return 'rgba(34,197,94,0.25)';
-  if (score >= 45) return 'rgba(245,158,11,0.25)';
-  return 'rgba(239,68,68,0.25)';
-}
-
-function wcagBadgeColor(score: number) {
-  if (score >= 7.0) return 'rgba(16,185,129,0.25)';
-  if (score >= 4.5) return 'rgba(34,197,94,0.25)';
-  if (score >= 3.0) return 'rgba(245,158,11,0.25)';
-  return 'rgba(239,68,68,0.25)';
-}
+const badge = {
+  display: 'block',
+  fontSize: 9,
+  fontWeight: 700,
+  padding: '1px 3px',
+  borderRadius: 3,
+  lineHeight: 1.3,
+} as const;
 
 export default () => (
   <>
@@ -143,9 +40,7 @@ export default () => (
             <th
               className="text-secondary text-[11px] font-bold"
               style={{
-                padding: '6px 4px',
-                minWidth: 65,
-                textAlign: 'center',
+                ...cell,
                 borderRight: '1px solid var(--color-charcoal-200)',
                 borderBottom: '1px solid var(--color-charcoal-200)',
                 position: 'sticky',
@@ -154,35 +49,31 @@ export default () => (
             >
               Bg \ Text
             </th>
-            {steps.map(s => (
+            {CHARCOAL_STEPS.map(step => (
               <th
-                key={s}
+                key={step}
                 className="text-secondary text-[11px] font-bold"
                 style={{
-                  padding: '6px 4px',
-                  minWidth: 65,
-                  textAlign: 'center',
+                  ...cell,
                   borderBottom: '1px solid var(--color-charcoal-200)',
                   position: 'sticky',
                   top: 0,
                 }}
               >
-                {s}
+                {step}
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {steps.map(bgStep => {
-            const bgC = colors[bgStep];
+          {CHARCOAL_STEPS.map(bgStep => {
+            const bg = charcoal[bgStep];
             return (
               <tr key={bgStep}>
                 <th
                   className="text-secondary text-[11px] font-bold"
                   style={{
-                    padding: '6px 4px',
-                    minWidth: 65,
-                    textAlign: 'center',
+                    ...cell,
                     borderRight: '1px solid var(--color-charcoal-200)',
                     borderBottom: '1px solid var(--color-charcoal-200)',
                     position: 'sticky',
@@ -192,24 +83,20 @@ export default () => (
                 >
                   {bgStep}
                 </th>
-                {steps.map(txStep => {
-                  const txC = colors[txStep];
-                  const apcaScore = Math.abs(
-                    Math.round(calculateAPCA(txC.rgb, bgC.rgb))
-                  );
-                  const wcagScore = calculateWCAG(txC.rgb, bgC.rgb);
+                {CHARCOAL_STEPS.map(textStep => {
+                  const text = charcoal[textStep];
+                  const lc = Math.abs(Math.round(apcaLc(text.rgb, bg.rgb)));
+                  const ratio = wcagRatio(text.rgb, bg.rgb);
 
                   return (
                     <td
-                      key={txStep}
-                      title={`Bg: ${bgStep}, Text: ${txStep}`}
+                      key={textStep}
+                      title={`Bg: ${bgStep}, Text: ${textStep}`}
                       style={{
-                        padding: '6px 4px',
-                        minWidth: 65,
-                        textAlign: 'center',
+                        ...cell,
                         fontSize: 11,
-                        backgroundColor: bgC.hex,
-                        color: txC.hex,
+                        backgroundColor: bg.hex,
+                        color: text.hex,
                         borderBottom: '1px solid rgba(0,0,0,0.05)',
                         borderRight: '1px solid rgba(0,0,0,0.05)',
                         cursor: 'default',
@@ -235,29 +122,19 @@ export default () => (
                         </span>
                         <span
                           style={{
-                            display: 'block',
-                            fontSize: 9,
-                            fontWeight: 700,
-                            padding: '1px 3px',
-                            borderRadius: 3,
-                            lineHeight: 1.3,
-                            backgroundColor: apcaBadgeColor(apcaScore),
+                            ...badge,
+                            backgroundColor: apcaBadgeColor(lc),
                           }}
                         >
-                          Lc {apcaScore}
+                          Lc {lc}
                         </span>
                         <span
                           style={{
-                            display: 'block',
-                            fontSize: 9,
-                            fontWeight: 700,
-                            padding: '1px 3px',
-                            borderRadius: 3,
-                            lineHeight: 1.3,
-                            backgroundColor: wcagBadgeColor(wcagScore),
+                            ...badge,
+                            backgroundColor: wcagBadgeColor(ratio),
                           }}
                         >
-                          {wcagScore.toFixed(1)}:1
+                          {ratio.toFixed(1)}:1
                         </span>
                       </div>
                     </td>
@@ -270,67 +147,6 @@ export default () => (
       </table>
     </div>
 
-    {/* Legend */}
-    <div className="text-secondary mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[11px]">
-      <span className="font-bold">APCA:</span>
-      <span>
-        <span
-          className="inline-block size-2 rounded-sm"
-          style={{ background: 'rgba(16,185,129,0.5)' }}
-        />{' '}
-        75+ Body
-      </span>
-      <span>
-        <span
-          className="inline-block size-2 rounded-sm"
-          style={{ background: 'rgba(34,197,94,0.5)' }}
-        />{' '}
-        60+ Sub
-      </span>
-      <span>
-        <span
-          className="inline-block size-2 rounded-sm"
-          style={{ background: 'rgba(245,158,11,0.5)' }}
-        />{' '}
-        45+ Large
-      </span>
-      <span>
-        <span
-          className="inline-block size-2 rounded-sm"
-          style={{ background: 'rgba(239,68,68,0.5)' }}
-        />{' '}
-        Fail
-      </span>
-      <span className="mx-1">|</span>
-      <span className="font-bold">WCAG:</span>
-      <span>
-        <span
-          className="inline-block size-2 rounded-sm"
-          style={{ background: 'rgba(16,185,129,0.5)' }}
-        />{' '}
-        7+ AAA
-      </span>
-      <span>
-        <span
-          className="inline-block size-2 rounded-sm"
-          style={{ background: 'rgba(34,197,94,0.5)' }}
-        />{' '}
-        4.5+ AA
-      </span>
-      <span>
-        <span
-          className="inline-block size-2 rounded-sm"
-          style={{ background: 'rgba(245,158,11,0.5)' }}
-        />{' '}
-        3+ Large
-      </span>
-      <span>
-        <span
-          className="inline-block size-2 rounded-sm"
-          style={{ background: 'rgba(239,68,68,0.5)' }}
-        />{' '}
-        Fail
-      </span>
-    </div>
+    <ContrastLegend />
   </>
 );
