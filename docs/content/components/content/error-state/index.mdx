@@ -1,0 +1,73 @@
+---
+title: ErrorState
+description: Inform users when a page or region failed to load.
+badge: beta
+---
+
+The `<ErrorState>` component communicates that a page or region failed to render or load its data. It is the error sibling of [EmptyState](/components/content/empty-state): `EmptyState` says "nothing here, and that is fine", `ErrorState` says "this broke, and here is what you can do".
+
+It is designed as the fallback UI of an error boundary. The boundary itself stays application-side. See the [error boundaries pattern](/patterns/feedback/error-boundaries) for the full convention covering tiers, focus, and recovery.
+
+## Appearance
+
+<AppearanceDemo component={'ErrorState'} />
+<AppearanceTable component={'ErrorState'} />
+
+## Usage
+
+Use `<ErrorState>` when content is gone: an error boundary caught a render failure, or a data fetch failed and nothing can be shown in its place. If content is still present and you are annotating it (validation issues, partial failures, warnings), use a [SectionMessage](/components/content/section-message) instead.
+
+- **Page tier**: the route's error boundary renders a complete `Page` with the route's `Title` and an `<ErrorState headingLevel={2}>` below it, and moves focus to the error state.
+- **Region tier**: a boundary around a `Panel`'s content renders `<ErrorState role="alert" headingLevel={3}>`, announcing the failure without stealing focus.
+
+<ComponentDemo name="error-state-panel" />
+
+### Content strategy
+
+The title states what failed, the description states what the user can do about it. No apologies, no stack traces, no blame. Offer retry only when retrying can actually succeed. For non-transient failures such as 403 or 404, offer an escape route instead. See the [retry microcopy guidance](/patterns/feedback/error-boundaries#recovery-and-retry-microcopy).
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      <ul>
+        <li>Name the thing that failed ("Invoices didn't load").</li>
+        <li>Tell users what they can do next (retry, go back).</li>
+      </ul>
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      <ul>
+        <li>Avoid technical detail like status codes or stack traces.</li>
+        <li>Avoid offering "Try again" when a retry cannot succeed.</li>
+      </ul>
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Accessibility
+
+- The `title` renders as a real heading (`headingLevel`, h2 to h6), so the failed region stays part of the document outline.
+- The illustration is decorative and marked with `aria-hidden="true"`.
+- The container passes through `role` (use `role="alert"` at region tier), `tabIndex`, and `ref` (page-tier fallbacks set `tabIndex={-1}` and move focus to it on mount).
+- The error is not conveyed by color alone: illustration plus explicit title and description.
+
+## Props
+
+### ErrorState
+
+<AutoTypeTable path="ErrorState" name="ErrorStateProps" />
+
+## Alternative components
+
+<ul>
+  <li>
+    [EmptyState](/components/content/empty-state): Use when a request succeeded
+    but returned no data. `ErrorState` is only for failures.
+  </li>
+  <li>
+    [SectionMessage](/components/content/section-message): Use when content is
+    still visible and you are annotating it with a problem or warning, rather
+    than replacing it.
+  </li>
+</ul>

@@ -74,8 +74,8 @@ const workspaceSections = Array.from({ length: 40 }, (_, i) => ({
   label: `Section ${i + 1}`,
 }));
 
-// Tall page content so the document scrolls under the sticky TopNavigation,
-// revealing its bottom-edge hairline (`ui-scroll-edge`).
+// Tall page content so the document scrolls under the sticky TopNavigation
+// (which carries an always-on bottom border).
 const reportPanels = Array.from({ length: 10 }, (_, i) => i + 1);
 
 const ShellFrame = ({
@@ -334,18 +334,15 @@ WideContentDoesNotOverflow.test(
 /**
  * Both scroll axes of the shell at once:
  *
- * - **Sidebar nav** overflows, so its sticky header and footer show their
- *   scroll-revealed seams — seamless at rest; a hairline fades in under the
- *   header as you scroll, and the footer keeps its top hairline until the list
- *   bottoms out.
+ * - **Sidebar nav** overflows, so the sticky footer shows its scroll-revealed
+ *   top seam — a hairline that holds while the list has content below and fades
+ *   out as it bottoms out. (The header carries a plain always-on bottom border.)
  * - **Page content** is tall, so the document scrolls under the sticky
- *   `TopNavigation`, which reveals its own bottom-edge hairline
- *   (`ui-scroll-edge`) once content passes beneath it.
+ *   `TopNavigation`, which carries its own always-on bottom border.
  *
- * Both are scroll-linked (not autonomous), so intentionally not gated by
- * reduced-motion. In browsers without scroll-driven animations the sidebar
- * seams fall back to an always-on hairline; the top bar stays borderless (its
- * opaque background still separates it from passing content).
+ * The footer seam is scroll-linked (not autonomous), so intentionally not gated
+ * by reduced-motion; in browsers without scroll-driven animations it falls back
+ * to an always-on hairline.
  */
 export const ScrollingSidebar = meta.story({
   tags: ['component-test'],
@@ -386,11 +383,10 @@ ScrollingSidebar.test(
     await expect(footer).not.toBeNull();
     await expect(getComputedStyle(footer!).boxShadow).not.toBe('none');
 
-    // And the page itself is tall enough to scroll under the sticky top bar —
-    // the precondition for the TopNavigation's own scroll-revealed edge (the
-    // reveal is a Chromium-only scroll-driven animation, verified visually; the
-    // test guards that the story actually exercises page scroll). The last
-    // filler panel renders below the fold.
+    // And the page itself is tall enough to scroll under the sticky top bar
+    // (which carries an always-on bottom border); the test guards that the
+    // story actually exercises page scroll. The last filler panel renders below
+    // the fold.
     await expect(canvas.getByText('Report 10')).toBeInTheDocument();
     await expect(document.documentElement.scrollHeight).toBeGreaterThan(
       window.innerHeight

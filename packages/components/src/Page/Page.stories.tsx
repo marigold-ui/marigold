@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { expect, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Copy, Download, Pencil, Trash2 } from '@marigold/icons';
 import { Button } from '../Button/Button';
 import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Description } from '../Description/Description';
+import { Inline } from '../Inline/Inline';
 import { LinkButton } from '../LinkButton/LinkButton';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Panel } from '../Panel/Panel';
@@ -11,6 +13,7 @@ import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { Title } from '../Title/Title';
 import { Page } from './Page';
+import { usePageFocus } from './usePageFocus';
 
 const meta = preview.meta({
   title: 'Components/Page',
@@ -356,4 +359,113 @@ export const ExternalLabel = meta.story({
       </Page>
     </>
   ),
+});
+
+// A component that persists across "routes": it calls `usePageFocus` with the
+// current route key so a route change moves focus to the page heading. It lives
+// inside `<Page>` (the hook reads the page context) and renders nothing.
+const RouteFocus = ({ routeKey }: { routeKey: string }) => {
+  usePageFocus(routeKey);
+  return null;
+};
+
+const ROUTES: Record<string, string> = {
+  '/billing': 'Billing',
+  '/team': 'Team members',
+};
+
+const RouteFocusHarness = () => {
+  const [route, setRoute] = useState('/billing');
+
+  return (
+    <>
+      <nav aria-label="Demo navigation">
+        <Inline space={2}>
+          {Object.entries(ROUTES).map(([path, label]) => (
+            <Button key={path} onPress={() => setRoute(path)}>
+              {`Open ${label}`}
+            </Button>
+          ))}
+        </Inline>
+      </nav>
+      <Page>
+        <RouteFocus routeKey={route} />
+        <Page.Header>
+          <Title>{ROUTES[route]}</Title>
+          <Description>You are viewing {ROUTES[route]}.</Description>
+        </Page.Header>
+        <Panel>
+          <Panel.Content>
+            <Text>Route: {route}</Text>
+          </Panel.Content>
+        </Panel>
+      </Page>
+    </>
+  );
+};
+
+/**
+ * `usePageFocus` moves focus to the page `<h1>` on a route change, the standard
+ * SPA technique for announcing navigation to screen-reader and keyboard users.
+ * The router is the source of the route signal — pass the current pathname to
+ * the hook from a component that persists across navigations (here, a small
+ * harness swaps the "route" via the nav buttons). The initial mount is skipped,
+ * so first paint never steals focus.
+ *
+ * The focus-management behaviour itself is covered by unit tests in
+ * `usePageFocus.test.tsx`, which render this story's `.Component`.
+ */
+export const FocusOnRouteChange = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: () => <RouteFocusHarness />,
+});
+
+const NoHeadingFocusHarness = () => {
+  const [route, setRoute] = useState('/billing');
+
+  return (
+    <>
+      <nav aria-label="Demo navigation">
+        <Inline space={2}>
+          {Object.entries(ROUTES).map(([path, label]) => (
+            <Button key={path} onPress={() => setRoute(path)}>
+              {`Open ${label}`}
+            </Button>
+          ))}
+        </Inline>
+      </nav>
+      <Page aria-label={ROUTES[route]}>
+        <RouteFocus routeKey={route} />
+        <Panel>
+          <Panel.Header>
+            <Title>{ROUTES[route]}</Title>
+          </Panel.Header>
+          <Panel.Content>
+            <Text>
+              Route changed to {route}, but there is no page heading, so focus
+              stays on the nav button you just clicked.
+            </Text>
+          </Panel.Content>
+        </Panel>
+      </Page>
+    </>
+  );
+};
+
+/**
+ * When the page has no `<Title>` (named instead by an `aria-label`), there is no
+ * `<h1>` to move to, so `usePageFocus` is a no-op on route change: it never
+ * throws and never moves focus. The nav buttons toggle between both "routes"
+ * (like `FocusOnRouteChange` above) and the panel names itself by its own
+ * `<Title>`, so the route change itself is obvious even though focus
+ * deliberately never moves off the clicked button.
+ *
+ * The no-op behaviour is covered by unit tests in `usePageFocus.test.tsx`,
+ * which render this story's `.Component`.
+ */
+export const FocusWithoutHeading = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: () => <NoHeadingFocusHarness />,
 });

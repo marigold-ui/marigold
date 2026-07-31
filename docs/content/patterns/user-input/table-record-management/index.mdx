@@ -34,7 +34,8 @@ The drawer is the default for anything beyond a single field. Reach for a full p
   A dialog blocks the table behind it, which is exactly the context people rely
   on during data entry. Dialogs also create nested scrolling once a form grows.
   Keep dialogs for confirmations, such as asking before a delete, and use a
-  drawer for everything else.
+  drawer for record creation and editing. To _select_ a subset of records rather
+  than edit them, see the [Pick](/patterns/user-input/pick) pattern.
 </Callout>
 
 ## Fixing a single value
@@ -129,6 +130,8 @@ The demo below starts filtered to active venues. Opening the form inherits that 
 />
 
 Two things to avoid. Do not let the record vanish silently, because that destroys trust. And do not clear all filters after a save, because that throws away the workspace the user set up. Temporarily exempting the new row from the filters (a ghost row) is another option, but it adds complexity and can confuse people who do not understand why a non matching record is showing, so it is not recommended as the default.
+
+The same principle governs picking from a dialog. An in-dialog search or filter must never clear the selections a user has already staged. See the [Pick](/patterns/user-input/pick) pattern for how a picker keeps staged selections while the visible list narrows.
 
 **Displaced by sorting or pagination.** If the table is sorted alphabetically and the user creates "Zebra Corp", the record belongs near the end of the data, perhaps many pages away. A user sitting on page one will not see it appear, and the save once again looks like it failed.
 

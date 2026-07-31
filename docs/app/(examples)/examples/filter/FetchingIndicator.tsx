@@ -2,15 +2,16 @@
 
 import { useIsFetching } from '@tanstack/react-query';
 import { Inline, ProgressCircle, Text } from '@marigold/components';
+import { venueKeys } from './hooks/queryKeys';
 
 // Subtle, non-blocking indicator for background activity.
 //
-// `useIsFetching()` counts queries currently fetching across the whole app. We
-// use it for background refetches (filter/sort/page changes keep the previous
-// data on screen via `placeholderData`) — distinct from `isLoading`, which is
-// the blocking initial fetch handled by the table skeleton.
+// Scoped to list queries: background refetches (filter/sort/page changes keep
+// the previous data on screen via `placeholderData`) — distinct from
+// `isLoading`, which is the blocking initial fetch handled by the table
+// skeleton. The drawer's result-count queries deliberately don't show here.
 export const FetchingIndicator = () => {
-  const fetching = useIsFetching();
+  const fetching = useIsFetching({ queryKey: venueKeys.lists() });
   if (!fetching) return null;
 
   return (

@@ -1,4 +1,5 @@
 import pc from 'picocolors';
+import { highlightCode } from '../format.js';
 
 export interface RenderRow {
   title: string;
@@ -20,13 +21,6 @@ const glyph = (status: RenderRow['status']): string => {
   if (status === 'error') return pc.red('✗');
   return pc.yellow('!');
 };
-
-// Colorize `inline code` spans while keeping the surrounding backticks, so
-// piped / non-TTY output (tests, AI agents, files) stays byte-for-byte the same
-// and only interactive terminals gain color. picocolors is TTY-aware, so every
-// helper below degrades to plain text automatically when color is unsupported.
-const highlightCode = (text: string): string =>
-  text.replace(/`[^`]+`/g, match => pc.cyan(match));
 
 // A single check can carry several findings (e.g. the Tailwind, freshness, and
 // React-peer checks). For humans we render them as a bulleted list under an

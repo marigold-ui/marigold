@@ -183,10 +183,37 @@
 /*
  * Applies a consistent visual style used for keyboard focus states across components.
  * Used this when the border of the component can be changed.
+ *
+ * Two-part indicator, and both parts matter: the *border* flips to full-opacity
+ * --color-ring (5.5:1 on white) and the outline is a soft halo around it. The
+ * halo alone measures 2.08:1 -- below the 3:1 a focus indicator needs -- so this
+ * utility only carries its weight on something that has a border to flip
+ * (ui-frame / ui-surface / ui-control). On a borderless row it silently
+ * degrades to the halo. Use ui-state-focus-item there instead.
  */
 @utility ui-state-focus {
   @apply outline-ring/50 outline-3 outline-offset-0 outline-solid;
   --ui-border-color: var(--color-ring);
+}
+
+/*
+ * Keyboard focus for borderless rows: menu items, list options, table rows --
+ * anything that has no --ui-border-color for ui-state-focus to recolor.
+ *
+ * Full-opacity --color-ring, because this ring *is* the whole indicator: 4.97:1
+ * over focus-highlight, 3.59:1 over selected, 3.14:1 on the contrast ground.
+ * At the /50 ui-state-focus uses it would land at 2.01:1 and fail.
+ *
+ * Inset rather than outline: rows live inside overflow-hidden, rounded overlays
+ * (Popover paints the rim, the Menu inside it is only p-1 off the edge), so an
+ * outward outline gets clipped at the corners. An inset ring cannot be, and it
+ * needs no outline reset from the caller.
+ *
+ * Pairs with, rather than replaces, a focus background -- the wash tracks the
+ * roving pointer/keyboard cursor, this proves where keyboard focus actually is.
+ */
+@utility ui-state-focus-item {
+  @apply inset-ring-ring inset-ring-2;
 }
 
 /*

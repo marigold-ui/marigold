@@ -2,6 +2,7 @@ import {
   type VenueQueryParams,
   type VenueSortColumn,
   type VenueSortDirection,
+  computeVenueFacets,
   queryVenues,
 } from '@/lib/data/venues-query';
 import type { NextRequest } from 'next/server';
@@ -20,6 +21,9 @@ const number = (value: string | null) => {
   return Number.isFinite(n) ? n : undefined;
 };
 
+const numberArray = (values: string[]) =>
+  values.map(Number).filter(Number.isFinite);
+
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const GET = async (request: NextRequest) => {
@@ -31,6 +35,12 @@ export const GET = async (request: NextRequest) => {
     price: number(searchParams.get('price')),
     rating: number(searchParams.get('rating')),
     traits: searchParams.getAll('traits'),
+    city: searchParams.getAll('city'),
+    available: searchParams.getAll('available'),
+    types: numberArray(searchParams.getAll('types')),
+    amenities: numberArray(searchParams.getAll('amenities')),
+    parking: numberArray(searchParams.getAll('parking')),
+    seating: numberArray(searchParams.getAll('seating')),
     column: (searchParams.get('column') as VenueSortColumn) ?? undefined,
     direction:
       (searchParams.get('direction') as VenueSortDirection) ?? undefined,
@@ -49,5 +59,12 @@ export const GET = async (request: NextRequest) => {
     await sleep(Math.min(delay, 5000));
   }
 
-  return Response.json(queryVenues(params));
+  const result = queryVenues(params);
+
+  // `?facets=true` adds per-option counts for the filter panel.
+  if (searchParams.get('facets') === 'true') {
+    return Response.json({ ...result, facets: computeVenueFacets(params) });
+  }
+
+  return Response.json(result);
 };

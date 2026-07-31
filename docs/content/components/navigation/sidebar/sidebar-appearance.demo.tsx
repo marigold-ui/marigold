@@ -8,7 +8,7 @@ export default (props: SidebarProviderProps) => {
   return (
     <RouterProvider navigate={setCurrentPath}>
       <Sidebar.Provider {...props}>
-        <div className="flex h-100 w-full">
+        <div className="flex h-100 w-full [--ui-viewport-height:25rem]">
           <Sidebar>
             <Sidebar.Header>
               <Text weight="bold">Acme Inc.</Text>
