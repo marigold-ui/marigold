@@ -18,5 +18,6 @@ export * from './ComponentDemo';
 export * from './ShinyText';
 export * from './Rectangle';
 export * from './VisualSpacing';
+export * from './DemoResizer';
 export * from './FadeContainer';
 export * from './Wireframe';

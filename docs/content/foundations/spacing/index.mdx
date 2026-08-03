@@ -151,6 +151,8 @@ a 24px diameter circle centered on it does not touch any adjacent target.
 
 </Callout>
 
+Touch input needs more than the mouse minimum: list rows that are pointer-sized on desktop grow to the `touch-target` height token (`--spacing-touch-target`, 44px — the platform guideline for finger targets) on small screens, via `max-sm:min-h-touch-target`. Menu and ListBox options (which open in a [Tray](/components/overlay/tray) on mobile) and the sidebar drawer's nav rows use this token.
+
 ## Composition
 
 Spacing is contextual rather than absolute, defined by the immediate container an element inhabits rather than the global page layout. To maintain a consistent rhythm, we treat every layout container as a self-contained universe where rules apply relative to that specific context, allowing the same semantic values to scale seamlessly across the hierarchy.

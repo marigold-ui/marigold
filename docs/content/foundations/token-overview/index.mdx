@@ -111,6 +111,12 @@ The foundational layer: page background and text hierarchy.
       useFor: 'Help text, descriptions, input icons',
     },
     {
+      name: 'secondary-bold',
+      value: 'charcoal-700',
+      useFor:
+        'Emphatic secondary text that must out-rank quiet captions without reaching full foreground — e.g. idle sidebar nav labels above group labels',
+    },
+    {
       name: 'placeholder',
       value: 'charcoal-600',
       useFor: 'Placeholder text in empty inputs',
@@ -126,10 +132,12 @@ The foundational layer: page background and text hierarchy.
 ```
 
 <Callout title="No pairing needed">
-  `secondary` and `placeholder` are standalone text colors. They do not have a
-  paired background token. `secondary` is the industry standard name for this
-  role (Carbon, Material Design, Atlassian all use "secondary" for secondary
-  text).
+  `secondary`, `secondary-bold` and `placeholder` are standalone text colors.
+  They do not have a paired background token. `secondary` is the industry
+  standard name for this role (Carbon, Material Design, Atlassian all use
+  "secondary" for secondary text); `secondary-bold` follows the system's `-bold`
+  emphasis modifier (cf. `selected`/`selected-bold`) for text that sits between
+  `secondary` and `foreground`.
 </Callout>
 
 ### Primary
@@ -298,7 +306,8 @@ The secondary Button and the Menu trigger don't wear a boundary at all. They're 
     {
       name: 'soft',
       value: 'oklch(0.99 0.002 54)',
-      useFor: 'Resting fill for the soft cap (secondary Button, Menu trigger)',
+      useFor:
+        'Resting fill for the soft cap (secondary Button, Menu trigger). Lightness and chroma are tuned by eye; the hue is derived from the palette',
     },
     {
       name: 'soft-hover',
@@ -395,13 +404,14 @@ Selection tells users which item has already been chosen. Not every selection lo
 
 Focus highlight marks the item the user is currently navigating to via keyboard. Unlike selection, which shows a confirmed choice, focus indicates where the user's cursor is right now. Two intensities handle different contexts: a subtle tint for menu items and drop zones, and a bolder fill for inline segments like date fields where the focused part needs to stand out clearly.
 
+A focus highlight is not a focus indicator on its own. `focus-highlight` composites to around 1.05:1 against the surface it tints, well under the 3:1 that [WCAG 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) asks of a state indicator, and in a menu the same tint fires on hover because focus follows the mouse. Pair it with a focus ring — `ui-state-focus` where there is a border to recolor, `ui-state-focus-item` on borderless rows — and let the tint track the cursor while the ring proves where keyboard focus is.
+
 <TokenTable
   tokens={[
     {
       name: 'focus-highlight',
       value: 'charcoal-100',
-      useFor:
-        'Subtle focus background for keyboard navigation (Menu, FileField)',
+      useFor: 'Subtle focus tint accompanying a focus ring (Menu, FileField)',
     },
     {
       name: 'focus-highlight-bold',
@@ -412,8 +422,8 @@ Focus highlight marks the item the user is currently navigating to via keyboard.
 />
 
 ```tsx
-// Subtle focus: menu items, file drop zones
-<div className="data-focused:bg-focus-highlight" />
+// Subtle tint plus the ring that carries the indicator: menu items, drop zones
+<div className="focus-visible:bg-focus-highlight focus-visible:ui-state-focus-item" />
 
 // Bold focus: inline segments like date fields
 <div className="data-focused:bg-focus-highlight-bold" />
@@ -427,6 +437,13 @@ Focus highlight marks the item the user is currently navigating to via keyboard.
       focused part needs stronger contrast.
     </DoDescription>
   </Do>
+  <Dont>
+    <DontDescription>
+      Don't let a focus highlight be the only focus indicator. On its own it
+      lands around 1.05:1 and, in a menu, it also fires on hover — add
+      `ui-state-focus` or `ui-state-focus-item` alongside it.
+    </DontDescription>
+  </Dont>
   <Dont>
     <DontDescription>
       Don't use `bg-selected` for focus states. Selection and focus are
@@ -497,7 +514,7 @@ Disabled elements must look visually inactive so users don't try to interact wit
     },
     {
       name: 'disabled-surface',
-      value: 'charcoal-200',
+      value: 'charcoal-100',
       useFor:
         'Disabled background for full controls (paired with text-disabled)',
     },
@@ -563,9 +580,9 @@ Every boundary token in one place. Marigold draws element edges with five tokens
     },
     {
       name: 'border',
-      value: 'oklch(0.9 0.004 54)',
+      value: 'charcoal-950 / 14%',
       useFor:
-        'Structural lines drawn on a known surface, such as dividers, table row and grid lines, section rules, and internal separators. Opaque so crossing strokes cannot stack',
+        'Structural lines drawn on a known surface, such as dividers, table row and grid lines, section rules, and internal separators. Translucent, so it holds the same ~1.36:1 contrast on every ground it is used on rather than varying with the fill behind it',
     },
     {
       name: 'ring',
@@ -584,10 +601,10 @@ Every boundary token in one place. Marigold draws element edges with five tokens
   clearly visible and adapts to the ground beneath it. `disabled-border` is that
   control edge **dimmed** for an inactive control, receding rather than
   vanishing. `border` draws **structural lines** such as dividers, grid lines,
-  and section rules. It is opaque on purpose, because separators are many
-  strokes drawn by many cells and translucent strokes would render darker
-  wherever they cross. `ring` is the **focus** outline, the perceivable
-  affordance for keyboard users.
+  and section rules. It is the lightest of the three translucent strokes, so a
+  divider carries the same weight on a white surface as it does on the page
+  ground. `ring` is the **focus** outline, the perceivable affordance for
+  keyboard users.
 </Callout>
 
 ### Status colors

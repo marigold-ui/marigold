@@ -25,23 +25,50 @@ deployment:
 ```sh
 # 1. Build the CLI
 pnpm --filter @marigold/cli build
+```
 
-# 2. Link it globally so `marigold ...` resolves to the local build
-cd packages/cli
-pnpm link --global
+Then link it globally so `marigold ...` resolves to the local build, using the
+guide matching your pnpm version:
 
-# 3. Point at a docs origin (preview or local). Create
-#    packages/cli/.env.local with:
-#      MARIGOLD_DOCS_URL="https://marigold-docs-git-<branch>-marigold.vercel.app"
-#    or for a local docs dev server:
-#      MARIGOLD_DOCS_URL="http://localhost:3000"
+### pnpm ≥ 10 (this repo pins pnpm 11)
+
+`pnpm link --global` no longer exists; symlink the built entry point into your
+global bin instead:
+
+```sh
+# Install (link)
+ln -sf "$(pwd)/packages/cli/dist/bin/marigold.mjs" "$(pnpm bin -g)/marigold"
+
+# Uninstall (remove the link)
+rm "$(pnpm bin -g)/marigold"
+```
+
+### pnpm ≤ 9
+
+The classic global link still works. Note: inside this repo, corepack picks the
+pinned pnpm 11 from `packageManager`, so this only applies when your pnpm
+really is ≤ 9.
+
+```sh
+# Install (link)
+cd packages/cli && pnpm link --global
+
+# Uninstall
+pnpm uninstall -g @marigold/cli
+```
+
+### Usage
+
+```sh
+# Point at a docs origin (preview or local). Create
+# packages/cli/.env.local with:
+#   MARIGOLD_DOCS_URL="https://marigold-docs-git-<branch>-marigold.vercel.app"
+# or for a local docs dev server:
+#   MARIGOLD_DOCS_URL="http://localhost:3000"
 
 # Now invoke as usual:
 marigold docs Button
 marigold list --category form
-
-# To remove the link:
-pnpm uninstall -g @marigold/cli
 ```
 
 Without the global link, you can also run the built entry point directly:

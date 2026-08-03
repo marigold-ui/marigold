@@ -132,12 +132,21 @@ export type { DrawerProps } from './Drawer/Drawer';
 export { EmptyState } from './EmptyState/EmptyState';
 export type { EmptyStateProps } from './EmptyState/EmptyState';
 
+export { ErrorState } from './ErrorState/ErrorState';
+export type { ErrorStateProps } from './ErrorState/ErrorState';
+
 export { FieldBase } from './FieldBase/FieldBase';
 export type { FieldBaseProps } from './FieldBase/FieldBase';
 
 export type { FileTriggerProps } from './FileField/FileTrigger';
 export { FileField } from './FileField/FileField';
 export type { FileFieldProps } from './FileField/FileField';
+
+export { OverflowRegion } from './OverflowRegion/OverflowRegion';
+export type {
+  OverflowRegionProps,
+  OverflowRegionState,
+} from './OverflowRegion/OverflowRegion';
 
 export { Form } from './Form/Form';
 export type { FormProps } from './Form/Form';
@@ -213,6 +222,7 @@ export { Page } from './Page/Page';
 export type { PageProps } from './Page/Page';
 export type { PageHeaderProps } from './Page/PageHeader';
 export type { PageContentProps } from './Page/PageContent';
+export { usePageFocus } from './Page/usePageFocus';
 
 export { Panel } from './Panel/Panel';
 export type { PanelProps } from './Panel/Panel';
@@ -295,6 +305,8 @@ export type { SidebarProps } from './Sidebar/Sidebar';
 export type { SidebarProviderProps } from './Sidebar/Context';
 export type { SidebarNavProps } from './Sidebar/SidebarNav';
 export type { SidebarItemProps } from './Sidebar/SidebarItem';
+export type { SidebarRailProps } from './Sidebar/SidebarRail';
+export type { SidebarRailItemProps } from './Sidebar/SidebarRailItem';
 
 export { Tabs } from './Tabs/Tabs';
 export type { TabsProps } from './Tabs/Tabs';

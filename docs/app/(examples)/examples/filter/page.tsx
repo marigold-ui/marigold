@@ -18,7 +18,7 @@ import {
   Title,
 } from '@marigold/components';
 import { AppliedFilter } from './AppliedFilter';
-import { Toolbar } from './Toolbar';
+import { FilterBar } from './FilterBar';
 import { VenuesPagination } from './VenuesPagination';
 import { VenuesTable } from './VenuesTable';
 import { DeletedVenuesProvider } from './hooks/useDeletedVenues';
@@ -75,7 +75,7 @@ const FilterPage = () => (
       <Panel aria-label="Venues">
         <Panel.Content>
           <Stack space="regular">
-            <Toolbar />
+            <FilterBar />
             <AppliedFilter />
           </Stack>
         </Panel.Content>

@@ -9,6 +9,7 @@ import userEvent from '@testing-library/user-event';
 import { expect, test, vi } from 'vitest';
 import {
   Basic,
+  DisabledAndLoading,
   IntegratedWithTable,
   NoSelection,
   WithoutClearButton,
@@ -87,6 +88,35 @@ test('keeps aria-label on icon-only action buttons', () => {
   expect(screen.getByRole('button', { name: 'Edit' })).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'Copy' })).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument();
+});
+
+test('keeps an enabled action operable next to inactive ones', () => {
+  render(<DisabledAndLoading.Component />);
+
+  expect(screen.getByRole('button', { name: 'Edit' })).toBeEnabled();
+});
+
+test('renders a disabled action as not operable', () => {
+  render(<DisabledAndLoading.Component />);
+
+  expect(screen.getByRole('button', { name: 'Copy' })).toBeDisabled();
+});
+
+test('marks a loading action as pending rather than disabled', () => {
+  render(<DisabledAndLoading.Component />);
+
+  // Queried by state rather than by name: `loading` swaps the label for a
+  // `visibility: hidden` copy, so a pending Button currently has *no*
+  // accessible name (WCAG 4.1.2). That is a Button-level defect, tracked
+  // separately — asserting the name here would lock the bug in.
+  const pending = screen
+    .getAllByRole('button')
+    .find(button => button.hasAttribute('data-pending'))!;
+
+  // `loading` maps to RAC's `isPending`, which keeps the button focusable and
+  // marks it `aria-disabled` rather than removing it from the tree.
+  expect(pending).toHaveAttribute('aria-disabled', 'true');
+  expect(pending).toHaveAttribute('tabindex', '0');
 });
 
 test('calls onClearSelection when Escape is pressed', async () => {

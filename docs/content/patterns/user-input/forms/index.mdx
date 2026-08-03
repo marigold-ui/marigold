@@ -4,11 +4,11 @@ description: Guidelines for building accessible, consistent forms covering layou
 badge: beta
 ---
 
-How you design forms affects whether people can actually use them. This page covers everything from layout and spacing to validation and submission, so your forms stay consistent, accessible, and easy to maintain.
+How you design forms affects whether people can actually use them. This page covers layout, spacing, validation, and submission, so your forms stay consistent, accessible, and easy to maintain.
 
 ## Layout & Structure
 
-Layout and structure determine whether a form feels easy or overwhelming. Good spacing and a clear visual hierarchy help people move through a form without getting lost.
+Good spacing and a clear visual hierarchy help people move through a form without getting lost.
 
 ### Overall form layout
 
@@ -20,21 +20,16 @@ Whitespace matters more than most people think. Enough breathing room between se
   <Do>
     <DoDescription>
       <ul>
+        <li>Align form content to the left.</li>
         <li>
-          Align form content to the left for better scanning and organization.
+          Cap the form width at 800px (spacing token `container`) so lines stay
+          readable.
         </li>
         <li>
-          Use a maximum width of 800px (spacing token `container`) for forms to
-          ensure readability across devices.
+          Leave enough whitespace around and within the form that the hierarchy
+          stays visible.
         </li>
-        <li>
-          Ensure sufficient whitespace around and within the form for a clear
-          visual hierarchy.
-        </li>
-        <li>
-          Group related fields together to provide more context and make the UI
-          easier to scan.
-        </li>
+        <li>Group related fields together so the form is easier to scan.</li>
       </ul>
     </DoDescription>
   </Do>
@@ -107,7 +102,7 @@ For destructive actions, use `<Panel variant="destructive">` to visually separat
 
 ### Accordions
 
-Accordions can replace regular sections to create collapsible groups of fields. This is useful for optional information or advanced settings that don't need to be visible by default. Ensure required fields remain visible and are not hidden within collapsed sections.
+Accordions can replace regular sections to create collapsible groups of fields. This is useful for optional information or advanced settings that don't need to be visible by default. Keep required fields out of collapsed sections.
 
 Accordions can also be used _within_ a section to group content. This lets users focus on what matters while still having access to additional options. The demo below shows both patterns.
 
@@ -136,7 +131,7 @@ This is the same cascade the Button component describes. See [Visual hierarchy](
 <Callout title="Settings pages are the exception">
   Settings pages are the one place where a single page carries more than one
   primary action. When a page is split into independently-saving `<Panel>`s,
-  each panel is its own form and owns its own primary save button — so a
+  each panel is its own form and owns its own primary save button, so a
   multi-panel settings page has one primary action _per panel_, not per page.
   Never share one submit across panels: a save in one panel must not commit the
   fields of another. Outside of this case, keep it to one primary action per
@@ -236,7 +231,7 @@ Validation keeps the data you collect accurate and tells users how to fix what's
 
 The simplest way to validate is to use native HTML constraints like `required`, `type="email"`, `minLength`, and `pattern`. The browser checks them on blur or on submit, and Marigold styles the messages to match the rest of the design instead of using the browser's defaults.
 
-Here is an email subscription form. If you submit it without entering an email address or if the entered email is invalid, an error will be displayed:
+The demo below is an email subscription form. Submit it without an email address, or with an invalid one, and the field shows an error:
 
 <ComponentDemo file="./validation-base.demo.tsx" background="page" />
 

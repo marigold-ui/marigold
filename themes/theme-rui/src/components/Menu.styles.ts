@@ -21,8 +21,13 @@ export const Menu: ThemeComponent<'Menu'> = {
   // Grid: col 1 = icon/checkmark, col 2 = label/description, col 3 = keyboard.
   item: cva({
     base: [
-      'group/option relative grid grid-cols-[auto_1fr_auto] items-center [&:has(>svg)]:gap-x-2 cursor-pointer rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap max-sm:min-h-11',
+      'group/option relative grid grid-cols-[auto_1fr_auto] items-center [&:has(>svg)]:gap-x-2 cursor-pointer rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap max-sm:min-h-touch-target',
       'disabled:cursor-not-allowed disabled:text-disabled',
+      // On item, not itemBase: `destructive` doesn't share itemBase, and every
+      // variant needs the ring. The variants' focus background is the roving
+      // cursor (in a menu, focus follows the mouse, so it doubles as hover);
+      // this is the part that only appears for real keyboard focus.
+      'focus-visible:ui-state-focus-item',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4 [&_svg]:row-span-full [&_svg]:self-center',
       // Selection visuals like ListBox: checkmark reserves col 1, row highlights on select. Don't also add a leading icon.
       '[&_.selection-indicator]:invisible [&_.selection-indicator]:text-foreground [&_.selection-indicator]:opacity-100',

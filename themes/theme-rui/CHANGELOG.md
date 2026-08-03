@@ -1,5 +1,467 @@
 # @marigold/theme-rui
 
+## 6.0.0-beta.4
+
+### Major Changes
+
+- 9918172: feat(DST-1545): replace `ActionBar.Button` with a plain `<Button>` via a `ButtonContext` cascade. `ActionBar` now provides a `ghost`/`default` cascade to its toolbar, so authors place a standard `<Button>` inside the bar and it adapts to the toolbar look automatically, with the full Button API available (`disabled`, `loading`, `slot`, `size="icon"`). This mirrors the pattern already used by `Panel.Header` and `ButtonGroup`.
+
+  **Breaking:** `ActionBar.Button` is removed. Replace `<ActionBar.Button>…</ActionBar.Button>` with `<Button>…</Button>`. For icon-only actions use `<Button size="icon" aria-label="…">`, which also fixes an accessibility defect where the old wrapper silently dropped `aria-label`, shipping unlabeled icon buttons. The duplicated `actionButton` theme style is gone (it hand-mirrored Button's `ghost` variant at the default size, minus the press and loading affordances a real `<Button>` now brings).
+
+  ```tsx
+  // Before
+  <ActionBar selectedItemCount={3} onClearSelection={clear}>
+    <ActionBar.Button onPress={edit}>
+      <Pencil /> Edit
+    </ActionBar.Button>
+  </ActionBar>
+
+  // After
+  <ActionBar selectedItemCount={3} onClearSelection={clear}>
+    <Button onPress={edit}>
+      <Pencil /> Edit
+    </Button>
+  </ActionBar>
+  ```
+
+### Minor Changes
+
+- c789dee: feat(DST-1381): add `master`/`admin` access variants to `Link` and `MenuItem` that mark actions requiring elevated access rights with an icon (lock = master, key = admin). `Badge` renders its `master`/`admin` variants with the same icons.
+
+  The components render the icon as a decorative `<svg>` colored by the theme's access foreground tokens (which also keeps it visible in forced-colors mode). On `Link` and `MenuItem` the restriction is exposed to assistive technology through a visually hidden "Master"/"Admin" text label rendered after the visible label, so restricted links and menu items carry the access level in their accessible name. `Badge` renders no extra label because its visible text already is the access level, which rules out double announcements by design.
+
+  Note that `variant` is a single axis: an access variant cannot be combined with another variant (e.g. `destructive` on `MenuItem`). For destructive actions that are access-restricted, the access variant takes precedence (`variant="master"`), with the destructive nature conveyed by the action's label and confirmation flow. See the Admin & Master Mark pattern docs.
+
+- 28c4e40: feat(DST-1461): `Accordion` aligns like `Table` inside a bled `Panel`.
+
+  **What changed:**
+
+  - A bled `Panel.Content` / `Panel.CollapsibleContent` now publishes a `--bleed-px` custom property (set to the Panel's `--panel-px`). Non-bled content is unchanged and does not set it.
+  - The `default` Accordion `header` and `content` inset themselves by `--bleed-px` (via `--accordion-x-padding`, which falls back to `0px`). So inside a **bled** Panel the item dividers span edge-to-edge while the header/content align with the Panel title.
+  - In a bled Panel the full-width header (and its focus ring) is inset off the Panel border by one spacing step, matching `Panel.Collapsible`.
+
+  **Why:**
+
+  Dropping an `<Accordion>` into `<Panel.Content bleed>` now gives full-width item dividers _and_ header/content aligned with the Panel title — the same behavior `Table` already had, with no new Accordion prop or variant.
+
+  **Impact:**
+
+  - Standalone Accordions are unchanged (`--bleed-px` is only set by a bled Panel container, so the inset resolves to `0px`).
+  - Accordions inside a **non-bled** `Panel.Content` are also unchanged — the inset stays `0px`, so header/content keep aligning with the dividers as before (no double indent).
+  - Only Accordions inside a **bled** Panel gain the inset. The `card` variant is unaffected; it keeps its own `px-4`.
+
+- f1990eb: feat(DST-1551): add `DateRangePicker` component
+
+  New `<DateRangePicker>` lets users enter or select a start–end date range through a single field, mirroring `<DatePicker>`'s API and behaviour. Two date inputs (`start`/`end`) sit in one field group with a calendar button that opens a `<RangeCalendar>` in a popover on desktop and a tray on small screens. Supports per-input paste (ISO/EU/US formats), `granularity` (inline time segments), `visibleDuration` (up to three months), and the usual Marigold field props (`disabled`, `readOnly`, `required`, `error`, `errorMessage`, `description`, `minValue`, `maxValue`, `dateUnavailable`, `width`, `variant`, `size`). Adds a matching `DateRangePicker` theme entry to `theme-rui`.
+
+- d72b30a: feat(DST-765): add `<SegmentedControl>` component
+
+  Adds a new `<SegmentedControl>` for compact, single-select view switching and quick filters. It is built on react-aria's `RadioGroup` / `RadioField` / `RadioButton` with a `SelectionIndicator`, so it is a real form field: `value` / `defaultValue` / `onChange`, the `name` attribute (submits like a radio group), `required`, `error` + `errorMessage`, `description`, `readOnly`, and validation all work exactly like the other Marigold form components (label/description/error route through `<FieldBase>`). The selected segment is marked by an animated indicator that slides between options.
+
+  Options are declared via the compound API `SegmentedControl.Option` (also exported as `SegmentedControlOption`), each with a `value`:
+
+  ```jsx
+  <SegmentedControl label="View" defaultValue="list">
+    <SegmentedControl.Option value="list">List</SegmentedControl.Option>
+    <SegmentedControl.Option value="grid">Grid</SegmentedControl.Option>
+  </SegmentedControl>
+  ```
+
+  Two variants — `default` (a `bg-control` track with a raised `ui-surface` thumb, mirroring the `Switch`) and `ghost` (track-less, with a translucent ghost-Button-style indicator for dense toolbars) — at a single `default` size (matching the `h-control` Input height). Hover and focus reuse the shared `ui-*` utilities (`ui-state-focus`, `ui-state-hover-ghost`); the indicator slides between options (`ease-out-quint`) and respects `prefers-reduced-motion`.
+
+  To make segments divide the available width equally, use the standard `width` prop — e.g. `width="full"`. There is no separate `fullWidth` prop.
+
+  When the options exceed the available width the control scrolls horizontally instead of compressing the segments, keeping the selected option scrolled into view (reduced-motion aware). A scroll-driven edge fade signals there is more to scroll where supported, falling back to a native scrollbar otherwise.
+
+  `ToggleButtonGroup` now logs a dev-only warning when used with `selectionMode`, steering single-select use cases towards `SegmentedControl` (it remains for independent on/off actions in toolbars).
+
+  [DST-765](https://reservix.atlassian.net/browse/DST-765)
+
+- be0eeb9: style(DST-1586): scale breadcrumb separators with the size variant and emphasize the current page
+
+  The chevron separator now scales with the breadcrumb size (`small`/`default`/
+  `large`) instead of rendering at a fixed 16px, so it stays a quiet mark between
+  crumbs; gaps tighten on `small` accordingly. The current page reads a tier above
+  the trail — medium weight in the `foreground` ink — matching how the sidebar
+  marks the active item.
+
+  The `<Breadcrumbs>` chevrons drop their hardcoded `size={16}` prop: the theme's
+  `Breadcrumbs` `item` slot now owns the separator size (`[&_svg]:size-*`, which
+  wins over the SVG's width/height), so the number in the component was dead and
+  misleading. Themes that don't set a separator size fall back to the icon's
+  default size.
+
+- 9b613e6: feat(DST-1369): adopt the slot-configuration pattern in `Dialog`, `Drawer`, and `Tray`
+
+  The three overlay components now follow the same slot-configuration pattern as `Panel` and `Card`. Each publishes the slot contexts at its root, so the title, description, and action primitives pick up the overlay's theme classes wherever they are dropped:
+
+  - `Dialog.Title` / `Drawer.Title` / `Tray.Title` are thin wrappers over `<Title slot="title">`.
+  - New `Dialog.Description` / `Drawer.Description` / `Tray.Description` wrap `<Description slot="description">`.
+  - New `Dialog.Header` / `Drawer.Header` / `Tray.Header` are **optional** layout wrappers that group a title and description. A bare `<Title slot="title">` (or `<*.Title>`) without a header is a first-class, accessible authoring form — `aria-labelledby` resolves to it automatically.
+
+  The compound-component API is unchanged. The `<header>` element that previously wrapped the title is gone; the title now carries the header chrome directly, with no change to the rendered visuals.
+
+- cff8f37: feat(DST-1633): `Dialog` reveals a header seam once its body scrolls.
+
+  **What changed:**
+
+  - The `Dialog` header is borderless at rest and fades in a bottom hairline once the body scrolls beneath it, matching the `Sidebar`'s scroll-revealed seam. A short (non-scrolling) dialog stays seamless.
+  - The scroll-seam mechanism is promoted from a private `Sidebar` utility to a reusable `ui-scroll-seam-*` primitive. It is the companion to `ui-scroll-edge` for the case where the header is a grid _sibling_ of the scrolling body rather than its ancestor. The seam color is a `--seam-color` custom property that defaults to `--color-border`.
+  - The `Sidebar` is migrated onto the shared primitive with its color pinned to `--color-surface-border`, so it renders exactly as before.
+
+  **Why:**
+
+  A long dialog gave no cue that its body scrolled under the header. The `Sidebar` already had this affordance, and the `Dialog` is the second occurrence of the same header-over-scrolling-body structure, so the mechanism becomes a shared primitive instead of a copy.
+
+  **Impact:**
+
+  - `Dialog` gains the affordance automatically with no API change, covering both `<Dialog.Header>` and bare `<Title>` dialogs.
+  - `Sidebar` is unchanged visually.
+  - Browsers without CSS scroll-driven animations (for example Firefox) fall back to an always-on hairline, so every engine still shows a divider.
+
+- c20abe3: feat(DST-1282): scroll the Tabs row horizontally when it overflows
+
+  When more tabs are rendered than fit the available width, `Tabs.List` now scrolls
+  horizontally instead of wrapping onto multiple lines or pushing the page wide. Tabs
+  keep their natural width (`shrink-0`) and snap gently into place (`proximity`) as you
+  scroll, with the adjacent tab kept peeking past the edge so the scrollability stays
+  discoverable. A vertical mouse wheel scrolls the row horizontally (pointer users
+  without a trackpad), without hijacking normal page scroll. Horizontal overscroll is
+  contained so it does not trigger browser back/forward gestures, and scrolling is
+  smooth for users who allow motion. On browsers that support scroll-driven animations
+  the overflowing edges fade out (`ui-scroll-mask-x`); elsewhere it falls back to a
+  plain scroll container. When all tabs fit, nothing changes visually.
+
+  The sliding selection indicator stays correct while react-aria scrolls an off-screen
+  tab into view (the scroll container is a `layoutScroll` motion element). No runtime
+  API change.
+
+  **Breaking change (`@marigold/system`):** the `Tabs` theme `Record` gains a new
+  required `tabsListScroll` slot. It is deliberately required so a theme cannot ship
+  `tabsList` (whose `w-max` triggers the overflow) without the scroll container that
+  makes it behave. Custom themes that define a `Tabs` block must add a `tabsListScroll`
+  entry to type-check.
+
+- d72f464: feat(DST-1360): introduce `AppShell`, `Page`, `Page.Header`, and `Page.Content`; remove `AppLayout`
+
+  Renames `AppLayout` to `AppShell` and removes its three pass-through subcomponents (`AppLayout.Sidebar`, `AppLayout.Header`, `AppLayout.Main`) — `<Sidebar>`, `<TopNavigation>`, and `<Page>` now sit directly inside `<AppShell>` (each owns its grid area, so child order does not matter). `AppShell` absorbs `Sidebar.Provider` via the `defaultSidebarOpen` prop; render your own `<Sidebar.Provider>` around `<AppShell>` for controlled state, `variant`, or `size` and it is detected and used instead of the internal one.
+
+  Adds `<Page>` — the `<main>` landmark with page padding (`p`, or `px`/`py`; default `square-relaxed`) and vertical rhythm between sections (`space`; default `group`). The page's `<main>` is named by its `<h1>` via `aria-labelledby`; when there is no `<Title>`, pass `aria-label` (or your own `aria-labelledby`) instead. With none of these, `<Page>` warns in development so the landmark is never silently unnamed. Like `<Panel>`, `<Page>` forwards standard HTML attributes (`id`, `data-*`, event handlers) and a `ref` to its `<main>`.
+
+  Adds `<Page.Header>` — a slot-based title/description/actions header that mirrors `Panel.Header` — and an optional `<Page.Content>` (with its own `space`) for when the rhythm between sections should differ from the header-to-content gap. The page heading outline now falls out of the defaults: `<Title>` in `Page.Header` is an `h1`, `<Title>` in `Panel.Header` an `h2`, `<Title>` in `Panel.Collapsible` an `h3` (override per `<Page>` with `headingLevel`).
+
+  **Migration:**
+
+  ```diff
+  -<Sidebar.Provider defaultOpen>
+  -  <AppLayout>
+  -    <AppLayout.Sidebar>…</AppLayout.Sidebar>
+  -    <AppLayout.Header>…</AppLayout.Header>
+  -    <AppLayout.Main>{content}</AppLayout.Main>
+  -  </AppLayout>
+  -</Sidebar.Provider>
+  +<AppShell defaultSidebarOpen>
+  +  <Sidebar>…</Sidebar>
+  +  <TopNavigation>…</TopNavigation>
+  +  <Page>
+  +    <Page.Header>
+  +      <Title>Billing</Title>
+  +      <Description>Manage your plan and invoices.</Description>
+  +      <Button variant="primary">Upgrade plan</Button>
+  +    </Page.Header>
+  +    {content}
+  +  </Page>
+  +</AppShell>
+  ```
+
+- 9fd4000: feat(DST-1439): give `SectionMessage` a neutral surface with a muted variant border
+
+  `SectionMessage` no longer fills its background with a per-variant tint (`bg-info`, `bg-success`, `bg-warning`, `bg-destructive`). It now sits on a neutral `ui-surface` with neutral title and body text. The severity is carried by a muted per-variant colored border (the accent mixed halfway into the neutral border) plus the colored icon.
+
+  This is a visible design change for every variant. Because the surface stays neutral, standard `<Button>` and `<Link>` actions placed inside read correctly instead of floating on a colored fill. On the old tint the default `<Button>` (variant `secondary`, which has its own `ui-surface` fill) rendered as a foreign chip on the colored container for every variant except error. The muted border sits at the container edge, away from the content, so it signals the variant without touching the actions. The border color is set through `ui-surface`'s `--ui-border-color` hook, which is registered as a non-inheriting custom property, so it stays scoped to the container and does not leak into nested action borders.
+
+  Variants stay distinguishable without relying on color alone through the colored border, the distinct icon shape and color, and the title. The bordered, in-flow treatment keeps an inline message visually distinct from the floating, shadowed `<Toast>`. No API changes.
+
+- dd044be: Add relative date presets to `Calendar`, `RangeCalendar`, `DatePicker`, and `DateRangePicker` via a new `presets` prop. On desktop the presets render as a quick-selection list beside the calendar. On small screens the grid renders first with a "Quick selection" row: inline calendars open the preset list in a bottom sheet, while the pickers switch their existing sheet to the list in place. Ships built-in localized presets (`today`, `yesterday`, `tomorrow`, `this-week`, `next-7-days`, `next-30-days`, `last-7-days`, `last-30-days`, `this-month`, `this-quarter`), supports custom presets with value resolvers, and exports `useDatePresets`/`useDateRangePresets` for userland compositions.
+- ecd739f: feat(DST-1533): add `Table.Footer` component
+
+  New `<Table.Footer>` renders a semantic `<tfoot>` after `<Table.Body>` for summary rows like totals, counts, or averages, composed from `<Table.Row>` and `<Table.Cell>` just like the body. Supports a `sticky` prop that pins the footer to the bottom of the viewport while scrolling, mirroring sticky table headers. Adds a matching `footer` theme entry to `theme-rui`.
+
+- 51484fd: style(DST-1602): quiet surfaces — one shadow tier, raised caps, tonal panels
+
+  The next iteration of the surface/elevation model: nothing in normal document
+  flow casts a shadow anymore.
+
+  - **One shadow tier.** `shadow-elevation-overlay` is the only remaining tier and
+    means one thing — a surface floats above the page (Dialog, Drawer, Menu,
+    Popover, Toast, ActionBar). `shadow-elevation-border` and
+    `shadow-elevation-raised` are **removed**.
+  - **Raised caps, not shadows.** Secondary Button and Menu trigger move to the new
+    `ui-soft` cap; the cap itself is the lift, no drop shadow.
+  - **Flat controls, tonal panels.** Fields become flat wells; Card, Panel, and the
+    Accordion card variant separate from the gray page by fill instead of elevation.
+  - **Softer structural lines & lighter backdrop.** `--color-border` and the modal
+    backdrop are quieted to match the flatter surfaces.
+
+  No component API changes — components using the removed shadow tokens are migrated
+  in this release. Consumers referencing `--shadow-elevation-border` or
+  `--shadow-elevation-raised` directly should move to `shadow-elevation-overlay` or
+  a flat surface.
+
+- 306fe23: feat(DST-1643): add a `fullscreen` size to `Dialog`
+
+  `<Dialog size="fullscreen">` fills the viewport (minus a small margin) at every breakpoint, giving content-heavy picks room for search, filters, and a long scrollable list while the title and actions stay fixed. The existing `xsmall`/`small`/`medium`/`large` sizes are unchanged.
+
+- 106821a: feat(DST-990): enrich `<Menu>` with selection visuals, keyboard shortcuts, and dividers
+
+  `<Menu>` gains richer building blocks for advanced menus:
+
+  - **Selected-item visuals.** In `selectionMode="single"` or `"multiple"`, items show a leading checkmark and a highlighted row, aligned like `<ListBox>`. Command menus (no `selectionMode`) render exactly as before.
+  - **Keyboard-shortcut hints** via a new shared `<Keyboard>` primitive (a sibling to `<TextValue>` and `<Description>`). It renders a `<kbd>` key-cap on its own and adapts to its container, so inside a `Menu.Item` it becomes a muted, right-aligned hint wired to react-aria's `aria-describedby`.
+  - **Dividers.** Drop the shared `<Divider>` between `<Menu.Item>`s to separate groups with a `role="separator"` line.
+
+  **Breaking (`@marigold/system`):** the `Menu` record in the `Theme` type now requires a `keyboard` key. Custom themes implementing `Menu` must add it to keep compiling. All `@marigold/components` additions are backward compatible.
+
+- be0eeb9: style(DST-1586): quieter sidebar navigation hierarchy and a seamless app shell
+
+  The sidebar navigation now carries hierarchy with semantic tokens instead of raw
+  charcoal values. The current page is an inset rounded pill (`selected` fill,
+  `foreground` text); idle rows sit a step lighter on `secondary` and preview the
+  pill in the `hover` charcoal. Section labels stay on `secondary` so they meet
+  WCAG AA contrast and read as their own tier through treatment — uppercase,
+  smaller, heavier, tracked — with an even gap opening above every section. The
+  drill-in back action shares the nav-row pill geometry, so it aligns to the same
+  content column and reads at the same weight as a nav item.
+
+  The navigation is also denser: rows sit at a fixed 30px height with a tighter
+  horizontal inset, section labels keep one even rhythm, and the sidebar toggle
+  steps down to the small control size with a lighter icon — more rows per screen
+  without losing the pill affordance.
+
+  The app shell keeps exactly one structural line: the sidebar divider, now at
+  full surface-hairline strength (it bounds the nav column so the branch rows'
+  trailing chevrons anchor against it, and it stays perceivable at low vision).
+  Every other shell line is gone — the sidebar header/footer hairlines and the
+  `TopNavigation` bottom border — so regions separate on whitespace and the
+  content panels carry the structure. The sticky `TopNavigation` reveals a bottom
+  hairline only once page content scrolls underneath it (`ui-scroll-edge`, a
+  scroll-driven progressive enhancement; non-supporting browsers simply stay
+  borderless). The mobile sidebar drawer wears the overlay elevation,
+  `Sidebar.Separator` steps up to the full-strength surface hairline, and the
+  sidebar footer now sits on the same content column as the nav and quiets its
+  links (secondary color, normal weight, nav-row pill on hover) so escape hatches
+  read as a continuation of the nav rather than competing with it.
+
+  When the nav scrolls, the sidebar's own sticky header and footer reveal a seam
+  so mid-list rows never butt against them without a divider. Because the nav is
+  a grid sibling between the two (not their ancestor), the seam is driven by a
+  named scroll timeline the nav declares, hoisted into scope for the header via
+  `timeline-scope` — a set of `ui-sidebar-seam-*` utilities marked non-reusable
+  since they are specific to this layout. The header seam fades in as content
+  scrolls under it; the footer seam shows while content remains below and fades
+  out as the list bottoms out. Without scroll-driven animation support it falls
+  back to an always-on hairline.
+
+### Patch Changes
+
+- e9996ef: feat(DST-1635): add a `bleed` prop to `Drawer.Content` so edge-aware children can span the full Drawer width.
+
+  **What changed:**
+
+  - `<Drawer.Content bleed>` drops the Drawer's horizontal content padding and publishes a `--bleed-px` custom property, mirroring `Panel.Content`'s `bleed`.
+  - The horizontal padding shared by the sectioned overlay surfaces (`ui-panel-header` / `ui-panel-content` / `ui-panel-actions`) now comes from a single `--ui-panel-px` token, and a bled `Drawer.Content` re-publishes that exact token as `--bleed-px` so the two can't drift.
+  - Edge-aware children stay aligned with the Drawer title while their dividers/backgrounds reach the Drawer edges: `Accordion` reads `--bleed-px` directly, and `Table`'s edge-cell padding now falls back to `--bleed-px` (after the Panel-only `--panel-px`), so it aligns inside a bled Drawer too.
+
+  **Why:**
+
+  Placing an `<Accordion>` (or `Table`) inside `<Drawer.Content>` previously trapped it inside the content padding, so item dividers and hover/selection backgrounds could not reach the Drawer edges. `bleed` gives the same full-width alignment `Panel.Content bleed` already offered.
+
+  **Impact:**
+
+  - Default behavior is unchanged: without `bleed`, `Drawer.Content` keeps the padded `ui-panel-content` and `--bleed-px` stays unset (children resolve their inset to `0px`). The `--ui-panel-px` token resolves to the same `24px` the surfaces used before, so Dialog/Drawer/Tray are visually identical.
+
+- 13a1982: feat([DST-1339]): **FileField** gains a `size="small"` compact layout renders as a single-row input-height control (upload button + file list) instead of the full drop-zone, suited for space-constrained forms.
+- 586ffd1: refactor(DST-1546): replace the bespoke TagGroup "Remove all" wrapper with a plain `<Button>` via a `ButtonContext` cascade
+
+  `TagGroup` now provides a `link`/`small` `ButtonContext` around its internal
+  `RemoveAll` render, so the "Remove all" action is a bare Marigold `<Button>`
+  instead of the raw react-aria `Button` with hand-rolled link styling. This
+  mirrors the cascade pattern already used by `ActionBar` and `Panel.Header`.
+
+  The change is internal-only. `TagGroupRemoveAll` is not part of the public API
+  (`TagGroup` renders it itself), the authoring API (`removeAll` / `onRemove`) is
+  unchanged, and there is no behavioral or accessibility change.
+
+  The redundant `removeAll` theme style is removed from `Tag.styles.ts` (the
+  `link` variant at `size="small"` reproduces it), and the now-unused `removeAll`
+  key is dropped from the `Tag` theme type.
+
+- af7767c: chore(DST-1547): move z-index classes out of theme style files into component implementations
+
+  Per the z-index management rule (`CLAUDE.md`), `z-*` utilities belong in component implementations, never in theme `*.styles.ts` files. The local focus/drop/sticky stacking classes for `Calendar`/`RangeCalendar`, `LegacyTable`, `ListBox`, `Table`, `ToggleButton` and `SegmentedControl` have been moved from their `theme-rui` styles into the matching component `className` (via `cn()`), preserving the exact modifiers and important flag. No visual or stacking change.
+
+- 8418ee7: refactor(DST-1548): rename `Card.Body` to `Card.Content`
+
+  Aligns the Card body sub-component with `Panel.Content` and `Page.Content` so all three container primitives expose the main body region under one name.
+
+  **Breaking change:** `Card.Body` (`CardBody`) is removed. Rename usages to `Card.Content`:
+
+  ```diff
+  - <Card.Body>...</Card.Body>
+  + <Card.Content>...</Card.Content>
+  ```
+
+  The `bleed` prop and padding behavior are unchanged. The internal `data-card-body` attribute has been removed to match `Panel.Content`.
+
+  The `Card` theme slot key is renamed from `body` to `content` in the `@marigold/system` `Theme` type and in `@marigold/theme-rui`. Theme authors overriding this slot must rename their key accordingly.
+
+- f1990eb: fix(DST-1551): round the `RangeCalendar` hover and focus highlight on days outside the selected range
+
+  Days outside the selected range now round their hover and focus highlight to match the selected state, instead of showing a square highlight against the rounded endpoints. In-range cells stay square so the range fill still connects seamlessly.
+
+- ae6644d: fix(DST-1560): align IconButton and Pagination to the control sizing token
+
+  IconButton and Pagination hardcoded `h-9`/`size-9` instead of the `h-control`/`size-control` token that every other `ui-button-base` button uses. The values are identical today (`--spacing-control` = `2.25rem` = `h-9`), so there is no rendered change, but the literals would silently drift if the token were retuned. Also dropped IconButton's redundant `disabled:text-disabled disabled:cursor-not-allowed` classes, which `ui-button-base` already applies via `disabled:ui-state-disabled`.
+
+- e911844: fix(DST-1560): correct the `@source inline` padding safelist to the real spacing tokens
+
+  The padding safelist in `styles.css` still used the pre-rename vocabulary `{compact, tight, regular, relaxed, spacious}`, but the spacing tokens were long ago renamed to `{tight, snug, regular, relaxed, loose}`. As a result `compact`/`spacious` force-generated dead utility classes (resolving to undefined `--spacing-*` vars), while the real `snug`/`loose` tokens were never safelisted and so were unavailable in scanner-excluded stories and in the (unscanned) docs app. The leading family-less line was also stale — it predates the `square`/`squish`/`stretch` split.
+
+  Replaced the three lines with the three inset-padding families (`square`/`squish`/`stretch`) using the real size names, so utility classes like `p-squish-relaxed` resolve to a concrete value and the full inset vocabulary is available where the scanner can't see it.
+
+- f69ba1c: fix(DST-1560): restore the `Toast` close-button hover state
+
+  The Toast close button kept its `transition-[color,box-shadow]` but lost its hover declaration, so it animated nothing on hover. Added `hover:text-foreground` so the icon darkens on hover, consistent with the system-wide convention that color (not background) animates on interactive controls.
+
+- 90d8af7: fix(DST-1560): align Tray content padding and Card radius to the shared surface tokens
+
+  `Tray` content used `p-2` while its own header and actions (and Dialog/Drawer content) follow the `ui-panel-content` rhythm (`px-6 py-4`), leaving the content visually out of step within the same component. Switched it to `ui-panel-content`.
+
+  `Card` hardcoded `rounded-md` while the rest of the raised surface tier (`Panel`, `Accordion`) uses `rounded-surface`. Moved Card to `rounded-surface` in its `base` so every variant (`default`, `master`, `admin`) shares the same 8px corner, making the raised tier consistent.
+
+- 136a4be: fix(DST-1560): use the defined `ui-scrollbar` utility on Drawer and Sidebar
+
+  `Drawer` and `Sidebar` referenced `util-scrollbar`, which is not defined in the theme (only `ui-scrollbar` exists in `ui.css`), so they rendered without the themed scrollbar while Dialog, Tray, and ContextualHelp got it. Corrected both to `ui-scrollbar`.
+
+- 018c055: fix(DST-1565): restore the ToggleButtonGroup divider, fix segment focus, and match Pagination hover
+
+  Three polish fixes on the control surfaces:
+
+  - **ToggleButtonGroup divider.** Segments in a group had a transparent right border, so no line separated them. The divider is restored with the opaque `border` token (the structural-line token, opaque on purpose so it never doubles up), removed on the last segment.
+  - **ToggleButtonGroup focus (DST-1597).** The group was `overflow-hidden`, which clipped the focus outline of a full-height segment so it was hard to tell which segment was focused. The group no longer clips. The end segments round their own outer corners to match the frame, so the standard focus outline now renders unclipped around any segment.
+  - **Pagination hover.** Unselected page numbers now pick up the same translucent ghost hover as the prev/next arrows. The selected page keeps its control fill and is left untouched.
+
+- 018c055: refa(DST-1565): unify surfaces and controls on one boundary and elevation model
+
+  `theme-rui` drew edges two different ways with no rule for which to use: a `background-clip` gradient border on surfaces, and an opaque `border` on controls. Both are replaced with a single model built on two independent axes.
+
+  - The **boundary encodes role**. Both roles compose one role-neutral primitive, `ui-frame` (a fill, a 1px ring, and a radius). `ui-surface` and `ui-control` are siblings of it that differ only in the boundary token, so a control is never modeled as "a kind of surface". Surfaces (Card, Panel, Dialog, Menu) wear `ui-surface`, a quiet translucent hairline. Controls (Input, Select, fields, the neutral Button family, SegmentedControl) wear `ui-control`, the same charcoal stroke about 2.5× denser, reading as something to operate. Both are translucent, so the edge composites over its ground and stays consistent on white, the page background, or a tinted panel.
+  - **Elevation encodes depth**, independently. Now that the ring owns the crisp edge, the three `shadow-elevation-*` tiers carry only lift, and controls sit on the lowest tier.
+
+  Mechanics:
+
+  - The surface boundary is a 1px Tailwind `ring` in the `box-shadow` chain, replacing the `1px solid transparent` plus `border-box` gradient that hijacked `background` and got covered by edge-to-edge children. `ui-state-error` swaps `--ui-border-color`, and the theming contract is unchanged.
+  - New `--color-surface-border` (decorative surface rim) and `--color-control-border` (functional control edge). `--color-border` narrows to structural lines (dividers, grid lines, table rules) and stays opaque, because crossing translucent strokes double-darken at their intersections.
+  - `ui-contrast` (primary Button, ActionBar) uses the same model inverted: a crisp dark ring plus light on the face (top glow, top-down gradient, top-edge highlight), all derived from `--ui-background-color`. `ui-contrast-destructive` is that recipe retinted red.
+  - Elevation shadows retuned: the contact layer is cut and spread across lighter, warm-tinted, contained layers so dense fields stay calm.
+  - The `Popover` owns the overlay surface. ListBox, Calendar, Menu, and Dialog render flat inside it and keep their own surface only when standalone.
+
+  No breaking changes: visual refinement plus additive tokens.
+
+- 0e4b915: refactor(DST-1585): drive SegmentedControl's reduced-motion scroll from CSS
+
+  SegmentedControl now gates its selection-reveal scroll animation with the same
+  CSS approach as Tabs: the scroll container carries `motion-safe:scroll-smooth`
+  and the component's `scrollTo` uses `behavior: 'auto'`, which follows that CSS —
+  animating when motion is allowed and jumping instantly under reduced motion.
+  This replaces the previous JS `window.matchMedia('(prefers-reduced-motion)')`
+  check. Behavior is unchanged; the initial mount reveal stays instant. No API
+  change.
+
+- 66a22e8: fix(DST-1628): apply the disabled state to the `Slider` track, fill, thumb, and value, dim the description text of disabled `SelectList`, `ListBox`, and `Menu` items, and show the not-allowed cursor on disabled items. The Slider slots drove their disabled styles off the bare `disabled:` variant on plain `<div>`s, where it never matches, so they now key off `group-disabled/field:`. The item description slots hardcoded `text-secondary`, which overrode the inherited disabled color, so they now add `group-disabled/option:text-disabled`. Disabled `SelectList` and `ListBox` items still showed the pointer cursor because the interactive `data-selection-mode:cursor-pointer` utility outranked `disabled:cursor-not-allowed` on source order, so the selectable cursor is now gated behind `not-disabled:`. `Menu` gained the `disabled:cursor-not-allowed` it was missing.
+- 40b006e: fix(DST-1630): match the Panel collapsible header caret to the Accordion chevron. It rendered at the default 24px in the foreground color, while Accordion uses a 16px `text-secondary` caret, so the two collapsible patterns looked inconsistent. The Panel caret now renders at 16px and its color is driven by a new themeable `collapsibleIcon` slot (defaulting to `text-secondary` in the RUI theme).
+- f817023: fix(DST-1631): keep the `RangeCalendar` within its container on small screens. Each month carried a hard `min-w-[250px]` with no breakpoint guard, so below `sm` (where the months stack) the calendar could not shrink and overflowed a narrow Panel. The floor is now gated to `sm` and up (`min-w-0 sm:min-w-[250px]`), letting the flexible-cell grid shrink to fit while the desktop two-across layout is unchanged.
+- 5d0b6c0: fix(DST-1632): center the section `Loader` together with its label and give the `Table` drag handle edge spacing.
+
+  The section `Loader` sized its container to a fixed square, so a labelled loader overflowed the box and the section wrapper centered the box instead of the spinner-and-label group. The spinner now carries the fixed size and the container is content-sized, so the whole group centers as one. The `Table` drag cell had no padding, leaving the grip flush against the row edge. It now uses the shared cell edge padding and its column matches the checkbox column width, so the grip lines up with its header and the first cell.
+
+- e5701c4: feat(DST-1634): standardize `Input` trailing-action alignment and make `size="icon"` a public `Button` API.
+
+  The `Input` leading icon is clamped to 16px so it no longer overlaps the placeholder. Every trailing action (clear button, chevron, loading spinner, or a custom icon button) now sits in a control-sized centered box flush to the edge, so its icon aligns at the same inset as the leading icon across `Input`, `SearchField`, `ComboBox`, `Autocomplete`, `TagField`, and `DatePicker`. `Button`'s `size="icon"` is now public and documented as the way to build an icon button, composing with any `variant` (for example `variant="ghost" size="icon"`).
+
+  Migration: `variant="icon"` was never a real Button variant. It silently rendered a default button, so any usage from older docs should switch to `size="icon"` (with a variant, for example `variant="ghost" size="icon"`).
+
+- a34b353: fix(DST-1636): simplify the Accordion `icon` slot to `pointer-events-none text-secondary`, matching Panel's `collapsibleIcon`. Drops the redundant `shrink-0` (already baked into `MorphCaret`) and the obsolete `transition-transform duration-250` (the caret morphs its path `d` rather than rotating). No visual change.
+- 766a46b: feat(DST-1370): migrate `ContextualHelp`, `SectionMessage`, and `EmptyState` to the slot-configuration pattern
+
+  - `SectionMessage.Title` now renders a semantic heading (`<h3>` by default) instead of a `<div>`, fixing an a11y gap. The level is configurable via the new `headingLevel` prop on `<SectionMessage>`. When a title is present, the container becomes a `role="group"` labelled by the title via `aria-labelledby`.
+  - New `<SectionMessage.Description>` sub-component for a short summary between title and content.
+  - `ContextualHelp.Title` now uses `slot="title"`, so the popover dialog gets a proper `aria-labelledby`. The title tag changes from `<h3>` to `<h2>` (same as `Dialog.Title`); visual appearance is unchanged.
+  - New `<ContextualHelp.Description>` sub-component.
+  - The `Theme` type now requires a `description` key on the `SectionMessage` and `ContextualHelp` style records; themes defining styles for these components must add it.
+  - `EmptyState`'s `title` now renders as a semantic heading (`<h3>` by default, configurable via the new `headingLevel` prop), and its `description` renders through the `<Description>` primitive (same DOM as before, now sitting 4px below the title to match the description rhythm of the other components). The flat-props API is unchanged.
+  - All three roots now also publish a `ButtonContext`, completing the slot-configuration set. It scopes action buttons (e.g. those placed in `SectionMessage.Content`, the `EmptyState` `action`, or `ContextualHelp` content) to a clean baseline so they never inherit a surrounding container's button cascade (such as a `Panel.Header`'s ghost/small look). No variant or positioning is imposed, so existing usage renders unchanged.
+
+- 4d44517: fix: make Select and Menu overlay appear above Drawer on small screens
+
+  On small screens, `Select` and `Menu` render their options in a `Tray` (bottom sheet). The `Tray` overlay had `z-40` in the theme while the `Drawer` overlay uses `z-50`, so the tray rendered behind an open drawer and was unreachable.
+
+  Moved the `z-index` from the theme style file into the `TrayModal` component implementation (matching the project's z-index architecture rule), and raised it to `z-50`. Both the `Drawer` and `Tray` portal to `document.body`; at equal z-index, DOM order determines stacking. The `Tray` is always mounted after the `Drawer`, so it correctly appears on top.
+
+- Updated dependencies [c789dee]
+- Updated dependencies [28c4e40]
+- Updated dependencies [9918172]
+- Updated dependencies [f1990eb]
+- Updated dependencies [d72b30a]
+- Updated dependencies [be0eeb9]
+- Updated dependencies [9b613e6]
+- Updated dependencies [e9996ef]
+- Updated dependencies [0b7f87f]
+- Updated dependencies [c20abe3]
+- Updated dependencies [13a1982]
+- Updated dependencies [d72f464]
+- Updated dependencies [9fd4000]
+- Updated dependencies [f715905]
+- Updated dependencies [0637671]
+- Updated dependencies [e686474]
+- Updated dependencies [c799448]
+- Updated dependencies [dd044be]
+- Updated dependencies [50d8339]
+- Updated dependencies [ecd739f]
+- Updated dependencies [2fc7b96]
+- Updated dependencies [586ffd1]
+- Updated dependencies [af7767c]
+- Updated dependencies [8418ee7]
+- Updated dependencies [fc8ca13]
+- Updated dependencies [508ec2c]
+- Updated dependencies [2a275bb]
+- Updated dependencies [018c055]
+- Updated dependencies [c30f224]
+- Updated dependencies [0e4b915]
+- Updated dependencies [51484fd]
+- Updated dependencies [b6666b4]
+- Updated dependencies [7605d46]
+- Updated dependencies [40b006e]
+- Updated dependencies [5d0b6c0]
+- Updated dependencies [e5701c4]
+- Updated dependencies [306fe23]
+- Updated dependencies [199e066]
+- Updated dependencies [106821a]
+- Updated dependencies [3231866]
+- Updated dependencies [40e6b21]
+- Updated dependencies [867f3cc]
+- Updated dependencies [b954ab2]
+- Updated dependencies [2b3e286]
+- Updated dependencies [d0bb11c]
+- Updated dependencies [b41a3e3]
+- Updated dependencies [be0eeb9]
+- Updated dependencies [ccd3bb3]
+- Updated dependencies [766a46b]
+- Updated dependencies [0e3971a]
+- Updated dependencies [4d44517]
+  - @marigold/components@18.0.0-beta.4
+  - @marigold/system@18.0.0-beta.4
+
 ## 6.0.0-beta.3
 
 ### Minor Changes

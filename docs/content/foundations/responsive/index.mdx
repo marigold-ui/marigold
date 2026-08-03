@@ -20,12 +20,87 @@ Marigold uses a `min-width` based breakpoint scale. A breakpoint marks the width
 
 Because the scale is mobile-first, the range below `sm` (0 to 639px) is the unprefixed base. You style the base for small screens and add larger breakpoints as upgrades. To target the small range explicitly, use the `max-sm:` variant.
 
-## Responsive values in components
+The scale comes from your theme's `screens` object (for example `{ sm: '40rem', md: '48rem', ... }`), which matches Tailwind v4's responsive modifiers like `sm:text-sm`. When a theme does not define `screens`, Marigold falls back to reading Tailwind v4's `--breakpoint-*` CSS custom properties.
 
-For values that need to change with the screen size in JavaScript rather than CSS, Marigold provides two hooks:
+## Reacting to breakpoints
 
-- [`useResponsiveValue`](../components/hooks-and-utils/useResponsiveValue) returns a value from an array based on the current breakpoint.
-- [`useSmallScreen`](../components/hooks-and-utils/useResponsiveValue#usesmallscreen) returns `true` below the `sm` breakpoint (640px). It defaults to the desktop layout until a small screen is detected, so components such as `Select`, `ComboBox` and `Menu` render a desktop popover by default and switch to a mobile tray below 640px.
+Marigold's components already adapt to screen size on their own, so you rarely need to handle it yourself. When you do need a value or behavior to change with the breakpoint in code, Marigold provides two client-side hooks: [`useResponsiveValue`](#useresponsivevalue) and [`useSmallScreen`](#usesmallscreen). Both read the breakpoints from `theme.screens`, so they stay in sync with the scale above.
+
+As a rule of thumb, reach for `useSmallScreen` when you only need a single mobile-versus-desktop split at `sm` (640px), and for `useResponsiveValue` when a value should change across several breakpoints.
+
+### Import
+
+```tsx
+import { useResponsiveValue, useSmallScreen } from '@marigold/system';
+```
+
+### useResponsiveValue
+
+`useResponsiveValue` maps an array of values onto the breakpoint scale and returns the one that matches the current screen size. The positions are ordered from the base range upward, so `[base, sm, md, lg, xl, 2xl]`. You can pass fewer entries than the scale has steps, and the last entry then carries through to the wider ones.
+
+The second argument, `defaultIndex`, is the position used during server-side rendering and the first client paint, before the real viewport width is known. Point it at the value most first views will land on so the layout does not shift on hydration.
+
+Reach for it when a value should step through several breakpoints, for example:
+
+- How many months a `<Calendar>` shows side by side, fewer on small screens.
+- The column count of your own card or media grid, such as `useResponsiveValue([1, 2, 2, 3], 0)`.
+- A per-breakpoint `Button` `size`, for example larger touch targets on small screens.
+
+```tsx
+import { Calendar } from '@marigold/components';
+import { useResponsiveValue } from '@marigold/system';
+
+const Availability = () => {
+  // One month on small screens, up to three side by side from `md` up
+  const months = useResponsiveValue<1 | 2 | 3>([1, 2, 3], 0);
+
+  return <Calendar visibleDuration={{ months }} />;
+};
+```
+
+#### Try it
+
+Pick a breakpoint to see which value `useResponsiveValue` resolves to.
+
+<ComponentDemo name="use-responsive-value" mode="preview" />
+
+### useSmallScreen
+
+`useSmallScreen` returns a single boolean: `true` below the `sm` breakpoint (640px) and `false` at or above it. It is the simpler choice when a component only needs to know whether it is on a small screen right now. Because it defaults to `false`, a custom component starts from the desktop layout and switches to its small-screen variant once a narrow viewport is detected. This mirrors how Marigold's own `Select`, `ComboBox` and `Menu` render a desktop popover by default and switch to a mobile tray below 640px.
+
+Reach for it when a single 640px threshold is all you need, for example:
+
+- Collapsing a custom toolbar to icon-only actions on small screens.
+- Rendering your own content inside a `Drawer` on small screens but inline on wider ones.
+- Reducing the number of visible segments in a custom breadcrumb or stepper.
+
+```tsx
+import { Button } from '@marigold/components';
+import { Save } from '@marigold/icons';
+import { useSmallScreen } from '@marigold/system';
+
+const SaveButton = () => {
+  const isSmallScreen = useSmallScreen();
+
+  // Icon-only button on small screens, icon plus label from `sm` up
+  return isSmallScreen ? (
+    <Button variant="primary" size="icon" aria-label="Save changes">
+      <Save />
+    </Button>
+  ) : (
+    <Button variant="primary">
+      <Save />
+      Save changes
+    </Button>
+  );
+};
+```
+
+#### Try it
+
+Pick a breakpoint to see what `useSmallScreen` returns (`true` only below 640px).
+
+<ComponentDemo name="use-small-screen" mode="preview" />
 
 ## Minimum supported width
 
