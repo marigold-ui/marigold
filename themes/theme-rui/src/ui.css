@@ -328,17 +328,9 @@
  * Distinct from the Panel component, which has its own styling and does not use
  * these.
  *
- * The shared horizontal padding lives here rather than in tokens.css: `--ui-*`
- * is not a Tailwind namespace, so it never generated a utility, and the only
- * readers are the three utilities below plus DrawerContent's `bleed` branch
- * (which republishes it as `--bleed-px`). `:root` keeps it globally resolvable —
- * postcss.config.js excludes `:root` from the `[data-theme="rui"]` prefixing,
- * exactly as it does for the @theme tokens.
+ * The shared horizontal padding is `--ui-panel-px`, declared in tokens.css so it
+ * inherits the `:root, :host` + `@layer theme` placement every token gets.
  */
-:root {
-  --ui-panel-px: --spacing(6);
-}
-
 @utility ui-panel-header {
   @apply border-border border-b px-(--ui-panel-px) py-4;
 }

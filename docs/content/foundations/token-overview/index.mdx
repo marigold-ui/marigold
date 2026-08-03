@@ -306,7 +306,8 @@ The secondary Button and the Menu trigger don't wear a boundary at all. They're 
     {
       name: 'soft',
       value: 'oklch(0.99 0.002 54)',
-      useFor: 'Resting fill for the soft cap (secondary Button, Menu trigger)',
+      useFor:
+        'Resting fill for the soft cap (secondary Button, Menu trigger). Lightness and chroma are tuned by eye; the hue is derived from the palette',
     },
     {
       name: 'soft-hover',
@@ -579,9 +580,9 @@ Every boundary token in one place. Marigold draws element edges with five tokens
     },
     {
       name: 'border',
-      value: 'oklch(0.9 0.004 54) — hue from palette',
+      value: 'oklch(0.9 0.004 54)',
       useFor:
-        'Structural lines drawn on a known surface, such as dividers, table row and grid lines, section rules, and internal separators. Opaque so crossing strokes cannot stack',
+        'Structural lines drawn on a known surface, such as dividers, table row and grid lines, section rules, and internal separators. Opaque so crossing strokes cannot stack. Lightness and chroma are tuned by eye; the hue is derived from the palette',
     },
     {
       name: 'ring',

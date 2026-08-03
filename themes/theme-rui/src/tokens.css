@@ -39,6 +39,9 @@
   --color-orange-900: #7c3712;
   --color-orange-950: #431a07;
 
+  /* Renaming this palette? The pre-compiled bundle force-generates its `bg-*`
+     utilities via `@source inline` in styles.css — update that line too, or the
+     bundle silently ships utilities for a palette that no longer exists. */
   --color-charcoal-50: oklch(0.985 0.002 54);
   --color-charcoal-100: oklch(0.965 0.003 54);
   --color-charcoal-200: oklch(0.92 0.004 54);
@@ -118,11 +121,12 @@
 
   /* --- Soft (raised control cap: secondary Button, Menu trigger) --- */
   /* Light counterpart to the dark contrast surface: a near-white convex cap.
-     The fill is a literal just above rung 50 so the cap reads a touch whiter
-     than a muted fill without dragging rung 50 with it. The edge is its own
-     token, not derived from the fill — a −0.12 L step off a near-white cap
-     washes out to ~1.5:1. It darkens with the cap on hover. */
-  --color-soft: oklch(0.99 0.002 54);
+     The fill sits just above rung 50 so the cap reads a touch whiter than a
+     muted fill without dragging rung 50 with it; lightness and chroma are tuned
+     by eye, only the hue follows the palette. The edge is its own token, not
+     derived from the fill — a −0.12 L step off a near-white cap washes out to
+     ~1.5:1. It darkens with the cap on hover. */
+  --color-soft: oklch(from var(--color-charcoal-950) 0.99 0.002 h);
   --color-soft-hover: var(--color-charcoal-100);
   --color-soft-edge: var(--color-charcoal-200);
   --color-soft-edge-hover: var(--color-charcoal-300);
@@ -264,6 +268,14 @@
   --spacing-regular: --spacing(6);
   --spacing-group: --spacing(12);
   --spacing-section: --spacing(24);
+
+  /* Shared horizontal padding for the `ui-panel-*` overlay surfaces in ui.css,
+   * plus DrawerContent's `bleed` branch (which republishes it as `--bleed-px`).
+   * `--ui-*` is not a Tailwind namespace, so this generates no utility — but it
+   * stays in `@theme` so it lands on `:root, :host` inside `@layer theme` like
+   * every other token: shadow-DOM mounts need `:host`, and an unlayered rule
+   * would outrank a consumer's own `@theme` override. */
+  --ui-panel-px: --spacing(6);
 
   /* Padding spacing */
   --spacing-padding-tight: --spacing(1);

@@ -33,9 +33,16 @@
   }
 }
 
-/* The theme's own palette. Force-generated because this bundle is pre-compiled:
-   a consumer's markup is never scanned, so palette utilities they write would
-   otherwise not exist. Must track the palette name in tokens.css. */
+/* The theme's own palette, as a consumer escape hatch. Force-generated because
+   this bundle is pre-compiled: a consumer's markup is never scanned, so palette
+   utilities they write would otherwise not exist. Nothing in the design system
+   itself writes these — components go through the semantic tokens.
+
+   This must track the palette name in tokens.css, and it cannot be colocated
+   there: theme.css imports tokens.css too, and Tailwind collects `@source`
+   across the whole import graph, so moving it would force these utilities into
+   the tree-shaking path as well (measured: 11 utilities, +812 bytes, for a
+   consumer who may use none of them). Renaming the palette means editing here. */
 /* prettier-ignore */
 @source inline('{bg}-{charcoal}-{50,{100..900..100},950}');
 /* prettier-ignore */
