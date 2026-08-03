@@ -41,19 +41,20 @@ export default () => {
         <ListView.Item
           key={notification.id}
           id={notification.id}
-          textValue={`${notification.title} — ${notification.timestamp}`}
+          textValue={notification.title}
         >
           <TextValue>{notification.title}</TextValue>
           <Description>{notification.timestamp}</Description>
-          <Switch aria-label="Mute this thread" />
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Dismiss"
-            onPress={() => dismiss(notification.id)}
-          >
-            <X />
-          </Button>
+          <ListView.Actions>
+            <Switch aria-label="Mute this thread" />
+            <Button
+              size="icon"
+              aria-label="Dismiss"
+              onPress={() => dismiss(notification.id)}
+            >
+              <X />
+            </Button>
+          </ListView.Actions>
         </ListView.Item>
       ))}
     </ListView>

@@ -4,6 +4,7 @@ import type RAC from 'react-aria-components';
 import { GridList as RACGridList } from 'react-aria-components/GridList';
 import { cn, useClassNames } from '@marigold/system';
 import { ListViewContext } from './Context';
+import { ListViewActions } from './ListViewActions';
 import { ListViewItem } from './ListViewItem';
 
 // ListView is deliberately NOT a form field: no FieldBase, no hidden input,
@@ -51,6 +52,7 @@ export interface ListViewProps extends Omit<
 interface ListViewComponent {
   (props: ListViewProps): ReactNode;
   Item: typeof ListViewItem;
+  Actions: typeof ListViewActions;
 }
 
 const ListViewBase = ({
@@ -84,5 +86,6 @@ const ListViewBase = ({
 
 const ListViewExported = ListViewBase as ListViewComponent;
 ListViewExported.Item = ListViewItem;
+ListViewExported.Actions = ListViewActions;
 
 export { ListViewExported as ListView };

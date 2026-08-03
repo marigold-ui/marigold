@@ -24,11 +24,13 @@ export default (props: ListViewProps) => (
         <FileText size={20} />
         <TextValue>{file.name}</TextValue>
         <Description>{file.meta}</Description>
-        <ActionMenu aria-label={`${file.name} actions`}>
-          <ActionMenu.Item>Rename</ActionMenu.Item>
-          <ActionMenu.Item>Share</ActionMenu.Item>
-          <ActionMenu.Item variant="destructive">Delete</ActionMenu.Item>
-        </ActionMenu>
+        <ListView.Actions>
+          <ActionMenu aria-label={`${file.name} actions`}>
+            <ActionMenu.Item>Rename</ActionMenu.Item>
+            <ActionMenu.Item>Share</ActionMenu.Item>
+            <ActionMenu.Item variant="destructive">Delete</ActionMenu.Item>
+          </ActionMenu>
+        </ListView.Actions>
       </ListView.Item>
     ))}
   </ListView>

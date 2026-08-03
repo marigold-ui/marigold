@@ -4,7 +4,7 @@ export const ListViewAnatomy = () => (
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
     role="img"
-    aria-label="Anatomy of a ListView: List container holding Item rows, each with leading content, a text value and description, and a trailing IconButton control"
+    aria-label="Anatomy of a ListView: List container holding Item rows, each with leading media, a text value and description, and an Actions region holding the row's controls"
   >
     {/* List container */}
     <rect
@@ -193,7 +193,7 @@ export const ListViewAnatomy = () => (
         Item
       </text>
       <text x="90" y="82" textAnchor="end">
-        Leading content
+        Leading media
       </text>
       <text x="350" y="0" textAnchor="middle">
         List
@@ -205,7 +205,7 @@ export const ListViewAnatomy = () => (
         Description
       </text>
       <text x="570" y="155" textAnchor="start">
-        Trailing controls
+        Actions
       </text>
       <text
         x="570"

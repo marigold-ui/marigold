@@ -1,9 +1,12 @@
 import type { Ref } from 'react';
+import { memo } from 'react';
 import { theme } from '@marigold/theme-rui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Description } from '../Description/Description';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
+import { Switch } from '../Switch/Switch';
+import { TextValue } from '../TextValue/TextValue';
 import { ListView } from './ListView';
 import {
   Basic,
@@ -75,12 +78,15 @@ describe('ListView', () => {
   });
 
   describe('textValue', () => {
-    test('warns in development when children is not a string and textValue is missing', () => {
+    test('names the row, and a missing one warns exactly once (RAC only)', () => {
       const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
       render(
         <MarigoldProvider theme={theme}>
           <ListView aria-label="Test">
+            <ListView.Item id="named" textValue="Named row">
+              <Description>Has a textValue</Description>
+            </ListView.Item>
             <ListView.Item id="row">
               <Description>No textValue provided</Description>
             </ListView.Item>
@@ -88,11 +94,85 @@ describe('ListView', () => {
         </MarigoldProvider>
       );
 
+      // RAC appends a row's `<Description>` to its name via `aria-labelledby`,
+      // so the accessible name starts with — but isn't only — the textValue.
+      expect(
+        screen.getByRole('row', { name: /^Named row/ })
+      ).toBeInTheDocument();
+      // RAC's GridList already warns about a missing `textValue`, so
+      // ListView.Item deliberately adds none of its own — one mistake must
+      // not produce two console lines.
+      expect(warnSpy).toHaveBeenCalledTimes(1);
       expect(warnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('`textValue` is required')
+        expect.stringContaining('<GridListItem>')
       );
 
       warnSpy.mockRestore();
+    });
+  });
+
+  describe('row layout', () => {
+    // Every region is placed by the row's CSS grid, so `data-grid-area` is
+    // what the slot contexts publish and what the theme's leading-media rule
+    // keys off. Asserting it here is asserting the placement itself.
+    const RowText = memo(() => (
+      <>
+        <TextValue>Wrapped label</TextValue>
+        <Description>Wrapped description</Description>
+      </>
+    ));
+
+    const renderRow = () =>
+      render(
+        <MarigoldProvider theme={theme}>
+          <ListView aria-label="Layout">
+            <ListView.Item id="row" textValue="Wrapped label">
+              <svg data-testid="media" aria-hidden />
+              <RowText />
+              <ListView.Actions>
+                <Switch aria-label="Toggle row" />
+              </ListView.Actions>
+            </ListView.Item>
+          </ListView>
+        </MarigoldProvider>
+      );
+
+    test('places text authored through a fragment behind `memo()`', () => {
+      renderRow();
+
+      expect(screen.getByText('Wrapped label')).toHaveAttribute(
+        'data-grid-area',
+        'label'
+      );
+      expect(screen.getByText('Wrapped description')).toHaveAttribute(
+        'data-grid-area',
+        'description'
+      );
+    });
+
+    test('leaves the leading media unclaimed so the row places it by position', () => {
+      renderRow();
+
+      expect(screen.getByTestId('media')).not.toHaveAttribute('data-grid-area');
+      // RAC's `gridcell` wrapper is `display: contents`, so the row's first
+      // *grid* item is that wrapper's first child — which is what the theme's
+      // leading-media rule selects. Reaching into the DOM is the assertion
+      // here: the rule is positional, so position is what has to hold.
+      // eslint-disable-next-line testing-library/no-node-access
+      expect(screen.getByRole('gridcell').firstElementChild).toBe(
+        screen.getByTestId('media')
+      );
+    });
+
+    test('gives the trailing controls their own region', () => {
+      renderRow();
+
+      const toggle = screen.getByRole('switch', { name: 'Toggle row' });
+
+      // The region has no role of its own — it's a layout box — so the only
+      // way to assert a control landed inside it is to walk up from it.
+      // eslint-disable-next-line testing-library/no-node-access
+      expect(toggle.closest('[data-grid-area="actions"]')).toBeInTheDocument();
     });
   });
 

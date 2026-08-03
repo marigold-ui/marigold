@@ -125,37 +125,39 @@ export const NotificationsFeed = meta.story({
   tags: ['component-test'],
   render: args => (
     <ListView {...args} aria-label="Notifications">
-      <ListView.Item id="build" textValue="Build finished — 2 minutes ago">
+      <ListView.Item id="build" textValue="Build finished">
         <TextValue>Build finished</TextValue>
         <Description>2 minutes ago</Description>
-        <Switch
-          aria-label="Mute this thread"
-          onChange={() => onMute('build')}
-        />
-        <Button
-          variant="ghost"
-          size="icon"
-          aria-label="Dismiss"
-          onPress={() => onDismiss('build')}
-        >
-          <X />
-        </Button>
+        <ListView.Actions>
+          <Switch
+            aria-label="Mute this thread"
+            onChange={() => onMute('build')}
+          />
+          <Button
+            size="icon"
+            aria-label="Dismiss"
+            onPress={() => onDismiss('build')}
+          >
+            <X />
+          </Button>
+        </ListView.Actions>
       </ListView.Item>
-      <ListView.Item id="deploy" textValue="Deploy succeeded — 1 hour ago">
+      <ListView.Item id="deploy" textValue="Deploy succeeded">
         <TextValue>Deploy succeeded</TextValue>
         <Description>1 hour ago</Description>
-        <Switch
-          aria-label="Mute this thread"
-          onChange={() => onMute('deploy')}
-        />
-        <Button
-          variant="ghost"
-          size="icon"
-          aria-label="Dismiss"
-          onPress={() => onDismiss('deploy')}
-        >
-          <X />
-        </Button>
+        <ListView.Actions>
+          <Switch
+            aria-label="Mute this thread"
+            onChange={() => onMute('deploy')}
+          />
+          <Button
+            size="icon"
+            aria-label="Dismiss"
+            onPress={() => onDismiss('deploy')}
+          >
+            <X />
+          </Button>
+        </ListView.Actions>
       </ListView.Item>
     </ListView>
   ),
@@ -245,41 +247,43 @@ export const ResourceListWithMenu = meta.story({
         <FileIcon />
         <TextValue>Quarterly report</TextValue>
         <Description>Updated 3 days ago · 2.1 MB</Description>
-        <ActionMenu aria-label="Quarterly report actions">
-          <ActionMenu.Item onAction={() => onRename('report')}>
-            Rename
-          </ActionMenu.Item>
-          <ActionMenu.Item onAction={() => onShare('report')}>
-            Share
-          </ActionMenu.Item>
-          <ActionMenu.Item
-            variant="destructive"
-            size="icon"
-            onAction={() => onDelete('report')}
-          >
-            Delete
-          </ActionMenu.Item>
-        </ActionMenu>
+        <ListView.Actions>
+          <ActionMenu aria-label="Quarterly report actions">
+            <ActionMenu.Item onAction={() => onRename('report')}>
+              Rename
+            </ActionMenu.Item>
+            <ActionMenu.Item onAction={() => onShare('report')}>
+              Share
+            </ActionMenu.Item>
+            <ActionMenu.Item
+              variant="destructive"
+              onAction={() => onDelete('report')}
+            >
+              Delete
+            </ActionMenu.Item>
+          </ActionMenu>
+        </ListView.Actions>
       </ListView.Item>
       <ListView.Item id="roadmap" textValue="Roadmap">
         <FileIcon />
         <TextValue>Roadmap</TextValue>
         <Description>Updated today · 640 KB</Description>
-        <ActionMenu aria-label="Roadmap actions">
-          <ActionMenu.Item onAction={() => onRename('roadmap')}>
-            Rename
-          </ActionMenu.Item>
-          <ActionMenu.Item onAction={() => onShare('roadmap')}>
-            Share
-          </ActionMenu.Item>
-          <ActionMenu.Item
-            variant="destructive"
-            size="icon"
-            onAction={() => onDelete('roadmap')}
-          >
-            Delete
-          </ActionMenu.Item>
-        </ActionMenu>
+        <ListView.Actions>
+          <ActionMenu aria-label="Roadmap actions">
+            <ActionMenu.Item onAction={() => onRename('roadmap')}>
+              Rename
+            </ActionMenu.Item>
+            <ActionMenu.Item onAction={() => onShare('roadmap')}>
+              Share
+            </ActionMenu.Item>
+            <ActionMenu.Item
+              variant="destructive"
+              onAction={() => onDelete('roadmap')}
+            >
+              Delete
+            </ActionMenu.Item>
+          </ActionMenu>
+        </ListView.Actions>
       </ListView.Item>
     </ListView>
   ),
@@ -337,53 +341,49 @@ export const WithDescription = meta.story({
   },
   render: args => (
     <ListView {...args} aria-label="Workspaces">
-      <ListView.Item
-        id="acme"
-        textValue="Acme Inc — Enterprise plan — 24 members"
-      >
+      <ListView.Item id="acme" textValue="Acme Inc">
         <Building2 aria-hidden size={20} color="#6366F1" />
         <Title>Acme Inc</Title>
         <Description>Enterprise plan</Description>
         <Description>24 members</Description>
-        <ActionMenu aria-label="Acme Inc actions">
-          <ActionMenu.Item onAction={() => onOpenWorkspace('acme')}>
-            Open
-          </ActionMenu.Item>
-          <ActionMenu.Item onAction={() => onWorkspaceSettings('acme')}>
-            Settings
-          </ActionMenu.Item>
-          <ActionMenu.Item
-            variant="destructive"
-            size="icon"
-            onAction={() => onLeaveWorkspace('acme')}
-          >
-            Leave
-          </ActionMenu.Item>
-        </ActionMenu>
+        <ListView.Actions>
+          <ActionMenu aria-label="Acme Inc actions">
+            <ActionMenu.Item onAction={() => onOpenWorkspace('acme')}>
+              Open
+            </ActionMenu.Item>
+            <ActionMenu.Item onAction={() => onWorkspaceSettings('acme')}>
+              Settings
+            </ActionMenu.Item>
+            <ActionMenu.Item
+              variant="destructive"
+              onAction={() => onLeaveWorkspace('acme')}
+            >
+              Leave
+            </ActionMenu.Item>
+          </ActionMenu>
+        </ListView.Actions>
       </ListView.Item>
-      <ListView.Item
-        id="globex"
-        textValue="Globex Corp — Team plan — 8 members"
-      >
+      <ListView.Item id="globex" textValue="Globex Corp">
         <Building2 aria-hidden size={20} color="#059669" />
         <Title>Globex Corp</Title>
         <Description>Team plan</Description>
         <Description>8 members</Description>
-        <ActionMenu aria-label="Globex Corp actions">
-          <ActionMenu.Item onAction={() => onOpenWorkspace('globex')}>
-            Open
-          </ActionMenu.Item>
-          <ActionMenu.Item onAction={() => onWorkspaceSettings('globex')}>
-            Settings
-          </ActionMenu.Item>
-          <ActionMenu.Item
-            variant="destructive"
-            size="icon"
-            onAction={() => onLeaveWorkspace('globex')}
-          >
-            Leave
-          </ActionMenu.Item>
-        </ActionMenu>
+        <ListView.Actions>
+          <ActionMenu aria-label="Globex Corp actions">
+            <ActionMenu.Item onAction={() => onOpenWorkspace('globex')}>
+              Open
+            </ActionMenu.Item>
+            <ActionMenu.Item onAction={() => onWorkspaceSettings('globex')}>
+              Settings
+            </ActionMenu.Item>
+            <ActionMenu.Item
+              variant="destructive"
+              onAction={() => onLeaveWorkspace('globex')}
+            >
+              Leave
+            </ActionMenu.Item>
+          </ActionMenu>
+        </ListView.Actions>
       </ListView.Item>
     </ListView>
   ),
@@ -442,45 +442,44 @@ export const TeamRosterWithStatus = meta.story({
   tags: ['component-test'],
   render: () => (
     <ListView aria-label="Team roster">
-      <ListView.Item
-        id="jane"
-        textValue="Jane Cooper — Design lead — Active now"
-      >
+      <ListView.Item id="jane" textValue="Jane Cooper">
         <Avatar initials="JC" color="#6366F1" />
         <Title>Jane Cooper</Title>
         <Description>Design lead</Description>
         <Description>Active now</Description>
-        <Switch
-          aria-label="Notify Jane Cooper"
-          selected
-          onChange={selected => onNotifyChange('jane', selected)}
-        />
-        <Button
-          variant="ghost"
-          size="icon"
-          aria-label="Remove Jane Cooper"
-          onPress={() => onRemoveMember('jane')}
-        >
-          <X />
-        </Button>
+        <ListView.Actions>
+          <Switch
+            aria-label="Notify Jane Cooper"
+            selected
+            onChange={selected => onNotifyChange('jane', selected)}
+          />
+          <Button
+            size="icon"
+            aria-label="Remove Jane Cooper"
+            onPress={() => onRemoveMember('jane')}
+          >
+            <X />
+          </Button>
+        </ListView.Actions>
       </ListView.Item>
-      <ListView.Item id="alex" textValue="Alex Kim — Engineer — Away">
+      <ListView.Item id="alex" textValue="Alex Kim">
         <Avatar initials="AK" color="#059669" />
         <Title>Alex Kim</Title>
         <Description>Engineer</Description>
         <Description>Away</Description>
-        <Switch
-          aria-label="Notify Alex Kim"
-          onChange={selected => onNotifyChange('alex', selected)}
-        />
-        <Button
-          variant="ghost"
-          size="icon"
-          aria-label="Remove Alex Kim"
-          onPress={() => onRemoveMember('alex')}
-        >
-          <X />
-        </Button>
+        <ListView.Actions>
+          <Switch
+            aria-label="Notify Alex Kim"
+            onChange={selected => onNotifyChange('alex', selected)}
+          />
+          <Button
+            size="icon"
+            aria-label="Remove Alex Kim"
+            onPress={() => onRemoveMember('alex')}
+          >
+            <X />
+          </Button>
+        </ListView.Actions>
       </ListView.Item>
     </ListView>
   ),
@@ -538,38 +537,41 @@ export const InPopover = meta.story({
             <ListView.Item id="build" textValue="Build finished">
               <TextValue>Build finished</TextValue>
               <Description>2 minutes ago</Description>
-              <Button
-                variant="ghost"
-                size="icon"
-                aria-label="Dismiss build finished"
-                onPress={() => onNotificationDismiss('build')}
-              >
-                <X />
-              </Button>
+              <ListView.Actions>
+                <Button
+                  size="icon"
+                  aria-label="Dismiss build finished"
+                  onPress={() => onNotificationDismiss('build')}
+                >
+                  <X />
+                </Button>
+              </ListView.Actions>
             </ListView.Item>
             <ListView.Item id="review" textValue="Review requested">
               <TextValue>Review requested</TextValue>
               <Description>18 minutes ago</Description>
-              <Button
-                variant="ghost"
-                size="icon"
-                aria-label="Dismiss review requested"
-                onPress={() => onNotificationDismiss('review')}
-              >
-                <X />
-              </Button>
+              <ListView.Actions>
+                <Button
+                  size="icon"
+                  aria-label="Dismiss review requested"
+                  onPress={() => onNotificationDismiss('review')}
+                >
+                  <X />
+                </Button>
+              </ListView.Actions>
             </ListView.Item>
             <ListView.Item id="deploy" textValue="Deploy succeeded">
               <TextValue>Deploy succeeded</TextValue>
               <Description>1 hour ago</Description>
-              <Button
-                variant="ghost"
-                size="icon"
-                aria-label="Dismiss deploy succeeded"
-                onPress={() => onNotificationDismiss('deploy')}
-              >
-                <X />
-              </Button>
+              <ListView.Actions>
+                <Button
+                  size="icon"
+                  aria-label="Dismiss deploy succeeded"
+                  onPress={() => onNotificationDismiss('deploy')}
+                >
+                  <X />
+                </Button>
+              </ListView.Actions>
             </ListView.Item>
           </ListView>
         </RACDialog>
@@ -599,19 +601,23 @@ export const InPanel = meta.story({
           <ListView.Item id="slack" textValue="Slack">
             <TextValue>Slack</TextValue>
             <Description>Post updates to #releases</Description>
-            <Switch
-              aria-label="Enable Slack"
-              selected
-              onChange={selected => onIntegrationToggle('slack', selected)}
-            />
+            <ListView.Actions>
+              <Switch
+                aria-label="Enable Slack"
+                selected
+                onChange={selected => onIntegrationToggle('slack', selected)}
+              />
+            </ListView.Actions>
           </ListView.Item>
           <ListView.Item id="github" textValue="GitHub">
             <TextValue>GitHub</TextValue>
             <Description>Link commits to tickets</Description>
-            <Switch
-              aria-label="Enable GitHub"
-              onChange={selected => onIntegrationToggle('github', selected)}
-            />
+            <ListView.Actions>
+              <Switch
+                aria-label="Enable GitHub"
+                onChange={selected => onIntegrationToggle('github', selected)}
+              />
+            </ListView.Actions>
           </ListView.Item>
         </ListView>
       </Panel.Content>

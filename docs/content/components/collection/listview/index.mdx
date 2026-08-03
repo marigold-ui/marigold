@@ -14,16 +14,16 @@ Each row's key comes from the `id` on its underlying data, pass a matching `id` 
 
 ## Anatomy
 
-A `<ListView>` is a labeled, non-form grid holding a stack of `<ListView.Item>` rows. Each row is authored as flat children: an optional leading icon or image, the row's text (`<TextValue>`/`<Description>`, or `<Title>` for a heading-like row), and optional trailing controls.
+A `<ListView>` is a labeled, non-form grid holding a stack of `<ListView.Item>` rows. Each row is authored as flat children: an optional leading icon or image, the row's text (`<TextValue>`/`<Description>`, or `<Title>` for a heading-like row), and a `<ListView.Actions>` region for the row's controls.
 
 <ListViewAnatomy />
 
 - **List:** The grid container. Requires `aria-label` or `aria-labelledby`.
 - **Item:** A single row (`role="row"`). Not selectable or toggleable by ListView itself.
-- **Leading content:** An optional icon or image before the row's text.
+- **Leading media:** An optional icon or image, authored as the row's first child.
 - **Text value:** The row's primary text, authored with `<TextValue>` (or `<Title>` for a heading-like row; see [Accessibility](#accessibility)).
-- **Description:** Optional secondary text below the text value.
-- **Trailing controls:** One or more interactive controls, such as a `<Switch>` or `<ActionMenu>`, positioned at the end of the row.
+- **Description:** Optional secondary text below the text value. A row can carry more than one.
+- **Actions:** `<ListView.Actions>`, holding the row's interactive controls, such as a `<Switch>` or an `<ActionMenu>`. Controls inside it default to the `ghost` variant.
 
 ## Appearance
 
@@ -125,6 +125,10 @@ For rows with rich content, such as a wrapped label or an icon, set `textValue` 
 ### ListView.Item
 
 <AutoTypeTable path="ListView/ListViewItem" name="ListViewItemProps" />
+
+### ListView.Actions
+
+<AutoTypeTable path="ListView/ListViewActions" name="ListViewActionsProps" />
 
 ## Alternative components
 
