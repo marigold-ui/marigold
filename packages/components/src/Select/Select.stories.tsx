@@ -112,6 +112,24 @@ export const Basic = meta.story({
   },
 });
 
+/**
+ * Clicks an option inside the (virtualized) popover list.
+ *
+ * While the virtualizer scrolls — which it does when it measures its rows and
+ * brings the focused option into view after opening — react-aria sets
+ * `pointer-events: none` on its content wrapper, and `userEvent.click()` refuses
+ * to interact with such an element. Wait for the list to settle first, the way
+ * a user would, instead of clicking into an unsettled list.
+ */
+const clickOption = async (listbox: HTMLElement, name: string | RegExp) => {
+  await waitFor(() => {
+    const option = within(listbox).getByRole('option', { name });
+    expect(getComputedStyle(option).pointerEvents).not.toBe('none');
+  });
+
+  await userEvent.click(within(listbox).getByRole('option', { name }));
+};
+
 Basic.test('Opens the dropdown', async ({ canvas, args }) => {
   const button = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
 
@@ -148,10 +166,7 @@ Basic.test(
     });
 
     await step('Select an item from the list', async () => {
-      const listbox = canvas.getByRole('listbox');
-      const option = within(listbox).getByText('Star Wars');
-
-      await userEvent.click(option);
+      await clickOption(canvas.getByRole('listbox'), 'Star Wars');
     });
 
     await step('Verify the select is closed', async () => {
@@ -634,9 +649,7 @@ WithRenderValue.test(
     });
 
     await step('Select Bob', async () => {
-      const listbox = canvas.getByRole('listbox');
-
-      await userEvent.click(within(listbox).getByText('Bob Smith'));
+      await clickOption(canvas.getByRole('listbox'), 'Bob Smith');
 
       await waitFor(() =>
         expect(canvas.queryByRole('listbox')).not.toBeInTheDocument()
