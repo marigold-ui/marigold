@@ -580,9 +580,9 @@ Every boundary token in one place. Marigold draws element edges with five tokens
     },
     {
       name: 'border',
-      value: 'oklch(0.9 0.004 54)',
+      value: 'charcoal-950 / 14%',
       useFor:
-        'Structural lines drawn on a known surface, such as dividers, table row and grid lines, section rules, and internal separators. Opaque, so it stays a consistent hairline rather than varying with the fill behind it. Lightness and chroma are tuned by eye; the hue is derived from the palette',
+        'Structural lines drawn on a known surface, such as dividers, table row and grid lines, section rules, and internal separators. Translucent, so it holds the same ~1.36:1 contrast on every ground it is used on rather than varying with the fill behind it',
     },
     {
       name: 'ring',
@@ -601,10 +601,10 @@ Every boundary token in one place. Marigold draws element edges with five tokens
   clearly visible and adapts to the ground beneath it. `disabled-border` is that
   control edge **dimmed** for an inactive control, receding rather than
   vanishing. `border` draws **structural lines** such as dividers, grid lines,
-  and section rules. It is opaque on purpose, because separators are many
-  strokes drawn by many cells and translucent strokes would render darker
-  wherever they cross. `ring` is the **focus** outline, the perceivable
-  affordance for keyboard users.
+  and section rules. It is the lightest of the three translucent strokes, so a
+  divider carries the same weight on a white surface as it does on the page
+  ground. `ring` is the **focus** outline, the perceivable affordance for
+  keyboard users.
 </Callout>
 
 ### Status colors

@@ -91,18 +91,18 @@
   --color-disabled-surface: var(--color-charcoal-100);
 
   /* --- Boundaries & Focus Ring --- */
-  /* The two translucent edges adapt to whatever ground they sit on; `border` is
-     opaque and the state edges are solid rungs. See /foundations/token-overview.
+  /* All three edge tokens are translucent, so they hold one *contrast* against
+     whatever ground they sit on rather than one lightness. The state edges stay
+     solid rungs. See /foundations/token-overview.
 
-     `border`'s opacity is a visual choice, not a technical constraint. Earlier
-     wording here and in the docs justified it as "opaque so crossing strokes
-     cannot stack" — that mechanism does not exist. A CSS border is painted
-     inside its own element's box, so borders on separate elements never overlap;
-     they abut. Measured on white with alpha 0.13 across three grid patterns
-     (Marigold's `not-last:border-r` + `not-last:border-b`, every-cell-bordered,
-     and LegacyTable's `border-separate`), the intersection luminance equals the
-     run's exactly in all three. Only genuinely overlapping boxes (negative
-     margins, absolutely positioned rules) could stack alpha. */
+     An earlier version of this comment justified an opaque `border` as "opaque so
+     crossing strokes cannot stack". That mechanism does not exist: a CSS border is
+     painted inside its own element's box, so borders on separate elements abut
+     rather than overlap. Measured across three grid patterns (Marigold's
+     `not-last:border-r` + `not-last:border-b`, every-cell-bordered, and
+     LegacyTable's `border-separate`), intersection luminance equals the run's
+     exactly in all three. Only genuinely overlapping boxes — negative margins,
+     absolutely positioned rules — could stack alpha, and nothing here does that. */
 
   /* Decorative rim of a raised surface (Card, Panel, Dialog, Menu), via
      ui-surface. Half the density of --color-control-border rather than a pure
@@ -118,12 +118,30 @@
   /* Dimmed rather than absent — a borderless input reads as broken. */
   --color-disabled-border: var(--color-charcoal-300);
 
-  /* Structural lines: dividers, grid lines, section rules, table grids. Quiet
-     (~1.4:1 on white) but opaque, so it doesn't dissolve into a white field.
-     Lightness and chroma are tuned by eye; only the hue follows the palette. */
-  --color-border: oklch(from var(--color-charcoal-950) 0.9 0.004 h);
+  /* Structural lines: dividers, grid lines, section rules, table grids. Quiet,
+     ~1.36:1 on every ground it is used on.
+
+     Alpha rather than a fixed lightness, because a fixed lightness makes the
+     divider's weight depend on its ground: at the previous `0.9 0.004 54` this
+     token measured 1.352:1 on `surface`, 1.297:1 on `muted` and only 1.222:1 on
+     `background` — the same rule 11% weaker in the Sidebar than in a Table, which
+     nothing in the design intends. At 0.14 the three land within 0.003 of each
+     other, and within 0.007 of the old value on `surface`. Alpha chosen by
+     sweeping 0.04–0.30 and sampling rendered pixels on all three grounds; see
+     DST-1672. */
+  --color-border: oklch(from var(--color-charcoal-950) l c h / 0.14);
 
   --color-ring: var(--color-charcoal-600);
+
+  /* The divider tone as an opaque value, for recipes that read the divider's
+     channels instead of its rendered appearance. Two do: Drawer steps its
+     lightness down (`calc(l - 0.1)`) and SectionMessage mixes it with a status
+     accent. Both break against a translucent `--color-border` — its lightness is
+     now the palette rung's 0.15 rather than a light grey, so `calc(l - 0.1)`
+     yields near-black, and its alpha compounds through `color-mix` (measured:
+     the status edge dropped to 0.57 alpha, the Drawer edge from 1.87:1 to
+     1.38:1 on white). Not a Tailwind namespace, so it generates no utility. */
+  --ui-divider-solid: oklch(from var(--color-charcoal-950) 0.9 0.004 h);
 
   /* --- Soft (raised control cap: secondary Button, Menu trigger) --- */
   /* Light counterpart to the dark contrast surface: a near-white convex cap.

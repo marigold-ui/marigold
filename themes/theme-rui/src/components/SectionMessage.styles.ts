@@ -13,13 +13,13 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
     // a fill would re-introduce the "actions float on a colored surface" problem.
     variants: {
       variant: {
-        info: '[--ui-border-color:color-mix(in_oklab,var(--color-info-accent)_50%,var(--color-border))]',
+        info: '[--ui-border-color:color-mix(in_oklab,var(--color-info-accent)_50%,var(--ui-divider-solid))]',
         success:
-          '[--ui-border-color:color-mix(in_oklab,var(--color-success-accent)_50%,var(--color-border))]',
+          '[--ui-border-color:color-mix(in_oklab,var(--color-success-accent)_50%,var(--ui-divider-solid))]',
         warning:
-          '[--ui-border-color:color-mix(in_oklab,var(--color-warning-accent)_50%,var(--color-border))]',
+          '[--ui-border-color:color-mix(in_oklab,var(--color-warning-accent)_50%,var(--ui-divider-solid))]',
         error:
-          '[--ui-border-color:color-mix(in_oklab,var(--color-destructive-accent)_50%,var(--color-border))]',
+          '[--ui-border-color:color-mix(in_oklab,var(--color-destructive-accent)_50%,var(--ui-divider-solid))]',
       },
     },
     defaultVariants: {
