@@ -9,12 +9,21 @@ import { EventSchema, type TelemetryEvent } from './schema';
 const RATE_LIMIT_PER_DAY = 1000;
 const SECONDS_PER_DAY = 24 * 60 * 60;
 
-const dateKey = (): string => {
+// Events go into one stream rather than one list per UTC day. Stream ids are
+// `<epochMillis>-<seq>`, so a reader covers any time window with a single
+// XRANGE; the per-day layout cost it one LRANGE per day in the window (180 for
+// Insights' 90-day view, which compares against the preceding 90 days). MINID
+// trimming rides along on the same XADD, so retention is bounded here — the
+// daily lists had no expiry at all and grew without limit.
+const STREAM_KEY = 'telemetry:events';
+const RETENTION_DAYS = 200;
+
+const utcDate = (): string => {
   const now = new Date();
   const y = now.getUTCFullYear();
   const m = String(now.getUTCMonth() + 1).padStart(2, '0');
   const d = String(now.getUTCDate()).padStart(2, '0');
-  return `telemetry:${y}-${m}-${d}`;
+  return `${y}-${m}-${d}`;
 };
 
 // Prefixed per event source so the rate-limit keyspace stays greppable by
@@ -24,8 +33,7 @@ const rateLimitIdOf = (event: TelemetryEvent): string =>
     ? `cli:${event.anonymousId}`
     : `mcp:${event.hashedCallerId}`;
 
-const rateLimitKey = (id: string): string =>
-  `telemetry:rl:${id}:${dateKey().slice('telemetry:'.length)}`;
+const rateLimitKey = (id: string): string => `telemetry:rl:${id}:${utcDate()}`;
 
 let redis: Redis | null = null;
 const getRedis = (): Redis | null => {
@@ -80,7 +88,23 @@ export async function recordTelemetryEvent(
       ...parsed.data,
       receivedAt: new Date().toISOString(),
     };
-    await client.lpush(dateKey(), JSON.stringify(payload));
+    // Append and trim in one command. `~` lets Redis trim by whole nodes, which
+    // is cheap; the exact cutoff doesn't matter as long as it stays well past
+    // what any reader asks for.
+    await client.xadd(
+      STREAM_KEY,
+      '*',
+      { data: JSON.stringify(payload) },
+      {
+        trim: {
+          type: 'MINID',
+          comparison: '~',
+          threshold: String(
+            Date.now() - RETENTION_DAYS * SECONDS_PER_DAY * 1000
+          ),
+        },
+      }
+    );
     return 'recorded';
   } catch {
     // Never leak backend errors; telemetry must not break the caller.

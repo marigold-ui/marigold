@@ -3,11 +3,11 @@ import type { TelemetryEvent } from './schema';
 
 const incr = vi.fn();
 const expireMock = vi.fn();
-const lpush = vi.fn();
+const xadd = vi.fn();
 
 vi.mock('@upstash/redis', () => ({
   Redis: vi.fn().mockImplementation(function RedisMock() {
-    return { incr, expire: expireMock, lpush };
+    return { incr, expire: expireMock, xadd };
   }),
 }));
 
@@ -46,7 +46,7 @@ describe('recordTelemetryEvent', () => {
   beforeEach(() => {
     incr.mockReset();
     expireMock.mockReset();
-    lpush.mockReset();
+    xadd.mockReset();
   });
 
   afterEach(() => {
@@ -77,9 +77,17 @@ describe('recordTelemetryEvent', () => {
       expect.stringMatching(/^telemetry:rl:mcp:a{64}:\d{4}-\d{2}-\d{2}$/)
     );
     expect(expireMock).toHaveBeenCalled();
-    expect(lpush).toHaveBeenCalledWith(
-      expect.stringMatching(/^telemetry:\d{4}-\d{2}-\d{2}$/),
-      expect.stringContaining('"hashedCallerId":"' + 'a'.repeat(64) + '"')
+    expect(xadd).toHaveBeenCalledWith(
+      'telemetry:events',
+      '*',
+      {
+        data: expect.stringContaining(
+          '"hashedCallerId":"' + 'a'.repeat(64) + '"'
+        ),
+      },
+      expect.objectContaining({
+        trim: expect.objectContaining({ type: 'MINID', comparison: '~' }),
+      })
     );
   });
 
@@ -118,7 +126,7 @@ describe('recordTelemetryEvent', () => {
     const result = await recordTelemetryEvent(mcpEvent);
 
     expect(result).toBe('rate-limited');
-    expect(lpush).not.toHaveBeenCalled();
+    expect(xadd).not.toHaveBeenCalled();
   });
 
   it('returns "error" and swallows a Redis failure', async () => {
@@ -180,7 +188,8 @@ describe('recordTelemetryEvent', () => {
     const result = await recordTelemetryEvent(withExtras);
 
     expect(result).toBe('recorded');
-    const [, payload] = lpush.mock.calls[0];
+    const [, , entries] = xadd.mock.calls[0];
+    const payload = entries.data;
     expect(payload).not.toContain('rawSub');
     expect(payload).not.toContain('employee@reservix.de');
     expect(JSON.parse(payload)).toMatchObject({ event: 'mcp_tool_call' });
