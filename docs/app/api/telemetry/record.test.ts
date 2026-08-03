@@ -3,11 +3,11 @@ import type { TelemetryEvent } from './schema';
 
 const incr = vi.fn();
 const expireMock = vi.fn();
-const lpush = vi.fn();
+const xadd = vi.fn();
 
 vi.mock('@upstash/redis', () => ({
   Redis: vi.fn().mockImplementation(function RedisMock() {
-    return { incr, expire: expireMock, lpush };
+    return { incr, expire: expireMock, xadd };
   }),
 }));
 
@@ -46,7 +46,7 @@ describe('recordTelemetryEvent', () => {
   beforeEach(() => {
     incr.mockReset();
     expireMock.mockReset();
-    lpush.mockReset();
+    xadd.mockReset();
   });
 
   afterEach(() => {
@@ -77,9 +77,17 @@ describe('recordTelemetryEvent', () => {
       expect.stringMatching(/^telemetry:rl:mcp:a{64}:\d{4}-\d{2}-\d{2}$/)
     );
     expect(expireMock).toHaveBeenCalled();
-    expect(lpush).toHaveBeenCalledWith(
-      expect.stringMatching(/^telemetry:\d{4}-\d{2}-\d{2}$/),
-      expect.stringContaining('"hashedCallerId":"' + 'a'.repeat(64) + '"')
+    expect(xadd).toHaveBeenCalledWith(
+      'telemetry:events',
+      '*',
+      {
+        data: expect.stringContaining(
+          '"hashedCallerId":"' + 'a'.repeat(64) + '"'
+        ),
+      },
+      expect.objectContaining({
+        trim: expect.objectContaining({ type: 'MINID', comparison: '~' }),
+      })
     );
   });
 
@@ -126,7 +134,7 @@ describe('recordTelemetryEvent', () => {
     const result = await recordTelemetryEvent(mcpEvent);
 
     expect(result).toBe('rate-limited');
-    expect(lpush).not.toHaveBeenCalled();
+    expect(xadd).not.toHaveBeenCalled();
   });
 
   it('returns "error" and swallows a Redis failure', async () => {
@@ -188,80 +196,67 @@ describe('recordTelemetryEvent', () => {
     const result = await recordTelemetryEvent(withExtras);
 
     expect(result).toBe('recorded');
-    const [, payload] = lpush.mock.calls[0];
+    const [, , entries] = xadd.mock.calls[0];
+    const payload = entries.data;
     expect(payload).not.toContain('rawSub');
     expect(payload).not.toContain('employee@reservix.de');
     expect(JSON.parse(payload)).toMatchObject({ event: 'mcp_tool_call' });
   });
 
-  describe("the day's event list retention", () => {
+  // Carried over from the daily-list layout, where retention was a separate
+  // EXPIRE that could land on the wrong day key or be skipped entirely. The
+  // stream makes it part of the write, so what's worth pinning is that every
+  // write carries a trim and that the cutoff is the one we intend.
+  describe('stream retention', () => {
     beforeEach(() => {
       vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
       vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
       incr.mockResolvedValue(1);
       expireMock.mockResolvedValue(1);
-      lpush.mockResolvedValue(1);
+      xadd.mockResolvedValue('1-0');
     });
 
-    // The plain day key, not the rate-limit key (telemetry:rl:<id>:date).
-    // Both are expired per event, so assertions must filter to this shape.
-    const dayKeyExpireCalls = () =>
-      expireMock.mock.calls.filter(([key]) =>
-        /^telemetry:\d{4}-\d{2}-\d{2}$/.test(key as string)
-      );
-
-    it("expires the day's event list, so it doesn't retain data forever", async () => {
-      const { recordTelemetryEvent } = await loadRecord();
-
-      await recordTelemetryEvent(cliEvent);
-
-      expect(lpush).toHaveBeenCalledTimes(1);
-      const calls = dayKeyExpireCalls();
-      expect(calls).toHaveLength(1);
-      const [dayKey, ttlSeconds, option] = calls[0];
-      expect(dayKey).toBe(lpush.mock.calls.at(-1)![0]);
-      expect(ttlSeconds).toBe(90 * 24 * 60 * 60);
-      expect(option).toBe('NX');
-    });
-
-    it('calls EXPIRE NX on every event, not just the first, so a failed first-event EXPIRE is retried', async () => {
-      // NX makes this idempotent server-side, so calling it unconditionally
-      // never extends the retention window, and a first-event EXPIRE lost to a
-      // network blip is retried by every later event.
-      const { recordTelemetryEvent } = await loadRecord();
-
-      await recordTelemetryEvent(cliEvent);
-      await recordTelemetryEvent(cliEvent);
-
-      expect(lpush).toHaveBeenCalledTimes(2);
-      expect(dayKeyExpireCalls()).toHaveLength(2);
-    });
-
-    it('resolves the event key once, so an event straddling midnight UTC still gets a TTL', async () => {
-      // Resolving the key twice lets a request crossing midnight LPUSH onto day
-      // N and EXPIRE day N+1, which doesn't exist yet — a silent no-op leaving
-      // day N with no TTL, and no later event ever targets that key again.
-      // Simulated by advancing the clock during the LPUSH call.
+    it('trims to the retention cutoff, so the stream cannot grow without bound', async () => {
       const { recordTelemetryEvent } = await loadRecord();
       vi.useFakeTimers();
       try {
-        vi.setSystemTime(new Date('2026-01-01T23:59:59.500Z'));
-        lpush.mockImplementationOnce(async () => {
-          vi.setSystemTime(new Date('2026-01-02T00:00:00.500Z'));
-          return 1;
-        });
+        vi.setSystemTime(new Date('2026-06-01T12:00:00.000Z'));
 
         await recordTelemetryEvent(cliEvent);
 
-        const pushedKey = lpush.mock.calls.at(-1)![0];
-        expect(pushedKey).toBe('telemetry:2026-01-01');
-        const calls = dayKeyExpireCalls();
-        expect(calls).toHaveLength(1);
-        // The TTL has to land on the key that was actually written to.
-        expect(calls[0][0]).toBe(pushedKey);
+        const [, , , opts] = xadd.mock.calls[0];
+        expect(opts.trim.type).toBe('MINID');
+        const cutoff = Number(opts.trim.threshold);
+        expect(Date.now() - cutoff).toBe(200 * 24 * 60 * 60 * 1000);
       } finally {
         vi.useRealTimers();
       }
+    });
+
+    it('trims on every write, not just the first, so retention never lapses', async () => {
+      const { recordTelemetryEvent } = await loadRecord();
+
+      await recordTelemetryEvent(cliEvent);
+      await recordTelemetryEvent(cliEvent);
+
+      expect(xadd).toHaveBeenCalledTimes(2);
+      for (const [, , , opts] of xadd.mock.calls) {
+        expect(opts.trim).toMatchObject({ type: 'MINID', comparison: '~' });
+      }
+    });
+
+    it('writes and trims in one command, so a write can never land untrimmed', async () => {
+      const { recordTelemetryEvent } = await loadRecord();
+
+      await recordTelemetryEvent(cliEvent);
+
+      // The whole point of MINID-on-XADD: no second round trip that could fail
+      // on its own and leave the stream unbounded.
+      expect(xadd).toHaveBeenCalledTimes(1);
+      const dayKeyExpires = expireMock.mock.calls.filter(([key]) =>
+        /^telemetry:\d{4}-\d{2}-\d{2}$/.test(key as string)
+      );
+      expect(dayKeyExpires).toHaveLength(0);
     });
   });
 });
