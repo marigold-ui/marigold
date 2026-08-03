@@ -93,10 +93,16 @@
   /* --- Boundaries & Focus Ring --- */
   /* The two translucent edges adapt to whatever ground they sit on; `border` is
      opaque and the state edges are solid rungs. See /foundations/token-overview.
-     `border` must STAY opaque: it draws dividers, grid lines and table rules,
-     and where translucent strokes cross, the alpha stacks and the intersections
-     render darker than the runs. A control edge is one closed stroke that never
-     crosses, which is why it can afford translucency. */
+
+     `border`'s opacity is a visual choice, not a technical constraint. Earlier
+     wording here and in the docs justified it as "opaque so crossing strokes
+     cannot stack" — that mechanism does not exist. A CSS border is painted
+     inside its own element's box, so borders on separate elements never overlap;
+     they abut. Measured on white with alpha 0.13 across three grid patterns
+     (Marigold's `not-last:border-r` + `not-last:border-b`, every-cell-bordered,
+     and LegacyTable's `border-separate`), the intersection luminance equals the
+     run's exactly in all three. Only genuinely overlapping boxes (negative
+     margins, absolutely positioned rules) could stack alpha. */
 
   /* Decorative rim of a raised surface (Card, Panel, Dialog, Menu), via
      ui-surface. Half the density of --color-control-border rather than a pure
