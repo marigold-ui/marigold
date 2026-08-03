@@ -1,7 +1,11 @@
 import { Redis } from '@upstash/redis';
 import { EventSchema, type TelemetryEvent } from './schema';
 
-// Per-caller daily quota, bounding abuse on the public POST endpoint.
+// Per-caller daily quota. On the public POST endpoint it bounds abuse; for
+// in-process MCP events, where the caller id is derived from a verified JWT and
+// can't be forged, it only caps how much one caller can add to the daily list.
+// A caller past the quota is dropped rather than truncated, so the ceiling is
+// deliberately far above realistic per-day usage for either source.
 const RATE_LIMIT_PER_DAY = 1000;
 const SECONDS_PER_DAY = 24 * 60 * 60;
 // How long a day's raw event list is retained before Redis expires it.
@@ -38,10 +42,15 @@ const getRedis = (): Redis | null => {
   return redis;
 };
 
+// 'invalid' (our event failed validation — a code bug) is kept distinct from
+// 'error' (the Redis call failed — an outage). Both are dead ends for the
+// event, but they call for completely different responses, and the MCP route
+// logs the cause.
 export type RecordResult =
   | 'recorded'
   | 'unconfigured'
   | 'rate-limited'
+  | 'invalid'
   | 'error';
 
 export async function recordTelemetryEvent(
@@ -49,9 +58,11 @@ export async function recordTelemetryEvent(
 ): Promise<RecordResult> {
   // Defense-in-depth: an in-process caller (the MCP route) builds its event
   // by hand and only satisfies TelemetryEvent at compile time, not Zod's
-  // runtime constraints.
-  if (!EventSchema.safeParse(event).success) {
-    return 'error';
+  // runtime constraints. The parsed output is what gets persisted, so unknown
+  // keys are stripped on this path too, not just the HTTP one.
+  const parsed = EventSchema.safeParse(event);
+  if (!parsed.success) {
+    return 'invalid';
   }
 
   const client = getRedis();
@@ -67,7 +78,7 @@ export async function recordTelemetryEvent(
     // retried by every later call, unlike a `count === 1` gate where that
     // failure would go unnoticed and unretried for the rest of the day,
     // leaving the key with no TTL at all.
-    const rlKey = rateLimitKey(rateLimitIdOf(event));
+    const rlKey = rateLimitKey(rateLimitIdOf(parsed.data));
     const count = await client.incr(rlKey);
     await client.expire(rlKey, SECONDS_PER_DAY, 'NX');
     if (count > RATE_LIMIT_PER_DAY) {
@@ -75,7 +86,7 @@ export async function recordTelemetryEvent(
     }
 
     const payload = {
-      ...event,
+      ...parsed.data,
       receivedAt: new Date().toISOString(),
     };
     // Same NX idempotency as the rate-limit key above. The key is resolved

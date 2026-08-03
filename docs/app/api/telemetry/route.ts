@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { recordTelemetryEvent } from './record';
-import { EventSchema } from './schema';
+import { CliCommandEventSchema } from './schema';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -20,7 +20,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'invalid json' }, { status: 400 });
   }
 
-  const parsed = EventSchema.safeParse(body);
+  // Deliberately the CLI shape only, not the full `EventSchema` union. An
+  // `mcp_tool_call` event carries the implicit claim that it came from an
+  // authenticated Keycloak caller, and its rate-limit key is derived from the
+  // caller-supplied `hashedCallerId` — so accepting one here would let anyone
+  // forge unique callers and call volume without ever hitting the quota. The
+  // MCP route writes its events in-process via `recordTelemetryEvent`, so it
+  // never needs this endpoint.
+  const parsed = CliCommandEventSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json({ error: 'invalid event' }, { status: 400 });
   }
