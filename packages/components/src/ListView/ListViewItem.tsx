@@ -5,25 +5,24 @@ import { GridListItem as RACGridListItem } from 'react-aria-components/GridList'
 import { HeadingContext } from 'react-aria-components/Heading';
 import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
+import { ButtonContext as MarigoldButtonContext } from '../Button/Context';
+import { TextValue } from '../TextValue/TextValue';
 import type { SlottedContextValue } from '../utils/useMergedTextSlots';
 import { useListViewContext } from './Context';
 
 // A row's content is authored as flat children (no wrapper required from the
-// consumer) and laid out by the row's CSS grid — nothing here inspects the
-// children to decide where they go:
+// consumer) and laid out by the row's CSS grid. Nothing here inspects the
+// children to decide where they go — every region claims its cell through a
+// slot context, so placement holds however the element is authored: directly,
+// inside a fragment, behind `memo()`, or from a consumer's own component.
 //   - `<TextValue>`/`<Title>` claim the label cell and `<Description>` the
-//     lines below it, through the `label`/`title`/`description` slot configs
-//     published here. Because that travels by context, it holds however the
-//     element is authored — directly, inside a fragment, behind `memo()`, or
-//     from a consumer's own component.
-//   - Trailing controls go in `<ListView.Actions>`, which owns the trailing
-//     cell (a `<Switch>` reads no context, and one grid cell can't lay out
-//     several controls on its own).
-//   - Leading media is placed by the row's `:first-child:not([data-grid-area])`
-//     rule in the theme — the one positional rule left, and it keys on the
-//     DOM, where fragments and wrappers leave nothing behind.
-// Each slot config also publishes `data-grid-area`, both to drive that rule
-// and to make placement assertable in a test.
+//     lines below it, via the `label`/`title`/`description` slot configs.
+//   - Trailing controls (`<Button>`, `<ActionMenu>`, `<LinkButton>`, or a
+//     `<ButtonGroup>` wrapping several) claim the actions cell via Marigold's
+//     `ButtonContext`, the same cascade `Panel.Header` and `SelectList.Option`
+//     use.
+// Each slot config also publishes `data-grid-area`, which makes placement
+// assertable in a test rather than inferred.
 
 type RemovedProps = 'className' | 'style' | 'isDisabled';
 
@@ -45,6 +44,7 @@ interface ItemChildrenProps {
   labelClassName?: string;
   descriptionClassName?: string;
   titleClassName?: string;
+  actionClassName?: string;
 }
 
 // Merge (not replace) RAC's slot configs on the Text/Heading contexts so
@@ -59,6 +59,7 @@ const ItemChildren = ({
   labelClassName,
   descriptionClassName,
   titleClassName,
+  actionClassName,
 }: ItemChildrenProps) => {
   const parentTextSlots = (use(TextContext) as SlottedContextValue | undefined)
     ?.slots;
@@ -100,11 +101,26 @@ const ItemChildren = ({
     [parentHeadingSlots, titleClassName]
   );
 
+  // Marigold `Button`/`LinkButton`/`ActionMenu` read this context, so the
+  // actions cell and the low-emphasis `ghost` default travel to whichever of
+  // them a row carries; a local `variant` still wins. A `<ButtonGroup>` reads
+  // it too and re-provides a fresh one, so a row with several controls keeps
+  // the positional className on the group and the cascade on its buttons.
+  const buttonContextValue = useMemo(
+    () => ({
+      className: actionClassName,
+      'data-grid-area': 'actions',
+      variant: 'ghost',
+    }),
+    [actionClassName]
+  );
+
   return (
     <Provider
       values={[
         [TextContext, textContextValue],
         [HeadingContext, headingContextValue],
+        [MarigoldButtonContext, buttonContextValue],
       ]}
     >
       {children}
@@ -138,8 +154,18 @@ export const ListViewItem = ({
         labelClassName={classNames?.label}
         descriptionClassName={classNames?.description}
         titleClassName={classNames?.title}
+        actionClassName={classNames?.action}
       >
-        {children}
+        {/* A bare string would become an anonymous grid item: no element for
+            a slot context or a selector to reach, so it lands unstyled in
+            whichever cell is free. Wrapping it in `<TextValue>` (which
+            defaults to `slot="label"`) gives the shorthand the same cell and
+            styling as the explicit form. */}
+        {typeof children === 'string' ? (
+          <TextValue>{children}</TextValue>
+        ) : (
+          children
+        )}
       </ItemChildren>
     </RACGridListItem>
   );

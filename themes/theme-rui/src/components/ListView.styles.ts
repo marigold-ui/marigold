@@ -1,11 +1,30 @@
 import { type ThemeComponent, cva } from '@marigold/system';
 
-// A row is a three-column grid — leading media, text, trailing actions — and
-// every region claims its cell from CSS, never from JavaScript inspecting the
-// children. Text lines auto-flow down column 2 (label first, then each
-// description); media and actions span that stack via `row-span-6` so they
-// stay centered next to it. Six is a ceiling, not a count: the row has no row
-// gap, so the rows a shorter stack leaves unused are 0-high and cost nothing.
+// A row is a two-column grid — text, then trailing actions — and every region
+// claims its cell from CSS, never from JavaScript inspecting the children.
+// Text lines auto-flow down column 1 (label first, then each description); the
+// actions region spans that stack via `row-span-6` so it stays centered next
+// to it. Six is a ceiling, not a count: the row has no row gap, so the rows a
+// shorter stack leaves unused are 0-high and cost nothing. It is still a
+// content-quantity assumption, and it degrades silently — past a label plus
+// five `<Description>` lines the span stops covering the stack and the
+// centering drifts. The structural fix is for the text column to be a single
+// cell holding its own stack, which makes the span a literal `1`; that's a
+// larger change than this component needs today, but the ceiling shouldn't
+// outlive the beta.
+//
+// Leading media (an icon, an avatar, a logo) is deliberately not part of v1.
+// Placing it needs a slot to attach a grid area to, and Marigold has no
+// `IconContext`/`ImageContext` for one — `@marigold/icons` re-exports lucide
+// directly, whose icons are plain SVG components. The alternative, keying
+// placement on DOM position, would make authoring order part of the public API
+// while every other region is order-free, so media waits for the slot work.
+//
+// `<Title>` and `<TextValue>` share `TEXT_CELL` on purpose: a row uses one or
+// the other, and both are the row's primary text. Authoring both puts two grid
+// items in the same cell, where they overlap rather than stack.
+const TEXT_CELL = 'col-start-1 row-start-1 self-center';
+
 export const ListView: ThemeComponent<'ListView'> = {
   list: cva({
     base: [
@@ -41,64 +60,66 @@ export const ListView: ThemeComponent<'ListView'> = {
   item: cva({
     base: [
       'group/option relative grid items-center',
-      // No column gap: the media and actions columns collapse to 0 when a row
-      // has neither, and a gap would still inset the text by its width on
-      // both sides — enough to break the alignment with a bled container's
-      // title that `variant="plain"` exists for. The spacing rides on the
-      // regions themselves (`me-3`/`ms-3`), so it only exists when they do.
-      'grid-cols-[auto_minmax(0,1fr)_auto]',
-      // Leading media (an icon, an avatar, a logo) is consumer markup that
-      // reads no slot context, so it's placed by its position in the DOM: the
-      // first child no context has claimed — i.e. carries no `data-grid-area`
-      // — takes column 1. Keying on the DOM rather than on `child.type` means
-      // fragments, `memo()` and consumer wrappers don't change the outcome,
-      // because none of them leave a node behind. Trailing controls have their
-      // own region, `<ListView.Actions>`.
-      // The extra `>*` is RAC's `role="gridcell"` wrapper: it's
-      // `display: contents`, so the row's children are its grandchildren in
-      // the DOM but its direct items in the grid.
-      '[&>*>*:first-child:not([data-grid-area])]:col-start-1',
-      '[&>*>*:first-child:not([data-grid-area])]:row-start-1',
-      '[&>*>*:first-child:not([data-grid-area])]:row-span-6',
-      '[&>*>*:first-child:not([data-grid-area])]:self-center',
-      '[&>*>*:first-child:not([data-grid-area])]:me-3',
+      // No column gap: the actions column collapses to 0 when a row has no
+      // controls, and a gap would still inset the text by its width — enough
+      // to break the alignment with a bled container's title that
+      // `variant="plain"` exists for. The spacing rides on the actions region
+      // itself (`ms-3`), so it only exists when the region does.
+      'grid-cols-[minmax(0,1fr)_auto]',
       // `--listview-item-px` is set per variant on the list (see above): the
       // standalone padding by default, a bled container's `--bleed-px` for
       // `plain`.
       'px-(--listview-item-px) py-(--spacing-stretch-regular-y)',
+      // State the touch-target floor rather than arriving at it: today's
+      // vertical padding plus `text-sm`'s line height lands on exactly 44px
+      // with nothing to spare, so a tighter token or a density variant would
+      // drop below it silently. `ListBox` and `Menu` guard their rows the
+      // same way.
+      'max-sm:min-h-touch-target',
       'text-sm text-foreground outline-none',
+      // `background` is deliberately absent: DST-1436 dropped it from hover
+      // transitions across the theme so hover fills flip instantly, and
+      // `ListBox`/`SelectList` carry the identical list. Don't widen this to
+      // `transition-colors` — that re-adds the background easing.
       'transition-[border,color]',
       'hover:ui-state-hover',
       'focus-visible:ui-state-focus',
       'disabled:cursor-not-allowed disabled:text-disabled',
-      // Round the first/last row to match the surface's own corners: a
-      // square-cornered row's hover fill/focus outline would otherwise poke
-      // past the rounded container edge.
-      'first:rounded-t-(--listview-item-radius) last:rounded-b-(--listview-item-radius)',
     ],
-    variants: { variant: { default: '' } },
+    variants: {
+      variant: {
+        // Rounding the first/last row to match the surface's own corners
+        // belongs to the only variant that draws a surface — and the only one
+        // that defines `--listview-item-radius`. On `base` the declaration
+        // would be invalid at computed-value time under `plain` and fall back
+        // to the initial `0` by accident rather than by intent.
+        default:
+          'first:rounded-t-(--listview-item-radius) last:rounded-b-(--listview-item-radius)',
+        // `plain` deliberately changes nothing about the row itself: the
+        // variant's work happens on the list (no frame) and through
+        // `--listview-item-px`. Declared rather than omitted so the supported
+        // set is readable from this slot too.
+        plain: '',
+      },
+    },
     defaultVariants: { variant: 'default' },
   }),
-  label: cva({ base: 'col-start-2 row-start-1 self-center' }),
-  title: cva({ base: 'col-start-2 row-start-1 self-center' }),
+  label: cva({ base: TEXT_CELL }),
+  title: cva({ base: TEXT_CELL }),
   description: cva({
     // No `row-start`: each description auto-flows onto the next row of the
     // text column, so a row can carry more than one metadata line.
     base: [
-      'col-start-2 self-center',
+      'col-start-1 self-center',
       'text-xs font-normal text-secondary group-disabled/option:text-disabled',
     ],
   }),
+  // Placement only. This class reaches the row's trailing control through
+  // `ButtonContext`, so it lands either on a single `<Button>`/`<ActionMenu>`
+  // or on the `<ButtonGroup>` wrapping several of them — and a `<ButtonGroup>`
+  // brings its own `flex gap-1` layout, so repeating one here would give two
+  // sources for the same decision.
   action: cva({
-    // `[&>*]:shrink-0` protects each trailing control (Switch, Button,
-    // IconButton, ActionMenu trigger) from being squeezed by its siblings
-    // when the row is tight — without it, a ghost icon Button silently
-    // loses its square shape (invisible until its hover fill reveals the
-    // squashed box) to make room for a neighboring Switch that refuses to
-    // shrink below its own min-content floor.
-    base: [
-      'col-start-3 row-start-1 row-span-6 self-center justify-self-end ms-3',
-      'flex items-center gap-1 [&>*]:shrink-0',
-    ],
+    base: 'col-start-2 row-start-1 row-span-6 self-center justify-self-end ms-3',
   }),
 };

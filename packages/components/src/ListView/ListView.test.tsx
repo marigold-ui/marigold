@@ -1,16 +1,18 @@
-import type { Ref } from 'react';
+import type { ReactNode, Ref } from 'react';
 import { memo } from 'react';
 import { theme } from '@marigold/theme-rui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Button } from '../Button/Button';
+import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Description } from '../Description/Description';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
-import { Switch } from '../Switch/Switch';
 import { TextValue } from '../TextValue/TextValue';
 import { ListView } from './ListView';
 import {
   Basic,
   EmptyState,
+  InPanel,
   NotificationsFeed,
   WithDescription,
 } from './ListView.stories';
@@ -70,10 +72,8 @@ describe('ListView', () => {
 
       await user.tab();
 
-      const [muteSwitch] = screen.getAllByRole('switch', {
-        name: 'Mute this thread',
-      });
-      expect(muteSwitch).toHaveFocus();
+      const [dismiss] = screen.getAllByRole('button', { name: 'Dismiss' });
+      expect(dismiss).toHaveFocus();
     });
   });
 
@@ -112,9 +112,8 @@ describe('ListView', () => {
   });
 
   describe('row layout', () => {
-    // Every region is placed by the row's CSS grid, so `data-grid-area` is
-    // what the slot contexts publish and what the theme's leading-media rule
-    // keys off. Asserting it here is asserting the placement itself.
+    // Every region is placed by the row's CSS grid, and `data-grid-area` is
+    // what the slot contexts publish. Asserting it is asserting the placement.
     const RowText = memo(() => (
       <>
         <TextValue>Wrapped label</TextValue>
@@ -122,23 +121,19 @@ describe('ListView', () => {
       </>
     ));
 
-    const renderRow = () =>
+    const renderRow = (children: ReactNode) =>
       render(
         <MarigoldProvider theme={theme}>
           <ListView aria-label="Layout">
             <ListView.Item id="row" textValue="Wrapped label">
-              <svg data-testid="media" aria-hidden />
-              <RowText />
-              <ListView.Actions>
-                <Switch aria-label="Toggle row" />
-              </ListView.Actions>
+              {children}
             </ListView.Item>
           </ListView>
         </MarigoldProvider>
       );
 
     test('places text authored through a fragment behind `memo()`', () => {
-      renderRow();
+      renderRow(<RowText />);
 
       expect(screen.getByText('Wrapped label')).toHaveAttribute(
         'data-grid-area',
@@ -150,29 +145,95 @@ describe('ListView', () => {
       );
     });
 
-    test('leaves the leading media unclaimed so the row places it by position', () => {
-      renderRow();
+    test('places a single trailing control in the actions cell', () => {
+      renderRow(
+        <>
+          <TextValue>Row</TextValue>
+          <Button size="icon" aria-label="Dismiss" />
+        </>
+      );
 
-      expect(screen.getByTestId('media')).not.toHaveAttribute('data-grid-area');
-      // RAC's `gridcell` wrapper is `display: contents`, so the row's first
-      // *grid* item is that wrapper's first child — which is what the theme's
-      // leading-media rule selects. Reaching into the DOM is the assertion
-      // here: the rule is positional, so position is what has to hold.
+      const dismiss = screen.getByRole('button', { name: 'Dismiss' });
+
+      expect(dismiss).toHaveAttribute('data-grid-area', 'actions');
+      // The `ghost` cascade rides on the same context as the placement.
+      expect(dismiss.className).toContain('col-start-2');
+    });
+
+    test('places a `<ButtonGroup>` of controls in the actions cell, not its buttons', () => {
+      renderRow(
+        <>
+          <TextValue>Row</TextValue>
+          <ButtonGroup>
+            <Button size="icon" aria-label="Dismiss" />
+            <Button size="icon" aria-label="Archive" />
+          </ButtonGroup>
+        </>
+      );
+
+      const group = screen.getByRole('toolbar');
+      const dismiss = screen.getByRole('button', { name: 'Dismiss' });
+
+      // ButtonGroup re-provides its own context, so the positional className
+      // stays on the group and only the cascade reaches its children.
+      expect(group).toHaveAttribute('data-grid-area', 'actions');
+      expect(dismiss).not.toHaveAttribute('data-grid-area');
+    });
+
+    test('wraps a string child so the shorthand row gets the label cell', () => {
+      renderRow('Plain string row');
+
+      expect(screen.getByText('Plain string row')).toHaveAttribute(
+        'data-grid-area',
+        'label'
+      );
+    });
+  });
+
+  describe('variant="plain" inside a bled container', () => {
+    // `--bleed-px` is a cross-component contract: a bled `Panel.Content`
+    // publishes it, and a `plain` list sources its row padding from it so row
+    // text lines up with the Panel title. Nothing type-checks that wiring, so
+    // assert both halves the way `Accordion`/`Table` do — otherwise renaming
+    // `--panel-px`, or moving which element publishes `--bleed-px`, silently
+    // reverts `plain` to its standalone padding with every test still green.
+    test('sources the row padding from the container `--bleed-px`', () => {
+      render(<InPanel.Component />);
+
+      const list = screen.getByRole('grid', { name: 'Attachments' });
+
+      expect(list.className).toContain(
+        '[--listview-item-px:var(--bleed-px,var(--spacing-stretch-regular-x))]'
+      );
+      // The publisher half: `Panel.Content bleed` declares the property the
+      // list above reads. Match the declaration (`--bleed-px:`), not a bare
+      // `--bleed-px`, which the list's own `var()` reference would also match.
       // eslint-disable-next-line testing-library/no-node-access
-      expect(screen.getByRole('gridcell').firstElementChild).toBe(
-        screen.getByTestId('media')
+      const contentWrapper = list.closest('[class*="[--bleed-px:"]')!;
+      expect(contentWrapper).not.toBeNull();
+      expect(contentWrapper.className).toContain(
+        '[--bleed-px:var(--panel-px)]'
       );
     });
 
-    test('gives the trailing controls their own region', () => {
-      renderRow();
+    test('falls back to the standalone padding outside a bled container', () => {
+      render(
+        <MarigoldProvider theme={theme}>
+          <ListView variant="plain" aria-label="Standalone">
+            <ListView.Item id="row" textValue="Row">
+              <TextValue>Row</TextValue>
+            </ListView.Item>
+          </ListView>
+        </MarigoldProvider>
+      );
 
-      const toggle = screen.getByRole('switch', { name: 'Toggle row' });
+      const list = screen.getByRole('grid', { name: 'Standalone' });
 
-      // The region has no role of its own — it's a layout box — so the only
-      // way to assert a control landed inside it is to walk up from it.
       // eslint-disable-next-line testing-library/no-node-access
-      expect(toggle.closest('[data-grid-area="actions"]')).toBeInTheDocument();
+      expect(list.closest('[class*="[--bleed-px:"]')).toBeNull();
+      expect(list.className).toContain(
+        'var(--bleed-px,var(--spacing-stretch-regular-x))'
+      );
     });
   });
 

@@ -80,7 +80,12 @@ export const ButtonGroup = ({
         orientation={orientation}
         className={cn(
           // Structural layout so a standalone cluster is spaced sensibly.
-          'flex gap-1',
+          // `[&>*]:shrink-0` keeps each control at its own size in a tight
+          // container: without it a square icon `<Button>` silently loses its
+          // aspect ratio (invisible until its hover fill reveals the squashed
+          // box) to make room for a neighbor that won't shrink below its
+          // min-content floor, e.g. a `<Switch>`.
+          'flex gap-1 [&>*]:shrink-0',
           orientation === 'vertical' ? 'flex-col items-start' : 'items-center',
           // A container's positional className rides along and can override.
           className

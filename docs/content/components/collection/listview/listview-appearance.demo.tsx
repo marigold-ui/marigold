@@ -5,7 +5,6 @@ import {
   ListView,
   TextValue,
 } from '@marigold/components';
-import { FileText } from '@marigold/icons';
 
 const files = [
   {
@@ -21,16 +20,13 @@ export default (props: ListViewProps) => (
   <ListView {...props} aria-label="Resources">
     {files.map(file => (
       <ListView.Item key={file.id} id={file.id} textValue={file.name}>
-        <FileText size={20} />
         <TextValue>{file.name}</TextValue>
         <Description>{file.meta}</Description>
-        <ListView.Actions>
-          <ActionMenu aria-label={`${file.name} actions`}>
-            <ActionMenu.Item>Rename</ActionMenu.Item>
-            <ActionMenu.Item>Share</ActionMenu.Item>
-            <ActionMenu.Item variant="destructive">Delete</ActionMenu.Item>
-          </ActionMenu>
-        </ListView.Actions>
+        <ActionMenu aria-label={`${file.name} actions`}>
+          <ActionMenu.Item>Rename</ActionMenu.Item>
+          <ActionMenu.Item>Share</ActionMenu.Item>
+          <ActionMenu.Item variant="destructive">Delete</ActionMenu.Item>
+        </ActionMenu>
       </ListView.Item>
     ))}
   </ListView>

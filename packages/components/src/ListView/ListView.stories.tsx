@@ -2,16 +2,15 @@ import {
   Dialog as RACDialog,
   DialogTrigger as RACDialogTrigger,
 } from 'react-aria-components/Dialog';
-import { Building2 } from '@marigold/icons';
 import { expect, fn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
+import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Description } from '../Description/Description';
 import { EmptyState as EmptyStateComponent } from '../EmptyState/EmptyState';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Popover } from '../Overlay/Popover';
 import { Panel } from '../Panel/Panel';
-import { Switch } from '../Switch/Switch';
 import { TextValue } from '../TextValue/TextValue';
 import { Title } from '../Title/Title';
 import { X } from '../icons/X';
@@ -115,10 +114,19 @@ Basic.test(
   }
 );
 
-// Scenario 1 — Notifications / activity feed: title + timestamp + mute
-// Switch + dismiss button, operated in place. The shared DST-1485
+// Scenario 1 — Notifications / activity feed: title + timestamp + a dismiss
+// button and an overflow menu, operated in place. The shared DST-1485
 // (Popover notifications panel) example.
+//
+// Muting is a menu command rather than a per-row `<Switch>`: a switch is the
+// highest-contrast control in a row, and repeated down a feed a column of
+// filled tracks out-shouts the notification text the feed exists to show. It
+// also announces ambiguously — "Mute this thread, switch, off" leaves open
+// whether off means not-muted or notifications-off — where `Mute thread` /
+// `Unmute thread` can't be misread. Every shipping notification inbox
+// (GitHub, Slack, Linear, Gmail) lands in the same place.
 const onMute = fn();
+const onMarkRead = fn();
 const onDismiss = fn();
 
 export const NotificationsFeed = meta.story({
@@ -128,11 +136,7 @@ export const NotificationsFeed = meta.story({
       <ListView.Item id="build" textValue="Build finished">
         <TextValue>Build finished</TextValue>
         <Description>2 minutes ago</Description>
-        <ListView.Actions>
-          <Switch
-            aria-label="Mute this thread"
-            onChange={() => onMute('build')}
-          />
+        <ButtonGroup>
           <Button
             size="icon"
             aria-label="Dismiss"
@@ -140,16 +144,20 @@ export const NotificationsFeed = meta.story({
           >
             <X />
           </Button>
-        </ListView.Actions>
+          <ActionMenu aria-label="Build finished actions">
+            <ActionMenu.Item onAction={() => onMute('build')}>
+              Mute thread
+            </ActionMenu.Item>
+            <ActionMenu.Item onAction={() => onMarkRead('build')}>
+              Mark as read
+            </ActionMenu.Item>
+          </ActionMenu>
+        </ButtonGroup>
       </ListView.Item>
       <ListView.Item id="deploy" textValue="Deploy succeeded">
         <TextValue>Deploy succeeded</TextValue>
         <Description>1 hour ago</Description>
-        <ListView.Actions>
-          <Switch
-            aria-label="Mute this thread"
-            onChange={() => onMute('deploy')}
-          />
+        <ButtonGroup>
           <Button
             size="icon"
             aria-label="Dismiss"
@@ -157,7 +165,15 @@ export const NotificationsFeed = meta.story({
           >
             <X />
           </Button>
-        </ListView.Actions>
+          <ActionMenu aria-label="Deploy succeeded actions">
+            <ActionMenu.Item onAction={() => onMute('deploy')}>
+              Mute thread
+            </ActionMenu.Item>
+            <ActionMenu.Item onAction={() => onMarkRead('deploy')}>
+              Mark as read
+            </ActionMenu.Item>
+          </ActionMenu>
+        </ButtonGroup>
       </ListView.Item>
     </ListView>
   ),
@@ -181,60 +197,36 @@ NotificationsFeed.test(
       expect(deployRow).toHaveFocus();
     });
 
-    await step(
-      'tab reaches the nested mute switch inside the row',
-      async () => {
-        await userEvent.tab();
-        const muteSwitch = canvas.getAllByRole('switch', {
-          name: 'Mute this thread',
-        })[1];
-        expect(muteSwitch).toHaveFocus();
-        await userEvent.keyboard('[Space]');
-        expect(onMute).toHaveBeenCalledWith('deploy');
-      }
-    );
+    await step('tab reaches the nested dismiss button in the row', async () => {
+      await userEvent.tab();
+      const dismissButtons = canvas.getAllByRole('button', {
+        name: 'Dismiss',
+      });
+      expect(dismissButtons[1]).toHaveFocus();
+      await userEvent.keyboard('[Space]');
+      expect(onDismiss).toHaveBeenCalledWith('deploy');
+    });
 
-    await step(
-      'the dismiss button is reachable and fires its handler',
-      async () => {
-        const dismissButtons = canvas.getAllByRole('button', {
-          name: 'Dismiss',
-        });
-        await userEvent.click(dismissButtons[0]);
-        expect(onDismiss).toHaveBeenCalledWith('build');
-      }
-    );
+    await step('the row menu opens and mutes the thread', async () => {
+      const trigger = canvas.getByRole('button', {
+        name: 'Build finished actions',
+      });
+      await userEvent.click(trigger);
+      await waitFor(() =>
+        expect(trigger).toHaveAttribute('aria-expanded', 'true')
+      );
+
+      const muteItem = await canvas.findByRole('menuitem', {
+        name: 'Mute thread',
+      });
+      await userEvent.click(muteItem);
+      expect(onMute).toHaveBeenCalledWith('build');
+    });
   }
 );
 
-// Scenario 2 — Resource list with a per-row menu: icon + name + meta +
-// ActionMenu (rename / delete / share).
-// A plain rounded-rect outline reads as an unchecked checkbox at this size,
-// which is misleading next to rows that don't support selection — the
-// folded corner and text lines mark this as a file/document instead.
-const FileIcon = () => (
-  <svg aria-hidden width={20} height={20} viewBox="0 0 20 20" fill="none">
-    <path
-      d="M5 2.5h6.5L15 6v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1Z"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M11.5 2.5V6H15"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M6.5 10h6M6.5 13h4"
-      stroke="currentColor"
-      strokeWidth="1.2"
-      strokeLinecap="round"
-    />
-  </svg>
-);
-
+// Scenario 2 — Resource list with a per-row menu: name + meta + ActionMenu
+// (rename / share / delete).
 const onRename = fn();
 const onShare = fn();
 const onDelete = fn();
@@ -244,46 +236,40 @@ export const ResourceListWithMenu = meta.story({
   render: args => (
     <ListView {...args} aria-label="Resources">
       <ListView.Item id="report" textValue="Quarterly report">
-        <FileIcon />
         <TextValue>Quarterly report</TextValue>
         <Description>Updated 3 days ago · 2.1 MB</Description>
-        <ListView.Actions>
-          <ActionMenu aria-label="Quarterly report actions">
-            <ActionMenu.Item onAction={() => onRename('report')}>
-              Rename
-            </ActionMenu.Item>
-            <ActionMenu.Item onAction={() => onShare('report')}>
-              Share
-            </ActionMenu.Item>
-            <ActionMenu.Item
-              variant="destructive"
-              onAction={() => onDelete('report')}
-            >
-              Delete
-            </ActionMenu.Item>
-          </ActionMenu>
-        </ListView.Actions>
+        <ActionMenu aria-label="Quarterly report actions">
+          <ActionMenu.Item onAction={() => onRename('report')}>
+            Rename
+          </ActionMenu.Item>
+          <ActionMenu.Item onAction={() => onShare('report')}>
+            Share
+          </ActionMenu.Item>
+          <ActionMenu.Item
+            variant="destructive"
+            onAction={() => onDelete('report')}
+          >
+            Delete
+          </ActionMenu.Item>
+        </ActionMenu>
       </ListView.Item>
       <ListView.Item id="roadmap" textValue="Roadmap">
-        <FileIcon />
         <TextValue>Roadmap</TextValue>
         <Description>Updated today · 640 KB</Description>
-        <ListView.Actions>
-          <ActionMenu aria-label="Roadmap actions">
-            <ActionMenu.Item onAction={() => onRename('roadmap')}>
-              Rename
-            </ActionMenu.Item>
-            <ActionMenu.Item onAction={() => onShare('roadmap')}>
-              Share
-            </ActionMenu.Item>
-            <ActionMenu.Item
-              variant="destructive"
-              onAction={() => onDelete('roadmap')}
-            >
-              Delete
-            </ActionMenu.Item>
-          </ActionMenu>
-        </ListView.Actions>
+        <ActionMenu aria-label="Roadmap actions">
+          <ActionMenu.Item onAction={() => onRename('roadmap')}>
+            Rename
+          </ActionMenu.Item>
+          <ActionMenu.Item onAction={() => onShare('roadmap')}>
+            Share
+          </ActionMenu.Item>
+          <ActionMenu.Item
+            variant="destructive"
+            onAction={() => onDelete('roadmap')}
+          >
+            Delete
+          </ActionMenu.Item>
+        </ActionMenu>
       </ListView.Item>
     </ListView>
   ),
@@ -316,8 +302,8 @@ ResourceListWithMenu.test(
 // section, not a single fact within one — a workspace switcher is that
 // case: each row is an entry point into its own dashboard, so the
 // workspace name carries heading semantics, not just a label. Pairing it
-// with a leading icon, two lines of metadata, and a row menu also shows
-// `<Title>` composes with the same complex row shapes `<TextValue>` does.
+// with two lines of metadata and a row menu also shows `<Title>` composes
+// with the same complex row shapes `<TextValue>` does.
 const onOpenWorkspace = fn();
 const onWorkspaceSettings = fn();
 const onLeaveWorkspace = fn();
@@ -342,48 +328,42 @@ export const WithDescription = meta.story({
   render: args => (
     <ListView {...args} aria-label="Workspaces">
       <ListView.Item id="acme" textValue="Acme Inc">
-        <Building2 aria-hidden size={20} color="#6366F1" />
         <Title>Acme Inc</Title>
         <Description>Enterprise plan</Description>
         <Description>24 members</Description>
-        <ListView.Actions>
-          <ActionMenu aria-label="Acme Inc actions">
-            <ActionMenu.Item onAction={() => onOpenWorkspace('acme')}>
-              Open
-            </ActionMenu.Item>
-            <ActionMenu.Item onAction={() => onWorkspaceSettings('acme')}>
-              Settings
-            </ActionMenu.Item>
-            <ActionMenu.Item
-              variant="destructive"
-              onAction={() => onLeaveWorkspace('acme')}
-            >
-              Leave
-            </ActionMenu.Item>
-          </ActionMenu>
-        </ListView.Actions>
+        <ActionMenu aria-label="Acme Inc actions">
+          <ActionMenu.Item onAction={() => onOpenWorkspace('acme')}>
+            Open
+          </ActionMenu.Item>
+          <ActionMenu.Item onAction={() => onWorkspaceSettings('acme')}>
+            Settings
+          </ActionMenu.Item>
+          <ActionMenu.Item
+            variant="destructive"
+            onAction={() => onLeaveWorkspace('acme')}
+          >
+            Leave
+          </ActionMenu.Item>
+        </ActionMenu>
       </ListView.Item>
       <ListView.Item id="globex" textValue="Globex Corp">
-        <Building2 aria-hidden size={20} color="#059669" />
         <Title>Globex Corp</Title>
         <Description>Team plan</Description>
         <Description>8 members</Description>
-        <ListView.Actions>
-          <ActionMenu aria-label="Globex Corp actions">
-            <ActionMenu.Item onAction={() => onOpenWorkspace('globex')}>
-              Open
-            </ActionMenu.Item>
-            <ActionMenu.Item onAction={() => onWorkspaceSettings('globex')}>
-              Settings
-            </ActionMenu.Item>
-            <ActionMenu.Item
-              variant="destructive"
-              onAction={() => onLeaveWorkspace('globex')}
-            >
-              Leave
-            </ActionMenu.Item>
-          </ActionMenu>
-        </ListView.Actions>
+        <ActionMenu aria-label="Globex Corp actions">
+          <ActionMenu.Item onAction={() => onOpenWorkspace('globex')}>
+            Open
+          </ActionMenu.Item>
+          <ActionMenu.Item onAction={() => onWorkspaceSettings('globex')}>
+            Settings
+          </ActionMenu.Item>
+          <ActionMenu.Item
+            variant="destructive"
+            onAction={() => onLeaveWorkspace('globex')}
+          >
+            Leave
+          </ActionMenu.Item>
+        </ActionMenu>
       </ListView.Item>
     </ListView>
   ),
@@ -415,44 +395,24 @@ WithDescription.test(
   }
 );
 
-// Scenario 4 — Complex layout: avatar + title + two lines of metadata +
-// a Switch and a dismiss button, all in one row. Shows that a row isn't
-// limited to a single leading icon / single description — leading media,
-// multiple text lines, and several trailing controls can all combine.
-const Avatar = ({ initials, color }: { initials: string; color: string }) => (
-  <svg aria-hidden width={32} height={32} viewBox="0 0 32 32">
-    <circle cx="16" cy="16" r="16" fill={color} />
-    <text
-      x="16"
-      y="21"
-      textAnchor="middle"
-      fontSize="12"
-      fontWeight="600"
-      fill="white"
-    >
-      {initials}
-    </text>
-  </svg>
-);
-
-const onNotifyChange = fn();
+// Scenario 3 — Complex row: a title, two lines of metadata, and more than one
+// trailing control. A row isn't limited to a single description or a single
+// action; several controls sit side by side in a `<ButtonGroup>`, which claims
+// the actions cell for the group and passes the row's `ghost` cascade on to
+// its buttons.
 const onRemoveMember = fn();
+const onMessageMember = fn();
+const onChangeRole = fn();
 
 export const TeamRosterWithStatus = meta.story({
   tags: ['component-test'],
-  render: () => (
-    <ListView aria-label="Team roster">
+  render: args => (
+    <ListView {...args} aria-label="Team roster">
       <ListView.Item id="jane" textValue="Jane Cooper">
-        <Avatar initials="JC" color="#6366F1" />
         <Title>Jane Cooper</Title>
         <Description>Design lead</Description>
         <Description>Active now</Description>
-        <ListView.Actions>
-          <Switch
-            aria-label="Notify Jane Cooper"
-            selected
-            onChange={selected => onNotifyChange('jane', selected)}
-          />
+        <ButtonGroup>
           <Button
             size="icon"
             aria-label="Remove Jane Cooper"
@@ -460,18 +420,21 @@ export const TeamRosterWithStatus = meta.story({
           >
             <X />
           </Button>
-        </ListView.Actions>
+          <ActionMenu aria-label="Jane Cooper actions">
+            <ActionMenu.Item onAction={() => onMessageMember('jane')}>
+              Message
+            </ActionMenu.Item>
+            <ActionMenu.Item onAction={() => onChangeRole('jane')}>
+              Change role
+            </ActionMenu.Item>
+          </ActionMenu>
+        </ButtonGroup>
       </ListView.Item>
       <ListView.Item id="alex" textValue="Alex Kim">
-        <Avatar initials="AK" color="#059669" />
         <Title>Alex Kim</Title>
         <Description>Engineer</Description>
         <Description>Away</Description>
-        <ListView.Actions>
-          <Switch
-            aria-label="Notify Alex Kim"
-            onChange={selected => onNotifyChange('alex', selected)}
-          />
+        <ButtonGroup>
           <Button
             size="icon"
             aria-label="Remove Alex Kim"
@@ -479,7 +442,15 @@ export const TeamRosterWithStatus = meta.story({
           >
             <X />
           </Button>
-        </ListView.Actions>
+          <ActionMenu aria-label="Alex Kim actions">
+            <ActionMenu.Item onAction={() => onMessageMember('alex')}>
+              Message
+            </ActionMenu.Item>
+            <ActionMenu.Item onAction={() => onChangeRole('alex')}>
+              Change role
+            </ActionMenu.Item>
+          </ActionMenu>
+        </ButtonGroup>
       </ListView.Item>
     </ListView>
   ),
@@ -488,21 +459,31 @@ export const TeamRosterWithStatus = meta.story({
 TeamRosterWithStatus.test(
   'operates the trailing controls of a row with multiple text lines',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas }) => {
-    onNotifyChange.mockClear();
+  async ({ canvas, step }) => {
     onRemoveMember.mockClear();
+    onMessageMember.mockClear();
 
-    const notifySwitch = await canvas.findByRole('switch', {
-      name: 'Notify Alex Kim',
+    await step('the visible icon button acts on its own row', async () => {
+      const removeButton = await canvas.findByRole('button', {
+        name: 'Remove Jane Cooper',
+      });
+      await userEvent.click(removeButton);
+      expect(onRemoveMember).toHaveBeenCalledWith('jane');
     });
-    await userEvent.click(notifySwitch);
-    expect(onNotifyChange).toHaveBeenCalledWith('alex', true);
 
-    const removeButton = canvas.getByRole('button', {
-      name: 'Remove Jane Cooper',
+    await step('its neighboring menu acts on the same row', async () => {
+      const trigger = canvas.getByRole('button', { name: 'Alex Kim actions' });
+      await userEvent.click(trigger);
+      await waitFor(() =>
+        expect(trigger).toHaveAttribute('aria-expanded', 'true')
+      );
+
+      const messageItem = await canvas.findByRole('menuitem', {
+        name: 'Message',
+      });
+      await userEvent.click(messageItem);
+      expect(onMessageMember).toHaveBeenCalledWith('alex');
     });
-    await userEvent.click(removeButton);
-    expect(onRemoveMember).toHaveBeenCalledWith('jane');
   }
 );
 
@@ -537,41 +518,35 @@ export const InPopover = meta.story({
             <ListView.Item id="build" textValue="Build finished">
               <TextValue>Build finished</TextValue>
               <Description>2 minutes ago</Description>
-              <ListView.Actions>
-                <Button
-                  size="icon"
-                  aria-label="Dismiss build finished"
-                  onPress={() => onNotificationDismiss('build')}
-                >
-                  <X />
-                </Button>
-              </ListView.Actions>
+              <Button
+                size="icon"
+                aria-label="Dismiss build finished"
+                onPress={() => onNotificationDismiss('build')}
+              >
+                <X />
+              </Button>
             </ListView.Item>
             <ListView.Item id="review" textValue="Review requested">
               <TextValue>Review requested</TextValue>
               <Description>18 minutes ago</Description>
-              <ListView.Actions>
-                <Button
-                  size="icon"
-                  aria-label="Dismiss review requested"
-                  onPress={() => onNotificationDismiss('review')}
-                >
-                  <X />
-                </Button>
-              </ListView.Actions>
+              <Button
+                size="icon"
+                aria-label="Dismiss review requested"
+                onPress={() => onNotificationDismiss('review')}
+              >
+                <X />
+              </Button>
             </ListView.Item>
             <ListView.Item id="deploy" textValue="Deploy succeeded">
               <TextValue>Deploy succeeded</TextValue>
               <Description>1 hour ago</Description>
-              <ListView.Actions>
-                <Button
-                  size="icon"
-                  aria-label="Dismiss deploy succeeded"
-                  onPress={() => onNotificationDismiss('deploy')}
-                >
-                  <X />
-                </Button>
-              </ListView.Actions>
+              <Button
+                size="icon"
+                aria-label="Dismiss deploy succeeded"
+                onPress={() => onNotificationDismiss('deploy')}
+              >
+                <X />
+              </Button>
             </ListView.Item>
           </ListView>
         </RACDialog>
@@ -584,8 +559,11 @@ export const InPopover = meta.story({
 // pair `plain` with the container's `bleed`. The list then reads its row
 // padding from the `--bleed-px` a bled container publishes: dividers and hover
 // fill reach the Panel border while the row text stays aligned with the Panel
-// title, the same way `<Table>` and `<Accordion>` behave.
-const onIntegrationToggle = fn();
+// title, the same way `<Table>` and `<Accordion>` behave. That alignment is
+// the whole point of this story — it's the coverage Chromatic needs for the
+// `listview-bleed-plain` change.
+const onDownloadAttachment = fn();
+const onAttachmentAction = fn();
 
 export const InPanel = meta.story({
   // The story supplies its own titled Panel, so opt out of the decorator's.
@@ -593,31 +571,34 @@ export const InPanel = meta.story({
   render: () => (
     <Panel>
       <Panel.Header>
-        <Title>Integrations</Title>
-        <Description>Turn a connection on to start syncing.</Description>
+        <Title>Attachments</Title>
+        <Description>Files shared in this conversation.</Description>
       </Panel.Header>
       <Panel.Content bleed>
-        <ListView variant="plain" aria-label="Integrations">
-          <ListView.Item id="slack" textValue="Slack">
-            <TextValue>Slack</TextValue>
-            <Description>Post updates to #releases</Description>
-            <ListView.Actions>
-              <Switch
-                aria-label="Enable Slack"
-                selected
-                onChange={selected => onIntegrationToggle('slack', selected)}
-              />
-            </ListView.Actions>
+        <ListView variant="plain" aria-label="Attachments">
+          <ListView.Item id="contract" textValue="Contract">
+            <TextValue>Contract.pdf</TextValue>
+            <Description>Added 3 days ago · 2.1 MB</Description>
+            <ActionMenu
+              aria-label="Contract actions"
+              onAction={() => onAttachmentAction('contract')}
+            >
+              <ActionMenu.Item>Download</ActionMenu.Item>
+              <ActionMenu.Item>Share</ActionMenu.Item>
+              <ActionMenu.Item variant="destructive">Remove</ActionMenu.Item>
+            </ActionMenu>
           </ListView.Item>
-          <ListView.Item id="github" textValue="GitHub">
-            <TextValue>GitHub</TextValue>
-            <Description>Link commits to tickets</Description>
-            <ListView.Actions>
-              <Switch
-                aria-label="Enable GitHub"
-                onChange={selected => onIntegrationToggle('github', selected)}
-              />
-            </ListView.Actions>
+          <ListView.Item id="mockups" textValue="Mockups">
+            <TextValue>Mockups.fig</TextValue>
+            <Description>Added yesterday · 8.4 MB</Description>
+            <ActionMenu
+              aria-label="Mockups actions"
+              onAction={() => onDownloadAttachment('mockups')}
+            >
+              <ActionMenu.Item>Download</ActionMenu.Item>
+              <ActionMenu.Item>Share</ActionMenu.Item>
+              <ActionMenu.Item variant="destructive">Remove</ActionMenu.Item>
+            </ActionMenu>
           </ListView.Item>
         </ListView>
       </Panel.Content>

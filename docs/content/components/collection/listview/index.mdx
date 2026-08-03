@@ -6,7 +6,7 @@ badge: beta
 
 import { ListViewAnatomy } from './listview-anatomy';
 
-A `<ListView>` shows a collection of items as rows in a list. Each row can optionally hold its own controls, such as a `<Switch>` or an `<ActionMenu>`.
+A `<ListView>` shows a collection of items as rows in a list. Each row can optionally hold its own controls, such as a `<Button>` or an `<ActionMenu>`.
 
 Rows are usually rendered from a data array rather than hardcoded, so `<ListView>` can reflect an external data source and update as that data changes, as in the notifications and resource list examples below.
 
@@ -14,16 +14,21 @@ Each row's key comes from the `id` on its underlying data, pass a matching `id` 
 
 ## Anatomy
 
-A `<ListView>` is a labeled, non-form grid holding a stack of `<ListView.Item>` rows. Each row is authored as flat children: an optional leading icon or image, the row's text (`<TextValue>`/`<Description>`, or `<Title>` for a heading-like row), and a `<ListView.Actions>` region for the row's controls.
+A `<ListView>` is a labeled, non-form grid holding a stack of `<ListView.Item>` rows. Each row is authored as flat children: the row's text (`<TextValue>`/`<Description>`, or `<Title>` for a heading-like row), followed by the row's controls.
 
 <ListViewAnatomy />
 
 - **List:** The grid container. Requires `aria-label` or `aria-labelledby`.
 - **Item:** A single row (`role="row"`). Not selectable or toggleable by ListView itself.
-- **Leading media:** An optional icon or image, authored as the row's first child.
-- **Text value:** The row's primary text, authored with `<TextValue>` (or `<Title>` for a heading-like row; see [Accessibility](#accessibility)).
+- **Text value:** The row's primary text, authored with `<TextValue>` (or `<Title>` for a heading-like row; see [Accessibility](#accessibility)). A bare string works too and is treated as the text value.
 - **Description:** Optional secondary text below the text value. A row can carry more than one.
-- **Actions:** `<ListView.Actions>`, holding the row's interactive controls, such as a `<Switch>` or an `<ActionMenu>`. Controls inside it default to the `ghost` variant.
+- **Actions:** The row's controls, a `<Button>`, an `<ActionMenu>`, or a `<ButtonGroup>` holding several. They claim the trailing cell and default to the `ghost` variant, the same way they do inside `<Panel.Header>`.
+
+<Callout title="Leading icons and images are not part of this release">
+  A row has no media region yet. It needs slot-aware icon and image components
+  to place media without making authoring order part of the API, which is
+  tracked separately.
+</Callout>
 
 ## Appearance
 
@@ -39,7 +44,7 @@ Each row owns its own state and its own controls, so actions typically fire per 
 
 ### `<ListView>` vs. `<SelectList>`
 
-`<ListView>`'s closest neighbor is [`<SelectList>`](/components/form/selectlist), where the row itself is the only focusable target. `<ListView>` gives each row its own `grid`/`row`/`gridcell` semantics instead, which is required once rows hold their own focusable controls.
+`<ListView>`'s closest neighbor is [`<SelectList>`](/components/form/selectlist), where the row itself is the only focusable target. `<ListView>` gives each row its own `grid`/`row`/`gridcell` semantics instead, which is required once rows hold their own focusable controls, such as a button or a menu.
 
 <GuidelineTiles>
   <Do>
@@ -61,7 +66,9 @@ Each row owns its own state and its own controls, so actions typically fire per 
 
 A build finished, a review was requested, a deploy succeeded: notification and activity feeds surface a stream of events that people scan for what's new, then act on immediately, muting a noisy thread or dismissing a stale one, without opening the item or leaving the page.
 
-Reach for `<ListView>` here because each row needs its own controls, a `<Switch>` to mute or a `<Button>` to dismiss, operated in place. That's the line between this and a plain list: the action stays scoped to the row instead of sending the reader to a details screen. Give each row a short label for the event and whatever supporting detail helps the reader act, such as when it happened.
+Reach for `<ListView>` here because each row needs its own controls, a `<Button>` to dismiss or a menu to mute, operated in place. That's the line between this and a plain list: the action stays scoped to the row instead of sending the reader to a details screen. Give each row a short label for the event and whatever supporting detail helps the reader act, such as when it happened.
+
+Keep the frequent action visible as an icon button and put the rest behind an `<ActionMenu>`. A `<Switch>` is the highest-contrast control a row can carry, so a column of them down a feed out-shouts the text the feed exists to show, and a toggle labeled "Mute" is ambiguous to announce. Reserve toggles for lists where scanning a column of settings is the task.
 
 <ComponentDemo name="listview-notifications" />
 
@@ -125,10 +132,6 @@ For rows with rich content, such as a wrapped label or an icon, set `textValue` 
 ### ListView.Item
 
 <AutoTypeTable path="ListView/ListViewItem" name="ListViewItemProps" />
-
-### ListView.Actions
-
-<AutoTypeTable path="ListView/ListViewActions" name="ListViewActionsProps" />
 
 ## Alternative components
 
