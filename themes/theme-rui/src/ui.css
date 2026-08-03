@@ -111,32 +111,19 @@
   @apply rounded-surface relative transition-[box-shadow];
   @apply text-primary-foreground;
 
-  /* The recipe: the lightness (-l) and alpha (-a) delta each layer shifts from
-     the fill. Scoped here rather than declared as theme tokens — they are
-     single-use arguments to the rules below, not part of the token API, and
-     nothing outside this block reads them. ui-soft keeps its equivalent deltas
-     inline for the same reason. */
-  --contrast-edge-l: 0.04;
-  --contrast-fill-top-l: 0.03;
-  --contrast-fill-bottom-l: 0.015;
-  --contrast-glow-l: 0.15;
-  --contrast-glow-a: 0.8;
-  --contrast-highlight-l: 0.2;
-  --contrast-highlight-a: 0.3;
-
   /* Read --ui-border-color first (falling back to the derived dark edge) so state
      overrides recolor the ring here exactly as on a plain ui-frame — otherwise a
      disabled/focused/invalid contrast surface keeps its dark outline. */
-  @apply ring-1 ring-[var(--ui-border-color,oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_-_var(--contrast-edge-l))_c_h))];
-  @apply inset-shadow-[0_1px_1.5px_-1px_oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_+_var(--contrast-highlight-l))_c_h_/_var(--contrast-highlight-a))];
+  @apply ring-1 ring-[var(--ui-border-color,oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_-_0.04)_c_h))];
+  @apply inset-shadow-[0_1px_1.5px_-1px_oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_+_0.2)_c_h_/_0.3)];
 
   /* prettier-ignore */
   background:
-      radial-gradient(ellipse 72% 70% at 50% -12%, var(--ui-highlight-color, oklch(from var(--ui-background-color, var(--color-primary)) calc(l + var(--contrast-glow-l)) c h / var(--contrast-glow-a))), transparent 72%),
+      radial-gradient(ellipse 72% 70% at 50% -12%, var(--ui-highlight-color, oklch(from var(--ui-background-color, var(--color-primary)) calc(l + 0.15) c h / 0.8)), transparent 72%),
       linear-gradient(
         to bottom,
-        oklch(from var(--ui-background-color, var(--color-primary)) calc(l + var(--contrast-fill-top-l)) c h),
-        oklch(from var(--ui-background-color, var(--color-primary)) calc(l - var(--contrast-fill-bottom-l)) c h)
+        oklch(from var(--ui-background-color, var(--color-primary)) calc(l + 0.03) c h),
+        oklch(from var(--ui-background-color, var(--color-primary)) calc(l - 0.015) c h)
       );
 }
 

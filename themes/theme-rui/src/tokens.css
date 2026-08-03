@@ -87,22 +87,12 @@
 
   /* --- Disabled --- */
   --color-disabled: var(--color-charcoal-400);
-  /* Its edge is --color-disabled-border, grouped with the boundaries below. */
   --color-disabled-surface: var(--color-charcoal-100);
 
   /* --- Boundaries & Focus Ring --- */
-  /* All three edge tokens are translucent, so they hold one *contrast* against
-     whatever ground they sit on rather than one lightness. The state edges stay
-     solid rungs. See /foundations/token-overview.
-
-     An earlier version of this comment justified an opaque `border` as "opaque so
-     crossing strokes cannot stack". That mechanism does not exist: a CSS border is
-     painted inside its own element's box, so borders on separate elements abut
-     rather than overlap. Measured across three grid patterns (Marigold's
-     `not-last:border-r` + `not-last:border-b`, every-cell-bordered, and
-     LegacyTable's `border-separate`), intersection luminance equals the run's
-     exactly in all three. Only genuinely overlapping boxes — negative margins,
-     absolutely positioned rules — could stack alpha, and nothing here does that. */
+  /* The three edge tokens are translucent, so each holds one *contrast* against
+     whatever ground it sits on rather than one lightness; `disabled-border` is a
+     solid rung. See /foundations/token-overview. */
 
   /* Decorative rim of a raised surface (Card, Panel, Dialog, Menu), via
      ui-surface. Half the density of --color-control-border rather than a pure
@@ -150,7 +140,7 @@
      by eye, only the hue follows the palette. The edge is its own token, not
      derived from the fill — a −0.12 L step off a near-white cap washes out to
      ~1.5:1. It darkens with the cap on hover. */
-  --color-soft: oklch(from var(--color-charcoal-950) 0.99 0.002 h);
+  --color-soft: oklch(from var(--color-charcoal-950) 0.99 0.002 h / 1);
   --color-soft-hover: var(--color-charcoal-100);
   --color-soft-edge: var(--color-charcoal-200);
   --color-soft-edge-hover: var(--color-charcoal-300);
@@ -197,7 +187,6 @@
   --color-scrollbar-track: transparent;
 
   /* --- Surface --- */
-  /* Its rim is --color-surface-border, grouped with the boundaries above. */
   --color-surface: var(--color-white);
 
   /* ==================== */
