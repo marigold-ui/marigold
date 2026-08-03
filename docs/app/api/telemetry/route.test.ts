@@ -14,7 +14,6 @@ const makeEvent = (command: string) => ({
   isAIAgent: false,
   durationBucket: '0-100',
   exitCode: 0,
-  anonymousId: '00000000-0000-4000-8000-000000000000',
 });
 
 const post = (body: unknown) =>
@@ -53,6 +52,20 @@ describe('POST /api/telemetry', () => {
 
   it('rejects an unknown command with 400', async () => {
     const res = await post(makeEvent('bogus'));
+
+    expect(res.status).toBe(400);
+  });
+
+  // The endpoint must not accept a client identifier even if a stale CLI keeps
+  // sending one. zod strips unknown keys by default, so this asserts the
+  // stricter contract: an identifying field is rejected outright rather than
+  // silently dropped, which would let it reappear the moment someone relaxed
+  // the schema. See lib/telemetry.ts for why the payload stays identifier-free.
+  it('rejects an event carrying an anonymousId', async () => {
+    const res = await post({
+      ...makeEvent('docs'),
+      anonymousId: '00000000-0000-4000-8000-000000000000',
+    });
 
     expect(res.status).toBe(400);
   });

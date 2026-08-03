@@ -5,7 +5,11 @@ import { NextResponse } from 'next/server';
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
-const EventSchema = z.object({
+// Strict: an unknown key fails the parse instead of being stripped. The point
+// is that a client identifier (or anything else not listed here) can never be
+// accepted quietly — a stale CLI sending `anonymousId` gets a 400, which is
+// visible, rather than having the field dropped in silence.
+const EventSchema = z.strictObject({
   event: z.literal('cli_command'),
   command: z.enum([
     'docs',
@@ -25,16 +29,25 @@ const EventSchema = z.object({
   exitCode: z.number().int().min(-1).max(255),
   cacheHit: z.boolean().optional(),
   args: z.record(z.string(), z.string().max(64)).optional(),
-  anonymousId: z.string().uuid(),
 });
 
 const MAX_BODY_BYTES = 4 * 1024;
-// Per-anonymousId daily quota. Telemetry is fire-and-forget from the CLI, so
-// the legit upper bound is "one event per command invocation"; 1000/day leaves
-// ample headroom for power users (CI is auto-suppressed) while still bounding
-// abuse on the public POST endpoint to a knowable share of the Upstash quota.
-const RATE_LIMIT_PER_DAY = 1000;
 const SECONDS_PER_DAY = 24 * 60 * 60;
+
+// Retention. Events are aggregate and identifier-free, but an unbounded log is
+// still a liability and a cost, so each day's list expires. 90 days covers
+// release-over-release comparison, which is the longest window we actually
+// analyse.
+const RETENTION_DAYS = 90;
+
+// Global daily cap, replacing the former per-anonymousId quota — there is no
+// per-client identifier to key on any more, by design. This is a cost backstop
+// on the Upstash quota, not a security control: a determined abuser can exhaust
+// the day's budget and suppress collection. That is an acceptable failure mode
+// for telemetry (no user-facing feature degrades) and the right place to stop
+// them is Vercel WAF rate limiting in front of this route, which needs no
+// client identifier here.
+const GLOBAL_EVENTS_PER_DAY = 500_000;
 
 const dateKey = (): string => {
   const now = new Date();
@@ -44,8 +57,8 @@ const dateKey = (): string => {
   return `telemetry:${y}-${m}-${d}`;
 };
 
-const rateLimitKey = (anonymousId: string): string =>
-  `telemetry:rl:${anonymousId}:${dateKey().slice('telemetry:'.length)}`;
+const globalRateLimitKey = (): string =>
+  `telemetry:rl:global:${dateKey().slice('telemetry:'.length)}`;
 
 let redis: Redis | null = null;
 const getRedis = (): Redis | null => {
@@ -82,20 +95,28 @@ export async function POST(request: Request) {
   }
 
   try {
-    // Per-anonymousId daily quota. INCR returns the new count atomically;
-    // EXPIRE only on first hit so the TTL doesn't get pushed out forever.
-    const rlKey = rateLimitKey(parsed.data.anonymousId);
+    // Global daily quota. INCR returns the new count atomically; EXPIRE only on
+    // the first hit so the TTL doesn't get pushed out forever.
+    const rlKey = globalRateLimitKey();
     const count = await client.incr(rlKey);
     if (count === 1) await client.expire(rlKey, SECONDS_PER_DAY);
-    if (count > RATE_LIMIT_PER_DAY) {
+    if (count > GLOBAL_EVENTS_PER_DAY) {
       return new NextResponse(null, { status: 429 });
     }
 
+    // `receivedAt` is truncated to the hour. Full timestamps would let events be
+    // correlated into per-session sequences, reconstructing by timing the
+    // per-user thread the removal of `anonymousId` was meant to break.
+    const receivedAt = new Date();
+    receivedAt.setUTCMinutes(0, 0, 0);
+
     const payload = {
       ...parsed.data,
-      receivedAt: new Date().toISOString(),
+      receivedAt: receivedAt.toISOString(),
     };
-    await client.lpush(dateKey(), JSON.stringify(payload));
+    const key = dateKey();
+    await client.lpush(key, JSON.stringify(payload));
+    await client.expire(key, RETENTION_DAYS * SECONDS_PER_DAY);
   } catch {
     // Never leak backend errors; telemetry must not break the caller.
   }
