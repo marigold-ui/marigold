@@ -132,22 +132,57 @@ describe('recordTelemetryEvent', () => {
     expect(result).toBe('error');
   });
 
-  it('returns "error" for an event that satisfies the type but not the runtime schema', async () => {
-    // Defense-in-depth: a hand-built event (like the MCP route's) only
-    // satisfies TelemetryEvent at compile time — this simulates a caller
-    // producing a malformed hashedCallerId (wrong length) despite the type
-    // checking out, which safeParse must still catch.
+  // Defense-in-depth: a hand-built event (like the MCP route's) only satisfies
+  // TelemetryEvent at compile time, not Zod's runtime constraints. These are
+  // asserted here rather than through the public POST route, which no longer
+  // accepts mcp_tool_call events at all.
+  it.each([
+    ['a hashedCallerId of the wrong length', { hashedCallerId: 'too-short' }],
+    [
+      'a hashedCallerId that is 64 non-hex chars',
+      { hashedCallerId: 'z'.repeat(64) },
+    ],
+    ['an unknown tool', { tool: 'bogus_tool' }],
+    ['a missing required field', { hashedCallerId: undefined }],
+    [
+      'a topMatchHeading over the length cap',
+      { topMatchHeading: 'x'.repeat(513) },
+    ],
+  ])(
+    'returns "invalid" for an mcp_tool_call event with %s',
+    async (_, patch) => {
+      vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
+      vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
+      const { recordTelemetryEvent } = await loadRecord();
+      const malformed = { ...mcpEvent, ...patch } as unknown as TelemetryEvent;
+
+      const result = await recordTelemetryEvent(malformed);
+
+      // 'invalid', not 'error' — the event is a code bug on our side, not a
+      // Redis outage, and the two want different responses.
+      expect(result).toBe('invalid');
+      expect(incr).not.toHaveBeenCalled();
+    }
+  );
+
+  // The HTTP route already hands over parsed output; this is the in-process MCP
+  // path, where the caller hand-builds the event and only satisfies the type.
+  it('persists the parsed event, not the caller-supplied object', async () => {
     vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
     vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
+    incr.mockResolvedValue(1);
     const { recordTelemetryEvent } = await loadRecord();
-    const malformed = {
+    const withExtras = {
       ...mcpEvent,
-      hashedCallerId: 'too-short',
+      rawSub: 'employee@reservix.de',
     } as unknown as TelemetryEvent;
 
-    const result = await recordTelemetryEvent(malformed);
+    const result = await recordTelemetryEvent(withExtras);
 
-    expect(result).toBe('error');
-    expect(incr).not.toHaveBeenCalled();
+    expect(result).toBe('recorded');
+    const [, payload] = lpush.mock.calls[0];
+    expect(payload).not.toContain('rawSub');
+    expect(payload).not.toContain('employee@reservix.de');
+    expect(JSON.parse(payload)).toMatchObject({ event: 'mcp_tool_call' });
   });
 });
