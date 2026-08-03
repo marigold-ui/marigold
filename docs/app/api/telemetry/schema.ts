@@ -1,9 +1,14 @@
 import { z } from 'zod';
 import { TELEMETRY_COMMANDS } from './commands';
 
-// CLI telemetry — one event per command invocation.
-const CliCommandEventSchema = z.object({
+// CLI telemetry — one event per command invocation. Exported because it is the
+// only shape the public POST endpoint accepts; `mcp_tool_call` events are
+// written in-process and must not be forgeable over HTTP.
+export const CliCommandEventSchema = z.object({
   event: z.literal('cli_command'),
+  // Sourced from ./commands, which commands.test.ts holds to the CLI's
+  // `CommandName` union — an unknown command is a 400 the fire-and-forget CLI
+  // swallows, so the two lists must not be allowed to drift.
   command: z.enum(TELEMETRY_COMMANDS),
   cliVersion: z.string().max(32),
   nodeVersion: z.string().max(32),
@@ -14,7 +19,7 @@ const CliCommandEventSchema = z.object({
   exitCode: z.number().int().min(-1).max(255),
   cacheHit: z.boolean().optional(),
   args: z.record(z.string(), z.string().max(64)).optional(),
-  anonymousId: z.string().uuid(),
+  anonymousId: z.uuid(),
 });
 
 // MCP tool telemetry — one event per tool call. `hashedCallerId` is a
@@ -23,7 +28,8 @@ const CliCommandEventSchema = z.object({
 const McpToolCallEventSchema = z.object({
   event: z.literal('mcp_tool_call'),
   tool: z.literal('search_docs'),
-  hashedCallerId: z.string().length(64),
+  // Matches what `hashCallerId` produces: a lowercase hex SHA-256 digest.
+  hashedCallerId: z.string().regex(/^[0-9a-f]{64}$/),
   latencyMs: z.number().int().min(0),
   success: z.boolean(),
   topMatchFile: z.string().max(512).optional(),

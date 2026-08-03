@@ -140,22 +140,128 @@ describe('recordTelemetryEvent', () => {
     expect(result).toBe('error');
   });
 
-  it('returns "error" for an event that satisfies the type but not the runtime schema', async () => {
-    // Defense-in-depth: a hand-built event (like the MCP route's) only
-    // satisfies TelemetryEvent at compile time — this simulates a caller
-    // producing a malformed hashedCallerId (wrong length) despite the type
-    // checking out, which safeParse must still catch.
+  // Defense-in-depth: a hand-built event (like the MCP route's) only satisfies
+  // TelemetryEvent at compile time, not Zod's runtime constraints. These are
+  // asserted here rather than through the public POST route, which no longer
+  // accepts mcp_tool_call events at all.
+  it.each([
+    ['a hashedCallerId of the wrong length', { hashedCallerId: 'too-short' }],
+    [
+      'a hashedCallerId that is 64 non-hex chars',
+      { hashedCallerId: 'z'.repeat(64) },
+    ],
+    ['an unknown tool', { tool: 'bogus_tool' }],
+    ['a missing required field', { hashedCallerId: undefined }],
+    [
+      'a topMatchHeading over the length cap',
+      { topMatchHeading: 'x'.repeat(513) },
+    ],
+  ])(
+    'returns "invalid" for an mcp_tool_call event with %s',
+    async (_, patch) => {
+      vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
+      vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
+      const { recordTelemetryEvent } = await loadRecord();
+      const malformed = { ...mcpEvent, ...patch } as unknown as TelemetryEvent;
+
+      const result = await recordTelemetryEvent(malformed);
+
+      // 'invalid', not 'error' — the event is a code bug on our side, not a
+      // Redis outage, and the two want different responses.
+      expect(result).toBe('invalid');
+      expect(incr).not.toHaveBeenCalled();
+    }
+  );
+
+  // The HTTP route already hands over parsed output; this is the in-process MCP
+  // path, where the caller hand-builds the event and only satisfies the type.
+  it('persists the parsed event, not the caller-supplied object', async () => {
     vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
     vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
+    incr.mockResolvedValue(1);
     const { recordTelemetryEvent } = await loadRecord();
-    const malformed = {
+    const withExtras = {
       ...mcpEvent,
-      hashedCallerId: 'too-short',
+      rawSub: 'employee@reservix.de',
     } as unknown as TelemetryEvent;
 
-    const result = await recordTelemetryEvent(malformed);
+    const result = await recordTelemetryEvent(withExtras);
 
-    expect(result).toBe('error');
-    expect(incr).not.toHaveBeenCalled();
+    expect(result).toBe('recorded');
+    const [, payload] = lpush.mock.calls[0];
+    expect(payload).not.toContain('rawSub');
+    expect(payload).not.toContain('employee@reservix.de');
+    expect(JSON.parse(payload)).toMatchObject({ event: 'mcp_tool_call' });
+  });
+
+  describe("the day's event list retention", () => {
+    beforeEach(() => {
+      vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
+      vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
+      incr.mockResolvedValue(1);
+      expireMock.mockResolvedValue(1);
+      lpush.mockResolvedValue(1);
+    });
+
+    // The plain day key, not the rate-limit key (telemetry:rl:<id>:date).
+    // Both are expired per event, so assertions must filter to this shape.
+    const dayKeyExpireCalls = () =>
+      expireMock.mock.calls.filter(([key]) =>
+        /^telemetry:\d{4}-\d{2}-\d{2}$/.test(key as string)
+      );
+
+    it("expires the day's event list, so it doesn't retain data forever", async () => {
+      const { recordTelemetryEvent } = await loadRecord();
+
+      await recordTelemetryEvent(cliEvent);
+
+      expect(lpush).toHaveBeenCalledTimes(1);
+      const calls = dayKeyExpireCalls();
+      expect(calls).toHaveLength(1);
+      const [dayKey, ttlSeconds, option] = calls[0];
+      expect(dayKey).toBe(lpush.mock.calls.at(-1)![0]);
+      expect(ttlSeconds).toBe(90 * 24 * 60 * 60);
+      expect(option).toBe('NX');
+    });
+
+    it('calls EXPIRE NX on every event, not just the first, so a failed first-event EXPIRE is retried', async () => {
+      // NX makes this idempotent server-side, so calling it unconditionally
+      // never extends the retention window, and a first-event EXPIRE lost to a
+      // network blip is retried by every later event.
+      const { recordTelemetryEvent } = await loadRecord();
+
+      await recordTelemetryEvent(cliEvent);
+      await recordTelemetryEvent(cliEvent);
+
+      expect(lpush).toHaveBeenCalledTimes(2);
+      expect(dayKeyExpireCalls()).toHaveLength(2);
+    });
+
+    it('resolves the event key once, so an event straddling midnight UTC still gets a TTL', async () => {
+      // Resolving the key twice lets a request crossing midnight LPUSH onto day
+      // N and EXPIRE day N+1, which doesn't exist yet — a silent no-op leaving
+      // day N with no TTL, and no later event ever targets that key again.
+      // Simulated by advancing the clock during the LPUSH call.
+      const { recordTelemetryEvent } = await loadRecord();
+      vi.useFakeTimers();
+      try {
+        vi.setSystemTime(new Date('2026-01-01T23:59:59.500Z'));
+        lpush.mockImplementationOnce(async () => {
+          vi.setSystemTime(new Date('2026-01-02T00:00:00.500Z'));
+          return 1;
+        });
+
+        await recordTelemetryEvent(cliEvent);
+
+        const pushedKey = lpush.mock.calls.at(-1)![0];
+        expect(pushedKey).toBe('telemetry:2026-01-01');
+        const calls = dayKeyExpireCalls();
+        expect(calls).toHaveLength(1);
+        // The TTL has to land on the key that was actually written to.
+        expect(calls[0][0]).toBe(pushedKey);
+      } finally {
+        vi.useRealTimers();
+      }
+    });
   });
 });

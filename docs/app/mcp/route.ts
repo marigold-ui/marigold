@@ -141,11 +141,31 @@ function search(queryVec: Float32Array, vs: VectorStore, limit: number) {
 
 // ─── Telemetry ────────────────────────────────────────────────────────────────
 
+// Telemetry problems are systematic, not incidental: whatever makes one call
+// fail to record — no secret, no Redis, a malformed event, no request scope for
+// after() — makes every call fail the same way for the life of the instance. So
+// each distinct cause is logged once per process. Per-call logging would be
+// pure noise, but staying silent leaves a permanently empty dashboard with
+// nothing anywhere explaining why.
+const warnedCauses = new Set<string>();
+
+const warnOnce = (cause: string, message: string) => {
+  if (warnedCauses.has(cause)) return;
+  warnedCauses.add(cause);
+  console.warn(message);
+};
+
 // One-way HMAC of the caller's Keycloak `sub` claim — never the raw claim,
 // which identifies a Reservix employee.
 const hashCallerId = (sub: string): string | null => {
   const secret = process.env.MCP_TELEMETRY_HASH_SECRET;
-  if (!secret) return null;
+  if (!secret) {
+    warnOnce(
+      'missing-secret',
+      '[MCP] MCP_TELEMETRY_HASH_SECRET is not set — search_docs telemetry is disabled for this deployment. See docs/app/mcp/README.md#telemetry.'
+    );
+    return null;
+  }
   return crypto.createHmac('sha256', secret).update(sub).digest('hex');
 };
 
@@ -158,7 +178,23 @@ const getJwks = () => {
   return jwks;
 };
 
-const verifyToken = async (
+// `AuthInfo` has no field for the token's subject, so the Keycloak `sub` claim
+// rides on `clientId`. The name reads oddly — it is not an OAuth client id —
+// and getting it wrong is silent: every caller would collapse into one hash and
+// "unique callers" would become 1 forever. So both sides of that decision go
+// through these two helpers, the auth path writing and the telemetry path
+// reading, and `route.test.ts` asserts a verified token's `sub` all the way
+// through to the recorded `hashedCallerId`.
+const authInfoForSubject = (token: string, subject: string): AuthInfo => ({
+  token,
+  scopes: [],
+  clientId: subject,
+});
+
+const subjectOf = (authInfo?: AuthInfo): string | undefined =>
+  authInfo?.clientId;
+
+export const verifyToken = async (
   _req: Request,
   bearerToken?: string
 ): Promise<AuthInfo | undefined> => {
@@ -172,11 +208,7 @@ const verifyToken = async (
 
     if (!payload.sub) return undefined;
 
-    return {
-      token: bearerToken,
-      scopes: [],
-      clientId: payload.sub,
-    };
+    return authInfoForSubject(bearerToken, payload.sub);
   } catch (err) {
     console.error('[MCP] JWT verification failed:', err);
     return undefined;
@@ -229,7 +261,7 @@ export const searchDocsHandler = async (
     topMatch?: { file: string; heading: string }
   ) => {
     try {
-      const sub = extra.authInfo?.clientId;
+      const sub = subjectOf(extra.authInfo);
       const hashedCallerId = sub ? hashCallerId(sub) : null;
       if (!hashedCallerId) return;
 
@@ -245,12 +277,24 @@ export const searchDocsHandler = async (
 
       after(async () => {
         const result = await recordTelemetryEvent(event);
-        if (result !== 'recorded') {
-          console.warn(`[MCP] search_docs telemetry not recorded: ${result}`);
+        // 'unconfigured' is the steady state wherever Redis isn't set up
+        // (local dev, preview deploys), so warning on it would be noise on
+        // every single call. The rest mean something actually went wrong.
+        if (result !== 'recorded' && result !== 'unconfigured') {
+          warnOnce(
+            result,
+            `[MCP] search_docs telemetry not recorded: ${result}`
+          );
         }
       });
     } catch (err) {
-      console.error('[MCP] search_docs telemetry emission failed:', err);
+      // Most likely cause is `after()` throwing for lack of a request scope,
+      // which would be true of every call — hence once per process, not once
+      // per call.
+      warnOnce(
+        'emit-failed',
+        `[MCP] search_docs telemetry emission failed: ${err}`
+      );
     }
   };
 
