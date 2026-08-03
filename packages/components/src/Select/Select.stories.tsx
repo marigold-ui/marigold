@@ -237,7 +237,7 @@ Basic.test(
   {
     parameters: { chromatic: { disableSnapshot: false } },
     render: args => (
-      <Inset space={24}>
+      <Inset p={24}>
         <Select
           {...args}
           width={40}
