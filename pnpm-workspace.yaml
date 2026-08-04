@@ -4,6 +4,34 @@ packages:
   - docs
   - packages/*
   - themes/*
+# Security overrides. Each entry clears an advisory that no in-range version can
+# reach, because a parent pins the vulnerable version exactly or with a range
+# that excludes the fix. Bumping the parent does not help; only an override does.
+#
+# These are debt. Drop each one as soon as its condition below is met, then run
+# `pnpm audit` to confirm the advisory stays closed.
+#
+# Overrides must live here, not under `pnpm.overrides` in package.json. On
+# pnpm 11 that key is silently ignored: install exits 0 and nothing moves.
+# Confirm they took effect via the `overrides:` block at the top of pnpm-lock.yaml.
+overrides:
+  # GHSA-r28c-9q8g-f849 + GHSA-6g55-p6wh-862q (high), GHSA-qx2v-qp2m-jg93 +
+  # GHSA-fxqj-rqcc-2cmp (moderate). next pins "postcss": "8.4.31" exactly, in
+  # every version. Remove once next widens or bumps that pin.
+  postcss: ^8.5.25
+  # GHSA-f88m-g3jw-g9cj (high), 4 inherited libvips CVEs. next declares
+  # "sharp": "^0.34.5", and a caret on a 0.x version cannot reach 0.35.0.
+  # Remove once next declares ^0.35.0 or later.
+  sharp: ^0.35.0
+  # GHSA-5qjj-4xww-7phc (moderate). @storybook/addon-mcp pins "valibot": "1.2.0"
+  # exactly, in both 0.6.0 and 0.7.0. Also fixes an unmet @valibot/to-json-schema
+  # peer, which wants ^1.4.0. Remove once addon-mcp stops pinning it, or is dropped.
+  valibot: ^1.4.2
+  # GHSA-frvp-7c67-39w9 (moderate). The whole 1.x line is vulnerable.
+  # @modelcontextprotocol/sdk 1.30.0 allows ^1.19.9 || ^2.0.5, but pnpm resolves
+  # that union to 1.19.14 because it takes the first satisfying branch rather than
+  # the highest. Remove once the sdk requires 2.x on its own.
+  '@hono/node-server': ^2.0.5
 allowBuilds:
   '@parcel/watcher': true
   esbuild: true
