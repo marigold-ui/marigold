@@ -3,6 +3,7 @@ import {
   DialogTrigger as RACDialogTrigger,
 } from 'react-aria-components/Dialog';
 import { expect, fn, userEvent, waitFor } from 'storybook/test';
+import { Archive } from '@marigold/icons';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
@@ -13,7 +14,6 @@ import { Popover } from '../Overlay/Popover';
 import { Panel } from '../Panel/Panel';
 import { TextValue } from '../TextValue/TextValue';
 import { Title } from '../Title/Title';
-import { X } from '../icons/X';
 import { ListView } from './ListView';
 
 const meta = preview.meta({
@@ -32,7 +32,7 @@ const meta = preview.meta({
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['default', 'plain'],
+      options: ['default', 'card'],
       table: {
         type: { summary: 'select' },
         defaultValue: { summary: 'default' },
@@ -114,9 +114,35 @@ Basic.test(
   }
 );
 
-// Scenario 1 — Notifications / activity feed: title + timestamp + a dismiss
-// button and an overflow menu, operated in place. The shared DST-1485
+// `variant="card"` is the opt-in frame: fill, hairline ring and rounded
+// corners of its own, for a list that sits directly on a page rather than in a
+// container that already draws a surface. The first and last rows pick up the
+// surface radius so a hover fill doesn't square off its corners.
+export const Framed = meta.story({
+  args: { variant: 'card' },
+  parameters: { surface: false },
+  render: args => (
+    <ListView {...args} aria-label="Recent files">
+      <ListView.Item id="report" textValue="Q3 report">
+        <TextValue>Q3 report</TextValue>
+        <Description>Edited 2 days ago</Description>
+      </ListView.Item>
+      <ListView.Item id="notes" textValue="Meeting notes">
+        <TextValue>Meeting notes</TextValue>
+        <Description>Edited just now</Description>
+      </ListView.Item>
+    </ListView>
+  ),
+});
+
+// Scenario 1 — Notifications / activity feed: title + timestamp + a visible
+// archive button and an overflow menu, operated in place. The shared DST-1485
 // (Popover notifications panel) example.
+//
+// The visible glyph is `<Archive />`, not `<X />`: in Marigold an `X` means
+// "close/cancel this transient thing" (`CloseButton`, `TableEditableCell`,
+// `ActionBar`), and this feed ships inside a Popover that has its own `X` a
+// few pixels away. `<Archive />` says what happens to the row.
 //
 // Muting is a menu command rather than a per-row `<Switch>`: a switch is the
 // highest-contrast control in a row, and repeated down a feed a column of
@@ -127,7 +153,7 @@ Basic.test(
 // (GitHub, Slack, Linear, Gmail) lands in the same place.
 const onMute = fn();
 const onMarkRead = fn();
-const onDismiss = fn();
+const onArchive = fn();
 
 export const NotificationsFeed = meta.story({
   tags: ['component-test'],
@@ -139,10 +165,10 @@ export const NotificationsFeed = meta.story({
         <ButtonGroup>
           <Button
             size="icon"
-            aria-label="Dismiss"
-            onPress={() => onDismiss('build')}
+            aria-label="Archive"
+            onPress={() => onArchive('build')}
           >
-            <X />
+            <Archive />
           </Button>
           <ActionMenu aria-label="Build finished actions">
             <ActionMenu.Item onAction={() => onMute('build')}>
@@ -160,10 +186,10 @@ export const NotificationsFeed = meta.story({
         <ButtonGroup>
           <Button
             size="icon"
-            aria-label="Dismiss"
-            onPress={() => onDismiss('deploy')}
+            aria-label="Archive"
+            onPress={() => onArchive('deploy')}
           >
-            <X />
+            <Archive />
           </Button>
           <ActionMenu aria-label="Deploy succeeded actions">
             <ActionMenu.Item onAction={() => onMute('deploy')}>
@@ -184,7 +210,7 @@ NotificationsFeed.test(
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }) => {
     onMute.mockClear();
-    onDismiss.mockClear();
+    onArchive.mockClear();
 
     const buildRow = await canvas.findByRole('row', {
       name: /build finished/i,
@@ -197,14 +223,14 @@ NotificationsFeed.test(
       expect(deployRow).toHaveFocus();
     });
 
-    await step('tab reaches the nested dismiss button in the row', async () => {
+    await step('tab reaches the nested archive button in the row', async () => {
       await userEvent.tab();
-      const dismissButtons = canvas.getAllByRole('button', {
-        name: 'Dismiss',
+      const archiveButtons = canvas.getAllByRole('button', {
+        name: 'Archive',
       });
-      expect(dismissButtons[1]).toHaveFocus();
+      expect(archiveButtons[1]).toHaveFocus();
       await userEvent.keyboard('[Space]');
-      expect(onDismiss).toHaveBeenCalledWith('deploy');
+      expect(onArchive).toHaveBeenCalledWith('deploy');
     });
 
     await step('the row menu opens and mutes the thread', async () => {
@@ -329,8 +355,7 @@ export const WithDescription = meta.story({
     <ListView {...args} aria-label="Workspaces">
       <ListView.Item id="acme" textValue="Acme Inc">
         <Title>Acme Inc</Title>
-        <Description>Enterprise plan</Description>
-        <Description>24 members</Description>
+        <Description>Enterprise plan · 24 members</Description>
         <ActionMenu aria-label="Acme Inc actions">
           <ActionMenu.Item onAction={() => onOpenWorkspace('acme')}>
             Open
@@ -348,8 +373,7 @@ export const WithDescription = meta.story({
       </ListView.Item>
       <ListView.Item id="globex" textValue="Globex Corp">
         <Title>Globex Corp</Title>
-        <Description>Team plan</Description>
-        <Description>8 members</Description>
+        <Description>Team plan · 8 members</Description>
         <ActionMenu aria-label="Globex Corp actions">
           <ActionMenu.Item onAction={() => onOpenWorkspace('globex')}>
             Open
@@ -377,7 +401,9 @@ WithDescription.test(
 
     expect(canvas.queryAllByRole('heading')).toHaveLength(0);
     expect(await canvas.findByText('Acme Inc')).toBeInTheDocument();
-    expect(canvas.getByText('24 members')).toBeInTheDocument();
+    expect(
+      canvas.getByText('Enterprise plan · 24 members')
+    ).toBeInTheDocument();
 
     await step('the row menu opens and fires an action', async () => {
       const trigger = canvas.getByRole('button', { name: 'Acme Inc actions' });
@@ -395,11 +421,10 @@ WithDescription.test(
   }
 );
 
-// Scenario 3 — Complex row: a title, two lines of metadata, and more than one
-// trailing control. A row isn't limited to a single description or a single
-// action; several controls sit side by side in a `<ButtonGroup>`, which claims
-// the actions cell for the group and passes the row's `ghost` cascade on to
-// its buttons.
+// Scenario 3 — A row whose commands include a destructive one. Removing a
+// member is rare and irreversible, so it's a `variant="destructive"` menu item
+// rather than a one-click icon button: the page's own rule is that a row keeps
+// its *frequent* action visible and groups the rest behind an `<ActionMenu>`.
 const onRemoveMember = fn();
 const onMessageMember = fn();
 const onChangeRole = fn();
@@ -410,97 +435,88 @@ export const TeamRosterWithStatus = meta.story({
     <ListView {...args} aria-label="Team roster">
       <ListView.Item id="jane" textValue="Jane Cooper">
         <Title>Jane Cooper</Title>
-        <Description>Design lead</Description>
-        <Description>Active now</Description>
-        <ButtonGroup>
-          <Button
-            size="icon"
-            aria-label="Remove Jane Cooper"
-            onPress={() => onRemoveMember('jane')}
+        <Description>Design lead · Active now</Description>
+        <ActionMenu aria-label="Jane Cooper actions">
+          <ActionMenu.Item onAction={() => onMessageMember('jane')}>
+            Message
+          </ActionMenu.Item>
+          <ActionMenu.Item onAction={() => onChangeRole('jane')}>
+            Change role
+          </ActionMenu.Item>
+          <ActionMenu.Item
+            variant="destructive"
+            onAction={() => onRemoveMember('jane')}
           >
-            <X />
-          </Button>
-          <ActionMenu aria-label="Jane Cooper actions">
-            <ActionMenu.Item onAction={() => onMessageMember('jane')}>
-              Message
-            </ActionMenu.Item>
-            <ActionMenu.Item onAction={() => onChangeRole('jane')}>
-              Change role
-            </ActionMenu.Item>
-          </ActionMenu>
-        </ButtonGroup>
+            Remove from team
+          </ActionMenu.Item>
+        </ActionMenu>
       </ListView.Item>
       <ListView.Item id="alex" textValue="Alex Kim">
         <Title>Alex Kim</Title>
-        <Description>Engineer</Description>
-        <Description>Away</Description>
-        <ButtonGroup>
-          <Button
-            size="icon"
-            aria-label="Remove Alex Kim"
-            onPress={() => onRemoveMember('alex')}
+        <Description>Engineer · Away</Description>
+        <ActionMenu aria-label="Alex Kim actions">
+          <ActionMenu.Item onAction={() => onMessageMember('alex')}>
+            Message
+          </ActionMenu.Item>
+          <ActionMenu.Item onAction={() => onChangeRole('alex')}>
+            Change role
+          </ActionMenu.Item>
+          <ActionMenu.Item
+            variant="destructive"
+            onAction={() => onRemoveMember('alex')}
           >
-            <X />
-          </Button>
-          <ActionMenu aria-label="Alex Kim actions">
-            <ActionMenu.Item onAction={() => onMessageMember('alex')}>
-              Message
-            </ActionMenu.Item>
-            <ActionMenu.Item onAction={() => onChangeRole('alex')}>
-              Change role
-            </ActionMenu.Item>
-          </ActionMenu>
-        </ButtonGroup>
+            Remove from team
+          </ActionMenu.Item>
+        </ActionMenu>
       </ListView.Item>
     </ListView>
   ),
 });
 
 TeamRosterWithStatus.test(
-  'operates the trailing controls of a row with multiple text lines',
+  'keeps the destructive command behind the row menu',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }) => {
     onRemoveMember.mockClear();
-    onMessageMember.mockClear();
 
-    await step('the visible icon button acts on its own row', async () => {
-      const removeButton = await canvas.findByRole('button', {
-        name: 'Remove Jane Cooper',
-      });
-      await userEvent.click(removeButton);
-      expect(onRemoveMember).toHaveBeenCalledWith('jane');
+    await step('the row exposes no one-click destructive control', () => {
+      expect(
+        canvas.queryByRole('button', { name: /remove/i })
+      ).not.toBeInTheDocument();
     });
 
-    await step('its neighboring menu acts on the same row', async () => {
-      const trigger = canvas.getByRole('button', { name: 'Alex Kim actions' });
+    await step('removing is reachable through the menu', async () => {
+      const trigger = await canvas.findByRole('button', {
+        name: 'Jane Cooper actions',
+      });
       await userEvent.click(trigger);
       await waitFor(() =>
         expect(trigger).toHaveAttribute('aria-expanded', 'true')
       );
 
-      const messageItem = await canvas.findByRole('menuitem', {
-        name: 'Message',
+      const removeItem = await canvas.findByRole('menuitem', {
+        name: 'Remove from team',
       });
-      await userEvent.click(messageItem);
-      expect(onMessageMember).toHaveBeenCalledWith('alex');
+      await userEvent.click(removeItem);
+      expect(onRemoveMember).toHaveBeenCalledWith('jane');
     });
   }
 );
 
-// `variant="plain"` drops the list's own surface (ring, shadow, radius) so it
-// can sit inside a container that already provides one.
+// The default list has no surface of its own, so it drops straight into a
+// container that provides one.
 //
 // A `<Popover>` is the simplest such container: it owns the overlay surface
-// (fill, rim, elevation) and carries no padding of its own, so a `plain` list
-// fills it edge-to-edge with nothing further to configure. This is the
-// DST-1485 notifications panel the component was built for.
+// (fill, rim, elevation) and carries no padding of its own, so the list fills
+// it edge-to-edge with nothing to configure. This is the DST-1485
+// notifications panel the component was built for.
 //
 // The `<DialogTrigger>`/`<Dialog>` pair comes from react-aria-components
 // because Marigold's `<Popover>` doesn't yet expose a trigger-based
 // composition of its own; `<ContextualHelp>` builds its popover the same way.
 // `<Dialog>` isn't decorative here — it's what moves focus into the overlay on
 // open and restores it to the trigger on close.
-const onNotificationDismiss = fn();
+const onNotificationArchive = fn();
 
 export const InPopover = meta.story({
   // No `component-test` tag: the story runner can't see the popover's portaled
@@ -514,16 +530,16 @@ export const InPopover = meta.story({
       <Button>Notifications</Button>
       <Popover placement="bottom start" matchTriggerWidth={false}>
         <RACDialog aria-label="Notifications" className="w-80 outline-none">
-          <ListView variant="plain" aria-label="Notifications">
+          <ListView aria-label="Notifications">
             <ListView.Item id="build" textValue="Build finished">
               <TextValue>Build finished</TextValue>
               <Description>2 minutes ago</Description>
               <Button
                 size="icon"
-                aria-label="Dismiss build finished"
-                onPress={() => onNotificationDismiss('build')}
+                aria-label="Archive build finished"
+                onPress={() => onNotificationArchive('build')}
               >
-                <X />
+                <Archive />
               </Button>
             </ListView.Item>
             <ListView.Item id="review" textValue="Review requested">
@@ -531,10 +547,10 @@ export const InPopover = meta.story({
               <Description>18 minutes ago</Description>
               <Button
                 size="icon"
-                aria-label="Dismiss review requested"
-                onPress={() => onNotificationDismiss('review')}
+                aria-label="Archive review requested"
+                onPress={() => onNotificationArchive('review')}
               >
-                <X />
+                <Archive />
               </Button>
             </ListView.Item>
             <ListView.Item id="deploy" textValue="Deploy succeeded">
@@ -542,10 +558,10 @@ export const InPopover = meta.story({
               <Description>1 hour ago</Description>
               <Button
                 size="icon"
-                aria-label="Dismiss deploy succeeded"
-                onPress={() => onNotificationDismiss('deploy')}
+                aria-label="Archive deploy succeeded"
+                onPress={() => onNotificationArchive('deploy')}
               >
-                <X />
+                <Archive />
               </Button>
             </ListView.Item>
           </ListView>
@@ -556,12 +572,11 @@ export const InPopover = meta.story({
 });
 
 // A `<Panel>` (or `<Card>`, or `<Drawer>`) does carry horizontal padding, so
-// pair `plain` with the container's `bleed`. The list then reads its row
-// padding from the `--bleed-px` a bled container publishes: dividers and hover
-// fill reach the Panel border while the row text stays aligned with the Panel
-// title, the same way `<Table>` and `<Accordion>` behave. That alignment is
-// the whole point of this story — it's the coverage Chromatic needs for the
-// `listview-bleed-plain` change.
+// give the container `bleed`. The list then reads its row padding from the
+// `--bleed-px` a bled container publishes: dividers and hover fill reach the
+// Panel border while the row text stays aligned with the Panel title, the same
+// way `<Table>` and `<Accordion>` behave — and with no opt-in on the list, the
+// way those two need none. That alignment is the whole point of this story.
 const onDownloadAttachment = fn();
 const onAttachmentAction = fn();
 
@@ -575,7 +590,7 @@ export const InPanel = meta.story({
         <Description>Files shared in this conversation.</Description>
       </Panel.Header>
       <Panel.Content bleed>
-        <ListView variant="plain" aria-label="Attachments">
+        <ListView aria-label="Attachments">
           <ListView.Item id="contract" textValue="Contract">
             <TextValue>Contract.pdf</TextValue>
             <Description>Added 3 days ago · 2.1 MB</Description>

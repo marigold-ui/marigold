@@ -8,7 +8,7 @@ import {
   ListView,
   TextValue,
 } from '@marigold/components';
-import { X } from '@marigold/icons';
+import { Archive } from '@marigold/icons';
 
 interface Notification {
   id: string;
@@ -41,7 +41,7 @@ const initialNotifications: Notification[] = [
 export default () => {
   const [notifications, setNotifications] = useState(initialNotifications);
 
-  const dismiss = (id: string) =>
+  const archive = (id: string) =>
     setNotifications(current => current.filter(item => item.id !== id));
 
   const toggleMute = (id: string) =>
@@ -72,10 +72,10 @@ export default () => {
           <ButtonGroup>
             <Button
               size="icon"
-              aria-label={`Dismiss ${notification.title}`}
-              onPress={() => dismiss(notification.id)}
+              aria-label={`Archive ${notification.title}`}
+              onPress={() => archive(notification.id)}
             >
-              <X />
+              <Archive />
             </Button>
             <ActionMenu aria-label={`${notification.title} actions`}>
               <ActionMenu.Item onAction={() => toggleMute(notification.id)}>

@@ -17,8 +17,21 @@ Use it for collections people work through rather than pick from, like a notific
 - **List:** The container that holds all rows.
 - **Item:** A single row representing one entry of the collection.
 - **Text value:** The primary text of a row, authored with `<TextValue>`. A bare string works too.
-- **Description:** Optional secondary text below the text value, like a timestamp or a file size. It takes inline markup, and a row can carry more than one.
-- **Actions:** Optional trailing controls for the row, a `<Button>`, an `<ActionMenu>`, or a `<ButtonGroup>` holding several.
+- **Description:** Optional secondary text below the text value, like a timestamp or a file size. One per row, and it takes inline markup — combine several facts into one line (`Updated 3 days ago · 2.1 MB`).
+- **Actions:** Optional trailing controls for the row. One `<Button>` or `<ActionMenu>`, or a `<ButtonGroup>` wrapping several — the group is **required** above one control, because each control claims the same cell and two of them stack. The trailing cell takes Button-family controls only; other trailing content, like a `<Badge>` or a status pill, has no slot yet and is placed by the grid wherever a cell happens to be free.
+
+To emphasise part of a row's text, nest `<Text as="span">` inside `<TextValue>` or `<Description>` rather than adding a `<Text>` of its own:
+
+```tsx
+<ListView.Item id="deploy" textValue="Deploy succeeded">
+  <TextValue>
+    Deploy{' '}
+    <Text as="span" weight="bold">
+      succeeded
+    </Text>
+  </TextValue>
+</ListView.Item>
+```
 
 ## Appearance
 
@@ -39,6 +52,8 @@ If a row exists to be picked rather than acted on, see [`<ListView>` vs. `<Selec
 ### Row actions
 
 Keep the action users reach for most often visible as an icon button and group the rest behind an `<ActionMenu>`. More than two visible buttons per row turns the list into a wall of controls that competes with the text people are scanning.
+
+Pick a glyph that says what happens to the row — `Archive`, `Check`, `BellOff`. An `X` means "close this" everywhere else in Marigold, and a row's action doesn't close anything. Rare or irreversible commands like deleting belong in the menu, as an `<ActionMenu.Item variant="destructive">`, not behind a one-click icon button.
 
 <ComponentDemo name="listview-notifications" />
 

@@ -7,6 +7,7 @@ import { Button } from '../Button/Button';
 import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Description } from '../Description/Description';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
+import { Text } from '../Text/Text';
 import { TextValue } from '../TextValue/TextValue';
 import { ListView } from './ListView';
 import {
@@ -72,8 +73,8 @@ describe('ListView', () => {
 
       await user.tab();
 
-      const [dismiss] = screen.getAllByRole('button', { name: 'Dismiss' });
-      expect(dismiss).toHaveFocus();
+      const [archive] = screen.getAllByRole('button', { name: 'Archive' });
+      expect(archive).toHaveFocus();
     });
   });
 
@@ -175,8 +176,8 @@ describe('ListView', () => {
       const dismiss = screen.getByRole('button', { name: 'Dismiss' });
 
       expect(dismiss).toHaveAttribute('data-grid-area', 'actions');
-      // The `ghost` cascade rides on the same context as the placement.
-      expect(dismiss.className).toContain('col-start-2');
+      // The placement className rides on the same context as the attribute.
+      expect(dismiss.className).toContain('[grid-area:actions]');
     });
 
     test('places a `<ButtonGroup>` of controls in the actions cell, not its buttons', () => {
@@ -207,15 +208,54 @@ describe('ListView', () => {
         'label'
       );
     });
+
+    // Inline markup is how a row emphasises part of its text — `<Text>` reads
+    // the row's slot context only when it renders through RAC, which it does
+    // for `as="span"` inside a slotted parent.
+    test('keeps a nested `<Text>` inside the cell of its slotted parent', () => {
+      renderRow(
+        <TextValue>
+          Deploy{' '}
+          <Text as="span" weight="bold">
+            succeeded
+          </Text>
+        </TextValue>
+      );
+
+      const label = screen.getByText(/Deploy/);
+
+      expect(label).toHaveAttribute('data-grid-area', 'label');
+      expect(label).toContainElement(screen.getByText('succeeded'));
+    });
+
+    // A row with two trailing controls places both in the same cell, so they
+    // stack. The types can't express "wrap them", so a dev warning does.
+    test('warns when more than one control claims the actions cell', () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+      renderRow(
+        <>
+          <TextValue>Row</TextValue>
+          <Button size="icon" aria-label="Dismiss" />
+          <Button size="icon" aria-label="Archive" />
+        </>
+      );
+
+      expect(warnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('more than one trailing control')
+      );
+
+      warnSpy.mockRestore();
+    });
   });
 
-  describe('variant="plain" inside a bled container', () => {
+  describe('row padding inside a bled container', () => {
     // `--bleed-px` is a cross-component contract: a bled `Panel.Content`
-    // publishes it, and a `plain` list sources its row padding from it so row
-    // text lines up with the Panel title. Nothing type-checks that wiring, so
+    // publishes it, and the list sources its row padding from it so row text
+    // lines up with the Panel title. Nothing type-checks that wiring, so
     // assert both halves the way `Accordion`/`Table` do — otherwise renaming
     // `--panel-px`, or moving which element publishes `--bleed-px`, silently
-    // reverts `plain` to its standalone padding with every test still green.
+    // reverts the list to its standalone padding with every test still green.
     test('sources the row padding from the container `--bleed-px`', () => {
       render(<InPanel.Component />);
 
@@ -238,7 +278,7 @@ describe('ListView', () => {
     test('falls back to the standalone padding outside a bled container', () => {
       render(
         <MarigoldProvider theme={theme}>
-          <ListView variant="plain" aria-label="Standalone">
+          <ListView aria-label="Standalone">
             <ListView.Item id="row" textValue="Row">
               <TextValue>Row</TextValue>
             </ListView.Item>
@@ -266,6 +306,22 @@ describe('ListView', () => {
       // one row rather than zero rows outright.
       expect(screen.getAllByRole('row')).toHaveLength(1);
     });
+
+    // The story above covers the dynamic form (`items={[]}` + a render
+    // function). Static children go through RAC's other collection path, and
+    // that is the form the docs demo uses — mirroring `table-empty.demo.tsx`.
+    test('renders the emptyState content for an empty static collection', () => {
+      render(
+        <MarigoldProvider theme={theme}>
+          <ListView aria-label="Resources" emptyState={<div>Nothing here</div>}>
+            {[]}
+          </ListView>
+        </MarigoldProvider>
+      );
+
+      expect(screen.getByText('Nothing here')).toBeInTheDocument();
+      expect(screen.getAllByRole('row')).toHaveLength(1);
+    });
   });
 
   describe('Title as span', () => {
@@ -274,6 +330,17 @@ describe('ListView', () => {
 
       expect(screen.queryAllByRole('heading')).toHaveLength(0);
       expect(screen.getByText('Acme Inc').tagName).toBe('SPAN');
+    });
+
+    // `<Title>` and `<TextValue>` are alternatives for the same text, so they
+    // resolve to the same cell — the attribute names the cell, not the slot.
+    test('a <Title> row claims the label cell', () => {
+      render(<WithDescription.Component />);
+
+      expect(screen.getByText('Acme Inc')).toHaveAttribute(
+        'data-grid-area',
+        'label'
+      );
     });
   });
 });
