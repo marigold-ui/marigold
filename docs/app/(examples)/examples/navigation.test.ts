@@ -13,6 +13,8 @@ describe('examplePages', () => {
       { name: 'Event Form', url: '/examples/event-form' },
       { name: 'Settings Form', url: '/examples/settings-form' },
       { name: 'Auto-Save Settings', url: '/examples/auto-save-settings' },
+      { name: 'Multi-Step Wizard', url: '/examples/copy-wizard' },
+      { name: 'Contract Model', url: '/examples/contract-model' },
       { name: 'Inventory', url: '/examples/inventory' },
     ]);
   });
@@ -43,6 +45,8 @@ describe('examplePages', () => {
     expect(names).toContain('Event Form');
     expect(names).toContain('Settings Form');
     expect(names).toContain('Auto-Save Settings');
+    expect(names).toContain('Multi-Step Wizard');
+    expect(names).toContain('Contract Model');
   });
 
   it('skips non-route nodes (GroupLabel, Separator)', () => {
