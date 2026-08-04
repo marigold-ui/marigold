@@ -145,6 +145,25 @@ describe('ListView', () => {
       );
     });
 
+    // A description is not restricted to a plain string: inline markup inside
+    // it stays in the description cell, so a row can emphasise part of its
+    // supporting text.
+    test('keeps inline markup inside the description cell', () => {
+      renderRow(
+        <>
+          <TextValue>Quarterly report</TextValue>
+          <Description>
+            Updated <strong>today</strong>
+          </Description>
+        </>
+      );
+
+      const description = screen.getByText(/Updated/);
+
+      expect(description).toHaveAttribute('data-grid-area', 'description');
+      expect(description).toContainElement(screen.getByText('today'));
+    });
+
     test('places a single trailing control in the actions cell', () => {
       renderRow(
         <>
