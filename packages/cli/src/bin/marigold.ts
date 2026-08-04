@@ -441,6 +441,13 @@ export const main = async (
       };
 
       if (!fileInput) fail('Usage: marigold validate <file.tsx>');
+      // Multi-file validation is a follow-up ticket, so a second positional is
+      // rejected rather than silently dropped: validating only the first file
+      // and exiting 0 would read as "both files are fine". Mirrors the
+      // positional guards on doctor/examples/migrate.
+      if (positionals.length > 1) {
+        fail('Usage: marigold validate <file.tsx> (one file at a time)');
+      }
       if (values.checks && !isValidateChecks(values.checks)) {
         fail(`Invalid --checks: ${values.checks}`);
       }

@@ -61,6 +61,13 @@ const getHarnessDir = (): string => {
   return _harnessDir;
 };
 
+// The workdir has to stay inside the CLI's own package: Vite's `fs.allow`
+// defaults to the workspace root derived from `root` (= the workdir), and the
+// harness is served the symlinked node_modules whose pnpm realpath points back
+// into the installing project. Relocating this to os.tmpdir() puts that realpath
+// outside the allow boundary, so the harness can never load React and every
+// render dies on the budget timeout instead. ensureCacheDir() below therefore
+// classifies an unwritable location rather than moving off it.
 const getCacheDir = (): string => {
   if (!_cacheDir) {
     _cacheDir = path.join(
@@ -105,8 +112,32 @@ export type SharedRenderer = {
   close: () => Promise<void>;
 };
 
+// A console template whose placeholders were never substituted carries no
+// information — only the text after them does. Anchored to the start and to
+// whitespace-separated tokens so a genuine "%o" inside a message body (or a
+// literal percent in user text) is left untouched.
+export const stripConsoleFormatTokens = (text: string): string =>
+  text.replace(/^(?:%[sdifoOc]\s*)+/, '').trimStart();
+
+// An unwritable workdir location is an environment precondition — a read-only
+// or root-owned install (`npm i -g` as root, an immutable container layer, a
+// Nix/Homebrew-style store) — not a defect in the file being validated. Carries
+// a stable `name` so validate/index.ts can recognise it and degrade to a
+// warning without statically importing this module (which would pull
+// playwright/vite back onto the hot path that the dynamic import keeps them off).
+export class RenderEnvironmentUnavailableError extends Error {
+  override name = 'RenderEnvironmentUnavailableError';
+}
+
 const ensureCacheDir = async (): Promise<string> => {
-  await mkdir(getCacheDir(), { recursive: true });
+  try {
+    await mkdir(getCacheDir(), { recursive: true });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    throw new RenderEnvironmentUnavailableError(
+      `Cannot create the render workdir at ${getCacheDir()}: ${message}`
+    );
+  }
   return getCacheDir();
 };
 
@@ -304,6 +335,12 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
       await context.addInitScript(() => {
         const w = window as unknown as Record<string, unknown>;
         w.RTCPeerConnection = undefined;
+        // Chromium still exposes the legacy prefixed alias as a separate,
+        // independently constructible reference — nulling only the unprefixed
+        // name leaves a working path to a peer connection (verified: with
+        // RTCPeerConnection undefined, `new webkitRTCPeerConnection()` still
+        // succeeds) and with it the UDP/STUN IP leak below.
+        w.webkitRTCPeerConnection = undefined;
         w.RTCDataChannel = undefined;
         w.Worker = undefined;
         w.SharedWorker = undefined;
@@ -389,7 +426,13 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
           /^Failed to send error to Vite server:/i.test(text)
         )
           return;
-        consoleErrors.push(text);
+        // React logs its error-boundary report through a console template
+        // ("%o\n\n%s\n\n%s\n") whose placeholders arrive unsubstituted, so the
+        // message would otherwise be reported to the caller with a leading run
+        // of literal %o/%s tokens before the real text. Strip that prefix —
+        // dropping the message entirely would lose the error content that
+        // follows it, which is genuine signal about the file under test.
+        consoleErrors.push(stripConsoleFormatTokens(text));
       });
       page.on('pageerror', err => pageErrors.push(err.message));
 

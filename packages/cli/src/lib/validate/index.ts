@@ -361,8 +361,13 @@ const runWithRenderer = async (
       // be mistaken for "this component is broken" by exit code alone. Any
       // other render failure (a genuine crash, the CHECK_BUDGET_MS timeout)
       // stays an error: that IS a real signal about the file under test.
+      // Matched by name rather than instanceof: the class lives in
+      // spatial/renderer.ts, which is only ever imported dynamically so that
+      // playwright/vite stay off the technical-only hot path.
       const isToolchainUnavailable =
-        err instanceof RenderToolchainUnavailableError;
+        err instanceof RenderToolchainUnavailableError ||
+        (err instanceof Error &&
+          err.name === 'RenderEnvironmentUnavailableError');
       issues.push({
         type: 'technical',
         severity: isToolchainUnavailable ? 'warning' : 'error',

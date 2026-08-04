@@ -52,6 +52,22 @@ describe('render integration (requires a working render environment)', () => {
     ).toBe(false);
   }, 60_000);
 
+  it('accepts a memo()-wrapped default export instead of reporting "no component found"', async ctx => {
+    if (!renderWorks) return ctx.skip();
+    // memo/forwardRef/lazy return objects, not functions. A typeof-function
+    // gate in the harness rejects them, which surfaces as a runtime error and
+    // exit 1 on a file that plainly has a default export — the false-failure
+    // class an agent fix-loop then tries to "repair" in correct code.
+    const report = await validate(example('memo-default-export.tsx'), {
+      checks: ['spatial'],
+      viewport,
+    });
+    expect(report.metadata.renderTimeMs).toBeGreaterThan(0);
+    const runtimeErrors = report.errors.filter(e => e.source === 'runtime');
+    expect(runtimeErrors).toEqual([]);
+    expect(report.metadata.componentsFound.length).toBeGreaterThan(0);
+  }, 60_000);
+
   it('drives the interaction simulation over a dialog without throwing', async ctx => {
     if (!renderWorks) return ctx.skip();
     // dialog-open.tsx exercises the overlay/interaction-driver path.

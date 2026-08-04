@@ -346,6 +346,18 @@ describe('main() — validate command', () => {
     expect(runValidateMock).not.toHaveBeenCalled();
   });
 
+  test('rejects a second file instead of silently validating only the first', async () => {
+    const code = await main(['validate', 'a.tsx', 'b.tsx']);
+
+    expect(code).toBe(1);
+    expect(stderrSpy.mock.calls.flat().join('')).toContain(
+      'one file at a time'
+    );
+    // The point of the guard: exiting 0 after checking only a.tsx would read
+    // as "both files are fine".
+    expect(runValidateMock).not.toHaveBeenCalled();
+  });
+
   test('clamps an invalid --checks to `invalid` in telemetry', async () => {
     const code = await main([
       'validate',

@@ -5,13 +5,20 @@ import { RenderHarness } from './setup.js';
 
 type AnyComponent = ComponentType;
 
+// React's exotic components (memo/forwardRef/lazy) are objects carrying a
+// `$$typeof` marker, not functions — so a `typeof === 'function'` gate rejects
+// `export default memo(Page)` and reports "no component found" on a file that
+// plainly has one. That surfaces as a runtime error and exit 1 on valid input,
+// which is the false-failure class an agent fix-loop then tries to "repair".
+const isComponentLike = (v: unknown): boolean =>
+  typeof v === 'function' ||
+  (typeof v === 'object' && v !== null && '$$typeof' in v);
+
 const findComponent = (
   mod: Record<string, unknown>
 ): AnyComponent | undefined => {
-  if (typeof mod.default === 'function') return mod.default as AnyComponent;
-  if (typeof (mod as Record<string, unknown>).App === 'function') {
-    return mod.App as AnyComponent;
-  }
+  if (isComponentLike(mod.default)) return mod.default as AnyComponent;
+  if (isComponentLike(mod.App)) return mod.App as AnyComponent;
   return undefined;
 };
 

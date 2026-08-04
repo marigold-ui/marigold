@@ -102,8 +102,14 @@ export async function POST(request: Request) {
     // Same NX idempotency as the rate-limit key above: retried by every
     // later event in the day if the first EXPIRE call fails, and never
     // pushes the retention window out regardless of how many times it runs.
-    await client.lpush(dateKey(), JSON.stringify(payload));
-    await client.expire(dateKey(), EVENT_RETENTION_SECONDS, 'NX');
+    // The key is resolved once: calling dateKey() twice lets a request that
+    // crosses midnight UTC between the two commands push onto day N and then
+    // EXPIRE day N+1 — a key that doesn't exist yet, so EXPIRE is a no-op and
+    // day N's list is left with no TTL at all. No later event targets that key
+    // again, so NX can't recover it.
+    const eventKey = dateKey();
+    await client.lpush(eventKey, JSON.stringify(payload));
+    await client.expire(eventKey, EVENT_RETENTION_SECONDS, 'NX');
   } catch {
     // Never leak backend errors; telemetry must not break the caller.
   }

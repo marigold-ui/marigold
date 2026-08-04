@@ -120,4 +120,33 @@ describe('POST /api/telemetry (with Redis configured)', () => {
     expect(redisMock.lpush).toHaveBeenCalledTimes(2);
     expect(dayKeyExpireCalls()).toHaveLength(2);
   });
+
+  it('resolves the event key once, so an event straddling midnight UTC still gets a TTL', async () => {
+    // Resolving the key separately for LPUSH and EXPIRE lets a request whose
+    // LPUSH round trip crosses midnight push onto day N and then EXPIRE day
+    // N+1 — a key that doesn't exist yet, so EXPIRE is a silent no-op and day
+    // N's list keeps no TTL at all. NX can't recover it either: no later event
+    // ever targets that key again. Simulated by letting the clock advance
+    // during the LPUSH call itself.
+    vi.useFakeTimers();
+    try {
+      vi.setSystemTime(new Date('2026-01-01T23:59:59.500Z'));
+      redisMock.lpush.mockImplementationOnce(async () => {
+        vi.setSystemTime(new Date('2026-01-02T00:00:00.500Z'));
+        return 1;
+      });
+
+      const res = await post(makeEvent('validate'));
+
+      expect(res.status).toBe(204);
+      const pushedKey = redisMock.lpush.mock.calls.at(-1)![0];
+      expect(pushedKey).toBe('telemetry:2026-01-01');
+      const calls = dayKeyExpireCalls();
+      expect(calls).toHaveLength(1);
+      // The TTL has to land on the key that was actually written to.
+      expect(calls[0][0]).toBe(pushedKey);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
 });
