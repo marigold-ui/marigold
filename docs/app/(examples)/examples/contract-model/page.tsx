@@ -47,6 +47,15 @@ import {
  *   it is a form; using the element says so, gives keyboard submit for free, and
  *   is the component that carries `maxWidth`. `<Stack>` inside it reproduces the
  *   rhythm `<Page>` would otherwise apply to its own children.
+ * - **One Save, and it means one thing.** Because the form is a real form, the
+ *   file upload is a field inside it (`<FileField name="conditions">`) and the
+ *   submit handler reads it off `FormData` — so there is no second commit
+ *   button in a dialog competing with this one. Every boolean on the screen is a
+ *   `<Checkbox>` for the same reason: a `<Switch>` promises the change has
+ *   already happened, and on this page nothing happens until Save.
+ * - **Fields are as wide as their answers.** The measure caps the *page*; it is
+ *   not a target for every control to fill. The Select takes three short labels
+ *   and is sized for them.
  * - **One Panel per topic, and no surface inside a surface.** The version this
  *   replaces drew its own boxes (`rounded-xl border p-4`) and then nested a
  *   `<Container>` and two `<Card>`s inside them. `<Panel>` is the surface;
@@ -71,6 +80,10 @@ const ContractModelPage = () => {
   // has a document this event always inherits at least that one.
   const [document, setDocument] = useState<ConditionsDocument | null>(null);
   const [saveAttempted, setSaveAttempted] = useState(false);
+  // Bumped on every save so the Panel remounts and the FileField's staged
+  // selection is cleared. FileField owns that state, so a new key is the way to
+  // reset it.
+  const [savedCount, setSavedCount] = useState(0);
   const { addToast } = useToast();
 
   // A bundle is sold outright, so it needs no terms and conditions. Every other
@@ -78,9 +91,20 @@ const ContractModelPage = () => {
   const needsDocument = model !== 'bundle';
   const isMissingDocument = needsDocument && document === null;
 
-  const save = () => {
+  const save = (form: HTMLFormElement) => {
     setSaveAttempted(true);
-    if (isMissingDocument) return;
+
+    // The upload is a field on this form, so it is read here like any other
+    // one — `<FileField name="conditions">` renders a file input, and FormData
+    // hands back the File. This is what replaces a dialog with its own commit
+    // button: one Save on the page, one thing it means.
+    const staged = new FormData(form).get('conditions');
+    const hasUpload = staged instanceof File && staged.size > 0;
+
+    if (isMissingDocument && !hasUpload) return;
+
+    if (hasUpload) setDocument(ownDocument);
+    setSavedCount(count => count + 1);
     addToast({
       title: 'Contract model saved',
       variant: 'success',
@@ -107,13 +131,13 @@ const ContractModelPage = () => {
         maxWidth="container"
         onSubmit={event => {
           event.preventDefault();
-          save();
+          save(event.currentTarget);
         }}
       >
         <Stack space="regular">
           <ConditionsPanel
+            key={savedCount}
             document={document}
-            onUpload={() => setDocument(ownDocument)}
             onRemove={() => setDocument(inheritedDocument)}
           />
 
@@ -126,11 +150,22 @@ const ContractModelPage = () => {
               </Description>
             </Panel.Header>
             <Panel.Content>
+              {/*
+                A field is as wide as the answer it takes, not as wide as the
+                page. Three short labels do not need 800px of control, and a
+                full-width Select next to a full-width paragraph makes the whole
+                Panel read as one undifferentiated column.
+
+                It is a number and not `width="fit"` because Select excludes the
+                `fit` keyword — and that is the right call here anyway: a control
+                sized to its content would change width every time the selection
+                changes. 64 (16rem) holds the longest label with room to spare.
+              */}
               <Select
                 label="Sales model"
                 value={model}
                 onChange={key => setModel(key as ContractModel)}
-                width="auto"
+                width={64}
                 required
               >
                 {contractModels.map(option => (

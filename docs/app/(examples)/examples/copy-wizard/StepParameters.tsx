@@ -12,7 +12,6 @@ import {
   SegmentedControl,
   Select,
   Stack,
-  Switch,
   Text,
   TextArea,
   TextField,
@@ -40,6 +39,10 @@ type TagMode = 'none' | 'all' | 'custom';
  * Sub-grouping *inside* a Panel is a plain `<Headline level={3} size="level-5">` over a
  * `<Stack>` — no nested surface, no hand-drawn rule. The Panel already draws
  * the boundary; a box inside a box just adds noise.
+ *
+ * Every boolean here is a `<Checkbox>` and not a `<Switch>`, because nothing
+ * happens until "Start the run" is pressed. See the comment on the Data
+ * transfer Panel for the rule.
  */
 export const StepParameters = () => {
   const [restrictBookings, setRestrictBookings] = useState(false);
@@ -132,13 +135,20 @@ export const StepParameters = () => {
                 Order data
               </Headline>
               {/*
-                `<Switch>` already places the toggle before the label and puts
-                the description in the label's column. Passing `description`
-                directly keeps that grid intact — a wrapper that flips the
-                label/toggle order breaks the alignment instead of fixing it.
+                `<Checkbox>`, not `<Switch>`. The two look interchangeable and
+                are not: a Switch promises the change takes effect the moment
+                you flip it, which is why it needs no Save button next to it.
+                Everything in this wizard is staged and committed by "Start the
+                run" at the bottom, so every one of these is a checkbox. The
+                test is one question — does anything happen when I toggle it?
+                No means checkbox.
+
+                Both take `label` and `description` and lay them out the same
+                way, with the description in the label's column, so this is a
+                one-word swap and nothing about the layout changes.
               */}
-              <Switch label="Copy order remarks" defaultSelected />
-              <Switch
+              <Checkbox label="Copy order remarks" defaultChecked />
+              <Checkbox
                 label="Copy booking reference"
                 description="Keeps the reference from the source order so finance can reconcile the two."
               />
@@ -148,18 +158,18 @@ export const StepParameters = () => {
               <Headline level={3} size="level-5">
                 Free fields
               </Headline>
-              <Switch label="Copy free fields per order" defaultSelected />
-              <Switch label="Copy free fields per ticket" />
+              <Checkbox label="Copy free fields per order" defaultChecked />
+              <Checkbox label="Copy free fields per ticket" />
             </Stack>
 
             <Stack space="regular">
               <Headline level={3} size="level-5">
                 Delivery address
               </Headline>
-              <Switch
+              <Checkbox
                 label="Copy delivery address"
-                description="When off, the address on file for the customer is used instead."
-                defaultSelected
+                description="When cleared, the address on file for the customer is used instead."
+                defaultChecked
               />
             </Stack>
           </Stack>
@@ -249,9 +259,15 @@ export const StepParameters = () => {
         </Panel.Header>
         <Panel.Content>
           <Stack space="regular">
-            <Switch
+            {/*
+              A checkbox for the same reason as the ones above: nothing is
+              filtered until the run starts. That it reveals fields below does
+              not make it a Switch — a disclosure checkbox is still a value
+              being staged, and the fields it reveals are staged with it.
+            */}
+            <Checkbox
               label="Restrict to specific orders"
-              selected={restrictBookings}
+              checked={restrictBookings}
               onChange={setRestrictBookings}
             />
             {restrictBookings ? (
@@ -287,7 +303,8 @@ export const StepParameters = () => {
         <SectionMessage.Content>
           <Text>
             The source bundles carry per-ticket free fields that this run will
-            drop. Turn the switch on above if the copies need them.
+            drop. Tick “Copy free fields per ticket” above if the copies need
+            them.
           </Text>
         </SectionMessage.Content>
       </SectionMessage>

@@ -3,6 +3,7 @@
 import { type CalendarDate, parseDate } from '@internationalized/date';
 import { useState } from 'react';
 import {
+  Checkbox,
   Columns,
   DatePicker,
   Description,
@@ -11,7 +12,6 @@ import {
   NumberField,
   Panel,
   Stack,
-  Switch,
   Text,
   Title,
 } from '@marigold/components';
@@ -43,7 +43,7 @@ export const ContractTermPanel = () => {
     parseDate('2027-05-31')
   );
 
-  // With the switch on, the end of the fixed term follows start + months.
+  // With the box ticked, the end of the fixed term follows start + months.
   const end = autoEnd ? start.add({ months }).subtract({ days: 1 }) : manualEnd;
   const indefiniteStart = end.add({ days: 1 });
 
@@ -80,10 +80,18 @@ export const ContractTermPanel = () => {
               required
             />
 
-            <Switch
+            {/*
+              A `<Checkbox>`, not a `<Switch>`. A Switch says "this takes
+              effect now" — it is the control for something with no Save button,
+              like a live preference. This screen has a Save at the bottom, so
+              every boolean on it is a value being staged and belongs in a
+              checkbox. Both components take `label` and `description` and lay
+              them out identically, so the swap costs nothing.
+            */}
+            <Checkbox
               label="Calculate the end date"
               description="Derives the end from the start date and a number of months."
-              selected={autoEnd}
+              checked={autoEnd}
               onChange={setAutoEnd}
             />
 

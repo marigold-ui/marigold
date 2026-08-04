@@ -4,7 +4,9 @@ brief: >-
   Page and Panel. One <h1> for the flow, a token-driven progress nav as page
   chrome, one Panel per topic per step (all full width, because step 1 holds
   tables and a page gets one measure; bleed on the table Panels), a single
-  Panel.Collapsible for the optional tag settings, and the wizard's
+  Panel.Collapsible for the optional tag settings, Checkbox rather than Switch
+  for every staged boolean because nothing happens until the run starts, ghost
+  icon buttons in noWrap Inline for the in-row reorder controls, and the wizard's
   Back/Continue outside the Panels because they act on the page, not on a
   section.
 patterns:

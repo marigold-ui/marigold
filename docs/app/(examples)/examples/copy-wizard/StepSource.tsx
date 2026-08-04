@@ -173,7 +173,7 @@ export const StepSource = () => {
               <Table.Header>
                 <Table.Column width={64}>Rank</Table.Column>
                 <Table.Column rowHeader>Bundle</Table.Column>
-                <Table.Column width={96}>Reorder</Table.Column>
+                <Table.Column width={112}>Reorder</Table.Column>
               </Table.Header>
               <Table.Body>
                 {ranked.map((bundle, index) => (
@@ -181,8 +181,27 @@ export const StepSource = () => {
                     <Table.Cell>{index + 1}</Table.Cell>
                     <Table.Cell>{bundle.name}</Table.Cell>
                     <Table.Cell>
-                      <Inline space="collapsed">
+                      {/*
+                        Row-level controls are `variant="ghost"`, not the
+                        default `secondary`. A filled button in every row of a
+                        table puts a grey box next to every line of data and
+                        competes with the row itself for attention; the ghost
+                        variant keeps the icon and drops the box, and still
+                        gives a hover and focus surface. `space="tight"` (6px)
+                        rather than `collapsed` (0) so the pair reads as two
+                        buttons — with no fill to separate them, touching
+                        targets look like one wide control.
+
+                        `noWrap` is not optional. `<Inline>` wraps by default,
+                        which is right for content and wrong for a control pair:
+                        in a fixed-width table column the second button drops
+                        onto its own line and doubles the row height. Any time
+                        the children are one control rather than a list, turn
+                        wrapping off and give the column room for them.
+                      */}
+                      <Inline space="tight" noWrap>
                         <Button
+                          variant="ghost"
                           size="icon"
                           aria-label={`Move ${bundle.name} up`}
                           disabled={index === 0}
@@ -191,6 +210,7 @@ export const StepSource = () => {
                           <ArrowUp />
                         </Button>
                         <Button
+                          variant="ghost"
                           size="icon"
                           aria-label={`Move ${bundle.name} down`}
                           disabled={index === ranked.length - 1}

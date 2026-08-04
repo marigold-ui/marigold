@@ -3,11 +3,15 @@ brief: >-
   A settings screen ("how is this subscription sold?") laid out with Page and
   Panel. One measure for the whole screen via Form maxWidth="container" rather
   than per-Panel size="form", one Panel per topic with no surface nested inside
-  another, the section's own actions in Panel.Header, EmptyState and FileField
-  instead of a hand-drawn dashed box and a hidden file input, derived read-only
-  values as key/value rows rather than a nested Card, and the page's Save/Cancel
-  plus the screen-level SectionMessage inside that measure but outside the
-  Panels, because they act on the page.
+  another, the section's own actions in Panel.Header, FileField as a field on the
+  form — read off FormData by the page's own Save — instead of a hidden file
+  input or a dialog with a second commit button, Checkbox rather than Switch
+  because nothing takes effect until Save, fields sized to their answers instead
+  of stretched to the measure, derived read-only values as key/value rows rather
+  than a nested Card, and the page's Save/Cancel plus the screen-level
+  SectionMessage inside that measure but outside the Panels, because they act on
+  the page. The one remaining Dialog is the destructive confirm, which is what a
+  dialog is for.
 patterns:
   - layout/app-frame
 mock_data:
