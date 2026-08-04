@@ -20,10 +20,15 @@ import { bundleGroups, bundles } from './data';
 /**
  * Step 1 — pick the source bundles and their transfer order.
  *
- * Three stacked Panels, each owning one topic. The first is a `size="form"`
- * Panel with a single Select; the two below are data Panels whose tables run
- * edge to edge via `<Panel.Content bleed>`, so the cell edges line up with the
- * Panel title above them.
+ * Three stacked Panels, each owning one topic. The first holds a single Select;
+ * the two below are data Panels whose tables run edge to edge via
+ * `<Panel.Content bleed>`, so the cell edges line up with the Panel title above
+ * them.
+ *
+ * This step is why the whole wizard is full width. A table wants the room, and
+ * a page where some Panels are capped and others are not reads as ragged — so
+ * the measure is decided once, for the page, and every Panel in every step
+ * follows it.
  */
 export const StepSource = () => {
   const [groupId, setGroupId] = useState<string>('bg-1');
@@ -55,7 +60,7 @@ export const StepSource = () => {
 
   return (
     <>
-      <Panel size="form">
+      <Panel>
         <Panel.Header>
           <Title>Bundle group</Title>
           <Description>
@@ -147,7 +152,7 @@ export const StepSource = () => {
         </Panel.Content>
       </Panel>
 
-      <Panel size="form">
+      <Panel>
         <Panel.Header>
           <Title>Transfer order</Title>
           <Description>

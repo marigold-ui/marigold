@@ -61,9 +61,10 @@ export const ConditionsPanel = ({
     document?.origin === 'group' || document?.origin === 'organizer';
 
   return (
-    // `size="form"` even though this Panel holds no fields: it is one section of
-    // a form, and the page reads as ragged if one Panel runs wider than the rest.
-    <Panel size="form">
+    // No `size="form"`: the page's `<Form maxWidth="container">` already sets the
+    // measure for every section, so a Panel-level cap would only add a second,
+    // competing edge.
+    <Panel>
       <Panel.Header>
         <Title>Terms and conditions</Title>
         <Description>

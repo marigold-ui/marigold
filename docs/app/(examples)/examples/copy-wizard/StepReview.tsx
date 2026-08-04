@@ -59,7 +59,7 @@ export const StepReview = () => {
 
   return (
     <>
-      <Panel size="form">
+      <Panel>
         <Panel.Header>
           <Title>Run summary</Title>
           <Description>

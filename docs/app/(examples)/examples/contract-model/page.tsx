@@ -4,6 +4,7 @@ import { useState } from 'react';
 import {
   Button,
   Description,
+  Form,
   Inline,
   Page,
   Panel,
@@ -32,11 +33,20 @@ import {
  *
  * The shape to copy:
  *
- * - **`<Page>` owns the frame and the measure.** No `utils-width-800` wrapper
- *   and no `max-w-*` around the screen. The reading measure is a property of
- *   the *form*, not of the page, so it comes from `<Panel size="form">` on the
- *   field-heavy Panels — which means a Panel that holds a table or a wide
- *   summary can still use the whole width without fighting a page-level cap.
+ * - **One measure, declared once.** `<Form maxWidth="container">` wraps the body,
+ *   so the Panels, the `<SectionMessage>` and the button row all end at the same
+ *   edge. `container` is the theme's own token for "max readable measure for a
+ *   centered page column" (50rem) — the named version of the 800px the old
+ *   `utils-width-800` was reaching for. Note what is *not* here: no
+ *   `size="form"` on the individual Panels. Capping some Panels and not others
+ *   is what makes a page look ragged, and it is a page-level decision, so it is
+ *   made in one place. A page whose content genuinely needs the room — the
+ *   wizard example, which holds tables — drops the wrapper instead and runs
+ *   every Panel full width.
+ * - **`<Form>` rather than a `<div>`.** The screen has a Save and a Cancel, so
+ *   it is a form; using the element says so, gives keyboard submit for free, and
+ *   is the component that carries `maxWidth`. `<Stack>` inside it reproduces the
+ *   rhythm `<Page>` would otherwise apply to its own children.
  * - **One Panel per topic, and no surface inside a surface.** The version this
  *   replaces drew its own boxes (`rounded-xl border p-4`) and then nested a
  *   `<Container>` and two `<Card>`s inside them. `<Panel>` is the surface;
@@ -87,98 +97,113 @@ const ContractModelPage = () => {
         </Description>
       </Page.Header>
 
-      <ConditionsPanel
-        document={document}
-        onUpload={() => setDocument(ownDocument)}
-        onRemove={() => setDocument(inheritedDocument)}
-      />
-
-      <Panel size="form">
-        <Panel.Header>
-          <Title>Sales model</Title>
-          <Description>
-            Determines what customers commit to. It cannot be changed once
-            contracts exist.
-          </Description>
-        </Panel.Header>
-        <Panel.Content>
-          <Select
-            label="Sales model"
-            value={model}
-            onChange={key => setModel(key as ContractModel)}
-            width="auto"
-            required
-          >
-            {contractModels.map(option => (
-              <Select.Option key={option.id} id={option.id}>
-                <Text slot="label">{option.label}</Text>
-                <Text slot="description">{option.description}</Text>
-              </Select.Option>
-            ))}
-          </Select>
-        </Panel.Content>
-      </Panel>
-
-      {model === 'subscription' ? (
-        <ContractTermPanel />
-      ) : (
-        <Panel size="form">
-          <Panel.Header>
-            <Title>Contract term</Title>
-            <Description>
-              How long customers are committed, and when they have to cancel by.
-            </Description>
-          </Panel.Header>
-          <Panel.Content>
-            <Stack space="related">
-              <Text variant="muted">
-                {model === 'bundle'
-                  ? 'A bundle is a one-off purchase, so there is no term to set. Customers buy the events and the sale is complete.'
-                  : 'Priority purchase grants early access to existing subscribers. The term comes from their existing subscription, so there is nothing to set here.'}
-              </Text>
-            </Stack>
-          </Panel.Content>
-        </Panel>
-      )}
-
       {/*
-        Feedback on the whole screen, so it sits in the page flow rather than
-        inside a Panel. The variant escalates only once the user has tried to
-        save: before that, a missing document is a heads-up, not an error.
+        One measure for the whole screen. `maxWidth="container"` is the theme's
+        named page measure (50rem), so everything below — Panels, the message,
+        the buttons — ends at the same edge, and nothing needs `size="form"`.
+        `<Stack>` supplies the rhythm that `<Page>` gives its own children.
       */}
-      {isMissingDocument ? (
-        <SectionMessage variant={saveAttempted ? 'error' : 'warning'}>
-          <SectionMessage.Title>
-            Terms and conditions are missing
-          </SectionMessage.Title>
-          <SectionMessage.Content>
-            <Text>
-              {saveAttempted
-                ? 'Upload a document before saving — a contract model cannot go live without one.'
-                : 'This sales model is a contract, so customers must be shown a document before they can sign up.'}
-            </Text>
-          </SectionMessage.Content>
-        </SectionMessage>
-      ) : (
-        needsDocument && (
-          <SectionMessage variant="info">
-            <SectionMessage.Content>
-              <Text>
-                Customers see these terms at checkout and receive a copy with
-                their confirmation.
-              </Text>
-            </SectionMessage.Content>
-          </SectionMessage>
-        )
-      )}
+      <Form
+        maxWidth="container"
+        onSubmit={event => {
+          event.preventDefault();
+          save();
+        }}
+      >
+        <Stack space="regular">
+          <ConditionsPanel
+            document={document}
+            onUpload={() => setDocument(ownDocument)}
+            onRemove={() => setDocument(inheritedDocument)}
+          />
 
-      <Inline space="related" alignY="center">
-        <Split />
-        <Button>Cancel</Button>
-        <Button variant="primary" onPress={save}>
-          Save
-        </Button>
-      </Inline>
+          <Panel>
+            <Panel.Header>
+              <Title>Sales model</Title>
+              <Description>
+                Determines what customers commit to. It cannot be changed once
+                contracts exist.
+              </Description>
+            </Panel.Header>
+            <Panel.Content>
+              <Select
+                label="Sales model"
+                value={model}
+                onChange={key => setModel(key as ContractModel)}
+                width="auto"
+                required
+              >
+                {contractModels.map(option => (
+                  <Select.Option key={option.id} id={option.id}>
+                    <Text slot="label">{option.label}</Text>
+                    <Text slot="description">{option.description}</Text>
+                  </Select.Option>
+                ))}
+              </Select>
+            </Panel.Content>
+          </Panel>
+
+          {model === 'subscription' ? (
+            <ContractTermPanel />
+          ) : (
+            <Panel>
+              <Panel.Header>
+                <Title>Contract term</Title>
+                <Description>
+                  How long customers are committed, and when they have to cancel
+                  by.
+                </Description>
+              </Panel.Header>
+              <Panel.Content>
+                <Text variant="muted">
+                  {model === 'bundle'
+                    ? 'A bundle is a one-off purchase, so there is no term to set. Customers buy the events and the sale is complete.'
+                    : 'Priority purchase grants early access to existing subscribers. The term comes from their existing subscription, so there is nothing to set here.'}
+                </Text>
+              </Panel.Content>
+            </Panel>
+          )}
+
+          {/*
+            Feedback on the whole screen, so it sits in the page flow rather than
+            inside a Panel. The variant escalates only once the user has tried to
+            save: before that, a missing document is a heads-up, not an error.
+          */}
+          {isMissingDocument ? (
+            <SectionMessage variant={saveAttempted ? 'error' : 'warning'}>
+              <SectionMessage.Title>
+                Terms and conditions are missing
+              </SectionMessage.Title>
+              <SectionMessage.Content>
+                <Text>
+                  {saveAttempted
+                    ? 'Upload a document before saving — a contract model cannot go live without one.'
+                    : 'This sales model is a contract, so customers must be shown a document before they can sign up.'}
+                </Text>
+              </SectionMessage.Content>
+            </SectionMessage>
+          ) : (
+            needsDocument && (
+              <SectionMessage variant="info">
+                <SectionMessage.Content>
+                  <Text>
+                    Customers see these terms at checkout and receive a copy
+                    with their confirmation.
+                  </Text>
+                </SectionMessage.Content>
+              </SectionMessage>
+            )
+          )}
+
+          <Inline space="related" alignY="center">
+            <Split />
+            <Button type="button">Cancel</Button>
+            <Button type="submit" variant="primary">
+              Save
+            </Button>
+          </Inline>
+        </Stack>
+      </Form>
     </Page>
   );
 };

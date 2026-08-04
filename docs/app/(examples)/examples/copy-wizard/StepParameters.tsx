@@ -32,9 +32,10 @@ type TagMode = 'none' | 'all' | 'custom';
  * Step 2 — the parameters that apply to the whole run.
  *
  * This is the step that goes wrong most often, because it is the one with the
- * most fields. Four Panels, one topic each, all `size="form"` so the
- * label/input pairs stay inside a comfortable reading measure instead of
- * stretching across a wide screen.
+ * most fields. Four Panels, one topic each, and — like every other step — no
+ * `size="form"`: this wizard is a full-width page because step 1 holds tables,
+ * and one page gets one measure. The fields keep their own comfortable widths
+ * through `width` on the field, not by narrowing the Panel around them.
  *
  * Sub-grouping *inside* a Panel is a plain `<Headline level={3} size="level-5">` over a
  * `<Stack>` — no nested surface, no hand-drawn rule. The Panel already draws
@@ -47,7 +48,7 @@ export const StepParameters = () => {
 
   return (
     <>
-      <Panel size="form">
+      <Panel>
         <Panel.Header>
           <Title>Sales parameters</Title>
           <Description>Applied to every order created by this run.</Description>
@@ -72,7 +73,7 @@ export const StepParameters = () => {
         </Panel.Content>
       </Panel>
 
-      <Panel size="form">
+      <Panel>
         <Panel.Header>
           <Title>Internal bookings</Title>
           <Description>
@@ -117,7 +118,7 @@ export const StepParameters = () => {
         </Panel.Content>
       </Panel>
 
-      <Panel size="form">
+      <Panel>
         <Panel.Header>
           <Title>Data transfer</Title>
           <Description>
@@ -239,7 +240,7 @@ export const StepParameters = () => {
         </Panel.Collapsible>
       </Panel>
 
-      <Panel size="form">
+      <Panel>
         <Panel.Header>
           <Title>Booking filter</Title>
           <Description>

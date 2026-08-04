@@ -53,7 +53,8 @@ export const ContractTermPanel = () => {
     );
 
   return (
-    <Panel size="form">
+    // The page's `<Form maxWidth="container">` owns the measure; see page.tsx.
+    <Panel>
       <Panel.Header>
         <Title>Contract term</Title>
         <Description>
