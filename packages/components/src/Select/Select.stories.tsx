@@ -3,6 +3,7 @@ import { Form } from 'react-aria-components/Form';
 import { Key } from 'react-aria-components/Select';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
+import { clickOption } from '.storybook/test-utils';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Description } from '../Description/Description';
@@ -112,24 +113,6 @@ export const Basic = meta.story({
   },
 });
 
-/**
- * Clicks an option inside the (virtualized) popover list.
- *
- * While the virtualizer scrolls — which it does when it measures its rows and
- * brings the focused option into view after opening — react-aria sets
- * `pointer-events: none` on its content wrapper, and `userEvent.click()` refuses
- * to interact with such an element. Wait for the list to settle first, the way
- * a user would, instead of clicking into an unsettled list.
- */
-const clickOption = async (listbox: HTMLElement, name: string | RegExp) => {
-  await waitFor(() => {
-    const option = within(listbox).getByRole('option', { name });
-    expect(getComputedStyle(option).pointerEvents).not.toBe('none');
-  });
-
-  await userEvent.click(within(listbox).getByRole('option', { name }));
-};
-
 Basic.test('Opens the dropdown', async ({ canvas, args }) => {
   const button = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
 
@@ -166,7 +149,11 @@ Basic.test(
     });
 
     await step('Select an item from the list', async () => {
-      await clickOption(canvas.getByRole('listbox'), 'Star Wars');
+      await clickOption(() =>
+        within(canvas.getByRole('listbox')).getByRole('option', {
+          name: 'Star Wars',
+        })
+      );
     });
 
     await step('Verify the select is closed', async () => {
@@ -273,14 +260,12 @@ Basic.test(
 
     const listbox = await canvas.findByRole('listbox');
 
-    // The label has no break opportunity, so it has to break mid-word and stay
-    // inside the narrow list instead of widening the option. That is a purely
-    // visual invariant here, guarded by the Chromatic snapshot of the open
-    // list: the virtualizer does not size its rows under the browser test
-    // runner, so per-option widths cannot be asserted in this environment.
-    expect(
-      within(listbox).getByRole('option', { name: /IchliebeDeutschland/ })
-    ).toBeVisible();
+    // The label has no break opportunity, so without `wrap-anywhere` it widens
+    // the option past the list instead of breaking mid-word. `scrollWidth`
+    // catches that even though the virtualizer does not size rows under the
+    // test runner, unlike a per-option width assertion. The Chromatic snapshot
+    // is still the guard for the wrap itself actually looking right.
+    expect(listbox.scrollWidth).toBeLessThanOrEqual(listbox.clientWidth);
   }
 );
 
@@ -649,7 +634,11 @@ WithRenderValue.test(
     });
 
     await step('Select Bob', async () => {
-      await clickOption(canvas.getByRole('listbox'), 'Bob Smith');
+      await clickOption(() =>
+        within(canvas.getByRole('listbox')).getByRole('option', {
+          name: 'Bob Smith',
+        })
+      );
 
       await waitFor(() =>
         expect(canvas.queryByRole('listbox')).not.toBeInTheDocument()
