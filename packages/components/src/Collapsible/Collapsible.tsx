@@ -1,5 +1,7 @@
-import type { DisclosureProps } from 'react-aria-components';
-import { Disclosure } from 'react-aria-components';
+import {
+  Disclosure,
+  type DisclosureProps,
+} from 'react-aria-components/Disclosure';
 import { cn, useClassNames } from '@marigold/system';
 import { CollapsibleContent } from './CollapsibleContent';
 import { CollapsibleTrigger } from './CollapsibleTrigger';

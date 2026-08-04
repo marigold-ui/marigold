@@ -11,19 +11,19 @@ import {
 } from '@marigold/components';
 
 export const ContactTiles = () => (
-  <Stack space={6}>
-    <Headline level="2">Our Team</Headline>
-    <Tiles stretch equalHeight tilesWidth="250px" space={4}>
+  <Stack space="regular">
+    <Headline level={2}>Our Team</Headline>
+    <Tiles stretch equalHeight tilesWidth="250px" space="regular">
       {people.map(person => (
-        <Card key={person.id} pt={8} pb={6} px={0} stretch>
-          <Stack space={12} alignY="between" stretch>
-            <Stack space={8} alignX="center">
+        <Card key={person.id} stretch>
+          <Card.Content>
+            <Stack space="regular" alignX="center">
               <img
                 src={person.avatar}
                 alt={person.name}
                 className="block w-32 rounded-full"
               />
-              <Stack alignX="center" space={1}>
+              <Stack alignX="center" space="tight">
                 <Text fontSize="xl" weight="semibold">
                   {person.name}
                 </Text>
@@ -37,7 +37,9 @@ export const ContactTiles = () => (
                 </Text>
               </Stack>
             </Stack>
-            <Inline alignX="center" space={1}>
+          </Card.Content>
+          <Card.Footer>
+            <Inline alignX="center" space="tight">
               <LinkButton href="#">
                 <Mail /> Email
               </LinkButton>
@@ -45,7 +47,7 @@ export const ContactTiles = () => (
                 <Phone /> Phone
               </LinkButton>
             </Inline>
-          </Stack>
+          </Card.Footer>
         </Card>
       ))}
     </Tiles>

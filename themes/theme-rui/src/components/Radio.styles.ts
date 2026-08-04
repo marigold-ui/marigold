@@ -1,20 +1,29 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Radio: ThemeComponent<'Radio'> = {
-  container: cva({ base: 'group-disabled/radio:cursor-not-allowed' }),
+  container: cva({
+    base: [
+      'gap-x-2',
+      'group-disabled/radio:cursor-not-allowed',
+      'group-data-[orientation=vertical]/radiogroup:py-1',
+      'group-data-[orientation=horizontal]/radiogroup:px-1.5',
+    ],
+  }),
   label: cva({
     base: [
-      'text-sm font-normal cursor-pointer w-full',
-      'group-disabled/radio:text-disabled-foreground group-disabled/radio:cursor-not-allowed',
+      'text-sm leading-4 font-normal cursor-pointer w-full',
+      'group-disabled/radio:text-disabled group-disabled/radio:cursor-not-allowed',
     ],
   }),
   radio: cva({
     base: [
       'aspect-square size-4 rounded-full',
-      'border border-input shadow-elevation-border',
+      // Matches Checkbox: tiny, always on white, so a +0.06 alpha step on
+      // control-border restores the old opaque-border weight. Token-derived.
+      'border border-[oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_+_0.06))] bg-surface',
       'group-focus-visible/radio:ui-state-focus outline-none',
-      'group-disabled/radio:group-selected/radio:bg-disabled group-disabled/radio:border-disabled! group-disabled/radio:cursor-not-allowed',
-      'group-selected/radio:border-brand group-selected/radio:bg-brand group-selected/radio:text-brand-foreground',
+      'group-disabled/radio:group-selected/radio:bg-disabled-surface group-disabled/radio:border-disabled-surface! group-disabled/radio:cursor-not-allowed',
+      'group-selected/radio:border-selected-bold group-selected/radio:bg-selected-bold group-selected/radio:text-selected-bold-foreground',
     ],
   }),
   group: cva({}),

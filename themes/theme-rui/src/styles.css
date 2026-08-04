@@ -1,10 +1,50 @@
+/*
+ * Consumer entry point for the pre-compiled / standalone path.
+ *
+ * This file is processed by the package's own Tailwind + PostCSS
+ * pipeline at build time and shipped as `dist/styles.css`. Utilities
+ * are scoped to `[data-theme="rui"]` by `postcss-prefix-selector`
+ * (see `postcss.config.js`) so Marigold can be mounted as an island
+ * alongside other design systems without leaking styles.
+ *
+ * The body paint below targets `[data-theme="rui"]` directly so the
+ * consumer controls placement — on `<html>` for a Marigold-first
+ * app, or on a wrapper `<div>` for an island.
+ *
+ * For a full Tailwind-native integration with tree-shaking, use
+ * `theme.css` instead.
+ */
+
 @import 'tailwindcss';
 
-@import './theme.css' theme(inline);
-@import './global.css' theme(inline);
+@plugin 'tailwindcss-react-aria-components';
 
+@import './preflight.css';
+@import './tokens.css' theme(inline);
+@import './ui.css';
+@import './variants.css';
+
+@layer base {
+  [data-theme='rui'] {
+    font-optical-sizing: auto;
+    font-style: normal;
+
+    @apply supports-[font-variation-settings:normal]:font-sans-variable text-foreground bg-background font-sans;
+  }
+}
+
+/* The theme's own palette, as a consumer escape hatch. Force-generated because
+   this bundle is pre-compiled: a consumer's markup is never scanned, so palette
+   utilities they write would otherwise not exist. Nothing in the design system
+   itself writes these — components go through the semantic tokens.
+
+   This must track the palette name in tokens.css, and it cannot be colocated
+   there: theme.css imports tokens.css too, and Tailwind collects `@source`
+   across the whole import graph, so moving it would force these utilities into
+   the tree-shaking path as well (measured: 11 utilities, +812 bytes, for a
+   consumer who may use none of them). Renaming the palette means editing here. */
 /* prettier-ignore */
-@source inline('{bg}-{stone}-{50,{100..900..100},950}');
+@source inline('{bg}-{charcoal}-{50,{100..900..100},950}');
 /* prettier-ignore */
 @source inline('{p,px,py,pt,pr,pb,pl}-square-{tight,snug,regular,relaxed,loose}');
 /* prettier-ignore */

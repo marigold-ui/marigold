@@ -1,16 +1,17 @@
-import { DateFormat, Inline, Tag } from '@marigold/components';
+import { DateFormat, Tag } from '@marigold/components';
+
+// Fixed dates and per-date formatting keep server and client output identical.
+const start = new Date(2026, 7, 3);
+const end = new Date(2026, 7, 9);
 
 export default () => (
   <Tag.Group label="Applied Filters" onRemove={() => {}}>
     <Tag id="type">Type is Club or Lounge</Tag>
     <Tag id="date">
-      <Inline>
-        Next 7 Days (
-        <DateFormat
-          value={[new Date(), new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)]}
-        />
-        )
-      </Inline>
+      <span>
+        Last 7 days (<DateFormat value={start} month="short" day="numeric" /> to{' '}
+        <DateFormat value={end} month="short" day="numeric" />)
+      </span>
     </Tag>
     <Tag id="traits">Traits are cheap, hype (+5 more)</Tag>
   </Tag.Group>

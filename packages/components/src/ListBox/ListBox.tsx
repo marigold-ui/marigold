@@ -1,12 +1,8 @@
-import {
-  ForwardRefExoticComponent,
-  Ref,
-  RefAttributes,
-  forwardRef,
-} from 'react';
+import type { Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { ListBox, ListLayout, Virtualizer } from 'react-aria-components';
-import type { ListLayoutOptions } from 'react-aria-components';
+import { ListBox as RACListBox } from 'react-aria-components/ListBox';
+import { ListLayout, Virtualizer } from 'react-aria-components/Virtualizer';
+import type { ListLayoutOptions } from 'react-aria-components/Virtualizer';
 import { cn, useClassNames } from '@marigold/system';
 import { ListBoxContext } from './Context';
 import { ListBoxItem } from './ListBoxItem';
@@ -28,59 +24,62 @@ const defaultLayoutOptions: ListLayoutOptions = {
   gap: 1,
 };
 
-interface ListBoxComponent extends ForwardRefExoticComponent<
-  ListBoxProps & RefAttributes<HTMLUListElement>
-> {
-  Item: typeof ListBoxItem;
-  Section: typeof Section;
-}
+const ListBoxBase = ({
+  variant,
+  size,
+  virtualized,
+  layoutOptions,
+  ref,
+  ...props
+}: ListBoxProps & { ref?: Ref<HTMLUListElement> }) => {
+  const classNames = useClassNames({ component: 'ListBox', variant, size });
 
-const _ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
-  ({ variant, size, virtualized, layoutOptions, ...props }, ref) => {
-    const classNames = useClassNames({ component: 'ListBox', variant, size });
+  // RAC types are incorrect, this will be passed to the `useListBox` hook
+  const listBoxProps: any = { shouldSelectOnPressUp: false };
 
-    // RAC types are incorrect, this will be passed to the `useListBox` hook
-    const listBoxProps: any = { shouldSelectOnPressUp: false };
+  const listBox = (
+    <RACListBox
+      {...props}
+      className={cn(
+        'overflow-y-auto',
+        classNames.list,
+        // `!` overrides the inline `z-index: 0` set by RAC's virtualizer wrapper
+        '[&_:has(>:focus-visible)]:z-1!'
+      )}
+      ref={ref as Ref<HTMLDivElement>}
+      // Bound the virtualized list so the Virtualizer has a viewport to
+      // clip against. Without this, the list grows to fit all items and
+      // virtualization has no effect.
+      style={
+        virtualized
+          ? { display: 'block', padding: 0, maxHeight: '24rem' }
+          : undefined
+      }
+      {...listBoxProps}
+    >
+      {props.children}
+    </RACListBox>
+  );
 
-    const listBox = (
-      <ListBox
-        {...props}
-        className={cn('overflow-y-auto', classNames.list)}
-        ref={ref as Ref<HTMLDivElement>}
-        // Bound the virtualized list so the Virtualizer has a viewport to
-        // clip against. Without this, the list grows to fit all items and
-        // virtualization has no effect.
-        style={
-          virtualized
-            ? { display: 'block', padding: 0, maxHeight: '24rem' }
-            : undefined
-        }
-        {...listBoxProps}
-      >
-        {props.children}
-      </ListBox>
-    );
+  return (
+    <ListBoxContext value={{ classNames, virtualized }}>
+      <div className={classNames.container}>
+        {virtualized ? (
+          <Virtualizer
+            layout={ListLayout}
+            layoutOptions={{ ...defaultLayoutOptions, ...layoutOptions }}
+          >
+            {listBox}
+          </Virtualizer>
+        ) : (
+          listBox
+        )}
+      </div>
+    </ListBoxContext>
+  );
+};
 
-    return (
-      <ListBoxContext value={{ classNames, virtualized }}>
-        <div className={classNames.container}>
-          {virtualized ? (
-            <Virtualizer
-              layout={ListLayout}
-              layoutOptions={{ ...defaultLayoutOptions, ...layoutOptions }}
-            >
-              {listBox}
-            </Virtualizer>
-          ) : (
-            listBox
-          )}
-        </div>
-      </ListBoxContext>
-    );
-  }
-) as ListBoxComponent;
-
-_ListBox.Item = ListBoxItem;
-_ListBox.Section = Section;
-
-export { _ListBox as ListBox };
+export const ListBox = Object.assign(ListBoxBase, {
+  Item: ListBoxItem,
+  Section: Section,
+});

@@ -1,6 +1,6 @@
 import * as m from 'motion/react-m';
 import type RAC from 'react-aria-components';
-import { Tab } from 'react-aria-components';
+import { Tab } from 'react-aria-components/Tabs';
 import { cn } from '@marigold/system';
 import { useTabContext } from './Context';
 

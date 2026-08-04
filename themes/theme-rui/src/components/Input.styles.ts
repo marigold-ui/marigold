@@ -4,21 +4,22 @@ import type { ThemeComponent } from '@marigold/system';
 export const Input: ThemeComponent<'Input'> = {
   input: cva({
     base: [
-      'ui-surface shadow-elevation-border ui-input',
+      'ui-control ui-input',
       'disabled:ui-state-disabled',
       'group-read-only/field:ui-state-readonly',
       'invalid:ui-state-error',
       'focus:ui-state-focus outline-none',
       'group-read-only/field:cursor-default',
       'group-data-icon/input:pl-8',
-      'group-data-action/input:pr-7',
+      // Reserve the control-sized action box so text never slides under it.
+      'group-data-action/input:pr-control',
 
       // [type=file] styles
-      '[&[type=file]]:cursor-pointer [&[type=file]]:border-solid [&[type=file]]:bg-background [&[type=file]]:h-[calc(var(--spacing-input)-2px)] [&[type=file]]:pl-0 [&[type=file]]:pr-3 [&[type=file]]:italic [&[type=file]]:text-muted-foreground',
-      'file:cursor-pointer file:me-3 file:h-full file:border-0 file:border-r file:border-solid file:border-input file:bg-transparent file:px-3 file:text-sm file:font-medium file:not-italic file:text-foreground',
+      '[&[type=file]]:cursor-pointer [&[type=file]]:border-solid [&[type=file]]:bg-surface [&[type=file]]:h-[calc(var(--spacing-control)-2px)] [&[type=file]]:pl-0 [&[type=file]]:pr-3 [&[type=file]]:italic [&[type=file]]:text-secondary',
+      'file:cursor-pointer file:me-3 file:h-full file:border-0 file:border-r file:border-solid file:border-border file:bg-transparent file:px-3 file:text-sm file:font-medium file:not-italic file:text-foreground',
 
       // [type-color] styles
-      '[&[type=color]]:h-input',
+      '[&[type=color]]:h-control',
       '[&::-webkit-color-swatch-wrapper]:p-0',
       '[&::-webkit-color-swatch]:p-2 [&::-moz-color-swatch]:p-2',
       '[&::-webkit-color-swatch]:rounded-[inherit] [&::-moz-color-swatch]:rounded-[inherit]',
@@ -27,9 +28,14 @@ export const Input: ThemeComponent<'Input'> = {
   }),
   icon: cva({
     base: [
-      'pointer-events-none left-2.5',
-      'text-muted-foreground disabled:text-disabled-foreground',
+      'pointer-events-none left-2.5 size-4',
+      'text-secondary disabled:text-disabled',
     ],
   }),
-  action: cva({ base: ['text-muted-foreground pr-1 right-2'] }),
+  // A flush, control-sized centered box: any trailing action (icon button,
+  // chevron, clear button, spinner) pins to the right edge and centers its
+  // 16px icon at the same inset as the leading icon.
+  action: cva({
+    base: 'right-0 text-secondary flex size-control items-center justify-center',
+  }),
 };

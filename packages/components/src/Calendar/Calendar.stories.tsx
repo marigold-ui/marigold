@@ -1,6 +1,13 @@
-import { CalendarDate, DateFormatter } from '@internationalized/date';
+import {
+  CalendarDate,
+  DateFormatter,
+  getLocalTimeZone,
+  isSameDay,
+  today,
+} from '@internationalized/date';
 import { useState } from 'react';
-import { DateValue, I18nProvider } from 'react-aria-components';
+import { DateValue } from 'react-aria-components/Calendar';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, fn, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Key } from '@react-types/shared';
@@ -20,6 +27,9 @@ const meta = preview.meta({
       </I18nProvider>
     ),
   ],
+  parameters: {
+    surface: false,
+  },
   argTypes: {
     disabled: {
       control: {
@@ -580,5 +590,144 @@ MultipleSelection.test(
     );
     await expect(canvas.getByText('Feb 20, 2025')).toBeInTheDocument();
     await expect(canvas.getByText('Mar 5, 2025')).toBeInTheDocument();
+  }
+);
+
+export const Presets = meta.story({
+  tags: ['component-test'],
+  args: {
+    'aria-label': 'Event date',
+    onChange: fn(),
+    // A fixed month in the past keeps the Chromatic baseline off the moving
+    // current month and its "today" cell.
+    defaultValue: new CalendarDate(2026, 3, 12),
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <Calendar
+        {...args}
+        presets={[
+          'today',
+          'yesterday',
+          'tomorrow',
+          { label: 'Kickoff', value: new CalendarDate(2026, 8, 1) },
+        ]}
+      />
+    </I18nProvider>
+  ),
+});
+
+Presets.test(
+  'presets render as a labeled listbox',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const listbox = canvas.getByRole('listbox', { name: 'Quick selection' });
+    const option = canvas.getByRole('option', { name: 'Kickoff' });
+
+    await expect(listbox).toBeVisible();
+    await expect(option).toBeVisible();
+  }
+);
+
+Presets.test(
+  'selecting a preset sets the date and marks the option selected',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ args, canvas, userEvent }) => {
+    const option = canvas.getByRole('option', { name: 'Tomorrow' });
+
+    await userEvent.click(option);
+    const [date] = (args.onChange as ReturnType<typeof fn>).mock.calls[0];
+
+    await expect(args.onChange).toHaveBeenCalledTimes(1);
+    await expect(
+      isSameDay(date, today(getLocalTimeZone()).add({ days: 1 }))
+    ).toBe(true);
+    await expect(option).toHaveAttribute('aria-selected', 'true');
+  }
+);
+
+Presets.test(
+  'selecting a preset jumps the visible month to its date',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('option', { name: 'Kickoff' }));
+
+    await expect(
+      canvas.getByRole('button', { name: 'Aug' })
+    ).toBeInTheDocument();
+  }
+);
+
+export const PresetsWithMinValue = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    'aria-label': 'Event date',
+    minValue: today(getLocalTimeZone()),
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <Calendar {...args} presets={['yesterday', 'today']} />
+    </I18nProvider>
+  ),
+});
+
+PresetsWithMinValue.test(
+  'a preset outside minValue/maxValue is disabled',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const yesterdayOption = canvas.getByRole('option', {
+      name: 'Yesterday',
+    });
+    const todayOption = canvas.getByRole('option', { name: 'Today' });
+
+    await expect(yesterdayOption).toHaveAttribute('aria-disabled', 'true');
+    await expect(todayOption).not.toHaveAttribute('aria-disabled');
+  }
+);
+
+// Small screens swap the rail for a "Quick selection" row that opens the
+// preset list in a tray. Fixed preset values (instead of the relative
+// built-ins) keep the resolved-date sublabels and the visible month stable,
+// so Chromatic can snapshot the open tray without daily diffs.
+export const PresetsMobile = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true, viewports: [320] } },
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
+  args: {
+    'aria-label': 'Event date',
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <Calendar
+        {...args}
+        defaultValue={new CalendarDate(2027, 1, 5)}
+        presets={[
+          { label: 'Kickoff', value: new CalendarDate(2027, 1, 5) },
+          { label: 'Review', value: new CalendarDate(2027, 1, 19) },
+          { label: 'Release', value: new CalendarDate(2027, 2, 2) },
+        ]}
+      />
+    </I18nProvider>
+  ),
+});
+
+PresetsMobile.test(
+  'opens the quick selection tray',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Quick selection' })
+    );
+    const tray = await canvas.findByRole('dialog');
+
+    await expect(
+      within(tray).getByRole('listbox', { name: 'Quick selection' })
+    ).toBeVisible();
+    // The preset matching the calendar value shows as selected.
+    await expect(
+      within(tray).getByRole('option', { name: 'Kickoff' })
+    ).toHaveAttribute('aria-selected', 'true');
   }
 );

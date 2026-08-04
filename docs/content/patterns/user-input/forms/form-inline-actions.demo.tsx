@@ -4,10 +4,12 @@ import {
   Button,
   Inline,
   Link,
+  Panel,
   Select,
   Split,
   Stack,
   TextField,
+  Title,
 } from '@marigold/components';
 
 export default () => {
@@ -44,58 +46,70 @@ export default () => {
   };
 
   return (
-    <Stack space="regular">
-      <Inline alignY="input" space="related" noWrap>
-        <Select
-          label="Venue"
-          value={selectedVenueId}
-          onChange={handleVenueChange}
-          width={96}
-        >
-          {venues.map(venue => (
-            <Select.Option key={venue.id} id={venue.id}>
-              {venue.name}
-            </Select.Option>
-          ))}
-        </Select>
-        <Split />
-        <Button variant="secondary" onPress={handleReset}>
-          Create new venue
-        </Button>
-      </Inline>
-      <TextField label="Name" value={name} onChange={setName} />
-      <TextField label="Street" value={street} onChange={setStreet} />
-      <Inline space="related">
-        <TextField
-          label="Postcode"
-          width={20}
-          value={postcode}
-          onChange={setPostcode}
-        />
-        <TextField label="City" width={44} value={city} onChange={setCity} />
-      </Inline>
-      <Stack space="tight">
-        <Select
-          label="Country"
-          placeholder="Select country"
-          width={40}
-          value={country}
-          onChange={key => setCountry(key as string)}
-        >
-          {uniqueCountries.map(country => (
-            <Select.Option key={country} id={country}>
-              {country}
-            </Select.Option>
-          ))}
-        </Select>
-        <Link
-          href={`https://www.google.com/maps/search/?api=1&query=${name},${city},${country}`}
-          target="_blank"
-          size="small"
-        >
-          Open in maps
-        </Link>
-      </Stack>
-    </Stack>
+    <Panel size="form">
+      <Panel.Header>
+        <Title>Venue</Title>
+      </Panel.Header>
+      <Panel.Content>
+        <Stack space="regular">
+          <Inline alignY="input" space="related" noWrap>
+            <Select
+              label="Venue"
+              value={selectedVenueId}
+              onChange={handleVenueChange}
+              width={96}
+            >
+              {venues.map(venue => (
+                <Select.Option key={venue.id} id={venue.id}>
+                  {venue.name}
+                </Select.Option>
+              ))}
+            </Select>
+            <Split />
+            <Button variant="secondary" onPress={handleReset}>
+              Create new venue
+            </Button>
+          </Inline>
+          <TextField label="Name" value={name} onChange={setName} />
+          <TextField label="Street" value={street} onChange={setStreet} />
+          <Inline space="related">
+            <TextField
+              label="Postcode"
+              width={20}
+              value={postcode}
+              onChange={setPostcode}
+            />
+            <TextField
+              label="City"
+              width={44}
+              value={city}
+              onChange={setCity}
+            />
+          </Inline>
+          <Stack space="tight">
+            <Select
+              label="Country"
+              placeholder="Select country"
+              width={40}
+              value={country}
+              onChange={key => setCountry(key as string)}
+            >
+              {uniqueCountries.map(country => (
+                <Select.Option key={country} id={country}>
+                  {country}
+                </Select.Option>
+              ))}
+            </Select>
+            <Link
+              href={`https://www.google.com/maps/search/?api=1&query=${name},${city},${country}`}
+              target="_blank"
+              size="small"
+            >
+              Open in maps
+            </Link>
+          </Stack>
+        </Stack>
+      </Panel.Content>
+    </Panel>
   );
 };

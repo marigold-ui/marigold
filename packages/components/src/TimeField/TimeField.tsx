@@ -1,12 +1,12 @@
-import { forwardRef } from 'react';
-import type { TimeValue } from 'react-aria-components';
+import type { Ref } from 'react';
 import type RAC from 'react-aria-components';
+import { Group } from 'react-aria-components/Group';
+import type { TimeValue } from 'react-aria-components/TimeField';
 import {
   DateInput,
   DateSegment,
-  Group,
   TimeField,
-} from 'react-aria-components';
+} from 'react-aria-components/TimeField';
 import { WidthProp, cn } from '@marigold/system';
 import { useClassNames } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
@@ -80,60 +80,52 @@ export interface TimeFieldProps
    * @default none
    */
   shouldForceLeadingZeros?: boolean;
+  ref?: Ref<HTMLDivElement>;
 }
 
 // Component
 // ---------------
-const _TimeField = forwardRef<HTMLInputElement, TimeFieldProps>(
-  (
-    {
-      required,
-      disabled,
-      readOnly,
-      error,
-      variant,
-      size,
-      width = 'full',
-      ...rest
-    }: TimeFieldProps,
-    ref
-  ) => {
-    const classNames = useClassNames({ component: 'DateField', variant, size });
+const _TimeField = ({
+  required,
+  disabled,
+  readOnly,
+  error,
+  variant,
+  size,
+  width = 'full',
+  ref,
+  ...rest
+}: TimeFieldProps) => {
+  const classNames = useClassNames({ component: 'DateField', variant, size });
 
-    const props: RAC.TimeFieldProps<TimeValue> = {
-      isDisabled: disabled,
-      isReadOnly: readOnly,
-      isInvalid: error,
-      isRequired: required,
-      ...rest,
-    };
+  const props: RAC.TimeFieldProps<TimeValue> = {
+    isDisabled: disabled,
+    isReadOnly: readOnly,
+    isInvalid: error,
+    isRequired: required,
+    ...rest,
+  };
 
-    return (
-      <FieldBase
-        as={TimeField}
-        variant={variant}
-        size={size}
-        width={width}
-        {...props}
-        ref={ref}
+  return (
+    <FieldBase
+      as={TimeField}
+      variant={variant}
+      size={size}
+      width={width}
+      {...props}
+      ref={ref}
+    >
+      <Group
+        className={cn('w-(--field-width) max-w-full min-w-0', classNames.field)}
       >
-        <Group
-          className={cn(
-            'w-(--field-width) max-w-full min-w-0',
-            classNames.field
+        <DateInput className={cn('flex flex-1 items-center', classNames.input)}>
+          {segment => (
+            <DateSegment className={classNames.segment} segment={segment} />
           )}
-        >
-          <DateInput
-            className={cn('flex flex-1 items-center', classNames.input)}
-          >
-            {segment => (
-              <DateSegment className={classNames.segment} segment={segment} />
-            )}
-          </DateInput>
-        </Group>
-      </FieldBase>
-    );
-  }
-);
+        </DateInput>
+      </Group>
+    </FieldBase>
+  );
+};
 
 export { _TimeField as TimeField };

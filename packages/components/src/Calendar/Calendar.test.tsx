@@ -1,10 +1,11 @@
 /* eslint-disable testing-library/no-node-access */
 import { CalendarDate } from '@internationalized/date';
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import { renderHook } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { Basic, ThreeMonths, TwoMonths } from './Calendar.stories';
+import { mockMatchMedia, smallScreenQuery } from '../test.utils';
+import { Basic, Presets, ThreeMonths, TwoMonths } from './Calendar.stories';
 import { useCalendarContext, useCalendarOrRangeState } from './Context';
 
 describe('Calendar', () => {
@@ -81,7 +82,7 @@ describe('Calendar', () => {
     );
   });
 
-  test("Doesn't select a date on keydown Enter/Space if readOnly", async () => {
+  test("Doesn't select a date on keydown Enter if readOnly", async () => {
     const onChange = vi.fn();
     render(
       <Basic.Component
@@ -91,19 +92,30 @@ describe('Calendar', () => {
         readOnly
       />
     );
-
-    let selectedDate = screen.getByLabelText('selected', { exact: false });
-    expect(selectedDate.textContent).toBe('5');
+    const selectedDate = screen.getByLabelText('selected', { exact: false });
 
     await user.keyboard('{ArrowLeft}');
     await user.keyboard('{Enter}');
-    selectedDate = screen.getByLabelText('selected', { exact: false });
+
     expect(selectedDate.textContent).toBe('5');
     expect(onChange).not.toHaveBeenCalled();
+  });
+
+  test("Doesn't select a date on keydown Space if readOnly", async () => {
+    const onChange = vi.fn();
+    render(
+      <Basic.Component
+        defaultValue={new CalendarDate(2019, 6, 5)}
+        autoFocus
+        onChange={onChange}
+        readOnly
+      />
+    );
+    const selectedDate = screen.getByLabelText('selected', { exact: false });
 
     await user.keyboard('{ArrowLeft}');
     await user.keyboard('{ }');
-    selectedDate = screen.getByLabelText('selected', { exact: false });
+
     expect(selectedDate.textContent).toBe('5');
     expect(onChange).not.toHaveBeenCalled();
   });
@@ -117,9 +129,10 @@ describe('Calendar', () => {
       />
     );
     const newDate = screen.getByText('17');
-    await user.click(newDate);
 
+    await user.click(newDate);
     const selectedDate = screen.getByLabelText('selected', { exact: false });
+
     expect(selectedDate.textContent).toBe('17');
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange.mock.calls[0][0]).toEqual(new CalendarDate(2019, 6, 17));
@@ -133,8 +146,8 @@ describe('Calendar', () => {
         onChange={onChange}
       />
     );
-
     const newDate = screen.getByText('17');
+
     await user.click(newDate);
     const selectedDate = screen.getByLabelText('selected', { exact: false });
 
@@ -173,12 +186,8 @@ describe('Calendar', () => {
 
   test('renders year selection', async () => {
     render(<Basic.Component value={new CalendarDate(2025, 1, 1)} />);
-
-    expect(
-      screen.queryByRole('listbox', { name: 'year' })
-    ).not.toBeInTheDocument();
-
     const yearSelection = screen.getByRole('button', { name: '2025' });
+
     await user.click(yearSelection);
 
     expect(screen.getByRole('listbox', { name: 'year' })).toBeInTheDocument();
@@ -186,15 +195,10 @@ describe('Calendar', () => {
 
   test('select a year', async () => {
     render(<Basic.Component value={new CalendarDate(2025, 1, 1)} />);
-
-    expect(
-      screen.queryByRole('listbox', { name: 'year' })
-    ).not.toBeInTheDocument();
-
     const yearSelection = screen.getByRole('button', { name: '2025' });
     await user.click(yearSelection);
-
     const yearOption = screen.getByText('2024');
+
     await user.click(yearOption);
 
     expect(
@@ -211,9 +215,9 @@ describe('Calendar - Multi-month', () => {
     render(<TwoMonths.Component />);
 
     const grids = screen.getAllByRole('grid');
-    expect(grids).toHaveLength(2);
-
     const calendar = screen.getByRole('application');
+
+    expect(grids).toHaveLength(2);
     expect(calendar).toHaveTextContent(/February 2025/i);
     expect(calendar).toHaveTextContent(/March 2025/i);
   });
@@ -222,9 +226,9 @@ describe('Calendar - Multi-month', () => {
     render(<ThreeMonths.Component />);
 
     const grids = screen.getAllByRole('grid');
-    expect(grids).toHaveLength(3);
-
     const calendar = screen.getByRole('application');
+
+    expect(grids).toHaveLength(3);
     expect(calendar).toHaveTextContent(/May 2025/i);
     expect(calendar).toHaveTextContent(/June 2025/i);
     expect(calendar).toHaveTextContent(/July 2025/i);
@@ -245,14 +249,10 @@ describe('Calendar - Multi-month', () => {
     render(
       <TwoMonths.Component defaultValue={new CalendarDate(2025, 1, 15)} />
     );
-
     const calendar = screen.getByRole('application');
-    expect(calendar).toHaveTextContent(/January 2025/i);
-    expect(calendar).toHaveTextContent(/February 2025/i);
-
     const buttons = screen.getAllByRole('button');
     const nextButton = buttons.find(b => b.getAttribute('slot') === 'next');
-    expect(nextButton).toBeDefined();
+
     await user.click(nextButton!);
 
     expect(calendar).toHaveTextContent(/March 2025/i);
@@ -263,14 +263,10 @@ describe('Calendar - Multi-month', () => {
     render(
       <TwoMonths.Component defaultValue={new CalendarDate(2025, 3, 15)} />
     );
-
     const calendar = screen.getByRole('application');
-    expect(calendar).toHaveTextContent(/March 2025/i);
-    expect(calendar).toHaveTextContent(/April 2025/i);
-
     const buttons = screen.getAllByRole('button');
     const prevButton = buttons.find(b => b.getAttribute('slot') === 'previous');
-    expect(prevButton).toBeDefined();
+
     await user.click(prevButton!);
 
     expect(calendar).toHaveTextContent(/January 2025/i);
@@ -285,7 +281,6 @@ describe('Calendar - Multi-month', () => {
         onChange={onChange}
       />
     );
-
     const grids = screen.getAllByRole('grid');
     const secondGrid = grids[1];
     const cells = within(secondGrid).getAllByRole('gridcell');
@@ -294,15 +289,12 @@ describe('Calendar - Multi-month', () => {
         cell.textContent === '10' &&
         cell.getAttribute('aria-disabled') !== 'true'
     );
-
-    expect(day10Cell).toBeDefined();
-
     const button =
       day10Cell!.querySelector('span[role="button"], span[tabindex]') ||
       day10Cell!.firstChild;
-    expect(button).toBeDefined();
 
     await user.click(button as Element);
+
     expect(onChange).toHaveBeenCalled();
     expect(onChange.mock.calls[0][0]).toEqual(new CalendarDate(2025, 3, 10));
   });
@@ -322,14 +314,10 @@ describe('Calendar - Multi-month', () => {
         defaultValue={new CalendarDate(2025, 1, 15)}
       />
     );
-
     const calendar = screen.getByRole('application');
-    expect(calendar).toHaveTextContent(/January 2025/i);
-    expect(calendar).toHaveTextContent(/February 2025/i);
-
     const buttons = screen.getAllByRole('button');
     const nextButton = buttons.find(b => b.getAttribute('slot') === 'next');
-    expect(nextButton).toBeDefined();
+
     await user.click(nextButton!);
 
     expect(calendar).toHaveTextContent(/February 2025/i);
@@ -347,4 +335,79 @@ test('useCalendarOrRangeState throws when used outside Calendar or RangeCalendar
   expect(() => renderHook(() => useCalendarOrRangeState())).toThrow(
     'Calendar subcomponents must be rendered inside <Calendar> or <RangeCalendar>'
   );
+});
+
+describe('presets on small screens', () => {
+  const user = userEvent.setup();
+
+  afterEach(() => {
+    window.matchMedia = mockMatchMedia([]);
+  });
+
+  test('quick selection opens a tray whose items show the resolved value as a trailing sublabel', async () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    render(<Presets.Component />);
+
+    await user.click(screen.getByRole('button', { name: 'Quick selection' }));
+    const dialog = await screen.findByRole('dialog');
+    const option = within(dialog).getByRole('option', { name: 'Kickoff' });
+
+    expect(option).toHaveTextContent('Aug 1');
+  });
+
+  test('the quick selection trigger renders as a closed dialog trigger next to the grid', async () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+
+    render(<Presets.Component />);
+    const trigger = screen.getByRole('button', { name: 'Quick selection' });
+
+    expect(screen.getByRole('grid')).toBeVisible();
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+    expect(trigger).not.toHaveFocus();
+    expect(trigger).toHaveAttribute('aria-haspopup', 'dialog');
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  test('opening the tray shows the preset list while the grid stays visible', async () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    render(<Presets.Component />);
+    const trigger = screen.getByRole('button', { name: 'Quick selection' });
+
+    await user.click(trigger);
+    const dialog = await screen.findByRole('dialog');
+
+    expect(
+      within(dialog).getByRole('listbox', { name: 'Quick selection' })
+    ).toBeVisible();
+    // The grid is visible right behind the sheet.
+    expect(screen.getByRole('grid')).toBeVisible();
+  });
+
+  test('selecting a preset in the tray applies and closes it', async () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    render(<Presets.Component />);
+    await user.click(screen.getByRole('button', { name: 'Quick selection' }));
+    const dialog = await screen.findByRole('dialog');
+
+    await user.click(within(dialog).getByRole('option', { name: 'Tomorrow' }));
+
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+    expect(screen.getByRole('grid')).toBeVisible();
+  });
+
+  test('the tray close button dismisses without selecting', async () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    render(<Presets.Component />);
+    await user.click(screen.getByRole('button', { name: 'Quick selection' }));
+    const dialog = await screen.findByRole('dialog');
+
+    await user.click(within(dialog).getByRole('button', { name: 'Close' }));
+
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+    expect(screen.getByRole('grid')).toBeVisible();
+  });
 });

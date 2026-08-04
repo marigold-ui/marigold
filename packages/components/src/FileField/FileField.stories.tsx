@@ -1,9 +1,16 @@
 import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
-import { expect } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
+import {
+  WCAG_NON_TEXT,
+  contrast,
+  flatten,
+  insetFocusRing,
+  paintedGround,
+} from '../contrast.utils';
 import { FileField } from './FileField';
 import { makeFile } from './makeFile';
 
@@ -87,6 +94,55 @@ Basic.test(
   }
 );
 
+Basic.test(
+  'Keyboard focus draws a ring that clears 3:1 against both adjacent colors',
+  // Snapshot on: this is the only baseline that shows the drop zone's focus
+  // ring, and it is the change in DST-1661 that had neither a test nor a
+  // snapshot behind it.
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    // One Tab reaches the drop zone. Note the element that takes DOM focus is
+    // RAC's own 0x0 proxy `<button aria-label="DropZone">` *inside* the zone --
+    // the styled div is never focused itself and carries `data-focus-visible`
+    // instead, which is what the theme's `focus-visible:` variant matches
+    // (`tailwindcss-react-aria-components` remaps it). Assert on the div.
+    await userEvent.tab();
+
+    const dropZone = await waitFor(() => {
+      const focused = canvas
+        .getByText('Drop files here')
+        .closest<HTMLElement>('[data-focus-visible]');
+      expect(focused).not.toBeNull();
+      return focused!;
+    });
+
+    const { boxShadow, ring, color: ringColor } = insetFocusRing(dropZone);
+    expect(
+      ring,
+      `no inset focus ring in box-shadow: ${boxShadow}`
+    ).toBeTruthy();
+    expect(ringColor, `no color found in shadow: ${ring}`).toBeTruthy();
+
+    // The tint alone composites to ~1.05:1 against the surface, so the ring has
+    // to carry the indicator on both sides: the tinted fill inside it and the
+    // untinted surface outside.
+    const inside = paintedGround(dropZone);
+    const outside = paintedGround(dropZone.parentElement);
+    expect(outside.length).toBeGreaterThan(0);
+
+    for (const [side, ground] of [
+      ['inside (focus tint)', inside],
+      ['outside (surface)', outside],
+    ] as const) {
+      const ratio = contrast(flatten([...ground, ringColor!]), flatten(ground));
+      expect(
+        ratio,
+        `focus ring vs ${side} is ${ratio.toFixed(2)}:1, needs ${WCAG_NON_TEXT}:1`
+      ).toBeGreaterThanOrEqual(WCAG_NON_TEXT);
+    }
+  }
+);
+
 export const UploadFile = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
@@ -98,16 +154,16 @@ export const UploadFile = meta.story({
 UploadFile.test(
   'Shows the uploaded file in the list',
   async ({ canvas, userEvent }) => {
+    // Arrange
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
     const fileA = makeFile('a.pdf', 'application/pdf', 2 * 1024 * 1024);
 
+    // Act
     await userEvent.upload(input, fileA);
 
-    await expect(
-      canvas.queryByText('a.pdf', { exact: true })
-    ).toBeInTheDocument();
+    // Assert
     await expect(canvas.queryByText('a.pdf', { exact: true })).toBeVisible();
   }
 );
@@ -122,16 +178,18 @@ UploadFile.test(
     },
   },
   async ({ canvas, userEvent }) => {
+    // Arrange
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
-
     const fileA = makeFile('abc.pdf', 'application/pdf', 2 * 1024 * 1024);
     const fileB = makeFile('test.txt', 'text/plain', 5 * 1024 * 1024);
     const fileC = makeFile('pic1.jpg', 'image/*', 0.5 * 1024 * 1024);
 
+    // Act
     await userEvent.upload(input, [fileA, fileB, fileC]);
 
+    // Assert
     await expect(canvas.getByText('abc.pdf')).toBeInTheDocument();
     await expect(canvas.getByText('test.txt')).toBeInTheDocument();
     await expect(canvas.getByText('pic1.jpg')).toBeInTheDocument();
@@ -140,6 +198,32 @@ UploadFile.test(
     await expect(canvas.getByText('0.50 MB')).toBeInTheDocument();
   }
 );
+
+export const Small = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Upload file (compact)',
+    size: 'small',
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <FileField width={'1/5'} {...args} />
+    </I18nProvider>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    // Arrange
+    const input = document.querySelector(
+      'input[type="file"]'
+    ) as HTMLInputElement;
+    const file = makeFile('compact.pdf', 'application/pdf', 1 * 1024 * 1024);
+
+    // Act
+    await userEvent.upload(input, file);
+
+    // Assert
+    await expect(canvas.getByText('compact.pdf')).toBeInTheDocument();
+  },
+});
 
 export const Disabled = meta.story({
   args: {
@@ -192,18 +276,18 @@ InForm.test(
   'Submits the uploaded file with the form',
   { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
+    // Arrange
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
-
     const file = makeFile('report.pdf', 'application/pdf', 1024 * 1024);
+
+    // Act
     await userEvent.upload(input, file);
+    await userEvent.click(canvas.getByRole('button', { name: 'Submit' }));
 
-    const submitButton = canvas.getByRole('button', { name: 'Submit' });
-    await userEvent.click(submitButton);
-    const result = canvas.getByTestId('submitted-files');
-
-    await expect(result).toBeInTheDocument();
+    // Assert
+    await expect(canvas.getByTestId('submitted-files')).toBeInTheDocument();
     await expect(
       canvas.getByText('report.pdf (1048576 bytes)')
     ).toBeInTheDocument();

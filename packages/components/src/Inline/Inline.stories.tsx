@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { alignment } from '@marigold/system';
 import { Button } from '../Button/Button';
@@ -16,7 +17,7 @@ const meta = preview.meta({
       control: {
         type: 'select',
       },
-      options: ['tight', 'related', 'regular', 'group', 'section'],
+      options: ['collapsed', 'tight', 'related', 'regular', 'group', 'section'],
       table: {
         type: { summary: 'text' },
         defaultValue: { summary: 'undefined' },
@@ -56,12 +57,15 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
+  parameters: {
+    surface: false,
+  },
   args: {
     space: 'related',
     alignX: 'left',
   },
   render: args => (
-    <Inline {...args}>
+    <Inline {...args} data-testid="inline">
       <Block>Lirum</Block>
       <Block>
         Larum
@@ -75,8 +79,22 @@ export const Basic = meta.story({
   ),
 });
 
+Basic.test(
+  'collapses the gap between children to zero',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: {
+      space: 'collapsed',
+    },
+  },
+  async ({ canvas }) => {
+    const inline = canvas.getByTestId('inline');
+
+    expect(getComputedStyle(inline).gap).toBe('0px');
+  }
+);
+
 export const InputButtonAlignment = meta.story({
-  tags: ['component-test'],
   args: {
     alignY: 'input',
     space: 6,
@@ -109,6 +127,9 @@ export const InputButtonAlignment = meta.story({
 });
 
 export const Nested = meta.story({
+  parameters: {
+    surface: false,
+  },
   args: {
     space: 4,
   },

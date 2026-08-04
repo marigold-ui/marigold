@@ -7,30 +7,31 @@ export const calendarCellBase = [
   'relative flex items-center justify-center whitespace-nowrap justify-self-center',
   'my-0.5',
   'border border-transparent p-0 text-sm font-normal text-foreground',
-  'outline-offset-2 duration-150 transition-[color,background-color]',
-  'data-hovered:bg-hover data-hovered:text-foreground',
-  'data-focus-visible:z-10 focus-visible:ui-state-focus outline-none',
-  'disabled:pointer-events-none disabled:opacity-30',
-  'unavailable:pointer-events-none unavailable:opacity-30 unavailable:line-through',
+  'outline-offset-2 duration-150 transition-[color]',
+  'data-hovered:ui-state-hover',
+  'focus-visible:ui-state-focus outline-none',
+  'disabled:cursor-not-allowed disabled:text-disabled',
+  'unavailable:cursor-not-allowed unavailable:text-disabled unavailable:line-through',
   'outside-month:hidden',
 ];
 
 export const Calendar: ThemeComponent<'Calendar'> = {
   calendar: cva({
     base: [
-      'min-h-[350px] min-w-fit ui-surface shadow-elevation-border p-2',
-      // In a Popover
-      'group-data-trigger/popover:shadow-elevation-overlay',
+      'min-h-[350px] min-w-fit ui-surface p-2',
+      // In a Popover (DatePicker) the Popover paints the overlay surface; the
+      // calendar drops its own ring. Standalone keeps it.
+      'group-data-trigger/popover:ring-0',
       // In a Tray
-      'group-[[role=dialog]]/tray:shadow-none group-[[role=dialog]]/tray:border-0 group-[[role=dialog]]/tray:p-0 group-[[role=dialog]]/tray:place-self-center',
+      'group-[[role=dialog]]/tray:ring-0 group-[[role=dialog]]/tray:p-0 group-[[role=dialog]]/tray:place-self-center',
     ],
   }),
   calendarContainer: cva({ base: 'flex flex-col gap-4 sm:flex-row' }),
-  calendarMonth: cva({ base: 'min-w-[250px] sm:flex-1' }),
+  calendarMonth: cva({ base: 'min-w-0 sm:min-w-[250px] sm:flex-1' }),
   calendarCell: cva({
     base: [
       'size-9 rounded-lg',
-      'selected:bg-brand selected:text-brand-foreground',
+      'selected:bg-selected-bold selected:text-selected-bold-foreground',
       ...calendarCellBase,
     ],
   }),
@@ -38,13 +39,13 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     base: [
       'inline-flex items-center justify-center gap-[0.5ch]',
       'size-9 rounded-lg',
-      'text-muted-foreground',
+      'text-secondary',
       'focus-visible:ui-state-focus outline-none',
     ],
   }),
   calendarHeader: cva({
     base: [
-      'size-9 rounded-lg p-0 text-xs font-medium text-muted-foreground text-center',
+      'size-9 rounded-lg p-0 text-xs font-medium text-secondary text-center',
     ],
   }),
   calendarGrid: cva({
@@ -53,23 +54,39 @@ export const Calendar: ThemeComponent<'Calendar'> = {
   calendarHeading: cva({
     base: 'text-sm font-medium',
   }),
+  calendarPresets: cva({
+    base: [
+      // Stack: full-width list above the grid on small screens.
+      'max-sm:w-full',
+      // Rail: fixed column left of the grid. Negative margins pull it flush
+      // against the calendar surface's padding so background and divider span
+      // the full height. The tray strips that padding, but the tray only
+      // shows on small screens where the stack layout applies.
+      'sm:w-40 sm:shrink-0 sm:self-stretch',
+      'sm:bg-muted sm:border-r sm:border-border',
+      'sm:-my-2 sm:-ml-2 sm:rounded-l-[inherit]',
+      '[&_[slot=description]]:text-secondary',
+      '[&_[data-selected]_[slot=description]]:text-foreground',
+      '[&_[data-disabled]_[slot=description]]:text-disabled',
+    ],
+  }),
   calendarListboxButton: cva({
     base: [
       'rounded-md text-sm font-medium transition-[color,box-shadow]',
       'px-4 py-2',
       'focus-visible:ui-state-focus outline-none',
       'cursor-pointer',
-      'hover:bg-hover',
-      'aria-selected:bg-brand aria-selected:text-brand-foreground aria-selected:shadow-elevation-border aria-selected:hover:bg-brand/90',
+      'hover:ui-state-hover',
+      'aria-selected:bg-selected-bold aria-selected:text-selected-bold-foreground aria-selected:hover:bg-selected-bold/90',
     ],
   }),
   select: cva({
     base: [
-      '[&svg]:text-muted-foreground',
-      'flex w-full px-3 py-2 rounded-lg shadow-elevation-border border border-input bg-background text-sm text-foreground transition-shadow',
+      '[&_svg]:text-secondary',
+      'flex w-full px-3 py-2 rounded-lg border border-control-border bg-surface text-sm text-foreground',
       'focus-visible:ui-state-focus outline-none',
-      'h-input',
-      'disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled',
+      'h-control',
+      'disabled:cursor-not-allowed disabled:text-disabled disabled:bg-disabled-surface',
       'cursor-pointer',
     ],
   }),

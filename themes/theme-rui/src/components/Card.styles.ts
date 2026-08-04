@@ -1,16 +1,33 @@
-import { cva } from '@marigold/system';
-import type { ThemeComponent } from '@marigold/system';
+import { ThemeComponent, cva } from '@marigold/system';
 
-export const Card: ThemeComponent<'Card'> = cva({
-  base: ['p-4 rounded-md shadow-elevation-raised'],
-  variants: {
-    variant: {
-      default: 'ui-surface',
-      master: 'bg-access-master/30 border border-access-master',
-      admin: 'bg-access-admin/30 border border-access-admin',
+export const Card: ThemeComponent<'Card'> = {
+  container: cva({
+    base: 'rounded-surface [--card-text:currentColor]',
+    variants: {
+      variant: {
+        default: 'ui-surface',
+        master:
+          'bg-access-master/40 border border-access-master-accent [--card-text:var(--color-access-master-foreground)]',
+        admin:
+          'bg-access-admin/40 border border-access-admin-accent [--card-text:var(--color-access-admin-foreground)]',
+      },
     },
-  },
-  defaultVariants: {
-    variant: 'default',
-  },
-});
+    defaultVariants: {
+      variant: 'default',
+    },
+  }),
+  header: cva({}),
+  title: cva({
+    base: 'text-lg font-semibold leading-none text-(--card-text)',
+  }),
+  description: cva({
+    base: 'mt-0.5 text-sm text-secondary',
+  }),
+  content: cva({
+    base: 'text-sm',
+  }),
+  footer: cva({
+    base: 'flex items-center gap-2',
+  }),
+  media: cva({}),
+};

@@ -5,7 +5,7 @@ import { DesignTicket } from '@marigold/icons';
 
 export default () => (
   <Tooltip.Trigger>
-    <Button variant="icon" size="large">
+    <Button variant="ghost" size="icon" aria-label="Design Ticket">
       <DesignTicket aria-hidden="true" />
     </Button>
     <Tooltip>Design Ticket</Tooltip>

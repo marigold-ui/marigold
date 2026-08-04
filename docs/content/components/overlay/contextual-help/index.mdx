@@ -27,7 +27,7 @@ Use `<ContextualHelp>` when users might need deeper guidance or context, especia
 
 ## Usage
 
-ContextualHelp is ideal when brief tooltips are insufficient and users might benefit from more elaborate information. Avoid overusing it—too many help popovers can clutter the UI. Use tooltips for short, simple hints (e.g., labeling an icon), and reserve ContextualHelp for situations where users need deeper guidance or clarification. Aim to use it selectively on parts of your app where extra support truly adds value.
+ContextualHelp is ideal when brief tooltips are insufficient and users might benefit from more elaborate information. Avoid overusing it. Too many help popovers can clutter the UI. Use tooltips for short, simple hints (e.g., labeling an icon), and reserve ContextualHelp for situations where users need deeper guidance or clarification. Aim to use it selectively on parts of your app where extra support truly adds value.
 
 <GuidelineTiles>
   <Do>
@@ -71,6 +71,12 @@ Keep labels concise and use ContextualHelp to elaborate. This keeps your form cl
 
 <ComponentDemo name="contextual-help-label" />
 
+### Description
+
+Use `<ContextualHelp.Description>` for a short summary directly below the title, while the content carries the detailed explanation.
+
+<ComponentDemo name="contextual-help-description" />
+
 ### Custom placement
 
 The position of the popover can be customized using the placement prop. Available options include `top`, `bottom`, `left`, `right`, and aligned variants like `bottom start`.
@@ -79,7 +85,7 @@ The position of the popover can be customized using the placement prop. Availabl
 
 ### Interactive content
 
-Unlike tooltips, ContextualHelp supports complex and interactive content inside the popover—such as links, buttons, or structured text.
+Unlike tooltips, ContextualHelp supports complex and interactive content inside the popover, such as links, buttons, or structured text.
 
 <ComponentDemo name="contextual-help-interactive" />
 
@@ -90,3 +96,24 @@ Unlike tooltips, ContextualHelp supports complex and interactive content inside 
 ### ContextualHelp
 
 <AutoTypeTable path="ContextualHelp" name="ContextualHelpProps" />
+
+### ContextualHelp.Title
+
+<AutoTypeTable
+  path="ContextualHelp/ContextualHelpTitle"
+  name="ContextualHelpTitleProps"
+/>
+
+### ContextualHelp.Description
+
+<AutoTypeTable
+  path="ContextualHelp/ContextualHelpDescription"
+  name="ContextualHelpDescriptionProps"
+/>
+
+### ContextualHelp.Content
+
+<AutoTypeTable
+  path="ContextualHelp/ContextualHelpContent"
+  name="ContextualHelpContentProps"
+/>

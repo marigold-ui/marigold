@@ -46,6 +46,19 @@ In contrast, a regular button is meant for performing an action on the current p
   button guidelines](/components/actions/button)
 </Callout>
 
+### In context
+
+`<LinkButton>` is the navigation flavor of [`<Button>`](/components/actions/button). When dropped inside a [`<ButtonGroup>`](/components/actions/button-group), or any container that publishes its own `ButtonContext`, it picks up the same `variant` and `size` cascade as a nested `<Button>`. The two coexist naturally in row-action clusters. Use `<Button>` for actions that fire on the current page (like "delete" or "archive"), and `<LinkButton>` for actions that navigate (like opening a detail page for editing).
+
+<ComponentDemo name="linkbutton-in-button-group" />
+
+<Callout title="Inside a ButtonGroup">
+  `<LinkButton>` shares the full `<Button>` variant vocabulary. With no local
+  `variant`, it inherits the group's cascade, which defaults to `secondary`, the
+  same baseline as a standalone button. A local `variant` or `size` always wins
+  over the group.
+</Callout>
+
 ## Props
 
 <StorybookHintMessage component={'LinkButton'} />

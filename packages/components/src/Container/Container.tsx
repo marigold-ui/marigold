@@ -21,18 +21,6 @@ const containerHeadlineLength = {
   long: '35ch',
 };
 
-export const gridColsAlign = {
-  left: 'has-[[data-breakout]]:grid-cols-[minmax(0,max-content)_1fr_1fr]',
-  center: 'has-[[data-breakout]]:grid-cols-[1fr_minmax(0,max-content)_1fr]',
-  right: 'has-[[data-breakout]]:grid-cols-[1fr_1fr_minmax(0,max-content)]',
-};
-
-export const gridColumn = {
-  left: '*:col-[1]',
-  center: '*:col-[2]',
-  right: '*:col-[3]',
-};
-
 // Props
 // ---------------
 export interface ContainerProps extends AriaRegionProps {
@@ -47,11 +35,6 @@ export interface ContainerProps extends AriaRegionProps {
    */
   contentLength?: keyof typeof containerTextLength;
   /**
-   * Set alignment the content inside the container.
-   * @default 'left'
-   */
-  align?: keyof typeof gridColsAlign;
-  /**
    * Set alignment of the items inside the container.
    */
   alignItems?: PlaceItemsProp['align'];
@@ -61,7 +44,6 @@ export interface ContainerProps extends AriaRegionProps {
 // ---------------
 export const Container = ({
   contentLength = 'default',
-  align = 'left',
   alignItems = 'none',
   space = 0,
   children,
@@ -69,12 +51,7 @@ export const Container = ({
 }: ContainerProps) => (
   <div
     {...props}
-    className={cn(
-      'grid gap-(--space)',
-      placeItems[alignItems],
-      gridColsAlign[align],
-      gridColumn[align]
-    )}
+    className={cn('grid gap-(--space)', placeItems[alignItems])}
     style={{
       ...createVar({
         maxTextWidth: containerTextLength[contentLength],

@@ -1,13 +1,17 @@
 import { useState } from 'react';
-import { Form, Key } from 'react-aria-components';
+import { Form } from 'react-aria-components/Form';
+import { Key } from 'react-aria-components/Select';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
+import { Description } from '../Description/Description';
 import { Inline } from '../Inline/Inline';
 import { Inset } from '../Inset/Inset';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
+import { TextValue } from '../TextValue/TextValue';
+import { VisuallyHidden } from '../VisuallyHidden/VisuallyHidden';
 import { Select } from './Select';
 
 const meta = preview.meta({
@@ -197,7 +201,7 @@ Basic.test(
   {
     parameters: { chromatic: { disableSnapshot: false } },
     render: args => (
-      <Inset space={24}>
+      <Inset p={24}>
         <Select
           {...args}
           label="Favorite character"
@@ -232,37 +236,48 @@ Basic.test(
   'Opens the list grouped into sections',
   {
     parameters: { chromatic: { disableSnapshot: false } },
+    args: { defaultValue: 'harry-potter' },
     render: args => (
       <Select {...args}>
         <Select.Section header="Fantasy">
           <Select.Option id="harry-potter">
-            <Text slot="label">Harry Potter</Text>
-            <Text slot="description">About the boy who lived</Text>
+            <TextValue>Harry Potter</TextValue>
+            <Description>About the boy who lived</Description>
           </Select.Option>
           <Select.Option id="lord-of-the-rings">
-            <Text slot="label">Lord of the Rings</Text>
-            <Text slot="description">In the lands of Middle earth</Text>
+            <TextValue>Lord of the Rings</TextValue>
+            <Description>In the lands of Middle earth</Description>
           </Select.Option>
         </Select.Section>
         <Select.Section header="Sci-Fi">
           <Select.Option id="star-wars">
-            <Text slot="label">Start Wars</Text>
-            <Text slot="description">
+            <TextValue>Star Wars</TextValue>
+            <Description>
               A long time ago, in a galaxy far, far away
-            </Text>
+            </Description>
           </Select.Option>
           <Select.Option id="star-trek">
-            <Text slot="label">Star Trek</Text>
-            <Text slot="description">What is this</Text>
+            <TextValue>Star Trek</TextValue>
+            <Description>What is this</Description>
           </Select.Option>
         </Select.Section>
       </Select>
     ),
   },
-  async ({ args, canvas }) => {
-    await userEvent.click(
-      canvas.getByLabelText(new RegExp(`${args.label}`, 'i'))
+  async ({ args, canvas, step }) => {
+    const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+
+    await step(
+      'Default trigger shows the text value but hides the description slot',
+      () => {
+        expect(within(trigger).getByText('Harry Potter')).toBeVisible();
+        expect(
+          within(trigger).getByText('About the boy who lived')
+        ).not.toBeVisible();
+      }
     );
+
+    await userEvent.click(trigger);
 
     const listbox = await canvas.findByRole('listbox');
     expect(within(listbox).getByText('Fantasy')).toBeVisible();
@@ -285,38 +300,38 @@ Basic.test(
       >
         <Select.Option id="draft">
           <Inline space={3} alignY="center">
-            <Text slot="label">Draft</Text>
+            <TextValue>Draft</TextValue>
             <Badge variant="info">In Progress</Badge>
           </Inline>
-          <Text slot="description">Work in progress</Text>
+          <Description>Work in progress</Description>
         </Select.Option>
         <Select.Option id="review">
           <Inline space={3} alignY="center">
             <Text>In Review</Text>
             <Badge variant="warning">Pending</Badge>
           </Inline>
-          <Text slot="description">Awaiting review</Text>
+          <Description>Awaiting review</Description>
         </Select.Option>
         <Select.Option id="approved">
           <Inline space={3} alignY="center">
             <Text>Approved</Text>
             <Badge variant="success">Ready</Badge>
           </Inline>
-          <Text slot="description">Approved for release</Text>
+          <Description>Approved for release</Description>
         </Select.Option>
         <Select.Option id="published">
           <Inline space={3} alignY="center">
             <Text>Published</Text>
             <Badge variant="success">Live</Badge>
           </Inline>
-          <Text slot="description">Released to public</Text>
+          <Description>Released to public</Description>
         </Select.Option>
         <Select.Option id="archived">
           <Inline space={3} alignY="center">
-            <Text slot="label">Archived</Text>
+            <TextValue>Archived</TextValue>
             <Badge>Inactive</Badge>
           </Inline>
-          <Text slot="description">No longer active</Text>
+          <Description>No longer active</Description>
         </Select.Option>
       </Select>
     ),
@@ -350,9 +365,9 @@ Basic.test(
                 alt={person.name}
                 className="size-6 rounded-full object-cover"
               />
-              <Text slot="label">{person.name}</Text>
+              <TextValue>{person.name}</TextValue>
             </Inline>
-            <Text slot="description">{person.position}</Text>
+            <Description>{person.position}</Description>
           </Select.Option>
         ))}
       </Select>
@@ -517,6 +532,338 @@ Multiple.test(
     expect(
       within(dialog).getByRole('option', { name: 'Firefly' })
     ).toHaveAttribute('aria-selected', 'true');
+  }
+);
+
+// Shared trigger summary + option markup so the desktop and mobile (tray)
+// `renderValue` stories exercise identical rendering on both branches.
+const renderUserValue = (selected: (typeof people)[number][]) => (
+  <Inline space={2} alignY="center">
+    {selected.map(person => (
+      <Inline key={person.id} space={1} alignY="center">
+        <img
+          src={person.avatar}
+          alt=""
+          className="size-5 rounded-full object-cover"
+        />
+        <Text>{person.name}</Text>
+      </Inline>
+    ))}
+  </Inline>
+);
+
+const renderUserOption = (person: (typeof people)[number]) => (
+  <Select.Option id={person.id} textValue={person.name}>
+    <Inline space={2} alignY="center">
+      <img
+        src={person.avatar}
+        alt={person.name}
+        className="size-6 rounded-full object-cover"
+      />
+      <TextValue>{person.name}</TextValue>
+    </Inline>
+    <Description>{person.position}</Description>
+  </Select.Option>
+);
+
+export const WithRenderValue = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    label: 'Assign to',
+    placeholder: 'Select a user',
+    width: 80,
+  },
+  render: args => (
+    <Select {...args} items={people} renderValue={renderUserValue}>
+      {renderUserOption}
+    </Select>
+  ),
+});
+
+WithRenderValue.test(
+  'renders the selected value with a custom renderValue',
+  async ({ args, canvas, step }) => {
+    const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+
+    await step('Trigger shows placeholder when nothing selected', async () => {
+      expect(within(trigger).getByText(args.placeholder!)).toBeVisible();
+    });
+
+    await step('Open the dropdown', async () => {
+      await userEvent.click(trigger);
+
+      await waitFor(() => canvas.getByRole('listbox'));
+    });
+
+    await step('Select Bob', async () => {
+      const listbox = canvas.getByRole('listbox');
+
+      await userEvent.click(within(listbox).getByText('Bob Smith'));
+
+      await waitFor(() =>
+        expect(canvas.queryByRole('listbox')).not.toBeInTheDocument()
+      );
+    });
+
+    await step('Trigger uses custom renderValue', async () => {
+      expect(within(trigger).getByText('Bob Smith')).toBeVisible();
+      expect(
+        within(trigger).queryByText('Senior Developer')
+      ).not.toBeInTheDocument();
+    });
+  }
+);
+
+/**
+ * Mobile counterpart of {@link WithRenderValue}: below the `sm` breakpoint the
+ * trigger value is rendered inside the `Tray` branch (an `IconButton`) rather
+ * than the desktop `Popover` branch. `renderValue` must behave identically
+ * there, since both branches render the same `TriggerValue`. Runs in real
+ * Firefox via the `smallScreen` viewport global.
+ */
+export const WithRenderValueMobile = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  globals: {
+    viewport: { value: 'smallScreen' },
+  },
+  args: {
+    label: 'Assign to',
+    placeholder: 'Select a user',
+    width: 80,
+  },
+  render: args => (
+    <Select {...args} items={people} renderValue={renderUserValue}>
+      {renderUserOption}
+    </Select>
+  ),
+});
+
+WithRenderValueMobile.test(
+  'renders the selected value with a custom renderValue in the tray',
+  async ({ args, canvas, step }) => {
+    // Fail loudly if the mobile viewport did not take effect, rather than
+    // passing a test that never exercised the tray branch.
+    expect(window.innerWidth).toBeLessThan(640);
+
+    const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+
+    await step('Open the tray', async () => {
+      await userEvent.click(trigger);
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toBeInTheDocument()
+      );
+    });
+
+    await step('Select Bob from the tray', async () => {
+      const dialog = canvas.getByRole('dialog');
+      await userEvent.click(within(dialog).getByText('Bob Smith'));
+    });
+
+    await step('Single selection auto-closes the tray', async () => {
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    });
+
+    await step('Trigger uses custom renderValue (no description slot)', () => {
+      expect(within(trigger).getByText('Bob Smith')).toBeVisible();
+      expect(
+        within(trigger).queryByText('Senior Developer')
+      ).not.toBeInTheDocument();
+    });
+  }
+);
+
+export const MultiSelectSummary = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    label: 'Formatting',
+    width: 64,
+  },
+  // No spread of `args` here: forcing `selectionMode="multiple"` narrows the
+  // value type, which clashes with the loosely-typed story args.
+  render: ({ label, width }) => (
+    <Select
+      label={label}
+      width={width}
+      selectionMode="multiple"
+      placeholder="Formatting"
+      // Opt in to a compact summary instead of listing every value. `count`
+      // is correct even though these options are static children.
+      renderValue={(_items, { count }) => `${count} selected`}
+    >
+      <Select.Option id="bold">Bold</Select.Option>
+      <Select.Option id="italic">Italic</Select.Option>
+      <Select.Option id="underline">Underline</Select.Option>
+    </Select>
+  ),
+});
+
+MultiSelectSummary.test(
+  'collapses multiple selections into a compact count summary',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ args, canvas }) => {
+    const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+
+    await userEvent.click(trigger);
+    await waitFor(() => canvas.getByRole('dialog'));
+
+    const dialog = canvas.getByRole('dialog');
+    await userEvent.click(within(dialog).getByText('Bold'));
+    await userEvent.click(within(dialog).getByText('Italic'));
+
+    await userEvent.click(document.body);
+    await waitFor(() =>
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+
+    // Two selections collapse to a compact "N selected" summary, rather than
+    // listing every value on the trigger.
+    expect(within(trigger).getByText('2 selected')).toBeVisible();
+  }
+);
+
+/**
+ * Mobile counterpart of {@link MultiSelectSummary}: the `count`-based summary
+ * must read correctly when the options live inside the `Tray` branch. Static
+ * `<Select.Option>` children expose a `null` value, but `details.count`
+ * reflects the real selection, so the summary stays accurate on mobile too.
+ * Runs in real Firefox via the `smallScreen` viewport global.
+ */
+export const MultiSelectSummaryMobile = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  globals: {
+    viewport: { value: 'smallScreen' },
+  },
+  args: {
+    label: 'Formatting',
+    width: 64,
+  },
+  render: ({ label, width }) => (
+    <Select
+      label={label}
+      width={width}
+      selectionMode="multiple"
+      placeholder="Formatting"
+      renderValue={(_items, { count }) => `${count} selected`}
+    >
+      <Select.Option id="bold">Bold</Select.Option>
+      <Select.Option id="italic">Italic</Select.Option>
+      <Select.Option id="underline">Underline</Select.Option>
+    </Select>
+  ),
+});
+
+MultiSelectSummaryMobile.test(
+  'shows the compact count summary from the tray branch',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ args, canvas, step }) => {
+    expect(window.innerWidth).toBeLessThan(640);
+
+    const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+
+    await step('Open the tray', async () => {
+      await userEvent.click(trigger);
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toBeInTheDocument()
+      );
+    });
+
+    await step('Select two options', async () => {
+      const dialog = canvas.getByRole('dialog');
+      await userEvent.click(within(dialog).getByText('Bold'));
+      await userEvent.click(within(dialog).getByText('Italic'));
+    });
+
+    await step('Multi-select keeps the tray open; dismiss it', async () => {
+      await userEvent.keyboard('{Escape}');
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    });
+
+    await step('Trigger shows the compact count summary', () => {
+      expect(within(trigger).getByText('2 selected')).toBeVisible();
+    });
+  }
+);
+
+/**
+ * Quick-filter pattern: a multi-select whose trigger always shows the filter's
+ * dimension label ("Status") instead of the selected values, with a `Badge`
+ * communicating how many options are active. This mirrors the applied-filter
+ * tags shown elsewhere in a filter toolbar and keeps the trigger width stable
+ * regardless of how many options are selected.
+ *
+ * Accessibility: the visual "Status [n]" chrome is `aria-hidden`, and a
+ * `VisuallyHidden` summary gives screen-reader users an unambiguous
+ * "Status, n selected" instead of a bare, unitless "2". The visible label is
+ * already provided by `aria-label`, so the summary only adds the count.
+ */
+export const QuickFilter = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: () => (
+    <Select
+      aria-label="Status"
+      selectionMode="multiple"
+      placeholder="Status"
+      width={48}
+      renderValue={(_items, { count }) => (
+        <>
+          <span aria-hidden="true">
+            <Inline space={2} alignY="center">
+              <Text>Status</Text>
+              <Badge>{count}</Badge>
+            </Inline>
+          </span>
+          <VisuallyHidden>{`${count} selected`}</VisuallyHidden>
+        </>
+      )}
+    >
+      <Select.Option id="active">Active</Select.Option>
+      <Select.Option id="scheduled">Scheduled</Select.Option>
+      <Select.Option id="draft">Draft</Select.Option>
+      <Select.Option id="archived">Archived</Select.Option>
+    </Select>
+  ),
+});
+
+QuickFilter.test(
+  'keeps the dimension label and reflects the active count in a badge',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas }) => {
+    const trigger = canvas.getByRole('button', { name: /Status/i });
+
+    // Until something is selected, the trigger shows the bare label and no badge.
+    expect(within(trigger).getByText('Status')).toBeVisible();
+    expect(within(trigger).queryByText('2')).not.toBeInTheDocument();
+
+    await userEvent.click(trigger);
+    await waitFor(() => canvas.getByRole('dialog'));
+
+    const dialog = canvas.getByRole('dialog');
+    await userEvent.click(within(dialog).getByText('Active'));
+    await userEvent.click(within(dialog).getByText('Scheduled'));
+
+    await userEvent.click(document.body);
+    await waitFor(() =>
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+
+    // The dimension label stays put; the badge reflects the active option count.
+    expect(within(trigger).getByText('Status')).toBeVisible();
+    expect(within(trigger).getByText('2')).toBeVisible();
+
+    // The count is conveyed unambiguously to assistive tech via the accessible
+    // name ("Status … 2 selected"), not just the bare "2" badge.
+    expect(
+      canvas.getByRole('button', { name: /2 selected/i })
+    ).toBeInTheDocument();
   }
 );
 

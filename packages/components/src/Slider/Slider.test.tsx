@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react';
-import { createRef } from 'react';
 import { Basic, MultipleThumbs } from './Slider.stories';
 
 test('supports disabled prop', () => {
@@ -17,8 +16,8 @@ test('supports defaultValue (uncontrolled)', () => {
 });
 
 test('forwards ref', () => {
-  const ref = createRef<HTMLDivElement>();
-  render(<Basic.Component ref={ref as any} label="Percent" />);
+  const ref: { current: HTMLDivElement | null } = { current: null };
+  render(<Basic.Component ref={ref} label="Percent" />);
 
   expect(ref.current).toBeInstanceOf(HTMLDivElement);
 });
@@ -29,4 +28,13 @@ test('renders multiple thumbs for range slider', () => {
   const sliders = screen.getAllByRole('slider');
 
   expect(sliders).toHaveLength(2);
+});
+
+test('applies width prop via --container-width CSS variable', () => {
+  render(<Basic.Component label="x" width="1/2" />);
+  const group = screen.getByRole('group');
+  expect(group).toHaveClass('w-(--container-width)');
+  expect(group.style.getPropertyValue('--container-width')).toBe(
+    'calc((1 / 2) * 100%)'
+  );
 });

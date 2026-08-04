@@ -1,15 +1,18 @@
 {
   "pages": [
     "badge",
-    "card",
+    "description",
     "divider",
     "empty-state",
+    "error-state",
     "headline",
-    "icon",
+    "keyboard",
     "list",
     "loader",
     "section-message",
     "svg",
-    "text"
+    "text",
+    "text-value",
+    "title"
   ]
 }

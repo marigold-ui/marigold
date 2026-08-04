@@ -1,5 +1,5 @@
-import { UNSTABLE_ToastRegion as ToastRegion } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { UNSTABLE_ToastRegion as ToastRegion } from 'react-aria-components/Toast';
 import { useClassNames } from '@marigold/system';
 import { Toast } from './Toast';
 import { getToastQueue } from './ToastQueue';

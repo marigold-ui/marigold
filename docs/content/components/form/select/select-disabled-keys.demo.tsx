@@ -5,7 +5,6 @@ export default () => (
     label="Shipping direction"
     disabledKeys={['germany', 'elsalvador', 'poland']}
     description="Please select the shipping direction, not every country can be available."
-    width="fit"
   >
     <Select.Option id="czechrepublic">Czech Republic</Select.Option>
     <Select.Option id="egypt">Egypt</Select.Option>

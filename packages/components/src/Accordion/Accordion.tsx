@@ -1,5 +1,5 @@
 import type RAC from 'react-aria-components';
-import { DisclosureGroup } from 'react-aria-components';
+import { DisclosureGroup } from 'react-aria-components/DisclosureGroup';
 import { useClassNames } from '@marigold/system';
 import { AccordionProvider } from './AccordionContext';
 import { AccordionHeader } from './AccordionHeader';

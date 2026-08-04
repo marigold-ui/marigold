@@ -101,7 +101,7 @@ export const WithIcons = meta.story({
     <Input
       icon={<Search />}
       action={
-        <Button size="small">
+        <Button variant="ghost" size="icon" aria-label="Clear">
           <Delete />
         </Button>
       }

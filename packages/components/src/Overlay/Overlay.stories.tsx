@@ -1,5 +1,5 @@
-import { forwardRef } from 'react';
-import { Menu, MenuItem, MenuTrigger } from 'react-aria-components';
+import type { Ref } from 'react';
+import { Menu, MenuItem, MenuTrigger } from 'react-aria-components/Menu';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Dialog } from '../Dialog/Dialog';
@@ -16,31 +16,35 @@ const meta = preview.meta({
 });
 
 // imported from RAC
-const TestTray = forwardRef<HTMLDivElement, { open: boolean }>(
-  ({ open }, ref) => {
-    return (
-      <Stack space={12} alignX="left">
-        <MenuTrigger isOpen={open}>
-          <Button>Button</Button>
-          <Popover ref={ref}>
-            <Menu>
-              <MenuItem key="edit">Edit</MenuItem>
-              <MenuItem key="duplicate">Duplicate</MenuItem>
-              <MenuItem key="delete">Delete</MenuItem>
-            </Menu>
-          </Popover>
-        </MenuTrigger>
-        <SectionMessage>
-          <SectionMessage.Title>Note</SectionMessage.Title>
-          <SectionMessage.Content>
-            This is a simple example of an overlay using the Popover component
-            using plain React Aria components without styling.
-          </SectionMessage.Content>
-        </SectionMessage>
-      </Stack>
-    );
-  }
-);
+const TestTray = ({
+  open,
+  ref,
+}: {
+  open: boolean;
+  ref?: Ref<HTMLDivElement>;
+}) => {
+  return (
+    <Stack space={12} alignX="left">
+      <MenuTrigger isOpen={open}>
+        <Button>Button</Button>
+        <Popover ref={ref}>
+          <Menu>
+            <MenuItem key="edit">Edit</MenuItem>
+            <MenuItem key="duplicate">Duplicate</MenuItem>
+            <MenuItem key="delete">Delete</MenuItem>
+          </Menu>
+        </Popover>
+      </MenuTrigger>
+      <SectionMessage>
+        <SectionMessage.Title>Note</SectionMessage.Title>
+        <SectionMessage.Content>
+          This is a simple example of an overlay using the Popover component
+          using plain React Aria components without styling.
+        </SectionMessage.Content>
+      </SectionMessage>
+    </Stack>
+  );
+};
 
 export const OverlayTray = meta.story({
   render: () => {

@@ -1,0 +1,27 @@
+title: Tabbed event-settings form
+brief: >-
+  An organization-level settings screen that groups related forms under Tabs
+  (general info, registration & capacity, notifications). Each tab is its own
+  Form that saves independently with a success Toast, and a Danger Zone uses
+  ConfirmationDialog to gate destructive actions (reset defaults, delete).
+patterns:
+  - user-input/forms
+mock_data:
+  - alias: '@/lib/data/eventTypes'
+    shape: |
+      // Populates the default event-type Select on the General tab. Swap for
+      // the consumer's own option source.
+      export const eventTypes: Array<{
+        id: string;
+        label: string;
+        description: string;
+      }>;
+key_files:
+  - generalSettings.tsx
+  - registrationCapacity.tsx
+  - notifications.tsx
+  - dangerZone.tsx
+  - useSavedToast.ts
+scaffolding_files:
+  - page.tsx
+peer_deps: []

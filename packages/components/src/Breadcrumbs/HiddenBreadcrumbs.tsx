@@ -33,15 +33,13 @@ export const HiddenBreadcrumbs = ({
             className={cn('shrink-0', itemClassName)}
           >
             <span>{itemChildren}</span>
-            {idx < items.length - 1 && (
-              <ChevronRight aria-hidden="true" size={16} />
-            )}
+            {idx < items.length - 1 && <ChevronRight aria-hidden="true" />}
           </div>
         );
       })}
       <div data-hidden-ellipsis className={cn('shrink-0', itemClassName)}>
         <span>...</span>
-        <ChevronRight aria-hidden="true" size={16} />
+        <ChevronRight aria-hidden="true" />
       </div>
     </div>
     {children}

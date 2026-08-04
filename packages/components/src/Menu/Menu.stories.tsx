@@ -2,7 +2,18 @@ import { useState } from 'react';
 import { expect, spyOn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Key } from '@react-types/shared';
-import { Delete } from '@marigold/icons';
+import { ClipboardPaste, Copy, Delete, Scissors } from '@marigold/icons';
+import { Description } from '../Description/Description';
+import { Divider } from '../Divider/Divider';
+import { Keyboard } from '../Keyboard/Keyboard';
+import { TextValue } from '../TextValue/TextValue';
+import {
+  WCAG_NON_TEXT,
+  contrast,
+  flatten,
+  insetFocusRing,
+  paintedGround,
+} from '../contrast.utils';
 import { ActionMenu } from './ActionMenu';
 import { Menu } from './Menu';
 
@@ -328,7 +339,67 @@ Basic.test(
   }
 );
 
+Basic.test(
+  'Keyboard focus draws a ring that clears 3:1 against both adjacent colors',
+  // Snapshot on, unlike the other Basic tests: this is the one interaction in
+  // the file that produces :focus-visible, so it is the only baseline that
+  // shows the ring. Every snapshotted test elsewhere drives the UI with
+  // `click` alone. The assertions below catch token and utility regressions;
+  // the snapshot catches the ring being clipped, doubled or misaligned.
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Hogwarts Houses' })
+    );
+    await userEvent.keyboard('{ArrowDown}');
+
+    const item = await waitFor(() => {
+      const focused = canvas
+        .getByRole('menu')
+        .querySelector<HTMLElement>('[data-focus-visible]');
+      expect(focused).not.toBeNull();
+      return focused!;
+    });
+
+    // The background wash measures ~1.11:1 on its own and, because focus
+    // follows the mouse in a menu, it also fires on hover. It cannot be the
+    // indicator. Assert the ring is a separate, real layer.
+    const { boxShadow, ring, color: ringColor } = insetFocusRing(item);
+    expect(
+      ring,
+      `no inset focus ring in box-shadow: ${boxShadow}`
+    ).toBeTruthy();
+    expect(ringColor, `no color found in shadow: ${ring}`).toBeTruthy();
+
+    // WCAG's "adjacent colors": the row's own fill inside the ring, and the
+    // menu surface outside it.
+    const inside = paintedGround(item);
+    const outside = paintedGround(item.parentElement);
+
+    // Guard on `paintedGround`, not on the wash. If the walk came back empty,
+    // `flatten` would silently fall back to bare white and the ratios below
+    // would be measured against a ground that is not on screen -- passing
+    // against nothing, the DST-1590 failure mode. Asserting the walk found a
+    // real fill covers that without pinning the wash in place: the wash is the
+    // roving cursor, not the indicator, so this test stays honest if it is
+    // ever restyled or dropped.
+    expect(outside.length).toBeGreaterThan(0);
+
+    for (const [side, ground] of [
+      ['inside (row fill)', inside],
+      ['outside (menu surface)', outside],
+    ] as const) {
+      const ratio = contrast(flatten([...ground, ringColor!]), flatten(ground));
+      expect(
+        ratio,
+        `focus ring vs ${side} is ${ratio.toFixed(2)}:1, needs ${WCAG_NON_TEXT}:1`
+      ).toBeGreaterThanOrEqual(WCAG_NON_TEXT);
+    }
+  }
+);
+
 export const MultiSelection = meta.story({
+  tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   render: () => {
     const [selectedKeys, setSelected] = useState(new Set());
@@ -352,6 +423,124 @@ export const MultiSelection = meta.story({
     );
   },
 });
+
+MultiSelection.test(
+  'Exposes the checkbox role in an unchecked state',
+  async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Choose' }));
+
+    expect(
+      canvas.getByRole('menuitemcheckbox', { name: /Burger/ })
+    ).toHaveAttribute('aria-checked', 'false');
+  }
+);
+
+MultiSelection.test('Toggles selection on click', async ({ canvas }) => {
+  await userEvent.click(canvas.getByRole('button', { name: 'Choose' }));
+
+  await userEvent.click(
+    canvas.getByRole('menuitemcheckbox', { name: /Burger/ })
+  );
+
+  expect(
+    canvas.getByRole('menuitemcheckbox', { name: /Burger/ })
+  ).toHaveAttribute('aria-checked', 'true');
+});
+
+export const AccessSections = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: () => (
+    <ActionMenu aria-label="Filial-Aktionen">
+      <ActionMenu.Item id="edit">Bearbeiten</ActionMenu.Item>
+      <ActionMenu.Section title="Master-Aktionen">
+        <ActionMenu.Item id="move" variant="master">
+          Verschieben
+        </ActionMenu.Item>
+        <ActionMenu.Item id="tse" variant="master">
+          TSE anbinden
+        </ActionMenu.Item>
+        {/* `variant` is a single axis: for restricted destructive actions the
+            access variant takes precedence over `destructive`. */}
+        <ActionMenu.Item id="delete" variant="master">
+          Löschen
+        </ActionMenu.Item>
+      </ActionMenu.Section>
+      <ActionMenu.Section title="Admin-Aktionen">
+        <ActionMenu.Item id="release" variant="admin">
+          Freigeben
+        </ActionMenu.Item>
+      </ActionMenu.Section>
+    </ActionMenu>
+  ),
+});
+
+AccessSections.test(
+  'renders master and admin access sections',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Filial-Aktionen' })
+    );
+
+    expect(await canvas.findByText('Master-Aktionen')).toBeVisible();
+
+    // The `name` filter asserts the accessible name: the visible label plus
+    // the hidden "Master" label. The lock icon itself is decorative.
+    const move = canvas.getByRole('menuitem', { name: 'Verschieben Master' });
+
+    expect(move.querySelector('svg')).toBeInTheDocument();
+  }
+);
+
+AccessSections.test(
+  'restricted destructive actions use the access variant',
+  async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Filial-Aktionen' })
+    );
+
+    const del = canvas.getByRole('menuitem', { name: 'Löschen Master' });
+
+    expect(del.querySelector('svg')).toBeInTheDocument();
+    expect(del).not.toHaveClass('text-destructive-accent');
+  }
+);
+
+export const DisabledWithDescription = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => (
+    <Menu {...args} label="Sharing options" disabledKeys={['restricted']}>
+      <Menu.Item id="public" textValue="Public">
+        <TextValue>Public</TextValue>
+        <Description>Anyone with the link can view.</Description>
+      </Menu.Item>
+      <Menu.Item id="restricted" textValue="Restricted">
+        <TextValue>Restricted</TextValue>
+        <Description>Only people you invite can view.</Description>
+      </Menu.Item>
+    </Menu>
+  ),
+});
+
+DisabledWithDescription.test(
+  'dims the description of a disabled item',
+  // Keep the snapshot so Chromatic captures the open menu with the disabled
+  // item's dimmed description.
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Sharing options' })
+    );
+
+    const restricted = await canvas.findByRole('menuitem', {
+      name: /Restricted/,
+    });
+
+    expect(restricted).toHaveAttribute('aria-disabled', 'true');
+  }
+);
 
 export const Mobile = meta.story({
   tags: ['component-test'],
@@ -464,3 +653,53 @@ Mobile.test('Mobile Menu close with Escape', async ({ canvas, step }) => {
     });
   });
 });
+
+export const Advanced = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => (
+    <Menu {...args} label="Edit">
+      <Menu.Item id="cut">
+        <Scissors />
+        Cut
+        <Keyboard>⌘X</Keyboard>
+      </Menu.Item>
+      <Menu.Item id="copy">
+        <Copy />
+        Copy
+        <Keyboard>⌘C</Keyboard>
+      </Menu.Item>
+      <Menu.Item id="paste">
+        <ClipboardPaste />
+        Paste
+        <Keyboard>⌘V</Keyboard>
+      </Menu.Item>
+      <Divider />
+      <Menu.Item id="delete" variant="destructive">
+        <Delete />
+        Delete
+        <Keyboard>⌘⌫</Keyboard>
+      </Menu.Item>
+    </Menu>
+  ),
+});
+
+Advanced.test(
+  'Renders icons and a divider, and wires the shortcut to the item description',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Edit' }));
+
+    const copyItem = canvas.getByRole('menuitem', { name: /Copy/ });
+    const shortcut = canvas.getByText('⌘C');
+
+    expect(copyItem).toBeVisible();
+    expect(shortcut).toBeVisible();
+    expect(canvas.getByRole('separator')).toBeInTheDocument();
+
+    // The shortcut <kbd> is the item's accessible description via aria-describedby.
+    expect(shortcut.tagName).toBe('KBD');
+    expect(shortcut.id).toBeTruthy();
+    expect(copyItem.getAttribute('aria-describedby')).toContain(shortcut.id);
+  }
+);
