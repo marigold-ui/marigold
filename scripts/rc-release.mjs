@@ -1,33 +1,40 @@
 #!/usr/bin/env zx
 // Set available globals for eslint
 /* global $, argv, chalk, fs, os, path */
+import { TAG, currentBranch, fail, resolveBranch } from './lib/prerelease.mjs';
 
 const force = !!argv.force;
-
-function fail(msg) {
-  console.error(chalk.red(`✗ ${msg}`));
-  process.exit(1);
-}
 
 async function isDirty() {
   const { stdout } = await $`git status --porcelain`;
   return stdout.trim().length > 0;
 }
 
-// 1. Branch check
-const branch = (await $`git rev-parse --abbrev-ref HEAD`).stdout.trim();
-if (branch !== 'beta-release' && !force) {
+// 1. Branch check — the release branch is always stated explicitly, via
+// `--branch <name>` or the prompt (Enter picks the branch you are on).
+const branch = await resolveBranch(argv.branch, 'release from');
+const current = await currentBranch();
+if (current !== branch && !force) {
   fail(
-    `Refusing to release from \`${branch}\`. Switch to \`beta-release\` (or pass --force).`
+    `Refusing to release from \`${current}\` while \`${branch}\` was requested. Switch branches (or pass --force).`
   );
 }
+console.log(chalk.dim(`  Releasing from \`${branch}\`.`));
 
 // 2. Clean working tree
 if (await isDirty()) fail('Working tree is dirty. Commit or stash first.');
 
 // 3. Pre mode active
 if (!fs.existsSync('.changeset/pre.json')) {
-  fail('Not in changeset pre mode. Run `pnpm release:beta:enter` first.');
+  fail('Not in changeset pre mode. Run `pnpm release:rc:enter` first.');
+}
+
+// 3b. Pre mode tag matches what this script publishes
+const preState = JSON.parse(fs.readFileSync('.changeset/pre.json', 'utf8'));
+if (preState.tag !== TAG) {
+  fail(
+    `Pre mode tag is \`${preState.tag}\`, but this script releases \`${TAG}\`. Update .changeset/pre.json or scripts/lib/prerelease.mjs.`
+  );
 }
 
 // 4. Pending changesets to release
@@ -67,13 +74,13 @@ if (!token || token === 'undefined') {
   );
 }
 
-// 6. Local in sync with origin/beta-release
-await $`git fetch origin beta-release`;
+// 6. Local in sync with origin
+await $`git fetch origin ${branch}`;
 const localSha = (await $`git rev-parse @`).stdout.trim();
-const remoteSha = (await $`git rev-parse origin/beta-release`).stdout.trim();
+const remoteSha = (await $`git rev-parse origin/${branch}`).stdout.trim();
 if (localSha !== remoteSha && !force) {
   fail(
-    'Local `beta-release` is not in sync with origin. Pull/push first (or pass --force).'
+    `Local \`${branch}\` is not in sync with origin. Pull/push first (or pass --force).`
   );
 }
 
@@ -92,9 +99,9 @@ await $`pnpm build`;
 
 console.log(chalk.cyan('\n▸ Committing version bump…'));
 await $`git add -A`;
-await $`git commit -m ${'release: version packages (beta)'}`;
+await $`git commit -m ${`release: version packages (${TAG})`}`;
 
-console.log(chalk.cyan('\n▸ Publishing to npm (tag: beta)…'));
+console.log(chalk.cyan(`\n▸ Publishing to npm (tag: ${TAG})…`));
 // `CI=true` makes changesets skip its `npm profile get` pre-flight check,
 // which 403s with granular access tokens (account-endpoint access is denied).
 // The publish itself works because the granular token has bypass-2FA enabled.
@@ -106,4 +113,4 @@ await $({
 console.log(chalk.cyan('\n▸ Pushing commit + tags to origin…'));
 await $`git push --follow-tags`;
 
-console.log(chalk.green('\n✓ Beta release complete.'));
+console.log(chalk.green(`\n✓ ${TAG} release complete on \`${branch}\`.`));
