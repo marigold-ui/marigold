@@ -1,5 +1,5 @@
 import type { PropsWithChildren, ReactNode } from 'react';
-import { createContext, useContext, useState } from 'react';
+import { createContext, use, useState } from 'react';
 import { ConfirmationDialog } from './ConfirmationDialog';
 import type { ConfirmationDialogProps } from './ConfirmationDialog';
 
@@ -48,7 +48,7 @@ export const ConfirmationProvider = ({ children }: PropsWithChildren) => {
   };
 
   return (
-    <ConfirmationContext.Provider value={confirm}>
+    <ConfirmationContext value={confirm}>
       {children}
       <ConfirmationDialog
         open={open}
@@ -67,14 +67,14 @@ export const ConfirmationProvider = ({ children }: PropsWithChildren) => {
       >
         {confirmation?.content}
       </ConfirmationDialog>
-    </ConfirmationContext.Provider>
+    </ConfirmationContext>
   );
 };
 
 // Hook
 // ---------------
 export const useConfirmation = () => {
-  const confirm = useContext(ConfirmationContext);
+  const confirm = use(ConfirmationContext);
 
   if (confirm === null) {
     throw new Error(

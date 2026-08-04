@@ -2,7 +2,12 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { Form } from '../Form/Form';
-import { Basic } from './TagGroup.stories';
+import {
+  Basic,
+  CollapseAt,
+  RemovableTags,
+  WithError,
+} from './TagGroup.stories';
 
 test('render tag group', () => {
   render(<Basic.Component aria-label="static tag group items" />);
@@ -29,27 +34,22 @@ test.each`
   expect(onRemoveSpy).toHaveBeenCalledTimes(1);
 });
 
-test('should navigate with keyboard keys through items', async () => {
-  const user = userEvent.setup();
+test('exposes every tag as a keyboard-focusable grid row', () => {
   render(<Basic.Component />);
 
   const tags = screen.getAllByRole('row');
-  await user.tab();
+  expect(tags).toHaveLength(4);
 
-  await user.keyboard('{arrowRight}');
-  expect(tags[1]).toHaveFocus();
-  expect(tags[0]).not.toHaveFocus();
-  expect(tags[2]).not.toHaveFocus();
-
-  await user.keyboard('{arrowRight}');
-  expect(tags[2]).toHaveFocus();
-  expect(tags[0]).not.toHaveFocus();
-  expect(tags[1]).not.toHaveFocus();
-
-  await user.keyboard('{arrowLeft}');
-  expect(tags[1]).toHaveFocus();
-  expect(tags[0]).not.toHaveFocus();
-  expect(tags[2]).not.toHaveFocus();
+  // react-aria uses `keyboardNavigationBehavior: 'tab'`, so each tag is its own
+  // tab stop — that is what makes the list keyboard navigable.
+  //
+  // Arrow-key navigation between tags is covered by the
+  // "Navigates between tags with arrow keys" play test in
+  // TagGroup.stories.tsx instead of here: @testing-library's synthetic key
+  // events do not traverse the `display: contents` TagList (needed so the
+  // "Show more" toggle flows inline after the last tag), dropping focus
+  // instead of moving it, while a real browser handles it correctly.
+  tags.forEach(tag => expect(tag).toHaveAttribute('tabindex', '0'));
 });
 
 test('renders label', () => {
@@ -57,6 +57,26 @@ test('renders label', () => {
 
   const label = screen.queryByLabelText(/Categories/i);
   expect(label).toBeInTheDocument();
+});
+
+test('renders error message when `error` is true', () => {
+  render(<WithError.Component />);
+
+  expect(
+    screen.getByText('Please pick at least one category.')
+  ).toBeInTheDocument();
+});
+
+test('`disabled` cascades to tags so interaction is blocked', async () => {
+  const onChange = vi.fn();
+  const user = userEvent.setup();
+  render(<Basic.Component disabled onChange={onChange} />);
+
+  const tags = screen.getAllByRole('row');
+  tags.forEach(tag => expect(tag).toHaveAttribute('data-disabled', 'true'));
+
+  await user.click(screen.getByText('News'));
+  expect(onChange).not.toHaveBeenCalled();
 });
 
 test('can be used like a native form element', async () => {
@@ -97,4 +117,28 @@ test('can be used like a native form element', async () => {
       ],
     ]
   `);
+});
+
+test('collapseAt hides tags beyond the limit behind a toggle', () => {
+  render(<CollapseAt.Component />);
+
+  expect(screen.getByText('News')).toBeVisible();
+  expect(screen.getByText('Sports')).toBeVisible();
+  expect(screen.queryByText('Music')).not.toBeVisible();
+  expect(screen.getByText('Show 5 more')).toBeVisible();
+});
+
+test('collapseAt expands automatically when a hidden tag is selected', () => {
+  render(<CollapseAt.Component defaultSelectedKeys={['music']} />);
+
+  expect(screen.getByText('Music')).toBeVisible();
+  expect(screen.getByText('Show 5 less')).toBeVisible();
+});
+
+test('collapseAt is ignored for dynamic collections (function children)', () => {
+  render(<RemovableTags.Component collapseAt={1} />);
+
+  expect(screen.getByText('News')).toBeInTheDocument();
+  expect(screen.getByText('Shopping')).toBeInTheDocument();
+  expect(screen.queryByText(/show \d+ more/i)).not.toBeInTheDocument();
 });

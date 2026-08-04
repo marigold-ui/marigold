@@ -27,7 +27,7 @@ export default () => {
         selected={showSpacing}
         onChange={setShowSpacing}
       />
-      <Inset spaceX={20}>
+      <Inset px={20}>
         <Stack space="section">
           <Stack space="regular">
             <Headline level={2}>Event Details</Headline>
@@ -67,7 +67,7 @@ export default () => {
                     <Select
                       label="Event Category"
                       placeholder="Select category"
-                      width="fit"
+                      width="1/2"
                     >
                       <Select.Option id="conference">Conference</Select.Option>
                       <Select.Option id="workshop">Workshop</Select.Option>

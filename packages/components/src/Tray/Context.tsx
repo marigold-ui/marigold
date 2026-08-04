@@ -1,4 +1,5 @@
-import { createContext, useContext } from 'react';
+import type { RefCallback } from 'react';
+import { createContext, use } from 'react';
 
 export interface TrayContextProps {
   classNames: {
@@ -7,13 +8,17 @@ export interface TrayContextProps {
     dragHandle: string;
     header: string;
     title: string;
+    description: string;
     content: string;
     actions: string;
   };
+  titleId?: string;
+  hasTitle?: boolean;
+  titleSlotRef?: RefCallback<Element>;
 }
 
 export const TrayContext = createContext<TrayContextProps>(
   null as unknown as TrayContextProps
 );
 
-export const useTrayContext = () => useContext(TrayContext);
+export const useTrayContext = () => use(TrayContext);

@@ -22,6 +22,8 @@ export const TableHeader = ({ stickyHeader, children }: TableHeaderProps) => {
       {...rowGroupProps}
       className={cn(
         classNames?.thead,
+        // sticky header lifts above the scrolled rows
+        'z-1',
         // for rui sticky is applied to thead
         stickyHeader ? 'sticky [&_th]:sticky [&_th]:top-0' : ''
       )}

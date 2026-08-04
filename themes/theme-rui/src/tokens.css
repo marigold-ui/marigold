@@ -1,0 +1,543 @@
+/*
+ * Design tokens for the RUI theme.
+ *
+ * Every color, font, spacing, elevation, and animation value is declared here
+ * as a Tailwind v4 `@theme static` block, so the token surface lives in one
+ * place and can be imported without `ui.css`, `variants.css` or the preflight
+ * rules.
+ *
+ * Not standalone CSS, though: this file must be processed by a Tailwind v4
+ * build that also supplies the default theme. It depends on Tailwind for the
+ * `--spacing()` function, for `--radius-lg`, and for the `red` / `green` /
+ * `yellow` / `blue` / `purple` / `white` palettes that the status and access
+ * tokens below reference (only `charcoal` and `orange` are declared here).
+ */
+
+@theme static {
+  /* ====================== */
+  /*      FONT FAMILIES     */
+  /* ====================== */
+  /* The only typographic tokens here: type scale, weight, leading and tracking
+     all come from Tailwind's defaults. */
+
+  --font-sans: Inter, system-ui, sans-serif;
+  --font-sans-variable: InterVariable, Inter, system-ui, sans-serif;
+
+  /* ====================== */
+  /*     COLOR PALETTES     */
+  /* ====================== */
+
+  --color-orange-50: #fff9ed;
+  --color-orange-100: #fff1d5;
+  --color-orange-200: #fedfaa;
+  --color-orange-300: #fdc774;
+  --color-orange-400: #fba43c;
+  --color-orange-500: #f98e22;
+  --color-orange-600: #ea6d0c;
+  --color-orange-700: #c2520c;
+  --color-orange-800: #9a4112;
+  --color-orange-900: #7c3712;
+  --color-orange-950: #431a07;
+
+  /* Renaming this palette? The pre-compiled bundle force-generates its `bg-*`
+     utilities via `@source inline` in styles.css — update that line too, or the
+     bundle silently ships utilities for a palette that no longer exists. */
+  --color-charcoal-50: oklch(0.985 0.002 54);
+  --color-charcoal-100: oklch(0.965 0.003 54);
+  --color-charcoal-200: oklch(0.92 0.004 54);
+  --color-charcoal-300: oklch(0.86 0.005 54);
+  --color-charcoal-400: oklch(0.74 0.006 54);
+  --color-charcoal-500: oklch(0.62 0.007 54);
+  --color-charcoal-600: oklch(0.52 0.008 54);
+  --color-charcoal-700: oklch(0.42 0.008 54);
+  --color-charcoal-800: oklch(0.32 0.008 54);
+  --color-charcoal-900: oklch(0.22 0.008 54);
+  --color-charcoal-950: oklch(0.15 0.008 54);
+
+  /* ====================== */
+  /*    SEMANTIC COLORS     */
+  /* ====================== */
+  /* To switch palette, change the charcoal references below. For which step
+     carries which role, read the declarations — they are the source of truth.
+     See /foundations/token-overview in the docs for the contrast matrix. */
+
+  /* --- Page Background & Text --- */
+  --color-background: var(--color-charcoal-100);
+  --color-foreground: var(--color-charcoal-900);
+  --color-secondary: var(--color-charcoal-600);
+  /* Out-ranks quiet captions without reaching full-strength `foreground` — e.g.
+     idle sidebar nav labels sitting above their `groupLabel`. */
+  --color-secondary-bold: var(--color-charcoal-700);
+  --color-placeholder: var(--color-charcoal-600);
+
+  /* --- Primary --- */
+  --color-primary: var(--color-charcoal-900);
+  --color-primary-foreground: var(--color-charcoal-50);
+
+  /* --- Neutral Backgrounds & States --- */
+  --color-muted: var(--color-charcoal-50);
+  --color-control: var(--color-charcoal-300);
+  --color-hover: var(--color-charcoal-200);
+
+  --color-selected: var(--color-charcoal-300);
+  --color-selected-bold: var(--color-charcoal-900);
+  --color-selected-bold-foreground: var(--color-charcoal-50);
+  --color-focus-highlight: var(--color-charcoal-100);
+  --color-focus-highlight-bold: var(--color-charcoal-300);
+
+  /* --- Disabled --- */
+  --color-disabled: var(--color-charcoal-400);
+  --color-disabled-surface: var(--color-charcoal-100);
+
+  /* --- Boundaries & Focus Ring --- */
+  /* The three edge tokens are translucent, so each holds one *contrast* against
+     whatever ground it sits on rather than one lightness; `disabled-border` is a
+     solid rung. See /foundations/token-overview. */
+
+  /* Decorative rim of a raised surface (Card, Panel, Dialog, Menu), via
+     ui-surface. Half the density of --color-control-border rather than a pure
+     whisper, because it has to hold the edge alone where the fill delta against
+     the page nearly vanishes (white surface on a charcoal-100 ground). */
+  --color-surface-border: oklch(from var(--color-charcoal-950) l c h / 0.13);
+
+  /* Functional control edge (inputs, selects, fields, checkboxes, radios).
+     Measures ~2:1 on white, short of WCAG 1.4.11's 3:1 — a deliberate call; the
+     focus ring stays the perceivable affordance. State overrides stay opaque. */
+  --color-control-border: oklch(from var(--color-charcoal-950) l c h / 0.26);
+
+  /* Dimmed rather than absent — a borderless input reads as broken. */
+  --color-disabled-border: var(--color-charcoal-300);
+
+  /* Structural lines: dividers, grid lines, section rules, table grids. Quiet,
+     ~1.36:1 on every ground it is used on.
+
+     Alpha rather than a fixed lightness, because a fixed lightness makes the
+     divider's weight depend on its ground: at the previous `0.9 0.004 54` this
+     token measured 1.352:1 on `surface`, 1.297:1 on `muted` and only 1.222:1 on
+     `background` — the same rule 11% weaker in the Sidebar than in a Table, which
+     nothing in the design intends. At 0.14 the three land within 0.003 of each
+     other, and within 0.007 of the old value on `surface`. Alpha chosen by
+     sweeping 0.04–0.30 and sampling rendered pixels on all three grounds; see
+     DST-1672. */
+  --color-border: oklch(from var(--color-charcoal-950) l c h / 0.14);
+
+  --color-ring: var(--color-charcoal-600);
+
+  /* The divider tone as an opaque value, for recipes that read the divider's
+     channels instead of its rendered appearance. Two do: Drawer steps its
+     lightness down (`calc(l - 0.1)`) and SectionMessage mixes it with a status
+     accent. Both break against a translucent `--color-border` — its lightness is
+     now the palette rung's 0.15 rather than a light grey, so `calc(l - 0.1)`
+     yields near-black, and its alpha compounds through `color-mix` (measured:
+     the status edge dropped to 0.57 alpha, the Drawer edge from 1.87:1 to
+     1.38:1 on white). Not a Tailwind namespace, so it generates no utility. */
+  --ui-divider-solid: oklch(from var(--color-charcoal-950) 0.9 0.004 h);
+
+  /* --- Soft (raised control cap: secondary Button, Menu trigger) --- */
+  /* Light counterpart to the dark contrast surface: a near-white convex cap.
+     The fill sits just above rung 50 so the cap reads a touch whiter than a
+     muted fill without dragging rung 50 with it; lightness and chroma are tuned
+     by eye, only the hue follows the palette. The edge is its own token, not
+     derived from the fill — a −0.12 L step off a near-white cap washes out to
+     ~1.5:1. It darkens with the cap on hover. */
+  --color-soft: oklch(from var(--color-charcoal-950) 0.99 0.002 h / 1);
+  --color-soft-hover: var(--color-charcoal-100);
+  --color-soft-edge: var(--color-charcoal-200);
+  --color-soft-edge-hover: var(--color-charcoal-300);
+
+  /* --- Status: Destructive --- */
+  --color-destructive: var(--color-red-100);
+  --color-destructive-foreground: var(--color-red-950);
+  --color-destructive-accent: var(--color-red-600);
+  --color-destructive-bold: var(--color-red-600);
+  --color-destructive-bold-foreground: var(--color-white);
+
+  /* --- Status: Success --- */
+  --color-success: var(--color-green-100);
+  --color-success-foreground: var(--color-green-950);
+  --color-success-accent: var(--color-green-600);
+
+  /* --- Status: Warning --- */
+  --color-warning: var(--color-yellow-100);
+  --color-warning-foreground: var(--color-yellow-950);
+  --color-warning-accent: var(--color-yellow-700);
+
+  /* --- Status: Info --- */
+  --color-info: var(--color-blue-100);
+  --color-info-foreground: var(--color-blue-950);
+  --color-info-accent: var(--color-blue-600);
+
+  /* --- Access Control --- */
+  --color-access-master: var(--color-orange-100);
+  --color-access-master-foreground: var(--color-orange-800);
+  --color-access-master-accent: var(--color-orange-700);
+  --color-access-admin: var(--color-purple-100);
+  --color-access-admin-foreground: var(--color-purple-900);
+  --color-access-admin-accent: var(--color-purple-800);
+
+  /* --- Links --- */
+  --color-link: var(--color-blue-600);
+
+  /* --- Overlay Backdrop --- */
+  --color-overlay-backdrop: oklch(from var(--color-charcoal-950) l c h / 45%);
+
+  /* --- Scrollbar --- */
+  --color-scrollbar: var(--color-charcoal-300);
+  --color-scrollbar-hover: var(--color-charcoal-950);
+  --color-scrollbar-track: transparent;
+
+  /* --- Surface --- */
+  --color-surface: var(--color-white);
+
+  /* ==================== */
+  /*        RADIUS        */
+  /* ==================== */
+  /* The corner shared by every raised thing — surfaces, caps and controls (the
+     ui-* utilities). Everything else uses Tailwind's default radius scale. */
+
+  --radius-surface: var(--radius-lg);
+
+  /* ==================== */
+  /*       ELEVATION      */
+  /* ==================== */
+  /*
+    Single-tier hierarchy: nothing in normal flow casts a shadow — buttons are
+    raised caps (ui-soft / ui-contrast), fields are flat wells, panels separate
+    by fill against the page. This is the one lift signal, for overlays only
+    (Dialog, Drawer, Menu, Popover, Toast, ActionBar).
+
+    The chroma (0.035) deliberately sits well above the palette's own (0.008) so
+    the shadow reads as a warm cast rather than near-grey; it and the lightness
+    are tuned by eye, while the hue follows the palette so a rebrand carries the
+    shadow with it.
+
+    Layered per Comeau's "Designing Beautiful Shadows": the doubling ladder
+    gives one smooth falloff instead of a blurry blob, and concentrating alpha
+    on the tight contact layer (0.17 -> 0.055) is what reads as crisp. Two
+    constraints to preserve: the hairline ring holds the edge on the near-white
+    charcoal-100 ground, where a diffuse cast has almost no tonal delta to bite
+    against — and it defines dark surfaces (the contrast ActionBar) too, since
+    box-shadow is outset. And light is straight overhead (no x offset) so the
+    shadow stays correct for overlays opening in any direction.
+  */
+  --shadow-elevation-overlay:
+    0px 0px 0px 0.5px oklch(from var(--color-charcoal-950) 0.14 0.035 h / 0.1),
+    0px 1px 1px 0px oklch(from var(--color-charcoal-950) 0.14 0.035 h / 0.17),
+    0px 2px 2px 0px oklch(from var(--color-charcoal-950) 0.14 0.035 h / 0.13),
+    0px 4px 4px 0px oklch(from var(--color-charcoal-950) 0.14 0.035 h / 0.1),
+    0px 8px 8px 0px oklch(from var(--color-charcoal-950) 0.14 0.035 h / 0.075),
+    0px 16px 16px 0px oklch(from var(--color-charcoal-950) 0.14 0.035 h / 0.055);
+
+  /* ==================== */
+  /*        SPACING       */
+  /* ==================== */
+
+  /* These are dimensions, not gaps. They live in the `--spacing-*` namespace
+     because that is the only namespace Tailwind derives `h-*` / `w-*` / `size-*`
+     utilities from. */
+
+  /* Control heights */
+  --spacing-control: 2.25rem;
+  --spacing-control-small: 2rem;
+  --spacing-control-large: 2.5rem;
+
+  /* Max readable measure for a centered page column (`Container`, `w-container`). */
+  --spacing-container: 50rem;
+
+  /* WCAG 2.5.8 minimum (44px). Pointer-sized list rows — menu and listbox
+   * options, sidebar nav rows — grow to this on small screens, where they are
+   * operated by finger (inside a Tray, the mobile nav drawer). */
+  --spacing-touch-target: 2.75rem;
+
+  /* The app shell's shared vertical datum: the top bar's height, the sidebar's
+   * brand row, and the rail's sticky offset all derive from it. */
+  --spacing-topbar: 3.5rem;
+
+  /* The two-level sidebar's column widths: the rail (expanded / icon-only
+   * collapsed) and the section panel beside it. The rail tiles' fixed label
+   * width derives from the expanded value.
+   *
+   * These describe the RUI app shell's specific geometry, not a general design
+   * decision — a theme with a different shell would re-value or drop them. Of
+   * the four, only --spacing-topbar is depended on by `packages/components`
+   * (SidebarRail, Sidebar, AppShell). */
+  --spacing-rail: 6.5rem;
+  --spacing-rail-collapsed: 4rem;
+  --spacing-rail-panel: 15.5rem;
+
+  /* Universal: no spacing (works for gap, padding, and inset recipes).
+   *
+   * The `-x` / `-y` variants are required, not redundant: `collapsed` is a
+   * member of `InsetSpacingTokens`, and `resolveInsetAxes` appends the axis
+   * suffix to every non-numeric token — so `<Panel p="collapsed">` resolves to
+   * `var(--spacing-collapsed-x)` and would otherwise be undefined. */
+  --spacing-collapsed: --spacing(0);
+  --spacing-collapsed-x: --spacing(0);
+  --spacing-collapsed-y: --spacing(0);
+
+  /* Relational spacing */
+  --spacing-tight: --spacing(1.5);
+  --spacing-related: --spacing(2);
+  --spacing-regular: --spacing(6);
+  --spacing-group: --spacing(12);
+  --spacing-section: --spacing(24);
+
+  /* Shared horizontal padding for the `ui-panel-*` overlay surfaces in ui.css,
+   * plus DrawerContent's `bleed` branch (which republishes it as `--bleed-px`).
+   * `--ui-*` is not a Tailwind namespace, so this generates no utility — but it
+   * stays in `@theme` so it lands on `:root, :host` inside `@layer theme` like
+   * every other token: shadow-DOM mounts need `:host`, and an unlayered rule
+   * would outrank a consumer's own `@theme` override. */
+  --ui-panel-px: --spacing(6);
+
+  /* Padding spacing */
+  --spacing-padding-tight: --spacing(1);
+  --spacing-padding-snug: --spacing(2);
+  --spacing-padding-regular: --spacing(3);
+  --spacing-padding-relaxed: --spacing(4);
+  --spacing-padding-loose: --spacing(6);
+
+  /* Inset spacing: square (equal padding) */
+  --spacing-square-tight: --spacing(1);
+  --spacing-square-snug: --spacing(2);
+  --spacing-square-regular: --spacing(3);
+  --spacing-square-relaxed: --spacing(4);
+  --spacing-square-loose: --spacing(6);
+
+  /* Inset spacing: squish (more horizontal than vertical) */
+  --spacing-squish-tight: --spacing(1) --spacing(2);
+  --spacing-squish-snug: --spacing(1.5) --spacing(2);
+  --spacing-squish-regular: --spacing(2) --spacing(3);
+  --spacing-squish-relaxed: --spacing(2) --spacing(4);
+  --spacing-squish-loose: --spacing(4) --spacing(6);
+
+  /* Inset spacing: stretch (more vertical than horizontal) */
+  --spacing-stretch-tight: --spacing(2) --spacing(1);
+  --spacing-stretch-snug: --spacing(2) --spacing(1.5);
+  --spacing-stretch-regular: --spacing(3) --spacing(2);
+  --spacing-stretch-relaxed: --spacing(4) --spacing(2);
+  --spacing-stretch-loose: --spacing(6) --spacing(4);
+
+  /*
+   * Axis-decomposed inset tokens (-x / -y)
+   *
+   * The inset tokens above hold two values (vertical horizontal) in a single
+   * custom property, which only works through the `padding` shorthand. CSS
+   * can't split them, so components that need one axis alone read these.
+   *
+   * <Panel> is the reason: it applies horizontal inset per-child so `bleed` can
+   * opt out, while vertical inset is set once on the container.
+   */
+
+  /* square -x / -y */
+  --spacing-square-tight-x: --spacing(1);
+  --spacing-square-tight-y: --spacing(1);
+  --spacing-square-snug-x: --spacing(2);
+  --spacing-square-snug-y: --spacing(2);
+  --spacing-square-regular-x: --spacing(3);
+  --spacing-square-regular-y: --spacing(3);
+  --spacing-square-relaxed-x: --spacing(4);
+  --spacing-square-relaxed-y: --spacing(4);
+  --spacing-square-loose-x: --spacing(6);
+  --spacing-square-loose-y: --spacing(6);
+
+  /* squish -x / -y */
+  --spacing-squish-tight-x: --spacing(2);
+  --spacing-squish-tight-y: --spacing(1);
+  --spacing-squish-snug-x: --spacing(2);
+  --spacing-squish-snug-y: --spacing(1.5);
+  --spacing-squish-regular-x: --spacing(3);
+  --spacing-squish-regular-y: --spacing(2);
+  --spacing-squish-relaxed-x: --spacing(4);
+  --spacing-squish-relaxed-y: --spacing(2);
+  --spacing-squish-loose-x: --spacing(6);
+  --spacing-squish-loose-y: --spacing(4);
+
+  /* stretch -x / -y */
+  --spacing-stretch-tight-x: --spacing(1);
+  --spacing-stretch-tight-y: --spacing(2);
+  --spacing-stretch-snug-x: --spacing(1.5);
+  --spacing-stretch-snug-y: --spacing(2);
+  --spacing-stretch-regular-x: --spacing(2);
+  --spacing-stretch-regular-y: --spacing(3);
+  --spacing-stretch-relaxed-x: --spacing(2);
+  --spacing-stretch-relaxed-y: --spacing(4);
+  --spacing-stretch-loose-x: --spacing(4);
+  --spacing-stretch-loose-y: --spacing(6);
+
+  /* ==================== */
+  /*       ANIMATION      */
+  /* ==================== */
+
+  /* Easing (https://gist.github.com/bendc/ac03faac0bf2aee25b49e5fd260a727d) */
+  --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-out-circ: cubic-bezier(0.075, 0.82, 0.165, 1);
+
+  --ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  --ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --ease-in-out-quart: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1);
+  --ease-in-out-expo: cubic-bezier(1, 0, 0, 1);
+  --ease-in-out-circ: cubic-bezier(0.785, 0.135, 0.15, 0.86);
+
+  --ease-in-quad: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+  --ease-in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  --ease-in-quart: cubic-bezier(0.895, 0.03, 0.685, 0.22);
+  --ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+  --ease-in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+  --ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.335);
+
+  /* Fade */
+  --fade-in-duration: 0.3s;
+  --fade-out-duration: 0.2s;
+
+  --animate-fade-in: fade-in var(--fade-in-duration) ease-out;
+  --animate-fade-out: fade-in var(--fade-out-duration) ease-in reverse;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  --animate-fade-in-up: fade-in-up var(--fade-in-duration) var(--ease-out-cubic);
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      filter: blur(6px);
+      transform: translateY(15px);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateY(0);
+    }
+  }
+
+  /* Directional slides (Drawer, Sidebar, Tray) */
+  --animate-slide-in: slide-in 0.25s var(--ease-out-quart) forwards;
+  --animate-slide-out: slide-out 0.2s var(--ease-out-quart) forwards;
+
+  @keyframes slide-in {
+    0% {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-out {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+  }
+
+  --slide-in-duration: 0.3s;
+  --slide-out-duration: 0.15s;
+
+  --animate-slide-in-right: slide-in-right var(--slide-in-duration)
+    var(--ease-out-expo);
+  --animate-slide-out-right: slide-in-right var(--slide-out-duration) reverse
+    forwards;
+
+  @keyframes slide-in-right {
+    from {
+      transform: translateX(calc(100% + var(--slide-offset, 0px)));
+    }
+
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  --animate-slide-in-left: slide-in-left var(--slide-in-duration)
+    var(--ease-out-expo);
+  --animate-slide-out-left: slide-in-left var(--slide-out-duration) reverse
+    forwards;
+
+  @keyframes slide-in-left {
+    from {
+      transform: translateX(calc(-100% - var(--slide-offset, 0px)));
+    }
+
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  --animate-slide-in-top: slide-in-top var(--slide-in-duration)
+    var(--ease-out-expo);
+  --animate-slide-out-top: slide-in-top var(--slide-out-duration) reverse
+    forwards;
+
+  @keyframes slide-in-top {
+    from {
+      transform: translateY(calc(-100% - var(--slide-offset, 0px)));
+    }
+
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  --animate-slide-in-bottom: slide-in-bottom var(--slide-in-duration)
+    var(--ease-out-expo);
+  --animate-slide-out-bottom: slide-in-bottom var(--slide-out-duration) reverse
+    forwards;
+
+  @keyframes slide-in-bottom {
+    from {
+      transform: translateY(calc(100% + var(--slide-offset, 0px)));
+    }
+
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  /* Spinner & progress */
+  --animate-rotate-spinner: rotate-spinner 2s linear infinite;
+  --animate-progress-cycle: progress-cycle 1.5s linear infinite;
+
+  @keyframes rotate-spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes progress-cycle {
+    0% {
+      transform: rotate(0deg);
+      stroke-dashoffset: 75;
+    }
+
+    30% {
+      stroke-dashoffset: 20;
+    }
+
+    100% {
+      transform: rotate(360deg);
+      stroke-dashoffset: 75;
+    }
+  }
+}

@@ -1,6 +1,7 @@
 ---
 title: Accessibility
 description: A guide to accessibility best practices for making your product usable for all.
+badge: updated
 ---
 
 Delivering valuable, inspirational, and accessible experiences for all users, including those with disabilities, is everyone's responsibility. We are committed to creating products where no one is left behind or faces a confusing or exclusionary experience. We continually iterate on Marigold to provide you with built-in accessibility features across our components, foundations, guidelines, and tooling.
@@ -87,6 +88,41 @@ Additionally, overlay elements like dialogs, popovers, and menus have special fo
 To test this, try the demo below using only your keyboard. Tab through all the elements to see how the focus remains contained within the dialog.
 
 <ComponentDemo name="accessibility-focus" />
+
+### Landmarks
+
+Landmarks are regions of the page that screen reader users can jump to directly without tabbing through every interactive element. They make large applications navigable in the same way that a sighted user might scan for the sidebar, header, or main content area.
+
+Landmarks are defined either by semantic HTML elements (`<main>`, `<nav>`, `<aside>`, `<header>`, `<footer>`, `<form>`) or by an explicit [ARIA landmark role](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles#3._landmark_roles). Most assistive technologies expose a list of all landmarks on the page so users can move between them, regardless of how the landmark was authored.
+
+`F6` / `Shift + F6` keyboard cycling is a separate feature. It only works for regions registered with the [`useLandmark`](/components/hooks-and-utils/useLandmark) hook, which wires the element into React Aria's landmark controller.
+
+The [App Frame pattern](/patterns/layout/app-frame) wires up the major landmarks via semantic HTML, so they appear in the screen reader's landmark list automatically. To make a custom region (search shell, AI assistant, activity feed) discoverable in the same list and reachable with `F6`, register it with `useLandmark`.
+
+Try the demo below. Click anywhere inside it, then use `F6` to move forward through the landmarks. Each region announces its role and accessible name to the screen reader.
+
+<ComponentDemo name="accessibility-landmarks" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      <ul>
+        <li>Use one `main` landmark per page so screen reader users can jump straight to the primary content.</li>
+        <li>Provide an `aria-label` when a page has multiple landmarks of the same role (e.g. two `navigation` regions) so they can be distinguished.</li>
+        <li>Reserve landmarks for the major regions of the page.</li>
+      </ul>
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      <ul>
+        <li>Don't nest landmarks of the same role. Keep the structure flat so users can navigate between regions efficiently.</li>
+        <li>Don't add a landmark role to every container. The outline gets noisy and stops being useful.</li>
+        <li>Don't rely on visual layout alone to convey structure. An unlabelled `<div>` is invisible to assistive technologies.</li>
+      </ul>
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 ### Dynamic content
 

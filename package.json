@@ -54,7 +54,7 @@
     "storybook": "^10.4.6",
     "storybook-addon-test-codegen": "3.0.1",
     "tailwindcss": "4.3.2",
-    "turbo": "2.10.5",
+    "turbo": "2.10.7",
     "typescript": "6.0.3",
     "vite": "8.1.3",
     "vitest": "4.1.9",
@@ -85,6 +85,9 @@
     "typecheck:docs": "pnpm --filter @marigold/docs types:check",
     "contributor": "all-contributors",
     "changeset": "changeset",
+    "release:beta": "zx scripts/beta-release.mjs",
+    "release:beta:enter": "zx scripts/beta-enter.mjs",
+    "release:beta:exit": "zx scripts/beta-exit.mjs",
     "release:notification": "zx scripts/create-slack-notification.mjs",
     "slack": "zx scripts/slack-release-notification.mjs --quiet",
     "prepare": "husky install"

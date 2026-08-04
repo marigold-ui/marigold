@@ -20,6 +20,7 @@ When you don't yet know the component name, start with `search`. It ranks compon
 - `marigold docs <Component> --section usage` — usage guidelines
 - `marigold list --category form` — discover form components
 - `marigold list --search date` — filter by name (substring; use `search` for content)
+- `marigold doctor --format json` — diagnose a project's Marigold setup (packages, versions, provider, theme, Tailwind, React peer deps) when components render unstyled or throw; returns `{ errors, warnings, passed, text }` so you can apply the suggested fixes
 
 The CLI fetches from the Marigold docs site, caches for 24h, and works offline (`--offline`). For AI use, prefer `--format json` — it returns a structured payload instead of formatted markdown.
 
@@ -173,7 +174,7 @@ z-1    /* Sticky headers (Table, Accordion, ListBox) */
 z-10   /* Focus states (Calendar) */
 
 /* Floating Layer (20-49) */
-z-20   /* Dropdowns (Multiselect, Select, ComboBox) */
+z-20   /* Dropdowns (Select, ComboBox) */
 z-30   /* Popovers, Menus, Tooltips, ActionBar */
 
 /* Overlay Layer (50-79) */
@@ -214,7 +215,7 @@ export const Toast: ThemeComponent = {
 - Always apply z-index classes in component implementations using Tailwind utilities (`z-1`, `z-30`, etc.)
 - Never add z-index classes to theme style files (`*.styles.ts`)
 - Use `cn()` utility to combine z-index with other classNames
-- Exception: Third-party libraries (like react-select) may require inline `zIndex` prop
+- Exception: Some third-party libraries may require an inline `zIndex` prop
 
 **Stacking Hierarchy**:
 
@@ -282,6 +283,7 @@ Run with `pnpm test:unit`.
 
 This project provides MCP servers for AI-assisted development:
 
+- **marigold-docs** (`https://www.marigold-ui.io/mcp`) — Semantic search over the Marigold documentation (`search_docs` tool). Reservix-internal, requires OAuth. See `docs/app/mcp/README.md` for how it works.
 - **Storybook** (`http://localhost:6006/mcp`) — Requires running Storybook (`pnpm sb`). Provides component discovery, documentation, and testing tools.
 - **React Aria** — Reference documentation for react-aria-components
 

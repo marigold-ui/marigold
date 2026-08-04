@@ -1,4 +1,4 @@
-import { DateValue } from 'react-aria-components';
+import { DateValue } from 'react-aria-components/Calendar';
 
 export function hasOnlyOneSelectableMonth(
   minValue?: DateValue | null,

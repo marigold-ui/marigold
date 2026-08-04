@@ -1,7 +1,10 @@
 ---
 title: Button
 description: Buttons allow users to trigger actions.
+badge: updated
 ---
+
+import { ButtonAnatomy } from './button-anatomy';
 
 The `<Button>` component is a crucial components of any user interface, allowing users to initiate actions such as submitting forms, adding items to a cart, or opening dialogs. The label on a button indicates the action that will be taken when the user presses it.
 
@@ -9,15 +12,14 @@ Different types of buttons, such as primary and secondary, help guide users by v
 
 ## Anatomy
 
-A button consists of a pressable area, often containing a textual label or icon, which users can press or activate using the Space or Enter keys.
+A button is a single pressable area that users activate with a click, a tap, or the Space or Enter keys.
 
-<ImageZoom
-  src="/button/button-anatomy.jpg"
-  alt="Anatomy of a button"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+<ButtonAnatomy />
+
+- **Button:** The pressable area that triggers the action.
+- **Label:** The text that names the action.
+- **Icon (optional):** A leading icon paired with the label, or the sole visual in an icon-only button.
+- **Icon-only:** A condensed square form for compact spaces. Always pair it with an `aria-label` so the action stays accessible.
 
 ## Appearance
 
@@ -296,6 +298,18 @@ To visually imitate a button element that navigates (e.g., a "Cancel" action tha
   </Dont>
 </GuidelineTiles>
 
+### Surface actions
+
+`<Button>` is the right call for a page-level commitment such as submit, save, confirm, or continue. The same `<Button>` also serves as a low-emphasis **surface action**: the chrome that belongs to a row, a toolbar, or a container header rather than to the page. Reach for `variant="ghost"` so the button recedes into its surroundings instead of competing with the page's primary action.
+
+Anchor each surface with at most one prominent `<Button>` for the real commitment, and use ghost buttons for the repeated, low-emphasis actions around it. Cluster several with a [`<ButtonGroup>`](/components/actions/button-group).
+
+<ComponentDemo name="button-page-vs-surface" />
+
+You rarely need to set a `variant` or `size` yourself. When a `<Button>` sits inside a container like a [`<ButtonGroup>`](/components/actions/button-group), a [`<Panel.Header>`](/components/layout/panel), or a [`<SelectList.Option>`](/components/form/select-list), it automatically picks up the look and placement that fit that spot, so a row or header of buttons stays consistent without any extra props. This is part of how Marigold components adapt to where they live, explained in [Slot-Driven Composition](/foundations/component-principles#slot-driven-composition). You can always set a `variant` or `size` on a button to override what the container suggests.
+
+<ComponentDemo name="button-in-context" />
+
 ### Press Event
 
 The `<Button>` component supports user interactions via mouse, keyboard, and touch, handled through the `onPress ` prop. This prop is similar to the standard `onClick` event but is normalized for all interaction methods. Additionally, `onPressStart`, `onPressEnd`, and `onPressChange` events are fired during user interaction.
@@ -312,5 +326,8 @@ Each handler receives a `PressEvent`, providing details about the target and the
 
 ## Alternative components
 
+- [ButtonGroup](/components/actions/button-group): A toolbar wrapper around a related cluster of buttons. It cascades a shared `variant`/`size`.
+- [ActionMenu](/components/overlay/action-menu): The overflow pattern for when there are more actions than fit comfortably in a row.
+- [ActionBar](/components/collection/actionbar): The bar around bulk-selection actions. Place a `<Button>` inside it and the bar cascades its toolbar look.
 - [Link](/components/actions/link): A component to navigate to another page.
 - [LinkButton](/components/actions/link-button): A component to navigate to another page but looks like a button.

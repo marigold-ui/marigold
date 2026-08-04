@@ -8,6 +8,9 @@ import { Button } from './Button';
 const meta = preview.meta({
   title: 'Components/Button',
   component: Button,
+  parameters: {
+    surface: false,
+  },
   argTypes: {
     disabled: {
       control: {
@@ -103,6 +106,7 @@ Basic.test(
 export const ButtonVariants = meta.story({
   tags: ['component-test'],
   parameters: {
+    surface: 'both',
     controls: { exclude: ['variant', 'children', 'loading'] },
   },
   args: {
@@ -137,7 +141,7 @@ export const ButtonVariants = meta.story({
 export const GhostOnBackground = meta.story({
   render: args => (
     <Stack space={4}>
-      <div className="bg-brand text-brand-foreground flex items-center justify-center rounded p-8">
+      <div className="bg-primary text-primary-foreground flex items-center justify-center rounded p-8">
         <Button {...args} variant="ghost">
           Ghost on Dark
         </Button>
@@ -151,6 +155,50 @@ export const GhostOnBackground = meta.story({
   ),
 });
 
+/**
+ * A ghost Button in every state, on each ground it actually lands on.
+ *
+ * `GhostOnBackground` above covers the resting state; the inactive ones behave
+ * differently, because `ui-state-disabled` paints the opaque
+ * `--color-disabled-surface`. That fill is calibrated for a white surface, so on
+ * `bg-background` it matches the page exactly and on `bg-primary` it reads as a
+ * light block. Snapshotted so both stay visible in VRT; see DST-1590.
+ */
+export const GhostStatesOnBackground = meta.story({
+  parameters: {
+    controls: { exclude: ['variant', 'loading', 'disabled', 'children'] },
+  },
+  render: args => {
+    const states = (
+      <>
+        <Button {...args} variant="ghost">
+          Rest
+        </Button>
+        <Button {...args} variant="ghost" disabled>
+          Disabled
+        </Button>
+        <Button {...args} variant="ghost" loading>
+          Loading
+        </Button>
+      </>
+    );
+
+    return (
+      <Stack space={4}>
+        <div className="bg-surface flex items-center gap-3 rounded border p-6">
+          {states}
+        </div>
+        <div className="bg-background text-foreground flex items-center gap-3 rounded border p-6">
+          {states}
+        </div>
+        <div className="bg-primary text-primary-foreground flex items-center gap-3 rounded p-6">
+          {states}
+        </div>
+      </Stack>
+    );
+  },
+});
+
 export const FullWidth = meta.story({
   args: {
     fullWidth: true,
@@ -158,8 +206,15 @@ export const FullWidth = meta.story({
 });
 
 export const Loading = meta.story({
+  // Required for the `Loading.test(...)` blocks below to be picked up by the
+  // test runner — without it they are silently never executed.
+  tags: ['component-test'],
   parameters: {
     controls: { exclude: ['loading'] },
+    // The idle state is a plain primary button — already covered by `Basic` and
+    // `ButtonVariants`. The pending state is the one worth a baseline, so the
+    // snapshot lives on the test below that actually reaches it.
+    chromatic: { disableSnapshot: true },
   },
   render: ({ children, ...args }) => {
     const [loading, setLoading] = useState<boolean | undefined>(false);
@@ -189,7 +244,9 @@ Loading.test(
   'Shows a spinner while loading',
   {
     parameters: {
-      chromatic: { disableSnapshot: true },
+      // The one place the pending state gets a visual baseline: spinner
+      // overlaid, label held at `opacity-0` so the width doesn't change.
+      chromatic: { disableSnapshot: false },
     },
   },
   async ({ canvas }) => {
@@ -199,5 +256,28 @@ Loading.test(
 
     await expect(await canvas.findByRole('progressbar')).toBeInTheDocument();
     await expect(button).toHaveAttribute('data-pending', 'true');
+  }
+);
+
+Loading.test(
+  'Keeps its accessible name while loading',
+  {
+    parameters: {
+      chromatic: { disableSnapshot: true },
+    },
+  },
+  async ({ canvas }) => {
+    // The label is hidden with `opacity-0` rather than `invisible` precisely so
+    // it survives here: `visibility: hidden` would drop it from the
+    // accessibility tree and leave a pending button anonymous (WCAG 4.1.2).
+    // Querying *by name* is the assertion — don't relax it to a state query.
+    const button = canvas.getByRole('button', { name: 'Submit' });
+
+    await userEvent.click(button);
+
+    await expect(await canvas.findByRole('progressbar')).toBeInTheDocument();
+    await expect(
+      canvas.getByRole('button', { name: 'Submit' })
+    ).toHaveAttribute('data-pending', 'true');
   }
 );

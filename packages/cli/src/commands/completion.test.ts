@@ -106,7 +106,7 @@ describe('computeSuggestions — static surface', () => {
   });
 
   test('filters subcommands by prefix `d`', () => {
-    expect(computeSuggestions(['d'])).toEqual(['docs']);
+    expect(computeSuggestions(['d'])).toEqual(['docs', 'doctor']);
   });
 
   test('filters subcommands by prefix `t`', () => {

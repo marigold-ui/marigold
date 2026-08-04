@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { useClassNames } from '@marigold/system';
-import { Lock } from '../icons/Lock';
+import { AccessIcon } from '../utils/AccessIcon';
 
 // Props
 // ---------------
@@ -29,7 +29,7 @@ export const Badge = ({ variant, size, children, ...props }: BadgeProps) => {
 
   return (
     <div className={classNames} {...props}>
-      {['master', 'admin'].includes(variant ?? '') && <Lock size={16} />}
+      <AccessIcon variant={variant} />
       {children}
     </div>
   );

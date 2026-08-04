@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, use } from 'react';
 import { WidthProp } from '@marigold/system';
 
 export interface CheckboxGroupContextProps {
@@ -9,4 +9,4 @@ export interface CheckboxGroupContextProps {
 
 export const CheckboxGroupContext =
   createContext<CheckboxGroupContextProps | null>(null);
-export const useCheckboxGroupContext = () => useContext(CheckboxGroupContext);
+export const useCheckboxGroupContext = () => use(CheckboxGroupContext);

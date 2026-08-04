@@ -1,7 +1,7 @@
 import { Select } from '@marigold/components';
 
 export default () => (
-  <Select label="Genres" width="fit">
+  <Select label="Genres">
     {options.map(item => (
       <Select.Section key={item.category} header={item.category}>
         {item.genres.map(genre => (

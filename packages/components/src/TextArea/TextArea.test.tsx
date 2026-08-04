@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { createRef } from 'react';
+import type { RefObject } from 'react';
 import { Basic } from './TextArea.stories';
 
 test('renders an textarea', () => {
@@ -121,7 +121,7 @@ test('passes down "rows" attribute', () => {
 });
 
 test('forwards ref', () => {
-  const ref = createRef<HTMLTextAreaElement>();
+  const ref: RefObject<HTMLTextAreaElement | null> = { current: null };
   render(<Basic.Component ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLTextAreaElement);

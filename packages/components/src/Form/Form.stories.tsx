@@ -138,11 +138,11 @@ export const Selected = meta.story({
               selectionMode="multiple"
               defaultSelectedKeys={['monday', 'tuesday', 'wednesday', 'friday']}
             >
-              <SelectList.Item id="monday">Monday</SelectList.Item>
-              <SelectList.Item id="tuesday">Tuesday</SelectList.Item>
-              <SelectList.Item id="wednesday">Wednesday</SelectList.Item>
-              <SelectList.Item id="thursday">Thursday</SelectList.Item>
-              <SelectList.Item id="friday">Friday</SelectList.Item>
+              <SelectList.Option id="monday">Monday</SelectList.Option>
+              <SelectList.Option id="tuesday">Tuesday</SelectList.Option>
+              <SelectList.Option id="wednesday">Wednesday</SelectList.Option>
+              <SelectList.Option id="thursday">Thursday</SelectList.Option>
+              <SelectList.Option id="friday">Friday</SelectList.Option>
             </SelectList>
           </Stack>
           <Stack space={5}>
@@ -155,6 +155,19 @@ export const Selected = meta.story({
       </Form>
     );
   },
+});
+
+export const BooleanFields = meta.story({
+  render: () => (
+    <Stack space={4}>
+      <Checkbox defaultChecked label="Accept Terms and Conditions" />
+      <Radio.Group defaultValue="email" label="Contact Preference">
+        <Radio value="email">Email</Radio>
+        <Radio value="phone">Phone</Radio>
+      </Radio.Group>
+      <Switch defaultSelected label="Enable Notifications" />
+    </Stack>
+  ),
 });
 
 export const WithRef = meta.story({

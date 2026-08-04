@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from 'react';
+import { createContext, use, useCallback, useMemo, useState } from 'react';
 import type { KeyboardEvent, ReactNode, RefObject } from 'react';
 import { createFocusManager } from '@react-aria/focus';
 import type { SidebarNode } from './collection';
@@ -26,7 +20,7 @@ export interface PanelKeyboardProps {
 }
 
 export const usePanelKeyboard = (
-  panelRef: RefObject<HTMLDivElement | null>
+  panelRef: RefObject<HTMLElement | null>
 ): PanelKeyboardProps => {
   const focusManager = useMemo(() => createFocusManager(panelRef), [panelRef]);
 
@@ -75,20 +69,33 @@ export const RovingTabIndexProvider = ({
   nodes,
   children,
 }: RovingTabIndexProviderProps) => {
-  const [currentKey, setCurrentKey] = useState<string | null>(null);
+  // The current page within this level, if any — the natural default tab stop.
+  const activeKey = useMemo(
+    () => nodes.find(n => n.type === 'item' && n.active)?.key ?? null,
+    [nodes]
+  );
+  const defaultKey = useMemo(
+    () => activeKey ?? nodes.find(n => n.type === 'item')?.key ?? '__back__',
+    [activeKey, nodes]
+  );
 
-  const defaultKey = useMemo(() => {
-    const active = nodes.find(n => n.type === 'item' && n.active);
-    if (active) return active.key;
-    return nodes.find(n => n.type === 'item')?.key ?? '__back__';
-  }, [nodes]);
+  // The user's manually-roved tab stop, overriding the default until the route
+  // moves. When `active` shifts to a new page (browser back/forward, or a link
+  // elsewhere in the app), drop the override so Tab re-enters the panel at the
+  // current page instead of the stale row the user last focused.
+  const [userKey, setUserKey] = useState<string | null>(null);
+  const [prevActiveKey, setPrevActiveKey] = useState(activeKey);
+  if (activeKey !== prevActiveKey) {
+    setPrevActiveKey(activeKey);
+    if (activeKey) setUserKey(null);
+  }
 
   const value = useMemo(
     () => ({
-      focusedKey: currentKey ?? defaultKey,
-      setFocusedKey: setCurrentKey,
+      focusedKey: userKey ?? defaultKey,
+      setFocusedKey: setUserKey,
     }),
-    [currentKey, defaultKey]
+    [userKey, defaultKey]
   );
 
   return (
@@ -114,7 +121,7 @@ export const useLastDistinctValue = <T,>(value: T): T | undefined => {
 };
 
 export const useRovingItem = (key: string) => {
-  const ctx = useContext(RovingTabIndexContext);
+  const ctx = use(RovingTabIndexContext);
   if (!ctx) {
     throw new Error(
       'useRovingItem must be used within a RovingTabIndexProvider'

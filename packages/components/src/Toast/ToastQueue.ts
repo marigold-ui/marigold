@@ -1,5 +1,5 @@
 import { ReactNode, useCallback } from 'react';
-import { UNSTABLE_ToastQueue as ToastQueue } from 'react-aria-components';
+import { UNSTABLE_ToastQueue as ToastQueue } from 'react-aria-components/Toast';
 import { flushSync } from 'react-dom';
 import type { ToastContentProps } from './Toast';
 

@@ -1,4 +1,4 @@
-import { Context, createContext, useContext } from 'react';
+import { Context, createContext, use } from 'react';
 import { ComponentNames, ThemeComponent } from '../types/theme';
 import { cn } from '../utils/className.utils';
 import { useTheme } from './useTheme';
@@ -39,7 +39,7 @@ export const useClassNames = <C extends ComponentNames>({
 }: UseClassNamesProps<C>): ComponentClassNames<C> => {
   const theme = useTheme();
 
-  const ctx = useContext(ComponentContext ?? FallbackContext);
+  const ctx = use(ComponentContext ?? FallbackContext);
 
   const currentSize = size ?? ctx?.size;
   const currentVariant = variant ?? ctx?.variant;

@@ -3,7 +3,7 @@ import { Button, Form, Inset, Stack, TextField } from '@marigold/components';
 export default () => {
   return (
     <Form>
-      <Inset space={8}>
+      <Inset p={8}>
         <Stack space={2} alignX="left">
           <TextField label="User Name" name="user" type="name" width="1/2" />
           <TextField
