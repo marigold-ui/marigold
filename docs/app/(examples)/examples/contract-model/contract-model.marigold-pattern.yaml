@@ -1,0 +1,38 @@
+title: Contract model settings
+brief: >-
+  A settings screen ("how is this subscription sold?") laid out with Page and
+  Panel. One Panel per topic with no surface nested inside another, the section's
+  own actions in Panel.Header, EmptyState and FileField instead of a hand-drawn
+  dashed box and a hidden file input, derived read-only values as key/value rows
+  rather than a nested Card, and the page's Save/Cancel plus the screen-level
+  SectionMessage outside the Panels because they act on the page.
+patterns:
+  - layout/app-frame
+mock_data:
+  - alias: './data'
+    shape: |
+      // The sales models to choose from, plus the two states of the terms and
+      // conditions document (inherited from the group, or uploaded for this
+      // event). Swap for the consumer's own sources.
+      export type ContractModel = 'bundle' | 'priorityPurchase' | 'subscription';
+      export const contractModels: Array<{
+        id: ContractModel;
+        label: string;
+        description: string;
+      }>;
+      export const inheritedDocument: {
+        origin: 'organizer' | 'group' | 'own';
+        name: string;
+        href: string;
+        uploadedAt: string;
+        inheritedFrom?: string;
+        fallsBackTo?: string;
+      };
+key_files:
+  - ConditionsPanel.tsx
+  - ContractTermPanel.tsx
+scaffolding_files:
+  - page.tsx
+  - data.ts
+peer_deps:
+  - '@internationalized/date'

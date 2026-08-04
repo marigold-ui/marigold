@@ -21,7 +21,7 @@ export interface WizardProgressProps {
  *
  * Marigold has no Stepper component, so this is app-owned chrome — but it is
  * built from theme tokens rather than raw palette classes, so it follows the
- * theme like every Marigold component does. The two decisions worth copying:
+ * theme like every Marigold component does. The three decisions worth copying:
  *
  * 1. It is a plain `<nav>`, not a `<Panel>`. A Panel is a *content* region of
  *    the page; progress chrome describes the page instead of holding part of
@@ -29,6 +29,20 @@ export interface WizardProgressProps {
  * 2. It carries no background of its own. It sits on the page background, the
  *    Panels below it are the raised surfaces, and that contrast is what makes
  *    the page read as layered.
+ * 3. Only the *circles* carry step state; the rail between them stays one
+ *    neutral colour the whole way across. A rail that changes colour behind
+ *    the completed steps says the same thing the checkmarks already say, and
+ *    a rail that disappears reads as a broken layout.
+ *
+ * A constraint to know about when writing classes like these: only the token
+ * utilities `@marigold/theme-rui` *itself* uses are available to you. Its
+ * `styles.css` is pre-compiled Tailwind, so the tokens arrive as plain `:root`
+ * custom properties and your own Tailwind build cannot generate new utilities
+ * from them. `bg-success` and `text-secondary` work because the theme's own
+ * component styles use them; `bg-success-accent` and `text-disabled` compile to
+ * nothing at all. There is no error — the rule is simply absent. Check that a
+ * semantic class actually paints before relying on it, and prefer a component
+ * over a hand-written class wherever one exists.
  */
 export const WizardProgress = ({
   steps,
@@ -57,11 +71,10 @@ export const WizardProgress = ({
                   'text-sm font-semibold',
                   'focus-visible:ui-state-focus outline-none',
                   isCurrent && 'bg-primary text-primary-foreground',
-                  isDone &&
-                    'bg-success text-success-foreground border-success-accent cursor-pointer border',
+                  isDone && 'bg-success text-success-foreground cursor-pointer',
                   !isCurrent &&
                     !isDone &&
-                    'bg-control text-disabled border-control-border cursor-not-allowed border'
+                    'bg-control text-secondary border-control-border cursor-not-allowed border'
                 )}
               >
                 {isDone ? <Check className="size-4" aria-hidden /> : step.id}
@@ -72,8 +85,7 @@ export const WizardProgress = ({
                 className={cn(
                   'text-center text-xs leading-tight',
                   isCurrent && 'text-foreground font-semibold',
-                  isDone && 'text-secondary',
-                  !isCurrent && !isDone && 'text-disabled'
+                  !isCurrent && 'text-secondary'
                 )}
               >
                 {step.label}
@@ -81,13 +93,7 @@ export const WizardProgress = ({
             </div>
 
             {!isLast && (
-              <div
-                aria-hidden
-                className={cn(
-                  'mt-4 h-px flex-1',
-                  isDone ? 'bg-success-accent' : 'bg-border'
-                )}
-              />
+              <div aria-hidden className="bg-border mt-4 h-px flex-1" />
             )}
           </li>
         );

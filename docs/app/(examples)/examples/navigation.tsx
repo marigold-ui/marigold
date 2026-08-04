@@ -54,6 +54,13 @@ const formItems: NavNode[] = [
     docsHref: '/patterns/layout/app-frame',
     docsLabel: 'App Frame Pattern',
   },
+  {
+    kind: 'Item',
+    slug: 'contract-model',
+    label: 'Contract Model',
+    docsHref: '/patterns/layout/app-frame',
+    docsLabel: 'App Frame Pattern',
+  },
 ];
 
 const tiles: RailTile[] = [
