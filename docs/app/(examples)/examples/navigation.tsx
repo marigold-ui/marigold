@@ -47,6 +47,13 @@ const formItems: NavNode[] = [
     label: 'Auto-Save Settings',
     ...formDocs,
   },
+  {
+    kind: 'Item',
+    slug: 'copy-wizard',
+    label: 'Multi-Step Wizard',
+    docsHref: '/patterns/layout/app-frame',
+    docsLabel: 'App Frame Pattern',
+  },
 ];
 
 const tiles: RailTile[] = [

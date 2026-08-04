@@ -1,0 +1,40 @@
+title: Multi-step wizard
+brief: >-
+  A four-step batch job ("copy subscriptions onto next season") laid out with
+  Page and Panel. One <h1> for the flow, a token-driven progress nav as page
+  chrome, one Panel per topic per step (size="form" for the field-heavy ones,
+  bleed for the tables), a single Panel.Collapsible for the optional tag
+  settings, and the wizard's Back/Continue outside the Panels because they act
+  on the page, not on a section.
+patterns:
+  - layout/app-frame
+mock_data:
+  - alias: './data'
+    shape: |
+      // Bundle groups, bundles, sales/branch/payment/delivery options, order
+      // tags, and the source→target mapping rows. Swap for the consumer's own
+      // sources.
+      export const bundleGroups: Array<{ id: string; name: string }>;
+      export const bundles: Array<{
+        id: string;
+        name: string;
+        type: 'series' | 'single';
+        connections: number;
+      }>;
+      export const mappings: Array<{
+        id: string;
+        source: string;
+        target: string;
+        seats: number;
+        status: 'ready' | 'review' | 'blocked';
+      }>;
+key_files:
+  - WizardProgress.tsx
+  - StepSource.tsx
+  - StepParameters.tsx
+  - StepAssignment.tsx
+  - StepReview.tsx
+scaffolding_files:
+  - page.tsx
+  - data.ts
+peer_deps: []
