@@ -58,6 +58,7 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     selectedItemCount: 3,
   },
@@ -81,7 +82,6 @@ export const Basic = meta.story({
 
 Basic.test(
   'Shows the selected item count and its actions',
-  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
     await expect(canvas.getByText('3 selected')).toBeInTheDocument();
     await expect(canvas.getByText('Edit')).toBeInTheDocument();
@@ -90,7 +90,7 @@ Basic.test(
 
 Basic.test(
   'Calls onClearSelection when the clear button is pressed',
-  { parameters: { chromatic: { disableSnapshot: true } } },
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ args, canvas, userEvent }) => {
     const clearButton = canvas.getByRole('button', {
       name: /clear selection/i,
@@ -320,6 +320,7 @@ const users = [
 export const IntegratedWithTable = meta.story({
   tags: ['component-test'],
   parameters: {
+    chromatic: { disableSnapshot: true },
     controls: { exclude: ['selectedItemCount', 'onClearSelection'] },
   },
   render: () => (
@@ -389,7 +390,6 @@ export const IntegratedWithTable = meta.story({
 
 IntegratedWithTable.test(
   'Shows the count of the rows selected by default',
-  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
     await expect(canvas.getByText('2 selected')).toBeInTheDocument();
   }
@@ -397,7 +397,6 @@ IntegratedWithTable.test(
 
 IntegratedWithTable.test(
   'Increments the count when an additional row is selected',
-  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent }) => {
     const uncheckedCheckbox = canvas
       .getAllByRole('checkbox')
@@ -414,7 +413,6 @@ IntegratedWithTable.test(
 
 IntegratedWithTable.test(
   'Hides the ActionBar when the selection is cleared',
-  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent }) => {
     const clearButton = canvas.getByRole('button', {
       name: /clear selection/i,
@@ -432,7 +430,7 @@ IntegratedWithTable.test(
 
 IntegratedWithTable.test(
   'Shows "All items selected" when select-all is pressed',
-  { parameters: { chromatic: { disableSnapshot: true } } },
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
     const selectAllCheckbox = canvas.getAllByRole('checkbox')[0];
 

@@ -201,6 +201,7 @@ UploadFile.test(
 
 export const Small = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     label: 'Upload file (compact)',
     size: 'small',
@@ -214,7 +215,7 @@ export const Small = meta.story({
 
 Small.test(
   'Shows the uploaded file in the compact layout',
-  { parameters: { chromatic: { disableSnapshot: true } } },
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
     // Arrange
     const input = document.querySelector(
