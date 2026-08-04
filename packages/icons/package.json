@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@marigold/system": "workspace:*",
-    "lucide-react": "^1.9.0"
+    "lucide-react": "^1.28.0"
   },
   "peerDependencies": {
     "react": ">=19.0.0"

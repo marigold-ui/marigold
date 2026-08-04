@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from 'react';
-import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { expect, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { cn } from '@marigold/system';
 import { Headline } from './Headline/Headline';
@@ -325,9 +325,16 @@ export const SidebarNavigation = meta.story({
  * geometry, so the back chevron sits on the same content column the nav text
  * and section labels align to — this asserts that shared inset survives.
  */
+// No snapshot: the story's own render is the un-drilled sidebar, which
+// `SidebarNavigation` already covers. The drilled-in state only exists after
+// the interaction below.
 export const SidebarBackAction = meta.story({
   tags: ['component-test'],
-  parameters: { layout: 'fullscreen', surface: false },
+  parameters: {
+    layout: 'fullscreen',
+    surface: false,
+    chromatic: { disableSnapshot: true },
+  },
   render: () => (
     <div className="p-4">
       <Stack space="group">
@@ -338,34 +345,59 @@ export const SidebarBackAction = meta.story({
       </Stack>
     </div>
   ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+});
 
-    // Drill into the "Management" branch to reveal the back action.
-    await userEvent.click(canvas.getByRole('link', { name: /Management/ }));
+SidebarBackAction.test(
+  'Reveals the back action and the child items on drill-in',
+  async ({ canvas, userEvent }) => {
+    const branch = canvas.getByRole('link', { name: /Management/ });
 
-    const back = await canvas.findByRole('button', { name: /Management/ });
-    const child = canvas.getByRole('link', { name: 'Users' });
+    await userEvent.click(branch);
+
     // The drill-in reveals the panel through a transition, so wait for it to
     // settle rather than racing the reveal (findByRole resolves as soon as the
     // node enters the a11y tree, before it is painted visible).
+    const back = await canvas.findByRole('button', { name: /Management/ });
+    const child = canvas.getByRole('link', { name: 'Users' });
     await waitFor(async () => {
       await expect(back).toBeVisible();
       await expect(child).toBeVisible();
     });
+  }
+);
+
+SidebarBackAction.test(
+  'Aligns the back action to the same content column as the nav rows',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('link', { name: /Management/ }));
+    const back = await canvas.findByRole('button', { name: /Management/ });
+    const child = canvas.getByRole('link', { name: 'Users' });
+    await waitFor(() => expect(back).toBeVisible());
 
     // The back action and the nav rows share one inset (mx-2 + px-2), so
     // their content starts on the same column — the alignment we tuned.
     const backStyle = getComputedStyle(back);
     const childStyle = getComputedStyle(child);
+
     await expect(backStyle.paddingLeft).toBe(childStyle.paddingLeft);
     await expect(backStyle.marginLeft).toBe(childStyle.marginLeft);
+  }
+);
 
-    // ...and the back label reads at the same weight as a nav item (the
-    // Button's default `font-medium` is reset).
+SidebarBackAction.test(
+  'Renders the back label at the same weight as a nav item',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('link', { name: /Management/ }));
+    const back = await canvas.findByRole('button', { name: /Management/ });
+    const child = canvas.getByRole('link', { name: 'Users' });
+    await waitFor(() => expect(back).toBeVisible());
+
+    // The Button's default `font-medium` is reset, so the back label reads at
+    // the nav item weight.
     const backLabel = within(back).getByText(/Management/);
+
     await expect(getComputedStyle(backLabel).fontWeight).toBe(
-      childStyle.fontWeight
+      getComputedStyle(child).fontWeight
     );
-  },
-});
+  }
+);
