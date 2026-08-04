@@ -201,6 +201,7 @@ UploadFile.test(
 
 export const Small = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     label: 'Upload file (compact)',
     size: 'small',
@@ -210,7 +211,12 @@ export const Small = meta.story({
       <FileField width={'1/5'} {...args} />
     </I18nProvider>
   ),
-  play: async ({ canvas, userEvent }) => {
+});
+
+Small.test(
+  'Shows the uploaded file in the compact layout',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
     // Arrange
     const input = document.querySelector(
       'input[type="file"]'
@@ -222,8 +228,8 @@ export const Small = meta.story({
 
     // Assert
     await expect(canvas.getByText('compact.pdf')).toBeInTheDocument();
-  },
-});
+  }
+);
 
 export const Disabled = meta.story({
   args: {

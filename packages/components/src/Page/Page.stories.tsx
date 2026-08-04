@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { expect, within } from 'storybook/test';
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Copy, Download, Pencil, Trash2 } from '@marigold/icons';
 import { Button } from '../Button/Button';
@@ -54,32 +54,39 @@ export const Basic = meta.story({
       </Panel>
     </Page>
   ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+});
 
+Basic.test(
+  'Names the main landmark with the page title',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
     const main = canvas.getByRole('main');
-    await expect(main).toBeInTheDocument();
-
-    // Page.Header title is the page h1; Panel.Header title is h2.
     const h1 = canvas.getByRole('heading', { level: 1, name: 'Billing' });
-    await expect(h1).toBeInTheDocument();
+
+    await expect(main).toHaveAttribute('aria-labelledby', h1.id);
+  }
+);
+
+Basic.test(
+  'Renders the header content and the heading outline below it',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    // Page.Header title is the page h1; Panel.Header title is h2.
     await expect(
       canvas.getByRole('heading', { level: 2, name: 'Current plan' })
     ).toBeInTheDocument();
 
-    // The main landmark is named by the page title.
-    await expect(main).toHaveAttribute('aria-labelledby', h1.id);
-
     // Description renders as a paragraph.
-    const description = canvas.getByText('Manage your plan and invoices.');
-    await expect(description.tagName).toBe('P');
+    await expect(
+      canvas.getByText('Manage your plan and invoices.').tagName
+    ).toBe('P');
 
     // Primary page action is a slot-aware Button.
     await expect(
       canvas.getByRole('button', { name: 'Upgrade plan' })
     ).toBeInTheDocument();
-  },
-});
+  }
+);
 
 /**
  * `<Page.Header>` accepts the same action components as `<Panel.Header>`.
@@ -200,9 +207,12 @@ export const Actions = meta.story({
       </Page>
     </Stack>
   ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+});
 
+Actions.test(
+  'Renders each action arrangement in the header',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
     // The no-actions header renders with just its heading.
     await expect(
       canvas.getByRole('heading', { level: 1, name: 'No actions' })
@@ -212,12 +222,6 @@ export const Actions = meta.story({
     await expect(
       canvas.getAllByRole('button', { name: 'Upgrade plan' })
     ).toHaveLength(3);
-
-    // The navigating primary is a real link (an <a>), not a button.
-    const createLink = canvas.getByRole('link', { name: 'Create event' });
-    await expect(createLink).toBeInTheDocument();
-    await expect(createLink.tagName).toBe('A');
-    await expect(createLink).toHaveAttribute('href', '/events/new');
 
     // The secondary button renders alongside the primary inside the group.
     await expect(
@@ -231,8 +235,20 @@ export const Actions = meta.story({
     await expect(
       canvas.getByRole('button', { name: 'More plan actions' })
     ).toBeInTheDocument();
-  },
-});
+  }
+);
+
+Actions.test(
+  'Renders a navigating primary action as a real link',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const createLink = canvas.getByRole('link', { name: 'Create event' });
+
+    // The navigating primary is an <a>, not a button.
+    await expect(createLink.tagName).toBe('A');
+    await expect(createLink).toHaveAttribute('href', '/events/new');
+  }
+);
 
 /**
  * Use the optional `<Page.Content>` wrapper when the rhythm between sections
@@ -289,24 +305,26 @@ export const TitleOnly = meta.story({
       </Panel>
     </Page>
   ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+});
 
+TitleOnly.test(
+  'Uses a bare Title as the page h1 and the landmark name',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
     const main = canvas.getByRole('main');
 
-    // The bare title becomes the page h1 even without <Page.Header>.
+    // The bare title becomes the page h1 even without <Page.Header>, and
+    // still names the main landmark.
     const h1 = canvas.getByRole('heading', { level: 1, name: 'Reports' });
-    await expect(h1).toBeInTheDocument();
 
-    // ...and still names the main landmark.
     await expect(main).toHaveAttribute('aria-labelledby', h1.id);
 
     // The heading outline below it is unaffected: the panel keeps its h2.
     await expect(
       canvas.getByRole('heading', { level: 2, name: 'Summary' })
     ).toBeInTheDocument();
-  },
-});
+  }
+);
 
 /**
  * Without a `<Title>`, the page must be given an `aria-label` so the `<main>`
@@ -328,8 +346,12 @@ export const WithoutTitle = meta.story({
  * Invalid usage: with neither a `<Title>` nor an `aria-label`, the `<main>`
  * landmark has no accessible name. `<Page>` warns about this in development.
  * Always provide one of the two (this story exists to document the warning).
+ *
+ * No snapshot: it renders identically to `WithoutTitle`. The difference is the
+ * missing accessible name, which a pixel baseline cannot see.
  */
 export const Unlabelled = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => (
     <Page>
       <Panel aria-label="Summary">
@@ -345,8 +367,12 @@ export const Unlabelled = meta.story({
  * When there is no `<Title>`, a caller can still name the `<main>` landmark by
  * passing their own `aria-labelledby` (or `aria-label`). Marigold preserves a
  * caller-supplied `aria-labelledby` instead of overwriting it.
+ *
+ * No snapshot: the page renders the same as `WithoutTitle`, and what this story
+ * documents is which `aria-labelledby` survives, not a visual difference.
  */
 export const ExternalLabel = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => (
     <>
       <h2 id="external-heading">Reports</h2>

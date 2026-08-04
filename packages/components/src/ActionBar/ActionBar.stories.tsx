@@ -1,5 +1,5 @@
 import { I18nProvider } from 'react-aria-components/I18nProvider';
-import { expect, fn, userEvent, waitFor } from 'storybook/test';
+import { expect, fn, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Copy, Pencil, Trash2 } from '@marigold/icons';
 import { NumericFormat } from '@marigold/system';
@@ -58,6 +58,7 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     selectedItemCount: 3,
   },
@@ -77,18 +78,29 @@ export const Basic = meta.story({
       </Button>
     </ActionBar>
   ),
-  play: async ({ args, canvas }) => {
+});
+
+Basic.test(
+  'Shows the selected item count and its actions',
+  async ({ canvas }) => {
     await expect(canvas.getByText('3 selected')).toBeInTheDocument();
     await expect(canvas.getByText('Edit')).toBeInTheDocument();
+  }
+);
 
+Basic.test(
+  'Calls onClearSelection when the clear button is pressed',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ args, canvas, userEvent }) => {
     const clearButton = canvas.getByRole('button', {
       name: /clear selection/i,
     });
+
     await userEvent.click(clearButton);
 
     await expect(args.onClearSelection).toHaveBeenCalled();
-  },
-});
+  }
+);
 
 export const WithoutClearButton = meta.story({
   tags: ['component-test'],
@@ -308,6 +320,7 @@ const users = [
 export const IntegratedWithTable = meta.story({
   tags: ['component-test'],
   parameters: {
+    chromatic: { disableSnapshot: true },
     controls: { exclude: ['selectedItemCount', 'onClearSelection'] },
   },
   render: () => (
@@ -373,58 +386,67 @@ export const IntegratedWithTable = meta.story({
       </Scrollable>
     </div>
   ),
-  play: async ({ canvas, step }) => {
-    await step('shows initial selection count', async () => {
-      await expect(canvas.getByText('2 selected')).toBeInTheDocument();
-    });
-
-    await step(
-      'increments count when selecting an additional row',
-      async () => {
-        const checkboxes = canvas.getAllByRole('checkbox');
-        const uncheckedCheckbox = checkboxes
-          .slice(1)
-          .find(cb => !(cb as HTMLInputElement).checked)!;
-
-        await userEvent.click(uncheckedCheckbox);
-
-        await waitFor(() => {
-          expect(canvas.getByText('3 selected')).toBeInTheDocument();
-        });
-      }
-    );
-
-    await step('hides ActionBar when clear selection is clicked', async () => {
-      const clearButton = canvas.getByRole('button', {
-        name: /clear selection/i,
-      });
-
-      await userEvent.click(clearButton);
-
-      await waitFor(() => {
-        expect(
-          canvas.queryByRole('toolbar', { name: /bulk actions/i })
-        ).not.toBeInTheDocument();
-      });
-    });
-
-    await step(
-      'shows "All items selected" when select-all is clicked',
-      async () => {
-        const selectAllCheckbox = canvas.getAllByRole('checkbox')[0];
-
-        await userEvent.click(selectAllCheckbox);
-
-        await waitFor(() => {
-          expect(canvas.getByText('All items selected')).toBeInTheDocument();
-        });
-      }
-    );
-  },
 });
 
+IntegratedWithTable.test(
+  'Shows the count of the rows selected by default',
+  async ({ canvas }) => {
+    await expect(canvas.getByText('2 selected')).toBeInTheDocument();
+  }
+);
+
+IntegratedWithTable.test(
+  'Increments the count when an additional row is selected',
+  async ({ canvas, userEvent }) => {
+    const uncheckedCheckbox = canvas
+      .getAllByRole('checkbox')
+      .slice(1)
+      .find(cb => !(cb as HTMLInputElement).checked)!;
+
+    await userEvent.click(uncheckedCheckbox);
+
+    await waitFor(() => {
+      expect(canvas.getByText('3 selected')).toBeInTheDocument();
+    });
+  }
+);
+
+IntegratedWithTable.test(
+  'Hides the ActionBar when the selection is cleared',
+  async ({ canvas, userEvent }) => {
+    const clearButton = canvas.getByRole('button', {
+      name: /clear selection/i,
+    });
+
+    await userEvent.click(clearButton);
+
+    await waitFor(() => {
+      expect(
+        canvas.queryByRole('toolbar', { name: /bulk actions/i })
+      ).not.toBeInTheDocument();
+    });
+  }
+);
+
+IntegratedWithTable.test(
+  'Shows "All items selected" when select-all is pressed',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    const selectAllCheckbox = canvas.getAllByRole('checkbox')[0];
+
+    await userEvent.click(selectAllCheckbox);
+
+    await waitFor(() => {
+      expect(canvas.getByText('All items selected')).toBeInTheDocument();
+    });
+  }
+);
+
+// No snapshot: with nothing selected the bar renders nothing, so the baseline
+// is the surrounding paragraph alone. The absence is asserted below instead.
 export const NoSelection = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <div>
       <p>No items selected no action bar will show up</p>
@@ -441,9 +463,13 @@ export const NoSelection = meta.story({
       </ActionBar>
     </div>
   ),
-  play: async ({ canvas }) => {
+});
+
+NoSelection.test(
+  'Renders no toolbar when nothing is selected',
+  async ({ canvas }) => {
     await expect(
       canvas.queryByRole('toolbar', { name: /bulk actions/i })
     ).not.toBeInTheDocument();
-  },
-});
+  }
+);
