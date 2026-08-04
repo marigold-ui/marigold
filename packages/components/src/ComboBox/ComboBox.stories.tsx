@@ -2,6 +2,7 @@ import { Key, useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
+import { clickOption } from '.storybook/test-utils';
 import { Description } from '../Description/Description';
 import { Stack } from '../Stack/Stack';
 import { TextValue } from '../TextValue/TextValue';
@@ -217,6 +218,36 @@ Basic.test('Opens with focus trigger', async ({ canvas }) => {
   await waitFor(() => expect(combobox).toHaveValue('Kangaroo'));
 });
 
+Basic.test(
+  'Wraps an unbreakable option label inside a narrow list',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+    args: { width: 40, menuTrigger: 'focus' },
+    render: args => (
+      <I18nProvider locale="en">
+        <ComboBox {...args}>
+          <ComboBox.Option id="unbreakable">
+            IchliebeDeutschlandundseineHauptstadtBerlin
+          </ComboBox.Option>
+          <ComboBox.Option id="at">Österreich</ComboBox.Option>
+          <ComboBox.Option id="ch">Schweiz</ComboBox.Option>
+        </ComboBox>
+      </I18nProvider>
+    ),
+  },
+  async ({ canvas }) => {
+    const combobox = canvas.getByRole('combobox');
+
+    await userEvent.click(combobox);
+
+    const listbox = await canvas.findByRole('listbox');
+
+    // Same invariant as Select's equivalent test: without `wrap-anywhere` the
+    // unbreakable label would widen the option past the list.
+    expect(listbox.scrollWidth).toBeLessThanOrEqual(listbox.clientWidth);
+  }
+);
+
 export const Controlled = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
@@ -372,7 +403,7 @@ LargeDataset.test(
       const options = within(listbox).getAllByRole('option');
       expect(options).toHaveLength(1);
       expect(options[0]).toHaveTextContent('Tenant 500 (item-500)');
-      await userEvent.click(options[0]);
+      await clickOption(() => within(listbox).getAllByRole('option')[0]);
     });
 
     await step('Verify selected value appears in the input', async () => {

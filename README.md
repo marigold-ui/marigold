@@ -80,5 +80,4 @@ To start documentation follow these steps:
 | pnpm format:fix            | Format and attempt to fix with Prettier.                                              |
 | pnpm typecheck             | Build docs, then run TypeScript type checking (no emit).                              |
 | pnpm typecheck:only        | Run TypeScript type checking only (no emit).                                          |
-| pnpm contributor           | Run the all-contributors CLI.                                                         |
 | pnpm changeset             | Run the Changesets CLI.                                                               |
