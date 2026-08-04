@@ -12,6 +12,8 @@ chore(DST-1680): update React Aria to the 1.20.0 line.
 
 **Impact:**
 
-No API or behavior change in Marigold components. Consumers pick up the upstream 1.20.0 fixes, including Table focus restoration, `FocusScope` restore-without-scrolling, and DatePicker focus handling in Firefox.
+No API change in Marigold components. Consumers pick up the upstream 1.20.0 fixes, including Table focus restoration, `FocusScope` restore-without-scrolling, and DatePicker focus handling in Firefox.
+
+One upstream behaviour change did need handling on our side: RAC 1.20.0 exposed a latent problem in the mobile `ComboBox`/`Autocomplete` tray, which lost its place in the accessibility tree. See the separate entry for that fix.
 
 `@react-types/{button,checkbox,grid,table}` deliberately stay on their type-only lines. All four latest minors pull `@react-spectrum/provider` — three as a direct dependency and `grid` 3.4.0 as a peer dependency — which drags in `@adobe/react-spectrum` and splits the i18n and overlay contexts. See the hold rule in `.github/renovate.json`.
