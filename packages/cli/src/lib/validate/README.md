@@ -78,7 +78,7 @@ Each checker runs individually through `safeCheck()` (the TypeScript compiler pa
 
 1. New file `checkers/my-check.ts` exporting a function `export const validateMyCheck = (filePath: string): ValidationIssue[] => …`.
 2. Parse the source with `parseSource(filePath)` from `helpers/source.ts` (keeps AST construction consistent, with sensible error messages).
-3. Add a new `IssueSource` value in `types.ts` (e.g. `'my-check'`).
+3. Add a new `IssueSource` value in `types.ts` — for a static checker that means the `StaticIssueSource` union (e.g. `'my-check'`).
 4. Import it in `checkers/index.ts`, wire it into `runTechnicalChecks` via `safeCheck('my-check', 'My Check', () => validateMyCheck(filePath))`, and add a `passed` entry where it makes sense.
 5. Add a `checkers/my-check.test.ts` file next to it — pattern: use `tmpFile()` from `test-support/tmp.ts` to build small inline fixtures, or add a fixture under `examples/` if multiple tests share it.
 
@@ -154,7 +154,7 @@ Every resource `renderer.ts` creates during a render (browser context, Vite serv
    - `extractMyCheckData(page: Page): Promise<MyCheckDatum[]>` — runs `page.evaluate(...)` and returns plain data (never a `ValidationIssue` directly from the browser — that would mean `ValidationIssue` types would need to be available in the browser context, which they aren't).
    - `myCheckToValidationIssues(data): ValidationIssue[]` — a pure, Node-side function that turns the raw data into findings. **This is the function that gets unit-tested in `*.test.ts`** (no browser needed) — see `non-text-contrast.test.ts` as a template.
 2. Import it in `spatial/index.ts` and wire it into the appropriate block (`enableSpatial`/`enableA11y`/its own switch) with its own `try/catch`, matching the existing blocks.
-3. Add a new `IssueSource` value in `types.ts`.
+3. Add a new `IssueSource` value to the `DYNAMIC_ISSUE_SOURCES` array in `types.ts` — not the `StaticIssueSource` union. That array is what `index.ts` builds its `DYNAMIC_SOURCES` set from, so listing it there is also what gets the finding source-location enrichment (rendered findings arrive without a `location`); adding it to the static union typechecks fine but silently leaves the finding printing bare.
 4. If the check needs real browser behavior that can't be meaningfully mocked: add a `*.integration.test.ts` next to it that self-skips when no Chromium is available (pattern: `beforeAll` attempts a real render, sets a `renderWorks` flag, every test checks `if (!renderWorks) return ctx.skip()`).
 
 ---
@@ -218,18 +218,18 @@ All tests run via `pnpm --filter @marigold/cli test` (see `packages/cli/vitest.c
 
 ## 8. "Where do I find …?" — quick reference
 
-| I want to …                                                              | … look here                                                                   |
-| ------------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
-| add a new static error/warning type                                      | `checkers/` (new file) + `checkers/index.ts` + `types.ts::IssueSource`        |
-| add a new dynamic (render-time) error/warning type                       | `spatial/` (new file) + `spatial/index.ts` + `types.ts::IssueSource`          |
-| find out which props/sub-components a Marigold component has             | `helpers/components.ts`                                                       |
-| understand why a locally/third-party-imported tag isn't checked          | `helpers/components.ts::buildMarigoldTagResolver`                             |
-| adjust the render sandbox/security boundaries                            | `spatial/renderer.ts` (read the comments at `fs.deny`/`routeWebSocket` first) |
-| understand how/when resources get cleaned up                             | `spatial/cleanup-stack.ts`                                                    |
-| change the output formatting (text/JSON)                                 | `format.ts`                                                                   |
-| understand how a dynamic finding gets mapped to its source line          | `helpers/component-locations.ts`, `index.ts::enrichDynamicLocations`          |
-| trace the CLI flags (`--checks`, `--format`)                             | `commands/validate.ts`, `bin/marigold.ts`                                     |
-| understand how the component actually gets rendered                      | `harness/entry.tsx`, `harness/setup.tsx`                                      |
-| look up design token values used for comparison                          | `helpers/design-tokens.ts`                                                    |
-| look up theme variant data                                               | `checkers/theme-variants.ts`, `helpers/resolve-theme.ts`                      |
-| understand why a finding is `error` instead of `warning` (or vice versa) | Section 5 above, the comment on `IssueSeverity` in `types.ts`                 |
+| I want to …                                                              | … look here                                                                    |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| add a new static error/warning type                                      | `checkers/` (new file) + `checkers/index.ts` + `types.ts::StaticIssueSource`   |
+| add a new dynamic (render-time) error/warning type                       | `spatial/` (new file) + `spatial/index.ts` + `types.ts::DYNAMIC_ISSUE_SOURCES` |
+| find out which props/sub-components a Marigold component has             | `helpers/components.ts`                                                        |
+| understand why a locally/third-party-imported tag isn't checked          | `helpers/components.ts::buildMarigoldTagResolver`                              |
+| adjust the render sandbox/security boundaries                            | `spatial/renderer.ts` (read the comments at `fs.deny`/`routeWebSocket` first)  |
+| understand how/when resources get cleaned up                             | `spatial/cleanup-stack.ts`                                                     |
+| change the output formatting (text/JSON)                                 | `format.ts`                                                                    |
+| understand how a dynamic finding gets mapped to its source line          | `helpers/component-locations.ts`, `index.ts::enrichDynamicLocations`           |
+| trace the CLI flags (`--checks`, `--format`)                             | `commands/validate.ts`, `bin/marigold.ts`                                      |
+| understand how the component actually gets rendered                      | `harness/entry.tsx`, `harness/setup.tsx`                                       |
+| look up design token values used for comparison                          | `helpers/design-tokens.ts`                                                     |
+| look up theme variant data                                               | `checkers/theme-variants.ts`, `helpers/resolve-theme.ts`                       |
+| understand why a finding is `error` instead of `warning` (or vice versa) | Section 5 above, the comment on `IssueSeverity` in `types.ts`                  |

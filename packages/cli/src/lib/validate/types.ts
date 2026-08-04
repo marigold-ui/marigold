@@ -17,7 +17,31 @@ export type SourceLocation = {
   column: number;
 };
 
-export type IssueSource =
+/**
+ * Checkers that run against the rendered DOM, as a value rather than a type
+ * union: their findings arrive without a source location, and `index.ts` builds
+ * the set `enrichDynamicLocations` consults straight from this array. That is
+ * the point of the array — the previous shape kept a second hand-maintained
+ * `Set` of the same names in `index.ts`, and two of the nine were missing from
+ * it, so `non-text-contrast` and `content-on-hover-focus` findings printed with
+ * neither a line number nor the explicit `scope: 'page'` marker every other
+ * rendered finding gets. Add a new render-time source here, not to the static
+ * union below.
+ */
+export const DYNAMIC_ISSUE_SOURCES = [
+  'overlap-detector',
+  'overflow-detector',
+  'token-compliance',
+  'aom-extractor',
+  'responsive-checker',
+  'keyboard-a11y',
+  'text-spacing',
+  'non-text-contrast',
+  'content-on-hover-focus',
+] as const;
+
+/** Checkers that run on the source alone — they carry their own locations. */
+type StaticIssueSource =
   | 'prop-validator'
   | 'compiler'
   | 'composition-validator'
@@ -29,16 +53,11 @@ export type IssueSource =
   | 'layout-usage'
   | 'table-usage'
   | 'component-conventions'
-  | 'overlap-detector'
-  | 'overflow-detector'
-  | 'token-compliance'
-  | 'theme-variant-validator'
-  | 'aom-extractor'
-  | 'responsive-checker'
-  | 'keyboard-a11y'
-  | 'text-spacing'
-  | 'non-text-contrast'
-  | 'content-on-hover-focus'
+  | 'theme-variant-validator';
+
+export type IssueSource =
+  | StaticIssueSource
+  | (typeof DYNAMIC_ISSUE_SOURCES)[number]
   | 'runtime';
 
 export type ValidationIssue = {

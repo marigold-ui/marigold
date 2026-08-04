@@ -10,6 +10,7 @@ import { setComponentResolutionRoot } from './helpers/components.js';
 import { setThemeResolutionRoot } from './helpers/design-tokens.js';
 import type { RenderTimingError, SharedRenderer } from './spatial/renderer.js';
 import {
+  DYNAMIC_ISSUE_SOURCES,
   type ValidateOptions,
   type ValidationCheck,
   type ValidationIssue,
@@ -34,8 +35,6 @@ export { isValidationCheck } from './types.js';
 // as "the validated file is broken" to an automated correction loop.
 class RenderToolchainUnavailableError extends Error {}
 
-// Dynamic checks run on the rendered DOM and have no inherent source location.
-// These sources get joined back to the source via the component-location map.
 // Outer backstop around the whole render+check call below (runSpatialChecks:
 // renderer.render() then the inspection phase). It is NOT the check phase's
 // own budget — that's INSPECTION_BUDGET_MS in spatial/index.ts, which starts
@@ -52,15 +51,11 @@ class RenderToolchainUnavailableError extends Error {}
 // keep in sync with those two constants by hand if either changes.
 const CHECK_BUDGET_MS = 110_000;
 
-const DYNAMIC_SOURCES = new Set([
-  'overlap-detector',
-  'overflow-detector',
-  'token-compliance',
-  'responsive-checker',
-  'keyboard-a11y',
-  'text-spacing',
-  'aom-extractor',
-]);
+// Dynamic checks run on the rendered DOM and have no inherent source location.
+// These sources get joined back to the source via the component-location map.
+// Derived from the single list in types.ts rather than spelled out again here —
+// the hand-kept copy this replaces was missing two of the nine.
+const DYNAMIC_SOURCES: ReadonlySet<string> = new Set(DYNAMIC_ISSUE_SOURCES);
 
 // Attach source locations to dynamic findings by joining their component name
 // against the JSX usages in the source. A single usage pinpoints the line;
