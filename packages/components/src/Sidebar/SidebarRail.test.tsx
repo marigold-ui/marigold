@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { theme } from '@marigold/theme-rui';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
+import { RouterProvider } from '../RouterProvider/RouterProvider';
 import { ensureOverlayContainer, mockMatchMedia } from '../test.utils';
 import { Sidebar } from './Sidebar';
 import { Rail, RailControlled } from './SidebarRail.stories';
@@ -500,6 +501,35 @@ describe('modified clicks & keyboard activation', () => {
     await user.keyboard(' ');
 
     expect(handlePress).toHaveBeenCalledTimes(2);
+  });
+
+  test('router useHref rewrites the rendered href while navigate gets the raw path', async () => {
+    const navigate = vi.fn();
+    render(
+      <RouterProvider navigate={navigate} useHref={href => `/base${href}`}>
+        <MarigoldProvider theme={theme}>
+          <Sidebar.Provider>
+            <Sidebar>
+              <Sidebar.Rail current="/tickets">
+                <Sidebar.RailItem id="tickets" icon={<i />} href="/tickets">
+                  Tickets
+                </Sidebar.RailItem>
+                <Sidebar.RailItem id="reports" icon={<i />} href="/reports">
+                  Berichte
+                </Sidebar.RailItem>
+              </Sidebar.Rail>
+            </Sidebar>
+          </Sidebar.Provider>
+        </MarigoldProvider>
+      </RouterProvider>
+    );
+    const link = screen.getByRole('link', { name: 'Berichte' });
+
+    expect(link).toHaveAttribute('href', '/base/reports');
+
+    await user.click(link);
+
+    expect(navigate).toHaveBeenCalledWith('/reports', undefined);
   });
 });
 

@@ -135,6 +135,30 @@ test('branch items render as links with auto-derived href', () => {
   expect(managementLink).toHaveAttribute('href', '/users');
 });
 
+test('router useHref rewrites the rendered href while navigate gets the raw path', async () => {
+  const navigate = vi.fn();
+  render(
+    <RouterProvider navigate={navigate} useHref={href => `/base${href}`}>
+      <MarigoldProvider theme={theme}>
+        <Sidebar.Provider>
+          <Sidebar>
+            <Sidebar.Nav>
+              <Sidebar.Item href="/overview">Overview</Sidebar.Item>
+            </Sidebar.Nav>
+          </Sidebar>
+        </Sidebar.Provider>
+      </MarigoldProvider>
+    </RouterProvider>
+  );
+  const link = screen.getByRole('link', { name: 'Overview' });
+
+  expect(link).toHaveAttribute('href', '/base/overview');
+
+  await user.click(link);
+
+  expect(navigate).toHaveBeenCalledWith('/overview', undefined);
+});
+
 test('sub-panel opens when child is active', () => {
   render(<WithActiveBranch.Component />);
 
