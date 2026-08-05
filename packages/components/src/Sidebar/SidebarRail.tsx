@@ -71,9 +71,11 @@ const RailItemLink = ({
 }: RailItemLinkProps) => {
   const router = useRouter();
   // Sole source of the rendered href, since a raw `href` would shadow the
-  // router's `useHref`. Only spread when there is one: without an href
-  // `useLinkProps` yields href="", which would make a section tile a link.
-  const routerLinkProps = useLinkProps({ href: node.href });
+  // router's `useHref`. Pass undefined when there is none, or `useLinkProps`
+  // yields href="", which would make a section tile a link.
+  const routerLinkProps = useLinkProps(
+    node.href ? { href: node.href } : undefined
+  );
 
   // A section is only the current page's ancestor (`true`); a direct-link item
   // that is the page announces `page`. The leaf itself is marked in the panel.
@@ -85,7 +87,7 @@ const RailItemLink = ({
     <Tooltip.Trigger disabled={!collapsed}>
       <Focusable>
         <a
-          {...(node.href ? routerLinkProps : {})}
+          {...routerLinkProps}
           role={node.href ? undefined : 'button'}
           aria-current={ariaCurrent}
           data-active={selected || undefined}

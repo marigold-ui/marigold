@@ -136,6 +136,7 @@ test('branch items render as links with auto-derived href', () => {
 });
 
 test('router useHref rewrites the rendered href while navigate gets the raw path', async () => {
+  // Arrange
   const navigate = vi.fn();
   render(
     <RouterProvider navigate={navigate} useHref={href => `/base${href}`}>
@@ -152,10 +153,13 @@ test('router useHref rewrites the rendered href while navigate gets the raw path
   );
   const link = screen.getByRole('link', { name: 'Overview' });
 
+  // Assert (rendered href is prefixed)
   expect(link).toHaveAttribute('href', '/base/overview');
 
+  // Act
   await user.click(link);
 
+  // Assert (navigate still receives the unprefixed path)
   expect(navigate).toHaveBeenCalledWith('/overview', undefined);
 });
 

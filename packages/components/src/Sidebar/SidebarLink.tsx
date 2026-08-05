@@ -32,14 +32,14 @@ export const SidebarLink = ({
   const ref = useObjectRef(forwardedRef);
   const router = useRouter();
   // Sole source of the rendered href, since a raw `href` would shadow the
-  // router's `useHref`. Only spread when there is one: without an href
-  // `useLinkProps` yields href="", which would make a branch trigger a link.
-  const routerLinkProps = useLinkProps({ href });
+  // router's `useHref`. Pass undefined when there is none, or `useLinkProps`
+  // yields href="", which would make a branch trigger a link.
+  const routerLinkProps = useLinkProps(href ? { href } : undefined);
   const { tabIndex, onFocus } = useRovingItem(dataKey!);
 
   return (
     <a
-      {...(href ? routerLinkProps : {})}
+      {...routerLinkProps}
       data-active={dataActive}
       data-key={dataKey}
       ref={ref}

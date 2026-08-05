@@ -505,6 +505,7 @@ describe('modified clicks & keyboard activation', () => {
   });
 
   test('router useHref rewrites the rendered href while navigate gets the raw path', async () => {
+    // Arrange
     const navigate = vi.fn();
     render(
       <RouterProvider navigate={navigate} useHref={href => `/base${href}`}>
@@ -526,10 +527,13 @@ describe('modified clicks & keyboard activation', () => {
     );
     const link = screen.getByRole('link', { name: 'Berichte' });
 
+    // Assert (rendered href is prefixed)
     expect(link).toHaveAttribute('href', '/base/reports');
 
+    // Act
     await user.click(link);
 
+    // Assert (navigate still receives the unprefixed path)
     expect(navigate).toHaveBeenCalledWith('/reports', undefined);
   });
 });

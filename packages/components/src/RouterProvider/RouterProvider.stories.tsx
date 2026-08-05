@@ -83,7 +83,12 @@ export const Basic = meta.story({
  * `useHref` prefixes the rendered href, while `navigate` still receives the
  * unprefixed path.
  */
+// No snapshot: the whole point of this story is an `href` attribute value, and
+// `/base/start` renders the same pixels as `/start`. The rendering itself is
+// two default `Link`s, already captured by `Link.Basic`. The behaviour is
+// covered by the unit tests in `Sidebar.test.tsx` and `SidebarRail.test.tsx`.
 export const WithBasePath = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => {
     const [navigated, setNavigated] = useState<string>('/start');
     return (
