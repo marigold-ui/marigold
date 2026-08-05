@@ -293,7 +293,11 @@ Exactly three components use it, and all three are tracks: the Switch groove, th
   track style to both the `SliderTrack` and an inner rail `div` at identical
   geometry, so the rail rendered visibly darker than the Switch groove beside
   it. If a component layers elements over its track, only one of them may carry
-  the fill.
+  the fill. The same arithmetic applies to a translucent *edge* drawn on a
+  track, because `ui-frame` rims are outset rings: they land on the track rather
+  than on the ground, so `control-border` over `control` reads denser than it
+  does on a field. The `SegmentedControl` indicator thins its rim to compensate,
+  deriving the amount from `--control-alpha` rather than hard-coding it.
 </Callout>
 
 <GuidelineTiles>

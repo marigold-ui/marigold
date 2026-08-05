@@ -3,7 +3,7 @@
 '@marigold/theme-rui': patch
 ---
 
-fix: make `control` a ground-adaptive track fill, and give the `Slider` rail the same token as `Switch` and `SegmentedControl`
+fix(DST-1686): make `control` a ground-adaptive track fill, and give the `Slider` rail the same token as `Switch` and `SegmentedControl`
 
 **The Slider rail was the wrong token, painted twice.** It used `bg-border` — the token for structural lines (dividers, grid lines, table rules) — where the `Switch` groove and the `SegmentedControl` track both use `bg-control`. On top of that, `Slider` applied its `track` style to two exactly-overlapping elements (the `SliderTrack` and an inner rail `div`), so the translucent `bg-border` composited with itself and the rail rendered at ~0.26 effective alpha instead of 0.14 — measuring `#c0bfbe` on white where the token specifies `#dddddc`. The redundant inner element is gone; the `SliderTrack` itself is the rail. Geometry is unchanged (both were `h-2` at the same position) and `touch-none`, `select-none` and the disabled cursor stay on the interactive track element.
 
@@ -15,4 +15,8 @@ The three tracks (`Switch`, `SegmentedControl`, `Slider`) read a touch lighter o
 
 **The `SegmentedControl` thumb's focus ring is now the shared `ui-state-focus`.** It previously hand-rolled only the outline, so it missed the other half of that utility — firming `--ui-border-color` to the opaque ring colour — and read noticeably lighter than every other focused control. A focused thumb and a focused `Input` now resolve identically: 3px `outline-ring/50` at `outline-offset-0`, plus a 1px opaque `oklch(0.52 0.008 54)` rim. The ring stays outside the thumb, and 3px is the minimum frame that clears it: the list is a scroll container clipping at its padding box, so that padding is the only room an outset ring can grow into. Below 3px the first and last thumbs get a visibly shaved ring.
 
-If you use `bg-control` in your own code, note that it is now translucent: two stacked elements that both carry it composite into a darker track than the token specifies.
+**The `SegmentedControl` track's corners are now concentric with the indicator's.** Both used the shared `rounded-surface`, but two rounded rectangles nested with a gap only look like parallel arcs when the outer radius is the inner radius plus that gap. With the thumb at 8px and 3px of frame around it, the track needs 11px; at 8px its corner read visibly tighter than the arc it frames. The track is now `calc(var(--radius-surface) + 3px)` — derived from the token, so it stays concentric if the radius is retuned. This is a deliberate exception to using `rounded-surface` everywhere.
+
+**The `SegmentedControl` indicator's resting rim is re-derived from the track.** `ui-frame` draws its rim as an *outset* ring, so the indicator's rim lands on the track and composites over `bg-control` — it reads denser than the same `control-border` token does on a field. The old compensation subtracted a flat 0.08, hand-tuned against the previous opaque `charcoal-300` track, which left the rim at an effective 0.31 against a field's 0.26. It is now derived from the track's own alpha (`--control-alpha`, newly exposed on the token), so a resting indicator rim and a resting `Input` edge render the same on every ground, and retuning the track cannot silently detune the rim.
+
+If you use `bg-control` in your own code, note that it is now translucent: two stacked elements that both carry it composite into a darker track than the token specifies, and anything that paints a translucent edge *over* a track has to account for the track underneath it.

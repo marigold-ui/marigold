@@ -3,16 +3,29 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
   // Outer track. Provides the surface (default variant). Doesn't clip: the inner
   // list is the scroll container, so option focus rings aren't cut at this edge.
+  // The radius is set per variant rather than once on `base`: twMerge doesn't
+  // recognise `rounded-surface` as a radius utility, so it won't drop it in favour
+  // of a variant's arbitrary `rounded-[…]` and emit order would decide the winner.
   group: cva({
-    base: 'group/segmented relative items-center rounded-surface',
+    base: 'group/segmented relative items-center',
     variants: {
       variant: {
         // Track matches the Switch groove and the Slider rail (`bg-control`, a
-        // translucent fill — see the token docs; never paint it twice). The 2px
-        // outer margin lives on the list (p-0.5), not here, so the list stays the
+        // translucent fill — see the token docs; never paint it twice). The 3px
+        // outer margin lives on the list (p-[3px]), not here, so the list stays the
         // one element that defines the frame around the thumbs.
-        default: 'bg-control',
-        ghost: '',
+        //   The radius is the one place this component departs from the shared
+        // `rounded-surface`, and it has to: two rounded rects nested with a gap are
+        // only concentric when the outer radius is the inner radius plus that gap
+        // (`R_outer = R_inner + d`). The thumb keeps `rounded-surface` (8px) and
+        // sits 3px in, so the track needs 11px. Sharing one radius makes the outer
+        // corner visibly tighter than the arc it frames. (The thumb's outset 1px
+        // rim doesn't change the sum: it widens the inner arc to 9px but closes the
+        // gap to 2px.) Derived from the token, so a retuned `--radius-surface`
+        // stays concentric.
+        default: 'bg-control rounded-[calc(var(--radius-surface)+3px)]',
+        // No track to frame, so no gap to compensate for.
+        ghost: 'rounded-surface',
       },
       size: {
         default: 'text-sm',
@@ -24,18 +37,13 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
     },
   }),
   // Inner scroll container: rows the options and scrolls them horizontally on
-  // overflow, with an edge fade (`ui-scroll-mask-x`). `p-[3px]` insets the segments
-  // 3px from the track edge, so 3px of frame shows to the left of the first thumb
-  // and to the right of the last — the horizontal half of the frame around the
-  // indicator (`inset-y-[3px]` below is the vertical half). Of those 3px the thumb's
-  // own 1px rim takes the innermost, so 2px of bare track is what you see.
-  // `-my-[3px]` cancels the vertical 3px so it adds no height (only `px` is a real
-  // inset; a negative `-mx` would overflow the rounded track — broke at 320px).
-  //   3px is also exactly the room the indicator's focus ring needs. A scrollport
-  //   clips at its padding box, so this padding is the only space an outset ring can
-  //   grow into, and `ui-state-focus` is `outline-3` at `outline-offset-0` — 3px.
-  //   Don't drop below 3px without moving the ring inside the thumb: at 2px the
-  //   first and last thumbs get a visibly shaved ring (verified).
+  // overflow, with an edge fade (`ui-scroll-mask-x`).
+  //   `p-[3px]` is the frame around the thumbs (`inset-y-[3px]` below is its
+  // vertical half), and 3px is the floor: a scrollport clips at its padding box,
+  // so this is the only room the thumb's outset focus ring has to grow into, and
+  // `ui-state-focus` needs 3px of it. Below that the first and last thumbs get a
+  // visibly shaved ring. `-my-[3px]` cancels the vertical padding so it adds no
+  // height; a negative `-mx` would overflow the rounded track (broke at 320px).
   //   - `motion-safe:scroll-smooth` makes the selection-reveal scroll animate for
   //     users who allow motion and jump instantly for those who don't; the
   //     component's `scrollTo` defers to it via `behavior: 'auto'` (matches Tabs).
@@ -121,11 +129,19 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
         // that utility firms `--ui-border-color` to the opaque ring colour as well
         // as drawing the 3px outline, and the outline alone (what this used to do)
         // reads noticeably lighter than every other control without it.
-        //   At rest, control-border's ground-adaptive firming over-darkens the edge
-        // against the track, so the alpha is stepped down 0.08 (token-derived);
-        // ui-state-focus overrides that on focus.
+        //   At rest the rim is thinned, because ui-frame's rim is an *outset* ring:
+        // it lands on the track, so it composites over `control` and reads denser
+        // than the same token does on a field. Two layers of one colour stack to
+        // `control-alpha + (1 - control-alpha) * a`, so solving that for
+        // `control-border`'s alpha gives the thinned value below — 0.119 at the
+        // current tokens. Derived from `--control-alpha` rather than hard-coded, so
+        // retuning the track can't silently detune the rim (it did: the old
+        // hand-tuned -0.08 was measured against the opaque charcoal-300 track and
+        // left the rim at an effective 0.31 against 0.26 on a field). Verified on
+        // rendered pixels: #c0bfbf on `surface`, matching an Input to within a
+        // rounding unit on all four grounds. ui-state-focus overrides it on focus.
         default:
-          'inset-y-[3px] left-0 w-full ui-control [--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_-_0.08))] group-has-[[data-focus-visible]]/segmented:ui-state-focus',
+          'inset-y-[3px] left-0 w-full ui-control [--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc((alpha_-_var(--control-alpha))_/_(1_-_var(--control-alpha))))] group-has-[[data-focus-visible]]/segmented:ui-state-focus',
         // Resembles a ghost Button's surface.
         ghost: 'inset-y-0 left-0 w-full rounded-surface ui-state-hover-ghost',
       },
