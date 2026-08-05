@@ -1,10 +1,12 @@
-import { Dispatch, SetStateAction } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 import { CalendarYearPicker } from 'react-aria-components';
-import { useCalendarOrRangeState } from './Context';
+import { type CalendarDropdownView, useCalendarOrRangeState } from './Context';
 import { ListBox } from './ListBox';
 
 interface YearDropdownProps {
-  setSelectedDropdown: Dispatch<SetStateAction<string | undefined>>;
+  setSelectedDropdown: Dispatch<
+    SetStateAction<CalendarDropdownView | undefined>
+  >;
 }
 
 const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => {
