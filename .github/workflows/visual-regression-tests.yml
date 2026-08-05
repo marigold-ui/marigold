@@ -117,30 +117,21 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           branchName: ${{ steps.resolve-branch.outputs.branch }}
-          # !!! TEMPORARY — REVERT TO `true` BEFORE MERGING THIS PR (DST-1686) !!!
-          # TurboSnap gave this theme-only change zero coverage: `themes/**` reaches
-          # most stories only through `.storybook/decorators.tsx`, which is in the
-          # `untraced` list below, so the trace dies there and every affected story
-          # inherited its baseline. Forcing a full run to get real snapshots of the
-          # SegmentedControl/Switch changes. The trace gap itself is its own ticket.
-          # `untraced` has to be commented out with it: it is a TurboSnap-only input
-          # and the CLI rejects it outright ("Invalid --untraced") when onlyChanged
-          # is false. Restore both together.
-          onlyChanged: false # TurboSnap: https://www.chromatic.com/docs/turbosnap/setup/
+          onlyChanged: true # TurboSnap: https://www.chromatic.com/docs/turbosnap/setup/
           zip: true # Zip the Storybook build for faster uploads
           # Files whose changes should NOT trigger story re-snapshots via
           # dependency tracing. Keep this list focused on files that change
           # often but cannot affect rendered output.
-          # untraced: |
-          #   ./.storybook/decorators.tsx
-          #   **/*.md
-          #   **/*.mdx
-          #   .changeset/**
-          #   **/*.test.{ts,tsx}
-          #   **/vitest.*.{ts,mjs,js}
-          #   **/vitest.setup.{ts,mjs,js}
-          #   eslint.config.*
-          #   **/tsconfig*.json
+          untraced: |
+            ./.storybook/decorators.tsx
+            **/*.md
+            **/*.mdx
+            .changeset/**
+            **/*.test.{ts,tsx}
+            **/vitest.*.{ts,mjs,js}
+            **/vitest.setup.{ts,mjs,js}
+            eslint.config.*
+            **/tsconfig*.json
           storybookConfigDir: './.storybook'
           storybookBuildDir: './storybook-static'
           storybookBaseDir: '.'
@@ -148,8 +139,7 @@ jobs:
           # One-shot diagnostics so we can see WHY TurboSnap chose to
           # snapshot what it did. Inspect via the uploaded artifact below.
           diagnosticsFile: true
-          # Also TurboSnap-only — restore with `onlyChanged` / `untraced` above.
-          # traceChanged: expanded
+          traceChanged: expanded
 
       - name: Upload Chromatic diagnostics
         if: always()
