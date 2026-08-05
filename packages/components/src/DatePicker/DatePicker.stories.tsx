@@ -453,3 +453,22 @@ PresetsMobile.test(
     ).toHaveAttribute('aria-selected', 'true');
   }
 );
+
+PresetsMobile.test(
+  'keeps an open month dropdown across a trip to the preset list',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button'));
+    const tray = await canvas.findByRole('dialog');
+    await within(tray).findByRole('grid');
+
+    await userEvent.click(within(tray).getByRole('button', { name: 'Mar' }));
+    await userEvent.click(
+      within(tray).getByRole('button', { name: 'Quick selection' })
+    );
+    await userEvent.click(within(tray).getByRole('button', { name: 'Back' }));
+
+    await expect(
+      within(tray).getByRole('listbox', { name: 'month' })
+    ).toBeVisible();
+  }
+);
