@@ -78,6 +78,7 @@
     "clean:build": "rm -rf `find . -type d -name 'dist'` coverage",
     "lint": "eslint . --no-warn-ignored",
     "format": "prettier --write \"**/*\"",
+    "format:check": "prettier --check \"**/*\"",
     "format:fix": "prettier --write \"**/*\" --fix",
     "typecheck": "tsc --noEmit --resolveJsonModule --project tsconfig.check.json",
     "typecheck:only": "tsc --noEmit --resolveJsonModule --project tsconfig.check.json",
