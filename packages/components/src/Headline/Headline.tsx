@@ -18,12 +18,7 @@ import { noSlot } from '../utils/noSlot';
  * share one vocabulary. Will become a typography token in a future PR.
  */
 export type HeadlineSize =
-  | 'level-1'
-  | 'level-2'
-  | 'level-3'
-  | 'level-4'
-  | 'level-5'
-  | 'level-6';
+  'level-1' | 'level-2' | 'level-3' | 'level-4' | 'level-5' | 'level-6';
 
 export interface HeadlineProps
   extends AriaLabelingProps, TextAlignProp, LineHeightProp, SlotProps {

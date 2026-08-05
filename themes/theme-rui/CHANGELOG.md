@@ -821,12 +821,13 @@
   - Remove `utils.css` from theme-rui build
 
   **Migration from legacy utilities:**
-  | Old utility | New replacement |
-  |---|---|
-  | `util-surface-sunken` | Removed, use `bg-background` for the page base layer |
-  | `util-surface-body` | `bg-background` (no shadow needed) |
-  | `util-surface-raised` | `ui-surface shadow-elevation-raised` |
-  | `util-surface-overlay` | `ui-surface shadow-elevation-overlay` |
+
+  | Old utility            | New replacement                                      |
+  | ---------------------- | ---------------------------------------------------- |
+  | `util-surface-sunken`  | Removed, use `bg-background` for the page base layer |
+  | `util-surface-body`    | `bg-background` (no shadow needed)                   |
+  | `util-surface-raised`  | `ui-surface shadow-elevation-raised`                 |
+  | `util-surface-overlay` | `ui-surface shadow-elevation-overlay`                |
 
   **Documentation:**
   - Rewrite elevation page around the 3-tier shadow system (border, raised, overlay)

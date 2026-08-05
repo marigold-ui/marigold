@@ -3,11 +3,7 @@
 // bin/marigold.ts and the help template.
 
 export type PositionalKind =
-  | 'component'
-  | 'category'
-  | 'query'
-  | 'telemetry-sub'
-  | 'examples-sub';
+  'component' | 'category' | 'query' | 'telemetry-sub' | 'examples-sub';
 
 export interface FlagSpec {
   name: string;

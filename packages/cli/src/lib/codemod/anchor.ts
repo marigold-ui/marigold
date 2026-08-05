@@ -43,8 +43,7 @@ export interface ThemeComponentDecl {
 const typeArgs = (ref: AnyNode): AnyNode[] =>
   (
     (ref.typeArguments ?? ref.typeParameters) as
-      | { params?: AnyNode[] }
-      | undefined
+      { params?: AnyNode[] } | undefined
   )?.params ?? [];
 
 /**

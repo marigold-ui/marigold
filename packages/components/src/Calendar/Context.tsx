@@ -5,8 +5,7 @@ import { RangeCalendarStateContext } from 'react-aria-components/RangeCalendar';
 import type { ComponentClassNames } from '@marigold/system';
 
 export type CalendarSharedClassNames =
-  | ComponentClassNames<'Calendar'>
-  | ComponentClassNames<'RangeCalendar'>;
+  ComponentClassNames<'Calendar'> | ComponentClassNames<'RangeCalendar'>;
 
 export interface CalendarContextValue {
   classNames: CalendarSharedClassNames;
