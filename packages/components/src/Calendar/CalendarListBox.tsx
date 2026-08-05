@@ -1,13 +1,19 @@
-import { Dispatch, SetStateAction } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 import { cn } from '@marigold/system';
 import { ChevronsVertical } from '../icons/ChevronsVertical';
-import { useCalendarContext, useCalendarOrRangeState } from './Context';
+import {
+  type CalendarDropdownView,
+  useCalendarContext,
+  useCalendarOrRangeState,
+} from './Context';
 import { useFormattedMonths } from './useFormattedMonths';
 
 interface CalendarButtonListBoxProps {
-  type: string;
+  type: CalendarDropdownView;
   isDisabled?: boolean;
-  setSelectedDropdown: Dispatch<SetStateAction<string | undefined>>;
+  setSelectedDropdown: Dispatch<
+    SetStateAction<CalendarDropdownView | undefined>
+  >;
 }
 
 export const CalendarListBox = ({

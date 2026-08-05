@@ -3,18 +3,9 @@ import type RAC from 'react-aria-components';
 import { Calendar, DateValue } from 'react-aria-components/Calendar';
 import { DatePickerStateContext } from 'react-aria-components/DatePicker';
 import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
-import { CalendarGrid } from './CalendarGrid';
-import { CalendarHeader } from './CalendarHeader';
-import { CalendarListBox } from './CalendarListBox';
+import { CalendarBody } from './CalendarBody';
 import { CalendarPresets, CalendarPresetsShell } from './CalendarPresets';
-import { CalendarContext } from './Context';
-import MonthControls from './MonthControls';
-import MonthListBox from './MonthListBox';
-import YearListBox from './YearListBox';
-import {
-  hasOnlyOneSelectableMonth,
-  hasOnlyOneSelectableYear,
-} from './calendarListBoxSelectableCheck';
+import { CalendarContext, type CalendarDropdownView } from './Context';
 import type { DatePreset } from './presets';
 
 // Props
@@ -79,8 +70,6 @@ export interface CalendarProps extends Omit<
   presets?: readonly DatePreset[];
 }
 
-type ViewMapKeys = 'month' | 'year';
-
 // Component
 // ---------------
 const _Calendar = ({
@@ -98,7 +87,6 @@ const _Calendar = ({
   ...rest
 }: CalendarProps) => {
   const visibleMonths = visibleDuration?.months ?? 1;
-  const isMultiMonth = visibleMonths > 1;
   const hasPresets = !!presets?.length;
 
   const props: RAC.CalendarProps<DateValue> = {
@@ -114,8 +102,10 @@ const _Calendar = ({
 
   const classNames = useClassNames({ component: 'Calendar', size, variant });
 
+  // Lives here, not in <CalendarBody>: a picker's preset view switch unmounts
+  // the body, and an open dropdown has to survive that.
   const [selectedDropdown, setSelectedDropdown] = useState<
-    ViewMapKeys | undefined
+    CalendarDropdownView | undefined
   >();
 
   const pickerState = use(DatePickerStateContext);
@@ -124,66 +114,11 @@ const _Calendar = ({
     'calendar'
   );
 
-  const ViewMap = {
-    month: <MonthListBox setSelectedDropdown={setSelectedDropdown} />,
-    year: <YearListBox setSelectedDropdown={setSelectedDropdown} />,
-  } satisfies { [key in ViewMapKeys]: React.JSX.Element };
-
-  const content = isMultiMonth ? (
-    <div className={classNames.calendarContainer}>
-      {[...Array(visibleMonths).keys()].map(i => (
-        <div key={i} className={classNames.calendarMonth}>
-          <CalendarHeader
-            monthOffset={i}
-            showPrevious={i === 0}
-            showNext={i === visibleMonths - 1}
-          />
-          <CalendarGrid offset={{ months: i }} />
-        </div>
-      ))}
-    </div>
-  ) : (
-    <>
-      <div
-        className={cn(
-          'pointer-events-none absolute top-1/2 left-0 w-full -translate-y-1/2 opacity-0',
-          selectedDropdown && 'pointer-events-auto opacity-100'
-        )}
-      >
-        {ViewMap[selectedDropdown as ViewMapKeys]}
-      </div>
-
-      <div
-        className={cn(
-          'flex flex-col',
-          selectedDropdown && 'pointer-events-none opacity-0'
-        )}
-      >
-        <div className="mb-6 flex items-center justify-between gap-4 max-sm:gap-2">
-          <div className="flex w-fit gap-4 max-sm:gap-3">
-            <CalendarListBox
-              key="month"
-              type="month"
-              isDisabled={
-                hasOnlyOneSelectableMonth(minValue, maxValue) ||
-                props.isDisabled
-              }
-              setSelectedDropdown={setSelectedDropdown}
-            />
-            <CalendarListBox
-              key="year"
-              type="year"
-              isDisabled={
-                hasOnlyOneSelectableYear(minValue, maxValue) || props.isDisabled
-              }
-              setSelectedDropdown={setSelectedDropdown}
-            />
-          </div>
-          <MonthControls />
-        </div>
-        <CalendarGrid />
-      </div>
-    </>
+  const body = (
+    <CalendarBody
+      selectedDropdown={selectedDropdown}
+      setSelectedDropdown={setSelectedDropdown}
+    />
   );
 
   return (
@@ -194,6 +129,8 @@ const _Calendar = ({
         minValue,
         maxValue,
         disabled,
+        // No window pointerup commit to guard here, unlike RangeCalendar (DSTSUP-257).
+        isRange: false,
       }}
     >
       <Calendar
@@ -217,10 +154,10 @@ const _Calendar = ({
               <CalendarPresets presets={presets} {...presetProps} />
             )}
           >
-            {content}
+            {body}
           </CalendarPresetsShell>
         ) : (
-          content
+          body
         )}
       </Calendar>
     </CalendarContext>
