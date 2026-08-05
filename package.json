@@ -84,7 +84,6 @@
     "typecheck:docs": "pnpm --filter @marigold/docs types:check",
     "changeset": "changeset",
     "release:notification": "zx scripts/create-slack-notification.mjs",
-    "slack": "zx scripts/slack-release-notification.mjs --quiet",
     "prepare": "husky install"
   },
   "devDependencies": {
