@@ -70,8 +70,9 @@ const RailItemLink = ({
   className,
 }: RailItemLinkProps) => {
   const router = useRouter();
-  // Sole source of the rendered href. A raw `href` here would shadow the
-  // router's `useHref`, while `navigate` still wants the untransformed one.
+  // Sole source of the rendered href, since a raw `href` would shadow the
+  // router's `useHref`. Only spread when there is one: without an href
+  // `useLinkProps` yields href="", which would make a section tile a link.
   const routerLinkProps = useLinkProps({ href: node.href });
 
   // A section is only the current page's ancestor (`true`); a direct-link item
@@ -84,7 +85,7 @@ const RailItemLink = ({
     <Tooltip.Trigger disabled={!collapsed}>
       <Focusable>
         <a
-          {...routerLinkProps}
+          {...(node.href ? routerLinkProps : {})}
           role={node.href ? undefined : 'button'}
           aria-current={ariaCurrent}
           data-active={selected || undefined}

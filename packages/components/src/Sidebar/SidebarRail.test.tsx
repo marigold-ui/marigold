@@ -492,6 +492,7 @@ describe('modified clicks & keyboard activation', () => {
     // No href and no section nav → rendered as <a role="button">, which gets
     // no native keyboard activation from the browser.
     const item = screen.getByRole('button', { name: 'Support' });
+    expect(item).not.toHaveAttribute('href');
     item.focus();
 
     await user.keyboard('{Enter}');

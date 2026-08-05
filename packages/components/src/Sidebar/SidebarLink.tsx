@@ -31,14 +31,15 @@ export const SidebarLink = ({
 }: SidebarLinkProps) => {
   const ref = useObjectRef(forwardedRef);
   const router = useRouter();
-  // Sole source of the rendered href. A raw `href` here would shadow the
-  // router's `useHref`, while `navigate` still wants the untransformed one.
+  // Sole source of the rendered href, since a raw `href` would shadow the
+  // router's `useHref`. Only spread when there is one: without an href
+  // `useLinkProps` yields href="", which would make a branch trigger a link.
   const routerLinkProps = useLinkProps({ href });
   const { tabIndex, onFocus } = useRovingItem(dataKey!);
 
   return (
     <a
-      {...routerLinkProps}
+      {...(href ? routerLinkProps : {})}
       data-active={dataActive}
       data-key={dataKey}
       ref={ref}
