@@ -1,4 +1,4 @@
-import { type ContextType, use, useCallback, useMemo, useState } from 'react';
+import { type ContextType, use, useMemo, useState } from 'react';
 import type RAC from 'react-aria-components';
 import { DateRangePickerStateContext } from 'react-aria-components/DateRangePicker';
 import { FieldErrorContext } from 'react-aria-components/FieldError';
@@ -7,21 +7,15 @@ import {
   DateValue,
 } from 'react-aria-components/RangeCalendar';
 import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
-import { CalendarGrid } from '../Calendar/CalendarGrid';
-import { CalendarHeader } from '../Calendar/CalendarHeader';
-import { CalendarListBox } from '../Calendar/CalendarListBox';
+import { CalendarBody } from '../Calendar/CalendarBody';
 import {
   CalendarPresetsShell,
   RangeCalendarPresets,
 } from '../Calendar/CalendarPresets';
-import { CalendarContext } from '../Calendar/Context';
-import MonthControls from '../Calendar/MonthControls';
-import MonthListBox from '../Calendar/MonthListBox';
-import YearListBox from '../Calendar/YearListBox';
 import {
-  hasOnlyOneSelectableMonth,
-  hasOnlyOneSelectableYear,
-} from '../Calendar/calendarListBoxSelectableCheck';
+  CalendarContext,
+  type CalendarDropdownView,
+} from '../Calendar/Context';
 import type { DateRangePreset } from '../Calendar/presets';
 import { FieldBase, type FieldBaseProps } from '../FieldBase/FieldBase';
 
@@ -97,8 +91,6 @@ export interface RangeCalendarProps<T extends DateValue = DateValue>
   presets?: readonly DateRangePreset[];
 }
 
-type ViewMapKeys = 'month' | 'year';
-
 const EMPTY_VALIDITY_STATE: ValidityState = {
   badInput: false,
   customError: false,
@@ -134,7 +126,6 @@ const _RangeCalendar = <T extends DateValue>({
   ...rest
 }: RangeCalendarProps<T>) => {
   const visibleMonths = visibleDuration.months;
-  const isMultiMonth = visibleMonths > 1;
   const hasPresets = !!presets?.length;
 
   const props: RAC.RangeCalendarProps<T> = {
@@ -156,8 +147,10 @@ const _RangeCalendar = <T extends DateValue>({
     variant,
   });
 
+  // Lives here, not in <CalendarBody>: a picker's preset view switch unmounts
+  // the body, and an open dropdown has to survive that.
   const [selectedDropdown, setSelectedDropdown] = useState<
-    ViewMapKeys | undefined
+    CalendarDropdownView | undefined
   >();
 
   // Non-null exactly when this calendar is the one embedded in a
@@ -169,29 +162,6 @@ const _RangeCalendar = <T extends DateValue>({
   const [pickerView, setPickerView] = useState<'calendar' | 'presets'>(
     'calendar'
   );
-
-  // react-aria's `useRangeCalendar` commits an in-progress range on any window
-  // `pointerup` that isn't on a button (our role="option" items included). The key
-  // detail: `usePress` listens for the touch press-end on `document`, while the
-  // range-commit listens on `window`. We stop overlay pointerups at `document` (not
-  // the node, not `window`) so both `usePress` and our guard still fire, but the
-  // `window` range-commit never does — which is exactly what keeps touch selection
-  // working (DSTSUP-257). Native listener because react-aria also listens natively,
-  // outside React's events.
-  const dropdownOverlayRef = useCallback((node: HTMLDivElement | null) => {
-    if (!node) return;
-    const ownerDocument = node.ownerDocument;
-    const stop = (event: PointerEvent) => {
-      if (node.contains(event.target as Node | null)) event.stopPropagation();
-    };
-    ownerDocument.addEventListener('pointerup', stop);
-    return () => ownerDocument.removeEventListener('pointerup', stop);
-  }, []);
-
-  const ViewMap = {
-    month: <MonthListBox setSelectedDropdown={setSelectedDropdown} />,
-    year: <YearListBox setSelectedDropdown={setSelectedDropdown} />,
-  } satisfies { [key in ViewMapKeys]: React.JSX.Element };
 
   const fieldErrorValue = useMemo<ContextType<typeof FieldErrorContext>>(
     () =>
@@ -205,62 +175,11 @@ const _RangeCalendar = <T extends DateValue>({
     [error]
   );
 
-  const content = isMultiMonth ? (
-    <div className={classNames.calendarContainer}>
-      {[...Array(visibleMonths).keys()].map(i => (
-        <div key={i} className={classNames.calendarMonth}>
-          <CalendarHeader
-            monthOffset={i}
-            showPrevious={i === 0}
-            showNext={i === visibleMonths - 1}
-          />
-          <CalendarGrid offset={{ months: i }} />
-        </div>
-      ))}
-    </div>
-  ) : (
-    <>
-      <div
-        ref={dropdownOverlayRef}
-        className={cn(
-          'pointer-events-none absolute top-1/2 left-0 w-full -translate-y-1/2 opacity-0',
-          selectedDropdown && 'pointer-events-auto opacity-100'
-        )}
-      >
-        {ViewMap[selectedDropdown as ViewMapKeys]}
-      </div>
-
-      <div
-        className={cn(
-          'flex flex-col',
-          selectedDropdown && 'pointer-events-none opacity-0'
-        )}
-      >
-        <div className="mb-6 flex items-center justify-between gap-4 max-sm:gap-2">
-          <div className="flex w-fit gap-4 max-sm:gap-3">
-            <CalendarListBox
-              key="month"
-              type="month"
-              isDisabled={
-                hasOnlyOneSelectableMonth(minValue, maxValue) ||
-                props.isDisabled
-              }
-              setSelectedDropdown={setSelectedDropdown}
-            />
-            <CalendarListBox
-              key="year"
-              type="year"
-              isDisabled={
-                hasOnlyOneSelectableYear(minValue, maxValue) || props.isDisabled
-              }
-              setSelectedDropdown={setSelectedDropdown}
-            />
-          </div>
-          <MonthControls />
-        </div>
-        <CalendarGrid />
-      </div>
-    </>
+  const body = (
+    <CalendarBody
+      selectedDropdown={selectedDropdown}
+      setSelectedDropdown={setSelectedDropdown}
+    />
   );
 
   return (
@@ -271,6 +190,7 @@ const _RangeCalendar = <T extends DateValue>({
         minValue,
         maxValue,
         disabled,
+        isRange: true,
       }}
     >
       <FieldErrorContext value={fieldErrorValue}>
@@ -314,10 +234,10 @@ const _RangeCalendar = <T extends DateValue>({
                   <RangeCalendarPresets presets={presets} {...presetProps} />
                 )}
               >
-                {content}
+                {body}
               </CalendarPresetsShell>
             ) : (
-              content
+              body
             )}
           </AriaRangeCalendar>
         </FieldBase>

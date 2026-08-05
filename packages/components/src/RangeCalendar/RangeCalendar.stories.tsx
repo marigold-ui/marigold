@@ -215,6 +215,30 @@ Basic.test(
   }
 );
 
+Basic.test(
+  'does not commit an in-progress range when tapping a month',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onChange: fn() },
+  },
+  async ({ args, canvas, userEvent }) => {
+    const tap = (target: Element) =>
+      userEvent.pointer([{ keys: '[TouchA>]', target }, { keys: '[/TouchA]' }]);
+
+    // Anchor an in-progress range: start picked, end not yet.
+    await tap(canvas.getByLabelText(/Tuesday, August 12, 2025/i));
+
+    await expect(args.onChange).not.toHaveBeenCalled();
+
+    await tap(canvas.getByRole('button', { name: 'Aug' }));
+    const monthOptions = canvas.getByRole('listbox', { name: 'month' });
+    await tap(within(monthOptions).getByRole('option', { name: /Mar/i }));
+
+    // The in-progress range must survive the trip (DSTSUP-257).
+    await expect(args.onChange).not.toHaveBeenCalled();
+  }
+);
+
 export const Disabled = Basic.extend({
   args: {
     disabled: true,
