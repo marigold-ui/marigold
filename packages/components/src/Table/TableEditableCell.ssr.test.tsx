@@ -28,6 +28,9 @@ test('inline editing works after hydrating server-rendered markup', async () => 
   const container = document.createElement('div');
   container.innerHTML = renderToString(<EditableCell.Component />);
   document.body.appendChild(container);
+  // Precondition, not a second assertion: `hydrateRoot` on markup that never
+  // contained the trigger would client-render one anyway and the test below
+  // would still pass, silently no longer covering hydration.
   expect(within(container).getAllByLabelText('Edit').length).toBeGreaterThan(0);
 
   let root: Root | null = null;

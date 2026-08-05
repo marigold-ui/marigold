@@ -34,10 +34,17 @@ import { useUNSAFE_PortalContext } from '@react-aria/overlays';
  * always false with a `null` ref). While the tray is closed it falls back to the
  * container the tray will portal into, so the hide pass keeps that container —
  * and therefore the tray appearing inside it — visible.
+ *
+ * One caveat on that blur path: it asks `nodeContains(popoverRef.current, e.relatedTarget)`,
+ * so while the closed-state fallback is armed (the portal container, or
+ * `document.body`) the answer is `true` for *any* target in the document and
+ * `onBlur` / `setFocused(false)` are skipped. That is harmless today because the
+ * combobox `Input` only exists inside the tray and therefore cannot blur while
+ * the fallback is armed — but move the input out of the tray subtree and blur
+ * handling goes missing silently.
  */
 export const useComboBoxTrayRef = ():
-  | RefObject<HTMLElement | null>
-  | undefined => {
+  RefObject<HTMLElement | null> | undefined => {
   const popoverContext = use(PopoverContext);
   const portalContext = useUNSAFE_PortalContext();
 
@@ -52,7 +59,6 @@ export const useComboBoxTrayRef = ():
   // run, so this re-arms the fallback on every close and a reopened tray is
   // never measured against a stale element. It also has to run before
   // `useComboBox`'s hide effect, which is a passive effect in an ancestor.
-  //
   useLayoutEffect(() => {
     if (popoverRef && !popoverRef.current) {
       // `popoverRef` is owned by RAC, so `react-hooks/immutability` cannot tell
