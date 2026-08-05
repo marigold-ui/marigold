@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
@@ -187,26 +187,43 @@ export const ControlledSectionMessage = meta.story({
       </Stack>
     );
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    // Not shown until "Show message" is pressed.
-    await expect(
-      canvas.queryByRole('heading', { name: 'Item deleted' })
-    ).not.toBeInTheDocument();
-
-    await userEvent.click(canvas.getByRole('button', { name: 'Show message' }));
-
-    const heading = canvas.getByRole('heading', { name: 'Item deleted' });
-    await expect(heading).toBeInTheDocument();
-
-    await userEvent.click(canvas.getByRole('button', { name: 'Close' }));
-
-    await expect(
-      canvas.queryByRole('heading', { name: 'Item deleted' })
-    ).not.toBeInTheDocument();
-  },
 });
+
+ControlledSectionMessage.test(
+  'Stays hidden until the trigger is pressed',
+  async ({ canvas }) => {
+    await expect(
+      canvas.queryByRole('heading', { name: 'Item deleted' })
+    ).not.toBeInTheDocument();
+  }
+);
+
+ControlledSectionMessage.test(
+  'Shows the message when the trigger is pressed',
+  async ({ canvas, userEvent }) => {
+    const trigger = canvas.getByRole('button', { name: 'Show message' });
+
+    await userEvent.click(trigger);
+
+    await expect(
+      canvas.getByRole('heading', { name: 'Item deleted' })
+    ).toBeInTheDocument();
+  }
+);
+
+ControlledSectionMessage.test(
+  'Dismisses the message when the close button is pressed',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Show message' }));
+    const closeButton = canvas.getByRole('button', { name: 'Close' });
+
+    await userEvent.click(closeButton);
+
+    await expect(
+      canvas.queryByRole('heading', { name: 'Item deleted' })
+    ).not.toBeInTheDocument();
+  }
+);
 export const WithoutTitle = meta.story({
   tags: ['component-test'],
   args: { closeButton: true },
@@ -254,7 +271,7 @@ WithoutTitle.test(
   {
     parameters: { chromatic: { disableSnapshot: true }, surface: false },
   },
-  async ({ canvas }) => {
+  async ({ canvas, userEvent }) => {
     const message = 'Hello, I am a simple message without a title.';
     const closeButton = canvas.getByRole('button');
 

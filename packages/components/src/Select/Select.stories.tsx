@@ -3,6 +3,7 @@ import { Form } from 'react-aria-components/Form';
 import { Key } from 'react-aria-components/Select';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
+import { clickOption } from '.storybook/test-utils';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Description } from '../Description/Description';
@@ -148,10 +149,11 @@ Basic.test(
     });
 
     await step('Select an item from the list', async () => {
-      const listbox = canvas.getByRole('listbox');
-      const option = within(listbox).getByText('Star Wars');
-
-      await userEvent.click(option);
+      await clickOption(() =>
+        within(canvas.getByRole('listbox')).getByRole('option', {
+          name: 'Star Wars',
+        })
+      );
     });
 
     await step('Verify the select is closed', async () => {
@@ -229,6 +231,41 @@ Basic.test(
       within(listbox).getByText(/Mario der Dritte von Emschenhagen/)
     ).toBeVisible();
     expect(within(listbox).getByText('Luigi')).toBeVisible();
+  }
+);
+
+Basic.test(
+  'Wraps an unbreakable option label inside a narrow list',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+    render: args => (
+      <Inset p={24}>
+        <Select
+          {...args}
+          width={40}
+          label="Favorite country"
+          placeholder="Select your country"
+        >
+          <Select.Option>
+            IchliebeDeutschlandundseineHauptstadtBerlin
+          </Select.Option>
+          <Select.Option>Österreich</Select.Option>
+          <Select.Option>Schweiz</Select.Option>
+        </Select>
+      </Inset>
+    ),
+  },
+  async ({ canvas }) => {
+    await userEvent.click(canvas.getByLabelText(/Favorite country/i));
+
+    const listbox = await canvas.findByRole('listbox');
+
+    // The label has no break opportunity, so without `wrap-anywhere` it widens
+    // the option past the list instead of breaking mid-word. `scrollWidth`
+    // catches that even though the virtualizer does not size rows under the
+    // test runner, unlike a per-option width assertion. The Chromatic snapshot
+    // is still the guard for the wrap itself actually looking right.
+    expect(listbox.scrollWidth).toBeLessThanOrEqual(listbox.clientWidth);
   }
 );
 
@@ -597,9 +634,11 @@ WithRenderValue.test(
     });
 
     await step('Select Bob', async () => {
-      const listbox = canvas.getByRole('listbox');
-
-      await userEvent.click(within(listbox).getByText('Bob Smith'));
+      await clickOption(() =>
+        within(canvas.getByRole('listbox')).getByRole('option', {
+          name: 'Bob Smith',
+        })
+      );
 
       await waitFor(() =>
         expect(canvas.queryByRole('listbox')).not.toBeInTheDocument()
