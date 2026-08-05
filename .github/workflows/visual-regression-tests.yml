@@ -117,7 +117,13 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           branchName: ${{ steps.resolve-branch.outputs.branch }}
-          onlyChanged: true # TurboSnap: https://www.chromatic.com/docs/turbosnap/setup/
+          # !!! TEMPORARY — REVERT TO `true` BEFORE MERGING THIS PR (DST-1686) !!!
+          # TurboSnap gave this theme-only change zero coverage: `themes/**` reaches
+          # most stories only through `.storybook/decorators.tsx`, which is in the
+          # `untraced` list below, so the trace dies there and every affected story
+          # inherited its baseline. Forcing a full run to get real snapshots of the
+          # SegmentedControl/Switch changes. The trace gap itself is its own ticket.
+          onlyChanged: false # TurboSnap: https://www.chromatic.com/docs/turbosnap/setup/
           zip: true # Zip the Storybook build for faster uploads
           # Files whose changes should NOT trigger story re-snapshots via
           # dependency tracing. Keep this list focused on files that change
