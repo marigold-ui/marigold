@@ -129,6 +129,7 @@ const _Calendar = ({
         minValue,
         maxValue,
         disabled,
+        // No window pointerup commit to guard here, unlike RangeCalendar (DSTSUP-257).
         isRange: false,
       }}
     >
