@@ -123,21 +123,24 @@ jobs:
           # `untraced` list below, so the trace dies there and every affected story
           # inherited its baseline. Forcing a full run to get real snapshots of the
           # SegmentedControl/Switch changes. The trace gap itself is its own ticket.
+          # `untraced` has to be commented out with it: it is a TurboSnap-only input
+          # and the CLI rejects it outright ("Invalid --untraced") when onlyChanged
+          # is false. Restore both together.
           onlyChanged: false # TurboSnap: https://www.chromatic.com/docs/turbosnap/setup/
           zip: true # Zip the Storybook build for faster uploads
           # Files whose changes should NOT trigger story re-snapshots via
           # dependency tracing. Keep this list focused on files that change
           # often but cannot affect rendered output.
-          untraced: |
-            ./.storybook/decorators.tsx
-            **/*.md
-            **/*.mdx
-            .changeset/**
-            **/*.test.{ts,tsx}
-            **/vitest.*.{ts,mjs,js}
-            **/vitest.setup.{ts,mjs,js}
-            eslint.config.*
-            **/tsconfig*.json
+          # untraced: |
+          #   ./.storybook/decorators.tsx
+          #   **/*.md
+          #   **/*.mdx
+          #   .changeset/**
+          #   **/*.test.{ts,tsx}
+          #   **/vitest.*.{ts,mjs,js}
+          #   **/vitest.setup.{ts,mjs,js}
+          #   eslint.config.*
+          #   **/tsconfig*.json
           storybookConfigDir: './.storybook'
           storybookBuildDir: './storybook-static'
           storybookBaseDir: '.'
