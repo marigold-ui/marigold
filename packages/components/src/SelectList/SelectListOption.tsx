@@ -70,19 +70,14 @@ export const SelectListOption = ({
   ...props
 }: SelectListOptionProps) => {
   const { classNames, disabled: listDisabled } = useSelectListContext();
+  // Don't warn about a missing `textValue` here. RAC's `GridList` already warns
+  // on exactly that, and its own fallback chain is wider than this one — it
+  // accepts string children *or* an `aria-label`. A local warning therefore
+  // both doubles up on the real mistake and fires on rows that are already
+  // named correctly via `aria-label`. This fallback stays only to keep the
+  // value handed to RAC explicit; RAC would derive the same thing on its own.
   const resolvedTextValue =
     textValue ?? (typeof children === 'string' ? children : undefined);
-
-  if (
-    process.env.NODE_ENV !== 'production' &&
-    resolvedTextValue === undefined
-  ) {
-    console.warn(
-      `[SelectList.Option${props.id !== undefined ? ` id="${props.id}"` : ''}] ` +
-        '`textValue` is required when children is not a plain string. ' +
-        'Screen readers announce the `textValue` as the option name.'
-    );
-  }
 
   return (
     <RACGridListItem

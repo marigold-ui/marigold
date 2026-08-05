@@ -29,6 +29,13 @@ import { SelectListOption } from './SelectListOption';
 
 export type SelectionMode = 'single' | 'multiple';
 
+// Props the component owns. Every entry here is either replaced by a Marigold
+// prop or hardcoded on the underlying `GridList` below — a prop that stays in
+// the public type but is overridden at render time is a prop that lies.
+// `layout` and `keyboardNavigationBehavior` come as a pair: the list is always
+// a `layout="grid"` GridList (see the render), and RAC derives
+// `keyboardNavigationBehavior: 'tab'` from that layout, so a consumer value for
+// either one is dropped on the floor.
 type RemoveProps =
   | 'style'
   | 'className'
@@ -37,6 +44,8 @@ type RemoveProps =
   | 'renderEmptyState'
   | 'selectionMode'
   | 'selectionBehavior'
+  | 'layout'
+  | 'keyboardNavigationBehavior'
   | 'isDisabled'
   | 'isInvalid'
   | 'isRequired';
@@ -347,6 +356,13 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
               ref={gridListRef}
               aria-labelledby={label ? labelId : rest['aria-labelledby']}
               aria-disabled={disabled || undefined}
+              // Load-bearing, and the reason `layout` is not a public prop: a
+              // grid layout is what gives the list arrow-key navigation on both
+              // axes, so a horizontal list moves with Left/Right and still
+              // moves with Up/Down after the container-query flip to a vertical
+              // stack. Under RAC's `"stack"` default a row instead captures
+              // Left/Right to walk its own focusable children, and horizontal
+              // navigation stops working entirely.
               layout="grid"
               orientation={orientation}
               selectionBehavior="toggle"

@@ -1,5 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
+import { theme } from '@marigold/theme-rui';
+import { Description } from '../Description/Description';
+import { MarigoldProvider } from '../Provider/MarigoldProvider';
+import { SelectList } from './SelectList';
 import {
   Basic,
   Bordered,
@@ -278,6 +283,27 @@ describe('SelectList', () => {
       expect(document.activeElement).toBe(paypalRow);
       /* eslint-enable testing-library/no-node-access */
     });
+
+    // Guards the hardcoded `layout="grid"` on the underlying GridList. Left and
+    // Right only move between rows because of it — with RAC's `"stack"` default
+    // the row captures those keys to walk its own focusable children instead,
+    // and a horizontal list stops being navigable.
+    test('moves focus between rows on ArrowRight/ArrowLeft when horizontal', async () => {
+      render(<Horizontal.Component />);
+      const standardRow = screen.getByRole('row', { name: /standard/i });
+      const expressRow = screen.getByRole('row', { name: /express/i });
+
+      await user.tab();
+      await user.keyboard('{ArrowRight}');
+
+      /* eslint-disable testing-library/no-node-access */
+      expect(document.activeElement).toBe(expressRow);
+
+      await user.keyboard('{ArrowLeft}');
+
+      expect(document.activeElement).toBe(standardRow);
+      /* eslint-enable testing-library/no-node-access */
+    });
   });
 
   describe('disabled state', () => {
@@ -327,6 +353,53 @@ describe('SelectList', () => {
 
       expect(label).toBeInTheDocument();
       expect(row).toBeInTheDocument();
+    });
+
+    test('a missing textValue warns exactly once (RAC only)', () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+      render(
+        <MarigoldProvider theme={theme}>
+          <SelectList aria-label="Test">
+            <SelectList.Option id="named" textValue="Named option">
+              <Description>Has a textValue</Description>
+            </SelectList.Option>
+            <SelectList.Option id="option">
+              <Description>No textValue provided</Description>
+            </SelectList.Option>
+          </SelectList>
+        </MarigoldProvider>
+      );
+
+      // RAC's GridList already warns about a missing `textValue`, so
+      // SelectList.Option deliberately adds none of its own — one authoring
+      // mistake must not produce two console lines.
+      expect(warnSpy).toHaveBeenCalledTimes(1);
+      expect(warnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('<GridListItem>')
+      );
+
+      warnSpy.mockRestore();
+    });
+
+    test('an option named by aria-label does not warn', () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+      render(
+        <MarigoldProvider theme={theme}>
+          <SelectList aria-label="Test">
+            <SelectList.Option id="option" aria-label="Named by aria-label">
+              <Description>No textValue provided</Description>
+            </SelectList.Option>
+          </SelectList>
+        </MarigoldProvider>
+      );
+
+      // RAC accepts an `aria-label` in place of a `textValue`, so such a row is
+      // named correctly and nothing should complain about it.
+      expect(warnSpy).not.toHaveBeenCalled();
+
+      warnSpy.mockRestore();
     });
 
     test('applies the action slot placement to a trailing action button', () => {
