@@ -247,7 +247,11 @@ Controls carry two neutral tokens. Most define their shape with a border, drawn 
 
 `control-border` is the visible edge of a bordered control such as a text input or a select. It is the denser sibling of `surface-border`, kept above the contrast threshold so the boundary is always seen. The full set of edge tokens lives under [Borders](#borders).
 
-Some controls have no border to define them. The switch track is the clearest example. When OFF, the track needs to look like a solid, physical groove that the thumb can slide along. A white or transparent background would make it disappear into the surface, while `selected` or `disabled-surface` would send the wrong signal. `control` fills this gap with a medium-weight neutral background that reads as an interactive control in its resting state, and it pairs naturally with `selected-bold` for the ON state.
+Some controls have no border to define them. The switch track is the clearest example. When OFF, the track needs to look like a physical groove that the thumb can slide along. A white or transparent background would make it disappear into the surface, while `selected` or `disabled-surface` would send the wrong signal. `control` fills this gap with a neutral groove that reads as an interactive control in its resting state, and it pairs naturally with `selected-bold` for the ON state.
+
+Exactly three components use it, and all three are tracks: the Switch groove, the SegmentedControl track, and the Slider rail.
+
+`control` is **translucent**, for the same reason the edge tokens are. A track is not painted on one known background — it appears on a white Card, on the gray page ground, on a `muted` fill, and inside a hovered Table or ListBox row. A fixed palette step drifts across those: charcoal-300 measured 1.53:1 on white but only 1.21:1 inside a hovered row, where the groove half-dissolved into the row it sits in. At 16% the four grounds land within 0.02 of each other, so a track weighs the same wherever you put it.
 
 <TokenTable
   tokens={[
@@ -259,9 +263,9 @@ Some controls have no border to define them. The switch track is the clearest ex
     },
     {
       name: 'control',
-      value: 'charcoal-300',
+      value: 'charcoal-950 / 16%',
       useFor:
-        'Resting fill for controls that show their inactive state through a background instead of a border (e.g. switch track)',
+        'Resting fill of an unselected control track: the Switch groove, the SegmentedControl track, the Slider rail. Translucent, so it holds ~1.42:1 against every ground a track lands on rather than varying with the fill behind it',
     },
   ]}
 />
@@ -278,7 +282,18 @@ Some controls have no border to define them. The switch track is the clearest ex
   `control-border` token documented with the other edges under
   [Borders](#borders). Only reach for `bg-control` when a control communicates
   its state through a filled background rather than a border, like switch
-  tracks, slider tracks, and similar "trough" elements.
+  tracks, slider tracks, and similar "trough" elements. The name is broader than
+  the role: read it as "control track".
+</Callout>
+
+<Callout title="Never paint it twice">
+  Because the fill is translucent, two stacked elements that both carry
+  `bg-control` composite into a darker track than the token specifies — 16% over
+  16% renders as 29%. This is a real bug we shipped: the Slider applied its
+  track style to both the `SliderTrack` and an inner rail `div` at identical
+  geometry, so the rail rendered visibly darker than the Switch groove beside
+  it. If a component layers elements over its track, only one of them may carry
+  the fill.
 </Callout>
 
 <GuidelineTiles>
@@ -292,7 +307,8 @@ Some controls have no border to define them. The switch track is the clearest ex
     <DontDescription>
       Don't use `bg-control` for bordered form controls like text inputs,
       selects, or textareas. Those should use `bg-surface` with the `ui-control`
-      ring.
+      ring. And don't stack it on two overlapping elements — a translucent fill
+      painted twice composites darker.
     </DontDescription>
   </Dont>
 </GuidelineTiles>

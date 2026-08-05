@@ -111,13 +111,11 @@ const _Slider = <T extends number | number[]>({
       >
         {({ state }) => (
           <>
-            {/* track */}
-            <div
-              className={cn(
-                'absolute top-[50%] h-2 w-full translate-y-[-50%]',
-                classNames.track
-              )}
-            />
+            {/* The `SliderTrack` above *is* the rail: it already carries
+                `classNames.track` at the same `h-2` geometry. Don't add a
+                second rail element here — it paints the track style twice, and
+                any translucency in the token then composites with itself into a
+                darker rail than the token specifies. */}
             {/* fill */}
             <div
               className={cn(

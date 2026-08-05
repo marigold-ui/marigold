@@ -76,8 +76,36 @@
 
   /* --- Neutral Backgrounds & States --- */
   --color-muted: var(--color-charcoal-50);
-  --color-control: var(--color-charcoal-300);
   --color-hover: var(--color-charcoal-200);
+
+  /* Resting fill of an unselected control track, and only that: the Switch
+     groove, the SegmentedControl track, the Slider rail. Not the surface of a
+     control in general — bordered controls (inputs, selects) sit on `surface` and
+     draw their shape with `control-border`. The name reads broader than the role;
+     see the callout in /foundations/token-overview.
+
+     Alpha, not a palette rung, so the track holds one *contrast* against
+     whatever ground it lands on instead of one lightness. A track appears on at
+     least four grounds — `surface`, `background`, `muted`, and a hovered
+     `hover` row — and a fixed rung drifts across them: charcoal-300 measured
+     1.53:1 on white but only 1.21:1 inside a hovered Table row, where the groove
+     half-dissolved into the row it sits in. At 0.16 the four land within 0.02 of
+     each other (1.41–1.43:1). Same reasoning as `--color-border` below.
+
+     0.16 rather than the 0.18 that would match charcoal-300's weight on white:
+     the tracks read a touch lighter by intent. The cost is the white-on-track
+     relationship — the Switch thumb and the SegmentedControl indicator are
+     opaque `surface`, so their contrast against the track now varies with the
+     ground (1.43:1 on white, 1.79:1 on a hovered row) where a rung held a flat
+     1.53:1. Track-vs-ground and thumb-vs-track cannot both be constant while the
+     thumb is opaque; ground legibility wins because it decides whether the
+     control reads as a control at all.
+
+     Note this composites near-neutral on white (chroma 0.008 at 16% is ~0.001),
+     so on a Card the track carries less of the palette's hue-54 warmth than a
+     rung would. On warmer grounds it picks the warmth back up. See DST-1672 for
+     the alpha-vs-rung rationale and the sampling method. */
+  --color-control: oklch(from var(--color-charcoal-950) l c h / 0.16);
 
   --color-selected: var(--color-charcoal-300);
   --color-selected-bold: var(--color-charcoal-900);
