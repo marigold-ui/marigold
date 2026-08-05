@@ -7,7 +7,6 @@ import type { ComponentClassNames } from '@marigold/system';
 export type CalendarSharedClassNames =
   ComponentClassNames<'Calendar'> | ComponentClassNames<'RangeCalendar'>;
 
-/** Which of the calendar header's dropdowns is open, if any. */
 export type CalendarDropdownView = 'month' | 'year';
 
 export interface CalendarContextValue {

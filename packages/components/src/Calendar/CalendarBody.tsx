@@ -15,10 +15,7 @@ import {
 // Props
 // ---------------
 interface CalendarBodyProps {
-  /**
-   * Which month/year dropdown is open, if any. Owned by the calendar so it
-   * outlives a preset view switch, which unmounts this component.
-   */
+  /** Which month/year dropdown is open, if any. Owned by the parent, see there for why. */
   selectedDropdown?: CalendarDropdownView;
   setSelectedDropdown: Dispatch<
     SetStateAction<CalendarDropdownView | undefined>
