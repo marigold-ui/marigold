@@ -19,6 +19,7 @@ import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import { useListData } from '../hooks';
 import type { Selection } from '../types';
+import type { TableProps } from './Table';
 import { Table } from './Table';
 import { TableDragPreview } from './TableDragPreview';
 
@@ -1949,6 +1950,139 @@ StickyFooter.test(
       const footerBottom = tfoot.getBoundingClientRect().bottom;
       const containerBottom = scrollContainer.getBoundingClientRect().bottom;
       expect(Math.abs(footerBottom - containerBottom)).toBeLessThan(5);
+    });
+  }
+);
+
+/**
+ * A data-entry grid, where form controls live in the cells. The arrow keys have
+ * to be handed back to the fields with `keyboardNavigationBehavior="tab"`.
+ * Without it the grid captures them and focus is pushed onto the row.
+ */
+const DataEntryGridTable = (args: Partial<TableProps>) => (
+  <Table aria-label="Data entry grid" {...args}>
+    <Table.Header>
+      <Table.Column rowHeader>Name</Table.Column>
+      <Table.Column>Note</Table.Column>
+      <Table.Column alignX="right">Balance</Table.Column>
+    </Table.Header>
+    <Table.Body>
+      {users.slice(0, 3).map(user => (
+        <Table.Row key={user.email}>
+          <Table.Cell>{user.name}</Table.Cell>
+          <Table.Cell>
+            <TextField
+              aria-label={`Note for ${user.name}`}
+              defaultValue={user.name}
+            />
+          </Table.Cell>
+          <Table.Cell>
+            <NumberField
+              aria-label={`Balance for ${user.name}`}
+              defaultValue={user.balance}
+              hideStepper
+            />
+          </Table.Cell>
+        </Table.Row>
+      ))}
+    </Table.Body>
+  </Table>
+);
+
+export const DataEntryGrid = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    keyboardNavigationBehavior: 'tab',
+    selectionMode: 'none',
+  },
+  render: args => <DataEntryGridTable {...args} />,
+});
+
+DataEntryGrid.test(
+  'Keeps typing and caret movement inside cell fields, and Tab moves in and out of a cell',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const first = canvas.getByLabelText(
+      `Note for ${users[0].name}`
+    ) as HTMLInputElement;
+    const balance = canvas.getByLabelText(`Balance for ${users[0].name}`);
+
+    await step(
+      'Typing edits the field instead of triggering typeahead',
+      async () => {
+        await userEvent.click(first);
+        expect(document.activeElement).toBe(first);
+        await userEvent.keyboard('Zulu');
+        expect(document.activeElement).toBe(first);
+        expect(first.value).toContain('Zulu');
+      }
+    );
+
+    await step(
+      'Arrow keys move the caret rather than leaving the field',
+      async () => {
+        first.setSelectionRange(first.value.length, first.value.length);
+        const before = first.selectionStart as number;
+        await userEvent.keyboard('{ArrowLeft}');
+        expect(document.activeElement).toBe(first);
+        expect(first.selectionStart).toBe(before - 1);
+      }
+    );
+
+    // Home/End are deliberately not asserted here. What those keys do inside an
+    // input is platform dependent (on macOS they do not move the caret at all),
+    // and inside a NumberField they still reach the grid, so they are not part
+    // of what this prop reliably fixes.
+
+    // The prop moves Tab in and out of a cell, not from one cell to the next,
+    // so reaching the neighbouring field is a three key round trip.
+    await step('Shift+Tab steps back out onto the cell', async () => {
+      await userEvent.keyboard('{Shift>}{Tab}{/Shift}');
+      expect(document.activeElement).toHaveAttribute('role', 'gridcell');
+    });
+
+    await step('An arrow key then Tab reaches the next field', async () => {
+      await userEvent.keyboard('{ArrowRight}');
+      await userEvent.keyboard('{Tab}');
+      expect(document.activeElement).toBe(balance);
+    });
+
+    // In a real browser, Tab pressed inside a field leaves the table entirely
+    // rather than reaching the next row. That is not asserted here because the test
+    // runner moves focus to the next tabbable element in DOM order instead of
+    // letting the grid handle the key, so it reports the opposite. Verified by
+    // hand in both Chromium and Firefox.
+  }
+);
+
+/**
+ * Row selection keeps working alongside always-on cell inputs, at the cost of
+ * one extra tab stop per row.
+ */
+export const DataEntryGridWithSelection = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    keyboardNavigationBehavior: 'tab',
+    selectionMode: 'multiple',
+  },
+  render: args => <DataEntryGridTable {...args} />,
+});
+
+DataEntryGridWithSelection.test(
+  'Row checkboxes stay reachable and selectable',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    await step('Every row has a checkbox alongside the select-all', () => {
+      // 3 rows + 1 select-all
+      expect(canvas.getAllByRole('checkbox')).toHaveLength(4);
+    });
+
+    await step('A row checkbox still toggles', async () => {
+      const rowCheckbox = canvas.getAllByRole('checkbox')[1];
+      await userEvent.click(rowCheckbox);
+      expect(rowCheckbox).toBeChecked();
     });
   }
 );

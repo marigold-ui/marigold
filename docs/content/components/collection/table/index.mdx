@@ -248,6 +248,8 @@ Editable cells always truncate their content, regardless of the table-level `ove
   </Dont>
 </GuidelineTiles>
 
+Editable cells suit occasional corrections, where most cells are read-only and the user opens one at a time. If instead every row needs the same fields filled in, don't give a whole column editable cells. Put the form controls directly in the cells and set `keyboardNavigationBehavior="tab"`, so the arrow keys stay with the fields instead of moving between cells. See [Filling in many rows at once](/patterns/user-input/table-record-management#filling-in-many-rows-at-once) for when that trade is worth making and how far it scales.
+
 ### Reordering
 
 When the order of items matters and users need to manually arrange them, enable drag and drop. This works well for priority lists, custom orderings, or workflows where sequence is important.
