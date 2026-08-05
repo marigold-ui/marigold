@@ -81,3 +81,33 @@ To start documentation follow these steps:
 | pnpm typecheck             | Build docs, then run TypeScript type checking (no emit).                              |
 | pnpm typecheck:only        | Run TypeScript type checking only (no emit).                                          |
 | pnpm changeset             | Run the Changesets CLI.                                                               |
+
+### Releasing
+
+Releases are published by CI, not locally. `.github/workflows/release.yml` runs
+[`changesets/action`](https://github.com/changesets/action) on every push to `main`: it either opens a
+"release: version packages" PR that consumes the pending changesets, or — once that PR is merged —
+publishes the bumped packages to npm.
+
+So the only thing you do by hand is add a changeset with `pnpm changeset` when your change should
+cause a version bump.
+
+#### Prereleases
+
+Prereleases use [changesets pre mode](https://github.com/changesets/changesets/blob/main/docs/prereleases.md),
+which lives on `main` (there is no separate release branch). The mode is recorded in
+`.changeset/pre.json`, and `pnpm changeset publish` derives the npm dist-tag from its `tag` field —
+so while pre mode is active, everything publishes to that tag instead of `latest`.
+
+```sh
+pnpm changeset pre enter rc   # start publishing 18.0.0-rc.x to the "rc" dist-tag
+pnpm changeset pre exit       # go back to regular releases on "latest"
+```
+
+Two things worth knowing:
+
+- The prerelease counter comes from the current version in `package.json`, not from the tag. Switching
+  channel mid-prerelease continues the count (`18.0.0-beta.4` → `18.0.0-rc.5`) rather than resetting it.
+- Switching channel leaves the old dist-tag pinned at its last version. Consumers on the old tag keep
+  resolving a stale version without any error, so repoint (`npm dist-tag add <pkg>@<new-version> <old-tag>`)
+  or remove (`npm dist-tag rm <pkg> <old-tag>`) it per package after the first publish on the new channel.
