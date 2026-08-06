@@ -284,19 +284,21 @@ describe('SelectList', () => {
       /* eslint-enable testing-library/no-node-access */
     });
 
-    // Guards the hardcoded `layout="grid"` on the underlying GridList. Left and
-    // Right only move between rows because of it — with RAC's `"stack"` default
-    // the row captures those keys to walk its own focusable children instead,
-    // and a horizontal list stops being navigable.
+    // Guards the hardcoded `layout="grid"`: under RAC's `"stack"` default the row
+    // captures Left/Right to walk its own focusable children instead, and a
+    // horizontal list stops being navigable.
     test('moves focus between rows on ArrowRight/ArrowLeft when horizontal', async () => {
       render(<Horizontal.Component />);
       const standardRow = screen.getByRole('row', { name: /standard/i });
       const expressRow = screen.getByRole('row', { name: /express/i });
 
+      /* eslint-disable testing-library/no-node-access */
       await user.tab();
+      // Tab lands here only because the story sets `defaultSelectedKeys`.
+      expect(document.activeElement).toBe(standardRow);
+
       await user.keyboard('{ArrowRight}');
 
-      /* eslint-disable testing-library/no-node-access */
       expect(document.activeElement).toBe(expressRow);
 
       await user.keyboard('{ArrowLeft}');
@@ -371,9 +373,6 @@ describe('SelectList', () => {
         </MarigoldProvider>
       );
 
-      // RAC's GridList already warns about a missing `textValue`, so
-      // SelectList.Option deliberately adds none of its own — one authoring
-      // mistake must not produce two console lines.
       expect(warnSpy).toHaveBeenCalledTimes(1);
       expect(warnSpy).toHaveBeenCalledWith(
         expect.stringContaining('<GridListItem>')
@@ -395,8 +394,8 @@ describe('SelectList', () => {
         </MarigoldProvider>
       );
 
-      // RAC accepts an `aria-label` in place of a `textValue`, so such a row is
-      // named correctly and nothing should complain about it.
+      // RAC accepts an `aria-label` in place of a `textValue`, so the row is
+      // named correctly and neither layer should complain.
       expect(warnSpy).not.toHaveBeenCalled();
 
       warnSpy.mockRestore();

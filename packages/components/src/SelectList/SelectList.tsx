@@ -29,13 +29,9 @@ import { SelectListOption } from './SelectListOption';
 
 export type SelectionMode = 'single' | 'multiple';
 
-// Props the component owns. Every entry here is either replaced by a Marigold
-// prop or hardcoded on the underlying `GridList` below — a prop that stays in
-// the public type but is overridden at render time is a prop that lies.
-// `layout` and `keyboardNavigationBehavior` come as a pair: the list is always
-// a `layout="grid"` GridList (see the render), and RAC derives
-// `keyboardNavigationBehavior: 'tab'` from that layout, so a consumer value for
-// either one is dropped on the floor.
+// Props the component owns: each is either replaced by a Marigold prop or
+// hardcoded on the `GridList` below. See the `layout="grid"` render site for why
+// `layout` and `keyboardNavigationBehavior` cannot be public.
 type RemoveProps =
   | 'style'
   | 'className'
