@@ -1,6 +1,6 @@
 ---
 title: Marigold v18.0.0
-date: 2026-08-17
+date: 2026-08-11
 type: Blog
 changed:
   - foundations/token-overview
@@ -63,6 +63,7 @@ changed:
   - components/content/section-message
   - components/content/loader
   - components/hooks-and-utils/useLandmark
+  - components/application/routerprovider
   - patterns/user-input/forms
   - patterns/user-input/bulk-actions
   - patterns/user-input/filter
@@ -114,19 +115,19 @@ export const Sw = ({ c }) => (
   />
 );
 
-| Step | Old (`stone`)                | New (`charcoal`)                                         | Typical role                      |
-| ---- | ---------------------------- | -------------------------------------------------------- | --------------------------------- |
-| 50   | <Sw c="#fafaf9" /> `#fafaf9` | <Sw c="oklch(0.985 0.002 54)" /> `oklch(0.985 0.002 54)` | Subtle tint, `primary-foreground` |
-| 100  | <Sw c="#f5f5f4" /> `#f5f5f4` | <Sw c="oklch(0.965 0.003 54)" /> `oklch(0.965 0.003 54)` | Page background                   |
-| 200  | <Sw c="#e7e5e4" /> `#e7e5e4` | <Sw c="oklch(0.92 0.004 54)" /> `oklch(0.92 0.004 54)`   | Hover, `disabled-surface`         |
-| 300  | <Sw c="#d6d3d1" /> `#d6d3d1` | <Sw c="oklch(0.86 0.005 54)" /> `oklch(0.86 0.005 54)`   | Borders, control fill, selected   |
-| 400  | <Sw c="#a8a29e" /> `#a8a29e` | <Sw c="oklch(0.74 0.006 54)" /> `oklch(0.74 0.006 54)`   | Disabled text                     |
-| 500  | <Sw c="#78716c" /> `#78716c` | <Sw c="oklch(0.62 0.007 54)" /> `oklch(0.62 0.007 54)`   | -                                 |
-| 600  | <Sw c="#57534e" /> `#57534e` | <Sw c="oklch(0.52 0.008 54)" /> `oklch(0.52 0.008 54)`   | Focus ring, `secondary` text      |
-| 700  | <Sw c="#44403c" /> `#44403c` | <Sw c="oklch(0.42 0.008 54)" /> `oklch(0.42 0.008 54)`   | -                                 |
-| 800  | <Sw c="#292524" /> `#292524` | <Sw c="oklch(0.32 0.008 54)" /> `oklch(0.32 0.008 54)`   | -                                 |
-| 900  | <Sw c="#1c1917" /> `#1c1917` | <Sw c="oklch(0.22 0.008 54)" /> `oklch(0.22 0.008 54)`   | Primary text                      |
-| 950  | <Sw c="#0c0a09" /> `#0c0a09` | <Sw c="oklch(0.15 0.008 54)" /> `oklch(0.15 0.008 54)`   | Primary action, scrollbar hover   |
+| Step | Old (`stone`)                | New (`charcoal`)                                         | Typical role                                               |
+| ---- | ---------------------------- | -------------------------------------------------------- | ---------------------------------------------------------- |
+| 50   | <Sw c="#fafaf9" /> `#fafaf9` | <Sw c="oklch(0.985 0.002 54)" /> `oklch(0.985 0.002 54)` | Subtle tint, `primary-foreground`                          |
+| 100  | <Sw c="#f5f5f4" /> `#f5f5f4` | <Sw c="oklch(0.965 0.003 54)" /> `oklch(0.965 0.003 54)` | Page background                                            |
+| 200  | <Sw c="#e7e5e4" /> `#e7e5e4` | <Sw c="oklch(0.92 0.004 54)" /> `oklch(0.92 0.004 54)`   | Hover, `disabled-surface`                                  |
+| 300  | <Sw c="#d6d3d1" /> `#d6d3d1` | <Sw c="oklch(0.86 0.005 54)" /> `oklch(0.86 0.005 54)`   | Selected state, disabled border                            |
+| 400  | <Sw c="#a8a29e" /> `#a8a29e` | <Sw c="oklch(0.74 0.006 54)" /> `oklch(0.74 0.006 54)`   | Disabled text                                              |
+| 500  | <Sw c="#78716c" /> `#78716c` | <Sw c="oklch(0.62 0.007 54)" /> `oklch(0.62 0.007 54)`   | -                                                          |
+| 600  | <Sw c="#57534e" /> `#57534e` | <Sw c="oklch(0.52 0.008 54)" /> `oklch(0.52 0.008 54)`   | Focus ring, `secondary` text                               |
+| 700  | <Sw c="#44403c" /> `#44403c` | <Sw c="oklch(0.42 0.008 54)" /> `oklch(0.42 0.008 54)`   | -                                                          |
+| 800  | <Sw c="#292524" /> `#292524` | <Sw c="oklch(0.32 0.008 54)" /> `oklch(0.32 0.008 54)`   | -                                                          |
+| 900  | <Sw c="#1c1917" /> `#1c1917` | <Sw c="oklch(0.22 0.008 54)" /> `oklch(0.22 0.008 54)`   | Primary text                                               |
+| 950  | <Sw c="#0c0a09" /> `#0c0a09` | <Sw c="oklch(0.15 0.008 54)" /> `oklch(0.15 0.008 54)`   | Primary action, boundary and track alphas, scrollbar hover |
 
 The new scale is more even across the light end (50 → 300), which gives more room for subtle UI layers on white surfaces, and it lands slightly cooler at the dark end so that body text reads with less warm cast. Full reference lives on the new [Token Overview](/foundations/token-overview) page.
 
@@ -159,6 +160,7 @@ If you read these values directly as CSS custom properties (`var(--color-brand)`
 
 Additional tokens join the semantic set to cover roles that were previously expressed with raw utility classes:
 
+- **`control`**: the resting fill of an unselected control track, and only that: the `<Switch>` groove, the `<SegmentedControl>` track, the `<Slider>` rail. Bordered controls (inputs, selects) sit on `surface` and use `control-border`. It resolves to `charcoal-950` at 16% rather than a palette step, so a track holds the same contrast on a white Card, the gray page ground, a `muted` fill, or a hovered table row, where a fixed lightness drifts. If you use `bg-control` yourself, note that it is translucent: two stacked elements that both carry it composite into a darker track than the token specifies, and anything painting a translucent edge over a track has to account for the track underneath.
 - **`disabled-surface`**: background for disabled control surfaces (switch tracks, selected-but-disabled states, inert chips). Resolves to `charcoal-200` in the default theme.
 - **`overlay-backdrop`**: the scrim behind modals, drawers, and trays. Previously the backdrop was styled with a raw `bg-black/50`. Routing it through a token lets themes tune both the color and the opacity.
 - **`surface-border`** and **`control-border`**: the two boundary tokens of the new elevation model (see _Design_ below). `--color-border` narrows to structural lines only (dividers, grid lines, table rules).
@@ -965,6 +967,9 @@ If you maintain a custom theme, the `Menu` entry now also requires a `keyboard` 
 - **`<Panel.Collapsible>` caret parity.** The collapsible header caret now renders at 16px in `text-secondary`, matching the Accordion chevron, with the color themeable via a new `collapsibleIcon` slot.
 - **Slider thumb clipping.** The `<Slider>` thumb is centered on the track position, so at its min and max values it overhung the track ends by half its width, and scroll containers such as `Drawer.Content` sliced the overhang off into a half circle. The track is now inset by half the thumb width so the thumb always stays inside the Slider's own box.
 - **Date presets in trays.** The preset quick-selection rows now span edge-to-edge on small screens and line up with the tray's navigation row, instead of sitting inset by the listbox's focus-ring gutter.
+- **Slider rail token.** The `<Slider>` rail used `bg-border`, the token for structural lines, where the `<Switch>` groove and the `<SegmentedControl>` track both use `bg-control`. It was also painted on two exactly-overlapping elements, so the translucent fill composited with itself and rendered at roughly twice the specified density. The redundant inner element is gone, the `SliderTrack` itself is the rail, and geometry is unchanged.
+- **Long unbreakable option labels.** A label with no break opportunity (one long word) set the automatic minimum of a list item's label track to its own width and pushed the item out of a narrow `<Select>`, `<ComboBox>`, `<Autocomplete>`, `<TagField>`, `<ListBox>`, or the date pickers' preset list. Items now break anywhere, matching how labels with spaces already wrapped.
+- **`useHref` in sidebar links.** `<Sidebar.Item>` and `<Sidebar.RailItem>` rendered the raw `href` prop onto their anchor, which shadowed the value produced by `RouterProvider`'s optional `useHref`. Apps served from a prefix, such as a Next.js `basePath`, ended up with sidebar markup pointing at unprefixed URLs, so middle click and "copy link address" resolved to the wrong page. Both now render the transformed href and keep handing the unprefixed path to `navigate`, matching how React Aria's own `useLink` behaves. Consumers that do not pass `useHref` see no change.
 
 ## Docs and examples
 
@@ -1100,7 +1105,7 @@ Tailwind v4's CSS resolver uses `conditionNames: ["style"]`. Bare `.css` export 
 ## Dependency updates
 
 - **React 19** is now the required baseline (see _Before you upgrade_).
-- **`react-aria-components`, `@react-aria/*`, `@react-stately/*`, `@react-types/*`, and `@internationalized/*`** are bumped to their latest versions. Most consumers do not need to do anything. If you import directly from `react-aria-components`, re-read the [react-aria changelog](https://github.com/adobe/react-spectrum/releases) for the version range.
+- **`react-aria-components` moves to 1.20.0**, which pins `react-aria` 3.51.0 and `react-stately` 3.49.0, with the `@react-aria/*`, `@react-stately/*`, `@react-types/*`, and `@internationalized/*` floors lifted to match. There is no API change in Marigold components. You pick up the upstream fixes, including Table focus restoration, `FocusScope` restore-without-scrolling, and DatePicker focus handling in Firefox. If you import directly from `react-aria-components`, re-read the [react-aria changelog](https://github.com/adobe/react-spectrum/releases) for the version range.
 - **`react-select`** is no longer a dependency. `<Multiselect>` was the only component pulling it in, and removing it shrinks the `@marigold/components` bundle for every app that had already migrated to `<TagField>`.
 
 ---

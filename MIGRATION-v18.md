@@ -943,5 +943,5 @@ declares a `style` export condition. Import `theme.css` for a full app or
 
 ---
 
-_Source of truth for this guide: the [v18.0.0 release notes](https://www.marigold-ui.io/releases/blog/release-2026-08-17),
+_Source of truth for this guide: the [v18.0.0 release notes](https://www.marigold-ui.io/releases/blog/release-2026-08-11),
 the `marigold migrate v18` codemod, and `marigold docs <Component>`._
