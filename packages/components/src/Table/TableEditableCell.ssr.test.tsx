@@ -28,17 +28,29 @@ test('inline editing works after hydrating server-rendered markup', async () => 
   const container = document.createElement('div');
   container.innerHTML = renderToString(<EditableCell.Component />);
   document.body.appendChild(container);
-  const serverEditButton = within(container).getAllByLabelText('Edit')[0];
+  // Precondition, not a second assertion: `hydrateRoot` on markup that never
+  // contained the trigger would client-render one anyway and the test below
+  // would still pass, silently no longer covering hydration.
+  expect(within(container).getAllByLabelText('Edit').length).toBeGreaterThan(0);
 
   let root: Root | null = null;
   await act(async () => {
     root = hydrateRoot(container, <EditableCell.Component />);
   });
 
-  try {
-    await user.click(serverEditButton);
+  // Query the trigger *after* hydration rather than reusing the node captured
+  // from the server markup. As of react-aria-components 1.20.0 the Table
+  // subtree is re-created during hydration instead of being hydrated in place
+  // (the emitted markup is byte-identical, but the DOM nodes are new), so a
+  // pre-hydration reference goes stale. Node identity is a RAC implementation
+  // detail; what this test guards is the DST-1507 behaviour below — that the
+  // editor actually opens once the client has taken over.
+  const editButton = within(container).getAllByLabelText('Edit')[0];
 
-    expect(serverEditButton.isConnected).toBe(true);
+  try {
+    await user.click(editButton);
+
+    expect(editButton.isConnected).toBe(true);
     await waitFor(() => {
       expect(screen.getByLabelText('Name')).toBeInTheDocument();
     });

@@ -76,8 +76,32 @@
 
   /* --- Neutral Backgrounds & States --- */
   --color-muted: var(--color-charcoal-50);
-  --color-control: var(--color-charcoal-300);
   --color-hover: var(--color-charcoal-200);
+
+  /* Resting fill of an unselected control track, and only that: the Switch
+     groove, the SegmentedControl track, the Slider rail. Bordered controls
+     (inputs, selects) sit on `surface` and use `control-border` instead — the
+     name reads broader than the role, see /foundations/token-overview.
+
+     Alpha, not a palette rung, so a track holds one contrast against every
+     ground it lands on instead of one lightness. charcoal-300 measured 1.53:1 on
+     `surface` but 1.21:1 inside a hovered row; at 0.16 the four grounds
+     (`surface`, `background`, `muted`, hovered `hover`) land within 0.02 of each
+     other. Same reasoning as `--color-border` below; see DST-1672 for the
+     alpha-vs-rung rationale and the sampling method.
+
+     Two knock-on effects, both accepted: the opaque white Switch thumb and
+     SegmentedControl indicator now vary against the track by ground (1.43:1 on
+     white, 1.79:1 on a hovered row) where a rung held a flat 1.53:1, and at
+     chroma ~0.001 the track composites near-neutral on white.
+
+     `--control-alpha` is exposed because a control that paints *over* the track
+     has to compensate for it — see the indicator rim in
+     SegmentedControl.styles.ts. Retuning the track here retunes that with it. */
+  --control-alpha: 0.16;
+  --color-control: oklch(
+    from var(--color-charcoal-950) l c h / var(--control-alpha)
+  );
 
   --color-selected: var(--color-charcoal-300);
   --color-selected-bold: var(--color-charcoal-900);

@@ -1,7 +1,10 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic } from './ComboBox.stories';
+
+const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
 const user = userEvent.setup();
 
@@ -135,4 +138,32 @@ test('supports specific empty state text', async () => {
 
   const emptyState = await screen.findByText('No vegetables found');
   expect(emptyState).toBeInTheDocument();
+});
+
+describe('mobile view', () => {
+  beforeEach(() => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+  });
+
+  afterEach(() => {
+    window.matchMedia = mockMatchMedia([]);
+  });
+
+  test('keeps the tray in the accessibility tree (DST-1680)', async () => {
+    renderWithOverlay(<Basic.Component label="Label" />);
+
+    await user.click(screen.getByRole('button'));
+
+    // `useComboBox` hides everything outside the combobox surface via
+    // `ariaHideOutside`. Without `useComboBoxTrayRef` that surface is empty, so
+    // the tray's own portal root gets `aria-hidden="true"` and screen readers
+    // cannot reach the dialog, input or options at all. Queried with
+    // `hidden: true` on purpose: the default role query already skips
+    // `aria-hidden` subtrees, so it would fail on the lookup instead of naming
+    // the invariant.
+    const dialog = await screen.findByRole('dialog', { hidden: true });
+
+    // eslint-disable-next-line testing-library/no-node-access
+    expect(dialog.closest('[aria-hidden="true"]')).toBeNull();
+  });
 });

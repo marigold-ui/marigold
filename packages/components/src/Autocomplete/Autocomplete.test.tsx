@@ -287,4 +287,22 @@ describe('mobile view', () => {
 
     expect(await screen.findByText('No result found')).toBeVisible();
   });
+
+  test('keeps the tray in the accessibility tree (DST-1680)', async () => {
+    renderWithOverlay(<Basic.Component label="Label" />);
+
+    await user.click(screen.getByRole('button'));
+
+    // `useComboBox` hides everything outside the combobox surface via
+    // `ariaHideOutside`. Without `useComboBoxTrayRef` that surface is empty, so
+    // the tray's own portal root gets `aria-hidden="true"` and screen readers
+    // cannot reach the dialog, input or options at all. Queried with
+    // `hidden: true` on purpose: the default role query already skips
+    // `aria-hidden` subtrees, so it would fail on the lookup instead of naming
+    // the invariant.
+    const dialog = await screen.findByRole('dialog', { hidden: true });
+
+    // eslint-disable-next-line testing-library/no-node-access
+    expect(dialog.closest('[aria-hidden="true"]')).toBeNull();
+  });
 });

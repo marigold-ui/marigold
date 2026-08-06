@@ -1,5 +1,6 @@
 import {
   type ReactNode,
+  type Ref,
   use,
   useId,
   useLayoutEffect,
@@ -99,6 +100,11 @@ export interface TrayProps extends Omit<
    * Children of the tray.
    */
   children?: ReactNode;
+
+  /**
+   * Ref to the tray's dialog element.
+   */
+  ref?: Ref<HTMLElement>;
 }
 
 // Component
@@ -110,6 +116,7 @@ export const Tray = ({
   keyboardDismissable = true,
   children,
   'aria-label': ariaLabel,
+  ref,
   ...props
 }: TrayProps) => {
   const state = use(OverlayTriggerStateContext);
@@ -169,6 +176,7 @@ export const Tray = ({
         >
           <Dialog
             {...props}
+            ref={ref}
             aria-label={ariaLabel}
             aria-labelledby={
               !ariaLabel && hasTitle ? titleId : props['aria-labelledby']

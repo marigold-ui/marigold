@@ -81,9 +81,7 @@ const findElement = (file: AnyNode, name: string): AnyNode | null => {
 //  - 'other'       theme="..."/theme={<expr>}, or a {...spread} that may carry it
 //                  (unverifiable, so we never flag it)
 type ThemeProp =
-  | { kind: 'none' }
-  | { kind: 'identifier'; name: string }
-  | { kind: 'other' };
+  { kind: 'none' } | { kind: 'identifier'; name: string } | { kind: 'other' };
 
 const themeProp = (el: AnyNode): ThemeProp => {
   const opening = el.openingElement as AnyNode | undefined;

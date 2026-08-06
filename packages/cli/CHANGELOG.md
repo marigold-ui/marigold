@@ -1,5 +1,16 @@
 # @marigold/cli
 
+## 0.5.0-rc.1
+
+### Minor Changes
+
+- b7122c0: feat(DST-1543): add `marigold migrate <version>` codemods for breaking Marigold releases. The v18 migration restructures theme files to the new slot shapes (never overriding consumer classes), swaps exact-baseline layout classes with a token diff report, scaffolds missing theme components, applies safe application-code renames (icon imports per the official mapping, `Tabs.TabPanel`/`SelectList.Item`, `Inset` spacing props, `TextField` min/max), and reports everything that needs a human decision with pinned source links. The report also covers design-token breakage that no typecheck can see: renamed/removed tokens still referenced, new tokens components require but the consumer CSS does not define, and repurposed tokens that kept their name but changed meaning (with a remap recipe at the definition site). Interactive runs pre-analyze the target and offer the fired changes as a multiselect (Enter applies everything; `--only <names>` selects non-interactively). Run `npx marigold migrate v18 --dry-run` first.
+
+### Patch Changes
+
+- b7122c0: fix: run the CLI when invoked via a symlinked bin. The entry-point guard compared `import.meta.url` (always the realpath) against `path.resolve(process.argv[1])`, so symlinked global bins (`npm install -g`, manual links) exited silently with code 0. `argv[1]` is now resolved through `realpathSync`.
+- b7122c0: fix(DST-1656): stop `marigold migrate` from warning on value-conditional props whose value is a literal wrapped in braces. The value check only read a bare `StringLiteral`, so `width={20}`, `width={48}` and `width={'1/2'}` all fell into the "cannot be ruled out statically" branch — a v18 run over a real app produced 16 `Select`/`ComboBox`/`Autocomplete` `width="fit"` warnings without a single site actually using `fit`. Literals inside a JSX expression container now resolve like bare ones; genuinely dynamic values such as `width={someVar}` still warn.
+
 ## 0.5.0-beta.0
 
 ### Minor Changes

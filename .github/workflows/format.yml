@@ -1,0 +1,35 @@
+name: Format
+
+on: ['push']
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+    steps:
+      # Setup
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6.0.9 # Uses version from package.json#packageManager
+      - name: Setup Node (using .node-version)
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+
+      # Action
+      # No build step, unlike Lint and Typecheck: Prettier only needs its own
+      # plugins and the shared @marigold/prettier-config, not the built packages.
+      #
+      # This guards against a Prettier version bump landing without the repo-wide
+      # reformat it implies. Without it, the drift is invisible until someone runs
+      # `pnpm format` and finds unrelated churn in their branch (see DST-1690).
+      - name: Check formatting
+        run: pnpm format:check
