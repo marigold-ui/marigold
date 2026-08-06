@@ -1,5 +1,161 @@
 # @marigold/components
 
+## 18.0.0-rc.5
+
+### Minor Changes
+
+- 0e2c676: fix(DST-1680): keep the mobile `ComboBox`/`Autocomplete` tray in the accessibility tree.
+
+  On small screens both components render a `Tray` instead of RAC's `Popover`. When the listbox opened, `useComboBox` called `ariaHideOutside([inputRef.current, popoverRef.current].filter(el => el != null))` — and because nothing claimed `PopoverContext` and the tray (with its input) portals in a later commit, both refs were `null`. `ariaHideOutside` hides everything _outside_ the elements it is given, so an empty list hid the whole document, including the tray itself: screen readers could not reach the tray's dialog, search input or options at all.
+
+  `popoverRef` now points at the tray — the dialog element while open, and the container the tray portals into while closed — so the hide pass keeps the tray visible. Background isolation is unchanged; it comes from the tray's own `Modal`, which runs `ariaHideOutside(..., { shouldUseInert: true })`. As a side effect `useComboBox`'s blur handling works again, since it checks whether focus moved into `popoverRef.current` before closing.
+
+  `Tray` now also accepts a `ref` to its dialog element.
+
+- b7122c0: feat(DST-1492): add `usePageFocus` to move focus to the page `<h1>` on route change
+
+  On client-side navigation focus lingers on the clicked link or falls back to `<body>`, so screen-reader and keyboard users get no signal that the screen changed. `usePageFocus` implements the standard SPA fix: given the current route key (typically the pathname), it makes the page `<h1>` programmatically focusable (`tabIndex={-1}`) and focuses it on each change.
+
+  The first render is skipped so the initial load never steals focus, and it is a no-op on a page with no `<h1>` (an `aria-label`-only `<Page>`). `<Page>` stays router-agnostic: the route signal comes from the app router (`RouterProvider`). Call the hook from a component that persists across navigations (the layout / shell level), since the skip-first-render guard is per mount.
+
+  ```tsx
+  import { Page, usePageFocus } from '@marigold/components';
+
+  const PageFocus = ({ pathname }: { pathname: string }) => {
+    usePageFocus(pathname);
+    return null;
+  };
+
+  <Page>
+    <PageFocus pathname={location.pathname} />
+    <Page.Header>
+      <Title>Billing</Title>
+    </Page.Header>
+    {/* … */}
+  </Page>;
+  ```
+
+- b7122c0: feat(DST-1609): two-level sidebar navigation with `Sidebar.Rail` and `Sidebar.RailItem`
+
+  Adds a two-level navigation mode to the sidebar: a persistent rail of icon-first
+  top-level destinations next to a panel showing the active section's sub-navigation.
+  A `Sidebar.RailItem` wrapping a `Sidebar.Nav` is a section that shows a panel. One with
+  only an `href` is a direct link, and one inside `Sidebar.Footer` pins to the bottom of the
+  rail. Its `active` prop overrides href matching for pages the URL can't identify.
+  Collapsing (toggle or Cmd/Ctrl+B) hides the panel while the rail narrows to an icon
+  strip, so top-level navigation always stays available. On small screens the rail
+  renders as the same single-column drawer as the plain sidebar: sections drill in
+  (opened at the active section) and links close the drawer.
+
+  - `<AppShell>` switches to a full-width top bar automatically when a rail is present
+    (pure CSS via `:has()`), so the brand never moves when the panel collapses.
+  - `Sidebar.Toggle` gains `variant="rail"` for its top-bar placement between the
+    brand and the breadcrumbs.
+  - New theme tokens: `--spacing-topbar` (the shell's shared vertical datum for the top bar
+    height, sidebar brand row, and rail sticky offset), the rail column widths
+    `--spacing-rail` / `--spacing-rail-collapsed` / `--spacing-rail-panel`, and
+    `--spacing-touch-target` (44px minimum row height on small screens, shared by the
+    drawer's nav rows and the existing Tray-mode ListBox/Menu options).
+  - Idle single-column nav labels darken a step (new `--color-secondary-bold` token,
+    charcoal-700) so they clearly out-rank the quiet group-label captions.
+  - Keyboard: the rail supports arrow-key (and Home/End) movement on top of its flat
+    tab order, and the section panel's tab stop re-syncs to the current page when the
+    route changes, so Tab re-enters at the active item.
+  - The `TopNavigation` bottom edge is now an always-on border. The non-reusable
+    `ui-scroll-edge` and `ui-sidebar-seam-header` utilities are removed, so the sticky
+    bar and the sidebar header carry a plain border instead.
+  - The `AppShell` header row is now sized `auto` (was a fixed `3.5rem`), so a shell
+    without a `TopNavigation` no longer reserves an empty header band, so the row
+    collapses to the height of its content.
+  - The shell's viewport-height claims (`AppShell` grid, sidebar and rail asides) read
+    the new `--ui-viewport-height` custom property with a `100dvh` fallback. Set it on a
+    wrapper to render the shell inside a bounded container (embedded previews, demos)
+    instead of the browser viewport. Nothing changes when it is unset.
+
+- b7122c0: feat(DST-1641): add `ErrorState`, the error sibling of `EmptyState`: same anatomy (`title`, `description`, `action`, `headingLevel`), plus typed DOM passthrough (`role`, `tabIndex`, `ref`) for error-boundary fallbacks.
+- b7122c0: feat(DST-1646): add `OverflowRegion`, a single-row layout primitive that hides trailing items instead of wrapping when horizontal space runs out, and restores them as space returns. Hidden items stay mounted (state preserved) but are removed from paint, tab order, and the accessibility tree. Like the other layout primitives it has no theme layer: space its items with the `space` prop (inherited from a parent `Inline`/`Stack` when unset, like `Inline`), label it with the forwarded region props (`role`, `aria-label`, ...), and pair it with the `indicator` render prop or the `onOverflowChange` callback so hidden items stay reachable through another surface, e.g. quick filters demoting into a filter panel.
+
+### Patch Changes
+
+- 85e9a45: Fix `Autocomplete`'s public `onSubmit` type, which declared `(value, key)` while the implementation, JSDoc, and both docs demos all used `(key, value)`. The type now matches the actual `(key, value)` signature — no runtime behavior changes.
+- b7122c0: fix(DST-1659): draw the `Checkbox` box from theme tokens instead of raw Tailwind literals
+
+  The checkbox icon painted itself with `bg-white` and `border-black`. Both now come from the token layer: `bg-surface` for the fill and `border-control-border` for the affordance edge, matching how every other control draws its boundary.
+
+  `@marigold/theme-rui` already overrides both slots in `Checkbox.styles.ts`, so the rendered markup and the visual result are unchanged there. The literals only leaked in custom themes, where a consumer could not recolor the box edge or fill without fighting a hardcoded value. This was the last raw color in the component layer.
+
+- 68122ff: refactor(DST-1627): extract a shared `CalendarBody` for the `Calendar`/`RangeCalendar` grid layout
+
+  The multi-month and single-month layout markup was duplicated verbatim in `Calendar` and `RangeCalendar`, so every layout tweak had to be made twice and the copies could silently drift. Both components now render that markup through one internal `<CalendarBody>`, which reads the theme classes, visible months, min/max value, disabled state and a new `isRange` flag off the existing `CalendarContext`, keeping the touch pointerup guard (DSTSUP-257) range-only. Pure refactor: the rendered DOM, the styling and the behavior are unchanged.
+
+- e0f9c05: fix(DST-1647): honor the router's `useHref` in sidebar links
+
+  `Sidebar.Item` and `Sidebar.RailItem` rendered the raw `href` prop straight onto
+  their anchor, which shadowed the value produced by `RouterProvider`'s optional
+  `useHref`. Applications served from a prefix, such as a Next.js `basePath`, ended
+  up with sidebar markup pointing at an unprefixed URL, so middle click and "copy
+  link address" resolved to the wrong page. Both components now render the
+  transformed href and keep handing the unprefixed path to `navigate`, matching how
+  React Aria's own `useLink` behaves. Consumers that do not pass `useHref` see no
+  change, because the default leaves the href untouched.
+
+  The `RouterProvider` docs now cover `useHref` next to `navigate`, and the
+  component gained a matching Storybook story and prop description.
+
+- b7122c0: fix(Radio): apply width via CSS variable instead of raw class name
+
+  `Radio` built its `width` class name from the raw token directly (e.g. `cn(width || groupWidth || 'w-full')`, where `width` could be a literal `"1/2"`), which Tailwind can't statically detect at build time, so no CSS was ever generated — setting `width` had no visible effect.
+
+  `Radio` now follows the same pattern already used by `FieldBase`/`TextField`/`NumberField`: a static `w-(--field-width)` class with the actual value injected via `createWidthVar`. Individual `Radio` items inside a sized `Radio.Group` now inherit the group's already-computed width instead of recomputing it, which previously caused a double-shrink (e.g. `width="1/2"` rendering at 1/4 instead of 1/2).
+
+- b7122c0: fix(DST-1660): keep a loading `Button`'s accessible name
+
+  A `<Button loading>` previously had **no accessible name at all**. The label is kept mounted so the button doesn't change width when the spinner is overlaid, but it was hidden with `invisible` (`visibility: hidden`), which removes a subtree from the accessibility tree — not just from the screen. The spinner's own `aria-label` did not substitute, because that is a child widget's name rather than text content the button can take its name from.
+
+  The effect: a screen reader announced "Delete, button" before the press and roughly "dimmed, button" the moment the action started, so the user lost the identity of the operation they were waiting on. That is a WCAG 2.1 §4.1.2 (Name, Role, Value) failure at Level A, and it was worse than a plain `disabled` button, which keeps its name.
+
+  The label is now hidden with `opacity-0`. It reserves the exact same layout box, so nothing moves — verified by comparing `getBoundingClientRect()` for every button across all three surface grounds, with `display: none` as a control to confirm the measurement detects real shifts. Rendering is unchanged; this is purely a fix to what assistive technology reports.
+
+- 0e2c676: chore(DST-1680): update React Aria to the 1.20.0 line.
+
+  **What changed:**
+
+  - `react-aria-components` 1.19.0 → 1.20.0, which pins `react-aria` 3.51.0 and `react-stately` 3.49.0.
+  - `@internationalized/date` → 3.12.3 and `@react-types/shared` → 3.36.1. Both are required rather than cosmetic: RAC 1.20.0 declares `^3.12.3` / `^3.36.1`, and pnpm will not move an in-range dependency unless the specifier changes, so leaving the old floors keeps a second (runtime-bearing) `@internationalized/date` copy in the tree.
+  - The remaining declared floors now match the versions actually installed, which are also the latest published ones: `@react-aria/form` → `^3.2.1`, `@react-aria/live-announcer` → `^3.5.1`, `@react-stately/form` → `^3.3.1`. Every other `@react-aria/*` and `@react-stately/*` entry was already current.
+
+  **Impact:**
+
+  No API change in Marigold components. Consumers pick up the upstream 1.20.0 fixes, including Table focus restoration, `FocusScope` restore-without-scrolling, and DatePicker focus handling in Firefox.
+
+  One upstream behaviour change did need handling on our side: RAC 1.20.0 exposed a latent problem in the mobile `ComboBox`/`Autocomplete` tray, which lost its place in the accessibility tree. See the separate entry for that fix.
+
+  `@react-types/{button,checkbox,grid,table}` deliberately stay on their type-only lines. All four latest minors pull `@react-spectrum/provider` — three as a direct dependency and `grid` 3.4.0 as a peer dependency — which drags in `@adobe/react-spectrum` and splits the i18n and overlay contexts. See the hold rule in `.github/renovate.json`.
+
+- 6cfcea4: fix(DST-1686): make `control` a ground-adaptive track fill, and give the `Slider` rail the same token as `Switch` and `SegmentedControl`
+
+  **The Slider rail was the wrong token, painted twice.** It used `bg-border` — the token for structural lines (dividers, grid lines, table rules) — where the `Switch` groove and the `SegmentedControl` track both use `bg-control`. On top of that, `Slider` applied its `track` style to two exactly-overlapping elements (the `SliderTrack` and an inner rail `div`), so the translucent `bg-border` composited with itself and the rail rendered at ~0.26 effective alpha instead of 0.14 — measuring `#c0bfbe` on white where the token specifies `#dddddc`. The redundant inner element is gone; the `SliderTrack` itself is the rail. Geometry is unchanged (both were `h-2` at the same position) and `touch-none`, `select-none` and the disabled cursor stay on the interactive track element.
+
+  **`control` is now translucent** (`charcoal-950 / 16%`, was the opaque `charcoal-300`). A track is not painted on one known background — it appears on a white Card, the gray page ground, a `muted` fill, and inside a hovered Table or ListBox row — and a fixed palette step drifts across those. charcoal-300 measured 1.53:1 on white but only 1.21:1 inside a hovered row, where the groove half-dissolved into the row it sits in. At 16% the four grounds land within 0.02 of each other (1.41–1.43:1), so a track weighs the same wherever it goes. Same rationale as `border` in DST-1672.
+
+  The three tracks (`Switch`, `SegmentedControl`, `Slider`) read a touch lighter on white surfaces as a result: `#d8d8d7` rather than `#d4d0ce`. The trade-off is that the white Switch thumb and SegmentedControl indicator now vary against the track by ground (1.43:1 on white, 1.79:1 on a hovered row) where the opaque step held a flat 1.53:1 — track-vs-ground and thumb-vs-track cannot both be constant while the thumb is opaque, and ground legibility wins because it decides whether the control reads as a control at all.
+
+  **The `SegmentedControl` indicator is larger.** The frame around the selected thumb went from 4px to 3px (`inset-y-[3px]` on the indicator, `p-[3px]` on the list), so the thumb is 30px tall instead of 28px. Since the thumb's own 1px rim occupies the innermost pixel of that frame, 2px of bare track is what you see.
+
+  **The `SegmentedControl` thumb's focus ring is now the shared `ui-state-focus`.** It previously hand-rolled only the outline, so it missed the other half of that utility — firming `--ui-border-color` to the opaque ring colour — and read noticeably lighter than every other focused control. A focused thumb and a focused `Input` now resolve identically: 3px `outline-ring/50` at `outline-offset-0`, plus a 1px opaque `oklch(0.52 0.008 54)` rim. The ring stays outside the thumb, and 3px is the minimum frame that clears it: the list is a scroll container clipping at its padding box, so that padding is the only room an outset ring can grow into. Below 3px the first and last thumbs get a visibly shaved ring.
+
+  **The `SegmentedControl` track's corners are now concentric with the indicator's.** Both used the shared `rounded-surface`, but two rounded rectangles nested with a gap only look like parallel arcs when the outer radius is the inner radius plus that gap. With the thumb at 8px and 3px of frame around it, the track needs 11px; at 8px its corner read visibly tighter than the arc it frames. The track is now `calc(var(--radius-surface) + 3px)` — derived from the token, so it stays concentric if the radius is retuned. This is a deliberate exception to using `rounded-surface` everywhere.
+
+  **The `SegmentedControl` indicator's resting rim is re-derived from the track.** `ui-frame` draws its rim as an _outset_ ring, so the indicator's rim lands on the track and composites over `bg-control` — it reads denser than the same `control-border` token does on a field. The old compensation subtracted a flat 0.08, hand-tuned against the previous opaque `charcoal-300` track, which left the rim at an effective 0.31 against a field's 0.26. It is now derived from the track's own alpha (`--control-alpha`, newly exposed on the token), so a resting indicator rim and a resting `Input` edge render the same on every ground, and retuning the track cannot silently detune the rim.
+
+  If you use `bg-control` in your own code, note that it is now translucent: two stacked elements that both carry it composite into a darker track than the token specifies, and anything that paints a translucent edge _over_ a track has to account for the track underneath it.
+
+- Updated dependencies [b7122c0]
+- Updated dependencies [b7122c0]
+- Updated dependencies [b7122c0]
+- Updated dependencies [b7122c0]
+  - @marigold/system@18.0.0-rc.5
+
 ## 18.0.0-beta.4
 
 ### Major Changes
