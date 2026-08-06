@@ -463,8 +463,7 @@ export const renameJsxMembers = (manifest: MigrationManifest): Codemod =>
       const changes: string[] = [];
       const renameTag = (tag: AnyNode | undefined, to: string): void => {
         const property = (tag?.name as AnyNode | undefined)?.property as
-          | AnyNode
-          | undefined;
+          AnyNode | undefined;
         if (property) {
           s.overwrite(property.start as number, property.end as number, to);
         }

@@ -1,8 +1,8 @@
-import { StrictMode } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { usePageFocus } from './usePageFocus';
+import { StrictMode } from 'react';
 import { FocusOnRouteChange, FocusWithoutHeading } from './Page.stories';
+import { usePageFocus } from './usePageFocus';
 
 describe('usePageFocus', () => {
   // Regression test: React StrictMode runs an effect's setup → cleanup → setup
