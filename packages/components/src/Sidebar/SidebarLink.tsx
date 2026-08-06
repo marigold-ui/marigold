@@ -31,7 +31,10 @@ export const SidebarLink = ({
 }: SidebarLinkProps) => {
   const ref = useObjectRef(forwardedRef);
   const router = useRouter();
-  const routerLinkProps = useLinkProps({ href });
+  // Sole source of the rendered href, since a raw `href` would shadow the
+  // router's `useHref`. Pass undefined when there is none, or `useLinkProps`
+  // yields href="", which would make a branch trigger a link.
+  const routerLinkProps = useLinkProps(href ? { href } : undefined);
   const { tabIndex, onFocus } = useRovingItem(dataKey!);
 
   return (
@@ -40,7 +43,6 @@ export const SidebarLink = ({
       data-active={dataActive}
       data-key={dataKey}
       ref={ref}
-      href={href}
       role={href ? undefined : 'button'}
       className={className}
       tabIndex={tabIndex}

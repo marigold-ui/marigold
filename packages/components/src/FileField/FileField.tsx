@@ -10,11 +10,7 @@ import { FileTrigger } from './FileTrigger';
 import { fileKey, isFileDropItem, normalizeAndLimitFiles } from './fileUtils';
 
 type RemovedProps =
-  | 'className'
-  | 'style'
-  | 'children'
-  | 'isDisabled'
-  | 'isRequired';
+  'className' | 'style' | 'children' | 'isDisabled' | 'isRequired';
 
 export interface FileFieldProps
   extends

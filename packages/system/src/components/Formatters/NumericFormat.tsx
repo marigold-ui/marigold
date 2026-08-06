@@ -5,10 +5,7 @@ export type NumerFormatterOptions = NonNullable<
 >;
 
 type StringNumericLiteral =
-  | `${number}`
-  | 'Infinity'
-  | '-Infinity'
-  | '+Infinity';
+  `${number}` | 'Infinity' | '-Infinity' | '+Infinity';
 
 export interface NumericFormatProps extends NumerFormatterOptions {
   /**

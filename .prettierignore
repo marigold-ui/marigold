@@ -19,6 +19,7 @@
 coverage
 dist
 docs/.cache
+docs/.source
 docs/public
 docs/public/render-page.js.map
 LICENSE

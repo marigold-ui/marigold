@@ -19,12 +19,7 @@ export type NoSpacingToken = 'collapsed';
  * Includes the universal `collapsed` token for the no-spacing case.
  */
 export type SpacingTokens =
-  | NoSpacingToken
-  | 'tight'
-  | 'related'
-  | 'regular'
-  | 'group'
-  | 'section';
+  NoSpacingToken | 'tight' | 'related' | 'regular' | 'group' | 'section';
 
 /**
  * Padding spacing tokens for single-axis padding (e.g. `spaceX`, `spaceY`).
