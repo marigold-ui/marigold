@@ -56,9 +56,7 @@ type StaticIssueSource =
   | 'theme-variant-validator';
 
 export type IssueSource =
-  | StaticIssueSource
-  | (typeof DYNAMIC_ISSUE_SOURCES)[number]
-  | 'runtime';
+  StaticIssueSource | (typeof DYNAMIC_ISSUE_SOURCES)[number] | 'runtime';
 
 export type ValidationIssue = {
   type: IssueType;
