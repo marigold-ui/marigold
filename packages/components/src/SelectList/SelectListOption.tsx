@@ -70,10 +70,6 @@ export const SelectListOption = ({
   ...props
 }: SelectListOptionProps) => {
   const { classNames, disabled: listDisabled } = useSelectListContext();
-  // Deliberately no warning for a missing `textValue`: RAC's `GridList` warns on
-  // exactly that, and its fallback chain is wider (it also accepts an
-  // `aria-label`), so a local warning would double up on the real mistake and
-  // fire on rows that are already named correctly.
   const resolvedTextValue =
     textValue ?? (typeof children === 'string' ? children : undefined);
 
