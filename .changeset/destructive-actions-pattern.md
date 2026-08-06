@@ -4,9 +4,9 @@
 
 feat(DST-944): add an `onClose` handler to `useToast` and make destructive confirmations settle reliably.
 
-`addToast` now accepts `onClose`, called when the toast closes either after its timeout or because it was dismissed. This is what an "Undo" toast commits its deferred work from: React Aria pauses a toast's timer while the toast region is hovered or focused, so a `setTimeout` running alongside the toast drifts out of sync and commits while the "Undo" button is still on screen.
+`addToast` now accepts `onClose`, called when the toast closes for any reason: its timeout ran out, it was dismissed, it was closed through `removeToast`, or the queue was cleared. This is what an "Undo" toast commits its deferred work from: React Aria pauses a toast's timer while the toast region is hovered or focused, so a `setTimeout` running alongside the toast drifts out of sync and commits while the "Undo" button is still on screen.
 
-`ConfirmationDialog` and `useConfirmation` gain three fixes around the same flow:
+`ConfirmationDialog` and `useConfirmation` gain four fixes around the same flow:
 
 - Closing a confirmation without pressing a button (<kbd>Escape</kbd>) now resolves `useConfirmation` as `cancelled`. Previously the promise never settled, so an `await confirm(...)` silently stalled and its continuation never ran.
 - `ConfirmationDialog` focuses the cancel button by default when `variant="destructive"`, so a reflexive <kbd>Enter</kbd> takes the safe path. Pass `autoFocusButton` to override.

@@ -59,15 +59,11 @@ export type ToastOptions = {
   action?: ReactNode;
   /**
    * Handler that is called when the toast closes, whether it timed out, was
-   * dismissed, or was closed through `removeToast`.
+   * dismissed, closed through `removeToast`, or cleared with `clearToasts`.
    *
    * Commit deferred work from here rather than from your own `setTimeout`: the
    * toast's timer pauses while the region is hovered or focused, so a separate
    * timer fires while the toast is still on screen.
-   *
-   * Not called by `clearToasts()`, which empties the queue without closing its
-   * toasts. Any work deferred to `onClose` is dropped, so do not clear the
-   * queue while a commit is pending.
    */
   onClose?: () => void;
 };
@@ -103,7 +99,13 @@ export function useToast() {
     []
   );
 
-  const clearToasts = useCallback(() => getToastQueue().clear(), []);
+  const clearToasts = useCallback(() => {
+    const queue = getToastQueue();
+    // `clear()` skips close handlers, so run them first. `visibleToasts` is the
+    // whole queue only while `maxVisibleToasts` stays at its `Infinity` default.
+    queue.visibleToasts.forEach(toast => toast.onClose?.());
+    queue.clear();
+  }, []);
 
   const removeToast = useCallback(
     (key: string) => getToastQueue().close(key),

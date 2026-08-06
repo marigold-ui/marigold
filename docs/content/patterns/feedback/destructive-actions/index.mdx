@@ -94,6 +94,15 @@ Three pieces make this work:
 2. **Commit from the toast's `onClose`.** This is the part that is easy to get wrong, see below.
 3. **Guard the commit.** Pressing Undo has to both restore the item and prevent the commit, because closing the toast runs `onClose` either way.
 
+<Callout title="Two buttons, opposite outcomes">
+  Every toast carries its own close button, so an undo toast puts Undo and Close
+  side by side, and closing commits the deletion. To most people a close button
+  reads as "get this out of my way", not "go through with it", so treat the
+  close button as a way out of the toast rather than a way out of the action.
+  Say what happened in the title, so a user who reaches for Close has already
+  read what they are about to keep.
+</Callout>
+
 ### Commit from onClose, never from your own timer
 
 The obvious implementation pairs the toast with a `setTimeout` of the same length. It is broken. React Aria pauses a toast's timer while the toast region is hovered or focused, so that users get time to read it. A separate timer does not pause. The moment a user moves the pointer towards the Undo button, the two clocks separate: the toast stays on screen looking live, and the deletion commits underneath it. Pressing Undo then does nothing.
@@ -115,7 +124,7 @@ Deferring the request buys the undo window, and it costs these:
 
 - **Leaving the page abandons the commit.** Close the tab during the window and the request never goes out, while the interface already reported the deletion. Keep windows short, and prefer a confirmation wherever the user is likely to navigate away, such as inside a form.
 - **Dismissing the toast commits early.** A user who clears the toast to get it out of the way ends their own window.
-- **Clearing the whole toast queue drops the commit.** `clearToasts` removes toasts without running their close handlers, so any pending work is lost. Do not clear the queue while an undo is in flight.
+- **Clearing the queue commits everything at once.** `clearToasts` runs every close handler, so a global clear puts through every deferred deletion rather than dropping it. That is the safe direction, but it is still a decision the user did not make one item at a time.
 
 ### When your api can restore
 

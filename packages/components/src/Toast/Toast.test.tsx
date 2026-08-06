@@ -12,6 +12,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  vi.useRealTimers();
   act(() => {
     getToastQueue().clear();
   });
@@ -130,9 +131,7 @@ describe('Toast', () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
-  // `clear()` drops toasts without running their close handlers, so work
-  // deferred to `onClose` is lost if the queue is cleared while it is pending.
-  test('does not call onClose when the whole queue is cleared', async () => {
+  test('calls onClose when the whole queue is cleared', async () => {
     const { addToast, clearToasts } = setupToastHook();
     const onClose = vi.fn();
     render(<Basic.Component />);
@@ -144,7 +143,23 @@ describe('Toast', () => {
       clearToasts();
     });
 
-    expect(onClose).not.toHaveBeenCalled();
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  test('calls onClose when the toast times out', async () => {
+    vi.useFakeTimers();
+    const { addToast } = setupToastHook();
+    const onClose = vi.fn();
+    render(<Basic.Component />);
+    await act(async () => {
+      addToast({ title: 'Product deleted', onClose });
+    });
+
+    await act(async () => {
+      vi.advanceTimersByTime(5000);
+    });
+
+    expect(onClose).toHaveBeenCalledTimes(1);
   });
 
   test('useToast returns stable function references (safe for useEffect deps)', () => {
