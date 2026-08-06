@@ -65,12 +65,17 @@ const Lists = () => {
     }));
 
     // The commit rides the toast's own `onClose`, never a separate timer.
-    // [!code highlight:11]
+    // [!code highlight:15]
     toastKeysRef.current[list.id] = addToast({
       title: `“${list.name}” deleted`,
-      description: 'Undo within a few seconds to keep it.',
+      // Toasts stack, so name the list: bare "Undo" buttons are ambiguous.
       action: (
-        <Button size="small" variant="ghost" onPress={() => undo(list.id)}>
+        <Button
+          size="small"
+          variant="ghost"
+          aria-label={`Undo deleting ${list.name}`}
+          onPress={() => undo(list.id)}
+        >
           Undo
         </Button>
       ),
@@ -119,7 +124,7 @@ const Lists = () => {
       {state.lists.length < initialLists.length && (
         <Inline alignX="right">
           <Button variant="ghost" size="small" onPress={resetDemo}>
-            <RotateCcw />
+            <RotateCcw size={16} />
             Reset demo
           </Button>
         </Inline>
