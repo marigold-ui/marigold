@@ -8,6 +8,20 @@ const CONSENT_CHANGE_EVENT = 'mg-consent-change';
 
 export const CONSENT_BANNER_ID = 'mg-consent-banner';
 
+const VERCEL_ENV = process.env.NEXT_PUBLIC_VERCEL_ENV;
+
+/**
+ * Consent is only asked for on the live site. Preview deployments are internal
+ * and never show the banner; locally it is off unless you are working on it,
+ * which you opt into with `NEXT_PUBLIC_CONSENT_BANNER=1` in `docs/.env.local`.
+ *
+ * Where the banner is off, analytics stays off too — nobody is around to
+ * consent to it.
+ */
+export const CONSENT_BANNER_ENABLED =
+  VERCEL_ENV === 'production' ||
+  (VERCEL_ENV !== 'preview' && process.env.NEXT_PUBLIC_CONSENT_BANNER === '1');
+
 /**
  * Runs before paint to stamp the stored choice onto the root element, so the
  * banner can be hidden by CSS instead of by React state. Without this the

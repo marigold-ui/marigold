@@ -1,3 +1,4 @@
+import { CONSENT_BANNER_ENABLED } from '@/lib/consent';
 import { source } from '@/lib/source';
 import { flattenTree } from 'fumadocs-core/page-tree';
 import type { Metadata } from 'next';
@@ -49,15 +50,19 @@ const Layout = ({ children }: LayoutProps<'/'>) => {
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>
       <body className="flex min-h-screen flex-col">
-        <ConsentInit />
+        {CONSENT_BANNER_ENABLED && <ConsentInit />}
         <Suspense>
           <Providers pages={[...docsPages, ...exampleEntries]}>
             {children}
           </Providers>
           <div id="portalContainer" data-theme="rui" className="not-prose" />
         </Suspense>
-        <ConsentBanner />
-        <ConsentedAnalytics />
+        {CONSENT_BANNER_ENABLED && (
+          <>
+            <ConsentBanner />
+            <ConsentedAnalytics />
+          </>
+        )}
       </body>
     </html>
   );

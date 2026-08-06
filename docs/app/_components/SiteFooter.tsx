@@ -1,3 +1,4 @@
+import { CONSENT_BANNER_ENABLED } from '@/lib/consent';
 import Link from 'fumadocs-core/link';
 import { ConsentSettingsButton } from './ConsentSettingsButton';
 
@@ -20,7 +21,7 @@ export const SiteFooter = () => (
         >
           Datenschutz
         </Link>
-        <ConsentSettingsButton />
+        {CONSENT_BANNER_ENABLED && <ConsentSettingsButton />}
         <Link
           className="hover:text-fd-foreground transition-colors"
           href="https://github.com/marigold-ui/marigold"
