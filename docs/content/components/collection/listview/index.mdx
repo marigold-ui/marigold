@@ -8,7 +8,7 @@ import { ListViewAnatomy } from './listview-anatomy';
 
 A `<ListView>` shows a collection of items as rows in a list. Each row can carry its own controls, such as a `<Button>` or an `<ActionMenu>`, so users can act on an item without leaving the page.
 
-Use it for collections people work through rather than pick from, like a notification feed or a list of uploaded files.
+Use it for collections people work through, like a notification feed or a list of uploaded files.
 
 ## Anatomy
 
@@ -16,22 +16,9 @@ Use it for collections people work through rather than pick from, like a notific
 
 - **List:** The container that holds all rows.
 - **Item:** A single row representing one entry of the collection.
-- **Text value:** The primary text of a row, authored with `<TextValue>`. A bare string works too.
-- **Description:** Optional secondary text below the text value, like a timestamp or a file size. One per row, and it takes inline markup — combine several facts into one line (`Updated 3 days ago · 2.1 MB`).
-- **Actions:** Optional trailing controls for the row. One `<Button>` or `<ActionMenu>`, or a `<ButtonGroup>` wrapping several — the group is **required** above one control, because each control claims the same cell and two of them stack. The trailing cell takes Button-family controls only; other trailing content, like a `<Badge>` or a status pill, has no slot yet and is placed by the grid wherever a cell happens to be free.
-
-To emphasise part of a row's text, nest `<Text as="span">` inside `<TextValue>` or `<Description>` rather than adding a `<Text>` of its own:
-
-```tsx
-<ListView.Item id="deploy" textValue="Deploy succeeded">
-  <TextValue>
-    Deploy{' '}
-    <Text as="span" weight="bold">
-      succeeded
-    </Text>
-  </TextValue>
-</ListView.Item>
-```
+- **Text value:** The primary text of a row.
+- **Description:** Optional secondary text below the text value, like a timestamp or a file size. One per row, and it takes inline markup, so several facts can share a line: "Updated 3 days ago · 2.1 MB".
+- **Actions:** Optional trailing controls for the row, such as a button or a row menu.
 
 ## Appearance
 
@@ -47,7 +34,26 @@ Reach for a `<ListView>` when the user works through a collection one entry at a
 - **Resource lists**: files, documents, or team members, each with rename, share, and delete behind a row menu.
 - **Connections and integrations**: linked accounts or services the user reviews and disconnects individually.
 
-If a row exists to be picked rather than acted on, see [`<ListView>` vs. `<SelectList>`](#listview-vs-selectlist).
+A row is one item, not a record split into fields. A `<ListView>` gives you a text column and a trailing control, with nothing aligned between rows, so there is no way to scan a column or sort by one. Once the user needs to compare entries against each other — a status column, a size to sort by, dates to line up — reach for a [`<Table>`](/components/collection/table).
+
+A `<ListView>` also has no selection. Rows are operated where they sit, and nothing is staged or submitted. To have the user choose from a set, see [`<ListView>` vs. `<SelectList>`](#listview-vs-selectlist).
+
+### Row text
+
+Author a row's primary text with `<TextValue>`, or pass a bare string. Secondary text goes in a `<Description>`, one per row.
+
+To emphasise part of a row's text, nest `<Text as="span">` inside `<TextValue>` or `<Description>` rather than adding a `<Text>` of its own:
+
+```tsx
+<ListView.Item id="deploy" textValue="Deploy succeeded">
+  <TextValue>
+    Deploy{' '}
+    <Text as="span" weight="bold">
+      succeeded
+    </Text>
+  </TextValue>
+</ListView.Item>
+```
 
 ### Row actions
 
@@ -61,6 +67,8 @@ When no single action stands out, or the available actions differ from row to ro
 
 <ComponentDemo name="listview-resource-menu" />
 
+A row has a single cell for trailing controls, so wrap two or more in a `<ButtonGroup>` — left loose, they claim the same cell and stack. That cell takes Button-family controls only. A `<Badge>` or status pill has no slot yet, and the grid drops it wherever a cell happens to be free.
+
 ### Empty state
 
 Pass an [`<EmptyState>`](/components/content/empty-state) to the `emptyState` prop so a list with nothing to show still explains itself instead of rendering as a blank surface.
@@ -69,7 +77,9 @@ Pass an [`<EmptyState>`](/components/content/empty-state) to the `emptyState` pr
 
 ### `<ListView>` vs. `<SelectList>`
 
-Both render a stack of rich rows, but they answer different questions. A `<ListView>` presents a collection the user reads and acts on. A [`<SelectList>`](/components/form/selectlist) asks the user to pick from a set, and that choice becomes a form value.
+The two render a similar stack of rich rows, so the choice comes down to selection. A [`<SelectList>`](/components/form/selectlist) is a form field: rows are selectable, the selection is its value, and that value submits and validates with the rest of the form. A `<ListView>` has no selection — every row carries its own controls instead, and each one acts the moment it is used.
+
+If the user is choosing something and that choice has to travel anywhere, use a `<SelectList>`.
 
 <GuidelineTiles>
   <Do>
