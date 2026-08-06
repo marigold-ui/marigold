@@ -55,16 +55,6 @@ Use this component to confirm that the lack of data is a valid state in the foll
 
 Add an action when the empty state has a concrete next step. A filtered or searched list needs a way back to the full set, and an initial state needs a way to create the first record. A state the user emptied on purpose often has no next step at all, and then the action is better left out than filled with something vague.
 
-Match the variant to the role the action plays in the surrounding view:
-
-| The empty state's action                                                                                   | Use                                  |
-| ---------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| The view's primary action, where the empty state stands in for the page's content ("Add new event")        | `primary`                            |
-| A supporting alternative beside it ("View wishlist")                                                       | `secondary`                          |
-| An action in a region that is one of several on the screen, where a primary action already lives elsewhere | `secondary` (the default) or `ghost` |
-| Undoing the state rather than creating something ("Clear all filters")                                     | `secondary`                          |
-| Navigating somewhere else                                                                                  | `<LinkButton>`                       |
-
 Keep it to one primary action. An empty state that replaces the content of a page can carry the page's primary action, but only when nothing else already does. The app frame keeps the [`<Page.Header>`](/components/layout/page) in place when the content below it is empty, so if that header still holds the primary action, the empty state should not repeat it. When an empty state has two actions, they run `primary → secondary` from left to right. The `action` prop renders whatever it is given as a single block and adds no spacing between children, so wrap a pair of buttons in an [`<Inline>`](/components/layout/inline).
 
 For the general rule behind all of this, see [Button: Visual hierarchy](/components/actions/button#visual-hierarchy), [Placement and order](/components/actions/button#placement-and-order), and [Surface actions](/components/actions/button#surface-actions).
