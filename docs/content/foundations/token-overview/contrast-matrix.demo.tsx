@@ -21,14 +21,10 @@ type Rgb = [number, number, number];
 type Palette = Record<Step, Rgb>;
 
 /**
- * Measured rather than restated, so the published numbers cannot disagree with
- * the shipped palette. A computed `background-color` stays in the wide-gamut
- * space the token was authored in (`oklch()` in Chrome, `lab()` in Firefox), so
- * the canvas is what reaches the sRGB the contrast math needs.
- * Same readback as `flatten` in `contrast.utils.ts`, minus its opaque white
- * base: clearing to transparent is what keeps an unreadable step detectable,
- * which assumes the probed tokens are opaque. The palette name is hardcoded, so
- * renaming it lands in the fallback message rather than drifting.
+ * Measured rather than restated, so the published numbers cannot drift from the
+ * shipped palette. Computed colors stay in their authored space, so the canvas
+ * is what converts to sRGB. Same readback as `flatten` in `contrast.utils.ts`,
+ * minus its white base, so opaque tokens only.
  */
 function measurePalette(container: HTMLElement): Palette | null {
   const canvas = document.createElement('canvas');
