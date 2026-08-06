@@ -1,5 +1,15 @@
 # @marigold/icons
 
+## 2.0.0-rc.5
+
+### Patch Changes
+
+- Updated dependencies [b7122c0]
+- Updated dependencies [b7122c0]
+- Updated dependencies [b7122c0]
+- Updated dependencies [b7122c0]
+  - @marigold/system@18.0.0-rc.5
+
 ## 2.0.0-beta.4
 
 ### Patch Changes
