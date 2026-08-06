@@ -23,8 +23,7 @@ const THEME_TYPES = path.join(
 const typeArgs = (ref: AnyNode): AnyNode[] =>
   (
     (ref.typeArguments ?? ref.typeParameters) as
-      | { params?: AnyNode[] }
-      | undefined
+      { params?: AnyNode[] } | undefined
   )?.params ?? [];
 
 /** string-literal members of `'a' | 'b'` (or of a lone `'a'`) */

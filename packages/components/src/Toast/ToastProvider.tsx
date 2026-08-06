@@ -14,12 +14,7 @@ export interface ToastProviderProps extends Omit<
 type RemovedProps = 'children' | 'className' | 'style' | 'queue';
 
 type ToastPosition =
-  | 'bottom-left'
-  | 'bottom-right'
-  | 'top-left'
-  | 'top-right'
-  | 'top'
-  | 'bottom';
+  'bottom-left' | 'bottom-right' | 'top-left' | 'top-right' | 'top' | 'bottom';
 
 const ToastProvider = ({ position = 'bottom-right' }: ToastProviderProps) => {
   const classNames = useClassNames({
