@@ -603,8 +603,7 @@ export const keyboardA11yToValidationIssues = (
   for (const el of data.unreachableElements) {
     issues.push({
       type: 'a11y',
-      // Warning, not error: measured by a simulated Tab walk at runtime, so
-      // not a deterministic violation. See severity policy.
+      // Measured by a simulated Tab walk. Severity policy.
       severity: 'warning',
       source: 'keyboard-a11y',
       component: el.component,
@@ -676,8 +675,7 @@ export const keyboardA11yToValidationIssues = (
     if (step.obscured) {
       issues.push({
         type: 'a11y',
-        // Warning, not error: runtime hit-test heuristic, WCAG 2.4.11 is Level
-        // AA. See severity policy.
+        // Runtime hit-test; 2.4.11 is AA. Severity policy.
         severity: 'warning',
         source: 'keyboard-a11y',
         component: step.component,
@@ -716,9 +714,7 @@ export const keyboardA11yToValidationIssues = (
       if (trap.isTrap) {
         issues.push({
           type: 'a11y',
-          // Warning, not error: trap detection is a runtime heuristic (cycle
-          // detection + an Escape-escape probe), not a deterministic violation.
-          // See severity policy.
+          // Cycle detection + an Escape probe. Severity policy.
           severity: 'warning',
           source: 'keyboard-a11y',
           component: trap.trapSelector ?? 'unknown',

@@ -144,8 +144,7 @@ export const overlapIssuesToValidationIssues = (
 ): ValidationIssue[] =>
   overlaps.map(o => ({
     type: 'spatial' as const,
-    // Always a warning (threshold-based heuristic); a substantial overlap is
-    // still flagged via `details.major`.
+    // Threshold-based; a substantial overlap is flagged via `details.major`.
     severity: 'warning' as const,
     source: 'overlap-detector' as const,
     component: `${o.componentA} ↔ ${o.componentB}`,

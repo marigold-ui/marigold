@@ -215,5 +215,4 @@ export const runCompleteSuggest = (words: string[]): string => {
   }
 };
 
-// Re-export for tests / external callers if needed.
 export { SUBCOMMANDS };

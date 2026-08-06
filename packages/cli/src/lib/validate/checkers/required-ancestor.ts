@@ -156,8 +156,7 @@ export const validateRequiredAncestor = (
       ) {
         issues.push({
           type: 'technical',
-          // Warning, not error — same file-scoped reasoning as the branch
-          // above.
+          // Same file-scoped reasoning as the branch above.
           severity: 'warning',
           source: 'required-ancestor',
           component: tag.text,

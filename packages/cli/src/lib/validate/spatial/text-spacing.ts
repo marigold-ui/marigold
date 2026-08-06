@@ -231,9 +231,7 @@ export const textSpacingToValidationIssues = (
 
       issues.push({
         type: 'a11y',
-        // Warning, not error: detected by injecting spacing CSS and measuring a
-        // clip — a runtime heuristic, and 1.4.12 is Level AA. Not a
-        // deterministic, false-positive-free violation. See severity policy.
+        // Injected spacing CSS + a measured clip; 1.4.12 is AA. Severity policy.
         severity: 'warning',
         source: 'text-spacing',
         component: after.component,

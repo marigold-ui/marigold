@@ -434,8 +434,7 @@ export const responsiveToValidationIssues = (
           } extends to ${snap.overflowCulprit.right}px.`
         : '';
 
-      // Warning, not error: overflow is a runtime measurement gated by a
-      // scrollbar tolerance, and 1.4.10 Reflow is Level AA. See severity policy.
+      // Runtime measurement with a scrollbar tolerance; 1.4.10 is AA. Policy.
       const tabular = snap.overflowCulprit?.tabular ?? false;
       issues.push({
         type: 'spatial',
@@ -505,8 +504,7 @@ export const responsiveToValidationIssues = (
       if (!isGenuineDisappearance(d)) continue;
       issues.push({
         type: 'spatial',
-        // Warning, not error: 0x0 is a heuristic whose legitimate causes the
-        // visibility guard only mostly excludes. See severity policy.
+        // The visibility guard only mostly excludes legit 0x0. Policy.
         severity: 'warning',
         source: 'responsive-checker',
         component: d.component,

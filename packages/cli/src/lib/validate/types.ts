@@ -8,6 +8,13 @@ export type IssueType = 'technical' | 'spatial' | 'style' | 'a11y';
  * warning — likely improvable: wrong prop values, missing optional
  *   sub-components, native-over-DS-component usage, invalid theme variants,
  *   placeholder-only labels, layout wrapping/overflow.
+ *
+ * THE SEVERITY POLICY, referenced from the checkers: an `error` must be
+ * deterministic and false-positive-free. Every runtime measurement and every
+ * threshold-based heuristic is therefore a `warning`, however confident the
+ * individual finding looks — as is anything above WCAG Level A, since those
+ * criteria carry judgement. Sites that cite this rule note only what makes
+ * them heuristic, not the rule itself.
  */
 export type IssueSeverity = 'error' | 'warning';
 
