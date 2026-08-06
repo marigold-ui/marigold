@@ -4,6 +4,17 @@ packages:
   - docs
   - packages/*
   - themes/*
+# These are debt. Drop each one as soon as its condition below is met, then run
+# `pnpm audit` to confirm the advisory stays closed.
+#
+# Overrides must live here, not under `pnpm.overrides` in package.json. On
+# pnpm 11 that key is silently ignored: install exits 0 and nothing moves.
+# Confirm they took effect via the `overrides:` block at the top of pnpm-lock.yaml.
+overrides:
+  postcss: ^8.5.25
+  sharp: ^0.35.0
+  valibot: ^1.4.2
+  '@hono/node-server': ^2.0.5
 allowBuilds:
   '@parcel/watcher': true
   esbuild: true

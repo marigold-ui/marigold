@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Key } from 'react-aria-components/TagGroup';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
+import { clickOption } from '.storybook/test-utils';
 import { I18nProvider } from '@react-aria/i18n';
 import { Stack } from '../Stack/Stack';
 import { TagField } from './TagField';
@@ -75,6 +76,35 @@ export const Basic = meta.story({
     </I18nProvider>
   ),
 });
+
+Basic.test(
+  'Wraps an unbreakable option label inside a narrow list',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+    args: { width: 40 },
+    render: args => (
+      <I18nProvider locale="en">
+        <TagField {...args}>
+          <TagField.Option id="unbreakable">
+            IchliebeDeutschlandundseineHauptstadtBerlin
+          </TagField.Option>
+          <TagField.Option id="at">Österreich</TagField.Option>
+          <TagField.Option id="ch">Schweiz</TagField.Option>
+        </TagField>
+      </I18nProvider>
+    ),
+  },
+  async ({ canvas, args }) => {
+    const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+    await userEvent.click(trigger);
+
+    const listbox = await canvas.findByRole('listbox');
+
+    // Same invariant as Select's equivalent test: without `wrap-anywhere` the
+    // unbreakable label would widen the option past the list.
+    expect(listbox.scrollWidth).toBeLessThanOrEqual(listbox.clientWidth);
+  }
+);
 
 Basic.test(
   'Show empty state when no items match',
@@ -207,9 +237,9 @@ LargeDataset.test(
 
     await step('Verify filtered result and select it', async () => {
       const dialog = canvas.getByRole('dialog');
-      const option = within(dialog).getByText('Tenant 500 (item-500)');
-      expect(option).toBeVisible();
-      await userEvent.click(option);
+      const getOption = () => within(dialog).getByText('Tenant 500 (item-500)');
+      expect(getOption()).toBeVisible();
+      await clickOption(getOption);
     });
 
     await step('Verify selected item appears as tag', async () => {

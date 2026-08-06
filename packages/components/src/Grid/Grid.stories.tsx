@@ -119,7 +119,7 @@ export const Bento = meta.story({
         <Grid.Area name="event-2">
           <Teaser
             alt="artist from back"
-            src="https://cdn.pressebox.de/f/f3ebdc8b4e5375b5/attachments/1451457.attachment"
+            src="https://www.reservix.net/app/uploads/resized/2023/12/Startseite-Portale-1-1000x667-051224-1000x750-c-center.jpg"
           />
         </Grid.Area>
         <Grid.Area name="tickets">

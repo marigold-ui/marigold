@@ -117,7 +117,7 @@
       "automerge": true
     },
     {
-      "description": "Hold @react-types/* at their last type-only versions (button ~3.15, checkbox ~3.10, grid ~3.3, table ~3.13). Newer minors invert the dependency direction: the type-only packages start depending on the full @react-spectrum/* component packages, which drag in @adobe/react-spectrum and a duplicate react-aria/react-stately copy, splitting the i18n + overlay React contexts. See #5485 and upstream https://github.com/adobe/react-spectrum/issues/10139. Patches within the type-only line stay allowed; minor/major are blocked (and must not automerge). Drop this rule once Adobe ships type-only @react-types/* again.",
+      "description": "Hold @react-types/* at their last type-only versions (button ~3.15, checkbox ~3.10, grid ~3.3, table ~3.13). Newer minors invert the dependency direction: the type-only packages start depending on the full @react-spectrum/* component packages, which drag in @adobe/react-spectrum and a duplicate react-aria/react-stately copy, splitting the i18n + overlay React contexts. See #5485 and upstream https://github.com/adobe/react-spectrum/issues/10139. Patches within the type-only line stay allowed; minor/major are blocked (and must not automerge). Note that some of these (e.g. @react-types/grid 3.4.0) pull @react-spectrum/provider via a *peerDependency*, so `npm view <pkg> dependencies` looks clean while pnpm still auto-installs the peer — verify with `scripts/check-react-aria-dedupe.mjs` after any install, not by reading the manifest. Drop this rule once Adobe ships type-only @react-types/* again.",
       "matchPackageNames": [
         "@react-types/button",
         "@react-types/checkbox",

@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@babel/parser": "8.0.4",
-    "@clack/prompts": "1.6.0",
+    "@clack/prompts": "1.7.0",
     "ci-info": "4.4.0",
     "magic-string": "0.30.21",
     "picocolors": "1.1.1"
@@ -51,8 +51,8 @@
     "@babel/types": "8.0.4",
     "@marigold/tsconfig": "workspace:*",
     "@types/node": "24.13.2",
-    "tsdown": "0.22.9",
-    "vitest": "4.1.9"
+    "tsdown": "0.22.14",
+    "vitest": "4.1.10"
   },
   "scripts": {
     "build": "tsdown",

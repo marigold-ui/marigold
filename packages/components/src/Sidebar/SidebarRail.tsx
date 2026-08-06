@@ -3,7 +3,7 @@ import type { ReactNode, Ref } from 'react';
 import { Focusable } from 'react-aria-components/Focusable';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { isFocusVisible } from '@react-aria/interactions';
-import { handleLinkClick, useRouter } from '@react-aria/utils';
+import { handleLinkClick, useLinkProps, useRouter } from '@react-aria/utils';
 import { cn } from '@marigold/system';
 import { Tooltip } from '../Tooltip/Tooltip';
 import { intlMessages } from '../intl/messages';
@@ -70,6 +70,12 @@ const RailItemLink = ({
   className,
 }: RailItemLinkProps) => {
   const router = useRouter();
+  // Sole source of the rendered href, since a raw `href` would shadow the
+  // router's `useHref`. Pass undefined when there is none, or `useLinkProps`
+  // yields href="", which would make a section tile a link.
+  const routerLinkProps = useLinkProps(
+    node.href ? { href: node.href } : undefined
+  );
 
   // A section is only the current page's ancestor (`true`); a direct-link item
   // that is the page announces `page`. The leaf itself is marked in the panel.
@@ -81,7 +87,7 @@ const RailItemLink = ({
     <Tooltip.Trigger disabled={!collapsed}>
       <Focusable>
         <a
-          href={node.href}
+          {...routerLinkProps}
           role={node.href ? undefined : 'button'}
           aria-current={ariaCurrent}
           data-active={selected || undefined}

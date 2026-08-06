@@ -40,14 +40,14 @@
   },
   "dependencies": {
     "@marigold/system": "workspace:*",
-    "lucide-react": "^1.9.0"
+    "lucide-react": "^1.28.0"
   },
   "peerDependencies": {
     "react": ">=19.0.0"
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
-    "tsdown": "0.22.9"
+    "tsdown": "0.22.14"
   },
   "scripts": {
     "build": "tsdown src/index.ts",

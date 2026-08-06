@@ -21,6 +21,18 @@ Similar to React Router you can pass in the `navigate` prop the routes you get f
 
 Also for more information please visit React Aria's documentation about it [here](https://react-spectrum.adobe.com/react-aria/routing.html#nextjs).
 
+### Rewriting hrefs
+
+The `navigate` prop decides how a click gets handled. The optional `useHref` prop decides what a link renders as its `href` attribute. Reach for it when your router serves the app from a prefix, such as a Next.js `basePath`.
+
+```tsx
+<RouterProvider navigate={navigate} useHref={href => `${basePath}${href}`}>
+  {children}
+</RouterProvider>
+```
+
+Components still hand the unprefixed path to `navigate`, so your route definitions stay free of the prefix. Only the rendered attribute changes, which is what middle click, "copy link address" and search engine crawlers read.
+
 ## Props
 
 <StorybookHintMessage component={'RouterProvider'} />

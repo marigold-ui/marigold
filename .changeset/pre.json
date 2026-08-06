@@ -1,6 +1,6 @@
 {
   "mode": "pre",
-  "tag": "beta",
+  "tag": "rc",
   "initialVersions": {
     "@marigold/eslint-config": "1.0.2",
     "@marigold/prettier-config": "0.3.2",
