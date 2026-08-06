@@ -42,12 +42,7 @@ const DialogTrigger = ({ open, ...rest }: DialogTriggerProps) => (
  * @default bottom start
  */
 type Placement =
-  | 'top'
-  | 'bottom'
-  | 'left'
-  | 'right'
-  | 'top start'
-  | 'bottom start';
+  'top' | 'bottom' | 'left' | 'right' | 'top start' | 'bottom start';
 /**
  * Props for the ContextualHelp component.
  */

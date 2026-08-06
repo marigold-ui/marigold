@@ -71,7 +71,7 @@ const exclude = [
   // branches, on their own (often stale) dependency state. Collecting them
   // makes local runs report failures that have nothing to do with the working
   // tree. Not an issue in CI (fresh checkout), but it breaks local verification.
-  '**/.claude/**',
+  '**/.claude/worktrees/**',
   '**/*.config.*',
   '**/config/**',
   '**/docs*/**',

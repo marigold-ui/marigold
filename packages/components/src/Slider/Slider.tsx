@@ -111,13 +111,7 @@ const _Slider = <T extends number | number[]>({
       >
         {({ state }) => (
           <>
-            {/* track */}
-            <div
-              className={cn(
-                'absolute top-[50%] h-2 w-full translate-y-[-50%]',
-                classNames.track
-              )}
-            />
+            {/* No rail element here — the `SliderTrack` above is the rail. */}
             {/* fill */}
             <div
               className={cn(

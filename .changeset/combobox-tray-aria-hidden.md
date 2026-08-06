@@ -1,5 +1,5 @@
 ---
-'@marigold/components': patch
+'@marigold/components': minor
 ---
 
 fix(DST-1680): keep the mobile `ComboBox`/`Autocomplete` tray in the accessibility tree.

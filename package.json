@@ -78,16 +78,13 @@
     "clean:build": "rm -rf `find . -type d -name 'dist'` coverage",
     "lint": "eslint . --no-warn-ignored",
     "format": "prettier --write \"**/*\"",
+    "format:check": "prettier --check \"**/*\"",
     "format:fix": "prettier --write \"**/*\" --fix",
     "typecheck": "tsc --noEmit --resolveJsonModule --project tsconfig.check.json",
     "typecheck:only": "tsc --noEmit --resolveJsonModule --project tsconfig.check.json",
     "typecheck:docs": "pnpm --filter @marigold/docs types:check",
     "changeset": "changeset",
-    "release:beta": "zx scripts/beta-release.mjs",
-    "release:beta:enter": "zx scripts/beta-enter.mjs",
-    "release:beta:exit": "zx scripts/beta-exit.mjs",
     "release:notification": "zx scripts/create-slack-notification.mjs",
-    "slack": "zx scripts/slack-release-notification.mjs --quiet",
     "prepare": "husky install"
   },
   "devDependencies": {

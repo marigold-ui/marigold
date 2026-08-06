@@ -25,9 +25,7 @@ export interface SidebarGroupLabelNode {
 }
 
 export type SidebarNode =
-  | SidebarItemNode
-  | SidebarSeparatorNode
-  | SidebarGroupLabelNode;
+  SidebarItemNode | SidebarSeparatorNode | SidebarGroupLabelNode;
 
 export interface SidebarCollection {
   rootNodes: SidebarNode[];

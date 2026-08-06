@@ -8,10 +8,7 @@ import { DialogContext } from './Context';
 // Props
 // ---------------
 type RemovedProps =
-  | 'children'
-  | 'isOpen'
-  | 'isDismissable'
-  | 'isKeyboardDismissDisabled';
+  'children' | 'isOpen' | 'isDismissable' | 'isKeyboardDismissDisabled';
 
 export interface DialogTriggerProps
   extends
