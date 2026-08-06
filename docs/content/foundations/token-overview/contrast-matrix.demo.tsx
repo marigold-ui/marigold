@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+// Authored here, not measured, so a rung added to the theme is silently omitted.
 const steps = [
   '50',
   '100',
@@ -23,8 +24,9 @@ type Palette = Record<Step, Rgb>;
 /**
  * Measured rather than restated, so the published numbers cannot drift from the
  * shipped palette. Computed colors stay in their authored space, so the canvas
- * is what converts to sRGB. Same readback as `flatten` in `contrast.utils.ts`,
- * minus its white base, so opaque tokens only.
+ * is what converts to sRGB. Same readback as `flatten` in
+ * `packages/components/src/contrast.utils.ts`, minus its white base, so opaque
+ * tokens only.
  */
 function measurePalette(container: HTMLElement): Palette | null {
   const canvas = document.createElement('canvas');
@@ -129,27 +131,105 @@ const Badge = ({ color, children }: { color?: string; children?: string }) => (
   </span>
 );
 
+const Legend = () => (
+  <div className="text-secondary mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[11px]">
+    <span className="font-bold">APCA:</span>
+    <span>
+      <span
+        className="inline-block size-2 rounded-sm"
+        style={{ background: 'rgba(16,185,129,0.5)' }}
+      />{' '}
+      75+ Body
+    </span>
+    <span>
+      <span
+        className="inline-block size-2 rounded-sm"
+        style={{ background: 'rgba(34,197,94,0.5)' }}
+      />{' '}
+      60+ Sub
+    </span>
+    <span>
+      <span
+        className="inline-block size-2 rounded-sm"
+        style={{ background: 'rgba(245,158,11,0.5)' }}
+      />{' '}
+      45+ Large
+    </span>
+    <span>
+      <span
+        className="inline-block size-2 rounded-sm"
+        style={{ background: 'rgba(239,68,68,0.5)' }}
+      />{' '}
+      Fail
+    </span>
+    <span className="mx-1">|</span>
+    <span className="font-bold">WCAG:</span>
+    <span>
+      <span
+        className="inline-block size-2 rounded-sm"
+        style={{ background: 'rgba(16,185,129,0.5)' }}
+      />{' '}
+      7+ AAA
+    </span>
+    <span>
+      <span
+        className="inline-block size-2 rounded-sm"
+        style={{ background: 'rgba(34,197,94,0.5)' }}
+      />{' '}
+      4.5+ AA
+    </span>
+    <span>
+      <span
+        className="inline-block size-2 rounded-sm"
+        style={{ background: 'rgba(245,158,11,0.5)' }}
+      />{' '}
+      3+ Large
+    </span>
+    <span>
+      <span
+        className="inline-block size-2 rounded-sm"
+        style={{ background: 'rgba(239,68,68,0.5)' }}
+      />{' '}
+      Fail
+    </span>
+  </div>
+);
+
 export default () => {
   const probesRef = useRef<HTMLDivElement>(null);
   const [palette, setPalette] = useState<Palette | 'unreadable' | null>(null);
 
   useEffect(() => {
-    const measured = probesRef.current && measurePalette(probesRef.current);
+    let frame = 0;
+
+    const attempt = (retry: boolean) => {
+      const result = probesRef.current && measurePalette(probesRef.current);
+      // A stylesheet that has not applied yet reads as transparent.
+      if (!result && retry) {
+        frame = requestAnimationFrame(() => attempt(false));
+        return;
+      }
+      setPalette(result ?? 'unreadable');
+    };
+
     // Deferred to satisfy `react-hooks/set-state-in-effect`, as Token.tsx does.
-    queueMicrotask(() => setPalette(measured ?? 'unreadable'));
+    queueMicrotask(() => attempt(true));
+
+    return () => cancelAnimationFrame(frame);
   }, []);
 
-  if (palette === 'unreadable') {
-    return (
-      <p className="text-secondary text-sm">
-        The charcoal palette could not be read from the theme, so no contrast
-        numbers are shown.
-      </p>
-    );
-  }
+  // A failed read only blanks the badges. The swatch grid needs no measurement.
+  const measured = palette === 'unreadable' ? null : palette;
 
   return (
     <>
+      {palette === 'unreadable' && (
+        <p className="text-secondary mb-2 text-sm">
+          The charcoal palette could not be read from the theme, so no contrast
+          numbers are shown.
+        </p>
+      )}
+
       <div ref={probesRef} style={{ display: 'none' }}>
         {steps.map(step => (
           <span
@@ -162,6 +242,7 @@ export default () => {
 
       <div className="overflow-x-auto">
         <table
+          aria-label="Contrast matrix"
           style={{
             borderCollapse: 'collapse',
             width: 'max-content',
@@ -188,6 +269,7 @@ export default () => {
               {steps.map(s => (
                 <th
                   key={s}
+                  scope="col"
                   className="text-secondary text-[11px] font-bold"
                   style={{
                     padding: '6px 4px',
@@ -207,6 +289,7 @@ export default () => {
             {steps.map(bgStep => (
               <tr key={bgStep}>
                 <th
+                  scope="row"
                   className="text-secondary text-[11px] font-bold"
                   style={{
                     padding: '6px 4px',
@@ -221,14 +304,14 @@ export default () => {
                   {bgStep}
                 </th>
                 {steps.map(txStep => {
-                  const scores = palette
+                  const scores = measured
                     ? {
                         apca: Math.abs(
                           Math.round(
-                            calculateAPCA(palette[txStep], palette[bgStep])
+                            calculateAPCA(measured[txStep], measured[bgStep])
                           )
                         ),
-                        wcag: calculateWCAG(palette[txStep], palette[bgStep]),
+                        wcag: calculateWCAG(measured[txStep], measured[bgStep]),
                       }
                     : undefined;
 
@@ -282,68 +365,7 @@ export default () => {
         </table>
       </div>
 
-      {/* Legend */}
-      <div className="text-secondary mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[11px]">
-        <span className="font-bold">APCA:</span>
-        <span>
-          <span
-            className="inline-block size-2 rounded-sm"
-            style={{ background: 'rgba(16,185,129,0.5)' }}
-          />{' '}
-          75+ Body
-        </span>
-        <span>
-          <span
-            className="inline-block size-2 rounded-sm"
-            style={{ background: 'rgba(34,197,94,0.5)' }}
-          />{' '}
-          60+ Sub
-        </span>
-        <span>
-          <span
-            className="inline-block size-2 rounded-sm"
-            style={{ background: 'rgba(245,158,11,0.5)' }}
-          />{' '}
-          45+ Large
-        </span>
-        <span>
-          <span
-            className="inline-block size-2 rounded-sm"
-            style={{ background: 'rgba(239,68,68,0.5)' }}
-          />{' '}
-          Fail
-        </span>
-        <span className="mx-1">|</span>
-        <span className="font-bold">WCAG:</span>
-        <span>
-          <span
-            className="inline-block size-2 rounded-sm"
-            style={{ background: 'rgba(16,185,129,0.5)' }}
-          />{' '}
-          7+ AAA
-        </span>
-        <span>
-          <span
-            className="inline-block size-2 rounded-sm"
-            style={{ background: 'rgba(34,197,94,0.5)' }}
-          />{' '}
-          4.5+ AA
-        </span>
-        <span>
-          <span
-            className="inline-block size-2 rounded-sm"
-            style={{ background: 'rgba(245,158,11,0.5)' }}
-          />{' '}
-          3+ Large
-        </span>
-        <span>
-          <span
-            className="inline-block size-2 rounded-sm"
-            style={{ background: 'rgba(239,68,68,0.5)' }}
-          />{' '}
-          Fail
-        </span>
-      </div>
+      <Legend />
     </>
   );
 };
