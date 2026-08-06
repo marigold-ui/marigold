@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { theme } from '@marigold/theme-rui';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
+import { RouterProvider } from '../RouterProvider/RouterProvider';
 import { ensureOverlayContainer, mockMatchMedia } from '../test.utils';
 import { Sidebar } from './Sidebar';
 import { Rail, RailControlled } from './SidebarRail.stories';
@@ -491,6 +492,7 @@ describe('modified clicks & keyboard activation', () => {
     // No href and no section nav → rendered as <a role="button">, which gets
     // no native keyboard activation from the browser.
     const item = screen.getByRole('button', { name: 'Support' });
+    expect(item).not.toHaveAttribute('href');
     item.focus();
 
     await user.keyboard('{Enter}');
@@ -500,6 +502,39 @@ describe('modified clicks & keyboard activation', () => {
     await user.keyboard(' ');
 
     expect(handlePress).toHaveBeenCalledTimes(2);
+  });
+
+  test('router useHref rewrites the rendered href while navigate gets the raw path', async () => {
+    // Arrange
+    const navigate = vi.fn();
+    render(
+      <RouterProvider navigate={navigate} useHref={href => `/base${href}`}>
+        <MarigoldProvider theme={theme}>
+          <Sidebar.Provider>
+            <Sidebar>
+              <Sidebar.Rail current="/tickets">
+                <Sidebar.RailItem id="tickets" icon={<i />} href="/tickets">
+                  Tickets
+                </Sidebar.RailItem>
+                <Sidebar.RailItem id="reports" icon={<i />} href="/reports">
+                  Berichte
+                </Sidebar.RailItem>
+              </Sidebar.Rail>
+            </Sidebar>
+          </Sidebar.Provider>
+        </MarigoldProvider>
+      </RouterProvider>
+    );
+    const link = screen.getByRole('link', { name: 'Berichte' });
+
+    // Assert (rendered href is prefixed)
+    expect(link).toHaveAttribute('href', '/base/reports');
+
+    // Act
+    await user.click(link);
+
+    // Assert (navigate still receives the unprefixed path)
+    expect(navigate).toHaveBeenCalledWith('/reports', undefined);
   });
 });
 
