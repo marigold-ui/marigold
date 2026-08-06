@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 
 // Authored here, not measured, so a rung added to the theme is silently omitted.
 const steps = [
@@ -89,28 +89,53 @@ function calculateAPCA(text: Rgb, bg: Rgb) {
   return Math.abs(c) < 0.1 ? 0 : c * 100;
 }
 
-function apcaBadgeColor(score: number) {
-  if (score >= 75) return 'rgba(16,185,129,0.25)';
-  if (score >= 60) return 'rgba(34,197,94,0.25)';
-  if (score >= 45) return 'rgba(245,158,11,0.25)';
-  return 'rgba(239,68,68,0.25)';
-}
-
-function wcagBadgeColor(score: number) {
-  if (score >= 7.0) return 'rgba(16,185,129,0.25)';
-  if (score >= 4.5) return 'rgba(34,197,94,0.25)';
-  if (score >= 3.0) return 'rgba(245,158,11,0.25)';
-  return 'rgba(239,68,68,0.25)';
-}
+type Tier = { min: number; rgb: string; label: string };
 
 /**
- * The row-header column is pinned while the matrix scrolls, so it needs an
- * opaque fill or the cells travel visibly behind the labels. Collapsed borders
- * belong to the table and stay behind at the unscrolled position, so the pinned
- * edges are painted as inset shadows instead.
+ * One table per scale drives both the cell badges and the legend, so a
+ * threshold or a tier colour only has to change in one place. The last tier has
+ * no floor, so a score always lands on one.
+ */
+const scales: Record<'APCA' | 'WCAG', readonly Tier[]> = {
+  APCA: [
+    { min: 75, rgb: '16,185,129', label: '75+ Body' },
+    { min: 60, rgb: '34,197,94', label: '60+ Sub' },
+    { min: 45, rgb: '245,158,11', label: '45+ Large' },
+    { min: -Infinity, rgb: '239,68,68', label: 'Fail' },
+  ],
+  WCAG: [
+    { min: 7, rgb: '16,185,129', label: '7+ AAA' },
+    { min: 4.5, rgb: '34,197,94', label: '4.5+ AA' },
+    { min: 3, rgb: '245,158,11', label: '3+ Large' },
+    { min: -Infinity, rgb: '239,68,68', label: 'Fail' },
+  ],
+};
+
+// Fainter than the legend swatches, because badge fills sit under text.
+const badgeColor = (tiers: readonly Tier[], score: number) =>
+  `rgba(${(tiers.find(t => score >= t.min) ?? tiers[tiers.length - 1]).rgb},0.25)`;
+
+/**
+ * Opaque, so the swatches never travel visibly behind a header label and the
+ * labels keep their contrast on any page background.
+ */
+const headerCell = {
+  padding: '6px 4px',
+  minWidth: 65,
+  textAlign: 'center',
+  backgroundColor: 'var(--color-surface)',
+} as const;
+
+/**
+ * The first column stays put while the matrix scrolls sideways. Collapsed
+ * borders belong to the table and stay behind at the unscrolled position, so
+ * the pinned edges are painted as inset shadows instead.
  */
 const pinnedRail = {
-  backgroundColor: 'var(--color-surface)',
+  position: 'sticky',
+  left: 0,
+  // Above the cells that scroll under it, which are not positioned.
+  zIndex: 1,
   boxShadow: `inset -1px 0 var(--color-charcoal-200),
     inset 0 -1px var(--color-charcoal-200)`,
 } as const;
@@ -133,65 +158,21 @@ const Badge = ({ color, children }: { color?: string; children?: string }) => (
 
 const Legend = () => (
   <div className="text-secondary mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[11px]">
-    <span className="font-bold">APCA:</span>
-    <span>
-      <span
-        className="inline-block size-2 rounded-sm"
-        style={{ background: 'rgba(16,185,129,0.5)' }}
-      />{' '}
-      75+ Body
-    </span>
-    <span>
-      <span
-        className="inline-block size-2 rounded-sm"
-        style={{ background: 'rgba(34,197,94,0.5)' }}
-      />{' '}
-      60+ Sub
-    </span>
-    <span>
-      <span
-        className="inline-block size-2 rounded-sm"
-        style={{ background: 'rgba(245,158,11,0.5)' }}
-      />{' '}
-      45+ Large
-    </span>
-    <span>
-      <span
-        className="inline-block size-2 rounded-sm"
-        style={{ background: 'rgba(239,68,68,0.5)' }}
-      />{' '}
-      Fail
-    </span>
-    <span className="mx-1">|</span>
-    <span className="font-bold">WCAG:</span>
-    <span>
-      <span
-        className="inline-block size-2 rounded-sm"
-        style={{ background: 'rgba(16,185,129,0.5)' }}
-      />{' '}
-      7+ AAA
-    </span>
-    <span>
-      <span
-        className="inline-block size-2 rounded-sm"
-        style={{ background: 'rgba(34,197,94,0.5)' }}
-      />{' '}
-      4.5+ AA
-    </span>
-    <span>
-      <span
-        className="inline-block size-2 rounded-sm"
-        style={{ background: 'rgba(245,158,11,0.5)' }}
-      />{' '}
-      3+ Large
-    </span>
-    <span>
-      <span
-        className="inline-block size-2 rounded-sm"
-        style={{ background: 'rgba(239,68,68,0.5)' }}
-      />{' '}
-      Fail
-    </span>
+    {Object.entries(scales).map(([scale, tiers], index) => (
+      <Fragment key={scale}>
+        {index > 0 && <span className="mx-1">|</span>}
+        <span className="font-bold">{scale}:</span>
+        {tiers.map(({ rgb, label }) => (
+          <span key={label}>
+            <span
+              className="inline-block size-2 rounded-sm"
+              style={{ background: `rgba(${rgb},0.5)` }}
+            />{' '}
+            {label}
+          </span>
+        ))}
+      </Fragment>
+    ))}
   </div>
 );
 
@@ -253,16 +234,7 @@ export default () => {
             <tr>
               <th
                 className="text-secondary text-[11px] font-bold"
-                style={{
-                  padding: '6px 4px',
-                  minWidth: 65,
-                  textAlign: 'center',
-                  position: 'sticky',
-                  top: 0,
-                  left: 0,
-                  zIndex: 2,
-                  ...pinnedRail,
-                }}
+                style={{ ...headerCell, ...pinnedRail }}
               >
                 Bg \ Text
               </th>
@@ -272,12 +244,8 @@ export default () => {
                   scope="col"
                   className="text-secondary text-[11px] font-bold"
                   style={{
-                    padding: '6px 4px',
-                    minWidth: 65,
-                    textAlign: 'center',
+                    ...headerCell,
                     borderBottom: '1px solid var(--color-charcoal-200)',
-                    position: 'sticky',
-                    top: 0,
                   }}
                 >
                   {s}
@@ -291,15 +259,7 @@ export default () => {
                 <th
                   scope="row"
                   className="text-secondary text-[11px] font-bold"
-                  style={{
-                    padding: '6px 4px',
-                    minWidth: 65,
-                    textAlign: 'center',
-                    position: 'sticky',
-                    left: 0,
-                    zIndex: 1,
-                    ...pinnedRail,
-                  }}
+                  style={{ ...headerCell, ...pinnedRail }}
                 >
                   {bgStep}
                 </th>
@@ -349,10 +309,14 @@ export default () => {
                         >
                           Aa
                         </span>
-                        <Badge color={scores && apcaBadgeColor(scores.apca)}>
+                        <Badge
+                          color={scores && badgeColor(scales.APCA, scores.apca)}
+                        >
                           {scores && `Lc ${scores.apca}`}
                         </Badge>
-                        <Badge color={scores && wcagBadgeColor(scores.wcag)}>
+                        <Badge
+                          color={scores && badgeColor(scales.WCAG, scores.wcag)}
+                        >
                           {scores && `${scores.wcag.toFixed(1)}:1`}
                         </Badge>
                       </div>
