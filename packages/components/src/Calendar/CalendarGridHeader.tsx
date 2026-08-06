@@ -1,7 +1,7 @@
 import {
   CalendarHeaderCell,
   CalendarGridHeader as RACCalendarGridHeader,
-} from 'react-aria-components';
+} from 'react-aria-components/Calendar';
 import { useCalendarContext } from './Context';
 
 export function CalendarGridHeader() {

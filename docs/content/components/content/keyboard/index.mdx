@@ -1,0 +1,174 @@
+---
+title: Keyboard
+description: A hint that shows the keyboard shortcut for an action.
+badge: beta
+---
+
+The `<Keyboard>` component renders a keyboard-shortcut hint, such as ⌘K, as a `<kbd>` element. Use it to surface the shortcut for an action, inside a `<Menu.Item>` or anywhere you reference a key, such as help text, an [empty state](/components/content/empty-state), or a [tooltip](/components/overlay/tooltip).
+
+import { KeyboardAnatomy } from './keyboard-anatomy';
+
+## Anatomy
+
+<KeyboardAnatomy />
+
+A keyboard hint is a single `<kbd>` element with no parts of its own.
+
+## Appearance
+
+By default `<Keyboard>` renders as a small key-cap. When it sits inside a container that styles shortcut hints, such as a `<Menu.Item>`, it adopts that container's treatment instead. In a menu the hint is a flat, muted label aligned to the right, which keeps it quiet next to the command rather than competing with it.
+
+This adaptation is inferred automatically from the surrounding context. See [Slot-Driven Composition](/foundations/component-principles#slot-driven-composition) for how this works.
+
+## Usage
+
+Reach for `<Keyboard>` when an action has a keyboard shortcut worth surfacing. The hint helps people discover the shortcut and rewards repeat use, without changing what the action does.
+
+### On its own
+
+Use `<Keyboard>` inline wherever you reference a shortcut, such as help text, an [empty state](/components/content/empty-state), or a [tooltip](/components/overlay/tooltip). On its own it renders as a key-cap.
+
+<ComponentDemo name="keyboard-standalone" />
+
+### Inside a menu item
+
+Add `<Keyboard>` after a `<Menu.Item>` label to show the command's shortcut. In a menu it renders as a flat, muted hint aligned to the right. Set `textValue` on the item so type-ahead matches the label and ignores the shortcut text.
+
+<ComponentDemo name="keyboard-in-menu-item" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Show a shortcut only when the action has one, and match the hint to the
+      real key binding.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use `<Keyboard>` as decoration or for text that isn't a shortcut.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+## Accessibility
+
+`<Keyboard>` renders as a `<kbd>` element, the semantic markup for keyboard input. Inside a `<Menu.Item>` it is wired to the item's accessible description automatically, so a screen reader announces the command's label first and the shortcut after, with no manual `aria` attributes.
+
+The hint is a convenience for sighted users. It does not register the key binding, so make sure the shortcut it shows is actually handled by your application.
+
+## Props
+
+<StorybookHintMessage component="Keyboard" />
+
+### Keyboard
+
+<AutoTypeTable path="Keyboard" name="KeyboardProps" />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Menu',
+      href: '/components/overlay/menu',
+      caption: 'The most common home for keyboard hints, on its command items.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <path d="M4 6h16" />
+          <path d="M4 12h16" />
+          <path d="M4 18h16" />
+        </svg>
+      ),
+    },
+    {
+      title: 'TextValue',
+      href: '/components/content/text-value',
+      caption: 'The item label a shortcut sits beside.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <path d="M4 7V4h16v3" />
+          <path d="M9 20h6" />
+          <path d="M12 4v16" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Description',
+      href: '/components/content/description',
+      caption: 'The secondary line a shortcut complements in a menu item.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <path d="M4 6h16" />
+          <path d="M4 12h10" />
+          <path d="M4 18h13" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Tooltip',
+      href: '/components/overlay/tooltip',
+      caption: 'Another place to reference a shortcut inline.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>
+      ),
+    },
+    {
+      title: 'EmptyState',
+      href: '/components/content/empty-state',
+      caption: 'Guide the next action by naming its shortcut.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <path d="M22 12h-6l-2 3h-4l-2-3H2" />
+          <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+        </svg>
+      ),
+    },
+  ]}
+/>

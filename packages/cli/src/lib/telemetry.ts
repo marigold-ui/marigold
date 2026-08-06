@@ -14,6 +14,8 @@ export type CommandName =
   | 'search'
   | 'examples'
   | 'init'
+  | 'doctor'
+  | 'migrate'
   | 'telemetry';
 
 export interface TelemetryEvent {
@@ -67,10 +69,7 @@ export const setTelemetryEnabled = (enabled: boolean): void => {
 };
 
 export const telemetryStatus = ():
-  | 'enabled'
-  | 'disabled'
-  | 'ci-suppressed'
-  | 'env-suppressed' => {
+  'enabled' | 'disabled' | 'ci-suppressed' | 'env-suppressed' => {
   if (process.env.MARIGOLD_TELEMETRY_DISABLED === '1') return 'env-suppressed';
   if (process.env.DO_NOT_TRACK === '1') return 'env-suppressed';
   if (ci.isCI) return 'ci-suppressed';

@@ -3,22 +3,25 @@ title: Select
 description: Dropdown for selecting an option among different options.
 ---
 
+import { SelectAnatomy } from './select-anatomy';
+
 The `<Select>` is a form component that allows you to select one or more elements from a list of predefined options. It should be used with other form components in a [`<Form>`](../form/form/).
 
 ## Anatomy
 
-A select contains a pressable button element with a down arrow. The lists of options opens per default below the button, if there is no space for it, it will open above. An option represent a possible choice the user can select.
+A `<Select>` is a labeled trigger that opens a popover with a list of options. The trigger shows the current selection and a chevron indicating the field is interactive. The popover opens below by default and flips above when there is no space.
 
-Optional you have the choice to add a section to the options which helps divide the content of options in categories. You can have the possibility to add a supporting text as short description and/ or error message to the select itself. The description will be relplaced with the error message when an error throws.
-Also you can have a description for the options in the list.
+<SelectAnatomy />
 
-<ImageZoom
-  src="/select/select-anatomy.jpg"
-  alt="Anatomy of select"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+- **Label:** Names the field above the trigger.
+- **Field:** The pressable trigger that opens the popover.
+- **Selected value:** The text rendered inside the trigger for the current selection. Falls back to a placeholder when nothing is selected.
+- **Description:** Optional helper text below the field. Replaced by the error message when the field is invalid.
+- **Popover:** The floating container that holds the list of options.
+- **Section header:** Optional title for a group of related options that helps users scan the list.
+- **Option:** A single choice in the list.
+- **Item label:** The primary text of an option that names the choice.
+- **Item description:** Optional secondary text within an option that helps the user decide.
 
 ## Appearance
 
@@ -42,25 +45,9 @@ When there are too many options (e.g., more than 15-20), usability can suffer. U
 
 <GuidelineTiles>
   <Do>
-    <DoFigure>
-      <ImageZoom
-        width={700}
-        height={700}
-        src="/select/select-do-length.jpg"
-        alt="Use a radio group for 1-4 options"
-      />
-    </DoFigure>
-    <DoDescription>Use a around 5-15 options for the select.</DoDescription>
+    <DoDescription>Use around 5-15 options for the select.</DoDescription>
   </Do>
   <Dont>
-    <DontFigure>
-      <ImageZoom
-        width={700}
-        height={700}
-        src="/select/select-dont-length.jpg"
-        alt="Dont use less than three options"
-      />
-    </DontFigure>
     <DontDescription>
       Don't use a select if there are less than 4 or more than 15 options to
       choose from.
@@ -78,7 +65,7 @@ This can be achieved by wrapping the options in the `<Select.Section>` component
 
 ### Item description
 
-If you need to have primary and secondary content shown within an option, you can use our [text component](../content/text) with the slot property and set it for the label and description to add a short description for secondary content, which provides more context for the certain selectable option.
+If you need to have primary and secondary content shown within an option, compose the option with the `<TextValue>` and `<Description>` primitives. `<TextValue>` carries the option's label. `<Description>` provides the secondary line and is automatically wired to the option's `aria-describedby` for assistive tech.
 
 <ComponentDemo name="select-description" />
 
@@ -94,15 +81,17 @@ Keep in mind that you always should write information why a certain option is di
 
 Sometimes you need to offer a way for users to select multiple options from a list, but you don't have much room in your layout. In these situations, enabling multiselection (`selectionMode="multiple"`) on the `<Select>` is an effective approach. A common use case for this is when filtering a list of products. For instance, a user could select both a specific brand and a particular feature, and the dropdown would neatly contain both selections.
 
-However, be mindful of the user experience when offering multiple selections. As more options are chosen, the display text will likely be truncated, hiding the full list of what's been selected. Note that for use cases requiring all selected options to be clearly visible, a dedicated [Multiselect](/components/form/multiselect) component might be a better choice.
+However, be mindful of the user experience when offering multiple selections. As more options are chosen, the display text will likely be truncated, hiding the full list of what's been selected. Note that for use cases requiring all selected options to be clearly visible, [`TagField`](/components/form/tag-field) is usually a better choice.
 
 <ComponentDemo name="select-multiple" />
 
-### Additional visuals
+### Custom selected value
 
-Icons or images can be added to options to provide immediate visual context and help users differentiate between items at a glance. Use these visual elements when they add meaningful value, such as representing different categories, user profiles, or status indicators.
+Add visual context to options by combining an avatar or icon with text. Pair the visual on the left with a name and short description on the right so users can scan the list quickly. Make sure options stay understandable without the visuals for accessibility purposes.
 
-Visual elements are processed faster than text, reducing cognitive load and helping users make selections more quickly. However, ensure that options remain understandable even without the visuals for accessibility purposes.
+To keep the trigger compact while showing the full layout in the dropdown, pass a `renderValue` callback. It receives the selected items and replaces the default trigger render whenever something is selected. The placeholder still shows when nothing is selected.
+
+The returned content must not include focusable or interactive elements. The trigger is itself a button.
 
 <ComponentDemo name="select-visuals" />
 
@@ -146,9 +135,9 @@ Visual elements are processed faster than text, reducing cognitive load and help
 <TeaserList
   items={[
     {
-      title: 'Building forms',
-      href: '../../patterns/user-input/form-implementation',
-      caption: 'Learn how to build forms.',
+      title: 'Forms',
+      href: '../../patterns/user-input/forms',
+      caption: 'How to structure, validate, and submit forms with Marigold.',
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -1,12 +1,7 @@
-import {
-  ForwardRefExoticComponent,
-  ReactNode,
-  RefAttributes,
-  forwardRef,
-} from 'react';
+import { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { RadioButton, RadioField } from 'react-aria-components';
-import { cn, useClassNames } from '@marigold/system';
+import { RadioButton, RadioField } from 'react-aria-components/RadioGroup';
+import { cn, createWidthVar, useClassNames } from '@marigold/system';
 import { useRadioGroupContext } from './Context';
 import { RadioGroup } from './RadioGroup';
 
@@ -29,6 +24,7 @@ export interface RadioProps extends Omit<RAC.RadioFieldProps, RemovedProps> {
    * @default false
    */
   disabled?: RAC.RadioFieldProps['isDisabled'];
+  ref?: Ref<HTMLLabelElement>;
 }
 
 interface IconProps {
@@ -49,70 +45,63 @@ const Icon = ({ checked, className, ...props }: IconProps) => (
   </div>
 );
 
-const _Radio = forwardRef<HTMLLabelElement, RadioProps>(
-  (
-    {
-      value,
-      disabled,
-      width,
-      children,
-      variant: variantProp,
-      size: sizeProp,
-      ...props
-    },
-    ref
-  ) => {
-    const { variant, size, width: groupWidth } = useRadioGroupContext();
+const _Radio = ({
+  value,
+  disabled,
+  width,
+  children,
+  variant: variantProp,
+  size: sizeProp,
+  ref,
+  ...props
+}: RadioProps) => {
+  const { variant, size } = useRadioGroupContext();
 
-    const classNames = useClassNames({
-      component: 'Radio',
-      variant: variant || variantProp,
-      size: size || sizeProp,
-    });
+  const classNames = useClassNames({
+    component: 'Radio',
+    variant: variant || variantProp,
+    size: size || sizeProp,
+  });
 
-    return (
-      <RadioField
-        className={cn(width || groupWidth || 'w-full')}
-        value={value}
-        isDisabled={disabled}
-        {...props}
+  // `groupWidth` is already applied to the group's FieldBase container, so an
+  // individual Radio only needs to compute its own CSS variable when it has
+  // its own `width` (i.e. used standalone, outside a Radio.Group). Reusing
+  // `groupWidth` here would resize against an already-resized container.
+  return (
+    <RadioField
+      className={cn(width ? 'w-(--field-width) max-w-full min-w-0' : 'w-full')}
+      style={width ? createWidthVar('field-width', `${width}`) : undefined}
+      value={value}
+      isDisabled={disabled}
+      {...props}
+    >
+      <RadioButton
+        ref={ref}
+        className={cn(
+          'group/radio',
+          'relative flex w-full items-start',
+          classNames.container
+        )}
       >
-        <RadioButton
-          ref={ref}
-          className={cn(
-            'group/radio',
-            'relative flex w-full items-center gap-[1ch]',
-            classNames.container
-          )}
-        >
-          {({ isSelected }) => (
-            <>
-              <Icon
-                checked={isSelected}
-                className={cn(
-                  disabled ? 'cursor-not-allowed' : 'cursor-pointer',
-                  classNames.radio
-                )}
-              />
-              <div className={classNames.label}>{children}</div>
-            </>
-          )}
-        </RadioButton>
-      </RadioField>
-    );
-  }
-) as RadioComponent;
+        {({ isSelected }) => (
+          <>
+            <Icon
+              checked={isSelected}
+              className={cn(
+                disabled ? 'cursor-not-allowed' : 'cursor-pointer',
+                classNames.radio
+              )}
+            />
+            <div className={classNames.label}>{children}</div>
+          </>
+        )}
+      </RadioButton>
+    </RadioField>
+  );
+};
 
-export { _Radio as Radio };
+const _MgRadio = Object.assign(_Radio, {
+  Group: RadioGroup,
+});
 
-_Radio.Group = RadioGroup;
-
-/**
- * We need this so that TypeScripts allows us to add
- * additional properties to the component (function).
- */
-export interface RadioComponent extends ForwardRefExoticComponent<
-  RadioProps & RefAttributes<HTMLLabelElement>
-> {
-  Group: typeof RadioGroup;
-}
+export { _MgRadio as Radio };

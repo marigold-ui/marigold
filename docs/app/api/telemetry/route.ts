@@ -7,7 +7,15 @@ export const runtime = 'nodejs';
 
 const EventSchema = z.object({
   event: z.literal('cli_command'),
-  command: z.enum(['docs', 'list', 'search', 'examples', 'init', 'telemetry']),
+  command: z.enum([
+    'docs',
+    'list',
+    'search',
+    'examples',
+    'init',
+    'doctor',
+    'telemetry',
+  ]),
   cliVersion: z.string().max(32),
   nodeVersion: z.string().max(32),
   platform: z.string().max(32),

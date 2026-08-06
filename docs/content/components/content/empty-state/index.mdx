@@ -54,7 +54,7 @@ Use this component to confirm that the lack of data is a valid state in the foll
 
 Timing is critical when displaying empty states. Always show a loading indicator (Skeleton or Spinner) while data is being fetched, and only reveal the empty state after the request completes and confirms no results exist. This prevents the "Flash of Empty Content" - a jarring flicker that can confuse users and make the interface feel unstable.
 
-It's equally important to distinguish between empty and error states. Use the `<EmptyState>` component exclusively for successful operations that return no data. For system failures, network errors, or other exceptions, use a `<Toast>` notification instead. This clear separation helps users understand whether they need to take action or simply recognize that no content exists yet.
+It's equally important to distinguish between empty and error states. Use the `<EmptyState>` component exclusively for successful operations that return no data. For system failures, network errors, or other exceptions, use an [ErrorState](/components/content/error-state) instead (see the [error boundaries pattern](/patterns/feedback/error-boundaries)). This clear separation helps users understand whether they need to take action or simply recognize that no content exists yet.
 
 ### Content Strategy
 
@@ -93,7 +93,7 @@ Effective `<EmptyState>` content serves as a conversation with the user, bridgin
 
 ### Accessibility
 
-The `<EmptyState>` component is accessible by default through its required title, which provides screen readers with clear context about the empty state. The decorative illustration is marked with `aria-hidden="true"`, ensuring assistive technologies correctly ignore it and focus on the meaningful text content.
+The `<EmptyState>` component is accessible by default through its required title, which renders as a semantic heading (`<h3>` by default) so screen reader users can navigate to it. Adjust the level with the `headingLevel` prop so it fits the surrounding document outline. The decorative illustration is marked with `aria-hidden="true"`, ensuring assistive technologies correctly ignore it and focus on the meaningful text content.
 
 ## Props
 
@@ -110,8 +110,9 @@ The `<EmptyState>` component is accessible by default through its required title
     being retrieved and will appear shortly.
   </li>
   <li>
-    [Toast](/components/overlay/toast): Use for error states or system failures.
-    When something goes wrong during data retrieval, a Toast provides immediate
-    feedback without replacing the main content area.
+    [ErrorState](/components/content/error-state): Use for failures. When data
+    retrieval or rendering breaks, `ErrorState` replaces the content area and
+    offers a way to recover. See the [error boundaries
+    pattern](/patterns/feedback/error-boundaries).
   </li>
 </ul>

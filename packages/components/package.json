@@ -1,6 +1,6 @@
 {
   "name": "@marigold/components",
-  "version": "17.9.1",
+  "version": "18.0.0-rc.5",
   "description": "Components for the Marigold Design System",
   "license": "MIT",
   "keywords": [
@@ -45,17 +45,19 @@
     "directory": "packages/components"
   },
   "dependencies": {
-    "@internationalized/date": "^3.12.2",
+    "@internationalized/date": "^3.12.3",
     "@marigold/system": "workspace:*",
     "@marigold/types": "workspace:*",
     "@react-aria/button": "^3.15.1",
     "@react-aria/calendar": "^3.10.1",
     "@react-aria/collections": "3.1.1",
     "@react-aria/focus": "^3.22.1",
+    "@react-aria/form": "^3.2.1",
     "@react-aria/i18n": "^3.13.1",
     "@react-aria/interactions": "^3.28.1",
     "@react-aria/label": "^3.8.1",
     "@react-aria/landmark": "^3.1.1",
+    "@react-aria/live-announcer": "^3.5.1",
     "@react-aria/overlays": "^3.32.1",
     "@react-aria/selection": "^3.28.1",
     "@react-aria/ssr": "^3.10.1",
@@ -64,6 +66,7 @@
     "@react-aria/visually-hidden": "^3.9.1",
     "@react-stately/collections": "^3.13.1",
     "@react-stately/data": "^3.16.1",
+    "@react-stately/form": "^3.3.1",
     "@react-stately/overlays": "^3.7.1",
     "@react-stately/table": "^3.16.1",
     "@react-stately/tree": "^3.10.1",
@@ -71,10 +74,10 @@
     "@react-types/button": "~3.15.0",
     "@react-types/checkbox": "~3.10.0",
     "@react-types/grid": "~3.3.0",
-    "@react-types/shared": "^3.35.0",
+    "@react-types/shared": "^3.36.1",
     "@react-types/table": "~3.13.0",
-    "motion": "12.39.0",
-    "react-aria-components": "^1.18.0",
+    "motion": "12.43.0",
+    "react-aria-components": "^1.20.0",
     "react-select": "^5.10.2"
   },
   "peerDependencies": {
@@ -85,12 +88,13 @@
     "@marigold/icons": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
     "@size-limit/preset-small-lib": "^12.1.0",
-    "@types/react": "19.2.17",
-    "lucide-react": "^1.7.0",
-    "react": "19.2.7",
-    "react-dom": "19.2.7",
+    "@types/react": "19.2.18",
+    "lucide-react": "^1.28.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-error-boundary": "6.1.2",
     "size-limit": "^12.1.0",
-    "tsdown": "0.22.3"
+    "tsdown": "0.22.14"
   },
   "scripts": {
     "build": "tsdown",

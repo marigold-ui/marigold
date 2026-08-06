@@ -1,18 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import { Base, WithBreakout } from './Container.stories';
+import { Base } from './Container.stories';
 
 describe('Container', () => {
   describe('Rendering', () => {
     test('renders content correctly', () => {
       render(<Base.Component data-testid="container" />);
-
-      const container = screen.getByTestId('container');
-
-      expect(container).toBeInTheDocument();
-    });
-
-    test('renders with breakout content', () => {
-      render(<WithBreakout.Component data-testid="container" />);
 
       const container = screen.getByTestId('container');
 
@@ -48,32 +40,6 @@ describe('Container', () => {
         longContainer.style.getPropertyValue('--maxTextWidth');
 
       expect(defaultTextWidth).not.toEqual(longTextWidth);
-    });
-  });
-
-  describe('Alignment', () => {
-    test('aligns children on left by default', () => {
-      render(<Base.Component data-testid="container" />);
-
-      const container = screen.getByTestId('container');
-
-      expect(container).toHaveClass('*:col-[1]');
-    });
-
-    test('aligns children to the center', () => {
-      render(<Base.Component data-testid="container" align="center" />);
-
-      const container = screen.getByTestId('container');
-
-      expect(container).toHaveClass('*:col-[2]');
-    });
-
-    test('aligns children to the right', () => {
-      render(<Base.Component data-testid="container" align="right" />);
-
-      const container = screen.getByTestId('container');
-
-      expect(container).toHaveClass('*:col-[3]');
     });
   });
 

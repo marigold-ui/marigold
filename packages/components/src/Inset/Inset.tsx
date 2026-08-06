@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import type {
   InsetSpacingTokens,
   PaddingSpacingTokens,
@@ -13,37 +13,38 @@ export type InsetProps =
        * The children of the component
        */
       children: ReactNode;
-      space?: never;
+      p?: never;
       /**
        * Horizontal padding for the children. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
        */
-      spaceX?: SpaceProp<PaddingSpacingTokens>['space'];
+      px?: SpaceProp<PaddingSpacingTokens>['space'];
       /**
        * Vertical padding for the children. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
        */
-      spaceY?: SpaceProp<PaddingSpacingTokens>['space'];
+      py?: SpaceProp<PaddingSpacingTokens>['space'];
     })
   | (AriaRegionProps & {
       children: ReactNode;
       /**
        * The padding of the children. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
        */
-      space?: SpaceProp<InsetSpacingTokens>['space'];
-      spaceX?: never;
-      spaceY?: never;
+      p?: SpaceProp<InsetSpacingTokens>['space'];
+      px?: never;
+      py?: never;
     });
 
-export const Inset = ({ space, spaceX, spaceY, children }: InsetProps) => (
+export const Inset = ({ p, px, py, children, ...props }: InsetProps) => (
   <div
+    {...props}
     className={cn(
-      space !== undefined && 'p-(--space)',
-      spaceX !== undefined && 'px-(--spaceX)',
-      spaceY !== undefined && 'py-(--spaceY)'
+      p !== undefined && 'p-(--inset-p)',
+      px !== undefined && 'px-(--inset-px)',
+      py !== undefined && 'py-(--inset-py)'
     )}
     style={{
-      ...(space !== undefined ? createSpacingVar('space', `${space}`) : {}),
-      ...(spaceX !== undefined ? createSpacingVar('spaceX', `${spaceX}`) : {}),
-      ...(spaceY !== undefined ? createSpacingVar('spaceY', `${spaceY}`) : {}),
+      ...(p !== undefined ? createSpacingVar('inset-p', `${p}`) : {}),
+      ...(px !== undefined ? createSpacingVar('inset-px', `${px}`) : {}),
+      ...(py !== undefined ? createSpacingVar('inset-py', `${py}`) : {}),
     }}
   >
     {children}

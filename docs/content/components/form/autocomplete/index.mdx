@@ -37,8 +37,8 @@ Autocomplete is made up of a form input field, label, and overlay of menu option
     from the input field.
   </li>
   <li>
-    <b>Dropdown arrow:</b> An icon indicating that more options are available;
-    clicking it reveals a list of selectable items.
+    <b>Dropdown arrow:</b> An icon indicating that more options are available.
+    Clicking it reveals a list of selectable items.
   </li>
   <li>
     <b>Overlay:</b> Hold a list of all possible options which can be selected.
@@ -106,6 +106,10 @@ Always display a label unless the `<Autocomplete>` is next to another component 
 Consider the width of the Autocomplete and keep the names of the options short and compact so that they fit. Long
 item
 names that occupy multiple lines are hard to perceive and should be avoided.
+
+For options that need a primary label and a secondary line, compose with `<TextValue>` and `<Description>`. The description is wired to the option's `aria-describedby` automatically.
+
+<ComponentDemo name="autocomplete-description" />
 
 <GuidelineTiles>
   <Do>
@@ -195,9 +199,9 @@ This can be achieved by wrapping the options in the `<Autocomplete.Section>` com
 <TeaserList
   items={[
     {
-      title: 'Form developement guide',
-      href: '../../patterns/user-input/form-implementation',
-      caption: 'Learn how to build forms.',
+      title: 'Forms',
+      href: '../../patterns/user-input/forms',
+      caption: 'How to structure, validate, and submit forms with Marigold.',
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"

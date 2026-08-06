@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
-import { Cell } from 'react-aria-components';
+import { Cell } from 'react-aria-components/Table';
 import { cn, textAlign, verticalAlign } from '@marigold/system';
 import { useTableContext } from './Context';
 import { TableCellContent } from './TableCellContent';

@@ -86,6 +86,17 @@ In addition to removing individual tags, you can also provide an option to remov
 
 <ComponentDemo name="tag-remove-all" />
 
+### Collapsing many tags
+
+Use `collapseAt` when the number of tags is unpredictable or user-generated, such as applied filters or selected categories, and could grow large enough to push surrounding content out of view. It caps the visible tags at a fixed count and moves the rest behind a "Show more" toggle, keeping the layout predictable while still giving users access to the full set.
+
+<ComponentDemo name="tag-collapse" />
+
+<Callout title="Auto-Expand on Selection">
+  If a tag that would normally be hidden by `collapseAt` is already selected,
+  the group starts out expanded so that tag stays visible.
+</Callout>
+
 ## Props
 
 <StorybookHintMessage component={'Tag'} />

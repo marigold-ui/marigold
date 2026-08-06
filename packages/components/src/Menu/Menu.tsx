@@ -1,6 +1,7 @@
 import { Key, ReactNode } from 'react';
 import type RAC from 'react-aria-components';
-import { Menu, MenuTrigger, Button as RACButton } from 'react-aria-components';
+import { Button as RACButton } from 'react-aria-components/Button';
+import { Menu, MenuTrigger } from 'react-aria-components/Menu';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useClassNames, useSmallScreen } from '@marigold/system';
 import { Button } from '../Button/Button';

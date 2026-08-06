@@ -67,10 +67,14 @@ const exclude = [
   '**/dist/**',
   '**/cypress/**',
   '**/.{idea,git,cache,output,temp}/**',
+  // Agent worktrees under .claude/worktrees/ are full checkouts of other
+  // branches, on their own (often stale) dependency state. Collecting them
+  // makes local runs report failures that have nothing to do with the working
+  // tree. Not an issue in CI (fresh checkout), but it breaks local verification.
+  '**/.claude/worktrees/**',
   '**/*.config.*',
   '**/config/**',
   '**/docs*/**',
-  '**/icons/**',
   '**/themes/**',
   '**/packages/types/**',
   // @marigold/cli runs node-mode tests from its own vitest config.

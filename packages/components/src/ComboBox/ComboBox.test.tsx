@@ -1,7 +1,10 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic } from './ComboBox.stories';
+
+const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
 const user = userEvent.setup();
 
@@ -25,13 +28,13 @@ test('check classname slots', () => {
   const button = screen.getByRole('button');
 
   expect(button.className).toMatchInlineSnapshot(
-    `"shrink-0 outline-0 absolute cursor-pointer pr-1 text-muted-foreground/80 right-2"`
+    `"shrink-0 outline-0 absolute cursor-pointer right-0 flex size-control items-center justify-center text-secondary/80"`
   );
   expect(container?.className).toMatchInlineSnapshot(
     `"group/field flex min-w-0 flex-col w-auto"`
   );
   expect(label.className).toMatchInlineSnapshot(
-    `"items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled-foreground group-required/field:after:ui-required-indicator group-required/field:after:-ml-1 group-required/field:after:text-destructive in-field:mb-1.5 inline-flex"`
+    `"items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled group-required/field:after:ui-required-indicator group-required/field:after:-ml-1 group-required/field:after:text-destructive-accent in-field:mb-1.5 inline-flex"`
   );
 });
 
@@ -109,6 +112,18 @@ test('hides loading state when loading is false', () => {
   expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
 });
 
+test('does not allow width="fit"', () => {
+  renderWithOverlay(
+    // @ts-expect-error - `width="fit"` is intentionally unsupported; assert it is not applied
+    <Basic.Component label="Label" width="fit" />
+  );
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getByText('Label').parentElement;
+
+  expect(container).not.toHaveClass('w-fit');
+});
+
 test('supports specific empty state text', async () => {
   renderWithOverlay(
     <Basic.Component
@@ -123,4 +138,32 @@ test('supports specific empty state text', async () => {
 
   const emptyState = await screen.findByText('No vegetables found');
   expect(emptyState).toBeInTheDocument();
+});
+
+describe('mobile view', () => {
+  beforeEach(() => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+  });
+
+  afterEach(() => {
+    window.matchMedia = mockMatchMedia([]);
+  });
+
+  test('keeps the tray in the accessibility tree (DST-1680)', async () => {
+    renderWithOverlay(<Basic.Component label="Label" />);
+
+    await user.click(screen.getByRole('button'));
+
+    // `useComboBox` hides everything outside the combobox surface via
+    // `ariaHideOutside`. Without `useComboBoxTrayRef` that surface is empty, so
+    // the tray's own portal root gets `aria-hidden="true"` and screen readers
+    // cannot reach the dialog, input or options at all. Queried with
+    // `hidden: true` on purpose: the default role query already skips
+    // `aria-hidden` subtrees, so it would fail on the lookup instead of naming
+    // the invariant.
+    const dialog = await screen.findByRole('dialog', { hidden: true });
+
+    // eslint-disable-next-line testing-library/no-node-access
+    expect(dialog.closest('[aria-hidden="true"]')).toBeNull();
+  });
 });

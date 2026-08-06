@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { DisclosurePanel } from 'react-aria-components';
+import { DisclosurePanel } from 'react-aria-components/Disclosure';
 import { useAccordionContext } from './AccordionContext';
 
 export interface AccordionPanelProps {

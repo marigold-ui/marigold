@@ -13,6 +13,9 @@ const Block = ({ children }: { children: ReactNode }) => (
 const meta = preview.meta({
   title: 'Components/Split',
   component: Split,
+  parameters: {
+    surface: false,
+  },
 });
 
 export const WithInline = meta.story({

@@ -1,7 +1,8 @@
-import { forwardRef } from 'react';
+import type { Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Modal } from 'react-aria-components';
+import { Modal } from 'react-aria-components/Modal';
 import { useClassNames } from '@marigold/system';
+import { ResetButtonContext } from '../Button/ResetButtonContext';
 import { Underlay } from './Underlay';
 
 // Props
@@ -24,39 +25,34 @@ export interface ModalProps extends Omit<RAC.ModalOverlayProps, 'render'> {
 
 // Component
 // ---------------
-const _Modal = forwardRef<
-  HTMLDivElement,
-  Omit<
-    ModalProps,
-    'isOpen' | 'isDismissable' | 'isKeyboardDismissDisabled' | 'className'
-  >
->(
-  (
-    {
-      size,
-      open,
-      dismissable,
-      keyboardDismissable,
-      onOpenChange,
-      children,
-      ...props
-    },
-    ref
-  ) => {
-    const className = useClassNames({ component: 'Modal', size });
-    return (
-      <Underlay
-        dismissable={dismissable}
-        keyboardDismissable={keyboardDismissable}
-        open={open}
-        onOpenChange={onOpenChange}
-      >
+const ModalBase = ({
+  size,
+  open,
+  dismissable,
+  keyboardDismissable,
+  onOpenChange,
+  children,
+  ref,
+  ...props
+}: Omit<
+  ModalProps,
+  'isOpen' | 'isDismissable' | 'isKeyboardDismissDisabled' | 'className'
+> & { ref?: Ref<HTMLDivElement> }) => {
+  const className = useClassNames({ component: 'Modal', size });
+  return (
+    <Underlay
+      dismissable={dismissable}
+      keyboardDismissable={keyboardDismissable}
+      open={open}
+      onOpenChange={onOpenChange}
+    >
+      <ResetButtonContext>
         <Modal {...props} className={className} ref={ref}>
           {children}
         </Modal>
-      </Underlay>
-    );
-  }
-);
+      </ResetButtonContext>
+    </Underlay>
+  );
+};
 
-export { _Modal as Modal };
+export { ModalBase as Modal };

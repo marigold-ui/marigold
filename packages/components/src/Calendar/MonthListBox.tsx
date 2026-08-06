@@ -1,10 +1,12 @@
-import { Dispatch, SetStateAction } from 'react';
-import { CalendarMonthPicker } from 'react-aria-components';
-import { useCalendarOrRangeState } from './Context';
+import type { Dispatch, SetStateAction } from 'react';
+import { CalendarMonthPicker } from 'react-aria-components/Calendar';
+import { type CalendarDropdownView, useCalendarOrRangeState } from './Context';
 import { ListBox } from './ListBox';
 
 interface MonthDropdownProps {
-  setSelectedDropdown: Dispatch<SetStateAction<string | undefined>>;
+  setSelectedDropdown: Dispatch<
+    SetStateAction<CalendarDropdownView | undefined>
+  >;
 }
 
 const MonthListBox = ({ setSelectedDropdown }: MonthDropdownProps) => {

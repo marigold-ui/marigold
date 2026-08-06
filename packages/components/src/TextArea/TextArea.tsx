@@ -1,6 +1,7 @@
-import { forwardRef } from 'react';
+import type { Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { TextArea, TextField } from 'react-aria-components';
+import { TextArea } from 'react-aria-components/TextArea';
+import { TextField } from 'react-aria-components/TextField';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 
@@ -81,44 +82,41 @@ export interface TextAreaProps
    * @default none
    */
   rows?: number;
+  ref?: Ref<HTMLTextAreaElement>;
 }
 
 // Component
 // ---------------
-const _TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  (
-    {
-      variant,
-      size,
-      required,
-      disabled,
-      readOnly,
-      error,
-      rows,
-      ...rest
-    }: TextAreaProps,
-    ref
-  ) => {
-    const classNames = useClassNames({ component: 'TextArea', variant, size });
+const _TextArea = ({
+  variant,
+  size,
+  required,
+  disabled,
+  readOnly,
+  error,
+  rows,
+  ref,
+  ...rest
+}: TextAreaProps) => {
+  const classNames = useClassNames({ component: 'TextArea', variant, size });
 
-    const props: RAC.TextFieldProps = {
-      isDisabled: disabled,
-      isReadOnly: readOnly,
-      isInvalid: error,
-      isRequired: required,
-      ...rest,
-    };
+  const props: RAC.TextFieldProps = {
+    isDisabled: disabled,
+    isReadOnly: readOnly,
+    isInvalid: error,
+    isRequired: required,
+    ...rest,
+  };
 
-    return (
-      <FieldBase as={TextField} {...props} variant={variant} size={size}>
-        <TextArea
-          className={cn(classNames, 'w-(--field-width) max-w-full min-w-0')}
-          ref={ref}
-          rows={rows}
-        />
-      </FieldBase>
-    );
-  }
-);
+  return (
+    <FieldBase as={TextField} {...props} variant={variant} size={size}>
+      <TextArea
+        className={cn(classNames, 'w-(--field-width) max-w-full min-w-0')}
+        ref={ref}
+        rows={rows}
+      />
+    </FieldBase>
+  );
+};
 
 export { _TextArea as TextArea };

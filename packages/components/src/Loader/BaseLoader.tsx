@@ -1,6 +1,9 @@
 import type { ReactNode } from 'react';
-import type { ProgressBarProps } from 'react-aria-components';
-import { Label, ProgressBar } from 'react-aria-components';
+import { Label } from 'react-aria-components/Label';
+import {
+  ProgressBar,
+  type ProgressBarProps,
+} from 'react-aria-components/ProgressBar';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useClassNames } from '@marigold/system';
 import { ProgressCircleSvg } from '../ProgressCircle/ProgressCircle';
@@ -185,21 +188,24 @@ export const BaseLoader = ({
   size,
   children,
   'aria-label': ariaLabel,
+  'aria-labelledby': ariaLabelledby,
   loaderType = 'circle',
   ...props
 }: BaseLoaderProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');
   const className = useClassNames({ component: 'Loader', variant, size });
 
+  // Localized label is only a fallback; let a consumer's label win.
+  const hasLabel = ariaLabel || ariaLabelledby || children;
+
   return (
     <ProgressBar
       className={className.container}
       isIndeterminate
       aria-label={
-        ariaLabel || children
-          ? ariaLabel
-          : stringFormatter.format('loadingMessage')
+        hasLabel ? ariaLabel : stringFormatter.format('loadingMessage')
       }
+      aria-labelledby={ariaLabelledby}
       {...props}
     >
       {loaderType === 'xloader' ? (

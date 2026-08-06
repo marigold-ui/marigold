@@ -1,9 +1,7 @@
 import type { ReactNode } from 'react';
-import { useContext } from 'react';
-import {
-  ComboBoxStateContext,
-  Button as RACButton,
-} from 'react-aria-components';
+import { use } from 'react';
+import { Button as RACButton } from 'react-aria-components/Button';
+import { ComboBoxStateContext } from 'react-aria-components/ComboBox';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
 import { Button } from '../Button/Button';
@@ -12,6 +10,7 @@ import { ListBox } from '../ListBox/ListBox';
 import { Tray } from '../Tray/Tray';
 import { Search } from '../icons/Search';
 import { intlMessages } from '../intl/messages';
+import { useComboBoxTrayRef } from '../utils/useComboBoxTrayRef';
 
 // Props
 // ---------------
@@ -33,7 +32,7 @@ interface MobileAutocompleteProps {
 const MobileAutocompleteTrigger = ({
   placeholder,
 }: MobileAutocompleteTriggerProps) => {
-  const state = useContext(ComboBoxStateContext);
+  const state = use(ComboBoxStateContext);
   const inputClassNames = useClassNames({ component: 'Input' });
   const autocompleteClassNames = useClassNames({ component: 'Autocomplete' });
   const displayText = state?.selectedItem?.textValue || '';
@@ -58,9 +57,7 @@ const MobileAutocompleteTrigger = ({
           inputClassNames.input
         )}
       >
-        {displayText || (
-          <span className="text-muted-foreground">{placeholder}</span>
-        )}
+        {displayText || <span className="text-secondary">{placeholder}</span>}
       </span>
     </div>
   );
@@ -76,13 +73,14 @@ const MobileAutocomplete = ({
   input,
 }: MobileAutocompleteProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const trayRef = useComboBoxTrayRef();
 
   return (
     <Tray.Trigger>
       <RACButton className="group/trigger outline-none">
         <MobileAutocompleteTrigger placeholder={placeholder} />
       </RACButton>
-      <Tray>
+      <Tray ref={trayRef}>
         <Tray.Title>{label}</Tray.Title>
         <Tray.Content className={'flex flex-col gap-2'}>
           {input}

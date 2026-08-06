@@ -1,14 +1,13 @@
 import { createContext, use } from 'react';
-import {
-  CalendarStateContext,
-  type DateValue,
-  RangeCalendarStateContext,
-} from 'react-aria-components';
+import { CalendarStateContext } from 'react-aria-components/Calendar';
+import type { DateValue } from 'react-aria-components/Calendar';
+import { RangeCalendarStateContext } from 'react-aria-components/RangeCalendar';
 import type { ComponentClassNames } from '@marigold/system';
 
 export type CalendarSharedClassNames =
-  | ComponentClassNames<'Calendar'>
-  | ComponentClassNames<'RangeCalendar'>;
+  ComponentClassNames<'Calendar'> | ComponentClassNames<'RangeCalendar'>;
+
+export type CalendarDropdownView = 'month' | 'year';
 
 export interface CalendarContextValue {
   classNames: CalendarSharedClassNames;
@@ -16,6 +15,8 @@ export interface CalendarContextValue {
   minValue?: DateValue | null;
   maxValue?: DateValue | null;
   disabled?: boolean;
+  /** Whether this is a `<RangeCalendar>`. Statically known by both parents. */
+  isRange: boolean;
 }
 
 export const CalendarContext = createContext<CalendarContextValue | null>(null);

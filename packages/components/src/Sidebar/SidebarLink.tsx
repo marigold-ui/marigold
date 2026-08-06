@@ -5,6 +5,7 @@ import {
   useObjectRef,
   useRouter,
 } from '@react-aria/utils';
+import { activateOnEnterOrSpace, isModifiedClick } from './linkActivation';
 import { useRovingItem } from './useSidebarNav';
 
 export interface SidebarLinkProps {
@@ -30,7 +31,10 @@ export const SidebarLink = ({
 }: SidebarLinkProps) => {
   const ref = useObjectRef(forwardedRef);
   const router = useRouter();
-  const routerLinkProps = useLinkProps({ href });
+  // Sole source of the rendered href, since a raw `href` would shadow the
+  // router's `useHref`. Pass undefined when there is none, or `useLinkProps`
+  // yields href="", which would make a branch trigger a link.
+  const routerLinkProps = useLinkProps(href ? { href } : undefined);
   const { tabIndex, onFocus } = useRovingItem(dataKey!);
 
   return (
@@ -39,16 +43,19 @@ export const SidebarLink = ({
       data-active={dataActive}
       data-key={dataKey}
       ref={ref}
-      href={href}
       role={href ? undefined : 'button'}
       className={className}
       tabIndex={tabIndex}
       aria-current={ariaCurrent}
       onFocus={onFocus}
       onClick={e => {
+        // Browser-owned clicks (new tab/window) keep native anchor behavior;
+        // the side effects (drill-in, drawer close) stay with the current view.
+        if (href && isModifiedClick(e)) return;
         onPress?.();
         handleLinkClick(e, router, href, undefined);
       }}
+      onKeyDown={href ? undefined : activateOnEnterOrSpace}
     >
       {children}
     </a>

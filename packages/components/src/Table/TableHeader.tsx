@@ -1,10 +1,10 @@
 import type RAC from 'react-aria-components';
+import { Collection } from 'react-aria-components/Collection';
 import {
-  Collection,
   Column,
   TableHeader as RACTableHeader,
   useTableOptions,
-} from 'react-aria-components';
+} from 'react-aria-components/Table';
 import { cn } from '@marigold/system';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { useTableContext } from './Context';
@@ -41,7 +41,7 @@ const TableHeader = <T extends object>({
       {...props}
     >
       {allowsDragging && (
-        <Column className={classNames.column} minWidth={24} width={24} />
+        <Column className={classNames.column} minWidth={36} width={36} />
       )}
       {selectionBehavior === 'toggle' && (
         <Column minWidth={36} width={36} className={classNames.column}>

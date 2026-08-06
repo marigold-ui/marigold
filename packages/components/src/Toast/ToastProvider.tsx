@@ -1,5 +1,5 @@
-import { UNSTABLE_ToastRegion as ToastRegion } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { UNSTABLE_ToastRegion as ToastRegion } from 'react-aria-components/Toast';
 import { useClassNames } from '@marigold/system';
 import { Toast } from './Toast';
 import { getToastQueue } from './ToastQueue';
@@ -14,12 +14,7 @@ export interface ToastProviderProps extends Omit<
 type RemovedProps = 'children' | 'className' | 'style' | 'queue';
 
 type ToastPosition =
-  | 'bottom-left'
-  | 'bottom-right'
-  | 'top-left'
-  | 'top-right'
-  | 'top'
-  | 'bottom';
+  'bottom-left' | 'bottom-right' | 'top-left' | 'top-right' | 'top' | 'bottom';
 
 const ToastProvider = ({ position = 'bottom-right' }: ToastProviderProps) => {
   const classNames = useClassNames({

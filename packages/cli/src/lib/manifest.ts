@@ -34,6 +34,10 @@ export interface Manifest {
   version?: string;
   generatedAt?: string;
   baseUrl: string;
+  // Published versions of the public packages, keyed by package name. Consumed
+  // by `marigold doctor` to flag out-of-date installs. Optional: older cached
+  // manifests predate this field.
+  packages?: Record<string, string>;
   categories: ManifestCategory[];
   pages: ManifestPage[];
 }
@@ -54,6 +58,7 @@ interface RawManifest {
   version?: string | null;
   generatedAt?: string | null;
   baseUrl: string;
+  packages?: Record<string, string> | null;
   pages: RawManifestPage[];
 }
 
@@ -114,6 +119,7 @@ const transformManifest = (raw: RawManifest): Manifest => {
     version: clean(raw.version),
     generatedAt: clean(raw.generatedAt),
     baseUrl: raw.baseUrl,
+    packages: raw.packages ?? undefined,
     categories,
     pages: standalonePages,
   };

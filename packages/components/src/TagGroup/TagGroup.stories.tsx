@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { I18nProvider } from 'react-aria-components';
-import { expect, fn, waitFor, within } from 'storybook/test';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Key } from '@react-types/shared';
 import { Button } from '../Button/Button';
+import { Form } from '../Form/Form';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { Tag } from './Tag';
@@ -27,7 +28,7 @@ export const Basic = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   args: {
-    onSelectionChange: fn(),
+    onChange: fn(),
   },
   render: args => (
     <Tag.Group {...args} selectionMode="multiple" label="Categories">
@@ -46,9 +47,31 @@ Basic.test(
     await userEvent.click(canvas.getByText('News'));
     await userEvent.click(canvas.getByText('Gaming'));
 
-    expect(args.onSelectionChange).toHaveBeenCalledWith(
+    expect(args.onChange).toHaveBeenCalledWith(
       expect.objectContaining(new Set(['news', 'gaming']))
     );
+  }
+);
+
+Basic.test(
+  'Navigates between tags with arrow keys',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    const news = canvas.getByText('News').closest('[role="row"]')!;
+    const travel = canvas.getByText('Travel').closest('[role="row"]')!;
+    const gaming = canvas.getByText('Gaming').closest('[role="row"]')!;
+
+    (news as HTMLElement).focus();
+    expect(news).toHaveFocus();
+
+    await userEvent.keyboard('{ArrowRight}');
+    expect(travel).toHaveFocus();
+
+    await userEvent.keyboard('{ArrowRight}');
+    expect(gaming).toHaveFocus();
+
+    await userEvent.keyboard('{ArrowLeft}');
+    expect(travel).toHaveFocus();
   }
 );
 
@@ -183,5 +206,245 @@ RemovableAllTags.test(
     await waitFor(() =>
       expect(canvas.queryByText('Remove all')).not.toBeInTheDocument()
     );
+  }
+);
+
+export const WithError = meta.story({
+  render: args => (
+    <Tag.Group
+      {...args}
+      selectionMode="multiple"
+      label="Categories"
+      error
+      errorMessage="Please pick at least one category."
+    >
+      <Tag id="news">News</Tag>
+      <Tag id="travel">Travel</Tag>
+      <Tag id="gaming">Gaming</Tag>
+      <Tag id="shopping">Shopping</Tag>
+    </Tag.Group>
+  ),
+});
+
+export const WithForm = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => (
+    <Form
+      onSubmit={e => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const submitted = formData.getAll('categories').join(',');
+        (e.currentTarget.querySelector(
+          '[data-testid=submitted]'
+        ) as HTMLElement)!.textContent = `submitted: ${submitted}`;
+      }}
+    >
+      <Stack space={4} alignX="left">
+        <Tag.Group
+          {...args}
+          selectionMode="multiple"
+          label="Categories"
+          name="categories"
+        >
+          <Tag id="news">News</Tag>
+          <Tag id="travel">Travel</Tag>
+          <Tag id="gaming">Gaming</Tag>
+          <Tag id="shopping">Shopping</Tag>
+        </Tag.Group>
+        <Button type="submit" variant="primary">
+          Submit
+        </Button>
+        <pre data-testid="submitted">submitted:</pre>
+      </Stack>
+    </Form>
+  ),
+});
+
+WithForm.test(
+  'submits the selected tags as form data',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    await userEvent.click(await canvas.findByText('Travel'));
+    await userEvent.click(canvas.getByText('Gaming'));
+    await userEvent.click(canvas.getByRole('button', { name: /submit/i }));
+
+    await waitFor(() => {
+      expect(canvas.getByTestId('submitted')).toHaveTextContent(
+        'submitted: travel,gaming'
+      );
+    });
+  }
+);
+
+export const Required = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <Form>
+      <Stack space={4} alignX="left">
+        <Tag.Group
+          {...args}
+          selectionMode="multiple"
+          label="Categories"
+          name="categories"
+          required
+          errorMessage="Pick at least one category."
+        >
+          <Tag id="news">News</Tag>
+          <Tag id="travel">Travel</Tag>
+          <Tag id="gaming">Gaming</Tag>
+          <Tag id="shopping">Shopping</Tag>
+        </Tag.Group>
+        <Button type="submit" variant="primary">
+          Submit
+        </Button>
+      </Stack>
+    </Form>
+  ),
+});
+
+Required.test(
+  'shows the validation error when submitted without a selection',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('button', { name: /submit/i }));
+
+    await waitFor(() =>
+      expect(
+        canvas.getByText('Pick at least one category.')
+      ).toBeInTheDocument()
+    );
+  }
+);
+
+export const CollapseAt = meta.story({
+  tags: ['component-test'],
+  args: {
+    collapseAt: 5,
+    onChange: fn(),
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <Tag.Group {...args} selectionMode="multiple" label="Categories">
+        <Tag id="news">News</Tag>
+        <Tag id="travel">Travel</Tag>
+        <Tag id="gaming">Gaming</Tag>
+        <Tag id="shopping">Shopping</Tag>
+        <Tag id="sports">Sports</Tag>
+        <Tag id="music">Music</Tag>
+        <Tag id="movies">Movies</Tag>
+        <Tag id="tech">Tech</Tag>
+        <Tag id="food">Food</Tag>
+        <Tag id="travelblog">Travel Blog</Tag>
+      </Tag.Group>
+    </I18nProvider>
+  ),
+});
+
+CollapseAt.test(
+  'hides tags beyond collapseAt and expands on toggle',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    expect(canvas.getByText('News')).toBeVisible();
+    expect(canvas.getByText('Sports')).toBeVisible();
+    expect(canvas.queryByText('Music')).not.toBeVisible();
+    expect(canvas.queryByText('Travel Blog')).not.toBeVisible();
+    expect(canvas.getByText('Show 5 more')).toBeVisible();
+
+    await userEvent.click(canvas.getByText('Show 5 more'));
+
+    expect(canvas.getByText('Music')).toBeVisible();
+    expect(canvas.getByText('Travel Blog')).toBeVisible();
+    expect(canvas.getByText('Show 5 less')).toBeVisible();
+
+    await userEvent.click(canvas.getByText('Show 5 less'));
+
+    expect(canvas.queryByText('Music')).not.toBeVisible();
+    expect(canvas.getByText('Show 5 more')).toBeVisible();
+  }
+);
+
+CollapseAt.test(
+  'selecting a hidden tag still works via keyboard-free click after expanding',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ args, canvas }) => {
+    await userEvent.click(canvas.getByText('Show 5 more'));
+    await userEvent.click(canvas.getByText('Music'));
+
+    expect(args.onChange).toHaveBeenCalledWith(
+      expect.objectContaining(new Set(['music']))
+    );
+  }
+);
+
+export const CollapseAtWithRemove = meta.story({
+  tags: ['component-test'],
+  render: args => {
+    const defaultTags = [
+      { id: 'news', name: 'News' },
+      { id: 'travel', name: 'Travel' },
+      { id: 'gaming', name: 'Gaming' },
+      { id: 'shopping', name: 'Shopping' },
+      { id: 'sports', name: 'Sports' },
+      { id: 'music', name: 'Music' },
+      { id: 'movies', name: 'Movies' },
+    ];
+    const [tags, setTags] = useState(defaultTags);
+
+    const onRemove = (keys: Set<Key>) => {
+      setTags(prevTags => prevTags.filter(tag => !keys.has(tag.id)));
+    };
+
+    return (
+      <I18nProvider locale="en-US">
+        <Stack space={6} alignX="left">
+          <Tag.Group
+            {...args}
+            collapseAt={3}
+            onRemove={onRemove}
+            removeAll
+            emptyState={() => (
+              <Text variant="muted" fontSize="sm" fontStyle="italic">
+                No tags.
+              </Text>
+            )}
+          >
+            {tags.map(tag => (
+              <Tag key={tag.id} id={tag.id}>
+                {tag.name}
+              </Tag>
+            ))}
+          </Tag.Group>
+          <Button onPress={() => setTags(defaultTags)}>Reset</Button>
+        </Stack>
+      </I18nProvider>
+    );
+  },
+});
+
+CollapseAtWithRemove.test(
+  'the collapsed count shrinks as visible tags are removed',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    expect(canvas.getByText('Show 4 more')).toBeVisible();
+
+    const news = canvas.getByText('News');
+    await userEvent.click(within(news).getByRole('button'));
+
+    await waitFor(() =>
+      expect(canvas.queryByText('News')).not.toBeInTheDocument()
+    );
+    expect(canvas.getByText('Show 3 more')).toBeVisible();
+  }
+);
+
+CollapseAtWithRemove.test(
+  'removing all tags shows the empty state and hides the toggle',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    await userEvent.click(canvas.getByText('Remove all'));
+
+    await waitFor(() => expect(canvas.getByText('No tags.')).toBeVisible());
+    expect(canvas.queryByText(/show \d+ more/i)).not.toBeInTheDocument();
   }
 );

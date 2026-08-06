@@ -23,7 +23,7 @@ export default () => {
       }}
       onReset={() => setAction('reset')}
     >
-      <Inset space={8}>
+      <Inset p={8}>
         <Stack space={4}>
           <Stack space={2} alignX="left">
             <TextField

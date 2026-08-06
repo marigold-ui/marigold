@@ -1,5 +1,29 @@
 # @marigold/cli
 
+## 0.5.0-rc.1
+
+### Minor Changes
+
+- b7122c0: feat(DST-1543): add `marigold migrate <version>` codemods for breaking Marigold releases. The v18 migration restructures theme files to the new slot shapes (never overriding consumer classes), swaps exact-baseline layout classes with a token diff report, scaffolds missing theme components, applies safe application-code renames (icon imports per the official mapping, `Tabs.TabPanel`/`SelectList.Item`, `Inset` spacing props, `TextField` min/max), and reports everything that needs a human decision with pinned source links. The report also covers design-token breakage that no typecheck can see: renamed/removed tokens still referenced, new tokens components require but the consumer CSS does not define, and repurposed tokens that kept their name but changed meaning (with a remap recipe at the definition site). Interactive runs pre-analyze the target and offer the fired changes as a multiselect (Enter applies everything; `--only <names>` selects non-interactively). Run `npx marigold migrate v18 --dry-run` first.
+
+### Patch Changes
+
+- b7122c0: fix: run the CLI when invoked via a symlinked bin. The entry-point guard compared `import.meta.url` (always the realpath) against `path.resolve(process.argv[1])`, so symlinked global bins (`npm install -g`, manual links) exited silently with code 0. `argv[1]` is now resolved through `realpathSync`.
+- b7122c0: fix(DST-1656): stop `marigold migrate` from warning on value-conditional props whose value is a literal wrapped in braces. The value check only read a bare `StringLiteral`, so `width={20}`, `width={48}` and `width={'1/2'}` all fell into the "cannot be ruled out statically" branch — a v18 run over a real app produced 16 `Select`/`ComboBox`/`Autocomplete` `width="fit"` warnings without a single site actually using `fit`. Literals inside a JSX expression container now resolve like bare ones; genuinely dynamic values such as `width={someVar}` still warn.
+
+## 0.5.0-beta.0
+
+### Minor Changes
+
+- 7fc3b53: feat(DST-1446): `marigold search` to find components by docs content
+
+  Adds `marigold search <query>`, which ranks components by matching the query against their docs content (title, description, section headings, and section prose), not just the component name. This collapses the "list → guess → docs → retry" discovery loop (3 to 5 calls) that AI agents run today into a single ranked, snippet-bearing, deep-linked result.
+
+  - **CLI:** new `loadSearchIndex()` / `searchComponentDocs()` library functions and a `search` command wrapping them, with `--limit`, `--format markdown|json|plain`, `--fresh` and `--offline` (reusing the existing cache and `sanitizeRemote` — no new dependencies). Scoring weights title ×3, description ×2, each matching heading ×2, and each matching section snippet ×1. Tab completion and telemetry cover the new command. No-match exits 0 (`[]` for `--format json`).
+  - **Docs:** `build-manifest.mjs` now also emits `public/component-search.json` — a content index over the component MDX (per-component `headings` plus prose-bearing `{ heading, snippet }` sections, with JSX/imports/code-fences stripped). It is written after `manifest.json` so a content-index bug can never block the manifest that `list`/`docs` depend on.
+
+- 946dc9f: feat(DST-1265): add `marigold doctor` — a read-only command that diagnoses a project's Marigold setup (package presence, `@marigold/components`/`@marigold/system` version match, latest-version freshness, that `MarigoldProvider` wraps the app and is actually imported, that its `theme` prop resolves to a real binding, Tailwind config, and React peer deps) and prints actionable fixes grouped by severity. The provider and theme checks verify the referenced identifiers are genuinely bound (imported or declared), so a `<MarigoldProvider theme={theme}>` whose import lines are missing is reported as broken instead of healthy. The freshness check makes a short, best-effort fetch of the docs manifest to learn the latest published versions (cached for 24h; skipped silently when offline or slow, and bypassed entirely with `--offline`). Supports `--format text|json` and `--offline`, and exits `1` only on deterministic errors (e.g. a `<MarigoldProvider>` that is rendered but never imported), so it is safe to gate CI on and easy for AI agents to consume.
+
 ## 0.4.0
 
 ### Minor Changes

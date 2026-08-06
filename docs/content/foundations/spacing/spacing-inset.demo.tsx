@@ -6,8 +6,8 @@ export default () => (
     <Box className="size-auto">
       <VisualInset
         name="regular"
-        spaceX="3"
-        spaceY="3"
+        px="3"
+        py="3"
         className="rounded-[calc(var(--radius-lg)-1px)]"
       >
         squared
@@ -17,8 +17,8 @@ export default () => (
     <Box className="size-auto">
       <VisualInset
         name="regular"
-        spaceX="3"
-        spaceY="2"
+        px="3"
+        py="2"
         className="rounded-[calc(var(--radius-lg)-1px)]"
       >
         squished
@@ -28,8 +28,8 @@ export default () => (
     <Box className="size-auto">
       <VisualInset
         name="regular"
-        spaceX="2"
-        spaceY="3"
+        px="2"
+        py="3"
         className="rounded-[calc(var(--radius-lg)-1px)]"
       >
         stretched

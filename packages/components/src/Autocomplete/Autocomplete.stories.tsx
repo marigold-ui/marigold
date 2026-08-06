@@ -1,10 +1,12 @@
 import { screen } from '@testing-library/react';
 import { useState } from 'react';
-import { Text } from 'react-aria-components';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
+import { clickOption } from '.storybook/test-utils';
 import { Center } from '../Center/Center';
+import { Description } from '../Description/Description';
 import { Stack } from '../Stack/Stack';
+import { TextValue } from '../TextValue/TextValue';
 import { Autocomplete } from './Autocomplete';
 
 const meta = preview.meta({
@@ -81,8 +83,8 @@ export const Basic = meta.story({
   render: args => (
     <Autocomplete {...args}>
       <Autocomplete.Option id="Harry Potter" textValue="Harry Potter">
-        <Text slot="label">Harry Potter</Text>
-        <Text slot="description">best series ever</Text>
+        <TextValue>Harry Potter</TextValue>
+        <Description>best series ever</Description>
       </Autocomplete.Option>
       <Autocomplete.Option id="Lord of the Rings">
         Lord of the Rings
@@ -122,6 +124,34 @@ Basic.test(
     const result = await canvas.findByText('Star Wars');
 
     await expect(result).toBeVisible();
+  }
+);
+
+Basic.test(
+  'Wraps an unbreakable option label inside a narrow list',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+    args: { width: 40, menuTrigger: 'focus' },
+    render: args => (
+      <Autocomplete {...args}>
+        <Autocomplete.Option id="unbreakable">
+          IchliebeDeutschlandundseineHauptstadtBerlin
+        </Autocomplete.Option>
+        <Autocomplete.Option id="at">Österreich</Autocomplete.Option>
+        <Autocomplete.Option id="ch">Schweiz</Autocomplete.Option>
+      </Autocomplete>
+    ),
+  },
+  async ({ canvas }) => {
+    const input = canvas.getByRole('combobox');
+
+    await userEvent.click(input);
+
+    const listbox = await canvas.findByRole('listbox');
+
+    // Same invariant as Select's equivalent test: without `wrap-anywhere` the
+    // unbreakable label would widen the option past the list.
+    expect(listbox.scrollWidth).toBeLessThanOrEqual(listbox.clientWidth);
   }
 );
 
@@ -351,7 +381,7 @@ LargeDataset.test(
       const options = within(listbox).getAllByRole('option');
       expect(options).toHaveLength(1);
       expect(options[0]).toHaveTextContent('Tenant 500 (item-500)');
-      await userEvent.click(options[0]);
+      await clickOption(() => within(listbox).getAllByRole('option')[0]);
     });
 
     await step('Verify selected value appears in the input', async () => {

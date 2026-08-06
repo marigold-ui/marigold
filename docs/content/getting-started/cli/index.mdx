@@ -1,7 +1,7 @@
 ---
 title: Marigold CLI
 description: Component docs, discovery, and project setup, straight from the terminal.
-badge: new
+badge: updated
 ---
 
 The **`@marigold/cli`** package brings the Marigold documentation into your terminal: fetch component docs, discover components and pages, scaffold Marigold into an existing project, and more. It's useful on its own and is built to ground AI coding agents on the canonical component API.
@@ -64,6 +64,12 @@ To adopt a whole feature pattern rather than a single component, use `marigold e
 marigold examples list
 marigold examples get filter --format json
 marigold docs getting-started/examples-for-agents
+```
+
+When components render unstyled or throw, run `marigold doctor --format json` to diagnose the project's setup (packages, versions, provider, theme, Tailwind, React peer deps) and apply the returned `suggestion` for each issue:
+
+```bash
+marigold doctor --format json
 ```
 
 The CLI detects common agent runtimes (Claude Code, Cursor, VS Code agent mode, Codex, or a generic `AI_AGENT=1`) via environment variables. For the full set of connection options (the MCP server and the public manifest / markdown endpoints), see [Usage with AI](/getting-started/usage-with-ai).
@@ -200,6 +206,74 @@ It detects Next.js or Vite, then:
   Re-running `marigold init` leaves already-configured files untouched, so
   running it more than once is safe. If a file's shape can't be recognized, the
   CLI prints a manual fallback for that step instead of guessing.
+</Callout>
+
+### marigold doctor
+
+Diagnose why Marigold isn't working in a project and print a checklist with actionable fixes, ideal when components render unstyled or throw, and for AI agents to self-diagnose and repair a setup. All checks read the filesystem only; the freshness check additionally makes a short, best-effort fetch of the docs manifest (skipped with `--offline`).
+
+```bash
+marigold doctor                 # run from your project root
+marigold doctor --format json   # structured report for AI agents / CI
+marigold doctor --offline       # skip the network; freshness uses the cache only
+```
+
+| Flag        | Description                                               | Default |
+| ----------- | --------------------------------------------------------- | ------- |
+| `--format`  | `text` or `json` output                                   | `text`  |
+| `--offline` | Skip the network; the freshness check uses the cache only |         |
+
+It checks, against the current working directory:
+
+1. **Packages installed** — `@marigold/components`, `@marigold/system`, and a theme (`@marigold/theme-rui`) are declared.
+2. **Package versions aligned** — installed `@marigold/components` and `@marigold/system` match (they are released together).
+3. **Up to date** — installed versions are the latest published (best-effort; skipped when offline).
+4. **MarigoldProvider wraps the app** — the root layout wraps the app in `<MarigoldProvider>`.
+5. **Theme passed to MarigoldProvider** — a `theme` prop is passed to the provider.
+6. **Tailwind configured for Marigold** — the CSS entry imports `tailwindcss` and `@marigold/theme-rui/theme.css`, declares `@source` for `node_modules/@marigold`, and the framework build plugin is wired up.
+7. **React version compatible** — installed React satisfies `@marigold/components`'s peer requirement.
+
+<Callout title="Safe for CI">
+  Only deterministic, definitely-broken findings (a missing core package, or a
+  components/system version mismatch) are errors; everything heuristic is a
+  warning. `marigold doctor` exits `1` only when there is an error. `--format
+  json` emits `{ errors, warnings, passed, text }`, so an agent can derive
+  health from `errors.length === 0` and act on each `suggestion`.
+</Callout>
+
+### marigold migrate
+
+Apply codemods for a breaking Marigold release, to your theme files and your application code. Run it after upgrading `@marigold/components`, from your project root.
+
+```bash
+marigold migrate v18                          # migrate the current directory
+marigold migrate v18 ./src --dry-run          # report what would change, write nothing
+marigold migrate                              # detect the installed version and confirm
+marigold migrate v18 --only rename-imports    # apply a subset, non-interactively
+```
+
+| Flag             | Description                                                             | Default |
+| ---------------- | ----------------------------------------------------------------------- | ------- |
+| `--dry-run`      | Report what would change without writing files                          |         |
+| `--only <names>` | Apply only these changes (comma-separated), skipping the selection step |         |
+
+Both positionals are optional. Without a version, the installed `@marigold/components` is detected and the applicable migration is proposed for confirmation. Without a path, the current directory is used.
+
+It anchors on imports rather than on file names or directory layout, so it works whatever your project structure is:
+
+1. **Theme files** (anchored on `ThemeComponent<'X'>` from `@marigold/system`): restructures single-style components into the slot shape the new version requires, moving your classes verbatim, swaps a baseline style only when it still matches the old baseline byte for byte (proof you never customized it), stubs new slots as `cva({})`, and scaffolds theme files for components the new version requires.
+2. **Application code** (anchored on `@marigold/components` and `@marigold/icons`): renamed exports such as the icon migration, renamed compound components, renamed and removed props.
+3. **Design tokens**: report-only, since token values are yours. Covers renamed or removed tokens you still reference, new tokens that component internals hardcode but your CSS does not define, and tokens that kept their name but changed meaning.
+
+Anything that cannot be decided from the source, a spread that hides slots, a customized style, a DOM change your own CSS may target, becomes a warning pointing at the release notes, never a guess.
+
+<Callout title="Dry run first">
+  `--dry-run` prints the full report and writes nothing. Interactive runs
+  pre-analyze the project and list the changes that actually fire, so you can
+  deselect any of them before applying; report-only checks always run. Applying
+  twice is a no-op, so a partial run can be completed later. After an applied
+  run, your typechecker is the completeness check: the slot `Record`s in
+  `@marigold/system` are exhaustive.
 </Callout>
 
 ### marigold completion

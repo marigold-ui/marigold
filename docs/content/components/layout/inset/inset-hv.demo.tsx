@@ -1,10 +1,10 @@
 import { venueTypes, venues } from '@/lib/data/venues';
-import { Card, Headline, Inline, Inset, Text } from '@marigold/components';
+import { Headline, Inline, Inset, Text } from '@marigold/components';
 
 export default () => {
   return (
-    <Card>
-      <Inset spaceX="padding-regular" spaceY="padding-snug">
+    <div className="bg-muted rounded-md">
+      <Inset px="padding-regular" py="padding-snug">
         <Headline level={3}>{venues[0].name}</Headline>
         <Inline>
           <Text fontStyle="italic">
@@ -13,6 +13,6 @@ export default () => {
         </Inline>
         <Text>{venues[0].description}</Text>
       </Inset>
-    </Card>
+    </div>
   );
 };

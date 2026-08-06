@@ -7,7 +7,7 @@ export default () => (
     <Button variant="primary">
       <Edit size={16} /> Edit
     </Button>
-    <Button variant="icon" aria-label="Edit">
+    <Button variant="ghost" size="icon" aria-label="Edit">
       <Edit />
     </Button>
   </Inline>

@@ -1,8 +1,11 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
+import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic, WithSections } from './Autocomplete.stories';
+
+const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
 const user = userEvent.setup();
 
@@ -55,6 +58,18 @@ test('supports showing an error', () => {
   renderWithOverlay(<Basic.Component error errorMessage="Error!" />);
 
   expect(screen.getByText('Error!')).toBeInTheDocument();
+});
+
+test('does not allow width="fit"', () => {
+  renderWithOverlay(
+    // @ts-expect-error - `width="fit"` is intentionally unsupported; assert it is not applied
+    <Basic.Component label="Label" width="fit" />
+  );
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getByText('Label').parentElement;
+
+  expect(container).not.toHaveClass('w-fit');
 });
 
 test('supports default value', () => {
@@ -228,12 +243,25 @@ test('calls onSubmit with custom value on Enter when no option is focused', asyn
   const input = screen.getByRole('combobox');
   await user.type(input, 'custom value{Enter}');
 
-  expect(onSubmit).toHaveBeenCalled();
+  expect(onSubmit).toHaveBeenCalledWith(null, 'custom value');
+});
+
+test('calls onSubmit with the selected key when an option is chosen', async () => {
+  const onSubmit = vi.fn();
+  renderWithOverlay(<Basic.Component label="Label" onSubmit={onSubmit} />);
+
+  const input = screen.getByRole('combobox');
+  await user.type(input, 'ha');
+
+  const option = await screen.findByRole('option', { name: 'Harry Potter' });
+  await user.click(option);
+
+  expect(onSubmit).toHaveBeenCalledWith('Harry Potter', null);
 });
 
 describe('mobile view', () => {
   beforeEach(() => {
-    window.matchMedia = mockMatchMedia(['(width < 640px)']);
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
   });
 
   afterEach(() => {
@@ -258,5 +286,23 @@ describe('mobile view', () => {
     await user.type(input, 'xyz');
 
     expect(await screen.findByText('No result found')).toBeVisible();
+  });
+
+  test('keeps the tray in the accessibility tree (DST-1680)', async () => {
+    renderWithOverlay(<Basic.Component label="Label" />);
+
+    await user.click(screen.getByRole('button'));
+
+    // `useComboBox` hides everything outside the combobox surface via
+    // `ariaHideOutside`. Without `useComboBoxTrayRef` that surface is empty, so
+    // the tray's own portal root gets `aria-hidden="true"` and screen readers
+    // cannot reach the dialog, input or options at all. Queried with
+    // `hidden: true` on purpose: the default role query already skips
+    // `aria-hidden` subtrees, so it would fail on the lookup instead of naming
+    // the invariant.
+    const dialog = await screen.findByRole('dialog', { hidden: true });
+
+    // eslint-disable-next-line testing-library/no-node-access
+    expect(dialog.closest('[aria-hidden="true"]')).toBeNull();
   });
 });

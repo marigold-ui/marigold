@@ -2,23 +2,32 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Slider: ThemeComponent<'Slider'> = {
   container: cva({ base: '*:aria-hidden:hidden' }),
+  // The rail. `bg-control` is the shared unselected-track fill — the same token
+  // the Switch groove and the SegmentedControl track use, so the three read as
+  // one control family. Not `bg-border`: that token is for structural lines
+  // (dividers, grid lines, table rules), and being translucent it also
+  // compounded when it was painted twice.
   track: cva({
     base: [
-      'relative bg-muted rounded-lg flex w-full touch-none select-none items-center',
-      'orientation-vertical:h-full orientation-vertical:w-auto orientation-vertical:flex-col disabled:opacity-50',
+      'relative bg-control rounded-full flex w-full touch-none select-none items-center',
+      'orientation-vertical:h-full orientation-vertical:w-auto orientation-vertical:flex-col',
+      'group-disabled/field:bg-disabled-surface group-disabled/field:cursor-not-allowed',
     ],
   }),
   selectedTrack: cva({
     base: [
-      'absolute bg-brand orientation-horizontal:h-full orientation-vertical:w-full rounded-lg',
+      'absolute bg-primary orientation-horizontal:h-full orientation-vertical:w-full rounded-full',
+      'group-disabled/field:bg-disabled',
     ],
   }),
   thumb: cva({
     base: [
-      'block h-5 w-5 rounded-full border-2 border-brand bg-background',
+      'block h-5 w-5 rounded-full border-2 border-primary bg-surface',
       'focus-visible:ui-state-focus outline-none',
-      'disabled:cursor-not-allowed',
+      'group-disabled/field:cursor-not-allowed group-disabled/field:border-disabled group-disabled/field:bg-disabled-surface',
     ],
   }),
-  output: cva({ base: 'text-foreground text-sm' }),
+  output: cva({
+    base: 'text-foreground text-sm group-disabled/field:text-disabled',
+  }),
 };

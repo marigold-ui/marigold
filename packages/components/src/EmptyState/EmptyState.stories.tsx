@@ -38,6 +38,13 @@ const meta = preview.meta({
         type: { summary: 'ReactNode' },
       },
     },
+    headingLevel: {
+      control: {
+        type: 'radio',
+      },
+      options: [2, 3, 4, 5, 6],
+      description: 'Heading level of the title',
+    },
   },
   args: {
     title: 'No items found',

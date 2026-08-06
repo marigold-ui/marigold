@@ -63,6 +63,12 @@ For short, straightforward messages, you can combine the title and the message t
 </Dialog>
 ```
 
+### Title and description
+
+`<Dialog.Title>` and `<Dialog.Description>` are slot-aware: the heading level, id, and `aria-labelledby` wiring are handled for you. `<Dialog.Header>` is an optional layout wrapper that groups a title and description into one header zone — reach for it when you need both. For a title-only dialog you can drop the title straight into `<Dialog>` without a header.
+
+<ComponentDemo name="dialog-title-only" />
+
 ### Content
 
 Keep dialogs simple by limiting the number of interactions. Remove any content or elements that aren't essential to completing the task. For instance, if the dialog is for editing a user's profile information, only include the necessary fields like name and email, rather than unrelated options like notification settings.
@@ -71,7 +77,13 @@ Keep dialogs simple by limiting the number of interactions. Remove any content o
 
 It's also best to avoid multi-step processes or requiring users to navigate within the dialog, as this can complicate the experience. If a task is too complex, consider using a dedicated page instead.
 
-Lastly, avoid asking users to make decisions that require information not accessible in the dialog, such as needing to check a different page or document to proceed—since this can frustrate users and disrupt their workflow.
+Lastly, avoid asking users to make decisions that require information not accessible in the dialog, such as needing to check a different page or document to proceed, since this can frustrate users and disrupt their workflow.
+
+### Sizes
+
+The `size` prop controls how much space a dialog takes. Most dialogs use one of the default sizes (`xsmall` to `large`, defaulting to `small`), which cap the width and let the dialog hug its content.
+
+Use `fullscreen` for content-heavy tasks, such as multi-column pickers or dense tables, where a boxed dialog would cramp the content. It fills the viewport minus a small margin at every breakpoint and keeps the title and actions pinned while only the content scrolls. Prefer a smaller size for focused, single-task dialogs like confirmations or short forms.
 
 ### Dismissal
 
@@ -125,7 +137,6 @@ Use the `useConfirmation` hook for this use case. This hook provides a simple AP
 ### Dialog.Title
 
 <AutoTypeTable path="Dialog/DialogTitle" name="DialogTitleProps" />
-
 ### Dialog.Content
 
 <AutoTypeTable path="Dialog/DialogContent" name="DialogContentProps" />

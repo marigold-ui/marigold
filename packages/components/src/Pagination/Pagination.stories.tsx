@@ -12,6 +12,9 @@ import { Pagination, PaginationProps } from './Pagination';
 const meta = preview.meta({
   title: 'Components/Pagination',
   component: Pagination,
+  parameters: {
+    surface: false,
+  },
   argTypes: {
     totalItems: {
       control: {
@@ -216,6 +219,10 @@ Basic.test(
   }
 );
 
+export const SurfaceVariants = meta.story({
+  parameters: { surface: 'both' },
+});
+
 export const Controlled = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
@@ -388,7 +395,7 @@ export const WithTable = meta.story({
           <Inline alignY="center" space={4}>
             <Text fontSize="sm">Results per page</Text>
             <Select
-              width={'fit'}
+              width={20}
               value={pageSize.toString()}
               onChange={val => setPageSize(parseInt(`${val}`))}
             >
