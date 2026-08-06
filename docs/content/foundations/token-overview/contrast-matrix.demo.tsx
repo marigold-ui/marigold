@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useId, useRef, useState } from 'react';
 
 // Authored here, not measured, so a rung added to the theme is silently omitted.
 const steps = [
@@ -178,12 +178,17 @@ const Legend = () => (
 
 export default () => {
   const probesRef = useRef<HTMLDivElement>(null);
+  const messageId = useId();
   const [palette, setPalette] = useState<Palette | 'unreadable' | null>(null);
 
   useEffect(() => {
+    let cancelled = false;
     let frame = 0;
 
     const attempt = (retry: boolean) => {
+      // The queued microtask cannot be cancelled, so this is what stops it.
+      if (cancelled) return;
+
       const result = probesRef.current && measurePalette(probesRef.current);
       // A stylesheet that has not applied yet reads as transparent.
       if (!result && retry) {
@@ -196,7 +201,10 @@ export default () => {
     // Deferred to satisfy `react-hooks/set-state-in-effect`, as Token.tsx does.
     queueMicrotask(() => attempt(true));
 
-    return () => cancelAnimationFrame(frame);
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(frame);
+    };
   }, []);
 
   // A failed read only blanks the badges. The swatch grid needs no measurement.
@@ -204,12 +212,19 @@ export default () => {
 
   return (
     <>
-      {palette === 'unreadable' && (
-        <p className="text-secondary mb-2 text-sm">
-          The charcoal palette could not be read from the theme, so no contrast
-          numbers are shown.
-        </p>
-      )}
+      {/*
+        Mounted empty so the region pre-exists the message it announces, since
+        mounting a live region together with its text drops the announcement in
+        some readers. Same reason as `VenuesTable` in the filter example.
+      */}
+      <div role="status">
+        {palette === 'unreadable' && (
+          <p id={messageId} className="text-secondary mb-2 text-sm">
+            The charcoal palette could not be read from the theme, so no
+            contrast numbers are shown.
+          </p>
+        )}
+      </div>
 
       <div ref={probesRef} style={{ display: 'none' }}>
         {steps.map(step => (
@@ -224,6 +239,9 @@ export default () => {
       <div className="overflow-x-auto">
         <table
           aria-label="Contrast matrix"
+          // The blank badges announce as nothing, so the table itself carries
+          // the reason rather than repeating it in all 121 cells.
+          aria-describedby={palette === 'unreadable' ? messageId : undefined}
           style={{
             borderCollapse: 'collapse',
             width: 'max-content',
