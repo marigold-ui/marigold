@@ -3,6 +3,7 @@ import { expect, fn, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { ConfirmationDialog } from './ConfirmationDialog';
+import type { ConfirmationConfig } from './useConfirmation';
 import { ConfirmationProvider, useConfirmation } from './useConfirmation';
 
 const meta = preview.meta({
@@ -138,13 +139,9 @@ Basic.test(
   }
 );
 
-// useConfirmation — the imperative hook opens a dialog built from its config and
-// resolves when the user confirms. A local `ConfirmationProvider` keeps the demo
-// self-contained instead of relying on the global one from the decorator.
+type ConfirmationResultProps = Pick<ConfirmationConfig, 'autoFocusButton'>;
 
-// Renders what `confirm()` resolved with, so a test can assert the settled value
-// and not just the dialog's absence.
-const ConfirmationResult = () => {
+const ConfirmationResult = ({ autoFocusButton }: ConfirmationResultProps) => {
   const confirm = useConfirmation();
   const [result, setResult] = useState<string>();
 
@@ -159,6 +156,7 @@ const ConfirmationResult = () => {
               content: 'This cannot be undone.',
               confirmationLabel: 'Delete',
               cancelLabel: 'Cancel',
+              autoFocusButton,
             })
           )
         }
@@ -170,9 +168,9 @@ const ConfirmationResult = () => {
   );
 };
 
-const ConfirmationResultDemo = () => (
+const ConfirmationResultDemo = (props: ConfirmationResultProps) => (
   <ConfirmationProvider>
-    <ConfirmationResult />
+    <ConfirmationResult {...props} />
   </ConfirmationProvider>
 );
 
@@ -264,5 +262,16 @@ Basic.test(
     await userEvent.click(canvas.getByRole('button', { name: 'Delete' }));
 
     expect(await canvas.findByText('resolved: confirmed')).toBeInTheDocument();
+  }
+);
+
+Basic.test(
+  'useConfirmation forwards autoFocusButton from the confirm() config',
+  { render: () => <ConfirmationResultDemo autoFocusButton="action" /> },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Delete file' }));
+
+    const confirmButton = await canvas.findByRole('button', { name: 'Delete' });
+    await waitFor(() => expect(confirmButton).toHaveFocus());
   }
 );

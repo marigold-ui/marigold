@@ -54,9 +54,6 @@ export const ConfirmationProvider = ({ children }: PropsWithChildren) => {
         open={open}
         onOpenChange={isOpen => {
           setOpen(isOpen);
-          // Every close that is not a confirm means cancelled, which covers the
-          // cancel button, Escape and outside-press alike. Confirming resolves
-          // before it closes, so this is a no-op on an already settled promise.
           if (!isOpen) {
             confirmation?.resolve('cancelled');
           }

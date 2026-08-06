@@ -8,7 +8,7 @@ feat(DST-944): add an `onClose` handler to `useToast` and make destructive confi
 
 `ConfirmationDialog` and `useConfirmation` gain three fixes around the same flow:
 
-- Closing a confirmation without pressing a button (<kbd>Escape</kbd>, a press outside) now resolves `useConfirmation` as `cancelled`. Previously the promise never settled, so an `await confirm(...)` silently stalled and its continuation never ran.
+- Closing a confirmation without pressing a button (<kbd>Escape</kbd>) now resolves `useConfirmation` as `cancelled`. Previously the promise never settled, so an `await confirm(...)` silently stalled and its continuation never ran.
 - `ConfirmationDialog` focuses the cancel button by default when `variant="destructive"`, so a reflexive <kbd>Enter</kbd> takes the safe path. Pass `autoFocusButton` to override.
 - `ConfirmationProvider` now forwards the `autoFocusButton` from a `confirm()` config, which it accepted but dropped.
 - `ConfirmationDialogProps['variant']` is typed as `'destructive' | (string & {})` so the variant that drives this behaviour is discoverable, rather than an untyped string.

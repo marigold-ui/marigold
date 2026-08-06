@@ -64,6 +64,10 @@ export type ToastOptions = {
    * Commit deferred work from here rather than from your own `setTimeout`: the
    * toast's timer pauses while the region is hovered or focused, so a separate
    * timer fires while the toast is still on screen.
+   *
+   * Not called by `clearToasts()`, which empties the queue without closing its
+   * toasts. Any work deferred to `onClose` is dropped, so do not clear the
+   * queue while a commit is pending.
    */
   onClose?: () => void;
 };

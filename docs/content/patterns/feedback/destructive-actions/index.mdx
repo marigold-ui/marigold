@@ -23,7 +23,9 @@ Picking the wrong one is not a neutral mistake. A confirmation on a harmless act
 
 ## Choosing between confirmation and undo
 
-Work through these four questions in order. The first "no" decides to use a confirmation.
+First check the action is destructive at all. Some actions look it and are not, and the clearest example is replacing an uploaded file: the user picks the replacement in the operating system's own file dialog, which they can cancel before anything changes. The confirmation already exists there, and it is the platform's. Putting another one in front of it asks the same question twice, which is the [never use both](#never-use-both) problem wearing a different hat.
+
+For everything that is destructive, work through these four questions in order. The first "no" decides to use a confirmation.
 
 | Question                                                 | Why it matters                                                                                                            |
 | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
@@ -48,6 +50,14 @@ Uploaded files are the clearest confirmation case, and they fail on the third qu
 
 <ComponentDemo name="file-delete-confirm" />
 
+<Callout title="Known limitation">
+  `FileField.Item`'s remove button carries a fixed accessible name ("Remove
+  file") that cannot be overridden yet, so on a list like this one every remove
+  button sounds the same to a screen reader. Until that changes, the
+  confirmation dialog is the only place the file gets named, which makes the
+  first rule below load-bearing rather than merely nice.
+</Callout>
+
 What the dialog owes the user:
 
 - **Name the object.** "Delete file?" with the filename in the body, not "Are you sure?".
@@ -55,7 +65,7 @@ What the dialog owes the user:
 - **Repeat the verb in the confirm button.** "Delete file" rather than "OK", so the button reads as the decision it is.
 - **Leave the safe path as the default.** The `destructive` variant focuses Cancel on open, so a reflexive <kbd>Enter</kbd> cancels. Pass `autoFocusButton` to override.
 
-Dismissing the dialog with <kbd>Escape</kbd> or a press outside resolves as `cancelled`. Never treat a dismissal as consent, and do not block dismissal to prevent mis-clicks: an `alertdialog` the keyboard cannot escape is an accessibility defect, not a safety feature.
+Dismissing the dialog with <kbd>Escape</kbd> resolves as `cancelled`. A press outside does not dismiss a confirmation at all, which is deliberate: a stray click next to the dialog should not decide anything. Never treat a dismissal as consent, and do not block <kbd>Escape</kbd> to prevent mis-clicks: an `alertdialog` the keyboard cannot escape is an accessibility defect, not a safety feature.
 
 <GuidelineTiles>
   <Do>
