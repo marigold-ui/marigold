@@ -8,23 +8,16 @@ import {
 import { parseSource } from '../helpers/source.js';
 import type { ValidationIssue } from '../types.js';
 
-// React Aria keyed collection items deliver their `id` to onAction /
-// onSelectionChange so a handler can identify the activated item (Marigold /
-// React Aria convention; the docs require an id on these items). A missing id
-// does NOT hard-break rendering — React Aria auto-generates keys for static
-// collections, and items with their own onPress still work — so this is a
-// WARNING, not an error.
+// Keyed collection items pass their `id` to onAction/onSelectionChange so a
+// handler can identify the activated item. A missing id doesn't break rendering
+// — React Aria auto-generates keys for static collections — so this is a
+// warning.
 //
-// The set below is curated, NOT schema-derived. Almost every component accepts
-// a DOM `id`, so "the sub-component declares an id prop" cannot tell a keyed
-// collection item (Menu.Item) apart from a positional sub-component (Table.Cell)
-// or a container (Tag.Group) — that signal produced false positives on exactly
-// those. Only the genuine keyed-item sub-components belong here, verified
-// against the Marigold component source. This makes the check design-system-
-// specific (part of the curated remainder), which is the honest classification.
-// Breadcrumbs.Item is intentionally excluded: a breadcrumb is a navigation link
-// identified by its `href`, not a selectable keyed item (its props require
-// `href`, not `id`).
+// The set is curated, NOT schema-derived: almost every component accepts a DOM
+// `id`, so "declares an id prop" can't tell a keyed item (Menu.Item) from a
+// positional sub-component (Table.Cell) or a container (Tag.Group), and that
+// signal false-positived on exactly those. Breadcrumbs.Item is excluded — a
+// breadcrumb is identified by `href`, not a selectable key.
 const KEYED_COLLECTION_ITEMS = new Set([
   'ActionMenu.Item',
   'Autocomplete.Option',
@@ -69,11 +62,9 @@ export const validateCollectionId = (filePath: string): ValidationIssue[] => {
   const source = parseSource(filePath);
   const relFile = path.relative(process.cwd(), filePath);
   const issues: ValidationIssue[] = [];
-  // Only treat a tag as a Marigold component when it is actually imported from
-  // @marigold/components, and honor aliased imports by resolving to the real
-  // name. Mirrors the origin guard the composition checker uses — without it,
-  // a local or third-party `<X.Item>` false-positives, and an aliased Marigold
-  // one is silently skipped.
+  // Only tags actually imported from @marigold/components, resolved through
+  // aliases. Without this a local `<X.Item>` false-positives and an aliased
+  // Marigold one is skipped. Mirrors the composition checker's origin guard.
   const resolver = buildMarigoldTagResolver(source);
 
   const check = (node: ts.Node): void => {

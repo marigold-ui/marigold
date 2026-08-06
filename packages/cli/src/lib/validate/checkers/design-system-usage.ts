@@ -167,18 +167,13 @@ const collectBindingNames = (name: ts.BindingName, out: Set<string>): void => {
 };
 
 /**
- * Collects every locally declared PascalCase identifier — declarations,
- * bindings, and destructured parameters — so none of them read as an
- * undeclared/hallucinated component.
+ * Every locally declared PascalCase identifier — declarations, bindings and
+ * destructured parameters — so none of them read as hallucinated.
  *
- * Deliberately flat across the whole file, not scoped to where each binding
- * is actually visible: a name bound in one function is also treated as
- * "locally declared" for an unrelated same-named usage elsewhere. This is a
- * false-negative risk (an unrelated `Component` parameter could mask a
- * genuinely hallucinated `<Component>` import elsewhere in the same file),
- * accepted as the safer direction — the alternative, scope-aware resolution,
- * risks the opposite: a false-positive ERROR on a legitimate nested closure,
- * which this checker's error-severity findings cannot tolerate at all.
+ * Deliberately flat across the file rather than scope-aware: a name bound in
+ * one function also counts as declared elsewhere. That risks a false negative,
+ * accepted because scope-aware resolution risks the opposite — a false-positive
+ * ERROR on a legitimate nested closure, which this checker cannot tolerate.
  */
 const collectLocalDeclarations = (source: ts.SourceFile): Set<string> => {
   const locals = new Set<string>();
@@ -198,10 +193,8 @@ const collectLocalDeclarations = (source: ts.SourceFile): Set<string> => {
       }
     }
 
-    // A class constructor is its own distinct node kind (ts.SyntaxKind.
-    // Constructor) — ts.isMethodDeclaration() returns false for it, so
-    // without this a constructor's destructured params (e.g. `constructor({
-    // Fallback }: Props)`) fell through as undeclared/hallucinated.
+    // ts.isMethodDeclaration() is false for a constructor, so without this its
+    // destructured params fell through as hallucinated.
     if (
       ts.isFunctionDeclaration(node) ||
       ts.isFunctionExpression(node) ||
@@ -214,10 +207,8 @@ const collectLocalDeclarations = (source: ts.SourceFile): Set<string> => {
       }
     }
 
-    // for (const { Component } of items) { ... } / for...in / a C-style
-    // for's own initializer — none of these are a VariableStatement (that
-    // node only covers a bare `const x = ...;` statement), so without this
-    // they fell through as an undeclared/hallucinated component.
+    // A for/for-in/for-of initializer is not a VariableStatement (that node
+    // only covers a bare `const x = ...;`), so these fell through too.
     if (
       (ts.isForOfStatement(node) ||
         ts.isForInStatement(node) ||
@@ -230,9 +221,7 @@ const collectLocalDeclarations = (source: ts.SourceFile): Set<string> => {
       }
     }
 
-    // catch ({ Component }) { <Component /> } — the same class of omission
-    // as the for-loop case above: a catch binding can destructure too, and
-    // isn't a VariableStatement/VariableDeclarationList either.
+    // `catch ({ Component })` — same omission as the for-loop case above.
     if (ts.isCatchClause(node) && node.variableDeclaration) {
       collectBindingNames(node.variableDeclaration.name, locals);
     }
@@ -266,12 +255,10 @@ export const validateDesignSystemUsage = (
 
   const importMap = buildImportMap(source);
   const localDeclarations = collectLocalDeclarations(source);
-  // Resolves a tag *as written* (including an alias, `{ Button as Btn }`) to
-  // its real @marigold/components export name. Built from the import
-  // statements directly, so — unlike a bare `isMarigoldComponent(name)`
-  // lookup — it correctly recognizes an aliased Marigold import as real, and
-  // correctly rejects a local/third-party tag that merely shares a Marigold
-  // name.
+  // Resolves a tag as written (including aliases) to its real
+  // @marigold/components export. Built from the imports, so unlike a bare
+  // `isMarigoldComponent(name)` it accepts an aliased Marigold import and
+  // rejects a local tag that merely shares the name.
   const resolver = buildMarigoldTagResolver(source);
 
   const isRealMarigoldComponent = (name: string): boolean =>
@@ -281,9 +268,8 @@ export const validateDesignSystemUsage = (
     if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
       const tag = node.tagName;
 
-      // Is this element a real Marigold component or sub-component? Used by the
-      // className check below: Tailwind className is allowed on native tags but
-      // not on Marigold components, which expose their own styling props.
+      // Used by the className check below: Tailwind className is allowed on
+      // native tags but not on Marigold components, which have styling props.
       let isMarigoldTag = false;
       if (ts.isIdentifier(tag)) {
         isMarigoldTag = isRealMarigoldComponent(tag.text);
@@ -328,10 +314,9 @@ export const validateDesignSystemUsage = (
             const importedFrom = importMap.get(tagName);
 
             if (importedFrom === '@marigold/components') {
-              // Imported from @marigold/components but not a real export of it —
-              // a hallucinated/typo'd component. Other @marigold/* packages
-              // (@marigold/icons, @marigold/system, …) export legitimate
-              // components, so an import from them is NOT flagged here.
+              // Imported from @marigold/components but not exported by it — a
+              // hallucinated or typo'd name. Other @marigold/* packages export
+              // legitimate components and are not flagged.
               const { line, character } = source.getLineAndCharacterOfPosition(
                 node.getStart(source)
               );

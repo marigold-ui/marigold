@@ -17,23 +17,18 @@ const DEFAULT_COMPILER_OPTIONS: ts.CompilerOptions = {
   isolatedModules: true,
 };
 
-// Filtered when the file is compiled outside a full project context (e.g.
-// standalone AI-generated files where @marigold/components can't be resolved).
-// Empirically verified: never fires inside the monorepo (workspace links resolve).
-// Trade-off: a genuinely mistyped import path (e.g. `@marigold/compnents`) is
-// also swallowed here rather than reported as a compiler error. That is
-// acceptable because a hallucinated/typo'd Marigold component is caught by the
-// design-system-usage checker, which does not depend on module resolution.
+// Filtered when the file compiles outside a full project context, where
+// @marigold/components can't be resolved. Never fires inside the monorepo.
+// Trade-off: a mistyped import path is swallowed too, acceptable because
+// design-system-usage catches typo'd components without module resolution.
 const ENVIRONMENT_ERROR_CODES = new Set([
   2307, // Cannot find module
   2503, // Cannot find namespace
   2875, // JSX module path not found
-  // Project-config-dependent, not Marigold violations: they depend on the
-  // consuming project's tsconfig, which validate does not adopt (it typechecks
-  // the file in isolation). Note: unlike 2307/2503/2875 above, 5097 has no
-  // secondary backstop (design-system-usage does not re-report it) — it is
-  // dropped purely because a `.tsx`-extension import is a config choice, never a
-  // Marigold defect, in an isolated typecheck.
+  // Config-dependent, not Marigold violations: these follow the consuming
+  // project's tsconfig, which validate doesn't adopt. Unlike the codes above,
+  // 5097 has no secondary backstop — it's dropped purely because a
+  // `.tsx`-extension import is a config choice, never a defect.
   5097, // Import path ends with .ts/.tsx (needs allowImportingTsExtensions)
   2591, // Cannot find name 'process' etc. (needs @types/node); NOT 2304, so a
   //       genuine undefined name is still reported.
@@ -43,14 +38,10 @@ const ENVIRONMENT_ERROR_CODES = new Set([
 // Strip TS suppress directives so the compiler always sees real type errors,
 // even in AI-generated files that use them as a crutch.
 //
-// `^[ \t]*`, not `^\s*` — `\s` also matches `\n`, so with a blank line right
-// before the directive, `^\s*` would greedily consume that blank line's own
-// newline as part of the match (backtracking to align `//` with the
-// directive), and removing the whole match then deletes a newline that
-// wasn't part of the directive at all. Every line after the diagnostic's real
-// position was reported at position - 1 whenever a directive was preceded by
-// a blank line. `[ \t]*` only absorbs same-line indentation, so the line
-// count — and every diagnostic's line number — stays exactly as written.
+// `^[ \t]*`, not `^\s*`: `\s` matches `\n` too, so a directive preceded by a
+// blank line would swallow that line's newline and shift every following
+// diagnostic up by one. `[ \t]*` absorbs only same-line indentation, keeping
+// the line count exactly as written.
 const stripTsSuppressDirectives = (text: string): string =>
   text.replace(/^[ \t]*\/\/\s*@ts-(?:nocheck|ignore|expect-error)[^\n]*/gm, '');
 

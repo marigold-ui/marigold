@@ -68,10 +68,9 @@ export const snapshotBrowserDefaults = async (
       const result: Record<string, Record<string, string>> = {};
       for (const tag of elements) {
         const el = document.createElement(tag);
-        // Some defaults only apply with the right attributes: an <a> is only
-        // link-colored when it has an href, inputs need a type. Without this
-        // the browser-default link color is never captured and every themed
-        // or unstyled link gets falsely flagged as an off-token color.
+        // Some defaults need the right attributes: an <a> is only link-colored
+        // with an href. Without this the default link color is never captured
+        // and every unstyled link is flagged as off-token.
         if (tag === 'a') el.setAttribute('href', '#');
         if (tag === 'input') el.setAttribute('type', 'text');
         container.appendChild(el);
@@ -103,20 +102,16 @@ export const snapshotBrowserDefaults = async (
   return defaultValues;
 };
 
-// Anchored (`^`), and matched only against the selector's LAST segment: a
-// cssPath is a full ancestor chain (`div:nth-child(1) > svg:nth-child(1)`,
-// browser-helpers.ts::cssPath), and an unanchored match against the whole
-// string would fire whenever ANY ancestor happens to be a native tag — which
-// is true of almost every real element (a wrapping div/span/p is ubiquitous)
-// — making this gate close to a no-op instead of restricting the exemption
-// to elements whose OWN tag is native, as intended.
+// Anchored, and matched only against the selector's LAST segment: a cssPath is
+// a full ancestor chain, so an unanchored match would fire whenever ANY
+// ancestor is a native tag — true of nearly every element — making the gate a
+// no-op instead of restricting the exemption to elements whose own tag is
+// native.
 const NATIVE_ELEMENT_PATTERN = new RegExp(
   `^(${NATIVE_ELEMENTS.join('|')}):nth-child`
 );
 
-// Exported for direct unit testing without a live browser (isBrowserDefault is
-// otherwise only exercised via checkTokenCompliance, which requires a real
-// Page).
+// Exported for unit testing without a live browser.
 export const isBrowserDefault = (
   selector: string,
   property: string,
@@ -189,16 +184,12 @@ const buildTokenReverseMap = async (page: Page): Promise<TokenReverseMap> => {
   return map;
 };
 
-// The COMPUTED-style token check (over the snapshots loop below) only fires
-// for color-family properties. A color token resolves to an exact rgb() value,
-// so a reverse-map match against the computed value is SOUND. Spacing,
-// typography and radius (line-height 25.6px, padding shorthand "8px 16px", a
-// pill's computed border-radius) are theme-derived computed pixels that rarely
-// equal a discrete token even when the value is fully token-driven; flagging
-// them produces warning volume that scales with UI size and biases the model
-// comparison. The author-written INLINE path (TOKENIZABLE_INLINE_PROPERTIES,
-// below) is broader on purpose — there a hardcoded spacing/radius value is a
-// real off-token override, not a theme-derived computed pixel.
+// The COMPUTED-style check only covers color-family properties: a color token
+// resolves to an exact rgb(), so reverse-mapping the computed value is sound.
+// Spacing, typography and radius are theme-derived computed pixels that rarely
+// equal a discrete token even when fully token-driven, so flagging them
+// produces warning volume that scales with UI size. The INLINE path below is
+// broader on purpose — there a hardcoded value IS an off-token override.
 const COMPUTED_TOKEN_PROPERTIES = new Set([
   'color',
   'background-color',
@@ -215,12 +206,10 @@ const COMPUTED_TOKEN_PROPERTIES = new Set([
 export const isComputedTokenCandidate = (property: string): boolean =>
   COMPUTED_TOKEN_PROPERTIES.has(property);
 
-// A disabled control's computed colors are a state treatment — the disabled
-// appearance composites an alpha/opacity over the base (e.g. a Marigold Button
-// with `disabled` renders rgba(…, 0.3)), so the value can never reverse-map to
-// an opaque token. That is not an author-chosen off-token color, so its
-// computed styles must not be token-checked. Author-written INLINE styles are
-// still checked separately and are unaffected by disabled state.
+// A disabled control composites an alpha over its base color (rgba(…, 0.3)),
+// so the value can never reverse-map to an opaque token. That's a state
+// treatment, not an author-chosen off-token color. Inline styles are still
+// checked separately.
 export const isTokenCheckableSnapshot = (snap: {
   disabled?: boolean;
 }): boolean => snap.disabled !== true;
@@ -239,23 +228,17 @@ const isTokenizedViaReverseMap = (
   return parts.every(part => SKIP_VALUES.has(part) || propMap.has(part));
 };
 
-// The unit suffix is optional: font-weight and (unitless) line-height — both
-// in TOKENIZABLE_INLINE_PROPERTIES below — are the only tokenizable
-// properties whose valid values are bare numbers (`fontWeight: 700`,
-// `lineHeight: 1.5`), and without this branch those extremely common
-// hardcoded forms were invisible to this regex entirely. A trailing `%` is
-// also covered (e.g. `padding: 5%`). Uses a lookahead instead of `\b` at the
-// end since `\b` doesn't reliably assert after a non-word character like `%`.
-// Exported for direct unit testing — otherwise only exercised transitively
-// via detectHardcodedInlineStyles, which requires a real Page.
+// The unit suffix is optional: font-weight and unitless line-height are the
+// only tokenizable properties whose valid values are bare numbers, and without
+// this branch those very common hardcoded forms were invisible here. Trailing
+// `%` is covered too, via a lookahead — `\b` doesn't reliably assert after a
+// non-word character. Exported for unit testing.
 export const HARDCODED_VALUE =
   /(?:#[0-9a-fA-F]{3,8}|rgba?\(|hsla?\(|oklch\(|lch\(|hwb\(|lab\(|color\(|\d+(?:\.\d+)?(?:px|em|rem|ch|vw|vh|%)?(?=\D|$))/;
 
-// Only properties where a design token is the expected source of the value.
-// Layout/positioning properties (transform, width, top, ...) and CSS custom
-// properties (--*) are deliberately excluded: components legitimately set
-// those inline (e.g. Marigold's Tiles writes `--tilesWidth` from a prop, a
-// table sets computed column widths), and they have no token equivalent.
+// Only properties where a token is the expected source. Layout properties and
+// CSS custom properties are excluded: components legitimately set those inline
+// (Tiles writes `--tilesWidth` from a prop) and they have no token equivalent.
 const TOKENIZABLE_INLINE_PROPERTIES = new Set([
   'color',
   'background',
@@ -289,17 +272,12 @@ const TOKENIZABLE_INLINE_PROPERTIES = new Set([
   'box-shadow',
 ]);
 
-// React Aria's `VisuallyHidden` (used internally by CheckboxGroup, RadioGroup,
-// many form components) renders a screen-reader-only element with the classic
-// clip idiom: `position:absolute; width:1px; height:1px; margin:-1px;
-// padding:0; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%)`. Those
-// inline values are an intentional a11y pattern with no token equivalent — the
-// `-1px`/`0` are part of the clip hack, not author-chosen off-token spacing.
-// Flagging them is a false positive and, worse, attributes a design-system
-// internal to the generated page. Skip the whole element when its inline style
-// carries the clip signature. NOTE: the same logic is inlined inside
-// detectHardcodedInlineStyles' page.evaluate (browser code cannot import this);
-// keep the two in sync.
+// React Aria's `VisuallyHidden` renders the classic clip idiom inline
+// (`width:1px; margin:-1px; clip:rect(0 0 0 0); clip-path:inset(50%)`). Those
+// values are part of the a11y hack, not author-chosen spacing, so flagging
+// them both false-positives and blames a design-system internal on the
+// generated page. NOTE: inlined again inside detectHardcodedInlineStyles'
+// page.evaluate (browser code cannot import this); keep in sync.
 export const isVisuallyHiddenInlineStyle = (raw: string): boolean =>
   /clip\s*:\s*rect\(\s*0/i.test(raw) ||
   /clip-path\s*:\s*inset\(\s*50%/i.test(raw) ||
@@ -422,9 +400,8 @@ export const checkTokenCompliance = async (
     // properties (transform, width, ...) have no token to use instead.
     if (v.property.startsWith('--')) continue;
     if (!TOKENIZABLE_INLINE_PROPERTIES.has(v.property)) continue;
-    // Reset/neutral values (0, 0px, transparent, …) are not off-token
-    // overrides; the computed path skips them via SKIP_VALUES, the inline path
-    // must too (e.g. a stray `padding: 0px` is not a token violation).
+    // Reset values (0, transparent, …) are not off-token overrides; the
+    // computed path skips them via SKIP_VALUES, so the inline path must too.
     if (SKIP_VALUES.has(v.value)) continue;
     if (!HARDCODED_VALUE.test(v.value)) continue;
     const fp = v.fingerprint ? ` (“${v.fingerprint}”)` : '';

@@ -9,15 +9,12 @@ import {
 import { parseSource } from '../helpers/source.js';
 import type { SourceLocation, ValidationIssue } from '../types.js';
 
-// Marigold form-field components (curated — part of the design-system-specific
-// remainder). A field inside a <Table> means the table is being misused for
-// form layout (W8); form fields belong in Stack / Inline / Columns.
+// Curated form-field components: one inside a <Table> means the table is being
+// misused for form layout (W8); fields belong in Stack / Inline / Columns.
 //
-// Checkbox, Select, and Switch are deliberately EXCLUDED: a per-row selection
-// <Checkbox>, an inline per-row <Select> (bulk actions), and a per-row status
-// <Switch> are idiomatic, common data-table patterns — not a table misused
-// for form layout — and flagging them would produce noisy false positives on
-// realistic tables.
+// Checkbox, Select and Switch are deliberately EXCLUDED — per-row selection,
+// bulk-action selects and status switches are idiomatic data-table patterns,
+// so flagging them would false-positive on realistic tables.
 const FIELD_COMPONENTS = new Set([
   'TextField',
   'NumberField',
@@ -65,10 +62,8 @@ export const validateTableUsage = (filePath: string): ValidationIssue[] => {
   const source = parseSource(filePath);
   const relFile = path.relative(process.cwd(), filePath);
   const issues: ValidationIssue[] = [];
-  // Only treat a tag as a Marigold component when it is actually imported
-  // from @marigold/components. A locally declared or third-party component
-  // that happens to share a Marigold name must not be held to these rules,
-  // and an aliased import must still be checked.
+  // Only tags actually imported from @marigold/components: a local component
+  // sharing the name isn't held to these rules, an aliased one still is.
   const resolver = buildMarigoldTagResolver(source);
 
   const columnAcceptsRowHeader =
@@ -131,9 +126,8 @@ export const validateTableUsage = (filePath: string): ValidationIssue[] => {
     ) {
       const tag = node.openingElement.tagName;
       if (ts.isIdentifier(tag) && resolver.get(tag.text) === 'Table') {
-        // `Table.Column` sub-elements are written using the same local
-        // identifier as the outer `<Table>` tag (aliased or not), so match
-        // against `tag.text` rather than the hardcoded original name.
+        // `Table.Column` uses the same local identifier as the outer tag, so
+        // match `tag.text` rather than the hardcoded original name.
         const tableLocalName = tag.text;
         const columns: (ts.JsxOpeningElement | ts.JsxSelfClosingElement)[] = [];
         let dynamicOrSpread = false;

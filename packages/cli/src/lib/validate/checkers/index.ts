@@ -58,10 +58,9 @@ const checkFailureIssue = (
     'This check could not complete due to an internal error; other checks still ran.',
 });
 
-// Isolates a single checker so an unexpected exception (an edge-case AST
-// shape a checker's author didn't anticipate) can't silently wipe out every
-// other checker's findings for the file — it degrades to one warning for
-// just that checker instead of collapsing the whole technical pass.
+// Isolates a checker so an unanticipated AST shape can't wipe out every other
+// checker's findings — it degrades to one warning instead of collapsing the
+// whole technical pass.
 const safeCheck = (
   source: IssueSource,
   label: string,
@@ -82,12 +81,10 @@ type FileCheck = {
 };
 
 // Every registry-dependent checker whose only input is the file path. Each
-// entry drives both the `registryIssue`-gated run and its `passed` line from
-// one place, so adding a checker here can't forget either half — the gap
-// this table replaced was ten call sites repeating `registryIssue ? [] :
-// safeCheck(...)` and a second, separately-spelled-out list for `passed`.
-// prop-validator (needs `coverage`) and theme-variant-validator (needs a
-// resolved theme path) don't fit this shape and stay special-cased below.
+// entry drives both the gated run and its `passed` line from one place, so a
+// new checker can't forget either half — this replaced ten call sites plus a
+// second, separately-spelled-out list. prop-validator and
+// theme-variant-validator need extra inputs and stay special-cased below.
 const FILE_CHECKS: readonly FileCheck[] = [
   {
     source: 'composition-validator',
@@ -151,10 +148,8 @@ export const runTechnicalChecks = (
 ): TechnicalResult => {
   const coverage = emptyCoverage();
   const projectDir = path.dirname(filePath);
-  // validate() (index.ts) already sets both roots unconditionally before
-  // dispatching here. Repeated for callers that invoke runTechnicalChecks
-  // directly (e.g. its own tests) without going through validate() — a no-op
-  // when the root hasn't changed, so this costs nothing on the normal path.
+  // validate() already sets both roots; repeated for callers that invoke
+  // runTechnicalChecks directly. A no-op when the root hasn't changed.
   setComponentResolutionRoot(projectDir);
   setThemeResolutionRoot(projectDir);
 
@@ -169,15 +164,10 @@ export const runTechnicalChecks = (
     }
   })();
 
-  // Every checker below (and theme-variant resolution) reads the
-  // @marigold/components registry. If it can't load, each would fail
-  // identically and safeCheck would downgrade every one of those failures to
-  // its own warning — N warnings adding up to a report that still shows
-  // "0 error(s)" even though nothing was actually checked against the design
-  // system. Load it once up front instead: on failure, report ONE error for
-  // the real cause and skip the checks that can't produce a meaningful
-  // result without it, rather than let a missing/unbuilt dependency read as
-  // a clean file.
+  // Every checker below reads the registry. If it can't load, each would fail
+  // identically and safeCheck would turn all of them into warnings — a report
+  // showing "0 error(s)" even though nothing was checked. Load it once up
+  // front and report ONE error for the real cause instead.
   let registryIssue: ValidationIssue | undefined;
   try {
     loadMarigoldRegistry();

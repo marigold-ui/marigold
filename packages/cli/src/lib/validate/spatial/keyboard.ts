@@ -12,9 +12,9 @@ type FocusableElement = {
   role: string;
   rect: { x: number; y: number; width: number; height: number };
   groupParent?: string;
-  // Visual fingerprint while NOT focused. Compared against the focused
-  // fingerprint during the Tab walk to decide whether a focus indicator is
-  // perceivable (WCAG 2.4.7). Optional so hand-built test data need not set it.
+  // Visual fingerprint while NOT focused, diffed against the focused one to
+  // decide whether an indicator is perceivable (WCAG 2.4.7). Optional so
+  // hand-built test data need not set it.
   unfocusedStyle?: FocusStyleFingerprint;
 };
 
@@ -42,9 +42,8 @@ type ArrowNavGroup = {
   groupSelector: string;
   role: string;
   memberCount: number;
-  // The group's own `aria-orientation`, if set. Absent when the group relies
-  // on its role's default orientation (radiogroup/menu/listbox: vertical;
-  // tablist/menubar: horizontal).
+  // Absent when the group relies on its role's default orientation
+  // (radiogroup/menu/listbox: vertical; tablist/menubar: horizontal).
   orientation: 'horizontal' | 'vertical' | undefined;
 };
 
@@ -174,12 +173,10 @@ const testArrowNavigation = async (page: Page): Promise<ArrowNavResult[]> => {
       continue;
     }
 
-    // `tablist`/`menubar` default to horizontal navigation, every other group
-    // role defaults to vertical — but an explicit `aria-orientation` always
-    // wins. If the orientation-correct key doesn't move focus, fall back to
-    // the other axis before concluding the group isn't navigable: a missing/
-    // misapplied `aria-orientation` must not produce a false positive on an
-    // otherwise correctly implemented widget.
+    // tablist/menubar default to horizontal, other group roles to vertical,
+    // and an explicit `aria-orientation` always wins. If the expected key
+    // doesn't move focus, try the other axis first: a misapplied
+    // `aria-orientation` must not fail an otherwise correct widget.
     const defaultHorizontal =
       group.role === 'tablist' || group.role === 'menubar';
     const isHorizontal =
@@ -239,10 +236,9 @@ export const extractFocusableElements = async (
         if (pos !== 'fixed' && pos !== 'sticky') continue;
       }
 
-      // Only elements that are actually keyboard-focusable. A role-only match
-      // without a usable tabindex (e.g. the current breadcrumb rendered as
-      // <span role="link"> with no href, or a roving-tabindex item that is not
-      // the active one) is not a Tab stop and must not count as "unreachable".
+      // Only genuinely keyboard-focusable elements. A role-only match without
+      // a usable tabindex (a breadcrumb as <span role="link">, an inactive
+      // roving-tabindex item) is no Tab stop and isn't "unreachable".
       if (htmlEl.tabIndex < 0) continue;
 
       const rect = el.getBoundingClientRect();
@@ -269,9 +265,8 @@ export const extractFocusableElements = async (
         parent = parent.parentElement;
       }
 
-      // Tag with a stable index so reachability can be matched by element
-      // identity during tab traversal, not by re-deriving CSS paths (which can
-      // diverge between passes and cause false "unreachable" reports).
+      // A stable index so reachability matches by element identity rather than
+      // re-derived CSS paths, which can diverge between passes.
       (el as HTMLElement).setAttribute(
         'data-mv-focusable',
         String(elements.length)
@@ -336,13 +331,10 @@ const extractFocusStepData = async (
     const idxAttr = el.getAttribute('data-mv-focusable');
     const rect = el.getBoundingClientRect();
 
-    // WCAG 2.4.11 Focus Not Obscured: is the focused element hidden behind
-    // author content that sticks in the viewport (sticky header/footer, cookie
-    // banner)? Hit-test the element's centre; if the top element there is a
-    // different node sitting inside a position:fixed/sticky container, the focus
-    // is obscured. Doing this on the real, scrolled tab path is the dynamic
-    // complement to the only existing (static, "needs review") implementation in
-    // IBM Equal Access.
+    // WCAG 2.4.11 Focus Not Obscured: hit-test the element's centre; if the
+    // top node there sits in a fixed/sticky container, focus is obscured.
+    // Running this on the real scrolled tab path is the dynamic complement to
+    // the static "needs review" implementation in IBM Equal Access.
     let obscured = false;
     let obscuredBy: string | null = null;
     const cx = rect.left + rect.width / 2;
@@ -420,10 +412,9 @@ export const extractTabSequence = async (
 
     visited.add(step.selector);
 
-    // WCAG 2.4.7: a focus indicator is perceivable when the element's
-    // appearance changes between its unfocused baseline and its focused
-    // fingerprint. Without a baseline to compare (no captured unfocused style),
-    // default to "visible" so a missing measurement never yields a false fail.
+    // WCAG 2.4.7: an indicator is perceivable when the appearance changes
+    // between the unfocused baseline and the focused fingerprint. Without a
+    // baseline, default to "visible" so a missing measurement can't fail.
     const unfocused = unfocusedByIndex.get(step.focusableIndex);
     const focusIndicatorVisible =
       unfocused && step.focused
@@ -445,12 +436,10 @@ export const extractTabSequence = async (
   return { tabSequence, endedByBody, cycleSelector, reachedIndices };
 };
 
-// `data-mv-focusable` is only read back by `extractFocusStepData` during the
-// Tab walk above. Once that walk finishes, the attribute is a stale mutation
-// left on the live DOM — harmless only because keyboard is currently the last
-// spatial check and the page is torn down right after. Removing it here keeps
-// that from becoming a hazard for any future reordering, or a second keyboard
-// pass, that would otherwise read leftover indices.
+// `data-mv-focusable` is only read during the Tab walk above; afterwards it is
+// a stale mutation on the live DOM, harmless only because keyboard happens to
+// run last. Removing it keeps a future reordering or a second pass from
+// reading leftover indices.
 const clearFocusableMarkers = (page: Page): Promise<void> =>
   page.evaluate(() => {
     for (const el of document.querySelectorAll('[data-mv-focusable]')) {
@@ -524,10 +513,9 @@ const detectKeyboardTraps = async (
     escapable = !afterTab.inCycle;
   }
 
-  // A real 2.1.2 trap keeps focus in a STRICT SUBSET of the page while the rest
-  // stays unreachable. When the cycle spans every focusable element it is just
-  // ordinary full-page Tab wrap-around (last -> first), not a trap — Escape
-  // does nothing there either, so `escapable` alone would false-positive.
+  // A real 2.1.2 trap confines focus to a STRICT SUBSET of the page. A cycle
+  // spanning every focusable element is ordinary Tab wrap-around, where Escape
+  // does nothing either — so `escapable` alone would false-positive.
   const cycleIsStrictSubset = cycleLength < focusableElements.length;
 
   return [
@@ -567,9 +555,8 @@ export const extractKeyboardA11yData = async (
   const unreachableElements = focusableElements.filter((el, i) => {
     if (tabResult.reachedIndices.has(i)) return false;
     if (el.groupParent && reachedGroups.has(el.groupParent)) return false;
-    // Container/composite roles are reached via arrow keys, not Tab — they are
-    // a single tab stop or roving-tabindex managed, so absence from the Tab
-    // sequence is not a defect.
+    // Composite roles are reached by arrow keys, not Tab, so absence from the
+    // Tab sequence is not a defect.
     if (NON_TAB_STOP_ROLES.has(el.role)) return false;
     return true;
   });
@@ -616,9 +603,8 @@ export const keyboardA11yToValidationIssues = (
   for (const el of data.unreachableElements) {
     issues.push({
       type: 'a11y',
-      // Warning, not error: reachability is measured at runtime via a simulated
-      // Tab walk (dynamic), so it is not a deterministic, false-positive-free
-      // violation. See severity policy.
+      // Warning, not error: measured by a simulated Tab walk at runtime, so
+      // not a deterministic violation. See severity policy.
       severity: 'warning',
       source: 'keyboard-a11y',
       component: el.component,
@@ -641,11 +627,9 @@ export const keyboardA11yToValidationIssues = (
 
     if (OVERLAY_ROLES.has(prev.role) || OVERLAY_ROLES.has(curr.role)) continue;
 
-    // Grids and tables (role=row, gridcell, …) navigate in 2D via arrow keys,
-    // not in a linear top-to-bottom reading order, so the visual-order heuristic
-    // below does not apply. These roles are already excluded from reachability
-    // checks for the same reason; skipping them here stops normal table tabbing
-    // (e.g. Tab from a toolbar button into a data row) from being flagged.
+    // Grids navigate in 2D via arrow keys, not in linear reading order, so the
+    // visual-order heuristic below doesn't apply — without this, normal table
+    // tabbing gets flagged.
     if (NON_TAB_STOP_ROLES.has(prev.role) || NON_TAB_STOP_ROLES.has(curr.role))
       continue;
 
@@ -672,11 +656,9 @@ export const keyboardA11yToValidationIssues = (
 
   for (const step of data.tabSequence) {
     if (!step.focusIndicatorVisible) {
-      // Downgraded to 'warning': focus-ring detection is heuristic and still
-      // incomplete (rings can be on ::before/::after, a wrapper, or use
-      // non-outline/box-shadow techniques), so a missed indicator may be a
-      // detection gap rather than a true WCAG 2.4.7 failure. A genuinely
-      // indicator-less element still surfaces — just without an error penalty.
+      // Warning, not error: ring detection is incomplete (rings can live on
+      // ::before, a wrapper, or use techniques this misses), so a missed
+      // indicator may be a detection gap rather than a 2.4.7 failure.
       issues.push({
         type: 'a11y',
         severity: 'warning',

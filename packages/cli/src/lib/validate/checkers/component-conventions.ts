@@ -38,15 +38,11 @@ const returnsJsx = (fn: ts.FunctionLikeDeclaration): boolean => {
   return found;
 };
 
-// German has no distinct progressive verb form the way English '-ing' words
-// do, so "wird" (the passive-progressive auxiliary in "wird gesendet"/"wird
-// geladen"/"wird gespeichert") is the reliable loading signal there — any
-// bare verb stem risks colliding with a normal resting-state label. A
-// `send`-based stem is deliberately omitted: "Send"/"Senden" (English
-// imperative / German infinitive) are both extremely common non-loading
-// button labels — e.g. `<Button>{sent ? 'Sent' : 'Send'}</Button>`, a
-// completely ordinary confirmation toggle unrelated to a loading state —
-// and would collide with the resting "Send" branch.
+// German has no distinct progressive form, so the auxiliary "wird" ("wird
+// geladen") is the reliable signal there; a bare verb stem would collide with
+// ordinary resting labels. A `send` stem is deliberately omitted:
+// "Send"/"Senden" are common non-loading labels — `{sent ? 'Sent' : 'Send'}`
+// is an ordinary toggle, not a loading state.
 const LOADING_LABEL =
   /\b(saving|loading|submitting|sending|please wait|wird|lädt|speichert)\b/i;
 
@@ -57,12 +53,9 @@ export const validateComponentConventions = (
   const relFile = path.relative(process.cwd(), filePath);
   const issues: ValidationIssue[] = [];
 
-  // Resolve JSX tags to their real @marigold/components symbol so W7/W10 only
-  // fire on Marigold's own <Form>/<Button> — not a locally declared or
-  // third-party component that happens to share the name, and honoring aliased
-  // imports (`{ Button as Btn }`). Mirrors the origin guard the prop and
-  // composition checkers use; without it these warnings false-positive on
-  // `./ui/Button` or a local <Form>.
+  // Resolve tags to their real @marigold/components symbol so W7/W10 fire only
+  // on Marigold's own <Form>/<Button>, honouring aliases. Without this origin
+  // guard they false-positive on a local `./ui/Button`.
   const resolver = buildMarigoldTagResolver(source);
   const isMarigoldForm = (name: string): boolean =>
     resolver.get(name) === 'Form';
@@ -102,11 +95,10 @@ export const validateComponentConventions = (
     });
   };
 
-  // --- W7: more than one primary Button inside the same <Form>. The Marigold
-  // convention is exactly one primary action per form (the affirmative submit);
-  // every other action is secondary/ghost/link. Settings pages are the
-  // exception because each independently-saving Panel wraps its OWN <Form>, so
-  // counting per-<Form> handles them automatically. ---
+  // --- W7: more than one primary Button per <Form>. The convention is exactly
+  // one primary action (the affirmative submit); everything else is
+  // secondary/ghost/link. Counting per-<Form> handles settings pages, where
+  // each independently-saving Panel wraps its own <Form>. ---
   const primaryButtonsInForm = (
     formNode: ts.JsxElement
   ): (ts.JsxOpeningElement | ts.JsxSelfClosingElement)[] => {

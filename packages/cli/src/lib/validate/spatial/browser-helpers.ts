@@ -1,14 +1,11 @@
 /**
- * Browser-side helpers shared across the spatial (dynamic) checks.
+ * The single source of truth for the DOM utilities the `page.evaluate` bodies
+ * need. Serialized into the page via {@link buildInstallScript} so each body
+ * can call `window.__mv.*` instead of re-inlining its own copy.
  *
- * The functions here are the SINGLE SOURCE OF TRUTH for the DOM utilities that
- * the `page.evaluate` bodies need. They are serialized into the page via
- * {@link buildInstallScript} so that any `page.evaluate` body can call them as
- * `window.__mv.*` instead of re-inlining its own copy.
- *
- * HARD CONSTRAINT: every function that gets serialized must be self-contained —
- * no closure over module scope, no imports, no TS-only runtime constructs.
- * `Function.prototype.toString()` must yield runnable JavaScript on its own.
+ * HARD CONSTRAINT: everything serialized must be self-contained — no closure
+ * over module scope, no imports, no TS-only runtime constructs.
+ * `Function.prototype.toString()` has to yield runnable JavaScript alone.
  */
 
 // Stable structural selector for an element, used to correlate findings across
@@ -26,9 +23,8 @@ export const cssPath = (el: Element): string => {
   return parts.join(' > ');
 };
 
-// Human/agent-facing description: nearest design-system component name (from the
-// data-component/data-slot the library stamps) or the tag, plus a short
-// source-greppable fingerprint (accessible name or trimmed text).
+// The nearest design-system component name (from the data-component/data-slot
+// the library stamps) or the tag, plus a source-greppable fingerprint.
 export const describeEl = (
   el: Element
 ): { component: string; fingerprint: string } => {
@@ -48,19 +44,13 @@ export const describeEl = (
   return { component, fingerprint: ariaLabel ?? text.slice(0, 40) };
 };
 
-// True when an element is removed from the visual/AOM render path by an author
-// mechanism. Centralises the visibility predicate the checks each re-implemented
-// inline. Does NOT walk ancestors — callers that need ancestor-hidden semantics
-// compose this with `el.closest(...)`.
+// True when an author mechanism removes an element from the render path. Does
+// NOT walk ancestors — compose with `el.closest(...)` for that.
 //
-// bounding-box.ts deliberately does NOT use this: aria-hidden is an
-// accessibility-tree signal, not a rendering one, so an aria-hidden element
-// can still be fully visible and genuinely overlap a sibling — folding it in
-// would make that visual overlap check produce false negatives. It also needs
-// display:none/[hidden] (no override possible) and visibility:hidden (author
-// can override on a descendant) to prune differently, which this single
-// boolean can't express. See bounding-box.ts's own isRenderSuppressed/
-// isInvisible before reusing this here.
+// bounding-box.ts deliberately does not use this: aria-hidden is an
+// accessibility-tree signal, so an aria-hidden element can still be visible and
+// genuinely overlap a sibling. It also needs display:none and
+// visibility:hidden to prune differently, which one boolean can't express.
 export const isHidden = (el: Element): boolean => {
   const style = window.getComputedStyle(el);
   return (
@@ -71,12 +61,10 @@ export const isHidden = (el: Element): boolean => {
   );
 };
 
-// Visual fingerprint of an element used to decide whether its appearance
-// CHANGES between unfocused and focused state (WCAG 2.4.7). Captures every
-// surface a focus indicator is commonly drawn on — the element's own
-// outline/box-shadow/border/background and the ::before/::after pseudo-elements
-// (react-aria/Marigold often draw the ring on a pseudo). The pure comparison
-// lives in focus-visible.ts; this only reads the values.
+// Visual fingerprint used to decide whether an element's appearance changes
+// between unfocused and focused (WCAG 2.4.7). Covers every surface a ring is
+// commonly drawn on, including ::before/::after — react-aria often uses a
+// pseudo. The comparison itself lives in focus-visible.ts.
 export const focusFingerprint = (
   el: Element
 ): {

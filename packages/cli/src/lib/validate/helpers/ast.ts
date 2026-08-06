@@ -38,12 +38,10 @@ export const isPascalCase = (name: string): boolean =>
 export const hasSpreadAttribute = (attrs: ts.JsxAttributes): boolean =>
   attrs.properties.some(ts.isJsxSpreadAttribute);
 
-// A JSX tag name is an Identifier (`<Foo>`) or a dotted access (`<Foo.Bar>`,
-// `<Foo.Bar.Baz>`). The import resolver only ever tracks top-level import
-// bindings, so a dotted tag's origin is decided by its leftmost identifier
-// (`Foo`) — `Foo.Bar` from a namespace import or a locally grouped object
-// (`const Foo = { Bar: ... }`) is exactly as unresolvable as a bare `<Foo>`
-// would be.
+// A JSX tag name is an Identifier or a dotted access. The import resolver only
+// tracks top-level bindings, so a dotted tag's origin is decided by its
+// leftmost identifier — `Foo.Bar` from a namespace import or a local object is
+// exactly as unresolvable as a bare `<Foo>`.
 export const getJsxTagRootIdentifier = (
   tag: ts.JsxTagNameExpression
 ): ts.Identifier | undefined => {
@@ -70,13 +68,10 @@ const hasOpaqueChildIn = (children: ts.NodeArray<ts.JsxChild>): boolean =>
       (ts.isJsxFragment(child) && hasOpaqueChildIn(child.children))
   );
 
-// A child whose content is an opaque runtime expression — `{children}`,
-// `{renderBody()}`, `{items.map(...)}` — may carry sub-components at runtime, so
-// the absence of a static sub-component is not provable. Inline render functions
-// (`{() => <X.Y/>}`) are NOT opaque: their body is part of the AST. A fragment
-// wrapping such an expression (`<>{items.map(...)}</>` — an idiomatic pattern,
-// e.g. inside `<Table>`) is equally opaque, since the fragment itself carries
-// no sub-components.
+// A child that is an opaque runtime expression (`{children}`,
+// `{items.map(...)}`) may carry sub-components at runtime, so their static
+// absence isn't provable. Inline render functions are NOT opaque — their body
+// is in the AST. A fragment wrapping such an expression is equally opaque.
 export const hasOpaqueDynamicChild = (element: ts.JsxElement): boolean =>
   hasOpaqueChildIn(element.children);
 
@@ -87,12 +82,11 @@ const EVENT_TARGET_PROPERTIES = new Set([
 ]);
 
 /**
- * Recursively checks whether an AST subtree contains a `<paramName>.target.value`
- * (or `.checked`/`.selectedOptions`) access — the telltale sign that a handler
- * treats its argument as a DOM event. The chain is bound to `paramName` (the
- * handler's first parameter), so a `.target.value` on some *other* object in the
- * body — a closed-over event, a helper's return value — does NOT trigger a false
- * positive. This matters because the finding is reported as an error.
+ * Whether a subtree accesses `<paramName>.target.value` (or
+ * `.checked`/`.selectedOptions`) — the sign that a handler treats its argument
+ * as a DOM event. Bound to the handler's first parameter, so a `.target.value`
+ * on any other object doesn't false-positive. The finding is an error, so that
+ * precision matters.
  */
 export const containsEventTargetAccess = (
   node: ts.Node,

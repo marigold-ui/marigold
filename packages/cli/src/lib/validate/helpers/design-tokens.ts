@@ -6,21 +6,17 @@ export type DesignTokenMap = Record<string, string>;
 
 let cachedTokens: DesignTokenMap | null = null;
 
-// The public entry point (checkers/index.ts and index.ts import this, not
-// resolve-theme.js directly): resolveThemeCss() below is keyed on
-// resolve-theme.ts's root, and this module caches its own derived result
-// globally with no key of its own — so a root change has to invalidate
-// cachedTokens/cachedFamilies too, or a second project validated in the same
-// process silently reads back the first project's tokens.
+// The public entry point (callers import this, not resolve-theme.js): this
+// module caches its derived result globally with no key of its own, so a root
+// change must invalidate cachedTokens/cachedFamilies too — otherwise a second
+// project validated in the same process reads back the first one's tokens.
 export const setThemeResolutionRoot = (dir: string): void => {
   if (setThemeResolutionRootRaw(dir)) resetDesignTokenCache();
 };
 
-// The value class deliberately does NOT exclude newlines: a multi-layer
-// shadow token (--shadow-elevation-overlay: 0px 0px … , 0px 1px … , …) is
-// written across several lines in theme-rui's source, terminated by a single
-// trailing `;` — excluding `\n` here would truncate the value at the first
-// line break, capturing only whitespace instead of the shadow layers.
+// The value class deliberately allows newlines: theme-rui writes multi-layer
+// shadow tokens across several lines with one trailing `;`, so excluding `\n`
+// would truncate the value at the first line break.
 const TOKEN_DECL = /--([a-zA-Z0-9_-]+):\s*([^;}]+);?/g;
 
 // Matches a local (`./`, `../`) `@import`, either the bare-string form
@@ -31,14 +27,11 @@ const TOKEN_DECL = /--([a-zA-Z0-9_-]+):\s*([^;}]+);?/g;
 const LOCAL_IMPORT =
   /@import\s+(?:url\(\s*['"]?(\.\.?\/[^'")]+)['"]?\s*\)|['"](\.\.?\/[^'"]+)['"])[^;]*;?/g;
 
-// theme-rui's theme.css is a thin consumer entry point: it declares no tokens
-// itself and only `@import`s the partials that do (tokens.css, ui.css, …), so
-// reading it verbatim always yields zero tokens. Inline every local (`./`,
-// `../`) `@import` recursively, relative to the importing file, so the
-// concatenated CSS actually contains the `@theme`/`:root` blocks the token
-// scan looks for. `seen` guards against re-visiting a file via more than one
-// import path (self-import is a pathological edge case, not something a real
-// theme build produces, but the guard is cheap).
+// theme-rui's theme.css declares no tokens itself and only `@import`s the
+// partials that do, so reading it verbatim yields zero tokens. Inline every
+// local `@import` recursively, relative to the importing file, so the result
+// contains the `@theme`/`:root` blocks the scan looks for. `seen` guards
+// against reaching one file through two import paths.
 export const resolveCssImports = (
   cssPath: string,
   seen = new Set<string>()
@@ -47,21 +40,14 @@ export const resolveCssImports = (
   if (seen.has(absolute)) return '';
   seen.add(absolute);
   const dir = path.dirname(absolute);
-  // A present-but-malformed dist (a `theme.css` that survives the top-level
-  // existence check in `loadDesignTokens` but `@import`s a partial that's
-  // missing or renamed) must degrade like `loadThemeVariants` does per-file,
-  // not throw an uncaught ENOENT out of the whole token load. Skipping just
-  // this partial means its tokens are absent from the map rather than the
-  // entire design-tokens check aborting over one bad file.
+  // A theme.css that survives the existence check but `@import`s a missing
+  // partial must degrade per-file rather than throw out of the whole load, so
+  // only that partial's tokens go missing.
   //
-  // Narrowed to ENOENT specifically, not a blanket catch: this same function
-  // also reads the top-level `theme.css` (already existence-checked, but not
-  // permission-checked, by `resolveThemeCss`), so a genuine EACCES/EISDIR on
-  // that entry file — a real environment misconfiguration, not "this partial
-  // doesn't exist" — must still surface. It already would as a warning
-  // (`token-compliance` in spatial/index.ts wraps every other error in its
-  // own generic catch-all), not crash validate(); swallowing it here instead
-  // would silently produce an empty token map with no signal at all.
+  // Narrowed to ENOENT, not a blanket catch: this also reads the top-level
+  // theme.css, so a genuine EACCES/EISDIR there is an environment
+  // misconfiguration that must still surface (as a warning, via the caller's
+  // catch-all) instead of silently yielding an empty token map.
   let raw: string;
   try {
     raw = fs.readFileSync(absolute, 'utf-8');
@@ -76,14 +62,12 @@ export const resolveCssImports = (
   );
 };
 
-// Restrict token extraction to `:root` / `@theme` blocks. A custom property
-// declared inside a component or utility selector is NOT a design token, and
-// hoisting it into the global map (last-write-wins across the whole file) could
-// silently collide with a real token of the same name. Marigold's theme-rui
-// emits every token inside `@theme static { … }`, so scoping keeps 100% of the
-// real tokens today while making the parse robust to future non-token `--vars`.
-// Falls back to the entire file when neither block exists, so a non-standard
-// theme CSS still resolves.
+// Restrict extraction to `:root` / `@theme` blocks: a custom property declared
+// inside a component selector is not a token, and hoisting it into the global
+// map could collide with a real token of the same name. theme-rui emits every
+// token inside `@theme static { … }`, so this keeps all of them today while
+// staying robust to future non-token `--vars`. Falls back to the whole file
+// when neither block exists.
 export const extractTokenScopes = (css: string): string => {
   const scopes: string[] = [];
   const opener = /(?::root\b|@theme\b)[^{]*\{/g;

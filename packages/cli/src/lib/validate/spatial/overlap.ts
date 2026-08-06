@@ -18,12 +18,9 @@ export type OverlapIssue = {
 // Minimum intersection (as % of the smaller box's area) before an overlap is
 // reported at all: below this is treated as an incidental touch/rounding.
 const OVERLAP_THRESHOLD_PERCENT = 5;
-// At or above this share of the smaller box the overlap is substantial enough
-// that content is very likely obscured. This is surfaced via `details.major`
-// for the agent, but the severity stays 'warning' regardless: overlap is a
-// threshold-based layout heuristic, and the severity policy keeps every
-// heuristic out of the error signal (only deterministic, FP-free, "broken"
-// findings are errors).
+// At or above this share of the smaller box, content is very likely obscured.
+// Surfaced via `details.major`, but the severity stays 'warning': the policy
+// keeps every threshold-based heuristic out of the error signal.
 const MAJOR_OVERLAP_PERCENT = 25;
 // A child smaller than 15% the area of its neighbour reads as a badge/icon
 // overlay sitting on top of a larger surface, not a layout collision. Heuristic.
@@ -49,11 +46,10 @@ const intersectionArea = (a: ComponentBounds, b: ComponentBounds): number => {
 
 const areaOf = (b: ComponentBounds): number => b.rect.width * b.rect.height;
 
-// Map each element's selector to the set of its ancestor selectors, taken from
-// the REAL nested bounds tree. This is the primary containment signal: the
-// cssPath-prefix check below is sound for genuine DOM paths but can miss a pair
-// once the extractor has skipped non-interesting intermediate elements, so the
-// tree relationship is authoritative and the prefix is only a fallback.
+// Each selector to its ancestors', from the real nested bounds tree. The
+// authoritative containment signal: the cssPath-prefix check below is sound
+// for genuine DOM paths but misses pairs once the extractor has skipped
+// intermediate elements, so it serves only as a fallback.
 const buildAncestryMap = (
   bounds: ComponentBounds[]
 ): Map<string, Set<string>> => {
@@ -148,9 +144,8 @@ export const overlapIssuesToValidationIssues = (
 ): ValidationIssue[] =>
   overlaps.map(o => ({
     type: 'spatial' as const,
-    // Overlap is a threshold-based layout heuristic, so it is always a
-    // 'warning' and never feeds the error signal. A substantial overlap is
-    // still flagged to the agent via `details.major`.
+    // Always a warning (threshold-based heuristic); a substantial overlap is
+    // still flagged via `details.major`.
     severity: 'warning' as const,
     source: 'overlap-detector' as const,
     component: `${o.componentA} ↔ ${o.componentB}`,

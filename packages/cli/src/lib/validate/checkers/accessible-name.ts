@@ -11,21 +11,17 @@ import { buildMarigoldTagResolver } from '../helpers/components.js';
 import { parseSource } from '../helpers/source.js';
 import type { IssueSeverity, ValidationIssue } from '../types.js';
 
-// Overlay components whose content is not in the DOM until the overlay opens.
-// The validate tool renders the page but never activates triggers, so axe-core
-// never sees a closed Dialog/Drawer, its `dialog` role, or its title — the
-// accessible name simply cannot be checked at runtime. A static check fills
-// exactly this gap: each overlay must carry an accessible name via an
-// `aria-label`/`aria-labelledby` prop OR an `<X.Title>` child.
+// Overlays whose content is absent from the DOM until they open, so axe-core
+// never sees their role or title at runtime. This static check fills that gap:
+// each must carry an accessible name via `aria-label`/`aria-labelledby` or an
+// `<X.Title>` child.
 //
 //   Dialog — doc-backed, error: "To correctly label a dialog, always include a
 //     title (`<Dialog.Title>`) or an `aria-label`."
 //     (marigold-ui.io/components/overlay/dialog)
-//   Drawer — warning: Drawer wraps the same React Aria dialog primitive, which
-//     emits a runtime warning when a dialog has no accessible name. The Marigold
-//     docs mark `Drawer.Title` as *optional*, so this is inferred rather than
-//     doc-mandated — hence a warning, not an error. Remove this entry to scope
-//     the check to Dialog only.
+//   Drawer — warning: it wraps the same React Aria primitive, which warns at
+//     runtime without a name, but the docs mark `Drawer.Title` optional, so
+//     this is inferred rather than doc-mandated.
 const OVERLAYS: ReadonlyArray<{
   component: string;
   titleSub: string;
@@ -82,14 +78,11 @@ const hasTitleDescendant = (
   return found;
 };
 
-// A custom (non-Marigold) child component might delegate the title to
-// something this static check cannot see into — e.g. a project's own
-// `<DialogHeader>` that renders `<Dialog.Title>` internally. Its presence is
-// treated as indeterminate, the same way an opaque `{expression}` child is:
-// this only relaxes the check for a component whose origin the resolver
-// can't identify (a real user-authored wrapper), not for a known Marigold
-// component (e.g. `<Button>`), which would never render another overlay's
-// title and must not silently suppress a genuine finding.
+// A user-authored child (a project's own `<DialogHeader>`) may render the
+// title where this static check cannot see. Treated as indeterminate, like an
+// opaque `{expression}` child. Only relaxed for components the resolver can't
+// identify — a known Marigold component would never render another overlay's
+// title, so it must not suppress a genuine finding.
 const hasUnresolvedComponentChild = (
   node: ts.JsxElement,
   component: string,
@@ -132,17 +125,14 @@ export const validateAccessibleName = (filePath: string): ValidationIssue[] => {
   const relFile = path.relative(process.cwd(), filePath);
   const issues: ValidationIssue[] = [];
   const overlayByName = new Map(OVERLAYS.map(o => [o.component, o]));
-  // Only treat a tag as a Marigold overlay when it is actually imported from
-  // @marigold/components. A locally declared or third-party component that
-  // happens to share an overlay's name (e.g. a project's own `Dialog`) must
-  // not be required to carry an accessible name. Mirrors the origin guard the
-  // composition checker uses.
+  // Only tags actually imported from @marigold/components: a project's own
+  // `Dialog` must not be required to carry an accessible name. Mirrors the
+  // composition checker's origin guard.
   const resolver = buildMarigoldTagResolver(source);
 
   const check = (node: ts.Node): void => {
-    // Self-closing overlays are empty by definition — the composition checker
-    // already reports the missing sub-components, so flagging them here too
-    // would just duplicate that finding.
+    // Self-closing overlays are empty by definition; the composition checker
+    // already reports the missing sub-components.
     if (ts.isJsxElement(node)) {
       const tag = node.openingElement.tagName;
       if (ts.isIdentifier(tag)) {

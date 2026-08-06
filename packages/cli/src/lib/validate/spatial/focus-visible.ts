@@ -1,14 +1,11 @@
 /**
  * WCAG 2.4.7 Focus Visible — focused-vs-unfocused comparison (pure, testable).
  *
- * ACT rule oj04fd defines visible focus as a difference between the focused
- * and unfocused rendering; this captures that as a style-fingerprint diff.
- * (A screenshot diff is the more exhaustive form; the style fingerprint
- * covers outline/box-shadow/border/background and the ::before/::after
- * pseudo-elements where react-aria/Marigold draw rings.)
- *
- * Nearest prior art to cite, not claim: ACT oj04fd defines the pixel diff; a USC
- * patent (US12229390B2, Chiou/Halfond) describes a screenshot-based variant.
+ * ACT rule oj04fd defines visible focus as a difference between the focused and
+ * unfocused rendering; this captures that as a style-fingerprint diff covering
+ * outline/box-shadow/border/background and the pseudo-elements where react-aria
+ * draws rings. A screenshot diff is the more exhaustive form (see ACT oj04fd
+ * and US12229390B2) — prior art to cite, not claim.
  */
 
 export type FocusStyleFingerprint = {

@@ -67,17 +67,12 @@ export const runCompletion = (
   return { output: script, exitCode: 0 };
 };
 
-// Completes a filesystem path for `validate`'s file positional. Only
-// directories (suggested with a trailing slash, for further completion) and
-// `.tsx` files (the only input `validate` accepts) are suggested — this
-// mirrors what a shell's own filename completion would offer, for the
-// headless `marigold __complete` path and for shells that don't fall back to
-// their own file completion.
+// Completes a filesystem path for `validate`'s file positional: directories
+// (with a trailing slash) and `.tsx` files, the only input it accepts. Mirrors
+// shell filename completion for shells that don't fall back to their own.
 const completeFilePath = (partial: string): string[] => {
-  // path.dirname('/a/b/') is '/a' (it treats a trailing slash as "no
-  // filename to strip, go up one more level"), which is wrong here — a
-  // trailing slash means "list THIS directory", not its parent. Splitting on
-  // the last '/' directly avoids that.
+  // path.dirname('/a/b/') is '/a', but a trailing slash here means "list THIS
+  // directory", not its parent — so split on the last '/' instead.
   const lastSlash = partial.lastIndexOf('/');
   const dir = lastSlash === -1 ? '.' : partial.slice(0, lastSlash) || '/';
   const prefix = lastSlash === -1 ? partial : partial.slice(lastSlash + 1);
@@ -93,10 +88,8 @@ const completeFilePath = (partial: string): string[] => {
   return (
     entries
       .filter(e => e.name.startsWith(prefix))
-      // A shell's own filename completion hides dotfiles unless the user
-      // already typed a leading '.' — startsWith(prefix) alone doesn't, so an
-      // empty prefix (e.g. `marigold validate <TAB>` at a repo root) would
-      // otherwise offer .git/, .claude/, .github/, node_modules/.
+      // Shells hide dotfiles until the user types a leading '.'; without this
+      // an empty prefix would offer .git/, .github/, node_modules/.
       .filter(e => prefix.startsWith('.') || !e.name.startsWith('.'))
       .filter(e => e.isDirectory() || e.name.endsWith('.tsx'))
       .map(e => `${dirPrefix}${e.name}${e.isDirectory() ? '/' : ''}`)

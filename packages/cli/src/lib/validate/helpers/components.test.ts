@@ -16,12 +16,11 @@ import {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// The registry is the source of truth for every ERROR-severity prop check, yet
-// it is otherwise only exercised transitively. A ts-morph/TypeScript upgrade or
-// a change to @marigold/components' dist layout could silently return an EMPTY
-// registry — which would make the prop validator pass everything. These tests
-// assert the structural invariants that guard against that, without pinning
-// brittle exact counts or the full value set of any prop.
+// The registry backs every error-severity prop check but is otherwise only
+// exercised transitively, so a ts-morph upgrade or a dist layout change could
+// silently return an EMPTY registry and make the prop validator pass
+// everything. These assert the structural invariants without pinning brittle
+// exact counts.
 describe('loadMarigoldRegistry (registry source of truth)', () => {
   beforeEach(() => {
     resetComponentRegistryCache();
@@ -41,13 +40,10 @@ describe('loadMarigoldRegistry (registry source of truth)', () => {
   });
 
   it('throws instead of silently caching a present-but-implausibly-small registry', () => {
-    // A truncated/malformed dist/index.d.mts (a ts-morph upgrade or a broken
-    // build that drops most exports without failing outright) must not be
-    // treated as a valid, cacheable registry — every checker resolving tags
-    // through it would otherwise read every genuine Marigold import as
-    // unresolvable and mass-error valid code as hallucinated. Verified via
-    // the same threshold loadMarigoldRegistry itself checks, since fabricating
-    // an actual truncated dist to exercise this end-to-end isn't practical.
+    // A truncated dist must not be cached as a valid registry — every checker
+    // resolving tags through it would mass-error valid code as hallucinated.
+    // Verified via the same threshold loadMarigoldRegistry checks, since
+    // fabricating a real truncated dist isn't practical.
     expect(isImplausiblySmallRegistry(0)).toBe(true);
     expect(isImplausiblySmallRegistry(20)).toBe(true);
     expect(isImplausiblySmallRegistry(21)).toBe(false);
@@ -78,11 +74,9 @@ describe('loadMarigoldRegistry (registry source of truth)', () => {
   });
 
   it('derives props for a component whose prop type is inline, not a separately-exported *Props interface', () => {
-    // IconButton declares its prop type inline as its own function parameter
-    // (`interface IconButtonProps` is NOT exported from @marigold/components)
-    // instead of a separately-exported `IconButtonProps`, exercising
-    // extractPropsFor's call-signature fallback (also relevant to CloseButton,
-    // VisuallyHidden, Split, …).
+    // IconButton declares its props inline as its function parameter rather
+    // than exporting `IconButtonProps`, exercising extractPropsFor's
+    // call-signature fallback (as do CloseButton, VisuallyHidden, Split).
     const props = getComponentProps('IconButton') ?? [];
     expect(props.length).toBeGreaterThan(0);
     expect(props.some(p => p.name === 'variant')).toBe(true);
@@ -119,10 +113,9 @@ describe('component resolution root', () => {
   });
 
   it('invalidates the cached registry when the resolution root actually changes', () => {
-    // validate() is a programmatic engine, not just a one-shot CLI call — an
-    // agent correction loop can validate files from two different projects in
-    // the same process. Without invalidation, the second project's caller
-    // would silently read back the first project's memoized registry.
+    // An agent correction loop can validate files from two projects in one
+    // process; without invalidation the second would read back the first's
+    // memoized registry.
     setComponentResolutionRoot(os.tmpdir());
     resetComponentRegistryCache();
     const first = loadMarigoldRegistry();
@@ -130,10 +123,8 @@ describe('component resolution root', () => {
     setComponentResolutionRoot(cliPackageDir);
     const second = loadMarigoldRegistry();
 
-    // Different Map instance proves the switch rebuilt the registry instead
-    // of handing back the first root's cached result (both roots happen to
-    // resolve to the same real dist, so content equality alone wouldn't
-    // distinguish "rebuilt" from "reused").
+    // A different Map instance proves a rebuild: both roots resolve to the
+    // same real dist, so content equality couldn't tell rebuilt from reused.
     expect(second).not.toBe(first);
     expect(second.size).toBeGreaterThan(20);
   });

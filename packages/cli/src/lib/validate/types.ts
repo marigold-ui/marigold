@@ -18,15 +18,12 @@ export type SourceLocation = {
 };
 
 /**
- * Checkers that run against the rendered DOM, as a value rather than a type
- * union: their findings arrive without a source location, and `index.ts` builds
- * the set `enrichDynamicLocations` consults straight from this array. That is
- * the point of the array — the previous shape kept a second hand-maintained
- * `Set` of the same names in `index.ts`, and two of the nine were missing from
- * it, so `non-text-contrast` and `content-on-hover-focus` findings printed with
- * neither a line number nor the explicit `scope: 'page'` marker every other
- * rendered finding gets. Add a new render-time source here, not to the static
- * union below.
+ * Checkers running against the rendered DOM, as a value rather than a type
+ * union: their findings carry no source location, and index.ts builds
+ * `enrichDynamicLocations`'s set straight from this array. That is the point —
+ * the hand-maintained `Set` it replaces was missing two of the nine, so those
+ * findings printed without a line number or the `scope: 'page'` marker. Add a
+ * new render-time source here, not to the static union below.
  */
 export const DYNAMIC_ISSUE_SOURCES = [
   'overlap-detector',
@@ -70,11 +67,9 @@ export type ValidationIssue = {
 };
 
 /**
- * Tracks how much of the generated code could actually be validated
- * statically. Variant/enum props with a dynamic value (e.g.
- * `variant={cond ? 'a' : 'b'}`) cannot be checked against the schema and are
- * skipped. Surfacing these counts makes the coverage of the syntactic
- * analysis transparent instead of silently incomplete.
+ * How much of the code could actually be validated statically. A prop with a
+ * dynamic value (`variant={cond ? 'a' : 'b'}`) can't be checked against the
+ * schema, so these counts keep the coverage gap visible.
  */
 export type ValidationCoverage = {
   /** Variant/enum prop assignments with a static value that was checked. */
@@ -103,11 +98,9 @@ export type ValidationReport = {
     componentsFound: string[];
     checksRun: ValidationCheck[];
     coverage: ValidationCoverage;
-    // Desktop width-utilisation metric (0..1) = fraction of the 1280px viewport
-    // width covered by content. Low = "stuck in mobile shape on desktop". null
-    // when not computed (no render, spatial check off, or a trivial layout).
-    // Score-free; a RELATIVE signal across configs, not an absolute quality
-    // measure. See spatial/responsive.ts computeWidthUtilization.
+    // Fraction of the 1280px viewport covered by content; low means "stuck in
+    // mobile shape on desktop". null when not computed. A relative signal
+    // across configs, not an absolute measure. See computeWidthUtilization.
     widthUtilization?: number | null;
   };
 };

@@ -15,8 +15,8 @@ export type ComponentPropInfo = {
   optional: boolean;
   // String literal values extracted from the union type, if any.
   knownValues?: string[];
-  // True when the union also allows arbitrary strings, so `knownValues` is a
-  // set of suggestions rather than a closed contract.
+  // The union also allows arbitrary strings, so `knownValues` is a set of
+  // suggestions rather than a closed contract.
   openValues?: boolean;
 };
 
@@ -25,32 +25,24 @@ export type ComponentInfo = {
   props: ComponentPropInfo[];
   subComponents: string[];
   subComponentProps: Map<string, ComponentPropInfo[]>;
-  // Derived from the type contract: the component (or one of its
-  // sub-components) declares the React Aria collection API's `items` prop, so
-  // it renders a variable number of entries by design. Used to suppress
+  // The component or a sub-component declares React Aria's `items` prop, so it
+  // renders a variable number of entries by design. Suppresses
   // duplicate-sub-component warnings without a hand-maintained name list.
   collection: boolean;
 };
 
 const require = createRequire(import.meta.url);
 
-// Set once per `validate()` invocation (from the file being validated) so
-// resolution below prefers the target project's own dependency tree over the
-// CLI's. Without this, a globally-installed `marigold` resolves
-// `@marigold/components` relative to itself — which it never has as a
-// dependency — and every static check silently degrades instead of finding
-// the project's real copy.
+// Set once per `validate()` so resolution prefers the target project's own
+// dependency tree. Without it a globally-installed `marigold` resolves
+// `@marigold/components` relative to itself — which it never depends on — and
+// every static check silently degrades.
 let resolutionRoot: string | undefined;
 
-// `validate()` is also a programmatic engine, not just a one-shot CLI call —
-// an agent correction loop can validate files from two different projects in
-// the same process. The registry/source/sub-component caches below are keyed
-// on nothing but "has loadMarigoldRegistry() ever run", so a plain
-// `resolutionRoot = dir` here would let the second project's caller silently
-// read back the first project's registry. Clearing the caches whenever the
-// root actually changes keys them on the root implicitly, at effectively no
-// cost to the common one-root-per-process case (the check below is then
-// always a no-op).
+// validate() is also a programmatic engine: an agent correction loop can
+// validate files from two projects in one process. The caches below key on
+// nothing but "has the registry loaded", so clearing them when the root
+// changes keys them on the root implicitly.
 export const setComponentResolutionRoot = (dir: string): void => {
   if (dir === resolutionRoot) return;
   resolutionRoot = dir;
@@ -70,18 +62,15 @@ const resolveMarigoldComponentsEntry = (): string => {
       });
     } catch {
       // Not resolvable from the target project either — fall through to the
-      // CLI-relative attempt below (covers running validate from inside the
-      // monorepo against its own fixtures, where there is no separate
-      // project tree to resolve from).
+      // CLI-relative attempt (covers the monorepo's own fixtures).
     }
   }
   return require.resolve('@marigold/components');
 };
 
 const findMarigoldComponentsDts = (): string => {
-  // `@marigold/components` does not expose `package.json` in its `exports`
-  // map, so we walk up from the resolved entry point until we find the
-  // package directory, then use the canonical dist path.
+  // The package doesn't expose `package.json` in its `exports` map, so walk up
+  // from the resolved entry to the package dir and use the canonical dist path.
   let entry: string;
   try {
     entry = resolveMarigoldComponentsEntry();
@@ -94,11 +83,9 @@ const findMarigoldComponentsDts = (): string => {
   while (dir !== path.dirname(dir)) {
     const pkg = path.join(dir, 'package.json');
     if (fs.existsSync(pkg)) {
-      // Only accept the package.json that actually belongs to
-      // @marigold/components. Without the name check, a nested package.json on
-      // the resolved path (e.g. a bundled sub-package) would be mistaken for
-      // the package root and we'd look for dist/ in the wrong place. Mirrors
-      // the name-verified walk-up in spatial/renderer.ts::findPackageDir.
+      // Without the name check, a nested package.json on the resolved path
+      // would be mistaken for the package root and put dist/ in the wrong
+      // place. Mirrors findPackageDir in spatial/renderer.ts.
       let name: string | undefined;
       try {
         name = (JSON.parse(fs.readFileSync(pkg, 'utf-8')) as { name?: string })
@@ -148,11 +135,9 @@ const acceptsAnyString = (t: Type): boolean => {
   return false;
 };
 
-// Extract string literal values from a type that may be a union like
-// 'primary' | 'secondary' | (string & {}) | undefined.
-// Returns undefined when there are no string literals in the type at all.
-// `open` marks a widened union (see acceptsAnyString): the literals are
-// then not a closed contract, so a value outside them is not a type error.
+// Extract string literals from a union like 'primary' | (string & {}).
+// Undefined when the type holds no literals at all. `open` marks a widened
+// union: a value outside the literals is then not a type error.
 const extractKnownValues = (
   type: Type
 ): { values: string[]; open: boolean } | undefined => {
@@ -160,18 +145,16 @@ const extractKnownValues = (
   const literals = unionTypes
     .filter(t => t.isStringLiteral())
     .map(t => t.getLiteralValue())
-    // getLiteralValue() is typed string | number | PseudoBigInt; the
-    // isStringLiteral() filter guarantees string, this narrows it soundly
-    // (no cast) and drops any non-string defensively.
+    // getLiteralValue() is string | number | PseudoBigInt; narrows without a
+    // cast, since isStringLiteral() already guarantees string.
     .filter((v): v is string => typeof v === 'string');
   if (literals.length === 0) return undefined;
   return { values: literals, open: unionTypes.some(acceptsAnyString) };
 };
 
 const propertiesFromType = (type: Type): ComponentPropInfo[] => {
-  // `getProperties()` includes inherited members from `extends` and `Omit`,
-  // so a Button declared as `interface ButtonProps extends Omit<RAC.ButtonProps, X>`
-  // returns the merged surface area we actually want to validate against.
+  // getProperties() includes members inherited via `extends`/`Omit`, giving
+  // the merged surface we want to validate against.
   return type.getProperties().map(symbol => {
     const declarations = symbol.getDeclarations();
     const declaration = declarations[0];
@@ -187,13 +170,10 @@ const propertiesFromType = (type: Type): ComponentPropInfo[] => {
   });
 };
 
-// Resolve the `${componentName}Props` type via the module's exported
-// declarations, which follow re-exports to the real interface/alias wherever it
-// lives. The build ships dist/index.d.mts as a thin re-export barrel (no inlined
-// type bodies), so searching only that file with getInterface/getTypeAlias
-// finds nothing; getExportedDeclarations resolves through the barrel to the
-// definition in its source module. Falls back to a direct lookup on the file
-// for a fully-inlined rollup.
+// Resolve `${componentName}Props` via exported declarations, which follow
+// re-exports to the real definition. dist/index.d.mts is a thin barrel with no
+// inlined type bodies, so getInterface/getTypeAlias on that file alone finds
+// nothing. Falls back to a direct lookup for a fully-inlined rollup.
 const extractPropsFor = (
   source: SourceFile,
   exports: ReadonlyMap<string, ExportedDeclarations[]>,
@@ -213,14 +193,10 @@ const extractPropsFor = (
   const alias = source.getTypeAlias(propsName);
   if (alias) return propertiesFromType(alias.getType());
 
-  // No separately-exported `${componentName}Props` — some components (e.g.
-  // CloseButton, IconButton, Split, VisuallyHidden) declare their prop type
-  // inline as the component function's own parameter type instead of a named
-  // export. Fall back to the call signature's first parameter, mirroring
-  // extractSubComponentData's identical fallback below for sub-components.
-  // Without this, these components silently resolved to `props: []`, and
-  // props.ts's `props.length > 0` guard then skipped prop validation for
-  // them entirely — a silent false negative on real, checkable components.
+  // Some components (CloseButton, IconButton, Split, VisuallyHidden) declare
+  // props inline as the function's parameter type instead of a named export.
+  // Without this fallback they resolve to `props: []` and props.ts's
+  // `props.length > 0` guard skips them — a silent false negative.
   for (const decl of declarations) {
     const signatures = decl.getType().getCallSignatures();
     if (signatures.length === 0) continue;
@@ -270,22 +246,16 @@ const extractSubComponentData = (
   return { names: [...new Set(names)], props };
 };
 
-// A real `@marigold/components` dist/index.d.mts exports well over a hundred
-// components — this is the same floor `components.test.ts` asserts against
-// the actual build. A *present-but-partial* dist (loads without throwing, but
-// a ts-morph upgrade or a broken/truncated build silently drops most exports)
-// would otherwise leave the registry near-empty without ever signaling
-// failure — and every checker that resolves tags through it (design-system-
-// usage, props, composition, …) would then read every genuine Marigold
-// import as unresolvable, mass-erroring valid code as hallucinated. Treating
-// an implausibly small registry as a load failure routes it through the same
-// safeCheck degrade-to-warning path as a missing dist already gets, instead
-// of silently producing wrong results from a "successful" load.
+// A real dist exports well over a hundred components. A present-but-partial
+// one (a truncated build, or a ts-morph upgrade dropping exports) would leave
+// the registry near-empty without signaling failure, and every checker that
+// resolves tags through it would then read genuine Marigold imports as
+// unresolvable, mass-erroring valid code as hallucinated. Treating it as a
+// load failure routes it through the same degrade-to-warning path as a
+// missing dist.
 const MIN_PLAUSIBLE_REGISTRY_SIZE = 20;
 
-// Exported so the threshold itself is unit-testable without needing to
-// fabricate a truncated dist/index.d.mts to exercise loadMarigoldRegistry
-// end-to-end.
+// Exported so the threshold is testable without fabricating a truncated dist.
 export const isImplausiblySmallRegistry = (size: number): boolean =>
   size <= MIN_PLAUSIBLE_REGISTRY_SIZE;
 
@@ -387,12 +357,10 @@ const buildSubComponentLookup = (): Map<string, string[]> => {
     for (const sub of info.subComponents) {
       const dotForm = `${parentName}.${sub}`;
 
-      // {Parent}{Sub} → {Parent}.{Sub}
-      // e.g. TableHeader → Table.Header, DialogTrigger → Dialog.Trigger
+      // {Parent}{Sub} → {Parent}.{Sub}, e.g. TableHeader → Table.Header
       addEntry(parentName + sub, dotForm);
 
-      // Standalone sub-component name → {Parent}.{Sub}
-      // e.g. Row → Table.Row, TabPanel → Tabs.TabPanel
+      // Standalone sub-component name, e.g. Row → Table.Row
       addEntry(sub, dotForm);
     }
   }
@@ -412,24 +380,17 @@ export const resetComponentRegistryCache = (): void => {
 };
 
 /**
- * Build a resolver that maps a JSX tag identifier *as written in the source*
- * to the real `@marigold/components` symbol it refers to.
+ * Map a JSX tag identifier *as written in the source* to the real
+ * `@marigold/components` symbol it refers to:
+ *   `import { Button }        from '@marigold/components'` → Button → Button
+ *   `import { Button as Btn } from '@marigold/components'` → Btn    → Button
  *
- * It walks the source's import declarations once and records ONLY bindings
- * imported from the exact module specifier `@marigold/components` whose
- * original (pre-alias) name is a real registry component:
- *   `import { Button }            from '@marigold/components'`  → Button → Button
- *   `import { Button as Btn }     from '@marigold/components'`  → Btn    → Button
+ * Local shadows and third-party imports are not recorded, so callers can
+ * early-return for unknown tags instead of validating them against the
+ * Marigold prop schema by name alone.
  *
- * Local shadows (`import { Button } from './ui/Button'`, `function Button(){}`)
- * and third-party imports are NOT recorded, so callers can early-return for any
- * tag the resolver does not know — eliminating the false "Prop X does not
- * exist" errors that arise from validating a non-Marigold tag against the
- * Marigold prop schema purely by name.
- *
- * Note: this reads import statements directly via the TS AST rather than via
- * `collectImports` (helpers/jsx.ts), because the latter discards the alias
- * original name (it pushes `el.name.text`), which we need here.
+ * Reads the TS AST directly rather than via `collectImports` (helpers/jsx.ts),
+ * which discards the alias's original name.
  */
 export const buildMarigoldTagResolver = (
   source: ts.SourceFile
@@ -445,9 +406,8 @@ export const buildMarigoldTagResolver = (
     if (!bindings || !ts.isNamedImports(bindings)) continue;
 
     for (const el of bindings.elements) {
-      // `propertyName` is set only for aliased imports (`{ Name as Alias }`),
-      // in which case `el.name` is the local alias and `propertyName` the
-      // original imported name. For non-aliased imports, `el.name` is both.
+      // `propertyName` is set only for aliased imports; then `el.name` is the
+      // local alias. For non-aliased imports `el.name` is both.
       const originalName = (el.propertyName ?? el.name).text;
       const localName = el.name.text;
       if (!isMarigoldComponent(originalName)) continue;
@@ -458,19 +418,13 @@ export const buildMarigoldTagResolver = (
   return resolver;
 };
 
-// HTML event handlers that should be replaced by their React Aria equivalent.
-// Curated, doc-justified allowlist — NOT auto-derived from "both names exist on
-// the type" (that over-fires, mirroring the boolean-shadow problem).
-// `onClick`→`onPress`/`onAction` is a genuine React Aria anti-pattern: Marigold
-// pressables expose `onPress`, never `onClick`.
+// HTML event handlers to replace with their React Aria equivalent. Curated,
+// not auto-derived from "both names exist on the type" (that over-fires).
 //
-// `onChange` is deliberately NOT a shadow source: Marigold *renames* React Aria
-// handlers to `onChange` as its public API (e.g. ComboBox exposes `onChange` ≙
-// `onInputChange`; Autocomplete/DatePicker likewise expose `onChange`), and
-// `onChange` vs `onSelectionChange`/`onOpenChange`/`onInputChange` are DIFFERENT
-// interactions, not synonyms — so flagging `onChange` was a false positive on
-// idiomatic usage. If a component does NOT expose `onChange`, the prop-validator
-// already reports it as an unknown prop, so nothing real is lost here.
+// `onChange` is deliberately absent: Marigold *renames* React Aria handlers to
+// `onChange` as its public API, and `onChange` vs `onSelectionChange`/
+// `onOpenChange` are different interactions, not synonyms. A component that
+// doesn't expose `onChange` is already caught by the prop validator.
 const HANDLER_PREFERRED_ALTERNATIVES: ReadonlyArray<[string, string]> = [
   ['onClick', 'onPress'],
   ['onClick', 'onAction'],
@@ -478,9 +432,8 @@ const HANDLER_PREFERRED_ALTERNATIVES: ReadonlyArray<[string, string]> = [
 ];
 
 /**
- * For a component, find event handler pairs where an HTML handler
- * coexists with a more-specific React Aria handler for the same
- * interaction.  Returns a map of htmlHandler → reactAriaHandler.
+ * Event handler pairs where an HTML handler coexists with a more-specific
+ * React Aria one. Returns htmlHandler → reactAriaHandler.
  */
 export const getHandlerShadows = (
   componentName: string
@@ -503,17 +456,7 @@ export const getHandlerShadows = (
   return shadows;
 };
 
-// A boolean-prop equivalent of getHandlerShadows above (x → isX) doesn't
-// currently exist: it was tried as a doc-justified ALLOWLIST rather than an
-// auto-derived pair list (auto-deriving from "both names exist on the type"
-// over-fires on legitimate alias props — e.g. Modal's `open`/`isOpen` and
-// `dismissable`/`isDismissable` are both genuine convenience aliases, not an
-// HTML-ism to replace; and RadioGroup's `isReadOnly` is itself a leaked,
-// undocumented RAC prop while `readOnly` is the documented public API, the
-// opposite direction from what auto-derivation would assume), but no pair in
-// the real registry ever qualified, so the mechanism had zero live cases.
-// Re-add (mirroring getHandlerShadows's shape) only once a genuine pair shows
-// up — `boolean-shadows.tsx` and props.test.ts's RadioGroup case keep
-// guarding the regression this was meant to catch either way, since
-// `readOnly` is in RadioGroup's own `validSet` and stays unflagged through
-// the normal per-component prop check with or without this.
+// A boolean equivalent (x → isX) was tried and dropped: no pair in the real
+// registry ever qualified, and auto-deriving one over-fires on genuine aliases
+// (Modal's `open`/`isOpen`). Re-add only once a real pair shows up —
+// boolean-shadows.tsx and props.test.ts's RadioGroup case guard it either way.

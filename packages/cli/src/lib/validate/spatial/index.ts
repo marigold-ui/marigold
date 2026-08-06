@@ -153,17 +153,12 @@ export type SpatialOptions = {
   viewport: Viewport;
 };
 
-// Wall-clock ceiling for the whole inspection phase below (every page.evaluate/
-// interaction call across every check), separate from the renderer's own
-// setup+mount budget (RENDER_BUDGET_MS in renderer.ts, which stops bounding
-// once render() returns a handle). page.evaluate has no default timeout, so
-// generated code that mounts cleanly but spins the main thread afterwards
-// (an infinite rAF loop, a runaway effect) would otherwise wedge every check
-// below indefinitely — and since `handle.close()` only runs in this
-// function's own `finally`, a wedged page means that finally never runs
-// either, leaking the page/context/dev-server. Racing the whole phase against
-// this budget guarantees runSpatialChecks always settles and its handle
-// always gets torn down, even when the page itself never responds again.
+// Ceiling for the whole inspection phase, separate from the renderer's
+// setup+mount budget, which stops bounding once render() returns.
+// page.evaluate has no default timeout, so code that mounts cleanly but then
+// spins the main thread would wedge every check below — and since
+// `handle.close()` only runs in this function's `finally`, that would leak the
+// page, context and dev server. Racing the phase guarantees it always settles.
 const INSPECTION_BUDGET_MS = 60_000;
 
 export const runSpatialChecks = async (
@@ -198,11 +193,8 @@ export const runSpatialChecks = async (
     let widthUtilization: number | null = null;
 
     if (options.enableSpatial) {
-      // Each sub-check gets its own try/catch (matching the a11y block below)
-      // so, e.g., a bounding-box extraction failure can't silently discard the
-      // token-compliance and overflow findings too — or worse, abort every
-      // later block (text-spacing, a11y, responsive, keyboard) in this
-      // function, collapsing them all into one generic runtime error.
+      // Per-sub-check try/catch so one extraction failure can't discard its
+      // siblings' findings or abort every later block in this function.
       let flat: ComponentBounds[] = [];
       try {
         const bounds = await extractBoundingBoxes(page);
@@ -239,12 +231,9 @@ export const runSpatialChecks = async (
         );
       } catch (err) {
         if (err instanceof ThemeCssNotFoundError) {
-          // An unbuilt/unresolvable theme is an environment precondition,
-          // not a defect in the file being validated — the static
-          // theme-variants checker already treats the same condition as a
-          // silent skip (checkers/index.ts). Match that with a warning
-          // rather than an error so a missing theme build can't fail the
-          // exit code the way a real finding would.
+          // An unbuilt theme is an environment precondition, not a defect in
+          // the file. The static theme-variants checker skips this condition
+          // silently; a warning here matches without failing the exit code.
           styleIssues.push({
             type: 'style',
             severity: 'warning',
@@ -255,9 +244,8 @@ export const runSpatialChecks = async (
               'Build the theme package first, then re-run validation.',
           });
         } else {
-          // A transient page.evaluate hiccup (e.g. "Execution context was
-          // destroyed") must not take the whole inspection phase down with
-          // it — matches every sibling try/catch in this function.
+          // A transient page.evaluate hiccup must not take the whole phase
+          // down — matches every sibling try/catch here.
           const message = err instanceof Error ? err.message : String(err);
           styleIssues.push({
             type: 'style',
@@ -310,9 +298,8 @@ export const runSpatialChecks = async (
     }
 
     if (options.enableA11y) {
-      // Each sub-check gets its own try/catch (matching every other block in
-      // this function) so, e.g., an axe-core internal error can't silently
-      // discard the AOM check's and non-text-contrast check's findings too.
+      // Per-sub-check try/catch, as elsewhere: an axe-core internal error
+      // must not discard the AOM and non-text-contrast findings too.
       try {
         const aom = await extractAOM(page);
         a11yIssues.push(...checkAccessibility(aom));
@@ -446,12 +433,10 @@ export const runSpatialChecks = async (
     const dedup = (issues: ValidationIssue[]): ValidationIssue[] => {
       const seen = new Set<string>();
       return issues.filter(i => {
-        // `details` is included because `source:component:message` alone
-        // collapses two genuinely distinct instances of the same violation
-        // (e.g. two separate <Tag> overlap pairs share identical message
-        // text) — `details` carries the per-instance selectors/coordinates
-        // that tell them apart. Location isn't available yet at this stage
-        // (assigned later by enrichDynamicLocations), so it can't be used.
+        // `source:component:message` alone collapses two distinct instances of
+        // the same violation (two <Tag> overlap pairs share message text);
+        // `details` carries the selectors that tell them apart. Location isn't
+        // assigned until enrichDynamicLocations, so it can't be used here.
         const key = `${i.source}:${i.component}:${i.message}:${JSON.stringify(i.details)}`;
         if (seen.has(key)) return false;
         seen.add(key);
@@ -475,30 +460,23 @@ export const runSpatialChecks = async (
   };
 
   const inspectPromise = inspect();
-  // If the budget wins the race below, inspectPromise rejects later with no
-  // local awaiter; mark it handled so a wedged page's eventual rejection
-  // never surfaces as an unhandled promise rejection.
+  // If the budget wins below, this rejects later with no awaiter.
   inspectPromise.catch(() => {});
 
   try {
     return await Promise.race([inspectPromise, budget]);
   } catch (err) {
-    // The render already completed by the time inspect() started (`handle`
-    // exists), so its real elapsed time is known even when the inspection
-    // phase itself times out — attach it so the caller doesn't report a
-    // timed-out-but-otherwise-healthy render as 0ms.
+    // The render completed before inspect() started, so its elapsed time is
+    // known even when the inspection phase times out.
     if (err instanceof Error) {
       (err as RenderTimingError).renderTimeMs = handle.result.renderTimeMs;
     }
     throw err;
   } finally {
     clearTimeout(budgetTimer);
-    // Always closed here, success or failure, and swallowed: a wedged
-    // page.evaluate would otherwise keep the browser context (and the
-    // underlying Vite server/temp dir) open indefinitely, since inspect()
-    // itself never reaches the point where it would close it — and a
-    // rejecting close() on the success path must not overwrite an already-
-    // computed, genuinely successful result with a thrown error.
+    // Always closed, success or failure, and swallowed: a wedged page would
+    // otherwise hold the context and Vite server open forever, and a rejecting
+    // close() must not overwrite an already-computed successful result.
     await handle.close().catch(() => {});
   }
 };

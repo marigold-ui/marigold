@@ -8,20 +8,16 @@ import {
 
 /**
  * WCAG 1.4.11 Non-text Contrast (AA) — the deterministically decidable subset.
+ * Two cases are checkable from computed styles without judging intent:
+ *   1. A visible BORDER is the boundary, so it must reach 3:1 against the
+ *      colour just outside it.
+ *   2. A borderless but FILLED component's fill is the boundary, so it must
+ *      reach 3:1 against the surrounding surface.
  *
- * Two things are checkable from computed styles + the AOM without judging
- * intent:
- *   1. A UI component with a visible BORDER: the border is the boundary that
- *      identifies the component, so it must reach 3:1 against the colour just
- *      outside it.
- *   2. A borderless but FILLED component (a solid button): the fill is the
- *      boundary, so the fill must reach 3:1 against the surrounding surface.
- *
- * A component identified only by its text (no border, no distinct fill — e.g. a
- * quiet/text button) is covered by 1.4.3 text contrast, not here. "Essential"
- * graphics and user-agent-determined appearance are intent-dependent and out of
- * scope. No public tool automates this (Deque's own coverage report lists 1.4.11
- * as 0% automated); the nearest checks only do text contrast (1.4.3).
+ * A component identified only by its text falls under 1.4.3 instead.
+ * "Essential" graphics and UA-determined appearance are intent-dependent and
+ * out of scope. No public tool automates this — Deque lists 1.4.11 as 0%
+ * automated.
  */
 
 // Candidate components, selected by ARIA role / native control — generic across
@@ -118,22 +114,17 @@ export const extractNonTextContrast = async (
 
         const borderColor = firstVisibleBorderColor(style);
 
-        // A translucent (partial-alpha) background is NOT a backdrop to stop
-        // at — flattenBackground (the Node-side compositor this data feeds)
-        // only treats an a>=1 layer as the opaque base, and composites every
-        // translucent layer above it. Stopping at the first non-fully-
-        // transparent layer (as opposed to the first fully OPAQUE one) would
-        // silently drop a real opaque grandparent beneath a translucent
-        // scrim/tint, making flattenBackground return null (indeterminate)
-        // and skip a genuine contrast violation.
+        // A translucent background is not a backdrop to stop at:
+        // flattenBackground treats only an a>=1 layer as the opaque base and
+        // composites the translucent ones above it. Stopping at the first
+        // non-transparent layer would drop a real opaque grandparent under a
+        // scrim, making the result indeterminate and skipping a real violation.
         const isOpaqueBackground = (colorStr: string): boolean => {
           const m = colorStr.match(/rgba?\(([^)]+)\)/);
           if (!m) return false;
-          // Accept both "r, g, b, a" and the space form "r g b / a" — modern
-          // Chromium can emit either from getComputedStyle. A comma-only split
-          // mis-parses the space form as a single part, always reading as
-          // opaque and stopping the ancestor walk at a translucent scrim.
-          // Mirrors contrast.ts::parseColor's part-splitting.
+          // Chromium emits both "r, g, b, a" and "r g b / a". A comma-only
+          // split reads the space form as one part, always looks opaque, and
+          // stops the walk at a translucent scrim. Mirrors contrast.ts.
           const parts = m[1]
             .replace('/', ' ')
             .split(/[\s,]+/)
@@ -205,10 +196,9 @@ export const nonTextContrastToValidationIssues = (
     if (d.hasVisibleBorder && d.borderColor) {
       const border = parseColor(d.borderColor);
       if (!border) continue;
-      // A border is a perceivable boundary if it contrasts with EITHER side it
-      // separates: the surroundings outside OR the component's own fill inside.
-      // Themed components often rely on border-vs-fill, so only flag when the
-      // border fails against every adjacent colour we can actually resolve.
+      // A border is perceivable if it contrasts with EITHER side it separates.
+      // Themed components often rely on border-vs-fill, so only flag when it
+      // fails against every adjacent colour that can be resolved.
       const outsideRes = contrastAgainstLayers(border, outside);
       const fill = parseColor(d.ownBackground);
       const fillRes =

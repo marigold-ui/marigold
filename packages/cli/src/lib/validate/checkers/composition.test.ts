@@ -191,11 +191,10 @@ describe('validateComposition', () => {
   });
 
   it('does not borrow the outer instance ancestor slot for an empty nested instance of the same compound', () => {
-    // The inner Dialog's ancestor chain passes through the outer Dialog's own
-    // <Dialog.Content> before reaching the outer <Dialog> boundary. That
-    // Content belongs to the outer instance, not the inner one — if it were
-    // wrongly borrowed via ancestor-climbing, this genuinely empty inner
-    // Dialog would escape the empty-compound error.
+    // The inner Dialog's ancestor chain passes through the outer's own
+    // <Dialog.Content>, which belongs to the outer instance. If it were
+    // borrowed by ancestor-climbing, this empty inner Dialog would escape the
+    // empty-compound error.
     const file = tmpFile(
       'cv-nested-ancestor.tsx',
       `import { Dialog } from '@marigold/components';
@@ -229,12 +228,10 @@ describe('validateComposition', () => {
   });
 
   it('does not emit false warnings when dynamic children are wrapped in a fragment', () => {
-    // `hasOpaqueDynamicChild` also recognizes a JSX expression wrapped in a
-    // fragment (`<>{children}</>` — an idiomatic pattern), not just a direct
-    // child: the fragment's own children are otherwise statically empty of
-    // any `<Table.X>` tag, so without this the "used without any of its
-    // sub-components" error would fire even though the content is genuinely
-    // dynamic.
+    // `hasOpaqueDynamicChild` also recognizes an expression wrapped in a
+    // fragment (`<>{children}</>`), whose children are otherwise statically
+    // empty of any `<Table.X>` tag — without it the empty-compound error would
+    // fire on genuinely dynamic content.
     const file = tmpFile(
       'cv-dynamic-fragment.tsx',
       `import { Table } from '@marigold/components';
@@ -349,10 +346,8 @@ const C = () => (
   });
 
   it('does not flag self-populating compounds used standalone', () => {
-    // <FileField multiple /> renders <FileField.Item> internally per selected
-    // file; the bare element is the canonical usage. Flagging it as "used
-    // without sub-components" is a false positive that only penalises code
-    // using the richer component.
+    // <FileField multiple /> renders <FileField.Item> internally per file, so
+    // the bare element is canonical usage.
     const file = tmpFile(
       'cv-filefield.tsx',
       `import { FileField } from '@marigold/components';
@@ -406,10 +401,8 @@ const C = () => <Checkbox value="a" label="Accept" />;`
   });
 
   it('does not flag a Tooltip wrapped in a standalone TooltipTrigger', () => {
-    // Tooltip's only sub-component is Trigger, which is an inverse wrapper:
-    // <TooltipTrigger> takes <Tooltip> as content. The bare <Tooltip> holding
-    // text is canonical, so requiring <Tooltip.Trigger> as a child is a false
-    // positive.
+    // Tooltip's only sub-component is the inverse wrapper Trigger, which takes
+    // <Tooltip> as content — so a bare <Tooltip> holding text is canonical.
     const file = tmpFile(
       'cv-tooltip-trigger.tsx',
       `import { TooltipTrigger, Tooltip, Button } from '@marigold/components';
@@ -524,10 +517,8 @@ const C = () => (
   });
 
   it('does not flag a compound whose sub-components are delegated via a dotted custom child', () => {
-    // Same unresolved-delegate pattern as above, but the custom child is
-    // accessed through a dotted tag (an object-grouped local or a namespace
-    // import) rather than a bare Identifier — the root of the dotted access
-    // ("UI") is what must be checked against the resolver, not the tag itself.
+    // Same unresolved-delegate pattern, but through a dotted tag: the root of
+    // the access ("UI") is what must be checked against the resolver.
     const file = tmpFile(
       'cv-dotted-custom-child.tsx',
       `import { Dialog } from '@marigold/components';
@@ -620,21 +611,17 @@ const C = () => (
 });
 
 describe('collection classification (contract)', () => {
-  // The duplicate-warning suppression is driven by the type-derived `items`
-  // signal plus the curated static-collection remainder. This test pins the
-  // resulting classification against the real schema so that a change in the
-  // component types (or in the derivation) surfaces here instead of silently
-  // flipping warnings on or off.
+  // Pins the classification against the real schema, so a change in the
+  // component types or the derivation surfaces here instead of silently
+  // flipping duplicate warnings on or off.
   it('derives the collection flag from the items prop for the known compounds', () => {
     const reg = loadMarigoldRegistry();
     const derived = [...reg.entries()]
       .filter(([, info]) => info.subComponents.length > 0 && info.collection)
       .map(([name]) => name)
       .sort();
-    // Every React Aria collection compound carries `items` on itself or a
-    // sub-component (Table.Body, Tabs.List, Tag.Group). Tag is intentionally
-    // included: two separate <Tag.Group>s on one page are legitimate, so
-    // suppressing the duplicate warning there removes a false positive.
+    // Every collection compound carries `items` on itself or a sub-component.
+    // Tag is intentionally included: two <Tag.Group>s on a page are legitimate.
     expect(derived).toEqual([
       'ActionMenu',
       'Autocomplete',

@@ -4,18 +4,15 @@ import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 
-// Set once per `validate()` invocation (from the file being validated) —
-// mirrors helpers/components.ts::setComponentResolutionRoot. Without it, a
-// globally-installed `marigold` resolves `@marigold/theme-rui` relative to
-// itself instead of the target project, which never has it as a dependency.
+// Set once per `validate()`, mirroring setComponentResolutionRoot. Without it
+// a globally-installed `marigold` resolves `@marigold/theme-rui` relative to
+// itself rather than the target project.
 let resolutionRoot: string | undefined;
 
-// Not the public entry point — design-tokens.ts depends on resolveThemeCss()
-// below, so it wraps this to also invalidate its own root-keyed caches on a
-// change. Callers should use design-tokens.ts's setThemeResolutionRoot
-// instead (importing it here directly would be a resolve-theme →
-// design-tokens → resolve-theme cycle). Returns whether the root actually
-// changed, so the wrapper only resets its caches when it needs to.
+// Not the public entry point: design-tokens.ts wraps this to also invalidate
+// its own root-keyed caches, and callers should use its setThemeResolutionRoot
+// (importing it here would be a cycle). Returns whether the root actually
+// changed, so the wrapper only resets when it needs to.
 export const setThemeResolutionRootRaw = (dir: string): boolean => {
   if (dir === resolutionRoot) return false;
   resolutionRoot = dir;
@@ -42,13 +39,9 @@ export const resolveThemeDir = (): string | null => {
     while (dir !== path.dirname(dir)) {
       const pkg = path.join(dir, 'package.json');
       if (fs.existsSync(pkg)) {
-        // Only accept the package.json that actually belongs to
-        // @marigold/theme-rui — otherwise a nested package.json on the
-        // resolved path (e.g. a bundled sub-package shipping its own
-        // dist/package.json) would be mistaken for the package root and
-        // theme.css would be looked up under dist/dist/. Mirrors the
-        // name-verified walk-up in helpers/components.ts::findMarigoldComponentsDts
-        // and spatial/renderer.ts::findPackageDir.
+        // Without the name check, a nested package.json on the resolved path
+        // would be mistaken for the package root and theme.css looked up under
+        // dist/dist/. Mirrors the walk-ups in components.ts and renderer.ts.
         let name: string | undefined;
         try {
           name = (

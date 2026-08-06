@@ -2,13 +2,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TELEMETRY_COMMANDS } from './commands';
 import { POST } from './route';
 
-// Constructed once and reused across every mocked-Redis test below: getRedis()
-// caches the client it constructs at module scope, so every call after the
-// first one (across all tests in this file, once Redis is configured) returns
-// this same instance regardless of which test's mockResolvedValue is "current"
-// — beforeEach resets the spies themselves, not the cached client. Hoisted by
-// vitest above the `./route` import above, so the mock is in place before
-// route.ts's own `import { Redis } from '@upstash/redis'` resolves.
+// Constructed once and reused: getRedis() caches its client at module scope,
+// so every later call returns this same instance — beforeEach resets the spies,
+// not the cached client. Hoisted by vitest above the `./route` import so the
+// mock is in place before route.ts resolves '@upstash/redis'.
 const redisMock = {
   incr: vi.fn(),
   expire: vi.fn(),
@@ -56,10 +53,8 @@ describe('POST /api/telemetry', () => {
     vi.stubEnv('KV_REST_API_TOKEN', '');
   });
 
-  // Derived from the route's own command enum so a command added there is
-  // automatically covered here — no second hardcoded list to drift out of
-  // sync with the schema (which itself mirrors the CLI's CommandName union in
-  // packages/cli/src/lib/telemetry.ts).
+  // Derived from the route's own command enum, so a command added there is
+  // covered automatically and no second list can drift out of sync.
   it.each(TELEMETRY_COMMANDS)('accepts a %s command event', async command => {
     const res = await post(makeEvent(command));
 
@@ -83,10 +78,8 @@ describe('POST /api/telemetry (with Redis configured)', () => {
     redisMock.lpush.mockResolvedValue(1);
   });
 
-  // The plain day key (telemetry:YYYY-MM-DD), as opposed to the differently-
-  // shaped rate-limit key (telemetry:rl:<anonymousId>:YYYY-MM-DD) — route.ts
-  // calls expire() on both, once per POST, so assertions on "the event list's
-  // own expire call" must filter to this shape specifically.
+  // The plain day key, not the rate-limit key (telemetry:rl:<id>:date).
+  // route.ts expires both per POST, so assertions must filter to this shape.
   const dayKeyExpireCalls = () =>
     redisMock.expire.mock.calls.filter(([key]) =>
       /^telemetry:\d{4}-\d{2}-\d{2}$/.test(key as string)
@@ -106,12 +99,9 @@ describe('POST /api/telemetry (with Redis configured)', () => {
   });
 
   it('calls EXPIRE NX on every event, not just the first, so a failed first-event EXPIRE is retried', async () => {
-    // NX makes this idempotent server-side (a no-op once the key already has
-    // a TTL), so calling it unconditionally — rather than gating on
-    // `lpush`'s return value being 1 — never pushes the retention window
-    // out, and a first-event EXPIRE that failed (e.g. a network blip) is
-    // retried by every later event instead of leaving the key with no TTL
-    // for the rest of the day.
+    // NX makes this idempotent server-side, so calling it unconditionally
+    // never extends the retention window, and a first-event EXPIRE lost to a
+    // network blip is retried by every later event.
     redisMock.lpush.mockResolvedValueOnce(1).mockResolvedValueOnce(2);
 
     await post(makeEvent('validate'));
@@ -122,12 +112,10 @@ describe('POST /api/telemetry (with Redis configured)', () => {
   });
 
   it('resolves the event key once, so an event straddling midnight UTC still gets a TTL', async () => {
-    // Resolving the key separately for LPUSH and EXPIRE lets a request whose
-    // LPUSH round trip crosses midnight push onto day N and then EXPIRE day
-    // N+1 — a key that doesn't exist yet, so EXPIRE is a silent no-op and day
-    // N's list keeps no TTL at all. NX can't recover it either: no later event
-    // ever targets that key again. Simulated by letting the clock advance
-    // during the LPUSH call itself.
+    // Resolving the key twice lets a request crossing midnight LPUSH onto day
+    // N and EXPIRE day N+1, which doesn't exist yet — a silent no-op leaving
+    // day N with no TTL, and no later event ever targets that key again.
+    // Simulated by advancing the clock during the LPUSH call.
     vi.useFakeTimers();
     try {
       vi.setSystemTime(new Date('2026-01-01T23:59:59.500Z'));

@@ -9,15 +9,11 @@ import {
 import { parseSource } from '../helpers/source.js';
 import type { ValidationIssue } from '../types.js';
 
-// Collection components expose a `<X.Section>` whose `header` prop the docs
-// declare mandatory ("A header is required for each section, which is set using
-// the `header` prop." — Select, ComboBox, Autocomplete, TagField). The
-// published declarations type `header` as a required `ReactNode`, but tsc does
-// not enforce it on `<X.Section>` usage (verified empirically: a section
-// without a header compiles cleanly through the RAC generics), so the compiler
-// check never flags a missing header. This check closes that gap: it fires
-// only for `*.Section` sub-components that the schema confirms accept a
-// `header` prop, so it stays in sync with the component API.
+// The docs declare `<X.Section>`'s `header` prop mandatory ("A header is
+// required for each section" — Select, ComboBox, Autocomplete, TagField) and
+// the declarations type it as required, but tsc doesn't enforce it through the
+// RAC generics, so the compiler check never flags a missing one. This closes
+// that gap, firing only for sections the schema confirms accept `header`.
 const SECTION_SUB = 'Section';
 const HEADER_PROP = 'header';
 

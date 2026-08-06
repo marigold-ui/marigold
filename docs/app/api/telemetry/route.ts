@@ -22,10 +22,9 @@ const EventSchema = z.object({
 });
 
 const MAX_BODY_BYTES = 4 * 1024;
-// Per-anonymousId daily quota. Telemetry is fire-and-forget from the CLI, so
-// the legit upper bound is "one event per command invocation"; 1000/day leaves
-// ample headroom for power users (CI is auto-suppressed) while still bounding
-// abuse on the public POST endpoint to a knowable share of the Upstash quota.
+// Per-anonymousId daily quota. The legitimate upper bound is one event per
+// command invocation, so 1000/day leaves headroom for power users (CI is
+// auto-suppressed) while bounding abuse of the public endpoint.
 const RATE_LIMIT_PER_DAY = 1000;
 const SECONDS_PER_DAY = 24 * 60 * 60;
 // How long a day's raw event list is retained before Redis expires it.

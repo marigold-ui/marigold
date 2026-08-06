@@ -39,32 +39,23 @@ export const extractBoundingBoxes = async (
       el.getAttribute('data-slot') ??
       el.tagName.toLowerCase();
 
-    // A collapsed Accordion/Disclosure panel renders its content inside a
-    // [hidden] container that Marigold styles display:block height:0; the
-    // descendants keep full bounding boxes and would be measured as
-    // overlapping although nothing is visible. display:none admits no
-    // override at all (a descendant's own display can never re-render it),
-    // and [hidden] — even though Marigold's height:0 override means its
-    // *computed* display usually isn't literally "none" — still clips every
-    // descendant to zero height regardless of the descendant's own styles, so
-    // the whole subtree is safe to skip outright in both cases. Once the
-    // panel is expanded (interaction driver removes [hidden]) it is measured
-    // normally, so no real finding is lost.
+    // A collapsed Disclosure panel keeps full bounding boxes inside a [hidden]
+    // container Marigold styles height:0, so its descendants would measure as
+    // overlapping while nothing is visible. Neither display:none nor [hidden]
+    // can be overridden by a descendant, so both subtrees are safe to skip
+    // outright; once expanded, the panel is measured normally.
     //
-    // aria-hidden is deliberately NOT treated as hidden here: it is an
-    // accessibility-tree signal, not a rendering one, so an aria-hidden
-    // element can still be fully visible and genuinely overlap a sibling —
-    // excluding it would just create a false negative for this visual check.
+    // aria-hidden is deliberately NOT treated as hidden: it's an
+    // accessibility-tree signal, so such an element can still be visible and
+    // genuinely overlap a sibling.
     const isRenderSuppressed = (el: Element): boolean => {
       const style = window.getComputedStyle(el);
       return style.display === 'none' || el.hasAttribute('hidden');
     };
 
-    // Unlike display:none, visibility:hidden is inherited but overridable — a
-    // descendant can set visibility:visible and render again even though its
-    // ancestor is visibility:hidden. So an element itself is excluded from
-    // the results, but its subtree is still walked so any such override is
-    // still measured.
+    // Unlike display:none, visibility:hidden is overridable: a descendant can
+    // set visibility:visible and render again. So the element is excluded but
+    // its subtree is still walked.
     const isInvisible = (el: Element): boolean =>
       window.getComputedStyle(el).visibility === 'hidden';
 

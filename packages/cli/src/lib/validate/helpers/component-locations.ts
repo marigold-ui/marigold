@@ -51,15 +51,12 @@ export const buildComponentLocationMap = (
   return map;
 };
 
-// Marigold emits NO `data-component` and no name-bearing `data-slot` on its
-// rendered DOM (only `data-rac`, which carries no name), so a dynamic finding's
-// `component` label is frequently a bare tag name and the name-keyed join above
-// resolves nothing. The runtime instead computes a content fingerprint per
-// element via `__describeEl` (renderer.ts): the element's aria-label, else its
-// trimmed/whitespace-collapsed text, capped at 40 chars. This builds the mirror
-// of that fingerprint from the JSX source so a finding can be joined back to its
-// authored line by content when the name key fails. Best-effort, additive: it
-// never alters the name map or any existing behaviour.
+// Marigold emits no name-bearing attributes on its rendered DOM, so a dynamic
+// finding's `component` label is often a bare tag name and the name-keyed join
+// above resolves nothing. The runtime instead computes a content fingerprint
+// per element via `__describeEl` (aria-label, else trimmed text, capped at 40
+// chars); this builds the mirror of it from the JSX source so a finding can be
+// joined by content when the name key fails. Best-effort and additive.
 export const buildTextFingerprintMap = (
   filePath: string
 ): ComponentLocationMap => {
@@ -98,18 +95,14 @@ export const buildTextFingerprintMap = (
     return undefined;
   };
 
-  // Concatenated literal JSX text of an element (direct JSXText children plus
-  // simple string-literal expression children), trimmed/collapsed and capped at
-  // 40 chars — the same shape `__describeEl` produces from textContent.
-  // KNOWN ASYMMETRY (location-precision only, never finding existence): runtime
-  // `__describeEl` reads el.textContent (ALL descendants), whereas this mirror
-  // only sees DIRECT JSXText / string-literal children. For nested text such as
-  // <Card><Heading>Title</Heading>Body</Card> the runtime fingerprint is
-  // 'TitleBody' but this mirror yields 'Body', so they will not join — the
-  // consequence is a MISSED location (falls back to details.scope='page'),
-  // never a WRONG line. Likewise aria-label here is trim/collapsed while
-  // __describeEl uses the raw aria-label; multi-word labels may not join. Both
-  // divergences only reduce location precision on the best-effort enrichment.
+  // Literal JSX text of an element, trimmed and capped at 40 chars — the shape
+  // `__describeEl` produces from textContent.
+  //
+  // KNOWN ASYMMETRY, affecting location precision only, never whether a finding
+  // exists: `__describeEl` reads textContent (all descendants) while this sees
+  // only direct children, so <Card><Heading>Title</Heading>Body</Card> yields
+  // 'TitleBody' at runtime but 'Body' here and won't join. aria-label diverges
+  // the same way (collapsed here, raw there). Both cost a location, not a line.
   const childTextOf = (el: ts.JsxElement): string => {
     let text = '';
     for (const child of el.children) {

@@ -2,22 +2,16 @@ import type { ElementHandle, Page } from 'playwright';
 import type { ValidationIssue } from '../types.js';
 
 /**
- * WCAG 1.4.13 Content on Hover or Focus (AA).
+ * WCAG 1.4.13 Content on Hover or Focus (AA): content revealed by hover/focus
+ * must be dismissable (Escape hides it), hoverable (the pointer can move onto
+ * it) and persistent (it doesn't vanish on its own).
  *
- * When hovering or focusing an element reveals additional content (a tooltip /
- * popover), that content must be: dismissable (Escape hides it without moving
- * pointer/focus), hoverable (the pointer can move onto it without it
- * vanishing), and persistent (it does not disappear on its own while the
- * trigger is still hovered/focused).
+ * No public tool simulates these three — axe and the ACT registry have no rule,
+ * and IBM Equal Access's `style_hover_persistent` is static CSS parsing that
+ * never opens anything. This drives the interaction for real.
  *
- * No public tool tests these three behaviours by simulation — axe and the ACT
- * registry have no rule, and IBM Equal Access's `style_hover_persistent` is
- * static CSS parsing that never opens anything. The nearest neighbour to cite,
- * not claim. This drives the interaction for real.
- *
- * FP-safe by construction: a behaviour is only reported as failing when it was
- * actually observed to fail; anything indeterminate defaults to "passes" so a
- * timing race never invents a violation.
+ * FP-safe: a behaviour fails only when observed to fail; anything
+ * indeterminate defaults to passing, so a timing race invents no violation.
  */
 
 export type HoverFocusObservation = {
@@ -115,9 +109,9 @@ const discoverHoverFocusCandidates = (page: Page): Promise<Candidate[]> =>
         if (!id) continue;
         const t = document.getElementById(id);
         if (!t) continue;
-        // 1.4.13 only applies to content that APPEARS on hover/focus: a target
-        // that is a tooltip, or one that is currently hidden (so it must be
-        // revealed). An always-visible description (help text) is out of scope.
+        // 1.4.13 only covers content that APPEARS on hover/focus — a tooltip,
+        // or a currently hidden target. Always-visible help text is out of
+        // scope.
         if (t.getAttribute('role') === 'tooltip' || isHidden(t)) {
           tooltip = t;
           break;
@@ -222,8 +216,7 @@ export const extractContentOnHoverFocus = async (
     } catch {
       // Keep FP-safe defaults on any interaction error.
     } finally {
-      // Dispose on every path — success, the early !revealed continue, and a
-      // thrown error alike — so the handle can never leak.
+      // Dispose on every path so the handle can never leak.
       await trigger?.dispose().catch(() => {});
     }
 

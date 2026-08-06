@@ -15,21 +15,14 @@ import {
 import { parseSource } from '../helpers/source.js';
 import type { ValidationCoverage, ValidationIssue } from '../types.js';
 
-// React Aria value-based handlers that pass a value, not a DOM event.
-// If the handler body accesses .target.value or .target.checked, it's wrong.
+// React Aria handlers that pass a value, not a DOM event, so a `.target.value`
+// in the body is wrong.
 //
-// Error-severity, so the premise must be FP-free — checked below against the
-// component's OWN declared prop type, not assumed from the handler name
-// alone. Most Marigold components wrap react-aria-components and *rename*
-// these handlers to `onChange` (e.g. ComboBox onChange ≙ onInputChange),
-// which is genuinely always value-based:
-//   @react-types/shared ValueBase.onChange?: (value: C) => void
-//   @react-types/shared onSelectionChange?: (key: Key | null | Selection) => void
-//   ComboBox onInputChange?: (value: string) => void
-// But Marigold's low-level native wrappers (Input, SearchInput) inherit the
-// native DOM `onChange: ChangeEventHandler<...>` as-is — a real ChangeEvent,
-// not a value. So the handler *name* being in this set is necessary but not
-// sufficient; the type-based gate right below it is what makes this FP-free.
+// Error-severity, so the premise must be FP-free: membership here is necessary
+// but not sufficient, and the type-based gate below is what decides. Most
+// components rename these to `onChange` (ComboBox onChange ≙ onInputChange),
+// which is always value-based — but the low-level native wrappers (Input,
+// SearchInput) inherit the DOM `ChangeEventHandler` as-is.
 const VALUE_BASED_HANDLERS = new Set([
   'onChange',
   'onSelectionChange',
@@ -38,12 +31,9 @@ const VALUE_BASED_HANDLERS = new Set([
 
 const COMMON_PROPS = new Set(['key', 'ref', 'children', 'data-testid', 'id']);
 
-// CLAUDE.md: components are authored to remove `className`/`style` and
-// expose theming through `variant`/`size` instead — so unlike COMMON_PROPS,
-// these are NOT blanket-allowed. A handful of components (e.g. CloseButton)
-// deliberately keep one anyway; `validSet` (the component's real declared
-// props) is checked first, so those stay unflagged. This only fires for the
-// components that followed the convention and actually removed it.
+// Components remove `className`/`style` in favour of `variant`/`size`, so
+// unlike COMMON_PROPS these are not blanket-allowed. `validSet` is checked
+// first, so the few components that deliberately keep one stay unflagged.
 const STYLE_ESCAPE_PROPS = new Set(['className', 'style']);
 
 const suggestProp = (used: string, valid: string[]): string | undefined => {
@@ -75,10 +65,9 @@ export const validateProps = (
 ): ValidationIssue[] => {
   const source = parseSource(filePath);
 
-  // Maps each JSX tag identifier as written (honoring `import { X as Y }`
-  // aliases) to the real @marigold/components symbol. Tags not in this map are
-  // local/aliased-local/third-party components that merely share a Marigold
-  // name, and must NOT be validated against the Marigold prop schema.
+  // Each JSX tag as written (honouring aliases) to its real
+  // @marigold/components symbol. Tags absent from this map merely share a
+  // Marigold name and must not be validated against its prop schema.
   const tagResolver = buildMarigoldTagResolver(source);
 
   const issues: ValidationIssue[] = [];
@@ -235,11 +224,9 @@ export const validateProps = (
       }
       if (coverage) coverage.staticValuesChecked++;
 
-      // A widened union like `'primary' | 'secondary' | (string & {})` lets
-      // the type accept any string, so a value outside the listed literals
-      // does not violate the type contract. Reporting it here as an error
-      // would be a false positive; the theme-variant check covers those
-      // props against the actually-defined theme values as a warning.
+      // A widened union accepts any string, so a value outside the literals
+      // doesn't violate the type contract — reporting it would be a false
+      // positive. The theme-variant check covers those as a warning.
       if (propInfo.openValues) continue;
 
       if (!propInfo.knownValues.includes(value)) {

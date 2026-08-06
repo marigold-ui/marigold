@@ -9,17 +9,12 @@ const require = createRequire(import.meta.url);
 
 export type ThemeVariantMap = Map<string, Map<string, string[]>>;
 
-// Resolves a JSX tag *as written* (including an alias, `{ Menu as M }`) to
-// the name it was imported under from `@marigold/components`. Deliberately
-// NOT gated on `@marigold/components` registry membership (unlike
-// `buildMarigoldTagResolver` in helpers/components.ts): `themeVariants` — the
-// actual source of truth here — is derived from theme-rui's own build output
-// (`dist/appearances.cjs`), a separate data source from the components
-// registry, so gating on the registry would reject a real, themed component
-// the registry loader doesn't happen to recognize. The only thing that must
-// be checked is origin: is this tag actually imported from
-// `@marigold/components` (not a locally declared or third-party component
-// sharing the name)?
+// Resolves a JSX tag as written (including aliases) to its imported name.
+// Deliberately NOT gated on registry membership, unlike
+// buildMarigoldTagResolver: the source of truth here is theme-rui's own
+// appearances build, a separate data source, so gating on the components
+// registry would reject a real themed component it doesn't recognize. Only
+// origin matters — is this tag actually imported from @marigold/components?
 const buildMarigoldImportResolver = (
   source: ts.SourceFile
 ): Map<string, string> => {
@@ -44,29 +39,18 @@ const buildMarigoldImportResolver = (
 let cachedMap: ThemeVariantMap | null = null;
 let cachedDir: string | null = null;
 
-// theme-rui's `*.styles.ts` sources define each component's variant/size
-// values via `cva(...)`, but they never ship in a published install —
-// theme-rui's package.json declares `files: ["dist"]`, and the CLI's primary
-// real-world environment IS a published install (an AI agent working in a
-// consumer project, not this monorepo). theme-rui's own build
-// (`scripts/build-appearances.mjs`) already resolves every component's
-// variant/size values into `dist/appearances.{cjs,mjs}` (published publicly
-// as the `@marigold/theme-rui/appearances` subpath) — reading THAT instead
-// means this check actually works in the CLI's primary environment, and
-// moves the responsibility for correctly resolving cva variants (including
-// compoundVariants, object-of-cva internal slots, etc.) onto theme-rui's own
-// build script rather than re-implementing it here. `require`d directly by
-// resolved path (not the package specifier) so a `--theme-path` override
-// pointing at a different theme-rui build works the same way auto-resolution
-// does. The CJS build, not the ESM one, so this stays a synchronous function
-// like every other technical checker.
+// theme-rui's `*.styles.ts` sources define variants via `cva(...)` but never
+// ship (`files: ["dist"]`), and the CLI's primary environment is a published
+// install. theme-rui's own build already resolves them into
+// `dist/appearances.cjs`, so reading that works in a consumer project and
+// keeps cva resolution (compoundVariants, slots) theme-rui's responsibility.
+// `require`d by resolved path so a `--theme-path` override behaves like
+// auto-resolution, and CJS so this stays synchronous like every other
+// technical checker.
 //
-// Known fidelity gap: theme-rui's `build-appearances.mjs` only reads each
-// component's `variants` object — it does not union in a value that appears
-// ONLY inside a `compoundVariants` rule. No real theme-rui component
-// currently has such a value, and that build script has no test coverage
-// against this regressing either — worth a follow-up in theme-rui if a
-// future component variant introduces one.
+// Known gap: build-appearances.mjs reads only each component's `variants`
+// object, not values appearing solely in a `compoundVariants` rule. No current
+// component has one — worth a follow-up in theme-rui if that changes.
 type Appearances = Record<string, Record<string, string[]>>;
 
 export const loadThemeVariants = (themeDir: string): ThemeVariantMap => {
@@ -75,11 +59,9 @@ export const loadThemeVariants = (themeDir: string): ThemeVariantMap => {
 
   const result: ThemeVariantMap = new Map();
 
-  // Degrades gracefully: a bad themePath, a pre-appearances-build theme-rui,
-  // or a malformed dist yields an empty variant map rather than throwing out
-  // of the technical phase. The theme-variant check is a warning-level
-  // source; losing it must never take down the registry-independent checks
-  // (compiler, section-header) too.
+  // A bad themePath or malformed dist yields an empty variant map rather than
+  // throwing: this is a warning-level source, and losing it must not take the
+  // registry-independent checks down with it.
   try {
     const appearancesPath = path.join(resolved, 'dist', 'appearances.cjs');
     const mod = require(appearancesPath) as { appearances?: Appearances };
@@ -111,13 +93,9 @@ export const validateThemeVariants = (
   const themeVariants = loadThemeVariants(themeDir);
   const relFile = path.relative(process.cwd(), filePath);
   const issues: ValidationIssue[] = [];
-  // Only treat a tag as a Marigold component when it is actually imported
-  // from @marigold/components. `themeVariants` is keyed by the component's
-  // real name (from theme-rui's `dist/appearances.cjs`), so a bare
-  // `themeVariants.get(tag.text)` lookup — with no origin check — false-
-  // positives on a locally-declared component sharing a Marigold name (e.g.
-  // a project's own `<Menu variant="...">` with an unrelated prop contract),
-  // and silently misses an aliased Marigold import.
+  // Only tags actually imported from @marigold/components. `themeVariants` is
+  // keyed by real component name, so a bare lookup would false-positive on a
+  // local `<Menu variant="...">` and miss an aliased Marigold import.
   const resolver = buildMarigoldImportResolver(source);
 
   const visit = (node: ts.Node): void => {

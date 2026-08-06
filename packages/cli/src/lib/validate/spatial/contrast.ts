@@ -1,14 +1,11 @@
 /**
- * Deterministic colour-contrast engine (pure, Node-testable).
+ * Deterministic colour-contrast engine for the 1.4.11 and 2.4.7 checks.
  *
- * Used by the WCAG 1.4.11 Non-text Contrast check and the 2.4.7 focus-visible
- * diff. Everything here is intentionally FP-safe: any colour that cannot be
- * resolved to a concrete sRGB value (gradients, background images,
- * `currentColor`, unknown syntaxes) parses to `null`, and a contrast result of
- * `null` means "indeterminate — do not report", never a failure.
+ * FP-safe throughout: a colour that can't resolve to a concrete sRGB value
+ * (gradients, `currentColor`, unknown syntaxes) parses to `null`, and a `null`
+ * contrast means "indeterminate — do not report", never a failure.
  *
- * Pure functions only; no DOM, no imports. The browser extractor reads raw
- * computed colour strings and hands them here.
+ * Pure functions only; no DOM, no imports.
  */
 
 export type RGB = { r: number; g: number; b: number };
@@ -23,11 +20,9 @@ const NAMED: Record<string, RGBA> = {
 };
 
 /**
- * Parses the colour syntaxes a browser actually emits from getComputedStyle:
- * `rgb(r, g, b)`, `rgba(r, g, b, a)`, the space form `rgb(r g b / a)`, `#rgb`,
- * `#rrggbb`, `#rrggbbaa`, and the keywords transparent/black/white. Anything
- * else (gradients, `color(srgb …)`, named colours beyond the trivial set,
- * `currentColor`) returns null so the caller treats it as indeterminate.
+ * The colour syntaxes getComputedStyle actually emits: `rgb()`/`rgba()`, the
+ * space form `rgb(r g b / a)`, `#rgb`/`#rrggbb`/`#rrggbbaa`, and
+ * transparent/black/white. Anything else returns null (indeterminate).
  */
 export const parseColor = (input: string): RGBA | null => {
   const value = input.trim().toLowerCase();
@@ -104,13 +99,10 @@ export const compositeOver = (fg: RGBA, bg: RGB): RGB => {
 };
 
 /**
- * Flattens a stack of background layers into a single opaque colour.
- *
- * `layers` are ordered TOP first (the element's own background) to BOTTOM last
- * (outermost ancestor / page). Compositing starts at the first fully-opaque
- * layer scanning from the bottom up and composites everything above it. If no
- * layer is opaque the true backdrop is unknown -> null (indeterminate), so the
- * caller does not invent a white page and produce a false contrast number.
+ * Flattens background layers — ordered top (the element's own) to bottom
+ * (page) — into one opaque colour. Compositing starts at the first fully
+ * opaque layer from the bottom. With no opaque layer the backdrop is unknown,
+ * so this returns null rather than inventing a white page.
  */
 export const flattenBackground = (layers: RGBA[]): RGB | null => {
   const bottomUp = [...layers].reverse();

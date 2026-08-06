@@ -104,11 +104,9 @@ const findSenderScript = (): string | null => {
 
 const TMP_SWEEP_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
-// Best-effort cleanup of stale telemetry tmp files in os.tmpdir(). The
-// detached sender unlinks on success, but if the child dies before reaching
-// unlink the file leaks; this sweep keeps the tmpdir bounded for a frequently
-// invoked CLI. Wrapped in try/catch and uses sync I/O so it stays cheap and
-// never throws.
+// The detached sender unlinks on success, but a child that dies first leaks
+// its file; this sweep keeps the tmpdir bounded for a frequently invoked CLI.
+// Sync I/O and fully guarded, so it stays cheap and never throws.
 const sweepStaleTelemetryTmpFiles = (): void => {
   try {
     const dir = os.tmpdir();
@@ -130,18 +128,11 @@ const sweepStaleTelemetryTmpFiles = (): void => {
 };
 
 export const emit = (options: EmitOptions): void => {
-  // The whole body, not just the file-write/spawn below: anonymousId() can
-  // also throw (it lazily calls writeConfig() on a first run or a wiped
-  // config dir, which has no try/catch of its own — unlike readConfig()).
-  // On a read-only/unwritable config dir (a sandboxed CI/agent runner, a
-  // locked-down container) that throw would otherwise propagate out of
-  // emit() uncaught, turning an unrelated command's own clean exit into a
-  // crash — exactly what this function's "must never break the CLI"
-  // contract promises not to do. setTelemetryEnabled() is deliberately NOT
-  // covered by this same guard: it backs the explicit `marigold telemetry
-  // enable/disable` command, whose entire purpose is persisting that choice,
-  // so a write failure there should surface to the user rather than silently
-  // pretend to have succeeded.
+  // The whole body, not just the write/spawn below: anonymousId() lazily calls
+  // writeConfig(), which has no guard of its own, so an unwritable config dir
+  // would propagate out of emit() and crash an unrelated command.
+  // setTelemetryEnabled() is deliberately NOT covered — it backs the explicit
+  // enable/disable command, where a write failure must surface to the user.
   try {
     if (isTelemetryDisabled()) return;
 

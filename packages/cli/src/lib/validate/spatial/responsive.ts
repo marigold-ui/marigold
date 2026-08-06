@@ -18,9 +18,8 @@ type TouchTargetIssue = {
 type DisappearedComponent = {
   selector: string;
   component: string;
-  // Visibility state captured at extraction time so the pure builder can decide
-  // whether a 0x0 measurement is a genuine collapse or a legitimately
-  // not-rendered element (display:none, hidden Disclosure, inactive Tab panel).
+  // Captured at extraction time so the pure builder can tell a genuine collapse
+  // from a legitimately not-rendered element (display:none, inactive Tab).
   hiddenByCss: boolean;
 };
 
@@ -29,15 +28,13 @@ type OverflowCulprit = {
   selector: string;
   right: number;
   accessibleName: string;
-  // True when the widest element is tabular content (a table/grid). WCAG 1.4.10
-  // Reflow explicitly exempts content that needs two-dimensional layout, so a
+  // WCAG 1.4.10 Reflow exempts content needing two-dimensional layout, so a
   // wide data table is a softer finding than a fixed-width block.
   tabular: boolean;
 };
 
-// A visible element's horizontal box at one breakpoint, keyed by a stable
-// cssPath. Used only to measure reflow between breakpoints — transient, never
-// persisted in the report.
+// A visible element's horizontal box at one breakpoint. Used only to measure
+// reflow between breakpoints — never persisted in the report.
 export type LayoutBox = { selector: string; x: number; width: number };
 
 export type ResponsiveSnapshot = {
@@ -47,16 +44,14 @@ export type ResponsiveSnapshot = {
   touchTargets: TouchTargetIssue[];
   disappearedComponents: DisappearedComponent[];
   overflowCulprit: OverflowCulprit | null;
-  // Optional: always set by the extractor; absent in hand-built test snapshots,
-  // in which case the reflow metric simply does not run.
+  // Always set by the extractor; absent in hand-built test snapshots, where the
+  // reflow metric then simply does not run.
   layout?: LayoutBox[];
 };
 
 const BREAKPOINTS: ResponsiveBreakpoint[] = [
-  // 320 CSS px is the canonical WCAG 1.4.10 Reflow condition (equivalent to a
-  // 1280px viewport at 400% zoom). Content must not require horizontal
-  // scrolling here; checking it catches reflow failures the wider breakpoints
-  // miss.
+  // The canonical WCAG 1.4.10 Reflow condition (1280px at 400% zoom): content
+  // must not require horizontal scrolling here.
   { label: 'reflow (320px)', width: 320, height: 640 },
   { label: 'mobile', width: 375, height: 812 },
   { label: 'tablet', width: 768, height: 1024 },
@@ -68,17 +63,14 @@ const BREAKPOINTS: ResponsiveBreakpoint[] = [
 const MIN_TOUCH_TARGET_PX = 24;
 
 // A vertical scrollbar narrows the content area while window.innerWidth still
-// counts the full width, so elements sized to the viewport overflow by roughly
-// the scrollbar width. Tolerate that to avoid flagging this rendering artifact;
-// genuine overflow is materially larger.
+// counts the full width, so viewport-sized elements overflow by about the
+// scrollbar width. Genuine overflow is materially larger than this.
 const SCROLLBAR_TOLERANCE_PX = 17;
 
-// WCAG 2.5.8 spacing exception is geometric: each target gets a 24px-diameter
-// circle and the exception applies when those circles do not overlap. For
-// axis-aligned rects that means the EDGE-to-edge gap (not the centre-to-centre
-// distance, which counts each target's own radius and so over-reports
-// crowding) must be at least the required clearance. Gap is 0 when the rects
-// touch or overlap.
+// WCAG 2.5.8's spacing exception is geometric: each target gets a 24px-diameter
+// circle and the exception applies when they don't overlap. For axis-aligned
+// rects that is the EDGE-to-edge gap — centre-to-centre would count each
+// target's own radius and over-report crowding. 0 when the rects touch.
 export const edgeGap = (
   a: { left: number; right: number; top: number; bottom: number },
   b: { left: number; right: number; top: number; bottom: number }
@@ -88,10 +80,9 @@ export const edgeGap = (
   return Math.hypot(gapX, gapY);
 };
 
-// A 0x0 measurement is only a genuine "disappeared" defect when the element is
-// in the visible render path. display:none / visibility:hidden / aria-hidden /
-// the hidden attribute / a collapsed Disclosure or inactive Tab panel all
-// legitimately measure 0x0 in Marigold and must not be flagged.
+// A 0x0 measurement is only a defect when the element is in the visible render
+// path: display:none, aria-hidden, a collapsed Disclosure or an inactive Tab
+// panel all legitimately measure 0x0 in Marigold.
 export const isGenuineDisappearance = (d: DisappearedComponent): boolean =>
   !d.hiddenByCss;
 
@@ -101,8 +92,7 @@ export type WidthUtilizationOptions = {
   /** Min. content elements for the metric to run (skips trivial layouts). */
   minElements?: number;
   /** Elements at/above this fraction of the viewport are full-bleed wrappers
-   *  (body / shell / full-width sections) and are excluded — they are always
-   *  ~100% wide and would mask a narrow content band. */
+   *  and are excluded — always ~100% wide, they'd mask a narrow content band. */
   fullBleedFraction?: number;
   /** utilization at/below which the content is flagged as not using the width. */
   lowThreshold?: number;
@@ -115,27 +105,17 @@ export type WidthUtilizationResult = {
   warning: boolean; // utilization <= lowThreshold on a non-trivial layout
 };
 
-// Measures how much of the DESKTOP viewport width the page's content actually
-// covers, from a single 1280px snapshot. This directly targets the "stuck in
-// mobile shape on desktop" defect: content crammed into a narrow band with
-// large empty horizontal space.
+// How much of the desktop viewport width the content covers, from a single
+// 1280px snapshot. Targets the "stuck in mobile shape on desktop" defect.
 //
-// Full-bleed wrappers (>= fullBleedFraction of the viewport — body, the shell,
-// full-width sections) are excluded; they are always ~100% wide and would mask
-// a narrow content band. Over the remaining content boxes we compute the UNION
-// of their horizontal [x, x+width] intervals (not the min..max extent), so a
-// single outlier near the right edge — e.g. a right-aligned header button —
-// cannot make a page with an empty middle look full-width. utilization = total
-// covered width / viewport width.
+// Full-bleed wrappers are excluded (see fullBleedFraction). Over the remaining
+// boxes this unions the horizontal [x, x+width] intervals rather than taking
+// the min..max extent, so one right-aligned outlier cannot make a page with an
+// empty middle look full-width. Empirically a "stuck" layout covers ~0.34, a
+// healthy one ~1.00.
 //
-// Empirically this separates cleanly: a "stuck" layout covers ~0.34, a layout
-// that uses the width covers ~1.00.
-//
-// CAVEAT (thesis): the threshold is a judgement call and an intentionally
-// centred narrow max-width column (a login form, a reading column) legitimately
-// scores low — so treat this as a RELATIVE signal between configs and a soft
-// warning, not an absolute defect. Single-snapshot, so unaffected by responsive
-// DOM changes between breakpoints.
+// The threshold is a judgement call and an intentionally centred narrow column
+// legitimately scores low, so treat it as a relative signal and a soft warning.
 export const computeWidthUtilization = (
   desktop: LayoutBox[],
   desktopViewportWidth: number,
@@ -287,10 +267,9 @@ const extractSnapshot = async (
           )
             continue;
 
-          // WCAG 2.5.8 exempts inline targets whose size is constrained by the
-          // line-height of surrounding text — links within a sentence,
-          // breadcrumb and navigation text links. These render as display:inline;
-          // standalone controls (buttons) use inline-flex/-block and stay checked.
+          // WCAG 2.5.8 exempts inline targets sized by the surrounding text's
+          // line-height. Standalone controls use inline-flex/-block and stay
+          // checked.
           if (style.display === 'inline') continue;
 
           const rect = el.getBoundingClientRect();
@@ -303,16 +282,12 @@ const extractSnapshot = async (
           if (t.rect.width >= minTouch && t.rect.height >= minTouch) continue;
 
           // WCAG 2.5.8 spacing exception: an undersized target passes when its
-          // 24px clearance circle does not reach the nearest other target,
-          // measured as the EDGE-to-edge gap between the two rects (0 when they
-          // touch/overlap). Edge gap is the correct geometry — centre distance
-          // would count each target's own radius and over-report crowding.
+          // 24px clearance circle doesn't reach the nearest other target.
           let nearestGap = Infinity;
           for (const o of targets) {
             if (o === t) continue;
-            // Edge-to-edge gap, inlined from the exported `edgeGap` helper
-            // (the tested source of truth — evaluate() cannot import module
-            // scope). Keep this block in sync with edgeGap above.
+            // Inlined from the exported `edgeGap` (the tested source of truth)
+            // because evaluate() cannot import module scope. Keep in sync.
             const gapX = Math.max(
               0,
               t.rect.left - o.rect.right,
@@ -349,13 +324,10 @@ const extractSnapshot = async (
 
           const rect = el.getBoundingClientRect();
           if (rect.width === 0 && rect.height === 0) {
-            // A 0x0 element is only a genuine collapse when it is in the visible
-            // render path. display:none/contents/visibility:hidden/aria-hidden/
-            // [hidden], an ancestor hidden the same way, or a closed Disclosure
-            // (aria-expanded="false") / inactive Tab panel (<details> not open)
-            // all legitimately measure 0x0 and are NOT defects. `display:
-            // contents` generates no box by design (a pass-through/slot
-            // wrapper) — it isn't "hidden" but is equally not a collapse.
+            // Only a genuine collapse when the element is in the visible render
+            // path: self- or ancestor-hidden elements and closed Disclosures
+            // legitimately measure 0x0. `display: contents` generates no box by
+            // design (a slot wrapper) — not hidden, but not a collapse either.
             const selfHidden =
               style.display === 'none' ||
               style.display === 'contents' ||
@@ -382,10 +354,8 @@ const extractSnapshot = async (
           }
         }
 
-        // Per-element horizontal layout map for the width-utilisation metric.
-        // Same DOM at
-        // every breakpoint, so cssPath keys match across snapshots. Only visible
-        // boxes; x + width are enough to detect whether the layout adapts.
+        // Horizontal layout map for the width-utilisation metric. The DOM is
+        // the same at every breakpoint, so cssPath keys match across snapshots.
         const layout: Array<{ selector: string; x: number; width: number }> =
           [];
         for (const el of document.querySelectorAll('body *')) {
@@ -464,11 +434,8 @@ export const responsiveToValidationIssues = (
           } extends to ${snap.overflowCulprit.right}px.`
         : '';
 
-      // Warning at every breakpoint: overflow is a runtime measurement gated by
-      // a scrollbar tolerance, and WCAG 1.4.10 Reflow is Level AA — not a
-      // deterministic, false-positive-free Level-A violation. (A wide data table
-      // is additionally 1.4.10-exempt 2D content; the fix there is a
-      // <Scrollable>.) See severity policy.
+      // Warning, not error: overflow is a runtime measurement gated by a
+      // scrollbar tolerance, and 1.4.10 Reflow is Level AA. See severity policy.
       const tabular = snap.overflowCulprit?.tabular ?? false;
       issues.push({
         type: 'spatial',
@@ -494,10 +461,8 @@ export const responsiveToValidationIssues = (
       });
     }
 
-    // Target size is a CSS-px property, so the same undersized control would be
-    // reported once per breakpoint. Assess it only on the mobile pass (the most
-    // touch-relevant viewport) so the 320 reflow pass and the 768 tablet pass do
-    // not duplicate the finding.
+    // Target size is a CSS-px property, so the same control would be reported
+    // once per breakpoint. Assess it only on the most touch-relevant viewport.
     if (bp.label === 'mobile' && snap.touchTargets.length > 0) {
       const byTag = new Map<
         string,
@@ -540,9 +505,8 @@ export const responsiveToValidationIssues = (
       if (!isGenuineDisappearance(d)) continue;
       issues.push({
         type: 'spatial',
-        // Warning, not error: a 0x0 measurement is a runtime heuristic with
-        // legitimate causes (CSS/display states) that the visibility guard only
-        // mostly excludes — not a false-positive-free violation. Severity policy.
+        // Warning, not error: 0x0 is a heuristic whose legitimate causes the
+        // visibility guard only mostly excludes. See severity policy.
         severity: 'warning',
         source: 'responsive-checker',
         component: d.component,
@@ -554,10 +518,8 @@ export const responsiveToValidationIssues = (
     }
   }
 
-  // Desktop width utilisation: if the page's content occupies only a narrow
-  // band of a wide viewport, it is "stuck in mobile shape" and does not use the
-  // available width. Warning only — see computeWidthUtilization for the
-  // measurement and its FP caveats.
+  // Content in a narrow band of a wide viewport is "stuck in mobile shape".
+  // See computeWidthUtilization for the measurement and its caveats.
   const util = widthUtilizationFromSnapshots(snapshots);
   if (util?.ran && util.warning) {
     const pct = Math.round(util.utilization * 100);

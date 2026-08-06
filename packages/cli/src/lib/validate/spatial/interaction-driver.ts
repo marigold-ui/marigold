@@ -2,18 +2,13 @@ import type { Page } from 'playwright';
 import type { ValidationIssue } from '../types.js';
 
 /**
- * Generic interaction driver.
+ * Reveals the states that only appear on interaction — menus, dialogs,
+ * listboxes, disclosure and tab panels — so the dynamic checks see more than a
+ * component's initial render.
  *
- * Most dynamic checks only ever saw a component's INITIAL render. This driver
- * reveals the states that appear on interaction — menus, dialogs, listboxes,
- * disclosure panels, tab panels — so the checks can run on that revealed
- * content too (and so the 1.4.13 hover/focus check has something to test).
- *
- * It is deliberately generic: triggers are found through the WAI-ARIA contract
- * (aria-haspopup / aria-expanded / aria-controls / popovertarget / <summary> /
- * role=tab), never through design-system component names. React Aria — which
- * Marigold builds on — stamps these attributes correctly, so the same driver
- * works for any conforming typed design system.
+ * Triggers are found through the WAI-ARIA contract (aria-haspopup /
+ * aria-expanded / aria-controls / popovertarget / <summary> / role=tab), never
+ * through component names, so this works for any conforming design system.
  */
 
 export type TriggerKind =
@@ -36,12 +31,10 @@ export type TriggerSignals = {
   hasPopoverTarget: boolean;
   hasAriaControls: boolean;
   isSummary: boolean;
-  // True only when `aria-describedby` is set AND the referenced id currently
-  // resolves to an element in the live DOM (whether visible or not) — the
-  // WAI-ARIA tooltip pattern where the tooltip is pre-rendered hidden and
-  // toggled visible on hover/focus. Checked as a DOM fact (not inferred) so a
-  // trigger is only ever classified as hover-activated when there is
-  // something concrete to reveal.
+  // `aria-describedby` is set AND its id resolves in the live DOM — the
+  // WAI-ARIA tooltip pattern, pre-rendered hidden and shown on hover/focus.
+  // A DOM fact, so hover-activation is only ever claimed with something real
+  // to reveal.
   hasResolvableAriaDescribedBy: boolean;
 };
 
@@ -72,13 +65,11 @@ export const classifyTrigger = (
   if (s.role === 'tab') return { kind: 'tab', activation: 'press' };
   if (s.isSummary) return { kind: 'disclosure', activation: 'press' };
   if (s.hasPopoverTarget) return { kind: 'popover', activation: 'press' };
-  // A collapsed disclosure (aria-expanded="false"), optionally with the content
-  // wired via aria-controls.
+  // A collapsed disclosure.
   if (s.ariaExpanded === 'false')
     return { kind: 'disclosure', activation: 'press' };
-  // A hover-revealed tooltip/popover: no press-style ARIA state, but
-  // `aria-describedby` resolves to a real (pre-rendered, hidden-until-shown)
-  // element. Checked last so a stronger press-style signal above always wins.
+  // A hover-revealed tooltip: no press-style state, but `aria-describedby`
+  // resolves. Checked last so any press-style signal above wins.
   if (s.hasResolvableAriaDescribedBy)
     return { kind: 'popover', activation: 'hover' };
   return null;
@@ -154,9 +145,8 @@ const discoverTriggers = (page: Page): Promise<Trigger[]> =>
       const cssPath = mv.cssPath as (el: Element) => string;
       const isHidden = mv.isHidden as (el: Element) => boolean;
 
-      // Inlined classifier mirror: evaluate() cannot import classifyTrigger, but
-      // it only forwards the raw signals; the Node side re-derives kind. Here we
-      // just collect candidates and their signals.
+      // evaluate() cannot import classifyTrigger, so this only collects raw
+      // signals; the Node side derives the kind.
       const candidates = document.querySelectorAll(
         '[aria-haspopup], [aria-expanded], [popovertarget], summary, [role="tab"], [aria-describedby]'
       );
@@ -234,16 +224,10 @@ const isDisclosureStillOpen = (
     }, selector)
     .catch(() => false);
 
-// The disclosure's own revealed content, found the same way a browser/AT
-// would: its aria-controls target if it declares one, else (native
-// <summary>/<details>, which carries no aria-controls) the enclosing
-// <details> itself. Unlike a tab's aria-controls — which names an
-// always-present panel regardless of interaction, so it can't be trusted as
-// a signal of "did this just open" — a disclosure's aria-controls target
-// starts collapsed/hidden and is unambiguously its own panel, so it's safe
-// to use directly here instead of through the OVERLAY_ROLES/visibleOverlays
-// mechanism (which doesn't recognize the role="group" a disclosure panel
-// commonly carries, e.g. Marigold's Accordion).
+// Its aria-controls target if declared, else the enclosing <details>. Safe to
+// use directly, unlike a tab's aria-controls: a disclosure's target starts
+// collapsed and is unambiguously its own panel. visibleOverlays() can't help
+// here — it doesn't know the role="group" a disclosure panel commonly carries.
 const disclosureRevealedRoot = (
   page: Page,
   trigger: Trigger
@@ -278,21 +262,15 @@ const activate = async (page: Page, trigger: Trigger): Promise<void> => {
     if (trigger.activation === 'hover') {
       await handle.hover({ timeout: 1000 }).catch(() => {});
     } else {
-      // Enter is the standard keyboard activation. As a last resort — for a
-      // disclosure widget that only binds onClick — fall back to a real click.
-      // This is bounded: the render route filter blocks every non-dev-server
-      // request, so a click on untrusted generated code cannot reach external
-      // services; and we skip anchors with an href so a click cannot navigate
-      // the harness away from the rendered component.
+      // Enter first; fall back to a real click for a widget that only binds
+      // onClick. Bounded: the route filter blocks every non-dev-server request,
+      // and anchors with an href are skipped so a click can't navigate away.
       await page.keyboard.press('Enter').catch(() => {});
       await waitForLayout(page);
-      // A disclosure's revealed panel (e.g. Marigold's Accordion, built on
-      // react-aria-components' Disclosure) commonly carries role="group" —
-      // not one of OVERLAY_ROLES — so visibleOverlays() never sees it opening
-      // and would read "still closed" even after Enter genuinely opened it,
-      // triggering the click-fallback below and immediately toggling it back
-      // closed. Ask the disclosure's own expanded state directly instead, the
-      // same way restore()'s isDisclosureStillOpen check does.
+      // A disclosure panel commonly carries role="group", which isn't in
+      // OVERLAY_ROLES, so visibleOverlays() would report "still closed" after a
+      // successful Enter and the click-fallback would toggle it shut again.
+      // Ask the disclosure's own expanded state instead.
       const stillClosed =
         trigger.kind === 'disclosure'
           ? !(await isDisclosureStillOpen(page, trigger.selector))
@@ -314,13 +292,9 @@ const restore = async (page: Page, trigger: Trigger): Promise<void> => {
   await page.keyboard.press('Escape').catch(() => {});
   await waitForLayout(page);
   if (trigger.kind !== 'disclosure') return;
-  // Escape does not close a native <details>/<summary> (or an
-  // aria-expanded-based) disclosure — the browser only toggles it via a real
-  // click/Enter on the trigger itself — so it would otherwise stay expanded
-  // for the rest of the sweep, skewing every downstream check (responsive
-  // layout, tab order, hover/focus content) with content that isn't part of
-  // the component's default collapsed state. Re-click the trigger to toggle
-  // it back closed, but only if it's actually still open.
+  // Escape doesn't close a disclosure — only a click/Enter on the trigger
+  // does — so it would stay expanded for the rest of the sweep and skew every
+  // downstream check with content outside the default collapsed state.
   if (!(await isDisclosureStillOpen(page, trigger.selector))) return;
   const handle = await page.$(trigger.selector);
   if (!handle) return;
@@ -336,10 +310,9 @@ export type DriveOptions = {
   /** Hard cap on triggers exercised, to bound render time. */
   maxTriggers?: number;
   /**
-   * Invoked while an overlay is open, with the revealed root selector. Whatever
-   * issues it returns are aggregated. This is how the existing checks (contrast,
-   * axe, …) get to run against revealed content. Must not throw; errors are
-   * swallowed so one flaky overlay never aborts the sweep.
+   * Invoked while an overlay is open; returned issues are aggregated. This is
+   * how contrast, axe and friends reach revealed content. Errors are swallowed
+   * so one flaky overlay never aborts the sweep.
    */
   onOpen?: (
     revealedRootSelector: string,
@@ -348,10 +321,8 @@ export type DriveOptions = {
 };
 
 /**
- * Opens each discovered trigger one at a time, runs the onOpen callback against
- * the revealed overlay, then closes it before moving on. Returns the revealed
- * states plus the aggregated issues. Never throws on an individual trigger — a
- * flaky open is skipped.
+ * Opens each trigger in turn, runs onOpen against the revealed overlay, then
+ * closes it again. A trigger that fails to open is skipped, never thrown on.
  */
 export const driveInteractions = async (
   page: Page,
@@ -367,11 +338,9 @@ export const driveInteractions = async (
   for (const trigger of triggers) {
     try {
       await activate(page, trigger);
-      // Disclosures take a separate path: visibleOverlays()/OVERLAY_ROLES
-      // doesn't recognize the role="group" a disclosure panel (e.g.
-      // Marigold's Accordion) commonly carries, so it can never see one
-      // open — ask the disclosure's own expanded state directly instead,
-      // same as activate()/restore() already do.
+      // Disclosures take a separate path: OVERLAY_ROLES omits the
+      // role="group" their panels carry, so visibleOverlays() can never see
+      // one open. Same reasoning as in activate()/restore().
       let fresh: string | null;
       if (trigger.kind === 'disclosure') {
         fresh = (await isDisclosureStillOpen(page, trigger.selector))
@@ -379,11 +348,10 @@ export const driveInteractions = async (
           : null;
       } else {
         const after = await visibleOverlays(page);
-        // Only a genuinely NEW overlay (an overlay-role element absent from
-        // the baseline) counts as revealed. The aria-controls target is
-        // deliberately NOT used as a fallback here: for a tab it can point
-        // at an always-present element already in the DOM, which would
-        // misattribute its findings to interaction.
+        // Only an overlay absent from the baseline counts as revealed.
+        // aria-controls is deliberately not a fallback: for a tab it can name
+        // an always-present element, misattributing its findings to
+        // interaction.
         fresh = after.find(sel => !baseline.has(sel)) ?? null;
       }
       let revealedRole: string | null = null;
@@ -405,12 +373,10 @@ export const driveInteractions = async (
       states.push({ trigger, revealedRootSelector: null, revealedRole: null });
     } finally {
       await restore(page, trigger);
-      // Recompute rather than reuse the loop-invariant baseline: if restore()
-      // (Escape) failed to close this trigger's overlay — realistic for a
-      // <details>/Disclosure or a popovertarget popover that ignores Escape —
-      // the next iteration must see it as already-present, not misattribute
-      // it as the next trigger's own revealed root. Falls back to the prior
-      // baseline on failure so one flaky read can't abort the sweep.
+      // Recompute: if restore() failed to close this overlay (realistic for a
+      // popover that ignores Escape), the next iteration must see it as
+      // already-present rather than as its own revealed root. Falls back to
+      // the prior baseline so one flaky read can't abort the sweep.
       baseline = new Set(
         await visibleOverlays(page).catch(() => [...baseline])
       );

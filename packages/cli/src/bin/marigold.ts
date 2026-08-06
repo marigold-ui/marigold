@@ -32,10 +32,8 @@ const packageRoot = path.join(
   '..'
 );
 
-// In local dev only, pick up packages/cli/.env.local. The file is excluded
-// from the published `files` array, so this is a no-op for installed copies.
-// loadEnvFile preserves existing process.env values, so explicit shell
-// exports still win.
+// Local dev only: .env.local is excluded from the published `files`, so this
+// is a no-op for installed copies. Existing process.env values still win.
 try {
   process.loadEnvFile(path.join(packageRoot, '.env.local'));
 } catch {
@@ -132,9 +130,8 @@ See https://www.marigold-ui.io for component documentation.
 const isOutputFormat = (v: string): v is OutputFormat =>
   v === 'markdown' || v === 'json' || v === 'plain';
 
-// Derived from the shared enum in commands-spec.ts (babel-free) rather than
-// imported from ../commands/doctor.js, so the doctor module — and its
-// @babel/parser dependency — stays lazily loaded off the hot path.
+// From the babel-free commands-spec.ts rather than ../commands/doctor.js, so
+// the doctor module and its @babel/parser stay off the hot path.
 const isDoctorFormat = (v: string): v is DoctorFormat =>
   (doctorFormatValues as readonly string[]).includes(v);
 
@@ -424,9 +421,8 @@ export const main = async (
       writeOutput(result.output);
       cacheHit = result.cacheHit;
     } else if (command === 'validate') {
-      // MARIGOLD_VALIDATE_DISABLED is enforced in one place — runValidate — so
-      // the CLI and programmatic callers behave identically: it returns
-      // hasErrors: false, so this exits 0 like any other clean run.
+      // Enforced only in runValidate, so CLI and programmatic callers behave
+      // identically: it returns hasErrors: false and exits 0.
       const { positionals, values } = parseValidateCommand(rest);
       const [fileInput] = positionals;
       const checks = values.checks ?? 'all';
@@ -441,10 +437,9 @@ export const main = async (
       };
 
       if (!fileInput) fail('Usage: marigold validate <file.tsx>');
-      // Multi-file validation is a follow-up ticket, so a second positional is
-      // rejected rather than silently dropped: validating only the first file
-      // and exiting 0 would read as "both files are fine". Mirrors the
-      // positional guards on doctor/examples/migrate.
+      // Multi-file validation is a follow-up ticket. A second positional is
+      // rejected rather than dropped — validating only the first and exiting 0
+      // would read as "both files are fine".
       if (positionals.length > 1) {
         fail('Usage: marigold validate <file.tsx> (one file at a time)');
       }
@@ -470,9 +465,8 @@ export const main = async (
         ...(values.yes ? { yes: 'true' } : {}),
         ...(values['skip-install'] ? { skipInstall: 'true' } : {}),
       };
-      // Lazy-load so @babel/parser, magic-string and @clack/prompts stay off
-      // the docs/list hot path — those are the commands AI agents call
-      // dozens of times per session.
+      // Lazy so @babel/parser, magic-string and @clack/prompts stay off the
+      // docs/list hot path agents hammer.
       const { runInit } = await import('../commands/init.js');
       await runInit({
         yes: values.yes,
@@ -481,10 +475,9 @@ export const main = async (
     } else if (command === 'doctor') {
       const { positionals, values } = parseDoctorCommand(rest);
       const format = values.format ?? 'text';
-      // Record only { format }: the pending DST-1600 GDPR/ePrivacy review scopes
-      // doctor telemetry to the output format alone, so --offline is not tracked.
-      // Clamp to a known enum value so an invalid `--format` never leaks the raw
-      // string into telemetry (validation below runs after telemetryArgs is set).
+      // Only { format }: the pending DST-1600 GDPR review scopes doctor
+      // telemetry to the output format, so --offline isn't tracked. Clamped so
+      // an invalid value never leaks the raw string into telemetry.
       telemetryArgs = { format: isDoctorFormat(format) ? format : 'invalid' };
 
       if (positionals.length > 0) {
@@ -567,9 +560,8 @@ export const main = async (
     }
   } catch (err) {
     if (err instanceof Error && err.name === 'InitCancelError') {
-      // User aborted `marigold init`. Surface SIGINT-style 130 so wrapping
-      // scripts can distinguish abort from completion. The init flow already
-      // printed "Aborted."; don't double-print.
+      // Aborted: SIGINT-style 130 so wrapping scripts can tell abort from
+      // completion. The init flow already printed "Aborted."
       exitCode = 130;
     } else {
       const message = err instanceof Error ? err.message : String(err);

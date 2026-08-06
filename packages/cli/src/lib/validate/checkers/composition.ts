@@ -39,13 +39,11 @@ const collectSubComponentUsages = (
 
   if (ts.isJsxElement(node)) {
     const tag = node.openingElement.tagName;
-    // Stop descending into any nested compound instance so its sub-components
-    // aren't misattributed to the outer one being checked — including a
-    // same-name nested instance (e.g. a confirm <Dialog> inside another
-    // <Dialog>'s content). Collection compounds are the exception: they are
-    // designed to hold legitimately nested same-name instances (e.g. a
-    // master-detail <Table> nested inside a <Table> row), so descent
-    // continues there.
+    // Stop descending into a nested compound so its sub-components aren't
+    // misattributed to the outer one — including a same-name nesting (a confirm
+    // <Dialog> inside another <Dialog>). Collection compounds are the
+    // exception: nested same-name instances are their design (a <Table> in a
+    // <Table> row), so descent continues there.
     if (
       ts.isIdentifier(tag) &&
       compoundParents.has(tag.text) &&
@@ -66,18 +64,15 @@ const collectSubComponentUsages = (
   );
 };
 
-// A compound that renders a variable number of entries by design (a table has
-// many rows, a select many options) repeats its sub-components as correct
-// usage — duplicate warnings would be false positives. Whether a compound is
-// such a collection is DERIVED from the type contract: React Aria collection
-// components declare an `items` prop on the component or one of its
-// sub-components (Select, Menu, Table.Body, Tabs.List, …), and the schema
-// records that as `collection` (see helpers/components.ts).
+// A compound that renders a variable number of entries by design repeats its
+// sub-components as correct usage, so duplicate warnings would be false
+// positives. That is derived from the type contract: collection components
+// declare an `items` prop, which the schema records as `collection`.
 //
-// Four static collections expose no `items` API — their entries are always
-// written by hand — yet repeat their Item sub-component by design. The type
-// contract cannot distinguish them from singleton-slot compounds (Sidebar.Item
-// and Dialog.Title have the same shape), so this remainder stays curated.
+// These four expose no `items` API — their entries are always hand-written —
+// yet repeat their Item sub-component by design. The type contract cannot tell
+// them from singleton-slot compounds (Sidebar.Item and Dialog.Title have the
+// same shape), so this remainder stays curated.
 export const STATIC_COLLECTION_COMPOUNDS = new Set([
   'Accordion',
   'FileField',
@@ -89,46 +84,33 @@ const isCollectionCompound = (componentName: string): boolean =>
   isCollectionComponent(componentName) ||
   STATIC_COLLECTION_COMPOUNDS.has(componentName);
 
-// Compounds that render their item sub-components internally from data/props
-// rather than from author-written JSX. <FileField multiple /> emits a
-// <FileField.Item> per selected file at runtime — the canonical usage is the
-// bare self-closing element, and no story writes <FileField.Item> by hand. This
-// differs from Select/Table/Tabs, where the author DOES write the items, so an
-// empty one of those is still a real error. Keep this list narrow and verified.
+// Compounds that render their items internally from data rather than from
+// author-written JSX: <FileField multiple /> emits a <FileField.Item> per file
+// at runtime, so the bare element is canonical. Unlike Select/Table/Tabs, where
+// the author writes the items and an empty one is a real error.
 const SELF_POPULATING_COMPOUNDS = new Set(['FileField']);
 
-// Some compounds are designed to hold multiple instances of a sub-component
-// that is NOT part of the shared React Aria collection vocabulary above, so the
-// collection-item heuristic misses them. An ActionBar, for example, is a
-// toolbar of N action buttons — repeating <ActionBar.Button> is correct usage,
-// not a duplicate-slot mistake. Curated per parent to avoid making a generic
-// name like "Button" repeatable everywhere.
+// Compounds holding multiple instances of a sub-component outside the React
+// Aria collection vocabulary, which the heuristic above misses. An ActionBar is
+// a toolbar of N buttons, so repeating <ActionBar.Button> is correct. Curated
+// per parent so a generic name like "Button" isn't repeatable everywhere.
 const REPEATABLE_SUBS: Record<string, Set<string>> = {
   ActionBar: new Set(['Button']),
 };
 
-// `X.Group` / `X.Trigger` (Checkbox.Group, Radio.Group, Tooltip.Trigger,
-// Dialog.Trigger, …) are INVERSE compounds: the Group/Trigger is a PARENT
-// wrapper that takes <X> as its child/content, not a child slot OF <X>. The
-// schema registers them as sub-components because Marigold attaches them
-// statically (`Checkbox.Group = CheckboxGroup`), but a bare <X> is valid usage —
-// the common case is <CheckboxGroup><Checkbox/></...> or
-// <TooltipTrigger>…<Tooltip>text</Tooltip></TooltipTrigger>. Treating them as
-// required children produces a false "used without sub-components" error.
-// Derived from the shared React Aria wrapper naming, not a per-component list.
-// (Removing them only suppresses the empty-compound error for components whose
-// ONLY sub-components are wrappers, e.g. Checkbox/Radio/Tooltip; Dialog keeps
-// Content/Title and is still checked.)
+// `X.Group` / `X.Trigger` are INVERSE compounds: the wrapper takes <X> as its
+// child, rather than being a slot OF <X>. The schema lists them as
+// sub-components because Marigold attaches them statically
+// (`Checkbox.Group = CheckboxGroup`), but a bare <X> is valid usage, so
+// treating them as required children yields a false empty-compound error.
+// Derived from the React Aria wrapper naming, not a per-component list.
 const WRAPPER_SUBCOMPONENTS = new Set(['Group', 'Trigger']);
 
-// Compounds whose sub-components are OPTIONAL structure rather than the content
-// itself: the component renders its primary content from a plain `children`
-// prop, and sub-components like SectionMessage.Title / .Content only add
-// optional layout. A bare <SectionMessage>text</SectionMessage> is canonical
-// usage, so the empty-compound error is a false positive. This cannot be
-// derived from the schema — Dialog/Select also declare a `children` prop, yet
-// there the sub-components ARE the content — so the list is curated and
-// verified against the component docs.
+// Compounds whose sub-components are optional structure rather than the content
+// itself: the content comes from a plain `children` prop and .Title/.Content
+// only add layout, so a bare <SectionMessage>text</SectionMessage> is
+// canonical. Not derivable from the schema — Dialog/Select also declare
+// `children`, but there the sub-components ARE the content.
 const OPTIONAL_SUBCOMPONENT_COMPOUNDS = new Set(['SectionMessage']);
 
 const collectAncestorSubComponents = (
@@ -140,20 +122,15 @@ const collectAncestorSubComponents = (
   while (current) {
     if (ts.isJsxElement(current)) {
       const tag = current.openingElement.tagName;
-      // Stop at the nearest enclosing <parentName> instance: anything above
-      // it belongs to a different (outer) instance of the same compound, not
-      // the one being checked (e.g. a nested <Dialog> inside another
-      // <Dialog>'s content must not inherit the outer instance's ancestors).
+      // Stop at the nearest enclosing <parentName>: anything above it belongs
+      // to an outer instance of the same compound, not the one being checked.
       if (ts.isIdentifier(tag) && tag.text === parentName) {
         break;
       }
-      // Only wrapper sub-components (Group/Trigger) are legitimately found as
-      // an ancestor of the instance they wrap (e.g. <Dialog.Trigger><Dialog>
-      // ...</Dialog></Dialog.Trigger>). A forward child-slot
-      // (Content/Title/Actions) is never really an ancestor of its own
-      // compound instance — if one shows up here it's the *outer* dialog's
-      // slot wrapping a nested same-name Dialog, and attributing it to the
-      // inner instance would be a false duplicate.
+      // Only wrappers (Group/Trigger) are legitimately an ancestor of the
+      // instance they wrap. A forward child-slot showing up here is the outer
+      // instance's slot around a nested same-name one, so attributing it to
+      // the inner instance would be a false duplicate.
       if (
         ts.isPropertyAccessExpression(tag) &&
         ts.isIdentifier(tag.expression) &&
@@ -168,9 +145,8 @@ const collectAncestorSubComponents = (
   }
 };
 
-// A spread attribute (`<X {...props} />`) may carry the sub-components / a
-// forwarded children prop, which cannot be resolved statically — so a compound
-// with a spread is left alone to avoid a false empty-compound error.
+// A spread may carry the sub-components or a forwarded children prop, which
+// can't be resolved statically — so a compound with one is left alone.
 const hasSpread = (node: ts.JsxElement | ts.JsxSelfClosingElement): boolean =>
   hasSpreadAttribute(
     ts.isJsxSelfClosingElement(node)
@@ -178,15 +154,11 @@ const hasSpread = (node: ts.JsxElement | ts.JsxSelfClosingElement): boolean =>
       : node.openingElement.attributes
   );
 
-// A custom (non-Marigold) child component might render the sub-components
-// internally in a way this static check cannot see into — e.g. a project's
-// own `<DialogBody>` that renders `<Dialog.Content>`/`<Dialog.Title>`
-// internally. Its presence is treated as indeterminate, the same way an
-// opaque `{expression}` child already is: this only relaxes the check for a
-// component whose origin the resolver can't identify (a real user-authored
-// wrapper), not for a known Marigold component, which would never render
-// another compound's sub-components and must not silently suppress a
-// genuine finding. Mirrors accessible-name.ts's hasUnresolvedComponentChild.
+// A user-authored child (a project's own `<DialogBody>`) may render the
+// sub-components internally where this static check cannot see. Treated as
+// indeterminate, like an opaque `{expression}` child. Only relaxed for
+// components the resolver can't identify — a known Marigold component would
+// never render another compound's slots. Mirrors accessible-name.ts.
 const hasUnresolvedComponentChild = (
   node: ts.JsxElement,
   resolver: Map<string, string>
@@ -278,10 +250,8 @@ export const validateComposition = (filePath: string): ValidationIssue[] => {
 
       if (info && isMarigoldCompound(info.tag.text)) {
         const componentName = info.tag.text;
-        // `original` (real Marigold name) drives registry/curated lookups;
-        // `componentName` (as written, possibly an alias) drives JSX
-        // sub-component matching and the reported message. They are identical
-        // for a non-aliased import.
+        // `original` drives registry lookups; `componentName` (as written,
+        // possibly aliased) drives JSX matching and the message.
         const original = resolver.get(componentName) ?? componentName;
         const knownSubs = getSubComponents(original);
         if (!knownSubs || knownSubs.length === 0) {
@@ -289,9 +259,8 @@ export const validateComposition = (filePath: string): ValidationIssue[] => {
           return;
         }
 
-        // Strip grouping wrappers (X.Group): they are inverse compounds, so a
-        // component whose only sub-components are wrappers is not child-bearing
-        // and a bare <X> must not be flagged as empty.
+        // Strip grouping wrappers: a component whose only sub-components are
+        // inverse wrappers isn't child-bearing, so a bare <X> isn't empty.
         const childSlotSubs = knownSubs.filter(
           s => !WRAPPER_SUBCOMPONENTS.has(s)
         );
@@ -337,12 +306,10 @@ export const validateComposition = (filePath: string): ValidationIssue[] => {
 
         const found = [...counts.keys()];
 
-        // Only a completely empty compound is an unambiguous error. Partial
-        // "missing sub-component" findings are too often optional to flag
-        // reliably (e.g. a Dialog opened programmatically needs no Trigger).
-        // Self-populating compounds are exempt: they render their item children
-        // from data/props at runtime, not from author-written JSX, so an empty
-        // usage is correct rather than a missing-children error.
+        // Only a completely empty compound is unambiguous. Partial "missing
+        // sub-component" findings are too often optional (a Dialog opened
+        // programmatically needs no Trigger). Self-populating compounds are
+        // exempt — they render their items from data, so empty is correct.
         if (
           found.length === 0 &&
           !isDynamic &&
@@ -363,9 +330,8 @@ export const validateComposition = (filePath: string): ValidationIssue[] => {
           });
         }
 
-        // Duplicate-instance warnings only make sense for singleton slots
-        // (e.g. two <Dialog.Title>). Collection compounds repeat sub-components
-        // by design, so suppress the warning there to avoid false positives.
+        // Duplicate warnings only make sense for singleton slots (two
+        // <Dialog.Title>); collection compounds repeat theirs by design.
         if (!collectionLike) {
           const repeatable = REPEATABLE_SUBS[original];
           const duplicates = [...counts.entries()].filter(

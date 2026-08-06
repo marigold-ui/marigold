@@ -8,25 +8,21 @@ import {
 import { parseSource } from '../helpers/source.js';
 import type { ValidationIssue } from '../types.js';
 
-// A bare item the docs require to live inside a named container, even though
-// that container is not part of its dotted name — the inverse of the
-// schema-derived rule below, so it must be listed explicitly. Only rules with
-// an explicit, prescriptive doc statement belong here. (Tag is deliberately
-// omitted: its doc text only *describes* a tag group, and standalone
-// removable tags are a real pattern.)
+// A bare item the docs require inside a named container that isn't part of its
+// dotted name — the inverse of the schema-derived rule below, so it must be
+// listed explicitly. Only prescriptive doc statements belong here. (Tag is
+// omitted: its docs only *describe* a group, and standalone tags are real.)
 //   Radio — "The <Radio> should never be used alone … the <Radio.Group> should
 //     be wrapped around the <Radio>." (marigold-ui.io/components/form/radio)
 export const REQUIRED_CONTAINER: Readonly<Record<string, string>> = {
   Radio: 'Radio.Group',
 };
 
-// Some hosts render a root component internally, so its sub-components may be
-// written directly inside the host with no literal `<Root>` element. This is
-// documented behaviour, not an error:
+// Some hosts render a root internally, so its sub-components may sit directly
+// inside the host with no literal `<Root>`. Documented behaviour, not an error:
 //   - ActionMenu is a ready-made Menu trigger, so its <Menu.Item>s live inside
 //     <ActionMenu> rather than <Menu> (marigold-ui.io/components/overlay/menu).
-// Hosts may be written either as a dotted sub (`X.Y`) or a flat component
-// (`ActionMenu`); when the host appears, its provided root counts as present.
+// When the host appears, its provided root counts as present.
 export const HOST_PROVIDES: Readonly<Record<string, string>> = {
   ActionMenu: 'Menu',
 };
@@ -56,28 +52,20 @@ export const validateRequiredAncestor = (
   const source = parseSource(filePath);
   const relFile = path.relative(process.cwd(), filePath);
   const issues: ValidationIssue[] = [];
-  // Only treat a tag as a Marigold component when it is actually imported from
-  // @marigold/components. A locally declared or third-party component that
-  // happens to share a Marigold name must not be held to Marigold's
-  // required-ancestor rules. Mirrors the origin guard the composition checker
-  // uses.
+  // Only tags actually imported from @marigold/components: a local or
+  // third-party component sharing a Marigold name must not be held to these
+  // rules. Mirrors the composition checker's origin guard.
   const resolver = buildMarigoldTagResolver(source);
 
-  // First pass: catalogue every JSX element in the file. The detached-usage
-  // rules are deliberately file-scoped, not ancestor-scoped: LLM-generated code
-  // routinely factors a `<Menu>` into one component and its `<Menu.Item>`s into
-  // a helper, so an ancestor-only walk would raise false positives. We only
-  // flag the unambiguous error — the required container appears *nowhere* in
-  // the file — which means the author forgot it entirely.
+  // First pass: catalogue every JSX element. These rules are deliberately
+  // file-scoped rather than ancestor-scoped, because generated code routinely
+  // factors a `<Menu>` and its `<Menu.Item>`s into separate components. Only
+  // the unambiguous case is flagged: the container appears nowhere in the file.
   //
-  // Keyed by CANONICAL name (post-alias-resolution), not as-written text: a
-  // REQUIRED_CONTAINER/HOST_PROVIDES value (e.g. 'Radio.Group', 'Menu') is
-  // always canonical — checking it against as-written tags breaks the moment
-  // either side is imported under an alias (`{ RadioGroup as RG }`, `{ Radio
-  // as R }` used for `<R.Group>`, `{ ActionMenu as AM }`, or `{ Menu as M }`
-  // used for `<M.Item>`): the alias never textually matches the canonical
-  // name, so a genuinely-present container/host is missed and a false
-  // positive is raised on valid, idiomatic (if aliased) code.
+  // Keyed by CANONICAL name, not as-written text. REQUIRED_CONTAINER and
+  // HOST_PROVIDES entries are always canonical, so matching them against
+  // as-written tags would miss a genuinely-present container the moment either
+  // side is aliased (`{ RadioGroup as RG }`) and false-positive on valid code.
   const canonicalIdentifierTags = new Set<string>();
   const canonicalDottedTags = new Set<string>();
   const elements: ElementInfo[] = [];
@@ -106,21 +94,11 @@ export const validateRequiredAncestor = (
   };
   collect(source);
 
-  // Roots that are present either literally (`<Sidebar>`) or because a host
-  // that renders them internally appears in the file. A host is usually a
-  // flat component (`<ActionMenu>`, checked via canonicalIdentifierTags
-  // below), but a HOST_PROVIDES key can itself be a dotted sub-component
-  // (`<X.Y>`), checked via canonicalDottedTags — no current entry uses that
-  // form, so that branch has no exerciser today, but it stays correct for a
-  // host written that way.
-  //
-  // Built from the CANONICAL sets, not the as-written ones: HOST_PROVIDES'
-  // keys/values are always canonical names (e.g. 'ActionMenu'/'Menu'), so
-  // checking them against as-written tags breaks the moment either the host
-  // or the root is imported under an alias (`ActionMenu as AM`, or `Menu as
-  // M` used as `<M.Item>`) — the alias never textually matches the canonical
-  // name, silently dropping a genuinely-present host/root and raising a
-  // false positive on valid, idiomatic (if aliased) code.
+  // Roots present either literally (`<Sidebar>`) or via a host that renders
+  // them internally. A host is usually flat (`<ActionMenu>`), but a
+  // HOST_PROVIDES key may itself be dotted — no entry uses that form today, so
+  // that branch is unexercised, though correct. Built from the canonical sets
+  // for the same aliasing reason as above.
   const satisfiedRoots = new Set(canonicalIdentifierTags);
   for (const [host, providedRoot] of Object.entries(HOST_PROVIDES)) {
     if (canonicalDottedTags.has(host) || canonicalIdentifierTags.has(host)) {
@@ -152,12 +130,9 @@ export const validateRequiredAncestor = (
       ) {
         issues.push({
           type: 'technical',
-          // Warning, not error: this rule is deliberately file-scoped (see
-          // the comment above `canonicalIdentifierTags`), so a file that exports
-          // `<${root}.${sub}>` usages for composition into a `<${root}>`
-          // defined elsewhere — a real cross-file factoring pattern —
-          // false-positives here. The project's own rule is that an `error`
-          // must be false-positive-free; this can't guarantee that.
+          // Warning, not error: the rule is file-scoped, so cross-file
+          // factoring (a `<${root}>` defined elsewhere) false-positives here,
+          // and an `error` must be false-positive-free.
           severity: 'warning',
           source: 'required-ancestor',
           component: `${root}.${sub}`,
@@ -181,10 +156,8 @@ export const validateRequiredAncestor = (
       ) {
         issues.push({
           type: 'technical',
-          // Warning, not error — same file-scoped-heuristic reasoning as the
-          // schema-derived branch above: a file that exports `<${tag.text}>`
-          // usages for composition into a container defined elsewhere would
-          // otherwise false-positive at error severity.
+          // Warning, not error — same file-scoped reasoning as the branch
+          // above.
           severity: 'warning',
           source: 'required-ancestor',
           component: tag.text,

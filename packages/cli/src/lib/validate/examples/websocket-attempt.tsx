@@ -6,19 +6,13 @@ declare global {
   }
 }
 
-// Fixture for the render sandbox's network egress test: opens a WebSocket on
-// mount and records the outcome on `window` so the test can assert the
-// connection never completes (the sandbox must close it).
+// Fixture for the sandbox's network egress test: opens a WebSocket on mount
+// and records the outcome on `window`.
 //
-// Deliberately targets a fixed LOCAL port (58211), not an external host: the
-// paired test (renderer-websocket.integration.test.ts) binds its own minimal
-// WebSocket-handshake server to this exact port before rendering, so the
-// connection attempt below WOULD actually succeed if the sandbox's
-// `context.routeWebSocket` handler were removed — a real positive control.
-// A fixture that targets an external host that simply refuses the handshake
-// on its own (nothing is listening there) can't tell "the sandbox blocked
-// this" apart from "the target was never reachable regardless" — the test
-// would pass either way.
+// Targets a fixed LOCAL port because the paired test binds its own handshake
+// server there first, so this WOULD succeed without the sandbox's
+// `routeWebSocket` handler — a real positive control. Against an external host
+// that simply refuses, the test would pass either way.
 const WebSocketAttempt = () => {
   const [status, setStatus] = useState<'pending' | 'open' | 'closed' | 'error'>(
     'pending'

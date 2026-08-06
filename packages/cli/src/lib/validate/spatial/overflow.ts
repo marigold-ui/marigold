@@ -23,9 +23,8 @@ export type OverflowDetection = {
   childrenOverflowX: boolean;
   childrenOverflowY: boolean;
   containerRect: { width: number; height: number };
-  // Padding-box extent of the container relative to its border-box top-left:
-  // borderLeftWidth + clientWidth (resp. borderTopWidth + clientHeight). The
-  // content region a child must stay within to NOT be clipped.
+  // Padding-box extent relative to the border-box top-left — the region a
+  // child must stay within to avoid being clipped.
   paddingBox: { right: number; bottom: number };
   maxChildExtent: { right: number; bottom: number };
 };
@@ -35,10 +34,9 @@ export type OverflowData = {
   overflows: OverflowDetection[];
 };
 
-// Sub-pixel rounding plus a scrollbar gutter can push a child a few px past the
-// padding box without any visible clipping. This is a HEURISTIC tolerance (not
-// a WCAG number) chosen to avoid flagging anti-alias/scrollbar artifacts; only
-// a child extending materially beyond the content box is a real clip.
+// Sub-pixel rounding and a scrollbar gutter can push a child a few px past the
+// padding box with no visible clipping. A heuristic tolerance, not a WCAG
+// number, so anti-alias artifacts aren't reported as clips.
 const OVERFLOW_TOLERANCE_PX = 4;
 
 // Only `overflow: hidden` clips content invisibly. `auto` and `scroll` are
@@ -57,12 +55,10 @@ export type ChildVisibility = {
   ariaHidden: boolean;
 };
 
-// A child counts as a genuine layout collapse (vanished content) only when it
-// is in the visible render path yet measures 0px wide. A hidden child
-// (display:none / visibility:hidden / [hidden] / aria-hidden) or a fully
-// collapsed 0x0 node is empty/hidden BY DESIGN — e.g. a conditionally-empty
-// Tiles cell or an empty icon slot — and must NOT defeat the auto-fit/
-// auto-fill grid exemption in isProblematicWrap.
+// A genuine collapse only when the child is in the visible render path yet
+// measures 0px wide. A hidden or fully 0x0 child is empty by design (a
+// conditionally-empty Tiles cell, an empty icon slot) and must not defeat the
+// auto-fit grid exemption in isProblematicWrap.
 export const isCollapsedVisibleChild = (c: ChildVisibility): boolean => {
   if (c.display === 'none') return false;
   if (c.visibility === 'hidden') return false;
@@ -80,12 +76,10 @@ export const extractOverflowData = async (page: Page): Promise<OverflowData> =>
     ).__mv;
     const cssPath = mv.cssPath as (el: Element) => string;
 
-    // getComputedStyle().gridTemplateColumns returns the USED value — for
-    // `repeat(auto-fit, minmax(...))`/`auto-fill`, that's an expanded list of
-    // concrete pixel track sizes, never the literal "auto-fit"/"auto-fill"
-    // keyword. So the specified declaration has to be found directly: check
-    // the inline style first, then walk stylesheet rules (including inside
-    // @media/@supports groups) for a matching selector that sets it.
+    // getComputedStyle returns the USED value — an expanded list of pixel
+    // track sizes, never the literal "auto-fit"/"auto-fill" keyword. So the
+    // specified declaration must be found directly: inline style first, then
+    // stylesheet rules (including inside @media/@supports groups).
     const declaresAutoFitGrid = (el: Element): boolean => {
       const inline = (el as HTMLElement).style?.gridTemplateColumns ?? '';
       if (/auto-fit|auto-fill/.test(inline)) return true;
