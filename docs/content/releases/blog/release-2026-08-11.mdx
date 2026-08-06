@@ -78,8 +78,16 @@ And this release opens that chapter loudly. v18 is by far the biggest release we
 It is a lot. Take your time with the breaking changes below. They all point in the same direction, and the app you end up with will be simpler for it.
 
 <Callout title="Before you upgrade" type="warning">
-  Marigold v18 requires React 19. If you are still on React 18, upgrade React
-  first, verify your app still builds, then bump Marigold.
+  v18.0.0 is currently a **release candidate**. It publishes to the `rc`
+  dist-tag, so a plain `npm install @marigold/components` still resolves v17.
+  Install it explicitly with `@marigold/components@rc`. Everything below
+  describes the release as it stands, and we do not expect further breaking
+  changes, but the token and design work is still settling, so small visual
+  adjustments are possible before the final release.
+
+Marigold v18 also requires React 19. If you are still on React 18, upgrade
+React first, verify your app still builds, then bump Marigold.
+
 </Callout>
 
 <Callout title="Upgrading? Follow the migration guide" type="info">
