@@ -57,6 +57,15 @@ export type ToastOptions = {
    */
   timeout?: number;
   action?: ReactNode;
+  /**
+   * Handler that is called when the toast closes, whether it timed out, was
+   * dismissed, or was closed through `removeToast`.
+   *
+   * Commit deferred work from here rather than from your own `setTimeout`: the
+   * toast's timer pauses while the region is hovered or focused, so a separate
+   * timer fires while the toast is still on screen.
+   */
+  onClose?: () => void;
 };
 
 const MINIMUM_TIMEOUT_MS = 5000;
@@ -81,18 +90,14 @@ const resolveTimeout = (
 };
 
 export function useToast() {
-  const addToast = useCallback((options: ToastOptions) => {
-    const { title, description, variant, timeout, action } = options;
-    return getToastQueue().add(
-      {
-        title,
-        description,
-        variant,
-        action,
-      },
-      { timeout: resolveTimeout(timeout, variant) }
-    );
-  }, []);
+  const addToast = useCallback(
+    ({ timeout, onClose, ...content }: ToastOptions) =>
+      getToastQueue().add(content, {
+        timeout: resolveTimeout(timeout, content.variant),
+        onClose,
+      }),
+    []
+  );
 
   const clearToasts = useCallback(() => getToastQueue().clear(), []);
 

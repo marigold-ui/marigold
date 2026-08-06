@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { expect, fn, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
@@ -124,9 +125,56 @@ Basic.test(
   }
 );
 
+Basic.test(
+  'Focuses the cancel button on open when the variant is destructive',
+  {
+    args: { variant: 'destructive', confirmationLabel: 'Delete' },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+
+    const cancelButton = await canvas.findByRole('button', { name: 'Cancel' });
+    await waitFor(() => expect(cancelButton).toHaveFocus());
+  }
+);
+
 // useConfirmation — the imperative hook opens a dialog built from its config and
 // resolves when the user confirms. A local `ConfirmationProvider` keeps the demo
 // self-contained instead of relying on the global one from the decorator.
+
+// Renders what `confirm()` resolved with, so a test can assert the settled value
+// and not just the dialog's absence.
+const ConfirmationResult = () => {
+  const confirm = useConfirmation();
+  const [result, setResult] = useState<string>();
+
+  return (
+    <>
+      <Button
+        onPress={async () =>
+          setResult(
+            await confirm({
+              variant: 'destructive',
+              title: 'Delete file?',
+              content: 'This cannot be undone.',
+              confirmationLabel: 'Delete',
+              cancelLabel: 'Cancel',
+            })
+          )
+        }
+      >
+        Delete file
+      </Button>
+      {result ? <div>{`resolved: ${result}`}</div> : null}
+    </>
+  );
+};
+
+const ConfirmationResultDemo = () => (
+  <ConfirmationProvider>
+    <ConfirmationResult />
+  </ConfirmationProvider>
+);
 
 Basic.test(
   'useConfirmation opens a dialog from the hook and closes it on confirm',
@@ -177,5 +225,44 @@ Basic.test(
     await waitFor(() =>
       expect(canvas.queryByRole('alertdialog')).not.toBeInTheDocument()
     );
+  }
+);
+
+Basic.test(
+  'Dismissing with Escape resolves the confirmation as cancelled',
+  { render: () => <ConfirmationResultDemo /> },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Delete file' }));
+    await canvas.findByRole('alertdialog');
+
+    await userEvent.keyboard('{Escape}');
+
+    expect(await canvas.findByText('resolved: cancelled')).toBeInTheDocument();
+  }
+);
+
+Basic.test(
+  'Pressing cancel resolves the confirmation as cancelled',
+  { render: () => <ConfirmationResultDemo /> },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Delete file' }));
+    await canvas.findByRole('alertdialog');
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Cancel' }));
+
+    expect(await canvas.findByText('resolved: cancelled')).toBeInTheDocument();
+  }
+);
+
+Basic.test(
+  'Confirming resolves as confirmed even though closing also settles the promise',
+  { render: () => <ConfirmationResultDemo /> },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Delete file' }));
+    await canvas.findByRole('alertdialog');
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Delete' }));
+
+    expect(await canvas.findByText('resolved: confirmed')).toBeInTheDocument();
   }
 );

@@ -1,0 +1,128 @@
+---
+title: Destructive Actions
+description: Decide whether a destructive action needs a confirmation or an undo, and build the one it needs.
+---
+
+Deleting, removing, clearing and overwriting are the actions users regret. Every one of them needs a recovery path, and there are only two: stop the user before it happens, or let them take it back afterwards. This page decides which one an action gets, and shows how to build both.
+
+Picking the wrong one is not a neutral mistake. A confirmation on a harmless action trains users to click through dialogs, which weakens every dialog in the product. An undo on an action the user cannot perceive announces a safety net that was never really there.
+
+<Callout title="Note">
+  The confirmation half of this page reflects patterns already in use across
+  Reservix products. The undo half is new and has no product implementation yet.
+  If your team is about to build one, [get in
+  touch](/getting-started/get-in-touch) so we can observe it.
+</Callout>
+
+## Key principles
+
+- **Recoverable.** Every destructive action offers either a way to stop or a way to take it back.
+- **Specific.** The recovery path names the thing being destroyed, never "this item".
+- **Honest.** Never promise a recovery the system cannot deliver.
+- **Singular.** One safety net per action, not two.
+
+## Choosing between confirmation and undo
+
+Work through these four questions in order. The first "no" decides to use a confirmation.
+
+| Question                                                 | Why it matters                                                                                                            |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| **Is it a single item, rather than a bulk action?**      | Bulk multiplies the cost of a mistake by the size of the selection. Bulk always confirms.                                 |
+| **Is the effect visible where the user is looking?**     | Undo depends on the user noticing inside a few seconds. An item they already scrolled past is not noticed at all.         |
+| **Is it unmistakable which item was affected?**          | If the list reads as near-identical rows, the user cannot verify that the right one disappeared before the window closes. |
+| **Is a short delay safe, with no external side effect?** | A notification, a payment or a webhook cannot be deferred ambiguously, and cannot be recalled once it is out.             |
+
+Four times yes means the action can offer undo.
+
+Notice that "is it reversible?" is not on the list. Undo in Marigold works by delaying the request rather than by reversing it, which makes almost anything reversible for a few seconds. Reversibility is therefore a property of the mechanism, not a test that can choose between mechanisms. It matters again only in the [optimistic variant](#when-your-api-can-restore) below.
+
+### Never use both
+
+A confirmation followed by an undo toast is not double safety. It teaches users that dialogs are a formality to click past, and it costs them a second interaction for the same decision. Choose one, then report what happened with a plain [feedback message](/patterns/feedback/feedback-messages) that carries no action.
+
+## Confirming
+
+Use the `useConfirmation` hook from [`<Dialog>`](/components/overlay/dialog). It opens an `alertdialog`, and resolves to `confirmed` or `cancelled` so the calling code reads top to bottom.
+
+Uploaded files are the clearest confirmation case, and they fail on the third question above. Document uploads often show near-identical names distinguished by a date, so a user who removes the wrong one cannot tell within the undo window. Files also live inside forms, and a user who leaves the form mid-window would leave a deferred deletion that never runs.
+
+<ComponentDemo name="file-delete-confirm" />
+
+What the dialog owes the user:
+
+- **Name the object.** "Delete file?" with the filename in the body, not "Are you sure?".
+- **State the consequence plainly.** Say that it cannot be undone, and say what else goes with it.
+- **Repeat the verb in the confirm button.** "Delete file" rather than "OK", so the button reads as the decision it is.
+- **Leave the safe path as the default.** The `destructive` variant focuses Cancel on open, so a reflexive <kbd>Enter</kbd> cancels. Pass `autoFocusButton` to override.
+
+Dismissing the dialog with <kbd>Escape</kbd> or a press outside resolves as `cancelled`. Never treat a dismissal as consent, and do not block dismissal to prevent mis-clicks: an `alertdialog` the keyboard cannot escape is an accessibility defect, not a safety feature.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Name the object in the title or body, and repeat the verb in the confirm
+      button so the decision is readable from the button alone.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't ask "Are you sure?" with OK and Cancel. It carries no information
+      about what is about to happen.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+## Offering undo
+
+An undo toast reports the action as done, hides its effect immediately, and sends the real request only when the toast closes. Until then the work is pending and a single press takes it back.
+
+<ComponentDemo name="undo-delete" />
+
+Three pieces make this work:
+
+1. **Hide the effect straight away** so the interface responds at once. Keep the committed data separate from what is hidden, so restoring puts the row back where it was.
+2. **Commit from the toast's `onClose`.** This is the part that is easy to get wrong, see below.
+3. **Guard the commit.** Pressing Undo has to both restore the item and prevent the commit, because closing the toast runs `onClose` either way.
+
+### Commit from onClose, never from your own timer
+
+The obvious implementation pairs the toast with a `setTimeout` of the same length. It is broken. React Aria pauses a toast's timer while the toast region is hovered or focused, so that users get time to read it. A separate timer does not pause. The moment a user moves the pointer towards the Undo button, the two clocks separate: the toast stays on screen looking live, and the deletion commits underneath it. Pressing Undo then does nothing.
+
+Driving the commit from `onClose` keeps "the toast is gone" and "the work is committed" the same event, whichever way the toast closes.
+
+```tsx
+// Don't: two clocks that drift apart on hover.
+addToast({ title: 'Deleted', action: <UndoButton /> });
+setTimeout(() => commit(), 5000);
+
+// Do: one clock, owned by the toast.
+addToast({ title: 'Deleted', action: <UndoButton />, onClose: () => commit() });
+```
+
+### What undo cannot cover
+
+Deferring the request buys the undo window, and it costs these:
+
+- **Leaving the page abandons the commit.** Close the tab during the window and the request never goes out, while the interface already reported the deletion. Keep windows short, and prefer a confirmation wherever the user is likely to navigate away, such as inside a form.
+- **Dismissing the toast commits early.** A user who clears the toast to get it out of the way ends their own window.
+- **Clearing the whole toast queue drops the commit.** `clearToasts` removes toasts without running their close handlers, so any pending work is lost. Do not clear the queue while an undo is in flight.
+
+### When your api can restore
+
+If the operation is genuinely reversible on the server, prefer sending the request immediately and having Undo call the restore endpoint. It survives navigation, it needs no window, and it reports the truth. Use the deferred form above only when the underlying operation cannot be taken back, which in practice is most of the time.
+
+## Content guidelines
+
+Toasts follow the [feedback message](/patterns/feedback/feedback-messages) guidelines. Two rules matter here in particular.
+
+Name what happened to what. "Newsletter August deleted" tells a user who mis-clicked exactly what they lost, and "Item deleted" does not. For bulk actions, carry the count instead, as described in [Bulk Actions](/patterns/user-input/bulk-actions).
+
+Label the recovery with the verb, not the outcome. "Undo" is understood. "Restore", "Revert" and "Cancel" all invite a second reading, and "Cancel" is actively ambiguous next to a completed action.
+
+## Related
+
+- [Dialog](/components/overlay/dialog) for the confirmation component and the `useConfirmation` hook.
+- [Feedback Messages](/patterns/feedback/feedback-messages) for choosing a message type and writing its copy.
+- [Bulk Actions](/patterns/user-input/bulk-actions) for confirming an action across a selection.
+- [Button](/components/actions/button#destructive-buttons) for the `destructive` and `destructive-ghost` variants.
+- [Panel](/components/layout/panel#danger-zone) for grouping irreversible actions into a danger zone.

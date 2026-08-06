@@ -32,26 +32,10 @@ const ToastHelper = ({
 };
 
 function setupToastHook() {
-  let addToast: ReturnType<typeof useToast>['addToast'];
-  let clearToasts: ReturnType<typeof useToast>['clearToasts'];
-
-  render(
-    <ToastHelper
-      onToast={toast => {
-        addToast = toast.addToast;
-        clearToasts = toast.clearToasts;
-      }}
-    />
-  );
-
-  return {
-    get addToast() {
-      return addToast;
-    },
-    get clearToasts() {
-      return clearToasts;
-    },
-  };
+  // `onToast` runs during `render`, so the value is assigned before the return.
+  let toast!: ReturnType<typeof useToast>;
+  render(<ToastHelper onToast={value => (toast = value)} />);
+  return toast;
 }
 
 describe('Toast', () => {
@@ -115,6 +99,52 @@ describe('Toast', () => {
     const actionElement = screen.getByText('Undo');
 
     expect(actionElement).toBeInTheDocument();
+  });
+
+  test('calls onClose when the toast is dismissed', async () => {
+    const { addToast } = setupToastHook();
+    const onClose = vi.fn();
+    render(<Basic.Component />);
+    await act(async () => {
+      addToast({ title: 'Product deleted', onClose });
+    });
+
+    await userEvent.click(screen.getByRole('button', { name: 'Close' }));
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  test('calls onClose when a toast is closed by key', async () => {
+    const { addToast, removeToast } = setupToastHook();
+    const onClose = vi.fn();
+    render(<Basic.Component />);
+    let key = '';
+    await act(async () => {
+      key = addToast({ title: 'Product deleted', onClose });
+    });
+
+    await act(async () => {
+      removeToast(key);
+    });
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  // `clear()` drops toasts without running their close handlers, so work
+  // deferred to `onClose` is lost if the queue is cleared while it is pending.
+  test('does not call onClose when the whole queue is cleared', async () => {
+    const { addToast, clearToasts } = setupToastHook();
+    const onClose = vi.fn();
+    render(<Basic.Component />);
+    await act(async () => {
+      addToast({ title: 'Product deleted', onClose });
+    });
+
+    await act(async () => {
+      clearToasts();
+    });
+
+    expect(onClose).not.toHaveBeenCalled();
   });
 
   test('useToast returns stable function references (safe for useEffect deps)', () => {

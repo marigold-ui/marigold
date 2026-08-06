@@ -52,17 +52,23 @@ export const ConfirmationProvider = ({ children }: PropsWithChildren) => {
       {children}
       <ConfirmationDialog
         open={open}
-        onOpenChange={setOpen}
+        onOpenChange={isOpen => {
+          setOpen(isOpen);
+          // Every close that is not a confirm means cancelled, which covers the
+          // cancel button, Escape and outside-press alike. Confirming resolves
+          // before it closes, so this is a no-op on an already settled promise.
+          if (!isOpen) {
+            confirmation?.resolve('cancelled');
+          }
+        }}
         variant={confirmation?.variant}
         size="xsmall"
         title={confirmation?.title || ''}
         confirmationLabel={confirmation?.confirmationLabel || 'Confirm'}
         cancelLabel={confirmation?.cancelLabel}
+        autoFocusButton={confirmation?.autoFocusButton}
         onConfirm={() => {
           confirmation?.resolve('confirmed');
-        }}
-        onCancel={() => {
-          confirmation?.resolve('cancelled');
         }}
       >
         {confirmation?.content}
