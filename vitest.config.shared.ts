@@ -33,7 +33,6 @@ export const browserDeps = [
   'storybook/viewport',
   // App deps used in decorators/stories
   '@tanstack/react-query',
-  'react-select',
   // SSR-hydration test (TableEditableCell.ssr.test.tsx) imports these as bare
   // specifiers — the first explicit `react-dom/server` + `react-dom/client`
   // entry points in the suite. Without pre-bundling, Vite optimizes them
