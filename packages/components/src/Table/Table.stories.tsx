@@ -2031,8 +2031,21 @@ DataEntryGrid.test(
       }
     );
 
-    // Home/End are not asserted: platform dependent inside an input, and still
-    // reach the grid inside a NumberField.
+    // Asserted for the TextField only: Home inside the NumberField still
+    // reaches the grid, which looks like an upstream useSpinButton issue.
+    await step('Home and End keep focus inside a text field', async () => {
+      await userEvent.click(first);
+      first.setSelectionRange(2, 2);
+
+      await userEvent.keyboard('{Home}');
+      expect(document.activeElement).toBe(first);
+      expect(first.selectionStart).toBe(0);
+
+      await userEvent.keyboard('{End}');
+      expect(document.activeElement).toBe(first);
+      expect(first.selectionStart).toBe(first.value.length);
+    });
+
     await step('Shift+Tab steps back out onto the cell', async () => {
       await userEvent.keyboard('{Shift>}{Tab}{/Shift}');
 
@@ -2049,6 +2062,57 @@ DataEntryGrid.test(
     // Tab inside a field leaving the table is not asserted: the runner moves
     // focus in DOM order instead of letting the grid handle the key, so it
     // reports the opposite. Verified by hand in Chromium and Firefox.
+  }
+);
+
+/**
+ * The same grid with no `keyboardNavigationBehavior`, so the arrow keys stay
+ * with the grid. This is the keyboard trap the prop exists to avoid.
+ */
+export const DataEntryGridDefaultNavigation = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    selectionMode: 'none',
+  },
+  render: args => <DataEntryGridTable {...args} />,
+});
+
+// Pins the upstream default the docs rest on. Without this, a change to it would
+// leave both callouts wrong while the rest of the suite stayed green.
+DataEntryGridDefaultNavigation.test(
+  'Defaults to arrow navigation, so an arrow key leaves the field',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const first = canvas.getByLabelText(
+      `Note for ${users[0].name}`
+    ) as HTMLInputElement;
+
+    await step(
+      'An arrow key navigates the grid instead of the caret',
+      async () => {
+        await userEvent.click(first);
+        first.setSelectionRange(first.value.length, first.value.length);
+
+        await userEvent.keyboard('{ArrowLeft}');
+
+        // Focus does not just leave the field, it moves a cell to the left —
+        // which here is the rowHeader column rather than a plain gridcell.
+        expect(document.activeElement).not.toBe(first);
+        expect(document.activeElement).toHaveAttribute('role', 'rowheader');
+      }
+    );
+
+    // The other half of the Home/End row asserted in the DataEntryGrid test:
+    // on the default, the key belongs to the grid rather than the caret.
+    await step('Home leaves the field as well', async () => {
+      await userEvent.click(first);
+      first.setSelectionRange(2, 2);
+
+      await userEvent.keyboard('{Home}');
+
+      expect(document.activeElement).not.toBe(first);
+    });
   }
 );
 
