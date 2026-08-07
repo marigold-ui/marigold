@@ -23,7 +23,8 @@ interface Venue {
   price: number;
 }
 
-// Shared by all three approaches, so this reads as a comparison.
+// The starting point for all three. Each keeps its own copy, so switching
+// tabs discards edits.
 const initialVenues: Venue[] = [
   { id: '1', name: 'Main Street Amphitheater', capacity: 500, price: 34.5 },
   { id: '2', name: 'Shakytown Comedy Club', capacity: 300, price: 22 },
@@ -256,7 +257,7 @@ const DrawerBatchApproach = () => {
 };
 
 export default () => (
-  <Panel aria-label="Three ways to change the same table">
+  <Panel>
     <Panel.Header>
       <Title>The same table, three ways</Title>
     </Panel.Header>

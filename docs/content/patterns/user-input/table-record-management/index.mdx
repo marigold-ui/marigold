@@ -39,7 +39,7 @@ The drawer is the default for anything beyond a single field, with one exception
   than edit them, see the [Pick](/patterns/user-input/pick) pattern.
 </Callout>
 
-The three that keep the table in view all change the same records, and the difference between them is the shape of the task rather than the amount of data. Try each below on one dataset, where you can correct a single value, fill in every row, or add records one after another.
+The three that keep the table in view all change the same records, and the difference between them is the shape of the task rather than the amount of data. Try each below on the same starting data, where you can correct a single value, fill in every row, or add records one after another. Each tab keeps its own copy, so switching tabs starts over.
 
 <ComponentDemo
   file="./table-record-entry-grid-compare.demo.tsx"
@@ -148,7 +148,7 @@ Moving between two fields is a grid movement rather than a single <kbd>Tab</kbd>
   </Dont>
 </GuidelineTiles>
 
-#### Notes on accessibility [!toc] [#accessibility]
+### Notes on accessibility [#accessibility]
 
 Keep the identifying column as a plain read-only cell and mark it `rowHeader`, so the row stays scannable and assistive technology can announce which row a field belongs to. Give every input a name that includes the row, such as `Price for Northgate Arena`. A column header alone is not enough, because it leaves a screen reader user hearing "Price" once per row with nothing to tell them apart.
 

@@ -2066,8 +2066,11 @@ export const DataEntryGridWithSelection = meta.story({
   render: args => <DataEntryGridTable {...args} />,
 });
 
+// Named for what it asserts. The per-row tab stop is not covered, because Tab
+// in this runner moves focus in DOM order instead of letting the grid handle it,
+// the same limitation noted in the DataEntryGrid test above.
 DataEntryGridWithSelection.test(
-  'Row checkboxes stay reachable and selectable',
+  'Row checkboxes render and toggle',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent, step }) => {
     await step('Every row has a checkbox alongside the select-all', () => {

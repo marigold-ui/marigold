@@ -65,7 +65,13 @@ export default () => {
     );
   }).length;
 
-  const totalCapacity = rows.reduce((sum, row) => sum + row.capacity, 0);
+  // An emptied NumberField commits NaN, which would poison the footer total.
+  const invalid = rows.some(row => Number.isNaN(row.capacity));
+
+  const totalCapacity = rows.reduce(
+    (sum, row) => sum + (Number.isNaN(row.capacity) ? 0 : row.capacity),
+    0
+  );
 
   return (
     <Panel aria-label="Seat allocation">
@@ -105,6 +111,7 @@ export default () => {
                     aria-label={`Capacity for ${row.venue}`} // [!code highlight]
                     value={row.capacity}
                     onChange={value => update(row.id, 'capacity', value)}
+                    error={Number.isNaN(row.capacity)} // [!code highlight]
                     minValue={0}
                     hideStepper
                   />
@@ -157,11 +164,11 @@ export default () => {
             Reset
           </Button>
           {/* One explicit Save for the whole grid, not per cell. */}
-          {/* [!code highlight:7] */}
+          {/* [!code highlight:8] */}
           <Button
             variant="primary"
             size="small"
-            disabled={changed === 0}
+            disabled={changed === 0 || invalid}
             onPress={() => setSaved(rows)}
           >
             Save changes
