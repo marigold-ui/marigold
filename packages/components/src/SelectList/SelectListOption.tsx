@@ -73,17 +73,6 @@ export const SelectListOption = ({
   const resolvedTextValue =
     textValue ?? (typeof children === 'string' ? children : undefined);
 
-  if (
-    process.env.NODE_ENV !== 'production' &&
-    resolvedTextValue === undefined
-  ) {
-    console.warn(
-      `[SelectList.Option${props.id !== undefined ? ` id="${props.id}"` : ''}] ` +
-        '`textValue` is required when children is not a plain string. ' +
-        'Screen readers announce the `textValue` as the option name.'
-    );
-  }
-
   return (
     <RACGridListItem
       isDisabled={disabled ?? listDisabled}
