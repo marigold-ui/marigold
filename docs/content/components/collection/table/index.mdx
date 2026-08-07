@@ -209,7 +209,11 @@ Enable sorting to let users click column headers and dynamically reorder rows by
   </Dont>
 </GuidelineTiles>
 
-### Inline editing
+### Editing
+
+A table can be edited in place in two ways, and the one that fits follows from the shape of the task rather than the amount of data. Reach for **editable cells** when the table is mostly read-only and the user corrects one value at a time. Reach for a **data-entry grid** when every row needs the same fields filled in. If you are still weighing those against a drawer or a separate page, the [Table record management pattern](/patterns/user-input/table-record-management) sets all four side by side.
+
+#### Editable cells [#inline-editing]
 
 When users need to make quick edits to individual values without navigating to a separate form, use editable cells. This is particularly effective for small, atomic changes where users need to update a single field across multiple records, like updating product prices, changing task statuses, correcting typos, or adjusting quantities. By allowing edits directly within the table, you keep users in context and reduce friction.
 
@@ -248,7 +252,37 @@ Editable cells always truncate their content, regardless of the table-level `ove
   </Dont>
 </GuidelineTiles>
 
-Editable cells suit occasional corrections, where most cells are read-only and the user opens one at a time. If instead every row needs the same fields filled in, don't give a whole column editable cells. Put the form controls directly in the cells and set `keyboardNavigationBehavior="tab"`, so the arrow keys stay with the fields instead of moving between cells. See [Filling in many rows at once](/patterns/user-input/table-record-management#filling-in-many-rows-at-once) for when that trade is worth making and how far it scales.
+#### Data-entry grid
+
+When the task is to fill in the table rather than to correct it, don't give a whole column editable cells. Put the form controls directly in the cells and let the table be the form. Every row stays visible for comparison while the user types, and nothing has to be opened first.
+
+<ComponentDemo name="table-entry-grid" />
+
+<Callout type="warning" title="Set keyboardNavigationBehavior to tab">
+  Form controls in cells need `keyboardNavigationBehavior="tab"` on the
+  `<Table>`. Without it the grid keeps the arrow keys, so pressing one inside a
+  field moves focus to the row instead of moving the caret. This is required, not
+  a refinement.
+</Callout>
+
+Moving between two fields stays a grid movement rather than a single <kbd>Tab</kbd> press, so the keystrokes add up faster than the table looks. That cost is what bounds the approach. See [Filling in many rows at once](/patterns/user-input/table-record-management#filling-in-many-rows-at-once) for the limits it sets on columns, rows, and how the grid is saved.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Keep everything the user doesn't edit as plain read-only cells, and give
+      every input a name that includes its row, like `Capacity for Northgate
+      Arena`.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't leave form controls in cells on the default
+      `keyboardNavigationBehavior="arrow"`. The fields look and click fine, so
+      the keyboard trap ships unnoticed.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 ### Reordering
 
@@ -441,6 +475,30 @@ Is there still not the right alternative for you please [get in touch](/resource
 
 <TeaserList
   items={[
+    {
+      title: 'Table record management',
+      href: '/patterns/user-input/table-record-management',
+      caption:
+        'Choosing between inline edit, a grid, a drawer, and a full page.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <path d="M3 5h18v14H3z" />
+          <path d="M3 10h18" />
+          <path d="M10 10v9" />
+        </svg>
+      ),
+    },
     {
       title: 'Admin- & master mark',
       href: '/patterns/layout/admin-master-mark',
