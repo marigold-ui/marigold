@@ -240,7 +240,9 @@ Editable cells always truncate their content, regardless of the table-level `ove
 
 #### Data-entry grid
 
-When the task is to fill in the table rather than to correct it, don't give a whole column editable cells. Put the form controls directly in the cells and let the table be the form. Every row stays visible for comparison while the user types, and nothing has to be opened first.
+Use this sparingly. It suits one shape of task: bulk, repetitive entry across a bounded set of rows that already exist, where the user's value comes from comparing rows as they type. A grid is a single tab stop, so moving from one field to the next stays a grid movement rather than a single <kbd>Tab</kbd> press. The keystrokes add up faster than the table looks, and no table can offer the field-to-field tabbing a form does. A date range, a lookup that opens its own popover, or a field whose validity depends on another field belongs in a [drawer](/patterns/user-input/table-record-management#creating-and-editing-whole-records) instead.
+
+When the task does fit, don't give a whole column editable cells. Put the form controls directly in the cells and let the table be the form. Every row stays visible for comparison while the user types, and nothing has to be opened first. See [Filling in many rows at once](/patterns/user-input/table-record-management#filling-in-many-rows-at-once) for the limits on columns and rows, which cells to keep read-only, and how the grid is saved.
 
 <ComponentDemo name="table-entry-grid" />
 
@@ -251,8 +253,6 @@ When the task is to fill in the table rather than to correct it, don't give a wh
   and click fine on the default `arrow`, which is how the keyboard trap ships
   unnoticed.
 </Callout>
-
-Moving between two fields stays a grid movement rather than a single <kbd>Tab</kbd> press, so the keystrokes add up faster than the table looks. That cost is what bounds the approach. See [Filling in many rows at once](/patterns/user-input/table-record-management#filling-in-many-rows-at-once) for the limits it sets on columns and rows, which cells to keep read-only, and how the grid is saved.
 
 ### Reordering
 
