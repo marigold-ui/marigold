@@ -61,7 +61,7 @@ The CLI fetches from the Marigold docs site, caches for 24h, and works offline (
 
 - **Test runner**: Vitest (not Jest)
 - **Run tests**: `pnpm test` (all), `pnpm test:unit` (unit tests), `pnpm test:sb` (story tests)
-- **Story tests**: Add `play` functions with `tags: ['component-test']` - runs in real browser via Playwright
+- **Story tests**: Attach `.test()` to a story tagged `component-test` - runs in real browser via Playwright
 - **Unit tests**: Import stories (e.g., `<Basic.Component />`) instead of creating test fixtures
 - **Browser tests**: Playwright integration via `@vitest/browser-playwright`
 - **Coverage**: `pnpm test:coverage` (requires 90% statements, functions, lines; 85% branches)
@@ -225,12 +225,13 @@ export const Toast: ThemeComponent = {
 
 ## Testing Patterns
 
-### Story Play Functions
+### Story Tests (`.test()`)
 
-Add `play` functions to stories for interaction testing. Runs in real browser via Playwright.
+Attach interaction tests to a story with `.test(name, options?, fn)` (enabled by
+`features.experimentalTestSyntax`). Do not write `play` functions. Runs in real browser via Playwright.
 
 ```typescript
-import { expect, fn, userEvent } from 'storybook/test';
+import { expect, fn } from 'storybook/test';
 import preview from '.storybook/preview';
 
 const meta = preview.meta({
@@ -239,17 +240,28 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
-  tags: ['component-test'],  // Required for test runner
-  args: {
-    onPress: fn(),
-  },
+  tags: ['component-test'], // Required for test runner; .test() children inherit it
   render: args => <Button {...args}>Click me</Button>,
-  play: async ({ args, canvas }) => {
-    await userEvent.click(canvas.getByRole('button'));
-    await expect(args.onPress).toHaveBeenCalled();
-  },
 });
+
+Basic.test(
+  'Calls onPress when clicked',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onPress: fn() },
+  },
+  async ({ args, canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button'));
+
+    await expect(args.onPress).toHaveBeenCalled();
+  }
+);
 ```
+
+- Destructure `canvas`, `userEvent`, `args`, `step` from the test context - never `within(canvasElement)`, never a module-scope `userEvent`
+- `options` takes the same `parameters`/`args`/`decorators` a story does, so per-test setup stays out of the story
+- Default to `chromatic: { disableSnapshot: true }`; use `false` when the interaction's end state is a visual state worth guarding
+- Wrap each act-assert cycle in `step()` when a behaviour needs more than one
 
 Run with `pnpm test:sb`.
 
@@ -262,8 +274,9 @@ import { render, screen } from '@testing-library/react';
 import { Basic } from './Button.stories';
 
 test('renders correctly', () => {
-  render(<Basic.Component data-testid="button" />);
-  expect(screen.getByTestId('button')).toBeInTheDocument();
+  render(<Basic.Component />);
+
+  expect(screen.getByRole('button')).toBeInTheDocument();
 });
 
 test('supports custom props', () => {
