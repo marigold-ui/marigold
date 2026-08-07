@@ -266,9 +266,8 @@ The `loading` property must be added manually to a Button, and is intended for p
 
 <Callout title="Pending state from async actions">
   When the loading state comes from a React 19 action, let `useActionState`
-  manage the pending flag and pass it to the button. See [Async forms and
-  useActionState
-  hook](/patterns/user-input/form-implementation#async-forms-and-useactionstate-hook).
+  manage the pending flag and pass it to the button. See [Async forms with
+  useActionState](/patterns/user-input/forms#async-forms-with-useactionstate).
 </Callout>
 
 ### Full-width
@@ -283,7 +282,7 @@ If the user interacts with the element and it results in navigation to another p
 
 Understanding this distinction is crucial: anchors handle navigation, while buttons handle page-specific actions. Misusing them can cause accessibility and usability issues, as anchors support tab-opening and navigation, while buttons do not.
 
-To visually imitate a button element that navigates (e.g., a "Cancel" action that redirects users to the previous page), use the [`<ButtonLink>`](/components/actions/button-link) component with the corresponding `variant`, usually the default `secondary`. This way, the action is clear and prominent while keeping its navigation function.
+To visually imitate a button element that navigates (e.g., a "Cancel" action that redirects users to the previous page), use the [`<LinkButton>`](/components/actions/link-button) component with the corresponding `variant`, usually the default `secondary`. This way, the action is clear and prominent while keeping its navigation function.
 
 <ComponentDemo name="button-link" />
 
@@ -306,9 +305,11 @@ Anchor each surface with at most one prominent `<Button>` for the real commitmen
 
 <ComponentDemo name="button-page-vs-surface" />
 
-You rarely need to set a `variant` or `size` yourself. When a `<Button>` sits inside a container like a [`<ButtonGroup>`](/components/actions/button-group), a [`<Panel.Header>`](/components/layout/panel), or a [`<SelectList.Option>`](/components/form/select-list), it automatically picks up the look and placement that fit that spot, so a row or header of buttons stays consistent without any extra props. This is part of how Marigold components adapt to where they live, explained in [Slot-Driven Composition](/foundations/component-principles#slot-driven-composition). You can always set a `variant` or `size` on a button to override what the container suggests.
+You rarely need to set a `variant` or `size` yourself. When a `<Button>` sits inside a container like a [`<ButtonGroup>`](/components/actions/button-group), a [`<Panel.Header>`](/components/layout/panel), or a [`<SelectList.Option>`](/components/form/selectlist), it automatically picks up the look and placement that fit that spot, so a row or header of buttons stays consistent without any extra props. This is part of how Marigold components adapt to where they live, explained in [Slot-Driven Composition](/foundations/component-principles#slot-driven-composition). You can always set a `variant` or `size` on a button to override what the container suggests.
 
 <ComponentDemo name="button-in-context" />
+
+Some containers deliberately do the opposite and reset the cascade to a clean baseline, so their action never inherits the ghost or small treatment of a container further up. A `<Button>` in one of them keeps its own default `secondary`, and you pick the variant yourself. This covers the message components, [`<EmptyState>`](/components/content/empty-state), [`<ErrorState>`](/components/content/error-state), [`<SectionMessage>`](/components/content/section-message) and [`<ContextualHelp>`](/components/overlay/contextual-help), and it covers overlays like [`<Drawer>`](/components/overlay/drawer) and anything rendered inside a [`<Dialog>`](/components/overlay/dialog), since an overlay opens a surface of its own that the cascade should not reach through.
 
 ### Press Event
 
