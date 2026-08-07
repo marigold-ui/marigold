@@ -80,7 +80,7 @@ This diagram shows how tokens map to a typical form card. The gray page backgrou
 
 ## Color palette
 
-The RUI theme is built on a warm neutral palette called **charcoal**, an oklch gray with a subtle warm hue (hue 54). The 11-step scale runs from near-white (50) to near-black (950). All semantic color tokens below reference values from this palette.
+The RUI theme is built on a warm neutral palette called **charcoal**, an oklch gray with a subtle warm hue. The 11-step scale runs from near-white (50) to near-black (950). All semantic color tokens below reference values from this palette.
 
 <ComponentDemo file="./color-palette.demo.tsx" mode="preview" />
 
@@ -325,7 +325,7 @@ The secondary Button and the Menu trigger don't wear a boundary at all. They're 
   tokens={[
     {
       name: 'soft',
-      value: 'oklch(0.99 0.002 54)',
+      value: 'oklch(from charcoal-950 0.99 0.002 h)',
       useFor:
         'Resting fill for the soft cap (secondary Button, Menu trigger). Lightness and chroma are tuned by eye; the hue is derived from the palette',
     },
