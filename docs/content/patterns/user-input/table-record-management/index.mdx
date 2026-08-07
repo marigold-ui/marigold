@@ -127,7 +127,7 @@ Moving between two fields is a grid movement rather than a single <kbd>Tab</kbd>
 - **A bounded set of rows,** roughly twenty five in view. Never put a data-entry grid behind infinite scroll or over an unbounded dataset.
 - **Keep everything the user does not edit read-only.** Identifiers, computed values, and totals stay plain cells, which also keeps them out of the tab order.
 - **Commit the whole grid with one Save,** and show how many rows are pending. Do not save per cell, because that is inline editing's model, and running both at once teaches two contradictory rules about when a change becomes real.
-- **Do not mix always-on inputs and `<Table.EditableCell>` in the same table.** Both work, so nothing breaks, but the user now has two different ways to edit depending on which column they are in.
+- **Do not mix always-on inputs and `<Table.EditableCell>` in the same table.** Neither one breaks the other, so this is a consistency rule rather than a technical limit: the user ends up with two different ways to edit depending on which column they are in.
 - **Validate in the field, and summarise on submit.** Show the message on the offending input, and when Save is pressed with errors outstanding, name them together in a [`<SectionMessage>`](/components/content/section-message). Never trap focus in an invalid field, because a user who cannot Tab out of a mistake cannot reach the fix.
 - **Add row selection only if bulk actions are genuinely part of the task.** It works, but it costs another tab stop on every row.
 
@@ -148,7 +148,7 @@ Moving between two fields is a grid movement rather than a single <kbd>Tab</kbd>
   </Dont>
 </GuidelineTiles>
 
-**Notes on accessibility**
+### Notes on accessibility [!toc] [#accessibility]
 
 Keep the identifying column as a plain read-only cell and mark it `rowHeader`, so the row stays scannable and assistive technology can announce which row a field belongs to. Give every input a name that includes the row, such as `Price for Northgate Arena`. A column header alone is not enough, because it leaves a screen reader user hearing "Price" once per row with nothing to tell them apart.
 

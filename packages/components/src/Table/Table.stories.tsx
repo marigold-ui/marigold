@@ -2087,3 +2087,117 @@ DataEntryGridWithSelection.test(
     });
   }
 );
+
+/**
+ * Always-on cell inputs and `<Table.EditableCell>` in one table. Both keep
+ * working — the pattern docs discourage mixing them because it gives the user
+ * two ways to edit, not because either one breaks.
+ */
+export const DataEntryGridWithEditableCell = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    keyboardNavigationBehavior: 'tab',
+    selectionMode: 'none',
+  },
+  render: args => {
+    const [data, setData] = useState(users.slice(0, 3).map(u => ({ ...u })));
+
+    return (
+      <Table aria-label="Mixed editing table" {...args}>
+        <Table.Header>
+          <Table.Column rowHeader>Name</Table.Column>
+          <Table.Column>Note</Table.Column>
+          <Table.Column>Status</Table.Column>
+        </Table.Header>
+        <Table.Body>
+          {data.map((user, i) => (
+            <Table.Row key={user.email}>
+              <Table.Cell>{user.name}</Table.Cell>
+              <Table.Cell>
+                <TextField
+                  aria-label={`Note for ${user.name}`}
+                  defaultValue={user.name}
+                />
+              </Table.Cell>
+              <Table.EditableCell
+                field={
+                  <TextField
+                    aria-label="Status"
+                    name="status"
+                    defaultValue={user.status}
+                  />
+                }
+                onSubmit={e => {
+                  const value = new FormData(e.currentTarget).get(
+                    'status'
+                  ) as string;
+                  setData(prev => {
+                    const next = [...prev];
+                    next[i] = { ...next[i], status: value || next[i].status };
+                    return next;
+                  });
+                }}
+              >
+                {user.status}
+              </Table.EditableCell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    );
+  },
+});
+
+// Closes DST-1687 open question 1, where the original probe was inconclusive.
+DataEntryGridWithEditableCell.test(
+  'An always-on input and an editable cell both work in one table',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const note = canvas.getByLabelText(
+      `Note for ${users[0].name}`
+    ) as HTMLInputElement;
+
+    await step(
+      'The always-on input keeps typing and caret movement',
+      async () => {
+        await userEvent.click(note);
+        await userEvent.keyboard('Zulu');
+        note.setSelectionRange(note.value.length, note.value.length);
+        const before = note.selectionStart as number;
+
+        await userEvent.keyboard('{ArrowLeft}');
+
+        expect(document.activeElement).toBe(note);
+        expect(note.value).toContain('Zulu');
+        expect(note.selectionStart).toBe(before - 1);
+      }
+    );
+
+    await step('The editable cell still opens its editor', async () => {
+      await userEvent.click(canvas.getAllByLabelText('Edit')[0]);
+
+      await waitFor(() => {
+        expect(canvas.getByLabelText('Status')).toBeInTheDocument();
+      });
+
+      expect(canvas.getByLabelText('Status')).toHaveFocus();
+    });
+
+    await step('Saving the editor commits the new value', async () => {
+      const status = canvas.getByLabelText('Status');
+      await userEvent.clear(status);
+      await userEvent.type(status, 'archived');
+
+      await userEvent.click(canvas.getByRole('button', { name: 'Save' }));
+
+      await waitFor(() => {
+        expect(canvas.getByText('archived')).toBeInTheDocument();
+      });
+    });
+
+    await step('The always-on input is unaffected by the edit', () => {
+      expect(note.value).toContain('Zulu');
+    });
+  }
+);
