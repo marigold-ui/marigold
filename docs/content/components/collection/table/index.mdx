@@ -224,30 +224,14 @@ Editable cells always truncate their content, regardless of the table-level `ove
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      <ul>
-        <li>
-          Use editable cells for quick, single-value updates like changing
-          status or correcting typos.
-        </li>
-        <li>
-          Choose form controls that match the data type (e.g. Select for
-          predefined options, NumberField for numbers, DatePicker for dates).
-        </li>
-      </ul>
+      Choose form controls that match the data type (e.g. Select for predefined
+      options, NumberField for numbers, DatePicker for dates).
     </DoDescription>
   </Do>
   <Dont>
     <DontDescription>
-      <ul>
-        <li>
-          Don't make cells editable if editing requires complex validation or
-          multiple related fields.
-        </li>
-        <li>
-          Don't use editable cells when a dedicated edit form would provide
-          better context and validation.
-        </li>
-      </ul>
+      Don't make cells editable if editing requires complex validation or
+      multiple related fields.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
@@ -261,28 +245,12 @@ When the task is to fill in the table rather than to correct it, don't give a wh
 <Callout type="warning" title="Set keyboardNavigationBehavior to tab">
   Form controls in cells need `keyboardNavigationBehavior="tab"` on the
   `<Table>`. Without it the grid keeps the arrow keys, so pressing one inside a
-  field moves focus to the row instead of moving the caret. This is required, not
-  a refinement.
+  field moves focus to the row instead of moving the caret. The fields still look
+  and click fine on the default `arrow`, which is how the keyboard trap ships
+  unnoticed.
 </Callout>
 
-Moving between two fields stays a grid movement rather than a single <kbd>Tab</kbd> press, so the keystrokes add up faster than the table looks. That cost is what bounds the approach. See [Filling in many rows at once](/patterns/user-input/table-record-management#filling-in-many-rows-at-once) for the limits it sets on columns, rows, and how the grid is saved.
-
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Keep everything the user doesn't edit as plain read-only cells, and give
-      every input a name that includes its row, like `Capacity for Northgate
-      Arena`.
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't leave form controls in cells on the default
-      `keyboardNavigationBehavior="arrow"`. The fields look and click fine, so
-      the keyboard trap ships unnoticed.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
+Moving between two fields stays a grid movement rather than a single <kbd>Tab</kbd> press, so the keystrokes add up faster than the table looks. That cost is what bounds the approach. See [Filling in many rows at once](/patterns/user-input/table-record-management#filling-in-many-rows-at-once) for the limits it sets on columns and rows, which cells to keep read-only, and how the grid is saved.
 
 ### Reordering
 
