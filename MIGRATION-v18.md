@@ -594,6 +594,10 @@ must remove the `SectionMessage.close` slot (see B6).
 - **`Button` `variant="icon"`** was never a real variant. Use `size="icon"`
   (composes with any variant, e.g. `variant="ghost" size="icon"`).
 - **`Label`** no longer exposes `style`.
+- **`SelectList` `layout` / `keyboardNavigationBehavior`** removed. The list is
+  always a `layout="grid"` GridList and react-aria derives
+  `keyboardNavigationBehavior: 'tab'` from that, so neither value ever reached the
+  DOM. Drop them; behavior is unchanged.
 - **`Loader` `loaderType`**: the v17 JSDoc documented a `cycle` value that never
   existed. The type only ever accepted `xloader` and `circle` (default `circle`),
   so this is a doc fix, not a code change. Unrelated to the `Spinner` → `Loader`
@@ -943,5 +947,5 @@ declares a `style` export condition. Import `theme.css` for a full app or
 
 ---
 
-_Source of truth for this guide: the [v18.0.0 release notes](https://www.marigold-ui.io/releases/blog/release-2026-08-17),
+_Source of truth for this guide: the [v18.0.0 release notes](https://www.marigold-ui.io/releases/blog/release-2026-08-11),
 the `marigold migrate v18` codemod, and `marigold docs <Component>`._

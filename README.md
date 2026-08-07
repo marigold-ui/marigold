@@ -77,6 +77,7 @@ To start documentation follow these steps:
 | pnpm clean:build           | Remove dist folders and coverage reports.                                             |
 | pnpm lint                  | Lint the repository with ESLint.                                                      |
 | pnpm format                | Format files with Prettier.                                                           |
+| pnpm format:check          | Check formatting without writing (what CI runs).                                      |
 | pnpm format:fix            | Format and attempt to fix with Prettier.                                              |
 | pnpm typecheck             | Build docs, then run TypeScript type checking (no emit).                              |
 | pnpm typecheck:only        | Run TypeScript type checking only (no emit).                                          |

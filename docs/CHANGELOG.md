@@ -1,5 +1,99 @@
 # @marigold/docs
 
+## 18.0.0-rc.5
+
+### Patch Changes
+
+- b7122c0: docs(DST-1434): promote the Filter pattern to beta. Restructures the guidance into task-focused chapters (choosing filters, filter types, applying, designing options, scaling up, filter state, small screens, accessibility, implementation), reframes the SegmentedControl as a scope switch, bases date quick filters on the built-in DateRangePicker presets, makes panel grouping thematic, and documents the draft preview. The reference implementation gains quick filters, a searchable city filter, an availability date range filter, live option counts, and a result-count preview on the Apply button.
+- b7122c0: docs(DST-1543): document `marigold migrate` on the CLI page
+
+  Adds a `marigold migrate` section to `/getting-started/cli`, alongside the other commands: what the codemods cover (theme slot restructures and baseline swaps, application-code renames, report-only design-token checks), the optional version and path positionals, the `--dry-run` and `--only` flags, and the safety model (warnings instead of guesses, idempotent runs, the typecheck as the completeness check).
+
+- b7122c0: docs(DST-1570): add v18 migration guide (`MIGRATION-v18.md`)
+
+  An exhaustive, agent-consumable guide for upgrading a consuming app from Marigold 17 to 18. Root-level Markdown file, split into Section A (app developers) and Section B (custom theme authors). Every breaking change lists what changed, a before→after, why, and gotchas, tagged `[auto]`/`[flagged]`/`[manual]`/`[adopt]` so it composes with the `marigold migrate v18` codemod. Linked from the v18.0.0 release notes.
+
+- e0f9c05: fix(DST-1647): honor the router's `useHref` in sidebar links
+
+  `Sidebar.Item` and `Sidebar.RailItem` rendered the raw `href` prop straight onto
+  their anchor, which shadowed the value produced by `RouterProvider`'s optional
+  `useHref`. Applications served from a prefix, such as a Next.js `basePath`, ended
+  up with sidebar markup pointing at an unprefixed URL, so middle click and "copy
+  link address" resolved to the wrong page. Both components now render the
+  transformed href and keep handing the unprefixed path to `navigate`, matching how
+  React Aria's own `useLink` behaves. Consumers that do not pass `useHref` see no
+  change, because the default leaves the href untouched.
+
+  The `RouterProvider` docs now cover `useHref` next to `navigate`, and the
+  component gained a matching Storybook story and prop description.
+
+- b7122c0: docs(DST-1651): expand the Pick pattern guidance, examples, and commit-button behavior
+
+  Rounds out the Pick pattern docs (`/patterns/user-input/pick`) and its example (`/examples/pick`).
+
+  **Commit button stays active.** Aligns the pattern with the Button page's "avoid disabled buttons" guidance. The commit button no longer disables when the staged set is empty or below the minimum. Pressing it refuses the commit and reveals a `<SectionMessage variant="error">` at the top of the surface that says what is still needed and announces itself to assistive technology, instead of a disabled control that gives no reason and drops out of the keyboard tab order. Applies to the guidance text and all four commit examples (the fullscreen example plus the dialog, select-list, and inline abonnement demos).
+
+  **"Naming the commit button" section.** Promotes the commit-button label guidance into its own section. The button names its outcome with the host task's own verb ("Add venues", "Assign users", "Save venues"), never a generic label. The staged count is status that lives on the removable-tag rail. The label may echo it ("Add 3 venues") when it stays short and mirrors the trigger, and stays a bare verb when the label would run long or a min or max applies. Names the labels that do not fit a commit: "Next", "Continue", "OK", "Done" (multi-step words), "Filter" (the wrong mechanism), and "Save" for a discardable result.
+
+  **"Selection limits" section.** Promotes the terse "Bound the selection" bullet into its own subsection. States the rule up front in helper text ("Pick at least three", "Choose up to seven") and keeps a live count in the staged-tag rail ("Staged (3 of 5)"). A minimum is checked on press and surfaces the message rather than disabling the button. A maximum makes the ceiling visible, disables the unchecked rows once reached and says why, and keeps deselection free so the user can swap a pick.
+
+  **In-page date-pick demo.** Adds a second stay-on-the-page example to "Choose the surface by collection size": assembling a season subscription (an Abonnement) from concert dates without a dialog, over a `<SelectList>` with sold-out entries disabled and a running count beside a verb-only commit.
+
+  **Faceted example filters.** The `/examples/pick` venue picker's Type, Region, and Status filters now reference one another. Each option carries the count it would yield under the other active filters and the search ("Bavaria (3)"), options that would return nothing are disabled, and the current value is never disabled so a filter can always be changed back. Counts derive from the same predicate that filters the table, so they never disagree.
+
+  Docs-only.
+
+  [DST-1651](https://reservix.atlassian.net/browse/DST-1651)
+
+- b7122c0: fix(DST-1434): ship nested example sources in the examples registry
+
+  `build-examples.mjs` collected only the top level of an example folder, so any
+  example keeping code in a subdirectory shipped importers without their imports.
+  The `filter` payload carried 7 files while all six of its key files import from
+  `./hooks/…`, and `bulk-actions` was missing 8 of its 16 — snippets that could
+  not be built by whoever copied them. The walk is now recursive, with paths
+  POSIX-relative to the example root so they match the import specifiers, and
+  `key_files` may point into a subdirectory.
+
+  Also completes the `filter` sidecar so its copyable snippet typechecks: the
+  `@/lib/data/venues` stub was missing `venueCities`, `MAX_CAPACITY`, `MAX_PRICE`,
+  the `Venue` type and the `nextAvailable` field, and `@/lib/data/venues-query`
+  had no stub at all despite being imported by a key file. `peer_deps` gains
+  `@internationalized/date`, `@tanstack/react-query` and `react-error-boundary`,
+  and drops `zod`, which nothing imports.
+
+  The scripts/ tests that guard this were never running: `docs/vitest.config.mjs`
+  and `docs/vitest.config.ts` both existed, vitest resolved the latter, and its
+  `include` covered only `app/` and `lib/`, so `pnpm --filter @marigold/docs test`
+  passed on an empty selection. The two configs are merged into one.
+
+- b7122c0: docs(DST-1344): unify responsive hooks into the Responsive Design foundations page
+
+  Folds the `useResponsiveValue` and `useSmallScreen` documentation into the existing `Responsive Design` foundations page so all screen-size guidance lives in one place. Adds a combined import block, a dedicated section for each hook with an interactive breakpoint picker, and notes that both hooks read breakpoints from `theme.screens` with a `--breakpoint-*` CSS fallback. Removes the standalone `useResponsiveValue` page under hooks-and-utils and repoints internal links (the TopNavigation mobile-navigation note and the on-page references) to the consolidated page.
+
+- Updated dependencies [85e9a45]
+- Updated dependencies [b7122c0]
+- Updated dependencies [0e2c676]
+- Updated dependencies [b7122c0]
+- Updated dependencies [b7122c0]
+- Updated dependencies [b7122c0]
+- Updated dependencies [68122ff]
+- Updated dependencies [e0f9c05]
+- Updated dependencies [b7122c0]
+- Updated dependencies [b7122c0]
+- Updated dependencies [b7122c0]
+- Updated dependencies [7a122c7]
+- Updated dependencies [b7122c0]
+- Updated dependencies [b7122c0]
+- Updated dependencies [b7122c0]
+- Updated dependencies [0e2c676]
+- Updated dependencies [b7122c0]
+- Updated dependencies [6cfcea4]
+  - @marigold/components@18.0.0-rc.5
+  - @marigold/system@18.0.0-rc.5
+  - @marigold/theme-rui@6.0.0-rc.5
+  - @marigold/icons@2.0.0-rc.5
+
 ## 18.0.0-beta.4
 
 ### Major Changes

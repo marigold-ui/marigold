@@ -1,5 +1,107 @@
 # @marigold/theme-rui
 
+## 6.0.0-rc.5
+
+### Minor Changes
+
+- b7122c0: feat(DST-1609): two-level sidebar navigation with `Sidebar.Rail` and `Sidebar.RailItem`
+
+  Adds a two-level navigation mode to the sidebar: a persistent rail of icon-first
+  top-level destinations next to a panel showing the active section's sub-navigation.
+  A `Sidebar.RailItem` wrapping a `Sidebar.Nav` is a section that shows a panel. One with
+  only an `href` is a direct link, and one inside `Sidebar.Footer` pins to the bottom of the
+  rail. Its `active` prop overrides href matching for pages the URL can't identify.
+  Collapsing (toggle or Cmd/Ctrl+B) hides the panel while the rail narrows to an icon
+  strip, so top-level navigation always stays available. On small screens the rail
+  renders as the same single-column drawer as the plain sidebar: sections drill in
+  (opened at the active section) and links close the drawer.
+
+  - `<AppShell>` switches to a full-width top bar automatically when a rail is present
+    (pure CSS via `:has()`), so the brand never moves when the panel collapses.
+  - `Sidebar.Toggle` gains `variant="rail"` for its top-bar placement between the
+    brand and the breadcrumbs.
+  - New theme tokens: `--spacing-topbar` (the shell's shared vertical datum for the top bar
+    height, sidebar brand row, and rail sticky offset), the rail column widths
+    `--spacing-rail` / `--spacing-rail-collapsed` / `--spacing-rail-panel`, and
+    `--spacing-touch-target` (44px minimum row height on small screens, shared by the
+    drawer's nav rows and the existing Tray-mode ListBox/Menu options).
+  - Idle single-column nav labels darken a step (new `--color-secondary-bold` token,
+    charcoal-700) so they clearly out-rank the quiet group-label captions.
+  - Keyboard: the rail supports arrow-key (and Home/End) movement on top of its flat
+    tab order, and the section panel's tab stop re-syncs to the current page when the
+    route changes, so Tab re-enters at the active item.
+  - The `TopNavigation` bottom edge is now an always-on border. The non-reusable
+    `ui-scroll-edge` and `ui-sidebar-seam-header` utilities are removed, so the sticky
+    bar and the sidebar header carry a plain border instead.
+  - The `AppShell` header row is now sized `auto` (was a fixed `3.5rem`), so a shell
+    without a `TopNavigation` no longer reserves an empty header band, so the row
+    collapses to the height of its content.
+  - The shell's viewport-height claims (`AppShell` grid, sidebar and rail asides) read
+    the new `--ui-viewport-height` custom property with a `100dvh` fallback. Set it on a
+    wrapper to render the shell inside a bounded container (embedded previews, demos)
+    instead of the browser viewport. Nothing changes when it is unset.
+
+- b7122c0: feat(DST-1641): add `ErrorState`, the error sibling of `EmptyState`: same anatomy (`title`, `description`, `action`, `headingLevel`), plus typed DOM passthrough (`role`, `tabIndex`, `ref`) for error-boundary fallbacks.
+
+### Patch Changes
+
+- 7a122c7: fix(DSTSUP-269): wrap long unbreakable option labels inside the list instead of letting them widen the item
+
+  A listbox item is a grid, so a label without any break opportunity (a long word with no spaces) set the automatic minimum of the label track to its own width and pushed the item out of a narrow `Select`, `ComboBox`, `Autocomplete`, `TagField`, `ListBox` or the Calendar's preset list. Items now break anywhere, matching how labels with spaces already wrapped.
+
+- b7122c0: Give Menu items and the FileField drop zone a real keyboard focus indicator.
+
+  Both signalled focus with a background wash alone — 1.11:1 for a menu item, ~1.05:1 for the drop zone — well under the 3:1 WCAG 1.4.11 asks of a state indicator. In a menu the wash is doubly unreliable, since focus follows the mouse there and the same wash fires on hover.
+
+  Adds `ui-state-focus-item`, the missing counterpart to `ui-state-focus`. `ui-state-focus` is a two-part indicator: the border flips to full-opacity `--color-ring` and the outline is a soft halo around it. On an element with no border to flip it degrades to the halo alone, which measures 2.08:1. `ui-state-focus-item` is for those borderless rows — a full-opacity inset ring (4.97:1 over the focus wash, 3.14:1 on the contrast ground), inset so overflow-hidden overlays like Popover cannot clip it.
+
+  Only keyboard focus changes. Hover, selection and pointer interaction are untouched.
+
+- b7122c0: Restructure `tokens.css` and fix three token defects. The public token surface is unchanged — every token consumers can reference still resolves to the same computed value.
+
+  - **Fix: the pre-compiled bundle force-generated the wrong palette.** `styles.css` declared `@source inline('{bg}-{stone}-…')`, but the theme's palette is `charcoal`. Consumers writing `bg-stone-500` were getting Tailwind's default stone, never a theme color, and `bg-charcoal-*` did not exist in the bundle at all. The line went stale when `charcoal` was introduced and the theme's own `stone` utility usages were migrated without updating it. The bundle now ships the 11 `bg-charcoal-*` utilities and no longer ships the 9 `bg-stone-*` ones — the only consumer-visible removal in this release.
+  - **Fix: `<Panel p="collapsed">` referenced an undefined variable.** `collapsed` is a member of `InsetSpacingTokens` and `resolveInsetAxes` appends an axis suffix to every non-numeric token, so it resolved to `var(--spacing-collapsed-x)`, which was never declared — leaving padding at `0` by accident rather than by design. Adds `--spacing-collapsed-x` / `--spacing-collapsed-y`.
+  - **`--color-border` is now translucent (`charcoal-950 / 14%`) instead of a fixed lightness.** This is the one visual change in the release. A fixed lightness made a divider's weight depend on its ground: the same token measured 1.352:1 on `surface`, 1.297:1 on `muted` and 1.222:1 on `background`, so a rule in the Sidebar read 11% weaker than the same rule in a Table. At 14% alpha the three land within 0.003 of each other and within 0.007 of the old value on `surface`, so dividers on white are unchanged to the eye and the ones on tinted grounds tighten up. Alpha picked by sweeping 0.04–0.30 and sampling rendered pixels on all three grounds. Adds a private `--ui-divider-solid` (no utility, not a Tailwind namespace) for the two recipes that read the divider's channels rather than its appearance — Drawer's `calc(l - 0.1)` and SectionMessage's status-accent `color-mix` — so both render exactly as before rather than inheriting an alpha that would compound.
+  - **`--color-soft` and `--shadow-elevation-overlay` now take their hue from the palette** via relative color syntax instead of hardcoding `54`. Computed values are identical today; a rebrand now carries the divider color, the soft cap and the shadow's warm cast with it instead of leaving them behind. Note this covers the _token_ definitions: on the pre-compiled path `tokens.css` is imported with `theme(inline)`, so palette utilities such as `bg-charcoal-500` compile to inlined literals rather than `var(--color-charcoal-500)` and are not retinted by overriding the token at runtime.
+  - **`--contrast-*` (7 vars) are no longer theme tokens.** They are single-use arguments to the `ui-contrast` utility and now live inside it. They were never in a Tailwind namespace, so they never generated a utility — private implementation detail sitting on the public `:root` surface.
+  - Regroups the file so the five boundary tokens sit together, splits radius out of the surface section, renames the `TYPOGRAPHY` section to `FONT FAMILIES` (it holds no type scale), and trims comments that restated their own values or had gone stale.
+
+- 6cfcea4: fix(DST-1686): make `control` a ground-adaptive track fill, and give the `Slider` rail the same token as `Switch` and `SegmentedControl`
+
+  **The Slider rail was the wrong token, painted twice.** It used `bg-border` — the token for structural lines (dividers, grid lines, table rules) — where the `Switch` groove and the `SegmentedControl` track both use `bg-control`. On top of that, `Slider` applied its `track` style to two exactly-overlapping elements (the `SliderTrack` and an inner rail `div`), so the translucent `bg-border` composited with itself and the rail rendered at ~0.26 effective alpha instead of 0.14 — measuring `#c0bfbe` on white where the token specifies `#dddddc`. The redundant inner element is gone; the `SliderTrack` itself is the rail. Geometry is unchanged (both were `h-2` at the same position) and `touch-none`, `select-none` and the disabled cursor stay on the interactive track element.
+
+  **`control` is now translucent** (`charcoal-950 / 16%`, was the opaque `charcoal-300`). A track is not painted on one known background — it appears on a white Card, the gray page ground, a `muted` fill, and inside a hovered Table or ListBox row — and a fixed palette step drifts across those. charcoal-300 measured 1.53:1 on white but only 1.21:1 inside a hovered row, where the groove half-dissolved into the row it sits in. At 16% the four grounds land within 0.02 of each other (1.41–1.43:1), so a track weighs the same wherever it goes. Same rationale as `border` in DST-1672.
+
+  The three tracks (`Switch`, `SegmentedControl`, `Slider`) read a touch lighter on white surfaces as a result: `#d8d8d7` rather than `#d4d0ce`. The trade-off is that the white Switch thumb and SegmentedControl indicator now vary against the track by ground (1.43:1 on white, 1.79:1 on a hovered row) where the opaque step held a flat 1.53:1 — track-vs-ground and thumb-vs-track cannot both be constant while the thumb is opaque, and ground legibility wins because it decides whether the control reads as a control at all.
+
+  **The `SegmentedControl` indicator is larger.** The frame around the selected thumb went from 4px to 3px (`inset-y-[3px]` on the indicator, `p-[3px]` on the list), so the thumb is 30px tall instead of 28px. Since the thumb's own 1px rim occupies the innermost pixel of that frame, 2px of bare track is what you see.
+
+  **The `SegmentedControl` thumb's focus ring is now the shared `ui-state-focus`.** It previously hand-rolled only the outline, so it missed the other half of that utility — firming `--ui-border-color` to the opaque ring colour — and read noticeably lighter than every other focused control. A focused thumb and a focused `Input` now resolve identically: 3px `outline-ring/50` at `outline-offset-0`, plus a 1px opaque `oklch(0.52 0.008 54)` rim. The ring stays outside the thumb, and 3px is the minimum frame that clears it: the list is a scroll container clipping at its padding box, so that padding is the only room an outset ring can grow into. Below 3px the first and last thumbs get a visibly shaved ring.
+
+  **The `SegmentedControl` track's corners are now concentric with the indicator's.** Both used the shared `rounded-surface`, but two rounded rectangles nested with a gap only look like parallel arcs when the outer radius is the inner radius plus that gap. With the thumb at 8px and 3px of frame around it, the track needs 11px; at 8px its corner read visibly tighter than the arc it frames. The track is now `calc(var(--radius-surface) + 3px)` — derived from the token, so it stays concentric if the radius is retuned. This is a deliberate exception to using `rounded-surface` everywhere.
+
+  **The `SegmentedControl` indicator's resting rim is re-derived from the track.** `ui-frame` draws its rim as an _outset_ ring, so the indicator's rim lands on the track and composites over `bg-control` — it reads denser than the same `control-border` token does on a field. The old compensation subtracted a flat 0.08, hand-tuned against the previous opaque `charcoal-300` track, which left the rim at an effective 0.31 against a field's 0.26. It is now derived from the track's own alpha (`--control-alpha`, newly exposed on the token), so a resting indicator rim and a resting `Input` edge render the same on every ground, and retuning the track cannot silently detune the rim.
+
+  If you use `bg-control` in your own code, note that it is now translucent: two stacked elements that both carry it composite into a darker track than the token specifies, and anything that paints a translucent edge _over_ a track has to account for the track underneath it.
+
+- Updated dependencies [85e9a45]
+- Updated dependencies [b7122c0]
+- Updated dependencies [0e2c676]
+- Updated dependencies [b7122c0]
+- Updated dependencies [b7122c0]
+- Updated dependencies [b7122c0]
+- Updated dependencies [68122ff]
+- Updated dependencies [e0f9c05]
+- Updated dependencies [b7122c0]
+- Updated dependencies [b7122c0]
+- Updated dependencies [b7122c0]
+- Updated dependencies [b7122c0]
+- Updated dependencies [b7122c0]
+- Updated dependencies [0e2c676]
+- Updated dependencies [6cfcea4]
+  - @marigold/components@18.0.0-rc.5
+  - @marigold/system@18.0.0-rc.5
+
 ## 6.0.0-beta.4
 
 ### Major Changes
@@ -821,12 +923,13 @@
   - Remove `utils.css` from theme-rui build
 
   **Migration from legacy utilities:**
-  | Old utility | New replacement |
-  |---|---|
-  | `util-surface-sunken` | Removed, use `bg-background` for the page base layer |
-  | `util-surface-body` | `bg-background` (no shadow needed) |
-  | `util-surface-raised` | `ui-surface shadow-elevation-raised` |
-  | `util-surface-overlay` | `ui-surface shadow-elevation-overlay` |
+
+  | Old utility            | New replacement                                      |
+  | ---------------------- | ---------------------------------------------------- |
+  | `util-surface-sunken`  | Removed, use `bg-background` for the page base layer |
+  | `util-surface-body`    | `bg-background` (no shadow needed)                   |
+  | `util-surface-raised`  | `ui-surface shadow-elevation-raised`                 |
+  | `util-surface-overlay` | `ui-surface shadow-elevation-overlay`                |
 
   **Documentation:**
   - Rewrite elevation page around the 3-tier shadow system (border, raised, overlay)
