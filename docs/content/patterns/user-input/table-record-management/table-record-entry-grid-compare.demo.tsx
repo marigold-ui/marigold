@@ -23,8 +23,7 @@ interface Venue {
   price: number;
 }
 
-// One dataset, three interactions. Sharing it is what makes this a comparison
-// rather than three unrelated examples.
+// Shared by all three approaches, so this reads as a comparison.
 const initialVenues: Venue[] = [
   { id: '1', name: 'Main Street Amphitheater', capacity: 500, price: 34.5 },
   { id: '2', name: 'Shakytown Comedy Club', capacity: 300, price: 22 },
@@ -37,8 +36,6 @@ const initialVenues: Venue[] = [
 const money = (value: number) =>
   value.toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
 
-// Reach for this when one value is wrong and the user spotted it while scanning.
-// ---------------
 const InlineEditApproach = () => {
   const [venues, setVenues] = useState(initialVenues);
 
@@ -104,8 +101,6 @@ const InlineEditApproach = () => {
   );
 };
 
-// Reach for this when the task is to fill in the whole table in one sitting.
-// ---------------
 const GridApproach = () => {
   const [venues, setVenues] = useState(initialVenues);
   const [saved, setSaved] = useState(initialVenues);
@@ -182,8 +177,6 @@ const GridApproach = () => {
   );
 };
 
-// Reach for this when the user is creating records, not correcting them.
-// ---------------
 const DrawerBatchApproach = () => {
   const [venues, setVenues] = useState(initialVenues);
   const [open, setOpen] = useState(false);

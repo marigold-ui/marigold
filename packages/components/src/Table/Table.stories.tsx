@@ -1954,11 +1954,6 @@ StickyFooter.test(
   }
 );
 
-/**
- * A data-entry grid, where form controls live in the cells. The arrow keys have
- * to be handed back to the fields with `keyboardNavigationBehavior="tab"`.
- * Without it the grid captures them and focus is pushed onto the row.
- */
 const DataEntryGridTable = (args: Partial<TableProps>) => (
   <Table aria-label="Data entry grid" {...args}>
     <Table.Header>
@@ -1989,6 +1984,10 @@ const DataEntryGridTable = (args: Partial<TableProps>) => (
   </Table>
 );
 
+/**
+ * Form controls in cells need `keyboardNavigationBehavior="tab"`, otherwise the
+ * grid keeps the arrow keys and focus is pushed onto the row.
+ */
 export const DataEntryGrid = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
@@ -2012,8 +2011,8 @@ DataEntryGrid.test(
       'Typing edits the field instead of triggering typeahead',
       async () => {
         await userEvent.click(first);
-        expect(document.activeElement).toBe(first);
         await userEvent.keyboard('Zulu');
+
         expect(document.activeElement).toBe(first);
         expect(first.value).toContain('Zulu');
       }
@@ -2024,35 +2023,32 @@ DataEntryGrid.test(
       async () => {
         first.setSelectionRange(first.value.length, first.value.length);
         const before = first.selectionStart as number;
+
         await userEvent.keyboard('{ArrowLeft}');
+
         expect(document.activeElement).toBe(first);
         expect(first.selectionStart).toBe(before - 1);
       }
     );
 
-    // Home/End are deliberately not asserted here. What those keys do inside an
-    // input is platform dependent (on macOS they do not move the caret at all),
-    // and inside a NumberField they still reach the grid, so they are not part
-    // of what this prop reliably fixes.
-
-    // The prop moves Tab in and out of a cell, not from one cell to the next,
-    // so reaching the neighbouring field is a three key round trip.
+    // Home/End are not asserted: platform dependent inside an input, and still
+    // reach the grid inside a NumberField.
     await step('Shift+Tab steps back out onto the cell', async () => {
       await userEvent.keyboard('{Shift>}{Tab}{/Shift}');
+
       expect(document.activeElement).toHaveAttribute('role', 'gridcell');
     });
 
     await step('An arrow key then Tab reaches the next field', async () => {
       await userEvent.keyboard('{ArrowRight}');
       await userEvent.keyboard('{Tab}');
+
       expect(document.activeElement).toBe(balance);
     });
 
-    // In a real browser, Tab pressed inside a field leaves the table entirely
-    // rather than reaching the next row. That is not asserted here because the test
-    // runner moves focus to the next tabbable element in DOM order instead of
-    // letting the grid handle the key, so it reports the opposite. Verified by
-    // hand in both Chromium and Firefox.
+    // Tab inside a field leaving the table is not asserted: the runner moves
+    // focus in DOM order instead of letting the grid handle the key, so it
+    // reports the opposite. Verified by hand in Chromium and Firefox.
   }
 );
 
@@ -2081,7 +2077,9 @@ DataEntryGridWithSelection.test(
 
     await step('A row checkbox still toggles', async () => {
       const rowCheckbox = canvas.getAllByRole('checkbox')[1];
+
       await userEvent.click(rowCheckbox);
+
       expect(rowCheckbox).toBeChecked();
     });
   }

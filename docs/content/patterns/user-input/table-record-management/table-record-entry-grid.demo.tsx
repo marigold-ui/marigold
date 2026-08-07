@@ -81,13 +81,11 @@ export default () => {
         <Table
           aria-label="Seat allocation per venue"
           size="compact"
-          // Without this, arrow keys and Home/End are captured by grid
-          // navigation and focus is thrown onto the row.
+          // Without this the grid keeps the arrow keys and focus lands on the row.
           keyboardNavigationBehavior="tab" // [!code highlight]
         >
           <Table.Header>
-            {/* The identifying column stays read-only, and marks the row for
-                assistive tech. */}
+            {/* Read-only, and marks the row for assistive tech. */}
             <Table.Column rowHeader>Venue</Table.Column>
             <Table.Column alignX="right" width={140}>
               Capacity
@@ -102,8 +100,7 @@ export default () => {
               <Table.Row key={row.id}>
                 <Table.Cell>{row.venue}</Table.Cell>
                 <Table.Cell>
-                  {/* Every input needs a name that says which row it belongs
-                      to, or a screen reader just repeats "Capacity". */}
+                  {/* Name the row too, or a screen reader just repeats "Capacity". */}
                   <NumberField
                     aria-label={`Capacity for ${row.venue}`} // [!code highlight]
                     value={row.capacity}
