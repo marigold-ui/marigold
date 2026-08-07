@@ -6,9 +6,9 @@ import type { PropsWithChildren } from 'react';
 const Layout = ({ children }: PropsWithChildren) => (
   <HomeLayout {...baseOptions()}>
     <div className="mx-auto w-full max-w-3xl px-(--page-padding-md) pt-24 pb-0 xl:px-(--page-padding-xl)">
-      <div className="prose prose-sm dark:prose-invert max-w-none">
-        {children}
-      </div>
+      {/* fumadocs' own `.prose` — already theme-aware and `max-width: none`.
+          No typography plugin here, so its variants would be no-ops. */}
+      <div className="prose">{children}</div>
       <SiteFooter />
     </div>
   </HomeLayout>

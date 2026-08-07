@@ -12,6 +12,6 @@ export const ConsentSettingsButton = () => (
     onClick={openConsentSettings}
     className="hover:text-fd-foreground cursor-pointer transition-colors"
   >
-    Cookie-Einstellungen
+    Cookie settings
   </button>
 );

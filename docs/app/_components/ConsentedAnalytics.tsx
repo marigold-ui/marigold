@@ -21,8 +21,9 @@ export const ConsentedAnalytics = () => {
 
   if (consent !== 'granted') return null;
 
-  // Second layer: even if this were mounted by mistake, a revoked choice still
-  // stops every event at the source.
+  // `@vercel/analytics` has no effect cleanup, so unmounting leaves its script
+  // in place until the next page load. `beforeSend` reads the live choice per
+  // event, so it is what actually enforces a withdrawal.
   return (
     <Analytics
       beforeSend={event => (readConsent() === 'granted' ? event : null)}

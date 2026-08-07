@@ -4,6 +4,7 @@ import { cn } from '@/lib/cn';
 import {
   CONSENT_BANNER_ID,
   type ConsentChoice,
+  closeConsentSettings,
   getServerConsent,
   readBannerState,
   subscribeConsent,
@@ -11,8 +12,8 @@ import {
 } from '@/lib/consent';
 import Link from 'fumadocs-core/link';
 import { buttonVariants } from 'fumadocs-ui/components/ui/button';
-import { ChartColumn } from 'lucide-react';
-import { useSyncExternalStore } from 'react';
+import { ChartColumn, X } from 'lucide-react';
+import { useEffect, useRef, useSyncExternalStore } from 'react';
 
 const declineClassName = cn(buttonVariants({ color: 'secondary' }), 'flex-1');
 const acceptClassName = cn(buttonVariants({ color: 'primary' }), 'flex-1');
@@ -24,6 +25,28 @@ export const ConsentBanner = () => {
     getServerConsent
   );
   const reopened = state === 'reopened';
+  const ref = useRef<HTMLDivElement>(null);
+  const previouslyFocused = useRef<HTMLElement | null>(null);
+
+  // Reopened, the banner is a dialog the visitor asked for: focus moves in
+  // (APG) and back to the trigger on close. On a first visit it is ambient.
+  useEffect(() => {
+    if (!reopened) return;
+
+    previouslyFocused.current = document.activeElement as HTMLElement | null;
+    ref.current?.focus();
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeConsentSettings();
+    };
+    document.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      previouslyFocused.current?.focus();
+      previouslyFocused.current = null;
+    };
+  }, [reopened]);
 
   const choose = (choice: ConsentChoice) => writeConsent(choice);
 
@@ -32,6 +55,9 @@ export const ConsentBanner = () => {
   return (
     <div
       id={CONSENT_BANNER_ID}
+      ref={ref}
+      // Focusable only as a dialog, never a stray tab stop.
+      tabIndex={reopened ? -1 : undefined}
       data-reopened={reopened || undefined}
       role="dialog"
       aria-labelledby={`${CONSENT_BANNER_ID}-title`}
@@ -48,7 +74,11 @@ export const ConsentBanner = () => {
         <div className="min-w-0 flex-1">
           <p
             id={`${CONSENT_BANNER_ID}-title`}
-            className="text-sm font-medium lg:text-base"
+            className={cn(
+              'text-sm font-medium lg:text-base',
+              // Clear of the close button.
+              reopened && 'pr-7'
+            )}
           >
             Analytics
           </p>
@@ -81,6 +111,17 @@ export const ConsentBanner = () => {
           </div>
         </div>
       </div>
+      {reopened && (
+        // Only offered with a stored choice to fall back on.
+        <button
+          type="button"
+          onClick={closeConsentSettings}
+          aria-label="Close without changing your choice"
+          className="hover:bg-fd-accent hover:text-fd-accent-foreground text-fd-muted-foreground absolute top-2 right-2 cursor-pointer rounded-md p-1.5 transition-colors"
+        >
+          <X aria-hidden className="size-4" />
+        </button>
+      )}
     </div>
   );
 };

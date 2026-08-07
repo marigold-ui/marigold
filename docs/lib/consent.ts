@@ -11,16 +11,15 @@ export const CONSENT_BANNER_ID = 'mg-consent-banner';
 const VERCEL_ENV = process.env.NEXT_PUBLIC_VERCEL_ENV;
 
 /**
- * Consent is only asked for on the live site. Preview deployments are internal
- * and never show the banner; locally it is off unless you are working on it,
- * which you opt into with `NEXT_PUBLIC_CONSENT_BANNER=1` in `docs/.env.local`.
+ * On the live site always; anywhere else only via
+ * `NEXT_PUBLIC_CONSENT_BANNER=1` — `docs/.env.local` while working on it, or a
+ * preview env so Legal and the DPO can review it without cloning the repo.
+ * Previews that do not set it are unaffected.
  *
- * Where the banner is off, analytics stays off too — nobody is around to
- * consent to it.
+ * Where the banner is off, analytics stays off too.
  */
 export const CONSENT_BANNER_ENABLED =
-  VERCEL_ENV === 'production' ||
-  (VERCEL_ENV !== 'preview' && process.env.NEXT_PUBLIC_CONSENT_BANNER === '1');
+  VERCEL_ENV === 'production' || process.env.NEXT_PUBLIC_CONSENT_BANNER === '1';
 
 /**
  * Runs before paint to stamp the stored choice onto the root element, so the
@@ -65,6 +64,12 @@ export const writeConsent = (choice: ConsentChoice) => {
 
 export const openConsentSettings = () => {
   reopened = true;
+  notify();
+};
+
+/** Leaves without answering again; the stored choice is untouched. */
+export const closeConsentSettings = () => {
+  reopened = false;
   notify();
 };
 
