@@ -74,7 +74,8 @@ export const EmptyStateAnatomy = () => (
       width="100"
       height="30"
       rx="6"
-      className="fill-fd-accent transition-colors duration-300"
+      className="fill-fd-accent stroke-fd-muted-foreground transition-colors duration-300"
+      strokeWidth="2"
     />
     <rect
       x="344"

@@ -714,7 +714,7 @@ Built-in localized presets cover the common cases (`today`, `yesterday`, `tomorr
 
 ### `<EmptyState>` is stable
 
-`<EmptyState>` leaves beta. It shipped in January, and v18 is where its surface settled: the title became a semantic heading with a configurable `headingLevel`, and the description moved onto the shared `<Description>` primitive. That surface is now final, so `title`, `description`, `action`, `headingLevel`, `variant`, and `size` are covered by the usual semver guarantees.
+`<EmptyState>` leaves beta. It shipped in January, and v18 is where its surface settled: the title became a semantic heading with a configurable `headingLevel`, and the description moved onto the shared `<Description>` primitive. That surface is now final, so `title`, `description`, `action`, and `headingLevel` are covered by the usual semver guarantees. `variant` and `size` stay open ended, as they do on every themed component, and `theme-rui` defines no values for either today.
 
 The [documentation](/components/content/empty-state) also gains an Actions section, which answers the question the component never did: when the action in an empty state should be `primary`, and when it should step aside for the primary action the page already has.
 
