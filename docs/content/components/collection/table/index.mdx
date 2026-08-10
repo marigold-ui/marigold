@@ -185,7 +185,7 @@ If you cannot place all row actions at the end of the row, be mindful of clarity
 
 Some records belong together: a settlement run that bundles individual clearings, an order that bundles its line items, a folder that bundles its files. Set `treeColumn` to the `id` of the column that should carry the hierarchy, then nest `<Table.Row>` inside `<Table.Row>`. The nested rows stay real table rows, so their values line up under the same headers, each one can carry its own actions, and each one can be selected, linked to and scrolled to individually.
 
-The column named by `treeColumn` renders the expand control and the indentation automatically. You don't place a chevron yourself, and rows without children reserve the same width so values stay aligned down the column. Group rows are emphasised for you, so there is no need to style them.
+The column named by `treeColumn` renders the expand control automatically — you don't place a chevron yourself. The control sits in a leading gutter that every row reserves, so a group row, its children and an ungrouped row all start their value at the same x and the column stays one scannable column. That matters most for the identifier people search on: staggering a clearing number by nesting level is what makes it hard to find by eye. Containment is carried by the group row instead, which is filled and emphasised for you, so there is nothing to style.
 
 When child rows come from data, render them with `<Table.ChildRows>` and let your render function recurse. It renders nothing when `items` is empty or missing, so leaf rows need no special case.
 
@@ -201,6 +201,17 @@ Groups start collapsed. Pre-open some of them with `defaultExpandedKeys`, or tak
 </Callout>
 
 Keyboard users reach a group row with the arrow keys and expand it with <kbd>→</kbd>, collapse it with <kbd>←</kbd>. Pressing <kbd>←</kbd> on a row that is already collapsed moves focus up to its parent. The chevron itself is deliberately skipped by <kbd>Tab</kbd>, so tabbing stays reserved for the buttons and links inside the rows.
+
+#### Selection and grouped rows
+
+Selection works with grouped rows, but **it does not cascade**. Each row is selected on its own: ticking a group row selects that one row, not its children, and the group row shows no partial state when only some of its children are selected. It is not a checkbox group with a "select all" parent.
+
+Two consequences worth designing around:
+
+- **Selecting a group row is not the same as selecting its contents.** If the action a user takes on a selection should apply to a run's clearings, resolve the group's children yourself from `selectedKeys` before acting.
+- **Select-all covers rendered rows only.** Because collapsed children aren't in the DOM, the header checkbox selects the visible rows and skips the children of collapsed groups — so "select all" does not mean "every record".
+
+If you need cascading selection with a partial state, model it in your own data and derive `selectedKeys` from it, or use a flat table with an explicit grouping column instead.
 
 #### Searching inside grouped rows
 

@@ -53,16 +53,17 @@ const TableCell = ({
 
         if (!isTreeColumn) return content;
 
-        // The indentation lives on this wrapper rather than on the cell's own
-        // padding, so it composes with `--cell-edge-padding` instead of
-        // fighting it.
+        // The leading gutter and any deeper-level indentation live on this
+        // wrapper rather than on the cell's own padding, so they compose with
+        // `--cell-edge-padding` instead of fighting it.
         return (
           <div className={classNames.treeIndent}>
             {hasChildItems ? (
               <TableExpandButton expanded={isExpanded} />
             ) : (
-              // Reserves the chevron's width so values in the tree column stay
-              // aligned between group rows and leaf rows.
+              // Holds the gutter open on rows that have no control, so a group
+              // row, its children and a root-level row all put their value at
+              // the same x and the column stays scannable.
               <span
                 aria-hidden="true"
                 className={cn(classNames.expandButton, 'invisible')}

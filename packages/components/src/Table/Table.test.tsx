@@ -455,7 +455,7 @@ describe('Expandable rows', () => {
     expect(child).toHaveAttribute('data-level', '2');
   });
 
-  test('only the tree column cell is marked and indented', () => {
+  test('exactly one cell per row is marked as the tree column', () => {
     render(<ExpandableRowsDynamic.Component />);
 
     const child = rowOf('ABR-10188');

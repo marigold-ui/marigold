@@ -47,9 +47,9 @@ export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
    */
   actionBar?: (selectedKeys: Selection) => ReactNode;
   /**
-   * The `id` of the column that shows the expand control and the indentation.
-   * Setting it enables expandable rows, which also changes the table's role from
-   * `grid` to `treegrid`.
+   * The `id` of the column that carries the hierarchy and shows the expand
+   * control. Setting it enables expandable rows, which also changes the table's
+   * role from `grid` to `treegrid`.
    */
   treeColumn?: RAC.TableProps['treeColumn'];
   /**

@@ -2544,6 +2544,30 @@ ExpandableRows.test(
 );
 
 ExpandableRows.test(
+  'Group, child and root rows all start at the same x',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    // The whole point of the feature is that the clearing number stays findable
+    // by eye, so the tree column has to read as one column at every level. The
+    // control sits in a gutter every row reserves rather than staggering values
+    // by depth — this is the assertion that keeps it that way.
+    const group = rowByName(canvas, 'Sammelabrechnung 01.07.2026');
+
+    await userEvent.click(chevronOf(group));
+
+    const valueX = (name: string) => {
+      const cell = rowByName(canvas, name).querySelector('[data-tree-column]')!;
+      const value = cell.querySelector('[data-cell-content]')!;
+
+      return Math.round(value.getBoundingClientRect().left);
+    };
+
+    expect(valueX('ABR-10231')).toBe(valueX('Sammelabrechnung 01.07.2026'));
+    expect(valueX('ABR-10240')).toBe(valueX('Sammelabrechnung 01.07.2026'));
+  }
+);
+
+ExpandableRows.test(
   'Tab reaches the row actions, not the chevron',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent, step }) => {

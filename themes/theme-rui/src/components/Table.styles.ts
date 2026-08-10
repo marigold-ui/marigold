@@ -9,7 +9,11 @@ export const Table: ThemeComponent<'Table'> = {
       '[--cell-edge-padding:var(--panel-px,var(--bleed-px,var(--cell-x-padding)))]',
       // Footprint of the expand control in the tree column. Leaf rows reserve
       // the same width, so values stay aligned down the column.
-      '[--tree-chevron-size:calc(var(--spacing)*6)]',
+      //
+      // 32px rather than the 24px WCAG 2.2 SC 2.5.8 sets as the floor: this is a
+      // control people hit repeatedly. It fits every density — at `compact` the
+      // row is 45px, leaving 13px of slack.
+      '[--tree-chevron-size:calc(var(--spacing)*8)]',
     ],
     variants: {
       variant: {
@@ -51,6 +55,15 @@ export const Table: ThemeComponent<'Table'> = {
       'disabled:cursor-not-allowed',
       'data-hovered:cursor-pointer data-hovered:ui-state-hover',
       'dragging:opacity-50 dragging:transform-gpu',
+      // A row that heads a group wears the structural band, so the two row kinds
+      // are told apart by fill rather than by font weight alone — which survives
+      // greyscale, low vision and print. Marks the row *kind*, not the expansion
+      // state, so a collapsed group is banded too: that is what lets you see
+      // there is something to open before you open it.
+      //
+      // Yields to hover explicitly. Both are backgrounds, and Tailwind's emit
+      // order — not the order in this array — decides which wins otherwise.
+      'data-has-child-items:not-data-hovered:bg-band',
     ],
     variants: {
       variant: {
@@ -133,32 +146,40 @@ export const Table: ThemeComponent<'Table'> = {
   // competing with it.
   treeIndent: cva({
     base: [
-      'relative flex items-center gap-1',
-      // One step per nesting level. React Aria publishes `--table-row-level` on
-      // the cell, starting at 1, so root rows are not indented.
-      'ps-[calc((var(--table-row-level,1)-1)*var(--tree-indent))]',
-      // Guide line tying child rows back to their group row. Centered on the
-      // parent's chevron and stretched over the cell's vertical padding, so it
-      // runs unbroken through the whole group.
-      'before:absolute before:w-px before:bg-border',
-      'before:top-[calc(var(--cell-y-padding)*-1)] before:bottom-[calc(var(--cell-y-padding)*-1)]',
-      'before:start-[calc((var(--table-row-level,1)-2)*var(--tree-indent)+var(--tree-chevron-size)/2)]',
-      // Root rows have no parent to connect to.
-      '[[data-level="1"]_&]:before:hidden',
-      // Group rows carry a little more weight than their children. Only the
-      // tree column renders this wrapper, so the emphasis stays scoped to it.
-      '[[data-has-child-items]_&]:font-medium',
+      'flex items-center gap-2',
+      // No indentation for the first level of children.
+      //
+      // The control lives in a fixed leading gutter that every row reserves, so
+      // a group row, its children and a root-level row all put their value at
+      // the same x. That keeps the tree column a single scannable column — which
+      // is the point of the whole feature: the ABR-Nr. you are searching for has
+      // to be findable by eye, and staggering it by level is what breaks that.
+      // Containment is carried by the group row's band instead.
+      //
+      // Level 3 and deeper do indent. One level is what this is designed for and
+      // what the docs recommend, but a deeper tree collapsing into a flat list
+      // would be unreadable, so depth degrades gracefully rather than silently.
+      // `--table-row-level` is published by React Aria and starts at 1.
+      'ps-[calc(max(var(--table-row-level,1)-2,0)*var(--tree-indent))]',
+      // Group rows carry more weight than their children. Only the tree column
+      // renders this wrapper, so the emphasis stays scoped to it.
+      '[[data-has-child-items]_&]:font-semibold',
     ],
   }),
   expandButton: cva({
     base: [
-      'flex shrink-0 items-center justify-center',
-      'size-(--tree-chevron-size) rounded-surface',
-      'text-secondary transition-[color,transform]',
-      'ui-interactive',
-      'ui-press',
+      // A ghost icon button: `ui-button-base` brings the shared button anatomy
+      // (radius, focus ring via `ui-interactive`, the svg reset) and the ghost
+      // hover wash blends it into whatever ground the row is on — including the
+      // group row's own band, since the wash is `bg-current/10` rather than a
+      // fixed fill.
+      'ui-button-base shrink-0',
+      'size-(--tree-chevron-size)',
+      // Same colour as the Accordion caret, so the two read as one system and
+      // the control does not compete with the group row's emphasised label.
+      'text-secondary',
       'hover:ui-state-hover-ghost',
-      '[&_svg]:pointer-events-none [&_svg]:shrink-0',
+      'ui-press',
     ],
   }),
 

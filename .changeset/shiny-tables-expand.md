@@ -13,12 +13,24 @@ the column that carries the hierarchy and nest `<Table.Row>` inside
 data. Nested rows stay real table rows, so their values line up under the same
 headers and each one can be selected, linked to and scrolled to on its own.
 
-The tree column renders the expand control and the indentation itself, reusing
-the caret and morph animation from `<Accordion>`. Rows without children reserve
-the same width so values stay aligned, and group rows are emphasised
-automatically. Expansion is collapsed by default and can be controlled with
-`expandedKeys` / `defaultExpandedKeys` / `onExpandedChange`. New theme keys:
-`treeIndent` and `expandButton`.
+The tree column renders the expand control itself, reusing the caret and morph
+animation from `<Accordion>`. The control sits in a leading gutter every row
+reserves, so a group row, its children and an ungrouped row all start their value
+at the same x — the identifier column stays a single scannable column instead of
+being staggered by nesting level. Containment is carried by the group row, which
+is filled with the new `band` token and emphasised automatically. Expansion is
+collapsed by default and can be controlled with `expandedKeys` /
+`defaultExpandedKeys` / `onExpandedChange`.
+
+New theme keys `treeIndent` and `expandButton`, and a new `--color-band` token
+for the fill that marks a row as heading a group. It is an alpha rather than a
+palette step, so it holds one contrast (~1.11:1) whether the row sits on
+`surface`, on `background`, inside a `muted` table or under a hover wash.
+
+Selection works with grouped rows but does not cascade: each row selects on its
+own, a group row shows no partial state, and select-all covers rendered rows
+only — so it skips the children of collapsed groups. Documented, with the
+workaround.
 
 **Potentially breaking for opted-in tables:** setting `treeColumn` changes the
 table's accessibility role from `grid` to `treegrid` — that is what makes screen
