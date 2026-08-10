@@ -81,15 +81,33 @@ All Toasts can be dismissed with `clearToasts`.
 
 Pass `onClose` to run something at the moment the Toast goes away, whichever way it goes: its timeout ran out, the user pressed the close button, `removeToast` closed it, or `clearToasts` emptied the queue.
 
-This is what an "Undo" toast defers its work with. Put the commit in `onClose` rather than in a `setTimeout` of the same length: React Aria pauses a Toast's timer while the toast region is hovered or focused, so a separate timer drifts out of sync and commits while the Undo button is still on screen.
-
 <Callout type="warning" title="Only for toasts that dismiss themselves">
   A `warning` or `error` toast, and any toast with `timeout: 0`, stays until it
   is dismissed, so `onClose` never runs on its own. Work deferred to such a
   toast waits indefinitely.
 </Callout>
 
-See [Destructive Actions](/patterns/feedback/destructive-actions#offering-undo) for the whole undo pattern, including how to guard the commit so pressing Undo cancels it.
+### Offering undo
+
+`addUndoToast` reports a destructive action as done, gives the user a window to take it back, and sends the real request only if they don't. Hide the effect yourself, restore it in `onUndo`, and send the request from `onCommit`.
+
+```tsx
+const { addUndoToast } = useToast();
+
+const deleteList = (list: MailingList) => {
+  setPending(current => [...current, list.id]);
+
+  addUndoToast({
+    title: `“${list.name}” deleted`,
+    onUndo: () => restore(list.id),
+    onCommit: () => deleteRequest(list.id),
+  });
+};
+```
+
+`onCommit` runs when the window closes without an undo, whichever way the Toast went away. The undo button is named after the title, so stacked undo Toasts do not all announce a bare "Undo": name what happened to what and this takes care of itself.
+
+An undo Toast carries no close button and ignores `timeout: 0`. [Destructive Actions](/patterns/feedback/destructive-actions) explains why, and when to offer undo at all rather than a confirmation dialog.
 
 ### Action
 
@@ -112,3 +130,9 @@ To add an action element, use the `action` prop which accepts any React componen
 Options accepted by `addToast`.
 
 <AutoTypeTable path="Toast/ToastQueue" name="ToastOptions" />
+
+### Undo Toast options
+
+Options accepted by `addUndoToast`.
+
+<AutoTypeTable path="Toast/ToastQueue" name="UndoToastOptions" />

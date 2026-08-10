@@ -2,6 +2,7 @@
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Basic } from './Toast.stories';
+import type { UndoToastOptions } from './ToastQueue';
 import { getToastQueue, useToast } from './ToastQueue';
 
 // Manually adding container for ToastProvider to prevent log errors
@@ -162,6 +163,34 @@ describe('Toast', () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
+  test('hides the close button when closeButton is false', async () => {
+    const { addToast } = setupToastHook();
+    render(<Basic.Component />);
+
+    await act(async () => {
+      addToast({ title: 'Product deleted', closeButton: false });
+    });
+
+    expect(
+      screen.queryByRole('button', { name: 'Close' })
+    ).not.toBeInTheDocument();
+  });
+
+  test('keeps the close button on a toast that never auto-dismisses', async () => {
+    const { addToast } = setupToastHook();
+    render(<Basic.Component />);
+
+    await act(async () => {
+      addToast({
+        title: 'Upload failed',
+        variant: 'error',
+        closeButton: false,
+      });
+    });
+
+    expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument();
+  });
+
   test('useToast returns stable function references (safe for useEffect deps)', () => {
     const results: ReturnType<typeof useToast>[] = [];
 
@@ -176,12 +205,95 @@ describe('Toast', () => {
 
     expect(results).toHaveLength(2);
     expect(results[0].addToast).toBe(results[1].addToast);
+    expect(results[0].addUndoToast).toBe(results[1].addUndoToast);
     expect(results[0].clearToasts).toBe(results[1].clearToasts);
     expect(results[0].removeToast).toBe(results[1].removeToast);
   });
 });
 
-describe('addToast timeout resolution', () => {
+describe('addUndoToast', () => {
+  // Arrange for every case below: one undo toast on screen, spies for both
+  // outcomes.
+  const showUndoToast = async (options: Partial<UndoToastOptions> = {}) => {
+    const { addUndoToast, clearToasts } = setupToastHook();
+    const onUndo = vi.fn();
+    const onCommit = vi.fn();
+    render(<Basic.Component />);
+
+    await act(async () => {
+      addUndoToast({ title: 'List deleted', onUndo, onCommit, ...options });
+    });
+
+    return { onUndo, onCommit, clearToasts };
+  };
+
+  const undoButton = () => screen.getByRole('button', { name: /^Undo:/ });
+
+  test('names the undo button after the title, so stacked toasts differ', async () => {
+    await showUndoToast({ title: '“Newsletter August” deleted' });
+
+    expect(
+      screen.getByRole('button', { name: 'Undo: “Newsletter August” deleted' })
+    ).toBeInTheDocument();
+  });
+
+  test('renders no close button, so nothing looks like dismiss but commits', async () => {
+    await showUndoToast();
+
+    expect(
+      screen.queryByRole('button', { name: 'Close' })
+    ).not.toBeInTheDocument();
+  });
+
+  test('commits when the window runs out', async () => {
+    vi.useFakeTimers();
+    const { onCommit } = await showUndoToast();
+
+    await act(async () => {
+      vi.advanceTimersByTime(5000);
+    });
+
+    expect(onCommit).toHaveBeenCalledTimes(1);
+  });
+
+  test('calls onUndo when the undo button is pressed', async () => {
+    const { onUndo } = await showUndoToast();
+
+    await userEvent.click(undoButton());
+
+    expect(onUndo).toHaveBeenCalledTimes(1);
+  });
+
+  test('does not commit when the undo button is pressed', async () => {
+    const { onCommit } = await showUndoToast();
+
+    await userEvent.click(undoButton());
+
+    expect(onCommit).not.toHaveBeenCalled();
+  });
+
+  test('closes the toast when the undo button is pressed', async () => {
+    await showUndoToast();
+
+    await userEvent.click(undoButton());
+
+    await waitFor(() =>
+      expect(screen.queryByText('List deleted')).not.toBeInTheDocument()
+    );
+  });
+
+  test('commits once when the queue is cleared', async () => {
+    const { onCommit, clearToasts } = await showUndoToast();
+
+    await act(async () => {
+      clearToasts();
+    });
+
+    expect(onCommit).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('timeout resolution', () => {
   let addSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
@@ -241,5 +353,18 @@ describe('addToast timeout resolution', () => {
       addToast({ title: 'x', variant: 'success', timeout: 0 });
     });
     expect(lastTimeout()).toBeUndefined();
+  });
+
+  test('addUndoToast falls back to the default window when timeout is 0', async () => {
+    const { addUndoToast } = setupToastHook();
+    await act(async () => {
+      addUndoToast({
+        title: 'x',
+        timeout: 0,
+        onUndo: vi.fn(),
+        onCommit: vi.fn(),
+      });
+    });
+    expect(lastTimeout()).toBe(5000);
   });
 });

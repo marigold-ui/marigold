@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import {
   Button,
   EmptyState,
@@ -23,63 +23,29 @@ const initialLists: MailingList[] = [
 ];
 
 const Lists = () => {
-  // `lists` is committed data, `pending` holds rows that are hidden but not
-  // deleted yet. They share one state value because `commit` has to read the
-  // current `pending` to decide whether to delete, and an updater cannot call
-  // another setter.
-  const [state, setState] = useState({
-    lists: initialLists,
-    pending: [] as string[],
-  });
-  const toastKeysRef = useRef<Record<string, string>>({});
-  const { addToast, removeToast } = useToast();
+  // `pending` rows are hidden but not deleted yet, so undo restores in place.
+  const [lists, setLists] = useState(initialLists);
+  const [pending, setPending] = useState<string[]>([]);
+  const { addUndoToast } = useToast();
 
-  const visible = state.lists.filter(list => !state.pending.includes(list.id));
+  const visible = lists.filter(list => !pending.includes(list.id));
 
-  const undo = (id: string) => {
-    setState(current => ({
-      ...current,
-      pending: current.pending.filter(pendingId => pendingId !== id),
-    }));
-    removeToast(toastKeysRef.current[id]);
+  const commit = (id: string) => {
+    setLists(current => current.filter(list => list.id !== id));
+    setPending(current => current.filter(pendingId => pendingId !== id));
   };
 
-  // Still pending means the user let the window run out, so the deletion stands.
-  // No longer pending means undo already put the row back, so this does nothing.
-  const commit = (id: string) =>
-    setState(current =>
-      current.pending.includes(id)
-        ? {
-            lists: current.lists.filter(list => list.id !== id),
-            pending: current.pending.filter(pendingId => pendingId !== id),
-          }
-        : current
-    );
-
-  const resetDemo = () => setState({ lists: initialLists, pending: [] });
+  const restore = (id: string) =>
+    setPending(current => current.filter(pendingId => pendingId !== id));
 
   const deleteList = (list: MailingList) => {
-    setState(current => ({
-      ...current,
-      pending: [...current.pending, list.id],
-    }));
+    setPending(current => [...current, list.id]);
 
-    // The commit rides the toast's own `onClose`, never a separate timer.
-    // [!code highlight:15]
-    toastKeysRef.current[list.id] = addToast({
+    // [!code highlight:5]
+    addUndoToast({
       title: `“${list.name}” deleted`,
-      // Toasts stack, so name the list: bare "Undo" buttons are ambiguous.
-      action: (
-        <Button
-          size="small"
-          variant="ghost"
-          aria-label={`Undo deleting ${list.name}`}
-          onPress={() => undo(list.id)}
-        >
-          Undo
-        </Button>
-      ),
-      onClose: () => commit(list.id),
+      onUndo: () => restore(list.id),
+      onCommit: () => commit(list.id),
     });
   };
 
@@ -121,9 +87,16 @@ const Lists = () => {
           ))}
         </Table.Body>
       </Table>
-      {state.lists.length < initialLists.length && (
+      {lists.length < initialLists.length && (
         <Inline alignX="right">
-          <Button variant="ghost" size="small" onPress={resetDemo}>
+          <Button
+            variant="ghost"
+            size="small"
+            onPress={() => {
+              setLists(initialLists);
+              setPending([]);
+            }}
+          >
             <RotateCcw size={16} />
             Reset demo
           </Button>

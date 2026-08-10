@@ -1,6 +1,9 @@
 import { ReactNode, useCallback } from 'react';
 import { UNSTABLE_ToastQueue as ToastQueue } from 'react-aria-components/Toast';
 import { flushSync } from 'react-dom';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { Button } from '../Button/Button';
+import { intlMessages } from '../intl/messages';
 import type { ToastContentProps } from './Toast';
 
 let queue: ToastQueue<ToastContentProps> | undefined;
@@ -61,6 +64,13 @@ export type ToastOptions = {
   timeout?: number;
   action?: ReactNode;
   /**
+   * Whether the toast renders its own close button. Ignored on a toast that
+   * never auto-dismisses (`warning`, `error`, `timeout: 0`): with no timeout
+   * and no close button there is no way out of the toast.
+   * @default true
+   */
+  closeButton?: boolean;
+  /**
    * Handler that is called when the toast closes, whether it timed out, was
    * dismissed, closed through `removeToast`, or cleared with `clearToasts`.
    *
@@ -96,7 +106,40 @@ const resolveTimeout = (
   return Math.max(timeout, MINIMUM_TIMEOUT_MS);
 };
 
+/**
+ * Options for a toast that reports a destructive action as done, defers the
+ * work, and commits it when the toast closes. See the [Destructive Actions
+ * pattern](https://www.marigold-ui.io/patterns/feedback/destructive-actions)
+ * for choosing between this and a confirmation dialog.
+ */
+export type UndoToastOptions = {
+  /**
+   * Title of the toast. Name what happened to what ("“Newsletter August”
+   * deleted"): it also names the undo button, which is what tells stacked
+   * toasts apart for a screen reader.
+   */
+  title: string;
+  description?: ReactNode;
+  /**
+   * Time in milliseconds the user has to undo, clamped up to 5000ms. Unlike
+   * `addToast`, `0` falls back to the default window: an undo toast that never
+   * closes never commits.
+   */
+  timeout?: number;
+  /**
+   * Called when the user presses undo. Restore whatever the interface hid.
+   */
+  onUndo: () => void;
+  /**
+   * Called when the window closes without an undo, whichever way the toast
+   * went away. Send the real request from here.
+   */
+  onCommit: () => void;
+};
+
 export function useToast() {
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+
   const addToast = useCallback(
     ({ timeout, onClose, ...content }: ToastOptions) =>
       getToastQueue().add(content, {
@@ -104,6 +147,53 @@ export function useToast() {
         onClose,
       }),
     []
+  );
+
+  const removeToast = useCallback(
+    (key: string) => getToastQueue().close(key),
+    []
+  );
+
+  /**
+   * Add a toast that offers to undo a destructive action and commits it when the
+   * window closes. The commit rides the toast's own `onClose`: React Aria pauses
+   * the toast timer on hover and focus, so a parallel `setTimeout` drifts.
+   */
+  const addUndoToast = useCallback(
+    ({ title, description, timeout, onUndo, onCommit }: UndoToastOptions) => {
+      // The undo press also closes the toast, and that close must not commit.
+      let undone = false;
+
+      // Read only when undo is pressed, by which point `addToast` has returned.
+      const key: string = addToast({
+        title,
+        description,
+        closeButton: false,
+        // Never `undefined`: a toast that never closes never commits.
+        timeout: Math.max(timeout ?? 0, MINIMUM_TIMEOUT_MS),
+        action: (
+          <Button
+            size="small"
+            variant="ghost"
+            // Toasts stack, so a bare "Undo" is ambiguous to a screen reader.
+            aria-label={stringFormatter.format('undoNamed', { title })}
+            onPress={() => {
+              undone = true;
+              onUndo();
+              removeToast(key);
+            }}
+          >
+            {stringFormatter.format('undo')}
+          </Button>
+        ),
+        onClose: () => {
+          if (!undone) onCommit();
+        },
+      });
+
+      return key;
+    },
+    [addToast, removeToast, stringFormatter]
   );
 
   const clearToasts = useCallback(() => {
@@ -114,10 +204,5 @@ export function useToast() {
     queue.clear();
   }, []);
 
-  const removeToast = useCallback(
-    (key: string) => getToastQueue().close(key),
-    []
-  );
-
-  return { addToast, clearToasts, removeToast };
+  return { addToast, addUndoToast, clearToasts, removeToast };
 }
