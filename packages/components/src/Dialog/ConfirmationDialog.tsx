@@ -69,8 +69,7 @@ export const ConfirmationDialog = ({
           <Dialog.Title>{title}</Dialog.Title>
           <Dialog.Content>{children}</Dialog.Content>
           {/* Handlers run before `close()`, so an owner watching `onOpenChange`
-              sees the decision before it sees the close. Called bare rather
-              than chained, so no press event leaks into their first argument. */}
+              sees the decision before it sees the close. */}
           <Dialog.Actions>
             <Button
               onPress={() => {

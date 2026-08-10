@@ -44,7 +44,6 @@ const meta = preview.meta({
   },
   args: {
     dismissable: true,
-    keyboardDismissable: true,
     size: 'small',
   },
 });

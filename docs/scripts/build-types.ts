@@ -52,10 +52,11 @@ const resolveComponentPath = ({ path: componentPath, package: pkg }: Ref) => {
   const withoutExt = isBare
     ? path.join(baseDir, resolved, componentPath)
     : path.join(baseDir, resolved);
-  // Types can live in a plain `.ts` module (Toast/ToastQueue.ts).
-  return existsSync(`${withoutExt}.tsx`)
-    ? `${withoutExt}.tsx`
-    : `${withoutExt}.ts`;
+  // A referenced type can live in a plain `.ts` module. Fall back to it only
+  // when it is there, so a missing file reports the `.tsx` the author meant.
+  return existsSync(`${withoutExt}.ts`) && !existsSync(`${withoutExt}.tsx`)
+    ? `${withoutExt}.ts`
+    : `${withoutExt}.tsx`;
 };
 
 // fumadocs-typescript keys its cache on the component source file, not on the

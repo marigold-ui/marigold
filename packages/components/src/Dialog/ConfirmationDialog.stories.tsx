@@ -144,8 +144,7 @@ Basic.test(
 Basic.test(
   'Focuses the cancel button on open when the variant is destructive',
   {
-    // The parent disables snapshots, so re-enable here: this is the only case
-    // that renders the destructive variant.
+    // The only case rendering the destructive variant, so it earns a snapshot.
     parameters: { chromatic: { disableSnapshot: false } },
     args: { variant: 'destructive', confirmationLabel: 'Delete' },
   },
