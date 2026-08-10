@@ -2269,9 +2269,9 @@ DataEntryGridWithEditableCell.test(
 // Expandable rows (tree grid)
 // ---------------
 /**
- * Modelled on the TenantClearing case: a "Sammelabrechnung" (settlement run)
- * bundles several individual clearings, each with its own clearing number,
- * invoice number and amount.
+ * Modelled on the TenantClearing case: a settlement run bundles several
+ * individual clearings, each with its own clearing number, invoice number and
+ * amount.
  */
 interface SettlementRow {
   id: string;
@@ -2286,47 +2286,52 @@ interface SettlementRow {
 const settlementRuns: SettlementRow[] = [
   {
     id: 'run-2026-07-01',
-    label: 'Sammelabrechnung 01.07.2026',
+    label: 'Settlement run 1 Jul 2026',
     total: 12480.5,
     children: [
       {
-        id: 'ABR-10231',
-        invoice: 'RE-4711',
-        event: 'Nachtflohmarkt',
+        id: 'CLR-10231',
+        invoice: 'INV-4711',
+        event: 'Night market',
         total: 4200,
       },
       {
-        id: 'ABR-10232',
-        invoice: 'RE-4712',
-        event: 'Sommerfest',
+        id: 'CLR-10232',
+        invoice: 'INV-4712',
+        event: 'Summer party',
         total: 8280.5,
       },
     ],
   },
   {
     id: 'run-2026-06-01',
-    label: 'Sammelabrechnung 01.06.2026',
+    label: 'Settlement run 1 Jun 2026',
     total: 5450,
     children: [
       {
-        id: 'ABR-10188',
-        invoice: 'RE-4655',
-        event: 'Frühlingslauf',
+        id: 'CLR-10188',
+        invoice: 'INV-4655',
+        event: 'Spring run',
         total: 3300,
       },
       {
-        id: 'ABR-10189',
-        invoice: 'RE-4656',
-        event: 'Lesenacht',
+        id: 'CLR-10189',
+        invoice: 'INV-4656',
+        event: 'Reading night',
         total: 1200,
       },
-      { id: 'ABR-10190', invoice: 'RE-4657', event: 'Kinoabend', total: 950 },
+      {
+        id: 'CLR-10190',
+        invoice: 'INV-4657',
+        event: 'Cinema night',
+        total: 950,
+      },
     ],
   },
   {
-    id: 'ABR-10240',
-    invoice: 'RE-4720',
-    event: 'Stadtführung',
+    id: 'CLR-10240',
+    invoice: 'INV-4720',
+    event: 'City tour',
     total: 990,
   },
 ];
@@ -2335,25 +2340,25 @@ export const ExpandableRows = meta.story({
   tags: ['component-test'],
   args: { treeColumn: 'clearing' },
   render: args => (
-    <Table aria-label="Abrechnungen" {...args}>
+    <Table aria-label="Clearings" {...args}>
       <Table.Header>
         <Table.Column id="clearing" rowHeader>
-          ABR-Nr.
+          Clearing no.
         </Table.Column>
-        <Table.Column id="invoice">Rechnungs-Nr.</Table.Column>
-        <Table.Column id="event">Veranstaltung</Table.Column>
+        <Table.Column id="invoice">Invoice no.</Table.Column>
+        <Table.Column id="event">Event</Table.Column>
         <Table.Column id="amount" alignX="right">
-          Betrag
+          Amount
         </Table.Column>
         <Table.Column id="actions" width={80} alignX="right">
-          Aktionen
+          Actions
         </Table.Column>
       </Table.Header>
       <Table.Body>
         <Table.Row id="run-2026-07-01">
-          <Table.Cell>Sammelabrechnung 01.07.2026</Table.Cell>
+          <Table.Cell>Settlement run 1 Jul 2026</Table.Cell>
           <Table.Cell>
-            <Badge>2 Abrechnungen</Badge>
+            <Badge>2 clearings</Badge>
           </Table.Cell>
           <Table.Cell>—</Table.Cell>
           <Table.Cell alignX="right">
@@ -2361,14 +2366,14 @@ export const ExpandableRows = meta.story({
           </Table.Cell>
           <Table.Cell alignX="right">
             <Button variant="ghost" size="small">
-              Gesamt-PDF
+              Total PDF
             </Button>
           </Table.Cell>
 
-          <Table.Row id="ABR-10231">
-            <Table.Cell>ABR-10231</Table.Cell>
-            <Table.Cell>RE-4711</Table.Cell>
-            <Table.Cell>Nachtflohmarkt</Table.Cell>
+          <Table.Row id="CLR-10231">
+            <Table.Cell>CLR-10231</Table.Cell>
+            <Table.Cell>INV-4711</Table.Cell>
+            <Table.Cell>Night market</Table.Cell>
             <Table.Cell alignX="right">
               <NumericFormat style="currency" currency="EUR" value={4200} />
             </Table.Cell>
@@ -2378,10 +2383,10 @@ export const ExpandableRows = meta.story({
               </Button>
             </Table.Cell>
           </Table.Row>
-          <Table.Row id="ABR-10232">
-            <Table.Cell>ABR-10232</Table.Cell>
-            <Table.Cell>RE-4712</Table.Cell>
-            <Table.Cell>Sommerfest</Table.Cell>
+          <Table.Row id="CLR-10232">
+            <Table.Cell>CLR-10232</Table.Cell>
+            <Table.Cell>INV-4712</Table.Cell>
+            <Table.Cell>Summer party</Table.Cell>
             <Table.Cell alignX="right">
               <NumericFormat style="currency" currency="EUR" value={8280.5} />
             </Table.Cell>
@@ -2393,10 +2398,10 @@ export const ExpandableRows = meta.story({
           </Table.Row>
         </Table.Row>
 
-        <Table.Row id="ABR-10240">
-          <Table.Cell>ABR-10240</Table.Cell>
-          <Table.Cell>RE-4720</Table.Cell>
-          <Table.Cell>Stadtführung</Table.Cell>
+        <Table.Row id="CLR-10240">
+          <Table.Cell>CLR-10240</Table.Cell>
+          <Table.Cell>INV-4720</Table.Cell>
+          <Table.Cell>City tour</Table.Cell>
           <Table.Cell alignX="right">
             <NumericFormat style="currency" currency="EUR" value={990} />
           </Table.Cell>
@@ -2427,28 +2432,28 @@ ExpandableRows.test(
   'Expands and collapses a group row on click',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent, step }) => {
-    const group = rowByName(canvas, 'Sammelabrechnung 01.07.2026');
+    const group = rowByName(canvas, 'Settlement run 1 Jul 2026');
 
     await step('Groups start collapsed, so children are not rendered', () => {
       expect(group).toHaveAttribute('aria-expanded', 'false');
-      expect(canvas.queryByText('ABR-10231')).not.toBeInTheDocument();
+      expect(canvas.queryByText('CLR-10231')).not.toBeInTheDocument();
     });
 
     await step('Clicking the chevron reveals the child rows', async () => {
       await userEvent.click(chevronOf(group));
 
       expect(group).toHaveAttribute('aria-expanded', 'true');
-      expect(canvas.getByText('ABR-10231')).toBeInTheDocument();
-      expect(canvas.getByText('ABR-10232')).toBeInTheDocument();
+      expect(canvas.getByText('CLR-10231')).toBeInTheDocument();
+      expect(canvas.getByText('CLR-10232')).toBeInTheDocument();
     });
 
     await step('Child rows are real rows one level deeper', () => {
-      expect(rowByName(canvas, 'ABR-10231')).toHaveAttribute('aria-level', '2');
-      expect(rowByName(canvas, 'ABR-10231')).toHaveAttribute(
+      expect(rowByName(canvas, 'CLR-10231')).toHaveAttribute('aria-level', '2');
+      expect(rowByName(canvas, 'CLR-10231')).toHaveAttribute(
         'aria-posinset',
         '1'
       );
-      expect(rowByName(canvas, 'ABR-10231')).toHaveAttribute(
+      expect(rowByName(canvas, 'CLR-10231')).toHaveAttribute(
         'aria-setsize',
         '2'
       );
@@ -2460,7 +2465,7 @@ ExpandableRows.test(
         await userEvent.click(chevronOf(group));
 
         expect(group).toHaveAttribute('aria-expanded', 'false');
-        expect(canvas.queryByText('ABR-10231')).not.toBeInTheDocument();
+        expect(canvas.queryByText('CLR-10231')).not.toBeInTheDocument();
       }
     );
   }
@@ -2470,12 +2475,12 @@ ExpandableRows.test(
   'Expands and collapses with the arrow keys',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent, step }) => {
-    const group = rowByName(canvas, 'Sammelabrechnung 01.07.2026');
+    const group = rowByName(canvas, 'Settlement run 1 Jul 2026');
 
     await step('Focus the group row', async () => {
       // Clicking lands on the cell; expansion keys act on the row, and
       // ArrowLeft from the first cell is how you step out to it.
-      await userEvent.click(canvas.getByText('Sammelabrechnung 01.07.2026'));
+      await userEvent.click(canvas.getByText('Settlement run 1 Jul 2026'));
       await userEvent.keyboard('{ArrowLeft}');
 
       expect(group).toHaveFocus();
@@ -2499,15 +2504,15 @@ ExpandableRows.test(
   'Collapsing a child row moves focus to its group row',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent, step }) => {
-    const group = rowByName(canvas, 'Sammelabrechnung 01.07.2026');
+    const group = rowByName(canvas, 'Settlement run 1 Jul 2026');
 
     await step('Expand and focus a child row', async () => {
       await userEvent.click(chevronOf(group));
-      await userEvent.click(canvas.getByText('ABR-10231'));
+      await userEvent.click(canvas.getByText('CLR-10231'));
       // Step out of the cell onto the child row itself.
       await userEvent.keyboard('{ArrowLeft}');
 
-      expect(rowByName(canvas, 'ABR-10231')).toHaveFocus();
+      expect(rowByName(canvas, 'CLR-10231')).toHaveFocus();
     });
 
     await step('ArrowLeft on a leaf jumps up to the parent', async () => {
@@ -2523,7 +2528,7 @@ ExpandableRows.test(
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }) => {
     await step('A row without children has no expand control', () => {
-      const leaf = rowByName(canvas, 'ABR-10240');
+      const leaf = rowByName(canvas, 'CLR-10240');
 
       expect(leaf).not.toHaveAttribute('aria-expanded');
       expect(
@@ -2532,7 +2537,7 @@ ExpandableRows.test(
     });
 
     await step('It still reserves the chevron width for alignment', () => {
-      const leaf = rowByName(canvas, 'ABR-10240');
+      const leaf = rowByName(canvas, 'CLR-10240');
       const treeCell = leaf.querySelector('[data-tree-column]')!;
 
       // A spacer stands in for the missing chevron, hidden from assistive tech.
@@ -2551,7 +2556,7 @@ ExpandableRows.test(
     // by eye, so the tree column has to read as one column at every level. The
     // control sits in a gutter every row reserves rather than staggering values
     // by depth — this is the assertion that keeps it that way.
-    const group = rowByName(canvas, 'Sammelabrechnung 01.07.2026');
+    const group = rowByName(canvas, 'Settlement run 1 Jul 2026');
 
     await userEvent.click(chevronOf(group));
 
@@ -2562,8 +2567,8 @@ ExpandableRows.test(
       return Math.round(value.getBoundingClientRect().left);
     };
 
-    expect(valueX('ABR-10231')).toBe(valueX('Sammelabrechnung 01.07.2026'));
-    expect(valueX('ABR-10240')).toBe(valueX('Sammelabrechnung 01.07.2026'));
+    expect(valueX('CLR-10231')).toBe(valueX('Settlement run 1 Jul 2026'));
+    expect(valueX('CLR-10240')).toBe(valueX('Settlement run 1 Jul 2026'));
   }
 );
 
@@ -2571,7 +2576,7 @@ ExpandableRows.test(
   'Tab reaches the row actions, not the chevron',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent, step }) => {
-    const group = rowByName(canvas, 'Sammelabrechnung 01.07.2026');
+    const group = rowByName(canvas, 'Settlement run 1 Jul 2026');
 
     await step('The chevron is excluded from the tab order', () => {
       expect(chevronOf(group)).toHaveAttribute('tabindex', '-1');
@@ -2581,7 +2586,7 @@ ExpandableRows.test(
       await userEvent.click(chevronOf(group));
 
       expect(
-        canvas.getByRole('button', { name: 'Gesamt-PDF' })
+        canvas.getByRole('button', { name: 'Total PDF' })
       ).toBeInTheDocument();
       // Each child clearing gets an independent action, not a shared menu.
       expect(canvas.getAllByRole('button', { name: 'PDF' })).toHaveLength(3);
@@ -2598,18 +2603,18 @@ export const ExpandableRowsDynamic = meta.story({
   args: { treeColumn: 'clearing' },
   render: args => (
     <Table
-      aria-label="Abrechnungen"
+      aria-label="Clearings"
       defaultExpandedKeys={['run-2026-06-01']}
       {...args}
     >
       <Table.Header>
         <Table.Column id="clearing" rowHeader>
-          ABR-Nr.
+          Clearing no.
         </Table.Column>
-        <Table.Column id="invoice">Rechnungs-Nr.</Table.Column>
-        <Table.Column id="event">Veranstaltung</Table.Column>
+        <Table.Column id="invoice">Invoice no.</Table.Column>
+        <Table.Column id="event">Event</Table.Column>
         <Table.Column id="amount" alignX="right">
-          Betrag
+          Amount
         </Table.Column>
       </Table.Header>
       <Table.Body items={settlementRuns}>
@@ -2619,7 +2624,7 @@ export const ExpandableRowsDynamic = meta.story({
               <Table.Cell>{row.label ?? row.id}</Table.Cell>
               <Table.Cell>
                 {row.children ? (
-                  <Badge>{row.children.length} Abrechnungen</Badge>
+                  <Badge>{row.children.length} clearings</Badge>
                 ) : (
                   row.invoice
                 )}
@@ -2648,20 +2653,20 @@ ExpandableRowsDynamic.test(
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent, step }) => {
     await step('The pre-expanded group shows its children', () => {
-      expect(canvas.getByText('ABR-10188')).toBeInTheDocument();
-      expect(canvas.getByText('ABR-10190')).toBeInTheDocument();
+      expect(canvas.getByText('CLR-10188')).toBeInTheDocument();
+      expect(canvas.getByText('CLR-10190')).toBeInTheDocument();
     });
 
     await step('The other group is still collapsed', () => {
-      expect(canvas.queryByText('ABR-10231')).not.toBeInTheDocument();
+      expect(canvas.queryByText('CLR-10231')).not.toBeInTheDocument();
     });
 
     await step('Expanding it renders its children too', async () => {
       await userEvent.click(
-        chevronOf(rowByName(canvas, 'Sammelabrechnung 01.07.2026'))
+        chevronOf(rowByName(canvas, 'Settlement run 1 Jul 2026'))
       );
 
-      expect(canvas.getByText('ABR-10231')).toBeInTheDocument();
+      expect(canvas.getByText('CLR-10231')).toBeInTheDocument();
     });
   }
 );
@@ -2674,18 +2679,18 @@ export const ExpandableRowsLazyChildren = meta.story({
   tags: ['component-test'],
   args: { treeColumn: 'clearing' },
   render: args => (
-    <Table aria-label="Abrechnungen" {...args}>
+    <Table aria-label="Clearings" {...args}>
       <Table.Header>
         <Table.Column id="clearing" rowHeader>
-          ABR-Nr.
+          Clearing no.
         </Table.Column>
-        <Table.Column id="invoice">Rechnungs-Nr.</Table.Column>
+        <Table.Column id="invoice">Invoice no.</Table.Column>
       </Table.Header>
       <Table.Body>
         <Table.Row id="run-2026-05-01" hasChildRows>
-          <Table.Cell>Sammelabrechnung 01.05.2026</Table.Cell>
+          <Table.Cell>Settlement run 1 May 2026</Table.Cell>
           <Table.Cell>
-            <Badge>Wird geladen</Badge>
+            <Badge>Loading …</Badge>
           </Table.Cell>
         </Table.Row>
       </Table.Body>

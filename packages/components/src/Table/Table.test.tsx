@@ -430,24 +430,24 @@ describe('Expandable rows', () => {
   test('group rows announce their collapsed state, leaf rows do not', () => {
     render(<ExpandableRows.Component />);
 
-    expect(rowOf('Sammelabrechnung 01.07.2026')).toHaveAttribute(
+    expect(rowOf('Settlement run 1 Jul 2026')).toHaveAttribute(
       'aria-expanded',
       'false'
     );
-    expect(rowOf('ABR-10240')).not.toHaveAttribute('aria-expanded');
+    expect(rowOf('CLR-10240')).not.toHaveAttribute('aria-expanded');
   });
 
   test('collapsed child rows are not rendered at all', () => {
     render(<ExpandableRows.Component />);
 
-    expect(screen.queryByText('ABR-10231')).not.toBeInTheDocument();
+    expect(screen.queryByText('CLR-10231')).not.toBeInTheDocument();
   });
 
   test('expanded child rows are real rows with tree semantics', () => {
     render(<ExpandableRowsDynamic.Component />);
 
     // `defaultExpandedKeys` pre-expands the June settlement run.
-    const child = rowOf('ABR-10188');
+    const child = rowOf('CLR-10188');
 
     expect(child).toHaveAttribute('aria-level', '2');
     expect(child).toHaveAttribute('aria-posinset', '1');
@@ -458,20 +458,20 @@ describe('Expandable rows', () => {
   test('exactly one cell per row is marked as the tree column', () => {
     render(<ExpandableRowsDynamic.Component />);
 
-    const child = rowOf('ABR-10188');
+    const child = rowOf('CLR-10188');
     // eslint-disable-next-line testing-library/no-node-access
     const cells = Array.from(child.querySelectorAll('[data-tree-column]'));
 
     expect(cells).toHaveLength(1);
-    expect(cells[0]).toHaveTextContent('ABR-10188');
+    expect(cells[0]).toHaveTextContent('CLR-10188');
   });
 
   test('Table.ChildRows renders nothing for a row without children', () => {
     render(<ExpandableRowsDynamic.Component />);
 
     // The standalone clearing has no `children`, so it stays a leaf.
-    expect(rowOf('ABR-10240')).not.toHaveAttribute('aria-expanded');
-    expect(rowOf('ABR-10240')).toHaveAttribute('aria-level', '1');
+    expect(rowOf('CLR-10240')).not.toHaveAttribute('aria-expanded');
+    expect(rowOf('CLR-10240')).toHaveAttribute('aria-level', '1');
   });
 
   test('hasChildRows drives both the visuals and aria-expanded', () => {
@@ -480,7 +480,7 @@ describe('Expandable rows', () => {
     // chevron and the correct announcement.
     render(<ExpandableRowsLazyChildren.Component />);
 
-    const row = rowOf('Sammelabrechnung 01.05.2026');
+    const row = rowOf('Settlement run 1 May 2026');
 
     expect(row).toHaveAttribute('aria-expanded', 'false');
     expect(row).toHaveAttribute('data-has-child-items', 'true');

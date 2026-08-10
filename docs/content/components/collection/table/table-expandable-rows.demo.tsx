@@ -14,18 +14,18 @@ interface Clearing {
 const clearings: Clearing[] = [
   {
     id: 'run-2026-07-01',
-    label: 'Settlement run 01.07.2026',
+    label: 'Settlement run 1 Jul 2026',
     amount: 12480.5,
     children: [
       {
-        id: 'ABR-10231',
-        invoice: 'RE-4711',
+        id: 'CLR-10231',
+        invoice: 'INV-4711',
         event: 'Night market',
         amount: 4200,
       },
       {
-        id: 'ABR-10232',
-        invoice: 'RE-4712',
+        id: 'CLR-10232',
+        invoice: 'INV-4712',
         event: 'Summer party',
         amount: 8280.5,
       },
@@ -33,26 +33,26 @@ const clearings: Clearing[] = [
   },
   {
     id: 'run-2026-06-01',
-    label: 'Settlement run 01.06.2026',
+    label: 'Settlement run 1 Jun 2026',
     amount: 4500,
     children: [
       {
-        id: 'ABR-10188',
-        invoice: 'RE-4655',
+        id: 'CLR-10188',
+        invoice: 'INV-4655',
         event: 'Spring run',
         amount: 3300,
       },
       {
-        id: 'ABR-10189',
-        invoice: 'RE-4656',
+        id: 'CLR-10189',
+        invoice: 'INV-4656',
         event: 'Reading night',
         amount: 1200,
       },
     ],
   },
   {
-    id: 'ABR-10240',
-    invoice: 'RE-4720',
+    id: 'CLR-10240',
+    invoice: 'INV-4720',
     event: 'City tour',
     amount: 990,
   },

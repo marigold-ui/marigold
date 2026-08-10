@@ -13,23 +13,23 @@ interface Clearing {
 const clearings: Clearing[] = [
   {
     id: 'run-2026-07-01',
-    label: 'Settlement run 01.07.2026',
+    label: 'Settlement run 1 Jul 2026',
     amount: 12480.5,
     children: [
-      { id: 'ABR-10231', invoice: 'RE-4711', amount: 4200 },
-      { id: 'ABR-10232', invoice: 'RE-4712', amount: 8280.5 },
+      { id: 'CLR-10231', invoice: 'INV-4711', amount: 4200 },
+      { id: 'CLR-10232', invoice: 'INV-4712', amount: 8280.5 },
     ],
   },
   {
     id: 'run-2026-06-01',
-    label: 'Settlement run 01.06.2026',
+    label: 'Settlement run 1 Jun 2026',
     amount: 4500,
     children: [
-      { id: 'ABR-10188', invoice: 'RE-4655', amount: 3300 },
-      { id: 'ABR-10189', invoice: 'RE-4656', amount: 1200 },
+      { id: 'CLR-10188', invoice: 'INV-4655', amount: 3300 },
+      { id: 'CLR-10189', invoice: 'INV-4656', amount: 1200 },
     ],
   },
-  { id: 'ABR-10240', invoice: 'RE-4720', amount: 990 },
+  { id: 'CLR-10240', invoice: 'INV-4720', amount: 990 },
 ];
 
 /**
@@ -91,7 +91,7 @@ export default () => {
     <Stack space={4}>
       <SearchField
         label="Find a clearing number"
-        placeholder="e.g. ABR-10232"
+        placeholder="e.g. CLR-10232"
         width={80}
         onSubmit={search}
         onClear={() => {
