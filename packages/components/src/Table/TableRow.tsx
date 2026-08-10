@@ -19,7 +19,7 @@ export interface TableRowProps<T extends object = object> extends Omit<
    * Whether the row can be expanded even though its nested rows are not there
    * yet. Only needed when they are fetched on demand: without it the row gets no
    * expand control, so there is nothing to trigger the fetch. Statically nested
-   * rows and `Table.ExpandedRows` are detected automatically.
+   * rows and `Table.ExpandableRows` are detected automatically.
    */
   expandable?: boolean;
 }

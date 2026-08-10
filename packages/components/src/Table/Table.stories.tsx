@@ -2595,7 +2595,7 @@ ExpandableRows.test(
 );
 
 /**
- * The same table built from data, where `Table.ExpandedRows` renders the child rows
+ * The same table built from data, where `Table.ExpandableRows` renders the child rows
  * and the render function recurses.
  */
 export const ExpandableRowsDynamic = meta.story({
@@ -2637,9 +2637,9 @@ export const ExpandableRowsDynamic = meta.story({
                   value={row.total}
                 />
               </Table.Cell>
-              <Table.ExpandedRows items={row.children}>
+              <Table.ExpandableRows items={row.children}>
                 {renderRow}
-              </Table.ExpandedRows>
+              </Table.ExpandableRows>
             </Table.Row>
           );
         }}

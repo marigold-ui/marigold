@@ -15,7 +15,7 @@ import { TableColumn } from './TableColumn';
 import { renderDragPreview } from './TableDragPreview';
 import { renderDropIndicator } from './TableDropIndicator';
 import { TableEditableCell } from './TableEditableCell';
-import { TableExpandedRows } from './TableExpandedRows';
+import { TableExpandableRows } from './TableExpandableRows';
 import { TableFooter } from './TableFooter';
 import { TableHeader } from './TableHeader';
 import { TableRow } from './TableRow';
@@ -136,7 +136,7 @@ const Table = Object.assign(_Table, {
   Column: TableColumn,
   Body: TableBody,
   Row: TableRow,
-  ExpandedRows: TableExpandedRows,
+  ExpandableRows: TableExpandableRows,
   Cell: TableCell,
   EditableCell: TableEditableCell,
   Footer: TableFooter,
@@ -154,7 +154,7 @@ export type { TableHeaderProps } from './TableHeader';
 export type { TableColumnProps } from './TableColumn';
 export type { TableBodyProps } from './TableBody';
 export type { TableRowProps } from './TableRow';
-export type { TableExpandedRowsProps } from './TableExpandedRows';
+export type { TableExpandableRowsProps } from './TableExpandableRows';
 export type { TableCellProps } from './TableCell';
 export type { TableDropIndicatorProps } from './TableDropIndicator';
 export type { TableDragPreviewProps } from './TableDragPreview';

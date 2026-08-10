@@ -467,7 +467,7 @@ describe('Expandable rows', () => {
     expect(cells[0]).toHaveTextContent('CLR-10188');
   });
 
-  test('Table.ExpandedRows renders nothing for a row without children', () => {
+  test('Table.ExpandableRows renders nothing for a row without children', () => {
     render(<ExpandableRowsDynamic.Component />);
 
     // The standalone clearing has no `children`, so it stays a leaf.

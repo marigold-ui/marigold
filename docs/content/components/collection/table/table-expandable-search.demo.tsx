@@ -134,9 +134,9 @@ export default () => {
                     value={row.amount}
                   />
                 </Table.Cell>
-                <Table.ExpandedRows items={row.children}>
+                <Table.ExpandableRows items={row.children}>
                   {renderRow}
-                </Table.ExpandedRows>
+                </Table.ExpandableRows>
               </Table.Row>
             );
           }}

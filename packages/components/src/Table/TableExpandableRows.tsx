@@ -3,7 +3,7 @@ import { Collection } from 'react-aria-components/Collection';
 
 // Props
 // ---------------
-export interface TableExpandedRowsProps<T extends object = object> {
+export interface TableExpandableRowsProps<T extends object = object> {
   /**
    * The rows that expanding the surrounding `Table.Row` reveals. Renders nothing
    * when `undefined` or empty, so a leaf row needs no conditional of its own.
@@ -31,11 +31,11 @@ export interface TableExpandedRowsProps<T extends object = object> {
  *
  * Statically known nested rows don't need this: nest `Table.Row` directly.
  */
-const TableExpandedRows = <T extends object = object>({
+const TableExpandableRows = <T extends object = object>({
   items,
   dependencies,
   children,
-}: TableExpandedRowsProps<T>) => {
+}: TableExpandableRowsProps<T>) => {
   if (!items) return null;
 
   return (
@@ -45,4 +45,4 @@ const TableExpandedRows = <T extends object = object>({
   );
 };
 
-export { TableExpandedRows };
+export { TableExpandableRows };
