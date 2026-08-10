@@ -34,6 +34,17 @@ vi.mock('../commands/doctor.js', () => ({
   runDoctor: vi.fn(async () => ({ output: 'doctor output', hasErrors: false })),
 }));
 
+// Unlike the other commands, runValidate's `hasErrors` is what the bin layer
+// maps onto the process exit code, so tests need to vary it per case rather
+// than pin one return value here.
+const runValidateMock = vi.hoisted(() =>
+  vi.fn(async () => ({ output: 'validate output', hasErrors: false }))
+);
+
+vi.mock('../commands/validate.js', () => ({
+  runValidate: runValidateMock,
+}));
+
 let stdoutSpy: ReturnType<typeof vi.spyOn>;
 let stderrSpy: ReturnType<typeof vi.spyOn>;
 
@@ -44,6 +55,7 @@ beforeEach(() => {
 
 afterEach(() => {
   emitMock.mockClear();
+  runValidateMock.mockClear();
   stdoutSpy.mockRestore();
   stderrSpy.mockRestore();
 });
@@ -264,6 +276,120 @@ describe('main() — migrate command', () => {
       command: 'migrate',
       exitCode: 1,
       args: expect.objectContaining({ version: 'auto' }),
+    });
+  });
+});
+
+describe('main() — validate command', () => {
+  test('dispatches validate with the default checks and format', async () => {
+    const code = await main(['validate', 'Component.tsx']);
+
+    expect(code).toBe(0);
+    expect(runValidateMock).toHaveBeenCalledWith({
+      file: 'Component.tsx',
+      checks: 'all',
+      format: 'text',
+    });
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      command: 'validate',
+      exitCode: 0,
+      args: expect.objectContaining({ checks: 'all', format: 'text' }),
+    });
+  });
+
+  test('forwards explicit --checks and --format', async () => {
+    const code = await main([
+      'validate',
+      'Component.tsx',
+      '--checks',
+      'technical',
+      '--format',
+      'json',
+    ]);
+
+    expect(code).toBe(0);
+    expect(runValidateMock).toHaveBeenCalledWith({
+      file: 'Component.tsx',
+      checks: 'technical',
+      format: 'json',
+    });
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      command: 'validate',
+      args: expect.objectContaining({ checks: 'technical', format: 'json' }),
+    });
+  });
+
+  // The exit-code contract the whole command rests on: findings are reported
+  // through `hasErrors`, never by throwing, and a warning-only run stays 0.
+  test('exits 1 when the report contains errors', async () => {
+    runValidateMock.mockResolvedValueOnce({
+      output: 'validate output',
+      hasErrors: true,
+    });
+
+    const code = await main(['validate', 'Component.tsx']);
+
+    expect(code).toBe(1);
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      command: 'validate',
+      exitCode: 1,
+    });
+  });
+
+  test('fails with a usage error when the file positional is missing', async () => {
+    const code = await main(['validate']);
+
+    expect(code).toBe(1);
+    expect(stderrSpy.mock.calls.flat().join('')).toContain(
+      'Usage: marigold validate <file.tsx>'
+    );
+    expect(runValidateMock).not.toHaveBeenCalled();
+  });
+
+  test('rejects a second file instead of silently validating only the first', async () => {
+    const code = await main(['validate', 'a.tsx', 'b.tsx']);
+
+    expect(code).toBe(1);
+    expect(stderrSpy.mock.calls.flat().join('')).toContain(
+      'one file at a time'
+    );
+    // The point of the guard: exiting 0 after checking only a.tsx would read
+    // as "both files are fine".
+    expect(runValidateMock).not.toHaveBeenCalled();
+  });
+
+  test('clamps an invalid --checks to `invalid` in telemetry', async () => {
+    const code = await main([
+      'validate',
+      'Component.tsx',
+      '--checks',
+      'banana',
+    ]);
+
+    expect(code).toBe(1);
+    expect(runValidateMock).not.toHaveBeenCalled();
+    // The raw string must never reach telemetry — it is clamped to an enum.
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      command: 'validate',
+      exitCode: 1,
+      args: expect.objectContaining({ checks: 'invalid', format: 'text' }),
+    });
+  });
+
+  test('clamps an invalid --format to `invalid` in telemetry', async () => {
+    const code = await main([
+      'validate',
+      'Component.tsx',
+      '--format',
+      'banana',
+    ]);
+
+    expect(code).toBe(1);
+    expect(runValidateMock).not.toHaveBeenCalled();
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      command: 'validate',
+      exitCode: 1,
+      args: expect.objectContaining({ checks: 'all', format: 'invalid' }),
     });
   });
 });

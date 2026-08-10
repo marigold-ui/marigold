@@ -1,5 +1,8 @@
 'use client';
 
+import { Fragment, useEffect, useId, useRef, useState } from 'react';
+
+// Authored here, not measured, so a rung added to the theme is silently omitted.
 const steps = [
   '50',
   '100',
@@ -14,68 +17,46 @@ const steps = [
   '950',
 ] as const;
 
-// oklch to sRGB conversion (from the reference implementation)
-function oklchToRgb(L: number, C: number, h: number): [number, number, number] {
-  const hr = (h * Math.PI) / 180;
-  const a = C * Math.cos(hr);
-  const b = C * Math.sin(hr);
-  const l_ = L + 0.3963377774 * a + 0.2158037573 * b;
-  const m_ = L - 0.1055613458 * a - 0.0638541728 * b;
-  const s_ = L - 0.0894841775 * a - 1.291485548 * b;
-  const l = l_ * l_ * l_;
-  const m = m_ * m_ * m_;
-  const s = s_ * s_ * s_;
-  const rLin = 4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s;
-  const gLin = -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s;
-  const bLin = -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s;
-  const gamma = (c: number) => {
-    const abs = Math.abs(c);
-    const r =
-      abs > 0.0031308 ? 1.055 * Math.pow(abs, 1 / 2.4) - 0.055 : 12.92 * abs;
-    return c < 0 ? -r : r;
-  };
-  return [
-    Math.max(0, Math.min(255, Math.round(gamma(rLin) * 255))),
-    Math.max(0, Math.min(255, Math.round(gamma(gLin) * 255))),
-    Math.max(0, Math.min(255, Math.round(gamma(bLin) * 255))),
-  ];
+type Step = (typeof steps)[number];
+type Rgb = [number, number, number];
+type Palette = Record<Step, Rgb>;
+
+/**
+ * Measured rather than restated, so the published numbers cannot drift from the
+ * shipped palette. Computed colors stay in their authored space, so the canvas
+ * is what converts to sRGB. Same readback as `flatten` in
+ * `packages/components/src/contrast.utils.ts`, minus its white base, so opaque
+ * tokens only.
+ */
+function measurePalette(container: HTMLElement): Palette | null {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1;
+  canvas.height = 1;
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  if (!ctx) return null;
+
+  const palette = {} as Palette;
+
+  for (const step of steps) {
+    const probe = container.querySelector(`[data-step="${step}"]`);
+    if (!probe) return null;
+
+    // Cleared and parked on transparent, so a token that is missing or that the
+    // canvas cannot parse leaves the pixel clear instead of keeping a stale one.
+    ctx.clearRect(0, 0, 1, 1);
+    ctx.fillStyle = 'transparent';
+    ctx.fillStyle = getComputedStyle(probe).backgroundColor;
+    ctx.fillRect(0, 0, 1, 1);
+
+    const [r, g, b, a] = ctx.getImageData(0, 0, 1, 1).data;
+    // Otherwise it reads as pure black and publishes 1:1 for every pairing.
+    if (a === 0) return null;
+
+    palette[step] = [r, g, b];
+  }
+
+  return palette;
 }
-
-function rgbToHex(r: number, g: number, b: number) {
-  return (
-    '#' +
-    [r, g, b]
-      .map(x =>
-        Math.max(0, Math.min(255, Math.round(x)))
-          .toString(16)
-          .padStart(2, '0')
-      )
-      .join('')
-  );
-}
-
-// Charcoal scale: oklch(L, C, 54)
-const charcoal: Record<string, { L: number; C: number }> = {
-  '50': { L: 0.985, C: 0.002 },
-  '100': { L: 0.965, C: 0.003 },
-  '200': { L: 0.92, C: 0.004 },
-  '300': { L: 0.86, C: 0.005 },
-  '400': { L: 0.74, C: 0.006 },
-  '500': { L: 0.62, C: 0.007 },
-  '600': { L: 0.52, C: 0.008 },
-  '700': { L: 0.42, C: 0.008 },
-  '800': { L: 0.32, C: 0.008 },
-  '900': { L: 0.22, C: 0.008 },
-  '950': { L: 0.15, C: 0.008 },
-};
-
-const colors = Object.fromEntries(
-  steps.map(s => {
-    const { L, C } = charcoal[s];
-    const rgb = oklchToRgb(L, C, 54);
-    return [s, { rgb, hex: rgbToHex(...rgb) }];
-  })
-) as Record<string, { rgb: [number, number, number]; hex: string }>;
 
 // WCAG 2.1 relative luminance
 function getWCAGLuminance(r: number, g: number, b: number) {
@@ -86,10 +67,7 @@ function getWCAGLuminance(r: number, g: number, b: number) {
   return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
 }
 
-function calculateWCAG(
-  rgb1: [number, number, number],
-  rgb2: [number, number, number]
-) {
+function calculateWCAG(rgb1: Rgb, rgb2: Rgb) {
   const l1 = getWCAGLuminance(...rgb1);
   const l2 = getWCAGLuminance(...rgb2);
   return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
@@ -104,100 +82,216 @@ function getLuminance(r: number, g: number, b: number) {
   );
 }
 
-function calculateAPCA(
-  text: [number, number, number],
-  bg: [number, number, number]
-) {
+function calculateAPCA(text: Rgb, bg: Rgb) {
   const Yt = getLuminance(...text);
   const Yb = getLuminance(...bg);
   const c = (Math.pow(Yb, 0.56) - Math.pow(Yt, 0.57)) * 1.14;
   return Math.abs(c) < 0.1 ? 0 : c * 100;
 }
 
-function apcaBadgeColor(score: number) {
-  if (score >= 75) return 'rgba(16,185,129,0.25)';
-  if (score >= 60) return 'rgba(34,197,94,0.25)';
-  if (score >= 45) return 'rgba(245,158,11,0.25)';
-  return 'rgba(239,68,68,0.25)';
-}
+type Tier = { min: number; rgb: string; label: string };
 
-function wcagBadgeColor(score: number) {
-  if (score >= 7.0) return 'rgba(16,185,129,0.25)';
-  if (score >= 4.5) return 'rgba(34,197,94,0.25)';
-  if (score >= 3.0) return 'rgba(245,158,11,0.25)';
-  return 'rgba(239,68,68,0.25)';
-}
+/**
+ * One table per scale drives both the cell badges and the legend, so a
+ * threshold or a tier colour only has to change in one place. The last tier has
+ * no floor, so a score always lands on one.
+ */
+const scales: Record<'APCA' | 'WCAG', readonly Tier[]> = {
+  APCA: [
+    { min: 75, rgb: '16,185,129', label: '75+ Body' },
+    { min: 60, rgb: '34,197,94', label: '60+ Sub' },
+    { min: 45, rgb: '245,158,11', label: '45+ Large' },
+    { min: -Infinity, rgb: '239,68,68', label: 'Fail' },
+  ],
+  WCAG: [
+    { min: 7, rgb: '16,185,129', label: '7+ AAA' },
+    { min: 4.5, rgb: '34,197,94', label: '4.5+ AA' },
+    { min: 3, rgb: '245,158,11', label: '3+ Large' },
+    { min: -Infinity, rgb: '239,68,68', label: 'Fail' },
+  ],
+};
 
-export default () => (
-  <>
-    <div className="overflow-x-auto">
-      <table
-        style={{
-          borderCollapse: 'collapse',
-          width: 'max-content',
-          minWidth: '100%',
-        }}
-      >
-        <thead>
-          <tr>
-            <th
-              className="text-secondary text-[11px] font-bold"
-              style={{
-                padding: '6px 4px',
-                minWidth: 65,
-                textAlign: 'center',
-                borderRight: '1px solid var(--color-charcoal-200)',
-                borderBottom: '1px solid var(--color-charcoal-200)',
-                position: 'sticky',
-                top: 0,
-              }}
-            >
-              Bg \ Text
-            </th>
-            {steps.map(s => (
+// Fainter than the legend swatches, because badge fills sit under text.
+const badgeColor = (tiers: readonly Tier[], score: number) =>
+  `rgba(${(tiers.find(t => score >= t.min) ?? tiers[tiers.length - 1]).rgb},0.25)`;
+
+/**
+ * Opaque, so the swatches never travel visibly behind a header label and the
+ * labels keep their contrast on any page background.
+ */
+const headerCell = {
+  padding: '6px 4px',
+  minWidth: 65,
+  textAlign: 'center',
+  backgroundColor: 'var(--color-surface)',
+} as const;
+
+/**
+ * The first column stays put while the matrix scrolls sideways. Collapsed
+ * borders belong to the table and stay behind at the unscrolled position, so
+ * the pinned edges are painted as inset shadows instead.
+ */
+const pinnedRail = {
+  position: 'sticky',
+  left: 0,
+  // Above the cells that scroll under it, which are not positioned.
+  zIndex: 1,
+  boxShadow: `inset -1px 0 var(--color-charcoal-200),
+    inset 0 -1px var(--color-charcoal-200)`,
+} as const;
+
+const Badge = ({ color, children }: { color?: string; children?: string }) => (
+  <span
+    style={{
+      display: 'block',
+      fontSize: 9,
+      fontWeight: 700,
+      padding: '1px 3px',
+      borderRadius: 3,
+      lineHeight: 1.3,
+      backgroundColor: color ?? 'transparent',
+    }}
+  >
+    {children ?? '\u00A0'}
+  </span>
+);
+
+const Legend = () => (
+  <div className="text-secondary mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[11px]">
+    {Object.entries(scales).map(([scale, tiers], index) => (
+      <Fragment key={scale}>
+        {index > 0 && <span className="mx-1">|</span>}
+        <span className="font-bold">{scale}:</span>
+        {tiers.map(({ rgb, label }) => (
+          <span key={label}>
+            <span
+              className="inline-block size-2 rounded-sm"
+              style={{ background: `rgba(${rgb},0.5)` }}
+            />{' '}
+            {label}
+          </span>
+        ))}
+      </Fragment>
+    ))}
+  </div>
+);
+
+export default () => {
+  const probesRef = useRef<HTMLDivElement>(null);
+  const messageId = useId();
+  const [palette, setPalette] = useState<Palette | 'unreadable' | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    let frame = 0;
+
+    const attempt = (retry: boolean) => {
+      // The queued microtask cannot be cancelled, so this is what stops it.
+      if (cancelled) return;
+
+      const result = probesRef.current && measurePalette(probesRef.current);
+      // A stylesheet that has not applied yet reads as transparent.
+      if (!result && retry) {
+        frame = requestAnimationFrame(() => attempt(false));
+        return;
+      }
+      setPalette(result ?? 'unreadable');
+    };
+
+    // Deferred to satisfy `react-hooks/set-state-in-effect`, as Token.tsx does.
+    queueMicrotask(() => attempt(true));
+
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  // A failed read only blanks the badges. The swatch grid needs no measurement.
+  const measured = palette === 'unreadable' ? null : palette;
+
+  return (
+    <>
+      {/*
+        Mounted empty so the region pre-exists the message it announces, since
+        mounting a live region together with its text drops the announcement in
+        some readers. Same reason as `VenuesTable` in the filter example.
+      */}
+      <div role="status">
+        {palette === 'unreadable' && (
+          <p id={messageId} className="text-secondary mb-2 text-sm">
+            The charcoal palette could not be read from the theme, so no
+            contrast numbers are shown.
+          </p>
+        )}
+      </div>
+
+      <div ref={probesRef} style={{ display: 'none' }}>
+        {steps.map(step => (
+          <span
+            key={step}
+            data-step={step}
+            style={{ backgroundColor: `var(--color-charcoal-${step})` }}
+          />
+        ))}
+      </div>
+
+      <div className="overflow-x-auto">
+        <table
+          aria-label="Contrast matrix"
+          // The blank badges announce as nothing, so the table itself carries
+          // the reason rather than repeating it in all 121 cells.
+          aria-describedby={palette === 'unreadable' ? messageId : undefined}
+          style={{
+            borderCollapse: 'collapse',
+            width: 'max-content',
+            minWidth: '100%',
+          }}
+        >
+          <thead>
+            <tr>
               <th
-                key={s}
                 className="text-secondary text-[11px] font-bold"
-                style={{
-                  padding: '6px 4px',
-                  minWidth: 65,
-                  textAlign: 'center',
-                  borderBottom: '1px solid var(--color-charcoal-200)',
-                  position: 'sticky',
-                  top: 0,
-                }}
+                style={{ ...headerCell, ...pinnedRail }}
               >
-                {s}
+                Bg \ Text
               </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {steps.map(bgStep => {
-            const bgC = colors[bgStep];
-            return (
-              <tr key={bgStep}>
+              {steps.map(s => (
                 <th
+                  key={s}
+                  scope="col"
                   className="text-secondary text-[11px] font-bold"
                   style={{
-                    padding: '6px 4px',
-                    minWidth: 65,
-                    textAlign: 'center',
-                    borderRight: '1px solid var(--color-charcoal-200)',
+                    ...headerCell,
                     borderBottom: '1px solid var(--color-charcoal-200)',
-                    position: 'sticky',
-                    left: 0,
-                    zIndex: 1,
                   }}
+                >
+                  {s}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {steps.map(bgStep => (
+              <tr key={bgStep}>
+                <th
+                  scope="row"
+                  className="text-secondary text-[11px] font-bold"
+                  style={{ ...headerCell, ...pinnedRail }}
                 >
                   {bgStep}
                 </th>
                 {steps.map(txStep => {
-                  const txC = colors[txStep];
-                  const apcaScore = Math.abs(
-                    Math.round(calculateAPCA(txC.rgb, bgC.rgb))
-                  );
-                  const wcagScore = calculateWCAG(txC.rgb, bgC.rgb);
+                  const scores = measured
+                    ? {
+                        apca: Math.abs(
+                          Math.round(
+                            calculateAPCA(measured[txStep], measured[bgStep])
+                          )
+                        ),
+                        wcag: calculateWCAG(measured[txStep], measured[bgStep]),
+                      }
+                    : undefined;
 
                   return (
                     <td
@@ -208,8 +302,8 @@ export default () => (
                         minWidth: 65,
                         textAlign: 'center',
                         fontSize: 11,
-                        backgroundColor: bgC.hex,
-                        color: txC.hex,
+                        backgroundColor: `var(--color-charcoal-${bgStep})`,
+                        color: `var(--color-charcoal-${txStep})`,
                         borderBottom: '1px solid rgba(0,0,0,0.05)',
                         borderRight: '1px solid rgba(0,0,0,0.05)',
                         cursor: 'default',
@@ -233,104 +327,27 @@ export default () => (
                         >
                           Aa
                         </span>
-                        <span
-                          style={{
-                            display: 'block',
-                            fontSize: 9,
-                            fontWeight: 700,
-                            padding: '1px 3px',
-                            borderRadius: 3,
-                            lineHeight: 1.3,
-                            backgroundColor: apcaBadgeColor(apcaScore),
-                          }}
+                        <Badge
+                          color={scores && badgeColor(scales.APCA, scores.apca)}
                         >
-                          Lc {apcaScore}
-                        </span>
-                        <span
-                          style={{
-                            display: 'block',
-                            fontSize: 9,
-                            fontWeight: 700,
-                            padding: '1px 3px',
-                            borderRadius: 3,
-                            lineHeight: 1.3,
-                            backgroundColor: wcagBadgeColor(wcagScore),
-                          }}
+                          {scores && `Lc ${scores.apca}`}
+                        </Badge>
+                        <Badge
+                          color={scores && badgeColor(scales.WCAG, scores.wcag)}
                         >
-                          {wcagScore.toFixed(1)}:1
-                        </span>
+                          {scores && `${scores.wcag.toFixed(1)}:1`}
+                        </Badge>
                       </div>
                     </td>
                   );
                 })}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-    {/* Legend */}
-    <div className="text-secondary mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[11px]">
-      <span className="font-bold">APCA:</span>
-      <span>
-        <span
-          className="inline-block size-2 rounded-sm"
-          style={{ background: 'rgba(16,185,129,0.5)' }}
-        />{' '}
-        75+ Body
-      </span>
-      <span>
-        <span
-          className="inline-block size-2 rounded-sm"
-          style={{ background: 'rgba(34,197,94,0.5)' }}
-        />{' '}
-        60+ Sub
-      </span>
-      <span>
-        <span
-          className="inline-block size-2 rounded-sm"
-          style={{ background: 'rgba(245,158,11,0.5)' }}
-        />{' '}
-        45+ Large
-      </span>
-      <span>
-        <span
-          className="inline-block size-2 rounded-sm"
-          style={{ background: 'rgba(239,68,68,0.5)' }}
-        />{' '}
-        Fail
-      </span>
-      <span className="mx-1">|</span>
-      <span className="font-bold">WCAG:</span>
-      <span>
-        <span
-          className="inline-block size-2 rounded-sm"
-          style={{ background: 'rgba(16,185,129,0.5)' }}
-        />{' '}
-        7+ AAA
-      </span>
-      <span>
-        <span
-          className="inline-block size-2 rounded-sm"
-          style={{ background: 'rgba(34,197,94,0.5)' }}
-        />{' '}
-        4.5+ AA
-      </span>
-      <span>
-        <span
-          className="inline-block size-2 rounded-sm"
-          style={{ background: 'rgba(245,158,11,0.5)' }}
-        />{' '}
-        3+ Large
-      </span>
-      <span>
-        <span
-          className="inline-block size-2 rounded-sm"
-          style={{ background: 'rgba(239,68,68,0.5)' }}
-        />{' '}
-        Fail
-      </span>
-    </div>
-  </>
-);
+      <Legend />
+    </>
+  );
+};

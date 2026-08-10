@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import {
   COMPLETION_SHELLS,
   EXAMPLES_SUBCOMMANDS,
@@ -64,6 +65,36 @@ export const runCompletion = (
   const script =
     shell === 'bash' ? BASH_SCRIPT : shell === 'zsh' ? ZSH_SCRIPT : FISH_SCRIPT;
   return { output: script, exitCode: 0 };
+};
+
+// Completes a filesystem path for `validate`'s file positional: directories
+// (with a trailing slash) and `.tsx` files, the only input it accepts. Mirrors
+// shell filename completion for shells that don't fall back to their own.
+const completeFilePath = (partial: string): string[] => {
+  // path.dirname('/a/b/') is '/a', but a trailing slash here means "list THIS
+  // directory", not its parent — so split on the last '/' instead.
+  const lastSlash = partial.lastIndexOf('/');
+  const dir = lastSlash === -1 ? '.' : partial.slice(0, lastSlash) || '/';
+  const prefix = lastSlash === -1 ? partial : partial.slice(lastSlash + 1);
+  const dirPrefix = lastSlash === -1 ? '' : partial.slice(0, lastSlash + 1);
+
+  let entries: fs.Dirent[];
+  try {
+    entries = fs.readdirSync(dir, { withFileTypes: true });
+  } catch {
+    return [];
+  }
+
+  return (
+    entries
+      .filter(e => e.name.startsWith(prefix))
+      // Shells hide dotfiles until the user types a leading '.'; without this
+      // an empty prefix would offer .git/, .github/, node_modules/.
+      .filter(e => prefix.startsWith('.') || !e.name.startsWith('.'))
+      .filter(e => e.isDirectory() || e.name.endsWith('.tsx'))
+      .map(e => `${dirPrefix}${e.name}${e.isDirectory() ? '/' : ''}`)
+      .sort()
+  );
 };
 
 // Walk the words between the subcommand and the cursor, classifying each
@@ -160,6 +191,11 @@ export const computeSuggestions = (words: string[]): string[] => {
     return [];
   }
 
+  if (sub.positionalKind === 'file') {
+    if (before.length > 0) return [];
+    return completeFilePath(last);
+  }
+
   if (sub.name === 'completion') {
     if (before.length > 0) return [];
     return [...COMPLETION_SHELLS].filter(startsWith);
@@ -179,5 +215,4 @@ export const runCompleteSuggest = (words: string[]): string => {
   }
 };
 
-// Re-export for tests / external callers if needed.
 export { SUBCOMMANDS };

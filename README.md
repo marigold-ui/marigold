@@ -4,7 +4,7 @@
 <br>
 <br>
 
-[![ci][ci-badge]][ci] [![Coverage][coverage-badge-gist]] [![MIT License][license-badge]][license] [![version][version-badge]][package]
+[![ci][ci-badge]][ci] [![MIT License][license-badge]][license] [![version][version-badge]][package]
 
 [![Open in Visual Studio Code](https://shields.io/badge/-Open%20in%20Visual%20Studio%20Code-blue?logo=visualstudiocode&style=for-the-badge)](https://open.vscode.dev/marigold-ui/marigold)
 
@@ -112,3 +112,12 @@ Two things worth knowing:
 - Switching channel leaves the old dist-tag pinned at its last version. Consumers on the old tag keep
   resolving a stale version without any error, so repoint (`npm dist-tag add <pkg>@<new-version> <old-tag>`)
   or remove (`npm dist-tag rm <pkg> <old-tag>`) it per package after the first publish on the new channel.
+
+<!-- LINKS + BADGES -->
+
+[ci]: https://github.com/marigold-ui/marigold/actions/workflows/build.yml
+[ci-badge]: https://github.com/marigold-ui/marigold/actions/workflows/build.yml/badge.svg
+[license]: https://github.com/marigold-ui/marigold/blob/main/LICENSE
+[license-badge]: https://img.shields.io/github/license/marigold-ui/marigold?style=flat-square
+[package]: https://www.npmjs.com/package/@marigold/components
+[version-badge]: https://img.shields.io/npm/v/@marigold/components?style=flat-square

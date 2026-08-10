@@ -48,6 +48,14 @@ The `.registry/` directory is the build-time scratch space (gitignored). Anythin
 | `build:embeddings` | Generates the MCP-server embeddings index (run separately from build) |
 | `postinstall`      | Hook: regenerates fumadocs MDX types and `.registry/demos.{tsx,json}` |
 
+## Environment variables
+
+| Variable                     | Purpose                                                                                                                                         |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_CONSENT_BANNER` | Set to `1` in `.env.local` to show the cookie consent banner while developing. It is off locally by default and never shown on Vercel previews. |
+
+The banner (and, with it, Vercel Analytics) is only active on the production deployment, which Vercel signals via `NEXT_PUBLIC_VERCEL_ENV`.
+
 ## Static endpoints
 
 These are written to `public/` at build time and served directly by Next.js — no route handlers, no rewrites:

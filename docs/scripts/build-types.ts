@@ -3,6 +3,7 @@
 // write to .registry/props.json — one ts-morph pass at build time so ts-morph
 // stays out of the Next.js bundle.
 import type { DocEntry } from 'fumadocs-typescript';
+import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -15,7 +16,8 @@ const REPO_ROOT = path.resolve(rootDir, '..');
 const TSCONFIG_PATH = path.join(REPO_ROOT, 'tsconfig.json');
 // Cache lives under .next/cache/ so Vercel preserves it across deploys.
 // `.registry/` is gitignored and wiped on each build → would always be cold.
-const CACHE_DIR = path.join(rootDir, '.next', 'cache', 'fumadocs-typescript');
+const CACHE_ROOT = path.join(rootDir, '.next', 'cache', 'fumadocs-typescript');
+const LOCKFILE = path.join(REPO_ROOT, 'pnpm-lock.yaml');
 const OUT_FILE = path.join(rootDir, '.registry', 'props.json');
 const CONTENT_DIR = path.join(rootDir, 'content');
 
@@ -54,6 +56,33 @@ const resolveComponentPath = ({ path: componentPath, package: pkg }: Ref) => {
   return existsSync(`${withoutExt}.tsx`)
     ? `${withoutExt}.tsx`
     : `${withoutExt}.ts`;
+};
+
+// fumadocs-typescript keys its cache on the component source file, not on the
+// `.d.ts` files the props are inherited from. So a dependency bump that changes
+// an inherited prop set leaves every untouched component serving its pre-bump
+// props — `keyboardNavigationBehavior` went missing from `<Table>` this way when
+// react-aria-components moved 1.19 → 1.20 without `Table.tsx` changing.
+// Salting the directory with the lockfile hash retires the cache whenever a
+// dependency moves, and prunes the generations it replaces so the Vercel cache
+// does not grow without bound.
+const resolveCacheDir = async () => {
+  const lockfile = await fs.readFile(LOCKFILE, 'utf-8');
+  const hash = createHash('sha256').update(lockfile).digest('hex').slice(0, 12);
+  const dir = path.join(CACHE_ROOT, hash);
+
+  // Removes superseded generations, and also the loose entry files the
+  // unsalted cache used to write straight into CACHE_ROOT.
+  const stale = await fs.readdir(CACHE_ROOT).catch((): string[] => []);
+  await Promise.all(
+    stale
+      .filter(entry => entry !== hash)
+      .map(entry =>
+        fs.rm(path.join(CACHE_ROOT, entry), { recursive: true, force: true })
+      )
+  );
+
+  return dir;
 };
 
 const findMdxFiles = async (dir: string): Promise<string[]> => {
@@ -104,7 +133,7 @@ const buildTypes = async () => {
   const fumaTs = await import('fumadocs-typescript');
   const generator = fumaTs.createGenerator({
     tsconfigPath: TSCONFIG_PATH,
-    cache: fumaTs.createFileSystemGeneratorCache(CACHE_DIR),
+    cache: fumaTs.createFileSystemGeneratorCache(await resolveCacheDir()),
   });
 
   const mdxFiles = await findMdxFiles(CONTENT_DIR);
