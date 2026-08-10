@@ -77,6 +77,20 @@ All Toasts can be dismissed with `clearToasts`.
 
 <ComponentDemo name="toast-close-all" />
 
+### Committing work when a Toast closes
+
+Pass `onClose` to run something at the moment the Toast goes away, whichever way it goes: its timeout ran out, the user pressed the close button, `removeToast` closed it, or `clearToasts` emptied the queue.
+
+This is what an "Undo" toast defers its work with. Put the commit in `onClose` rather than in a `setTimeout` of the same length: React Aria pauses a Toast's timer while the toast region is hovered or focused, so a separate timer drifts out of sync and commits while the Undo button is still on screen.
+
+<Callout type="warning" title="Only for toasts that dismiss themselves">
+  A `warning` or `error` toast, and any toast with `timeout: 0`, stays until it
+  is dismissed, so `onClose` never runs on its own. Work deferred to such a
+  toast waits indefinitely.
+</Callout>
+
+See [Destructive Actions](/patterns/feedback/destructive-actions#offering-undo) for the whole undo pattern, including how to guard the commit so pressing Undo cancels it.
+
 ### Action
 
 Toasts can also include an action element, which is typically a button or link that allows the user to take a specific action related to the toast message. This is useful for scenarios where you want to provide users with a way to respond to the notification.
@@ -92,3 +106,9 @@ To add an action element, use the `action` prop which accepts any React componen
 ### Toast Provider
 
 <AutoTypeTable path="Toast/ToastProvider" name="ToastProviderProps" />
+
+### Toast options
+
+Options accepted by `addToast`.
+
+<AutoTypeTable path="Toast/ToastQueue" name="ToastOptions" />

@@ -3,6 +3,7 @@
 // write to .registry/props.json — one ts-morph pass at build time so ts-morph
 // stays out of the Next.js bundle.
 import type { DocEntry } from 'fumadocs-typescript';
+import { existsSync } from 'node:fs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -42,11 +43,17 @@ const resolveComponentPath = ({ path: componentPath, package: pkg }: Ref) => {
       ? `components/${componentPath}`
       : componentPath;
 
-  if (resolved.endsWith('.tsx')) return path.join(baseDir, resolved);
+  if (resolved.endsWith('.tsx') || resolved.endsWith('.ts'))
+    return path.join(baseDir, resolved);
   // Bare component names → folder containing same-named file (Button/Button.tsx).
   // Nested paths → file at the path (Radio/RadioGroup.tsx, components/Formatters/DateFormat.tsx).
-  if (isBare) return path.join(baseDir, resolved, `${componentPath}.tsx`);
-  return path.join(baseDir, `${resolved}.tsx`);
+  const withoutExt = isBare
+    ? path.join(baseDir, resolved, componentPath)
+    : path.join(baseDir, resolved);
+  // Types can live in a plain `.ts` module (Toast/ToastQueue.ts).
+  return existsSync(`${withoutExt}.tsx`)
+    ? `${withoutExt}.tsx`
+    : `${withoutExt}.ts`;
 };
 
 const findMdxFiles = async (dir: string): Promise<string[]> => {

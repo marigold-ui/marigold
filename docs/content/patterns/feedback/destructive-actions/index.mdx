@@ -1,6 +1,7 @@
 ---
 title: Destructive Actions
 description: Decide whether a destructive action needs a confirmation or an undo, and build the one it needs.
+badge: alpha
 ---
 
 Deleting, removing, clearing and overwriting are the actions users regret. Every one of them needs a recovery path, and there are only two: stop the user before it happens, or let them take it back afterwards. This page decides which one an action gets, and shows how to build both.
@@ -59,11 +60,10 @@ Uploaded files are the clearest confirmation case, and they fail on the third qu
 <ComponentDemo name="file-delete-confirm" />
 
 <Callout title="Known limitation">
-  `FileField.Item`'s remove button carries a fixed accessible name ("Remove
-  file") that cannot be overridden yet, so on a list like this one every remove
-  button sounds the same to a screen reader. Until that changes, the
-  confirmation dialog is the only place the file gets named, which makes the
-  first rule below load-bearing rather than merely nice.
+  `FileField.Item`'s remove button always announces "Remove file", and that name
+  cannot be changed yet, so every row in a list like this one sounds the same to
+  a screen reader. The dialog is the only place the file gets named, which is
+  why the first rule below is required rather than nice to have.
 </Callout>
 
 What the dialog owes the user:
