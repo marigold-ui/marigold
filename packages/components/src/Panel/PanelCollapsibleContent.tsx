@@ -25,10 +25,10 @@ export const PanelCollapsibleContent = ({
     <DisclosurePanel className={classNames.collapsibleContent}>
       <div
         className={cn(
-          // When bled, drop the horizontal padding and publish `--bleed-px` so
-          // edge-aware children (Table, Accordion) can inset their own content
-          // while backgrounds/dividers reach the Panel border.
-          bleed ? '[--bleed-px:var(--panel-px)]' : 'px-(--panel-px)',
+          // Same contract as Panel.Content, including the non-bled reset.
+          bleed
+            ? '[--bleed-px:var(--panel-px)]'
+            : 'px-(--panel-px) [--bleed-px:initial]',
           'pt-(--panel-py) pb-(--panel-py)'
         )}
       >

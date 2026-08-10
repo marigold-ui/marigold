@@ -179,6 +179,19 @@ describe('Card', () => {
         .closest('[data-card-footer]');
       expect(footer).not.toBeNull();
       expect(footer!.className).not.toContain('px-(--card-px)');
+      expect(footer!.className).toContain('[--bleed-px:var(--card-px)]');
+    });
+
+    test('non-bled content and footer clear --bleed-px', () => {
+      render(<Basic.Component />);
+      const content = screen.getByText(/was an English/).parentElement;
+      expect(content!.className).toContain('[--bleed-px:initial]');
+
+      render(<WithBleedContent.Component />);
+      const footer = screen
+        .getByRole('button', { name: 'Action' })
+        .closest('[data-card-footer]');
+      expect(footer!.className).toContain('[--bleed-px:initial]');
     });
 
     test('Card.Media renders its content', () => {

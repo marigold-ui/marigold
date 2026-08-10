@@ -7,7 +7,8 @@ export interface CardFooterProps {
   children?: ReactNode;
   /**
    * Render the footer edge-to-edge horizontally, skipping the Card's horizontal
-   * padding.
+   * padding. Publishes `--bleed-px` so edge-aware children realign with the
+   * Card title, like a bled `Card.Content`.
    * @default false
    */
   bleed?: boolean;
@@ -18,7 +19,13 @@ export const CardFooter = ({ children, bleed }: CardFooterProps) => {
   return (
     <div
       data-card-footer
-      className={cn(!bleed && 'px-(--card-px)', classNames.footer)}
+      className={cn(
+        // Same contract as Card.Content.
+        bleed
+          ? '[--bleed-px:var(--card-px)]'
+          : 'px-(--card-px) [--bleed-px:initial]',
+        classNames.footer
+      )}
     >
       {children}
     </div>
