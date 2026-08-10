@@ -4,9 +4,15 @@ export const Table: ThemeComponent<'Table'> = {
   table: cva({
     base: [
       'text-sm bg-surface',
-      // Edge padding: Panel's `--panel-px`, then a bled container's
-      // `--bleed-px`, then the standalone cell default.
-      '[--cell-edge-padding:var(--panel-px,var(--bleed-px,var(--cell-x-padding)))]',
+      // Edge padding: a bled container publishes `--bleed-px` (Panel.Content,
+      // Panel.CollapsibleContent, Card.Content, Drawer.Content), which pulls the
+      // first/last cell in to align with the container's title while the row
+      // backgrounds and dividers still reach its border. Falls back to the
+      // standalone cell default everywhere else — including a *non-bled* content
+      // area, which already offsets the whole table with its own padding. Must
+      // not read `--panel-px` here: Panel sets it on its root, so it inherits
+      // into non-bled content too and would double the offset.
+      '[--cell-edge-padding:var(--bleed-px,var(--cell-x-padding))]',
     ],
     variants: {
       variant: {

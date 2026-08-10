@@ -16,7 +16,16 @@ export interface CardContentProps {
 export const CardContent = ({ children, bleed }: CardContentProps) => {
   const { classNames } = useCardContext();
   return (
-    <div className={cn(!bleed && 'px-(--card-px)', classNames.content)}>
+    <div
+      className={cn(
+        // When bled, drop the horizontal padding and publish `--bleed-px` so
+        // edge-aware children (Table, Accordion) can inset their own content to
+        // stay aligned with the Card title while backgrounds/dividers reach the
+        // Card border. Mirrors `Panel.Content`.
+        bleed ? '[--bleed-px:var(--card-px)]' : 'px-(--card-px)',
+        classNames.content
+      )}
+    >
       {children}
     </div>
   );

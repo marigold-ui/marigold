@@ -168,6 +168,10 @@ describe('Card', () => {
 
       expect(content).toBeInTheDocument();
       expect(content!.className).not.toContain('px-(--card-px)');
+      // Publishes `--bleed-px` so edge-aware children (Table, Accordion) can
+      // inset their own content while dividers/backgrounds reach the border,
+      // exactly like a bled `Panel.Content`.
+      expect(content!.className).toContain('[--bleed-px:var(--card-px)]');
     });
 
     test('Card.Footer with bleed opts out of horizontal padding', () => {

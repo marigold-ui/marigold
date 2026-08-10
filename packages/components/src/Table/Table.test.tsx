@@ -17,6 +17,23 @@ const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
 window.matchMedia = mockMatchMedia([smallScreenQuery]);
 
+describe('Edge cell padding', () => {
+  test('derives from --bleed-px only, never from --panel-px', () => {
+    render(<Basic.Component />);
+
+    const table = screen.getByRole('grid', { name: 'label' });
+
+    // Only a *bled* container publishes `--bleed-px`, so the fallback correctly
+    // stops applying outside one. Reading `--panel-px` here would break that:
+    // Panel sets it on its root, where it inherits into non-bled content too
+    // and would offset the edge cells a second time.
+    expect(table.className).toContain(
+      '[--cell-edge-padding:var(--bleed-px,var(--cell-x-padding))]'
+    );
+    expect(table.className).not.toContain('--panel-px');
+  });
+});
+
 describe('Basic Rendering', () => {
   test('applies colspans to cells', () => {
     render(<WidthsAndOverflow.Component />);
