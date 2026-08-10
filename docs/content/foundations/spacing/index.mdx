@@ -164,3 +164,41 @@ For example, consider the `related` token, which is typically used to separate d
 It might seem intuitive to make the page-level spacing larger than the card-level spacing. However, because the cards usually have visible boundaries (explicit grouping), that visual weight already handles the heavy lifting of separation.
 
 You don't need to double the whitespace to tell the user "these are two different cards." The border does that job. The spacing token simply ensures they adhere to the system's rhythm. By reusing the same token, you create a fractal-like consistency where the interface feels harmonious from the smallest detail to the widest layout.
+
+### Reading container spacing
+
+Because spacing is resolved per container, a container has to tell its subtree what it decided. [`<Panel>`](/components/layout/panel), [`<Card>`](/components/collection/card) and [`<Page>`](/components/layout/page) each publish their resolved padding and gap as CSS custom properties on their own root element, where they reach the whole subtree by inheritance:
+
+| Container | Horizontal padding | Vertical padding | Gap between sections |
+| --------- | ------------------ | ---------------- | -------------------- |
+| `<Panel>` | `--panel-px`       | `--panel-py`     | `--panel-gap`        |
+| `<Card>`  | `--card-px`        | `--card-py`      | `--card-gap`         |
+| `<Page>`  | `--page-px`        | `--page-py`      | `--page-gap`         |
+
+These are **read-only**. They reflect what the container's `p`/`px`/`py`/`space` props resolved to, so set spacing through those props and read the variable only when something outside the container's own slots has to match it. Setting one yourself won't work as you'd expect: the container writes it inline on its root, which outranks a declaration on any ancestor.
+
+The common case is a wrapper that breaks the container's own rhythm. A `<Panel>` spaces its slots with a flex gap, so a wrapper around several `<Panel.Content>` siblings becomes one flex item and the gap between them disappears. Re-declaring it with the same variable keeps them in rhythm with every other Panel, where a hardcoded value would drift the moment the `space` default changes:
+
+```tsx
+<Panel>
+  <Panel.Header>…</Panel.Header>
+  {/* One live region around two contents, still on the Panel's own rhythm */}
+  <div className="flex flex-col gap-(--panel-gap)" aria-live="polite">
+    <Panel.Content bleed>…table…</Panel.Content>
+    <Panel.Content>…pagination…</Panel.Content>
+  </div>
+</Panel>
+```
+
+#### Aligning with a bled container
+
+`--bleed-px` is the one you want when content sits edge-to-edge and needs to line back up with the container's title. Any content area rendered with `bleed` publishes it — `Panel.Content`, `Panel.CollapsibleContent`, `Card.Content` and `Drawer.Content` — always holding that container's own horizontal padding.
+
+Prefer it over the container-specific `--panel-px` and `--card-px`: it is scoped to the bled element rather than inherited from a root, so it is only set where edge alignment actually applies, and the same declaration works whichever container the content ends up in.
+
+```css
+/* Aligns in a bled Panel, Card or Drawer, and falls back when not bled */
+padding-inline-start: var(--bleed-px, 0px);
+```
+
+This is how [`<Table>`](/components/collection/table) pulls its first and last cell in to sit under the title while row backgrounds still reach the border, and how [`<Accordion>`](/components/navigation/accordion) insets its header and content while its dividers span the full width. Both work in any bled container without knowing which one it is.
