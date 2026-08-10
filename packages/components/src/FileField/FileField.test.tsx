@@ -2,6 +2,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
+import { vi } from 'vitest';
 import { Basic, UploadFile } from './FileField.stories';
 import { makeFile } from './makeFile';
 
@@ -48,7 +49,7 @@ test('when multiple is false, only first file is kept', async () => {
 
   await user.upload(input, [fileA, fileB]);
 
-  const items = screen.getAllByRole('button', { name: 'Remove file' });
+  const items = screen.getAllByRole('button', { name: /^Remove / });
   expect(items.length).toBe(1);
   expect(screen.getByText('doc.pdf')).toBeInTheDocument();
   expect(screen.queryByText('pic.jpg')).not.toBeInTheDocument();
@@ -68,7 +69,7 @@ test('when multiple, files selected in separate interactions accumulate', async 
   await user.upload(input, [fileA]);
   await user.upload(input, [fileB]);
 
-  const items = screen.getAllByRole('button', { name: 'Remove file' });
+  const items = screen.getAllByRole('button', { name: /^Remove / });
   expect(items.length).toBe(2);
   expect(screen.getByText('a.pdf')).toBeInTheDocument();
   expect(screen.getByText('b.pdf')).toBeInTheDocument();
@@ -87,7 +88,7 @@ test('when multiple, re-selecting the same file does not duplicate it', async ()
   await user.upload(input, [file]);
   await user.upload(input, [file]);
 
-  const items = screen.getAllByRole('button', { name: 'Remove file' });
+  const items = screen.getAllByRole('button', { name: /^Remove / });
   expect(items.length).toBe(1);
 });
 
@@ -105,7 +106,7 @@ test('when multiple is false, a later selection replaces the previous one', asyn
   await user.upload(input, [fileA]);
   await user.upload(input, [fileB]);
 
-  const items = screen.getAllByRole('button', { name: 'Remove file' });
+  const items = screen.getAllByRole('button', { name: /^Remove / });
   expect(items.length).toBe(1);
   expect(screen.getByText('b.pdf')).toBeInTheDocument();
   expect(screen.queryByText('a.pdf')).not.toBeInTheDocument();
@@ -145,14 +146,93 @@ test('remove button removes the corresponding file', async () => {
 
   await user.upload(input, [fileA, fileB]);
 
-  const itemsBefore = screen.getAllByRole('button', { name: 'Remove file' });
-  await user.click(itemsBefore[0]);
+  await user.click(screen.getByRole('button', { name: 'Remove a.txt' }));
 
-  const itemsAfter = screen.getAllByRole('button', { name: 'Remove file' });
+  const itemsAfter = screen.getAllByRole('button', { name: /^Remove / });
   expect(itemsAfter.length).toBe(1);
   expect(screen.queryByText('a.txt')).not.toBeInTheDocument();
   expect(screen.getByText('b.txt')).toBeInTheDocument();
 });
+
+test('names each remove button after its file', async () => {
+  const user = userEvent.setup();
+  render(<UploadFile.Component multiple />);
+  const input = document.querySelector(
+    'input[type="file"]'
+  ) as HTMLInputElement;
+
+  await user.upload(input, [
+    makeFile('a.pdf', 'application/pdf'),
+    makeFile('b.pdf', 'application/pdf'),
+  ]);
+
+  expect(
+    screen.getByRole('button', { name: 'Remove a.pdf' })
+  ).toBeInTheDocument();
+  expect(
+    screen.getByRole('button', { name: 'Remove b.pdf' })
+  ).toBeInTheDocument();
+});
+
+test('names the remove button in German when the locale is de-DE', async () => {
+  const user = userEvent.setup();
+  render(
+    <I18nProvider locale="de-DE">
+      <UploadFile.Component multiple />
+    </I18nProvider>
+  );
+  const input = document.querySelector(
+    'input[type="file"]'
+  ) as HTMLInputElement;
+
+  await user.upload(input, [makeFile('a.pdf', 'application/pdf')]);
+
+  expect(
+    screen.getByRole('button', { name: 'a.pdf entfernen' })
+  ).toBeInTheDocument();
+});
+
+test('onBeforeRemove receives the file it is about to remove', async () => {
+  const user = userEvent.setup();
+  const onBeforeRemove = vi.fn(() => true);
+  render(<UploadFile.Component multiple onBeforeRemove={onBeforeRemove} />);
+  const input = document.querySelector(
+    'input[type="file"]'
+  ) as HTMLInputElement;
+  await user.upload(input, [makeFile('a.pdf', 'application/pdf')]);
+
+  await user.click(screen.getByRole('button', { name: 'Remove a.pdf' }));
+
+  expect(onBeforeRemove).toHaveBeenCalledWith(
+    expect.objectContaining({ name: 'a.pdf' })
+  );
+});
+
+it.each([
+  [true, 0],
+  [false, 1],
+])(
+  'onBeforeRemove resolving %s leaves %i rows',
+  async (decision, remaining) => {
+    const user = userEvent.setup();
+    render(
+      <UploadFile.Component
+        multiple
+        onBeforeRemove={() => Promise.resolve(decision)}
+      />
+    );
+    const input = document.querySelector(
+      'input[type="file"]'
+    ) as HTMLInputElement;
+    await user.upload(input, [makeFile('a.pdf', 'application/pdf')]);
+
+    await user.click(screen.getByRole('button', { name: 'Remove a.pdf' }));
+
+    await waitFor(() =>
+      expect(screen.queryAllByText('a.pdf')).toHaveLength(remaining)
+    );
+  }
+);
 
 test('renders with default props', () => {
   render(
@@ -227,8 +307,7 @@ test('hidden input persists after file removal', async () => {
   const fileB = makeFile('b.pdf', 'application/pdf');
   await user.upload(triggerInput, [fileA, fileB]);
 
-  const removeButtons = screen.getAllByRole('button', { name: 'Remove file' });
-  await user.click(removeButtons[0]);
+  await user.click(screen.getByRole('button', { name: 'Remove a.pdf' }));
 
   const hiddenInput = document.querySelector(
     'input[type="file"][name="docs"]'

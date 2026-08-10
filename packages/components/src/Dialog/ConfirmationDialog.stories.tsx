@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { expect, fn, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { ConfirmationDialog } from './ConfirmationDialog';
+import type { ConfirmationConfig } from './useConfirmation';
 import { ConfirmationProvider, useConfirmation } from './useConfirmation';
 
 const meta = preview.meta({
@@ -94,6 +96,21 @@ Basic.test(
   }
 );
 
+Basic.test(
+  'Closes with Escape without opting in to keyboard dismiss',
+  {},
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+    await canvas.findByRole('alertdialog');
+
+    await userEvent.keyboard('{Escape}');
+
+    await waitFor(() =>
+      expect(canvas.queryByRole('alertdialog')).not.toBeInTheDocument()
+    );
+  }
+);
+
 // Auto focus — `autoFocusButton` focuses the matching action button on open.
 
 Basic.test(
@@ -124,58 +141,117 @@ Basic.test(
   }
 );
 
-// useConfirmation — the imperative hook opens a dialog built from its config and
-// resolves when the user confirms. A local `ConfirmationProvider` keeps the demo
-// self-contained instead of relying on the global one from the decorator.
-
 Basic.test(
-  'useConfirmation opens a dialog from the hook and closes it on confirm',
+  'Focuses the cancel button on open when the variant is destructive',
   {
-    render: () => {
-      const Demo = () => {
-        const confirm = useConfirmation();
-
-        return (
-          <Button
-            onPress={() =>
-              confirm({
-                title: 'Enable notifications',
-                content:
-                  'Would you like to receive notifications for upcoming events?',
-                confirmationLabel: 'Enable',
-                cancelLabel: 'Cancel',
-              })
-            }
-          >
-            Enable notifications
-          </Button>
-        );
-      };
-
-      return (
-        <ConfirmationProvider>
-          <Demo />
-        </ConfirmationProvider>
-      );
-    },
+    // The only case rendering the destructive variant, so it earns a snapshot.
+    parameters: { chromatic: { disableSnapshot: false } },
+    args: { variant: 'destructive', confirmationLabel: 'Delete' },
   },
   async ({ canvas, userEvent }) => {
-    await userEvent.click(
-      canvas.getByRole('button', { name: 'Enable notifications' })
-    );
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
 
-    // The dialog opens with the config passed to `confirm()`.
+    const cancelButton = await canvas.findByRole('button', { name: 'Cancel' });
+    await waitFor(() => expect(cancelButton).toHaveFocus());
+  }
+);
+
+type ConfirmationResultProps = Pick<ConfirmationConfig, 'autoFocusButton'>;
+
+const ConfirmationResult = ({ autoFocusButton }: ConfirmationResultProps) => {
+  const confirm = useConfirmation();
+  const [result, setResult] = useState<string>();
+
+  return (
+    <>
+      <Button
+        onPress={async () =>
+          setResult(
+            await confirm({
+              variant: 'destructive',
+              title: 'Delete file?',
+              content: 'This cannot be undone.',
+              confirmationLabel: 'Delete',
+              cancelLabel: 'Cancel',
+              autoFocusButton,
+            })
+          )
+        }
+      >
+        Delete file
+      </Button>
+      {result ? <div>{`resolved: ${result}`}</div> : null}
+    </>
+  );
+};
+
+// `useConfirmation` — the imperative hook opens a dialog built from its config
+// and resolves when the user confirms. A local `ConfirmationProvider` keeps the
+// demo self-contained instead of relying on the global one from the decorator.
+const ConfirmationResultDemo = (props: ConfirmationResultProps) => (
+  <ConfirmationProvider>
+    <ConfirmationResult {...props} />
+  </ConfirmationProvider>
+);
+
+Basic.test(
+  'useConfirmation builds the dialog from the config passed to confirm()',
+  { render: () => <ConfirmationResultDemo /> },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Delete file' }));
+
     expect(await canvas.findByRole('alertdialog')).toBeInTheDocument();
-    expect(
-      canvas.getByText(
-        'Would you like to receive notifications for upcoming events?'
-      )
-    ).toBeInTheDocument();
+    expect(canvas.getByText('This cannot be undone.')).toBeInTheDocument();
+    expect(canvas.getByRole('button', { name: 'Delete' })).toBeInTheDocument();
+  }
+);
 
-    // Confirming resolves the promise and closes the dialog.
-    await userEvent.click(canvas.getByRole('button', { name: 'Enable' }));
-    await waitFor(() =>
-      expect(canvas.queryByRole('alertdialog')).not.toBeInTheDocument()
-    );
+Basic.test(
+  'Dismissing with Escape resolves the confirmation as cancelled',
+  { render: () => <ConfirmationResultDemo /> },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Delete file' }));
+    await canvas.findByRole('alertdialog');
+
+    await userEvent.keyboard('{Escape}');
+
+    expect(await canvas.findByText('resolved: cancelled')).toBeInTheDocument();
+  }
+);
+
+Basic.test(
+  'Pressing cancel resolves the confirmation as cancelled',
+  { render: () => <ConfirmationResultDemo /> },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Delete file' }));
+    await canvas.findByRole('alertdialog');
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Cancel' }));
+
+    expect(await canvas.findByText('resolved: cancelled')).toBeInTheDocument();
+  }
+);
+
+Basic.test(
+  'Confirming resolves as confirmed even though closing also settles the promise',
+  { render: () => <ConfirmationResultDemo /> },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Delete file' }));
+    await canvas.findByRole('alertdialog');
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Delete' }));
+
+    expect(await canvas.findByText('resolved: confirmed')).toBeInTheDocument();
+  }
+);
+
+Basic.test(
+  'useConfirmation forwards autoFocusButton from the confirm() config',
+  { render: () => <ConfirmationResultDemo autoFocusButton="action" /> },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Delete file' }));
+
+    const confirmButton = await canvas.findByRole('button', { name: 'Delete' });
+    await waitFor(() => expect(confirmButton).toHaveFocus());
   }
 );

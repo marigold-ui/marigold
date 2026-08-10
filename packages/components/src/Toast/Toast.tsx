@@ -26,10 +26,11 @@ export type ToastContentProps = {
   description?: ReactNode;
   action?: ReactNode;
   variant?: 'success' | 'info' | 'warning' | 'error';
+  closeButton?: boolean;
 };
 
 export interface ToastProps {
-  toast: { content: ToastContentProps; key: string };
+  toast: { content: ToastContentProps; key: string; timeout?: number };
 }
 
 export const Toast = ({ toast }: ToastProps) => {
@@ -62,11 +63,15 @@ export const Toast = ({ toast }: ToastProps) => {
           <div className={classNames.action}>{toast.content.action}</div>
         )}
       </RAC_ToastContent>
-      <CloseButton
-        className={classNames.closeButton}
-        aria-label={stringFormatter.format('close')}
-        slot="close"
-      ></CloseButton>
+      {/* A toast with no timeout keeps its close button whatever the caller
+          asked for, or there is no way out of it. */}
+      {(toast.content.closeButton !== false || toast.timeout === undefined) && (
+        <CloseButton
+          className={classNames.closeButton}
+          aria-label={stringFormatter.format('close')}
+          slot="close"
+        ></CloseButton>
+      )}
     </RAC_Toast>
   );
 };
