@@ -1,0 +1,426 @@
+import type { Page } from 'playwright';
+import {
+  ThemeCssNotFoundError,
+  discoverTokenFamilies,
+  loadDesignTokens,
+} from '../helpers/design-tokens.js';
+import type { ValidationIssue } from '../types.js';
+import type { ComputedStyleSnapshot } from './computed-styles.js';
+
+const SKIP_VALUES = new Set([
+  '',
+  'none',
+  'normal',
+  'auto',
+  'inherit',
+  'initial',
+  'unset',
+  '0px',
+  '0',
+  'rgba(0, 0, 0, 0)',
+  'rgb(0, 0, 0)',
+  'transparent',
+]);
+
+const NATIVE_ELEMENTS = [
+  'div',
+  'span',
+  'p',
+  'a',
+  'button',
+  'input',
+  'textarea',
+  'select',
+  'option',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'ul',
+  'ol',
+  'li',
+  'label',
+  'fieldset',
+  'legend',
+  'table',
+  'tr',
+  'td',
+  'th',
+  'img',
+];
+
+export const snapshotBrowserDefaults = async (
+  page: Page,
+  properties: string[]
+): Promise<Map<string, Set<string>>> => {
+  const defaults = await page.evaluate<
+    Record<string, Record<string, string>>,
+    { elements: string[]; properties: string[] }
+  >(
+    ({ elements, properties }) => {
+      const container = document.createElement('div');
+      container.style.cssText =
+        'position:absolute;left:-9999px;top:-9999px;visibility:hidden';
+      document.body.appendChild(container);
+
+      const result: Record<string, Record<string, string>> = {};
+      for (const tag of elements) {
+        const el = document.createElement(tag);
+        // Some defaults need the right attributes: an <a> is only link-colored
+        // with an href. Without this the default link color is never captured
+        // and every unstyled link is flagged as off-token.
+        if (tag === 'a') el.setAttribute('href', '#');
+        if (tag === 'input') el.setAttribute('type', 'text');
+        container.appendChild(el);
+        const computed = window.getComputedStyle(el);
+        const styles: Record<string, string> = {};
+        for (const p of properties) {
+          styles[p] = computed.getPropertyValue(p);
+        }
+        result[tag] = styles;
+      }
+
+      document.body.removeChild(container);
+      return result;
+    },
+    { elements: NATIVE_ELEMENTS, properties }
+  );
+
+  const defaultValues = new Map<string, Set<string>>();
+  for (const styles of Object.values(defaults)) {
+    for (const [prop, value] of Object.entries(styles)) {
+      let set = defaultValues.get(prop);
+      if (!set) {
+        set = new Set();
+        defaultValues.set(prop, set);
+      }
+      set.add(value.trim());
+    }
+  }
+  return defaultValues;
+};
+
+// Anchored, and matched only against the selector's LAST segment: a cssPath is
+// a full ancestor chain, so an unanchored match would fire whenever ANY
+// ancestor is a native tag — true of nearly every element — making the gate a
+// no-op instead of restricting the exemption to elements whose own tag is
+// native.
+const NATIVE_ELEMENT_PATTERN = new RegExp(
+  `^(${NATIVE_ELEMENTS.join('|')}):nth-child`
+);
+
+// Exported for unit testing without a live browser.
+export const isBrowserDefault = (
+  selector: string,
+  property: string,
+  value: string,
+  browserDefaults: Map<string, Set<string>>
+): boolean => {
+  const leaf = selector.split(' > ').pop() ?? selector;
+  if (!NATIVE_ELEMENT_PATTERN.test(leaf)) return false;
+  return browserDefaults.get(property)?.has(value) ?? false;
+};
+
+type TokenReverseMap = Map<string, Map<string, string>>;
+
+const buildTokenReverseMap = async (page: Page): Promise<TokenReverseMap> => {
+  let tokens: Record<string, string>;
+  try {
+    tokens = loadDesignTokens();
+  } catch (err) {
+    if (err instanceof ThemeCssNotFoundError) return new Map();
+    throw err;
+  }
+  if (Object.keys(tokens).length === 0) return new Map();
+
+  const families = discoverTokenFamilies();
+
+  const grouped: Record<string, Array<{ name: string; value: string }>> = {};
+  for (const family of families) {
+    for (const tokenName of family.tokenNames) {
+      const value = tokens[tokenName];
+      if (!value) continue;
+      for (const prop of family.cssProperties) {
+        if (!grouped[prop]) grouped[prop] = [];
+        grouped[prop].push({ name: tokenName, value });
+      }
+    }
+  }
+
+  const normalized = await page.evaluate<
+    Record<string, Record<string, string>>,
+    Record<string, Array<{ name: string; value: string }>>
+  >(grouped => {
+    const result: Record<string, Record<string, string>> = {};
+    const container = document.createElement('div');
+    container.style.cssText =
+      'position:absolute;left:-9999px;visibility:hidden';
+    document.body.appendChild(container);
+
+    for (const [prop, entries] of Object.entries(grouped)) {
+      result[prop] = {};
+      for (const { name, value } of entries) {
+        const el = document.createElement('div');
+        el.style.setProperty(prop, value);
+        container.appendChild(el);
+        const computed = window.getComputedStyle(el).getPropertyValue(prop);
+        if (computed) {
+          result[prop][computed.trim()] = name;
+        }
+        container.removeChild(el);
+      }
+    }
+
+    document.body.removeChild(container);
+    return result;
+  }, grouped);
+
+  const map: TokenReverseMap = new Map();
+  for (const [prop, reverseEntries] of Object.entries(normalized)) {
+    map.set(prop, new Map(Object.entries(reverseEntries)));
+  }
+  return map;
+};
+
+// The COMPUTED-style check only covers color-family properties: a color token
+// resolves to an exact rgb(), so reverse-mapping the computed value is sound.
+// Spacing, typography and radius are theme-derived computed pixels that rarely
+// equal a discrete token even when fully token-driven, so flagging them
+// produces warning volume that scales with UI size. The INLINE path below is
+// broader on purpose — there a hardcoded value IS an off-token override.
+const COMPUTED_TOKEN_PROPERTIES = new Set([
+  'color',
+  'background-color',
+  'border-color',
+  'border-top-color',
+  'border-right-color',
+  'border-bottom-color',
+  'border-left-color',
+  'outline-color',
+  'fill',
+  'stroke',
+]);
+
+export const isComputedTokenCandidate = (property: string): boolean =>
+  COMPUTED_TOKEN_PROPERTIES.has(property);
+
+// A disabled control composites an alpha over its base color (rgba(…, 0.3)),
+// so the value can never reverse-map to an opaque token. That's a state
+// treatment, not an author-chosen off-token color. Inline styles are still
+// checked separately.
+export const isTokenCheckableSnapshot = (snap: {
+  disabled?: boolean;
+}): boolean => snap.disabled !== true;
+
+const isTokenizedViaReverseMap = (
+  property: string,
+  value: string,
+  reverseMap: TokenReverseMap
+): boolean => {
+  const propMap = reverseMap.get(property);
+  if (!propMap) return false;
+  if (propMap.has(value)) return true;
+
+  if (!value.includes(' ')) return false;
+  const parts = value.split(/\s+/);
+  return parts.every(part => SKIP_VALUES.has(part) || propMap.has(part));
+};
+
+// The unit suffix is optional: font-weight and unitless line-height are the
+// only tokenizable properties whose valid values are bare numbers, and without
+// this branch those very common hardcoded forms were invisible here. Trailing
+// `%` is covered too, via a lookahead — `\b` doesn't reliably assert after a
+// non-word character. Exported for unit testing.
+export const HARDCODED_VALUE =
+  /(?:#[0-9a-fA-F]{3,8}|rgba?\(|hsla?\(|oklch\(|lch\(|hwb\(|lab\(|color\(|\d+(?:\.\d+)?(?:px|em|rem|ch|vw|vh|%)?(?=\D|$))/;
+
+// Only properties where a token is the expected source. Layout properties and
+// CSS custom properties are excluded: components legitimately set those inline
+// (Tiles writes `--tilesWidth` from a prop) and they have no token equivalent.
+const TOKENIZABLE_INLINE_PROPERTIES = new Set([
+  'color',
+  'background',
+  'background-color',
+  'border-color',
+  'border-top-color',
+  'border-right-color',
+  'border-bottom-color',
+  'border-left-color',
+  'outline-color',
+  'fill',
+  'stroke',
+  'padding',
+  'padding-top',
+  'padding-right',
+  'padding-bottom',
+  'padding-left',
+  'margin',
+  'margin-top',
+  'margin-right',
+  'margin-bottom',
+  'margin-left',
+  'gap',
+  'row-gap',
+  'column-gap',
+  'border-radius',
+  'font-size',
+  'font-weight',
+  'line-height',
+  'letter-spacing',
+  'box-shadow',
+]);
+
+// React Aria's `VisuallyHidden` renders the classic clip idiom inline
+// (`width:1px; margin:-1px; clip:rect(0 0 0 0); clip-path:inset(50%)`). Those
+// values are part of the a11y hack, not author-chosen spacing, so flagging
+// them both false-positives and blames a design-system internal on the
+// generated page. NOTE: inlined again inside detectHardcodedInlineStyles'
+// page.evaluate (browser code cannot import this); keep in sync.
+export const isVisuallyHiddenInlineStyle = (raw: string): boolean =>
+  /clip\s*:\s*rect\(\s*0/i.test(raw) ||
+  /clip-path\s*:\s*inset\(\s*50%/i.test(raw) ||
+  (/(?:^|;)\s*width\s*:\s*1px/i.test(raw) &&
+    /(?:^|;)\s*height\s*:\s*1px/i.test(raw) &&
+    /overflow\s*:\s*hidden/i.test(raw));
+
+type InlineStyleViolation = {
+  selector: string;
+  component: string;
+  fingerprint: string;
+  property: string;
+  value: string;
+};
+
+const detectHardcodedInlineStyles = async (
+  page: Page
+): Promise<InlineStyleViolation[]> =>
+  page.evaluate(() => {
+    const results: Array<{
+      selector: string;
+      component: string;
+      fingerprint: string;
+      property: string;
+      value: string;
+    }> = [];
+    const mv = (
+      window as unknown as {
+        __mv: Record<string, (...args: unknown[]) => unknown>;
+      }
+    ).__mv;
+    const cssPath = mv.cssPath as (el: Element) => string;
+    const describeEl = mv.describeEl as (el: Element) => {
+      component: string;
+      fingerprint: string;
+    };
+
+    for (const el of document.querySelectorAll('[style]')) {
+      const raw = el.getAttribute('style');
+      if (!raw) continue;
+      // Skip React Aria VisuallyHidden clip elements (kept in sync with the
+      // exported isVisuallyHiddenInlineStyle helper).
+      if (
+        /clip\s*:\s*rect\(\s*0/i.test(raw) ||
+        /clip-path\s*:\s*inset\(\s*50%/i.test(raw) ||
+        (/(?:^|;)\s*width\s*:\s*1px/i.test(raw) &&
+          /(?:^|;)\s*height\s*:\s*1px/i.test(raw) &&
+          /overflow\s*:\s*hidden/i.test(raw))
+      ) {
+        continue;
+      }
+      const selector = cssPath(el);
+      const { component, fingerprint } = describeEl(el);
+      for (const decl of raw.split(';')) {
+        const colon = decl.indexOf(':');
+        if (colon < 0) continue;
+        const prop = decl.slice(0, colon).trim();
+        const val = decl.slice(colon + 1).trim();
+        if (!val || val.includes('var(')) continue;
+        results.push({
+          selector,
+          component,
+          fingerprint,
+          property: prop,
+          value: val,
+        });
+      }
+    }
+    return results;
+  });
+
+export const checkTokenCompliance = async (
+  page: Page,
+  snapshots: ComputedStyleSnapshot[],
+  browserDefaults?: Map<string, Set<string>>
+): Promise<ValidationIssue[]> => {
+  let tokens: Record<string, string>;
+  try {
+    tokens = loadDesignTokens();
+  } catch (err) {
+    if (err instanceof ThemeCssNotFoundError) return [];
+    throw err;
+  }
+  if (Object.keys(tokens).length === 0) return [];
+
+  const reverseMap = await buildTokenReverseMap(page);
+  const defaults = browserDefaults ?? new Map<string, Set<string>>();
+  const issues: ValidationIssue[] = [];
+
+  for (const snap of snapshots) {
+    if (!isTokenCheckableSnapshot(snap)) continue;
+    for (const [property, rawValue] of Object.entries(snap.styles)) {
+      if (!isComputedTokenCandidate(property)) continue;
+      const value = rawValue.trim();
+      if (SKIP_VALUES.has(value)) continue;
+      if (isBrowserDefault(snap.selector, property, value, defaults)) continue;
+      if (isTokenizedViaReverseMap(property, value, reverseMap)) continue;
+
+      const fp = snap.fingerprint ? ` (“${snap.fingerprint}”)` : '';
+      issues.push({
+        type: 'style',
+        severity: 'warning',
+        source: 'token-compliance',
+        component: snap.component,
+        message: `Computed ${property} value "${value}" on <${snap.component}>${fp} does not map to a known design token.`,
+        suggestion: `If this is intentional, ignore the warning. Otherwise, use a Marigold variant or a theme-rui token instead of a hard-coded value.`,
+        details: {
+          property,
+          value,
+          selector: snap.selector,
+          ...(snap.fingerprint ? { fingerprint: snap.fingerprint } : {}),
+        },
+      });
+    }
+  }
+
+  const inlineViolations = await detectHardcodedInlineStyles(page);
+  for (const v of inlineViolations) {
+    // CSS custom properties are the token mechanism itself, and non-tokenizable
+    // properties (transform, width, ...) have no token to use instead.
+    if (v.property.startsWith('--')) continue;
+    if (!TOKENIZABLE_INLINE_PROPERTIES.has(v.property)) continue;
+    // Reset values (0, transparent, …) are not off-token overrides; the
+    // computed path skips them via SKIP_VALUES, so the inline path must too.
+    if (SKIP_VALUES.has(v.value)) continue;
+    if (!HARDCODED_VALUE.test(v.value)) continue;
+    const fp = v.fingerprint ? ` (“${v.fingerprint}”)` : '';
+    issues.push({
+      type: 'style',
+      severity: 'warning',
+      source: 'token-compliance',
+      component: v.component,
+      message: `Inline style "${v.property}: ${v.value}" on <${v.component}>${fp} uses a hardcoded value instead of a design token.`,
+      suggestion: `Use var(--token-name) or a Marigold component prop instead of hardcoding "${v.value}".`,
+      details: {
+        property: v.property,
+        value: v.value,
+        inline: true,
+        selector: v.selector,
+        ...(v.fingerprint ? { fingerprint: v.fingerprint } : {}),
+      },
+    });
+  }
+
+  return issues;
+};

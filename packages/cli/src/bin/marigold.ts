@@ -13,6 +13,7 @@ import {
   type TelemetrySubcommand,
   runTelemetry,
 } from '../commands/telemetry.js';
+import type { ValidateChecks, ValidateFormat } from '../commands/validate.js';
 import {
   type DoctorFormat,
   EXAMPLES_SUBCOMMANDS,
@@ -31,10 +32,8 @@ const packageRoot = path.join(
   '..'
 );
 
-// In local dev only, pick up packages/cli/.env.local. The file is excluded
-// from the published `files` array, so this is a no-op for installed copies.
-// loadEnvFile preserves existing process.env values, so explicit shell
-// exports still win.
+// Local dev only: .env.local is excluded from the published `files`, so this
+// is a no-op for installed copies. Existing process.env values still win.
 try {
   process.loadEnvFile(path.join(packageRoot, '.env.local'));
 } catch {
@@ -66,6 +65,7 @@ ${pc.bold('Commands:')}
   list                  List available components and pages
   search <query>        Find components by what their docs say
   examples <action>     Browse application patterns (list | get <slug>)
+  validate <file>       Validate a Marigold component file
   init                  Set up Marigold in a project
   doctor                Diagnose a project's Marigold setup
   migrate [version]     Apply codemods for a breaking Marigold release
@@ -95,6 +95,10 @@ ${pc.bold('Examples options:')}
   --fresh             Bypass the local cache
   --offline           Use only the local cache
 
+${pc.bold('Validate options:')}
+  --checks <name>     technical | spatial | a11y | all (default: all)
+  --format <name>     text | json (default: text)
+
 ${pc.bold('Init options:')}
   --yes               Skip confirmation prompts
   --skip-install      Don't run the package install step
@@ -116,6 +120,7 @@ ${pc.bold('Migrate options:')}
 ${pc.bold('Environment:')}
   MARIGOLD_DOCS_URL              Override docs site base URL
   MARIGOLD_CACHE_TTL_MS          Override cache TTL in milliseconds
+  MARIGOLD_VALIDATE_DISABLED=1   Skip validation (exit immediately)
   MARIGOLD_TELEMETRY_DISABLED=1  Opt out of telemetry
   DO_NOT_TRACK=1                 Opt out of telemetry (standard)
 
@@ -125,9 +130,8 @@ See https://www.marigold-ui.io for component documentation.
 const isOutputFormat = (v: string): v is OutputFormat =>
   v === 'markdown' || v === 'json' || v === 'plain';
 
-// Derived from the shared enum in commands-spec.ts (babel-free) rather than
-// imported from ../commands/doctor.js, so the doctor module — and its
-// @babel/parser dependency — stays lazily loaded off the hot path.
+// From the babel-free commands-spec.ts rather than ../commands/doctor.js, so
+// the doctor module and its @babel/parser stay off the hot path.
 const isDoctorFormat = (v: string): v is DoctorFormat =>
   (doctorFormatValues as readonly string[]).includes(v);
 
@@ -136,6 +140,12 @@ const isSection = (v: string): v is Section =>
 
 const isTelemetrySub = (v: string): v is TelemetrySubcommand =>
   v === 'status' || v === 'enable' || v === 'disable';
+
+const isValidateChecks = (v: string): v is ValidateChecks =>
+  v === 'technical' || v === 'spatial' || v === 'a11y' || v === 'all';
+
+const isValidateFormat = (v: string): v is ValidateFormat =>
+  v === 'json' || v === 'text';
 
 // Thrown by `fail()` so the existing try/catch in `main()` can handle
 // validation failures without bypassing the telemetry emit block.
@@ -190,6 +200,16 @@ const parseExamplesCommand = (argv: string[]) =>
       format: { type: 'string' },
       fresh: { type: 'boolean', default: false },
       offline: { type: 'boolean', default: false },
+    },
+  });
+
+const parseValidateCommand = (argv: string[]) =>
+  parseArgs({
+    args: argv,
+    allowPositionals: true,
+    options: {
+      checks: { type: 'string', default: 'all' },
+      format: { type: 'string', default: 'text' },
     },
   });
 
@@ -400,15 +420,53 @@ export const main = async (
 
       writeOutput(result.output);
       cacheHit = result.cacheHit;
+    } else if (command === 'validate') {
+      // Enforced only in runValidate, so CLI and programmatic callers behave
+      // identically: it returns hasErrors: false and exits 0.
+      const { positionals, values } = parseValidateCommand(rest);
+      const [fileInput] = positionals;
+      const checks = values.checks ?? 'all';
+      const format = values.format ?? 'text';
+
+      // Clamp to a known enum value so an invalid flag never leaks the raw
+      // string into telemetry (validation below runs after telemetryArgs is
+      // set). Mirrors the doctor command's --format clamping.
+      telemetryArgs = {
+        checks: isValidateChecks(checks) ? checks : 'invalid',
+        format: isValidateFormat(format) ? format : 'invalid',
+      };
+
+      if (!fileInput) fail('Usage: marigold validate <file.tsx>');
+      // Multi-file validation is a follow-up ticket. A second positional is
+      // rejected rather than dropped — validating only the first and exiting 0
+      // would read as "both files are fine".
+      if (positionals.length > 1) {
+        fail('Usage: marigold validate <file.tsx> (one file at a time)');
+      }
+      if (values.checks && !isValidateChecks(values.checks)) {
+        fail(`Invalid --checks: ${values.checks}`);
+      }
+      if (values.format && !isValidateFormat(values.format)) {
+        fail(`Invalid --format: ${values.format}`);
+      }
+
+      const { runValidate } = await import('../commands/validate.js');
+      const result = await runValidate({
+        file: fileInput,
+        checks: (values.checks as ValidateChecks | undefined) ?? 'all',
+        format: (values.format as ValidateFormat | undefined) ?? 'text',
+      });
+
+      writeOutput(result.output);
+      exitCode = result.hasErrors ? 1 : 0;
     } else if (command === 'init') {
       const { values } = parseInitCommand(rest);
       telemetryArgs = {
         ...(values.yes ? { yes: 'true' } : {}),
         ...(values['skip-install'] ? { skipInstall: 'true' } : {}),
       };
-      // Lazy-load so @babel/parser, magic-string and @clack/prompts stay off
-      // the docs/list hot path — those are the commands AI agents call
-      // dozens of times per session.
+      // Lazy so @babel/parser, magic-string and @clack/prompts stay off the
+      // docs/list hot path agents hammer.
       const { runInit } = await import('../commands/init.js');
       await runInit({
         yes: values.yes,
@@ -417,10 +475,9 @@ export const main = async (
     } else if (command === 'doctor') {
       const { positionals, values } = parseDoctorCommand(rest);
       const format = values.format ?? 'text';
-      // Record only { format }: the pending DST-1600 GDPR/ePrivacy review scopes
-      // doctor telemetry to the output format alone, so --offline is not tracked.
-      // Clamp to a known enum value so an invalid `--format` never leaks the raw
-      // string into telemetry (validation below runs after telemetryArgs is set).
+      // Only { format }: the pending DST-1600 GDPR review scopes doctor
+      // telemetry to the output format, so --offline isn't tracked. Clamped so
+      // an invalid value never leaks the raw string into telemetry.
       telemetryArgs = { format: isDoctorFormat(format) ? format : 'invalid' };
 
       if (positionals.length > 0) {
@@ -503,9 +560,8 @@ export const main = async (
     }
   } catch (err) {
     if (err instanceof Error && err.name === 'InitCancelError') {
-      // User aborted `marigold init`. Surface SIGINT-style 130 so wrapping
-      // scripts can distinguish abort from completion. The init flow already
-      // printed "Aborted."; don't double-print.
+      // Aborted: SIGINT-style 130 so wrapping scripts can tell abort from
+      // completion. The init flow already printed "Aborted."
       exitCode = 130;
     } else {
       const message = err instanceof Error ? err.message : String(err);

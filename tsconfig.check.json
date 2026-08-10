@@ -30,6 +30,7 @@
     "**/dist/*",
     "**/node_modules/*",
     "docs/**/*",
-    ".claude/**/*"
+    ".claude/**/*",
+    "**/validate/examples/*"
   ]
 }
