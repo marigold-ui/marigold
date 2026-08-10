@@ -1,4 +1,5 @@
 import { render, renderHook, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia } from '../test.utils';
 import { useTableContext } from './Context';
@@ -472,6 +473,53 @@ describe('Expandable rows', () => {
     // The standalone clearing has no `children`, so it stays a leaf.
     expect(rowOf('CLR-10240')).not.toHaveAttribute('aria-expanded');
     expect(rowOf('CLR-10240')).toHaveAttribute('aria-level', '1');
+  });
+
+  test('selecting a group row leaves its children alone', async () => {
+    render(<ExpandableRowsDynamic.Component selectionMode="multiple" />);
+
+    // June is pre-expanded, so its children are there to check.
+    const group = rowOf('Settlement run 1 Jun 2026');
+    await userEvent.click(
+      // eslint-disable-next-line testing-library/no-node-access
+      group.querySelector('input[type=checkbox]')!
+    );
+
+    expect(group).toHaveAttribute('aria-selected', 'true');
+    expect(rowOf('CLR-10188')).toHaveAttribute('aria-selected', 'false');
+    // No partial state either: `mixed` would promise a cascade that we don't do.
+    expect(
+      // eslint-disable-next-line testing-library/no-node-access
+      rowOf('CLR-10188').querySelector<HTMLInputElement>(
+        'input[type=checkbox]'
+      )!.indeterminate
+    ).toBe(false);
+  });
+
+  test('select-all yields the all sentinel and covers collapsed rows', async () => {
+    // Easy to get backwards: collapsed rows are absent from the DOM, so it looks
+    // like select-all should skip them. It doesn't — it never enumerates keys at
+    // all, and expanding afterwards reveals them already selected.
+    const onSelectionChange = vi.fn();
+    render(
+      <ExpandableRowsDynamic.Component
+        selectionMode="multiple"
+        onSelectionChange={onSelectionChange}
+      />
+    );
+
+    await userEvent.click(
+      screen.getByRole('checkbox', { name: /select all/i })
+    );
+
+    expect(onSelectionChange).toHaveBeenCalledWith('all');
+
+    // July was collapsed while select-all ran.
+    const collapsed = rowOf('Settlement run 1 Jul 2026');
+    // eslint-disable-next-line testing-library/no-node-access
+    await userEvent.click(collapsed.querySelector('button')!);
+
+    expect(rowOf('CLR-10231')).toHaveAttribute('aria-selected', 'true');
   });
 
   test('expandable drives both the visuals and aria-expanded', () => {

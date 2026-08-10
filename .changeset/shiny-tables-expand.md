@@ -29,9 +29,11 @@ palette step, so it holds one contrast (~1.11:1) whether the row sits on
 `surface`, on `background`, inside a `muted` table or under a hover wash.
 
 Selection works with grouped rows but does not cascade: each row selects on its
-own, a group row shows no partial state, and select-all covers rendered rows
-only — so it skips the children of collapsed groups. Documented, with the
-workaround.
+own and a group row shows no partial state, because a nested row is a real
+record whose checkbox already means "this record". Select-all yields the `'all'`
+sentinel, which does cover collapsed nested rows — but it can't be iterated, so
+resolve it against your own data rather than the rendered rows. Documented, with
+the workaround.
 
 **Potentially breaking for opted-in tables:** setting `treeColumn` changes the
 table's accessibility role from `grid` to `treegrid` — that is what makes screen
