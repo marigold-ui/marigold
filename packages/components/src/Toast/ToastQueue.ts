@@ -18,6 +18,9 @@ let queue: ToastQueue<ToastContentProps> | undefined;
 export const getToastQueue = (): ToastQueue<ToastContentProps> => {
   if (!queue) {
     queue = new ToastQueue<ToastContentProps>({
+      // Explicit rather than inherited: `clearToasts` reads `visibleToasts` as
+      // the whole queue, which only holds while nothing is held back.
+      maxVisibleToasts: Infinity,
       // Wrap state updates in a CSS view transition.
       wrapUpdate(fn) {
         if (
@@ -64,6 +67,10 @@ export type ToastOptions = {
    * Commit deferred work from here rather than from your own `setTimeout`: the
    * toast's timer pauses while the region is hovered or focused, so a separate
    * timer fires while the toast is still on screen.
+   *
+   * A toast that never auto-dismisses never runs this on its own. Don't pair it
+   * with `variant="warning"`, `variant="error"` or `timeout: 0` when the
+   * handler commits work the user has already been told happened.
    */
   onClose?: () => void;
 };
@@ -102,7 +109,7 @@ export function useToast() {
   const clearToasts = useCallback(() => {
     const queue = getToastQueue();
     // `clear()` skips close handlers, so run them first. `visibleToasts` is the
-    // whole queue only while `maxVisibleToasts` stays at its `Infinity` default.
+    // whole queue because `getToastQueue` sets `maxVisibleToasts: Infinity`.
     queue.visibleToasts.forEach(toast => toast.onClose?.());
     queue.clear();
   }, []);
