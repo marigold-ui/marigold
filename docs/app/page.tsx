@@ -1,3 +1,4 @@
+import { SiteFooter } from '@/app/_components/SiteFooter';
 import { getLatestPost } from '@/lib/blog';
 import { baseOptions } from '@/lib/layout.shared';
 import Link from 'fumadocs-core/link';
@@ -59,6 +60,8 @@ const Page = () => {
             alt="Reservix GmbH"
           />
         </div>
+
+        <SiteFooter />
       </main>
     </HomeLayout>
   );

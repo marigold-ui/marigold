@@ -33,6 +33,20 @@ export const blogPosts = defineCollections({
   },
 });
 
+/**
+ * Impressum and Datenschutzerklärung — MDX so Legal and the DPO can edit the
+ * prose without JSX escaping.
+ *
+ * In `legal/`, not `content/`: the docs collection globs all of `content`, so
+ * anything there joins the page tree, sidebar, search and MCP index. These are
+ * statutory pages, rendered by their own routes under `app/(legal)`.
+ */
+export const legal = defineCollections({
+  type: 'doc',
+  dir: 'legal',
+  schema: frontmatterSchema,
+});
+
 // You can customise Zod schemas for frontmatter and `meta.json` here
 // see https://fumadocs.dev/docs/mdx/collections
 export const docs = defineDocs({

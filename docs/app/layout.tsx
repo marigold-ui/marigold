@@ -1,10 +1,13 @@
+import { CONSENT_BANNER_ENABLED } from '@/lib/consent';
 import { source } from '@/lib/source';
-import { Analytics } from '@vercel/analytics/next';
 import { flattenTree } from 'fumadocs-core/page-tree';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { Inter } from 'next/font/google';
 import { examplePages } from './(examples)/examples/navigation';
+import { ConsentBanner } from './_components/ConsentBanner';
+import { ConsentInit } from './_components/ConsentInit';
+import { ConsentedAnalytics } from './_components/ConsentedAnalytics';
 import './global.css';
 import { type PageEntry, Providers } from './providers';
 
@@ -47,13 +50,19 @@ const Layout = ({ children }: LayoutProps<'/'>) => {
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>
       <body className="flex min-h-screen flex-col">
+        {CONSENT_BANNER_ENABLED && <ConsentInit />}
         <Suspense>
           <Providers pages={[...docsPages, ...exampleEntries]}>
             {children}
           </Providers>
           <div id="portalContainer" data-theme="rui" className="not-prose" />
         </Suspense>
-        <Analytics />
+        {CONSENT_BANNER_ENABLED && (
+          <>
+            <ConsentBanner />
+            <ConsentedAnalytics />
+          </>
+        )}
       </body>
     </html>
   );
