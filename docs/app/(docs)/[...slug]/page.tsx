@@ -1,3 +1,4 @@
+import { DocsPageFooter } from '@/app/_components/DocsPageFooter';
 import { getPageImage, source } from '@/lib/source';
 import { getMDXComponents } from '@/mdx-components';
 import {
@@ -59,6 +60,8 @@ const Page = async (props: PageProps<'/[...slug]'>) => {
       }}
       toc={toc}
       full={page.data.full}
+      slots={{ footer: DocsPageFooter }}
+      className="pb-0"
     >
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription className="mb-0">

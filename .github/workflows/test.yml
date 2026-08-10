@@ -155,6 +155,60 @@ jobs:
         run: pnpm --filter @marigold/docs test
 
   # ---------------------------------------------------------------------------
+  # @marigold/cli tests (vitest node-mode, real Playwright renders).
+  # Excluded from the root unit-tests/storybook-tests projects (see
+  # vitest.config.shared.ts) because it needs a built @marigold/components
+  # (its checkers read dist/index.d.mts to derive the live component registry)
+  # and a built theme-rui (design-tokens checks read dist/theme.css) rather
+  # than the workspace source those browser-mode projects run against.
+  # ---------------------------------------------------------------------------
+  cli-tests:
+    name: CLI Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    env:
+      CI: true
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6.0.9
+      - name: Setup Node (using .node-version)
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Get Playwright version
+        id: playwright-version
+        run: echo "version=$(pnpm exec playwright --version)" >> $GITHUB_OUTPUT
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/ms-playwright
+          # Distinct from the other jobs' `playwright-<version>-<os>` key: this
+          # job only ever installs Chromium (see below), so it must not share
+          # a cache slot with unit-tests/storybook-tests — whichever job's
+          # cache-save wins that shared key on a cold run would otherwise
+          # leave the other jobs restoring a Chromium-only cache and missing
+          # firefox/webkit on every run after.
+          key: playwright-${{ steps.playwright-version.outputs.version }}-${{ runner.os }}-chromium
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        # spatial/renderer.ts only ever launches Chromium — firefox/webkit
+        # would be pure cold-cache cost with nothing in this job using them.
+        run: pnpm exec playwright install chromium
+
+      - name: Build @marigold/components, theme packages, and @marigold/cli
+        run: pnpm build
+
+      - name: Run CLI tests
+        run: pnpm --filter @marigold/cli test
+
+  # ---------------------------------------------------------------------------
   # Merge coverage & report
   # ---------------------------------------------------------------------------
   coverage-report:
@@ -168,8 +222,6 @@ jobs:
     env:
       CI: true
       PR_NUMBER: ${{ github.event.number }}
-      GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
-      GIST_ID: ${{ secrets.GIST_ID }}
     steps:
       - uses: actions/checkout@v6
       - name: Setup Node (using .node-version)
@@ -228,74 +280,3 @@ jobs:
           pr-number: 'auto'
           json-summary-path: './coverage/coverage-summary.json'
           json-final-path: './coverage/coverage-final.json'
-
-      # Coverage badge
-      - name: Read coverage and prepare badge JSON
-        id: prepare_badge
-        run: |
-          node -e "
-          const fs = require('fs');
-          const path = require('path');
-          const summaryPath = path.join(process.cwd(), 'coverage', 'coverage-summary.json');
-          if (!fs.existsSync(summaryPath)) {
-            console.error('coverage-summary.json not found at', summaryPath);
-            process.exit(1);
-          }
-          const summary = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
-          const pct = Number(summary?.total?.lines?.pct ?? 0);
-          const message = pct.toFixed(0) + '%';
-          let color = 'red';
-          if (pct >= 90) color = 'brightgreen';
-          else if (pct >= 80) color = 'green';
-          else if (pct >= 65) color = 'orange';
-          else if (pct >= 50) color = 'yellow';
-
-          const badge = {
-            schemaVersion: 1,
-            label: 'Vitest',
-            message,
-            color,
-            labelColor: 'black',
-            namedLogo: 'vitest',
-            logoColor: 'white'
-          };
-          const outDir = path.join(process.cwd(), 'artifacts');
-          fs.mkdirSync(outDir, { recursive: true });
-          const outFile = path.join(outDir, 'vitest-coverage-badge.json');
-          fs.writeFileSync(outFile, JSON.stringify(badge));
-          console.log('Badge JSON written to', outFile);
-
-          // Also expose outputs
-          const githubOutput = process.env.GITHUB_OUTPUT;
-          if (githubOutput) {
-            fs.appendFileSync(githubOutput, 'coverage_pct=' + pct + '\n');
-            fs.appendFileSync(githubOutput, 'badge_path=' + outFile + '\n');
-          }
-          "
-
-      - name: Upload badge JSON as artifact (for debugging)
-        uses: actions/upload-artifact@v7
-        with:
-          name: vitest-coverage-badge
-          path: artifacts/vitest-coverage-badge.json
-
-      - name: Upload badge to Gist (only for main target)
-        if: ${{ (github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main')) && (env.GIST_TOKEN != '' && env.GIST_ID != '') }}
-        uses: schneegans/dynamic-badges-action@v1.7.0
-        with:
-          auth: ${{ secrets.GIST_TOKEN }}
-          gistID: ${{ secrets.GIST_ID }}
-          filename: vitest-coverage-badge.json
-          label: Vitest
-          message: ${{ steps.prepare_badge.outputs.coverage_pct }}%
-          color: >-
-            ${{
-              steps.prepare_badge.outputs.coverage_pct >= 90 && 'brightgreen' ||
-              steps.prepare_badge.outputs.coverage_pct >= 80 && 'green' ||
-              steps.prepare_badge.outputs.coverage_pct >= 65 && 'orange' ||
-              steps.prepare_badge.outputs.coverage_pct >= 50 && 'yellow' ||
-              'red'
-            }}
-          labelColor: black
-          namedLogo: vitest
-          logoColor: white

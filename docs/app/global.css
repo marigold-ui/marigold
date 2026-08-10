@@ -26,3 +26,16 @@
     --breakpoint-lg: 1024px;
   }
 }
+
+/*
+ * Hides the banner before paint for visitors who already answered, off the
+ * attribute `CONSENT_INIT_SCRIPT` stamps onto <html>; otherwise it flashes on
+ * every load. `:not([data-reopened])` keeps the footer link able to reopen it.
+ *
+ * Unlayered on purpose — in `@layer base` it would lose to any `display`
+ * utility. Selector hardcodes `CONSENT_BANNER_ID` from lib/consent.ts.
+ */
+html[data-consent='granted'] #mg-consent-banner:not([data-reopened]),
+html[data-consent='denied'] #mg-consent-banner:not([data-reopened]) {
+  display: none;
+}
