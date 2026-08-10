@@ -78,24 +78,6 @@
   --color-muted: var(--color-charcoal-50);
   --color-hover: var(--color-charcoal-200);
 
-  /* Structural band: marks a row as heading a group of other rows — a Table
-     group row today, a grouped collection section later. Deliberately distinct
-     from `hover` and `selected`, which mean transient interaction state; a band
-     is permanent structure and must not read as either.
-
-     Alpha, not a palette rung, for the same reason as `--color-control` below: a
-     group row lands on `surface`, on `background`, inside a `muted` Table and
-     under a hover wash, and the band has to hold one contrast against all four.
-     At 0.05 they measure 1.110 / 1.115 / 1.112 / 1.111 — within 0.005 of each
-     other. `charcoal-100`, the rung this replaces, measured 1.106 on surface but
-     drifts on the others. See DST-1672 for the alpha-vs-rung method.
-
-     Deliberately quiet: this sits *under* body text, so it separates by fill
-     without competing with the values in the row. `--color-muted` was the
-     obvious candidate and is unusable here — it measures 1.04:1 on surface,
-     which is invisible in practice. */
-  --color-band: oklch(from var(--color-charcoal-950) l c h / 0.05);
-
   /* Resting fill of an unselected control track, and only that: the Switch
      groove, the SegmentedControl track, the Slider rail. Bordered controls
      (inputs, selects) sit on `surface` and use `control-border` instead — the

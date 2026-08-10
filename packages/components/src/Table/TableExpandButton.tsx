@@ -12,13 +12,11 @@ export interface TableExpandButtonProps {
 // Component
 // ---------------
 /**
- * Expand/collapse control for a group row, rendered by `Table.Cell` in the tree
- * column.
+ * Expand/collapse control rendered by `Table.Cell` in the tree column.
  *
- * The `chevron` slot is what wires this up: react-aria supplies the press
- * handler, the localized "Expand"/"Collapse" label, and keeps the button out of
- * the tab order (you reach it by arrow-navigating to the row), so `Tab` stays
- * reserved for the row's own action buttons.
+ * `slot="chevron"` supplies the press handler, the localized "Expand"/"Collapse"
+ * label and tab-order exclusion — you reach it by arrow-navigating to the row,
+ * so `Tab` stays reserved for the row's own buttons.
  */
 export const TableExpandButton = ({ expanded }: TableExpandButtonProps) => {
   const { classNames } = useTableContext();

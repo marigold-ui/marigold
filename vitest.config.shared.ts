@@ -59,11 +59,10 @@ export const browserDeps = [
  */
 export const browserScanEntries = [
   'packages/*/src/**/*.{test,stories}.{ts,tsx}',
-  // @marigold/cli runs node-mode tests from its own vitest config (it is already
-  // excluded from collection below). Its import graph reaches native modules
-  // such as chokidar -> fsevents, which the browser dep scanner tries to bundle
-  // as JavaScript and fails on with `UNLOADABLE_DEPENDENCY`, taking down every
-  // browser-mode project on a cold optimizer cache.
+  // @marigold/cli reaches native modules (chokidar -> fsevents), which the
+  // browser dep scanner fails to bundle with `UNLOADABLE_DEPENDENCY` — taking
+  // down every browser-mode project on a cold optimizer cache. It has its own
+  // config anyway.
   '!packages/cli/**',
 ];
 

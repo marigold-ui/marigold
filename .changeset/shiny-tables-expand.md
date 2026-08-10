@@ -23,10 +23,9 @@ is filled with the new `band` token and emphasised automatically. Expansion is
 collapsed by default and can be controlled with `expandedKeys` /
 `defaultExpandedKeys` / `onExpandedChange`.
 
-New theme keys `treeIndent` and `expandButton`, and a new `--color-band` token
-for the fill that marks a row as heading a group. It is an alpha rather than a
-palette step, so it holds one contrast (~1.11:1) whether the row sits on
-`surface`, on `background`, inside a `muted` table or under a hover wash.
+New theme keys `treeIndent` and `expandButton`. The group row's fill is
+`foreground/5`, which holds ~1.10:1 whether the row sits on `surface`, on
+`background`, inside a `muted` table or under a hover wash.
 
 Selection works with grouped rows but does not cascade: each row selects on its
 own and a group row shows no partial state, because a nested row is a real

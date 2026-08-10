@@ -36,17 +36,11 @@ const TableRow = <T extends object>({
   let { selectionBehavior, allowsDragging } = useTableOptions();
   const context = useTableContext();
 
-  // Upstream reads two different prop names for the same thing: react-aria-
-  // components uses `hasChildItems` for the chevron and the data attributes,
-  // while react-aria's `useTableRow` uses `hasChildRows` for `aria-expanded`.
-  // Setting only one leaves the other half missing, so both are written until
-  // upstream reconciles them. `hasChildRows` is not part of RAC's `RowProps`,
-  // but every row prop ends up on the collection node, which is where
-  // `useTableRow` looks for it.
-  //
-  // Both are spelled in terms of children the row does not have yet, which is
-  // why the public prop is `expandable` instead: the row is what gains the
-  // behaviour, and that stays true before anything is loaded.
+  // RAC reads `hasChildItems` for the control and the data attributes;
+  // react-aria's `useTableRow` reads `hasChildRows` for `aria-expanded`. Setting
+  // one leaves the other half missing, so write both until upstream unifies
+  // them. `hasChildRows` isn't in RAC's `RowProps`, but row props reach the
+  // collection node, which is where `useTableRow` looks.
   const expandableProps = {
     hasChildItems: expandable,
     hasChildRows: expandable,

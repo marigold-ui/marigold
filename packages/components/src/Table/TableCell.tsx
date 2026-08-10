@@ -45,7 +45,7 @@ const TableCell = ({
             columnIndex={columnIndex}
             alignX={alignX}
             cellOverflow={cellOverflow}
-            className={isTreeColumn ? 'min-w-0 flex-1' : undefined}
+            className={isTreeColumn ? 'col-start-2 min-w-0' : undefined}
           >
             {children}
           </TableCellContent>
@@ -53,22 +53,9 @@ const TableCell = ({
 
         if (!isTreeColumn) return content;
 
-        // The leading gutter and any deeper-level indentation live on this
-        // wrapper rather than on the cell's own padding, so they compose with
-        // `--cell-edge-padding` instead of fighting it.
         return (
           <div className={classNames.treeIndent}>
-            {hasChildItems ? (
-              <TableExpandButton expanded={isExpanded} />
-            ) : (
-              // Holds the gutter open on rows that have no control, so a group
-              // row, its children and a root-level row all put their value at
-              // the same x and the column stays scannable.
-              <span
-                aria-hidden="true"
-                className={cn(classNames.expandButton, 'invisible')}
-              />
-            )}
+            {hasChildItems && <TableExpandButton expanded={isExpanded} />}
             {content}
           </div>
         );

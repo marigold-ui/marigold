@@ -2524,27 +2524,17 @@ ExpandableRows.test(
 );
 
 ExpandableRows.test(
-  'Leaf rows render no chevron but stay aligned',
+  'Leaf rows render no chevron',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas, step }) => {
-    await step('A row without children has no expand control', () => {
-      const leaf = rowByName(canvas, 'CLR-10240');
+  async ({ canvas }) => {
+    // That they stay aligned anyway is asserted below, on the real promise —
+    // matching x — rather than on how the gutter is held open.
+    const leaf = rowByName(canvas, 'CLR-10240');
 
-      expect(leaf).not.toHaveAttribute('aria-expanded');
-      expect(
-        within(leaf).queryByRole('button', { name: EXPAND_CONTROL })
-      ).not.toBeInTheDocument();
-    });
-
-    await step('It still reserves the chevron width for alignment', () => {
-      const leaf = rowByName(canvas, 'CLR-10240');
-      const treeCell = leaf.querySelector('[data-tree-column]')!;
-
-      // A spacer stands in for the missing chevron, hidden from assistive tech.
-      expect(
-        treeCell.querySelector('[aria-hidden="true"]')
-      ).toBeInTheDocument();
-    });
+    expect(leaf).not.toHaveAttribute('aria-expanded');
+    expect(
+      within(leaf).queryByRole('button', { name: EXPAND_CONTROL })
+    ).not.toBeInTheDocument();
   }
 );
 
@@ -2552,10 +2542,7 @@ ExpandableRows.test(
   'Group, child and root rows all start at the same x',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent }) => {
-    // The whole point of the feature is that the clearing number stays findable
-    // by eye, so the tree column has to read as one column at every level. The
-    // control sits in a gutter every row reserves rather than staggering values
-    // by depth — this is the assertion that keeps it that way.
+    // Same x at every level is the point of the feature — lock it in.
     const group = rowByName(canvas, 'Settlement run 1 Jul 2026');
 
     await userEvent.click(chevronOf(group));

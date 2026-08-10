@@ -497,9 +497,8 @@ describe('Expandable rows', () => {
   });
 
   test('select-all yields the all sentinel and covers collapsed rows', async () => {
-    // Easy to get backwards: collapsed rows are absent from the DOM, so it looks
-    // like select-all should skip them. It doesn't — it never enumerates keys at
-    // all, and expanding afterwards reveals them already selected.
+    // Easy to get backwards: select-all never enumerates keys, so the rows
+    // missing from the DOM are covered anyway.
     const onSelectionChange = vi.fn();
     render(
       <ExpandableRowsDynamic.Component
@@ -523,9 +522,8 @@ describe('Expandable rows', () => {
   });
 
   test('expandable drives both the visuals and aria-expanded', () => {
-    // Upstream reads `hasChildItems` for the data attributes and `hasChildRows`
-    // for `aria-expanded`; `Table.Row` writes both from `expandable`, so rows
-    // whose children load on demand get the control and the announcement.
+    // `hasChildItems` drives the visuals, `hasChildRows` drives `aria-expanded`
+    // — see TableRow. Both have to survive.
     render(<ExpandableRowsLazyChildren.Component />);
 
     const row = rowOf('Settlement run 1 May 2026');
