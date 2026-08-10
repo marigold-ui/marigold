@@ -19,6 +19,7 @@ import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import { useListData } from '../hooks';
 import type { Selection } from '../types';
+import type { TableProps } from './Table';
 import { Table } from './Table';
 import { TableDragPreview } from './TableDragPreview';
 
@@ -1949,6 +1950,318 @@ StickyFooter.test(
       const footerBottom = tfoot.getBoundingClientRect().bottom;
       const containerBottom = scrollContainer.getBoundingClientRect().bottom;
       expect(Math.abs(footerBottom - containerBottom)).toBeLessThan(5);
+    });
+  }
+);
+
+const DataEntryGridTable = (args: Partial<TableProps>) => (
+  <Table aria-label="Data entry grid" {...args}>
+    <Table.Header>
+      <Table.Column rowHeader>Name</Table.Column>
+      <Table.Column>Note</Table.Column>
+      <Table.Column alignX="right">Balance</Table.Column>
+    </Table.Header>
+    <Table.Body>
+      {users.slice(0, 3).map(user => (
+        <Table.Row key={user.email}>
+          <Table.Cell>{user.name}</Table.Cell>
+          <Table.Cell>
+            <TextField
+              aria-label={`Note for ${user.name}`}
+              defaultValue={user.name}
+            />
+          </Table.Cell>
+          <Table.Cell>
+            <NumberField
+              aria-label={`Balance for ${user.name}`}
+              defaultValue={user.balance}
+              hideStepper
+            />
+          </Table.Cell>
+        </Table.Row>
+      ))}
+    </Table.Body>
+  </Table>
+);
+
+/**
+ * Form controls in cells need `keyboardNavigationBehavior="tab"`, otherwise the
+ * grid keeps the arrow keys and focus is pushed onto the row.
+ */
+export const DataEntryGrid = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    keyboardNavigationBehavior: 'tab',
+    selectionMode: 'none',
+  },
+  render: args => <DataEntryGridTable {...args} />,
+});
+
+DataEntryGrid.test(
+  'Keeps typing and caret movement inside cell fields, and Tab moves in and out of a cell',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const first = canvas.getByLabelText(
+      `Note for ${users[0].name}`
+    ) as HTMLInputElement;
+    const balance = canvas.getByLabelText(`Balance for ${users[0].name}`);
+
+    await step(
+      'Typing edits the field instead of triggering typeahead',
+      async () => {
+        await userEvent.click(first);
+        await userEvent.keyboard('Zulu');
+
+        expect(document.activeElement).toBe(first);
+        expect(first.value).toContain('Zulu');
+      }
+    );
+
+    await step(
+      'Arrow keys move the caret rather than leaving the field',
+      async () => {
+        first.setSelectionRange(first.value.length, first.value.length);
+        const before = first.selectionStart as number;
+
+        await userEvent.keyboard('{ArrowLeft}');
+
+        expect(document.activeElement).toBe(first);
+        expect(first.selectionStart).toBe(before - 1);
+      }
+    );
+
+    // Asserted for the TextField only: Home inside the NumberField still
+    // reaches the grid, which looks like an upstream useSpinButton issue.
+    await step('Home and End keep focus inside a text field', async () => {
+      await userEvent.click(first);
+      first.setSelectionRange(2, 2);
+
+      await userEvent.keyboard('{Home}');
+      expect(document.activeElement).toBe(first);
+      expect(first.selectionStart).toBe(0);
+
+      await userEvent.keyboard('{End}');
+      expect(document.activeElement).toBe(first);
+      expect(first.selectionStart).toBe(first.value.length);
+    });
+
+    await step('Shift+Tab steps back out onto the cell', async () => {
+      await userEvent.keyboard('{Shift>}{Tab}{/Shift}');
+
+      expect(document.activeElement).toHaveAttribute('role', 'gridcell');
+    });
+
+    await step('An arrow key then Tab reaches the next field', async () => {
+      await userEvent.keyboard('{ArrowRight}');
+      await userEvent.keyboard('{Tab}');
+
+      expect(document.activeElement).toBe(balance);
+    });
+
+    // Tab inside a field leaving the table is not asserted: the runner moves
+    // focus in DOM order instead of letting the grid handle the key, so it
+    // reports the opposite. Verified by hand in Chromium and Firefox.
+  }
+);
+
+/**
+ * The same grid with no `keyboardNavigationBehavior`, so the arrow keys stay
+ * with the grid. This is the keyboard trap the prop exists to avoid.
+ */
+export const DataEntryGridDefaultNavigation = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    selectionMode: 'none',
+  },
+  render: args => <DataEntryGridTable {...args} />,
+});
+
+// Pins the upstream default the docs rest on. Without this, a change to it would
+// leave both callouts wrong while the rest of the suite stayed green.
+DataEntryGridDefaultNavigation.test(
+  'Defaults to arrow navigation, so an arrow key leaves the field',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const first = canvas.getByLabelText(
+      `Note for ${users[0].name}`
+    ) as HTMLInputElement;
+
+    await step(
+      'An arrow key navigates the grid instead of the caret',
+      async () => {
+        await userEvent.click(first);
+        first.setSelectionRange(first.value.length, first.value.length);
+
+        await userEvent.keyboard('{ArrowLeft}');
+
+        // Focus does not just leave the field, it moves a cell to the left —
+        // which here is the rowHeader column rather than a plain gridcell.
+        expect(document.activeElement).not.toBe(first);
+        expect(document.activeElement).toHaveAttribute('role', 'rowheader');
+      }
+    );
+
+    // The other half of the Home/End row asserted in the DataEntryGrid test:
+    // on the default, the key belongs to the grid rather than the caret.
+    await step('Home leaves the field as well', async () => {
+      await userEvent.click(first);
+      first.setSelectionRange(2, 2);
+
+      await userEvent.keyboard('{Home}');
+
+      expect(document.activeElement).not.toBe(first);
+    });
+  }
+);
+
+/**
+ * Row selection keeps working alongside always-on cell inputs, at the cost of
+ * one extra tab stop per row.
+ */
+export const DataEntryGridWithSelection = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    keyboardNavigationBehavior: 'tab',
+    selectionMode: 'multiple',
+  },
+  render: args => <DataEntryGridTable {...args} />,
+});
+
+// Named for what it asserts. The per-row tab stop is not covered, because Tab
+// in this runner moves focus in DOM order instead of letting the grid handle it,
+// the same limitation noted in the DataEntryGrid test above.
+DataEntryGridWithSelection.test(
+  'Row checkboxes render and toggle',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    await step('Every row has a checkbox alongside the select-all', () => {
+      // 3 rows + 1 select-all
+      expect(canvas.getAllByRole('checkbox')).toHaveLength(4);
+    });
+
+    await step('A row checkbox still toggles', async () => {
+      const rowCheckbox = canvas.getAllByRole('checkbox')[1];
+
+      await userEvent.click(rowCheckbox);
+
+      expect(rowCheckbox).toBeChecked();
+    });
+  }
+);
+
+/**
+ * Always-on cell inputs and `<Table.EditableCell>` in one table. Both keep
+ * working — the pattern docs discourage mixing them because it gives the user
+ * two ways to edit, not because either one breaks.
+ */
+export const DataEntryGridWithEditableCell = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    keyboardNavigationBehavior: 'tab',
+    selectionMode: 'none',
+  },
+  render: args => {
+    const [data, setData] = useState(users.slice(0, 3).map(u => ({ ...u })));
+
+    return (
+      <Table aria-label="Mixed editing table" {...args}>
+        <Table.Header>
+          <Table.Column rowHeader>Name</Table.Column>
+          <Table.Column>Note</Table.Column>
+          <Table.Column>Status</Table.Column>
+        </Table.Header>
+        <Table.Body>
+          {data.map((user, i) => (
+            <Table.Row key={user.email}>
+              <Table.Cell>{user.name}</Table.Cell>
+              <Table.Cell>
+                <TextField
+                  aria-label={`Note for ${user.name}`}
+                  defaultValue={user.name}
+                />
+              </Table.Cell>
+              <Table.EditableCell
+                field={
+                  <TextField
+                    aria-label="Status"
+                    name="status"
+                    defaultValue={user.status}
+                  />
+                }
+                onSubmit={e => {
+                  const value = new FormData(e.currentTarget).get(
+                    'status'
+                  ) as string;
+                  setData(prev => {
+                    const next = [...prev];
+                    next[i] = { ...next[i], status: value || next[i].status };
+                    return next;
+                  });
+                }}
+              >
+                {user.status}
+              </Table.EditableCell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    );
+  },
+});
+
+// Closes DST-1687 open question 1, where the original probe was inconclusive.
+DataEntryGridWithEditableCell.test(
+  'An always-on input and an editable cell both work in one table',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const note = canvas.getByLabelText(
+      `Note for ${users[0].name}`
+    ) as HTMLInputElement;
+
+    await step(
+      'The always-on input keeps typing and caret movement',
+      async () => {
+        await userEvent.click(note);
+        await userEvent.keyboard('Zulu');
+        note.setSelectionRange(note.value.length, note.value.length);
+        const before = note.selectionStart as number;
+
+        await userEvent.keyboard('{ArrowLeft}');
+
+        expect(document.activeElement).toBe(note);
+        expect(note.value).toContain('Zulu');
+        expect(note.selectionStart).toBe(before - 1);
+      }
+    );
+
+    await step('The editable cell still opens its editor', async () => {
+      await userEvent.click(canvas.getAllByLabelText('Edit')[0]);
+
+      await waitFor(() => {
+        expect(canvas.getByLabelText('Status')).toBeInTheDocument();
+      });
+
+      expect(canvas.getByLabelText('Status')).toHaveFocus();
+    });
+
+    await step('Saving the editor commits the new value', async () => {
+      const status = canvas.getByLabelText('Status');
+      await userEvent.clear(status);
+      await userEvent.type(status, 'archived');
+
+      await userEvent.click(canvas.getByRole('button', { name: 'Save' }));
+
+      await waitFor(() => {
+        expect(canvas.getByText('archived')).toBeInTheDocument();
+      });
+    });
+
+    await step('The always-on input is unaffected by the edit', () => {
+      expect(note.value).toContain('Zulu');
     });
   }
 );
