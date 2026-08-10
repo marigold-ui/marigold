@@ -11,11 +11,11 @@ import type { Selection } from '../types';
 import { TableContext } from './Context';
 import { TableBody } from './TableBody';
 import { TableCell } from './TableCell';
-import { TableChildRows } from './TableChildRows';
 import { TableColumn } from './TableColumn';
 import { renderDragPreview } from './TableDragPreview';
 import { renderDropIndicator } from './TableDropIndicator';
 import { TableEditableCell } from './TableEditableCell';
+import { TableExpandedRows } from './TableExpandedRows';
 import { TableFooter } from './TableFooter';
 import { TableHeader } from './TableHeader';
 import { TableRow } from './TableRow';
@@ -136,7 +136,7 @@ const Table = Object.assign(_Table, {
   Column: TableColumn,
   Body: TableBody,
   Row: TableRow,
-  ChildRows: TableChildRows,
+  ExpandedRows: TableExpandedRows,
   Cell: TableCell,
   EditableCell: TableEditableCell,
   Footer: TableFooter,
@@ -154,7 +154,7 @@ export type { TableHeaderProps } from './TableHeader';
 export type { TableColumnProps } from './TableColumn';
 export type { TableBodyProps } from './TableBody';
 export type { TableRowProps } from './TableRow';
-export type { TableChildRowsProps } from './TableChildRows';
+export type { TableExpandedRowsProps } from './TableExpandedRows';
 export type { TableCellProps } from './TableCell';
 export type { TableDropIndicatorProps } from './TableDropIndicator';
 export type { TableDragPreviewProps } from './TableDragPreview';

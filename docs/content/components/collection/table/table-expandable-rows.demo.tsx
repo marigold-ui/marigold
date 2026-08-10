@@ -103,7 +103,9 @@ export default () => (
                 {row.children ? 'Total PDF' : 'PDF'}
               </Button>
             </Table.Cell>
-            <Table.ChildRows items={row.children}>{renderRow}</Table.ChildRows>
+            <Table.ExpandedRows items={row.children}>
+              {renderRow}
+            </Table.ExpandedRows>
           </Table.Row>
         );
       }}

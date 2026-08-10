@@ -16,11 +16,12 @@ export interface TableRowProps<T extends object = object> extends Omit<
   variant?: 'grid' | 'default' | 'muted' | (string & {});
   size?: 'compact' | 'default' | 'spacious' | (string & {});
   /**
-   * Whether this row has child rows that are not loaded yet. Only needed when
-   * child rows are fetched on demand — statically nested rows and
-   * `Table.ChildRows` are detected automatically.
+   * Whether the row can be expanded even though its nested rows are not there
+   * yet. Only needed when they are fetched on demand: without it the row gets no
+   * expand control, so there is nothing to trigger the fetch. Statically nested
+   * rows and `Table.ExpandedRows` are detected automatically.
    */
-  hasChildRows?: boolean;
+  expandable?: boolean;
 }
 
 const TableRow = <T extends object>({
@@ -29,7 +30,7 @@ const TableRow = <T extends object>({
   children,
   variant: variantProp,
   size: sizeProp,
-  hasChildRows,
+  expandable,
   ...otherProps
 }: TableRowProps<T>) => {
   let { selectionBehavior, allowsDragging } = useTableOptions();
@@ -42,9 +43,13 @@ const TableRow = <T extends object>({
   // upstream reconciles them. `hasChildRows` is not part of RAC's `RowProps`,
   // but every row prop ends up on the collection node, which is where
   // `useTableRow` looks for it.
+  //
+  // Both are spelled in terms of children the row does not have yet, which is
+  // why the public prop is `expandable` instead: the row is what gains the
+  // behaviour, and that stays true before anything is loaded.
   const expandableProps = {
-    hasChildItems: hasChildRows,
-    hasChildRows,
+    hasChildItems: expandable,
+    hasChildRows: expandable,
   };
   const classNames = useClassNames({
     component: 'Table',

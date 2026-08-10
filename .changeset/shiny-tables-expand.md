@@ -9,9 +9,10 @@ feat(Table): expandable rows for grouped records
 and its individual clearings, an order and its line items — share one table
 instead of being faked with a button and a menu. Set `treeColumn` to the `id` of
 the column that carries the hierarchy and nest `<Table.Row>` inside
-`<Table.Row>`; use the new `<Table.ChildRows>` when the child rows come from
-data. Nested rows stay real table rows, so their values line up under the same
-headers and each one can be selected, linked to and scrolled to on its own.
+`<Table.Row>`; use the new `<Table.ExpandedRows>` when the nested rows come from
+data, and mark a row `expandable` when they are fetched only once it is opened.
+Nested rows stay real table rows, so their values line up under the same headers
+and each one can be selected, linked to and scrolled to on its own.
 
 The tree column renders the expand control itself, reusing the caret and morph
 animation from `<Accordion>`. The control sits in a leading gutter every row

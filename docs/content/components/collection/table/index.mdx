@@ -187,11 +187,21 @@ Some records belong together: a settlement run that bundles individual clearings
 
 The column named by `treeColumn` renders the expand control automatically — you don't place a chevron yourself. The control sits in a leading gutter that every row reserves, so a group row, its children and an ungrouped row all start their value at the same x and the column stays one scannable column. That matters most for the identifier people search on: staggering a clearing number by nesting level is what makes it hard to find by eye. Containment is carried by the group row instead, which is filled and emphasised for you, so there is nothing to style.
 
-When child rows come from data, render them with `<Table.ChildRows>` and let your render function recurse. It renders nothing when `items` is empty or missing, so leaf rows need no special case.
+When the nested rows come from data, render them with `<Table.ExpandedRows>` and let your render function recurse. It renders nothing when `items` is empty or missing, so leaf rows need no special case. Always render it — the Table decides whether the rows are visible, so don't wrap it in a check of the expansion state.
 
 <ComponentDemo name="table-expandable-rows" />
 
 Groups start collapsed. Pre-open some of them with `defaultExpandedKeys`, or take full control with `expandedKeys` and `onExpandedChange` — for example to keep the open groups in the URL so a link restores them.
+
+#### Rows that load on demand
+
+The Table works out which rows can be expanded from the rows you actually give it, which leaves a gap when the nested rows are fetched only once someone opens the group: at first render there is nothing under the row, so it gets no expand control — and without a control there is nothing to press that could start the fetch.
+
+Mark such a row `expandable` to break that cycle. It gets a control and announces itself as collapsed before its rows exist, and you load them in `onExpandedChange`. You don't need it for rows you pass in up front, whether nested statically or through `<Table.ExpandedRows>`.
+
+```tsx
+<Table.Row id={run.id} expandable>
+```
 
 <Callout title="The role changes to treegrid">
   Setting `treeColumn` changes the table's accessibility role from `grid` to
@@ -469,9 +479,9 @@ Mark the column that best identifies each row, typically a name, title, or ID co
 
 <AutoTypeTable path="Table" name="TableRowProps" />
 
-### Table.ChildRows
+### Table.ExpandedRows
 
-<AutoTypeTable path="Table/TableChildRows" name="TableChildRowsProps" />
+<AutoTypeTable path="Table/TableExpandedRows" name="TableExpandedRowsProps" />
 
 ### Table.Cell
 

@@ -2595,7 +2595,7 @@ ExpandableRows.test(
 );
 
 /**
- * The same table built from data, where `Table.ChildRows` renders the child rows
+ * The same table built from data, where `Table.ExpandedRows` renders the child rows
  * and the render function recurses.
  */
 export const ExpandableRowsDynamic = meta.story({
@@ -2637,9 +2637,9 @@ export const ExpandableRowsDynamic = meta.story({
                   value={row.total}
                 />
               </Table.Cell>
-              <Table.ChildRows items={row.children}>
+              <Table.ExpandedRows items={row.children}>
                 {renderRow}
-              </Table.ChildRows>
+              </Table.ExpandedRows>
             </Table.Row>
           );
         }}
@@ -2672,8 +2672,9 @@ ExpandableRowsDynamic.test(
 );
 
 /**
- * When child rows are fetched on demand they don't exist yet, so the row has to
- * declare that it has children via `hasChildRows` to get a chevron.
+ * When nested rows are fetched on demand they don't exist yet, so the row has to
+ * declare itself `expandable` to get a control at all — otherwise there is
+ * nothing to press that could start the fetch.
  */
 export const ExpandableRowsLazyChildren = meta.story({
   tags: ['component-test'],
@@ -2687,7 +2688,7 @@ export const ExpandableRowsLazyChildren = meta.story({
         <Table.Column id="invoice">Invoice no.</Table.Column>
       </Table.Header>
       <Table.Body>
-        <Table.Row id="run-2026-05-01" hasChildRows>
+        <Table.Row id="run-2026-05-01" expandable>
           <Table.Cell>Settlement run 1 May 2026</Table.Cell>
           <Table.Cell>
             <Badge>Loading …</Badge>

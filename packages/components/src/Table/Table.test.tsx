@@ -466,7 +466,7 @@ describe('Expandable rows', () => {
     expect(cells[0]).toHaveTextContent('CLR-10188');
   });
 
-  test('Table.ChildRows renders nothing for a row without children', () => {
+  test('Table.ExpandedRows renders nothing for a row without children', () => {
     render(<ExpandableRowsDynamic.Component />);
 
     // The standalone clearing has no `children`, so it stays a leaf.
@@ -474,10 +474,10 @@ describe('Expandable rows', () => {
     expect(rowOf('CLR-10240')).toHaveAttribute('aria-level', '1');
   });
 
-  test('hasChildRows drives both the visuals and aria-expanded', () => {
+  test('expandable drives both the visuals and aria-expanded', () => {
     // Upstream reads `hasChildItems` for the data attributes and `hasChildRows`
-    // for `aria-expanded`; `Table.Row` writes both, so async children get the
-    // chevron and the correct announcement.
+    // for `aria-expanded`; `Table.Row` writes both from `expandable`, so rows
+    // whose children load on demand get the control and the announcement.
     render(<ExpandableRowsLazyChildren.Component />);
 
     const row = rowOf('Settlement run 1 May 2026');
