@@ -96,6 +96,8 @@ When a dialog is open, users cannot interact with the rest of the page until the
 
 To prevent the dialog from closing when the underlay is (accidentally) clicked, you can set the `dismissable` prop on the `<Dialog.Trigger>` component to `false`. This disables closing the dialog by clicking on the background, ensuring that the dialog remains open until the user interacts with the provided buttons or other close mechanisms.
 
+<kbd>Escape</kbd> closes the dialog unless you set `keyboardDismissable={false}` on the `<Dialog.Trigger>`. Reach for that only where losing in-progress work would be worse than the trapped focus, and never on an `alertdialog`: a dialog the keyboard cannot leave is an accessibility defect, not a safety feature.
+
 <ComponentDemo name="dialog-dismiss" />
 
 <Callout title="Dedicated close button">

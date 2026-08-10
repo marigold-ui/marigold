@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import {
   Button,
+  EmptyState,
   FileField,
   Inline,
   Stack,
-  Text,
   useConfirmation,
 } from '@marigold/components';
 import { RotateCcw } from '@marigold/icons';
@@ -44,7 +44,10 @@ export default () => {
   return (
     <Stack space={2}>
       {files.length === 0 ? (
-        <Text>All files deleted.</Text>
+        <EmptyState
+          title="No files"
+          description="Every file was removed through its confirmation dialog."
+        />
       ) : (
         files.map(file => (
           <FileField.Item key={file.id} onRemove={() => deleteFile(file)}>
