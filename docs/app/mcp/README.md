@@ -15,27 +15,38 @@ flowchart LR
     Bedrock[("AWS Bedrock<br/>Titan Text<br/>Embeddings v2")]
     Search["search(vector, store)"]
     ClientIn(["Client<br/>receives response"])
+    Emit["emitTelemetry<br/>env: MCP_TELEMETRY_HASH_SECRET"]
+    Record["recordTelemetryEvent<br/>env: KV_REST_API_*"]
+    Redis[("Upstash Redis<br/>telemetry:YYYY-MM-DD")]
 
     ClientOut -- "1 · HTTP + OAuth bearer token" --> Auth
     Auth --> Handler --> Embed
     Embed -- "2 · query text" --> Bedrock
     Bedrock -- "3 · query vector" --> Search
     Search == "4 · top-K chunks (JSON)" ==> ClientIn
+    Handler -- "5 · outcome + top match,<br/>caller from Auth" --> Emit
+    Emit -. "6 · deferred via after()" .-> Record
+    Record -. "7 · LPUSH" .-> Redis
 ```
 
-`ClientOut` and `ClientIn` are the same client, drawn twice. One box is for the outgoing call, the other for the response, so the diagram reads as a straight line instead of looping back on itself. `Auth`, `Handler`, `Embed`, and `Search` are steps inside `route.ts`. `Bedrock` is the one external call in the middle of that chain. The numbers trace one live request from start to finish. The call comes in (1), gets embedded via Bedrock (2, 3), and the ranked chunks go back out as the tool's JSON result (4). That result is the only output this server ever produces.
+`ClientOut` and `ClientIn` are the same client, drawn twice. One box is for the outgoing call, the other for the response, so the diagram reads as a straight line instead of looping back on itself. `Auth`, `Handler`, `Embed`, `Search`, and `Emit` are steps inside `route.ts`; `Record` is the shared recording helper in [`app/api/telemetry/record.ts`](../api/telemetry/record.ts). `Bedrock` and `Redis` are the two external calls, and the numbers trace one live request from start to finish. The call comes in (1), gets embedded via Bedrock (2, 3), and the ranked chunks go back out as the tool's JSON result (4). That result is the only thing the _caller_ ever sees.
 
-None of these boxes hold their own state or secrets at request time. Everything they depend on is already in place before a request arrives.
+Steps 5–7 are a side effect the caller never observes. `Emit` hangs off `Handler`, not off `Search`, because it fires on **every** outcome: a Bedrock failure never reaches `Search` but still records `success: false`. Its inputs come from two places — the outcome and top match from the search, the caller's hashed id from the token `Auth` already verified.
 
-- `Auth` and `Embed` are configured from Vercel project env vars, shown on the boxes above. See [Auth](#auth) for what each one does.
+`Emit` runs synchronously in-request, deliberately, so `latencyMs` measures the search rather than whenever the deferred work happened to run — but it only _builds_ the event and hands it to Next's `after()`. The dashed edges are the deferred part: the Redis write happens once the response is already on its way out, so it can neither delay nor fail the search. See [Telemetry](#telemetry).
+
+No box reaches outside the process at request time except the two external calls, and the only request-time secrets are the env vars on the boxes. What state there is, is all cross-request rather than per-request: `Auth`, `Embed`, and `Search` memoize a JWKS set, a Bedrock client, and the vector store on first use, and `Emit` remembers which telemetry failures it has already logged so it can warn once per instance instead of once per call.
+
+- `Auth`, `Embed`, `Emit`, and `Record` are configured from Vercel project env vars, shown on the boxes above. See [Auth](#auth) for what each one does.
 - `Search` reads `embeddings.json` from local disk, lazily, on first use. That file is baked into this function at build time from Vercel Blob on every release. `Search` never talks to Blob directly. See [Data pipeline](#data-pipeline).
 
-Everything except the external Bedrock call lives in [`route.ts`](./route.ts):
+Everything above lives in [`route.ts`](./route.ts) except the two external calls and `Record`. References below are by symbol name rather than line number, since line numbers go stale the moment anything above them shifts:
 
 - **Transport.** Streamable HTTP via `createMcpHandler` from the `mcp-handler` package (wraps `@modelcontextprotocol/sdk`). The route exports `GET`, `POST`, and `DELETE`, all pointing at the same handler.
-- **Tool.** There is exactly one, `search_docs(query: string, limit?: number)` (`route.ts:176-229`). `query` is 1–1000 chars. `limit` is 3–10, default 5.
-- **Search.** A brute-force dot-product top-K scan over the in-memory vector store (`route.ts:110-136`). There is no approximate-nearest-neighbor index. The corpus is small enough (roughly one doc page times a few chunks each) that a linear scan is fast enough per request.
-- **Runtime.** `export const runtime = 'nodejs'` and `dynamic = 'force-dynamic'` (`route.ts:17-18`). This is a Node.js serverless function, not an Edge function, and it is never statically cached.
+- **Tool.** There is exactly one, `search_docs(query: string, limit?: number)` — described by `SEARCH_DOCS_DESCRIPTION`, typed by `SEARCH_DOCS_SCHEMA`, implemented by `searchDocsHandler`. `query` is 1–1000 chars. `limit` is 3–10, default 5. `searchDocsHandler` is exported separately from the `server.tool()` registration so it can be unit-tested without standing up the MCP transport and auth chain (see [`route.test.ts`](./route.test.ts)).
+- **Search.** A brute-force dot-product top-K scan over the in-memory vector store (`search`). There is no approximate-nearest-neighbor index. The corpus is small enough (roughly one doc page times a few chunks each) that a linear scan is fast enough per request.
+- **Telemetry.** One event per tool call, written after the response. Built by `emitTelemetry` inside `searchDocsHandler`, using the module-level `hashCallerId`. See [Telemetry](#telemetry).
+- **Runtime.** `export const runtime = 'nodejs'` and `dynamic = 'force-dynamic'`. This is a Node.js serverless function, not an Edge function, and it is never statically cached.
 
 ## Data pipeline
 
@@ -90,8 +101,8 @@ Each stored chunk (`route.ts`'s `StoredChunk` type) carries:
 
 The tool is gated behind OAuth (Keycloak/OIDC), required on every call.
 
-- `withMcpAuth(handler, verifyToken, { required: true, resourceMetadataPath: '/.well-known/oauth-protected-resource' })` (`route.ts:239-244`)
-- `verifyToken` (`route.ts:147-170`) verifies the bearer JWT against Keycloak's remote JWKS (`${OIDC_AUTHORITY}/protocol/openid-connect/certs`), checking `issuer` and `audience` (`OIDC_CLIENT_ID`)
+- `withMcpAuth(handler, verifyToken, { required: true, resourceMetadataPath: '/.well-known/oauth-protected-resource' })` (`authOptions` + `mcpHandler` at the bottom of `route.ts`)
+- `verifyToken` verifies the bearer JWT against Keycloak's remote JWKS (`${OIDC_AUTHORITY}/protocol/openid-connect/certs`), checking `issuer` and `audience` (`OIDC_CLIENT_ID`)
 - [`app/.well-known/oauth-protected-resource/route.ts`](../.well-known/oauth-protected-resource/route.ts) serves the OAuth protected-resource metadata the MCP client needs to discover the auth server. It deliberately restricts `scopes_supported` to `['openid']`. Without this, VS Code requests every Keycloak scope and fails with "Invalid scopes" for clients that aren't assigned all of them.
 
 Required env vars (all optional at build time so `pnpm build` works locally without secrets, see `.changeset/docs-optional-env-vars.md`):
@@ -102,8 +113,30 @@ Required env vars (all optional at build time so `pnpm build` works locally with
 | `OIDC_CLIENT_ID`                                              | Expected JWT audience                                                                             |
 | `AWS_BEDROCK_ACCESS_KEY_ID` / `AWS_BEDROCK_SECRET_ACCESS_KEY` | Bedrock credentials, used both at query time (`embedQuery`) and at embed time (`etl/embedder.ts`) |
 | `BLOB_READ_WRITE_TOKEN`                                       | Vercel Blob access, used by `embedder.ts` (upload) and `download-embeddings.mjs` (download)       |
+| `MCP_TELEMETRY_HASH_SECRET`                                   | HMAC key for hashing the caller's Keycloak `sub`; unset means MCP telemetry is skipped entirely   |
+| `KV_REST_API_URL` / `KV_REST_API_TOKEN`                       | Upstash Redis, where telemetry events are persisted; unset means telemetry is skipped entirely    |
 
-All five vars above live in Vercel (see [Deployment](#deployment)). Nothing is configured outside the `@marigold/docs` Vercel project.
+All eight vars above live in Vercel (see [Deployment](#deployment)). Nothing is configured outside the `@marigold/docs` Vercel project. At request time a `search_docs` call only needs the `OIDC_*` and `AWS_BEDROCK_*` vars — `BLOB_READ_WRITE_TOKEN` is build-time only (see [Data pipeline](#data-pipeline)), and the three telemetry vars only turn recording on or off (see [Telemetry](#telemetry)).
+
+## Telemetry
+
+Every `search_docs` call records one event so [Insights](https://github.com/marigold-ui/insights) can report call volume, unique callers, error rate, and top-searched doc topics. It reuses the same Redis-backed store and the same `telemetry:YYYY-MM-DD` daily lists the CLI's telemetry already writes to, rather than adding a second datastore.
+
+Recorded per call: `hashedCallerId`, `latencyMs`, `success`, and `topMatchFile` / `topMatchHeading` (the best-matching chunk, absent on failure or no results). **No query text and no similarity scores.**
+
+- **The caller is pseudonymous, not anonymous.** `hashCallerId` runs the Keycloak `sub` claim through HMAC-SHA256 keyed on `MCP_TELEMETRY_HASH_SECRET` before it leaves the process; the raw claim identifies an individual Reservix employee and is never written anywhere. But the digest is _stable_ for as long as the secret is — that's what makes unique-caller counts possible at all, and it also means the store holds a per-person, per-day record of which doc pages that pseudonym searched. Anyone holding both Redis read access and the secret can re-identify a known `sub`. Treat the secret as a credential, rotate it to break linkability across periods, and see the retention note below.
+- **The write cannot affect the response.** `emitTelemetry` builds the event, then hands the Redis write to Next's [`after()`](https://nextjs.org/docs/app/api-reference/functions/after), which runs it once the response is already on its way out. The event is built _before_ `after()` is called, not inside its callback, so `latencyMs` measures the embed+search and not whenever the deferred callback happened to run. The whole thing is wrapped in a `try`/`catch` so even a synchronous throw from `after()` itself — which is what Next does when there's no request scope — can't turn a successful search into a reported failure.
+- **Nothing recorded is ever a hard failure, but it is never silent either.** Every way telemetry can fail is systematic: whatever breaks one call breaks all of them for the life of that instance. So each distinct cause is logged **once per process** rather than once per call — loud enough to diagnose an empty dashboard, quiet enough not to fill the logs. The causes are a missing `MCP_TELEMETRY_HASH_SECRET`, `after()` throwing, and `recordTelemetryEvent` returning `'rate-limited'`, `'invalid'` (the event failed its own schema — a bug on our side), or `'error'` (the Redis call failed). The one exception is `'unconfigured'`, i.e. no `KV_REST_API_*`: that's the normal steady state in local dev and preview deploys, so it stays silent. `search_docs` behaves identically in all of them.
+
+**Events are retained indefinitely, and that is a decision rather than an oversight.** `record.ts` sets a TTL on the rate-limit keys but deliberately not on the `telemetry:YYYY-MM-DD` data lists. The reasoning: because the lists are bucketed per day, growth is in the _number_ of keys rather than the size of any one, so no single read gets slower over time and Insights only ever reads a bounded window anyway. At this volume — a few hundred events a day at roughly 250 bytes each — the store is years from mattering. Keeping the whole history is also what makes long-run adoption trends possible, and expiring keys would silently delete what the dashboards read. Compliance was signed off separately on DST-1625: this is Reservix-internal telemetry, so no retention window is imposed.
+
+If volume ever grows by an order of magnitude, bounding it is a three-line change — `LPUSH` returns the new list length, so `EXPIRE` on the first write of each day mirrors what the rate-limit keys already do. Note that the caller pseudonym is stable for as long as `MCP_TELEMETRY_HASH_SECRET` is, so rotating that secret is what breaks linkability across periods, not retention.
+
+The recording itself lives outside this directory, in [`app/api/telemetry/`](../api/telemetry/), and is shared with the CLI:
+
+- [`schema.ts`](../api/telemetry/schema.ts) — one discriminated union over `cli_command` and `mcp_tool_call`, so both sources share a single validated contract. `cli_command`'s `command` enum must track the CLI's `CommandName` union; an unknown command is a 400 and the CLI is fire-and-forget, so drift silently drops every event for the new command. `api/telemetry/route.test.ts` reads that union out of the CLI source and fails on drift.
+- [`record.ts`](../api/telemetry/record.ts) — rate limiting and the Redis write. `route.ts` calls this **in-process**; the server never POSTs to itself. The quota is 1000/day per caller, keyed `cli:{anonymousId}` or `mcp:{hashedCallerId}`. On the public endpoint that bounds abuse; for MCP events, where the id comes from a verified JWT, it only caps one caller's share of the daily list. A caller past the quota is dropped, not truncated, so the ceiling sits far above realistic usage — but it does mean a single caller exceeding 1000 calls in a UTC day would under-report.
+- [`route.ts`](../api/telemetry/route.ts) — the public `POST /api/telemetry` endpoint the CLI uses. It deliberately accepts **only** `cli_command` events, never `mcp_tool_call`: an MCP event's rate-limit key comes from its own `hashedCallerId` field, so accepting one over an unauthenticated endpoint would make call volume and unique-caller counts forgeable without bound. MCP events reach `record.ts` in-process only.
 
 ## Deployment
 
@@ -126,15 +159,17 @@ The `callbackPort` is where the client's local OAuth redirect listener runs duri
 
 ## Where things live
 
-| If you want to change...                                    | Look at                                                                                                                |
-| ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| The tool itself, its schema, search logic, or auth wiring   | [`route.ts`](./route.ts)                                                                                               |
-| What the OAuth discovery metadata advertises                | [`app/.well-known/oauth-protected-resource/route.ts`](../.well-known/oauth-protected-resource/route.ts)                |
-| How docs get split into chunks                              | [`lib/markdown/etl/chunker.ts`](../../lib/markdown/etl/chunker.ts)                                                     |
-| The embedding model, dimensions, or AWS region              | [`lib/markdown/etl/config.ts`](../../lib/markdown/etl/config.ts)                                                       |
-| How chunks get embedded and uploaded                        | [`lib/markdown/etl/embedder.ts`](../../lib/markdown/etl/embedder.ts)                                                   |
-| The `build:embeddings` script itself                        | [`scripts/build-embeddings.mjs`](../../scripts/build-embeddings.mjs)                                                   |
-| How the built file gets pulled into a Vercel build          | [`scripts/download-embeddings.mjs`](../../scripts/download-embeddings.mjs), [`next.config.mjs`](../../next.config.mjs) |
-| When and how embeddings get rebuilt in CI                   | [`.github/workflows/release.yml`](../../../.github/workflows/release.yml)                                              |
-| The client-facing setup instructions (Claude Code, VS Code) | [`usage-with-ai/index.mdx`](../../content/getting-started/usage-with-ai/index.mdx)                                     |
-| This repo's own MCP client config                           | repo-root [`.mcp.json`](../../../.mcp.json), [`.vscode/mcp.json`](../../../.vscode/mcp.json)                           |
+| If you want to change...                                      | Look at                                                                                                                |
+| ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| The tool itself, its schema, search logic, or auth wiring     | [`route.ts`](./route.ts)                                                                                               |
+| What gets recorded per tool call, or how the caller is hashed | [`route.ts`](./route.ts) (`hashCallerId`, `emitTelemetry`)                                                             |
+| Rate limiting, the Redis keyspace, or the event schema        | [`app/api/telemetry/record.ts`](../api/telemetry/record.ts), [`schema.ts`](../api/telemetry/schema.ts)                 |
+| What the OAuth discovery metadata advertises                  | [`app/.well-known/oauth-protected-resource/route.ts`](../.well-known/oauth-protected-resource/route.ts)                |
+| How docs get split into chunks                                | [`lib/markdown/etl/chunker.ts`](../../lib/markdown/etl/chunker.ts)                                                     |
+| The embedding model, dimensions, or AWS region                | [`lib/markdown/etl/config.ts`](../../lib/markdown/etl/config.ts)                                                       |
+| How chunks get embedded and uploaded                          | [`lib/markdown/etl/embedder.ts`](../../lib/markdown/etl/embedder.ts)                                                   |
+| The `build:embeddings` script itself                          | [`scripts/build-embeddings.mjs`](../../scripts/build-embeddings.mjs)                                                   |
+| How the built file gets pulled into a Vercel build            | [`scripts/download-embeddings.mjs`](../../scripts/download-embeddings.mjs), [`next.config.mjs`](../../next.config.mjs) |
+| When and how embeddings get rebuilt in CI                     | [`.github/workflows/release.yml`](../../../.github/workflows/release.yml)                                              |
+| The client-facing setup instructions (Claude Code, VS Code)   | [`usage-with-ai/index.mdx`](../../content/getting-started/usage-with-ai/index.mdx)                                     |
+| This repo's own MCP client config                             | repo-root [`.mcp.json`](../../../.mcp.json), [`.vscode/mcp.json`](../../../.vscode/mcp.json)                           |

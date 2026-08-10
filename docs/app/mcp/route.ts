@@ -1,3 +1,5 @@
+import { recordTelemetryEvent } from '@/app/api/telemetry/record';
+import type { TelemetryEvent } from '@/app/api/telemetry/schema';
 import {
   AWS_REGION,
   TITAN_DIMENSIONS,
@@ -11,8 +13,10 @@ import type { AuthInfo } from '@modelcontextprotocol/sdk/server/auth/types.js';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 import { createMcpHandler, withMcpAuth } from 'mcp-handler';
 import { z } from 'zod';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
+import { after } from 'next/server';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -135,6 +139,36 @@ function search(queryVec: Float32Array, vs: VectorStore, limit: number) {
   }));
 }
 
+// ─── Telemetry ────────────────────────────────────────────────────────────────
+
+// Telemetry problems are systematic, not incidental: whatever makes one call
+// fail to record — no secret, no Redis, a malformed event, no request scope for
+// after() — makes every call fail the same way for the life of the instance. So
+// each distinct cause is logged once per process. Per-call logging would be
+// pure noise, but staying silent leaves a permanently empty dashboard with
+// nothing anywhere explaining why.
+const warnedCauses = new Set<string>();
+
+const warnOnce = (cause: string, message: string) => {
+  if (warnedCauses.has(cause)) return;
+  warnedCauses.add(cause);
+  console.warn(message);
+};
+
+// One-way HMAC of the caller's Keycloak `sub` claim — never the raw claim,
+// which identifies a Reservix employee.
+const hashCallerId = (sub: string): string | null => {
+  const secret = process.env.MCP_TELEMETRY_HASH_SECRET;
+  if (!secret) {
+    warnOnce(
+      'missing-secret',
+      '[MCP] MCP_TELEMETRY_HASH_SECRET is not set — search_docs telemetry is disabled for this deployment. See docs/app/mcp/README.md#telemetry.'
+    );
+    return null;
+  }
+  return crypto.createHmac('sha256', secret).update(sub).digest('hex');
+};
+
 // ─── Auth (Keycloak JWT) ─────────────────────────────────────────────────────
 
 let jwks: ReturnType<typeof createRemoteJWKSet> | null = null;
@@ -144,7 +178,23 @@ const getJwks = () => {
   return jwks;
 };
 
-const verifyToken = async (
+// `AuthInfo` has no field for the token's subject, so the Keycloak `sub` claim
+// rides on `clientId`. The name reads oddly — it is not an OAuth client id —
+// and getting it wrong is silent: every caller would collapse into one hash and
+// "unique callers" would become 1 forever. So both sides of that decision go
+// through these two helpers, the auth path writing and the telemetry path
+// reading, and `route.test.ts` asserts a verified token's `sub` all the way
+// through to the recorded `hashedCallerId`.
+const authInfoForSubject = (token: string, subject: string): AuthInfo => ({
+  token,
+  scopes: [],
+  clientId: subject,
+});
+
+const subjectOf = (authInfo?: AuthInfo): string | undefined =>
+  authInfo?.clientId;
+
+export const verifyToken = async (
   _req: Request,
   bearerToken?: string
 ): Promise<AuthInfo | undefined> => {
@@ -158,14 +208,122 @@ const verifyToken = async (
 
     if (!payload.sub) return undefined;
 
-    return {
-      token: bearerToken,
-      scopes: [],
-      clientId: payload.sub,
-    };
+    return authInfoForSubject(bearerToken, payload.sub);
   } catch (err) {
     console.error('[MCP] JWT verification failed:', err);
     return undefined;
+  }
+};
+
+// ─── search_docs ─────────────────────────────────────────────────────────────
+
+const SEARCH_DOCS_DESCRIPTION = [
+  'Search the Marigold Design System documentation using semantic similarity.',
+  'Use this tool to find component APIs, usage guidelines, accessibility notes, theming instructions, and code examples.',
+  'Ideal for questions like: "How do I use the Button component?", "What props does Select accept?", or "How does theming work in Marigold?".',
+  'Returns the most relevant documentation sections ranked by similarity to the query.',
+  'Query must be a natural language question or keyword phrase (max 1000 characters).',
+].join(' ');
+
+const SEARCH_DOCS_SCHEMA = {
+  query: z
+    .string()
+    .min(1)
+    .max(1000)
+    .describe(
+      'Natural language question or keyword phrase to search for. Max 1000 characters. Example: "How do I disable a Button?" or "Select component props".'
+    ),
+  limit: z
+    .number()
+    .int()
+    .min(3)
+    .max(10)
+    .default(5)
+    .describe(
+      'Number of documentation sections to return (3–10, default: 5). Use a higher value for broad topics, lower for specific lookups.'
+    ),
+};
+
+// Exported separately from the MCP tool registration below so it's
+// unit-testable without going through the full MCP transport/auth chain.
+export const searchDocsHandler = async (
+  { query, limit }: { query: string; limit: number },
+  extra: { authInfo?: AuthInfo }
+) => {
+  const startedAt = Date.now();
+
+  // Fires via `after()` so it never delays the search response. The event is
+  // built before calling after(), not inside its callback, so latencyMs
+  // reflects the actual embed+search duration rather than whenever the
+  // deferred callback happens to run.
+  const emitTelemetry = (
+    success: boolean,
+    topMatch?: { file: string; heading: string }
+  ) => {
+    try {
+      const sub = subjectOf(extra.authInfo);
+      const hashedCallerId = sub ? hashCallerId(sub) : null;
+      if (!hashedCallerId) return;
+
+      const event: TelemetryEvent = {
+        event: 'mcp_tool_call',
+        tool: 'search_docs',
+        hashedCallerId,
+        latencyMs: Date.now() - startedAt,
+        success,
+        topMatchFile: topMatch?.file,
+        topMatchHeading: topMatch?.heading,
+      };
+
+      after(async () => {
+        const result = await recordTelemetryEvent(event);
+        // 'unconfigured' is the steady state wherever Redis isn't set up
+        // (local dev, preview deploys), so warning on it would be noise on
+        // every single call. The rest mean something actually went wrong.
+        if (result !== 'recorded' && result !== 'unconfigured') {
+          warnOnce(
+            result,
+            `[MCP] search_docs telemetry not recorded: ${result}`
+          );
+        }
+      });
+    } catch (err) {
+      // Most likely cause is `after()` throwing for lack of a request scope,
+      // which would be true of every call — hence once per process, not once
+      // per call.
+      warnOnce(
+        'emit-failed',
+        `[MCP] search_docs telemetry emission failed: ${err}`
+      );
+    }
+  };
+
+  try {
+    const queryVec = await embedQuery(query.trim());
+    const results = search(queryVec, getStore(), limit);
+
+    emitTelemetry(true, results[0]?.metadata);
+
+    return {
+      content: [
+        {
+          type: 'text' as const,
+          text: JSON.stringify(results, null, 2),
+        },
+      ],
+    };
+  } catch (err) {
+    console.error('[MCP] search_docs error:', err);
+    emitTelemetry(false);
+    return {
+      isError: true,
+      content: [
+        {
+          type: 'text' as const,
+          text: 'Search temporarily unavailable.',
+        },
+      ],
+    };
   }
 };
 
@@ -175,57 +333,9 @@ const handler = createMcpHandler(
   server => {
     server.tool(
       'search_docs',
-      [
-        'Search the Marigold Design System documentation using semantic similarity.',
-        'Use this tool to find component APIs, usage guidelines, accessibility notes, theming instructions, and code examples.',
-        'Ideal for questions like: "How do I use the Button component?", "What props does Select accept?", or "How does theming work in Marigold?".',
-        'Returns the most relevant documentation sections ranked by similarity to the query.',
-        'Query must be a natural language question or keyword phrase (max 1000 characters).',
-      ].join(' '),
-      {
-        query: z
-          .string()
-          .min(1)
-          .max(1000)
-          .describe(
-            'Natural language question or keyword phrase to search for. Max 1000 characters. Example: "How do I disable a Button?" or "Select component props".'
-          ),
-        limit: z
-          .number()
-          .int()
-          .min(3)
-          .max(10)
-          .default(5)
-          .describe(
-            'Number of documentation sections to return (3–10, default: 5). Use a higher value for broad topics, lower for specific lookups.'
-          ),
-      },
-      async ({ query, limit }) => {
-        try {
-          const queryVec = await embedQuery(query.trim());
-          const results = search(queryVec, getStore(), limit);
-
-          return {
-            content: [
-              {
-                type: 'text' as const,
-                text: JSON.stringify(results, null, 2),
-              },
-            ],
-          };
-        } catch (err) {
-          console.error('[MCP] search_docs error:', err);
-          return {
-            isError: true,
-            content: [
-              {
-                type: 'text' as const,
-                text: 'Search temporarily unavailable.',
-              },
-            ],
-          };
-        }
-      }
+      SEARCH_DOCS_DESCRIPTION,
+      SEARCH_DOCS_SCHEMA,
+      searchDocsHandler
     );
   },
   {
