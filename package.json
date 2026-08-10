@@ -83,9 +83,6 @@
     "typecheck:only": "tsc --noEmit --resolveJsonModule --project tsconfig.check.json",
     "typecheck:docs": "pnpm --filter @marigold/docs types:check",
     "changeset": "changeset",
-    "release:beta": "zx scripts/beta-release.mjs",
-    "release:beta:enter": "zx scripts/beta-enter.mjs",
-    "release:beta:exit": "zx scripts/beta-exit.mjs",
     "release:notification": "zx scripts/create-slack-notification.mjs",
     "prepare": "husky install"
   },
