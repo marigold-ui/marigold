@@ -312,29 +312,31 @@
  * with a top divider, on one padding rhythm. Consumers override via composition
  * (e.g. Dialog stacks actions responsively).
  *
- * Distinct from the Panel component, which has its own styling and does not use
- * these.
+ * Named after `ui-surface` above: those containers wear the surface role, these
+ * style its parts. Not every surface opts in — Panel is a `ui-surface` too, but
+ * styles its own header and derives its padding per instance from its padding
+ * props (`--panel-px`), where these surfaces share one static rhythm.
  *
- * The shared horizontal padding is `--ui-panel-px`, declared in tokens.css so it
- * inherits the `:root, :host` + `@layer theme` placement every token gets.
+ * The shared horizontal padding is `--ui-surface-px`, declared in tokens.css so
+ * it inherits the `:root, :host` + `@layer theme` placement every token gets.
  */
-@utility ui-panel-header {
-  @apply border-border border-b px-(--ui-panel-px) py-4;
+@utility ui-surface-header {
+  @apply border-border border-b px-(--ui-surface-px) py-4;
 }
 
 /*
  * NOTE: Drawer.Content's `bleed` branch (DrawerContent.tsx) hand-copies the
  * non-horizontal parts of this utility (`overflow-y-auto py-4 outline-none`)
- * because it must drop `px-(--ui-panel-px)` while keeping everything else. Only
- * the horizontal axis is shared via the token; if the vertical padding, scroll
- * or outline here change, update that branch too.
+ * because it must drop `px-(--ui-surface-px)` while keeping everything else.
+ * Only the horizontal axis is shared via the token; if the vertical padding,
+ * scroll or outline here change, update that branch too.
  */
-@utility ui-panel-content {
-  @apply overflow-y-auto px-(--ui-panel-px) py-4 outline-none;
+@utility ui-surface-content {
+  @apply overflow-y-auto px-(--ui-surface-px) py-4 outline-none;
 }
 
-@utility ui-panel-actions {
-  @apply border-border flex flex-row justify-end gap-3 border-t px-(--ui-panel-px) py-4;
+@utility ui-surface-actions {
+  @apply border-border flex flex-row justify-end gap-3 border-t px-(--ui-surface-px) py-4;
 }
 
 /* ========================= */

@@ -205,7 +205,7 @@ LongContent.test(
     await userEvent.click(trigger);
     const endMarker = await canvas.findByTestId('end-of-content');
     const scrollContainer = endMarker.closest(
-      '[class*="ui-panel-content"]'
+      '[class*="ui-surface-content"]'
     ) as HTMLElement;
     const isWithin = (child: Element, parent: Element) => {
       const c = child.getBoundingClientRect();
