@@ -5,6 +5,9 @@ import { useTableContext } from './Context';
 import { Table } from './Table';
 import {
   Basic,
+  ExpandableRows,
+  ExpandableRowsDynamic,
+  ExpandableRowsLazyChildren,
   FooterTotals,
   ScrollableAndSticky,
   VerticalAlignment,
@@ -403,4 +406,83 @@ test('useTableContext throws outside Table', () => {
   expect(() => renderHook(() => useTableContext())).toThrow(
     'useTableContext must be used within a <Table> component'
   );
+});
+
+describe('Expandable rows', () => {
+  const rowOf = (text: string) =>
+    // eslint-disable-next-line testing-library/no-node-access
+    screen.getByText(text).closest('tr')!;
+
+  test('setting treeColumn turns the table into a treegrid', () => {
+    render(<ExpandableRows.Component />);
+
+    expect(screen.getByRole('treegrid')).toBeInTheDocument();
+    expect(screen.queryByRole('grid')).not.toBeInTheDocument();
+  });
+
+  test('a table without treeColumn stays a plain grid', () => {
+    render(<Basic.Component />);
+
+    expect(screen.getByRole('grid')).toBeInTheDocument();
+    expect(screen.queryByRole('treegrid')).not.toBeInTheDocument();
+  });
+
+  test('group rows announce their collapsed state, leaf rows do not', () => {
+    render(<ExpandableRows.Component />);
+
+    expect(rowOf('Sammelabrechnung 01.07.2026')).toHaveAttribute(
+      'aria-expanded',
+      'false'
+    );
+    expect(rowOf('ABR-10240')).not.toHaveAttribute('aria-expanded');
+  });
+
+  test('collapsed child rows are not rendered at all', () => {
+    render(<ExpandableRows.Component />);
+
+    expect(screen.queryByText('ABR-10231')).not.toBeInTheDocument();
+  });
+
+  test('expanded child rows are real rows with tree semantics', () => {
+    render(<ExpandableRowsDynamic.Component />);
+
+    // `defaultExpandedKeys` pre-expands the June settlement run.
+    const child = rowOf('ABR-10188');
+
+    expect(child).toHaveAttribute('aria-level', '2');
+    expect(child).toHaveAttribute('aria-posinset', '1');
+    expect(child).toHaveAttribute('aria-setsize', '3');
+    expect(child).toHaveAttribute('data-level', '2');
+  });
+
+  test('only the tree column cell is marked and indented', () => {
+    render(<ExpandableRowsDynamic.Component />);
+
+    const child = rowOf('ABR-10188');
+    // eslint-disable-next-line testing-library/no-node-access
+    const cells = Array.from(child.querySelectorAll('[data-tree-column]'));
+
+    expect(cells).toHaveLength(1);
+    expect(cells[0]).toHaveTextContent('ABR-10188');
+  });
+
+  test('Table.ChildRows renders nothing for a row without children', () => {
+    render(<ExpandableRowsDynamic.Component />);
+
+    // The standalone clearing has no `children`, so it stays a leaf.
+    expect(rowOf('ABR-10240')).not.toHaveAttribute('aria-expanded');
+    expect(rowOf('ABR-10240')).toHaveAttribute('aria-level', '1');
+  });
+
+  test('hasChildRows drives both the visuals and aria-expanded', () => {
+    // Upstream reads `hasChildItems` for the data attributes and `hasChildRows`
+    // for `aria-expanded`; `Table.Row` writes both, so async children get the
+    // chevron and the correct announcement.
+    render(<ExpandableRowsLazyChildren.Component />);
+
+    const row = rowOf('Sammelabrechnung 01.05.2026');
+
+    expect(row).toHaveAttribute('aria-expanded', 'false');
+    expect(row).toHaveAttribute('data-has-child-items', 'true');
+  });
 });

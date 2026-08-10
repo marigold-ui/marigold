@@ -11,10 +11,16 @@ type RemovedProps = 'className' | 'style';
 
 export interface TableRowProps<T extends object = object> extends Omit<
   RAC.RowProps<T>,
-  RemovedProps
+  RemovedProps | 'hasChildItems'
 > {
   variant?: 'grid' | 'default' | 'muted' | (string & {});
   size?: 'compact' | 'default' | 'spacious' | (string & {});
+  /**
+   * Whether this row has child rows that are not loaded yet. Only needed when
+   * child rows are fetched on demand — statically nested rows and
+   * `Table.ChildRows` are detected automatically.
+   */
+  hasChildRows?: boolean;
 }
 
 const TableRow = <T extends object>({
@@ -23,10 +29,23 @@ const TableRow = <T extends object>({
   children,
   variant: variantProp,
   size: sizeProp,
+  hasChildRows,
   ...otherProps
 }: TableRowProps<T>) => {
   let { selectionBehavior, allowsDragging } = useTableOptions();
   const context = useTableContext();
+
+  // Upstream reads two different prop names for the same thing: react-aria-
+  // components uses `hasChildItems` for the chevron and the data attributes,
+  // while react-aria's `useTableRow` uses `hasChildRows` for `aria-expanded`.
+  // Setting only one leaves the other half missing, so both are written until
+  // upstream reconciles them. `hasChildRows` is not part of RAC's `RowProps`,
+  // but every row prop ends up on the collection node, which is where
+  // `useTableRow` looks for it.
+  const expandableProps = {
+    hasChildItems: hasChildRows,
+    hasChildRows,
+  };
   const classNames = useClassNames({
     component: 'Table',
     variant: variantProp ?? context.variant,
@@ -34,7 +53,12 @@ const TableRow = <T extends object>({
   });
 
   return (
-    <Row id={id} className={cn('group/row', classNames.row)} {...otherProps}>
+    <Row
+      id={id}
+      className={cn('group/row', classNames.row)}
+      {...expandableProps}
+      {...otherProps}
+    >
       {allowsDragging && (
         <Cell className={classNames.cell}>
           <Button

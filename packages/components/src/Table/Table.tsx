@@ -11,6 +11,7 @@ import type { Selection } from '../types';
 import { TableContext } from './Context';
 import { TableBody } from './TableBody';
 import { TableCell } from './TableCell';
+import { TableChildRows } from './TableChildRows';
 import { TableColumn } from './TableColumn';
 import { renderDragPreview } from './TableDragPreview';
 import { renderDropIndicator } from './TableDropIndicator';
@@ -45,6 +46,24 @@ export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
    * When provided, the Table manages selection wiring and ActionBar positioning automatically.
    */
   actionBar?: (selectedKeys: Selection) => ReactNode;
+  /**
+   * The `id` of the column that shows the expand control and the indentation.
+   * Setting it enables expandable rows, which also changes the table's role from
+   * `grid` to `treegrid`.
+   */
+  treeColumn?: RAC.TableProps['treeColumn'];
+  /**
+   * The keys of the expanded rows (controlled).
+   */
+  expandedKeys?: RAC.TableProps['expandedKeys'];
+  /**
+   * The keys of the initially expanded rows (uncontrolled).
+   */
+  defaultExpandedKeys?: RAC.TableProps['defaultExpandedKeys'];
+  /**
+   * Handler that is called when rows are expanded or collapsed.
+   */
+  onExpandedChange?: RAC.TableProps['onExpandedChange'];
 }
 
 const _Table = ({
@@ -117,6 +136,7 @@ const Table = Object.assign(_Table, {
   Column: TableColumn,
   Body: TableBody,
   Row: TableRow,
+  ChildRows: TableChildRows,
   Cell: TableCell,
   EditableCell: TableEditableCell,
   Footer: TableFooter,
@@ -134,6 +154,7 @@ export type { TableHeaderProps } from './TableHeader';
 export type { TableColumnProps } from './TableColumn';
 export type { TableBodyProps } from './TableBody';
 export type { TableRowProps } from './TableRow';
+export type { TableChildRowsProps } from './TableChildRows';
 export type { TableCellProps } from './TableCell';
 export type { TableDropIndicatorProps } from './TableDropIndicator';
 export type { TableDragPreviewProps } from './TableDragPreview';

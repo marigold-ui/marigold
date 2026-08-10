@@ -181,6 +181,68 @@ If you cannot place all row actions at the end of the row, be mindful of clarity
   </Dont>
 </GuidelineTiles>
 
+### Grouped rows
+
+Some records belong together: a settlement run that bundles individual clearings, an order that bundles its line items, a folder that bundles its files. Set `treeColumn` to the `id` of the column that should carry the hierarchy, then nest `<Table.Row>` inside `<Table.Row>`. The nested rows stay real table rows, so their values line up under the same headers, each one can carry its own actions, and each one can be selected, linked to and scrolled to individually.
+
+The column named by `treeColumn` renders the expand control and the indentation automatically. You don't place a chevron yourself, and rows without children reserve the same width so values stay aligned down the column. Group rows are emphasised for you, so there is no need to style them.
+
+When child rows come from data, render them with `<Table.ChildRows>` and let your render function recurse. It renders nothing when `items` is empty or missing, so leaf rows need no special case.
+
+<ComponentDemo name="table-expandable-rows" />
+
+Groups start collapsed. Pre-open some of them with `defaultExpandedKeys`, or take full control with `expandedKeys` and `onExpandedChange` — for example to keep the open groups in the URL so a link restores them.
+
+<Callout title="The role changes to treegrid">
+  Setting `treeColumn` changes the table's accessibility role from `grid` to
+  `treegrid`, which is what makes screen readers announce expanded state and
+  nesting level. Existing tests that assert `getByRole('grid')` on such a table
+  need to be updated to `getByRole('treegrid')`.
+</Callout>
+
+Keyboard users reach a group row with the arrow keys and expand it with <kbd>→</kbd>, collapse it with <kbd>←</kbd>. Pressing <kbd>←</kbd> on a row that is already collapsed moves focus up to its parent. The chevron itself is deliberately skipped by <kbd>Tab</kbd>, so tabbing stays reserved for the buttons and links inside the rows.
+
+#### Searching inside grouped rows
+
+Collapsed child rows are not rendered at all. That keeps large tables fast and the announced row counts correct, but it means you cannot scroll to a match that is still hidden. Searching therefore takes one extra step, and it belongs in your app rather than in the Table:
+
+1. Match the query against your own data, not the DOM.
+2. Add the matching row's ancestors to `expandedKeys`.
+3. Once the row has rendered, focus it or call `scrollIntoView` on it.
+
+The same three steps cover deep links: expand the ancestors on mount, then scroll. The Table is not virtualized, so a plain `scrollIntoView` is enough.
+
+<ComponentDemo name="table-expandable-search" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Keep the hierarchy shallow. One level of grouping is almost always enough
+      in a data table.
+    </DoDescription>
+  </Do>
+  <Do>
+    <DoDescription>
+      Flatten a group that contains a single child — a group of one is noise.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use grouped rows for content that isn't tabular. Reach for an{' '}
+      <a href="/components/disclosure/accordion">Accordion</a> when the expanded
+      content doesn't share the table's columns.
+    </DontDescription>
+  </Dont>
+  <Dont>
+    <DontDescription>
+      Don't combine editable cells with the tree column. The edit trigger and
+      the chevron compete for the same space.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+Not supported yet, and worth knowing before you design around it: inline editing in the tree column, drag and drop across nesting levels, and sorting that reorders levels automatically (you sort your own data, so a grouped table has to sort each level). There is no built-in "expand all" control either — set `expandedKeys` to every group's key yourself.
+
 ### Sorting columns
 
 When working with large datasets, users often need to organize information by specific attributes to find what they're looking for or identify patterns. Sorting solves the problem of information overload by letting users reorder data in a way that makes sense for their current task, whether that's finding the highest value, the most recent date, or items alphabetically.
@@ -395,6 +457,10 @@ Mark the column that best identifies each row, typically a name, title, or ID co
 ### Table.Row
 
 <AutoTypeTable path="Table" name="TableRowProps" />
+
+### Table.ChildRows
+
+<AutoTypeTable path="Table/TableChildRows" name="TableChildRowsProps" />
 
 ### Table.Cell
 

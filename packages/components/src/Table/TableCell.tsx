@@ -4,6 +4,7 @@ import { Cell } from 'react-aria-components/Table';
 import { cn, textAlign, verticalAlign } from '@marigold/system';
 import { useTableContext } from './Context';
 import { TableCellContent } from './TableCellContent';
+import { TableExpandButton } from './TableExpandButton';
 
 // Props
 // ---------------
@@ -38,15 +39,39 @@ const TableCell = ({
 
   return (
     <Cell className={cn(classNames.cell, verticalAlign[alignY])} {...props}>
-      {({ columnIndex }) => (
-        <TableCellContent
-          columnIndex={columnIndex}
-          alignX={alignX}
-          cellOverflow={cellOverflow}
-        >
-          {children}
-        </TableCellContent>
-      )}
+      {({ columnIndex, isTreeColumn, hasChildItems, isExpanded }) => {
+        const content = (
+          <TableCellContent
+            columnIndex={columnIndex}
+            alignX={alignX}
+            cellOverflow={cellOverflow}
+            className={isTreeColumn ? 'min-w-0 flex-1' : undefined}
+          >
+            {children}
+          </TableCellContent>
+        );
+
+        if (!isTreeColumn) return content;
+
+        // The indentation lives on this wrapper rather than on the cell's own
+        // padding, so it composes with `--cell-edge-padding` instead of
+        // fighting it.
+        return (
+          <div className={classNames.treeIndent}>
+            {hasChildItems ? (
+              <TableExpandButton expanded={isExpanded} />
+            ) : (
+              // Reserves the chevron's width so values in the tree column stay
+              // aligned between group rows and leaf rows.
+              <span
+                aria-hidden="true"
+                className={cn(classNames.expandButton, 'invisible')}
+              />
+            )}
+            {content}
+          </div>
+        );
+      }}
     </Cell>
   );
 };

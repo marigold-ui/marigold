@@ -7,6 +7,9 @@ export const Table: ThemeComponent<'Table'> = {
       // Edge padding: Panel's `--panel-px`, then a bled container's
       // `--bleed-px`, then the standalone cell default.
       '[--cell-edge-padding:var(--panel-px,var(--bleed-px,var(--cell-x-padding)))]',
+      // Footprint of the expand control in the tree column. Leaf rows reserve
+      // the same width, so values stay aligned down the column.
+      '[--tree-chevron-size:calc(var(--spacing)*6)]',
     ],
     variants: {
       variant: {
@@ -19,16 +22,19 @@ export const Table: ThemeComponent<'Table'> = {
           '[--cell-y-padding:calc(var(--spacing)*1.5)]',
           '[--cell-x-padding:calc(var(--spacing)*2)]',
           '[--header-height:calc(var(--spacing)*8)]',
+          '[--tree-indent:calc(var(--spacing)*5)]',
         ],
         default: [
           '[--cell-y-padding:calc(var(--spacing)*2.5)]',
           '[--cell-x-padding:calc(var(--spacing)*2.5)]',
           '[--header-height:calc(var(--spacing)*10)]',
+          '[--tree-indent:calc(var(--spacing)*6)]',
         ],
         spacious: [
           '[--cell-y-padding:calc(var(--spacing)*4)]',
           '[--cell-x-padding:calc(var(--spacing)*4)]',
           '[--header-height:calc(var(--spacing)*12)]',
+          '[--tree-indent:calc(var(--spacing)*7)]',
         ],
       },
     },
@@ -117,6 +123,42 @@ export const Table: ThemeComponent<'Table'> = {
       '**:data-cell-content:outline-none',
       'data-editable:hover:ui-state-hover',
       'data-editable:has-[:focus-visible]:ui-state-hover',
+    ],
+  }),
+
+  // Expandable rows (tree grid)
+  //
+  // The indentation sits on this wrapper inside the cell rather than on the
+  // cell's own padding, so it composes with `--cell-edge-padding` instead of
+  // competing with it.
+  treeIndent: cva({
+    base: [
+      'relative flex items-center gap-1',
+      // One step per nesting level. React Aria publishes `--table-row-level` on
+      // the cell, starting at 1, so root rows are not indented.
+      'ps-[calc((var(--table-row-level,1)-1)*var(--tree-indent))]',
+      // Guide line tying child rows back to their group row. Centered on the
+      // parent's chevron and stretched over the cell's vertical padding, so it
+      // runs unbroken through the whole group.
+      'before:absolute before:w-px before:bg-border',
+      'before:top-[calc(var(--cell-y-padding)*-1)] before:bottom-[calc(var(--cell-y-padding)*-1)]',
+      'before:start-[calc((var(--table-row-level,1)-2)*var(--tree-indent)+var(--tree-chevron-size)/2)]',
+      // Root rows have no parent to connect to.
+      '[[data-level="1"]_&]:before:hidden',
+      // Group rows carry a little more weight than their children. Only the
+      // tree column renders this wrapper, so the emphasis stays scoped to it.
+      '[[data-has-child-items]_&]:font-medium',
+    ],
+  }),
+  expandButton: cva({
+    base: [
+      'flex shrink-0 items-center justify-center',
+      'size-(--tree-chevron-size) rounded-surface',
+      'text-secondary transition-[color,transform]',
+      'ui-interactive',
+      'ui-press',
+      'hover:ui-state-hover-ghost',
+      '[&_svg]:pointer-events-none [&_svg]:shrink-0',
     ],
   }),
 
