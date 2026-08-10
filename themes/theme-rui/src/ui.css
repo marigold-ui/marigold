@@ -313,12 +313,11 @@
  * (e.g. Dialog stacks actions responsively).
  *
  * Named after `ui-surface` above: those containers wear the surface role, these
- * style its parts. Not every surface opts in — Panel is a `ui-surface` too, but
- * styles its own header and derives its padding per instance from its padding
- * props (`--panel-px`), where these surfaces share one static rhythm.
+ * style its parts. Panel is a `ui-surface` too but opts out — it derives padding
+ * per instance from its padding props (`--panel-px`).
  *
- * The shared horizontal padding is `--ui-surface-px`, declared in tokens.css so
- * it inherits the `:root, :host` + `@layer theme` placement every token gets.
+ * `--ui-surface-px` lives in tokens.css so it gets the `:root, :host` +
+ * `@layer theme` placement every token has.
  */
 @utility ui-surface-header {
   @apply border-border border-b px-(--ui-surface-px) py-4;

@@ -18,10 +18,8 @@ export const CardContent = ({ children, bleed }: CardContentProps) => {
   return (
     <div
       className={cn(
-        // When bled, drop the horizontal padding and publish `--bleed-px` so
-        // edge-aware children (Table, Accordion) can inset their own content to
-        // stay aligned with the Card title while backgrounds/dividers reach the
-        // Card border. Mirrors `Panel.Content`.
+        // `--bleed-px` lets edge-aware children (Table, Accordion) realign with
+        // the Card title while their dividers reach the border. Like Panel.Content.
         bleed ? '[--bleed-px:var(--card-px)]' : 'px-(--card-px)',
         classNames.content
       )}

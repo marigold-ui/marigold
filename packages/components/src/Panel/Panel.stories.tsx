@@ -712,10 +712,9 @@ export const TableInside = meta.story(() => (
 ));
 
 /**
- * Edge cell alignment is driven by `--bleed-px`, which only a *bled* content
- * area publishes. A bled table pulls its first/last cell in to line up with the
- * Panel title; a non-bled table keeps its own cell padding, because the content
- * area already offsets the whole table.
+ * Only a bled content area publishes `--bleed-px`: a bled table pulls its
+ * first/last cell in to line up with the Panel title, a non-bled one keeps its
+ * own cell padding.
  */
 export const TableEdgeAlignment = meta.story({
   tags: ['component-test'],
@@ -776,8 +775,8 @@ TableEdgeAlignment.test(
     parameters: { chromatic: { disableSnapshot: true } },
   },
   async ({ canvas }) => {
-    // Resolved geometry, not token values: `--panel-px` computes to an
-    // unresolved `var()` chain, so it cannot be read back and parsed.
+    // `--panel-px` computes to an unresolved `var()` chain, so compare resolved
+    // geometry rather than token values.
     const padding = (el: Element) =>
       parseFloat(getComputedStyle(el).paddingInlineStart);
 
@@ -791,8 +790,7 @@ TableEdgeAlignment.test(
     const bled = cells('Bled orders');
     const nonBled = cells('Non-bled orders');
 
-    // Bled: the first cell is pulled in to line up with the Panel header, so it
-    // is padded more than an interior cell.
+    // Bled: the first cell lines up with the header, so it out-pads an interior one.
     const header = canvas
       .getByRole('heading', { name: 'Bled table' })
       .closest('[class*="px-(--panel-px)"]')!;
@@ -800,9 +798,8 @@ TableEdgeAlignment.test(
     expect(padding(bled.first)).toBeCloseTo(padding(header), 1);
     expect(padding(bled.first)).toBeGreaterThan(padding(bled.second));
 
-    // Non-bled: the content area already offsets the whole table, so the first
-    // cell keeps the ordinary cell padding. Reading Panel's inherited
-    // `--panel-px` here would inset it a second time.
+    // Non-bled: the content area already offsets the table, so the first cell
+    // keeps the ordinary cell padding.
     expect(padding(nonBled.first)).toBeCloseTo(padding(nonBled.second), 1);
   }
 );

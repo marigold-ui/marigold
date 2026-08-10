@@ -23,10 +23,8 @@ describe('Edge cell padding', () => {
 
     const table = screen.getByRole('grid', { name: 'label' });
 
-    // Only a *bled* container publishes `--bleed-px`, so the fallback correctly
-    // stops applying outside one. Reading `--panel-px` here would break that:
-    // Panel sets it on its root, where it inherits into non-bled content too
-    // and would offset the edge cells a second time.
+    // `--panel-px` inherits into non-bled content, so reading it would offset
+    // those edge cells twice.
     expect(table.className).toContain(
       '[--cell-edge-padding:var(--bleed-px,var(--cell-x-padding))]'
     );
