@@ -3,8 +3,8 @@ import {
   DialogTrigger as RACDialogTrigger,
 } from 'react-aria-components/Dialog';
 import { expect, fn, userEvent, waitFor } from 'storybook/test';
-import { Archive } from '@marigold/icons';
 import preview from '.storybook/preview';
+import { Archive } from '@marigold/icons';
 import { Button } from '../Button/Button';
 import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Description } from '../Description/Description';

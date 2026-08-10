@@ -1,8 +1,8 @@
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import type { ReactNode, Ref } from 'react';
 import { memo } from 'react';
 import { theme } from '@marigold/theme-rui';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { Button } from '../Button/Button';
 import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Description } from '../Description/Description';
