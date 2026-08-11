@@ -2707,6 +2707,9 @@ ExpandableRowsDynamic.test(
 export const ExpandableRowsLazyChildren = meta.story({
   tags: ['component-test'],
   args: { treeColumn: 'clearing' },
+  // Pixel-identical to a collapsed group row in `ExpandableRows`; what's special
+  // about it is an attribute, and the unit test asserts that.
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Table aria-label="Clearings" {...args}>
       <Table.Header>
