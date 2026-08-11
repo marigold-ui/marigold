@@ -18,7 +18,8 @@ The tree column renders the expand control itself, reusing the caret and morph
 animation from `<Accordion>`. The control sits in a leading gutter every row
 reserves, so a group row and a childless row at the same level start their value
 at the same x whether or not there is a control to show. Levels below the root
-indent by `--tree-indent`, and the column's own header label takes the same
+indent by one gutter (`--tree-indent`), so a nested row's control starts where
+its parent's value starts, and the column's own header label takes the same
 gutter, so it sits above the values it heads. Containment is also carried by the
 group row, which is filled and emphasised automatically. Expansion is collapsed
 by default and can be controlled with `expandedKeys` / `defaultExpandedKeys` /

@@ -2567,6 +2567,17 @@ ExpandableRows.test(
       expect(valueX('CLR-10232')).toBe(valueX('CLR-10231'));
     });
 
+    await step('A child starts where its parent value starts', () => {
+      // One level in is one gutter in, so the step between levels is the same
+      // distance as the one from a control to the value beside it.
+      const gutter =
+        valueX('Settlement run 1 Jul 2026') - left(chevronOf(group));
+
+      expect(valueX('CLR-10231') - valueX('Settlement run 1 Jul 2026')).toBe(
+        gutter
+      );
+    });
+
     await step('The column label sits above the values it heads', () => {
       const header = canvas.getByRole('columnheader', { name: /clearing no/i });
 

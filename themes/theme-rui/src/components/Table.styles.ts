@@ -15,6 +15,10 @@ export const Table: ThemeComponent<'Table'> = {
       '[--tree-gutter-gap:calc(var(--spacing)*2)]',
       // Width the control's track claims, control or not.
       '[--tree-gutter:calc(var(--tree-chevron-size)+var(--tree-gutter-gap))]',
+      // One level in is one gutter in, so a child's control starts where its
+      // parent's value does. A smaller step would put it between the parent's
+      // control and value, which reads as a misalignment rather than depth.
+      '[--tree-indent:var(--tree-gutter)]',
       // Levels up to here share the gutter's x instead of indenting. Only the
       // root does: a root row with no children must not read as the previous
       // group's last child.
@@ -31,19 +35,16 @@ export const Table: ThemeComponent<'Table'> = {
           '[--cell-y-padding:calc(var(--spacing)*1.5)]',
           '[--cell-x-padding:calc(var(--spacing)*2)]',
           '[--header-height:calc(var(--spacing)*8)]',
-          '[--tree-indent:calc(var(--spacing)*5)]',
         ],
         default: [
           '[--cell-y-padding:calc(var(--spacing)*2.5)]',
           '[--cell-x-padding:calc(var(--spacing)*2.5)]',
           '[--header-height:calc(var(--spacing)*10)]',
-          '[--tree-indent:calc(var(--spacing)*6)]',
         ],
         spacious: [
           '[--cell-y-padding:calc(var(--spacing)*4)]',
           '[--cell-x-padding:calc(var(--spacing)*4)]',
           '[--header-height:calc(var(--spacing)*12)]',
-          '[--tree-indent:calc(var(--spacing)*7)]',
         ],
       },
     },
