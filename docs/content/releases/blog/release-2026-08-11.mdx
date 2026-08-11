@@ -1055,9 +1055,9 @@ The app shell around it separates regions on whitespace, and the remaining struc
 
 `<SectionMessage>` no longer fills its background with a per-variant tint. It now sits on a neutral `ui-surface` with neutral title and body text, and the severity is carried by a muted per-variant colored border plus the colored icon. Because the surface stays neutral, standard `<Button>` and `<Link>` actions placed inside read correctly instead of floating on a colored fill, and the bordered, in-flow treatment keeps an inline message visually distinct from the floating, shadowed `<Toast>`. Variants stay distinguishable without relying on color alone through the border, the icon shape, and the title.
 
-### Dialog: shared panel pattern and a scroll seam
+### Dialog: shared surface pattern and a scroll seam
 
-`<Dialog>` now uses the same `ui-panel-*` utilities as `<Drawer>`, `<Tray>`, and `<Sidebar>`. Its actions gain a `border-t` divider as an interaction-zone marker, and its content picks up consistent vertical padding. The responsive button stacking specific to Dialog stays as it was, and Drawer, Tray, and Sidebar are visually unchanged.
+`<Dialog>` now uses the same `ui-surface-*` utilities as `<Drawer>`, `<Tray>`, and `<Sidebar>`. Its actions gain a `border-t` divider as an interaction-zone marker, and its content picks up consistent vertical padding. The responsive button stacking specific to Dialog stays as it was, and Drawer, Tray, and Sidebar are visually unchanged.
 
 On top of that, a long Dialog now signals that its body scrolls: the header is borderless at rest and fades in a bottom hairline once content scrolls beneath it. The mechanism is a reusable `ui-scroll-seam-*` primitive, with an always-on hairline fallback for browsers without scroll-driven animations.
 
@@ -1079,7 +1079,7 @@ A round of smaller refinements across the control surfaces:
 
 - `<ToggleButtonGroup>` gets its segment divider back, and it no longer clips the focus outline of a focused segment.
 - Unselected `<Pagination>` page numbers pick up the same translucent ghost hover as the prev/next arrows.
-- `<Tray>` content adopts the shared `ui-panel-content` rhythm, and `<Card>` moves to the shared `rounded-surface` radius so the raised tier is consistent.
+- `<Tray>` content adopts the shared `ui-surface-content` rhythm, and `<Card>` moves to the shared `rounded-surface` radius so the raised tier is consistent.
 - The `<Toast>` close button darkens on hover again.
 
 ### Transparent `ui-scrollbar` track

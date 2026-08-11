@@ -189,6 +189,8 @@ Every slot is inset with `p="square-regular"`, mirroring `Panel`. Use `square-lo
 </Card>
 ```
 
+A bled `<Card.Content>` publishes the card's horizontal padding as `--bleed-px`, so edge-aware children realign with the title on their own: `<Table>` pulls its first and last cell in while row backgrounds still reach the edge, and `<Accordion>` insets its header and content while its dividers span the full width. Custom content can read the same variable — see [Reading container spacing](/foundations/spacing#reading-container-spacing).
+
 ## Accessibility
 
 Card renders an `<article>` and wires up its accessible name and heading level, so most of the work is handled for you. Give every card a name, pick the heading level that fits the page, and add list semantics when cards repeat in a grid.

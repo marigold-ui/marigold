@@ -205,7 +205,7 @@ LongContent.test(
     await userEvent.click(trigger);
     const endMarker = await canvas.findByTestId('end-of-content');
     const scrollContainer = endMarker.closest(
-      '[class*="ui-panel-content"]'
+      '[class*="ui-surface-content"]'
     ) as HTMLElement;
     const isWithin = (child: Element, parent: Element) => {
       const c = child.getBoundingClientRect();
@@ -632,15 +632,27 @@ export const BleedTable = meta.story({
 });
 
 BleedTable.test(
-  'Opens the drawer with a full-width Table',
+  'Opens the drawer with a Table whose edge cells align with the title',
   {
     parameters: { chromatic: { disableSnapshot: false } },
   },
   async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
 
-    expect(
-      await canvas.findByRole('grid', { name: 'Attendees' })
-    ).toBeInTheDocument();
+    const grid = await canvas.findByRole('grid', { name: 'Attendees' });
+    expect(grid).toBeInTheDocument();
+
+    // `--bleed-px` computes to an unresolved `var()` chain, so compare resolved
+    // geometry rather than token values.
+    const padding = (el: Element) =>
+      parseFloat(getComputedStyle(el).paddingInlineStart);
+
+    const [first, second] = grid.querySelectorAll('tbody tr:first-child > *');
+    const header = canvas
+      .getByRole('heading', { name: 'Attendees' })
+      .closest('[class*="ui-surface-header"]')!;
+
+    expect(padding(first)).toBeCloseTo(padding(header), 1);
+    expect(padding(first)).toBeGreaterThan(padding(second));
   }
 );

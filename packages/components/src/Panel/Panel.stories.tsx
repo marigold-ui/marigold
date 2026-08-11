@@ -711,6 +711,99 @@ export const TableInside = meta.story(() => (
   </Stack>
 ));
 
+/**
+ * Only a bled content area publishes `--bleed-px`: a bled table pulls its
+ * first/last cell in to line up with the Panel title, a non-bled one keeps its
+ * own cell padding.
+ */
+export const TableEdgeAlignment = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <Stack space="regular">
+      <Panel>
+        <Panel.Header>
+          <Title>Bled table</Title>
+          <Description>Edge cells align with the title.</Description>
+        </Panel.Header>
+        <Panel.Content bleed>
+          <Table aria-label="Bled orders">
+            <Table.Header>
+              <Table.Column rowHeader>Order</Table.Column>
+              <Table.Column>Customer</Table.Column>
+            </Table.Header>
+            <Table.Body items={orders.slice(0, 2)}>
+              {item => (
+                <Table.Row id={item.id}>
+                  <Table.Cell>#{item.id}</Table.Cell>
+                  <Table.Cell>{item.customer}</Table.Cell>
+                </Table.Row>
+              )}
+            </Table.Body>
+          </Table>
+        </Panel.Content>
+      </Panel>
+
+      <Panel>
+        <Panel.Header>
+          <Title>Non-bled table</Title>
+          <Description>Keeps the standalone cell padding.</Description>
+        </Panel.Header>
+        <Panel.Content>
+          <Table aria-label="Non-bled orders">
+            <Table.Header>
+              <Table.Column rowHeader>Order</Table.Column>
+              <Table.Column>Customer</Table.Column>
+            </Table.Header>
+            <Table.Body items={orders.slice(0, 2)}>
+              {item => (
+                <Table.Row id={item.id}>
+                  <Table.Cell>#{item.id}</Table.Cell>
+                  <Table.Cell>{item.customer}</Table.Cell>
+                </Table.Row>
+              )}
+            </Table.Body>
+          </Table>
+        </Panel.Content>
+      </Panel>
+    </Stack>
+  ),
+});
+
+TableEdgeAlignment.test(
+  'only a bled table takes its edge padding from the Panel',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvas }) => {
+    // `--panel-px` computes to an unresolved `var()` chain, so compare resolved
+    // geometry rather than token values.
+    const padding = (el: Element) =>
+      parseFloat(getComputedStyle(el).paddingInlineStart);
+
+    const cells = (name: string) => {
+      const [first, second] = canvas
+        .getByRole('grid', { name })
+        .querySelectorAll('tbody tr:first-child > *');
+      return { first, second };
+    };
+
+    const bled = cells('Bled orders');
+    const nonBled = cells('Non-bled orders');
+
+    // Bled: the first cell lines up with the header, so it out-pads an interior one.
+    const header = canvas
+      .getByRole('heading', { name: 'Bled table' })
+      .closest('[class*="px-(--panel-px)"]')!;
+
+    expect(padding(bled.first)).toBeCloseTo(padding(header), 1);
+    expect(padding(bled.first)).toBeGreaterThan(padding(bled.second));
+
+    // Non-bled: the content area already offsets the table, so the first cell
+    // keeps the ordinary cell padding.
+    expect(padding(nonBled.first)).toBeCloseTo(padding(nonBled.second), 1);
+  }
+);
+
 export const AccordionInside = meta.story(() => (
   <Stack space="regular">
     <Panel>

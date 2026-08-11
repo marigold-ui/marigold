@@ -17,6 +17,21 @@ const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
 window.matchMedia = mockMatchMedia([smallScreenQuery]);
 
+describe('Edge cell padding', () => {
+  test('derives from --bleed-px only, never from --panel-px', () => {
+    render(<Basic.Component />);
+
+    const table = screen.getByRole('grid', { name: 'label' });
+
+    // `--panel-px` inherits into non-bled content, so reading it would offset
+    // those edge cells twice.
+    expect(table.className).toContain(
+      '[--cell-edge-padding:var(--bleed-px,var(--cell-x-padding))]'
+    );
+    expect(table.className).not.toContain('--panel-px');
+  });
+});
+
 describe('Basic Rendering', () => {
   test('applies colspans to cells', () => {
     render(<WidthsAndOverflow.Component />);
