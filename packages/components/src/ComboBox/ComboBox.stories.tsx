@@ -567,3 +567,60 @@ Mobile.test(
     });
   }
 );
+
+/**
+ * Rendered options are cached per item object, so a render function that reads
+ * outside state needs `dependencies` — otherwise the option keeps the value it
+ * was first rendered with. The ComboBox hands its `items` to the listbox
+ * internally, so this is the only way in.
+ */
+const SHIFT_ITEMS = [{ id: 'ada' }, { id: 'grace' }];
+
+export const WithDependencies = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { label: 'Assign to' },
+  render: args => {
+    const [shift, setShift] = useState('early');
+
+    return (
+      <Stack space={2} alignX="left">
+        <button type="button" onClick={() => setShift('late')}>
+          Switch shift
+        </button>
+        <ComboBox {...args} items={SHIFT_ITEMS} dependencies={[shift]}>
+          {(item: { id: string }) => (
+            <ComboBox.Option id={item.id}>
+              {item.id} — {shift}
+            </ComboBox.Option>
+          )}
+        </ComboBox>
+      </Stack>
+    );
+  },
+});
+
+WithDependencies.test(
+  'Re-renders the options when a listed dependency changes',
+  async ({ canvas }) => {
+    const optionFor = async (shift: string) => {
+      const input = canvas.getByRole('combobox');
+      await userEvent.clear(input);
+      // Typing is what opens the list; the query matches both options.
+      await userEvent.type(input, 'a{arrowdown}');
+
+      return canvas.findByRole('option', {
+        name: new RegExp(`ada — ${shift}`),
+      });
+    };
+
+    expect(await optionFor('early')).toBeInTheDocument();
+
+    // The open popover hides the rest of the page from queries, so close it
+    // before reaching for the button.
+    await userEvent.keyboard('{Escape}');
+    await userEvent.click(canvas.getByRole('button', { name: 'Switch shift' }));
+
+    expect(await optionFor('late')).toBeInTheDocument();
+  }
+);

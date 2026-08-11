@@ -11,7 +11,7 @@ import { WidthProp, cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Center } from '../Center/Center';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { SearchInput } from '../Input/SearchInput';
-import { ListBox } from '../ListBox/ListBox';
+import { ListBox, type ListBoxProps } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
 import { intlMessages } from '../intl/messages';
 import { MobileAutocomplete } from './MobileAutocomplete';
@@ -127,6 +127,13 @@ export interface AutocompleteProps
    * The value of the input (controlled).
    */
   value?: RAC.ComboBoxProps<object>['inputValue'];
+  /**
+   * Values that invalidate the cached items, like a hook's dependency array.
+   * Only needed for `items` plus a render function: rendered items are cached
+   * per item object, so anything the function reads from outside the item —
+   * state, a lookup, a prop — has to be listed here or it renders stale.
+   */
+  dependencies?: ListBoxProps['dependencies'];
 
   /**
    * Called when the input value changes.
@@ -196,6 +203,7 @@ export interface AutocompleteProps
 // ---------------
 const AutocompleteBase = ({
   children,
+  dependencies,
   defaultValue,
   value,
   disabled,
@@ -233,6 +241,7 @@ const AutocompleteBase = ({
           placeholder={rest.placeholder}
           label={rest.label}
           emptyState={emptyState}
+          dependencies={dependencies}
           input={
             <AutocompleteInput
               loading={loading}
@@ -256,6 +265,7 @@ const AutocompleteBase = ({
           <Popover>
             <ListBox
               virtualized
+              dependencies={dependencies}
               renderEmptyState={() =>
                 emptyState ?? (
                   <Center>{stringFormatter.format('noResultsFound')}</Center>
