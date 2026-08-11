@@ -2746,11 +2746,18 @@ export const ExpandableRowsWithEditableCell = meta.story({
       'CLR-10189': '—',
       'CLR-10190': '—',
     });
+    const [labels, setLabels] = useState<Record<string, string>>({});
+    const labelOf = (row: SettlementRow) =>
+      labels[row.id] ?? row.label ?? row.id;
 
-    const handleSubmit = (id: string, e: React.FormEvent<HTMLFormElement>) => {
-      const note = new FormData(e.currentTarget).get('note');
-      setNotes(prev => ({ ...prev, [id]: (note as string) || prev[id] }));
-    };
+    const submit =
+      (setter: typeof setNotes, id: string, field: string) =>
+      (e: React.FormEvent<HTMLFormElement>) => {
+        const value = new FormData(e.currentTarget).get(field);
+        if (typeof value === 'string' && value) {
+          setter(prev => ({ ...prev, [id]: value }));
+        }
+      };
 
     return (
       <I18nProvider locale="en">
@@ -2770,13 +2777,32 @@ export const ExpandableRowsWithEditableCell = meta.story({
           </Table.Header>
           {/*
             Both collections need `dependencies`: rendered rows are cached by
-            item identity, and the items here never change — only `notes` does.
+            item identity, and the items here never change — only the edits do.
           */}
-          <Table.Body items={[settlementRuns[1]]} dependencies={[notes]}>
+          <Table.Body
+            items={[settlementRuns[1]]}
+            dependencies={[notes, labels]}
+          >
             {function renderRow(row: SettlementRow) {
               return (
                 <Table.Row id={row.id}>
-                  <Table.Cell>{row.label ?? row.id}</Table.Cell>
+                  {/*
+                    The tree column, editable. `Table.EditableCell` renders the
+                    column's gutter itself; without that the row would lose the
+                    only control that can collapse it.
+                  */}
+                  <Table.EditableCell
+                    field={
+                      <TextField
+                        aria-label="Label"
+                        name="label"
+                        defaultValue={labelOf(row)}
+                      />
+                    }
+                    onSubmit={submit(setLabels, row.id, 'label')}
+                  >
+                    {labelOf(row)}
+                  </Table.EditableCell>
                   <Table.EditableCell
                     field={
                       <TextField
@@ -2785,7 +2811,7 @@ export const ExpandableRowsWithEditableCell = meta.story({
                         defaultValue={notes[row.id]}
                       />
                     }
-                    onSubmit={e => handleSubmit(row.id, e)}
+                    onSubmit={submit(setNotes, row.id, 'note')}
                   >
                     {notes[row.id]}
                   </Table.EditableCell>
@@ -2798,7 +2824,7 @@ export const ExpandableRowsWithEditableCell = meta.story({
                   </Table.Cell>
                   <Table.ExpandableRows
                     items={row.children}
-                    dependencies={[notes]}
+                    dependencies={[notes, labels]}
                   >
                     {renderRow}
                   </Table.ExpandableRows>
@@ -2812,13 +2838,17 @@ export const ExpandableRowsWithEditableCell = meta.story({
   },
 });
 
+// Every editable cell's trigger carries the same label, so pick one by column.
+const editTriggerIn = (row: Element, column: number) =>
+  within(row.children[column] as HTMLElement).getByLabelText('Edit');
+
 ExpandableRowsWithEditableCell.test(
   'Edits a cell in a nested row',
   async ({ canvas, userEvent, step }) => {
     const child = rowByName(canvas, 'CLR-10188');
 
     await step('The editor opens from a nested row', async () => {
-      await userEvent.click(within(child).getByLabelText('Edit'));
+      await userEvent.click(editTriggerIn(child, 1));
 
       await waitFor(() =>
         expect(canvas.getByLabelText('Note')).toBeInTheDocument()
@@ -2839,58 +2869,22 @@ ExpandableRowsWithEditableCell.test(
   }
 );
 
-/**
- * `Table.EditableCell` renders the tree column's gutter itself. Without that it
- * would drop the expand control, which is the only way to collapse the row.
- */
-export const ExpandableRowsWithEditableTreeColumn = meta.story({
-  tags: ['component-test'],
-  args: { treeColumn: 'clearing' },
-  parameters: { chromatic: { disableSnapshot: true } },
-  render: args => (
-    <I18nProvider locale="en">
-      <Table aria-label="Clearings" {...args}>
-        <Table.Header>
-          <Table.Column id="clearing" rowHeader>
-            Clearing no.
-          </Table.Column>
-          <Table.Column id="invoice">Invoice no.</Table.Column>
-        </Table.Header>
-        <Table.Body>
-          <Table.Row id="run-2026-06-01">
-            <Table.EditableCell
-              field={<TextField aria-label="Label" name="label" />}
-            >
-              Settlement run 1 Jun 2026
-            </Table.EditableCell>
-            <Table.Cell>—</Table.Cell>
-
-            <Table.Row id="CLR-10188">
-              <Table.EditableCell
-                field={<TextField aria-label="Label" name="label" />}
-              >
-                CLR-10188
-              </Table.EditableCell>
-              <Table.Cell>INV-4655</Table.Cell>
-            </Table.Row>
-          </Table.Row>
-        </Table.Body>
-      </Table>
-    </I18nProvider>
-  ),
-});
-
-ExpandableRowsWithEditableTreeColumn.test(
+ExpandableRowsWithEditableCell.test(
   'Keeps the expand control when the tree column is editable',
-  async ({ canvas, userEvent }) => {
+  async ({ canvas, userEvent, step }) => {
     const group = rowByName(canvas, 'Settlement run 1 Jun 2026');
 
-    expect(chevronOf(group)).toBeInTheDocument();
+    await step('The editable tree cell renders both controls', () => {
+      expect(chevronOf(group)).toBeInTheDocument();
+      expect(editTriggerIn(group, 0)).toBeInTheDocument();
+    });
 
-    await userEvent.click(chevronOf(group));
+    await step('And the expand control still collapses the row', async () => {
+      await userEvent.click(chevronOf(group));
 
-    expect(group).toHaveAttribute('aria-expanded', 'true');
-    expect(canvas.getByText('CLR-10188')).toBeInTheDocument();
+      expect(group).toHaveAttribute('aria-expanded', 'false');
+      expect(canvas.queryByText('CLR-10188')).not.toBeInTheDocument();
+    });
   }
 );
 
