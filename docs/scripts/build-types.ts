@@ -4,6 +4,7 @@
 // stays out of the Next.js bundle.
 import type { DocEntry } from 'fumadocs-typescript';
 import { createHash } from 'node:crypto';
+import { existsSync } from 'node:fs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -44,11 +45,18 @@ const resolveComponentPath = ({ path: componentPath, package: pkg }: Ref) => {
       ? `components/${componentPath}`
       : componentPath;
 
-  if (resolved.endsWith('.tsx')) return path.join(baseDir, resolved);
+  if (resolved.endsWith('.tsx') || resolved.endsWith('.ts'))
+    return path.join(baseDir, resolved);
   // Bare component names → folder containing same-named file (Button/Button.tsx).
   // Nested paths → file at the path (Radio/RadioGroup.tsx, components/Formatters/DateFormat.tsx).
-  if (isBare) return path.join(baseDir, resolved, `${componentPath}.tsx`);
-  return path.join(baseDir, `${resolved}.tsx`);
+  const withoutExt = isBare
+    ? path.join(baseDir, resolved, componentPath)
+    : path.join(baseDir, resolved);
+  // A referenced type can live in a plain `.ts` module. Fall back to it only
+  // when it is there, so a missing file reports the `.tsx` the author meant.
+  return existsSync(`${withoutExt}.ts`) && !existsSync(`${withoutExt}.tsx`)
+    ? `${withoutExt}.ts`
+    : `${withoutExt}.tsx`;
 };
 
 // fumadocs-typescript keys its cache on the component source file, not on the

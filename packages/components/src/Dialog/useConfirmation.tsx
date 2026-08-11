@@ -1,5 +1,7 @@
 import type { PropsWithChildren, ReactNode } from 'react';
 import { createContext, use, useState } from 'react';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { intlMessages } from '../intl/messages';
 import { ConfirmationDialog } from './ConfirmationDialog';
 import type { ConfirmationDialogProps } from './ConfirmationDialog';
 
@@ -27,6 +29,7 @@ interface ConfirmationState extends ConfirmationConfig {
 }
 
 export const ConfirmationProvider = ({ children }: PropsWithChildren) => {
+  const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');
   const [confirmation, setConfirmation] = useState<ConfirmationState | null>(
     null
   );
@@ -52,17 +55,22 @@ export const ConfirmationProvider = ({ children }: PropsWithChildren) => {
       {children}
       <ConfirmationDialog
         open={open}
-        onOpenChange={setOpen}
+        onOpenChange={isOpen => {
+          setOpen(isOpen);
+          if (!isOpen) {
+            confirmation?.resolve('cancelled');
+          }
+        }}
         variant={confirmation?.variant}
         size="xsmall"
         title={confirmation?.title || ''}
-        confirmationLabel={confirmation?.confirmationLabel || 'Confirm'}
+        confirmationLabel={
+          confirmation?.confirmationLabel || stringFormatter.format('confirm')
+        }
         cancelLabel={confirmation?.cancelLabel}
+        autoFocusButton={confirmation?.autoFocusButton}
         onConfirm={() => {
           confirmation?.resolve('confirmed');
-        }}
-        onCancel={() => {
-          confirmation?.resolve('cancelled');
         }}
       >
         {confirmation?.content}

@@ -96,6 +96,8 @@ When a dialog is open, users cannot interact with the rest of the page until the
 
 To prevent the dialog from closing when the underlay is (accidentally) clicked, you can set the `dismissable` prop on the `<Dialog.Trigger>` component to `false`. This disables closing the dialog by clicking on the background, ensuring that the dialog remains open until the user interacts with the provided buttons or other close mechanisms.
 
+<kbd>Escape</kbd> closes the dialog unless you set `keyboardDismissable={false}` on the `<Dialog.Trigger>`. Reach for that only where losing in-progress work would be worse than the trapped focus, and never on an `alertdialog`: a dialog the keyboard cannot leave is an accessibility defect, not a safety feature.
+
 <ComponentDemo name="dialog-dismiss" />
 
 <Callout title="Dedicated close button">
@@ -116,11 +118,20 @@ For an effective dialog, be specific in your prompt. For example, ask "Permanent
 
 Use the `useConfirmation` hook for this use case. This hook provides a simple API to trigger confirmation dialogs programmatically, making it easy to prompt users for confirmation before performing critical actions. It returns a function that opens the dialog and resolves with the user's response, allowing you to handle confirmation logic directly in your code.
 
+The returned promise resolves to `'confirmed'` when the user presses the confirm button, and to `'cancelled'` for every other way out: the cancel button, and dismissing the dialog with <kbd>Escape</kbd>. Always `await` it and branch on the result. Never treat a dismissal as consent.
+
 <ComponentDemo name="dialog-from-menu" />
 
 <Callout title="Styling for Negative Consequences">
-  For actions with potentially negative consequences, such as deleting an item, apply the `"destructive"` variant to the `<ConfirmationDialog>`. This will automatically style the dialog and its primary action button to visually communicate a serious or irreversible operation
+  For actions with potentially negative consequences, such as deleting an item,
+  apply the `"destructive"` variant to the `<ConfirmationDialog>`. This styles
+  the dialog and its primary action button to visually communicate a serious or
+  irreversible operation, and focuses the cancel button when the dialog opens so
+  that a reflexive <kbd>Enter</kbd> takes the safe path. Pass `autoFocusButton`
+  to override which button gets focus.
 </Callout>
+
+Not every destructive action wants a dialog. See [Destructive Actions](/patterns/feedback/destructive-actions) for choosing between a confirmation and an undo, and for building either one.
 
 ## Props
 
