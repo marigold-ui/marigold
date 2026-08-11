@@ -11,12 +11,14 @@ import { Checkbox } from '../Checkbox/Checkbox';
 import { EmptyState } from '../EmptyState/EmptyState';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { NumberField } from '../NumberField/NumberField';
+import { Panel } from '../Panel/Panel';
 import { Scrollable } from '../Scrollable/Scrollable';
 import { Select } from '../Select/Select';
 import { Stack } from '../Stack/Stack';
 import { Switch } from '../Switch/Switch';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
+import { Title } from '../Title/Title';
 import { useListData } from '../hooks';
 import type { Selection } from '../types';
 import type { TableProps } from './Table';
@@ -2685,3 +2687,326 @@ export const ExpandableRowsLazyChildren = meta.story({
     </Table>
   ),
 });
+
+/**
+ * Inline editing composes with nested rows: a child row's cells are editable the
+ * same way a root row's are, and the tree column keeps its expand control even
+ * when that cell is the editable one.
+ */
+export const ExpandableRowsWithEditableCell = meta.story({
+  tags: ['component-test'],
+  args: { treeColumn: 'clearing' },
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => {
+    const [notes, setNotes] = useState<Record<string, string>>({
+      'run-2026-06-01': 'Checked by Finance',
+      'CLR-10188': 'Awaiting receipt',
+      'CLR-10189': '—',
+      'CLR-10190': '—',
+    });
+
+    const handleSubmit = (id: string, e: React.FormEvent<HTMLFormElement>) => {
+      const note = new FormData(e.currentTarget).get('note');
+      setNotes(prev => ({ ...prev, [id]: (note as string) || prev[id] }));
+    };
+
+    return (
+      <I18nProvider locale="en">
+        <Table
+          aria-label="Clearings"
+          defaultExpandedKeys={['run-2026-06-01']}
+          {...args}
+        >
+          <Table.Header>
+            <Table.Column id="clearing" rowHeader>
+              Clearing no.
+            </Table.Column>
+            <Table.Column id="note">Note</Table.Column>
+            <Table.Column id="amount" alignX="right">
+              Amount
+            </Table.Column>
+          </Table.Header>
+          {/*
+            Both collections need `dependencies`: rendered rows are cached by
+            item identity, and the items here never change — only `notes` does.
+          */}
+          <Table.Body items={[settlementRuns[1]]} dependencies={[notes]}>
+            {function renderRow(row: SettlementRow) {
+              return (
+                <Table.Row id={row.id}>
+                  <Table.Cell>{row.label ?? row.id}</Table.Cell>
+                  <Table.EditableCell
+                    field={
+                      <TextField
+                        aria-label="Note"
+                        name="note"
+                        defaultValue={notes[row.id]}
+                      />
+                    }
+                    onSubmit={e => handleSubmit(row.id, e)}
+                  >
+                    {notes[row.id]}
+                  </Table.EditableCell>
+                  <Table.Cell alignX="right">
+                    <NumericFormat
+                      style="currency"
+                      currency="EUR"
+                      value={row.total}
+                    />
+                  </Table.Cell>
+                  <Table.ExpandableRows
+                    items={row.children}
+                    dependencies={[notes]}
+                  >
+                    {renderRow}
+                  </Table.ExpandableRows>
+                </Table.Row>
+              );
+            }}
+          </Table.Body>
+        </Table>
+      </I18nProvider>
+    );
+  },
+});
+
+ExpandableRowsWithEditableCell.test(
+  'Edits a cell in a nested row',
+  async ({ canvas, userEvent, step }) => {
+    const child = rowByName(canvas, 'CLR-10188');
+
+    await step('The editor opens from a nested row', async () => {
+      await userEvent.click(within(child).getByLabelText('Edit'));
+
+      await waitFor(() =>
+        expect(canvas.getByLabelText('Note')).toBeInTheDocument()
+      );
+    });
+
+    await step('Saving writes back to the nested row', async () => {
+      await userEvent.clear(canvas.getByLabelText('Note'));
+      await userEvent.type(canvas.getByLabelText('Note'), 'Receipt attached');
+      await userEvent.click(canvas.getByLabelText('Save'));
+
+      await waitFor(() =>
+        expect(
+          within(rowByName(canvas, 'CLR-10188')).getByText('Receipt attached')
+        ).toBeInTheDocument()
+      );
+    });
+  }
+);
+
+/**
+ * `Table.EditableCell` renders the tree column's gutter itself. Without that it
+ * would drop the expand control, which is the only way to collapse the row.
+ */
+export const ExpandableRowsWithEditableTreeColumn = meta.story({
+  tags: ['component-test'],
+  args: { treeColumn: 'clearing' },
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => (
+    <I18nProvider locale="en">
+      <Table aria-label="Clearings" {...args}>
+        <Table.Header>
+          <Table.Column id="clearing" rowHeader>
+            Clearing no.
+          </Table.Column>
+          <Table.Column id="invoice">Invoice no.</Table.Column>
+        </Table.Header>
+        <Table.Body>
+          <Table.Row id="run-2026-06-01">
+            <Table.EditableCell
+              field={<TextField aria-label="Label" name="label" />}
+            >
+              Settlement run 1 Jun 2026
+            </Table.EditableCell>
+            <Table.Cell>—</Table.Cell>
+
+            <Table.Row id="CLR-10188">
+              <Table.EditableCell
+                field={<TextField aria-label="Label" name="label" />}
+              >
+                CLR-10188
+              </Table.EditableCell>
+              <Table.Cell>INV-4655</Table.Cell>
+            </Table.Row>
+          </Table.Row>
+        </Table.Body>
+      </Table>
+    </I18nProvider>
+  ),
+});
+
+ExpandableRowsWithEditableTreeColumn.test(
+  'Keeps the expand control when the tree column is editable',
+  async ({ canvas, userEvent }) => {
+    const group = rowByName(canvas, 'Settlement run 1 Jun 2026');
+
+    expect(chevronOf(group)).toBeInTheDocument();
+
+    await userEvent.click(chevronOf(group));
+
+    expect(group).toHaveAttribute('aria-expanded', 'true');
+    expect(canvas.getByText('CLR-10188')).toBeInTheDocument();
+  }
+);
+
+/**
+ * Reordering and nesting coexist: a group row carries both a drag handle and an
+ * expand control. Only root-level rows are reorderable — moving a row across
+ * levels is not supported.
+ */
+export const ExpandableRowsWithDragAndDrop = meta.story({
+  tags: ['component-test'],
+  args: { treeColumn: 'clearing', selectionMode: 'multiple' },
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => {
+    const list = useListData({ initialItems: settlementRuns });
+
+    const { dragAndDropHooks } = useDragAndDrop({
+      renderDropIndicator: Table.renderDropIndicator,
+      renderDragPreview: Table.renderDragPreview,
+      getItems: keys =>
+        [...keys].map(key => ({
+          'text/plain': String(list.getItem(key)?.label ?? key),
+        })),
+      onReorder(e) {
+        if (e.target.dropPosition === 'before') {
+          list.moveBefore(e.target.key, e.keys);
+          return;
+        }
+        list.moveAfter(e.target.key, e.keys);
+      },
+    });
+
+    return (
+      <I18nProvider locale="en">
+        <Table
+          aria-label="Clearings"
+          dragAndDropHooks={dragAndDropHooks}
+          defaultExpandedKeys={['run-2026-06-01']}
+          {...args}
+        >
+          <Table.Header>
+            <Table.Column id="clearing" rowHeader>
+              Clearing no.
+            </Table.Column>
+            <Table.Column id="invoice">Invoice no.</Table.Column>
+            <Table.Column id="amount" alignX="right">
+              Amount
+            </Table.Column>
+          </Table.Header>
+          <Table.Body items={list.items}>
+            {function renderRow(row: SettlementRow) {
+              return (
+                <Table.Row id={row.id} textValue={row.label ?? row.id}>
+                  <Table.Cell>{row.label ?? row.id}</Table.Cell>
+                  <Table.Cell>{row.invoice ?? '—'}</Table.Cell>
+                  <Table.Cell alignX="right">
+                    <NumericFormat
+                      style="currency"
+                      currency="EUR"
+                      value={row.total}
+                    />
+                  </Table.Cell>
+                  <Table.ExpandableRows items={row.children}>
+                    {renderRow}
+                  </Table.ExpandableRows>
+                </Table.Row>
+              );
+            }}
+          </Table.Body>
+        </Table>
+      </I18nProvider>
+    );
+  },
+});
+
+ExpandableRowsWithDragAndDrop.test(
+  'A group row carries a drag handle, a checkbox and an expand control',
+  async ({ canvas, userEvent, step }) => {
+    const group = rowByName(canvas, 'Settlement run 1 Jun 2026');
+
+    await step('All three controls coexist in the row', () => {
+      expect(
+        within(group).getByRole('button', { name: /drag/i })
+      ).toBeInTheDocument();
+      expect(within(group).getByRole('checkbox')).toBeInTheDocument();
+      expect(chevronOf(group)).toBeInTheDocument();
+    });
+
+    await step('The expand control still works', async () => {
+      await userEvent.click(chevronOf(group));
+
+      expect(group).toHaveAttribute('aria-expanded', 'false');
+      expect(canvas.queryByText('CLR-10188')).not.toBeInTheDocument();
+    });
+  }
+);
+
+/**
+ * Inside a bled `Panel.Content` the tree column keeps the panel's edge padding,
+ * so the expand control lines up with the panel's own header.
+ */
+export const ExpandableRowsInPanel = meta.story({
+  tags: ['component-test'],
+  args: { treeColumn: 'clearing' },
+  render: args => (
+    <Panel>
+      <Panel.Header>
+        <Title>Clearings</Title>
+      </Panel.Header>
+      <Panel.Content bleed>
+        <Table
+          aria-label="Clearings"
+          defaultExpandedKeys={['run-2026-06-01']}
+          {...args}
+        >
+          <Table.Header>
+            <Table.Column id="clearing" rowHeader>
+              Clearing no.
+            </Table.Column>
+            <Table.Column id="invoice">Invoice no.</Table.Column>
+            <Table.Column id="amount" alignX="right">
+              Amount
+            </Table.Column>
+          </Table.Header>
+          <Table.Body items={[settlementRuns[1]]}>
+            {function renderRow(row: SettlementRow) {
+              return (
+                <Table.Row id={row.id}>
+                  <Table.Cell>{row.label ?? row.id}</Table.Cell>
+                  <Table.Cell>{row.invoice ?? '—'}</Table.Cell>
+                  <Table.Cell alignX="right">
+                    <NumericFormat
+                      style="currency"
+                      currency="EUR"
+                      value={row.total}
+                    />
+                  </Table.Cell>
+                  <Table.ExpandableRows items={row.children}>
+                    {renderRow}
+                  </Table.ExpandableRows>
+                </Table.Row>
+              );
+            }}
+          </Table.Body>
+        </Table>
+      </Panel.Content>
+    </Panel>
+  ),
+});
+
+ExpandableRowsInPanel.test(
+  'The tree column starts at the panel edge padding',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const left = (el: Element) => Math.round(el.getBoundingClientRect().left);
+    const group = rowByName(canvas, 'Settlement run 1 Jun 2026');
+
+    // The gutter, not the value, is what carries the edge: the control replaces
+    // the text at the panel's inline start.
+    expect(left(chevronOf(group))).toBe(left(canvas.getByText('Clearings')));
+  }
+);

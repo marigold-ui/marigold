@@ -27,6 +27,12 @@ New theme keys `treeIndent` and `expandButton`. The group row's fill is
 `foreground/5`, which holds ~1.10:1 whether the row sits on `surface`, on
 `background`, inside a `muted` table or under a hover wash.
 
+Inline editing composes with it: `Table.EditableCell` renders the tree column's
+gutter too, so a row keeps its expand control even when that cell is the editable
+one. Selection checkboxes, drag handles and the `compact` / `default` /
+`spacious` paddings all keep working alongside the tree column, and the tree
+column still takes its edge padding from a `Panel`'s bleed contract.
+
 Selection works with grouped rows but does not cascade: each row selects on its
 own and a group row shows no partial state, because a nested row is a real
 record whose checkbox already means "this record". Select-all yields the `'all'`

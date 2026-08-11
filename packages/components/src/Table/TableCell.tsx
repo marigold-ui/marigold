@@ -4,7 +4,7 @@ import { Cell } from 'react-aria-components/Table';
 import { cn, textAlign, verticalAlign } from '@marigold/system';
 import { useTableContext } from './Context';
 import { TableCellContent } from './TableCellContent';
-import { TableExpandButton } from './TableExpandButton';
+import { TableTreeColumn } from './TableTreeColumn';
 
 // Props
 // ---------------
@@ -54,10 +54,12 @@ const TableCell = ({
         if (!isTreeColumn) return content;
 
         return (
-          <div className={classNames.treeIndent}>
-            {hasChildItems && <TableExpandButton expanded={isExpanded} />}
+          <TableTreeColumn
+            hasChildItems={hasChildItems}
+            isExpanded={isExpanded}
+          >
             {content}
-          </div>
+          </TableTreeColumn>
         );
       }}
     </Cell>

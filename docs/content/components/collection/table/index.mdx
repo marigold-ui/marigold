@@ -258,13 +258,16 @@ The same three steps cover deep links: expand the ancestors on mount, then scrol
   </Dont>
   <Dont>
     <DontDescription>
-      Don't combine editable cells with the tree column. The edit trigger and
-      the chevron compete for the same space.
+      Don't make the tree column editable unless the identifier really is
+      editable. It works — the chevron keeps its own track — but it puts two
+      controls in the column users scan.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
 
-Not supported yet, and worth knowing before you design around it: inline editing in the tree column, drag and drop across nesting levels, and sorting that reorders levels automatically (you sort your own data, so a grouped table has to sort each level). There is no built-in "expand all" control either — set `expandedKeys` to every group's key yourself.
+Not supported yet, and worth knowing before you design around it: drag and drop across nesting levels, and sorting that reorders levels automatically (you sort your own data, so a grouped table has to sort each level). There is no built-in "expand all" control either — set `expandedKeys` to every group's key yourself.
+
+Inline editing itself composes with nested rows: `Table.EditableCell` works in a child row exactly as in a root row. Remember `dependencies` on both `Table.Body` and `Table.ExpandableRows` when the edited value lives outside the row items — rendered rows are cached by item identity, so a table whose items never change won't otherwise re-render.
 
 ### Sorting columns
 
