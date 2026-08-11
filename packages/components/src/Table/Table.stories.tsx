@@ -2541,23 +2541,39 @@ ExpandableRows.test(
 );
 
 ExpandableRows.test(
-  'Group, child and root rows all start at the same x',
+  'Depth is visible, and one level shares one x',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas, userEvent }) => {
-    // Same x at every level is the point of the feature — lock it in.
+  async ({ canvas, userEvent, step }) => {
     const group = rowByName(canvas, 'Settlement run 1 Jul 2026');
 
     await userEvent.click(chevronOf(group));
 
-    const valueX = (name: string) => {
-      const cell = rowByName(canvas, name).querySelector('[data-tree-column]')!;
-      const value = cell.querySelector('[data-cell-content]')!;
+    const left = (el: Element) => Math.round(el.getBoundingClientRect().left);
+    const valueX = (name: string) =>
+      left(
+        rowByName(canvas, name)
+          .querySelector('[data-tree-column]')!
+          .querySelector('[data-cell-content]')!
+      );
 
-      return Math.round(value.getBoundingClientRect().left);
-    };
+    await step('A root row is not indented by a group above it', () => {
+      // The regression this guards: with every level flush, CLR-10240 read as a
+      // fourth child of the group it follows.
+      expect(valueX('CLR-10240')).toBe(valueX('Settlement run 1 Jul 2026'));
+      expect(valueX('CLR-10231')).toBeGreaterThan(valueX('CLR-10240'));
+    });
 
-    expect(valueX('CLR-10231')).toBe(valueX('Settlement run 1 Jul 2026'));
-    expect(valueX('CLR-10240')).toBe(valueX('Settlement run 1 Jul 2026'));
+    await step('Rows at the same level share an x', () => {
+      expect(valueX('CLR-10232')).toBe(valueX('CLR-10231'));
+    });
+
+    await step('The column label sits above the values it heads', () => {
+      const header = canvas.getByRole('columnheader', { name: /clearing no/i });
+
+      expect(left(header.querySelector('[role=presentation]')!)).toBe(
+        valueX('CLR-10240')
+      );
+    });
   }
 );
 

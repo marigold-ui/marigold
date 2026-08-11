@@ -73,6 +73,7 @@ const _Table = ({
   allowTextSelection = false,
   alignY = 'middle',
   actionBar,
+  treeColumn,
   selectedKeys: selectedKeysProp,
   defaultSelectedKeys: defaultSelectedKeysProp,
   onSelectionChange: onSelectionChangeProp,
@@ -92,8 +93,17 @@ const _Table = ({
       overflow,
       allowTextSelection,
       alignY,
+      treeColumn,
     }),
-    [classNames, variant, size, overflow, allowTextSelection, alignY]
+    [
+      classNames,
+      variant,
+      size,
+      overflow,
+      allowTextSelection,
+      alignY,
+      treeColumn,
+    ]
   );
 
   const { selectedKeys, onSelectionChange, actionBarHeight, actionBarOverlay } =
@@ -119,6 +129,7 @@ const _Table = ({
       >
         <RACTable
           className={cn('group/table', classNames.table)}
+          treeColumn={treeColumn}
           selectionBehavior="toggle"
           selectedKeys={selectedKeys}
           defaultSelectedKeys={actionBar ? undefined : defaultSelectedKeysProp}
