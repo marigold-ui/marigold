@@ -10,14 +10,16 @@ export const Table: ThemeComponent<'Table'> = {
       // 32px, not the 24px WCAG 2.2 SC 2.5.8 floor: hit repeatedly, and still
       // fits `compact` (45px row).
       '[--tree-chevron-size:calc(var(--spacing)*8)]',
-      // Gap between the control's track and the value, shared with the drop
-      // indicator so a nested drop lands on that level's text.
-      '[--tree-gutter-gap:calc(var(--spacing)*2)]',
-      // Width the control's track claims, control or not.
-      '[--tree-gutter:calc(var(--tree-chevron-size)+var(--tree-gutter-gap))]',
-      // One level in is one gutter in, so a child's control starts where its
+      // The whitespace the ghost button already carries around its 16px caret.
+      // The track overlaps it instead of adding padding of its own, so the
+      // caret lines up with the column's values and still gets 32px to hit.
+      '[--tree-caret-inset:calc((var(--tree-chevron-size)-var(--spacing)*4)/2)]',
+      // Caret box plus the button's own trailing whitespace — the distance from
+      // where a row's content starts to where its value starts.
+      '[--tree-gutter:calc(var(--tree-chevron-size)-var(--tree-caret-inset))]',
+      // One level in is one gutter in, so a child's caret starts where its
       // parent's value does. A smaller step would put it between the parent's
-      // control and value, which reads as a misalignment rather than depth.
+      // caret and value, which reads as a misalignment rather than depth.
       '[--tree-indent:var(--tree-gutter)]',
       // Levels up to here share the gutter's x instead of indenting. Only the
       // root does: a root row with no children must not read as the previous
@@ -149,8 +151,10 @@ export const Table: ThemeComponent<'Table'> = {
     base: [
       // A fixed leading track, so a group row and a childless row at the same
       // level still put their value at the same x. The track holds its width
-      // with no control in it, so leaf rows need no spacer.
-      'grid grid-cols-[var(--tree-chevron-size)_1fr] items-center gap-(--tree-gutter-gap)',
+      // with no control in it, so leaf rows need no spacer. The control is
+      // wider than the track and hangs into the cell's edge padding — see
+      // `--tree-caret-inset`.
+      'grid grid-cols-[var(--tree-gutter)_1fr] items-center',
       // Indents past `--tree-indent-skip`, i.e. everything below the root, so
       // depth is visible. `--table-row-level` is React Aria's, and starts at 1;
       // the header cell has none, which is what leaves it at the root's x.
@@ -163,7 +167,9 @@ export const Table: ThemeComponent<'Table'> = {
       // Ghost icon button. The wash is `bg-current/10`, so it blends on any
       // ground including the group row's own fill.
       'ui-button-base col-start-1',
-      'size-(--tree-chevron-size)',
+      // Keeps the 32px target while the caret itself sits where the column's
+      // values do, so its margin box still measures exactly one track.
+      'size-(--tree-chevron-size) -ms-(--tree-caret-inset)',
       'text-secondary',
       'hover:ui-state-hover-ghost',
       'ui-press',

@@ -2567,11 +2567,23 @@ ExpandableRows.test(
       expect(valueX('CLR-10232')).toBe(valueX('CLR-10231'));
     });
 
+    await step('The caret adds no padding of its own', () => {
+      // Its hit target is wider than the caret, and that surplus hangs into the
+      // cell's edge padding rather than pushing the column further in.
+      const cell = group.querySelector('[data-tree-column]')!;
+      const edge = parseFloat(getComputedStyle(cell).paddingInlineStart || '0');
+
+      expect(left(chevronOf(group).querySelector('svg')!)).toBe(
+        Math.round(cell.getBoundingClientRect().left + edge)
+      );
+    });
+
     await step('A child starts where its parent value starts', () => {
       // One level in is one gutter in, so the step between levels is the same
-      // distance as the one from a control to the value beside it.
+      // distance as the one from a caret to the value beside it.
       const gutter =
-        valueX('Settlement run 1 Jul 2026') - left(chevronOf(group));
+        valueX('Settlement run 1 Jul 2026') -
+        left(chevronOf(group).querySelector('svg')!);
 
       expect(valueX('CLR-10231') - valueX('Settlement run 1 Jul 2026')).toBe(
         gutter
@@ -3032,8 +3044,11 @@ ExpandableRowsInPanel.test(
     const left = (el: Element) => Math.round(el.getBoundingClientRect().left);
     const group = rowByName(canvas, 'Settlement run 1 Jun 2026');
 
-    // The gutter, not the value, is what carries the edge: the control replaces
-    // the text at the panel's inline start.
-    expect(left(chevronOf(group))).toBe(left(canvas.getByText('Clearings')));
+    // The caret, not the value, is what carries the edge: it replaces the text
+    // at the panel's inline start. Its hit target is wider and hangs into the
+    // panel's padding, so measure the caret rather than the button around it.
+    expect(left(chevronOf(group).querySelector('svg')!)).toBe(
+      left(canvas.getByText('Clearings'))
+    );
   }
 );

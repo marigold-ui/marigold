@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "sessions": {
+    "566bd54b-044f-465b-a904-7ccee1561d25": {
+      "updatedAt": 1782815054983,
+      "files": {
+        "/Users/sebastian/Projects/marigold-2/packages/components/src/ProgressCircle/ProgressCircle.tsx": {
+          "editCount": 2,
+          "findings": []
+        }
+      }
+    }
+  }
+}
