@@ -60,9 +60,6 @@ export const Table: ThemeComponent<'Table'> = {
       'disabled:cursor-not-allowed',
       'data-hovered:cursor-pointer data-hovered:ui-state-hover',
       'dragging:opacity-50 dragging:transform-gpu',
-      // Dropping *onto* a row nests into it, which the insertion line between
-      // rows cannot express — so the row itself has to read as the target.
-      'data-drop-target:outline-2 data-drop-target:-outline-offset-2 data-drop-target:outline-primary',
       // Fills a group row whether open or closed, so the row kind survives
       // greyscale and print where font weight alone would not. `not-hovered` is
       // explicit because Tailwind's emit order, not this array's, picks the

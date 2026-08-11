@@ -26,9 +26,8 @@ by default and can be controlled with `expandedKeys` / `defaultExpandedKeys` /
 
 Drop indicators are level-aware: the insertion line starts at the x of the level
 the row would land at, so a reorder inside an expanded group reads as landing in
-that group, while a root-level drop still spans the row. Moving rows between
-levels stays up to your drop handlers, and the keyboard drag path only offers
-root-level positions.
+that group, while a root-level drop still spans the row. Moving a row from one
+level to another is not supported.
 
 New theme keys `treeIndent` and `expandButton`. The group row's fill is
 `foreground/5`, which holds ~1.10:1 whether the row sits on `surface`, on

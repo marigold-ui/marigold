@@ -265,9 +265,9 @@ The same three steps cover deep links: expand the ancestors on mount, then scrol
   </Dont>
 </GuidelineTiles>
 
-Not supported yet, and worth knowing before you design around it: sorting that reorders levels automatically (you sort your own data, so a grouped table has to sort each level), and there is no built-in "expand all" control — set `expandedKeys` to every group's key yourself.
+Not supported yet, and worth knowing before you design around it: moving a row from one level to another, sorting that reorders levels automatically (you sort your own data, so a grouped table has to sort each level), and there is no built-in "expand all" control — set `expandedKeys` to every group's key yourself.
 
-Drag and drop is partly there. Reordering works, and the insertion line is indented to the level the row would land at, so a drop inside an expanded group reads as landing in that group. Moving a row _between_ levels is up to your drop handlers, and the keyboard path only offers root-level positions, so don't ship cross-level reordering as keyboard-accessible yet.
+Reordering itself works alongside nested rows, and the insertion line is indented to the level the row would land at, so a drop inside an expanded group reads as landing in that group rather than at the root.
 
 Inline editing itself composes with nested rows: `Table.EditableCell` works in a child row exactly as in a root row. Remember `dependencies` on both `Table.Body` and `Table.ExpandableRows` when the edited value lives outside the row items — rendered rows are cached by item identity, so a table whose items never change won't otherwise re-render.
 
