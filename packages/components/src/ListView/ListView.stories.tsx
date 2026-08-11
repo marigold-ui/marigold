@@ -32,7 +32,7 @@ const meta = preview.meta({
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['default', 'card'],
+      options: ['default'],
       table: {
         type: { summary: 'select' },
         defaultValue: { summary: 'default' },
@@ -113,27 +113,6 @@ Basic.test(
     expect(disabledRow).toHaveAttribute('aria-disabled', 'true');
   }
 );
-
-// `variant="card"` is the opt-in frame: fill, hairline ring and rounded
-// corners of its own, for a list that sits directly on a page rather than in a
-// container that already draws a surface. The first and last rows pick up the
-// surface radius so a hover fill doesn't square off its corners.
-export const Framed = meta.story({
-  args: { variant: 'card' },
-  parameters: { surface: false },
-  render: args => (
-    <ListView {...args} aria-label="Recent files">
-      <ListView.Item id="report" textValue="Q3 report">
-        <TextValue>Q3 report</TextValue>
-        <Description>Edited 2 days ago</Description>
-      </ListView.Item>
-      <ListView.Item id="notes" textValue="Meeting notes">
-        <TextValue>Meeting notes</TextValue>
-        <Description>Edited just now</Description>
-      </ListView.Item>
-    </ListView>
-  ),
-});
 
 // Scenario 1 — Notifications / activity feed: title + timestamp + a visible
 // archive button and an overflow menu, operated in place. The shared DST-1485

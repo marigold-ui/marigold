@@ -11,15 +11,12 @@ export const ListView: ThemeComponent<'ListView'> = {
       '[--listview-item-px:var(--bleed-px,var(--spacing-stretch-regular-x))]',
     ],
     variants: {
-      // Flat by default, framed on request — the split `Accordion` already
-      // uses. A framed list nested in a container that draws its own surface
-      // is a ring inside a ring, so the frame is the opt-in.
+      // One variant: the list draws no surface of its own. It always sits in a
+      // container that owns the frame (`Popover`, `Panel`, `Card`), the way
+      // `Table` does — a framed list nested in one of those is a ring inside a
+      // ring. A standalone framed list is `<Card><ListView /></Card>`.
       variant: {
         default: '',
-        card: [
-          'ui-surface rounded-surface',
-          '[--listview-item-radius:calc(var(--radius-surface)-1px)]',
-        ],
       },
     },
     defaultVariants: { variant: 'default' },
@@ -48,8 +45,6 @@ export const ListView: ThemeComponent<'ListView'> = {
     variants: {
       variant: {
         default: '',
-        // Only `card` draws a surface, and only `card` defines the radius.
-        card: 'first:rounded-t-(--listview-item-radius) last:rounded-b-(--listview-item-radius)',
       },
     },
     defaultVariants: { variant: 'default' },

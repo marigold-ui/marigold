@@ -14,7 +14,7 @@ Trailing controls claim their cell through Marigold's `ButtonContext` and inheri
 
 `<ListView.Item>` forces any nested `<Title>` to render as a `<span>` instead of a real heading, so a list of rows never emits one document heading per row.
 
-The list is flat by default (divider lines only) and takes `variant="card"` for a surface of its own, the same split `<Accordion>` uses — a framed list nested in a container that already draws a surface is a ring inside a ring.
+The list is flat (divider lines only) and draws no surface of its own, the way `<Table>` does — a framed list nested in a container that already draws a surface is a ring inside a ring. A standalone framed list is `<Card><ListView /></Card>`.
 
 This closes the gap between `<List>` (presentational, no roles), `<ListBox>` (selection only — forbids focusable controls inside a row), `<SelectList>`/`<Select>` (form fields), `<Table>` (tabular), and `<Menu>` (commands that close on activation). The motivating consumer is the Popover notifications panel (DST-1485), and the docs cover a second must-support scenario: a resource list with a per-row action menu.
 

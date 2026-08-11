@@ -29,15 +29,11 @@ export interface ListViewProps extends Omit<
   RemovedProps
 > {
   /**
-   * Visual variant of the list.
-   * - `default` — no outer frame, divider lines only. Sits inside a container
-   *   that already draws a surface (`<Popover>`, `<Panel>`, `<Card>`) and
-   *   reads its row padding from a bled container's `--bleed-px`.
-   * - `card` — a bounded surface of its own (fill, hairline ring, rounded
-   *   corners), for a standalone list on a page.
+   * Visual variant of the list. `default` draws no outer frame, divider lines
+   * only — the container around it owns the surface.
    * @default 'default'
    */
-  variant?: 'default' | 'card' | (string & {});
+  variant?: 'default' | (string & {});
   /**
    * Size token applied to the list.
    */
