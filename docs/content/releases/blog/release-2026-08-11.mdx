@@ -1,5 +1,5 @@
 ---
-title: Marigold v18.0.0 (rc)
+title: Marigold v18.0.0
 date: 2026-08-11
 type: Blog
 changed:
@@ -80,12 +80,11 @@ And this release opens that chapter loudly. v18 is by far the biggest release we
 It is a lot. Take your time with the breaking changes below. They all point in the same direction, and the app you end up with will be simpler for it.
 
 <Callout title="Before you upgrade" type="warning">
-  v18.0.0 is currently a **release candidate**. It publishes to the `rc`
-  dist-tag, so a plain `npm install @marigold/components` still resolves v17.
-  Install it explicitly with `@marigold/components@rc`. Everything below
-  describes the release as it stands, and we do not expect further breaking
-  changes, but the token and design work is still settling, so small visual
-  adjustments are possible before the final release.
+  v18.0.0 is a stable release on the `latest` dist-tag, so a plain `npm install
+  @marigold/components` resolves it. If you tracked the release candidates
+  through `@marigold/components@rc`, move your dependency back to a normal
+  version range: the `rc` tag stays pinned at `18.0.0-rc.5` and will not receive
+  further updates.
 
 Marigold v18 also requires React 19. If you are still on React 18, upgrade
 React first, verify your app still builds, then bump Marigold.
