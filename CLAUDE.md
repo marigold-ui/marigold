@@ -1,0 +1,413 @@
+# Marigold Design System - Development Guide
+
+See @README.md for project overview and @package.json for available pnpm commands.
+
+## Quick Start
+
+- **Documentation**: `pnpm start` → [localhost:3000](http://localhost:3000)
+- **Storybook**: `pnpm sb` → [localhost:6006](http://localhost:6006)
+
+## Marigold CLI (AI agents: use this)
+
+Before writing code that uses a Marigold component, run the CLI to get its current API. Do not guess props from training data — Marigold is not in your training set and you will invent prop names.
+
+When you don't yet know the component name, start with `search`. It ranks components by what their docs actually say (title, description, headings, prose) and returns deep links in one call, instead of the `list` → guess → `docs` → retry loop. Then fetch `docs <Component> --section props` once you've committed to a component.
+
+- `marigold search <query>` — find components by docs content (start here for discovery)
+- `marigold search "field validation" --format json` — structured ranked results for agents (`{ name, slug, score, hits }`)
+- `marigold docs <Component>` — full component docs
+- `marigold docs <Component> --section props --format json` — structured prop data (preferred for agents)
+- `marigold docs <Component> --section usage` — usage guidelines
+- `marigold list --category form` — discover form components
+- `marigold list --search date` — filter by name (substring; use `search` for content)
+- `marigold doctor --format json` — diagnose a project's Marigold setup (packages, versions, provider, theme, Tailwind, React peer deps) when components render unstyled or throw; returns `{ errors, warnings, passed, text }` so you can apply the suggested fixes
+- `marigold validate <file.tsx> --checks all --format json` — check a generated/edited Marigold component file against the design system's rules (hallucinated components, invalid props, missing compound parts, raw HTML vs. components, rendered a11y/layout issues); exits non-zero only on an error, so it's safe to loop on until clean
+
+The CLI fetches from the Marigold docs site, caches for 24h, and works offline (`--offline`). For AI use, prefer `--format json` — it returns a structured payload instead of formatted markdown.
+
+## Build System
+
+- This is a **pnpm workspace monorepo** managed by Turbo
+- Always use `pnpm` (not npm or yarn) - required by `packageManager` field
+- Run `pnpm install` after pulling changes (postinstall builds packages)
+- Build components before testing: `pnpm build` or `turbo run build`
+- Use `pnpm --filter <package>` to run commands in specific packages
+
+## Core Directives
+
+- **Brevity**: Provide complete, functional code. Explain only when explicitly asked.
+- **TypeScript**: Strict typing required - no `any` types, use `unknown` or proper types.
+- **Components**: Functional components using React 19 patterns with `forwardRef` when needed.
+- **Styling**: Use Tailwind CSS utility classes exclusively via `@marigold/system` theming.
+- **Accessibility**: All components must be accessible. Use react-aria-components as foundation.
+- **Error Handling**: Early returns preferred. Always handle edge cases explicitly.
+
+## Code Style
+
+- **TypeScript**: Required for all new code (strict mode enabled)
+- **Imports**: Use ES modules syntax, destructure when possible. Use `import type` for better tree-shaking.
+- **React**: Use React 19 with functional components and hooks
+- **Components**: Built on react-aria for accessibility
+- **Styling**: Tailwind CSS utility classes (Tailwind v4)
+- **Formatting**: Prettier (run `pnpm format` before committing)
+- Use `const` over `let`. Never use `var`.
+- Name component files in `PascalCase` (e.g., `Button.tsx`)
+- Name utility files in `camelCase` (e.g., `useNonModal.ts`)
+- Use the `useClassNames` hook from `@marigold/system` for theming
+- Rename react-aria props: `isDisabled` → `disabled`, `isPending` → `loading`
+- Export components with named exports
+- Use React Context for component composition (see `AccordionContext` patterns)
+
+## Testing
+
+- **Test runner**: Vitest (not Jest)
+- **Run tests**: `pnpm test` (all), `pnpm test:unit` (unit tests), `pnpm test:sb` (story tests)
+- **Story tests**: Attach `.test()` to a story tagged `component-test` - runs in real browser via Playwright
+- **Unit tests**: Import stories (e.g., `<Basic.Component />`) instead of creating test fixtures
+- **Browser tests**: Playwright integration via `@vitest/browser-playwright`
+- **Coverage**: `pnpm test:coverage` (requires 90% statements, functions, lines; 85% branches)
+
+## Workflow
+
+- **Typecheck**: Run `pnpm typecheck:only` after code changes
+- **Lint**: Run `pnpm lint` to check code style
+- **Format**: Run `pnpm format` before committing
+- **Branch from**: `main` (use GitHub Flow)
+- **Changesets**: Use `pnpm changeset` for version management
+- **Storybook**: Run `pnpm sb` to preview components locally
+
+## Monorepo Structure
+
+- `packages/components` - Core React components
+- `packages/system` - Design system utilities and hooks
+- `packages/icons` - Icon components
+- `packages/types` - Shared TypeScript types
+- `themes/*` - Theme packages (theme-rui)
+- `docs` - Documentation site (Next.js)
+- `.storybook` - Storybook configuration
+
+## Do Not
+
+### Testing
+
+- **Don't create test fixtures/themes** - Import stories instead of using `setup()` or creating inline themes
+- **Never use `fireEvent`** - Always use `userEvent` (from `storybook/test` in stories, or `@testing-library/user-event` in test files)
+- **Never use Jest APIs** - Use Vitest equivalents (`vi.fn()`, `vi.spyOn()`, `vi.mock()` instead of `jest.*`)
+- **Avoid `getByTestId`** - Prefer accessible queries: `getByRole`, `getByLabelText`, `getByText` (Testing Library best practice)
+- **Don't wrap in `act()` unnecessarily** - `userEvent` and `render` already handle this
+- **Don't import from `dist/`** - Always import from source packages (e.g., `@marigold/components` not `@marigold/components/dist`)
+
+### Components
+
+- **Don't expose `className` or `style` props** - Remove from RAC props interface; use `variant`/`size` for theming
+- **Don't use `isDisabled`/`isPending`** - Map to `disabled`/`loading` for cleaner API (RAC naming convention)
+- **Don't hardcode styles** - Use `useClassNames` hook for theme-driven styling
+- **Don't skip `forwardRef`** - All components wrapping DOM elements must forward refs
+- **Don't use npm or yarn** - Only pnpm is supported (enforced via `packageManager` field)
+- Don't write inline styles or use `className` prop directly
+- Don't use class components
+- Don't import CSS files - use Tailwind utilities only
+- Don't create components without TypeScript interfaces
+- Don't bypass the theming system with custom CSS
+
+### TypeScript
+
+- **Avoid `@ts-ignore`** - Use `@ts-expect-error` with explanation if truly necessary
+- **Minimize `as any`** - Prefer proper typing; if unavoidable, add comment explaining why
+
+## Component Patterns
+
+### Wrapping React Aria Components (RAC)
+
+```typescript
+type RemovedProps = 'isDisabled' | 'isPending' | 'className' | 'style';
+
+export interface ComponentProps extends Omit<RAC.ComponentProps, RemovedProps> {
+  variant?: 'primary' | 'secondary' | (string & {});
+  size?: 'default' | 'small' | (string & {});
+  disabled?: RAC.ComponentProps['isDisabled'];
+  loading?: RAC.ComponentProps['isPending'];
+}
+```
+
+### Compound Components
+
+```typescript
+interface DialogComponent extends ForwardRefExoticComponent<DialogProps> {
+  Trigger: typeof DialogTrigger;
+  Title: typeof DialogTitle;
+}
+
+const _Dialog = forwardRef<HTMLElement, DialogProps>(...);
+_Dialog.Trigger = DialogTrigger;
+_Dialog.Title = DialogTitle;
+
+export const Dialog = _Dialog as DialogComponent;
+```
+
+### Styling with useClassNames
+
+```typescript
+const classNames = useClassNames({
+  component: 'Button',
+  variant,
+  size,
+});
+
+return <Button className={cn(classNames, fullWidth && 'w-full')} />;
+```
+
+### Z-Index Management
+
+Z-index values are centralized and standardized across the design system to ensure consistent stacking order.
+
+**Architecture**:
+
+- Z-index **classes** are plain Tailwind v4 numeric utilities (`z-1`, `z-30`, `z-80`, …). Tailwind v4 generates `z-<integer>` on demand, so there are no `--z-*` custom properties or `theme.css` definitions — the scale below is a shared convention, not a token set
+- Z-index **classes** are applied directly in component implementations (`packages/components/src/`), NOT in theme style files
+- This keeps stacking order consistent and discoverable without coupling it to the theme layer
+
+**Z-Index Scale** (the agreed convention for which utility maps to which layer):
+
+```text
+/* Content Layer (0-10) */
+z-1    /* Sticky headers (Table, Accordion, ListBox) */
+z-10   /* Focus states (Calendar) */
+
+/* Floating Layer (20-49) */
+z-20   /* Dropdowns (Select, ComboBox) */
+z-30   /* Popovers, Menus, Tooltips, ActionBar */
+
+/* Overlay Layer (50-79) */
+z-50   /* Modal overlays, Drawer overlays, Underlay */
+
+/* Notification Layer (80-99) */
+z-80   /* Toast notifications, Drawer close button */
+
+/* System Layer (100+) */
+z-100  /* Touch hitbox utility */
+```
+
+**Component Examples**:
+
+```typescript
+// ✅ Correct - z-index in component implementation
+const ToastProvider = () => (
+  <ToastRegion className={`${classNames.position} z-80 gap-2`}>
+    {children}
+  </ToastRegion>
+);
+
+// ✅ Correct - using cn() utility
+const Popover = () => (
+  <Popover className={cn('flex z-30', classNames)}>
+    {children}
+  </Popover>
+);
+
+// ❌ Wrong - z-index in theme style file
+export const Toast: ThemeComponent = {
+  toast: cva(['z-80', ...otherClasses]), // Don't do this
+};
+```
+
+**Rules**:
+
+- Always apply z-index classes in component implementations using Tailwind utilities (`z-1`, `z-30`, etc.)
+- Never add z-index classes to theme style files (`*.styles.ts`)
+- Use `cn()` utility to combine z-index with other classNames
+- Exception: Some third-party libraries may require an inline `zIndex` prop
+
+**Stacking Hierarchy**:
+
+- Toast notifications (z-80) appear **above** modals (z-50)
+- Popovers/Menus/Tooltips/ActionBar (z-30) appear **below** modals (z-50)
+- This ensures notifications remain visible while modals properly block interactions
+
+## Testing Patterns
+
+### Story Tests (`.test()`)
+
+Attach interaction tests to a story with `.test(name, options?, fn)` (enabled by
+`features.experimentalTestSyntax`). Do not write `play` functions. Runs in real browser via Playwright.
+
+```typescript
+import { expect, fn } from 'storybook/test';
+import preview from '.storybook/preview';
+
+const meta = preview.meta({
+  title: 'Components/Button',
+  component: Button,
+});
+
+export const Basic = meta.story({
+  tags: ['component-test'], // Required for test runner; .test() children inherit it
+  render: args => <Button {...args}>Click me</Button>,
+});
+
+Basic.test(
+  'Calls onPress when clicked',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onPress: fn() },
+  },
+  async ({ args, canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button'));
+
+    await expect(args.onPress).toHaveBeenCalled();
+  }
+);
+```
+
+- Destructure `canvas`, `userEvent`, `args`, `step` from the test context - never `within(canvasElement)`, never a module-scope `userEvent`
+- `options` takes the same `parameters`/`args`/`decorators` a story does, so per-test setup stays out of the story
+- Default to `chromatic: { disableSnapshot: true }`; use `false` when the interaction's end state is a visual state worth guarding
+- Wrap each act-assert cycle in `step()` when a behaviour needs more than one
+
+Run with `pnpm test:sb`.
+
+### Unit Tests (Import Stories)
+
+Use `.test.tsx` files for additional tests, but import stories instead of creating fixtures.
+
+```typescript
+import { render, screen } from '@testing-library/react';
+import { Basic } from './Button.stories';
+
+test('renders correctly', () => {
+  render(<Basic.Component />);
+
+  expect(screen.getByRole('button')).toBeInTheDocument();
+});
+
+test('supports custom props', () => {
+  render(<Basic.Component variant="primary" />);
+  // assertions...
+});
+```
+
+Run with `pnpm test:unit`.
+
+## Specialized Agents
+
+- **component-scaffold**: Creates new components with all required files (component, tests, stories, theme styles)
+- **a11y-audit**: Audits components for WCAG 2.1 AA accessibility compliance
+
+## MCP Servers
+
+This project provides MCP servers for AI-assisted development:
+
+- **marigold-docs** (`https://www.marigold-ui.io/mcp`) — Semantic search over the Marigold documentation (`search_docs` tool). Reservix-internal, requires OAuth. See `docs/app/mcp/README.md` for how it works.
+- **Storybook** (`http://localhost:6006/mcp`) — Requires running Storybook (`pnpm sb`). Provides component discovery, documentation, and testing tools.
+- **React Aria** — Reference documentation for react-aria-components
+
+When working with Marigold components, prefer Storybook MCP tools to discover existing components and their APIs before searching the codebase manually.
+
+## Storybook MCP Server instructions
+
+When working on UI components, always use the `sb-mcp-server` MCP tools to access Storybook's component and documentation knowledge before answering or taking any action.
+
+- **CRITICAL: Never hallucinate component properties!** Before using ANY property on a component from a design system (including common-sounding ones like `shadow`, etc.), you MUST use the MCP tools to check if the property is actually documented for that component.
+- Query `list-all-documentation` to get a list of all components
+- Query `get-documentation` for that component to see all available properties and examples
+- Only use properties that are explicitly documented or shown in example stories
+- If a property isn't documented, do not assume properties based on naming conventions or common patterns from other libraries. Check back with the user in these cases.
+- Use the `get-storybook-story-instructions` tool to fetch the latest instructions for creating or updating stories. This will ensure you follow current conventions and recommendations.
+- Check your work by running `run-story-tests`.
+
+Remember: A story name might not reflect the property name correctly, so always verify properties through documentation or example stories before using them.
+
+## Common Gotchas
+
+- Components depend on `@marigold/system` - rebuild system package if making system changes
+- Docs depend on `@marigold/theme-rui` - rebuild theme package for changes to be visible in docs
+- Storybook uses source folders directly (not dist) - no build needed for stories
+- Git hooks run lint-staged on commit via Husky
+- Node.js 22.x required (check `.node-version`)
+- **Build before test**: Components must be built before running docs locally
+- **React 19**: This project uses React 19 patterns (newer than many examples online)
+- **Strict TypeScript**: The project enforces strict type checking
+- Story tests run in a real browser (Firefox) via Playwright - use `pnpm test:sb`
+- Stories tagged with `component-test` are picked up by the test runner
+
+## Jira (DST Project)
+
+Jira Cloud ID: `reservix.atlassian.net` | Project key: `DST`
+
+### Issue Types
+
+| Type      | ID    | Use for                     |
+| --------- | ----- | --------------------------- |
+| Task      | 10697 | Standard work items         |
+| Bug       | 10698 | Defects and errors          |
+| Epic      | 10671 | Collection of related tasks |
+| Sub-task  | 10672 | Breakdown of a parent task  |
+| Unplanned | 10860 | Unplanned/ad-hoc work       |
+
+### Required Custom Fields (Task)
+
+When creating Task issues via the API, these fields are **required** in `additional_fields`:
+
+- **Appetite** (`customfield_11370`) — Free text time estimate. Examples: `"2 days"`, `"1 week"`, `"3 weeks"`
+- **Rollout Communication** (`customfield_12908`) — Select field. Defaults to `"no communication"` (id: `13833`). Options: `"internal communication"` (`13834`), `"internal & external communication"` (`13835`)
+- **Requires UI Kit Update** (`customfield_13205`) — Select field. Defaults to `"No"` (id: `14326`). Other option: `"Yes"` (`14325`)
+
+Always use `contentFormat: "markdown"` for descriptions.
+
+### Description Template
+
+```markdown
+#### **Problem:**
+
+[Motivation. Include bullet points: Why now? Why important? Impact? Stakeholders?]
+
+#### **Expected Outcome:**
+
+[What success looks like for the user/team]
+
+#### **Scope:**
+
+**Included:**
+
+- [requirement 1]
+- [requirement 2]
+
+**Not included:**
+
+- [explicit exclusion 1]
+
+#### **Suggested Solution:**
+
+[Rough sketch, code examples, architecture notes]
+
+#### **References:**
+
+- [Links to files, related tickets, Confluence pages, RFCs]
+```
+
+### Title Emoji Convention
+
+Every issue title **must** start with an emoji indicating its type of work (see [Confluence: Emojis](https://reservix.atlassian.net/wiki/spaces/DST/pages/3797942472/Emojis)):
+
+| Emoji | Category                  |
+| ----- | ------------------------- |
+| 🐛    | Bug                       |
+| 🩹    | Hotfix                    |
+| 🏗️    | Infrastructure            |
+| 🧹    | Refactor / Cleanup        |
+| 📝    | Documentation             |
+| 💄    | Style / Theme             |
+| ✨    | Feature                   |
+| 🧩    | New Component             |
+| ✍️    | Blog / Confluence article |
+
+**Modifier emojis** (combine with a type emoji above):
+
+| Emoji | Meaning                      |
+| ----- | ---------------------------- |
+| ⚡️    | Quick task / spare-time work |
+| 🏚️    | Core-only task               |
+
+Examples: `📝⚡️ Quick docs fix`, `🧹🏚️ Core-only refactor`, `✨ New feature title`
+
+**Exception**: Epics use text prefixes instead of emojis: `[CPB]`, `[RUI]`, `[Infra]`

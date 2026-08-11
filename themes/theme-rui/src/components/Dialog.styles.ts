@@ -34,8 +34,8 @@ export const Dialog: ThemeComponent<'Dialog'> = {
   title: cva({ base: 'text-lg font-semibold mb-1' }),
   description: cva({ base: 'text-sm text-secondary' }),
   // Declares the named scroll timeline the header seam animates against.
-  content: cva({ base: 'ui-panel-content text-sm ui-scroll-seam-timeline' }),
+  content: cva({ base: 'ui-surface-content text-sm ui-scroll-seam-timeline' }),
   actions: cva({
-    base: 'ui-panel-actions flex-col-reverse sm:flex-row',
+    base: 'ui-surface-actions flex-col-reverse sm:flex-row',
   }),
 };

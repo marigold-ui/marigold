@@ -24,7 +24,9 @@ export interface DialogTriggerProps
 const _DialogTrigger = ({
   open,
   dismissable,
-  keyboardDismissable,
+  // A dialog the keyboard cannot leave is an accessibility defect, so opting
+  // out has to be explicit. Same default as `Tray` and `useNonModal`.
+  keyboardDismissable = true,
   ...rest
 }: DialogTriggerProps): ReactNode => {
   const ctx = {

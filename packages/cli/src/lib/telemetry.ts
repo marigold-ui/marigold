@@ -13,6 +13,7 @@ export type CommandName =
   | 'list'
   | 'search'
   | 'examples'
+  | 'validate'
   | 'init'
   | 'doctor'
   | 'migrate'
@@ -103,11 +104,9 @@ const findSenderScript = (): string | null => {
 
 const TMP_SWEEP_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
-// Best-effort cleanup of stale telemetry tmp files in os.tmpdir(). The
-// detached sender unlinks on success, but if the child dies before reaching
-// unlink the file leaks; this sweep keeps the tmpdir bounded for a frequently
-// invoked CLI. Wrapped in try/catch and uses sync I/O so it stays cheap and
-// never throws.
+// The detached sender unlinks on success, but a child that dies first leaks
+// its file; this sweep keeps the tmpdir bounded for a frequently invoked CLI.
+// Sync I/O and fully guarded, so it stays cheap and never throws.
 const sweepStaleTelemetryTmpFiles = (): void => {
   try {
     const dir = os.tmpdir();
@@ -129,29 +128,34 @@ const sweepStaleTelemetryTmpFiles = (): void => {
 };
 
 export const emit = (options: EmitOptions): void => {
-  if (isTelemetryDisabled()) return;
-
-  sweepStaleTelemetryTmpFiles();
-
-  const event: TelemetryEvent = {
-    event: 'cli_command',
-    command: options.command,
-    cliVersion: options.cliVersion,
-    nodeVersion: process.version,
-    platform: process.platform,
-    isTTY: Boolean(process.stdout.isTTY),
-    isAIAgent: detectAIAgent(),
-    durationBucket: bucketDuration(Date.now() - options.startedAt),
-    exitCode: options.exitCode,
-    cacheHit: options.cacheHit,
-    args: options.args,
-    anonymousId: anonymousId(),
-  };
-
-  const script = findSenderScript();
-  if (!script) return;
-
+  // The whole body, not just the write/spawn below: anonymousId() lazily calls
+  // writeConfig(), which has no guard of its own, so an unwritable config dir
+  // would propagate out of emit() and crash an unrelated command.
+  // setTelemetryEnabled() is deliberately NOT covered — it backs the explicit
+  // enable/disable command, where a write failure must surface to the user.
   try {
+    if (isTelemetryDisabled()) return;
+
+    sweepStaleTelemetryTmpFiles();
+
+    const event: TelemetryEvent = {
+      event: 'cli_command',
+      command: options.command,
+      cliVersion: options.cliVersion,
+      nodeVersion: process.version,
+      platform: process.platform,
+      isTTY: Boolean(process.stdout.isTTY),
+      isAIAgent: detectAIAgent(),
+      durationBucket: bucketDuration(Date.now() - options.startedAt),
+      exitCode: options.exitCode,
+      cacheHit: options.cacheHit,
+      args: options.args,
+      anonymousId: anonymousId(),
+    };
+
+    const script = findSenderScript();
+    if (!script) return;
+
     const tmpFile = path.join(
       os.tmpdir(),
       `marigold-telemetry-${process.pid}-${Date.now()}.json`

@@ -37,6 +37,8 @@ type RemoveProps =
   | 'renderEmptyState'
   | 'selectionMode'
   | 'selectionBehavior'
+  | 'layout'
+  | 'keyboardNavigationBehavior'
   | 'isDisabled'
   | 'isInvalid'
   | 'isRequired';

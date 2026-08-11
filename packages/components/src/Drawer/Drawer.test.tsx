@@ -209,17 +209,17 @@ test('`bleed` content drops the padding and publishes --bleed-px', async () => {
   // eslint-disable-next-line testing-library/no-node-access
   const content = header.closest('[class*="[--bleed-px:"]')!;
   expect(content).not.toBeNull();
-  expect(content.className).not.toContain('ui-panel-content');
-  expect(content.className).toContain('[--bleed-px:var(--ui-panel-px)]');
+  expect(content.className).not.toContain('ui-surface-content');
+  expect(content.className).toContain('[--bleed-px:var(--ui-surface-px)]');
 });
 
-test('non-bled content keeps the padded ui-panel-content', async () => {
+test('non-bled content keeps the padded ui-surface-content', async () => {
   renderWithOverlay(<Basic.Component />);
 
   await user.click(screen.getByRole('button', { name: 'Open Drawer' }));
   const paragraph = await screen.findByText(/Once upon a time/);
 
   // eslint-disable-next-line testing-library/no-node-access
-  const content = paragraph.closest('[class*="ui-panel-content"]');
+  const content = paragraph.closest('[class*="ui-surface-content"]');
   expect(content).not.toBeNull();
 });

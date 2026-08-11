@@ -2,6 +2,7 @@ import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Badge, Button, Inline, Stack, Text } from '@marigold/components';
 import { Description } from '../Description/Description';
+import { Table } from '../Table/Table';
 import { Title } from '../Title/Title';
 import { Card } from './Card';
 
@@ -230,6 +231,66 @@ export const WithBleedContent = meta.story({
     </Card>
   ),
 });
+
+const orders = [
+  { id: '1001', customer: 'Alice' },
+  { id: '1002', customer: 'Bob' },
+];
+
+const OrderTable = ({ label }: { label: string }) => (
+  <Table aria-label={label}>
+    <Table.Header>
+      <Table.Column rowHeader>Order</Table.Column>
+      <Table.Column>Customer</Table.Column>
+    </Table.Header>
+    <Table.Body items={orders}>
+      {item => (
+        <Table.Row id={item.id}>
+          <Table.Cell>#{item.id}</Table.Cell>
+          <Table.Cell>{item.customer}</Table.Cell>
+        </Table.Row>
+      )}
+    </Table.Body>
+  </Table>
+);
+
+export const TableEdgeAlignment = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <Card {...args}>
+      <Card.Header>
+        <Title>Bled table</Title>
+        <Description>Edge cells align with the title.</Description>
+      </Card.Header>
+      <Card.Content bleed>
+        <OrderTable label="Bled orders" />
+      </Card.Content>
+    </Card>
+  ),
+});
+
+TableEdgeAlignment.test(
+  'a bled Card aligns edge cells with its title',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    // `--card-px` computes to an unresolved `var()` chain, so compare resolved
+    // geometry rather than token values.
+    const padding = (el: Element) =>
+      parseFloat(getComputedStyle(el).paddingInlineStart);
+
+    const [first, second] = canvas
+      .getByRole('grid', { name: 'Bled orders' })
+      .querySelectorAll('tbody tr:first-child > *');
+
+    // The first cell lines up with the header, so it out-pads an interior one.
+    const header = canvas
+      .getByRole('heading', { name: 'Bled table' })
+      .closest('[data-card-header]')!;
+
+    expect(padding(first)).toBeCloseTo(padding(header), 1);
+    expect(padding(first)).toBeGreaterThan(padding(second));
+  }
+);
 
 export const WithBleedFooter = meta.story({
   render: args => (

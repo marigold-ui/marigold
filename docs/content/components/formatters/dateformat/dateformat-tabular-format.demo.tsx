@@ -25,9 +25,9 @@ export default () => {
         onChange={setTabular}
       />
 
-      <Table>
+      <Table aria-label="Events">
         <Table.Header>
-          <Table.Column>Event</Table.Column>
+          <Table.Column rowHeader>Event</Table.Column>
           <Table.Column>Price</Table.Column>
           <Table.Column>Date</Table.Column>
         </Table.Header>

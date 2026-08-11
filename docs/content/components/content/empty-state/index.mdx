@@ -1,8 +1,9 @@
 ---
 title: EmptyState
 description: Inform users when there is no content to display.
-badge: beta
 ---
+
+import { EmptyStateAnatomy } from './empty-state-anatomy';
 
 The `<EmptyState>` component is used to communicate that a container, list, or page currently has no data to display. It provides visual confirmation that the lack of data is a valid system state, ensuring users do not mistake the empty space for a loading error or a bug.
 
@@ -10,15 +11,15 @@ It serves as a bridge between an empty screen and a populated one, offering cont
 
 ## Anatomy
 
-The `EmptyState` component typically consists of the following elements:
+An `<EmptyState>` is a centered column holding the built-in illustration, a title, an optional description, and an optional action.
 
-<ImageZoom
-  src="/emptystate/emptystate-anatomy.jpg"
-  alt="Anatomy of an EmptyState"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+<EmptyStateAnatomy />
+
+- **Container**: Centered column, capped at a readable width. It paints no surface of its own, so it sits directly on whatever is behind it.
+- **Illustration**: Built into the component and marked `aria-hidden`, so it carries no meaning on its own. It is fixed and cannot be swapped out.
+- **Title**: Required. Renders as a semantic heading, `<h3>` by default. Adjust the level with the `headingLevel` prop so it fits the surrounding document outline.
+- **Description** _(optional)_: Short explanation of why there is nothing to show, and of what would put content here.
+- **Action** _(optional)_: The next step, usually a single `<Button>`. See [Actions](#actions) for which variant it should use.
 
 ## Appearance
 
@@ -49,6 +50,42 @@ Use this component to confirm that the lack of data is a valid state in the foll
 </GuidelineTiles>
 
 <ComponentDemo name="empty-state-table" />
+
+### Actions
+
+Add an action when the empty state has a concrete next step. A filtered or searched list needs a way back to the full set, and an initial state needs a way to create the first record. A state the user emptied on purpose often has no next step at all, and then the action is better left out than filled with something vague.
+
+Keep it to one primary action. An empty state that replaces the content of a page can carry the page's primary action, but only when nothing else already does. The app frame keeps the [`<Page.Header>`](/components/layout/page) in place when the content below it is empty, so if that header still holds the primary action, the empty state should not repeat it. When an empty state has two actions, they run `primary → secondary` from left to right. The `action` prop renders whatever it is given as a single block and adds no spacing between children, so wrap a pair of buttons in an [`<Inline>`](/components/layout/inline).
+
+For the general rule behind all of this, see [Button: Visual hierarchy](/components/actions/button#visual-hierarchy), [Placement and order](/components/actions/button#placement-and-order), and [Surface actions](/components/actions/button#surface-actions).
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      <ul>
+        <li>
+          Use `primary` only when the action is the real next step for the whole
+          view.
+        </li>
+        <li>Label the action with a verb and a noun, like "Add new event".</li>
+      </ul>
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      <ul>
+        <li>
+          Avoid a primary action that competes with the one already in the page
+          header.
+        </li>
+        <li>
+          Avoid promoting a recovery action like "Clear all filters" to
+          `primary`.
+        </li>
+      </ul>
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 ### Best Practices
 

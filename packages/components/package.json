@@ -1,6 +1,6 @@
 {
   "name": "@marigold/components",
-  "version": "18.0.0-rc.5",
+  "version": "18.0.0",
   "description": "Components for the Marigold Design System",
   "license": "MIT",
   "keywords": [
@@ -77,8 +77,7 @@
     "@react-types/shared": "^3.36.1",
     "@react-types/table": "~3.13.0",
     "motion": "12.43.0",
-    "react-aria-components": "^1.20.0",
-    "react-select": "^5.10.2"
+    "react-aria-components": "^1.20.0"
   },
   "peerDependencies": {
     "react": ">=17.0.0",

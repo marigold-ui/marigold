@@ -48,6 +48,14 @@ export interface FileFieldProps
    * The name of the field for form submission.
    */
   name?: string;
+
+  /**
+   * Called before a file is removed. Return `false`, or a promise resolving to
+   * `false`, to keep the file, which is how a confirmation goes in front of the
+   * remove button. If the handler throws, the file is kept and the error
+   * propagates.
+   */
+  onBeforeRemove?: (file: File) => boolean | Promise<boolean>;
 }
 
 // Component
@@ -61,6 +69,7 @@ export const FileField = ({
   name,
   size,
   variant,
+  onBeforeRemove,
   ...props
 }: FileFieldProps) => {
   const [files, setFiles] = useState<File[] | null>(null);
@@ -100,6 +109,13 @@ export const FileField = ({
 
   const handleSelect: RAC.FileTriggerProps['onSelect'] = files => {
     mergeFiles(files ? Array.from(files) : []);
+  };
+
+  const handleRemove = async (file: File) => {
+    const key = fileKey(file);
+    if (!onBeforeRemove || (await onBeforeRemove(file))) {
+      updateFiles(prev => prev.filter(f => fileKey(f) !== key));
+    }
   };
 
   const handleDrop: RAC.DropZoneProps['onDrop'] = async e => {
@@ -170,11 +186,10 @@ export const FileField = ({
           <FileField.Item
             key={fileKey(file)}
             size={size}
-            onRemove={() =>
-              updateFiles(prev =>
-                prev.filter(f => fileKey(f) !== fileKey(file))
-              )
-            }
+            removeLabel={stringFormatter.format('removeFileNamed', {
+              name: file.name,
+            })}
+            onRemove={() => void handleRemove(file)}
           >
             <div className={cn('[grid-area:label]', classNames.itemLabel)}>
               {file.name}
