@@ -2869,6 +2869,38 @@ ExpandableRowsWithEditableCell.test(
   }
 );
 
+// The editor is capped at the table's width, which has to be found by element:
+// a tree table's role is `treegrid`, so matching `role="grid"` collapsed the
+// overlay to its padding.
+ExpandableRowsWithEditableCell.test(
+  'Sizes the editor to the cell it edits',
+  async ({ canvas, userEvent, step }) => {
+    const widthOf = (el: Element) => el.getBoundingClientRect().width;
+
+    const check = async (row: Element, column: number, field: string) => {
+      await userEvent.click(editTriggerIn(row, column));
+
+      const editor = await waitFor(() => {
+        const input = canvas.getByLabelText(field);
+        return input.closest('[data-placement]')!;
+      });
+
+      expect(widthOf(editor)).toBeGreaterThanOrEqual(
+        widthOf(row.children[column])
+      );
+      await userEvent.keyboard('{Escape}');
+    };
+
+    await step('From a nested row', () =>
+      check(rowByName(canvas, 'CLR-10188'), 1, 'Note')
+    );
+
+    await step('And from the tree column of its parent', () =>
+      check(rowByName(canvas, 'Settlement run 1 Jun 2026'), 0, 'Label')
+    );
+  }
+);
+
 ExpandableRowsWithEditableCell.test(
   'Keeps the expand control when the tree column is editable',
   async ({ canvas, userEvent, step }) => {

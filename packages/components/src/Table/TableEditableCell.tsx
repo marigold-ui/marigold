@@ -106,7 +106,10 @@ const EditableCellPopover = ({
 
     setTriggerWidth(rect.width);
     setVerticalOffset(offset);
-    setTableWidth(cell.closest('[role="grid"]')?.clientWidth ?? 0);
+    // Match on the element, not `role="grid"`: expandable rows make React Aria
+    // render the table as `treegrid`, which would leave the cap at 0 and
+    // collapse the popover to its padding.
+    setTableWidth(cell.closest('table')?.clientWidth ?? 0);
   }, [cellRef, open]);
 
   return (
