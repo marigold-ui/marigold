@@ -22,5 +22,5 @@ feat(DST-1700): `--bleed-px` is the documented way to align content with a conta
 - A `Table` in a **bled** `Panel.Content`, `Panel.CollapsibleContent` or `Drawer.Content` is unchanged.
 - A `Table` in a **non-bled** `Panel.Content` now uses the ordinary cell padding for its first and last cell instead of the Panel's horizontal padding. Docs steer tables to `bleed`, so most tables are unaffected.
 - `Table` and `Accordion` inside a **bled** `Card.Content` or `Card.Footer` now align with the container title, where previously they got no edge alignment at all.
-- A `Table` or `Accordion` in a **non-bled** container nested inside a **bled** one (a `Card` inside a bled `Panel.Content`, say) no longer picks up the outer container's padding.
+- A `Table` or `Accordion` in a **non-bled** container nested inside a **bled** one no longer picks up the outer container's padding.
 - `Dialog`, `Drawer`, `Tray` and `Sidebar` are visually unchanged. If you override `--ui-panel-px` or apply the `ui-panel-*` utilities directly, rename them; the token was undocumented, so nothing else in the public API moves. It also only ever existed in `18.0.0-rc.*`, never in a stable release, so only prerelease consumers are affected.

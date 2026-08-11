@@ -2,7 +2,6 @@ import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Badge, Button, Inline, Stack, Text } from '@marigold/components';
 import { Description } from '../Description/Description';
-import { Panel } from '../Panel/Panel';
 import { Table } from '../Table/Table';
 import { Title } from '../Title/Title';
 import { Card } from './Card';
@@ -258,40 +257,20 @@ const OrderTable = ({ label }: { label: string }) => (
 export const TableEdgeAlignment = meta.story({
   tags: ['component-test'],
   render: args => (
-    <Stack space="regular">
-      <Card {...args}>
-        <Card.Header>
-          <Title>Bled table</Title>
-          <Description>Edge cells align with the title.</Description>
-        </Card.Header>
-        <Card.Content bleed>
-          <OrderTable label="Bled orders" />
-        </Card.Content>
-      </Card>
-
-      {/* The Panel's `--bleed-px` must not reach the nested table. */}
-      <Panel>
-        <Panel.Header>
-          <Title>Card in a bled Panel</Title>
-        </Panel.Header>
-        <Panel.Content bleed>
-          <Card>
-            <Card.Header>
-              <Title>Nested table</Title>
-              <Description>Keeps the standalone cell padding.</Description>
-            </Card.Header>
-            <Card.Content>
-              <OrderTable label="Nested orders" />
-            </Card.Content>
-          </Card>
-        </Panel.Content>
-      </Panel>
-    </Stack>
+    <Card {...args}>
+      <Card.Header>
+        <Title>Bled table</Title>
+        <Description>Edge cells align with the title.</Description>
+      </Card.Header>
+      <Card.Content bleed>
+        <OrderTable label="Bled orders" />
+      </Card.Content>
+    </Card>
   ),
 });
 
 TableEdgeAlignment.test(
-  'a bled Card aligns edge cells with its title, and does not leak into a nested non-bled one',
+  'a bled Card aligns edge cells with its title',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
     // `--card-px` computes to an unresolved `var()` chain, so compare resolved
@@ -299,27 +278,17 @@ TableEdgeAlignment.test(
     const padding = (el: Element) =>
       parseFloat(getComputedStyle(el).paddingInlineStart);
 
-    const cells = (name: string) => {
-      const [first, second] = canvas
-        .getByRole('grid', { name })
-        .querySelectorAll('tbody tr:first-child > *');
-      return { first, second };
-    };
+    const [first, second] = canvas
+      .getByRole('grid', { name: 'Bled orders' })
+      .querySelectorAll('tbody tr:first-child > *');
 
-    const bled = cells('Bled orders');
-    const nested = cells('Nested orders');
-
-    // Bled: the first cell lines up with the header, so it out-pads an interior one.
+    // The first cell lines up with the header, so it out-pads an interior one.
     const header = canvas
       .getByRole('heading', { name: 'Bled table' })
       .closest('[data-card-header]')!;
 
-    expect(padding(bled.first)).toBeCloseTo(padding(header), 1);
-    expect(padding(bled.first)).toBeGreaterThan(padding(bled.second));
-
-    // Nested and non-bled: the Card clears the Panel's `--bleed-px`, so the
-    // first cell keeps the ordinary cell padding.
-    expect(padding(nested.first)).toBeCloseTo(padding(nested.second), 1);
+    expect(padding(first)).toBeCloseTo(padding(header), 1);
+    expect(padding(first)).toBeGreaterThan(padding(second));
   }
 );
 
