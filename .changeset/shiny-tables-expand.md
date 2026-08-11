@@ -16,12 +16,19 @@ and each one can be selected, linked to and scrolled to on its own.
 
 The tree column renders the expand control itself, reusing the caret and morph
 animation from `<Accordion>`. The control sits in a leading gutter every row
-reserves, so a group row, its children and an ungrouped row all start their value
-at the same x — the identifier column stays a single scannable column instead of
-being staggered by nesting level. Containment is carried by the group row, which
-is filled with the new `band` token and emphasised automatically. Expansion is
-collapsed by default and can be controlled with `expandedKeys` /
-`defaultExpandedKeys` / `onExpandedChange`.
+reserves, so a group row and a childless row at the same level start their value
+at the same x whether or not there is a control to show. Levels below the root
+indent by `--tree-indent`, and the column's own header label takes the same
+gutter, so it sits above the values it heads. Containment is also carried by the
+group row, which is filled and emphasised automatically. Expansion is collapsed
+by default and can be controlled with `expandedKeys` / `defaultExpandedKeys` /
+`onExpandedChange`.
+
+Drop indicators are level-aware: the insertion line starts at the x of the level
+the row would land at, so a reorder inside an expanded group reads as landing in
+that group, while a root-level drop still spans the row. Moving rows between
+levels stays up to your drop handlers, and the keyboard drag path only offers
+root-level positions.
 
 New theme keys `treeIndent` and `expandButton`. The group row's fill is
 `foreground/5`, which holds ~1.10:1 whether the row sits on `surface`, on

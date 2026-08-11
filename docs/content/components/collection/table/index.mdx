@@ -185,7 +185,7 @@ If you cannot place all row actions at the end of the row, be mindful of clarity
 
 Some records belong together: a settlement run that bundles individual clearings, an order that bundles its line items, a folder that bundles its files. Set `treeColumn` to the `id` of the column that should carry the hierarchy, then nest `<Table.Row>` inside `<Table.Row>`. The nested rows stay real table rows, so their values line up under the same headers, each one can carry its own actions, and each one can be selected, linked to and scrolled to individually.
 
-The column named by `treeColumn` renders the expand control automatically — you don't place a chevron yourself. The control sits in a leading gutter that every row reserves, so a group row, its children and an ungrouped row all start their value at the same x and the column stays one scannable column. That matters most for the identifier people search on: staggering a clearing number by nesting level is what makes it hard to find by eye. Containment is carried by the group row instead, which is filled and emphasised for you, so there is nothing to style.
+The column named by `treeColumn` renders the expand control automatically — you don't place a chevron yourself. The control sits in a leading gutter that every row reserves, so a group row and a childless row at the same level start their value at the same x whether or not there is a control to show. Levels below the root indent, so you can read a row's depth: without that, a root-level row that happens to follow an expanded group is indistinguishable from that group's children. The column's own header label takes the same gutter, so it sits above the values it heads. Containment is also carried by the group row, which is filled and emphasised for you, so there is nothing to style.
 
 When the nested rows come from data, render them with `<Table.ExpandableRows>` and let your render function recurse. It renders nothing when `items` is empty or missing, so leaf rows need no special case. Always render it — the Table decides whether the rows are visible, so don't wrap it in a check of the expansion state.
 
@@ -265,7 +265,9 @@ The same three steps cover deep links: expand the ancestors on mount, then scrol
   </Dont>
 </GuidelineTiles>
 
-Not supported yet, and worth knowing before you design around it: drag and drop across nesting levels, and sorting that reorders levels automatically (you sort your own data, so a grouped table has to sort each level). There is no built-in "expand all" control either — set `expandedKeys` to every group's key yourself.
+Not supported yet, and worth knowing before you design around it: sorting that reorders levels automatically (you sort your own data, so a grouped table has to sort each level), and there is no built-in "expand all" control — set `expandedKeys` to every group's key yourself.
+
+Drag and drop is partly there. Reordering works, and the insertion line is indented to the level the row would land at, so a drop inside an expanded group reads as landing in that group. Moving a row _between_ levels is up to your drop handlers, and the keyboard path only offers root-level positions, so don't ship cross-level reordering as keyboard-accessible yet.
 
 Inline editing itself composes with nested rows: `Table.EditableCell` works in a child row exactly as in a root row. Remember `dependencies` on both `Table.Body` and `Table.ExpandableRows` when the edited value lives outside the row items — rendered rows are cached by item identity, so a table whose items never change won't otherwise re-render.
 
