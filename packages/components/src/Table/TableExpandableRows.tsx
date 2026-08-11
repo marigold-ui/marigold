@@ -10,7 +10,10 @@ export interface TableExpandableRowsProps<T extends object = object> {
    */
   items?: Iterable<T>;
   /**
-   * Values that should invalidate the row cache when the nested rows change.
+   * Values that invalidate the cached rows, like a hook's dependency array.
+   * Rendered rows are cached per item object, so anything the render function
+   * reads from outside the item — state, a lookup, a prop — has to be listed
+   * here or it renders stale. Needed on every level of the table separately.
    */
   dependencies?: ReadonlyArray<unknown>;
   /**
