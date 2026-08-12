@@ -174,10 +174,6 @@ export function useToast() {
         action: (
           <Button
             size="small"
-            // Filled, not `ghost`: the toast sits far from the button that
-            // triggered it and leaves after five seconds, so the way back has
-            // to be visible without a hover. Not `destructive` either — undo is
-            // the safe action, and red would read as a second delete.
             variant="secondary"
             // Toasts stack, so a bare "Undo" is ambiguous to a screen reader.
             aria-label={stringFormatter.format('undoNamed', { title })}
