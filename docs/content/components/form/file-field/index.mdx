@@ -62,6 +62,14 @@ For specific use cases where only certain file types are appropriate, such as ac
 
 The `accept` prop accepts an array of MIME types (like `'application/pdf'` or `'image/*'`) or file extensions (like `'.pdf'` or `'.jpg'`). Users will only be able to select files that match these criteria, and dropped files that don't match will be filtered out automatically.
 
+### Confirming before a file is removed
+
+Each row's remove button drops the file straight away. Pass `onBeforeRemove` to put a question in front of it: return `false`, or a promise resolving to `false`, and the file stays. If the handler throws, the file is kept.
+
+<ComponentDemo name="file-delete-confirm" />
+
+Worth knowing for uploads where names look alike: each remove button is named after its own file ("Remove agb-2026-08-01.pdf"), so a screen reader user can tell the rows apart. When you compose `FileField.Item` yourself, pass that name through `removeLabel`. See [Destructive Actions](/patterns/feedback/destructive-actions) for whether a given removal deserves a dialog at all.
+
 ## Props
 
 <StorybookHintMessage component={'FileField'} />

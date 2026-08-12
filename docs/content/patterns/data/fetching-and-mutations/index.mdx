@@ -199,7 +199,7 @@ This is wired end to end in the demo below and in the [filter example](/examples
 
 ### Destructive actions
 
-Wrap destructive mutations in a confirmation before they run. Marigold's [`useConfirmation`](/components/overlay/dialog) returns a promise that resolves to `'confirmed'` or `'cancelled'`, so the whole flow reads top to bottom.
+Wrap destructive mutations in a confirmation before they run. Marigold's [`useConfirmation`](/components/overlay/dialog) returns a promise that resolves to `'confirmed'` or `'cancelled'`, so the whole flow reads top to bottom. [Destructive Actions](/patterns/feedback/destructive-actions) decides which mutations earn a confirmation and which can offer an undo instead.
 
 ```tsx
 const confirm = useConfirmation();

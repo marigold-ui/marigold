@@ -306,13 +306,13 @@
   --spacing-group: --spacing(12);
   --spacing-section: --spacing(24);
 
-  /* Shared horizontal padding for the `ui-panel-*` overlay surfaces in ui.css,
+  /* Shared horizontal padding for the `ui-surface-*` overlay surfaces in ui.css,
    * plus DrawerContent's `bleed` branch (which republishes it as `--bleed-px`).
    * `--ui-*` is not a Tailwind namespace, so this generates no utility — but it
    * stays in `@theme` so it lands on `:root, :host` inside `@layer theme` like
    * every other token: shadow-DOM mounts need `:host`, and an unlayered rule
    * would outrank a consumer's own `@theme` override. */
-  --ui-panel-px: --spacing(6);
+  --ui-surface-px: --spacing(6);
 
   /* Padding spacing */
   --spacing-padding-tight: --spacing(1);

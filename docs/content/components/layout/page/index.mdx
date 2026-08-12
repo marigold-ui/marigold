@@ -99,6 +99,8 @@ Reach for an override only when a screen has a reason the defaults cannot antici
 - **Tighter padding** with `p` (or `px` and `py` for one axis) when the page is embedded in a surface that already supplies its own outer spacing. Set one or the other. Passing `p` together with `px` or `py` is a type error, since they would fight over the same edges.
 - **A different rhythm** with `space` when a sparse screen wants more air between the header and a lone panel, or when a dense screen reads better pulled tight.
 
+Whatever those props resolve to is published as `--page-px`, `--page-py` and `--page-gap` on the Page root, so content in the subtree can line up with the page frame without repeating the value. They are read-only — see [Reading container spacing](/foundations/spacing#reading-container-spacing).
+
 ### Content
 
 Put `<Panel>`s directly inside `<Page>` for the common case. Reach for the optional `<Page.Content>` wrapper only when the rhythm _between_ sections should differ from the header-to-content gap, for instance a header set well apart from a group of panels that themselves sit close together. `<Page>`'s `space` then controls the header-to-content gap, and `<Page.Content space>` the gap between sections.

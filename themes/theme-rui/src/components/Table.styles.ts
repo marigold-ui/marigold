@@ -4,9 +4,11 @@ export const Table: ThemeComponent<'Table'> = {
   table: cva({
     base: [
       'text-sm bg-surface',
-      // Edge padding: Panel's `--panel-px`, then a bled container's
-      // `--bleed-px`, then the standalone cell default.
-      '[--cell-edge-padding:var(--panel-px,var(--bleed-px,var(--cell-x-padding)))]',
+      // Only a bled container publishes `--bleed-px`, so edge cells align with
+      // its title there and keep the plain cell padding everywhere else. Never
+      // read `--panel-px`: Panel sets it on its root, where it inherits into
+      // non-bled content too and would offset those cells twice.
+      '[--cell-edge-padding:var(--bleed-px,var(--cell-x-padding))]',
       // 32px, not the 24px WCAG 2.2 SC 2.5.8 floor: hit repeatedly, and still
       // fits `compact` (45px row).
       '[--tree-chevron-size:calc(var(--spacing)*8)]',

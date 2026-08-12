@@ -56,14 +56,15 @@ export const browserDeps = [
  *
  * Covers test + story files (the browser-mode entry points) across all packages;
  * their transitive source imports are followed automatically by the scanner.
+ *
+ * `packages/cli` is left out to match the `exclude` below: crawling its Node
+ * tests drags Node-only deps into this browser pass, reaching the optional
+ * `fsevents` on macOS, whose `.node` binary rolldown cannot load. The run then
+ * dies with `UNLOADABLE_DEPENDENCY` before collecting a test. Linux CI never
+ * sees it, because fsevents does not install there.
  */
 export const browserScanEntries = [
-  'packages/*/src/**/*.{test,stories}.{ts,tsx}',
-  // @marigold/cli reaches native modules (chokidar -> fsevents), which the
-  // browser dep scanner fails to bundle with `UNLOADABLE_DEPENDENCY` — taking
-  // down every browser-mode project on a cold optimizer cache. It has its own
-  // config anyway.
-  '!packages/cli/**',
+  'packages/!(cli)/src/**/*.{test,stories}.{ts,tsx}',
 ];
 
 const exclude = [

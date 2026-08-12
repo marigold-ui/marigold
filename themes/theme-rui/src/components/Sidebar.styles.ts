@@ -48,12 +48,12 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   content: cva({
     base: 'sm:w-64 ui-scroll-seam-scope [--seam-color:var(--color-surface-border)]',
   }),
-  // Always-on bottom edge (via `ui-panel-header`) so the brand row reads as a
+  // Always-on bottom edge (via `ui-surface-header`) so the brand row reads as a
   // header band, consistent with the rail's full-width top bar. h-topbar shares
   // the --spacing-topbar token with TopNavigation and the rail's sticky offset.
   // min-w-0: keep the grid column from overflowing the w-64 aside.
   header: cva({
-    base: 'ui-panel-header h-topbar min-w-0',
+    base: 'ui-surface-header h-topbar min-w-0',
   }),
   nav: cva({
     base: [
@@ -66,7 +66,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   }),
   // Ambient escape hatches, a step quieter than nav rows so they never compete
   // with navigation. Left-aligned on the nav's content column (not
-  // ui-panel-actions' right-aligned padding): px-4 to the 16px column, link
+  // ui-surface-actions' right-aligned padding): px-4 to the 16px column, link
   // children echo the nav pill (-mx-2 to the 8px inset, px-2, h-7.5, rounded,
   // secondary ink lifting to foreground on hover). Top seam mirrors the
   // header's, fading out as the list bottoms out.
