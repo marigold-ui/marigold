@@ -183,57 +183,35 @@ If you cannot place all row actions at the end of the row, be mindful of clarity
 
 ### Grouped rows
 
-Some records belong together: a settlement run that bundles individual clearings, an order that bundles its line items, a folder that bundles its files. Set `treeColumn` to the `id` of the column that should carry the hierarchy, then nest `<Table.Row>` inside `<Table.Row>`. The nested rows stay real table rows, so their values line up under the same headers, each one can carry its own actions, and each one can be selected, linked to and scrolled to individually.
+When a record contains records of its own, like a settlement run that bundles individual clearings, users still need to read those children against the same columns as everything else. Grouped rows keep them in the table instead of moving them into a detail view, and each child stays a row in its own right, with its own actions and its own selection.
 
-The column named by `treeColumn` renders the expand control automatically — you don't place a chevron yourself. The caret starts where the column's values start — its 32px hit target is wider than the caret itself and hangs back into the cell's edge padding, so the tree column adds no padding of its own. Behind the caret every row reserves a leading gutter, so a group row and a childless row at the same level start their value at the same x whether or not there is a control to show. Levels below the root indent by exactly that gutter, so a nested row's caret starts where its parent's value starts and you can read a row's depth: without the indent, a root-level row that happens to follow an expanded group is indistinguishable from that group's children. The column's own header label takes the same gutter, so it sits above the values it heads. Containment is also carried by the group row, which is filled and emphasised for you, so there is nothing to style.
+Let the hierarchy sit on the column that identifies the row, usually the first one, and leave the rest of the columns as they are. The expand control, the indentation and the emphasis on a group row come with it, so there is nothing to place or style.
 
-When the nested rows come from data, render them with `<Table.ExpandableRows>` and let your render function recurse. It renders nothing when `items` is empty or missing, so leaf rows need no special case. Always render it — the Table decides whether the rows are visible, so don't wrap it in a check of the expansion state.
+Groups open collapsed, which makes the group row the only thing most people will read of a group. Give it values of its own rather than an empty row above its children: a total, a count, a status that summarises what is inside. Where a value has no summary, leave the cell empty instead of repeating the first child.
 
 <ComponentDemo name="table-expandable-rows" />
 
-Groups start collapsed. Pre-open some of them with `defaultExpandedKeys`, or take full control with `expandedKeys` and `onExpandedChange` — for example to keep the open groups in the URL so a link restores them.
+Open a group up front with `defaultExpandedKeys`, or control the state with `expandedKeys` and `onExpandedChange`, for example to keep the open groups in the URL so a shared link restores them. Render `<Table.ExpandableRows>` whether or not the group is open, as the demo does: the Table decides when those rows become visible, and it renders nothing for a row without children, so leaf rows need no special case.
+
+Grouped rows also change what the table reports to assistive technology: the role becomes `treegrid`, which is what makes screen readers announce nesting and expanded state. Tests that query `getByRole('grid')` have to move to `getByRole('treegrid')`. Keyboard users expand a row with the right arrow key and collapse it with the left, and the expand control stays out of the tab order, so tabbing still moves between the buttons and links inside the rows.
 
 #### Rows that load on demand
 
-The Table works out which rows can be expanded from the rows you actually give it, which leaves a gap when the nested rows are fetched only once someone opens the group: at first render there is nothing under the row, so it gets no expand control — and without a control there is nothing to press that could start the fetch.
-
-Mark such a row `expandable` to break that cycle. It gets a control and announces itself as collapsed before its rows exist, and you load them in `onExpandedChange`. You don't need it for rows you pass in up front, whether nested statically or through `<Table.ExpandableRows>`.
+A group whose contents you fetch only once someone asks for them still has to look like a group, otherwise there is nothing to invite the press that would start the fetch. Mark the row `expandable` and it shows the control and reads as collapsed before its children exist, so you can load them in `onExpandedChange`. Rows you pass in up front work this out on their own.
 
 ```tsx
 <Table.Row id={run.id} expandable>
 ```
 
-<Callout title="The role changes to treegrid">
-  Setting `treeColumn` changes the table's accessibility role from `grid` to
-  `treegrid`, which is what makes screen readers announce expanded state and
-  nesting level. Existing tests that assert `getByRole('grid')` on such a table
-  need to be updated to `getByRole('treegrid')`.
-</Callout>
-
-Keyboard users reach a group row with the arrow keys and expand it with <kbd>→</kbd>, collapse it with <kbd>←</kbd>. Pressing <kbd>←</kbd> on a row that is already collapsed moves focus up to its parent. The chevron itself is deliberately skipped by <kbd>Tab</kbd>, so tabbing stays reserved for the buttons and links inside the rows.
-
 #### Selection and grouped rows
 
-Selection works with grouped rows, but **it does not cascade**. Each row is selected on its own: ticking a group row selects that one row, not its children, and the group row shows no partial state when only some of its children are selected. It is not a checkbox group with a "select all" parent.
+Selection does not cascade. Ticking a group row selects that row and nothing else, and it shows no partial state when only some of its children are selected. Each nested row is a real record with its own id and actions, so its checkbox means that one record. If an action should apply to a group's children, resolve them from your own data first, and note that select all gives you `'all'` instead of a set of keys. That value covers children inside collapsed groups too, so don't rebuild it from the rendered rows.
 
-That is deliberate. A nested row here is a real record with its own id and its own actions, not a heading generated over a group — so its checkbox means "this record", and making it also mean "everything underneath" would overload it. Grids that do cascade selection apply it to synthetic group headers, which have no other meaning to carry.
-
-Two consequences worth designing around:
-
-- **Selecting a group row is not the same as selecting its contents.** If the action a user takes on a selection should apply to a run's clearings, resolve the group's children yourself from `selectedKeys` before acting.
-- **Select-all hands you `'all'`, not a set of keys.** That sentinel does cover nested rows, including those inside collapsed groups — expand one afterwards and its rows come out selected. But you cannot iterate it, and materializing it from the rendered rows would miss everything still collapsed, so resolve it against your own data.
-
-If you need a group row to select its children, and a partial state on it when only some are selected, model it in your own data and pass the resulting `selectedKeys` back in. Note that a partial state only makes sense together with cascading: a checkbox showing `mixed` implies that pressing it will resolve its children to all-or-none, so showing one without the other misdescribes the control.
+If you do need a group to select its children, model it in your data and pass the resulting `selectedKeys` back in. Cascading and partial state belong together: a checkbox showing `mixed` promises that pressing it will resolve the children to all or none.
 
 #### Searching inside grouped rows
 
-Collapsed child rows are not rendered at all. That keeps large tables fast and the announced row counts correct, but it means you cannot scroll to a match that is still hidden. Searching therefore takes one extra step, and it belongs in your app rather than in the Table:
-
-1. Match the query against your own data, not the DOM.
-2. Add the matching row's ancestors to `expandedKeys`.
-3. Once the row has rendered, focus it or call `scrollIntoView` on it.
-
-The same three steps cover deep links: expand the ancestors on mount, then scroll. The Table is not virtualized, so a plain `scrollIntoView` is enough.
+Children of a collapsed group are not rendered, which keeps large tables fast and the announced row counts correct. It also means search and deep links need one step from your app: match against your own data, add the row's ancestors to `expandedKeys`, then scroll to the row once it has rendered.
 
 <ComponentDemo name="table-expandable-search" />
 
@@ -244,11 +222,6 @@ The same three steps cover deep links: expand the ancestors on mount, then scrol
       in a data table.
     </DoDescription>
   </Do>
-  <Do>
-    <DoDescription>
-      Flatten a group that contains a single child — a group of one is noise.
-    </DoDescription>
-  </Do>
   <Dont>
     <DontDescription>
       Don't use grouped rows for content that isn't tabular. Reach for an{' '}
@@ -256,20 +229,9 @@ The same three steps cover deep links: expand the ancestors on mount, then scrol
       content doesn't share the table's columns.
     </DontDescription>
   </Dont>
-  <Dont>
-    <DontDescription>
-      Don't make the tree column editable unless the identifier really is
-      editable. It works — the chevron keeps its own track — but it puts two
-      controls in the column users scan.
-    </DontDescription>
-  </Dont>
 </GuidelineTiles>
 
-Not supported yet, and worth knowing before you design around it: moving a row from one level to another, sorting that reorders levels automatically (you sort your own data, so a grouped table has to sort each level), and there is no built-in "expand all" control — set `expandedKeys` to every group's key yourself.
-
-Reordering itself works alongside nested rows, and the insertion line is indented to the level the row would land at, so a drop inside an expanded group reads as landing in that group rather than at the root.
-
-Inline editing itself composes with nested rows: `Table.EditableCell` works in a child row exactly as in a root row. Remember `dependencies` on both `Table.Body` and `Table.ExpandableRows` when the edited value lives outside the row items — rendered rows are cached by item identity, so a table whose items never change won't otherwise re-render.
+Reordering works with grouped rows, and the insertion line follows the level the row would land at. Inline editing works in a child row as it does in a root row, though `Table.EditableCell` needs `dependencies` on both `Table.Body` and `Table.ExpandableRows` when the edited value lives outside the row items. Not supported: moving a row between levels, sorting that reorders levels for you (sort each level in your own data), and an expand all control (set `expandedKeys` to every group's key).
 
 ### Sorting columns
 
