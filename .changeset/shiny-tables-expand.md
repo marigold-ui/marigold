@@ -39,9 +39,11 @@ New theme keys `treeIndent` and `expandButton`. The group row's fill is
 
 Inline editing composes with it: `Table.EditableCell` renders the tree column's
 gutter too, so a row keeps its expand control even when that cell is the editable
-one. Selection checkboxes, drag handles and the `compact` / `default` /
-`spacious` paddings all keep working alongside the tree column, and the tree
-column still takes its edge padding from a `Panel`'s bleed contract.
+one. When the edited value lives outside the row items, pass `dependencies` to
+`Table.ExpandableRows` as well as to `Table.Body`. Selection checkboxes, drag
+handles and the `compact` / `default` / `spacious` paddings all keep working
+alongside the tree column, and the tree column still takes its edge padding from
+a `Panel`'s bleed contract.
 
 Selection works on grouped rows but does not cascade: each row selects on its
 own, and a group row shows no partial state while only some of its children are
@@ -55,4 +57,6 @@ Tables that don't set `treeColumn` are unaffected.
 
 Collapsed child rows are deliberately not rendered, so searching or deep-linking
 to a nested row means expanding its ancestors first. Moving focus to a specific
-row is not supported yet, which is tracked in DST-1713.
+row is not supported yet, which is tracked in DST-1713. Sorting doesn't reorder
+levels for you either, so sort each level in your own data, and there is no
+expand all control, so set `expandedKeys` to every group's key when you need one.
