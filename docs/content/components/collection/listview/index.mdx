@@ -34,7 +34,7 @@ Reach for a `<ListView>` when the user works through a collection one entry at a
 - **Resource lists**: files, documents, or team members, each with rename, share, and delete behind a row menu.
 - **Connections and integrations**: linked accounts or services the user reviews and disconnects individually.
 
-A row is one item, not a record split into fields. A `<ListView>` gives you a text column and a trailing control, with nothing aligned between rows, so there is no way to scan a column or sort by one. Once the user needs to compare entries against each other — a status column, a size to sort by, dates to line up — reach for a [`<Table>`](/components/collection/table).
+A row is one item, not a record split into fields. A `<ListView>` gives you a text column and a trailing control, with nothing aligned between rows, so there is no way to scan a column or sort by one. Once the user needs to compare entries against each other (a status column, a size to sort by, dates to line up), reach for a [`<Table>`](/components/collection/table).
 
 A `<ListView>` also has no selection. Rows are operated where they sit, and nothing is staged or submitted. To have the user choose from a set, see [`<ListView>` vs. `<SelectList>`](#listview-vs-selectlist).
 
@@ -59,7 +59,7 @@ To emphasise part of a row's text, nest `<Text as="span">` inside `<TextValue>` 
 
 Keep the action users reach for most often visible as an icon button and group the rest behind an `<ActionMenu>`. More than two visible buttons per row turns the list into a wall of controls that competes with the text people are scanning.
 
-Pick a glyph that says what happens to the row — `Archive`, `Check`, `BellOff`. An `X` means "close this" everywhere else in Marigold, and a row's action doesn't close anything. Rare or irreversible commands like deleting belong in the menu, as an `<ActionMenu.Item variant="destructive">`, not behind a one-click icon button.
+Pick a glyph that says what happens to the row, like `Archive`, `Check`, or `BellOff`. An `X` means "close this" everywhere else in Marigold, and a row's action doesn't close anything. Rare or irreversible commands like deleting belong in the menu, as an `<ActionMenu.Item variant="destructive">`, not behind a one-click icon button.
 
 <ComponentDemo name="listview-notifications" />
 
@@ -67,7 +67,7 @@ When no single action stands out, or the available actions differ from row to ro
 
 <ComponentDemo name="listview-resource-menu" />
 
-A row has a single cell for trailing controls, so wrap two or more in a `<ButtonGroup>` — left loose, they claim the same cell and stack. That cell takes Button-family controls only. A `<Badge>` or status pill has no slot yet, and the grid drops it wherever a cell happens to be free.
+A row has a single cell for trailing controls, so wrap two or more in a `<ButtonGroup>`. Left loose, they claim the same cell and stack. That cell takes Button-family controls only. A `<Badge>` or status pill has no slot yet. It sits in the trailing cell only while that cell is empty. Add a control to the row and the grid pushes it onto a new full-width line under the description, where it reads as part of the row's text.
 
 ### Empty state
 
@@ -77,7 +77,7 @@ Pass an [`<EmptyState>`](/components/content/empty-state) to the `emptyState` pr
 
 ### `<ListView>` vs. `<SelectList>`
 
-The two render a similar stack of rich rows, so the choice comes down to selection. A [`<SelectList>`](/components/form/selectlist) is a form field: rows are selectable, the selection is its value, and that value submits and validates with the rest of the form. A `<ListView>` has no selection — every row carries its own controls instead, and each one acts the moment it is used.
+The two render a similar stack of rich rows, so the choice comes down to selection. A [`<SelectList>`](/components/form/selectlist) is a form field: rows are selectable, the selection is its value, and that value submits and validates with the rest of the form. A `<ListView>` has no selection. Every row carries its own controls instead, and each one acts the moment it is used.
 
 If the user is choosing something and that choice has to travel anywhere, use a `<SelectList>`.
 
