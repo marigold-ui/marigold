@@ -191,29 +191,13 @@ Groups open collapsed, which makes the group row the only thing most people will
 
 <ComponentDemo name="table-expandable-rows" />
 
-Open a group up front with `defaultExpandedKeys`, or control the state with `expandedKeys` and `onExpandedChange`, for example to keep the open groups in the URL so a shared link restores them. Render `<Table.ExpandableRows>` whether or not the group is open, as the demo does: the Table decides when those rows become visible, and it renders nothing for a row without children, so leaf rows need no special case.
-
-Grouped rows also change what the table reports to assistive technology: the role becomes `treegrid`, which is what makes screen readers announce nesting and expanded state. Tests that query `getByRole('grid')` have to move to `getByRole('treegrid')`. Keyboard users expand a row with the right arrow key and collapse it with the left, and the expand control stays out of the tab order, so tabbing still moves between the buttons and links inside the rows.
-
-#### Rows that load on demand
-
-A group whose contents you fetch only once someone asks for them still has to look like a group, otherwise there is nothing to invite the press that would start the fetch. Mark the row `expandable` and it shows the control and reads as collapsed before its children exist, so you can load them in `onExpandedChange`. Rows you pass in up front work this out on their own.
-
-```tsx
-<Table.Row id={run.id} expandable>
-```
-
-#### Selection and grouped rows
-
-Selection does not cascade. Ticking a group row selects that row and nothing else, and it shows no partial state when only some of its children are selected. Each nested row is a real record with its own id and actions, so its checkbox means that one record. If an action should apply to a group's children, resolve them from your own data first, and note that select all gives you `'all'` instead of a set of keys. That value covers children inside collapsed groups too, so don't rebuild it from the rendered rows.
-
-If you do need a group to select its children, model it in your data and pass the resulting `selectedKeys` back in. Cascading and partial state belong together: a checkbox showing `mixed` promises that pressing it will resolve the children to all or none.
-
-#### Searching inside grouped rows
-
-Children of a collapsed group are not rendered, which keeps large tables fast and the announced row counts correct. It also means search and deep links need one step from your app: match against your own data, add the row's ancestors to `expandedKeys`, then scroll to the row once it has rendered.
-
-<ComponentDemo name="table-expandable-search" />
+<Callout title="Children that load on demand" type="warning">
+  A group whose children you fetch only once someone opens it has nothing under
+  it at first render, so it gets no expand control and there is nothing to press
+  that would start the fetch. Mark the row `expandable` to give it a control
+  before its children exist, then load them in `onExpandedChange`. Rows you pass
+  in up front work this out on their own.
+</Callout>
 
 <GuidelineTiles>
   <Do>
@@ -423,6 +407,12 @@ Mark the column that best identifies each row, typically a name, title, or ID co
   <Table.Column>Email</Table.Column>
 </Table.Header>
 ```
+
+### Accessibility
+
+A table with [grouped rows](#grouped-rows) reports itself as a `treegrid` instead of a `grid`, which is what lets screen readers announce how deep a row sits and whether it is expanded. Tests that query `getByRole('grid')` have to move to `getByRole('treegrid')`.
+
+Group rows expand with <kbd>→</kbd> and collapse with <kbd>←</kbd>. The expand control stays out of the tab order, so <kbd>Tab</kbd> keeps moving between the buttons and links inside the rows.
 
 ## Props
 
