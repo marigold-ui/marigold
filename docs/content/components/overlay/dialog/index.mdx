@@ -3,6 +3,8 @@ title: Dialog
 description: Component for displaying dialogs.
 ---
 
+import { DialogAnatomy } from './dialog-anatomy';
+
 The `<Dialog>` component is a versatile UI element used to display important content that requires user interaction, typically in a modal or popup window. It is designed to temporarily interrupt the user's workflow to present critical information, request confirmation, or facilitate a task without navigating away from the current page.
 
 Key features of the `<Dialog>` component include customizable content, support for multiple dialog sizes, focus trapping for accessibility, and optional overlay to dim the background. It can be used for alerts, forms, confirmations, or any interactive modal interface.
@@ -11,13 +13,13 @@ Key features of the `<Dialog>` component include customizable content, support f
 
 A dialog consists of an optional title, content, actions, an optional close button, and an underlay. The title provides context for the user, while the content holds the main message or interactive elements like forms. The actions section contains controls such as buttons for confirming or canceling. The underlay dims the background to focus attention on the dialog and prevent interaction with other elements on the page. The close button offers a way to dismiss the dialog.
 
-<ImageZoom
-  src="/dialog/dialog-anatomy.jpg"
-  alt="Anatomy of a dialog"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+<DialogAnatomy />
+
+- **Underlay:** Dims the page behind the dialog and prevents interaction with it.
+- **Title:** Names the dialog and gives the user context.
+- **Close button:** Dismisses the dialog without taking an action.
+- **Content:** The main message or interactive elements, such as a form.
+- **Actions:** The controls for confirming or canceling.
 
 ## Appearance
 
