@@ -122,6 +122,8 @@ export const AutocompleteAnatomy = () => (
       <path d="M 290 86 L 290 46" />
       {/* Help text -> left */}
       <path d="M 140 155 L 90 155" />
+      {/* Label -> left (open state) */}
+      <path d="M 560 66 L 500 66" />
       {/* Clear button -> up */}
       <path d="M 816 100 L 816 46" />
       {/* Dropdown arrow -> right */}
@@ -135,6 +137,7 @@ export const AutocompleteAnatomy = () => (
       <circle cx="140" cy="66" r="4" />
       <circle cx="290" cy="86" r="4" />
       <circle cx="140" cy="155" r="4" />
+      <circle cx="560" cy="66" r="4" />
       <circle cx="816" cy="100" r="4" />
       <circle cx="872" cy="116" r="4" />
       <circle cx="880" cy="250" r="4" />
@@ -153,6 +156,9 @@ export const AutocompleteAnatomy = () => (
         </text>
         <text x="80" y="159">
           Help text
+        </text>
+        <text x="490" y="70">
+          Label
         </text>
       </g>
       <g textAnchor="middle">
