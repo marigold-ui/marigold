@@ -215,8 +215,6 @@ Groups open collapsed, which makes the group row the only thing most people will
   </Dont>
 </GuidelineTiles>
 
-Reordering works with grouped rows, and the insertion line follows the level the row would land at. Inline editing works in a child row as it does in a root row, though `Table.EditableCell` needs `dependencies` on both `Table.Body` and `Table.ExpandableRows` when the edited value lives outside the row items. Not supported: moving a row between levels, sorting that reorders levels for you (sort each level in your own data), and an expand all control (set `expandedKeys` to every group's key).
-
 ### Sorting columns
 
 When working with large datasets, users often need to organize information by specific attributes to find what they're looking for or identify patterns. Sorting solves the problem of information overload by letting users reorder data in a way that makes sense for their current task, whether that's finding the highest value, the most recent date, or items alphabetically.
