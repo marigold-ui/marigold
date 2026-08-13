@@ -3,25 +3,22 @@ title: Pagination
 description: Component that divides up large datasets into manageable chunks.
 ---
 
+import { PaginationAnatomy } from './pagination-anatomy';
+
 Pagination is used to divide and navigate large data sets, like a table or list of search results. It benefits users by reducing cognitive load as well as improving system performance.
 
 ## Anatomy
 
-The `<Pagination>` component consists of:
+The `<Pagination>` component consists of a "previous" button, a maximum of seven page buttons, and a "next" button. Each page button is a text `<Button>` labelled with its respective page number. If the total number of pages exceeds seven, some pages will be hidden with an ellipsis ("…").
 
-- A "previous" button
-- A max of seven page buttons
-- A "next" button
+<PaginationAnatomy />
 
-Each page button is a text `<Button>` labelled with its respective page number. If the total number of pages exceeds seven, some pages will be hidden with an ellipsis ("…").
-
-<ImageZoom
-  src="/pagination/pagination-anatomy.jpg"
-  alt="Anatomy of pagination"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+- **Previous button:** Moves one page back.
+- **First page:** Jumps to the first page of the data set.
+- **Page buttons:** Up to seven buttons for selecting a page directly.
+- **Ellipsis:** Marks the pages that are hidden when the total exceeds seven.
+- **Last page:** Jumps to the last page of the data set.
+- **Next button:** Moves one page forward.
 
 ## Appearance
 
