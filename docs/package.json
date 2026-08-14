@@ -30,7 +30,6 @@
     "@marigold/theme-rui": "workspace:*",
     "@modelcontextprotocol/sdk": "1.30.0",
     "@octokit/core": "7.0.7",
-    "@radix-ui/react-popover": "^1.1.15",
     "@react-aria/i18n": "3.13.1",
     "@react-types/shared": "3.36.1",
     "@shikijs/transformers": "^4.4.1",
