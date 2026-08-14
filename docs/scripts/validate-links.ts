@@ -29,7 +29,15 @@ const validateLinks = async () => {
     },
   });
 
-  printErrors(await validateFiles(files, { scanned }), true);
+  printErrors(
+    await validateFiles(files, {
+      scanned,
+      // The `next` preset only globs `app/**/page.*`, so route handlers are
+      // invisible to it and have to be listed by hand.
+      whitelist: ['/rss.xml'],
+    }),
+    true
+  );
 };
 
 validateLinks().catch(err => {
