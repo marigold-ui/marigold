@@ -1,8 +1,10 @@
 name: Docs links
 
+# On push, like Lint and Typecheck. A `pull_request`-only trigger dropped the
+# synchronize event for the second commit of #5742 and the check silently did
+# not run — a stale green check is indistinguishable from a fresh one.
 on:
-  pull_request:
-    branches: [main]
+  push:
     paths:
       - 'docs/content/**'
       - 'docs/app/**'
