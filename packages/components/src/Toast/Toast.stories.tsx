@@ -241,6 +241,58 @@ Basic.test(
 );
 
 Basic.test(
+  'Undo toast takes the action back instead of committing it',
+  {
+    // Covers what the unit tests cannot: the real-browser view transition
+    // `wrapUpdate` runs on add and close. The toast auto-dismisses after 5s, so
+    // a snapshot would race the commit.
+    parameters: { chromatic: { disableSnapshot: true } },
+    render: () => {
+      const [status, setStatus] = useState('idle');
+      const { addUndoToast } = useToast();
+
+      return (
+        <>
+          <ToastProvider />
+          <Button
+            onPress={() => {
+              setStatus('hidden');
+              addUndoToast({
+                title: '“Newsletter August” deleted',
+                onUndo: () => setStatus('restored'),
+                onCommit: () => setStatus('committed'),
+              });
+            }}
+          >
+            Delete list
+          </Button>
+          <div>{`status: ${status}`}</div>
+        </>
+      );
+    },
+  },
+  async ({ canvas, step }) => {
+    await step('Delete the list', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Delete list' })
+      );
+
+      await expect(
+        await canvas.findByText('“Newsletter August” deleted')
+      ).toBeInTheDocument();
+    });
+
+    await step('Undo restores instead of committing', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: /^Undo:/ }));
+
+      await expect(
+        await canvas.findByText('status: restored')
+      ).toBeInTheDocument();
+    });
+  }
+);
+
+Basic.test(
   'Shows a toast with an action button',
   // Keep the snapshot so Chromatic captures the toast with its action.
   {

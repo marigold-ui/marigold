@@ -26,8 +26,12 @@ export const PanelContent = ({ children, bleed }: PanelContentProps) => {
         // When bled, drop the horizontal padding and publish `--bleed-px` so
         // edge-aware children (Table, Accordion) can inset their own content
         // to stay aligned with the Panel title while backgrounds/dividers
-        // reach the Panel border.
-        bleed ? '[--bleed-px:var(--panel-px)]' : 'px-(--panel-px)',
+        // reach the Panel border. Non-bled content clears it so an outer bled
+        // container's value cannot inherit past it — `initial` is the
+        // guaranteed-invalid value, so `var(--bleed-px, …)` falls back.
+        bleed
+          ? '[--bleed-px:var(--panel-px)]'
+          : 'px-(--panel-px) [--bleed-px:initial]',
         classNames.content
       )}
     >

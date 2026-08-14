@@ -24,6 +24,7 @@ import { X } from '../icons/X';
 import { intlMessages } from '../intl/messages';
 import { useTableContext } from './Context';
 import { TableCellContent } from './TableCellContent';
+import { TableTreeColumn } from './TableTreeColumn';
 
 // Props
 // ---------------
@@ -105,7 +106,10 @@ const EditableCellPopover = ({
 
     setTriggerWidth(rect.width);
     setVerticalOffset(offset);
-    setTableWidth(cell.closest('[role="grid"]')?.clientWidth ?? 0);
+    // Match on the element, not `role="grid"`: expandable rows make React Aria
+    // render the table as `treegrid`, which would leave the cap at 0 and
+    // collapse the popover to its padding.
+    setTableWidth(cell.closest('table')?.clientWidth ?? 0);
   }, [cellRef, open]);
 
   return (
@@ -139,6 +143,10 @@ interface TableEditableCellInnerProps extends TableEditableCellProps {
   columnIndex?: number | null;
   /** Ref to the `<Cell>`, used to position and anchor the editor popover. */
   cellRef: RefObject<HTMLTableCellElement | null>;
+  /** Tree state, provided by the `<Cell>` render prop. */
+  isTreeColumn?: boolean;
+  hasChildItems?: boolean;
+  isExpanded?: boolean;
 }
 
 /**
@@ -164,6 +172,9 @@ const TableEditableCellInner = ({
   hasSelection,
   columnIndex,
   cellRef,
+  isTreeColumn,
+  hasChildItems,
+  isExpanded,
 }: TableEditableCellInnerProps) => {
   const { classNames } = useTableContext();
   const isSmallScreen = useSmallScreen();
@@ -237,36 +248,47 @@ const TableEditableCellInner = ({
     </Button>
   );
 
+  const trigger = (
+    <div
+      className={cn(
+        'group/editable-cell flex items-center',
+        isTreeColumn && 'col-start-2 min-w-0',
+        !disabled && 'cursor-pointer'
+      )}
+      onClick={disabled ? undefined : () => setOpen(true)}
+    >
+      <TableCellContent
+        columnIndex={columnIndex}
+        alignX={alignX}
+        cellOverflow={disabled ? cellOverflow : 'truncate'}
+        className="min-w-0 flex-1"
+        allowTextSelection={!hasSelection || undefined}
+      >
+        {children}
+      </TableCellContent>
+      {!disabled && (
+        <div className="w-0 shrink-0 overflow-hidden group-has-[:focus-visible]/editable-cell:w-auto group-has-[:focus-visible]/editable-cell:overflow-visible [[role=row]:hover_&]:w-auto [[role=row]:hover_&]:overflow-visible">
+          <Button
+            className={classNames.editTrigger}
+            aria-label={stringFormatter.format('edit')}
+            onPress={() => setOpen(true)}
+          >
+            <Pencil />
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <>
-      <div
-        className={cn(
-          'group/editable-cell flex items-center',
-          !disabled && 'cursor-pointer'
-        )}
-        onClick={disabled ? undefined : () => setOpen(true)}
-      >
-        <TableCellContent
-          columnIndex={columnIndex}
-          alignX={alignX}
-          cellOverflow={disabled ? cellOverflow : 'truncate'}
-          className="min-w-0 flex-1"
-          allowTextSelection={!hasSelection || undefined}
-        >
-          {children}
-        </TableCellContent>
-        {!disabled && (
-          <div className="w-0 shrink-0 overflow-hidden group-has-[:focus-visible]/editable-cell:w-auto group-has-[:focus-visible]/editable-cell:overflow-visible [[role=row]:hover_&]:w-auto [[role=row]:hover_&]:overflow-visible">
-            <Button
-              className={classNames.editTrigger}
-              aria-label={stringFormatter.format('edit')}
-              onPress={() => setOpen(true)}
-            >
-              <Pencil />
-            </Button>
-          </div>
-        )}
-      </div>
+      {isTreeColumn ? (
+        <TableTreeColumn hasChildItems={hasChildItems} isExpanded={isExpanded}>
+          {trigger}
+        </TableTreeColumn>
+      ) : (
+        trigger
+      )}
       {isSmallScreen ? (
         <Dialog open={open} onOpenChange={handleOpenChange}>
           <Form
@@ -324,12 +346,15 @@ export const TableEditableCell = (props: TableEditableCellProps) => {
 
   return (
     <Cell ref={cellRef} className={cn(classNames.cell, verticalAlign[alignY])}>
-      {({ columnIndex }) => (
+      {({ columnIndex, isTreeColumn, hasChildItems, isExpanded }) => (
         <TableEditableCellInner
           {...props}
           hasSelection={hasSelection}
           columnIndex={columnIndex}
           cellRef={cellRef}
+          isTreeColumn={isTreeColumn}
+          hasChildItems={hasChildItems}
+          isExpanded={isExpanded}
         />
       )}
     </Cell>

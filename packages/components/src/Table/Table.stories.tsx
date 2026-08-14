@@ -11,14 +11,17 @@ import { Checkbox } from '../Checkbox/Checkbox';
 import { EmptyState } from '../EmptyState/EmptyState';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { NumberField } from '../NumberField/NumberField';
+import { Panel } from '../Panel/Panel';
 import { Scrollable } from '../Scrollable/Scrollable';
 import { Select } from '../Select/Select';
 import { Stack } from '../Stack/Stack';
 import { Switch } from '../Switch/Switch';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
+import { Title } from '../Title/Title';
 import { useListData } from '../hooks';
 import type { Selection } from '../types';
+import type { TableProps } from './Table';
 import { Table } from './Table';
 import { TableDragPreview } from './TableDragPreview';
 
@@ -1950,5 +1953,1175 @@ StickyFooter.test(
       const containerBottom = scrollContainer.getBoundingClientRect().bottom;
       expect(Math.abs(footerBottom - containerBottom)).toBeLessThan(5);
     });
+  }
+);
+
+const DataEntryGridTable = (args: Partial<TableProps>) => (
+  <Table aria-label="Data entry grid" {...args}>
+    <Table.Header>
+      <Table.Column rowHeader>Name</Table.Column>
+      <Table.Column>Note</Table.Column>
+      <Table.Column alignX="right">Balance</Table.Column>
+    </Table.Header>
+    <Table.Body>
+      {users.slice(0, 3).map(user => (
+        <Table.Row key={user.email}>
+          <Table.Cell>{user.name}</Table.Cell>
+          <Table.Cell>
+            <TextField
+              aria-label={`Note for ${user.name}`}
+              defaultValue={user.name}
+            />
+          </Table.Cell>
+          <Table.Cell>
+            <NumberField
+              aria-label={`Balance for ${user.name}`}
+              defaultValue={user.balance}
+              hideStepper
+            />
+          </Table.Cell>
+        </Table.Row>
+      ))}
+    </Table.Body>
+  </Table>
+);
+
+/**
+ * Form controls in cells need `keyboardNavigationBehavior="tab"`, otherwise the
+ * grid keeps the arrow keys and focus is pushed onto the row.
+ */
+export const DataEntryGrid = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    keyboardNavigationBehavior: 'tab',
+    selectionMode: 'none',
+  },
+  render: args => <DataEntryGridTable {...args} />,
+});
+
+DataEntryGrid.test(
+  'Keeps typing and caret movement inside cell fields, and Tab moves in and out of a cell',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const first = canvas.getByLabelText(
+      `Note for ${users[0].name}`
+    ) as HTMLInputElement;
+    const balance = canvas.getByLabelText(`Balance for ${users[0].name}`);
+
+    await step(
+      'Typing edits the field instead of triggering typeahead',
+      async () => {
+        await userEvent.click(first);
+        await userEvent.keyboard('Zulu');
+
+        expect(document.activeElement).toBe(first);
+        expect(first.value).toContain('Zulu');
+      }
+    );
+
+    await step(
+      'Arrow keys move the caret rather than leaving the field',
+      async () => {
+        first.setSelectionRange(first.value.length, first.value.length);
+        const before = first.selectionStart as number;
+
+        await userEvent.keyboard('{ArrowLeft}');
+
+        expect(document.activeElement).toBe(first);
+        expect(first.selectionStart).toBe(before - 1);
+      }
+    );
+
+    // Asserted for the TextField only: Home inside the NumberField still
+    // reaches the grid, which looks like an upstream useSpinButton issue.
+    await step('Home and End keep focus inside a text field', async () => {
+      await userEvent.click(first);
+      first.setSelectionRange(2, 2);
+
+      await userEvent.keyboard('{Home}');
+      expect(document.activeElement).toBe(first);
+      expect(first.selectionStart).toBe(0);
+
+      await userEvent.keyboard('{End}');
+      expect(document.activeElement).toBe(first);
+      expect(first.selectionStart).toBe(first.value.length);
+    });
+
+    await step('Shift+Tab steps back out onto the cell', async () => {
+      await userEvent.keyboard('{Shift>}{Tab}{/Shift}');
+
+      expect(document.activeElement).toHaveAttribute('role', 'gridcell');
+    });
+
+    await step('An arrow key then Tab reaches the next field', async () => {
+      await userEvent.keyboard('{ArrowRight}');
+      await userEvent.keyboard('{Tab}');
+
+      expect(document.activeElement).toBe(balance);
+    });
+
+    // Tab inside a field leaving the table is not asserted: the runner moves
+    // focus in DOM order instead of letting the grid handle the key, so it
+    // reports the opposite. Verified by hand in Chromium and Firefox.
+  }
+);
+
+/**
+ * The same grid with no `keyboardNavigationBehavior`, so the arrow keys stay
+ * with the grid. This is the keyboard trap the prop exists to avoid.
+ */
+export const DataEntryGridDefaultNavigation = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    selectionMode: 'none',
+  },
+  render: args => <DataEntryGridTable {...args} />,
+});
+
+// Pins the upstream default the docs rest on. Without this, a change to it would
+// leave both callouts wrong while the rest of the suite stayed green.
+DataEntryGridDefaultNavigation.test(
+  'Defaults to arrow navigation, so an arrow key leaves the field',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const first = canvas.getByLabelText(
+      `Note for ${users[0].name}`
+    ) as HTMLInputElement;
+
+    await step(
+      'An arrow key navigates the grid instead of the caret',
+      async () => {
+        await userEvent.click(first);
+        first.setSelectionRange(first.value.length, first.value.length);
+
+        await userEvent.keyboard('{ArrowLeft}');
+
+        // Focus does not just leave the field, it moves a cell to the left —
+        // which here is the rowHeader column rather than a plain gridcell.
+        expect(document.activeElement).not.toBe(first);
+        expect(document.activeElement).toHaveAttribute('role', 'rowheader');
+      }
+    );
+
+    // The other half of the Home/End row asserted in the DataEntryGrid test:
+    // on the default, the key belongs to the grid rather than the caret.
+    await step('Home leaves the field as well', async () => {
+      await userEvent.click(first);
+      first.setSelectionRange(2, 2);
+
+      await userEvent.keyboard('{Home}');
+
+      expect(document.activeElement).not.toBe(first);
+    });
+  }
+);
+
+/**
+ * Row selection keeps working alongside always-on cell inputs, at the cost of
+ * one extra tab stop per row.
+ */
+export const DataEntryGridWithSelection = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    keyboardNavigationBehavior: 'tab',
+    selectionMode: 'multiple',
+  },
+  render: args => <DataEntryGridTable {...args} />,
+});
+
+// Named for what it asserts. The per-row tab stop is not covered, because Tab
+// in this runner moves focus in DOM order instead of letting the grid handle it,
+// the same limitation noted in the DataEntryGrid test above.
+DataEntryGridWithSelection.test(
+  'Row checkboxes render and toggle',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    await step('Every row has a checkbox alongside the select-all', () => {
+      // 3 rows + 1 select-all
+      expect(canvas.getAllByRole('checkbox')).toHaveLength(4);
+    });
+
+    await step('A row checkbox still toggles', async () => {
+      const rowCheckbox = canvas.getAllByRole('checkbox')[1];
+
+      await userEvent.click(rowCheckbox);
+
+      expect(rowCheckbox).toBeChecked();
+    });
+  }
+);
+
+/**
+ * Always-on cell inputs and `<Table.EditableCell>` in one table. Both keep
+ * working — the pattern docs discourage mixing them because it gives the user
+ * two ways to edit, not because either one breaks.
+ */
+export const DataEntryGridWithEditableCell = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    keyboardNavigationBehavior: 'tab',
+    selectionMode: 'none',
+  },
+  render: args => {
+    const [data, setData] = useState(users.slice(0, 3).map(u => ({ ...u })));
+
+    return (
+      <Table aria-label="Mixed editing table" {...args}>
+        <Table.Header>
+          <Table.Column rowHeader>Name</Table.Column>
+          <Table.Column>Note</Table.Column>
+          <Table.Column>Status</Table.Column>
+        </Table.Header>
+        <Table.Body>
+          {data.map((user, i) => (
+            <Table.Row key={user.email}>
+              <Table.Cell>{user.name}</Table.Cell>
+              <Table.Cell>
+                <TextField
+                  aria-label={`Note for ${user.name}`}
+                  defaultValue={user.name}
+                />
+              </Table.Cell>
+              <Table.EditableCell
+                field={
+                  <TextField
+                    aria-label="Status"
+                    name="status"
+                    defaultValue={user.status}
+                  />
+                }
+                onSubmit={e => {
+                  const value = new FormData(e.currentTarget).get(
+                    'status'
+                  ) as string;
+                  setData(prev => {
+                    const next = [...prev];
+                    next[i] = { ...next[i], status: value || next[i].status };
+                    return next;
+                  });
+                }}
+              >
+                {user.status}
+              </Table.EditableCell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    );
+  },
+});
+
+// Closes DST-1687 open question 1, where the original probe was inconclusive.
+DataEntryGridWithEditableCell.test(
+  'An always-on input and an editable cell both work in one table',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const note = canvas.getByLabelText(
+      `Note for ${users[0].name}`
+    ) as HTMLInputElement;
+
+    await step(
+      'The always-on input keeps typing and caret movement',
+      async () => {
+        await userEvent.click(note);
+        await userEvent.keyboard('Zulu');
+        note.setSelectionRange(note.value.length, note.value.length);
+        const before = note.selectionStart as number;
+
+        await userEvent.keyboard('{ArrowLeft}');
+
+        expect(document.activeElement).toBe(note);
+        expect(note.value).toContain('Zulu');
+        expect(note.selectionStart).toBe(before - 1);
+      }
+    );
+
+    await step('The editable cell still opens its editor', async () => {
+      await userEvent.click(canvas.getAllByLabelText('Edit')[0]);
+
+      await waitFor(() => {
+        expect(canvas.getByLabelText('Status')).toBeInTheDocument();
+      });
+
+      expect(canvas.getByLabelText('Status')).toHaveFocus();
+    });
+
+    await step('Saving the editor commits the new value', async () => {
+      const status = canvas.getByLabelText('Status');
+      await userEvent.clear(status);
+      await userEvent.type(status, 'archived');
+
+      await userEvent.click(canvas.getByRole('button', { name: 'Save' }));
+
+      await waitFor(() => {
+        expect(canvas.getByText('archived')).toBeInTheDocument();
+      });
+    });
+
+    await step('The always-on input is unaffected by the edit', () => {
+      expect(note.value).toContain('Zulu');
+    });
+  }
+);
+
+// Expandable rows (tree grid)
+// ---------------
+/**
+ * Modelled on the TenantClearing case: a settlement run bundles several
+ * individual clearings, each with its own clearing number, invoice number and
+ * amount.
+ */
+interface SettlementRow {
+  id: string;
+  /** Only a settlement run has a label; a clearing is named by its id. */
+  label?: string;
+  invoice?: string;
+  event?: string;
+  total: number;
+  children?: SettlementRow[];
+}
+
+const settlementRuns: SettlementRow[] = [
+  {
+    id: 'run-2026-07-01',
+    label: 'Settlement run 1 Jul 2026',
+    total: 12480.5,
+    children: [
+      {
+        id: 'CLR-10231',
+        invoice: 'INV-4711',
+        event: 'Night market',
+        total: 4200,
+      },
+      {
+        id: 'CLR-10232',
+        invoice: 'INV-4712',
+        event: 'Summer party',
+        total: 8280.5,
+      },
+    ],
+  },
+  {
+    id: 'run-2026-06-01',
+    label: 'Settlement run 1 Jun 2026',
+    total: 5450,
+    children: [
+      {
+        id: 'CLR-10188',
+        invoice: 'INV-4655',
+        event: 'Spring run',
+        total: 3300,
+      },
+      {
+        id: 'CLR-10189',
+        invoice: 'INV-4656',
+        event: 'Reading night',
+        total: 1200,
+      },
+      {
+        id: 'CLR-10190',
+        invoice: 'INV-4657',
+        event: 'Cinema night',
+        total: 950,
+      },
+    ],
+  },
+  {
+    id: 'CLR-10240',
+    invoice: 'INV-4720',
+    event: 'City tour',
+    total: 990,
+  },
+];
+
+export const ExpandableRows = meta.story({
+  tags: ['component-test'],
+  args: { treeColumn: 'clearing' },
+  render: args => (
+    <Table aria-label="Clearings" {...args}>
+      <Table.Header>
+        <Table.Column id="clearing" rowHeader>
+          Clearing no.
+        </Table.Column>
+        <Table.Column id="invoice">Invoice no.</Table.Column>
+        <Table.Column id="event">Event</Table.Column>
+        <Table.Column id="amount" alignX="right">
+          Amount
+        </Table.Column>
+        {/* Fits "Total PDF" — a fixed column doesn't clip, it spills. */}
+        <Table.Column id="actions" width={120} alignX="right">
+          Actions
+        </Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row id="run-2026-07-01">
+          <Table.Cell>Settlement run 1 Jul 2026</Table.Cell>
+          <Table.Cell>
+            <Badge>2 clearings</Badge>
+          </Table.Cell>
+          <Table.Cell>—</Table.Cell>
+          <Table.Cell alignX="right">
+            <NumericFormat style="currency" currency="EUR" value={12480.5} />
+          </Table.Cell>
+          <Table.Cell alignX="right">
+            <Button variant="ghost" size="small">
+              Total PDF
+            </Button>
+          </Table.Cell>
+
+          <Table.Row id="CLR-10231">
+            <Table.Cell>CLR-10231</Table.Cell>
+            <Table.Cell>INV-4711</Table.Cell>
+            <Table.Cell>Night market</Table.Cell>
+            <Table.Cell alignX="right">
+              <NumericFormat style="currency" currency="EUR" value={4200} />
+            </Table.Cell>
+            <Table.Cell alignX="right">
+              <Button variant="ghost" size="small">
+                PDF
+              </Button>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row id="CLR-10232">
+            <Table.Cell>CLR-10232</Table.Cell>
+            <Table.Cell>INV-4712</Table.Cell>
+            <Table.Cell>Summer party</Table.Cell>
+            <Table.Cell alignX="right">
+              <NumericFormat style="currency" currency="EUR" value={8280.5} />
+            </Table.Cell>
+            <Table.Cell alignX="right">
+              <Button variant="ghost" size="small">
+                PDF
+              </Button>
+            </Table.Cell>
+          </Table.Row>
+        </Table.Row>
+
+        <Table.Row id="CLR-10240">
+          <Table.Cell>CLR-10240</Table.Cell>
+          <Table.Cell>INV-4720</Table.Cell>
+          <Table.Cell>City tour</Table.Cell>
+          <Table.Cell alignX="right">
+            <NumericFormat style="currency" currency="EUR" value={990} />
+          </Table.Cell>
+          <Table.Cell alignX="right">
+            <Button variant="ghost" size="small">
+              PDF
+            </Button>
+          </Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  ),
+});
+
+// React Aria labels the chevron "Expand"/"Collapse" plus the row's own label,
+// so match on the action word rather than the whole accessible name.
+const EXPAND_CONTROL = /expand|collapse/i;
+
+const chevronOf = (row: HTMLElement) =>
+  within(row).getByRole('button', { name: EXPAND_CONTROL });
+
+const rowByName = (
+  canvas: { getByText: (text: string) => HTMLElement },
+  name: string
+) => canvas.getByText(name).closest('tr')!;
+
+ExpandableRows.test(
+  'Expands and collapses a group row on click',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const group = rowByName(canvas, 'Settlement run 1 Jul 2026');
+
+    await step('Groups start collapsed, so children are not rendered', () => {
+      expect(group).toHaveAttribute('aria-expanded', 'false');
+      expect(canvas.queryByText('CLR-10231')).not.toBeInTheDocument();
+    });
+
+    await step('Clicking the chevron reveals the child rows', async () => {
+      await userEvent.click(chevronOf(group));
+
+      expect(group).toHaveAttribute('aria-expanded', 'true');
+      expect(canvas.getByText('CLR-10231')).toBeInTheDocument();
+      expect(canvas.getByText('CLR-10232')).toBeInTheDocument();
+    });
+
+    await step('Child rows are real rows one level deeper', () => {
+      expect(rowByName(canvas, 'CLR-10231')).toHaveAttribute('aria-level', '2');
+      expect(rowByName(canvas, 'CLR-10231')).toHaveAttribute(
+        'aria-posinset',
+        '1'
+      );
+      expect(rowByName(canvas, 'CLR-10231')).toHaveAttribute(
+        'aria-setsize',
+        '2'
+      );
+    });
+
+    await step(
+      'Clicking again collapses and unmounts the children',
+      async () => {
+        await userEvent.click(chevronOf(group));
+
+        expect(group).toHaveAttribute('aria-expanded', 'false');
+        expect(canvas.queryByText('CLR-10231')).not.toBeInTheDocument();
+      }
+    );
+  }
+);
+
+ExpandableRows.test(
+  'Expands and collapses with the arrow keys',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const group = rowByName(canvas, 'Settlement run 1 Jul 2026');
+
+    await step('Focus the group row', async () => {
+      // Clicking lands on the cell; expansion keys act on the row, and
+      // ArrowLeft from the first cell is how you step out to it.
+      await userEvent.click(canvas.getByText('Settlement run 1 Jul 2026'));
+      await userEvent.keyboard('{ArrowLeft}');
+
+      expect(group).toHaveFocus();
+    });
+
+    await step('ArrowRight expands', async () => {
+      await userEvent.keyboard('{ArrowRight}');
+
+      expect(group).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    await step('ArrowLeft collapses', async () => {
+      await userEvent.keyboard('{ArrowLeft}');
+
+      expect(group).toHaveAttribute('aria-expanded', 'false');
+    });
+  }
+);
+
+ExpandableRows.test(
+  'Collapsing a child row moves focus to its group row',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const group = rowByName(canvas, 'Settlement run 1 Jul 2026');
+
+    await step('Expand and focus a child row', async () => {
+      await userEvent.click(chevronOf(group));
+      await userEvent.click(canvas.getByText('CLR-10231'));
+      // Step out of the cell onto the child row itself.
+      await userEvent.keyboard('{ArrowLeft}');
+
+      expect(rowByName(canvas, 'CLR-10231')).toHaveFocus();
+    });
+
+    await step('ArrowLeft on a leaf jumps up to the parent', async () => {
+      await userEvent.keyboard('{ArrowLeft}');
+
+      expect(group).toHaveFocus();
+    });
+  }
+);
+
+ExpandableRows.test(
+  'Leaf rows render no chevron',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    // That they stay aligned anyway is asserted below, on the real promise —
+    // matching x — rather than on how the gutter is held open.
+    const leaf = rowByName(canvas, 'CLR-10240');
+
+    expect(leaf).not.toHaveAttribute('aria-expanded');
+    expect(
+      within(leaf).queryByRole('button', { name: EXPAND_CONTROL })
+    ).not.toBeInTheDocument();
+  }
+);
+
+ExpandableRows.test(
+  'Depth is visible, and one level shares one x',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const group = rowByName(canvas, 'Settlement run 1 Jul 2026');
+
+    await userEvent.click(chevronOf(group));
+
+    const left = (el: Element) => Math.round(el.getBoundingClientRect().left);
+    const valueX = (name: string) =>
+      left(
+        rowByName(canvas, name)
+          .querySelector('[data-tree-column]')!
+          .querySelector('[data-cell-content]')!
+      );
+
+    await step('A root row is not indented by a group above it', () => {
+      // The regression this guards: with every level flush, CLR-10240 read as a
+      // fourth child of the group it follows.
+      expect(valueX('CLR-10240')).toBe(valueX('Settlement run 1 Jul 2026'));
+      expect(valueX('CLR-10231')).toBeGreaterThan(valueX('CLR-10240'));
+    });
+
+    await step('Rows at the same level share an x', () => {
+      expect(valueX('CLR-10232')).toBe(valueX('CLR-10231'));
+    });
+
+    await step('The caret adds no padding of its own', () => {
+      // Its hit target is wider than the caret, and that surplus hangs into the
+      // cell's edge padding rather than pushing the column further in.
+      const cell = group.querySelector('[data-tree-column]')!;
+      const edge = parseFloat(getComputedStyle(cell).paddingInlineStart || '0');
+
+      expect(left(chevronOf(group).querySelector('svg')!)).toBe(
+        Math.round(cell.getBoundingClientRect().left + edge)
+      );
+    });
+
+    await step('A child starts where its parent value starts', () => {
+      // One level in is one gutter in, so the step between levels is the same
+      // distance as the one from a caret to the value beside it.
+      const gutter =
+        valueX('Settlement run 1 Jul 2026') -
+        left(chevronOf(group).querySelector('svg')!);
+
+      expect(valueX('CLR-10231') - valueX('Settlement run 1 Jul 2026')).toBe(
+        gutter
+      );
+    });
+
+    await step('The column label sits above the values it heads', () => {
+      const header = canvas.getByRole('columnheader', { name: /clearing no/i });
+
+      expect(left(header.querySelector('[role=presentation]')!)).toBe(
+        valueX('CLR-10240')
+      );
+    });
+  }
+);
+
+ExpandableRows.test(
+  'Nested rows are banded, rows at the root are not',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const group = rowByName(canvas, 'Settlement run 1 Jul 2026');
+
+    await userEvent.click(chevronOf(group));
+
+    const fillOf = (name: string) =>
+      getComputedStyle(rowByName(canvas, name)).backgroundColor;
+    const transparent = fillOf('CLR-10240');
+
+    await step('The children carry the band', () => {
+      // The affordance the indent alone did not carry: it spans the whole row,
+      // so the leading drag and selection columns are inside the group too.
+      expect(fillOf('CLR-10231')).not.toBe(transparent);
+      expect(fillOf('CLR-10232')).toBe(fillOf('CLR-10231'));
+    });
+
+    await step('A group row and a root row do not', () => {
+      // A root row that follows an expanded group has to stay outside it.
+      expect(fillOf('Settlement run 1 Jul 2026')).toBe(transparent);
+    });
+  }
+);
+
+ExpandableRows.test(
+  'Tab reaches the row actions, not the chevron',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const group = rowByName(canvas, 'Settlement run 1 Jul 2026');
+
+    await step('The chevron is excluded from the tab order', () => {
+      expect(chevronOf(group)).toHaveAttribute('tabindex', '-1');
+    });
+
+    await step('The group row keeps its own action reachable', async () => {
+      await userEvent.click(chevronOf(group));
+
+      expect(
+        canvas.getByRole('button', { name: 'Total PDF' })
+      ).toBeInTheDocument();
+      // Each child clearing gets an independent action, not a shared menu.
+      expect(canvas.getAllByRole('button', { name: 'PDF' })).toHaveLength(3);
+    });
+  }
+);
+
+/**
+ * The same table built from data, where `Table.ExpandableRows` renders the child rows
+ * and the render function recurses.
+ */
+export const ExpandableRowsDynamic = meta.story({
+  tags: ['component-test'],
+  args: { treeColumn: 'clearing' },
+  render: args => (
+    <Table
+      aria-label="Clearings"
+      defaultExpandedKeys={['run-2026-06-01']}
+      {...args}
+    >
+      <Table.Header>
+        <Table.Column id="clearing" rowHeader>
+          Clearing no.
+        </Table.Column>
+        <Table.Column id="invoice">Invoice no.</Table.Column>
+        <Table.Column id="event">Event</Table.Column>
+        <Table.Column id="amount" alignX="right">
+          Amount
+        </Table.Column>
+      </Table.Header>
+      <Table.Body items={settlementRuns}>
+        {function renderRow(row: SettlementRow) {
+          return (
+            <Table.Row id={row.id}>
+              <Table.Cell>{row.label ?? row.id}</Table.Cell>
+              <Table.Cell>
+                {row.children ? (
+                  <Badge>{row.children.length} clearings</Badge>
+                ) : (
+                  row.invoice
+                )}
+              </Table.Cell>
+              <Table.Cell>{row.event ?? '—'}</Table.Cell>
+              <Table.Cell alignX="right">
+                <NumericFormat
+                  style="currency"
+                  currency="EUR"
+                  value={row.total}
+                />
+              </Table.Cell>
+              <Table.ExpandableRows items={row.children}>
+                {renderRow}
+              </Table.ExpandableRows>
+            </Table.Row>
+          );
+        }}
+      </Table.Body>
+    </Table>
+  ),
+});
+
+ExpandableRowsDynamic.test(
+  'Renders child rows from data and honours defaultExpandedKeys',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    await step('The pre-expanded group shows its children', () => {
+      expect(canvas.getByText('CLR-10188')).toBeInTheDocument();
+      expect(canvas.getByText('CLR-10190')).toBeInTheDocument();
+    });
+
+    await step('The other group is still collapsed', () => {
+      expect(canvas.queryByText('CLR-10231')).not.toBeInTheDocument();
+    });
+
+    await step('Expanding it renders its children too', async () => {
+      await userEvent.click(
+        chevronOf(rowByName(canvas, 'Settlement run 1 Jul 2026'))
+      );
+
+      expect(canvas.getByText('CLR-10231')).toBeInTheDocument();
+    });
+  }
+);
+
+/**
+ * When nested rows are fetched on demand they don't exist yet, so the row has to
+ * declare itself `expandable` to get a control at all — otherwise there is
+ * nothing to press that could start the fetch.
+ */
+export const ExpandableRowsLazyChildren = meta.story({
+  tags: ['component-test'],
+  args: { treeColumn: 'clearing' },
+  // Pixel-identical to a collapsed group row in `ExpandableRows`; what's special
+  // about it is an attribute, and the unit test asserts that.
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => (
+    <Table aria-label="Clearings" {...args}>
+      <Table.Header>
+        <Table.Column id="clearing" rowHeader>
+          Clearing no.
+        </Table.Column>
+        <Table.Column id="invoice">Invoice no.</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row id="run-2026-05-01" expandable>
+          <Table.Cell>Settlement run 1 May 2026</Table.Cell>
+          <Table.Cell>
+            <Badge>Loading …</Badge>
+          </Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  ),
+});
+
+/**
+ * Inline editing composes with nested rows: a child row's cells are editable the
+ * same way a root row's are, and the tree column keeps its expand control even
+ * when that cell is the editable one.
+ */
+export const ExpandableRowsWithEditableCell = meta.story({
+  tags: ['component-test'],
+  args: { treeColumn: 'clearing' },
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => {
+    const [notes, setNotes] = useState<Record<string, string>>({
+      'run-2026-06-01': 'Checked by Finance',
+      'CLR-10188': 'Awaiting receipt',
+      'CLR-10189': '—',
+      'CLR-10190': '—',
+    });
+    const [labels, setLabels] = useState<Record<string, string>>({});
+    const labelOf = (row: SettlementRow) =>
+      labels[row.id] ?? row.label ?? row.id;
+
+    const submit =
+      (setter: typeof setNotes, id: string, field: string) =>
+      (e: React.FormEvent<HTMLFormElement>) => {
+        const value = new FormData(e.currentTarget).get(field);
+        if (typeof value === 'string' && value) {
+          setter(prev => ({ ...prev, [id]: value }));
+        }
+      };
+
+    return (
+      <I18nProvider locale="en">
+        <Table
+          aria-label="Clearings"
+          defaultExpandedKeys={['run-2026-06-01']}
+          {...args}
+        >
+          <Table.Header>
+            <Table.Column id="clearing" rowHeader>
+              Clearing no.
+            </Table.Column>
+            <Table.Column id="note">Note</Table.Column>
+            <Table.Column id="amount" alignX="right">
+              Amount
+            </Table.Column>
+          </Table.Header>
+          {/*
+            Both collections need `dependencies`: rendered rows are cached by
+            item identity, and the items here never change — only the edits do.
+          */}
+          <Table.Body
+            items={[settlementRuns[1]]}
+            dependencies={[notes, labels]}
+          >
+            {function renderRow(row: SettlementRow) {
+              return (
+                <Table.Row id={row.id}>
+                  {/*
+                    The tree column, editable. `Table.EditableCell` renders the
+                    column's gutter itself; without that the row would lose the
+                    only control that can collapse it.
+                  */}
+                  <Table.EditableCell
+                    field={
+                      <TextField
+                        aria-label="Label"
+                        name="label"
+                        defaultValue={labelOf(row)}
+                      />
+                    }
+                    onSubmit={submit(setLabels, row.id, 'label')}
+                  >
+                    {labelOf(row)}
+                  </Table.EditableCell>
+                  <Table.EditableCell
+                    field={
+                      <TextField
+                        aria-label="Note"
+                        name="note"
+                        defaultValue={notes[row.id]}
+                      />
+                    }
+                    onSubmit={submit(setNotes, row.id, 'note')}
+                  >
+                    {notes[row.id]}
+                  </Table.EditableCell>
+                  <Table.Cell alignX="right">
+                    <NumericFormat
+                      style="currency"
+                      currency="EUR"
+                      value={row.total}
+                    />
+                  </Table.Cell>
+                  <Table.ExpandableRows
+                    items={row.children}
+                    dependencies={[notes, labels]}
+                  >
+                    {renderRow}
+                  </Table.ExpandableRows>
+                </Table.Row>
+              );
+            }}
+          </Table.Body>
+        </Table>
+      </I18nProvider>
+    );
+  },
+});
+
+// Every editable cell's trigger carries the same label, so pick one by column.
+const editTriggerIn = (row: Element, column: number) =>
+  within(row.children[column] as HTMLElement).getByLabelText('Edit');
+
+ExpandableRowsWithEditableCell.test(
+  'Edits a cell in a nested row',
+  async ({ canvas, userEvent, step }) => {
+    const child = rowByName(canvas, 'CLR-10188');
+
+    await step('The editor opens from a nested row', async () => {
+      await userEvent.click(editTriggerIn(child, 1));
+
+      await waitFor(() =>
+        expect(canvas.getByLabelText('Note')).toBeInTheDocument()
+      );
+    });
+
+    await step('Saving writes back to the nested row', async () => {
+      await userEvent.clear(canvas.getByLabelText('Note'));
+      await userEvent.type(canvas.getByLabelText('Note'), 'Receipt attached');
+      await userEvent.click(canvas.getByLabelText('Save'));
+
+      await waitFor(() =>
+        expect(
+          within(rowByName(canvas, 'CLR-10188')).getByText('Receipt attached')
+        ).toBeInTheDocument()
+      );
+    });
+  }
+);
+
+// The editor is capped at the table's width, which has to be found by element:
+// a tree table's role is `treegrid`, so matching `role="grid"` collapsed the
+// overlay to its padding.
+ExpandableRowsWithEditableCell.test(
+  'Sizes the editor to the cell it edits',
+  async ({ canvas, userEvent, step }) => {
+    const widthOf = (el: Element) => el.getBoundingClientRect().width;
+
+    const check = async (row: Element, column: number, field: string) => {
+      await userEvent.click(editTriggerIn(row, column));
+
+      const editor = await waitFor(() => {
+        const input = canvas.getByLabelText(field);
+        return input.closest('[data-placement]')!;
+      });
+
+      expect(widthOf(editor)).toBeGreaterThanOrEqual(
+        widthOf(row.children[column])
+      );
+      await userEvent.keyboard('{Escape}');
+    };
+
+    await step('From a nested row', () =>
+      check(rowByName(canvas, 'CLR-10188'), 1, 'Note')
+    );
+
+    await step('And from the tree column of its parent', () =>
+      check(rowByName(canvas, 'Settlement run 1 Jun 2026'), 0, 'Label')
+    );
+  }
+);
+
+ExpandableRowsWithEditableCell.test(
+  'Keeps the expand control when the tree column is editable',
+  async ({ canvas, userEvent, step }) => {
+    const group = rowByName(canvas, 'Settlement run 1 Jun 2026');
+
+    await step('The editable tree cell renders both controls', () => {
+      expect(chevronOf(group)).toBeInTheDocument();
+      expect(editTriggerIn(group, 0)).toBeInTheDocument();
+    });
+
+    await step('And the expand control still collapses the row', async () => {
+      await userEvent.click(chevronOf(group));
+
+      expect(group).toHaveAttribute('aria-expanded', 'false');
+      expect(canvas.queryByText('CLR-10188')).not.toBeInTheDocument();
+    });
+  }
+);
+
+/**
+ * Reordering and nesting coexist: a group row carries both a drag handle and an
+ * expand control. Only root-level rows are reorderable — moving a row across
+ * levels is not supported.
+ */
+export const ExpandableRowsWithDragAndDrop = meta.story({
+  tags: ['component-test'],
+  args: { treeColumn: 'clearing', selectionMode: 'multiple' },
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => {
+    const list = useListData({ initialItems: settlementRuns });
+
+    const { dragAndDropHooks } = useDragAndDrop({
+      renderDropIndicator: Table.renderDropIndicator,
+      renderDragPreview: Table.renderDragPreview,
+      getItems: keys =>
+        [...keys].map(key => ({
+          'text/plain': String(list.getItem(key)?.label ?? key),
+        })),
+      onReorder(e) {
+        if (e.target.dropPosition === 'before') {
+          list.moveBefore(e.target.key, e.keys);
+          return;
+        }
+        list.moveAfter(e.target.key, e.keys);
+      },
+    });
+
+    return (
+      <I18nProvider locale="en">
+        <Table
+          aria-label="Clearings"
+          dragAndDropHooks={dragAndDropHooks}
+          defaultExpandedKeys={['run-2026-06-01']}
+          {...args}
+        >
+          <Table.Header>
+            <Table.Column id="clearing" rowHeader>
+              Clearing no.
+            </Table.Column>
+            <Table.Column id="invoice">Invoice no.</Table.Column>
+            <Table.Column id="amount" alignX="right">
+              Amount
+            </Table.Column>
+          </Table.Header>
+          <Table.Body items={list.items}>
+            {function renderRow(row: SettlementRow) {
+              return (
+                <Table.Row id={row.id} textValue={row.label ?? row.id}>
+                  <Table.Cell>{row.label ?? row.id}</Table.Cell>
+                  <Table.Cell>{row.invoice ?? '—'}</Table.Cell>
+                  <Table.Cell alignX="right">
+                    <NumericFormat
+                      style="currency"
+                      currency="EUR"
+                      value={row.total}
+                    />
+                  </Table.Cell>
+                  <Table.ExpandableRows items={row.children}>
+                    {renderRow}
+                  </Table.ExpandableRows>
+                </Table.Row>
+              );
+            }}
+          </Table.Body>
+        </Table>
+      </I18nProvider>
+    );
+  },
+});
+
+ExpandableRowsWithDragAndDrop.test(
+  'A group row carries a drag handle, a checkbox and an expand control',
+  async ({ canvas, userEvent, step }) => {
+    const group = rowByName(canvas, 'Settlement run 1 Jun 2026');
+
+    await step('All three controls coexist in the row', () => {
+      expect(
+        within(group).getByRole('button', { name: /drag/i })
+      ).toBeInTheDocument();
+      expect(within(group).getByRole('checkbox')).toBeInTheDocument();
+      expect(chevronOf(group)).toBeInTheDocument();
+    });
+
+    await step('The expand control still works', async () => {
+      await userEvent.click(chevronOf(group));
+
+      expect(group).toHaveAttribute('aria-expanded', 'false');
+      expect(canvas.queryByText('CLR-10188')).not.toBeInTheDocument();
+    });
+  }
+);
+
+ExpandableRowsWithDragAndDrop.test(
+  'The expand control does not make its row taller',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    // The control is taller than the line it sits on, so without the negative
+    // block margin a group row would outgrow every row that has no control.
+    const heights = new Set(
+      canvas
+        .getAllByRole('row')
+        .filter(row => row.hasAttribute('aria-level'))
+        .map(row => Math.round(row.getBoundingClientRect().height))
+    );
+
+    expect([...heights]).toHaveLength(1);
+  }
+);
+
+/**
+ * Inside a bled `Panel.Content` the tree column keeps the panel's edge padding,
+ * so the expand control lines up with the panel's own header.
+ */
+export const ExpandableRowsInPanel = meta.story({
+  tags: ['component-test'],
+  args: { treeColumn: 'clearing' },
+  render: args => (
+    <Panel>
+      <Panel.Header>
+        <Title>Clearings</Title>
+      </Panel.Header>
+      <Panel.Content bleed>
+        <Table
+          aria-label="Clearings"
+          defaultExpandedKeys={['run-2026-06-01']}
+          {...args}
+        >
+          <Table.Header>
+            <Table.Column id="clearing" rowHeader>
+              Clearing no.
+            </Table.Column>
+            <Table.Column id="invoice">Invoice no.</Table.Column>
+            <Table.Column id="amount" alignX="right">
+              Amount
+            </Table.Column>
+          </Table.Header>
+          <Table.Body items={[settlementRuns[1]]}>
+            {function renderRow(row: SettlementRow) {
+              return (
+                <Table.Row id={row.id}>
+                  <Table.Cell>{row.label ?? row.id}</Table.Cell>
+                  <Table.Cell>{row.invoice ?? '—'}</Table.Cell>
+                  <Table.Cell alignX="right">
+                    <NumericFormat
+                      style="currency"
+                      currency="EUR"
+                      value={row.total}
+                    />
+                  </Table.Cell>
+                  <Table.ExpandableRows items={row.children}>
+                    {renderRow}
+                  </Table.ExpandableRows>
+                </Table.Row>
+              );
+            }}
+          </Table.Body>
+        </Table>
+      </Panel.Content>
+    </Panel>
+  ),
+});
+
+ExpandableRowsInPanel.test(
+  'The tree column starts at the panel edge padding',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const left = (el: Element) => Math.round(el.getBoundingClientRect().left);
+    const group = rowByName(canvas, 'Settlement run 1 Jun 2026');
+
+    // The caret, not the value, is what carries the edge: it replaces the text
+    // at the panel's inline start. Its hit target is wider and hangs into the
+    // panel's padding, so measure the caret rather than the button around it.
+    expect(left(chevronOf(group).querySelector('svg')!)).toBe(
+      left(canvas.getByText('Clearings'))
+    );
   }
 );

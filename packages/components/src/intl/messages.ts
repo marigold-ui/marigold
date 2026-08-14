@@ -14,6 +14,7 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     clearSelectionAriaLabel: 'Auswahl löschen',
     close: 'Schließen',
     closeNavigation: 'Navigation schließen',
+    confirm: 'Bestätigen',
     dismissDrawer: 'Seitenleiste schließen',
     dropZoneLabel: 'Dateien hierher ziehen',
     edit: 'Bearbeiten',
@@ -44,6 +45,7 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     presets: 'Schnellauswahl',
     removeAll: 'Alle entfernen',
     removeFile: 'Datei entfernen',
+    removeFileNamed: vars => `${vars?.name} entfernen`,
     save: 'Speichern',
     search: 'Suche',
     selectedAll: 'Alles ausgewählt',
@@ -55,6 +57,8 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     showMore: 'Mehr anzeigen',
     showMoreCount: vars => `${vars?.count} weitere anzeigen`,
     toggleNavigation: 'Navigation umschalten',
+    undo: 'Rückgängig',
+    undoNamed: vars => `${vars?.title} rückgängig machen`,
     collapseSidebarTooltip: (vars: Variables) =>
       `Seitenleiste einklappen (${vars?.shortcut})`,
     expandSidebarTooltip: (vars: Variables) =>
@@ -73,6 +77,7 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     clearSelectionAriaLabel: 'Clear selection',
     close: 'Close',
     closeNavigation: 'Close navigation',
+    confirm: 'Confirm',
     dismissDrawer: 'Dismiss drawer',
     dropZoneLabel: 'Drop files here',
     edit: 'Edit',
@@ -103,6 +108,7 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     presets: 'Quick selection',
     removeAll: 'Remove all',
     removeFile: 'Remove file',
+    removeFileNamed: vars => `Remove ${vars?.name}`,
     save: 'Save',
     search: 'Search',
     selectedAll: 'All items selected',
@@ -114,6 +120,8 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     showMore: 'Show more',
     showMoreCount: vars => `Show ${vars?.count} more`,
     toggleNavigation: 'Toggle navigation',
+    undo: 'Undo',
+    undoNamed: vars => `Undo: ${vars?.title}`,
     collapseSidebarTooltip: (vars: Variables) =>
       `Collapse sidebar (${vars?.shortcut})`,
     expandSidebarTooltip: (vars: Variables) =>

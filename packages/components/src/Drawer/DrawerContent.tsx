@@ -44,11 +44,12 @@ export const DrawerContent = ({
     <div
       className={cn(
         '[grid-area:content]',
-        // Bled: drop the padding and re-publish `--ui-panel-px` as `--bleed-px`
-        // so edge-aware children inset to align with the title.
+        // Bled: drop the padding and re-publish `--ui-surface-px` as `--bleed-px`
+        // so edge-aware children inset to align with the title. Non-bled clears
+        // it, as in Panel.Content.
         bleed
-          ? 'overflow-y-auto py-4 outline-none [--bleed-px:var(--ui-panel-px)]'
-          : classNames.content
+          ? 'overflow-y-auto py-4 outline-none [--bleed-px:var(--ui-surface-px)]'
+          : cn(classNames.content, '[--bleed-px:initial]')
       )}
       style={{ '--i': 1 } as CSSProperties}
     >

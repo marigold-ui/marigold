@@ -7,6 +7,7 @@ import { SortAscending } from '../icons/SortAscending';
 import { SortDescending } from '../icons/SortDescending';
 import { Sortable } from '../icons/Sortable';
 import { useTableContext } from './Context';
+import { TableTreeColumn } from './TableTreeColumn';
 
 // Helper
 // ---------------
@@ -61,7 +62,8 @@ const TableColumn = ({
   rowHeader,
   ...props
 }: TableColumnProps) => {
-  const { classNames } = useTableContext();
+  const { classNames, treeColumn } = useTableContext();
+  const isTreeColumn = treeColumn != null && props.id === treeColumn;
 
   return (
     <Column
@@ -74,29 +76,39 @@ const TableColumn = ({
       alignX={alignX}
       {...props}
     >
-      {({ allowsSorting, sortDirection }) => (
-        <div
-          className={cn(
-            'flex items-center gap-1',
-            alignment.horizontal.alignmentX[alignX]
-          )}
-        >
-          {allowsSorting && (
-            <span aria-hidden="true">
-              {sortDirection === 'ascending' && <SortAscending size={14} />}
-              {sortDirection === 'descending' && <SortDescending size={14} />}
-              {!sortDirection && <Sortable size={14} />}
-            </span>
-          )}
-          <Group
-            className="cursor-default outline-none"
-            role="presentation"
-            tabIndex={-1}
+      {({ allowsSorting, sortDirection }) => {
+        const label = (
+          <div
+            className={cn(
+              'flex items-center gap-1',
+              // Sits beside the gutter rather than in it, so the label lands on
+              // the same x as the values it heads.
+              isTreeColumn && 'col-start-2 min-w-0',
+              alignment.horizontal.alignmentX[alignX]
+            )}
           >
-            {props.children}
-          </Group>
-        </div>
-      )}
+            {allowsSorting && (
+              <span aria-hidden="true">
+                {sortDirection === 'ascending' && <SortAscending size={14} />}
+                {sortDirection === 'descending' && <SortDescending size={14} />}
+                {!sortDirection && <Sortable size={14} />}
+              </span>
+            )}
+            <Group
+              className="cursor-default outline-none"
+              role="presentation"
+              tabIndex={-1}
+            >
+              {props.children}
+            </Group>
+          </div>
+        );
+
+        if (!isTreeColumn) return label;
+
+        // No control in the header, only the track it reserves.
+        return <TableTreeColumn>{label}</TableTreeColumn>;
+      }}
     </Column>
   );
 };

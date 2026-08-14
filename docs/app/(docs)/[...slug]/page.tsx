@@ -1,3 +1,4 @@
+import { DocsPageFooter } from '@/app/_components/DocsPageFooter';
 import { getPageImage, source } from '@/lib/source';
 import { getMDXComponents } from '@/mdx-components';
 import {
@@ -29,11 +30,12 @@ import {
   DocsDescription,
   DocsPage,
   DocsTitle,
+  ViewOptionsPopover,
 } from 'fumadocs-ui/layouts/docs/page';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { MarkdownCopyButton, ViewOptionsPopover } from '@/ui/PageActions';
+import { MarkdownCopyButton } from '@/ui/MarkdownCopyButton';
 import { PostList } from '@/ui/PostList';
 
 const Page = async (props: PageProps<'/[...slug]'>) => {
@@ -59,6 +61,8 @@ const Page = async (props: PageProps<'/[...slug]'>) => {
       }}
       toc={toc}
       full={page.data.full}
+      slots={{ footer: DocsPageFooter }}
+      className="pb-0"
     >
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription className="mb-0">

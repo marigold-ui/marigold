@@ -1,5 +1,5 @@
 ---
-title: Marigold v18.0.0 (rc)
+title: Marigold v18.0.0
 date: 2026-08-11
 type: Blog
 changed:
@@ -68,7 +68,9 @@ changed:
   - patterns/user-input/bulk-actions
   - patterns/user-input/filter
   - patterns/user-input/pick
+  - patterns/user-input/table-record-management
   - patterns/data/fetching-and-mutations
+  - patterns/feedback/destructive-actions
 ---
 
 For the last years, Marigold's job was mostly to replace. Modernize an aging codebase, swap out legacy patterns, refresh a design that had started to show its years. v18.0.0 is where that chapter ends and a new one begins. We are done catching up. From here, the work is about craft. Shaping a design language that does not just look current, but is unmistakably its own.
@@ -78,12 +80,11 @@ And this release opens that chapter loudly. v18 is by far the biggest release we
 It is a lot. Take your time with the breaking changes below. They all point in the same direction, and the app you end up with will be simpler for it.
 
 <Callout title="Before you upgrade" type="warning">
-  v18.0.0 is currently a **release candidate**. It publishes to the `rc`
-  dist-tag, so a plain `npm install @marigold/components` still resolves v17.
-  Install it explicitly with `@marigold/components@rc`. Everything below
-  describes the release as it stands, and we do not expect further breaking
-  changes, but the token and design work is still settling, so small visual
-  adjustments are possible before the final release.
+  v18.0.0 is a stable release on the `latest` dist-tag, so a plain `npm install
+  @marigold/components` resolves it. If you tracked the release candidates
+  through `@marigold/components@rc`, move your dependency back to a normal
+  version range: the `rc` tag stays pinned at `18.0.0-rc.5` and will not receive
+  further updates.
 
 Marigold v18 also requires React 19. If you are still on React 18, upgrade
 React first, verify your app still builds, then bump Marigold.
@@ -547,6 +548,12 @@ The message's visual treatment also changed: it now sits on a neutral surface wi
 - `selectionMode` now defaults to `'multiple'`.
 - `disabled` propagates to each `<Tag>`, so interaction is blocked alongside the form-disabled state.
 
+### `<Dialog.Trigger>` no longer traps Escape
+
+An unset `keyboardDismissable` was inverted into "keyboard dismiss disabled", so every dialog opened from a `<Dialog.Trigger>` trapped the keyboard unless the prop was passed explicitly, contradicting both the documentation and the defaults in `<Tray>` and `<Drawer>`. Escape now closes a triggered dialog. Pass `keyboardDismissable={false}` to opt out, which is what a dialog holding unsaved work or a required decision should do.
+
+`<ConfirmationDialog>`'s action buttons changed their order of operations in the same pass: they call their handler before closing the dialog, so an owner watching `onOpenChange` sees the decision before it sees the close. They are still called with no arguments. Neither change has a type-level signal, so audit dialogs that relied on Escape being inert or on the previous ordering.
+
 ### `<Drawer>` enforces one open at a time
 
 Opening a sibling `<Drawer>` while one is already open now dismisses the first, on desktop and mobile. The dismissed Drawer's `onOpenChange(false)` is invoked so controlled-state consumers stay in sync.
@@ -567,6 +574,7 @@ A small cleanup pass removed props that silently did nothing:
 - **`FileTrigger`**: the mis-named singular `acceptedFileType` prop is removed. Its key never matched react-aria's `acceptedFileTypes`, so file-type filtering silently never applied. Use `acceptedFileTypes`.
 - **`Button`**: `variant="icon"` was never a real variant. It silently rendered a default button. Use the now-public `size="icon"` instead (composes with any variant, e.g. `variant="ghost" size="icon"`).
 - **`Label`**: no longer exposes `style`, completing the `className` / `style` removal convention used across the system.
+- **`SelectList`**: `layout` and `keyboardNavigationBehavior` are gone from the props. Both were publicly typed but discarded at runtime, and the props table even published `layout` as `"stack" | "grid"` defaulting to `'stack'` while the component always rendered a grid. The grid layout is load-bearing (it is what gives the list arrow-key navigation on both axes), so it stays hardcoded and react-aria keeps deriving the keyboard behavior from it. Passing either prop was already a no-op, so nothing changes at runtime, it just stops type-checking.
 
 ### `@marigold/system`: dimension props under the hood
 
@@ -712,6 +720,12 @@ Built-in localized presets cover the common cases (`today`, `yesterday`, `tomorr
 
 `<Table>` gains a footer: a semantic `<tfoot>` rendered after `<Table.Body>` for summary rows like totals, counts, or averages, composed from `<Table.Row>` and `<Table.Cell>` just like the body. A `sticky` prop pins the footer to the bottom of the viewport while scrolling, mirroring sticky table headers.
 
+### `<EmptyState>` is stable
+
+`<EmptyState>` leaves beta. It shipped in January, and v18 is where its surface settled: the title became a semantic heading with a configurable `headingLevel`, and the description moved onto the shared `<Description>` primitive. That surface is now final, so `title`, `description`, `action`, and `headingLevel` are covered by the usual semver guarantees. `variant` and `size` stay open ended, as they do on every themed component, and `theme-rui` defines no values for either today.
+
+The [documentation](/components/content/empty-state) also gains an Actions section, which answers the question the component never did: when the action in an empty state should be `primary`, and when it should step aside for the primary action the page already has.
+
 ### `<ErrorState>`
 
 `<EmptyState>` gets an error sibling. `<ErrorState>` shares the same anatomy (`title`, `description`, `action`, and a `headingLevel` prop) and adds typed DOM passthrough (`role`, `tabIndex`, `ref`), so it drops straight into error-boundary fallbacks that need to be focusable or announced.
@@ -840,6 +854,21 @@ The compound-component API is unchanged. The `<header>` element that previously 
 
 `<Drawer.Content bleed>` drops the Drawer's horizontal content padding and publishes the same `--bleed-px` custom property as a bled `<Panel.Content>`. Edge-aware children stay aligned with the Drawer title while their dividers and hover backgrounds reach the Drawer edges: `<Accordion>` reads the property directly, and `<Table>`'s edge-cell padding falls back to it too. Without `bleed`, nothing changes.
 
+### `--bleed-px` is the alignment contract
+
+Containers publish their resolved spacing as read-only custom properties: `--panel-px` / `--panel-py` / `--panel-gap` and their `--card-*` and `--page-*` counterparts, plus `--bleed-px` on every bled content area. All of them are documented public API now, under [Reading container spacing](/foundations/spacing#reading-container-spacing).
+
+`--bleed-px` is the single property a child reads to align itself with a container's padding. It is declared on the bled element rather than on a container root, and cleared with `initial` on every non-bled content area (`Panel.Content`, `Panel.CollapsibleContent`, `Card.Content`, `Card.Footer`, `Drawer.Content`), so it is in effect exactly where edge alignment applies and nowhere else. `<Table>` derives its edge cell padding from it alone, and a bled `<Card.Content>` or `<Card.Footer>` publishes it too, which it never did before.
+
+Custom properties inherit through the whole subtree, and that is what the old chain got wrong: `--panel-px` sits on the `Panel` root whether content is bled or not, so a `<Table>` in a **non-bled** `Panel.Content` was inset by the Panel's padding on top of the content area's own padding, putting its edge cells at 12px while the Panel title also sat at 12px, offset twice. What that means for your app:
+
+- A `<Table>` in a **bled** `Panel.Content`, `Panel.CollapsibleContent`, or `Drawer.Content` is unchanged.
+- A `<Table>` or `<Accordion>` in a **bled** `Card.Content` or `Card.Footer` now aligns with the container title, where it previously got no edge alignment at all.
+- A `<Table>` in a **non-bled** `Panel.Content` now uses the ordinary cell padding for its first and last cell. The docs steer tables to `bleed`, so most tables are unaffected.
+- A container nested inside a bled one no longer picks up the outer container's padding when it is not bled itself.
+
+The shared overlay utilities were renamed in the same pass: `ui-panel-header` / `ui-panel-content` / `ui-panel-actions` and their `--ui-panel-px` token are now `ui-surface-header` / `ui-surface-content` / `ui-surface-actions` and `--ui-surface-px`. They style the sectioned anatomy of `<Dialog>`, `<Drawer>`, `<Tray>`, and `<Sidebar>`, never the `<Panel>` component, which has its own per-instance `--panel-px`, so they are now named after the `ui-surface` role those containers already wear. The old names only ever shipped in `18.0.0-rc.*`, so only prerelease consumers who overrode the token or used the utilities directly need to rename.
+
 ### Semantic headings for `<ContextualHelp>` and `<EmptyState>`
 
 The inline-message family completes the slot-configuration migration alongside `<SectionMessage>` (see Breaking Changes):
@@ -847,6 +876,15 @@ The inline-message family completes the slot-configuration migration alongside `
 - `ContextualHelp.Title` now uses `slot="title"`, so the popover dialog gets a proper `aria-labelledby`, and a new `<ContextualHelp.Description>` sub-component is available.
 - `EmptyState`'s `title` renders as a semantic heading (`<h3>` by default, configurable via a new `headingLevel` prop), and its description renders through the shared `<Description>` primitive.
 - All three roots publish a clean-baseline `ButtonContext`, so action buttons inside them never inherit a surrounding container's cascade (such as a `Panel.Header`'s ghost/small look).
+
+### Undo as a first-class recovery path
+
+Deleting, removing, and overwriting are the actions users regret, and there are only two recovery paths: stop them before it happens, or let them take it back afterwards. v18 builds out the second one and hardens the first. The new [Destructive Actions](/patterns/feedback/destructive-actions) pattern decides which path an action gets.
+
+- **`useToast` gains `addUndoToast({ title, description, timeout, onUndo, onCommit })`.** It reports the action as done, then sends the real request only if the user does not take it back. It owns the parts that are easy to get wrong: the commit rides the toast's own `onClose` rather than a parallel `setTimeout` (React Aria pauses the toast timer on hover and focus, so a separate timer drifts out of sync with what the user sees), an undo press is latched so the close it causes cannot also commit, the timeout is floored so a toast that never closes can never strand the commit, and the undo button carries the toast title in its accessible name, since a bare "Undo" is ambiguous once toasts stack.
+- **`addToast` accepts `onClose` and `closeButton: false`.** `onClose` fires whenever the toast goes away, whether its timeout ran out, it was dismissed, it was closed through `removeToast`, or the queue was cleared. `closeButton: false` is ignored by toasts that never auto-dismiss (`warning`, `error`, `timeout: 0`), since that combination would leave no way out.
+- **`<FileField>` accepts `onBeforeRemove`.** It is called with the file a remove button is about to drop; return `false`, or a promise resolving to `false`, to keep it. That is what puts a confirmation in front of the built-in remove buttons, and a handler that throws keeps the file. Each remove button is now named after its file ("Remove agb-2026-08-01.pdf") instead of every row announcing "Remove file", and `FileField.Item` takes `removeLabel` for composed items.
+- **Confirmations settle reliably.** Closing a confirmation with Escape resolves `useConfirmation` as `cancelled`; previously the promise never settled, so an `await confirm(...)` stalled silently and its continuation never ran. `<ConfirmationDialog>` focuses the cancel button by default when `variant="destructive"` so a reflexive Enter takes the safe path (`autoFocusButton: 'action'` overrides it), `ConfirmationProvider` now forwards the `autoFocusButton` it already accepted but dropped, its confirm button falls back to the localized `confirm` message instead of a hardcoded "Confirm" sitting next to a translated "Cancel", and `variant` is typed as `'destructive' | (string & {})` so the variant driving all of this is discoverable.
 
 ### `<Switch>` and `<Checkbox>` support `error` and `errorMessage`
 
@@ -987,6 +1025,7 @@ v18 ships alongside a substantial pass over the documentation site, and, new thi
 
 - **`marigold search`.** The Marigold CLI gains a `search` command that finds components by what their docs actually say (title, description, headings, prose), returning ranked, snippet-bearing, deep-linked results in one call. It collapses the "list → guess → docs → retry" discovery loop coding agents run into a single query, with `--format json` for structured output. The CLI is now documented end to end on a new [Getting Started page](/getting-started/cli).
 - **`marigold doctor`.** A read-only command that diagnoses a project's Marigold setup: package presence and version match, freshness against the latest release, that `MarigoldProvider` actually wraps the app and its `theme` resolves to a real binding, Tailwind config, and React peer deps. It prints actionable fixes grouped by severity, supports `--format text|json` and `--offline`, and exits non-zero only on deterministic errors, so it is safe to gate CI on. The CLI also now runs correctly through a symlinked global bin.
+- **`marigold validate`.** A command that checks a component file against the design system's rules in two passes: a static one over the AST for hallucinated components, invalid props, and missing compound parts, and a rendered one that mounts the file and inspects the resulting DOM for accessibility and layout problems. It reports errors and warnings a human or an agent can act on, and exits non-zero only on errors, so a generating agent can loop on it until the file comes back clean.
 - **An MCP server over the docs.** The docs site exposes an MCP (Model Context Protocol) server at `/mcp`, letting AI coding assistants (Claude Code, VS Code Copilot, and friends) semantically search the Marigold documentation through vector embeddings.
 - **Every docs page as markdown.** Each page is available as raw markdown at `<page-url>.md` (for example `/components/actions/button.md`), and the full page index at `/manifest.json`, both served as plain static assets. Prop tables in the markdown output now match the HTML exactly.
 
@@ -999,8 +1038,10 @@ v18 ships alongside a substantial pass over the documentation site, and, new thi
 - **New Bulk Actions pattern and working example.** A full pattern page on letting users select many records and act on all of them at once (`<Table>` selection, `<ActionBar>`, confirmation dialogs, progress feedback, partial-failure handling), plus a complete working example at `/examples/bulk-actions` with a paginated events table, bulk edit through a `<Drawer>`, and toasts for every outcome.
 - **New Pick pattern and working example.** Picking is the counterpart to filtering: filtering narrows a view in place, picking finds records and commits them as a set. The new [Pick pattern](/patterns/user-input/pick) documents that distinction, a surface spectrum that scales with collection size (inline multi-select, a searchable `<TagField>`, a `<Dialog>`, a routed page as the exception), and the load-bearing practices: staged selections survive narrowing, the commit button bounds the selection and names the outcome, and the staged set stays visible as a removable `<Tag.Group>` rail. The page ships four inline demos plus a complete example at `/examples/pick`.
 - **New Fetching and Mutations pattern** covering `@tanstack/react-query` with Marigold: hook encapsulation, query keys, loading taxonomy, error handling with `throwOnError`, toast feedback, optimistic updates, and destructive confirmation. The `/examples/filter` reference app now runs against a real API route to match.
+- **New Destructive Actions pattern.** [Destructive Actions](/patterns/feedback/destructive-actions) sorts deletions into the recovery path they deserve: an undo toast when the action is reversible and routine, a confirmation when it is not, and nothing at all when the cost of the mistake is lower than the cost of the interruption. It documents the decision, then shows how to build each one with `addUndoToast`, `useConfirmation`, and `onBeforeRemove`, including what to name the buttons and how to phrase the consequence.
 - **Filter pattern promoted to beta.** The [Filter pattern](/patterns/user-input/filter) is rewritten end to end and moves from alpha to beta. It now covers the full lifecycle: choosing which filters to offer, picking a control per filter type, instant versus batched applying, designing option lists (search, counts, select all, exclusions), and scaling up through quick filters and a grouped panel. Load-bearing additions are the two-tier hierarchy (a few high-value quick filters in the bar, the canonical set behind "All filters"), a single-row bar layout held together by `<OverflowRegion>`, a scope switch framed apart from the filter cluster, applied-filter labels with an active count that counts _applied_ filters rather than hidden ones, small-screen behaviour, and an implementation chapter on URL state, pagination resets, draft previews, and browser history. Eighteen inline demos and a themed inline SVG anatomy diagram replace the previous static screenshots.
 - **Full data management example at `/examples/filter`.** A venue browsing app demonstrating multi-criteria filtering coordinated through URL state via `nuqs`: a single-row filter bar (scope switch, search, quick filters inside an `<OverflowRegion>`, and a pinned "All filters" panel), applied filter chips, a draft preview of the pending result count, and a paginated data table all driven by the same URL state and a real API route.
+- **New data-entry grid documentation.** The [table record management pattern](/patterns/user-input/table-record-management) grows from three options to four with the data-entry grid, a `<Table>` of always-on form controls navigated with `keyboardNavigationBehavior="tab"`. The Table component page's editing guidance is restructured into a single `Editing` section that covers editable cells and the grid side by side, so the choice between them is made in one place.
 - **Settings form and event form pattern examples** at `/examples/settings-form` and `/examples/event-form`. The settings form demonstrates tabbed navigation, independent section saves with `<Panel>`, collapsible advanced fields, and a danger zone with confirmation dialogs. The event form shows a single-submit form with multiple `<Panel>` sections. The forms pattern documentation now includes a Panels subsection that links to both demos.
 - **Drawer documentation rewritten** around a defining principle (supplementary, in-context, light task) with a Drawer-vs-Dialog decision framework and six canonical use cases, each with demos.
 - **ActionBar fully documented and re-homed.** `<ActionBar>` gets complete, use-case-driven documentation (anatomy, Do/Don't, three demos, accessibility) and moves into the Collection section at [`/components/collection/actionbar`](/components/collection/actionbar) alongside `Table`, `Card`, and `Tag`, reframed around the bulk-selection context.
@@ -1013,6 +1054,10 @@ v18 ships alongside a substantial pass over the documentation site, and, new thi
 - **Installation guide revised** end to end, so a new project (human- or AI-driven) sets up without friction.
 - **Prop tables split into groups.** Each component page now shows the meaningful API props by default and tucks `aria-*` attributes and DOM event handlers into collapsible sections (Button drops from 112 visible props to 39). The machine-readable docs keep the full list.
 - **Toast guidance:** a new callout documents that `<ToastProvider>` should be mounted exactly once per app, since every toast shares one global queue.
+- **Design Principles page removed.** The Getting Started page was generic design advice (Familiarity, Simplicity, Clarity) with nothing tied to a Marigold component or token, and nothing in the docs linked to it. The maintained equivalent lives in [Component Principles](/foundations/component-principles) and the rest of `foundations/*`, so Getting Started keeps only the pages that help someone actually start using Marigold.
+- **Legal pages and a consent banner.** The docs site gains `/impressum` and `/datenschutz`, each carrying a German (authoritative) and an English version in `lang`-scoped sections so screen readers switch voice, reachable from a site footer that now runs across every public route including `/examples/*`. A consent banner gates Vercel Web Analytics: nothing is loaded until consent is granted, the choice is stored in `localStorage`, and a "Cookie settings" link in the footer reopens the banner. Both legal pages are drafts pending review.
+- **The contrast matrix measures the palette it documents.** The token overview's matrix used to recompute its published WCAG and APCA numbers from a hand-copied list of the eleven charcoal rungs, so a rebrand would have left the documented contrast reporting the old palette with no test to catch it. It now reads the rungs back out of the theme through hidden probes, and its pinned first column, header contrast, and screen-reader wiring are fixed along the way. The APCA figures are still the simplified approximation the demo has always used.
+- **Prop tables survive a dependency bump.** The prop-table cache keyed only on component source, so a dependency that changed an inherited prop set left every untouched component serving its pre-bump props indefinitely. That is how `keyboardNavigationBehavior` went missing from the `<Table>` prop table when react-aria-components moved 1.19 to 1.20. The cache is now keyed on the lockfile as well.
 - **Documentation prose cleanup.** Em-dash and en-dash punctuation and prose semicolons across the component, foundation, and pattern docs are rewritten into plain sentences for easier reading.
 
 ## Design
@@ -1049,9 +1094,9 @@ The app shell around it separates regions on whitespace, and the remaining struc
 
 `<SectionMessage>` no longer fills its background with a per-variant tint. It now sits on a neutral `ui-surface` with neutral title and body text, and the severity is carried by a muted per-variant colored border plus the colored icon. Because the surface stays neutral, standard `<Button>` and `<Link>` actions placed inside read correctly instead of floating on a colored fill, and the bordered, in-flow treatment keeps an inline message visually distinct from the floating, shadowed `<Toast>`. Variants stay distinguishable without relying on color alone through the border, the icon shape, and the title.
 
-### Dialog: shared panel pattern and a scroll seam
+### Dialog: shared surface pattern and a scroll seam
 
-`<Dialog>` now uses the same `ui-panel-*` utilities as `<Drawer>`, `<Tray>`, and `<Sidebar>`. Its actions gain a `border-t` divider as an interaction-zone marker, and its content picks up consistent vertical padding. The responsive button stacking specific to Dialog stays as it was, and Drawer, Tray, and Sidebar are visually unchanged.
+`<Dialog>` now uses the same `ui-surface-*` utilities as `<Drawer>`, `<Tray>`, and `<Sidebar>`. Its actions gain a `border-t` divider as an interaction-zone marker, and its content picks up consistent vertical padding. The responsive button stacking specific to Dialog stays as it was, and Drawer, Tray, and Sidebar are visually unchanged.
 
 On top of that, a long Dialog now signals that its body scrolls: the header is borderless at rest and fades in a bottom hairline once content scrolls beneath it. The mechanism is a reusable `ui-scroll-seam-*` primitive, with an always-on hairline fallback for browsers without scroll-driven animations.
 
@@ -1073,7 +1118,7 @@ A round of smaller refinements across the control surfaces:
 
 - `<ToggleButtonGroup>` gets its segment divider back, and it no longer clips the focus outline of a focused segment.
 - Unselected `<Pagination>` page numbers pick up the same translucent ghost hover as the prev/next arrows.
-- `<Tray>` content adopts the shared `ui-panel-content` rhythm, and `<Card>` moves to the shared `rounded-surface` radius so the raised tier is consistent.
+- `<Tray>` content adopts the shared `ui-surface-content` rhythm, and `<Card>` moves to the shared `rounded-surface` radius so the raised tier is consistent.
 - The `<Toast>` close button darkens on hover again.
 
 ### Transparent `ui-scrollbar` track

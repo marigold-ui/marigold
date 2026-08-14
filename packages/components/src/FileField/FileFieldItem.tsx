@@ -11,12 +11,20 @@ export interface FileFieldItemProps {
    */
   onRemove?: () => void;
 
+  /**
+   * Accessible name for the remove button. Defaults to "Remove file", so pass
+   * the file's name when you compose items yourself and rows stay
+   * distinguishable to a screen reader.
+   */
+  removeLabel?: string;
+
   size?: 'default' | 'small' | (string & {});
 }
 
 export const FileFieldItem = ({
   children,
   onRemove,
+  removeLabel,
   size,
 }: FileFieldItemProps) => {
   const classNames = useClassNames({
@@ -29,7 +37,7 @@ export const FileFieldItem = ({
       {children}
       <div className={cn('[grid-area:remove]', classNames.itemRemove)}>
         <CloseButton
-          aria-label={stringFormatter.format('removeFile')}
+          aria-label={removeLabel ?? stringFormatter.format('removeFile')}
           onPress={onRemove}
         />
       </div>

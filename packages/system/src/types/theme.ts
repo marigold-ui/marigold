@@ -236,6 +236,8 @@ export type Theme = {
       | 'footer'
       | 'row'
       | 'cell'
+      | 'treeIndent'
+      | 'expandButton'
       | 'dragHandle'
       | 'dragPreview'
       | 'dragPreviewCounter'
