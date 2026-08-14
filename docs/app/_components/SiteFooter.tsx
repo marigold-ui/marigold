@@ -29,6 +29,12 @@ export const SiteFooter = () => (
         >
           GitHub
         </Link>
+        <Link
+          className="hover:text-fd-foreground transition-colors"
+          href="/rss.xml"
+        >
+          RSS
+        </Link>
       </nav>
     </div>
   </footer>
