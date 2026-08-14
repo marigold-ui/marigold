@@ -3,8 +3,9 @@ import type { SortedResult } from 'fumadocs-core/search';
 import { createFromSource } from 'fumadocs-core/search/server';
 import type { NextRequest } from 'next/server';
 
+// Kept over the new `multilingual` default: that one skips stemming, which
+// reorders results for most queries. Excludes using a custom `tokenizer`.
 const searchAPI = createFromSource(source, {
-  // https://docs.orama.com/docs/orama-js/supported-languages
   language: 'english',
 });
 
