@@ -2352,7 +2352,8 @@ export const ExpandableRows = meta.story({
         <Table.Column id="amount" alignX="right">
           Amount
         </Table.Column>
-        <Table.Column id="actions" width={80} alignX="right">
+        {/* Fits "Total PDF" — a fixed column doesn't clip, it spills. */}
+        <Table.Column id="actions" width={120} alignX="right">
           Actions
         </Table.Column>
       </Table.Header>

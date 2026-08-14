@@ -1,4 +1,4 @@
-import { render, renderHook, screen } from '@testing-library/react';
+import { render, renderHook, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia } from '../test.utils';
@@ -425,6 +425,8 @@ test('useTableContext throws outside Table', () => {
 });
 
 describe('Expandable rows', () => {
+  const EXPAND_CONTROL = /expand|collapse/i;
+
   const rowOf = (text: string) =>
     // eslint-disable-next-line testing-library/no-node-access
     screen.getByText(text).closest('tr')!;
@@ -495,19 +497,14 @@ describe('Expandable rows', () => {
 
     // June is pre-expanded, so its children are there to check.
     const group = rowOf('Settlement run 1 Jun 2026');
-    await userEvent.click(
-      // eslint-disable-next-line testing-library/no-node-access
-      group.querySelector('input[type=checkbox]')!
-    );
+    await userEvent.click(within(group).getByRole('checkbox'));
 
     expect(group).toHaveAttribute('aria-selected', 'true');
     expect(rowOf('CLR-10188')).toHaveAttribute('aria-selected', 'false');
     // No partial state either: `mixed` would promise a cascade that we don't do.
     expect(
-      // eslint-disable-next-line testing-library/no-node-access
-      rowOf('CLR-10188').querySelector<HTMLInputElement>(
-        'input[type=checkbox]'
-      )!.indeterminate
+      within(rowOf('CLR-10188')).getByRole<HTMLInputElement>('checkbox')
+        .indeterminate
     ).toBe(false);
   });
 
@@ -530,8 +527,9 @@ describe('Expandable rows', () => {
 
     // July was collapsed while select-all ran.
     const collapsed = rowOf('Settlement run 1 Jul 2026');
-    // eslint-disable-next-line testing-library/no-node-access
-    await userEvent.click(collapsed.querySelector('button')!);
+    await userEvent.click(
+      within(collapsed).getByRole('button', { name: EXPAND_CONTROL })
+    );
 
     expect(rowOf('CLR-10231')).toHaveAttribute('aria-selected', 'true');
   });
