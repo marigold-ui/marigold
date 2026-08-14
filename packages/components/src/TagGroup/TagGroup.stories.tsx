@@ -490,3 +490,9 @@ WithDependencies.test(
     expect(canvas.getByText('Nachrichten')).toBeInTheDocument();
   }
 );
+
+// The `collapseAt` branch renders a second `TagList`, but it only engages for
+// static children (`canCollapse` requires a non-function `children`), so a
+// render function can never reach it and there is no stale render to test. Its
+// `dependencies` forward is kept so the two branches stay in step if collapse
+// ever learns to handle `items`.

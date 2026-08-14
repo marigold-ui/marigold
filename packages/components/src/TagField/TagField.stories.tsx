@@ -435,3 +435,59 @@ WithDependencies.test(
     });
   }
 );
+
+/**
+ * The tray renders its own dropdown, so it needs the same `dependencies`
+ * forward the popover gets — a component that only forwards to the popover
+ * fails here and nowhere else.
+ */
+export const WithDependenciesMobile = WithDependencies.extend({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  globals: {
+    viewport: { value: 'smallScreen' },
+  },
+});
+
+WithDependenciesMobile.test(
+  'Re-renders the tray options when a listed dependency changes',
+  async ({ args, canvas, step }) => {
+    const optionFor = async (shift: string) => {
+      // The tray title repeats the label, so scope the trigger to its role.
+      await userEvent.click(
+        canvas.getByRole('button', { name: new RegExp(`${args.label}`, 'i') })
+      );
+      const tray = await canvas.findByRole('dialog');
+
+      return within(tray).findByRole('option', {
+        name: new RegExp(`Ada — ${shift}`),
+      });
+    };
+
+    // The tray's underlay swallows clicks until it is gone, so wait it out
+    // before touching anything behind it.
+    const close = async () => {
+      await userEvent.keyboard('{Escape}');
+
+      return waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    };
+
+    await step(
+      'The tray options render with the current outside state',
+      async () => {
+        expect(await optionFor('early')).toBeInTheDocument();
+        await close();
+      }
+    );
+
+    await step('Changing that state re-renders them', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Switch shift' })
+      );
+
+      expect(await optionFor('late')).toBeInTheDocument();
+    });
+  }
+);
