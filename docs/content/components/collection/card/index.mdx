@@ -44,14 +44,14 @@ The card component supports variants for general content grouping as well as acc
 
 A `<Card>` displays one item in a repeating set, such as an event, a product, a venue, or a team member, where each entry has its own visual identity and links to its own detail view. Repetition is the core case. If the element doesn't repeat, a card is probably the wrong tool.
 
-`<Card>` is one of Marigold's Collection components, alongside [`<Table>`](../table). The rest of this section helps you decide when a card is the right choice, when another Collection component or a Layout primitive fits better, and how to build and lay out cards once you've settled on one.
+`<Card>` is one of Marigold's Collection components, alongside [`<Table>`](/components/collection/table). The rest of this section helps you decide when a card is the right choice, when another Collection component or a Layout primitive fits better, and how to build and lay out cards once you've settled on one.
 
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Use a Layout primitive for content that doesn't repeat: [`<Panel>`](../../layout/panel)
-      for a named region like "Billing", [`<Stack>`](../../layout/stack) for topic-grouped
-      content, [`<Tiles>`](../../layout/tiles) for a reflowing grid of blocks.
+      Use a Layout primitive for content that doesn't repeat: [`<Panel>`](/components/layout/panel)
+      for a named region like "Billing", [`<Stack>`](/components/layout/stack) for topic-grouped
+      content, [`<Tiles>`](/components/layout/tiles) for a reflowing grid of blocks.
     </DoDescription>
   </Do>
   <Dont>
@@ -62,15 +62,15 @@ A `<Card>` displays one item in a repeating set, such as an event, a product, a 
   </Dont>
 </GuidelineTiles>
 
-Panel covers the reverse in its [Panel vs Card](../../layout/panel#panel-vs-card) section.
+Panel covers the reverse in its [Panel vs Card](/components/layout/panel#panel-vs-card) section.
 
 ### Card vs Table
 
-`<Card>` and [`<Table>`](../table) are both Collection components. They both display one item in a repeating set, so the choice between them is about display shape, not category.
+`<Card>` and [`<Table>`](/components/collection/table) are both Collection components. They both display one item in a repeating set, so the choice between them is about display shape, not category.
 
 <CardVsTableMockup />
 
-Reach for [`<Table>`](../table) when items share the same fields and the user's task is comparison, sorting, filtering, or [bulk action](/patterns/user-input/bulk-actions). Reach for `<Card>` when each item is recognized by its own visuals and links to a detail view, not by its position in a row.
+Reach for [`<Table>`](/components/collection/table) when items share the same fields and the user's task is comparison, sorting, filtering, or [bulk action](/patterns/user-input/bulk-actions). Reach for `<Card>` when each item is recognized by its own visuals and links to a detail view, not by its position in a row.
 
 ### Selectable cards
 
@@ -78,11 +78,11 @@ Reach for selectable cards when the user has to pick from a set of card-shaped o
 
 `<Card>` cannot do any of that. It renders a non-interactive `<article>` meant for grouping content, so making it selectable means rebuilding the whole selection layer by hand: tracking which card is active, wiring a hidden radio or checkbox so the value posts with the form, adding roving arrow-key focus across the grid, and setting the ARIA roles a screen reader needs to announce a card as "selected." That is a lot of accessibility-critical behaviour to reinvent, and it is easy to get subtly wrong.
 
-[`<SelectList>`](../../form/selectlist#options-as-cards) with `variant="bordered"` is exactly that machinery, already built and tested. Each option renders as its own outlined card, so you keep the card look while the component owns selection state, form integration, keyboard navigation, and the "selected" announcements. Use `selectionMode="single"` for a plan or payment-method picker where one card wins, or `selectionMode="multiple"` when several cards can be active at once, such as add-ons or notification channels.
+[`<SelectList>`](/components/form/selectlist#options-as-cards) with `variant="bordered"` is exactly that machinery, already built and tested. Each option renders as its own outlined card, so you keep the card look while the component owns selection state, form integration, keyboard navigation, and the "selected" announcements. Use `selectionMode="single"` for a plan or payment-method picker where one card wins, or `selectionMode="multiple"` when several cards can be active at once, such as add-ons or notification channels.
 
 ### Header
 
-`Card.Header` is slot-aware: drop a [`<Title>`](../../content/title) and an optional [`<Description>`](../../content/description) directly inside it. The header wires up the heading level, id, and accessible name automatically.
+`Card.Header` is slot-aware: drop a [`<Title>`](/components/content/title) and an optional [`<Description>`](/components/content/description) directly inside it. The header wires up the heading level, id, and accessible name automatically.
 
 <ComponentDemo name="card-header" background="page" />
 
@@ -90,7 +90,7 @@ The `Title` inside `Card.Header` renders at the card's `headingLevel` (default `
 
 ### Card grids
 
-The canonical card layout is a responsive grid of items, each with its own visual identity. Use [`<Tiles>`](../../layout/tiles) for a grid that reflows automatically, [`<Stack>`](../../layout/stack) for a vertical list, or [`<Inline>`](../../layout/inline) for a horizontal row.
+The canonical card layout is a responsive grid of items, each with its own visual identity. Use [`<Tiles>`](/components/layout/tiles) for a grid that reflows automatically, [`<Stack>`](/components/layout/stack) for a vertical list, or [`<Inline>`](/components/layout/inline) for a horizontal row.
 
 <ComponentDemo name="card-grid" background="page" />
 
@@ -130,7 +130,7 @@ Use small buttons (`<Button size="small" />`). Cards sit in tight grid cells, an
 
 ### Nested cards
 
-Cards already sit on a raised surface. Nesting a card inside another card creates double elevation that no longer reads as depth. It's just a frame inside a frame. Restructure the inner content with a layout primitive like [`<Stack>`](../../layout/stack), a [`<Divider>`](../../content/divider), or split the content into sibling sections.
+Cards already sit on a raised surface. Nesting a card inside another card creates double elevation that no longer reads as depth. It's just a frame inside a frame. Restructure the inner content with a layout primitive like [`<Stack>`](/components/layout/stack), a [`<Divider>`](/components/content/divider), or split the content into sibling sections.
 
 <GuidelineTiles>
   <Do>
@@ -138,8 +138,8 @@ Cards already sit on a raised surface. Nesting a card inside another card create
       <DoNestedMockup />
     </DoFigure>
     <DoDescription>
-      Restructure the inner content with [`<Stack>`](../../layout/stack) and
-      [`<Divider>`](../../content/divider) so a single card holds the sections.
+      Restructure the inner content with [`<Stack>`](/components/layout/stack) and
+      [`<Divider>`](/components/content/divider) so a single card holds the sections.
     </DoDescription>
   </Do>
   <Dont>

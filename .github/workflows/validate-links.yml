@@ -1,0 +1,37 @@
+name: Docs links
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/content/**'
+      - 'docs/app/**'
+      - 'docs/scripts/validate-links.ts'
+      - '.github/workflows/validate-links.yml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  links:
+    name: Validate docs links
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+    steps:
+      # Setup
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6.0.9 # Uses version from package.json#packageManager
+      - name: Setup Node (using .node-version)
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+
+      # Action
+      # Reads `docs/content` and the App Router tree — no `pnpm build` needed.
+      - name: Validate links
+        run: pnpm --filter @marigold/docs lint:links
