@@ -17,6 +17,7 @@ import {
   NotificationsFeed,
   WithDescription,
 } from './ListView.stories';
+import { __resetStackedActionsWarning } from './ListViewItem';
 
 const user = userEvent.setup({ pointerEventsCheck: 0 });
 
@@ -231,6 +232,10 @@ describe('ListView', () => {
     // A row with two trailing controls places both in the same cell, so they
     // stack. The types can't express "wrap them", so a dev warning does.
     test('warns when more than one control claims the actions cell', () => {
+      // `hasWarnedStackedActions` is module-scoped and fires once per
+      // process, so reset it here rather than relying on this being the
+      // first offending row rendered in the file.
+      __resetStackedActionsWarning();
       const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
       renderRow(

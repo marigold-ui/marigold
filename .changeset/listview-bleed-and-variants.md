@@ -15,8 +15,3 @@ feat(DST-1489): `ListView` is flat, and aligns like `Table` and `Accordion` insi
 A framed list was what a consumer got without asking, and it collides with anything that draws its own surface — a `Card`, a `Panel`, a docs preview — as a ring inside a ring 8px apart. Every `ListView` in the repo lives inside such a container, so the frame had no consumer of its own; `Table` answers the same shape by drawing no frame at all and leaving the surface to its container. A standalone framed list is `<Card><ListView /></Card>`.
 
 Binding the bleed to a variant had the same problem from the other side: `<Table>` and `<Accordion>` adopt `--bleed-px` unconditionally, so both align inside a bled `Panel` with no opt-in, while `<ListView>` needed two knobs to do the same thing.
-
-**Impact:**
-
-- `variant="plain"` no longer resolves. Drop the prop — the default is that list.
-- A list inside a bled container now adopts the container's horizontal padding without any opt-in. Standalone lists and lists in a non-bled container are unchanged, since `--bleed-px` is only set by a bled container.

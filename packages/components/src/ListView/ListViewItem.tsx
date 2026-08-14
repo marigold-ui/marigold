@@ -63,6 +63,13 @@ interface ItemChildrenProps {
 // is still `null` in an effect one level up.
 let hasWarnedStackedActions = false;
 
+// Test-only: lets each test assert the warning independently instead of
+// racing whichever test file happens to trip it first. Not part of the
+// package's public API (not re-exported from `packages/components/src/index.ts`).
+export const __resetStackedActionsWarning = () => {
+  hasWarnedStackedActions = false;
+};
+
 const useStackedActionsWarning = (row: RefObject<HTMLElement | null>) => {
   useEffect(() => {
     if (process.env.NODE_ENV === 'production' || hasWarnedStackedActions) {
