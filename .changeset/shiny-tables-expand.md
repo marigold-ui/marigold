@@ -34,6 +34,11 @@ the row would land at, so a reorder inside an expanded group reads as landing in
 that group, while a root-level drop still spans the row. Moving a row from one
 level to another is not supported.
 
+The 32px control keeps that hit target without setting row height: a negative
+block margin cancels the surplus over the line box, so a group row is exactly as
+tall as a leaf row and the `size` variant's cell padding stays the only thing
+that decides — 33 / 41 / 53px for `compact` / `default` / `spacious`.
+
 New theme keys `treeIndent` and `expandButton`. The group row's fill is
 `foreground/5`, which holds ~1.10:1 whether the row sits on `surface`, on
 `background`, inside a `muted` table or under a hover wash. The guide is

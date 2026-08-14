@@ -3056,6 +3056,23 @@ ExpandableRowsWithDragAndDrop.test(
   }
 );
 
+ExpandableRowsWithDragAndDrop.test(
+  'The expand control does not make its row taller',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    // The control is taller than the line it sits on, so without the negative
+    // block margin a group row would outgrow every row that has no control.
+    const heights = new Set(
+      canvas
+        .getAllByRole('row')
+        .filter(row => row.hasAttribute('aria-level'))
+        .map(row => Math.round(row.getBoundingClientRect().height))
+    );
+
+    expect([...heights]).toHaveLength(1);
+  }
+);
+
 /**
  * Inside a bled `Panel.Content` the tree column keeps the panel's edge padding,
  * so the expand control lines up with the panel's own header.

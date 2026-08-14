@@ -190,6 +190,10 @@ export const Table: ThemeComponent<'Table'> = {
       // Keeps the 32px target while the caret itself sits where the column's
       // values do, so its margin box still measures exactly one track.
       'size-(--tree-chevron-size) -ms-(--tree-caret-inset)',
+      // Same trick vertically: the target is taller than the line it sits on,
+      // and without this it would set the row's height, making group rows
+      // taller than leaf rows. Cell padding stays the only thing that does.
+      'my-[calc((var(--tree-chevron-size)-1lh)/-2)]',
       'text-secondary',
       'hover:ui-state-hover-ghost',
       'ui-press',
