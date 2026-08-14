@@ -1,10 +1,14 @@
-import { render, renderHook, screen } from '@testing-library/react';
+import { render, renderHook, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia } from '../test.utils';
 import { useTableContext } from './Context';
 import { Table } from './Table';
 import {
   Basic,
+  ExpandableRows,
+  ExpandableRowsDynamic,
+  ExpandableRowsLazyChildren,
   FooterTotals,
   ScrollableAndSticky,
   VerticalAlignment,
@@ -418,4 +422,126 @@ test('useTableContext throws outside Table', () => {
   expect(() => renderHook(() => useTableContext())).toThrow(
     'useTableContext must be used within a <Table> component'
   );
+});
+
+describe('Expandable rows', () => {
+  const EXPAND_CONTROL = /expand|collapse/i;
+
+  const rowOf = (text: string) =>
+    // eslint-disable-next-line testing-library/no-node-access
+    screen.getByText(text).closest('tr')!;
+
+  test('setting treeColumn turns the table into a treegrid', () => {
+    render(<ExpandableRows.Component />);
+
+    expect(screen.getByRole('treegrid')).toBeInTheDocument();
+    expect(screen.queryByRole('grid')).not.toBeInTheDocument();
+  });
+
+  test('a table without treeColumn stays a plain grid', () => {
+    render(<Basic.Component />);
+
+    expect(screen.getByRole('grid')).toBeInTheDocument();
+    expect(screen.queryByRole('treegrid')).not.toBeInTheDocument();
+  });
+
+  test('group rows announce their collapsed state, leaf rows do not', () => {
+    render(<ExpandableRows.Component />);
+
+    expect(rowOf('Settlement run 1 Jul 2026')).toHaveAttribute(
+      'aria-expanded',
+      'false'
+    );
+    expect(rowOf('CLR-10240')).not.toHaveAttribute('aria-expanded');
+  });
+
+  test('collapsed child rows are not rendered at all', () => {
+    render(<ExpandableRows.Component />);
+
+    expect(screen.queryByText('CLR-10231')).not.toBeInTheDocument();
+  });
+
+  test('expanded child rows are real rows with tree semantics', () => {
+    render(<ExpandableRowsDynamic.Component />);
+
+    // `defaultExpandedKeys` pre-expands the June settlement run.
+    const child = rowOf('CLR-10188');
+
+    expect(child).toHaveAttribute('aria-level', '2');
+    expect(child).toHaveAttribute('aria-posinset', '1');
+    expect(child).toHaveAttribute('aria-setsize', '3');
+    expect(child).toHaveAttribute('data-level', '2');
+  });
+
+  test('exactly one cell per row is marked as the tree column', () => {
+    render(<ExpandableRowsDynamic.Component />);
+
+    const child = rowOf('CLR-10188');
+    // eslint-disable-next-line testing-library/no-node-access
+    const cells = Array.from(child.querySelectorAll('[data-tree-column]'));
+
+    expect(cells).toHaveLength(1);
+    expect(cells[0]).toHaveTextContent('CLR-10188');
+  });
+
+  test('Table.ExpandableRows renders nothing for a row without children', () => {
+    render(<ExpandableRowsDynamic.Component />);
+
+    // The standalone clearing has no `children`, so it stays a leaf.
+    expect(rowOf('CLR-10240')).not.toHaveAttribute('aria-expanded');
+    expect(rowOf('CLR-10240')).toHaveAttribute('aria-level', '1');
+  });
+
+  test('selecting a group row leaves its children alone', async () => {
+    render(<ExpandableRowsDynamic.Component selectionMode="multiple" />);
+
+    // June is pre-expanded, so its children are there to check.
+    const group = rowOf('Settlement run 1 Jun 2026');
+    await userEvent.click(within(group).getByRole('checkbox'));
+
+    expect(group).toHaveAttribute('aria-selected', 'true');
+    expect(rowOf('CLR-10188')).toHaveAttribute('aria-selected', 'false');
+    // No partial state either: `mixed` would promise a cascade that we don't do.
+    expect(
+      within(rowOf('CLR-10188')).getByRole<HTMLInputElement>('checkbox')
+        .indeterminate
+    ).toBe(false);
+  });
+
+  test('select-all yields the all sentinel and covers collapsed rows', async () => {
+    // Easy to get backwards: select-all never enumerates keys, so the rows
+    // missing from the DOM are covered anyway.
+    const onSelectionChange = vi.fn();
+    render(
+      <ExpandableRowsDynamic.Component
+        selectionMode="multiple"
+        onSelectionChange={onSelectionChange}
+      />
+    );
+
+    await userEvent.click(
+      screen.getByRole('checkbox', { name: /select all/i })
+    );
+
+    expect(onSelectionChange).toHaveBeenCalledWith('all');
+
+    // July was collapsed while select-all ran.
+    const collapsed = rowOf('Settlement run 1 Jul 2026');
+    await userEvent.click(
+      within(collapsed).getByRole('button', { name: EXPAND_CONTROL })
+    );
+
+    expect(rowOf('CLR-10231')).toHaveAttribute('aria-selected', 'true');
+  });
+
+  test('expandable drives both the visuals and aria-expanded', () => {
+    // `hasChildItems` drives the visuals, `hasChildRows` drives `aria-expanded`
+    // — see TableRow. Both have to survive.
+    render(<ExpandableRowsLazyChildren.Component />);
+
+    const row = rowOf('Settlement run 1 May 2026');
+
+    expect(row).toHaveAttribute('aria-expanded', 'false');
+    expect(row).toHaveAttribute('data-has-child-items', 'true');
+  });
 });

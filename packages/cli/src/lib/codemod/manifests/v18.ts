@@ -168,6 +168,8 @@ export const v18: MigrationManifest = {
       'footer',
       'row',
       'cell',
+      'treeIndent',
+      'expandButton',
       'dragHandle',
       'dragPreview',
       'dragPreviewCounter',
