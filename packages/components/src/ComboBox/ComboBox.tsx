@@ -8,7 +8,7 @@ import { Center } from '../Center/Center';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { IconButton } from '../IconButton/IconButton';
 import { Input } from '../Input/Input';
-import { ListBox, type ListBoxProps } from '../ListBox/ListBox';
+import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
 import { ChevronsVertical } from '../icons/ChevronsVertical';
@@ -84,13 +84,6 @@ export interface ComboBoxProps
    * ReactNode or function to render the list of items.
    */
   children?: ReactNode | ((item: any) => ReactNode);
-  /**
-   * Values that invalidate the cached items, like a hook's dependency array.
-   * Only needed for `items` plus a render function: rendered items are cached
-   * per item object, so anything the function reads from outside the item —
-   * state, a lookup, a prop — has to be listed here or it renders stale.
-   */
-  dependencies?: ListBoxProps['dependencies'];
 
   /**
    * Set the placeholder for the select.
@@ -123,7 +116,6 @@ const ComboBoxBase = ({
   emptyState,
   onChange,
   children,
-  dependencies,
   loading,
   ref,
   ...rest
@@ -150,7 +142,6 @@ const ComboBoxBase = ({
           placeholder={rest.placeholder}
           label={rest.label}
           emptyState={emptyState}
-          dependencies={dependencies}
         >
           {children}
         </MobileComboBox>
@@ -166,7 +157,6 @@ const ComboBoxBase = ({
           <Popover>
             <ListBox
               virtualized
-              dependencies={dependencies}
               renderEmptyState={() =>
                 emptyState ?? (
                   <Center>{stringFormatter.format('noResultsFound')}</Center>

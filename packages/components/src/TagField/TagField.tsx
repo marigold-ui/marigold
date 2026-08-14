@@ -21,7 +21,7 @@ import {
 import { Button } from '../Button/Button';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { SearchInput } from '../Input/SearchInput';
-import { ListBox, type ListBoxProps } from '../ListBox/ListBox';
+import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
 import { Tag } from '../TagGroup/Tag';
 import { Tray } from '../Tray/Tray';
@@ -69,13 +69,6 @@ export interface TagFieldProps<T extends object>
    * Items of the tag field.
    */
   items?: Iterable<T>;
-  /**
-   * Values that invalidate the cached items, like a hook's dependency array.
-   * Only needed for `items` plus a render function: rendered items are cached
-   * per item object, so anything the function reads from outside the item —
-   * state, a lookup, a prop — has to be listed here or it renders stale.
-   */
-  dependencies?: ListBoxProps['dependencies'];
 
   /**
    * If the field should be required.
@@ -174,7 +167,6 @@ const TagDisplay = ({ placeholder, classNames, disabled }: TagDisplayProps) => {
 interface TagFieldDropdownProps {
   items?: Iterable<object>;
   children?: ReactNode | ((item: object) => ReactNode);
-  dependencies?: ListBoxProps['dependencies'];
   placeholder?: string;
   emptyState?: ReactNode;
 }
@@ -182,7 +174,6 @@ interface TagFieldDropdownProps {
 const TagFieldDropdown = ({
   items,
   children,
-  dependencies,
   placeholder,
   emptyState,
 }: TagFieldDropdownProps) => {
@@ -196,7 +187,6 @@ const TagFieldDropdown = ({
       </SearchField>
       <ListBox
         items={items}
-        dependencies={dependencies}
         virtualized
         renderEmptyState={() =>
           emptyState ?? (
@@ -218,7 +208,6 @@ function TagFieldBase<T extends object>({
   disabled,
   required,
   items,
-  dependencies,
   variant,
   size,
   error,
@@ -288,7 +277,6 @@ function TagFieldBase<T extends object>({
           <Tray.Content className="flex flex-col gap-2">
             <TagFieldDropdown
               items={items}
-              dependencies={dependencies}
               placeholder={placeholder}
               emptyState={emptyState}
             >
@@ -311,7 +299,6 @@ function TagFieldBase<T extends object>({
           >
             <TagFieldDropdown
               items={items}
-              dependencies={dependencies}
               placeholder={placeholder}
               emptyState={emptyState}
             >

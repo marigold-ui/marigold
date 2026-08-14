@@ -6,7 +6,7 @@ import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { Center } from '../Center/Center';
-import { ListBox, type ListBoxProps } from '../ListBox/ListBox';
+import { ListBox } from '../ListBox/ListBox';
 import { Tray } from '../Tray/Tray';
 import { Search } from '../icons/Search';
 import { intlMessages } from '../intl/messages';
@@ -24,7 +24,6 @@ interface MobileAutocompleteProps {
   label?: ReactNode;
   emptyState?: ReactNode;
   children?: ReactNode | ((item: object) => ReactNode);
-  dependencies?: ListBoxProps['dependencies'];
   input: ReactNode;
 }
 
@@ -71,7 +70,6 @@ const MobileAutocomplete = ({
   label,
   emptyState,
   children,
-  dependencies,
   input,
 }: MobileAutocompleteProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
@@ -87,7 +85,6 @@ const MobileAutocomplete = ({
         <Tray.Content className={'flex flex-col gap-2'}>
           {input}
           <ListBox
-            dependencies={dependencies}
             renderEmptyState={() =>
               emptyState ?? (
                 <Center>{stringFormatter.format('noResultsFound')}</Center>
