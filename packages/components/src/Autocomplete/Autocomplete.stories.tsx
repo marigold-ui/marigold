@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { clickOption } from '.storybook/test-utils';
+import { Button } from '../Button/Button';
 import { Center } from '../Center/Center';
 import { Description } from '../Description/Description';
 import { Stack } from '../Stack/Stack';
@@ -517,6 +518,72 @@ Mobile.test(
 
     await step('Verify selection is displayed in trigger', async () => {
       await waitFor(() => expect(trigger).toHaveTextContent('The Matrix'));
+    });
+  }
+);
+
+/**
+ * Rendered options are cached per item object, so a render function that reads
+ * outside state needs `dependencies` — otherwise the option keeps the value it
+ * was first rendered with. The Autocomplete hands its `items` to the listbox
+ * internally, so this is the only way in.
+ */
+const SHIFT_ITEMS = [
+  { id: 'ada', name: 'Ada' },
+  { id: 'grace', name: 'Grace' },
+];
+
+export const WithDependencies = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { label: 'Assign to', description: undefined },
+  render: args => {
+    const [shift, setShift] = useState('early');
+
+    return (
+      <Stack space={2} alignX="left">
+        <Button onPress={() => setShift('late')}>Switch shift</Button>
+        <Autocomplete {...args} items={SHIFT_ITEMS} dependencies={[shift]}>
+          {(item: (typeof SHIFT_ITEMS)[number]) => (
+            <Autocomplete.Option id={item.id}>
+              {item.name} — {shift}
+            </Autocomplete.Option>
+          )}
+        </Autocomplete>
+      </Stack>
+    );
+  },
+});
+
+WithDependencies.test(
+  'Re-renders the options when a listed dependency changes',
+  async ({ canvas, step }) => {
+    const optionFor = async (shift: string) => {
+      const input = canvas.getByRole('combobox');
+      await userEvent.clear(input);
+      // Typing is what opens the list; the query matches both options.
+      await userEvent.type(input, 'a');
+
+      return canvas.findByRole('option', {
+        name: new RegExp(`Ada — ${shift}`),
+      });
+    };
+
+    await step(
+      'The options render with the current outside state',
+      async () => {
+        expect(await optionFor('early')).toBeInTheDocument();
+        // The open popover hides the rest of the page from queries.
+        await userEvent.keyboard('{Escape}');
+      }
+    );
+
+    await step('Changing that state re-renders them', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Switch shift' })
+      );
+
+      expect(await optionFor('late')).toBeInTheDocument();
     });
   }
 );

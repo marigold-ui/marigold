@@ -37,7 +37,7 @@ type RemoveProps =
 export interface TagGroupProps
   extends
     Omit<RAC.TagGroupProps, RemoveProps>,
-    Pick<TagListProps<object>, 'items' | 'children'> {
+    Pick<TagListProps<object>, 'items' | 'children' | 'dependencies'> {
   variant?: string;
   size?: string;
 
@@ -143,6 +143,7 @@ const _TagGroup = ({
   ref,
   items,
   children,
+  dependencies,
   emptyState,
   variant,
   size,
@@ -281,6 +282,7 @@ const _TagGroup = ({
                 <TagList
                   ref={tagListRef}
                   items={items}
+                  dependencies={dependencies}
                   className="contents"
                   renderEmptyState={emptyState}
                 >
@@ -312,6 +314,7 @@ const _TagGroup = ({
               <TagList
                 ref={tagListRef}
                 items={items}
+                dependencies={dependencies}
                 className={classNames.listItems}
                 renderEmptyState={emptyState}
               >
