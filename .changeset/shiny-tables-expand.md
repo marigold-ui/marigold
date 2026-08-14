@@ -23,11 +23,11 @@ gutter, so a group row and a childless row at the same level start their value a
 the same x whether or not there is a control to show. Levels below the root
 indent by one gutter (`--tree-indent`), so a nested row's caret starts where its
 parent's value starts, and the column's own header label takes the same gutter,
-so it sits above the values it heads. Containment is carried by two more things:
-a guide line running down each nested row at its parent's caret, and the group
-row itself, which is filled and emphasised automatically. Expansion is collapsed
-by default and can be controlled with `expandedKeys` / `defaultExpandedKeys` /
-`onExpandedChange`.
+so it sits above the values it heads. Containment is carried by the children
+rather than the parent: nested rows share a filled band across the full row, so
+what belongs to a group is legible in the leading drag and selection columns
+too, which don't indent. Expansion is collapsed by default and can be controlled
+with `expandedKeys` / `defaultExpandedKeys` / `onExpandedChange`.
 
 Drop indicators are level-aware: the insertion line starts at the x of the level
 the row would land at, so a reorder inside an expanded group reads as landing in
@@ -39,11 +39,11 @@ block margin cancels the surplus over the line box, so a group row is exactly as
 tall as a leaf row and the `size` variant's cell padding stays the only thing
 that decides — 33 / 41 / 53px for `compact` / `default` / `spacious`.
 
-New theme keys `treeIndent` and `expandButton`. The group row's fill is
-`foreground/5`, which holds ~1.10:1 whether the row sits on `surface`, on
-`background`, inside a `muted` table or under a hover wash. The guide is
-`foreground/28%` at ~1.83:1 on those same grounds — deliberately clear of the
-row divider it must not be mistaken for, which sits at ~1.36:1.
+New theme keys `treeIndent` and `expandButton`. The band is `foreground/8`,
+which holds ~1.17:1 whether the rows sit on `surface`, on `background` or inside
+a `muted` table, and yields to the hover wash so hovering still reads. `admin`
+and `master` rows keep their access colour at every level — who may see a row
+outranks where it sits in the tree.
 
 Inline editing composes with it: `Table.EditableCell` renders the tree column's
 gutter too, so a row keeps its expand control even when that cell is the editable

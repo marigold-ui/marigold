@@ -2602,43 +2602,27 @@ ExpandableRows.test(
 );
 
 ExpandableRows.test(
-  'A nested row draws a guide, a root row draws none',
+  'Nested rows are banded, rows at the root are not',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent, step }) => {
     const group = rowByName(canvas, 'Settlement run 1 Jul 2026');
 
     await userEvent.click(chevronOf(group));
 
-    const guideOf = (name: string) => {
-      const track = rowByName(canvas, name).querySelector(
-        '[data-tree-column] [data-cell-content]'
-      )!.parentElement!;
-      const style = getComputedStyle(track, '::before');
-      const inset =
-        parseFloat(style.insetInlineStart) || parseFloat(style.left) || 0;
+    const fillOf = (name: string) =>
+      getComputedStyle(rowByName(canvas, name)).backgroundColor;
+    const transparent = fillOf('CLR-10240');
 
-      return {
-        x: Math.round(track.getBoundingClientRect().left + inset),
-        width: Math.round(parseFloat(style.width) || 0),
-      };
-    };
-
-    await step('Nothing is drawn where there is no parent to point at', () => {
-      expect(guideOf('CLR-10240').width).toBe(0);
-      expect(guideOf('Settlement run 1 Jul 2026').width).toBe(0);
+    await step('The children carry the band', () => {
+      // The affordance the indent alone did not carry: it spans the whole row,
+      // so the leading drag and selection columns are inside the group too.
+      expect(fillOf('CLR-10231')).not.toBe(transparent);
+      expect(fillOf('CLR-10232')).toBe(fillOf('CLR-10231'));
     });
 
-    await step('A child gets one, aligned to its parent caret', () => {
-      // The affordance the indent alone did not carry: without this, a child
-      // and a root row differ by 24px of whitespace and nothing else.
-      const caret = chevronOf(group)
-        .querySelector('svg')!
-        .getBoundingClientRect();
-
-      expect(guideOf('CLR-10231').width).toBeGreaterThan(0);
-      expect(guideOf('CLR-10231').x).toBe(
-        Math.round(caret.left + caret.width / 2)
-      );
+    await step('A group row and a root row do not', () => {
+      // A root row that follows an expanded group has to stay outside it.
+      expect(fillOf('Settlement run 1 Jul 2026')).toBe(transparent);
     });
   }
 );

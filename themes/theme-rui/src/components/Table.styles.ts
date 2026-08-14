@@ -27,12 +27,6 @@ export const Table: ThemeComponent<'Table'> = {
       // root does: a root row with no children must not read as the previous
       // group's last child.
       '[--tree-indent-skip:1]',
-      // An alpha rather than a palette rung, for the same reason the group-row
-      // fill is one: it has to hold on `surface`, inside a `muted` table, on an
-      // admin/master row and under a hover wash. Deliberately not
-      // `--color-border`: that is the row divider this line has to be told
-      // apart from.
-      '[--tree-guide:color-mix(in_oklab,var(--color-foreground)_28%,transparent)]',
     ],
     variants: {
       variant: {
@@ -71,11 +65,11 @@ export const Table: ThemeComponent<'Table'> = {
       'disabled:cursor-not-allowed',
       'data-hovered:cursor-pointer data-hovered:ui-state-hover',
       'dragging:opacity-50 dragging:transform-gpu',
-      // Fills a group row whether open or closed, so the row kind survives
-      // greyscale and print where font weight alone would not. `not-hovered` is
-      // explicit because Tailwind's emit order, not this array's, picks the
-      // winning background.
-      'data-has-child-items:not-data-hovered:bg-foreground/5',
+      // The children carry the group, not the parent: a band across the whole
+      // row says what belongs to what even in the leading drag and selection
+      // columns, which don't indent. `:not([data-hovered])` is explicit because
+      // Tailwind's emit order, not this array's, picks the winning background.
+      '[&[data-level]:not([data-level="1"]):not([data-hovered])]:bg-foreground/8',
     ],
     variants: {
       variant: {
@@ -84,12 +78,15 @@ export const Table: ThemeComponent<'Table'> = {
           '**:not-last:[[role=rowheader]]:border-r **:not-last:[[role=rowheader]]:border-border',
           '**:not-last:[[role=gridcell]]:border-r **:not-last:[[role=gridcell]]:border-border',
         ],
+        // `!` on the background for the same reason it is on the border: who
+        // may see a row outranks where it sits in the tree, so the access mark
+        // has to survive the nesting band.
         admin: [
-          'bg-access-admin border-access-admin-accent!',
+          'bg-access-admin! border-access-admin-accent!',
           '*:border-t *:border-access-admin-accent',
         ],
         master: [
-          'bg-access-master border-access-master-accent!',
+          'bg-access-master! border-access-master-accent!',
           '*:border-t *:border-access-master-accent',
         ],
       },
@@ -169,17 +166,6 @@ export const Table: ThemeComponent<'Table'> = {
       '[--tree-level-indent:calc(max(var(--table-row-level,1)-var(--tree-indent-skip),0)*var(--tree-indent))]',
       'ps-(--tree-level-indent)',
       '[[data-has-child-items]_&]:font-semibold',
-      // One guide per ancestor, drawn across the indent the row just took: the
-      // repeat puts a hairline at every `--tree-indent` boundary, and a root
-      // row indents by 0 so it draws none. Spans the row rather than the cell
-      // box, so consecutive children read as one line.
-      'relative',
-      // Control's centre, less how far the control hangs left of the track, so
-      // each line falls under its parent's caret rather than the cell's edge.
-      'before:absolute before:start-[calc(var(--tree-chevron-size)/2-var(--tree-caret-inset))] before:w-(--tree-level-indent)',
-      'before:top-[calc(var(--cell-y-padding)*-1)] before:bottom-[calc(var(--cell-y-padding)*-1)]',
-      'before:bg-[repeating-linear-gradient(to_right,var(--tree-guide)_0_1px,transparent_1px_var(--tree-indent))]',
-      'rtl:before:bg-[repeating-linear-gradient(to_left,var(--tree-guide)_0_1px,transparent_1px_var(--tree-indent))]',
     ],
   }),
   expandButton: cva({
