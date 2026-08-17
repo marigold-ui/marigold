@@ -298,6 +298,10 @@ test('supports custom props', () => {
 
 Run with `pnpm test:unit`.
 
+## AI Toolkit
+
+Committed skills live in `.claude/skills/`; plugins are declared in `.claude/settings.json`. See [.claude/README.md](.claude/README.md) for the conventions they follow and the extra rules for skills with side effects.
+
 ## MCP Servers
 
 This project provides MCP servers for AI-assisted development:
