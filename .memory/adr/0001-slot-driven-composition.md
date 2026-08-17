@@ -52,7 +52,9 @@ Two properties fall out of this that are easy to miss:
 
 The general rule this implies — position parts with CSS rather than by restructuring the React tree — is broader than slots and is recorded separately in [ADR-0002](0002-css-layout-over-children-manipulation.md).
 
-The cost is equally concrete. RAC throws `"A slot prop is required when using slots"` for any unslotted `<Heading>` or `<Text>` rendered inside a publishing container. **Publishing a slot config turns the container into a hazard for structural children.** That is why `noSlot` exists (`utils/noSlot.ts`, a `null as unknown as string | undefined` cast), and it is already needed in six places — `AccordionHeader`, `CalendarHeader`, `PanelCollapsibleHeader`, `Title`, `CollapsibleTrigger`, `Headline` — plus a seventh opt-out in `CalendarPresets` for the `ButtonContext` equivalent.
+### The cost: a publishing container is a hazard for structural children
+
+RAC throws `"A slot prop is required when using slots"` for any unslotted `<Heading>` or `<Text>` rendered inside a publishing container. **Publishing a slot config turns the container into a hazard for structural children.** That is why `noSlot` exists (`utils/noSlot.ts`, a `null as unknown as string | undefined` cast), and it is already needed in six places — `AccordionHeader`, `CalendarHeader`, `PanelCollapsibleHeader`, `Title`, `CollapsibleTrigger`, `Headline` — plus a seventh opt-out in `CalendarPresets` for the `ButtonContext` equivalent.
 
 ## Decision
 
