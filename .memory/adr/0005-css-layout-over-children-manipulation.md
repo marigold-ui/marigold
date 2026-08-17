@@ -19,10 +19,9 @@ There are two ways to get there.
 
 **Declare the layout in CSS and let each part name its area.** The container declares `grid-template-areas`; each part carries `[grid-area:…]` (delivered through its slot config — see [ADR-0004](0004-slot-driven-composition.md)). The tree stays flat.
 
-Marigold has consistently taken the second route, and the code shows how far it goes:
+Marigold's containers overwhelmingly take the second route. Two examples show how far it goes:
 
 - `Panel.Header` / `Page.Header` — `grid-cols-[1fr_auto] [grid-template-areas:'title_actions'_'description_actions']`, with `[grid-area:title|description|actions]` handed to the roles.
-- `Drawer`, `ContextualHelp`, `Sidebar`, `SidebarModal` — one `grid-template-areas` each, parts self-placing.
 - `AppShell` — the whole application frame reflows on the _presence of a child_, in CSS:
 
   ```
@@ -38,9 +37,13 @@ React's own documentation pushes the same direction. On `cloneElement` it is blu
 
 The current CSS baseline supports this: `:has()` is broadly available, and pushing this work into the style engine avoids the extra reflow that a measure-then-rearrange pass in JavaScript incurs.
 
-But the repo is not dogmatic, and the exceptions are the useful part. Children _are_ inspected in `Aside`, `Breadcrumbs`, `OverflowRegion`, `Sidebar/collection.ts` and `SidebarRail`. Four of those are not doing visual placement at all — they build collections, measure overflow, or implement a RAC collection API.
+But the repo is not dogmatic, and the exceptions are the useful part. Children _are_ inspected in a number of components — to build collections, to measure overflow, to implement a RAC collection API, and in a couple of cases to place things.
 
-`Aside` is the genuine counter-example, and worth being honest about:
+**This record deliberately does not list them.** `grep -rl 'Children\.\|cloneElement' packages/components/src` gives today's answer; a list here would give the answer from whenever it was last updated, while looking equally authoritative. An earlier draft of this record enumerated five such components, was wrong about one of them, and had missed four others — which is the argument.
+
+What it lists instead is one worked example on each side of the line.
+
+`Aside` is the sanctioned kind, and worth being honest about:
 
 ```tsx
 const [left, right] = Children.toArray(children);
@@ -50,6 +53,20 @@ const [left, right] = Children.toArray(children);
 That is precisely the wrapper-per-region approach this record rejects below. It survives because position is not something `Aside` infers — it _is_ the component's API, declared in the type: `children: [ReactElement, ReactElement]`. A tuple, not `ReactNode`. `side="left" | "right"` then says which of the two is the aside, and each wrapper carries the flex basis that sizing needs. There is no role for a part to declare and nothing for a grid to place, because a child's identity here comes from its ordinal position and nothing else.
 
 So the test is not "does this component read children" but "does it _infer_ what its children are". `Aside` is told. That is the narrow exception the Decision allows, not a precedent for reading children whenever a layout is awkward.
+
+`Input` is the other side of the same test, and fails it:
+
+```tsx
+cloneElement(icon, {
+  className: cn(
+    'pointer-events-none absolute',
+    classNames.icon,
+    icon.props.className
+  ),
+});
+```
+
+Nothing declared that the icon is an icon — the prop name did, and the component then decided the child needs `absolute`. It clones to inject placement into a child it was handed, which is the alternative rejected below, and it silently overrides a `ref` the consumer set while doing nothing at all for a Fragment. Tracked as DST-1731.
 
 ## Decision
 
@@ -67,7 +84,7 @@ Manipulate children only when:
 - The decision needs a **measurement CSS cannot express** — `OverflowRegion` must know how many items actually fit, which requires observing the DOM.
 - An **enumerated position** is part of the API contract, e.g. `Aside` taking exactly two children.
 
-When you do manipulate children, prefer `Children.toArray` (stable keys) over `cloneElement`. If a class or a default has to reach a child, pass it through **context** — the slot mechanism in ADR-0001 — rather than cloning the element.
+When you do manipulate children, prefer `Children.toArray` (stable keys) over `cloneElement`. If a class or a default has to reach a child, pass it through **context** — the slot mechanism in [ADR-0004](0004-slot-driven-composition.md) — rather than cloning the element.
 
 **Never add a boolean prop whose only job is to tell the container what it contains.** `hasHeader`, `hasDescription`, `withActions` are all `:has()` or a collapsing grid row. This is the `CLAUDE.md` "no mode booleans" rule arriving from the layout side.
 

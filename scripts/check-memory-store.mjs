@@ -162,7 +162,40 @@ for (const name of adrFiles) {
     );
   }
 
-  records.push({ name, number, front });
+  records.push({ name, number, front, source });
+}
+
+// 6. Every citation of another record must be a link that carries the slug.
+//    A bare `ADR-0001` survives a renumber by silently re-pointing at whichever record
+//    later takes that number — a citation that is *wrong* rather than dead, which no
+//    number-only check can detect. Requiring `[ADR-0001](0001-the-slug.md)` moves the
+//    identity into the filename, so the same renumber leaves a target that does not exist.
+for (const { name, source } of records) {
+  const body = source.replace(/^---\r?\n[\s\S]*?\r?\n---/, '');
+  const where = `.memory/adr/${name}`;
+
+  for (const [, cited, target] of body.matchAll(
+    /\[ADR-(\d{4})\]\(([^)]+)\)/g
+  )) {
+    if (!adrFiles.includes(target)) {
+      errors.push(
+        `${where}: cites ADR-${cited} as \`${target}\`, which is not a record in this directory. ` +
+          'If something was renumbered, its slug moved too.'
+      );
+    } else if (!target.startsWith(`${cited}-`)) {
+      errors.push(
+        `${where}: cites ADR-${cited} but links to \`${target}\`. The number and the file disagree.`
+      );
+    }
+  }
+
+  const bare = body.replace(/\[ADR-\d{4}\]\([^)]+\)/g, '');
+  for (const [mention] of bare.matchAll(/ADR-\d{4}/g)) {
+    errors.push(
+      `${where}: mentions ${mention} without linking it. Cite records as ` +
+        '`[ADR-NNNN](NNNN-slug.md)` — a bare number silently re-points at a different record after a renumber.'
+    );
+  }
 }
 
 // 3. Supersede chains must resolve.

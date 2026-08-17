@@ -16,7 +16,7 @@ Marigold has two composition mechanisms that both get called "slots".
 
 **Slot-driven composition** publishes a slot config on RAC's `HeadingContext` / `TextContext` — `{ slots: { title: {…}, description: {…} } }` — which role primitives (`<Title>`, `<Description>`, `<TextValue>`) consume by declaring a matching `slot`. The consumer writes the same `<Title>` in a `<Dialog>`, a `<Panel>` and a `<Card>`; each container decides what it means there.
 
-Eleven containers publish slot configs today: `Card`, `CardHeader`, `ContextualHelp`, `EmptyState`, `ErrorState`, `Page`, `PageHeader`, `Panel`, `PanelHeader`, `PanelCollapsibleHeader`, `SectionMessage` — plus `useOverlayHeaderSlotProps` for the Dialog/Drawer/Tray family and `useMergedTextSlots` for RAC-managed items (`ListBox.Item`, `SelectList.Option`).
+Enough containers publish slot configs that the pattern is the norm rather than an experiment — surfaces (`Card`, `Panel`, `Page`), their headers, and status displays, plus `useOverlayHeaderSlotProps` for the Dialog/Drawer/Tray family and `useMergedTextSlots` for RAC-managed items like `ListBox.Item`. `grep -rl 'HeadingContext\|TextContext' packages/components/src` is the current list; this record does not carry one, because a count in prose is a fact with no owner and this one had already drifted before the record was a day old.
 
 A separate, non-slot-keyed cascade covers actions: Marigold's own `ButtonContext` carries `variant` / `size` / `className` defaults, with `RESET_BUTTON_CONTEXT` to stop it at overlay boundaries.
 
@@ -77,7 +77,7 @@ RAC throws `"A slot prop is required when using slots"` for any unslotted `<Head
 
 ## Alternatives rejected
 
-**Per-container compound parts for every role** (`Panel.Title`, `Dialog.Title`, `Card.Title`). Discoverable and type-safe, and it never throws. Rejected because the roles genuinely recur: the same title/description pair appears in every container listed above plus the overlay family, and each new container would add parts that differ only in heading level and class. It also puts the burden of knowing the correct heading level on whoever adds the container.
+**Per-container compound parts for every role** (`Panel.Title`, `Dialog.Title`, `Card.Title`). Discoverable and type-safe, and it never throws. Rejected because the roles genuinely recur: the same title/description pair appears across the surfaces, their headers and the overlay family, and each new container would add parts that differ only in heading level and class. It also puts the burden of knowing the correct heading level on whoever adds the container.
 
 **Configuration props** (`<Panel title="…" description="…" />`). Simplest to type and impossible to misplace. Rejected under the composition rules in `CLAUDE.md`: the moment a title needs a badge, a tooltip or a link, a string prop becomes a `ReactNode` prop, then a render prop. Children compose; props don't.
 
