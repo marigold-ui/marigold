@@ -38,7 +38,18 @@ React's own documentation pushes the same direction. On `cloneElement` it is blu
 
 The current CSS baseline supports this: `:has()` is broadly available, and pushing this work into the style engine avoids the extra reflow that a measure-then-rearrange pass in JavaScript incurs.
 
-But the repo is not dogmatic, and the exceptions are the useful part. Children _are_ inspected in `Aside`, `Breadcrumbs`, `OverflowRegion`, `Sidebar/collection.ts` and `SidebarRail`. None of those are doing visual placement — they are building collections, measuring overflow, or implementing a RAC collection API.
+But the repo is not dogmatic, and the exceptions are the useful part. Children _are_ inspected in `Aside`, `Breadcrumbs`, `OverflowRegion`, `Sidebar/collection.ts` and `SidebarRail`. Four of those are not doing visual placement at all — they build collections, measure overflow, or implement a RAC collection API.
+
+`Aside` is the genuine counter-example, and worth being honest about:
+
+```tsx
+const [left, right] = Children.toArray(children);
+// …each wrapped in its own positioning <div>
+```
+
+That is precisely the wrapper-per-region approach this record rejects below. It survives because position is not something `Aside` infers — it _is_ the component's API, declared in the type: `children: [ReactElement, ReactElement]`. A tuple, not `ReactNode`. `side="left" | "right"` then says which of the two is the aside, and each wrapper carries the flex basis that sizing needs. There is no role for a part to declare and nothing for a grid to place, because a child's identity here comes from its ordinal position and nothing else.
+
+So the test is not "does this component read children" but "does it _infer_ what its children are". `Aside` is told. That is the narrow exception the Decision allows, not a precedent for reading children whenever a layout is awkward.
 
 ## Decision
 
