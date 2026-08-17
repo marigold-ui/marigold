@@ -11,7 +11,7 @@
  *    citing it becomes ambiguous. `.memory/README.md` argues that one-decision-per-file
  *    makes the store merge-safe — that holds for *contradiction*, not for *ID collision*,
  *    and this check closes the gap.
- * 2. **`id` disagreeing with the filename**, usually from a copy of TEMPLATE.md whose
+ * 2. **`id` disagreeing with the filename**, usually from a copy of 0000-template.md whose
  *    frontmatter was never filled in.
  * 3. **A supersede chain pointing at nothing.** `superseded-by ADR-0009` where no ADR-0009
  *    exists reads as "this was replaced" while hiding what replaced it.
@@ -59,7 +59,7 @@ const readFrontmatter = source => {
     if (!pair) continue;
 
     const [, key, rest] = pair;
-    // Strip trailing `# …` comments, as on the `status` line in TEMPLATE.md.
+    // Strip trailing `# …` comments, as on the `status` line in 0000-template.md.
     const value = rest.replace(/\s+#.*$/, '').trim();
 
     if (value === '') {
@@ -79,7 +79,7 @@ const readFrontmatter = source => {
 // ---------------------------------------------------------------------------
 
 const adrFiles = readdirSync(adrDir)
-  .filter(name => name.endsWith('.md') && name !== 'TEMPLATE.md')
+  .filter(name => name.endsWith('.md') && name !== '0000-template.md')
   .sort();
 
 const byNumber = new Map();

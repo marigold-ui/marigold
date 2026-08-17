@@ -1,5 +1,5 @@
 ---
-id: ADR-0002
+id: ADR-0005
 status: proposed # proposed | accepted | superseded-by ADR-NNNN
 date: 2026-08-17
 applies_to:
@@ -7,7 +7,7 @@ applies_to:
   - 'themes/**/*.styles.ts'
 ---
 
-# 0002. Place parts with CSS, not by rearranging React children
+# 0005. Place parts with CSS, not by rearranging React children
 
 ## Context
 
@@ -17,7 +17,7 @@ There are two ways to get there.
 
 **Restructure the React tree.** Read the children, sort them into buckets, wrap each bucket in a positioning `<div>`. In practice that means `Children.toArray`, `isValidElement` type-sniffing, `cloneElement` to inject a class, and a conditional wrapper for every optional part.
 
-**Declare the layout in CSS and let each part name its area.** The container declares `grid-template-areas`; each part carries `[grid-area:…]` (delivered through its slot config — see [ADR-0001](0001-slot-driven-composition.md)). The tree stays flat.
+**Declare the layout in CSS and let each part name its area.** The container declares `grid-template-areas`; each part carries `[grid-area:…]` (delivered through its slot config — see [ADR-0004](0004-slot-driven-composition.md)). The tree stays flat.
 
 Marigold has consistently taken the second route, and the code shows how far it goes:
 

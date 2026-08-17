@@ -59,7 +59,7 @@ Write one only when at least one of these holds:
 - **Surprising without context.** Someone reading the code cold would "fix" it back, not understanding why it is the way it is.
 - **A live alternative was rejected.** Without the record, the same alternative gets proposed again next quarter.
 
-Copy `.memory/adr/TEMPLATE.md` to `.memory/adr/NNNN-<slug>.md` and fill in the frontmatter. `NNNN` is the DST ticket the decision was made under, not the next free number — the reason is in [.memory/README.md](../../../.memory/README.md), along with the rest of the ADR conventions and the rule against editing an accepted record.
+Copy `.memory/adr/0000-template.md` to `.memory/adr/NNNN-<slug>.md`, taking the next free number, and fill in the frontmatter. The field meanings and the rest of the ADR conventions are in [.memory/README.md](../../../.memory/README.md).
 
 Set `status: proposed`, and tell the user it is the author's job to flip it to `accepted` in the PR once the review approves. Nothing does that automatically.
 

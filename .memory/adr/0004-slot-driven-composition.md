@@ -1,12 +1,12 @@
 ---
-id: ADR-0001
+id: ADR-0004
 status: proposed # proposed | accepted | superseded-by ADR-NNNN
 date: 2026-08-17
 applies_to:
   - 'packages/components/src/**/*.tsx'
 ---
 
-# 0001. Publish a slot config only when the container knows something the consumer cannot
+# 0004. Publish a slot config only when the container knows something the consumer cannot
 
 ## Context
 
@@ -50,7 +50,7 @@ Two properties fall out of this that are easy to miss:
 - **Optional parts cost nothing.** Omit the `<Description>` and its grid row collapses. No conditional wrapper, no `hasDescription` branch in the container.
 - **Source order stops mattering.** `<AppShell>`'s own doc comment says it outright: place `<Sidebar>`, `<TopNavigation>` and `<Page>` in any order, "each owns its own grid area."
 
-The general rule this implies — position parts with CSS rather than by restructuring the React tree — is broader than slots and is recorded separately in [ADR-0002](0002-css-layout-over-children-manipulation.md).
+The general rule this implies — position parts with CSS rather than by restructuring the React tree — is broader than slots and is recorded separately in [ADR-0005](0005-css-layout-over-children-manipulation.md).
 
 ### The cost: a publishing container is a hazard for structural children
 
