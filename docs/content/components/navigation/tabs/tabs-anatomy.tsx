@@ -1,5 +1,7 @@
 export const TabsAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of Tabs: a Tab list of Tabs with the selected one marked, above the Tab panel showing its content"
     viewBox="100 45 570 330"
     className="mx-auto h-auto w-full max-w-[100%]"
     xmlns="http://www.w3.org/2000/svg"

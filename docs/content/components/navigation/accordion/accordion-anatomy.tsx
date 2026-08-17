@@ -1,5 +1,7 @@
 export const AccordionAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of an Accordion: Items that each pair a Header with the Content it expands"
     viewBox="70 50 760 255"
     className="mx-auto h-auto w-full max-w-[100%]"
     xmlns="http://www.w3.org/2000/svg"

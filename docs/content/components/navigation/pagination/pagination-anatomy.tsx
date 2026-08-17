@@ -1,5 +1,7 @@
 export const PaginationAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of a Pagination: a Previous button, Page buttons from the First page to the Last page with an Ellipsis for the hidden ones, and a Next button"
     viewBox="0 85 900 215"
     className="mx-auto h-auto w-full max-w-[100%]"
     xmlns="http://www.w3.org/2000/svg"

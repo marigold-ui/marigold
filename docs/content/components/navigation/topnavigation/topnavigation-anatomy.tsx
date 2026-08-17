@@ -1,5 +1,7 @@
 export const TopNavigationAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of a TopNavigation: a Container holding the Start, Middle and End slots"
     viewBox="40 30 580 210"
     className="mx-auto h-auto w-full max-w-[100%]"
     xmlns="http://www.w3.org/2000/svg"

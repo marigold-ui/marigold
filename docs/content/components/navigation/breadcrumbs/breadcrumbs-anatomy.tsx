@@ -1,5 +1,7 @@
 export const BreadcrumbsAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of Breadcrumbs: Breadcrumbs items joined by Separators"
     viewBox="60 40 580 145"
     className="mx-auto h-auto w-full max-w-[100%]"
     xmlns="http://www.w3.org/2000/svg"
