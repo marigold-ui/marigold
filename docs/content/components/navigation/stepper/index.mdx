@@ -1,7 +1,7 @@
 ---
 title: Stepper
 description: A component for showing a user's position in a multi-step task.
-badge: new
+badge: BETA
 ---
 
 The `<Stepper>` component shows where a user stands in a task that spans several steps, such as a checkout, an onboarding flow, or a multi-page form. Each step reports whether it is done, current, failed, or still ahead, so the progress is visible at a glance and announced to screen readers.
@@ -14,7 +14,42 @@ The `<Stepper>` component shows where a user stands in a task that spans several
 
 ## Anatomy
 
-A `<Stepper>` is a navigation landmark wrapping an ordered list. Each step has a marker (a number, a check when it is done, or a warning when it failed), a label, and a connector running to the next step.
+A `<Stepper>` is a navigation landmark wrapping an ordered list. Each step carries a marker, a label, and a connector running to the next step.
+
+<ImageZoom
+  src="/stepper/stepper-anatomy.svg"
+  alt="Anatomy of the Stepper component"
+  width={800}
+  height={263}
+  className="mx-auto block"
+/>
+
+<ul>
+  <li>
+    <b>Step:</b> One entry in the task, added with `<Stepper.Item>`. It is a
+    link when it has an `href`, a button when it can be returned to, and plain
+    text when it cannot.
+  </li>
+  <li>
+    <b>Marker:</b> The circle that carries the step's state. It shows the step
+    number, a check once the step is done, or a warning when it failed.
+  </li>
+  <li>
+    <b>Label:</b> The name of the step, passed as the item's children. It is
+    also the step's accessible name, so it is never optional.
+  </li>
+  <li>
+    <b>Connector:</b> The line running to the next step. It takes the done
+    colour once the step before it is complete, which is what makes progress
+    readable as a filled trail rather than as four separate circles.
+  </li>
+</ul>
+
+## Appearance
+
+<AppearanceDemo component={'Stepper'} />
+
+<AppearanceTable component={'Stepper'} />
 
 ## Usage
 
@@ -24,13 +59,30 @@ The flow owns the state. `selectedKey` says where the user is, and `completedKey
 
 <ComponentDemo name="stepper-basic" />
 
-## Appearance
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      <ul>
+        <li>
+          Use a stepper when the steps run in a fixed order and the task has a
+          clear end
+        </li>
+        <li>
+          Keep labels to one or two words so the row fits without hiding them
+        </li>
+        <li>Let users return to steps they have already finished</li>
+      </ul>
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use a stepper as page navigation, or for a task of only two steps
+      where the progress is already obvious.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
-<AppearanceDemo component={'Stepper'} />
-
-<AppearanceTable component={'Stepper'} />
-
-## States
+### States
 
 A step is in exactly one state, resolved in this order: `disabled`, then `error`, then `current`, then `completed`, then `upcoming`. Each state is carried by a marker shape and a text label as well as by colour, so the meaning never depends on colour alone.
 
@@ -38,7 +90,7 @@ A step is in exactly one state, resolved in this order: `disabled`, then `error`
 
 An errored step stays clickable on purpose. A user who is told a step failed needs a way back to it.
 
-## Driving a multi-step form
+### Driving a multi-step form
 
 The stepper reports progress, it does not drive it. Your "Continue" button owns both the panel that is shown and the keys handed back to `<Stepper>`: it adds the step being left to `completedKeys` and moves `selectedKey` on. Because completed steps stay clickable, the user can jump back to anything they have already finished without losing it.
 
@@ -46,15 +98,15 @@ The stepper reports progress, it does not drive it. Your "Continue" button owns 
 
 Keep the panel and the stepper in the same source of truth, as the example does with a single `index`. Deriving one from the other is what stops the marker and the visible content drifting apart.
 
-## Validation errors
+### Validation errors
 
-`errorKeys` is what puts a failed step on the stepper instead of in a toast that disappears after five seconds. Pass the keys of the steps whose validation failed, and hand the field-level messages to the [`<Form>`](/components/form/form) as `validationErrors` so each input explains its own problem.
+When a user submits a step that fails validation, they need to see which step broke and get back to it. `errorKeys` puts the failure on the stepper itself instead of in a toast that disappears after five seconds. Pass the keys of the steps whose validation failed, and hand the field-level messages to the [`<Form>`](/components/form/form) as `validationErrors` so each input explains its own problem.
 
 <ComponentDemo name="stepper-validation-errors" />
 
 Two things are worth copying from the example. Clear the step's key as soon as the user edits the field, so the marker and the input never disagree about whether the step is still broken. And remember that an errored step stays selectable by design: if your flow lets people move past a failed step, the red marker is their way back to it.
 
-## Which steps can be clicked
+### Which steps can be clicked
 
 By default a user can return to any step they have completed, any step that failed, and the step they are on. Steps still ahead are inert text, not disabled buttons, because they are not controls yet.
 
@@ -78,9 +130,9 @@ Two props change this:
 </Stepper>
 ```
 
-## Links or buttons
+### Links or buttons
 
-Give a `<Stepper.Item>` an `href` and it renders as a real link, so middle-click, open in a new tab, and copy link all work. Without an `href`, the step renders as a button and only calls `onSelectionChange`.
+When each step of your flow has its own URL, the steps should behave like the links they are, so middle-click, open in a new tab, and copy link all work. Give a `<Stepper.Item>` an `href` and it renders as a real link. Without an `href`, the step renders as a button and only calls `onSelectionChange`.
 
 A bare `href` performs a real page load, which is usually not what a single-page app wants. Wrap the tree in a [`<RouterProvider>`](/components/application/routerprovider) and hand it your router's navigate function: the steps stay real anchors for the browser, but clicking one routes client-side. With hrefs the route is the source of truth, so derive `selectedKey` from it and skip `onSelectionChange` entirely.
 
@@ -88,18 +140,45 @@ A bare `href` performs a real page load, which is usually not what a single-page
 
 Modifier clicks are deliberately left alone. Cmd-click and middle-click still open a new tab, because that is what a link is for.
 
-## Long flows
+### Long flows
 
-When there are more steps than labels will fit, `hideLabels` drops the labels visually while keeping them for screen readers. Do not remove the labels from your JSX to achieve this: an unlabelled step has no accessible name.
+When there are more steps than labels will fit, the row overflows its container and the labels become unreadable anyway. `hideLabels` drops them visually while keeping them for screen readers. Do not remove the labels from your JSX to achieve this: an unlabelled step has no accessible name.
 
 Hiding the labels also takes away a sighted user's sense of how far along they are, so `hideLabels` adds a visible "Step 3 of 5" counter in exchange. The counter is hidden from assistive technology, because every step already announces its own position and the counter would only repeat it.
 
 <ComponentDemo name="stepper-hide-labels" />
 
-## Accessibility
+### Accessibility
 
 - The stepper renders a `<nav>` landmark around an ordered list, so screen reader users can jump to it or past it. Give it an `aria-label` when a page has more than one landmark, otherwise it falls back to a localized "Progress".
 - Avoid labelling both the stepper and a `<Panel>` wrapped directly around it. Two nested labelled regions add noise without adding information.
 - Each step announces its label, its position, and its state, for example "Choose plan, Step 2 of 4, current step".
 - Activation follows the element: Enter on a link step, Enter or Space on a button step.
 - Colour transitions are removed when the user prefers reduced motion.
+
+## Props
+
+<StorybookHintMessage component={'Stepper'} />
+
+### Stepper
+
+<AutoTypeTable path="Stepper" name="StepperProps" />
+
+### Stepper.Item
+
+<AutoTypeTable path="Stepper/StepperItem" name="StepperItemProps" />
+
+## Alternative components
+
+<ul>
+  <li>
+    [Tabs](/components/navigation/tabs): Use tabs when the sections are at the
+    same level and can be visited in any order. A stepper implies a sequence
+    with a beginning and an end.
+  </li>
+  <li>
+    [Breadcrumbs](/components/navigation/breadcrumbs): Breadcrumbs show where a
+    page sits in a hierarchy. A stepper shows how far along a task is, which is
+    progress rather than location.
+  </li>
+</ul>
