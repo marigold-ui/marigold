@@ -61,7 +61,7 @@ Write one only when at least one of these holds:
 - **Surprising without context.** Someone reading the code cold would "fix" it back, not understanding why it is the way it is.
 - **A live alternative was rejected.** Without the record, the same alternative gets proposed again next quarter.
 
-Copy `.memory/adr/TEMPLATE.md` to `.memory/adr/NNNN-<slug>.md`, taking the next free number. Fill in the frontmatter — `id`, `status`, `date`, and an `applies_to` glob narrow enough that the record only loads for work it governs.
+Copy `.memory/adr/0000-template.md` to `.memory/adr/NNNN-<slug>.md`, taking the next free number. Fill in the frontmatter — `id`, `status`, `date`, and an `applies_to` glob narrow enough that the record only loads for work it governs.
 
 Set `status: proposed`. It becomes `accepted` when the PR carrying it merges.
 

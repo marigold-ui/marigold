@@ -45,7 +45,7 @@ Split the file once it passes roughly 200 lines — long files get read less fai
 
 ## ADR conventions
 
-One decision per file, `adr/NNNN-<slug>.md`, numbered sequentially from `0001`. Start from `TEMPLATE.md`.
+One decision per file, `adr/NNNN-<slug>.md`, numbered sequentially from `0001`. Start from `0000-template.md`.
 
 Frontmatter carries:
 
