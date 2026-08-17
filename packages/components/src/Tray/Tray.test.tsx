@@ -67,6 +67,7 @@ const dragState = vi.hoisted(() => ({
 }));
 
 const mockAnimate = vi.hoisted(() => vi.fn());
+const mockDragControls = vi.hoisted(() => ({ start: vi.fn() }));
 
 vi.mock('motion/react', async () => {
   const React = await import('react');
@@ -82,6 +83,7 @@ vi.mock('motion/react', async () => {
       React.createElement(React.Fragment, null, children),
     domMax: {},
     useMotionValue: () => ({ get: () => 0, set: () => {} }),
+    useDragControls: () => mockDragControls,
     useReducedMotion: () => false,
     animate: mockAnimate,
     cubicBezier: () => [0, 0, 0, 0],
@@ -105,6 +107,7 @@ vi.mock('motion/react-m', async () => {
 beforeEach(() => {
   dragState.onDragEnd = undefined;
   mockAnimate.mockClear();
+  mockDragControls.start.mockClear();
 });
 
 test('drag down far enough dismisses the tray', async () => {
@@ -153,6 +156,36 @@ test('small drag snaps tray back', async () => {
 
   expect(screen.getByRole('dialog')).toBeInTheDocument();
   expect(mockAnimate).toHaveBeenCalled();
+});
+
+const openTray = async () => {
+  renderWithOverlay(<Basic.Component />);
+  await user.click(screen.getByRole('button', { name: 'Open Tray' }));
+  await waitFor(() => {
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+  });
+};
+
+test('does not start a drag from inside the tray content', async () => {
+  await openTray();
+
+  await user.pointer({
+    keys: '[MouseLeft>]',
+    target: screen.getByText(/slides in from the bottom/),
+  });
+
+  expect(mockDragControls.start).not.toHaveBeenCalled();
+});
+
+test('starts a drag from the tray chrome', async () => {
+  await openTray();
+
+  await user.pointer({
+    keys: '[MouseLeft>]',
+    target: screen.getByText('Tray Title'),
+  });
+
+  expect(mockDragControls.start).toHaveBeenCalled();
 });
 
 // DSTSUP-261 hidden-pass guard contract.

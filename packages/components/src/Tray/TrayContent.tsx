@@ -28,6 +28,7 @@ export const TrayContent = ({ children, className }: TrayContentProps) => {
           node.style.minHeight = `${node.offsetHeight}px`;
         }
       }}
+      data-tray-content
       className={cn('[grid-area:content]', classNames.content, className)}
     >
       {children}

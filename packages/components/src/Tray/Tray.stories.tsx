@@ -274,6 +274,28 @@ SlotPrimitives.test(
   }
 );
 
+export const ScrollableContent = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => (
+    <Tray.Trigger>
+      <Button>Open Tray</Button>
+      <Tray {...args}>
+        <Tray.Title>Pick a city</Tray.Title>
+        <Tray.Content>
+          <Stack space={2}>
+            {Array.from({ length: 40 }, (_, i) => (
+              <Text key={i}>City {i + 1}</Text>
+            ))}
+          </Stack>
+        </Tray.Content>
+        <Tray.Actions>
+          <Button slot="close">Close</Button>
+        </Tray.Actions>
+      </Tray>
+    </Tray.Trigger>
+  ),
+});
+
 /**
  * A bare `<Title slot="title">` (no `<Tray.Header>`, no description) labels the
  * tray dialog automatically via `aria-labelledby`.

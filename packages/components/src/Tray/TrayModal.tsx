@@ -2,10 +2,12 @@ import {
   AnimatePresence,
   animate,
   cubicBezier,
+  useDragControls,
   useMotionValue,
   useReducedMotion,
 } from 'motion/react';
 import { create } from 'motion/react-m';
+import type { PointerEvent as ReactPointerEvent } from 'react';
 import { use } from 'react';
 import type RAC from 'react-aria-components';
 import { OverlayTriggerStateContext } from 'react-aria-components/Dialog';
@@ -44,6 +46,30 @@ const staticTransition = {
   ease: cubicBezier(0.32, 0.72, 0, 1),
 };
 
+const SCROLLABLE_OVERFLOW = new Set(['auto', 'scroll']);
+
+const startsInScrollableBody = (target: Element, boundary: Element) => {
+  for (
+    let node: Element | null = target;
+    node && node !== boundary;
+    node = node.parentElement
+  ) {
+    if (node.hasAttribute('data-tray-content')) {
+      return true;
+    }
+
+    const { overflowY } = getComputedStyle(node);
+    if (
+      SCROLLABLE_OVERFLOW.has(overflowY) &&
+      node.scrollHeight > node.clientHeight
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
 export const TrayModal = ({
   open,
   onOpenChange,
@@ -56,6 +82,15 @@ export const TrayModal = ({
   const reducedMotion = useReducedMotion();
   const h = typeof window !== 'undefined' ? window.innerHeight : 0;
   const y = useMotionValue(h);
+  const dragControls = useDragControls();
+
+  const startDrag = (event: ReactPointerEvent<Element>) => {
+    if (startsInScrollableBody(event.target as Element, event.currentTarget)) {
+      return;
+    }
+
+    dragControls.start(event);
+  };
 
   const handleOpenChange = (isOpen: boolean) => {
     onOpenChange?.(isOpen);
@@ -101,8 +136,11 @@ export const TrayModal = ({
               animate={{ y: 0 }}
               exit={{ y: h }}
               transition={staticTransition}
-              style={{ y }}
+              style={{ y, userSelect: 'none', WebkitUserSelect: 'none' }}
               drag="y"
+              dragListener={false}
+              dragControls={dragControls}
+              onPointerDown={startDrag}
               dragConstraints={{ top: 0 }}
               onDragEnd={(_e, { offset, velocity }) => {
                 if (offset.y > window.innerHeight * 0.75 || velocity.y > 10) {
