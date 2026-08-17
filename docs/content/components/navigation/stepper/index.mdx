@@ -46,6 +46,14 @@ The stepper reports progress, it does not drive it. Your "Continue" button owns 
 
 Keep the panel and the stepper in the same source of truth, as the example does with a single `index`. Deriving one from the other is what stops the marker and the visible content drifting apart.
 
+## Validation errors
+
+`errorKeys` is what puts a failed step on the stepper instead of in a toast that disappears after five seconds. Pass the keys of the steps whose validation failed, and hand the field-level messages to the [`<Form>`](/components/form/form) as `validationErrors` so each input explains its own problem.
+
+<ComponentDemo name="stepper-validation-errors" />
+
+Two things are worth copying from the example. Clear the step's key as soon as the user edits the field, so the marker and the input never disagree about whether the step is still broken. And remember that an errored step stays selectable by design: if your flow lets people move past a failed step, the red marker is their way back to it.
+
 ## Which steps can be clicked
 
 By default a user can return to any step they have completed, any step that failed, and the step they are on. Steps still ahead are inert text, not disabled buttons, because they are not controls yet.
