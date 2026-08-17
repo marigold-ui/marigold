@@ -9,6 +9,9 @@ on:
       - 'docs/content/**'
       - 'docs/app/**'
       - 'docs/scripts/validate-links.ts'
+      # The `lint:links` entry point and the `next-validate-link` version both
+      # live here, so a change to either has to re-run the check.
+      - 'docs/package.json'
       - '.github/workflows/validate-links.yml'
 
 concurrency:
