@@ -1,5 +1,7 @@
 export const DialogAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of a Dialog: a Title, Content, a Close button and Actions, sitting on the Underlay"
     viewBox="40 20 870 425"
     className="mx-auto h-auto w-full max-w-[100%]"
     xmlns="http://www.w3.org/2000/svg"

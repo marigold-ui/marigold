@@ -1,5 +1,7 @@
 export const ContextualHelpAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of a ContextualHelp: a Trigger button opening a Popover that holds the Dialog content"
     viewBox="120 30 740 370"
     className="mx-auto h-auto w-full max-w-[100%]"
     xmlns="http://www.w3.org/2000/svg"

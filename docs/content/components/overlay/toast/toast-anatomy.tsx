@@ -1,5 +1,7 @@
 export const ToastAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of a Toast: an Icon beside the message, with a Close button"
     viewBox="80 40 800 190"
     className="mx-auto h-auto w-full max-w-[100%]"
     xmlns="http://www.w3.org/2000/svg"

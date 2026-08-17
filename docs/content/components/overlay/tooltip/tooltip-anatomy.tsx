@@ -1,5 +1,7 @@
 export const TooltipAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of a Tooltip: a Trigger with a Tooltip attached to it by a Caret tip"
     viewBox="140 40 620 300"
     className="mx-auto h-auto w-full max-w-[100%]"
     xmlns="http://www.w3.org/2000/svg"
