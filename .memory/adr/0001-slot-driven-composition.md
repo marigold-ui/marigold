@@ -54,7 +54,7 @@ The general rule this implies — position parts with CSS rather than by restruc
 
 ### The cost: a publishing container is a hazard for structural children
 
-RAC throws `"A slot prop is required when using slots"` for any unslotted `<Heading>` or `<Text>` rendered inside a publishing container. **Publishing a slot config turns the container into a hazard for structural children.** That is why `noSlot` exists (`utils/noSlot.ts`, a `null as unknown as string | undefined` cast), and it is already needed in six places — `AccordionHeader`, `CalendarHeader`, `PanelCollapsibleHeader`, `Title`, `CollapsibleTrigger`, `Headline` — plus a seventh opt-out in `CalendarPresets` for the `ButtonContext` equivalent.
+RAC throws `"A slot prop is required when using slots"` for any unslotted `<Heading>` or `<Text>` rendered inside a publishing container. **Publishing a slot config turns the container into a hazard for structural children.** That is why `noSlot` exists (`utils/noSlot.ts`, a `null as unknown as string | undefined` cast). Every component that opts out imports it — `grep -rl noSlot packages/components/src` is the current list, and it grows with each publishing container. `CalendarPresets` does the same thing with a bare `slot={null}` for the `ButtonContext` equivalent.
 
 ## Decision
 
@@ -77,7 +77,7 @@ RAC throws `"A slot prop is required when using slots"` for any unslotted `<Head
 
 ## Alternatives rejected
 
-**Per-container compound parts for every role** (`Panel.Title`, `Dialog.Title`, `Card.Title`). Discoverable and type-safe, and it never throws. Rejected because the roles genuinely recur: the same title/description pair appears in eleven containers plus the overlay family, and each new container would add parts that differ only in heading level and class. It also puts the burden of knowing the correct heading level on whoever adds the container.
+**Per-container compound parts for every role** (`Panel.Title`, `Dialog.Title`, `Card.Title`). Discoverable and type-safe, and it never throws. Rejected because the roles genuinely recur: the same title/description pair appears in every container listed above plus the overlay family, and each new container would add parts that differ only in heading level and class. It also puts the burden of knowing the correct heading level on whoever adds the container.
 
 **Configuration props** (`<Panel title="…" description="…" />`). Simplest to type and impossible to misplace. Rejected under the composition rules in `CLAUDE.md`: the moment a title needs a badge, a tooltip or a link, a string prop becomes a `ReactNode` prop, then a render prop. Children compose; props don't.
 
