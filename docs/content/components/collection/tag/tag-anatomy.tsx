@@ -1,5 +1,7 @@
 export const TagAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of a Tag group: a Group label above a Tag group of tags, each with a Tag label and a Remove button"
     viewBox="100 30 790 290"
     className="mx-auto h-auto w-full max-w-[100%]"
     xmlns="http://www.w3.org/2000/svg"
