@@ -1,0 +1,75 @@
+---
+title: Stepper
+description: A component for showing a user's position in a multi-step task.
+badge: new
+---
+
+The `<Stepper>` component shows where a user stands in a task that spans several steps, such as a checkout, an onboarding flow, or a multi-page form. Each step reports whether it is done, current, failed, or still ahead, so the progress is visible at a glance and announced to screen readers.
+
+<Callout title="Not the same as the number field stepper">
+  `<NumberField>` uses the word "stepper" for its increment and decrement
+  buttons, controlled with `hideStepper`. The two are unrelated: that one adjusts
+  a value, this one tracks progress through a task.
+</Callout>
+
+## Anatomy
+
+A `<Stepper>` is a navigation landmark wrapping an ordered list. Each step has a marker (a number, a check when it is done, or a warning when it failed), a label, and a connector running to the next step.
+
+## Usage
+
+`<Stepper>` takes `<Stepper.Item>` children, one per step, in the order they occur. Every item needs a unique `id`, and every item needs a label as its children, because the label is the step's accessible name.
+
+The flow owns the state. `selectedKey` says where the user is, and `completedKeys` says which steps are done. Marigold never advances the stepper and never marks a step complete on its own: only your code knows whether a step's validation passed or its data was saved.
+
+<ComponentDemo name="stepper-basic" />
+
+## Appearance
+
+<AppearanceDemo component={'Stepper'} />
+
+<AppearanceTable component={'Stepper'} />
+
+## States
+
+A step is in exactly one state, resolved in this order: `disabled`, then `error`, then `current`, then `completed`, then `upcoming`. Each state is carried by a marker shape and a text label as well as by colour, so the meaning never depends on colour alone.
+
+<ComponentDemo name="stepper-states" />
+
+An errored step stays clickable on purpose. A user who is told a step failed needs a way back to it.
+
+## Which steps can be clicked
+
+By default a user can return to any step they have completed, any step that failed, and the step they are on. Steps still ahead are inert text, not disabled buttons, because they are not controls yet.
+
+Two props change this:
+
+- `disabledKeys` marks steps that are unavailable. They are never clickable, and nothing overrides that.
+- `selectableKeys` replaces the default rule outright. Pass it when a server decides which steps are reachable.
+
+```tsx
+<Stepper
+  aria-label="Booking progress"
+  selectedKey={currentStep}
+  completedKeys={completedSteps}
+  selectableKeys={availableSteps}
+>
+```
+
+## Links or buttons
+
+Give a `<Stepper.Item>` an `href` and it renders as a real link, so middle-click, open in a new tab, and copy link all work. Wrap your app in a `<RouterProvider>` and those links route client-side. Without an `href`, the step renders as a button and only calls `onSelectionChange`.
+
+## Long flows
+
+When there are more steps than labels will fit, `hideLabels` drops the labels visually while keeping them for screen readers. Do not remove the labels from your JSX to achieve this: an unlabelled step has no accessible name.
+
+<ComponentDemo name="stepper-hide-labels" />
+
+## Accessibility
+
+- The stepper renders a `<nav>` landmark around an ordered list, so screen reader users can jump to it or past it. Give it an `aria-label` when a page has more than one landmark, otherwise it falls back to a localized "Progress".
+- Avoid labelling both the stepper and a `<Panel>` wrapped directly around it. Two nested labelled regions add noise without adding information.
+- Each step announces its label, its position, and its state, for example "Choose plan, Step 2 of 4, current step".
+- Activation follows the element: Enter on a link step, Enter or Space on a button step.
+- Colour transitions are removed when the user prefers reduced motion.
