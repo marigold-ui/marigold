@@ -105,6 +105,9 @@ export const States = meta.story({
  */
 export const Controlled = meta.story({
   tags: ['component-test'],
+  // No snapshot: this demonstrates behaviour, and its appearance is a 3-step
+  // subset of Basic. Same call the repo makes for every other `Controlled` story.
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     'aria-label': 'Onboarding progress',
   },
@@ -156,46 +159,33 @@ const EVENT_STEPS = [
 ];
 
 /**
- * The case `hideLabels` exists for, shown both ways so the trade is visible.
+ * The case `hideLabels` exists for: twelve steps, where no amount of horizontal
+ * space makes twelve labels fit inline. The labels are still authored, so a
+ * screen reader still hears "Ticket categories"; sighted users get the markers
+ * plus the counter, which is the only thing telling them the flow is twelve
+ * steps long without counting circles.
  *
- * Hidden labels: the markers keep their rhythm and the counter carries the total.
- * Visible labels: twelve labels have nowhere to go, the connectors collapse to
- * their minimum, and the row runs out of width. The labels are authored either
- * way, so a screen reader hears "Ticket categories" in both.
+ * Stacking the labels under the markers was measured as an alternative (it takes
+ * the overflow from 492px to 12px and the row from 44px to 76px tall) and
+ * deliberately not taken: `hideLabels` stays the single answer for flows too long
+ * to label, so there is one way to build a stepper rather than two.
  */
 export const ManySteps = meta.story({
   args: {
+    'aria-label': 'Event creation progress',
+    hideLabels: true,
     selectedKey: 'prices',
     completedKeys: ['basics', 'dates', 'venue', 'categories'],
   },
-  render: args => {
-    const items = EVENT_STEPS.map(step => (
-      <Stepper.Item key={step.id} id={step.id}>
-        {step.label}
-      </Stepper.Item>
-    ));
-
-    return (
-      <Stack space={8}>
-        <Stack space={2}>
-          <Text>Labels hidden</Text>
-          <Stepper {...args} aria-label="Event creation progress" hideLabels>
-            {items}
-          </Stepper>
-        </Stack>
-        <Stack space={2}>
-          <Text>Labels visible</Text>
-          <Stepper
-            {...args}
-            aria-label="Event creation progress, with labels"
-            hideLabels={false}
-          >
-            {items}
-          </Stepper>
-        </Stack>
-      </Stack>
-    );
-  },
+  render: args => (
+    <Stepper {...args}>
+      {EVENT_STEPS.map(step => (
+        <Stepper.Item key={step.id} id={step.id}>
+          {step.label}
+        </Stepper.Item>
+      ))}
+    </Stepper>
+  ),
 });
 
 const CHECKOUT_ROUTES = [
@@ -211,6 +201,9 @@ const CHECKOUT_ROUTES = [
  */
 export const WithHrefs = meta.story({
   tags: ['component-test'],
+  // No snapshot: what differs from Basic is the rendered element (<a> vs
+  // <button>), not the pixels. The tests assert that; a screenshot cannot.
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     'aria-label': 'Checkout progress',
   },
@@ -246,6 +239,10 @@ export const WithHrefs = meta.story({
  * is still authored and still read aloud.
  */
 export const HideLabels = meta.story({
+  // No snapshot: identical treatment to ManySteps, which exercises it harder
+  // (connectors at their floor, a two-digit total). Guarding both is one diff to
+  // review for one behaviour.
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     'aria-label': 'Event creation progress',
     hideLabels: true,
@@ -449,6 +446,10 @@ const validateStep = (
  */
 export const ValidationErrors = meta.story({
   tags: ['component-test'],
+  // No snapshot: the errored marker is covered by States, and the invalid-field
+  // styling belongs to TextField/HelpText, which guard it themselves. What is
+  // unique here is the wiring, which the three tests cover.
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     'aria-label': 'Checkout progress',
   },
