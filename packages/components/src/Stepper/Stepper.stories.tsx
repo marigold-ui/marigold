@@ -140,25 +140,62 @@ Controlled.test(
   }
 );
 
+const EVENT_STEPS = [
+  { id: 'basics', label: 'Basic data' },
+  { id: 'dates', label: 'Dates' },
+  { id: 'venue', label: 'Venue' },
+  { id: 'categories', label: 'Ticket categories' },
+  { id: 'prices', label: 'Prices' },
+  { id: 'discounts', label: 'Discounts' },
+  { id: 'delivery', label: 'Delivery' },
+  { id: 'payment', label: 'Payment' },
+  { id: 'texts', label: 'Texts' },
+  { id: 'images', label: 'Images' },
+  { id: 'preview', label: 'Preview' },
+  { id: 'publish', label: 'Publish' },
+];
+
 /**
- * A failed step stays reachable. That is the whole point of surfacing the
- * failure on the step instead of in a toast.
+ * The case `hideLabels` exists for, shown both ways so the trade is visible.
+ *
+ * Hidden labels: the markers keep their rhythm and the counter carries the total.
+ * Visible labels: twelve labels have nowhere to go, the connectors collapse to
+ * their minimum, and the row runs out of width. The labels are authored either
+ * way, so a screen reader hears "Ticket categories" in both.
  */
-export const Errored = meta.story({
+export const ManySteps = meta.story({
   args: {
-    'aria-label': 'Checkout progress',
-    selectedKey: 'done',
-    completedKeys: ['signin', 'plan'],
-    errorKeys: ['pay'],
+    selectedKey: 'prices',
+    completedKeys: ['basics', 'dates', 'venue', 'categories'],
   },
-  render: args => (
-    <Stepper {...args}>
-      <Stepper.Item id="signin">Sign in</Stepper.Item>
-      <Stepper.Item id="plan">Choose plan</Stepper.Item>
-      <Stepper.Item id="pay">Pay</Stepper.Item>
-      <Stepper.Item id="done">Done</Stepper.Item>
-    </Stepper>
-  ),
+  render: args => {
+    const items = EVENT_STEPS.map(step => (
+      <Stepper.Item key={step.id} id={step.id}>
+        {step.label}
+      </Stepper.Item>
+    ));
+
+    return (
+      <Stack space={8}>
+        <Stack space={2}>
+          <Text>Labels hidden</Text>
+          <Stepper {...args} aria-label="Event creation progress" hideLabels>
+            {items}
+          </Stepper>
+        </Stack>
+        <Stack space={2}>
+          <Text>Labels visible</Text>
+          <Stepper
+            {...args}
+            aria-label="Event creation progress, with labels"
+            hideLabels={false}
+          >
+            {items}
+          </Stepper>
+        </Stack>
+      </Stack>
+    );
+  },
 });
 
 const CHECKOUT_ROUTES = [
