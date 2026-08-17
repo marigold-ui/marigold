@@ -4,6 +4,7 @@ import { expect, fn } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
+import { Form } from '../Form/Form';
 import { Headline } from '../Headline/Headline';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
@@ -351,6 +352,167 @@ MultiStepForm.test(
 
     await expect(
       canvas.getByRole('textbox', { name: 'Full name' })
+    ).toBeInTheDocument();
+  }
+);
+
+const CHECKOUT_STEPS = [
+  { id: 'contact', label: 'Contact' },
+  { id: 'payment', label: 'Payment' },
+  { id: 'review', label: 'Review' },
+];
+
+const validateStep = (
+  step: string,
+  values: Record<string, string>
+): Record<string, string> => {
+  if (step === 'contact' && !values.email.includes('@')) {
+    return { email: 'Enter a valid email address.' };
+  }
+  if (step === 'payment' && !/^\d{16}$/.test(values.card)) {
+    return { card: 'The card number needs 16 digits.' };
+  }
+  return {};
+};
+
+/**
+ * Where `errorKeys` earns its place: a step that fails validation is marked on
+ * the stepper itself rather than only in a toast that disappears. The failing
+ * fields keep their own messages, and because an errored step stays selectable
+ * the user always has a way back to it.
+ */
+export const ValidationErrors = meta.story({
+  tags: ['component-test'],
+  args: {
+    'aria-label': 'Checkout progress',
+  },
+  render: function Render(args) {
+    const [index, setIndex] = useState(0);
+    const [completed, setCompleted] = useState<Key[]>([]);
+    const [failed, setFailed] = useState<Key[]>([]);
+    const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+    const [values, setValues] = useState({ email: '', card: '' });
+    const step = CHECKOUT_STEPS[index];
+
+    // Editing clears the step's error too, so the marker and the field never
+    // disagree about whether the step is still broken.
+    const edit = (field: string) => (value: string) => {
+      setValues(current => ({ ...current, [field]: value }));
+      setFieldErrors({});
+      setFailed(keys => keys.filter(key => key !== step.id));
+    };
+
+    const onContinue = () => {
+      const failures = validateStep(step.id, values);
+      setFieldErrors(failures);
+
+      if (Object.keys(failures).length > 0) {
+        setFailed(keys => (keys.includes(step.id) ? keys : [...keys, step.id]));
+        return;
+      }
+
+      setCompleted(done =>
+        done.includes(step.id) ? done : [...done, step.id]
+      );
+      setIndex(current => current + 1);
+    };
+
+    return (
+      <Stack space={8}>
+        <Stepper
+          {...args}
+          selectedKey={step.id}
+          completedKeys={completed}
+          errorKeys={failed}
+          onSelectionChange={key =>
+            setIndex(CHECKOUT_STEPS.findIndex(item => item.id === key))
+          }
+        >
+          {CHECKOUT_STEPS.map(item => (
+            <Stepper.Item key={item.id} id={item.id}>
+              {item.label}
+            </Stepper.Item>
+          ))}
+        </Stepper>
+
+        <Form validationErrors={fieldErrors} unstyled>
+          {step.id === 'contact' && (
+            <TextField
+              name="email"
+              label="Email"
+              value={values.email}
+              onChange={edit('email')}
+            />
+          )}
+          {step.id === 'payment' && (
+            <TextField
+              name="card"
+              label="Card number"
+              value={values.card}
+              onChange={edit('card')}
+            />
+          )}
+          {step.id === 'review' && <Text>Everything checks out.</Text>}
+        </Form>
+
+        <ButtonGroup>
+          <Button
+            variant="secondary"
+            disabled={index === 0}
+            onPress={() => setIndex(current => current - 1)}
+          >
+            Back
+          </Button>
+          <Button
+            variant="primary"
+            disabled={index === CHECKOUT_STEPS.length - 1}
+            onPress={onContinue}
+          >
+            Continue
+          </Button>
+        </ButtonGroup>
+      </Stack>
+    );
+  },
+});
+
+ValidationErrors.test(
+  'marks the step as errored when its fields fail validation',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Continue' }));
+
+    await expect(
+      canvas.getByRole('button', { name: /Contact.*error/ })
+    ).toBeInTheDocument();
+  }
+);
+
+ValidationErrors.test(
+  'shows the failing field its own message',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Continue' }));
+
+    await expect(
+      canvas.getByText('Enter a valid email address.')
+    ).toBeInTheDocument();
+  }
+);
+
+ValidationErrors.test(
+  'clears the error and advances once the field is fixed',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Continue' }));
+    await userEvent.type(
+      canvas.getByRole('textbox', { name: 'Email' }),
+      'ada@example.com'
+    );
+    await userEvent.click(canvas.getByRole('button', { name: 'Continue' }));
+
+    await expect(
+      canvas.getByRole('textbox', { name: 'Card number' })
     ).toBeInTheDocument();
   }
 );
