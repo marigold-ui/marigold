@@ -2,8 +2,14 @@ import type { ThemeComponent } from '@marigold/system';
 import { cva } from '@marigold/system';
 
 export const Stepper: ThemeComponent<'Stepper'> = {
+  /**
+   * The `gap` matters: the connector is the last child of its own `<li>`, so
+   * without a gap between list items it butts straight into the next marker
+   * while still sitting 8px clear of its own step. The line has to breathe on
+   * both sides or it reads as an arm growing out of the next circle.
+   */
   container: cva({
-    base: 'm-0 flex list-none items-start p-0',
+    base: 'm-0 flex list-none items-start gap-2 p-0',
   }),
   /**
    * Every step but the last stretches so its connector fills the gap to the
