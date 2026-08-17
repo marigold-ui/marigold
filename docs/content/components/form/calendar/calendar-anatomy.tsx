@@ -1,5 +1,7 @@
 export const CalendarAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of a Calendar: a Header with a Month select box, a Year select box and Step buttons, above a Grid of selectable Dates"
     viewBox="110 5 700 440"
     className="mx-auto h-auto w-full max-w-[100%]"
     xmlns="http://www.w3.org/2000/svg"

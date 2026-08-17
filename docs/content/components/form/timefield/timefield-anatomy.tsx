@@ -1,5 +1,7 @@
 export const TimeFieldAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of a TimeField: a Label above a Field made up of editable Segments"
     viewBox="120 15 560 220"
     className="mx-auto h-auto w-full max-w-[100%]"
     xmlns="http://www.w3.org/2000/svg"

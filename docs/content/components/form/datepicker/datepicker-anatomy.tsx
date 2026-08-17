@@ -1,5 +1,7 @@
 export const DatePickerAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of a DatePicker: a Label above a Date field with a Calendar button, opening a popover whose Header sits above the calendar grid"
     viewBox="120 5 790 505"
     className="mx-auto h-auto w-full max-w-[100%]"
     xmlns="http://www.w3.org/2000/svg"
