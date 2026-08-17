@@ -1,11 +1,12 @@
 import type { Key } from 'react';
 import { useState } from 'react';
-import { expect, fn } from 'storybook/test';
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Form } from '../Form/Form';
 import { Headline } from '../Headline/Headline';
+import { RouterProvider } from '../RouterProvider/RouterProvider';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
@@ -160,29 +161,47 @@ export const Errored = meta.story({
   ),
 });
 
+const CHECKOUT_ROUTES = [
+  { id: 'signin', label: 'Sign in', href: '/checkout/signin' },
+  { id: 'plan', label: 'Choose plan', href: '/checkout/plan' },
+  { id: 'pay', label: 'Pay', href: '/checkout/pay' },
+];
+
 /**
- * Steps that are real URLs. With a `RouterProvider` in the tree these route
- * client-side; without one they are ordinary links.
+ * Steps that are real URLs. A `RouterProvider` turns the clicks into
+ * client-side routing, which is why this story swaps a panel instead of
+ * navigating away; without one they are ordinary links that load a page.
  */
 export const WithHrefs = meta.story({
+  tags: ['component-test'],
   args: {
     'aria-label': 'Checkout progress',
-    selectedKey: 'plan',
-    completedKeys: ['signin'],
   },
-  render: args => (
-    <Stepper {...args}>
-      <Stepper.Item id="signin" href="/checkout/signin">
-        Sign in
-      </Stepper.Item>
-      <Stepper.Item id="plan" href="/checkout/plan">
-        Choose plan
-      </Stepper.Item>
-      <Stepper.Item id="pay" href="/checkout/pay">
-        Pay
-      </Stepper.Item>
-    </Stepper>
-  ),
+  render: function Render(args) {
+    const [path, setPath] = useState('/checkout/plan');
+    const index = CHECKOUT_ROUTES.findIndex(route => route.href === path);
+
+    return (
+      <RouterProvider navigate={setPath}>
+        <Stack space={4}>
+          <Stepper
+            {...args}
+            selectedKey={CHECKOUT_ROUTES[index].id}
+            completedKeys={CHECKOUT_ROUTES.slice(0, index).map(
+              route => route.id
+            )}
+          >
+            {CHECKOUT_ROUTES.map(route => (
+              <Stepper.Item key={route.id} id={route.id} href={route.href}>
+                {route.label}
+              </Stepper.Item>
+            ))}
+          </Stepper>
+          <Text>Current route: {path}</Text>
+        </Stack>
+      </RouterProvider>
+    );
+  },
 });
 
 /**
@@ -208,18 +227,28 @@ export const HideLabels = meta.story({
 });
 
 WithHrefs.test(
+  'routes through the RouterProvider instead of leaving the page',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('link', { name: /Sign in/ }));
+
+    await expect(
+      canvas.getByText('Current route: /checkout/signin')
+    ).toBeInTheDocument();
+  }
+);
+
+WithHrefs.test(
   'activates a link step with Enter',
-  {
-    parameters: { chromatic: { disableSnapshot: true } },
-    args: { onSelectionChange: fn() },
-  },
-  async ({ args, canvas, userEvent }) => {
-    const step = canvas.getByRole('link', { name: /Sign in/ });
-    step.focus();
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    canvas.getByRole('link', { name: /Sign in/ }).focus();
 
     await userEvent.keyboard('{Enter}');
 
-    await expect(args.onSelectionChange).toHaveBeenCalledWith('signin');
+    await expect(
+      canvas.getByText('Current route: /checkout/signin')
+    ).toBeInTheDocument();
   }
 );
 
