@@ -1,4 +1,4 @@
-import type { Key, ReactElement, ReactNode } from 'react';
+import type { Key, ReactNode } from 'react';
 import { Children, isValidElement } from 'react';
 import { Button } from 'react-aria-components/Button';
 import { Link } from 'react-aria-components/Link';
@@ -152,8 +152,7 @@ const _Stepper = ({
   const classNames = useClassNames({ component: 'Stepper', variant });
 
   const items = Children.toArray(children).filter(
-    (child): child is ReactElement<StepperItemProps> =>
-      isValidElement<StepperItemProps>(child)
+    isValidElement<StepperItemProps>
   );
 
   // Uncontrolled mode only remembers which step was activated. It never infers
@@ -170,20 +169,24 @@ const _Stepper = ({
   const disabled = new Set(disabledKeys);
   const selectable = selectableKeys ? new Set(selectableKeys) : undefined;
 
-  // `disabledKeys` always wins: it is the one prop that means "never", so an
-  // explicit selectableKeys cannot resurrect a disabled step.
-  const isSelectable = (key: Key) => {
-    if (disabled.has(key)) return false;
-    if (selectable) return selectable.has(key);
-    return completed.has(key) || errors.has(key) || key === selectedKey;
-  };
-
   const getState = (key: Key): StepState => {
     if (disabled.has(key)) return 'disabled';
     if (errors.has(key)) return 'error';
     if (key === selectedKey) return 'current';
     if (completed.has(key)) return 'completed';
     return 'upcoming';
+  };
+
+  // Derived from `getState` rather than re-testing the same four sets, so the
+  // two rules cannot drift. `disabledKeys` always wins: it is the one prop that
+  // means "never", so an explicit selectableKeys cannot resurrect a disabled
+  // step. Everything else is "you can return to any step that is not still
+  // ahead of you".
+  const isSelectable = (key: Key) => {
+    const state = getState(key);
+    if (state === 'disabled') return false;
+    if (selectable) return selectable.has(key);
+    return state !== 'upcoming';
   };
 
   const currentIndex = items.findIndex(item => item.props.id === selectedKey);

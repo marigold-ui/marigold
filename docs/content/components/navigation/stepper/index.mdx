@@ -70,6 +70,12 @@ Two props change this:
   completedKeys={completedSteps}
   selectableKeys={availableSteps}
 >
+  {steps.map(step => (
+    <Stepper.Item key={step.id} id={step.id}>
+      {step.label}
+    </Stepper.Item>
+  ))}
+</Stepper>
 ```
 
 ## Links or buttons

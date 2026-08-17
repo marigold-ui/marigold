@@ -15,26 +15,21 @@ export const Stepper: ThemeComponent<'Stepper'> = {
     base: 'm-0 flex grow list-none items-start gap-2 p-0',
   }),
   /**
-   * Every step but the last stretches so its connector fills the gap to the
-   * next marker. The last one shrinks to its content, otherwise it drags a stub
-   * of empty space behind it.
-   */
-  /**
    * `grow`, not `flex-1`. `flex-1` is `flex: 1 1 0%`, a zero basis, which forces
    * every step to the same width no matter what it contains: the connector then
    * absorbs whatever the label leaves, so a long label yields a short line and
    * the spacing looks arbitrary (measured 77/98/117/92px across one row).
    * `grow` keeps each step's natural content width and shares only the *surplus*
    * equally, so every connector ends up the same length while the row still
-   * fills its container.
+   * fills its container. `last:grow-0` because the last step has no connector to
+   * fill, so stretching it would only drag a stub of empty space behind it.
    */
   item: cva({
     base: 'flex grow items-center gap-2 last:grow-0',
   }),
   /**
-   * Only the interactive elements (Link/Button) ever receive focus, so the ring
-   * simply never applies to an inert `<span>` step. `min-h-11` keeps the pointer
-   * target at 44px, well above WCAG 2.5.8's 24px floor.
+   * `min-h-11` keeps the pointer target at 44px, well above WCAG 2.5.8's 24px
+   * floor.
    */
   link: cva({
     base: [
@@ -79,10 +74,7 @@ export const Stepper: ThemeComponent<'Stepper'> = {
       '[&_svg]:size-4',
     ],
   }),
-  /**
-   * The "Step 2 of 4" counter, shown only when the labels are hidden. It has to
-   * hold its width against the growing steps beside it, hence `shrink-0`.
-   */
+  /** The "Step 2 of 4" counter, rendered only when the labels are hidden. */
   count: cva({
     base: 'text-secondary shrink-0 text-sm font-medium tabular-nums',
   }),
