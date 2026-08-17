@@ -29,7 +29,12 @@ export const Stepper: ThemeComponent<'Stepper'> = {
   marker: cva({
     base: [
       'flex size-8 shrink-0 items-center justify-center rounded-full',
-      'border-surface-border border text-sm font-medium tabular-nums',
+      // `control-border` (26% alpha, 1.81:1) rather than `surface-border` (13%,
+      // 1.33:1): the marker is the visible boundary of a control, not a surface
+      // rim. Both sit under 3:1, which is true of every alpha border token in
+      // this theme, so the step number carries the meaning and the ring is
+      // support.
+      'border-control-border border text-sm font-medium tabular-nums',
       'transition-colors motion-reduce:transition-none',
       'in-data-[state=upcoming]:text-secondary',
       // A disabled step is inert *text*, not an inactive control (it renders as
@@ -57,15 +62,22 @@ export const Stepper: ThemeComponent<'Stepper'> = {
     ],
   }),
   /**
-   * Decorative and `aria-hidden`, so it carries colour only. It reads the state
-   * of the step it trails, which is why a completed step's connector is filled
-   * and an upcoming step's is not.
+   * Decorative and `aria-hidden`: completion is carried by the marker icon, the
+   * label and the visually hidden state text, so this line only has to be
+   * *perceivable*, not to clear 1.4.11 on its own.
+   *
+   * Two things matter here. The done colour is `success-accent` (green-600,
+   * 2.90:1), not `success` (green-100, 1.01:1) -- `success` is a surface fill
+   * meant to sit behind dark text, and as a hairline it is invisible against
+   * the page and indistinguishable from the undone connector, which defeats the
+   * entire point of the connector. And the line is 2px, because 1px of a 13%
+   * alpha rim reads as nothing at all.
    */
   connector: cva({
     base: [
-      'bg-surface-border h-px min-w-4 flex-1',
+      'bg-surface-border h-0.5 min-w-4 flex-1',
       'transition-colors motion-reduce:transition-none',
-      'in-data-[state=completed]:bg-success',
+      'in-data-[state=completed]:bg-success-accent',
     ],
   }),
 };
