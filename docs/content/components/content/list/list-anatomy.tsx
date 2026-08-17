@@ -1,5 +1,7 @@
 export const ListAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of a List: a List container holding several List items"
     viewBox="60 40 680 320"
     className="mx-auto h-auto w-full max-w-[100%]"
     xmlns="http://www.w3.org/2000/svg"
