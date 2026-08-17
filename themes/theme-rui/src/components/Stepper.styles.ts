@@ -16,8 +16,17 @@ export const Stepper: ThemeComponent<'Stepper'> = {
    * next marker. The last one shrinks to its content, otherwise it drags a stub
    * of empty space behind it.
    */
+  /**
+   * `grow`, not `flex-1`. `flex-1` is `flex: 1 1 0%`, a zero basis, which forces
+   * every step to the same width no matter what it contains: the connector then
+   * absorbs whatever the label leaves, so a long label yields a short line and
+   * the spacing looks arbitrary (measured 77/98/117/92px across one row).
+   * `grow` keeps each step's natural content width and shares only the *surplus*
+   * equally, so every connector ends up the same length while the row still
+   * fills its container.
+   */
   item: cva({
-    base: 'flex flex-1 items-center gap-2 last:flex-none',
+    base: 'flex grow items-center gap-2 last:grow-0',
   }),
   /**
    * Only the interactive elements (Link/Button) ever receive focus, so the ring
