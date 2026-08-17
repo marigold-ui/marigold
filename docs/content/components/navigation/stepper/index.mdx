@@ -74,7 +74,13 @@ Two props change this:
 
 ## Links or buttons
 
-Give a `<Stepper.Item>` an `href` and it renders as a real link, so middle-click, open in a new tab, and copy link all work. Wrap your app in a `<RouterProvider>` and those links route client-side. Without an `href`, the step renders as a button and only calls `onSelectionChange`.
+Give a `<Stepper.Item>` an `href` and it renders as a real link, so middle-click, open in a new tab, and copy link all work. Without an `href`, the step renders as a button and only calls `onSelectionChange`.
+
+A bare `href` performs a real page load, which is usually not what a single-page app wants. Wrap the tree in a [`<RouterProvider>`](/components/application/routerprovider) and hand it your router's navigate function: the steps stay real anchors for the browser, but clicking one routes client-side. With hrefs the route is the source of truth, so derive `selectedKey` from it and skip `onSelectionChange` entirely.
+
+<ComponentDemo name="stepper-links" />
+
+Modifier clicks are deliberately left alone. Cmd-click and middle-click still open a new tab, because that is what a link is for.
 
 ## Long flows
 
