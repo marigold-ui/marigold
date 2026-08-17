@@ -145,6 +145,61 @@ Basic.test(
   }
 );
 
+// There is no accessible way to reach the track. It is the first rounded
+// element in the label; the thumb is nested inside it.
+const getTrack = (switchEl: HTMLElement) => {
+  const track = switchEl
+    .closest('label')
+    ?.querySelector('[class*="rounded-full"]');
+
+  expect(track).not.toBeNull();
+
+  return track!;
+};
+
+const cursorOf = (el: Element) => getComputedStyle(el).cursor;
+
+// One test per state, because each needs its own `args`. Note `.test()` calls are
+// collected statically — registering them from a loop yields no tests at all.
+Basic.test(
+  'The label shares the track cursor',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const switchEl = await canvas.findByRole('switch');
+
+    expect(cursorOf(canvas.getByText('Default Switch'))).toBe('pointer');
+    expect(cursorOf(getTrack(switchEl))).toBe('pointer');
+  }
+);
+
+Basic.test(
+  'Disabled swaps the cursor on the whole hit area',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { disabled: true },
+  },
+  async ({ canvas }) => {
+    const switchEl = await canvas.findByRole('switch');
+
+    expect(cursorOf(canvas.getByText('Default Switch'))).toBe('not-allowed');
+    expect(cursorOf(getTrack(switchEl))).toBe('not-allowed');
+  }
+);
+
+Basic.test(
+  'Read only swaps the cursor on the whole hit area',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { readOnly: true },
+  },
+  async ({ canvas }) => {
+    const switchEl = await canvas.findByRole('switch');
+
+    expect(cursorOf(canvas.getByText('Default Switch'))).toBe('default');
+    expect(cursorOf(getTrack(switchEl))).toBe('default');
+  }
+);
+
 export const WithDescription = meta.story({
   tags: ['component-test'],
   args: {
