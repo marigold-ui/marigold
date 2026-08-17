@@ -186,8 +186,25 @@ const _Stepper = ({
     return 'upcoming';
   };
 
+  const currentIndex = items.findIndex(item => item.props.id === selectedKey);
+
   return (
-    <nav aria-label={ariaLabel ?? stringFormatter.format('progress')}>
+    <nav
+      aria-label={ariaLabel ?? stringFormatter.format('progress')}
+      className="flex items-center gap-3"
+    >
+      {/* Hiding the labels also hides "how far along am I" from sighted users:
+          all they get is a row of circles with no total. The counter restores it.
+          It is `aria-hidden` because every step already announces its own
+          position, so this would only repeat what SR users already hear. */}
+      {hideLabels && currentIndex >= 0 && (
+        <span aria-hidden="true" className={classNames.count}>
+          {stringFormatter.format('stepPosition', {
+            current: currentIndex + 1,
+            total: items.length,
+          })}
+        </span>
+      )}
       <ol className={classNames.container}>
         {items.map((item, index) => {
           const { id, children: label, href } = item.props;

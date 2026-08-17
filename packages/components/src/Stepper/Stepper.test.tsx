@@ -145,3 +145,26 @@ test('keeps labels in the accessible name when they are visually hidden', () => 
     screen.getByRole('button', { name: /Ticket categories/ })
   ).toBeInTheDocument();
 });
+
+test('shows a visible step counter when the labels are hidden', () => {
+  render(<HideLabels.Component />);
+
+  expect(screen.getByText('Step 3 of 5')).toBeInTheDocument();
+});
+
+// Every step already announces its own position, so the visible counter would
+// only repeat it. It exists to give sighted users what SR users already have.
+test('hides the step counter from the accessibility tree', () => {
+  render(<HideLabels.Component />);
+
+  expect(screen.getByText('Step 3 of 5')).toHaveAttribute(
+    'aria-hidden',
+    'true'
+  );
+});
+
+test('shows no step counter while the labels are visible', () => {
+  render(<Basic.Component />);
+
+  expect(screen.queryByText('Step 2 of 4')).not.toBeInTheDocument();
+});

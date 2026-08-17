@@ -211,7 +211,13 @@ export type Theme = {
     // the hook per item. The component emits `data-state` on each `<li>` and the
     // theme selects on it instead. See theme-rui's Stepper.styles.ts.
     Stepper?: Record<
-      'container' | 'item' | 'link' | 'marker' | 'label' | 'connector',
+      | 'container'
+      | 'item'
+      | 'link'
+      | 'marker'
+      | 'label'
+      | 'connector'
+      | 'count',
       ComponentStyleFunction<string, string>
     >;
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;

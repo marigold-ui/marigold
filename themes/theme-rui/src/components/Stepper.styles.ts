@@ -9,7 +9,10 @@ export const Stepper: ThemeComponent<'Stepper'> = {
    * both sides or it reads as an arm growing out of the next circle.
    */
   container: cva({
-    base: 'm-0 flex list-none items-start gap-2 p-0',
+    // `grow` because the list is itself a flex child of the `<nav>` (which may
+    // also hold the step counter): without it the list sizes to its content and
+    // the steps have no surplus left to share.
+    base: 'm-0 flex grow list-none items-start gap-2 p-0',
   }),
   /**
    * Every step but the last stretches so its connector fills the gap to the
@@ -75,6 +78,13 @@ export const Stepper: ThemeComponent<'Stepper'> = {
       'in-data-[state=error]:text-destructive-accent in-data-[state=error]:border-destructive-accent',
       '[&_svg]:size-4',
     ],
+  }),
+  /**
+   * The "Step 2 of 4" counter, shown only when the labels are hidden. It has to
+   * hold its width against the growing steps beside it, hence `shrink-0`.
+   */
+  count: cva({
+    base: 'text-secondary shrink-0 text-sm font-medium tabular-nums',
   }),
   label: cva({
     base: [
