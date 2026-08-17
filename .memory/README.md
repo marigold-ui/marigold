@@ -46,17 +46,17 @@ Split the file once it passes roughly 200 lines — long files get read less fai
 
 ## ADR conventions
 
-One decision per file, `adr/NNNN-<slug>.md`, where `NNNN` is the DST ticket the decision was made under — `1521-memory-store-conventions.md` is `ADR-1521`. Start from `TEMPLATE.md`.
-
-**The number comes from the ticket, not from a sequence**, because a sequence is not merge-safe. Two branches each taking the next free `0002` produce two different filenames, so git merges both without complaint and leaves two records claiming the same `id` — the same clean-merge-into-contradiction this file warns about for the glossary above. Ticket numbers are already unique, already on the branch and the commits, and they link the record to the discussion for free. Two ADRs from one ticket is the only collision left, and it happens inside a single branch where you can see it: suffix the second `NNNN-b-<slug>`.
+One decision per file, `adr/NNNN-<slug>.md`, numbered sequentially from `0001`. Start from `TEMPLATE.md`.
 
 Frontmatter carries:
 
-- **`id`** — stable and citable (`ADR-1521`), so a review comment can name the record it means.
-- **`status`** — `proposed` → `accepted`, then `superseded-by ADR-NNNN`. Never anything else. **The author flips `proposed` to `accepted` in the same PR, once the review approves and before it merges.** Nothing does this for you, and a status nobody moves stops meaning anything.
-- **`applies_to`** — globs for the paths the decision governs, so a reader pointed at this directory can tell in one line whether a record concerns the file in front of them. Nothing loads records on its own: no script consumes the glob and nothing puts `adr/` into a session by itself. Keep them narrow anyway — the day something does the selecting, wide globs are what makes it useless.
+- **`id`** — stable and citable (`ADR-0001`), so a review comment can name the record it means.
+- **`status`** — `proposed` → `accepted`, then `superseded-by ADR-NNNN`. Never anything else.
+- **`applies_to`** — globs for the paths the decision governs. This is an **index for finding records, not a loading mechanism**: nothing scopes an agent's context by it. Its job is to make "which records govern this file?" answerable by grep, and it is checked so it cannot rot silently.
 
 Keep each record under ~200 lines. It competes for context with the code the agent actually needs to read.
+
+**Take the next free number, and expect the check to catch you if you collide.** Sequential numbering has no allocation mechanism — two branches each adding `0003-<their-own-slug>.md` have different filenames, so git merges both without a conflict and `ADR-0003` then names two decisions. That is the same clean-merge hazard the one-term-per-heading rule addresses in the glossary, and it is why the numbering is checked rather than trusted.
 
 **Accepted ADRs are not edited to change a decision.** Supersede them: write the new record, then set the old one's status to `superseded-by ADR-NNNN`. Fixing the past in place destroys the reason the file existed.
 
@@ -64,4 +64,6 @@ Keep each record under ~200 lines. It competes for context with the code the age
 
 These records are **advisory**. They enter the context window and influence what an agent does. Nothing verifies compliance — no check reads an ADR and blocks a change that violates it. A record that nothing enforces is a well-argued comment, and no amount of careful writing turns a probabilistic reader into a guarantee.
 
-Worth revisiting if a decision here ever matters enough to need one: pairing a record with a runnable check is what would turn it into a constraint.
+`pnpm check:memory` (CI: `.github/workflows/memory-store.yml`) does not change that. It checks the store's **structure** — number collisions, `id`/filename agreement, the status vocabulary, supersede targets that resolve, `applies_to` globs that still match something, duplicate or misordered glossary terms. Those are the failures that make the store untrustworthy without anything breaking. Whether a decision was actually followed is not checkable here.
+
+Worth revisiting if a decision here ever matters enough to need one: pairing a specific record with its own runnable check is what would turn that record into a constraint.
