@@ -298,11 +298,6 @@ test('supports custom props', () => {
 
 Run with `pnpm test:unit`.
 
-## Specialized Agents
-
-- **component-scaffold**: Creates new components with all required files (component, tests, stories, theme styles)
-- **a11y-audit**: Audits components for WCAG 2.1 AA accessibility compliance
-
 ## MCP Servers
 
 This project provides MCP servers for AI-assisted development:
