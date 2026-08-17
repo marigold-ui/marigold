@@ -2,6 +2,7 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { Basic, HideLabels, States, WithHrefs } from './Stepper.stories';
+import { StepperItem } from './StepperItem';
 
 test('renders a navigation landmark wrapping an ordered list of steps', () => {
   render(<Basic.Component />);
@@ -167,4 +168,12 @@ test('shows no step counter while the labels are visible', () => {
   render(<Basic.Component />);
 
   expect(screen.queryByText('Step 2 of 4')).not.toBeInTheDocument();
+});
+
+// `<Stepper.Item>` only declares props: `<Stepper>` reads them off the element
+// and renders the step itself, so the item never renders anything of its own.
+test('renders nothing when a step is used outside a Stepper', () => {
+  render(<StepperItem id="contact">Contact</StepperItem>);
+
+  expect(screen.queryByText('Contact')).not.toBeInTheDocument();
 });
