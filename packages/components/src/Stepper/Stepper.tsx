@@ -4,6 +4,7 @@ import { Button } from 'react-aria-components/Button';
 import { Link } from 'react-aria-components/Link';
 import { VisuallyHidden } from 'react-aria-components/VisuallyHidden';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { useControlledState } from '@react-stately/utils';
 import { useClassNames } from '@marigold/system';
 import { Check } from '../icons/Check';
 import { TriangleAlert } from '../icons/TriangleAlert';
@@ -136,10 +137,13 @@ const StepContent = ({
 
 const _Stepper = ({
   children,
-  selectedKey,
+  selectedKey: selectedKeyProp,
+  defaultSelectedKey,
+  onSelectionChange,
   completedKeys,
   errorKeys,
   disabledKeys,
+  selectableKeys,
   variant,
   'aria-label': ariaLabel,
 }: StepperProps) => {
@@ -151,9 +155,27 @@ const _Stepper = ({
       isValidElement<StepperItemProps>(child)
   );
 
+  // Uncontrolled mode only remembers which step was activated. It never infers
+  // completion: that is validation passing or a server write, which the
+  // component cannot see. No auto-advance, no auto-correct effect.
+  const [selectedKey, setSelectedKey] = useControlledState(
+    selectedKeyProp,
+    defaultSelectedKey ?? items[0]?.props.id,
+    onSelectionChange
+  );
+
   const completed = new Set(completedKeys);
   const errors = new Set(errorKeys);
   const disabled = new Set(disabledKeys);
+  const selectable = selectableKeys ? new Set(selectableKeys) : undefined;
+
+  // `disabledKeys` always wins: it is the one prop that means "never", so an
+  // explicit selectableKeys cannot resurrect a disabled step.
+  const isSelectable = (key: Key) => {
+    if (disabled.has(key)) return false;
+    if (selectable) return selectable.has(key);
+    return completed.has(key) || errors.has(key) || key === selectedKey;
+  };
 
   const getState = (key: Key): StepState => {
     if (disabled.has(key)) return 'disabled';
@@ -180,9 +202,9 @@ const _Stepper = ({
               <StepContent
                 className={classNames.link}
                 isCurrent={id === selectedKey}
-                isSelectable={state !== 'disabled' && state !== 'upcoming'}
+                isSelectable={isSelectable(id)}
                 href={href}
-                onSelect={() => {}}
+                onSelect={() => setSelectedKey(id)}
               >
                 <span aria-hidden="true" className={classNames.marker}>
                   {state === 'completed' ? (

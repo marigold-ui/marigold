@@ -1,5 +1,7 @@
 import { render, screen, within } from '@testing-library/react';
-import { Basic, States } from './Stepper.stories';
+import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
+import { Basic, States, WithHrefs } from './Stepper.stories';
 
 test('renders a navigation landmark wrapping an ordered list of steps', () => {
   render(<Basic.Component />);
@@ -65,4 +67,73 @@ test('renders one fewer connector than there are steps', () => {
   render(<Basic.Component />);
 
   expect(screen.getAllByTestId('stepper-connector')).toHaveLength(3);
+});
+
+test('calls onSelectionChange when a completed step is activated', async () => {
+  const user = userEvent.setup();
+  const onSelectionChange = vi.fn();
+  render(<Basic.Component onSelectionChange={onSelectionChange} />);
+
+  await user.click(screen.getByRole('button', { name: /Sign in/ }));
+
+  expect(onSelectionChange).toHaveBeenCalledWith('signin');
+});
+
+test('renders an upcoming step as inert text rather than a control', () => {
+  render(<Basic.Component />);
+
+  expect(screen.queryByRole('button', { name: /Pay/ })).not.toBeInTheDocument();
+  expect(screen.getByText('Pay')).toBeInTheDocument();
+});
+
+test('renders a disabled step as inert text without aria-disabled', () => {
+  render(<States.Component />);
+
+  const disabledItem = screen.getAllByRole('listitem')[3];
+
+  expect(within(disabledItem).queryByRole('button')).not.toBeInTheDocument();
+  expect(within(disabledItem).getByText('Disabled')).not.toHaveAttribute(
+    'aria-disabled'
+  );
+});
+
+test('keeps an errored step selectable so it can be fixed', () => {
+  render(<States.Component />);
+
+  expect(screen.getByRole('button', { name: /Error/ })).toBeInTheDocument();
+});
+
+test('lets selectableKeys override the default rule', () => {
+  render(<Basic.Component selectableKeys={['done']} />);
+
+  expect(screen.getByRole('button', { name: /Done/ })).toBeInTheDocument();
+  expect(
+    screen.queryByRole('button', { name: /Sign in/ })
+  ).not.toBeInTheDocument();
+});
+
+test('never makes a disabled step selectable, even via selectableKeys', () => {
+  render(<States.Component selectableKeys={['locked']} />);
+
+  expect(
+    screen.queryByRole('button', { name: /Disabled/ })
+  ).not.toBeInTheDocument();
+});
+
+test('renders a step with an href as a real link', () => {
+  render(<WithHrefs.Component />);
+
+  expect(screen.getByRole('link', { name: /Sign in/ })).toHaveAttribute(
+    'href',
+    '/checkout/signin'
+  );
+});
+
+test('selects the first step by default when uncontrolled', () => {
+  render(<Basic.Component selectedKey={undefined} />);
+
+  expect(screen.getByRole('button', { name: /Sign in/ })).toHaveAttribute(
+    'aria-current',
+    'step'
+  );
 });
