@@ -32,7 +32,12 @@ export const Stepper: ThemeComponent<'Stepper'> = {
       'border-surface-border border text-sm font-medium tabular-nums',
       'transition-colors motion-reduce:transition-none',
       'in-data-[state=upcoming]:text-secondary',
-      'in-data-[state=disabled]:text-disabled in-data-[state=disabled]:border-disabled',
+      // A disabled step is inert *text*, not an inactive control (it renders as
+      // a <span>), so WCAG 1.4.3's exemption for disabled widgets does not
+      // apply and `text-disabled` would fail contrast. It reads as secondary
+      // like an upcoming step, and a dashed ring carries the "not available"
+      // difference as shape rather than colour.
+      'in-data-[state=disabled]:text-secondary in-data-[state=disabled]:border-dashed',
       'in-data-[state=completed]:bg-success in-data-[state=completed]:text-success-foreground in-data-[state=completed]:border-transparent',
       'in-data-[state=current]:ui-control in-data-[state=current]:border-transparent',
       'in-data-[state=error]:text-destructive-accent in-data-[state=error]:border-destructive-accent',
@@ -44,7 +49,8 @@ export const Stepper: ThemeComponent<'Stepper'> = {
       'text-sm',
       'transition-colors motion-reduce:transition-none',
       'in-data-[state=upcoming]:text-secondary',
-      'in-data-[state=disabled]:text-disabled',
+      // See the marker slot: an inert <span> is text, so it owes the full 4.5:1.
+      'in-data-[state=disabled]:text-secondary',
       'in-data-[state=current]:text-foreground in-data-[state=current]:font-medium',
       'in-data-[state=completed]:text-foreground',
       'in-data-[state=error]:text-destructive-accent',
