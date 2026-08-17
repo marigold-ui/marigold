@@ -1,5 +1,7 @@
 export const LinkAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of a Link: an underlined Label naming the destination"
     viewBox="220 30 260 150"
     className="mx-auto h-auto w-full max-w-[50%]"
     xmlns="http://www.w3.org/2000/svg"
