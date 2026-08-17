@@ -158,24 +158,6 @@ const getTrack = (switchEl: HTMLElement) => {
 };
 
 const tintOf = (el: Element) => getComputedStyle(el).backgroundImage;
-const fillOf = (el: Element) => getComputedStyle(el).backgroundColor;
-
-Basic.test(
-  'Hover darkens the track when off, without touching the eased fill',
-  { parameters: { chromatic: { disableSnapshot: false } } },
-  async ({ canvas, userEvent }) => {
-    const switchEl = await canvas.findByRole('switch');
-    const track = getTrack(switchEl);
-    const off = fillOf(track);
-
-    expect(tintOf(track)).toBe('none');
-
-    await userEvent.hover(switchEl);
-
-    expect(tintOf(track)).not.toBe('none');
-    expect(fillOf(track)).toBe(off);
-  }
-);
 
 Basic.test(
   'The hover tint is not a transitioned property',

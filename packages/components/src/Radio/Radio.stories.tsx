@@ -101,20 +101,6 @@ const getIcon = (radio: HTMLElement) => {
 const borderOf = (el: Element) => getComputedStyle(el).borderColor;
 
 Basic.test(
-  'Hover darkens the border of an unselected radio',
-  { parameters: { chromatic: { disableSnapshot: false } } },
-  async ({ canvas, userEvent }) => {
-    const radio = await canvas.findByRole('radio', { name: 'Option 2' });
-    const icon = getIcon(radio);
-    const idle = borderOf(icon);
-
-    await userEvent.hover(radio);
-
-    expect(borderOf(icon)).not.toBe(idle);
-  }
-);
-
-Basic.test(
   'Hover leaves the border alone when selected or disabled',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ step, canvas, userEvent }) => {

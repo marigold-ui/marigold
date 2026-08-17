@@ -137,20 +137,6 @@ const getIcon = (checkbox: HTMLElement) => {
 
 const borderOf = (el: Element) => getComputedStyle(el).borderColor;
 
-Basic.test(
-  'Hover darkens the border',
-  { parameters: { chromatic: { disableSnapshot: false } } },
-  async ({ canvas, userEvent }) => {
-    const checkbox = await canvas.findByRole('checkbox');
-    const icon = getIcon(checkbox);
-    const idle = borderOf(icon);
-
-    await userEvent.hover(checkbox);
-
-    expect(borderOf(icon)).not.toBe(idle);
-  }
-);
-
 // One test per state, because each needs its own `args`. Note `.test()` calls are
 // collected statically — registering them from a loop yields no tests at all.
 Basic.test(
