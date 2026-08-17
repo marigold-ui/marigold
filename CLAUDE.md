@@ -316,6 +316,14 @@ Run with `pnpm test:unit`.
 
 Committed skills live in `.claude/skills/`; plugins are declared in `.claude/settings.json`. See [.claude/README.md](.claude/README.md) for the conventions they follow and the extra rules for skills with side effects.
 
+### Scoping work: `/grill`
+
+Start non-trivial work with `/grill`. It interrogates an under-specified idea one question at a time — each with a recommended answer — until every decision branch is resolved, and answers from the codebase rather than asking whenever it can.
+
+When the session concerns this codebase, it also records what is worth keeping, without being asked: settled vocabulary goes to `.memory/CONTEXT.md`, and decisions that are hard to reverse become ADRs under `.memory/adr/`. Sessions that are not about the code record nothing.
+
+`.memory/` is committed and reviewed like code — see [.memory/README.md](.memory/README.md) for what belongs there, what does not, and the rule that keeps it from duplicating this file.
+
 ## MCP Servers
 
 This project provides MCP servers for AI-assisted development:

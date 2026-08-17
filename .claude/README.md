@@ -30,6 +30,10 @@ One shape, no exceptions:
 
 The `description` is the only part of a skill that enters the context window before it runs — everything else loads on invocation. So write it as a trigger, not a summary: say what the skill does *and* the phrases that should reach for it. A vague description is why a good skill never fires.
 
+Open it with `Marigold repo — ` so ours group visibly in a `/` menu that also lists plugin and personal skills. Use the em dash, not a colon: descriptions are read raw rather than as quoted YAML, so quotes leak through literally, and `Marigold repo: ` would need them.
+
+Don't put that marker in the `name`. Plugin and directory-scoped skills are namespaced by the harness with a colon (`vercel:react-best-practices`, `apps/web:deploy`), so a hand-written prefix in the name impersonates a mechanism it isn't part of. The invocation stays `/create-pr`.
+
 Keep the body in `SKILL.md` and push bulk into `references/`. Skills are cheap when idle and expensive when bloated at the top level.
 
 ## Skills with side effects
