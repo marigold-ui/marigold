@@ -1,6 +1,6 @@
 ---
 name: review-pr
-description: Review a GitHub PR for Marigold Design System code quality, TypeScript standards, React best practices, and accessibility compliance. Optionally links Jira tickets for context. Use when asked to "review PR", "check PR", or "review pull request".
+description: Marigold repo — Review a GitHub PR for code quality, TypeScript standards, React best practices, and accessibility compliance. Optionally links Jira tickets for context. Use when asked to "review PR", "check PR", or "review pull request".
 ---
 
 # PR Review Skill for Marigold Design System

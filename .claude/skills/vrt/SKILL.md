@@ -1,6 +1,6 @@
 ---
 name: vrt
-description: Trigger the Visual-Regression-Tests (Chromatic) GitHub Actions workflow on the current or a given branch. Use ONLY when the user explicitly asks to run visual regression tests, run Chromatic, or types `/vrt`. Dispatching consumes Chromatic snapshot quota, so never invoke this proactively, never as a follow-up to unrelated work, and never to "verify" a change nobody asked to verify.
+description: Marigold repo — Trigger the Visual-Regression-Tests (Chromatic) GitHub Actions workflow on the current or a given branch. Use ONLY when the user explicitly asks to run visual regression tests, run Chromatic, or types `/vrt`. Dispatching consumes Chromatic snapshot quota, so never invoke this proactively, never as a follow-up to unrelated work, and never to "verify" a change nobody asked to verify.
 allowed-tools: Bash(gh workflow run *), Bash(gh run list *), Bash(gh run view *), Bash(gh run watch *), Bash(git branch --show-current), Bash(git rev-parse *)
 ---
 

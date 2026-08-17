@@ -1,6 +1,6 @@
 ---
 name: grill
-description: Interrogate an under-specified idea one question at a time until every decision branch is resolved, recommending an answer for each. When the work concerns this codebase, also maintain the glossary in .memory/CONTEXT.md and record hard-to-reverse decisions as ADRs under .memory/adr/. Use before writing a ticket, before starting non-trivial work, when a plan needs stress-testing, or when the user types `/grill`.
+description: Marigold repo — Interrogate an under-specified idea one question at a time until every decision branch is resolved, recommending an answer for each. When the work concerns this codebase, also maintain the glossary in .memory/CONTEXT.md and record hard-to-reverse decisions as ADRs under .memory/adr/. Use before writing a ticket, before starting non-trivial work, when a plan needs stress-testing, or when the user types `/grill`.
 ---
 
 # Grill
