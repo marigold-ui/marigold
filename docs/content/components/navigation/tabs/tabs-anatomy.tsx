@@ -2,59 +2,59 @@ export const TabsAnatomy = () => (
   <svg
     role="img"
     aria-label="Anatomy of Tabs: a Tab list of Tabs with the selected one marked, above the Tab panel showing its content"
-    viewBox="100 45 570 330"
-    className="mx-auto h-auto w-full max-w-[100%]"
+    viewBox="165 58 660 425"
+    className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
     {/* Selected tab and its indicator */}
     <rect
-      x="300"
-      y="120"
-      width="70"
-      height="14"
-      rx="4"
+      x="386"
+      y="154"
+      width="90"
+      height="18"
+      rx="5"
       className="fill-fd-primary transition-colors duration-300"
     />
     <rect
-      x="296"
-      y="146"
-      width="78"
-      height="3"
-      rx="1.5"
+      x="381"
+      y="188"
+      width="100"
+      height="4"
+      rx="2"
       className="fill-fd-primary transition-colors duration-300"
     />
     {/* Remaining tabs */}
     <rect
-      x="400"
-      y="120"
-      width="70"
-      height="14"
-      rx="4"
+      x="515"
+      y="154"
+      width="90"
+      height="18"
+      rx="5"
       className="fill-fd-foreground transition-colors duration-300"
     />
     <rect
-      x="500"
-      y="120"
-      width="70"
-      height="14"
-      rx="4"
+      x="643"
+      y="154"
+      width="90"
+      height="18"
+      rx="5"
       className="fill-fd-muted-foreground transition-colors duration-300"
     />
 
     {/* Tab panel showing the content of the selected tab */}
     <rect
-      x="290"
-      y="170"
-      width="340"
-      height="180"
-      rx="8"
+      x="373"
+      y="219"
+      width="437"
+      height="232"
+      rx="10"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
     {/* Content inside the panel */}
     <g className="fill-fd-muted-foreground transition-colors duration-300">
-      <rect x="318" y="204" width="220" height="12" rx="4" />
-      <rect x="318" y="232" width="180" height="12" rx="4" />
+      <rect x="409" y="262" width="283" height="15" rx="5" />
+      <rect x="409" y="298" width="232" height="15" rx="5" />
     </g>
 
     {/* Connector lines */}
@@ -66,21 +66,21 @@ export const TabsAnatomy = () => (
       strokeLinejoin="round"
     >
       {/* Tab list -> left */}
-      <path d="M 296 127 L 230 127" />
+      <path d="M 381 163 L 296 163" />
       {/* Tab (selected) -> up */}
-      <path d="M 335 120 L 335 76" />
+      <path d="M 431 154 L 431 98" />
       {/* Tab -> up */}
-      <path d="M 435 120 L 435 76" />
+      <path d="M 560 154 L 560 98" />
       {/* Tab panel -> left */}
-      <path d="M 290 260 L 230 260" />
+      <path d="M 373 335 L 296 335" />
     </g>
 
     {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="296" cy="127" r="4" />
-      <circle cx="335" cy="120" r="4" />
-      <circle cx="435" cy="120" r="4" />
-      <circle cx="290" cy="260" r="4" />
+      <circle cx="381" cy="163" r="4" />
+      <circle cx="431" cy="154" r="4" />
+      <circle cx="560" cy="154" r="4" />
+      <circle cx="373" cy="335" r="4" />
     </g>
 
     {/* Annotation labels */}
@@ -91,18 +91,18 @@ export const TabsAnatomy = () => (
       className="fill-fd-primary transition-colors duration-300"
     >
       <g textAnchor="end">
-        <text x="220" y="131">
+        <text x="283" y="169">
           Tab list
         </text>
-        <text x="220" y="264">
+        <text x="283" y="340">
           Tab panel
         </text>
       </g>
       <g textAnchor="middle">
-        <text x="335" y="68">
+        <text x="431" y="87">
           Tab (selected)
         </text>
-        <text x="435" y="68">
+        <text x="560" y="87">
           Tab
         </text>
       </g>

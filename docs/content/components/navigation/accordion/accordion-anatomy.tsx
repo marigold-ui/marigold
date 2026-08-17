@@ -2,65 +2,65 @@ export const AccordionAnatomy = () => (
   <svg
     role="img"
     aria-label="Anatomy of an Accordion: Items that each pair a Header with the Content it expands"
-    viewBox="70 50 760 255"
-    className="mx-auto h-auto w-full max-w-[100%]"
+    viewBox="83 46 660 234"
+    className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
     {/* Header of the expanded item */}
     <rect
-      x="220"
-      y="70"
-      width="460"
-      height="64"
-      rx="8"
+      x="202"
+      y="64"
+      width="422"
+      height="59"
+      rx="7"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
     {/* Title inside the header */}
     <rect
-      x="246"
-      y="96"
-      width="90"
-      height="12"
+      x="226"
+      y="88"
+      width="83"
+      height="11"
       rx="4"
       className="fill-fd-foreground transition-colors duration-300"
     />
 
     {/* Panel holding the content of the expanded item */}
     <rect
-      x="220"
-      y="142"
-      width="460"
-      height="72"
-      rx="8"
+      x="202"
+      y="130"
+      width="422"
+      height="66"
+      rx="7"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
     {/* Content inside the panel */}
     <rect
-      x="246"
-      y="170"
-      width="120"
-      height="12"
+      x="226"
+      y="156"
+      width="110"
+      height="11"
       rx="4"
       className="fill-fd-foreground/70 transition-colors duration-300"
     />
 
     {/* Header of the collapsed item */}
     <rect
-      x="220"
-      y="222"
-      width="460"
-      height="64"
-      rx="8"
+      x="202"
+      y="204"
+      width="422"
+      height="59"
+      rx="7"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
     <rect
-      x="246"
-      y="248"
-      width="90"
-      height="12"
+      x="226"
+      y="227"
+      width="83"
+      height="11"
       rx="4"
       className="fill-fd-foreground transition-colors duration-300"
     />
@@ -73,13 +73,13 @@ export const AccordionAnatomy = () => (
       strokeLinejoin="round"
       fill="none"
     >
-      <path d="M 638 97 L 648 107 L 658 97" />
-      <path d="M 643 244 L 653 254 L 643 264" />
+      <path d="M 585 89 L 594 98 L 603 89" />
+      <path d="M 589 224 L 599 233 L 589 242" />
     </g>
 
     {/* Bracket grouping header and panel into one item */}
     <path
-      d="M 700 70 L 712 70 L 712 214 L 700 214"
+      d="M 642 64 L 653 64 L 653 196 L 642 196"
       className="stroke-fd-primary transition-colors duration-300"
       fill="none"
       strokeWidth="2"
@@ -96,18 +96,18 @@ export const AccordionAnatomy = () => (
       strokeLinejoin="round"
     >
       {/* Header -> left */}
-      <path d="M 220 102 L 160 102" />
+      <path d="M 202 94 L 147 94" />
       {/* Content -> left */}
-      <path d="M 220 176 L 160 176" />
+      <path d="M 202 161 L 147 161" />
       {/* Item -> right */}
-      <path d="M 712 142 L 760 142" />
+      <path d="M 653 130 L 697 130" />
     </g>
 
     {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="220" cy="102" r="4" />
-      <circle cx="220" cy="176" r="4" />
-      <circle cx="712" cy="142" r="4" />
+      <circle cx="202" cy="94" r="4" />
+      <circle cx="202" cy="161" r="4" />
+      <circle cx="653" cy="130" r="4" />
     </g>
 
     {/* Annotation labels */}
@@ -118,14 +118,14 @@ export const AccordionAnatomy = () => (
       className="fill-fd-primary transition-colors duration-300"
     >
       <g textAnchor="end">
-        <text x="150" y="106">
+        <text x="138" y="97">
           Header
         </text>
-        <text x="150" y="180">
+        <text x="138" y="165">
           Content
         </text>
       </g>
-      <text x="770" y="146" textAnchor="start">
+      <text x="706" y="134" textAnchor="start">
         Item
       </text>
     </g>

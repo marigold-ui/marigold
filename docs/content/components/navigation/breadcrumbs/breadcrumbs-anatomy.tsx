@@ -2,21 +2,21 @@ export const BreadcrumbsAnatomy = () => (
   <svg
     role="img"
     aria-label="Anatomy of Breadcrumbs: Breadcrumbs items joined by Separators"
-    viewBox="60 40 580 145"
-    className="mx-auto h-auto w-full max-w-[100%]"
+    viewBox="113 51 660 183"
+    className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
     {/* Breadcrumb items (the last one is the current page) */}
     <g className="fill-fd-muted-foreground transition-colors duration-300">
-      <rect x="260" y="140" width="60" height="12" rx="4" />
-      <rect x="366" y="140" width="90" height="12" rx="4" />
+      <rect x="329" y="177" width="76" height="15" rx="5" />
+      <rect x="463" y="177" width="114" height="15" rx="5" />
     </g>
     <rect
-      x="502"
-      y="140"
-      width="80"
-      height="12"
-      rx="4"
+      x="635"
+      y="177"
+      width="101"
+      height="15"
+      rx="5"
       className="fill-fd-foreground transition-colors duration-300"
     />
 
@@ -28,8 +28,8 @@ export const BreadcrumbsAnatomy = () => (
       strokeLinejoin="round"
       fill="none"
     >
-      <path d="M 340 140 L 348 146 L 340 152" />
-      <path d="M 476 140 L 484 146 L 476 152" />
+      <path d="M 430 177 L 440 185 L 430 192" />
+      <path d="M 602 177 L 612 185 L 602 192" />
     </g>
 
     {/* Connector lines */}
@@ -41,15 +41,15 @@ export const BreadcrumbsAnatomy = () => (
       strokeLinejoin="round"
     >
       {/* Separator -> up */}
-      <path d="M 344 136 L 344 78" />
+      <path d="M 435 172 L 435 99" />
       {/* Breadcrumbs item -> left */}
-      <path d="M 260 146 L 200 146" />
+      <path d="M 329 185 L 253 185" />
     </g>
 
     {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="344" cy="136" r="4" />
-      <circle cx="260" cy="146" r="4" />
+      <circle cx="435" cy="172" r="4" />
+      <circle cx="329" cy="185" r="4" />
     </g>
 
     {/* Annotation labels */}
@@ -59,10 +59,10 @@ export const BreadcrumbsAnatomy = () => (
       fontWeight="600"
       className="fill-fd-primary transition-colors duration-300"
     >
-      <text x="344" y="70" textAnchor="middle">
+      <text x="435" y="89" textAnchor="middle">
         Separator
       </text>
-      <text x="190" y="150" textAnchor="end">
+      <text x="240" y="190" textAnchor="end">
         Breadcrumbs item
       </text>
     </g>
