@@ -2,16 +2,16 @@ export const TagAnatomy = () => (
   <svg
     role="img"
     aria-label="Anatomy of a Tag group: a Group label above a Tag group of tags, each with a Tag label and a Remove button"
-    viewBox="100 30 790 290"
-    className="mx-auto h-auto w-full max-w-[100%]"
+    viewBox="129 28 660 269"
+    className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
     {/* Group label above the tags */}
     <rect
-      x="180"
-      y="100"
-      width="110"
-      height="14"
+      x="167"
+      y="93"
+      width="102"
+      height="13"
       rx="4"
       className="fill-fd-foreground transition-colors duration-300"
     />
@@ -21,15 +21,15 @@ export const TagAnatomy = () => (
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     >
-      <rect x="180" y="140" width="180" height="52" rx="8" />
-      <rect x="380" y="140" width="180" height="52" rx="8" />
-      <rect x="580" y="140" width="180" height="52" rx="8" />
+      <rect x="167" y="130" width="167" height="48" rx="7" />
+      <rect x="353" y="130" width="167" height="48" rx="7" />
+      <rect x="538" y="130" width="167" height="48" rx="7" />
     </g>
     {/* Tag labels */}
     <g className="fill-fd-foreground transition-colors duration-300">
-      <rect x="202" y="160" width="90" height="12" rx="4" />
-      <rect x="402" y="160" width="90" height="12" rx="4" />
-      <rect x="602" y="160" width="90" height="12" rx="4" />
+      <rect x="188" y="149" width="84" height="11" rx="4" />
+      <rect x="373" y="149" width="84" height="11" rx="4" />
+      <rect x="559" y="149" width="84" height="11" rx="4" />
     </g>
     {/* Remove buttons */}
     <g
@@ -38,17 +38,17 @@ export const TagAnatomy = () => (
       strokeLinecap="round"
       fill="none"
     >
-      <path d="M 320 160 L 332 172" />
-      <path d="M 332 160 L 320 172" />
-      <path d="M 520 160 L 532 172" />
-      <path d="M 532 160 L 520 172" />
-      <path d="M 720 160 L 732 172" />
-      <path d="M 732 160 L 720 172" />
+      <path d="M 297 149 L 308 160" />
+      <path d="M 308 149 L 297 160" />
+      <path d="M 483 149 L 494 160" />
+      <path d="M 494 149 L 483 160" />
+      <path d="M 668 149 L 679 160" />
+      <path d="M 679 149 L 668 160" />
     </g>
 
     {/* Bracket spanning the whole tag group */}
     <path
-      d="M 180 248 L 180 262 L 760 262 L 760 248"
+      d="M 167 230 L 167 243 L 705 243 L 705 230"
       className="stroke-fd-primary transition-colors duration-300"
       fill="none"
       strokeWidth="2"
@@ -65,18 +65,18 @@ export const TagAnatomy = () => (
       strokeLinejoin="round"
     >
       {/* Group label -> up */}
-      <path d="M 215 100 L 215 66" />
+      <path d="M 200 93 L 200 61" />
       {/* Tag label -> down */}
-      <path d="M 222 192 L 222 218" />
+      <path d="M 206 178 L 206 202" />
       {/* Remove button -> up */}
-      <path d="M 726 152 L 726 76" />
+      <path d="M 674 141 L 674 71" />
     </g>
 
     {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="215" cy="100" r="4" />
-      <circle cx="222" cy="192" r="4" />
-      <circle cx="726" cy="152" r="4" />
+      <circle cx="200" cy="93" r="4" />
+      <circle cx="206" cy="178" r="4" />
+      <circle cx="674" cy="141" r="4" />
     </g>
 
     {/* Annotation labels */}
@@ -87,16 +87,16 @@ export const TagAnatomy = () => (
       textAnchor="middle"
       className="fill-fd-primary transition-colors duration-300"
     >
-      <text x="215" y="58">
+      <text x="200" y="54">
         Group label
       </text>
-      <text x="222" y="236">
+      <text x="206" y="219">
         Tag label
       </text>
-      <text x="726" y="68">
+      <text x="674" y="63">
         Remove button
       </text>
-      <text x="470" y="286">
+      <text x="436" y="265">
         Tag group
       </text>
     </g>

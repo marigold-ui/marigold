@@ -1,281 +1,281 @@
 export const BulkActionsAnatomy = () => (
   <svg
-    viewBox="0 0 820 470"
+    viewBox="0 0 660 378"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
     {/* App frame / page */}
     <rect
-      x="170"
-      y="40"
-      width="480"
-      height="390"
-      rx="12"
+      x="137"
+      y="32"
+      width="386"
+      height="314"
+      rx="10"
       className="fill-fd-muted/40 stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
 
     {/* Table header: select-all checkbox + columns */}
     <rect
-      x="190"
-      y="66"
-      width="14"
-      height="14"
-      rx="3"
+      x="153"
+      y="53"
+      width="11"
+      height="11"
+      rx="2"
       className="stroke-fd-muted-foreground transition-colors duration-300"
       strokeWidth="2"
       fill="none"
     />
     <rect
-      x="220"
-      y="69"
-      width="90"
-      height="8"
-      rx="3"
+      x="177"
+      y="56"
+      width="72"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/55 transition-colors duration-300"
     />
     <rect
-      x="360"
-      y="69"
-      width="70"
-      height="8"
-      rx="3"
+      x="290"
+      y="56"
+      width="56"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/55 transition-colors duration-300"
     />
     <rect
-      x="480"
-      y="69"
-      width="70"
-      height="8"
-      rx="3"
+      x="386"
+      y="56"
+      width="56"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/55 transition-colors duration-300"
     />
     <rect
-      x="190"
-      y="90"
-      width="440"
+      x="153"
+      y="72"
+      width="354"
       height="2"
       className="fill-fd-border transition-colors duration-300"
     />
 
     {/* Row 1 — selected */}
     <rect
-      x="182"
-      y="100"
-      width="456"
-      height="34"
-      rx="6"
+      x="146"
+      y="80"
+      width="367"
+      height="27"
+      rx="5"
       className="fill-fd-primary/10 transition-colors duration-300"
     />
     <rect
-      x="190"
-      y="110"
-      width="14"
-      height="14"
-      rx="3"
+      x="153"
+      y="89"
+      width="11"
+      height="11"
+      rx="2"
       className="fill-fd-primary transition-colors duration-300"
     />
     <rect
-      x="220"
-      y="113"
-      width="110"
-      height="8"
-      rx="3"
+      x="177"
+      y="91"
+      width="89"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/40 transition-colors duration-300"
     />
     <rect
-      x="360"
-      y="113"
-      width="80"
-      height="8"
-      rx="3"
+      x="290"
+      y="91"
+      width="64"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/30 transition-colors duration-300"
     />
     <rect
-      x="480"
-      y="113"
-      width="60"
-      height="8"
-      rx="3"
+      x="386"
+      y="91"
+      width="48"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/30 transition-colors duration-300"
     />
 
     {/* Row 2 — selected */}
     <rect
-      x="182"
-      y="138"
-      width="456"
-      height="34"
-      rx="6"
+      x="146"
+      y="111"
+      width="367"
+      height="27"
+      rx="5"
       className="fill-fd-primary/10 transition-colors duration-300"
     />
     <rect
-      x="190"
-      y="148"
-      width="14"
-      height="14"
-      rx="3"
+      x="153"
+      y="119"
+      width="11"
+      height="11"
+      rx="2"
       className="fill-fd-primary transition-colors duration-300"
     />
     <rect
-      x="220"
-      y="151"
-      width="90"
-      height="8"
-      rx="3"
+      x="177"
+      y="122"
+      width="72"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/40 transition-colors duration-300"
     />
     <rect
-      x="360"
-      y="151"
-      width="70"
-      height="8"
-      rx="3"
+      x="290"
+      y="122"
+      width="56"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/30 transition-colors duration-300"
     />
     <rect
-      x="480"
-      y="151"
-      width="80"
-      height="8"
-      rx="3"
+      x="386"
+      y="122"
+      width="64"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/30 transition-colors duration-300"
     />
 
     {/* Row 3 — unselected */}
     <rect
-      x="190"
-      y="186"
-      width="14"
-      height="14"
-      rx="3"
+      x="153"
+      y="150"
+      width="11"
+      height="11"
+      rx="2"
       className="stroke-fd-muted-foreground transition-colors duration-300"
       strokeWidth="2"
       fill="none"
     />
     <rect
-      x="220"
-      y="189"
-      width="120"
-      height="8"
-      rx="3"
+      x="177"
+      y="152"
+      width="97"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/40 transition-colors duration-300"
     />
     <rect
-      x="360"
-      y="189"
-      width="60"
-      height="8"
-      rx="3"
+      x="290"
+      y="152"
+      width="48"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/30 transition-colors duration-300"
     />
     <rect
-      x="480"
-      y="189"
-      width="70"
-      height="8"
-      rx="3"
+      x="386"
+      y="152"
+      width="56"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/30 transition-colors duration-300"
     />
 
     {/* Row 4 — unselected */}
     <rect
-      x="190"
-      y="224"
-      width="14"
-      height="14"
-      rx="3"
+      x="153"
+      y="180"
+      width="11"
+      height="11"
+      rx="2"
       className="stroke-fd-muted-foreground transition-colors duration-300"
       strokeWidth="2"
       fill="none"
     />
     <rect
-      x="220"
-      y="227"
-      width="100"
-      height="8"
-      rx="3"
+      x="177"
+      y="183"
+      width="80"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/40 transition-colors duration-300"
     />
     <rect
-      x="360"
-      y="227"
-      width="90"
-      height="8"
-      rx="3"
+      x="290"
+      y="183"
+      width="72"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/30 transition-colors duration-300"
     />
     <rect
-      x="480"
-      y="227"
-      width="50"
-      height="8"
-      rx="3"
+      x="386"
+      y="183"
+      width="40"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/30 transition-colors duration-300"
     />
 
     {/* Action bar — floating above the bottom of the table */}
     <g>
       <rect
-        x="230"
-        y="290"
-        width="360"
-        height="44"
-        rx="10"
+        x="185"
+        y="233"
+        width="290"
+        height="35"
+        rx="8"
         className="fill-fd-card stroke-fd-primary transition-colors duration-300"
         strokeWidth="2"
       />
       {/* Selection count */}
       <rect
-        x="248"
-        y="308"
-        width="66"
-        height="9"
-        rx="3"
+        x="200"
+        y="248"
+        width="53"
+        height="7"
+        rx="2"
         className="fill-fd-foreground transition-colors duration-300"
       />
       {/* Clear button */}
       <circle
-        cx="336"
-        cy="312"
-        r="8"
+        cx="270"
+        cy="251"
+        r="6"
         className="stroke-fd-muted-foreground transition-colors duration-300"
         strokeWidth="2"
         fill="none"
       />
       {/* Divider */}
       <rect
-        x="358"
-        y="300"
+        x="288"
+        y="241"
         width="2"
-        height="24"
+        height="19"
         className="fill-fd-border transition-colors duration-300"
       />
       {/* Actions */}
       <rect
-        x="374"
-        y="302"
-        width="60"
-        height="20"
-        rx="5"
+        x="301"
+        y="243"
+        width="48"
+        height="16"
+        rx="4"
         className="fill-fd-muted/70 stroke-fd-border transition-colors duration-300"
         strokeWidth="1.5"
       />
       <rect
-        x="444"
-        y="302"
-        width="60"
-        height="20"
-        rx="5"
+        x="357"
+        y="243"
+        width="48"
+        height="16"
+        rx="4"
         className="fill-fd-muted/70 stroke-fd-border transition-colors duration-300"
         strokeWidth="1.5"
       />
       <rect
-        x="514"
-        y="302"
-        width="60"
-        height="20"
-        rx="5"
+        x="414"
+        y="243"
+        width="48"
+        height="16"
+        rx="4"
         className="fill-fd-muted/70 stroke-fd-border transition-colors duration-300"
         strokeWidth="1.5"
       />
@@ -284,26 +284,26 @@ export const BulkActionsAnatomy = () => (
     {/* Result toast — bottom right of the page */}
     <g>
       <rect
-        x="440"
-        y="376"
-        width="190"
-        height="36"
-        rx="8"
+        x="354"
+        y="303"
+        width="153"
+        height="29"
+        rx="6"
         className="fill-fd-card stroke-fd-border transition-colors duration-300"
         strokeWidth="2"
       />
       <circle
-        cx="460"
-        cy="394"
-        r="7"
+        cx="370"
+        cy="317"
+        r="6"
         className="fill-fd-primary transition-colors duration-300"
       />
       <rect
-        x="476"
-        y="390"
-        width="130"
-        height="8"
-        rx="3"
+        x="383"
+        y="314"
+        width="105"
+        height="6"
+        rx="2"
         className="fill-fd-muted-foreground/50 transition-colors duration-300"
       />
     </g>
@@ -311,53 +311,53 @@ export const BulkActionsAnatomy = () => (
     {/* Confirm dialog — overlapping card on the right */}
     <g>
       <rect
-        x="600"
-        y="120"
-        width="180"
-        height="130"
-        rx="10"
+        x="483"
+        y="97"
+        width="145"
+        height="105"
+        rx="8"
         className="fill-fd-card stroke-fd-border transition-colors duration-300"
         strokeWidth="2"
       />
       <rect
-        x="618"
-        y="140"
-        width="110"
-        height="10"
-        rx="3"
+        x="497"
+        y="113"
+        width="89"
+        height="8"
+        rx="2"
         className="fill-fd-foreground transition-colors duration-300"
       />
       <rect
-        x="618"
-        y="162"
-        width="144"
-        height="7"
-        rx="3"
+        x="497"
+        y="130"
+        width="116"
+        height="6"
+        rx="2"
         className="fill-fd-muted-foreground/40 transition-colors duration-300"
       />
       <rect
-        x="618"
-        y="176"
-        width="120"
-        height="7"
-        rx="3"
+        x="497"
+        y="142"
+        width="97"
+        height="6"
+        rx="2"
         className="fill-fd-muted-foreground/40 transition-colors duration-300"
       />
       <rect
-        x="618"
-        y="208"
-        width="60"
-        height="22"
-        rx="5"
+        x="497"
+        y="167"
+        width="48"
+        height="18"
+        rx="4"
         className="fill-fd-muted/70 stroke-fd-border transition-colors duration-300"
         strokeWidth="1.5"
       />
       <rect
-        x="688"
-        y="208"
-        width="74"
-        height="22"
-        rx="5"
+        x="554"
+        y="167"
+        width="60"
+        height="18"
+        rx="4"
         className="fill-fd-primary transition-colors duration-300"
       />
     </g>
@@ -370,20 +370,20 @@ export const BulkActionsAnatomy = () => (
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M 190 73 L 140 73" />
-      <path d="M 182 155 L 140 155" />
-      <path d="M 230 312 L 140 312" />
-      <path d="M 440 394 L 140 394" />
-      <path d="M 690 250 L 690 270" />
+      <path d="M 153 59 L 113 59" />
+      <path d="M 146 125 L 113 125" />
+      <path d="M 185 251 L 113 251" />
+      <path d="M 354 317 L 113 317" />
+      <path d="M 555 201 L 555 217" />
     </g>
 
     {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="190" cy="73" r="4" />
-      <circle cx="182" cy="155" r="4" />
-      <circle cx="230" cy="312" r="4" />
-      <circle cx="440" cy="394" r="4" />
-      <circle cx="690" cy="250" r="4" />
+      <circle cx="153" cy="59" r="4" />
+      <circle cx="146" cy="125" r="4" />
+      <circle cx="185" cy="251" r="4" />
+      <circle cx="354" cy="317" r="4" />
+      <circle cx="555" cy="201" r="4" />
     </g>
 
     {/* Labels */}
@@ -393,8 +393,8 @@ export const BulkActionsAnatomy = () => (
     >
       <g textAnchor="end">
         <text
-          x="130"
-          y="77"
+          x="105"
+          y="62"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -402,8 +402,8 @@ export const BulkActionsAnatomy = () => (
           Select All
         </text>
         <text
-          x="130"
-          y="159"
+          x="105"
+          y="128"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -411,8 +411,8 @@ export const BulkActionsAnatomy = () => (
           Selection
         </text>
         <text
-          x="130"
-          y="316"
+          x="105"
+          y="254"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -420,8 +420,8 @@ export const BulkActionsAnatomy = () => (
           Action Bar
         </text>
         <text
-          x="130"
-          y="398"
+          x="105"
+          y="320"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -430,8 +430,8 @@ export const BulkActionsAnatomy = () => (
         </text>
       </g>
       <text
-        x="690"
-        y="288"
+        x="555"
+        y="232"
         textAnchor="middle"
         fontSize="14"
         fontWeight="600"
