@@ -2,97 +2,97 @@ export const DatePickerAnatomy = () => (
   <svg
     role="img"
     aria-label="Anatomy of a DatePicker: a Label above a Date field with a Calendar button, opening a popover whose Header sits above the calendar grid"
-    viewBox="120 5 790 505"
-    className="mx-auto h-auto w-full max-w-[100%]"
+    viewBox="107 4 660 429"
+    className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
     {/* Field label above the date field */}
     <rect
-      x="300"
-      y="60"
-      width="100"
-      height="14"
-      rx="4"
+      x="255"
+      y="51"
+      width="85"
+      height="12"
+      rx="3"
       className="fill-fd-foreground transition-colors duration-300"
     />
 
     {/* Date field (segments the user can type into) */}
     <rect
-      x="300"
-      y="90"
-      width="420"
-      height="52"
-      rx="8"
+      x="255"
+      y="76"
+      width="357"
+      height="44"
+      rx="7"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
     {/* Date value inside the field */}
     <g className="fill-fd-foreground transition-colors duration-300">
-      <rect x="320" y="110" width="24" height="12" rx="4" />
-      <rect x="356" y="110" width="24" height="12" rx="4" />
-      <rect x="392" y="110" width="40" height="12" rx="4" />
+      <rect x="272" y="93" width="20" height="10" rx="3" />
+      <rect x="302" y="93" width="20" height="10" rx="3" />
+      <rect x="333" y="93" width="34" height="10" rx="3" />
     </g>
     {/* Calendar button that opens the popover */}
     <rect
-      x="666"
-      y="106"
-      width="20"
-      height="20"
-      rx="4"
+      x="566"
+      y="90"
+      width="17"
+      height="17"
+      rx="3"
       className="fill-fd-card stroke-fd-foreground transition-colors duration-300"
       strokeWidth="2"
     />
     <rect
-      x="666"
-      y="106"
-      width="20"
-      height="7"
+      x="566"
+      y="90"
+      width="17"
+      height="6"
       className="fill-fd-foreground transition-colors duration-300"
     />
 
     {/* Popover holding the calendar */}
     <rect
-      x="300"
-      y="154"
-      width="420"
-      height="316"
-      rx="12"
+      x="255"
+      y="131"
+      width="357"
+      height="268"
+      rx="10"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
 
     {/* Calendar header: month and year select boxes */}
     <rect
-      x="322"
-      y="176"
-      width="90"
-      height="36"
-      rx="6"
+      x="273"
+      y="149"
+      width="76"
+      height="31"
+      rx="5"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
     <rect
-      x="336"
-      y="188"
-      width="34"
-      height="10"
+      x="285"
+      y="160"
+      width="29"
+      height="8"
       rx="3"
       className="fill-fd-foreground transition-colors duration-300"
     />
     <rect
-      x="424"
-      y="176"
-      width="90"
-      height="36"
-      rx="6"
+      x="360"
+      y="149"
+      width="76"
+      height="31"
+      rx="5"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
     <rect
-      x="438"
-      y="188"
-      width="38"
-      height="10"
+      x="372"
+      y="160"
+      width="32"
+      height="8"
       rx="3"
       className="fill-fd-foreground transition-colors duration-300"
     />
@@ -104,8 +104,8 @@ export const DatePickerAnatomy = () => (
       strokeLinejoin="round"
       fill="none"
     >
-      <path d="M 386 190 L 392 197 L 398 190" />
-      <path d="M 490 190 L 496 197 L 502 190" />
+      <path d="M 328 161 L 333 167 L 338 161" />
+      <path d="M 416 161 L 421 167 L 426 161" />
     </g>
     {/* Step buttons of the calendar header */}
     <g
@@ -115,26 +115,26 @@ export const DatePickerAnatomy = () => (
       strokeLinejoin="round"
       fill="none"
     >
-      <path d="M 606 186 L 596 194 L 606 202" />
-      <path d="M 642 186 L 652 194 L 642 202" />
+      <path d="M 515 158 L 506 165 L 515 172" />
+      <path d="M 545 158 L 554 165 L 545 172" />
     </g>
 
     {/* Weekday headers */}
     <g className="fill-fd-muted-foreground transition-colors duration-300">
-      {[340, 396, 452, 508, 564, 620, 676].map(x => (
-        <rect key={x} x={x - 10} y="238" width="20" height="9" rx="3" />
+      {[289, 336, 384, 431, 479, 527, 574].map(x => (
+        <rect key={x} x={x - 8} y="202" width="17" height="8" rx="3" />
       ))}
     </g>
     {/* Dates of the grid (7 columns x 5 weeks) */}
     <g className="fill-fd-foreground/70 transition-colors duration-300">
-      {[276, 316, 356, 396, 436].map(y =>
-        [340, 396, 452, 508, 564, 620, 676].map(x => (
+      {[234, 268, 302, 336, 370].map(y =>
+        [289, 336, 384, 431, 479, 527, 574].map(x => (
           <rect
             key={`${x}-${y}`}
-            x={x - 9}
+            x={x - 8}
             y={y}
-            width="18"
-            height="9"
+            width="15"
+            height="8"
             rx="3"
           />
         ))
@@ -142,23 +142,23 @@ export const DatePickerAnatomy = () => (
     </g>
     {/* Selected date */}
     <circle
-      cx="676"
-      cy="320"
-      r="15"
+      cx="574"
+      cy="272"
+      r="13"
       className="fill-fd-primary transition-colors duration-300"
     />
     <rect
-      x="667"
-      y="316"
-      width="18"
-      height="9"
+      x="567"
+      y="268"
+      width="15"
+      height="8"
       rx="3"
       className="fill-fd-primary-foreground transition-colors duration-300"
     />
 
     {/* Bracket grouping the calendar header */}
     <path
-      d="M 320 170 L 312 170 L 312 218 L 320 218"
+      d="M 272 144 L 265 144 L 265 185 L 272 185"
       className="stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
       strokeLinecap="round"
@@ -174,21 +174,21 @@ export const DatePickerAnatomy = () => (
       strokeLinejoin="round"
     >
       {/* Label -> up */}
-      <path d="M 350 60 L 350 34" />
+      <path d="M 297 51 L 297 29" />
       {/* Date field -> left */}
-      <path d="M 300 116 L 240 116" />
+      <path d="M 255 99 L 204 99" />
       {/* Calendar button -> right */}
-      <path d="M 700 116 L 770 116" />
+      <path d="M 595 99 L 650 99" />
       {/* Header -> left */}
-      <path d="M 312 194 L 240 194" />
+      <path d="M 265 165 L 204 165" />
     </g>
 
     {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="350" cy="60" r="4" />
-      <circle cx="300" cy="116" r="4" />
-      <circle cx="700" cy="116" r="4" />
-      <circle cx="312" cy="194" r="4" />
+      <circle cx="297" cy="51" r="4" />
+      <circle cx="255" cy="99" r="4" />
+      <circle cx="595" cy="99" r="4" />
+      <circle cx="265" cy="165" r="4" />
     </g>
 
     {/* Annotation labels */}
@@ -198,18 +198,18 @@ export const DatePickerAnatomy = () => (
       fontWeight="600"
       className="fill-fd-primary transition-colors duration-300"
     >
-      <text x="350" y="26" textAnchor="middle">
+      <text x="297" y="22" textAnchor="middle">
         Label
       </text>
       <g textAnchor="end">
-        <text x="230" y="120">
+        <text x="195" y="102">
           Date field
         </text>
-        <text x="230" y="198">
+        <text x="195" y="168">
           Header
         </text>
       </g>
-      <text x="780" y="120" textAnchor="start">
+      <text x="659" y="102" textAnchor="start">
         Calendar button
       </text>
     </g>

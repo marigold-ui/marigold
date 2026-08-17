@@ -2,42 +2,42 @@ export const CalendarAnatomy = () => (
   <svg
     role="img"
     aria-label="Anatomy of a Calendar: a Header with a Month select box, a Year select box and Step buttons, above a Grid of selectable Dates"
-    viewBox="110 5 700 440"
-    className="mx-auto h-auto w-full max-w-[100%]"
+    viewBox="123 5 660 433"
+    className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
     {/* Header: month select box */}
     <rect
-      x="270"
-      y="90"
-      width="110"
-      height="44"
+      x="266"
+      y="89"
+      width="108"
+      height="43"
       rx="8"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
     <rect
-      x="286"
-      y="106"
-      width="40"
+      x="282"
+      y="104"
+      width="39"
       height="12"
       rx="4"
       className="fill-fd-foreground transition-colors duration-300"
     />
     {/* Header: year select box */}
     <rect
-      x="396"
-      y="90"
-      width="110"
-      height="44"
+      x="390"
+      y="89"
+      width="108"
+      height="43"
       rx="8"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
     <rect
-      x="412"
-      y="106"
-      width="44"
+      x="406"
+      y="104"
+      width="43"
       height="12"
       rx="4"
       className="fill-fd-foreground transition-colors duration-300"
@@ -50,8 +50,8 @@ export const CalendarAnatomy = () => (
       strokeLinejoin="round"
       fill="none"
     >
-      <path d="M 350 108 L 356 116 L 362 108" />
-      <path d="M 476 108 L 482 116 L 488 108" />
+      <path d="M 345 106 L 351 114 L 356 106" />
+      <path d="M 469 106 L 475 114 L 481 106" />
     </g>
     {/* Step buttons (previous / next month) */}
     <g
@@ -61,39 +61,39 @@ export const CalendarAnatomy = () => (
       strokeLinejoin="round"
       fill="none"
     >
-      <path d="M 570 100 L 558 112 L 570 124" />
-      <path d="M 606 100 L 618 112 L 606 124" />
+      <path d="M 561 98 L 549 110 L 561 122" />
+      <path d="M 597 98 L 609 110 L 597 122" />
     </g>
 
     {/* Weekday headers of the grid */}
     <g className="fill-fd-muted-foreground transition-colors duration-300">
-      <rect x="279" y="170" width="22" height="10" rx="3" />
-      <rect x="339" y="170" width="22" height="10" rx="3" />
-      <rect x="399" y="170" width="22" height="10" rx="3" />
-      <rect x="459" y="170" width="22" height="10" rx="3" />
-      <rect x="519" y="170" width="22" height="10" rx="3" />
-      <rect x="579" y="170" width="22" height="10" rx="3" />
-      <rect x="639" y="170" width="22" height="10" rx="3" />
+      <rect x="275" y="167" width="22" height="10" rx="3" />
+      <rect x="334" y="167" width="22" height="10" rx="3" />
+      <rect x="393" y="167" width="22" height="10" rx="3" />
+      <rect x="452" y="167" width="22" height="10" rx="3" />
+      <rect x="511" y="167" width="22" height="10" rx="3" />
+      <rect x="570" y="167" width="22" height="10" rx="3" />
+      <rect x="629" y="167" width="22" height="10" rx="3" />
     </g>
 
     {/* Dates of the grid (7 columns x 5 weeks) */}
     <g className="fill-fd-foreground/70 transition-colors duration-300">
-      {[215, 260, 305, 350, 395].map(y =>
-        [280, 340, 400, 460, 520, 580, 640].map(x => (
+      {[212, 256, 300, 345, 389].map(y =>
+        [276, 335, 394, 453, 512, 571, 630].map(x => (
           <rect key={`${x}-${y}`} x={x} y={y} width="20" height="10" rx="3" />
         ))
       )}
     </g>
     {/* Selected date */}
     <circle
-      cx="650"
-      cy="265"
+      cx="640"
+      cy="261"
       r="16"
       className="fill-fd-primary transition-colors duration-300"
     />
     <rect
-      x="640"
-      y="260"
+      x="630"
+      y="256"
       width="20"
       height="10"
       rx="3"
@@ -108,9 +108,9 @@ export const CalendarAnatomy = () => (
       fill="none"
     >
       {/* Header */}
-      <path d="M 248 84 L 240 84 L 240 140 L 248 140" />
+      <path d="M 244 83 L 236 83 L 236 138 L 244 138" />
       {/* Grid */}
-      <path d="M 248 158 L 240 158 L 240 420 L 248 420" />
+      <path d="M 244 156 L 236 156 L 236 414 L 244 414" />
     </g>
 
     {/* Connector lines */}
@@ -122,27 +122,27 @@ export const CalendarAnatomy = () => (
       strokeLinejoin="round"
     >
       {/* Header -> left */}
-      <path d="M 240 112 L 190 112" />
+      <path d="M 236 110 L 187 110" />
       {/* Grid -> left */}
-      <path d="M 240 289 L 190 289" />
+      <path d="M 236 285 L 187 285" />
       {/* Month select box -> up */}
-      <path d="M 325 90 L 325 66" />
+      <path d="M 320 89 L 320 65" />
       {/* Year select box -> up */}
-      <path d="M 451 90 L 451 30" />
+      <path d="M 444 89 L 444 30" />
       {/* Step buttons -> right */}
-      <path d="M 628 112 L 700 112" />
+      <path d="M 618 110 L 689 110" />
       {/* Date -> right */}
-      <path d="M 666 265 L 700 265" />
+      <path d="M 656 261 L 689 261" />
     </g>
 
     {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="240" cy="112" r="4" />
-      <circle cx="240" cy="289" r="4" />
-      <circle cx="325" cy="90" r="4" />
-      <circle cx="451" cy="90" r="4" />
-      <circle cx="628" cy="112" r="4" />
-      <circle cx="666" cy="265" r="4" />
+      <circle cx="236" cy="110" r="4" />
+      <circle cx="236" cy="285" r="4" />
+      <circle cx="320" cy="89" r="4" />
+      <circle cx="444" cy="89" r="4" />
+      <circle cx="618" cy="110" r="4" />
+      <circle cx="656" cy="261" r="4" />
     </g>
 
     {/* Annotation labels */}
@@ -153,26 +153,26 @@ export const CalendarAnatomy = () => (
       className="fill-fd-primary transition-colors duration-300"
     >
       <g textAnchor="end">
-        <text x="180" y="116">
+        <text x="177" y="114">
           Header
         </text>
-        <text x="180" y="293">
+        <text x="177" y="289">
           Grid
         </text>
       </g>
       <g textAnchor="middle">
-        <text x="325" y="58">
+        <text x="320" y="57">
           Month select box
         </text>
-        <text x="451" y="22">
+        <text x="444" y="22">
           Year select box
         </text>
       </g>
       <g textAnchor="start">
-        <text x="710" y="116">
+        <text x="699" y="114">
           Step buttons
         </text>
-        <text x="710" y="269">
+        <text x="699" y="265">
           Date
         </text>
       </g>

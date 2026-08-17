@@ -2,69 +2,69 @@ export const DateFieldAnatomy = () => (
   <svg
     role="img"
     aria-label="Anatomy of a DateField: a Label above a Field made up of editable Segments"
-    viewBox="120 15 560 220"
-    className="mx-auto h-auto w-full max-w-[100%]"
+    viewBox="194 20 660 288"
+    className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
     {/* Field label above the segments */}
     <rect
-      x="260"
-      y="70"
-      width="90"
-      height="12"
-      rx="4"
+      x="340"
+      y="92"
+      width="118"
+      height="16"
+      rx="5"
       className="fill-fd-foreground transition-colors duration-300"
     />
 
     {/* Field (the group holding all segments) */}
     <rect
-      x="260"
-      y="96"
-      width="320"
-      height="48"
-      rx="8"
+      x="340"
+      y="126"
+      width="419"
+      height="63"
+      rx="10"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
 
     {/* Focused segment (day) */}
     <rect
-      x="276"
-      y="108"
-      width="36"
-      height="24"
-      rx="4"
+      x="361"
+      y="141"
+      width="47"
+      height="31"
+      rx="5"
       className="fill-fd-accent transition-colors duration-300"
     />
     <rect
-      x="284"
-      y="116"
-      width="20"
-      height="8"
-      rx="3"
+      x="372"
+      y="152"
+      width="26"
+      height="10"
+      rx="4"
       className="fill-fd-accent-foreground transition-colors duration-300"
     />
 
     {/* Remaining date and time segments */}
     <g className="fill-fd-foreground transition-colors duration-300">
       {/* Month */}
-      <rect x="322" y="116" width="20" height="8" rx="3" />
+      <rect x="422" y="152" width="26" height="10" rx="4" />
       {/* Year */}
-      <rect x="352" y="116" width="34" height="8" rx="3" />
+      <rect x="461" y="152" width="45" height="10" rx="4" />
       {/* Hour */}
-      <rect x="404" y="116" width="20" height="8" rx="3" />
+      <rect x="529" y="152" width="26" height="10" rx="4" />
       {/* Minute */}
-      <rect x="434" y="116" width="20" height="8" rx="3" />
+      <rect x="568" y="152" width="26" height="10" rx="4" />
       {/* Second */}
-      <rect x="464" y="116" width="20" height="8" rx="3" />
+      <rect x="608" y="152" width="26" height="10" rx="4" />
     </g>
     {/* Literal separators between the segments */}
     <g className="fill-fd-muted-foreground transition-colors duration-300">
-      <rect x="314" y="122" width="4" height="4" rx="2" />
-      <rect x="344" y="122" width="4" height="4" rx="2" />
-      <rect x="394" y="122" width="4" height="4" rx="2" />
-      <rect x="426" y="122" width="4" height="4" rx="2" />
-      <rect x="456" y="122" width="4" height="4" rx="2" />
+      <rect x="411" y="160" width="5" height="5" rx="3" />
+      <rect x="450" y="160" width="5" height="5" rx="3" />
+      <rect x="516" y="160" width="5" height="5" rx="3" />
+      <rect x="558" y="160" width="5" height="5" rx="3" />
+      <rect x="597" y="160" width="5" height="5" rx="3" />
     </g>
 
     {/* Connector lines */}
@@ -76,18 +76,18 @@ export const DateFieldAnatomy = () => (
       strokeLinejoin="round"
     >
       {/* Label -> up */}
-      <path d="M 300 70 L 300 44" />
+      <path d="M 393 92 L 393 58" />
       {/* Field -> up */}
-      <path d="M 520 96 L 520 44" />
+      <path d="M 681 126 L 681 58" />
       {/* Segment -> down */}
-      <path d="M 294 132 L 294 186" />
+      <path d="M 385 173 L 385 244" />
     </g>
 
     {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="300" cy="70" r="4" />
-      <circle cx="520" cy="96" r="4" />
-      <circle cx="294" cy="132" r="4" />
+      <circle cx="393" cy="92" r="4" />
+      <circle cx="681" cy="126" r="4" />
+      <circle cx="385" cy="173" r="4" />
     </g>
 
     {/* Annotation labels */}
@@ -98,13 +98,13 @@ export const DateFieldAnatomy = () => (
       textAnchor="middle"
       className="fill-fd-primary transition-colors duration-300"
     >
-      <text x="300" y="36">
+      <text x="393" y="47">
         Label
       </text>
-      <text x="520" y="36">
+      <text x="681" y="47">
         Field
       </text>
-      <text x="294" y="204">
+      <text x="385" y="267">
         Segment
       </text>
     </g>
