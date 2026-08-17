@@ -49,8 +49,20 @@ export const Stepper: ThemeComponent<'Stepper'> = {
       // like an upcoming step, and a dashed ring carries the "not available"
       // difference as shape rather than colour.
       'in-data-[state=disabled]:text-secondary in-data-[state=disabled]:border-dashed',
-      'in-data-[state=completed]:bg-success in-data-[state=completed]:text-success-foreground in-data-[state=completed]:border-transparent',
-      'in-data-[state=current]:ui-control in-data-[state=current]:border-transparent',
+      // Weight ranks by how much each state answers "where am I": the step you
+      // are on is a solid fill, a finished step is a softer fill, everything
+      // else is a ring. A filled mark always outranks a ringed one, which is why
+      // the errored step stays a ring -- you can only be *at* one step, but
+      // several can be broken at once, and red must not out-shout the current
+      // step. `success-accent` also matches the completed connector, so the
+      // marker leads and the line follows rather than the reverse.
+      'in-data-[state=completed]:bg-success-accent in-data-[state=completed]:text-success-foreground in-data-[state=completed]:border-transparent',
+      // Not `ui-control`: that is the theme's operable-surface utility, it
+      // composes `ui-frame`, and it brought an 8px radius and a white fill with
+      // it. That overrode `rounded-full` and gave the current step the exact
+      // border-radius and background of the TextField sitting under it, so the
+      // one marker that has to be unmistakable rendered as a tiny empty input.
+      'in-data-[state=current]:bg-primary in-data-[state=current]:text-primary-foreground in-data-[state=current]:border-transparent',
       'in-data-[state=error]:text-destructive-accent in-data-[state=error]:border-destructive-accent',
       '[&_svg]:size-4',
     ],
