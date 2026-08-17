@@ -2,22 +2,22 @@ export const TooltipAnatomy = () => (
   <svg
     role="img"
     aria-label="Anatomy of a Tooltip: a Trigger with a Tooltip attached to it by a Caret tip"
-    viewBox="140 40 620 300"
-    className="mx-auto h-auto w-full max-w-[100%]"
+    viewBox="202 47 660 355"
+    className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
     {/* Trigger the tooltip is attached to */}
     <circle
-      cx="450"
-      cy="150"
-      r="22"
+      cx="532"
+      cy="177"
+      r="26"
       className="fill-fd-muted-foreground/25 transition-colors duration-300"
     />
     <text
-      x="450"
-      y="158"
+      x="532"
+      y="187"
       fontFamily="ui-sans-serif, system-ui, sans-serif"
-      fontSize="22"
+      fontSize="26"
       fontWeight="700"
       textAnchor="middle"
       className="fill-fd-foreground transition-colors duration-300"
@@ -27,21 +27,21 @@ export const TooltipAnatomy = () => (
 
     {/* Caret tip pointing at the trigger */}
     <path
-      d="M 434 198 L 450 180 L 466 198 Z"
+      d="M 513 234 L 532 213 L 551 234 Z"
       className="fill-fd-muted-foreground/20 transition-colors duration-300"
     />
     {/* Tooltip holding the informative text */}
     <rect
-      x="290"
-      y="196"
-      width="320"
-      height="110"
-      rx="8"
+      x="343"
+      y="232"
+      width="378"
+      height="130"
+      rx="9"
       className="fill-fd-muted-foreground/20 transition-colors duration-300"
     />
     <g className="fill-fd-foreground/70 transition-colors duration-300">
-      <rect x="320" y="230" width="260" height="12" rx="4" />
-      <rect x="320" y="254" width="200" height="12" rx="4" />
+      <rect x="378" y="272" width="308" height="14" rx="5" />
+      <rect x="378" y="300" width="237" height="14" rx="5" />
     </g>
 
     {/* Connector lines */}
@@ -53,18 +53,18 @@ export const TooltipAnatomy = () => (
       strokeLinejoin="round"
     >
       {/* Trigger -> up */}
-      <path d="M 450 128 L 450 76" />
+      <path d="M 532 151 L 532 90" />
       {/* Caret tip -> right */}
-      <path d="M 462 190 L 620 190" />
+      <path d="M 546 225 L 733 225" />
       {/* Tooltip -> left */}
-      <path d="M 290 250 L 220 250" />
+      <path d="M 343 296 L 260 296" />
     </g>
 
     {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="450" cy="128" r="4" />
-      <circle cx="462" cy="190" r="4" />
-      <circle cx="290" cy="250" r="4" />
+      <circle cx="532" cy="151" r="4" />
+      <circle cx="546" cy="225" r="4" />
+      <circle cx="343" cy="296" r="4" />
     </g>
 
     {/* Annotation labels */}
@@ -74,13 +74,13 @@ export const TooltipAnatomy = () => (
       fontWeight="600"
       className="fill-fd-primary transition-colors duration-300"
     >
-      <text x="450" y="68" textAnchor="middle">
+      <text x="532" y="80" textAnchor="middle">
         Trigger
       </text>
-      <text x="630" y="194" textAnchor="start">
+      <text x="745" y="229" textAnchor="start">
         Caret tip
       </text>
-      <text x="210" y="254" textAnchor="end">
+      <text x="248" y="300" textAnchor="end">
         Tooltip
       </text>
     </g>
