@@ -86,6 +86,8 @@ Modifier clicks are deliberately left alone. Cmd-click and middle-click still op
 
 When there are more steps than labels will fit, `hideLabels` drops the labels visually while keeping them for screen readers. Do not remove the labels from your JSX to achieve this: an unlabelled step has no accessible name.
 
+Hiding the labels also takes away a sighted user's sense of how far along they are, so `hideLabels` adds a visible "Step 3 of 5" counter in exchange. The counter is hidden from assistive technology, because every step already announces its own position and the counter would only repeat it.
+
 <ComponentDemo name="stepper-hide-labels" />
 
 ## Accessibility
