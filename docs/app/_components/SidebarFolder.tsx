@@ -69,6 +69,8 @@ const StyledSidebarFolderTrigger = ({
       className={cn(
         itemVariants({ variant: collapsible ? 'button' : undefined }),
         'w-full',
+        // Top-level sections outrank the pages inside them.
+        depth === 1 && 'text-fd-foreground font-medium',
         className
       )}
       style={{
@@ -84,15 +86,24 @@ const StyledSidebarFolderTrigger = ({
 const StyledSidebarFolderContent = ({
   className,
   children,
+  rail = true,
   ...props
-}: ComponentProps<typeof BaseSidebarFolderContent>) => {
+}: ComponentProps<typeof BaseSidebarFolderContent> & {
+  /**
+   * Draws the depth-1 rail the active item's marker sits on. Off for trees that
+   * group their pages into categories — there the rail would run past every
+   * category label and merge them back into one list.
+   */
+  rail?: boolean;
+}) => {
   const depth = useFolderDepth();
 
   return (
     <BaseSidebarFolderContent
       className={cn(
         'relative',
-        depth === 1 &&
+        rail &&
+          depth === 1 &&
           "before:bg-fd-border before:absolute before:inset-y-1 before:start-2.5 before:w-px before:content-['']",
         className
       )}
@@ -121,6 +132,9 @@ export const SidebarFolder = ({
     path.includes(item) ||
     path.some(node => node.type === 'folder' && node.name === item.name);
 
+  // Category labels already group these pages, see `rail`.
+  const hasCategories = item.children.some(child => child.type === 'separator');
+
   if (item.index) {
     return (
       <BaseSidebarFolder
@@ -142,7 +156,9 @@ export const SidebarFolder = ({
             </span>
           )}
         </StyledSidebarFolderLink>
-        <StyledSidebarFolderContent>{children}</StyledSidebarFolderContent>
+        <StyledSidebarFolderContent rail={!hasCategories}>
+          {children}
+        </StyledSidebarFolderContent>
       </BaseSidebarFolder>
     );
   }
@@ -158,7 +174,9 @@ export const SidebarFolder = ({
         {item.icon}
         {item.name}
       </StyledSidebarFolderTrigger>
-      <StyledSidebarFolderContent>{children}</StyledSidebarFolderContent>
+      <StyledSidebarFolderContent rail={!hasCategories}>
+        {children}
+      </StyledSidebarFolderContent>
     </BaseSidebarFolder>
   );
 };
