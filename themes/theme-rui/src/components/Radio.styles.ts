@@ -24,6 +24,8 @@ export const Radio: ThemeComponent<'Radio'> = {
       'group-focus-visible/radio:ui-state-focus outline-none',
       'group-disabled/radio:group-selected/radio:bg-disabled-surface group-disabled/radio:border-disabled-surface! group-disabled/radio:cursor-not-allowed',
       'group-selected/radio:border-selected-bold group-selected/radio:bg-selected-bold group-selected/radio:text-selected-bold-foreground',
+      // Same step and the same load-bearing exclusions as Checkbox.
+      'group-hover/radio:not-group-read-only/radio:not-group-selected/radio:border-[oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_+_0.18))]',
     ],
   }),
   group: cva({}),

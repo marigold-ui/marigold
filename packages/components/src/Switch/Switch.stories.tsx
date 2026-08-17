@@ -145,6 +145,103 @@ Basic.test(
   }
 );
 
+// There is no accessible way to reach the track. It is the first rounded
+// element in the label; the thumb is nested inside it.
+const getTrack = (switchEl: HTMLElement) => {
+  const track = switchEl
+    .closest('label')
+    ?.querySelector('[class*="rounded-full"]');
+
+  expect(track).not.toBeNull();
+
+  return track as Element;
+};
+
+// The hover tint is a background-image so it lands instantly; the toggle keeps
+// background-color and its transition. Asserting on the two properties
+// separately is what pins that split.
+const tintOf = (el: Element) => getComputedStyle(el).backgroundImage;
+const fillOf = (el: Element) => getComputedStyle(el).backgroundColor;
+
+Basic.test(
+  'Hover darkens the track when off, without touching the eased fill',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    const switchEl = await canvas.findByRole('switch');
+    const track = getTrack(switchEl);
+    const off = fillOf(track);
+
+    expect(tintOf(track)).toBe('none');
+
+    await userEvent.hover(switchEl);
+
+    expect(tintOf(track)).not.toBe('none');
+    expect(fillOf(track)).toBe(off);
+  }
+);
+
+Basic.test(
+  'The hover tint is not a transitioned property',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const switchEl = await canvas.findByRole('switch');
+    const track = getTrack(switchEl);
+    const transitions = getComputedStyle(track).transitionProperty;
+
+    // The toggle still eases, the hover cannot.
+    expect(transitions).toContain('background-color');
+    expect(transitions).not.toContain('background-image');
+  }
+);
+
+Basic.test(
+  'Hover leaves the track alone when on',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { defaultSelected: true },
+  },
+  async ({ canvas, userEvent }) => {
+    const switchEl = await canvas.findByRole('switch');
+    const track = getTrack(switchEl);
+
+    await userEvent.hover(switchEl);
+
+    expect(tintOf(track)).toBe('none');
+  }
+);
+
+Basic.test(
+  'Hover leaves the track alone when disabled',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { disabled: true },
+  },
+  async ({ canvas, userEvent }) => {
+    const switchEl = await canvas.findByRole('switch');
+    const track = getTrack(switchEl);
+
+    await userEvent.hover(switchEl);
+
+    expect(tintOf(track)).toBe('none');
+  }
+);
+
+Basic.test(
+  'Hover leaves the track alone when read only',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { readOnly: true },
+  },
+  async ({ canvas, userEvent }) => {
+    const switchEl = await canvas.findByRole('switch');
+    const track = getTrack(switchEl);
+
+    await userEvent.hover(switchEl);
+
+    expect(tintOf(track)).toBe('none');
+  }
+);
+
 export const WithDescription = meta.story({
   tags: ['component-test'],
   args: {

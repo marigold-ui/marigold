@@ -11,8 +11,13 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
       'group-focus-visible/checkbox:ui-state-focus group-focus-visible/checkbox:border-(--ui-border-color) outline-none',
       'group-disabled/checkbox:group-selected/checkbox:bg-disabled-surface group-disabled/checkbox:border-disabled-surface! group-disabled/checkbox:text-disabled group-disabled/checkbox:cursor-not-allowed',
       'group-selected/checkbox:border-selected-bold group-selected/checkbox:bg-selected-bold group-selected/checkbox:text-selected-bold-foreground',
-      'group-[indeterminate]/checkbox:border-selected-bold group-[indeterminate]/checkbox:bg-selected-bold group-[indeterminate]/checkbox:text-selected-bold-foreground',
+      'group-indeterminate/checkbox:border-selected-bold group-indeterminate/checkbox:bg-selected-bold group-indeterminate/checkbox:text-selected-bold-foreground',
       'group-hover/checkbox:group-disabled/checkbox:bg-disabled-surface',
+      // Matches ToggleButton's hover *step*, not its value: this slot idles at
+      // +0.06, so its +0.12 would deliver half the step. Every `:not()` is
+      // load-bearing — each one outranks the state rules above, so dropping any
+      // makes hover repaint that state's border.
+      'group-hover/checkbox:not-group-read-only/checkbox:not-group-selected/checkbox:not-group-indeterminate/checkbox:border-[oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_+_0.18))]',
     ],
   }),
   container: cva({

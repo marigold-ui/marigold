@@ -126,6 +126,116 @@ Basic.test(
   }
 );
 
+// There is no accessible way to reach the element that paints the checkbox.
+const getIcon = (checkbox: HTMLElement) => {
+  const icon = checkbox.closest('label')?.querySelector('[aria-hidden="true"]');
+
+  expect(icon).not.toBeNull();
+
+  return icon as Element;
+};
+
+const borderOf = (el: Element) => getComputedStyle(el).borderColor;
+
+Basic.test(
+  'Hover darkens the border',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    const checkbox = await canvas.findByRole('checkbox');
+    const icon = getIcon(checkbox);
+    const idle = borderOf(icon);
+
+    await userEvent.hover(checkbox);
+
+    expect(borderOf(icon)).not.toBe(idle);
+  }
+);
+
+Basic.test(
+  'Hover leaves the border alone when checked',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { defaultChecked: true },
+  },
+  async ({ canvas, userEvent }) => {
+    const checkbox = await canvas.findByRole('checkbox');
+    const icon = getIcon(checkbox);
+    const checked = borderOf(icon);
+
+    await userEvent.hover(checkbox);
+
+    expect(borderOf(icon)).toBe(checked);
+  }
+);
+
+Basic.test(
+  'Hover leaves the border alone when indeterminate',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { indeterminate: true },
+  },
+  async ({ canvas, userEvent }) => {
+    const checkbox = await canvas.findByRole('checkbox');
+    const icon = getIcon(checkbox);
+    const indeterminate = borderOf(icon);
+
+    await userEvent.hover(checkbox);
+
+    expect(borderOf(icon)).toBe(indeterminate);
+  }
+);
+
+Basic.test(
+  'Hover leaves the border alone when disabled',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { disabled: true },
+  },
+  async ({ canvas, userEvent }) => {
+    const checkbox = await canvas.findByRole('checkbox');
+    const icon = getIcon(checkbox);
+    const disabled = borderOf(icon);
+
+    await userEvent.hover(checkbox);
+
+    expect(borderOf(icon)).toBe(disabled);
+  }
+);
+
+Basic.test(
+  'Hover leaves the border alone when read only',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { readOnly: true },
+  },
+  async ({ canvas, userEvent }) => {
+    const checkbox = await canvas.findByRole('checkbox');
+    const icon = getIcon(checkbox);
+    const readOnly = borderOf(icon);
+
+    await userEvent.hover(checkbox);
+
+    expect(borderOf(icon)).toBe(readOnly);
+  }
+);
+
+Basic.test(
+  'Indeterminate fills the box like a checked one',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+    args: { indeterminate: true },
+  },
+  async ({ canvas }) => {
+    const checkbox = await canvas.findByRole('checkbox');
+    const icon = getIcon(checkbox);
+
+    // Same bold fill as `checked` — the `selected-bold` background, not `surface`.
+    expect(getComputedStyle(icon).backgroundColor).not.toBe(
+      'rgb(255, 255, 255)'
+    );
+  }
+);
+
 export const WithError = meta.story({
   tags: ['component-test'],
   args: {
