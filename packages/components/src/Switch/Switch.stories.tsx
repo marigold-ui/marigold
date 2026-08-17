@@ -154,12 +154,9 @@ const getTrack = (switchEl: HTMLElement) => {
 
   expect(track).not.toBeNull();
 
-  return track as Element;
+  return track!;
 };
 
-// The hover tint is a background-image so it lands instantly; the toggle keeps
-// background-color and its transition. Asserting on the two properties
-// separately is what pins that split.
 const tintOf = (el: Element) => getComputedStyle(el).backgroundImage;
 const fillOf = (el: Element) => getComputedStyle(el).backgroundColor;
 
@@ -188,12 +185,13 @@ Basic.test(
     const track = getTrack(switchEl);
     const transitions = getComputedStyle(track).transitionProperty;
 
-    // The toggle still eases, the hover cannot.
     expect(transitions).toContain('background-color');
     expect(transitions).not.toContain('background-image');
   }
 );
 
+// One test per state, because each needs its own `args`. Note `.test()` calls are
+// collected statically — registering them from a loop yields no tests at all.
 Basic.test(
   'Hover leaves the track alone when on',
   {

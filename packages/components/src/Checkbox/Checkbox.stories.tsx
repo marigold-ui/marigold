@@ -132,7 +132,7 @@ const getIcon = (checkbox: HTMLElement) => {
 
   expect(icon).not.toBeNull();
 
-  return icon as Element;
+  return icon!;
 };
 
 const borderOf = (el: Element) => getComputedStyle(el).borderColor;
@@ -151,6 +151,8 @@ Basic.test(
   }
 );
 
+// One test per state, because each needs its own `args`. Note `.test()` calls are
+// collected statically — registering them from a loop yields no tests at all.
 Basic.test(
   'Hover leaves the border alone when checked',
   {
@@ -160,11 +162,11 @@ Basic.test(
   async ({ canvas, userEvent }) => {
     const checkbox = await canvas.findByRole('checkbox');
     const icon = getIcon(checkbox);
-    const checked = borderOf(icon);
+    const before = borderOf(icon);
 
     await userEvent.hover(checkbox);
 
-    expect(borderOf(icon)).toBe(checked);
+    expect(borderOf(icon)).toBe(before);
   }
 );
 
@@ -177,11 +179,11 @@ Basic.test(
   async ({ canvas, userEvent }) => {
     const checkbox = await canvas.findByRole('checkbox');
     const icon = getIcon(checkbox);
-    const indeterminate = borderOf(icon);
+    const before = borderOf(icon);
 
     await userEvent.hover(checkbox);
 
-    expect(borderOf(icon)).toBe(indeterminate);
+    expect(borderOf(icon)).toBe(before);
   }
 );
 
@@ -194,11 +196,11 @@ Basic.test(
   async ({ canvas, userEvent }) => {
     const checkbox = await canvas.findByRole('checkbox');
     const icon = getIcon(checkbox);
-    const disabled = borderOf(icon);
+    const before = borderOf(icon);
 
     await userEvent.hover(checkbox);
 
-    expect(borderOf(icon)).toBe(disabled);
+    expect(borderOf(icon)).toBe(before);
   }
 );
 
@@ -211,11 +213,11 @@ Basic.test(
   async ({ canvas, userEvent }) => {
     const checkbox = await canvas.findByRole('checkbox');
     const icon = getIcon(checkbox);
-    const readOnly = borderOf(icon);
+    const before = borderOf(icon);
 
     await userEvent.hover(checkbox);
 
-    expect(borderOf(icon)).toBe(readOnly);
+    expect(borderOf(icon)).toBe(before);
   }
 );
 
@@ -227,12 +229,9 @@ Basic.test(
   },
   async ({ canvas }) => {
     const checkbox = await canvas.findByRole('checkbox');
-    const icon = getIcon(checkbox);
+    const style = getComputedStyle(getIcon(checkbox));
 
-    // Same bold fill as `checked` — the `selected-bold` background, not `surface`.
-    expect(getComputedStyle(icon).backgroundColor).not.toBe(
-      'rgb(255, 255, 255)'
-    );
+    expect(style.backgroundColor).toBe(style.borderColor);
   }
 );
 

@@ -95,7 +95,7 @@ const getIcon = (radio: HTMLElement) => {
 
   expect(icon).not.toBeNull();
 
-  return icon as Element;
+  return icon!;
 };
 
 const borderOf = (el: Element) => getComputedStyle(el).borderColor;
