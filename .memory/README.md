@@ -56,6 +56,8 @@ Frontmatter carries:
 
 Keep each record under ~200 lines. It competes for context with the code the agent actually needs to read.
 
+**Cite other records as links, never bare numbers.** `[ADR-0004](0004-slot-driven-composition.md)`, not `ADR-0004`. A bare number survives a renumber by silently re-pointing at whichever record later takes that slot — a citation that is wrong rather than dead, which nothing can detect. Putting the slug in the link moves the identity into the filename, so the same renumber leaves a target that does not exist and the check fails. This is enforced.
+
 **Take the next free number, and expect the check to catch you if you collide.** Sequential numbering has no allocation mechanism — two branches each adding `0003-<their-own-slug>.md` have different filenames, so git merges both without a conflict and `ADR-0003` then names two decisions. That is the same clean-merge hazard the one-term-per-heading rule addresses in the glossary, and it is why the numbering is checked rather than trusted.
 
 **Accepted ADRs are not edited to change a decision.** Supersede them: write the new record, then set the old one's status to `superseded-by ADR-NNNN`. Fixing the past in place destroys the reason the file existed.
