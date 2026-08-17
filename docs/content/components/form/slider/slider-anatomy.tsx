@@ -1,5 +1,7 @@
 export const SliderAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of a Slider: a Label and an Output above a Track with a draggable Thumb, and a Description below"
     viewBox="120 40 630 220"
     className="mx-auto h-auto w-full max-w-[100%]"
     xmlns="http://www.w3.org/2000/svg"

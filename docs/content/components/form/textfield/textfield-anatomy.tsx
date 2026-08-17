@@ -1,5 +1,7 @@
 export const TextFieldAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of a TextField: a Label above an Input holding the Value, with Help text below"
     viewBox="120 15 490 185"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"

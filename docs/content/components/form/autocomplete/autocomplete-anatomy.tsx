@@ -1,5 +1,7 @@
 export const AutocompleteAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of an Autocomplete: a Label above an Input field with a Clear button and a Dropdown arrow, Help text below, and an Overlay listing the options"
     viewBox="0 5 1090 365"
     className="mx-auto h-auto w-full max-w-[100%]"
     xmlns="http://www.w3.org/2000/svg"

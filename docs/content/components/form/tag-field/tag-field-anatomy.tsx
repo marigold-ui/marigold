@@ -1,5 +1,7 @@
 export const TagFieldAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of a TagField: a Label above a Container of Tags and a Button, with a Popover holding a Search input and Options grouped into Sections"
     viewBox="20 40 600 345"
     className="mx-auto h-auto w-full max-w-[100%]"
     xmlns="http://www.w3.org/2000/svg"

@@ -1,5 +1,7 @@
 export const CheckboxAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of a Checkbox group: a Group label above rows that each pair a Checkbox input with its Checkbox label"
     viewBox="195 40 550 205"
     className="mx-auto h-auto w-full max-w-[100%]"
     xmlns="http://www.w3.org/2000/svg"

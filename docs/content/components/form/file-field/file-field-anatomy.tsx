@@ -1,5 +1,7 @@
 export const FileFieldAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of a FileField: a Label above a Drop zone holding a Zone label and an Upload button, with a File item and its Remove button below"
     viewBox="40 90 710 265"
     className="mx-auto h-auto w-full max-w-[100%]"
     xmlns="http://www.w3.org/2000/svg"

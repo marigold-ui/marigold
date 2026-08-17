@@ -1,5 +1,7 @@
 export const NumberFieldAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of a NumberField: a Label above an Input holding the Value, flanked by optional Steppers, with Help text below"
     viewBox="120 15 650 230"
     className="mx-auto h-auto w-full max-w-[100%]"
     xmlns="http://www.w3.org/2000/svg"
