@@ -1,5 +1,7 @@
 export const BadgeAnatomy = () => (
   <svg
+    role="img"
+    aria-label="Anatomy of a Badge: a pill-shaped Container holding either a Text or an Icon"
     viewBox="120 40 500 240"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
