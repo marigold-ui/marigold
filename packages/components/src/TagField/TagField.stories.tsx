@@ -406,7 +406,7 @@ export const WithDependencies = meta.story({
 
 WithDependencies.test(
   'Re-renders the options when a listed dependency changes',
-  async ({ args, canvas, step }) => {
+  async ({ args, canvas, step, userEvent }) => {
     const optionFor = async (shift: string) => {
       await userEvent.click(
         canvas.getByLabelText(new RegExp(`${args.label}`, 'i'))
@@ -451,7 +451,7 @@ export const WithDependenciesMobile = WithDependencies.extend({
 
 WithDependenciesMobile.test(
   'Re-renders the tray options when a listed dependency changes',
-  async ({ args, canvas, step }) => {
+  async ({ args, canvas, step, userEvent }) => {
     const optionFor = async (shift: string) => {
       // The tray title repeats the label, so scope the trigger to its role.
       await userEvent.click(

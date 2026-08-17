@@ -37,9 +37,17 @@ type RemoveProps =
 export interface TagGroupProps
   extends
     Omit<RAC.TagGroupProps, RemoveProps>,
-    Pick<TagListProps<object>, 'items' | 'children' | 'dependencies'> {
+    Pick<TagListProps<object>, 'items' | 'children'> {
   variant?: string;
   size?: string;
+
+  /**
+   * Values that invalidate the cached items, like a hook's dependency array.
+   * Only needed for `items` plus a render function: rendered items are cached
+   * per item object, so anything the function reads from outside the item —
+   * state, a lookup, a prop — has to be listed here or it renders stale.
+   */
+  dependencies?: TagListProps<object>['dependencies'];
 
   /**
    * The label of the field.
