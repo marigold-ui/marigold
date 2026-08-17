@@ -2,6 +2,12 @@ import type { Key } from 'react';
 import { useState } from 'react';
 import { expect, fn } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Button } from '../Button/Button';
+import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
+import { Headline } from '../Headline/Headline';
+import { Stack } from '../Stack/Stack';
+import { Text } from '../Text/Text';
+import { TextField } from '../TextField/TextField';
 import { Stepper } from './Stepper';
 
 const meta = preview.meta({
@@ -30,6 +36,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
   args: {
     selectedKey: 'plan',
     completedKeys: ['signin'],
@@ -43,6 +50,29 @@ export const Basic = meta.story({
     </Stepper>
   ),
 });
+
+Basic.test(
+  'draws no focus ring until a step is focused',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const step = canvas.getByRole('button', { name: /Sign in/ });
+
+    await expect(getComputedStyle(step).outlineStyle).toBe('none');
+  }
+);
+
+Basic.test(
+  'draws the focus ring once a step has keyboard focus',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.tab();
+
+    await expect(
+      getComputedStyle(canvas.getByRole('button', { name: /Sign in/ }))
+        .outlineStyle
+    ).toBe('solid');
+  }
+);
 
 /**
  * All five states at once, in render priority order:
@@ -189,5 +219,138 @@ WithHrefs.test(
     await userEvent.keyboard('{Enter}');
 
     await expect(args.onSelectionChange).toHaveBeenCalledWith('signin');
+  }
+);
+
+const FORM_STEPS = [
+  { id: 'contact', label: 'Contact' },
+  { id: 'delivery', label: 'Delivery' },
+  { id: 'review', label: 'Review' },
+];
+
+const StepPanel = ({ step }: { step: Key }) => {
+  if (step === 'contact') {
+    return (
+      <Stack space={4}>
+        <Headline level={3}>Contact</Headline>
+        <TextField label="Full name" />
+        <TextField label="Email" type="email" />
+      </Stack>
+    );
+  }
+
+  if (step === 'delivery') {
+    return (
+      <Stack space={4}>
+        <Headline level={3}>Delivery</Headline>
+        <TextField label="Street and number" />
+        <TextField label="City" />
+      </Stack>
+    );
+  }
+
+  return (
+    <Stack space={4}>
+      <Headline level={3}>Review</Headline>
+      <Text>Check your details, then place the order.</Text>
+    </Stack>
+  );
+};
+
+/**
+ * The stepper reports progress, it does not drive it: "Continue" owns both the
+ * panel that is shown and the keys handed back to `<Stepper>`. Completed steps
+ * stay clickable, so the user can jump back without losing what they finished.
+ */
+export const MultiStepForm = meta.story({
+  tags: ['component-test'],
+  args: {
+    'aria-label': 'Order progress',
+  },
+  render: function Render(args) {
+    const [index, setIndex] = useState(0);
+    const [completed, setCompleted] = useState<Key[]>([]);
+    const isLast = index === FORM_STEPS.length - 1;
+
+    const goTo = (key: Key) =>
+      setIndex(FORM_STEPS.findIndex(step => step.id === key));
+
+    const advance = () => {
+      setCompleted(done =>
+        done.includes(FORM_STEPS[index].id)
+          ? done
+          : [...done, FORM_STEPS[index].id]
+      );
+      setIndex(current => current + 1);
+    };
+
+    return (
+      <Stack space={8}>
+        <Stepper
+          {...args}
+          selectedKey={FORM_STEPS[index].id}
+          completedKeys={completed}
+          onSelectionChange={goTo}
+        >
+          {FORM_STEPS.map(step => (
+            <Stepper.Item key={step.id} id={step.id}>
+              {step.label}
+            </Stepper.Item>
+          ))}
+        </Stepper>
+
+        <StepPanel step={FORM_STEPS[index].id} />
+
+        <ButtonGroup>
+          <Button
+            variant="secondary"
+            disabled={index === 0}
+            onPress={() => setIndex(current => current - 1)}
+          >
+            Back
+          </Button>
+          <Button variant="primary" disabled={isLast} onPress={advance}>
+            Continue
+          </Button>
+        </ButtonGroup>
+      </Stack>
+    );
+  },
+});
+
+MultiStepForm.test(
+  'swaps the panel content when Continue is pressed',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Continue' }));
+
+    await expect(
+      canvas.getByRole('textbox', { name: 'Street and number' })
+    ).toBeInTheDocument();
+  }
+);
+
+MultiStepForm.test(
+  'marks the step just left as completed',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Continue' }));
+
+    await expect(
+      canvas.getByRole('button', { name: /Contact.*completed/ })
+    ).toBeInTheDocument();
+  }
+);
+
+MultiStepForm.test(
+  'returns to an earlier step from the stepper itself',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Continue' }));
+    await userEvent.click(canvas.getByRole('button', { name: /Contact/ }));
+
+    await expect(
+      canvas.getByRole('textbox', { name: 'Full name' })
+    ).toBeInTheDocument();
   }
 );

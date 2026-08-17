@@ -22,7 +22,7 @@ export const Stepper: ThemeComponent<'Stepper'> = {
     base: [
       'flex min-h-11 items-center gap-2 rounded-sm bg-transparent',
       'text-left no-underline',
-      'ui-state-focus',
+      'focus-visible:ui-state-focus outline-none',
       'transition-colors motion-reduce:transition-none',
     ],
   }),
