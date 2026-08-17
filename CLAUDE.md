@@ -145,6 +145,30 @@ _Dialog.Title = DialogTitle;
 export const Dialog = _Dialog as DialogComponent;
 ```
 
+### Composition
+
+Prefer composition over configuration. These rules keep a component's API from growing a combinatorial surface.
+
+**No mode booleans.** Never add props like `isThread`, `isEditing` or `showFooter` that switch _what_ a component renders — each one doubles the states the component has to support. Booleans are fine for genuine binary state (`disabled`, `loading`, `open`); they are not a way to pick a layout. Appearance belongs in `variant`/`size`, structure belongs in compound parts.
+
+```typescript
+// ❌ Wrong - every flag doubles the state space
+<Panel showHeader showFooter isCompact />
+
+// ✅ Correct - the consumer composes the parts they need
+<Panel size="form">
+  <Panel.Header>…</Panel.Header>
+  <Panel.Content>…</Panel.Content>
+  <Panel.Footer>…</Panel.Footer>
+</Panel>
+```
+
+**Children over render props.** Expose `children` or a compound part, never a `renderHeader`-style callback. Children compose naturally and don't ask the consumer to learn a callback signature.
+
+**Share state through context, not props.** Compound parts read shared state from a context so consumers never thread props through intermediate elements. Follow `packages/components/src/Sidebar/Context.tsx`: a typed context value, `createContext<T | null>(null)`, and a `useX()` hook that throws a helpful error when used outside its provider.
+
+**Lift state into a provider** when something outside the subtree needs it — a trigger rendered elsewhere on the page, for example. The provider is the only place that knows how state is managed; the parts consume the interface and stay agnostic.
+
 ### Styling with useClassNames
 
 ```typescript
@@ -288,10 +312,9 @@ test('supports custom props', () => {
 
 Run with `pnpm test:unit`.
 
-## Specialized Agents
+## AI Toolkit
 
-- **component-scaffold**: Creates new components with all required files (component, tests, stories, theme styles)
-- **a11y-audit**: Audits components for WCAG 2.1 AA accessibility compliance
+Committed skills live in `.claude/skills/`; plugins are declared in `.claude/settings.json`. See [.claude/README.md](.claude/README.md) for the conventions they follow and the extra rules for skills with side effects.
 
 ## MCP Servers
 
