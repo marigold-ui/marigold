@@ -154,6 +154,28 @@ export const WithHrefs = meta.story({
   ),
 });
 
+/**
+ * Long flows drop the labels visually so the markers still fit, but every label
+ * is still authored and still read aloud.
+ */
+export const HideLabels = meta.story({
+  args: {
+    'aria-label': 'Event creation progress',
+    hideLabels: true,
+    selectedKey: 'categories',
+    completedKeys: ['basics', 'dates'],
+  },
+  render: args => (
+    <Stepper {...args}>
+      <Stepper.Item id="basics">Basic data</Stepper.Item>
+      <Stepper.Item id="dates">Dates</Stepper.Item>
+      <Stepper.Item id="categories">Ticket categories</Stepper.Item>
+      <Stepper.Item id="prices">Prices</Stepper.Item>
+      <Stepper.Item id="publish">Publish</Stepper.Item>
+    </Stepper>
+  ),
+});
+
 WithHrefs.test(
   'activates a link step with Enter',
   {

@@ -1,7 +1,7 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { Basic, States, WithHrefs } from './Stepper.stories';
+import { Basic, HideLabels, States, WithHrefs } from './Stepper.stories';
 
 test('renders a navigation landmark wrapping an ordered list of steps', () => {
   render(<Basic.Component />);
@@ -136,4 +136,12 @@ test('selects the first step by default when uncontrolled', () => {
     'aria-current',
     'step'
   );
+});
+
+test('keeps labels in the accessible name when they are visually hidden', () => {
+  render(<HideLabels.Component />);
+
+  expect(
+    screen.getByRole('button', { name: /Ticket categories/ })
+  ).toBeInTheDocument();
 });

@@ -144,6 +144,7 @@ const _Stepper = ({
   errorKeys,
   disabledKeys,
   selectableKeys,
+  hideLabels,
   variant,
   'aria-label': ariaLabel,
 }: StepperProps) => {
@@ -215,7 +216,11 @@ const _Stepper = ({
                     index + 1
                   )}
                 </span>
-                <span className={classNames.label}>{label}</span>
+                {hideLabels ? (
+                  <VisuallyHidden elementType="span">{label}</VisuallyHidden>
+                ) : (
+                  <span className={classNames.label}>{label}</span>
+                )}
                 {/* Visible label first, so the accessible name opens with it
                     (WCAG 2.5.3 Label in Name), then position and state. */}
                 <VisuallyHidden elementType="span">
