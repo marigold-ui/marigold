@@ -2,34 +2,34 @@ export const CheckboxAnatomy = () => (
   <svg
     role="img"
     aria-label="Anatomy of a Checkbox group: a Group label above rows that each pair a Checkbox input with its Checkbox label"
-    viewBox="195 40 550 205"
-    className="mx-auto h-auto w-full max-w-[100%]"
+    viewBox="297 53 660 273"
+    className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
     {/* Group label above the checkboxes */}
     <rect
-      x="400"
-      y="52"
-      width="90"
-      height="14"
-      rx="4"
+      x="533"
+      y="69"
+      width="120"
+      height="19"
+      rx="5"
       className="fill-fd-foreground transition-colors duration-300"
     />
 
     {/* Unchecked checkbox */}
     <rect
-      x="400"
-      y="100"
-      width="28"
-      height="28"
-      rx="6"
+      x="533"
+      y="133"
+      width="37"
+      height="37"
+      rx="8"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
     {/* Checked checkboxes */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <rect x="400" y="150" width="28" height="28" rx="6" />
-      <rect x="400" y="200" width="28" height="28" rx="6" />
+      <rect x="533" y="200" width="37" height="37" rx="8" />
+      <rect x="533" y="267" width="37" height="37" rx="8" />
     </g>
     {/* Checkmarks inside the checked boxes */}
     <g
@@ -39,15 +39,15 @@ export const CheckboxAnatomy = () => (
       strokeLinejoin="round"
       fill="none"
     >
-      <path d="M 407 164 L 412 170 L 421 158" />
-      <path d="M 407 214 L 412 220 L 421 208" />
+      <path d="M 543 219 L 549 227 L 561 211" />
+      <path d="M 543 285 L 549 293 L 561 277" />
     </g>
 
     {/* Checkbox labels next to each box */}
     <g className="fill-fd-foreground/70 transition-colors duration-300">
-      <rect x="444" y="108" width="70" height="12" rx="4" />
-      <rect x="444" y="158" width="70" height="12" rx="4" />
-      <rect x="444" y="208" width="70" height="12" rx="4" />
+      <rect x="592" y="144" width="93" height="16" rx="5" />
+      <rect x="592" y="211" width="93" height="16" rx="5" />
+      <rect x="592" y="277" width="93" height="16" rx="5" />
     </g>
 
     {/* Connector lines */}
@@ -59,18 +59,18 @@ export const CheckboxAnatomy = () => (
       strokeLinejoin="round"
     >
       {/* Group label -> left */}
-      <path d="M 400 59 L 330 59" />
+      <path d="M 533 79 L 440 79" />
       {/* Checkbox label -> right */}
-      <path d="M 524 114 L 600 114" />
+      <path d="M 699 152 L 800 152" />
       {/* Checkbox input -> left */}
-      <path d="M 400 214 L 330 214" />
+      <path d="M 533 285 L 440 285" />
     </g>
 
     {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="400" cy="59" r="4" />
-      <circle cx="524" cy="114" r="4" />
-      <circle cx="400" cy="214" r="4" />
+      <circle cx="533" cy="79" r="4" />
+      <circle cx="699" cy="152" r="4" />
+      <circle cx="533" cy="285" r="4" />
     </g>
 
     {/* Annotation labels */}
@@ -81,14 +81,14 @@ export const CheckboxAnatomy = () => (
       className="fill-fd-primary transition-colors duration-300"
     >
       <g textAnchor="end">
-        <text x="320" y="63">
+        <text x="427" y="84">
           Group label
         </text>
-        <text x="320" y="218">
+        <text x="427" y="291">
           Checkbox input
         </text>
       </g>
-      <text x="610" y="118" textAnchor="start">
+      <text x="813" y="157" textAnchor="start">
         Checkbox label
       </text>
     </g>

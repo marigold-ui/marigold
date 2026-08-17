@@ -2,92 +2,92 @@ export const AutocompleteAnatomy = () => (
   <svg
     role="img"
     aria-label="Anatomy of an Autocomplete: a Label above an Input field with a Clear button and a Dropdown arrow, Help text below, and an Overlay listing the options"
-    viewBox="0 5 1090 365"
-    className="mx-auto h-auto w-full max-w-[100%]"
+    viewBox="-22 3 660 206"
+    className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
     {/* --- Closed state (left) --- */}
     {/* Field label */}
     <rect
-      x="140"
-      y="60"
-      width="60"
-      height="12"
-      rx="4"
+      x="79"
+      y="34"
+      width="34"
+      height="7"
+      rx="2"
       className="fill-fd-foreground transition-colors duration-300"
     />
     {/* Input field */}
     <rect
-      x="140"
-      y="86"
-      width="300"
-      height="48"
-      rx="8"
+      x="79"
+      y="49"
+      width="170"
+      height="27"
+      rx="5"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
     {/* Text cursor inside the input */}
     <rect
-      x="158"
-      y="100"
-      width="3"
-      height="20"
+      x="89"
+      y="57"
+      width="2"
+      height="11"
       className="fill-fd-foreground transition-colors duration-300"
     />
     {/* Help text below the input */}
     <rect
-      x="140"
-      y="150"
-      width="170"
-      height="10"
-      rx="4"
+      x="79"
+      y="85"
+      width="96"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground transition-colors duration-300"
     />
 
     {/* --- Open state (right) --- */}
     {/* Field label */}
     <rect
-      x="560"
-      y="60"
-      width="60"
-      height="12"
-      rx="4"
+      x="316"
+      y="34"
+      width="34"
+      height="7"
+      rx="2"
       className="fill-fd-foreground transition-colors duration-300"
     />
     {/* Input field */}
     <rect
-      x="560"
-      y="86"
-      width="320"
-      height="48"
-      rx="8"
+      x="316"
+      y="49"
+      width="181"
+      height="27"
+      rx="5"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
     {/* Text cursor inside the input */}
     <rect
-      x="578"
-      y="100"
-      width="3"
-      height="20"
+      x="327"
+      y="57"
+      width="2"
+      height="11"
       className="fill-fd-foreground transition-colors duration-300"
     />
     {/* Overlay holding the menu items */}
     <rect
-      x="560"
-      y="146"
-      width="320"
-      height="200"
-      rx="8"
+      x="316"
+      y="83"
+      width="181"
+      height="113"
+      rx="5"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
     {/* Menu items */}
     <g className="fill-fd-foreground/70 transition-colors duration-300">
-      <rect x="584" y="176" width="160" height="12" rx="4" />
-      <rect x="584" y="224" width="160" height="12" rx="4" />
-      <rect x="584" y="272" width="160" height="12" rx="4" />
-      <rect x="584" y="320" width="160" height="12" rx="4" />
+      <rect x="330" y="99" width="90" height="7" rx="2" />
+      <rect x="330" y="127" width="90" height="7" rx="2" />
+      <rect x="330" y="154" width="90" height="7" rx="2" />
+      <rect x="330" y="181" width="90" height="7" rx="2" />
     </g>
 
     {/* Clear buttons and dropdown arrows of both fields */}
@@ -99,15 +99,15 @@ export const AutocompleteAnatomy = () => (
       fill="none"
     >
       {/* Clear button (closed state) */}
-      <path d="M 364 104 L 376 116" />
-      <path d="M 376 104 L 364 116" />
+      <path d="M 206 59 L 212 66" />
+      <path d="M 212 59 L 206 66" />
       {/* Dropdown arrow (closed state) */}
-      <path d="M 404 106 L 412 116 L 420 106" />
+      <path d="M 228 60 L 233 66 L 237 60" />
       {/* Clear button (open state) */}
-      <path d="M 810 104 L 822 116" />
-      <path d="M 822 104 L 810 116" />
+      <path d="M 458 59 L 465 66" />
+      <path d="M 465 59 L 458 66" />
       {/* Dropdown arrow (open state) */}
-      <path d="M 848 106 L 856 116 L 864 106" />
+      <path d="M 479 60 L 484 66 L 488 60" />
     </g>
 
     {/* Connector lines */}
@@ -119,30 +119,30 @@ export const AutocompleteAnatomy = () => (
       strokeLinejoin="round"
     >
       {/* Label -> left */}
-      <path d="M 140 66 L 90 66" />
+      <path d="M 79 37 L 51 37" />
       {/* Input field -> up */}
-      <path d="M 290 86 L 290 46" />
+      <path d="M 164 49 L 164 26" />
       {/* Help text -> left */}
-      <path d="M 140 155 L 90 155" />
+      <path d="M 79 88 L 51 88" />
       {/* Label -> left (open state) */}
-      <path d="M 560 66 L 500 66" />
+      <path d="M 316 37 L 283 37" />
       {/* Clear button -> up */}
-      <path d="M 816 100 L 816 46" />
+      <path d="M 461 57 L 461 26" />
       {/* Dropdown arrow -> right */}
-      <path d="M 872 116 L 930 116" />
+      <path d="M 493 66 L 522 66" />
       {/* Overlay -> right */}
-      <path d="M 880 250 L 930 250" />
+      <path d="M 497 141 L 522 141" />
     </g>
 
     {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="140" cy="66" r="4" />
-      <circle cx="290" cy="86" r="4" />
-      <circle cx="140" cy="155" r="4" />
-      <circle cx="560" cy="66" r="4" />
-      <circle cx="816" cy="100" r="4" />
-      <circle cx="872" cy="116" r="4" />
-      <circle cx="880" cy="250" r="4" />
+      <circle cx="79" cy="37" r="4" />
+      <circle cx="164" cy="49" r="4" />
+      <circle cx="79" cy="88" r="4" />
+      <circle cx="316" cy="37" r="4" />
+      <circle cx="461" cy="57" r="4" />
+      <circle cx="493" cy="66" r="4" />
+      <circle cx="497" cy="141" r="4" />
     </g>
 
     {/* Annotation labels */}
@@ -153,29 +153,29 @@ export const AutocompleteAnatomy = () => (
       className="fill-fd-primary transition-colors duration-300"
     >
       <g textAnchor="end">
-        <text x="80" y="70">
+        <text x="45" y="40">
           Label
         </text>
-        <text x="80" y="159">
+        <text x="45" y="90">
           Help text
         </text>
-        <text x="490" y="70">
+        <text x="277" y="40">
           Label
         </text>
       </g>
       <g textAnchor="middle">
-        <text x="290" y="38">
+        <text x="164" y="21">
           Input field
         </text>
-        <text x="816" y="38">
+        <text x="461" y="21">
           Clear button
         </text>
       </g>
       <g textAnchor="start">
-        <text x="940" y="120">
+        <text x="527" y="68">
           Dropdown arrow
         </text>
-        <text x="940" y="254">
+        <text x="531" y="144">
           Overlay
         </text>
       </g>

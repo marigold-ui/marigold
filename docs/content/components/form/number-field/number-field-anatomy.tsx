@@ -2,27 +2,27 @@ export const NumberFieldAnatomy = () => (
   <svg
     role="img"
     aria-label="Anatomy of a NumberField: a Label above an Input holding the Value, flanked by optional Steppers, with Help text below"
-    viewBox="120 15 650 230"
-    className="mx-auto h-auto w-full max-w-[100%]"
+    viewBox="157 16 660 252"
+    className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
     {/* Field label above the input */}
     <rect
-      x="260"
-      y="70"
-      width="90"
-      height="12"
+      x="285"
+      y="77"
+      width="98"
+      height="13"
       rx="4"
       className="fill-fd-foreground transition-colors duration-300"
     />
 
     {/* Group holding the steppers and the input */}
     <rect
-      x="260"
-      y="96"
-      width="300"
-      height="48"
-      rx="8"
+      x="285"
+      y="105"
+      width="328"
+      height="53"
+      rx="9"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
@@ -31,8 +31,8 @@ export const NumberFieldAnatomy = () => (
       className="stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     >
-      <path d="M 306 96 L 306 144" />
-      <path d="M 514 96 L 514 144" />
+      <path d="M 335 105 L 335 158" />
+      <path d="M 563 105 L 563 158" />
     </g>
     {/* Decrement stepper (minus) */}
     <g
@@ -41,27 +41,27 @@ export const NumberFieldAnatomy = () => (
       strokeLinecap="round"
       fill="none"
     >
-      <path d="M 272 120 L 294 120" />
+      <path d="M 298 131 L 322 131" />
       {/* Increment stepper (plus) */}
-      <path d="M 526 120 L 548 120" />
-      <path d="M 537 109 L 537 131" />
+      <path d="M 576 131 L 600 131" />
+      <path d="M 588 119 L 588 143" />
     </g>
     {/* Value entered into the input */}
     <rect
-      x="322"
-      y="114"
-      width="120"
-      height="12"
+      x="352"
+      y="125"
+      width="131"
+      height="13"
       rx="4"
       className="fill-fd-foreground transition-colors duration-300"
     />
 
     {/* Help text (description or error message) below the input */}
     <rect
-      x="260"
-      y="160"
-      width="180"
-      height="10"
+      x="285"
+      y="175"
+      width="197"
+      height="11"
       rx="4"
       className="fill-fd-muted-foreground transition-colors duration-300"
     />
@@ -75,24 +75,24 @@ export const NumberFieldAnatomy = () => (
       strokeLinejoin="round"
     >
       {/* Label -> up */}
-      <path d="M 300 70 L 300 44" />
+      <path d="M 328 77 L 328 48" />
       {/* Input -> up */}
-      <path d="M 460 96 L 460 44" />
+      <path d="M 503 105 L 503 48" />
       {/* Value -> down */}
-      <path d="M 382 126 L 382 196" />
+      <path d="M 418 138 L 418 214" />
       {/* Help text -> left */}
-      <path d="M 260 165 L 210 165" />
+      <path d="M 285 181 L 230 181" />
       {/* Steppers -> right */}
-      <path d="M 560 120 L 620 120" />
+      <path d="M 613 131 L 679 131" />
     </g>
 
     {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="300" cy="70" r="4" />
-      <circle cx="460" cy="96" r="4" />
-      <circle cx="382" cy="126" r="4" />
-      <circle cx="260" cy="165" r="4" />
-      <circle cx="560" cy="120" r="4" />
+      <circle cx="328" cy="77" r="4" />
+      <circle cx="503" cy="105" r="4" />
+      <circle cx="418" cy="138" r="4" />
+      <circle cx="285" cy="181" r="4" />
+      <circle cx="613" cy="131" r="4" />
     </g>
 
     {/* Annotation labels */}
@@ -103,20 +103,20 @@ export const NumberFieldAnatomy = () => (
       className="fill-fd-primary transition-colors duration-300"
     >
       <g textAnchor="middle">
-        <text x="300" y="36">
+        <text x="328" y="39">
           Label
         </text>
-        <text x="460" y="36">
+        <text x="503" y="39">
           Input
         </text>
-        <text x="382" y="214">
+        <text x="418" y="234">
           Value
         </text>
       </g>
-      <text x="200" y="169" textAnchor="end">
+      <text x="219" y="185" textAnchor="end">
         Help text
       </text>
-      <text x="630" y="124" textAnchor="start">
+      <text x="689" y="136" textAnchor="start">
         Steppers (optional)
       </text>
     </g>
