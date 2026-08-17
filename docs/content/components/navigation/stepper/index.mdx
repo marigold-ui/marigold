@@ -38,6 +38,14 @@ A step is in exactly one state, resolved in this order: `disabled`, then `error`
 
 An errored step stays clickable on purpose. A user who is told a step failed needs a way back to it.
 
+## Driving a multi-step form
+
+The stepper reports progress, it does not drive it. Your "Continue" button owns both the panel that is shown and the keys handed back to `<Stepper>`: it adds the step being left to `completedKeys` and moves `selectedKey` on. Because completed steps stay clickable, the user can jump back to anything they have already finished without losing it.
+
+<ComponentDemo name="stepper-multi-step-form" />
+
+Keep the panel and the stepper in the same source of truth, as the example does with a single `index`. Deriving one from the other is what stops the marker and the visible content drifting apart.
+
 ## Which steps can be clicked
 
 By default a user can return to any step they have completed, any step that failed, and the step they are on. Steps still ahead are inert text, not disabled buttons, because they are not controls yet.
