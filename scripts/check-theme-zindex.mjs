@@ -12,10 +12,16 @@
  * harmless on the day, drift bait afterwards, and nothing noticed for two tickets. That is
  * the argument for a guard rather than a third cleanup.
  *
- * Deliberately not covered: `themes/theme-rui/src/ui.css`. Its `z-100` sits on the
- * `ui-touch-hitbox` pseudo-element, which has no component to own it. That is the one
- * sanctioned exception, and it is a `.css` file rather than a `*.styles.ts`, so the glob
- * excludes it structurally rather than by a special case.
+ * Scope is `*.styles.{ts,tsx}` — the theme's class definitions, which is exactly what the
+ * CLAUDE.md rule names. Plain `.css` in a theme is not scanned at all: raw CSS sometimes has
+ * to stack something that has no component to own it, which is why `themes/theme-rui/src/ui.css`
+ * legitimately sets `z-100` on the `ui-touch-hitbox` pseudo-element. That exemption is the
+ * glob's shape, not a named special case — but it does mean a z-index added to any other theme
+ * `.css` file would also go unseen.
+ *
+ * Known limit: this reads source text, so a class assembled at runtime (`'z-' + level`) is
+ * invisible to it. Closing that would need a TypeScript AST, which is far more machinery than
+ * a convention guard is worth. It catches what people actually write.
  *
  * Run locally: `pnpm check:theme-zindex`
  */
@@ -31,15 +37,20 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 // the hyphen before `z` is a word boundary too.
 // The trailing lookahead rather than `\b`: an arbitrary value ends in `]`, and `\b` cannot
 // match between `]` and the closing quote, so `z-[100]` would slip through.
-const Z_UTILITY = /(?<=^|[\s'"`:{[(])(-?z-(?:\d+|\[[^\]]*\]|auto))(?![\w-])/gm;
-// `[z-index:…]` arbitrary properties and any stray CSS-in-JS `zIndex`.
-const Z_PROPERTY = /\bz-index\s*:|\bzIndex\b/g;
+// The `(…)` alternative is Tailwind v4's custom-property shorthand: `z-(--stack)` is the same
+// utility as `z-[var(--stack)]`, and that shorthand is already used inside these files.
+const Z_UTILITY =
+  /(?<=^|[\s'"`:{[(])(-?z-(?:\d+|\[[^\]]*\]|\([^)]*\)|auto))(?![\w-])/gm;
+// `[z-index:…]` arbitrary properties and any stray CSS-in-JS `zIndex`. Both require the value
+// to follow, so prose that merely names `zIndex` — a comment explaining why one is absent, say
+// — does not trip the guard.
+const Z_PROPERTY = /\bz-index\s*:|\bzIndex\s*[:=]/g;
 
 const errors = [];
 
 const lineOf = (source, index) => source.slice(0, index).split('\n').length;
 
-for (const file of globSync('**/*.styles.ts', {
+for (const file of globSync('**/*.styles.{ts,tsx}', {
   cwd: root,
   exclude: name => name === 'node_modules' || name === 'dist',
 })) {
@@ -69,5 +80,5 @@ if (errors.length > 0) {
 }
 
 console.log(
-  '✅ theme z-index guard passed: no z-index in any *.styles.ts — components own stacking order.'
+  '✅ theme z-index guard passed: no z-index in any *.styles.{ts,tsx} — components own stacking order.'
 );
