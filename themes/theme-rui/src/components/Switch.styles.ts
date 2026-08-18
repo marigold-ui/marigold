@@ -4,6 +4,10 @@ export const Switch: ThemeComponent<'Switch'> = {
   container: cva({
     base: [
       'grid gap-x-2 items-center',
+      // Cursor lives here, on the whole hit area, so the label reads as clickable
+      // too — and inherits down to the track, where a local rule would otherwise
+      // outrank the disabled/read-only cursors below.
+      'cursor-pointer read-only:cursor-default',
       'disabled:cursor-not-allowed disabled:text-disabled',
       'group-data-booleanfield/booleanfield:grid-cols-subgrid group-data-booleanfield/booleanfield:col-span-full',
     ],
@@ -20,7 +24,7 @@ export const Switch: ThemeComponent<'Switch'> = {
   track: cva({
     base: [
       'h-4 w-7',
-      'flex shrink-0 cursor-pointer items-center rounded-full transition-colors',
+      'flex shrink-0 items-center rounded-full transition-colors',
       'border-2 border-transparent',
       'group-disabled/switch:bg-disabled-surface group-disabled/switch:text-disabled group-selected/switch:group-disabled/switch:bg-disabled-surface group-selected/switch:group-disabled/switch:text-disabled',
       'group-selected/switch:bg-selected-bold bg-control',

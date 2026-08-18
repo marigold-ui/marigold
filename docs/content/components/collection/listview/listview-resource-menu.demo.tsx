@@ -1,0 +1,29 @@
+import {
+  ActionMenu,
+  Description,
+  ListView,
+  TextValue,
+} from '@marigold/components';
+
+export default () => (
+  <ListView aria-label="Resources">
+    <ListView.Item id="report" textValue="Quarterly report">
+      <TextValue>Quarterly report</TextValue>
+      <Description>Updated 3 days ago · 2.1 MB</Description>
+      <ActionMenu aria-label="Quarterly report actions">
+        <ActionMenu.Item>Rename</ActionMenu.Item>
+        <ActionMenu.Item>Share</ActionMenu.Item>
+        <ActionMenu.Item variant="destructive">Delete</ActionMenu.Item>
+      </ActionMenu>
+    </ListView.Item>
+    <ListView.Item id="roadmap" textValue="Roadmap">
+      <TextValue>Roadmap</TextValue>
+      <Description>Updated today · 640 KB</Description>
+      <ActionMenu aria-label="Roadmap actions">
+        <ActionMenu.Item>Rename</ActionMenu.Item>
+        <ActionMenu.Item>Share</ActionMenu.Item>
+        <ActionMenu.Item variant="destructive">Delete</ActionMenu.Item>
+      </ActionMenu>
+    </ListView.Item>
+  </ListView>
+);

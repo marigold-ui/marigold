@@ -1,6 +1,6 @@
 export const EmptyStateAnatomy = () => (
   <svg
-    viewBox="75 25 545 285"
+    viewBox="91 30 660 345"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
     role="img"
@@ -8,11 +8,11 @@ export const EmptyStateAnatomy = () => (
   >
     {/* Container: a centered column that paints no surface of its own */}
     <rect
-      x="230"
-      y="40"
-      width="280"
-      height="254"
-      rx="8"
+      x="279"
+      y="48"
+      width="339"
+      height="308"
+      rx="10"
       className="stroke-fd-border transition-colors duration-300"
       fill="none"
       strokeWidth="2"
@@ -21,68 +21,68 @@ export const EmptyStateAnatomy = () => (
 
     {/* Illustration: placeholder standing in for the built-in artwork */}
     <rect
-      x="295"
-      y="64"
-      width="150"
-      height="84"
-      rx="8"
+      x="357"
+      y="78"
+      width="182"
+      height="102"
+      rx="10"
       className="fill-fd-muted-foreground/20 transition-colors duration-300"
     />
     <circle
-      cx="340"
-      cy="94"
-      r="7"
+      cx="412"
+      cy="114"
+      r="8"
       className="fill-fd-muted-foreground/60 transition-colors duration-300"
     />
     <path
-      d="M 320 128 L 352 100 L 372 118 L 392 98 L 420 128 Z"
+      d="M 388 155 L 426 121 L 450 143 L 475 119 L 509 155 Z"
       className="fill-fd-muted-foreground/60 transition-colors duration-300"
     />
 
     {/* Title */}
     <rect
-      x="295"
-      y="172"
-      width="150"
-      height="14"
-      rx="4"
+      x="357"
+      y="208"
+      width="182"
+      height="17"
+      rx="5"
       className="fill-fd-foreground transition-colors duration-300"
     />
 
     {/* Description lines */}
     <rect
-      x="270"
-      y="190"
-      width="200"
-      height="10"
-      rx="4"
+      x="327"
+      y="230"
+      width="242"
+      height="12"
+      rx="5"
       className="fill-fd-muted-foreground/40 transition-colors duration-300"
     />
     <rect
-      x="300"
-      y="206"
-      width="140"
-      height="10"
-      rx="4"
+      x="363"
+      y="249"
+      width="170"
+      height="12"
+      rx="5"
       className="fill-fd-muted-foreground/40 transition-colors duration-300"
     />
 
     {/* Action */}
     <rect
-      x="320"
-      y="240"
-      width="100"
-      height="30"
-      rx="6"
+      x="388"
+      y="291"
+      width="121"
+      height="36"
+      rx="7"
       className="fill-fd-accent stroke-fd-muted-foreground transition-colors duration-300"
       strokeWidth="2"
     />
     <rect
-      x="344"
-      y="251"
-      width="52"
-      height="8"
-      rx="4"
+      x="417"
+      y="304"
+      width="63"
+      height="10"
+      rx="5"
       className="fill-fd-accent-foreground transition-colors duration-300"
     />
 
@@ -95,24 +95,24 @@ export const EmptyStateAnatomy = () => (
       strokeLinejoin="round"
     >
       {/* Illustration -> left */}
-      <path d="M 295 106 L 180 106" />
+      <path d="M 357 128 L 218 128" />
       {/* Description -> left */}
-      <path d="M 270 195 L 180 195" />
+      <path d="M 327 236 L 218 236" />
       {/* Container -> bottom left */}
-      <path d="M 230 276 L 180 276" />
+      <path d="M 279 334 L 218 334" />
       {/* Title -> right */}
-      <path d="M 445 179 L 550 179" />
+      <path d="M 539 217 L 666 217" />
       {/* Action -> right */}
-      <path d="M 420 255 L 550 255" />
+      <path d="M 509 309 L 666 309" />
     </g>
 
     {/* Connector Dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="295" cy="106" r="4" />
-      <circle cx="270" cy="195" r="4" />
-      <circle cx="230" cy="276" r="4" />
-      <circle cx="445" cy="179" r="4" />
-      <circle cx="420" cy="255" r="4" />
+      <circle cx="357" cy="128" r="4" />
+      <circle cx="327" cy="236" r="4" />
+      <circle cx="279" cy="334" r="4" />
+      <circle cx="539" cy="217" r="4" />
+      <circle cx="509" cy="309" r="4" />
     </g>
 
     {/* Labels */}
@@ -122,8 +122,8 @@ export const EmptyStateAnatomy = () => (
     >
       <g textAnchor="end">
         <text
-          x="170"
-          y="110"
+          x="206"
+          y="133"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -131,8 +131,8 @@ export const EmptyStateAnatomy = () => (
           Illustration
         </text>
         <text
-          x="170"
-          y="199"
+          x="206"
+          y="241"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -140,8 +140,8 @@ export const EmptyStateAnatomy = () => (
           Description
         </text>
         <text
-          x="170"
-          y="280"
+          x="206"
+          y="339"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -151,8 +151,8 @@ export const EmptyStateAnatomy = () => (
       </g>
       <g textAnchor="start">
         <text
-          x="560"
-          y="183"
+          x="678"
+          y="222"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -160,8 +160,8 @@ export const EmptyStateAnatomy = () => (
           Title
         </text>
         <text
-          x="560"
-          y="259"
+          x="678"
+          y="314"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
