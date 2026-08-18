@@ -209,6 +209,21 @@ export type Theme = {
       'container' | 'track' | 'thumb' | 'output' | 'selectedTrack',
       ComponentStyleFunction<string, string>
     >;
+    // Per-step state (`completed` / `current` / `error` / `disabled` /
+    // `upcoming`) is not a slot variant: `useClassNames` only carries `variant`
+    // and `size`, and the parent renders every step in a loop, so it cannot call
+    // the hook per item. The component emits `data-state` on each `<li>` and the
+    // theme selects on it instead. See theme-rui's Stepper.styles.ts.
+    Stepper?: Record<
+      | 'container'
+      | 'item'
+      | 'link'
+      | 'marker'
+      | 'label'
+      | 'connector'
+      | 'count',
+      ComponentStyleFunction<string, string>
+    >;
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;
     SelectList?: Record<
       | 'container'
