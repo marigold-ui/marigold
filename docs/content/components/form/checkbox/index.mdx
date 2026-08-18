@@ -3,6 +3,8 @@ title: Checkbox
 description: Component to select one or more options.
 ---
 
+import { CheckboxAnatomy } from './checkbox-anatomy';
+
 The `<Checkbox>` component is a form element that allows users to make a binary choice, either selecting or deselecting an option. Multiple checkboxes can be grouped together using `<Checkbox.Group>` to enable the selection of zero, one or any number of options.
 
 It is commonly used in forms, settings, and anywhere users need to make multiple selections or toggle individual options. A `<Checkbox>` can also display an indeterminate state to represent a partially selected group.
@@ -13,13 +15,11 @@ A checkbox consists of a clickable box and a label. The box has three states: un
 
 A checkbox group consists of multiple checkboxes, each with its own label, allowing users to select one or more options within a related set.
 
-<ImageZoom
-  src="/checkbox/checkbox-anatomy.jpg"
-  alt="Anatomy of a checkbox"
-  width={800}
-  height={550}
-  className="mx-auto block w-full"
-/>
+<CheckboxAnatomy />
+
+- **Group label:** Describes the group of options or provides guidance for making a selection.
+- **Checkbox input:** The clickable box showing the unchecked, checked, or indeterminate state.
+- **Checkbox label:** Describes the option that the checkbox toggles.
 
 ## Appearance
 
