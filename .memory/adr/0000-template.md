@@ -1,6 +1,6 @@
 ---
 id: ADR-NNNN
-status: proposed # proposed | accepted | superseded-by ADR-NNNN
+status: accepted # accepted | superseded-by ADR-NNNN
 date: YYYY-MM-DD
 applies_to:
   - 'packages/components/src/**'
