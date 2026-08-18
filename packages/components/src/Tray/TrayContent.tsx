@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { cn } from '@marigold/system';
-import { useTrayContext } from './Context';
+import { TRAY_CONTENT_ATTR, useTrayContext } from './Context';
 
 // Props
 // ---------------
@@ -28,7 +28,7 @@ export const TrayContent = ({ children, className }: TrayContentProps) => {
           node.style.minHeight = `${node.offsetHeight}px`;
         }
       }}
-      data-tray-content
+      {...{ [TRAY_CONTENT_ATTR]: true }}
       className={cn('[grid-area:content]', classNames.content, className)}
     >
       {children}

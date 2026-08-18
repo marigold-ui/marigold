@@ -14,6 +14,7 @@ import { OverlayTriggerStateContext } from 'react-aria-components/Dialog';
 import { Modal, ModalOverlay } from 'react-aria-components/Modal';
 import { cn, useClassNames } from '@marigold/system';
 import { MotionFeatures } from '../lazyMotion';
+import { TRAY_CONTENT_ATTR } from './Context';
 
 type RemovedProps =
   | 'isOpen'
@@ -46,29 +47,8 @@ const staticTransition = {
   ease: cubicBezier(0.32, 0.72, 0, 1),
 };
 
-const SCROLLABLE_OVERFLOW = new Set(['auto', 'scroll']);
-
-const startsInScrollableBody = (target: Element, boundary: Element) => {
-  for (
-    let node: Element | null = target;
-    node && node !== boundary;
-    node = node.parentElement
-  ) {
-    if (node.hasAttribute('data-tray-content')) {
-      return true;
-    }
-
-    const { overflowY } = getComputedStyle(node);
-    if (
-      SCROLLABLE_OVERFLOW.has(overflowY) &&
-      node.scrollHeight > node.clientHeight
-    ) {
-      return true;
-    }
-  }
-
-  return false;
-};
+const startsInTrayContent = (target: Element) =>
+  target.closest(`[${TRAY_CONTENT_ATTR}]`) !== null;
 
 export const TrayModal = ({
   open,
@@ -85,7 +65,7 @@ export const TrayModal = ({
   const dragControls = useDragControls();
 
   const startDrag = (event: ReactPointerEvent<Element>) => {
-    if (startsInScrollableBody(event.target as Element, event.currentTarget)) {
+    if (startsInTrayContent(event.target as Element)) {
       return;
     }
 
@@ -136,7 +116,7 @@ export const TrayModal = ({
               animate={{ y: 0 }}
               exit={{ y: h }}
               transition={staticTransition}
-              style={{ y, userSelect: 'none', WebkitUserSelect: 'none' }}
+              style={{ y }}
               drag="y"
               dragListener={false}
               dragControls={dragControls}

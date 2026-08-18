@@ -110,12 +110,16 @@ beforeEach(() => {
   mockDragControls.start.mockClear();
 });
 
-test('drag down far enough dismisses the tray', async () => {
+const openTray = async () => {
   renderWithOverlay(<Basic.Component />);
   await user.click(screen.getByRole('button', { name: 'Open Tray' }));
   await waitFor(() => {
     expect(screen.getByRole('dialog')).toBeInTheDocument();
   });
+};
+
+test('drag down far enough dismisses the tray', async () => {
+  await openTray();
   expect(dragState.onDragEnd).toBeDefined();
 
   act(() => {
@@ -128,11 +132,7 @@ test('drag down far enough dismisses the tray', async () => {
 });
 
 test('fast swipe dismisses the tray', async () => {
-  renderWithOverlay(<Basic.Component />);
-  await user.click(screen.getByRole('button', { name: 'Open Tray' }));
-  await waitFor(() => {
-    expect(screen.getByRole('dialog')).toBeInTheDocument();
-  });
+  await openTray();
 
   act(() => {
     dragState.onDragEnd!({}, { offset: { y: 10 }, velocity: { y: 15 } });
@@ -144,11 +144,7 @@ test('fast swipe dismisses the tray', async () => {
 });
 
 test('small drag snaps tray back', async () => {
-  renderWithOverlay(<Basic.Component />);
-  await user.click(screen.getByRole('button', { name: 'Open Tray' }));
-  await waitFor(() => {
-    expect(screen.getByRole('dialog')).toBeInTheDocument();
-  });
+  await openTray();
 
   act(() => {
     dragState.onDragEnd!({}, { offset: { y: 10 }, velocity: { y: 0 } });
@@ -157,14 +153,6 @@ test('small drag snaps tray back', async () => {
   expect(screen.getByRole('dialog')).toBeInTheDocument();
   expect(mockAnimate).toHaveBeenCalled();
 });
-
-const openTray = async () => {
-  renderWithOverlay(<Basic.Component />);
-  await user.click(screen.getByRole('button', { name: 'Open Tray' }));
-  await waitFor(() => {
-    expect(screen.getByRole('dialog')).toBeInTheDocument();
-  });
-};
 
 test('does not start a drag from inside the tray content', async () => {
   await openTray();

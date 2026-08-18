@@ -17,7 +17,7 @@ export const TrayActions = ({ children }: TrayActionsProps) => {
   const { classNames } = useTrayContext();
 
   return (
-    <div className={cn('[grid-area:actions]', classNames.actions)}>
+    <div className={cn('select-none [grid-area:actions]', classNames.actions)}>
       {children}
     </div>
   );
