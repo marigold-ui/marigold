@@ -1,5 +1,12 @@
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
+import {
+  WCAG_NON_TEXT,
+  contrast,
+  flatten,
+  paintedGround,
+} from '../contrast.utils';
+import { borderOf, controlIcon } from '../control.utils';
 import { Checkbox } from './Checkbox';
 
 const meta = preview.meta({
@@ -126,16 +133,52 @@ Basic.test(
   }
 );
 
-// There is no accessible way to reach the element that paints the checkbox.
-const getIcon = (checkbox: HTMLElement) => {
-  const icon = checkbox.closest('label')?.querySelector('[aria-hidden="true"]');
+// The one positive assertion: every "leaves the border alone" case below also
+// passes against a rule that never matches, which is how the
+// `group-[indeterminate]` bug this PR fixes stayed green for its whole life.
+Basic.test(
+  'Hover darkens the border',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    const checkbox = await canvas.findByRole('checkbox');
+    const icon = controlIcon(checkbox);
+    const idle = borderOf(icon);
 
-  expect(icon).not.toBeNull();
+    await userEvent.hover(checkbox);
 
-  return icon!;
-};
+    expect(borderOf(icon)).not.toBe(idle);
+  }
+);
 
-const borderOf = (el: Element) => getComputedStyle(el).borderColor;
+// Hover and focus-visible both set `border-color`, and the hover rule compiles
+// to (0,5,0) against (0,2,0) for the focus-visible border — so it wins unless it
+// excludes `focus-visible` explicitly. Without that clause the border stays at
+// the hover colour and the halo is all that marks focus, which is 2.08:1 alone.
+Basic.test(
+  'Hover does not weaken the focus indicator',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    const checkbox = await canvas.findByRole('checkbox');
+    const icon = controlIcon(checkbox);
+
+    await userEvent.tab();
+    await expect(checkbox).toHaveFocus();
+    const focused = borderOf(icon);
+
+    await userEvent.hover(checkbox);
+
+    expect(borderOf(icon)).toBe(focused);
+
+    const ground = paintedGround(icon.parentElement as HTMLElement);
+    expect(ground.length).toBeGreaterThan(0);
+
+    const ratio = contrast(flatten([...ground, focused]), flatten(ground));
+    expect(
+      ratio,
+      `focused + hovered border is ${ratio.toFixed(2)}:1, needs ${WCAG_NON_TEXT}:1`
+    ).toBeGreaterThanOrEqual(WCAG_NON_TEXT);
+  }
+);
 
 // One test per state, because each needs its own `args`. Note `.test()` calls are
 // collected statically — registering them from a loop yields no tests at all.
@@ -147,7 +190,7 @@ Basic.test(
   },
   async ({ canvas, userEvent }) => {
     const checkbox = await canvas.findByRole('checkbox');
-    const icon = getIcon(checkbox);
+    const icon = controlIcon(checkbox);
     const before = borderOf(icon);
 
     await userEvent.hover(checkbox);
@@ -164,7 +207,7 @@ Basic.test(
   },
   async ({ canvas, userEvent }) => {
     const checkbox = await canvas.findByRole('checkbox');
-    const icon = getIcon(checkbox);
+    const icon = controlIcon(checkbox);
     const before = borderOf(icon);
 
     await userEvent.hover(checkbox);
@@ -181,7 +224,7 @@ Basic.test(
   },
   async ({ canvas, userEvent }) => {
     const checkbox = await canvas.findByRole('checkbox');
-    const icon = getIcon(checkbox);
+    const icon = controlIcon(checkbox);
     const before = borderOf(icon);
 
     await userEvent.hover(checkbox);
@@ -198,7 +241,7 @@ Basic.test(
   },
   async ({ canvas, userEvent }) => {
     const checkbox = await canvas.findByRole('checkbox');
-    const icon = getIcon(checkbox);
+    const icon = controlIcon(checkbox);
     const before = borderOf(icon);
 
     await userEvent.hover(checkbox);
@@ -215,7 +258,7 @@ Basic.test(
   },
   async ({ canvas }) => {
     const checkbox = await canvas.findByRole('checkbox');
-    const style = getComputedStyle(getIcon(checkbox));
+    const style = getComputedStyle(controlIcon(checkbox));
 
     expect(style.backgroundColor).toBe(style.borderColor);
   }

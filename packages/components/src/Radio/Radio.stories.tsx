@@ -1,6 +1,7 @@
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
+import { borderOf, controlIcon } from '../control.utils';
 import { Radio } from './Radio';
 import { RadioGroup } from './RadioGroup';
 
@@ -89,16 +90,21 @@ export const Basic = meta.story({
   ),
 });
 
-// There is no accessible way to reach the element that paints the radio.
-const getIcon = (radio: HTMLElement) => {
-  const icon = radio.closest('label')?.querySelector('[aria-hidden="true"]');
+// The one positive assertion: the "leaves the border alone" cases below pass
+// just as happily against a rule that never matches at all.
+Basic.test(
+  'Hover darkens the border of an unselected radio',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    const radio = await canvas.findByRole('radio', { name: 'Option 2' });
+    const icon = controlIcon(radio);
+    const idle = borderOf(icon);
 
-  expect(icon).not.toBeNull();
+    await userEvent.hover(radio);
 
-  return icon!;
-};
-
-const borderOf = (el: Element) => getComputedStyle(el).borderColor;
+    expect(borderOf(icon)).not.toBe(idle);
+  }
+);
 
 Basic.test(
   'Hover leaves the border alone when selected or disabled',
@@ -106,7 +112,7 @@ Basic.test(
   async ({ step, canvas, userEvent }) => {
     await step('selected', async () => {
       const radio = await canvas.findByRole('radio', { name: 'Option 1' });
-      const icon = getIcon(radio);
+      const icon = controlIcon(radio);
       const selected = borderOf(icon);
 
       await userEvent.hover(radio);
@@ -116,7 +122,7 @@ Basic.test(
 
     await step('disabled', async () => {
       const radio = await canvas.findByRole('radio', { name: 'Option 3' });
-      const icon = getIcon(radio);
+      const icon = controlIcon(radio);
       const disabled = borderOf(icon);
 
       await userEvent.hover(radio);
@@ -134,7 +140,7 @@ Basic.test(
   },
   async ({ canvas, userEvent }) => {
     const radio = await canvas.findByRole('radio', { name: 'Option 2' });
-    const icon = getIcon(radio);
+    const icon = controlIcon(radio);
     const readOnly = borderOf(icon);
 
     await userEvent.hover(radio);
