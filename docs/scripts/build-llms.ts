@@ -1,11 +1,17 @@
 #!/usr/bin/env tsx
-// Generate public/llms.txt and public/llms-full.txt — the conventional
-// discovery entry points for AI agents (https://llmstxt.org).
+// Generate public/llms.txt — the conventional discovery entry point for AI
+// agents (https://llmstxt.org).
 //
-// Both are indexes over what the docs build already emits: `build-manifest`
-// writes the page index, `build-md` writes a per-page `.md` with demos inlined
-// as source and props tables expanded. So this runs last and reads those files
-// rather than parsing MDX a second time.
+// It indexes what the docs build already emits: `build-manifest` writes the page
+// index, `build-md` writes a per-page `.md` with demos inlined as source and
+// props tables expanded. So this runs last and reads those files rather than
+// parsing MDX a second time.
+//
+// There is deliberately no `llms-full.txt`. The full corpus measures ~2 MB,
+// which is past what most agents ingest in one shot, and it would be a third
+// copy of the same content free to drift from the manifest and the `.md` files.
+// Agents that cannot take the whole thing are better served by this index plus
+// a fetch per page, and the MCP server already does semantic retrieval.
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -77,7 +83,13 @@ export const readCategories = (
         label = separator[1].trim();
         continue;
       }
-      if (!entry.startsWith('...')) continue;
+      // A plain slug consumes the pending label as well: only a spread directly
+      // below a separator takes it. Without this, a separator followed by plain
+      // slugs would leak its label onto the next spread further down.
+      if (!entry.startsWith('...')) {
+        label = null;
+        continue;
+      }
 
       const folder = entry.slice(3);
       categories.push({
@@ -132,7 +144,7 @@ export const buildIndex = (manifest: Manifest, categories: Category[]) => {
     'docs URL to get the same for a page that is not listed here.',
     '',
     `- Page index as JSON: ${baseUrl}/manifest.json`,
-    `- Release notes: ${baseUrl}/releases/release-notes (feed: ${baseUrl}/rss.xml)`,
+    `- Release notes: ${baseUrl}/releases/release-notes`,
   ];
 
   for (const { label, pages } of groupPages(manifest.pages, categories)) {
@@ -155,13 +167,18 @@ const buildLlms = async () => {
   const manifest: Manifest = JSON.parse(
     await fs.readFile(path.join(publicDir, 'manifest.json'), 'utf8')
   );
-  const readMeta = async (...segments: string[]) =>
-    JSON.parse(
-      await fs.readFile(
-        path.join(rootDir, 'content', ...segments, 'meta.json'),
-        'utf8'
-      )
-    ).pages as string[];
+  // Named rather than raw ENOENT: the way to hit this is adding a folder to
+  // content/meta.json without giving it a meta.json of its own.
+  const readMeta = async (...segments: string[]) => {
+    const file = path.join(rootDir, 'content', ...segments, 'meta.json');
+    const raw = await fs.readFile(file, 'utf8').catch(() => {
+      throw new Error(
+        `Missing ${path.relative(rootDir, file)}, which content/meta.json lists.`
+      );
+    });
+
+    return JSON.parse(raw).pages as string[];
+  };
 
   const topLevel = await readMeta();
   const areaMeta = Object.fromEntries(
@@ -189,6 +206,33 @@ const buildLlms = async () => {
   }
 
   const index = buildIndex(manifest, categories);
+
+  // `buildIndex` also links two things by hand that are not manifest pages, so
+  // the check above cannot see them — which is how a link to a route that did
+  // not exist shipped once already. Assert the source each one points at, and
+  // that the index still links it, so the pair cannot drift apart silently.
+  const handWritten: [url: string, source: string][] = [
+    [
+      `${manifest.baseUrl}/manifest.json`,
+      path.join(publicDir, 'manifest.json'),
+    ],
+    [
+      `${manifest.baseUrl}/releases/release-notes`,
+      path.join(rootDir, 'content', 'releases', 'release-notes.mdx'),
+    ],
+  ];
+
+  for (const [url, source] of handWritten) {
+    if (!index.includes(url)) {
+      throw new Error(`Expected llms.txt to link ${url}`);
+    }
+    await fs.access(source).catch(() => {
+      throw new Error(
+        `llms.txt links ${url}, but ${path.relative(rootDir, source)} does not exist`
+      );
+    });
+  }
+
   await fs.writeFile(path.join(publicDir, 'llms.txt'), index);
 
   console.log(

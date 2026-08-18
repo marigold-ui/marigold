@@ -48,6 +48,19 @@ describe('readCategories', () => {
     ]);
   });
 
+  it('does not leak a label past the plain slugs that follow it', () => {
+    // `---Themes---` labels nothing, so `...form` takes its folder name rather
+    // than inheriting a separator two entries up.
+    expect(
+      readCategories(['components'], {
+        components: ['---Themes---', 'a-page', '...form'],
+      })
+    ).toEqual([
+      { category: 'components', label: 'Components' },
+      { category: 'components/form', label: 'Components / Form' },
+    ]);
+  });
+
   it('falls back to the folder name when no separator precedes it', () => {
     expect(readCategories(['components'], { components: ['...form'] })).toEqual(
       [
@@ -122,6 +135,8 @@ describe('buildIndex', () => {
     const index = buildIndex(manifest([page()]), CATEGORIES);
 
     expect(index).toContain('https://www.marigold-ui.io/manifest.json');
-    expect(index).toContain('https://www.marigold-ui.io/rss.xml');
+    expect(index).toContain(
+      'https://www.marigold-ui.io/releases/release-notes'
+    );
   });
 });
