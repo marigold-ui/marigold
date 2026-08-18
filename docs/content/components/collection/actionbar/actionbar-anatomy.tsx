@@ -1,15 +1,15 @@
 export const ActionBarAnatomy = () => (
   <svg
-    viewBox="0 0 680 210"
+    viewBox="0 0 660 204"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
     {/* ActionBar container */}
     <rect
-      x="180"
-      y="92"
-      width="320"
-      height="48"
+      x="175"
+      y="89"
+      width="311"
+      height="47"
       rx="12"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
@@ -22,14 +22,14 @@ export const ActionBarAnatomy = () => (
       strokeLinecap="round"
       fill="none"
     >
-      <path d="M199 111 l10 10" />
-      <path d="M209 111 l-10 10" />
+      <path d="M193 108 l10 10" />
+      <path d="M203 108 l-10 10" />
     </g>
 
     {/* Selection count */}
     <text
-      x="226"
-      y="121"
+      x="219"
+      y="117"
       fontFamily="ui-sans-serif, system-ui, sans-serif"
       fontSize="14"
       className="fill-fd-foreground transition-colors duration-300"
@@ -39,17 +39,17 @@ export const ActionBarAnatomy = () => (
 
     {/* Divider between selection summary and toolbar */}
     <path
-      d="M312 102 L312 130"
+      d="M303 99 L303 126"
       className="stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
 
     {/* Toolbar wrapper around the action buttons */}
     <rect
-      x="324"
-      y="100"
-      width="164"
-      height="32"
+      x="314"
+      y="97"
+      width="159"
+      height="31"
       rx="8"
       className="stroke-fd-border transition-colors duration-300"
       fill="none"
@@ -59,26 +59,26 @@ export const ActionBarAnatomy = () => (
 
     {/* Action buttons */}
     <rect
-      x="332"
-      y="106"
-      width="46"
-      height="20"
+      x="322"
+      y="103"
+      width="45"
+      height="19"
       rx="6"
       className="fill-fd-foreground/10 transition-colors duration-300"
     />
     <rect
-      x="386"
-      y="106"
-      width="46"
-      height="20"
+      x="375"
+      y="103"
+      width="45"
+      height="19"
       rx="6"
       className="fill-fd-foreground/10 transition-colors duration-300"
     />
     <rect
-      x="440"
-      y="106"
-      width="40"
-      height="20"
+      x="427"
+      y="103"
+      width="39"
+      height="19"
       rx="6"
       className="fill-fd-foreground/10 transition-colors duration-300"
     />
@@ -92,21 +92,21 @@ export const ActionBarAnatomy = () => (
       strokeLinejoin="round"
     >
       {/* Clear button -> up-left */}
-      <path d="M204 106 L204 58 L150 58" />
+      <path d="M198 103 L198 56 L146 56" />
       {/* Selection count -> up-right */}
-      <path d="M256 104 L256 58 L330 58" />
+      <path d="M248 101 L248 56 L320 56" />
       {/* Toolbar -> down-left */}
-      <path d="M340 132 L340 174 L300 174" />
+      <path d="M330 128 L330 169 L291 169" />
       {/* Action button -> down-right */}
-      <path d="M457 126 L457 174 L520 174" />
+      <path d="M444 122 L444 169 L505 169" />
     </g>
 
     {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="204" cy="106" r="4" />
-      <circle cx="256" cy="104" r="4" />
-      <circle cx="340" cy="132" r="4" />
-      <circle cx="457" cy="126" r="4" />
+      <circle cx="198" cy="103" r="4" />
+      <circle cx="248" cy="101" r="4" />
+      <circle cx="330" cy="128" r="4" />
+      <circle cx="444" cy="122" r="4" />
     </g>
 
     {/* Labels */}
@@ -116,16 +116,16 @@ export const ActionBarAnatomy = () => (
       fontWeight="600"
       className="fill-fd-primary transition-colors duration-300"
     >
-      <text x="142" y="62" textAnchor="end">
+      <text x="138" y="60" textAnchor="end">
         Clear button
       </text>
-      <text x="338" y="62" textAnchor="start">
+      <text x="328" y="60" textAnchor="start">
         Selection count
       </text>
-      <text x="292" y="178" textAnchor="end">
+      <text x="283" y="173" textAnchor="end">
         Toolbar
       </text>
-      <text x="528" y="178" textAnchor="start">
+      <text x="512" y="173" textAnchor="start">
         Action
       </text>
     </g>

@@ -1,31 +1,31 @@
 export const DescriptionAnatomy = () => (
   <svg
-    viewBox="220 30 360 60"
-    className="mx-auto h-auto w-full max-w-md"
+    viewBox="107 33 660 65"
+    className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
     {/* Lines */}
     <rect
-      x="240"
-      y="38"
-      width="220"
-      height="9"
+      x="262"
+      y="41"
+      width="240"
+      height="10"
       rx="3"
       className="fill-fd-muted-foreground/60 transition-colors duration-300"
     />
     <rect
-      x="240"
-      y="55"
-      width="200"
-      height="9"
+      x="262"
+      y="60"
+      width="218"
+      height="10"
       rx="3"
       className="fill-fd-muted-foreground/60 transition-colors duration-300"
     />
     <rect
-      x="240"
-      y="72"
-      width="160"
-      height="9"
+      x="262"
+      y="79"
+      width="175"
+      height="10"
       rx="3"
       className="fill-fd-muted-foreground/60 transition-colors duration-300"
     />
@@ -37,19 +37,19 @@ export const DescriptionAnatomy = () => (
       strokeWidth="2"
       strokeLinecap="round"
     >
-      <path d="M 460 59 L 510 59" />
+      <path d="M 502 64 L 557 64" />
     </g>
     <circle
-      cx="460"
-      cy="59"
+      cx="502"
+      cy="64"
       r="4"
       className="fill-fd-primary transition-colors duration-300"
     />
 
     {/* Label */}
     <text
-      x="520"
-      y="63"
+      x="568"
+      y="69"
       textAnchor="start"
       fontSize="14"
       fontWeight="600"

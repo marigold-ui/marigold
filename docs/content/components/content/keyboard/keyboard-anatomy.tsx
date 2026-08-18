@@ -1,26 +1,26 @@
 export const KeyboardAnatomy = () => (
   <svg
-    viewBox="220 30 360 70"
-    className="mx-auto h-auto w-full max-w-md"
+    viewBox="107 33 660 76"
+    className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
     role="img"
     aria-label="Anatomy of Keyboard: a single kbd element"
   >
     {/* kbd key-cap */}
     <rect
-      x="300"
-      y="42"
-      width="90"
-      height="34"
-      rx="6"
+      x="327"
+      y="46"
+      width="98"
+      height="37"
+      rx="7"
       className="fill-fd-muted stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
     <rect
-      x="320"
-      y="55"
-      width="50"
-      height="9"
+      x="349"
+      y="60"
+      width="55"
+      height="10"
       rx="3"
       className="fill-fd-muted-foreground/70 transition-colors duration-300"
     />
@@ -32,19 +32,19 @@ export const KeyboardAnatomy = () => (
       strokeWidth="2"
       strokeLinecap="round"
     >
-      <path d="M 390 59 L 450 59" />
+      <path d="M 426 64 L 491 64" />
     </g>
     <circle
-      cx="390"
-      cy="59"
+      cx="426"
+      cy="64"
       r="4"
       className="fill-fd-primary transition-colors duration-300"
     />
 
     {/* Label */}
     <text
-      x="460"
-      y="63"
+      x="502"
+      y="69"
       textAnchor="start"
       fontSize="14"
       fontWeight="600"
