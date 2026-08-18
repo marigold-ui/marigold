@@ -10,6 +10,9 @@ import type { NextRequest } from 'next/server';
 export const proxy = (request: NextRequest) => {
   if (!isMarkdownPreferred(request)) return NextResponse.next();
 
+  // Only reachable when Next's trailing-slash redirect hasn't run first: on
+  // Vercel `/foo/` 308s to `/foo` before the proxy sees it, so this is for
+  // `next start` and self-hosting.
   const pathname = request.nextUrl.pathname.replace(/\/$/, '');
 
   // `__internal__` is a live route that build-md deliberately skips, and a path

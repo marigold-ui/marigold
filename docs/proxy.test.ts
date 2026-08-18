@@ -7,8 +7,9 @@ import {
 import { NextRequest } from 'next/server';
 import { config, proxy } from './proxy';
 
-// What a browser actually sends. The `*/*;q=0.8` at the end is why a naive
-// "does Accept mention markdown" check would serve Markdown to every visitor.
+// What a browser actually sends. Markdown loses on both readings of the header:
+// it names no markdown media type at all, and the `*/*;q=0.8` that a
+// provided-type negotiation would match one against ranks below `text/html`.
 const BROWSER_ACCEPT =
   'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7';
 
@@ -23,20 +24,24 @@ const isRewritten = (path: string, accept?: string) =>
   isRewrite(proxy(request(path, accept)));
 
 describe('matcher', () => {
-  test('covers the content areas that have generated markdown', () => {
-    expect(matches('/components/actions/button')).toBe(true);
-    expect(matches('/foundations/spacing')).toBe(true);
-    expect(matches('/getting-started/installation')).toBe(true);
-    expect(matches('/patterns/user-input/forms')).toBe(true);
-    expect(matches('/releases/blog/release-2026-06-09')).toBe(true);
+  test.each([
+    '/components/actions/button',
+    '/foundations/spacing',
+    '/getting-started/installation',
+    '/patterns/user-input/forms',
+    '/releases/blog/release-2026-06-09',
+  ])('covers %s, which has generated markdown', path => {
+    expect(matches(path)).toBe(true);
   });
 
-  test('leaves the rest of the site alone', () => {
-    expect(matches('/')).toBe(false);
-    expect(matches('/examples/inventory')).toBe(false);
-    expect(matches('/impressum')).toBe(false);
-    expect(matches('/mcp')).toBe(false);
-    expect(matches('/manifest.json')).toBe(false);
+  test.each([
+    '/',
+    '/examples/inventory',
+    '/impressum',
+    '/mcp',
+    '/manifest.json',
+  ])('leaves %s alone', path => {
+    expect(matches(path)).toBe(false);
   });
 });
 
@@ -72,6 +77,22 @@ describe('negotiation', () => {
     expect(
       isRewritten('/components/actions/button', 'text/html;q=0.5,text/markdown')
     ).toBe(true);
+  });
+
+  // The two below are what separate ranking from mere mention: a check that only
+  // asked "does `Accept` name a markdown type" would serve markdown for both.
+  // They pin the `markdown >= html` comparison added in fumadocs-core 16.13.0,
+  // so a downgrade past it fails here instead of in production.
+  test('serves html when html outranks markdown', () => {
+    expect(
+      isRewritten('/components/actions/button', 'text/html,text/markdown;q=0.1')
+    ).toBe(false);
+  });
+
+  test('serves html when text/plain is only a fallback', () => {
+    expect(
+      isRewritten('/components/actions/button', 'text/html,text/plain;q=0.1')
+    ).toBe(false);
   });
 
   // Next.js replaces `Vary` on a rendered page with its own router values, so
