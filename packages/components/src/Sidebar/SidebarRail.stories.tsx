@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
-import { I18nProvider } from '@react-aria/i18n';
 import {
   BarChart3,
   BookOpen,
