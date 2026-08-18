@@ -186,7 +186,12 @@ export const Tray = ({
               classNames.container
             )}
           >
-            <div className={cn('[grid-area:drag]', classNames.dragHandle)} />
+            <div
+              className={cn(
+                'select-none [grid-area:drag]',
+                classNames.dragHandle
+              )}
+            />
             <Provider
               values={[
                 [HeadingContext, rootHeadingProps],

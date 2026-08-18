@@ -38,7 +38,7 @@ export const TrayHeader = ({ children }: TrayHeaderProps) => {
           [TextContext, textProps],
         ]}
       >
-        <div className={cn('[grid-area:title]', classNames.header)}>
+        <div className={cn('select-none [grid-area:title]', classNames.header)}>
           {children}
         </div>
       </Provider>

@@ -22,3 +22,5 @@ export const TrayContext = createContext<TrayContextProps>(
 );
 
 export const useTrayContext = () => use(TrayContext);
+
+export const TRAY_CONTENT_ATTR = 'data-tray-content';

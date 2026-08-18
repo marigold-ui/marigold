@@ -274,6 +274,60 @@ SlotPrimitives.test(
   }
 );
 
+export const ScrollableContent = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => (
+    <Tray.Trigger>
+      <Button>Open Tray</Button>
+      <Tray {...args}>
+        <Tray.Title>Pick a city</Tray.Title>
+        <Tray.Content>
+          <Stack space={2}>
+            {Array.from({ length: 40 }, (_, i) => (
+              <Text key={i}>City {i + 1}</Text>
+            ))}
+          </Stack>
+        </Tray.Content>
+        <Tray.Actions>
+          <Button slot="close">Close</Button>
+        </Tray.Actions>
+      </Tray>
+    </Tray.Trigger>
+  ),
+});
+
+ScrollableContent.test(
+  'a swipe that starts inside the content never dismisses the tray',
+  async ({ canvas, step }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open Tray' }));
+    const dialog = await waitFor(() => canvas.getByRole('dialog'));
+    const content = dialog.querySelector('[data-tray-content]') as HTMLElement;
+
+    await step('an upward swipe inside the content', async () => {
+      await userEvent.pointer([
+        { keys: '[TouchA>]', target: content, coords: { x: 150, y: 700 } },
+        { pointerName: 'TouchA', coords: { x: 150, y: 500 } },
+        { pointerName: 'TouchA', coords: { x: 150, y: 300 } },
+        { keys: '[/TouchA]' },
+      ]);
+
+      expect(canvas.getByRole('dialog')).toBeInTheDocument();
+    });
+
+    await step('a downward swipe inside the content', async () => {
+      await userEvent.pointer([
+        { keys: '[TouchA>]', target: content, coords: { x: 150, y: 100 } },
+        { pointerName: 'TouchA', coords: { x: 150, y: 400 } },
+        { pointerName: 'TouchA', coords: { x: 150, y: 800 } },
+        { keys: '[/TouchA]' },
+      ]);
+
+      expect(canvas.getByRole('dialog')).toBeInTheDocument();
+    });
+  }
+);
+
 /**
  * A bare `<Title slot="title">` (no `<Tray.Header>`, no description) labels the
  * tray dialog automatically via `aria-labelledby`.
