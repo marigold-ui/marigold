@@ -63,7 +63,9 @@ Write one only when at least one of these holds:
 
 Copy `.memory/adr/0000-template.md` to `.memory/adr/NNNN-<slug>.md`, taking the next free number. Fill in the frontmatter — `id`, `status`, `date`, and an `applies_to` glob narrow enough that the record only loads for work it governs.
 
-Set `status: proposed`. It becomes `accepted` when the PR carrying it merges.
+Set `status: accepted`. There is no `proposed` state — the PR review is where a record is accepted or rejected, so anything that reaches `main` is accepted by definition.
+
+Cite other records as links that carry the slug — `[ADR-0004](0004-slot-driven-composition.md)`, never a bare `ADR-0004`. This is checked.
 
 **Never edit an accepted ADR to change its decision.** Write a new one and set the old record's status to `superseded-by ADR-NNNN`. The history is the point; correcting the past in place destroys it.
 
