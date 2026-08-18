@@ -12,6 +12,7 @@ public/foundations/**/*.md
 public/getting-started/**/*.md
 public/patterns/**/*.md
 public/releases/**/*.md
+public/llms.txt
 public/mcp/
 
 # test & build
