@@ -1,6 +1,6 @@
 ---
 id: ADR-0001
-status: proposed # proposed | accepted | superseded-by ADR-NNNN
+status: accepted # accepted | superseded-by ADR-NNNN
 date: 2026-08-17
 applies_to:
   - 'packages/components/src/**/*.tsx'

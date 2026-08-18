@@ -51,7 +51,7 @@ One decision per file, `adr/NNNN-<slug>.md`, numbered sequentially from `0001`. 
 Frontmatter carries:
 
 - **`id`** — stable and citable (`ADR-0001`), so a review comment can name the record it means.
-- **`status`** — `proposed` → `accepted`, then `superseded-by ADR-NNNN`. Never anything else.
+- **`status`** — `accepted`, or `superseded-by ADR-NNNN`. Never anything else. **There is deliberately no `proposed` state:** deciding happens in review, so a record only reaches `main` by being accepted — "on main" and "accepted" are the same fact, and a field duplicating it would be one more thing to drift. It also means the no-editing rule below applies from the first commit rather than from a status flip nobody performs.
 - **`applies_to`** — globs for the paths the decision governs. This is an **index for finding records, not a loading mechanism**: nothing scopes an agent's context by it. Its job is to make "which records govern this file?" answerable by grep, and it is checked so it cannot rot silently.
 
 Keep each record under ~200 lines. It competes for context with the code the agent actually needs to read.
@@ -60,12 +60,12 @@ Keep each record under ~200 lines. It competes for context with the code the age
 
 **Take the next free number, and expect the check to catch you if you collide.** Sequential numbering has no allocation mechanism — two branches each adding `0003-<their-own-slug>.md` have different filenames, so git merges both without a conflict and `ADR-0003` then names two decisions. That is the same clean-merge hazard the one-term-per-heading rule addresses in the glossary, and it is why the numbering is checked rather than trusted.
 
-**Accepted ADRs are not edited to change a decision.** Supersede them: write the new record, then set the old one's status to `superseded-by ADR-NNNN`. Fixing the past in place destroys the reason the file existed.
+**Once a record is on `main`, it is not edited to change its decision.** Supersede it: write the new record, then set the old one's status to `superseded-by ADR-NNNN`. Fixing the past in place destroys the reason the file existed. (Before it merges it is still a draft in an open PR — revise it freely there, which is what review is for.)
 
 ## What this is not
 
 These records are **advisory**. They enter the context window and influence what an agent does. Nothing verifies compliance — no check reads an ADR and blocks a change that violates it. A record that nothing enforces is a well-argued comment, and no amount of careful writing turns a probabilistic reader into a guarantee.
 
-`pnpm check:memory` (CI: `.github/workflows/memory-store.yml`) does not change that. It checks the store's **structure** — number collisions, `id`/filename agreement, the status vocabulary, supersede targets that resolve, `applies_to` globs that still match something, duplicate or misordered glossary terms. Those are the failures that make the store untrustworthy without anything breaking. Whether a decision was actually followed is not checkable here.
+`pnpm check:memory` (CI: `.github/workflows/memory-store.yml`) does not change that. It checks the store's **structure** — number collisions, `id`/filename agreement, the status vocabulary, supersede targets that resolve, cross-references that point at the record they name, `applies_to` globs that still match something, duplicate or misordered glossary terms. Those are the failures that make the store untrustworthy without anything breaking. Whether a decision was actually followed is not checkable here.
 
 Worth revisiting if a decision here ever matters enough to need one: pairing a specific record with its own runnable check is what would turn that record into a constraint.

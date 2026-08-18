@@ -38,7 +38,7 @@ const errors = [];
 const warnings = [];
 
 const LINE_CEILING = 200;
-const STATUS_PATTERN = /^(proposed|accepted|superseded-by ADR-\d{4})$/;
+const STATUS_PATTERN = /^(accepted|superseded-by ADR-\d{4})$/;
 
 /** Minimal frontmatter reader: flat `key: value` plus `- item` lists. Enough for ADRs. */
 const readFrontmatter = source => {
@@ -126,7 +126,7 @@ for (const name of adrFiles) {
   if (!STATUS_PATTERN.test(front.status ?? '')) {
     errors.push(
       `${where}: status is \`${front.status ?? '(missing)'}\`; allowed values are ` +
-        '`proposed`, `accepted`, or `superseded-by ADR-NNNN`.'
+        '`accepted` or `superseded-by ADR-NNNN`.'
     );
   }
 

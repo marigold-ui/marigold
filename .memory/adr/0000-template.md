@@ -1,6 +1,6 @@
 ---
-id: ADR-NNNN # NNNN = the DST ticket this was decided under
-status: proposed # proposed | accepted | superseded-by ADR-NNNN
+id: ADR-NNNN
+status: accepted # accepted | superseded-by ADR-NNNN
 date: YYYY-MM-DD
 applies_to:
   - 'CHANGEME/**'
