@@ -41,6 +41,14 @@ DST-1512 then finished the migration across the remaining stories, tests and dem
 
 Import from `@react-aria/*` or `@react-stately/*` only when RAC genuinely does not re-export what you need — most hooks, and the low-level utilities.
 
+**How to tell whether RAC re-exports something**, which is the question this rule turns on and is otherwise a guess:
+
+```sh
+ls node_modules/react-aria-components | grep -i <name>
+```
+
+RAC ships one directory per subpath export, so the listing _is_ the answer — `I18nProvider` is there, `useDateFormatter` is not. That is also why imports in this repo look like `react-aria-components/Dialog` rather than reaching into `dist`.
+
 By package:
 
 | Package               | Import from                                               |
