@@ -113,7 +113,7 @@ export const AccordionAnatomy = () => (
     {/* Annotation labels */}
     <g
       fontFamily="ui-sans-serif, system-ui, sans-serif"
-      fontSize="14"
+      fontSize="12"
       fontWeight="600"
       className="fill-fd-primary transition-colors duration-300"
     >

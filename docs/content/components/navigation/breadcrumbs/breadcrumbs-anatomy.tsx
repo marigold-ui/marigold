@@ -2,7 +2,7 @@ export const BreadcrumbsAnatomy = () => (
   <svg
     role="img"
     aria-label="Anatomy of Breadcrumbs: Breadcrumbs items joined by Separators"
-    viewBox="113 51 660 183"
+    viewBox="113 51 660 200"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -40,26 +40,26 @@ export const BreadcrumbsAnatomy = () => (
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      {/* Separator -> up */}
-      <path d="M 435 172 L 435 99" />
+      {/* Separator -> down */}
+      <path d="M 435 197 L 435 220" />
       {/* Breadcrumbs item -> left */}
       <path d="M 329 185 L 253 185" />
     </g>
 
     {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="435" cy="172" r="4" />
+      <circle cx="435" cy="197" r="4" />
       <circle cx="329" cy="185" r="4" />
     </g>
 
     {/* Annotation labels */}
     <g
       fontFamily="ui-sans-serif, system-ui, sans-serif"
-      fontSize="14"
+      fontSize="12"
       fontWeight="600"
       className="fill-fd-primary transition-colors duration-300"
     >
-      <text x="435" y="89" textAnchor="middle">
+      <text x="435" y="233" textAnchor="middle">
         Separator
       </text>
       <text x="240" y="190" textAnchor="end">

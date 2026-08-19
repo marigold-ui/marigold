@@ -2,7 +2,7 @@ export const PaginationAnatomy = () => (
   <svg
     role="img"
     aria-label="Anatomy of a Pagination: a Previous button, Page buttons from the First page to the Last page with an Ellipsis for the hidden ones, and a Next button"
-    viewBox="-31 56 660 143"
+    viewBox="-31 56 660 155"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -18,17 +18,47 @@ export const PaginationAnatomy = () => (
       <path d="M 448 126 L 454 133 L 448 139" />
     </g>
 
-    {/* Page buttons */}
-    <g className="fill-fd-foreground transition-colors duration-300">
-      {/* First page */}
-      <rect x="168" y="128" width="9" height="9" rx="3" />
-      <rect x="208" y="128" width="9" height="9" rx="3" />
-      <rect x="248" y="128" width="9" height="9" rx="3" />
-      <rect x="288" y="128" width="9" height="9" rx="3" />
-      <rect x="327" y="128" width="9" height="9" rx="3" />
+    {/* Selected page gets a filled, bordered control; the rest are plain numbers */}
+    <rect
+      x="157"
+      y="118"
+      width="31"
+      height="30"
+      rx="7"
+      className="fill-fd-card stroke-fd-border transition-colors duration-300"
+      strokeWidth="1.5"
+    />
+
+    {/* Page numbers */}
+    <g
+      fontFamily="ui-sans-serif, system-ui, sans-serif"
+      fontSize="13"
+      fontWeight="600"
+      textAnchor="middle"
+      className="fill-fd-foreground transition-colors duration-300"
+    >
+      {/* First page (selected) */}
+      <text x="172.5" y="138">
+        1
+      </text>
+      <text x="212.5" y="138">
+        2
+      </text>
+      <text x="252.5" y="138">
+        3
+      </text>
+      <text x="292.5" y="138">
+        4
+      </text>
+      <text x="331.5" y="138">
+        5
+      </text>
       {/* Last page */}
-      <rect x="407" y="128" width="9" height="9" rx="3" />
+      <text x="411.5" y="138">
+        24
+      </text>
     </g>
+
     {/* Ellipsis hiding the remaining pages */}
     <g className="fill-fd-muted-foreground transition-colors duration-300">
       <circle cx="367" cy="135" r="2" />
@@ -38,7 +68,7 @@ export const PaginationAnatomy = () => (
 
     {/* Bracket spanning all page buttons */}
     <path
-      d="M 163 147 L 163 153 L 421 153 L 421 147"
+      d="M 155 160 L 155 166 L 424 166 L 424 160"
       className="stroke-fd-primary transition-colors duration-300"
       fill="none"
       strokeWidth="2"
@@ -55,47 +85,47 @@ export const PaginationAnatomy = () => (
       strokeLinejoin="round"
     >
       {/* Previous button -> left */}
-      <path d="M 126 133 L 80 133" />
+      <path d="M 118 133 L 80 133" />
       {/* Next button -> right */}
-      <path d="M 458 133 L 505 133" />
+      <path d="M 466 133 L 505 133" />
       {/* First page -> up */}
-      <path d="M 173 128 L 173 80" />
+      <path d="M 172.5 118 L 172.5 80" />
       {/* Last page -> up */}
-      <path d="M 412 128 L 412 80" />
+      <path d="M 411.5 122 L 411.5 80" />
       {/* Ellipsis -> up */}
       <path d="M 372 131 L 372 100" />
       {/* Page buttons -> down */}
-      <path d="M 292 153 L 292 173" />
+      <path d="M 289.5 166 L 289.5 186" />
     </g>
 
     {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="126" cy="133" r="4" />
-      <circle cx="458" cy="133" r="4" />
-      <circle cx="173" cy="128" r="4" />
-      <circle cx="412" cy="128" r="4" />
+      <circle cx="118" cy="133" r="4" />
+      <circle cx="466" cy="133" r="4" />
+      <circle cx="172.5" cy="118" r="4" />
+      <circle cx="411.5" cy="122" r="4" />
       <circle cx="372" cy="131" r="4" />
-      <circle cx="292" cy="153" r="4" />
+      <circle cx="289.5" cy="166" r="4" />
     </g>
 
     {/* Annotation labels */}
     <g
       fontFamily="ui-sans-serif, system-ui, sans-serif"
-      fontSize="14"
+      fontSize="12"
       fontWeight="600"
       className="fill-fd-primary transition-colors duration-300"
     >
       <g textAnchor="middle">
-        <text x="173" y="74">
+        <text x="172.5" y="74">
           First page
         </text>
-        <text x="412" y="74">
+        <text x="411.5" y="74">
           Last page
         </text>
         <text x="372" y="94">
           Ellipsis
         </text>
-        <text x="292" y="185">
+        <text x="289.5" y="198">
           Page buttons
         </text>
       </g>
