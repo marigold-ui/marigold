@@ -43,6 +43,9 @@ export const _ToggleButton = ({
     <ToggleButton
       isSelected={selected}
       isDisabled={disabled}
+      // With the group no longer clipping, the standard ui-state-focus outline
+      // (from ui-button-base) renders unclipped. Lift it above the neighbouring
+      // segments so the full ring shows. (DST-1597)
       className={cn(classNames.button, 'in-[.group]:focus-visible:z-10')}
       {...props}
     >

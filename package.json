@@ -77,6 +77,7 @@
     "clean:build": "rm -rf `find . -type d -name 'dist'` coverage",
     "lint": "eslint . --no-warn-ignored",
     "check:rac-imports": "node scripts/check-rac-first-imports.mjs",
+    "check:theme-zindex": "node scripts/check-theme-zindex.mjs",
     "format": "prettier --write \"**/*\"",
     "format:check": "prettier --check \"**/*\"",
     "format:fix": "prettier --write \"**/*\" --fix",

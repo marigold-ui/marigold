@@ -170,23 +170,32 @@ Z-index values are centralized and standardized across the design system to ensu
 **Z-Index Scale** (the agreed convention for which utility maps to which layer):
 
 ```text
-/* Content Layer (0-10) */
-z-1    /* Sticky headers (Table, Accordion, ListBox) */
-z-10   /* Focus states (Calendar) */
+/* Content layer — inside the component's own stacking context */
+z-0    /* Holds a part behind its siblings without taking it out of flow */
+z-1    /* Sticky content in a scroll container */
+z-10   /* Lifts one item above its immediate siblings */
 
-/* Floating Layer (20-49) */
-z-20   /* Dropdowns (Select, ComboBox) */
-z-30   /* Popovers, Menus, Tooltips, ActionBar */
+/* Floating layer — anchored to a trigger, escaping the content flow */
+z-30   /* Popover, Tooltip, ActionBar */
 
-/* Overlay Layer (50-79) */
-z-50   /* Modal overlays, Drawer overlays, Underlay */
+/* Overlay layer */
+z-50   /* Modal surfaces and the underlay behind them */
 
-/* Notification Layer (80-99) */
-z-80   /* Toast notifications, Drawer close button */
+/* Notification layer */
+z-80   /* Must stay above a modal */
 
-/* System Layer (100+) */
-z-100  /* Touch hitbox utility */
+/* System layer */
+z-100  /* ui-touch-hitbox — the one z-index outside a component; see Rules */
 ```
+
+Each rung is defined by its **role**, because that is the part that stays true. For which
+components sit on a rung today, ask the code: `grep -rnE '\bz-[0-9]' packages/components/src`.
+An earlier version of this scale named components per rung, and every single rung had drifted.
+
+**There is deliberately no `z-20`.** It used to read "Dropdowns (Select, ComboBox)", but both
+render their list through `Popover` and therefore already stack at `z-30` — nothing has ever
+carried `z-20`. Giving dropdowns their own rung would change the stacking order, which is a
+different decision from writing down the one we have.
 
 **Component Examples**:
 
@@ -214,9 +223,10 @@ export const Toast: ThemeComponent = {
 **Rules**:
 
 - Always apply z-index classes in component implementations using Tailwind utilities (`z-1`, `z-30`, etc.)
-- Never add z-index classes to theme style files (`*.styles.ts`)
+- Never add z-index classes to theme style files (`*.styles.ts`). `pnpm check:theme-zindex` enforces this in CI — a theme must not be able to reorder the layers
 - Use `cn()` utility to combine z-index with other classNames
 - Exception: Some third-party libraries may require an inline `zIndex` prop
+- Exception: `themes/theme-rui/src/ui.css` sets `z-100` on the `ui-touch-hitbox` utility. The pseudo-element it stacks has no component to own it, so this is the one sanctioned z-index outside `packages/components/src/`. It lives in a `.css` file, which is why the guard's `*.styles.ts` glob does not reach it
 
 **Stacking Hierarchy**:
 
