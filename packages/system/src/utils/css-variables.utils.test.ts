@@ -5,6 +5,7 @@ import {
   createVar,
   createWidthVar,
   ensureCssVar,
+  isAxislessToken,
   isFraction,
   isScale,
   isValidCssCustomPropertyName,
@@ -204,6 +205,42 @@ describe('resolveInsetAxes', () => {
       px: 'square-relaxed-x',
       py: 'square-relaxed-y',
     });
+  });
+
+  it('leaves the axis-less "collapsed" token unsuffixed on both axes', () => {
+    // An axis split is meaningless for "no spacing" — suffixing it would force
+    // every theme to declare --spacing-collapsed-x / -y as aliases of 0.
+    expect(
+      resolveInsetAxes({ p: 'collapsed', defaultInset: 'square-regular' })
+    ).toEqual({
+      px: 'collapsed',
+      py: 'collapsed',
+    });
+  });
+
+  it('leaves "collapsed" unsuffixed when it comes from the default inset', () => {
+    expect(resolveInsetAxes({ defaultInset: 'collapsed' })).toEqual({
+      px: 'collapsed',
+      py: 'collapsed',
+    });
+  });
+});
+
+describe('isAxislessToken', () => {
+  it('reports the no-spacing token as axis-less', () => {
+    expect(isAxislessToken('collapsed')).toBe(true);
+  });
+
+  it.each(['square-regular', 'squish-tight', 'padding-loose', '4', ''])(
+    'reports "%s" as having per-axis forms',
+    token => {
+      expect(isAxislessToken(token)).toBe(false);
+    }
+  );
+
+  it('does not classify the no-spacing token as a scale value', () => {
+    // createWidthVar / createHeightVar / createSpacingVar depend on this.
+    expect(isScale('collapsed')).toBe(false);
   });
 });
 

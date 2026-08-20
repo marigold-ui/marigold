@@ -737,6 +737,31 @@ WithCustomPadding.test(
   }
 );
 
+WithCustomPadding.test(
+  'resolves the axis-less `collapsed` token to zero padding',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { p: 'collapsed' },
+  },
+  async ({ canvas }) => {
+    const standardRow = await canvas.findByRole('row', { name: /standard/i });
+    const list = standardRow.closest('[role="grid"]') as HTMLElement;
+
+    // No `-x` / `-y` suffix: a theme only declares `--spacing-collapsed`.
+    expect(list.style.getPropertyValue('--selectlist-item-px')).toBe(
+      'var(--spacing-collapsed)'
+    );
+    expect(list.style.getPropertyValue('--selectlist-item-py')).toBe(
+      'var(--spacing-collapsed)'
+    );
+
+    // And it resolves, rather than falling back to 0 because it is undefined.
+    const styles = getComputedStyle(standardRow);
+    expect(styles.paddingLeft).toBe('0px');
+    expect(styles.paddingTop).toBe('0px');
+  }
+);
+
 export const EmptyState = meta.story({
   args: {
     items: [],

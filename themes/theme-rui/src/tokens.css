@@ -291,13 +291,10 @@
 
   /* Universal: no spacing (works for gap, padding, and inset recipes).
    *
-   * The `-x` / `-y` variants are required, not redundant: `collapsed` is a
-   * member of `InsetSpacingTokens`, and `resolveInsetAxes` appends the axis
-   * suffix to every non-numeric token — so `<Panel p="collapsed">` resolves to
-   * `var(--spacing-collapsed-x)` and would otherwise be undefined. */
+   * One variable is enough: `resolveInsetAxes` treats `collapsed` as axis-less
+   * and skips the `-x` / `-y` suffix, so `<Panel p="collapsed">` resolves to
+   * `var(--spacing-collapsed)` directly. */
   --spacing-collapsed: --spacing(0);
-  --spacing-collapsed-x: --spacing(0);
-  --spacing-collapsed-y: --spacing(0);
 
   /* Relational spacing */
   --spacing-tight: --spacing(1.5);
