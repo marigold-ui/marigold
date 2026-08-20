@@ -1,5 +1,21 @@
 # @marigold/cli
 
+## 2.0.0
+
+### Patch Changes
+
+- Updated dependencies [1dfe461]
+- Updated dependencies [c7b5c1d]
+- Updated dependencies [1dfe461]
+- Updated dependencies [1dfe461]
+- Updated dependencies [1fd3f85]
+- Updated dependencies [ce2720e]
+- Updated dependencies [eeb0a29]
+- Updated dependencies [f2dff15]
+- Updated dependencies [e41e633]
+  - @marigold/components@18.1.0
+  - @marigold/theme-rui@6.1.0
+
 ## 1.0.0
 
 ### Minor Changes
