@@ -145,22 +145,110 @@ Basic.test(
   }
 );
 
-// There is no accessible way to reach the track. It is the first rounded
-// element in the label; the thumb is nested inside it.
+// There is no accessible way to reach the track. It is the direct child div of
+// the label; the thumb is nested inside it. Matching on `rounded-full` would
+// also match the thumb, and every assertion here reads `'none'` off a wrong
+// element just as happily as off the right one — so pin the shape instead.
 const getTrack = (switchEl: HTMLElement) => {
-  const track = switchEl
-    .closest('label')
-    ?.querySelector('[class*="rounded-full"]');
+  const track = switchEl.closest('label')?.querySelector('div > div');
 
   expect(track).not.toBeNull();
+  // The track is the `w-7` box; the thumb is `size-3`. If this ever matches the
+  // thumb, fail here rather than passing three tests against the wrong element.
+  expect(getComputedStyle(track!).width).toBe('28px');
 
   return track!;
 };
 
+const tintOf = (el: Element) => getComputedStyle(el).backgroundImage;
+const fillOf = (el: Element) => getComputedStyle(el).backgroundColor;
 const cursorOf = (el: Element) => getComputedStyle(el).cursor;
+
+// The one positive assertion for the tint: the "leaves ... alone" cases below
+// all pass against a rule that never matches at all, which is exactly how the
+// `group-[indeterminate]` bug this PR fixes stayed green. This also pins the
+// architectural choice — the tint arrives as `background-image` and leaves the
+// transitioned `background-color` untouched.
+Basic.test(
+  'Hover darkens the track when off, without touching the eased fill',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    const switchEl = await canvas.findByRole('switch');
+    const track = getTrack(switchEl);
+    const off = fillOf(track);
+
+    expect(tintOf(track)).toBe('none');
+
+    await userEvent.hover(switchEl);
+
+    expect(tintOf(track)).not.toBe('none');
+    expect(fillOf(track)).toBe(off);
+  }
+);
+
+Basic.test(
+  'The hover tint is not a transitioned property',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const switchEl = await canvas.findByRole('switch');
+    const track = getTrack(switchEl);
+    const transitions = getComputedStyle(track).transitionProperty;
+
+    expect(transitions).toContain('background-color');
+    expect(transitions).not.toContain('background-image');
+  }
+);
 
 // One test per state, because each needs its own `args`. Note `.test()` calls are
 // collected statically — registering them from a loop yields no tests at all.
+Basic.test(
+  'Hover leaves the track alone when on',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { defaultSelected: true },
+  },
+  async ({ canvas, userEvent }) => {
+    const switchEl = await canvas.findByRole('switch');
+    const track = getTrack(switchEl);
+
+    await userEvent.hover(switchEl);
+
+    expect(tintOf(track)).toBe('none');
+  }
+);
+
+Basic.test(
+  'Hover leaves the track alone when disabled',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { disabled: true },
+  },
+  async ({ canvas, userEvent }) => {
+    const switchEl = await canvas.findByRole('switch');
+    const track = getTrack(switchEl);
+
+    await userEvent.hover(switchEl);
+
+    expect(tintOf(track)).toBe('none');
+  }
+);
+
+Basic.test(
+  'Hover leaves the track alone when read only',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { readOnly: true },
+  },
+  async ({ canvas, userEvent }) => {
+    const switchEl = await canvas.findByRole('switch');
+    const track = getTrack(switchEl);
+
+    await userEvent.hover(switchEl);
+
+    expect(tintOf(track)).toBe('none');
+  }
+);
+
 Basic.test(
   'The label shares the track cursor',
   { parameters: { chromatic: { disableSnapshot: true } } },
