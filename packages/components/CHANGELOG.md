@@ -1,5 +1,129 @@
 # @marigold/components
 
+## 18.1.0
+
+### Minor Changes
+
+- 1dfe461: feat(DST-1489): add non-form interactive list component
+
+  Adds `<ListView>` and `<ListView.Item>`, a non-form list built on React Aria's `GridList`/`GridListItem` for rows the user operates in place — dismissing with a `<Button>`, opening a per-row `<ActionMenu>`, or following a link — without leaving the page. Unlike `<SelectList>`/`<Select>`/`<ListBox>`, `<ListView>` has no selection, no hidden input, and never becomes a submitted form value.
+
+  A row is a named-area grid — `'label actions' 'description actions'` — so every region names the cell it wants instead of counting columns and rows. Row content is authored with Marigold's slot-aware components (`<TextValue>`, `<Description>`, `<Title>`), and each of them claims its cell through slot context, so text still lands correctly when it's wrapped in a fragment, behind `memo()`, or inside a consumer's own component. A bare string child is wrapped as the row's text value; to emphasise part of a line, nest `<Text as="span">` inside `<TextValue>`/`<Description>`. A row carries one `<Description>` — it takes inline markup, so several facts go on one line.
+
+  Trailing controls claim their cell through Marigold's `ButtonContext` and inherit the row's `ghost` cascade, the same mechanism `<Panel.Header>` and `<SelectList.Option>` use. A row with more than one control **must** wrap them in a `<ButtonGroup>`: each control reads the same context and would otherwise be placed in the same cell. A dev-only warning catches that at authoring time. The trailing cell takes Button-family controls only; trailing badges, pills or timestamps have no slot yet.
+
+  `<ListView.Item>` forces any nested `<Title>` to render as a `<span>` instead of a real heading, so a list of rows never emits one document heading per row.
+
+  The list is flat (divider lines only) and draws no surface of its own, the way `<Table>` does — a framed list nested in a container that already draws a surface is a ring inside a ring. A standalone framed list is `<Card><ListView /></Card>`.
+
+  This closes the gap between `<List>` (presentational, no roles), `<ListBox>` (selection only — forbids focusable controls inside a row), `<SelectList>`/`<Select>` (form fields), `<Table>` (tabular), and `<Menu>` (commands that close on activation). The motivating consumer is the Popover notifications panel (DST-1485), and the docs cover a second must-support scenario: a resource list with a per-row action menu.
+
+  v1 is intentionally minimal: no selection, no bulk-action bar, no async loading, no drag-and-drop, and no leading media. Leading icons and images need slot-aware icon/image components so placement doesn't depend on authoring order, which is tracked separately along with the rest of the follow-ups (selection ships together with a bulk-action bar, building on DST-1487).
+
+  **Documentation**
+
+  New `/components/collection/listview` docs page: anatomy, appearance, a "which list?" decision guide, the must-support demos, accessibility notes (including the `<Title>`-as-span caveat), and cross-links to `<List>`, `<ListBox>`, `<SelectList>`, `<Table>`, and `<Menu>`.
+
+- 1dfe461: feat(DST-1489): `ListView` is flat, and aligns like `Table` and `Accordion` inside a bled container.
+
+  **What changed:**
+
+  - The list ships one variant. `default` is the flat list (divider lines only) and there is no framed variant — the old `variant="plain"` is gone, since it is what `default` now does.
+  - Row padding is sourced from `--bleed-px` (via `--listview-item-px`) on the base rather than per variant. That is the custom property a bled `Panel.Content` / `Panel.CollapsibleContent` / `Drawer.Content` publishes; it falls back to the standalone row padding (`--spacing-stretch-regular-x`) when unset.
+
+  **Why:**
+
+  A framed list was what a consumer got without asking, and it collides with anything that draws its own surface — a `Card`, a `Panel`, a docs preview — as a ring inside a ring 8px apart. Every `ListView` in the repo lives inside such a container, so the frame had no consumer of its own; `Table` answers the same shape by drawing no frame at all and leaving the surface to its container. A standalone framed list is `<Card><ListView /></Card>`.
+
+  Binding the bleed to a variant had the same problem from the other side: `<Table>` and `<Accordion>` adopt `--bleed-px` unconditionally, so both align inside a bled `Panel` with no opt-in, while `<ListView>` needed two knobs to do the same thing.
+
+- ce2720e: feat(Table): expandable rows for grouped records
+
+  `<Table>` can now nest rows, so records that belong together (a settlement run
+  and its individual clearings, an order and its line items) share one table
+  instead of being faked with a button and a menu. Set `treeColumn` to the `id` of
+  the column that carries the hierarchy and nest `<Table.Row>` inside
+  `<Table.Row>`; use the new `<Table.ExpandableRows>` when the nested rows come from
+  data, and mark a row `expandable` when they are fetched only once it is opened.
+  Nested rows stay real table rows, so their values line up under the same headers
+  and each one carries its own actions.
+
+  The tree column renders the expand control itself, reusing the caret and morph
+  animation from `<Accordion>`. The caret starts where the column's values start:
+  its hit target is wider than the caret and hangs back into the cell's edge
+  padding (`--tree-caret-inset`), so the ghost button's own whitespace is the
+  gutter rather than something added to it. Behind it every row reserves that
+  gutter, so a group row and a childless row at the same level start their value at
+  the same x whether or not there is a control to show. Levels below the root
+  indent by one gutter (`--tree-indent`), so a nested row's caret starts where its
+  parent's value starts, and the column's own header label takes the same gutter,
+  so it sits above the values it heads. Containment is carried by the children
+  rather than the parent: nested rows share a filled band across the full row, so
+  what belongs to a group is legible in the leading drag and selection columns
+  too, which don't indent. Expansion is collapsed by default and can be controlled
+  with `expandedKeys` / `defaultExpandedKeys` / `onExpandedChange`.
+
+  Drop indicators are level-aware: the insertion line starts at the x of the level
+  the row would land at, so a reorder inside an expanded group reads as landing in
+  that group, while a root-level drop still spans the row. Moving a row from one
+  level to another is not supported.
+
+  The 32px control keeps that hit target without setting row height: a negative
+  block margin cancels the surplus over the line box, so a group row is exactly as
+  tall as a leaf row and the `size` variant's cell padding stays the only thing
+  that decides — 33 / 41 / 53px for `compact` / `default` / `spacious`.
+
+  New theme keys `treeIndent` and `expandButton`. The band is `foreground/8`,
+  which holds ~1.17:1 whether the rows sit on `surface`, on `background` or inside
+  a `muted` table, and yields to the hover wash so hovering still reads. `admin`
+  and `master` rows keep their access colour at every level — who may see a row
+  outranks where it sits in the tree.
+
+  Inline editing composes with it: `Table.EditableCell` renders the tree column's
+  gutter too, so a row keeps its expand control even when that cell is the editable
+  one. When the edited value lives outside the row items, pass `dependencies` to
+  `Table.ExpandableRows` as well as to `Table.Body`. Selection checkboxes, drag
+  handles and the `compact` / `default` / `spacious` paddings all keep working
+  alongside the tree column, and the tree column still takes its edge padding from
+  a `Panel`'s bleed contract.
+
+  Selection works on grouped rows but does not cascade: each row selects on its
+  own, and a group row shows no partial state while only some of its children are
+  selected. Cascading selection is not part of this release.
+
+  **Potentially breaking for opted-in tables:** setting `treeColumn` changes the
+  table's accessibility role from `grid` to `treegrid`, which is what makes screen
+  readers announce expanded state and nesting level. Tests asserting
+  `getByRole('grid')` on such a table need to become `getByRole('treegrid')`.
+  Tables that don't set `treeColumn` are unaffected.
+
+  Collapsed child rows are deliberately not rendered, so searching or deep-linking
+  to a nested row means expanding its ancestors first. Moving focus to a specific
+  row is not supported yet, which is tracked in DST-1713. Sorting doesn't reorder
+  levels for you either, so sort each level in your own data, and there is no
+  expand all control, so set `expandedKeys` to every group's key when you need one.
+
+### Patch Changes
+
+- 1fd3f85: fix(DST-1729): take `useLocale` from `react-aria-components`, not `@react-aria/i18n`.
+
+  `Calendar`'s preset resolution read the locale through the `@react-aria/i18n` shell. RAC pins
+  its `react-aria` internals exactly while the shells keep caret ranges, so a consumer's lockfile
+  can legitimately resolve two `react-aria` copies — two module instances, two distinct
+  `I18nContext`s. The hook then reads a context that `<I18nProvider>` never wrote, and presets
+  silently fall back to the default locale. Nothing errors, and our own dedupe hides it locally,
+  so it only ever appears in a consumer's app.
+
+  Same failure class as DSTSUP-261 and DST-1505. A check now fails CI if `packages/components`
+  takes `I18nProvider`, `useLocale` or `isRTL` from the shell again.
+
+- e41e633: style(DST-1711): give the undo toast's action button a visible weight.
+
+  `addUndoToast` rendered its Undo button as `variant="ghost"`, which has no fill and no border until it is hovered. It is now the default `secondary` button, so the way back out of a deletion is visible at a glance.
+
+  Review feedback on the [Destructive Actions](https://www.marigold-ui.io/patterns/feedback/destructive-actions) pattern found the button easy to overlook: the toast arrives far from the control that triggered it and leaves again after five seconds, which is the worst case for an affordance that only appears on hover. It is deliberately not a `destructive` button — undo is the safe action, and red beside a completed deletion reads as a second delete.
+  - @marigold/system@18.1.0
+
 ## 18.0.0
 
 ### Major Changes
