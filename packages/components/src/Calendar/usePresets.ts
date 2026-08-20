@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import type { DateValue } from 'react-aria-components/Calendar';
-import { useLocale, useLocalizedStringFormatter } from '@react-aria/i18n';
+import { useLocale } from 'react-aria-components/I18nProvider';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { intlMessages } from '../intl/messages';
 import {
   type BuiltInPreset,
