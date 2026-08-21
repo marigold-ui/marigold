@@ -3,19 +3,15 @@ title: Tabs
 description: Component for building tabs.
 ---
 
+import { TabsAnatomy } from './tabs-anatomy';
+
 The `<Tabs>` component allows you to organize related content into multiple sections. They allow the user to navigate between groups of information that appear within the same context.
 
 ## Anatomy
 
 `<Tabs>` consist of a tab list with one or more visually separated tabs. Each tab has associated content, and only the selected tab's content is shown. Each tab can be clicked, tapped, or navigated to via arrow keys.
 
-<ImageZoom
-  src="/tabs/tabs-anatomy.jpg"
-  alt="Anatomy of tabs"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+<TabsAnatomy />
 
 <ul>
   <li><b>Tab list:</b> Holds multiple tabs. Use the `<Tabs.List>` component within `<Tabs>` to group tabs that a user
