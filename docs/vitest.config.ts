@@ -18,6 +18,8 @@ export default defineConfig({
       'app/**/*.test.{ts,tsx}',
       'lib/**/*.test.{ts,tsx}',
       'scripts/**/*.test.{ts,mjs}',
+      // `proxy.ts` has to sit next to `app/`, so its test does too.
+      'proxy.test.ts',
     ],
   },
   resolve: {
