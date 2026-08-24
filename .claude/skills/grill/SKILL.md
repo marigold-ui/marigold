@@ -47,11 +47,9 @@ It does not apply to one-off questions, throwaway exploration, or scoping that c
 
 ### 4. Update the glossary
 
-If the session settled what a term means, add or correct its entry in `.memory/CONTEXT.md`.
+If the session settled what a term means, add or correct its entry in `.memory/CONTEXT.md`, following the glossary conventions in [.memory/README.md](../../../.memory/README.md).
 
-One term per `###` heading, kept alphabetical. Define the term and name what it is *not* when there is a neighbouring term it gets confused with — that confusion is usually why the entry is needed.
-
-Do not add rules here. A rule the agent must follow belongs in `CLAUDE.md`. The glossary says what words mean; it does not say what to do.
+The one worth repeating because it is what gets this step wrong: do not add rules here. A rule the agent must follow belongs in `CLAUDE.md`. The glossary says what words mean; it does not say what to do.
 
 ### 5. Write an ADR when the bar is met
 
@@ -61,11 +59,9 @@ Write one only when at least one of these holds:
 - **Surprising without context.** Someone reading the code cold would "fix" it back, not understanding why it is the way it is.
 - **A live alternative was rejected.** Without the record, the same alternative gets proposed again next quarter.
 
-Copy `.memory/adr/TEMPLATE.md` to `.memory/adr/NNNN-<slug>.md`, taking the next free number. Fill in the frontmatter — `id`, `status`, `date`, and an `applies_to` glob narrow enough that the record only loads for work it governs.
+Copy `.memory/adr/TEMPLATE.md` to `.memory/adr/NNNN-<slug>.md` and fill in the frontmatter. `NNNN` is the DST ticket the decision was made under, not the next free number — the reason is in [.memory/README.md](../../../.memory/README.md), along with the rest of the ADR conventions and the rule against editing an accepted record.
 
-Set `status: proposed`. It becomes `accepted` when the PR carrying it merges.
-
-**Never edit an accepted ADR to change its decision.** Write a new one and set the old record's status to `superseded-by ADR-NNNN`. The history is the point; correcting the past in place destroys it.
+Set `status: proposed`, and tell the user it is the author's job to flip it to `accepted` in the PR once the review approves. Nothing does that automatically.
 
 If none of the three criteria hold, write nothing. Records with the thinking removed are worse than absence — they look like documentation while doing nothing, and they cost context on every future session that loads them.
 
@@ -79,4 +75,4 @@ If you wrote to `.memory/`, say exactly which files changed. These are committed
 
 ## Limits worth knowing
 
-Records under `.memory/` are **advisory**. They enter the context window and influence what the agent does; nothing verifies compliance. An ADR that no check enforces is a well-argued comment, and a probabilistic reader cannot turn it into a guarantee. Write them because they compress genuine context, not because they constrain anything.
+Records under `.memory/` are **advisory**, and nothing loads them on its own — see "What this is not" in [.memory/README.md](../../../.memory/README.md). Write them because they compress genuine context, not because they constrain anything.

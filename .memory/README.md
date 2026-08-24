@@ -12,6 +12,7 @@ Context an agent would otherwise re-derive every session: what our words mean, a
 | -------------------- | ------------------------------ | ----------------------------------- |
 | `CONTEXT.md`         | Glossary — what our terms mean | Descriptive, corrected in place     |
 | `adr/NNNN-<slug>.md` | Why a decision was made        | Historical, immutable once accepted |
+| `tasks/`             | Reserved — per-ticket specs    | Not in use yet; `/pick-up` fills it |
 
 ## The boundary with CLAUDE.md
 
@@ -39,19 +40,21 @@ Prune on sight. A wrong entry is worse than a missing one, because the agent has
 
 One term per `###` heading, alphabetical. Define the term, and name what it is _not_ when a neighbouring term gets confused with it.
 
-Split the file once it passes roughly 200 lines — long files get read less faithfully, and a glossary nobody finishes reading is a glossary that quietly stops working.
+Split the file once it passes roughly 200 lines — long files get read less faithfully, and a glossary nobody finishes reading is a glossary that quietly stops working. Split into `CONTEXT/<area>.md` and keep `CONTEXT.md` as the index that links them, so the one path `CLAUDE.md` and the skill both point at stays valid.
 
 **One term per heading is a merge-safety rule, not just tidiness.** Two branches appending different definitions of the same term in the same place produce a git conflict, which someone resolves. Two branches appending to a shared blob merge cleanly and leave the file holding two definitions that cannot both be true — with nothing failing to tell you.
 
 ## ADR conventions
 
-One decision per file, `adr/NNNN-<slug>.md`, numbered sequentially from `0001`. Start from `TEMPLATE.md`.
+One decision per file, `adr/NNNN-<slug>.md`, where `NNNN` is the DST ticket the decision was made under — `1521-memory-store-conventions.md` is `ADR-1521`. Start from `TEMPLATE.md`.
+
+**The number comes from the ticket, not from a sequence**, because a sequence is not merge-safe. Two branches each taking the next free `0002` produce two different filenames, so git merges both without complaint and leaves two records claiming the same `id` — the same clean-merge-into-contradiction this file warns about for the glossary above. Ticket numbers are already unique, already on the branch and the commits, and they link the record to the discussion for free. Two ADRs from one ticket is the only collision left, and it happens inside a single branch where you can see it: suffix the second `NNNN-b-<slug>`.
 
 Frontmatter carries:
 
-- **`id`** — stable and citable (`ADR-0001`), so a review comment can name the record it means.
-- **`status`** — `proposed` → `accepted`, then `superseded-by ADR-NNNN`. Never anything else.
-- **`applies_to`** — globs for the paths the decision governs. Narrow ones let an agent load only the records relevant to the file it is editing rather than the whole set.
+- **`id`** — stable and citable (`ADR-1521`), so a review comment can name the record it means.
+- **`status`** — `proposed` → `accepted`, then `superseded-by ADR-NNNN`. Never anything else. **The author flips `proposed` to `accepted` in the same PR, once the review approves and before it merges.** Nothing does this for you, and a status nobody moves stops meaning anything.
+- **`applies_to`** — globs for the paths the decision governs, so a reader pointed at this directory can tell in one line whether a record concerns the file in front of them. Nothing loads records on its own: no script consumes the glob and nothing puts `adr/` into a session by itself. Keep them narrow anyway — the day something does the selecting, wide globs are what makes it useless.
 
 Keep each record under ~200 lines. It competes for context with the code the agent actually needs to read.
 

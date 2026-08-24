@@ -1,9 +1,9 @@
 ---
-id: ADR-NNNN
+id: ADR-NNNN # NNNN = the DST ticket this was decided under
 status: proposed # proposed | accepted | superseded-by ADR-NNNN
 date: YYYY-MM-DD
 applies_to:
-  - 'packages/components/src/**'
+  - 'CHANGEME/**'
 ---
 
 # NNNN. Short imperative title
