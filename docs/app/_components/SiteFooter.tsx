@@ -29,6 +29,15 @@ export const SiteFooter = () => (
         >
           GitHub
         </Link>
+        {/* Not `Link`: it treats `/rss.xml` as internal, so the router
+            prefetches every in-viewport footer, pulling the whole feed on a
+            page that has nothing to do with it. */}
+        <a
+          className="hover:text-fd-foreground transition-colors"
+          href="/rss.xml"
+        >
+          RSS
+        </a>
       </nav>
     </div>
   </footer>

@@ -21,3 +21,6 @@ jobs:
       # Reads the committed pnpm-lock.yaml only — no install needed.
       - name: Assert single react-aria, no @react-spectrum
         run: node scripts/check-react-aria-dedupe.mjs
+      # Reads source files only — the guard is a grep, not a resolution.
+      - name: Assert packages/components imports RAC re-exports from RAC
+        run: node scripts/check-rac-first-imports.mjs

@@ -1,0 +1,23 @@
+name: theme conventions
+
+on:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  theme-conventions:
+    name: Check theme conventions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Setup Node (using .node-version)
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.node-version'
+      # Reads source files only — no install, no build.
+      - name: Assert no z-index in theme style files
+        run: node scripts/check-theme-zindex.mjs

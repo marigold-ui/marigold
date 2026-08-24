@@ -6,10 +6,10 @@ import {
   today,
 } from '@internationalized/date';
 import { useState } from 'react';
-import { DateValue, I18nProvider } from 'react-aria-components';
+import type { DateValue } from 'react-aria-components';
+import { I18nProvider, useLocale } from 'react-aria-components/I18nProvider';
 import { expect, fn, within } from 'storybook/test';
 import preview from '.storybook/preview';
-import { useLocale } from '@react-aria/i18n';
 import type { RangeValue } from '@react-types/shared';
 import { RangeCalendar } from './RangeCalendar';
 
