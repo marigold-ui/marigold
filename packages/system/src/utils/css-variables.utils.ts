@@ -7,7 +7,7 @@ import type { NoSpacingToken } from '../types/tokens';
  * Kept in sync with `NoSpacingToken` by the annotation: adding a member to that
  * type is a type error here until it is listed.
  */
-const AXISLESS_TOKENS: readonly NoSpacingToken[] = ['collapsed'];
+const AXISLESS_TOKENS: Record<NoSpacingToken, true> = { collapsed: true };
 
 /**
  * Checks whether a spacing token is axis-less, i.e. splitting it into `-x` /
@@ -25,7 +25,7 @@ const AXISLESS_TOKENS: readonly NoSpacingToken[] = ['collapsed'];
  * @returns `true` if the token has no per-axis form, otherwise `false`.
  */
 export const isAxislessToken = (value: string) =>
-  (AXISLESS_TOKENS as readonly string[]).includes(value);
+  Object.hasOwn(AXISLESS_TOKENS, value);
 
 /**
  * Checks if the provided string represents a numeric scale value.
