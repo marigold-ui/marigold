@@ -3,7 +3,12 @@ import { type ThemeComponent, cva } from '@marigold/system';
 export const Switch: ThemeComponent<'Switch'> = {
   container: cva({
     base: [
-      'grid gap-x-2 items-center',
+      // `items-start`, matching Checkbox and Radio: the track belongs on the
+      // label's *first* line. Under `items-center` a wrapping `settings` label
+      // floated the track to the middle of the block instead (DST-1607).
+      // One-line labels are unaffected — the label slot below gives them a
+      // 16px line box, the same height as the track.
+      'grid gap-x-2 items-start',
       // Cursor lives here, on the whole hit area, so the label reads as clickable
       // too — and inherits down to the track, where a local rule would otherwise
       // outrank the disabled/read-only cursors below.
@@ -20,6 +25,21 @@ export const Switch: ThemeComponent<'Switch'> = {
     defaultVariants: {
       variant: 'default',
     },
+  }),
+  // Deliberately not the shared `Label`: its `leading-none` gives a 14px line
+  // against a 16px track, so first-line anchoring would land 1px off. Switch is
+  // also the only field that used `Label` *inside* the control's own `<label>`,
+  // where it contributed nothing the name computation needs — the accessible
+  // name comes from the wrapping `<label>`'s text either way. This matches the
+  // Checkbox and Radio label slots instead.
+  label: cva({
+    base: [
+      'flex items-start gap-1 min-w-0',
+      'text-sm leading-4 font-medium text-foreground',
+      // The container sets `disabled:text-disabled`, but `text-foreground` here
+      // would out-specify the inherited colour, so restate it.
+      'group-disabled/switch:text-disabled',
+    ],
   }),
   track: cva({
     base: [

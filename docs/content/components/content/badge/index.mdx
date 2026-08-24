@@ -40,6 +40,25 @@ Badges use color to convey meaning at a glance. Choose the variant that matches 
 
 A `<Badge>` is a component used to provide information on new updates and notifications. It is used with other components and cannot be used alone. The content of a badge can be arbitrary, but it is preferred to use a string and/or a icon.
 
+### Sizes
+
+A badge at its default size is taller than a line of text, which is right when it sits _next to_ text — in a table cell, a card header, a list row.
+
+Inside a line of text it is not. A default badge in the label of a `<Checkbox>`, `<Radio>` or `<Switch>` makes that line taller than the control beside it, and the control ends up sitting above the words it belongs to. Use `size="inline"` there: it is drawn to the height of a text line, so the line — and the control — stay put.
+
+```tsx
+<Checkbox
+  label="Enable early bird pricing"
+  labelAdornment={
+    <Badge variant="master" size="inline">
+      Master
+    </Badge>
+  }
+/>
+```
+
+<ComponentDemo name="badge-inline" />
+
 ### Text Label Length
 
 The Badge is a simple and compact component for use in a limited space in the context of more complex components. When it includes a text label, make sure it fits into the dedicated space.

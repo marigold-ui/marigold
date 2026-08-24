@@ -71,6 +71,12 @@ Add a description when the label alone doesn't explain what toggling actually do
 
 <ComponentDemo name="switch-description" />
 
+### Label adornment
+
+To mark a switch with a `<Badge>` — an access level, a "New" flag — pass it to `labelAdornment` rather than building the decoration into `label` yourself. The slot holds it to the height of the label's line, so the track stays centred on the text instead of drifting above it, and a label that wraps still keeps the track on its first line. Use `<Badge size="inline">`, which is drawn to fit a line of text.
+
+<ComponentDemo name="switch-label-adornment" />
+
 ### Error
 
 Set `error` to mark the switch as invalid and pass an `errorMessage` to explain what needs to change. The error message replaces the description while `error` is set, and it is announced to screen readers via `aria-describedby`.

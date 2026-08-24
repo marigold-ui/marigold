@@ -42,11 +42,11 @@ export const RegistrationSettings = () => (
             </Select>
           </Inline>
           <Checkbox
-            label={
-              <Inline space="related" alignY="center">
-                Enable early bird pricing
-                <Badge variant="master">Master</Badge>
-              </Inline>
+            label="Enable early bird pricing"
+            labelAdornment={
+              <Badge variant="master" size="inline">
+                Master
+              </Badge>
             }
           />
         </Stack>

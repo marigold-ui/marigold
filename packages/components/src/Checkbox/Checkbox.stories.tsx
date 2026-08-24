@@ -1,12 +1,18 @@
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Badge } from '../Badge/Badge';
 import {
   WCAG_NON_TEXT,
   contrast,
   flatten,
   paintedGround,
 } from '../contrast.utils';
-import { borderOf, controlIcon } from '../control.utils';
+import {
+  borderOf,
+  controlIcon,
+  firstLineOffset,
+  isSingleLine,
+} from '../control.utils';
 import { Checkbox } from './Checkbox';
 
 const meta = preview.meta({
@@ -261,6 +267,77 @@ Basic.test(
     const style = getComputedStyle(controlIcon(checkbox));
 
     expect(style.backgroundColor).toBe(style.borderColor);
+  }
+);
+
+export const WithBadge = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Enable early bird pricing',
+    labelAdornment: (
+      <Badge variant="master" size="inline">
+        Master
+      </Badge>
+    ),
+    description: undefined,
+  },
+});
+
+WithBadge.test(
+  'The badge leaves the box on the label line',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, step }) => {
+    const checkbox = await canvas.findByRole('checkbox');
+    const box = controlIcon(checkbox);
+    // `getByText` matches on an element's own text nodes, so this is the label
+    // block itself and not the badge nested inside it.
+    const labelBlock = canvas.getByText('Enable early bird pricing');
+
+    await step('the badge fits the line', async () => {
+      expect(isSingleLine(labelBlock)).toBe(true);
+    });
+
+    await step('the box is centred on it', async () => {
+      expect(firstLineOffset(box, labelBlock)).toBeLessThanOrEqual(0.5);
+    });
+
+    await step('and so is the badge', async () => {
+      expect(
+        firstLineOffset(canvas.getByText('Master'), labelBlock)
+      ).toBeLessThanOrEqual(0.5);
+    });
+  }
+);
+
+// The other half of DST-1607: `items-center` would fix the badge above and
+// break this one, floating the box to the middle of the block.
+export const LongMultilineLabel = meta.story({
+  tags: ['component-test'],
+  args: {
+    label:
+      'Send a reminder email to everyone on the guest list 24 hours before the event starts, including attendees who registered through a partner site',
+    description: undefined,
+  },
+  render: args => (
+    <div className="w-64">
+      <Checkbox {...args} />
+    </div>
+  ),
+});
+
+LongMultilineLabel.test(
+  'The box stays on the first line of a wrapping label',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas }) => {
+    const checkbox = await canvas.findByRole('checkbox');
+    const box = controlIcon(checkbox);
+    const labelBlock = canvas.getByText(/Send a reminder email/);
+
+    // Guards the guard: at full width this label does not wrap, and a box
+    // centred on a one-line block passes the assertion below for free.
+    expect(isSingleLine(labelBlock)).toBe(false);
+
+    expect(firstLineOffset(box, labelBlock)).toBeLessThanOrEqual(0.5);
   }
 );
 

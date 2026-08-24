@@ -11,7 +11,11 @@ export const Radio: ThemeComponent<'Radio'> = {
   }),
   label: cva({
     base: [
-      'text-sm leading-4 font-normal cursor-pointer w-full',
+      // Same row as Checkbox's label, and `items-start` for the same reason: the
+      // dot is top-aligned to the label, so a `labelAdornment` has to stay on
+      // the first line rather than centre itself over a wrapped block.
+      'flex items-start gap-1',
+      'text-sm leading-4 font-normal cursor-pointer w-full min-w-0',
       'group-disabled/radio:text-disabled group-disabled/radio:cursor-not-allowed',
     ],
   }),

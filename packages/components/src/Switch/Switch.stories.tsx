@@ -1,5 +1,7 @@
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Badge } from '../Badge/Badge';
+import { firstLineOffset, isSingleLine } from '../control.utils';
 import { Switch } from './Switch';
 
 const meta = preview.meta({
@@ -303,6 +305,79 @@ WithDescription.test(
 
     expect(canvas.getByText('This is a description')).toBeInTheDocument();
     await expect(switchEl).toHaveAccessibleDescription('This is a description');
+  }
+);
+
+// DST-1607. Switch carried the mirror of the Checkbox bug: `items-center` on the
+// container, which is right for one line and wrong for every other -- so both
+// stories below are snapshotted.
+export const WithBadge = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Enable early bird pricing',
+    labelAdornment: (
+      <Badge variant="master" size="inline">
+        Master
+      </Badge>
+    ),
+  },
+});
+
+WithBadge.test(
+  'The badge leaves the track on the label line',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, step }) => {
+    const track = getTrack(await canvas.findByRole('switch'));
+    // `getByText` matches on an element's own text nodes, so this is the label
+    // block itself and not the badge nested inside it.
+    const labelBlock = canvas.getByText('Enable early bird pricing');
+
+    await step('the badge fits the line', async () => {
+      expect(isSingleLine(labelBlock)).toBe(true);
+    });
+
+    await step('the track is centred on it', async () => {
+      expect(firstLineOffset(track, labelBlock)).toBeLessThanOrEqual(0.5);
+    });
+
+    await step('and so is the badge', async () => {
+      expect(
+        firstLineOffset(canvas.getByText('Master'), labelBlock)
+      ).toBeLessThanOrEqual(0.5);
+    });
+  }
+);
+
+// `settings` puts the label in the first column, which is the wide one -- so it
+// is the variant that actually wraps in practice, and the one where the old
+// `items-center` dropped the track to the middle of the block.
+export const LongMultilineLabel = meta.story({
+  tags: ['component-test'],
+  args: {
+    variant: 'settings',
+    label:
+      'Notify the organiser about every registration, cancellation and waitlist movement as it happens',
+    description: 'Applies to this event only.',
+  },
+  render: args => (
+    <div className="w-72">
+      <Switch {...args} />
+    </div>
+  ),
+});
+
+LongMultilineLabel.test(
+  'The track stays on the first line of a wrapping label',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas }) => {
+    const track = getTrack(await canvas.findByRole('switch'));
+    const labelBlock = canvas.getByText(/Notify the organiser/);
+
+    // Guards the guard: a track centred on a one-line block passes the
+    // assertion below whether or not first-line anchoring works.
+    expect(isSingleLine(labelBlock)).toBe(false);
+
+    expect(firstLineOffset(track, labelBlock)).toBeLessThanOrEqual(0.5);
   }
 );
 

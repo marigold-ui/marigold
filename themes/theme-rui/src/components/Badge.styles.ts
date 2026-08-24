@@ -2,11 +2,15 @@ import { type ThemeComponent, cva } from '@marigold/system';
 
 export const Badge: ThemeComponent<'Badge'> = cva({
   base: [
-    'inline-flex items-center justify-center rounded-full px-2 text-xs font-medium leading-normal',
+    'inline-flex items-center justify-center rounded-full text-xs font-medium',
     'focus-visible:ui-state-focus outline-none',
     'has-[svg]:gap-1',
   ],
   variants: {
+    size: {
+      default: 'px-2 leading-normal',
+      inline: 'h-4 px-1.5 leading-none [&_svg]:size-3',
+    },
     variant: {
       default: 'bg-muted text-foreground border border-border',
       primary: 'bg-primary text-primary-foreground ',
@@ -21,6 +25,7 @@ export const Badge: ThemeComponent<'Badge'> = cva({
     },
   },
   defaultVariants: {
+    size: 'default',
     variant: 'default',
   },
 });

@@ -19,7 +19,14 @@ export interface BadgeProps {
     | 'admin'
     | 'master'
     | (string & {});
-  size?: string;
+  /**
+   * Set the size of the badge. Use `inline` for a badge that sits *inside* a
+   * text line — e.g. the `labelAdornment` of a `Checkbox`, `Radio` or `Switch`
+   * — where a default-sized badge would make the line taller than the control
+   * next to it.
+   * @default default
+   */
+  size?: 'default' | 'inline' | (string & {});
 }
 
 // Component
