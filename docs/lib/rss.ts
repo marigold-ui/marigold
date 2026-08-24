@@ -23,6 +23,10 @@ const toPlainText = (markdown: string) =>
   markdown
     .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
     .replace(/`([^`]+)`/g, '$1')
+    // Component names lose their brackets too. A reader renders a description
+    // as HTML, so an escaped `<Dialog>` comes back out of the XML parser as a
+    // tag and gets dropped, taking the word the sentence is about with it.
+    .replace(/<(\/?[A-Za-z][\w.-]*)>/g, '$1')
     .replace(/\*\*([^*]+)\*\*/g, '$1')
     // Only emphasis markers, not the underscores in an identifier.
     .replace(/(?<![\w`])[*_]([^*_\n]+)[*_](?![\w`])/g, '$1')

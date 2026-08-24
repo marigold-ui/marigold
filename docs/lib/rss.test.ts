@@ -81,6 +81,16 @@ describe('buildRssFeed', () => {
     );
   });
 
+  it('drops the brackets around a component name', () => {
+    const feed = buildRssFeed([
+      post({ introduction: 'Now with `<DateRangePicker>` and `<Dialog>`.' }),
+    ]);
+
+    expect(feed).toContain(
+      '<description>Now with DateRangePicker and Dialog.</description>'
+    );
+  });
+
   it('strips emphasis markers but leaves underscores in identifiers', () => {
     const feed = buildRssFeed([
       post({
