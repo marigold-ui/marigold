@@ -39,7 +39,7 @@
     "@vitest/coverage-v8": "4.1.10",
     "@vitest/ui": "4.1.10",
     "autoprefixer": "10.5.4",
-    "concurrently": "10.0.4",
+    "concurrently": "10.0.5",
     "eslint": "10.8.0",
     "eslint-plugin-storybook": "10.4.6",
     "husky": "9.1.7",
