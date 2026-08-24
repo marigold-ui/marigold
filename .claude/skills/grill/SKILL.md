@@ -59,9 +59,11 @@ Write one only when at least one of these holds:
 - **Surprising without context.** Someone reading the code cold would "fix" it back, not understanding why it is the way it is.
 - **A live alternative was rejected.** Without the record, the same alternative gets proposed again next quarter.
 
-Copy `.memory/adr/TEMPLATE.md` to `.memory/adr/NNNN-<slug>.md` and fill in the frontmatter. `NNNN` is the DST ticket the decision was made under, not the next free number — the reason is in [.memory/README.md](../../../.memory/README.md), along with the rest of the ADR conventions and the rule against editing an accepted record.
+Copy `.memory/adr/0000-template.md` to `.memory/adr/NNNN-<slug>.md`, taking the next free number, and fill in the frontmatter. The field meanings and the rest of the ADR conventions are in [.memory/README.md](../../../.memory/README.md).
 
-Set `status: proposed`, and tell the user it is the author's job to flip it to `accepted` in the PR once the review approves. Nothing does that automatically.
+Set `status: accepted`. There is no `proposed` state — the PR review is where a record is accepted or rejected, so anything that reaches `main` is accepted by definition.
+
+Cite other records as links that carry the slug — `[ADR-0004](0004-slot-driven-composition.md)`, never a bare `ADR-0004`. This is checked.
 
 If none of the three criteria hold, write nothing. Records with the thinking removed are worse than absence — they look like documentation while doing nothing, and they cost context on every future session that loads them.
 
