@@ -17,6 +17,7 @@ import { SelectList } from './SelectList';
 // it back to `undefined` so the component falls through to the theme's
 // variant-based fallback.
 const insetTokens = [
+  'collapsed',
   'square-tight',
   'square-snug',
   'square-regular',

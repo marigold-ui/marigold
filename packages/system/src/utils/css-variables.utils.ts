@@ -2,8 +2,6 @@ import type { CSSProperties } from 'react';
 import type { NoSpacingToken } from '../types/tokens';
 
 /**
- * The one spacing token that has no per-axis form.
- *
  * Kept in sync with `NoSpacingToken` by the annotation: adding a member to that
  * type is a type error here until it is listed.
  */

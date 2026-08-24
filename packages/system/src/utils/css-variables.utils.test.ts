@@ -38,6 +38,11 @@ describe('isScale', () => {
   ])('should return %s for "%s"', (input, expected) => {
     expect(isScale(input)).toBe(expected);
   });
+
+  it('does not classify the no-spacing token as a scale value', () => {
+    // createWidthVar / createHeightVar / createSpacingVar depend on this.
+    expect(isScale('collapsed')).toBe(false);
+  });
 });
 
 describe('isFraction', () => {
@@ -238,10 +243,12 @@ describe('isAxislessToken', () => {
     }
   );
 
-  it('does not classify the no-spacing token as a scale value', () => {
-    // createWidthVar / createHeightVar / createSpacingVar depend on this.
-    expect(isScale('collapsed')).toBe(false);
-  });
+  it.each(['__proto__', 'constructor', 'toString'])(
+    'does not resolve inherited Object property "%s" as axis-less',
+    value => {
+      expect(isAxislessToken(value)).toBe(false);
+    }
+  );
 });
 
 describe('createWidthVar', () => {

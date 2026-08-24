@@ -14,4 +14,4 @@ That variable went undeclared until it was added to `@marigold/theme-rui`, so th
 
 `isScale` is unchanged: `collapsed` stays non-numeric there, because `createWidthVar`, `createHeightVar` and `createSpacingVar` depend on that classification.
 
-**Theme:** `--spacing-collapsed-x` and `--spacing-collapsed-y` are removed from `@marigold/theme-rui`. They existed only to satisfy the suffix that is no longer generated, and nothing else referenced them.
+**Theme:** `--spacing-collapsed-x` and `--spacing-collapsed-y` are removed from `@marigold/theme-rui`. They shipped in `theme-rui` 6.0.0 stable but existed only to satisfy the suffix that is no longer generated — nothing else referenced them, and the documented token has always been `collapsed`.

@@ -138,6 +138,22 @@ describe('Panel', () => {
       );
     });
 
+    test('`p="collapsed"` writes the unsuffixed token on both axes', () => {
+      render(<CustomPadding.Component />);
+
+      const collapsedRegion = screen.getByRole('region', {
+        name: 'No padding',
+      });
+
+      // No `-x` / `-y` suffix: a theme only declares `--spacing-collapsed`.
+      expect(collapsedRegion.style.getPropertyValue('--panel-px')).toBe(
+        'var(--spacing-collapsed)'
+      );
+      expect(collapsedRegion.style.getPropertyValue('--panel-py')).toBe(
+        'var(--spacing-collapsed)'
+      );
+    });
+
     test('`px` / `py` set the axes independently', () => {
       render(<CustomPadding.Component />);
 
