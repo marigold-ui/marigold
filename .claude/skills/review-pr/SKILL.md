@@ -145,6 +145,8 @@ Invoke the `react-best-practices` skill from the `vercel` plugin (enabled in `.c
 Skill(vercel:react-best-practices)
 ```
 
+If the `vercel` plugin is not installed, skip this step and note it in the report. The rest of the review does not depend on it.
+
 This skill checks for:
 - Component rendering optimization (memo, useMemo, useCallback)
 - Proper data fetching patterns

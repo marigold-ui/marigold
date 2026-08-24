@@ -1,7 +1,7 @@
 ---
 name: vrt
 description: Trigger the Visual-Regression-Tests (Chromatic) GitHub Actions workflow on the current or a given branch. Use ONLY when the user explicitly asks to run visual regression tests, run Chromatic, or types `/vrt`. Dispatching consumes Chromatic snapshot quota, so never invoke this proactively, never as a follow-up to unrelated work, and never to "verify" a change nobody asked to verify.
-allowed-tools: Bash(gh workflow run *), Bash(gh run list *), Bash(gh run view *), Bash(gh run watch *), Bash(git branch --show-current), Bash(git rev-parse *)
+allowed-tools: Bash(gh workflow run *), Bash(gh run list *), Bash(gh run view *), Bash(gh run watch *), Bash(git branch --show-current), Bash(git rev-list *)
 ---
 
 # Trigger Visual Regression Tests
@@ -19,29 +19,30 @@ This skill spends money. The `allowed-tools` list above is deliberately narrow, 
 
 ## Workflow
 
-### 1. Ask before dispatching
+### 1. Resolve the branch, then ask
 
-Resolve the branch first (step 2), then state it back and wait for the user to confirm.
-
-Do this **every time**, including when the user typed `/vrt` — the confirmation is about *which branch* is about to burn snapshots, which is the part that goes wrong. Never dispatch on an inferred intent, and never fold a dispatch into a larger task the user asked for.
-
-### 2. Determine the branch
-
-If a branch name was given, use it. Otherwise:
+If `$ARGUMENTS` names a branch, use it. Otherwise take the current branch and check that it is pushed:
 
 ```bash
 git branch --show-current
+git rev-list --count @{u}..HEAD
 ```
 
-If the resolved branch has unpushed commits, say so before asking — the workflow runs against what is on the remote, not the local tree.
+Non-zero: say so before asking, because the workflow runs against what is on the remote, not the local tree. The second command fails when the branch has no upstream, which means it was never pushed and the dispatch in step 2 would fail anyway: say that instead of asking.
 
-### 3. Dispatch the workflow
+A branch named in `$ARGUMENTS` gets no such check, since there is nothing local to compare it against. If the ref does not exist on the remote, step 2 fails with a clear error.
+
+State the branch back and wait for the user to confirm.
+
+Do this **every time**, including when the user typed `/vrt`: the confirmation is about *which branch* is about to burn snapshots, which is the part that goes wrong. Never dispatch on an inferred intent, and never fold a dispatch into a larger task the user asked for.
+
+### 2. Dispatch the workflow
 
 ```bash
 gh workflow run "Visual-Regression-Tests" --ref <branch>
 ```
 
-### 4. Confirm the run started
+### 3. Confirm the run started
 
 Wait a few seconds, then:
 
@@ -51,7 +52,7 @@ gh run list --workflow="Visual-Regression-Tests" --limit=1
 
 Report the run URL.
 
-### 5. If no run appears
+### 4. If no run appears
 
 The job is gated on a repository variable and will be skipped silently when visual regression is switched off:
 
