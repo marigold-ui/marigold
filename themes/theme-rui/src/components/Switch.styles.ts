@@ -28,6 +28,11 @@ export const Switch: ThemeComponent<'Switch'> = {
       'border-2 border-transparent',
       'group-disabled/switch:bg-disabled-surface group-disabled/switch:text-disabled group-selected/switch:group-disabled/switch:bg-disabled-surface group-selected/switch:group-disabled/switch:text-disabled',
       'group-selected/switch:bg-selected-bold bg-control',
+      // background-image so the toggle keeps `transition-colors` (DST-1436) while
+      // hover lands instantly; it layers rather than replaces, hence
+      // 0.14/(1-alpha) to match the Checkbox/Radio step. Exclusions are
+      // load-bearing, see Checkbox.styles.ts.
+      'group-hover/switch:not-group-read-only/switch:not-group-selected/switch:not-group-disabled/switch:bg-[image:linear-gradient(oklch(from_var(--color-control)_l_c_h_/_calc(0.14_/_(1_-_alpha)))_0_0)]',
       'group-focus-visible/switch:ui-state-focus outline-none',
     ],
   }),
