@@ -755,10 +755,11 @@ WithCustomPadding.test(
       'var(--spacing-collapsed)'
     );
 
-    // And it resolves, rather than falling back to 0 because it is undefined.
-    const styles = getComputedStyle(standardRow);
-    expect(styles.paddingLeft).toBe('0px');
-    expect(styles.paddingTop).toBe('0px');
+    // Resolution, not fallback: a failed substitution would compute to the
+    // guaranteed-invalid value, which reads back as ''.
+    const listStyles = getComputedStyle(list);
+    expect(listStyles.getPropertyValue('--selectlist-item-px')).not.toBe('');
+    expect(listStyles.getPropertyValue('--selectlist-item-py')).not.toBe('');
   }
 );
 
