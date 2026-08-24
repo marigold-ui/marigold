@@ -76,6 +76,6 @@ The rule is therefore not "always type `react-aria-components`". It is **provide
 **What it costs.**
 
 - **The rule differs per package**, and the reason is not visible at the import site. Someone moving code from `packages/system` to `packages/components` has to change the import, and nothing says so.
-- **Nothing enforces it.** No lint rule checks the import source. `check-react-aria-dedupe.mjs` catches the duplicate _tree_, not a wrong import path.
+- **The guard covers `packages/components` only.** `scripts/check-rac-first-imports.mjs` (DST-1729) fails a build on an `@react-aria/*` import of a name RAC re-exports, which is what `check-react-aria-dedupe.mjs` does not do — that one catches the duplicate _tree_, not the import path that turns it into a bug. Its scope is a hardcoded glob, so `docs` and any package that later takes on RAC are unchecked until someone adds them.
 - **The exception looks like a mistake.** The `packages/system` formatter tests will keep attracting well-meaning "fix" PRs. They carry a comment; this record is the longer answer.
 - Our own dedupe **hides the failure** during development. A wrong import is invisible here and only surfaces in a consumer's build, which is the worst possible place to discover it.

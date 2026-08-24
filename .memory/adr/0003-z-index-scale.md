@@ -51,6 +51,6 @@ Two facts about the mechanism matter for reading the code:
 **What it costs.**
 
 - **A rule with a shape people do not expect.** "Styling goes in the theme" is otherwise near-absolute in this codebase; z-index is the exception, and it looks like an oversight until you know why. Expect `z-*` to be "tidied" back into `*.styles.ts`.
-- **Nothing enforces either half.** No check rejects `z-*` in a `*.styles.ts` file, and none verifies that a component picked the right rung. Both are review-time concerns.
+- **Only the first half is enforced.** `scripts/check-theme-zindex.mjs` (DST-1730) fails a build on a `z-*` utility in a `*.styles.ts` file. Which rung a component picked is not checked and stays a review-time concern. The guard reads source text, so a class assembled at runtime (`'z-' + level`) is invisible to it, and it scans `*.styles.{ts,tsx}` only — a z-index added to any other theme `.css` file also goes unseen, which is the shape of the `ui.css` exception below.
 - **The scale is a convention, so rungs drift.** Nothing requires a layer to be used, or requires a component that should be on one to be on it. The list in `CLAUDE.md` documents intent, and intent and usage can diverge silently — an audit is the only way to find out.
 - **The exception is a real hole.** `ui.css` demonstrates that theme files _can_ set z-index when a component cannot own the element. The justification bar is stated above, but it is prose, and prose is not a gate.

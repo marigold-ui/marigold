@@ -40,6 +40,17 @@ const warnings = [];
 const LINE_CEILING = 200;
 const STATUS_PATTERN = /^(accepted|superseded-by ADR-\d{4})$/;
 
+/** Apply a stripping pattern until the source stops changing, so no partial match survives it. */
+const stripRepeatedly = (source, pattern) => {
+  let current = source;
+  let previous;
+  do {
+    previous = current;
+    current = previous.replace(pattern, '');
+  } while (current !== previous);
+  return current;
+};
+
 /** Minimal frontmatter reader: flat `key: value` plus `- item` lists. Enough for ADRs. */
 const readFrontmatter = source => {
   const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---/);
@@ -123,6 +134,20 @@ for (const name of adrFiles) {
     );
   }
 
+  // The other half of a renumber. The error text above names the heading; nothing checked it,
+  // so a record could carry the old number in its title and pass.
+  const heading = source.match(/^#\s+(\d{4})\.\s/m);
+  if (!heading) {
+    errors.push(
+      `${where}: no \`# NNNN. Title\` heading. It is how the record names itself in prose.`
+    );
+  } else if (heading[1] !== number) {
+    errors.push(
+      `${where}: heading says \`# ${heading[1]}.\` but the filename says ADR-${number}. ` +
+        'A renumber has to move the heading too.'
+    );
+  }
+
   if (!STATUS_PATTERN.test(front.status ?? '')) {
     errors.push(
       `${where}: status is \`${front.status ?? '(missing)'}\`; allowed values are ` +
@@ -137,7 +162,10 @@ for (const name of adrFiles) {
   }
 
   // 4. applies_to must be present and every glob must still match something.
-  const globs = Array.isArray(front.applies_to) ? front.applies_to : [];
+  // `applies_to: 'one/glob'` on a single line is valid YAML; treat it as a one-item list rather
+  // than reporting a populated field as missing.
+  const declared = front.applies_to;
+  const globs = Array.isArray(declared) ? declared : declared ? [declared] : [];
   if (globs.length === 0) {
     errors.push(
       `${where}: applies_to is missing or empty. It is how someone working in a path finds ` +
@@ -189,7 +217,10 @@ for (const { name, source } of records) {
     }
   }
 
-  const bare = body.replace(/\[ADR-\d{4}\]\([^)]+\)/g, '');
+  // Fenced blocks are examples, not citations: a record illustrating `superseded-by ADR-0002`
+  // must not be forced to make its own documentation worse to satisfy this check.
+  const prose = stripRepeatedly(body, /^```[\s\S]*?^```/gm);
+  const bare = prose.replace(/\[ADR-\d{4}\]\([^)]+\)/g, '');
   for (const [mention] of bare.matchAll(/ADR-\d{4}/g)) {
     errors.push(
       `${where}: mentions ${mention} without linking it. Cite records as ` +
@@ -215,7 +246,9 @@ for (const { name, front } of records) {
 
 const glossarySource = readFileSync(resolve(memory, 'CONTEXT.md'), 'utf8');
 // Strip HTML comments first — CONTEXT.md documents its entry shape with a sample `### Term`.
-const glossaryBody = glossarySource.replace(/<!--[\s\S]*?-->/g, '');
+// Looped rather than a single pass: one pass over `<!--<!---->` leaves a `<!--` behind, which
+// is what CodeQL's incomplete-multi-character-sanitization rule flags.
+const glossaryBody = stripRepeatedly(glossarySource, /<!--[\s\S]*?-->/g);
 const terms = [...glossaryBody.matchAll(/^###\s+(.+?)\s*$/gm)].map(m => m[1]);
 
 const seenTerms = new Map();
