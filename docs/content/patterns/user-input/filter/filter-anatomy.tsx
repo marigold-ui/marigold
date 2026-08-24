@@ -1,224 +1,224 @@
 export const FilterAnatomy = () => (
   <svg
-    viewBox="0 0 820 470"
+    viewBox="0 0 660 378"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
     aria-hidden="true"
   >
     {/* App frame / page */}
     <rect
-      x="150"
-      y="40"
-      width="520"
-      height="390"
-      rx="12"
+      x="121"
+      y="32"
+      width="419"
+      height="314"
+      rx="10"
       className="fill-fd-muted/40 stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
 
     {/* Filter bar: search field */}
     <rect
-      x="170"
-      y="62"
-      width="180"
-      height="22"
-      rx="11"
+      x="137"
+      y="50"
+      width="145"
+      height="18"
+      rx="9"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="1.5"
     />
     <rect
-      x="184"
-      y="70"
-      width="90"
-      height="6"
-      rx="3"
+      x="148"
+      y="56"
+      width="72"
+      height="5"
+      rx="2"
       className="fill-fd-muted-foreground/40 transition-colors duration-300"
     />
     {/* Filter bar: filter trigger button */}
     <rect
-      x="366"
-      y="62"
-      width="84"
-      height="22"
-      rx="6"
+      x="295"
+      y="50"
+      width="68"
+      height="18"
+      rx="5"
       className="fill-fd-primary transition-colors duration-300"
     />
     <rect
-      x="380"
-      y="70"
-      width="44"
-      height="6"
-      rx="3"
+      x="306"
+      y="56"
+      width="35"
+      height="5"
+      rx="2"
       className="fill-fd-primary-foreground/80 transition-colors duration-300"
     />
 
     {/* Applied filter tags */}
     <g>
       <rect
-        x="170"
-        y="104"
-        width="74"
-        height="22"
-        rx="11"
+        x="137"
+        y="84"
+        width="60"
+        height="18"
+        rx="9"
         className="fill-fd-muted/70 stroke-fd-border transition-colors duration-300"
         strokeWidth="1.5"
       />
       <rect
-        x="184"
-        y="112"
-        width="40"
-        height="6"
-        rx="3"
+        x="148"
+        y="90"
+        width="32"
+        height="5"
+        rx="2"
         className="fill-fd-muted-foreground/50 transition-colors duration-300"
       />
       <rect
-        x="252"
-        y="104"
-        width="62"
-        height="22"
-        rx="11"
+        x="203"
+        y="84"
+        width="50"
+        height="18"
+        rx="9"
         className="fill-fd-muted/70 stroke-fd-border transition-colors duration-300"
         strokeWidth="1.5"
       />
       <rect
-        x="266"
-        y="112"
-        width="34"
-        height="6"
-        rx="3"
+        x="214"
+        y="90"
+        width="27"
+        height="5"
+        rx="2"
         className="fill-fd-muted-foreground/50 transition-colors duration-300"
       />
       <rect
-        x="322"
-        y="104"
-        width="68"
-        height="22"
-        rx="11"
+        x="259"
+        y="84"
+        width="55"
+        height="18"
+        rx="9"
         className="fill-fd-muted/70 stroke-fd-border transition-colors duration-300"
         strokeWidth="1.5"
       />
       <rect
-        x="336"
-        y="112"
-        width="40"
-        height="6"
-        rx="3"
+        x="270"
+        y="90"
+        width="32"
+        height="5"
+        rx="2"
         className="fill-fd-muted-foreground/50 transition-colors duration-300"
       />
     </g>
 
     {/* Data set: table header + rows */}
     <rect
-      x="170"
-      y="150"
-      width="90"
-      height="8"
-      rx="3"
+      x="137"
+      y="121"
+      width="72"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/55 transition-colors duration-300"
     />
     <rect
-      x="300"
-      y="150"
-      width="70"
-      height="8"
-      rx="3"
+      x="241"
+      y="121"
+      width="56"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/55 transition-colors duration-300"
     />
     <rect
-      x="170"
-      y="170"
-      width="280"
+      x="137"
+      y="137"
+      width="225"
       height="2"
       className="fill-fd-border transition-colors duration-300"
     />
     <rect
-      x="170"
-      y="188"
-      width="120"
-      height="8"
-      rx="3"
+      x="137"
+      y="151"
+      width="97"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/30 transition-colors duration-300"
     />
     <rect
-      x="300"
-      y="188"
+      x="241"
+      y="151"
+      width="64"
+      height="6"
+      rx="2"
+      className="fill-fd-muted-foreground/30 transition-colors duration-300"
+    />
+    <rect
+      x="137"
+      y="171"
+      width="225"
+      height="2"
+      className="fill-fd-border/70 transition-colors duration-300"
+    />
+    <rect
+      x="137"
+      y="185"
       width="80"
-      height="8"
-      rx="3"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/30 transition-colors duration-300"
     />
     <rect
-      x="170"
-      y="212"
-      width="280"
+      x="241"
+      y="185"
+      width="72"
+      height="6"
+      rx="2"
+      className="fill-fd-muted-foreground/30 transition-colors duration-300"
+    />
+    <rect
+      x="137"
+      y="204"
+      width="225"
       height="2"
       className="fill-fd-border/70 transition-colors duration-300"
     />
     <rect
-      x="170"
-      y="230"
-      width="100"
-      height="8"
-      rx="3"
+      x="137"
+      y="219"
+      width="105"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/30 transition-colors duration-300"
     />
     <rect
-      x="300"
-      y="230"
-      width="90"
-      height="8"
-      rx="3"
-      className="fill-fd-muted-foreground/30 transition-colors duration-300"
-    />
-    <rect
-      x="170"
-      y="254"
-      width="280"
-      height="2"
-      className="fill-fd-border/70 transition-colors duration-300"
-    />
-    <rect
-      x="170"
-      y="272"
-      width="130"
-      height="8"
-      rx="3"
-      className="fill-fd-muted-foreground/30 transition-colors duration-300"
-    />
-    <rect
-      x="300"
-      y="272"
-      width="70"
-      height="8"
-      rx="3"
+      x="241"
+      y="219"
+      width="56"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/30 transition-colors duration-300"
     />
 
     {/* Pagination */}
     <g>
       <rect
-        x="170"
-        y="382"
-        width="24"
-        height="24"
-        rx="5"
+        x="137"
+        y="307"
+        width="19"
+        height="19"
+        rx="4"
         className="fill-fd-primary transition-colors duration-300"
       />
       <rect
-        x="202"
-        y="382"
-        width="24"
-        height="24"
-        rx="5"
+        x="163"
+        y="307"
+        width="19"
+        height="19"
+        rx="4"
         className="fill-fd-card stroke-fd-border transition-colors duration-300"
         strokeWidth="1.5"
       />
       <rect
-        x="234"
-        y="382"
-        width="24"
-        height="24"
-        rx="5"
+        x="188"
+        y="307"
+        width="19"
+        height="19"
+        rx="4"
         className="fill-fd-card stroke-fd-border transition-colors duration-300"
         strokeWidth="1.5"
       />
@@ -226,126 +226,126 @@ export const FilterAnatomy = () => (
 
     {/* Filter panel (drawer) — drawn last so it overlaps the page */}
     <rect
-      x="470"
-      y="40"
-      width="200"
-      height="390"
-      rx="12"
+      x="378"
+      y="32"
+      width="161"
+      height="314"
+      rx="10"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
     {/* Panel title */}
     <rect
-      x="490"
-      y="64"
-      width="110"
-      height="12"
-      rx="4"
+      x="394"
+      y="52"
+      width="89"
+      height="10"
+      rx="3"
       className="fill-fd-foreground transition-colors duration-300"
     />
     {/* Group 1 label + options */}
     <rect
-      x="490"
-      y="104"
-      width="72"
-      height="8"
-      rx="3"
+      x="394"
+      y="84"
+      width="58"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/60 transition-colors duration-300"
     />
     <rect
-      x="490"
-      y="124"
-      width="14"
-      height="14"
-      rx="3"
+      x="394"
+      y="100"
+      width="11"
+      height="11"
+      rx="2"
       className="fill-fd-primary transition-colors duration-300"
     />
     <rect
-      x="512"
-      y="128"
-      width="120"
-      height="8"
-      rx="3"
+      x="412"
+      y="103"
+      width="97"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/40 transition-colors duration-300"
     />
     <rect
-      x="490"
-      y="148"
-      width="14"
-      height="14"
-      rx="3"
+      x="394"
+      y="119"
+      width="11"
+      height="11"
+      rx="2"
       className="stroke-fd-muted-foreground transition-colors duration-300"
       strokeWidth="2"
       fill="none"
     />
     <rect
-      x="512"
-      y="152"
-      width="100"
-      height="8"
-      rx="3"
+      x="412"
+      y="122"
+      width="80"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/40 transition-colors duration-300"
     />
     {/* Group 2 label + options */}
     <rect
-      x="490"
-      y="192"
-      width="64"
-      height="8"
-      rx="3"
+      x="394"
+      y="155"
+      width="52"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/60 transition-colors duration-300"
     />
     <rect
-      x="490"
-      y="212"
-      width="14"
-      height="14"
-      rx="3"
+      x="394"
+      y="171"
+      width="11"
+      height="11"
+      rx="2"
       className="stroke-fd-muted-foreground transition-colors duration-300"
       strokeWidth="2"
       fill="none"
     />
     <rect
-      x="512"
-      y="216"
-      width="110"
-      height="8"
-      rx="3"
+      x="412"
+      y="174"
+      width="89"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/40 transition-colors duration-300"
     />
     <rect
-      x="490"
-      y="236"
-      width="14"
-      height="14"
-      rx="3"
+      x="394"
+      y="190"
+      width="11"
+      height="11"
+      rx="2"
       className="stroke-fd-muted-foreground transition-colors duration-300"
       strokeWidth="2"
       fill="none"
     />
     <rect
-      x="512"
-      y="240"
-      width="90"
-      height="8"
-      rx="3"
+      x="412"
+      y="193"
+      width="72"
+      height="6"
+      rx="2"
       className="fill-fd-muted-foreground/40 transition-colors duration-300"
     />
     {/* Apply button */}
     <rect
-      x="490"
-      y="384"
-      width="160"
-      height="30"
-      rx="6"
+      x="394"
+      y="309"
+      width="129"
+      height="24"
+      rx="5"
       className="fill-fd-primary transition-colors duration-300"
     />
     <rect
-      x="545"
-      y="395"
-      width="50"
-      height="8"
-      rx="3"
+      x="439"
+      y="318"
+      width="40"
+      height="6"
+      rx="2"
       className="fill-fd-primary-foreground/80 transition-colors duration-300"
     />
 
@@ -357,20 +357,20 @@ export const FilterAnatomy = () => (
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M 170 73 L 140 73" />
-      <path d="M 170 115 L 140 115" />
-      <path d="M 170 225 L 140 225" />
-      <path d="M 170 394 L 140 394" />
-      <path d="M 670 230 L 690 230" />
+      <path d="M 137 59 L 113 59" />
+      <path d="M 137 93 L 113 93" />
+      <path d="M 137 181 L 113 181" />
+      <path d="M 137 317 L 113 317" />
+      <path d="M 539 185 L 555 185" />
     </g>
 
     {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="170" cy="73" r="4" />
-      <circle cx="170" cy="115" r="4" />
-      <circle cx="170" cy="225" r="4" />
-      <circle cx="170" cy="394" r="4" />
-      <circle cx="670" cy="230" r="4" />
+      <circle cx="137" cy="59" r="4" />
+      <circle cx="137" cy="93" r="4" />
+      <circle cx="137" cy="181" r="4" />
+      <circle cx="137" cy="317" r="4" />
+      <circle cx="539" cy="185" r="4" />
     </g>
 
     {/* Labels */}
@@ -380,8 +380,8 @@ export const FilterAnatomy = () => (
     >
       <g textAnchor="end">
         <text
-          x="130"
-          y="77"
+          x="105"
+          y="62"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -389,8 +389,8 @@ export const FilterAnatomy = () => (
           Filter Bar
         </text>
         <text
-          x="130"
-          y="119"
+          x="105"
+          y="96"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -398,8 +398,8 @@ export const FilterAnatomy = () => (
           Applied Filter
         </text>
         <text
-          x="130"
-          y="229"
+          x="105"
+          y="184"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -407,8 +407,8 @@ export const FilterAnatomy = () => (
           Data Set
         </text>
         <text
-          x="130"
-          y="398"
+          x="105"
+          y="320"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -417,8 +417,8 @@ export const FilterAnatomy = () => (
         </text>
       </g>
       <text
-        x="700"
-        y="234"
+        x="563"
+        y="188"
         textAnchor="start"
         fontSize="14"
         fontWeight="600"

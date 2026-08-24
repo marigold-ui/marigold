@@ -3,6 +3,8 @@ title: Radio
 description: Component which allows to select only one option from a list.
 ---
 
+import { RadioAnatomy } from './radio-anatomy';
+
 The `<Radio>` and `<Radio.Group>` components allow users to select one option from a set of options. They are useful for presenting a list of options to users and collecting their responses.
 
 The `<Radio.Group>` not only groups the radio buttons but also manages their state. This means you can easily control which option is selected by default and dynamically update the selection based on user interactions.
@@ -11,13 +13,7 @@ The `<Radio.Group>` not only groups the radio buttons but also manages their sta
 
 The radio button component is comprised of a set of clickable circles (the inputs) with text labels positioned to the right. If there is a group of radio buttons, a group label can be added.
 
-<ImageZoom
-  src="/radio/radio-anatomy.jpg"
-  alt="Anatomy of radio component"
-  width={550}
-  height={400}
-  className="mx-auto block"
-/>
+<RadioAnatomy />
 
 - **Group label:** Describes the group of options or provides guidance for making a selection.
 - **Radio button input:** Indicates the state of a radio button. By default, no option will be preselected.
@@ -33,7 +29,7 @@ The radio button component is comprised of a set of clickable circles (the input
 
 Radio buttons are used for mutually exclusive choices, where only one option can be selected at a time. They are ideal when you want the user to choose a single option from a small list of predefined choices. When a user selects a new option, the previous choice is automatically deselected.
 
-The `<Radio>` should never be used alone because radio buttons are designed for selecting one option from multiple mutually exclusive choices. For that the `<Radio.Group>` should be wrapped around the `<Radio>`. If you want one option you could use the [`<Checkbox>`](/components/checkbox/) instead.
+The `<Radio>` should never be used alone because radio buttons are designed for selecting one option from multiple mutually exclusive choices. For that the `<Radio.Group>` should be wrapped around the `<Radio>`. If you want one option you could use the [`<Checkbox>`](/components/form/checkbox) instead.
 
 ### Overflow content
 

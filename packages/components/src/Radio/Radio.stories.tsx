@@ -1,6 +1,7 @@
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
+import { borderOf, controlIcon } from '../control.utils';
 import { Radio } from './Radio';
 import { RadioGroup } from './RadioGroup';
 
@@ -72,6 +73,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
   render: args => (
     <Radio.Group
       {...args}
@@ -87,6 +89,65 @@ export const Basic = meta.story({
     </Radio.Group>
   ),
 });
+
+// The one positive assertion: the "leaves the border alone" cases below pass
+// just as happily against a rule that never matches at all.
+Basic.test(
+  'Hover darkens the border of an unselected radio',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    const radio = await canvas.findByRole('radio', { name: 'Option 2' });
+    const icon = controlIcon(radio);
+    const idle = borderOf(icon);
+
+    await userEvent.hover(radio);
+
+    expect(borderOf(icon)).not.toBe(idle);
+  }
+);
+
+Basic.test(
+  'Hover leaves the border alone when selected or disabled',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ step, canvas, userEvent }) => {
+    await step('selected', async () => {
+      const radio = await canvas.findByRole('radio', { name: 'Option 1' });
+      const icon = controlIcon(radio);
+      const selected = borderOf(icon);
+
+      await userEvent.hover(radio);
+
+      expect(borderOf(icon)).toBe(selected);
+    });
+
+    await step('disabled', async () => {
+      const radio = await canvas.findByRole('radio', { name: 'Option 3' });
+      const icon = controlIcon(radio);
+      const disabled = borderOf(icon);
+
+      await userEvent.hover(radio);
+
+      expect(borderOf(icon)).toBe(disabled);
+    });
+  }
+);
+
+Basic.test(
+  'Hover leaves the border alone when read only',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { readOnly: true },
+  },
+  async ({ canvas, userEvent }) => {
+    const radio = await canvas.findByRole('radio', { name: 'Option 2' });
+    const icon = controlIcon(radio);
+    const readOnly = borderOf(icon);
+
+    await userEvent.hover(radio);
+
+    expect(borderOf(icon)).toBe(readOnly);
+  }
+);
 
 export const WithOwnWidth = meta.story({
   parameters: {

@@ -145,6 +145,30 @@ _Dialog.Title = DialogTitle;
 export const Dialog = _Dialog as DialogComponent;
 ```
 
+### Composition
+
+Prefer composition over configuration. These rules keep a component's API from growing a combinatorial surface.
+
+**No mode booleans.** Never add props like `isThread`, `isEditing` or `showFooter` that switch _what_ a component renders — each one doubles the states the component has to support. Booleans are fine for genuine binary state (`disabled`, `loading`, `open`); they are not a way to pick a layout. Appearance belongs in `variant`/`size`, structure belongs in compound parts.
+
+```typescript
+// ❌ Wrong - every flag doubles the state space
+<Panel showHeader showFooter isCompact />
+
+// ✅ Correct - the consumer composes the parts they need
+<Panel size="form">
+  <Panel.Header>…</Panel.Header>
+  <Panel.Content>…</Panel.Content>
+  <Panel.Footer>…</Panel.Footer>
+</Panel>
+```
+
+**Children over render props.** Expose `children` or a compound part, never a `renderHeader`-style callback. Children compose naturally and don't ask the consumer to learn a callback signature.
+
+**Share state through context, not props.** Compound parts read shared state from a context so consumers never thread props through intermediate elements. Follow `packages/components/src/Sidebar/Context.tsx`: a typed context value, `createContext<T | null>(null)`, and a `useX()` hook that throws a helpful error when used outside its provider.
+
+**Lift state into a provider** when something outside the subtree needs it — a trigger rendered elsewhere on the page, for example. The provider is the only place that knows how state is managed; the parts consume the interface and stay agnostic.
+
 ### Styling with useClassNames
 
 ```typescript
@@ -170,23 +194,32 @@ Z-index values are centralized and standardized across the design system to ensu
 **Z-Index Scale** (the agreed convention for which utility maps to which layer):
 
 ```text
-/* Content Layer (0-10) */
-z-1    /* Sticky headers (Table, Accordion, ListBox) */
-z-10   /* Focus states (Calendar) */
+/* Content layer — inside the component's own stacking context */
+z-0    /* Holds a part behind its siblings without taking it out of flow */
+z-1    /* Sticky content in a scroll container */
+z-10   /* Lifts one item above its immediate siblings */
 
-/* Floating Layer (20-49) */
-z-20   /* Dropdowns (Select, ComboBox) */
-z-30   /* Popovers, Menus, Tooltips, ActionBar */
+/* Floating layer — anchored to a trigger, escaping the content flow */
+z-30   /* Popover, Tooltip, ActionBar */
 
-/* Overlay Layer (50-79) */
-z-50   /* Modal overlays, Drawer overlays, Underlay */
+/* Overlay layer */
+z-50   /* Modal surfaces and the underlay behind them */
 
-/* Notification Layer (80-99) */
-z-80   /* Toast notifications, Drawer close button */
+/* Notification layer */
+z-80   /* Must stay above a modal */
 
-/* System Layer (100+) */
-z-100  /* Touch hitbox utility */
+/* System layer */
+z-100  /* ui-touch-hitbox — the one z-index outside a component; see Rules */
 ```
+
+Each rung is defined by its **role**, because that is the part that stays true. For which
+components sit on a rung today, ask the code: `grep -rnE '\bz-[0-9]' packages/components/src`.
+An earlier version of this scale named components per rung, and every single rung had drifted.
+
+**There is deliberately no `z-20`.** It used to read "Dropdowns (Select, ComboBox)", but both
+render their list through `Popover` and therefore already stack at `z-30` — nothing has ever
+carried `z-20`. Giving dropdowns their own rung would change the stacking order, which is a
+different decision from writing down the one we have.
 
 **Component Examples**:
 
@@ -214,9 +247,10 @@ export const Toast: ThemeComponent = {
 **Rules**:
 
 - Always apply z-index classes in component implementations using Tailwind utilities (`z-1`, `z-30`, etc.)
-- Never add z-index classes to theme style files (`*.styles.ts`)
+- Never add z-index classes to theme style files (`*.styles.ts`). `pnpm check:theme-zindex` enforces this in CI — a theme must not be able to reorder the layers
 - Use `cn()` utility to combine z-index with other classNames
 - Exception: Some third-party libraries may require an inline `zIndex` prop
+- Exception: `themes/theme-rui/src/ui.css` sets `z-100` on the `ui-touch-hitbox` utility. The pseudo-element it stacks has no component to own it, so this is the one sanctioned z-index outside `packages/components/src/`. It lives in a `.css` file, which is why the guard's `*.styles.ts` glob does not reach it
 
 **Stacking Hierarchy**:
 
@@ -288,10 +322,9 @@ test('supports custom props', () => {
 
 Run with `pnpm test:unit`.
 
-## Specialized Agents
+## AI Toolkit
 
-- **component-scaffold**: Creates new components with all required files (component, tests, stories, theme styles)
-- **a11y-audit**: Audits components for WCAG 2.1 AA accessibility compliance
+Committed skills live in `.claude/skills/`; plugins are declared in `.claude/settings.json`. See [.claude/README.md](.claude/README.md) for the conventions they follow and the extra rules for skills with side effects.
 
 ## MCP Servers
 
