@@ -158,6 +158,10 @@ export type Theme = {
       | 'description',
       ComponentStyleFunction<string, string>
     >;
+    ListView?: Record<
+      'list' | 'item' | 'label' | 'description' | 'title' | 'actions',
+      ComponentStyleFunction<string, string>
+    >;
     Menu?: Record<
       | 'container'
       | 'section'
@@ -247,6 +251,8 @@ export type Theme = {
       | 'footer'
       | 'row'
       | 'cell'
+      | 'treeIndent'
+      | 'expandButton'
       | 'dragHandle'
       | 'dragPreview'
       | 'dragPreviewCounter'

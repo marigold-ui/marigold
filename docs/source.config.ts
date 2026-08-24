@@ -1,17 +1,16 @@
+import { metaSchema, pageSchema } from 'fumadocs-core/source/schema';
 import {
   defineCollections,
   defineConfig,
   defineDocs,
-  frontmatterSchema,
-  metaSchema,
 } from 'fumadocs-mdx/config';
 import lastModified from 'fumadocs-mdx/plugins/last-modified';
 import { z } from 'zod';
 
-// Extend frontmatter schema to include date field for blog posts
-// Fumadocs auto-parses date strings to Date objects, so we accept Date and convert back to string
-const customFrontmatterSchema = frontmatterSchema.extend({
-  date: z
+// `date` must be coerced: since fumadocs-mdx 15.1.1 parses YAML 1.2, a bare
+// `date: 2026-07-07` arrives as a string instead of a Date.
+const customFrontmatterSchema = pageSchema.extend({
+  date: z.coerce
     .date()
     .transform(d => d.toISOString().split('T')[0])
     .optional(),
@@ -23,8 +22,8 @@ const customFrontmatterSchema = frontmatterSchema.extend({
 export const blogPosts = defineCollections({
   type: 'doc',
   dir: 'content/releases/blog',
-  schema: frontmatterSchema.extend({
-    date: z.date().or(z.string().transform(s => new Date(s))),
+  schema: pageSchema.extend({
+    date: z.coerce.date(),
     type: z.string().optional(),
     changed: z.array(z.string()).optional(),
   }),
@@ -44,7 +43,7 @@ export const blogPosts = defineCollections({
 export const legal = defineCollections({
   type: 'doc',
   dir: 'legal',
-  schema: frontmatterSchema,
+  schema: pageSchema,
 });
 
 // You can customise Zod schemas for frontmatter and `meta.json` here

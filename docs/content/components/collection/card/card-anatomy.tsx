@@ -1,6 +1,6 @@
 export const CardAnatomy = () => (
   <svg
-    viewBox="40 20 640 340"
+    viewBox="41 21 660 351"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
     role="img"
@@ -8,10 +8,10 @@ export const CardAnatomy = () => (
   >
     {/* Card Container */}
     <rect
-      x="240"
-      y="40"
-      width="220"
-      height="300"
+      x="248"
+      y="41"
+      width="227"
+      height="309"
       rx="12"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
@@ -19,36 +19,36 @@ export const CardAnatomy = () => (
 
     {/* Preview area (top corners rounded only) */}
     <path
-      d="M 240 52 Q 240 40 252 40 L 448 40 Q 460 40 460 52 L 460 130 L 240 130 Z"
+      d="M 248 54 Q 248 41 260 41 L 462 41 Q 474 41 474 54 L 474 134 L 248 134 Z"
       className="fill-fd-muted-foreground/20 transition-colors duration-300"
     />
 
     {/* Image icon inside Preview */}
     <circle
-      cx="335"
-      cy="72"
+      cx="345"
+      cy="74"
       r="5"
       className="fill-fd-muted-foreground/60 transition-colors duration-300"
     />
     <path
-      d="M 310 108 L 336 82 L 356 100 L 374 86 L 390 108 Z"
+      d="M 320 111 L 347 85 L 367 103 L 386 89 L 402 111 Z"
       className="fill-fd-muted-foreground/60 transition-colors duration-300"
     />
 
     {/* Header - title placeholder */}
     <rect
-      x="260"
-      y="148"
-      width="120"
+      x="268"
+      y="153"
+      width="124"
       height="12"
       rx="4"
       className="fill-fd-foreground transition-colors duration-300"
     />
     {/* Header - description placeholder */}
     <rect
-      x="260"
-      y="166"
-      width="160"
+      x="268"
+      y="171"
+      width="165"
       height="8"
       rx="4"
       className="fill-fd-muted-foreground/60 transition-colors duration-300"
@@ -56,33 +56,33 @@ export const CardAnatomy = () => (
 
     {/* Body - text lines */}
     <rect
-      x="260"
-      y="190"
-      width="180"
+      x="268"
+      y="196"
+      width="186"
       height="10"
       rx="4"
       className="fill-fd-muted-foreground/40 transition-colors duration-300"
     />
     <rect
-      x="260"
-      y="208"
-      width="160"
+      x="268"
+      y="215"
+      width="165"
       height="10"
       rx="4"
       className="fill-fd-muted-foreground/40 transition-colors duration-300"
     />
     <rect
-      x="260"
-      y="226"
-      width="170"
+      x="268"
+      y="233"
+      width="175"
       height="10"
       rx="4"
       className="fill-fd-muted-foreground/40 transition-colors duration-300"
     />
     <rect
-      x="260"
-      y="244"
-      width="140"
+      x="268"
+      y="252"
+      width="144"
       height="10"
       rx="4"
       className="fill-fd-muted-foreground/40 transition-colors duration-300"
@@ -90,26 +90,26 @@ export const CardAnatomy = () => (
 
     {/* Separator above Footer */}
     <rect
-      x="260"
-      y="280"
-      width="180"
+      x="268"
+      y="289"
+      width="186"
       height="1"
       className="fill-fd-border transition-colors duration-300"
     />
 
     {/* Footer - primary button */}
     <rect
-      x="260"
-      y="298"
-      width="80"
-      height="28"
+      x="268"
+      y="307"
+      width="83"
+      height="29"
       rx="6"
       className="fill-fd-accent transition-colors duration-300"
     />
     <rect
-      x="278"
-      y="308"
-      width="44"
+      x="287"
+      y="318"
+      width="45"
       height="8"
       rx="4"
       className="fill-fd-accent-foreground transition-colors duration-300"
@@ -117,18 +117,18 @@ export const CardAnatomy = () => (
 
     {/* Footer - secondary button */}
     <rect
-      x="350"
-      y="298"
-      width="64"
-      height="28"
+      x="361"
+      y="307"
+      width="66"
+      height="29"
       rx="6"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="1.5"
     />
     <rect
-      x="364"
-      y="308"
-      width="36"
+      x="375"
+      y="318"
+      width="37"
       height="8"
       rx="4"
       className="fill-fd-muted-foreground/60 transition-colors duration-300"
@@ -143,30 +143,30 @@ export const CardAnatomy = () => (
       strokeLinejoin="round"
     >
       {/* Preview -> left */}
-      <path d="M 240 85 L 160 85" />
+      <path d="M 248 88 L 165 88" />
       {/* Title -> left */}
-      <path d="M 260 154 L 160 154" />
+      <path d="M 268 159 L 165 159" />
       {/* Description -> left */}
-      <path d="M 260 170 L 160 170" />
+      <path d="M 268 175 L 165 175" />
       {/* Body -> left */}
-      <path d="M 240 220 L 160 220" />
+      <path d="M 248 227 L 165 227" />
       {/* Card -> top right */}
-      <path d="M 450 50 L 560 50" />
+      <path d="M 464 52 L 578 52" />
       {/* Header -> right */}
-      <path d="M 460 156 L 560 156" />
+      <path d="M 474 161 L 578 161" />
       {/* Footer -> right */}
-      <path d="M 460 312 L 560 312" />
+      <path d="M 474 322 L 578 322" />
     </g>
 
     {/* Connector Dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="240" cy="85" r="4" />
-      <circle cx="260" cy="154" r="4" />
-      <circle cx="260" cy="170" r="4" />
-      <circle cx="240" cy="220" r="4" />
-      <circle cx="450" cy="50" r="4" />
-      <circle cx="460" cy="156" r="4" />
-      <circle cx="460" cy="312" r="4" />
+      <circle cx="248" cy="88" r="4" />
+      <circle cx="268" cy="159" r="4" />
+      <circle cx="268" cy="175" r="4" />
+      <circle cx="248" cy="227" r="4" />
+      <circle cx="464" cy="52" r="4" />
+      <circle cx="474" cy="161" r="4" />
+      <circle cx="474" cy="322" r="4" />
     </g>
 
     {/* Labels */}
@@ -176,8 +176,8 @@ export const CardAnatomy = () => (
     >
       <g textAnchor="end">
         <text
-          x="150"
-          y="89"
+          x="155"
+          y="92"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -185,8 +185,8 @@ export const CardAnatomy = () => (
           Card.Media
         </text>
         <text
-          x="150"
-          y="158"
+          x="155"
+          y="163"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -194,8 +194,8 @@ export const CardAnatomy = () => (
           Title
         </text>
         <text
-          x="150"
-          y="174"
+          x="155"
+          y="179"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -203,8 +203,8 @@ export const CardAnatomy = () => (
           Description
         </text>
         <text
-          x="150"
-          y="224"
+          x="155"
+          y="231"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -214,8 +214,8 @@ export const CardAnatomy = () => (
       </g>
       <g textAnchor="start">
         <text
-          x="570"
-          y="54"
+          x="588"
+          y="56"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -223,8 +223,8 @@ export const CardAnatomy = () => (
           Card
         </text>
         <text
-          x="570"
-          y="160"
+          x="588"
+          y="165"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -232,8 +232,8 @@ export const CardAnatomy = () => (
           Card.Header
         </text>
         <text
-          x="570"
-          y="316"
+          x="588"
+          y="326"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
