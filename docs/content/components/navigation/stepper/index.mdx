@@ -4,6 +4,8 @@ description: A component for showing a user's position in a multi-step task.
 badge: BETA
 ---
 
+import { StepperAnatomy } from './stepper-anatomy';
+
 The `<Stepper>` component shows where a user stands in a task that spans several steps, such as a checkout, an onboarding flow, or a multi-page form. Each step reports whether it is done, current, failed, or still ahead, so the progress is visible at a glance and announced to screen readers.
 
 <Callout title="Not the same as the number field stepper">
@@ -16,13 +18,7 @@ The `<Stepper>` component shows where a user stands in a task that spans several
 
 A `<Stepper>` is a navigation landmark wrapping an ordered list. Each step carries a marker, a label, and a connector running to the next step.
 
-<ImageZoom
-  src="/stepper/stepper-anatomy.svg"
-  alt="Anatomy of the Stepper component"
-  width={800}
-  height={263}
-  className="mx-auto block"
-/>
+<StepperAnatomy />
 
 <ul>
   <li>
