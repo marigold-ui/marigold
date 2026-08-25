@@ -1,7 +1,6 @@
 export const MenuAnatomy = () => (
   <svg
     viewBox="0 0 660 275"
-    viewBox="0 0 660 275"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
     role="img"
