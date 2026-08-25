@@ -413,5 +413,19 @@ export function remarkSimplifyJsx() {
           return cleanExpression(node, index, parent);
       }
     );
+
+    // The `import`s that pull demo components into a page. Their targets are
+    // relative MDX-only paths, so they resolve to nothing for a reader of the
+    // generated markdown.
+    visit(
+      tree,
+      'mdxjsEsm',
+      (_node: Node, index, parent: Parent | undefined) => {
+        if (parent && typeof index === 'number') {
+          (parent.children as Node[]).splice(index, 1);
+          return [SKIP, index];
+        }
+      }
+    );
   };
 }

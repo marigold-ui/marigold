@@ -1,0 +1,25 @@
+name: memory store guard
+
+on:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  memory:
+    name: Check .memory store
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Setup Node (using .node-version)
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.node-version'
+      # Reads .memory/ and the working tree only — no install needed.
+      # Deliberately unfiltered by path: an `applies_to` glob rots when the code it points
+      # at is renamed, which is a PR that never touches .memory/ at all.
+      - name: Check ADR numbering, statuses, globs and glossary
+        run: node scripts/check-memory-store.mjs

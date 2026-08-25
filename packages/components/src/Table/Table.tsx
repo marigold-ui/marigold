@@ -15,6 +15,7 @@ import { TableColumn } from './TableColumn';
 import { renderDragPreview } from './TableDragPreview';
 import { renderDropIndicator } from './TableDropIndicator';
 import { TableEditableCell } from './TableEditableCell';
+import { TableExpandableRows } from './TableExpandableRows';
 import { TableFooter } from './TableFooter';
 import { TableHeader } from './TableHeader';
 import { TableRow } from './TableRow';
@@ -45,6 +46,24 @@ export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
    * When provided, the Table manages selection wiring and ActionBar positioning automatically.
    */
   actionBar?: (selectedKeys: Selection) => ReactNode;
+  /**
+   * The `id` of the column that carries the hierarchy and shows the expand
+   * control. Setting it enables expandable rows, which also changes the table's
+   * role from `grid` to `treegrid`.
+   */
+  treeColumn?: RAC.TableProps['treeColumn'];
+  /**
+   * The keys of the expanded rows (controlled).
+   */
+  expandedKeys?: RAC.TableProps['expandedKeys'];
+  /**
+   * The keys of the initially expanded rows (uncontrolled).
+   */
+  defaultExpandedKeys?: RAC.TableProps['defaultExpandedKeys'];
+  /**
+   * Handler that is called when rows are expanded or collapsed.
+   */
+  onExpandedChange?: RAC.TableProps['onExpandedChange'];
 }
 
 const _Table = ({
@@ -54,6 +73,7 @@ const _Table = ({
   allowTextSelection = false,
   alignY = 'middle',
   actionBar,
+  treeColumn,
   selectedKeys: selectedKeysProp,
   defaultSelectedKeys: defaultSelectedKeysProp,
   onSelectionChange: onSelectionChangeProp,
@@ -73,8 +93,17 @@ const _Table = ({
       overflow,
       allowTextSelection,
       alignY,
+      treeColumn,
     }),
-    [classNames, variant, size, overflow, allowTextSelection, alignY]
+    [
+      classNames,
+      variant,
+      size,
+      overflow,
+      allowTextSelection,
+      alignY,
+      treeColumn,
+    ]
   );
 
   const { selectedKeys, onSelectionChange, actionBarHeight, actionBarOverlay } =
@@ -100,6 +129,7 @@ const _Table = ({
       >
         <RACTable
           className={cn('group/table', classNames.table)}
+          treeColumn={treeColumn}
           selectionBehavior="toggle"
           selectedKeys={selectedKeys}
           defaultSelectedKeys={actionBar ? undefined : defaultSelectedKeysProp}
@@ -117,6 +147,7 @@ const Table = Object.assign(_Table, {
   Column: TableColumn,
   Body: TableBody,
   Row: TableRow,
+  ExpandableRows: TableExpandableRows,
   Cell: TableCell,
   EditableCell: TableEditableCell,
   Footer: TableFooter,
@@ -134,6 +165,7 @@ export type { TableHeaderProps } from './TableHeader';
 export type { TableColumnProps } from './TableColumn';
 export type { TableBodyProps } from './TableBody';
 export type { TableRowProps } from './TableRow';
+export type { TableExpandableRowsProps } from './TableExpandableRows';
 export type { TableCellProps } from './TableCell';
 export type { TableDropIndicatorProps } from './TableDropIndicator';
 export type { TableDragPreviewProps } from './TableDragPreview';

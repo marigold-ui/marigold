@@ -174,7 +174,7 @@ export function useToast() {
         action: (
           <Button
             size="small"
-            variant="ghost"
+            variant="secondary"
             // Toasts stack, so a bare "Undo" is ambiguous to a screen reader.
             aria-label={stringFormatter.format('undoNamed', { title })}
             onPress={() => {

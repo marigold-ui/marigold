@@ -4,19 +4,15 @@ description: A component for building a persistent top navigation bar with flexi
 badge: beta
 ---
 
+import { TopNavigationAnatomy } from './topnavigation-anatomy';
+
 The `<TopNavigation>` is a component that provides a consistent, accessible navigation bar at the top of an application. It uses a three-slot layout with start, middle, and end sections, giving you full control over how navigation links, and user actions are arranged.
 
 ## Anatomy
 
 The `<TopNavigation>` component uses a compound component pattern with three slots arranged in a CSS grid layout.
 
-<ImageZoom
-  src="/topnavigation/topnavigation-anatomy.svg"
-  alt="Anatomy of TopNavigation"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+<TopNavigationAnatomy />
 
 <ul>
   <li><b>Container:</b> The outer `<header>` element that holds the three-column grid layout.</li>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
-import { I18nProvider } from '@react-aria/i18n';
 import { Button } from '../Button/Button';
 import { Link } from '../Link/Link';
 import { Toast } from './Toast';
