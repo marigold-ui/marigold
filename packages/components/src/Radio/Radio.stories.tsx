@@ -189,16 +189,11 @@ export const WithBadge = meta.story({
       <Radio value="standard">Standard admission</Radio>
       <Radio
         value="early-bird"
-        labelAdornment={
-          <Badge variant="master" size="inline">
-            Master
-          </Badge>
-        }
+        // No `size="inline"` here on purpose: the `badge` slot sizes a
+        // `<Badge>` through context, so consumers don't have to remember it.
+        badge={<Badge variant="master">Master</Badge>}
       >
         Early bird pricing
-        sunt possimus dolorum. Maiores consequatur, explicabo, qui natus
-        accusamus vero quis temporibus excepturi repudiandae eos, eveniet nulla
-        sequi ipsum! Doloribus?
       </Radio>
     </Radio.Group>
   ),

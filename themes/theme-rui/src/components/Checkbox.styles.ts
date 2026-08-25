@@ -39,9 +39,9 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
     base: [
       // `items-start`, not `items-center`: the container top-aligns the box to
       // the label so it lands on the label's *first* line, and the label row has
-      // to agree. With `items-center` a `labelAdornment` next to a wrapping
-      // label drifts to the middle of the block while the box stays on line one.
-      // For a single-line label the two are identical.
+      // to agree. With `items-center` a `badge` next to a wrapping label drifts
+      // to the middle of the block while the box stays on line one. For a
+      // single-line label the two are identical.
       'flex items-start gap-1',
       'text-sm leading-4 group-[&]/checkboxgroup:font-normal font-medium text-foreground',
       'group-disabled/checkbox:text-disabled',

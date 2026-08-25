@@ -5,10 +5,11 @@ export const Badge: ThemeComponent<'Badge'> = cva({
     'inline-flex items-center justify-center rounded-full text-xs font-medium',
     'focus-visible:ui-state-focus outline-none',
     'has-[svg]:gap-1',
+    'px-2 leading-normal',
   ],
   variants: {
     size: {
-      default: 'px-2 leading-normal',
+      default: '',
       inline: 'h-4 px-1.5 leading-none [&_svg]:size-3',
     },
     variant: {

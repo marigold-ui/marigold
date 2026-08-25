@@ -25,12 +25,11 @@ export interface SwitchProps extends Omit<RAC.SwitchFieldProps, RemovedProps> {
   label?: ReactNode;
 
   /**
-   * A decoration shown at the end of the label's first line, e.g. a
-   * `<Badge size="inline">`. Use this instead of putting the decoration in
-   * `label` yourself — the slot keeps it from making the line taller than the
-   * track next to it.
+   * A `<Badge>` shown at the end of the label's first line. Use this instead
+   * of putting it in `label` yourself: the slot sizes it to the line so it
+   * doesn't make the line taller than the track next to it.
    */
-  labelAdornment?: ReactNode;
+  badge?: ReactNode;
 
   /**
    * A helpful text.
@@ -83,7 +82,7 @@ const _Switch = ({
   size,
   width = 'full',
   label,
-  labelAdornment,
+  badge,
   description,
   error,
   errorMessage,
@@ -103,10 +102,10 @@ const _Switch = ({
 
   // The `settings` variant renders the same label on the other side of the
   // track, so build it once.
-  const labelSlot = (label || labelAdornment) && (
+  const labelSlot = (label || badge) && (
     <div className={classNames.label}>
       {label}
-      {labelAdornment && <LabelAdornment>{labelAdornment}</LabelAdornment>}
+      {badge && <LabelAdornment>{badge}</LabelAdornment>}
     </div>
   );
 

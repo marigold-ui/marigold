@@ -274,11 +274,9 @@ export const WithBadge = meta.story({
   tags: ['component-test'],
   args: {
     label: 'Enable early bird pricing',
-    labelAdornment: (
-      <Badge variant="master" size="inline">
-        Master
-      </Badge>
-    ),
+    // No `size="inline"` here on purpose: the `badge` slot sizes a `<Badge>`
+    // through context, so consumers don't have to remember it.
+    badge: <Badge variant="master">Master</Badge>,
     description: undefined,
   },
 });
@@ -338,6 +336,91 @@ LongMultilineLabel.test(
     expect(isSingleLine(labelBlock)).toBe(false);
 
     expect(firstLineOffset(box, labelBlock)).toBeLessThanOrEqual(0.5);
+  }
+);
+
+// The case `badge` exists for — an adornment on a label that also wraps — was
+// otherwise untested: `WithBadge` covers the adornment on one line,
+// `LongMultilineLabel` covers wrapping with no adornment, but never both at
+// once.
+export const WrappingLabelWithBadge = meta.story({
+  tags: ['component-test'],
+  args: {
+    label:
+      'Send a reminder email to everyone on the guest list 24 hours before the event starts, including attendees who registered through a partner site',
+    badge: <Badge variant="master">Master</Badge>,
+    description: undefined,
+  },
+  render: args => (
+    <div className="w-64">
+      <Checkbox {...args} />
+    </div>
+  ),
+});
+
+WrappingLabelWithBadge.test(
+  'The badge stays on the first line of a wrapping label',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, step }) => {
+    const checkbox = await canvas.findByRole('checkbox');
+    const box = controlIcon(checkbox);
+    const labelBlock = canvas.getByText(/Send a reminder email/);
+
+    await step('the label still wraps', async () => {
+      expect(isSingleLine(labelBlock)).toBe(false);
+    });
+
+    await step('the box stays on line one', async () => {
+      expect(firstLineOffset(box, labelBlock)).toBeLessThanOrEqual(0.5);
+    });
+
+    await step('and so does the badge', async () => {
+      expect(
+        firstLineOffset(canvas.getByText('Master'), labelBlock)
+      ).toBeLessThanOrEqual(0.5);
+    });
+  }
+);
+
+// Pins `LabelAdornment`'s overflow guarantee: a consumer who ignores the
+// slot's auto-sizing and passes a full-size badge still stays centred.
+export const OversizedBadge = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Enable early bird pricing',
+    badge: (
+      <Badge variant="master" size="default">
+        Master
+      </Badge>
+    ),
+    description: undefined,
+  },
+});
+
+OversizedBadge.test(
+  'A badge that outgrows the slot still overflows symmetrically',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, step }) => {
+    const checkbox = await canvas.findByRole('checkbox');
+    const box = controlIcon(checkbox);
+    const labelBlock = canvas.getByText('Enable early bird pricing');
+
+    await step('the line itself is unaffected', async () => {
+      expect(isSingleLine(labelBlock)).toBe(true);
+    });
+
+    await step(
+      'the box stays centred despite the oversized badge',
+      async () => {
+        expect(firstLineOffset(box, labelBlock)).toBeLessThanOrEqual(0.5);
+      }
+    );
+
+    await step('and so does the badge, even past the slot bounds', async () => {
+      expect(
+        firstLineOffset(canvas.getByText('Master'), labelBlock)
+      ).toBeLessThanOrEqual(0.5);
+    });
   }
 );
 

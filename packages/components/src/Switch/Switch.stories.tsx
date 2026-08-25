@@ -315,11 +315,7 @@ export const WithBadge = meta.story({
   tags: ['component-test'],
   args: {
     label: 'Enable early bird pricing',
-    labelAdornment: (
-      <Badge variant="master" size="inline">
-        Master
-      </Badge>
-    ),
+    badge: <Badge variant="master">Master</Badge>,
   },
 });
 

@@ -65,9 +65,17 @@ export const firstLineOffset = (control: Element, labelBlock: Element) =>
  * Whether a label block is still exactly one line tall. A decoration that fits
  * the line leaves this true; one that inflates it -- the DST-1607 bug -- does
  * not, and that is what pushes the control off centre.
+ *
+ * Within `SUBPIXEL_TOLERANCE`, not exact: a fractional line-height can round
+ * the rendered height off by a sub-pixel amount on a genuinely single line.
  */
+const SUBPIXEL_TOLERANCE = 0.5;
+
 export const isSingleLine = (labelBlock: Element) => {
   const lineHeight = parseFloat(getComputedStyle(labelBlock).lineHeight);
 
-  return labelBlock.getBoundingClientRect().height === lineHeight;
+  return (
+    Math.abs(labelBlock.getBoundingClientRect().height - lineHeight) <=
+    SUBPIXEL_TOLERANCE
+  );
 };

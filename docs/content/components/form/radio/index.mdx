@@ -117,9 +117,9 @@ When a radio group is long enough to create clutter, overload, or excessive scro
 
 Options should be arranged by relevance to help users find what they need quickly. Prioritizing by factors such as frequency of use, overall popularity, or recency of interaction ensures the most useful items appear first. Alphabetical order should be considered only when no meaningful ranking criteria are available, as it may not align with user priorities or usage patterns.
 
-### Label adornment
+### Badge
 
-To mark a single option with a `<Badge>`, such as an access level or a "New" flag, pass it to `labelAdornment` rather than putting it inside the radio's children. The slot holds it to the height of the label's line, so the dot stays centred on the text instead of drifting above it, and a label that wraps still keeps the dot on its first line. Use `<Badge size="inline">`, which is drawn to fit a line of text.
+To mark a single option with a `<Badge>`, such as an access level or a "New" flag, pass it to `badge` rather than putting it inside the radio's children. The slot holds it to the height of the label's line and sizes it to fit, so the dot stays centred on the text instead of drifting above it, and a label that wraps still keeps the dot on its first line.
 
 <ComponentDemo name="radio-label-adornment" />
 

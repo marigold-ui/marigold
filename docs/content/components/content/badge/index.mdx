@@ -44,18 +44,16 @@ A `<Badge>` is a component used to provide information on new updates and notifi
 
 A badge at its default size is taller than a line of text, which is right when it sits _next to_ text: in a table cell, a card header, a list row.
 
-Inside a line of text it is not. A default badge in the label of a `<Checkbox>`, `<Radio>` or `<Switch>` makes that line taller than the control beside it, and the control ends up sitting above the words it belongs to. Use `size="inline"` there: it is drawn to the height of a text line, so both the line and the control stay put.
+Inside a line of text it is not. A default badge in the label of a `<Checkbox>`, `<Radio>` or `<Switch>` makes that line taller than the control beside it, and the control ends up sitting above the words it belongs to. Their `badge` slot sizes a `<Badge>` to fit the line automatically:
 
 ```tsx
 <Checkbox
   label="Enable early bird pricing"
-  labelAdornment={
-    <Badge variant="master" size="inline">
-      Master
-    </Badge>
-  }
+  badge={<Badge variant="master">Master</Badge>}
 />
 ```
+
+Placing a badge inside a line of text yourself, outside that slot, needs `size="inline"` directly: it is drawn to the height of a text line rather than sitting beside one.
 
 <ComponentDemo name="badge-inline" />
 

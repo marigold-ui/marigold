@@ -168,9 +168,11 @@ Adding a description to a checkbox is helpful when the label alone isn't enough 
 
 <ComponentDemo name="checkbox-description" />
 
-### Label adornment
+### Badge
 
-To mark a checkbox with a `<Badge>`, such as an access level or a "New" flag, pass it to `labelAdornment` rather than building the decoration into `label` yourself. The slot holds it to the height of the label's line, so the box stays centred on the text instead of drifting above it, and a label that wraps still keeps the box on its first line. Use `<Badge size="inline">`, which is drawn to fit a line of text.
+To mark a checkbox with a `<Badge>`, such as an access level or a "New" flag, pass it to `badge` rather than building the decoration into `label` yourself. The slot holds it to the height of the label's line and sizes it to fit, so the box stays centred on the text instead of drifting above it, and a label that wraps still keeps the box on its first line.
+
+The badge joins the checkbox's accessible name, announced right after the label text. That's right for an access-level mark, but a purely decorative badge should get `aria-hidden` instead.
 
 <ComponentDemo name="checkbox-label-adornment" />
 

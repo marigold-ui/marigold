@@ -58,11 +58,8 @@ export default () => (
         <Card variant="admin">
           <Card.Content>
             <Checkbox
-              label={
-                <>
-                  Enable Diagnostics <Badge variant="admin">Admin</Badge>
-                </>
-              }
+              label="Enable Diagnostics"
+              badge={<Badge variant="admin">Admin</Badge>}
               description="Allow system diagnostics and data collection for this organizer to improve service quality."
               defaultChecked
             />

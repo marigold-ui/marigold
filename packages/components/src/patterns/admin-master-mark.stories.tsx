@@ -72,11 +72,8 @@ export const Form = meta.story({
           }
         />
         <Checkbox
-          label={
-            <>
-              Enable Feature <Badge variant="admin">Admin</Badge>
-            </>
-          }
+          label="Enable Feature"
+          badge={<Badge variant="admin">Admin</Badge>}
         />
         <Radio.Group
           label={
