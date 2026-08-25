@@ -226,7 +226,19 @@ export const Select: ThemeComponent<'Select'> = { select: cva({}) };
   });
 
   test('leaves complete slot objects unchanged', () => {
-    const result = stubMissingSlots(v18).apply(PORTAL_SWITCH);
+    // Every v18 Switch slot present, so there is nothing to stub. Spelled out
+    // here rather than reusing PORTAL_SWITCH, which is a v17 theme and is
+    // therefore missing `label`.
+    const source = `import { cva, ThemeComponent } from '@marigold/system';
+
+export const Switch: ThemeComponent<'Switch'> = {
+    container: cva({}),
+    label: cva({}),
+    track: cva({}),
+    thumb: cva({})
+};
+`;
+    const result = stubMissingSlots(v18).apply(source);
     expect(result.kind).toBe('unchanged');
   });
 });
