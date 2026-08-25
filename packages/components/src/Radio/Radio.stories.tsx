@@ -193,7 +193,7 @@ export const WithBadge = meta.story({
         // `<Badge>` through context, so consumers don't have to remember it.
         badge={<Badge variant="master">Master</Badge>}
       >
-        Early bird pricing
+        Early bird pricing{' '}
       </Radio>
     </Radio.Group>
   ),
