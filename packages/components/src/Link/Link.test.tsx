@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { RefObject } from 'react';
 import { MockInstance, vi } from 'vitest';
-import { AccessVariants, Basic, NewTab } from './Link.stories';
+import { AccessVariants, Basic, NewTab, NewTabBehaviors } from './Link.stories';
 
 const user = userEvent.setup();
 
@@ -92,7 +92,7 @@ test('a new-tab link warns screen readers and defaults rel to noopener', () => {
 });
 
 test('a consumer-supplied rel wins over the noopener default', () => {
-  render(<NewTab.Component />);
+  render(<NewTabBehaviors.Component />);
 
   const [link] = screen.getAllByRole('link', {
     name: 'Release notes opens in a new tab',
@@ -121,7 +121,7 @@ test('an access variant keeps its mark and appends the new-tab warning', () => {
 });
 
 test('extends an aria-label with the new-tab warning', () => {
-  render(<NewTab.Component />);
+  render(<NewTabBehaviors.Component />);
 
   const [link] = screen.getAllByRole('link', {
     name: 'Marigold release notes opens in a new tab',
@@ -131,7 +131,7 @@ test('extends an aria-label with the new-tab warning', () => {
 });
 
 test('marks a named window as a new tab', () => {
-  render(<NewTab.Component />);
+  render(<NewTabBehaviors.Component />);
 
   const [link] = screen.getAllByRole('link', {
     name: 'Named window opens in a new tab',
@@ -141,7 +141,7 @@ test('marks a named window as a new tab', () => {
 });
 
 test('leaves a same-window target unmarked', () => {
-  render(<NewTab.Component />);
+  render(<NewTabBehaviors.Component />);
 
   const [link] = screen.getAllByRole('link', { name: 'Top frame' });
 

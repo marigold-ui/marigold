@@ -113,10 +113,27 @@ export const NewTab = meta.story({
       <Link href="https://marigold-ui.io" target="_blank">
         Marigold docs
       </Link>
+      <Link href="https://marigold-ui.io">Same tab</Link>
+      <Link href="#" variant="master" target="_blank">
+        Support console
+      </Link>
+    </Stack>
+  ),
+});
+
+/**
+ * The cases below render identically to a plain new-tab link, so they are kept
+ * out of `NewTab` and out of Chromatic. What differs is the accessible name and
+ * the `rel`, which the tests assert.
+ */
+export const NewTabBehaviors = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: () => (
+    <Stack space={2} alignX="left">
       <Link href="https://marigold-ui.io" target="_blank" rel="noreferrer">
         Release notes
       </Link>
-      <Link href="https://marigold-ui.io">Same tab</Link>
       <Link
         href="https://marigold-ui.io"
         target="_blank"
@@ -129,9 +146,6 @@ export const NewTab = meta.story({
       </Link>
       <Link href="https://marigold-ui.io" target="_top">
         Top frame
-      </Link>
-      <Link href="#" variant="master" target="_blank">
-        Support console
       </Link>
     </Stack>
   ),
@@ -147,18 +161,6 @@ NewTab.test(
 
     expect(link.querySelector('svg')).toBeInTheDocument();
     expect(link).toHaveAttribute('rel', 'noopener');
-  }
-);
-
-NewTab.test(
-  'leaves a consumer-supplied rel alone',
-  { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas }) => {
-    const [link] = canvas.getAllByRole('link', {
-      name: 'Release notes opens in a new tab',
-    });
-
-    expect(link).toHaveAttribute('rel', 'noreferrer');
   }
 );
 
@@ -186,9 +188,19 @@ NewTab.test(
   }
 );
 
-NewTab.test(
+NewTabBehaviors.test(
+  'leaves a consumer-supplied rel alone',
+  async ({ canvas }) => {
+    const [link] = canvas.getAllByRole('link', {
+      name: 'Release notes opens in a new tab',
+    });
+
+    expect(link).toHaveAttribute('rel', 'noreferrer');
+  }
+);
+
+NewTabBehaviors.test(
   'extends an aria-label rather than being swallowed by it',
-  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
     // `aria-label` replaces the content in the accessible name, so the hidden
     // warning alone would never reach a screen reader.
@@ -200,9 +212,8 @@ NewTab.test(
   }
 );
 
-NewTab.test(
+NewTabBehaviors.test(
   'marks a named window, but not a same-window target',
-  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
     const [named] = canvas.getAllByRole('link', {
       name: 'Named window opens in a new tab',
