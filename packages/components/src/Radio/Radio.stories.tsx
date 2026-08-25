@@ -195,7 +195,7 @@ export const WithBadge = meta.story({
           </Badge>
         }
       >
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Qui tempore
+        Early bird pricing
         sunt possimus dolorum. Maiores consequatur, explicabo, qui natus
         accusamus vero quis temporibus excepturi repudiandae eos, eveniet nulla
         sequi ipsum! Doloribus?
