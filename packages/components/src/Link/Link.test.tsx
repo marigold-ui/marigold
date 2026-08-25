@@ -52,8 +52,10 @@ test('renders span element when no href', () => {
   expect(ref.current).toBeInstanceOf(HTMLSpanElement);
 });
 
+// `href="#"` because the story's real URL would navigate the test iframe away
+// now that `Basic` no longer forces `target="_blank"`.
 test('supports "onPress"', async () => {
-  render(<Basic.Component onPress={() => {}} />);
+  render(<Basic.Component href="#" onPress={() => {}} />);
 
   const link = screen.getAllByRole('link')[0];
   await user.click(link);
@@ -116,4 +118,32 @@ test('an access variant keeps its mark and appends the new-tab warning', () => {
   });
 
   expect(link).toBeInTheDocument();
+});
+
+test('extends an aria-label with the new-tab warning', () => {
+  render(<NewTab.Component />);
+
+  const [link] = screen.getAllByRole('link', {
+    name: 'Marigold release notes opens in a new tab',
+  });
+
+  expect(link).toBeInTheDocument();
+});
+
+test('marks a named window as a new tab', () => {
+  render(<NewTab.Component />);
+
+  const [link] = screen.getAllByRole('link', {
+    name: 'Named window opens in a new tab',
+  });
+
+  expect(link).toHaveAttribute('rel', 'noopener');
+});
+
+test('leaves a same-window target unmarked', () => {
+  render(<NewTab.Component />);
+
+  const [link] = screen.getAllByRole('link', { name: 'Top frame' });
+
+  expect(link).not.toHaveAttribute('rel');
 });

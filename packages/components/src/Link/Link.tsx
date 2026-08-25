@@ -1,17 +1,23 @@
 import type { Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Link } from 'react-aria-components/Link';
+import { VisuallyHidden } from 'react-aria-components/VisuallyHidden';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
+import { intlMessages } from '../intl/messages';
 import { AccessIcon } from '../utils/AccessIcon';
 import { AccessLabel } from '../utils/AccessLabel';
 import { NewTabIcon } from '../utils/NewTabIcon';
-import { NewTabLabel } from '../utils/NewTabLabel';
 
 type RemovedProps = 'className' | 'isDisabled' | 'slot';
 
 // Inline, not a flex item: a flex icon sits beside a wrapped label instead of
-// after its last word. `-0.125em` lands it where `items-center` would.
-const iconPlacement = 'inline-block align-[-0.125em]';
+// after its last word. Sizing in `em` keeps the glyph at 16px next to 16px text
+// and makes `-0.125em` land exactly where `items-center` would at every size.
+const iconPlacement = 'inline-block size-[1em] align-[-0.125em]';
+
+// Everything else, including a named window, opens a new browsing context.
+const sameWindowTargets = new Set(['_self', '_top', '_parent']);
 
 export interface LinkProps extends Omit<RAC.LinkProps, RemovedProps> {
   variant?: 'default' | 'secondary' | 'master' | 'admin' | (string & {});
@@ -38,11 +44,19 @@ const _Link = ({
     size,
   });
 
-  const newTab = props.target === '_blank';
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+
+  const newTab = !!props.target && !sameWindowTargets.has(props.target);
+  const warning = stringFormatter.format('opensInNewTab');
+
+  // `aria-label` replaces the element's content in the accessible name, so the
+  // hidden warning would never be announced. Extend the label instead.
+  const ariaLabel = props['aria-label'];
 
   return (
     <Link
       {...props}
+      aria-label={newTab && ariaLabel ? `${ariaLabel} ${warning}` : ariaLabel}
       rel={props.rel ?? (newTab ? 'noopener' : undefined)}
       ref={ref}
       className={classNames}
@@ -54,7 +68,9 @@ const _Link = ({
           {typeof children === 'function' ? children(renderProps) : children}
           <NewTabIcon active={newTab} className={cn('ml-1', iconPlacement)} />
           <AccessLabel variant={variant} />
-          <NewTabLabel active={newTab} />
+          {newTab && !ariaLabel ? (
+            <VisuallyHidden elementType="span">{` ${warning}`}</VisuallyHidden>
+          ) : null}
         </>
       )}
     </Link>

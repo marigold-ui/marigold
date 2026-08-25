@@ -54,10 +54,8 @@ const meta = preview.meta({
 export const Basic = meta.story({
   render: args => (
     <Stack space={4}>
-      <Link target="_blank" {...args}>
-        Visit Marigold Docs
-      </Link>
-      <Link target="_blank" size="small" {...args}>
+      <Link {...args}>Visit Marigold Docs</Link>
+      <Link size="small" {...args}>
         Visit Marigold Docs (small size)
       </Link>
     </Stack>
@@ -68,7 +66,7 @@ export const Inline = meta.story({
   render: args => (
     <Text>
       To set up Tailwind CSS, please refer to the{' '}
-      <Link target="_blank" variant="secondary" {...args}>
+      <Link variant="secondary" {...args}>
         official installation guide
       </Link>
       . Once you have completed the installation, you should create a CSS file
@@ -119,6 +117,19 @@ export const NewTab = meta.story({
         Release notes
       </Link>
       <Link href="https://marigold-ui.io">Same tab</Link>
+      <Link
+        href="https://marigold-ui.io"
+        target="_blank"
+        aria-label="Marigold release notes"
+      >
+        Changelog
+      </Link>
+      <Link href="https://marigold-ui.io" target="popup">
+        Named window
+      </Link>
+      <Link href="https://marigold-ui.io" target="_top">
+        Top frame
+      </Link>
       <Link href="#" variant="master" target="_blank">
         Support console
       </Link>
@@ -128,7 +139,7 @@ export const NewTab = meta.story({
 
 NewTab.test(
   'warns about the new tab and defaults rel to noopener',
-  { parameters: { chromatic: { disableSnapshot: false } } },
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
     const [link] = canvas.getAllByRole('link', {
       name: 'Marigold docs opens in a new tab',
@@ -172,5 +183,34 @@ NewTab.test(
     });
 
     expect(link.querySelectorAll('svg')).toHaveLength(2);
+  }
+);
+
+NewTab.test(
+  'extends an aria-label rather than being swallowed by it',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    // `aria-label` replaces the content in the accessible name, so the hidden
+    // warning alone would never reach a screen reader.
+    const [link] = canvas.getAllByRole('link', {
+      name: 'Marigold release notes opens in a new tab',
+    });
+
+    expect(link).toBeInTheDocument();
+  }
+);
+
+NewTab.test(
+  'marks a named window, but not a same-window target',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const [named] = canvas.getAllByRole('link', {
+      name: 'Named window opens in a new tab',
+    });
+    const [top] = canvas.getAllByRole('link', { name: 'Top frame' });
+
+    expect(named).toHaveAttribute('rel', 'noopener');
+    expect(top.querySelector('svg')).not.toBeInTheDocument();
+    expect(top).not.toHaveAttribute('rel');
   }
 );
