@@ -1,80 +1,82 @@
 export const DrawerAnatomy = () => (
   <svg
-    viewBox="0 0 820 440"
+    role="img"
+    aria-label="Anatomy of a Drawer: a Title, Content, a Close button and Actions, in a panel beside the Page content"
+    viewBox="0 -30 660 384"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
     {/* Page area (active page content) */}
     <rect
-      x="180"
-      y="30"
-      width="500"
-      height="380"
-      rx="12"
+      x="144.88"
+      y="24.15"
+      width="402.44"
+      height="305.85"
+      rx="9.66"
       className="fill-fd-muted/40 stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
 
     {/* Page content placeholders */}
     <rect
-      x="200"
-      y="60"
-      width="180"
-      height="12"
-      rx="4"
+      x="160.98"
+      y="48.29"
+      width="144.88"
+      height="9.66"
+      rx="3.22"
       className="fill-fd-muted-foreground/40 transition-colors duration-300"
     />
     <rect
-      x="200"
-      y="86"
-      width="140"
-      height="10"
-      rx="4"
+      x="160.98"
+      y="69.22"
+      width="112.68"
+      height="8.05"
+      rx="3.22"
       className="fill-fd-muted-foreground/30 transition-colors duration-300"
     />
     <rect
-      x="200"
-      y="110"
-      width="160"
-      height="10"
-      rx="4"
+      x="160.98"
+      y="88.54"
+      width="128.78"
+      height="8.05"
+      rx="3.22"
       className="fill-fd-muted-foreground/30 transition-colors duration-300"
     />
     <rect
-      x="200"
-      y="134"
-      width="120"
-      height="10"
-      rx="4"
+      x="160.98"
+      y="107.85"
+      width="96.59"
+      height="8.05"
+      rx="3.22"
       className="fill-fd-muted-foreground/30 transition-colors duration-300"
     />
 
     {/* Drawer panel */}
     <rect
-      x="440"
-      y="30"
-      width="240"
-      height="380"
-      rx="12"
+      x="354.15"
+      y="24.15"
+      width="193.17"
+      height="305.85"
+      rx="9.66"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
 
     {/* Title */}
     <rect
-      x="460"
-      y="62"
-      width="120"
-      height="14"
-      rx="4"
+      x="370.24"
+      y="49.9"
+      width="96.59"
+      height="11.27"
+      rx="3.22"
       className="fill-fd-foreground transition-colors duration-300"
     />
 
     {/* Close button */}
     <circle
-      cx="652"
-      cy="46"
-      r="14"
+      cx="524.78"
+      cy="37.02"
+      r="11.27"
       className="fill-fd-muted/60 stroke-fd-border transition-colors duration-300"
       strokeWidth="1.5"
     />
@@ -83,87 +85,87 @@ export const DrawerAnatomy = () => (
       strokeWidth="1.75"
       strokeLinecap="round"
     >
-      <path d="M 646 40 L 658 52" />
-      <path d="M 658 40 L 646 52" />
+      <path d="M 519.95 32.2 L 529.61 41.85" />
+      <path d="M 529.61 32.2 L 519.95 41.85" />
     </g>
 
     {/* Content placeholder lines */}
     <rect
-      x="460"
-      y="120"
-      width="200"
-      height="10"
-      rx="4"
+      x="370.24"
+      y="96.59"
+      width="160.98"
+      height="8.05"
+      rx="3.22"
       className="fill-fd-muted-foreground/50 transition-colors duration-300"
     />
     <rect
-      x="460"
-      y="146"
-      width="180"
-      height="10"
-      rx="4"
+      x="370.24"
+      y="117.51"
+      width="144.88"
+      height="8.05"
+      rx="3.22"
       className="fill-fd-muted-foreground/40 transition-colors duration-300"
     />
     <rect
-      x="460"
-      y="172"
-      width="200"
-      height="10"
-      rx="4"
+      x="370.24"
+      y="138.44"
+      width="160.98"
+      height="8.05"
+      rx="3.22"
       className="fill-fd-muted-foreground/40 transition-colors duration-300"
     />
     <rect
-      x="460"
-      y="198"
-      width="150"
-      height="10"
-      rx="4"
+      x="370.24"
+      y="159.37"
+      width="120.73"
+      height="8.05"
+      rx="3.22"
       className="fill-fd-muted-foreground/40 transition-colors duration-300"
     />
 
     {/* Actions area separator (subtle) */}
     <rect
-      x="460"
-      y="340"
-      width="200"
-      height="1"
+      x="370.24"
+      y="273.66"
+      width="160.98"
+      height="0.8"
       className="fill-fd-border transition-colors duration-300"
     />
 
     {/* Cancel button */}
     <rect
-      x="460"
-      y="358"
-      width="90"
-      height="32"
-      rx="6"
+      x="370.24"
+      y="288.15"
+      width="72.44"
+      height="25.76"
+      rx="4.83"
       className="stroke-fd-border fill-transparent transition-colors duration-300"
       strokeWidth="2"
     />
     <rect
-      x="485"
-      y="370"
-      width="40"
-      height="8"
-      rx="3"
+      x="390.37"
+      y="297.8"
+      width="32.2"
+      height="6.44"
+      rx="2.41"
       className="fill-fd-muted-foreground/60 transition-colors duration-300"
     />
 
     {/* Primary button */}
     <rect
-      x="570"
-      y="358"
-      width="90"
-      height="32"
-      rx="6"
+      x="458.78"
+      y="288.15"
+      width="72.44"
+      height="25.76"
+      rx="4.83"
       className="fill-fd-primary transition-colors duration-300"
     />
     <rect
-      x="595"
-      y="370"
-      width="40"
-      height="8"
-      rx="3"
+      x="478.9"
+      y="297.8"
+      width="32.2"
+      height="6.44"
+      rx="2.41"
       className="fill-fd-primary-foreground/80 transition-colors duration-300"
     />
 
@@ -175,84 +177,51 @@ export const DrawerAnatomy = () => (
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M 290 96 L 170 96" />
-      <path d="M 440 220 L 170 220" />
-      <path d="M 580 70 L 690 70" />
-      <path d="M 666 46 L 690 46" />
-      <path d="M 660 150 L 690 150" />
-      <path d="M 660 374 L 690 374" />
+      <path d="M 233.41 77.27 L 136.83 77.27" />
+      <path d="M 354.15 177.07 L 136.83 177.07" />
+      <path d="M 466.83 56.34 L 555.37 56.34" />
+      {/* Close button -> up, so its label clears the Title's */}
+      <path d="M 524.88 25.75 L 524.88 -2" />
+      <path d="M 531.22 120.73 L 555.37 120.73" />
+      <path d="M 531.22 301.02 L 555.37 301.02" />
     </g>
 
     {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="290" cy="96" r="4" />
-      <circle cx="440" cy="220" r="4" />
-      <circle cx="580" cy="70" r="4" />
-      <circle cx="666" cy="46" r="4" />
-      <circle cx="660" cy="150" r="4" />
-      <circle cx="660" cy="374" r="4" />
+      <circle cx="233.41" cy="77.27" r="4" />
+      <circle cx="354.15" cy="177.07" r="4" />
+      <circle cx="466.83" cy="56.34" r="4" />
+      <circle cx="524.88" cy="25.75" r="4" />
+      <circle cx="531.22" cy="120.73" r="4" />
+      <circle cx="531.22" cy="301.02" r="4" />
     </g>
 
     {/* Labels */}
     <g
       fontFamily="ui-sans-serif, system-ui, sans-serif"
-      className="transition-colors duration-300"
+      fontSize="14"
+      fontWeight="600"
+      className="fill-fd-primary transition-colors duration-300"
     >
       <g textAnchor="end">
-        <text
-          x="160"
-          y="100"
-          fontSize="14"
-          fontWeight="600"
-          className="fill-fd-primary"
-        >
+        <text x="128.78" y="80.49">
           Page content
         </text>
-        <text
-          x="160"
-          y="224"
-          fontSize="14"
-          fontWeight="600"
-          className="fill-fd-primary"
-        >
+        <text x="128.78" y="180.29">
           Drawer
         </text>
       </g>
+      <text x="524.88" y="-10" textAnchor="middle">
+        Close button
+      </text>
       <g textAnchor="start">
-        <text
-          x="700"
-          y="50"
-          fontSize="14"
-          fontWeight="600"
-          className="fill-fd-primary"
-        >
-          Close button
-        </text>
-        <text
-          x="700"
-          y="74"
-          fontSize="14"
-          fontWeight="600"
-          className="fill-fd-primary"
-        >
+        <text x="563.41" y="59.56">
           Title
         </text>
-        <text
-          x="700"
-          y="154"
-          fontSize="14"
-          fontWeight="600"
-          className="fill-fd-primary"
-        >
+        <text x="563.41" y="123.95">
           Content
         </text>
-        <text
-          x="700"
-          y="378"
-          fontSize="14"
-          fontWeight="600"
-          className="fill-fd-primary"
-        >
+        <text x="563.41" y="304.24">
           Actions
         </text>
       </g>
