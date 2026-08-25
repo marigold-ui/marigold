@@ -72,7 +72,7 @@ Using descriptive and meaningful labels for links is crucial to clearly indicate
 
 Avoid opening links in new windows or tabs as it can be disorienting for users. It's acceptable to do so only when necessary, such as when the link leads to an external site, or when there's a risk of users losing their current place or task.
 
-When a link does open a new browsing context, whether through `target="_blank"` or a named window, it marks itself. It appends a small external-link icon after the label and a visually hidden "opens in a new tab" warning, so the change of context is announced to screen reader users as well as shown to sighted ones. It also defaults `rel` to `noopener`. Pass your own `rel` to override that. A `target` that stays in the current window (`_self`, `_top`, `_parent`) is left alone.
+When a link does open a new browsing context, whether through `target="_blank"` or a named window, it marks itself. It appends a small external-link icon after the label and a visually hidden "opens in a new tab" warning, so the change of context is announced to screen reader users as well as shown to sighted ones. It also defaults `rel` to `noopener`. Pass your own `rel` to override that. A `target` that stays in the current window (`_self`, `_top`, `_parent`) is left alone, and so is a link that cannot navigate anywhere, meaning a `disabled` one or one without an `href`.
 
 <ComponentDemo name="link-new-tab" />
 

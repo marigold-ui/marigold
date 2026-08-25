@@ -15,8 +15,16 @@ const accessLabels: Record<string, string> = {
   admin: 'Admin',
 };
 
+/**
+ * The label text on its own, for the callers that cannot render it as content:
+ * an `aria-label` replaces an element's content in the accessible name, so it
+ * has to be folded into that label instead.
+ */
+export const getAccessLabel = (variant?: string) =>
+  variant ? accessLabels[variant] : undefined;
+
 export const AccessLabel = ({ variant }: { variant?: string }) => {
-  const label = variant && accessLabels[variant];
+  const label = getAccessLabel(variant);
 
   return label ? (
     <VisuallyHidden elementType="span">{` ${label}`}</VisuallyHidden>

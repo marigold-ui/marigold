@@ -81,69 +81,15 @@ test('admin variant appends a hidden "Admin" label to the accessible name', () =
   expect(admin).toBeInTheDocument();
 });
 
-test('a new-tab link warns screen readers and defaults rel to noopener', () => {
-  render(<NewTab.Component />);
-
-  const [link] = screen.getAllByRole('link', {
-    name: 'Marigold docs opens in a new tab',
-  });
-
-  expect(link).toHaveAttribute('rel', 'noopener');
-});
-
-test('a consumer-supplied rel wins over the noopener default', () => {
-  render(<NewTab.Component rel="noreferrer" />);
-
-  const [link] = screen.getAllByRole('link', {
-    name: 'Marigold docs opens in a new tab',
-  });
-
-  expect(link).toHaveAttribute('rel', 'noreferrer');
-});
-
-test('a same-tab link gets no warning and no rel', () => {
-  render(<NewTab.Component />);
-
-  const [link] = screen.getAllByRole('link', { name: 'Same tab' });
-
-  expect(link).not.toHaveAttribute('rel');
-});
-
-// Icon rendering is covered by the NewTab story test.
-test('an access variant keeps its mark and appends the new-tab warning', () => {
-  render(<NewTab.Component />);
-
-  const [link] = screen.getAllByRole('link', {
-    name: 'Support console Master opens in a new tab',
-  });
-
-  expect(link).toBeInTheDocument();
-});
-
-test('extends an aria-label with the new-tab warning', () => {
-  render(<NewTab.Component aria-label="Marigold release notes" />);
-
-  const [link] = screen.getAllByRole('link', {
-    name: 'Marigold release notes opens in a new tab',
-  });
-
-  expect(link).toBeInTheDocument();
-});
-
-test('marks a named window as a new tab', () => {
-  render(<NewTab.Component target="popup" />);
-
-  const [link] = screen.getAllByRole('link', {
-    name: 'Marigold docs opens in a new tab',
-  });
-
-  expect(link).toHaveAttribute('rel', 'noopener');
-});
-
-test('leaves a same-window target unmarked', () => {
-  render(<NewTab.Component target="_top" />);
+// The rest of the new-tab behaviour (rel default and override, same-tab and
+// same-window targets, disabled, access mark, aria-label) is covered by the
+// `NewTab` story tests. Only the no-`href` case lives here, because a story's
+// args cannot drop an arg the meta supplies.
+test('leaves a link that cannot navigate unmarked', () => {
+  render(<NewTab.Component href={undefined} />);
 
   const [link] = screen.getAllByRole('link', { name: 'Marigold docs' });
 
+  expect(link).toBeInstanceOf(HTMLSpanElement);
   expect(link).not.toHaveAttribute('rel');
 });

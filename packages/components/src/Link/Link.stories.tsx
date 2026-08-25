@@ -114,8 +114,8 @@ export const NewTab = meta.story({
   args: { target: '_blank' },
   render: args => (
     <Stack space={2} alignX="left">
-      {/* Only this one is args-driven, so a test can vary `target`, `rel` or
-          `aria-label` without a story of its own. */}
+      {/* Only this one is args-driven, so a test can vary `target`, `rel`,
+          `aria-label` or `disabled` without a story of its own. */}
       <Link {...args}>Marigold docs</Link>
       <Link href="https://marigold-ui.io" target="_blank" size="small">
         Marigold docs (small size)
@@ -198,6 +198,22 @@ NewTab.test(
 );
 
 NewTab.test(
+  'folds the access mark into an aria-label too',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { variant: 'master', 'aria-label': 'Move event' },
+  },
+  async ({ canvas }) => {
+    // The access label is content as well, so it is swallowed by the same rule.
+    const [link] = canvas.getAllByRole('link', {
+      name: 'Move event Master opens in a new tab',
+    });
+
+    expect(link).toBeInTheDocument();
+  }
+);
+
+NewTab.test(
   'marks a named window',
   {
     parameters: { chromatic: { disableSnapshot: true } },
@@ -219,6 +235,37 @@ NewTab.test(
     args: { target: '_top' },
   },
   async ({ canvas }) => {
+    const [link] = canvas.getAllByRole('link', { name: 'Marigold docs' });
+
+    expect(link.querySelector('svg')).not.toBeInTheDocument();
+    expect(link).not.toHaveAttribute('rel');
+  }
+);
+
+NewTab.test(
+  'matches same-window targets case-insensitively',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { target: '_SELF' },
+  },
+  async ({ canvas }) => {
+    // HTML matches the target keywords ASCII case-insensitively, so `_SELF`
+    // stays in the current window and a warning would be a lie.
+    const [link] = canvas.getAllByRole('link', { name: 'Marigold docs' });
+
+    expect(link.querySelector('svg')).not.toBeInTheDocument();
+    expect(link).not.toHaveAttribute('rel');
+  }
+);
+
+NewTab.test(
+  'leaves a disabled link unmarked',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { disabled: true },
+  },
+  async ({ canvas }) => {
+    // A disabled link renders as a `<span>` and cannot open anything.
     const [link] = canvas.getAllByRole('link', { name: 'Marigold docs' });
 
     expect(link.querySelector('svg')).not.toBeInTheDocument();
