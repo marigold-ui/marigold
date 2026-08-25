@@ -6,6 +6,7 @@ import { Link } from '../Link/Link';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Radio } from '../Radio/Radio';
 import { Stack } from '../Stack/Stack';
+import { Switch } from '../Switch/Switch';
 import { Table } from '../Table/Table';
 import { TextField } from '../TextField/TextField';
 
@@ -64,20 +65,27 @@ export const Form = meta.story({
   render: () => (
     <div className="max-w-md">
       <Stack space={8}>
+        {/* A non-boolean field has no `badge` slot, so the mark goes in the
+            label and sets its own `size="inline"`. Without it the badge is
+            taller than the label's line and pushes the input down. */}
         <TextField
           label={
             <>
-              Label <Badge variant="master">Master</Badge>
+              Label{' '}
+              <Badge variant="master" size="inline">
+                Master
+              </Badge>
             </>
           }
         />
+        {/* Boolean fields take the mark through `badge`, which sizes it. */}
         <Checkbox
           label="Enable Feature"
-          badge={
-            <Badge variant="admin" size="inline">
-              Admin
-            </Badge>
-          }
+          badge={<Badge variant="admin">Admin</Badge>}
+        />
+        <Switch
+          label="Require Approval"
+          badge={<Badge variant="master">Master</Badge>}
         />
         <Radio.Group
           label={

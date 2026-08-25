@@ -41,7 +41,10 @@ export default () => (
             <Select
               label={
                 <>
-                  Associated Team <Badge variant="master">Master</Badge>
+                  Associated Team{' '}
+                  <Badge variant="master" size="inline">
+                    Master
+                  </Badge>
                 </>
               }
               width={56}

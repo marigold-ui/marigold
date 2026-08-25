@@ -102,7 +102,12 @@ const _Radio = ({
             />
             <div className={classNames.label}>
               {children}
-              {badge && <LabelAdornment>{badge}</LabelAdornment>}
+              {badge && (
+                <>
+                  {' '}
+                  <LabelAdornment>{badge}</LabelAdornment>
+                </>
+              )}
             </div>
           </>
         )}

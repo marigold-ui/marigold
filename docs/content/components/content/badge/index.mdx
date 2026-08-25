@@ -42,6 +42,13 @@ A `<Badge>` is a component used to provide information on new updates and notifi
 
 ### Sizes
 
+Badges come in two sizes. Which one is right depends on whether the badge sits _next to_ a line of text or _inside_ one.
+
+| Size      | Description                                                               | When to use                                                                                                          |
+| --------- | ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `default` | Taller than a line of text. This is the default size.                     | Wherever the badge sits beside text rather than within it: a table cell, a card header, a list row, or a tab label.  |
+| `inline`  | Drawn to the height of a text line, with the access icon scaled to match. | Inside a run of text, and in field labels, where a default badge would make the line taller than the text around it. |
+
 A badge at its default size is taller than a line of text, which is right when it sits _next to_ text: in a table cell, a card header, a list row.
 
 Inside a line of text it is not. A default badge in the label of a `<Checkbox>`, `<Radio>` or `<Switch>` makes that line taller than the control beside it, and the control ends up sitting above the words it belongs to. Their `badge` slot sizes a `<Badge>` to fit the line automatically:
