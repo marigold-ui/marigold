@@ -69,8 +69,11 @@ export const Inline = meta.story({
       <Link variant="secondary" {...args}>
         official installation guide
       </Link>
-      . Once you have completed the installation, you should create a CSS file
-      with the following informations
+      . Once you have completed the installation, see the{' '}
+      <Link variant="secondary" href="https://marigold-ui.io" target="_blank">
+        release notes
+      </Link>{' '}
+      for what changed.
     </Text>
   ),
 });
@@ -108,44 +111,18 @@ AccessVariants.test(
 
 export const NewTab = meta.story({
   tags: ['component-test'],
-  render: () => (
+  args: { target: '_blank' },
+  render: args => (
     <Stack space={2} alignX="left">
-      <Link href="https://marigold-ui.io" target="_blank">
-        Marigold docs
+      {/* Only this one is args-driven, so a test can vary `target`, `rel` or
+          `aria-label` without a story of its own. */}
+      <Link {...args}>Marigold docs</Link>
+      <Link href="https://marigold-ui.io" target="_blank" size="small">
+        Marigold docs (small size)
       </Link>
       <Link href="https://marigold-ui.io">Same tab</Link>
       <Link href="#" variant="master" target="_blank">
         Support console
-      </Link>
-    </Stack>
-  ),
-});
-
-/**
- * The cases below render identically to a plain new-tab link, so they are kept
- * out of `NewTab` and out of Chromatic. What differs is the accessible name and
- * the `rel`, which the tests assert.
- */
-export const NewTabBehaviors = meta.story({
-  tags: ['component-test'],
-  parameters: { chromatic: { disableSnapshot: true } },
-  render: () => (
-    <Stack space={2} alignX="left">
-      <Link href="https://marigold-ui.io" target="_blank" rel="noreferrer">
-        Release notes
-      </Link>
-      <Link
-        href="https://marigold-ui.io"
-        target="_blank"
-        aria-label="Marigold release notes"
-      >
-        Changelog
-      </Link>
-      <Link href="https://marigold-ui.io" target="popup">
-        Named window
-      </Link>
-      <Link href="https://marigold-ui.io" target="_top">
-        Top frame
       </Link>
     </Stack>
   ),
@@ -188,19 +165,27 @@ NewTab.test(
   }
 );
 
-NewTabBehaviors.test(
+NewTab.test(
   'leaves a consumer-supplied rel alone',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { rel: 'noreferrer' },
+  },
   async ({ canvas }) => {
     const [link] = canvas.getAllByRole('link', {
-      name: 'Release notes opens in a new tab',
+      name: 'Marigold docs opens in a new tab',
     });
 
     expect(link).toHaveAttribute('rel', 'noreferrer');
   }
 );
 
-NewTabBehaviors.test(
+NewTab.test(
   'extends an aria-label rather than being swallowed by it',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { 'aria-label': 'Marigold release notes' },
+  },
   async ({ canvas }) => {
     // `aria-label` replaces the content in the accessible name, so the hidden
     // warning alone would never reach a screen reader.
@@ -212,16 +197,31 @@ NewTabBehaviors.test(
   }
 );
 
-NewTabBehaviors.test(
-  'marks a named window, but not a same-window target',
+NewTab.test(
+  'marks a named window',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { target: 'popup' },
+  },
   async ({ canvas }) => {
-    const [named] = canvas.getAllByRole('link', {
-      name: 'Named window opens in a new tab',
+    const [link] = canvas.getAllByRole('link', {
+      name: 'Marigold docs opens in a new tab',
     });
-    const [top] = canvas.getAllByRole('link', { name: 'Top frame' });
 
-    expect(named).toHaveAttribute('rel', 'noopener');
-    expect(top.querySelector('svg')).not.toBeInTheDocument();
-    expect(top).not.toHaveAttribute('rel');
+    expect(link).toHaveAttribute('rel', 'noopener');
+  }
+);
+
+NewTab.test(
+  'leaves a same-window target unmarked',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { target: '_top' },
+  },
+  async ({ canvas }) => {
+    const [link] = canvas.getAllByRole('link', { name: 'Marigold docs' });
+
+    expect(link.querySelector('svg')).not.toBeInTheDocument();
+    expect(link).not.toHaveAttribute('rel');
   }
 );

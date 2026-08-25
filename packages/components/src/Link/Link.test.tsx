@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { RefObject } from 'react';
 import { MockInstance, vi } from 'vitest';
-import { AccessVariants, Basic, NewTab, NewTabBehaviors } from './Link.stories';
+import { AccessVariants, Basic, NewTab } from './Link.stories';
 
 const user = userEvent.setup();
 
@@ -92,10 +92,10 @@ test('a new-tab link warns screen readers and defaults rel to noopener', () => {
 });
 
 test('a consumer-supplied rel wins over the noopener default', () => {
-  render(<NewTabBehaviors.Component />);
+  render(<NewTab.Component rel="noreferrer" />);
 
   const [link] = screen.getAllByRole('link', {
-    name: 'Release notes opens in a new tab',
+    name: 'Marigold docs opens in a new tab',
   });
 
   expect(link).toHaveAttribute('rel', 'noreferrer');
@@ -121,7 +121,7 @@ test('an access variant keeps its mark and appends the new-tab warning', () => {
 });
 
 test('extends an aria-label with the new-tab warning', () => {
-  render(<NewTabBehaviors.Component />);
+  render(<NewTab.Component aria-label="Marigold release notes" />);
 
   const [link] = screen.getAllByRole('link', {
     name: 'Marigold release notes opens in a new tab',
@@ -131,19 +131,19 @@ test('extends an aria-label with the new-tab warning', () => {
 });
 
 test('marks a named window as a new tab', () => {
-  render(<NewTabBehaviors.Component />);
+  render(<NewTab.Component target="popup" />);
 
   const [link] = screen.getAllByRole('link', {
-    name: 'Named window opens in a new tab',
+    name: 'Marigold docs opens in a new tab',
   });
 
   expect(link).toHaveAttribute('rel', 'noopener');
 });
 
 test('leaves a same-window target unmarked', () => {
-  render(<NewTabBehaviors.Component />);
+  render(<NewTab.Component target="_top" />);
 
-  const [link] = screen.getAllByRole('link', { name: 'Top frame' });
+  const [link] = screen.getAllByRole('link', { name: 'Marigold docs' });
 
   expect(link).not.toHaveAttribute('rel');
 });
