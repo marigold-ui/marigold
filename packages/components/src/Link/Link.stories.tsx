@@ -107,3 +107,70 @@ AccessVariants.test(
     expect(admin.querySelector('svg')).toBeInTheDocument();
   }
 );
+
+export const NewTab = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <Stack space={2} alignX="left">
+      <Link href="https://marigold-ui.io" target="_blank">
+        Marigold docs
+      </Link>
+      <Link href="https://marigold-ui.io" target="_blank" rel="noreferrer">
+        Release notes
+      </Link>
+      <Link href="https://marigold-ui.io">Same tab</Link>
+      <Link href="#" variant="master" target="_blank">
+        Support console
+      </Link>
+    </Stack>
+  ),
+});
+
+NewTab.test(
+  'warns about the new tab and defaults rel to noopener',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas }) => {
+    const [link] = canvas.getAllByRole('link', {
+      name: 'Marigold docs opens in a new tab',
+    });
+
+    expect(link.querySelector('svg')).toBeInTheDocument();
+    expect(link).toHaveAttribute('rel', 'noopener');
+  }
+);
+
+NewTab.test(
+  'leaves a consumer-supplied rel alone',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const [link] = canvas.getAllByRole('link', {
+      name: 'Release notes opens in a new tab',
+    });
+
+    expect(link).toHaveAttribute('rel', 'noreferrer');
+  }
+);
+
+NewTab.test(
+  'leaves a same-tab link unmarked',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    // Deriving from `target` must not mark every link in the system.
+    const [link] = canvas.getAllByRole('link', { name: 'Same tab' });
+
+    expect(link.querySelector('svg')).not.toBeInTheDocument();
+    expect(link).not.toHaveAttribute('rel');
+  }
+);
+
+NewTab.test(
+  'stacks the warning after an access mark',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const [link] = canvas.getAllByRole('link', {
+      name: 'Support console Master opens in a new tab',
+    });
+
+    expect(link.querySelectorAll('svg')).toHaveLength(2);
+  }
+);

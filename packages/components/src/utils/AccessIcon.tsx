@@ -14,8 +14,14 @@ const accessIcons: Record<string, ComponentType<IconProps>> = {
   admin: Key,
 };
 
-export const AccessIcon = ({ variant }: { variant?: string }) => {
+export const AccessIcon = ({
+  variant,
+  className,
+}: {
+  variant?: string;
+  className?: string;
+}) => {
   const Icon = variant ? accessIcons[variant] : undefined;
 
-  return Icon ? <Icon size={16} aria-hidden /> : null;
+  return Icon ? <Icon size={16} aria-hidden className={className} /> : null;
 };

@@ -72,7 +72,13 @@ Using descriptive and meaningful labels for links is crucial to clearly indicate
 
 Avoid opening links in new windows or tabs as it can be disorienting for users. It's acceptable to do so only when necessary, such as when the link leads to an external site, or when there's a risk of users losing their current place or task.
 
-To support accessibility, ensure that such links include a warning for screen readers to alert users of the new window or tab. For more details on this practice, see the [W3C guidelines](https://www.w3.org/TR/WCAG20-TECHS/G200.html).
+When you do set `target="_blank"`, the link marks itself. It appends a small external-link icon after the label and a visually hidden "opens in a new tab" warning, so the change of context is announced to screen reader users as well as shown to sighted ones. It also defaults `rel` to `noopener`. Pass your own `rel` to override that.
+
+<ComponentDemo name="link-new-tab" />
+
+You don't opt into the indicator and you can't opt out of it. That is deliberate. An indicator is only worth anything if it appears on every link that opens a new tab, because users learn to read its absence as "this one stays here". If a link should not carry the icon, don't force the new tab, and let people decide for themselves how to open it.
+
+For the reasoning behind warning users in the first place, see the W3C techniques on [opening new windows only when necessary](https://www.w3.org/WAI/WCAG21/Techniques/general/G200) and [giving advance warning when a link opens a new window](https://www.w3.org/WAI/WCAG21/Techniques/general/G201).
 
 ### Buttons or links
 

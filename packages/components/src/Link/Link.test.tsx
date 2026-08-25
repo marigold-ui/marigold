@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { RefObject } from 'react';
 import { MockInstance, vi } from 'vitest';
-import { AccessVariants, Basic } from './Link.stories';
+import { AccessVariants, Basic, NewTab } from './Link.stories';
 
 const user = userEvent.setup();
 
@@ -77,4 +77,43 @@ test('admin variant appends a hidden "Admin" label to the accessible name', () =
   const [admin] = screen.getAllByRole('link', { name: 'freigeben Admin' });
 
   expect(admin).toBeInTheDocument();
+});
+
+test('a new-tab link warns screen readers and defaults rel to noopener', () => {
+  render(<NewTab.Component />);
+
+  const [link] = screen.getAllByRole('link', {
+    name: 'Marigold docs opens in a new tab',
+  });
+
+  expect(link).toHaveAttribute('rel', 'noopener');
+});
+
+test('a consumer-supplied rel wins over the noopener default', () => {
+  render(<NewTab.Component />);
+
+  const [link] = screen.getAllByRole('link', {
+    name: 'Release notes opens in a new tab',
+  });
+
+  expect(link).toHaveAttribute('rel', 'noreferrer');
+});
+
+test('a same-tab link gets no warning and no rel', () => {
+  render(<NewTab.Component />);
+
+  const [link] = screen.getAllByRole('link', { name: 'Same tab' });
+
+  expect(link).not.toHaveAttribute('rel');
+});
+
+// Icon rendering is covered by the NewTab story test.
+test('an access variant keeps its mark and appends the new-tab warning', () => {
+  render(<NewTab.Component />);
+
+  const [link] = screen.getAllByRole('link', {
+    name: 'Support console Master opens in a new tab',
+  });
+
+  expect(link).toBeInTheDocument();
 });

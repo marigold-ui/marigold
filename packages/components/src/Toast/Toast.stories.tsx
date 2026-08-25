@@ -230,8 +230,9 @@ Basic.test(
 
     await step('Toast appears with its links and stays open', async () => {
       await expect(await canvas.findByText(defaults.title)).toBeInTheDocument();
+      // The name carries Link's new-tab warning, since this one is `_blank`.
       await expect(
-        canvas.getByRole('link', { name: 'View changelog' })
+        canvas.getByRole('link', { name: 'View changelog opens in a new tab' })
       ).toBeInTheDocument();
       await expect(
         canvas.getByRole('link', { name: 'Update now' })
