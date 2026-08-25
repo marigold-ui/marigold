@@ -12,6 +12,7 @@ import {
   LinkButton,
   Page,
   Panel,
+  Scrollable,
   Stack,
   Table,
   Text,
@@ -105,27 +106,37 @@ const DashboardPage = () => (
           <Description>What your team has been up to.</Description>
         </Panel.Header>
         <Panel.Content bleed>
-          <Table aria-label="Recent activity">
-            <Table.Header>
-              <Table.Column rowHeader>Member</Table.Column>
-              <Table.Column>Activity</Table.Column>
-              <Table.Column>When</Table.Column>
-            </Table.Header>
-            <Table.Body>
-              {activity.map(entry => (
-                <Table.Row key={entry.id}>
-                  <Table.Cell>{byId(entry.who)?.name}</Table.Cell>
-                  <Table.Cell>{entry.action}</Table.Cell>
-                  <Table.Cell>
-                    <DateFormat
-                      value={new Date(entry.date)}
-                      dateStyle="medium"
-                    />
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
+          {/* `Scrollable` earns its place twice here: it gives the table
+              somewhere to go below the column widths' sum, and its own
+              min-content is zero, so the table can no longer inflate this
+              panel and wrap the 2:1 pair before `collapseAt` says to. */}
+          <Scrollable>
+            <Table aria-label="Recent activity">
+              <Table.Header>
+                <Table.Column rowHeader width="1fr" minWidth={150}>
+                  Member
+                </Table.Column>
+                <Table.Column width="2fr" minWidth={200}>
+                  Activity
+                </Table.Column>
+                <Table.Column width={130}>When</Table.Column>
+              </Table.Header>
+              <Table.Body>
+                {activity.map(entry => (
+                  <Table.Row key={entry.id}>
+                    <Table.Cell>{byId(entry.who)?.name}</Table.Cell>
+                    <Table.Cell>{entry.action}</Table.Cell>
+                    <Table.Cell>
+                      <DateFormat
+                        value={new Date(entry.date)}
+                        dateStyle="medium"
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table>
+          </Scrollable>
         </Panel.Content>
       </Panel>
 

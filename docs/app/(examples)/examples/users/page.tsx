@@ -10,6 +10,7 @@ import {
   Inline,
   Page,
   Panel,
+  Scrollable,
   Stack,
   Table,
   Text,
@@ -36,49 +37,62 @@ const UsersPage = () => (
     </Page.Header>
     <Panel aria-label="Members">
       <Panel.Content bleed>
-        <Table aria-label="Members">
-          <Table.Header>
-            <Table.Column rowHeader>Name</Table.Column>
-            <Table.Column>Title</Table.Column>
-            <Table.Column>Role</Table.Column>
-            <Table.Column>Status</Table.Column>
-            <Table.Column>Joined</Table.Column>
-          </Table.Header>
-          <Table.Body>
-            {people.map(person => (
-              <Table.Row key={person.id} href={`/examples/users/${person.id}`}>
-                <Table.Cell>
-                  <Inline space="related" alignY="center" noWrap>
-                    <img
-                      src={person.avatar}
-                      alt=""
-                      className="block size-8 shrink-0 rounded-full"
+        {/* Columns carry widths so they never fall back to the 75px default,
+            which squeezes them under their content and lets the name cell
+            paint over its neighbour. `Scrollable` then gives the table
+            somewhere to go when the sum no longer fits. */}
+        <Scrollable>
+          <Table aria-label="Members">
+            <Table.Header>
+              <Table.Column rowHeader width="2fr" minWidth={240}>
+                Name
+              </Table.Column>
+              <Table.Column width="1fr" minWidth={170}>
+                Title
+              </Table.Column>
+              <Table.Column width={110}>Role</Table.Column>
+              <Table.Column width={110}>Status</Table.Column>
+              <Table.Column width={120}>Joined</Table.Column>
+            </Table.Header>
+            <Table.Body>
+              {people.map(person => (
+                <Table.Row
+                  key={person.id}
+                  href={`/examples/users/${person.id}`}
+                >
+                  <Table.Cell>
+                    <Inline space="related" alignY="center" noWrap>
+                      <img
+                        src={person.avatar}
+                        alt=""
+                        className="block size-8 shrink-0 rounded-full"
+                      />
+                      <Stack space="collapsed">
+                        <Text weight="semibold">{person.name}</Text>
+                        <Text variant="muted" fontSize="xs">
+                          {person.email}
+                        </Text>
+                      </Stack>
+                    </Inline>
+                  </Table.Cell>
+                  <Table.Cell>{person.position}</Table.Cell>
+                  <Table.Cell>{person.role}</Table.Cell>
+                  <Table.Cell>
+                    <Badge variant={statusVariant[person.status]}>
+                      {person.status}
+                    </Badge>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <DateFormat
+                      value={new Date(person.joined)}
+                      dateStyle="medium"
                     />
-                    <Stack space="collapsed">
-                      <Text weight="semibold">{person.name}</Text>
-                      <Text variant="muted" fontSize="xs">
-                        {person.email}
-                      </Text>
-                    </Stack>
-                  </Inline>
-                </Table.Cell>
-                <Table.Cell>{person.position}</Table.Cell>
-                <Table.Cell>{person.role}</Table.Cell>
-                <Table.Cell>
-                  <Badge variant={statusVariant[person.status]}>
-                    {person.status}
-                  </Badge>
-                </Table.Cell>
-                <Table.Cell>
-                  <DateFormat
-                    value={new Date(person.joined)}
-                    dateStyle="medium"
-                  />
-                </Table.Cell>
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+        </Scrollable>
       </Panel.Content>
     </Panel>
   </Page>

@@ -242,25 +242,48 @@ export const VenuesTable = () => {
           )}
         >
           <Table.Header>
-            <Table.Column id="name" rowHeader allowsSorting>
+            <Table.Column
+              id="name"
+              rowHeader
+              allowsSorting
+              width="2fr"
+              minWidth={200}
+            >
               Name
             </Table.Column>
-            <Table.Column id="type">Type</Table.Column>
-            <Table.Column id="address">Address</Table.Column>
-            <Table.Column id="capacity" alignX="right" allowsSorting>
+            <Table.Column id="type" width={130}>
+              Type
+            </Table.Column>
+            <Table.Column id="address" width="1fr" minWidth={190}>
+              Address
+            </Table.Column>
+            <Table.Column
+              id="capacity"
+              alignX="right"
+              allowsSorting
+              width={110}
+            >
               Capacity
             </Table.Column>
-            <Table.Column id="price" alignX="right" allowsSorting>
+            <Table.Column id="price" alignX="right" allowsSorting width={120}>
               Max. Price
             </Table.Column>
-            <Table.Column id="traits">Traits</Table.Column>
-            <Table.Column id="amenities">Amenities</Table.Column>
-            <Table.Column id="parking">Parking</Table.Column>
-            <Table.Column id="rating" alignX="right">
+            <Table.Column id="traits" width="1fr" minWidth={160}>
+              Traits
+            </Table.Column>
+            <Table.Column id="amenities" width="1fr" minWidth={160}>
+              Amenities
+            </Table.Column>
+            <Table.Column id="parking" width={140}>
+              Parking
+            </Table.Column>
+            <Table.Column id="rating" alignX="right" width={100}>
               Rating
             </Table.Column>
-            <Table.Column id="available">Available</Table.Column>
-            <Table.Column id="actions">
+            <Table.Column id="available" width={120}>
+              Available
+            </Table.Column>
+            <Table.Column id="actions" width={72}>
               <VisuallyHidden>Actions</VisuallyHidden>
             </Table.Column>
           </Table.Header>
