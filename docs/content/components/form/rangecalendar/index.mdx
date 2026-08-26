@@ -4,9 +4,24 @@ description: Used to select a contiguous date range
 badge: alpha
 ---
 
+import { RangeCalendarAnatomy } from './rangecalendar-anatomy';
+
 The `<RangeCalendar>` component...
 
 ## Anatomy
+
+A `<RangeCalendar>` has the same header and grid as a [Calendar](/components/form/calendar), but a selection spans two dates: picking a start date and an end date highlights every date in between as one range.
+
+<RangeCalendarAnatomy />
+
+- **Header:** The top area holding the select boxes and the step buttons.
+- **Month select box:** Jumps directly to a month.
+- **Year select box:** Jumps directly to a year.
+- **Step buttons:** Move to the previous or next month.
+- **Grid:** Holds all selectable dates of the displayed month.
+- **Start date:** The first date of the selection.
+- **End date:** The last date of the selection.
+- **Range:** All dates between start and end, highlighted as one block.
 
 ## Appearance
 

@@ -1,4 +1,29 @@
 import type { CSSProperties } from 'react';
+import type { NoSpacingToken } from '../types/tokens';
+
+/**
+ * Kept in sync with `NoSpacingToken` by the annotation: adding a member to that
+ * type is a type error here until it is listed.
+ */
+const AXISLESS_TOKENS: Record<NoSpacingToken, true> = { collapsed: true };
+
+/**
+ * Checks whether a spacing token is axis-less, i.e. splitting it into `-x` /
+ * `-y` variants would be meaningless.
+ *
+ * `collapsed` means "no spacing" on both axes, so there is nothing for an axis
+ * suffix to distinguish. Treating it as axis-less keeps themes from having to
+ * declare three variables (`--spacing-collapsed{,-x,-y}`) that all mean `0`.
+ *
+ * Note this is deliberately *not* folded into {@link isScale}: `collapsed` is
+ * not numeric, and `createWidthVar` / `createHeightVar` / `createSpacingVar`
+ * rely on it being classified that way.
+ *
+ * @param value - The token to test.
+ * @returns `true` if the token has no per-axis form, otherwise `false`.
+ */
+export const isAxislessToken = (value: string) =>
+  Object.hasOwn(AXISLESS_TOKENS, value);
 
 /**
  * Checks if the provided string represents a numeric scale value.
@@ -146,7 +171,9 @@ const makeDimensionVar =
  * When `p` is a numeric scale value (e.g. `"4"`) the same value is used on
  * both axes (`calc(var(--spacing) * 4)`). When it is a named token (e.g.
  * `"square-regular"`) the conventional `-x` / `-y` suffixes are appended so
- * the right axis-specific spacing variable is referenced.
+ * the right axis-specific spacing variable is referenced. Axis-less tokens
+ * (see {@link isAxislessToken}) are passed through unsuffixed — `collapsed`
+ * means `0` on both axes, so there is no per-axis variable to reference.
  *
  * @param options - Destructured options object.
  * @param options.p - The shorthand padding prop (`InsetSpacingTokens` or a scale number).
@@ -166,10 +193,10 @@ export const resolveInsetAxes = ({
   defaultInset: string;
 }): { px: string; py: string } => {
   const inset = `${p ?? defaultInset}`;
-  const scale = isScale(inset);
+  const unsuffixed = isScale(inset) || isAxislessToken(inset);
   return {
-    px: `${px ?? (scale ? inset : `${inset}-x`)}`,
-    py: `${py ?? (scale ? inset : `${inset}-y`)}`,
+    px: `${px ?? (unsuffixed ? inset : `${inset}-x`)}`,
+    py: `${py ?? (unsuffixed ? inset : `${inset}-y`)}`,
   };
 };
 

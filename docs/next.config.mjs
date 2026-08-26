@@ -16,14 +16,6 @@ const config = {
   outputFileTracingIncludes: {
     '/mcp': ['./lib/markdown/embeddings.json'],
   },
-  async rewrites() {
-    return [
-      {
-        source: '/docs/:path*.mdx',
-        destination: '/llms.mdx/docs/:path*',
-      },
-    ];
-  },
 };
 
 export default withMDX(config);
