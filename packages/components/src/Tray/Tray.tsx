@@ -186,9 +186,16 @@ export const Tray = ({
               classNames.container
             )}
           >
+            {/*
+              `select-none`/`touch-none`: this is chrome that can start
+              drag-to-dismiss, so a vertical gesture here is JS-owned rather
+              than the browser's. Motion used to set both on the whole modal;
+              with its listener disarmed they belong on the chrome only, so
+              content stays selectable and pannable. See `TrayModal.tsx`.
+            */}
             <div
               className={cn(
-                'select-none [grid-area:drag]',
+                'touch-none select-none [grid-area:drag]',
                 classNames.dragHandle
               )}
             />

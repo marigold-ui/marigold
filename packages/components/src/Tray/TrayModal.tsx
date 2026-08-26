@@ -47,6 +47,21 @@ const staticTransition = {
   ease: cubicBezier(0.32, 0.72, 0, 1),
 };
 
+// Drag-to-dismiss is armed everywhere on the tray except its content — a
+// denylist, not an allowlist. `useDragControls` is built for the opposite
+// shape (call `start()` from a handle's own `onPointerDown`), which would fail
+// safe: anything unrecognised simply would not drag. We keep the denylist so
+// consumers that compose their own chrome next to `<Tray.Content>` keep the
+// gesture, but it fails open: a swipeable carousel, a slider or any custom
+// gesture widget dropped directly under `<Tray>` (i.e. outside `Tray.Content`)
+// re-opens DSTSUP-272, and there is no opt-out in either direction. Revisit as
+// an allowlist over `[grid-area:drag]`/`title`/`actions` if that shows up in
+// practice.
+//
+// The decision is also made once, at `pointerdown`, and holds for the whole
+// gesture: scrolling the content to the top and continuing to pull cannot hand
+// off into a dismiss (DSTSUP-272, requirement 9) — the user has to lift and
+// start again on the chrome. Follow-up needed for the continuous handoff.
 const startsInTrayContent = (target: Element) =>
   target.closest(`[${TRAY_CONTENT_ATTR}]`) !== null;
 
@@ -118,6 +133,22 @@ export const TrayModal = ({
               transition={staticTransition}
               style={{ y }}
               drag="y"
+              // Disarming motion's own listener is half the fix: while it is
+              // armed, motion sets `touch-action: pan-x` (plus
+              // `user-select: none`, `-webkit-touch-callout: none` and
+              // `draggable={false}`) on the dragged element, and `pan-x`
+              // blocks vertical panning for the whole subtree — a descendant
+              // cannot re-allow it, so the content could never scroll. Drag is
+              // started manually from `startDrag` instead, and the pieces we
+              // still want are re-applied deliberately, scoped to the chrome
+              // that can start a drag: `select-none`/`touch-none` in
+              // `Tray.tsx`, `TrayHeader.tsx` and `TrayActions.tsx`. The
+              // `draggable={false}` motion also dropped is not restored: it is
+              // a per-element attribute that does not inherit, so on this
+              // `<div>` (not draggable to begin with) it never did anything
+              // for the images or links inside the tray. Restoring
+              // `dragListener` would silently bring the scroll bug back — see
+              // DSTSUP-272.
               dragListener={false}
               dragControls={dragControls}
               onPointerDown={startDrag}
