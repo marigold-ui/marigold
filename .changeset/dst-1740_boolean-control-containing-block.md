@@ -10,6 +10,6 @@ An absolutely positioned box laid out against an ancestor outside a scroll conta
 
 Both labels are now `relative`. React Aria's own docs name this as a precondition of `VisuallyHidden` ("it must have a `position: relative` or `position: absolute` ancestor"), citing stray scrollbars — the focus jump is the sharper consequence, which is probably why it went unnoticed.
 
-`Radio` already positioned its label and is unchanged. `Switch` looked like it did too, but its `relative` sat on the wrapper around the track, a sibling of the input rather than an ancestor, so it never reached it. That class moves up to the label, where it was meant to be. `Checkbox.Group` renders `Checkbox` children and needs no change of its own.
+`Radio` already positioned its label and is unchanged. `Switch` looked like it did too, but its `relative` sat on a wrapper around the track, a sibling of the input rather than an ancestor, so it never reached it. That wrapper is gone and the track is now a direct child of the label, which carries the `relative`. `Checkbox.Group` renders `Checkbox` children and needs no change of its own.
 
 Consumers who worked around this by setting `position: relative` on their own scroll containers can drop it, though leaving it in place is harmless.
