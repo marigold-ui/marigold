@@ -114,10 +114,8 @@ const _Switch = ({
         {variant === 'settings' && label && (
           <Label elementType="span">{label}</Label>
         )}
-        <div>
-          <div className={classNames.track}>
-            <div className={classNames.thumb} />
-          </div>
+        <div className={classNames.track}>
+          <div className={classNames.thumb} />
         </div>
         {variant !== 'settings' && label && (
           <Label elementType="span">{label}</Label>
