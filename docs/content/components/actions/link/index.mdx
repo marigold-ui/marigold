@@ -72,11 +72,13 @@ Using descriptive and meaningful labels for links is crucial to clearly indicate
 
 Avoid opening links in new windows or tabs as it can be disorienting for users. It's acceptable to do so only when necessary, such as when the link leads to an external site, or when there's a risk of users losing their current place or task.
 
-When a link does open a new browsing context, whether through `target="_blank"` or a named window, it marks itself. It appends a small external-link icon after the label and a visually hidden "opens in a new tab" warning, so the change of context is announced to screen reader users as well as shown to sighted ones. It also defaults `rel` to `noopener`. Pass your own `rel` to override that. A `target` that stays in the current window (`_self`, `_top`, `_parent`) is left alone, and so is a link that cannot navigate anywhere, meaning a `disabled` one or one without an `href`.
+A link that opens a new tab marks itself. It adds a small external-link icon after the label plus a hidden warning, so screen reader users are told about the change too. Targets that stay in the current window (`_self`, `_top`, `_parent`) are left alone, and so are links that cannot navigate at all, meaning `disabled` ones and ones with no `href`.
+
+With `target="_blank"`, `rel` defaults to `noopener`. Pass your own `rel` to override it. A named window gets no default `rel`, because `noopener` makes the browser ignore the window name and open a new tab on every click instead of reusing the window.
 
 <ComponentDemo name="link-new-tab" />
 
-If you pass your own `aria-label`, the warning is appended to it, because an `aria-label` replaces a link's content in its accessible name and would otherwise hide the warning from screen readers. The one case the component cannot reach is `aria-labelledby`, where the name comes from elsewhere on the page. There you need to include the warning yourself.
+If you pass your own `aria-label`, the warning is appended to it, because an `aria-label` replaces a link's content and would otherwise hide the warning. With `aria-labelledby` the warning is referenced by id instead, so it reaches the name either way.
 
 You don't opt into the indicator and you can't opt out of it. That is deliberate. An indicator is only worth anything if it appears on every link that opens a new tab, because users learn to read its absence as "this one stays here". If a link should not carry the icon, don't force the new tab, and let people decide for themselves how to open it.
 

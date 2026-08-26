@@ -1,4 +1,5 @@
 import type { Ref } from 'react';
+import { useId } from 'react';
 import type RAC from 'react-aria-components';
 import { Link } from 'react-aria-components/Link';
 import { VisuallyHidden } from 'react-aria-components/VisuallyHidden';
@@ -7,13 +8,13 @@ import { cn, useClassNames } from '@marigold/system';
 import { ExternalLink } from '../icons/ExternalLink';
 import { intlMessages } from '../intl/messages';
 import { AccessIcon } from '../utils/AccessIcon';
-import { AccessLabel, getAccessLabel } from '../utils/AccessLabel';
+import { getAccessLabel } from '../utils/AccessLabel';
 
 type RemovedProps = 'className' | 'isDisabled' | 'slot';
 
 // Inline, not a flex item: a flex icon sits beside a wrapped label instead of
-// after its last word. Sizing in `em` keeps the glyph at 16px next to 16px text
-// and makes `-0.125em` land exactly where `items-center` would at every size.
+// after its last word. `em` sizing tracks the text, so `size` is only the
+// attribute fallback and `-0.125em` lands where `items-center` would.
 const iconPlacement = 'inline-block size-[1em] align-[-0.125em]';
 
 // Everything else, including a named window, opens a new browsing context.
@@ -45,6 +46,7 @@ const _Link = ({
   });
 
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const suffixId = useId();
 
   // Only a link that can navigate opens anything: RAC renders a `<span>` when
   // there is no `href` or when disabled, where `target` and `rel` do nothing.
@@ -53,9 +55,15 @@ const _Link = ({
   const newTab =
     !!props.href && !disabled && !!target && !sameWindowTargets.has(target);
 
-  // `aria-label` replaces the element's content in the accessible name, so the
-  // hidden suffixes below would never be announced. Fold them into the label.
+  // `rel="noopener"` makes the browser ignore a window name, so it is limited
+  // to `_blank`, where there is no name to reuse.
+  const blank = newTab && target === '_blank';
+
+  // The suffix is content, which an `aria-label` replaces and an
+  // `aria-labelledby` outranks. Fold it into the label, or reference it by id.
   const ariaLabel = props['aria-label'];
+  const labelledBy = props['aria-labelledby'];
+  const foldIntoLabel = !labelledBy && !!ariaLabel;
   const warning = stringFormatter.format('opensInNewTab');
   const suffix = [getAccessLabel(variant), newTab ? warning : undefined]
     .filter(Boolean)
@@ -64,8 +72,13 @@ const _Link = ({
   return (
     <Link
       {...props}
-      aria-label={ariaLabel && suffix ? `${ariaLabel} ${suffix}` : ariaLabel}
-      rel={props.rel ?? (newTab ? 'noopener' : undefined)}
+      aria-label={
+        foldIntoLabel && suffix ? `${ariaLabel} ${suffix}` : ariaLabel
+      }
+      aria-labelledby={
+        labelledBy && suffix ? `${labelledBy} ${suffixId}` : labelledBy
+      }
+      rel={props.rel ?? (blank ? 'noopener' : undefined)}
       ref={ref}
       className={classNames}
       isDisabled={disabled}
@@ -84,14 +97,14 @@ const _Link = ({
               className={cn('ms-[0.25em]', iconPlacement)}
             />
           ) : null}
-          {ariaLabel ? null : (
-            <>
-              <AccessLabel variant={variant} />
-              {newTab ? (
-                <VisuallyHidden elementType="span">{` ${warning}`}</VisuallyHidden>
-              ) : null}
-            </>
-          )}
+          {suffix && !foldIntoLabel ? (
+            <VisuallyHidden
+              elementType="span"
+              id={labelledBy ? suffixId : undefined}
+            >
+              {` ${suffix}`}
+            </VisuallyHidden>
+          ) : null}
         </>
       )}
     </Link>

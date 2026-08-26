@@ -93,3 +93,18 @@ test('leaves a link that cannot navigate unmarked', () => {
   expect(link).toBeInstanceOf(HTMLSpanElement);
   expect(link).not.toHaveAttribute('rel');
 });
+
+test('references the warning from an aria-labelledby name', () => {
+  render(
+    <>
+      <span id="release-notes">Marigold release notes</span>
+      <NewTab.Component aria-labelledby="release-notes" />
+    </>
+  );
+
+  const [link] = screen.getAllByRole('link', {
+    name: 'Marigold release notes opens in a new tab',
+  });
+
+  expect(link.getAttribute('aria-labelledby')).toMatch(/^release-notes \S+$/);
+});

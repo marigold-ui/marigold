@@ -193,7 +193,7 @@ NewTab.test(
       name: 'Marigold release notes opens in a new tab',
     });
 
-    expect(link).toBeInTheDocument();
+    expect(link.querySelector('svg')).toBeInTheDocument();
   }
 );
 
@@ -209,22 +209,25 @@ NewTab.test(
       name: 'Move event Master opens in a new tab',
     });
 
-    expect(link).toBeInTheDocument();
+    expect(link.querySelectorAll('svg')).toHaveLength(2);
   }
 );
 
 NewTab.test(
-  'marks a named window',
+  'marks a named window without forcing a new one',
   {
     parameters: { chromatic: { disableSnapshot: true } },
     args: { target: 'popup' },
   },
   async ({ canvas }) => {
+    // `rel="noopener"` makes the browser ignore the window name and open a new
+    // tab on every click, so a named target keeps its default `rel`.
     const [link] = canvas.getAllByRole('link', {
       name: 'Marigold docs opens in a new tab',
     });
 
-    expect(link).toHaveAttribute('rel', 'noopener');
+    expect(link.querySelector('svg')).toBeInTheDocument();
+    expect(link).not.toHaveAttribute('rel');
   }
 );
 
