@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import type RAC from 'react-aria-components';
 import { DropZone } from 'react-aria-components/DropZone';
-import { useLocale, useLocalizedStringFormatter } from '@react-aria/i18n';
+import { useLocale } from 'react-aria-components/I18nProvider';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, type FieldBaseProps } from '../FieldBase/FieldBase';
 import { intlMessages } from '../intl/messages';
