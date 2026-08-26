@@ -241,49 +241,46 @@ export const VenuesTable = () => {
             </ActionBar>
           )}
         >
+          {/* Fraction-only widths. A static width becomes the column's floor
+              too, and eleven floors do not fit this container, which has no
+              scroll container of its own to fall back on. */}
           <Table.Header>
-            <Table.Column
-              id="name"
-              rowHeader
-              allowsSorting
-              width="2fr"
-              minWidth={200}
-            >
+            <Table.Column id="name" rowHeader allowsSorting width="2fr">
               Name
             </Table.Column>
-            <Table.Column id="type" width={130}>
+            <Table.Column id="type" width="1fr">
               Type
             </Table.Column>
-            <Table.Column id="address" width="1fr" minWidth={190}>
+            <Table.Column id="address" width="2fr">
               Address
             </Table.Column>
             <Table.Column
               id="capacity"
               alignX="right"
               allowsSorting
-              width={110}
+              width="1fr"
             >
               Capacity
             </Table.Column>
-            <Table.Column id="price" alignX="right" allowsSorting width={120}>
+            <Table.Column id="price" alignX="right" allowsSorting width="1fr">
               Max. Price
             </Table.Column>
-            <Table.Column id="traits" width="1fr" minWidth={160}>
+            <Table.Column id="traits" width="1.5fr">
               Traits
             </Table.Column>
-            <Table.Column id="amenities" width="1fr" minWidth={160}>
+            <Table.Column id="amenities" width="1.5fr">
               Amenities
             </Table.Column>
-            <Table.Column id="parking" width={140}>
+            <Table.Column id="parking" width="1fr">
               Parking
             </Table.Column>
-            <Table.Column id="rating" alignX="right" width={100}>
+            <Table.Column id="rating" alignX="right" width="1fr">
               Rating
             </Table.Column>
-            <Table.Column id="available" width={120}>
+            <Table.Column id="available" width="1fr">
               Available
             </Table.Column>
-            <Table.Column id="actions" width={72}>
+            <Table.Column id="actions" width="1fr">
               <VisuallyHidden>Actions</VisuallyHidden>
             </Table.Column>
           </Table.Header>

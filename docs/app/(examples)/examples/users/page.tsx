@@ -44,7 +44,7 @@ const UsersPage = () => (
         <Scrollable>
           <Table aria-label="Members">
             <Table.Header>
-              <Table.Column rowHeader width="2fr" minWidth={240}>
+              <Table.Column rowHeader width="2fr" minWidth={280}>
                 Name
               </Table.Column>
               <Table.Column width="1fr" minWidth={170}>
