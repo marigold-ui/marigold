@@ -30,12 +30,19 @@ export const Stepper: ThemeComponent<'Stepper'> = {
   /**
    * `min-h-11` keeps the pointer target at 44px, well above WCAG 2.5.8's 24px
    * floor.
+   *
+   * `ui-interactive` is scoped to `a`/`button` because this one class also
+   * lands on the `<span>` an unreachable step renders as, and a pointer cursor
+   * there would promise a click that does nothing. Tailwind v4 dropped v3's
+   * `button { cursor: pointer }` from preflight, so without this a step that is
+   * a button kept the arrow cursor while a step with an `href` got the pointer
+   * from the UA stylesheet -- the same control, two cursors.
    */
   link: cva({
     base: [
       'flex min-h-11 items-center gap-2 rounded-sm bg-transparent',
       'text-left no-underline',
-      'focus-visible:ui-state-focus outline-none',
+      '[&:is(a,button)]:ui-interactive',
       'transition-colors motion-reduce:transition-none',
     ],
   }),

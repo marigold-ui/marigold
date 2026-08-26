@@ -63,6 +63,31 @@ Basic.test(
   }
 );
 
+// Tailwind v4 dropped `button { cursor: pointer }` from preflight, so a step
+// that is a button and a step that is a link disagreed about the cursor while
+// being the same control (DSTSUP via Vercel feedback on MultiStepForm).
+Basic.test(
+  'shows a pointer cursor on a step that can be returned to',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const completed = canvas.getByRole('button', { name: /Sign in/ });
+
+    await expect(getComputedStyle(completed).cursor).toBe('pointer');
+  }
+);
+
+// An unreachable step renders as a <span>, so a pointer there would promise a
+// click that does nothing.
+Basic.test(
+  'shows no pointer cursor on a step that is still ahead',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const upcoming = canvas.getByText('Pay').closest('span');
+
+    await expect(getComputedStyle(upcoming!).cursor).not.toBe('pointer');
+  }
+);
+
 Basic.test(
   'draws the focus ring once a step has keyboard focus',
   { parameters: { chromatic: { disableSnapshot: true } } },
