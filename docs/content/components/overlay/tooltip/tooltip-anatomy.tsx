@@ -1,48 +1,45 @@
 export const TooltipAnatomy = () => (
   <svg
     role="img"
-    aria-label="Anatomy of a Tooltip: a Trigger with a Tooltip attached to it by a Caret tip"
-    viewBox="202 47 660 355"
+    aria-label="Anatomy of a Tooltip: a Tooltip sitting above its Trigger, attached to it by a Caret tip"
+    viewBox="0 14 660 221"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
+    {/* Tooltip surface and its caret, drawn as one group: overlapping translucent
+        shapes would otherwise double up into a visible seam where they meet. */}
+    <g
+      className="fill-fd-muted-foreground transition-colors duration-300"
+      opacity="0.2"
+    >
+      <rect x="160" y="30" width="340" height="108" rx="9" />
+      {/* Caret points down, since a tooltip defaults to `placement="top"` */}
+      <path d="M 311 137 L 330 157 L 349 137 Z" />
+    </g>
+    {/* Informative text the tooltip holds */}
+    <g className="fill-fd-foreground/70 transition-colors duration-300">
+      <rect x="194" y="64" width="272" height="12" rx="5" />
+      <rect x="194" y="90" width="210" height="12" rx="5" />
+    </g>
+
     {/* Trigger the tooltip is attached to */}
     <circle
-      cx="532"
-      cy="177"
-      r="26"
+      cx="330"
+      cy="195"
+      r="24"
       className="fill-fd-muted-foreground/25 transition-colors duration-300"
     />
     <text
-      x="532"
-      y="187"
+      x="330"
+      y="204"
       fontFamily="ui-sans-serif, system-ui, sans-serif"
-      fontSize="26"
+      fontSize="24"
       fontWeight="700"
       textAnchor="middle"
       className="fill-fd-foreground transition-colors duration-300"
     >
       ?
     </text>
-
-    {/* Caret tip pointing at the trigger */}
-    <path
-      d="M 513 234 L 532 213 L 551 234 Z"
-      className="fill-fd-muted-foreground/20 transition-colors duration-300"
-    />
-    {/* Tooltip holding the informative text */}
-    <rect
-      x="343"
-      y="232"
-      width="378"
-      height="130"
-      rx="9"
-      className="fill-fd-muted-foreground/20 transition-colors duration-300"
-    />
-    <g className="fill-fd-foreground/70 transition-colors duration-300">
-      <rect x="378" y="272" width="308" height="14" rx="5" />
-      <rect x="378" y="300" width="237" height="14" rx="5" />
-    </g>
 
     {/* Connector lines */}
     <g
@@ -52,19 +49,19 @@ export const TooltipAnatomy = () => (
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      {/* Trigger -> up */}
-      <path d="M 532 151 L 532 90" />
-      {/* Caret tip -> right */}
-      <path d="M 546 225 L 733 225" />
       {/* Tooltip -> left */}
-      <path d="M 343 296 L 260 296" />
+      <path d="M 160 84 L 96 84" />
+      {/* Caret tip -> right */}
+      <path d="M 340 147 L 520 147" />
+      {/* Trigger -> left */}
+      <path d="M 306 195 L 96 195" />
     </g>
 
     {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="532" cy="151" r="4" />
-      <circle cx="546" cy="225" r="4" />
-      <circle cx="343" cy="296" r="4" />
+      <circle cx="160" cy="84" r="4" />
+      <circle cx="340" cy="147" r="4" />
+      <circle cx="306" cy="195" r="4" />
     </g>
 
     {/* Annotation labels */}
@@ -74,14 +71,14 @@ export const TooltipAnatomy = () => (
       fontWeight="600"
       className="fill-fd-primary transition-colors duration-300"
     >
-      <text x="532" y="80" textAnchor="middle">
-        Trigger
+      <text x="88" y="88" textAnchor="end">
+        Tooltip
       </text>
-      <text x="745" y="229" textAnchor="start">
+      <text x="529" y="151" textAnchor="start">
         Caret tip
       </text>
-      <text x="248" y="300" textAnchor="end">
-        Tooltip
+      <text x="88" y="199" textAnchor="end">
+        Trigger
       </text>
     </g>
   </svg>
