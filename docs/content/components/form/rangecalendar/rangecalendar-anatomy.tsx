@@ -1,8 +1,8 @@
-export const CalendarAnatomy = () => (
+export const RangeCalendarAnatomy = () => (
   <svg
     role="img"
-    aria-label="Anatomy of a Calendar: a Header with a Month select box, a Year select box and Step buttons, above a Grid of selectable Dates"
-    viewBox="109 -2 660 440"
+    aria-label="Anatomy of a RangeCalendar: a Header with a Month select box, a Year select box and Step buttons, above a Grid whose selected Range runs from a Start date to an End date"
+    viewBox="109 -2 660 522"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -42,7 +42,7 @@ export const CalendarAnatomy = () => (
       rx="4"
       className="fill-fd-foreground transition-colors duration-300"
     />
-    {/* Chevrons of the two select boxes and the step buttons */}
+    {/* Chevrons of the two select boxes */}
     <g
       className="stroke-fd-muted-foreground transition-colors duration-300"
       strokeWidth="2"
@@ -76,6 +76,21 @@ export const CalendarAnatomy = () => (
       <rect x="629" y="167" width="22" height="10" rx="3" />
     </g>
 
+    {/* Highlighted band spanning the selected range */}
+    <rect
+      x="388"
+      y="378"
+      width="209"
+      height="32"
+      rx="8"
+      className="fill-fd-accent transition-colors duration-300"
+    />
+    {/* Start and end date of the range */}
+    <g className="fill-fd-primary transition-colors duration-300">
+      <rect x="388" y="378" width="32" height="32" rx="8" />
+      <rect x="565" y="378" width="32" height="32" rx="8" />
+    </g>
+
     {/* Dates of the grid (7 columns x 5 weeks) */}
     <g className="fill-fd-foreground/70 transition-colors duration-300">
       {[212, 256, 300, 345, 389].map(y =>
@@ -84,21 +99,11 @@ export const CalendarAnatomy = () => (
         ))
       )}
     </g>
-    {/* Selected date */}
-    <circle
-      cx="640"
-      cy="261"
-      r="16"
-      className="fill-fd-primary transition-colors duration-300"
-    />
-    <rect
-      x="630"
-      y="256"
-      width="20"
-      height="10"
-      rx="3"
-      className="fill-fd-primary-foreground transition-colors duration-300"
-    />
+    {/* Dates sitting on the start and end of the range */}
+    <g className="fill-fd-primary-foreground transition-colors duration-300">
+      <rect x="394" y="389" width="20" height="10" rx="3" />
+      <rect x="571" y="389" width="20" height="10" rx="3" />
+    </g>
 
     {/* Brackets grouping the header and the grid */}
     <g
@@ -131,8 +136,12 @@ export const CalendarAnatomy = () => (
       <path d="M 444 89 L 444 30" />
       {/* Step buttons -> up */}
       <path d="M 579 98 L 579 65" />
-      {/* Date -> right */}
-      <path d="M 656 261 L 689 261" />
+      {/* Start date -> down */}
+      <path d="M 404 410 L 404 448" />
+      {/* End date -> down */}
+      <path d="M 581 410 L 581 448" />
+      {/* Range -> down */}
+      <path d="M 492 410 L 492 483" />
     </g>
 
     {/* Connector dots */}
@@ -142,7 +151,9 @@ export const CalendarAnatomy = () => (
       <circle cx="320" cy="89" r="4" />
       <circle cx="444" cy="89" r="4" />
       <circle cx="579" cy="98" r="4" />
-      <circle cx="656" cy="261" r="4" />
+      <circle cx="404" cy="410" r="4" />
+      <circle cx="581" cy="410" r="4" />
+      <circle cx="492" cy="410" r="4" />
     </g>
 
     {/* Annotation labels */}
@@ -170,10 +181,16 @@ export const CalendarAnatomy = () => (
         <text x="579" y="57">
           Step buttons
         </text>
+        <text x="404" y="470">
+          Start date
+        </text>
+        <text x="581" y="470">
+          End date
+        </text>
+        <text x="492" y="505">
+          Range
+        </text>
       </g>
-      <text x="699" y="265" textAnchor="start">
-        Date
-      </text>
     </g>
   </svg>
 );

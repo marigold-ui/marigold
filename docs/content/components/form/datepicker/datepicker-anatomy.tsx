@@ -2,7 +2,7 @@ export const DatePickerAnatomy = () => (
   <svg
     role="img"
     aria-label="Anatomy of a DatePicker: a Label above a Date field with a Calendar button, opening a popover whose Header sits above the calendar grid"
-    viewBox="107 4 660 429"
+    viewBox="48 -2 660 435"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -177,8 +177,8 @@ export const DatePickerAnatomy = () => (
       <path d="M 297 51 L 297 29" />
       {/* Date field -> left */}
       <path d="M 255 99 L 204 99" />
-      {/* Calendar button -> right */}
-      <path d="M 595 99 L 650 99" />
+      {/* Calendar button -> up, off the top border above the button */}
+      <path d="M 575 76 L 575 30" />
       {/* Header -> left */}
       <path d="M 265 165 L 204 165" />
     </g>
@@ -187,7 +187,7 @@ export const DatePickerAnatomy = () => (
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="297" cy="51" r="4" />
       <circle cx="255" cy="99" r="4" />
-      <circle cx="595" cy="99" r="4" />
+      <circle cx="575" cy="76" r="4" />
       <circle cx="265" cy="165" r="4" />
     </g>
 
@@ -198,9 +198,14 @@ export const DatePickerAnatomy = () => (
       fontWeight="600"
       className="fill-fd-primary transition-colors duration-300"
     >
-      <text x="297" y="22" textAnchor="middle">
-        Label
-      </text>
+      <g textAnchor="middle">
+        <text x="297" y="22">
+          Label
+        </text>
+        <text x="575" y="22">
+          Calendar button
+        </text>
+      </g>
       <g textAnchor="end">
         <text x="195" y="102">
           Date field
@@ -209,9 +214,6 @@ export const DatePickerAnatomy = () => (
           Header
         </text>
       </g>
-      <text x="659" y="102" textAnchor="start">
-        Calendar button
-      </text>
     </g>
   </svg>
 );
