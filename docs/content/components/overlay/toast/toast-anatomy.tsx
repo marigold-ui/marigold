@@ -2,7 +2,7 @@ export const ToastAnatomy = () => (
   <svg
     role="img"
     aria-label="Anatomy of a Toast: an Icon beside the message, with a Close button"
-    viewBox="79 34 660 162"
+    viewBox="93 34 660 162"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -72,9 +72,9 @@ export const ToastAnatomy = () => (
       strokeLinejoin="round"
     >
       {/* Icon -> left */}
-      <path d="M 194 85 L 136 85" />
+      <path d="M 194 85 L 160 85" />
       {/* Close button -> right */}
-      <path d="M 590 82 L 648 82" />
+      <path d="M 590 82 L 624 82" />
     </g>
 
     {/* Connector dots */}
@@ -90,10 +90,10 @@ export const ToastAnatomy = () => (
       fontWeight="600"
       className="fill-fd-primary transition-colors duration-300"
     >
-      <text x="128" y="89" textAnchor="end">
+      <text x="152" y="89" textAnchor="end">
         Icon
       </text>
-      <text x="656" y="85" textAnchor="start">
+      <text x="632" y="85" textAnchor="start">
         Close button
       </text>
     </g>

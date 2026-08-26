@@ -2,7 +2,7 @@ export const DialogAnatomy = () => (
   <svg
     role="img"
     aria-label="Anatomy of a Dialog: a Title, Content, a Close button and Actions, sitting on the Underlay"
-    viewBox="22 15 660 315"
+    viewBox="17 15 660 315"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -98,11 +98,11 @@ export const DialogAnatomy = () => (
       {/* Content -> left */}
       <path d="M 202 131 L 141 131" />
       {/* Underlay -> left */}
-      <path d="M 148 297 L 89 297" />
+      <path d="M 148 297 L 115 297" />
       {/* Close button -> right */}
-      <path d="M 512 89 L 579 89" />
+      <path d="M 512 89 L 552 89" />
       {/* Actions -> right */}
-      <path d="M 512 245 L 579 245" />
+      <path d="M 512 245 L 552 245" />
     </g>
 
     {/* Connector dots */}
@@ -128,15 +128,15 @@ export const DialogAnatomy = () => (
         <text x="134" y="134">
           Content
         </text>
-        <text x="82" y="300">
+        <text x="108" y="300">
           Underlay
         </text>
       </g>
       <g textAnchor="start">
-        <text x="586" y="92">
+        <text x="559" y="92">
           Close button
         </text>
-        <text x="586" y="248">
+        <text x="559" y="248">
           Actions
         </text>
       </g>

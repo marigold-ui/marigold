@@ -2,7 +2,7 @@ export const DrawerAnatomy = () => (
   <svg
     role="img"
     aria-label="Anatomy of a Drawer: a Title, Content, a Close button and Actions, in a panel beside the Page content"
-    viewBox="0 -30 660 384"
+    viewBox="0 -36 660 390"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
