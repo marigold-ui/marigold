@@ -1,4 +1,4 @@
-import type { Key, ReactNode } from 'react';
+import type { Key, ReactElement, ReactNode } from 'react';
 import { Children, isValidElement } from 'react';
 import { Button } from 'react-aria-components/Button';
 import { Link } from 'react-aria-components/Link';
@@ -9,7 +9,7 @@ import { useClassNames } from '@marigold/system';
 import { Check } from '../icons/Check';
 import { TriangleAlert } from '../icons/TriangleAlert';
 import { intlMessages } from '../intl/messages';
-import { StepperItem, StepperItemProps } from './StepperItem';
+import { StepperItem, type StepperItemProps } from './StepperItem';
 
 type StepState = 'completed' | 'current' | 'error' | 'disabled' | 'upcoming';
 
@@ -50,8 +50,9 @@ export interface StepperProps {
   completedKeys?: Iterable<Key>;
 
   /**
-   * The steps that failed. Always selectable, so the user can go back and fix
-   * them.
+   * The steps that failed. Selectable by default, so the user can go back and
+   * fix them, unless `selectableKeys` is given: that replaces the default rule
+   * outright and an errored key left out of it is no longer reachable.
    */
   errorKeys?: Iterable<Key>;
 
@@ -151,8 +152,12 @@ const _Stepper = ({
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const classNames = useClassNames({ component: 'Stepper', variant });
 
+  // `isValidElement<T>` only asserts the props type, it does not check what
+  // the element is, and `Children.toArray` leaves fragments intact. Without the
+  // `type` test a stray element or a fragment becomes a step with no `id`.
   const items = Children.toArray(children).filter(
-    isValidElement<StepperItemProps>
+    (child): child is ReactElement<StepperItemProps> =>
+      isValidElement(child) && child.type === StepperItem
   );
 
   // Uncontrolled mode only remembers which step was activated. It never infers
@@ -191,6 +196,9 @@ const _Stepper = ({
 
   const currentIndex = items.findIndex(item => item.props.id === selectedKey);
 
+  // A landmark with nothing in it is noise in the landmark list.
+  if (items.length === 0) return null;
+
   return (
     <nav
       aria-label={ariaLabel ?? stringFormatter.format('progress')}
@@ -208,7 +216,7 @@ const _Stepper = ({
           })}
         </span>
       )}
-      <ol className={classNames.container}>
+      <ol role="list" className={classNames.container}>
         {items.map((item, index) => {
           const { id, children: label, href } = item.props;
           const state = getState(id);
@@ -219,7 +227,12 @@ const _Stepper = ({
           const stateText = stringFormatter.format(STATE_MESSAGE[state]);
 
           return (
-            <li key={id} className={classNames.item} data-state={state}>
+            <li
+              key={id}
+              className={classNames.item}
+              data-state={state}
+              data-current={id === selectedKey || undefined}
+            >
               <StepContent
                 className={classNames.link}
                 isCurrent={id === selectedKey}

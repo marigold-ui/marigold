@@ -85,7 +85,8 @@ export const Stepper: ThemeComponent<'Stepper'> = {
       'in-data-[state=upcoming]:text-secondary',
       // See the marker slot: an inert <span> is text, so it owes the full 4.5:1.
       'in-data-[state=disabled]:text-secondary',
-      'in-data-[state=current]:text-foreground in-data-[state=current]:font-medium',
+      'in-data-[state=current]:text-foreground',
+      'in-data-current:font-medium',
       'in-data-[state=completed]:text-foreground',
       'in-data-[state=error]:text-destructive-accent',
     ],

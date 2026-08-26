@@ -96,13 +96,9 @@ export const StepperAnatomy = () => (
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      {/* Step -> up */}
       <path d="M 86 118 L 86 86" />
-      {/* Label -> up */}
       <path d="M 433 134 L 433 86" />
-      {/* Marker -> down */}
       <path d="M 213 155 L 213 196" />
-      {/* Connector -> down */}
       <path d="M 333 140 L 333 196" />
     </g>
 

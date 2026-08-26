@@ -1,7 +1,7 @@
 ---
 title: Stepper
 description: A component for showing a user's position in a multi-step task.
-badge: BETA
+badge: beta
 ---
 
 import { StepperAnatomy } from './stepper-anatomy';
@@ -100,7 +100,7 @@ When a user submits a step that fails validation, they need to see which step br
 
 <ComponentDemo name="stepper-validation-errors" />
 
-Two things are worth copying from the example. Clear the step's key as soon as the user edits the field, so the marker and the input never disagree about whether the step is still broken. And remember that an errored step stays selectable by design: if your flow lets people move past a failed step, the red marker is their way back to it.
+Two things are worth copying from the example. Clear the step's key as soon as the user edits the field, so the marker and the input never disagree about whether the step is still broken. And remember that an errored step stays selectable by default: if your flow lets people move past a failed step, the red marker is their way back to it.
 
 ### Which steps can be clicked
 
@@ -109,7 +109,7 @@ By default a user can return to any step they have completed, any step that fail
 Two props change this:
 
 - `disabledKeys` marks steps that are unavailable. They are never clickable, and nothing overrides that.
-- `selectableKeys` replaces the default rule outright. Pass it when a server decides which steps are reachable.
+- `selectableKeys` replaces the default rule outright. Pass it when a server decides which steps are reachable. It revokes the errored-step guarantee too: a key in `errorKeys` that you leave out of `selectableKeys` is marked as broken with no way back to it, so include it unless you mean that.
 
 ```tsx
 <Stepper
@@ -128,7 +128,7 @@ Two props change this:
 
 ### Links or buttons
 
-When each step of your flow has its own URL, the steps should behave like the links they are, so middle-click, open in a new tab, and copy link all work. Give a `<Stepper.Item>` an `href` and it renders as a real link. Without an `href`, the step renders as a button and only calls `onSelectionChange`.
+When each step of your flow has its own URL, the steps should behave like the links they are, so middle-click, open in a new tab, and copy link all work. Give a **reachable** `<Stepper.Item>` an `href` and it renders as a real link; a step that is still ahead stays inert text even with an `href`. Without an `href`, a reachable step renders as a button and only calls `onSelectionChange`.
 
 A bare `href` performs a real page load, which is usually not what a single-page app wants. Wrap the tree in a [`<RouterProvider>`](/components/application/routerprovider) and hand it your router's navigate function: the steps stay real anchors for the browser, but clicking one routes client-side. With hrefs the route is the source of truth, so derive `selectedKey` from it and skip `onSelectionChange` entirely.
 
@@ -148,7 +148,7 @@ Hiding the labels also takes away a sighted user's sense of how far along they a
 
 - The stepper renders a `<nav>` landmark around an ordered list, so screen reader users can jump to it or past it. Give it an `aria-label` when a page has more than one landmark, otherwise it falls back to a localized "Progress".
 - Avoid labelling both the stepper and a `<Panel>` wrapped directly around it. Two nested labelled regions add noise without adding information.
-- Each step announces its label, its position, and its state, for example "Choose plan, Step 2 of 4, current step".
+- Each step announces its label, its position, and its state, for example "Choose plan Step 2 of 4, current step".
 - Activation follows the element: Enter on a link step, Enter or Space on a button step.
 - Colour transitions are removed when the user prefers reduced motion.
 

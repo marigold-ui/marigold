@@ -1,6 +1,9 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
+import { theme } from '@marigold/theme-rui';
+import { MarigoldProvider } from '../Provider/MarigoldProvider';
+import { Stepper } from './Stepper';
 import { Basic, HideLabels, States, WithHrefs } from './Stepper.stories';
 import { StepperItem } from './StepperItem';
 
@@ -104,6 +107,14 @@ test('keeps an errored step selectable so it can be fixed', () => {
   expect(screen.getByRole('button', { name: /Error/ })).toBeInTheDocument();
 });
 
+test('drops the errored-step guarantee when selectableKeys leaves it out', () => {
+  render(<States.Component selectableKeys={['done']} />);
+
+  expect(
+    screen.queryByRole('button', { name: /Error/ })
+  ).not.toBeInTheDocument();
+});
+
 test('lets selectableKeys override the default rule', () => {
   render(<Basic.Component selectableKeys={['done']} />);
 
@@ -121,6 +132,21 @@ test('never makes a disabled step selectable, even via selectableKeys', () => {
   ).not.toBeInTheDocument();
 });
 
+test('accepts completion that skips a step', () => {
+  render(
+    <Basic.Component selectedKey="done" completedKeys={['signin', 'pay']} />
+  );
+
+  const items = screen.getAllByRole('listitem');
+
+  expect(items.map(item => item.getAttribute('data-state'))).toEqual([
+    'completed',
+    'upcoming',
+    'completed',
+    'current',
+  ]);
+});
+
 test('renders a step with an href as a real link', () => {
   render(<WithHrefs.Component />);
 
@@ -132,6 +158,27 @@ test('renders a step with an href as a real link', () => {
 
 test('selects the first step by default when uncontrolled', () => {
   render(<Basic.Component selectedKey={undefined} />);
+
+  expect(screen.getByRole('button', { name: /Sign in/ })).toHaveAttribute(
+    'aria-current',
+    'step'
+  );
+});
+
+test('starts on defaultSelectedKey when uncontrolled', () => {
+  render(<Basic.Component selectedKey={undefined} defaultSelectedKey="pay" />);
+
+  expect(screen.getByRole('button', { name: /Pay/ })).toHaveAttribute(
+    'aria-current',
+    'step'
+  );
+});
+
+test('moves the current step itself when uncontrolled', async () => {
+  const user = userEvent.setup();
+  render(<Basic.Component selectedKey={undefined} defaultSelectedKey="pay" />);
+
+  await user.click(screen.getByRole('button', { name: /Sign in/ }));
 
   expect(screen.getByRole('button', { name: /Sign in/ })).toHaveAttribute(
     'aria-current',
@@ -168,6 +215,55 @@ test('shows no step counter while the labels are visible', () => {
   render(<Basic.Component />);
 
   expect(screen.queryByText('Step 2 of 4')).not.toBeInTheDocument();
+});
+
+test('marks the current step even when its state resolves to error', () => {
+  render(<States.Component selectedKey="failed" />);
+
+  const errored = screen.getAllByRole('listitem')[2];
+
+  expect(errored).toHaveAttribute('data-current', 'true');
+});
+
+test('marks only the current step with data-current', () => {
+  render(<Basic.Component />);
+
+  const marked = screen
+    .getAllByRole('listitem')
+    .filter(item => item.hasAttribute('data-current'));
+
+  expect(marked).toHaveLength(1);
+});
+
+// Tailwind's preflight sets `list-style: none` on every list, and WebKit reads
+// that as "not a list". The explicit role is what keeps the semantics.
+test('keeps the list role against the stylesheet', () => {
+  render(<Basic.Component />);
+
+  expect(screen.getByRole('list')).toHaveAttribute('role', 'list');
+});
+
+test('ignores children that are not a Stepper.Item', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Stepper aria-label="Checkout progress">
+        <Stepper.Item id="signin">Sign in</Stepper.Item>
+        <span>Not a step</span>
+      </Stepper>
+    </MarigoldProvider>
+  );
+
+  expect(screen.getAllByRole('listitem')).toHaveLength(1);
+});
+
+test('renders nothing when there are no steps', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Stepper aria-label="Checkout progress">{[]}</Stepper>
+    </MarigoldProvider>
+  );
+
+  expect(screen.queryByRole('navigation')).not.toBeInTheDocument();
 });
 
 // `<Stepper.Item>` only declares props: `<Stepper>` reads them off the element
