@@ -105,13 +105,16 @@ const _Switch = ({
     >
       <SwitchButton
         ref={ref}
-        className={cn('group/switch w-(--width)', classNames.container)}
+        className={cn(
+          'group/switch relative w-(--width)',
+          classNames.container
+        )}
         style={createWidthVar('width', width)}
       >
         {variant === 'settings' && label && (
           <Label elementType="span">{label}</Label>
         )}
-        <div className="relative">
+        <div>
           <div className={classNames.track}>
             <div className={classNames.thumb} />
           </div>
