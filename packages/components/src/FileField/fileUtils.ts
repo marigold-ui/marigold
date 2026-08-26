@@ -56,6 +56,37 @@ const matchesAcceptedToken = (file: File, token: string): boolean => {
   return fileType === t;
 };
 
+// Sizes step by 1024, which is what the field has always divided by. The
+// symbols stay the same in every locale Marigold ships messages for, so only
+// the number goes through `Intl.NumberFormat` - that keeps `2,34 kB` in de-DE
+// next to `2.34 kB` in en-US while a list of files stays on one set of units.
+// `style: 'unit'` was the alternative, but its short form spells bytes out
+// ("340 byte"), which reads inconsistently next to the abbreviated `kB` above
+// it in the same list.
+const FILE_SIZE_UNITS = ['B', 'kB', 'MB', 'GB', 'TB'] as const;
+const FILE_SIZE_STEP = 1024;
+
+/**
+ * Formats a file size with the unit that fits its magnitude, so a 2,400-byte
+ * CSV reads as `2.34 kB` instead of rounding away to `0.00 MB`.
+ */
+export const formatFileSize = (size: number, locale: string): string => {
+  const bytes = Number.isFinite(size) && size > 0 ? size : 0;
+  const exponent =
+    bytes === 0
+      ? 0
+      : Math.min(
+          Math.floor(Math.log(bytes) / Math.log(FILE_SIZE_STEP)),
+          FILE_SIZE_UNITS.length - 1
+        );
+
+  const value = new Intl.NumberFormat(locale, {
+    maximumFractionDigits: 2,
+  }).format(bytes / FILE_SIZE_STEP ** exponent);
+
+  return `${value} ${FILE_SIZE_UNITS[exponent]}`;
+};
+
 // Identity of a file for de-duplication and removal: two files with the same
 // name, size, and last-modified time are treated as the same file.
 export const fileKey = (file: File): string =>

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   filterAcceptedFiles,
+  formatFileSize,
   isFileDropItem,
   normalizeAndLimitFiles,
 } from './fileUtils';
@@ -140,6 +141,38 @@ describe('normalizeAndLimitFiles', () => {
     expect(result).toHaveLength(1);
     expect(result[0].name).toBe('a.txt');
   });
+});
+
+describe('formatFileSize', () => {
+  it.each([
+    [0, '0 B'],
+    [340, '340 B'],
+    [1023, '1,023 B'],
+    [1024, '1 kB'],
+    // The regression from DSTSUP-275: a small CSV used to render "0.00 MB".
+    [2400, '2.34 kB'],
+    [0.5 * 1024 * 1024, '512 kB'],
+    [2 * 1024 * 1024, '2 MB'],
+    [1.5 * 1024 * 1024 * 1024, '1.5 GB'],
+    [3 * 1024 ** 4, '3 TB'],
+  ])('formats %i bytes as "%s" in en-US', (size, expected) => {
+    expect(formatFileSize(size, 'en-US')).toBe(expected);
+  });
+
+  it('keeps the largest unit for sizes beyond it', () => {
+    expect(formatFileSize(2 * 1024 ** 5, 'en-US')).toBe('2,048 TB');
+  });
+
+  it('formats the number for the active locale', () => {
+    expect(formatFileSize(2400, 'de-DE')).toBe('2,34 kB');
+  });
+
+  it.each([[-1], [NaN], [Infinity]])(
+    'falls back to "0 B" for the non-size %s',
+    size => {
+      expect(formatFileSize(size, 'en-US')).toBe('0 B');
+    }
+  );
 });
 
 describe('isFileDropItem', () => {

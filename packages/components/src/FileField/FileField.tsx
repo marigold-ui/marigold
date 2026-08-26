@@ -1,13 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import type RAC from 'react-aria-components';
 import { DropZone } from 'react-aria-components/DropZone';
-import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { useLocale, useLocalizedStringFormatter } from '@react-aria/i18n';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, type FieldBaseProps } from '../FieldBase/FieldBase';
 import { intlMessages } from '../intl/messages';
 import { FileFieldItem } from './FileFieldItem';
 import { FileTrigger } from './FileTrigger';
-import { fileKey, isFileDropItem, normalizeAndLimitFiles } from './fileUtils';
+import {
+  fileKey,
+  formatFileSize,
+  isFileDropItem,
+  normalizeAndLimitFiles,
+} from './fileUtils';
 
 type RemovedProps =
   'className' | 'style' | 'children' | 'isDisabled' | 'isRequired';
@@ -75,6 +80,7 @@ export const FileField = ({
   const [files, setFiles] = useState<File[] | null>(null);
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const { locale } = useLocale();
   const dropZoneLabel = stringFormatter.format('dropZoneLabel');
   const buttonLabel = stringFormatter.format('uploadLabel');
 
@@ -200,7 +206,7 @@ export const FileField = ({
                 classNames.itemDescription
               )}
             >
-              {(file.size / 1024 / 1024).toFixed(2)} MB
+              {formatFileSize(file.size, locale)}
             </div>
           </FileField.Item>
         ))}
