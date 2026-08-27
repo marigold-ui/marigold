@@ -728,8 +728,7 @@ export const statusVariant: Record<string, 'success' | 'warning' | 'default'> =
 // Column widths for the venue tables, shared so the picker and the committed
 // report stay in step. Set at all because a column without a width falls back
 // to react-aria's 75px default, which squeezes every column under its content
-// until neighbouring cells paint over each other. The flexible columns take a
-// fraction plus a floor, the predictable ones a fixed width.
+// until neighbouring cells paint over each other.
 export const venueColumnWidths = {
   name: { width: '2fr', minWidth: 200 },
   city: { width: 130 },

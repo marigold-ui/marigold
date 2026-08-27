@@ -241,9 +241,6 @@ export const VenuesTable = () => {
             </ActionBar>
           )}
         >
-          {/* Fraction-only widths. A static width becomes the column's floor
-              too, and eleven floors do not fit this container, which has no
-              scroll container of its own to fall back on. */}
           <Table.Header>
             <Table.Column id="name" rowHeader allowsSorting width="2fr">
               Name

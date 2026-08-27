@@ -106,10 +106,6 @@ const DashboardPage = () => (
           <Description>What your team has been up to.</Description>
         </Panel.Header>
         <Panel.Content bleed>
-          {/* `Scrollable` earns its place twice here: it gives the table
-              somewhere to go below the column widths' sum, and its own
-              min-content is zero, so the table can no longer inflate this
-              panel and wrap the 2:1 pair before `collapseAt` says to. */}
           <Scrollable>
             <Table aria-label="Recent activity">
               <Table.Header>

@@ -44,8 +44,6 @@ export const ReportVenues = () => {
         </Panel.Content>
       ) : (
         <Panel.Content bleed>
-          {/* Eleven columns never fit a narrow panel, so the table scrolls
-              inside `Scrollable` rather than being clipped by the page. */}
           <Scrollable>
             <Table aria-label="Report venues">
               <Table.Header>

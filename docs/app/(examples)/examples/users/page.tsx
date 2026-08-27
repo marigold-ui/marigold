@@ -37,10 +37,6 @@ const UsersPage = () => (
     </Page.Header>
     <Panel aria-label="Members">
       <Panel.Content bleed>
-        {/* Columns carry widths so they never fall back to the 75px default,
-            which squeezes them under their content and lets the name cell
-            paint over its neighbour. `Scrollable` then gives the table
-            somewhere to go when the sum no longer fits. */}
         <Scrollable>
           <Table aria-label="Members">
             <Table.Header>
