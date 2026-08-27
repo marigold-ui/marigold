@@ -13,13 +13,9 @@ const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => {
   const state = useCalendarOrRangeState();
   const focusedYear = state.focusedDate.year;
 
-  // `CalendarYearPicker` centers a fixed `visibleYears` window on the focused
-  // year and clamps it to the bounds, so size the window to reach whichever
-  // bound is farther. Unbounded sides keep the focused-year ±20 window. A wide
-  // both-bounds range still renders every in-range year, so virtualizing the
-  // listbox is the path forward if the DOM size ever becomes a concern.
-  const min = state.minValue ? state.minValue.year : focusedYear - 20;
-  const max = state.maxValue ? state.maxValue.year : focusedYear + 20;
+  const start = Math.max(focusedYear - 20, 1);
+  const min = state.minValue ? state.minValue.year : start;
+  const max = state.maxValue ? state.maxValue.year : start + 40;
   const visibleYears = 2 * Math.max(focusedYear - min, max - focusedYear) + 1;
 
   return (
@@ -27,7 +23,7 @@ const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => {
       {({ items, value, onChange, 'aria-label': ariaLabel }) => (
         <ListBox
           ariaLabel={ariaLabel}
-          items={items}
+          items={items.filter(item => item.date.era === state.focusedDate.era)}
           isSelected={item => item.id === value}
           onSelect={item => {
             onChange(item.id);

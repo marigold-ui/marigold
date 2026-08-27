@@ -228,6 +228,27 @@ Basic.test(
 );
 
 Basic.test(
+  'Anchors the year list at year 1 instead of rolling into the previous era',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: {
+      defaultValue: new CalendarDate(5, 6, 15),
+    },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: '5' }));
+
+    const years = within(canvas.getByRole('listbox', { name: 'year' }))
+      .getAllByRole('option')
+      .map(option => option.textContent);
+
+    await expect(years).toEqual(
+      Array.from({ length: 41 }, (_, index) => String(index + 1))
+    );
+  }
+);
+
+Basic.test(
   'Keeps the maxValue year reachable and renders no later years',
   {
     parameters: { chromatic: { disableSnapshot: true } },
