@@ -18,7 +18,7 @@ import {
   Tag,
   Text,
 } from '@marigold/components';
-import { type Venue, statusVariant, venues } from './venues';
+import { type Venue, statusVariant, venueColumnWidths, venues } from './venues';
 
 // Type and region options are derived from the data so they never drift from
 // it: every option maps to real venues, and every venue value is selectable.
@@ -297,17 +297,35 @@ const PickBody = ({
               onSelectionChange={onSelectionChange}
             >
               <Table.Header sticky>
-                <Table.Column rowHeader>Venue</Table.Column>
-                <Table.Column>City</Table.Column>
-                <Table.Column>Region</Table.Column>
-                <Table.Column>Country</Table.Column>
-                <Table.Column>Type</Table.Column>
-                <Table.Column>Setting</Table.Column>
-                <Table.Column alignX="right">Capacity</Table.Column>
-                <Table.Column alignX="right">Rating</Table.Column>
-                <Table.Column alignX="right">Upcoming</Table.Column>
-                <Table.Column>Status</Table.Column>
-                <Table.Column alignX="right">Day rate</Table.Column>
+                <Table.Column rowHeader {...venueColumnWidths.name}>
+                  Venue
+                </Table.Column>
+                <Table.Column {...venueColumnWidths.city}>City</Table.Column>
+                <Table.Column {...venueColumnWidths.region}>
+                  Region
+                </Table.Column>
+                <Table.Column {...venueColumnWidths.country}>
+                  Country
+                </Table.Column>
+                <Table.Column {...venueColumnWidths.type}>Type</Table.Column>
+                <Table.Column {...venueColumnWidths.setting}>
+                  Setting
+                </Table.Column>
+                <Table.Column alignX="right" {...venueColumnWidths.capacity}>
+                  Capacity
+                </Table.Column>
+                <Table.Column alignX="right" {...venueColumnWidths.rating}>
+                  Rating
+                </Table.Column>
+                <Table.Column alignX="right" {...venueColumnWidths.upcoming}>
+                  Upcoming
+                </Table.Column>
+                <Table.Column {...venueColumnWidths.status}>
+                  Status
+                </Table.Column>
+                <Table.Column alignX="right" {...venueColumnWidths.rate}>
+                  Day rate
+                </Table.Column>
               </Table.Header>
               <Table.Body
                 items={results}

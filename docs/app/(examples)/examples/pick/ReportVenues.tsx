@@ -6,11 +6,12 @@ import {
   EmptyState,
   Inline,
   Panel,
+  Scrollable,
   Table,
   Text,
 } from '@marigold/components';
 import { PickVenuesDialog } from './PickVenuesDialog';
-import { statusVariant, venues } from './venues';
+import { statusVariant, venueColumnWidths, venues } from './venues';
 
 export const ReportVenues = () => {
   // The report starts empty; picking builds the committed set, which then lives
@@ -43,42 +44,62 @@ export const ReportVenues = () => {
         </Panel.Content>
       ) : (
         <Panel.Content bleed>
-          <Table aria-label="Report venues">
-            <Table.Header>
-              <Table.Column rowHeader>Venue</Table.Column>
-              <Table.Column>City</Table.Column>
-              <Table.Column>Region</Table.Column>
-              <Table.Column>Country</Table.Column>
-              <Table.Column>Type</Table.Column>
-              <Table.Column>Setting</Table.Column>
-              <Table.Column alignX="right">Capacity</Table.Column>
-              <Table.Column alignX="right">Rating</Table.Column>
-              <Table.Column alignX="right">Upcoming</Table.Column>
-              <Table.Column>Status</Table.Column>
-              <Table.Column alignX="right">Day rate</Table.Column>
-            </Table.Header>
-            <Table.Body items={chosen}>
-              {venue => (
-                <Table.Row id={venue.id}>
-                  <Table.Cell>{venue.name}</Table.Cell>
-                  <Table.Cell>{venue.city}</Table.Cell>
-                  <Table.Cell>{venue.region}</Table.Cell>
-                  <Table.Cell>{venue.country}</Table.Cell>
-                  <Table.Cell>{venue.type}</Table.Cell>
-                  <Table.Cell>{venue.setting}</Table.Cell>
-                  <Table.Cell alignX="right">{venue.capacity}</Table.Cell>
-                  <Table.Cell alignX="right">{venue.rating}</Table.Cell>
-                  <Table.Cell alignX="right">{venue.events}</Table.Cell>
-                  <Table.Cell>
-                    <Badge variant={statusVariant[venue.status]}>
-                      {venue.status}
-                    </Badge>
-                  </Table.Cell>
-                  <Table.Cell alignX="right">{venue.rate}</Table.Cell>
-                </Table.Row>
-              )}
-            </Table.Body>
-          </Table>
+          <Scrollable>
+            <Table aria-label="Report venues">
+              <Table.Header>
+                <Table.Column rowHeader {...venueColumnWidths.name}>
+                  Venue
+                </Table.Column>
+                <Table.Column {...venueColumnWidths.city}>City</Table.Column>
+                <Table.Column {...venueColumnWidths.region}>
+                  Region
+                </Table.Column>
+                <Table.Column {...venueColumnWidths.country}>
+                  Country
+                </Table.Column>
+                <Table.Column {...venueColumnWidths.type}>Type</Table.Column>
+                <Table.Column {...venueColumnWidths.setting}>
+                  Setting
+                </Table.Column>
+                <Table.Column alignX="right" {...venueColumnWidths.capacity}>
+                  Capacity
+                </Table.Column>
+                <Table.Column alignX="right" {...venueColumnWidths.rating}>
+                  Rating
+                </Table.Column>
+                <Table.Column alignX="right" {...venueColumnWidths.upcoming}>
+                  Upcoming
+                </Table.Column>
+                <Table.Column {...venueColumnWidths.status}>
+                  Status
+                </Table.Column>
+                <Table.Column alignX="right" {...venueColumnWidths.rate}>
+                  Day rate
+                </Table.Column>
+              </Table.Header>
+              <Table.Body items={chosen}>
+                {venue => (
+                  <Table.Row id={venue.id}>
+                    <Table.Cell>{venue.name}</Table.Cell>
+                    <Table.Cell>{venue.city}</Table.Cell>
+                    <Table.Cell>{venue.region}</Table.Cell>
+                    <Table.Cell>{venue.country}</Table.Cell>
+                    <Table.Cell>{venue.type}</Table.Cell>
+                    <Table.Cell>{venue.setting}</Table.Cell>
+                    <Table.Cell alignX="right">{venue.capacity}</Table.Cell>
+                    <Table.Cell alignX="right">{venue.rating}</Table.Cell>
+                    <Table.Cell alignX="right">{venue.events}</Table.Cell>
+                    <Table.Cell>
+                      <Badge variant={statusVariant[venue.status]}>
+                        {venue.status}
+                      </Badge>
+                    </Table.Cell>
+                    <Table.Cell alignX="right">{venue.rate}</Table.Cell>
+                  </Table.Row>
+                )}
+              </Table.Body>
+            </Table>
+          </Scrollable>
         </Panel.Content>
       )}
     </Panel>
