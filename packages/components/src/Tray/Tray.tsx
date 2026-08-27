@@ -186,7 +186,14 @@ export const Tray = ({
               classNames.container
             )}
           >
-            <div className={cn('[grid-area:drag]', classNames.dragHandle)} />
+            {/* Chrome owns vertical gestures now that motion's listener is
+                disarmed. See `TrayModal.tsx`. */}
+            <div
+              className={cn(
+                'touch-none select-none [grid-area:drag]',
+                classNames.dragHandle
+              )}
+            />
             <Provider
               values={[
                 [HeadingContext, rootHeadingProps],

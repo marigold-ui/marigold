@@ -242,25 +242,42 @@ export const VenuesTable = () => {
           )}
         >
           <Table.Header>
-            <Table.Column id="name" rowHeader allowsSorting>
+            <Table.Column id="name" rowHeader allowsSorting width="2fr">
               Name
             </Table.Column>
-            <Table.Column id="type">Type</Table.Column>
-            <Table.Column id="address">Address</Table.Column>
-            <Table.Column id="capacity" alignX="right" allowsSorting>
+            <Table.Column id="type" width="1fr">
+              Type
+            </Table.Column>
+            <Table.Column id="address" width="2fr">
+              Address
+            </Table.Column>
+            <Table.Column
+              id="capacity"
+              alignX="right"
+              allowsSorting
+              width="1fr"
+            >
               Capacity
             </Table.Column>
-            <Table.Column id="price" alignX="right" allowsSorting>
+            <Table.Column id="price" alignX="right" allowsSorting width="1fr">
               Max. Price
             </Table.Column>
-            <Table.Column id="traits">Traits</Table.Column>
-            <Table.Column id="amenities">Amenities</Table.Column>
-            <Table.Column id="parking">Parking</Table.Column>
-            <Table.Column id="rating" alignX="right">
+            <Table.Column id="traits" width="1.5fr">
+              Traits
+            </Table.Column>
+            <Table.Column id="amenities" width="1.5fr">
+              Amenities
+            </Table.Column>
+            <Table.Column id="parking" width="1fr">
+              Parking
+            </Table.Column>
+            <Table.Column id="rating" alignX="right" width="1fr">
               Rating
             </Table.Column>
-            <Table.Column id="available">Available</Table.Column>
-            <Table.Column id="actions">
+            <Table.Column id="available" width="1fr">
+              Available
+            </Table.Column>
+            <Table.Column id="actions" width="1fr">
               <VisuallyHidden>Actions</VisuallyHidden>
             </Table.Column>
           </Table.Header>
