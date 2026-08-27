@@ -22,3 +22,10 @@ export const TrayContext = createContext<TrayContextProps>(
 );
 
 export const useTrayContext = () => use(TrayContext);
+
+/**
+ * Marks the tray's scrollable body so `TrayModal` can tell content gestures
+ * from chrome gestures (DSTSUP-272). Internal, not an opt-out marker. Lives
+ * here, not `TrayContent.tsx`, so `TrayModal` doesn't depend on it.
+ */
+export const TRAY_CONTENT_ATTR = 'data-tray-content';
