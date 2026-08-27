@@ -3,7 +3,7 @@ import type RAC from 'react-aria-components';
 import { SwitchButton, SwitchField } from 'react-aria-components/Switch';
 import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
 import { BooleanField } from '../FieldBase/BooleanField';
-import { Label } from '../Label/Label';
+import { LabelAdornment } from '../utils/LabelAdornment';
 
 type RemovedProps =
   | 'children'
@@ -23,6 +23,13 @@ export interface SwitchProps extends Omit<RAC.SwitchFieldProps, RemovedProps> {
    * Set the label of the switch.
    */
   label?: ReactNode;
+
+  /**
+   * A `<Badge>` shown at the end of the label's first line. Use this instead
+   * of putting it in `label` yourself: the slot sizes it to the line so it
+   * doesn't make the line taller than the track next to it.
+   */
+  badge?: ReactNode;
 
   /**
    * A helpful text.
@@ -75,6 +82,7 @@ const _Switch = ({
   size,
   width = 'full',
   label,
+  badge,
   description,
   error,
   errorMessage,
@@ -91,6 +99,14 @@ const _Switch = ({
     isSelected: selected,
     ...rest,
   } satisfies RAC.SwitchFieldProps;
+
+  const labelSlot = (label || badge) && (
+    <div className={classNames.label}>
+      {label}
+      {badge && <LabelAdornment>{badge}</LabelAdornment>}
+    </div>
+  );
+
   return (
     // The `SwitchButton` (the rendered `label`) carries the width, matching the
     // standalone layout.
@@ -111,15 +127,11 @@ const _Switch = ({
         )}
         style={createWidthVar('width', width)}
       >
-        {variant === 'settings' && label && (
-          <Label elementType="span">{label}</Label>
-        )}
-        <div className={classNames.track}>
+        {variant === 'settings' && labelSlot}
+        <div aria-hidden="true" className={classNames.track}>
           <div className={classNames.thumb} />
         </div>
-        {variant !== 'settings' && label && (
-          <Label elementType="span">{label}</Label>
-        )}
+        {variant !== 'settings' && labelSlot}
       </SwitchButton>
     </BooleanField>
   );

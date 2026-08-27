@@ -147,12 +147,10 @@ Basic.test(
   }
 );
 
-// There is no accessible way to reach the track. It is the direct child div of
-// the label; the thumb is nested inside it. Matching on `rounded-full` would
-// also match the thumb, and every assertion here reads `'none'` off a wrong
-// element just as happily as off the right one — so pin the shape instead.
 const getTrack = (switchEl: HTMLElement) => {
-  const track = switchEl.closest('label')?.querySelector(':scope > div');
+  const track = switchEl
+    .closest('label')
+    ?.querySelector('[aria-hidden="true"]');
 
   expect(track).not.toBeNull();
   // The track is the `w-7` box; the thumb is `size-3`. If this ever matches the
