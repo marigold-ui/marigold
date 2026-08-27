@@ -114,6 +114,8 @@ Assembled by hand, this pattern has three ways to lose data quietly, and `addUnd
 
 It also drops the toast's close button. Undo and Close side by side is a trap: to most people a close button reads as "get this out of my way", not "go through with it", yet closing is what puts the deletion through. With no close button the only two ways out are Undo and the window running out, and both mean what they look like.
 
+The Undo button it renders is a filled `secondary` button, not a ghost one. The toast arrives far from the control that triggered it and leaves after five seconds, so the way back has to be visible at a glance rather than on hover. It is not a `destructive` button either: undo is the safe action here, and red beside a completed deletion reads as a second delete.
+
 <GuidelineTiles>
   <Do>
     <DoDescription>

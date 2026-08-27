@@ -3,19 +3,15 @@ title: ContextualHelp
 description: Displays contextual help via popover on button click
 ---
 
+import { ContextualHelpAnatomy } from './contextual-help-anatomy';
+
 The `<ContextualHelp>` component provides inline assistance to help users understand specific parts of your interface. It displays a small button with an icon that, when clicked, opens a popover with explanatory content. This content can be rich and interactive, unlike tooltips which are intended for brief, passive messages.
 
 Use `<ContextualHelp>` when users might need deeper guidance or context, especially for complex settings, form inputs, or unfamiliar actions.
 
 ## Anatomy
 
-<ImageZoom
-  src="/contextualhelp/contextualhelp-anatomy.jpg"
-  alt="Anatomy of tooltip"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+<ContextualHelpAnatomy />
 
 - **Trigger button:** A small icon button that activates the help popover.
 - **Popover:** A floating container for detailed help content.
