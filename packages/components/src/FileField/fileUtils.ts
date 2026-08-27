@@ -56,15 +56,18 @@ const matchesAcceptedToken = (file: File, token: string): boolean => {
   return fileType === t;
 };
 
-// Sizes step by 1024, which is what the field has always divided by. The
-// symbols stay the same in every locale Marigold ships messages for, so only
-// the number goes through `Intl.NumberFormat` - that keeps `2,34 kB` in de-DE
-// next to `2.34 kB` in en-US while a list of files stays on one set of units.
-// `style: 'unit'` was the alternative, but its short form spells bytes out
-// ("340 byte"), which reads inconsistently next to the abbreviated `kB` above
-// it in the same list.
 const FILE_SIZE_UNITS = ['B', 'kB', 'MB', 'GB', 'TB'] as const;
 const FILE_SIZE_STEP = 1024;
+
+const fileSizeFormatters = new Map<string, Intl.NumberFormat>();
+const fileSizeFormatterFor = (locale: string): Intl.NumberFormat => {
+  let formatter = fileSizeFormatters.get(locale);
+  if (!formatter) {
+    formatter = new Intl.NumberFormat(locale, { maximumFractionDigits: 2 });
+    fileSizeFormatters.set(locale, formatter);
+  }
+  return formatter;
+};
 
 /**
  * Formats a file size with the unit that fits its magnitude, so a 2,400-byte
@@ -72,7 +75,7 @@ const FILE_SIZE_STEP = 1024;
  */
 export const formatFileSize = (size: number, locale: string): string => {
   const bytes = Number.isFinite(size) && size > 0 ? size : 0;
-  const exponent =
+  let exponent =
     bytes === 0
       ? 0
       : Math.min(
@@ -80,15 +83,20 @@ export const formatFileSize = (size: number, locale: string): string => {
           FILE_SIZE_UNITS.length - 1
         );
 
-  const value = new Intl.NumberFormat(locale, {
-    maximumFractionDigits: 2,
-  }).format(bytes / FILE_SIZE_STEP ** exponent);
+  let scaled = bytes / FILE_SIZE_STEP ** exponent;
+  if (
+    exponent < FILE_SIZE_UNITS.length - 1 &&
+    Math.round(scaled * 100) / 100 >= FILE_SIZE_STEP
+  ) {
+    exponent += 1;
+    scaled = bytes / FILE_SIZE_STEP ** exponent;
+  }
+
+  const value = fileSizeFormatterFor(locale).format(scaled);
 
   return `${value} ${FILE_SIZE_UNITS[exponent]}`;
 };
 
-// Identity of a file for de-duplication and removal: two files with the same
-// name, size, and last-modified time are treated as the same file.
 export const fileKey = (file: File): string =>
   `${file.name}:${file.size}:${file.lastModified}`;
 

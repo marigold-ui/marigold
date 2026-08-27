@@ -155,6 +155,7 @@ describe('formatFileSize', () => {
     [2 * 1024 * 1024, '2 MB'],
     [1.5 * 1024 * 1024 * 1024, '1.5 GB'],
     [3 * 1024 ** 4, '3 TB'],
+    [1024 ** 2 - 1, '1 MB'],
   ])('formats %i bytes as "%s" in en-US', (size, expected) => {
     expect(formatFileSize(size, 'en-US')).toBe(expected);
   });
