@@ -32,43 +32,17 @@ export const centerY = (el: Element) => {
   return top + height / 2;
 };
 
-/**
- * Vertical centre of the *first* line box of a label block.
- *
- * All three controls anchor to line one, so this is the number they have to
- * meet whether the label is one line or five. Derived from the block's own
- * line-height rather than from a `Range`: range rects are the glyph box
- * (ascent + descent) and sit ~0.5px off the line box, which is the same order
- * as the misalignment being guarded against. The block carries no padding or
- * border, so its top *is* the top of line one.
- */
 export const firstLineCenterY = (labelBlock: Element) => {
   const lineHeight = parseFloat(getComputedStyle(labelBlock).lineHeight);
 
-  // A `normal` line-height parses to NaN, and every comparison against NaN is
-  // false -- so an `expect(...).toBeLessThan()` on the offset would pass no
-  // matter where the control sat. Fail here instead.
   expect(lineHeight).toBeGreaterThan(0);
 
   return labelBlock.getBoundingClientRect().top + lineHeight / 2;
 };
 
-/**
- * How far the control's optical centre misses the centre of the label's first
- * line, in px. Zero is the contract; sub-pixel rounding is why the assertions
- * allow half a pixel rather than an exact match.
- */
 export const firstLineOffset = (control: Element, labelBlock: Element) =>
   Math.abs(centerY(control) - firstLineCenterY(labelBlock));
 
-/**
- * Whether a label block is still exactly one line tall. A decoration that fits
- * the line leaves this true; one that inflates it -- the DST-1607 bug -- does
- * not, and that is what pushes the control off centre.
- *
- * Within `SUBPIXEL_TOLERANCE`, not exact: a fractional line-height can round
- * the rendered height off by a sub-pixel amount on a genuinely single line.
- */
 const SUBPIXEL_TOLERANCE = 0.5;
 
 export const isSingleLine = (labelBlock: Element) => {
