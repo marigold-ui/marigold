@@ -164,6 +164,8 @@ const _Checkbox = ({
         ref={ref}
         className={cn(
           'group/checkbox',
+          // Containing block for the absolute input React Aria renders here.
+          'relative',
           'data-disabled:cursor-not-allowed',
           classNames.container
         )}
