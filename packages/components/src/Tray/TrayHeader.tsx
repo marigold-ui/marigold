@@ -38,8 +38,7 @@ export const TrayHeader = ({ children }: TrayHeaderProps) => {
           [TextContext, textProps],
         ]}
       >
-        {/* `select-none`/`touch-none`: chrome that can start drag-to-dismiss,
-            see `TrayModal.tsx`. */}
+        {/* Chrome, can start drag-to-dismiss — see `TrayModal.tsx`. */}
         <div
           className={cn(
             'touch-none select-none [grid-area:title]',

@@ -277,8 +277,7 @@ SlotPrimitives.test(
 
 export const ScrollableContent = meta.story({
   tags: ['component-test'],
-  // Closed, this is just the trigger button — the state worth snapshotting is
-  // the opened tray, captured by the test below.
+  // Snapshot the opened tray in the test below instead.
   parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Tray.Trigger>
@@ -300,23 +299,16 @@ export const ScrollableContent = meta.story({
   ),
 });
 
-/** Vertical offset the tray has been dragged to, in px. */
+/** Current drag offset, in px. */
 const translateY = (element: HTMLElement) => {
   const { transform } = getComputedStyle(element);
   return transform === 'none' ? 0 : new DOMMatrixReadOnly(transform).m42;
 };
 
-/**
- * Drives a vertical drag with a primary touch pointer. Motion reads
- * `pageX`/`pageY` (`extractEventInfo`) and throttles its own updates through
- * `requestAnimationFrame`, so the coords have to carry page values and each
- * move has to be given a frame to land — otherwise `PanSession` never passes
- * its 3px threshold and no gesture ever happens.
- */
+/** Drives a vertical touch drag; uses page coords and RAF frames so `PanSession`'s 3px threshold triggers. */
 const dragVertically = async (
-  // Takes the story context's `userEvent.pointer` rather than the whole
-  // instance: the context type and the module-scope import are separate copies
-  // of user-event's API.
+  // Must use the context's userEvent.pointer — the module-scope import is a
+  // different instance.
   pointer: (input: Parameters<typeof userEvent.pointer>[0]) => Promise<unknown>,
   target: Element,
   { from, to, steps = 6 }: { from: number; to: number; steps?: number }
@@ -352,8 +344,7 @@ const dragVertically = async (
 
 ScrollableContent.test(
   'Opens a tray whose content overflows',
-  // The only story where the content area actually scrolls, and the fix
-  // changes how that area behaves — so keep the snapshot.
+  // Keep snapshot: the only story where content actually scrolls.
   { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Open Tray' }));
@@ -371,8 +362,7 @@ ScrollableContent.test(
   async ({ canvas, userEvent, step }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Open Tray' }));
     const dialog = await waitFor(() => canvas.getByRole('dialog'));
-    // The element `drag`/`dragListener` live on: RAC's `Modal` renders the
-    // dialog's parent, and `TrayModal` makes that the motion element.
+    // `drag`/`dragListener` live on the dialog's parent (RAC `Modal` + `TrayModal`).
     const modal = dialog.parentElement as HTMLElement;
     const content = dialog.querySelector(
       `[${TRAY_CONTENT_ATTR}]`
@@ -381,18 +371,15 @@ ScrollableContent.test(
       '[class*="grid-area:drag"]'
     ) as HTMLElement;
 
-    // Let the open animation settle so `translateY` starts from 0 and any
-    // later movement can only come from a drag.
+    // Wait for the open animation to settle before measuring drag.
     await waitFor(() => expect(translateY(modal)).toBe(0));
 
     await step('the content can pan and select on touch', async () => {
-      // While motion's own drag listener is armed it writes
-      // `touch-action: pan-x` and `user-select: none` onto the dragged
-      // element — `pan-x` is what stopped the content scrolling. Both fail if
+      // pan-x/user-select come from motion's drag listener; fail if
       // `dragListener={false}` is dropped.
       expect(getComputedStyle(modal).touchAction).not.toBe('pan-x');
       expect(getComputedStyle(content).userSelect).not.toBe('none');
-      // The chrome is the part whose vertical gesture we own.
+      // Chrome owns the vertical gesture.
       expect(getComputedStyle(handle).touchAction).toBe('none');
     });
 
@@ -412,9 +399,7 @@ ScrollableContent.test(
         to: top + 20 + window.innerHeight,
       });
 
-      // Nothing was dragged, so the tray never moved. Without the
-      // `startsInTrayContent` guard this same gesture translates the modal by
-      // most of the viewport and dismisses it.
+      // Without the `startsInTrayContent` guard, this would dismiss the tray.
       expect(translateY(modal)).toBe(0);
       expect(canvas.getByRole('dialog')).toBeInTheDocument();
     });
