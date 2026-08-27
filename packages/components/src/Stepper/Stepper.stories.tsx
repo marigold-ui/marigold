@@ -82,7 +82,9 @@ Basic.test(
   'shows no pointer cursor on a step that is still ahead',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
-    const upcoming = canvas.getByText('Pay').closest('span');
+    // The label's parent, not `closest('span')`: that resolves to the label
+    // itself and would only assert the cursor it inherits.
+    const upcoming = canvas.getByText('Pay').parentElement;
 
     await expect(getComputedStyle(upcoming!).cursor).not.toBe('pointer');
   }
@@ -137,16 +139,27 @@ export const Controlled = meta.story({
     'aria-label': 'Onboarding progress',
   },
   render: function Render(args) {
-    const steps = ['account', 'profile', 'invite'];
     const [selectedKey, setSelectedKey] = useState<Key>('profile');
-    const completedKeys = steps.slice(0, steps.indexOf(selectedKey as string));
+    // Completion only grows. Derived from the current index it empties on the
+    // way back, so every step ahead becomes inert text and the story is left
+    // with nothing to click.
+    const [completedKeys, setCompletedKeys] = useState<Key[]>(['account']);
+
+    // Records the step being *left*. Recording the entered one is a no-op: a
+    // step has to be selectable before it can be activated.
+    const select = (key: Key) => {
+      setCompletedKeys(keys =>
+        keys.includes(selectedKey) ? keys : [...keys, selectedKey]
+      );
+      setSelectedKey(key);
+    };
 
     return (
       <Stepper
         {...args}
         selectedKey={selectedKey}
         completedKeys={completedKeys}
-        onSelectionChange={setSelectedKey}
+        onSelectionChange={select}
       >
         <Stepper.Item id="account">Account</Stepper.Item>
         <Stepper.Item id="profile">Profile</Stepper.Item>
@@ -165,6 +178,20 @@ Controlled.test(
     await expect(
       canvas.getByRole('button', { name: /Account/ })
     ).toHaveAttribute('aria-current', 'step');
+  }
+);
+
+// Walking back must not un-complete the steps ahead, or the story dead-ends on
+// its own first click.
+Controlled.test(
+  'keeps the step ahead reachable after walking back',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: /Account/ }));
+
+    await expect(
+      canvas.getByRole('button', { name: /Profile/ })
+    ).toBeInTheDocument();
   }
 );
 
@@ -234,17 +261,26 @@ export const WithHrefs = meta.story({
   },
   render: function Render(args) {
     const [path, setPath] = useState('/checkout/plan');
+    // The route says where you are, not where you have been, and only a
+    // reachable step renders as a link. Without the visited set, walking back
+    // turns the steps ahead into inert text and the routing cannot be re-driven.
+    const [visited, setVisited] = useState(['/checkout/signin']);
     const index = CHECKOUT_ROUTES.findIndex(route => route.href === path);
 
+    const navigate = (href: string) => {
+      setVisited(paths => (paths.includes(path) ? paths : [...paths, path]));
+      setPath(href);
+    };
+
     return (
-      <RouterProvider navigate={setPath}>
+      <RouterProvider navigate={navigate}>
         <Stack space={4}>
           <Stepper
             {...args}
             selectedKey={CHECKOUT_ROUTES[index].id}
-            completedKeys={CHECKOUT_ROUTES.slice(0, index).map(
-              route => route.id
-            )}
+            completedKeys={CHECKOUT_ROUTES.filter(route =>
+              visited.includes(route.href)
+            ).map(route => route.id)}
           >
             {CHECKOUT_ROUTES.map(route => (
               <Stepper.Item key={route.id} id={route.id} href={route.href}>
@@ -293,6 +329,20 @@ WithHrefs.test(
 
     await expect(
       canvas.getByText('Current route: /checkout/signin')
+    ).toBeInTheDocument();
+  }
+);
+
+// A step that stops being reachable stops being an anchor, so this is also what
+// keeps the routing demo re-drivable.
+WithHrefs.test(
+  'keeps the step ahead a link after routing back',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('link', { name: /Sign in/ }));
+
+    await expect(
+      canvas.getByRole('link', { name: /Choose plan/ })
     ).toBeInTheDocument();
   }
 );
