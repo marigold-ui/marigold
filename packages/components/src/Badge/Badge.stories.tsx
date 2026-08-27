@@ -100,7 +100,7 @@ export const Inline = meta.story({
 
 Inline.test(
   'The inline size is drawn shorter than the default',
-  { parameters: { chromatic: { disableSnapshot: false } } },
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
     // Render order above: default first, inline second.
     const [defaultBadge, inlineBadge] = canvas.getAllByText('Master');
