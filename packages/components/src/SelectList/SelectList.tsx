@@ -21,7 +21,13 @@ import type {
   SpaceProp,
   WidthProp,
 } from '@marigold/system';
-import { cn, createSpacingVar, isScale, useClassNames } from '@marigold/system';
+import {
+  cn,
+  createSpacingVar,
+  isAxislessToken,
+  isScale,
+  useClassNames,
+} from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
 import { SelectListContext } from './Context';
@@ -252,12 +258,20 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
     // 3. Partial-axis overrides are valid — px and py are applied independently,
     //    letting the theme fill in whichever axis the consumer leaves unset.
     // Don't "consolidate" this with resolveInsetAxes without accounting for all three.
+    // The axis-suffix rule itself is shared, though: both paths must skip the
+    // suffix for scale values and axis-less tokens.
     if (p !== undefined) {
       const inset = `${p}`;
-      const scale = isScale(inset);
+      const unsuffixed = isScale(inset) || isAxislessToken(inset);
       return {
-        ...createSpacingVar('selectlist-item-px', scale ? inset : `${inset}-x`),
-        ...createSpacingVar('selectlist-item-py', scale ? inset : `${inset}-y`),
+        ...createSpacingVar(
+          'selectlist-item-px',
+          unsuffixed ? inset : `${inset}-x`
+        ),
+        ...createSpacingVar(
+          'selectlist-item-py',
+          unsuffixed ? inset : `${inset}-y`
+        ),
       };
     }
     return {
