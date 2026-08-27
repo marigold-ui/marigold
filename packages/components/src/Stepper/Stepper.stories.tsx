@@ -31,8 +31,6 @@ const meta = preview.meta({
     variant: 'default',
     hideLabels: false,
     'aria-label': 'Checkout progress',
-    // Each story supplies its own steps via `render`; this only satisfies the
-    // required prop on the meta args. Same as Breadcrumbs.
     children: [],
   },
 });
@@ -63,9 +61,6 @@ Basic.test(
   }
 );
 
-// Tailwind v4 dropped `button { cursor: pointer }` from preflight, so a step
-// that is a button and a step that is a link disagreed about the cursor while
-// being the same control (DSTSUP via Vercel feedback on MultiStepForm).
 Basic.test(
   'shows a pointer cursor on a step that can be returned to',
   { parameters: { chromatic: { disableSnapshot: true } } },
@@ -76,14 +71,10 @@ Basic.test(
   }
 );
 
-// An unreachable step renders as a <span>, so a pointer there would promise a
-// click that does nothing.
 Basic.test(
   'shows no pointer cursor on a step that is still ahead',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
-    // The label's parent, not `closest('span')`: that resolves to the label
-    // itself and would only assert the cursor it inherits.
     const upcoming = canvas.getByText('Pay').parentElement;
 
     await expect(getComputedStyle(upcoming!).cursor).not.toBe('pointer');
@@ -132,21 +123,14 @@ export const States = meta.story({
  */
 export const Controlled = meta.story({
   tags: ['component-test'],
-  // No snapshot: this demonstrates behaviour, and its appearance is a 3-step
-  // subset of Basic. Same call the repo makes for every other `Controlled` story.
   parameters: { chromatic: { disableSnapshot: true } },
   args: {
     'aria-label': 'Onboarding progress',
   },
   render: function Render(args) {
     const [selectedKey, setSelectedKey] = useState<Key>('profile');
-    // Completion only grows. Derived from the current index it empties on the
-    // way back, so every step ahead becomes inert text and the story is left
-    // with nothing to click.
     const [completedKeys, setCompletedKeys] = useState<Key[]>(['account']);
 
-    // Records the step being *left*. Recording the entered one is a no-op: a
-    // step has to be selectable before it can be activated.
     const select = (key: Key) => {
       setCompletedKeys(keys =>
         keys.includes(selectedKey) ? keys : [...keys, selectedKey]
@@ -181,8 +165,6 @@ Controlled.test(
   }
 );
 
-// Walking back must not un-complete the steps ahead, or the story dead-ends on
-// its own first click.
 Controlled.test(
   'keeps the step ahead reachable after walking back',
   { parameters: { chromatic: { disableSnapshot: true } } },
@@ -216,11 +198,6 @@ const EVENT_STEPS = [
  * screen reader still hears "Ticket categories"; sighted users get the markers
  * plus the counter, which is the only thing telling them the flow is twelve
  * steps long without counting circles.
- *
- * Stacking the labels under the markers was measured as an alternative (it takes
- * the overflow from 492px to 12px and the row from 44px to 76px tall) and
- * deliberately not taken: `hideLabels` stays the single answer for flows too long
- * to label, so there is one way to build a stepper rather than two.
  */
 export const ManySteps = meta.story({
   args: {
@@ -253,19 +230,15 @@ const CHECKOUT_ROUTES = [
  */
 export const WithHrefs = meta.story({
   tags: ['component-test'],
-  // No snapshot: what differs from Basic is the rendered element (<a> vs
-  // <button>), not the pixels. The tests assert that; a screenshot cannot.
   parameters: { chromatic: { disableSnapshot: true } },
   args: {
     'aria-label': 'Checkout progress',
   },
   render: function Render(args) {
     const [path, setPath] = useState('/checkout/plan');
-    // The route says where you are, not where you have been, and only a
-    // reachable step renders as a link. Without the visited set, walking back
-    // turns the steps ahead into inert text and the routing cannot be re-driven.
     const [visited, setVisited] = useState(['/checkout/signin']);
-    const index = CHECKOUT_ROUTES.findIndex(route => route.href === path);
+    const current =
+      CHECKOUT_ROUTES.find(route => route.href === path) ?? CHECKOUT_ROUTES[0];
 
     const navigate = (href: string) => {
       setVisited(paths => (paths.includes(path) ? paths : [...paths, path]));
@@ -277,7 +250,7 @@ export const WithHrefs = meta.story({
         <Stack space={4}>
           <Stepper
             {...args}
-            selectedKey={CHECKOUT_ROUTES[index].id}
+            selectedKey={current.id}
             completedKeys={CHECKOUT_ROUTES.filter(route =>
               visited.includes(route.href)
             ).map(route => route.id)}
@@ -300,9 +273,6 @@ export const WithHrefs = meta.story({
  * is still authored and still read aloud.
  */
 export const HideLabels = meta.story({
-  // No snapshot: identical treatment to ManySteps, which exercises it harder
-  // (connectors at their floor, a two-digit total). Guarding both is one diff to
-  // review for one behaviour.
   parameters: { chromatic: { disableSnapshot: true } },
   args: {
     'aria-label': 'Event creation progress',
@@ -333,8 +303,6 @@ WithHrefs.test(
   }
 );
 
-// A step that stops being reachable stops being an anchor, so this is also what
-// keeps the routing demo re-drivable.
 WithHrefs.test(
   'keeps the step ahead a link after routing back',
   { parameters: { chromatic: { disableSnapshot: true } } },
@@ -521,9 +489,6 @@ const validateStep = (
  */
 export const ValidationErrors = meta.story({
   tags: ['component-test'],
-  // No snapshot: the errored marker is covered by States, and the invalid-field
-  // styling belongs to TextField/HelpText, which guard it themselves. What is
-  // unique here is the wiring, which the three tests cover.
   parameters: { chromatic: { disableSnapshot: true } },
   args: {
     'aria-label': 'Checkout progress',
@@ -536,8 +501,6 @@ export const ValidationErrors = meta.story({
     const [values, setValues] = useState({ email: '', card: '' });
     const step = CHECKOUT_STEPS[index];
 
-    // Editing clears the step's error too, so the marker and the field never
-    // disagree about whether the step is still broken.
     const edit = (field: string) => (value: string) => {
       setValues(current => ({ ...current, [field]: value }));
       setFieldErrors({});

@@ -74,7 +74,17 @@ export interface StepperProps {
    */
   hideLabels?: boolean;
 
+  /**
+   * Selects a themed appearance.
+   * @default 'default'
+   */
   variant?: 'default' | (string & {});
+
+  /**
+   * Selects a themed size.
+   * @default 'default'
+   */
+  size?: 'default' | (string & {});
 
   /**
    * Labels the navigation landmark.
@@ -92,12 +102,6 @@ interface StepContentProps {
   children: ReactNode;
 }
 
-/**
- * A step is a real `<a>` when it has an href, a real `<button>` when it is
- * selectable without one, and inert text otherwise. No `role="link"` on a
- * non-link, and no `aria-disabled` on something that was never a control:
- * an unreachable step is text, not a disabled widget.
- */
 const StepContent = ({
   className,
   isCurrent,
@@ -147,22 +151,17 @@ const _Stepper = ({
   selectableKeys,
   hideLabels,
   variant,
+  size,
   'aria-label': ariaLabel,
 }: StepperProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
-  const classNames = useClassNames({ component: 'Stepper', variant });
+  const classNames = useClassNames({ component: 'Stepper', variant, size });
 
-  // `isValidElement<T>` only asserts the props type, it does not check what
-  // the element is, and `Children.toArray` leaves fragments intact. Without the
-  // `type` test a stray element or a fragment becomes a step with no `id`.
   const items = Children.toArray(children).filter(
     (child): child is ReactElement<StepperItemProps> =>
       isValidElement(child) && child.type === StepperItem
   );
 
-  // Uncontrolled mode only remembers which step was activated. It never infers
-  // completion: that is validation passing or a server write, which the
-  // component cannot see. No auto-advance, no auto-correct effect.
   const [selectedKey, setSelectedKey] = useControlledState(
     selectedKeyProp,
     defaultSelectedKey ?? items[0]?.props.id,
@@ -182,11 +181,6 @@ const _Stepper = ({
     return 'upcoming';
   };
 
-  // Derived from `getState` rather than re-testing the same four sets, so the
-  // two rules cannot drift. `disabledKeys` always wins: it is the one prop that
-  // means "never", so an explicit selectableKeys cannot resurrect a disabled
-  // step. Everything else is "you can return to any step that is not still
-  // ahead of you".
   const isSelectable = (key: Key) => {
     const state = getState(key);
     if (state === 'disabled') return false;
@@ -196,7 +190,6 @@ const _Stepper = ({
 
   const currentIndex = items.findIndex(item => item.props.id === selectedKey);
 
-  // A landmark with nothing in it is noise in the landmark list.
   if (items.length === 0) return null;
 
   return (
@@ -204,10 +197,6 @@ const _Stepper = ({
       aria-label={ariaLabel ?? stringFormatter.format('progress')}
       className="flex items-center gap-3"
     >
-      {/* Hiding the labels also hides "how far along am I" from sighted users:
-          all they get is a row of circles with no total. The counter restores it.
-          It is `aria-hidden` because every step already announces its own
-          position, so this would only repeat what SR users already hear. */}
       {hideLabels && currentIndex >= 0 && (
         <span aria-hidden="true" className={classNames.count}>
           {stringFormatter.format('stepPosition', {
@@ -232,6 +221,7 @@ const _Stepper = ({
               className={classNames.item}
               data-state={state}
               data-current={id === selectedKey || undefined}
+              data-completed={completed.has(id) || undefined}
             >
               <StepContent
                 className={classNames.link}
@@ -254,8 +244,6 @@ const _Stepper = ({
                 ) : (
                   <span className={classNames.label}>{label}</span>
                 )}
-                {/* Visible label first, so the accessible name opens with it
-                    (WCAG 2.5.3 Label in Name), then position and state. */}
                 <VisuallyHidden elementType="span">
                   {`${position}, ${stateText}`}
                 </VisuallyHidden>

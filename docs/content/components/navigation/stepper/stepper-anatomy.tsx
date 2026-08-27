@@ -6,7 +6,6 @@ export const StepperAnatomy = () => (
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
-    {/* One step: its marker and label belong together */}
     <rect
       x="32"
       y="118"
@@ -18,7 +17,6 @@ export const StepperAnatomy = () => (
       strokeDasharray="6 4"
     />
 
-    {/* Connectors: the first one is walked, the rest are still ahead */}
     <g strokeWidth="2" strokeLinecap="round" fill="none">
       <path
         d="M 144 140 L 190 140"
@@ -30,12 +28,10 @@ export const StepperAnatomy = () => (
       </g>
     </g>
 
-    {/* Markers of the completed and the current step */}
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="55" cy="140" r="15" />
       <circle cx="213" cy="140" r="15" />
     </g>
-    {/* The completed step carries a check instead of its number */}
     <path
       d="M 48 140 L 53 145.5 L 62 134.5"
       className="stroke-fd-primary-foreground transition-colors duration-300"
@@ -45,7 +41,6 @@ export const StepperAnatomy = () => (
       fill="none"
     />
 
-    {/* Markers of the steps still ahead */}
     <g
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
@@ -54,7 +49,6 @@ export const StepperAnatomy = () => (
       <circle cx="541" cy="140" r="15" />
     </g>
 
-    {/* Step numbers */}
     <g
       fontFamily="ui-sans-serif, system-ui, sans-serif"
       fontSize="13"
@@ -78,7 +72,6 @@ export const StepperAnatomy = () => (
       </g>
     </g>
 
-    {/* Labels: walked and current steps read as foreground, the rest as muted */}
     <g className="fill-fd-foreground transition-colors duration-300">
       <rect x="78" y="133" width="58" height="14" rx="5" />
       <rect x="236" y="132" width="66" height="16" rx="5" />
@@ -88,7 +81,6 @@ export const StepperAnatomy = () => (
       <rect x="564" y="134" width="56" height="12" rx="5" />
     </g>
 
-    {/* Connector lines */}
     <g
       className="stroke-fd-primary transition-colors duration-300"
       fill="none"
@@ -102,7 +94,6 @@ export const StepperAnatomy = () => (
       <path d="M 333 140 L 333 196" />
     </g>
 
-    {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="86" cy="118" r="4" />
       <circle cx="433" cy="134" r="4" />
@@ -110,7 +101,6 @@ export const StepperAnatomy = () => (
       <circle cx="333" cy="140" r="4" />
     </g>
 
-    {/* Annotation labels */}
     <g
       fontFamily="ui-sans-serif, system-ui, sans-serif"
       fontSize="12"

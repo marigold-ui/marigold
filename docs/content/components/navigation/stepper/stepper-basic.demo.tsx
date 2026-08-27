@@ -4,13 +4,12 @@ import { Stepper } from '@marigold/components';
 
 export default () => {
   const [selectedKey, setSelectedKey] = useState<Key>('plan');
-  // Completion only ever grows. Deriving it from the current step would undo it
-  // the moment the user walks back, and every later step would stop being
-  // clickable, so there would be no way forward again.
   const [completedKeys, setCompletedKeys] = useState<Key[]>(['signin']);
 
   const select = (key: Key) => {
-    setCompletedKeys(keys => (keys.includes(key) ? keys : [...keys, key]));
+    setCompletedKeys(keys =>
+      keys.includes(selectedKey) ? keys : [...keys, selectedKey]
+    );
     setSelectedKey(key);
   };
 

@@ -18,11 +18,5 @@ export interface StepperItemProps {
   href?: string;
 }
 
-/**
- * Declares a step. Renders nothing itself: `<Stepper>` reads these props while
- * walking its children, because it needs each step's index and the total to
- * build the position text and to suppress the last connector. Same pattern as
- * `Breadcrumbs.Item`.
- */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const StepperItem = (_: StepperItemProps) => null;

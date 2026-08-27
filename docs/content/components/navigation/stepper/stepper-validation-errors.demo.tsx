@@ -37,8 +37,6 @@ export default () => {
   const [values, setValues] = useState({ email: '', card: '' });
   const step = STEPS[index];
 
-  // Editing clears the step's error too, so the marker and the field never
-  // disagree about whether the step is still broken.
   const edit = (field: string) => (value: string) => {
     setValues(current => ({ ...current, [field]: value }));
     setFieldErrors({});

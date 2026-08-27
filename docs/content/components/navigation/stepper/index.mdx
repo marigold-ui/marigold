@@ -150,6 +150,7 @@ Hiding the labels also takes away a sighted user's sense of how far along they a
 - Avoid labelling both the stepper and a `<Panel>` wrapped directly around it. Two nested labelled regions add noise without adding information.
 - Each step announces its label, its position, and its state, for example "Choose plan Step 2 of 4, current step".
 - Activation follows the element: Enter on a link step, Enter or Space on a button step.
+- Move focus into the new panel after a step change, to its heading for example. Activating a step swaps the content but leaves focus on the stepper, so without this nothing tells a keyboard or screen reader user that the page moved on.
 - Colour transitions are removed when the user prefers reduced motion.
 
 ## Props

@@ -8,14 +8,9 @@ const ROUTES = [
 ];
 
 export default () => {
-  // Stands in for your router. In a real app this is `router.push` from
-  // Next.js, React Router, or whichever router the app already uses.
   const [path, setPath] = useState('/checkout/plan');
-  // The route says where you are, but not where you have been, and only a
-  // reachable step renders as a link. Keep the visited set alongside the route
-  // so walking back does not turn the steps ahead into inert text.
   const [visited, setVisited] = useState(['/checkout/signin']);
-  const index = ROUTES.findIndex(route => route.href === path);
+  const current = ROUTES.find(route => route.href === path) ?? ROUTES[0];
 
   const navigate = (href: string) => {
     setVisited(paths => (paths.includes(path) ? paths : [...paths, path]));
@@ -27,7 +22,7 @@ export default () => {
       <Stack space={4}>
         <Stepper
           aria-label="Checkout progress"
-          selectedKey={ROUTES[index].id}
+          selectedKey={current.id}
           completedKeys={ROUTES.filter(route =>
             visited.includes(route.href)
           ).map(route => route.id)}

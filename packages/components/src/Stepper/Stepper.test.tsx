@@ -57,16 +57,12 @@ test('derives data-state for each step in priority order', () => {
 test('keeps the step number out of the accessible name', () => {
   render(<Basic.Component />);
 
-  // The marker shows "2" but the accessible name has to open with the visible
-  // label (WCAG 2.5.3 Label in Name), so the digit is decorative.
   expect(screen.getByText('2')).toHaveAttribute('aria-hidden', 'true');
   expect(
     screen.getByRole('button', { name: /^Choose plan/ })
   ).toBeInTheDocument();
 });
 
-// The connector is aria-hidden decoration with no accessible query, so it
-// carries a testid, same as the Breadcrumbs chevron.
 test('renders one fewer connector than there are steps', () => {
   render(<Basic.Component />);
 
@@ -200,8 +196,6 @@ test('shows a visible step counter when the labels are hidden', () => {
   expect(screen.getByText('Step 3 of 5')).toBeInTheDocument();
 });
 
-// Every step already announces its own position, so the visible counter would
-// only repeat it. It exists to give sighted users what SR users already have.
 test('hides the step counter from the accessibility tree', () => {
   render(<HideLabels.Component />);
 
@@ -225,6 +219,14 @@ test('marks the current step even when its state resolves to error', () => {
   expect(errored).toHaveAttribute('data-current', 'true');
 });
 
+test('marks a completed step even when its state resolves to current', () => {
+  render(<Basic.Component selectedKey="signin" completedKeys={['signin']} />);
+
+  const revisited = screen.getAllByRole('listitem')[0];
+
+  expect(revisited).toHaveAttribute('data-completed', 'true');
+});
+
 test('marks only the current step with data-current', () => {
   render(<Basic.Component />);
 
@@ -235,8 +237,6 @@ test('marks only the current step with data-current', () => {
   expect(marked).toHaveLength(1);
 });
 
-// Tailwind's preflight sets `list-style: none` on every list, and WebKit reads
-// that as "not a list". The explicit role is what keeps the semantics.
 test('keeps the list role against the stylesheet', () => {
   render(<Basic.Component />);
 
@@ -266,8 +266,6 @@ test('renders nothing when there are no steps', () => {
   expect(screen.queryByRole('navigation')).not.toBeInTheDocument();
 });
 
-// `<Stepper.Item>` only declares props: `<Stepper>` reads them off the element
-// and renders the step itself, so the item never renders anything of its own.
 test('renders nothing when a step is used outside a Stepper', () => {
   render(<StepperItem id="contact">Contact</StepperItem>);
 
