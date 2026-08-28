@@ -28,9 +28,7 @@ import { TopNavigation } from '../TopNavigation/TopNavigation';
 import { Sidebar } from './Sidebar';
 
 const meta = preview.meta({
-  // Same title as Sidebar.stories on purpose: the rail is a mode of the one
-  // Sidebar component, so its story lists as a sibling of Basic — not as a
-  // nested "Rail" folder.
+  // Same title as Sidebar.stories: the rail is a mode of Sidebar, not a subfolder.
   title: 'Components/Sidebar',
   component: Sidebar.Rail,
   parameters: {
@@ -39,8 +37,7 @@ const meta = preview.meta({
   },
   decorators: [
     Story => {
-      // Same reset as Sidebar.stories: the collapse state persists to a
-      // cookie, so drop it to keep state from leaking between stories.
+      // Collapse state persists to a cookie, so drop it between stories.
       if (typeof document !== 'undefined') {
         document.cookie = 'marigold:sidebar:state=;path=/;max-age=0';
       }
@@ -49,10 +46,8 @@ const meta = preview.meta({
   ],
 });
 
-// German-first content — the labels go in verbatim, long compounds and all
-// (Veranstaltungen, Automatisierungen, Wissensdatenbank). Rail items show
-// their label under the icon: the rail is sized so "Veranstaltungen" fits on
-// one line, and the extra-long compounds hyphenate onto a second.
+// German-first: the rail is sized so "Veranstaltungen" fits one line, longer
+// compounds hyphenate onto a second.
 const pages: Record<string, string> = {
   '/uebersicht': 'Übersicht',
   '/tickets/meine': 'Meine Tickets',
@@ -78,10 +73,8 @@ const pages: Record<string, string> = {
   '/profil': 'Profil',
 };
 
-// Ancestors for the breadcrumb trail: the section (and one nested subsection)
-// roots that group the leaf pages. They have no landing page of their own, so
-// each crumb links to the section's first leaf — the same target the rail item
-// would take you to.
+// Breadcrumb ancestors. No landing page of their own, so each crumb links to
+// the section's first leaf, same as its rail item.
 const sections: Record<string, { label: string; href: string }> = {
   '/tickets': { label: 'Tickets', href: '/tickets/meine' },
   '/tickets/archiv': { label: 'Archiv', href: '/tickets/archiv/geloest' },
@@ -114,18 +107,13 @@ const RailShell = ({
   bounded = false,
 }: {
   initialPath?: string;
-  /**
-   * Bounds the shell to a short viewport (the docs demos' `25rem`) so the
-   * rail's nine tiles overflow. See `RailOverflow`.
-   */
+  /** Bounds the shell to the docs demos' 25rem so the nine tiles overflow. */
   bounded?: boolean;
 }) => {
   const [path, setPath] = useState(initialPath);
   const label = pages[path] ?? 'Seite';
 
-  // Breadcrumb trail from the current path: each segment becomes a crumb, so
-  // the bar reads "Tickets › Meine Tickets" or "Tickets › Archiv › Gelöst".
-  // It reflects the active section even when the rail is collapsed to icons.
+  // Each path segment becomes a crumb: "Tickets › Archiv › Gelöst".
   const trail = path
     .split('/')
     .filter(Boolean)
@@ -137,9 +125,8 @@ const RailShell = ({
         : { key, href: key, label: pages[key] ?? 'Seite' };
     });
 
-  // The mobile drawer portals outside the story's `lang="de"` wrapper, which
-  // silently disables `hyphens: auto` on the rail tiles. A real app sets the
-  // document language, so mirror that here (and restore it afterwards).
+  // The drawer portals outside the lang="de" wrapper, killing hyphens: auto.
+  // A real app sets the document language, so mirror that.
   useEffect(() => {
     const previous = document.documentElement.lang;
     document.documentElement.lang = 'de';
@@ -149,9 +136,8 @@ const RailShell = ({
   }, []);
 
   return (
-    // id="storybook-root": portal target for overlays (tooltips) — the vitest
-    // browser runner has no outer preview root, so the story provides its own
-    // (repo convention, see e.g. Tooltip.stories).
+    // Portal target for tooltips: the vitest runner has no preview root, so the
+    // story provides one (see Tooltip.stories).
     <div
       lang="de"
       id="storybook-root"
@@ -360,15 +346,13 @@ export const Rail = meta.story({
 Rail.test(
   'shows two nav landmarks and swaps the panel on rail selection',
   async ({ canvas, userEvent, step }) => {
-    // Rail landmark + the active section's panel landmark are both present.
     const rail = canvas.getByRole('navigation', { name: 'Hauptnavigation' });
     expect(rail).toBeInTheDocument();
     const ticketsNav = canvas.getByRole('navigation', { name: 'Tickets' });
     expect(ticketsNav).toBeInTheDocument();
 
-    // The active section (from `current`) is marked on its rail item, and its
-    // sub-nav is what fills the panel. Scope rail-item lookups to the rail
-    // landmark: the breadcrumb now mirrors the section names as links too.
+    // Scope rail-item lookups to the rail landmark: the breadcrumb mirrors
+    // section names as links too.
     expect(within(rail).getByRole('link', { name: 'Tickets' })).toHaveAttribute(
       'aria-current',
       'true'
@@ -378,19 +362,17 @@ Rail.test(
     ).toBeInTheDocument();
 
     await step('rail items carry a visible label', async () => {
-      // The label under the icon is the accessible name — no tooltip needed.
+      // The label under the icon is the accessible name, no tooltip needed.
       const uebersicht = within(rail).getByRole('link', { name: 'Übersicht' });
       expect(uebersicht).toBeVisible();
       expect(uebersicht).toHaveTextContent('Übersicht');
     });
 
     await step('nested item drills the panel in and back out', async () => {
-      // Scope to the panel landmark: after navigating, the breadcrumb exposes
-      // the current page as a second role="link" with the same name.
+      // Scope to the panel: the breadcrumb exposes the page as a second link.
       const panelNav = canvas.getByRole('navigation', { name: 'Tickets' });
 
-      // Activating 'Archiv' drills into its children and navigates to its
-      // first leaf (Gelöst).
+      // Activating 'Archiv' drills in and lands on its first leaf.
       await userEvent.click(
         within(panelNav).getByRole('link', { name: 'Archiv' })
       );
@@ -400,7 +382,6 @@ Rail.test(
         ).toHaveAttribute('aria-current', 'page')
       );
 
-      // The back row leads to the section root again.
       await userEvent.click(
         within(panelNav).getByRole('button', { name: /Zurück/i })
       );
@@ -445,8 +426,7 @@ Rail.test(
         const toggle = canvas.getByRole('button', {
           name: 'Navigation umschalten',
         });
-        // No section panel here, but collapse still has an effect: it narrows
-        // the rail to an icon-only strip.
+        // No panel here, but collapse still narrows the rail to icons.
         expect(toggle).toBeEnabled();
         expect(toggle).toHaveAttribute('aria-expanded', 'true');
         await userEvent.click(toggle);
@@ -462,8 +442,7 @@ Rail.test(
   }
 );
 
-// Walks the tree instead of matching a theme class, so the assertions below
-// are about behaviour.
+// Walks the tree instead of matching a theme class, so assertions stay behavioural.
 const closestScrollable = (element: HTMLElement) => {
   let node = element.parentElement;
   while (node) {
@@ -480,10 +459,7 @@ const closestScrollable = (element: HTMLElement) => {
 };
 
 // Overflow: nine tiles in a 25rem viewport. Both cues are scroll-state aware,
-// so a rail that fits shows no extra chrome — the list fades its overflowing
-// edges (`ui-scroll-mask-y`, on top of the scrollbar, not instead of it) and
-// the footer takes a top hairline (`ui-scroll-seam-footer`). Snapshotted: the
-// point of the ticket is how this looks.
+// so a rail that fits shows no extra chrome.
 export const RailOverflow = meta.story({
   tags: ['component-test'],
   render: () => <RailShell bounded />,
@@ -499,17 +475,14 @@ RailOverflow.test(
 
     const scroller = closestScrollable(firstItem);
 
-    // The footer outside the scroller is what keeps it in place and lets its
-    // seam resolve the list's timeline (a following sibling can).
+    // The footer sits outside the scroller, which is what keeps it pinned.
     expect(scroller).not.toBeNull();
     expect(scroller).toContainElement(firstItem);
     expect(scroller).not.toContainElement(pinnedItem);
     expect(scroller!.parentElement).toContainElement(pinnedItem);
 
-    // Guards that the footer still carries `ui-scroll-seam-footer` at all, and
-    // no more: this suite runs Firefox, which takes the fallback branch where
-    // the hairline is unconditional, so the value is constant here. Whether the
-    // seam tracks scroll position is Chromatic's to catch.
+    // Firefox takes the fallback branch, so the hairline is unconditional here.
+    // Whether the seam tracks scroll position is not testable in this suite.
     expect(getComputedStyle(pinnedItem.parentElement!).boxShadow).not.toBe(
       'none'
     );
@@ -517,21 +490,17 @@ RailOverflow.test(
     await step(
       'focus lands a below-the-fold tile clear of the faded edge',
       () => {
-        // Any below-fold tile but the last: that one can only ever reach the
-        // list's own bottom padding, leaving no scroll range below it to prove
-        // scroll-py did anything.
+        // Any below-fold tile but the last: the last has no scroll range below it.
         const belowFold = within(rail).getByRole('link', {
           name: 'Automatisierungen',
         });
 
         belowFold.focus();
 
-        // Without this the gap below could just be a tile that was already in
-        // view, and the assertion would hold with no scroll-padding at all.
+        // Without this the gap could be a tile that was already in view.
         expect(scroller!.scrollTop).toBeGreaterThan(0);
 
-        // scroll-py keeps a focused tile off the fade, so its focus ring is
-        // never half-erased. Loose bound: the exact gap is the theme's.
+        // scroll-py keeps the tile off the fade. Exact gap is the theme's.
         const gap =
           scroller!.getBoundingClientRect().bottom -
           belowFold.getBoundingClientRect().bottom;
@@ -541,11 +510,8 @@ RailOverflow.test(
   }
 );
 
-// At rest the list sits at scrollTop 0, where the top fade is still 0 and the
-// seam is at the start of its range — so the resting snapshot above never shows
-// either cue mid-flight. This one scrolls to the middle for that frame. The
-// assertion is engine-independent; the fade itself is Chromatic's to catch,
-// since Firefox has no scroll-driven animations to drive it.
+// The resting story sits at scrollTop 0, where the top fade is still 0. This
+// one scrolls to the middle, the only position with both fades at full width.
 RailOverflow.test(
   'scrolls clear of both ends, the frame where both fades are at full width',
   { parameters: { chromatic: { disableSnapshot: false } } },
@@ -559,8 +525,6 @@ RailOverflow.test(
       (scroller!.scrollHeight - scroller!.clientHeight) / 2
     );
 
-    // Off both ends is the whole point: that is the only position where the top
-    // and bottom fades are both at full width.
     await waitFor(() => {
       expect(scroller!.scrollTop).toBeGreaterThan(0);
       expect(scroller!.scrollTop).toBeLessThan(
@@ -590,8 +554,7 @@ RailOverflow.test(
 
     expect(scroller).not.toBeNull();
 
-    // Still pinned outside the scroller, same as expanded. The folded label
-    // stays the accessible name (opacity-0, not unmounted), so it still queries.
+    // The folded label stays the accessible name (opacity-0, not unmounted).
     const pinnedItem = within(rail).getByRole('link', { name: 'Hilfe-Center' });
 
     expect(scroller).not.toContainElement(pinnedItem);
@@ -599,9 +562,8 @@ RailOverflow.test(
   }
 );
 
-// Controlled: an outer `Sidebar.Provider` owns the collapse state (e.g. an app
-// syncing it to user preferences). Mirrors the single column's `Controlled`
-// story; exercised by the unit tests, so no snapshot or component test needed.
+// An outer Sidebar.Provider owns the collapse state. Covered by unit tests,
+// so no snapshot or component test.
 const RailControlledExample = () => {
   const [open, setOpen] = useState(true);
   return (
@@ -616,11 +578,8 @@ export const RailControlled = meta.story({
   render: () => <RailControlledExample />,
 });
 
-// Mobile: the rail renders as the same full-width drawer as the single-column
-// sidebar — one drill-down nav column with the brand header and close button.
-// Sections are drill-in branches (the drawer opens pre-drilled into the active
-// one), direct links are plain rows; leaf and direct-link taps close the
-// drawer, the back row and section rows keep it open.
+// Mobile: the same full-width drawer as the single column. Sections become
+// drill-in branches, direct links plain rows.
 export const RailMobile = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
@@ -636,9 +595,8 @@ RailMobile.test(
     const toggle = canvas.getByRole('button', {
       name: 'Navigation umschalten',
     });
-    // Panels stay mounted (inert when not active) — assert the showing level
-    // via `data-position`, and scope queries to the drawer since the top-bar
-    // breadcrumb mirrors leaf names as links.
+    // Panels stay mounted (inert when inactive), so assert the showing level via
+    // data-position. Scope to the drawer, the breadcrumb mirrors leaf names.
     const activePanelOf = (element: HTMLElement) =>
       element.closest('[data-position]');
 
@@ -659,8 +617,7 @@ RailMobile.test(
             within(drawer).getByRole('link', { name: 'Meine Tickets' })
           )
         ).toHaveAttribute('data-position', 'active');
-        // No side-by-side rail: sections are drilled-in regions, not a
-        // second nav landmark next to the list.
+        // No side-by-side rail: sections are drilled-in regions, not a landmark.
         expect(
           within(drawer).queryByRole('navigation', { name: 'Tickets' })
         ).not.toBeInTheDocument();
