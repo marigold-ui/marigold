@@ -7,8 +7,9 @@ import { Lock } from '../icons/Lock';
 /**
  * Icon that marks a `master`/`admin` variant as access-restricted
  * (lock = master, key = admin). Rendered before the visible label; the
- * matching access color comes from the theme. The icon is decorative — the
- * announcement to assistive technology is the `AccessLabel`'s job.
+ * matching access color comes from the theme. The icon is decorative. The
+ * announcement to assistive technology belongs to the caller: `MenuItem`
+ * renders `AccessLabel`, `Link` folds `getAccessLabel` into its own suffix.
  *
  * The `access-icon` class is the markup contract a theme selects on, like
  * `.selection-indicator`. Selecting on `svg` would catch every other glyph.

@@ -1,6 +1,6 @@
 // https://lucide.dev/icons/external-link
 import { cn } from '@marigold/system';
-import { IconProps } from './Icons.types';
+import type { IconProps } from './Icons.types';
 
 export const ExternalLink = ({ size = 24, className, ...props }: IconProps) => (
   <svg
