@@ -56,6 +56,8 @@ const matchesAcceptedToken = (file: File, token: string): boolean => {
   return fileType === t;
 };
 
+// Identity of a file for de-duplication and removal: two files with the same
+// name, size, and last-modified time are treated as the same file.
 export const fileKey = (file: File): string =>
   `${file.name}:${file.size}:${file.lastModified}`;
 
@@ -75,6 +77,10 @@ const FILE_SIZE_FRACTION_DIGITS = 2;
 const FILE_SIZE_ROUNDING = 10 ** FILE_SIZE_FRACTION_DIGITS;
 
 const fileSizeFormatters = new Map<string, Intl.NumberFormat>();
+// The unit symbol is not localized through `style: 'unit'`: it spells bytes
+// out in its short form (`340 byte`), which reads inconsistently next to the
+// abbreviated `kB` a row above it in the same list, and `B`/`kB`/`MB` are the
+// same in every locale Marigold ships messages for.
 const fileSizeFormatterFor = (locale: string): Intl.NumberFormat => {
   let formatter = fileSizeFormatters.get(locale);
   if (!formatter) {
