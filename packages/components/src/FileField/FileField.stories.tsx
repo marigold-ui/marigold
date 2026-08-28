@@ -176,6 +176,13 @@ UploadFile.test(
       label: 'Multifile Upload',
       multiple: true,
     },
+    decorators: [
+      Story => (
+        <I18nProvider locale="en-US">
+          <Story />
+        </I18nProvider>
+      ),
+    ],
   },
   async ({ canvas, userEvent }) => {
     // Arrange

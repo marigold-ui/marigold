@@ -56,14 +56,31 @@ const matchesAcceptedToken = (file: File, token: string): boolean => {
   return fileType === t;
 };
 
+export const fileKey = (file: File): string =>
+  `${file.name}:${file.size}:${file.lastModified}`;
+
+const dedupeFiles = (files: File[]): File[] => {
+  const seen = new Set<string>();
+  return files.filter(file => {
+    const key = fileKey(file);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
+
 const FILE_SIZE_UNITS = ['B', 'kB', 'MB', 'GB', 'TB'] as const;
 const FILE_SIZE_STEP = 1024;
+const FILE_SIZE_FRACTION_DIGITS = 2;
+const FILE_SIZE_ROUNDING = 10 ** FILE_SIZE_FRACTION_DIGITS;
 
 const fileSizeFormatters = new Map<string, Intl.NumberFormat>();
 const fileSizeFormatterFor = (locale: string): Intl.NumberFormat => {
   let formatter = fileSizeFormatters.get(locale);
   if (!formatter) {
-    formatter = new Intl.NumberFormat(locale, { maximumFractionDigits: 2 });
+    formatter = new Intl.NumberFormat(locale, {
+      maximumFractionDigits: FILE_SIZE_FRACTION_DIGITS,
+    });
     fileSizeFormatters.set(locale, formatter);
   }
   return formatter;
@@ -79,14 +96,15 @@ export const formatFileSize = (size: number, locale: string): string => {
     bytes === 0
       ? 0
       : Math.min(
-          Math.floor(Math.log(bytes) / Math.log(FILE_SIZE_STEP)),
+          Math.max(Math.floor(Math.log(bytes) / Math.log(FILE_SIZE_STEP)), 0),
           FILE_SIZE_UNITS.length - 1
         );
 
   let scaled = bytes / FILE_SIZE_STEP ** exponent;
   if (
     exponent < FILE_SIZE_UNITS.length - 1 &&
-    Math.round(scaled * 100) / 100 >= FILE_SIZE_STEP
+    Math.round(scaled * FILE_SIZE_ROUNDING) / FILE_SIZE_ROUNDING >=
+      FILE_SIZE_STEP
   ) {
     exponent += 1;
     scaled = bytes / FILE_SIZE_STEP ** exponent;
@@ -95,19 +113,6 @@ export const formatFileSize = (size: number, locale: string): string => {
   const value = fileSizeFormatterFor(locale).format(scaled);
 
   return `${value} ${FILE_SIZE_UNITS[exponent]}`;
-};
-
-export const fileKey = (file: File): string =>
-  `${file.name}:${file.size}:${file.lastModified}`;
-
-const dedupeFiles = (files: File[]): File[] => {
-  const seen = new Set<string>();
-  return files.filter(file => {
-    const key = fileKey(file);
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
 };
 
 export const normalizeAndLimitFiles = (

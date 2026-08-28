@@ -10,4 +10,4 @@ Sizes now step through `B`, `kB`, `MB`, `GB` and `TB`, picking the unit that fit
 
 The step stays at 1024, which is what the field has always divided by, so a given file keeps the number it had before — only its unit and trailing zeros change (`0.50 MB` is now `512 kB`, `2.00 MB` is now `2 MB`).
 
-The number is run through `Intl.NumberFormat` for the active locale, so a German consumer gets `2,34 kB` next to the field's already-localized labels. The unit symbol is not localized: `style: 'unit'` spells bytes out in its short form (`340 byte`), which reads inconsistently next to the abbreviated `kB` a row above it in the same list, and `B`/`kB`/`MB` are the same in every locale Marigold ships messages for.
+The number is run through `Intl.NumberFormat` for the active locale, so a German consumer gets `2,34 kB` next to the field's already-localized labels.

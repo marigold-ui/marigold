@@ -194,7 +194,11 @@ test('names the remove button in German when the locale is de-DE', async () => {
 
 test('shows a small file with a unit that fits it, not "0.00 MB"', async () => {
   const user = userEvent.setup();
-  render(<UploadFile.Component multiple />);
+  render(
+    <I18nProvider locale="en-US">
+      <UploadFile.Component multiple />
+    </I18nProvider>
+  );
   const input = document.querySelector(
     'input[type="file"]'
   ) as HTMLInputElement;
