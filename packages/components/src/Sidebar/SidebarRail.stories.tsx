@@ -432,7 +432,6 @@ Rail.test(
         await userEvent.click(toggle);
         expect(toggle).toHaveAttribute('aria-expanded', 'false');
 
-        // Selecting a section from the collapsed rail re-expands the panel.
         await userEvent.click(
           within(rail).getByRole('link', { name: 'Tickets' })
         );

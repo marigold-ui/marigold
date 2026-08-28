@@ -512,7 +512,7 @@
  * (conventional down this axis, so pair with `ui-scrollbar`) and fades narrower,
  * since 2.5rem would swallow a whole row. The mask covers the scrollbar and any
  * border, thinning the track ends mid-scroll, so put borders on the parent.
- * Shares `--sc-mask` with the horizontal version, so the two don't compose.
+ * Won't compose with the x version: shared --sc-mask and animation shorthands.
  */
 @utility ui-scroll-mask-y {
   --sc-mask-width: 1.25rem;
