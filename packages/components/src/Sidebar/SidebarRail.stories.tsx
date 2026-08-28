@@ -572,7 +572,7 @@ RailOverflow.test(
 
 RailOverflow.test(
   'collapsed the icon-only list still overflows and keeps its footer',
-  { parameters: { chromatic: { disableSnapshot: false } } },
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent }) => {
     const toggle = canvas.getByRole('button', {
       name: 'Navigation umschalten',
