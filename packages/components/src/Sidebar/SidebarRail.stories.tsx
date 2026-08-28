@@ -517,8 +517,9 @@ RailOverflow.test(
     await step(
       'focus lands a below-the-fold tile clear of the faded edge',
       () => {
-        // Second to last: the last tile can only ever reach the list's own
-        // bottom padding, leaving no scroll range below it.
+        // Any below-fold tile but the last: that one can only ever reach the
+        // list's own bottom padding, leaving no scroll range below it to prove
+        // scroll-py did anything.
         const belowFold = within(rail).getByRole('link', {
           name: 'Automatisierungen',
         });
@@ -546,7 +547,7 @@ RailOverflow.test(
 // assertion is engine-independent; the fade itself is Chromatic's to catch,
 // since Firefox has no scroll-driven animations to drive it.
 RailOverflow.test(
-  'mid-scroll both edges are faded and the seam still reads',
+  'scrolls clear of both ends, the frame where both fades are at full width',
   { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas }) => {
     const rail = canvas.getByRole('navigation', { name: 'Hauptnavigation' });
@@ -580,11 +581,21 @@ RailOverflow.test(
     await userEvent.click(toggle);
 
     expect(toggle).toHaveAttribute('aria-expanded', 'false');
+
     // Icon-only tiles are shorter, but nine of them still outgrow 25rem.
     const rail = canvas.getByRole('navigation', { name: 'Hauptnavigation' });
-    expect(
-      closestScrollable(within(rail).getByRole('link', { name: 'Übersicht' }))
-    ).not.toBeNull();
+    const scroller = closestScrollable(
+      within(rail).getByRole('link', { name: 'Übersicht' })
+    );
+
+    expect(scroller).not.toBeNull();
+
+    // Still pinned outside the scroller, same as expanded. The folded label
+    // stays the accessible name (opacity-0, not unmounted), so it still queries.
+    const pinnedItem = within(rail).getByRole('link', { name: 'Hilfe-Center' });
+
+    expect(scroller).not.toContainElement(pinnedItem);
+    expect(scroller!.parentElement).toContainElement(pinnedItem);
   }
 );
 
