@@ -10,9 +10,8 @@ import { Lock } from '../icons/Lock';
  * matching access color comes from the theme. The icon is decorative — the
  * announcement to assistive technology is the `AccessLabel`'s job.
  *
- * The `access-icon` class is the markup contract a theme selects on, the same
- * way `.selection-indicator` works. Selecting on `svg` would catch every other
- * glyph a component renders next to the label.
+ * The `access-icon` class is the markup contract a theme selects on, like
+ * `.selection-indicator`. Selecting on `svg` would catch every other glyph.
  */
 const accessIcons: Record<string, ComponentType<IconProps>> = {
   master: Lock,

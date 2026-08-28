@@ -12,9 +12,8 @@ import { getAccessLabel } from '../utils/AccessLabel';
 
 type RemovedProps = 'className' | 'isDisabled' | 'slot';
 
-// Inline, not a flex item: a flex icon sits beside a wrapped label instead of
-// after its last word. `em` sizing tracks the text, so `size` is only the
-// attribute fallback and `-0.125em` lands where `items-center` would.
+// Inline, not a flex item: a flex icon sits beside a wrapped label instead
+// of after its last word. `em` sizing tracks the text, so `size` is a fallback.
 const iconPlacement = 'inline-block size-[1em] align-[-0.125em]';
 
 // Everything else, including a named window, opens a new browsing context.
@@ -48,19 +47,23 @@ const _Link = ({
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const suffixId = useId();
 
-  // Only a link that can navigate opens anything: RAC renders a `<span>` when
-  // there is no `href` or when disabled, where `target` and `rel` do nothing.
+  // RAC renders a `<span>` with no `href` or when disabled, so nothing opens.
   // Target keywords are ASCII case-insensitive in HTML, so `_SELF` stays here.
   const target = props.target?.toLowerCase();
+  // `download` beats `target`: the browser saves the file and nothing opens.
+  const download = props.download !== undefined && props.download !== false;
   const newWindow =
-    !!props.href && !disabled && !!target && !sameWindowTargets.has(target);
+    !!props.href &&
+    !disabled &&
+    !download &&
+    !!target &&
+    !sameWindowTargets.has(target);
 
-  // `rel="noopener"` makes the browser ignore a window name, so it is limited
-  // to `_blank`, where there is no name to reuse.
+  // `noopener` makes the browser ignore a window name, so limit it to `_blank`.
   const blank = newWindow && target === '_blank';
 
   // The suffix is content, which an `aria-label` replaces and an
-  // `aria-labelledby` outranks. Fold it into the label, or reference it by id.
+  // `aria-labelledby` outranks.
   const ariaLabel = props['aria-label'];
   const labelledBy = props['aria-labelledby'];
   const foldIntoLabel = !labelledBy && !!ariaLabel;

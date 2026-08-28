@@ -114,8 +114,8 @@ export const NewTab = meta.story({
   args: { target: '_blank' },
   render: args => (
     <Stack space={2} alignX="left">
-      {/* Only this one is args-driven, so a test can vary `target`, `rel`,
-          `aria-label` or `disabled` without a story of its own. */}
+      {/* Only this one is args-driven, so a test can vary props without a
+          story of its own. */}
       <Link {...args}>Marigold docs</Link>
       <Link href="https://marigold-ui.io" target="_blank" size="small">
         Marigold docs (small size)
@@ -187,8 +187,7 @@ NewTab.test(
     args: { 'aria-label': 'Marigold release notes' },
   },
   async ({ canvas }) => {
-    // `aria-label` replaces the content in the accessible name, so the hidden
-    // warning alone would never reach a screen reader.
+    // `aria-label` replaces the content, so the hidden warning alone is lost.
     const [link] = canvas.getAllByRole('link', {
       name: 'Marigold release notes opens in a new window',
     });
@@ -220,8 +219,7 @@ NewTab.test(
     args: { target: 'popup' },
   },
   async ({ canvas }) => {
-    // `rel="noopener"` makes the browser ignore the window name and open a new
-    // tab on every click, so a named target keeps its default `rel`.
+    // `noopener` would make the browser ignore the name, so no default `rel`.
     const [link] = canvas.getAllByRole('link', {
       name: 'Marigold docs opens in a new window',
     });
@@ -252,12 +250,25 @@ NewTab.test(
     args: { target: '_SELF' },
   },
   async ({ canvas }) => {
-    // HTML matches the target keywords ASCII case-insensitively, so `_SELF`
-    // stays in the current window and a warning would be a lie.
+    // HTML matches target keywords case-insensitively, so `_SELF` stays put.
     const [link] = canvas.getAllByRole('link', { name: 'Marigold docs' });
 
     expect(link.querySelector('svg')).not.toBeInTheDocument();
     expect(link).not.toHaveAttribute('rel');
+  }
+);
+
+NewTab.test(
+  'leaves a download link unmarked',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { download: true },
+  },
+  async ({ canvas }) => {
+    // `download` overrides `target`, so nothing opens.
+    const [link] = canvas.getAllByRole('link', { name: 'Marigold docs' });
+
+    expect(link.querySelector('svg')).not.toBeInTheDocument();
   }
 );
 

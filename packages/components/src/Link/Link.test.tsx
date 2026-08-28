@@ -81,10 +81,8 @@ test('admin variant appends a hidden "Admin" label to the accessible name', () =
   expect(admin).toBeInTheDocument();
 });
 
-// The rest of the new-tab behaviour (rel default and override, same-tab and
-// same-window targets, disabled, access mark, aria-label) is covered by the
-// `NewTab` story tests. Only the no-`href` case lives here, because a story's
-// args cannot drop an arg the meta supplies.
+// The `NewTab` story tests cover the rest. Only the no-`href` case lives here,
+// because a story's args cannot drop an arg the meta supplies.
 test('leaves a link that cannot navigate unmarked', () => {
   render(<NewTab.Component href={undefined} />);
 

@@ -9,11 +9,12 @@ The `<Link>` component is an interactive element that redirects users to differe
 
 ## Anatomy
 
-A link consists of text that indicates what the link will direct the user to. To distinguish a link from regular text, it is usually underlined.
+A link consists of text that indicates what the link will direct the user to. To distinguish a link from regular text, it is usually underlined. A link that leaves the current window also carries an icon after its label.
 
 <LinkAnatomy />
 
 - **Label:** The text that names the destination, underlined to set it apart from the surrounding text.
+- **New-window icon (automatic):** Sits after the label when the link opens a new window or tab. You never add it yourself, see [Opening in new windows or tabs](#opening-in-new-windows-or-tabs).
 
 ## Appearance
 
@@ -72,7 +73,7 @@ Using descriptive and meaningful labels for links is crucial to clearly indicate
 
 Avoid opening links in new windows or tabs as it can be disorienting for users. It's acceptable to do so only when necessary, such as when the link leads to an external site, or when there's a risk of users losing their current place or task.
 
-A link that opens a new window or tab marks itself. It adds a small external-link icon after the label plus a hidden "opens in a new window" warning, so screen reader users are told about the change too. Targets that stay in the current window (`_self`, `_top`, `_parent`) are left alone, and so are links that cannot navigate at all, meaning `disabled` ones and ones with no `href`.
+A link that opens a new window or tab marks itself with an external-link icon after the label plus a hidden "opens in a new window" warning for screen readers. Same-window targets (`_self`, `_top`, `_parent`) are left alone, as are links that open nothing: `disabled` ones, ones with no `href`, and `download` ones.
 
 The warning says "window", not "tab", because the marker follows the `target` and only the browser decides whether a new browsing context opens as a tab or a window.
 

@@ -16,9 +16,8 @@ const accessLabels: Record<string, string> = {
 };
 
 /**
- * The label text on its own, for the callers that cannot render it as content:
- * an `aria-label` replaces an element's content in the accessible name, so it
- * has to be folded into that label instead.
+ * The label text on its own, for callers with an `aria-label`: it replaces an
+ * element's content, so the label has to be folded into it instead.
  */
 export const getAccessLabel = (variant?: string) =>
   variant ? accessLabels[variant] : undefined;
