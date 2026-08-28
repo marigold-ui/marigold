@@ -52,20 +52,20 @@ const _Link = ({
   // there is no `href` or when disabled, where `target` and `rel` do nothing.
   // Target keywords are ASCII case-insensitive in HTML, so `_SELF` stays here.
   const target = props.target?.toLowerCase();
-  const newTab =
+  const newWindow =
     !!props.href && !disabled && !!target && !sameWindowTargets.has(target);
 
   // `rel="noopener"` makes the browser ignore a window name, so it is limited
   // to `_blank`, where there is no name to reuse.
-  const blank = newTab && target === '_blank';
+  const blank = newWindow && target === '_blank';
 
   // The suffix is content, which an `aria-label` replaces and an
   // `aria-labelledby` outranks. Fold it into the label, or reference it by id.
   const ariaLabel = props['aria-label'];
   const labelledBy = props['aria-labelledby'];
   const foldIntoLabel = !labelledBy && !!ariaLabel;
-  const warning = stringFormatter.format('opensInNewTab');
-  const suffix = [getAccessLabel(variant), newTab ? warning : undefined]
+  const warning = stringFormatter.format('opensInNewWindow');
+  const suffix = [getAccessLabel(variant), newWindow ? warning : undefined]
     .filter(Boolean)
     .join(' ');
 
@@ -90,7 +90,7 @@ const _Link = ({
             className={cn('me-[0.25em]', iconPlacement)}
           />
           {typeof children === 'function' ? children(renderProps) : children}
-          {newTab ? (
+          {newWindow ? (
             <ExternalLink
               size={16}
               aria-hidden

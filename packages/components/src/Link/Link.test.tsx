@@ -103,7 +103,7 @@ test('references the warning from an aria-labelledby name', () => {
   );
 
   const [link] = screen.getAllByRole('link', {
-    name: 'Marigold release notes opens in a new tab',
+    name: 'Marigold release notes opens in a new window',
   });
 
   expect(link.getAttribute('aria-labelledby')).toMatch(/^release-notes \S+$/);

@@ -72,7 +72,9 @@ Using descriptive and meaningful labels for links is crucial to clearly indicate
 
 Avoid opening links in new windows or tabs as it can be disorienting for users. It's acceptable to do so only when necessary, such as when the link leads to an external site, or when there's a risk of users losing their current place or task.
 
-A link that opens a new tab marks itself. It adds a small external-link icon after the label plus a hidden warning, so screen reader users are told about the change too. Targets that stay in the current window (`_self`, `_top`, `_parent`) are left alone, and so are links that cannot navigate at all, meaning `disabled` ones and ones with no `href`.
+A link that opens a new window or tab marks itself. It adds a small external-link icon after the label plus a hidden "opens in a new window" warning, so screen reader users are told about the change too. Targets that stay in the current window (`_self`, `_top`, `_parent`) are left alone, and so are links that cannot navigate at all, meaning `disabled` ones and ones with no `href`.
+
+The warning says "window", not "tab", because the marker follows the `target` and only the browser decides whether a new browsing context opens as a tab or a window.
 
 With `target="_blank"`, `rel` defaults to `noopener`. Pass your own `rel` to override it. A named window gets no default `rel`, because `noopener` makes the browser ignore the window name and open a new tab on every click instead of reusing the window.
 
@@ -80,7 +82,7 @@ With `target="_blank"`, `rel` defaults to `noopener`. Pass your own `rel` to ove
 
 If you pass your own `aria-label`, the warning is appended to it, because an `aria-label` replaces a link's content and would otherwise hide the warning. With `aria-labelledby` the warning is referenced by id instead, so it reaches the name either way.
 
-You don't opt into the indicator and you can't opt out of it. That is deliberate. An indicator is only worth anything if it appears on every link that opens a new tab, because users learn to read its absence as "this one stays here". If a link should not carry the icon, don't force the new tab, and let people decide for themselves how to open it.
+You don't opt into the indicator and you can't opt out of it. That is deliberate. An indicator is only worth anything if it appears on every link that leaves the current window, because users learn to read its absence as "this one stays here". If a link should not carry the icon, don't force the new window, and let people decide for themselves how to open it.
 
 For the reasoning behind warning users in the first place, see the W3C techniques on [opening new windows only when necessary](https://www.w3.org/WAI/WCAG21/Techniques/general/G200) and [giving advance warning when a link opens a new window](https://www.w3.org/WAI/WCAG21/Techniques/general/G201).
 

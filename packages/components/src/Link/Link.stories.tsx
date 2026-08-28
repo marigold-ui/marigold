@@ -129,11 +129,11 @@ export const NewTab = meta.story({
 });
 
 NewTab.test(
-  'warns about the new tab and defaults rel to noopener',
+  'warns about the new window and defaults rel to noopener',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
     const [link] = canvas.getAllByRole('link', {
-      name: 'Marigold docs opens in a new tab',
+      name: 'Marigold docs opens in a new window',
     });
 
     expect(link.querySelector('svg')).toBeInTheDocument();
@@ -158,7 +158,7 @@ NewTab.test(
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
     const [link] = canvas.getAllByRole('link', {
-      name: 'Support console Master opens in a new tab',
+      name: 'Support console Master opens in a new window',
     });
 
     expect(link.querySelectorAll('svg')).toHaveLength(2);
@@ -173,7 +173,7 @@ NewTab.test(
   },
   async ({ canvas }) => {
     const [link] = canvas.getAllByRole('link', {
-      name: 'Marigold docs opens in a new tab',
+      name: 'Marigold docs opens in a new window',
     });
 
     expect(link).toHaveAttribute('rel', 'noreferrer');
@@ -190,7 +190,7 @@ NewTab.test(
     // `aria-label` replaces the content in the accessible name, so the hidden
     // warning alone would never reach a screen reader.
     const [link] = canvas.getAllByRole('link', {
-      name: 'Marigold release notes opens in a new tab',
+      name: 'Marigold release notes opens in a new window',
     });
 
     expect(link.querySelector('svg')).toBeInTheDocument();
@@ -206,7 +206,7 @@ NewTab.test(
   async ({ canvas }) => {
     // The access label is content as well, so it is swallowed by the same rule.
     const [link] = canvas.getAllByRole('link', {
-      name: 'Move event Master opens in a new tab',
+      name: 'Move event Master opens in a new window',
     });
 
     expect(link.querySelectorAll('svg')).toHaveLength(2);
@@ -223,7 +223,7 @@ NewTab.test(
     // `rel="noopener"` makes the browser ignore the window name and open a new
     // tab on every click, so a named target keeps its default `rel`.
     const [link] = canvas.getAllByRole('link', {
-      name: 'Marigold docs opens in a new tab',
+      name: 'Marigold docs opens in a new window',
     });
 
     expect(link.querySelector('svg')).toBeInTheDocument();
