@@ -111,8 +111,14 @@ const sections: Record<string, { label: string; href: string }> = {
 
 const RailShell = ({
   initialPath = '/tickets/meine',
+  bounded = false,
 }: {
   initialPath?: string;
+  /**
+   * Bounds the shell to a short viewport (the docs demos' `25rem`) so the
+   * rail's nine tiles overflow. See `RailOverflow`.
+   */
+  bounded?: boolean;
 }) => {
   const [path, setPath] = useState(initialPath);
   const label = pages[path] ?? 'Seite';
@@ -146,7 +152,13 @@ const RailShell = ({
     // id="storybook-root": portal target for overlays (tooltips) — the vitest
     // browser runner has no outer preview root, so the story provides its own
     // (repo convention, see e.g. Tooltip.stories).
-    <div lang="de" id="storybook-root">
+    <div
+      lang="de"
+      id="storybook-root"
+      className={
+        bounded ? 'flex h-100 [--ui-viewport-height:25rem]' : undefined
+      }
+    >
       <RouterProvider navigate={setPath}>
         <I18nProvider locale="de-DE">
           <AppShell>
@@ -447,6 +459,132 @@ Rail.test(
         expect(toggle).toHaveAttribute('aria-expanded', 'true');
       }
     );
+  }
+);
+
+// Walks the tree instead of matching a theme class, so the assertions below
+// are about behaviour.
+const closestScrollable = (element: HTMLElement) => {
+  let node = element.parentElement;
+  while (node) {
+    const { overflowY } = getComputedStyle(node);
+    if (
+      (overflowY === 'auto' || overflowY === 'scroll') &&
+      node.scrollHeight > node.clientHeight + 1
+    ) {
+      return node;
+    }
+    node = node.parentElement;
+  }
+  return null;
+};
+
+// Overflow: nine tiles in a 25rem viewport. Both cues are scroll-state aware,
+// so a rail that fits shows no extra chrome — the list fades its overflowing
+// edges (`ui-scroll-mask-y`, on top of the scrollbar, not instead of it) and
+// the footer takes a top hairline (`ui-scroll-seam-footer`). Snapshotted: the
+// point of the ticket is how this looks.
+export const RailOverflow = meta.story({
+  tags: ['component-test'],
+  render: () => <RailShell bounded />,
+});
+
+RailOverflow.test(
+  'the item list scrolls while the footer stays pinned outside it',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    const rail = canvas.getByRole('navigation', { name: 'Hauptnavigation' });
+    const firstItem = within(rail).getByRole('link', { name: 'Übersicht' });
+    const pinnedItem = within(rail).getByRole('link', { name: 'Hilfe-Center' });
+
+    const scroller = closestScrollable(firstItem);
+
+    // The footer outside the scroller is what keeps it in place and lets its
+    // seam resolve the list's timeline (a following sibling can).
+    expect(scroller).not.toBeNull();
+    expect(scroller).toContainElement(firstItem);
+    expect(scroller).not.toContainElement(pinnedItem);
+    expect(scroller!.parentElement).toContainElement(pinnedItem);
+
+    // Guards that the footer still carries `ui-scroll-seam-footer` at all, and
+    // no more: this suite runs Firefox, which takes the fallback branch where
+    // the hairline is unconditional, so the value is constant here. Whether the
+    // seam tracks scroll position is Chromatic's to catch.
+    expect(getComputedStyle(pinnedItem.parentElement!).boxShadow).not.toBe(
+      'none'
+    );
+
+    await step(
+      'focus lands a below-the-fold tile clear of the faded edge',
+      () => {
+        // Second to last: the last tile can only ever reach the list's own
+        // bottom padding, leaving no scroll range below it.
+        const belowFold = within(rail).getByRole('link', {
+          name: 'Automatisierungen',
+        });
+
+        belowFold.focus();
+
+        // Without this the gap below could just be a tile that was already in
+        // view, and the assertion would hold with no scroll-padding at all.
+        expect(scroller!.scrollTop).toBeGreaterThan(0);
+
+        // scroll-py keeps a focused tile off the fade, so its focus ring is
+        // never half-erased. Loose bound: the exact gap is the theme's.
+        const gap =
+          scroller!.getBoundingClientRect().bottom -
+          belowFold.getBoundingClientRect().bottom;
+        expect(gap).toBeGreaterThan(8);
+      }
+    );
+  }
+);
+
+// At rest the list sits at scrollTop 0, where the top fade is still 0 and the
+// seam is at the start of its range — so the resting snapshot above never shows
+// either cue mid-flight. This one scrolls to the middle for that frame. The
+// assertion is engine-independent; the fade itself is Chromatic's to catch,
+// since Firefox has no scroll-driven animations to drive it.
+RailOverflow.test(
+  'mid-scroll both edges are faded and the seam still reads',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas }) => {
+    const rail = canvas.getByRole('navigation', { name: 'Hauptnavigation' });
+    const scroller = closestScrollable(
+      within(rail).getByRole('link', { name: 'Übersicht' })
+    );
+
+    scroller!.scrollTop = Math.round(
+      (scroller!.scrollHeight - scroller!.clientHeight) / 2
+    );
+
+    // Off both ends is the whole point: that is the only position where the top
+    // and bottom fades are both at full width.
+    await waitFor(() => {
+      expect(scroller!.scrollTop).toBeGreaterThan(0);
+      expect(scroller!.scrollTop).toBeLessThan(
+        scroller!.scrollHeight - scroller!.clientHeight
+      );
+    });
+  }
+);
+
+RailOverflow.test(
+  'collapsed the icon-only list still overflows and keeps its footer',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    const toggle = canvas.getByRole('button', {
+      name: 'Navigation umschalten',
+    });
+
+    await userEvent.click(toggle);
+
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    // Icon-only tiles are shorter, but nine of them still outgrow 25rem.
+    const rail = canvas.getByRole('navigation', { name: 'Hauptnavigation' });
+    expect(
+      closestScrollable(within(rail).getByRole('link', { name: 'Übersicht' }))
+    ).not.toBeNull();
   }
 );
 
