@@ -1,5 +1,12 @@
 import { venueTypes, venues } from '@/lib/data/venues';
-import { Badge, Inline, SelectList, Stack, Text } from '@marigold/components';
+import {
+  Badge,
+  Inline,
+  NumericFormat,
+  SelectList,
+  Stack,
+  Text,
+} from '@marigold/components';
 
 const featured = venues.slice(0, 3);
 
@@ -43,12 +50,17 @@ export default () => (
                 <Badge variant="info">{venueTypes[venue.type]}</Badge>
               </Inline>
               <Text size="sm" variant="muted">
-                Up to {venue.capacity.toLocaleString()} guests
+                Up to <NumericFormat value={venue.capacity} /> guests
               </Text>
             </Stack>
             <Inline space="related" alignY="center">
               <Text size="sm" weight="bold">
-                ${venue.price.from.toLocaleString()}
+                <NumericFormat
+                  style="currency"
+                  currency="USD"
+                  maximumFractionDigits={0}
+                  value={venue.price.from}
+                />
               </Text>
             </Inline>
           </Stack>
