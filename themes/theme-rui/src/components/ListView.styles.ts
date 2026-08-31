@@ -23,7 +23,7 @@ export const ListView: ThemeComponent<'ListView'> = {
       'transition-[border,color]',
       'selected:bg-selected',
       'hover:ui-state-hover',
-      'focus-visible:ui-state-focus',
+      'focus-visible:inset-ring-2 focus-visible:inset-ring-ring/50',
       'not-disabled:data-selection-mode:cursor-pointer',
       'disabled:cursor-not-allowed disabled:text-disabled',
     ],
