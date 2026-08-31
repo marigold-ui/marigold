@@ -79,7 +79,8 @@ const expectedHash = crypto
 const authInfoForSub = (sub: string): AuthInfo => ({
   token: 'token',
   scopes: [],
-  clientId: sub,
+  clientId: 'dst-marigold-docs-mcp',
+  extra: { sub },
 });
 
 const authInfo = authInfoForSub(SUB);
@@ -146,7 +147,6 @@ describe('searchDocsHandler', () => {
   });
 
   // Drives a verified token through to the recorded digest rather than
-  // hand-building the AuthInfo — see the `clientId` note in route.ts.
   it('hashes the verified JWT sub, not any other claim', async () => {
     jwtVerify.mockResolvedValue({
       payload: { sub: SUB, azp: 'dst-marigold-docs-mcp' },

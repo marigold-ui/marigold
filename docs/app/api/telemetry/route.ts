@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { consumePublicQuota, recordTelemetryEvent } from './record';
+import { isPublicQuotaExceeded, recordTelemetryEvent } from './record';
 import { CliCommandEventSchema } from './schema';
 
 export const dynamic = 'force-dynamic';
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'invalid event' }, { status: 400 });
   }
 
-  if ((await consumePublicQuota()) === 'exceeded') {
+  if (await isPublicQuotaExceeded()) {
     return new NextResponse(null, { status: 429 });
   }
 
