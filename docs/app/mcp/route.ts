@@ -1,5 +1,6 @@
 import { recordTelemetryEvent } from '@/app/api/telemetry/record';
 import type { TelemetryEvent } from '@/app/api/telemetry/schema';
+import { lazy } from '@/lib/lazy';
 import {
   AWS_REGION,
   TITAN_DIMENSIONS,
@@ -160,12 +161,7 @@ const hashCallerId = (sub: string): string | null => {
 
 // ─── Auth (Keycloak JWT) ─────────────────────────────────────────────────────
 
-let jwks: ReturnType<typeof createRemoteJWKSet> | null = null;
-
-const getJwks = () => {
-  if (!jwks) jwks = createRemoteJWKSet(new URL(KEYCLOAK_JWKS_URI));
-  return jwks;
-};
+const getJwks = lazy(() => createRemoteJWKSet(new URL(KEYCLOAK_JWKS_URI)));
 
 const subjectOf = (authInfo?: AuthInfo): string | undefined =>
   typeof authInfo?.extra?.sub === 'string' ? authInfo.extra.sub : undefined;
@@ -186,7 +182,9 @@ export const verifyToken = async (
 
     return {
       token: bearerToken,
-      clientId: OIDC_CLIENT_ID,
+      // The calling client, not our own audience. Required by AuthInfo and
+      // unread by us; the subject travels in `extra`.
+      clientId: typeof payload.azp === 'string' ? payload.azp : OIDC_CLIENT_ID,
       scopes: [],
       extra: { sub: payload.sub },
     };
@@ -237,23 +235,34 @@ export const searchDocsHandler = async (
     success: boolean,
     topMatch?: { file: string; heading: string }
   ) => {
-    const sub = subjectOf(extra.authInfo);
-    const hashedCallerId = sub ? hashCallerId(sub) : null;
-    if (!hashedCallerId) return;
-
-    // Built before after() is called, not inside the callback, so latencyMs
-    // measures embed+search rather than whenever the callback ran.
-    const event: TelemetryEvent = {
-      event: 'mcp_tool_call',
-      tool: 'search_docs',
-      hashedCallerId,
-      latencyMs: Date.now() - startedAt,
-      success,
-      topMatchFile: topMatch?.file,
-      topMatchHeading: topMatch?.heading,
-    };
-
+    // The whole body, not just after(): this is called again from the outer
+    // catch below, so anything escaping here would throw a second time with no
+    // handler left — an unhandled rejection instead of the isError response.
     try {
+      const sub = subjectOf(extra.authInfo);
+      if (!sub) {
+        warnOnce(
+          'no-subject',
+          '[MCP] search_docs telemetry skipped: the verified token carried no subject. If a dependency upgrade changed how AuthInfo travels, see docs/app/mcp/README.md#telemetry.'
+        );
+        return;
+      }
+
+      const hashedCallerId = hashCallerId(sub);
+      if (!hashedCallerId) return;
+
+      // Built before after() is called, not inside the callback, so latencyMs
+      // measures embed+search rather than whenever the callback ran.
+      const event: TelemetryEvent = {
+        event: 'mcp_tool_call',
+        tool: 'search_docs',
+        hashedCallerId,
+        latencyMs: Date.now() - startedAt,
+        success,
+        topMatchFile: topMatch?.file,
+        topMatchHeading: topMatch?.heading,
+      };
+
       after(async () => {
         const result = await recordTelemetryEvent(event);
         if (result !== 'recorded' && result !== 'unconfigured') {
@@ -264,8 +273,8 @@ export const searchDocsHandler = async (
         }
       });
     } catch (err) {
-      // after() throws synchronously without a request scope — true of every
-      // call, hence once per process.
+      // Most likely after() throwing for lack of a request scope — true of
+      // every call, hence once per process.
       warnOnce(
         'emit-failed',
         `[MCP] search_docs telemetry emission failed: ${err}`

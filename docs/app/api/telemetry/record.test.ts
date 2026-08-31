@@ -33,8 +33,8 @@ vi.mock('@upstash/redis', () => ({
   }),
 }));
 
-const mcpEvent = makeMcpEvent() as TelemetryEvent;
-const cliEvent = makeCliEvent({ command: 'docs' }) as TelemetryEvent;
+const mcpEvent = makeMcpEvent();
+const cliEvent = makeCliEvent({ command: 'docs' });
 
 // A fresh module instance per test, so record.ts's cached `redis` singleton
 // can't leak a client built under one test's env vars into the next.
@@ -246,12 +246,12 @@ describe('recordTelemetryEvent', () => {
   });
 
   // Unbounded retention rests on this one — see ./README.md
-  describe('isPublicQuotaExceeded', () => {
+  describe('consumePublicQuota', () => {
     it('counts one fixed key per day, derived from no caller input', async () => {
       incr.mockResolvedValue(1);
-      const { isPublicQuotaExceeded } = await loadRecord();
+      const { consumePublicQuota } = await loadRecord();
 
-      await expect(isPublicQuotaExceeded()).resolves.toBe(false);
+      await expect(consumePublicQuota()).resolves.toBe(false);
       expect(incr).toHaveBeenCalledTimes(1);
       expect(incr).toHaveBeenCalledWith(
         expect.stringMatching(/^telemetry:rl:public:\d{4}-\d{2}-\d{2}$/)
@@ -260,9 +260,9 @@ describe('recordTelemetryEvent', () => {
 
     it('reports exceeded past the ceiling, and gives the key a TTL', async () => {
       incr.mockResolvedValue(50_001);
-      const { isPublicQuotaExceeded } = await loadRecord();
+      const { consumePublicQuota } = await loadRecord();
 
-      await expect(isPublicQuotaExceeded()).resolves.toBe(true);
+      await expect(consumePublicQuota()).resolves.toBe(true);
       expect(expireMock).toHaveBeenCalledWith(
         expect.stringContaining('telemetry:rl:public:'),
         24 * 60 * 60,
@@ -283,9 +283,51 @@ describe('recordTelemetryEvent', () => {
         vi.stubEnv('KV_REST_API_URL', '');
         vi.stubEnv('KV_REST_API_TOKEN', '');
       }
-      const { isPublicQuotaExceeded } = await loadRecord();
+      const { consumePublicQuota } = await loadRecord();
 
-      await expect(isPublicQuotaExceeded()).resolves.toBe(false);
+      await expect(consumePublicQuota()).resolves.toBe(false);
     });
+  });
+
+  // The comment on bumpDailyCounter says a failing EXPIRE must not discard a
+  // good INCR. Without keepErrors the default exec() throws on any command
+  // error, so a blip on the TTL alone would drop the event.
+  it('records the event even when only the EXPIRE fails', async () => {
+    incr.mockResolvedValue(1);
+    expireMock.mockRejectedValue(new Error('expire blew up'));
+    const { recordTelemetryEvent } = await loadRecord();
+
+    await expect(recordTelemetryEvent(cliEvent)).resolves.toBe('recorded');
+    expect(xadd).toHaveBeenCalledTimes(1);
+  });
+
+  // `count > limit`, so the ceiling itself is still allowed. Pins the
+  // comparison against an off-by-one to `>=`.
+  it.each([
+    ['cli_command', 1_000],
+    ['mcp_tool_call', 10_000],
+  ])(
+    'records the %s event that lands exactly on its ceiling',
+    async (event, ceiling) => {
+      incr.mockResolvedValue(ceiling);
+      const { recordTelemetryEvent } = await loadRecord();
+
+      await expect(
+        recordTelemetryEvent(event === 'cli_command' ? cliEvent : mcpEvent)
+      ).resolves.toBe('recorded');
+    }
+  );
+
+  // The defense-in-depth re-parse guards both halves of the union, but only the
+  // MCP half was covered — that is the hand-built path, so it got the attention.
+  it('returns "invalid" for a malformed cli_command event', async () => {
+    const { recordTelemetryEvent } = await loadRecord();
+    const malformed = {
+      ...cliEvent,
+      anonymousId: 'not-a-uuid',
+    } as unknown as TelemetryEvent;
+
+    await expect(recordTelemetryEvent(malformed)).resolves.toBe('invalid');
+    expect(incr).not.toHaveBeenCalled();
   });
 });

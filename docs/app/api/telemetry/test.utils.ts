@@ -1,16 +1,14 @@
 import { TELEMETRY_COMMANDS } from './commands';
-import type { TelemetryEvent } from './schema';
-
-type CliEvent = Extract<TelemetryEvent, { event: 'cli_command' }>;
-type McpEvent = Extract<TelemetryEvent, { event: 'mcp_tool_call' }>;
+import type { CliCommandEvent, McpToolCallEvent } from './schema';
 
 /**
- * Known-good events, one field varied at a time. Typed loosely on the way in so
- * a test can post a deliberately invalid shape (`{ command: 'bogus' }`) through
- * the same factory the valid cases use — the schema, not the factory, is what
- * decides what is acceptable.
+ * Known-good events, one field varied at a time. Fully typed: build a
+ * deliberately invalid shape by spreading and overriding at the call site
+ * (`{ ...makeCliEvent(), command: 'bogus' }`) rather than by loosening these.
  */
-export const makeCliEvent = (overrides: Partial<CliEvent> = {}) => ({
+export const makeCliEvent = (
+  overrides: Partial<CliCommandEvent> = {}
+): CliCommandEvent => ({
   event: 'cli_command',
   command: TELEMETRY_COMMANDS[0],
   cliVersion: '1.0.0',
@@ -24,7 +22,9 @@ export const makeCliEvent = (overrides: Partial<CliEvent> = {}) => ({
   ...overrides,
 });
 
-export const makeMcpEvent = (overrides: Partial<McpEvent> = {}) => ({
+export const makeMcpEvent = (
+  overrides: Partial<McpToolCallEvent> = {}
+): McpToolCallEvent => ({
   event: 'mcp_tool_call',
   tool: 'search_docs',
   hashedCallerId: 'a'.repeat(64),
