@@ -1,20 +1,26 @@
+import { useState } from 'react';
 import {
   Dialog as RACDialog,
   DialogTrigger as RACDialogTrigger,
 } from 'react-aria-components/Dialog';
 import { expect, fn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
+import type { Selection } from '@react-types/shared';
 import { Archive } from '@marigold/icons';
+import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
+import { Checkbox } from '../Checkbox/Checkbox';
 import { Description } from '../Description/Description';
 import { EmptyState as EmptyStateComponent } from '../EmptyState/EmptyState';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Popover } from '../Overlay/Popover';
 import { Panel } from '../Panel/Panel';
+import { Stack } from '../Stack/Stack';
 import { TextValue } from '../TextValue/TextValue';
 import { Title } from '../Title/Title';
 import { ListView } from './ListView';
+import type { ListViewProps } from './ListView';
 
 const meta = preview.meta({
   title: 'Components/ListView',
@@ -71,8 +77,8 @@ const meta = preview.meta({
       },
       description:
         'Whether `disabledKeys` blocks all interactions with a row, or only ' +
-        "selection. ListView doesn't support selection, so `all` is the " +
-        'only setting with an observable effect.',
+        'selection. With `selection`, a disabled row still takes focus and ' +
+        'fires its own controls; it just cannot be selected.',
     },
   },
   args: {
@@ -111,6 +117,9 @@ Basic.test(
     expect(grid).toBeInTheDocument();
     expect(row).not.toHaveAttribute('aria-selected');
     expect(disabledRow).toHaveAttribute('aria-disabled', 'true');
+    // No selectionMode means no indicator, so the `auto` track stays at zero
+    // width and the row renders exactly as it did before selection existed.
+    expect(grid.querySelector('[data-grid-area="indicator"]')).toBeNull();
   }
 );
 
@@ -775,5 +784,234 @@ SelectionWithRowActions.test(
     expect(row).toHaveAttribute('aria-selected', 'false');
 
     await userEvent.keyboard('{Escape}');
+  }
+);
+
+const onVenueMenu = fn();
+const onVenueArchive = fn();
+
+export const SelectionWithMixedRowContent = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <ListView {...args} aria-label="Venues" selectionMode="multiple">
+      <ListView.Item id="gasometer" textValue="Gasometer">
+        <TextValue>Gasometer</TextValue>
+        <Description>Vienna · 1600 seats</Description>
+        <Badge variant="warning">Sold out</Badge>
+        <ButtonGroup>
+          <Button
+            size="icon"
+            aria-label="Archive Gasometer"
+            onPress={() => onVenueArchive('gasometer')}
+          >
+            <Archive />
+          </Button>
+          <ActionMenu aria-label="Manage Gasometer">
+            <ActionMenu.Item onAction={() => onVenueMenu('gasometer')}>
+              Rename
+            </ActionMenu.Item>
+          </ActionMenu>
+        </ButtonGroup>
+      </ListView.Item>
+      <ListView.Item id="tempodrom" textValue="Tempodrom">
+        <TextValue>Tempodrom</TextValue>
+        <Description>Berlin · 3800 seats</Description>
+      </ListView.Item>
+    </ListView>
+  ),
+});
+
+SelectionWithMixedRowContent.test(
+  'every named region keeps its cell beside an unslotted child',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const row = canvas.getByRole('row', { name: /gasometer/i });
+
+    expect(row.querySelector('[data-grid-area="indicator"]')).toBeVisible();
+    expect(row.querySelector('[data-grid-area="label"]')).toHaveTextContent(
+      'Gasometer'
+    );
+    expect(
+      row.querySelector('[data-grid-area="description"]')
+    ).toHaveTextContent('Vienna');
+    // The `<ButtonGroup>` claims the cell, not each of its buttons, so a
+    // grouped row still reports exactly one.
+    expect(row.querySelectorAll('[data-grid-area="actions"]')).toHaveLength(1);
+    // The badge claims nothing, so it must not be able to take a named cell.
+    expect(canvas.getByText('Sold out').closest('[data-grid-area]')).toBeNull();
+  }
+);
+
+const VENUE_IDS = ['gasometer', 'tempodrom', 'columbiahalle'];
+
+const SelectAllExample = (args: ListViewProps) => {
+  const [selected, setSelected] = useState<Selection>(() => new Set());
+  const count = selected === 'all' ? VENUE_IDS.length : selected.size;
+
+  return (
+    <Stack space={4}>
+      <Checkbox
+        aria-label="Select all venues"
+        checked={count === VENUE_IDS.length}
+        indeterminate={count > 0 && count < VENUE_IDS.length}
+        onChange={checked =>
+          setSelected(checked ? new Set(VENUE_IDS) : new Set())
+        }
+      />
+      <ListView
+        {...args}
+        aria-label="Venues"
+        selectionMode="multiple"
+        selectedKeys={selected}
+        onSelectionChange={setSelected}
+      >
+        <ListView.Item id="gasometer" textValue="Gasometer">
+          <TextValue>Gasometer</TextValue>
+          <Description>Vienna · 1600 seats</Description>
+        </ListView.Item>
+        <ListView.Item id="tempodrom" textValue="Tempodrom">
+          <TextValue>Tempodrom</TextValue>
+          <Description>Berlin · 3800 seats</Description>
+        </ListView.Item>
+        <ListView.Item id="columbiahalle" textValue="Columbiahalle">
+          <TextValue>Columbiahalle</TextValue>
+          <Description>Berlin · 3500 seats</Description>
+        </ListView.Item>
+      </ListView>
+    </Stack>
+  );
+};
+
+export const SelectAll = meta.story({
+  tags: ['component-test'],
+  render: args => <SelectAllExample {...args} />,
+});
+
+SelectAll.test(
+  'selects every row, and reads mixed while the selection is partial',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const selectAll = canvas.getByRole('checkbox', {
+      name: 'Select all venues',
+    });
+
+    await step('checking it selects every row', async () => {
+      await userEvent.click(selectAll);
+
+      for (const row of canvas.getAllByRole('row')) {
+        expect(row).toHaveAttribute('aria-selected', 'true');
+      }
+    });
+
+    await step('dropping one row puts it in a mixed state', async () => {
+      await userEvent.click(canvas.getByRole('row', { name: /gasometer/i }));
+
+      // A native checkbox carries the mixed state on the DOM `indeterminate`
+      // property, not as `aria-checked`.
+      expect(selectAll).toBePartiallyChecked();
+    });
+  }
+);
+
+export const SelectionWithRowActivation = meta.story({
+  tags: ['component-test'],
+  args: { onAction: fn() },
+  render: args => (
+    <ListView {...args} aria-label="Venues" selectionMode="multiple">
+      <ListView.Item id="gasometer" textValue="Gasometer">
+        <TextValue>Gasometer</TextValue>
+        <Description>Vienna · 1600 seats</Description>
+      </ListView.Item>
+      <ListView.Item id="tempodrom" textValue="Tempodrom">
+        <TextValue>Tempodrom</TextValue>
+        <Description>Berlin · 3800 seats</Description>
+      </ListView.Item>
+    </ListView>
+  ),
+});
+
+SelectionWithRowActivation.test(
+  'a row press opens while nothing is selected, and toggles once something is',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onAction: fn() },
+  },
+  async ({ args, canvas, userEvent, step }) => {
+    await step('nothing selected: pressing a row fires onAction', async () => {
+      await userEvent.click(canvas.getByRole('row', { name: /gasometer/i }));
+
+      expect(args.onAction).toHaveBeenCalledTimes(1);
+      expect(canvas.getByRole('row', { name: /gasometer/i })).toHaveAttribute(
+        'aria-selected',
+        'false'
+      );
+    });
+
+    await step('the checkbox selects without firing onAction', async () => {
+      await userEvent.click(canvas.getAllByRole('checkbox')[0]);
+
+      expect(canvas.getByRole('row', { name: /gasometer/i })).toHaveAttribute(
+        'aria-selected',
+        'true'
+      );
+      expect(args.onAction).toHaveBeenCalledTimes(1);
+    });
+
+    await step('with a selection, pressing a row toggles it', async () => {
+      await userEvent.click(canvas.getByRole('row', { name: /tempodrom/i }));
+
+      expect(canvas.getByRole('row', { name: /tempodrom/i })).toHaveAttribute(
+        'aria-selected',
+        'true'
+      );
+      expect(args.onAction).toHaveBeenCalledTimes(1);
+    });
+  }
+);
+
+export const SelectableDisabledRows = meta.story({
+  tags: ['component-test'],
+  args: { onSelectionChange: fn() },
+  render: args => (
+    <ListView
+      {...args}
+      aria-label="Venues"
+      selectionMode="multiple"
+      disabledKeys={['tempodrom']}
+      disabledBehavior="selection"
+    >
+      <ListView.Item id="gasometer" textValue="Gasometer">
+        <TextValue>Gasometer</TextValue>
+        <Description>Vienna · 1600 seats</Description>
+      </ListView.Item>
+      <ListView.Item id="tempodrom" textValue="Tempodrom">
+        <TextValue>Tempodrom</TextValue>
+        <Description>Berlin · booking closed</Description>
+      </ListView.Item>
+    </ListView>
+  ),
+});
+
+SelectableDisabledRows.test(
+  'a selection-disabled row still takes focus but cannot be selected',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onSelectionChange: fn() },
+  },
+  async ({ args, canvas, userEvent }) => {
+    const disabled = canvas.getByRole('row', { name: /tempodrom/i });
+
+    await userEvent.click(canvas.getByRole('row', { name: /gasometer/i }));
+    await userEvent.keyboard('{ArrowDown}');
+
+    expect(disabled).toHaveFocus();
+
+    await userEvent.keyboard(' ');
+
+    // RAC drops `aria-selected` altogether on a selection-disabled row rather
+    // than reporting `false`: a row that cannot be selected should not
+    // advertise a selection state.
+    expect(disabled).not.toHaveAttribute('aria-selected');
+    expect(args.onSelectionChange).toHaveBeenCalledTimes(1);
   }
 );

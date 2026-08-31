@@ -33,7 +33,7 @@ describe('ListView', () => {
       expect(rows).toHaveLength(3);
     });
 
-    test('rows have no aria-selected — ListView has no selection', () => {
+    test('rows have no aria-selected without a selectionMode', () => {
       render(<Basic.Component />);
 
       for (const row of screen.getAllByRole('row')) {
@@ -384,28 +384,6 @@ describe('ListView', () => {
       expect(screen.getByRole('grid')).not.toHaveAttribute(
         'aria-multiselectable'
       );
-    });
-
-    test('the indicator claims the indicator cell', () => {
-      renderList({ selectionMode: 'multiple' });
-
-      const indicators = screen
-        .getAllByRole('row')
-        .map(row => row.querySelector('[data-grid-area="indicator"]'));
-
-      expect(indicators).toHaveLength(2);
-      expect(indicators.every(Boolean)).toBe(true);
-    });
-
-    test('renders no indicator and no aria-selected without a selectionMode', () => {
-      renderList({});
-
-      expect(
-        document.querySelectorAll('[data-grid-area="indicator"]')
-      ).toHaveLength(0);
-      for (const row of screen.getAllByRole('row')) {
-        expect(row).not.toHaveAttribute('aria-selected');
-      }
     });
 
     test('reports the selection as a Set of keys', async () => {
