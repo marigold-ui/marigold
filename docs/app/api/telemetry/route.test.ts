@@ -1,13 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TELEMETRY_COMMANDS } from './commands';
-import { recordTelemetryEvent } from './record';
+import { consumePublicIpQuota, recordTelemetryEvent } from './record';
 import { POST } from './route';
 
 vi.mock('./record', () => ({
   recordTelemetryEvent: vi.fn().mockResolvedValue('recorded'),
+  consumePublicIpQuota: vi.fn().mockResolvedValue('ok'),
 }));
 
 const record = vi.mocked(recordTelemetryEvent);
+const ipQuota = vi.mocked(consumePublicIpQuota);
 
 const makeEvent = (command: string) => ({
   event: 'cli_command',
@@ -32,11 +34,11 @@ const mcpEvent = {
   topMatchHeading: 'Usage',
 };
 
-const post = (body: unknown) =>
+const post = (body: unknown, headers: Record<string, string> = {}) =>
   POST(
     new Request('http://localhost/api/telemetry', {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
+      headers: { 'content-type': 'application/json', ...headers },
       body: JSON.stringify(body),
     })
   );
@@ -45,6 +47,8 @@ describe('POST /api/telemetry', () => {
   beforeEach(() => {
     record.mockReset();
     record.mockResolvedValue('recorded');
+    ipQuota.mockReset();
+    ipQuota.mockResolvedValue('ok');
   });
 
   // Derived from the route's own command enum, so a command added there is
@@ -131,5 +135,62 @@ describe('POST /api/telemetry', () => {
 
     expect(res.status).toBe(400);
     expect(record).not.toHaveBeenCalled();
+  });
+
+  // The per-caller quota inside recordTelemetryEvent keys on the body's own
+  // `anonymousId`, so rotating it walks straight past. This endpoint is
+  // unauthenticated and the stream has no TTL, so the second quota keys on
+  // something the caller does not choose.
+  describe('per-IP quota', () => {
+    it('takes the client address from the first x-forwarded-for entry', async () => {
+      await post(makeEvent('docs'), {
+        'x-forwarded-for': '203.0.113.7, 70.41.3.18, 150.172.238.178',
+      });
+
+      expect(ipQuota).toHaveBeenCalledWith('203.0.113.7');
+    });
+
+    it('falls back to x-real-ip', async () => {
+      await post(makeEvent('docs'), { 'x-real-ip': '203.0.113.9' });
+
+      expect(ipQuota).toHaveBeenCalledWith('203.0.113.9');
+    });
+
+    it('passes null when no address header is present', async () => {
+      await post(makeEvent('docs'));
+
+      expect(ipQuota).toHaveBeenCalledWith(null);
+    });
+
+    it('rejects with 429 without recording once the address is over quota', async () => {
+      ipQuota.mockResolvedValue('exceeded');
+
+      const res = await post(makeEvent('docs'), {
+        'x-forwarded-for': '203.0.113.7',
+      });
+
+      expect(res.status).toBe(429);
+      expect(record).not.toHaveBeenCalled();
+    });
+
+    // Fail open: a quota check that can't run must not start turning away
+    // traffic, or a Redis outage would take the CLI's telemetry down with it.
+    it('records normally when the quota check is unavailable', async () => {
+      ipQuota.mockResolvedValue('unavailable');
+
+      const res = await post(makeEvent('docs'));
+
+      expect(res.status).toBe(204);
+      expect(record).toHaveBeenCalledTimes(1);
+    });
+
+    it('is not consulted for a body that fails validation', async () => {
+      // A malformed body is a cheap 400 that never reaches the stream, so it
+      // costs no Redis round trip.
+      const res = await post(makeEvent('bogus'));
+
+      expect(res.status).toBe(400);
+      expect(ipQuota).not.toHaveBeenCalled();
+    });
   });
 });

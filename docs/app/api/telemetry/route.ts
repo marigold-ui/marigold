@@ -1,11 +1,20 @@
 import { NextResponse } from 'next/server';
-import { recordTelemetryEvent } from './record';
+import { consumePublicIpQuota, recordTelemetryEvent } from './record';
 import { CliCommandEventSchema } from './schema';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 const MAX_BODY_BYTES = 4 * 1024;
+
+// Vercel sets `x-forwarded-for` on every request; the client address is the
+// first entry, the rest are proxies. Returning null when it's absent (local
+// dev) makes the IP quota skip rather than reject.
+const clientIp = (request: Request): string | null => {
+  const forwarded = request.headers.get('x-forwarded-for');
+  if (forwarded) return forwarded.split(',')[0]!.trim() || null;
+  return request.headers.get('x-real-ip');
+};
 
 export async function POST(request: Request) {
   const contentLength = Number(request.headers.get('content-length') ?? '0');
@@ -27,6 +36,14 @@ export async function POST(request: Request) {
   const parsed = CliCommandEventSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json({ error: 'invalid event' }, { status: 400 });
+  }
+
+  // Checked after validation, not before: a malformed body is a cheap 400 that
+  // never reaches the stream, so the thing worth defending is valid events. The
+  // quota inside recordTelemetryEvent keys on the body's own `anonymousId`,
+  // which the caller picks — this one doesn't.
+  if ((await consumePublicIpQuota(clientIp(request))) === 'exceeded') {
+    return new NextResponse(null, { status: 429 });
   }
 
   const result = await recordTelemetryEvent(parsed.data);
