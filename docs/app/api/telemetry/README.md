@@ -109,6 +109,16 @@ no identity — there is no personal data in it. `mcp_tool_call` carries `hashed
 HMAC-SHA256 of a Keycloak `sub`: pseudonymous, not anonymous, since anyone holding both Redis
 read access and `MCP_TELEMETRY_HASH_SECRET` can re-identify a named Reservix employee.
 
+That digest is salted with the calendar quarter and the period stored beside it as `hashPeriod`,
+so linkability is bounded by construction rather than by anyone remembering to rotate a secret:
+one person is one caller within a quarter and two unlinkable ones across the boundary. It is
+stored rather than derived from `receivedAt`, which is stamped later on the write path and can
+land on the far side of a boundary. The trade is deliberate — a window spanning a boundary counts
+one person twice, and there is no such thing as an all-time unique-caller count. Neither matters
+for what Insights reads: its widest view is 90 days, roughly one period, and its KPI deltas
+compare a period against the preceding one, which is a comparison of counts rather than of
+identities.
+
 Retaining that indefinitely is a deliberate call on the basis that `marigold-docs` is an
 internal tool, its callers are Reservix employees, and what is recorded is which doc pages were
 searched — not query text and not similarity scores. **No DPO review was sought and no
@@ -120,10 +130,10 @@ substitute for either.** Revisit it, before the fact rather than after, if:
   makes the current position defensible is that Insights only ever aggregates;
 - someone asks the employee-data question properly.
 
-The two mitigations for that last case are scheduled rotation of `MCP_TELEMETRY_HASH_SECRET`,
-which breaks linkability across periods where retention does not, and a per-caller opt-out on
-the MCP path, which unlike the CLI's `DO_NOT_TRACK` does not exist. Both are deferred, not
-dismissed.
+For that last case, the per-period salting above is already in place; what remains available is
+rotating `MCP_TELEMETRY_HASH_SECRET`, which invalidates every past digest rather than only
+future ones, and a per-caller opt-out on the MCP path, which unlike the CLI's `DO_NOT_TRACK`
+does not exist. The opt-out is deferred, not dismissed.
 
 The shapes are not symmetric either: the CLI reports its outcome as `exitCode` and its duration
 as a coarse `durationBucket` (its [public docs](../../../content/getting-started/cli/index.mdx)
