@@ -77,18 +77,11 @@ describe('recordTelemetryEvent', () => {
       expect.stringMatching(/^telemetry:rl:mcp:a{64}:\d{4}-\d{2}-\d{2}$/)
     );
     expect(expireMock).toHaveBeenCalled();
-    expect(xadd).toHaveBeenCalledWith(
-      'telemetry:events',
-      '*',
-      {
-        data: expect.stringContaining(
-          '"hashedCallerId":"' + 'a'.repeat(64) + '"'
-        ),
-      },
-      expect.objectContaining({
-        trim: expect.objectContaining({ type: 'MINID', comparison: '~' }),
-      })
-    );
+    expect(xadd).toHaveBeenCalledWith('telemetry:events', '*', {
+      data: expect.stringContaining(
+        '"hashedCallerId":"' + 'a'.repeat(64) + '"'
+      ),
+    });
   });
 
   it('uses a cli-prefixed rate-limit key for cli_command events', async () => {
@@ -203,11 +196,11 @@ describe('recordTelemetryEvent', () => {
     expect(JSON.parse(payload)).toMatchObject({ event: 'mcp_tool_call' });
   });
 
-  // Carried over from the daily-list layout, where retention was a separate
-  // EXPIRE that could land on the wrong day key or be skipped entirely. The
-  // stream makes it part of the write, so what's worth pinning is that every
-  // write carries a trim and that the cutoff is the one we intend.
-  describe('stream retention', () => {
+  // Retention is unbounded by design (.memory/adr/0006-telemetry-retention.md).
+  // That is easy to undo by accident — a stray trim option silently starts
+  // dropping the tail, and the symptom is a dip in historical usage rather
+  // than a failure — so the absence of one is asserted rather than assumed.
+  describe('retention', () => {
     beforeEach(() => {
       vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
       vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
@@ -216,54 +209,26 @@ describe('recordTelemetryEvent', () => {
       xadd.mockResolvedValue('1-0');
     });
 
-    // Two assertions, deliberately: the exact window catches an accidental
-    // edit, and the floor states why the number can't just be lowered. 180
-    // days is what Insights needs — a 90-day view whose KPI deltas compare
-    // against the preceding 90 — and that constraint lives in another repo,
-    // where shrinking this would silently truncate the tail instead of failing.
-    it('trims 200 days back, keeping the 180 days Insights reads', async () => {
-      const DAY_MS = 24 * 60 * 60 * 1000;
-      const { recordTelemetryEvent } = await loadRecord();
-      vi.useFakeTimers();
-      try {
-        vi.setSystemTime(new Date('2026-06-01T12:00:00.000Z'));
-
-        await recordTelemetryEvent(cliEvent);
-
-        const [, , , opts] = xadd.mock.calls[0];
-        expect(opts.trim.type).toBe('MINID');
-        const cutoff = Number(opts.trim.threshold);
-        expect(Date.now() - cutoff).toBe(200 * DAY_MS);
-        expect(cutoff).toBeLessThanOrEqual(Date.now() - 180 * DAY_MS);
-      } finally {
-        vi.useRealTimers();
-      }
-    });
-
-    it('trims on every write, not just the first, so retention never lapses', async () => {
-      const { recordTelemetryEvent } = await loadRecord();
-
-      await recordTelemetryEvent(cliEvent);
-      await recordTelemetryEvent(cliEvent);
-
-      expect(xadd).toHaveBeenCalledTimes(2);
-      for (const [, , , opts] of xadd.mock.calls) {
-        expect(opts.trim).toMatchObject({ type: 'MINID', comparison: '~' });
-      }
-    });
-
-    it('writes and trims in one command, so a write can never land untrimmed', async () => {
+    it('appends without trimming, so no history is ever dropped', async () => {
       const { recordTelemetryEvent } = await loadRecord();
 
       await recordTelemetryEvent(cliEvent);
 
-      // The whole point of MINID-on-XADD: no second round trip that could fail
-      // on its own and leave the stream unbounded.
       expect(xadd).toHaveBeenCalledTimes(1);
-      const dayKeyExpires = expireMock.mock.calls.filter(([key]) =>
-        /^telemetry:\d{4}-\d{2}-\d{2}$/.test(key as string)
-      );
-      expect(dayKeyExpires).toHaveLength(0);
+      // Three args exactly: key, id, entry. A fourth would carry `trim`.
+      expect(xadd.mock.calls[0]).toHaveLength(3);
+    });
+
+    it('sets no TTL on the stream key, only on the rate-limit key', async () => {
+      const { recordTelemetryEvent } = await loadRecord();
+
+      await recordTelemetryEvent(cliEvent);
+
+      const expiredKeys = expireMock.mock.calls.map(([key]) => key);
+      expect(expiredKeys).not.toContain('telemetry:events');
+      expect(
+        expiredKeys.every(k => String(k).startsWith('telemetry:rl:'))
+      ).toBe(true);
     });
   });
 });
