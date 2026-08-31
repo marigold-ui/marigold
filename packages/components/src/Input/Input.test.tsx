@@ -22,14 +22,6 @@ test('supports variant and size props', () => {
   expect(input).toBeInTheDocument();
 });
 
-test('renders with leading icon', () => {
-  render(<WithIcons.Component />);
-  // eslint-disable-next-line testing-library/no-node-access
-  const icon = document.querySelector('svg');
-
-  expect(icon).toBeInTheDocument();
-});
-
 test('constrains the leading icon to 16px so it stays clear of the text', () => {
   render(<WithIcons.Component />);
   const action = screen.getByRole('button');
@@ -37,14 +29,14 @@ test('constrains the leading icon to 16px so it stays clear of the text', () => 
   // eslint-disable-next-line testing-library/no-node-access
   const icon = [...document.querySelectorAll('svg')].find(
     svg => !action.contains(svg)
-  );
+  )!;
 
-  expect(icon).toHaveClass('size-4');
+  expect(icon.getBoundingClientRect().width).toBe(16);
 });
 
-test('renders with action', () => {
+test('keeps the action a control-sized touch target', () => {
   render(<WithIcons.Component />);
-  const button = screen.getByRole('button');
+  const action = screen.getByRole('button');
 
-  expect(button).toBeInTheDocument();
+  expect(action.getBoundingClientRect().height).toBe(36);
 });
