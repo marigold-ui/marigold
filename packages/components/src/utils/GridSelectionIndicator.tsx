@@ -44,7 +44,7 @@ export const GridSelectionIndicator = ({
   }
 
   return (
-    <div className={className}>
+    <div className={className} data-grid-area="indicator">
       {selectionMode === 'multiple' ? (
         <Checkbox slot="selection" />
       ) : (

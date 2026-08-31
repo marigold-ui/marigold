@@ -699,3 +699,81 @@ MultipleSelection.test(
     expect(args.onSelectionChange).toHaveBeenCalledTimes(1);
   }
 );
+
+SingleSelection.test(
+  'Space selects the focused row and Escape clears it',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const grid = canvas.getByRole('grid', { name: 'Delivery speed' });
+    const express = canvas.getByRole('row', { name: /express/i });
+
+    await step('arrow keys move focus without changing selection', async () => {
+      await userEvent.click(canvas.getByRole('row', { name: /standard/i }));
+      await userEvent.keyboard('{ArrowDown}');
+
+      expect(express).toHaveFocus();
+      expect(express).toHaveAttribute('aria-selected', 'false');
+    });
+
+    await step('Space selects the focused row', async () => {
+      await userEvent.keyboard(' ');
+
+      expect(express).toHaveAttribute('aria-selected', 'true');
+    });
+
+    await step('Escape clears the selection', async () => {
+      await userEvent.keyboard('{Escape}');
+
+      expect(express).toHaveAttribute('aria-selected', 'false');
+      expect(grid.querySelectorAll('[aria-selected="true"]')).toHaveLength(0);
+    });
+  }
+);
+
+const onOpenVenue = fn();
+const onArchiveVenue = fn();
+
+export const SelectionWithRowActions = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <ListView {...args} aria-label="Venues" selectionMode="multiple">
+      <ListView.Item id="gasometer" textValue="Gasometer">
+        <TextValue>Gasometer</TextValue>
+        <Description>Vienna · 1600 seats</Description>
+        <ActionMenu aria-label="Manage Gasometer">
+          <ActionMenu.Item onAction={() => onOpenVenue('gasometer')}>
+            Open
+          </ActionMenu.Item>
+          <ActionMenu.Item onAction={() => onArchiveVenue('gasometer')}>
+            Archive
+          </ActionMenu.Item>
+        </ActionMenu>
+      </ListView.Item>
+      <ListView.Item id="tempodrom" textValue="Tempodrom">
+        <TextValue>Tempodrom</TextValue>
+        <Description>Berlin · 3800 seats</Description>
+        <ActionMenu aria-label="Manage Tempodrom">
+          <ActionMenu.Item onAction={() => onOpenVenue('tempodrom')}>
+            Open
+          </ActionMenu.Item>
+        </ActionMenu>
+      </ListView.Item>
+    </ListView>
+  ),
+});
+
+SelectionWithRowActions.test(
+  'a row control stays reachable and does not toggle the row',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    const row = canvas.getByRole('row', { name: /gasometer/i });
+    const trigger = canvas.getByRole('button', { name: 'Manage Gasometer' });
+
+    await userEvent.click(trigger);
+
+    expect(await canvas.findByRole('menuitem', { name: 'Open' })).toBeVisible();
+    expect(row).toHaveAttribute('aria-selected', 'false');
+
+    await userEvent.keyboard('{Escape}');
+  }
+);

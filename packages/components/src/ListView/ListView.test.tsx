@@ -348,4 +348,111 @@ describe('ListView', () => {
       );
     });
   });
+  describe('selection', () => {
+    const rows = (
+      <>
+        <ListView.Item id="a" textValue="Alpha">
+          <TextValue>Alpha</TextValue>
+          <Description>First</Description>
+        </ListView.Item>
+        <ListView.Item id="b" textValue="Beta">
+          <TextValue>Beta</TextValue>
+        </ListView.Item>
+      </>
+    );
+
+    const renderList = (props: Record<string, unknown>) =>
+      render(
+        <MarigoldProvider theme={theme}>
+          <ListView aria-label="Records" {...props}>
+            {rows}
+          </ListView>
+        </MarigoldProvider>
+      );
+
+    test('marks the grid multiselectable only in multiple mode', () => {
+      const { unmount } = renderList({ selectionMode: 'multiple' });
+
+      expect(screen.getByRole('grid')).toHaveAttribute(
+        'aria-multiselectable',
+        'true'
+      );
+
+      unmount();
+      renderList({ selectionMode: 'single' });
+
+      expect(screen.getByRole('grid')).not.toHaveAttribute(
+        'aria-multiselectable'
+      );
+    });
+
+    test('the indicator claims the indicator cell', () => {
+      renderList({ selectionMode: 'multiple' });
+
+      const indicators = screen
+        .getAllByRole('row')
+        .map(row => row.querySelector('[data-grid-area="indicator"]'));
+
+      expect(indicators).toHaveLength(2);
+      expect(indicators.every(Boolean)).toBe(true);
+    });
+
+    test('renders no indicator and no aria-selected without a selectionMode', () => {
+      renderList({});
+
+      expect(
+        document.querySelectorAll('[data-grid-area="indicator"]')
+      ).toHaveLength(0);
+      for (const row of screen.getAllByRole('row')) {
+        expect(row).not.toHaveAttribute('aria-selected');
+      }
+    });
+
+    test('reports the selection as a Set of keys', async () => {
+      const onSelectionChange = vi.fn();
+      renderList({ selectionMode: 'multiple', onSelectionChange });
+
+      await user.click(screen.getByRole('row', { name: /alpha/i }));
+
+      // A `Selection` is a `Set` subclass, so compare contents not identity.
+      expect([...onSelectionChange.mock.calls[0][0]]).toEqual(['a']);
+    });
+
+    test('honors a controlled selection', () => {
+      renderList({ selectionMode: 'multiple', selectedKeys: ['b'] });
+
+      expect(screen.getByRole('row', { name: /beta/i })).toHaveAttribute(
+        'aria-selected',
+        'true'
+      );
+      expect(screen.getByRole('row', { name: /alpha/i })).toHaveAttribute(
+        'aria-selected',
+        'false'
+      );
+    });
+
+    test('a disabled row cannot be selected', async () => {
+      const onSelectionChange = vi.fn();
+      renderList({
+        selectionMode: 'multiple',
+        disabledKeys: ['b'],
+        onSelectionChange,
+      });
+
+      await user.click(screen.getByRole('row', { name: /beta/i }));
+
+      expect(onSelectionChange).not.toHaveBeenCalled();
+    });
+
+    test('keeps the interactive cursor off a disabled row', () => {
+      renderList({ selectionMode: 'multiple' });
+
+      // Gated behind `not-disabled:`, because an ungated
+      // `data-selection-mode:cursor-pointer` outranks `disabled:cursor-not-allowed`
+      // on source order.
+      expect(screen.getByRole('row', { name: /alpha/i }).className).toContain(
+        'not-disabled:data-selection-mode:cursor-pointer'
+      );
+    });
+  });
 });
