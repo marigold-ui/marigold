@@ -1,20 +1,18 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TELEMETRY_COMMANDS } from './commands';
-import { isPublicQuotaExceeded, recordTelemetryEvent } from './record';
+import { consumePublicQuota, recordTelemetryEvent } from './record';
 import { POST } from './route';
 import { makeCliEvent, makeMcpEvent } from './test.utils';
 
-const makeEvent = (command: string) =>
-  makeCliEvent({ command: command as never });
 const mcpEvent = makeMcpEvent();
 
 vi.mock('./record', () => ({
   recordTelemetryEvent: vi.fn().mockResolvedValue('recorded'),
-  isPublicQuotaExceeded: vi.fn().mockResolvedValue(false),
+  consumePublicQuota: vi.fn().mockResolvedValue(false),
 }));
 
 const record = vi.mocked(recordTelemetryEvent);
-const publicQuota = vi.mocked(isPublicQuotaExceeded);
+const publicQuota = vi.mocked(consumePublicQuota);
 
 const post = (body: unknown, headers: Record<string, string> = {}) =>
   POST(
@@ -36,21 +34,24 @@ describe('POST /api/telemetry', () => {
   // Derived from the route's own enum, so a new command is covered
   // automatically; commands.test.ts holds that enum to the CLI's union.
   it.each(TELEMETRY_COMMANDS)('accepts a %s command event', async command => {
-    const res = await post(makeEvent(command));
+    const res = await post(makeCliEvent({ command }));
 
     expect(res.status).toBe(204);
     expect(record).toHaveBeenCalledWith(expect.objectContaining({ command }));
   });
 
   it('rejects an unknown command with 400 without recording anything', async () => {
-    const res = await post(makeEvent('bogus'));
+    const res = await post({ ...makeCliEvent(), command: 'bogus' });
 
     expect(res.status).toBe(400);
     expect(record).not.toHaveBeenCalled();
   });
 
   it('hands the parsed event on, dropping unknown keys', async () => {
-    const res = await post({ ...makeEvent('docs'), injected: 'nope' });
+    const res = await post({
+      ...makeCliEvent({ command: 'docs' }),
+      injected: 'nope',
+    });
 
     expect(res.status).toBe(204);
     expect(record).toHaveBeenCalledTimes(1);
@@ -60,7 +61,7 @@ describe('POST /api/telemetry', () => {
   it('maps a rate-limited event to 429', async () => {
     record.mockResolvedValue('rate-limited');
 
-    const res = await post(makeEvent('docs'));
+    const res = await post(makeCliEvent({ command: 'docs' }));
 
     expect(res.status).toBe(429);
   });
@@ -72,7 +73,7 @@ describe('POST /api/telemetry', () => {
     async result => {
       record.mockResolvedValue(result);
 
-      const res = await post(makeEvent('docs'));
+      const res = await post(makeCliEvent({ command: 'docs' }));
 
       expect(res.status).toBe(204);
     }
@@ -86,7 +87,7 @@ describe('POST /api/telemetry', () => {
           'content-type': 'application/json',
           'content-length': String(5 * 1024),
         },
-        body: JSON.stringify(makeEvent('docs')),
+        body: JSON.stringify(makeCliEvent({ command: 'docs' })),
       })
     );
 
@@ -124,25 +125,14 @@ describe('POST /api/telemetry', () => {
     it('rejects with 429 without recording once the day is spent', async () => {
       publicQuota.mockResolvedValue(true);
 
-      const res = await post(makeEvent('docs'));
+      const res = await post(makeCliEvent({ command: 'docs' }));
 
       expect(res.status).toBe(429);
       expect(record).not.toHaveBeenCalled();
     });
 
-    // Fail open: a quota check that can't run must not start turning away
-    // traffic, or a Redis outage would take the CLI's telemetry down with it.
-    it('records normally when the quota check cannot run', async () => {
-      publicQuota.mockResolvedValue(false);
-
-      const res = await post(makeEvent('docs'));
-
-      expect(res.status).toBe(204);
-      expect(record).toHaveBeenCalledTimes(1);
-    });
-
     it('is not consulted for a body that fails validation', async () => {
-      const res = await post(makeEvent('bogus'));
+      const res = await post({ ...makeCliEvent(), command: 'bogus' });
 
       expect(res.status).toBe(400);
       expect(publicQuota).not.toHaveBeenCalled();

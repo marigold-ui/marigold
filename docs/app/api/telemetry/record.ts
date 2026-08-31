@@ -3,18 +3,10 @@ import { Redis } from '@upstash/redis';
 import { EventSchema, type TelemetryEvent } from './schema';
 
 // Ceilings, keyspace and the retention decision: see ./README.md
-const POLICY = {
-  cli_command: {
-    limit: 1_000,
-    id: (e: Extract<TelemetryEvent, { event: 'cli_command' }>) =>
-      `cli:${e.anonymousId}`,
-  },
-  mcp_tool_call: {
-    limit: 10_000,
-    id: (e: Extract<TelemetryEvent, { event: 'mcp_tool_call' }>) =>
-      `mcp:${e.hashedCallerId}`,
-  },
-} as const;
+const LIMITS: Record<TelemetryEvent['event'], number> = {
+  cli_command: 1_000,
+  mcp_tool_call: 10_000,
+};
 
 const SECONDS_PER_DAY = 24 * 60 * 60;
 const PUBLIC_LIMIT_PER_DAY = 50_000;
@@ -32,8 +24,8 @@ const utcDate = (): string => {
 const rateLimitKey = (event: TelemetryEvent): string => {
   const id =
     event.event === 'cli_command'
-      ? POLICY.cli_command.id(event)
-      : POLICY.mcp_tool_call.id(event);
+      ? `cli:${event.anonymousId}`
+      : `mcp:${event.hashedCallerId}`;
   return `telemetry:rl:${id}:${utcDate()}`;
 };
 
@@ -86,7 +78,7 @@ export async function recordTelemetryEvent(
     }
 
     const count = await bumpDailyCounter(client, rateLimitKey(parsed.data));
-    if (count > POLICY[parsed.data.event].limit) {
+    if (count > LIMITS[parsed.data.event]) {
       return 'rate-limited';
     }
 
@@ -102,9 +94,9 @@ export async function recordTelemetryEvent(
   }
 }
 
-// False whenever the check could not run, so a Redis outage fails open rather
-// than turning traffic away — see ./README.md
-export async function isPublicQuotaExceeded(): Promise<boolean> {
+// Bumps the counter, so it costs quota. False whenever the check could not run,
+// so a Redis outage fails open rather than turning traffic away — see ./README.md
+export async function consumePublicQuota(): Promise<boolean> {
   try {
     const client = getRedis();
     if (!client) return false;
@@ -114,7 +106,10 @@ export async function isPublicQuotaExceeded(): Promise<boolean> {
       `telemetry:rl:public:${utcDate()}`
     );
     return count > PUBLIC_LIMIT_PER_DAY;
-  } catch {
+  } catch (err) {
+    // Distinct cause from the write path's, so a failure isolated to this key
+    // isn't reported as — or silenced by — a general Redis outage.
+    warnOnce('public-quota', `[telemetry] public quota check failed: ${err}`);
     return false;
   }
 }

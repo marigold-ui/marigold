@@ -18,7 +18,7 @@ export const CliCommandEventSchema = z.object({
 });
 
 // hashedCallerId is an HMAC of the Keycloak `sub` — never the raw claim.
-const McpToolCallEventSchema = z.object({
+export const McpToolCallEventSchema = z.object({
   event: z.literal('mcp_tool_call'),
   tool: z.literal('search_docs'),
   hashedCallerId: z.string().regex(/^[0-9a-f]{64}$/),
@@ -34,3 +34,5 @@ export const EventSchema = z.discriminatedUnion('event', [
 ]);
 
 export type TelemetryEvent = z.infer<typeof EventSchema>;
+export type CliCommandEvent = z.infer<typeof CliCommandEventSchema>;
+export type McpToolCallEvent = z.infer<typeof McpToolCallEventSchema>;

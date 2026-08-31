@@ -42,7 +42,7 @@ to change.
 
 It had been settled three different ways without ever being written down: DST-1264 set no
 policy at all, DST-1475 added the 90-day TTL as a "storage leak" fix, and DST-1625's stream
-refactor silently made it 200 days for both sources. Hence this section.
+refactor changed it again as a side effect of the layout change. Hence this section.
 
 Three reasons, in order of weight:
 
@@ -70,7 +70,7 @@ year, and until it exists trimming means losing the history it is meant to prese
 
 With no window, the quotas are the only thing left.
 
-**Per caller, per source.** 1000/day for `cli_command`, 10 000/day for `mcp_tool_call`. The
+**Per caller, per source.** 1000/day for `cli_command`, 10000/day for `mcp_tool_call`. The
 ceilings differ because the threat does: CLI events arrive over an unauthenticated endpoint, so
 1000 bounds abuse, while MCP ids come from a verified JWT and dropping those events only
 under-reports the call volume the feature exists to measure. It is not removed there, because
@@ -78,15 +78,23 @@ with nothing expiring a looping agent is the one trusted caller that could still
 limit. A caller past its ceiling is dropped rather than truncated, so both sit far above
 realistic usage — but a caller crossing one in a UTC day does under-report.
 
-**Endpoint-wide.** 50 000/day on `telemetry:rl:public:{date}`. `POST /api/telemetry` has to stay
+**Endpoint-wide.** 50000/day on `telemetry:rl:public:{date}`. `POST /api/telemetry` has to stay
 unauthenticated — `@marigold/cli` is a public npm package — and the per-caller key above comes
 out of the request body, so rotating `anonymousId` walks past it. A single fixed key can't be
-influenced by any header, body field or rotation, which makes it the only hard bound on a store
-that never expires. **Removing it re-opens unbounded growth.** `/mcp` needs no equivalent,
+influenced by any header, body field or rotation, which makes it a hard bound where the
+per-caller ceiling is not. **Removing it re-opens unbounded growth on this endpoint.** It
+bounds only `POST /api/telemetry`: MCP writes never pass through it, and are bounded instead
+by 10000/day times however many Keycloak subjects exist — a soft bound, acceptable only
+because that path is authenticated. `/mcp` needs no equivalent,
 being Keycloak-gated.
 
 A quota check that cannot run lets the request through. Telemetry must not start rejecting
 traffic because Redis is down.
+
+Worth knowing before tuning that ceiling: it counts requests, not writes, so 429'd requests
+consume it too — and the CLI's sender neither inspects the response status nor retries. If one
+caller ever burns the day's budget, every CLI's telemetry is dropped for the rest of the UTC
+day, silently on both sides.
 
 ## Two event types, one store
 
@@ -125,7 +133,7 @@ is a storage decision rather than a common data model.
 
 One consequence that is easy to miss: Insights pages the stream at `STREAM_PAGE_SIZE = 5_000`
 with `MAX_STREAM_PAGES = 20`, and the page counter counts every entry in the window — including
-the `cli_command` ones it is about to discard. Past 100 000 entries in a window it logs and
+the `cli_command` ones it is about to discard. Past 100000 entries in a window it logs and
 returns **incomplete aggregates**, which look like a drop in usage rather than an error. At
 ~35 events a day the window holds ~6000, so there is roughly 16x headroom; the point is that the
 headroom is spent by the source nobody reads, while CLI volume is the half that grows with

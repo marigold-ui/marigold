@@ -146,7 +146,10 @@ describe('searchDocsHandler', () => {
     expect(event.topMatchHeading).toBeUndefined();
   });
 
-  // Drives a verified token through to the recorded digest rather than
+  // Drives a verified token all the way through to the recorded digest, rather
+  // than hand-building the AuthInfo — so a dependency that stopped carrying the
+  // subject through `extra` would fail here instead of silently zeroing
+  // unique-caller counts.
   it('hashes the verified JWT sub, not any other claim', async () => {
     jwtVerify.mockResolvedValue({
       payload: { sub: SUB, azp: 'dst-marigold-docs-mcp' },
@@ -285,5 +288,71 @@ describe('searchDocsHandler', () => {
 
     expect(result.isError).toBeUndefined();
     expect(recordTelemetryEvent).not.toHaveBeenCalled();
+  });
+
+  describe('verifyToken', () => {
+    const loadVerify = async () => {
+      jwtVerify.mockClear();
+      vi.stubEnv('OIDC_AUTHORITY', 'https://keycloak.example/realms/rx');
+      vi.resetModules();
+      return (await import('./route')).verifyToken;
+    };
+    const req = () => new Request('http://localhost/mcp');
+
+    it('returns undefined without a bearer token, without calling the JWKS', async () => {
+      const verify = await loadVerify();
+
+      await expect(verify(req(), undefined)).resolves.toBeUndefined();
+      expect(jwtVerify).not.toHaveBeenCalled();
+    });
+
+    it('returns undefined when verification throws, rather than propagating', async () => {
+      jwtVerify.mockRejectedValue(new Error('bad signature'));
+      const error = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const verify = await loadVerify();
+
+      await expect(verify(req(), 'token')).resolves.toBeUndefined();
+      expect(error).toHaveBeenCalled();
+      error.mockRestore();
+    });
+
+    // A token that verifies but carries no subject cannot be attributed, and
+    // attributing it to a shared fallback would collapse every caller into one.
+    it('returns undefined when the verified payload has no sub', async () => {
+      jwtVerify.mockResolvedValue({ payload: { azp: 'some-client' } });
+      const verify = await loadVerify();
+
+      await expect(verify(req(), 'token')).resolves.toBeUndefined();
+    });
+
+    it('carries the subject in `extra`, not in `clientId`', async () => {
+      jwtVerify.mockResolvedValue({ payload: { sub: SUB, azp: 'caller-app' } });
+      const verify = await loadVerify();
+
+      const info = await verify(req(), 'token');
+
+      expect(info?.extra).toEqual({ sub: SUB });
+      expect(info?.clientId).toBe('caller-app');
+    });
+  });
+
+  // The README promises telemetry is never a hard failure but never silent
+  // either. Every other cause warns once; this one used to return quietly.
+  it('warns once when the verified token carries no subject', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    // Fresh instance so the once-per-process flag starts unset, regardless of
+    // what earlier tests in this file already consumed.
+    vi.resetModules();
+    const { searchDocsHandler: handler } = await import('./route');
+    const subjectless = { token: 't', scopes: [], clientId: 'c' };
+
+    await handler({ query: 'button', limit: 3 }, { authInfo: subjectless });
+    await handler({ query: 'button', limit: 3 }, { authInfo: subjectless });
+
+    expect(recordTelemetryEvent).not.toHaveBeenCalled();
+    expect(
+      warn.mock.calls.filter(([m]) => String(m).includes('no subject'))
+    ).toHaveLength(1);
+    warn.mockRestore();
   });
 });
