@@ -51,9 +51,8 @@ describe('POST /api/telemetry', () => {
     ipQuota.mockResolvedValue('ok');
   });
 
-  // Derived from the route's own command enum, so a command added there is
-  // covered automatically and no second list can drift out of sync.
-  // commands.test.ts is what holds that enum to the CLI's union.
+  // Derived from the route's own enum, so a new command is covered
+  // automatically; commands.test.ts holds that enum to the CLI's union.
   it.each(TELEMETRY_COMMANDS)('accepts a %s command event', async command => {
     const res = await post(makeEvent(command));
 
@@ -126,10 +125,8 @@ describe('POST /api/telemetry', () => {
     expect(record).not.toHaveBeenCalled();
   });
 
-  // This endpoint is public, and an `mcp_tool_call` event's rate-limit key is
-  // derived from its caller-supplied `hashedCallerId` — so accepting one here
-  // would make call volume and unique-caller counts forgeable without bound.
-  // MCP events are only ever written in-process via `recordTelemetryEvent`.
+  // Its rate-limit key comes from a caller-supplied field, so accepting one on
+  // a public endpoint would make call volume and unique callers forgeable.
   it('rejects an otherwise valid mcp_tool_call event with 400', async () => {
     const res = await post(mcpEvent);
 
@@ -137,10 +134,8 @@ describe('POST /api/telemetry', () => {
     expect(record).not.toHaveBeenCalled();
   });
 
-  // The per-caller quota inside recordTelemetryEvent keys on the body's own
-  // `anonymousId`, so rotating it walks straight past. This endpoint is
-  // unauthenticated and the stream has no TTL, so the second quota keys on
-  // something the caller does not choose.
+  // The quota inside recordTelemetryEvent keys on the body's own `anonymousId`,
+  // so rotating it walks past; this one keys on the client address instead.
   describe('per-IP quota', () => {
     it('takes the client address from the first x-forwarded-for entry', async () => {
       await post(makeEvent('docs'), {
@@ -185,8 +180,6 @@ describe('POST /api/telemetry', () => {
     });
 
     it('is not consulted for a body that fails validation', async () => {
-      // A malformed body is a cheap 400 that never reaches the stream, so it
-      // costs no Redis round trip.
       const res = await post(makeEvent('bogus'));
 
       expect(res.status).toBe(400);

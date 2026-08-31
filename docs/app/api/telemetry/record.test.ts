@@ -37,9 +37,8 @@ const cliEvent: TelemetryEvent = {
   anonymousId: '00000000-0000-4000-8000-000000000000',
 };
 
-// vi.resetModules + a dynamic re-import gives each test a fresh module
-// instance, so the module-level `redis` singleton cache in record.ts doesn't
-// leak a client created under one test's env vars into the next test.
+// A fresh module instance per test, so record.ts's cached `redis` singleton
+// can't leak a client built under one test's env vars into the next.
 const loadRecord = async () => {
   vi.resetModules();
   return import('./record');
@@ -103,8 +102,6 @@ describe('recordTelemetryEvent', () => {
   });
 
   it('sets the rate-limit TTL with NX on every hit, not just the first', async () => {
-    // NX makes it idempotent, so an unconditional EXPIRE never pushes the
-    // window out and a lost first-hit EXPIRE is retried by every later event.
     vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
     vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
     incr.mockResolvedValue(2);
@@ -142,8 +139,6 @@ describe('recordTelemetryEvent', () => {
     expect(result).toBe('error');
   });
 
-  // Asserted here rather than through the public POST route, which no longer
-  // accepts mcp_tool_call events at all.
   it.each([
     ['a hashedCallerId of the wrong length', { hashedCallerId: 'too-short' }],
     [
@@ -173,8 +168,6 @@ describe('recordTelemetryEvent', () => {
     }
   );
 
-  // The HTTP route already hands over parsed output; this is the in-process MCP
-  // path, where the caller hand-builds the event and only satisfies the type.
   it('persists the parsed event, not the caller-supplied object', async () => {
     vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
     vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
@@ -195,9 +188,7 @@ describe('recordTelemetryEvent', () => {
     expect(JSON.parse(payload)).toMatchObject({ event: 'mcp_tool_call' });
   });
 
-  // Retention is unbounded by design (see ADR-0006), and easy to undo by
-  // accident: a stray trim option drops the tail silently, and the symptom is
-  // a dip in past usage rather than a failure. So assert the absence.
+  // A stray trim option would drop the tail silently, so assert its absence.
   describe('retention', () => {
     beforeEach(() => {
       vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
@@ -230,11 +221,8 @@ describe('recordTelemetryEvent', () => {
     });
   });
 
-  // `new Redis()` validates its URL and throws synchronously — a trailing
-  // newline in KV_REST_API_URL is enough. Neither caller can absorb a
-  // rejection: the CLI route would 500 where it promises a silent 204, and the
-  // MCP route's call runs inside an after() callback, past the try that would
-  // have logged it. So construction has to be inside the try.
+  // A trailing newline in KV_REST_API_URL is enough to make the constructor
+  // throw, and neither caller can absorb a rejection.
   it('returns "error" rather than rejecting when the Redis client fails to construct', async () => {
     vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
     vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
@@ -248,9 +236,6 @@ describe('recordTelemetryEvent', () => {
   });
 
   it('gives mcp_tool_call events a 10x higher ceiling than cli_command', async () => {
-    // The CLI ceiling bounds abuse on a public endpoint. MCP events arrive
-    // in-process with an id from a verified JWT, so dropping them only
-    // under-reports the call volume the feature exists to measure.
     vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
     vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
     incr.mockResolvedValue(1_001);
@@ -261,8 +246,6 @@ describe('recordTelemetryEvent', () => {
   });
 
   it('still drops mcp_tool_call events past their own ceiling, so a runaway loop is bounded', async () => {
-    // Not removed outright: nothing expires any more, so a trusted-but-looping
-    // caller is the one thing left that could grow the stream without limit.
     vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
     vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
     incr.mockResolvedValue(10_001);
@@ -272,8 +255,6 @@ describe('recordTelemetryEvent', () => {
   });
 
   it('logs the cause of a Redis failure once per process, not per call', async () => {
-    // Otherwise an outage is indistinguishable from "nobody used it", and
-    // per-call logging would bury the signal.
     vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
     vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
@@ -321,8 +302,7 @@ describe('recordTelemetryEvent', () => {
       );
     });
 
-    // 'unavailable' must never become a rejection: telemetry cannot start
-    // turning traffic away because the quota check itself couldn't run.
+    // Must never become a rejection — see the fail-open case in route.test.ts.
     it.each([
       ['no address is available', null],
       ['the address is present', '203.0.113.7'],

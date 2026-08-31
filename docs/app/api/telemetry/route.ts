@@ -7,9 +7,8 @@ export const runtime = 'nodejs';
 
 const MAX_BODY_BYTES = 4 * 1024;
 
-// Vercel sets `x-forwarded-for` on every request; the client address is the
-// first entry, the rest are proxies. Returning null when it's absent (local
-// dev) makes the IP quota skip rather than reject.
+// Vercel sets `x-forwarded-for`; the client address is the first entry. null
+// when absent (local dev) makes the quota skip rather than reject.
 const clientIp = (request: Request): string | null => {
   const forwarded = request.headers.get('x-forwarded-for');
   if (forwarded) return forwarded.split(',')[0]!.trim() || null;
@@ -29,19 +28,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'invalid json' }, { status: 400 });
   }
 
-  // The CLI shape only, not the full union. An `mcp_tool_call` event's
-  // rate-limit key comes from its own caller-supplied `hashedCallerId`, so
-  // accepting one on this public endpoint would make call volume and
-  // unique-caller counts forgeable. MCP events are recorded in-process.
+  // The CLI shape only, not the union: an `mcp_tool_call` event's rate-limit
+  // key comes from its own caller-supplied `hashedCallerId`, so accepting one
+  // here would make call volume and unique-caller counts forgeable.
   const parsed = CliCommandEventSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json({ error: 'invalid event' }, { status: 400 });
   }
 
-  // Checked after validation, not before: a malformed body is a cheap 400 that
-  // never reaches the stream, so the thing worth defending is valid events. The
-  // quota inside recordTelemetryEvent keys on the body's own `anonymousId`,
-  // which the caller picks — this one doesn't.
+  // After validation: a malformed body is a cheap 400 that never reaches the
+  // stream, so what's worth defending is the flow of valid events.
   if ((await consumePublicIpQuota(clientIp(request))) === 'exceeded') {
     return new NextResponse(null, { status: 429 });
   }

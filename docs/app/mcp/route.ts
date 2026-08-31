@@ -141,10 +141,9 @@ function search(queryVec: Float32Array, vs: VectorStore, limit: number) {
 
 // ─── Telemetry ────────────────────────────────────────────────────────────────
 
-// Telemetry failures are systematic: whatever stops one call recording — no
-// secret, no Redis, a bad event, no request scope for after() — stops every
-// call for the life of the instance. Hence once per cause per process: per-call
-// logging is noise, silence leaves an empty dashboard with nothing explaining it.
+// Telemetry failures are systematic: whatever stops one call recording stops
+// every call for the life of the instance. Hence once per cause per process —
+// per-call logging is noise, silence leaves an unexplained empty dashboard.
 const warnedCauses = new Set<string>();
 
 const warnOnce = (cause: string, message: string) => {

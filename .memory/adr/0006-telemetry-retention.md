@@ -106,9 +106,15 @@ What has to be lived with:
   this ADR stands.** `MAXLEN ~` was considered as the mitigation instead and rejected: it
   evicts the _oldest_ entries, so a flood would push out exactly the history this decision
   exists to keep.
+- **Half the retained data has no reader.** Insights only parses `mcp_tool_call`; `cli_command`
+  entries fail its schema and are discarded. So "long-run adoption trends" justifies retaining
+  MCP events, and nothing currently justifies retaining CLI events beyond the option value of
+  having them if a reader is ever written. Retaining them costs ~3 MB a year, which is why this
+  wasn't worth splitting the policy over — but the reasoning above is weaker for that half than
+  it reads.
 - **A trusted caller can still loop.** With nothing expiring, a runaway agent hammering
   `search_docs` is the remaining unbounded writer, which is why the MCP quota is raised to
-  10k/day rather than removed.
+  10000/day rather than removed.
 - **A per-employee record of doc searches persists indefinitely**, re-identifiable by anyone
   holding both Redis read access and `MCP_TELEMETRY_HASH_SECRET`. Treat that secret as a
   credential. This is the part of the decision most likely to be questioned later, and the

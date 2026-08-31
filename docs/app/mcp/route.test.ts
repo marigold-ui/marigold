@@ -74,9 +74,8 @@ const expectedHash = crypto
   .update(SUB)
   .digest('hex');
 
-// A stand-in for what `verifyToken` returns. The test below pins the real
-// mapping end to end; this is just a shorthand for the cases that don't care
-// how the AuthInfo got built.
+// Shorthand for cases that don't care how the AuthInfo got built; the test
+// below pins the real mapping end to end.
 const authInfoForSub = (sub: string): AuthInfo => ({
   token: 'token',
   scopes: [],
@@ -146,10 +145,8 @@ describe('searchDocsHandler', () => {
     expect(event.topMatchHeading).toBeUndefined();
   });
 
-  // Ties the auth path to the telemetry path. If anyone "corrects" `clientId`
-  // to a real OAuth client id (`azp`), every caller collapses into one hash and
-  // unique-caller counts silently become 1 — so this drives a verified token
-  // through to the recorded digest rather than hand-building the AuthInfo.
+  // Drives a verified token through to the recorded digest rather than
+  // hand-building the AuthInfo — see the `clientId` note in route.ts.
   it('hashes the verified JWT sub, not any other claim', async () => {
     jwtVerify.mockResolvedValue({
       payload: { sub: SUB, azp: 'dst-marigold-docs-mcp' },
@@ -186,8 +183,6 @@ describe('searchDocsHandler', () => {
     expect(JSON.stringify(first)).not.toContain(SUB);
   });
 
-  // 'unconfigured' is the steady state wherever Redis isn't set up (local dev,
-  // preview deploys), so warning on it would log on every single MCP call.
   it('does not warn when recording is merely unconfigured', async () => {
     recordTelemetryEvent.mockResolvedValue('unconfigured');
 
@@ -201,9 +196,8 @@ describe('searchDocsHandler', () => {
     vi.resetModules();
     const { searchDocsHandler: handler } = await import('./route');
 
-    // One module instance throughout, so this pins the granularity: each cause
-    // is deduplicated independently, rather than the first warning silencing
-    // every later one.
+    // One module instance throughout, so this pins the granularity: causes
+    // dedupe independently rather than the first warning silencing the rest.
     for (const result of [
       'error',
       'error',
@@ -228,9 +222,8 @@ describe('searchDocsHandler', () => {
   });
 
   it('still returns a successful search when after() itself throws, warning once', async () => {
-    // Next's after() throws synchronously when there's no request scope, which
-    // would be true of every call — so this must not turn a working search
-    // into a reported failure, and must not log per call either.
+    // Next's after() throws synchronously with no request scope — true of
+    // every call, so it must not fail the search or log per call.
     vi.resetModules();
     const { searchDocsHandler: handler } = await import('./route');
     vi.mocked(after).mockImplementation(() => {
@@ -259,8 +252,7 @@ describe('searchDocsHandler', () => {
 
     expect(result.isError).toBeUndefined();
     expect(recordTelemetryEvent).not.toHaveBeenCalled();
-    // Twice skipped, warned once — otherwise this logs on every MCP call for
-    // the lifetime of a deployment that never sets the secret.
+    // Otherwise a deployment that never sets the secret logs on every call.
     expect(warn).toHaveBeenCalledTimes(1);
     expect(warn.mock.calls[0][0]).toContain('MCP_TELEMETRY_HASH_SECRET');
   });
