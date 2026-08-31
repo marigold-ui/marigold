@@ -17,6 +17,11 @@ const SECONDS_PER_DAY = 24 * 60 * 60;
 // the same XADD, so there is no separate EXPIRE to land on the right day key
 // and no way for one to be missed.
 const STREAM_KEY = 'telemetry:events';
+// Must stay >= 180 days: Insights' widest view is 90 days and its KPI deltas
+// compare against the preceding 90. That floor is a cross-repo constraint with
+// nothing enforcing it — widening Insights' range doesn't fail anything here,
+// it just trims the tail away, which reads as a drop in usage rather than an
+// error. See the Telemetry section of app/mcp/README.md.
 const RETENTION_DAYS = 200;
 
 const utcDate = (): string => {
