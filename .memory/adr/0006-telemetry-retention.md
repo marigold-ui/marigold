@@ -98,14 +98,21 @@ What has to be lived with:
   "nothing caps this" is now true and should be re-checked if MCP usage grows by an order of
   magnitude, or if the event shape gets bigger.
 - **~35 events/day is legitimate volume, which is not the same as the volume an attacker can
-  produce.** `POST /api/telemetry` is unauthenticated and its per-caller quota keys on the
-  request body's own `anonymousId`, so rotating that walks straight past it. Under the old
-  layout the 90-day `EXPIRE` reclaimed such writes automatically; nothing does now. This
-  decision therefore depends on the per-IP quota in `route.ts`, keyed on an address the caller
-  does not choose — **removing that quota re-opens unbounded growth and must not be done while
-  this ADR stands.** `MAXLEN ~` was considered as the mitigation instead and rejected: it
-  evicts the _oldest_ entries, so a flood would push out exactly the history this decision
-  exists to keep.
+  produce.** `POST /api/telemetry` is unauthenticated — it has to be, since `@marigold/cli` is a
+  public npm package — and its per-caller quota keys on the request body's own `anonymousId`, so
+  rotating that walks straight past it. Under the old layout the 90-day `EXPIRE` reclaimed such
+  writes automatically; nothing does now. This decision therefore depends on
+  `PUBLIC_LIMIT_PER_DAY`, a ceiling on one fixed key that no caller input can influence —
+  **removing it re-opens unbounded growth and must not be done while this ADR stands.**
+
+  Two alternatives were tried and dropped. `MAXLEN ~` evicts the _oldest_ entries, so a flood
+  would push out exactly the history this decision exists to keep. A per-client-address quota
+  keys on a header, which is caller-supplied unless a proxy overwrites it — two review rounds
+  disagreed about which end of `x-forwarded-for` to trust, which is itself the evidence that it
+  bounds nothing reliably — and it would have put IP addresses in Redis, personal data this
+  system otherwise avoids holding. `/mcp` needs no equivalent: it is Keycloak-gated, so only
+  Reservix employees reach it.
+
 - **Half the retained data has no reader.** Insights only parses `mcp_tool_call`; `cli_command`
   entries fail its schema and are discarded. So "long-run adoption trends" justifies retaining
   MCP events, and nothing currently justifies retaining CLI events beyond the option value of

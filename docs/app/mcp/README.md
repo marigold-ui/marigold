@@ -136,7 +136,21 @@ Worth being explicit about what the two event types are, because they are not th
 
 Note that the caller pseudonym is stable for as long as `MCP_TELEMETRY_HASH_SECRET` is, so rotating that secret is what breaks linkability across periods, not retention.
 
-Because nothing expires, the quotas are what bound growth rather than a retention window. There are two, and they defend different things. The per-caller quota in `record.ts` keys on the event's own id — `anonymousId` for CLI events, `hashedCallerId` for MCP ones — at 1000/day and 10000/day respectively; the MCP ceiling is higher because that id comes from a verified JWT and dropping those events only under-reports the call volume the feature exists to measure, but it is not removed, since a looping agent is the one trusted caller that could still write without limit. The per-IP quota in `route.ts` (20000/day, generous because a whole team can share one NAT address) exists because the per-caller key on the public endpoint comes out of the request body: rotating `anonymousId` walks past that quota, and without a TTL nothing reclaims the result. A quota check that cannot run lets the request through — telemetry must not start rejecting traffic because Redis is down.
+Because nothing expires, the quotas are what bound growth rather than a retention window. There are two, and they defend different things. The per-caller quota in `record.ts` keys on the event's own id — `anonymousId` for CLI events, `hashedCallerId` for MCP ones — at 1000/day and 10000/day respectively; the MCP ceiling is higher because that id comes from a verified JWT and dropping those events only under-reports the call volume the feature exists to measure, but it is not removed, since a looping agent is the one trusted caller that could still write without limit. The endpoint-wide quota in `route.ts` (50000/day on one fixed key) exists because the per-caller key on the public endpoint comes out of the request body: rotating `anonymousId` walks past that quota, and without a TTL nothing reclaims the result. It is deliberately not keyed per client address — that key would come from a header, which is caller-supplied unless a proxy overwrites it, and it would put IP addresses in Redis. `/mcp` needs no equivalent, being Keycloak-gated. A quota check that cannot run lets the request through: telemetry must not start rejecting traffic because Redis is down.
+
+### Reading the store
+
+Each stream entry carries the whole event as JSON in a field named `data`, plus a `receivedAt`
+timestamp added on write. Ids are `<epochMillis>-<seq>`, so a reader seeks by time with
+`XRANGE <fromMs> <toMs>` and pages with `(<lastId>`.
+
+Rate-limit keys carry a source prefix — `telemetry:rl:cli:{anonymousId}:{date}` and
+`telemetry:rl:mcp:{hashedCallerId}:{date}` — so the keyspace stays greppable by caller type.
+The endpoint-wide counter is `telemetry:rl:public:{date}`.
+
+Data written under the old per-day layout is not migrated and nothing reads it. It needs no
+cleanup either: those lists carried a 90-day TTL, so the last of them expires within 90 days of
+this shipping.
 
 ### One store, one reader
 
