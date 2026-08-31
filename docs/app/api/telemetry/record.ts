@@ -8,9 +8,10 @@ import { EventSchema, type TelemetryEvent } from './schema';
 const RATE_LIMIT_PER_DAY = { cli_command: 1_000, mcp_tool_call: 10_000 };
 const SECONDS_PER_DAY = 24 * 60 * 60;
 
-// Second quota for the public endpoint, keyed on an address the caller can't
-// pick: the ceiling above keys on the request body's own `anonymousId`, which
-// rotating walks past. Generous because a team can share one NAT address.
+// Second quota for the public endpoint, keyed on the client address rather
+// than on the request body's own `anonymousId`, which rotating walks past. See
+// `clientIp` in route.ts for how far that address can be trusted. Generous
+// because a team can share one NAT address.
 const IP_LIMIT_PER_DAY = 20_000;
 
 // Ids are `<epochMillis>-<seq>`, so any window is one XRANGE. Never trimmed —
@@ -37,6 +38,23 @@ const warnOnce = (cause: string, message: string): void => {
   if (warned.has(cause)) return;
   warned.add(cause);
   console.warn(message);
+};
+
+// Pipelined into one round trip: the EXPIRE doesn't depend on the INCR's
+// result, and this store bills per command. NX sets a TTL only when there
+// isn't one, so issuing it on every hit is idempotent and a first-hit EXPIRE
+// lost to a blip still gets retried.
+const bumpDailyCounter = async (
+  client: Redis,
+  key: string
+): Promise<number> => {
+  const [count] = (await client
+    .pipeline()
+    .incr(key)
+    .expire(key, SECONDS_PER_DAY, 'NX')
+    .exec()) as [number, number];
+
+  return count;
 };
 
 let redis: Redis | null = null;
@@ -73,11 +91,8 @@ export async function recordTelemetryEvent(
       return 'unconfigured';
     }
 
-    // NX sets a TTL only when there isn't one, so an unconditional EXPIRE is
-    // idempotent and a first-hit EXPIRE lost to a blip still gets retried.
     const rlKey = rateLimitKey(rateLimitIdOf(parsed.data));
-    const count = await client.incr(rlKey);
-    await client.expire(rlKey, SECONDS_PER_DAY, 'NX');
+    const count = await bumpDailyCounter(client, rlKey);
     if (count > RATE_LIMIT_PER_DAY[parsed.data.event]) {
       return 'rate-limited';
     }
@@ -110,9 +125,10 @@ export async function consumePublicIpQuota(
     const client = getRedis();
     if (!client) return 'unavailable';
 
-    const key = `telemetry:rl:ip:${ip}:${utcDate()}`;
-    const count = await client.incr(key);
-    await client.expire(key, SECONDS_PER_DAY, 'NX');
+    const count = await bumpDailyCounter(
+      client,
+      `telemetry:rl:ip:${ip}:${utcDate()}`
+    );
     return count > IP_LIMIT_PER_DAY ? 'exceeded' : 'ok';
   } catch {
     return 'unavailable';

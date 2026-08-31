@@ -7,12 +7,19 @@ export const runtime = 'nodejs';
 
 const MAX_BODY_BYTES = 4 * 1024;
 
-// Vercel sets `x-forwarded-for`; the client address is the first entry. null
-// when absent (local dev) makes the quota skip rather than reject.
+// The *last* `x-forwarded-for` entry, not the first. A client can prepend its
+// own value, so the left end is caller-controlled; the right end is whatever
+// the closest proxy appended, which is the real address whether the edge
+// appends to the header or overwrites it outright. Behind several proxies this
+// degrades to callers sharing a key — a weaker quota, not a bypassed one.
+// null (local dev, no headers) makes the quota skip rather than reject.
 const clientIp = (request: Request): string | null => {
-  const forwarded = request.headers.get('x-forwarded-for');
-  if (forwarded) return forwarded.split(',')[0]!.trim() || null;
-  return request.headers.get('x-real-ip');
+  const hops = (request.headers.get('x-forwarded-for') ?? '')
+    .split(',')
+    .map(hop => hop.trim())
+    .filter(Boolean);
+
+  return hops.at(-1) ?? request.headers.get('x-real-ip')?.trim() ?? null;
 };
 
 export async function POST(request: Request) {
