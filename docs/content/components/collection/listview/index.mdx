@@ -6,9 +6,9 @@ badge: beta
 
 import { ListViewAnatomy } from './listview-anatomy';
 
-A `<ListView>` shows a collection of items as rows in a list. Each row can carry its own controls, such as a `<Button>` or an `<ActionMenu>`, so users can act on an item without leaving the page.
+A `<ListView>` shows a collection of items as rows in a list. Each row can carry its own controls, such as a `<Button>` or an `<ActionMenu>`, so users can act on an item without leaving the page. Rows can also be selectable, for a flow that gathers several items and then acts on all of them at once.
 
-Use it for collections people work through, like a notification feed or a list of uploaded files.
+Use it for collections people work through, like a notification feed, a list of uploaded files, or the venues a user picks from in a dialog.
 
 ## Anatomy
 
@@ -16,6 +16,7 @@ Use it for collections people work through, like a notification feed or a list o
 
 - **List:** The container that holds all rows.
 - **Item:** A single row representing one entry of the collection.
+- **Selection indicator:** The mark for a row's selected state, present only once the list has a `selectionMode`. A checkbox for multiple selection, a radio circle for single.
 - **Text value:** The primary text of a row.
 - **Description:** Optional secondary text below the text value, like a timestamp or a file size. One per row, and it takes inline markup, so several facts can share a line: "Updated 3 days ago · 2.1 MB".
 - **Actions:** Optional trailing controls for the row, such as a button or a row menu.
@@ -36,7 +37,7 @@ Reach for a `<ListView>` when the user works through a collection one entry at a
 
 A row is one item, not a record split into fields. A `<ListView>` gives you a text column and a trailing control, with nothing aligned between rows, so there is no way to scan a column or sort by one. Once the user needs to compare entries against each other (a status column, a size to sort by, dates to line up), reach for a [`<Table>`](/components/collection/table).
 
-A `<ListView>` also has no selection. Rows are operated where they sit, and nothing is staged or submitted. To have the user choose from a set, see [`<ListView>` vs. `<SelectList>`](#listview-vs-selectlist).
+Rows can be selected, but the selection stays in your own state and never submits with a form. That is the line between a `<ListView>` and a [`<SelectList>`](/components/form/selectlist), and the [decision test](#listview-vs-selectlist) below is how you pick between them.
 
 ### Row text
 
@@ -55,6 +56,17 @@ To emphasise part of a row's text, nest `<Text as="span">` inside `<TextValue>` 
 </ListView.Item>
 ```
 
+The same rule covers everything else a row carries. A row has a cell for its text, a cell for its trailing control, and, once the list is selectable, a cell for its selection indicator. A child that claims none of them, like a `<Badge>`, gets placed wherever the grid has room. On its own that means a new full-width line under the description, where it reads as part of the row's text. In a selectable list it is worse: the badge lands in the indicator column, widens it, and pushes the text of every row in the list out of line. Nest it in the text it belongs to instead:
+
+```tsx
+<ListView.Item id="gasometer" textValue="Gasometer">
+  <TextValue>
+    Gasometer <Badge variant="warning">Sold out</Badge>
+  </TextValue>
+  <Description>Vienna · 1600 seats</Description>
+</ListView.Item>
+```
+
 ### Row actions
 
 Keep the action users reach for most often visible as an icon button and group the rest behind an `<ActionMenu>`. More than two visible buttons per row turns the list into a wall of controls that competes with the text people are scanning.
@@ -67,7 +79,38 @@ When no single action stands out, or the available actions differ from row to ro
 
 <ComponentDemo name="listview-resource-menu" />
 
-A row has a single cell for trailing controls, so wrap two or more in a `<ButtonGroup>`. Left loose, they claim the same cell and stack. That cell takes Button-family controls only. A `<Badge>` or status pill has no slot yet. It sits in the trailing cell only while that cell is empty. Add a control to the row and the grid pushes it onto a new full-width line under the description, where it reads as part of the row's text.
+A row has a single cell for trailing controls, so wrap two or more in a `<ButtonGroup>`. Left loose, they claim the same cell and stack. That cell takes Button-family controls only: a `<Badge>` or a status pill belongs in the row's text, as shown under [Row text](#row-text) above.
+
+### Selection
+
+Set `selectionMode` to make rows selectable: `single` for one row at a time, `multiple` for several. A list without the prop is not selectable, which is the default.
+
+The selection is view state. It lives in your component, you read it through `onSelectionChange`, and you decide when it commits. Nothing about it reaches a surrounding `<form>`. For a choice that submits and validates with the form, use a [`<SelectList>`](/components/form/selectlist).
+
+<ComponentDemo name="listview-selection" />
+
+Each mode shows the mark users already know from forms: a radio circle for `single`, a checkbox for `multiple`. Only the checkbox is a real control. The radio circle is decoration, and the row's own selected state is what carries the semantics, so a single-select list is never announced as a radio group.
+
+Reach for `single` when the list stages one choice that gets committed elsewhere, like a venue picked in a dialog and applied with its confirm button. Reach for `multiple` when users gather rows for one operation, and give them an action bar to run it.
+
+Rows toggle one at a time. There is no highlight-style selection where a press replaces the whole selection and <kbd>Shift</kbd>+click extends a range, in a `<ListView>` or in a [`<Table>`](/components/collection/table). Marigold collections select by toggling, so a flow that depends on range selection needs a design decision rather than a prop.
+
+#### Selecting and opening a row
+
+A selectable list can still open its rows. With both `selectionMode` and `onAction` set, the gesture depends on whether anything is selected:
+
+- **Nothing selected:** pressing a row fires `onAction`, so the list reads as a feed where a press opens the item. The checkbox still selects without opening anything.
+- **Something selected:** pressing a row toggles it, and `onAction` stays quiet until the selection is cleared.
+
+This is how file managers behave, and it lets one list serve browsing and selecting without a mode switch of your own. Users leave the selecting task with <kbd>Escape</kbd>, which clears the selection.
+
+#### Bulk actions
+
+Pair a multi-select list with an [`<ActionBar>`](/components/collection/actionbar) rendered as a sibling. The bar takes the selection count and a clear handler, and it appears once something is selected.
+
+<ComponentDemo name="listview-bulk-actions" />
+
+One piece of the [Bulk Actions](/patterns/user-input/bulk-actions) pattern is missing here: select-all. That is a checkbox in the collection's header, and a list has no header row to hold one, so a flow where users regularly select every visible record belongs in a [`<Table>`](/components/collection/table). Everything else in the pattern applies to a `<ListView>` unchanged, including bounding the selection to the rows the user can see, clearing it when a filter or a page changes what is visible, and confirming a destructive action with the exact count.
 
 ### Empty state
 
@@ -77,21 +120,28 @@ Pass an [`<EmptyState>`](/components/content/empty-state) to the `emptyState` pr
 
 ### `<ListView>` vs. `<SelectList>`
 
-The two render a similar stack of rich rows, so the choice comes down to selection. A [`<SelectList>`](/components/form/selectlist) is a form field: rows are selectable, the selection is its value, and that value submits and validates with the rest of the form. A `<ListView>` has no selection. Every row carries its own controls instead, and each one acts the moment it is used.
+Both render a stack of rich rows and both can select them, so they are easy to confuse. One question separates them:
 
-If the user is choosing something and that choice has to travel anywhere, use a `<SelectList>`.
+> **Does the selection need to submit with the form?**
+>
+> - **Yes**, it is a field value that submits and validates: [`<SelectList>`](/components/form/selectlist).
+> - **No**, you read it and commit it yourself: `<ListView>`.
+
+The reason behind the test is what each component is. A `<SelectList>` is a form field. It carries a label, validation, and a hidden input, so its selection is the field's value and travels with the rest of the form. A `<ListView>` is a collection view. Its selection is view state you own, and rows may carry their own focusable controls, like a link or a row menu, which a field has no room for.
+
+Answer the question before reaching for either. "Form field" and "collection view" are the right distinction but the wrong decision aid, because most flows can be described as both.
 
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Use `<ListView>` to present a collection the user works through, like a
-      notification feed or a list of files.
+      Use `<ListView>` when you own the selection: a notification feed, a list
+      of files, or records staged in a dialog and committed with its button.
     </DoDescription>
   </Do>
   <Dont>
     <DontDescription>
-      Don't use `<ListView>` for a choice that gets submitted with a form,
-      that's what `<SelectList>` is for.
+      Don't use `<ListView>` for a choice that submits with a form. It has no
+      label, no validation, and no value, which is what `<SelectList>` is for.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
@@ -101,6 +151,8 @@ If the user is choosing something and that choice has to travel anywhere, use a 
 - Arrow keys move focus between rows, `Tab` reaches the controls inside the focused row.
 - Give the list an `aria-label`, or `aria-labelledby` when a heading nearby already names it.
 - Set `textValue` on a row whose text isn't a plain string, screen readers use it as the row's accessible name.
+
+In a selectable list, moving focus never changes the selection. <kbd>Space</kbd> selects the focused row and <kbd>Escape</kbd> clears the whole selection, so a user who started selecting by accident has a way out. The row itself announces whether it is selected, which is why the radio circle in single mode stays out of the accessibility tree: it says nothing a screen reader has not already heard.
 
 `<Title>` normally renders a real heading. Inside a row it renders as a `<span>` instead, so a heading-like row doesn't add an entry to the page's heading outline.
 
