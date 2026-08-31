@@ -14,12 +14,12 @@ interface YearDropdownProps {
 const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => {
   const state = useCalendarOrRangeState();
   const focusedYear = state.focusedDate.year;
-  const gregorian = state.focusedDate.calendar.identifier === 'gregory';
+  const anchorAtEraFloor =
+    state.focusedDate.calendar.identifier === 'gregory' && !state.minValue;
 
-  const start =
-    gregorian && !state.minValue
-      ? Math.max(focusedYear - YEARS_AROUND_FOCUS, 1)
-      : focusedYear - YEARS_AROUND_FOCUS;
+  const start = anchorAtEraFloor
+    ? Math.max(focusedYear - YEARS_AROUND_FOCUS, 1)
+    : focusedYear - YEARS_AROUND_FOCUS;
   const min = state.minValue ? state.minValue.year : start;
   const max = state.maxValue
     ? state.maxValue.year
@@ -32,7 +32,7 @@ const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => {
         <ListBox
           ariaLabel={ariaLabel}
           items={
-            gregorian
+            anchorAtEraFloor
               ? items.filter(item => item.date.era === state.focusedDate.era)
               : items
           }

@@ -207,6 +207,26 @@ Basic.test(
 );
 
 Basic.test(
+  'Selects year 1 from the anchored list',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: {
+      defaultValue: {
+        start: new CalendarDate(5, 6, 15),
+        end: new CalendarDate(5, 6, 20),
+      },
+    },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: '5' }));
+
+    await userEvent.click(canvas.getByRole('option', { name: '1' }));
+
+    await expect(canvas.getByRole('button', { name: '1' })).toBeVisible();
+  }
+);
+
+Basic.test(
   'Commits a month selection via touch',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent, step }) => {
