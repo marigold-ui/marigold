@@ -83,26 +83,27 @@ A row has a single cell for trailing controls, so wrap two or more in a `<Button
 
 ### Selection
 
-Set `selectionMode` to make rows selectable: `single` for one row at a time, `multiple` for several. A list without the prop is not selectable, which is the default.
+Make rows selectable when the user's next step needs a row they haven't acted on yet. Two situations earn it:
 
-The selection is view state. It lives in your component, you read it through `onSelectionChange`, and you decide when it commits. Nothing about it reaches a surrounding `<form>`. For a choice that submits and validates with the form, use a [`<SelectList>`](/components/form/selectlist).
+- **Staging one choice.** The list is where the user picks a record, and something else commits it, like a venue chosen in a dialog and applied with its confirm button. Set `selectionMode="single"`.
+- **Gathering rows for one operation.** The user marks several records, then runs one action across all of them, like archiving six files at once. Set `selectionMode="multiple"` and give them an action bar to run it.
+
+Leave selection off otherwise, which is the default. A row the user acts on where it sits doesn't need marking first, and an indicator on every row of a notification feed adds a step to a list that had none.
 
 <ComponentDemo name="listview-selection" />
 
-Each mode shows the mark users already know from forms: a radio circle for `single`, a checkbox for `multiple`. Only the checkbox is a real control. The radio circle is decoration, and the row's own selected state is what carries the semantics, so a single-select list is never announced as a radio group.
+Whichever mode you pick, the selection is yours to keep. Hold it in your own state, read it through `onSelectionChange`, and decide when it commits. It never reaches a surrounding `<form>`, so a choice that has to submit and validate with the rest of the form is a [`<SelectList>`](/components/form/selectlist) instead.
 
-Reach for `single` when the list stages one choice that gets committed elsewhere, like a venue picked in a dialog and applied with its confirm button. Reach for `multiple` when users gather rows for one operation, and give them an action bar to run it.
-
-Rows toggle one at a time. There is no highlight-style selection where a press replaces the whole selection and <kbd>Shift</kbd>+click extends a range, in a `<ListView>` or in a [`<Table>`](/components/collection/table). Marigold collections select by toggling, so a flow that depends on range selection needs a design decision rather than a prop.
+Rows are marked one at a time. A press adds or removes a single row, and there is no <kbd>Shift</kbd>+click to take a range, in a `<ListView>` or in a [`<Table>`](/components/collection/table). Plan a flow that depends on range selection around that.
 
 #### Selecting and opening a row
 
-A selectable list can still open its rows. With both `selectionMode` and `onAction` set, the gesture depends on whether anything is selected:
+A selectable list can still open its rows. Set `onAction` alongside `selectionMode` and the press does whichever the user is more likely to mean:
 
-- **Nothing selected:** pressing a row fires `onAction`, so the list reads as a feed where a press opens the item. The checkbox still selects without opening anything.
-- **Something selected:** pressing a row toggles it, and `onAction` stays quiet until the selection is cleared.
+- **Nothing selected:** pressing a row opens the item, so the list still reads as a feed. The checkbox selects without opening anything.
+- **Something selected:** pressing a row marks it instead, and nothing opens until the selection is cleared.
 
-This is how file managers behave, and it lets one list serve browsing and selecting without a mode switch of your own. Users leave the selecting task with <kbd>Escape</kbd>, which clears the selection.
+Users know this from their file manager, and it lets one list serve browsing and selecting without a mode switch of your own. <kbd>Escape</kbd> clears the selection and puts them back to browsing.
 
 #### Bulk actions
 
