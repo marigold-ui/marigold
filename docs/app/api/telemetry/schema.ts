@@ -1,14 +1,12 @@
 import { z } from 'zod';
 import { TELEMETRY_COMMANDS } from './commands';
 
-// CLI telemetry — one event per command invocation. Exported because it is the
-// only shape the public POST endpoint accepts; `mcp_tool_call` events are
-// written in-process and must not be forgeable over HTTP.
+// Exported because it is the only shape the public POST endpoint accepts —
+// `mcp_tool_call` events are written in-process and must not be forgeable.
 export const CliCommandEventSchema = z.object({
   event: z.literal('cli_command'),
-  // Sourced from ./commands, which commands.test.ts holds to the CLI's
-  // `CommandName` union — an unknown command is a 400 the fire-and-forget CLI
-  // swallows, so the two lists must not be allowed to drift.
+  // commands.test.ts holds this to the CLI's `CommandName` union: an unknown
+  // command is a 400 the fire-and-forget CLI swallows.
   command: z.enum(TELEMETRY_COMMANDS),
   cliVersion: z.string().max(32),
   nodeVersion: z.string().max(32),
@@ -22,9 +20,8 @@ export const CliCommandEventSchema = z.object({
   anonymousId: z.uuid(),
 });
 
-// MCP tool telemetry — one event per tool call. `hashedCallerId` is a
-// one-way HMAC-SHA256 digest of the caller's Keycloak `sub` claim — never
-// the raw claim, which would identify a Reservix employee.
+// `hashedCallerId` is a one-way HMAC-SHA256 digest of the caller's Keycloak
+// `sub` — never the raw claim, which identifies a Reservix employee.
 const McpToolCallEventSchema = z.object({
   event: z.literal('mcp_tool_call'),
   tool: z.literal('search_docs'),

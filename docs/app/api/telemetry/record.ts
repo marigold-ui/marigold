@@ -1,24 +1,14 @@
 import { Redis } from '@upstash/redis';
 import { EventSchema, type TelemetryEvent } from './schema';
 
-// Per-caller daily quota. On the public POST endpoint it bounds abuse; for
-// in-process MCP events, where the caller id is derived from a verified JWT and
-// can't be forged, it only caps how much one caller can add to the stream.
-// A caller past the quota is dropped rather than truncated, so the ceiling is
-// deliberately far above realistic per-day usage for either source.
+// Per-caller daily quota. A caller past it is dropped rather than truncated,
+// so the ceiling sits far above realistic per-day usage for either source.
 const RATE_LIMIT_PER_DAY = 1000;
 const SECONDS_PER_DAY = 24 * 60 * 60;
 
-// Events go into one stream rather than one list per UTC day. Stream ids are
-// `<epochMillis>-<seq>`, so a reader covers any time window with a single
-// XRANGE; the per-day layout cost it one LRANGE per day in the window (180 for
-// Insights' 90-day view, which compares against the preceding 90 days).
-//
-// The stream is deliberately not trimmed — see
-// .memory/adr/0006-telemetry-retention.md. Short version: growth is ~3 MB a
-// year, and trimming would destroy the long-run adoption history that is the
-// whole reason this data is collected. Nothing here caps the stream, so any
-// window Insights asks for is answerable.
+// One stream, not one list per UTC day: ids are `<epochMillis>-<seq>`, so any
+// window is a single XRANGE instead of one LRANGE per day. Deliberately never
+// trimmed — see .memory/adr/0006-telemetry-retention.md.
 const STREAM_KEY = 'telemetry:events';
 
 const utcDate = (): string => {
@@ -29,8 +19,6 @@ const utcDate = (): string => {
   return `${y}-${m}-${d}`;
 };
 
-// Prefixed per event source so the rate-limit keyspace stays greppable by
-// caller type.
 const rateLimitIdOf = (event: TelemetryEvent): string =>
   event.event === 'cli_command'
     ? `cli:${event.anonymousId}`
@@ -48,20 +36,17 @@ const getRedis = (): Redis | null => {
   return redis;
 };
 
-// 'invalid' (our event failed validation — a code bug) is kept distinct from
-// 'error' (the Redis call failed — an outage). Both are dead ends for the
-// event, but they call for completely different responses, and the MCP route
-// logs the cause.
+// 'invalid' (the event failed validation — a bug here) is kept distinct from
+// 'error' (the Redis call failed — an outage); the MCP route logs the cause.
 export type RecordResult =
   'recorded' | 'unconfigured' | 'rate-limited' | 'invalid' | 'error';
 
 export async function recordTelemetryEvent(
   event: TelemetryEvent
 ): Promise<RecordResult> {
-  // Defense-in-depth: an in-process caller (the MCP route) builds its event
-  // by hand and only satisfies TelemetryEvent at compile time, not Zod's
-  // runtime constraints. The parsed output is what gets persisted, so unknown
-  // keys are stripped on this path too, not just the HTTP one.
+  // The MCP route hand-builds its event and only satisfies TelemetryEvent at
+  // compile time, not Zod's runtime constraints. Parsing here also strips
+  // unknown keys on that path, not just the HTTP one.
   const parsed = EventSchema.safeParse(event);
   if (!parsed.success) {
     return 'invalid';
@@ -74,12 +59,9 @@ export async function recordTelemetryEvent(
   }
 
   try {
-    // Per-caller daily quota. INCR returns the new count atomically.
-    // EXPIRE with NX sets the TTL only if the key doesn't already have one —
-    // idempotent, so a failed EXPIRE on the first hit (a network blip) is
-    // retried by every later call, unlike a `count === 1` gate where that
-    // failure would go unnoticed and unretried for the rest of the day,
-    // leaving the key with no TTL at all.
+    // NX sets the TTL only when there isn't one, so calling EXPIRE on every
+    // hit is idempotent — and a first-hit EXPIRE lost to a blip gets retried,
+    // where a `count === 1` gate would leave the key TTL-less all day.
     const rlKey = rateLimitKey(rateLimitIdOf(parsed.data));
     const count = await client.incr(rlKey);
     await client.expire(rlKey, SECONDS_PER_DAY, 'NX');
@@ -91,9 +73,7 @@ export async function recordTelemetryEvent(
       ...parsed.data,
       receivedAt: new Date().toISOString(),
     };
-    // No trim option: retention is unbounded by design. Adding one later is a
-    // one-line change; the data it would have dropped is not recoverable, which
-    // is why the default is to keep.
+    // No trim option — see the retention note above.
     await client.xadd(STREAM_KEY, '*', { data: JSON.stringify(payload) });
     return 'recorded';
   } catch {

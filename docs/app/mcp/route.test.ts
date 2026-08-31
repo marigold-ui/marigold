@@ -146,12 +146,10 @@ describe('searchDocsHandler', () => {
     expect(event.topMatchHeading).toBeUndefined();
   });
 
-  // The one assertion tying the auth path to the telemetry path. AuthInfo has
-  // no subject field, so the Keycloak `sub` rides on `clientId` — if anyone
-  // ever "corrects" that to a real OAuth client id (`azp`), every caller
-  // collapses into one hash and unique-caller counts silently become 1. That
-  // has to fail here, so this drives a verified token all the way through to
-  // the recorded digest rather than hand-building the AuthInfo.
+  // Ties the auth path to the telemetry path. If anyone "corrects" `clientId`
+  // to a real OAuth client id (`azp`), every caller collapses into one hash and
+  // unique-caller counts silently become 1 — so this drives a verified token
+  // through to the recorded digest rather than hand-building the AuthInfo.
   it('hashes the verified JWT sub, not any other claim', async () => {
     jwtVerify.mockResolvedValue({
       payload: { sub: SUB, azp: 'dst-marigold-docs-mcp' },
@@ -268,12 +266,10 @@ describe('searchDocsHandler', () => {
   });
 
   it('computes latencyMs before deferring to after(), not inside its callback', async () => {
-    // Hold after()'s task back instead of running it inline, simulating the
-    // response having already been sent by the time the deferred callback
-    // executes, then jump the clock far forward before running it. Fake timers
-    // freeze Date.now(), so a correctly-computed latencyMs is exactly 0; if it
-    // were (mis)computed inside the callback it would pick up the full jump.
-    // No real sleep, so there's no duration threshold to flake on.
+    // Hold after()'s task back, jump the clock far forward, then run it. Fake
+    // timers freeze Date.now(), so a correctly-computed latencyMs is exactly 0;
+    // computed inside the callback it would pick up the whole jump. No real
+    // sleep, so there's no duration threshold to flake on.
     vi.useFakeTimers();
     let deferred: (() => unknown) | undefined;
     vi.mocked(after).mockImplementationOnce(task => {

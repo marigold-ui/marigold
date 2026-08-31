@@ -141,12 +141,10 @@ function search(queryVec: Float32Array, vs: VectorStore, limit: number) {
 
 // ─── Telemetry ────────────────────────────────────────────────────────────────
 
-// Telemetry problems are systematic, not incidental: whatever makes one call
-// fail to record — no secret, no Redis, a malformed event, no request scope for
-// after() — makes every call fail the same way for the life of the instance. So
-// each distinct cause is logged once per process. Per-call logging would be
-// pure noise, but staying silent leaves a permanently empty dashboard with
-// nothing anywhere explaining why.
+// Telemetry failures are systematic: whatever stops one call recording — no
+// secret, no Redis, a bad event, no request scope for after() — stops every
+// call for the life of the instance. Hence once per cause per process: per-call
+// logging is noise, silence leaves an empty dashboard with nothing explaining it.
 const warnedCauses = new Set<string>();
 
 const warnOnce = (cause: string, message: string) => {
@@ -178,13 +176,10 @@ const getJwks = () => {
   return jwks;
 };
 
-// `AuthInfo` has no field for the token's subject, so the Keycloak `sub` claim
-// rides on `clientId`. The name reads oddly — it is not an OAuth client id —
-// and getting it wrong is silent: every caller would collapse into one hash and
-// "unique callers" would become 1 forever. So both sides of that decision go
-// through these two helpers, the auth path writing and the telemetry path
-// reading, and `route.test.ts` asserts a verified token's `sub` all the way
-// through to the recorded `hashedCallerId`.
+// `AuthInfo` has no field for the token's subject, so the Keycloak `sub` rides
+// on `clientId` — it is not an OAuth client id. Getting this wrong is silent:
+// every caller collapses into one hash and "unique callers" becomes 1 forever.
+// route.test.ts drives a verified token through to the digest to catch that.
 const authInfoForSubject = (token: string, subject: string): AuthInfo => ({
   token,
   scopes: [],
@@ -252,10 +247,9 @@ export const searchDocsHandler = async (
 ) => {
   const startedAt = Date.now();
 
-  // Fires via `after()` so it never delays the search response. The event is
-  // built before calling after(), not inside its callback, so latencyMs
-  // reflects the actual embed+search duration rather than whenever the
-  // deferred callback happens to run.
+  // Fires via after() so it never delays the response. Built before after() is
+  // called, not inside the callback, so latencyMs measures embed+search rather
+  // than whenever the callback ran.
   const emitTelemetry = (
     success: boolean,
     topMatch?: { file: string; heading: string }
@@ -277,9 +271,8 @@ export const searchDocsHandler = async (
 
       after(async () => {
         const result = await recordTelemetryEvent(event);
-        // 'unconfigured' is the steady state wherever Redis isn't set up
-        // (local dev, preview deploys), so warning on it would be noise on
-        // every single call. The rest mean something actually went wrong.
+        // 'unconfigured' is the steady state without Redis (local dev,
+        // previews), so warning on it would fire on every call.
         if (result !== 'recorded' && result !== 'unconfigured') {
           warnOnce(
             result,
@@ -288,9 +281,8 @@ export const searchDocsHandler = async (
         }
       });
     } catch (err) {
-      // Most likely cause is `after()` throwing for lack of a request scope,
-      // which would be true of every call — hence once per process, not once
-      // per call.
+      // Most likely `after()` throwing for lack of a request scope — true of
+      // every call, hence once per process.
       warnOnce(
         'emit-failed',
         `[MCP] search_docs telemetry emission failed: ${err}`
