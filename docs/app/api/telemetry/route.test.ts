@@ -1,38 +1,20 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TELEMETRY_COMMANDS } from './commands';
-import { consumePublicQuota, recordTelemetryEvent } from './record';
+import { isPublicQuotaExceeded, recordTelemetryEvent } from './record';
 import { POST } from './route';
+import { makeCliEvent, makeMcpEvent } from './test.utils';
+
+const makeEvent = (command: string) =>
+  makeCliEvent({ command: command as never });
+const mcpEvent = makeMcpEvent();
 
 vi.mock('./record', () => ({
   recordTelemetryEvent: vi.fn().mockResolvedValue('recorded'),
-  consumePublicQuota: vi.fn().mockResolvedValue('ok'),
+  isPublicQuotaExceeded: vi.fn().mockResolvedValue(false),
 }));
 
 const record = vi.mocked(recordTelemetryEvent);
-const publicQuota = vi.mocked(consumePublicQuota);
-
-const makeEvent = (command: string) => ({
-  event: 'cli_command',
-  command,
-  cliVersion: '1.0.0',
-  nodeVersion: '24.0.0',
-  platform: 'darwin',
-  isTTY: true,
-  isAIAgent: false,
-  durationBucket: '0-100',
-  exitCode: 0,
-  anonymousId: '00000000-0000-4000-8000-000000000000',
-});
-
-const mcpEvent = {
-  event: 'mcp_tool_call',
-  tool: 'search_docs',
-  hashedCallerId: 'a'.repeat(64),
-  latencyMs: 120,
-  success: true,
-  topMatchFile: 'Button.mdx',
-  topMatchHeading: 'Usage',
-};
+const publicQuota = vi.mocked(isPublicQuotaExceeded);
 
 const post = (body: unknown, headers: Record<string, string> = {}) =>
   POST(
@@ -48,7 +30,7 @@ describe('POST /api/telemetry', () => {
     record.mockReset();
     record.mockResolvedValue('recorded');
     publicQuota.mockReset();
-    publicQuota.mockResolvedValue('ok');
+    publicQuota.mockResolvedValue(false);
   });
 
   // Derived from the route's own enum, so a new command is covered
@@ -140,7 +122,7 @@ describe('POST /api/telemetry', () => {
   // as a whole — the only hard bound on a store that never expires.
   describe('public quota', () => {
     it('rejects with 429 without recording once the day is spent', async () => {
-      publicQuota.mockResolvedValue('exceeded');
+      publicQuota.mockResolvedValue(true);
 
       const res = await post(makeEvent('docs'));
 
@@ -150,8 +132,8 @@ describe('POST /api/telemetry', () => {
 
     // Fail open: a quota check that can't run must not start turning away
     // traffic, or a Redis outage would take the CLI's telemetry down with it.
-    it('records normally when the quota check is unavailable', async () => {
-      publicQuota.mockResolvedValue('unavailable');
+    it('records normally when the quota check cannot run', async () => {
+      publicQuota.mockResolvedValue(false);
 
       const res = await post(makeEvent('docs'));
 

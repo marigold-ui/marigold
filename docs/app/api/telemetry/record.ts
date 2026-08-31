@@ -1,10 +1,22 @@
+import { createWarnOnce } from '@/lib/warn-once';
 import { Redis } from '@upstash/redis';
 import { EventSchema, type TelemetryEvent } from './schema';
 
 // Ceilings, keyspace and the retention decision: see ./README.md
-const RATE_LIMIT_PER_DAY = { cli_command: 1_000, mcp_tool_call: 10_000 };
-const SECONDS_PER_DAY = 24 * 60 * 60;
+const POLICY = {
+  cli_command: {
+    limit: 1_000,
+    id: (e: Extract<TelemetryEvent, { event: 'cli_command' }>) =>
+      `cli:${e.anonymousId}`,
+  },
+  mcp_tool_call: {
+    limit: 10_000,
+    id: (e: Extract<TelemetryEvent, { event: 'mcp_tool_call' }>) =>
+      `mcp:${e.hashedCallerId}`,
+  },
+} as const;
 
+const SECONDS_PER_DAY = 24 * 60 * 60;
 const PUBLIC_LIMIT_PER_DAY = 50_000;
 
 const STREAM_KEY = 'telemetry:events';
@@ -17,19 +29,15 @@ const utcDate = (): string => {
   return `${y}-${m}-${d}`;
 };
 
-const rateLimitIdOf = (event: TelemetryEvent): string =>
-  event.event === 'cli_command'
-    ? `cli:${event.anonymousId}`
-    : `mcp:${event.hashedCallerId}`;
-
-const rateLimitKey = (id: string): string => `telemetry:rl:${id}:${utcDate()}`;
-
-const warned = new Set<string>();
-const warnOnce = (cause: string, message: string): void => {
-  if (warned.has(cause)) return;
-  warned.add(cause);
-  console.warn(message);
+const rateLimitKey = (event: TelemetryEvent): string => {
+  const id =
+    event.event === 'cli_command'
+      ? POLICY.cli_command.id(event)
+      : POLICY.mcp_tool_call.id(event);
+  return `telemetry:rl:${id}:${utcDate()}`;
 };
+
+const warnOnce = createWarnOnce();
 
 // keepErrors: a failing EXPIRE must not discard a good INCR.
 const bumpDailyCounter = async (
@@ -77,9 +85,8 @@ export async function recordTelemetryEvent(
       return 'unconfigured';
     }
 
-    const rlKey = rateLimitKey(rateLimitIdOf(parsed.data));
-    const count = await bumpDailyCounter(client, rlKey);
-    if (count > RATE_LIMIT_PER_DAY[parsed.data.event]) {
+    const count = await bumpDailyCounter(client, rateLimitKey(parsed.data));
+    if (count > POLICY[parsed.data.event].limit) {
       return 'rate-limited';
     }
 
@@ -95,20 +102,19 @@ export async function recordTelemetryEvent(
   }
 }
 
-// 'unavailable' must be let through by callers — see ./README.md
-export type PublicQuotaResult = 'ok' | 'exceeded' | 'unavailable';
-
-export async function consumePublicQuota(): Promise<PublicQuotaResult> {
+// False whenever the check could not run, so a Redis outage fails open rather
+// than turning traffic away — see ./README.md
+export async function isPublicQuotaExceeded(): Promise<boolean> {
   try {
     const client = getRedis();
-    if (!client) return 'unavailable';
+    if (!client) return false;
 
     const count = await bumpDailyCounter(
       client,
       `telemetry:rl:public:${utcDate()}`
     );
-    return count > PUBLIC_LIMIT_PER_DAY ? 'exceeded' : 'ok';
+    return count > PUBLIC_LIMIT_PER_DAY;
   } catch {
-    return 'unavailable';
+    return false;
   }
 }

@@ -5,6 +5,7 @@ import {
   TITAN_DIMENSIONS,
   TITAN_MODEL_ID,
 } from '@/lib/markdown/etl/config';
+import { createWarnOnce } from '@/lib/warn-once';
 import {
   BedrockRuntimeClient,
   InvokeModelCommand,
@@ -141,16 +142,7 @@ function search(queryVec: Float32Array, vs: VectorStore, limit: number) {
 
 // ─── Telemetry ────────────────────────────────────────────────────────────────
 
-// Telemetry failures are systematic: whatever stops one call recording stops
-// every call for the life of the instance. Hence once per cause per process —
-// per-call logging is noise, silence leaves an unexplained empty dashboard.
-const warnedCauses = new Set<string>();
-
-const warnOnce = (cause: string, message: string) => {
-  if (warnedCauses.has(cause)) return;
-  warnedCauses.add(cause);
-  console.warn(message);
-};
+const warnOnce = createWarnOnce();
 
 // One-way HMAC of the caller's Keycloak `sub` claim — never the raw claim,
 // which identifies a Reservix employee.
@@ -175,18 +167,8 @@ const getJwks = () => {
   return jwks;
 };
 
-// `AuthInfo` has no field for the token's subject, so the Keycloak `sub` rides
-// on `clientId` — it is not an OAuth client id. Getting this wrong is silent:
-// every caller collapses into one hash and "unique callers" becomes 1 forever.
-// route.test.ts drives a verified token through to the digest to catch that.
-const authInfoForSubject = (token: string, subject: string): AuthInfo => ({
-  token,
-  scopes: [],
-  clientId: subject,
-});
-
 const subjectOf = (authInfo?: AuthInfo): string | undefined =>
-  authInfo?.clientId;
+  typeof authInfo?.extra?.sub === 'string' ? authInfo.extra.sub : undefined;
 
 export const verifyToken = async (
   _req: Request,
@@ -202,7 +184,12 @@ export const verifyToken = async (
 
     if (!payload.sub) return undefined;
 
-    return authInfoForSubject(bearerToken, payload.sub);
+    return {
+      token: bearerToken,
+      clientId: OIDC_CLIENT_ID,
+      scopes: [],
+      extra: { sub: payload.sub },
+    };
   } catch (err) {
     console.error('[MCP] JWT verification failed:', err);
     return undefined;
@@ -246,32 +233,29 @@ export const searchDocsHandler = async (
 ) => {
   const startedAt = Date.now();
 
-  // Fires via after() so it never delays the response. Built before after() is
-  // called, not inside the callback, so latencyMs measures embed+search rather
-  // than whenever the callback ran.
   const emitTelemetry = (
     success: boolean,
     topMatch?: { file: string; heading: string }
   ) => {
+    const sub = subjectOf(extra.authInfo);
+    const hashedCallerId = sub ? hashCallerId(sub) : null;
+    if (!hashedCallerId) return;
+
+    // Built before after() is called, not inside the callback, so latencyMs
+    // measures embed+search rather than whenever the callback ran.
+    const event: TelemetryEvent = {
+      event: 'mcp_tool_call',
+      tool: 'search_docs',
+      hashedCallerId,
+      latencyMs: Date.now() - startedAt,
+      success,
+      topMatchFile: topMatch?.file,
+      topMatchHeading: topMatch?.heading,
+    };
+
     try {
-      const sub = subjectOf(extra.authInfo);
-      const hashedCallerId = sub ? hashCallerId(sub) : null;
-      if (!hashedCallerId) return;
-
-      const event: TelemetryEvent = {
-        event: 'mcp_tool_call',
-        tool: 'search_docs',
-        hashedCallerId,
-        latencyMs: Date.now() - startedAt,
-        success,
-        topMatchFile: topMatch?.file,
-        topMatchHeading: topMatch?.heading,
-      };
-
       after(async () => {
         const result = await recordTelemetryEvent(event);
-        // 'unconfigured' is the steady state without Redis (local dev,
-        // previews), so warning on it would fire on every call.
         if (result !== 'recorded' && result !== 'unconfigured') {
           warnOnce(
             result,
@@ -280,8 +264,8 @@ export const searchDocsHandler = async (
         }
       });
     } catch (err) {
-      // Most likely `after()` throwing for lack of a request scope — true of
-      // every call, hence once per process.
+      // after() throws synchronously without a request scope — true of every
+      // call, hence once per process.
       warnOnce(
         'emit-failed',
         `[MCP] search_docs telemetry emission failed: ${err}`
