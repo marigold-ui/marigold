@@ -1,8 +1,11 @@
+import type { SelectionMode } from '@react-types/shared';
 import { cn } from '@marigold/system';
 import { Checkbox } from '../Checkbox/Checkbox';
 
-interface SelectionIndicatorProps {
-  selectionMode: 'single' | 'multiple';
+// The selection mark for a GridListItem-backed row, shared by SelectList and ListView.
+
+interface GridSelectionIndicatorProps {
+  selectionMode: SelectionMode;
   isSelected: boolean;
   isDisabled?: boolean;
   className?: string;
@@ -11,7 +14,7 @@ interface SelectionIndicatorProps {
 const RadioIndicator = ({
   isSelected,
   isDisabled,
-}: Pick<SelectionIndicatorProps, 'isSelected' | 'isDisabled'>) => (
+}: Pick<GridSelectionIndicatorProps, 'isSelected' | 'isDisabled'>) => (
   <div
     aria-hidden="true"
     className={cn(
@@ -29,12 +32,17 @@ const RadioIndicator = ({
   </div>
 );
 
-export const SelectionIndicator = ({
+export const GridSelectionIndicator = ({
   selectionMode,
   isSelected,
   isDisabled,
   className,
-}: SelectionIndicatorProps) => {
+}: GridSelectionIndicatorProps) => {
+  // Nothing, not an empty wrapper: the cell's own spacing would still apply.
+  if (selectionMode === 'none') {
+    return null;
+  }
+
   return (
     <div className={className}>
       {selectionMode === 'multiple' ? (

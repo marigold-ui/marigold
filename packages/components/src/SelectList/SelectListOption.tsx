@@ -6,9 +6,9 @@ import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
 import { cn } from '@marigold/system';
 import { ButtonContext as MarigoldButtonContext } from '../Button/Context';
+import { GridSelectionIndicator } from '../utils/GridSelectionIndicator';
 import { useMergedTextSlots } from '../utils/useMergedTextSlots';
 import { useSelectListContext } from './Context';
-import { SelectionIndicator } from './SelectionIndicator';
 
 type RemovedProps = 'className' | 'style' | 'isDisabled';
 
@@ -86,8 +86,8 @@ export const SelectListOption = ({
     >
       {({ selectionMode, isSelected, isDisabled }) => (
         <>
-          <SelectionIndicator
-            selectionMode={selectionMode as 'single' | 'multiple'}
+          <GridSelectionIndicator
+            selectionMode={selectionMode}
             isSelected={isSelected}
             isDisabled={isDisabled}
             className={classNames?.indicator}
