@@ -1,10 +1,25 @@
 import { Redis } from '@upstash/redis';
 import { EventSchema, type TelemetryEvent } from './schema';
 
-// Per-caller daily quota. A caller past it is dropped rather than truncated,
-// so the ceiling sits far above realistic per-day usage for either source.
-const RATE_LIMIT_PER_DAY = 1000;
+// Per-caller daily quota, per source. A caller past it is dropped rather than
+// truncated, so both ceilings sit far above realistic per-day usage.
+//
+// The two differ because the threat differs. CLI events arrive over an
+// unauthenticated endpoint, so 1000 is an abuse bound. MCP events arrive
+// in-process with an id from a verified JWT — there is no abuse to bound, and
+// dropping them under-reports the very call volume this feature exists to
+// measure, so the ceiling is 10x. It isn't removed outright because nothing
+// expires any more: a runaway agent loop is a trusted caller that can still
+// write without limit, and this is the only thing left standing in its way.
+const RATE_LIMIT_PER_DAY = { cli_command: 1_000, mcp_tool_call: 10_000 };
 const SECONDS_PER_DAY = 24 * 60 * 60;
+
+// Second quota for the public endpoint, keyed on something the caller does not
+// choose. The per-caller key above comes out of the request body, so rotating
+// `anonymousId` walks straight past it — which stopped being self-correcting
+// when the stream lost its TTL. Generous because a whole team can share one
+// NAT egress address: 20k/day is ~20 power users at their own 1000 ceiling.
+const IP_LIMIT_PER_DAY = 20_000;
 
 // One stream, not one list per UTC day: ids are `<epochMillis>-<seq>`, so any
 // window is a single XRANGE instead of one LRANGE per day. Deliberately never
@@ -25,6 +40,16 @@ const rateLimitIdOf = (event: TelemetryEvent): string =>
     : `mcp:${event.hashedCallerId}`;
 
 const rateLimitKey = (id: string): string => `telemetry:rl:${id}:${utcDate()}`;
+
+// Separate from the MCP route's own warnOnce: that one tracks emission
+// failures, this one tracks the Redis call. Different causes, so they must
+// dedupe independently or one would silence the other.
+const warned = new Set<string>();
+const warnOnce = (cause: string, message: string): void => {
+  if (warned.has(cause)) return;
+  warned.add(cause);
+  console.warn(message);
+};
 
 let redis: Redis | null = null;
 const getRedis = (): Redis | null => {
@@ -71,7 +96,7 @@ export async function recordTelemetryEvent(
     const rlKey = rateLimitKey(rateLimitIdOf(parsed.data));
     const count = await client.incr(rlKey);
     await client.expire(rlKey, SECONDS_PER_DAY, 'NX');
-    if (count > RATE_LIMIT_PER_DAY) {
+    if (count > RATE_LIMIT_PER_DAY[parsed.data.event]) {
       return 'rate-limited';
     }
 
@@ -82,8 +107,37 @@ export async function recordTelemetryEvent(
     // No trim option — see the retention note above.
     await client.xadd(STREAM_KEY, '*', { data: JSON.stringify(payload) });
     return 'recorded';
-  } catch {
-    // Never leak backend errors; telemetry must not break the caller.
+  } catch (err) {
+    // Never leak backend errors to the caller — but don't swallow the cause
+    // either, or a Redis outage looks identical to "nobody used it". Once per
+    // process: an outage breaks every call the same way, so per-call logging
+    // would bury the signal it is meant to provide.
+    warnOnce('redis', `[telemetry] Redis call failed: ${err}`);
     return 'error';
+  }
+}
+
+// Bump the public endpoint's per-IP counter. Separate from the per-caller
+// quota above because only this one is a defence: it keys on an address the
+// caller can't pick. 'unavailable' means the check couldn't run (no address,
+// no Redis, or the call failed) and the caller should let the request through
+// — telemetry must not start rejecting traffic because Redis is down.
+export type IpQuotaResult = 'ok' | 'exceeded' | 'unavailable';
+
+export async function consumePublicIpQuota(
+  ip: string | null
+): Promise<IpQuotaResult> {
+  if (!ip) return 'unavailable';
+
+  try {
+    const client = getRedis();
+    if (!client) return 'unavailable';
+
+    const key = `telemetry:rl:ip:${ip}:${utcDate()}`;
+    const count = await client.incr(key);
+    await client.expire(key, SECONDS_PER_DAY, 'NX');
+    return count > IP_LIMIT_PER_DAY ? 'exceeded' : 'ok';
+  } catch {
+    return 'unavailable';
   }
 }

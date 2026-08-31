@@ -97,6 +97,18 @@ What has to be lived with:
 - **Growth is unbounded**, even if slow. At ~3 MB a year nothing needs watching for years, but
   "nothing caps this" is now true and should be re-checked if MCP usage grows by an order of
   magnitude, or if the event shape gets bigger.
+- **~35 events/day is legitimate volume, which is not the same as the volume an attacker can
+  produce.** `POST /api/telemetry` is unauthenticated and its per-caller quota keys on the
+  request body's own `anonymousId`, so rotating that walks straight past it. Under the old
+  layout the 90-day `EXPIRE` reclaimed such writes automatically; nothing does now. This
+  decision therefore depends on the per-IP quota in `route.ts`, keyed on an address the caller
+  does not choose — **removing that quota re-opens unbounded growth and must not be done while
+  this ADR stands.** `MAXLEN ~` was considered as the mitigation instead and rejected: it
+  evicts the _oldest_ entries, so a flood would push out exactly the history this decision
+  exists to keep.
+- **A trusted caller can still loop.** With nothing expiring, a runaway agent hammering
+  `search_docs` is the remaining unbounded writer, which is why the MCP quota is raised to
+  10k/day rather than removed.
 - **A per-employee record of doc searches persists indefinitely**, re-identifiable by anyone
   holding both Redis read access and `MCP_TELEMETRY_HASH_SECRET`. Treat that secret as a
   credential. This is the part of the decision most likely to be questioned later, and the

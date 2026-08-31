@@ -119,10 +119,10 @@ describe('recordTelemetryEvent', () => {
     );
   });
 
-  it('returns "rate-limited" once the daily quota is exceeded', async () => {
+  it('returns "rate-limited" once the daily quota is exceeded, without writing', async () => {
     vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
     vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
-    incr.mockResolvedValue(1001);
+    incr.mockResolvedValue(10_001);
     const { recordTelemetryEvent } = await loadRecord();
 
     const result = await recordTelemetryEvent(mcpEvent);
@@ -245,5 +245,92 @@ describe('recordTelemetryEvent', () => {
 
     await expect(recordTelemetryEvent(cliEvent)).resolves.toBe('error');
     expect(incr).not.toHaveBeenCalled();
+  });
+
+  it('gives mcp_tool_call events a 10x higher ceiling than cli_command', async () => {
+    // The CLI ceiling bounds abuse on a public endpoint. MCP events arrive
+    // in-process with an id from a verified JWT, so dropping them only
+    // under-reports the call volume the feature exists to measure.
+    vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
+    vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
+    incr.mockResolvedValue(1_001);
+    const { recordTelemetryEvent } = await loadRecord();
+
+    await expect(recordTelemetryEvent(cliEvent)).resolves.toBe('rate-limited');
+    await expect(recordTelemetryEvent(mcpEvent)).resolves.toBe('recorded');
+  });
+
+  it('still drops mcp_tool_call events past their own ceiling, so a runaway loop is bounded', async () => {
+    // Not removed outright: nothing expires any more, so a trusted-but-looping
+    // caller is the one thing left that could grow the stream without limit.
+    vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
+    vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
+    incr.mockResolvedValue(10_001);
+    const { recordTelemetryEvent } = await loadRecord();
+
+    await expect(recordTelemetryEvent(mcpEvent)).resolves.toBe('rate-limited');
+  });
+
+  it('logs the cause of a Redis failure once per process, not per call', async () => {
+    // Otherwise an outage is indistinguishable from "nobody used it", and
+    // per-call logging would bury the signal.
+    vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
+    vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    incr.mockRejectedValue(new Error('upstash down'));
+    const { recordTelemetryEvent } = await loadRecord();
+
+    await recordTelemetryEvent(cliEvent);
+    await recordTelemetryEvent(cliEvent);
+
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(warn.mock.calls[0][0]).toContain('upstash down');
+    warn.mockRestore();
+  });
+
+  describe('consumePublicIpQuota', () => {
+    beforeEach(() => {
+      vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
+      vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
+      expireMock.mockResolvedValue(1);
+    });
+
+    it('counts per address per day and reports "exceeded" past the cap', async () => {
+      incr.mockResolvedValue(20_001);
+      const { consumePublicIpQuota } = await loadRecord();
+
+      await expect(consumePublicIpQuota('203.0.113.7')).resolves.toBe(
+        'exceeded'
+      );
+      expect(incr).toHaveBeenCalledWith(
+        expect.stringMatching(
+          /^telemetry:rl:ip:203\.0\.113\.7:\d{4}-\d{2}-\d{2}$/
+        )
+      );
+    });
+
+    it('reports "ok" under the cap and gives the key a TTL', async () => {
+      incr.mockResolvedValue(1);
+      const { consumePublicIpQuota } = await loadRecord();
+
+      await expect(consumePublicIpQuota('203.0.113.7')).resolves.toBe('ok');
+      expect(expireMock).toHaveBeenCalledWith(
+        expect.stringContaining('telemetry:rl:ip:'),
+        24 * 60 * 60,
+        'NX'
+      );
+    });
+
+    // 'unavailable' must never become a rejection: telemetry cannot start
+    // turning traffic away because the quota check itself couldn't run.
+    it.each([
+      ['no address is available', null],
+      ['the address is present', '203.0.113.7'],
+    ])('reports "unavailable" when Redis fails and %s', async (_, ip) => {
+      incr.mockRejectedValue(new Error('upstash down'));
+      const { consumePublicIpQuota } = await loadRecord();
+
+      await expect(consumePublicIpQuota(ip)).resolves.toBe('unavailable');
+    });
   });
 });
