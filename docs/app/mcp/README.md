@@ -17,7 +17,7 @@ flowchart LR
     ClientIn(["Client<br/>receives response"])
     Emit["emitTelemetry<br/>env: MCP_TELEMETRY_HASH_SECRET"]
     Record["recordTelemetryEvent<br/>env: KV_REST_API_*"]
-    Redis[("Upstash Redis<br/>telemetry:YYYY-MM-DD")]
+    Redis[("Upstash Redis<br/>telemetry:events")]
 
     ClientOut -- "1 · HTTP + OAuth bearer token" --> Auth
     Auth --> Handler --> Embed
@@ -26,7 +26,7 @@ flowchart LR
     Search == "4 · top-K chunks (JSON)" ==> ClientIn
     Handler -- "5 · outcome + top match,<br/>caller from Auth" --> Emit
     Emit -. "6 · deferred via after()" .-> Record
-    Record -. "7 · LPUSH" .-> Redis
+    Record -. "7 · XADD" .-> Redis
 ```
 
 `ClientOut` and `ClientIn` are the same client, drawn twice. One box is for the outgoing call, the other for the response, so the diagram reads as a straight line instead of looping back on itself. `Auth`, `Handler`, `Embed`, `Search`, and `Emit` are steps inside `route.ts`; `Record` is the shared recording helper in [`app/api/telemetry/record.ts`](../api/telemetry/record.ts). `Bedrock` and `Redis` are the two external calls, and the numbers trace one live request from start to finish. The call comes in (1), gets embedded via Bedrock (2, 3), and the ranked chunks go back out as the tool's JSON result (4). That result is the only thing the _caller_ ever sees.
@@ -120,7 +120,7 @@ All eight vars above live in Vercel (see [Deployment](#deployment)). Nothing is 
 
 ## Telemetry
 
-Every `search_docs` call records one event so [Insights](https://github.com/marigold-ui/insights) can report call volume, unique callers, error rate, and top-searched doc topics. It reuses the same Redis-backed store and the same `telemetry:YYYY-MM-DD` daily lists the CLI's telemetry already writes to, rather than adding a second datastore.
+Every `search_docs` call records one event so [Insights](https://github.com/marigold-ui/insights) can report call volume, unique callers, error rate, and top-searched doc topics. It reuses the same Redis-backed store the CLI's telemetry already writes to, rather than adding a second datastore — one `telemetry:events` stream carrying both sources, discriminated on `event`.
 
 Recorded per call: `hashedCallerId`, `latencyMs`, `success`, and `topMatchFile` / `topMatchHeading` (the best-matching chunk, absent on failure or no results). **No query text and no similarity scores.**
 
@@ -128,14 +128,16 @@ Recorded per call: `hashedCallerId`, `latencyMs`, `success`, and `topMatchFile` 
 - **The write cannot affect the response.** `emitTelemetry` builds the event, then hands the Redis write to Next's [`after()`](https://nextjs.org/docs/app/api-reference/functions/after), which runs it once the response is already on its way out. The event is built _before_ `after()` is called, not inside its callback, so `latencyMs` measures the embed+search and not whenever the deferred callback happened to run. The whole thing is wrapped in a `try`/`catch` so even a synchronous throw from `after()` itself — which is what Next does when there's no request scope — can't turn a successful search into a reported failure.
 - **Nothing recorded is ever a hard failure, but it is never silent either.** Every way telemetry can fail is systematic: whatever breaks one call breaks all of them for the life of that instance. So each distinct cause is logged **once per process** rather than once per call — loud enough to diagnose an empty dashboard, quiet enough not to fill the logs. The causes are a missing `MCP_TELEMETRY_HASH_SECRET`, `after()` throwing, and `recordTelemetryEvent` returning `'rate-limited'`, `'invalid'` (the event failed its own schema — a bug on our side), or `'error'` (the Redis call failed). The one exception is `'unconfigured'`, i.e. no `KV_REST_API_*`: that's the normal steady state in local dev and preview deploys, so it stays silent. `search_docs` behaves identically in all of them.
 
-**Events are retained indefinitely, and that is a decision rather than an oversight.** `record.ts` sets a TTL on the rate-limit keys but deliberately not on the `telemetry:YYYY-MM-DD` data lists. The reasoning: because the lists are bucketed per day, growth is in the _number_ of keys rather than the size of any one, so no single read gets slower over time and Insights only ever reads a bounded window anyway. At this volume — a few hundred events a day at roughly 250 bytes each — the store is years from mattering. Keeping the whole history is also what makes long-run adoption trends possible, and expiring keys would silently delete what the dashboards read. Compliance was signed off separately on DST-1625: this is Reservix-internal telemetry, so no retention window is imposed.
+**Events are retained for roughly 200 days, and the bound is deliberate.** Events go into one `telemetry:events` stream rather than one list per UTC day, and `record.ts` trims it with `MINID ~` on every `XADD` — so retention rides along on the write path rather than needing its own job, and the store cannot grow without limit the way the daily lists could. The window is sized against its one real consumer: Insights' widest view is 90 days and its KPI deltas compare against the preceding 90, so **180 days have to survive**. 200 leaves that margin. At this volume — a few hundred events a day at roughly 250 bytes each — size was never the constraint; the point is that the ceiling is now stated somewhere rather than being whatever the store happens to have accumulated. Compliance was signed off separately on DST-1625: this is Reservix-internal telemetry, so no external retention window is imposed.
 
-If volume ever grows by an order of magnitude, bounding it is a three-line change — `LPUSH` returns the new list length, so `EXPIRE` on the first write of each day mirrors what the rate-limit keys already do. Note that the caller pseudonym is stable for as long as `MCP_TELEMETRY_HASH_SECRET` is, so rotating that secret is what breaks linkability across periods, not retention.
+That 180-day floor is a cross-repo constraint with nothing enforcing it: `RETENTION_DAYS` lives here, the window that depends on it lives in [Insights](https://github.com/marigold-ui/insights). Widening Insights' range past 180 days does not fail anything on this side — the tail is simply trimmed away, which reads as a drop in usage rather than an error. If that range grows, `RETENTION_DAYS` has to grow with it.
+
+Note that the caller pseudonym is stable for as long as `MCP_TELEMETRY_HASH_SECRET` is, so rotating that secret is what breaks linkability across periods, not retention.
 
 The recording itself lives outside this directory, in [`app/api/telemetry/`](../api/telemetry/), and is shared with the CLI:
 
 - [`schema.ts`](../api/telemetry/schema.ts) — one discriminated union over `cli_command` and `mcp_tool_call`, so both sources share a single validated contract. `cli_command`'s `command` enum must track the CLI's `CommandName` union; an unknown command is a 400 and the CLI is fire-and-forget, so drift silently drops every event for the new command. That list lives in [`commands.ts`](../api/telemetry/commands.ts); `api/telemetry/commands.test.ts` reads the union out of the CLI source and fails on drift.
-- [`record.ts`](../api/telemetry/record.ts) — rate limiting and the Redis write. `route.ts` calls this **in-process**; the server never POSTs to itself. The quota is 1000/day per caller, keyed `cli:{anonymousId}` or `mcp:{hashedCallerId}`. On the public endpoint that bounds abuse; for MCP events, where the id comes from a verified JWT, it only caps one caller's share of the daily list. A caller past the quota is dropped, not truncated, so the ceiling sits far above realistic usage — but it does mean a single caller exceeding 1000 calls in a UTC day would under-report.
+- [`record.ts`](../api/telemetry/record.ts) — rate limiting and the Redis write. `route.ts` calls this **in-process**; the server never POSTs to itself. The quota is 1000/day per caller, keyed `cli:{anonymousId}` or `mcp:{hashedCallerId}`. On the public endpoint that bounds abuse; for MCP events, where the id comes from a verified JWT, it only caps one caller's share of the stream. A caller past the quota is dropped, not truncated, so the ceiling sits far above realistic usage — but it does mean a single caller exceeding 1000 calls in a UTC day would under-report.
 - [`route.ts`](../api/telemetry/route.ts) — the public `POST /api/telemetry` endpoint the CLI uses. It deliberately accepts **only** `cli_command` events, never `mcp_tool_call`: an MCP event's rate-limit key comes from its own `hashedCallerId` field, so accepting one over an unauthenticated endpoint would make call volume and unique-caller counts forgeable without bound. MCP events reach `record.ts` in-process only.
 
 ## Deployment

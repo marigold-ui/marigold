@@ -64,7 +64,7 @@ describe('recordTelemetryEvent', () => {
     expect(incr).not.toHaveBeenCalled();
   });
 
-  it('records an event and persists it under the daily key', async () => {
+  it('records an event and appends it to the events stream', async () => {
     vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
     vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
     incr.mockResolvedValue(1);
@@ -216,7 +216,13 @@ describe('recordTelemetryEvent', () => {
       xadd.mockResolvedValue('1-0');
     });
 
-    it('trims to the retention cutoff, so the stream cannot grow without bound', async () => {
+    // Two assertions, deliberately: the exact window catches an accidental
+    // edit, and the floor states why the number can't just be lowered. 180
+    // days is what Insights needs — a 90-day view whose KPI deltas compare
+    // against the preceding 90 — and that constraint lives in another repo,
+    // where shrinking this would silently truncate the tail instead of failing.
+    it('trims 200 days back, keeping the 180 days Insights reads', async () => {
+      const DAY_MS = 24 * 60 * 60 * 1000;
       const { recordTelemetryEvent } = await loadRecord();
       vi.useFakeTimers();
       try {
@@ -227,7 +233,8 @@ describe('recordTelemetryEvent', () => {
         const [, , , opts] = xadd.mock.calls[0];
         expect(opts.trim.type).toBe('MINID');
         const cutoff = Number(opts.trim.threshold);
-        expect(Date.now() - cutoff).toBe(200 * 24 * 60 * 60 * 1000);
+        expect(Date.now() - cutoff).toBe(200 * DAY_MS);
+        expect(cutoff).toBeLessThanOrEqual(Date.now() - 180 * DAY_MS);
       } finally {
         vi.useRealTimers();
       }
