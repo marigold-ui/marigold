@@ -123,16 +123,16 @@ Pass an [`<EmptyState>`](/components/content/empty-state) to the `emptyState` pr
 
 ### `<ListView>` vs. `<SelectList>`
 
-Both render a stack of rich rows and both can select them, so they are easy to confuse. One question separates them:
+On screen these two are hard to tell apart: the same stack of rich rows, an indicator on each, a description under the label. What differs is where the selection goes, and one question settles it:
 
 > **Does the selection need to submit with the form?**
 >
 > - **Yes**, it is a field value that submits and validates: [`<SelectList>`](/components/form/selectlist).
 > - **No**, you read it and commit it yourself: `<ListView>`.
 
-The reason behind the test is what each component is. A `<SelectList>` is a form field. It carries a label, validation, and a hidden input, so its selection is the field's value and travels with the rest of the form. A `<ListView>` is a collection view. Its selection is view state you own, and rows may carry their own focusable controls, like a link or a row menu, which a field has no room for.
+Underneath, one is a form field and the other a collection view. A `<SelectList>` carries a label, validation, and a hidden input, so its selection is the field's value and travels with the rest of the form. A `<ListView>` keeps its selection as state you own, and its rows can carry their own focusable controls, like a link or a row menu, which a field has no room for.
 
-Answer the question before reaching for either. "Form field" and "collection view" are the right distinction but the wrong decision aid, because most flows can be described as both.
+That is the real distinction, and a poor decision aid on its own, because most flows can be described either way. Start from the question.
 
 <GuidelineTiles>
   <Do>
