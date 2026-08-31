@@ -145,15 +145,10 @@ function search(queryVec: Float32Array, vs: VectorStore, limit: number) {
 
 const warnOnce = createWarnOnce();
 
-// Salting the digest with the current quarter breaks linkability at each
-// boundary without anyone having to rotate the secret, and keeps unique-caller
-// counts correct within a period — which is the window Insights reads.
-export const hashPeriodOf = (now: Date): string =>
-  `${now.getUTCFullYear()}-Q${Math.floor(now.getUTCMonth() / 3) + 1}`;
-
 // One-way HMAC of the caller's Keycloak `sub` claim — never the raw claim,
-// which identifies a Reservix employee.
-const hashCallerId = (sub: string, period: string): string | null => {
+// which identifies a Reservix employee. Stable for the life of the secret, on
+// purpose: see ../api/telemetry/README.md.
+const hashCallerId = (sub: string): string | null => {
   const secret = process.env.MCP_TELEMETRY_HASH_SECRET;
   if (!secret) {
     warnOnce(
@@ -162,10 +157,7 @@ const hashCallerId = (sub: string, period: string): string | null => {
     );
     return null;
   }
-  return crypto
-    .createHmac('sha256', secret)
-    .update(`${sub}:${period}`)
-    .digest('hex');
+  return crypto.createHmac('sha256', secret).update(sub).digest('hex');
 };
 
 // ─── Auth (Keycloak JWT) ─────────────────────────────────────────────────────
@@ -257,8 +249,7 @@ export const searchDocsHandler = async (
         return;
       }
 
-      const hashPeriod = hashPeriodOf(new Date());
-      const hashedCallerId = hashCallerId(sub, hashPeriod);
+      const hashedCallerId = hashCallerId(sub);
       if (!hashedCallerId) return;
 
       // Built before after() is called, not inside the callback, so latencyMs
@@ -267,7 +258,6 @@ export const searchDocsHandler = async (
         event: 'mcp_tool_call',
         tool: 'search_docs',
         hashedCallerId,
-        hashPeriod,
         latencyMs: Date.now() - startedAt,
         success,
         topMatchFile: topMatch?.file,

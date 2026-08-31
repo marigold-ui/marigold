@@ -70,13 +70,14 @@ year, and until it exists trimming means losing the history it is meant to prese
 
 With no window, the quotas are the only thing left.
 
-**Per caller, per source.** 1000/day for `cli_command`, 10000/day for `mcp_tool_call`. The
-ceilings differ because the threat does: CLI events arrive over an unauthenticated endpoint, so
-1000 bounds abuse, while MCP ids come from a verified JWT and dropping those events only
-under-reports the call volume the feature exists to measure. It is not removed there, because
-with nothing expiring a looping agent is the one trusted caller that could still write without
-limit. A caller past its ceiling is dropped rather than truncated, so both sit far above
-realistic usage — but a caller crossing one in a UTC day does under-report.
+**Per caller.** 10000/day, the same for both sources. It is not an abuse bound — the
+endpoint-wide ceiling below is — but a guard against a runaway writer, which matters because
+nothing expires to clean up after one: a looping agent on the MCP side, or a broken script on
+the CLI side. Since that is the only job, there is no reason to treat the two sources
+differently, and an earlier split (1000 for CLI, on the theory that its endpoint is
+unauthenticated) just duplicated what the endpoint-wide ceiling already does. A caller past the
+ceiling is dropped rather than truncated, so it sits far above realistic usage — but a caller
+crossing it in a UTC day does under-report.
 
 **Endpoint-wide.** 50000/day on `telemetry:rl:public:{date}`. `POST /api/telemetry` has to stay
 unauthenticated — `@marigold/cli` is a public npm package — and the per-caller key above comes
@@ -109,15 +110,27 @@ no identity — there is no personal data in it. `mcp_tool_call` carries `hashed
 HMAC-SHA256 of a Keycloak `sub`: pseudonymous, not anonymous, since anyone holding both Redis
 read access and `MCP_TELEMETRY_HASH_SECRET` can re-identify a named Reservix employee.
 
-That digest is salted with the calendar quarter and the period stored beside it as `hashPeriod`,
-so linkability is bounded by construction rather than by anyone remembering to rotate a secret:
-one person is one caller within a quarter and two unlinkable ones across the boundary. It is
-stored rather than derived from `receivedAt`, which is stamped later on the write path and can
-land on the far side of a boundary. The trade is deliberate — a window spanning a boundary counts
-one person twice, and there is no such thing as an all-time unique-caller count. Neither matters
-for what Insights reads: its widest view is 90 days, roughly one period, and its KPI deltas
-compare a period against the preceding one, which is a comparison of counts rather than of
-identities.
+That digest is **stable for the life of the secret, and that is a decision rather than a
+default.** A salt that changed over time — per quarter, say — would bound linkability by
+construction, but it would also make a unique-caller count meaningless across the boundary, and
+an all-time count impossible. Since the whole reason this data is kept indefinitely is long-run
+adoption trends, "how many distinct people have ever used this" has to stay answerable. So the
+digest is stable, and the linkability that comes with it is accepted rather than engineered
+away.
+
+What limits the exposure is therefore not the hash, and saying otherwise would be the easy
+mistake to make here. Three things do. The secret is a credential, held only as a Vercel project
+env var, and re-identifying anyone needs it _and_ Redis read access _and_ a `sub` to test
+against. What is recorded is which doc page ranked first — not query text, not similarity
+scores. And the read side never attributes: Insights counts distinct `hashedCallerId`s and
+charts volume, and no view anywhere maps a digest back to a person or shows one caller's
+history. **That last one is the load-bearing one**, which is why "someone proposes reading this
+per person" is a revisit trigger below and not a feature request.
+
+Rotating `MCP_TELEMETRY_HASH_SECRET` remains available and is the one lever that invalidates
+every past digest at once. It is deliberately not part of the design: it would also reset every
+caller to a new identity, so the all-time count restarts and the history before it becomes
+uncountable. Reach for it if the position above stops holding, not on a schedule.
 
 Retaining that indefinitely is a deliberate call on the basis that `marigold-docs` is an
 internal tool, its callers are Reservix employees, and what is recorded is which doc pages were
@@ -130,10 +143,9 @@ substitute for either.** Revisit it, before the fact rather than after, if:
   makes the current position defensible is that Insights only ever aggregates;
 - someone asks the employee-data question properly.
 
-For that last case, the per-period salting above is already in place; what remains available is
-rotating `MCP_TELEMETRY_HASH_SECRET`, which invalidates every past digest rather than only
-future ones, and a per-caller opt-out on the MCP path, which unlike the CLI's `DO_NOT_TRACK`
-does not exist. The opt-out is deferred, not dismissed.
+Two mitigations exist for that last case, both deferred rather than dismissed: rotating
+`MCP_TELEMETRY_HASH_SECRET`, at the cost described above, and a per-caller opt-out on the MCP
+path, which unlike the CLI's `DO_NOT_TRACK` does not exist.
 
 The shapes are not symmetric either: the CLI reports its outcome as `exitCode` and its duration
 as a coarse `durationBucket` (its [public docs](../../../content/getting-started/cli/index.mdx)
