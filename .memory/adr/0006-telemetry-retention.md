@@ -53,8 +53,21 @@ Reservix-internal tool, its callers are Reservix employees, and what is recorded
 pages were searched — not query text and not similarity scores. **No DPO review was sought.**
 That is a judgement, not a ruling.
 
-**If this store ever holds data about anyone outside Reservix, this ADR must be revisited**
-before that happens, along with the absence of an MCP opt-out.
+This ADR must be revisited, before the fact rather than after, if any of these becomes true:
+
+- **The store holds data about anyone outside Reservix.** The whole internal-tool basis goes
+  with it.
+- **Anyone proposes reading this data per person** — attributing searches to a caller rather
+  than counting distinct callers. What makes the current position defensible is that Insights
+  only ever aggregates; `hashedCallerId` exists to count unique callers, not to look one up.
+- **Someone asks the employee-data question properly.** The basis above is a judgement about
+  internal telemetry, taken without a DPO review and without works-council involvement. Neither
+  was sought, and this ADR is not a substitute for either. The two mitigations already named
+  here — scheduled rotation of `MCP_TELEMETRY_HASH_SECRET`, and an MCP opt-out — are deferred,
+  not dismissed, and are the first things to reach for if the answer comes back differently.
+
+The original trigger recorded here named only the first of these, which is the least likely to
+happen and the least load-bearing of the three.
 
 ## Alternatives rejected
 
