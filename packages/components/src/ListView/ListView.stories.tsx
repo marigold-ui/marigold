@@ -621,3 +621,81 @@ export const EmptyState = meta.story({
     </ListView>
   ),
 });
+
+const onVenueSelectionChange = fn();
+
+export const SingleSelection = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <ListView
+      {...args}
+      aria-label="Delivery speed"
+      selectionMode="single"
+      defaultSelectedKeys={['standard']}
+    >
+      <ListView.Item id="standard" textValue="Standard">
+        <TextValue>Standard</TextValue>
+        <Description>Arrives in 3 to 5 days · Free</Description>
+      </ListView.Item>
+      <ListView.Item id="express" textValue="Express">
+        <TextValue>Express</TextValue>
+        <Description>Arrives tomorrow · 4.90 €</Description>
+      </ListView.Item>
+    </ListView>
+  ),
+});
+
+SingleSelection.test(
+  'marks one row selected at a time, without a checkbox',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    const standard = canvas.getByRole('row', { name: /standard/i });
+    const express = canvas.getByRole('row', { name: /express/i });
+
+    expect(standard).toHaveAttribute('aria-selected', 'true');
+    expect(canvas.queryByRole('checkbox')).not.toBeInTheDocument();
+
+    await userEvent.click(express);
+
+    expect(express).toHaveAttribute('aria-selected', 'true');
+    expect(standard).toHaveAttribute('aria-selected', 'false');
+  }
+);
+
+export const MultipleSelection = meta.story({
+  tags: ['component-test'],
+  args: { onSelectionChange: onVenueSelectionChange },
+  render: args => (
+    <ListView {...args} aria-label="Venues" selectionMode="multiple">
+      <ListView.Item id="gasometer" textValue="Gasometer">
+        <TextValue>Gasometer</TextValue>
+        <Description>Vienna · 1600 seats</Description>
+      </ListView.Item>
+      <ListView.Item id="tempodrom" textValue="Tempodrom">
+        <TextValue>Tempodrom</TextValue>
+        <Description>Berlin · 3800 seats</Description>
+      </ListView.Item>
+    </ListView>
+  ),
+});
+
+MultipleSelection.test(
+  'gives every row a checkbox and reports the selection',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onSelectionChange: fn() },
+  },
+  async ({ args, canvas, userEvent }) => {
+    const checkboxes = canvas.getAllByRole('checkbox');
+
+    expect(checkboxes).toHaveLength(2);
+
+    await userEvent.click(canvas.getByRole('row', { name: /gasometer/i }));
+
+    expect(canvas.getByRole('row', { name: /gasometer/i })).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
+    expect(args.onSelectionChange).toHaveBeenCalledTimes(1);
+  }
+);
