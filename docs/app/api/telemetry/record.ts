@@ -3,10 +3,7 @@ import { Redis } from '@upstash/redis';
 import { EventSchema, type TelemetryEvent } from './schema';
 
 // Ceilings, keyspace and the retention decision: see ./README.md
-const LIMITS: Record<TelemetryEvent['event'], number> = {
-  cli_command: 1_000,
-  mcp_tool_call: 10_000,
-};
+const RATE_LIMIT_PER_DAY = 10_000;
 
 const SECONDS_PER_DAY = 24 * 60 * 60;
 const PUBLIC_LIMIT_PER_DAY = 50_000;
@@ -78,7 +75,7 @@ export async function recordTelemetryEvent(
     }
 
     const count = await bumpDailyCounter(client, rateLimitKey(parsed.data));
-    if (count > LIMITS[parsed.data.event]) {
+    if (count > RATE_LIMIT_PER_DAY) {
       return 'rate-limited';
     }
 

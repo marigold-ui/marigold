@@ -2,7 +2,7 @@ import type { AuthInfo } from '@modelcontextprotocol/sdk/server/auth/types.js';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import crypto from 'node:crypto';
 import { after } from 'next/server';
-import { hashPeriodOf, searchDocsHandler } from './route';
+import { searchDocsHandler } from './route';
 
 // vi.mock factories are hoisted above all imports/consts in this file, so
 // anything they reference must go through vi.hoisted().
@@ -69,17 +69,8 @@ vi.mock('next/server', () => ({
 
 const HASH_SECRET = 'test-secret';
 const SUB = 'user-123';
-// The digest is salted with the quarter, so the expectation has to be too —
-// computed the same way the route does rather than hardcoded.
-const currentPeriod = () => {
-  const now = new Date();
-  return `${now.getUTCFullYear()}-Q${Math.floor(now.getUTCMonth() / 3) + 1}`;
-};
-const hashOf = (sub: string, period = currentPeriod()) =>
-  crypto
-    .createHmac('sha256', HASH_SECRET)
-    .update(`${sub}:${period}`)
-    .digest('hex');
+const hashOf = (sub: string) =>
+  crypto.createHmac('sha256', HASH_SECRET).update(sub).digest('hex');
 const expectedHash = hashOf(SUB);
 
 // Shorthand for cases that don't care how the AuthInfo got built; the test
@@ -364,52 +355,34 @@ describe('searchDocsHandler', () => {
     warn.mockRestore();
   });
 
-  // The point of salting per period: the same person is one caller within a
-  // quarter and an unlinkable one across quarters, without anyone rotating the
-  // secret. Unique-caller counts stay correct for the window Insights reads.
-  describe('period-salted caller digest', () => {
-    it('records the period the digest was salted with', async () => {
-      await search({ authInfo });
-
-      const [event] = recordTelemetryEvent.mock.calls[0];
-      expect(event.hashPeriod).toBe(currentPeriod());
-      expect(event.hashedCallerId).toBe(hashOf(SUB, event.hashPeriod));
-    });
-
-    it('gives the same caller the same digest twice in one period', async () => {
+  // The digest is deliberately stable for the life of the secret: that is what
+  // makes an all-time unique-caller view possible, and it is the property the
+  // privacy note in ../api/telemetry/README.md is written against.
+  describe('caller digest stability', () => {
+    it('gives the same caller the same digest across calls', async () => {
       await search({ authInfo });
       await search({ authInfo });
 
       const [first] = recordTelemetryEvent.mock.calls[0];
       const [second] = recordTelemetryEvent.mock.calls[1];
       expect(second.hashedCallerId).toBe(first.hashedCallerId);
+      expect(first.hashedCallerId).toBe(expectedHash);
     });
 
-    it('gives the same caller a different digest in a different period', async () => {
+    it('does not vary with the clock, so counts stay comparable over time', async () => {
       vi.useFakeTimers();
       try {
         vi.setSystemTime(new Date('2026-02-15T12:00:00Z'));
         await search({ authInfo });
-        vi.setSystemTime(new Date('2026-05-15T12:00:00Z'));
+        vi.setSystemTime(new Date('2027-11-15T12:00:00Z'));
         await search({ authInfo });
       } finally {
         vi.useRealTimers();
       }
 
-      const [q1] = recordTelemetryEvent.mock.calls[0];
-      const [q2] = recordTelemetryEvent.mock.calls[1];
-      expect(q1.hashPeriod).toBe('2026-Q1');
-      expect(q2.hashPeriod).toBe('2026-Q2');
-      expect(q2.hashedCallerId).not.toBe(q1.hashedCallerId);
-    });
-
-    it.each([
-      ['2026-01-01T00:00:00Z', '2026-Q1'],
-      ['2026-03-31T23:59:59Z', '2026-Q1'],
-      ['2026-04-01T00:00:00Z', '2026-Q2'],
-      ['2026-12-31T23:59:59Z', '2026-Q4'],
-    ])('maps %s to %s', (iso, expected) => {
-      expect(hashPeriodOf(new Date(iso))).toBe(expected);
+      const [early] = recordTelemetryEvent.mock.calls[0];
+      const [late] = recordTelemetryEvent.mock.calls[1];
+      expect(late.hashedCallerId).toBe(early.hashedCallerId);
     });
   });
 });

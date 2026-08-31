@@ -217,14 +217,6 @@ describe('recordTelemetryEvent', () => {
     expect(incr).not.toHaveBeenCalled();
   });
 
-  it('gives mcp_tool_call events a 10x higher ceiling than cli_command', async () => {
-    incr.mockResolvedValue(1_001);
-    const { recordTelemetryEvent } = await loadRecord();
-
-    await expect(recordTelemetryEvent(cliEvent)).resolves.toBe('rate-limited');
-    await expect(recordTelemetryEvent(mcpEvent)).resolves.toBe('recorded');
-  });
-
   it('still drops mcp_tool_call events past their own ceiling, so a runaway loop is bounded', async () => {
     incr.mockResolvedValue(10_001);
     const { recordTelemetryEvent } = await loadRecord();
@@ -302,21 +294,30 @@ describe('recordTelemetryEvent', () => {
   });
 
   // `count > limit`, so the ceiling itself is still allowed. Pins the
-  // comparison against an off-by-one to `>=`.
+  // comparison against an off-by-one to `>=`, for both sources since one
+  // ceiling now covers them.
   it.each([
-    ['cli_command', 1_000],
-    ['mcp_tool_call', 10_000],
+    ['cli_command', () => cliEvent],
+    ['mcp_tool_call', () => mcpEvent],
   ])(
-    'records the %s event that lands exactly on its ceiling',
-    async (event, ceiling) => {
-      incr.mockResolvedValue(ceiling);
+    'records the %s event landing exactly on the ceiling',
+    async (_, event) => {
+      incr.mockResolvedValue(10_000);
       const { recordTelemetryEvent } = await loadRecord();
 
-      await expect(
-        recordTelemetryEvent(event === 'cli_command' ? cliEvent : mcpEvent)
-      ).resolves.toBe('recorded');
+      await expect(recordTelemetryEvent(event())).resolves.toBe('recorded');
     }
   );
+
+  it.each([
+    ['cli_command', () => cliEvent],
+    ['mcp_tool_call', () => mcpEvent],
+  ])('rate-limits the %s event one past the ceiling', async (_, event) => {
+    incr.mockResolvedValue(10_001);
+    const { recordTelemetryEvent } = await loadRecord();
+
+    await expect(recordTelemetryEvent(event())).resolves.toBe('rate-limited');
+  });
 
   // The defense-in-depth re-parse guards both halves of the union, but only the
   // MCP half was covered — that is the hand-built path, so it got the attention.
