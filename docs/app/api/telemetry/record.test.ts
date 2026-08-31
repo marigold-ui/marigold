@@ -100,10 +100,8 @@ describe('recordTelemetryEvent', () => {
   });
 
   it('sets the rate-limit TTL with NX on every hit, not just the first', async () => {
-    // NX makes EXPIRE idempotent server-side, so calling it unconditionally
-    // never pushes the window out — and a first-hit EXPIRE lost to a network
-    // blip is retried by every later event instead of leaving the key
-    // TTL-less for the rest of the day.
+    // NX makes it idempotent, so an unconditional EXPIRE never pushes the
+    // window out and a lost first-hit EXPIRE is retried by every later event.
     vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
     vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
     incr.mockResolvedValue(2);
@@ -141,9 +139,7 @@ describe('recordTelemetryEvent', () => {
     expect(result).toBe('error');
   });
 
-  // Defense-in-depth: a hand-built event (like the MCP route's) only satisfies
-  // TelemetryEvent at compile time, not Zod's runtime constraints. These are
-  // asserted here rather than through the public POST route, which no longer
+  // Asserted here rather than through the public POST route, which no longer
   // accepts mcp_tool_call events at all.
   it.each([
     ['a hashedCallerId of the wrong length', { hashedCallerId: 'too-short' }],
@@ -196,10 +192,9 @@ describe('recordTelemetryEvent', () => {
     expect(JSON.parse(payload)).toMatchObject({ event: 'mcp_tool_call' });
   });
 
-  // Retention is unbounded by design (.memory/adr/0006-telemetry-retention.md).
-  // That is easy to undo by accident — a stray trim option silently starts
-  // dropping the tail, and the symptom is a dip in historical usage rather
-  // than a failure — so the absence of one is asserted rather than assumed.
+  // Retention is unbounded by design (see ADR-0006), and easy to undo by
+  // accident: a stray trim option drops the tail silently, and the symptom is
+  // a dip in past usage rather than a failure. So assert the absence.
   describe('retention', () => {
     beforeEach(() => {
       vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');

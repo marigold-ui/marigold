@@ -20,13 +20,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'invalid json' }, { status: 400 });
   }
 
-  // Deliberately the CLI shape only, not the full `EventSchema` union. An
-  // `mcp_tool_call` event carries the implicit claim that it came from an
-  // authenticated Keycloak caller, and its rate-limit key is derived from the
-  // caller-supplied `hashedCallerId` — so accepting one here would let anyone
-  // forge unique callers and call volume without ever hitting the quota. The
-  // MCP route writes its events in-process via `recordTelemetryEvent`, so it
-  // never needs this endpoint.
+  // The CLI shape only, not the full union. An `mcp_tool_call` event's
+  // rate-limit key comes from its own caller-supplied `hashedCallerId`, so
+  // accepting one on this public endpoint would make call volume and
+  // unique-caller counts forgeable. MCP events are recorded in-process.
   const parsed = CliCommandEventSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json({ error: 'invalid event' }, { status: 400 });
