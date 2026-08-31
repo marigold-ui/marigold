@@ -51,11 +51,7 @@ const getRedis = (): Redis | null => {
 // event, but they call for completely different responses, and the MCP route
 // logs the cause.
 export type RecordResult =
-  | 'recorded'
-  | 'unconfigured'
-  | 'rate-limited'
-  | 'invalid'
-  | 'error';
+  'recorded' | 'unconfigured' | 'rate-limited' | 'invalid' | 'error';
 
 export async function recordTelemetryEvent(
   event: TelemetryEvent
