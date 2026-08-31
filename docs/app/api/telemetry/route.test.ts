@@ -137,12 +137,30 @@ describe('POST /api/telemetry', () => {
   // The quota inside recordTelemetryEvent keys on the body's own `anonymousId`,
   // so rotating it walks past; this one keys on the client address instead.
   describe('per-IP quota', () => {
-    it('takes the client address from the first x-forwarded-for entry', async () => {
+    // The leftmost entry is the one a client can prepend, so keying on it would
+    // let an attacker pick their own quota bucket — which is the whole point of
+    // not keying on the request body's `anonymousId`.
+    it('takes the last x-forwarded-for entry, not the caller-supplied first', async () => {
       await post(makeEvent('docs'), {
         'x-forwarded-for': '203.0.113.7, 70.41.3.18, 150.172.238.178',
       });
 
-      expect(ipQuota).toHaveBeenCalledWith('203.0.113.7');
+      expect(ipQuota).toHaveBeenCalledWith('150.172.238.178');
+    });
+
+    it('ignores empty entries rather than skipping the quota', async () => {
+      await post(makeEvent('docs'), { 'x-forwarded-for': ', 198.51.100.4, ' });
+
+      expect(ipQuota).toHaveBeenCalledWith('198.51.100.4');
+    });
+
+    it('falls back to x-real-ip when x-forwarded-for holds nothing usable', async () => {
+      await post(makeEvent('docs'), {
+        'x-forwarded-for': ' , ',
+        'x-real-ip': '198.51.100.9',
+      });
+
+      expect(ipQuota).toHaveBeenCalledWith('198.51.100.9');
     });
 
     it('falls back to x-real-ip', async () => {

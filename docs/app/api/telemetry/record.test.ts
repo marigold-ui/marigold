@@ -7,10 +7,22 @@ const xadd = vi.fn();
 
 const { redisCtor } = vi.hoisted(() => ({ redisCtor: vi.fn() }));
 
+// pipeline() delegates to the same spies as the direct calls, so a test can
+// drive the counter with `incr.mockResolvedValue(n)` either way.
+const pipeline = () => {
+  const queued: Promise<unknown>[] = [];
+  const chain = {
+    incr: (...a: unknown[]) => (queued.push(incr(...a)), chain),
+    expire: (...a: unknown[]) => (queued.push(expireMock(...a)), chain),
+    exec: () => Promise.all(queued),
+  };
+  return chain;
+};
+
 vi.mock('@upstash/redis', () => ({
   Redis: vi.fn().mockImplementation(function RedisMock(...args: unknown[]) {
     redisCtor(...args);
-    return { incr, expire: expireMock, xadd };
+    return { incr, expire: expireMock, xadd, pipeline };
   }),
 }));
 
