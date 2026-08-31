@@ -291,10 +291,7 @@ describe('recordTelemetryEvent', () => {
     warn.mockRestore();
   });
 
-  // ADR-0006 rests unbounded retention on this one: a single fixed key that no
-  // header, body field or rotation can influence, so the endpoint's daily write
-  // volume has a hard ceiling. It is the only such bound on a store that never
-  // expires, which is why it is asserted rather than assumed.
+  // Unbounded retention rests on this one — see ./README.md
   describe('consumePublicQuota', () => {
     beforeEach(() => {
       vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
