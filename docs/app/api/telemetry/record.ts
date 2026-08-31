@@ -52,13 +52,19 @@ export async function recordTelemetryEvent(
     return 'invalid';
   }
 
-  const client = getRedis();
-  if (!client) {
-    // Telemetry not configured — accept silently to avoid retries from CLI.
-    return 'unconfigured';
-  }
-
   try {
+    // Inside the try: `new Redis()` throws synchronously on a URL that fails
+    // its own regex (a trailing newline in the env var is enough), and this
+    // function must resolve to a RecordResult rather than reject. Its callers
+    // can't absorb a rejection — the CLI route would 500 where it promises a
+    // silent 204, and the MCP route's runs in an after() callback, past the
+    // try that would have logged it.
+    const client = getRedis();
+    if (!client) {
+      // Telemetry not configured — accept silently to avoid retries from CLI.
+      return 'unconfigured';
+    }
+
     // NX sets the TTL only when there isn't one, so calling EXPIRE on every
     // hit is idempotent — and a first-hit EXPIRE lost to a blip gets retried,
     // where a `count === 1` gate would leave the key TTL-less all day.

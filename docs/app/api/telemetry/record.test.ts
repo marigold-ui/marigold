@@ -5,8 +5,11 @@ const incr = vi.fn();
 const expireMock = vi.fn();
 const xadd = vi.fn();
 
+const { redisCtor } = vi.hoisted(() => ({ redisCtor: vi.fn() }));
+
 vi.mock('@upstash/redis', () => ({
-  Redis: vi.fn().mockImplementation(function RedisMock() {
+  Redis: vi.fn().mockImplementation(function RedisMock(...args: unknown[]) {
+    redisCtor(...args);
     return { incr, expire: expireMock, xadd };
   }),
 }));
@@ -225,5 +228,22 @@ describe('recordTelemetryEvent', () => {
         expiredKeys.every(k => String(k).startsWith('telemetry:rl:'))
       ).toBe(true);
     });
+  });
+
+  // `new Redis()` validates its URL and throws synchronously — a trailing
+  // newline in KV_REST_API_URL is enough. Neither caller can absorb a
+  // rejection: the CLI route would 500 where it promises a silent 204, and the
+  // MCP route's call runs inside an after() callback, past the try that would
+  // have logged it. So construction has to be inside the try.
+  it('returns "error" rather than rejecting when the Redis client fails to construct', async () => {
+    vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
+    vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
+    redisCtor.mockImplementationOnce(() => {
+      throw new Error('[Upstash Redis] The provided URL is invalid');
+    });
+    const { recordTelemetryEvent } = await loadRecord();
+
+    await expect(recordTelemetryEvent(cliEvent)).resolves.toBe('error');
+    expect(incr).not.toHaveBeenCalled();
   });
 });
