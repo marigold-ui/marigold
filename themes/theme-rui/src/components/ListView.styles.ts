@@ -43,7 +43,7 @@ export const ListView: ThemeComponent<'ListView'> = {
     ],
   }),
   indicator: cva({
-    base: '[grid-area:indicator] self-center me-3 flex shrink-0 items-center justify-center',
+    base: '[grid-area:indicator] self-center justify-self-start me-3 flex shrink-0 items-center',
   }),
   actions: cva({
     base: '[grid-area:actions] self-center justify-self-end ms-3',
