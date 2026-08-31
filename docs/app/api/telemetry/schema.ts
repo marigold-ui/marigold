@@ -22,6 +22,10 @@ export const McpToolCallEventSchema = z.object({
   event: z.literal('mcp_tool_call'),
   tool: z.literal('search_docs'),
   hashedCallerId: z.string().regex(/^[0-9a-f]{64}$/),
+  // The period the digest is salted with. Stored rather than derived from
+  // `receivedAt`, which is stamped later and can land on the far side of a
+  // boundary.
+  hashPeriod: z.string().regex(/^\d{4}-Q[1-4]$/),
   latencyMs: z.number().int().min(0),
   success: z.boolean(),
   topMatchFile: z.string().max(512).optional(),

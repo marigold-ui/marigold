@@ -28,6 +28,7 @@ export const makeMcpEvent = (
   event: 'mcp_tool_call',
   tool: 'search_docs',
   hashedCallerId: 'a'.repeat(64),
+  hashPeriod: '2026-Q1',
   latencyMs: 120,
   success: true,
   topMatchFile: 'Button.mdx',
