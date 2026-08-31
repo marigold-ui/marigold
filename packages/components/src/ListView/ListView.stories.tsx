@@ -7,16 +7,15 @@ import { expect, fn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import type { Selection } from '@react-types/shared';
 import { Archive } from '@marigold/icons';
+import { ActionBar } from '../ActionBar/ActionBar';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
-import { Checkbox } from '../Checkbox/Checkbox';
 import { Description } from '../Description/Description';
 import { EmptyState as EmptyStateComponent } from '../EmptyState/EmptyState';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Popover } from '../Overlay/Popover';
 import { Panel } from '../Panel/Panel';
-import { Stack } from '../Stack/Stack';
 import { TextValue } from '../TextValue/TextValue';
 import { Title } from '../Title/Title';
 import { ListView } from './ListView';
@@ -59,6 +58,18 @@ const meta = preview.meta({
       },
       description: 'Content to render when the list is empty.',
     },
+    selectionMode: {
+      control: { type: 'select' },
+      options: ['none', 'single', 'multiple'],
+      table: {
+        type: { summary: 'select' },
+        defaultValue: { summary: 'none' },
+      },
+      description:
+        'Whether rows can be selected, and how many at a time. Selection is ' +
+        'view state: read it with `onSelectionChange` and commit it yourself. ' +
+        'For a selection that submits with a form, use `SelectList`.',
+    },
     disabledKeys: {
       control: false,
       table: {
@@ -77,8 +88,9 @@ const meta = preview.meta({
       },
       description:
         'Whether `disabledKeys` blocks all interactions with a row, or only ' +
-        'selection. With `selection`, a disabled row still takes focus and ' +
-        'fires its own controls; it just cannot be selected.',
+        'selection. With `selection` the row still takes focus and fires its ' +
+        'own controls, but it is marked disabled neither visually nor for ' +
+        'assistive technology, so the row has to explain itself.',
     },
   },
   args: {
@@ -635,11 +647,11 @@ const onVenueSelectionChange = fn();
 
 export const SingleSelection = meta.story({
   tags: ['component-test'],
+  args: { selectionMode: 'single' },
   render: args => (
     <ListView
       {...args}
       aria-label="Delivery speed"
-      selectionMode="single"
       defaultSelectedKeys={['standard']}
     >
       <ListView.Item id="standard" textValue="Standard">
@@ -673,9 +685,12 @@ SingleSelection.test(
 
 export const MultipleSelection = meta.story({
   tags: ['component-test'],
-  args: { onSelectionChange: onVenueSelectionChange },
+  args: {
+    selectionMode: 'multiple',
+    onSelectionChange: onVenueSelectionChange,
+  },
   render: args => (
-    <ListView {...args} aria-label="Venues" selectionMode="multiple">
+    <ListView {...args} aria-label="Venues">
       <ListView.Item id="gasometer" textValue="Gasometer">
         <TextValue>Gasometer</TextValue>
         <Description>Vienna · 1600 seats</Description>
@@ -744,8 +759,9 @@ const onArchiveVenue = fn();
 
 export const SelectionWithRowActions = meta.story({
   tags: ['component-test'],
+  args: { selectionMode: 'multiple' },
   render: args => (
-    <ListView {...args} aria-label="Venues" selectionMode="multiple">
+    <ListView {...args} aria-label="Venues">
       <ListView.Item id="gasometer" textValue="Gasometer">
         <TextValue>Gasometer</TextValue>
         <Description>Vienna · 1600 seats</Description>
@@ -792,12 +808,14 @@ const onVenueArchive = fn();
 
 export const SelectionWithMixedRowContent = meta.story({
   tags: ['component-test'],
+  args: { selectionMode: 'multiple' },
   render: args => (
-    <ListView {...args} aria-label="Venues" selectionMode="multiple">
+    <ListView {...args} aria-label="Venues">
       <ListView.Item id="gasometer" textValue="Gasometer">
-        <TextValue>Gasometer</TextValue>
+        <TextValue>
+          Gasometer <Badge variant="warning">Sold out</Badge>
+        </TextValue>
         <Description>Vienna · 1600 seats</Description>
-        <Badge variant="warning">Sold out</Badge>
         <ButtonGroup>
           <Button
             size="icon"
@@ -837,87 +855,113 @@ SelectionWithMixedRowContent.test(
     // The `<ButtonGroup>` claims the cell, not each of its buttons, so a
     // grouped row still reports exactly one.
     expect(row.querySelectorAll('[data-grid-area="actions"]')).toHaveLength(1);
-    // The badge claims nothing, so it must not be able to take a named cell.
-    expect(canvas.getByText('Sold out').closest('[data-grid-area]')).toBeNull();
+    // A `<Badge>` claims no cell of its own, so it is authored inside
+    // `<TextValue>` and shares the label cell. Left as a sibling it auto-places
+    // into an implicit third row in the indicator column, widening that column
+    // and pushing the row's text out of line with every other row.
+    expect(
+      canvas.getByText('Sold out').closest('[data-grid-area]')
+    ).toHaveAttribute('data-grid-area', 'label');
+
+    // The indicators form a column: every row starts its content at the same x,
+    // whatever else the row carries.
+    const indicatorX = (r: HTMLElement) =>
+      Math.round(
+        r.querySelector('[data-grid-area="indicator"]')!.getBoundingClientRect()
+          .x
+      );
+    const [first, second] = canvas.getAllByRole('row');
+
+    expect(indicatorX(first)).toBe(indicatorX(second));
   }
 );
 
-const VENUE_IDS = ['gasometer', 'tempodrom', 'columbiahalle'];
+const VENUES = [
+  { id: 'gasometer', name: 'Gasometer', detail: 'Vienna · 1600 seats' },
+  { id: 'tempodrom', name: 'Tempodrom', detail: 'Berlin · 3800 seats' },
+  { id: 'columbiahalle', name: 'Columbiahalle', detail: 'Berlin · 3500 seats' },
+];
 
-const SelectAllExample = (args: ListViewProps) => {
+const onBulkArchive = fn();
+
+// The Bulk Actions pattern's action bar, which needs no new API: `<ActionBar>`
+// takes `selectedItemCount` / `onClearSelection` as props and only falls back to
+// the context Table publishes. There is deliberately no select-all — that is a
+// header checkbox in the collection, which `ListView` has no region for yet.
+const BulkActionsExample = (args: ListViewProps) => {
   const [selected, setSelected] = useState<Selection>(() => new Set());
-  const count = selected === 'all' ? VENUE_IDS.length : selected.size;
+  const count = selected === 'all' ? VENUES.length : selected.size;
 
   return (
-    <Stack space={4}>
-      <Checkbox
-        aria-label="Select all venues"
-        checked={count === VENUE_IDS.length}
-        indeterminate={count > 0 && count < VENUE_IDS.length}
-        onChange={checked =>
-          setSelected(checked ? new Set(VENUE_IDS) : new Set())
-        }
-      />
+    <>
       <ListView
         {...args}
         aria-label="Venues"
-        selectionMode="multiple"
         selectedKeys={selected}
         onSelectionChange={setSelected}
+        items={VENUES}
       >
-        <ListView.Item id="gasometer" textValue="Gasometer">
-          <TextValue>Gasometer</TextValue>
-          <Description>Vienna · 1600 seats</Description>
-        </ListView.Item>
-        <ListView.Item id="tempodrom" textValue="Tempodrom">
-          <TextValue>Tempodrom</TextValue>
-          <Description>Berlin · 3800 seats</Description>
-        </ListView.Item>
-        <ListView.Item id="columbiahalle" textValue="Columbiahalle">
-          <TextValue>Columbiahalle</TextValue>
-          <Description>Berlin · 3500 seats</Description>
-        </ListView.Item>
+        {(venue: (typeof VENUES)[number]) => (
+          <ListView.Item id={venue.id} textValue={venue.name}>
+            <TextValue>{venue.name}</TextValue>
+            <Description>{venue.detail}</Description>
+          </ListView.Item>
+        )}
       </ListView>
-    </Stack>
+      <ActionBar
+        selectedItemCount={count}
+        onClearSelection={() => setSelected(new Set())}
+      >
+        <Button onPress={() => onBulkArchive(count)}>
+          <Archive />
+          Archive
+        </Button>
+      </ActionBar>
+    </>
   );
 };
 
-export const SelectAll = meta.story({
+export const WithActionBar = meta.story({
   tags: ['component-test'],
-  render: args => <SelectAllExample {...args} />,
+  args: { selectionMode: 'multiple' },
+  render: args => <BulkActionsExample {...args} />,
 });
 
-SelectAll.test(
-  'selects every row, and reads mixed while the selection is partial',
+WithActionBar.test(
+  'the action bar appears with the count once rows are selected, and clears them',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent, step }) => {
-    const selectAll = canvas.getByRole('checkbox', {
-      name: 'Select all venues',
+    await step('nothing selected: no action bar', async () => {
+      expect(
+        canvas.queryByRole('button', { name: 'Archive' })
+      ).not.toBeInTheDocument();
     });
 
-    await step('checking it selects every row', async () => {
-      await userEvent.click(selectAll);
-
-      for (const row of canvas.getAllByRole('row')) {
-        expect(row).toHaveAttribute('aria-selected', 'true');
-      }
-    });
-
-    await step('dropping one row puts it in a mixed state', async () => {
+    await step('selecting a row reveals it with the count', async () => {
       await userEvent.click(canvas.getByRole('row', { name: /gasometer/i }));
 
-      // A native checkbox carries the mixed state on the DOM `indeterminate`
-      // property, not as `aria-checked`.
-      expect(selectAll).toBePartiallyChecked();
+      expect(
+        await canvas.findByRole('button', { name: 'Archive' })
+      ).toBeVisible();
+      expect(canvas.getByText('1 selected')).toBeVisible();
+    });
+
+    await step('clearing the selection dismisses it', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: /clear/i }));
+
+      expect(canvas.getByRole('row', { name: /gasometer/i })).toHaveAttribute(
+        'aria-selected',
+        'false'
+      );
     });
   }
 );
 
 export const SelectionWithRowActivation = meta.story({
   tags: ['component-test'],
-  args: { onAction: fn() },
+  args: { selectionMode: 'multiple', onAction: fn() },
   render: args => (
-    <ListView {...args} aria-label="Venues" selectionMode="multiple">
+    <ListView {...args} aria-label="Venues">
       <ListView.Item id="gasometer" textValue="Gasometer">
         <TextValue>Gasometer</TextValue>
         <Description>Vienna · 1600 seats</Description>
@@ -966,52 +1010,5 @@ SelectionWithRowActivation.test(
       );
       expect(args.onAction).toHaveBeenCalledTimes(1);
     });
-  }
-);
-
-export const SelectableDisabledRows = meta.story({
-  tags: ['component-test'],
-  args: { onSelectionChange: fn() },
-  render: args => (
-    <ListView
-      {...args}
-      aria-label="Venues"
-      selectionMode="multiple"
-      disabledKeys={['tempodrom']}
-      disabledBehavior="selection"
-    >
-      <ListView.Item id="gasometer" textValue="Gasometer">
-        <TextValue>Gasometer</TextValue>
-        <Description>Vienna · 1600 seats</Description>
-      </ListView.Item>
-      <ListView.Item id="tempodrom" textValue="Tempodrom">
-        <TextValue>Tempodrom</TextValue>
-        <Description>Berlin · booking closed</Description>
-      </ListView.Item>
-    </ListView>
-  ),
-});
-
-SelectableDisabledRows.test(
-  'a selection-disabled row still takes focus but cannot be selected',
-  {
-    parameters: { chromatic: { disableSnapshot: true } },
-    args: { onSelectionChange: fn() },
-  },
-  async ({ args, canvas, userEvent }) => {
-    const disabled = canvas.getByRole('row', { name: /tempodrom/i });
-
-    await userEvent.click(canvas.getByRole('row', { name: /gasometer/i }));
-    await userEvent.keyboard('{ArrowDown}');
-
-    expect(disabled).toHaveFocus();
-
-    await userEvent.keyboard(' ');
-
-    // RAC drops `aria-selected` altogether on a selection-disabled row rather
-    // than reporting `false`: a row that cannot be selected should not
-    // advertise a selection state.
-    expect(disabled).not.toHaveAttribute('aria-selected');
-    expect(args.onSelectionChange).toHaveBeenCalledTimes(1);
   }
 );

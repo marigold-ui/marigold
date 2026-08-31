@@ -422,6 +422,34 @@ describe('ListView', () => {
       expect(onSelectionChange).not.toHaveBeenCalled();
     });
 
+    // `disabledBehavior="selection"` is deliberately not a story: RAC sets
+    // neither `data-disabled` nor `aria-disabled` in that mode, so the row
+    // renders and announces like any other and only its checkbox is disabled.
+    // The behaviour is worth pinning; the appearance is not worth publishing.
+    test('a selection-disabled row takes focus but cannot be selected', async () => {
+      const onSelectionChange = vi.fn();
+      renderList({
+        selectionMode: 'multiple',
+        disabledKeys: ['b'],
+        disabledBehavior: 'selection',
+        onSelectionChange,
+      });
+
+      const rows = screen.getAllByRole('row');
+      rows[0].focus();
+
+      await user.keyboard('{ArrowDown}');
+
+      expect(rows[1]).toHaveFocus();
+
+      await user.keyboard(' ');
+
+      // RAC drops `aria-selected` altogether rather than reporting `false`: a
+      // row that cannot be selected should not advertise a selection state.
+      expect(rows[1]).not.toHaveAttribute('aria-selected');
+      expect(onSelectionChange).not.toHaveBeenCalled();
+    });
+
     test('keeps the interactive cursor off a disabled row', () => {
       renderList({ selectionMode: 'multiple' });
 
