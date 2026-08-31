@@ -48,11 +48,11 @@ const bumpDailyCounter = async (
   client: Redis,
   key: string
 ): Promise<number> => {
-  const [count] = (await client
+  const [count] = await client
     .pipeline()
     .incr(key)
     .expire(key, SECONDS_PER_DAY, 'NX')
-    .exec()) as [number, number];
+    .exec();
 
   return count;
 };
