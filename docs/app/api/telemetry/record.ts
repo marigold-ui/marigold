@@ -13,16 +13,13 @@ const SECONDS_PER_DAY = 24 * 60 * 60;
 // `<epochMillis>-<seq>`, so a reader covers any time window with a single
 // XRANGE; the per-day layout cost it one LRANGE per day in the window (180 for
 // Insights' 90-day view, which compares against the preceding 90 days).
-// Retention also stops being per-key bookkeeping: MINID trimming rides along on
-// the same XADD, so there is no separate EXPIRE to land on the right day key
-// and no way for one to be missed.
+//
+// The stream is deliberately not trimmed — see
+// .memory/adr/0006-telemetry-retention.md. Short version: growth is ~3 MB a
+// year, and trimming would destroy the long-run adoption history that is the
+// whole reason this data is collected. Nothing here caps the stream, so any
+// window Insights asks for is answerable.
 const STREAM_KEY = 'telemetry:events';
-// Must stay >= 180 days: Insights' widest view is 90 days and its KPI deltas
-// compare against the preceding 90. That floor is a cross-repo constraint with
-// nothing enforcing it — widening Insights' range doesn't fail anything here,
-// it just trims the tail away, which reads as a drop in usage rather than an
-// error. See the Telemetry section of app/mcp/README.md.
-const RETENTION_DAYS = 200;
 
 const utcDate = (): string => {
   const now = new Date();
@@ -94,23 +91,10 @@ export async function recordTelemetryEvent(
       ...parsed.data,
       receivedAt: new Date().toISOString(),
     };
-    // Append and trim in one command. `~` lets Redis trim by whole nodes, which
-    // is cheap; the exact cutoff doesn't matter as long as it stays well past
-    // what any reader asks for.
-    await client.xadd(
-      STREAM_KEY,
-      '*',
-      { data: JSON.stringify(payload) },
-      {
-        trim: {
-          type: 'MINID',
-          comparison: '~',
-          threshold: String(
-            Date.now() - RETENTION_DAYS * SECONDS_PER_DAY * 1000
-          ),
-        },
-      }
-    );
+    // No trim option: retention is unbounded by design. Adding one later is a
+    // one-line change; the data it would have dropped is not recoverable, which
+    // is why the default is to keep.
+    await client.xadd(STREAM_KEY, '*', { data: JSON.stringify(payload) });
     return 'recorded';
   } catch {
     // Never leak backend errors; telemetry must not break the caller.
