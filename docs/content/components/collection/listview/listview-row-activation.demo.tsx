@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import type { Key, Selection } from '@react-types/shared';
 import {
+  Button,
   Description,
+  Headline,
+  Inline,
   ListView,
   Stack,
   Text,
   TextValue,
 } from '@marigold/components';
+import { ChevronLeft } from '@marigold/icons';
 
 const uploads = [
   { id: 'report', name: 'Report Q1.pdf', detail: '3 days ago · 2.1 MB' },
@@ -20,17 +24,26 @@ const uploads = [
 
 export default () => {
   const [selected, setSelected] = useState<Selection>(() => new Set<Key>());
-  const [opened, setOpened] = useState<Key>();
+  const [openKey, setOpenKey] = useState<Key>();
 
+  const opened = uploads.find(upload => upload.id === openKey);
   const count = selected === 'all' ? uploads.length : selected.size;
-  const openedName = uploads.find(upload => upload.id === opened)?.name;
 
-  const hint =
-    count > 0
-      ? `${count} selected, so pressing a row marks it instead of opening it.`
-      : openedName
-        ? `Opened ${openedName}. Nothing is selected, so a press still opens.`
-        : 'Press a row to open it, or use a checkbox to start selecting.';
+  // A row press really leaves the list, the way opening a record would.
+  if (opened) {
+    return (
+      <Stack space={4}>
+        <Inline space={2}>
+          <Button onPress={() => setOpenKey(undefined)}>
+            <ChevronLeft />
+            Back to files
+          </Button>
+        </Inline>
+        <Headline level={3}>{opened.name}</Headline>
+        <Text>Uploaded {opened.detail}</Text>
+      </Stack>
+    );
+  }
 
   return (
     <Stack space={4}>
@@ -39,8 +52,7 @@ export default () => {
         selectionMode="multiple"
         selectedKeys={selected}
         onSelectionChange={setSelected}
-        // Reached only while nothing is selected.
-        onAction={setOpened} // [!code highlight]
+        onAction={setOpenKey} // [!code highlight]
         items={uploads}
       >
         {(upload: (typeof uploads)[number]) => (
@@ -51,7 +63,9 @@ export default () => {
         )}
       </ListView>
       <Text variant="muted" size="sm">
-        {hint}
+        {count > 0
+          ? `${count} selected, so a row press only marks rows. Press Escape to open files again.`
+          : 'Press a row to open the file. Tick a checkbox first and the same press marks the row instead.'}
       </Text>
     </Stack>
   );

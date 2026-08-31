@@ -100,12 +100,12 @@ Rows are marked one at a time. A press adds or removes a single row, and there i
 
 A selectable list can still open its rows. Set `onAction` alongside `selectionMode` and the press does whichever the user is more likely to mean:
 
-- **Nothing selected:** pressing a row opens the item, so the list still reads as a feed. The checkbox selects without opening anything.
-- **Something selected:** pressing a row marks it instead, and nothing opens until the selection is cleared.
+- **Nothing selected:** pressing a row opens the item. <kbd>Enter</kbd> does the same, and the checkbox or <kbd>Space</kbd> selects without opening anything.
+- **Something selected:** every row press marks a row instead. Nothing opens while a selection exists.
 
 <ComponentDemo name="listview-row-activation" />
 
-Users know this from their file manager, and it lets one list serve browsing and selecting without a mode switch of your own. <kbd>Escape</kbd> clears the selection and puts them back to browsing.
+One list serves browsing and selecting this way, without a mode switch of your own to build. The catch is the second state: a user with something selected has no way to open a row, and it isn't obvious why the list stopped responding the way it did a moment ago. <kbd>Escape</kbd> clears the selection and opening works again, so say so where they can see it, or leave a clear button in reach.
 
 #### Bulk actions
 
