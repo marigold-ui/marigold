@@ -1,15 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TELEMETRY_COMMANDS } from './commands';
-import { consumePublicIpQuota, recordTelemetryEvent } from './record';
+import { consumePublicQuota, recordTelemetryEvent } from './record';
 import { POST } from './route';
 
 vi.mock('./record', () => ({
   recordTelemetryEvent: vi.fn().mockResolvedValue('recorded'),
-  consumePublicIpQuota: vi.fn().mockResolvedValue('ok'),
+  consumePublicQuota: vi.fn().mockResolvedValue('ok'),
 }));
 
 const record = vi.mocked(recordTelemetryEvent);
-const ipQuota = vi.mocked(consumePublicIpQuota);
+const publicQuota = vi.mocked(consumePublicQuota);
 
 const makeEvent = (command: string) => ({
   event: 'cli_command',
@@ -47,8 +47,8 @@ describe('POST /api/telemetry', () => {
   beforeEach(() => {
     record.mockReset();
     record.mockResolvedValue('recorded');
-    ipQuota.mockReset();
-    ipQuota.mockResolvedValue('ok');
+    publicQuota.mockReset();
+    publicQuota.mockResolvedValue('ok');
   });
 
   // Derived from the route's own enum, so a new command is covered
@@ -135,52 +135,14 @@ describe('POST /api/telemetry', () => {
   });
 
   // The quota inside recordTelemetryEvent keys on the body's own `anonymousId`,
-  // so rotating it walks past; this one keys on the client address instead.
-  describe('per-IP quota', () => {
-    // The leftmost entry is the one a client can prepend, so keying on it would
-    // let an attacker pick their own quota bucket — which is the whole point of
-    // not keying on the request body's `anonymousId`.
-    it('takes the last x-forwarded-for entry, not the caller-supplied first', async () => {
-      await post(makeEvent('docs'), {
-        'x-forwarded-for': '203.0.113.7, 70.41.3.18, 150.172.238.178',
-      });
+  // so rotating it walks past. This endpoint is unauthenticated by necessity
+  // (@marigold/cli is public on npm), so a second ceiling covers the endpoint
+  // as a whole — the only hard bound on a store that never expires.
+  describe('public quota', () => {
+    it('rejects with 429 without recording once the day is spent', async () => {
+      publicQuota.mockResolvedValue('exceeded');
 
-      expect(ipQuota).toHaveBeenCalledWith('150.172.238.178');
-    });
-
-    it('ignores empty entries rather than skipping the quota', async () => {
-      await post(makeEvent('docs'), { 'x-forwarded-for': ', 198.51.100.4, ' });
-
-      expect(ipQuota).toHaveBeenCalledWith('198.51.100.4');
-    });
-
-    it('falls back to x-real-ip when x-forwarded-for holds nothing usable', async () => {
-      await post(makeEvent('docs'), {
-        'x-forwarded-for': ' , ',
-        'x-real-ip': '198.51.100.9',
-      });
-
-      expect(ipQuota).toHaveBeenCalledWith('198.51.100.9');
-    });
-
-    it('falls back to x-real-ip', async () => {
-      await post(makeEvent('docs'), { 'x-real-ip': '203.0.113.9' });
-
-      expect(ipQuota).toHaveBeenCalledWith('203.0.113.9');
-    });
-
-    it('passes null when no address header is present', async () => {
-      await post(makeEvent('docs'));
-
-      expect(ipQuota).toHaveBeenCalledWith(null);
-    });
-
-    it('rejects with 429 without recording once the address is over quota', async () => {
-      ipQuota.mockResolvedValue('exceeded');
-
-      const res = await post(makeEvent('docs'), {
-        'x-forwarded-for': '203.0.113.7',
-      });
+      const res = await post(makeEvent('docs'));
 
       expect(res.status).toBe(429);
       expect(record).not.toHaveBeenCalled();
@@ -189,7 +151,7 @@ describe('POST /api/telemetry', () => {
     // Fail open: a quota check that can't run must not start turning away
     // traffic, or a Redis outage would take the CLI's telemetry down with it.
     it('records normally when the quota check is unavailable', async () => {
-      ipQuota.mockResolvedValue('unavailable');
+      publicQuota.mockResolvedValue('unavailable');
 
       const res = await post(makeEvent('docs'));
 
@@ -201,7 +163,7 @@ describe('POST /api/telemetry', () => {
       const res = await post(makeEvent('bogus'));
 
       expect(res.status).toBe(400);
-      expect(ipQuota).not.toHaveBeenCalled();
+      expect(publicQuota).not.toHaveBeenCalled();
     });
   });
 });

@@ -14,7 +14,17 @@ const pipeline = () => {
   const chain = {
     incr: (...a: unknown[]) => (queued.push(incr(...a)), chain),
     expire: (...a: unknown[]) => (queued.push(expireMock(...a)), chain),
-    exec: () => Promise.all(queued),
+    // Mirrors exec({ keepErrors: true }): per-command {error, result} pairs,
+    // so a rejecting spy surfaces as an error entry rather than a rejection.
+    exec: async () =>
+      Promise.all(
+        queued.map(p =>
+          Promise.resolve(p).then(
+            result => ({ error: undefined, result }),
+            (err: unknown) => ({ error: String(err), result: undefined })
+          )
+        )
+      ),
   };
   return chain;
 };
@@ -281,34 +291,35 @@ describe('recordTelemetryEvent', () => {
     warn.mockRestore();
   });
 
-  describe('consumePublicIpQuota', () => {
+  // ADR-0006 rests unbounded retention on this one: a single fixed key that no
+  // header, body field or rotation can influence, so the endpoint's daily write
+  // volume has a hard ceiling. It is the only such bound on a store that never
+  // expires, which is why it is asserted rather than assumed.
+  describe('consumePublicQuota', () => {
     beforeEach(() => {
       vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
       vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
       expireMock.mockResolvedValue(1);
     });
 
-    it('counts per address per day and reports "exceeded" past the cap', async () => {
-      incr.mockResolvedValue(20_001);
-      const { consumePublicIpQuota } = await loadRecord();
+    it('counts one fixed key per day, derived from no caller input', async () => {
+      incr.mockResolvedValue(1);
+      const { consumePublicQuota } = await loadRecord();
 
-      await expect(consumePublicIpQuota('203.0.113.7')).resolves.toBe(
-        'exceeded'
-      );
+      await expect(consumePublicQuota()).resolves.toBe('ok');
+      expect(incr).toHaveBeenCalledTimes(1);
       expect(incr).toHaveBeenCalledWith(
-        expect.stringMatching(
-          /^telemetry:rl:ip:203\.0\.113\.7:\d{4}-\d{2}-\d{2}$/
-        )
+        expect.stringMatching(/^telemetry:rl:public:\d{4}-\d{2}-\d{2}$/)
       );
     });
 
-    it('reports "ok" under the cap and gives the key a TTL', async () => {
-      incr.mockResolvedValue(1);
-      const { consumePublicIpQuota } = await loadRecord();
+    it('reports "exceeded" past the ceiling and gives the key a TTL', async () => {
+      incr.mockResolvedValue(50_001);
+      const { consumePublicQuota } = await loadRecord();
 
-      await expect(consumePublicIpQuota('203.0.113.7')).resolves.toBe('ok');
+      await expect(consumePublicQuota()).resolves.toBe('exceeded');
       expect(expireMock).toHaveBeenCalledWith(
-        expect.stringContaining('telemetry:rl:ip:'),
+        expect.stringContaining('telemetry:rl:public:'),
         24 * 60 * 60,
         'NX'
       );
@@ -316,13 +327,18 @@ describe('recordTelemetryEvent', () => {
 
     // Must never become a rejection — see the fail-open case in route.test.ts.
     it.each([
-      ['no address is available', null],
-      ['the address is present', '203.0.113.7'],
-    ])('reports "unavailable" when Redis fails and %s', async (_, ip) => {
-      incr.mockRejectedValue(new Error('upstash down'));
-      const { consumePublicIpQuota } = await loadRecord();
+      ['Redis is unconfigured', false],
+      ['the Redis call fails', true],
+    ])('reports "unavailable" when %s', async (_, configured) => {
+      if (configured) {
+        incr.mockRejectedValue(new Error('upstash down'));
+      } else {
+        vi.stubEnv('KV_REST_API_URL', '');
+        vi.stubEnv('KV_REST_API_TOKEN', '');
+      }
+      const { consumePublicQuota } = await loadRecord();
 
-      await expect(consumePublicIpQuota(ip)).resolves.toBe('unavailable');
+      await expect(consumePublicQuota()).resolves.toBe('unavailable');
     });
   });
 });

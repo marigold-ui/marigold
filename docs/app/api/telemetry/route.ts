@@ -1,26 +1,11 @@
 import { NextResponse } from 'next/server';
-import { consumePublicIpQuota, recordTelemetryEvent } from './record';
+import { consumePublicQuota, recordTelemetryEvent } from './record';
 import { CliCommandEventSchema } from './schema';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 const MAX_BODY_BYTES = 4 * 1024;
-
-// The *last* `x-forwarded-for` entry, not the first. A client can prepend its
-// own value, so the left end is caller-controlled; the right end is whatever
-// the closest proxy appended, which is the real address whether the edge
-// appends to the header or overwrites it outright. Behind several proxies this
-// degrades to callers sharing a key — a weaker quota, not a bypassed one.
-// null (local dev, no headers) makes the quota skip rather than reject.
-const clientIp = (request: Request): string | null => {
-  const hops = (request.headers.get('x-forwarded-for') ?? '')
-    .split(',')
-    .map(hop => hop.trim())
-    .filter(Boolean);
-
-  return hops.at(-1) ?? request.headers.get('x-real-ip')?.trim() ?? null;
-};
 
 export async function POST(request: Request) {
   const contentLength = Number(request.headers.get('content-length') ?? '0');
@@ -45,7 +30,7 @@ export async function POST(request: Request) {
 
   // After validation: a malformed body is a cheap 400 that never reaches the
   // stream, so what's worth defending is the flow of valid events.
-  if ((await consumePublicIpQuota(clientIp(request))) === 'exceeded') {
+  if ((await consumePublicQuota()) === 'exceeded') {
     return new NextResponse(null, { status: 429 });
   }
 
