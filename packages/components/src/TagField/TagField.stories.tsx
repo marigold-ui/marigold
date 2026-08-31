@@ -3,7 +3,6 @@ import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { Key } from 'react-aria-components/TagGroup';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
-import { clickOption } from '.storybook/test-utils';
 import { Stack } from '../Stack/Stack';
 import { TagField } from './TagField';
 
@@ -237,9 +236,9 @@ LargeDataset.test(
 
     await step('Verify filtered result and select it', async () => {
       const dialog = canvas.getByRole('dialog');
-      const getOption = () => within(dialog).getByText('Tenant 500 (item-500)');
-      expect(getOption()).toBeVisible();
-      await clickOption(getOption);
+      const option = within(dialog).getByText('Tenant 500 (item-500)');
+      expect(option).toBeVisible();
+      await userEvent.click(option);
     });
 
     await step('Verify selected item appears as tag', async () => {

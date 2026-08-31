@@ -3,7 +3,6 @@ import { Form } from 'react-aria-components/Form';
 import { Key } from 'react-aria-components/Select';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
-import { clickOption } from '.storybook/test-utils';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Description } from '../Description/Description';
@@ -149,7 +148,7 @@ Basic.test(
     });
 
     await step('Select an item from the list', async () => {
-      await clickOption(() =>
+      await userEvent.click(
         within(canvas.getByRole('listbox')).getByRole('option', {
           name: 'Star Wars',
         })
@@ -461,6 +460,53 @@ Basic.test(
 );
 
 Basic.test(
+  'Selects an option clicked immediately after reopening the list',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: {
+      label: 'Tenants',
+      placeholder: 'Select a tenant',
+      width: 80,
+    },
+    render: args => (
+      <Select {...args} items={LARGE_ITEMS}>
+        {(item: (typeof LARGE_ITEMS)[number]) => (
+          <Select.Option id={item.id}>{item.label}</Select.Option>
+        )}
+      </Select>
+    ),
+  },
+  async ({ args, canvas, step }) => {
+    const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+
+    const openAndSelect = async (label: string) => {
+      await userEvent.click(trigger);
+
+      const listbox = await canvas.findByRole('listbox');
+      await userEvent.click(
+        within(listbox).getByRole('option', { name: label })
+      );
+
+      await waitFor(() =>
+        expect(canvas.queryByRole('listbox')).not.toBeInTheDocument()
+      );
+    };
+
+    await step('Select a non-first option on the first open', async () => {
+      await openAndSelect('Tenant 203 (item-203)');
+
+      expect(within(trigger).getByText('Tenant 203 (item-203)')).toBeVisible();
+    });
+
+    await step('Select another option right after reopening', async () => {
+      await openAndSelect('Tenant 206 (item-206)');
+
+      expect(within(trigger).getByText('Tenant 206 (item-206)')).toBeVisible();
+    });
+  }
+);
+
+Basic.test(
   'Sizes the trigger to the requested width',
   {
     args: {
@@ -634,7 +680,7 @@ WithRenderValue.test(
     });
 
     await step('Select Bob', async () => {
-      await clickOption(() =>
+      await userEvent.click(
         within(canvas.getByRole('listbox')).getByRole('option', {
           name: 'Bob Smith',
         })
