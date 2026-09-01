@@ -380,6 +380,14 @@ describe('ListView', () => {
       expect([...onSelectionChange.mock.calls[0][0]]).toEqual(['gasometer']);
     });
 
+    test('marks every row when the selection is the `all` sentinel', () => {
+      render(<MultipleSelection.Component selectedKeys="all" />);
+
+      for (const row of screen.getAllByRole('row')) {
+        expect(row).toHaveAttribute('aria-selected', 'true');
+      }
+    });
+
     test('honors a controlled selection', () => {
       render(<MultipleSelection.Component selectedKeys={['tempodrom']} />);
 

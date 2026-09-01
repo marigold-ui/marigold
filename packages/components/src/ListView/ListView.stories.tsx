@@ -719,6 +719,33 @@ MultipleSelection.test(
   }
 );
 
+// `Mod` is `metaKey` on Mac and `ctrlKey` elsewhere. Firefox exposes no
+// `userAgentData`, so react-aria's `isMac()` reads `navigator.platform` here too
+// and this agrees with the implementation on either platform.
+const modKey = /^Mac/i.test(navigator.platform) ? 'Meta' : 'Control';
+
+MultipleSelection.test(
+  'Mod+A selects every row and reports the "all" sentinel',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onSelectionChange: fn() },
+  },
+  async ({ args, canvas, userEvent }) => {
+    // Pressing a row first puts keyboard focus in the grid.
+    await userEvent.click(canvas.getByRole('row', { name: /gasometer/i }));
+    await userEvent.keyboard(`{${modKey}>}a{/${modKey}}`);
+
+    // The string, not a filled Set. React Aria exposes no way to disable the
+    // shortcut, so a consumer reading `.size` gets `undefined` even on a list
+    // that offers no select-all control.
+    expect(args.onSelectionChange).toHaveBeenLastCalledWith('all');
+
+    for (const row of canvas.getAllByRole('row')) {
+      expect(row).toHaveAttribute('aria-selected', 'true');
+    }
+  }
+);
+
 SingleSelection.test(
   'Space selects the focused row and Escape clears it',
   { parameters: { chromatic: { disableSnapshot: true } } },
