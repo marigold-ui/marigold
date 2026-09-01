@@ -467,7 +467,7 @@ export const RailOverflow = meta.story({
 RailOverflow.test(
   'the item list scrolls while the footer stays pinned outside it',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas, step }) => {
+  async ({ canvas }) => {
     const rail = canvas.getByRole('navigation', { name: 'Hauptnavigation' });
     const firstItem = within(rail).getByRole('link', { name: 'Übersicht' });
     const pinnedItem = within(rail).getByRole('link', { name: 'Hilfe-Center' });
@@ -480,32 +480,42 @@ RailOverflow.test(
     expect(scroller).not.toContainElement(pinnedItem);
     expect(scroller!.parentElement).toContainElement(pinnedItem);
 
-    // Firefox takes the fallback branch, so the hairline is unconditional here.
-    // Whether the seam tracks scroll position is not testable in this suite.
-    expect(getComputedStyle(pinnedItem.parentElement!).boxShadow).not.toBe(
-      'none'
+    // Firefox takes the seam's fallback branch, which the rail opts out of, so
+    // nothing is painted. Whether the seam tracks scroll position where the
+    // animation does run is not testable in this suite.
+    expect(getComputedStyle(pinnedItem.parentElement!).boxShadow).toMatch(
+      /none|rgba\(0, 0, 0, 0\)/
+    );
+  }
+);
+
+RailOverflow.test(
+  'focus lands a below-the-fold tile clear of the faded edge',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const rail = canvas.getByRole('navigation', { name: 'Hauptnavigation' });
+    const scroller = closestScrollable(
+      within(rail).getByRole('link', { name: 'Übersicht' })
     );
 
-    await step(
-      'focus lands a below-the-fold tile clear of the faded edge',
-      () => {
-        // Any below-fold tile but the last: the last has no scroll range below it.
-        const belowFold = within(rail).getByRole('link', {
-          name: 'Automatisierungen',
-        });
+    // Any below-fold tile but the last: the last has no scroll range below it.
+    const belowFold = within(rail).getByRole('link', {
+      name: 'Automatisierungen',
+    });
 
-        belowFold.focus();
+    belowFold.focus();
 
-        // Without this the gap could be a tile that was already in view.
-        expect(scroller!.scrollTop).toBeGreaterThan(0);
+    // scroll-smooth means the scroll settles a frame later.
+    await waitFor(() => {
+      // Without this the gap could be a tile that was already in view.
+      expect(scroller!.scrollTop).toBeGreaterThan(0);
 
-        // scroll-py keeps the tile off the fade. Exact gap is the theme's.
-        const gap =
-          scroller!.getBoundingClientRect().bottom -
-          belowFold.getBoundingClientRect().bottom;
-        expect(gap).toBeGreaterThan(8);
-      }
-    );
+      // scroll-py keeps the tile off the fade. Exact gap is the theme's.
+      const gap =
+        scroller!.getBoundingClientRect().bottom -
+        belowFold.getBoundingClientRect().bottom;
+      expect(gap).toBeGreaterThan(8);
+    });
   }
 );
 
@@ -520,16 +530,17 @@ RailOverflow.test(
       within(rail).getByRole('link', { name: 'Übersicht' })
     );
 
-    scroller!.scrollTop = Math.round(
+    const middle = Math.round(
       (scroller!.scrollHeight - scroller!.clientHeight) / 2
     );
 
-    await waitFor(() => {
-      expect(scroller!.scrollTop).toBeGreaterThan(0);
-      expect(scroller!.scrollTop).toBeLessThan(
-        scroller!.scrollHeight - scroller!.clientHeight
-      );
-    });
+    scroller!.scrollTop = middle;
+
+    // scroll-smooth animates the assignment, so wait for the target itself:
+    // "moved at all" would snapshot a frame short of both fades being full.
+    await waitFor(() =>
+      expect(Math.abs(scroller!.scrollTop - middle)).toBeLessThan(2)
+    );
   }
 );
 
@@ -545,11 +556,19 @@ RailOverflow.test(
 
     expect(toggle).toHaveAttribute('aria-expanded', 'false');
 
-    // Icon-only tiles are shorter, but nine of them still outgrow 25rem.
     const rail = canvas.getByRole('navigation', { name: 'Hauptnavigation' });
-    const scroller = closestScrollable(
-      within(rail).getByRole('link', { name: 'Übersicht' })
-    );
+    const firstItem = within(rail).getByRole('link', { name: 'Übersicht' });
+
+    // The label row folds over 200ms, and the list is at its tallest for that
+    // window. Wait for the row to reach 0px or the overflow below would pass
+    // on the mid-fold height whether or not the settled list overflows.
+    await waitFor(() => {
+      const rows = getComputedStyle(firstItem).gridTemplateRows.split(' ');
+      expect(rows[rows.length - 1]).toBe('0px');
+    });
+
+    // Icon-only tiles are shorter, but nine of them still outgrow 25rem.
+    const scroller = closestScrollable(firstItem);
 
     expect(scroller).not.toBeNull();
 

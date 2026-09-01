@@ -588,6 +588,9 @@
  * each `timeline-scope` confines resolution to its own subtree, and Dialogs
  * render in an overlay portal (never nested in the Sidebar's scope). Without
  * scroll-driven animation the fallback pins the seam on as an always-on divider.
+ * That suits a body that usually scrolls. Where it usually fits, the divider
+ * would be wrong more often than right: set `--seam-fallback-color: transparent`
+ * to drop it and keep "fits means no chrome" true in every engine.
  */
 @keyframes scroll-seam-header {
   to {
@@ -627,6 +630,7 @@
     animation-range: calc(100% - 12px) 100%;
   }
   @supports not (animation-timeline: scroll()) {
-    box-shadow: 0 -1px 0 0 var(--seam-color, var(--color-border));
+    box-shadow: 0 -1px 0 0
+      var(--seam-fallback-color, var(--seam-color, var(--color-border)));
   }
 }
