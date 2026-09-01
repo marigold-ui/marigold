@@ -5,7 +5,6 @@ import {
 } from 'react-aria-components/Dialog';
 import { expect, fn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
-import type { Selection } from '@react-types/shared';
 import { Archive } from '@marigold/icons';
 import { ActionBar } from '../ActionBar/ActionBar';
 import { Badge } from '../Badge/Badge';
@@ -18,6 +17,7 @@ import { Popover } from '../Overlay/Popover';
 import { Panel } from '../Panel/Panel';
 import { TextValue } from '../TextValue/TextValue';
 import { Title } from '../Title/Title';
+import type { Selection } from '../types';
 import { ListView } from './ListView';
 import type { ListViewProps } from './ListView';
 
@@ -643,8 +643,6 @@ export const EmptyState = meta.story({
   ),
 });
 
-const onVenueSelectionChange = fn();
-
 export const SingleSelection = meta.story({
   tags: ['component-test'],
   args: { selectionMode: 'single' },
@@ -685,10 +683,7 @@ SingleSelection.test(
 
 export const MultipleSelection = meta.story({
   tags: ['component-test'],
-  args: {
-    selectionMode: 'multiple',
-    onSelectionChange: onVenueSelectionChange,
-  },
+  args: { selectionMode: 'multiple', onSelectionChange: fn() },
   render: args => (
     <ListView {...args} aria-label="Venues">
       <ListView.Item id="gasometer" textValue="Gasometer">
@@ -940,10 +935,11 @@ WithActionBar.test(
     await step('selecting a row reveals it with the count', async () => {
       await userEvent.click(canvas.getByRole('row', { name: /gasometer/i }));
 
-      expect(
-        await canvas.findByRole('button', { name: 'Archive' })
-      ).toBeVisible();
-      expect(canvas.getByText('1 selected')).toBeVisible();
+      // The bar animates in from `opacity: 0`, so wait for the end state.
+      await waitFor(() => {
+        expect(canvas.getByRole('button', { name: 'Archive' })).toBeVisible();
+        expect(canvas.getByText('1 selected')).toBeVisible();
+      });
     });
 
     await step('clearing the selection dismisses it', async () => {

@@ -14,6 +14,7 @@ import {
   Basic,
   EmptyState,
   InPanel,
+  MultipleSelection,
   NotificationsFeed,
   WithDescription,
 } from './ListView.stories';
@@ -348,38 +349,19 @@ describe('ListView', () => {
       );
     });
   });
+
   describe('selection', () => {
-    const rows = (
-      <>
-        <ListView.Item id="a" textValue="Alpha">
-          <TextValue>Alpha</TextValue>
-          <Description>First</Description>
-        </ListView.Item>
-        <ListView.Item id="b" textValue="Beta">
-          <TextValue>Beta</TextValue>
-        </ListView.Item>
-      </>
-    );
-
-    const renderList = (props: Record<string, unknown>) =>
-      render(
-        <MarigoldProvider theme={theme}>
-          <ListView aria-label="Records" {...props}>
-            {rows}
-          </ListView>
-        </MarigoldProvider>
-      );
-
-    test('marks the grid multiselectable only in multiple mode', () => {
-      const { unmount } = renderList({ selectionMode: 'multiple' });
+    test('marks the grid multiselectable in multiple mode', () => {
+      render(<MultipleSelection.Component />);
 
       expect(screen.getByRole('grid')).toHaveAttribute(
         'aria-multiselectable',
         'true'
       );
+    });
 
-      unmount();
-      renderList({ selectionMode: 'single' });
+    test('leaves the grid single-selectable in single mode', () => {
+      render(<MultipleSelection.Component selectionMode="single" />);
 
       expect(screen.getByRole('grid')).not.toHaveAttribute(
         'aria-multiselectable'
@@ -388,22 +370,24 @@ describe('ListView', () => {
 
     test('reports the selection as a Set of keys', async () => {
       const onSelectionChange = vi.fn();
-      renderList({ selectionMode: 'multiple', onSelectionChange });
+      render(
+        <MultipleSelection.Component onSelectionChange={onSelectionChange} />
+      );
 
-      await user.click(screen.getByRole('row', { name: /alpha/i }));
+      await user.click(screen.getByRole('row', { name: /gasometer/i }));
 
       // A `Selection` is a `Set` subclass, so compare contents not identity.
-      expect([...onSelectionChange.mock.calls[0][0]]).toEqual(['a']);
+      expect([...onSelectionChange.mock.calls[0][0]]).toEqual(['gasometer']);
     });
 
     test('honors a controlled selection', () => {
-      renderList({ selectionMode: 'multiple', selectedKeys: ['b'] });
+      render(<MultipleSelection.Component selectedKeys={['tempodrom']} />);
 
-      expect(screen.getByRole('row', { name: /beta/i })).toHaveAttribute(
+      expect(screen.getByRole('row', { name: /tempodrom/i })).toHaveAttribute(
         'aria-selected',
         'true'
       );
-      expect(screen.getByRole('row', { name: /alpha/i })).toHaveAttribute(
+      expect(screen.getByRole('row', { name: /gasometer/i })).toHaveAttribute(
         'aria-selected',
         'false'
       );
@@ -411,13 +395,14 @@ describe('ListView', () => {
 
     test('a disabled row cannot be selected', async () => {
       const onSelectionChange = vi.fn();
-      renderList({
-        selectionMode: 'multiple',
-        disabledKeys: ['b'],
-        onSelectionChange,
-      });
+      render(
+        <MultipleSelection.Component
+          disabledKeys={['tempodrom']}
+          onSelectionChange={onSelectionChange}
+        />
+      );
 
-      await user.click(screen.getByRole('row', { name: /beta/i }));
+      await user.click(screen.getByRole('row', { name: /tempodrom/i }));
 
       expect(onSelectionChange).not.toHaveBeenCalled();
     });
@@ -428,12 +413,13 @@ describe('ListView', () => {
     // The behaviour is worth pinning; the appearance is not worth publishing.
     test('a selection-disabled row takes focus but cannot be selected', async () => {
       const onSelectionChange = vi.fn();
-      renderList({
-        selectionMode: 'multiple',
-        disabledKeys: ['b'],
-        disabledBehavior: 'selection',
-        onSelectionChange,
-      });
+      render(
+        <MultipleSelection.Component
+          disabledKeys={['tempodrom']}
+          disabledBehavior="selection"
+          onSelectionChange={onSelectionChange}
+        />
+      );
 
       const rows = screen.getAllByRole('row');
       rows[0].focus();
@@ -451,14 +437,14 @@ describe('ListView', () => {
     });
 
     test('keeps the interactive cursor off a disabled row', () => {
-      renderList({ selectionMode: 'multiple' });
+      render(<MultipleSelection.Component />);
 
       // Gated behind `not-disabled:`, because an ungated
       // `data-selection-mode:cursor-pointer` outranks `disabled:cursor-not-allowed`
       // on source order.
-      expect(screen.getByRole('row', { name: /alpha/i }).className).toContain(
-        'not-disabled:data-selection-mode:cursor-pointer'
-      );
+      expect(
+        screen.getByRole('row', { name: /gasometer/i }).className
+      ).toContain('not-disabled:data-selection-mode:cursor-pointer');
     });
   });
 });
