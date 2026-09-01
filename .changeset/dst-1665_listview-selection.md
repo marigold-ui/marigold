@@ -21,7 +21,7 @@ The row's named-area grid gains a leading `indicator` region, so the template go
 
 The indicator is centred against the whole text stack and pinned to the start of its column. Pinning matters once the column widens, which it does when a row carries an unslotted child.
 
-That is worth knowing when authoring: a child claiming none of the row's three regions, a `<Badge>` being the likely case, is auto-placed by the grid and lands in the indicator column, widening it and pushing the text of **every** row in the list out of line. Nest it in `<TextValue>` or `<Description>` instead. Before selection this misplaced a badge onto its own line; now it misaligns the list.
+That is worth knowing when authoring: a child claiming none of the row's three regions, a `<Badge>` being the likely case, is auto-placed by the grid and lands in the indicator column, widening it so that **row's** text no longer lines up with any other row's. Nest it in `<TextValue>` or `<Description>` instead. Before selection this misplaced a badge onto its own line; now it misaligns the list.
 
 **Selecting and opening a row**
 

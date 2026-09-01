@@ -56,7 +56,7 @@ To emphasise part of a row's text, nest `<Text as="span">` inside `<TextValue>` 
 </ListView.Item>
 ```
 
-The same rule covers everything else a row carries. A row has a cell for its text, a cell for its trailing control, and, once the list is selectable, a cell for its selection indicator. A child that claims none of them, like a `<Badge>`, gets placed wherever the grid has room. On its own that means a new full-width line under the description, where it reads as part of the row's text. In a selectable list it is worse: the badge lands in the indicator column, widens it, and pushes the text of every row in the list out of line. Nest it in the text it belongs to instead:
+The same rule covers everything else a row carries. A row has a cell for its text, a cell for its trailing control, and, once the list is selectable, a cell for its selection indicator. A child that claims none of them, like a `<Badge>`, gets placed wherever the grid has room. On its own that means a new full-width line under the description, where it reads as part of the row's text. In a selectable list it is worse: the badge lands in the indicator column and widens it, so that row's text no longer lines up with any other row's. Nest it in the text it belongs to instead:
 
 ```tsx
 <ListView.Item id="gasometer" textValue="Gasometer">
