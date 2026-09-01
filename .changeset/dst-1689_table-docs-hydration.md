@@ -24,7 +24,7 @@ carries `aria-label="Venues"`, matching how `listview-appearance.demo.tsx` label
 the same shape. That was the whole source of the seven react-aria warnings the
 page logged, which fire once per render pass.
 
-Two more console findings on neighbouring pages, same class of defect, fixed here
+Further console findings on neighbouring pages, same class of defect, fixed here
 rather than left behind:
 
 `selectlist-selectable-cards.demo.tsx` formatted capacity and price with
@@ -34,8 +34,18 @@ rendered `$1,000` on the server and `$1.000` on a de-DE client, a second
 hydration mismatch. `ComponentDemo` already pins `<I18nProvider locale="en-US">`
 to prevent exactly this, but `toLocaleString` bypasses the provider entirely.
 Both values now use `NumericFormat`, which reads the pinned locale through
-`useNumberFormatter`. Output is unchanged (`$1,000`, no cents, via
-`maximumFractionDigits`).
+`useNumberFormatter`. The rendered text is unchanged (`$1,000`, no cents, via
+`maximumFractionDigits`), but the DOM gains a `<span suppressHydrationWarning>`
+per value. `NumericFormat` defaults to `tabular`, which suits the price and not
+the middle of a sentence, so the capacity passes `tabular={false}` and keeps the
+proportional figures the prose had before.
+
+The two closest copies of that code are fixed with it. `card-grid.demo.tsx`
+repeated both lines verbatim. `card-appearance.demo.tsx` rendered its price range
+as two bare `toLocaleString()` calls on four- and five-digit values, so the
+grouping separator always fired there. The range now goes through a single
+`NumericFormat` with a tuple value, which formats it through `Intl.formatRange`
+and reproduces the same en dash and spacing the hardcoded `&ndash;` produced.
 
 `menu-dialog.demo.tsx` wrapped each controlled dialog in `<Dialog.Trigger>` with
 the `<Dialog>` as its only child. `Dialog.Trigger` wraps its children in a

@@ -5,6 +5,7 @@ import {
   type CardProps,
   Description,
   Inline,
+  NumericFormat,
   Stack,
   Text,
   Title,
@@ -32,8 +33,12 @@ export default (props: CardProps) => (
     <Card.Footer>
       <Inline space="regular">
         <Text size="sm" variant="muted">
-          ${venue.price.from.toLocaleString()} &ndash; $
-          {venue.price.to.toLocaleString()}
+          <NumericFormat
+            style="currency"
+            currency="USD"
+            maximumFractionDigits={0}
+            value={[venue.price.from, venue.price.to]}
+          />
         </Text>
       </Inline>
     </Card.Footer>

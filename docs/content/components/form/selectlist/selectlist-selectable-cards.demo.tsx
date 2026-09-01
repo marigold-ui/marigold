@@ -50,7 +50,8 @@ export default () => (
                 <Badge variant="info">{venueTypes[venue.type]}</Badge>
               </Inline>
               <Text size="sm" variant="muted">
-                Up to <NumericFormat value={venue.capacity} /> guests
+                Up to <NumericFormat tabular={false} value={venue.capacity} />{' '}
+                guests
               </Text>
             </Stack>
             <Inline space="related" alignY="center">
