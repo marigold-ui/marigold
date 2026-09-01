@@ -235,7 +235,7 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
 }: SelectListProps<Mode>) => {
   const resolvedSelectionMode = (selectionMode ?? 'single') as SelectionMode;
   // Radio-group semantics for a field. `ListView` passes RAC's default through
-  // instead: a view's selection has to be abandonable. See ADR-0006.
+  // instead, because a view's selection has to be abandonable.
   const resolvedDisallowEmptySelection =
     disallowEmptySelection ?? resolvedSelectionMode === 'single';
   const classNames = useClassNames({ component: 'SelectList', variant });
