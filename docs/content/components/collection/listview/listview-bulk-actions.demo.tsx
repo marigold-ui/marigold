@@ -1,12 +1,11 @@
-import { useState } from 'react';
-import type { Key, Selection } from '@react-types/shared';
+import type { Selection } from '@react-types/shared';
 import {
   ActionBar,
   Button,
   Description,
   ListView,
-  Stack,
   TextValue,
+  useActionBar,
 } from '@marigold/components';
 import { Archive, Download } from '@marigold/icons';
 
@@ -18,19 +17,52 @@ const uploads = [
     name: 'Venue contract.pdf',
     detail: '2 weeks ago · 1.2 MB',
   },
+  { id: 'floorplan', name: 'Floor plan.png', detail: '3 weeks ago · 4.7 MB' },
+  { id: 'rider', name: 'Tech rider.pdf', detail: 'Last month · 320 KB' },
+  { id: 'invoice', name: 'Invoice 2291.pdf', detail: 'Last month · 88 KB' },
 ];
 
 export default () => {
-  const [selected, setSelected] = useState<Selection>(() => new Set<Key>());
-  const count = selected === 'all' ? uploads.length : selected.size;
+  // The hook holds the selection and measures the bar, so the count and the
+  // clear button are filled in for you.
+  const { selectedKeys, onSelectionChange, actionBarHeight, actionBarOverlay } =
+    useActionBar({
+      // [!code highlight:1]
+      actionBar: (keys: Selection) => {
+        const count = keys === 'all' ? uploads.length : keys.size;
+
+        return (
+          <ActionBar>
+            <Button onPress={() => alert(`Download ${count} files`)}>
+              <Download />
+              Download
+            </Button>
+            <Button onPress={() => alert(`Archive ${count} files`)}>
+              <Archive />
+              Archive
+            </Button>
+          </ActionBar>
+        );
+      },
+    });
+
+  // The bar is sticky, so it pins to the bottom of this scroll container.
+  // Reserving its height in both paddings keeps it off the last rows and stops
+  // keyboard scrolling parking a row underneath it.
+  const room = actionBarHeight
+    ? `calc(${actionBarHeight}px + var(--actionbar-offset, 8px))`
+    : undefined;
 
   return (
-    <Stack space={8}>
+    <div
+      className="max-h-64 overflow-y-auto"
+      style={{ paddingBottom: room, scrollPaddingBottom: room }} // [!code highlight]
+    >
       <ListView
         aria-label="Uploads"
         selectionMode="multiple" // [!code highlight]
-        selectedKeys={selected}
-        onSelectionChange={setSelected}
+        selectedKeys={selectedKeys}
+        onSelectionChange={onSelectionChange}
         items={uploads}
       >
         {(upload: (typeof uploads)[number]) => (
@@ -40,21 +72,7 @@ export default () => {
           </ListView.Item>
         )}
       </ListView>
-
-      {/* A sibling, not a prop: the bar takes the count and a clear handler. */}
-      <ActionBar
-        selectedItemCount={count} // [!code highlight]
-        onClearSelection={() => setSelected(new Set())} // [!code highlight]
-      >
-        <Button onPress={() => alert(`Download ${count} files`)}>
-          <Download />
-          Download
-        </Button>
-        <Button onPress={() => alert(`Archive ${count} files`)}>
-          <Archive />
-          Archive
-        </Button>
-      </ActionBar>
-    </Stack>
+      {actionBarOverlay}
+    </div>
   );
 };

@@ -109,9 +109,13 @@ One list serves browsing and selecting this way, without a mode switch of your o
 
 #### Bulk actions
 
-Pair a multi-select list with an [`<ActionBar>`](/components/collection/actionbar) rendered as a sibling. The bar takes the selection count and a clear handler, and it appears once something is selected.
+Pair a multi-select list with an [`<ActionBar>`](/components/collection/actionbar), rendered as a sibling inside the list's scroll container. The bar is sticky, so it pins itself to the bottom of that container and appears once something is selected.
+
+Drive it with [`useActionBar`](/components/collection/actionbar#useactionbar), which holds the selection, fills in the count and the clear button, and measures the bar. You need that measurement: a `<ListView>` does not know the bar is there, so without it the bar covers the last rows and keyboard navigation parks a focused row underneath it. Reserve its height on the scroll container in both `padding-bottom` and `scroll-padding-bottom`, which is what a [`<Table>`](/components/collection/table) does for you.
 
 <ComponentDemo name="listview-bulk-actions" />
+
+A list short enough not to scroll needs none of that. Render the `<ActionBar>` after it and pass `selectedItemCount` and `onClearSelection` yourself.
 
 One piece of the [Bulk Actions](/patterns/user-input/bulk-actions) pattern is missing here: select-all. That is a checkbox in the collection's header, and a list has no header row to hold one, so a flow where users regularly select every visible record belongs in a [`<Table>`](/components/collection/table). Everything else in the pattern applies to a `<ListView>` unchanged, including bounding the selection to the rows the user can see, clearing it when a filter or a page changes what is visible, and confirming a destructive action with the exact count.
 
