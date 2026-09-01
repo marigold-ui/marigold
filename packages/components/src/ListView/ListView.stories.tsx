@@ -918,6 +918,9 @@ const BulkActionsExample = (args: ListViewProps) => {
 
 export const WithActionBar = meta.story({
   tags: ['component-test'],
+  // Nothing is selected at rest, so the bar is closed and the snapshot would be
+  // `MultipleSelection` with a third row. `ActionBar` guards its own appearance.
+  parameters: { chromatic: { disableSnapshot: true } },
   args: { selectionMode: 'multiple' },
   render: args => <BulkActionsExample {...args} />,
 });
@@ -955,6 +958,8 @@ WithActionBar.test(
 
 export const SelectionWithRowActivation = meta.story({
   tags: ['component-test'],
+  // Pixel-identical to `MultipleSelection`. The gesture switch is behaviour.
+  parameters: { chromatic: { disableSnapshot: true } },
   args: { selectionMode: 'multiple', onAction: fn() },
   render: args => (
     <ListView {...args} aria-label="Venues">
