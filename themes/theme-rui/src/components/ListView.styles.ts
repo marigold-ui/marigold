@@ -16,6 +16,7 @@ export const ListView: ThemeComponent<'ListView'> = {
   item: cva({
     base: [
       'group/option relative grid items-center',
+      // No column gap: it would inset text on a control-less row; `me-3`/`ms-3` carry it.
       "[grid-template-areas:'indicator_label_actions'_'indicator_description_actions'] grid-cols-[auto_minmax(0,1fr)_auto]",
       'px-(--listview-item-px) py-(--spacing-stretch-regular-y)',
       'max-sm:min-h-touch-target',
@@ -23,6 +24,7 @@ export const ListView: ThemeComponent<'ListView'> = {
       'transition-[border,color]',
       'selected:bg-selected',
       'hover:ui-state-hover',
+      // Inline, not `ui-state-focus-item`: `/50` matches SelectList (DST-1590/1662).
       'focus-visible:inset-ring-2 focus-visible:inset-ring-ring/50',
       'not-disabled:data-selection-mode:cursor-pointer',
       'disabled:cursor-not-allowed disabled:text-disabled',

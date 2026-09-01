@@ -9,6 +9,8 @@ interface GridSelectionIndicatorProps {
   isSelected: boolean;
   isDisabled?: boolean;
   className?: string;
+  /** Names the cell in a caller whose grid uses named areas. */
+  gridArea?: string;
 }
 
 const RadioIndicator = ({
@@ -37,6 +39,7 @@ export const GridSelectionIndicator = ({
   isSelected,
   isDisabled,
   className,
+  gridArea,
 }: GridSelectionIndicatorProps) => {
   // Nothing, not an empty wrapper: the cell's own spacing would still apply.
   if (selectionMode === 'none') {
@@ -44,7 +47,7 @@ export const GridSelectionIndicator = ({
   }
 
   return (
-    <div className={className} data-grid-area="indicator">
+    <div className={className} data-grid-area={gridArea}>
       {selectionMode === 'multiple' ? (
         <Checkbox slot="selection" />
       ) : (

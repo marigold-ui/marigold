@@ -63,7 +63,15 @@ const ListViewBase = ({
 }: ListViewProps) => {
   const classNames = useClassNames({ component: 'ListView', variant, size });
 
-  const contextValue = useMemo(() => ({ classNames }), [classNames]);
+  // `useClassNames` returns a fresh object, so memoise on the slot strings.
+  const { list, item, label, description, title, indicator, actions } =
+    classNames;
+  const contextValue = useMemo(
+    () => ({
+      classNames: { list, item, label, description, title, indicator, actions },
+    }),
+    [list, item, label, description, title, indicator, actions]
+  );
 
   return (
     <ListViewContext value={contextValue}>

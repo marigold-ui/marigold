@@ -180,6 +180,7 @@ export const ListViewItem = ({
             isSelected={isSelected}
             isDisabled={isDisabled}
             className={classNames?.indicator}
+            gridArea="indicator"
           />
           <ItemChildren
             row={rowRef}
