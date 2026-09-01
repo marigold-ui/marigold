@@ -8,7 +8,7 @@ feat(DST-889): mark links that open in a new window
 
 A `<Link>` that opens a new window or tab now shows an external-link icon after its label plus a hidden, localized "opens in a new window" warning (WCAG G201). Targets that stay in the current window (`_self`, `_top`, `_parent`, in any casing) are untouched, and so are links that open nothing: `disabled` ones, ones with no `href`, and `download` ones, where the browser saves the file and ignores `target`.
 
-`target="_blank"` also defaults `rel` to `noopener`, which your own `rel` still overrides. A named window gets no default `rel`, because `noopener` makes the browser ignore the window name and open a new tab on every click instead of reusing the window.
+`target="_blank"` also defaults `rel` to `noopener`, which your own `rel` still overrides. A named window gets no default `rel`, because `noopener` makes the browser ignore the window name and open a new tab on every click instead of reusing the window. The cost is that a named window keeps a live `window.opener` handle on your page, which browsers still allow for named targets even though they severed it for `_blank`, so don't point one at an origin you don't control.
 
 **This is automatic and retroactive.** Every existing `target="_blank"` link gains the icon and a longer accessible name, so tests asserting an exact name need updating: `getByRole('link', { name: 'Terms' })` becomes `getByRole('link', { name: 'Terms opens in a new window' })`.
 

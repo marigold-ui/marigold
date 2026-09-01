@@ -79,6 +79,8 @@ The warning says "window", not "tab", because the marker follows the `target` an
 
 With `target="_blank"`, `rel` defaults to `noopener`. Pass your own `rel` to override it. A named window gets no default `rel`, because `noopener` makes the browser ignore the window name and open a new tab on every click instead of reusing the window.
 
+That trade has a security half. Without `noopener`, the document you open keeps a live `window.opener` reference back to your page and can navigate it somewhere else. Browsers have severed that for `_blank` since 2021, but not for named targets. So don't point a named window at an origin you don't control, and use `_blank` unless you genuinely need the window reused.
+
 <ComponentDemo name="link-new-tab" />
 
 If you pass your own `aria-label`, the warning is appended to it, because an `aria-label` replaces a link's content and would otherwise hide the warning. With `aria-labelledby` the warning is referenced by id instead, so it reaches the name either way.
