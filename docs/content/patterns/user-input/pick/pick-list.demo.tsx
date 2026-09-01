@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
-import type { Key, Selection } from '@react-types/shared';
+import type { Key } from '@react-types/shared';
+import type { Selection } from '@marigold/components';
 import {
   Button,
   Description,
@@ -134,7 +135,7 @@ const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
     // Any selection change clears a pending empty-press error.
     setEmptyAttempts(0);
     const visibleIds = new Set<Key>(results.map(person => person.id));
-    const visible = keys === 'all' ? [...visibleIds] : [...keys];
+    const visible = keys === 'all' ? visibleIds : keys;
     setSelected(prev => {
       const offView = [...prev].filter(key => !visibleIds.has(key));
       return new Set<Key>([...offView, ...visible]);

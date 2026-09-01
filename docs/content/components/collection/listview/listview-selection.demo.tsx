@@ -1,5 +1,6 @@
+import { venues } from '@/lib/data/venues';
 import { useState } from 'react';
-import type { Key, Selection } from '@react-types/shared';
+import type { Selection } from '@marigold/components';
 import {
   Button,
   Description,
@@ -9,17 +10,13 @@ import {
   TextValue,
 } from '@marigold/components';
 
-const venues = [
-  { id: 'gasometer', name: 'Gasometer', detail: 'Vienna · 1600 seats' },
-  { id: 'tempodrom', name: 'Tempodrom', detail: 'Berlin · 3800 seats' },
-  { id: 'columbiahalle', name: 'Columbiahalle', detail: 'Berlin · 3500 seats' },
-];
+const options = venues.slice(2, 5);
 
 export default () => {
   // The selection lives here, not in a form. Nothing leaves this component
   // until the button commits it.
-  const [selected, setSelected] = useState<Selection>(() => new Set<Key>());
-  const chosen = venues.find(
+  const [selected, setSelected] = useState<Selection>(() => new Set());
+  const chosen = options.find(
     venue => selected !== 'all' && selected.has(venue.id)
   );
 
@@ -30,16 +27,18 @@ export default () => {
         selectionMode="single" // [!code highlight]
         selectedKeys={selected} // [!code highlight]
         onSelectionChange={setSelected} // [!code highlight]
-        items={venues}
+        items={options}
       >
-        {(venue: (typeof venues)[number]) => (
+        {(venue: (typeof options)[number]) => (
           <ListView.Item textValue={venue.name}>
             <TextValue>{venue.name}</TextValue>
-            <Description>{venue.detail}</Description>
+            <Description>
+              {venue.city} · {venue.capacity} seats
+            </Description>
           </ListView.Item>
         )}
       </ListView>
-      <Inline space={2}>
+      <Inline>
         <Button
           variant="primary"
           disabled={!chosen}

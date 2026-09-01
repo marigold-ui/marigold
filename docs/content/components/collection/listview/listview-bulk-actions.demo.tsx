@@ -1,4 +1,4 @@
-import type { Selection } from '@react-types/shared';
+import type { Selection } from '@marigold/components';
 import {
   ActionBar,
   Button,
@@ -27,7 +27,7 @@ export default () => {
   // clear button are filled in for you.
   const { selectedKeys, onSelectionChange, actionBarHeight, actionBarOverlay } =
     useActionBar({
-      // [!code highlight:1]
+      // [!code highlight]
       actionBar: (keys: Selection) => {
         const count = keys === 'all' ? uploads.length : keys.size;
 
