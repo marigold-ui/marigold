@@ -437,14 +437,16 @@ describe('ListView', () => {
     });
 
     test('keeps the interactive cursor off a disabled row', () => {
-      render(<MultipleSelection.Component />);
+      render(<MultipleSelection.Component disabledKeys={['tempodrom']} />);
 
-      // Gated behind `not-disabled:`, because an ungated
+      const enabled = screen.getByRole('row', { name: /gasometer/i });
+      const disabled = screen.getByRole('row', { name: /tempodrom/i });
+
+      // The pointer is gated behind `not-disabled:`: ungated, a
       // `data-selection-mode:cursor-pointer` outranks `disabled:cursor-not-allowed`
-      // on source order.
-      expect(
-        screen.getByRole('row', { name: /gasometer/i }).className
-      ).toContain('not-disabled:data-selection-mode:cursor-pointer');
+      // on source order and the disabled row still invites a click.
+      expect(getComputedStyle(enabled).cursor).toBe('pointer');
+      expect(getComputedStyle(disabled).cursor).toBe('not-allowed');
     });
   });
 });
