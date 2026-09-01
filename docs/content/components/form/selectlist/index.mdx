@@ -45,14 +45,14 @@ Use `<SelectList>` when comparison is the point of the field, not when it is one
 
 ### `<SelectList>` vs. `<ListView>`
 
-A [`<ListView>`](/components/collection/listview) renders the same stack of rich rows and can select them too, so the two are easy to confuse. One question separates them:
+On screen these two are hard to tell apart: the same stack of rich rows, an indicator on each, a description under the label. What differs is where the selection goes, and one question settles it:
 
 > **Does the selection need to submit with the form?**
 >
 > - **Yes**, it is a field value that submits and validates: `<SelectList>`.
 > - **No**, you read it and commit it yourself: [`<ListView>`](/components/collection/listview).
 
-The reason behind the test is what each component is. A `<SelectList>` is a form field. It carries a label, validation, and a hidden input, so its selection is the field's value and travels with the rest of the form. A `<ListView>` is a collection view. Its selection is view state the consumer owns and commits, and rows may carry their own focusable controls.
+Underneath, one is a form field and the other a collection view. A `<SelectList>` carries a label, validation, and a hidden input, so its selection is the field's value and travels with the rest of the form. A `<ListView>` keeps its selection as state the consumer owns, and its rows can carry their own focusable controls, like a link or a row menu, which a field has no room for.
 
 The case worth catching is a pick that never submits: records staged in a dialog and applied with its confirm button. A `<SelectList>` does work there, and it brings a label, a required marker, and validation wiring that the flow never asked for. Use a `<ListView>` for those, and keep `<SelectList>` for the field.
 
