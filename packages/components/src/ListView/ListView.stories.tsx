@@ -975,6 +975,46 @@ export const SelectionWithRowActivation = meta.story({
 });
 
 SelectionWithRowActivation.test(
+  'Enter opens only while the selection is empty',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onAction: fn() },
+  },
+  async ({ args, canvas, userEvent, step }) => {
+    // The checkbox is the only way into a selection that never fires onAction.
+    // `ArrowLeft` walks focus back out of its cell onto the row itself.
+    await userEvent.click(canvas.getAllByRole('checkbox')[0]);
+    await userEvent.keyboard('{ArrowLeft}{ArrowDown}');
+
+    const tempodrom = canvas.getByRole('row', { name: /tempodrom/i });
+
+    await step('with a selection, Enter neither opens nor marks', async () => {
+      await userEvent.keyboard('{Enter}');
+
+      expect(args.onAction).not.toHaveBeenCalled();
+      expect(tempodrom).toHaveAttribute('aria-selected', 'false');
+    });
+
+    await step('Space marks the focused row instead', async () => {
+      await userEvent.keyboard(' ');
+
+      expect(tempodrom).toHaveAttribute('aria-selected', 'true');
+      expect(args.onAction).not.toHaveBeenCalled();
+    });
+
+    await step(
+      'Escape empties the selection, and Enter opens again',
+      async () => {
+        await userEvent.keyboard('{Escape}');
+        await userEvent.keyboard('{Enter}');
+
+        expect(args.onAction).toHaveBeenCalledTimes(1);
+      }
+    );
+  }
+);
+
+SelectionWithRowActivation.test(
   'a row press opens while nothing is selected, and toggles once something is',
   {
     parameters: { chromatic: { disableSnapshot: true } },
