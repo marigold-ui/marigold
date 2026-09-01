@@ -104,8 +104,8 @@ AccessVariants.test(
     });
     const [admin] = canvas.getAllByRole('link', { name: 'freigeben Admin' });
 
-    expect(master.querySelector('svg')).toBeInTheDocument();
-    expect(admin.querySelector('svg')).toBeInTheDocument();
+    expect(master.querySelector('.access-icon')).toBeInTheDocument();
+    expect(admin.querySelector('.access-icon')).toBeInTheDocument();
   }
 );
 
@@ -136,7 +136,7 @@ NewTab.test(
       name: 'Marigold docs opens in a new window',
     });
 
-    expect(link.querySelector('svg')).toBeInTheDocument();
+    expect(link.querySelector('.new-window-icon')).toBeInTheDocument();
     expect(link).toHaveAttribute('rel', 'noopener');
   }
 );
@@ -148,7 +148,7 @@ NewTab.test(
     // Deriving from `target` must not mark every link in the system.
     const [link] = canvas.getAllByRole('link', { name: 'Same tab' });
 
-    expect(link.querySelector('svg')).not.toBeInTheDocument();
+    expect(link.querySelector('.new-window-icon')).not.toBeInTheDocument();
     expect(link).not.toHaveAttribute('rel');
   }
 );
@@ -161,7 +161,10 @@ NewTab.test(
       name: 'Support console Master opens in a new window',
     });
 
-    expect(link.querySelectorAll('svg')).toHaveLength(2);
+    // Both glyphs by their theme selector: counting `svg` would still pass
+    // if a class went missing, which is the part a theme selects on.
+    expect(link.querySelector('.access-icon')).toBeInTheDocument();
+    expect(link.querySelector('.new-window-icon')).toBeInTheDocument();
   }
 );
 
@@ -192,7 +195,7 @@ NewTab.test(
       name: 'Marigold release notes opens in a new window',
     });
 
-    expect(link.querySelector('svg')).toBeInTheDocument();
+    expect(link.querySelector('.new-window-icon')).toBeInTheDocument();
   }
 );
 
@@ -208,7 +211,8 @@ NewTab.test(
       name: 'Move event Master opens in a new window',
     });
 
-    expect(link.querySelectorAll('svg')).toHaveLength(2);
+    expect(link.querySelector('.access-icon')).toBeInTheDocument();
+    expect(link.querySelector('.new-window-icon')).toBeInTheDocument();
   }
 );
 
@@ -224,7 +228,7 @@ NewTab.test(
       name: 'Marigold docs opens in a new window',
     });
 
-    expect(link.querySelector('svg')).toBeInTheDocument();
+    expect(link.querySelector('.new-window-icon')).toBeInTheDocument();
     expect(link).not.toHaveAttribute('rel');
   }
 );
@@ -238,7 +242,7 @@ NewTab.test(
   async ({ canvas }) => {
     const [link] = canvas.getAllByRole('link', { name: 'Marigold docs' });
 
-    expect(link.querySelector('svg')).not.toBeInTheDocument();
+    expect(link.querySelector('.new-window-icon')).not.toBeInTheDocument();
     expect(link).not.toHaveAttribute('rel');
   }
 );
@@ -253,7 +257,7 @@ NewTab.test(
     // HTML matches target keywords case-insensitively, so `_SELF` stays put.
     const [link] = canvas.getAllByRole('link', { name: 'Marigold docs' });
 
-    expect(link.querySelector('svg')).not.toBeInTheDocument();
+    expect(link.querySelector('.new-window-icon')).not.toBeInTheDocument();
     expect(link).not.toHaveAttribute('rel');
   }
 );
@@ -268,7 +272,7 @@ NewTab.test(
     // `download` overrides `target`, so nothing opens.
     const [link] = canvas.getAllByRole('link', { name: 'Marigold docs' });
 
-    expect(link.querySelector('svg')).not.toBeInTheDocument();
+    expect(link.querySelector('.new-window-icon')).not.toBeInTheDocument();
   }
 );
 
@@ -282,7 +286,7 @@ NewTab.test(
     // A disabled link renders as a `<span>` and cannot open anything.
     const [link] = canvas.getAllByRole('link', { name: 'Marigold docs' });
 
-    expect(link.querySelector('svg')).not.toBeInTheDocument();
+    expect(link.querySelector('.new-window-icon')).not.toBeInTheDocument();
     expect(link).not.toHaveAttribute('rel');
   }
 );

@@ -93,11 +93,12 @@ const _Link = ({
             className={cn('me-[0.25em]', iconPlacement)}
           />
           {typeof children === 'function' ? children(renderProps) : children}
+          {/* `new-window-icon` is this glyph's theme selector, like `access-icon`. */}
           {newWindow ? (
             <ExternalLink
               size={16}
               aria-hidden
-              className={cn('ms-[0.25em]', iconPlacement)}
+              className={cn('new-window-icon', 'ms-[0.25em]', iconPlacement)}
             />
           ) : null}
           {suffix && !foldIntoLabel ? (
