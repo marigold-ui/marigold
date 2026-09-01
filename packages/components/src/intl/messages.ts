@@ -28,7 +28,7 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     loadingMessage: 'Lade...',
     moreInfo: 'Mehr Informationen',
     noResultsFound: 'Kein Ergebnis gefunden',
-    opensInNewWindow: 'öffnet in neuem Fenster',
+    opensInNewWindow: 'wird in einem neuen Fenster geöffnet',
     pageNext: 'Nächste Seite',
     pageOfTotal: vars => `Seite ${vars?.current} von ${vars?.total}`,
     pagePrevious: 'Vorherige Seite',
