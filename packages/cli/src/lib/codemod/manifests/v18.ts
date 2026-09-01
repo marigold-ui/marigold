@@ -112,7 +112,15 @@ export const v18: MigrationManifest = {
       'label',
       'description',
     ],
-    ListView: ['list', 'item', 'label', 'description', 'title', 'actions'],
+    ListView: [
+      'list',
+      'item',
+      'label',
+      'description',
+      'title',
+      'indicator',
+      'actions',
+    ],
     Menu: [
       'container',
       'section',
