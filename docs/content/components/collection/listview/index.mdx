@@ -94,6 +94,8 @@ Leave selection off otherwise, which is the default. A row the user acts on wher
 
 Whichever mode you pick, the selection is yours to keep. Hold it in your own state, read it through `onSelectionChange`, and decide when it commits. It never reaches a surrounding `<form>`, so a choice that has to submit and validate with the rest of the form is a [`<SelectList>`](/components/form/selectlist) instead.
 
+`onSelectionChange` hands you React Aria's `Selection`, which is either a `Set` of keys or the string `'all'`. <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> selects every row of a multi-select list and reports the string, so both shapes reach you even in a list that shows no select-all control. Resolve it to concrete keys in one place before you count or act on it, the way the Bulk Actions pattern [does for a `<Table>`](/patterns/user-input/bulk-actions#resolve-the-selection-to-records-once). Reading `.size` straight off the selection returns `undefined` once it is `'all'`, which surfaces as a wrong number in a confirmation rather than an error.
+
 Rows are marked one at a time. A press adds or removes a single row, and there is no <kbd>Shift</kbd>+click to take a range, in a `<ListView>` or in a [`<Table>`](/components/collection/table). Plan a flow that depends on range selection around that.
 
 #### Selecting and opening a row
@@ -105,7 +107,7 @@ A selectable list can still open its rows. Set `onAction` alongside `selectionMo
 
 <ComponentDemo name="listview-row-activation" />
 
-One list serves browsing and selecting this way, without a mode switch of your own to build. The catch is the second state: while anything is selected there is no way to open a row, and a keyboard user who presses <kbd>Enter</kbd> gets no response of any kind. <kbd>Escape</kbd> clears the selection and opening works again, so keep a clear button within reach rather than leaving that as the only way out.
+One list serves browsing and selecting this way, without a mode switch of your own to build. The catch is the second state: while anything is selected there is no way to open a row, and a keyboard user who presses <kbd>Enter</kbd> gets no response of any kind. <kbd>Escape</kbd> clears the selection and opening works again, so keep a clear button within reach rather than leaving that as the only way out. `disallowEmptySelection` blocks <kbd>Escape</kbd> as well, which strands a keyboard user in this state, so leave it off on a list that sets `onAction`.
 
 #### Bulk actions
 
@@ -117,7 +119,7 @@ Drive it with [`useActionBar`](/components/collection/actionbar#useactionbar), w
 
 A list short enough not to scroll needs none of that. Render the `<ActionBar>` after it and pass `selectedItemCount` and `onClearSelection` yourself.
 
-One piece of the [Bulk Actions](/patterns/user-input/bulk-actions) pattern is missing here: select-all. That is a checkbox in the collection's header, and a list has no header row to hold one, so a flow where users regularly select every visible record belongs in a [`<Table>`](/components/collection/table). Everything else in the pattern applies to a `<ListView>` unchanged, including bounding the selection to the rows the user can see, clearing it when a filter or a page changes what is visible, and confirming a destructive action with the exact count.
+One piece of the [Bulk Actions](/patterns/user-input/bulk-actions) pattern has no control here: select-all. That is a checkbox in the collection's header, and a list has no header row to hold one, so a flow where users regularly select every visible record belongs in a [`<Table>`](/components/collection/table). What is missing is the control, not the capability: <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> still selects every row, which is the other reason to resolve `'all'` rather than assume a `Set`. Everything else in the pattern applies to a `<ListView>` unchanged, including bounding the selection to the rows the user can see, clearing it when a filter or a page changes what is visible, and confirming a destructive action with the exact count.
 
 ### Empty state
 
@@ -161,7 +163,7 @@ That is the real distinction, and a poor decision aid on its own, because most f
 - Give the list an `aria-label`, or `aria-labelledby` when a heading nearby already names it.
 - Set `textValue` on a row whose text isn't a plain string, screen readers use it as the row's accessible name.
 
-In a selectable list, moving focus never changes the selection. <kbd>Space</kbd> selects the focused row and <kbd>Escape</kbd> clears the whole selection, so a user who started selecting by accident has a way out. The row itself announces whether it is selected, which is why the radio circle in single mode stays out of the accessibility tree: it says nothing a screen reader has not already heard.
+In a selectable list, moving focus never changes the selection. <kbd>Space</kbd> selects the focused row, <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> selects every row in multiple mode, and <kbd>Escape</kbd> clears the whole selection, so a user who started selecting by accident has a way out. The row itself announces whether it is selected, which is why the radio circle in single mode stays out of the accessibility tree: it says nothing a screen reader has not already heard.
 
 `<Title>` normally renders a real heading. Inside a row it renders as a `<span>` instead, so a heading-like row doesn't add an entry to the page's heading outline.
 

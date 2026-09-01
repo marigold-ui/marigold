@@ -33,7 +33,7 @@ One rough edge in that second state, measured rather than inferred: <kbd>Enter</
 
 A multi-select list composes with `<ActionBar>` with no new API. The bar carries `sticky bottom-(--actionbar-offset)` in the component, so rendered inside the list's scroll container it pins itself to the bottom. Drive it with the exported `useActionBar` hook, which holds the selection, fills in the count and clear button, and measures the bar so you can reserve its height in `padding-bottom` and `scroll-padding-bottom`.
 
-**Select-all is not included.** The Bulk Actions pattern puts it in a header checkbox and a list has no header row to hold one, so a flow where users select every visible record still wants a `<Table>`. Tracked separately.
+**There is no select-all control.** The Bulk Actions pattern puts it in a header checkbox and a list has no header row to hold one, so a flow where users select every visible record still wants a `<Table>`. Tracked separately. <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> does still select every row, and React Aria exposes no way to turn it off, so handle the `'all'` sentinel even in a list that shows no select-all of its own.
 
 **Internal**
 
