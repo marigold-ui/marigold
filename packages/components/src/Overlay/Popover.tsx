@@ -18,6 +18,18 @@ import { ResetButtonContext } from '../Button/ResetButtonContext';
 //
 // Components typically check viewport width and conditionally render either `<Tray>` or `<Popover>`.
 
+const DEFAULT_CONTAINER_PADDING = 12;
+
+const getContainerPadding = () => {
+  if (typeof document === 'undefined') return DEFAULT_CONTAINER_PADDING;
+
+  const gutter = Math.max(
+    0,
+    Math.ceil(window.innerWidth - document.body.getBoundingClientRect().right)
+  );
+  return DEFAULT_CONTAINER_PADDING + gutter;
+};
+
 // Props
 // ---------------
 export interface PopoverProps extends Omit<
@@ -45,6 +57,7 @@ const PopoverBase = ({
   offset = 0,
   open,
   matchTriggerWidth = true,
+  containerPadding = getContainerPadding(),
   children,
   ref,
   ...rest
@@ -53,6 +66,7 @@ const PopoverBase = ({
     isKeyboardDismissDisabled: keyboardDismissDisabled,
     isOpen: open,
     placement,
+    containerPadding,
     ...rest,
   };
   const classNames = useClassNames({

@@ -1,4 +1,5 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Text } from '../Text/Text';
@@ -44,3 +45,51 @@ export const OpenPopover = meta.story({
     );
   },
 });
+
+// Stands in for a reserved scrollbar gutter; see the decorator below.
+const SIMULATED_GUTTER = 15;
+
+export const AtViewportEdge = meta.story({
+  tags: ['component-test'],
+  parameters: { surface: false },
+  decorators: [
+    Story => {
+      document.body.style.marginRight = `${SIMULATED_GUTTER}px`;
+      useEffect(
+        () => () => {
+          document.body.style.marginRight = '';
+        },
+        []
+      );
+      return (
+        <div id="storybook-root">
+          <Story />
+        </div>
+      );
+    },
+  ],
+  render: () => {
+    const ref = useRef<HTMLDivElement>(null);
+    return (
+      <div className="fixed top-0 right-0">
+        <div ref={ref}>Trigger</div>
+        <Popover data-testid="popover" open triggerRef={ref}>
+          <Text>a popover wide enough to reach past the trigger</Text>
+        </Popover>
+      </div>
+    );
+  },
+});
+
+AtViewportEdge.test(
+  'stays inside the clip box of the body',
+  async ({ canvas }) => {
+    const popover = await canvas.findByTestId('popover');
+
+    // The body is what clips (`overflow-x: clip`), so its right edge — not the
+    // viewport's — is the line the overlay has to stay behind.
+    await expect(popover.getBoundingClientRect().right).toBeLessThanOrEqual(
+      document.body.getBoundingClientRect().right
+    );
+  }
+);
