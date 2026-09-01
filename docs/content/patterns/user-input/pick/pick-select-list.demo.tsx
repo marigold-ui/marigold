@@ -1,16 +1,16 @@
 import { useMemo, useState } from 'react';
-import type { Key } from '@react-types/shared';
+import type { Key, Selection } from '@react-types/shared';
 import {
   Button,
   Description,
   Dialog,
   EmptyState,
   Inline,
+  ListView,
   Panel,
   SearchField,
   SectionMessage,
   Select,
-  SelectList,
   Stack,
   Tag,
   Text,
@@ -127,16 +127,17 @@ const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
     });
   }, [search, team]);
 
-  // SelectList reports the visible selection as a Key[]. Merge it with the
-  // staged keys that are currently filtered out of view, so narrowing the list
-  // by search or team never drops what is already staged.
-  const onChange = (keys: Key[]) => {
+  // ListView reports only the visible selection. Merge it with the staged keys
+  // that are currently filtered out of view, so narrowing the list by search or
+  // team never drops what is already staged.
+  const onSelectionChange = (keys: Selection) => {
     // Any selection change clears a pending empty-press error.
     setEmptyAttempts(0);
     const visibleIds = new Set<Key>(results.map(person => person.id));
+    const visible = keys === 'all' ? [...visibleIds] : [...keys];
     setSelected(prev => {
       const offView = [...prev].filter(key => !visibleIds.has(key));
-      return new Set<Key>([...offView, ...keys]);
+      return new Set<Key>([...offView, ...visible]);
     });
   };
 
@@ -228,17 +229,16 @@ const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
           </Tag.Group>
 
           {/* People are labels with a supporting email, not a grid of columns,
-              so the results collection is a SelectList rather than a Table.
-              Only the collection differs from the venue pick above. The list is
-              its own boxed, scrolling surface, so it is not wrapped in a
-              Scrollable (which would clip its rounded frame); the dialog scrolls
-              instead. */}
-          <SelectList
+              so the results collection is a list rather than a Table. A
+              ListView, not a SelectList: the dialog stages the selection and
+              its own button commits it, so nothing here submits. The dialog
+              scrolls, so the list needs no Scrollable of its own. */}
+          <ListView
             aria-label="People"
             selectionMode="multiple"
             items={results}
             selectedKeys={selected}
-            onChange={onChange}
+            onSelectionChange={onSelectionChange}
             emptyState={
               <EmptyState
                 title="No people match"
@@ -247,12 +247,12 @@ const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
             }
           >
             {(person: Person) => (
-              <SelectList.Option id={person.id} textValue={person.name}>
+              <ListView.Item id={person.id} textValue={person.name}>
                 <TextValue>{person.name}</TextValue>
                 <Description>{person.email}</Description>
-              </SelectList.Option>
+              </ListView.Item>
             )}
-          </SelectList>
+          </ListView>
         </Stack>
       </Dialog.Content>
       <Dialog.Actions>

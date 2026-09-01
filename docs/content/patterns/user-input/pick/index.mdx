@@ -131,7 +131,9 @@ A maximum is the most the user may pick. Show the limit before they reach it. On
 
 ### List or table
 
-Not every pick needs a table. When you choose a record by its name, with at most a supporting line and no grid of comparable detail to scan across rows, a [`<SelectList>`](/components/form/selectlist) is the lighter collection: a multi-select list, checked to stage and committed the same way. An option can still carry a little more than a bare label, such as a name over an email, and it stays a list. Reach for a [`<Table>`](/components/collection/table) only once the records carry several attributes worth comparing side by side.
+Not every pick needs a table. When you choose a record by its name, with at most a supporting line and no grid of comparable detail to scan across rows, a list is the lighter collection: checked to stage, committed the same way. A row can still carry a little more than a bare label, such as a name over an email, and it stays a list. Reach for a [`<Table>`](/components/collection/table) only once the records carry several attributes worth comparing side by side.
+
+Which list depends on the surface. A pick staged in a dialog and applied with its confirm button is a [`<ListView>`](/components/collection/listview), because the selection is yours to hold and nothing submits. A pick that sits on the page as a labelled field, naming itself on screen or explaining a rule like "choose at least one", is a [`<SelectList>`](/components/form/selectlist), the one that renders a label, helper text, and validation messages. The Abonnement pick under [Choose the surface by collection size](#choose-the-surface-by-collection-size) is the second kind, which is why it stays a field.
 
 <ComponentDemo name="pick-select-list" background="page" />
 
