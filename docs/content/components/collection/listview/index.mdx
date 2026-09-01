@@ -130,6 +130,8 @@ On screen these two are hard to tell apart: the same stack of rich rows, an indi
 > - **Yes**, it is a field value that submits and validates: [`<SelectList>`](/components/form/selectlist).
 > - **No**, you read it and commit it yourself: `<ListView>`.
 
+One exception runs the other way. A pick that never submits but still needs a visible label, helper text, or a validation message wants a `<SelectList>` anyway, because a `<ListView>` renders none of those. It takes an `aria-label` and nothing else, so a list that has to name itself on screen or explain a rule like "choose at least one" is a field whether or not a `<form>` is involved.
+
 Underneath, one is a form field and the other a collection view. A `<SelectList>` carries a label, validation, and a hidden input, so its selection is the field's value and travels with the rest of the form. A `<ListView>` keeps its selection as state you own, and its rows can carry their own focusable controls, like a link or a row menu, which a field has no room for.
 
 That is the real distinction, and a poor decision aid on its own, because most flows can be described either way. Start from the question.
