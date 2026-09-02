@@ -4,10 +4,12 @@ import type { Key } from '@react-types/shared';
 
 export class ListBoxLayout extends ListLayout<unknown> {
   updateItemSize(key: Key, size: Size): boolean {
-    const width = this.virtualizer?.size.width;
+    const width = this.virtualizer?.size.width ?? 0;
 
-    if (width == null || !Number.isFinite(width) || width <= 0) {
+    if (!Number.isFinite(width) || width <= 0) {
       const layoutInfo = this.layoutNodes.get(key)?.layoutInfo;
+      // Clear the flag so `useVirtualizerItem` stops re-measuring — and reflowing — every render.
+      // `update()` re-flags the row estimated once the width changes, so it is still measured properly.
       if (layoutInfo) {
         layoutInfo.estimatedSize = false;
       }

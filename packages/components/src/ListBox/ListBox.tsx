@@ -6,8 +6,8 @@ import type { ListLayoutOptions } from 'react-aria-components/Virtualizer';
 import { cn, useClassNames } from '@marigold/system';
 import { ListBoxContext } from './Context';
 import { ListBoxItem } from './ListBoxItem';
+import { ListBoxLayout } from './ListBoxLayout';
 import { Section } from './ListBoxSection';
-import { ListBoxLayout } from './listLayout';
 
 export interface ListBoxProps extends Omit<
   RAC.ListBoxProps<object>,
