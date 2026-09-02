@@ -88,11 +88,21 @@ Fields that are required but carry a default can be omitted from the payload. Ji
 
 ### 6. Search for an existing ticket
 
-One JQL pass on the distinctive nouns of the scope:
+Build the query from the most specific terms the scope actually contains, preferring:
+
+1. **Proper nouns** — a component (`Checkbox`, `Popover`), a file or utility (`GridSelectionIndicator`), a skill (`create-ticket`). DST summaries are written around these, so they match well.
+2. **A compound term the scope keeps repeating**, when there is no proper noun.
+
+OR up to three of them together:
 
 ```
-project = DST AND statusCategory != Done AND summary ~ "<distinctive noun>"
+project = DST AND statusCategory != Done
+  AND (summary ~ "Checkbox" OR summary ~ "Radio")
 ```
+
+Never search on generic words alone. `padding`, `spacing`, `style`, `layout`, `fix`, `update` and `component` each match hundreds of DST tickets and tell you nothing.
+
+**If no usable term exists, say so instead of running a weak query.** The gate then reads "no distinctive term to search on" rather than a confident "none found". An empty result from a bad query and an empty result from a good one look identical, and only one of them means anything.
 
 Carry any hits into the gate as context, with key, title, and status. **This never blocks.** Summary matching is noisy, and a false positive must not stand between someone and a legitimate ticket.
 
@@ -107,10 +117,10 @@ Epic      DST-1520 (or none)
 Labels    ai-workflow (or none)
 Appetite  3 days
 Sprint    backlog
-Links     blocks DST-1523
+Links     3 Blocks → DST-1523
 
 Description
-<the full rendered Problem / Expected Outcome / Scope / Suggested Solution / References>
+<the full rendered description, on the chosen type's template from step 4>
 
 Possible duplicates (not blocking)
 DST-1522  ✨ /create-ticket skill — In Arbeit
@@ -120,7 +130,7 @@ Use `AskUserQuestion` with options:
 
 - **Create** — proceed to step 8, backlog placement
 - **Create and add to the active sprint** — proceed to step 8, then place it
-- **Edit** — take the requested change, re-render the ticket, ask again
+- **Edit** — say what to change. `AskUserQuestion` always offers a free-text answer, so the change can arrive with the choice instead of costing another round trip. Apply it, re-render, ask again
 - **Cancel** — nothing happens
 
 Do **not** create without an explicit confirm. The confirmation belongs to **this** rendered ticket: an earlier "go ahead", the invocation itself, or approval of some other step is not consent to file an issue.
@@ -164,7 +174,7 @@ Then read the issue back with `getJiraIssue` and report its URL, its type, and a
 
 ## Edge cases
 
-**No Atlassian MCP at all.** Stop after step 7 and hand the user the rendered ticket as markdown to paste. Do not pretend the create happened.
+**The Atlassian MCP is unreachable.** Say so at the first call that fails, and stop there rather than carrying on to the gate. Without step 4 the payload cannot be built, and without step 6 the gate's duplicate line would read as a confident "none found" that was never checked. Hand over the brief and a draft title as markdown to paste into Jira by hand, and say plainly which checks did not run. Do not pretend the create happened.
 
 **The brief is a bug someone already filed.** The step-6 search surfaces it. Prefer commenting on the existing ticket over creating a second one, but that is the user's call, not the skill's.
 
@@ -174,6 +184,6 @@ Then read the issue back with `getJiraIssue` and report its URL, its type, and a
 
 ## Notes
 
-- The confirmation gate is step 7 rather than step 1, unlike the other side-effecting skill in this repo. Its entire value is showing a ticket that steps 1 to 6 produce. The rule it is honouring, that nothing goes outward before a human confirms, still holds.
+- The confirmation gate is step 7, not step 1. `.claude/README.md` asks a side-effecting skill to confirm first, and the letter of that is not met here: the gate's whole value is showing a ticket that steps 1 to 6 produce. `create-pr` sits the same way, at step 6 of 8. What the rule protects, that nothing goes outward before a human confirms, holds in both.
 - `.claude/` is not a published package, so changes here need no changeset.
 - Producing the ticket is the job. Deciding it is worth doing is not, and neither is starting it. That is `/pick-up`.
