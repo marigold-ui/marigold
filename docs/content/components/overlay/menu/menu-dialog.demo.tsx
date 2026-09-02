@@ -21,41 +21,47 @@ export default () => {
       </Menu>
 
       {/* Collect input before acting */}
-      <Dialog.Trigger open={renameOpen} onOpenChange={setRenameOpen}>
-        <Dialog size="xsmall" closeButton>
-          <Dialog.Title>Rename document</Dialog.Title>
-          <Dialog.Content>
-            <TextField label="Name" defaultValue="Untitled" />
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button variant="secondary" slot="close">
-              Cancel
-            </Button>
-            <Button variant="primary" slot="close">
-              Save
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Dialog.Trigger>
+      <Dialog
+        open={renameOpen}
+        onOpenChange={setRenameOpen}
+        size="xsmall"
+        closeButton
+      >
+        <Dialog.Title>Rename document</Dialog.Title>
+        <Dialog.Content>
+          <TextField label="Name" defaultValue="Untitled" />
+        </Dialog.Content>
+        <Dialog.Actions>
+          <Button variant="secondary" slot="close">
+            Cancel
+          </Button>
+          <Button variant="primary" slot="close">
+            Save
+          </Button>
+        </Dialog.Actions>
+      </Dialog>
 
       {/* Confirm a destructive action */}
-      <Dialog.Trigger open={deleteOpen} onOpenChange={setDeleteOpen}>
-        <Dialog role="alertdialog" closeButton>
-          <Dialog.Title>Delete document</Dialog.Title>
-          <Dialog.Content>
-            Are you sure you want to delete this document? This action cannot be
-            undone.
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button variant="secondary" slot="close">
-              Cancel
-            </Button>
-            <Button variant="destructive" slot="close">
-              Delete
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Dialog.Trigger>
+      <Dialog
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+        role="alertdialog"
+        closeButton
+      >
+        <Dialog.Title>Delete document</Dialog.Title>
+        <Dialog.Content>
+          Are you sure you want to delete this document? This action cannot be
+          undone.
+        </Dialog.Content>
+        <Dialog.Actions>
+          <Button variant="secondary" slot="close">
+            Cancel
+          </Button>
+          <Button variant="destructive" slot="close">
+            Delete
+          </Button>
+        </Dialog.Actions>
+      </Dialog>
     </>
   );
 };

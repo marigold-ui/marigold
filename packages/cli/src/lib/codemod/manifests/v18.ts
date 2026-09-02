@@ -149,6 +149,15 @@ export const v18: MigrationManifest = {
     ProgressCircle: ['container', 'loader', 'label'],
     Radio: ['container', 'label', 'radio', 'group'],
     Slider: ['container', 'track', 'thumb', 'output', 'selectedTrack'],
+    Stepper: [
+      'container',
+      'item',
+      'link',
+      'marker',
+      'label',
+      'connector',
+      'count',
+    ],
     Select: ['select', 'icon'],
     SelectList: [
       'container',
