@@ -135,7 +135,7 @@ The foundational layer: page background and text hierarchy.
   `secondary`, `secondary-bold` and `placeholder` are standalone text colors.
   They do not have a paired background token. `secondary` is the industry
   standard name for this role (Carbon, Material Design, Atlassian all use
-  "secondary" for secondary text); `secondary-bold` follows the system's `-bold`
+  "secondary" for secondary text). `secondary-bold` follows the system's `-bold`
   emphasis modifier (cf. `selected`/`selected-bold`) for text that sits between
   `secondary` and `foreground`.
 </Callout>
@@ -251,7 +251,7 @@ Some controls have no border to define them. The switch track is the clearest ex
 
 Exactly three components use it, and all three are tracks: the Switch groove, the SegmentedControl track, and the Slider rail.
 
-`control` is **translucent**, for the same reason the edge tokens are. A track is not painted on one known background — it appears on a white Card, on the gray page ground, on a `muted` fill, and inside a hovered Table or ListBox row. A fixed palette step drifts across those: charcoal-300 measured 1.53:1 on white but only 1.21:1 inside a hovered row, where the groove half-dissolved into the row it sits in. At 16% the four grounds land within 0.02 of each other, so a track weighs the same wherever you put it.
+`control` is **translucent**, for the same reason the edge tokens are. A track is not painted on one known background. It appears on a white Card, on the gray page ground, on a `muted` fill, and inside a hovered Table or ListBox row. A fixed palette step drifts across those: charcoal-300 measured 1.53:1 on white but only 1.21:1 inside a hovered row, where the groove half-dissolved into the row it sits in. At 16% the four grounds land within 0.02 of each other, so a track weighs the same wherever you put it.
 
 <TokenTable
   tokens={[
@@ -288,7 +288,7 @@ Exactly three components use it, and all three are tracks: the Switch groove, th
 
 <Callout title="Never paint it twice">
   Because the fill is translucent, two stacked elements that both carry
-  `bg-control` composite into a darker track than the token specifies — 16% over
+  `bg-control` composite into a darker track than the token specifies: 16% over
   16% renders as 29%. This is a real bug we shipped: the Slider applied its
   track style to both the `SliderTrack` and an inner rail `div` at identical
   geometry, so the rail rendered visibly darker than the Switch groove beside
@@ -311,7 +311,7 @@ Exactly three components use it, and all three are tracks: the Switch groove, th
     <DontDescription>
       Don't use `bg-control` for bordered form controls like text inputs,
       selects, or textareas. Those should use `bg-surface` with the `ui-control`
-      ring. And don't stack it on two overlapping elements — a translucent fill
+      ring. And don't stack it on two overlapping elements. A translucent fill
       painted twice composites darker.
     </DontDescription>
   </Dont>
@@ -424,7 +424,7 @@ Selection tells users which item has already been chosen. Not every selection lo
 
 Focus highlight marks the item the user is currently navigating to via keyboard. Unlike selection, which shows a confirmed choice, focus indicates where the user's cursor is right now. Two intensities handle different contexts: a subtle tint for menu items and drop zones, and a bolder fill for inline segments like date fields where the focused part needs to stand out clearly.
 
-A focus highlight is not a focus indicator on its own. `focus-highlight` composites to around 1.05:1 against the surface it tints, well under the 3:1 that [WCAG 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) asks of a state indicator, and in a menu the same tint fires on hover because focus follows the mouse. Pair it with a focus ring — `ui-state-focus` where there is a border to recolor, `ui-state-focus-item` on borderless rows — and let the tint track the cursor while the ring proves where keyboard focus is.
+A focus highlight is not a focus indicator on its own. `focus-highlight` composites to around 1.05:1 against the surface it tints, well under the 3:1 that [WCAG 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) asks of a state indicator, and in a menu the same tint fires on hover because focus follows the mouse. Pair it with a focus ring: `ui-state-focus` where there is a border to recolor, `ui-state-focus-item` on borderless rows, and let the tint track the cursor while the ring proves where keyboard focus is.
 
 <TokenTable
   tokens={[
@@ -460,7 +460,7 @@ A focus highlight is not a focus indicator on its own. `focus-highlight` composi
   <Dont>
     <DontDescription>
       Don't let a focus highlight be the only focus indicator. On its own it
-      lands around 1.05:1 and, in a menu, it also fires on hover — add
+      lands around 1.05:1 and, in a menu, it also fires on hover. Add
       `ui-state-focus` or `ui-state-focus-item` alongside it.
     </DontDescription>
   </Dont>
@@ -808,7 +808,7 @@ Domain-specific tokens for Reservix access level indicators. Follows the same st
   ]}
 />
 
-The `master`/`admin` variants of `Badge`, `Link`, and `Menu.Item` mark access-restricted content with an icon (lock = master, key = admin, derived from the [lucide](https://lucide.dev) icons `lock-keyhole` and `key`) colored with the matching access foreground token. The icon is purely decorative; on links and menu items the access level is exposed to assistive technology through a visually hidden text label. See the [Admin- and Mastermark pattern](/patterns/layout/admin-master-mark) for when and how to apply the variants.
+The `master`/`admin` variants of `Badge`, `Link`, and `Menu.Item` mark access-restricted content with an icon (lock = master, key = admin, derived from the [lucide](https://lucide.dev) icons `lock-keyhole` and `key`) colored with the matching access foreground token. The icon is purely decorative. On links and menu items the access level is exposed to assistive technology through a visually hidden text label. See the [Admin- and Mastermark pattern](/patterns/layout/admin-master-mark) for when and how to apply the variants.
 
 ### Links
 
