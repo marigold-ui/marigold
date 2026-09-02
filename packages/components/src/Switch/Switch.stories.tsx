@@ -306,9 +306,6 @@ WithDescription.test(
   }
 );
 
-// DST-1607. Switch carried the mirror of the Checkbox bug: `items-center` on the
-// container, which is right for one line and wrong for every other -- so both
-// stories below are snapshotted.
 export const WithBadge = meta.story({
   tags: ['component-test'],
   args: {
@@ -322,8 +319,6 @@ WithBadge.test(
   { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, step }) => {
     const track = getTrack(await canvas.findByRole('switch'));
-    // `getByText` matches on an element's own text nodes, so this is the label
-    // block itself and not the badge nested inside it.
     const labelBlock = canvas.getByText('Enable early bird pricing');
 
     await step('the badge fits the line', async () => {
@@ -342,9 +337,6 @@ WithBadge.test(
   }
 );
 
-// `settings` puts the label in the first column, which is the wide one -- so it
-// is the variant that actually wraps in practice, and the one where the old
-// `items-center` dropped the track to the middle of the block.
 export const LongMultilineLabel = meta.story({
   tags: ['component-test'],
   args: {
@@ -367,8 +359,6 @@ LongMultilineLabel.test(
     const track = getTrack(await canvas.findByRole('switch'));
     const labelBlock = canvas.getByText(/Notify the organiser/);
 
-    // Guards the guard: a track centred on a one-line block passes the
-    // assertion below whether or not first-line anchoring works.
     expect(isSingleLine(labelBlock)).toBe(false);
 
     expect(firstLineOffset(track, labelBlock)).toBeLessThanOrEqual(0.5);

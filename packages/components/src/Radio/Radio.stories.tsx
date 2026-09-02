@@ -180,19 +180,12 @@ export const WithOwnWidth = meta.story({
   ),
 });
 
-// DST-1607, on the Radio side: a decoration that outgrows the label's line box
-// inflates it and leaves the dot above the text it belongs to.
 export const WithBadge = meta.story({
   tags: ['component-test'],
   render: args => (
     <Radio.Group {...args} defaultValue="standard">
       <Radio value="standard">Standard admission</Radio>
-      <Radio
-        value="early-bird"
-        // No `size="inline"` here on purpose: the `badge` slot sizes a
-        // `<Badge>` through context, so consumers don't have to remember it.
-        badge={<Badge variant="master">Master</Badge>}
-      >
+      <Radio value="early-bird" badge={<Badge variant="master">Master</Badge>}>
         Early bird pricing
       </Radio>
     </Radio.Group>
@@ -205,8 +198,6 @@ WithBadge.test(
   async ({ canvas, step }) => {
     const radio = await canvas.findByRole('radio', { name: /Early bird/ });
     const dot = controlIcon(radio);
-    // `getByText` matches on an element's own text nodes, so this is the label
-    // block itself and not the badge nested inside it.
     const labelBlock = canvas.getByText('Early bird pricing');
 
     await step('the badge fits the line', async () => {
@@ -250,8 +241,6 @@ LongMultilineLabel.test(
     const dot = controlIcon(radio);
     const labelBlock = canvas.getByText(/Notify me about every registration/);
 
-    // Guards the guard: a dot centred on a one-line block passes the assertion
-    // below whether or not first-line anchoring works.
     expect(isSingleLine(labelBlock)).toBe(false);
 
     expect(firstLineOffset(dot, labelBlock)).toBeLessThanOrEqual(0.5);

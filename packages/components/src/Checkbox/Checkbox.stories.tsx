@@ -274,8 +274,6 @@ export const WithBadge = meta.story({
   tags: ['component-test'],
   args: {
     label: 'Enable early bird pricing',
-    // No `size="inline"` here on purpose: the `badge` slot sizes a `<Badge>`
-    // through context, so consumers don't have to remember it.
     badge: <Badge variant="master">Master</Badge>,
     description: undefined,
   },
@@ -287,8 +285,6 @@ WithBadge.test(
   async ({ canvas, step }) => {
     const checkbox = await canvas.findByRole('checkbox');
     const box = controlIcon(checkbox);
-    // `getByText` matches on an element's own text nodes, so this is the label
-    // block itself and not the badge nested inside it.
     const labelBlock = canvas.getByText('Enable early bird pricing');
 
     await step('the badge fits the line', async () => {
@@ -307,8 +303,6 @@ WithBadge.test(
   }
 );
 
-// The other half of DST-1607: `items-center` would fix the badge above and
-// break this one, floating the box to the middle of the block.
 export const LongMultilineLabel = meta.story({
   tags: ['component-test'],
   args: {
@@ -331,18 +325,12 @@ LongMultilineLabel.test(
     const box = controlIcon(checkbox);
     const labelBlock = canvas.getByText(/Send a reminder email/);
 
-    // Guards the guard: at full width this label does not wrap, and a box
-    // centred on a one-line block passes the assertion below for free.
     expect(isSingleLine(labelBlock)).toBe(false);
 
     expect(firstLineOffset(box, labelBlock)).toBeLessThanOrEqual(0.5);
   }
 );
 
-// The case `badge` exists for — an adornment on a label that also wraps — was
-// otherwise untested: `WithBadge` covers the adornment on one line,
-// `LongMultilineLabel` covers wrapping with no adornment, but never both at
-// once.
 export const WrappingLabelWithBadge = meta.story({
   tags: ['component-test'],
   args: {
@@ -447,8 +435,6 @@ WithError.test(
   }
 );
 
-// Without a containing block on the label, React Aria's absolute input stops
-// travelling with the row and focusing it scrolls the wrong ancestor.
 Basic.test(
   'Hidden input travels with the control inside a scroll container',
   {

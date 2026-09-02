@@ -65,9 +65,6 @@ export const Form = meta.story({
   render: () => (
     <div className="max-w-md">
       <Stack space={8}>
-        {/* A non-boolean field has no `badge` slot, so the mark goes in the
-            label and sets its own `size="inline"`. Without it the badge is
-            taller than the label's line and pushes the input down. */}
         <TextField
           label={
             <>
