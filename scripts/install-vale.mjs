@@ -18,7 +18,7 @@
  */
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
 const VERSION = '3.19.0';
@@ -35,34 +35,30 @@ const ASSETS = {
   'linux-x64': `vale_${VERSION}_Linux_64-bit.tar.gz`,
 };
 
-const alreadyInstalled = () => {
-  if (!existsSync(BIN)) return false;
+/** null when the binary is missing, truncated (ENOEXEC) or not executable (EACCES). */
+const valeVersion = () => {
   try {
-    return execFileSync(BIN, ['--version'], { encoding: 'utf8' }).includes(
-      VERSION
-    );
+    return execFileSync(BIN, ['--version'], { encoding: 'utf8' }).trim();
   } catch {
-    return false;
+    return null;
   }
 };
 
-const fetchOrDie = async (url, what) => {
+const fetchOrDie = async url => {
   const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`Could not download ${what}: ${response.status} ${url}`);
-  }
+  if (!response.ok)
+    throw new Error(`Could not download ${url}: ${response.status}`);
   return response;
 };
 
 /** The release publishes one checksums file for every asset; find our line in it. */
 const expectedSha = async asset => {
-  const list = await (
-    await fetchOrDie(
-      `${REPO}/v${VERSION}/vale_${VERSION}_checksums.txt`,
-      'checksums'
-    )
-  ).text();
-  const line = list.split('\n').find(l => l.trim().endsWith(asset));
+  const res = await fetchOrDie(
+    `${REPO}/v${VERSION}/vale_${VERSION}_checksums.txt`
+  );
+  const line = (await res.text())
+    .split('\n')
+    .find(l => l.trim().endsWith(asset));
   if (!line) throw new Error(`No checksum published for ${asset}`);
   return line.trim().split(/\s+/)[0];
 };
@@ -79,11 +75,11 @@ const main = async () => {
     return;
   }
 
-  if (alreadyInstalled()) return;
+  if (valeVersion()?.includes(VERSION)) return;
 
   console.log(`[vale] downloading ${VERSION} for ${key}`);
   const [tarball, sha] = await Promise.all([
-    fetchOrDie(`${REPO}/v${VERSION}/${asset}`, asset).then(r => r.bytes()),
+    fetchOrDie(`${REPO}/v${VERSION}/${asset}`).then(r => r.bytes()),
     expectedSha(asset),
   ]);
 
@@ -101,9 +97,7 @@ const main = async () => {
   execFileSync('tar', ['xzf', archive, '-C', BIN_DIR, 'vale']);
   rmSync(archive);
 
-  console.log(
-    `[vale] ${execFileSync(BIN, ['--version'], { encoding: 'utf8' }).trim()}`
-  );
+  console.log(`[vale] ${valeVersion()}`);
 };
 
 await main();

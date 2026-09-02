@@ -1,5 +1,14 @@
+# Prose punctuation, enforced. See the "Prose Style" section in CLAUDE.md for scope.
+#
+# The token matches the *aside* form only, not the character. German uses a spaced en dash
+# where English uses an em dash, which is the slip this rule exists to catch. A range is
+# left alone because it reads as digits or a capital around the dash (`4–9`,
+# `Jan 1, 2025 – Dec 31, 2025`, `Reservix – Marigold`), while an aside runs letter to
+# lowercase letter. Quoted component output depends on this: `Intl.DateTimeFormat`
+# genuinely emits a spaced U+2013, so those doc lines are accurate and must not be
+# "fixed" (the same call #5496 made by hand).
 extends: existence
-message: 'Use a comma, a colon, or a second sentence instead of an en dash aside. German uses a spaced en dash where English uses an em dash; ranges like `4–9` or `Jan 1 – Dec 31` are fine.'
+message: 'Use a comma, a colon, or a second sentence instead of an en dash aside. German uses a spaced en dash where English uses an em dash. Ranges like `4–9` or `Jan 1 – Dec 31` are fine.'
 level: error
 nonword: true
 scope:

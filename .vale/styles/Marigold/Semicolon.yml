@@ -9,5 +9,6 @@ nonword: true
 scope:
   - paragraph
   - list
+  - heading
 tokens:
   - ';'

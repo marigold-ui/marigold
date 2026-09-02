@@ -88,8 +88,7 @@
     "typecheck:docs": "pnpm --filter @marigold/docs types:check",
     "changeset": "changeset",
     "release:notification": "zx scripts/create-slack-notification.mjs",
-    "prepare": "husky install",
-    "postinstall": "node scripts/install-vale.mjs"
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@storybook/addon-mcp": "^0.6.0",
