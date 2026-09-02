@@ -5,25 +5,29 @@ import {
 } from './containerPadding';
 
 /**
- * Stand in for the two numbers react-aria compares. A reserved scrollbar gutter
- * cannot be produced in a headless browser (they use overlay scrollbars), and
- * `documentElement.clientWidth` reports the viewport rather than the element's
- * own box, so neither value can be moved with CSS.
+ * The box that clips, measured the way the browser defines it rather than the
+ * way the implementation happens to. Test browsers use overlay scrollbars, so
+ * `scrollbar-gutter: stable` reserves nothing and the gutter itself cannot be
+ * reproduced here — what these tests pin down is the arithmetic on top of it,
+ * and that page-level margins leave it alone. The gutter case is verified by
+ * hand in a headed Chrome; see the table in `containerPadding.ts`.
  */
-const stubViewport = ({ visual, clip }: { visual: number; clip: number }) => {
-  Object.defineProperty(window, 'visualViewport', {
-    value: { width: visual },
-    configurable: true,
-  });
-  Object.defineProperty(window, 'innerWidth', {
-    value: visual,
-    configurable: true,
-  });
-  Object.defineProperty(document.documentElement, 'clientWidth', {
-    value: clip,
-    configurable: true,
-  });
+const clipWidth = () => {
+  const probe = document.createElement('div');
+  probe.style.cssText = 'position:fixed;left:0;right:0;height:0';
+  document.body.appendChild(probe);
+  const { width } = probe.getBoundingClientRect();
+  probe.remove();
+
+  return width;
 };
+
+/** Stand in for react-aria's boundary, the one number it reads. */
+const stubVisualViewport = (width: number) =>
+  Object.defineProperty(window, 'visualViewport', {
+    value: { width },
+    configurable: true,
+  });
 
 afterEach(() => {
   // Own properties shadowing the native accessors; deleting restores them.
@@ -31,46 +35,76 @@ afterEach(() => {
   delete window.visualViewport;
   // @ts-expect-error -- not optional on the real Window
   delete window.innerWidth;
-  // @ts-expect-error -- not optional on the real Element
-  delete document.documentElement.clientWidth;
+  document.documentElement.style.marginRight = '';
+  document.body.style.marginRight = '';
 });
 
 test('measures nothing when react-aria already sees the box that clips', () => {
-  stubViewport({ visual: 1280, clip: 1280 });
+  stubVisualViewport(clipWidth());
 
   expect(measureViewportOvershoot()).toBe(0);
 });
 
-test('measures the gutter react-aria counts but the clip box does not', () => {
-  stubViewport({ visual: 1280, clip: 1265 });
+test('measures how far react-aria overshoots the box that clips', () => {
+  stubVisualViewport(clipWidth() + 15);
 
   expect(measureViewportOvershoot()).toBe(15);
 });
 
-test('rounds a fractional gutter up, so nothing is left sticking out', () => {
-  stubViewport({ visual: 1280, clip: 1276.58 });
+test('rounds a fractional overshoot up, so nothing is left sticking out', () => {
+  stubVisualViewport(clipWidth() + 3.42);
 
   expect(measureViewportOvershoot()).toBe(4);
 });
 
 test('never subtracts, so a wider clip box cannot pull the boundary outward', () => {
-  stubViewport({ visual: 1280, clip: 1300 });
+  stubVisualViewport(clipWidth() - 20);
 
   expect(measureViewportOvershoot()).toBe(0);
 });
 
-// The measurement is cached against `window.innerWidth`, so the cases below use
-// a distinct width each to make sure they measure rather than read a hit.
+// The clip propagates from the body to the viewport, so neither the body's box
+// nor the root's is what clips — a child renders past both, out to the viewport
+// edge. Measuring either one would fold the margin into the padding for good.
+test('ignores a body margin, which clips nothing', () => {
+  const before = clipWidth();
+  document.body.style.marginRight = '100px';
+  stubVisualViewport(before);
+
+  expect(measureViewportOvershoot()).toBe(0);
+});
+
+test('ignores a margin on the root element, which clips nothing either', () => {
+  const before = clipWidth();
+  document.documentElement.style.marginRight = '50px';
+  stubVisualViewport(before);
+
+  expect(measureViewportOvershoot()).toBe(0);
+});
+
 test('adds the overshoot to the default padding', () => {
-  stubViewport({ visual: 1440, clip: 1425 });
+  stubVisualViewport(clipWidth() + 15);
+  Object.defineProperty(window, 'innerWidth', {
+    value: 1441,
+    configurable: true,
+  });
 
   expect(getContainerPadding()).toBe(DEFAULT_CONTAINER_PADDING + 15);
 });
 
 test('re-measures when the window width changes', () => {
-  stubViewport({ visual: 1024, clip: 1024 });
+  const clip = clipWidth();
+  stubVisualViewport(clip);
+  Object.defineProperty(window, 'innerWidth', {
+    value: 1442,
+    configurable: true,
+  });
   expect(getContainerPadding()).toBe(DEFAULT_CONTAINER_PADDING);
 
-  stubViewport({ visual: 900, clip: 885 });
+  stubVisualViewport(clip + 15);
+  Object.defineProperty(window, 'innerWidth', {
+    value: 1443,
+    configurable: true,
+  });
   expect(getContainerPadding()).toBe(DEFAULT_CONTAINER_PADDING + 15);
 });

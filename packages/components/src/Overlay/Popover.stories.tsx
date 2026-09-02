@@ -59,8 +59,11 @@ export const OpenPopover = meta.story({
 const CONTAINER_PADDING = 100;
 
 export const AtViewportEdge = meta.story({
-  tags: ['component-test'],
-  parameters: { surface: false },
+  // The meta hides this file from Storybook (`!dev`) because the other two
+  // stories are bare test fixtures. This one shows the geometry the fix is
+  // about, so it opts back in and is worth a Chromatic snapshot of its own.
+  tags: ['component-test', 'dev'],
+  parameters: { surface: false, chromatic: { disableSnapshot: false } },
   decorators: [
     // The preview portals overlays into `#storybook-root`, which the test
     // runner's canvas does not carry.
