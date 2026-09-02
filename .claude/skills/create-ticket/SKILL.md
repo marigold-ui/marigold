@@ -32,13 +32,19 @@ Take the first of these that is present:
 
 ### 2. Gate on completeness
 
-Three checks, all against the brief:
+**Run this before any investigation.** Reading the repo first and arriving here with the gaps already filled is the exact failure this step exists to prevent, and it is easy to talk yourself into.
+
+Three checks, against the brief as it arrived:
 
 - the problem is stated, not just the desired change
 - the outcome is checkable by someone who was not in the conversation
 - the scope names at least one thing that is explicitly **not** included
 
-If any fails, stop. Say which one failed and route the user to `/grill`. Do not fill the gap with your own assumptions, because a ticket that reads as complete while resting on invented requirements is worse than an obviously thin one.
+If any fails, stop and say which. **Do not draft the ticket.** Route the user to `/grill` and wait for a scoped brief to come back.
+
+**Reading the code is not a way past this gate.** It can evidence a problem someone has already stated, which is what `/grill` does too. It cannot supply the other two checks. What counts as done, and what is deliberately left out, are the user's calls, and nothing in the repo contains them. A ticket that reads as complete while resting on exclusions the agent invented is worse than an obviously thin one, because nobody can see which parts were decided and which were filled in.
+
+This has already gone wrong once. A one-line brief, "align the checkbox and radio styles", was answered by reading the two style files, manufacturing an outcome and a Not-included list from them, and carrying on to the confirm gate. The problem statement was sound and the code did supply it. The exclusions were never the agent's to make.
 
 Appetite is handled separately in step 5, since it is collectable rather than a reason to send someone back to scoping.
 
