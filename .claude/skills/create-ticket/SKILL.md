@@ -70,11 +70,13 @@ Switching the type changes which fields exist. Step 4 is what makes that safe.
 
 ### 4. Read the type's fields from Jira
 
-Call `getJiraIssueTypeMetaWithFields` for `DST` and the chosen issue type with `requiredFieldsOnly: true`, and build the create payload from what comes back: which fields are required, their allowed option ids, and which carry a server-side default.
+Call `getJiraIssueTypeMetaWithFields` for `DST` and the chosen issue type, taking the type's id from the issue-type table in `CLAUDE.md`. Build the create payload from what comes back: which fields are required, their allowed option ids, and which carry a server-side default.
+
+**Pass `requiredFieldsOnly: false`.** It defaults to true, and the narrow response is the wrong one here: the template step 8 renders lives on `description`, which is not a required field and so is filtered out. On `Task` the narrow call returns 6 fields of 24 and no `description` at all. A skill that reads the metadata and still builds a `Bug` on `Task`'s headings has bought nothing.
 
 **Do not keep a copy of the answer in this file.** The required-field set differs per issue type and is Jira configuration, so a table written here would be a second source of truth that nothing keeps honest. Reading it costs one call, and if that call fails you cannot create the issue anyway, so there is nothing a fallback table could buy.
 
-The same response also carries the type's own description template, as `description.defaultValue` in ADF. Take the section headings from there. Each issue type has a different one, so a `Bug` built on `Task`'s template loses the reproduce steps a bug report needs.
+The same response carries the type's own description template, as `description.defaultValue` in ADF. Take the section headings from there. Each issue type has a different one, so a `Bug` built on `Task`'s template loses the reproduce steps a bug report needs.
 
 For orientation only, and true at the time of writing rather than something to rely on: `Appetite` and `Rollout Communication` sat on `Task` alone, `Requires UI Kit Update` on `Task` and `Unplanned`, and only `Appetite` lacked a server-side default.
 
@@ -85,6 +87,10 @@ For every field the step-4 metadata marks required with no default, you need a v
 Propose one from the shape of the scope and let the user correct it. A proposal someone rejects costs less than a blank prompt.
 
 Fields that are required but carry a default can be omitted from the payload. Jira fills them. Only send one when the brief gives a reason to depart from the default, for example a change that genuinely needs external communication.
+
+`AskUserQuestion` is fine for this. A wrong appetite is visible at the gate and costs a correction, which is a different class of mistake from a create nobody saw. Step 7 is where the mechanism matters.
+
+**The epic.** Take it from the brief, either a parent it names outright or the epic an obviously related ticket sits under. If nothing names one, leave it unset and render `none` at the gate. A guessed parent files the ticket into someone else's plan, and adding the right one through **Edit** is cheaper than noticing a wrong one later.
 
 ### 6. Search for an existing ticket
 
@@ -126,12 +132,14 @@ Possible duplicates (not blocking)
 DST-1522  ✨ /create-ticket skill — In Arbeit
 ```
 
-Use `AskUserQuestion` with options:
+**Render the options as text and end the turn. Do not use `AskUserQuestion` here.** It is resolved by the permission component, so on a machine running `skipAutoPermissionPrompt` under `permissions.defaultMode: "auto"` it never reaches the screen: it returns the first option, and nothing in the result says it was never asked. The first option below is **Create**. Ending the turn is the one gate no setting can answer on someone's behalf. `.claude/README.md` has the whole story.
 
-- **Create** — proceed to step 8, backlog placement
-- **Create and add to the active sprint** — proceed to step 8, then place it
-- **Edit** — say what to change. `AskUserQuestion` always offers a free-text answer, so the change can arrive with the choice instead of costing another round trip. Apply it, re-render, ask again
-- **Cancel** — nothing happens
+Offer four choices and wait for the user's next message:
+
+- **Create**, proceed to step 8, backlog placement
+- **Create and add to the active sprint**, proceed to step 8, then place it
+- **Edit**, say what to change. Apply it, re-render, ask again
+- **Cancel**, nothing happens
 
 Do **not** create without an explicit confirm. The confirmation belongs to **this** rendered ticket: an earlier "go ahead", the invocation itself, or approval of some other step is not consent to file an issue.
 
@@ -146,9 +154,9 @@ again.
 
 `createJiraIssue` with `contentFormat: "markdown"`, and the description built on **the chosen type's** template from the step-4 response, not on a fixed one.
 
-Everything the create screen accepts goes in one call via `additional_fields`: the required custom fields from step 5, `parent` for the epic, and `labels`. Inherit labels from the parent epic when its children share one, otherwise send none. DST tickets are mostly unlabelled.
+Everything the create screen accepts goes in one call via `additional_fields`: the required custom fields from step 5, the epic as `{"parent": {"key": "DST-1520"}}`, and `labels`. The tool's top-level `parent` argument is for sub-tasks, so an epic sent there is not the same thing. Inherit labels from the parent epic when its children share one, otherwise send none. DST tickets are mostly unlabelled.
 
-Leave `assignee` unset. Filing a ticket is not taking it, and `/pick-up` is what self-assigns when work actually starts.
+Leave `assignee` unset. Filing a ticket is not taking it, and whoever picks the work up assigns it to themselves when they start.
 
 **Sprint,** only if the user opted in. No MCP tool returns sprint ids directly, so read one off an issue that already has it:
 
@@ -186,4 +194,4 @@ Then read the issue back with `getJiraIssue` and report its URL, its type, and a
 
 - The confirmation gate is step 7, not step 1. `.claude/README.md` asks a side-effecting skill to confirm first, and the letter of that is not met here: the gate's whole value is showing a ticket that steps 1 to 6 produce. `create-pr` sits the same way, at step 6 of 8. What the rule protects, that nothing goes outward before a human confirms, holds in both.
 - `.claude/` is not a published package, so changes here need no changeset.
-- Producing the ticket is the job. Deciding it is worth doing is not, and neither is starting it. That is `/pick-up`.
+- Producing the ticket is the job. Deciding it is worth doing is not, and neither is starting it.

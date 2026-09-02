@@ -390,9 +390,9 @@ case rather than an exception. The two differ by **planning provenance**, not by
 kind of work: a feature and a defect can both be `Unplanned`. The title emoji is what
 says which kind of work it is.
 
-### Required Custom Fields (Task)
+### Custom Fields by Issue Type
 
-When creating Task issues via the API, these fields are **required** in `additional_fields`:
+The `Task` create screen marks these three required. They are set through `additional_fields`:
 
 - **Appetite** (`customfield_11370`) — Free text time estimate. Examples: `"2 days"`, `"1 week"`, `"3 weeks"`
 - **Rollout Communication** (`customfield_12908`) — Select field. Defaults to `"no communication"` (id: `13833`). Options: `"internal communication"` (`13834`), `"internal & external communication"` (`13835`)
