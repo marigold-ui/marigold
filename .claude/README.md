@@ -43,7 +43,7 @@ Some skills spend money or touch the outside world. `vrt` dispatches a Chromatic
 These carry two extra obligations:
 
 1. **The description must rule out proactive use.** State plainly that the skill runs only on an explicit request. A description that merely describes the capability invites the model to fire it on its own.
-2. **Confirmation is step 1 of the workflow, before anything is dispatched.** Not a note, not a caveat at the end — the first numbered step.
+2. **Confirmation is a hard stop immediately before the first outward call.** Where the skill has nothing to render first, that is step 1, as in `vrt`. Where the gate's value is showing what is about to be filed or pushed, it comes after the steps that build it. What holds either way: no outward call precedes the gate, and it is a stop rather than a note or a closing caveat.
 
 Narrow `allowed-tools` to the exact commands the skill needs. It is the one guardrail in a skill that is structural rather than a matter of prose.
 

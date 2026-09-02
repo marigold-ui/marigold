@@ -123,7 +123,7 @@ Epic      DST-1520 (or none)
 Labels    ai-workflow (or none)
 Appetite  3 days
 Sprint    backlog
-Links     3 Blocks → DST-1523
+Links     blocks DST-1523
 
 Description
 <the full rendered description, on the chosen type's template from step 4>
@@ -168,7 +168,7 @@ Take the entry whose `state` is `active`. Carried-over issues list their closed 
 
 ### 9. Link, then read back
 
-Create any relationships the brief named with `createIssueLink`. Resolve the type name with `getIssueLinkTypes` first, because the names in this instance are numbered: `1 Relates`, `3 Blocks`, and so on. Passing `Relates` fails.
+Create any relationships the brief named with `createIssueLink`. Resolve the type name with `getIssueLinkTypes` first, because the names in this instance are numbered: `1 Relates`, `3 Blocks`, and so on. Passing `Relates` fails. Direction is not symmetric. On `3 Blocks`, `inwardIssue` is the blocker and `outwardIssue` is the issue being blocked, so "this ticket blocks DST-1523" sends the new key as `inwardIssue`. Render the relationship in words at the gate, not as an arrow, so a reversed link is visible before it is created.
 
 Then read the issue back with `getJiraIssue` and report its URL, its type, and anything the human still owns (sprint placement, assignee). If a link failed but the create succeeded, say so plainly. The ticket is valid and the link is a one-click fix.
 
@@ -192,6 +192,5 @@ Then read the issue back with `getJiraIssue` and report its URL, its type, and a
 
 ## Notes
 
-- The confirmation gate is step 7, not step 1. `.claude/README.md` asks a side-effecting skill to confirm first, and the letter of that is not met here: the gate's whole value is showing a ticket that steps 1 to 6 produce. `create-pr` sits the same way, at step 6 of 8. What the rule protects, that nothing goes outward before a human confirms, holds in both.
 - `.claude/` is not a published package, so changes here need no changeset.
 - Producing the ticket is the job. Deciding it is worth doing is not, and neither is starting it.

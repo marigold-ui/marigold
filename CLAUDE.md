@@ -417,9 +417,10 @@ Always use `contentFormat: "markdown"` for descriptions.
 ### Description Template
 
 **Each issue type has its own template**, and Jira carries it as that type's `description`
-field default. The one below is `Task`'s. `Unplanned` uses Summary / Context or Trigger /
-Impact, and `Bug` uses Marigold version / Description / How to reproduce / Expected
-behavior / Screenshots / Stakeholders. When creating programmatically, take the section
+field default. The one below is `Task`'s. `Unplanned` uses `Summary`, `Context / Trigger`
+and `Impact`, carried as bold paragraphs rather than headings. `Bug` uses `Which version
+of Marigold are you using?`, `Description`, `How to reproduce`, `Expected behavior`,
+`Screenshots` and `Stakeholders`. When creating programmatically, take the section
 headings from `description.defaultValue` in the `getJiraIssueTypeMetaWithFields` response
 for the type you are creating. That call needs `requiredFieldsOnly: false`. It defaults to
 true, and `description` is not a required field, so the plain call returns every required
