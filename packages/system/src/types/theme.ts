@@ -209,6 +209,16 @@ export type Theme = {
       'container' | 'track' | 'thumb' | 'output' | 'selectedTrack',
       ComponentStyleFunction<string, string>
     >;
+    Stepper?: Record<
+      | 'container'
+      | 'item'
+      | 'link'
+      | 'marker'
+      | 'label'
+      | 'connector'
+      | 'count',
+      ComponentStyleFunction<string, string>
+    >;
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;
     SelectList?: Record<
       | 'container'

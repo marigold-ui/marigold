@@ -37,8 +37,8 @@ export const Menu: ThemeComponent<'Menu'> = {
       variant: {
         default: `${itemBase} ${itemIconMuted}`,
         destructive: 'text-destructive-accent focus:bg-destructive-accent/10',
-        master: `${itemBase} [&_svg]:text-access-master-foreground`,
-        admin: `${itemBase} [&_svg]:text-access-admin-foreground`,
+        master: `${itemBase} [&_.access-icon]:text-access-master-foreground`,
+        admin: `${itemBase} [&_.access-icon]:text-access-admin-foreground`,
       },
     },
     defaultVariants: {
