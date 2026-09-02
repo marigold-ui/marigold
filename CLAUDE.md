@@ -421,7 +421,9 @@ field default. The one below is `Task`'s. `Unplanned` uses Summary / Context or 
 Impact, and `Bug` uses Marigold version / Description / How to reproduce / Expected
 behavior / Screenshots / Stakeholders. When creating programmatically, take the section
 headings from `description.defaultValue` in the `getJiraIssueTypeMetaWithFields` response
-for the type you are creating.
+for the type you are creating. That call needs `requiredFieldsOnly: false`. It defaults to
+true, and `description` is not a required field, so the plain call returns every required
+field and no template at all.
 
 ```markdown
 #### **Problem:**
