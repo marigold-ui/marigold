@@ -221,7 +221,10 @@ const _Stepper = ({
               className={classNames.item}
               data-state={state}
               data-current={id === selectedKey || undefined}
-              data-completed={completed.has(id) || undefined}
+              data-completed={
+                (completed.has(id) && !disabled.has(id) && !errors.has(id)) ||
+                undefined
+              }
             >
               <StepContent
                 className={classNames.link}

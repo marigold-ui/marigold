@@ -49,6 +49,8 @@ A `<Stepper>` is a navigation landmark wrapping an ordered list. Each step carri
 
 ## Usage
 
+Reach for a stepper when a task runs over several steps in a fixed order, has a clear end, and is long enough that people benefit from knowing how much of it is left: a checkout, an onboarding flow, a form split across pages. If the sections can be visited in any order they are not steps, so use [Tabs](/components/navigation/tabs) instead. If there are only two of them, the progress is already obvious without one.
+
 `<Stepper>` takes `<Stepper.Item>` children, one per step, in the order they occur. Every item needs a unique `id`, and every item needs a label as its children, because the label is the step's accessible name.
 
 The flow owns the state. `selectedKey` says where the user is, and `completedKeys` says which steps are done. Marigold never advances the stepper and never marks a step complete on its own: only your code knows whether a step's validation passed or its data was saved.
@@ -86,13 +88,21 @@ A step is in exactly one state, resolved in this order: `disabled`, then `error`
 
 An errored step stays clickable on purpose. A user who is told a step failed needs a way back to it.
 
+The connector is the one part not driven by that single state. It reads completion directly, so a completed step the user has come back to keeps its filled line while its marker shows `current`. An `error` or `disabled` state still clears the line, because a step you have to return to has not cleared the run to the next one.
+
 ### Driving a multi-step form
+
+Split a form into steps when one page of it would be discouraging, when the fields fall into groups that stand on their own, or when later fields depend on earlier answers. Splitting costs the user a click per step, so a short form is better off on one page. Once it is split, the stepper is what tells people how many steps are left and lets them get back to one they have already filled.
 
 The stepper reports progress, it does not drive it. Your "Continue" button owns both the panel that is shown and the keys handed back to `<Stepper>`: it adds the step being left to `completedKeys` and moves `selectedKey` on. Because completed steps stay clickable, the user can jump back to anything they have already finished without losing it.
 
 <ComponentDemo name="stepper-multi-step-form" />
 
 Keep the panel and the stepper in the same source of truth, as the example does with a single `index`. Deriving one from the other is what stops the marker and the visible content drifting apart.
+
+The example advances on every press so that it stays about the wiring. A real flow should only add a step to `completedKeys` once that step's data is valid, otherwise the check claims work the user has not done. The [validation errors](#validation-errors) example below adds that part.
+
+Completion does not reset when the user goes back. `completedKeys` is a set, not a high-water mark, so a step keeps its check while the user is somewhere earlier in the flow. That is what tells them what they have already got through, and it is what keeps those steps clickable. If changing an early answer invalidates a later step, drop that key from `completedKeys` yourself, because only your code knows which answers depend on which.
 
 ### Validation errors
 
@@ -110,6 +120,8 @@ Two props change this:
 
 - `disabledKeys` marks steps that are unavailable. They are never clickable, and nothing overrides that.
 - `selectableKeys` replaces the default rule outright. Pass it when a server decides which steps are reachable. It revokes the errored-step guarantee too: a key in `errorKeys` that you leave out of `selectableKeys` is marked as broken with no way back to it, so include it unless you mean that.
+
+Reach for `disabledKeys` when a step is visible but genuinely not available: one that does not apply to this user, such as a payment step on a free plan, or one you have locked after the fact, such as a step whose data can no longer be changed. You do not need it for steps that are merely ahead of the current one, because those are already inert.
 
 ```tsx
 <Stepper

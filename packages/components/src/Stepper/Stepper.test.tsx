@@ -51,7 +51,9 @@ test('derives data-state for each step in priority order', () => {
   expect(items[1]).toHaveAttribute('data-state', 'current');
   expect(items[2]).toHaveAttribute('data-state', 'error');
   expect(items[3]).toHaveAttribute('data-state', 'disabled');
-  expect(items[4]).toHaveAttribute('data-state', 'upcoming');
+  expect(items[4]).toHaveAttribute('data-state', 'error');
+  expect(items[5]).toHaveAttribute('data-state', 'disabled');
+  expect(items[6]).toHaveAttribute('data-state', 'upcoming');
 });
 
 test('keeps the step number out of the accessible name', () => {
@@ -225,6 +227,24 @@ test('marks a completed step even when its state resolves to current', () => {
   const revisited = screen.getAllByRole('listitem')[0];
 
   expect(revisited).toHaveAttribute('data-completed', 'true');
+});
+
+test('drops data-completed when a completed step also errors', () => {
+  render(<Basic.Component completedKeys={['signin']} errorKeys={['signin']} />);
+
+  const errored = screen.getAllByRole('listitem')[0];
+
+  expect(errored).not.toHaveAttribute('data-completed');
+});
+
+test('drops data-completed when a completed step is disabled', () => {
+  render(
+    <Basic.Component completedKeys={['signin']} disabledKeys={['signin']} />
+  );
+
+  const locked = screen.getAllByRole('listitem')[0];
+
+  expect(locked).not.toHaveAttribute('data-completed');
 });
 
 test('marks only the current step with data-current', () => {

@@ -97,14 +97,18 @@ Basic.test(
 /**
  * All five states at once, in render priority order:
  * `disabled` > `error` > `current` > `completed` > `upcoming`.
+ *
+ * The two overlapping steps carry `completed` plus a state that outranks it.
+ * The connector follows the same order, so both leave a grey line behind them.
+ * `current` is the one exception: a revisited step keeps its green connector.
  */
 export const States = meta.story({
   args: {
     'aria-label': 'Step states',
     selectedKey: 'current',
-    completedKeys: ['done'],
-    errorKeys: ['failed'],
-    disabledKeys: ['locked'],
+    completedKeys: ['done', 'doneFailed', 'doneLocked'],
+    errorKeys: ['failed', 'doneFailed'],
+    disabledKeys: ['locked', 'doneLocked'],
   },
   render: args => (
     <Stepper {...args}>
@@ -112,6 +116,8 @@ export const States = meta.story({
       <Stepper.Item id="current">Current</Stepper.Item>
       <Stepper.Item id="failed">Error</Stepper.Item>
       <Stepper.Item id="locked">Disabled</Stepper.Item>
+      <Stepper.Item id="doneFailed">Completed + error</Stepper.Item>
+      <Stepper.Item id="doneLocked">Completed + disabled</Stepper.Item>
       <Stepper.Item id="later">Upcoming</Stepper.Item>
     </Stepper>
   ),
