@@ -1,0 +1,33 @@
+name: Prose
+
+# On push, like Lint and Format. A `pull_request`-only trigger drops the synchronize event
+# for a second commit and the check silently does not run — a stale green check is
+# indistinguishable from a fresh one (see the same note in validate-links.yml).
+#
+# Deliberately unfiltered by path: `vale .` over the whole repo takes 0.2s, so there is
+# nothing to save, and a path filter on a required check means a PR that misses the filter
+# waits forever for a check that will never run.
+on: ['push']
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  prose:
+    name: Check prose style
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Setup Node (using .node-version)
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.node-version'
+
+      # No `pnpm install` and no build, like theme-conventions.yml and memory-store.yml:
+      # the installer and Vale read the working tree and need nothing from node_modules.
+      - name: Install Vale (pinned in the script, checksum verified)
+        run: node scripts/install-vale.mjs
+
+      - name: Check prose style
+        run: .vale/bin/vale .

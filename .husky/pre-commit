@@ -1,4 +1,8 @@
 #!/bin/sh
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-npx lint-staged
+# `--relative` is required, not cosmetic: Vale matches the path sections in `.vale.ini`
+# against the path it is handed, and an absolute path matches no section at all — so it
+# lints with no rules and reports a clean file. Without this flag the prose gate silently
+# passes everything.
+npx lint-staged --relative
