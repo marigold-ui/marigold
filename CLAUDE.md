@@ -377,13 +377,18 @@ Jira Cloud ID: `reservix.atlassian.net` | Project key: `DST`
 
 ### Issue Types
 
-| Type      | ID    | Use for                     |
-| --------- | ----- | --------------------------- |
-| Task      | 10697 | Standard work items         |
-| Bug       | 10698 | Defects and errors          |
-| Epic      | 10671 | Collection of related tasks |
-| Sub-task  | 10672 | Breakdown of a parent task  |
-| Unplanned | 10860 | Unplanned/ad-hoc work       |
+| Type      | ID    | Use for                                         |
+| --------- | ----- | ----------------------------------------------- |
+| Task      | 10697 | Work planned into a sprint                      |
+| Bug       | 10698 | Defects and errors                              |
+| Epic      | 10671 | Collection of related tasks                     |
+| Sub-task  | 10672 | Breakdown of a parent task                      |
+| Unplanned | 10860 | Work picked up inside an already-planned sprint |
+
+`Task` and `Unplanned` are used in roughly equal numbers, so `Unplanned` is a normal
+case rather than an exception. The two differ by **planning provenance**, not by the
+kind of work: a feature and a defect can both be `Unplanned`. The title emoji is what
+says which kind of work it is.
 
 ### Required Custom Fields (Task)
 
@@ -393,9 +398,30 @@ When creating Task issues via the API, these fields are **required** in `additio
 - **Rollout Communication** (`customfield_12908`) — Select field. Defaults to `"no communication"` (id: `13833`). Options: `"internal communication"` (`13834`), `"internal & external communication"` (`13835`)
 - **Requires UI Kit Update** (`customfield_13205`) — Select field. Defaults to `"No"` (id: `14326`). Other option: `"Yes"` (`14325`)
 
+**These fields do not exist on every issue type.** `Appetite` and `Rollout Communication`
+are on the `Task` create screen only. `Requires UI Kit Update` is also on `Unplanned`,
+where it is optional and carries no default. `Bug` has none of the three. Sending a field
+the chosen type does not carry gets the whole create rejected, so omit what does not apply
+and put the appetite in the description instead. Since `Unplanned` is about half of what
+the team files, this is the common case rather than an edge one.
+
+On `Task`, only `Appetite` actually needs a value. The other two carry server-side
+defaults, so Jira fills them when they are omitted.
+
+Required fields are Jira configuration and can change without notice. When creating an
+issue programmatically, read them with `getJiraIssueTypeMetaWithFields` for the issue
+type you are about to create rather than trusting this list.
+
 Always use `contentFormat: "markdown"` for descriptions.
 
 ### Description Template
+
+**Each issue type has its own template**, and Jira carries it as that type's `description`
+field default. The one below is `Task`'s. `Unplanned` uses Summary / Context or Trigger /
+Impact, and `Bug` uses Marigold version / Description / How to reproduce / Expected
+behavior / Screenshots / Stakeholders. When creating programmatically, take the section
+headings from `description.defaultValue` in the `getJiraIssueTypeMetaWithFields` response
+for the type you are creating.
 
 ```markdown
 #### **Problem:**
