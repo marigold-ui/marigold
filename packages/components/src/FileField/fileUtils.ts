@@ -71,32 +71,38 @@ const dedupeFiles = (files: File[]): File[] => {
   });
 };
 
+// `kB`/`MB`/`GB`/`TB` are SI symbols, so the step is their SI value of 1000 -
+// not the 1024 the field used to divide by. That is what Finder, GNOME Files
+// and the Chrome/Firefox download UIs report, which is what a user has open
+// next to this field when they compare.
 const FILE_SIZE_UNITS = ['B', 'kB', 'MB', 'GB', 'TB'] as const;
-const FILE_SIZE_STEP = 1024;
+const FILE_SIZE_STEP = 1000;
 const FILE_SIZE_FRACTION_DIGITS = 2;
 const FILE_SIZE_ROUNDING = 10 ** FILE_SIZE_FRACTION_DIGITS;
 
-const fileSizeFormatters = new Map<string, Intl.NumberFormat>();
 // The unit symbol is not localized through `style: 'unit'`: it spells bytes
 // out in its short form (`340 byte`), which reads inconsistently next to the
 // abbreviated `kB` a row above it in the same list, and `B`/`kB`/`MB` are the
 // same in every locale Marigold ships messages for.
-const fileSizeFormatterFor = (locale: string): Intl.NumberFormat => {
-  let formatter = fileSizeFormatters.get(locale);
-  if (!formatter) {
-    formatter = new Intl.NumberFormat(locale, {
-      maximumFractionDigits: FILE_SIZE_FRACTION_DIGITS,
-    });
-    fileSizeFormatters.set(locale, formatter);
-  }
-  return formatter;
+//
+// Exported so the formatter's fraction digits and the boundary rounding below
+// cannot drift apart: a caller builds its formatter from these options, and
+// `FILE_SIZE_ROUNDING` is derived from the same constant.
+export const FILE_SIZE_FORMAT_OPTIONS: Intl.NumberFormatOptions = {
+  maximumFractionDigits: FILE_SIZE_FRACTION_DIGITS,
 };
 
 /**
  * Formats a file size with the unit that fits its magnitude, so a 2,400-byte
- * CSV reads as `2.34 kB` instead of rounding away to `0.00 MB`.
+ * CSV reads as `2.4 kB` instead of rounding away to `0.00 MB`.
+ *
+ * Takes the formatter rather than a locale so it stays pure and the caller can
+ * hand it a memoized one (`useNumberFormatter(FILE_SIZE_FORMAT_OPTIONS)`).
  */
-export const formatFileSize = (size: number, locale: string): string => {
+export const formatFileSize = (
+  size: number,
+  formatter: Intl.NumberFormat
+): string => {
   const bytes = Number.isFinite(size) && size > 0 ? size : 0;
   let exponent =
     bytes === 0
@@ -116,7 +122,7 @@ export const formatFileSize = (size: number, locale: string): string => {
     scaled = bytes / FILE_SIZE_STEP ** exponent;
   }
 
-  const value = fileSizeFormatterFor(locale).format(scaled);
+  const value = formatter.format(scaled);
 
   return `${value} ${FILE_SIZE_UNITS[exponent]}`;
 };

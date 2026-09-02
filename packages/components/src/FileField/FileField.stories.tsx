@@ -189,9 +189,9 @@ UploadFile.test(
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
-    const fileA = makeFile('abc.pdf', 'application/pdf', 2 * 1024 * 1024);
-    const fileB = makeFile('test.txt', 'text/plain', 5 * 1024 * 1024);
-    const fileC = makeFile('pic1.jpg', 'image/*', 0.5 * 1024 * 1024);
+    const fileA = makeFile('abc.pdf', 'application/pdf', 2_000_000);
+    const fileB = makeFile('test.txt', 'text/plain', 5_000_000);
+    const fileC = makeFile('pic1.jpg', 'image/*', 512_000);
     // Small enough that a fixed MB divisor rendered it as "0.00 MB" (DSTSUP-275).
     const fileD = makeFile('import.csv', 'text/csv', 2400);
 
@@ -206,7 +206,7 @@ UploadFile.test(
     await expect(canvas.getByText('2 MB')).toBeInTheDocument();
     await expect(canvas.getByText('5 MB')).toBeInTheDocument();
     await expect(canvas.getByText('512 kB')).toBeInTheDocument();
-    await expect(canvas.getByText('2.34 kB')).toBeInTheDocument();
+    await expect(canvas.getByText('2.4 kB')).toBeInTheDocument();
   }
 );
 
