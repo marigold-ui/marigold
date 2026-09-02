@@ -2,6 +2,8 @@ import { useRef } from 'react';
 import { expect, screen } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
+import { Inset } from '../Inset/Inset';
+import { OverlayContainerProvider } from '../Provider/OverlayContainerProvider';
 import { Text } from '../Text/Text';
 import { Popover } from './Popover';
 
@@ -57,6 +59,7 @@ export const OpenPopover = meta.story({
 //      that `<Popover>` forwards it — here, with an exaggerated value so the
 //      assertion cannot pass by accident.
 const CONTAINER_PADDING = 100;
+const PORTAL_ID = 'popover-at-viewport-edge';
 
 export const AtViewportEdge = meta.story({
   // The meta hides this file from Storybook (`!dev`) because the other two
@@ -66,20 +69,30 @@ export const AtViewportEdge = meta.story({
   parameters: { surface: false, chromatic: { disableSnapshot: false } },
   decorators: [
     // The preview portals overlays into `#storybook-root`, which the test
-    // runner's canvas does not carry.
+    // runner's canvas does not have. Own the container here instead of
+    // rendering a second element carrying Storybook's id.
     Story => (
-      <div id="storybook-root">
-        <Story />
-      </div>
+      <OverlayContainerProvider container={PORTAL_ID}>
+        <div id={PORTAL_ID}>
+          <Story />
+        </div>
+      </OverlayContainerProvider>
     ),
   ],
   render: () => {
-    const ref = useRef<HTMLDivElement>(null);
+    const ref = useRef<HTMLButtonElement>(null);
     return (
-      <div className="fixed top-0 right-0">
-        <div ref={ref}>Trigger</div>
+      <div className="fixed top-4 right-0">
+        <Button ref={ref} variant="secondary">
+          Trigger at the window edge
+        </Button>
         <Popover open triggerRef={ref} containerPadding={CONTAINER_PADDING}>
-          <Text>a popover wide enough to reach past the trigger</Text>
+          <Inset p={4}>
+            <Text>
+              Wide enough to reach past its trigger, so the boundary is what
+              decides where it stops.
+            </Text>
+          </Inset>
         </Popover>
       </div>
     );
@@ -92,11 +105,16 @@ AtViewportEdge.test(
     // RAC marks the popover root with `data-placement`, so no attribute has to be
     // added for the test's benefit.
     const popover = (
-      await screen.findByText('a popover wide enough to reach past the trigger')
+      await screen.findByText(/Wide enough to reach past its trigger/)
     ).closest('[data-placement]')!;
 
+    // Against react-aria's own boundary, which is what `containerPadding` is
+    // measured from — `clientWidth` disagrees with it whenever a scrollbar
+    // gutter is reserved, which is the whole subject of this fix.
+    const boundary = window.visualViewport?.width ?? window.innerWidth;
+
     await expect(popover.getBoundingClientRect().right).toBeLessThanOrEqual(
-      document.documentElement.clientWidth - CONTAINER_PADDING
+      boundary - CONTAINER_PADDING
     );
   }
 );
