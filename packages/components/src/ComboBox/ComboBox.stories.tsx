@@ -2,7 +2,6 @@ import { Key, useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
-import { clickOption } from '.storybook/test-utils';
 import { Description } from '../Description/Description';
 import { Stack } from '../Stack/Stack';
 import { TextValue } from '../TextValue/TextValue';
@@ -403,7 +402,7 @@ LargeDataset.test(
       const options = within(listbox).getAllByRole('option');
       expect(options).toHaveLength(1);
       expect(options[0]).toHaveTextContent('Tenant 500 (item-500)');
-      await clickOption(() => within(listbox).getAllByRole('option')[0]);
+      await userEvent.click(within(listbox).getAllByRole('option')[0]);
     });
 
     await step('Verify selected value appears in the input', async () => {
