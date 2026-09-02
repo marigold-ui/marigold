@@ -3,6 +3,7 @@ import type RAC from 'react-aria-components';
 import { Popover } from 'react-aria-components/Popover';
 import { cn, useClassNames } from '@marigold/system';
 import { ResetButtonContext } from '../Button/ResetButtonContext';
+import { getContainerPadding } from './containerPadding';
 
 // Internal Usage Notes
 // ---------------
@@ -17,18 +18,6 @@ import { ResetButtonContext } from '../Button/ResetButtonContext';
 //             Best for pointer devices / wide viewports.
 //
 // Components typically check viewport width and conditionally render either `<Tray>` or `<Popover>`.
-
-const DEFAULT_CONTAINER_PADDING = 12;
-
-const getContainerPadding = () => {
-  if (typeof document === 'undefined') return DEFAULT_CONTAINER_PADDING;
-
-  const gutter = Math.max(
-    0,
-    Math.ceil(window.innerWidth - document.body.getBoundingClientRect().right)
-  );
-  return DEFAULT_CONTAINER_PADDING + gutter;
-};
 
 // Props
 // ---------------

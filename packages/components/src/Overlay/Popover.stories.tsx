@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import { expect } from 'storybook/test';
+import { useRef } from 'react';
+import { expect, screen } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Text } from '../Text/Text';
@@ -46,34 +46,36 @@ export const OpenPopover = meta.story({
   },
 });
 
-// Stands in for a reserved scrollbar gutter; see the decorator below.
-const SIMULATED_GUTTER = 15;
+// A reserved scrollbar gutter cannot be produced in a headless browser (they
+// use overlay scrollbars, so `scrollbar-gutter: stable` reserves nothing).
+// What the fix depends on splits in two, and each half is tested where it can
+// be tested honestly:
+//
+//   1. the size of the correction — `containerPadding.test.ts`, against stubbed
+//      viewport measurements;
+//   2. that `containerPadding` is the lever that actually moves the overlay and
+//      that `<Popover>` forwards it — here, with an exaggerated value so the
+//      assertion cannot pass by accident.
+const CONTAINER_PADDING = 100;
 
 export const AtViewportEdge = meta.story({
   tags: ['component-test'],
   parameters: { surface: false },
   decorators: [
-    Story => {
-      document.body.style.marginRight = `${SIMULATED_GUTTER}px`;
-      useEffect(
-        () => () => {
-          document.body.style.marginRight = '';
-        },
-        []
-      );
-      return (
-        <div id="storybook-root">
-          <Story />
-        </div>
-      );
-    },
+    // The preview portals overlays into `#storybook-root`, which the test
+    // runner's canvas does not carry.
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
   ],
   render: () => {
     const ref = useRef<HTMLDivElement>(null);
     return (
       <div className="fixed top-0 right-0">
         <div ref={ref}>Trigger</div>
-        <Popover data-testid="popover" open triggerRef={ref}>
+        <Popover open triggerRef={ref} containerPadding={CONTAINER_PADDING}>
           <Text>a popover wide enough to reach past the trigger</Text>
         </Popover>
       </div>
@@ -82,14 +84,16 @@ export const AtViewportEdge = meta.story({
 });
 
 AtViewportEdge.test(
-  'stays inside the clip box of the body',
-  async ({ canvas }) => {
-    const popover = await canvas.findByTestId('popover');
+  'keeps containerPadding clear of the boundary',
+  async () => {
+    // RAC marks the popover root with `data-placement`, so no attribute has to be
+    // added for the test's benefit.
+    const popover = (
+      await screen.findByText('a popover wide enough to reach past the trigger')
+    ).closest('[data-placement]')!;
 
-    // The body is what clips (`overflow-x: clip`), so its right edge — not the
-    // viewport's — is the line the overlay has to stay behind.
     await expect(popover.getBoundingClientRect().right).toBeLessThanOrEqual(
-      document.body.getBoundingClientRect().right
+      document.documentElement.clientWidth - CONTAINER_PADDING
     );
   }
 );
