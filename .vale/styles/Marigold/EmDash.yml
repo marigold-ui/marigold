@@ -1,8 +1,3 @@
-# Prose punctuation, enforced. See the "Prose Style" section in CLAUDE.md for scope.
-#
-# `table.cell` is deliberately absent from the scope list: in a table an em dash is a
-# legitimate "not applicable" marker (`| — (no class) |`), not the parenthetical-aside
-# habit this rule exists to catch.
 extends: existence
 message: 'Rephrase with a comma, a colon, or a second sentence instead of an em dash.'
 level: error

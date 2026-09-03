@@ -1,7 +1,3 @@
-# Prose punctuation, enforced. See the "Prose Style" section in CLAUDE.md for scope.
-#
-# Only prose is scoped, so semicolons in code keep working: fenced blocks, code spans and
-# MDX `import { X } from './x';` statements are all outside `paragraph` and `list`.
 extends: existence
 message: 'Use a period or a comma instead of a semicolon in prose.'
 level: error

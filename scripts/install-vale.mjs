@@ -1,21 +1,3 @@
-/**
- * Downloads the pinned Vale binary into `.vale/bin/` (gitignored).
- *
- * We own this rather than depending on the `@vvago/vale` npm wrapper, because that wrapper
- * derives its download URL from its *own* package version and is stalled at 3.17.1 — and
- * 3.17.1 is materially wrong for us on two counts:
- *
- *   1. It ignores the `table.cell` scope exclusion, so it flags the em dash in
- *      `| — (no class) |`, which is a legitimate "not applicable" marker.
- *   2. It reports only the first match per paragraph, missing every later em dash in a
- *      wrapped paragraph. That under-reported this repo by 10 findings.
- *
- * Native MDX parsing arrived in 3.18.0 and JSX-children scoping in 3.19.0, so pinning 3.19.0
- * also means no `mdx2vast` bridge and no `Packages = MDX` key.
- *
- * Idempotent: exits immediately when the pinned version is already in place, so it is cheap
- * to run from `postinstall` on every install.
- */
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
@@ -27,7 +9,6 @@ const REPO = 'https://github.com/vale-cli/vale/releases/download';
 const BIN_DIR = path.join(import.meta.dirname, '..', '.vale', 'bin');
 const BIN = path.join(BIN_DIR, 'vale');
 
-/** Release assets are named by Vale's own platform labels, not Node's. */
 const ASSETS = {
   'darwin-arm64': `vale_${VERSION}_macOS_arm64.tar.gz`,
   'darwin-x64': `vale_${VERSION}_macOS_64-bit.tar.gz`,
@@ -35,7 +16,6 @@ const ASSETS = {
   'linux-x64': `vale_${VERSION}_Linux_64-bit.tar.gz`,
 };
 
-/** null when the binary is missing, truncated (ENOEXEC) or not executable (EACCES). */
 const valeVersion = () => {
   try {
     return execFileSync(BIN, ['--version'], { encoding: 'utf8' }).trim();
@@ -51,7 +31,6 @@ const fetchOrDie = async url => {
   return response;
 };
 
-/** The release publishes one checksums file for every asset; find our line in it. */
 const expectedSha = async asset => {
   const res = await fetchOrDie(
     `${REPO}/v${VERSION}/vale_${VERSION}_checksums.txt`
@@ -67,8 +46,6 @@ const main = async () => {
   const key = `${process.platform}-${process.arch}`;
   const asset = ASSETS[key];
   if (!asset) {
-    // Windows ships a .zip and needs a different extract path. Nobody on the team is on
-    // Windows; skip rather than fail, so `pnpm install` still succeeds there.
     console.log(
       `[vale] no pinned build for ${key}; skipping. Install Vale ${VERSION} manually.`
     );
@@ -93,7 +70,6 @@ const main = async () => {
   mkdirSync(BIN_DIR, { recursive: true });
   const archive = path.join(BIN_DIR, asset);
   writeFileSync(archive, tarball);
-  // `vale` sits at the archive root, alongside LICENSE and README.
   execFileSync('tar', ['xzf', archive, '-C', BIN_DIR, 'vale']);
   rmSync(archive);
 

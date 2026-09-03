@@ -1,12 +1,5 @@
 name: Prose
 
-# On push, like Lint and Format. A `pull_request`-only trigger drops the synchronize event
-# for a second commit and the check silently does not run — a stale green check is
-# indistinguishable from a fresh one (see the same note in validate-links.yml).
-#
-# Deliberately unfiltered by path: `vale .` over the whole repo takes 0.2s, so there is
-# nothing to save, and a path filter on a required check means a PR that misses the filter
-# waits forever for a check that will never run.
 on: ['push']
 
 concurrency:
@@ -24,12 +17,6 @@ jobs:
         with:
           node-version-file: '.node-version'
 
-      # These two steps are `pnpm lint:prose` spelled out, and they have to stay in step with
-      # it. Going through pnpm instead reads tidier and costs 16.5s: pnpm 11 verifies
-      # dependencies before running a script, so a job with no `node_modules` installs the
-      # whole workspace, husky and the docs registry build included, to run a 0.2s check that
-      # needs none of it. Like theme-conventions.yml and memory-store.yml, this job reads the
-      # working tree and nothing else.
       - name: Install Vale (pinned in the script, checksum verified)
         run: node scripts/install-vale.mjs
 

@@ -51,5 +51,4 @@ next-env.d.ts
 **/__screenshots__
 .vitest-attachments
 
-# Vale binary, downloaded by scripts/install-vale.mjs (pinned in that file)
 .vale/bin/
