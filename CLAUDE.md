@@ -76,6 +76,20 @@ The CLI fetches from the Marigold docs site, caches for 24h, and works offline (
 - **Changesets**: Use `pnpm changeset` for version management
 - **Storybook**: Run `pnpm sb` to preview components locally
 
+## GitHub CLI
+
+**Never pass a comment, review or PR body as an inline shell string.** Write it to a file and point `gh` at the file. Shell quoting eats backticks, newlines, `$` and emoji, and the mangled result is posted publicly before anyone notices.
+
+| Command                                                            | Flag                 | Notes                                                              |
+| ------------------------------------------------------------------ | -------------------- | ------------------------------------------------------------------ |
+| `gh pr create`, `gh pr comment`, `gh pr review`, `gh issue create` | `--body-file <path>` | Short form `-F`. Use `-` to read stdin                             |
+| `gh api`, single field                                             | `-F key=@<path>`     | `-F`/`--field` reads `@path`. **`-f`/`--raw-field` does not**      |
+| `gh api`, whole JSON body                                          | `--input <path>`     | Use for nested payloads, such as a review carrying inline comments |
+
+The trap worth naming out loud: `gh api -f body=@reply.md` posts the literal string `@reply.md` and **exits 0**. There is no error to catch, only a nonsense comment on someone's PR. `-F` is the flag that reads the file. Verified on `gh 2.92.0`.
+
+`-F` means two different things depending on the command. In `gh api` it is `--field`, in `gh pr *` and `gh issue *` it is `--body-file`. Both read a file, so the habit transfers, but the long forms are not interchangeable.
+
 ## Monorepo Structure
 
 - `packages/components` - Core React components
