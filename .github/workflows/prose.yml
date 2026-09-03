@@ -19,15 +19,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v6.0.9 # Uses version from package.json#packageManager
       - name: Setup Node (using .node-version)
         uses: actions/setup-node@v6
         with:
           node-version-file: '.node-version'
 
-      # Runs `pnpm lint:prose` rather than re-spelling it, so the local command and the CI
-      # check cannot drift. No `pnpm install` and no build, like theme-conventions.yml and
-      # memory-store.yml: the script downloads the pinned binary itself, and neither it nor
-      # Vale needs anything from node_modules.
+      # These two steps are `pnpm lint:prose` spelled out, and they have to stay in step with
+      # it. Going through pnpm instead reads tidier and costs 16.5s: pnpm 11 verifies
+      # dependencies before running a script, so a job with no `node_modules` installs the
+      # whole workspace, husky and the docs registry build included, to run a 0.2s check that
+      # needs none of it. Like theme-conventions.yml and memory-store.yml, this job reads the
+      # working tree and nothing else.
+      - name: Install Vale (pinned in the script, checksum verified)
+        run: node scripts/install-vale.mjs
+
       - name: Check prose style
-        run: pnpm lint:prose
+        run: .vale/bin/vale .

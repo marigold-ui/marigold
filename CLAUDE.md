@@ -80,7 +80,7 @@ The CLI fetches from the Marigold docs site, caches for 24h, and works offline (
 ## Prose Style
 
 Documentation prose is linted. `pnpm lint:prose` runs Vale over the docs site, the changesets
-and the published READMEs, and CI runs the same command. The binary is pinned and downloaded by
+and the published READMEs, and the Prose CI check runs the same rules. The binary is pinned and downloaded by
 `scripts/install-vale.mjs` on first use, and pinned there so Renovate can see it.
 
 - **No em dashes.** Rephrase with a comma, a colon, or a second sentence. In a
