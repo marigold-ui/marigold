@@ -1,7 +1,7 @@
 ---
 name: triage-feedback
 description: Marigold repo — Make one triage pass over all feedback on a PR, from both GitHub review threads and Vercel preview toolbar comments, then reply and resolve in whichever system each item came from. Use when the user asks to "triage feedback", "go through the review comments", "handle the PR feedback", "address the preview comments", or types `/triage-feedback`. It posts replies, resolves threads and pushes commits, so run it only on an explicit request, never proactively and never as a follow-up to unrelated work.
-allowed-tools: Bash(gh pr view *), Bash(gh pr list *), Bash(gh pr diff *), Bash(gh api graphql *), Bash(gh api repos/*), Bash(gh api user *), Bash(gh run list *), Bash(git branch --show-current), Bash(git status --porcelain), Bash(git log *), Bash(git add *), Bash(git commit *), Bash(git push *), Bash(pnpm typecheck:only), Bash(pnpm build), Read, Edit, Write, Grep, Glob
+allowed-tools: Bash(gh pr view *), Bash(gh pr list *), Bash(gh pr diff *), Bash(gh api graphql *), Bash(gh api repos/*), Bash(gh api user *), Bash(gh run list *), Bash(git branch --show-current), Bash(git status --porcelain), Bash(git log *), Bash(git add *), Bash(git commit *), Bash(git push *), Bash(pnpm typecheck:only), Bash(pnpm build), Read, Edit, Write, Grep, Glob, mcp__plugin_vercel_vercel__list_teams, mcp__plugin_vercel_vercel__list_toolbar_threads, mcp__plugin_vercel_vercel__get_toolbar_thread, mcp__plugin_vercel_vercel__reply_to_toolbar_thread, mcp__plugin_vercel_vercel__change_toolbar_thread_resolve_status
 ---
 
 # Triage-Feedback Skill for Marigold Design System
@@ -25,7 +25,7 @@ This skill makes one pass over both, triages every item on the same three axes, 
 
 ## Workflow
 
-### 1. Resolve the target and the mode
+### 1. Resolve the target, the sources and the mode
 
 ```bash
 gh api user -q .login
@@ -35,13 +35,18 @@ git branch --show-current
 
 Stop if the PR is merged or closed. Resolving threads on a landed PR is noise, and the fixes have nowhere to go. A draft is fine, proceed and say so.
 
-Then set the mode, because it decides which half of this skill runs:
+**Sources.** Both by default. `--github` runs the GitHub half alone, `--vercel` the Vercel half alone, and passing both is the same as passing neither. A source that is switched off is not gathered in step 2 and contributes no rows. Step 4 names which sources ran, so an empty table is never mistaken for a PR with no feedback.
+
+**Mode**, because it decides which half of this skill runs:
 
 | Condition | Mode | What the skill does |
 | --- | --- | --- |
-| PR author is you **and** its branch is checked out | **author** | Full workflow, steps 1 to 8 |
-| PR author is you, branch **not** checked out | **author** | Offer to check the branch out first. If declined, drop to respond-only |
+| PR author is you, branch checked out | **author** | Full workflow, steps 1 to 8 |
+| PR author is you, branch **not** checked out | **author, no apply** | Offer to check the branch out. If declined, every `apply` row becomes `needs-human`. Replies do not need the code, fixes do |
 | PR author is someone else | **respond-only** | Steps 1 to 4, then 7 and 8. **Skips 5 and 6 entirely** |
+| No PR for the branch | **author** | The GitHub source is absent, which is not an error. Gather Vercel only and say so |
+
+Mode is about who owns the branch, not about who opened a PR. That is why a branch with no PR is still author mode: previews build per branch, so toolbar feedback can arrive before a PR exists.
 
 In respond-only mode there is nothing to apply, nothing to commit, nothing to push, and no changeset. Saying "I will now apply 3 fixes" on a branch you do not own is the failure this table exists to prevent.
 
@@ -49,9 +54,11 @@ Record `headRefOid`. Every code check in step 3 reads that commit, not your work
 
 ### 2. Gather
 
-Both sources are read-only here. Run them in parallel.
+Every source selected in step 1 is read-only here. Run them in parallel.
 
 #### GitHub
+
+Skip this half when `--vercel` was passed, or when the branch has no PR.
 
 REST does not expose whether a review thread is resolved, so this has to be GraphQL:
 
@@ -79,6 +86,8 @@ query($o:String!,$r:String!,$n:Int!){
 
 #### Vercel
 
+Skip this half when `--github` was passed.
+
 Resolve the team at run time. Never hardcode the id: it is account state, and this file is committed.
 
 ```
@@ -99,12 +108,14 @@ Each thread carries context worth keeping: `webUrl` for the table, `context.href
 
 Every item gets all four columns. No item is skipped, including ones you intend to do nothing about.
 
-| Axis | Values |
+| Column | Values |
 | --- | --- |
 | **Validity** | `confirmed`, `stale`, `incorrect`, `unassessed` |
 | **Severity** | `blocker`, `should-fix`, `nice-to-have`, `question` |
 | **Action** | `apply`, `push back`, `needs-human` |
 | **Turn** | `yours` when someone else spoke last, `theirs` when you did |
+
+The first three are the triage axes and are your judgement. Turn is thread state, read off the data in step 2.
 
 #### Reading an item against the code
 
@@ -283,4 +294,4 @@ Then stop. Acting on the `needs-human` rows is the next thing the user asks for,
 
 **Every row is `Turn: theirs`.** You are not blocked, they are. Report what the PR is waiting on and post nothing.
 
-**The branch has no PR.** Vercel threads may still exist, since previews are built per branch. Triage them, and say there is no GitHub side rather than treating it as an error.
+**The branch has no PR.** Author mode with the GitHub source absent, per step 1's mode table. Vercel threads may still exist, since previews build per branch. Triage them, and say there is no GitHub side rather than treating it as an error.
