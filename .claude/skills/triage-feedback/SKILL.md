@@ -1,7 +1,7 @@
 ---
 name: triage-feedback
 description: Marigold repo — Make one triage pass over all feedback on a PR, from both GitHub review threads and Vercel preview toolbar comments, then reply and resolve in whichever system each item came from. Use when the user asks to "triage feedback", "go through the review comments", "handle the PR feedback", "address the preview comments", or types `/triage-feedback`. It posts replies, resolves threads and pushes commits, so run it only on an explicit request, never proactively and never as a follow-up to unrelated work.
-allowed-tools: Bash(gh pr view *), Bash(gh pr list *), Bash(gh pr diff *), Bash(gh api graphql *), Bash(git branch --show-current), Bash(git status --porcelain), Bash(git log *), Bash(git add *), Bash(git commit *), Bash(git push *), Bash(pnpm typecheck:only), Bash(pnpm build), Read, Edit, Write, Grep, Glob
+allowed-tools: Bash(gh pr view *), Bash(gh pr list *), Bash(gh pr diff *), Bash(gh api graphql *), Bash(gh api repos/*), Bash(gh api user *), Bash(gh run list *), Bash(git branch --show-current), Bash(git status --porcelain), Bash(git log *), Bash(git add *), Bash(git commit *), Bash(git push *), Bash(pnpm typecheck:only), Bash(pnpm build), Read, Edit, Write, Grep, Glob
 ---
 
 # Triage-Feedback Skill for Marigold Design System
@@ -12,6 +12,8 @@ This skill makes one pass over both, triages every item on the same three axes, 
 
 **Two gates, and they are the shape of the skill.** The triage table in step 4 is the approval for every reply and resolve. The push confirmation in step 6 is separate, because pushing is governed by a standing rule of its own. Steps 1 to 3 are read-only. Nothing before step 5 changes a file, and nothing before step 7 leaves this machine.
 
+**Two modes, and step 1 decides which.** On your own PR you are the author, and feedback is work incoming. On someone else's you are a reviewer, and the feedback is yours: there is nothing to fix, only replies to write and threads to close. Getting this wrong produces a skill that tries to commit fixes to a branch it does not own.
+
 ## Usage
 
 ```
@@ -21,22 +23,29 @@ This skill makes one pass over both, triages every item on the same three axes, 
 /triage-feedback --vercel
 ```
 
-With no argument the skill works from the current branch. A PR number lets you triage someone else's, which changes the tone of every reply: you are answering a reviewer on your own PR, or responding to feedback on theirs. Say which case you are in when you draft replies.
-
 ## Workflow
 
-### 1. Resolve the target
+### 1. Resolve the target and the mode
 
 ```bash
+gh api user -q .login
+gh pr view [<number>] --json number,title,author,headRefName,baseRefName,state,isDraft,headRefOid
 git branch --show-current
-gh pr view --json number,title,headRefName,baseRefName,state,isDraft,headRefOid
 ```
 
-With a PR number in `$ARGUMENTS`, pass it to `gh pr view` instead and take `headRefName` from the result. The branch name is the join key between the two sources, so resolve it before gathering either.
+Stop if the PR is merged or closed. Resolving threads on a landed PR is noise, and the fixes have nowhere to go. A draft is fine, proceed and say so.
 
-Stop if the PR is merged or closed. Resolving threads on a landed PR is noise, and the fixes have nowhere to go.
+Then set the mode, because it decides which half of this skill runs:
 
-Record `headRefOid`. Any thread whose feedback predates a later commit may already be fixed, which is a Validity signal in step 3.
+| Condition | Mode | What the skill does |
+| --- | --- | --- |
+| PR author is you **and** its branch is checked out | **author** | Full workflow, steps 1 to 8 |
+| PR author is you, branch **not** checked out | **author** | Offer to check the branch out first. If declined, drop to respond-only |
+| PR author is someone else | **respond-only** | Steps 1 to 4, then 7 and 8. **Skips 5 and 6 entirely** |
+
+In respond-only mode there is nothing to apply, nothing to commit, nothing to push, and no changeset. Saying "I will now apply 3 fixes" on a branch you do not own is the failure this table exists to prevent.
+
+Record `headRefOid`. Every code check in step 3 reads that commit, not your worktree.
 
 ### 2. Gather
 
@@ -51,11 +60,10 @@ gh api graphql -f query='
 query($o:String!,$r:String!,$n:Int!){
   repository(owner:$o,name:$r){
     pullRequest(number:$n){
-      headRefName
       reviewThreads(first:100){
         nodes{
           id isResolved isOutdated path line
-          comments(first:50){nodes{databaseId author{login} body createdAt}}
+          comments(first:50){nodes{databaseId author{login} body createdAt url}}
         }
       }
     }
@@ -66,6 +74,7 @@ query($o:String!,$r:String!,$n:Int!){
 - **Skip threads where `isResolved` is true.** They are done, and reopening them to say so is noise.
 - **`isOutdated` means the diff moved under the comment.** It is the single strongest stale signal available, so carry it into Validity rather than re-deriving staleness from the diff.
 - `line` is `null` on outdated threads. Do not treat that as a malformed thread.
+- **Record who spoke last** in each thread, from the final entry in `comments.nodes`. Step 3 turns it into the Turn column, and it is the difference between feedback nobody has answered and feedback already answered that is waiting on you.
 - Also fetch `gh pr view <n> --json reviews` for review bodies with no inline comment attached. They carry the summary objections and are easy to miss.
 
 #### Vercel
@@ -88,36 +97,70 @@ Each thread carries context worth keeping: `webUrl` for the table, `context.href
 
 ### 3. Triage
 
-Every item gets all three axes. No item is skipped, including ones you intend to do nothing about.
+Every item gets all four columns. No item is skipped, including ones you intend to do nothing about.
 
 | Axis | Values |
 | --- | --- |
-| **Validity** | `confirmed`, `stale`, `incorrect` |
+| **Validity** | `confirmed`, `stale`, `incorrect`, `unassessed` |
 | **Severity** | `blocker`, `should-fix`, `nice-to-have`, `question` |
 | **Action** | `apply`, `push back`, `needs-human` |
+| **Turn** | `yours` when someone else spoke last, `theirs` when you did |
 
-Read each item against the current code, not against the diff that provoked it. A comment is `stale` when the code it describes has since changed, and `incorrect` when the code is as described but the reader was wrong about it. Those need different replies, so do not collapse them.
+#### Reading an item against the code
 
-**Visual and design comments route straight to `needs-human`.** Do not attempt to judge from a screenshot whether something is correctly aligned, sufficiently prominent, or visually balanced. This is a deliberate v1 limit rather than a gap: a wrong confident answer about a visual is worse than an honest hand-off. In practice this catches a large share of Vercel items, which is expected.
+Read each item against **the PR head**, not your worktree and not the diff that provoked the comment. In respond-only mode the worktree is a different branch entirely, and even in author mode it can be ahead of what the reviewer saw.
 
-**Only `needs-human` items interrupt.** Do not stop to ask about each row. The table in step 4 is the single interrupt for the whole pass.
+```bash
+gh pr diff <number>                                    # what the PR actually changes
+gh pr diff <number> --name-only                        # fast check that a file exists
+gh api "repos/marigold-ui/marigold/contents/<path>?ref=<headRefOid>"   # one file at that commit
+```
+
+Quote any URL containing `?`. Unquoted, zsh treats it as a glob and fails with `no matches found` before `gh` ever runs.
+
+A comment is `stale` when the code it describes has since changed, and `incorrect` when the code is as described but the reader was wrong about it. Those need different replies, so do not collapse them.
+
+#### `unassessed`, and when it is the only honest answer
+
+**Visual and design comments route straight to `needs-human`.** Do not attempt to judge from a screenshot whether something is correctly aligned, sufficiently prominent, or visually balanced. This is a deliberate v1 limit rather than a gap: a wrong confident answer about a visual is worse than an honest hand-off.
+
+Those items take Validity `unassessed`, because Validity is exactly the judgement the rule forbids. Do not put `confirmed` on something you did not verify.
+
+`unassessed` is for that case only. It is never a shrug for an item you could have checked and did not.
+
+#### Turn
+
+`Turn: theirs` means you had the last word and nobody has answered. Those rows need no reply from you: adding one is nagging. They still belong in the table, because an unanswered blocker of yours is the thing most likely to have stalled the PR.
+
+`Turn: yours` is where the work is, in both modes. In author mode it is unaddressed review feedback. In respond-only mode it is the author answering you, and often asking you something back.
+
+#### Correlation
 
 Correlate across sources but do not merge. The same problem raised in both a review thread and a preview comment is two rows, because each needs its own reply and its own resolve. Note the correlation in the table so the person can see it is one issue.
+
+**Only `needs-human` items interrupt.** Do not stop to ask about each row. The table in step 4 is the single interrupt for the whole pass.
 
 ### 4. Confirm the triage table
 
 Render the table as text and **end the turn**.
 
 ```
-| # | Source | Where | Who | Item | Validity | Severity | Action |
-|---|--------|-------|-----|------|----------|----------|--------|
-| 1 | GitHub | Popover.tsx:58 | @sebald | containerPadding is symmetric… | confirmed | should-fix | apply |
-| 2 | Vercel | /components/…/provider | @osama | scroll thumb only moves per category | confirmed | question | needs-human |
+| # | Source | Where | Who | Item | Validity | Severity | Action | Turn |
+|---|--------|-------|-----|------|----------|----------|--------|------|
+| 1 | GitHub | Popover.tsx:58 | @sebald | containerPadding is symmetric… | confirmed | should-fix | apply | yours |
+| 2 | Vercel | /components/…/provider | @osama | scroll thumb only moves per category | unassessed | question | needs-human | yours |
 ```
 
-Below the table, list every `needs-human` row again in full with its link (`webUrl` for Vercel, the thread URL for GitHub), because those are the rows that actually need the person.
+State the mode in one line above the table, so it is never ambiguous which half of the skill is about to run.
 
-Then state plainly what the act phase will do: how many fixes, which files, how many replies, how many resolves.
+Below the table, list every `needs-human` row again in full with its link (`webUrl` for Vercel, the comment `url` for GitHub), because those are the rows that actually need the person.
+
+Then state plainly what the act phase will do, in the mode's own terms:
+
+- **author** — how many fixes, which files, how many replies, how many resolves
+- **respond-only** — how many replies and resolves, and that no code will change
+
+If that count is zero, say so in as many words. A pass where every row is `needs-human` is a real and useful outcome, not a failure.
 
 **Never use `AskUserQuestion`, here or anywhere in this skill.** It is resolved by the permission component, so on a machine running `skipAutoPermissionPrompt` under `permissions.defaultMode: "auto"` it never reaches a screen. It returns the first option and nothing in the result says a human was never asked. Ending the turn is the one gate no setting can answer on someone's behalf.
 
@@ -125,7 +168,9 @@ Offer: **Approve**, **Edit** (change any row's Action, re-render, ask again), or
 
 Approval here covers the replies and the resolves. It does not cover the push, which has its own gate.
 
-### 5. Apply
+### 5. Apply — author mode only
+
+**Skip this step entirely in respond-only mode.** Go to step 7.
 
 Only rows marked `apply`. Work them smallest-blast-radius first so a later failure does not strand a half-finished larger change.
 
@@ -138,7 +183,9 @@ Then a changeset, if any package under `packages/` or `themes/` changed. Body st
 
 Commit. Do not push.
 
-### 6. Confirm the push
+### 6. Confirm the push — author mode only
+
+**Skip this step entirely in respond-only mode.** There is nothing to push.
 
 The second gate. Render what is about to leave the machine and **end the turn**:
 
@@ -155,7 +202,12 @@ Pushing is an outward action under a standing never-without-confirmation rule, a
 
 ### 7. Reply and resolve
 
-Reply in the origin system. Every reply names what changed and, where a fix landed, the commit.
+Reply in the origin system. Reply only to rows where `Turn` is `yours`.
+
+What a reply says depends on the mode:
+
+- **author** — what changed and where. Name the commit when a fix landed.
+- **respond-only** — you are answering as the reviewer. Accept the author's response, or say what still does not hold and why. If they asked you something, answer it. Do not describe fixes: they are not yours to make.
 
 #### GitHub
 
@@ -185,12 +237,14 @@ mutation($threadId:ID!){
 }'
 ```
 
-Resolve only threads you actually acted on. A `needs-human` row stays open, and so does a `push back` row until the reviewer answers.
+Resolve only threads you actually acted on. A `needs-human` row stays open, and so does a `push back` row until the other side answers.
+
+**In respond-only mode, resolve only threads you opened.** Closing someone else's thread decides on their behalf that they are satisfied.
 
 #### Vercel
 
 ```
-reply_to_toolbar_thread            -> teamId, threadId, markdown
+reply_to_toolbar_thread              -> teamId, threadId, markdown
 change_toolbar_thread_resolve_status -> teamId, threadId, resolved: true
 ```
 
@@ -200,16 +254,19 @@ change_toolbar_thread_resolve_status -> teamId, threadId, resolved: true
 
 Report, and stop:
 
-- what was fixed, and in which commits
-- what was pushed, or that the branch is still local
+- the mode the pass ran in
+- what was fixed, and in which commits (author mode)
+- what was pushed, or that the branch is still local (author mode)
 - replies and resolves posted, per system
 - every `needs-human` row still open, with its link
 - every `push back` row, and what you said
+- every `Turn: theirs` row, as what the PR is waiting on
 
 Then stop. Acting on the `needs-human` rows is the next thing the user asks for, not something this skill continues into.
 
 ## Rough edges
 
+- **Quote `gh api` URLs containing `?`.** Unquoted, zsh globs them and fails with `no matches found` before `gh` runs. `gh pr diff --name-only` is usually the cheaper existence check anyway.
 - **Vercel MCP tool names carry a plugin prefix** (`mcp__plugin_vercel_vercel__list_teams`) which differs with how the developer installed the plugin. Use whichever is connected.
 - **`list_toolbar_threads` defaults to unresolved**, which is what you want. Passing `status: resolved` is only useful when hunting for something already closed.
 - **Toolbar threads include localhost sessions** (`isLocalhost: true`). Those came from someone's dev server, not the preview, and are usually noise on a PR pass.
@@ -220,10 +277,10 @@ Then stop. Acting on the `needs-human` rows is the next thing the user asks for,
 
 **No feedback in either source.** Say so and stop. Do not go looking for something to fix.
 
-**The PR is a draft.** Proceed, and say it is a draft. Feedback on drafts is normal and often the point.
+**Every row lands on `needs-human`.** Common on a visual-heavy PR, and normal in respond-only mode where the author has answered everything and is waiting on you. Still render the table, since the hand-off list is the value, and say plainly that the skill judged none of them.
 
 **A thread's fix belongs in another PR.** Mark it `push back`, reply saying where it belongs, and leave it unresolved. Do not silently widen this PR's scope.
 
-**Every Vercel row lands on `needs-human`.** Expected on a visual-heavy PR. Still render the table, since the value is the hand-off list, and say plainly that the skill judged none of them.
+**Every row is `Turn: theirs`.** You are not blocked, they are. Report what the PR is waiting on and post nothing.
 
 **The branch has no PR.** Vercel threads may still exist, since previews are built per branch. Triage them, and say there is no GitHub side rather than treating it as an error.
