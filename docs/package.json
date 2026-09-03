@@ -23,7 +23,7 @@
     "build:embeddings": "zx ./scripts/build-embeddings.mjs"
   },
   "dependencies": {
-    "@aws-sdk/client-bedrock-runtime": "3.1101.0",
+    "@aws-sdk/client-bedrock-runtime": "3.1121.0",
     "@internationalized/date": "^3.12.3",
     "@marigold/components": "workspace:*",
     "@marigold/eslint-config": "workspace:*",
