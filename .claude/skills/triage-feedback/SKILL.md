@@ -1,7 +1,7 @@
 ---
 name: triage-feedback
 description: Marigold repo — Make one triage pass over all feedback on a PR, from both GitHub review threads and Vercel preview toolbar comments, then reply and resolve in whichever system each item came from. Use when the user asks to "triage feedback", "go through the review comments", "handle the PR feedback", "address the preview comments", or types `/triage-feedback`. It posts replies, resolves threads and pushes commits, so run it only on an explicit request, never proactively and never as a follow-up to unrelated work.
-allowed-tools: Bash(gh pr view *), Bash(gh pr list *), Bash(gh pr diff *), Bash(gh api graphql *), Bash(gh api repos/*), Bash(gh api user *), Bash(gh run list *), Bash(git branch --show-current), Bash(git status --porcelain), Bash(git log *), Bash(git add *), Bash(git commit *), Bash(git push *), Bash(pnpm typecheck:only), Bash(pnpm build), Read, Edit, Write, Grep, Glob, mcp__plugin_vercel_vercel__list_teams, mcp__plugin_vercel_vercel__list_toolbar_threads, mcp__plugin_vercel_vercel__get_toolbar_thread, mcp__plugin_vercel_vercel__reply_to_toolbar_thread, mcp__plugin_vercel_vercel__change_toolbar_thread_resolve_status
+allowed-tools: Bash(gh pr view *), Bash(gh pr diff *), Bash(gh api graphql *), Bash(gh api repos/*), Bash(gh api user *), Bash(git branch --show-current), Bash(git status --porcelain), Bash(git log *), Bash(git add *), Bash(git commit *), Bash(git push *), Bash(pnpm typecheck:only), Bash(pnpm build), Read, Edit, Write, Grep, Glob, mcp__plugin_vercel_vercel__list_teams, mcp__plugin_vercel_vercel__list_toolbar_threads, mcp__plugin_vercel_vercel__get_toolbar_thread, mcp__plugin_vercel_vercel__reply_to_toolbar_thread, mcp__plugin_vercel_vercel__change_toolbar_thread_resolve_status
 ---
 
 # Triage-Feedback Skill for Marigold Design System
@@ -42,11 +42,13 @@ Stop if the PR is merged or closed. Resolving threads on a landed PR is noise, a
 | Condition | Mode | What the skill does |
 | --- | --- | --- |
 | PR author is you, branch checked out | **author** | Full workflow, steps 1 to 8 |
-| PR author is you, branch **not** checked out | **author, no apply** | Offer to check the branch out. If declined, every `apply` row becomes `needs-human`. Replies do not need the code, fixes do |
+| PR author is you, branch **not** checked out | **author, no apply** | Ask them to switch to it and re-run. Until then every `apply` row becomes `needs-human`. Replies do not need the code, fixes do |
 | PR author is someone else | **respond-only** | Steps 1 to 4, then 7 and 8. **Skips 5 and 6 entirely** |
 | No PR for the branch | **author** | The GitHub source is absent, which is not an error. Gather Vercel only and say so |
 
 Mode is about who owns the branch, not about who opened a PR. That is why a branch with no PR is still author mode: previews build per branch, so toolbar feedback can arrive before a PR exists.
+
+The skill does not check the branch out itself. Steps 1 to 3 are read-only, and swapping someone's worktree under them is the largest side effect in the whole pass. Asking keeps that invariant true, which is why no checkout command appears in `allowed-tools`.
 
 In respond-only mode there is nothing to apply, nothing to commit, nothing to push, and no changeset. Saying "I will now apply 3 fixes" on a branch you do not own is the failure this table exists to prevent.
 
@@ -68,9 +70,10 @@ query($o:String!,$r:String!,$n:Int!){
   repository(owner:$o,name:$r){
     pullRequest(number:$n){
       reviewThreads(first:100){
+        pageInfo{hasNextPage}
         nodes{
           id isResolved isOutdated path line
-          comments(first:50){nodes{databaseId author{login} body createdAt url}}
+          comments(first:50){totalCount nodes{databaseId author{login} body createdAt url}}
         }
       }
     }
@@ -82,6 +85,7 @@ query($o:String!,$r:String!,$n:Int!){
 - **`isOutdated` means the diff moved under the comment.** It is the single strongest stale signal available, so carry it into Validity rather than re-deriving staleness from the diff.
 - `line` is `null` on outdated threads. Do not treat that as a malformed thread.
 - **Record who spoke last** in each thread, from the final entry in `comments.nodes`. Step 3 turns it into the Turn column, and it is the difference between feedback nobody has answered and feedback already answered that is waiting on you.
+- **Read the caps back.** `hasNextPage` true, or a thread whose `comments.totalCount` exceeds the 50 fetched, means the gather is partial. Say so in step 4. A table that silently drops the 101st thread looks complete and is not, which is the one failure this skill cannot afford.
 - Also fetch `gh pr view <n> --json reviews` for review bodies with no inline comment attached. They carry the summary objections and are easy to miss.
 
 #### Vercel
@@ -92,9 +96,11 @@ Resolve the team at run time. Never hardcode the id: it is account state, and th
 
 ```
 list_teams                        -> teamId
-list_toolbar_threads              -> teamId, branch: <headRefName>, status: unresolved
+list_toolbar_threads              -> teamId, branch: <headRefName>, status: unresolved, limit: 100
 get_toolbar_thread                -> full messages when a thread is truncated in the list
 ```
+
+**Pass `limit` explicitly.** It defaults to 20, which a visual-heavy docs PR reaches, and nothing in the response says the list was cut short. If a full page comes back, page with `offset` before triaging.
 
 **Filter by `branch`, never by `projectId`.** Marigold's preview feedback lands in two Vercel projects, `marigold-docs` and `marigold-storybook`, and a project filter silently drops whichever one you did not name. Branch spans both in a single call.
 
@@ -124,8 +130,11 @@ Read each item against **the PR head**, not your worktree and not the diff that 
 ```bash
 gh pr diff <number>                                    # what the PR actually changes
 gh pr diff <number> --name-only                        # fast check that a file exists
-gh api "repos/marigold-ui/marigold/contents/<path>?ref=<headRefOid>"   # one file at that commit
+gh api -H "Accept: application/vnd.github.raw" \
+  "repos/marigold-ui/marigold/contents/<path>?ref=<headRefOid>"       # one file at that commit
 ```
+
+**Send the raw Accept header.** Without it the contents endpoint returns a JSON envelope with the source base64-encoded in `.content`, which is not something to read code from. Verified on `gh 2.92.0`.
 
 Quote any URL containing `?`. Unquoted, zsh treats it as a glob and fails with `no matches found` before `gh` ever runs.
 
@@ -141,7 +150,7 @@ Those items take Validity `unassessed`, because Validity is exactly the judgemen
 
 #### Turn
 
-`Turn: theirs` means you had the last word and nobody has answered. Those rows need no reply from you: adding one is nagging. They still belong in the table, because an unanswered blocker of yours is the thing most likely to have stalled the PR.
+`Turn: theirs` means you had the last word and nobody has answered. Those rows need no reply from you: adding one is nagging. The exception is a row you then fixed. "Fixed in abc1234" is news rather than a nudge, so an `apply` row earns a reply whichever way Turn points. They still belong in the table, because an unanswered blocker of yours is the thing most likely to have stalled the PR.
 
 `Turn: yours` is where the work is, in both modes. In author mode it is unaddressed review feedback. In respond-only mode it is the author answering you, and often asking you something back.
 
@@ -162,7 +171,7 @@ Render the table as text and **end the turn**.
 | 2 | Vercel | /components/…/provider | @osama | scroll thumb only moves per category | unassessed | question | needs-human | yours |
 ```
 
-State the mode in one line above the table, so it is never ambiguous which half of the skill is about to run.
+State the mode in one line above the table, so it is never ambiguous which half of the skill is about to run. If step 2 hit a cap, say on the same line that the gather was partial and which source it truncated.
 
 Below the table, list every `needs-human` row again in full with its link (`webUrl` for Vercel, the comment `url` for GitHub), because those are the rows that actually need the person.
 
@@ -173,7 +182,7 @@ Then state plainly what the act phase will do, in the mode's own terms:
 
 If that count is zero, say so in as many words. A pass where every row is `needs-human` is a real and useful outcome, not a failure.
 
-**Never use `AskUserQuestion`, here or anywhere in this skill.** It is resolved by the permission component, so on a machine running `skipAutoPermissionPrompt` under `permissions.defaultMode: "auto"` it never reaches a screen. It returns the first option and nothing in the result says a human was never asked. Ending the turn is the one gate no setting can answer on someone's behalf.
+**Never use `AskUserQuestion`, here or anywhere in this skill.** It is resolved by the permission component, so under `permissions.defaultMode: "auto"` with `skipAutoPermissionPrompt` it never reaches a screen: it returns the first option, and nothing in the result says a human was never asked. It fails toward acting, which is the wrong direction for a gate to fail in. Ending the turn is the one gate no setting can answer on someone's behalf. See the convention in `.claude/README.md`.
 
 Offer: **Approve**, **Edit** (change any row's Action, re-render, ask again), or **Stop**.
 
@@ -190,7 +199,7 @@ pnpm typecheck:only
 pnpm build          # only if a package's public surface changed
 ```
 
-Then a changeset, if any package under `packages/` or `themes/` changed. Body starts with the Conventional Commits line, for example `fix(DST-1234): …`. Docs-only changes still need one (`@marigold/docs: patch`).
+Then a changeset, if anything under `packages/`, `themes/` or `docs/` changed. Body starts with the Conventional Commits line, for example `fix(DST-1234): …`. A docs-only change still needs one (`@marigold/docs: patch`).
 
 Commit. Do not push.
 
@@ -213,11 +222,11 @@ Pushing is an outward action under a standing never-without-confirmation rule, a
 
 ### 7. Reply and resolve
 
-Reply in the origin system. Reply only to rows where `Turn` is `yours`.
+Reply in the origin system. Reply to every row where `Turn` is `yours`, plus any `apply` row you fixed, whichever way its Turn points.
 
 What a reply says depends on the mode:
 
-- **author** — what changed and where. Name the commit when a fix landed.
+- **author** — what changed and where. Name the commit when a fix landed **and the branch was pushed**. On the reply-only path the SHA is local and resolves to nothing for the reader, so say the fix is made and pending a push instead.
 - **respond-only** — you are answering as the reviewer. Accept the author's response, or say what still does not hold and why. If they asked you something, answer it. Do not describe fixes: they are not yours to make.
 
 #### GitHub
