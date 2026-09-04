@@ -22,11 +22,9 @@
  * turbo.json defines no typecheck task.
  *
  * Scope and known limits:
- * - The tsc flags below are a third copy of the string in package.json's `typecheck` and
- *   `typecheck:only`. Sharing tsconfig.check.json means the same *program* as CI, but --noEmit
- *   and --resolveJsonModule live only on command lines, so a flag added to those scripts must
- *   be added here too. Moving them into the tsconfig would fix that properly and is left for a
- *   change that is allowed to touch a CI-shared config.
+ * - Everything that decides what is checked lives in tsconfig.check.json, so this runs the same
+ *   program as `pnpm typecheck` and the CI job with nothing to keep in sync. The flags below are
+ *   only about how this hook runs it: reuse a warm cache, and report plainly.
  * - A pre-existing error anywhere in the program is reported after every edit. Errors in the
  *   edited file are listed first and the output is capped, which makes that tolerable rather
  *   than solving it.
@@ -242,8 +240,6 @@ try {
   result = spawnSync(
     tscPath,
     [
-      '--noEmit',
-      '--resolveJsonModule',
       '--project',
       'tsconfig.check.json',
       '--incremental',

@@ -4,6 +4,10 @@
 {
   "extends": "@marigold/tsconfig/react",
   "compilerOptions": {
+    // Here rather than on the command line, so `pnpm typecheck`, the CI job and the post-edit
+    // hook cannot drift apart on the flags that decide what is checked.
+    "noEmit": true,
+    "resolveJsonModule": true,
     "declaration": false,
     "declarationMap": false,
     "jsx": "preserve",
