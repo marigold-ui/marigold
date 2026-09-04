@@ -7,7 +7,7 @@ import {
   BedrockRuntimeClient,
   InvokeModelCommand,
 } from '@aws-sdk/client-bedrock-runtime';
-import type { AuthInfo } from '@modelcontextprotocol/sdk/server/auth/types.js';
+import type { AuthInfo } from '@modelcontextprotocol/server';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 import { createMcpHandler, withMcpAuth } from 'mcp-handler';
 import { z } from 'zod';
@@ -173,32 +173,34 @@ const verifyToken = async (
 
 const handler = createMcpHandler(
   server => {
-    server.tool(
+    server.registerTool(
       'search_docs',
-      [
-        'Search the Marigold Design System documentation using semantic similarity.',
-        'Use this tool to find component APIs, usage guidelines, accessibility notes, theming instructions, and code examples.',
-        'Ideal for questions like: "How do I use the Button component?", "What props does Select accept?", or "How does theming work in Marigold?".',
-        'Returns the most relevant documentation sections ranked by similarity to the query.',
-        'Query must be a natural language question or keyword phrase (max 1000 characters).',
-      ].join(' '),
       {
-        query: z
-          .string()
-          .min(1)
-          .max(1000)
-          .describe(
-            'Natural language question or keyword phrase to search for. Max 1000 characters. Example: "How do I disable a Button?" or "Select component props".'
-          ),
-        limit: z
-          .number()
-          .int()
-          .min(3)
-          .max(10)
-          .default(5)
-          .describe(
-            'Number of documentation sections to return (3–10, default: 5). Use a higher value for broad topics, lower for specific lookups.'
-          ),
+        description: [
+          'Search the Marigold Design System documentation using semantic similarity.',
+          'Use this tool to find component APIs, usage guidelines, accessibility notes, theming instructions, and code examples.',
+          'Ideal for questions like: "How do I use the Button component?", "What props does Select accept?", or "How does theming work in Marigold?".',
+          'Returns the most relevant documentation sections ranked by similarity to the query.',
+          'Query must be a natural language question or keyword phrase (max 1000 characters).',
+        ].join(' '),
+        inputSchema: z.object({
+          query: z
+            .string()
+            .min(1)
+            .max(1000)
+            .describe(
+              'Natural language question or keyword phrase to search for. Max 1000 characters. Example: "How do I disable a Button?" or "Select component props".'
+            ),
+          limit: z
+            .number()
+            .int()
+            .min(3)
+            .max(10)
+            .default(5)
+            .describe(
+              'Number of documentation sections to return (3–10, default: 5). Use a higher value for broad topics, lower for specific lookups.'
+            ),
+        }),
       },
       async ({ query, limit }) => {
         try {
