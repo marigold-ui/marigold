@@ -38,6 +38,12 @@ A named region of a container's `grid-template-areas`, which a part claims with 
 
 Not to be confused with the `<Grid>` component's `areas` prop, which exposes the same CSS feature as a public layout API. Grid areas in this sense are internal to a container's own composition.
 
+### Internal export
+
+A runtime export kept in a package barrel (`packages/*/src/index.ts`) for composition by other Marigold packages rather than for consumers: the field parts, the overlay primitives, the slot contexts, the style-prop maps and the CSS-variable helpers. It carries a bare `/** @internal */` on the barrel line, which the Insights scanner reads from the barrel source to keep these out of the "unused" metrics and to flag direct consumer usage. The tag says nothing about stability and does not survive the build: tsdown collapses the barrel into one export statement, so the published package is unchanged.
+
+Not to be confused with a deprecated export, which is public API on its way out and documented as such.
+
 ### RAC-first imports
 
 The principle that when `react-aria-components` re-exports an API, we import it from there rather than from the `@react-aria/*` shell packages — because RAC pins its internals exactly while the shells keep caret ranges, so the shells can resolve to a second `react-aria` copy and split a context.
