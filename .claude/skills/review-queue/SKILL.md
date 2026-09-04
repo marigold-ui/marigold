@@ -42,9 +42,10 @@ The login splits the two sections, recognises your own approvals, and tells you 
 One call, org-wide:
 
 ```bash
-gh search prs --owner=marigold-ui --state=open --limit 100 \
-  --json number,title,repository,author,isDraft,url,updatedAt,labels
+gh search prs --owner=marigold-ui --state=open --limit 100 --json repository
 ```
+
+One field, because one field is used. Everything else this call could return is fetched again per repo in step 3, which is where the branch name has to come from anyway.
 
 **The org is the allowlist.** There is no configurable repo list, deliberately: `--owner=marigold-ui` already covers every work repo, excludes personal forks and OSS clones by construction, and cannot go stale the way a hand-maintained list in this file would. DST-1531 asked for the list, and the flag is the same thing without the maintenance.
 
@@ -62,8 +63,10 @@ Take the distinct `repository.nameWithOwner` values. Querying only the repos tha
 
 ```bash
 gh pr list --repo <owner/repo> --state open --limit 100 \
-  --json number,title,author,isDraft,headRefName,reviewDecision,url,updatedAt,labels
+  --json number,title,author,isDraft,headRefName,baseRefName,reviewDecision,url,updatedAt,labels
 ```
+
+**Keep this list, unfiltered, for step 8.** The filters below are for the two rendered sections only, and step 8 needs to know about every PR that exists, drafts and bots included.
 
 Then filter:
 
@@ -72,6 +75,8 @@ Then filter:
 - **Split on `author.login`.** Yours feeds section 2, everyone else's feeds section 1.
 
 `reviewDecision` is a string enum: `APPROVED`, `CHANGES_REQUESTED`, `REVIEW_REQUIRED`. **`REVIEW_REQUIRED` also means nobody has looked yet**, so it is the normal state of a healthy new PR and never on its own a rework signal.
+
+**Mark a PR whose `baseRefName` is not `main`.** It is stacked on another branch, so reviewing it before its base lands may be premature and its diff may include the base's commits. Say so on the row rather than dropping it: a stacked PR is often exactly what wants reviewing, but the reader needs to know the order. This is not hypothetical, and the skill's own PR is the first one in the repo to be stacked.
 
 ### 4. Count unresolved threads, in one batched call
 
@@ -136,6 +141,8 @@ key IN (DST-1526, DST-1607, DST-1745) ORDER BY Rank ASC
 
 `fields: ["summary", "status", "assignee", "customfield_10020", "parent"]`.
 
+**Read `status.statusCategory.key`, never `status.name`.** The name comes back localised, so a `de` account reads `Fertig` and `Wird überprüft` where an `en` one reads `Done` and `In Review`. The category key is neither translated nor renamed, and it is the same three values (`new`, `indeterminate`, `done`) in both projects despite `DST` and `DSTSUP` having entirely different status ids. Step 7 and the Done edge case both depend on this.
+
 The **response order is the ranking**. Nothing needs to read a rank value, and none is returned. One query per key because rank is a global lexorank string, so a mixed `DST` and `DSTSUP` set comes back interleaved in an order that means nothing. See [../references/jira-board.md](../references/jira-board.md) for both.
 
 **There is no priority input, and its absence is deliberate.** DST-1531 specified ranking by "open-sprint membership + priority + board rank". Priority is a dead field on this board: three open issues carry one at all, none above Medium, and current issues do not return the field. Ranking by it would sort by a constant while appearing to sort by importance, which is worse than not claiming to rank at all.
@@ -148,7 +155,9 @@ The **response order is the ranking**. Nothing needs to read a rank value, and n
 2. Board rank, from step 6's response order.
 3. Has a ticket but no sprint.
 4. Unranked, at the bottom. **Never dropped.** A PR with no ticket is still a PR someone is waiting on, and repos outside `DST`'s reach have no keys at all.
-5. Below even those, a PR whose ticket is already Done. Its sprint and rank are live values on a closed ticket, so tier 1 would otherwise float it to the top of the queue. See the edge case below for why it stays in the digest at all.
+5. Below even those, a PR whose ticket is already Done, meaning `status.statusCategory.key == "done"`. Its sprint and rank are live values on a closed ticket, so tier 1 would otherwise float it to the top of the queue. See the edge case below for why it stays in the digest at all.
+
+**Test tier 5 on the category key, not on the status name.** `status.name == "Done"` matches nothing on a `de` account, where the value is `Fertig`. The tier then silently never fires, and the closed ticket's live rank floats its PR to the top of the queue, which is the exact failure this tier exists to prevent. A ranking rule that fails silently is worse than one that is absent, because the digest still looks ranked.
 
 **Section 2, your PRs needing rework.** The filter is `CHANGES_REQUESTED`, or unresolved threads, or a failing check. Sort by:
 
@@ -164,9 +173,11 @@ gh pr view <n> --repo <owner/repo> --json statusCheckRollup
 
 Aggregate to `any(conclusion == "FAILURE")` and name the failing checks. **Do not print the rollup.** There are about 25 entries per PR on marigold (Builds, CodeQL, Format, Lint, Size Limit, Typecheck, four Unit Tests shards, four Storybook shards, and the repo's own guards) and the digest dies of it.
 
-**Cap each section at 7**, with a `+N more` line naming what was cut. `--all` lifts the cap. The cap is the feature: a digest nobody finishes reading by week two has failed, whatever it contains.
+**Cap each section at 7.** `--all` lifts it. The cap is the feature: a digest nobody finishes reading by week two has failed, whatever it contains.
 
-Every row carries a one-line why-this-rank. A ranked list whose ranking cannot be checked is asking for trust it has not earned.
+What the cap actually saves is the per-row detail, not the row. So the `+N more` line names the cut items compactly, one clause each, because a reader who cannot see that the two hidden rows are a keyless PR and a closed ticket will run `--all` every time and the cap will have bought nothing. Cutting them to a bare count is the version that gets `--all` typed reflexively.
+
+Every uncapped row carries a one-line why-this-rank. A ranked list whose ranking cannot be checked is asking for trust it has not earned.
 
 ### 8. The board tail: review work with no PR
 
@@ -179,7 +190,9 @@ project = DSTSUP AND status = "Review" ORDER BY Rank ASC
 
 **The status names differ between the two projects**, and both are the canonical English ones rather than what a `de` account reads back off a response.
 
-Subtract the tickets already matched to a PR in section 1 or 2. List what is left as "board says in review, no PR found".
+**Subtract against every PR step 3 gathered, before its draft and bot filters, and not against the two rendered sections.** List what is left as "board says in review, no PR found".
+
+The distinction is the whole correctness of this section. A ticket whose only PR is a draft is filtered out of both sections, so subtracting the sections reports it as having no PR at all, which is false and sends someone looking for work that already exists. Keep the unfiltered key set from step 3 for exactly this.
 
 It also catches tickets whose PR already merged while the ticket stayed in review. DST-1529 was in exactly that state on the first live run: the work is on `main` and the board still lists it as under review. That is a one-second fix nobody would otherwise notice.
 
@@ -188,6 +201,8 @@ This is the section that makes the digest honest rather than just a prettier Git
 ### 9. Render, and stop
 
 Terminal output only. **No file.** `/pick-up` writes its plan to `.claude/tasks/` because a plan is resumable and worth returning to. A queue is a snapshot of a board that moves hourly, and a stale digest on disk that looks authoritative is worse than no digest.
+
+**Strip every emoji from the ticket summary and shorten it to fit one line.** DST titles carry leading type and area emoji by convention (`👁️ Track marigold-docs MCP server usage in Insights`), and the digest already carries the type in the PR title. `/pick-up` strips them the same way when it builds a branch slug.
 
 A real run, both sections, all values verified live:
 
@@ -229,7 +244,7 @@ Close with the hand-offs that continue the loop, **as text, not as invocations**
 
 **A key from a project that is neither `DST` nor `DSTSUP`.** Unranked. Do not invent a board for it or guess at its statuses.
 
-**An open PR whose ticket is already Done.** It happens: PR #5776 is open against DST-1745, which is `Fertig`. Rank it last within its section and flag it, because it is one of two things and both want a person. Either the ticket was closed while the PR was still in flight, or the PR is abandoned and wants closing. Do not drop it, and do not let a closed ticket's board rank float it above live work.
+**An open PR whose ticket is already Done.** It happens: PR #5776 is open against DST-1745, whose `statusCategory.key` is `done` and whose localised name is `Fertig`. Rank it last within its section and flag it, because it is one of two things and both want a person. Either the ticket was closed while the PR was still in flight, or the PR is abandoned and wants closing. Do not drop it, and do not let a closed ticket's board rank float it above live work.
 
 **Both sections come back empty.** Earn the claim, per the reference. Re-run step 8 without the status clause before reporting a clear board, and check that step 2 returned anything at all. An empty digest and a broken query look identical from the outside.
 

@@ -25,6 +25,10 @@ JQL matches the canonical English name. The API hands back the localised one. So
 
 **Never round-trip a status name from a response into a query.** The ids above are immune to both translation and renaming.
 
+**To ask what kind of state a ticket is in, read `status.statusCategory.key`.** It is `new`, `indeterminate` or `done`, it is neither translated nor renamed, and it is the same three values in both projects even though `DST` and `DSTSUP` share no status ids. So `statusCategory.key == "done"` is the portable way to spot a closed ticket, where `status.name == "Done"` finds nothing on a `de` account and `status.id == "11130"` only works for `DST`. Use the ids when you need one specific status, and the category key when you need a class of them.
+
+**`statusCategory.name` is localised as well**, and it is the sibling field one character away from the one you want. Verified on a `de` account: the three categories read `Zu erledigen`, `In Arbeit` and `Fertig`. On a Done `DST` ticket both `status.name` and `statusCategory.name` are `Fertig`, so a reader checking the category by name sees something that looks correct and is not portable. Only `.key` is.
+
 The same split applies to transitions, which is worse because both fields are present on one object: transition names come back in English while their `to.name` comes back localised. On a `de` account the transition to In Progress is named `In Progress` and its `to.name` is `In Arbeit`. Match on `to.id`, the only field that is neither translated nor renamed. Never hardcode a transition id itself: a status id is stable, a transition id is workflow configuration and differs with the status you are leaving.
 
 ## `statusCategory` is too wide to stand in for a status
