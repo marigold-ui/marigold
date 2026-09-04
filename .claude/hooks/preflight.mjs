@@ -48,9 +48,7 @@ const flush = () => {
   if (flushed) return;
   flushed = true;
   if (lines.length > 0) {
-    // No process.exit() after this. Writes to a pipe are asynchronous on macOS, so exiting here
-    // could truncate the very context block this hook exists to deliver. Nothing is pending on
-    // the event loop, so returning exits 0 on its own.
+    // No process.exit() here: pipe writes are async on macOS and would truncate the block.
     console.log(`Marigold pre-flight:\n${lines.map(l => `  ${l}`).join('\n')}`);
   }
 };
@@ -90,10 +88,7 @@ const readJson = path => {
   }
 };
 
-/**
- * Commits either side of the fork point with a ref. `...` is a symmetric difference, so both
- * numbers are already counted from the merge base and stay correct after the trunk moves on.
- */
+/** Commits either side of the fork point. `...` counts from the merge base. */
 const countsAgainst = ref => {
   const out = git('rev-list', '--left-right', '--count', `HEAD...${ref}`);
   if (!out) return null;
@@ -115,8 +110,7 @@ const onTrunk = Boolean(branch) && TRUNKS.includes(branch);
 const fork = (() => {
   if (!branch || branch === 'HEAD') return null;
   if (onTrunk) return { trunk: branch, counts: countsAgainst(`origin/${branch}`) };
-  // Fewest own commits wins, which is the nearer fork point. Not `behind === 0`: a trunk that
-  // has moved on since the fork is still the fork point, and on a busy trunk that is the norm.
+  // Fewest own commits wins. Not `behind === 0`: a moved-on trunk is still the fork point.
   return (
     TRUNKS.map(trunk => ({ trunk, counts: countsAgainst(`origin/${trunk}`) }))
       .filter(f => f.counts)

@@ -10,8 +10,9 @@
  * - PostToolUse (Edit|Write): filters on the edited path, and skips silently if another run
  *   already holds the lock.
  * - Stop: no path filter, but gated on whether anything in the program, or the git index, is
- *   newer than the last completed check, and waits for the lock. This is the backstop that covers files written
- *   through Bash (sed, heredocs, redirects), which never fire Edit or Write, and the last edit
+ *   newer than the last completed check, and waits for the lock. This is the backstop that
+ *   covers files written through Bash (sed, heredocs, redirects), which never fire Edit or
+ *   Write, and the last edit
  *   of a burst whose own run was skipped. The gate costs ~13ms and is what stops it re-verifying
  *   an unchanged tree at the end of every turn.
  *
@@ -22,9 +23,8 @@
  * turbo.json defines no typecheck task.
  *
  * Scope and known limits:
- * - Everything that decides what is checked lives in tsconfig.check.json, so this runs the same
- *   program as `pnpm typecheck` and the CI job with nothing to keep in sync. The flags below are
- *   only about how this hook runs it: reuse a warm cache, and report plainly.
+ * - What gets checked lives entirely in tsconfig.check.json, so this runs the same program as
+ *   `pnpm typecheck` and CI. The flags below only say how this hook runs it.
  * - A pre-existing error anywhere in the program is reported after every edit. Errors in the
  *   edited file are listed first and the output is capped, which makes that tolerable rather
  *   than solving it.
@@ -156,10 +156,9 @@ const changedSince = stampMs => {
   ]);
   if (listed === null) return true;
 
-  // The index moves on rename, branch switch, stash and revert, none of which need touch a
-  // single source mtime. `git mv` is the sharp case: it carries the old mtime to the new path
-  // *and* drops the old path from the index, so the scan below sees nothing at all.
-  // resolve(), not join(): --git-dir answers with an absolute path inside a worktree.
+  // Rename, branch switch, stash and revert move the index without touching a source mtime:
+  // `git mv` carries the old mtime over and drops the old path, so the scan below sees nothing.
+  // resolve(), not join(): --git-dir is absolute inside a worktree.
   const gitDir = git(['rev-parse', '--git-dir'])?.trim();
   if (!gitDir) return true;
   try {
@@ -181,13 +180,8 @@ const changedSince = stampMs => {
 };
 
 // "When did we last have an answer about this tree", so a PostToolUse run seconds earlier makes
-// the end-of-turn run a no-op, for ~13ms instead of ~2.6s.
-//
-// The stamp is when the last completed run *started*, not when it finished, and that difference
-// is load-bearing. tsc reads the program in its first moments, so an edit landing mid-run was
-// never in it. Stamping the end would make that edit look already-checked and gate it out of
-// this backstop, which is the one registration that covers it. Stamping the start can only
-// re-check something already covered.
+// the end-of-turn run a no-op, for ~13ms instead of ~2.6s. The stamp is when that run *started*:
+// tsc reads the program up front, so stamping the end would hide an edit that landed mid-run.
 const lastCheckedMs = (() => {
   try {
     return statSync(stampPath).mtimeMs;
