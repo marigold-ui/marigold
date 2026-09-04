@@ -311,13 +311,60 @@ marigold telemetry disable
 marigold telemetry enable
 ```
 
-Telemetry is on by default and sent fire-and-forget via a detached background process. It never blocks the foreground command or surfaces network errors. Each event records the command name, CLI version, Node version, platform, exit code, a coarse duration bucket, cache hit/miss, a stable anonymous UUID, whether stdout is a TTY, whether the CLI was invoked by an AI agent, and which flags were passed (values redacted, only flag presence or enum value is kept, and free-form `--search` terms are recorded as `used`, never the term itself).
+Telemetry is on by default and carries **no identifier** — no account, user, machine, or session ID. Nothing links one command to another or to you, so there is no usage history to build, export, or hand over. Events are sent fire-and-forget from a detached background process, so telemetry never blocks your command, delays output, or surfaces a network error.
 
-Telemetry is automatically suppressed when:
+#### What is sent
 
-- `MARIGOLD_TELEMETRY_DISABLED=1` is set
-- `DO_NOT_TRACK=1` is set ([consoledonottrack.com](https://consoledonottrack.com) standard)
-- CI is detected (via [`ci-info`](https://github.com/watson/ci-info), covering GitHub Actions, GitLab CI, CircleCI, etc.)
+One event per command invocation, with these fields and nothing else:
+
+| Field            | Example                   | Notes                                               |
+| ---------------- | ------------------------- | --------------------------------------------------- |
+| `command`        | `docs`                    | Which command ran                                   |
+| `args`           | `{ component: "Button" }` | Flag presence and closed-set values only, see below |
+| `cliVersion`     | `1.4.0`                   | Which release is in use                             |
+| `nodeVersion`    | `v24.3.0`                 | Which Node versions we still need to support        |
+| `platform`       | `darwin`                  | `darwin`, `linux`, or `win32`                       |
+| `exitCode`       | `0`                       | Whether the command succeeded                       |
+| `durationBucket` | `100-500`                 | A coarse bucket in ms, never an exact timing        |
+| `cacheHit`       | `true`                    | Whether the local docs cache was used               |
+| `isTTY`          | `false`                   | Whether output went to a terminal or a pipe         |
+| `isAIAgent`      | `true`                    | Whether an agent runtime env var was set            |
+| `receivedAt`     | `2026-07-30T14:00:00Z`    | Added server-side, truncated to the hour            |
+
+`args` keeps only flag presence and values from a closed set. Enum flags (`--format`, `--section`, `--limit`) are recorded as their validated value, or as `invalid` if unrecognised, so a typo is never echoed back. Identifier-shaped positionals (a component name, an example slug, a `--category`) are recorded only when they look like an identifier. **Free-text is never sent** — a `marigold search` query or a `list --search` term is recorded as `used`, so we learn that search was used but not what you searched for.
+
+`receivedAt` is deliberately hour-granular: exact timestamps would let separate events be stitched back into a per-session sequence by timing alone, undoing the point of having no identifier.
+
+#### What is never sent
+
+- Your source code, file contents, file paths, or project names
+- Search queries and any other free-form text you type
+- Your name, email, username, hostname, or any account data
+- Any persistent identifier, of any kind
+- Your IP address is not stored. It's necessarily visible to our host in transit, as with any HTTP request, but it is never written into a telemetry record.
+
+Events are deleted after **90 days**, which covers release-over-release comparison, the longest window we analyse.
+
+#### Why it's opt-out
+
+Because there's nothing to consent to storing. We removed the per-machine identifier the CLI used to send, which means we can count **invocations, not people** — unique-user numbers come from public npm download counts instead. In exchange, the data stops being personal data, the CLI stops writing an identifier onto your device, and no per-user history exists to secure or hand over. An opt-in prompt would also be close to meaningless here: most runs are non-interactive, driven by AI agents in pipelines where no human is at a prompt to ask.
+
+<Callout variant="warning" title="If this ever changes">
+  This reasoning holds only as long as the payload stays identifier-free. If a
+  future version needs to link events to a person or a machine, the default has
+  to flip to opt-in rather than being disclosed after the fact.
+</Callout>
+
+#### Turning it off
+
+`marigold telemetry disable` persists the preference for the machine. Per-invocation, either env var works:
+
+```bash
+MARIGOLD_TELEMETRY_DISABLED=1 marigold docs Button
+DO_NOT_TRACK=1 marigold docs Button
+```
+
+`DO_NOT_TRACK` follows the [consoledonottrack.com](https://consoledonottrack.com) convention, so setting it once opts you out of every tool that honours it. Telemetry is also suppressed automatically, with no configuration, when CI is detected (via [`ci-info`](https://github.com/watson/ci-info), covering GitHub Actions, GitLab CI, CircleCI, etc.).
 
 ### Global flags
 
@@ -335,7 +382,7 @@ Every variable below is **optional**, the CLI works out of the box. Set one only
 | `MARIGOLD_DOCS_URL`                                                       | Override the docs site base URL (default: `https://www.marigold-ui.io`) |
 | `MARIGOLD_CACHE_TTL_MS`                                                   | Override the default 24h cache TTL (in milliseconds)                    |
 | `MARIGOLD_CACHE_DIR`                                                      | Override the cache directory location                                   |
-| `MARIGOLD_CONFIG_DIR`                                                     | Override the config directory (telemetry preference + anonymous ID)     |
+| `MARIGOLD_CONFIG_DIR`                                                     | Override the config directory (stores the telemetry preference)         |
 | `MARIGOLD_TELEMETRY_DISABLED=1`                                           | Opt out of telemetry                                                    |
 | `DO_NOT_TRACK=1`                                                          | Opt out of telemetry (standard)                                         |
 | `CI`                                                                      | Auto-detected, suppresses telemetry when set                            |

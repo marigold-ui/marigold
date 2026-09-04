@@ -297,7 +297,9 @@ marigold telemetry disable
 marigold telemetry enable
 ```
 
-Telemetry is on by default and sent fire-and-forget via a detached background process — it never blocks the foreground command or surfaces network errors. Each event records: command name (`docs`/`list`/`search`/`examples`/`init`/`doctor`/`telemetry`), CLI version, Node version, platform, exit code, a coarse duration bucket (`0-100` / `100-500` / `500-2000` / `2000+` ms), cache hit/miss, a stable anonymous UUID, whether stdout is a TTY, whether the CLI was invoked by an AI agent (`CLAUDECODE`, `CURSOR_AGENT`, `VSCODE_AGENT`, `CODEX_SANDBOX`, or `AI_AGENT` env var set), and the flags passed (values redacted — only flag presence/enum value is kept; free-form `--search` terms are recorded as `used`, never the term itself).
+Telemetry is on by default and sent fire-and-forget via a detached background process — it never blocks the foreground command or surfaces network errors. Each event records: command name (`docs`/`list`/`search`/`examples`/`init`/`doctor`/`telemetry`), CLI version, Node version, platform, exit code, a coarse duration bucket (`0-100` / `100-500` / `500-2000` / `2000+` ms), cache hit/miss, whether stdout is a TTY, whether the CLI was invoked by an AI agent (`CLAUDECODE`, `CURSOR_AGENT`, `VSCODE_AGENT`, `CODEX_SANDBOX`, or `AI_AGENT` env var set), and the flags passed (only flag presence/closed-set value is kept; free-form `--search` terms are recorded as `used`, never the term itself).
+
+Events carry **no identifier** — no user, machine, or session ID — so they cannot be linked to you or to each other. Server-side timestamps are truncated to the hour and events are deleted after 90 days. Full disclosure: [marigold-ui.io/getting-started/cli#marigold-telemetry](https://www.marigold-ui.io/getting-started/cli#marigold-telemetry).
 
 Telemetry is automatically suppressed when:
 
@@ -323,7 +325,7 @@ The CLI detects common agent runtimes (Claude Code, Cursor, VS Code agent mode, 
 - `MARIGOLD_DOCS_URL` — override the docs site base URL (default: `https://www.marigold-ui.io`)
 - `MARIGOLD_CACHE_TTL_MS` — override the default 24h cache TTL (in milliseconds)
 - `MARIGOLD_CACHE_DIR` — override the cache directory location
-- `MARIGOLD_CONFIG_DIR` — override the config directory (where telemetry preference + anonymous ID are stored)
+- `MARIGOLD_CONFIG_DIR` — override the config directory (where the telemetry preference is stored)
 - `MARIGOLD_TELEMETRY_DISABLED=1` — opt out of telemetry
 - `DO_NOT_TRACK=1` — opt out of telemetry (standard)
 - `CLAUDECODE`, `CURSOR_AGENT`, `VSCODE_AGENT`, `CODEX_SANDBOX`, `AI_AGENT` — when set, the run is tagged as agent-driven in telemetry
