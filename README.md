@@ -76,6 +76,7 @@ To start documentation follow these steps:
 | pnpm clean                 | Remove node_modules, dist, .next, .turbo, coverage, and storybook-static directories. |
 | pnpm clean:build           | Remove dist folders and coverage reports.                                             |
 | pnpm lint                  | Lint the repository with ESLint.                                                      |
+| pnpm lint:prose            | Lint docs prose with Vale.                                                            |
 | pnpm format                | Format files with Prettier.                                                           |
 | pnpm format:check          | Check formatting without writing (what CI runs).                                      |
 | pnpm format:fix            | Format and attempt to fix with Prettier.                                              |

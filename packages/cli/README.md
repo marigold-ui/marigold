@@ -97,7 +97,7 @@ Flags:
 - `--section <name>`: `props`, `usage`, `examples`, or `all` (default: `all`)
 - `--format <name>`: `markdown` (default), `json`, or `plain`
 - `--fresh`: bypass the local cache
-- `--offline`: use only the local cache. Fail if missing
+- `--offline`: use only the local cache, failing if it is missing
 
 Pass a component name (case-insensitive, so `Button`, `button`, `BUTTON` all resolve to the same component) or the slug of a non-component docs page (e.g. `foundations/spacing`, `getting-started/installation`). The `props` section is component-only. Requesting it for a page emits a note instead.
 
@@ -127,7 +127,7 @@ Flags:
 - `--limit <n>`: max results (default: `5`)
 - `--format <name>`: `markdown` (default), `json`, or `plain`
 - `--fresh`: bypass the local cache
-- `--offline`: use only the local cache. Fail if missing
+- `--offline`: use only the local cache, failing if it is missing
 
 Ranking weights title ×3, description ×2, each matching heading ×2, and each
 matching section snippet ×1, with a coverage scale for partial multi-term
@@ -160,7 +160,7 @@ Flags:
 - `--search <term>`: substring filter on component and page names
 - `--format <name>`: `markdown` (default), `json`, or `plain`
 - `--fresh`: bypass the local cache
-- `--offline`: use only the local cache. Fail if missing
+- `--offline`: use only the local cache, failing if it is missing
 
 ### `marigold examples`
 
@@ -185,7 +185,7 @@ Flags (for `get`/`list`):
 
 - `--format <name>`: `markdown` (default), `json`, or `plain`
 - `--fresh`: bypass the local cache
-- `--offline`: use only the local cache. Fail if missing
+- `--offline`: use only the local cache, failing if it is missing
 
 Examples are authored **Next.js App Router-first**. Before adapting one to a
 different framework (e.g. Vite), read the framework-transformation note:
@@ -211,7 +211,7 @@ marigold init --skip-install    # apply config edits without running the install
 
 Detects Next.js or Vite, then:
 
-1. Installs `@marigold/components`, `@marigold/system`, `@marigold/theme-rui`, and Tailwind v4 + the framework adapter (`@tailwindcss/postcss` for Next.js, `@tailwindcss/vite` for Vite) if Tailwind isn't already present. The Tailwind install is gated behind a confirmation prompt unless `--yes` is passed.
+1. Installs `@marigold/components`, `@marigold/system` and `@marigold/theme-rui`. Adds Tailwind v4 and the framework adapter (`@tailwindcss/postcss` for Next.js, `@tailwindcss/vite` for Vite) if Tailwind isn't already present. The Tailwind install is gated behind a confirmation prompt unless `--yes` is passed.
 2. Patches your global CSS (`app/globals.css`, `src/app/globals.css`, `src/index.css`, or `styles/globals.css`) with the required `@import` and `@source` lines, preserving existing rules.
 3. Patches `vite.config.ts` (Vite) or writes `postcss.config.mjs` (Next.js) if missing.
 4. Wraps the root: creates `app/providers.tsx` and wraps `{children}` in `app/layout.tsx` (Next.js), or wraps `<App />` in `src/main.tsx` (Vite).

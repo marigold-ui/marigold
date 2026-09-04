@@ -192,7 +192,7 @@ The common case is a wrapper that breaks the container's own rhythm. A `<Panel>`
 
 #### Aligning with a bled container
 
-`--bleed-px` is the one you want when content sits edge-to-edge and needs to line back up with the container's title. Any content area rendered with `bleed` publishes it: `Panel.Content`, `Panel.CollapsibleContent`, `Card.Content`, `Card.Footer` and `Drawer.Content`, always holding that container's own horizontal padding. The same areas clear it again when they are not bled, so it is in effect only inside the nearest bled container and never leaks into a nested one that keeps its padding.
+`--bleed-px` is the one you want when content sits edge-to-edge and needs to line back up with the container's title. Any content area rendered with `bleed` publishes it: `Panel.Content`, `Panel.CollapsibleContent`, `Card.Content`, `Card.Footer` and `Drawer.Content`. Each holds that container's own horizontal padding. The same areas clear it again when they are not bled, so it is in effect only inside the nearest bled container and never leaks into a nested one that keeps its padding.
 
 Prefer it over the container-specific `--panel-px` and `--card-px`: those are set on the container root and inherit into everything below, bled or not, while `--bleed-px` is in effect only where edge alignment actually applies, and the same declaration works whichever container the content ends up in.
 

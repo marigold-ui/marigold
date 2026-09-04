@@ -424,7 +424,7 @@ Selection tells users which item has already been chosen. Not every selection lo
 
 Focus highlight marks the item the user is currently navigating to via keyboard. Unlike selection, which shows a confirmed choice, focus indicates where the user's cursor is right now. Two intensities handle different contexts: a subtle tint for menu items and drop zones, and a bolder fill for inline segments like date fields where the focused part needs to stand out clearly.
 
-A focus highlight is not a focus indicator on its own. `focus-highlight` composites to around 1.05:1 against the surface it tints, well under the 3:1 that [WCAG 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) asks of a state indicator, and in a menu the same tint fires on hover because focus follows the mouse. Pair it with a focus ring: `ui-state-focus` where there is a border to recolor, `ui-state-focus-item` on borderless rows, and let the tint track the cursor while the ring proves where keyboard focus is.
+A focus highlight is not a focus indicator on its own. `focus-highlight` composites to around 1.05:1 against the surface it tints, well under the 3:1 that [WCAG 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) asks of a state indicator, and in a menu the same tint fires on hover because focus follows the mouse. Pair it with a focus ring, `ui-state-focus` where there is a border to recolor and `ui-state-focus-item` on borderless rows. Let the tint track the cursor while the ring proves where keyboard focus is.
 
 <TokenTable
   tokens={[
