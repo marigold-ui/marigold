@@ -1,0 +1,8 @@
+[
+  { "query": "triage the feedback on this PR", "should_trigger": true },
+  { "query": "go through the review comments", "should_trigger": true },
+  { "query": "address the preview comments", "should_trigger": true },
+  { "query": "what should I review next", "should_trigger": false },
+  { "query": "review PR 5776 for me", "should_trigger": false },
+  { "query": "I'll take the next ticket off the board", "should_trigger": false }
+]
