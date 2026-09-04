@@ -1,5 +1,84 @@
 # @marigold/components
 
+## 18.2.0
+
+### Minor Changes
+
+- d7cf7e4: fix(DST-1607): align boolean-field controls to the first line of their label
+
+  A `<Badge variant="master">` placed inline in a `<Checkbox>` label left the box sitting 2px above the text it belongs to. The box was not the problem: `Checkbox` and `Radio` anchor their control to the **first line** of the label with `items-start`, which is correct — it is what keeps the box on line one of a label that wraps. The problem was the line. The label line is `text-sm leading-4` (16px); a default `Badge` is 20px (18px line box plus 1px borders), so the badge inflated the first line and the 16px control, pinned to its top, stopped reaching the line's optical centre.
+
+  Flipping to `items-center` fixes the badge and breaks wrapping labels — the control floats to the middle of the block, 32px off a five-line label. So the fix keeps `items-start` and stops tall decorations from inflating the line.
+
+  **`Badge` gains `size="inline"`** — 16px tall, sized to sit _inside_ a line of text rather than next to one, with the access icon scaled to match. The default size is unchanged.
+
+  **`Checkbox`, `Radio` and `Switch` gain a `badge` slot.** Pass the badge there instead of building it into the label:
+
+  ```tsx
+  <Checkbox
+    label="Enable early bird pricing"
+    badge={<Badge variant="master">Master</Badge>}
+  />
+  ```
+
+  The slot takes the height of the label's line (`1lh`, so it follows the theme), centres the decoration in it, and sizes a `<Badge>` passed to it to `inline` automatically via context — an explicit `size` on the badge still wins. A decoration that fits lands dead on the line; one that does not overflows symmetrically instead of pushing the line apart, so the control stays put either way — the guardrail holds even if a consumer passes a default-sized badge. Those classes live in the component, not in a theme file, so a theme cannot reopen the bug.
+
+  **`Switch` carried the mirror of the same bug** and is now consistent with the other two. It used `items-center`, so a wrapping `variant="settings"` label dropped the track to the middle of the block instead of the first line — measured 28.5px off. It also rendered its label through the shared `Label`, whose `leading-none` gives a 14px line against a 16px track; it now uses its own label slot with a 16px line box, matching `Checkbox` and `Radio`. The accessible name is unchanged — it comes from the wrapping `<label>`'s text either way — and single-line switches keep their exact height and position.
+
+  Checkbox's and Radio's label rows moved from `items-center` to `items-start`, which is identical for a single-line label and correct for a wrapping one. `Radio`'s label stays a plain text block rather than becoming a flex row: `children` is arbitrary, and consumer layouts (e.g. `<Inline alignX="between">`) rely on filling a block-level label the way they fill any other block container.
+
+  `WithBadge` and `LongMultilineLabel` stories for all three components pin both cases under Chromatic, each with a test asserting the control is within 0.5px of the first line's centre.
+
+  **Breaking for external themes:** `Theme['components']['Switch']` is a `Record` with required keys, so a theme outside this repo that defines `Switch` without the new `label` slot now fails `tsc`. `Badge`'s `size="inline"` and the `badge` prop on `Checkbox`/`Radio`/`Switch` are additive.
+
+- 4b9631c: feat(DST-889): mark links that open in a new window
+
+  A `<Link>` that opens a new window or tab now shows an external-link icon after its label plus a hidden, localized "opens in a new window" warning (WCAG G201). Targets that stay in the current window (`_self`, `_top`, `_parent`, in any casing) are untouched, and so are links that open nothing: `disabled` ones, ones with no `href`, and `download` ones, where the browser saves the file and ignores `target`.
+
+  `target="_blank"` also defaults `rel` to `noopener`, which your own `rel` still overrides. A named window gets no default `rel`, because `noopener` makes the browser ignore the window name and open a new tab on every click instead of reusing the window. The cost is that a named window keeps a live `window.opener` handle on your page, which browsers still allow for named targets even though they severed it for `_blank`, so don't point one at an origin you don't control.
+
+  **This is automatic and retroactive.** Every existing `target="_blank"` link gains the icon and a longer accessible name, so tests asserting an exact name need updating: `getByRole('link', { name: 'Terms' })` becomes `getByRole('link', { name: 'Terms opens in a new window' })`.
+
+  An `aria-label` replaces a link's content in its accessible name, so the warning is appended to it rather than dropped. With `aria-labelledby` it is referenced by id instead. That also fixes the `master`/`admin` access label, which an `aria-label` used to swallow.
+
+  There is no `external` prop and no opt-out. Deriving from `target` keeps the API unchanged and makes the indicator reliable, since an opt-in prop gets forgotten and a missing icon reads as "this one stays here". If a link should not carry the icon, do not force the new window.
+
+  **Theme:** `master` and `admin` render slightly differently. They coloured every descendant `svg` with the access token, which would have painted the new-tab glyph too, so `AccessIcon` now carries an `access-icon` class for the theme to select instead. `Menu`'s `master` and `admin` items moved to that same selector. Nothing renders differently today, because an access item's only glyph is the access one, but a consumer icon dropped into such an item no longer picks up the access colour. They also placed their icon with `inline-flex items-center gap-1`, which puts a trailing icon beside a wrapped label instead of after its last word. Both icons are now inline and sized in `em`, so they follow `size="small"` instead of staying at 16px.
+
+- 0c56a11: feat(DST-1391): add `Stepper`, a progress indicator for multi-step tasks.
+
+  `<Stepper>` shows where a user stands in a checkout, an onboarding flow, or a multi-page form, replacing the one-off "Step 1 of 4" widgets that several product flows had each built for themselves. It renders a `<nav>` landmark around an ordered list, announces each step's label, position, and state, and never relies on colour alone to convey which step is which.
+
+  State is entirely consumer-owned. `completedKeys` is a set rather than a high-water mark, so non-contiguous completion coming from a server is expressible, and the component never infers that a step is finished: only your code knows whether validation passed. `selectableKeys` replaces the built-in "completed, errored, or current" rule when a backend decides what is reachable, and `disabledKeys` always wins over both. Errored steps stay clickable by default, so a user who is told a step failed has a way back to it, unless `selectableKeys` leaves them out.
+
+  Steps with an `href` render as real links and route through `RouterProvider`; steps without one render as buttons. Steps that are not reachable render as plain text rather than as disabled controls, since an unreachable step is not a disabled widget. `hideLabels` drops labels visually for flows with too many steps to label, keeping them for screen readers and adding a visible "Step 3 of 5" counter so sighted users still know how far along they are.
+
+### Patch Changes
+
+- 8ba1cc4: fix(DST-1684): ignore virtualized ListBox row measurements taken before the list has a width
+
+  `ListLayout` sizes each virtualized row from the virtualizer's own width, which is `0` on the
+  first layout pass and non-finite in browser-mode test runs. Either way the row wrapper collapses,
+  and since `wrap-anywhere` removed the `min-width: auto` floor on options (DSTSUP-269), a row
+  measured in that state wraps character by character and reports a height in the hundreds of pixels.
+  The resulting scroll-into-view puts the list behind React Aria's 300ms `pointer-events: none`
+  cooldown, which swallows a click on an option.
+
+  The observable failure was confined to browser-mode test runs, where the width never becomes
+  finite. In a real browser the first-pass window never reaches the DOM — `ScrollView` settles its
+  width before commit — so no change in behaviour is expected for `Select`, `ComboBox`,
+  `Autocomplete` or `TagField`. `ListBoxLayout` now rejects measurements taken in that state, closing
+  both paths.
+
+- 7ef7733: `Input` no longer clones its `icon` and `action` children to inject positioning
+  classes. It renders the positioned box itself and lets the child fill it, so a
+  Fragment or a non-element child is placed like anything else, and a `className`
+  you set on the icon or action is left alone instead of being merged. Rendered
+  geometry is unchanged; the icon and action each gain a wrapping `<span>`.
+- Updated dependencies [d7cf7e4]
+- Updated dependencies [0c56a11]
+  - @marigold/system@18.2.0
+
 ## 18.1.0
 
 ### Minor Changes
