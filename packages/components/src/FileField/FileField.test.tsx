@@ -192,6 +192,43 @@ test('names the remove button in German when the locale is de-DE', async () => {
   ).toBeInTheDocument();
 });
 
+test('shows a small file with a unit that fits it, not "0.00 MB"', async () => {
+  const user = userEvent.setup();
+  render(
+    <I18nProvider locale="en-US">
+      <UploadFile.Component multiple />
+    </I18nProvider>
+  );
+  const input = document.querySelector(
+    'input[type="file"]'
+  ) as HTMLInputElement;
+
+  await user.upload(input, [
+    makeFile('import.csv', 'text/csv', 2400),
+    makeFile('report.pdf', 'application/pdf', 2_000_000),
+  ]);
+
+  expect(screen.getByText('2.4 kB')).toBeInTheDocument();
+  expect(screen.getByText('2 MB')).toBeInTheDocument();
+  expect(screen.queryByText('0.00 MB')).not.toBeInTheDocument();
+});
+
+test('formats the file size for the active locale', async () => {
+  const user = userEvent.setup();
+  render(
+    <I18nProvider locale="de-DE">
+      <UploadFile.Component multiple />
+    </I18nProvider>
+  );
+  const input = document.querySelector(
+    'input[type="file"]'
+  ) as HTMLInputElement;
+
+  await user.upload(input, [makeFile('import.csv', 'text/csv', 2400)]);
+
+  expect(screen.getByText('2,4 kB')).toBeInTheDocument();
+});
+
 test('onBeforeRemove receives the file it is about to remove', async () => {
   const user = userEvent.setup();
   const onBeforeRemove = vi.fn(() => true);

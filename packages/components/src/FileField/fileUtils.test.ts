@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
+  FILE_SIZE_FORMAT_OPTIONS,
   filterAcceptedFiles,
+  formatFileSize,
   isFileDropItem,
   normalizeAndLimitFiles,
 } from './fileUtils';
@@ -140,6 +142,46 @@ describe('normalizeAndLimitFiles', () => {
     expect(result).toHaveLength(1);
     expect(result[0].name).toBe('a.txt');
   });
+});
+
+describe('formatFileSize', () => {
+  const formatterFor = (locale: string) =>
+    new Intl.NumberFormat(locale, FILE_SIZE_FORMAT_OPTIONS);
+
+  it.each([
+    [0, '0 B'],
+    [340, '340 B'],
+    [999, '999 B'],
+    [1000, '1 kB'],
+    // The regression from DSTSUP-275: a small CSV used to render "0.00 MB".
+    [2400, '2.4 kB'],
+    [512_000, '512 kB'],
+    [2_000_000, '2 MB'],
+    [1_500_000_000, '1.5 GB'],
+    [3 * 1000 ** 4, '3 TB'],
+    // The unit is picked before rounding, so the ladder must not print its own
+    // step: 999,999 B rounds to 1,000 kB and has to become "1 MB".
+    [1000 ** 2 - 1, '1 MB'],
+  ])('formats %i bytes as "%s" in en-US', (size, expected) => {
+    expect(formatFileSize(size, formatterFor('en-US'))).toBe(expected);
+  });
+
+  it('keeps the largest unit for sizes beyond it', () => {
+    expect(formatFileSize(2 * 1000 ** 5, formatterFor('en-US'))).toBe(
+      '2,000 TB'
+    );
+  });
+
+  it('formats the number for the active locale', () => {
+    expect(formatFileSize(2400, formatterFor('de-DE'))).toBe('2,4 kB');
+  });
+
+  it.each([[-1], [NaN], [Infinity]])(
+    'falls back to "0 B" for the non-size %s',
+    size => {
+      expect(formatFileSize(size, formatterFor('en-US'))).toBe('0 B');
+    }
+  );
 });
 
 describe('isFileDropItem', () => {
