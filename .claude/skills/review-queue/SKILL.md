@@ -1,6 +1,6 @@
 ---
 name: review-queue
-description: Marigold repo — Produce one ranked digest of the review work waiting on you, across every repo in the marigold-ui org. Two sections: open PRs awaiting your review, ranked by the linked DST ticket's sprint and board rank rather than by when it was last touched, and your own PRs that bounced back with changes requested, unresolved review threads, unresolved Vercel preview comments or a failing build. Use when the user asks "what should I review", "what's in my review queue", "which of my PRs need rework", "anything waiting on me", or types `/review-queue`. Read-only: it ranks and reports, and never posts, replies, resolves or transitions anything.
+description: Marigold repo — Produce one ranked digest of the review work waiting on you, across every repo in the marigold-ui org. Two sections: the open PRs that are actually yours to review, meaning nobody else has reviewed them yet or you already have, ranked by the linked DST ticket's sprint and board rank rather than by when it was last touched, and your own PRs that bounced back with changes requested, unresolved review threads, unresolved Vercel preview comments or a failing build. Use when the user asks "what should I review", "what's in my review queue", "which of my PRs need rework", "anything waiting on me", or types `/review-queue`. Read-only: it ranks and reports, and never posts, replies, resolves or transitions anything.
 allowed-tools: Bash(gh api user *), Bash(gh search prs *), Bash(gh repo list *), Bash(gh pr list *), Bash(gh pr view *), Bash(gh api graphql *), Read, mcp__plugin_atlassian_atlassian__searchJiraIssuesUsingJql, mcp__plugin_rx-baseline_atlassian__searchJiraIssuesUsingJql
 ---
 
@@ -125,6 +125,19 @@ One document per repo, since `repository` is the root. Build the aliases from th
 
 `latestReviews[].state` is not the same enum as `reviewDecision`. It carries `APPROVED`, `CHANGES_REQUESTED`, `COMMENTED` and also **`DISMISSED`**, which is a review someone has since dismissed. Treat a dismissed review as absent rather than as an opinion. `reference-app#306` is the live example.
 
+#### Is it yours to review at all
+
+**Cut a PR from section 1 when someone else has reviewed it and you have not.** They are already on it, and a second opinion nobody asked for is the cheapest thing to drop from a queue. #5684 is the case: `sebald` and `jim761` have both commented, every thread is resolved, and there is nothing there for a third reviewer.
+
+So section 1 keeps exactly two kinds of PR:
+
+- **Nobody has reviewed it.** No reviews at all, or only `DISMISSED` ones, which count as absent.
+- **You have reviewed it.** Your involvement continues, whatever anyone else has said.
+
+**An unresolved preview comment does not count as someone reviewing.** It is feedback left for the author, not a code review, so #5740 and #5748 stay in the queue: nobody has looked at either, and their only open feedback is a preview comment. Reading the `Open feedback` column as "somebody is on it" would hide two PRs that no human has read.
+
+**Name the cut rows, never drop them silently.** They go in a `+N cut (others reviewing)` line under the table, one clause each. A PR that others commented on and nobody approved can otherwise sit forever without ever reaching you, which is the failure mode of every review dashboard that filters by cleverness.
+
 #### Whose turn is it
 
 **A PR you have already reviewed is not automatically off your queue, and it is not automatically on it either.** This is the single biggest correctness question in section 1, because the wrong answer puts work you have finished at the top of your own list.
@@ -145,11 +158,16 @@ Do not use `reviewDecision` for this. It stays `CHANGES_REQUESTED` until a revie
 
 ### 5. Extract the ticket key
 
-Cascade, first hit wins, the same shape `/create-pr` uses:
+**Read both the branch and the title, every time. This is not a first-hit-wins cascade.** `/create-pr` stops at the first hit because it only needs one answer, and copying that here silently picks the wrong ticket when the two disagree.
 
-1. `headRefName`
-2. the PR title
-3. no key, and the PR is unranked
+1. Extract from `headRefName` and from the PR title independently.
+2. If they agree, or only one yields a key, use it.
+3. **If they disagree, use the title's key and say so on the row.**
+4. Neither yields a key, and the PR is unranked.
+
+The title wins because it is written as prose, read by every reviewer, edited when wrong, and lands in the changelog. A branch name is typed once at creation and never corrected.
+
+**#5776 is the worked example, and it is why this rule exists.** Its branch is `dst-1745_fix-popover` and its title is `fix(DST-1754): keep popovers inside the body's clip box at the window edge`: transposed digits. DST-1745 is a Core-only invoice-printing migration that is already Done, DST-1754 is the popover bug the PR actually fixes and is In Review in the active sprint. Taking the branch gave the wrong ticket, demoted the PR as "ticket is Done", and made step 8 report DST-1754 as having no PR. One typo, three wrong rows. Checked across all 32 open PRs in the org, it is the only disagreement, so surfacing it costs one flag and almost never fires.
 
 Match `\[?(DSTSUP|DST)-([0-9]+)\]?` case-insensitively, **anchored on the whole key**. A looser `dst-?(\d+)` mis-parses `DSTSUP-275`, and there are real branches and commits for both projects.
 
@@ -266,19 +284,20 @@ The ticket summary was the obvious choice and is the wrong one. It describes the
 
 A real run, both sections, all values verified live:
 
-**Awaiting your review** — 7 of 9 · 5 repos searched · `marigold` and `reference-app` had rows
+**Awaiting your review** — 6 · 3 repos searched, 2 archived skipped
 
 | PR | Title | Author | Ticket | Ranked by | Reviews | Open feedback |
 | --- | --- | --- | --- | --- | --- | --- |
-| #5684 | track marigold-docs MCP server usage | sinan-rsvx | DST-1625 | active sprint | 2 commented | 0/11 threads |
-| #5761 | align boolean-field controls with tall labels | OsamaAbdellateef | DST-1607 | active sprint | you commented | 3/23 threads, 1 outdated |
-| #5740 | expose dependencies on collection owners | sebald | DST-1717 | active sprint | none | 0/2 threads · preview comments |
-| #5748 | distinguish component categories in the sidebar | sebald | DST-1726 | active sprint | none | preview comments |
-| #5764 | format file sizes to reflect magnitude and locale | OsamaAbdellateef | DSTSUP-275 | no sprint field | 2 commented | 9/13 threads, 8 outdated |
-| #5766 | anchor the Calendar year list at year 1 | aromko | DSTSUP-276 | no sprint field | 1 commented | 0/7 threads |
+| #5761 | align boolean-field controls to their label's first line | OsamaAbdellateef | DST-1607 | active sprint | you commented | 3/23 threads, 1 outdated |
+| #5740 | expose `dependencies` on collection owners | sebald | DST-1717 | active sprint | none | 0/2 threads · preview comments |
+| #5748 | make component categories distinguishable in the sidebar | sebald | DST-1726 | active sprint | none | preview comments |
+| #5776 | keep popovers inside the body's clip box | OsamaAbdellateef | DST-1754 ⚠ | active sprint | you requested changes, they pushed since | 2/9 threads · preview comments |
 | ref-app#306 | harden npm supply chain | aromko | — | unranked, no ticket key | 1 dismissed | none |
+| #5779 | lint docs prose with Vale in pre-commit and CI | aromko | DST-1526 | author's turn | you requested changes | 12/12 threads |
 
-`+2 more (--all)`: `#5779` (you requested changes, waiting on aromko), `#5776` (DST-1745 is Done)
+`+3 cut (others reviewing)`: `#5684` (sebald, jim761), `#5764` (aromko, jim761), `#5766` (jim761)
+
+⚠ `#5776` branch says `dst-1745`, title says `DST-1754`. Using the title. The branch has transposed digits.
 
 Build failing: none
 
@@ -294,7 +313,7 @@ A true board rank would mean querying every issue in the sprint and counting, wh
 
 Nothing bounced back. #5777, #5778, #5780 and #5781 are all awaiting first review: no changes requested, no unresolved threads, no preview comments, no CI failures.
 
-**Board says in review, no PR found** — 5
+**Board says in review, no PR found** — 4
 
 | Ticket | Title | Why there is no PR |
 | --- | --- | --- |
@@ -302,9 +321,10 @@ Nothing bounced back. #5777, #5778, #5780 and #5781 are all awaiting first revie
 | DST-1757 | Migrate invoice deletion dialog | Core-only, lives in GitLab |
 | DST-1759 | Migrate sale options settings page | Core-only, lives in GitLab |
 | DST-1529 | Normalize the AI toolkit | PR already merged, ticket never moved to Done |
-| DST-1754 | Popover loses its right edge | No open PR located |
 
-Four things that output is doing on purpose. The rows are in **board order, not recency order**, so #5684 leads despite being the oldest PR in the list, and #5779 sinks despite ranking third on the board because the turn is the author's. The `Ranked by` column **shows its own reasoning**, so the order can be checked rather than trusted. The **empty section is a sentence** naming what it gathered. And the tail earns its place twice over: it catches the GitLab work `gh` cannot see, and it caught DST-1529, whose PR merged while the ticket sat in review. Neither is visible from any GitHub dashboard.
+Note what the two cut lines are doing differently. `+N cut (others reviewing)` is the step 4 filter, and those PRs are not yours to review. `+N more (--all)` is the step 7 cap, and those are yours but did not fit. Collapsing them into one line would say two different things with one number.
+
+Four things that output is doing on purpose. The rows are in **board order, not recency order**, and #5779 sinks below a key-less PR despite ranking second on the board, because the turn is the author's. The `Ranked by` column **shows its own reasoning**, so the order can be checked rather than trusted. The **empty section is a sentence** naming what it gathered. And the tail earns its place twice over: it catches the GitLab work `gh` cannot see, and it caught DST-1529, whose PR merged while the ticket sat in review. Neither is visible from any GitHub dashboard.
 
 Section 2 uses the same shape with `Ranked by` replaced by `Blocking`, which names the changes-requested state or the failing check rather than the sprint.
 
@@ -322,7 +342,9 @@ Close with the hand-offs that continue the loop, **as text, not as invocations**
 
 **A key from a project that is neither `DST` nor `DSTSUP`.** Unranked. Do not invent a board for it or guess at its statuses.
 
-**An open PR whose ticket is already Done.** It happens: PR #5776 is open against DST-1745, whose `statusCategory.key` is `done` and whose localised name is `Fertig`. Rank it last within its section and flag it, because it is one of two things and both want a person. Either the ticket was closed while the PR was still in flight, or the PR is abandoned and wants closing. Do not drop it, and do not let a closed ticket's board rank float it above live work.
+**An open PR whose ticket is already Done.** Rank it last within its section and flag it, because it is one of two things and both want a person. Either the ticket was closed while the PR was still in flight, or the PR is abandoned and wants closing. Do not drop it, and do not let a closed ticket's board rank float it above live work.
+
+There is **no live instance of this** in the org today, and the one that looked like it was not. #5776 appeared to be an open PR on a Done ticket only because its branch name has transposed digits, so step 5 resolved it to DST-1745 instead of DST-1754. The rule stands on its own, but do not go looking for that example: it was a typo wearing a costume.
 
 **Both sections come back empty.** Earn the claim, per the reference. Re-run step 8 without the status clause before reporting a clear board, and check that step 2 returned anything at all. An empty digest and a broken query look identical from the outside.
 
