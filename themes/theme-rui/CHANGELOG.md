@@ -1,5 +1,83 @@
 # @marigold/theme-rui
 
+## 6.2.0
+
+### Minor Changes
+
+- d7cf7e4: fix(DST-1607): align boolean-field controls to the first line of their label
+
+  A `<Badge variant="master">` placed inline in a `<Checkbox>` label left the box sitting 2px above the text it belongs to. The box was not the problem: `Checkbox` and `Radio` anchor their control to the **first line** of the label with `items-start`, which is correct — it is what keeps the box on line one of a label that wraps. The problem was the line. The label line is `text-sm leading-4` (16px); a default `Badge` is 20px (18px line box plus 1px borders), so the badge inflated the first line and the 16px control, pinned to its top, stopped reaching the line's optical centre.
+
+  Flipping to `items-center` fixes the badge and breaks wrapping labels — the control floats to the middle of the block, 32px off a five-line label. So the fix keeps `items-start` and stops tall decorations from inflating the line.
+
+  **`Badge` gains `size="inline"`** — 16px tall, sized to sit _inside_ a line of text rather than next to one, with the access icon scaled to match. The default size is unchanged.
+
+  **`Checkbox`, `Radio` and `Switch` gain a `badge` slot.** Pass the badge there instead of building it into the label:
+
+  ```tsx
+  <Checkbox
+    label="Enable early bird pricing"
+    badge={<Badge variant="master">Master</Badge>}
+  />
+  ```
+
+  The slot takes the height of the label's line (`1lh`, so it follows the theme), centres the decoration in it, and sizes a `<Badge>` passed to it to `inline` automatically via context — an explicit `size` on the badge still wins. A decoration that fits lands dead on the line; one that does not overflows symmetrically instead of pushing the line apart, so the control stays put either way — the guardrail holds even if a consumer passes a default-sized badge. Those classes live in the component, not in a theme file, so a theme cannot reopen the bug.
+
+  **`Switch` carried the mirror of the same bug** and is now consistent with the other two. It used `items-center`, so a wrapping `variant="settings"` label dropped the track to the middle of the block instead of the first line — measured 28.5px off. It also rendered its label through the shared `Label`, whose `leading-none` gives a 14px line against a 16px track; it now uses its own label slot with a 16px line box, matching `Checkbox` and `Radio`. The accessible name is unchanged — it comes from the wrapping `<label>`'s text either way — and single-line switches keep their exact height and position.
+
+  Checkbox's and Radio's label rows moved from `items-center` to `items-start`, which is identical for a single-line label and correct for a wrapping one. `Radio`'s label stays a plain text block rather than becoming a flex row: `children` is arbitrary, and consumer layouts (e.g. `<Inline alignX="between">`) rely on filling a block-level label the way they fill any other block container.
+
+  `WithBadge` and `LongMultilineLabel` stories for all three components pin both cases under Chromatic, each with a test asserting the control is within 0.5px of the first line's centre.
+
+  **Breaking for external themes:** `Theme['components']['Switch']` is a `Record` with required keys, so a theme outside this repo that defines `Switch` without the new `label` slot now fails `tsc`. `Badge`'s `size="inline"` and the `badge` prop on `Checkbox`/`Radio`/`Switch` are additive.
+
+- 741774f: fix(DST-1640): give the `Sidebar.Rail` an overflow affordance and a footer seam
+
+  When a rail's top-level list outgrew the viewport it scrolled, but nothing except the scrollbar said so, and the pinned footer had no seam against the scrolling list, so the two ran together and the scrollbar ended against a hard footer edge. Two scroll-state-aware cues now sit on top of the scrollbar, and a rail that fits still shows no extra chrome:
+
+  - The list fades its overflowing edges via a new `ui-scroll-mask-y` utility, the block-axis twin of `ui-scroll-mask-x` (already behind `Tabs` and `SegmentedControl`). `scroll-padding` keeps a focused tile clear of the fade so its focus ring is never half-erased.
+  - The footer takes the `ui-scroll-seam-*` top hairline the single-column sidebar's footer already had, fading out as the list bottoms out. Being a following sibling of the list is not enough to see its named scroll timeline, so the rail column hoists the name with `ui-scroll-seam-scope`. That scope belongs on the column and no higher: the section panel's `nav` declares the same name, and two declarations in one scope are ambiguous, which kills the animation.
+
+  `ui-scroll-mask-y` differs from the horizontal version in two ways. Its fade defaults narrower (1.25rem), because a row is shorter than a horizontal scroller is wide and 2.5rem would swallow a whole one. And it keeps the scrollbar, where `ui-scroll-mask-x` hides it: a horizontal scrollbar under a row of tabs is unconventional chrome a fade can replace outright, but down the block axis the scrollbar is the conventional affordance and the one a pointer user looks for, so the fade is additive. Pair it with `ui-scrollbar` to theme the scrollbar as usual.
+
+  One caveat, since a mask applies to the whole element: the fade also thins the ends of the scrollbar track. The animation ranges keep the thumb clear of it where it matters (the top fade is 0 exactly when the thumb is at the top), and the narrow default keeps the rest subtle, but it is why the utility wants no border of its own on the masked element.
+
+  Progressive enhancement follows the horizontal version: without scroll-driven animation support (Firefox as of 153) there is no fade, just the scrollbar. The seam now degrades the same way. Its `@supports not` branch pins a hairline on unconditionally, which suits the single-column sidebar, whose nav usually overflows, but not a rail of three to seven sections, which usually fits. Pinning it on there would put a permanent divider under a rail that never scrolls, the one thing a scroll-state-aware affordance exists to avoid. So `ui-scroll-seam-footer` gained a `--seam-fallback-color` hook, and the rail's footer sets it to `transparent`. The cost is that the footer-meets-scrollbar seam stays unfixed in that engine, exactly as it is today. Existing consumers are untouched: leave the property unset and the fallback hairline behaves as before.
+
+  The rail's guidance is unchanged. It is still meant for a small, stable set of sections, and this only makes sure it never looks broken past that, on a short viewport, at high zoom, or with large text.
+
+- 0c56a11: feat(DST-1391): add `Stepper`, a progress indicator for multi-step tasks.
+
+  `<Stepper>` shows where a user stands in a checkout, an onboarding flow, or a multi-page form, replacing the one-off "Step 1 of 4" widgets that several product flows had each built for themselves. It renders a `<nav>` landmark around an ordered list, announces each step's label, position, and state, and never relies on colour alone to convey which step is which.
+
+  State is entirely consumer-owned. `completedKeys` is a set rather than a high-water mark, so non-contiguous completion coming from a server is expressible, and the component never infers that a step is finished: only your code knows whether validation passed. `selectableKeys` replaces the built-in "completed, errored, or current" rule when a backend decides what is reachable, and `disabledKeys` always wins over both. Errored steps stay clickable by default, so a user who is told a step failed has a way back to it, unless `selectableKeys` leaves them out.
+
+  Steps with an `href` render as real links and route through `RouterProvider`; steps without one render as buttons. Steps that are not reachable render as plain text rather than as disabled controls, since an unreachable step is not a disabled widget. `hideLabels` drops labels visually for flows with too many steps to label, keeping them for screen readers and adding a visible "Step 3 of 5" counter so sighted users still know how far along they are.
+
+### Patch Changes
+
+- 4b9631c: feat(DST-889): mark links that open in a new window
+
+  A `<Link>` that opens a new window or tab now shows an external-link icon after its label plus a hidden, localized "opens in a new window" warning (WCAG G201). Targets that stay in the current window (`_self`, `_top`, `_parent`, in any casing) are untouched, and so are links that open nothing: `disabled` ones, ones with no `href`, and `download` ones, where the browser saves the file and ignores `target`.
+
+  `target="_blank"` also defaults `rel` to `noopener`, which your own `rel` still overrides. A named window gets no default `rel`, because `noopener` makes the browser ignore the window name and open a new tab on every click instead of reusing the window. The cost is that a named window keeps a live `window.opener` handle on your page, which browsers still allow for named targets even though they severed it for `_blank`, so don't point one at an origin you don't control.
+
+  **This is automatic and retroactive.** Every existing `target="_blank"` link gains the icon and a longer accessible name, so tests asserting an exact name need updating: `getByRole('link', { name: 'Terms' })` becomes `getByRole('link', { name: 'Terms opens in a new window' })`.
+
+  An `aria-label` replaces a link's content in its accessible name, so the warning is appended to it rather than dropped. With `aria-labelledby` it is referenced by id instead. That also fixes the `master`/`admin` access label, which an `aria-label` used to swallow.
+
+  There is no `external` prop and no opt-out. Deriving from `target` keeps the API unchanged and makes the indicator reliable, since an opt-in prop gets forgotten and a missing icon reads as "this one stays here". If a link should not carry the icon, do not force the new window.
+
+  **Theme:** `master` and `admin` render slightly differently. They coloured every descendant `svg` with the access token, which would have painted the new-tab glyph too, so `AccessIcon` now carries an `access-icon` class for the theme to select instead. `Menu`'s `master` and `admin` items moved to that same selector. Nothing renders differently today, because an access item's only glyph is the access one, but a consumer icon dropped into such an item no longer picks up the access colour. They also placed their icon with `inline-flex items-center gap-1`, which puts a trailing icon beside a wrapped label instead of after its last word. Both icons are now inline and sized in `em`, so they follow `size="small"` instead of staying at 16px.
+
+- Updated dependencies [d7cf7e4]
+- Updated dependencies [4b9631c]
+- Updated dependencies [8ba1cc4]
+- Updated dependencies [7ef7733]
+- Updated dependencies [0c56a11]
+  - @marigold/components@18.2.0
+  - @marigold/system@18.2.0
+
 ## 6.1.0
 
 ### Minor Changes
