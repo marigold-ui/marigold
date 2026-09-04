@@ -1,0 +1,60 @@
+{
+  "skill_name": "create-ticket",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "/create-ticket align the checkbox and radio styles",
+      "expected_output": "Stops at the step-2 completeness gate. The brief states a change rather than a problem, has no outcome checkable by an outsider, and names nothing as out of scope. The skill says which checks failed and routes to /grill without drafting anything. This is the exact regression the SKILL.md records as having happened once: reading the two style files and manufacturing an outcome and a Not-included list from them.",
+      "files": [],
+      "expectations": [
+        "No Jira issue was created and no create tool was called",
+        "No draft ticket was rendered, not even a partial one",
+        "The response names which of the three completeness checks the brief failed",
+        "The response routes the user to /grill rather than proceeding",
+        "The response does not present an Expected Outcome or a Not-included list derived from reading the checkbox and radio style files"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "/create-ticket Problem: the Popover escapes the viewport at the window edge, so its content is clipped and unreachable on narrow screens. Expected outcome: a Popover opened near any window edge stays fully inside the viewport, verifiable in the docs Popover page at 360px width. Included: Popover placement clamping. Not included: Tooltip, and any change to Popover's z-index rung.",
+      "expected_output": "The brief passes the completeness gate, so the skill reads the issue type's fields from Jira, proposes an appetite, and renders the complete ticket at the step-7 gate. It then ends the turn and waits. Nothing reaches Jira.",
+      "files": [],
+      "expectations": [
+        "No Jira issue was created and no create tool was called",
+        "getJiraIssueTypeMetaWithFields was called for project DST with requiredFieldsOnly set to false",
+        "The complete ticket is rendered, showing at least Type, Title, Epic, Appetite and the full Description",
+        "The title begins with a type emoji from the CLAUDE.md convention",
+        "The rendered description uses the section headings from the issue type's own Jira template rather than a set hardcoded in the skill",
+        "Four choices are offered as plain text: Create, Create and add to the active sprint, Edit, and Cancel",
+        "AskUserQuestion was not used to present the confirmation",
+        "The turn ends awaiting the user's next message rather than continuing past the gate"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "/create-ticket Problem: two separate things are slowing the team down. First, Table columns with no explicit width collapse to react-aria's 75px floor and overlap, so wide data tables are unreadable. Second, the release notes page has no way to filter by package, so finding what changed in @marigold/system means reading every entry. Expected outcome: Table columns size to content, and release notes can be filtered by package. Not included: LegacyTable, and the changelog generation script.",
+      "expected_output": "Two unrelated problems, each worth shipping alone and each plausibly picked up by a different person. The skill flags the split before anything else, lists it, and offers to create the first now and run again for the rest. It does not silently fold them into one ticket.",
+      "files": [],
+      "expectations": [
+        "No Jira issue was created and no create tool was called",
+        "The response flags that this is more than one ticket before rendering any draft",
+        "The response lists the proposed split as two distinct tickets",
+        "The response offers to create the first one now and run again for the second",
+        "The response does not combine both problems into a single rendered ticket"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "/create-ticket Problem: the Atlassian MCP server is unreachable from my machine right now. Expected outcome: I still get something I can paste into Jira by hand. Not included: fixing the MCP connection itself.",
+      "expected_output": "A brief the skill can read, but the Jira calls it needs will fail. The skill should report the failure at the first call that fails and stop there rather than carrying on to the confirm gate, then hand over the brief and a draft title as markdown while saying plainly which checks did not run.",
+      "files": [],
+      "expectations": [
+        "No Jira issue was created and no create tool was called",
+        "The response reports the Jira failure at the point it occurred rather than after rendering a full gate",
+        "The response does not claim the duplicate search found nothing",
+        "The response hands over a markdown brief and draft title for manual pasting",
+        "The response states which steps could not run"
+      ]
+    }
+  ]
+}
