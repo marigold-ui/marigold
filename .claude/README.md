@@ -36,6 +36,24 @@ Don't put that marker in the `name`. Plugin and directory-scoped skills are name
 
 Keep the body in `SKILL.md` and push bulk into `references/`. Skills are cheap when idle and expensive when bloated at the top level.
 
+**When two skills need the same reference, it moves up to `skills/references/`** and both link to it:
+
+```
+.claude/skills/
+  references/       # shared across skills, loaded on demand
+  <name>/SKILL.md
+```
+
+Not into `CLAUDE.md`, which loads every session and so would make a rarely-needed reference permanently expensive. Not into `.memory/`, which is domain vocabulary and decision history rather than operational how-to. And not duplicated into both skills, because the copies drift and the one you read is not necessarily the corrected one. `references/jira-board.md` is the worked example: `/pick-up` and `/review-queue` hit the same JQL traps and field ids, so those are written down once.
+
+## Gates and questions
+
+`AskUserQuestion` is the normal way to confirm something, and `/create-pr` uses it at its confirmation step to good effect.
+
+The one thing worth knowing is that it is resolved by the permission component, so a machine configured with `skipAutoPermissionPrompt` can have it return the first option without a person seeing it. That is a property of one setting rather than of the tool, but it means a gate built on it fails toward acting. So for the last step before something irreversible, some skills prefer to render the options as text and end the turn, which no setting can answer on anyone's behalf. `/pick-up` and `/triage-feedback` both make that choice and say why.
+
+Either is fine. Pick per gate, on how expensive the wrong answer is.
+
 ## Skills with side effects
 
 Some skills spend money or touch the outside world. `vrt` dispatches a Chromatic run; a deploy or release skill would be the same class.
