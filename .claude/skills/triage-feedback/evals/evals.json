@@ -17,8 +17,8 @@
     },
     {
       "id": 2,
-      "prompt": "/triage-feedback on a PR that has already been merged",
-      "expected_output": "Step 1 stops on a merged or closed PR. Resolving threads on a landed PR is noise and the fixes have nowhere to go.",
+      "prompt": "/triage-feedback 5770",
+      "expected_output": "PR 5770 is merged, and a merged PR stays merged, so this is a durable target rather than a sentence describing one. The previous prompt read 'on a PR that has already been merged', which named nothing: the executor had to go and find a merged PR itself, and said so.\n\nStep 1 stops on a merged or closed PR, before any gather or mode resolution. Resolving threads on a landed PR is noise and the fixes have nowhere to go.",
       "files": [],
       "expectations": [
         "The response stops and says the PR is merged or closed",
@@ -42,8 +42,8 @@
     },
     {
       "id": 4,
-      "prompt": "/triage-feedback on my own PR while I have a different branch checked out",
-      "expected_output": "Author mode, but the branch is not checked out, so the skill runs author-no-apply: it asks the user to switch to the branch and re-run, and until then every apply row becomes needs-human. Replies do not need the code, fixes do. The skill must not check the branch out itself, because swapping someone's worktree is the largest side effect in the pass.",
+      "prompt": "/triage-feedback 5777",
+      "expected_output": "PRECONDITION: PR 5777 is the user's own, on branch `feat/DST-1665-listview-selection`, and that branch is NOT checked out. Run this from any other branch. If it happens to be checked out the run resolves plain author mode instead and the case is inconclusive.\n\nThe previous prompt read 'on my own PR while I have a different branch checked out', which named no PR and stated the precondition as narration rather than setup.\n\nAuthor mode, no apply: the skill asks the user to switch to the branch and re-run, and until then every apply row becomes needs-human. Replies do not need the code, fixes do. The skill must not check the branch out itself, because swapping someone's worktree is the largest side effect in the pass.",
       "files": [],
       "expectations": [
         "The response identifies the mode as author with no apply",
