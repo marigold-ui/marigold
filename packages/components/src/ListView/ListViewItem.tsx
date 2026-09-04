@@ -8,24 +8,13 @@ import { Provider } from 'react-aria-components/slots';
 import { useObjectRef } from '@react-aria/utils';
 import { ButtonContext as MarigoldButtonContext } from '../Button/Context';
 import { TextValue } from '../TextValue/TextValue';
+import { GridSelectionIndicator } from '../utils/GridSelectionIndicator';
 import type { SlottedContextValue } from '../utils/useMergedTextSlots';
 import { useListViewContext } from './Context';
 
-// A row's content is authored as flat children and laid out by the row's CSS
-// grid. Nothing here inspects the children to decide where they go — every
-// region claims its cell through a slot context, so placement holds however
-// the element is authored: directly, inside a fragment, behind `memo()`, or
-// from a consumer's own component.
-//   - `<TextValue>`/`<Title>` claim the label cell and `<Description>` the
-//     line below it, via the `label`/`title`/`description` slot configs.
-//   - Trailing controls (`<Button>`, `<ActionMenu>`, `<LinkButton>`, or a
-//     `<ButtonGroup>` wrapping several) claim the actions cell via Marigold's
-//     `ButtonContext`, the cascade `Panel.Header` and `SelectList.Option` use.
-// Content that claims nothing — a `<Badge>`, an un-slotted `<Text>` — is
-// auto-placed by the grid and moves as the row's other children change, so
-// the trailing cell supports Button-family controls only (see DST-1681).
-// Each slot config also publishes `data-grid-area`, which makes placement
-// assertable in a test rather than inferred.
+// Children claim their cell via slot contexts (label/title/description on
+// Text/Heading, actions via ButtonContext); the indicator is component-owned.
+// Unclaimed content is auto-placed, so the trailing cell is Button-only (DST-1681).
 
 type RemovedProps = 'className' | 'style' | 'isDisabled';
 
@@ -51,21 +40,13 @@ interface ItemChildrenProps {
   actionsClassName?: string;
 }
 
-// Every Button-family child reads the row's `ButtonContext`, so two of them
-// are two elements explicitly placed in the same cell — they stack, and
-// whichever paints last takes the clicks. The types can't express "wrap
-// several in a `<ButtonGroup>`", so warn once at authoring time, the way
-// `ToggleButtonGroup` warns about `selectionMode`.
-//
-// This hook belongs to `ItemChildren`, not to `ListViewItem`: RAC renders a
-// static collection twice — once to build the collection, then again for the
-// DOM — and only the second pass runs inside the row element, so `row.current`
-// is still `null` in an effect one level up.
+// Two Button-family children both claim the actions cell and stack, and the
+// types can't forbid it, so warn once at authoring time. The hook has to run
+// inside `ItemChildren`: RAC renders a static collection twice and only the
+// second pass is inside the row, so `row.current` is null one level up.
 let hasWarnedStackedActions = false;
 
-// Test-only: lets each test assert the warning independently instead of
-// racing whichever test file happens to trip it first. Not part of the
-// package's public API (not re-exported from `packages/components/src/index.ts`).
+// Test-only: lets each test assert the warning without racing another file.
 export const __resetStackedActionsWarning = () => {
   hasWarnedStackedActions = false;
 };
@@ -76,9 +57,8 @@ const useStackedActionsWarning = (row: RefObject<HTMLElement | null>) => {
       return;
     }
 
-    // Counts what the context actually reached, not what was authored: a
-    // `<ButtonGroup>` re-provides a fresh context, so its buttons don't carry
-    // the attribute and a grouped row stays at one.
+    // Counts what the context reached: a `<ButtonGroup>` re-provides a fresh
+    // one, so its buttons carry no attribute and a grouped row stays at one.
     const claimed = row.current?.querySelectorAll('[data-grid-area="actions"]');
 
     if (claimed && claimed.length > 1) {
@@ -92,13 +72,9 @@ const useStackedActionsWarning = (row: RefObject<HTMLElement | null>) => {
   });
 };
 
-// Merge (not replace) RAC's slot configs on the Text/Heading contexts so
-// nested slotted children pick up our theme classNames without losing RAC's
-// wiring. The `title` slot additionally forces `as: 'span'` so a row's
-// `<Title>` never emits a real `<hN>` — a list must not produce one document
-// heading per row, which would destroy the heading outline for screen-reader
-// users. `<Title>` already supports rendering as a span via this slot config
-// (see `Panel.CollapsibleHeader`); we just supply it here.
+// Merge rather than replace RAC's slot configs, so nested slotted children keep
+// its wiring. `title` forces `as: 'span'`: a list must not emit one document
+// heading per row.
 const ItemChildren = ({
   children,
   row,
@@ -142,9 +118,8 @@ const ItemChildren = ({
           ...(parentHeadingSlots?.title ?? {}),
           as: 'span',
           className: titleClassName,
-          // `label`, not `title`: `<Title>` is the other way to author a
-          // row's primary text and lands in the same cell, and this attribute
-          // names the cell an element occupies.
+          // `label`, not `title`: `<Title>` is the other way to author the
+          // row's primary text and lands in the same cell.
           'data-grid-area': 'label',
         },
       },
@@ -152,11 +127,8 @@ const ItemChildren = ({
     [parentHeadingSlots, titleClassName]
   );
 
-  // Marigold `Button`/`LinkButton`/`ActionMenu` read this context, so the
-  // actions cell and the low-emphasis `ghost` default travel to whichever of
-  // them a row carries; a local `variant` still wins. A `<ButtonGroup>` reads
-  // it too and re-provides a fresh one, so a row with several controls keeps
-  // the positional className on the group and the cascade on its buttons.
+  // Carries the actions cell and the `ghost` default to whichever Button-family
+  // control the row has; a local `variant` wins, and `<ButtonGroup>` re-provides.
   const buttonContextValue = useMemo(
     () => ({
       className: actionsClassName,
@@ -188,9 +160,8 @@ export const ListViewItem = ({
 }: ListViewItemProps) => {
   const { classNames } = useListViewContext();
   const rowRef = useObjectRef(ref);
-  // No warning of our own when this stays `undefined`: RAC's `GridList`
-  // already warns on exactly that condition, and its warning can't be
-  // suppressed — adding one here means two console lines for one mistake.
+  // No warning of our own: RAC's `GridList` already warns on a missing
+  // `textValue`, and its warning can't be suppressed.
   const resolvedTextValue =
     textValue ?? (typeof children === 'string' ? children : undefined);
 
@@ -202,24 +173,33 @@ export const ListViewItem = ({
       className={classNames?.item}
       ref={rowRef}
     >
-      <ItemChildren
-        row={rowRef}
-        labelClassName={classNames?.label}
-        descriptionClassName={classNames?.description}
-        titleClassName={classNames?.title}
-        actionsClassName={classNames?.actions}
-      >
-        {/* A bare string would become an anonymous grid item: no element for
-            a slot context or a selector to reach, so it lands unstyled in
-            whichever cell is free. Wrapping it in `<TextValue>` (which
-            defaults to `slot="label"`) gives the shorthand the same cell and
-            styling as the explicit form. */}
-        {typeof children === 'string' ? (
-          <TextValue>{children}</TextValue>
-        ) : (
-          children
-        )}
-      </ItemChildren>
+      {({ selectionMode, isSelected, isDisabled }) => (
+        <>
+          <GridSelectionIndicator
+            selectionMode={selectionMode}
+            isSelected={isSelected}
+            isDisabled={isDisabled}
+            className={classNames?.indicator}
+            gridArea="indicator"
+          />
+          <ItemChildren
+            row={rowRef}
+            labelClassName={classNames?.label}
+            descriptionClassName={classNames?.description}
+            titleClassName={classNames?.title}
+            actionsClassName={classNames?.actions}
+          >
+            {/* A bare string is an anonymous grid item with no slot context to
+                claim a cell, so wrap it — `<TextValue>` defaults to
+                `slot="label"`. */}
+            {typeof children === 'string' ? (
+              <TextValue>{children}</TextValue>
+            ) : (
+              children
+            )}
+          </ItemChildren>
+        </>
+      )}
     </RACGridListItem>
   );
 };

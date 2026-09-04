@@ -43,6 +43,12 @@ Hidden lists make users do invisible work. Comparing two options in a dropdown m
 
 Use `<SelectList>` when comparison is the point of the field, not when it is one step among many. That usually means a peer-level choice where each option is its own commitment, and getting it right matters more than moving through the form quickly.
 
+### `<SelectList>` vs. `<ListView>`
+
+A [`<ListView>`](/components/collection/listview) is hard to tell apart from this on screen, and it can select rows too. One question settles it: **does the selection need to submit with the form?** Yes is a `<SelectList>`, where the selection is the field's value. No is a `<ListView>`, whose selection you read and commit yourself. Stay here for one case that answers no, though: a `<ListView>` takes only an `aria-label`, so a pick that needs a visible label, helper text, or a validation message is a `<SelectList>` whether or not a `<form>` is involved. See [`<ListView>` vs. `<SelectList>`](/components/collection/listview#listview-vs-selectlist) for what sits behind the question.
+
+The case worth catching here is a pick that never submits: records staged in a dialog and applied with its confirm button. A `<SelectList>` does work there, and it brings a label, a required marker, and validation wiring that the flow never asked for. Use a `<ListView>` for those, and keep `<SelectList>` for the field.
+
 ### Options as cards
 
 The `bordered` variant renders each option as its own outlined card with a small gap between rows, instead of a continuous surface with dividers. Reach for it when the choice is commit-level and each option is a peer the user weighs against the others, like event spaces, subscription plans, payment methods, or shipping modes. The card framing reads as "pick one of these" more strongly than a plain list, and each card has room for a thumbnail, a title, and a short description, the same anatomy as a [`<Card>`](/components/collection/card).
@@ -227,6 +233,7 @@ When an option carries an image, decide whether it conveys information. A decora
 - [Select](/components/form/select): Use when the list is long, options are single-line, and saving vertical space matters more than seeing every option at once.
 - [Combobox](/components/form/combobox): Use for long lists where typing narrows results faster than scanning.
 - [TagField](/components/form/tag-field): Use for multi-select with search, where users add and remove choices as tags.
+- [ListView](/components/collection/listview): Use when the selection stays in your own state instead of submitting with a form.
 - [Table](/components/collection/table): Use when each row is a record with multiple columns of structured data, not a selectable choice.
 
 ## Related
