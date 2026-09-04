@@ -50,14 +50,14 @@ Narrow `allowed-tools` to the exact commands the skill needs. It is the one guar
 
 ## Hooks
 
-Hooks are the opposite of skills. A skill is offered to the model, which decides whether to reach for it. A hook is a shell command Claude Code runs itself at a fixed point in the session, whether anyone wanted it or not. Registration lives in `.claude/settings.json`, scripts live in `.claude/hooks/`, and both are committed, so a hook added here starts running on every teammate's next session.
+Hooks are the opposite of skills. A skill is offered to the model, which decides whether to reach for it. A hook is a shell command Claude Code runs itself at a fixed point in the session, whether anyone wanted it or not. Registration lives in `.claude/settings.json`, scripts live in `.claude/hooks/`, and both are committed, so a hook added here runs on every teammate's machine. Nothing gates it: [workspace trust](https://code.claude.com/docs/en/permissions#project-allow-rules-and-workspace-trust) holds back a project's `permissions.allow` rules, not its hooks, and the file watcher picks up a settings edit mid-session, so a pull can start one running before the next session.
 
 That removes the confirmation gate the section above depends on. A side-effecting skill can be told to ask first. A hook has nobody to ask, so the rule is stricter instead:
 
 1. **A hook may read, and may write only to a cache.** No edits to tracked files, no network, nothing outward-facing. `node_modules/.cache/` is the place for state, because it is gitignored, per-checkout and disposable. A hook must never dirty the working tree.
 2. **It must reject the cases it does not care about in the first few lines**, before doing any work, because it fires on every occurrence of its event. Past that filter, a couple of seconds after a source edit is the ceiling the team accepts: the typecheck hook sits at ~2.6s and is the most expensive hook here. Anything slower needs a change gate, the way that hook gates its `Stop` run on whether the tree moved since the last answer.
 3. **It must degrade to silence, never to noise.** A hook that cannot do its job exits 0 and says nothing. `preflight.mjs` swallows every probe failure for this reason: `SessionStart` discards the output of a hook that exits non-zero, so a crash would cost the session its context block and tell nobody why.
-4. **It carries a named opt-out**, documented here. Personal settings cannot remove a hook the project registers, only `disableAllHooks` can, and that is all or nothing.
+4. **It carries a named opt-out**, documented here. Personal settings cannot remove a single hook the project registers, only `disableAllHooks` can, and that is all or nothing. Never set `"disableAllHooks": false` in this repo's settings: project settings win, so it would override every teammate's personal opt-out.
 
 Write hooks as `#!/usr/bin/env node` ESM with Node built-ins only, matching `scripts/check-*.mjs`. The payload arrives as JSON on stdin and `jq` is not guaranteed to be installed. Commit the executable bit (`chmod +x`), and note that `.claude` is in `.prettierignore`, so nothing will reformat or lint these files for you.
 
