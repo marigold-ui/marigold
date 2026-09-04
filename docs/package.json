@@ -23,7 +23,7 @@
     "build:embeddings": "zx ./scripts/build-embeddings.mjs"
   },
   "dependencies": {
-    "@aws-sdk/client-bedrock-runtime": "3.1101.0",
+    "@aws-sdk/client-bedrock-runtime": "3.1121.0",
     "@internationalized/date": "^3.12.3",
     "@marigold/components": "workspace:*",
     "@marigold/eslint-config": "workspace:*",
@@ -31,7 +31,7 @@
     "@marigold/system": "workspace:*",
     "@marigold/theme-rui": "workspace:*",
     "@modelcontextprotocol/server": "2.0.0",
-    "@octokit/core": "7.0.7",
+    "@octokit/core": "7.0.8",
     "@react-aria/i18n": "3.13.1",
     "@react-types/shared": "3.36.1",
     "@shikijs/transformers": "^4.4.1",
