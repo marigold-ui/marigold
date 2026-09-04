@@ -100,7 +100,8 @@ written for an agent. `CLAUDE.md`, `.memory/**`, `.claude/**`, `docs/superpowers
 `packages/*/src/**/README.md` are deliberately out of scope, and `.claude/README.md` positively
 _requires_ an em dash in skill descriptions. Do not "fix" those files. Generated output
 (`CHANGELOG.md`, `docs/content/releases/*/release.mdx`) is out of scope too, which is why
-changesets are linted at the source instead.
+changesets are linted at the source instead, and so are the dated release posts under
+`docs/content/releases/blog/`, which are historical announcements rather than living docs.
 
 The rules live in `.vale/styles/Marigold/`. A rule at `error` blocks CI. A rule at `warning` is
 advisory, which is how a new rule lands until its existing violations are cleaned up.
