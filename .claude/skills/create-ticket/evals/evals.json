@@ -45,15 +45,16 @@
     },
     {
       "id": 4,
-      "prompt": "/create-ticket Problem: the Atlassian MCP server is unreachable from my machine right now. Expected outcome: I still get something I can paste into Jira by hand. Not included: fixing the MCP connection itself.",
-      "expected_output": "A brief the skill can read, but the Jira calls it needs will fail. The skill should report the failure at the first call that fails and stop there rather than carrying on to the confirm gate, then hand over the brief and a draft title as markdown while saying plainly which checks did not run.",
+      "prompt": "/create-ticket Problem: the Toast region renders above a Modal's underlay, but a Toast dismissed by keyboard returns focus to the body instead of the element that had it before the Modal opened, so a keyboard user is dropped to the top of the page. Expected outcome: dismissing a Toast while a Modal is open returns focus to the Modal, checkable with the Toast story under an open Dialog. Not included: Toast's z-index rung, and the non-modal Toast case.",
+      "expected_output": "A complete brief that names no epic and asks for no sprint. The gate must render Epic as none rather than guessing a parent from the component it touches: the SKILL.md is explicit that a guessed parent files the ticket into someone else's plan, and adding the right one later is cheaper than noticing a wrong one. Sprint stays backlog because --sprint was not passed, and assignee stays unset because filing a ticket is not taking it.",
       "files": [],
       "expectations": [
         "No Jira issue was created and no create tool was called",
-        "The response reports the Jira failure at the point it occurred rather than after rendering a full gate",
-        "The response does not claim the duplicate search found nothing",
-        "The response hands over a markdown brief and draft title for manual pasting",
-        "The response states which steps could not run"
+        "The gate renders Epic as none rather than naming one the brief never mentioned",
+        "The gate shows Sprint as backlog, since --sprint was not passed",
+        "No assignee is set on the rendered ticket",
+        "The duplicate line reports what the step-6 search actually found, rather than a bare claim of none",
+        "The turn ends awaiting the user's next message"
       ]
     }
   ]
