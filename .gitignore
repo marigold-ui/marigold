@@ -50,3 +50,5 @@ next-env.d.ts
 # Vitest browser-mode failure artifacts
 **/__screenshots__
 .vitest-attachments
+
+.vale/bin/

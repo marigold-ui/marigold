@@ -210,7 +210,7 @@ It detects Next.js or Vite, then:
 
 ### marigold doctor
 
-Diagnose why Marigold isn't working in a project and print a checklist with actionable fixes, ideal when components render unstyled or throw, and for AI agents to self-diagnose and repair a setup. All checks read the filesystem only; the freshness check additionally makes a short, best-effort fetch of the docs manifest (skipped with `--offline`).
+Diagnose why Marigold isn't working in a project and print a checklist with actionable fixes, ideal when components render unstyled or throw, and for AI agents to self-diagnose and repair a setup. All checks read the filesystem only. The freshness check additionally makes a short, best-effort fetch of the docs manifest (skipped with `--offline`).
 
 ```bash
 marigold doctor                 # run from your project root
@@ -225,17 +225,17 @@ marigold doctor --offline       # skip the network; freshness uses the cache onl
 
 It checks, against the current working directory:
 
-1. **Packages installed** — `@marigold/components`, `@marigold/system`, and a theme (`@marigold/theme-rui`) are declared.
-2. **Package versions aligned** — installed `@marigold/components` and `@marigold/system` match (they are released together).
-3. **Up to date** — installed versions are the latest published (best-effort; skipped when offline).
-4. **MarigoldProvider wraps the app** — the root layout wraps the app in `<MarigoldProvider>`.
-5. **Theme passed to MarigoldProvider** — a `theme` prop is passed to the provider.
-6. **Tailwind configured for Marigold** — the CSS entry imports `tailwindcss` and `@marigold/theme-rui/theme.css`, declares `@source` for `node_modules/@marigold`, and the framework build plugin is wired up.
-7. **React version compatible** — installed React satisfies `@marigold/components`'s peer requirement.
+1. **Packages installed**: `@marigold/components`, `@marigold/system`, and a theme (`@marigold/theme-rui`) are declared.
+2. **Package versions aligned**: installed `@marigold/components` and `@marigold/system` match (they are released together).
+3. **Up to date**: installed versions are the latest published (best-effort, skipped when offline).
+4. **MarigoldProvider wraps the app**: the root layout wraps the app in `<MarigoldProvider>`.
+5. **Theme passed to MarigoldProvider**: a `theme` prop is passed to the provider.
+6. **Tailwind configured for Marigold**: the CSS entry imports `tailwindcss` and `@marigold/theme-rui/theme.css`, declares `@source` for `node_modules/@marigold`, and the framework build plugin is wired up.
+7. **React version compatible**: installed React satisfies `@marigold/components`'s peer requirement.
 
 <Callout title="Safe for CI">
   Only deterministic, definitely-broken findings (a missing core package, or a
-  components/system version mismatch) are errors; everything heuristic is a
+  components/system version mismatch) are errors. Everything heuristic is a
   warning. `marigold doctor` exits `1` only when there is an error. `--format
   json` emits `{ errors, warnings, passed, text }`, so an agent can derive
   health from `errors.length === 0` and act on each `suggestion`.
@@ -270,7 +270,7 @@ Anything that cannot be decided from the source, a spread that hides slots, a cu
 <Callout title="Dry run first">
   `--dry-run` prints the full report and writes nothing. Interactive runs
   pre-analyze the project and list the changes that actually fire, so you can
-  deselect any of them before applying; report-only checks always run. Applying
+  deselect any of them before applying. Report-only checks always run. Applying
   twice is a no-op, so a partial run can be completed later. After an applied
   run, your typechecker is the completeness check: the slot `Record`s in
   `@marigold/system` are exhaustive.

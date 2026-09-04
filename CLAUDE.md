@@ -71,10 +71,40 @@ The CLI fetches from the Marigold docs site, caches for 24h, and works offline (
 
 - **Typecheck**: Run `pnpm typecheck:only` after code changes
 - **Lint**: Run `pnpm lint` to check code style
+- **Prose**: Run `pnpm lint:prose` after editing docs prose (see [Prose Style](#prose-style))
 - **Format**: Run `pnpm format` before committing
 - **Branch from**: `main` (use GitHub Flow)
 - **Changesets**: Use `pnpm changeset` for version management
 - **Storybook**: Run `pnpm sb` to preview components locally
+
+## Prose Style
+
+Documentation prose is linted. `pnpm lint:prose` runs Vale over the docs site, the changesets
+and the published READMEs, and the Prose CI check runs the same rules. The binary is pinned and downloaded by
+`scripts/vale.mjs` on first use, and pinned there so Renovate can see it.
+
+- **No em dashes.** Rephrase with a comma, a colon, or a second sentence. In a
+  `- **Term** — definition` list item, write `- **Term**: definition`, which is already the
+  dominant form in these docs.
+- **No semicolons in prose.** Use a period or a comma. Semicolons in code are untouched:
+  fenced blocks, code spans and MDX `import` statements are all outside the linted scope.
+- **No en dash asides.** German uses a spaced en dash where English uses an em dash, so this
+  is an easy slip to make. Ranges keep the en dash: `4–9`, `Jan 1 – Dec 31`.
+
+Table cells are exempt from all three. There an em dash is a legitimate "not applicable"
+marker, as in `| — (no class) |`.
+
+These rules govern prose written **for a reader**: `docs/content/**`, `.changeset/*.md`,
+published package READMEs, and the repo's top-level markdown. They do **not** govern prose
+written for an agent. `CLAUDE.md`, `.memory/**`, `.claude/**`, `docs/superpowers/**` and
+`packages/*/src/**/README.md` are deliberately out of scope, and `.claude/README.md` positively
+_requires_ an em dash in skill descriptions. Do not "fix" those files. Generated output
+(`CHANGELOG.md`, `docs/content/releases/*/release.mdx`) is out of scope too, which is why
+changesets are linted at the source instead, and so are the dated release posts under
+`docs/content/releases/blog/`, which are historical announcements rather than living docs.
+
+The rules live in `.vale/styles/Marigold/`. A rule at `error` blocks CI. A rule at `warning` is
+advisory, which is how a new rule lands until its existing violations are cleaned up.
 
 ## Monorepo Structure
 

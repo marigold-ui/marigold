@@ -31,7 +31,7 @@ import { ActionMenuAnatomy } from './action-menu-anatomy';
 
 ActionMenu's trigger is a slot-aware [`<Button>`](/components/actions/button). On its own it renders as the standard `secondary` button, and inside a `<Panel.Header>`, `<SelectList.Option>`, or `<ButtonGroup>` it inherits that container's `variant` and `size` so the menu blends into the row or toolbar it sits on. Set `variant` or `size` on the `<ActionMenu>` to override the inherited values.
 
-The `variant` above styles the trigger only. Menu items carry their own `variant`: mark an item with `variant="destructive"` for high-impact actions (see [Destructive actions](#destructive-actions)), or with `variant="master"` or `variant="admin"` for actions restricted to internal roles — these render a lock or key icon in the matching access color (see the [Admin- and Mastermark pattern](/patterns/layout/admin-master-mark)).
+The `variant` above styles the trigger only. Menu items carry their own `variant`: mark an item with `variant="destructive"` for high-impact actions (see [Destructive actions](#destructive-actions)), or with `variant="master"` or `variant="admin"` for actions restricted to internal roles. These render a lock or key icon in the matching access color (see the [Admin- and Mastermark pattern](/patterns/layout/admin-master-mark)).
 
 ## Usage
 
