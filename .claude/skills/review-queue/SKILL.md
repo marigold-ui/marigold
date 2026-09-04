@@ -91,12 +91,14 @@ query($o:String!,$r:String!){
   }
 }
 fragment prBits on PullRequest {
-  number headRefName reviewDecision
+  number headRefName headRefOid reviewDecision
+  author{ login }
   reviewThreads(first:100){
     totalCount pageInfo{hasNextPage}
     nodes{ isResolved isOutdated }
   }
   latestReviews(first:20){ nodes{ author{login} state } }
+  reviews(last:30){ nodes{ author{login} state submittedAt commit{oid} } }
 }' -f o=marigold-ui -f r=marigold
 ```
 
@@ -109,7 +111,25 @@ One document per repo, since `repository` is the root. Build the aliases from th
 - **Read the caps back**, both `hasNextPage` and a `totalCount` above the 100 fetched.
 - **Drop from section 1 any PR whose `latestReviews` shows your login with state `APPROVED`.** You are done with it, whoever else is not.
 
-In `latestReviews` the `id` and `commit.oid` come back as empty strings. Use `reviews` if you ever need those, and neither is needed here.
+`latestReviews[].state` is not the same enum as `reviewDecision`. It carries `APPROVED`, `CHANGES_REQUESTED`, `COMMENTED` and also **`DISMISSED`**, which is a review someone has since dismissed. Treat a dismissed review as absent rather than as an opinion. `reference-app#306` is the live example.
+
+#### Whose turn is it
+
+**A PR you have already reviewed is not automatically off your queue, and it is not automatically on it either.** This is the single biggest correctness question in section 1, because the wrong answer puts work you have finished at the top of your own list.
+
+Read it from two fields:
+
+| Your latest review on it | The author has pushed since | Turn |
+| --- | --- | --- |
+| `CHANGES_REQUESTED` | no | **theirs**, demote per step 7 |
+| `CHANGES_REQUESTED` | yes | **yours**, they answered your review, rank normally |
+| `COMMENTED` only | either | **yours**, a comment is not a verdict |
+| `APPROVED` | either | dropped above |
+| none | — | **yours**, first review |
+
+"Pushed since" is your latest `CHANGES_REQUESTED` review's `commit.oid` against the PR's current `headRefOid`. **Take the oid from `reviews`, not `latestReviews`**, where it comes back as an empty string. Verified live: on #5779 both are `5f38f3e`, so it is still the author's turn, while on #5776 the review sat on `1165e01` and the head has moved to `63ea2b5`, so the author has answered and it is yours again.
+
+Do not use `reviewDecision` for this. It stays `CHANGES_REQUESTED` until a reviewer approves, so it cannot distinguish "they have not replied yet" from "they pushed fixes and are waiting on you", which are the two cases that matter most.
 
 ### 5. Extract the ticket key
 
@@ -155,7 +175,10 @@ The **response order is the ranking**. Nothing needs to read a rank value, and n
 2. Board rank, from step 6's response order.
 3. Has a ticket but no sprint.
 4. Unranked, at the bottom. **Never dropped.** A PR with no ticket is still a PR someone is waiting on, and repos outside `DST`'s reach have no keys at all.
-5. Below even those, a PR whose ticket is already Done, meaning `status.statusCategory.key == "done"`. Its sprint and rank are live values on a closed ticket, so tier 1 would otherwise float it to the top of the queue. See the edge case below for why it stays in the digest at all.
+5. Below those, a PR where step 4 put the turn with the **author**: you requested changes and they have not pushed since. Nobody is blocked on you.
+6. Below even those, a PR whose ticket is already Done, meaning `status.statusCategory.key == "done"`. Its sprint and rank are live values on a closed ticket, so tier 1 would otherwise float it to the top of the queue. See the edge case below for why it stays in the digest at all.
+
+**Tier 5 is the one that matters most in practice, because it fires often.** Without it a PR you have already reviewed sits near the top of your own queue on the strength of its sprint and rank, and you re-read work you finished days ago. Measured on the first live run: #5779 ranked **third** while the ball was in the author's court, which is the worst single row the digest produced. It is a demotion rather than a drop so that the queue still shows what you are waiting on, and a demoted row says so in `Ranked by`.
 
 **Test tier 5 on the category key, not on the status name.** `status.name == "Done"` matches nothing on a `de` account, where the value is `Fertig`. The tier then silently never fires, and the closed ticket's live rank floats its PR to the top of the queue, which is the exact failure this tier exists to prevent. A ranking rule that fails silently is worse than one that is absent, because the digest still looks ranked.
 
@@ -177,7 +200,7 @@ Aggregate to `any(conclusion == "FAILURE")` and name the failing checks. **Do no
 
 What the cap actually saves is the per-row detail, not the row. So the `+N more` line names the cut items compactly, one clause each, because a reader who cannot see that the two hidden rows are a keyless PR and a closed ticket will run `--all` every time and the cap will have bought nothing. Cutting them to a bare count is the version that gets `--all` typed reflexively.
 
-Every uncapped row carries a one-line why-this-rank. A ranked list whose ranking cannot be checked is asking for trust it has not earned.
+Every uncapped row shows what ranked it, in the `Ranked by` column step 9 defines. A ranked list whose ranking cannot be checked is asking for trust it has not earned, and a column keeps that legible without a second line per row.
 
 ### 8. The board tail: review work with no PR
 
@@ -204,31 +227,45 @@ Terminal output only. **No file.** `/pick-up` writes its plan to `.claude/tasks/
 
 **Strip every emoji from the ticket summary and shorten it to fit one line.** DST titles carry leading type and area emoji by convention (`👁️ Track marigold-docs MCP server usage in Insights`), and the digest already carries the type in the PR title. `/pick-up` strips them the same way when it builds a branch slug.
 
+**One markdown table per section, as the default.** Not a fenced code block: a real table renders as a table in the terminal, and the columns are what make a ranked list scannable. Each section keeps its heading line above the table, carrying the counts and the scope.
+
+**An empty section is a sentence, not an empty table.** A header row with nothing under it reads as a rendering failure, and this skill's whole discipline about empty sections is that they must say what they gathered.
+
 A real run, both sections, all values verified live:
 
-```
-Awaiting your review (7 of 9)      5 repos searched, marigold + reference-app had rows
+**Awaiting your review** — 7 of 9 · 5 repos searched · `marigold` and `reference-app` had rows
 
- 1. #5684  Track MCP usage in Insights      DST-1625  sprint · rank 1 ·  0/11 open
- 2. #5761  Boolean fields misalign          DST-1607  sprint · rank 2 ·  3/23 open
- 3. #5779  Prose style as lint              DST-1526  sprint · rank 3 · 12/12 open
- 4. #5740  Expose dependencies              DST-1717  sprint · rank 5 ·  0/2 open
- 5. #5748  Sidebar category hierarchy       DST-1726  sprint · rank 6 ·  0/0 open
- 6. #5764  FileField size in MB           DSTSUP-275  no sprint    ·  9/13 open, 8 outdated
- 7. #5766  Year list era boundary         DSTSUP-276  no sprint    ·  0/7 open
- +2 more (--all): reference-app#306 (no key), #5776 (DST-1745 is Done)
+| PR | Title | Author | Ticket | Ranked by | Reviews | Open threads |
+| --- | --- | --- | --- | --- | --- | --- |
+| #5684 | Track marigold-docs MCP usage | sinan-rsvx | DST-1625 | active sprint · rank 1 | 2 commented | 0/11 |
+| #5761 | Boolean-field controls misalign | OsamaAbdellateef | DST-1607 | active sprint · rank 2 | you commented | 3/23 |
+| #5764 | FileField size always in MB | OsamaAbdellateef | DSTSUP-275 | no sprint field · rank 1 | 2 commented | 9/13, 8 outdated |
+| #5766 | Year-list era boundary | aromko | DSTSUP-276 | no sprint field · rank 2 | 1 commented | 0/7 |
+| #5740 | Expose dependencies on owners | sebald | DST-1717 | active sprint · rank 5 | none | 0/2 |
+| #5748 | Distinguish sidebar categories | sebald | DST-1726 | active sprint · rank 6 | none | 0/0 |
+| #5776 | Popover right edge | OsamaAbdellateef | DST-1745 | ticket is Done | you requested changes, they pushed since | 2/9 |
 
-Your PRs needing rework (0 of 4 open)
- Nothing bounced back. #5777, #5778, #5780 and #5781 are all awaiting first review,
- no changes requested, no unresolved threads, no failing checks.
+`+2 more (--all)`: `reference-app#306` (no ticket key, one dismissed review), `#5779` (you requested changes, waiting on aromko)
 
-Board says in review, no PR found (5)
- · DST-1750, DST-1757, DST-1759   Core-only, lives in GitLab
- · DST-1529                       PR already merged, ticket never moved to Done
- · DST-1754                       no open PR located
-```
+**No `#` column.** Row order *is* the rank, and `Ranked by` says why, so a position number is a third copy of the same fact and goes stale the moment a row is filtered.
 
-Three things that output is doing on purpose. The rows are in **board order, not recency order**, so #5684 leads despite being the oldest PR in the list. An **empty section says what it gathered** rather than printing nothing. And the tail earns its place twice over: it catches the GitLab work `gh` cannot see, and it caught DST-1529, whose PR merged while the ticket sat in review. Neither is visible from any GitHub dashboard.
+**Your PRs needing rework** — 0 of 4 open
+
+Nothing bounced back. #5777, #5778, #5780 and #5781 are all awaiting first review: no changes requested, no unresolved threads, no failing checks.
+
+**Board says in review, no PR found** — 5
+
+| Ticket | Title | Why there is no PR |
+| --- | --- | --- |
+| DST-1750 | Migrate clearing and cash-register pages | Core-only, lives in GitLab |
+| DST-1757 | Migrate invoice deletion dialog | Core-only, lives in GitLab |
+| DST-1759 | Migrate sale options settings page | Core-only, lives in GitLab |
+| DST-1529 | Normalize the AI toolkit | PR already merged, ticket never moved to Done |
+| DST-1754 | Popover loses its right edge | No open PR located |
+
+Four things that output is doing on purpose. The rows are in **board order, not recency order**, so #5684 leads despite being the oldest PR in the list, and #5779 sinks despite ranking third on the board because the turn is the author's. The `Ranked by` column **shows its own reasoning**, so the order can be checked rather than trusted. The **empty section is a sentence** naming what it gathered. And the tail earns its place twice over: it catches the GitLab work `gh` cannot see, and it caught DST-1529, whose PR merged while the ticket sat in review. Neither is visible from any GitHub dashboard.
+
+Section 2 uses the same shape with `Ranked by` replaced by `Blocking`, which names the changes-requested state or the failing check rather than the sprint.
 
 Close with the hand-offs that continue the loop, **as text, not as invocations**: `/review-pr <n>` for something in the queue, `/triage-feedback <n>` for something needing rework.
 
