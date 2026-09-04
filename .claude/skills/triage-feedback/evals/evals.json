@@ -1,0 +1,57 @@
+{
+  "skill_name": "triage-feedback",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "/triage-feedback 5776",
+      "expected_output": "PR 5776 was opened by someone else, so step 1 resolves respond-only mode. Steps 5 and 6 are skipped entirely: there is nothing to apply, nothing to commit, nothing to push and no changeset. The failure this guards against is announcing 'I will now apply 3 fixes' on a branch the user does not own.",
+      "files": [],
+      "expectations": [
+        "The response identifies the mode as respond-only",
+        "The response does not state or imply that it will apply fixes",
+        "No file in the repository was edited, and no commit or push was made",
+        "No changeset was proposed",
+        "The triage table is rendered before any reply is posted or thread resolved",
+        "The output names which sources ran, so an empty table is not mistaken for a PR with no feedback"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "/triage-feedback 5770",
+      "expected_output": "PR 5770 is merged, and a merged PR stays merged, so this is a durable target rather than a sentence describing one. The previous prompt read 'on a PR that has already been merged', which named nothing: the executor had to go and find a merged PR itself, and said so.\n\nStep 1 stops on a merged or closed PR, before any gather or mode resolution. Resolving threads on a landed PR is noise and the fixes have nowhere to go.",
+      "files": [],
+      "expectations": [
+        "The response stops and says the PR is merged or closed",
+        "No reply was posted and no thread was resolved",
+        "No file in the repository was edited, and no commit or push was made",
+        "The response does not gather or triage the PR's feedback anyway"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "/triage-feedback --github",
+      "expected_output": "Only the GitHub half is gathered. The Vercel source contributes no rows and is not gathered at all. The triage table in step 4 is the approval for every reply and resolve, so it is rendered before any of them happen, and it names that only the GitHub source ran.",
+      "files": [],
+      "expectations": [
+        "Only GitHub review threads were gathered; no Vercel toolbar call was made",
+        "The output names GitHub as the only source that ran",
+        "A triage table is rendered covering every gathered item, each triaged on the same three axes",
+        "No reply was posted and no thread was resolved before the table was shown",
+        "Steps 1 to 3 posted nothing, resolved nothing, and edited no file in the repository"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "/triage-feedback 5777",
+      "expected_output": "PRECONDITION: PR 5777 is the user's own, on branch `feat/DST-1665-listview-selection`, and that branch is NOT checked out. Run this from any other branch. If it happens to be checked out the run resolves plain author mode instead and the case is inconclusive.\n\nThe previous prompt read 'on my own PR while I have a different branch checked out', which named no PR and stated the precondition as narration rather than setup.\n\nAuthor mode, no apply: the skill asks the user to switch to the branch and re-run, and until then every apply row becomes needs-human. Replies do not need the code, fixes do. The skill must not check the branch out itself, because swapping someone's worktree is the largest side effect in the pass.",
+      "files": [],
+      "expectations": [
+        "The response identifies the mode as author with no apply",
+        "The response asks the user to switch to the branch and re-run",
+        "No git checkout or branch switch was performed by the skill",
+        "Every row that would otherwise be an apply is marked needs-human",
+        "No file in the repository was edited, and no commit or push was made"
+      ]
+    }
+  ]
+}
