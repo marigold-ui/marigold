@@ -1,7 +1,7 @@
 ---
 name: review-queue
 description: Marigold repo — Produce one ranked digest of the review work waiting on you, across every repo in the marigold-ui org. Two sections: open PRs awaiting your review, ranked by the linked DST ticket's sprint and board rank rather than by when it was last touched, and your own PRs that bounced back with changes requested, unresolved review threads, unresolved Vercel preview comments or a failing build. Use when the user asks "what should I review", "what's in my review queue", "which of my PRs need rework", "anything waiting on me", or types `/review-queue`. Read-only: it ranks and reports, and never posts, replies, resolves or transitions anything.
-allowed-tools: Bash(gh api user *), Bash(gh search prs *), Bash(gh pr list *), Bash(gh pr view *), Bash(gh api graphql *), Read, mcp__plugin_atlassian_atlassian__searchJiraIssuesUsingJql, mcp__plugin_rx-baseline_atlassian__searchJiraIssuesUsingJql
+allowed-tools: Bash(gh api user *), Bash(gh search prs *), Bash(gh repo list *), Bash(gh pr list *), Bash(gh pr view *), Bash(gh api graphql *), Read, mcp__plugin_atlassian_atlassian__searchJiraIssuesUsingJql, mcp__plugin_rx-baseline_atlassian__searchJiraIssuesUsingJql
 ---
 
 # Review-Queue Skill for Marigold Design System
@@ -49,7 +49,19 @@ One field, because one field is used. Everything else this call could return is 
 
 **The org is the allowlist.** There is no configurable repo list, deliberately: `--owner=marigold-ui` already covers every work repo, excludes personal forks and OSS clones by construction, and cannot go stale the way a hand-maintained list in this file would. DST-1531 asked for the list, and the flag is the same thing without the maintenance.
 
-The result is genuinely multi-repo. At the time of writing it spans `marigold` (15), `search-form-pattern` (11), `reference-app` (3), `insight` (2) and `insights` (1). Note that `insight` and `insights` are two different repositories, and both are live.
+The result is genuinely multi-repo. At the time of writing it spans `marigold` (15), `search-form-pattern` (11), `reference-app` (3), `insight` (2) and `insights` (1). Note that `insight` and `insights` are two different repositories.
+
+**A repo is absent because it has no open PRs, and that is the whole reason.** `starter` and `ai-assistant` are live repos in the org and never appear, because there is nothing open in them. Verified against a per-repo `gh pr list` over all 16 org repos: the direct counts match this search exactly, so the search index is not quietly dropping anything.
+
+**Drop archived repos.** Their PRs cannot be merged, so reviewing one is effort that can never land:
+
+```bash
+gh repo list marigold-ui --limit 100 --json name,isArchived
+```
+
+Two of the five repos above are archived, `insight` and `search-form-pattern`, and between them they hold 13 of the 32 open PRs. Today every one of those is a draft or a renovate PR, so the step 3 filters happen to remove them all, which is luck rather than design: one non-draft human PR on an archived repo would sit in the queue looking reviewable. Count them under "repos searched" and say how many were skipped.
+
+This also retires the example DST-1531 was written around. The ticket cited `marigold-ui/insight` PRs as the live proof that key-less PRs must not be dropped. Those two PRs still exist, but they are drafts on an archived repo now, so `reference-app` is the honest key-less example.
 
 **Read the cap back.** Exactly 100 results means the gather is partial, and the digest has to say so. A digest that silently drops the 101st PR looks complete and is not.
 
@@ -172,7 +184,7 @@ The **response order is the ranking**. Nothing needs to read a rank value, and n
 **Section 1, awaiting your review.** Sort by:
 
 1. In the active sprint before not in it. Match `customfield_10020[].state == "active"`, **never `[0]`**. DST-1625 is the live worked example: it carries `Calvin Klein` (closed) at `[0]` and `Enchantment` (active) at `[1]`, so indexing gets the answer exactly backwards. `DSTSUP` issues have no sprint field at all, so treat missing as "no sprint" rather than as an error.
-2. Board rank, from step 6's response order.
+2. Board rank, from step 6's response order. **Do not print a rank number.** See step 9.
 3. Has a ticket but no sprint.
 4. Unranked, at the bottom. **Never dropped.** A PR with no ticket is still a PR someone is waiting on, and repos outside `DST`'s reach have no keys at all.
 5. Below those, a PR where step 4 put the turn with the **author**: you requested changes and they have not pushed since. Nobody is blocked on you.
@@ -242,7 +254,11 @@ This is the section that makes the digest honest rather than just a prettier Git
 
 Terminal output only. **No file.** `/pick-up` writes its plan to `.claude/tasks/` because a plan is resumable and worth returning to. A queue is a snapshot of a board that moves hourly, and a stale digest on disk that looks authoritative is worse than no digest.
 
-**Strip every emoji from the ticket summary and shorten it to fit one line.** DST titles carry leading type and area emoji by convention (`👁️ Track marigold-docs MCP server usage in Insights`), and the digest already carries the type in the PR title. `/pick-up` strips them the same way when it builds a branch slug.
+**`Title` comes from the PR, not from the ticket.** Strip the Conventional Commits prefix and show the rest: `fix(DSTSUP-276): anchor the Calendar year list at year 1` renders as `anchor the Calendar year list at year 1`. The `Ticket` column already carries the key, so repeating it in the title wastes the widest column in the table.
+
+The ticket summary was the obvious choice and is the wrong one. It describes the ticket, which is often broader than the branch in front of you, and it is not always usable: DSTSUP-276's summary is `Strange things happen when you go back to where Jesus was born :D`, against a PR title of `anchor the Calendar year list at year 1`. Taking the summary also leaves the key-less rows with nothing to show, which needed a second rule of its own.
+
+**Strip every emoji from a ticket summary wherever one is shown**, which after the rule above means the tail table only. DST titles carry leading type and area emoji by convention (`👁️ Track marigold-docs MCP server usage in Insights`). `/pick-up` strips them the same way when it builds a branch slug.
 
 **One markdown table per section, as the default.** Not a fenced code block: a real table renders as a table in the terminal, and the columns are what make a ranked list scannable. Each section keeps its heading line above the table, carrying the counts and the scope.
 
@@ -254,19 +270,21 @@ A real run, both sections, all values verified live:
 
 | PR | Title | Author | Ticket | Ranked by | Reviews | Open feedback |
 | --- | --- | --- | --- | --- | --- | --- |
-| #5684 | Track marigold-docs MCP usage | sinan-rsvx | DST-1625 | active sprint · rank 1 | 2 commented | 0/11 threads |
-| #5761 | Boolean-field controls misalign | OsamaAbdellateef | DST-1607 | active sprint · rank 2 | you commented | 3/23 threads |
-| #5764 | FileField size always in MB | OsamaAbdellateef | DSTSUP-275 | no sprint field · rank 1 | 2 commented | 9/13 threads, 8 outdated |
-| #5766 | Year-list era boundary | aromko | DSTSUP-276 | no sprint field · rank 2 | 1 commented | 0/7 threads |
-| #5740 | Expose dependencies on owners | sebald | DST-1717 | active sprint · rank 5 | none | 0/2 threads · preview comments |
-| #5748 | Distinguish sidebar categories | sebald | DST-1726 | active sprint · rank 6 | none | preview comments |
-| #5776 | Popover right edge | OsamaAbdellateef | DST-1745 | ticket is Done | you requested changes, they pushed since | 2/9 threads · preview comments |
+| #5684 | track marigold-docs MCP server usage | sinan-rsvx | DST-1625 | active sprint | 2 commented | 0/11 threads |
+| #5761 | align boolean-field controls with tall labels | OsamaAbdellateef | DST-1607 | active sprint | you commented | 3/23 threads, 1 outdated |
+| #5740 | expose dependencies on collection owners | sebald | DST-1717 | active sprint | none | 0/2 threads · preview comments |
+| #5748 | distinguish component categories in the sidebar | sebald | DST-1726 | active sprint | none | preview comments |
+| #5764 | format file sizes to reflect magnitude and locale | OsamaAbdellateef | DSTSUP-275 | no sprint field | 2 commented | 9/13 threads, 8 outdated |
+| #5766 | anchor the Calendar year list at year 1 | aromko | DSTSUP-276 | no sprint field | 1 commented | 0/7 threads |
+| ref-app#306 | harden npm supply chain | aromko | — | unranked, no ticket key | 1 dismissed | none |
 
-`+2 more (--all)`: `reference-app#306` (no ticket key, one dismissed review), `#5779` (you requested changes, waiting on aromko)
+`+2 more (--all)`: `#5779` (you requested changes, waiting on aromko), `#5776` (DST-1745 is Done)
 
 Build failing: none
 
-**No `#` column.** Row order *is* the rank, and `Ranked by` says why, so a position number is a third copy of the same fact and goes stale the moment a row is filtered.
+**No `#` column, and no rank number in `Ranked by`.** Row order carries the ordering and `Ranked by` names the basis, so a number adds nothing and actively misleads: it is the position within whatever key set the run happened to query, not a board rank. Measured across two runs of this skill, DST-1717 came back 5th of 6 keys and 9th of 10, same ticket and same board, because the second run also ranked section 2's keys. `/review-queue --review` and a bare `/review-queue` would print different numbers for the same PR.
+
+A true board rank would mean querying every issue in the sprint and counting, which is the large unfiltered query [../references/jira-board.md](../references/jira-board.md) warns off. The relative order is the part that was ever useful, so print only that.
 
 **`Open feedback` carries both kinds**, GitHub review threads and unresolved Vercel preview comments, because both are somebody waiting on an edit and the two are counted in different systems. #5748 has no review threads at all and is still not clean, which a thread count alone renders as `0/0`.
 
