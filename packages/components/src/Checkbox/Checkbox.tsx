@@ -5,6 +5,7 @@ import { StateAttrProps, cn, useClassNames } from '@marigold/system';
 import { BooleanField } from '../FieldBase/BooleanField';
 import { Check } from '../icons/Check';
 import { Minus } from '../icons/Minus';
+import { LabelAdornment } from '../utils/LabelAdornment';
 import { CheckboxGroup } from './CheckboxGroup';
 import { useCheckboxGroupContext } from './Context';
 
@@ -101,6 +102,12 @@ export interface CheckboxProps extends Omit<
    */
   label?: ReactNode;
   /**
+   * A `<Badge>` shown at the end of the label's first line. Use this instead
+   * of putting it in `label` yourself: the slot sizes it to the line so it
+   * doesn't make the line taller than the checkbox next to it.
+   */
+  badge?: ReactNode;
+  /**
    * A helpful text.
    */
   description?: ReactNode;
@@ -121,6 +128,7 @@ const _Checkbox = ({
   variant,
   size,
   label,
+  badge,
   description,
   ref,
   ...rest
@@ -169,7 +177,12 @@ const _Checkbox = ({
               indeterminate={isIndeterminate}
               className={classNames.checkbox}
             />
-            {label && <div className={classNames.label}>{label}</div>}
+            {(label || badge) && (
+              <div className={classNames.label}>
+                {label}
+                {badge && <LabelAdornment>{badge}</LabelAdornment>}
+              </div>
+            )}
           </>
         )}
       </CheckboxButton>
