@@ -9,7 +9,7 @@
       "expectations": [
         "The response identifies the mode as respond-only",
         "The response does not state or imply that it will apply fixes",
-        "No file was edited and no commit or push was made",
+        "No file in the repository was edited, and no commit or push was made",
         "No changeset was proposed",
         "The triage table is rendered before any reply is posted or thread resolved",
         "The output names which sources ran, so an empty table is not mistaken for a PR with no feedback"
@@ -23,7 +23,7 @@
       "expectations": [
         "The response stops and says the PR is merged or closed",
         "No reply was posted and no thread was resolved",
-        "No file was edited and no commit or push was made",
+        "No file in the repository was edited, and no commit or push was made",
         "The response does not gather or triage the PR's feedback anyway"
       ]
     },
@@ -37,7 +37,7 @@
         "The output names GitHub as the only source that ran",
         "A triage table is rendered covering every gathered item, each triaged on the same three axes",
         "No reply was posted and no thread was resolved before the table was shown",
-        "Steps 1 to 3 made no write of any kind"
+        "Steps 1 to 3 posted nothing, resolved nothing, and edited no file in the repository"
       ]
     },
     {
@@ -50,7 +50,7 @@
         "The response asks the user to switch to the branch and re-run",
         "No git checkout or branch switch was performed by the skill",
         "Every row that would otherwise be an apply is marked needs-human",
-        "No file was edited and no commit or push was made"
+        "No file in the repository was edited, and no commit or push was made"
       ]
     }
   ]
