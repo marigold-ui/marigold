@@ -37,7 +37,7 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
   }),
   label: cva({
     base: [
-      'flex items-center gap-1',
+      'flex items-start gap-1',
       'text-sm leading-4 group-[&]/checkboxgroup:font-normal font-medium text-foreground',
       'group-disabled/checkbox:text-disabled',
     ],

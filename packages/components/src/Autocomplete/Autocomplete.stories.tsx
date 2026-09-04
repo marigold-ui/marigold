@@ -2,7 +2,6 @@ import { screen } from '@testing-library/react';
 import { useState } from 'react';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
-import { clickOption } from '.storybook/test-utils';
 import { Center } from '../Center/Center';
 import { Description } from '../Description/Description';
 import { Stack } from '../Stack/Stack';
@@ -381,7 +380,7 @@ LargeDataset.test(
       const options = within(listbox).getAllByRole('option');
       expect(options).toHaveLength(1);
       expect(options[0]).toHaveTextContent('Tenant 500 (item-500)');
-      await clickOption(() => within(listbox).getAllByRole('option')[0]);
+      await userEvent.click(within(listbox).getAllByRole('option')[0]);
     });
 
     await step('Verify selected value appears in the input', async () => {

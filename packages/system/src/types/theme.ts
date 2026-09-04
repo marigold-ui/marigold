@@ -137,7 +137,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Switch?: Record<
-      'container' | 'track' | 'thumb',
+      'container' | 'label' | 'track' | 'thumb',
       ComponentStyleFunction<string, string>
     >;
     Input?: Record<
@@ -207,6 +207,16 @@ export type Theme = {
     >;
     Slider?: Record<
       'container' | 'track' | 'thumb' | 'output' | 'selectedTrack',
+      ComponentStyleFunction<string, string>
+    >;
+    Stepper?: Record<
+      | 'container'
+      | 'item'
+      | 'link'
+      | 'marker'
+      | 'label'
+      | 'connector'
+      | 'count',
       ComponentStyleFunction<string, string>
     >;
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;
