@@ -1,6 +1,6 @@
 ---
 name: review-queue
-description: Marigold repo — Produce one ranked digest of the review work waiting on you, across every repo in the marigold-ui org. Two sections: open PRs awaiting your review, ranked by the linked DST ticket's sprint and board rank rather than by when it was last touched, and your own PRs that bounced back with changes requested, unresolved review threads or failing CI. Use when the user asks "what should I review", "what's in my review queue", "which of my PRs need rework", "anything waiting on me", or types `/review-queue`. Read-only: it ranks and reports, and never posts, replies, resolves or transitions anything.
+description: Marigold repo — Produce one ranked digest of the review work waiting on you, across every repo in the marigold-ui org. Two sections: open PRs awaiting your review, ranked by the linked DST ticket's sprint and board rank rather than by when it was last touched, and your own PRs that bounced back with changes requested, unresolved review threads, unresolved Vercel preview comments or a failing build. Use when the user asks "what should I review", "what's in my review queue", "which of my PRs need rework", "anything waiting on me", or types `/review-queue`. Read-only: it ranks and reports, and never posts, replies, resolves or transitions anything.
 allowed-tools: Bash(gh api user *), Bash(gh search prs *), Bash(gh pr list *), Bash(gh pr view *), Bash(gh api graphql *), Read, mcp__plugin_atlassian_atlassian__searchJiraIssuesUsingJql, mcp__plugin_rx-baseline_atlassian__searchJiraIssuesUsingJql
 ---
 
@@ -182,19 +182,36 @@ The **response order is the ranking**. Nothing needs to read a rank value, and n
 
 **Test tier 5 on the category key, not on the status name.** `status.name == "Done"` matches nothing on a `de` account, where the value is `Fertig`. The tier then silently never fires, and the closed ticket's live rank floats its PR to the top of the queue, which is the exact failure this tier exists to prevent. A ranking rule that fails silently is worse than one that is absent, because the digest still looks ranked.
 
-**Section 2, your PRs needing rework.** The filter is `CHANGES_REQUESTED`, or unresolved threads, or a failing check. Sort by:
+**Section 2, your PRs needing rework.** The filter is `CHANGES_REQUESTED`, or unresolved threads, or unresolved preview comments, or a CI failure. Sort by:
 
-1. A failing check or `CHANGES_REQUESTED` first.
+1. A CI failure or `CHANGES_REQUESTED` first.
 2. Unresolved thread count, descending.
-3. Board rank.
+3. Unresolved preview comments.
+4. Board rank.
 
-For section 2 only, add CI status. It is a handful of PRs, so one call each is cheap:
+Preview comments qualify a PR for this section but sort below a broken build and below review threads, because a build failure blocks everything and a preview comment is usually a smaller edit.
+
+Add check status for both sections. It is one call per PR, so keep it to the rows you are about to print:
 
 ```bash
 gh pr view <n> --repo <owner/repo> --json statusCheckRollup
 ```
 
-Aggregate to `any(conclusion == "FAILURE")` and name the failing checks. **Do not print the rollup.** There are about 25 entries per PR on marigold (Builds, CodeQL, Format, Lint, Size Limit, Typecheck, four Unit Tests shards, four Storybook shards, and the repo's own guards) and the digest dies of it.
+**Do not print the rollup.** There are about 27 entries per PR on marigold (Builds, CodeQL, Format, Lint, Size Limit, Typecheck, four Unit Tests shards, four Storybook shards, three Vercel deploys, and the repo's own guards) and the digest dies of it.
+
+**A red check is not one thing, and `any(conclusion == "FAILURE")` is the wrong aggregate.** Classify into three, because they want three different responses:
+
+| What it is | How to recognise it | What it means |
+| --- | --- | --- |
+| **Our CI failed** | `__typename == "CheckRun"` **and** `workflowName` is non-empty | A real build failure. The PR is not ready to review or to merge |
+| **Unresolved preview comments** | `CheckRun` named `Vercel Preview Comments` | Someone left toolbar feedback on the preview. Not a build failure at all |
+| **A deploy or integration problem** | `__typename == "StatusContext"`, or a `CheckRun` with an empty `workflowName` | Report it as itself. Neither of the above |
+
+Verified on #5776: 22 of its checks are `CheckRun`s carrying a `workflowName` (`Builds`, `CodeQL`, `Format`, `Test`, `Typecheck`, the guards), three are `StatusContext` Vercel deploys, and two are `CheckRun`s with an empty `workflowName`.
+
+**Do not shorten the first rule to "empty `workflowName` means third-party".** A bare `CodeQL` `CheckRun` with an empty `workflowName` sits alongside the `Analyze (javascript)` runs that carry `workflowName: "CodeQL"`. It is GitHub's own aggregate, so treating an empty name as third-party would file a real CodeQL failure as somebody's integration problem.
+
+**`Vercel Preview Comments` is worth more than the mislabelling it caused.** It fails while preview comments are unresolved, which makes it the only window `gh` has into Vercel toolbar feedback: this skill does not talk to the Vercel MCP, and `/triage-feedback` does. It is also independent of GitHub review threads. #5740 has zero unresolved GitHub threads and a red preview check, so folding it into a thread count would lose it entirely. Carry it as feedback and point at `/triage-feedback`, never as failing CI.
 
 **Cap each section at 7.** `--all` lifts it. The cap is the feature: a digest nobody finishes reading by week two has failed, whatever it contains.
 
@@ -235,23 +252,29 @@ A real run, both sections, all values verified live:
 
 **Awaiting your review** — 7 of 9 · 5 repos searched · `marigold` and `reference-app` had rows
 
-| PR | Title | Author | Ticket | Ranked by | Reviews | Open threads |
+| PR | Title | Author | Ticket | Ranked by | Reviews | Open feedback |
 | --- | --- | --- | --- | --- | --- | --- |
-| #5684 | Track marigold-docs MCP usage | sinan-rsvx | DST-1625 | active sprint · rank 1 | 2 commented | 0/11 |
-| #5761 | Boolean-field controls misalign | OsamaAbdellateef | DST-1607 | active sprint · rank 2 | you commented | 3/23 |
-| #5764 | FileField size always in MB | OsamaAbdellateef | DSTSUP-275 | no sprint field · rank 1 | 2 commented | 9/13, 8 outdated |
-| #5766 | Year-list era boundary | aromko | DSTSUP-276 | no sprint field · rank 2 | 1 commented | 0/7 |
-| #5740 | Expose dependencies on owners | sebald | DST-1717 | active sprint · rank 5 | none | 0/2 |
-| #5748 | Distinguish sidebar categories | sebald | DST-1726 | active sprint · rank 6 | none | 0/0 |
-| #5776 | Popover right edge | OsamaAbdellateef | DST-1745 | ticket is Done | you requested changes, they pushed since | 2/9 |
+| #5684 | Track marigold-docs MCP usage | sinan-rsvx | DST-1625 | active sprint · rank 1 | 2 commented | 0/11 threads |
+| #5761 | Boolean-field controls misalign | OsamaAbdellateef | DST-1607 | active sprint · rank 2 | you commented | 3/23 threads |
+| #5764 | FileField size always in MB | OsamaAbdellateef | DSTSUP-275 | no sprint field · rank 1 | 2 commented | 9/13 threads, 8 outdated |
+| #5766 | Year-list era boundary | aromko | DSTSUP-276 | no sprint field · rank 2 | 1 commented | 0/7 threads |
+| #5740 | Expose dependencies on owners | sebald | DST-1717 | active sprint · rank 5 | none | 0/2 threads · preview comments |
+| #5748 | Distinguish sidebar categories | sebald | DST-1726 | active sprint · rank 6 | none | preview comments |
+| #5776 | Popover right edge | OsamaAbdellateef | DST-1745 | ticket is Done | you requested changes, they pushed since | 2/9 threads · preview comments |
 
 `+2 more (--all)`: `reference-app#306` (no ticket key, one dismissed review), `#5779` (you requested changes, waiting on aromko)
 
+Build failing: none
+
 **No `#` column.** Row order *is* the rank, and `Ranked by` says why, so a position number is a third copy of the same fact and goes stale the moment a row is filtered.
+
+**`Open feedback` carries both kinds**, GitHub review threads and unresolved Vercel preview comments, because both are somebody waiting on an edit and the two are counted in different systems. #5748 has no review threads at all and is still not clean, which a thread count alone renders as `0/0`.
+
+**A CI failure gets the line under the table, not a column.** It is rarer than feedback and more serious, it wants the failing workflow named, and as a column it would be six empty cells most days. It stays out of the ranking: the board decides the order and the checks decide whether a row is worth starting, so a red build is a warning on the row rather than a demotion. Letting it reorder the queue would put a mechanical signal back in charge of priority, which is the thing this skill exists to stop.
 
 **Your PRs needing rework** — 0 of 4 open
 
-Nothing bounced back. #5777, #5778, #5780 and #5781 are all awaiting first review: no changes requested, no unresolved threads, no failing checks.
+Nothing bounced back. #5777, #5778, #5780 and #5781 are all awaiting first review: no changes requested, no unresolved threads, no preview comments, no CI failures.
 
 **Board says in review, no PR found** — 5
 
