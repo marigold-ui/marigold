@@ -30,10 +30,10 @@
     {
       "id": 3,
       "prompt": "/review-queue --review",
-      "expected_output": "Only section 1 is printed, and the output says that only that section ran. No rework rows appear. The per-section cap still applies, because --all is orthogonal and was not passed.",
+      "expected_output": "Section 1 is printed and the needs-rework section is not, with the output saying so. The step-8 board tail also renders: it is review work with no PR, so it rides with section 1 rather than being a third thing the flags ignore. The per-section cap still applies, because --all is orthogonal and was not passed.",
       "files": [],
       "expectations": [
-        "Only the awaiting-review section is printed",
+        "The awaiting-review section is printed, and so is the step-8 board tail, which rides with it",
         "The output states that only the awaiting-review section ran",
         "No needs-rework rows appear anywhere in the output",
         "The section is still capped, since --all was not passed",
@@ -49,6 +49,19 @@
         "Both sections are printed, the same as an unflagged invocation",
         "The run does not produce an empty digest on the grounds that the two flags conflict",
         "The output names both sections as having run",
+        "No write reached the repository or any remote: no file in the repo changed, no git command wrote, and no `gh` call posted, reviewed, resolved or merged anything"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "/review-queue --rework",
+      "expected_output": "The mirror of case 3, and the half of the flag rule that case 3 cannot reach. Only the needs-rework section runs. The board tail is review work, so --rework drops it along with section 1, and no awaiting-review rows appear.",
+      "files": [],
+      "expectations": [
+        "Only the needs-rework section is printed",
+        "The output states that only the needs-rework section ran",
+        "No awaiting-review rows appear anywhere in the output",
+        "The step-8 board tail is absent, since it rides with section 1",
         "No write reached the repository or any remote: no file in the repo changed, no git command wrote, and no `gh` call posted, reviewed, resolved or merged anything"
       ]
     }
