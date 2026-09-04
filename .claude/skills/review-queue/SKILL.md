@@ -23,7 +23,9 @@ Board mechanics, JQL traps and field ids live in [../references/jira-board.md](.
 /review-queue --all        # lift the per-section cap
 ```
 
-Passing both `--review` and `--rework` is the same as passing neither. `--all` is orthogonal and combines with either, so `--review --all` is every row of section 1 and nothing else.
+Passing both `--review` and `--rework` is the same as passing neither. `--all` is orthogonal and combines with either, so `--review --all` is every row of section 1, uncapped.
+
+**The board tail from step 8 is review work, so it rides with section 1.** It renders under `--review` and under no flags, and `--rework` drops it along with section 1.
 
 ## Workflow
 
@@ -260,6 +262,8 @@ What the cap actually saves is the per-row detail, not the row. So the `+N more`
 Every uncapped row shows what ranked it, in the `Ranked by` column step 9 defines. A ranked list whose ranking cannot be checked is asking for trust it has not earned, and a column keeps that legible without a second line per row.
 
 ### 8. The board tail: review work with no PR
+
+**This runs with section 1, not independently.** A ticket the board has in review with no PR is review work, so `--review` keeps the tail and `--rework` drops it. Suppressing it under the one flag whose job is to show review work would hide exactly what was asked for.
 
 One JQL call per project, for what the board thinks is in review:
 
