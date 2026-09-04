@@ -324,7 +324,7 @@ Run with `pnpm test:unit`.
 
 ## AI Toolkit
 
-Committed skills live in `.claude/skills/`; plugins are declared in `.claude/settings.json`. See [.claude/README.md](.claude/README.md) for the conventions they follow and the extra rules for skills with side effects.
+Committed skills live in `.claude/skills/`, project hooks in `.claude/hooks/`, and plugins are declared in `.claude/settings.json`. See [.claude/README.md](.claude/README.md) for the conventions they follow, the extra rules for skills with side effects, and how to opt out of a hook.
 
 ### Scoping work: `/grill`
 
@@ -364,7 +364,7 @@ Remember: A story name might not reflect the property name correctly, so always 
 - Docs depend on `@marigold/theme-rui` - rebuild theme package for changes to be visible in docs
 - Storybook uses source folders directly (not dist) - no build needed for stories
 - Git hooks run lint-staged on commit via Husky
-- Node.js 22.x required (check `.node-version`)
+- Node.js version is pinned in `.node-version` (the pre-flight hook reports the installed one and flags a mismatch)
 - **Build before test**: Components must be built before running docs locally
 - **React 19**: This project uses React 19 patterns (newer than many examples online)
 - **Strict TypeScript**: The project enforces strict type checking
