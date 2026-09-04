@@ -2,6 +2,7 @@ import { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { RadioButton, RadioField } from 'react-aria-components/RadioGroup';
 import { cn, createWidthVar, useClassNames } from '@marigold/system';
+import { LabelAdornment } from '../utils/LabelAdornment';
 import { useRadioGroupContext } from './Context';
 import { RadioGroup } from './RadioGroup';
 
@@ -19,6 +20,12 @@ export interface RadioProps extends Omit<RAC.RadioFieldProps, RemovedProps> {
    */
   width?: string;
   children?: ReactNode;
+  /**
+   * A `<Badge>` shown at the end of the label's first line. Use this instead
+   * of putting it in `children` yourself: the slot sizes it to the line so it
+   * doesn't make the line taller than the radio next to it.
+   */
+  badge?: ReactNode;
   /**
    * Set the radio disabled.
    * @default false
@@ -50,6 +57,7 @@ const _Radio = ({
   disabled,
   width,
   children,
+  badge,
   variant: variantProp,
   size: sizeProp,
   ref,
@@ -92,7 +100,15 @@ const _Radio = ({
                 classNames.radio
               )}
             />
-            <div className={classNames.label}>{children}</div>
+            <div className={classNames.label}>
+              {children}
+              {badge && (
+                <>
+                  {' '}
+                  <LabelAdornment>{badge}</LabelAdornment>
+                </>
+              )}
+            </div>
           </>
         )}
       </RadioButton>
