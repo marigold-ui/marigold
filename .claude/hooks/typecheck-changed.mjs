@@ -40,7 +40,16 @@
  *   echo '{"hook_event_name":"Stop"}' | .claude/hooks/typecheck-changed.mjs
  */
 import { execFileSync, spawnSync } from 'node:child_process';
-import { closeSync, existsSync, mkdirSync, openSync, rmSync, statSync } from 'node:fs';
+import {
+  closeSync,
+  existsSync,
+  mkdirSync,
+  openSync,
+  rmSync,
+  statSync,
+  utimesSync,
+  writeFileSync,
+} from 'node:fs';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -66,6 +75,8 @@ const MAX_REPORTED_LINES = 25;
 const cacheDir = join(root, 'node_modules', '.cache', 'marigold-hooks');
 const lockPath = join(cacheDir, 'typecheck.lock');
 const buildInfoPath = join(cacheDir, 'check.tsbuildinfo');
+/** Its mtime is the moment the last completed check started reading. See `lastCheckedMs`. */
+const stampPath = join(cacheDir, 'last-check-start');
 const tscPath = join(root, 'node_modules', '.bin', 'tsc');
 
 // An unforeseen throw is a bug in this hook, not in the edit. Release the lock so the next run
@@ -159,12 +170,17 @@ const changedSince = stampMs => {
   return false;
 };
 
-// tsc rewrites the buildinfo on every completed run, errors included, so its mtime is a stamp
-// for "when did we last have an answer about this tree". A PostToolUse run seconds earlier
-// therefore makes the end-of-turn run a no-op, for ~13ms instead of ~2.6s.
+// "When did we last have an answer about this tree", so a PostToolUse run seconds earlier makes
+// the end-of-turn run a no-op, for ~13ms instead of ~2.6s.
+//
+// The stamp is when the last completed run *started*, not when it finished, and that difference
+// is load-bearing. tsc reads the program in its first moments, so an edit landing mid-run was
+// never in it. Stamping the end would make that edit look already-checked and gate it out of
+// this backstop, which is the one registration that covers it. Stamping the start can only
+// re-check something already covered.
 const lastCheckedMs = (() => {
   try {
-    return statSync(buildInfoPath).mtimeMs;
+    return statSync(stampPath).mtimeMs;
   } catch {
     return null;
   }
@@ -208,6 +224,7 @@ if (!(await lock(isStop ? LOCK_WAIT_MS : 0))) {
   process.exit(0);
 }
 
+const startedMs = Date.now();
 let result;
 try {
   result = spawnSync(
@@ -236,6 +253,13 @@ if (result.error?.code === 'ETIMEDOUT' || result.signal) {
   process.exit(0);
 }
 
+try {
+  writeFileSync(stampPath, '');
+  utimesSync(stampPath, new Date(), new Date(startedMs));
+} catch {
+  // No stamp means the next Stop run re-checks. Wasteful, never wrong.
+}
+
 if (result.status === 0) process.exit(0);
 
 const errorLines = `${result.stdout ?? ''}\n${result.stderr ?? ''}`
@@ -261,7 +285,7 @@ const footer = [
     ? `  ... and ${errorLines.length - shown.length} more error(s).`
     : null,
   own.length === 0 && editedFile
-    ? 'None of these are in the file you just edited, so some may pre-date this session.'
+    ? 'None of these are in the file you just edited.'
     : null,
   'Reproduce with `pnpm typecheck:only`.',
 ].filter(Boolean);

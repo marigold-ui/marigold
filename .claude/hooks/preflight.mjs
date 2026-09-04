@@ -48,9 +48,11 @@ const flush = () => {
   if (flushed) return;
   flushed = true;
   if (lines.length > 0) {
+    // No process.exit() after this. Writes to a pipe are asynchronous on macOS, so exiting here
+    // could truncate the very context block this hook exists to deliver. Nothing is pending on
+    // the event loop, so returning exits 0 on its own.
     console.log(`Marigold pre-flight:\n${lines.map(l => `  ${l}`).join('\n')}`);
   }
-  process.exit(0);
 };
 
 // Every probe below is individually guarded, but an unforeseen throw would still cost the
@@ -89,8 +91,8 @@ const readJson = path => {
 };
 
 /**
- * Commits either side of the fork point with a ref. `behind === 0` also answers ancestry:
- * nothing on the ref is missing from HEAD, so HEAD descends from it.
+ * Commits either side of the fork point with a ref. `...` is a symmetric difference, so both
+ * numbers are already counted from the merge base and stay correct after the trunk moves on.
  */
 const countsAgainst = ref => {
   const out = git('rev-list', '--left-right', '--count', `HEAD...${ref}`);
@@ -113,10 +115,11 @@ const onTrunk = Boolean(branch) && TRUNKS.includes(branch);
 const fork = (() => {
   if (!branch || branch === 'HEAD') return null;
   if (onTrunk) return { trunk: branch, counts: countsAgainst(`origin/${branch}`) };
-  // A branch descending from both trunks merged them, so prefer the nearer fork point.
+  // Fewest own commits wins, which is the nearer fork point. Not `behind === 0`: a trunk that
+  // has moved on since the fork is still the fork point, and on a busy trunk that is the norm.
   return (
     TRUNKS.map(trunk => ({ trunk, counts: countsAgainst(`origin/${trunk}`) }))
-      .filter(f => f.counts?.behind === 0)
+      .filter(f => f.counts)
       .sort((a, b) => a.counts.ahead - b.counts.ahead)[0] ?? null
   );
 })();
@@ -152,7 +155,9 @@ if (pre?.mode === 'pre') {
 
 // 3. Freshness of the origin refs every conclusion above rests on.
 try {
-  const days = (Date.now() - statSync(join(root, '.git', 'FETCH_HEAD')).mtimeMs) / 86_400_000;
+  // Not `<root>/.git`: that is a file in a worktree, and FETCH_HEAD is shared across worktrees.
+  const gitDir = resolve(root, git('rev-parse', '--git-common-dir') ?? '.git');
+  const days = (Date.now() - statSync(join(gitDir, 'FETCH_HEAD')).mtimeMs) / 86_400_000;
   if (days >= 1) {
     lines.push(
       `origin refs last fetched ${Math.round(days)} day(s) ago. Run \`git fetch\` before trusting the branch lines above.`
