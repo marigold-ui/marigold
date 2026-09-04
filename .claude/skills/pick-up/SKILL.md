@@ -36,13 +36,13 @@ project = DST AND sprint in openSprints()
 
 Pass `fields: ["summary", "status", "assignee"]` and `maxResults: 5`. An unfiltered sprint query returns well over a hundred thousand characters and will be truncated before you can read it.
 
-Two things about that query are the result of getting it wrong first:
+Three things about that query are the result of getting it wrong first, and all three are general enough that they now live in [../references/jira-board.md](../references/jira-board.md). What they mean here:
 
-**Status names in JQL are the canonical English ones, and the API hands back localised ones.** A `de` locale account reads `Bereit` off the response, and `status = "Bereit"` then matches nothing. Never round-trip a status name from a response into a query. The ids are locale-proof if you prefer them: `11128` is Ready, `11153` is Backlog.
+**The status names are the canonical English ones**, never the localised ones a `de` account reads back off a response. `11128` is Ready and `11153` is Backlog if you prefer the ids.
 
-**`statusCategory = "To Do"` is too wide.** It also contains `On hold` and `Re-shape`, which are parked and re-scoping rather than startable, so the query names the two startable statuses instead.
+**It names two statuses rather than using `statusCategory = "To Do"`**, which is too wide: that category also holds `On hold` and `Re-shape`, which are parked and re-scoping rather than startable.
 
-**An empty result is a claim you have to earn.** It looks identical to "nothing to pick up", which is how the locale trap above hid itself. Before reporting an empty queue, re-run without the status clause. If that returns rows, the query is broken, not the board.
+**An empty result has to be earned before you report it.** Here it looks identical to "nothing to pick up", which is how the locale trap hid itself. Re-run without the status clause first.
 
 Render the rows as a list with key, title, status and assignee, so "unassigned" and "already mine" are distinguishable, and let the user choose. **Do not auto-take the top row.** Rank is a planning artifact that goes stale, and gathering context for the wrong ticket costs more than one turn.
 
@@ -225,12 +225,13 @@ Then stop. Implementing the plan is the next thing the user asks for, not someth
 
 ## Atlassian MCP rough edges
 
-- **JQL takes canonical English status names, responses return localised ones.** Verified on a `de` account: `status = "Bereit"` matches nothing, `status = "Ready"` matches. Status ids work and are immune to both.
-- **`getJiraIssue` can hang on comment-heavy issues.** Fetch comments in their own call.
-- **The fields the plan template needs are not all guessable.** Sprint is `customfield_10020`, and carried-over issues list their closed sprints alongside the active one. Appetite is `customfield_11370`, free text. The epic is `parent`, which returns the epic's key *and* summary, so its title costs no second call.
-- **Link type names are numbered** in this instance: `1 Relates`, `3 Blocks`. Only relevant for reading a ticket's links.
+All of them live in [../references/jira-board.md](../references/jira-board.md), which `/review-queue` reads too. Read it before writing a query. The ones this skill leans on hardest:
+
+- **JQL takes canonical English status names, responses return localised ones.** Status ids are immune to both.
+- **`getJiraIssue` can hang on comment-heavy issues.** Fetch comments in their own call, which is why step 3 splits them out.
+- **The fields the plan template needs are not guessable.** Sprint is `customfield_10020`, appetite `customfield_11370`, the epic is `parent`.
 - **An unfiltered sprint query is far too large to read.** Always send an explicit `fields` list and a small `maxResults`.
-- **Two Atlassian MCP servers may be connected**, depending on which plugins a developer enabled. Use whichever is authenticated. The tool names differ only in their server prefix.
+- **Two Atlassian MCP servers may be connected.** Use whichever is authenticated.
 
 ## Edge cases
 
