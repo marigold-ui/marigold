@@ -1,0 +1,8 @@
+[
+  { "query": "I'll take DST-1607", "should_trigger": true },
+  { "query": "pick up DST-1607", "should_trigger": true },
+  { "query": "give me my next sprint ticket", "should_trigger": true },
+  { "query": "what should I work on", "should_trigger": true },
+  { "query": "file this in Jira", "should_trigger": false },
+  { "query": "what should I review next", "should_trigger": false }
+]
