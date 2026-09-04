@@ -3,6 +3,7 @@ import type RAC from 'react-aria-components';
 import { Popover } from 'react-aria-components/Popover';
 import { cn, useClassNames } from '@marigold/system';
 import { ResetButtonContext } from '../Button/ResetButtonContext';
+import { getContainerPadding } from './containerPadding';
 
 // Internal Usage Notes
 // ---------------
@@ -45,6 +46,7 @@ const PopoverBase = ({
   offset = 0,
   open,
   matchTriggerWidth = true,
+  containerPadding = getContainerPadding(),
   children,
   ref,
   ...rest
@@ -53,6 +55,7 @@ const PopoverBase = ({
     isKeyboardDismissDisabled: keyboardDismissDisabled,
     isOpen: open,
     placement,
+    containerPadding,
     ...rest,
   };
   const classNames = useClassNames({

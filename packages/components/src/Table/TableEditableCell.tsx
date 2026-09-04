@@ -18,6 +18,7 @@ import {
 import { cn, textAlign, useSmallScreen, verticalAlign } from '@marigold/system';
 import { Dialog } from '../Dialog/Dialog';
 import { Form } from '../Form/Form';
+import { getContainerPadding } from '../Overlay/containerPadding';
 import { Check } from '../icons/Check';
 import { Pencil } from '../icons/Pencil';
 import { X } from '../icons/X';
@@ -120,6 +121,7 @@ const EditableCellPopover = ({
       triggerRef={cellRef}
       offset={verticalOffset}
       placement="bottom start"
+      containerPadding={getContainerPadding()}
       style={{
         minWidth: `min(${triggerWidth}px, ${tableWidth}px)`,
         maxWidth: tableWidth,

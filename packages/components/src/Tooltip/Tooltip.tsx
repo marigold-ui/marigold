@@ -2,6 +2,7 @@ import { type ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { OverlayArrow, Tooltip } from 'react-aria-components/Tooltip';
 import { cn, useClassNames } from '@marigold/system';
+import { getContainerPadding } from '../Overlay/containerPadding';
 import { TooltipArrow } from './TooltipArrow';
 import { TooltipTrigger } from './TooltipTrigger';
 
@@ -16,11 +17,18 @@ export interface TooltipProps extends Omit<RAC.TooltipProps, RemovedProps> {
   size?: string;
 }
 
-const _Tooltip = ({ children, variant, size, ...rest }: TooltipProps) => {
+const _Tooltip = ({
+  children,
+  variant,
+  size,
+  containerPadding = getContainerPadding(),
+  ...rest
+}: TooltipProps) => {
   const classNames = useClassNames({ component: 'Tooltip', variant, size });
 
   return (
     <Tooltip
+      containerPadding={containerPadding}
       {...rest}
       className={cn('group/tooltip z-30', classNames.container)}
     >
