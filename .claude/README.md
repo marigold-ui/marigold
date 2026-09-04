@@ -9,6 +9,7 @@ Claude Code already injects every available skill's name and description into ea
 | Source | Lives in | Applies to |
 | --- | --- | --- |
 | First-party skills | `.claude/skills/<name>/SKILL.md` | Committed, ours to edit |
+| Project hooks | registered in `.claude/settings.json`, scripts in `.claude/hooks/` | Committed, run automatically for everyone |
 | Plugins | declared in `.claude/settings.json` | Installed per-user, versioned upstream |
 | Personal skills | `~/.claude/skills/` | One developer's machine, never the repo |
 
@@ -46,6 +47,37 @@ These carry two extra obligations:
 2. **Confirmation is step 1 of the workflow, before anything is dispatched.** Not a note, not a caveat at the end — the first numbered step.
 
 Narrow `allowed-tools` to the exact commands the skill needs. It is the one guardrail in a skill that is structural rather than a matter of prose.
+
+## Hooks
+
+Hooks are the opposite of skills. A skill is offered to the model, which decides whether to reach for it. A hook is a shell command Claude Code runs itself at a fixed point in the session, whether anyone wanted it or not. Registration lives in `.claude/settings.json`, scripts live in `.claude/hooks/`, and both are committed, so a hook added here runs on every teammate's machine. Nothing gates it: [workspace trust](https://code.claude.com/docs/en/permissions#project-allow-rules-and-workspace-trust) holds back a project's `permissions.allow` rules, not its hooks, and the file watcher picks up a settings edit mid-session, so a pull can start one running before the next session.
+
+That removes the confirmation gate the section above depends on. A side-effecting skill can be told to ask first. A hook has nobody to ask, so the rule is stricter instead:
+
+1. **A hook may read, and may write only to a cache.** No edits to tracked files, no network, nothing outward-facing. `node_modules/.cache/` is the place for state, because it is gitignored, per-checkout and disposable. A hook must never dirty the working tree.
+2. **It must reject the cases it does not care about in the first few lines**, before doing any work, because it fires on every occurrence of its event. Past that filter, a couple of seconds after a source edit is the ceiling the team accepts: the typecheck hook sits at ~2.6s and is the most expensive hook here. Anything slower needs a change gate, the way that hook gates its `Stop` run on whether the tree moved since the last answer.
+3. **It must degrade to silence, never to noise.** A hook that cannot do its job exits 0 and says nothing. `preflight.mjs` swallows every probe failure for this reason: `SessionStart` discards the output of a hook that exits non-zero, so a crash would cost the session its context block and tell nobody why.
+4. **It carries a named opt-out**, documented here. Personal settings cannot remove a single hook the project registers, only `disableAllHooks` can, and that is all or nothing. Never set `"disableAllHooks": false` in this repo's settings: project settings win, so it would override every teammate's personal opt-out.
+
+Write hooks as `#!/usr/bin/env node` ESM with Node built-ins only, matching `scripts/check-*.mjs`. The payload arrives as JSON on stdin and `jq` is not guaranteed to be installed. Commit the executable bit (`chmod +x`), and note that `.claude` is in `.prettierignore`, so nothing will reformat or lint these files for you.
+
+Exit codes are per-event and worth checking against the [hooks reference](https://code.claude.com/docs/en/hooks) rather than assumed. Two that this repo relies on: on `SessionStart`, stdout on exit 0 becomes context the model reads, and on `PostToolUse`, only exit 2 puts stderr in front of the model.
+
+Test one by piping a payload at it, which needs no session:
+
+```sh
+echo '{"hook_event_name":"Stop"}' | .claude/hooks/typecheck-changed.mjs; echo "exit=$?"
+```
+
+Then `/hooks` in a session lists what is registered, and `claude --debug-file /tmp/claude.log` shows which hooks matched and what they returned.
+
+### Opting out
+
+| What | How |
+| --- | --- |
+| The post-edit typecheck | `MARIGOLD_SKIP_TYPECHECK_HOOK=1` in your shell |
+| The session pre-flight | `MARIGOLD_SKIP_PREFLIGHT_HOOK=1` in your shell |
+| Every hook at once | `"disableAllHooks": true` in `~/.claude/settings.json` |
 
 ## Adding and removing
 
