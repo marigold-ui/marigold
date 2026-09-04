@@ -44,9 +44,6 @@ next-env.d.ts
 # Claude Code worktrees
 .claude/worktrees/
 
-# Per-session scratch notes, local to one developer
-.claude/tasks/
-
 # Playwright MCP
 .playwright-mcp
 
