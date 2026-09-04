@@ -23,7 +23,7 @@ Board mechanics, JQL traps and field ids live in [../references/jira-board.md](.
 /review-queue --all        # lift the per-section cap
 ```
 
-Passing both `--review` and `--rework` is the same as passing neither.
+Passing both `--review` and `--rework` is the same as passing neither. `--all` is orthogonal and combines with either, so `--review --all` is every row of section 1 and nothing else.
 
 ## Workflow
 
@@ -49,6 +49,8 @@ One field, because one field is used. Everything else this call could return is 
 
 **The org is the allowlist.** There is no configurable repo list, deliberately: `--owner=marigold-ui` already covers every work repo, excludes personal forks and OSS clones by construction, and cannot go stale the way a hand-maintained list in this file would. DST-1531 asked for the list, and the flag is the same thing without the maintenance.
 
+**There is no `--review-requested=@me`, and that is the largest departure from the ticket.** DST-1531 specifies exactly that flag as the gather, which would be the obvious way to answer "what is waiting on me" and returns nothing at all here: of 15 open PRs on `marigold`, two carry a review request of any kind (#5740 to `aromko`, #5748 to `OsamaAbdellateef`) and none request the author of this file. The team assigns reviewers in conversation rather than in GitHub's field, so a queue built on it would be permanently empty and look like a clear board. So the sweep is org-wide and "is this mine to review" is decided further down, from who has actually reviewed it. That test is in step 4, and it is doing the job the flag was meant to do.
+
 The result is genuinely multi-repo. At the time of writing it spans `marigold` (15), `search-form-pattern` (11), `reference-app` (3), `insight` (2) and `insights` (1). Note that `insight` and `insights` are two different repositories.
 
 **A repo is absent because it has no open PRs, and that is the whole reason.** `starter` and `ai-assistant` are live repos in the org and never appear, because there is nothing open in them. Verified against a per-repo `gh pr list` over all 16 org repos: the direct counts match this search exactly, so the search index is not quietly dropping anything.
@@ -56,8 +58,10 @@ The result is genuinely multi-repo. At the time of writing it spans `marigold` (
 **Drop archived repos.** Their PRs cannot be merged, so reviewing one is effort that can never land:
 
 ```bash
-gh repo list marigold-ui --limit 100 --json name,isArchived
+gh repo list marigold-ui --limit 100 --json nameWithOwner,isArchived
 ```
+
+`nameWithOwner` rather than `name`, so it joins directly against what the search returned. Asking for `name` and comparing it to `owner/repo` matches nothing, which fails in the dangerous direction: the filter drops nothing and every archived repo stays in the queue looking reviewable.
 
 Two of the five repos above are archived, `insight` and `search-form-pattern`, and between them they hold 13 of the 32 open PRs. Today every one of those is a draft or a renovate PR, so the step 3 filters happen to remove them all, which is luck rather than design: one non-draft human PR on an archived repo would sit in the queue looking reviewable. Count them under "repos searched" and say how many were skipped.
 
@@ -67,7 +71,11 @@ This also retires the example DST-1531 was written around. The ticket cited `mar
 
 Take the distinct `repository.nameWithOwner` values. Querying only the repos that have open PRs is why this step exists at all rather than looping over a fixed list.
 
-**Loop with `while read`, never `for r in $REPOS`.** zsh does not word-split unquoted parameters, so the `for` form passes all five repo names to `--repo` as one argument. `gh` then fails, and if its stderr is suppressed the digest comes back empty and looks like a quiet board. This was hit while building the skill, and it is the same class as `/triage-feedback`'s rule about quoting a URL containing `?`.
+**Loop with `while read`, never `for r in $REPOS`.** zsh does not word-split unquoted parameters, so the `for` form passes all five repo names to `--repo` as one argument. `gh` then fails, and if its stderr is suppressed the digest comes back empty and looks like a quiet board. This was hit while building the skill, and it is the same class as `/triage-feedback`'s rule about quoting a URL containing `?`. `set -- $spec` inside such a loop fails the same way, so read the fields with `while IFS=' ' read -r a b` rather than splitting a line yourself.
+
+**Write `.name? // ""` with spaces, never `.name?//""`.** jq reads `?//` as the destructuring-alternative operator and refuses to compile. The guard itself is needed because a `StatusContext` has no `name` at all, only `context`, so step 7's classification has to reach for it defensively. The failure is loud on its own and quiet inside a loop, where the surrounding rows still print and only the cells fed by that filter come out wrong. Same shape as the trap above, a shell or jq metacharacter doing something other than what it looks like, so they live together.
+
+While checking that: **`workflowName` is always present on a `CheckRun`, sometimes as an empty string.** Absent and empty are different tests, and it is the empty one step 7 talks about. The full key set is `__typename, completedAt, conclusion, detailsUrl, name, startedAt, status, workflowName` for a `CheckRun` against `__typename, context, startedAt, state, targetUrl` for a `StatusContext`, which is also why a failing deploy is read off `state` rather than `conclusion`.
 
 ### 3. Pull the detail the search cannot give you
 
@@ -88,7 +96,7 @@ Then filter:
 
 `reviewDecision` is a string enum: `APPROVED`, `CHANGES_REQUESTED`, `REVIEW_REQUIRED`. **`REVIEW_REQUIRED` also means nobody has looked yet**, so it is the normal state of a healthy new PR and never on its own a rework signal.
 
-**Mark a PR whose `baseRefName` is not `main`.** It is stacked on another branch, so reviewing it before its base lands may be premature and its diff may include the base's commits. Say so on the row rather than dropping it: a stacked PR is often exactly what wants reviewing, but the reader needs to know the order. This is not hypothetical, and the skill's own PR is the first one in the repo to be stacked.
+**Mark a PR whose `baseRefName` is not `main`.** It is stacked on another branch, so reviewing it before its base lands may be premature and its diff may include the base's commits. Say so on the row rather than dropping it: a stacked PR is often exactly what wants reviewing, but the reader needs to know the order. Every open PR in the org has `main` as its base today, so this rule currently never fires and is here for the first stack rather than for a live example.
 
 ### 4. Count unresolved threads, in one batched call
 
@@ -109,8 +117,7 @@ fragment prBits on PullRequest {
     totalCount pageInfo{hasNextPage}
     nodes{ isResolved isOutdated }
   }
-  latestReviews(first:20){ nodes{ author{login} state } }
-  reviews(last:30){ nodes{ author{login} state submittedAt commit{oid} } }
+  latestReviews(first:20){ nodes{ author{login} state commit{oid} } }
 }' -f o=marigold-ui -f r=marigold
 ```
 
@@ -118,7 +125,7 @@ One document per repo, since `repository` is the root. Build the aliases from th
 
 **Unresolved count is the highest-signal column in the whole digest, and it is orthogonal to `reviewDecision`.** Measured on real PRs: 5776 and 5761 are both `CHANGES_REQUESTED`, but 5776 has 2 unresolved threads out of 9 and 5761 has 3 out of 23. Ranking on `reviewDecision` alone would treat those as equal, and ranking on total threads would put the almost-finished one first.
 
-- **Do not count `reviews` as a measure of feedback.** Every inline comment submission lands as its own `COMMENTED` review, so PR 5761 shows 20+ entries for 3 live threads.
+- **`reviews` is deliberately not in that query, because a review count is not a measure of feedback.** Every inline comment submission lands as its own `COMMENTED` review, so PR 5761 carries a `reviews.totalCount` of 47 against 3 live threads. `latestReviews` collapses that to one node per author, which is the only shape anything here needs. Ask for `reviews` with a `last:` window and you get the window back rather than the total, which is its own way to misreport this.
 - **`isOutdated` means the diff moved under the thread.** Carry it through as a staleness hint rather than re-deriving it from the diff. Report it, do not subtract it: a thread on a moved hunk is often still a live objection.
 - **Read the caps back**, both `hasNextPage` and a `totalCount` above the 100 fetched.
 - **Drop from section 1 any PR whose `latestReviews` shows your login with state `APPROVED`.** You are done with it, whoever else is not.
@@ -152,7 +159,7 @@ Read it from two fields:
 | `APPROVED` | either | dropped above |
 | none | — | **yours**, first review |
 
-"Pushed since" is your latest `CHANGES_REQUESTED` review's `commit.oid` against the PR's current `headRefOid`. **Take the oid from `reviews`, not `latestReviews`**, where it comes back as an empty string. Verified live: on #5779 both are `5f38f3e`, so it is still the author's turn, while on #5776 the review sat on `1165e01` and the head has moved to `63ea2b5`, so the author has answered and it is yours again.
+"Pushed since" is your latest `CHANGES_REQUESTED` review's `commit.oid` against the PR's current `headRefOid`. Both come off `latestReviews`, which is one node per author and so is already the "latest review" this table asks about. Verified live: on #5779 both oids are `5f38f3e`, so it is still the author's turn, while on #5776 the review sat on `1165e01` and the head has moved to `63ea2b5`, so the author has answered and it is yours again.
 
 Do not use `reviewDecision` for this. It stays `CHANGES_REQUESTED` until a reviewer approves, so it cannot distinguish "they have not replied yet" from "they pushed fixes and are waiting on you", which are the two cases that matter most.
 
@@ -199,18 +206,19 @@ The **response order is the ranking**. Nothing needs to read a rank value, and n
 
 ### 7. Rank, and cap
 
-**Section 1, awaiting your review.** Sort by:
+**Section 1, awaiting your review.** Five tiers, top to bottom. They are named rather than numbered because the prose below refers to them and numbers drift when a tier is inserted:
 
-1. In the active sprint before not in it. Match `customfield_10020[].state == "active"`, **never `[0]`**. DST-1625 is the live worked example: it carries `Calvin Klein` (closed) at `[0]` and `Enchantment` (active) at `[1]`, so indexing gets the answer exactly backwards. `DSTSUP` issues have no sprint field at all, so treat missing as "no sprint" rather than as an error.
-2. Board rank, from step 6's response order. **Do not print a rank number.** See step 9.
-3. Has a ticket but no sprint.
-4. Unranked, at the bottom. **Never dropped.** A PR with no ticket is still a PR someone is waiting on, and repos outside `DST`'s reach have no keys at all.
-5. Below those, a PR where step 4 put the turn with the **author**: you requested changes and they have not pushed since. Nobody is blocked on you.
-6. Below even those, a PR whose ticket is already Done, meaning `status.statusCategory.key == "done"`. Its sprint and rank are live values on a closed ticket, so tier 1 would otherwise float it to the top of the queue. See the edge case below for why it stays in the digest at all.
+1. **Active sprint.** Match `customfield_10020[].state == "active"`, **never `[0]`**. DST-1625 is the live worked example: it carries `Calvin Klein` (closed) at `[0]` and `Enchantment` (active) at `[1]`, so indexing gets the answer exactly backwards. `DSTSUP` issues have no sprint field at all, so treat missing as "no sprint" rather than as an error.
+2. **Ticket, no sprint.**
+3. **Unranked**, meaning no ticket key. **Never dropped.** A PR with no ticket is still a PR someone is waiting on, and repos outside `DST`'s reach have no keys at all.
+4. **Author's turn**: step 4 put the ball in their court, because you requested changes and they have not pushed since. Nobody is blocked on you.
+5. **Ticket already Done**, meaning `status.statusCategory.key == "done"`. Its sprint and rank are live values on a closed ticket, so the active-sprint tier would otherwise float it to the top of the queue. See the edge case below for why it stays in the digest at all.
 
-**Tier 5 is the one that matters most in practice, because it fires often.** Without it a PR you have already reviewed sits near the top of your own queue on the strength of its sprint and rank, and you re-read work you finished days ago. Measured on the first live run: #5779 ranked **third** while the ball was in the author's court, which is the worst single row the digest produced. It is a demotion rather than a drop so that the queue still shows what you are waiting on, and a demoted row says so in `Ranked by`.
+**Board rank orders the rows inside each tier**, taken from step 6's response order. It is not a tier of its own: a well-ranked ticket that is not in the sprint still sits below every sprint row. **Do not print a rank number.** See step 9.
 
-**Test tier 5 on the category key, not on the status name.** `status.name == "Done"` matches nothing on a `de` account, where the value is `Fertig`. The tier then silently never fires, and the closed ticket's live rank floats its PR to the top of the queue, which is the exact failure this tier exists to prevent. A ranking rule that fails silently is worse than one that is absent, because the digest still looks ranked.
+**The author's-turn tier is the one that matters most in practice, because it fires often.** Without it a PR you have already reviewed sits near the top of your own queue on the strength of its sprint and rank, and you re-read work you finished days ago. Measured on the first live run: #5779 ranked **third** while the ball was in the author's court, which is the worst single row the digest produced. It is a demotion rather than a drop so that the queue still shows what you are waiting on, and a demoted row says so in `Ranked by`.
+
+**Test the Done tier on the category key, not on the status name.** `status.name == "Done"` matches nothing on a `de` account, where the value is `Fertig`. The tier then silently never fires, and the closed ticket's live rank floats its PR to the top of the queue, which is the exact failure this tier exists to prevent. A ranking rule that fails silently is worse than one that is absent, because the digest still looks ranked.
 
 **Section 2, your PRs needing rework.** The filter is `CHANGES_REQUESTED`, or unresolved threads, or unresolved preview comments, or a CI failure. Sort by:
 
@@ -221,25 +229,27 @@ The **response order is the ranking**. Nothing needs to read a rank value, and n
 
 Preview comments qualify a PR for this section but sort below a broken build and below review threads, because a build failure blocks everything and a preview comment is usually a smaller edit.
 
-Add check status for both sections. It is one call per PR, so keep it to the rows you are about to print:
+**Fetch check status for every shortlisted PR, before either filter runs.** It is one call per PR:
 
 ```bash
 gh pr view <n> --repo <owner/repo> --json statusCheckRollup
 ```
 
+Not for the rows about to be printed, which is the ordering it is tempting to write and cannot work: two of section 2's four qualifying conditions, a CI failure and unresolved preview comments, exist nowhere but this rollup, so the section cannot know its own membership until the calls are made. Section 1 needs it on every candidate too. #5740 and #5748 both belong in the queue only because of a red preview check, and reporting "nothing bounced back" is a claim about all of your open PRs rather than about a subset. Run it once over the shortlist step 3 produced and rank from what comes back.
+
 **Do not print the rollup.** There are about 27 entries per PR on marigold (Builds, CodeQL, Format, Lint, Size Limit, Typecheck, four Unit Tests shards, four Storybook shards, three Vercel deploys, and the repo's own guards) and the digest dies of it.
 
-**A red check is not one thing, and `any(conclusion == "FAILURE")` is the wrong aggregate.** Classify into three, because they want three different responses:
+**A red check is not one thing, and `any(conclusion == "FAILURE")` is the wrong aggregate.** Classify into three, because they want three different responses. **Match the rows in order and stop at the first hit**, because the name test has to run before the type test:
 
 | What it is | How to recognise it | What it means |
 | --- | --- | --- |
-| **Our CI failed** | `__typename == "CheckRun"` **and** `workflowName` is non-empty | A real build failure. The PR is not ready to review or to merge |
 | **Unresolved preview comments** | `CheckRun` named `Vercel Preview Comments` | Someone left toolbar feedback on the preview. Not a build failure at all |
-| **A deploy or integration problem** | `__typename == "StatusContext"`, or a `CheckRun` with an empty `workflowName` | Report it as itself. Neither of the above |
+| **A deploy or integration problem** | `__typename == "StatusContext"` | Report it as itself. Neither of the above |
+| **Our CI failed** | any remaining `CheckRun`, `workflowName` or not | A real build failure. The PR is not ready to review or to merge |
 
 Verified on #5776: 22 of its checks are `CheckRun`s carrying a `workflowName` (`Builds`, `CodeQL`, `Format`, `Test`, `Typecheck`, the guards), three are `StatusContext` Vercel deploys, and two are `CheckRun`s with an empty `workflowName`.
 
-**Do not shorten the first rule to "empty `workflowName` means third-party".** A bare `CodeQL` `CheckRun` with an empty `workflowName` sits alongside the `Analyze (javascript)` runs that carry `workflowName: "CodeQL"`. It is GitHub's own aggregate, so treating an empty name as third-party would file a real CodeQL failure as somebody's integration problem.
+**Those two empty-name checks are why the CI row is last and tests no `workflowName` at all.** They are `Vercel Preview Comments`, which row 1 has already claimed by name, and a bare `CodeQL` aggregate sitting alongside the `Analyze (javascript)` and `Analyze (typescript)` runs that carry `workflowName: "CodeQL"`. An earlier version of this table read the empty name as third-party and sent that `CodeQL` to the integration row, which files a real security-scan failure as somebody else's problem. There is no live example of a `CheckRun` that is genuinely third-party, so `StatusContext` carries that row alone.
 
 **`Vercel Preview Comments` is worth more than the mislabelling it caused.** It fails while preview comments are unresolved, which makes it the only window `gh` has into Vercel toolbar feedback: this skill does not talk to the Vercel MCP, and `/triage-feedback` does. It is also independent of GitHub review threads. #5740 has zero unresolved GitHub threads and a red preview check, so folding it into a thread count would lose it entirely. Carry it as feedback and point at `/triage-feedback`, never as failing CI.
 
@@ -262,6 +272,8 @@ project = DSTSUP AND status = "Review" ORDER BY Rank ASC
 
 **Subtract against every PR step 3 gathered, before its draft and bot filters, and not against the two rendered sections.** List what is left as "board says in review, no PR found".
 
+**Keep the response order through the subtraction.** These queries carry `ORDER BY Rank ASC` for the same reason step 6's does, and removing rows from a ranked list does not reorder the survivors. It is easy to lose by collecting the leftovers into a set and rendering that instead: on a run where the board held fourteen tickets in review, DST-1529 was tenth and DST-1759 fourteenth, so a tail that ends with 1529 has been sorted by something else.
+
 The distinction is the whole correctness of this section. A ticket whose only PR is a draft is filtered out of both sections, so subtracting the sections reports it as having no PR at all, which is false and sends someone looking for work that already exists. Keep the unfiltered key set from step 3 for exactly this.
 
 It also catches tickets whose PR already merged while the ticket stayed in review. DST-1529 was in exactly that state on the first live run: the work is on `main` and the board still lists it as under review. That is a one-second fix nobody would otherwise notice.
@@ -282,17 +294,17 @@ The ticket summary was the obvious choice and is the wrong one. It describes the
 
 **An empty section is a sentence, not an empty table.** A header row with nothing under it reads as a rendering failure, and this skill's whole discipline about empty sections is that they must say what they gathered.
 
-A real run, both sections, all values verified live:
+A real run, both sections, every value verified live on 2026-09-04. The date is here because this block is a snapshot of a board that moves, and a reader who cannot tell how old it is has to re-check all of it:
 
 **Awaiting your review** — 6 · 3 repos searched, 2 archived skipped
 
 | PR | Title | Author | Ticket | Ranked by | Reviews | Open feedback |
 | --- | --- | --- | --- | --- | --- | --- |
-| #5761 | align boolean-field controls to their label's first line | OsamaAbdellateef | DST-1607 | active sprint | you commented | 3/23 threads, 1 outdated |
-| #5740 | expose `dependencies` on collection owners | sebald | DST-1717 | active sprint | none | 0/2 threads · preview comments |
-| #5748 | make component categories distinguishable in the sidebar | sebald | DST-1726 | active sprint | none | preview comments |
-| #5776 | keep popovers inside the body's clip box | OsamaAbdellateef | DST-1754 ⚠ | active sprint | you requested changes, they pushed since | 2/9 threads · preview comments |
-| ref-app#306 | harden npm supply chain | aromko | — | unranked, no ticket key | 1 dismissed | none |
+| #5761 | align boolean-field controls to the first line of their label | OsamaAbdellateef | DST-1607 | active sprint | you commented | 3/23 threads, 1 outdated |
+| #5740 | expose `dependencies` on the components that own their collection | sebald | DST-1717 | active sprint | none | 0/2 threads · preview comments |
+| #5748 | make component categories distinguishable in the docs sidebar | sebald | DST-1726 | active sprint | none | preview comments |
+| #5776 | keep popovers inside the body's clip box at the window edge | OsamaAbdellateef | DST-1754 ⚠ | active sprint | you requested changes, they pushed since | 2/9 threads · preview comments |
+| ref-app#306 | harden npm supply chain (pnpm 11 + min-release-age + renovate) | aromko | — | unranked, no ticket key | 1 dismissed | none |
 | #5779 | lint docs prose with Vale in pre-commit and CI | aromko | DST-1526 | author's turn | you requested changes | 12/12 threads |
 
 `+3 cut (others reviewing)`: `#5684` (sebald, jim761), `#5764` (aromko, jim761), `#5766` (jim761)
@@ -301,7 +313,7 @@ A real run, both sections, all values verified live:
 
 Build failing: none
 
-**No `#` column, and no rank number in `Ranked by`.** Row order carries the ordering and `Ranked by` names the basis, so a number adds nothing and actively misleads: it is the position within whatever key set the run happened to query, not a board rank. Measured across two runs of this skill, DST-1717 came back 5th of 6 keys and 9th of 10, same ticket and same board, because the second run also ranked section 2's keys. `/review-queue --review` and a bare `/review-queue` would print different numbers for the same PR.
+**No `#` column, and no rank number in `Ranked by`.** Row order carries the ordering and `Ranked by` names the basis, so a number adds nothing and actively misleads: it is the position within whatever key set the run happened to query, not a board rank. Measured across two runs of this skill, DST-1717 came back 3rd of 5 keys and 6th of 8, same ticket and same board, because the second run also ranked section 2's keys. `/review-queue --review` and a bare `/review-queue` would print different numbers for the same PR.
 
 A true board rank would mean querying every issue in the sprint and counting, which is the large unfiltered query [../references/jira-board.md](../references/jira-board.md) warns off. The relative order is the part that was ever useful, so print only that.
 
@@ -311,16 +323,16 @@ A true board rank would mean querying every issue in the sprint and counting, wh
 
 **Your PRs needing rework** — 0 of 4 open
 
-Nothing bounced back. #5777, #5778, #5780 and #5781 are all awaiting first review: no changes requested, no unresolved threads, no preview comments, no CI failures.
+Nothing bounced back. #5777, #5778, #5780 and #5781 are all awaiting first review: no changes requested, no unresolved threads, no preview comments, no CI failures. A fifth, #5786, is a draft and so is not counted, which is the step 3 filter working rather than a row going missing.
 
 **Board says in review, no PR found** — 4
 
 | Ticket | Title | Why there is no PR |
 | --- | --- | --- |
-| DST-1750 | Migrate clearing and cash-register pages | Core-only, lives in GitLab |
-| DST-1757 | Migrate invoice deletion dialog | Core-only, lives in GitLab |
-| DST-1759 | Migrate sale options settings page | Core-only, lives in GitLab |
-| DST-1529 | Normalize the AI toolkit | PR already merged, ticket never moved to Done |
+| DST-1750 | Migrate the clearing and cash-register pages to TWIG and RUI styles | Core-only, lives in GitLab |
+| DST-1757 | Migrate the invoice deletion dialog to RUI styles and document the RUI List component | Core-only, lives in GitLab |
+| DST-1529 | Normalize the AI toolkit to one SKILL.md standard | PR already merged, ticket never moved to Done |
+| DST-1759 | Migrate the sale options settings page to RUI styles | Core-only, lives in GitLab |
 
 Note what the two cut lines are doing differently. `+N cut (others reviewing)` is the step 4 filter, and those PRs are not yours to review. `+N more (--all)` is the step 7 cap, and those are yours but did not fit. Collapsing them into one line would say two different things with one number.
 
