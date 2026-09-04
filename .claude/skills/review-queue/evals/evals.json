@@ -8,7 +8,7 @@
       "files": [],
       "expectations": [
         "A digest is printed covering both the awaiting-review and needs-rework sections",
-        "No write of any kind occurred: no Write, no Edit, no git command, no gh pr review",
+        "No write reached the repository or any remote: no file in the repo changed, no git command wrote, and no `gh` call posted, reviewed, resolved or merged anything",
         "The output names which sections ran, so an empty section is distinguishable from one never gathered",
         "The user's own login was read at run time rather than taken from a value written in the skill file",
         "Each section is capped rather than printing every row"
@@ -37,7 +37,7 @@
         "The output states that only the awaiting-review section ran",
         "No needs-rework rows appear anywhere in the output",
         "The section is still capped, since --all was not passed",
-        "No write of any kind occurred"
+        "No write reached the repository or any remote: no file in the repo changed, no git command wrote, and no `gh` call posted, reviewed, resolved or merged anything"
       ]
     },
     {
@@ -49,7 +49,7 @@
         "Both sections are printed, the same as an unflagged invocation",
         "The run does not produce an empty digest on the grounds that the two flags conflict",
         "The output names both sections as having run",
-        "No write of any kind occurred"
+        "No write reached the repository or any remote: no file in the repo changed, no git command wrote, and no `gh` call posted, reviewed, resolved or merged anything"
       ]
     }
   ]
