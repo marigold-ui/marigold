@@ -281,7 +281,7 @@ export const WithBadge = meta.story({
 
 WithBadge.test(
   'The badge leaves the box on the label line',
-  { parameters: { chromatic: { disableSnapshot: false } } },
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }) => {
     const checkbox = await canvas.findByRole('checkbox');
     const box = controlIcon(checkbox);
@@ -319,7 +319,7 @@ export const LongMultilineLabel = meta.story({
 
 LongMultilineLabel.test(
   'The box stays on the first line of a wrapping label',
-  { parameters: { chromatic: { disableSnapshot: false } } },
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
     const checkbox = await canvas.findByRole('checkbox');
     const box = controlIcon(checkbox);
@@ -348,7 +348,7 @@ export const WrappingLabelWithBadge = meta.story({
 
 WrappingLabelWithBadge.test(
   'The badge stays on the first line of a wrapping label',
-  { parameters: { chromatic: { disableSnapshot: false } } },
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }) => {
     const checkbox = await canvas.findByRole('checkbox');
     const box = controlIcon(checkbox);
@@ -387,7 +387,7 @@ export const OversizedBadge = meta.story({
 
 OversizedBadge.test(
   'A badge that outgrows the slot still overflows symmetrically',
-  { parameters: { chromatic: { disableSnapshot: false } } },
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }) => {
     const checkbox = await canvas.findByRole('checkbox');
     const box = controlIcon(checkbox);

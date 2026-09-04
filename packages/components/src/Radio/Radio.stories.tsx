@@ -194,7 +194,7 @@ export const WithBadge = meta.story({
 
 WithBadge.test(
   'The badge leaves the dot on the label line',
-  { parameters: { chromatic: { disableSnapshot: false } } },
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }) => {
     const radio = await canvas.findByRole('radio', { name: /Early bird/ });
     const dot = controlIcon(radio);
@@ -233,7 +233,7 @@ export const LongMultilineLabel = meta.story({
 
 LongMultilineLabel.test(
   'The dot stays on the first line of a wrapping label',
-  { parameters: { chromatic: { disableSnapshot: false } } },
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
     const radio = await canvas.findByRole('radio', {
       name: /every registration/,

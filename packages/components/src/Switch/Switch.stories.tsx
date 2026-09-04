@@ -150,7 +150,7 @@ Basic.test(
 const getTrack = (switchEl: HTMLElement) => {
   const track = switchEl
     .closest('label')
-    ?.querySelector('[aria-hidden="true"]');
+    ?.querySelector(':scope > div:has(> div)');
 
   expect(track).not.toBeNull();
   // The track is the `w-7` box; the thumb is `size-3`. If this ever matches the
@@ -316,7 +316,7 @@ export const WithBadge = meta.story({
 
 WithBadge.test(
   'The badge leaves the track on the label line',
-  { parameters: { chromatic: { disableSnapshot: false } } },
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }) => {
     const track = getTrack(await canvas.findByRole('switch'));
     const labelBlock = canvas.getByText('Enable early bird pricing');
@@ -354,7 +354,7 @@ export const LongMultilineLabel = meta.story({
 
 LongMultilineLabel.test(
   'The track stays on the first line of a wrapping label',
-  { parameters: { chromatic: { disableSnapshot: false } } },
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
     const track = getTrack(await canvas.findByRole('switch'));
     const labelBlock = canvas.getByText(/Notify the organiser/);

@@ -128,7 +128,7 @@ const _Switch = ({
         style={createWidthVar('width', width)}
       >
         {variant === 'settings' && labelSlot}
-        <div aria-hidden="true" className={classNames.track}>
+        <div className={classNames.track}>
           <div className={classNames.thumb} />
         </div>
         {variant !== 'settings' && labelSlot}
