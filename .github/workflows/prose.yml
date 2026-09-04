@@ -17,8 +17,5 @@ jobs:
         with:
           node-version-file: '.node-version'
 
-      - name: Install Vale (pinned in the script, checksum verified)
-        run: node scripts/install-vale.mjs
-
-      - name: Check prose style
-        run: .vale/bin/vale .
+      - name: Check prose style (Vale is pinned in the script, checksum verified)
+        run: node scripts/vale.mjs .

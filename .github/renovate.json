@@ -143,7 +143,7 @@
     {
       "customType": "regex",
       "description": "Vale is a downloaded binary, not an npm dependency, so no native manager sees its pin",
-      "managerFilePatterns": ["/^scripts/install-vale\\.mjs$/"],
+      "managerFilePatterns": ["/^scripts/vale\\.mjs$/"],
       "matchStrings": ["const VERSION = '(?<currentValue>[^']+)';"],
       "depNameTemplate": "vale-cli/vale",
       "datasourceTemplate": "github-releases",

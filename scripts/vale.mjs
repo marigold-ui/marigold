@@ -1,4 +1,4 @@
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -6,7 +6,8 @@ import path from 'node:path';
 const VERSION = '3.19.0';
 const REPO = 'https://github.com/vale-cli/vale/releases/download';
 
-const BIN_DIR = path.join(import.meta.dirname, '..', '.vale', 'bin');
+const ROOT = path.join(import.meta.dirname, '..');
+const BIN_DIR = path.join(ROOT, '.vale', 'bin');
 const BIN = path.join(BIN_DIR, 'vale');
 
 const ASSETS = {
@@ -42,18 +43,7 @@ const expectedSha = async asset => {
   return line.trim().split(/\s+/)[0];
 };
 
-const main = async () => {
-  const key = `${process.platform}-${process.arch}`;
-  const asset = ASSETS[key];
-  if (!asset) {
-    console.log(
-      `[vale] no pinned build for ${key}; skipping. Install Vale ${VERSION} manually.`
-    );
-    return;
-  }
-
-  if (valeVersion()?.includes(VERSION)) return;
-
+const install = async (key, asset) => {
   console.log(`[vale] downloading ${VERSION} for ${key}`);
   const [tarball, sha] = await Promise.all([
     fetchOrDie(`${REPO}/v${VERSION}/${asset}`).then(r => r.bytes()),
@@ -74,6 +64,25 @@ const main = async () => {
   rmSync(archive);
 
   console.log(`[vale] ${valeVersion()}`);
+};
+
+const main = async () => {
+  const key = `${process.platform}-${process.arch}`;
+  const asset = ASSETS[key];
+  if (!asset) {
+    console.log(
+      `[vale] no pinned build for ${key}; skipping. Install Vale ${VERSION} manually.`
+    );
+    return;
+  }
+
+  if (!valeVersion()?.includes(VERSION)) await install(key, asset);
+
+  const files = process.argv
+    .slice(2)
+    .map(file => path.relative(ROOT, path.resolve(file)) || '.');
+  const { status } = spawnSync(BIN, files, { cwd: ROOT, stdio: 'inherit' });
+  process.exit(status ?? 1);
 };
 
 await main();
