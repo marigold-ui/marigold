@@ -9,8 +9,8 @@
  * Registered on two events, and behaves differently on each:
  * - PostToolUse (Edit|Write): filters on the edited path, and skips silently if another run
  *   already holds the lock.
- * - Stop: no path filter, but gated on whether anything in the program is newer than the last
- *   completed check, and waits for the lock. This is the backstop that covers files written
+ * - Stop: no path filter, but gated on whether anything in the program, or the git index, is
+ *   newer than the last completed check, and waits for the lock. This is the backstop that covers files written
  *   through Bash (sed, heredocs, redirects), which never fire Edit or Write, and the last edit
  *   of a burst whose own run was skipped. The gate costs ~13ms and is what stops it re-verifying
  *   an unchanged tree at the end of every turn.
@@ -145,7 +145,7 @@ const editedFile = (() => {
 // On PostToolUse the path is the whole reason to run. No usable path means nothing to check.
 if (!isStop && !editedFile) process.exit(0);
 
-/** True when any file in the program is newer than `stampMs`. Fails open. */
+/** True when any file in the program, or the git index, is newer than `stampMs`. Fails open. */
 const changedSince = stampMs => {
   const listed = git([
     'ls-files',
@@ -157,6 +157,18 @@ const changedSince = stampMs => {
     '*.tsx',
   ]);
   if (listed === null) return true;
+
+  // The index moves on rename, branch switch, stash and revert, none of which need touch a
+  // single source mtime. `git mv` is the sharp case: it carries the old mtime to the new path
+  // *and* drops the old path from the index, so the scan below sees nothing at all.
+  // resolve(), not join(): --git-dir answers with an absolute path inside a worktree.
+  const gitDir = git(['rev-parse', '--git-dir'])?.trim();
+  if (!gitDir) return true;
+  try {
+    if (statSync(resolve(root, gitDir, 'index')).mtimeMs > stampMs) return true;
+  } catch {
+    // No index to compare against. The file scan below still applies.
+  }
 
   for (const rel of listed.split('\n')) {
     if (!rel || !isCovered(rel)) continue;
