@@ -45,7 +45,7 @@
     "fumadocs-core": "16.14.3",
     "fumadocs-mdx": "15.2.3",
     "fumadocs-ui": "16.14.3",
-    "jose": "6.2.8",
+    "jose": "6.2.10",
     "lucide-react": "^1.28.0",
     "mcp-handler": "2.1.1",
     "motion": "12.43.0",
