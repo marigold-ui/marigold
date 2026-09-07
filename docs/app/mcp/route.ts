@@ -216,11 +216,15 @@ const SEARCH_DOCS_SCHEMA = {
     ),
 };
 
+// Narrower than the SDK's ServerContext on purpose: this is all the handler
+// reads, and it keeps the tests from having to build a whole context.
+export type SearchDocsContext = { http?: { authInfo?: AuthInfo } };
+
 // Exported separately from the MCP tool registration below so it's
 // unit-testable without going through the full MCP transport/auth chain.
 export const searchDocsHandler = async (
   { query, limit }: { query: string; limit: number },
-  extra: { authInfo?: AuthInfo }
+  ctx: SearchDocsContext
 ) => {
   const startedAt = Date.now();
 
@@ -232,7 +236,7 @@ export const searchDocsHandler = async (
     // catch below, so anything escaping here would throw a second time with no
     // handler left — an unhandled rejection instead of the isError response.
     try {
-      const sub = subjectOf(extra.authInfo);
+      const sub = subjectOf(ctx.http?.authInfo);
       if (!sub) {
         warnOnce(
           'no-subject',

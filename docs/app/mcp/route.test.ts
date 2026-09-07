@@ -1,4 +1,4 @@
-import type { AuthInfo } from '@modelcontextprotocol/sdk/server/auth/types.js';
+import type { AuthInfo } from '@modelcontextprotocol/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import crypto from 'node:crypto';
 import { after } from 'next/server';
@@ -84,8 +84,11 @@ const authInfoForSub = (sub: string): AuthInfo => ({
 
 const authInfo = authInfoForSub(SUB);
 
-const search = (extra: { authInfo?: AuthInfo }) =>
-  searchDocsHandler({ query: 'button', limit: 3 }, extra);
+// mcp-handler v2 hands auth to the tool on ctx.http.authInfo.
+const ctxFor = (authInfo?: AuthInfo) => ({ http: { authInfo } });
+
+const search = (authInfo?: AuthInfo) =>
+  searchDocsHandler({ query: 'button', limit: 3 }, ctxFor(authInfo));
 
 describe('searchDocsHandler', () => {
   let warn: ReturnType<typeof vi.spyOn>;
@@ -115,7 +118,7 @@ describe('searchDocsHandler', () => {
   });
 
   it('records a successful call with the top match and a real latency', async () => {
-    const result = await search({ authInfo });
+    const result = await search(authInfo);
 
     expect(result.isError).toBeUndefined();
     expect(recordTelemetryEvent).toHaveBeenCalledTimes(1);
@@ -135,7 +138,7 @@ describe('searchDocsHandler', () => {
 
   it('records a failed call with no top-match fields', async () => {
     send.mockRejectedValue(new Error('bedrock unavailable'));
-    const result = await search({ authInfo });
+    const result = await search(authInfo);
 
     expect(result.isError).toBe(true);
     expect(recordTelemetryEvent).toHaveBeenCalledTimes(1);
@@ -164,7 +167,7 @@ describe('searchDocsHandler', () => {
       new Request('http://localhost/mcp'),
       'bearer-token'
     );
-    await handler({ query: 'button', limit: 3 }, { authInfo: verified });
+    await handler({ query: 'button', limit: 3 }, ctxFor(verified));
 
     expect(verified).toBeDefined();
     const [event] = recordTelemetryEvent.mock.calls[0];
@@ -172,8 +175,8 @@ describe('searchDocsHandler', () => {
   });
 
   it('derives a distinct hashedCallerId per caller, and never sends the raw sub', async () => {
-    await search({ authInfo });
-    await search({ authInfo: authInfoForSub('other-user') });
+    await search(authInfo);
+    await search(authInfoForSub('other-user'));
 
     const [first] = recordTelemetryEvent.mock.calls[0];
     const [second] = recordTelemetryEvent.mock.calls[1];
@@ -188,7 +191,7 @@ describe('searchDocsHandler', () => {
   it('does not warn when recording is merely unconfigured', async () => {
     recordTelemetryEvent.mockResolvedValue('unconfigured');
 
-    await search({ authInfo });
+    await search(authInfo);
 
     expect(recordTelemetryEvent).toHaveBeenCalledTimes(1);
     expect(warn).not.toHaveBeenCalled();
@@ -210,7 +213,7 @@ describe('searchDocsHandler', () => {
       'unconfigured',
     ] as const) {
       recordTelemetryEvent.mockResolvedValue(result);
-      await handler({ query: 'button', limit: 3 }, { authInfo });
+      await handler({ query: 'button', limit: 3 }, ctxFor(authInfo));
     }
 
     expect(recordTelemetryEvent).toHaveBeenCalledTimes(7);
@@ -232,8 +235,11 @@ describe('searchDocsHandler', () => {
       throw new Error('no request scope');
     });
 
-    const result = await handler({ query: 'button', limit: 3 }, { authInfo });
-    await handler({ query: 'button', limit: 3 }, { authInfo });
+    const result = await handler(
+      { query: 'button', limit: 3 },
+      ctxFor(authInfo)
+    );
+    await handler({ query: 'button', limit: 3 }, ctxFor(authInfo));
 
     expect(result.isError).toBeUndefined();
     expect(result.content[0].text).toContain('Button usage');
@@ -249,8 +255,11 @@ describe('searchDocsHandler', () => {
     vi.resetModules();
     const { searchDocsHandler: handler } = await import('./route');
 
-    const result = await handler({ query: 'button', limit: 3 }, { authInfo });
-    await handler({ query: 'button', limit: 3 }, { authInfo });
+    const result = await handler(
+      { query: 'button', limit: 3 },
+      ctxFor(authInfo)
+    );
+    await handler({ query: 'button', limit: 3 }, ctxFor(authInfo));
 
     expect(result.isError).toBeUndefined();
     expect(recordTelemetryEvent).not.toHaveBeenCalled();
@@ -270,7 +279,7 @@ describe('searchDocsHandler', () => {
       if (typeof task === 'function') deferred = task as () => unknown;
     });
 
-    await search({ authInfo });
+    await search(authInfo);
 
     expect(recordTelemetryEvent).not.toHaveBeenCalled();
 
@@ -283,7 +292,7 @@ describe('searchDocsHandler', () => {
   });
 
   it('skips telemetry when there is no caller sub', async () => {
-    const result = await search({ authInfo: undefined });
+    const result = await search(undefined);
 
     expect(result.isError).toBeUndefined();
     expect(recordTelemetryEvent).not.toHaveBeenCalled();
@@ -345,8 +354,8 @@ describe('searchDocsHandler', () => {
     const { searchDocsHandler: handler } = await import('./route');
     const subjectless = { token: 't', scopes: [], clientId: 'c' };
 
-    await handler({ query: 'button', limit: 3 }, { authInfo: subjectless });
-    await handler({ query: 'button', limit: 3 }, { authInfo: subjectless });
+    await handler({ query: 'button', limit: 3 }, ctxFor(subjectless));
+    await handler({ query: 'button', limit: 3 }, ctxFor(subjectless));
 
     expect(recordTelemetryEvent).not.toHaveBeenCalled();
     expect(
@@ -360,8 +369,8 @@ describe('searchDocsHandler', () => {
   // privacy note in ../api/telemetry/README.md is written against.
   describe('caller digest stability', () => {
     it('gives the same caller the same digest across calls', async () => {
-      await search({ authInfo });
-      await search({ authInfo });
+      await search(authInfo);
+      await search(authInfo);
 
       const [first] = recordTelemetryEvent.mock.calls[0];
       const [second] = recordTelemetryEvent.mock.calls[1];
@@ -373,9 +382,9 @@ describe('searchDocsHandler', () => {
       vi.useFakeTimers();
       try {
         vi.setSystemTime(new Date('2026-02-15T12:00:00Z'));
-        await search({ authInfo });
+        await search(authInfo);
         vi.setSystemTime(new Date('2027-11-15T12:00:00Z'));
-        await search({ authInfo });
+        await search(authInfo);
       } finally {
         vi.useRealTimers();
       }
