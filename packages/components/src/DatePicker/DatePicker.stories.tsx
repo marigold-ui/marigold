@@ -123,6 +123,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
   render: args => {
     return (
       <I18nProvider locale="de-DE">
@@ -136,6 +137,31 @@ export const Basic = meta.story({
     );
   },
 });
+
+Basic.test(
+  'gives the calendar trigger slack on every side of the icon',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const trigger = canvas.getByRole('button');
+    const icon = trigger.querySelector('svg')!;
+
+    const button = trigger.getBoundingClientRect();
+    const glyph = icon.getBoundingClientRect();
+
+    const left = Math.round(glyph.left - button.left);
+    const right = Math.round(button.right - glyph.right);
+
+    // The icon used to sit flush against the button's left edge, so reaching
+    // the trigger from the left meant landing on the 16px glyph itself.
+    expect(left).toBeGreaterThan(0);
+    expect(left).toBe(right);
+
+    // The slack is part of the trigger, not of the date input next to it.
+    expect(
+      document.elementFromPoint(glyph.left - 4, button.top + button.height / 2)
+    ).toBe(trigger);
+  }
+);
 
 export const Controlled = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
