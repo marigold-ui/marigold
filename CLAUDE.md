@@ -56,7 +56,7 @@ The CLI fetches from the Marigold docs site, caches for 24h, and works offline (
 - Use the `useClassNames` hook from `@marigold/system` for theming
 - Rename react-aria props: `isDisabled` → `disabled`, `isPending` → `loading`
 - Export components with named exports
-- **Barrel exports**: public only if the export has a docs page. Everything else in `packages/*/src/index.ts` gets a bare `/** @internal */` on the line above, one export per tagged statement. The Insights scanner reads the tag from the barrel source, so do not add it to component files (see `.memory/CONTEXT.md` → Internal export)
+- **Barrel exports**: an export is internal when it exists for composition by other Marigold packages rather than for consumers. Documented exports (own page, or an API on a parent page) are public; consumer-facing exports that still lack docs stay public with a docs ticket (DST-1758). Internal exports get a bare `/** @internal */` on the line above, one export per tagged statement. The Insights scanner reads the tag from the barrel source, so do not add it to component files (see `.memory/CONTEXT.md` → Internal export)
 - Use React Context for component composition (see `AccordionContext` patterns)
 
 ## Testing
