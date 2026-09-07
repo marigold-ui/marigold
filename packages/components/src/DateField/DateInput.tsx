@@ -120,9 +120,6 @@ const _DateInput = ({
         className={cn(
           'flex flex-1 items-center',
           classNames.input,
-          // The action is a control-sized box that already centers its icon,
-          // so the input's own right padding would stack on top of that inset
-          // and push the icon away from the text it belongs to.
           action && 'pr-0'
         )}
         {...props}
