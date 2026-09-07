@@ -101,6 +101,20 @@ Proper alignment makes data easier to scan and compare. Different data types ben
 
 <ComponentDemo name="table-cell-alignment" />
 
+### Column widths
+
+A column without a `width` falls back to react-aria's 75px minimum, so a narrow container squeezes every column down to that floor. Cell content that cannot shrink then paints outside its own cell, because cells do not clip. Give columns a width to keep the table a predictable size:
+
+- **A fraction (`2fr`, `1.5fr`)** for text columns that should absorb the space left over, like names, addresses or descriptions.
+- **A number** for columns whose content has a predictable size, like a badge, a date or a row action.
+- **`minWidth`** on fraction columns, to set the width at which the column stops shrinking. A static `width` is its own floor already and needs no `minWidth`.
+
+Those floors added together are the smallest width the table can take. Where that can exceed the space available, wrap the table in a [`<Scrollable>`](/components/layout/scrollable) so the columns stay reachable instead of being clipped by the page.
+
+<ComponentDemo name="table-column-widths" />
+
+A table without a scroll container has to fit its container at every width, so keep its floors low: fraction widths on their own divide up the available space without raising the minimum.
+
 ### Selecting rows
 
 When users need to perform actions on multiple items at once, enable row selection. This allows users to select individual rows or all rows, then perform bulk operations like delete, export, or modify. The [Bulk Actions pattern](/patterns/user-input/bulk-actions) describes the complete flow from selection to result feedback, including the [`<ActionBar>`](/components/collection/actionbar) that carries the actions.

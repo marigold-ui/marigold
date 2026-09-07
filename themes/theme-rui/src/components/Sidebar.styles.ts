@@ -176,11 +176,15 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'motion-reduce:transition-none',
     ],
   }),
-  // Carries the always-on vertical divider (`border-r`) between rail and panel.
-  // overflow-x-clip: fixed-width labels overhang the narrowing column mid-
-  // animation (see railItem) — clip them instead of bleeding across the divider.
+  // Always-on divider between rail and panel. overflow-x-clip: fixed-width
+  // labels overhang the narrowing column mid-animation (see railItem).
+  // Hoists railFooter's seam timeline, and stays on this column: the panel's
+  // `nav` declares the same name, and two in one scope kill the animation.
   railColumn: cva({
-    base: ['flex flex-col min-h-0 overflow-x-clip', 'border-r border-border'],
+    base: [
+      'flex flex-col min-h-0 overflow-x-clip',
+      'border-r border-border ui-scroll-seam-scope',
+    ],
   }),
   // The top-bar panel toggle. SidebarToggle already composes the icon Button
   // base (hitbox, ghost hover, press); this only adds the rail deltas: quieter
@@ -192,11 +196,19 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       '[&_svg]:size-5',
     ],
   }),
-  // The scrolling item list (footer pinned below). overflow-x-hidden: the
-  // fixed-width labels would otherwise grow a horizontal scrollbar.
+  // The scrolling item list. overflow-x-hidden: fixed-width labels would
+  // otherwise grow a horizontal scrollbar. ui-scroll-mask-y owns the vertical
+  // overflow (hence no overflow-y here) and fades over the scrollbar instead
+  // of replacing it. scroll-py reads its --sc-mask-width so they can't drift,
+  // and scroll-smooth keeps focus from jumping to a tile below the fold.
+  // No overscroll containment, unlike the ui-scroll-mask-x consumers: theirs
+  // guards the browser's back/forward swipe, which has no block-axis twin, and
+  // the single column's nav doesn't contain either.
   rail: cva({
     base: [
-      'flex flex-col gap-0.5 flex-1 min-h-0 overflow-y-auto overflow-x-hidden py-1.5 ui-scrollbar',
+      'flex flex-col gap-0.5 flex-1 min-h-0 overflow-x-hidden py-1.5',
+      'ui-scrollbar ui-scroll-mask-y ui-scroll-seam-timeline',
+      'scroll-py-(--sc-mask-width) motion-safe:scroll-smooth',
     ],
   }),
   // Stacked tile: icon above a visible label. Content-hugging so the pill never
@@ -244,8 +256,17 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'motion-reduce:[&>span]:transition-none',
     ],
   }),
-  // Pinned below the scrolling list; same tiles, same rhythm.
-  railFooter: cva({ base: ['shrink-0 flex flex-col gap-0.5 py-1.5'] }),
+  // Pinned below the list, same tiles and rhythm. Top seam mirrors the single
+  // column's: absent while the list fits, a hairline once it scrolls. Default
+  // --seam-color, 0.14 vs 0.13. The fallback hairline is opted out of, unlike
+  // the single column's: that nav usually overflows, a rail of 3-7 sections
+  // usually fits, so pinning it on would be wrong more often than right.
+  railFooter: cva({
+    base: [
+      'shrink-0 flex flex-col gap-0.5 py-1.5',
+      'ui-scroll-seam-footer [--seam-fallback-color:transparent]',
+    ],
+  }),
   // The section panel. Draws the sidebar's outer right edge; dropped when
   // collapsed so the rail column's border becomes the single edge (see
   // railRoot).

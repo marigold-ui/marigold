@@ -1,5 +1,75 @@
 # @marigold/docs
 
+## 18.1.0
+
+### Patch Changes
+
+- 1dfe461: feat(DST-1489): add non-form interactive list component
+
+  Adds `<ListView>` and `<ListView.Item>`, a non-form list built on React Aria's `GridList`/`GridListItem` for rows the user operates in place — dismissing with a `<Button>`, opening a per-row `<ActionMenu>`, or following a link — without leaving the page. Unlike `<SelectList>`/`<Select>`/`<ListBox>`, `<ListView>` has no selection, no hidden input, and never becomes a submitted form value.
+
+  A row is a named-area grid — `'label actions' 'description actions'` — so every region names the cell it wants instead of counting columns and rows. Row content is authored with Marigold's slot-aware components (`<TextValue>`, `<Description>`, `<Title>`), and each of them claims its cell through slot context, so text still lands correctly when it's wrapped in a fragment, behind `memo()`, or inside a consumer's own component. A bare string child is wrapped as the row's text value; to emphasise part of a line, nest `<Text as="span">` inside `<TextValue>`/`<Description>`. A row carries one `<Description>` — it takes inline markup, so several facts go on one line.
+
+  Trailing controls claim their cell through Marigold's `ButtonContext` and inherit the row's `ghost` cascade, the same mechanism `<Panel.Header>` and `<SelectList.Option>` use. A row with more than one control **must** wrap them in a `<ButtonGroup>`: each control reads the same context and would otherwise be placed in the same cell. A dev-only warning catches that at authoring time. The trailing cell takes Button-family controls only; trailing badges, pills or timestamps have no slot yet.
+
+  `<ListView.Item>` forces any nested `<Title>` to render as a `<span>` instead of a real heading, so a list of rows never emits one document heading per row.
+
+  The list is flat (divider lines only) and draws no surface of its own, the way `<Table>` does — a framed list nested in a container that already draws a surface is a ring inside a ring. A standalone framed list is `<Card><ListView /></Card>`.
+
+  This closes the gap between `<List>` (presentational, no roles), `<ListBox>` (selection only — forbids focusable controls inside a row), `<SelectList>`/`<Select>` (form fields), `<Table>` (tabular), and `<Menu>` (commands that close on activation). The motivating consumer is the Popover notifications panel (DST-1485), and the docs cover a second must-support scenario: a resource list with a per-row action menu.
+
+  v1 is intentionally minimal: no selection, no bulk-action bar, no async loading, no drag-and-drop, and no leading media. Leading icons and images need slot-aware icon/image components so placement doesn't depend on authoring order, which is tracked separately along with the rest of the follow-ups (selection ships together with a bulk-action bar, building on DST-1487).
+
+  **Documentation**
+
+  New `/components/collection/listview` docs page: anatomy, appearance, a "which list?" decision guide, the must-support demos, accessibility notes (including the `<Title>`-as-span caveat), and cross-links to `<List>`, `<ListBox>`, `<SelectList>`, `<Table>`, and `<Menu>`.
+
+- 19474cf: docs(DST-1703): migrate the Link, LinkButton, Tag, Badge and List anatomy diagrams to inline SVG, and describe their annotated parts
+- b924fc6: docs(DST-1703): migrate the Calendar, DateField, DatePicker and TimeField anatomy diagrams to inline SVG, describe their annotated parts, and add the missing RangeCalendar anatomy
+- e5b29a5: docs(DST-1703): migrate the Autocomplete, Checkbox, FileField, NumberField, Radio, SearchField, Slider, TagField and TextField anatomy diagrams to inline SVG, and describe their annotated parts
+- 75036b1: docs(DST-1703): migrate the Accordion, Breadcrumbs, Pagination, Tabs and TopNavigation anatomy diagrams to inline SVG, and describe their annotated parts
+- cbc9ab5: docs(DST-1703): migrate the ContextualHelp, Dialog, Toast and Tooltip anatomy diagrams to inline SVG, and describe their annotated parts. With this, docs/public/**/_-anatomy._ no longer exists.
+- e897384: fix(DST-1673): keep example tables readable when they outgrow their container
+
+  Example tables declared no column widths, so every column fell back to
+  react-aria's 75px default. In the examples shell a 768px viewport still gives
+  the sidebar 352px, leaving 401px for content, which pinned all five columns of
+  `/examples/users` at that floor and let the nowrap name-and-email cell paint
+  146px over the Title column.
+
+  Columns now carry widths (a fraction plus a floor for the flexible ones, a
+  fixed width for the predictable ones), and the users, dashboard and report
+  tables sit in `Scrollable`, so they scroll instead of overlapping. The picker
+  dialog's table already scrolled and only gains the widths. On the dashboard
+  that scroll container also stops the activity table inflating its panel, which
+  is what could wrap the 2:1 pair before `collapseAt` asked for it.
+
+  The filter table gets fraction-only widths and no floors. It cannot have a
+  `Scrollable` of its own yet, because its `actionBar` overlay renders inside
+  `Table` as `sticky bottom-…` and an outer wrapper would re-anchor it. Since a
+  static width also becomes that column's floor, floors on eleven columns would
+  push the table past its container at 1440px with nothing to scroll. Fractions
+  leave the floor where it already was, so the table keeps filling its container
+  at desktop width, where the name cell no longer overlaps, and narrow viewports
+  stay as they are until `Table` can own that scroll container itself.
+
+- Updated dependencies [1dfe461]
+- Updated dependencies [c7b5c1d]
+- Updated dependencies [17f9158]
+- Updated dependencies [148ef97]
+- Updated dependencies [1dfe461]
+- Updated dependencies [1dfe461]
+- Updated dependencies [1fd3f85]
+- Updated dependencies [ce2720e]
+- Updated dependencies [eeb0a29]
+- Updated dependencies [f2dff15]
+- Updated dependencies [4a18a38]
+- Updated dependencies [e41e633]
+  - @marigold/components@18.1.0
+  - @marigold/theme-rui@6.1.0
+  - @marigold/system@18.1.0
+  - @marigold/icons@2.0.1
+
 ## 18.0.0
 
 ### Major Changes

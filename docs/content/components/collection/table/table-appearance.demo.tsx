@@ -34,7 +34,7 @@ const columns = [
 ] as const;
 
 export default (props: TableProps) => (
-  <Table {...props}>
+  <Table {...props} aria-label="Venues">
     <Table.Header columns={columns}>
       {column => (
         <Table.Column
