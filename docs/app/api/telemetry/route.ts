@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { consumePublicQuota, recordTelemetryEvent } from './record';
+import { recordTelemetryEvent } from './record';
 import { CliCommandEventSchema } from './schema';
 
 export const dynamic = 'force-dynamic';
@@ -27,12 +27,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'invalid event' }, { status: 400 });
   }
 
-  if (await consumePublicQuota()) {
-    return new NextResponse(null, { status: 429 });
-  }
-
+  // Both ceilings live in recordTelemetryEvent, which charges the shared
+  // endpoint-wide budget only when a write is actually about to happen.
   const result = await recordTelemetryEvent(parsed.data);
-  if (result === 'rate-limited') {
+  if (result === 'rate-limited' || result === 'quota-exceeded') {
     return new NextResponse(null, { status: 429 });
   }
 

@@ -122,6 +122,54 @@ describe('recordTelemetryEvent', () => {
     expect(xadd).not.toHaveBeenCalled();
   });
 
+  // Spending the shared budget on traffic that was never written lets one
+  // stuck script silence every other CLI. Ordering is the whole fix.
+  describe('quota ordering', () => {
+    // Both keys go through the same `incr` spy, so drive them by key.
+    const counters = (perCaller: number, publicCount: number) =>
+      incr.mockImplementation((key: string) =>
+        Promise.resolve(key.includes(':public:') ? publicCount : perCaller)
+      );
+
+    it('does not charge the shared budget for a caller past its own ceiling', async () => {
+      counters(10_001, 1);
+      const { recordTelemetryEvent } = await loadRecord();
+
+      const result = await recordTelemetryEvent(cliEvent);
+
+      expect(result).toBe('rate-limited');
+      expect(incr).toHaveBeenCalledTimes(1);
+      expect(incr).not.toHaveBeenCalledWith(
+        expect.stringContaining('telemetry:rl:public:')
+      );
+    });
+
+    it('returns "quota-exceeded" without writing once the shared budget is spent', async () => {
+      counters(1, 50_001);
+      const { recordTelemetryEvent } = await loadRecord();
+
+      const result = await recordTelemetryEvent(cliEvent);
+
+      expect(result).toBe('quota-exceeded');
+      expect(xadd).not.toHaveBeenCalled();
+    });
+
+    // /mcp never passes through the public endpoint, so charging it there
+    // would let MCP traffic starve the CLI's budget.
+    it('never charges the shared budget for an MCP event', async () => {
+      counters(1, 1);
+      const { recordTelemetryEvent } = await loadRecord();
+
+      const result = await recordTelemetryEvent(mcpEvent);
+
+      expect(result).toBe('recorded');
+      expect(incr).toHaveBeenCalledTimes(1);
+      expect(incr).not.toHaveBeenCalledWith(
+        expect.stringContaining('telemetry:rl:public:')
+      );
+    });
+  });
+
   it('returns "error" and swallows a Redis failure', async () => {
     incr.mockRejectedValue(new Error('boom'));
     const { recordTelemetryEvent } = await loadRecord();
@@ -238,12 +286,12 @@ describe('recordTelemetryEvent', () => {
   });
 
   // Unbounded retention rests on this one — see ./README.md
-  describe('consumePublicQuota', () => {
+  describe('publicQuotaExceeded', () => {
     it('counts one fixed key per day, derived from no caller input', async () => {
       incr.mockResolvedValue(1);
-      const { consumePublicQuota } = await loadRecord();
+      const { publicQuotaExceeded } = await loadRecord();
 
-      await expect(consumePublicQuota()).resolves.toBe(false);
+      await expect(publicQuotaExceeded()).resolves.toBe(false);
       expect(incr).toHaveBeenCalledTimes(1);
       expect(incr).toHaveBeenCalledWith(
         expect.stringMatching(/^telemetry:rl:public:\d{4}-\d{2}-\d{2}$/)
@@ -252,9 +300,9 @@ describe('recordTelemetryEvent', () => {
 
     it('reports exceeded past the ceiling, and gives the key a TTL', async () => {
       incr.mockResolvedValue(50_001);
-      const { consumePublicQuota } = await loadRecord();
+      const { publicQuotaExceeded } = await loadRecord();
 
-      await expect(consumePublicQuota()).resolves.toBe(true);
+      await expect(publicQuotaExceeded()).resolves.toBe(true);
       expect(expireMock).toHaveBeenCalledWith(
         expect.stringContaining('telemetry:rl:public:'),
         24 * 60 * 60,
@@ -275,9 +323,9 @@ describe('recordTelemetryEvent', () => {
         vi.stubEnv('KV_REST_API_URL', '');
         vi.stubEnv('KV_REST_API_TOKEN', '');
       }
-      const { consumePublicQuota } = await loadRecord();
+      const { publicQuotaExceeded } = await loadRecord();
 
-      await expect(consumePublicQuota()).resolves.toBe(false);
+      await expect(publicQuotaExceeded()).resolves.toBe(false);
     });
   });
 

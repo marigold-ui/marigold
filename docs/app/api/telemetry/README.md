@@ -29,6 +29,12 @@ view, whose KPI deltas compare against the preceding 90 days. Data written under
 not migrated and nothing reads it; it needs no cleanup either, since those lists carried a
 90-day TTL.
 
+No backfill was done, deliberately, and that is not in tension with keeping everything from here
+forward: the only events in the old lists are `cli_command` ones, which have had no consumer
+since DST-1264 — so there is no history there anyone has ever read or charted. The argument for
+unbounded retention is about the trends this store is now actually read for, not about
+reconstructing a window nothing ever looked at.
+
 Rate-limit keys carry a source prefix — `telemetry:rl:cli:{anonymousId}:{date}` and
 `telemetry:rl:mcp:{hashedCallerId}:{date}` — so the keyspace stays greppable by caller type.
 The endpoint-wide counter is `telemetry:rl:public:{date}`.
@@ -83,7 +89,12 @@ crossing it in a UTC day does under-report.
 unauthenticated — `@marigold/cli` is a public npm package — and the per-caller key above comes
 out of the request body, so rotating `anonymousId` walks past it. A single fixed key can't be
 influenced by any header, body field or rotation, which makes it a hard bound where the
-per-caller ceiling is not. **Removing it re-opens unbounded growth on this endpoint.** It
+per-caller ceiling is not. Worth stating precisely, since the imprecise version is what a
+future reader will trust when deciding whether the ceiling is enough: it bounds the write
+**rate**, not the total. At 50000/day times ~250 bytes it permits ~12.5 MB/day — roughly
+4.5 GB/year sustained, three orders of magnitude above the ~3 MB/year actual volume the
+retention argument rests on. Total size is unbounded by construction; the ceiling is what makes
+growth predictable rather than finite. **Removing it makes the rate unbounded too.** It
 bounds only `POST /api/telemetry`: MCP writes never pass through it, and are bounded instead
 by 10000/day times however many Keycloak subjects exist — a soft bound, acceptable only
 because that path is authenticated. `/mcp` needs no equivalent,

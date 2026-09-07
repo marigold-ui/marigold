@@ -56,7 +56,12 @@ const getRedis = (): Redis | null => {
 };
 
 export type RecordResult =
-  'recorded' | 'unconfigured' | 'rate-limited' | 'invalid' | 'error';
+  | 'recorded'
+  | 'unconfigured'
+  | 'rate-limited'
+  | 'quota-exceeded'
+  | 'invalid'
+  | 'error';
 
 export async function recordTelemetryEvent(
   event: TelemetryEvent
@@ -79,6 +84,12 @@ export async function recordTelemetryEvent(
       return 'rate-limited';
     }
 
+    // Charged only when a write is about to happen, so a throttled caller
+    // can't spend the shared budget. cli_command only: /mcp never uses it.
+    if (parsed.data.event === 'cli_command' && (await publicQuotaExceeded())) {
+      return 'quota-exceeded';
+    }
+
     const payload = {
       ...parsed.data,
       receivedAt: new Date().toISOString(),
@@ -91,9 +102,9 @@ export async function recordTelemetryEvent(
   }
 }
 
-// Bumps the counter, so it costs quota. False whenever the check could not run,
-// so a Redis outage fails open rather than turning traffic away — see ./README.md
-export async function consumePublicQuota(): Promise<boolean> {
+// True means over the ceiling. Bumps the counter, so calling it costs quota.
+// False when the check could not run: a Redis outage fails open — see ./README.md
+export async function publicQuotaExceeded(): Promise<boolean> {
   try {
     const client = getRedis();
     if (!client) return false;

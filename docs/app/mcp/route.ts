@@ -49,20 +49,16 @@ type StoredChunk = {
 
 // ─── Bedrock client (lazy singleton) ─────────────────────────────────────────
 
-let bedrock: BedrockRuntimeClient | null = null;
-
-function getBedrock(): BedrockRuntimeClient {
-  if (bedrock) return bedrock;
-
-  const accessKeyId = process.env.AWS_BEDROCK_ACCESS_KEY_ID || '';
-  const secretAccessKey = process.env.AWS_BEDROCK_SECRET_ACCESS_KEY || '';
-
-  bedrock = new BedrockRuntimeClient({
-    region: AWS_REGION,
-    credentials: { accessKeyId, secretAccessKey },
-  });
-  return bedrock;
-}
+const getBedrock = lazy(
+  () =>
+    new BedrockRuntimeClient({
+      region: AWS_REGION,
+      credentials: {
+        accessKeyId: process.env.AWS_BEDROCK_ACCESS_KEY_ID || '',
+        secretAccessKey: process.env.AWS_BEDROCK_SECRET_ACCESS_KEY || '',
+      },
+    })
+);
 
 async function embedQuery(text: string): Promise<Float32Array> {
   const res = await getBedrock().send(
@@ -105,11 +101,7 @@ function loadStore(): VectorStore {
 }
 
 // Lazy so module init does not require embeddings.json (local builds skip it; production bundles it via outputFileTracingIncludes).
-let store: VectorStore | null = null;
-const getStore = (): VectorStore => {
-  if (!store) store = loadStore();
-  return store;
-};
+const getStore = lazy(loadStore);
 
 // ─── Search ──────────────────────────────────────────────────────────────────
 

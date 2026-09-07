@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TELEMETRY_COMMANDS } from './commands';
-import { consumePublicQuota, recordTelemetryEvent } from './record';
+import { recordTelemetryEvent } from './record';
 import { POST } from './route';
 import { makeCliEvent, makeMcpEvent } from './test.utils';
 
@@ -8,11 +8,9 @@ const mcpEvent = makeMcpEvent();
 
 vi.mock('./record', () => ({
   recordTelemetryEvent: vi.fn().mockResolvedValue('recorded'),
-  consumePublicQuota: vi.fn().mockResolvedValue(false),
 }));
 
 const record = vi.mocked(recordTelemetryEvent);
-const publicQuota = vi.mocked(consumePublicQuota);
 
 const post = (body: unknown, headers: Record<string, string> = {}) =>
   POST(
@@ -27,8 +25,6 @@ describe('POST /api/telemetry', () => {
   beforeEach(() => {
     record.mockReset();
     record.mockResolvedValue('recorded');
-    publicQuota.mockReset();
-    publicQuota.mockResolvedValue(false);
   });
 
   // Derived from the route's own enum, so a new command is covered
@@ -117,25 +113,13 @@ describe('POST /api/telemetry', () => {
     expect(record).not.toHaveBeenCalled();
   });
 
-  // The quota inside recordTelemetryEvent keys on the body's own `anonymousId`,
-  // so rotating it walks past. This endpoint is unauthenticated by necessity
-  // (@marigold/cli is public on npm), so a second ceiling covers the endpoint
-  // as a whole — the only hard bound on a store that never expires.
-  describe('public quota', () => {
-    it('rejects with 429 without recording once the day is spent', async () => {
-      publicQuota.mockResolvedValue(true);
+  // Both ceilings live in recordTelemetryEvent now; the route just maps
+  // either exhaustion onto 429. Ordering is pinned in record.test.ts.
+  it('maps an exhausted endpoint-wide quota to 429', async () => {
+    record.mockResolvedValue('quota-exceeded');
 
-      const res = await post(makeCliEvent({ command: 'docs' }));
+    const res = await post(makeCliEvent({ command: 'docs' }));
 
-      expect(res.status).toBe(429);
-      expect(record).not.toHaveBeenCalled();
-    });
-
-    it('is not consulted for a body that fails validation', async () => {
-      const res = await post({ ...makeCliEvent(), command: 'bogus' });
-
-      expect(res.status).toBe(400);
-      expect(publicQuota).not.toHaveBeenCalled();
-    });
+    expect(res.status).toBe(429);
   });
 });
