@@ -46,7 +46,8 @@ const PopoverBase = ({
   offset = 0,
   open,
   matchTriggerWidth = true,
-  containerPadding = getContainerPadding(),
+  isNonModal,
+  containerPadding = getContainerPadding({ locksScroll: !isNonModal }),
   children,
   ref,
   ...rest
@@ -55,6 +56,7 @@ const PopoverBase = ({
     isKeyboardDismissDisabled: keyboardDismissDisabled,
     isOpen: open,
     placement,
+    isNonModal,
     containerPadding,
     ...rest,
   };

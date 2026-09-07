@@ -71,7 +71,7 @@ export const AtViewportEdge = meta.story({
   render: ({ containerPadding }) => {
     const ref = useRef<HTMLButtonElement>(null);
     return (
-      <div className="fixed top-4 right-2">
+      <div className="fixed top-4 right-3">
         <Button ref={ref} variant="secondary">
           Trigger at the window edge
         </Button>

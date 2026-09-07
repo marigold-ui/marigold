@@ -21,7 +21,7 @@ const _Tooltip = ({
   children,
   variant,
   size,
-  containerPadding = getContainerPadding(),
+  containerPadding = getContainerPadding({ locksScroll: false }),
   ...rest
 }: TooltipProps) => {
   const classNames = useClassNames({ component: 'Tooltip', variant, size });
