@@ -19,15 +19,18 @@ reach `record.ts` in-process only.
 ## Storage layout
 
 One stream, `telemetry:events`, carrying both sources and discriminated on `event`. Each entry
-holds the whole event as JSON in a field named `data`, plus a `receivedAt` timestamp added on
-write. Ids are `<epochMillis>-<seq>`, so a reader seeks by time with `XRANGE <fromMs> <toMs>`
+has exactly one field, `data`, holding the whole event as JSON with a `receivedAt` timestamp
+added on write — `receivedAt` is inside that JSON, not a second entry field. Ids are `<epochMillis>-<seq>`, so a reader seeks by time with `XRANGE <fromMs> <toMs>`
 and pages with `(<lastId>`.
 
 This replaced one list per UTC day (`telemetry:YYYY-MM-DD`), which cost the reader one `LRANGE`
 per day in the window — 180 for [Insights](https://github.com/marigold-ui/insights)' 90-day
 view, whose KPI deltas compare against the preceding 90 days. Data written under that layout is
-not migrated and nothing reads it; it needs no cleanup either, since those lists carried a
-90-day TTL.
+not migrated and nothing reads it. Most of it needs no cleanup either, since those lists
+carried a 90-day TTL — but not all: `08a590f80` set the `EXPIRE` only on a day's first `LPUSH`,
+so any day that was already written before it shipped never got one and those keys are
+immortal. Worth an `TTL telemetry:YYYY-MM-DD` spot-check on the oldest days if the keyspace is
+ever audited.
 
 No backfill was done, deliberately, and that is not in tension with keeping everything from here
 forward: the only events in the old lists are `cli_command` ones, which have had no consumer
@@ -103,13 +106,23 @@ being Keycloak-gated.
 A quota check that cannot run lets the request through. Telemetry must not start rejecting
 traffic because Redis is down.
 
-Worth knowing before tuning that ceiling: it charges write attempts, not requests. A request
-turned away by the per-caller ceiling or by the route's own schema never reaches it, so only
-traffic that got as far as an `XADD` spends it. That also bounds what a single caller can take —
-its own 10000/day ceiling stops it at a fifth of the shared budget, so exhausting the day needs
-at least five rotated `anonymousId`s. Once it is exhausted, every CLI's telemetry is dropped for
-the rest of the UTC day, silently on both sides: the CLI's sender neither inspects the response
-status nor retries.
+Worth knowing before tuning that ceiling: it is charged at the write step, not per request. A
+request turned away by the per-caller ceiling or by the route's own schema never reaches it. But
+charged is not the same as written — `publicQuotaExceeded` increments first and compares after,
+so the request that trips the ceiling spends the counter and returns without an `XADD`, and so
+does one whose `XADD` then fails. Reconciling the counter against stream length will always show
+the counter ahead; that is not lost events.
+
+That bounds what a single caller can take: its own 10000/day ceiling stops it at a fifth of the
+shared budget, so it takes a sixth rotated `anonymousId` to exhaust the day — five spend exactly
+50000, which the `>` comparison still lets through. Note the ceilings do not protect each other
+symmetrically: the per-caller counter is charged before the shared gate is consulted, so once the
+day's shared budget is gone, every caller keeps burning its own allowance on requests that are
+dropped. A caller can therefore end the day marked rate-limited with nothing written, which reads
+like a runaway writer and is not one.
+
+Once the shared budget is exhausted, every CLI's telemetry is dropped for the rest of the UTC
+day, silently on both sides: the CLI's sender neither inspects the response status nor retries.
 
 ## Two event types, one store
 
@@ -185,6 +198,7 @@ the numbers as illustrative and the headroom argument as the durable part), and 
 counts every entry in the window — including
 the `cli_command` ones it is about to discard. Past 100000 entries in a window it logs and
 returns **incomplete aggregates**, which look like a drop in usage rather than an error. At
-~35 events a day the window holds ~6000, so there is roughly 16x headroom; the point is that the
-headroom is spent by the source nobody reads, while CLI volume is the half that grows with
-adoption. If it ever gets close, the fix is one stream per source, not a bigger page budget.
+~35 events a day the window holds ~6000, so there is roughly 16x headroom. The point is where
+that headroom goes: it is spent by `cli_command`, the half nobody reads, and nothing on the read
+side notices, because the budget is exhausted by entries Insights discards after paying for
+them. If it ever gets close, the fix is one stream per source, not a bigger page budget.
