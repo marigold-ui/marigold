@@ -144,6 +144,15 @@ describe('recordTelemetryEvent', () => {
       );
     });
 
+    // Both sides, like the per-caller ceiling below: the README reasons about
+    // this exact `>` edge, so tightening it to `>=` must fail a test.
+    it('records the event landing exactly on the shared ceiling', async () => {
+      counters(1, 50_000);
+      const { recordTelemetryEvent } = await loadRecord();
+
+      await expect(recordTelemetryEvent(cliEvent)).resolves.toBe('recorded');
+    });
+
     it('returns "quota-exceeded" without writing once the shared budget is spent', async () => {
       counters(1, 50_001);
       const { recordTelemetryEvent } = await loadRecord();

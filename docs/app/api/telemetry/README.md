@@ -27,10 +27,11 @@ This replaced one list per UTC day (`telemetry:YYYY-MM-DD`), which cost the read
 per day in the window — 180 for [Insights](https://github.com/marigold-ui/insights)' 90-day
 view, whose KPI deltas compare against the preceding 90 days. Data written under that layout is
 not migrated and nothing reads it. Most of it needs no cleanup either, since those lists
-carried a 90-day TTL — but not all: `08a590f80` set the `EXPIRE` only on a day's first `LPUSH`,
-so any day that was already written before it shipped never got one and those keys are
-immortal. Worth an `TTL telemetry:YYYY-MM-DD` spot-check on the oldest days if the keyspace is
-ever audited.
+carried a 90-day TTL — but not all. The `EXPIRE` arrived with
+[#5619](https://github.com/marigold-ui/marigold/pull/5619) and ran only on a day whose key
+received a write, so any day that had already stopped receiving events by then never got one,
+and those keys are immortal. Worth a `TTL telemetry:YYYY-MM-DD` spot-check on the oldest days
+if the keyspace is ever audited.
 
 No backfill was done, deliberately, and that is not in tension with keeping everything from here
 forward: the only events in the old lists are `cli_command` ones, which have had no consumer
@@ -50,8 +51,9 @@ one stream — worth knowing, because nothing in DST-1625 would lead you to expe
 to change.
 
 It had been settled three different ways without ever being written down: DST-1264 set no
-policy at all, DST-1475 added the 90-day TTL as a "storage leak" fix, and DST-1625's stream
-refactor changed it again as a side effect of the layout change. Hence this section.
+policy at all, the 90-day TTL rode along incidentally in DST-1475 — whose merged scope was
+`marigold validate` — as a "storage leak" fix in a code comment, and DST-1625's stream refactor
+changed it again as a side effect of the layout change. Hence this section.
 
 Three reasons, in order of weight:
 
@@ -104,7 +106,10 @@ because that path is authenticated. `/mcp` needs no equivalent,
 being Keycloak-gated.
 
 A quota check that cannot run lets the request through. Telemetry must not start rejecting
-traffic because Redis is down.
+traffic because Redis is down. That is true of the shared check specifically: it catches its own
+failure and returns `false`. A failure on the per-caller key propagates instead, so the request
+still answers 204 but the event is dropped — a partial Upstash degradation can therefore look
+like recording continued when it did not.
 
 Worth knowing before tuning that ceiling: it is charged at the write step, not per request. A
 request turned away by the per-caller ceiling or by the route's own schema never reaches it. But
@@ -126,8 +131,10 @@ day, silently on both sides: the CLI's sender neither inspects the response stat
 
 ## Two event types, one store
 
-Only one of them is read. Insights' read-side schema is `z.literal('mcp_tool_call')`, so
-`cli_command` entries fail it and are discarded. **CLI telemetry has had no consumer since
+Only one of them is read: Insights discards `cli_command` entries, because its read-side schema
+accepts the `mcp_tool_call` literal only (as of marigold-ui/insights#86 — that schema lives in
+that repo, so treat the shape as illustrative and "only MCP events are read" as the durable
+part). **CLI telemetry has had no consumer since
 DST-1264 introduced it** — worth knowing before citing "we have CLI usage data", and it means
 the long-run-trends argument above is weaker for that half than it reads.
 
@@ -149,11 +156,23 @@ away.
 obvious alternative, and was rejected. A key defends against exactly one attack: taking the
 stored digests and hashing candidate inputs until they match. A Keycloak `sub` is a UUID, so
 there is no candidate space small enough to walk — that attack is infeasible with or without a
-key. What a key adds is a bar against someone who already holds a list of `sub`s, and holding
-that list means Keycloak access, i.e. already knowing every name. Set against that, the key cost
-a required env var whose absence disabled recording silently, and a value that had to be
-provisioned identically in every environment or digests would not match across them. Not worth
-it, so the digest is a plain SHA-256.
+key. What a key adds is a bar against someone who already holds `sub`s to test against — and
+that population is wider than it first looks: a `sub` rides in every token the realm issues, so
+any relying party, any log or error payload that captured one, and this route itself all have
+them. Be precise about what was traded away, because it is not nothing: the join from digest to
+a named person to _which doc pages that person searched_ previously needed a server-held
+credential as well, and now needs only Redis read access and a `sub`. Set against that, the key
+cost an env var that had to be provisioned identically in every environment or digests would not
+match across them, and whose absence disabled recording for that deployment (loudly — it warned
+once per instance — but disabled all the same). Judged not worth it, so the digest is a plain
+SHA-256, and what carries the weight instead is the read side never attributing.
+
+**This rests on `sub` being high-entropy, which nothing here enforces.** Keycloak's default is
+the user's UUID, but `sub` is overridable by a protocol mapper, and neither `verifyToken` nor
+`schema.ts` constrains it beyond "non-empty string" and "64 hex characters out". Map it to a
+username or an email and the candidate space becomes the staff directory — every stored digest
+falls to a few hundred hashes, where an HMAC would have shrugged. If the realm's `sub` mapping
+is ever touched, this decision has to be revisited before the change lands, not after.
 
 What limits the exposure is therefore not the hash, and saying otherwise would be the easy
 mistake to make here. Three things do. Re-identifying anyone needs Redis read access _and_ a
