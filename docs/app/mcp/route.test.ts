@@ -67,10 +67,9 @@ vi.mock('next/server', () => ({
   after: vi.fn((task: () => unknown) => task()),
 }));
 
-const HASH_SECRET = 'test-secret';
 const SUB = 'user-123';
 const hashOf = (sub: string) =>
-  crypto.createHmac('sha256', HASH_SECRET).update(sub).digest('hex');
+  crypto.createHash('sha256').update(sub).digest('hex');
 const expectedHash = hashOf(SUB);
 
 // Shorthand for cases that don't care how the AuthInfo got built; the test
@@ -105,7 +104,6 @@ describe('searchDocsHandler', () => {
     vi.mocked(after).mockReset();
     vi.mocked(after).mockImplementation((task: () => unknown) => task());
     warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    vi.stubEnv('MCP_TELEMETRY_HASH_SECRET', HASH_SECRET);
   });
 
   afterEach(() => {
@@ -248,26 +246,6 @@ describe('searchDocsHandler', () => {
     expect(warn.mock.calls[0][0]).toContain('telemetry emission failed');
   });
 
-  it('warns once, then skips telemetry, when no hash secret is configured', async () => {
-    vi.stubEnv('MCP_TELEMETRY_HASH_SECRET', '');
-    // Fresh module instance so the once-per-process warn flag starts unset
-    // regardless of what earlier tests in this file did.
-    vi.resetModules();
-    const { searchDocsHandler: handler } = await import('./route');
-
-    const result = await handler(
-      { query: 'button', limit: 3 },
-      ctxFor(authInfo)
-    );
-    await handler({ query: 'button', limit: 3 }, ctxFor(authInfo));
-
-    expect(result.isError).toBeUndefined();
-    expect(recordTelemetryEvent).not.toHaveBeenCalled();
-    // Otherwise a deployment that never sets the secret logs on every call.
-    expect(warn).toHaveBeenCalledTimes(1);
-    expect(warn.mock.calls[0][0]).toContain('MCP_TELEMETRY_HASH_SECRET');
-  });
-
   it('computes latencyMs before deferring to after(), not inside its callback', async () => {
     // Hold after()'s task back, jump the clock far forward, then run it. Fake
     // timers freeze Date.now(), so a correctly-computed latencyMs is exactly 0;
@@ -364,9 +342,10 @@ describe('searchDocsHandler', () => {
     warn.mockRestore();
   });
 
-  // The digest is deliberately stable for the life of the secret: that is what
-  // makes an all-time unique-caller view possible, and it is the property the
-  // privacy note in ../api/telemetry/README.md is written against.
+  // Unkeyed and therefore stable for good — `expectedHash` above is a plain
+  // SHA-256, so these also pin that no secret is involved. That stability is
+  // what makes an all-time unique-caller view possible, and it is the property
+  // the privacy note in ../api/telemetry/README.md is written against.
   describe('caller digest stability', () => {
     it('gives the same caller the same digest across calls', async () => {
       await search(authInfo);

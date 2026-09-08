@@ -17,7 +17,7 @@ export const CliCommandEventSchema = z.object({
   anonymousId: z.uuid(),
 });
 
-// hashedCallerId is an HMAC of the Keycloak `sub` — never the raw claim.
+// hashedCallerId is a SHA-256 of the Keycloak `sub` — never the raw claim.
 export const McpToolCallEventSchema = z.object({
   event: z.literal('mcp_tool_call'),
   tool: z.literal('search_docs'),

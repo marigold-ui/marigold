@@ -137,20 +137,11 @@ function search(queryVec: Float32Array, vs: VectorStore, limit: number) {
 
 const warnOnce = createWarnOnce();
 
-// One-way HMAC of the caller's Keycloak `sub` claim — never the raw claim,
-// which identifies a Reservix employee. Stable for the life of the secret, on
-// purpose: see ../api/telemetry/README.md.
-const hashCallerId = (sub: string): string | null => {
-  const secret = process.env.MCP_TELEMETRY_HASH_SECRET;
-  if (!secret) {
-    warnOnce(
-      'missing-secret',
-      '[MCP] MCP_TELEMETRY_HASH_SECRET is not set — search_docs telemetry is disabled for this deployment. See docs/app/mcp/README.md#telemetry.'
-    );
-    return null;
-  }
-  return crypto.createHmac('sha256', secret).update(sub).digest('hex');
-};
+// One-way SHA-256 of the caller's Keycloak `sub` claim — never the raw claim,
+// which identifies a Reservix employee. Unkeyed, so the digest is stable for
+// good and needs no secret to reproduce: see ../api/telemetry/README.md.
+const hashCallerId = (sub: string): string =>
+  crypto.createHash('sha256').update(sub).digest('hex');
 
 // ─── Auth (Keycloak JWT) ─────────────────────────────────────────────────────
 
@@ -245,15 +236,12 @@ export const searchDocsHandler = async (
         return;
       }
 
-      const hashedCallerId = hashCallerId(sub);
-      if (!hashedCallerId) return;
-
       // Built before after() is called, not inside the callback, so latencyMs
       // measures embed+search rather than whenever the callback ran.
       const event: TelemetryEvent = {
         event: 'mcp_tool_call',
         tool: 'search_docs',
-        hashedCallerId,
+        hashedCallerId: hashCallerId(sub),
         latencyMs: Date.now() - startedAt,
         success,
         topMatchFile: topMatch?.file,
@@ -283,15 +271,15 @@ export const searchDocsHandler = async (
     const queryVec = await embedQuery(query.trim());
     const results = search(queryVec, getStore(), limit);
 
+    // Serialised before the emit: the only throwable step left, so nothing
+    // between them can land in the catch below and record a second event for
+    // the same call.
+    const text = JSON.stringify(results, null, 2);
+
     emitTelemetry(true, results[0]?.metadata);
 
     return {
-      content: [
-        {
-          type: 'text' as const,
-          text: JSON.stringify(results, null, 2),
-        },
-      ],
+      content: [{ type: 'text' as const, text }],
     };
   } catch (err) {
     console.error('[MCP] search_docs error:', err);

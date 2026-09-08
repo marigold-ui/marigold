@@ -62,9 +62,10 @@ describe('POST /api/telemetry', () => {
     expect(res.status).toBe(429);
   });
 
-  // 'unconfigured' and 'error' both accept silently, so telemetry never leaks
-  // backend state and the CLI never retries.
-  it.each(['unconfigured', 'error'] as const)(
+  // These all accept silently, so telemetry never leaks backend state and the
+  // CLI never retries. 'invalid' means the event failed record.ts's own schema
+  // after passing the route's — a bug on our side, not something to report.
+  it.each(['unconfigured', 'error', 'invalid'] as const)(
     'accepts silently with 204 when recording returns %s',
     async result => {
       record.mockResolvedValue(result);

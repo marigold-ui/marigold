@@ -285,24 +285,27 @@ describe('recordTelemetryEvent', () => {
     warn.mockRestore();
   });
 
-  // Unbounded retention rests on this one — see ./README.md
-  describe('publicQuotaExceeded', () => {
+  // Unbounded retention rests on this one — see ./README.md. Driven through
+  // recordTelemetryEvent: the check is module-private, because calling it
+  // spends the shared budget.
+  describe('shared endpoint quota', () => {
     it('counts one fixed key per day, derived from no caller input', async () => {
       incr.mockResolvedValue(1);
-      const { publicQuotaExceeded } = await loadRecord();
+      const { recordTelemetryEvent } = await loadRecord();
 
-      await expect(publicQuotaExceeded()).resolves.toBe(false);
-      expect(incr).toHaveBeenCalledTimes(1);
+      await recordTelemetryEvent(cliEvent);
+
       expect(incr).toHaveBeenCalledWith(
         expect.stringMatching(/^telemetry:rl:public:\d{4}-\d{2}-\d{2}$/)
       );
     });
 
-    it('reports exceeded past the ceiling, and gives the key a TTL', async () => {
-      incr.mockResolvedValue(50_001);
-      const { publicQuotaExceeded } = await loadRecord();
+    it('gives the shared key a TTL, so it cannot outlive its day', async () => {
+      incr.mockResolvedValue(1);
+      const { recordTelemetryEvent } = await loadRecord();
 
-      await expect(publicQuotaExceeded()).resolves.toBe(true);
+      await recordTelemetryEvent(cliEvent);
+
       expect(expireMock).toHaveBeenCalledWith(
         expect.stringContaining('telemetry:rl:public:'),
         24 * 60 * 60,
@@ -310,22 +313,22 @@ describe('recordTelemetryEvent', () => {
       );
     });
 
-    // Fails open: a check that could not run must not turn traffic away, and
-    // must never reject either. The boolean makes that structural — there is
-    // no third state a caller could accidentally branch on.
-    it.each([
-      ['Redis is unconfigured', false],
-      ['the Redis call fails', true],
-    ])('returns false when %s', async (_, redisConfigured) => {
-      if (redisConfigured) {
-        incr.mockRejectedValue(new Error('upstash down'));
-      } else {
-        vi.stubEnv('KV_REST_API_URL', '');
-        vi.stubEnv('KV_REST_API_TOKEN', '');
-      }
-      const { publicQuotaExceeded } = await loadRecord();
+    // Fails open: a check that could not run must not turn traffic away. Only
+    // the shared key fails here, so this also pins that a blip isolated to it
+    // is not reported as — or silenced by — a general Redis outage.
+    it('still records the event when the shared check itself fails', async () => {
+      incr.mockImplementation((key: string) =>
+        key.includes(':public:')
+          ? Promise.reject(new Error('upstash down'))
+          : Promise.resolve(1)
+      );
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const { recordTelemetryEvent } = await loadRecord();
 
-      await expect(publicQuotaExceeded()).resolves.toBe(false);
+      await expect(recordTelemetryEvent(cliEvent)).resolves.toBe('recorded');
+      expect(xadd).toHaveBeenCalled();
+      expect(warn.mock.calls[0][0]).toContain('public quota check failed');
+      warn.mockRestore();
     });
   });
 

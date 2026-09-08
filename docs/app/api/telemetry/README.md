@@ -103,10 +103,13 @@ being Keycloak-gated.
 A quota check that cannot run lets the request through. Telemetry must not start rejecting
 traffic because Redis is down.
 
-Worth knowing before tuning that ceiling: it counts requests, not writes, so 429'd requests
-consume it too — and the CLI's sender neither inspects the response status nor retries. If one
-caller ever burns the day's budget, every CLI's telemetry is dropped for the rest of the UTC
-day, silently on both sides.
+Worth knowing before tuning that ceiling: it charges write attempts, not requests. A request
+turned away by the per-caller ceiling or by the route's own schema never reaches it, so only
+traffic that got as far as an `XADD` spends it. That also bounds what a single caller can take —
+its own 10000/day ceiling stops it at a fifth of the shared budget, so exhausting the day needs
+at least five rotated `anonymousId`s. Once it is exhausted, every CLI's telemetry is dropped for
+the rest of the UTC day, silently on both sides: the CLI's sender neither inspects the response
+status nor retries.
 
 ## Two event types, one store
 
@@ -117,31 +120,43 @@ the long-run-trends argument above is weaker for that half than it reads.
 
 They are also different classes of data, which is why only one made retention a question.
 `cli_command` carries `anonymousId`, a UUID minted locally by `crypto.randomUUID()` and tied to
-no identity — there is no personal data in it. `mcp_tool_call` carries `hashedCallerId`, an
-HMAC-SHA256 of a Keycloak `sub`: pseudonymous, not anonymous, since anyone holding both Redis
-read access and `MCP_TELEMETRY_HASH_SECRET` can re-identify a named Reservix employee.
+no identity — there is no personal data in it. `mcp_tool_call` carries `hashedCallerId`, a
+SHA-256 of a Keycloak `sub`: pseudonymous, not anonymous, since anyone holding both Redis read
+access and a list of `sub`s to test against can re-identify a named Reservix employee.
 
-That digest is **stable for the life of the secret, and that is a decision rather than a
-default.** A salt that changed over time — per quarter, say — would bound linkability by
-construction, but it would also make a unique-caller count meaningless across the boundary, and
-an all-time count impossible. Since the whole reason this data is kept indefinitely is long-run
+That digest is **stable for good, and that is a decision rather than a default.** A salt that
+changed over time — per quarter, say — would bound linkability by construction, but it would
+also make a unique-caller count meaningless across the boundary, and an all-time count
+impossible. Since the whole reason this data is kept indefinitely is long-run
 adoption trends, "how many distinct people have ever used this" has to stay answerable. So the
 digest is stable, and the linkability that comes with it is accepted rather than engineered
 away.
 
+**The hash is unkeyed, and that is also a decision.** Keying it on a server-held secret was the
+obvious alternative, and was rejected. A key defends against exactly one attack: taking the
+stored digests and hashing candidate inputs until they match. A Keycloak `sub` is a UUID, so
+there is no candidate space small enough to walk — that attack is infeasible with or without a
+key. What a key adds is a bar against someone who already holds a list of `sub`s, and holding
+that list means Keycloak access, i.e. already knowing every name. Set against that, the key cost
+a required env var whose absence disabled recording silently, and a value that had to be
+provisioned identically in every environment or digests would not match across them. Not worth
+it, so the digest is a plain SHA-256.
+
 What limits the exposure is therefore not the hash, and saying otherwise would be the easy
-mistake to make here. Three things do. The secret is a credential, held only as a Vercel project
-env var, and re-identifying anyone needs it _and_ Redis read access _and_ a `sub` to test
-against. What is recorded is which doc page ranked first — not query text, not similarity
+mistake to make here. Three things do. Re-identifying anyone needs Redis read access _and_ a
+list of `sub`s to test against, and a `sub` is not something the store or the docs site ever
+hands out. What is recorded is which doc page ranked first — not query text, not similarity
 scores. And the read side never attributes: Insights counts distinct `hashedCallerId`s and
 charts volume, and no view anywhere maps a digest back to a person or shows one caller's
 history. **That last one is the load-bearing one**, which is why "someone proposes reading this
 per person" is a revisit trigger below and not a feature request.
 
-Rotating `MCP_TELEMETRY_HASH_SECRET` remains available and is the one lever that invalidates
-every past digest at once. It is deliberately not part of the design: it would also reset every
-caller to a new identity, so the all-time count restarts and the history before it becomes
-uncountable. Reach for it if the position above stops holding, not on a schedule.
+**There is no lever that invalidates every past digest at once.** Keying the hash and rotating
+the key would have been one, and it was never something to reach for anyway: using it resets
+every caller to a new identity, restarting the all-time count and making the history before it
+uncountable. If it ever has to happen, the equivalent is a one-off rewrite of the stored
+digests, or accepting the same discontinuity by salting from a chosen date forward. Either is a
+deliberate migration rather than a switch to flip.
 
 Retaining that indefinitely is a deliberate call on the basis that `marigold-docs` is an
 internal tool, its callers are Reservix employees, and what is recorded is which doc pages were
@@ -154,9 +169,9 @@ substitute for either.** Revisit it, before the fact rather than after, if:
   makes the current position defensible is that Insights only ever aggregates;
 - someone asks the employee-data question properly.
 
-Two mitigations exist for that last case, both deferred rather than dismissed: rotating
-`MCP_TELEMETRY_HASH_SECRET`, at the cost described above, and a per-caller opt-out on the MCP
-path, which unlike the CLI's `DO_NOT_TRACK` does not exist.
+Two mitigations exist for that last case, both deferred rather than dismissed: re-pseudonymising
+the stored digests, at the cost described above, and a per-caller opt-out on the MCP path, which
+unlike the CLI's `DO_NOT_TRACK` does not exist.
 
 The shapes are not symmetric either: the CLI reports its outcome as `exitCode` and its duration
 as a coarse `durationBucket` (its [public docs](../../../content/getting-started/cli/index.mdx)
@@ -165,7 +180,9 @@ Anything aggregating across both has to special-case, which is a third reason th
 is a storage decision rather than a common data model.
 
 One consequence that is easy to miss: Insights pages the stream at `STREAM_PAGE_SIZE = 5_000`
-with `MAX_STREAM_PAGES = 20`, and the page counter counts every entry in the window — including
+with `MAX_STREAM_PAGES = 20` (as of marigold-ui/insights#86 — they live in that repo, so treat
+the numbers as illustrative and the headroom argument as the durable part), and the page counter
+counts every entry in the window — including
 the `cli_command` ones it is about to discard. Past 100000 entries in a window it logs and
 returns **incomplete aggregates**, which look like a drop in usage rather than an error. At
 ~35 events a day the window holds ~6000, so there is roughly 16x headroom; the point is that the
