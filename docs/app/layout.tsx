@@ -1,3 +1,4 @@
+import { canonicalUrl } from '@/lib/config';
 import { CONSENT_BANNER_ENABLED } from '@/lib/consent';
 import { source } from '@/lib/source';
 import { flattenTree } from 'fumadocs-core/page-tree';
@@ -29,6 +30,11 @@ export const metadata: Metadata = {
     icon:
       // @ts-expect-error TS2538
       FAV_ICONS[process.env.NEXT_PUBLIC_VERCEL_ENV] || '/logo.svg',
+  },
+  alternates: {
+    types: {
+      'application/rss+xml': `${canonicalUrl}/rss.xml`,
+    },
   },
 };
 

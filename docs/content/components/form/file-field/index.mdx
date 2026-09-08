@@ -3,6 +3,8 @@ title: FileField
 description: A form component for uploading files with drag and drop support.
 ---
 
+import { FileFieldAnatomy } from './file-field-anatomy';
+
 The `<FileField>` component allows users to upload files to your application. It provides both a drag and drop area and a traditional file browser button, making it easy for users to select files in the way that works best for them.
 
 File uploads are commonly used in forms where users need to attach documents, images, or other files such as resumes for job applications, profile pictures for accounts, or supporting materials for requests.
@@ -11,13 +13,7 @@ File uploads are commonly used in forms where users need to attach documents, im
 
 A `<FileField>` consists of a label, a drop zone where users can drag files, a zone label providing instructions, and an upload button for browsing files. Once files are selected, they appear as file items in a list, each showing the file name, size, and a remove button.
 
-<ImageZoom
-  src="/file-field/file-field-anatomy.svg"
-  alt="Anatomy of FileField component"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+<FileFieldAnatomy />
 
 - **Label:** Identifies what the file upload field is for.
 - **Drop zone:** The area where users can drag and drop files.

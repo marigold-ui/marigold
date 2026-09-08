@@ -4,6 +4,8 @@ description: A multi-select field that displays selected items as removable tags
 badge: beta
 ---
 
+import { TagFieldAnatomy } from './tag-field-anatomy';
+
 The `<TagField>` component allows users to select multiple options from a dropdown list. Selected items are displayed as removable tags directly inside the input area, giving users a clear overview of their choices at a glance. The component includes a built-in search field for quickly filtering through large option sets.
 
 `<TagField>` is ideal for scenarios where users need to pick several items from a predefined set, such as assigning categories, tagging content, or selecting multiple preferences. Unlike a standard multi-select dropdown, the tag-based display provides immediate visual feedback and makes it easy to add or remove individual selections.
@@ -14,13 +16,7 @@ The component is built on react-aria, providing full keyboard navigation, screen
 
 A `<TagField>` consists of a label, a trigger area with tags and an add button, and a popover containing a search input and an options list.
 
-<ImageZoom
-  src="/tag-field/tag-field-anatomy.svg"
-  alt="Anatomy of TagField component"
-  width={800}
-  height={435}
-  className="mx-auto block"
-/>
+<TagFieldAnatomy />
 
 <ul>
   <li>

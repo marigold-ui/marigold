@@ -32,8 +32,8 @@ None of these boxes hold their own state or secrets at request time. Everything 
 
 Everything except the external Bedrock call lives in [`route.ts`](./route.ts):
 
-- **Transport.** Streamable HTTP via `createMcpHandler` from the `mcp-handler` package (wraps `@modelcontextprotocol/sdk`). The route exports `GET`, `POST`, and `DELETE`, all pointing at the same handler.
-- **Tool.** There is exactly one, `search_docs(query: string, limit?: number)` (`route.ts:176-229`). `query` is 1–1000 chars. `limit` is 3–10, default 5.
+- **Transport.** Streamable HTTP via `createMcpHandler` from the `mcp-handler` package (wraps `@modelcontextprotocol/server`). The route exports `GET`, `POST`, and `DELETE`, all pointing at the same handler.
+- **Tool.** There is exactly one, `search_docs(query: string, limit?: number)` (`route.ts:176-231`). `query` is 1–1000 chars. `limit` is 3–10, default 5.
 - **Search.** A brute-force dot-product top-K scan over the in-memory vector store (`route.ts:110-136`). There is no approximate-nearest-neighbor index. The corpus is small enough (roughly one doc page times a few chunks each) that a linear scan is fast enough per request.
 - **Runtime.** `export const runtime = 'nodejs'` and `dynamic = 'force-dynamic'` (`route.ts:17-18`). This is a Node.js serverless function, not an Edge function, and it is never statically cached.
 
@@ -90,7 +90,7 @@ Each stored chunk (`route.ts`'s `StoredChunk` type) carries:
 
 The tool is gated behind OAuth (Keycloak/OIDC), required on every call.
 
-- `withMcpAuth(handler, verifyToken, { required: true, resourceMetadataPath: '/.well-known/oauth-protected-resource' })` (`route.ts:239-244`)
+- `withMcpAuth(handler, verifyToken, { required: true, resourceMetadataPath: '/.well-known/oauth-protected-resource' })` (`route.ts:241-246`)
 - `verifyToken` (`route.ts:147-170`) verifies the bearer JWT against Keycloak's remote JWKS (`${OIDC_AUTHORITY}/protocol/openid-connect/certs`), checking `issuer` and `audience` (`OIDC_CLIENT_ID`)
 - [`app/.well-known/oauth-protected-resource/route.ts`](../.well-known/oauth-protected-resource/route.ts) serves the OAuth protected-resource metadata the MCP client needs to discover the auth server. It deliberately restricts `scopes_supported` to `['openid']`. Without this, VS Code requests every Keycloak scope and fails with "Invalid scopes" for clients that aren't assigned all of them.
 

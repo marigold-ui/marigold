@@ -6,6 +6,7 @@ import { Link } from '../Link/Link';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Radio } from '../Radio/Radio';
 import { Stack } from '../Stack/Stack';
+import { Switch } from '../Switch/Switch';
 import { Table } from '../Table/Table';
 import { TextField } from '../TextField/TextField';
 
@@ -67,21 +68,29 @@ export const Form = meta.story({
         <TextField
           label={
             <>
-              Label <Badge variant="master">Master</Badge>
+              Label{' '}
+              <Badge variant="master" size="inline">
+                Master
+              </Badge>
             </>
           }
         />
+        {/* Boolean fields take the mark through `badge`, which sizes it. */}
         <Checkbox
-          label={
-            <>
-              Enable Feature <Badge variant="admin">Admin</Badge>
-            </>
-          }
+          label="Enable Feature"
+          badge={<Badge variant="admin">Admin</Badge>}
+        />
+        <Switch
+          label="Require Approval"
+          badge={<Badge variant="master">Master</Badge>}
         />
         <Radio.Group
           label={
             <>
-              Role <Badge variant="admin">Admin</Badge>
+              Role{' '}
+              <Badge variant="admin" size="inline">
+                Admin
+              </Badge>
             </>
           }
           defaultValue="admin"

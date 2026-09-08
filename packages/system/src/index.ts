@@ -97,6 +97,7 @@ export {
   createWidthVar,
   createHeightVar,
   ensureCssVar,
+  isAxislessToken,
   isFraction,
   isScale,
   isValidCssCustomPropertyName,

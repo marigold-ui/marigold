@@ -1,15 +1,15 @@
 export const SidebarRailAnatomy = () => (
   <svg
-    viewBox="40 58 640 385"
+    viewBox="41 60 660 397"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
     {/* Shell container: rail + panel */}
     <rect
-      x="220"
-      y="70"
-      width="280"
-      height="360"
+      x="227"
+      y="72"
+      width="289"
+      height="371"
       rx="12"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
@@ -17,34 +17,34 @@ export const SidebarRailAnatomy = () => (
 
     {/* Divider between rail and panel */}
     <rect
-      x="316"
-      y="70"
+      x="326"
+      y="72"
       width="2"
-      height="360"
+      height="371"
       className="fill-fd-border transition-colors duration-300"
     />
 
     {/* Rail tile 1 (active section) */}
     <rect
-      x="228"
-      y="86"
-      width="82"
-      height="56"
+      x="235"
+      y="89"
+      width="85"
+      height="58"
       rx="6"
       className="fill-fd-accent transition-colors duration-300"
     />
     <rect
-      x="261"
-      y="96"
-      width="16"
-      height="16"
+      x="269"
+      y="99"
+      width="17"
+      height="17"
       rx="4"
       className="fill-fd-accent-foreground/70 transition-colors duration-300"
     />
     <rect
-      x="245"
-      y="120"
-      width="48"
+      x="253"
+      y="124"
+      width="50"
       height="8"
       rx="4"
       className="fill-fd-accent-foreground transition-colors duration-300"
@@ -52,17 +52,17 @@ export const SidebarRailAnatomy = () => (
 
     {/* Rail tile 2 */}
     <rect
-      x="261"
-      y="162"
-      width="16"
-      height="16"
+      x="269"
+      y="167"
+      width="17"
+      height="17"
       rx="4"
       className="fill-fd-muted-foreground/50 transition-colors duration-300"
     />
     <rect
-      x="249"
-      y="186"
-      width="40"
+      x="257"
+      y="192"
+      width="41"
       height="8"
       rx="4"
       className="fill-fd-muted-foreground/50 transition-colors duration-300"
@@ -70,17 +70,17 @@ export const SidebarRailAnatomy = () => (
 
     {/* Rail tile 3 */}
     <rect
-      x="261"
-      y="228"
-      width="16"
-      height="16"
+      x="269"
+      y="235"
+      width="17"
+      height="17"
       rx="4"
       className="fill-fd-muted-foreground/50 transition-colors duration-300"
     />
     <rect
-      x="249"
-      y="252"
-      width="40"
+      x="257"
+      y="260"
+      width="41"
       height="8"
       rx="4"
       className="fill-fd-muted-foreground/50 transition-colors duration-300"
@@ -88,17 +88,17 @@ export const SidebarRailAnatomy = () => (
 
     {/* Pinned footer tile */}
     <rect
-      x="261"
-      y="384"
-      width="16"
-      height="16"
+      x="269"
+      y="396"
+      width="17"
+      height="17"
       rx="4"
       className="fill-fd-muted-foreground/50 transition-colors duration-300"
     />
     <rect
-      x="249"
-      y="408"
-      width="40"
+      x="257"
+      y="421"
+      width="41"
       height="8"
       rx="4"
       className="fill-fd-muted-foreground/50 transition-colors duration-300"
@@ -106,9 +106,9 @@ export const SidebarRailAnatomy = () => (
 
     {/* Panel title */}
     <rect
-      x="334"
-      y="92"
-      width="110"
+      x="344"
+      y="95"
+      width="113"
       height="12"
       rx="4"
       className="fill-fd-foreground transition-colors duration-300"
@@ -116,17 +116,17 @@ export const SidebarRailAnatomy = () => (
 
     {/* Panel row 1 (active leaf) */}
     <rect
-      x="326"
-      y="120"
-      width="158"
-      height="30"
+      x="336"
+      y="124"
+      width="163"
+      height="31"
       rx="6"
       className="fill-fd-accent transition-colors duration-300"
     />
     <rect
-      x="338"
-      y="130"
-      width="100"
+      x="349"
+      y="134"
+      width="103"
       height="10"
       rx="4"
       className="fill-fd-accent-foreground transition-colors duration-300"
@@ -134,17 +134,17 @@ export const SidebarRailAnatomy = () => (
 
     {/* Panel rows 2 + 3 */}
     <rect
-      x="338"
-      y="166"
-      width="84"
+      x="349"
+      y="171"
+      width="87"
       height="10"
       rx="4"
       className="fill-fd-muted-foreground/50 transition-colors duration-300"
     />
     <rect
-      x="338"
-      y="196"
-      width="110"
+      x="349"
+      y="202"
+      width="113"
       height="10"
       rx="4"
       className="fill-fd-muted-foreground/50 transition-colors duration-300"
@@ -158,22 +158,22 @@ export const SidebarRailAnatomy = () => (
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M 249 190 L 160 190" />
-      <path d="M 228 300 L 160 300" />
-      <path d="M 249 412 L 160 412" />
-      <path d="M 444 98 L 590 98" />
-      <path d="M 484 135 L 590 135" />
-      <path d="M 500 300 L 560 300" />
+      <path d="M 257 196 L 165 196" />
+      <path d="M 235 309 L 165 309" />
+      <path d="M 257 425 L 165 425" />
+      <path d="M 458 101 L 608 101" />
+      <path d="M 499 139 L 608 139" />
+      <path d="M 516 309 L 578 309" />
     </g>
 
     {/* Connector Dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="249" cy="190" r="4" />
-      <circle cx="228" cy="300" r="4" />
-      <circle cx="249" cy="412" r="4" />
-      <circle cx="444" cy="98" r="4" />
-      <circle cx="484" cy="135" r="4" />
-      <circle cx="560" cy="300" r="4" />
+      <circle cx="257" cy="196" r="4" />
+      <circle cx="235" cy="309" r="4" />
+      <circle cx="257" cy="425" r="4" />
+      <circle cx="458" cy="101" r="4" />
+      <circle cx="499" cy="139" r="4" />
+      <circle cx="578" cy="309" r="4" />
     </g>
 
     {/* Labels */}
@@ -183,8 +183,8 @@ export const SidebarRailAnatomy = () => (
     >
       <g textAnchor="end">
         <text
-          x="150"
-          y="194"
+          x="155"
+          y="200"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -192,8 +192,8 @@ export const SidebarRailAnatomy = () => (
           Rail item
         </text>
         <text
-          x="150"
-          y="304"
+          x="155"
+          y="314"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -201,8 +201,8 @@ export const SidebarRailAnatomy = () => (
           Rail
         </text>
         <text
-          x="150"
-          y="416"
+          x="155"
+          y="429"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -212,8 +212,8 @@ export const SidebarRailAnatomy = () => (
       </g>
       <g textAnchor="start">
         <text
-          x="600"
-          y="102"
+          x="619"
+          y="105"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -221,8 +221,8 @@ export const SidebarRailAnatomy = () => (
           Panel title
         </text>
         <text
-          x="600"
-          y="139"
+          x="619"
+          y="143"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -230,8 +230,8 @@ export const SidebarRailAnatomy = () => (
           Item
         </text>
         <text
-          x="570"
-          y="304"
+          x="588"
+          y="314"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"

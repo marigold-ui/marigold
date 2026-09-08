@@ -1,11 +1,12 @@
 import type { Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { ListBox as RACListBox } from 'react-aria-components/ListBox';
-import { ListLayout, Virtualizer } from 'react-aria-components/Virtualizer';
+import { Virtualizer } from 'react-aria-components/Virtualizer';
 import type { ListLayoutOptions } from 'react-aria-components/Virtualizer';
 import { cn, useClassNames } from '@marigold/system';
 import { ListBoxContext } from './Context';
 import { ListBoxItem } from './ListBoxItem';
+import { ListBoxLayout } from './ListBoxLayout';
 import { Section } from './ListBoxSection';
 
 export interface ListBoxProps extends Omit<
@@ -66,7 +67,7 @@ const ListBoxBase = ({
       <div className={classNames.container}>
         {virtualized ? (
           <Virtualizer
-            layout={ListLayout}
+            layout={ListBoxLayout}
             layoutOptions={{ ...defaultLayoutOptions, ...layoutOptions }}
           >
             {listBox}

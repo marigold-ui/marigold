@@ -1,15 +1,15 @@
 export const SidebarAnatomy = () => (
   <svg
-    viewBox="40 58 640 385"
+    viewBox="41 60 660 397"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
     {/* Sidebar Container */}
     <rect
-      x="240"
-      y="70"
-      width="220"
-      height="360"
+      x="248"
+      y="72"
+      width="227"
+      height="371"
       rx="12"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
@@ -17,17 +17,17 @@ export const SidebarAnatomy = () => (
 
     {/* Header Area */}
     <rect
-      x="260"
-      y="90"
-      width="24"
-      height="24"
+      x="268"
+      y="93"
+      width="25"
+      height="25"
       rx="6"
       className="fill-fd-muted-foreground/40 transition-colors duration-300"
     />
     <rect
-      x="296"
-      y="96"
-      width="100"
+      x="305"
+      y="99"
+      width="103"
       height="12"
       rx="4"
       className="fill-fd-foreground transition-colors duration-300"
@@ -35,9 +35,9 @@ export const SidebarAnatomy = () => (
 
     {/* Group 1 Label */}
     <rect
-      x="260"
-      y="140"
-      width="80"
+      x="268"
+      y="144"
+      width="83"
       height="10"
       rx="4"
       className="fill-fd-muted-foreground transition-colors duration-300"
@@ -45,25 +45,25 @@ export const SidebarAnatomy = () => (
 
     {/* Item 1 (Active) */}
     <rect
-      x="252"
-      y="160"
-      width="196"
-      height="36"
+      x="260"
+      y="165"
+      width="202"
+      height="37"
       rx="6"
       className="fill-fd-accent transition-colors duration-300"
     />
     <rect
-      x="264"
-      y="170"
-      width="16"
-      height="16"
+      x="272"
+      y="175"
+      width="17"
+      height="17"
       rx="4"
       className="fill-fd-muted-foreground transition-colors duration-300"
     />
     <rect
-      x="292"
-      y="172"
-      width="120"
+      x="301"
+      y="177"
+      width="124"
       height="12"
       rx="4"
       className="fill-fd-accent-foreground transition-colors duration-300"
@@ -71,17 +71,17 @@ export const SidebarAnatomy = () => (
 
     {/* Item 2 */}
     <rect
-      x="264"
-      y="214"
-      width="16"
-      height="16"
+      x="272"
+      y="221"
+      width="17"
+      height="17"
       rx="4"
       className="fill-fd-muted-foreground/50 transition-colors duration-300"
     />
     <rect
-      x="292"
-      y="216"
-      width="90"
+      x="301"
+      y="223"
+      width="93"
       height="12"
       rx="4"
       className="fill-fd-muted-foreground/50 transition-colors duration-300"
@@ -89,9 +89,9 @@ export const SidebarAnatomy = () => (
 
     {/* Separator */}
     <rect
-      x="260"
-      y="250"
-      width="180"
+      x="268"
+      y="258"
+      width="186"
       height="2"
       rx="1"
       className="fill-fd-border transition-colors duration-300"
@@ -99,9 +99,9 @@ export const SidebarAnatomy = () => (
 
     {/* Group 2 Label */}
     <rect
-      x="260"
-      y="270"
-      width="60"
+      x="268"
+      y="278"
+      width="62"
       height="10"
       rx="4"
       className="fill-fd-muted-foreground transition-colors duration-300"
@@ -109,17 +109,17 @@ export const SidebarAnatomy = () => (
 
     {/* Item 3 */}
     <rect
-      x="264"
-      y="294"
-      width="16"
-      height="16"
+      x="272"
+      y="303"
+      width="17"
+      height="17"
       rx="4"
       className="fill-fd-muted-foreground/50 transition-colors duration-300"
     />
     <rect
-      x="292"
-      y="296"
-      width="110"
+      x="301"
+      y="305"
+      width="113"
       height="12"
       rx="4"
       className="fill-fd-muted-foreground/50 transition-colors duration-300"
@@ -127,30 +127,30 @@ export const SidebarAnatomy = () => (
 
     {/* Footer Area */}
     <rect
-      x="240"
-      y="360"
-      width="220"
+      x="248"
+      y="371"
+      width="227"
       height="2"
       className="fill-fd-border transition-colors duration-300"
     />
     <circle
-      cx="272"
-      cy="395"
-      r="16"
+      cx="281"
+      cy="407"
+      r="17"
       className="fill-fd-muted-foreground/30 transition-colors duration-300"
     />
     <rect
-      x="300"
-      y="385"
-      width="90"
+      x="309"
+      y="397"
+      width="93"
       height="10"
       rx="4"
       className="fill-fd-muted-foreground transition-colors duration-300"
     />
     <rect
-      x="300"
-      y="401"
-      width="60"
+      x="309"
+      y="414"
+      width="62"
       height="8"
       rx="4"
       className="fill-fd-muted-foreground/40 transition-colors duration-300"
@@ -158,10 +158,10 @@ export const SidebarAnatomy = () => (
 
     {/* Toggle Button */}
     <rect
-      x="490"
-      y="70"
-      width="40"
-      height="40"
+      x="505"
+      y="72"
+      width="41"
+      height="41"
       rx="8"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
@@ -171,9 +171,9 @@ export const SidebarAnatomy = () => (
       strokeWidth="2"
       strokeLinecap="round"
     >
-      <path d="M 502 84 L 518 84" />
-      <path d="M 502 90 L 518 90" />
-      <path d="M 502 96 L 518 96" />
+      <path d="M 518 87 L 534 87" />
+      <path d="M 518 93 L 534 93" />
+      <path d="M 518 99 L 534 99" />
     </g>
 
     {/* Connector Lines */}
@@ -184,26 +184,26 @@ export const SidebarAnatomy = () => (
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M 272 102 L 160 102" />
-      <path d="M 300 145 L 160 145" />
-      <path d="M 246 260 L 160 260" />
-      <path d="M 240 330 L 160 330" />
-      <path d="M 530 90 L 590 90" />
-      <path d="M 382 222 L 590 222" />
-      <path d="M 440 251 L 590 251" />
-      <path d="M 460 395 L 590 395" />
+      <path d="M 281 105 L 165 105" />
+      <path d="M 309 150 L 165 150" />
+      <path d="M 254 268 L 165 268" />
+      <path d="M 248 340 L 165 340" />
+      <path d="M 547 93 L 608 93" />
+      <path d="M 394 229 L 608 229" />
+      <path d="M 454 259 L 608 259" />
+      <path d="M 474 407 L 608 407" />
     </g>
 
     {/* Connector Dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="272" cy="102" r="4" />
-      <circle cx="300" cy="145" r="4" />
-      <circle cx="246" cy="260" r="4" />
-      <circle cx="240" cy="330" r="4" />
-      <circle cx="530" cy="90" r="4" />
-      <circle cx="382" cy="222" r="4" />
-      <circle cx="440" cy="251" r="4" />
-      <circle cx="460" cy="395" r="4" />
+      <circle cx="281" cy="105" r="4" />
+      <circle cx="309" cy="150" r="4" />
+      <circle cx="254" cy="268" r="4" />
+      <circle cx="248" cy="340" r="4" />
+      <circle cx="547" cy="93" r="4" />
+      <circle cx="394" cy="229" r="4" />
+      <circle cx="454" cy="259" r="4" />
+      <circle cx="474" cy="407" r="4" />
     </g>
 
     {/* Labels */}
@@ -213,8 +213,8 @@ export const SidebarAnatomy = () => (
     >
       <g textAnchor="end">
         <text
-          x="150"
-          y="106"
+          x="155"
+          y="109"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -222,8 +222,8 @@ export const SidebarAnatomy = () => (
           Header
         </text>
         <text
-          x="150"
-          y="149"
+          x="155"
+          y="154"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -231,8 +231,8 @@ export const SidebarAnatomy = () => (
           Group label
         </text>
         <text
-          x="150"
-          y="264"
+          x="155"
+          y="272"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -240,8 +240,8 @@ export const SidebarAnatomy = () => (
           Navigation
         </text>
         <text
-          x="150"
-          y="334"
+          x="155"
+          y="344"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -251,8 +251,8 @@ export const SidebarAnatomy = () => (
       </g>
       <g textAnchor="start">
         <text
-          x="600"
-          y="94"
+          x="619"
+          y="97"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -260,8 +260,8 @@ export const SidebarAnatomy = () => (
           Toggle
         </text>
         <text
-          x="600"
-          y="226"
+          x="619"
+          y="233"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -269,8 +269,8 @@ export const SidebarAnatomy = () => (
           Item
         </text>
         <text
-          x="600"
-          y="255"
+          x="619"
+          y="263"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -278,8 +278,8 @@ export const SidebarAnatomy = () => (
           Separator
         </text>
         <text
-          x="600"
-          y="399"
+          x="619"
+          y="411"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"

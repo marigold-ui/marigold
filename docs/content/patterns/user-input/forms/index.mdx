@@ -44,7 +44,7 @@ Beyond those, you'll likely need some of these to put a form together:
 - **Layout components**: [`<Stack>`](../../components/layout/stack/) and [`<Inset>`](../../components/layout/inset/) to organize fields and sections. See [Layouts](/foundations/layouts) for choosing the right layout component (and why fields never belong in a `<Table>`).
 - **Accordion**: Group fields with an [accordion](../../components/navigation/accordion/) for lengthy forms or optional fields. Use accordions for sections that can be collapsed to save space and reduce cognitive load.
 - **Buttons**: Use primary [buttons](../../components/actions/button/) for form submission, secondary for additional actions like "View PDF".
-- **Links**: Use [links](../../components/navigation/link/) for navigation to privacy policies or terms of service, not for form actions.
+- **Links**: Use [links](/components/actions/link) for navigation to privacy policies or terms of service, not for form actions.
 - **Feedback components**: [`<SectionMessage>`](../../components/content/section-message/) and [`<Toast>`](../../components/overlay/toast/) for inline hints or notifications.
 
 ## Content Organization
@@ -92,7 +92,7 @@ To create a group, wrap the fields with `<Stack space="group">` to add spacing t
 
 ### Panels
 
-For settings pages and forms with independent sections, use [`<Panel>`](/components/layout/panel/) instead of plain sections. Panels provide a structured container with a header, description, content area, optional collapsible section, and a footer for actions.
+For settings pages and forms with independent sections, use [`<Panel>`](/components/layout/panel) instead of plain sections. Panels provide a structured container with a header, description, content area, optional collapsible section, and a footer for actions.
 
 This pattern works well when each section can be saved independently. Wrap the `<Form>` around the entire `<Panel>` so that all fields, including those inside `<Panel.Collapsible>`, are part of the submission.
 

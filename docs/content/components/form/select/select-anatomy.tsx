@@ -1,42 +1,42 @@
 export const SelectAnatomy = () => (
   <svg
-    viewBox="-20 50 960 330"
-    className="mx-auto h-auto w-full max-w-[100%]"
+    viewBox="-28 33 660 217"
+    className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
     <defs>
       <clipPath id="select-anatomy-popover-clip">
-        <rect x="520" y="70" width="240" height="280" rx="12" />
+        <rect x="342" y="46" width="158" height="184" rx="8" />
       </clipPath>
     </defs>
 
     {/* Field label */}
     <rect
-      x="160"
-      y="70"
-      width="80"
-      height="12"
-      rx="4"
+      x="105"
+      y="46"
+      width="53"
+      height="8"
+      rx="3"
       className="fill-fd-foreground transition-colors duration-300"
     />
 
     {/* Trigger (closed select field) */}
     <rect
-      x="160"
-      y="100"
-      width="200"
-      height="44"
-      rx="8"
+      x="105"
+      y="66"
+      width="131"
+      height="29"
+      rx="5"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
     {/* Selected value */}
     <rect
-      x="180"
-      y="116"
-      width="120"
-      height="12"
-      rx="4"
+      x="118"
+      y="76"
+      width="79"
+      height="8"
+      rx="3"
       className="fill-fd-foreground transition-colors duration-300"
     />
     {/* Chevron (chevrons-up-down) */}
@@ -47,122 +47,122 @@ export const SelectAnatomy = () => (
       strokeLinejoin="round"
       fill="none"
     >
-      <path d="M 328 120 L 336 113 L 344 120" />
-      <path d="M 328 124 L 336 131 L 344 124" />
+      <path d="M 215 79 L 221 74 L 226 79" />
+      <path d="M 215 81 L 221 86 L 226 81" />
     </g>
 
     {/* Helper text (description below the field) */}
     <rect
-      x="160"
-      y="160"
-      width="160"
-      height="10"
-      rx="4"
+      x="105"
+      y="105"
+      width="105"
+      height="7"
+      rx="3"
       className="fill-fd-muted-foreground transition-colors duration-300"
     />
 
     {/* Popover / listbox */}
     <rect
-      x="520"
-      y="70"
-      width="240"
-      height="280"
-      rx="12"
+      x="342"
+      y="46"
+      width="158"
+      height="184"
+      rx="8"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
 
     {/* Section header */}
     <rect
-      x="540"
-      y="90"
-      width="80"
-      height="10"
-      rx="4"
+      x="355"
+      y="59"
+      width="53"
+      height="7"
+      rx="3"
       className="fill-fd-muted-foreground transition-colors duration-300"
     />
 
     {/* Option 1 (selected) accent fill */}
     <g clipPath="url(#select-anatomy-popover-clip)">
       <rect
-        x="528"
-        y="116"
-        width="224"
-        height="60"
-        rx="6"
+        x="347"
+        y="76"
+        width="147"
+        height="39"
+        rx="4"
         className="fill-fd-accent transition-colors duration-300"
       />
     </g>
     {/* Option 1 label */}
     <rect
-      x="540"
-      y="132"
-      width="130"
-      height="12"
-      rx="4"
+      x="355"
+      y="87"
+      width="85"
+      height="8"
+      rx="3"
       className="fill-fd-accent-foreground transition-colors duration-300"
     />
     {/* Option 1 description */}
     <rect
-      x="540"
-      y="152"
-      width="160"
-      height="10"
-      rx="4"
+      x="355"
+      y="100"
+      width="105"
+      height="7"
+      rx="3"
       className="fill-fd-accent-foreground/70 transition-colors duration-300"
     />
 
     {/* Divider between option 1 and 2 */}
     <rect
-      x="540"
-      y="192"
-      width="200"
-      height="2"
+      x="355"
+      y="126"
+      width="131"
+      height="1"
       className="fill-fd-border transition-colors duration-300"
     />
 
     {/* Option 2 */}
     <rect
-      x="540"
-      y="212"
-      width="120"
-      height="12"
-      rx="4"
+      x="355"
+      y="139"
+      width="79"
+      height="8"
+      rx="3"
       className="fill-fd-foreground/70 transition-colors duration-300"
     />
     <rect
-      x="540"
-      y="232"
-      width="160"
-      height="10"
-      rx="4"
+      x="355"
+      y="152"
+      width="105"
+      height="7"
+      rx="3"
       className="fill-fd-muted-foreground transition-colors duration-300"
     />
 
     {/* Divider between option 2 and 3 */}
     <rect
-      x="540"
-      y="272"
-      width="200"
-      height="2"
+      x="355"
+      y="179"
+      width="131"
+      height="1"
       className="fill-fd-border transition-colors duration-300"
     />
 
     {/* Option 3 */}
     <rect
-      x="540"
-      y="292"
-      width="100"
-      height="12"
-      rx="4"
+      x="355"
+      y="192"
+      width="66"
+      height="8"
+      rx="3"
       className="fill-fd-foreground/70 transition-colors duration-300"
     />
     <rect
-      x="540"
-      y="312"
-      width="130"
-      height="10"
-      rx="4"
+      x="355"
+      y="205"
+      width="85"
+      height="7"
+      rx="3"
       className="fill-fd-muted-foreground transition-colors duration-300"
     />
 
@@ -175,38 +175,38 @@ export const SelectAnatomy = () => (
       strokeLinejoin="round"
     >
       {/* Label (left) */}
-      <path d="M 160 76 L 130 76" />
+      <path d="M 105 50 L 85 50" />
       {/* Field — trigger left edge */}
-      <path d="M 160 122 L 130 122" />
+      <path d="M 105 80 L 85 80" />
       {/* Helper text */}
-      <path d="M 160 165 L 130 165" />
+      <path d="M 105 108 L 85 108" />
 
       {/* Selected value — into the gap between trigger and popover */}
-      <path d="M 300 122 L 390 122" />
+      <path d="M 197 80 L 233 80" />
 
       {/* Popover top-right */}
-      <path d="M 760 72 L 790 72" />
-      {/* Section header */}
-      <path d="M 620 95 L 790 95" />
+      <path d="M 499 47 L 519 47" />
+      {/* Section header, routed down so the label clears "Popover" */}
+      <path d="M 407 62 L 495 62 L 495 69 L 519 69" />
       {/* Option (right edge of selected option) */}
-      <path d="M 752 146 L 790 146" />
+      <path d="M 494 96 L 519 96" />
       {/* Item label */}
-      <path d="M 660 218 L 790 218" />
-      {/* Item description */}
-      <path d="M 700 237 L 790 237" />
+      <path d="M 434 143 L 519 143" />
+      {/* Item description, routed down so the label clears "Item label" */}
+      <path d="M 460 156 L 490 156 L 490 163 L 519 163" />
     </g>
 
     {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="160" cy="76" r="4" />
-      <circle cx="160" cy="122" r="4" />
-      <circle cx="160" cy="165" r="4" />
-      <circle cx="300" cy="122" r="4" />
-      <circle cx="760" cy="72" r="4" />
-      <circle cx="620" cy="95" r="4" />
-      <circle cx="752" cy="146" r="4" />
-      <circle cx="660" cy="218" r="4" />
-      <circle cx="700" cy="237" r="4" />
+      <circle cx="105" cy="50" r="4" />
+      <circle cx="105" cy="80" r="4" />
+      <circle cx="105" cy="108" r="4" />
+      <circle cx="197" cy="80" r="4" />
+      <circle cx="499" cy="47" r="4" />
+      <circle cx="407" cy="62" r="4" />
+      <circle cx="494" cy="96" r="4" />
+      <circle cx="434" cy="143" r="4" />
+      <circle cx="460" cy="156" r="4" />
     </g>
 
     {/* Labels */}
@@ -216,8 +216,8 @@ export const SelectAnatomy = () => (
     >
       <g textAnchor="end">
         <text
-          x="120"
-          y="80"
+          x="79"
+          y="53"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -225,8 +225,8 @@ export const SelectAnatomy = () => (
           Label
         </text>
         <text
-          x="120"
-          y="126"
+          x="79"
+          y="83"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -234,8 +234,8 @@ export const SelectAnatomy = () => (
           Field
         </text>
         <text
-          x="120"
-          y="169"
+          x="79"
+          y="111"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -245,8 +245,8 @@ export const SelectAnatomy = () => (
       </g>
       <g textAnchor="start">
         <text
-          x="395"
-          y="126"
+          x="240"
+          y="83"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -254,8 +254,8 @@ export const SelectAnatomy = () => (
           Selected value
         </text>
         <text
-          x="800"
-          y="76"
+          x="526"
+          y="50"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -263,8 +263,8 @@ export const SelectAnatomy = () => (
           Popover
         </text>
         <text
-          x="800"
-          y="99"
+          x="526"
+          y="72"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -272,8 +272,8 @@ export const SelectAnatomy = () => (
           Section header
         </text>
         <text
-          x="800"
-          y="150"
+          x="526"
+          y="99"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -281,8 +281,8 @@ export const SelectAnatomy = () => (
           Option
         </text>
         <text
-          x="800"
-          y="222"
+          x="526"
+          y="146"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -290,8 +290,8 @@ export const SelectAnatomy = () => (
           Item label
         </text>
         <text
-          x="800"
-          y="241"
+          x="526"
+          y="166"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"

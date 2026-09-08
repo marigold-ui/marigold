@@ -1,54 +1,54 @@
 export const ButtonAnatomy = () => (
   <svg
-    viewBox="120 100 545 120"
+    viewBox="145 121 660 145"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
     {/* Button with a label (the pressable area) */}
     <rect
-      x="250"
-      y="150"
-      width="170"
-      height="52"
-      rx="10"
+      x="303"
+      y="182"
+      width="206"
+      height="63"
+      rx="12"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
     {/* Icon placeholder (optional leading icon) */}
     <rect
-      x="272"
-      y="168"
-      width="16"
-      height="16"
-      rx="3"
+      x="329"
+      y="203"
+      width="19"
+      height="19"
+      rx="4"
       className="fill-fd-foreground transition-colors duration-300"
     />
     {/* Label placeholder (the text) */}
     <rect
-      x="300"
-      y="171"
-      width="96"
-      height="12"
-      rx="4"
+      x="363"
+      y="207"
+      width="116"
+      height="15"
+      rx="5"
       className="fill-fd-foreground transition-colors duration-300"
     />
 
     {/* Icon-only button (square, no label) */}
     <rect
-      x="460"
-      y="150"
-      width="52"
-      height="52"
-      rx="10"
+      x="557"
+      y="182"
+      width="63"
+      height="63"
+      rx="12"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
     <rect
-      x="478"
-      y="168"
-      width="16"
-      height="16"
-      rx="3"
+      x="579"
+      y="203"
+      width="19"
+      height="19"
+      rx="4"
       className="fill-fd-foreground transition-colors duration-300"
     />
 
@@ -61,21 +61,21 @@ export const ButtonAnatomy = () => (
       strokeLinejoin="round"
     >
       {/* Button -> left */}
-      <path d="M 250 176 L 185 176" />
+      <path d="M 303 213 L 224 213" />
       {/* Icon -> up */}
-      <path d="M 280 168 L 280 124" />
+      <path d="M 339 203 L 339 150" />
       {/* Label -> up */}
-      <path d="M 348 171 L 348 124" />
+      <path d="M 421 207 L 421 150" />
       {/* Icon-only -> right */}
-      <path d="M 512 176 L 580 176" />
+      <path d="M 620 213 L 702 213" />
     </g>
 
     {/* Connector Dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="250" cy="176" r="4" />
-      <circle cx="280" cy="168" r="4" />
-      <circle cx="348" cy="171" r="4" />
-      <circle cx="512" cy="176" r="4" />
+      <circle cx="303" cy="213" r="4" />
+      <circle cx="339" cy="203" r="4" />
+      <circle cx="421" cy="207" r="4" />
+      <circle cx="620" cy="213" r="4" />
     </g>
 
     {/* Labels */}
@@ -84,8 +84,8 @@ export const ButtonAnatomy = () => (
       className="transition-colors duration-300"
     >
       <text
-        x="175"
-        y="180"
+        x="212"
+        y="218"
         fontSize="14"
         fontWeight="600"
         textAnchor="end"
@@ -94,8 +94,8 @@ export const ButtonAnatomy = () => (
         Button
       </text>
       <text
-        x="280"
-        y="116"
+        x="339"
+        y="140"
         fontSize="14"
         fontWeight="600"
         textAnchor="middle"
@@ -104,8 +104,8 @@ export const ButtonAnatomy = () => (
         Icon
       </text>
       <text
-        x="348"
-        y="116"
+        x="421"
+        y="140"
         fontSize="14"
         fontWeight="600"
         textAnchor="middle"
@@ -114,8 +114,8 @@ export const ButtonAnatomy = () => (
         Label
       </text>
       <text
-        x="590"
-        y="180"
+        x="714"
+        y="218"
         fontSize="14"
         fontWeight="600"
         textAnchor="start"

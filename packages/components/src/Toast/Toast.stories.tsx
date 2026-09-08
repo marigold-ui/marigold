@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
-import { I18nProvider } from '@react-aria/i18n';
 import { Button } from '../Button/Button';
 import { Link } from '../Link/Link';
 import { Toast } from './Toast';
@@ -230,8 +230,11 @@ Basic.test(
 
     await step('Toast appears with its links and stays open', async () => {
       await expect(await canvas.findByText(defaults.title)).toBeInTheDocument();
+      // The name carries Link's new-window warning, since this one is `_blank`.
       await expect(
-        canvas.getByRole('link', { name: 'View changelog' })
+        canvas.getByRole('link', {
+          name: 'View changelog opens in a new window',
+        })
       ).toBeInTheDocument();
       await expect(
         canvas.getByRole('link', { name: 'Update now' })

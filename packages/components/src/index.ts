@@ -282,6 +282,10 @@ export { Split } from './Split/Split';
 export { Stack } from './Stack/Stack';
 export type { StackProps } from './Stack/Stack';
 
+export { Stepper } from './Stepper/Stepper';
+export type { StepperProps } from './Stepper/Stepper';
+export type { StepperItemProps } from './Stepper/StepperItem';
+
 export { Switch } from './Switch/Switch';
 export type { SwitchProps } from './Switch/Switch';
 

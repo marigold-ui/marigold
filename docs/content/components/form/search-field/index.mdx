@@ -3,19 +3,20 @@ title: SearchField
 description: Component which allows user to enter and clear a search query.
 ---
 
+import { SearchFieldAnatomy } from './search-field-anatomy';
+
 The `<SearchField>` component offers a user-friendly input field specifically designed for search queries, often accompanied by a search icon or button to initiate the search action.
 
 ## Anatomy
 
 A `<SearchField>` consists of an input element, a label, and an optional clear button.
 
-<ImageZoom
-  src="/search-field/search-field-anatomy.jpg"
-  alt="Anatomy of search field"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+<SearchFieldAnatomy />
+
+- **Label:** Describes what the user is searching for.
+- **Input field:** The text box holding the search term.
+- **Icon:** A magnifier marking the field as a search.
+- **Dismiss icon:** Clears the current search term. Shown once typing starts.
 
 ## Appearance
 

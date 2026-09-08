@@ -13,7 +13,6 @@
 .npmrc
 .nvmrc
 .prettierignore
-.cursorrules
 .claude
 
 coverage
