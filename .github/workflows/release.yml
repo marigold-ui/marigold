@@ -18,7 +18,7 @@ jobs:
     steps:
       # Setup
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v6.0.9 # Uses version from package.json#packageManager
+      - uses: pnpm/action-setup@v6.1.0 # Uses version from package.json#packageManager
       - name: Setup Node (using .node-version)
         uses: actions/setup-node@v6
         with:
@@ -47,7 +47,7 @@ jobs:
         run: pnpm release:notification --packages '${{ steps.changesets.outputs.publishedPackages }}'
       - name: Slack Notification
         if: steps.changesets.outputs.published == 'true'
-        uses: slackapi/slack-github-action@v2.1.1
+        uses: slackapi/slack-github-action@v4.0.0
         with:
           payload-file-path: './slack-notification.json'
           webhook: ${{ secrets.SLACK_HOOK }}
