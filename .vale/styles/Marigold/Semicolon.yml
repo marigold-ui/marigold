@@ -1,0 +1,10 @@
+extends: existence
+message: 'Use a period or a comma instead of a semicolon in prose.'
+level: error
+nonword: true
+scope:
+  - paragraph
+  - list
+  - heading
+tokens:
+  - ';'

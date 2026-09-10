@@ -478,6 +478,69 @@
   }
 }
 
+/* Block-axis twins of the fades above, registered for the same reason. */
+@property --sc-mask-top {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+@property --sc-mask-bottom {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+@keyframes sc-reveal-top {
+  from {
+    --sc-mask-top: 0px;
+  }
+  to {
+    --sc-mask-top: var(--sc-mask-width);
+  }
+}
+@keyframes sc-hide-bottom {
+  from {
+    --sc-mask-bottom: var(--sc-mask-width);
+  }
+  to {
+    --sc-mask-bottom: 0px;
+  }
+}
+
+/*
+ * Vertical twin of `ui-scroll-mask-x`. Keeps the scrollbar rather than hiding it
+ * (conventional down this axis, so pair with `ui-scrollbar`) and fades narrower,
+ * since 2.5rem would swallow a whole row. The mask covers the scrollbar and any
+ * border, thinning the track ends mid-scroll, so put borders on the parent.
+ * Won't compose with the x version: shared --sc-mask and animation shorthands.
+ */
+@utility ui-scroll-mask-y {
+  --sc-mask-width: 1.25rem;
+  --sc-scroll-buffer: 1rem;
+
+  overflow-y: auto;
+
+  @supports (animation-timeline: scroll()) {
+    --sc-mask: linear-gradient(
+      to bottom,
+      transparent 0,
+      #000 var(--sc-mask-top),
+      #000 calc(100% - var(--sc-mask-bottom)),
+      transparent 100%
+    );
+    -webkit-mask-image: var(--sc-mask);
+    mask-image: var(--sc-mask);
+
+    animation:
+      sc-reveal-top linear both,
+      sc-hide-bottom linear both;
+    animation-timeline: scroll(self block), scroll(self block);
+    animation-range:
+      0 var(--sc-scroll-buffer),
+      calc(100% - var(--sc-scroll-buffer)) 100%;
+  }
+}
+
 @keyframes sc-edge-b {
   to {
     box-shadow: 0 1px 0 0 var(--color-border);
@@ -525,6 +588,9 @@
  * each `timeline-scope` confines resolution to its own subtree, and Dialogs
  * render in an overlay portal (never nested in the Sidebar's scope). Without
  * scroll-driven animation the fallback pins the seam on as an always-on divider.
+ * That suits a body that usually scrolls. Where it usually fits, the divider
+ * would be wrong more often than right: set `--seam-fallback-color: transparent`
+ * to drop it and keep "fits means no chrome" true in every engine.
  */
 @keyframes scroll-seam-header {
   to {
@@ -564,6 +630,7 @@
     animation-range: calc(100% - 12px) 100%;
   }
   @supports not (animation-timeline: scroll()) {
-    box-shadow: 0 -1px 0 0 var(--seam-color, var(--color-border));
+    box-shadow: 0 -1px 0 0
+      var(--seam-fallback-color, var(--seam-color, var(--color-border)));
   }
 }

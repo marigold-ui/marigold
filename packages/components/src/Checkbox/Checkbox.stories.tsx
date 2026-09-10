@@ -1,12 +1,18 @@
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Badge } from '../Badge/Badge';
 import {
   WCAG_NON_TEXT,
   contrast,
   flatten,
   paintedGround,
 } from '../contrast.utils';
-import { borderOf, controlIcon } from '../control.utils';
+import {
+  borderOf,
+  controlIcon,
+  firstLineOffset,
+  isSingleLine,
+} from '../control.utils';
 import { Checkbox } from './Checkbox';
 
 const meta = preview.meta({
@@ -264,6 +270,148 @@ Basic.test(
   }
 );
 
+export const WithBadge = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Enable early bird pricing',
+    badge: <Badge variant="master">Master</Badge>,
+    description: undefined,
+  },
+});
+
+WithBadge.test(
+  'The badge leaves the box on the label line',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    const checkbox = await canvas.findByRole('checkbox');
+    const box = controlIcon(checkbox);
+    const labelBlock = canvas.getByText('Enable early bird pricing');
+
+    await step('the badge fits the line', async () => {
+      expect(isSingleLine(labelBlock)).toBe(true);
+    });
+
+    await step('the box is centred on it', async () => {
+      expect(firstLineOffset(box, labelBlock)).toBeLessThanOrEqual(0.5);
+    });
+
+    await step('and so is the badge', async () => {
+      expect(
+        firstLineOffset(canvas.getByText('Master'), labelBlock)
+      ).toBeLessThanOrEqual(0.5);
+    });
+  }
+);
+
+export const LongMultilineLabel = meta.story({
+  tags: ['component-test'],
+  args: {
+    label:
+      'Send a reminder email to everyone on the guest list 24 hours before the event starts, including attendees who registered through a partner site',
+    description: undefined,
+  },
+  render: args => (
+    <div className="w-64">
+      <Checkbox {...args} />
+    </div>
+  ),
+});
+
+LongMultilineLabel.test(
+  'The box stays on the first line of a wrapping label',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const checkbox = await canvas.findByRole('checkbox');
+    const box = controlIcon(checkbox);
+    const labelBlock = canvas.getByText(/Send a reminder email/);
+
+    expect(isSingleLine(labelBlock)).toBe(false);
+
+    expect(firstLineOffset(box, labelBlock)).toBeLessThanOrEqual(0.5);
+  }
+);
+
+export const WrappingLabelWithBadge = meta.story({
+  tags: ['component-test'],
+  args: {
+    label:
+      'Send a reminder email to everyone on the guest list 24 hours before the event starts, including attendees who registered through a partner site',
+    badge: <Badge variant="master">Master</Badge>,
+    description: undefined,
+  },
+  render: args => (
+    <div className="w-64">
+      <Checkbox {...args} />
+    </div>
+  ),
+});
+
+WrappingLabelWithBadge.test(
+  'The badge stays on the first line of a wrapping label',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    const checkbox = await canvas.findByRole('checkbox');
+    const box = controlIcon(checkbox);
+    const labelBlock = canvas.getByText(/Send a reminder email/);
+
+    await step('the label still wraps', async () => {
+      expect(isSingleLine(labelBlock)).toBe(false);
+    });
+
+    await step('the box stays on line one', async () => {
+      expect(firstLineOffset(box, labelBlock)).toBeLessThanOrEqual(0.5);
+    });
+
+    await step('and so does the badge', async () => {
+      expect(
+        firstLineOffset(canvas.getByText('Master'), labelBlock)
+      ).toBeLessThanOrEqual(0.5);
+    });
+  }
+);
+
+// Pins `LabelAdornment`'s overflow guarantee: a consumer who ignores the
+// slot's auto-sizing and passes a full-size badge still stays centred.
+export const OversizedBadge = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Enable early bird pricing',
+    badge: (
+      <Badge variant="master" size="default">
+        Master
+      </Badge>
+    ),
+    description: undefined,
+  },
+});
+
+OversizedBadge.test(
+  'A badge that outgrows the slot still overflows symmetrically',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    const checkbox = await canvas.findByRole('checkbox');
+    const box = controlIcon(checkbox);
+    const labelBlock = canvas.getByText('Enable early bird pricing');
+
+    await step('the line itself is unaffected', async () => {
+      expect(isSingleLine(labelBlock)).toBe(true);
+    });
+
+    await step(
+      'the box stays centred despite the oversized badge',
+      async () => {
+        expect(firstLineOffset(box, labelBlock)).toBeLessThanOrEqual(0.5);
+      }
+    );
+
+    await step('and so does the badge, even past the slot bounds', async () => {
+      expect(
+        firstLineOffset(canvas.getByText('Master'), labelBlock)
+      ).toBeLessThanOrEqual(0.5);
+    });
+  }
+);
+
 export const WithError = meta.story({
   tags: ['component-test'],
   args: {
@@ -287,8 +435,6 @@ WithError.test(
   }
 );
 
-// Without a containing block on the label, React Aria's absolute input stops
-// travelling with the row and focusing it scrolls the wrong ancestor.
 Basic.test(
   'Hidden input travels with the control inside a scroll container',
   {

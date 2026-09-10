@@ -91,7 +91,7 @@ For the panel's commit control, label it clearly and tell users what they are co
 
 ## Designing Options
 
-This section is about one filter's own choices — the cities in a City filter, not the filters in the panel. These guidelines cover how to keep a long or complex option list usable, surface counts, and handle bulk or excluded values.
+This section is about one filter's own choices: the cities in a City filter, not the filters in the panel. These guidelines cover how to keep a long or complex option list usable, surface counts, and handle bulk or excluded values.
 
 ### Many Options
 
@@ -121,7 +121,7 @@ Pairing counts in the panel with a clear applied filter summary gives users conf
 
 ### Select All
 
-This "Select all" checks every **option** in one filter — every city in a City filter — which widens the result set. It is not the row-level "select all" that starts a bulk operation; for that, see [Bulk Actions](/patterns/user-input/bulk-actions). The words are the same, the object is not: here it changes what you see, there it chooses what you act on.
+This "Select all" checks every **option** in one filter, every city in a City filter, which widens the result set. It is not the row-level "select all" that starts a bulk operation. For that, see [Bulk Actions](/patterns/user-input/bulk-actions). The words are the same, the object is not: here it changes what you see, there it chooses what you act on.
 
 In multi-select filters, leaving everything unchecked typically means all results are shown, so a "Select all" option is not always required. It earns its place in long lists where users often want nearly everything, or when a parent-child structure enables bulk toggling, making the common "all except a few" pattern easier to achieve.
 
@@ -373,7 +373,7 @@ The form inside the filter panel is uncontrolled: its fields read their `default
 
 A batched panel that shows "Show 47 results" on its Apply button, or [option counts](#option-counts) that follow the user's picks, must query the **draft** state of the form, not the applied filter. The applied filter only changes on submit, so previews built on it lag one commit behind.
 
-Read the form into a draft on every interaction. The panel form is uncontrolled, so there is no state to subscribe to; instead, listen broadly on a wrapper around the fields and take a `FormData` snapshot. Defer the read by one tick so the interaction has been committed to the DOM before the snapshot is taken.
+Read the form into a draft on every interaction. The panel form is uncontrolled, so there is no state to subscribe to. Instead, listen broadly on a wrapper around the fields and take a `FormData` snapshot. Defer the read by one tick so the interaction has been committed to the DOM before the snapshot is taken.
 
 ```tsx
 const updateDraft = () => {

@@ -1,5 +1,7 @@
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Badge } from '../Badge/Badge';
+import { firstLineOffset, isSingleLine } from '../control.utils';
 import { Switch } from './Switch';
 
 const meta = preview.meta({
@@ -145,12 +147,10 @@ Basic.test(
   }
 );
 
-// There is no accessible way to reach the track. It is the direct child div of
-// the label; the thumb is nested inside it. Matching on `rounded-full` would
-// also match the thumb, and every assertion here reads `'none'` off a wrong
-// element just as happily as off the right one — so pin the shape instead.
 const getTrack = (switchEl: HTMLElement) => {
-  const track = switchEl.closest('label')?.querySelector(':scope > div');
+  const track = switchEl
+    .closest('label')
+    ?.querySelector(':scope > div:has(> div)');
 
   expect(track).not.toBeNull();
   // The track is the `w-7` box; the thumb is `size-3`. If this ever matches the
@@ -303,6 +303,65 @@ WithDescription.test(
 
     expect(canvas.getByText('This is a description')).toBeInTheDocument();
     await expect(switchEl).toHaveAccessibleDescription('This is a description');
+  }
+);
+
+export const WithBadge = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Enable early bird pricing',
+    badge: <Badge variant="master">Master</Badge>,
+  },
+});
+
+WithBadge.test(
+  'The badge leaves the track on the label line',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    const track = getTrack(await canvas.findByRole('switch'));
+    const labelBlock = canvas.getByText('Enable early bird pricing');
+
+    await step('the badge fits the line', async () => {
+      expect(isSingleLine(labelBlock)).toBe(true);
+    });
+
+    await step('the track is centred on it', async () => {
+      expect(firstLineOffset(track, labelBlock)).toBeLessThanOrEqual(0.5);
+    });
+
+    await step('and so is the badge', async () => {
+      expect(
+        firstLineOffset(canvas.getByText('Master'), labelBlock)
+      ).toBeLessThanOrEqual(0.5);
+    });
+  }
+);
+
+export const LongMultilineLabel = meta.story({
+  tags: ['component-test'],
+  args: {
+    variant: 'settings',
+    label:
+      'Notify the organiser about every registration, cancellation and waitlist movement as it happens',
+    description: 'Applies to this event only.',
+  },
+  render: args => (
+    <div className="w-72">
+      <Switch {...args} />
+    </div>
+  ),
+});
+
+LongMultilineLabel.test(
+  'The track stays on the first line of a wrapping label',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const track = getTrack(await canvas.findByRole('switch'));
+    const labelBlock = canvas.getByText(/Notify the organiser/);
+
+    expect(isSingleLine(labelBlock)).toBe(false);
+
+    expect(firstLineOffset(track, labelBlock)).toBeLessThanOrEqual(0.5);
   }
 );
 

@@ -3,6 +3,8 @@ import { CalendarYearPicker } from 'react-aria-components';
 import { type CalendarDropdownView, useCalendarOrRangeState } from './Context';
 import { ListBox } from './ListBox';
 
+const YEARS_AROUND_FOCUS = 20;
+
 interface YearDropdownProps {
   setSelectedDropdown: Dispatch<
     SetStateAction<CalendarDropdownView | undefined>
@@ -12,14 +14,16 @@ interface YearDropdownProps {
 const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => {
   const state = useCalendarOrRangeState();
   const focusedYear = state.focusedDate.year;
+  const anchorAtEraFloor =
+    state.focusedDate.calendar.identifier === 'gregory' && !state.minValue;
 
-  // `CalendarYearPicker` centers a fixed `visibleYears` window on the focused
-  // year and clamps it to the bounds, so size the window to reach whichever
-  // bound is farther. Unbounded sides keep the focused-year ±20 window. A wide
-  // both-bounds range still renders every in-range year, so virtualizing the
-  // listbox is the path forward if the DOM size ever becomes a concern.
-  const min = state.minValue ? state.minValue.year : focusedYear - 20;
-  const max = state.maxValue ? state.maxValue.year : focusedYear + 20;
+  const start = anchorAtEraFloor
+    ? Math.max(focusedYear - YEARS_AROUND_FOCUS, 1)
+    : focusedYear - YEARS_AROUND_FOCUS;
+  const min = state.minValue ? state.minValue.year : start;
+  const max = state.maxValue
+    ? state.maxValue.year
+    : start + YEARS_AROUND_FOCUS * 2;
   const visibleYears = 2 * Math.max(focusedYear - min, max - focusedYear) + 1;
 
   return (
@@ -27,7 +31,11 @@ const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => {
       {({ items, value, onChange, 'aria-label': ariaLabel }) => (
         <ListBox
           ariaLabel={ariaLabel}
-          items={items}
+          items={
+            anchorAtEraFloor
+              ? items.filter(item => item.date.era === state.focusedDate.era)
+              : items
+          }
           isSelected={item => item.id === value}
           onSelect={item => {
             onChange(item.id);
