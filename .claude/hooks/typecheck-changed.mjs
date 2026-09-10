@@ -1,41 +1,21 @@
 #!/usr/bin/env node
 /**
- * Post-edit typecheck (DST-1525).
+ * Post-edit typecheck (DST-1525): runs the repo's own typecheck after the model edits a .ts/.tsx
+ * file, and once more at the end of a turn that changed something, so a type regression reaches
+ * the model while it still has the context to fix it instead of surfacing in CI.
  *
- * Runs the repo's own typecheck after the model edits a .ts/.tsx file, and once more at the end
- * of a turn that changed something, so a type regression reaches the model while it still has
- * the context to fix it instead of surfacing in CI.
+ * PostToolUse (Edit|Write) filters on the edited path, reports the whole program with that file's
+ * errors first, and skips if another run already holds the lock.
  *
- * Registered on two events, and behaves differently on each:
- * - PostToolUse (Edit|Write): filters on the edited path, and skips silently if another run
- *   already holds the lock.
- * - Stop: no path filter, but gated on whether anything in the program, or the git index, is
- *   newer than the last completed check, and waits for the lock. This is the backstop that
- *   covers files written through Bash (sed, heredocs, redirects), which never fire Edit or
- *   Write, and the last edit
- *   of a burst whose own run was skipped. The gate costs ~13ms and is what stops it re-verifying
- *   an unchanged tree at the end of every turn.
- *
- * Why the whole program instead of the changed package: measured against tsconfig.check.json,
- * a cold run is ~11s and a warm --incremental run is ~2.6s, so there is nothing to gain by
- * narrowing. There is also nothing to narrow to. The only per-package configs are
- * tsconfig.build.json emit configs, which resolve @marigold/* through node_modules to dist, and
- * turbo.json defines no typecheck task.
- *
- * Scope and known limits:
- * - What gets checked lives entirely in tsconfig.check.json, so this runs the same program as
- *   `pnpm typecheck` and CI. The flags below only say how this hook runs it.
- * - A pre-existing error anywhere in the program is reported after every edit. Errors in the
- *   edited file are listed first and the output is capped, which makes that tolerable rather
- *   than solving it.
- * - Bash-written files are invisible to the PostToolUse registration by design. The Stop
- *   registration is what covers them.
+ * Stop is the backstop for files written through Bash, which fire neither event. It is gated on
+ * whether the tree moved since the last answer (~13ms, against ~2.4s for a run), and blocks only
+ * on errors in files that moved, so a branch switch mid-session cannot hand the model a program
+ * full of errors it did not cause.
  *
  * Opt out with MARIGOLD_SKIP_TYPECHECK_HOOK=1. To turn off every hook in this repo, set
  * "disableAllHooks": true in your personal settings instead.
  *
- * Run locally:
- *   echo '{"hook_event_name":"Stop"}' | .claude/hooks/typecheck-changed.mjs
+ * Run locally: echo '{"hook_event_name":"Stop"}' | .claude/hooks/typecheck-changed.mjs
  */
 import { execFileSync, spawnSync } from 'node:child_process';
 import {
@@ -43,6 +23,7 @@ import {
   existsSync,
   mkdirSync,
   openSync,
+  readFileSync,
   rmSync,
   statSync,
   utimesSync,
@@ -73,7 +54,7 @@ const MAX_REPORTED_LINES = 25;
 const cacheDir = join(root, 'node_modules', '.cache', 'marigold-hooks');
 const lockPath = join(cacheDir, 'typecheck.lock');
 const buildInfoPath = join(cacheDir, 'check.tsbuildinfo');
-/** Its mtime is the moment the last completed check started reading. See `lastCheckedMs`. */
+/** mtime: when the last completed check started reading. Content: the listing it read. */
 const stampPath = join(cacheDir, 'last-check-start');
 const tscPath = join(root, 'node_modules', '.bin', 'tsc');
 
@@ -143,8 +124,8 @@ const editedFile = (() => {
 // On PostToolUse the path is the whole reason to run. No usable path means nothing to check.
 if (!isStop && !editedFile) process.exit(0);
 
-/** True when any file in the program, or the git index, is newer than `stampMs`. Fails open. */
-const changedSince = stampMs => {
+/** Sorted source files in the program, or null when git cannot answer. */
+const listSources = () => {
   const listed = git([
     'ls-files',
     '--cached',
@@ -154,43 +135,74 @@ const changedSince = stampMs => {
     '*.ts',
     '*.tsx',
   ]);
-  if (listed === null) return true;
+  if (listed === null) return null;
 
-  // Rename, branch switch, stash and revert move the index without touching a source mtime:
-  // `git mv` carries the old mtime over and drops the old path, so the scan below sees nothing.
-  // resolve(), not join(): --git-dir is absolute inside a worktree.
-  const gitDir = git(['rev-parse', '--git-dir'])?.trim();
-  if (!gitDir) return true;
-  try {
-    if (statSync(resolve(root, gitDir, 'index')).mtimeMs > stampMs) return true;
-  } catch {
-    // No index to compare against. The file scan below still applies.
-  }
-
-  for (const rel of listed.split('\n')) {
-    if (!rel || !isCovered(rel)) continue;
-    try {
-      if (statSync(join(root, rel)).mtimeMs > stampMs) return true;
-    } catch {
-      // Listed but unstattable means deleted, which is a change.
-      return true;
-    }
-  }
-  return false;
+  return [...new Set(listed.split('\n').filter(rel => rel && isCovered(rel)))].sort();
 };
 
-// "When did we last have an answer about this tree", so a PostToolUse run seconds earlier makes
-// the end-of-turn run a no-op, for ~13ms instead of ~2.6s. The stamp is when that run *started*:
-// tsc reads the program up front, so stamping the end would hide an edit that landed mid-run.
-const lastCheckedMs = (() => {
+// The last answer we had about this tree, so a PostToolUse run seconds earlier makes the
+// end-of-turn run a no-op. The mtime is when that run *started*: tsc reads the program up front,
+// so stamping the end would hide an edit that landed mid-run.
+const previous = (() => {
   try {
-    return statSync(stampPath).mtimeMs;
+    return {
+      at: statSync(stampPath).mtimeMs,
+      listing: readFileSync(stampPath, 'utf8'),
+    };
   } catch {
     return null;
   }
 })();
 
-if (isStop && lastCheckedMs !== null && !changedSince(lastCheckedMs)) process.exit(0);
+const sources = listSources();
+
+/**
+ * Files that moved since that answer, or null when the change is not attributable to any of them
+ * and every error has to be assumed relevant. A file moved if its mtime is newer, or it is new.
+ */
+const moved = (() => {
+  if (!previous || sources === null) return null;
+
+  const before = new Set(previous.listing.split('\n').filter(Boolean));
+  const current = new Set(sources);
+  // A file this session created and then deleted through Bash leaves no other trace: `ls-files
+  // --others` stops listing it, and `mv` carries the old mtime over. The stored listing is the
+  // only record it was there, and what a disappearance breaks is its importers, which did not move.
+  for (const rel of before) if (!current.has(rel)) return null;
+
+  const out = [];
+  for (const rel of sources) {
+    if (!before.has(rel)) {
+      out.push(rel);
+      continue;
+    }
+    try {
+      if (statSync(join(root, rel)).mtimeMs > previous.at) out.push(rel);
+    } catch {
+      // Listed but unstattable means deleted, which is a change.
+      out.push(rel);
+    }
+  }
+  return out;
+})();
+
+/** Rename, branch switch, stash and revert move the index without touching a source mtime. */
+const indexMovedSince = at => {
+  // resolve(), not join(): --git-dir is absolute inside a worktree.
+  const gitDir = git(['rev-parse', '--git-dir'])?.trim();
+  if (!gitDir) return true;
+  try {
+    return statSync(resolve(root, gitDir, 'index')).mtimeMs > at;
+  } catch {
+    // No index to compare against. The scans above still apply.
+    return false;
+  }
+};
+
+const treeMoved =
+  moved === null || moved.length > 0 || indexMovedSince(previous.at);
+
+if (isStop && !treeMoved) process.exit(0);
 
 mkdirSync(cacheDir, { recursive: true });
 
@@ -231,6 +243,10 @@ if (!(await lock(isStop ? LOCK_WAIT_MS : 0))) {
 const startedMs = Date.now();
 let result;
 try {
+  // What gets checked lives in tsconfig.check.json, so this is the same program as `pnpm
+  // typecheck` and CI. The flags only say how this hook runs it. --noEmit is already in the
+  // config; repeating it here is the guard that keeps a config change from making this hook
+  // write 1700 files into everyone's working tree.
   result = spawnSync(
     tscPath,
     [
@@ -239,6 +255,7 @@ try {
       '--incremental',
       '--tsBuildInfoFile',
       buildInfoPath,
+      '--noEmit',
       '--pretty',
       'false',
     ],
@@ -255,14 +272,19 @@ if (result.error?.code === 'ETIMEDOUT' || result.signal) {
   process.exit(0);
 }
 
-try {
-  writeFileSync(stampPath, '');
-  utimesSync(stampPath, new Date(), new Date(startedMs));
-} catch {
-  // No stamp means the next Stop run re-checks. Wasteful, never wrong.
+if (sources !== null) {
+  try {
+    writeFileSync(stampPath, sources.join('\n'));
+    utimesSync(stampPath, new Date(), new Date(startedMs));
+  } catch {
+    // No stamp means the next Stop run re-checks. Wasteful, never wrong.
+  }
 }
 
 if (result.status === 0) process.exit(0);
+
+/** `packages/x/src/A.ts(12,5): error TS2322: ...` -> `packages/x/src/A.ts` */
+const fileOf = l => l.match(/^(.+?)\(\d+,\d+\): error TS/)?.[1] ?? null;
 
 const errorLines = `${result.stdout ?? ''}\n${result.stderr ?? ''}`
   .split('\n')
@@ -273,10 +295,26 @@ const errorLines = `${result.stdout ?? ''}\n${result.stderr ?? ''}`
 // That is a problem with this hook, not with the edit, so stay out of the model's way.
 if (errorLines.length === 0) process.exit(0);
 
-// Errors in the file just edited come first. Everything else may well be pre-existing.
-const isOwn = l => Boolean(editedFile) && l.startsWith(editedFile);
+// Errors this session is answerable for. Everything else may well be pre-existing, so it is
+// reported after them and, on Stop, does not block on its own.
+const attributed = editedFile
+  ? new Set([editedFile])
+  : moved === null
+    ? null
+    : new Set(moved);
+
+const isOwn = l => Boolean(attributed) && attributed.has(fileOf(l));
 const own = errorLines.filter(isOwn);
-const shown = [...own, ...errorLines.filter(l => !isOwn(l))].slice(0, MAX_REPORTED_LINES);
+
+// Blocking the end of a turn on an error in a file nobody touched would spend the next turn
+// fixing something nobody asked about. Trade-off: an edit to A.ts that only breaks the unchanged
+// B.ts passes this gate. The PostToolUse run reports the whole program, which is what catches it.
+if (isStop && attributed && own.length === 0) process.exit(0);
+
+const shown = [...own, ...errorLines.filter(l => !isOwn(l))].slice(
+  0,
+  MAX_REPORTED_LINES
+);
 
 const header = editedFile
   ? `Typecheck failed after editing ${editedFile} (${errorLines.length} error(s)):`
@@ -295,5 +333,6 @@ const footer = [
 console.error([header, ...shown.map(l => `  ${l}`), ...footer].join('\n'));
 
 // PostToolUse cannot block, and exit 2 is the documented way to put stderr in front of the
-// model. Exit 2 on Stop prevents the turn from ending on broken types.
-process.exit(2);
+// model. Exit 2 on Stop prevents the turn from ending on broken types. Set rather than called:
+// process.exit() would truncate the write above, since pipe writes are async on macOS.
+process.exitCode = 2;
