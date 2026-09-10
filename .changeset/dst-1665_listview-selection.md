@@ -13,7 +13,7 @@ The selection is **view state, not a field value**. Read it through `onSelection
 
 `onSelectionChange` receives React Aria's raw `Selection` (`'all' | Set<Key>`), deliberately not `<SelectList>`'s mode-typed `onChange`, because `'all'` is meaningful for a view and unsubmittable for a field. `disallowEmptySelection` passes React Aria's default through in both modes, unlike `<SelectList>`, which defaults it to `true` in single mode for radio-group semantics. A view's selection has to be abandonable, and `true` would also disable Escape-to-clear.
 
-`selectionBehavior` is fixed to `"toggle"` and stays unexposed, matching `<Table>`. There is no equivalent of React Spectrum's `selectionStyle="highlight"`, so no press replaces the whole selection and <kbd>Shift</kbd>+click does not take a range.
+`selectionBehavior` is fixed to `"toggle"` and stays unexposed, matching `<Table>`. There is no equivalent of React Spectrum's `selectionStyle="highlight"`, so no press replaces the whole selection. Range selection is unaffected: React Aria checks <kbd>Shift</kbd> before it consults `selectionBehavior`, so <kbd>Shift</kbd>+click and <kbd>Shift</kbd>+<kbd>↑</kbd>/<kbd>↓</kbd> extend a range in `"multiple"` mode.
 
 **Row layout**
 
@@ -21,7 +21,7 @@ The row's named-area grid gains a leading `indicator` region, so the template go
 
 The indicator is centred against the whole text stack and pinned to the start of its column. Pinning matters once the column widens, which it does when a row carries an unslotted child.
 
-That is worth knowing when authoring: a child claiming none of the row's three regions, a `<Badge>` being the likely case, is auto-placed by the grid and lands in the indicator column, widening it so that **row's** text no longer lines up with any other row's. Nest it in `<TextValue>` or `<Description>` instead. Before selection this misplaced a badge onto its own line; now it misaligns the list.
+That is worth knowing when authoring: a child claiming none of the row's three regions, a `<Badge>` being the likely case, is auto-placed by the grid and lands in the indicator column, widening it so that **row's** text no longer lines up with any other row's. Nest it in `<TextValue>` or `<Description>` instead. Before selection this misplaced a badge onto its own line. Now it misaligns the list.
 
 **Selecting and opening a row**
 

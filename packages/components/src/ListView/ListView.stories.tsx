@@ -983,6 +983,25 @@ WithActionBar.test(
   }
 );
 
+// Three rows, so a range is more than the two rows a plain toggle would reach.
+WithActionBar.test(
+  'Shift+click extends the selection to a range',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('row', { name: /gasometer/i }));
+
+    // `selectionBehavior="toggle"` does not rule this out: react-aria checks
+    // `shiftKey` before it consults the behaviour.
+    await userEvent.keyboard('{Shift>}');
+    await userEvent.click(canvas.getByRole('row', { name: /columbiahalle/i }));
+    await userEvent.keyboard('{/Shift}');
+
+    for (const row of canvas.getAllByRole('row')) {
+      expect(row).toHaveAttribute('aria-selected', 'true');
+    }
+  }
+);
+
 export const SelectionWithRowActivation = meta.story({
   tags: ['component-test'],
   // Pixel-identical to `MultipleSelection`. The gesture switch is behaviour.

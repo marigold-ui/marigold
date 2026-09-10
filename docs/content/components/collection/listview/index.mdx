@@ -96,7 +96,7 @@ Whichever mode you pick, the selection is yours to keep. Hold it in your own sta
 
 `onSelectionChange` hands you React Aria's `Selection`, which is either a `Set` of keys or the string `'all'`. <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> selects every row of a multi-select list and reports the string, so both shapes reach you even in a list that shows no select-all control. Resolve it to concrete keys in one place before you count or act on it, the way the Bulk Actions pattern [does for a `<Table>`](/patterns/user-input/bulk-actions#resolve-the-selection-to-records-once). Reading `.size` straight off the selection returns `undefined` once it is `'all'`, which surfaces as a wrong number in a confirmation rather than an error.
 
-Rows are marked one at a time. A press adds or removes a single row, and there is no <kbd>Shift</kbd>+click to take a range, in a `<ListView>` or in a [`<Table>`](/components/collection/table). Plan a flow that depends on range selection around that.
+A press adds or removes a single row and never replaces the whole selection. <kbd>Shift</kbd>+click extends from the last marked row to the pressed one, and <kbd>Shift</kbd>+<kbd>↑</kbd>/<kbd>↓</kbd> does the same from the keyboard. Both behave this way in a [`<Table>`](/components/collection/table) too.
 
 #### Selecting and opening a row
 
