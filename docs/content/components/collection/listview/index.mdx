@@ -94,16 +94,20 @@ Leave selection off otherwise, which is the default. A row the user acts on wher
 
 Whichever mode you pick, the selection is yours to keep. Hold it in your own state, read it through `onSelectionChange`, and decide when it commits. It never reaches a surrounding `<form>`, so a choice that has to submit and validate with the rest of the form is a [`<SelectList>`](/components/form/selectlist) instead.
 
+Single mode draws a radio circle, but a `<ListView>` is not a [`<Radio.Group>`](/components/form/radio). A radio group is a labelled form field for a short list of plain-text choices. Reach for it when the choice submits with a form and the rows carry no description or controls of their own.
+
 `onSelectionChange` hands you React Aria's `Selection`, which is either a `Set` of keys or the string `'all'`. <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> selects every row of a multi-select list and reports the string, so both shapes reach you even in a list that shows no select-all control. Resolve it to concrete keys in one place before you count or act on it, the way the Bulk Actions pattern [does for a `<Table>`](/patterns/user-input/bulk-actions#resolve-the-selection-to-records-once). Reading `.size` straight off the selection returns `undefined` once it is `'all'`, which surfaces as a wrong number in a confirmation rather than an error.
 
 A press adds or removes a single row and never replaces the whole selection. <kbd>Shift</kbd>+click extends from the last marked row to the pressed one, and <kbd>Shift</kbd>+<kbd>↑</kbd>/<kbd>↓</kbd> does the same from the keyboard. Both behave this way in a [`<Table>`](/components/collection/table) too.
 
 #### Selecting and opening a row
 
-A selectable list can still open its rows. Set `onAction` alongside `selectionMode` and the press does whichever the user is more likely to mean:
+A selectable list can still open its rows. Set `onAction` alongside `selectionMode` and one rule governs the press: **it opens while nothing is selected, and selects once anything is.**
 
 - **Nothing selected:** pressing a row opens the item, and <kbd>Enter</kbd> does the same. The checkbox and <kbd>Space</kbd> select without opening anything.
 - **Something selected:** pressing a row marks it instead, and nothing opens. <kbd>Space</kbd> marks the focused row, and <kbd>Enter</kbd> does nothing at all.
+
+This is React Aria's `toggle` behaviour, shared with [`<Table>`](/components/collection/table) and specified in its [selection guide](https://react-aria.adobe.com/selection). It is not a Marigold choice, and no prop changes it.
 
 <ComponentDemo name="listview-row-activation" />
 
@@ -184,6 +188,7 @@ In a selectable list, moving focus never changes the selection. <kbd>Space</kbd>
 - [List](/components/content/list): Use for a static list of text with no per-row controls.
 - [SelectList](/components/form/selectlist): Use when the selection becomes a submitted form value.
 - [Select](/components/form/select): Use for a compact single/multi-select form field.
+- [Radio](/components/form/radio): Use for a small set of mutually exclusive choices as a labelled form field, with plain text options rather than rich rows.
 - [Table](/components/collection/table): Use when each row is a record with multiple columns of structured data to compare, not a flat list of operable items.
 - [Menu](/components/overlay/menu): Use for a set of commands that close the surface on activation.
 - [Card](/components/collection/card): Use to present one item, like an event or a product, as a self-contained visual unit.
