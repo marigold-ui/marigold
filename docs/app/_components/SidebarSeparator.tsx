@@ -20,8 +20,9 @@ export const SidebarSeparator: React.FC<{
         // tracked, full contrast) instead of a bolder item.
         'text-fd-foreground text-[0.6875rem] font-semibold tracking-[0.09em] uppercase',
         // Asymmetric space instead of a divider: the label belongs to the group
-        // below it, and is pushed away from the group above.
-        'mt-7 mb-1 py-1 first:mt-1',
+        // below it, and is pushed away from the group above. The rail segments
+        // carry the grouping too, so the gap does not have to do it alone.
+        'mt-5 mb-1 py-1 first:mt-1',
         '[&_svg]:size-4 [&_svg]:shrink-0'
       )}
       style={{
