@@ -1,33 +1,13 @@
 #!/usr/bin/env node
 /**
- * SessionStart pre-flight (DST-1525).
+ * SessionStart pre-flight (DST-1525): probes the repo state a session would otherwise guess at,
+ * because written-down environment facts drift. CLAUDE.md claimed "Node.js 22.x required" for
+ * months while .node-version said 24.
  *
- * Reports the repo state a session needs before it starts guessing: which branch this is and
- * what it forked from, whether a prerelease channel is open, how stale the local origin refs
- * are, and whether the installed toolchain matches what the repo pins.
- *
- * Why a hook and not CLAUDE.md: written-down environment facts drift. CLAUDE.md claimed
- * "Node.js 22.x required" for months while .node-version said 24. This probes instead.
- *
- * Contract: SessionStart adds stdout to the model's context on exit 0, and ignores output
- * entirely on any other exit. Every probe degrades to a missing line, and the process always
- * exits 0.
- *
- * Scope and known limits:
- * - TRUNKS is the only record in this repo of which branches are release trunks. No config
- *   knows: .changeset/config.json says baseBranch "main" on both trunks, no workflow mentions
- *   beta-release, and origin/HEAD is a single ref. Rename or add a trunk and this list must
- *   change with it, or a branch forked from the new trunk gets confidently misreported.
- * - Never fetches. Every branch conclusion is only as fresh as the last `git fetch`, which is
- *   why the ref age is reported instead of quietly refreshed.
- * - Reads .changeset/pre.json from the checked-out branch only. Its presence on some other
- *   branch is not evidence of an open channel: beta-release still carries mode "pre" from the
- *   v18 beta that shipped in August, because `changeset pre exit` was never run there.
- * - Reports only probed facts. The pins in package.json are already in the session's context,
- *   because CLAUDE.md pulls the file in with @package.json.
+ * Every probe degrades to a missing line and the process always exits 0, because SessionStart
+ * discards the output of a hook that exits non-zero.
  *
  * Opt out with MARIGOLD_SKIP_PREFLIGHT_HOOK=1.
- *
  * Run locally: echo '{}' | .claude/hooks/preflight.mjs
  */
 import { execFileSync } from 'node:child_process';
@@ -38,8 +18,8 @@ import { fileURLToPath } from 'node:url';
 if (process.env.MARIGOLD_SKIP_PREFLIGHT_HOOK === '1') process.exit(0);
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
-/** Release trunks, most specific first, so the nearest fork point wins a tie. */
-const TRUNKS = ['beta-release', 'main'];
+/** The one release trunk. Prereleases run in changesets pre mode on main, not a release branch. */
+const TRUNK = 'main';
 const lines = [];
 
 let flushed = false;
@@ -103,55 +83,44 @@ const describe = ({ ahead, behind }) => {
   return parts.join(', ') || 'up to date';
 };
 
-// 1. Branch, and the trunk it descends from.
+// 1. Branch, and where it sits against the trunk. Never fetches, so this is only as fresh as the
+// last `git fetch`, which is why probe 3 reports the ref age instead of quietly refreshing.
 const branch = git('rev-parse', '--abbrev-ref', 'HEAD');
-const onTrunk = Boolean(branch) && TRUNKS.includes(branch);
-
-const fork = (() => {
-  if (!branch || branch === 'HEAD') return null;
-  if (onTrunk) return { trunk: branch, counts: countsAgainst(`origin/${branch}`) };
-  // Fewest own commits wins. Not `behind === 0`: a moved-on trunk is still the fork point.
-  return (
-    TRUNKS.map(trunk => ({ trunk, counts: countsAgainst(`origin/${trunk}`) }))
-      .filter(f => f.counts)
-      .sort((a, b) => a.counts.ahead - b.counts.ahead)[0] ?? null
-  );
-})();
-
-const trunk = fork?.trunk ?? null;
+const onTrunk = branch === TRUNK;
+const counts =
+  branch && branch !== 'HEAD' ? countsAgainst(`origin/${TRUNK}`) : null;
 
 if (branch === 'HEAD') {
   lines.push(`branch: detached HEAD at ${git('rev-parse', '--short', 'HEAD')}`);
 } else if (onTrunk) {
-  const state = fork?.counts ? ` (origin/${branch}: ${describe(fork.counts)})` : '';
+  const state = counts ? ` (origin/${branch}: ${describe(counts)})` : '';
   lines.push(`branch: ${branch}${state}`);
-} else if (fork) {
+} else if (counts) {
   lines.push(
-    `branch: ${branch} (forked from origin/${fork.trunk}, ${describe(fork.counts)})`
+    `branch: ${branch} (forked from origin/${TRUNK}, ${describe(counts)})`
   );
 } else if (branch) {
-  lines.push(`branch: ${branch} (base not derivable from local refs, they may be stale)`);
+  lines.push(
+    `branch: ${branch} (base not derivable from local refs, they may be stale)`
+  );
 }
 
-// 2. Prerelease channel, from the checked-out branch only.
+// 2. Prerelease channel. From the checked-out branch only: a pre.json on some other branch is not
+// evidence of an open channel, since `changeset pre exit` is easy to forget there.
 const pre = readJson(join(root, '.changeset', 'pre.json'));
 
 if (pre?.mode === 'pre') {
   lines.push(
     `prerelease: changesets is in "pre" mode, npm dist-tag "${pre.tag}". Publishes go to that tag, not latest.`
   );
-  // Keyed on "a trunk that is not main" rather than the branch name, so renaming a trunk does
-  // not leave this line silently dead.
-  if (trunk && trunk !== 'main') {
-    lines.push(`VRT is not required for PRs into ${trunk}.`);
-  }
 }
 
 // 3. Freshness of the origin refs every conclusion above rests on.
 try {
   // Not `<root>/.git`: that is a file in a worktree, and FETCH_HEAD is shared across worktrees.
   const gitDir = resolve(root, git('rev-parse', '--git-common-dir') ?? '.git');
-  const days = (Date.now() - statSync(join(gitDir, 'FETCH_HEAD')).mtimeMs) / 86_400_000;
+  const days =
+    (Date.now() - statSync(join(gitDir, 'FETCH_HEAD')).mtimeMs) / 86_400_000;
   if (days >= 1) {
     lines.push(
       `origin refs last fetched ${Math.round(days)} day(s) ago. Run \`git fetch\` before trusting the branch lines above.`
@@ -167,8 +136,13 @@ const pkg = readJson(join(root, 'package.json')) ?? {};
 const pinnedNode = readText(join(root, '.node-version'))?.trim() ?? null;
 const enginesNode = pkg.engines?.node ?? null;
 const declaredTailwind = pkg.dependencies?.tailwindcss ?? null;
-const tailwind = readJson(join(root, 'node_modules', 'tailwindcss', 'package.json'))?.version;
-const major = v => String(v ?? '').replace(/^\D*/, '').split('.')[0];
+const tailwind = readJson(
+  join(root, 'node_modules', 'tailwindcss', 'package.json')
+)?.version;
+const major = v =>
+  String(v ?? '')
+    .replace(/^\D*/, '')
+    .split('.')[0];
 
 lines.push(
   `installed: node ${process.versions.node}, tailwind ${tailwind ?? '(missing, run `pnpm install`)'}`
