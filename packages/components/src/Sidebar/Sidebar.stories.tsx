@@ -1,9 +1,9 @@
 import { ArrowLeft } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
-import { I18nProvider } from '@react-aria/i18n';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Headline } from '../Headline/Headline';

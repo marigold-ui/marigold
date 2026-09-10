@@ -4,6 +4,7 @@ import { Cell } from 'react-aria-components/Table';
 import { cn, textAlign, verticalAlign } from '@marigold/system';
 import { useTableContext } from './Context';
 import { TableCellContent } from './TableCellContent';
+import { TableTreeColumn } from './TableTreeColumn';
 
 // Props
 // ---------------
@@ -38,15 +39,29 @@ const TableCell = ({
 
   return (
     <Cell className={cn(classNames.cell, verticalAlign[alignY])} {...props}>
-      {({ columnIndex }) => (
-        <TableCellContent
-          columnIndex={columnIndex}
-          alignX={alignX}
-          cellOverflow={cellOverflow}
-        >
-          {children}
-        </TableCellContent>
-      )}
+      {({ columnIndex, isTreeColumn, hasChildItems, isExpanded }) => {
+        const content = (
+          <TableCellContent
+            columnIndex={columnIndex}
+            alignX={alignX}
+            cellOverflow={cellOverflow}
+            className={isTreeColumn ? 'col-start-2 min-w-0' : undefined}
+          >
+            {children}
+          </TableCellContent>
+        );
+
+        if (!isTreeColumn) return content;
+
+        return (
+          <TableTreeColumn
+            hasChildItems={hasChildItems}
+            isExpanded={isExpanded}
+          >
+            {content}
+          </TableTreeColumn>
+        );
+      }}
     </Cell>
   );
 };

@@ -17,6 +17,7 @@ import { SelectList } from './SelectList';
 // it back to `undefined` so the component falls through to the theme's
 // variant-based fallback.
 const insetTokens = [
+  'collapsed',
   'square-tight',
   'square-snug',
   'square-regular',
@@ -734,6 +735,32 @@ WithCustomPadding.test(
     expect(list.style.getPropertyValue('--selectlist-item-py')).toBe(
       'var(--spacing-square-loose-y)'
     );
+  }
+);
+
+WithCustomPadding.test(
+  'resolves the axis-less `collapsed` token to zero padding',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { p: 'collapsed' },
+  },
+  async ({ canvas }) => {
+    const standardRow = await canvas.findByRole('row', { name: /standard/i });
+    const list = standardRow.closest('[role="grid"]') as HTMLElement;
+
+    // No `-x` / `-y` suffix: a theme only declares `--spacing-collapsed`.
+    expect(list.style.getPropertyValue('--selectlist-item-px')).toBe(
+      'var(--spacing-collapsed)'
+    );
+    expect(list.style.getPropertyValue('--selectlist-item-py')).toBe(
+      'var(--spacing-collapsed)'
+    );
+
+    // Resolution, not fallback: a failed substitution would compute to the
+    // guaranteed-invalid value, which reads back as ''.
+    const listStyles = getComputedStyle(list);
+    expect(listStyles.getPropertyValue('--selectlist-item-px')).not.toBe('');
+    expect(listStyles.getPropertyValue('--selectlist-item-py')).not.toBe('');
   }
 );
 

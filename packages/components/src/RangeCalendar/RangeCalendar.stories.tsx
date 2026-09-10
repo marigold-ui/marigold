@@ -6,10 +6,10 @@ import {
   today,
 } from '@internationalized/date';
 import { useState } from 'react';
-import { DateValue, I18nProvider } from 'react-aria-components';
+import type { DateValue } from 'react-aria-components';
+import { I18nProvider, useLocale } from 'react-aria-components/I18nProvider';
 import { expect, fn, within } from 'storybook/test';
 import preview from '.storybook/preview';
-import { useLocale } from '@react-aria/i18n';
 import type { RangeValue } from '@react-types/shared';
 import { RangeCalendar } from './RangeCalendar';
 
@@ -179,6 +179,50 @@ Basic.test(
       await expect(canvas.queryByText('2024')).not.toBeInTheDocument();
       await expect(canvas.queryByText('2028')).not.toBeInTheDocument();
     });
+  }
+);
+
+Basic.test(
+  'Anchors the year list at year 1 instead of rolling into the previous era',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: {
+      defaultValue: {
+        start: new CalendarDate(5, 6, 15),
+        end: new CalendarDate(5, 6, 20),
+      },
+    },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: '5' }));
+
+    const years = within(canvas.getByRole('listbox', { name: 'year' }))
+      .getAllByRole('option')
+      .map(option => option.textContent);
+
+    await expect(years).toEqual(
+      Array.from({ length: 41 }, (_, index) => String(index + 1))
+    );
+  }
+);
+
+Basic.test(
+  'Selects year 1 from the anchored list',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: {
+      defaultValue: {
+        start: new CalendarDate(5, 6, 15),
+        end: new CalendarDate(5, 6, 20),
+      },
+    },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: '5' }));
+
+    await userEvent.click(canvas.getByRole('option', { name: '1' }));
+
+    await expect(canvas.getByRole('button', { name: '1' })).toBeVisible();
   }
 );
 

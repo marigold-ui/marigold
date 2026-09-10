@@ -3,6 +3,7 @@
 import { usePages } from '@/app/providers';
 import { track } from '@vercel/analytics';
 import { useDocsSearch } from 'fumadocs-core/search/client';
+import { fetchClient } from 'fumadocs-core/search/client/fetch';
 import {
   SearchDialog,
   SearchDialogClose,
@@ -21,7 +22,8 @@ import { useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function CustomSearchDialog(props: SharedProps) {
-  const { search, setSearch, query } = useDocsSearch({ type: 'fetch' });
+  // Inline is fine: `fetchClient` carries its own `deps` and a module-level cache.
+  const { search, setSearch, query } = useDocsSearch({ client: fetchClient() });
   const pages = usePages();
   const router = useRouter();
 

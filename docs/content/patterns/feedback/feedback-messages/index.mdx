@@ -45,7 +45,7 @@ You might send a system-generated message when:
 Don't use messages when the information does not have a significant impact on the user's current task or overall experience, or when the same information can be communicated in a less obtrusive way. For example:
 
 - To draw attention to a new element or piece of content, you can use a [badge](/components/content/badge).
-- To draw attention to the status of just one UI element, you can use an [icon](/foundations/icon) with a [tooltip](/components/overlay/tooltip) for short, non-essential supporting information. (Tooltips have lower accessibility and usability across device types than messages, so do not use them for critical information.)
+- To draw attention to the status of just one UI element, you can use an [icon](/foundations/iconography) with a [tooltip](/components/overlay/tooltip) for short, non-essential supporting information. (Tooltips have lower accessibility and usability across device types than messages, so do not use them for critical information.)
 - Messages that describe permanent, non-resolvable aspects or features of a page may be better communicated through headings, description text, or information architecture.
 
 ## Message Statuses
@@ -106,11 +106,11 @@ It is used to provide feedback about a user's input, typically as part of a form
 
 <ComponentDemo name="inputfield-validation" />
 
-A custom-written validation message is not always required. Browsers come with their own default validation error messages that can be used in place of a customized one. See more on the [Validation](/foundations/validation) page.
+A custom-written validation message is not always required. Browsers come with their own default validation error messages that can be used in place of a customized one. See more on the [Validation](/patterns/user-input/forms#validation) page.
 
 ### Section Message
 
-A [section message](/components/section-message) is a block-level component that is used to alert users to something in a specific section of the screen. It is placed near the affected content in a way that clearly communicates its relationship. This is often directly above the affected section or content, but use your best judgement and place it where it makes the most sense in context.
+A [section message](/components/content/section-message) is a block-level component that is used to alert users to something in a specific section of the screen. It is placed near the affected content in a way that clearly communicates its relationship. This is often directly above the affected section or content, but use your best judgement and place it where it makes the most sense in context.
 
 <ComponentDemo name="sectionmessage-info" />
 
@@ -241,7 +241,7 @@ A [section message](/components/section-message) is a block-level component that
     },
     {
       title: 'Validation',
-      href: '../../foundations/validation',
+      href: '/patterns/user-input/forms#validation',
       caption: 'Learn about how to use form validation with Marigold.',
       icon: (
         <svg

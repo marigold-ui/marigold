@@ -1,6 +1,6 @@
 export const MenuAnatomy = () => (
   <svg
-    viewBox="0 0 720 300"
+    viewBox="0 0 660 275"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
     role="img"
@@ -8,101 +8,101 @@ export const MenuAnatomy = () => (
   >
     {/* Trigger button */}
     <rect
-      x="300"
-      y="34"
-      width="130"
-      height="38"
-      rx="8"
+      x="275"
+      y="31.17"
+      width="119.17"
+      height="34.83"
+      rx="7.33"
       className="fill-fd-muted stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
     <rect
-      x="318"
-      y="47"
-      width="64"
-      height="12"
-      rx="4"
+      x="291.5"
+      y="43.08"
+      width="58.67"
+      height="11"
+      rx="3.67"
       className="fill-fd-foreground transition-colors duration-300"
     />
 
     {/* Menu surface */}
     <rect
-      x="300"
-      y="88"
-      width="210"
-      height="178"
-      rx="12"
+      x="275"
+      y="80.67"
+      width="192.5"
+      height="163.17"
+      rx="11"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
 
     {/* Section header */}
     <rect
-      x="318"
-      y="104"
-      width="60"
-      height="9"
-      rx="3"
+      x="291.5"
+      y="95.33"
+      width="55"
+      height="8.25"
+      rx="2.75"
       className="fill-fd-muted-foreground/70 transition-colors duration-300"
     />
 
     {/* Item A: icon + label + shortcut */}
     <rect
-      x="318"
-      y="126"
-      width="14"
-      height="14"
-      rx="4"
+      x="291.5"
+      y="115.5"
+      width="12.83"
+      height="12.83"
+      rx="3.67"
       className="fill-fd-muted-foreground/70 transition-colors duration-300"
     />
     <rect
-      x="340"
-      y="129"
-      width="78"
-      height="9"
-      rx="3"
+      x="311.67"
+      y="118.25"
+      width="71.5"
+      height="8.25"
+      rx="2.75"
       className="fill-fd-foreground transition-colors duration-300"
     />
     <rect
-      x="452"
-      y="129"
-      width="24"
-      height="9"
-      rx="3"
+      x="414.33"
+      y="118.25"
+      width="22"
+      height="8.25"
+      rx="2.75"
       className="fill-fd-muted-foreground/70 transition-colors duration-300"
     />
 
     {/* Item B: plain label */}
     <rect
-      x="318"
-      y="158"
-      width="96"
-      height="9"
-      rx="3"
+      x="291.5"
+      y="144.83"
+      width="88"
+      height="8.25"
+      rx="2.75"
       className="fill-fd-foreground transition-colors duration-300"
     />
 
     {/* Divider */}
     <rect
-      x="310"
-      y="184"
-      width="190"
-      height="2"
-      rx="1"
+      x="284.17"
+      y="168.67"
+      width="174.17"
+      height="1.83"
+      rx="0.92"
       className="fill-fd-border transition-colors duration-300"
     />
 
     {/* Selected item: highlight + checkmark + label */}
     <rect
-      x="310"
-      y="198"
-      width="190"
-      height="28"
-      rx="6"
+      x="284.17"
+      y="181.5"
+      width="174.17"
+      height="25.67"
+      rx="5.5"
       className="fill-fd-muted transition-colors duration-300"
     />
     <path
-      d="M 320 212 l 4 4 l 8 -9"
+      d="M 293.33 194.33 l 3.67 3.67 l 7.33 -8.25"
       className="stroke-fd-foreground transition-colors duration-300"
       fill="none"
       strokeWidth="2.5"
@@ -110,21 +110,21 @@ export const MenuAnatomy = () => (
       strokeLinejoin="round"
     />
     <rect
-      x="342"
-      y="207"
-      width="80"
-      height="9"
-      rx="3"
+      x="313.5"
+      y="189.75"
+      width="73.33"
+      height="8.25"
+      rx="2.75"
       className="fill-fd-foreground transition-colors duration-300"
     />
 
     {/* Item D: plain label */}
     <rect
-      x="318"
-      y="244"
-      width="88"
-      height="9"
-      rx="3"
+      x="291.5"
+      y="223.67"
+      width="80.67"
+      height="8.25"
+      rx="2.75"
       className="fill-fd-foreground transition-colors duration-300"
     />
 
@@ -136,22 +136,22 @@ export const MenuAnatomy = () => (
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M 300 53 L 250 53" />
-      <path d="M 300 108 L 250 108" />
-      <path d="M 300 162 L 250 162" />
-      <path d="M 476 133 L 540 133" />
-      <path d="M 500 185 L 540 185" />
-      <path d="M 500 212 L 540 212" />
+      <path d="M 275 48.58 L 229.17 48.58" />
+      <path d="M 275 99 L 229.17 99" />
+      <path d="M 275 148.5 L 229.17 148.5" />
+      <path d="M 436.33 121.92 L 495 121.92" />
+      <path d="M 458.33 169.58 L 495 169.58" />
+      <path d="M 458.33 194.33 L 495 194.33" />
     </g>
 
     {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="300" cy="53" r="4" />
-      <circle cx="300" cy="108" r="4" />
-      <circle cx="300" cy="162" r="4" />
-      <circle cx="476" cy="133" r="4" />
-      <circle cx="500" cy="185" r="4" />
-      <circle cx="500" cy="212" r="4" />
+      <circle cx="275" cy="48.58" r="4" />
+      <circle cx="275" cy="99" r="4" />
+      <circle cx="275" cy="148.5" r="4" />
+      <circle cx="436.33" cy="121.92" r="4" />
+      <circle cx="458.33" cy="169.58" r="4" />
+      <circle cx="458.33" cy="194.33" r="4" />
     </g>
 
     {/* Labels */}
@@ -162,24 +162,24 @@ export const MenuAnatomy = () => (
       className="fill-fd-primary transition-colors duration-300"
     >
       <g textAnchor="end">
-        <text x="240" y="57">
+        <text x="220" y="52.25">
           Trigger
         </text>
-        <text x="240" y="112">
+        <text x="220" y="102.67">
           Section
         </text>
-        <text x="240" y="166">
+        <text x="220" y="152.17">
           Menu item
         </text>
       </g>
       <g textAnchor="start">
-        <text x="550" y="137">
+        <text x="504.17" y="125.58">
           Shortcut
         </text>
-        <text x="550" y="189">
+        <text x="504.17" y="173.25">
           Divider
         </text>
-        <text x="550" y="216">
+        <text x="504.17" y="198">
           Selected item
         </text>
       </g>

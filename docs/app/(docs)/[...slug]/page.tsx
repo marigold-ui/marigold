@@ -30,11 +30,12 @@ import {
   DocsDescription,
   DocsPage,
   DocsTitle,
+  ViewOptionsPopover,
 } from 'fumadocs-ui/layouts/docs/page';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { MarkdownCopyButton, ViewOptionsPopover } from '@/ui/PageActions';
+import { MarkdownCopyButton } from '@/ui/MarkdownCopyButton';
 import { PostList } from '@/ui/PostList';
 
 const Page = async (props: PageProps<'/[...slug]'>) => {

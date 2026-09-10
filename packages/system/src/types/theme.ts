@@ -137,7 +137,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Switch?: Record<
-      'container' | 'track' | 'thumb',
+      'container' | 'label' | 'track' | 'thumb',
       ComponentStyleFunction<string, string>
     >;
     Input?: Record<
@@ -156,6 +156,10 @@ export type Theme = {
       | 'header'
       | 'label'
       | 'description',
+      ComponentStyleFunction<string, string>
+    >;
+    ListView?: Record<
+      'list' | 'item' | 'label' | 'description' | 'title' | 'actions',
       ComponentStyleFunction<string, string>
     >;
     Menu?: Record<
@@ -205,6 +209,16 @@ export type Theme = {
       'container' | 'track' | 'thumb' | 'output' | 'selectedTrack',
       ComponentStyleFunction<string, string>
     >;
+    Stepper?: Record<
+      | 'container'
+      | 'item'
+      | 'link'
+      | 'marker'
+      | 'label'
+      | 'connector'
+      | 'count',
+      ComponentStyleFunction<string, string>
+    >;
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;
     SelectList?: Record<
       | 'container'
@@ -232,6 +246,8 @@ export type Theme = {
       | 'footer'
       | 'row'
       | 'cell'
+      | 'treeIndent'
+      | 'expandButton'
       | 'dragHandle'
       | 'dragPreview'
       | 'dragPreviewCounter'

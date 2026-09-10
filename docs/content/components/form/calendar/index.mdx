@@ -3,19 +3,22 @@ title: Calendar
 description: A date selection interface for choosing dates from a calendar view.
 ---
 
+import { CalendarAnatomy } from './calendar-anatomy';
+
 The `<Calendar>` is a date selection interface that allows you to choose a date using a visual calendar view. It displays a month grid with navigable months and years, making it easy to browse and select specific dates.
 
 ## Anatomy
 
 The `<Calendar>` consists of a header and a grid section. Inside of the header there are two select lists, one for a month and one for a year. In the grid section there is a grid of selectable dates.
 
-<ImageZoom
-  src="/calendar/calendar-anatomy.jpg"
-  alt="Anatomy of calendar"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+<CalendarAnatomy />
+
+- **Header:** The top area holding the select boxes and the step buttons.
+- **Month select box:** Jumps directly to a month.
+- **Year select box:** Jumps directly to a year.
+- **Step buttons:** Move to the previous or next month.
+- **Grid:** Holds all selectable dates of the displayed month.
+- **Date:** A single selectable day inside the grid.
 
 ## Appearance
 

@@ -52,7 +52,7 @@ The most common home for an `<ActionBar>` is a [`<Table>`](/components/collectio
 
 <ComponentDemo name="actionbar-table-bulk-actions" />
 
-Inside the render prop you write only the actions; the selection count and the clear button are filled in for you. The bar stays pinned to the bottom of the scroll area as the user works down a long list.
+Inside the render prop you write only the actions. The selection count and the clear button are filled in for you. The bar stays pinned to the bottom of the scroll area as the user works down a long list.
 
 <Callout title="Acting on a full selection" type="info">
   When the user toggles the Table's select-all checkbox, the selection becomes
@@ -101,7 +101,7 @@ Give every icon-only action a text label as well, either visible next to the ico
 
 ### Actions
 
-Actions are plain [`<Button>`](/components/actions/button) elements. Place them directly inside the bar and it cascades the toolbar look (a `ghost` variant at the default size); a local `variant` or `size` on a button still wins. For an icon-only action, set `size="icon"` and give it an `aria-label`.
+Actions are plain [`<Button>`](/components/actions/button) elements. Place them directly inside the bar and it cascades the toolbar look (a `ghost` variant at the default size). A local `variant` or `size` on a button still wins. For an icon-only action, set `size="icon"` and give it an `aria-label`.
 
 ```tsx
 <ActionBar selectedItemCount={3} onClearSelection={clear}>
@@ -163,7 +163,7 @@ Actions are plain [`<Button>`](/components/actions/button) elements. Place them 
     },
     {
       title: 'Table',
-      href: '../table',
+      href: '/components/collection/table',
       caption:
         'The most common host for an ActionBar. Selecting rows in a Table reveals the bar with bulk actions for the selection.',
       icon: (
@@ -186,7 +186,7 @@ Actions are plain [`<Button>`](/components/actions/button) elements. Place them 
     },
     {
       title: 'Drawer',
-      href: '../../overlay/drawer',
+      href: '/components/overlay/drawer',
       caption:
         'Pair a Button with a Drawer when a bulk action needs a small form before it runs.',
       icon: (

@@ -1,32 +1,32 @@
 export const SelectListAnatomy = () => (
   <svg
-    viewBox="-20 60 720 380"
+    viewBox="-18 55 660 348"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
     <defs>
       <clipPath id="selectlist-anatomy-clip">
-        <rect x="200" y="110" width="320" height="300" rx="12" />
+        <rect x="183" y="101" width="293" height="275" rx="11" />
       </clipPath>
     </defs>
 
     {/* Field label */}
     <rect
-      x="200"
-      y="80"
-      width="120"
-      height="12"
+      x="183"
+      y="73"
+      width="110"
+      height="11"
       rx="4"
       className="fill-fd-foreground transition-colors duration-300"
     />
 
     {/* Container */}
     <rect
-      x="200"
-      y="110"
-      width="320"
-      height="300"
-      rx="12"
+      x="183"
+      y="101"
+      width="293"
+      height="275"
+      rx="11"
       className="fill-fd-card stroke-fd-border transition-colors duration-300"
       strokeWidth="2"
     />
@@ -34,119 +34,119 @@ export const SelectListAnatomy = () => (
     {/* Selected row 1 fill (clipped to container so the top corners round) */}
     <g clipPath="url(#selectlist-anatomy-clip)">
       <rect
-        x="200"
-        y="110"
-        width="320"
-        height="98"
+        x="183"
+        y="101"
+        width="293"
+        height="90"
         className="fill-fd-accent transition-colors duration-300"
       />
     </g>
 
     {/* Row 1 (selected): radio indicator filled */}
     <circle
-      cx="226"
-      cy="159"
-      r="10"
+      cx="207"
+      cy="146"
+      r="9"
       className="fill-fd-card stroke-fd-foreground transition-colors duration-300"
       strokeWidth="2"
     />
     <circle
-      cx="226"
-      cy="159"
+      cx="207"
+      cy="146"
       r="4"
       className="fill-fd-foreground transition-colors duration-300"
     />
     <rect
-      x="252"
-      y="147"
-      width="140"
-      height="12"
+      x="231"
+      y="135"
+      width="128"
+      height="11"
       rx="4"
       className="fill-fd-accent-foreground transition-colors duration-300"
     />
     <rect
-      x="252"
-      y="167"
-      width="180"
-      height="10"
+      x="231"
+      y="153"
+      width="165"
+      height="9"
       rx="4"
       className="fill-fd-accent-foreground/70 transition-colors duration-300"
     />
 
     {/* Divider between row 1 and row 2 */}
     <rect
-      x="200"
-      y="208"
-      width="320"
+      x="183"
+      y="191"
+      width="293"
       height="2"
       className="fill-fd-border transition-colors duration-300"
     />
 
     {/* Row 2: radio indicator empty */}
     <circle
-      cx="226"
-      cy="259"
-      r="10"
+      cx="207"
+      cy="237"
+      r="9"
       className="stroke-fd-muted-foreground transition-colors duration-300"
       strokeWidth="2"
       fill="none"
     />
     <rect
-      x="252"
-      y="247"
-      width="130"
-      height="12"
+      x="231"
+      y="226"
+      width="119"
+      height="11"
       rx="4"
       className="fill-fd-foreground/70 transition-colors duration-300"
     />
     <rect
-      x="252"
-      y="267"
-      width="170"
-      height="10"
+      x="231"
+      y="245"
+      width="156"
+      height="9"
       rx="4"
       className="fill-fd-muted-foreground transition-colors duration-300"
     />
 
     {/* Divider between row 2 and row 3 */}
     <rect
-      x="200"
-      y="308"
-      width="320"
+      x="183"
+      y="282"
+      width="293"
       height="2"
       className="fill-fd-border transition-colors duration-300"
     />
 
     {/* Row 3: radio indicator empty + trailing action */}
     <circle
-      cx="226"
-      cy="359"
-      r="10"
+      cx="207"
+      cy="329"
+      r="9"
       className="stroke-fd-muted-foreground transition-colors duration-300"
       strokeWidth="2"
       fill="none"
     />
     <rect
-      x="252"
-      y="347"
-      width="120"
-      height="12"
+      x="231"
+      y="318"
+      width="110"
+      height="11"
       rx="4"
       className="fill-fd-foreground/70 transition-colors duration-300"
     />
     <rect
-      x="252"
-      y="367"
-      width="160"
-      height="10"
+      x="231"
+      y="336"
+      width="147"
+      height="9"
       rx="4"
       className="fill-fd-muted-foreground transition-colors duration-300"
     />
     {/* Action: 3 vertical dots (ActionMenu / IconButton placeholder) */}
     <g className="fill-fd-muted-foreground transition-colors duration-300">
-      <circle cx="490" cy="349" r="2.2" />
-      <circle cx="490" cy="359" r="2.2" />
-      <circle cx="490" cy="369" r="2.2" />
+      <circle cx="449" cy="320" r="2" />
+      <circle cx="449" cy="329" r="2" />
+      <circle cx="449" cy="338" r="2" />
     </g>
 
     {/* Connector Lines */}
@@ -158,31 +158,31 @@ export const SelectListAnatomy = () => (
       strokeLinejoin="round"
     >
       {/* Label */}
-      <path d="M 200 86 L 130 86" />
+      <path d="M 183 79 L 119 79" />
       {/* List (container outer) */}
-      <path d="M 200 110 L 130 110" />
+      <path d="M 183 101 L 119 101" />
       {/* Selection indicator (Row 1) */}
-      <path d="M 216 159 L 130 159" />
+      <path d="M 198 146 L 119 146" />
       {/* Option (whole Row 2 left edge) */}
-      <path d="M 200 259 L 130 259" />
+      <path d="M 183 237 L 119 237" />
 
       {/* Text value (Row 1 right edge of text value rect) */}
-      <path d="M 392 153 L 590 153" />
+      <path d="M 359 140 L 541 140" />
       {/* Description (Row 1 right edge of description rect) */}
-      <path d="M 432 172 L 590 172" />
+      <path d="M 396 158 L 541 158" />
       {/* Action (Row 3 right of action dots) */}
-      <path d="M 500 359 L 590 359" />
+      <path d="M 458 329 L 541 329" />
     </g>
 
     {/* Connector Dots */}
     <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="200" cy="86" r="4" />
-      <circle cx="200" cy="110" r="4" />
-      <circle cx="216" cy="159" r="4" />
-      <circle cx="200" cy="259" r="4" />
-      <circle cx="392" cy="153" r="4" />
-      <circle cx="432" cy="172" r="4" />
-      <circle cx="500" cy="359" r="4" />
+      <circle cx="183" cy="79" r="4" />
+      <circle cx="183" cy="101" r="4" />
+      <circle cx="198" cy="146" r="4" />
+      <circle cx="183" cy="237" r="4" />
+      <circle cx="359" cy="140" r="4" />
+      <circle cx="396" cy="158" r="4" />
+      <circle cx="458" cy="329" r="4" />
     </g>
 
     {/* Labels */}
@@ -192,8 +192,8 @@ export const SelectListAnatomy = () => (
     >
       <g textAnchor="end">
         <text
-          x="120"
-          y="90"
+          x="110"
+          y="83"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -201,8 +201,8 @@ export const SelectListAnatomy = () => (
           Label
         </text>
         <text
-          x="120"
-          y="114"
+          x="110"
+          y="105"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -210,8 +210,8 @@ export const SelectListAnatomy = () => (
           List
         </text>
         <text
-          x="120"
-          y="163"
+          x="110"
+          y="149"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -219,8 +219,8 @@ export const SelectListAnatomy = () => (
           Selection indicator
         </text>
         <text
-          x="120"
-          y="263"
+          x="110"
+          y="241"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -230,8 +230,8 @@ export const SelectListAnatomy = () => (
       </g>
       <g textAnchor="start">
         <text
-          x="600"
-          y="157"
+          x="550"
+          y="144"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -239,8 +239,8 @@ export const SelectListAnatomy = () => (
           Text value
         </text>
         <text
-          x="600"
-          y="176"
+          x="550"
+          y="161"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"
@@ -248,8 +248,8 @@ export const SelectListAnatomy = () => (
           Description
         </text>
         <text
-          x="600"
-          y="363"
+          x="550"
+          y="333"
           fontSize="14"
           fontWeight="600"
           className="fill-fd-primary"

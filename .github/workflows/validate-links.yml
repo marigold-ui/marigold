@@ -1,0 +1,42 @@
+name: Docs links
+
+# On push, like Lint and Typecheck. A `pull_request`-only trigger dropped the
+# synchronize event for the second commit of #5742 and the check silently did
+# not run — a stale green check is indistinguishable from a fresh one.
+on:
+  push:
+    paths:
+      - 'docs/content/**'
+      - 'docs/app/**'
+      - 'docs/scripts/validate-links.ts'
+      # The `lint:links` entry point and the `next-validate-link` version both
+      # live here, so a change to either has to re-run the check.
+      - 'docs/package.json'
+      - '.github/workflows/validate-links.yml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  links:
+    name: Validate docs links
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+    steps:
+      # Setup
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6.0.9 # Uses version from package.json#packageManager
+      - name: Setup Node (using .node-version)
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+
+      # Action
+      # Reads `docs/content` and the App Router tree — no `pnpm build` needed.
+      - name: Validate links
+        run: pnpm --filter @marigold/docs lint:links

@@ -1,6 +1,6 @@
 ---
 name: review-pr
-description: Review a GitHub PR for Marigold Design System code quality, TypeScript standards, React best practices, and accessibility compliance. Optionally links Jira tickets for context. Use when asked to "review PR", "check PR", or "review pull request".
+description: Marigold repo — Review a GitHub PR for code quality, TypeScript standards, React best practices, and accessibility compliance. Optionally links Jira tickets for context. Use when asked to "review PR", "check PR", or "review pull request".
 ---
 
 # PR Review Skill for Marigold Design System
@@ -139,11 +139,13 @@ For each changed file:
 
 ### 8. Apply Vercel React Best Practices
 
-Invoke the `vercel-react-best-practices` skill to check for React/Next.js performance patterns:
+Invoke the `react-best-practices` skill from the `vercel` plugin (enabled in `.claude/settings.json`) to check for React/Next.js performance patterns:
 
 ```
-Skill(vercel-react-best-practices)
+Skill(vercel:react-best-practices)
 ```
+
+If the `vercel` plugin is not installed, skip this step and note it in the report. The rest of the review does not depend on it.
 
 This skill checks for:
 - Component rendering optimization (memo, useMemo, useCallback)
@@ -200,7 +202,7 @@ Output a structured review report in this format:
 - [ ] Proper hook usage (no conditionals)
 - [ ] Early returns for error handling
 
-#### React Performance (from vercel-react-best-practices)
+#### React Performance (from vercel:react-best-practices)
 - [ ] Appropriate use of memo/useMemo/useCallback
 - [ ] No unnecessary re-renders
 - [ ] Proper data fetching patterns
@@ -340,7 +342,7 @@ The following tools are needed for this skill:
 - `Bash(gh api repos/*/pulls/*/reviews *)` - Post inline comments on specific code lines
 - `Bash(pnpm typecheck:only)` - TypeScript checking (user opt-in)
 - `Bash(pnpm lint)` - Lint checking (user opt-in)
-- `Skill(vercel-react-best-practices)` - React performance best practices
+- `Skill(vercel:react-best-practices)` - React performance best practices (vercel plugin)
 - `mcp__plugin_atlassian_atlassian__getAccessibleAtlassianResources` - Get Jira cloud ID
 - `mcp__plugin_atlassian_atlassian__getJiraIssue` - Fetch Jira ticket details
 - `AskUserQuestion` - Ask user whether to post review to GitHub
@@ -349,7 +351,7 @@ The following tools are needed for this skill:
 
 - Review is displayed locally first, then user is asked if they want to post to GitHub
 - The skill focuses on Marigold-specific patterns documented in CLAUDE.md
-- Integrates `vercel-react-best-practices` skill for React performance checks
+- Integrates the `vercel` plugin's `react-best-practices` skill for React performance checks
 - Jira integration is optional and gracefully handles missing tickets
 - Automated checks (typecheck, lint) require user confirmation before running
 - GitHub posting is opt-in and supports full review comments, inline code comments, or both

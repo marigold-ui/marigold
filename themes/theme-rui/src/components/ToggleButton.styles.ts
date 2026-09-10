@@ -36,10 +36,6 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
       // so the group needs no overflow clip. Border lives here, not
       // ui-button-base.
       'in-[.group]:rounded-none in-[.group]:first:rounded-l-surface in-[.group]:last:rounded-r-surface in-[.group]:ring-0 in-[.group]:shadow-none in-[.group]:border-r in-[.group]:border-r-border in-[.group]:last:border-r-0 in-[.group]:hover:[--ui-border-color:initial]',
-      // Focus. With the group no longer clipping, the standard ui-state-focus
-      // outline (from ui-button-base) renders unclipped. Lift it above the
-      // neighbouring segments so the full ring shows. (DST-1597)
-      'in-[.group]:focus-visible:z-10',
     ],
     variants: {
       size: {

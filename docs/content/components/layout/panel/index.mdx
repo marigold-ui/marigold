@@ -51,12 +51,12 @@ Every Panel separates from the page by fill, not by a shadow: a white surface ag
 
 Panel has four variants. They match the ones in Card and Badge so master, admin, and destructive sections read consistently, whether they show up as a collection item or a page region.
 
-| Variant       | Description                       | When to use                                                                        |
-| ------------- | --------------------------------- | ---------------------------------------------------------------------------------- |
-| `default`     | Subtle surface tint.              | Most page sections: profile, notifications, billing.                               |
-| `master`      | Tint and accent for master users. | Sections only master users see. [Learn more.](../../../patterns/admin-master-mark) |
-| `admin`       | Tint and accent for admin users.  | Sections only admin users see. [Learn more.](../../../patterns/admin-master-mark)  |
-| `destructive` | Tint for danger zones.            | Irreversible actions, like deleting an account or revoking access.                 |
+| Variant       | Description                       | When to use                                                                       |
+| ------------- | --------------------------------- | --------------------------------------------------------------------------------- |
+| `default`     | Subtle surface tint.              | Most page sections: profile, notifications, billing.                              |
+| `master`      | Tint and accent for master users. | Sections only master users see. [Learn more.](/patterns/layout/admin-master-mark) |
+| `admin`       | Tint and accent for admin users.  | Sections only admin users see. [Learn more.](/patterns/layout/admin-master-mark)  |
+| `destructive` | Tint for danger zones.            | Irreversible actions, like deleting an account or revoking access.                |
 
 Panel also offers two sizes. The default is unconstrained and grows with its container. The `form` size caps the Panel at a comfortable reading width so long label-input pairs don't stretch across the page.
 
@@ -81,8 +81,9 @@ Panel and Card look similar, but they solve different problems. A Panel is a nam
 
 <Callout title="Rule of thumb">
   If the element repeats as you scroll (events, products, team members), reach
-  for a [Card](../../content/card). If it owns a page region on its own, like
-  "Organizer profile", "Team members", or "Billing", reach for a Panel.
+  for a [Card](/components/collection/card). If it owns a page region on its
+  own, like "Organizer profile", "Team members", or "Billing", reach for a
+  Panel.
 </Callout>
 
 ### Header
@@ -153,7 +154,7 @@ Tables, media, charts, and status bars are the exceptions. They look cramped whe
 
 <ComponentDemo name="panel-bleed" />
 
-Tables get a small bonus: when bled, their cell edges line up with the Panel's header and footer, so what's inside a row still reads in rhythm with the title above it. That works because a bled content area publishes the Panel's horizontal padding as `--bleed-px`, which your own content can read too — see [Reading container spacing](/foundations/spacing#reading-container-spacing).
+Tables get a small bonus: when bled, their cell edges line up with the Panel's header and footer, so what's inside a row still reads in rhythm with the title above it. That works because a bled content area publishes the Panel's horizontal padding as `--bleed-px`, which your own content can read too. See [Reading container spacing](/foundations/spacing#reading-container-spacing).
 
 An `<Accordion>` behaves the same way. Drop one into a bled content area and its item dividers span edge-to-edge while the header and content stay inset, aligned with the Panel title. No extra prop is needed: the Accordion picks up the Panel's horizontal padding automatically, exactly like Table cells do.
 
@@ -261,7 +262,7 @@ Panel publishes what those props resolved to as three read-only custom propertie
 
 You need them when a wrapper interrupts the Panel's own rhythm. Panel spaces its slots with a flex gap, so a `<div>` around several `<Panel.Content>` siblings becomes a single flex item and the gap between them collapses. Re-declare it with `gap-(--panel-gap)` and the group stays in rhythm with every other Panel, where a hardcoded value would drift as soon as the `space` default changes.
 
-Set spacing through the props, not by declaring these yourself — Panel writes them inline on its root, which outranks a declaration on any ancestor. For content that should align with the Panel's padding after bleeding out of it, reach for `--bleed-px` instead. See [Reading container spacing](/foundations/spacing#reading-container-spacing).
+Set spacing through the props, not by declaring these yourself. Panel writes them inline on its root, which outranks a declaration on any ancestor. For content that should align with the Panel's padding after bleeding out of it, reach for `--bleed-px` instead. See [Reading container spacing](/foundations/spacing#reading-container-spacing).
 
 ## Accessibility
 
@@ -341,21 +342,21 @@ If the Panel lives under an existing `<h2>` on the page (inside a Tabs panel, fo
   items={[
     {
       title: 'Card',
-      href: '../../content/card',
+      href: '/components/collection/card',
       caption:
         'The collection-item counterpart to Panel. Use Card for items that repeat in a list or grid.',
       icon: <SquareStack className="size-6" />,
     },
     {
       title: 'Accordion',
-      href: '../../navigation/accordion',
+      href: '/components/navigation/accordion',
       caption:
         'Use Accordion for a set of peer collapsible sections. Panel is for one topic, Accordion is for parallel items.',
       icon: <ListCollapse className="size-6" />,
     },
     {
       title: 'Admin- & master mark',
-      href: '/patterns/admin-master-mark',
+      href: '/patterns/layout/admin-master-mark',
       caption: 'Placement guidance for master- and admin-only content.',
       icon: <ShieldCheck className="size-6" />,
     },

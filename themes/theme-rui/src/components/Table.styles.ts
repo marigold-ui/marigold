@@ -9,6 +9,24 @@ export const Table: ThemeComponent<'Table'> = {
       // read `--panel-px`: Panel sets it on its root, where it inherits into
       // non-bled content too and would offset those cells twice.
       '[--cell-edge-padding:var(--bleed-px,var(--cell-x-padding))]',
+      // 32px, not the 24px WCAG 2.2 SC 2.5.8 floor: hit repeatedly, and still
+      // fits `compact` (45px row).
+      '[--tree-chevron-size:calc(var(--spacing)*8)]',
+      // The whitespace the ghost button already carries around its 16px caret.
+      // The track overlaps it instead of adding padding of its own, so the
+      // caret lines up with the column's values and still gets 32px to hit.
+      '[--tree-caret-inset:calc((var(--tree-chevron-size)-var(--spacing)*4)/2)]',
+      // Caret box plus the button's own trailing whitespace — the distance from
+      // where a row's content starts to where its value starts.
+      '[--tree-gutter:calc(var(--tree-chevron-size)-var(--tree-caret-inset))]',
+      // One level in is one gutter in, so a child's caret starts where its
+      // parent's value does. A smaller step would put it between the parent's
+      // caret and value, which reads as a misalignment rather than depth.
+      '[--tree-indent:var(--tree-gutter)]',
+      // Levels up to here share the gutter's x instead of indenting. Only the
+      // root does: a root row with no children must not read as the previous
+      // group's last child.
+      '[--tree-indent-skip:1]',
     ],
     variants: {
       variant: {
@@ -47,6 +65,11 @@ export const Table: ThemeComponent<'Table'> = {
       'disabled:cursor-not-allowed',
       'data-hovered:cursor-pointer data-hovered:ui-state-hover',
       'dragging:opacity-50 dragging:transform-gpu',
+      // The children carry the group, not the parent: a band across the whole
+      // row says what belongs to what even in the leading drag and selection
+      // columns, which don't indent. `:not([data-hovered])` is explicit because
+      // Tailwind's emit order, not this array's, picks the winning background.
+      '[&[data-level]:not([data-level="1"]):not([data-hovered])]:bg-foreground/8',
     ],
     variants: {
       variant: {
@@ -55,12 +78,15 @@ export const Table: ThemeComponent<'Table'> = {
           '**:not-last:[[role=rowheader]]:border-r **:not-last:[[role=rowheader]]:border-border',
           '**:not-last:[[role=gridcell]]:border-r **:not-last:[[role=gridcell]]:border-border',
         ],
+        // `!` on the background for the same reason it is on the border: who
+        // may see a row outranks where it sits in the tree, so the access mark
+        // has to survive the nesting band.
         admin: [
-          'bg-access-admin border-access-admin-accent!',
+          'bg-access-admin! border-access-admin-accent!',
           '*:border-t *:border-access-admin-accent',
         ],
         master: [
-          'bg-access-master border-access-master-accent!',
+          'bg-access-master! border-access-master-accent!',
           '*:border-t *:border-access-master-accent',
         ],
       },
@@ -122,6 +148,44 @@ export const Table: ThemeComponent<'Table'> = {
     ],
   }),
 
+  // Expandable rows (tree grid)
+  //
+  // Indent lives here rather than on the cell's padding, so it composes with
+  // `--cell-edge-padding` instead of colliding with it on the same property.
+  treeIndent: cva({
+    base: [
+      // A fixed leading track, so a group row and a childless row at the same
+      // level still put their value at the same x. The track holds its width
+      // with no control in it, so leaf rows need no spacer. The control is
+      // wider than the track and hangs into the cell's edge padding — see
+      // `--tree-caret-inset`.
+      'grid grid-cols-[var(--tree-gutter)_1fr] items-center',
+      // Indents past `--tree-indent-skip`, i.e. everything below the root, so
+      // depth is visible. `--table-row-level` is React Aria's, and starts at 1;
+      // the header cell has none, which is what leaves it at the root's x.
+      '[--tree-level-indent:calc(max(var(--table-row-level,1)-var(--tree-indent-skip),0)*var(--tree-indent))]',
+      'ps-(--tree-level-indent)',
+      '[[data-has-child-items]_&]:font-semibold',
+    ],
+  }),
+  expandButton: cva({
+    base: [
+      // Ghost icon button. The wash is `bg-current/10`, so it blends on any
+      // ground including the group row's own fill.
+      'ui-button-base col-start-1',
+      // Keeps the 32px target while the caret itself sits where the column's
+      // values do, so its margin box still measures exactly one track.
+      'size-(--tree-chevron-size) -ms-(--tree-caret-inset)',
+      // Same trick vertically: the target is taller than the line it sits on,
+      // and without this it would set the row's height, making group rows
+      // taller than leaf rows. Cell padding stays the only thing that does.
+      'my-[calc((var(--tree-chevron-size)-1lh)/-2)]',
+      'text-secondary',
+      'hover:ui-state-hover-ghost',
+      'ui-press',
+    ],
+  }),
+
   // Drag and drop
   dragHandle: cva({
     base: [
@@ -146,7 +210,18 @@ export const Table: ThemeComponent<'Table'> = {
   dropIndicator: cva({
     base: [
       'relative',
-      'before:absolute before:inset-0 before:h-0.5 before:-translate-y-1/2 before:bg-border',
+      // Starts where the drop target's own level puts its text, so a drop inside
+      // an expanded group reads as landing in that group rather than at the
+      // root, which spans the full row. The edge padding and gutter are added
+      // once for anything below the root, then the per-level indent.
+      //
+      // `--drop-level` is the collection's level, which is 0-based — unlike
+      // `--table-row-level`. Hence the `+1` before comparing against
+      // `--tree-indent-skip`, so both indents stay driven by that one token.
+      // Unset (a flat table) resolves to 0.
+      '[--drop-indent:calc(clamp(0,var(--drop-level,0),1)*(var(--cell-edge-padding)+var(--tree-gutter))+max(var(--drop-level,0)+1-var(--tree-indent-skip),0)*var(--tree-indent))]',
+      'before:absolute before:top-0 before:end-0 before:start-(--drop-indent)',
+      'before:h-0.5 before:-translate-y-1/2 before:bg-border',
       'drop-target:before:bg-primary',
     ],
   }),

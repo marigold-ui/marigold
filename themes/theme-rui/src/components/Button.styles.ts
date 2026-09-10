@@ -90,7 +90,11 @@ export const Button: ThemeComponent<'Button'> = cva({
         'destructive-ghost',
       ],
       size: 'icon',
-      class: 'size-control [&_svg]:size-4',
+      // `shrink-0`: an icon button is a fixed square, so it has to keep its
+      // aspect ratio in any flex container — a `ButtonGroup`, a `Panel.Header`,
+      // an `ActionBar`. Text buttons don't need it (`ui-button-base` sets
+      // `whitespace-nowrap`, so their min-content floor is the label).
+      class: 'size-control shrink-0 [&_svg]:size-4',
     },
   ],
 });

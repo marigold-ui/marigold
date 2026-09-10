@@ -80,6 +80,9 @@ export const ButtonGroup = ({
         orientation={orientation}
         className={cn(
           // Structural layout so a standalone cluster is spaced sensibly.
+          // Controls that must not be compressed own that themselves (see
+          // `Button`'s `size="icon"`, `Switch`, `Tabs`), so the group doesn't
+          // reach into its children to pin them.
           'flex gap-1',
           orientation === 'vertical' ? 'flex-col items-start' : 'items-center',
           // A container's positional className rides along and can override.

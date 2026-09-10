@@ -458,6 +458,21 @@ describe('SelectList', () => {
       );
     });
 
+    test('`p="collapsed"` writes the unsuffixed token on both axes', () => {
+      render(<Basic.Component p="collapsed" />);
+
+      const grid = screen.getByRole('grid') as HTMLElement;
+
+      // `collapsed` means "no spacing" on both axes, so there is no
+      // `--spacing-collapsed-x` / `-y` for a theme to declare.
+      expect(grid.style.getPropertyValue('--selectlist-item-px')).toBe(
+        'var(--spacing-collapsed)'
+      );
+      expect(grid.style.getPropertyValue('--selectlist-item-py')).toBe(
+        'var(--spacing-collapsed)'
+      );
+    });
+
     test('axis-specific `px` / `py` write only the matching axis var inline', () => {
       render(<Basic.Component px="padding-relaxed" py="padding-tight" />);
 

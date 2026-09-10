@@ -1,6 +1,6 @@
 ---
 name: create-pr
-description: Create a GitHub pull request for the Marigold Design System repo that follows the project's PR template and Conventional Commits title convention with a DST Jira scope (e.g. `feat(DST-1234): ...`). Use whenever the user asks to "create a PR", "open a pull request", "submit this for review", "ship this branch", or types `/create-pr`. Inspects the branch diff to infer change type, extracts the Jira ticket from the branch name or commit history, auto-fills the PR body, and auto-ticks checklist items it can verify (changeset, stories, tests, docs).
+description: Marigold repo — Create a GitHub pull request that follows the project's PR template and Conventional Commits title convention with a DST Jira scope (e.g. `feat(DST-1234): ...`). Use whenever the user asks to "create a PR", "open a pull request", "submit this for review", "ship this branch", or types `/create-pr`. Inspects the branch diff to infer change type, extracts the Jira ticket from the branch name or commit history, auto-fills the PR body, and auto-ticks checklist items it can verify (changeset, stories, tests, docs).
 ---
 
 # Create-PR Skill for Marigold Design System

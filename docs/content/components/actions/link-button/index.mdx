@@ -3,19 +3,20 @@ title: LinkButton
 description: Interactive component that resembels a button to help users navigate to new pages.
 ---
 
+import { ButtonAnatomy } from '../button/button-anatomy';
+
 The `<LinkButton>` component provides a visually distinct, button-like element that functions as a navigational link. It combines the accessibility and semantics of a link with the appearance and interactivity of a button, making it ideal for scenarios where users need a clear call-to-action that leads to another page or resource.
 
 ## Anatomy
 
 A link button consists of a pressable area, often containing a textual label or icon, which users can press or activate using the Space or Enter keys.
 
-<ImageZoom
-  src="/button/button-anatomy.jpg"
-  alt="Anatomy of a button"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+<ButtonAnatomy />
+
+- **Button:** The pressable area that navigates to the target.
+- **Label:** The text that names the destination.
+- **Icon (optional):** A leading icon paired with the label, or the sole visual in an icon-only link button.
+- **Icon-only:** A condensed square form for compact spaces. Always pair it with an `aria-label` so the destination stays accessible.
 
 ## Appearance
 

@@ -11,10 +11,17 @@ type RemovedProps = 'className' | 'style';
 
 export interface TableRowProps<T extends object = object> extends Omit<
   RAC.RowProps<T>,
-  RemovedProps
+  RemovedProps | 'hasChildItems'
 > {
   variant?: 'grid' | 'default' | 'muted' | (string & {});
   size?: 'compact' | 'default' | 'spacious' | (string & {});
+  /**
+   * Whether the row can be expanded even though its nested rows are not there
+   * yet. Only needed when they are fetched on demand: without it the row gets no
+   * expand control, so there is nothing to trigger the fetch. Statically nested
+   * rows and `Table.ExpandableRows` are detected automatically.
+   */
+  expandable?: boolean;
 }
 
 const TableRow = <T extends object>({
@@ -23,10 +30,21 @@ const TableRow = <T extends object>({
   children,
   variant: variantProp,
   size: sizeProp,
+  expandable,
   ...otherProps
 }: TableRowProps<T>) => {
   let { selectionBehavior, allowsDragging } = useTableOptions();
   const context = useTableContext();
+
+  // RAC reads `hasChildItems` for the control and the data attributes;
+  // react-aria's `useTableRow` reads `hasChildRows` for `aria-expanded`. Setting
+  // one leaves the other half missing, so write both until upstream unifies
+  // them. `hasChildRows` isn't in RAC's `RowProps`, but row props reach the
+  // collection node, which is where `useTableRow` looks.
+  const expandableProps = {
+    hasChildItems: expandable,
+    hasChildRows: expandable,
+  };
   const classNames = useClassNames({
     component: 'Table',
     variant: variantProp ?? context.variant,
@@ -34,7 +52,12 @@ const TableRow = <T extends object>({
   });
 
   return (
-    <Row id={id} className={cn('group/row', classNames.row)} {...otherProps}>
+    <Row
+      id={id}
+      className={cn('group/row', classNames.row)}
+      {...expandableProps}
+      {...otherProps}
+    >
       {allowsDragging && (
         <Cell className={classNames.cell}>
           <Button

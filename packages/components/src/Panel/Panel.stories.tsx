@@ -903,5 +903,21 @@ export const CustomPadding = meta.story(() => (
         <Button>Action</Button>
       </Panel.Footer>
     </Panel>
+
+    <Panel p="collapsed">
+      <Panel.Header>
+        <Title>No padding</Title>
+        <Description>
+          Using <code>p="collapsed"</code> — the universal no-spacing token, for
+          wrappers that should render edge to edge.
+        </Description>
+      </Panel.Header>
+      <Panel.Content>
+        <Text>Every section sits flush against the panel edge.</Text>
+      </Panel.Content>
+      <Panel.Footer>
+        <Button>Action</Button>
+      </Panel.Footer>
+    </Panel>
   </Stack>
 ));
