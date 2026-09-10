@@ -5,8 +5,8 @@
 fix(Select, ComboBox, TagGroup, TagField, Autocomplete): expose `dependencies`
 
 Collections cache each rendered item against the item object, so a render
-function that reads anything else — a label from state, a lookup by id — keeps
-rendering the value it first saw. React Aria's escape hatch is `dependencies`,
+function that reads anything else, such as a label from state or a lookup by id,
+keeps rendering the value it first saw. React Aria's escape hatch is `dependencies`,
 listed like a hook's dependency array, but it only exists on the collection
 components themselves. These five own their collection internally, so there was
 no way to reach it: the option or tag went stale and stayed stale.
@@ -22,7 +22,7 @@ children or for items that are replaced rather than mutated.
 ```
 
 `Autocomplete` also gains the item render function on its `children` type, which
-is what `dependencies` exists for — it was typed as React Aria's render props,
-so `items` plus a function only type-checked through a cast. `AutocompleteProps`
+is what `dependencies` exists for. It was typed as React Aria's render props, so
+`items` plus a function only type-checked through a cast. `AutocompleteProps`
 takes an optional item type (`AutocompleteProps<Person>`) like `TagFieldProps`
-does; existing uses keep working unchanged.
+does. Existing uses keep working unchanged.
