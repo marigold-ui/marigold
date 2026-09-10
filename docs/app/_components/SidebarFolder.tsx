@@ -11,7 +11,7 @@ import {
   useFolderDepth,
 } from 'fumadocs-ui/components/sidebar/base';
 import { useTreePath } from 'fumadocs-ui/contexts/tree';
-import { ComponentProps, type ReactNode } from 'react';
+import { ComponentProps, Fragment, type ReactNode } from 'react';
 import { cva } from '@marigold/system';
 
 const itemVariants = cva({
@@ -82,34 +82,60 @@ const StyledSidebarFolderTrigger = ({
   );
 };
 
+// The line the active item's marker sits on, drawn behind the items.
+const rail =
+  "before:bg-fd-border before:absolute before:inset-y-1 before:start-2.5 before:w-px before:content-['']";
+
+/**
+ * Splits a folder's rendered children into the runs its category labels
+ * separate, so every run gets its own rail: an unbroken rail would run past
+ * each label and merge the categories back into one list. A folder without
+ * categories comes out as a single run, i.e. one rail across the whole folder.
+ */
+const railGroups = (item: PageTree.Folder, children: ReactNode) => {
+  // Fumadocs' page tree renders one node per `item.children` entry, in order,
+  // so the rendered nodes zip with the tree by index. Read as a plain array
+  // rather than through `Children.toArray`, which drops empty nodes and would
+  // shift the two out of alignment.
+  const nodes = Array.isArray(children) ? children : [children];
+  const groups: { key: string; label?: ReactNode; items: ReactNode[] }[] = [
+    { key: 'lead', items: [] },
+  ];
+
+  item.children.forEach((child, index) => {
+    if (child.type === 'separator') {
+      groups.push({
+        key: child.$id ?? `separator-${index}`,
+        label: nodes[index],
+        items: [],
+      });
+      return;
+    }
+    groups[groups.length - 1].items.push(nodes[index]);
+  });
+
+  return groups.map(({ key, label, items }) => (
+    <Fragment key={key}>
+      {label}
+      {items.length > 0 && <div className={cn('relative', rail)}>{items}</div>}
+    </Fragment>
+  ));
+};
+
 // Styled wrapper for SidebarFolderContent
 const StyledSidebarFolderContent = ({
   className,
   children,
-  rail = true,
+  item,
   ...props
 }: ComponentProps<typeof BaseSidebarFolderContent> & {
-  /**
-   * Draws the depth-1 rail the active item's marker sits on. Off for trees that
-   * group their pages into categories — there the rail would run past every
-   * category label and merge them back into one list.
-   */
-  rail?: boolean;
+  item: PageTree.Folder;
 }) => {
   const depth = useFolderDepth();
 
   return (
-    <BaseSidebarFolderContent
-      className={cn(
-        'relative',
-        rail &&
-          depth === 1 &&
-          "before:bg-fd-border before:absolute before:inset-y-1 before:start-2.5 before:w-px before:content-['']",
-        className
-      )}
-      {...props}
-    >
-      {children}
+    <BaseSidebarFolderContent className={cn('relative', className)} {...props}>
+      {depth === 1 ? railGroups(item, children) : children}
     </BaseSidebarFolderContent>
   );
 };
@@ -132,9 +158,6 @@ export const SidebarFolder = ({
     path.includes(item) ||
     path.some(node => node.type === 'folder' && node.name === item.name);
 
-  // Category labels already group these pages, see `rail`.
-  const hasCategories = item.children.some(child => child.type === 'separator');
-
   if (item.index) {
     return (
       <BaseSidebarFolder
@@ -156,7 +179,7 @@ export const SidebarFolder = ({
             </span>
           )}
         </StyledSidebarFolderLink>
-        <StyledSidebarFolderContent rail={!hasCategories}>
+        <StyledSidebarFolderContent item={item}>
           {children}
         </StyledSidebarFolderContent>
       </BaseSidebarFolder>
@@ -174,7 +197,7 @@ export const SidebarFolder = ({
         {item.icon}
         {item.name}
       </StyledSidebarFolderTrigger>
-      <StyledSidebarFolderContent rail={!hasCategories}>
+      <StyledSidebarFolderContent item={item}>
         {children}
       </StyledSidebarFolderContent>
     </BaseSidebarFolder>
