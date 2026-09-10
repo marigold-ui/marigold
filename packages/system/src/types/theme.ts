@@ -137,7 +137,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Switch?: Record<
-      'container' | 'track' | 'thumb',
+      'container' | 'label' | 'track' | 'thumb',
       ComponentStyleFunction<string, string>
     >;
     Input?: Record<

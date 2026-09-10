@@ -13,7 +13,7 @@
     "@babel/core": "8.0.1",
     "@changesets/changelog-git": "0.2.1",
     "@changesets/cli": "2.31.1",
-    "@eslint/eslintrc": "3.3.6",
+    "@eslint/eslintrc": "3.3.7",
     "@eslint/js": "10.0.1",
     "@manypkg/get-packages": "3.1.0",
     "@marigold/eslint-config": "workspace:*",
@@ -40,7 +40,7 @@
     "@vitest/ui": "4.1.10",
     "autoprefixer": "10.5.4",
     "concurrently": "10.0.5",
-    "eslint": "10.8.0",
+    "eslint": "10.9.1",
     "eslint-plugin-storybook": "10.4.6",
     "husky": "9.1.7",
     "playwright": "1.62.1",
@@ -52,10 +52,10 @@
     "storybook": "^10.4.6",
     "storybook-addon-test-codegen": "3.0.1",
     "tailwindcss": "4.3.3",
-    "turbo": "2.10.8",
+    "turbo": "2.10.12",
     "typescript": "6.0.3",
     "vite": "8.2.0",
-    "vitest": "4.1.10",
+    "vitest": "4.1.11",
     "zx": "8.8.5"
   },
   "scripts": {
@@ -76,6 +76,7 @@
     "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist' -o -name '.next' -o -name '.turbo' -o -name 'storybook-static' -o -name 'coverage'`",
     "clean:build": "rm -rf `find . -type d -name 'dist'` coverage",
     "lint": "eslint . --no-warn-ignored",
+    "lint:prose": "node scripts/vale.mjs .",
     "check:memory": "node scripts/check-memory-store.mjs",
     "check:rac-imports": "node scripts/check-rac-first-imports.mjs",
     "check:theme-zindex": "node scripts/check-theme-zindex.mjs",
@@ -91,6 +92,7 @@
   },
   "devDependencies": {
     "@storybook/addon-mcp": "^0.6.0",
-    "@vitest/coverage-istanbul": "4.1.10"
+    "@vitest/coverage-istanbul": "4.1.10",
+    "lint-staged": "17.3.0"
   }
 }
