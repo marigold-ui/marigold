@@ -97,7 +97,7 @@ export const v18: MigrationManifest = {
     HelpText: ['container', 'icon'],
     IconButton: null,
     Checkbox: ['container', 'label', 'checkbox', 'group'],
-    Switch: ['container', 'track', 'thumb'],
+    Switch: ['container', 'label', 'track', 'thumb'],
     Input: ['input', 'icon', 'action'],
     Keyboard: null,
     Label: null,
