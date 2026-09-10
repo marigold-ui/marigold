@@ -4,7 +4,6 @@
 {
   "extends": "@marigold/tsconfig/react",
   "compilerOptions": {
-    // Here, not on the command line, so the scripts, CI and the post-edit hook cannot drift.
     "noEmit": true,
     "resolveJsonModule": true,
     "declaration": false,
