@@ -76,6 +76,7 @@
     "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist' -o -name '.next' -o -name '.turbo' -o -name 'storybook-static' -o -name 'coverage'`",
     "clean:build": "rm -rf `find . -type d -name 'dist'` coverage",
     "lint": "eslint . --no-warn-ignored",
+    "lint:prose": "node scripts/vale.mjs .",
     "check:memory": "node scripts/check-memory-store.mjs",
     "check:rac-imports": "node scripts/check-rac-first-imports.mjs",
     "check:theme-zindex": "node scripts/check-theme-zindex.mjs",
@@ -91,6 +92,7 @@
   },
   "devDependencies": {
     "@storybook/addon-mcp": "^0.6.0",
-    "@vitest/coverage-istanbul": "4.1.10"
+    "@vitest/coverage-istanbul": "4.1.10",
+    "lint-staged": "17.3.0"
   }
 }

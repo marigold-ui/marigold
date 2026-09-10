@@ -1,6 +1,6 @@
 # @marigold/cli
 
-Marigold Design System CLI — component docs, discovery, and project setup, straight from the terminal.
+Marigold Design System CLI: component docs, discovery, and project setup, straight from the terminal.
 
 ## Install
 
@@ -32,7 +32,7 @@ guide matching your pnpm version:
 
 ### pnpm ≥ 10 (this repo pins pnpm 11)
 
-`pnpm link --global` no longer exists; symlink the built entry point into your
+`pnpm link --global` no longer exists. Symlink the built entry point into your
 global bin instead:
 
 ```sh
@@ -94,12 +94,12 @@ marigold docs getting-started/installation
 
 Flags:
 
-- `--section <name>` — `props`, `usage`, `examples`, or `all` (default: `all`)
-- `--format <name>` — `markdown` (default), `json`, or `plain`
-- `--fresh` — bypass the local cache
-- `--offline` — use only the local cache; fail if missing
+- `--section <name>`: `props`, `usage`, `examples`, or `all` (default: `all`)
+- `--format <name>`: `markdown` (default), `json`, or `plain`
+- `--fresh`: bypass the local cache
+- `--offline`: use only the local cache, failing if it is missing
 
-Pass a component name (case-insensitive, so `Button`, `button`, `BUTTON` all resolve to the same component) or the slug of a non-component docs page (e.g. `foundations/spacing`, `getting-started/installation`). The `props` section is component-only; requesting it for a page emits a note instead.
+Pass a component name (case-insensitive, so `Button`, `button`, `BUTTON` all resolve to the same component) or the slug of a non-component docs page (e.g. `foundations/spacing`, `getting-started/installation`). The `props` section is component-only. Requesting it for a page emits a note instead.
 
 The default `markdown` output is a best-effort terminal render (headings, code
 fences, inline code, bold). For non-trivial docs prefer `--format json` (the
@@ -108,8 +108,8 @@ plain` (ANSI-stripped, ideal for piping into other tools).
 
 ### `marigold search <query>`
 
-Find components by **what their docs say** — title, description, section
-headings, and section prose — not just by name. Returns ranked results, each
+Find components by **what their docs say**: title, description, section
+headings, and section prose, not just by name. Returns ranked results, each
 with the most relevant snippet and a deep link. This is the discovery entry
 point: it collapses the `list` → guess → `docs` → retry loop into a single call,
 which is especially valuable for AI agents that don't yet know the component
@@ -124,10 +124,10 @@ marigold search modal --format plain
 
 Flags:
 
-- `--limit <n>` — max results (default: `5`)
-- `--format <name>` — `markdown` (default), `json`, or `plain`
-- `--fresh` — bypass the local cache
-- `--offline` — use only the local cache; fail if missing
+- `--limit <n>`: max results (default: `5`)
+- `--format <name>`: `markdown` (default), `json`, or `plain`
+- `--fresh`: bypass the local cache
+- `--offline`: use only the local cache, failing if it is missing
 
 Ranking weights title ×3, description ×2, each matching heading ×2, and each
 matching section snippet ×1, with a coverage scale for partial multi-term
@@ -156,15 +156,15 @@ marigold list --fresh
 
 Flags:
 
-- `--category <name>` — filter by category, including component categories (e.g. `actions`, `form`, `layout`) and page categories (e.g. `foundations`, `patterns`, `getting-started`)
-- `--search <term>` — substring filter on component and page names
-- `--format <name>` — `markdown` (default), `json`, or `plain`
-- `--fresh` — bypass the local cache
-- `--offline` — use only the local cache; fail if missing
+- `--category <name>`: filter by category, including component categories (e.g. `actions`, `form`, `layout`) and page categories (e.g. `foundations`, `patterns`, `getting-started`)
+- `--search <term>`: substring filter on component and page names
+- `--format <name>`: `markdown` (default), `json`, or `plain`
+- `--fresh`: bypass the local cache
+- `--offline`: use only the local cache, failing if it is missing
 
 ### `marigold examples`
 
-Browse application-level reference patterns — multi-file compositions that show
+Browse application-level reference patterns: multi-file compositions that show
 how Marigold components combine into real features (filterable tables, multi-section
 forms, component inventories).
 
@@ -176,16 +176,16 @@ marigold examples get filter --format json
 
 Subcommands:
 
-- `list` — print every available example (slug, title, brief, mapped patterns)
-- `get <slug>` — fetch a single example: its source files, the canonical pattern
+- `list`: print every available example (slug, title, brief, mapped patterns)
+- `get <slug>`: fetch a single example: its source files, the canonical pattern
   docs it maps to, the mock-data shapes it depends on, which files are
   load-bearing vs. framework scaffolding, and its peer dependencies
 
 Flags (for `get`/`list`):
 
-- `--format <name>` — `markdown` (default), `json`, or `plain`
-- `--fresh` — bypass the local cache
-- `--offline` — use only the local cache; fail if missing
+- `--format <name>`: `markdown` (default), `json`, or `plain`
+- `--fresh`: bypass the local cache
+- `--offline`: use only the local cache, failing if it is missing
 
 Examples are authored **Next.js App Router-first**. Before adapting one to a
 different framework (e.g. Vite), read the framework-transformation note:
@@ -211,16 +211,16 @@ marigold init --skip-install    # apply config edits without running the install
 
 Detects Next.js or Vite, then:
 
-1. Installs `@marigold/components`, `@marigold/system`, `@marigold/theme-rui` — and Tailwind v4 + the framework adapter (`@tailwindcss/postcss` for Next.js, `@tailwindcss/vite` for Vite) if Tailwind isn't already present. The Tailwind install is gated behind a confirmation prompt unless `--yes` is passed.
-2. Patches your global CSS (`app/globals.css`, `src/app/globals.css`, `src/index.css`, or `styles/globals.css`) with the required `@import` and `@source` lines — preserving existing rules.
+1. Installs `@marigold/components`, `@marigold/system` and `@marigold/theme-rui`. Adds Tailwind v4 and the framework adapter (`@tailwindcss/postcss` for Next.js, `@tailwindcss/vite` for Vite) if Tailwind isn't already present. The Tailwind install is gated behind a confirmation prompt unless `--yes` is passed.
+2. Patches your global CSS (`app/globals.css`, `src/app/globals.css`, `src/index.css`, or `styles/globals.css`) with the required `@import` and `@source` lines, preserving existing rules.
 3. Patches `vite.config.ts` (Vite) or writes `postcss.config.mjs` (Next.js) if missing.
 4. Wraps the root: creates `app/providers.tsx` and wraps `{children}` in `app/layout.tsx` (Next.js), or wraps `<App />` in `src/main.tsx` (Vite).
 
-Edits are idempotent — re-running leaves files untouched. If a file shape can't be recognized, the CLI prints a manual fallback for that step instead of guessing.
+Edits are idempotent: re-running leaves files untouched. If a file shape can't be recognized, the CLI prints a manual fallback for that step instead of guessing.
 
 ### `marigold doctor`
 
-Diagnose why Marigold isn't working in a project and print a checklist with actionable fixes. All checks read the filesystem only; the freshness check additionally makes a short, best-effort fetch of the docs manifest (skipped with `--offline`).
+Diagnose why Marigold isn't working in a project and print a checklist with actionable fixes. All checks read the filesystem only. The freshness check additionally makes a short, best-effort fetch of the docs manifest (skipped with `--offline`).
 
 ```sh
 marigold doctor                 # run from your project root
@@ -230,24 +230,24 @@ marigold doctor --offline       # skip the network; freshness uses the cache onl
 
 Flags:
 
-- `--format <name>` — `text` (default) or `json`
-- `--offline` — skip the network; the freshness check uses the cache only
+- `--format <name>`: `text` (default) or `json`
+- `--offline`: skip the network. The freshness check uses the cache only
 
 Checks, run against the current working directory:
 
-1. **Packages installed** — `@marigold/components`, `@marigold/system`, and a theme (`@marigold/theme-rui`) are declared.
-2. **Package versions aligned** — installed `@marigold/components` and `@marigold/system` match (they are released together).
-3. **Up to date** — installed versions are the latest published (best-effort; uses the cached manifest, skipped when offline).
-4. **MarigoldProvider wraps the app** — the root layout wraps the app in `<MarigoldProvider>` (following the Next.js `Providers` convention).
-5. **Theme passed to MarigoldProvider** — a `theme` prop is passed to the provider.
-6. **Tailwind configured for Marigold** — the CSS entry imports `tailwindcss` and `@marigold/theme-rui/theme.css`, declares `@source` for `node_modules/@marigold`, and the framework build plugin is wired up.
-7. **React version compatible** — installed React satisfies `@marigold/components`'s peer requirement.
+1. **Packages installed**: `@marigold/components`, `@marigold/system`, and a theme (`@marigold/theme-rui`) are declared.
+2. **Package versions aligned**: installed `@marigold/components` and `@marigold/system` match (they are released together).
+3. **Up to date**: installed versions are the latest published (best-effort, uses the cached manifest, skipped when offline).
+4. **MarigoldProvider wraps the app**: the root layout wraps the app in `<MarigoldProvider>` (following the Next.js `Providers` convention).
+5. **Theme passed to MarigoldProvider**: a `theme` prop is passed to the provider.
+6. **Tailwind configured for Marigold**: the CSS entry imports `tailwindcss` and `@marigold/theme-rui/theme.css`, declares `@source` for `node_modules/@marigold`, and the framework build plugin is wired up.
+7. **React version compatible**: installed React satisfies `@marigold/components`'s peer requirement.
 
-Only deterministic, definitely-broken findings (a missing core package, or a components/system version mismatch) are **errors**; everything heuristic is a **warning**. The command exits `1` only when there is an error, so it is safe to gate CI on. `--format json` emits `{ errors, warnings, passed, text }` — agents derive health from `errors.length === 0`.
+Only deterministic, definitely-broken findings (a missing core package, or a components/system version mismatch) are **errors**. Everything heuristic is a **warning**. The command exits `1` only when there is an error, so it is safe to gate CI on. `--format json` emits `{ errors, warnings, passed, text }`. Agents derive health from `errors.length === 0`.
 
 ### `marigold validate <file.tsx>`
 
-Check a single Marigold component file against the design system's rules and print the problems found — the checks a compiler can't catch: a hallucinated component, a required compound part missing, raw HTML used where a component exists, a control with no accessible name, overlapping elements, and more.
+Check a single Marigold component file against the design system's rules and print the problems found, the checks a compiler can't catch: a hallucinated component, a required compound part missing, raw HTML used where a component exists, a control with no accessible name, overlapping elements, and more.
 
 ```sh
 marigold validate src/components/Card.tsx --checks all
@@ -256,15 +256,15 @@ marigold validate src/components/Card.tsx --checks technical --format json
 
 Flags:
 
-- `--checks <name>` — `technical`, `spatial`, `a11y`, or `all` (default: `all`)
-- `--format <name>` — `text` (default) or `json`
+- `--checks <name>`: `technical`, `spatial`, `a11y`, or `all` (default: `all`)
+- `--format <name>`: `text` (default) or `json`
 
 Validation runs in two passes:
 
-- **Static (TypeScript/AST)** — always runs on a single `.tsx` file: compiler errors, invalid props/event handlers, compound composition, raw HTML vs. components, section headers, collection ids, component conventions.
-- **Dynamic (rendered in a headless browser)** — needs a self-contained file (only imports from packages like `@marigold/components`/`react`, no local files) and Chromium installed: DOM overlap, token compliance, responsive width, keyboard access, text spacing, contrast, focus visibility, and an axe accessibility audit. Skipped (with a single warning, not a crash) when the render toolchain or Chromium isn't available.
+- **Static (TypeScript/AST)** always runs on a single `.tsx` file: compiler errors, invalid props/event handlers, compound composition, raw HTML vs. components, section headers, collection ids, component conventions.
+- **Dynamic (rendered in a headless browser)** needs a self-contained file (only imports from packages like `@marigold/components`/`react`, no local files) and Chromium installed: DOM overlap, token compliance, responsive width, keyboard access, text spacing, contrast, focus visibility, and an axe accessibility audit. Skipped (with a single warning, not a crash) when the render toolchain or Chromium isn't available.
 
-Something is an **error** only if it's deterministic and free of false positives (compile failure, hallucinated component, missing required part, a DOM-event handler on a controlled component); everything else — including all rendered/a11y findings — is a **warning**. The command exits `1` only on an error, so it's safe to run inside an automatic fix loop. Set `MARIGOLD_VALIDATE_DISABLED=1` to skip validation with a clear message in environments without a browser setup.
+Something is an **error** only if it's deterministic and free of false positives (compile failure, hallucinated component, missing required part, a DOM-event handler on a controlled component). Everything else, including all rendered/a11y findings, is a **warning**. The command exits `1` only on an error, so it's safe to run inside an automatic fix loop. Set `MARIGOLD_VALIDATE_DISABLED=1` to skip validation with a clear message in environments without a browser setup.
 
 ### `marigold completion <shell>`
 
@@ -285,7 +285,7 @@ marigold completion zsh > "${fpath[1]}/_marigold"
 marigold completion fish > ~/.config/fish/completions/marigold.fish
 ```
 
-Tab-completes subcommands, flag names, enum values (e.g. `--format markdown|json|plain`), categories (`marigold list --category <TAB>`), and component names (`marigold docs <TAB>`). Component and category suggestions are sourced from the local manifest cache — run `marigold list` once to warm it. PowerShell is not yet supported. For instant component completion, install the CLI globally rather than relying on `npx`/`pnpm dlx`.
+Tab-completes subcommands, flag names, enum values (e.g. `--format markdown|json|plain`), categories (`marigold list --category <TAB>`), and component names (`marigold docs <TAB>`). Component and category suggestions are sourced from the local manifest cache. Run `marigold list` once to warm it. PowerShell is not yet supported. For instant component completion, install the CLI globally rather than relying on `npx`/`pnpm dlx`.
 
 ### `marigold telemetry`
 
@@ -297,36 +297,36 @@ marigold telemetry disable
 marigold telemetry enable
 ```
 
-Telemetry is on by default and sent fire-and-forget via a detached background process — it never blocks the foreground command or surfaces network errors. Each event records: command name (`docs`/`list`/`search`/`examples`/`init`/`doctor`/`telemetry`), CLI version, Node version, platform, exit code, a coarse duration bucket (`0-100` / `100-500` / `500-2000` / `2000+` ms), cache hit/miss, a stable anonymous UUID, whether stdout is a TTY, whether the CLI was invoked by an AI agent (`CLAUDECODE`, `CURSOR_AGENT`, `VSCODE_AGENT`, `CODEX_SANDBOX`, or `AI_AGENT` env var set), and the flags passed (values redacted — only flag presence/enum value is kept; free-form `--search` terms are recorded as `used`, never the term itself).
+Telemetry is on by default and sent fire-and-forget via a detached background process. It never blocks the foreground command or surfaces network errors. Each event records: command name (`docs`/`list`/`search`/`examples`/`init`/`doctor`/`telemetry`), CLI version, Node version, platform, exit code, a coarse duration bucket (`0-100` / `100-500` / `500-2000` / `2000+` ms), cache hit/miss, a stable anonymous UUID, whether stdout is a TTY, whether the CLI was invoked by an AI agent (`CLAUDECODE`, `CURSOR_AGENT`, `VSCODE_AGENT`, `CODEX_SANDBOX`, or `AI_AGENT` env var set), and the flags passed (values redacted: only flag presence or enum value is kept, and free-form `--search` terms are recorded as `used`, never the term itself).
 
 Telemetry is automatically suppressed when:
 
 - `MARIGOLD_TELEMETRY_DISABLED=1` is set
 - `DO_NOT_TRACK=1` is set ([consoledonottrack.com](https://consoledonottrack.com) standard)
-- CI is detected (via [`ci-info`](https://github.com/watson/ci-info) — covers GitHub Actions, GitLab CI, CircleCI, etc.)
+- CI is detected (via [`ci-info`](https://github.com/watson/ci-info), which covers GitHub Actions, GitLab CI, CircleCI, etc.)
 
 ### Global flags
 
-- `-h`, `--help` — print usage
-- `-v`, `--version` — print the installed CLI version
+- `-h`, `--help`: print usage
+- `-v`, `--version`: print the installed CLI version
 
 ## For AI agents
 
 When invoked by an AI coding agent, prefer `--format json` and `--section props` for structured, precise component data. When you don't yet know the component name, start with `marigold search <query> --format json` to find the right component in one call, then fetch `marigold docs <Component> --section props --format json`. See the `## Marigold CLI` section in [CLAUDE.md](https://github.com/marigold-ui/marigold/blob/main/CLAUDE.md) for recommended patterns.
 
-To adopt a whole feature pattern (rather than a single component), use `marigold examples list` to discover patterns and `marigold examples get <slug> --format json` to retrieve a pattern's source plus the metadata needed to adapt it — then read `marigold docs getting-started/examples-for-agents` once for the framework-transformation rules.
+To adopt a whole feature pattern (rather than a single component), use `marigold examples list` to discover patterns and `marigold examples get <slug> --format json` to retrieve a pattern's source plus the metadata needed to adapt it. Then read `marigold docs getting-started/examples-for-agents` once for the framework-transformation rules.
 
 The CLI detects common agent runtimes (Claude Code, Cursor, VS Code agent mode, Codex, generic `AI_AGENT=1`) via environment variables and tags telemetry accordingly, so we can prioritize the agent surface based on real usage.
 
 ## Environment
 
-- `MARIGOLD_DOCS_URL` — override the docs site base URL (default: `https://www.marigold-ui.io`)
-- `MARIGOLD_CACHE_TTL_MS` — override the default 24h cache TTL (in milliseconds)
-- `MARIGOLD_CACHE_DIR` — override the cache directory location
-- `MARIGOLD_CONFIG_DIR` — override the config directory (where telemetry preference + anonymous ID are stored)
-- `MARIGOLD_TELEMETRY_DISABLED=1` — opt out of telemetry
-- `DO_NOT_TRACK=1` — opt out of telemetry (standard)
-- `CLAUDECODE`, `CURSOR_AGENT`, `VSCODE_AGENT`, `CODEX_SANDBOX`, `AI_AGENT` — when set, the run is tagged as agent-driven in telemetry
+- `MARIGOLD_DOCS_URL`: override the docs site base URL (default: `https://www.marigold-ui.io`)
+- `MARIGOLD_CACHE_TTL_MS`: override the default 24h cache TTL (in milliseconds)
+- `MARIGOLD_CACHE_DIR`: override the cache directory location
+- `MARIGOLD_CONFIG_DIR`: override the config directory (where telemetry preference + anonymous ID are stored)
+- `MARIGOLD_TELEMETRY_DISABLED=1`: opt out of telemetry
+- `DO_NOT_TRACK=1`: opt out of telemetry (standard)
+- `CLAUDECODE`, `CURSOR_AGENT`, `VSCODE_AGENT`, `CODEX_SANDBOX`, `AI_AGENT`: when set, the run is tagged as agent-driven in telemetry
 
 Default locations:
 
