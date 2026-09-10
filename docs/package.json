@@ -76,7 +76,7 @@
     "@types/react-dom": "^19.2.4",
     "@types/unist": "^3.0.3",
     "eslint": "10.9.1",
-    "eslint-config-next": "16.3.0",
+    "eslint-config-next": "16.3.4",
     "fumadocs-typescript": "^5.3.0",
     "next-validate-link": "^1.6.7",
     "p-limit": "7.3.1",
