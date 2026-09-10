@@ -7,7 +7,11 @@ import { main } from './marigold.js';
 
 const emitMock = vi.hoisted(() => vi.fn());
 
-vi.mock('../lib/telemetry.js', () => ({
+// Partial mock: only `emit` is stubbed, so the real `slugArg`/`enumArg` clamps
+// stay in the path and the args asserted below are the ones that would actually
+// be sent.
+vi.mock('../lib/telemetry.js', async importOriginal => ({
+  ...(await importOriginal<typeof import('../lib/telemetry.js')>()),
   emit: emitMock,
 }));
 
@@ -61,7 +65,10 @@ afterEach(() => {
 });
 
 describe('main() — telemetry on validation failure', () => {
-  test('emits exitCode 1 with args when --section is invalid', async () => {
+  // A failed run still reports which flags were supplied, but the rejected value
+  // is clamped to 'invalid' rather than echoed back — telemetry must never carry
+  // raw user input.
+  test('emits exitCode 1 and clamps an invalid --section', async () => {
     const code = await main(['docs', 'Button', '--section', 'bogus']);
 
     expect(code).toBe(1);
@@ -73,9 +80,26 @@ describe('main() — telemetry on validation failure', () => {
       exitCode: 1,
       args: expect.objectContaining({
         component: 'Button',
-        section: 'bogus',
+        section: 'invalid',
       }),
     });
+  });
+
+  // Guards the identifier-free contract at the point of emit: no field in the
+  // payload may single out a machine, user, or session.
+  test('emits no identifying field', async () => {
+    await main(['docs', 'Button']);
+
+    const event = emitMock.mock.calls[0][0];
+    expect(event).not.toHaveProperty('anonymousId');
+    expect(Object.keys(event)).toEqual(
+      expect.not.arrayContaining([
+        'anonymousId',
+        'userId',
+        'sessionId',
+        'machineId',
+      ])
+    );
   });
 
   test('emits exitCode 1 when the component positional is missing', async () => {

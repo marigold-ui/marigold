@@ -32,6 +32,8 @@ const telemetrySubValues = ['status', 'enable', 'disable'] as const;
 const examplesSubValues = ['list', 'get'] as const;
 const completionShellValues = ['bash', 'zsh', 'fish'] as const;
 
+export const FORMAT_VALUES = formatValues;
+export const SECTION_VALUES = sectionValues;
 export const TELEMETRY_SUBCOMMANDS = telemetrySubValues;
 export const EXAMPLES_SUBCOMMANDS = examplesSubValues;
 export const COMPLETION_SHELLS = completionShellValues;
