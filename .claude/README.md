@@ -59,7 +59,7 @@ That removes the confirmation gate the section above depends on. A side-effectin
 3. **It must degrade to silence, never to noise.** A hook that cannot do its job exits 0 and says nothing. `preflight.mjs` swallows every probe failure for this reason: `SessionStart` discards the output of a hook that exits non-zero, so a crash would cost the session its context block and tell nobody why.
 4. **It carries a named opt-out**, documented here. Personal settings cannot remove a single hook the project registers, only `disableAllHooks` can, and that is all or nothing. Never set `"disableAllHooks": false` in this repo's settings: project settings win, so it would override every teammate's personal opt-out.
 
-Write hooks as `#!/usr/bin/env node` ESM with Node built-ins only, matching `scripts/check-*.mjs`. The payload arrives as JSON on stdin and `jq` is not guaranteed to be installed. Commit the executable bit (`chmod +x`), and note that `.claude` is in `.prettierignore`, so nothing will reformat or lint these files for you.
+Write hooks as `#!/usr/bin/env node` ESM with Node built-ins only, matching `scripts/check-*.mjs`. The payload arrives as JSON on stdin and `jq` is not guaranteed to be installed. Note that `.claude` is in `.prettierignore`, so nothing will reformat or lint these files for you.
 
 Exit codes are per-event and worth checking against the [hooks reference](https://code.claude.com/docs/en/hooks) rather than assumed. Two that this repo relies on: on `SessionStart`, stdout on exit 0 becomes context the model reads, and on `PostToolUse`, only exit 2 puts stderr in front of the model.
 
