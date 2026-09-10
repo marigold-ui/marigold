@@ -450,36 +450,37 @@ CollapseAtWithRemove.test(
 );
 
 /**
- * Rendered tags are cached per item object, so a render function that reads
- * outside state needs `dependencies` — otherwise the tag keeps the value it was
- * first rendered with.
+ * `dependencies` invalidates React Aria's per-item render cache, so it only
+ * matters for `items` plus a render function that reads state living outside
+ * the collection — a setup none of the stories above has, and one with nothing
+ * to look at: the cache is the subject, and both states render the same way.
+ * The test below therefore carries that setup as its own `render` instead of
+ * exporting a story a reader can take nothing from.
  */
 const ITEMS = [{ id: 1 }, { id: 2 }];
 
-export const WithDependencies = meta.story({
-  tags: ['component-test'],
-  parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
-    const [locale, setLocale] = useState('en');
-    const labels: Record<string, Record<number, string>> = {
-      en: { 1: 'News', 2: 'Travel' },
-      de: { 1: 'Nachrichten', 2: 'Reisen' },
-    };
-
-    return (
-      <Stack space={6} alignX="left">
-        {/* The items never change, so only `dependencies` can refresh the tags. */}
-        <Tag.Group {...args} items={ITEMS} dependencies={[locale]}>
-          {(item: { id: number }) => <Tag>{labels[locale][item.id]}</Tag>}
-        </Tag.Group>
-        <Button onPress={() => setLocale('de')}>Switch language</Button>
-      </Stack>
-    );
-  },
-});
-
-WithDependencies.test(
+Basic.test(
   'Re-renders the tags when a listed dependency changes',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    render: args => {
+      const [locale, setLocale] = useState('en');
+      const labels: Record<string, Record<number, string>> = {
+        en: { 1: 'News', 2: 'Travel' },
+        de: { 1: 'Nachrichten', 2: 'Reisen' },
+      };
+
+      return (
+        <Stack space={6} alignX="left">
+          {/* The items never change, so only `dependencies` can refresh the tags. */}
+          <Tag.Group {...args} items={ITEMS} dependencies={[locale]}>
+            {(item: { id: number }) => <Tag>{labels[locale][item.id]}</Tag>}
+          </Tag.Group>
+          <Button onPress={() => setLocale('de')}>Switch language</Button>
+        </Stack>
+      );
+    },
+  },
   async ({ canvas, userEvent }) => {
     expect(canvas.getByText('News')).toBeInTheDocument();
 

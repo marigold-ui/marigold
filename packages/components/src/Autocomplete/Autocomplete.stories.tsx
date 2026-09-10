@@ -522,20 +522,21 @@ Mobile.test(
 );
 
 /**
- * Rendered options are cached per item object, so a render function that reads
- * outside state needs `dependencies` — otherwise the option keeps the value it
- * was first rendered with. The Autocomplete hands its `items` to the listbox
- * internally, so this is the only way in.
+ * `dependencies` invalidates React Aria's per-item render cache, so it only
+ * matters for `items` plus a render function that reads state living outside
+ * the collection — a setup none of the stories above has, and one with nothing
+ * to look at: the cache is the whole subject, and both states render the same
+ * way. The two tests below therefore carry it as their own `render` instead of
+ * exporting a story nobody can read anything off.
  */
 const SHIFT_ITEMS = [
   { id: 'ada', name: 'Ada' },
   { id: 'grace', name: 'Grace' },
 ];
 
-export const WithDependencies = meta.story({
-  tags: ['component-test'],
-  parameters: { chromatic: { disableSnapshot: true } },
+const withShift: Parameters<typeof Basic.test>[1] = {
   args: { label: 'Assign to', description: undefined },
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [shift, setShift] = useState('early');
 
@@ -552,10 +553,11 @@ export const WithDependencies = meta.story({
       </Stack>
     );
   },
-});
+};
 
-WithDependencies.test(
+Basic.test(
   'Re-renders the options when a listed dependency changes',
+  withShift,
   async ({ canvas, step, userEvent }) => {
     const optionFor = async (shift: string) => {
       const input = canvas.getByRole('combobox');
@@ -587,21 +589,12 @@ WithDependencies.test(
   }
 );
 
-/**
- * The tray renders its own listbox, so it needs the same `dependencies` forward
- * the popover gets — a component that only forwards to the popover fails here
- * and nowhere else.
- */
-export const WithDependenciesMobile = WithDependencies.extend({
-  tags: ['component-test'],
-  parameters: { chromatic: { disableSnapshot: true } },
-  globals: {
-    viewport: { value: 'smallScreen' },
-  },
-});
-
-WithDependenciesMobile.test(
+// The tray renders its own listbox, so it needs the same `dependencies` forward
+// the popover gets — a component that only forwards to the popover fails here and
+// nowhere else.
+Basic.test(
   'Re-renders the tray options when a listed dependency changes',
+  { ...withShift, globals: { viewport: { value: 'smallScreen' } } },
   async ({ args, canvas, step, userEvent }) => {
     const optionFor = async (shift: string) => {
       // The tray title repeats the label, so scope the trigger to its role.

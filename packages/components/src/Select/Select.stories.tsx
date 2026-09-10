@@ -1071,14 +1071,16 @@ export const MobileControlled = meta.story({
 });
 
 /**
- * Rendered options are cached per item object, so a render function that reads
- * outside state needs `dependencies` — otherwise the option keeps the value it
- * was first rendered with.
+ * `dependencies` invalidates React Aria's per-item render cache, so it only
+ * matters for `items` plus a render function that reads state living outside
+ * the collection — a setup none of the stories above has, and one with nothing
+ * to look at: the cache is the subject, and both states render the same way.
+ * The tests below therefore carry that setup as their own `render` instead of
+ * exporting a story a reader can take nothing from.
  */
-export const WithDependencies = meta.story({
-  tags: ['component-test'],
-  parameters: { chromatic: { disableSnapshot: true } },
+const withShift: Parameters<typeof Basic.test>[1] = {
   args: { label: 'Assign to', width: 80 },
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [shift, setShift] = useState('early');
 
@@ -1096,10 +1098,11 @@ export const WithDependencies = meta.story({
       </Stack>
     );
   },
-});
+};
 
-WithDependencies.test(
+Basic.test(
   'Re-renders the options when a listed dependency changes',
+  withShift,
   async ({ args, canvas, step, userEvent }) => {
     const open = async () => {
       await userEvent.click(
@@ -1134,21 +1137,12 @@ WithDependencies.test(
   }
 );
 
-/**
- * The tray renders its own collection, so it needs the same `dependencies`
- * forward the popover gets — a component that only forwards to the popover
- * fails here and nowhere else.
- */
-export const WithDependenciesMobile = WithDependencies.extend({
-  tags: ['component-test'],
-  parameters: { chromatic: { disableSnapshot: true } },
-  globals: {
-    viewport: { value: 'smallScreen' },
-  },
-});
-
-WithDependenciesMobile.test(
+// The tray renders its own collection, so it needs the same `dependencies`
+// forward the popover gets — a component that only forwards to the popover
+// fails here and nowhere else.
+Basic.test(
   'Re-renders the tray options when a listed dependency changes',
+  { ...withShift, globals: { viewport: { value: 'smallScreen' } } },
   async ({ args, canvas, step, userEvent }) => {
     const open = async () => {
       // The tray title repeats the label, so scope the trigger to its role.
