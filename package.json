@@ -55,7 +55,7 @@
     "turbo": "2.10.8",
     "typescript": "6.0.3",
     "vite": "8.2.0",
-    "vitest": "4.1.10",
+    "vitest": "4.1.11",
     "zx": "8.8.5"
   },
   "scripts": {
