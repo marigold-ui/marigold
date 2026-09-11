@@ -256,7 +256,13 @@ const DateRangeInput = ({ action }: DateRangeInputProps) => {
         <div className="min-w-0" onPaste={handlePaste('end')}>
           <AriaDateInput
             slot="end"
-            className={cn('flex items-center pl-0', classNames.input)}
+            className={cn(
+              'flex items-center pl-0',
+              classNames.input,
+              // See `DateInput`: the action centers its own icon, so the end
+              // input must not add padding on that side as well.
+              action && 'pr-0'
+            )}
           >
             {segment => (
               <DateSegment className={classNames.segment} segment={segment} />

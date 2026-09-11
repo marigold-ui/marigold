@@ -117,7 +117,11 @@ const _DateInput = ({
       onPaste={handlePaste}
     >
       <DateInput
-        className={cn('flex flex-1 items-center', classNames.input)}
+        className={cn(
+          'flex flex-1 items-center',
+          classNames.input,
+          action && 'pr-0'
+        )}
         {...props}
       >
         {segment => (
