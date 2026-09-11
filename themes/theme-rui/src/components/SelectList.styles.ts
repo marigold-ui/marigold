@@ -65,6 +65,7 @@ export const SelectList: ThemeComponent<'SelectList'> = {
       'grid-rows-[minmax(1.25rem,auto)_auto]',
       'text-sm font-medium text-foreground outline-none',
       'cursor-default not-disabled:data-selection-mode:cursor-pointer',
+      // Inline, not `ui-state-focus-item`: `/50` matches ListView (DST-1590/1662).
       'focus-visible:inset-ring-2 focus-visible:inset-ring-ring/50',
       'transition-[border,color]',
       'disabled:cursor-not-allowed disabled:text-disabled',
