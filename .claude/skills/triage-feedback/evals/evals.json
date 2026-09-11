@@ -83,17 +83,18 @@
     },
     {
       "id": 7,
-      "prompt": "/triage-feedback https://git.reservix.io/core/main/-/merge_requests/36307",
-      "expected_output": "A GitLab MR URL resolves the platform before anything else: project path `core/main` (encoded `core%2Fmain`), iid 36307. The MR is open and authored by someone else, so the mode is respond-only. It is also a different repository from the checkout, so no fix can land there under any authorship, and steps 5 and 6 never run.\n\nThe gather goes through the rx-baseline wrapper, not a bare `glab`. At the time of writing the MR carries 9 discussions, 3 of them already resolved, so the table should hold 6 rows and say the GitLab source ran alone.",
+      "prompt": "/triage-feedback https://git.reservix.io/portal/main/-/merge_requests/11427",
+      "expected_output": "A GitLab MR URL resolves the platform before anything else: project path `portal/main` (encoded `portal%2Fmain`), host `git.reservix.io` carried into every call as `--hostname`, iid 11427. The MR is open and authored by someone else, so the mode is respond-only, and it is a different repository from the checkout, so steps 5 and 6 never run.\n\nThe gather returns 6 discussions. Three are system notes (`added N commits`) and are dropped before triage. The remaining three are unresolved resolvable threads, so the table holds three rows and says the GitLab source ran alone.",
       "files": [],
       "expectations": [
-        "The response identifies the target as a GitLab MR and names the project and iid separately",
+        "The response identifies the target as a GitLab MR and names the project, the host and the iid",
         "The mode is respond-only, and the response does not state or imply that it will apply fixes",
         "No file in the repository was edited, and no commit or push was made",
-        "Discussions already carrying resolved: true were skipped rather than triaged",
+        "System notes were dropped rather than triaged: no row describes a commit being added or a title being changed",
+        "The table holds three rows, one per unresolved human thread",
         "The glab calls go through the path supplied by the rx-baseline gitlab skill, not a bare `glab` and not a hardcoded version-pinned path",
+        "Every glab call carries --hostname rather than relying on the configured default",
         "The triage table is rendered before any reply is posted or discussion resolved",
-        "The platform and the mode are both named on the line above the table",
         "No Vercel source was gathered, and the single-source table is not hedged as truncated"
       ]
     },
@@ -128,6 +129,19 @@
         "The response stops and reports the wrapper's own error text, including the remedy",
         "No triage table was rendered, and no empty table was presented as a finished pass",
         "The response does not fall back to a bare `glab` binary or to any other transport"
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "/triage-feedback https://git.reservix.io/core/main/-/merge_requests/36307",
+      "expected_output": "This MR is the case where both filters have to fire. It returns 9 discussions: 6 are system notes from GitLab's activity feed, and all 3 real threads already carry `resolved: true`. After dropping the first set and skipping the second, nothing is left to triage.\n\nThe right answer is an empty table and a plain statement that there is no open feedback, not a table of six rows describing commits that were pushed and a title that was changed.",
+      "files": [],
+      "expectations": [
+        "The response reports no open feedback on the MR",
+        "No system note appears as a triage row",
+        "The three already-resolved threads were skipped rather than re-opened or replied to",
+        "No reply was posted and no discussion resolved",
+        "The response does not present the empty result as a failure or as a gather that went wrong"
       ]
     }
   ]
