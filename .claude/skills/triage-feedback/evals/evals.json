@@ -66,6 +66,20 @@
         "Every gh call that acts on the PR passes the repo explicitly rather than relying on the remote",
         "The triage table is rendered before any reply is posted or thread resolved"
       ]
+    },
+    {
+      "id": 6,
+      "prompt": "/triage-feedback 5781",
+      "expected_output": "PRECONDITION: PR 5781 carries two threads from @aromko, both deliberately left unresolved after being replied to. The naming one because only half of it landed, the de-hardcoding but not the plugin move that would make the skill loadable in another repo. The GitLab one because it was pushed to a follow-up. Turn is theirs on both, since ours was the last word. If either has since been resolved the case is inconclusive rather than failed.\n\nThe case is about the Thread column. Neither row may be resolved: one is a partial apply and one is a push back, and apply on its own is not a licence to resolve. A run that resolves either has re-derived the decision from Action, which step 7 forbids. Turn theirs rows are reported as what the PR is waiting on, not replied to again.",
+      "files": [],
+      "expectations": [
+        "The triage table carries a Thread value for every row, not only for some",
+        "Neither of the two threads is resolved",
+        "The naming thread is not resolved on the grounds that a fix was applied to it",
+        "The count line states the number of resolves as zero",
+        "The response says what each thread left open is still waiting on",
+        "Rows whose Turn is theirs are reported as what the PR waits on rather than replied to again"
+      ]
     }
   ]
 }

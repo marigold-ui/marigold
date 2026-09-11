@@ -115,7 +115,7 @@ get_toolbar_thread                -> full messages when a thread is truncated in
 
 `.vercel/project.json` is **not** a prerequisite, whatever an older ticket may say. `teamId` is the only required argument on these tools, `list_teams` supplies it, and `.vercel` is gitignored so the file can never be committed anyway.
 
-Thread branch names are our git branch names, which is what makes the join work. Pass `headRefName` from step 1 **verbatim**. `branch` is an exact match, not a substring one: `DST-1665` returns zero threads where `feat/DST-1665-listview-selection` returns six. Naming is not uniform either (`dst-1745_fix-popover`, `fumadocs`, `multiselect-recipe`), so never rebuild the name from the ticket key or assume a `feat/` prefix.
+A toolbar thread's branch name is our git branch name, which is what makes the join work. Pass `headRefName` from step 1 **verbatim**. `branch` is an exact match, not a substring one: `DST-1665` returns zero threads where `feat/DST-1665-listview-selection` returns six. Naming is not uniform either (`dst-1745_fix-popover`, `fumadocs`, `multiselect-recipe`), so never rebuild the name from the ticket key or assume a `feat/` prefix.
 
 **An empty result is ambiguous, and the fix is not to drop the filter.** Zero threads means either no feedback or a branch string that did not match, and the two are indistinguishable. Do not settle it by listing the team unfiltered: that returns every open thread in every project and overflows a single tool result, 64 threads and roughly 244k characters when this was measured. Narrow instead, with `search` for wording you expect in the comment or `page` for the preview path. `limit: 100` is the right cap *with* a branch filter and the wrong one without.
 
@@ -123,16 +123,17 @@ Each thread carries context worth keeping: `webUrl` for the table, `context.href
 
 ### 3. Triage
 
-Every item gets all four columns. No item is skipped, including ones you intend to do nothing about.
+Every item gets all five columns. No item is skipped, including ones you intend to do nothing about.
 
 | Column | Values |
 | --- | --- |
 | **Validity** | `confirmed`, `stale`, `incorrect`, `unassessed` |
 | **Severity** | `blocker`, `should-fix`, `nice-to-have`, `question` |
 | **Action** | `apply`, `push back`, `needs-human` |
+| **Thread** | `resolve`, `keep open` |
 | **Turn** | `yours` when someone else spoke last, `theirs` when you did |
 
-The first three are the triage axes and are your judgement. Turn is thread state, read off the data in step 2.
+The first three are the triage axes and are your judgement. `Thread` is a judgement too, but about the conversation rather than the code. `Turn` is the only one you do not decide: it is thread state, read off the data in step 2.
 
 #### Reading an item against the code
 
@@ -165,6 +166,14 @@ Those items take Validity `unassessed`, because Validity is exactly the judgemen
 
 `Turn: yours` is where the work is, in both modes. In author mode it is unaddressed review feedback. In respond-only mode it is the author answering you, and often asking you something back.
 
+#### Thread
+
+`Action` says what happens to the code. `Thread` says what happens to the conversation, and the two come apart more often than they look.
+
+By default `push back` and `needs-human` keep the thread open, and `apply` resolves it. What breaks the last one is a **partial apply**: you did some of what was asked and deferred the rest. The code action is still `apply`, but resolving would decide on the reviewer's behalf that they are satisfied with half an answer. Those rows are `apply` plus `keep open`, and the reply has to say which half landed and where the rest went.
+
+`resolve` needs the item to be both acted on *and* finished. Anything else keeps the thread open, and step 8 reports it as still waiting.
+
 #### Correlation
 
 Correlate across sources but do not merge. The same problem raised in both a review thread and a preview comment is two rows, because each needs its own reply and its own resolve. Note the correlation in the table so the person can see it is one issue.
@@ -176,10 +185,10 @@ Correlate across sources but do not merge. The same problem raised in both a rev
 Render the table as text and **end the turn**.
 
 ```
-| # | Source | Where | Who | Item | Validity | Severity | Action | Turn |
-|---|--------|-------|-----|------|----------|----------|--------|------|
-| 1 | GitHub | Popover.tsx:58 | @sebald | containerPadding is symmetric… | confirmed | should-fix | apply | yours |
-| 2 | Vercel | /components/…/provider | @osama | scroll thumb only moves per category | unassessed | question | needs-human | yours |
+| # | Source | Where | Who | Item | Validity | Severity | Action | Thread | Turn |
+|---|--------|-------|-----|------|----------|----------|--------|--------|------|
+| 1 | GitHub | Popover.tsx:58 | @sebald | containerPadding is symmetric… | confirmed | should-fix | apply | resolve | yours |
+| 2 | Vercel | /components/…/provider | @osama | scroll thumb only moves per category | unassessed | question | needs-human | keep open | yours |
 ```
 
 State the mode in one line above the table, so it is never ambiguous which half of the skill is about to run. If step 2 hit a cap, say on the same line that the gather was partial and which source it truncated.
@@ -214,7 +223,11 @@ pnpm build          # only if a package's public surface changed
 
 followed by a changeset whenever anything under `packages/`, `themes/` or `docs/` changed, its body starting with the Conventional Commits line (`fix(DST-1234): …`). A docs-only change still needs one (`@marigold/docs: patch`).
 
+Run only the checks the change can actually fail. A markdown or JSON change never reaches `pnpm typecheck:only` or `pnpm build`, and running them anyway is a green tick that means nothing.
+
 Commit, in the repo's own commit convention. Do not push.
+
+**The commit is not inert.** Husky runs lint-staged on it, which here means `prettier --write` plus Vale on markdown, and it re-stages whatever it rewrote. The committed content can therefore differ from what step 4 was approved against. Run the formatter yourself before committing rather than letting the hook do it, and if the hook still rewrites something, say so in step 8 rather than reporting the diff you intended.
 
 ### 6. Confirm the push — author mode only
 
@@ -270,7 +283,7 @@ mutation($threadId:ID!){
 }'
 ```
 
-Resolve only threads you actually acted on. A `needs-human` row stays open, and so does a `push back` row until the other side answers.
+Resolve exactly the rows marked `Thread: resolve`. Everything else stays open, including an `apply` row whose fix was partial: step 3 already made that call, so step 7 does not second-guess it from `Action`.
 
 **In respond-only mode, resolve only threads you opened.** Closing someone else's thread decides on their behalf that they are satisfied.
 
@@ -293,6 +306,7 @@ Report, and stop:
 - replies and resolves posted, per system
 - every `needs-human` row still open, with its link
 - every `push back` row, and what you said
+- every `apply` row left `Thread: keep open`, and which half of the ask is still outstanding
 - every `Turn: theirs` row, as what the PR is waiting on
 
 Then stop. Acting on the `needs-human` rows is the next thing the user asks for, not something this skill continues into.
