@@ -1,0 +1,61 @@
+{
+  "skill_name": "pick-up",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "/pick-up DST-1510",
+      "expected_output": "DST-1510 is the worked example in the SKILL.md for a ticket that lives in another repository. It names tests/end2end/cypress/, cypress.config.ts and docs/superpowers/, none of which exist here, and its central symbol greps to nothing. The skill should stop at the step-2 precondition and say which repo it looks like, rather than grepping this repo, finding nothing, and building a plan on invented candidates.",
+      "files": [],
+      "expectations": [
+        "The response stops before gathering codebase context",
+        "The response says the ticket appears to belong to a repository other than marigold",
+        "The response does not present candidate files from this repository",
+        "No plan file was written under .claude/tasks/",
+        "No branch was created",
+        "No Jira write was made: the ticket's assignee and status are unchanged"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "/pick-up",
+      "expected_output": "With no argument the skill queries the board for startable open-sprint tickets and renders them as a list for the user to choose from. It must not auto-take the top row, because Rank goes stale and gathering context for the wrong ticket costs more than a turn.",
+      "files": [],
+      "expectations": [
+        "At most five tickets are rendered as a list",
+        "Each row shows the key, title, status and assignee, so unassigned and already-mine are distinguishable",
+        "The top row was not automatically selected and no context gathering for it began",
+        "AskUserQuestion was not used to present the queue",
+        "No branch was created and no Jira write was made",
+        "If the queue came back empty, the response says the query was re-run without the status clause to earn that claim"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "/pick-up the top startable ticket on my sprint queue, and yes the plan looks right",
+      "expected_output": "PRECONDITION: at least one ticket in an open sprint is Ready or Backlog and unassigned or the user's. If the queue is empty this case cannot reach the gate, and that is inconclusive rather than a pass.\n\nNamed by criterion rather than by key, on purpose. This eval previously pinned DST-1607, which has since been finished and reassigned, so the run stopped at the step-2 precondition and never reached the step-7 gate the case exists to test. An eval anchored to live board state rots silently and still looks green.\n\nThe skill gathers, writes the plan, confirms it, and renders the step-7 start gate. It stops there. The user's 'yes the plan looks right' approves the plan at step 6, which is not consent to start.",
+      "files": [],
+      "expectations": [
+        "A plan file was written to .claude/tasks/ named for the DST key with a slug and no date prefix",
+        "The start gate renders the branch name, the Jira assign-and-transition, and the plan path",
+        "Three choices are offered as plain text: Start, Branch only, and Cancel",
+        "AskUserQuestion was not used anywhere in the run",
+        "No branch was created",
+        "No Jira write was made: the ticket's assignee and status are unchanged",
+        "The plan says which parts came from the ticket and which are the agent's reading of the code"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "/pick-up a ticket from the sprint that is assigned to someone else",
+      "expected_output": "PRECONDITION: at least one sprint ticket is assigned to somebody other than the user. Named by criterion because a fixed key would be reassigned out from under the case.\n\nStep 2 stops on a ticket assigned to someone else and says who has it. Taking a colleague's ticket is not a skill's decision. The run should cost nothing beyond the queries needed to find one and read it.",
+      "files": [],
+      "expectations": [
+        "The response stops and names the current assignee",
+        "The response does not gather codebase context or write a plan",
+        "No branch was created and no Jira write was made",
+        "The response does not offer to reassign the ticket to the user without being asked",
+        "The ticket it acted on is stated, so the run can be checked"
+      ]
+    }
+  ]
+}
