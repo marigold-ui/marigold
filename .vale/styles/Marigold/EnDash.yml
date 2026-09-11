@@ -1,0 +1,10 @@
+extends: existence
+message: 'Use a comma, a colon, or a second sentence instead of an en dash aside. German uses a spaced en dash where English uses an em dash. Ranges like `4–9` or `Jan 1 – Dec 31` are fine.'
+level: error
+nonword: true
+scope:
+  - paragraph
+  - list
+  - heading
+tokens:
+  - '[a-zA-Z] – [a-z]'

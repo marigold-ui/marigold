@@ -1,0 +1,10 @@
+extends: existence
+message: 'Rephrase with a comma, a colon, or a second sentence instead of an em dash.'
+level: error
+nonword: true
+scope:
+  - paragraph
+  - list
+  - heading
+tokens:
+  - '—'

@@ -89,7 +89,7 @@ jobs:
         # build that happened to have a real commit.
         id: sha
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-      - uses: pnpm/action-setup@v6.0.9 # Uses version from package.json#packageManager
+      - uses: pnpm/action-setup@v6.1.0 # Uses version from package.json#packageManager
       - name: Setup Node (using .node-version)
         uses: actions/setup-node@v6
         with:
@@ -153,7 +153,7 @@ jobs:
 
       - name: Send Slack notification
         if: always() && steps.chromatic.outputs.changeCount != '0'
-        uses: slackapi/slack-github-action@v2.1.1
+        uses: slackapi/slack-github-action@v4.0.0
         with:
           webhook: ${{ secrets.SLACK_HOOK_DST_REPO_STREAM }}
           webhook-type: webhook-trigger
