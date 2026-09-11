@@ -262,3 +262,32 @@ test('deselecting all rows hides ActionBar', async () => {
     ).not.toBeInTheDocument()
   );
 });
+
+// Regression: the measurement used to sit in the outer `ActionBar`, which renders
+// `null` while nothing is selected, so the observer never attached to an element.
+test('reserves the ActionBar height on the container once the bar reopens', async () => {
+  render(<IntegratedWithTable.Component />);
+
+  // The reservation lands on Table's scroll container, which exposes no role.
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getByRole('grid').parentElement!;
+  const rowBoxes = screen.getAllByRole('checkbox').slice(1);
+  const checked = rowBoxes.filter(cb => (cb as HTMLInputElement).checked);
+
+  for (const cb of checked) {
+    await user.click(cb);
+  }
+
+  await waitFor(() =>
+    expect(
+      screen.queryByRole('toolbar', { name: /bulk actions/i })
+    ).not.toBeInTheDocument()
+  );
+
+  await user.click(rowBoxes[0]);
+
+  await waitFor(() => {
+    expect(container.style.paddingBottom).toMatch(/^calc\((?!0px)\d/);
+    expect(container.style.scrollPaddingBottom).toMatch(/^calc\((?!0px)\d/);
+  });
+});
