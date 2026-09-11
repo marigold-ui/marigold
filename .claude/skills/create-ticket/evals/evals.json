@@ -1,0 +1,61 @@
+{
+  "skill_name": "create-ticket",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "/create-ticket align the checkbox and radio styles",
+      "expected_output": "Stops at the step-2 completeness gate. The brief states a change rather than a problem, has no outcome checkable by an outsider, and names nothing as out of scope. The skill says which checks failed and routes to /grill without drafting anything. This is the exact regression the SKILL.md records as having happened once: reading the two style files and manufacturing an outcome and a Not-included list from them.",
+      "files": [],
+      "expectations": [
+        "No Jira issue was created and no create tool was called",
+        "No draft ticket was rendered, not even a partial one",
+        "The response names which of the three completeness checks the brief failed",
+        "The response routes the user to /grill rather than proceeding",
+        "The response does not present an Expected Outcome or a Not-included list derived from reading the checkbox and radio style files"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "/create-ticket Problem: the Popover escapes the viewport at the window edge, so its content is clipped and unreachable on narrow screens. Expected outcome: a Popover opened near any window edge stays fully inside the viewport, verifiable in the docs Popover page at 360px width. Included: Popover placement clamping. Not included: Tooltip, and any change to Popover's z-index rung.",
+      "expected_output": "The brief passes the completeness gate, so the skill reads the issue type's fields from Jira, proposes an appetite, and renders the complete ticket at the step-7 gate. It then ends the turn and waits. Nothing reaches Jira.",
+      "files": [],
+      "expectations": [
+        "No Jira issue was created and no create tool was called",
+        "getJiraIssueTypeMetaWithFields was called for project DST with requiredFieldsOnly set to false",
+        "The complete ticket is rendered, showing at least Type, Title, Epic, Appetite and the full Description",
+        "The title begins with a type emoji from the CLAUDE.md convention",
+        "The rendered description uses the section headings from the issue type's own Jira template rather than a set hardcoded in the skill",
+        "Four choices are offered as plain text: Create, Create and add to the active sprint, Edit, and Cancel",
+        "AskUserQuestion was not used to present the confirmation",
+        "The turn ends awaiting the user's next message rather than continuing past the gate"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "/create-ticket Problem: two separate things are slowing the team down. First, Table columns with no explicit width collapse to react-aria's 75px floor and overlap, so wide data tables are unreadable. Second, the release notes page has no way to filter by package, so finding what changed in @marigold/system means reading every entry. Expected outcome: Table columns size to content, and release notes can be filtered by package. Not included: LegacyTable, and the changelog generation script.",
+      "expected_output": "Two unrelated problems, each worth shipping alone and each plausibly picked up by a different person. The skill flags the split before anything else, lists it, and offers to create the first now and run again for the rest. It does not silently fold them into one ticket.",
+      "files": [],
+      "expectations": [
+        "No Jira issue was created and no create tool was called",
+        "The response flags that this is more than one ticket before rendering any draft",
+        "The response lists the proposed split as two distinct tickets",
+        "The response offers to create the first one now and run again for the second",
+        "The response does not combine both problems into a single rendered ticket"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "/create-ticket Problem: the Toast region renders above a Modal's underlay, but a Toast dismissed by keyboard returns focus to the body instead of the element that had it before the Modal opened, so a keyboard user is dropped to the top of the page. Expected outcome: dismissing a Toast while a Modal is open returns focus to the Modal, checkable with the Toast story under an open Dialog. Not included: Toast's z-index rung, and the non-modal Toast case.",
+      "expected_output": "A complete brief that names no epic and asks for no sprint. The gate must render Epic as none rather than guessing a parent from the component it touches: the SKILL.md is explicit that a guessed parent files the ticket into someone else's plan, and adding the right one later is cheaper than noticing a wrong one. Sprint stays backlog because --sprint was not passed, and assignee stays unset because filing a ticket is not taking it.",
+      "files": [],
+      "expectations": [
+        "No Jira issue was created and no create tool was called",
+        "The gate renders Epic as none rather than naming one the brief never mentioned",
+        "The gate shows Sprint as backlog, since --sprint was not passed",
+        "No assignee is set on the rendered ticket",
+        "The duplicate line reports what the step-6 search actually found, rather than a bare claim of none",
+        "The turn ends awaiting the user's next message"
+      ]
+    }
+  ]
+}

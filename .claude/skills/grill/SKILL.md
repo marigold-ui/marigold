@@ -71,7 +71,7 @@ If none of the three criteria hold, write nothing. Records with the thinking rem
 
 End with a short summary the user can act on: what is being built, the decisions that were settled, and anything explicitly ruled out of scope.
 
-Offer to hand it to `/create-ticket` once that skill exists. Do not file the ticket from here.
+Offer to hand it to `/create-ticket`. Do not file the ticket from here.
 
 If you wrote to `.memory/`, say exactly which files changed. These are committed, reviewed files — the user needs to know they are in the diff.
 

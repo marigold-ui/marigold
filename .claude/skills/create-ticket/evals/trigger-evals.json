@@ -1,0 +1,8 @@
+[
+  { "query": "create a DST ticket for the popover clipping bug", "should_trigger": true },
+  { "query": "file a Jira ticket for the popover clipping bug", "should_trigger": true },
+  { "query": "make a DST ticket for the popover clipping problem", "should_trigger": true },
+  { "query": "what should I work on next", "should_trigger": false },
+  { "query": "go through the review comments on my PR", "should_trigger": false },
+  { "query": "open a pull request for this branch", "should_trigger": false }
+]

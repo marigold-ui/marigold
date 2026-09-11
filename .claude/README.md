@@ -48,6 +48,10 @@ These carry two extra obligations:
 
 Narrow `allowed-tools` to the exact commands the skill needs. It is the one guardrail in a skill that is structural rather than a matter of prose.
 
+**A confirmation only holds if the question reaches a human.** `AskUserQuestion` is resolved by the permission component, so on a machine running `skipAutoPermissionPrompt` under `permissions.defaultMode: "auto"` it never renders. The tool returns the first option and nothing in the result distinguishes that from a real answer, so the model believes it was approved. This was found the slow way: seven questions in one session came back selecting the recommended option every time, and the person at the keyboard had seen none of them.
+
+Two things follow. It fails toward performing the outward action, which is the worst direction for a guardrail to fail in. And it is invisible on a machine where the setting is off, so a gate that works for you can be silently open for a teammate. Check `/config` if a gate ever seems to answer itself. A skill that must hold regardless of anyone's configuration can render its options and end the turn instead, which no setting can resolve.
+
 ## Hooks
 
 Hooks are the opposite of skills. A skill is offered to the model, which decides whether to reach for it. A hook is a shell command Claude Code runs itself at a fixed point in the session, whether anyone wanted it or not. Registration lives in `.claude/settings.json`, scripts live in `.claude/hooks/`, and both are committed, so a hook added here runs on every teammate's machine. Nothing gates it: [workspace trust](https://code.claude.com/docs/en/permissions#project-allow-rules-and-workspace-trust) holds back a project's `permissions.allow` rules, not its hooks, and the file watcher picks up a settings edit mid-session, so a pull can start one running before the next session.
