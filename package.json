@@ -38,13 +38,13 @@
     "@vitest/browser-playwright": "4.1.10",
     "@vitest/coverage-v8": "4.1.10",
     "@vitest/ui": "4.1.10",
-    "autoprefixer": "10.5.4",
+    "autoprefixer": "10.5.5",
     "concurrently": "10.0.5",
     "eslint": "10.9.1",
     "eslint-plugin-storybook": "10.4.6",
     "husky": "9.1.7",
     "playwright": "1.62.1",
-    "postcss-import": "16.1.1",
+    "postcss-import": "16.2.0",
     "postcss-loader": "8.2.1",
     "prettier": "3.9.6",
     "react": "19.2.8",
@@ -76,6 +76,7 @@
     "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist' -o -name '.next' -o -name '.turbo' -o -name 'storybook-static' -o -name 'coverage'`",
     "clean:build": "rm -rf `find . -type d -name 'dist'` coverage",
     "lint": "eslint . --no-warn-ignored",
+    "lint:prose": "node scripts/vale.mjs .",
     "check:memory": "node scripts/check-memory-store.mjs",
     "check:rac-imports": "node scripts/check-rac-first-imports.mjs",
     "check:theme-zindex": "node scripts/check-theme-zindex.mjs",
@@ -91,6 +92,7 @@
   },
   "devDependencies": {
     "@storybook/addon-mcp": "^0.6.0",
-    "@vitest/coverage-istanbul": "4.1.10"
+    "@vitest/coverage-istanbul": "4.1.10",
+    "lint-staged": "17.3.0"
   }
 }
