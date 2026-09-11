@@ -1,8 +1,12 @@
+import { recordTelemetryEvent } from '@/app/api/telemetry/record';
+import type { TelemetryEvent } from '@/app/api/telemetry/schema';
+import { lazy } from '@/lib/lazy';
 import {
   AWS_REGION,
   TITAN_DIMENSIONS,
   TITAN_MODEL_ID,
 } from '@/lib/markdown/etl/config';
+import { createWarnOnce } from '@/lib/warn-once';
 import {
   BedrockRuntimeClient,
   InvokeModelCommand,
@@ -11,8 +15,10 @@ import type { AuthInfo } from '@modelcontextprotocol/server';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 import { createMcpHandler, withMcpAuth } from 'mcp-handler';
 import { z } from 'zod';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
+import { after } from 'next/server';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -43,20 +49,16 @@ type StoredChunk = {
 
 // ─── Bedrock client (lazy singleton) ─────────────────────────────────────────
 
-let bedrock: BedrockRuntimeClient | null = null;
-
-function getBedrock(): BedrockRuntimeClient {
-  if (bedrock) return bedrock;
-
-  const accessKeyId = process.env.AWS_BEDROCK_ACCESS_KEY_ID || '';
-  const secretAccessKey = process.env.AWS_BEDROCK_SECRET_ACCESS_KEY || '';
-
-  bedrock = new BedrockRuntimeClient({
-    region: AWS_REGION,
-    credentials: { accessKeyId, secretAccessKey },
-  });
-  return bedrock;
-}
+const getBedrock = lazy(
+  () =>
+    new BedrockRuntimeClient({
+      region: AWS_REGION,
+      credentials: {
+        accessKeyId: process.env.AWS_BEDROCK_ACCESS_KEY_ID || '',
+        secretAccessKey: process.env.AWS_BEDROCK_SECRET_ACCESS_KEY || '',
+      },
+    })
+);
 
 async function embedQuery(text: string): Promise<Float32Array> {
   const res = await getBedrock().send(
@@ -99,11 +101,7 @@ function loadStore(): VectorStore {
 }
 
 // Lazy so module init does not require embeddings.json (local builds skip it; production bundles it via outputFileTracingIncludes).
-let store: VectorStore | null = null;
-const getStore = (): VectorStore => {
-  if (!store) store = loadStore();
-  return store;
-};
+const getStore = lazy(loadStore);
 
 // ─── Search ──────────────────────────────────────────────────────────────────
 
@@ -135,16 +133,24 @@ function search(queryVec: Float32Array, vs: VectorStore, limit: number) {
   }));
 }
 
+// ─── Telemetry ────────────────────────────────────────────────────────────────
+
+const warnOnce = createWarnOnce();
+
+// One-way SHA-256 of the caller's Keycloak `sub` claim — never the raw claim,
+// which identifies a Reservix employee. Unkeyed, so the digest is stable for
+// good and needs no secret to reproduce: see ../api/telemetry/README.md.
+const hashCallerId = (sub: string): string =>
+  crypto.createHash('sha256').update(sub).digest('hex');
+
 // ─── Auth (Keycloak JWT) ─────────────────────────────────────────────────────
 
-let jwks: ReturnType<typeof createRemoteJWKSet> | null = null;
+const getJwks = lazy(() => createRemoteJWKSet(new URL(KEYCLOAK_JWKS_URI)));
 
-const getJwks = () => {
-  if (!jwks) jwks = createRemoteJWKSet(new URL(KEYCLOAK_JWKS_URI));
-  return jwks;
-};
+const subjectOf = (authInfo?: AuthInfo): string | undefined =>
+  typeof authInfo?.extra?.sub === 'string' ? authInfo.extra.sub : undefined;
 
-const verifyToken = async (
+export const verifyToken = async (
   _req: Request,
   bearerToken?: string
 ): Promise<AuthInfo | undefined> => {
@@ -160,12 +166,133 @@ const verifyToken = async (
 
     return {
       token: bearerToken,
+      // The calling client, not our own audience. Required by AuthInfo and
+      // unread by us; the subject travels in `extra`.
+      clientId: typeof payload.azp === 'string' ? payload.azp : OIDC_CLIENT_ID,
       scopes: [],
-      clientId: payload.sub,
+      extra: { sub: payload.sub },
     };
   } catch (err) {
     console.error('[MCP] JWT verification failed:', err);
     return undefined;
+  }
+};
+
+// ─── search_docs ─────────────────────────────────────────────────────────────
+
+const SEARCH_DOCS_DESCRIPTION = [
+  'Search the Marigold Design System documentation using semantic similarity.',
+  'Use this tool to find component APIs, usage guidelines, accessibility notes, theming instructions, and code examples.',
+  'Ideal for questions like: "How do I use the Button component?", "What props does Select accept?", or "How does theming work in Marigold?".',
+  'Returns the most relevant documentation sections ranked by similarity to the query.',
+  'Query must be a natural language question or keyword phrase (max 1000 characters).',
+].join(' ');
+
+const SEARCH_DOCS_SCHEMA = {
+  query: z
+    .string()
+    .min(1)
+    .max(1000)
+    .describe(
+      'Natural language question or keyword phrase to search for. Max 1000 characters. Example: "How do I disable a Button?" or "Select component props".'
+    ),
+  limit: z
+    .number()
+    .int()
+    .min(3)
+    .max(10)
+    .default(5)
+    .describe(
+      'Number of documentation sections to return (3–10, default: 5). Use a higher value for broad topics, lower for specific lookups.'
+    ),
+};
+
+// Narrower than the SDK's ServerContext on purpose: this is all the handler
+// reads, and it keeps the tests from having to build a whole context.
+export type SearchDocsContext = { http?: { authInfo?: AuthInfo } };
+
+// Exported separately from the MCP tool registration below so it's
+// unit-testable without going through the full MCP transport/auth chain.
+export const searchDocsHandler = async (
+  { query, limit }: { query: string; limit: number },
+  ctx: SearchDocsContext
+) => {
+  const startedAt = Date.now();
+
+  const emitTelemetry = (
+    success: boolean,
+    topMatch?: { file: string; heading: string }
+  ) => {
+    // The whole body, not just after(): this is called again from the outer
+    // catch below, so anything escaping here would throw a second time with no
+    // handler left — an unhandled rejection instead of the isError response.
+    try {
+      const sub = subjectOf(ctx.http?.authInfo);
+      if (!sub) {
+        warnOnce(
+          'no-subject',
+          '[MCP] search_docs telemetry skipped: the verified token carried no subject. If a dependency upgrade changed how AuthInfo travels, see docs/app/mcp/README.md#telemetry.'
+        );
+        return;
+      }
+
+      // Built before after() is called, not inside the callback, so latencyMs
+      // measures embed+search rather than whenever the callback ran.
+      const event: TelemetryEvent = {
+        event: 'mcp_tool_call',
+        tool: 'search_docs',
+        hashedCallerId: hashCallerId(sub),
+        latencyMs: Date.now() - startedAt,
+        success,
+        topMatchFile: topMatch?.file,
+        topMatchHeading: topMatch?.heading,
+      };
+
+      after(async () => {
+        const result = await recordTelemetryEvent(event);
+        if (result !== 'recorded' && result !== 'unconfigured') {
+          warnOnce(
+            result,
+            `[MCP] search_docs telemetry not recorded: ${result}`
+          );
+        }
+      });
+    } catch (err) {
+      // Most likely after() throwing for lack of a request scope — true of
+      // every call, hence once per process.
+      warnOnce(
+        'emit-failed',
+        `[MCP] search_docs telemetry emission failed: ${err}`
+      );
+    }
+  };
+
+  try {
+    const queryVec = await embedQuery(query.trim());
+    const results = search(queryVec, getStore(), limit);
+
+    // Serialised before the emit: the only throwable step left, so nothing
+    // between them can land in the catch below and record a second event for
+    // the same call.
+    const text = JSON.stringify(results, null, 2);
+
+    emitTelemetry(true, results[0]?.metadata);
+
+    return {
+      content: [{ type: 'text' as const, text }],
+    };
+  } catch (err) {
+    console.error('[MCP] search_docs error:', err);
+    emitTelemetry(false);
+    return {
+      isError: true,
+      content: [
+        {
+          type: 'text' as const,
+          text: 'Search temporarily unavailable.',
+        },
+      ],
+    };
   }
 };
 
@@ -176,58 +303,10 @@ const handler = createMcpHandler(
     server.registerTool(
       'search_docs',
       {
-        description: [
-          'Search the Marigold Design System documentation using semantic similarity.',
-          'Use this tool to find component APIs, usage guidelines, accessibility notes, theming instructions, and code examples.',
-          'Ideal for questions like: "How do I use the Button component?", "What props does Select accept?", or "How does theming work in Marigold?".',
-          'Returns the most relevant documentation sections ranked by similarity to the query.',
-          'Query must be a natural language question or keyword phrase (max 1000 characters).',
-        ].join(' '),
-        inputSchema: z.object({
-          query: z
-            .string()
-            .min(1)
-            .max(1000)
-            .describe(
-              'Natural language question or keyword phrase to search for. Max 1000 characters. Example: "How do I disable a Button?" or "Select component props".'
-            ),
-          limit: z
-            .number()
-            .int()
-            .min(3)
-            .max(10)
-            .default(5)
-            .describe(
-              'Number of documentation sections to return (3–10, default: 5). Use a higher value for broad topics, lower for specific lookups.'
-            ),
-        }),
+        description: SEARCH_DOCS_DESCRIPTION,
+        inputSchema: z.object(SEARCH_DOCS_SCHEMA),
       },
-      async ({ query, limit }) => {
-        try {
-          const queryVec = await embedQuery(query.trim());
-          const results = search(queryVec, getStore(), limit);
-
-          return {
-            content: [
-              {
-                type: 'text' as const,
-                text: JSON.stringify(results, null, 2),
-              },
-            ],
-          };
-        } catch (err) {
-          console.error('[MCP] search_docs error:', err);
-          return {
-            isError: true,
-            content: [
-              {
-                type: 'text' as const,
-                text: 'Search temporarily unavailable.',
-              },
-            ],
-          };
-        }
-      }
+      searchDocsHandler
     );
   },
   {
