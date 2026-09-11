@@ -56,8 +56,6 @@ const matchesAcceptedToken = (file: File, token: string): boolean => {
   return fileType === t;
 };
 
-// Identity of a file for de-duplication and removal: two files with the same
-// name, size, and last-modified time are treated as the same file.
 export const fileKey = (file: File): string =>
   `${file.name}:${file.size}:${file.lastModified}`;
 
@@ -71,25 +69,15 @@ const dedupeFiles = (files: File[]): File[] => {
   });
 };
 
-// `kB`/`MB`/`GB`/`TB` are SI symbols, so the step is 1000, matching what
-// Finder, GNOME Files and the browser download UIs report.
 const FILE_SIZE_UNITS = ['B', 'kB', 'MB', 'GB', 'TB'] as const;
 const FILE_SIZE_STEP = 1000;
 const FILE_SIZE_FRACTION_DIGITS = 2;
 const FILE_SIZE_ROUNDING = 10 ** FILE_SIZE_FRACTION_DIGITS;
 
-// Not `style: 'unit'`, which spells bytes out (`340 byte`) next to an
-// abbreviated `kB` in the same list. Exported so a caller's formatter and
-// `FILE_SIZE_ROUNDING` share one source for the fraction digits.
 export const FILE_SIZE_FORMAT_OPTIONS: Intl.NumberFormatOptions = {
   maximumFractionDigits: FILE_SIZE_FRACTION_DIGITS,
 };
 
-/**
- * Formats a file size with the unit that fits its magnitude, so a 2,400-byte
- * CSV reads as `2.4 kB` instead of rounding away to `0.00 MB`. Takes the
- * formatter so it stays pure (`useNumberFormatter(FILE_SIZE_FORMAT_OPTIONS)`).
- */
 export const formatFileSize = (
   size: number,
   formatter: Intl.NumberFormat

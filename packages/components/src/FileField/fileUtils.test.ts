@@ -153,14 +153,11 @@ describe('formatFileSize', () => {
     [340, '340 B'],
     [999, '999 B'],
     [1000, '1 kB'],
-    // The regression from DSTSUP-275: a small CSV used to render "0.00 MB".
     [2400, '2.4 kB'],
     [512_000, '512 kB'],
     [2_000_000, '2 MB'],
     [1_500_000_000, '1.5 GB'],
     [3 * 1000 ** 4, '3 TB'],
-    // The unit is picked before rounding, so the ladder must not print its own
-    // step: 999,999 B rounds to 1,000 kB and has to become "1 MB".
     [1000 ** 2 - 1, '1 MB'],
   ])('formats %i bytes as "%s" in en-US', (size, expected) => {
     expect(formatFileSize(size, formatterFor('en-US'))).toBe(expected);
