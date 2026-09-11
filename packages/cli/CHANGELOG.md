@@ -1,5 +1,40 @@
 # @marigold/cli
 
+## 2.0.1
+
+### Patch Changes
+
+- 39072e8: Prose style is now enforced rather than remembered. Vale runs over the docs site, the
+  changesets and the published READMEs, wired into the pre-commit hook and a CI check, with
+  the rules in `.vale/styles/Marigold/` and the writing guidance in `CLAUDE.md`.
+
+  Three rules block CI: no em dashes, no semicolons in prose, and no en dash asides. Table
+  cells are exempt, because there an em dash is a legitimate "not applicable" marker, and
+  ranges keep the en dash so quoted component output stays accurate. All existing violations
+  are rewritten in this change, so the check starts green.
+
+  The en dash rule matches only the aside form (a letter, a spaced en dash, then a lowercase
+  letter). German uses a spaced en dash where English uses an em dash, which makes it an easy
+  slip, but a range reads as digits or a capital around the dash and stays legal.
+
+- 0c56a11: feat(DST-1391): add `Stepper`, a progress indicator for multi-step tasks.
+
+  `<Stepper>` shows where a user stands in a checkout, an onboarding flow, or a multi-page form, replacing the one-off "Step 1 of 4" widgets that several product flows had each built for themselves. It renders a `<nav>` landmark around an ordered list, announces each step's label, position, and state, and never relies on colour alone to convey which step is which.
+
+  State is entirely consumer-owned. `completedKeys` is a set rather than a high-water mark, so non-contiguous completion coming from a server is expressible, and the component never infers that a step is finished: only your code knows whether validation passed. `selectableKeys` replaces the built-in "completed, errored, or current" rule when a backend decides what is reachable, and `disabledKeys` always wins over both. Errored steps stay clickable by default, so a user who is told a step failed has a way back to it, unless `selectableKeys` leaves them out.
+
+  Steps with an `href` render as real links and route through `RouterProvider`. Steps without one render as buttons. Steps that are not reachable render as plain text rather than as disabled controls, since an unreachable step is not a disabled widget. `hideLabels` drops labels visually for flows with too many steps to label, keeping them for screen readers and adding a visible "Step 3 of 5" counter so sighted users still know how far along they are.
+
+- Updated dependencies [d7cf7e4]
+- Updated dependencies [741774f]
+- Updated dependencies [4b9631c]
+- Updated dependencies [d5f277a]
+- Updated dependencies [8ba1cc4]
+- Updated dependencies [7ef7733]
+- Updated dependencies [0c56a11]
+  - @marigold/components@18.2.0
+  - @marigold/theme-rui@6.2.0
+
 ## 2.0.0
 
 ### Patch Changes

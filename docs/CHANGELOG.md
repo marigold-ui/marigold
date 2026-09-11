@@ -1,5 +1,131 @@
 # @marigold/docs
 
+## 18.2.0
+
+### Patch Changes
+
+- d7cf7e4: fix(DST-1607): align boolean-field controls to the first line of their label
+
+  A `<Badge variant="master">` placed inline in a `<Checkbox>` label left the box sitting 2px above the text it belongs to. The box was not the problem: `Checkbox` and `Radio` anchor their control to the **first line** of the label with `items-start`, which is correct: it is what keeps the box on line one of a label that wraps. The problem was the line. The label line is `text-sm leading-4` (16px). A default `Badge` is 20px (18px line box plus 1px borders), so the badge inflated the first line and the 16px control, pinned to its top, stopped reaching the line's optical centre.
+
+  Flipping to `items-center` fixes the badge and breaks wrapping labels: the control floats to the middle of the block, 32px off a five-line label. So the fix keeps `items-start` and stops tall decorations from inflating the line.
+
+  **`Badge` gains `size="inline"`**: 16px tall, sized to sit _inside_ a line of text rather than next to one, with the access icon scaled to match. The default size is unchanged.
+
+  **`Checkbox`, `Radio` and `Switch` gain a `badge` slot.** Pass the badge there instead of building it into the label:
+
+  ```tsx
+  <Checkbox
+    label="Enable early bird pricing"
+    badge={<Badge variant="master">Master</Badge>}
+  />
+  ```
+
+  The slot takes the height of the label's line (`1lh`, so it follows the theme), centres the decoration in it, and sizes a `<Badge>` passed to it to `inline` automatically via context. An explicit `size` on the badge still wins. A decoration that fits lands dead on the line. One that does not overflows symmetrically instead of pushing the line apart, so the control stays put either way. The guardrail holds even if a consumer passes a default-sized badge. Those classes live in the component, not in a theme file, so a theme cannot reopen the bug.
+
+  **`Switch` carried the mirror of the same bug** and is now consistent with the other two. It used `items-center`, so a wrapping `variant="settings"` label dropped the track to the middle of the block instead of the first line, measured 28.5px off. It also rendered its label through the shared `Label`, whose `leading-none` gives a 14px line against a 16px track. It now uses its own label slot with a 16px line box, matching `Checkbox` and `Radio`. The accessible name is unchanged, because it comes from the wrapping `<label>`'s text either way. Single-line switches keep their exact height and position.
+
+  Checkbox's and Radio's label rows moved from `items-center` to `items-start`, which is identical for a single-line label and correct for a wrapping one. `Radio`'s label stays a plain text block rather than becoming a flex row: `children` is arbitrary, and consumer layouts (e.g. `<Inline alignX="between">`) rely on filling a block-level label the way they fill any other block container.
+
+  `WithBadge` and `LongMultilineLabel` stories for all three components pin both cases under Chromatic, each with a test asserting the control is within 0.5px of the first line's centre.
+
+  **Breaking for external themes:** `Theme['components']['Switch']` is a `Record` with required keys, so a theme outside this repo that defines `Switch` without the new `label` slot now fails `tsc`. `Badge`'s `size="inline"` and the `badge` prop on `Checkbox`/`Radio`/`Switch` are additive.
+
+- af745a8: fix(DST-1689): make the Table cell alignment demo render the same on server and client
+
+  `table-cell-alignment.demo.tsx` built its `nights` and `guests` columns with
+  `Math.floor(Math.random() * n)` at render time. `ComponentDemo` is a client
+  component, so the demo is server-rendered and then hydrated, which ran the
+  generator twice and produced two unrelated datasets. React reported a hydration
+  mismatch on the first Nights cell and regenerated the whole table on the client,
+  so all eight generated cells visibly swapped values after the first paint. Three
+  consecutive requests to the page returned three different tables.
+
+  The two columns now come from a fixed four-entry fixture, merged into the venue
+  data by index, and the derivation moves to module scope because it no longer
+  depends on anything per render. The guest counts span one, two and three digits
+  and stay under each venue's capacity, so the demo makes its own point about right
+  alignment better than the random values did.
+
+  `table-appearance.demo.tsx` also rendered `<Table {...props}>`, and `AppearanceDemo`
+  passes only `variant` and `size`, so that grid had no accessible name. It now
+  carries `aria-label="Venues"`, matching how `listview-appearance.demo.tsx` labels
+  the same shape. That was the whole source of the seven react-aria warnings the
+  page logged, which fire once per render pass.
+
+  Further console findings on neighbouring pages, same class of defect, fixed here
+  rather than left behind:
+
+  `selectlist-selectable-cards.demo.tsx` formatted capacity and price with
+  `Number.prototype.toLocaleString()` and no locale argument, so it read the JS
+  runtime default: en-US under Node, the viewer's own locale in the browser. That
+  rendered `$1,000` on the server and `$1.000` on a de-DE client, a second
+  hydration mismatch. `ComponentDemo` already pins `<I18nProvider locale="en-US">`
+  to prevent exactly this, but `toLocaleString` bypasses the provider entirely.
+  Both values now use `NumericFormat`, which reads the pinned locale through
+  `useNumberFormatter`. The rendered text is unchanged (`$1,000`, no cents, via
+  `maximumFractionDigits`), but the DOM gains a `<span suppressHydrationWarning>`
+  per value. `NumericFormat` defaults to `tabular`, which suits the price and not
+  the middle of a sentence, so the capacity passes `tabular={false}` and keeps the
+  proportional figures the prose had before.
+
+  The two closest copies of that code are fixed with it. `card-grid.demo.tsx`
+  repeated both lines verbatim. `card-appearance.demo.tsx` rendered its price range
+  as two bare `toLocaleString()` calls on four- and five-digit values, so the
+  grouping separator always fired there. The range now goes through a single
+  `NumericFormat` with a tuple value, which formats it through `Intl.formatRange`
+  and reproduces the same en dash and spacing the hardcoded `&ndash;` produced.
+
+  `menu-dialog.demo.tsx` wrapped each controlled dialog in `<Dialog.Trigger>` with
+  the `<Dialog>` as its only child. `Dialog.Trigger` wraps its children in a
+  `PressResponder` to turn a child into the trigger, and a `Dialog` never registers
+  a press, so react-aria warned four times (two dialogs, doubled by StrictMode's
+  effect). These dialogs are opened by the menu items, so they need no trigger at
+  all: `open` and `onOpenChange` move onto `Dialog` itself, which already renders
+  its own `Modal`. That is what `ConfirmationDialog` and `useConfirmation` do
+  internally. Verified unchanged: both dialogs open from the menu, `slot="close"`
+  still closes them, `role="alertdialog"` and the `aria-labelledby` title wiring
+  survive, and Escape still dismisses.
+
+- 4b9631c: feat(DST-889): mark links that open in a new window
+
+  A `<Link>` that opens a new window or tab now shows an external-link icon after its label plus a hidden, localized "opens in a new window" warning (WCAG G201). Targets that stay in the current window (`_self`, `_top`, `_parent`, in any casing) are untouched, and so are links that open nothing: `disabled` ones, ones with no `href`, and `download` ones, where the browser saves the file and ignores `target`.
+
+  `target="_blank"` also defaults `rel` to `noopener`, which your own `rel` still overrides. A named window gets no default `rel`, because `noopener` makes the browser ignore the window name and open a new tab on every click instead of reusing the window. The cost is that a named window keeps a live `window.opener` handle on your page, which browsers still allow for named targets even though they severed it for `_blank`, so don't point one at an origin you don't control.
+
+  **This is automatic and retroactive.** Every existing `target="_blank"` link gains the icon and a longer accessible name, so tests asserting an exact name need updating: `getByRole('link', { name: 'Terms' })` becomes `getByRole('link', { name: 'Terms opens in a new window' })`.
+
+  An `aria-label` replaces a link's content in its accessible name, so the warning is appended to it rather than dropped. With `aria-labelledby` it is referenced by id instead. That also fixes the `master`/`admin` access label, which an `aria-label` used to swallow.
+
+  There is no `external` prop and no opt-out. Deriving from `target` keeps the API unchanged and makes the indicator reliable, since an opt-in prop gets forgotten and a missing icon reads as "this one stays here". If a link should not carry the icon, do not force the new window.
+
+  **Theme:** `master` and `admin` render slightly differently. They coloured every descendant `svg` with the access token, which would have painted the new-tab glyph too, so `AccessIcon` now carries an `access-icon` class for the theme to select instead. `Menu`'s `master` and `admin` items moved to that same selector. Nothing renders differently today, because an access item's only glyph is the access one, but a consumer icon dropped into such an item no longer picks up the access colour. They also placed their icon with `inline-flex items-center gap-1`, which puts a trailing icon beside a wrapped label instead of after its last word. Both icons are now inline and sized in `em`, so they follow `size="small"` instead of staying at 16px.
+
+- 39072e8: Prose style is now enforced rather than remembered. Vale runs over the docs site, the
+  changesets and the published READMEs, wired into the pre-commit hook and a CI check, with
+  the rules in `.vale/styles/Marigold/` and the writing guidance in `CLAUDE.md`.
+
+  Three rules block CI: no em dashes, no semicolons in prose, and no en dash asides. Table
+  cells are exempt, because there an em dash is a legitimate "not applicable" marker, and
+  ranges keep the en dash so quoted component output stays accurate. All existing violations
+  are rewritten in this change, so the check starts green.
+
+  The en dash rule matches only the aside form (a letter, a spaced en dash, then a lowercase
+  letter). German uses a spaced en dash where English uses an em dash, which makes it an easy
+  slip, but a range reads as digits or a capital around the dash and stays legal.
+
+- Updated dependencies [d7cf7e4]
+- Updated dependencies [741774f]
+- Updated dependencies [4b9631c]
+- Updated dependencies [d5f277a]
+- Updated dependencies [8ba1cc4]
+- Updated dependencies [7ef7733]
+- Updated dependencies [0c56a11]
+  - @marigold/components@18.2.0
+  - @marigold/theme-rui@6.2.0
+  - @marigold/system@18.2.0
+  - @marigold/icons@2.0.2
+
 ## 18.1.0
 
 ### Patch Changes
