@@ -1,7 +1,7 @@
 ---
 name: triage-feedback
-description: Marigold repo — Make one triage pass over all feedback on a PR, from both GitHub review threads and Vercel preview toolbar comments, then reply and resolve in whichever system each item came from. Use when the user asks to "triage feedback", "go through the review comments", "handle the PR feedback", "address the preview comments", or types `/triage-feedback`. It posts replies, resolves threads and pushes commits, so run it only on an explicit request, never proactively and never as a follow-up to unrelated work.
-allowed-tools: Bash(gh pr view *), Bash(gh repo view *), Bash(gh pr diff *), Bash(gh api graphql *), Bash(gh api repos/*), Bash(gh api user *), Bash(git branch --show-current), Bash(git status --porcelain), Bash(git log *), Bash(git add *), Bash(git commit *), Bash(git push *), Bash(pnpm typecheck:only), Bash(pnpm build), Read, Edit, Write, Grep, Glob, mcp__plugin_vercel_vercel__list_teams, mcp__plugin_vercel_vercel__list_toolbar_threads, mcp__plugin_vercel_vercel__get_toolbar_thread, mcp__plugin_vercel_vercel__reply_to_toolbar_thread, mcp__plugin_vercel_vercel__change_toolbar_thread_resolve_status
+description: Marigold repo — Make one triage pass over all feedback on a pull request or a merge request, from GitHub review threads, GitLab MR discussions and Vercel preview toolbar comments, then reply and resolve in whichever system each item came from. Use when the user asks to "triage feedback", "go through the review comments", "handle the PR feedback", "address the preview comments", "triage the MR feedback", "go through the merge request comments", or types `/triage-feedback`. It posts replies, resolves threads and pushes commits, so run it only on an explicit request, never proactively and never as a follow-up to unrelated work.
+allowed-tools: Bash(gh pr view *), Bash(gh repo view *), Bash(gh pr diff *), Bash(gh api graphql *), Bash(gh api repos/*), Bash(gh api user *), Bash(git branch --show-current), Bash(git status --porcelain), Bash(git log *), Bash(git add *), Bash(git commit *), Bash(git push *), Bash(pnpm typecheck:only), Bash(pnpm build), Read, Edit, Write, Grep, Glob, mcp__plugin_vercel_vercel__list_teams, mcp__plugin_vercel_vercel__list_toolbar_threads, mcp__plugin_vercel_vercel__get_toolbar_thread, mcp__plugin_vercel_vercel__reply_to_toolbar_thread, mcp__plugin_vercel_vercel__change_toolbar_thread_resolve_status, Skill(rx-baseline:gitlab)
 ---
 
 # Triage-Feedback Skill
@@ -9,6 +9,8 @@ allowed-tools: Bash(gh pr view *), Bash(gh repo view *), Bash(gh pr diff *), Bas
 Feedback on a PR arrives in two places. GitHub review threads carry the code review, and Vercel preview toolbar comments carry everything someone noticed while clicking through the deployed preview. Working them by hand means two tabs, two idioms for "resolved", and steps that get missed.
 
 This skill makes one pass over both, triages every item on the same three axes, and acts on each in the system it came from.
+
+**A GitLab merge request is a third source, on the same footing.** Point the skill at an MR URL and it gathers that MR's discussions instead of a PR's review threads. Everything downstream is unchanged: same triage table, same gates, same reply-and-resolve. What it cannot do there is fix anything, for the reason step 1's mode table already gives for any target outside this checkout.
 
 **Two gates, and they are the shape of the skill.** The triage table in step 4 is the approval for every reply and resolve. The push confirmation in step 6 is separate, because pushing is governed by a standing rule of its own. Steps 1 to 3 are read-only. Nothing before step 5 changes a file, and nothing before step 7 leaves this machine.
 
@@ -22,11 +24,31 @@ This skill makes one pass over both, triages every item on the same three axes, 
 /triage-feedback --github     # one source only
 /triage-feedback --vercel
 /triage-feedback --repo marigold-ui/insights 116   # a PR in another repo
+
+/triage-feedback https://git.reservix.io/core/main/-/merge_requests/32140
+/triage-feedback --gitlab core/main 32140          # the same target, short form
 ```
 
 ## Workflow
 
-### 1. Resolve the repo, the target, the sources and the mode
+### 1. Resolve the platform, the repo, the target, the sources and the mode
+
+**Platform first, because it decides every command below.**
+
+| Target | Platform |
+| --- | --- |
+| nothing, or a bare number | GitHub, the current branch's PR |
+| `--repo <owner>/<name> [<number>]` | GitHub |
+| `https://<host>/<project path>/-/merge_requests/<iid>` | GitLab |
+| `--gitlab <project path> <iid>` | GitLab |
+
+`--repo` is GitHub only, and deliberately so. A GitLab project path is shaped exactly like `owner/name`, so there is nothing in `core/main` to tell the two apart. Naming the platform is the user's job, by pasting a URL or passing `--gitlab`.
+
+From an MR URL the project path is everything between the host and `/-/merge_requests/`, which is what makes nested subgroups work (`core/main`, `group/subgroup/project`), and the trailing segment is the iid. URL-encode the path for every API call: `core%2Fmain`. Written `<enc>` below.
+
+**Keep the host too, and pass it on every call as `--hostname`.** Nothing in this skill is bound to one GitLab server any more than it is bound to one project. Without the flag, `glab` falls back to the default in `~/.config/glab-cli/config.yml`, which means a pasted `gitlab.com` URL would quietly be answered by whichever server that config names. The short form carries no host, so there the fallback is the answer: say which host it resolved to on step 4's line rather than leaving it implied.
+
+**GitHub target.**
 
 ```bash
 gh api user -q .login
@@ -41,7 +63,34 @@ Stop if the PR is merged or closed. Resolving threads on a landed PR is noise, a
 
 The repo argument is **positional** on `gh repo view` and a **flag** on `gh pr view`. There is no `--repo` flag on the former, and `GH_REPO` does not override it either: it reports the remote regardless, so it is not a second way in. Verified on `gh 2.92.0`. Resolve once, in this step, and pass the result explicitly everywhere after it.
 
-**Sources.** Both by default. `--github` runs the GitHub half alone, `--vercel` the Vercel half alone, and passing both is the same as passing neither. A source that is switched off is not gathered in step 2 and contributes no rows. Step 4 names which sources ran, so an empty table is never mistaken for a PR with no feedback.
+**GitLab target.** The GitLab half runs through the `glab` Docker wrapper in the `rx-baseline` plugin. Load that skill once, here, and use the absolute `glab.sh` path it gives you for every call below, written `<glab>`:
+
+```
+Skill(rx-baseline:gitlab)
+```
+
+**Never hardcode that path.** The plugin cache is version-pinned (`.../rx-baseline/<version>/skills/gitlab/scripts/glab.sh`) with no stable alias, so a literal path works until the next rx-baseline release and then quietly stops existing.
+
+If the skill is not available, **stop**, and say what to run:
+
+> This needs the GitLab wrapper from rx-baseline: `claude plugin install rx-baseline@rx-ai-suite`.
+
+There is no degraded mode here. `review-pr` can skip its Vercel step because that step is an extra, whereas on a GitLab target the wrapper is the only source there is. A skill in `.claude/skills/` has no `dependencies` field to declare that with, so the check has to be explicit and it has to be early.
+
+```bash
+<glab> api "user" --hostname <host>
+<glab> api "projects/<enc>/merge_requests/<iid>" --hostname <host>   # author, state, diff_refs, web_url, source_branch
+```
+
+The first call doubles as the preflight. The wrapper refuses to start without Docker and refuses without glab credentials, in both cases with the remedy in the error text. Pass that text on verbatim and stop, rather than continuing into a gather that cannot work.
+
+Stop if the MR is merged or closed, for the same reason a landed PR stops.
+
+Record `diff_refs.head_sha`. It is this side's `headRefOid`: every code read in step 3 uses it.
+
+**Sources.** On a GitLab target there is exactly one: previews build from the GitHub repo, so an MR has no toolbar threads, and `--github` or `--vercel` alongside `--gitlab` is a contradiction rather than a filter. Say so in one line and stop.
+
+On a GitHub target, both by default. `--github` runs the GitHub half alone, `--vercel` the Vercel half alone, and passing both is the same as passing neither. A source that is switched off is not gathered in step 2 and contributes no rows. Step 4 names which sources ran, so an empty table is never mistaken for a PR with no feedback.
 
 **Mode**, because it decides which half of this skill runs:
 
@@ -52,10 +101,13 @@ The repo argument is **positional** on `gh repo view` and a **flag** on `gh pr v
 | PR author is someone else | **respond-only** | Steps 1 to 4, then 7 and 8. **Skips 5 and 6 entirely** |
 | No PR for the branch | **author** | The GitHub source is absent, which is not an error. Gather Vercel only and say so |
 | PR is in a repo other than the checkout | **author, no apply** or **respond-only**, by author | The worktree is a different repository, so no fix can land there. Replies and resolves still work |
+| Target is a GitLab MR | **author, no apply** or **respond-only**, by author | The same rule seen from the other side. This skill loads only in the marigold checkout, so an MR is always a different repository |
 
 Mode is about who owns the branch, not about who opened a PR. That is why a branch with no PR is still author mode: previews build per branch, so toolbar feedback can arrive before a PR exists.
 
 `--repo` pointing elsewhere is that same constraint from the other side. The feedback is reachable, the code is not, so the pass is a reply pass whatever the authorship says. Never offer to fix something in a repository you are not standing in.
+
+A GitLab target is that constraint with no exception at all. There is no arrangement in which this skill is standing in the MR's repository, so the GitLab half is a reply pass by construction rather than by circumstance.
 
 The skill does not check the branch out itself. Steps 1 to 3 are read-only, and swapping someone's worktree under them is the largest side effect in the whole pass. Asking keeps that invariant true, which is why no checkout command appears in `allowed-tools`.
 
@@ -121,6 +173,21 @@ A toolbar thread's branch name is our git branch name, which is what makes the j
 
 Each thread carries context worth keeping: `webUrl` for the table, `context.href` for the exact preview page, `context.pageTitle`, a CSS `selector`, a React component tree, and often screenshot attachments. Carry all of it into the triage row. The component tree in particular usually identifies the file faster than grepping.
 
+#### GitLab
+
+The only source on a GitLab target, and skipped entirely on a GitHub one.
+
+```bash
+<glab> api "projects/<enc>/merge_requests/<iid>/discussions?per_page=100" --hostname <host>
+```
+
+- **Skip discussions whose notes carry `resolved: true`.** Same rule, same reason, as a resolved review thread. Read that flag literally: an unresolvable note carries `resolved: null`, not `false`, and `null` is not "still open, deal with it" so much as "this was never a thing that closes".
+- **`individual_note: true` is a standalone comment rather than a thread.** It is this side's equivalent of a review body with no inline comment attached, so keep it: that is where the summary objections land.
+- **`resolvable` is the flag that decides whether a discussion can be closed, and the note type does not predict it.** A thread is resolvable whether or not it is anchored to a diff, `DiffNote` and `DiscussionNote` alike. A plain comment is not. Carry the flag into the triage row: step 7 needs it before step 4 promises anyone a resolve.
+- **Record who spoke last**, from the final entry in `notes[]`. It feeds the Turn column unchanged.
+- **`position` is the diff anchor** on a `DiffNote`: `new_path`, `new_line` and `head_sha`. Keep `head_sha`, step 3 reads staleness off it.
+- **Read the cap back.** GitLab pages at 20 by default, which is why `per_page=100` is written out. If exactly 100 discussions come back, fetch `page=2` before triaging. A table that silently drops the 101st thread looks complete and is not, on either platform.
+
 ### 3. Triage
 
 Every item gets all five columns. No item is skipped, including ones you intend to do nothing about.
@@ -148,9 +215,20 @@ gh api -H "Accept: application/vnd.github.raw" \
 
 **Send the raw Accept header.** Without it the contents endpoint returns a JSON envelope with the source base64-encoded in `.content`, which is not something to read code from. Verified on `gh 2.92.0`.
 
+On a GitLab target the same two reads, through the API for the same reason: the repository is not checked out.
+
+```bash
+<glab> api "projects/<enc>/merge_requests/<iid>/changes" --hostname <host>
+<glab> api "projects/<enc>/repository/files/<enc path>/raw?ref=<head_sha>" --hostname <host>
+```
+
+Every path segment is URL-encoded here, the file path included: `src/main/App.tsx` becomes `src%2Fmain%2FApp.tsx`.
+
 Quote any URL containing `?`. Unquoted, zsh treats it as a glob and fails with `no matches found` before `gh` ever runs.
 
 A comment is `stale` when the code it describes has since changed, and `incorrect` when the code is as described but the reader was wrong about it. Those need different replies, so do not collapse them.
+
+**GitLab has no `isOutdated`.** The nearest thing is a diff note's `position.head_sha` against the MR's current `diff_refs.head_sha`. A mismatch says the diff moved under the comment at some point, which is a reason to go and read the code rather than a verdict on its own. Never set Validity `stale` from the SHAs alone: unlike `isOutdated`, this cannot tell whether what moved was the lines the comment is about.
 
 #### `unassessed`, and when it is the only honest answer
 
@@ -174,6 +252,8 @@ By default `push back` and `needs-human` keep the thread open, and `apply` resol
 
 `resolve` needs the item to be both acted on *and* finished. Anything else keeps the thread open, and step 8 reports it as still waiting.
 
+**A GitLab discussion with `resolvable: false` takes `keep open` whatever you would have judged.** It has no resolved state to move, in the API or in the UI. Mark the row as not resolvable so step 4 does not promise a resolve that cannot happen. Do not infer this from the note type: read `resolvable`.
+
 #### Correlation
 
 Correlate across sources but do not merge. The same problem raised in both a review thread and a preview comment is two rows, because each needs its own reply and its own resolve. Note the correlation in the table so the person can see it is one issue.
@@ -191,9 +271,9 @@ Render the table as text and **end the turn**.
 | 2 | Vercel | /components/…/provider | @osama | scroll thumb only moves per category | unassessed | question | needs-human | keep open | yours |
 ```
 
-State the mode in one line above the table, so it is never ambiguous which half of the skill is about to run. If step 2 hit a cap, say on the same line that the gather was partial and which source it truncated.
+State the platform and the mode in one line above the table, so it is never ambiguous which half of the skill is about to run, nor which host it is about to post to. If step 2 hit a cap, say on the same line that the gather was partial and which source it truncated.
 
-Below the table, list every `needs-human` row again in full with its link (`webUrl` for Vercel, the comment `url` for GitHub), because those are the rows that actually need the person.
+Below the table, list every `needs-human` row again in full with its link, because those are the rows that actually need the person: `webUrl` for Vercel, the comment `url` for GitHub, and the MR's `web_url` with `#note_<first note id>` appended for GitLab, which has no per-note url of its own.
 
 Then state plainly what the act phase will do, in the mode's own terms:
 
@@ -210,7 +290,7 @@ Approval here covers the replies and the resolves. It does not cover the push, w
 
 ### 5. Apply — author mode only
 
-**Skip this step entirely in respond-only mode.** Go to step 7. There is nothing here in author-no-apply either, because the mode table in step 1 turns every `apply` row into `needs-human`.
+**Skip this step entirely in respond-only mode.** Go to step 7. There is nothing here in author-no-apply either, because the mode table in step 1 turns every `apply` row into `needs-human`. A GitLab target is always one of those two, so this step never runs there.
 
 Only rows marked `apply`. Work them smallest-blast-radius first so a later failure does not strand a half-finished larger change.
 
@@ -231,7 +311,7 @@ Commit, in the repo's own commit convention. Do not push.
 
 ### 6. Confirm the push — author mode only
 
-**Skip this step entirely in respond-only mode.** There is nothing to push.
+**Skip this step entirely in respond-only mode.** There is nothing to push. A GitLab target never reaches this step either, for the same reason it never reaches step 5.
 
 The second gate. Render what is about to leave the machine and **end the turn**:
 
@@ -287,6 +367,36 @@ Resolve exactly the rows marked `Thread: resolve`. Everything else stays open, i
 
 **In respond-only mode, resolve only threads you opened.** Closing someone else's thread decides on their behalf that they are satisfied.
 
+#### GitLab
+
+Same rule as GitHub: write the body to a file, never build it as an inline shell string.
+
+```bash
+cat > .triage-reply.md <<'EOF'
+The alignment is deliberate, see the comment on line 40.
+EOF
+
+<glab> api "projects/<enc>/merge_requests/<iid>/discussions/<discussion id>/notes" \
+  --hostname <host> --method POST -F body=@.triage-reply.md
+
+rm .triage-reply.md
+```
+
+**The body file has to live inside this checkout.** The wrapper mounts `git rev-parse --show-toplevel` at `/app` and works from there, so a path under `/tmp` does not exist as far as the container is concerned. Write it to the repo root, reference it relatively, delete it after. `.triage-reply.md` is gitignored for exactly this.
+
+**`-F` reads the file, `-f` does not**, the same split `gh api` has and the same failure: `-f body=@.triage-reply.md` sends the literal string and exits 0. See the table in this repo's `CLAUDE.md`.
+
+Then resolve, for discussions the gather marked `resolvable` only:
+
+```bash
+<glab> api "projects/<enc>/merge_requests/<iid>/discussions/<discussion id>" \
+  --hostname <host> --method PUT -f resolved=true
+```
+
+`-f` is the right flag on that one: `resolved` is a literal value rather than a file.
+
+A non-resolvable discussion gets its reply and nothing else. Report it in step 8 rather than attempting the call, so nobody reads the summary as "closed". The respond-only rule above holds here too: resolve only threads you opened.
+
 #### Vercel
 
 ```
@@ -307,6 +417,7 @@ Report, and stop:
 - every `needs-human` row still open, with its link
 - every `push back` row, and what you said
 - every `apply` row left `Thread: keep open`, and which half of the ask is still outstanding
+- every GitLab discussion that was replied to but could not be resolved, so "still open" is never read as an oversight
 - every `Turn: theirs` row, as what the PR is waiting on
 
 Then stop. Acting on the `needs-human` rows is the next thing the user asks for, not something this skill continues into.
@@ -318,6 +429,10 @@ Then stop. Acting on the `needs-human` rows is the next thing the user asks for,
 - **`list_toolbar_threads` defaults to unresolved**, which is what you want. Passing `status: resolved` is only useful when hunting for something already closed.
 - **Toolbar threads include localhost sessions** (`isLocalhost: true`). Those came from someone's dev server, not the preview, and are usually noise on a PR pass.
 - **A Vercel thread has no notion of "outdated".** Unlike a GitHub review thread, nothing marks it stale when the code moves, so staleness on that side always has to be read from the code.
+- **`glab` runs from this checkout, which is not a GitLab repository.** The wrapper mounts whatever `git rev-parse --show-toplevel` returns, so inside the container the working directory is marigold. There is no repo context to lean on, so every call needs an explicit `projects/<enc>/…` path and an explicit `--hostname`. Without the flag `glab` documents a fallback to `gitlab.com`, and in practice takes the default from `~/.config/glab-cli/config.yml` instead, which is a difference you do not want to discover by posting somewhere unintended.
+- **A host has to be authenticated before it answers.** `--hostname` pointing at a server with no entry in `~/.config/glab-cli/config.yml` fails with a bare `ERROR`. Read that as "not logged in there", not as a bad project path.
+- **URL-encode every GitLab path segment**, project paths and file paths alike. A raw slash ends the segment, and the call 404s rather than erroring usefully.
+- **A GitLab MR has no Vercel side.** Previews build from the GitHub repo, so a one-source table on an MR is complete rather than truncated, and step 4 should not hedge about it.
 - **`gh api graphql` needs the repo owner and name explicitly.** There is no `{owner}/{repo}` placeholder expansion in a GraphQL query the way there is in a REST path, and no `--repo` flag either. That is why step 1 keeps the owner and the name as two separate values rather than one `owner/name` string.
 
 ## Edge cases
@@ -329,5 +444,7 @@ Then stop. Acting on the `needs-human` rows is the next thing the user asks for,
 **A thread's fix belongs in another PR.** Mark it `push back`, reply saying where it belongs, and leave it unresolved. Do not silently widen this PR's scope.
 
 **Every row is `Turn: theirs`.** You are not blocked, they are. Report what the PR is waiting on and post nothing.
+
+**A GitLab discussion is not resolvable.** Normal rather than an error: a plain comment (`individual_note: true`) has no resolved state anywhere, API or UI. Reply, leave it open, and say so in the summary. An MR where every row is like that posts replies and closes nothing, which is the correct outcome and not a failed pass.
 
 **The branch has no PR.** Author mode with the GitHub source absent, per step 1's mode table. Vercel threads may still exist, since previews build per branch. Triage them, and say there is no GitHub side rather than treating it as an error.

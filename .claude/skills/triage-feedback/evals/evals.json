@@ -80,6 +80,55 @@
         "The response says what each thread left open is still waiting on",
         "Rows whose Turn is theirs are reported as what the PR waits on rather than replied to again"
       ]
+    },
+    {
+      "id": 7,
+      "prompt": "/triage-feedback https://git.reservix.io/core/main/-/merge_requests/36307",
+      "expected_output": "A GitLab MR URL resolves the platform before anything else: project path `core/main` (encoded `core%2Fmain`), iid 36307. The MR is open and authored by someone else, so the mode is respond-only. It is also a different repository from the checkout, so no fix can land there under any authorship, and steps 5 and 6 never run.\n\nThe gather goes through the rx-baseline wrapper, not a bare `glab`. At the time of writing the MR carries 9 discussions, 3 of them already resolved, so the table should hold 6 rows and say the GitLab source ran alone.",
+      "files": [],
+      "expectations": [
+        "The response identifies the target as a GitLab MR and names the project and iid separately",
+        "The mode is respond-only, and the response does not state or imply that it will apply fixes",
+        "No file in the repository was edited, and no commit or push was made",
+        "Discussions already carrying resolved: true were skipped rather than triaged",
+        "The glab calls go through the path supplied by the rx-baseline gitlab skill, not a bare `glab` and not a hardcoded version-pinned path",
+        "The triage table is rendered before any reply is posted or discussion resolved",
+        "The platform and the mode are both named on the line above the table",
+        "No Vercel source was gathered, and the single-source table is not hedged as truncated"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "/triage-feedback --gitlab core/main 36586",
+      "expected_output": "The short form resolves to the same target shape as a URL. MR 36586 is merged, and a merged MR stays merged, so this is a durable target rather than a sentence describing one.\n\nStep 1 stops on a merged or closed MR, before any gather. Resolving threads on a landed MR is noise, and on this platform there is not even a fix that could follow.",
+      "files": [],
+      "expectations": [
+        "The response stops and says the MR is merged",
+        "No discussion was gathered, no reply posted and no discussion resolved",
+        "The stop happens in step 1, not after a triage table was rendered"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "/triage-feedback --gitlab core/main 36307 --vercel",
+      "expected_output": "A GitLab target has exactly one source. Previews build from the GitHub repo, so an MR has no toolbar threads, and `--vercel` alongside `--gitlab` is a contradiction rather than a filter.\n\nThe skill says so in one line and stops. It does not silently drop the flag and run the GitLab half anyway, because a user who asked for Vercel feedback and got a GitLab-only table has been answered a question they did not ask.",
+      "files": [],
+      "expectations": [
+        "The response refuses the flag combination and explains why in one line",
+        "No gather was run on either source",
+        "The response does not quietly ignore --vercel and proceed"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "/triage-feedback https://git.reservix.io/core/main/-/merge_requests/36307 (with Docker stopped)",
+      "expected_output": "The wrapper refuses to start without Docker and says so: `Error: Docker is not running or not accessible.` That first `glab api user` call is the preflight, so the failure lands before any gather.\n\nThe skill passes the error text on verbatim and stops. There is no degraded mode on this platform: the wrapper is the only source a GitLab target has, so continuing would produce an empty table that looks like an MR with no feedback.",
+      "files": [],
+      "expectations": [
+        "The response stops and reports the wrapper's own error text, including the remedy",
+        "No triage table was rendered, and no empty table was presented as a finished pass",
+        "The response does not fall back to a bare `glab` binary or to any other transport"
+      ]
     }
   ]
 }
