@@ -4,6 +4,8 @@
 {
   "extends": "@marigold/tsconfig/react",
   "compilerOptions": {
+    "noEmit": true,
+    "resolveJsonModule": true,
     "declaration": false,
     "declarationMap": false,
     "jsx": "preserve",
