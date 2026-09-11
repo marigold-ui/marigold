@@ -39,24 +39,11 @@ A row is one item, not a record split into fields. A `<ListView>` gives you a te
 
 Rows can be selected, though the selection stays in your own state rather than submitting with a form. [ListView vs. SelectList](#listview-vs-selectlist) below covers when that difference decides which one you want.
 
-### Row text
+### Content and layout
 
-Author a row's primary text with `<TextValue>`, or pass a bare string. Secondary text goes in a `<Description>`, one per row.
+A row carries its primary text in a [`<TextValue>`](/components/content/text-value), an optional [`<Description>`](/components/content/description) below it, and trailing controls. A bare string is shorthand for the text value.
 
-To emphasise part of a row's text, nest `<Text as="span">` inside `<TextValue>` or `<Description>` rather than adding a `<Text>` of its own:
-
-```tsx
-<ListView.Item id="deploy" textValue="Deploy succeeded">
-  <TextValue>
-    Deploy{' '}
-    <Text as="span" weight="bold">
-      succeeded
-    </Text>
-  </TextValue>
-</ListView.Item>
-```
-
-The same rule covers everything else a row carries. A row has a cell for its text, a cell for its trailing control, and, once the list is selectable, a cell for its selection indicator. A child that claims none of them, like a `<Badge>`, gets placed wherever the grid has room. On its own that means a new full-width line under the description, where it reads as part of the row's text. In a selectable list it is worse: the badge lands in the indicator column and widens it, so that row's text no longer lines up with any other row's. Nest it in the text it belongs to instead:
+Anything else the row shows, like a `<Badge>` or a status pill, belongs inside the text it describes rather than beside it. Left as a sibling it breaks the list's alignment: on its own it drops onto a line of its own under the description, and in a selectable list it pushes that row's text out of line with every other row.
 
 ```tsx
 <ListView.Item id="gasometer" textValue="Gasometer">
@@ -71,7 +58,9 @@ The same rule covers everything else a row carries. A row has a cell for its tex
 
 Keep the action users reach for most often visible as an icon button and group the rest behind an `<ActionMenu>`. More than two visible buttons per row turns the list into a wall of controls that competes with the text people are scanning.
 
-Pick a glyph that says what happens to the row, like `Archive`, `Check`, or `BellOff`. An `X` means "close this" everywhere else in Marigold, and a row's action doesn't close anything. Rare or irreversible commands like deleting belong in the menu, as an `<ActionMenu.Item variant="destructive">`, not behind a one-click icon button.
+Pick an icon that says what happens to the row, like `Archive`, `Check`, or `BellOff`. An `X` means "close this" everywhere else in Marigold, and a row's action doesn't close anything.
+
+Rare or irreversible commands like deleting belong in the menu, as an `<ActionMenu.Item variant="destructive">`, rather than behind a one-click icon button.
 
 <ComponentDemo name="listview-notifications" />
 
@@ -79,11 +68,11 @@ When no single action stands out, or the available actions differ from row to ro
 
 <ComponentDemo name="listview-resource-menu" />
 
-A row has a single cell for trailing controls, so wrap two or more in a `<ButtonGroup>`. Left loose, they claim the same cell and stack. That cell takes Button-family controls only: a `<Badge>` or a status pill belongs in the row's text, as shown under [Row text](#row-text) above.
+Wrap two or more trailing controls in a `<ButtonGroup>`, or they stack on top of each other. Only buttons and menus belong there. A `<Badge>` or a status pill goes in the row's text, as shown under [Content and layout](#content-and-layout) above.
 
 ### Selection
 
-Make rows selectable when the user's next step needs a row they haven't acted on yet. Two situations earn it:
+Make rows selectable when marking a row and acting on it are two separate steps. Two situations earn it:
 
 - **Staging one choice.** The list is where the user picks a record, and something else commits it, like a venue chosen in a dialog and applied with its confirm button.
 - **Gathering rows for one operation.** The user marks several records, then runs one action across all of them, like archiving six files at once, with an [action bar](#bulk-actions) to run it.
@@ -100,26 +89,23 @@ Single mode draws a radio circle, but a `<ListView>` is not a [`<Radio.Group>`](
   <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> selects every row of a multi-select list and reports the string `'all'` rather than a `Set`, whether or not the list shows a select-all control. Reading `.size` straight off it returns `undefined`, which surfaces as a wrong number in a confirmation rather than an error. Resolve the selection to concrete keys in one place before you count or act on it, the way the Bulk Actions pattern [does for a `<Table>`](/patterns/user-input/bulk-actions#resolve-the-selection-to-records-once).
 </Callout>
 
-A press adds or removes a single row and never replaces the whole selection. <kbd>Shift</kbd>+click extends from the last marked row to the pressed one, and <kbd>Shift</kbd>+<kbd>↑</kbd>/<kbd>↓</kbd> does the same from the keyboard. Both behave this way in a [`<Table>`](/components/collection/table) too.
-
 #### Selecting and opening a row
 
-A selectable list can still open its rows. Set `onAction` alongside `selectionMode` and one rule governs the press: **it opens while nothing is selected, and selects once anything is.**
-
-- **Nothing selected:** pressing a row opens the item, and <kbd>Enter</kbd> does the same. The checkbox and <kbd>Space</kbd> select without opening anything.
-- **Something selected:** pressing a row marks it instead, and nothing opens. <kbd>Space</kbd> marks the focused row, and <kbd>Enter</kbd> does nothing at all.
-
-This is React Aria's `toggle` behaviour, shared with [`<Table>`](/components/collection/table) and specified in its [selection guide](https://react-aria.adobe.com/selection). It is not a Marigold choice, and no prop changes it.
+One list can serve both browsing and selecting, so a user opens a file to check it and then marks several to archive without switching modes. Set `onAction` alongside `selectionMode` and one rule governs the press: **it opens while nothing is selected, and selects once anything is.**
 
 <ComponentDemo name="listview-row-activation" />
 
-One list serves browsing and selecting this way, without a mode switch of your own to build. The catch is the second state: while anything is selected there is no way to open a row, and a keyboard user who presses <kbd>Enter</kbd> gets no response of any kind. <kbd>Escape</kbd> clears the selection and opening works again, so keep a clear button within reach rather than leaving that as the only way out. `disallowEmptySelection` blocks <kbd>Escape</kbd> as well, which strands a keyboard user in this state, so leave it off on a list that sets `onAction`.
+Keep a clear button in reach on a list like this. While anything is selected there is no way to open a row, so a user who wants to go back to browsing needs somewhere obvious to undo the selection.
+
+<Callout type="warning" title="Enter does nothing while a selection exists">
+  The keyboard follows the same rule as the press, with one gap. <kbd>Space</kbd> always marks the focused row, but <kbd>Enter</kbd> opens only while the selection is empty and does nothing at all once it is not, so a keyboard user gets no response and no hint why. <kbd>Escape</kbd> clears the selection and restores opening, which is why `disallowEmptySelection` should stay off on a list that sets `onAction`: it blocks <kbd>Escape</kbd> and strands them there. This is React Aria's `toggle` behaviour, shared with [`<Table>`](/components/collection/table) and not changeable by a prop.
+</Callout>
 
 #### Bulk actions
 
 Pair a multi-select list with an [`<ActionBar>`](/components/collection/actionbar), rendered as a sibling inside the list's scroll container. The bar is sticky, so it pins itself to the bottom of that container and appears once something is selected.
 
-Drive it with [`useActionBar`](/components/collection/actionbar#useactionbar), which holds the selection, fills in the count and the clear button, and measures the bar. You need that measurement: a `<ListView>` does not know the bar is there, so without it the bar covers the last rows and keyboard navigation parks a focused row underneath it. Reserve the measured height on the content inside the scroll container rather than on the scroller itself, which is what a [`<Table>`](/components/collection/table) does for you. A scroll container's own padding shrinks the rectangle its sticky children pin to, so padding the scroller lifts the bar off the bottom by the height you just reserved.
+Drive it with [`useActionBar`](/components/collection/actionbar#useactionbar), which holds the selection, fills in the count and the clear button, and measures the bar. You need that measurement: a `<ListView>` does not know the bar is there, so without it the bar covers the last rows and keyboard navigation parks a focused row underneath it. A [`<Table>`](/components/collection/table) reserves that room for you, and the demo below shows where it goes in a list.
 
 <ComponentDemo name="listview-bulk-actions" />
 
@@ -168,7 +154,7 @@ Underneath, one is a form field and the other a collection view. A `<SelectList>
 - Give the list an `aria-label`, or `aria-labelledby` when a heading nearby already names it.
 - Set `textValue` on a row whose text isn't a plain string, screen readers use it as the row's accessible name.
 
-In a selectable list, moving focus never changes the selection. <kbd>Space</kbd> selects the focused row, <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> selects every row in multiple mode, and <kbd>Escape</kbd> clears the whole selection, so a user who started selecting by accident has a way out. The row itself announces whether it is selected, which is why the radio circle in single mode stays out of the accessibility tree: it says nothing a screen reader has not already heard.
+In a selectable list, moving focus never changes the selection. <kbd>Space</kbd> selects the focused row, <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> selects every row in multiple mode, and <kbd>Escape</kbd> clears the whole selection, so a user who started selecting by accident has a way out. A press adds or removes a single row and never replaces the selection, while <kbd>Shift</kbd>+click and <kbd>Shift</kbd>+<kbd>↑</kbd>/<kbd>↓</kbd> extend a range from the last marked row. A [`<Table>`](/components/collection/table) behaves the same way. The row itself announces whether it is selected, which is why the radio circle in single mode stays out of the accessibility tree: it says nothing a screen reader has not already heard.
 
 `<Title>` normally renders a real heading. Inside a row it renders as a `<span>` instead, so a heading-like row doesn't add an entry to the page's heading outline.
 
