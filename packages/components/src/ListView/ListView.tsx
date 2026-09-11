@@ -2,23 +2,18 @@ import type { ReactNode, Ref } from 'react';
 import { useMemo } from 'react';
 import type RAC from 'react-aria-components';
 import { GridList as RACGridList } from 'react-aria-components/GridList';
+import type { SelectionMode } from '@react-types/shared';
 import { useClassNames } from '@marigold/system';
 import { ListViewContext } from './Context';
 import { ListViewItem } from './ListViewItem';
 
-// ListView is deliberately NOT a form field: no FieldBase, no hidden input,
-// no name/form/validate, no selection. It's a non-form list of rows the user
-// operates in place (toggle / dismiss / open a row menu), staying on the
-// page. For "pick one/some from a set" use SelectList/Select/ListBox instead.
+// A collection view, not a form field: selection is view state the consumer
+// reads and commits. Never name/form/validate — that is SelectList's job.
 type RemovedProps =
   | 'className'
   | 'style'
   | 'selectionMode'
   | 'selectionBehavior'
-  | 'selectedKeys'
-  | 'defaultSelectedKeys'
-  | 'onSelectionChange'
-  | 'disallowEmptySelection'
   | 'dragAndDropHooks'
   | 'renderEmptyState'
   | 'orientation'
@@ -42,6 +37,13 @@ export interface ListViewProps extends Omit<
    * Content to render when the list is empty.
    */
   emptyState?: ReactNode;
+  /**
+   * Whether rows can be selected, and how many at a time. Selection is view
+   * state: read it with `onSelectionChange` and commit it yourself. For a
+   * selection that submits with a form, use `SelectList` instead.
+   * @default 'none'
+   */
+  selectionMode?: SelectionMode;
   ref?: Ref<HTMLDivElement>;
 }
 
@@ -54,13 +56,22 @@ const ListViewBase = ({
   variant,
   size,
   emptyState,
+  selectionMode = 'none',
   children,
   ref,
   ...rest
 }: ListViewProps) => {
   const classNames = useClassNames({ component: 'ListView', variant, size });
 
-  const contextValue = useMemo(() => ({ classNames }), [classNames]);
+  // `useClassNames` returns a fresh object, so memoise on the slot strings.
+  const { list, item, label, description, title, indicator, actions } =
+    classNames;
+  const contextValue = useMemo(
+    () => ({
+      classNames: { list, item, label, description, title, indicator, actions },
+    }),
+    [list, item, label, description, title, indicator, actions]
+  );
 
   return (
     <ListViewContext value={contextValue}>
@@ -70,7 +81,8 @@ const ListViewBase = ({
           renderEmptyState: () => emptyState,
         })}
         ref={ref}
-        selectionMode="none"
+        selectionMode={selectionMode}
+        selectionBehavior="toggle"
         className={classNames.list}
       >
         {children}

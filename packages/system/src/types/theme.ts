@@ -159,7 +159,13 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     ListView?: Record<
-      'list' | 'item' | 'label' | 'description' | 'title' | 'actions',
+      | 'list'
+      | 'item'
+      | 'label'
+      | 'description'
+      | 'title'
+      | 'indicator'
+      | 'actions',
       ComponentStyleFunction<string, string>
     >;
     Menu?: Record<

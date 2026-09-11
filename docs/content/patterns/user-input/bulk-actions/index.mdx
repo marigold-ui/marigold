@@ -77,6 +77,8 @@ Selection begins the flow, and it must be visible and cheap to change. Use a [`<
 
 <ComponentDemo name="bulk-actions-selection" />
 
+The pattern is written around a `<Table>` because select-all needs a header checkbox, and a table is the collection that has a header to put one in. A [`<ListView>`](/components/collection/listview) carries everything else: set `selectionMode="multiple"` and render the `<ActionBar>` as a sibling, passing `selectedItemCount` and `onClearSelection` yourself. Reach for it when users pick a handful of rows by hand, and for a `<Table>` when selecting every visible record is part of the job.
+
 ### Scope
 
 The selection is bounded to what the user can currently see. The select-all checkbox selects the visible rows, not the entire result set behind pagination, and there is no banner offering to extend the selection across all pages. When pagination, a filter, or a search query changes the visible set, clear the selection instead of carrying invisible rows along.
