@@ -56,6 +56,7 @@ The CLI fetches from the Marigold docs site, caches for 24h, and works offline (
 - Use the `useClassNames` hook from `@marigold/system` for theming
 - Rename react-aria props: `isDisabled` → `disabled`, `isPending` → `loading`
 - Export components with named exports
+- **Barrel exports**: an export is internal when it exists for composition by other Marigold packages rather than for consumers. Documented exports (own page, or an API on a parent page) are public; consumer-facing exports that still lack docs stay public with a docs ticket (DST-1758). Internal exports get a bare `/** @internal */` on the line above, one export per tagged statement. The Insights scanner reads the tag from the barrel source, so do not add it to component files (see `.memory/CONTEXT.md` → Internal export)
 - Use React Context for component composition (see `AccordionContext` patterns)
 
 ## Testing
@@ -71,10 +72,40 @@ The CLI fetches from the Marigold docs site, caches for 24h, and works offline (
 
 - **Typecheck**: Run `pnpm typecheck:only` after code changes
 - **Lint**: Run `pnpm lint` to check code style
+- **Prose**: Run `pnpm lint:prose` after editing docs prose (see [Prose Style](#prose-style))
 - **Format**: Run `pnpm format` before committing
 - **Branch from**: `main` (use GitHub Flow)
 - **Changesets**: Use `pnpm changeset` for version management
 - **Storybook**: Run `pnpm sb` to preview components locally
+
+## Prose Style
+
+Documentation prose is linted. `pnpm lint:prose` runs Vale over the docs site, the changesets
+and the published READMEs, and the Prose CI check runs the same rules. The binary is pinned and downloaded by
+`scripts/vale.mjs` on first use, and pinned there so Renovate can see it.
+
+- **No em dashes.** Rephrase with a comma, a colon, or a second sentence. In a
+  `- **Term** — definition` list item, write `- **Term**: definition`, which is already the
+  dominant form in these docs.
+- **No semicolons in prose.** Use a period or a comma. Semicolons in code are untouched:
+  fenced blocks, code spans and MDX `import` statements are all outside the linted scope.
+- **No en dash asides.** German uses a spaced en dash where English uses an em dash, so this
+  is an easy slip to make. Ranges keep the en dash: `4–9`, `Jan 1 – Dec 31`.
+
+Table cells are exempt from all three. There an em dash is a legitimate "not applicable"
+marker, as in `| — (no class) |`.
+
+These rules govern prose written **for a reader**: `docs/content/**`, `.changeset/*.md`,
+published package READMEs, and the repo's top-level markdown. They do **not** govern prose
+written for an agent. `CLAUDE.md`, `.memory/**`, `.claude/**`, `docs/superpowers/**` and
+`packages/*/src/**/README.md` are deliberately out of scope, and `.claude/README.md` positively
+_requires_ an em dash in skill descriptions. Do not "fix" those files. Generated output
+(`CHANGELOG.md`, `docs/content/releases/*/release.mdx`) is out of scope too, which is why
+changesets are linted at the source instead, and so are the dated release posts under
+`docs/content/releases/blog/`, which are historical announcements rather than living docs.
+
+The rules live in `.vale/styles/Marigold/`. A rule at `error` blocks CI. A rule at `warning` is
+advisory, which is how a new rule lands until its existing violations are cleaned up.
 
 ## Monorepo Structure
 
@@ -324,7 +355,7 @@ Run with `pnpm test:unit`.
 
 ## AI Toolkit
 
-Committed skills live in `.claude/skills/`; plugins are declared in `.claude/settings.json`. See [.claude/README.md](.claude/README.md) for the conventions they follow and the extra rules for skills with side effects.
+Committed skills live in `.claude/skills/`, project hooks in `.claude/hooks/`, and plugins are declared in `.claude/settings.json`. See [.claude/README.md](.claude/README.md) for the conventions they follow, the extra rules for skills with side effects, and how to opt out of a hook.
 
 ### Scoping work: `/grill`
 
@@ -364,7 +395,7 @@ Remember: A story name might not reflect the property name correctly, so always 
 - Docs depend on `@marigold/theme-rui` - rebuild theme package for changes to be visible in docs
 - Storybook uses source folders directly (not dist) - no build needed for stories
 - Git hooks run lint-staged on commit via Husky
-- Node.js 22.x required (check `.node-version`)
+- Node.js version is pinned in `.node-version` (the pre-flight hook reports the installed one and flags a mismatch)
 - **Build before test**: Components must be built before running docs locally
 - **React 19**: This project uses React 19 patterns (newer than many examples online)
 - **Strict TypeScript**: The project enforces strict type checking

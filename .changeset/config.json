@@ -6,5 +6,6 @@
     "@changesets/changelog-git",
     { "repo": "marigold-ui/marigold" }
   ],
-  "fixed": [["@marigold/system", "@marigold/components", "@marigold/docs"]]
+  "fixed": [["@marigold/system", "@marigold/components", "@marigold/docs"]],
+  "privatePackages": { "version": true, "tag": false }
 }
