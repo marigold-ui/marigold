@@ -54,4 +54,7 @@ next-env.d.ts
 **/__screenshots__
 .vitest-attachments
 
+# Per-ticket working notes. Local scratch, like .claude/tasks/DST-1524-*.
+# This repo is public, and these hold internal planning detail.
+.claude/tasks/
 .vale/bin/
