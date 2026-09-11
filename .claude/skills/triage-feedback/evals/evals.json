@@ -52,6 +52,20 @@
         "Every row that would otherwise be an apply is marked needs-human",
         "No file in the repository was edited, and no commit or push was made"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "/triage-feedback --repo marigold-ui/insights 116",
+      "expected_output": "PRECONDITION: insights PR 116 is open and authored by someone else. If it has since merged the run stops at step 1 on the merged check, which is correct behaviour but tests a different row, so the case is inconclusive rather than failed.\n\nThe target is in a different repository from the checkout, so no fix can land there whatever the authorship says. Step 1 resolves the repo from --repo rather than the remote, and the mode table's cross-repo row applies: replies and resolves are reachable, the code is not. Every gh call carries the repo explicitly, because GH_REPO does not override gh repo view and there is no --repo flag on it.",
+      "files": [],
+      "expectations": [
+        "The repo is resolved from the --repo argument, not from the checkout's git remote",
+        "The response states that no code will change because the PR is in another repository",
+        "No file in the repository was edited, and no commit or push was made",
+        "No pnpm command was run",
+        "Every gh call that acts on the PR passes the repo explicitly rather than relying on the remote",
+        "The triage table is rendered before any reply is posted or thread resolved"
+      ]
     }
   ]
 }

@@ -1,12 +1,12 @@
 ---
 name: triage-feedback
 description: Marigold repo — Make one triage pass over all feedback on a PR, from both GitHub review threads and Vercel preview toolbar comments, then reply and resolve in whichever system each item came from. Use when the user asks to "triage feedback", "go through the review comments", "handle the PR feedback", "address the preview comments", or types `/triage-feedback`. It posts replies, resolves threads and pushes commits, so run it only on an explicit request, never proactively and never as a follow-up to unrelated work.
-allowed-tools: Bash(gh pr view *), Bash(gh pr diff *), Bash(gh api graphql *), Bash(gh api repos/*), Bash(gh api user *), Bash(git branch --show-current), Bash(git status --porcelain), Bash(git log *), Bash(git add *), Bash(git commit *), Bash(git push *), Bash(pnpm typecheck:only), Bash(pnpm build), Read, Edit, Write, Grep, Glob, mcp__plugin_vercel_vercel__list_teams, mcp__plugin_vercel_vercel__list_toolbar_threads, mcp__plugin_vercel_vercel__get_toolbar_thread, mcp__plugin_vercel_vercel__reply_to_toolbar_thread, mcp__plugin_vercel_vercel__change_toolbar_thread_resolve_status
+allowed-tools: Bash(gh pr view *), Bash(gh repo view *), Bash(gh pr diff *), Bash(gh api graphql *), Bash(gh api repos/*), Bash(gh api user *), Bash(git branch --show-current), Bash(git status --porcelain), Bash(git log *), Bash(git add *), Bash(git commit *), Bash(git push *), Bash(pnpm typecheck:only), Bash(pnpm build), Read, Edit, Write, Grep, Glob, mcp__plugin_vercel_vercel__list_teams, mcp__plugin_vercel_vercel__list_toolbar_threads, mcp__plugin_vercel_vercel__get_toolbar_thread, mcp__plugin_vercel_vercel__reply_to_toolbar_thread, mcp__plugin_vercel_vercel__change_toolbar_thread_resolve_status
 ---
 
-# Triage-Feedback Skill for Marigold Design System
+# Triage-Feedback Skill
 
-Feedback on a PR arrives in two places. GitHub review threads carry the code review, and Vercel preview toolbar comments carry everything someone noticed while clicking through the deployed docs or Storybook. Working them by hand means two tabs, two idioms for "resolved", and steps that get missed.
+Feedback on a PR arrives in two places. GitHub review threads carry the code review, and Vercel preview toolbar comments carry everything someone noticed while clicking through the deployed preview. Working them by hand means two tabs, two idioms for "resolved", and steps that get missed.
 
 This skill makes one pass over both, triages every item on the same three axes, and acts on each in the system it came from.
 
@@ -21,19 +21,25 @@ This skill makes one pass over both, triages every item on the same three axes, 
 /triage-feedback 5776         # a PR by number
 /triage-feedback --github     # one source only
 /triage-feedback --vercel
+/triage-feedback --repo marigold-ui/insights 116   # a PR in another repo
 ```
 
 ## Workflow
 
-### 1. Resolve the target, the sources and the mode
+### 1. Resolve the repo, the target, the sources and the mode
 
 ```bash
 gh api user -q .login
-gh pr view [<number>] --json number,title,author,headRefName,baseRefName,state,isDraft,headRefOid
+gh repo view [<owner>/<name>] --json nameWithOwner -q .nameWithOwner
+gh pr view [<number>] [--repo <owner>/<name>] --json number,title,author,headRefName,baseRefName,state,isDraft,headRefOid
 git branch --show-current
 ```
 
 Stop if the PR is merged or closed. Resolving threads on a landed PR is noise, and the fixes have nowhere to go. A draft is fine, proceed and say so.
+
+**Repo.** Nothing in this skill is bound to one repository. `--repo <owner>/<name>` names it explicitly, otherwise `gh repo view` reads it from the checkout's remote. Record the result: every `gh` call below takes it, and the GraphQL query in step 2 needs the owner and the name as separate values.
+
+The repo argument is **positional** on `gh repo view` and a **flag** on `gh pr view`. There is no `--repo` flag on the former, and `GH_REPO` does not override it either: it reports the remote regardless, so it is not a second way in. Verified on `gh 2.92.0`. Resolve once, in this step, and pass the result explicitly everywhere after it.
 
 **Sources.** Both by default. `--github` runs the GitHub half alone, `--vercel` the Vercel half alone, and passing both is the same as passing neither. A source that is switched off is not gathered in step 2 and contributes no rows. Step 4 names which sources ran, so an empty table is never mistaken for a PR with no feedback.
 
@@ -45,8 +51,11 @@ Stop if the PR is merged or closed. Resolving threads on a landed PR is noise, a
 | PR author is you, branch **not** checked out | **author, no apply** | Ask them to switch to it and re-run. Until then every `apply` row becomes `needs-human`. Replies do not need the code, fixes do |
 | PR author is someone else | **respond-only** | Steps 1 to 4, then 7 and 8. **Skips 5 and 6 entirely** |
 | No PR for the branch | **author** | The GitHub source is absent, which is not an error. Gather Vercel only and say so |
+| PR is in a repo other than the checkout | **author, no apply** or **respond-only**, by author | The worktree is a different repository, so no fix can land there. Replies and resolves still work |
 
 Mode is about who owns the branch, not about who opened a PR. That is why a branch with no PR is still author mode: previews build per branch, so toolbar feedback can arrive before a PR exists.
+
+`--repo` pointing elsewhere is that same constraint from the other side. The feedback is reachable, the code is not, so the pass is a reply pass whatever the authorship says. Never offer to fix something in a repository you are not standing in.
 
 The skill does not check the branch out itself. Steps 1 to 3 are read-only, and swapping someone's worktree under them is the largest side effect in the whole pass. Asking keeps that invariant true, which is why no checkout command appears in `allowed-tools`.
 
@@ -78,7 +87,7 @@ query($o:String!,$r:String!,$n:Int!){
       }
     }
   }
-}' -f o=marigold-ui -f r=marigold -F n=<number>
+}' -f o=<owner> -f r=<name> -F n=<number>
 ```
 
 - **Skip threads where `isResolved` is true.** They are done, and reopening them to say so is noise.
@@ -102,11 +111,13 @@ get_toolbar_thread                -> full messages when a thread is truncated in
 
 **Pass `limit` explicitly.** It defaults to 20, which a visual-heavy docs PR reaches, and nothing in the response says the list was cut short. If a full page comes back, page with `offset` before triaging.
 
-**Filter by `branch`, never by `projectId`.** Marigold's preview feedback lands in two Vercel projects, `marigold-docs` and `marigold-storybook`, and a project filter silently drops whichever one you did not name. Branch spans both in a single call.
+**Filter by `branch`, never by `projectId`.** One repo's preview feedback can land in several Vercel projects, and a project filter silently drops whichever one you did not name. Branch spans all of them in a single call. Marigold is the worked example: `marigold-docs` and `marigold-storybook` both build from this repo.
 
 `.vercel/project.json` is **not** a prerequisite, whatever an older ticket may say. `teamId` is the only required argument on these tools, `list_teams` supplies it, and `.vercel` is gitignored so the file can never be committed anyway.
 
-Thread branch names match our git branch names, which is what makes the join work. Older branches do not all follow the convention (`dst-1745_fix-popover`), so match the string loosely rather than by `feat/` prefix.
+Thread branch names are our git branch names, which is what makes the join work. Pass `headRefName` from step 1 **verbatim**. `branch` is an exact match, not a substring one: `DST-1665` returns zero threads where `feat/DST-1665-listview-selection` returns six. Naming is not uniform either (`dst-1745_fix-popover`, `fumadocs`, `multiselect-recipe`), so never rebuild the name from the ticket key or assume a `feat/` prefix.
+
+**An empty result is ambiguous, and the fix is not to drop the filter.** Zero threads means either no feedback or a branch string that did not match, and the two are indistinguishable. Do not settle it by listing the team unfiltered: that returns every open thread in every project and overflows a single tool result, 64 threads and roughly 244k characters when this was measured. Narrow instead, with `search` for wording you expect in the comment or `page` for the preview path. `limit: 100` is the right cap *with* a branch filter and the wrong one without.
 
 Each thread carries context worth keeping: `webUrl` for the table, `context.href` for the exact preview page, `context.pageTitle`, a CSS `selector`, a React component tree, and often screenshot attachments. Carry all of it into the triage row. The component tree in particular usually identifies the file faster than grepping.
 
@@ -128,10 +139,10 @@ The first three are the triage axes and are your judgement. Turn is thread state
 Read each item against **the PR head**, not your worktree and not the diff that provoked the comment. In respond-only mode the worktree is a different branch entirely, and even in author mode it can be ahead of what the reviewer saw.
 
 ```bash
-gh pr diff <number>                                    # what the PR actually changes
-gh pr diff <number> --name-only                        # fast check that a file exists
+gh pr diff <number> --repo <owner>/<name>              # what the PR actually changes
+gh pr diff <number> --repo <owner>/<name> --name-only  # fast check that a file exists
 gh api -H "Accept: application/vnd.github.raw" \
-  "repos/marigold-ui/marigold/contents/<path>?ref=<headRefOid>"       # one file at that commit
+  "repos/<owner>/<name>/contents/<path>?ref=<headRefOid>"    # one file at that commit
 ```
 
 **Send the raw Accept header.** Without it the contents endpoint returns a JSON envelope with the source base64-encoded in `.content`, which is not something to read code from. Verified on `gh 2.92.0`.
@@ -190,18 +201,20 @@ Approval here covers the replies and the resolves. It does not cover the push, w
 
 ### 5. Apply — author mode only
 
-**Skip this step entirely in respond-only mode.** Go to step 7.
+**Skip this step entirely in respond-only mode.** Go to step 7. There is nothing here in author-no-apply either, because the mode table in step 1 turns every `apply` row into `needs-human`.
 
 Only rows marked `apply`. Work them smallest-blast-radius first so a later failure does not strand a half-finished larger change.
+
+Then run the repo's own verification and versioning steps. Read them out of that repo's `CLAUDE.md` rather than assuming this one's: a repo that is not built with `pnpm` has neither of the commands below. In marigold they are
 
 ```bash
 pnpm typecheck:only
 pnpm build          # only if a package's public surface changed
 ```
 
-Then a changeset, if anything under `packages/`, `themes/` or `docs/` changed. Body starts with the Conventional Commits line, for example `fix(DST-1234): …`. A docs-only change still needs one (`@marigold/docs: patch`).
+followed by a changeset whenever anything under `packages/`, `themes/` or `docs/` changed, its body starting with the Conventional Commits line (`fix(DST-1234): …`). A docs-only change still needs one (`@marigold/docs: patch`).
 
-Commit. Do not push.
+Commit, in the repo's own commit convention. Do not push.
 
 ### 6. Confirm the push — author mode only
 
@@ -246,7 +259,7 @@ mutation($threadId:ID!,$body:String!){
 }'
 ```
 
-**`-F` reads the file. `-f` does not.** In `gh api`, `-f/--raw-field` sends the literal string `@/tmp/reply.md`, exits 0, and posts garbage. This is verified behaviour on `gh 2.92.0`, not a theoretical risk. See the convention in `CLAUDE.md`.
+**`-F` reads the file. `-f` does not.** In `gh api`, `-f/--raw-field` sends the literal string `@/tmp/reply.md`, exits 0, and posts garbage. This is verified behaviour on `gh 2.92.0`, not a theoretical risk. See the convention in this repo's `CLAUDE.md`.
 
 Then resolve:
 
@@ -291,11 +304,11 @@ Then stop. Acting on the `needs-human` rows is the next thing the user asks for,
 - **`list_toolbar_threads` defaults to unresolved**, which is what you want. Passing `status: resolved` is only useful when hunting for something already closed.
 - **Toolbar threads include localhost sessions** (`isLocalhost: true`). Those came from someone's dev server, not the preview, and are usually noise on a PR pass.
 - **A Vercel thread has no notion of "outdated".** Unlike a GitHub review thread, nothing marks it stale when the code moves, so staleness on that side always has to be read from the code.
-- **`gh api graphql` needs the repo owner and name explicitly.** There is no `{owner}/{repo}` placeholder expansion in a GraphQL query the way there is in a REST path.
+- **`gh api graphql` needs the repo owner and name explicitly.** There is no `{owner}/{repo}` placeholder expansion in a GraphQL query the way there is in a REST path, and no `--repo` flag either. That is why step 1 keeps the owner and the name as two separate values rather than one `owner/name` string.
 
 ## Edge cases
 
-**No feedback in either source.** Say so and stop. Do not go looking for something to fix.
+**No feedback in either source.** Say so and stop. Do not go looking for something to fix. Word the Vercel half as "no threads matched this branch" rather than "no feedback": the filter is an exact match and cannot tell an empty branch from a missed one, so claiming the stronger of the two is a claim the gather did not support.
 
 **Every row lands on `needs-human`.** Common on a visual-heavy PR, and normal in respond-only mode where the author has answered everything and is waiting on you. Still render the table, since the hand-off list is the value, and say plainly that the skill judged none of them.
 
