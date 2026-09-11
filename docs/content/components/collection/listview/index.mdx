@@ -37,7 +37,7 @@ Reach for a `<ListView>` when the user works through a collection one entry at a
 
 A row is one item, not a record split into fields. A `<ListView>` gives you a text column and a trailing control, with nothing aligned between rows, so there is no way to scan a column or sort by one. Once the user needs to compare entries against each other (a status column, a size to sort by, dates to line up), reach for a [`<Table>`](/components/collection/table).
 
-Rows can be selected, but the selection stays in your own state and never submits with a form. That is the line between a `<ListView>` and a [`<SelectList>`](/components/form/selectlist), and the [decision test](#listview-vs-selectlist) below is how you pick between them.
+Rows can be selected, though the selection stays in your own state rather than submitting with a form. [ListView vs. SelectList](#listview-vs-selectlist) below covers when that difference decides which one you want.
 
 ### Row text
 
@@ -92,9 +92,9 @@ Leave selection off otherwise, which is the default. A row the user acts on wher
 
 <ComponentDemo name="listview-selection" />
 
-Whichever mode you pick, the selection is yours to keep. Hold it in your own state, read it through `onSelectionChange`, and decide when it commits. It never reaches a surrounding `<form>`, so a choice that has to submit and validate with the rest of the form is a [`<SelectList>`](/components/form/selectlist) instead.
+Whichever mode you pick, the selection is yours to keep. Hold it in your own state, read it through `onSelectionChange`, and decide when it commits. Nothing leaves the component until you act on it.
 
-Single mode draws a radio circle, but a `<ListView>` is not a [`<Radio.Group>`](/components/form/radio). A radio group is a labelled form field for a short list of plain-text choices. Reach for it when the choice submits with a form and the rows carry no description or controls of their own.
+Single mode draws a radio circle, but a `<ListView>` is not a [`<Radio.Group>`](/components/form/radio). If the rows are plain text and the choice belongs to a form, that is a radio group.
 
 `onSelectionChange` hands you React Aria's `Selection`, which is either a `Set` of keys or the string `'all'`. <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> selects every row of a multi-select list and reports the string, so both shapes reach you even in a list that shows no select-all control. Resolve it to concrete keys in one place before you count or act on it, the way the Bulk Actions pattern [does for a `<Table>`](/patterns/user-input/bulk-actions#resolve-the-selection-to-records-once). Reading `.size` straight off the selection returns `undefined` once it is `'all'`, which surfaces as a wrong number in a confirmation rather than an error.
 
@@ -131,20 +131,19 @@ Pass an [`<EmptyState>`](/components/content/empty-state) to the `emptyState` pr
 
 <ComponentDemo name="listview-empty-state" />
 
-### `<ListView>` vs. `<SelectList>`
+### ListView vs. SelectList
 
-On screen these two are hard to tell apart: the same stack of rich rows, an indicator on each, a description under the label. What differs is where the selection goes, and one question settles it:
+On screen these two are hard to tell apart: the same stack of rich rows, an indicator on each, a description under the label. What differs is what the selection is for.
 
-> **Does the selection need to submit with the form?**
->
-> - **Yes**, it is a field value that submits and validates: [`<SelectList>`](/components/form/selectlist).
-> - **No**, you read it and commit it yourself: `<ListView>`.
+Reach for a `<ListView>` when you own the selection and decide yourself when it counts. Records staged in a dialog and applied with its confirm button, rows gathered for one bulk action, a feed where marking a row is a step in a flow you control. Reach for a [`<SelectList>`](/components/form/selectlist) when the selection is a field value, submitted and validated with the rest of the form, labelled and marked required while the user fills it in.
 
-One exception runs the other way. A pick that never submits but still needs a visible label, helper text, or a validation message wants a `<SelectList>` anyway, because a `<ListView>` renders none of those. It takes an `aria-label` and nothing else, so a list that has to name itself on screen or explain a rule like "choose at least one" is a field whether or not a `<form>` is involved.
+Two questions settle the cases that still look alike:
+
+**Does the selection submit with a form?** If it does, it is a field value, and that is a `<SelectList>`.
+
+**Does the list need a visible label, helper text, or a validation message?** If it does, it is a `<SelectList>` too, even for a pick that never submits. A `<ListView>` takes an `aria-label` and renders none of those, so a list that has to name itself on screen or explain a rule like "choose at least one" is a field whether or not a `<form>` is involved.
 
 Underneath, one is a form field and the other a collection view. A `<SelectList>` carries a label, validation, and a hidden input, so its selection is the field's value and travels with the rest of the form. A `<ListView>` keeps its selection as state you own, and its rows can carry their own focusable controls, like a link or a row menu, which a field has no room for.
-
-That is the real distinction, and a poor decision aid on its own, because most flows can be described either way. Start from the question.
 
 <GuidelineTiles>
   <Do>
