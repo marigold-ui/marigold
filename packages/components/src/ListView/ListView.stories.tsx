@@ -681,18 +681,26 @@ SingleSelection.test(
   }
 );
 
+const VENUES = [
+  { id: 'gasometer', name: 'Gasometer', detail: 'Vienna · 1600 seats' },
+  { id: 'tempodrom', name: 'Tempodrom', detail: 'Berlin · 3800 seats' },
+  { id: 'columbiahalle', name: 'Columbiahalle', detail: 'Berlin · 3500 seats' },
+];
+
+const [gasometer, tempodrom] = VENUES;
+
 export const MultipleSelection = meta.story({
   tags: ['component-test'],
   args: { selectionMode: 'multiple', onSelectionChange: fn() },
   render: args => (
     <ListView {...args} aria-label="Venues">
-      <ListView.Item id="gasometer" textValue="Gasometer">
-        <TextValue>Gasometer</TextValue>
-        <Description>Vienna · 1600 seats</Description>
+      <ListView.Item id={gasometer.id} textValue={gasometer.name}>
+        <TextValue>{gasometer.name}</TextValue>
+        <Description>{gasometer.detail}</Description>
       </ListView.Item>
-      <ListView.Item id="tempodrom" textValue="Tempodrom">
-        <TextValue>Tempodrom</TextValue>
-        <Description>Berlin · 3800 seats</Description>
+      <ListView.Item id={tempodrom.id} textValue={tempodrom.name}>
+        <TextValue>{tempodrom.name}</TextValue>
+        <Description>{tempodrom.detail}</Description>
       </ListView.Item>
     </ListView>
   ),
@@ -784,23 +792,23 @@ export const SelectionWithRowActions = meta.story({
   args: { selectionMode: 'multiple' },
   render: args => (
     <ListView {...args} aria-label="Venues">
-      <ListView.Item id="gasometer" textValue="Gasometer">
-        <TextValue>Gasometer</TextValue>
-        <Description>Vienna · 1600 seats</Description>
-        <ActionMenu aria-label="Manage Gasometer">
-          <ActionMenu.Item onAction={() => onOpenVenue('gasometer')}>
+      <ListView.Item id={gasometer.id} textValue={gasometer.name}>
+        <TextValue>{gasometer.name}</TextValue>
+        <Description>{gasometer.detail}</Description>
+        <ActionMenu aria-label={`Manage ${gasometer.name}`}>
+          <ActionMenu.Item onAction={() => onOpenVenue(gasometer.id)}>
             Open
           </ActionMenu.Item>
-          <ActionMenu.Item onAction={() => onArchiveVenue('gasometer')}>
+          <ActionMenu.Item onAction={() => onArchiveVenue(gasometer.id)}>
             Archive
           </ActionMenu.Item>
         </ActionMenu>
       </ListView.Item>
-      <ListView.Item id="tempodrom" textValue="Tempodrom">
-        <TextValue>Tempodrom</TextValue>
-        <Description>Berlin · 3800 seats</Description>
-        <ActionMenu aria-label="Manage Tempodrom">
-          <ActionMenu.Item onAction={() => onOpenVenue('tempodrom')}>
+      <ListView.Item id={tempodrom.id} textValue={tempodrom.name}>
+        <TextValue>{tempodrom.name}</TextValue>
+        <Description>{tempodrom.detail}</Description>
+        <ActionMenu aria-label={`Manage ${tempodrom.name}`}>
+          <ActionMenu.Item onAction={() => onOpenVenue(tempodrom.id)}>
             Open
           </ActionMenu.Item>
         </ActionMenu>
@@ -833,29 +841,29 @@ export const SelectionWithMixedRowContent = meta.story({
   args: { selectionMode: 'multiple' },
   render: args => (
     <ListView {...args} aria-label="Venues">
-      <ListView.Item id="gasometer" textValue="Gasometer">
+      <ListView.Item id={gasometer.id} textValue={gasometer.name}>
         <TextValue>
-          Gasometer <Badge variant="warning">Sold out</Badge>
+          {gasometer.name} <Badge variant="warning">Sold out</Badge>
         </TextValue>
-        <Description>Vienna · 1600 seats</Description>
+        <Description>{gasometer.detail}</Description>
         <ButtonGroup>
           <Button
             size="icon"
-            aria-label="Archive Gasometer"
-            onPress={() => onVenueArchive('gasometer')}
+            aria-label={`Archive ${gasometer.name}`}
+            onPress={() => onVenueArchive(gasometer.id)}
           >
             <Archive />
           </Button>
-          <ActionMenu aria-label="Manage Gasometer">
-            <ActionMenu.Item onAction={() => onVenueMenu('gasometer')}>
+          <ActionMenu aria-label={`Manage ${gasometer.name}`}>
+            <ActionMenu.Item onAction={() => onVenueMenu(gasometer.id)}>
               Rename
             </ActionMenu.Item>
           </ActionMenu>
         </ButtonGroup>
       </ListView.Item>
-      <ListView.Item id="tempodrom" textValue="Tempodrom">
-        <TextValue>Tempodrom</TextValue>
-        <Description>Berlin · 3800 seats</Description>
+      <ListView.Item id={tempodrom.id} textValue={tempodrom.name}>
+        <TextValue>{tempodrom.name}</TextValue>
+        <Description>{tempodrom.detail}</Description>
       </ListView.Item>
     </ListView>
   ),
@@ -897,12 +905,6 @@ SelectionWithMixedRowContent.test(
     expect(indicatorX(first)).toBe(indicatorX(second));
   }
 );
-
-const VENUES = [
-  { id: 'gasometer', name: 'Gasometer', detail: 'Vienna · 1600 seats' },
-  { id: 'tempodrom', name: 'Tempodrom', detail: 'Berlin · 3800 seats' },
-  { id: 'columbiahalle', name: 'Columbiahalle', detail: 'Berlin · 3500 seats' },
-];
 
 const onBulkArchive = fn();
 
@@ -1009,13 +1011,13 @@ export const SelectionWithRowActivation = meta.story({
   args: { selectionMode: 'multiple', onAction: fn() },
   render: args => (
     <ListView {...args} aria-label="Venues">
-      <ListView.Item id="gasometer" textValue="Gasometer">
-        <TextValue>Gasometer</TextValue>
-        <Description>Vienna · 1600 seats</Description>
+      <ListView.Item id={gasometer.id} textValue={gasometer.name}>
+        <TextValue>{gasometer.name}</TextValue>
+        <Description>{gasometer.detail}</Description>
       </ListView.Item>
-      <ListView.Item id="tempodrom" textValue="Tempodrom">
-        <TextValue>Tempodrom</TextValue>
-        <Description>Berlin · 3800 seats</Description>
+      <ListView.Item id={tempodrom.id} textValue={tempodrom.name}>
+        <TextValue>{tempodrom.name}</TextValue>
+        <Description>{tempodrom.detail}</Description>
       </ListView.Item>
     </ListView>
   ),
