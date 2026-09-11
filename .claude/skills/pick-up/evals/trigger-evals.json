@@ -1,0 +1,46 @@
+[
+  {
+    "query": "I'll take DST-1607",
+    "should_trigger": true
+  },
+  {
+    "query": "pick up DST-1607",
+    "should_trigger": true
+  },
+  {
+    "query": "give me my next sprint ticket",
+    "should_trigger": true
+  },
+  {
+    "query": "what should I work on",
+    "should_trigger": true
+  },
+  {
+    "query": "file this in Jira",
+    "should_trigger": false
+  },
+  {
+    "query": "what should I review next",
+    "should_trigger": false
+  },
+  {
+    "query": "what's next on the board",
+    "should_trigger": true
+  },
+  {
+    "query": "what's the status of DST-1607",
+    "should_trigger": false
+  },
+  {
+    "query": "what did I work on last week",
+    "should_trigger": false
+  },
+  {
+    "query": "summarise DST-1607 for me",
+    "should_trigger": false
+  },
+  {
+    "query": "go through the review comments on my PR",
+    "should_trigger": false
+  }
+]
