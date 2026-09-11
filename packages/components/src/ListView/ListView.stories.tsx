@@ -114,22 +114,6 @@ Basic.test(
   }
 );
 
-// Scenario 1 — Notifications / activity feed: title + timestamp + a visible
-// archive button and an overflow menu, operated in place. The shared DST-1485
-// (Popover notifications panel) example.
-//
-// The visible glyph is `<Archive />`, not `<X />`: in Marigold an `X` means
-// "close/cancel this transient thing" (`CloseButton`, `TableEditableCell`,
-// `ActionBar`), and this feed ships inside a Popover that has its own `X` a
-// few pixels away. `<Archive />` says what happens to the row.
-//
-// Muting is a menu command rather than a per-row `<Switch>`: a switch is the
-// highest-contrast control in a row, and repeated down a feed a column of
-// filled tracks out-shouts the notification text the feed exists to show. It
-// also announces ambiguously — "Mute this thread, switch, off" leaves open
-// whether off means not-muted or notifications-off — where `Mute thread` /
-// `Unmute thread` can't be misread. Every shipping notification inbox
-// (GitHub, Slack, Linear, Gmail) lands in the same place.
 const onMute = fn();
 const onMarkRead = fn();
 const onArchive = fn();
