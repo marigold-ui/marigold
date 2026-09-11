@@ -11,7 +11,7 @@ import { WidthProp, cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Center } from '../Center/Center';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { SearchInput } from '../Input/SearchInput';
-import { ListBox } from '../ListBox/ListBox';
+import { ListBox, type ListBoxProps } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
 import { intlMessages } from '../intl/messages';
 import { MobileAutocomplete } from './MobileAutocomplete';
@@ -93,6 +93,7 @@ const AutocompleteInput = ({
 type RemovedProps =
   | 'className'
   | 'style'
+  | 'children'
   | 'isDisabled'
   | 'isRequired'
   | 'isInvalid'
@@ -104,10 +105,15 @@ type RemovedProps =
   | 'validationState'
   | 'slot';
 
-export interface AutocompleteProps
+export interface AutocompleteProps<T extends object = object>
   extends
-    Omit<RAC.ComboBoxProps<object>, RemovedProps>,
+    Omit<RAC.ComboBoxProps<T>, RemovedProps>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
+  /**
+   * ReactNode or function to render the list of items.
+   */
+  children?: ReactNode | ((item: T) => ReactNode);
+
   /**
    * The value of the input (uncontrolled).
    */
@@ -127,6 +133,13 @@ export interface AutocompleteProps
    * The value of the input (controlled).
    */
   value?: RAC.ComboBoxProps<object>['inputValue'];
+  /**
+   * Values that invalidate the cached items, like a hook's dependency array.
+   * Only needed for `items` plus a render function: rendered items are cached
+   * per item object, so anything the function reads from outside the item —
+   * state, a lookup, a prop — has to be listed here or it renders stale.
+   */
+  dependencies?: ListBoxProps['dependencies'];
 
   /**
    * Called when the input value changes.
@@ -194,8 +207,9 @@ export interface AutocompleteProps
 
 // Component
 // ---------------
-const AutocompleteBase = ({
+function AutocompleteBase<T extends object>({
   children,
+  dependencies,
   defaultValue,
   value,
   disabled,
@@ -209,8 +223,8 @@ const AutocompleteBase = ({
   onSubmit,
   ref,
   ...rest
-}: AutocompleteProps & { ref?: Ref<HTMLInputElement> }) => {
-  const props: RAC.ComboBoxProps<object> = {
+}: AutocompleteProps<T> & { ref?: Ref<HTMLInputElement> }) {
+  const props: RAC.ComboBoxProps<T> = {
     onSelectionChange: key => key !== null && onSubmit?.(key, null),
     defaultInputValue: defaultValue,
     inputValue: value,
@@ -233,6 +247,7 @@ const AutocompleteBase = ({
           placeholder={rest.placeholder}
           label={rest.label}
           emptyState={emptyState}
+          dependencies={dependencies}
           input={
             <AutocompleteInput
               loading={loading}
@@ -256,6 +271,7 @@ const AutocompleteBase = ({
           <Popover>
             <ListBox
               virtualized
+              dependencies={dependencies}
               renderEmptyState={() =>
                 emptyState ?? (
                   <Center>{stringFormatter.format('noResultsFound')}</Center>
@@ -269,7 +285,8 @@ const AutocompleteBase = ({
       )}
     </FieldBase>
   );
-};
+}
+
 export const Autocomplete = Object.assign(AutocompleteBase, {
   Option: ListBox.Item,
   Section: ListBox.Section,

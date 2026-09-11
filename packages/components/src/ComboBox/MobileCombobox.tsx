@@ -7,7 +7,7 @@ import { cn, useClassNames } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { Center } from '../Center/Center';
 import { Input } from '../Input/Input';
-import { ListBox } from '../ListBox/ListBox';
+import { ListBox, type ListBoxProps } from '../ListBox/ListBox';
 import { Tray } from '../Tray/Tray';
 import { ChevronsVertical } from '../icons/ChevronsVertical';
 import { intlMessages } from '../intl/messages';
@@ -24,6 +24,7 @@ interface MobileComboBoxProps {
   label?: ReactNode;
   emptyState?: ReactNode;
   children?: ReactNode | ((item: object) => ReactNode);
+  dependencies?: ListBoxProps['dependencies'];
 }
 
 // Trigger Display (for Mobile mode)
@@ -68,6 +69,7 @@ const MobileComboBox = ({
   label,
   emptyState,
   children,
+  dependencies,
 }: MobileComboBoxProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const trayRef = useComboBoxTrayRef();
@@ -82,6 +84,7 @@ const MobileComboBox = ({
         <Tray.Content className={'flex flex-col gap-2'}>
           <Input autoFocus />
           <ListBox
+            dependencies={dependencies}
             renderEmptyState={() =>
               emptyState ?? (
                 <Center>{stringFormatter.format('noResultsFound')}</Center>

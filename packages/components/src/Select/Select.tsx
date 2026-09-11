@@ -11,7 +11,7 @@ import { WidthProp, cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { IconButton } from '../IconButton/IconButton';
-import { ListBox } from '../ListBox/ListBox';
+import { ListBox, type ListBoxProps } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
 import { Tray } from '../Tray/Tray';
 import { ChevronsVertical } from '../icons/ChevronsVertical';
@@ -77,6 +77,13 @@ export interface SelectProps<
    * Items of the select.
    */
   items?: Iterable<T>;
+  /**
+   * Values that invalidate the cached items, like a hook's dependency array.
+   * Only needed for `items` plus a render function: rendered items are cached
+   * per item object, so anything the function reads from outside the item —
+   * state, a lookup, a prop — has to be listed here or it renders stale.
+   */
+  dependencies?: ListBoxProps['dependencies'];
   /**
    * If the select should be required.
    *
@@ -152,6 +159,7 @@ function SelectBase<T extends object, M extends SelectionMode = 'single'>({
   disabled,
   required,
   items,
+  dependencies,
   variant,
   size,
   error,
@@ -208,7 +216,9 @@ function SelectBase<T extends object, M extends SelectionMode = 'single'>({
           <Tray>
             <Tray.Title>{label}</Tray.Title>
             <Tray.Content>
-              <ListBox items={items}>{children}</ListBox>
+              <ListBox items={items} dependencies={dependencies}>
+                {children}
+              </ListBox>
             </Tray.Content>
             <Tray.Actions>
               <Button slot="close">{stringFormatter.format('close')}</Button>
@@ -227,7 +237,7 @@ function SelectBase<T extends object, M extends SelectionMode = 'single'>({
             <ChevronsVertical size="16" className={classNames.icon} />
           </RACButton>
           <Popover>
-            <ListBox items={items} virtualized>
+            <ListBox items={items} dependencies={dependencies} virtualized>
               {children}
             </ListBox>
           </Popover>
