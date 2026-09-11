@@ -119,7 +119,7 @@ One list serves browsing and selecting this way, without a mode switch of your o
 
 Pair a multi-select list with an [`<ActionBar>`](/components/collection/actionbar), rendered as a sibling inside the list's scroll container. The bar is sticky, so it pins itself to the bottom of that container and appears once something is selected.
 
-Drive it with [`useActionBar`](/components/collection/actionbar#useactionbar), which holds the selection, fills in the count and the clear button, and measures the bar. You need that measurement: a `<ListView>` does not know the bar is there, so without it the bar covers the last rows and keyboard navigation parks a focused row underneath it. Reserve the measured height on the scroll container, which a [`<Table>`](/components/collection/table) does for you. The demo below highlights where it goes.
+Drive it with [`useActionBar`](/components/collection/actionbar#useactionbar), which holds the selection, fills in the count and the clear button, and measures the bar. You need that measurement: a `<ListView>` does not know the bar is there, so without it the bar covers the last rows and keyboard navigation parks a focused row underneath it. Reserve the measured height on the content inside the scroll container rather than on the scroller itself, which is what a [`<Table>`](/components/collection/table) does for you. A scroll container's own padding shrinks the rectangle its sticky children pin to, so padding the scroller lifts the bar off the bottom by the height you just reserved.
 
 <ComponentDemo name="listview-bulk-actions" />
 
