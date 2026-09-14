@@ -1,4 +1,4 @@
-import type { ReactNode, Ref } from 'react';
+import { type ReactNode, type Ref, useSyncExternalStore } from 'react';
 import type RAC from 'react-aria-components';
 import { Popover } from 'react-aria-components/Popover';
 import { cn, useClassNames } from '@marigold/system';
@@ -17,6 +17,31 @@ import { ResetButtonContext } from '../Button/ResetButtonContext';
 //             Best for pointer devices / wide viewports.
 //
 // Components typically check viewport width and conditionally render either `<Tray>` or `<Popover>`.
+
+// Boundary
+// ---------------
+const DEFAULT_CONTAINER_PADDING = 12;
+
+const getContainerPadding = () => {
+  if (typeof document === 'undefined' || !document.body) {
+    return DEFAULT_CONTAINER_PADDING;
+  }
+
+  if (getComputedStyle(document.body).overflowX === 'visible') {
+    return DEFAULT_CONTAINER_PADDING;
+  }
+
+  const gutter =
+    window.innerWidth - document.body.getBoundingClientRect().right;
+
+  return DEFAULT_CONTAINER_PADDING + Math.max(0, Math.ceil(gutter));
+};
+
+const subscribeToViewport = (onChange: () => void) => {
+  window.visualViewport?.addEventListener('resize', onChange);
+
+  return () => window.visualViewport?.removeEventListener('resize', onChange);
+};
 
 // Props
 // ---------------
@@ -45,14 +70,21 @@ const PopoverBase = ({
   offset = 0,
   open,
   matchTriggerWidth = true,
+  containerPadding,
   children,
   ref,
   ...rest
 }: PopoverProps & { ref?: Ref<HTMLDivElement> }) => {
+  const measured = useSyncExternalStore(
+    subscribeToViewport,
+    getContainerPadding,
+    () => DEFAULT_CONTAINER_PADDING
+  );
   const props: RAC.PopoverProps = {
     isKeyboardDismissDisabled: keyboardDismissDisabled,
     isOpen: open,
     placement,
+    containerPadding: containerPadding ?? measured,
     ...rest,
   };
   const classNames = useClassNames({
