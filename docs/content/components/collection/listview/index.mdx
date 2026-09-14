@@ -103,15 +103,13 @@ Keep a clear button in reach on a list like this. While anything is selected the
 
 #### Bulk actions
 
-Pair a multi-select list with an [`<ActionBar>`](/components/collection/actionbar), rendered as a sibling inside the list's scroll container. The bar is sticky, so it pins itself to the bottom of that container and appears once something is selected.
-
-Drive it with [`useActionBar`](/components/collection/actionbar#useactionbar), which holds the selection, fills in the count and the clear button, and measures the bar. You need that measurement: a `<ListView>` does not know the bar is there, so without it the bar covers the last rows and keyboard navigation parks a focused row underneath it. A [`<Table>`](/components/collection/table) reserves that room for you, and the demo below shows where it goes in a list.
+Pair a multi-select list with an [`<ActionBar>`](/components/collection/actionbar), driven by [`useActionBar`](/components/collection/actionbar#useactionbar). One thing is yours to do that a [`<Table>`](/components/collection/table) does for you: reserve the bar's height on the list's content, or the bar covers the last rows and keyboard navigation parks a focused row underneath it. A list short enough not to scroll needs none of that.
 
 <ComponentDemo name="listview-bulk-actions" />
 
-A list short enough not to scroll needs none of that. Render the `<ActionBar>` after it and pass `selectedItemCount` and `onClearSelection` yourself.
-
-One piece of the [Bulk Actions](/patterns/user-input/bulk-actions) pattern has no control here: select-all. That is a checkbox in the collection's header, and a list has no header row to hold one, so a flow where users regularly select every visible record belongs in a [`<Table>`](/components/collection/table). Everything else in the pattern applies to a `<ListView>` unchanged, including bounding the selection to the rows the user can see, clearing it when a filter or a page changes what is visible, and confirming a destructive action with the exact count.
+<Callout type="info" title="No select-all in a list">
+  Select-all is a checkbox in the collection's header, and a list has no header row to hold one, so a flow where users regularly select every visible record belongs in a [`<Table>`](/components/collection/table). Everything else in the [Bulk Actions](/patterns/user-input/bulk-actions) pattern applies to a `<ListView>` unchanged.
+</Callout>
 
 ### Empty state
 
