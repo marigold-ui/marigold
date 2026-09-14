@@ -1,27 +1,16 @@
-# Gives every PR a baseline review against the repository's own standards,
-# without anyone having to remember to run /review-pr locally.
+# Baseline review of a pull request against the repository's own standards,
+# so it happens without anyone remembering to run /review-pr locally.
 #
-# This is Phase 2 of DST-1527 and it ships SWITCHED OFF. The gate below is
-# fail-closed (opt in with AI_REVIEW_ENABLED='true'), the inverse of the
-# fail-open VRT_ENABLED convention, because an unattended reviewer commenting on
-# every PR is a change the team should turn on deliberately and be able to turn
-# off in ten seconds. Committing it now rather than in a follow-up ticket means
-# the trial is a variable flip instead of a sprint item.
-#
-# It does not and cannot block a merge. claude-code-action is unable to submit
-# formal GitHub reviews or approve a PR at all, so this is advisory by
-# construction, not by configuration.
+# Ships SWITCHED OFF: opt in with the AI_REVIEW_ENABLED repository variable.
+# Advisory only. claude-code-action cannot submit formal reviews or approve.
 name: Claude Review
 
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    # Prose only. Note this is NOT the same list as
-    # visual-regression-tests.yml, which also ignores all of `docs/**` because
-    # those files produce no Chromatic snapshots. That reasoning does not carry
-    # over to a code review: `docs/` is a Next.js app holding ~600 .tsx files
-    # (docs/app/** and every *.demo.tsx) with hooks, RAC usage and a11y surface
-    # that the checklist covers.
+    # Free pre-filter, in front of the classifier rather than replacing it.
+    # Deliberately narrower than visual-regression-tests.yml, which also ignores
+    # all of docs/**: that is a Next.js app with ~600 reviewable .tsx files.
     paths-ignore:
       - '**/*.md'
       - '**/*.mdx'
@@ -30,36 +19,99 @@ on:
 permissions: {}
 
 concurrency:
-  # Collapses push bursts. PRs here average 4.3 commits, so without this a
-  # single PR pays for four full reviews of states nobody ends up merging.
+  # PRs here average 4.3 commits, so without this one PR pays for four reviews.
   group: claude-review-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:
-  review:
-    # Off unless AI_REVIEW_ENABLED is exactly 'true' (Settings -> Secrets and
-    # variables -> Actions -> Variables).
-    #
-    # Fork PRs cannot run: they have no access to the OIDC identity this needs,
-    # and the action does not support them (upstream #339). ~1.5% of PRs here.
-    #
-    # Bot PRs are skipped by account TYPE rather than by login. A login list is
-    # how this was first written and it was wrong: Renovate posts here as
-    # `marigold-renovate[bot]`, not `renovate[bot]`, so the list matched nothing
-    # and every dependency bump would have been reviewed. Type also covers bots
-    # added later without anyone editing this file.
+  classify:
+    # Bots are filtered by account TYPE, not login: Renovate posts here as
+    # `marigold-renovate[bot]`, so a login list matches nothing.
     if: >-
       vars.AI_REVIEW_ENABLED == 'true' &&
       github.event.pull_request.head.repo.full_name == github.repository &&
       github.event.pull_request.user.type != 'Bot'
 
-    name: Baseline review
+    name: Decide whether this PR gets reviewed
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      profile: ${{ steps.pick.outputs.profile }}
+
+    steps:
+      # Category comes from the PR title, not the type:* labels. Those are
+      # path-derived and `packages/*` matches a package manifest, so every
+      # Renovate bump inside a package is labelled type:feature. labeler.yml
+      # also runs in parallel with this workflow, so at `opened` the label may
+      # not exist yet.
+      #
+      # PR_TITLE goes through env:, never interpolated into the script.
+      - name: Classify the pull request
+        id: pick
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          set -euo pipefail
+
+          # Leading emoji is stripped first, so "🐛 fix(DST-1): …" parses.
+          type=$(printf '%s' "$PR_TITLE" \
+            | sed -E 's/^[^A-Za-z]+//' \
+            | sed -nE 's/^([A-Za-z]+)(\([^)]*\))?!?:.*/\1/p' \
+            | tr '[:upper:]' '[:lower:]')
+
+          [ "$type" = "refa" ] && type=refactor
+
+          case "$type" in
+            # `style` is not formatting here: every style: PR in history is a
+            # design change to component source, and one of them changed AA
+            # labels. It gets a full review.
+            feat|fix|refactor|style) profile=full ;;
+            docs) profile=docs ;;
+            test) profile=tests ;;
+            chore|ci|build|release|revert) profile=skip ;;
+            # Unparseable titles fail toward reviewing.
+            *) profile=full ;;
+          esac
+
+          # Nothing lints the title, so a skip-category PR that touches real
+          # source is promoted. Matching src/** excludes package.json, which is
+          # what the labeler gets wrong.
+          if [ "$profile" = "skip" ]; then
+            # Captured, then counted. Piping into `grep -q` looks equivalent and
+            # is not: grep exits on first match, gh takes SIGPIPE, and pipefail
+            # reads that as "no source changed" — failing in the unsafe
+            # direction. `grep -c` must read all of its input.
+            changed=$(gh pr diff "$PR_NUMBER" --repo "$REPOSITORY" --name-only)
+            src_changed=$(printf '%s\n' "$changed" \
+              | grep -cE '^(packages|themes)/[^/]+/src/' || true)
+            if [ "$src_changed" -gt 0 ]; then
+              echo "::notice::Title type '${type:-none}' would skip, but $src_changed source file(s) changed. Escalating to a full review."
+              profile=full
+            fi
+          fi
+
+          echo "Title type: ${type:-<unparseable>} -> profile: $profile"
+          echo "profile=$profile" >> "$GITHUB_OUTPUT"
+
+  review:
+    needs: classify
+    if: needs.classify.outputs.profile != 'skip'
+
+    name: Baseline review (${{ needs.classify.outputs.profile }})
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # Lets the AWS trust policy be scoped to an environment, not the whole repo.
+    environment: ai-review
     permissions:
-      contents: read # review only, never commits. The mentions workflow is the write path.
+      contents: read # review only. The mentions workflow is the write path.
       pull-requests: write
-      id-token: write # required: fetches the GitHub OIDC token for federation
+      id-token: write # exchanged for AWS credentials below
 
     steps:
       - name: Checkout repository
@@ -68,28 +120,36 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
+      # Short-lived STS credentials, so nothing static lives in this public
+      # repo. The existing AWS_BEDROCK_* secrets are not reused: they are static
+      # keys scoped to Titan embeddings for release.yml.
+      - name: Assume the Bedrock role
+        uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
+        with:
+          role-to-assume: ${{ vars.AI_REVIEW_BEDROCK_ROLE_ARN }}
+          aws-region: ${{ vars.AI_REVIEW_BEDROCK_REGION }}
+          role-session-name: gha-claude-review-${{ github.run_id }}
+
       - name: Review
         uses: anthropics/claude-code-action@fa2b2666b747000bf42767d1f332065b375e3c8f # v1.0.214
         with:
-          anthropic_federation_rule_id: ${{ vars.ANTHROPIC_FEDERATION_RULE_ID }}
-          anthropic_organization_id: ${{ vars.ANTHROPIC_ORGANIZATION_ID }}
-          anthropic_service_account_id: ${{ vars.ANTHROPIC_SERVICE_ACCOUNT_ID }}
+          # Reads the STS credentials from the environment. Do not add
+          # anthropic_api_key: a static credential takes precedence and Bedrock
+          # is silently skipped.
+          use_bedrock: 'true'
 
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-          # One comment, rewritten on each run, rather than a new one per push.
-          # Stale findings disappear when they are fixed instead of accumulating
-          # threads someone has to resolve by hand.
-          #
-          # track_progress is deliberately NOT set alongside this. It posts a
-          # progress comment up front and rewrites it as work proceeds, which
-          # combines badly with cancel-in-progress above: a run cancelled by the
-          # next push can strand a permanent "Claude is working" comment.
+          # One comment rewritten per run, so stale findings disappear instead
+          # of accumulating threads. track_progress is deliberately not set
+          # alongside it: with cancel-in-progress above, a cancelled run can
+          # strand a permanent "Claude is working" comment.
           use_sticky_comment: true
 
           prompt: |
             REPO: ${{ github.repository }}
             PR NUMBER: ${{ github.event.pull_request.number }}
+            REVIEW PROFILE: ${{ needs.classify.outputs.profile }}
 
             You are reviewing a pull request for the Marigold design system.
 
@@ -104,6 +164,20 @@ jobs:
                agreed checklist, including its Critical / Warning / Suggestion
                severity guide. Read it. Do not restate it, apply it.
             2. `CLAUDE.md` — project conventions, already loaded for you.
+
+            The REVIEW PROFILE above narrows what to spend attention on:
+
+            - `full`: the whole checklist. Component and system source is the
+              subject. This includes PRs titled `style:`, which in this
+              repository means a visual or design change to real component code,
+              not formatting.
+            - `docs`: documentation content and the docs app. Prose, MDX, and
+              the `.tsx` demo and app files under `docs/`. Apply the checklist's
+              React, TypeScript and accessibility rules to that `.tsx`. Do not
+              report a missing changeset unless a published package changed.
+            - `tests`: the checklist's testing conventions. Vitest over Jest,
+              userEvent over fireEvent, stories imported instead of fixtures,
+              accessible queries over getByTestId.
 
             Report a single comment with these sections, omitting any that are
             empty:
@@ -135,9 +209,9 @@ jobs:
             You cannot approve or request changes on this PR and should not try.
             This review is advisory and never blocks a merge.
 
-          # No --allowedTools. An explicit list here silently broke the job: it
-          # omitted the action's own MCP comment tool, leaving Claude no
-          # permitted way to post its findings, and it left `gh` without
-          # GH_TOKEN in the Bash environment. The action's defaults already
-          # cover reading the diff and writing the sticky comment.
-          claude_args: --model claude-sonnet-5
+          # No --allowedTools. An explicit list omitted the action's own MCP
+          # comment tool, leaving Claude no way to post its findings.
+          #
+          # The model is a Bedrock inference profile ID, not an API alias such
+          # as `claude-sonnet-5`, which Bedrock does not accept.
+          claude_args: --model ${{ vars.AI_REVIEW_MODEL_ID }}
