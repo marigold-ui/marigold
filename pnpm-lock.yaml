@@ -214,8 +214,8 @@ importers:
         specifier: 7.16.2
         version: 7.16.2(eslint@10.9.1(jiti@2.7.0))(typescript@6.0.3)
       globals:
-        specifier: 17.9.0
-        version: 17.9.0
+        specifier: 17.12.0
+        version: 17.12.0
       prettier:
         specifier: 3.9.6
         version: 3.9.6
@@ -5505,8 +5505,8 @@ packages:
     resolution: {integrity: sha512-ob/2LcVVaVGCYN+r14cnwnoDPUufjiYgSqRhiFD0Q1iI4Odora5RE8Iv1D24hAz5oMophRGkGz+yuvQmmUMnMw==}
     engines: {node: '>=18'}
 
-  globals@17.9.0:
-    resolution: {integrity: sha512-m/MvAW61QVU5VDNF1Vj8axt016h8w7L5TU1e9zlab7XIttAT2YAlCwl75K1fOqvMM9apmD7lbCIRhpfkhmxhCg==}
+  globals@17.12.0:
+    resolution: {integrity: sha512-cezEd/DTyyht9cvSSURyygXPfy04GtWO/5e6ZPvH7fCtjKz9PYOmuawphw1Ctd1f6C+5JypXfGD7ahNMXvevBA==}
     engines: {node: '>=18'}
 
   globalthis@1.0.4:
@@ -13313,7 +13313,7 @@ snapshots:
 
   globals@16.4.0: {}
 
-  globals@17.9.0: {}
+  globals@17.12.0: {}
 
   globalthis@1.0.4:
     dependencies:
