@@ -4,6 +4,7 @@ import {
   isSameDay,
   today,
 } from '@internationalized/date';
+import type { BoundFunctions, queries } from '@testing-library/dom';
 import { useState } from 'react';
 import type { DateValue } from 'react-aria-components';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
@@ -12,6 +13,7 @@ import preview from '.storybook/preview';
 import type { RangeValue } from '@react-types/shared';
 import { theme } from '../../../../themes/theme-rui/src/index.js';
 import { Stack } from '../Stack/Stack';
+import { assertCalendarTriggerHitArea } from '../calendarTrigger.utils';
 import { firePaste } from '../firePaste';
 import { DateRangePicker } from './DateRangePicker';
 
@@ -233,25 +235,8 @@ Basic.tags = ['component-test'];
 Basic.test(
   'gives the calendar trigger slack on every side of the icon',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas }: any) => {
-    const trigger = canvas.getByRole('button');
-    const icon = trigger.querySelector('svg')!;
-
-    const button = trigger.getBoundingClientRect();
-    const glyph = icon.getBoundingClientRect();
-
-    const left = Math.round(glyph.left - button.left);
-    const right = Math.round(button.right - glyph.right);
-
-    // The icon used to sit flush against the button's left edge, so reaching
-    // the trigger from the left meant landing on the 16px glyph itself.
-    expect(left).toBeGreaterThan(0);
-    expect(left).toBe(right);
-
-    // The slack is part of the trigger, not of the end date input next to it.
-    expect(
-      document.elementFromPoint(glyph.left - 4, button.top + button.height / 2)
-    ).toBe(trigger);
+  async ({ canvas }: { canvas: BoundFunctions<typeof queries> }) => {
+    assertCalendarTriggerHitArea(canvas.getByRole('button'));
   }
 );
 

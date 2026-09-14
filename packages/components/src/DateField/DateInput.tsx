@@ -128,7 +128,16 @@ const _DateInput = ({
           <DateSegment className={classNames.segment} segment={segment} />
         )}
       </DateInput>
-      {action ? action : null}
+      {action && (
+        <span
+          className={cn(
+            '*:flex *:size-full *:items-center *:justify-center',
+            classNames.action
+          )}
+        >
+          {action}
+        </span>
+      )}
     </Group>
   );
 };
