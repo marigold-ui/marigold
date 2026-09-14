@@ -4,8 +4,11 @@ import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Menu } from '../Menu/Menu';
+import { OverlayContainerProvider } from '../Provider/OverlayContainerProvider';
 import { Text } from '../Text/Text';
 import { Popover } from './Popover';
+
+const PORTAL_ID = 'popover-at-viewport-edge';
 
 const meta = preview.meta({
   title: 'Components/Popover',
@@ -50,12 +53,17 @@ export const OpenPopover = meta.story({
 
 export const AtViewportEdge = meta.story({
   tags: ['dev', 'component-test'],
-  parameters: { layout: 'fullscreen', surface: false },
+  parameters: {
+    layout: 'fullscreen',
+    surface: false,
+    chromatic: { disableSnapshot: false },
+  },
   decorators: [
     Story => (
-      <div id="storybook-root">
+      <OverlayContainerProvider container={PORTAL_ID}>
+        <div id={PORTAL_ID} />
         <Story />
-      </div>
+      </OverlayContainerProvider>
     ),
   ],
   render: () => (
@@ -74,22 +82,8 @@ export const AtViewportEdge = meta.story({
   ),
 });
 
-/**
- * A reserved scrollbar gutter cannot be produced in a headless browser — the
- * platform draws overlay scrollbars, so `scrollbar-gutter: stable` reserves
- * nothing and there is no gap to catch. What this pins instead is the lever the
- * fix pulls: that `containerPadding` reaches react-aria and holds the overlay
- * that far off the boundary. The gutter measurement itself is verified by hand
- * in a headed browser; see the changeset.
- */
 const EXAGGERATED_PADDING = 100;
 
-/**
- * react-aria clamps by setting `left` to `boundaryEnd - width`, both fractional,
- * so the right edge can land a fraction of a pixel over the line depending on
- * how the text in the overlay happens to measure. Far below the ~88px the
- * assertion moves by when the forwarding is removed.
- */
 const SUBPIXEL = 1;
 
 AtViewportEdge.test(
