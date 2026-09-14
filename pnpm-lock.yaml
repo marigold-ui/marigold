@@ -732,8 +732,8 @@ importers:
         specifier: ^10.0.0
         version: 10.1.0
       cssnano:
-        specifier: 9.0.3
-        version: 9.0.3(postcss@8.5.28)
+        specifier: 9.0.4
+        version: 9.0.4(postcss@8.5.28)
       postcss-cli:
         specifier: 11.0.1
         version: 11.0.1(jiti@2.7.0)(postcss@8.5.25)(tsx@4.23.13)
@@ -4610,8 +4610,8 @@ packages:
     peerDependencies:
       postcss: ^8.5.25
 
-  cssnano@9.0.3:
-    resolution: {integrity: sha512-v4oRMYCXcJtI1MlGcwVgSP/TG/RrznC3iKQeNcFTQZZYWomp2j8CmgT9iiSO2v64K4LJSi6pWdyznmUUutLCKw==}
+  cssnano@9.0.4:
+    resolution: {integrity: sha512-CdXjUnePN8UmFySZ65Oh83DUf/z/VV+yRc86PlMUA4JBJizXiwelynZvfLji+gY/Z94xH+RrCT48wZyqSJdhuw==}
     engines: {node: ^22.22.3 || ^24.15.0 || >=26.0}
     peerDependencies:
       postcss: ^8.5.25
@@ -12137,7 +12137,7 @@ snapshots:
     dependencies:
       postcss: 8.5.28
 
-  cssnano@9.0.3(postcss@8.5.28):
+  cssnano@9.0.4(postcss@8.5.28):
     dependencies:
       cssnano-preset-default: 9.0.4(postcss@8.5.28)
       postcss: 8.5.28
