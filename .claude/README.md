@@ -31,7 +31,7 @@ One shape, no exceptions:
 
 The `description` is the only part of a skill that enters the context window before it runs — everything else loads on invocation. So write it as a trigger, not a summary: say what the skill does *and* the phrases that should reach for it. A vague description is why a good skill never fires.
 
-Open it with `Marigold repo — ` so ours group visibly in a `/` menu that also lists plugin and personal skills. Use the em dash, not a colon: descriptions are read raw rather than as quoted YAML, so quotes leak through literally, and `Marigold repo: ` would need them.
+Open it with `DST — ` so ours group visibly in a `/` menu that also lists plugin and personal skills. The marker names the team whose workflow the skill encodes, not the checkout it happens to sit in. `DST` is the design system team's project across the Core app, ClearingAdministration, the Cypress suite and the Insights scanner as well as this repository, so a skill that talks only to Jira or to a resolved remote is usable from any of them. Write the body that way: a skill that reaches for `CLAUDE.md`, `pnpm` or a path under `packages/` has pinned itself here, and only the ones that genuinely cannot work elsewhere should. Use the em dash, not a colon: descriptions are read raw rather than as quoted YAML, so quotes leak through literally, and `DST: ` would need them.
 
 Don't put that marker in the `name`. Plugin and directory-scoped skills are namespaced by the harness with a colon (`vercel:react-best-practices`, `apps/web:deploy`), so a hand-written prefix in the name impersonates a mechanism it isn't part of. The invocation stays `/create-pr`.
 

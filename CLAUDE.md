@@ -406,20 +406,19 @@ Remember: A story name might not reflect the property name correctly, so always 
 
 Jira Cloud ID: `reservix.atlassian.net` | Project key: `DST`
 
-### Issue Types
+### Issue Types and Title Emojis
 
-| Type      | ID    | Use for                                         |
-| --------- | ----- | ----------------------------------------------- |
-| Task      | 10697 | Work planned into a sprint                      |
-| Bug       | 10698 | Defects and errors                              |
-| Epic      | 10671 | Collection of related tasks                     |
-| Sub-task  | 10672 | Breakdown of a parent task                      |
-| Unplanned | 10860 | Work picked up inside an already-planned sprint |
+Both tables live in [`.claude/skills/create-ticket/references/dst-conventions.md`](.claude/skills/create-ticket/references/dst-conventions.md):
+the issue types with their ids, and the title emoji convention every DST title starts
+with. They are the team's conventions rather than this repository's, and `/create-ticket`
+has to apply them from the Core, ClearingAdministration and Insights checkouts too, so
+they travel with the skill instead of living here. One copy, read from either side.
 
-`Task` and `Unplanned` are used in roughly equal numbers, so `Unplanned` is a normal
-case rather than an exception. The two differ by **planning provenance**, not by the
-kind of work: a feature and a defect can both be `Unplanned`. The title emoji is what
-says which kind of work it is.
+The two you will reach for most: `Task` is work planned into a sprint, `Unplanned` is
+work picked up inside an already-planned one. They are used in roughly equal numbers, so
+`Unplanned` is a normal case rather than an exception. The two differ by **planning
+provenance**, not by the kind of work: a feature and a defect can both be `Unplanned`.
+The title emoji is what says which kind of work it is.
 
 ### Custom Fields by Issue Type
 
@@ -485,30 +484,3 @@ field and no template at all.
 
 - [Links to files, related tickets, Confluence pages, RFCs]
 ```
-
-### Title Emoji Convention
-
-Every issue title **must** start with an emoji indicating its type of work (see [Confluence: Emojis](https://reservix.atlassian.net/wiki/spaces/DST/pages/3797942472/Emojis)):
-
-| Emoji | Category                  |
-| ----- | ------------------------- |
-| 🐛    | Bug                       |
-| 🩹    | Hotfix                    |
-| 🏗️    | Infrastructure            |
-| 🧹    | Refactor / Cleanup        |
-| 📝    | Documentation             |
-| 💄    | Style / Theme             |
-| ✨    | Feature                   |
-| 🧩    | New Component             |
-| ✍️    | Blog / Confluence article |
-
-**Modifier emojis** (combine with a type emoji above):
-
-| Emoji | Meaning                      |
-| ----- | ---------------------------- |
-| ⚡️    | Quick task / spare-time work |
-| 🏚️    | Core-only task               |
-
-Examples: `📝⚡️ Quick docs fix`, `🧹🏚️ Core-only refactor`, `✨ New feature title`
-
-**Exception**: Epics use text prefixes instead of emojis: `[CPB]`, `[RUI]`, `[Infra]`

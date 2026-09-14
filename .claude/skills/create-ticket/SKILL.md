@@ -1,12 +1,14 @@
 ---
 name: create-ticket
-description: Marigold repo — Turn a settled scope (normally the summary `/grill` ends with) into one DST-conformant Jira issue, with the emoji title convention, the right issue type, the fields that type actually requires, and the description template Jira carries for that type. Use when the user asks to "create a ticket", "file this in Jira", "make a DST ticket", or types `/create-ticket`. Creating an issue is an outward action, so run this only on an explicit request, never proactively and never as a follow-up to unrelated work. The full rendered ticket is shown for confirmation before anything is written to Jira.
+description: DST — Turn a settled scope (normally the summary `/grill` ends with) into one DST-conformant Jira issue, with the emoji title convention, the right issue type, the fields that type actually requires, and the description template Jira carries for that type. Use when the user asks to "create a ticket", "file this in Jira", "make a DST ticket", or types `/create-ticket`. Creating an issue is an outward action, so run this only on an explicit request, never proactively and never as a follow-up to unrelated work. The full rendered ticket is shown for confirmation before anything is written to Jira.
 allowed-tools: AskUserQuestion, Read, mcp__plugin_atlassian_atlassian__getJiraIssueTypeMetaWithFields, mcp__plugin_atlassian_atlassian__searchJiraIssuesUsingJql, mcp__plugin_atlassian_atlassian__getIssueLinkTypes, mcp__plugin_atlassian_atlassian__createJiraIssue, mcp__plugin_atlassian_atlassian__createIssueLink, mcp__plugin_atlassian_atlassian__getJiraIssue, mcp__plugin_rx-baseline_atlassian__getJiraIssueTypeMetaWithFields, mcp__plugin_rx-baseline_atlassian__searchJiraIssuesUsingJql, mcp__plugin_rx-baseline_atlassian__getIssueLinkTypes, mcp__plugin_rx-baseline_atlassian__createJiraIssue, mcp__plugin_rx-baseline_atlassian__createIssueLink, mcp__plugin_rx-baseline_atlassian__getJiraIssue
 ---
 
-# Create-Ticket Skill for Marigold Design System
+# Create-Ticket Skill
 
-Turn a scope that is already settled into one DST issue a teammate can pick up cold. The conventions this enforces live in `CLAUDE.md` under "Jira (DST Project)". This skill applies them, it does not restate them.
+Turn a scope that is already settled into one DST issue a teammate can pick up cold.
+
+**This skill is not tied to one repository.** `DST` is the design system team's project, not the Marigold repository's issue tracker: it also carries work on the Core app, ClearingAdministration, the Cypress end-to-end suite and the Insights scanner. Nothing below depends on a file from the checkout it is invoked in, so the skill behaves the same from any of them. The conventions it applies travel with it in `references/dst-conventions.md`.
 
 **This skill writes to Jira.** Step 7 shows the whole rendered ticket and waits for an explicit confirmation. Nothing reaches Jira before that.
 
@@ -18,7 +20,7 @@ Turn a scope that is already settled into one DST issue a teammate can pick up c
 /create-ticket --sprint            # opt into the active sprint (see step 7)
 ```
 
-Jira coordinates that cannot drift: cloud id `4d9db72d-4108-4483-8582-40a3286e29c9` (`reservix.atlassian.net`), project key `DST`. Everything else about the project's fields is read from Jira at run time, see step 4.
+**Read `references/dst-conventions.md` before step 3.** It carries the Jira coordinates, the issue type ids and the title emoji table, which are team conventions and stable configuration. Which fields an issue type requires is neither, so that is read from Jira at run time instead, see step 4.
 
 ## Workflow
 
@@ -66,15 +68,15 @@ The type is a statement about planning provenance, not about the kind of work. T
 
 Switching the type changes which fields exist. Step 4 is what makes that safe.
 
-**Title.** Emoji prefix per the convention in `CLAUDE.md`, then a short imperative summary. Modifier emojis combine with a type emoji, they do not replace it.
+**Title.** Emoji prefix per the convention in `references/dst-conventions.md`, then a short imperative summary. Modifier emojis combine with a type emoji, they do not replace it.
 
 ### 4. Read the type's fields from Jira
 
-Call `getJiraIssueTypeMetaWithFields` for `DST` and the chosen issue type, taking the type's id from the issue-type table in `CLAUDE.md`. Build the create payload from what comes back: which fields are required, their allowed option ids, and which carry a server-side default.
+Call `getJiraIssueTypeMetaWithFields` for `DST` and the chosen issue type, taking the type's id from the issue-type table in `references/dst-conventions.md`. Build the create payload from what comes back: which fields are required, their allowed option ids, and which carry a server-side default.
 
 **Pass `requiredFieldsOnly: false`.** It defaults to true, and the narrow response is the wrong one here: the template step 8 renders lives on `description`, which is not a required field and so is filtered out. On `Task` the narrow call returns 6 fields of 24 and no `description` at all. A skill that reads the metadata and still builds a `Bug` on `Task`'s headings has bought nothing.
 
-**Do not keep a copy of the answer in this file.** The required-field set differs per issue type and is Jira configuration, so a table written here would be a second source of truth that nothing keeps honest. Reading it costs one call, and if that call fails you cannot create the issue anyway, so there is nothing a fallback table could buy.
+**Do not keep a copy of the answer in this file, or in `references/`.** The required-field set differs per issue type and is Jira configuration, so a table written down anywhere in this skill would be a second source of truth that nothing keeps honest. That is the line the reference file stops at. Reading it costs one call, and if that call fails you cannot create the issue anyway, so there is nothing a fallback table could buy.
 
 The same response carries the type's own description template, as `description.defaultValue` in ADF. Take the section headings from there. Each issue type has a different one, so a `Bug` built on `Task`'s template loses the reproduce steps a bug report needs.
 
@@ -192,5 +194,4 @@ Then read the issue back with `getJiraIssue` and report its URL, its type, and a
 
 ## Notes
 
-- `.claude/` is not a published package, so changes here need no changeset.
 - Producing the ticket is the job. Deciding it is worth doing is not, and neither is starting it.

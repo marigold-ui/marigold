@@ -23,7 +23,7 @@
         "No Jira issue was created and no create tool was called",
         "getJiraIssueTypeMetaWithFields was called for project DST with requiredFieldsOnly set to false",
         "The complete ticket is rendered, showing at least Type, Title, Epic, Appetite and the full Description",
-        "The title begins with a type emoji from the CLAUDE.md convention",
+        "The title begins with a type emoji from the convention in references/dst-conventions.md",
         "The rendered description uses the section headings from the issue type's own Jira template rather than a set hardcoded in the skill",
         "Four choices are offered as plain text: Create, Create and add to the active sprint, Edit, and Cancel",
         "AskUserQuestion was not used to present the confirmation",
