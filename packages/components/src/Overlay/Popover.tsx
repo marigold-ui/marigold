@@ -22,19 +22,41 @@ import { ResetButtonContext } from '../Button/ResetButtonContext';
 // ---------------
 const DEFAULT_CONTAINER_PADDING = 12;
 
+const measureClipWidth = () => {
+  const probe = document.createElement('div');
+  probe.style.cssText =
+    'position:fixed;top:0;left:0;right:0;height:0;visibility:hidden;pointer-events:none';
+
+  document.body.appendChild(probe);
+  const { width } = probe.getBoundingClientRect();
+  probe.remove();
+
+  return width;
+};
+
+let cached: { innerWidth: number; padding: number } | undefined;
+
 const getContainerPadding = () => {
   if (typeof document === 'undefined' || !document.body) {
     return DEFAULT_CONTAINER_PADDING;
   }
 
-  if (getComputedStyle(document.body).overflowX === 'visible') {
-    return DEFAULT_CONTAINER_PADDING;
+  const { innerWidth } = window;
+
+  if (cached?.innerWidth === innerWidth) {
+    return cached.padding;
   }
 
-  const gutter =
-    window.innerWidth - document.body.getBoundingClientRect().right;
+  const reserved =
+    getComputedStyle(document.documentElement).scrollbarGutter !== 'auto';
+  const gutter = reserved ? innerWidth - measureClipWidth() : 0;
 
-  return DEFAULT_CONTAINER_PADDING + Math.max(0, Math.ceil(gutter));
+  cached = {
+    innerWidth,
+    padding: DEFAULT_CONTAINER_PADDING + Math.max(0, Math.ceil(gutter)),
+  };
+
+  return cached.padding;
 };
 
 const subscribeToViewport = (onChange: () => void) => {

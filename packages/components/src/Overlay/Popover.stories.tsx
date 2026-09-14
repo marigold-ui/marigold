@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { expect, userEvent } from 'storybook/test';
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { ActionMenu } from '../Menu/ActionMenu';
@@ -83,29 +83,42 @@ export const AtViewportEdge = meta.story({
   ),
 });
 
-AtViewportEdge.test(
-  'Keeps the menu inside the box that clips it',
-  {
-    parameters: { chromatic: { disableSnapshot: false } },
-    beforeEach: () => {
-      document.body.style.overflowX = 'clip';
-      document.body.style.marginRight = '15px';
+/**
+ * A reserved scrollbar gutter cannot be produced in a headless browser — the
+ * platform draws overlay scrollbars, so `scrollbar-gutter: stable` reserves
+ * nothing and there is no gap to catch. What this pins instead is the lever the
+ * fix pulls: that `containerPadding` reaches react-aria and holds the overlay
+ * that far off the boundary. The gutter measurement itself is verified by hand
+ * in a headed browser; see the changeset.
+ */
+const EXAGGERATED_PADDING = 100;
 
-      return () => {
-        document.body.style.overflowX = '';
-        document.body.style.marginRight = '';
-      };
+AtViewportEdge.test(
+  'Holds the menu containerPadding away from react-aria’s boundary',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { containerPadding: EXAGGERATED_PADDING },
+    render: args => {
+      const ref = useRef<HTMLDivElement>(null);
+
+      return (
+        <div className="flex justify-end">
+          <div ref={ref}>Jane Doe</div>
+          <Popover {...args} open triggerRef={ref}>
+            <Text>Account</Text>
+          </Popover>
+        </div>
+      );
     },
   },
   async ({ canvas }) => {
-    await userEvent.click(canvas.getByRole('button', { name: 'User menu' }));
-
-    const popover = (await canvas.findByRole('menu')).closest(
-      '[data-trigger]'
+    const popover = (await canvas.findByText('Account')).closest(
+      '[data-placement]'
     )!;
+    const boundary = window.visualViewport?.width ?? window.innerWidth;
 
     expect(popover.getBoundingClientRect().right).toBeLessThanOrEqual(
-      document.body.getBoundingClientRect().right
+      boundary - EXAGGERATED_PADDING
     );
   }
 );
