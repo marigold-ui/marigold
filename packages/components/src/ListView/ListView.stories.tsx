@@ -202,15 +202,20 @@ NotificationsFeed.test(
       expect(deployRow).toHaveFocus();
     });
 
-    await step('tab reaches the nested archive button in the row', async () => {
-      await userEvent.tab();
-      const archiveButtons = canvas.getAllByRole('button', {
-        name: 'Archive',
-      });
-      expect(archiveButtons[1]).toHaveFocus();
-      await userEvent.keyboard('[Space]');
-      expect(onArchive).toHaveBeenCalledWith('deploy');
-    });
+    // A grid is a single tab stop, so the controls inside a row are reached
+    // with ArrowRight, not Tab. Tab leaves the list entirely.
+    await step(
+      'arrow-right reaches the nested archive button in the row',
+      async () => {
+        await userEvent.keyboard('{ArrowRight}');
+        const archiveButtons = canvas.getAllByRole('button', {
+          name: 'Archive',
+        });
+        expect(archiveButtons[1]).toHaveFocus();
+        await userEvent.keyboard('[Space]');
+        expect(onArchive).toHaveBeenCalledWith('deploy');
+      }
+    );
 
     await step('the row menu opens and mutes the thread', async () => {
       const trigger = canvas.getByRole('button', {

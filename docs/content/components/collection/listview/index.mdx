@@ -98,7 +98,7 @@ If the user is choosing something and that choice has to travel anywhere, use a 
 
 ## Accessibility
 
-- Arrow keys move focus between rows, `Tab` reaches the controls inside the focused row.
+- Up and Down move focus between rows. The list is a single tab stop, so `Right` moves focus into the controls inside the focused row and `Left` moves it back out to the row. `Tab` leaves the list.
 - Give the list an `aria-label`, or `aria-labelledby` when a heading nearby already names it.
 - Set `textValue` on a row whose text isn't a plain string, screen readers use it as the row's accessible name.
 
