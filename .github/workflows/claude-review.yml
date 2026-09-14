@@ -213,5 +213,8 @@ jobs:
           # comment tool, leaving Claude no way to post its findings.
           #
           # The model is a Bedrock inference profile ID, not an API alias such
-          # as `claude-sonnet-5`, which Bedrock does not accept.
-          claude_args: --model ${{ vars.AI_REVIEW_MODEL_ID }}
+          # as `claude-sonnet-5`, which Bedrock does not accept. --max-turns
+          # caps a runaway review; the timeout above only bounds wall clock.
+          claude_args: >-
+            --model ${{ vars.AI_REVIEW_MODEL_ID }}
+            --max-turns 30
