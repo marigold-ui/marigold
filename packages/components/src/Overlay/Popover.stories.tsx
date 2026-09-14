@@ -93,6 +93,14 @@ export const AtViewportEdge = meta.story({
  */
 const EXAGGERATED_PADDING = 100;
 
+/**
+ * react-aria clamps by setting `left` to `boundaryEnd - width`, both fractional,
+ * so the right edge can land a fraction of a pixel over the line depending on
+ * how the text in the overlay happens to measure. Far below the ~88px the
+ * assertion moves by when the forwarding is removed.
+ */
+const SUBPIXEL = 1;
+
 AtViewportEdge.test(
   'Holds the menu containerPadding away from react-aria’s boundary',
   {
@@ -118,7 +126,7 @@ AtViewportEdge.test(
     const boundary = window.visualViewport?.width ?? window.innerWidth;
 
     expect(popover.getBoundingClientRect().right).toBeLessThanOrEqual(
-      boundary - EXAGGERATED_PADDING
+      boundary - EXAGGERATED_PADDING + SUBPIXEL
     );
   }
 );
