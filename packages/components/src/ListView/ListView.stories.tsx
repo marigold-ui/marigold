@@ -202,8 +202,6 @@ NotificationsFeed.test(
       expect(deployRow).toHaveFocus();
     });
 
-    // A grid is a single tab stop, so the controls inside a row are reached
-    // with ArrowRight, not Tab. Tab leaves the list entirely.
     await step(
       'arrow-right reaches the nested archive button in the row',
       async () => {

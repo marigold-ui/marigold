@@ -90,8 +90,6 @@ describe('ListView', () => {
       expect(rows[0]).toHaveFocus();
     });
 
-    // The grid is a single tab stop: RAC's default `keyboardNavigationBehavior`
-    // is `'arrow'`, so Tab leaves the list instead of stepping into a row.
     test('tab leaves the list rather than entering the focused row', async () => {
       render(<NotificationsFeed.Component />);
 
@@ -100,8 +98,6 @@ describe('ListView', () => {
 
       await user.tab();
 
-      // The story renders nothing but the list, so nothing focusable in it
-      // holding focus means focus left the list.
       for (const element of [
         ...screen.getAllByRole('row'),
         ...screen.getAllByRole('button'),
