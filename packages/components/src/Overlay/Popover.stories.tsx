@@ -48,15 +48,6 @@ export const OpenPopover = meta.story({
   },
 });
 
-/**
- * The App Shell top bar from `/examples/general`, reduced to the part that
- * breaks: an overflow menu pinned to the right edge of a page that scrolls.
- *
- * `theme-rui`'s preflight reserves a scrollbar gutter on `<html>` and clips the
- * `<body>`, so the box that cuts is a gutter's width narrower than the visual
- * viewport react-aria positions against. The menu lands in the gutter and loses
- * its right border and corners — see DST-1754.
- */
 export const AtViewportEdge = meta.story({
   tags: ['dev', 'component-test'],
   parameters: { layout: 'fullscreen', surface: false },
