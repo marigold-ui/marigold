@@ -93,6 +93,6 @@
   "devDependencies": {
     "@storybook/addon-mcp": "^0.6.0",
     "@vitest/coverage-istanbul": "4.1.10",
-    "lint-staged": "17.3.0"
+    "lint-staged": "17.5.1"
   }
 }
