@@ -4,7 +4,8 @@ import { useLayoutEffect } from 'react';
 // which excludes the reserved scrollbar gutter, so this spans the box that actually
 // clips. Not `fixed`: react-aria reads a non-body boundary in document coordinates,
 // and a fixed element reports viewport ones, which throws the flip and max-height
-// maths off by the scroll offset. Workaround for adobe/react-spectrum#10131.
+// maths off by the scroll offset.
+// Workaround for adobe/react-spectrum#10131. Delete when that lands.
 let boundary: HTMLElement | undefined;
 
 export const getClipBoundary = () => {
