@@ -1,0 +1,8 @@
+[
+  { "query": "what should I review next", "should_trigger": true },
+  { "query": "which of my PRs bounced back and need rework", "should_trigger": true },
+  { "query": "show me my review queue", "should_trigger": true },
+  { "query": "go through the review comments on my PR", "should_trigger": false },
+  { "query": "review PR 5776 for me", "should_trigger": false },
+  { "query": "what should I work on next", "should_trigger": false }
+]
