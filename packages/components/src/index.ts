@@ -79,8 +79,10 @@ export type { CheckboxGroupProps } from './Checkbox/CheckboxGroup';
 export { Checkbox } from './Checkbox/Checkbox';
 export type { CheckboxProps } from './Checkbox/Checkbox';
 
+/** @internal */
 export { CloseButton } from './CloseButton/CloseButton';
 
+/** @internal */
 export { Collapsible } from './Collapsible/Collapsible';
 export type { CollapsibleProps } from './Collapsible/Collapsible';
 
@@ -112,11 +114,11 @@ export { Dialog } from './Dialog/Dialog';
 export type { DialogProps } from './Dialog/Dialog';
 export { ConfirmationDialog } from './Dialog/ConfirmationDialog';
 export type { ConfirmationDialogProps } from './Dialog/ConfirmationDialog';
-export {
-  useConfirmation,
-  ConfirmationProvider,
-  ConfirmationContext,
-} from './Dialog/useConfirmation';
+export { useConfirmation } from './Dialog/useConfirmation';
+/** @internal */
+export { ConfirmationProvider } from './Dialog/useConfirmation';
+/** @internal */
+export { ConfirmationContext } from './Dialog/useConfirmation';
 export type {
   ConfirmationResult,
   ConfirmationConfig,
@@ -135,6 +137,7 @@ export type { EmptyStateProps } from './EmptyState/EmptyState';
 export { ErrorState } from './ErrorState/ErrorState';
 export type { ErrorStateProps } from './ErrorState/ErrorState';
 
+/** @internal */
 export { FieldBase } from './FieldBase/FieldBase';
 export type { FieldBaseProps } from './FieldBase/FieldBase';
 
@@ -157,6 +160,7 @@ export type { GridProps } from './Grid/Grid';
 export { Headline } from './Headline/Headline';
 export type { HeadlineProps } from './Headline/Headline';
 
+/** @internal */
 export { HelpText } from './HelpText/HelpText';
 export type { HelpTextProps } from './HelpText/HelpText';
 
@@ -165,8 +169,10 @@ export { IconButton } from './IconButton/IconButton';
 export { Inline } from './Inline/Inline';
 export type { InlineProps } from './Inline/Inline';
 
+/** @internal */
 export { Input } from './Input/Input';
 export type { InputProps } from './Input/Input';
+/** @internal */
 export { SearchInput } from './Input/SearchInput';
 export type { SearchInputProps } from './Input/SearchInput';
 
@@ -176,6 +182,7 @@ export type { InsetProps } from './Inset/Inset';
 export { Keyboard } from './Keyboard/Keyboard';
 export type { KeyboardProps } from './Keyboard/Keyboard';
 
+/** @internal */
 export { Label } from './Label/Label';
 export type { LabelProps } from './Label/Label';
 
@@ -188,6 +195,7 @@ export type { LinkButtonProps } from './LinkButton/LinkButton';
 export { List } from './List/List';
 export type { ListProps } from './List/List';
 
+/** @internal */
 export { ListBox } from './ListBox/ListBox';
 export type { ListBoxProps } from './ListBox/ListBox';
 
@@ -197,6 +205,7 @@ export type { ListViewItemProps } from './ListView/ListViewItem';
 
 export { ActionMenu } from './Menu/ActionMenu';
 export type { ActionMenuProps } from './Menu/ActionMenu';
+/** @internal */
 export { ActionMenuContext } from './Menu/ActionMenuContext';
 
 export { Menu } from './Menu/Menu';
@@ -205,15 +214,19 @@ export type { MenuProps } from './Menu/Menu';
 export { NumberField } from './NumberField/NumberField';
 export type { NumberFieldProps } from './NumberField/NumberField';
 
+/** @internal */
 export { Popover } from './Overlay/Popover';
 export type { PopoverProps } from './Overlay/Popover';
 
+/** @internal */
 export { Modal } from './Overlay/Modal';
 export type { ModalProps } from './Overlay/Modal';
 
+/** @internal */
 export { NonModal } from './Overlay/NonModal';
 export type { NonModalProps } from './Overlay/NonModal';
 
+/** @internal */
 export { Underlay } from './Overlay/Underlay';
 export type { UnderlayProps } from './Overlay/Underlay';
 
@@ -232,8 +245,11 @@ export type { PaginationProps } from './Pagination/Pagination';
 export { ProgressCircle } from './ProgressCircle/ProgressCircle';
 export type { ProgressCircleProps } from './ProgressCircle/ProgressCircle';
 
+/** @internal */
 export { HeadingContext } from 'react-aria-components/Heading';
+/** @internal */
 export { TextContext } from 'react-aria-components/Text';
+/** @internal */
 export { Provider } from 'react-aria-components/slots';
 // Re-exported from react-aria-components (NOT `@react-aria/i18n`) so the
 // provider writes the same `I18nContext` instance that RAC-based components
@@ -377,6 +393,7 @@ export type { SegmentedControlProps } from './SegmentedControl/SegmentedControl'
 export { SegmentedControlOption } from './SegmentedControl/SegmentedControl';
 export type { SegmentedControlOptionProps } from './SegmentedControl/SegmentedControl';
 
+/** @internal */
 export { Tray } from './Tray/Tray';
 export type { TrayProps } from './Tray/Tray';
 

@@ -6,7 +6,8 @@ export default defineConfig({
   tsconfig: './tsconfig.build.json',
   dts: true,
   external: ['react', 'react-dom', 'react/jsx-runtime'],
-  inlineOnly: false,
+  // tsdown 0.23 replaced `inlineOnly` with `deps.onlyBundle`; false silences its hint.
+  deps: { onlyBundle: false },
   // Emit one output file per source module (preserveModules equivalent) so
   // consumer bundlers can drop unused components instead of pulling the whole
   // concatenated barrel. The `.` barrel import stays backward compatible.

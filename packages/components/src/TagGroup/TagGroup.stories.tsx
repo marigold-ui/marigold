@@ -448,3 +448,52 @@ CollapseAtWithRemove.test(
     expect(canvas.queryByText(/show \d+ more/i)).not.toBeInTheDocument();
   }
 );
+
+/**
+ * `dependencies` invalidates React Aria's per-item render cache, so it only
+ * matters for `items` plus a render function that reads state living outside
+ * the collection — a setup none of the stories above has, and one with nothing
+ * to look at: the cache is the subject, and both states render the same way.
+ * The test below therefore carries that setup as its own `render` instead of
+ * exporting a story a reader can take nothing from.
+ */
+const ITEMS = [{ id: 1 }, { id: 2 }];
+
+Basic.test(
+  'Re-renders the tags when a listed dependency changes',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    render: args => {
+      const [locale, setLocale] = useState('en');
+      const labels: Record<string, Record<number, string>> = {
+        en: { 1: 'News', 2: 'Travel' },
+        de: { 1: 'Nachrichten', 2: 'Reisen' },
+      };
+
+      return (
+        <Stack space={6} alignX="left">
+          {/* The items never change, so only `dependencies` can refresh the tags. */}
+          <Tag.Group {...args} items={ITEMS} dependencies={[locale]}>
+            {(item: { id: number }) => <Tag>{labels[locale][item.id]}</Tag>}
+          </Tag.Group>
+          <Button onPress={() => setLocale('de')}>Switch language</Button>
+        </Stack>
+      );
+    },
+  },
+  async ({ canvas, userEvent }) => {
+    expect(canvas.getByText('News')).toBeInTheDocument();
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Switch language' })
+    );
+
+    expect(canvas.getByText('Nachrichten')).toBeInTheDocument();
+  }
+);
+
+// The `collapseAt` branch renders a second `TagList`, but it only engages for
+// static children (`canCollapse` requires a non-function `children`), so a
+// render function can never reach it and there is no stale render to test. Its
+// `dependencies` forward is kept so the two branches stay in step if collapse
+// ever learns to handle `items`.

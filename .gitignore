@@ -44,9 +44,14 @@ next-env.d.ts
 # Claude Code worktrees
 .claude/worktrees/
 
+# Per-ticket plans written by /pick-up
+.claude/tasks/
+
 # Playwright MCP
 .playwright-mcp
 
 # Vitest browser-mode failure artifacts
 **/__screenshots__
 .vitest-attachments
+
+.vale/bin/

@@ -140,7 +140,7 @@ Reach for `disabledKeys` when a step is visible but genuinely not available: one
 
 ### Links or buttons
 
-When each step of your flow has its own URL, the steps should behave like the links they are, so middle-click, open in a new tab, and copy link all work. Give a **reachable** `<Stepper.Item>` an `href` and it renders as a real link; a step that is still ahead stays inert text even with an `href`. Without an `href`, a reachable step renders as a button and only calls `onSelectionChange`.
+When each step of your flow has its own URL, the steps should behave like the links they are, so middle-click, open in a new tab, and copy link all work. Give a **reachable** `<Stepper.Item>` an `href` and it renders as a real link. A step that is still ahead stays inert text even with an `href`. Without an `href`, a reachable step renders as a button and only calls `onSelectionChange`.
 
 A bare `href` performs a real page load, which is usually not what a single-page app wants. Wrap the tree in a [`<RouterProvider>`](/components/application/routerprovider) and hand it your router's navigate function: the steps stay real anchors for the browser, but clicking one routes client-side. With hrefs the route is the source of truth, so derive `selectedKey` from it and skip `onSelectionChange` entirely.
 

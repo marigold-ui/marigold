@@ -42,6 +42,14 @@ export interface TagGroupProps
   size?: string;
 
   /**
+   * Values that invalidate the cached items, like a hook's dependency array.
+   * Only needed for `items` plus a render function: rendered items are cached
+   * per item object, so anything the function reads from outside the item —
+   * state, a lookup, a prop — has to be listed here or it renders stale.
+   */
+  dependencies?: TagListProps<object>['dependencies'];
+
+  /**
    * The label of the field.
    */
   label?: ReactNode;
@@ -143,6 +151,7 @@ const _TagGroup = ({
   ref,
   items,
   children,
+  dependencies,
   emptyState,
   variant,
   size,
@@ -281,6 +290,7 @@ const _TagGroup = ({
                 <TagList
                   ref={tagListRef}
                   items={items}
+                  dependencies={dependencies}
                   className="contents"
                   renderEmptyState={emptyState}
                 >
@@ -312,6 +322,7 @@ const _TagGroup = ({
               <TagList
                 ref={tagListRef}
                 items={items}
+                dependencies={dependencies}
                 className={classNames.listItems}
                 renderEmptyState={emptyState}
               >

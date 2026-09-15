@@ -154,7 +154,7 @@ Tables, media, charts, and status bars are the exceptions. They look cramped whe
 
 <ComponentDemo name="panel-bleed" />
 
-Tables get a small bonus: when bled, their cell edges line up with the Panel's header and footer, so what's inside a row still reads in rhythm with the title above it. That works because a bled content area publishes the Panel's horizontal padding as `--bleed-px`, which your own content can read too — see [Reading container spacing](/foundations/spacing#reading-container-spacing).
+Tables get a small bonus: when bled, their cell edges line up with the Panel's header and footer, so what's inside a row still reads in rhythm with the title above it. That works because a bled content area publishes the Panel's horizontal padding as `--bleed-px`, which your own content can read too. See [Reading container spacing](/foundations/spacing#reading-container-spacing).
 
 An `<Accordion>` behaves the same way. Drop one into a bled content area and its item dividers span edge-to-edge while the header and content stay inset, aligned with the Panel title. No extra prop is needed: the Accordion picks up the Panel's horizontal padding automatically, exactly like Table cells do.
 
@@ -262,7 +262,7 @@ Panel publishes what those props resolved to as three read-only custom propertie
 
 You need them when a wrapper interrupts the Panel's own rhythm. Panel spaces its slots with a flex gap, so a `<div>` around several `<Panel.Content>` siblings becomes a single flex item and the gap between them collapses. Re-declare it with `gap-(--panel-gap)` and the group stays in rhythm with every other Panel, where a hardcoded value would drift as soon as the `space` default changes.
 
-Set spacing through the props, not by declaring these yourself — Panel writes them inline on its root, which outranks a declaration on any ancestor. For content that should align with the Panel's padding after bleeding out of it, reach for `--bleed-px` instead. See [Reading container spacing](/foundations/spacing#reading-container-spacing).
+Set spacing through the props, not by declaring these yourself. Panel writes them inline on its root, which outranks a declaration on any ancestor. For content that should align with the Panel's padding after bleeding out of it, reach for `--bleed-px` instead. See [Reading container spacing](/foundations/spacing#reading-container-spacing).
 
 ## Accessibility
 

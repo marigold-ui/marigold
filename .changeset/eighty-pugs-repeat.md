@@ -12,7 +12,7 @@ The resulting scroll-into-view puts the list behind React Aria's 300ms `pointer-
 cooldown, which swallows a click on an option.
 
 The observable failure was confined to browser-mode test runs, where the width never becomes
-finite. In a real browser the first-pass window never reaches the DOM — `ScrollView` settles its
-width before commit — so no change in behaviour is expected for `Select`, `ComboBox`,
+finite. In a real browser the first-pass window never reaches the DOM, because `ScrollView` settles its
+width before commit, so no change in behaviour is expected for `Select`, `ComboBox`,
 `Autocomplete` or `TagField`. `ListBoxLayout` now rejects measurements taken in that state, closing
 both paths.

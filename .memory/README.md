@@ -12,7 +12,8 @@ Context an agent would otherwise re-derive every session: what our words mean, a
 | -------------------- | ------------------------------ | ----------------------------------- |
 | `CONTEXT.md`         | Glossary — what our terms mean | Descriptive, corrected in place     |
 | `adr/NNNN-<slug>.md` | Why a decision was made        | Historical, immutable once accepted |
-| `tasks/`             | Reserved — per-ticket specs    | Not in use yet; `/pick-up` fills it |
+
+There is no `tasks/`. Per-ticket specs were reserved here once and then moved out: `/pick-up` writes its plans to `.claude/tasks/`, untracked. A plan for one ticket is task-local and dead the day the ticket ships, so it fails the write rule below, and this store is only worth loading while everything in it is still true.
 
 ## The boundary with CLAUDE.md
 

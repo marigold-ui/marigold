@@ -2,6 +2,7 @@ import { screen } from '@testing-library/react';
 import { useState } from 'react';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Button } from '../Button/Button';
 import { Center } from '../Center/Center';
 import { Description } from '../Description/Description';
 import { Stack } from '../Stack/Stack';
@@ -516,6 +517,123 @@ Mobile.test(
 
     await step('Verify selection is displayed in trigger', async () => {
       await waitFor(() => expect(trigger).toHaveTextContent('The Matrix'));
+    });
+  }
+);
+
+/**
+ * `dependencies` invalidates React Aria's per-item render cache, so it only
+ * matters for `items` plus a render function that reads state living outside
+ * the collection — a setup none of the stories above has, and one with nothing
+ * to look at: the cache is the whole subject, and both states render the same
+ * way. The two tests below therefore carry it as their own `render` instead of
+ * exporting a story nobody can read anything off.
+ */
+const SHIFT_ITEMS = [
+  { id: 'ada', name: 'Ada' },
+  { id: 'grace', name: 'Grace' },
+];
+
+const withShift: Parameters<typeof Basic.test>[1] = {
+  args: { label: 'Assign to', description: undefined },
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => {
+    const [shift, setShift] = useState('early');
+
+    return (
+      <Stack space={2} alignX="left">
+        <Button onPress={() => setShift('late')}>Switch shift</Button>
+        <Autocomplete {...args} items={SHIFT_ITEMS} dependencies={[shift]}>
+          {(item: (typeof SHIFT_ITEMS)[number]) => (
+            <Autocomplete.Option id={item.id}>
+              {item.name} — {shift}
+            </Autocomplete.Option>
+          )}
+        </Autocomplete>
+      </Stack>
+    );
+  },
+};
+
+Basic.test(
+  'Re-renders the options when a listed dependency changes',
+  withShift,
+  async ({ canvas, step, userEvent }) => {
+    const optionFor = async (shift: string) => {
+      const input = canvas.getByRole('combobox');
+      await userEvent.clear(input);
+      // Typing is what opens the list; the query matches both options.
+      await userEvent.type(input, 'a');
+
+      return canvas.findByRole('option', {
+        name: new RegExp(`Ada — ${shift}`),
+      });
+    };
+
+    await step(
+      'The options render with the current outside state',
+      async () => {
+        expect(await optionFor('early')).toBeInTheDocument();
+        // The open popover hides the rest of the page from queries.
+        await userEvent.keyboard('{Escape}');
+      }
+    );
+
+    await step('Changing that state re-renders them', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Switch shift' })
+      );
+
+      expect(await optionFor('late')).toBeInTheDocument();
+    });
+  }
+);
+
+// The tray renders its own listbox, so it needs the same `dependencies` forward
+// the popover gets — a component that only forwards to the popover fails here and
+// nowhere else.
+Basic.test(
+  'Re-renders the tray options when a listed dependency changes',
+  { ...withShift, globals: { viewport: { value: 'smallScreen' } } },
+  async ({ args, canvas, step, userEvent }) => {
+    const optionFor = async (shift: string) => {
+      // The tray title repeats the label, so scope the trigger to its role.
+      await userEvent.click(
+        canvas.getByRole('button', { name: new RegExp(`${args.label}`, 'i') })
+      );
+      const tray = await canvas.findByRole('dialog');
+      // Typing is what filters the list; the query matches both options.
+      await userEvent.type(within(tray).getByRole('combobox'), 'a');
+
+      return within(tray).findByRole('option', {
+        name: new RegExp(`Ada — ${shift}`),
+      });
+    };
+
+    // The tray's underlay swallows clicks until it is gone, so wait it out
+    // before touching anything behind it.
+    const close = async () => {
+      await userEvent.keyboard('{Escape}');
+
+      return waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    };
+
+    await step(
+      'The tray options render with the current outside state',
+      async () => {
+        expect(await optionFor('early')).toBeInTheDocument();
+        await close();
+      }
+    );
+
+    await step('Changing that state re-renders them', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Switch shift' })
+      );
+
+      expect(await optionFor('late')).toBeInTheDocument();
     });
   }
 );

@@ -13,6 +13,7 @@
 .npmrc
 .nvmrc
 .prettierignore
+.vale.ini
 .claude
 
 coverage
