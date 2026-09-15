@@ -7,6 +7,7 @@ import { Menu } from '../Menu/Menu';
 import { OverlayContainerProvider } from '../Provider/OverlayContainerProvider';
 import { Text } from '../Text/Text';
 import { Popover } from './Popover';
+import { getClipBoundary } from './clipBoundary';
 
 const PORTAL_ID = 'popover-at-viewport-edge';
 
@@ -82,37 +83,33 @@ export const AtViewportEdge = meta.story({
   ),
 });
 
-const EXAGGERATED_PADDING = 100;
+const BOUNDARY_INSET = 300;
 
 const SUBPIXEL = 1;
 
 AtViewportEdge.test(
-  'Holds the menu containerPadding away from react-aria’s boundary',
+  'Clamps the menu to the clip boundary rather than the viewport',
   {
     tags: ['!dev'],
     parameters: { chromatic: { disableSnapshot: true } },
-    args: { containerPadding: EXAGGERATED_PADDING },
-    render: args => {
-      const ref = useRef<HTMLDivElement>(null);
+    beforeEach: () => {
+      const boundary = getClipBoundary()!;
+      boundary.style.right = `${BOUNDARY_INSET}px`;
 
-      return (
-        <div className="flex justify-end">
-          <div ref={ref}>Jane Doe</div>
-          <Popover {...args} open triggerRef={ref}>
-            <Text>Account</Text>
-          </Popover>
-        </div>
-      );
+      return () => {
+        boundary.style.right = '0px';
+      };
     },
   },
-  async ({ canvas }) => {
-    const popover = (await canvas.findByText('Account')).closest(
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'User menu' }));
+
+    const popover = (await canvas.findByRole('menu')).closest(
       '[data-placement]'
     )!;
-    const boundary = window.visualViewport?.width ?? window.innerWidth;
 
     expect(popover.getBoundingClientRect().right).toBeLessThanOrEqual(
-      boundary - EXAGGERATED_PADDING + SUBPIXEL
+      getClipBoundary()!.getBoundingClientRect().right + SUBPIXEL
     );
   }
 );
