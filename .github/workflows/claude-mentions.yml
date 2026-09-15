@@ -1,16 +1,5 @@
-# Lets anyone with write access pull Claude into a PR thread by writing @claude,
-# to ask a question or ask for a fix. The automatic baseline review is the other
-# half and lives in claude-review.yml.
-#
-# Auth is Amazon Bedrock via GitHub OIDC role assumption, so there is no static
-# key in this public repo. The credential is fixed per run and billed to the AWS
-# account, never drawn from the quota of whoever typed @claude.
-#
-# GitHub-side identity is a dedicated App, not GITHUB_TOKEN, following the same
-# pattern as renovate.yml. This is not cosmetic: GitHub does not start workflow
-# runs from commits created with GITHUB_TOKEN, so a fix Claude pushes would
-# never be built, typechecked or tested. The review workflow keeps GITHUB_TOKEN,
-# because it only comments.
+# Pulls Claude into a PR thread on an @claude mention. The automatic baseline
+# review is the other half and lives in claude-review.yml.
 name: Claude Mentions
 
 on:
@@ -24,22 +13,17 @@ on:
 permissions: {}
 
 concurrency:
-  # One Claude at a time per PR. Deliberately NOT cancel-in-progress: a
-  # cancelled run can leave a half-finished commit push behind.
+  # Not cancel-in-progress: a cancelled run can leave a half-finished push.
   group: claude-mentions-${{ github.event.issue.number || github.event.pull_request.number }}
   cancel-in-progress: false
 
 jobs:
-  # Everything cheap and refusable happens here, so the expensive job is gated
-  # once with `needs:` and a step added later cannot forget the guard.
   gate:
-    # Disable with the AI_MENTIONS_ENABLED repository variable set to 'false'.
+    # Off with AI_MENTIONS_ENABLED='false'.
     #
-    # author_association is a cheap pre-filter, NOT the security boundary:
-    # MEMBER and COLLABORATOR do not imply write access. The real boundary is
-    # claude-code-action, which verifies write permission on comment and review
-    # events. Do not set allowed_non_write_users here: this job holds
-    # contents: write, and that input would make this filter the only check.
+    # author_association is a pre-filter, not the boundary: MEMBER and
+    # COLLABORATOR do not imply write. The real check is in the job below. Do
+    # not set allowed_non_write_users, which would make this the only check.
     if: >-
       vars.AI_MENTIONS_ENABLED != 'false' && (
         (
@@ -74,12 +58,9 @@ jobs:
       proceed: ${{ steps.check.outputs.proceed }}
 
     steps:
-      # Forks are rejected. This matters here specifically: issue_comment fires
-      # in the BASE repo's context, so unlike a pull_request event it does have
-      # credentials available on a fork PR. With contents: write that is the
-      # untrusted-checkout shape. The two review events carry
-      # head.repo.full_name in their payload and are filtered above, so only
-      # issue_comment needs the API call.
+      # issue_comment fires in the BASE repo's context, so unlike pull_request
+      # it does have credentials on a fork PR. The review events carry
+      # head.repo.full_name and are filtered above.
       - name: Reject fork pull requests
         id: check
         env:
@@ -124,13 +105,8 @@ jobs:
           private-key: ${{ secrets.CLAUDE_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
 
-      # The real write check, ahead of the AWS step so an unauthorised mention
-      # never reaches the cloud credentials. The gate job's author_association
-      # is only a pre-filter: MEMBER and COLLABORATOR do not imply write.
-      #
       # Allowlist, never a denylist. On a PUBLIC repo this endpoint answers
-      # `read` for someone with no relationship to the repository at all, so
-      # testing for `none` would let everyone through.
+      # `read` for a total stranger, so refusing only `none` lets everyone in.
       - name: Verify the commenter has write access
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
@@ -144,19 +120,16 @@ jobs:
             *) echo "::error::${ACTOR} has '${perm}' access, not write. Refusing."; exit 1 ;;
           esac
 
-      # No `ref:` on purpose. The action does its own branch management, and its
-      # security guide is explicit that an untrusted ref must not be checked out
-      # into the workspace root ahead of it.
+      # No `ref:`. The action manages the branch itself, and its security guide
+      # forbids checking out an untrusted ref ahead of it.
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
           fetch-depth: 1
           persist-credentials: false
 
-      # Node and pnpm go on PATH, but dependencies are deliberately NOT
-      # installed: this checkout is the base branch, and the action switches the
-      # workspace to the PR branch afterwards, so an install now resolves the
-      # wrong lockfile. Claude installs for itself when it changes code.
+      # On PATH only. Installing here would resolve the base branch's lockfile,
+      # since the action switches to the PR branch afterwards.
       - name: Setup pnpm
         uses: pnpm/action-setup@v6.1.0 # version comes from package.json#packageManager
 
@@ -166,9 +139,6 @@ jobs:
           node-version-file: '.node-version'
           cache: 'pnpm'
 
-      # Short-lived STS credentials, so nothing static lives in this public
-      # repo. The existing AWS_BEDROCK_* secrets are not reused: they are static
-      # keys scoped to Titan embeddings for release.yml.
       - name: Assume the Bedrock role
         uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
         with:
@@ -179,26 +149,19 @@ jobs:
       - name: Run Claude
         uses: anthropics/claude-code-action@fa2b2666b747000bf42767d1f332065b375e3c8f # v1.0.214
         with:
-          # Reads the STS credentials from the environment. Do not add
-          # anthropic_api_key: a static credential takes precedence and Bedrock
-          # is silently skipped.
+          # Do not add anthropic_api_key: it takes precedence and Bedrock is
+          # silently skipped.
           use_bedrock: 'true'
 
           # The App token, so a commit Claude pushes actually triggers CI.
           github_token: ${{ steps.app-token.outputs.token }}
 
-          # No `prompt:` here, deliberately. Setting one REPLACES the comment
-          # that tagged Claude, which is the whole point of this workflow.
-          # Project conventions arrive via CLAUDE.md, loaded automatically.
+          # No `prompt:`. Setting one REPLACES the comment that tagged Claude.
 
           additional_permissions: |
             actions: read
 
-          # Single-quoted and free of backticks, so nothing in the value can be
-          # taken as shell substitution. The model is a Bedrock inference
-          # profile ID, not an API alias such as `claude-opus-5`. Mentions are
-          # rare and deliberate and get the stronger model; the automatic review
-          # is where spend accumulates.
+          # Single-quoted and backtick-free: nothing here may expand as shell.
           claude_args: >-
             --model ${{ vars.AI_MENTIONS_MODEL_ID }}
             --max-turns 60

@@ -1,6 +1,4 @@
-# Baseline review of a pull request against the repository's own standards,
-# so it happens without anyone remembering to run /review-pr locally.
-#
+# Baseline review of a pull request against the repository's own standards.
 # Ships SWITCHED OFF: opt in with the AI_REVIEW_ENABLED repository variable.
 # Advisory only. claude-code-action cannot submit formal reviews or approve.
 name: Claude Review
@@ -8,9 +6,8 @@ name: Claude Review
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    # Free pre-filter, in front of the classifier rather than replacing it.
-    # Deliberately narrower than visual-regression-tests.yml, which also ignores
-    # all of docs/**: that is a Next.js app with ~600 reviewable .tsx files.
+    # Narrower than visual-regression-tests.yml on purpose: docs/** is a Next.js
+    # app with ~600 reviewable .tsx files.
     paths-ignore:
       - '**/*.md'
       - '**/*.mdx'
@@ -19,14 +16,14 @@ on:
 permissions: {}
 
 concurrency:
-  # PRs here average 4.3 commits, so without this one PR pays for four reviews.
+  # PRs average 4.3 commits; without this one PR pays for four reviews.
   group: claude-review-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:
   classify:
-    # Bots are filtered by account TYPE, not login: Renovate posts here as
-    # `marigold-renovate[bot]`, so a login list matches nothing.
+    # Forks excluded (unsupported upstream). Bots filtered by account TYPE:
+    # Renovate posts as `marigold-renovate[bot]`, so a login list matches none.
     if: >-
       vars.AI_REVIEW_ENABLED == 'true' &&
       github.event.pull_request.head.repo.full_name == github.repository &&
@@ -42,11 +39,8 @@ jobs:
       profile: ${{ steps.pick.outputs.profile }}
 
     steps:
-      # Category comes from the PR title, not the type:* labels. Those are
-      # path-derived and `packages/*` matches a package manifest, so every
-      # Renovate bump inside a package is labelled type:feature. labeler.yml
-      # also runs in parallel with this workflow, so at `opened` the label may
-      # not exist yet.
+      # Title, not the type:* labels: those are path-derived, so `packages/*`
+      # matches a manifest and every Renovate bump reads as type:feature.
       #
       # PR_TITLE goes through env:, never interpolated into the script.
       - name: Classify the pull request
@@ -69,8 +63,7 @@ jobs:
 
           case "$type" in
             # `style` is not formatting here: every style: PR in history is a
-            # design change to component source, and one of them changed AA
-            # labels. It gets a full review.
+            # design change to component source. It gets a full review.
             feat|fix|refactor|style) profile=full ;;
             docs) profile=docs ;;
             test) profile=tests ;;
@@ -79,14 +72,11 @@ jobs:
             *) profile=full ;;
           esac
 
-          # Nothing lints the title, so a skip-category PR that touches real
-          # source is promoted. Matching src/** excludes package.json, which is
-          # what the labeler gets wrong.
+          # Nothing lints the title, so a skip-category PR touching real source
+          # is promoted. Matching src/** excludes package.json.
           if [ "$profile" = "skip" ]; then
-            # Captured, then counted. Piping into `grep -q` looks equivalent and
-            # is not: grep exits on first match, gh takes SIGPIPE, and pipefail
-            # reads that as "no source changed" — failing in the unsafe
-            # direction. `grep -c` must read all of its input.
+            # Not `| grep -q`: grep exits on first match, gh takes SIGPIPE, and
+            # pipefail reads that as "no source changed" — unsafe direction.
             changed=$(gh pr diff "$PR_NUMBER" --repo "$REPOSITORY" --name-only)
             src_changed=$(printf '%s\n' "$changed" \
               | grep -cE '^(packages|themes)/[^/]+/src/' || true)
@@ -106,10 +96,6 @@ jobs:
     name: Baseline review (${{ needs.classify.outputs.profile }})
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    # No GitHub environment on purpose. This job runs on `pull_request`, so its
-    # OIDC subject is `repo:marigold-ui/marigold:pull_request`, which the AWS
-    # trust policy scopes on directly. An environment would only add a second
-    # name to keep in sync with that policy.
     permissions:
       contents: read # review only. The mentions workflow is the write path.
       pull-requests: write
@@ -122,9 +108,6 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
-      # Short-lived STS credentials, so nothing static lives in this public
-      # repo. The existing AWS_BEDROCK_* secrets are not reused: they are static
-      # keys scoped to Titan embeddings for release.yml.
       - name: Assume the Bedrock role
         uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
         with:
@@ -135,17 +118,14 @@ jobs:
       - name: Review
         uses: anthropics/claude-code-action@fa2b2666b747000bf42767d1f332065b375e3c8f # v1.0.214
         with:
-          # Reads the STS credentials from the environment. Do not add
-          # anthropic_api_key: a static credential takes precedence and Bedrock
-          # is silently skipped.
+          # Do not add anthropic_api_key: it takes precedence and Bedrock is
+          # silently skipped.
           use_bedrock: 'true'
 
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-          # One comment rewritten per run, so stale findings disappear instead
-          # of accumulating threads. track_progress is deliberately not set
-          # alongside it: with cancel-in-progress above, a cancelled run can
-          # strand a permanent "Claude is working" comment.
+          # Not track_progress: with cancel-in-progress above, a cancelled run
+          # can strand a permanent "Claude is working" comment.
           use_sticky_comment: true
 
           prompt: |
@@ -211,12 +191,8 @@ jobs:
             You cannot approve or request changes on this PR and should not try.
             This review is advisory and never blocks a merge.
 
-          # No --allowedTools. An explicit list omitted the action's own MCP
+          # No --allowedTools: an explicit list omitted the action's own MCP
           # comment tool, leaving Claude no way to post its findings.
-          #
-          # The model is a Bedrock inference profile ID, not an API alias such
-          # as `claude-sonnet-5`, which Bedrock does not accept. --max-turns
-          # caps a runaway review; the timeout above only bounds wall clock.
           claude_args: >-
             --model ${{ vars.AI_REVIEW_MODEL_ID }}
             --max-turns 30
