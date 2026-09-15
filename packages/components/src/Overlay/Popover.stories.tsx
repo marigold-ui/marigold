@@ -57,7 +57,6 @@ export const AtViewportEdge = meta.story({
   parameters: {
     layout: 'fullscreen',
     surface: false,
-    chromatic: { disableSnapshot: false },
   },
   decorators: [
     Story => (
@@ -110,6 +109,48 @@ AtViewportEdge.test(
 
     expect(popover.getBoundingClientRect().right).toBeLessThanOrEqual(
       getClipBoundary()!.getBoundingClientRect().right + SUBPIXEL
+    );
+  }
+);
+
+// Space above the bar, so the trigger can sit near the bottom of a scrolled page.
+const SCROLLED_TRIGGER_OFFSET = 90;
+
+AtViewportEdge.test(
+  'Keeps the menu inside the viewport once the page is scrolled',
+  {
+    tags: ['!dev'],
+    parameters: { chromatic: { disableSnapshot: true } },
+    decorators: [
+      Story => (
+        <div className="pt-[150vh]">
+          <Story />
+        </div>
+      ),
+    ],
+  },
+  async ({ canvas, userEvent }) => {
+    const trigger = canvas.getByRole('button', { name: 'User menu' });
+    window.scrollTo(
+      0,
+      trigger.getBoundingClientRect().top +
+        window.scrollY -
+        window.innerHeight +
+        SCROLLED_TRIGGER_OFFSET
+    );
+
+    await userEvent.click(trigger);
+
+    const popover = (await canvas.findByRole('menu')).closest(
+      '[data-placement]'
+    )!;
+
+    // A boundary read in the wrong coordinate space is off by the scroll offset:
+    // react-aria then sees room below the trigger that is not there, leaves the
+    // menu unflipped and squashes it against the bottom edge with `max-height`.
+    expect(popover).toHaveAttribute('data-placement', 'top');
+    expect(popover.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+      window.innerHeight + SUBPIXEL
     );
   }
 );
