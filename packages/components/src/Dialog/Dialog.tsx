@@ -6,10 +6,12 @@ import {
   OverlayTriggerStateContext,
   Dialog as RACDialog,
 } from 'react-aria-components/Dialog';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { ActionMenuContext } from '../Menu/ActionMenuContext';
 import { Modal, ModalProps } from '../Overlay/Modal';
+import { intlMessages } from '../intl/messages';
 import { useOverlayRootSlotProps } from '../utils/useOverlayRootSlotProps';
 import { useSlot } from '../utils/useSlot';
 import { DialogContext, DialogSlotContext } from './Context';
@@ -40,6 +42,7 @@ const InnerDialog = ({
   ...props
 }: InnerDialogProps) => {
   const state = use(OverlayTriggerStateContext);
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const titleId = useId();
   const classNames = useClassNames({
     component: 'Dialog',
@@ -105,6 +108,7 @@ const InnerDialog = ({
     >
       {closeButton && (
         <CloseButton
+          aria-label={stringFormatter.format('close')}
           className={classNames.closeButton}
           onPress={state?.close}
         />
