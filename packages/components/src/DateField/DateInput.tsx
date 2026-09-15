@@ -117,14 +117,27 @@ const _DateInput = ({
       onPaste={handlePaste}
     >
       <DateInput
-        className={cn('flex flex-1 items-center', classNames.input)}
+        className={cn(
+          'flex flex-1 items-center',
+          classNames.input,
+          action && 'pr-0'
+        )}
         {...props}
       >
         {segment => (
           <DateSegment className={classNames.segment} segment={segment} />
         )}
       </DateInput>
-      {action ? action : null}
+      {action && (
+        <span
+          className={cn(
+            '*:flex *:size-full *:items-center *:justify-center',
+            classNames.action
+          )}
+        >
+          {action}
+        </span>
+      )}
     </Group>
   );
 };

@@ -202,15 +202,18 @@ NotificationsFeed.test(
       expect(deployRow).toHaveFocus();
     });
 
-    await step('tab reaches the nested archive button in the row', async () => {
-      await userEvent.tab();
-      const archiveButtons = canvas.getAllByRole('button', {
-        name: 'Archive',
-      });
-      expect(archiveButtons[1]).toHaveFocus();
-      await userEvent.keyboard('[Space]');
-      expect(onArchive).toHaveBeenCalledWith('deploy');
-    });
+    await step(
+      'arrow-right reaches the nested archive button in the row',
+      async () => {
+        await userEvent.keyboard('{ArrowRight}');
+        const archiveButtons = canvas.getAllByRole('button', {
+          name: 'Archive',
+        });
+        expect(archiveButtons[1]).toHaveFocus();
+        await userEvent.keyboard('[Space]');
+        expect(onArchive).toHaveBeenCalledWith('deploy');
+      }
+    );
 
     await step('the row menu opens and mutes the thread', async () => {
       const trigger = canvas.getByRole('button', {

@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@babel/parser": "8.0.5",
-    "@clack/prompts": "1.7.0",
+    "@clack/prompts": "1.8.0",
     "ci-info": "4.4.0",
     "magic-string": "0.30.21",
     "picocolors": "1.1.1",
@@ -96,7 +96,7 @@
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "6.1.1",
-    "playwright": "1.61.1",
+    "playwright": "1.63.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "tsdown": "0.23.0",
