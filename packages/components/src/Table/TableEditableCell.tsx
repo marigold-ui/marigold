@@ -18,7 +18,7 @@ import {
 import { cn, textAlign, useSmallScreen, verticalAlign } from '@marigold/system';
 import { Dialog } from '../Dialog/Dialog';
 import { Form } from '../Form/Form';
-import { useContainerPadding } from '../Overlay/containerPadding';
+import { getClipBoundary } from '../Overlay/clipBoundary';
 import { Check } from '../icons/Check';
 import { Pencil } from '../icons/Pencil';
 import { X } from '../icons/X';
@@ -91,7 +91,6 @@ const EditableCellPopover = ({
   children,
 }: EditableCellPopoverProps) => {
   const popoverRef = useRef<HTMLDivElement>(null);
-  const containerPadding = useContainerPadding();
   const [triggerWidth, setTriggerWidth] = useState(0);
   const [tableWidth, setTableWidth] = useState(0);
   const [verticalOffset, setVerticalOffset] = useState(0);
@@ -121,7 +120,7 @@ const EditableCellPopover = ({
       onOpenChange={onOpenChange}
       triggerRef={cellRef}
       offset={verticalOffset}
-      containerPadding={containerPadding}
+      boundaryElement={getClipBoundary()}
       placement="bottom start"
       style={{
         minWidth: `min(${triggerWidth}px, ${tableWidth}px)`,

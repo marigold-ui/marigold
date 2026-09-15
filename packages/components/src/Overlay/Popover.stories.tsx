@@ -89,6 +89,7 @@ const SUBPIXEL = 1;
 AtViewportEdge.test(
   'Holds the menu containerPadding away from react-aria’s boundary',
   {
+    tags: ['!dev'],
     parameters: { chromatic: { disableSnapshot: true } },
     args: { containerPadding: EXAGGERATED_PADDING },
     render: args => {

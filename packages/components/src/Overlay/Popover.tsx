@@ -3,7 +3,7 @@ import type RAC from 'react-aria-components';
 import { Popover } from 'react-aria-components/Popover';
 import { cn, useClassNames } from '@marigold/system';
 import { ResetButtonContext } from '../Button/ResetButtonContext';
-import { useContainerPadding } from './containerPadding';
+import { getClipBoundary } from './clipBoundary';
 
 // Internal Usage Notes
 // ---------------
@@ -46,17 +46,15 @@ const PopoverBase = ({
   offset = 0,
   open,
   matchTriggerWidth = true,
-  containerPadding,
   children,
   ref,
   ...rest
 }: PopoverProps & { ref?: Ref<HTMLDivElement> }) => {
-  const measured = useContainerPadding();
   const props: RAC.PopoverProps = {
     isKeyboardDismissDisabled: keyboardDismissDisabled,
     isOpen: open,
     placement,
-    containerPadding: containerPadding ?? measured,
+    boundaryElement: getClipBoundary(),
     ...rest,
   };
   const classNames = useClassNames({
