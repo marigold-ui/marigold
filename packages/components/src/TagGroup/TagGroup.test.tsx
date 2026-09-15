@@ -142,3 +142,15 @@ test('collapseAt is ignored for dynamic collections (function children)', () => 
   expect(screen.getByText('Shopping')).toBeInTheDocument();
   expect(screen.queryByText(/show \d+ more/i)).not.toBeInTheDocument();
 });
+
+test('remove buttons keep the label RAC supplies through the slot', () => {
+  // CloseButton falls back to a generic "Close" when nothing names it, but a
+  // local aria-label would beat RAC's slot context. Guards DST-1769.
+  render(<RemovableTags.Component />);
+
+  // RAC composes the slot label with the tag's own text ("Remove News").
+  expect(screen.getAllByRole('button', { name: /^Remove / })).toHaveLength(4);
+  expect(
+    screen.queryByRole('button', { name: /close/i })
+  ).not.toBeInTheDocument();
+});
