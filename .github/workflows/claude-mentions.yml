@@ -108,11 +108,6 @@ jobs:
     name: Respond to @claude
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    # No GitHub environment on purpose. This job runs on `issue_comment`, which
-    # GitHub only ever fires from the default branch, so its OIDC subject is
-    # `repo:marigold-ui/marigold:ref:refs/heads/main`. Note that is NOT the
-    # `:pull_request` subject the review workflow gets: the AWS trust policy has
-    # to allow both.
     permissions:
       contents: write # Claude pushes its fix as a commit on the PR branch
       pull-requests: write
