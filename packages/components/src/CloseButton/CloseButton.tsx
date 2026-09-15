@@ -32,14 +32,6 @@ export const CloseButton = ({
     variant,
   });
 
-  /**
-   * The button renders an icon only, so it has no accessible name of its own.
-   * A `slot` means the parent supplies one through context (RAC's `TagGroup`
-   * labels its `remove` slot), and setting `aria-label` here would win over it.
-   * Everywhere else we fall back to a generic "Close" so an unnamed button can
-   * never reach production, and warn so the vague label gets replaced with one
-   * that says what closing actually does.
-   */
   const hasAccessibleName =
     !!props['aria-label'] || !!props['aria-labelledby'] || !!props.slot;
 
@@ -57,6 +49,7 @@ export const CloseButton = ({
       ref={ref}
       className={classNames}
       aria-label={
+        // Set undefined, so we use the accessible label from props
         hasAccessibleName ? undefined : stringFormatter.format('close')
       }
       {...props}
