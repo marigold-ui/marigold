@@ -106,8 +106,10 @@ jobs:
     name: Baseline review (${{ needs.classify.outputs.profile }})
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    # Lets the AWS trust policy be scoped to an environment, not the whole repo.
-    environment: ai-review
+    # No GitHub environment on purpose. This job runs on `pull_request`, so its
+    # OIDC subject is `repo:marigold-ui/marigold:pull_request`, which the AWS
+    # trust policy scopes on directly. An environment would only add a second
+    # name to keep in sync with that policy.
     permissions:
       contents: read # review only. The mentions workflow is the write path.
       pull-requests: write
