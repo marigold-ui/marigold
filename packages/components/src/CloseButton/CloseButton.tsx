@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
 import React from 'react';
-import { Button } from 'react-aria-components/Button';
+import { Button, ButtonContext } from 'react-aria-components/Button';
+import { useSlottedContext } from 'react-aria-components/slots';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useClassNames } from '@marigold/system';
 import { ButtonProps } from '../Button/Button';
@@ -9,12 +10,11 @@ import { intlMessages } from '../intl/messages';
 
 interface CloseButtonProps extends Pick<
   ButtonProps,
-  'onPress' | 'size' | 'variant' | 'slot' | 'aria-label'
+  'onPress' | 'size' | 'variant' | 'slot' | 'aria-label' | 'aria-labelledby'
 > {
   className?: string;
   style?: CSSProperties;
   ref?: React.Ref<HTMLButtonElement>;
-  'aria-labelledby'?: string;
 }
 
 export const CloseButton = ({
@@ -32,8 +32,18 @@ export const CloseButton = ({
     variant,
   });
 
+  // A `slot` on its own is not proof of an accessible name. RAC's `TagGroup`
+  // labels its `remove` slot through context, but RAC's `Dialog` registers a
+  // `close` slot carrying only `onPress` (`dist/private/Dialog.cjs`), so
+  // trusting the prop would leave `<CloseButton slot="close" />` unnamed.
+  // Ask the resolved context which kind of slot this actually is.
+  const slottedContext = useSlottedContext(ButtonContext, props.slot);
+
   const hasAccessibleName =
-    !!props['aria-label'] || !!props['aria-labelledby'] || !!props.slot;
+    !!props['aria-label'] ||
+    !!props['aria-labelledby'] ||
+    !!slottedContext?.['aria-label'] ||
+    !!slottedContext?.['aria-labelledby'];
 
   if (process.env.NODE_ENV !== 'production' && !hasAccessibleName) {
     console.warn(
@@ -49,7 +59,8 @@ export const CloseButton = ({
       ref={ref}
       className={classNames}
       aria-label={
-        // Set undefined, so we use the accessible label from props
+        // Left undefined so the name already in scope wins, whether it came
+        // from props or from the slotted context.
         hasAccessibleName ? undefined : stringFormatter.format('close')
       }
       {...props}

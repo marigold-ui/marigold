@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import type { MockInstance } from 'vitest';
-import { vi } from 'vitest';
+import { MockInstance, vi } from 'vitest';
 import { theme } from '@marigold/theme-rui';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import { CloseButton } from './CloseButton';
@@ -44,11 +43,15 @@ test('an explicit aria-label wins over the fallback', () => {
   expect(warnMock).not.toHaveBeenCalled();
 });
 
-test('does not apply the fallback when a slot supplies the name', () => {
-  // A `slot` means a parent labels the button through context. Setting
-  // `aria-label` here would win over it, so the fallback must stand down.
+test('still falls back when a slot resolves no name from context', () => {
+  // A `slot` prop is not itself a name. With no provider above it nothing
+  // resolves, which is the same shape as RAC's `Dialog` `close` slot: it
+  // supplies `onPress` and no label. The slot that *does* carry a label is
+  // covered in `TagGroup.test.tsx`, against its real provider.
   renderCloseButton(<CloseButton slot="remove" />);
 
-  expect(screen.getByRole('button')).not.toHaveAttribute('aria-label');
-  expect(warnMock).not.toHaveBeenCalled();
+  expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument();
+  expect(warnMock).toHaveBeenCalledWith(
+    expect.stringContaining('[CloseButton]')
+  );
 });
