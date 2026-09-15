@@ -93,7 +93,11 @@ jobs:
     needs: classify
     if: needs.classify.outputs.profile != 'skip'
 
-    name: Baseline review (${{ needs.classify.outputs.profile }})
+    # Static on purpose. An interpolated job name renders as the raw
+    # `${{ … }}` template in the checks list whenever `classify` is skipped,
+    # which is its normal state while AI_REVIEW_ENABLED is off. The profile is
+    # logged by classify and passed to the prompt instead.
+    name: Baseline review
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
