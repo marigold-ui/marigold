@@ -3,6 +3,7 @@ import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { Key } from 'react-aria-components/TagGroup';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
 import { TagField } from './TagField';
 
@@ -365,6 +366,120 @@ Mobile.test(
 
       expect(within(tray).getByRole('option', { name: 'Rock' })).toBeVisible();
       expect(within(tray).getByRole('option', { name: 'Jazz' })).toBeVisible();
+    });
+  }
+);
+
+/**
+ * `dependencies` invalidates React Aria's per-item render cache, so it only
+ * matters for `items` plus a render function that reads state living outside
+ * the collection — a setup none of the stories above has, and one with nothing
+ * to look at: the cache is the subject, and both states render the same way.
+ * The tests below therefore carry that setup as their own `render` instead of
+ * exporting a story a reader can take nothing from.
+ */
+const SHIFT_ITEMS = [
+  { id: 'ada', name: 'Ada' },
+  { id: 'grace', name: 'Grace' },
+];
+
+const withShift: Parameters<typeof Basic.test>[1] = {
+  args: { label: 'Assign to', width: 80 },
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => {
+    const [shift, setShift] = useState('early');
+
+    return (
+      <Stack space={2} alignX="left">
+        <Button onPress={() => setShift('late')}>Switch shift</Button>
+        <TagField {...args} items={SHIFT_ITEMS} dependencies={[shift]}>
+          {(item: (typeof SHIFT_ITEMS)[number]) => (
+            <TagField.Option id={item.id}>
+              {item.name} — {shift}
+            </TagField.Option>
+          )}
+        </TagField>
+      </Stack>
+    );
+  },
+};
+
+Basic.test(
+  'Re-renders the options when a listed dependency changes',
+  withShift,
+  async ({ args, canvas, step, userEvent }) => {
+    const optionFor = async (shift: string) => {
+      await userEvent.click(
+        canvas.getByLabelText(new RegExp(`${args.label}`, 'i'))
+      );
+      const dialog = await waitFor(() => canvas.getByRole('dialog'));
+
+      return within(dialog).findByRole('option', {
+        name: new RegExp(`Ada — ${shift}`),
+      });
+    };
+
+    await step(
+      'The options render with the current outside state',
+      async () => {
+        expect(await optionFor('early')).toBeInTheDocument();
+        await userEvent.keyboard('{Escape}');
+      }
+    );
+
+    await step('Changing that state re-renders them', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Switch shift' })
+      );
+
+      expect(await optionFor('late')).toBeInTheDocument();
+    });
+  }
+);
+
+// The tray renders its own collection, so it needs the same `dependencies`
+// forward the popover gets — a component that only forwards to the popover
+// fails here and nowhere else.
+Basic.test(
+  'Re-renders the tray options when a listed dependency changes',
+  { ...withShift, globals: { viewport: { value: 'smallScreen' } } },
+  async ({ args, canvas, step, userEvent }) => {
+    const optionFor = async (shift: string) => {
+      // The tray title repeats the label, so scope the trigger to its role.
+      await userEvent.click(
+        canvas.getByRole('button', { name: new RegExp(`${args.label}`, 'i') })
+      );
+      const tray = await canvas.findByRole('dialog');
+
+      return within(tray).findByRole('option', {
+        name: new RegExp(`Ada — ${shift}`),
+      });
+    };
+
+    // The tray's underlay swallows clicks until it is gone, so wait it out
+    // before touching anything behind it.
+    const close = async () => {
+      await userEvent.keyboard('{Escape}');
+
+      return waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    };
+
+    await step(
+      'The tray options render with the current outside state',
+      async () => {
+        expect(await optionFor('early')).toBeInTheDocument();
+        await close();
+      }
+    );
+
+    await step('Changing that state re-renders them', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Switch shift' })
+      );
+
+      expect(await optionFor('late')).toBeInTheDocument();
     });
   }
 );

@@ -1,0 +1,69 @@
+{
+  "skill_name": "review-queue",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "/review-queue",
+      "expected_output": "One capped digest with both sections: what is awaiting the user's review, and which of their PRs bounced back. The skill is read-only by construction, so the run should contain no outward call at all. Its allowed-tools carry no Write, no Edit, no git and no gh pr review, and that narrow list is the guarantee rather than the prose.",
+      "files": [],
+      "expectations": [
+        "A digest is printed covering both the awaiting-review and needs-rework sections",
+        "No write reached the repository or any remote: no file in the repo changed, no git command wrote, and no `gh` call posted, reviewed, resolved or merged anything",
+        "The output names which sections ran, so an empty section is distinguishable from one never gathered",
+        "The user's own login was read at run time rather than taken from a value written in the skill file",
+        "Each section is capped rather than printing every row"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "/review-queue",
+      "expected_output": "The gather is one org-wide search, not GitHub's review-requested filter. DST-1531 specified --review-requested=@me, which returns nothing here because the team assigns reviewers in conversation rather than in GitHub's field, so a queue built on it would be permanently empty and read as a clear board. Whether a PR is the user's to review is decided later, from who has actually reviewed it.",
+      "files": [],
+      "expectations": [
+        "gh search prs was called with --owner=marigold-ui",
+        "The --review-requested flag was not used as the gather",
+        "The result set is not restricted to a single repository by construction",
+        "Archived repositories are excluded from the digest",
+        "A repository absent from the results is treated as having no open PRs rather than as an error"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "/review-queue --review",
+      "expected_output": "Section 1 is printed and the needs-rework section is not, with the output saying so. The step-8 board tail also renders: it is review work with no PR, so it rides with section 1 rather than being a third thing the flags ignore. The per-section cap still applies, because --all is orthogonal and was not passed.",
+      "files": [],
+      "expectations": [
+        "The awaiting-review section is printed, and so is the step-8 board tail, which rides with it",
+        "The output states that only the awaiting-review section ran",
+        "No needs-rework rows appear anywhere in the output",
+        "The section is still capped, since --all was not passed",
+        "No write reached the repository or any remote: no file in the repo changed, no git command wrote, and no `gh` call posted, reviewed, resolved or merged anything"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "/review-queue --review --rework",
+      "expected_output": "Passing both flags is the same as passing neither, so both sections run. This is stated in the Usage block and is easy to get wrong by treating the flags as additive filters that cancel each other out to nothing.",
+      "files": [],
+      "expectations": [
+        "Both sections are printed, the same as an unflagged invocation",
+        "The run does not produce an empty digest on the grounds that the two flags conflict",
+        "The output names both sections as having run",
+        "No write reached the repository or any remote: no file in the repo changed, no git command wrote, and no `gh` call posted, reviewed, resolved or merged anything"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "/review-queue --rework",
+      "expected_output": "The mirror of case 3, and the half of the flag rule that case 3 cannot reach. Only the needs-rework section runs. The board tail is review work, so --rework drops it along with section 1, and no awaiting-review rows appear.",
+      "files": [],
+      "expectations": [
+        "Only the needs-rework section is printed",
+        "The output states that only the needs-rework section ran",
+        "No awaiting-review rows appear anywhere in the output",
+        "The step-8 board tail is absent, since it rides with section 1",
+        "No write reached the repository or any remote: no file in the repo changed, no git command wrote, and no `gh` call posted, reviewed, resolved or merged anything"
+      ]
+    }
+  ]
+}
