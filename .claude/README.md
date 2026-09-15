@@ -101,6 +101,19 @@ Then `/hooks` in a session lists what is registered, and `claude --debug-file /t
 | The session pre-flight | `MARIGOLD_SKIP_PREFLIGHT_HOOK=1` in your shell |
 | Every hook at once | `"disableAllHooks": true` in `~/.claude/settings.json` |
 
+## AI review: local and CI
+
+Review runs in two places and they are not the same tool.
+
+`/review-pr` is on demand, for the author, before anyone else looks. It can reach things CI does not: Jira context, the VRT freshness check, whatever you want to ask it next.
+
+The `Claude Review` workflow is the floor. It runs unattended on a pull request, posts one advisory comment, and cannot approve, request changes or block a merge. Which pull requests it runs on is decided by category, read from the Conventional Commits type in the title. `Claude Mentions` is the interactive half, triggered by writing `@claude` in a thread.
+
+Two rules hold this together:
+
+- **The checklist has one home.** `skills/review-pr/references/review-checklist.md` is the agreed standard, and the CI prompt points at that path rather than restating it. A rule that exists in a workflow file and not in the checklist will drift out of review.
+- **CI never becomes required.** The floor stays advisory. Making it blocking would put a non-deterministic check on the merge path, and it is structurally impossible anyway: the action cannot submit a formal review.
+
 ## Adding and removing
 
 Anything committed here is a claim that the team works this way, so add a skill when a workflow is worth standardising, not to record that you once did something twice.
