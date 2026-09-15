@@ -11,7 +11,7 @@ export const Radio: ThemeComponent<'Radio'> = {
   }),
   label: cva({
     base: [
-      'text-sm leading-4 font-normal cursor-pointer w-full',
+      'text-sm leading-4 font-normal cursor-pointer w-full min-w-0',
       'group-disabled/radio:text-disabled group-disabled/radio:cursor-not-allowed',
     ],
   }),

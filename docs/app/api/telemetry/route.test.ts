@@ -1,153 +1,143 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TELEMETRY_COMMANDS } from './commands';
+import { recordTelemetryEvent } from './record';
 import { POST } from './route';
+import { makeCliEvent, makeMcpEvent } from './test.utils';
 
-// Constructed once and reused: getRedis() caches its client at module scope,
-// so every later call returns this same instance — beforeEach resets the spies,
-// not the cached client. Hoisted by vitest above the `./route` import so the
-// mock is in place before route.ts resolves '@upstash/redis'.
-const redisMock = {
-  incr: vi.fn(),
-  expire: vi.fn(),
-  lpush: vi.fn(),
-};
-vi.mock('@upstash/redis', () => ({
-  // route.ts constructs this with `new Redis(...)` — an arrow function can't
-  // be invoked as a constructor, so this needs a real function/class.
-  Redis: vi.fn(function RedisMock() {
-    return redisMock;
-  }),
+const mcpEvent = makeMcpEvent();
+
+vi.mock('./record', () => ({
+  recordTelemetryEvent: vi.fn().mockResolvedValue('recorded'),
 }));
 
-// Build a valid telemetry event. The `command` field is the only thing each
-// test varies; everything else is a known-good payload that satisfies
-// EventSchema so we isolate the command-enum contract.
-const makeEvent = (command: string) => ({
-  event: 'cli_command',
-  command,
-  cliVersion: '1.0.0',
-  nodeVersion: '24.0.0',
-  platform: 'darwin',
-  isTTY: true,
-  isAIAgent: false,
-  durationBucket: '0-100',
-  exitCode: 0,
-});
+const record = vi.mocked(recordTelemetryEvent);
 
-const post = (body: unknown) =>
+const post = (body: unknown, headers: Record<string, string> = {}) =>
   POST(
     new Request('http://localhost/api/telemetry', {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
+      headers: { 'content-type': 'application/json', ...headers },
       body: JSON.stringify(body),
     })
   );
 
 describe('POST /api/telemetry', () => {
   beforeEach(() => {
-    // Redis is unconfigured in tests, so a valid event is accepted with 204
-    // (the route returns 204 when getRedis() yields null). This lets us assert
-    // schema acceptance without a backend.
-    vi.stubEnv('KV_REST_API_URL', '');
-    vi.stubEnv('KV_REST_API_TOKEN', '');
+    record.mockReset();
+    record.mockResolvedValue('recorded');
   });
 
-  // Derived from the route's own command enum, so a command added there is
-  // covered automatically and no second list can drift out of sync.
+  // Derived from the route's own enum, so a new command is covered
+  // automatically; commands.test.ts holds that enum to the CLI's union.
   it.each(TELEMETRY_COMMANDS)('accepts a %s command event', async command => {
-    const res = await post(makeEvent(command));
+    const res = await post(makeCliEvent({ command }));
 
-    expect(res.status).not.toBe(400);
+    expect(res.status).toBe(204);
+    expect(record).toHaveBeenCalledWith(expect.objectContaining({ command }));
   });
 
-  it('rejects an unknown command with 400', async () => {
-    const res = await post(makeEvent('bogus'));
+  it('rejects an unknown command with 400 without recording anything', async () => {
+    const res = await post({ ...makeCliEvent(), command: 'bogus' });
 
     expect(res.status).toBe(400);
+    expect(record).not.toHaveBeenCalled();
   });
 
-  // The endpoint must not accept a client identifier even if a stale CLI keeps
-  // sending one. zod strips unknown keys by default, so this asserts the
-  // stricter contract: an identifying field is rejected outright rather than
-  // silently dropped, which would let it reappear the moment someone relaxed
-  // the schema. See lib/telemetry.ts for why the payload stays identifier-free.
-  it('rejects an event carrying an anonymousId', async () => {
+  // The schema is strict, so an unknown key fails the parse rather than being
+  // stripped. Stripping would be enough to keep the field out of the store,
+  // but it is invisible: nobody learns the sender is wrong, and the field
+  // reappears the moment someone relaxes the schema.
+  it('rejects an unknown key with 400 rather than stripping it', async () => {
     const res = await post({
-      ...makeEvent('docs'),
+      ...makeCliEvent({ command: 'docs' }),
+      injected: 'nope',
+    });
+
+    expect(res.status).toBe(400);
+    expect(record).not.toHaveBeenCalled();
+  });
+
+  // The identifying key this endpoint used to require. A stale CLI still
+  // sending it gets a visible 400 instead of a quiet drop. See
+  // packages/cli/src/lib/config.ts for why the payload is identifier-free.
+  it('rejects an event carrying an anonymousId with 400', async () => {
+    const res = await post({
+      ...makeCliEvent({ command: 'docs' }),
       anonymousId: '00000000-0000-4000-8000-000000000000',
     });
 
     expect(res.status).toBe(400);
-  });
-});
-
-describe('POST /api/telemetry (with Redis configured)', () => {
-  beforeEach(() => {
-    vi.stubEnv('KV_REST_API_URL', 'https://example.upstash.io');
-    vi.stubEnv('KV_REST_API_TOKEN', 'test-token');
-    vi.clearAllMocks();
-    redisMock.incr.mockResolvedValue(1);
-    redisMock.expire.mockResolvedValue(1);
-    redisMock.lpush.mockResolvedValue(1);
+    expect(record).not.toHaveBeenCalled();
   });
 
-  // The plain day key, not the rate-limit key (telemetry:rl:<id>:date).
-  // route.ts expires both per POST, so assertions must filter to this shape.
-  const dayKeyExpireCalls = () =>
-    redisMock.expire.mock.calls.filter(([key]) =>
-      /^telemetry:\d{4}-\d{2}-\d{2}$/.test(key as string)
-    );
+  it('maps a rate-limited event to 429', async () => {
+    record.mockResolvedValue('rate-limited');
 
-  it("expires the day's event list on its first event, so it doesn't retain data forever", async () => {
-    const res = await post(makeEvent('validate'));
+    const res = await post(makeCliEvent({ command: 'docs' }));
 
-    expect(res.status).toBe(204);
-    expect(redisMock.lpush).toHaveBeenCalledTimes(1);
-    const calls = dayKeyExpireCalls();
-    expect(calls).toHaveLength(1);
-    const [dayKey, ttlSeconds, option] = calls[0];
-    expect(dayKey).toBe(redisMock.lpush.mock.calls.at(-1)![0]);
-    expect(ttlSeconds).toBe(90 * 24 * 60 * 60);
-    expect(option).toBe('NX');
+    expect(res.status).toBe(429);
   });
 
-  it('calls EXPIRE NX on every event, not just the first, so a failed first-event EXPIRE is retried', async () => {
-    // NX makes this idempotent server-side, so calling it unconditionally
-    // never extends the retention window, and a first-event EXPIRE lost to a
-    // network blip is retried by every later event.
-    redisMock.lpush.mockResolvedValueOnce(1).mockResolvedValueOnce(2);
+  // These all accept silently, so telemetry never leaks backend state and the
+  // CLI never retries. 'invalid' means the event failed record.ts's own schema
+  // after passing the route's — a bug on our side, not something to report.
+  it.each(['unconfigured', 'error', 'invalid'] as const)(
+    'accepts silently with 204 when recording returns %s',
+    async result => {
+      record.mockResolvedValue(result);
 
-    await post(makeEvent('validate'));
-    await post(makeEvent('validate'));
-
-    expect(redisMock.lpush).toHaveBeenCalledTimes(2);
-    expect(dayKeyExpireCalls()).toHaveLength(2);
-  });
-
-  it('resolves the event key once, so an event straddling midnight UTC still gets a TTL', async () => {
-    // Resolving the key twice lets a request crossing midnight LPUSH onto day
-    // N and EXPIRE day N+1, which doesn't exist yet — a silent no-op leaving
-    // day N with no TTL, and no later event ever targets that key again.
-    // Simulated by advancing the clock during the LPUSH call.
-    vi.useFakeTimers();
-    try {
-      vi.setSystemTime(new Date('2026-01-01T23:59:59.500Z'));
-      redisMock.lpush.mockImplementationOnce(async () => {
-        vi.setSystemTime(new Date('2026-01-02T00:00:00.500Z'));
-        return 1;
-      });
-
-      const res = await post(makeEvent('validate'));
+      const res = await post(makeCliEvent({ command: 'docs' }));
 
       expect(res.status).toBe(204);
-      const pushedKey = redisMock.lpush.mock.calls.at(-1)![0];
-      expect(pushedKey).toBe('telemetry:2026-01-01');
-      const calls = dayKeyExpireCalls();
-      expect(calls).toHaveLength(1);
-      // The TTL has to land on the key that was actually written to.
-      expect(calls[0][0]).toBe(pushedKey);
-    } finally {
-      vi.useRealTimers();
     }
+  );
+
+  it('rejects a body over the size limit with 413', async () => {
+    const res = await POST(
+      new Request('http://localhost/api/telemetry', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'content-length': String(5 * 1024),
+        },
+        body: JSON.stringify(makeCliEvent({ command: 'docs' })),
+      })
+    );
+
+    expect(res.status).toBe(413);
+    expect(record).not.toHaveBeenCalled();
+  });
+
+  it('rejects a malformed JSON body with 400', async () => {
+    const res = await POST(
+      new Request('http://localhost/api/telemetry', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: 'not json',
+      })
+    );
+
+    expect(res.status).toBe(400);
+    expect(record).not.toHaveBeenCalled();
+  });
+
+  // Its rate-limit key comes from a caller-supplied field, so accepting one on
+  // a public endpoint would make call volume and unique callers forgeable.
+  it('rejects an otherwise valid mcp_tool_call event with 400', async () => {
+    const res = await post(mcpEvent);
+
+    expect(res.status).toBe(400);
+    expect(record).not.toHaveBeenCalled();
+  });
+
+  // The ceiling lives in recordTelemetryEvent now; the route just maps
+  // exhaustion onto 429. This is the only one a CLI event can trip, since
+  // there is no identifier to key a per-caller ceiling on.
+  it('maps an exhausted endpoint-wide quota to 429', async () => {
+    record.mockResolvedValue('quota-exceeded');
+
+    const res = await post(makeCliEvent({ command: 'docs' }));
+
+    expect(res.status).toBe(429);
   });
 });

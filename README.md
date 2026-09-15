@@ -76,6 +76,7 @@ To start documentation follow these steps:
 | pnpm clean                 | Remove node_modules, dist, .next, .turbo, coverage, and storybook-static directories. |
 | pnpm clean:build           | Remove dist folders and coverage reports.                                             |
 | pnpm lint                  | Lint the repository with ESLint.                                                      |
+| pnpm lint:prose            | Lint docs prose with Vale.                                                            |
 | pnpm format                | Format files with Prettier.                                                           |
 | pnpm format:check          | Check formatting without writing (what CI runs).                                      |
 | pnpm format:fix            | Format and attempt to fix with Prettier.                                              |
@@ -87,7 +88,7 @@ To start documentation follow these steps:
 
 Releases are published by CI, not locally. `.github/workflows/release.yml` runs
 [`changesets/action`](https://github.com/changesets/action) on every push to `main`: it either opens a
-"release: version packages" PR that consumes the pending changesets, or — once that PR is merged —
+"release: version packages" PR that consumes the pending changesets, or, once that PR is merged,
 publishes the bumped packages to npm.
 
 So the only thing you do by hand is add a changeset with `pnpm changeset` when your change should
@@ -97,7 +98,7 @@ cause a version bump.
 
 Prereleases use [changesets pre mode](https://github.com/changesets/changesets/blob/main/docs/prereleases.md),
 which lives on `main` (there is no separate release branch). The mode is recorded in
-`.changeset/pre.json`, and `pnpm changeset publish` derives the npm dist-tag from its `tag` field —
+`.changeset/pre.json`, and `pnpm changeset publish` derives the npm dist-tag from its `tag` field,
 so while pre mode is active, everything publishes to that tag instead of `latest`.
 
 ```sh

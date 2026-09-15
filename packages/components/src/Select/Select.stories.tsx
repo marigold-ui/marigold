@@ -3,7 +3,6 @@ import { Form } from 'react-aria-components/Form';
 import { Key } from 'react-aria-components/Select';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
-import { clickOption } from '.storybook/test-utils';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Description } from '../Description/Description';
@@ -149,7 +148,7 @@ Basic.test(
     });
 
     await step('Select an item from the list', async () => {
-      await clickOption(() =>
+      await userEvent.click(
         within(canvas.getByRole('listbox')).getByRole('option', {
           name: 'Star Wars',
         })
@@ -461,6 +460,53 @@ Basic.test(
 );
 
 Basic.test(
+  'Selects an option clicked immediately after reopening the list',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: {
+      label: 'Tenants',
+      placeholder: 'Select a tenant',
+      width: 80,
+    },
+    render: args => (
+      <Select {...args} items={LARGE_ITEMS}>
+        {(item: (typeof LARGE_ITEMS)[number]) => (
+          <Select.Option id={item.id}>{item.label}</Select.Option>
+        )}
+      </Select>
+    ),
+  },
+  async ({ args, canvas, step }) => {
+    const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+
+    const openAndSelect = async (label: string) => {
+      await userEvent.click(trigger);
+
+      const listbox = await canvas.findByRole('listbox');
+      await userEvent.click(
+        within(listbox).getByRole('option', { name: label })
+      );
+
+      await waitFor(() =>
+        expect(canvas.queryByRole('listbox')).not.toBeInTheDocument()
+      );
+    };
+
+    await step('Select a non-first option on the first open', async () => {
+      await openAndSelect('Tenant 203 (item-203)');
+
+      expect(within(trigger).getByText('Tenant 203 (item-203)')).toBeVisible();
+    });
+
+    await step('Select another option right after reopening', async () => {
+      await openAndSelect('Tenant 206 (item-206)');
+
+      expect(within(trigger).getByText('Tenant 206 (item-206)')).toBeVisible();
+    });
+  }
+);
+
+Basic.test(
   'Sizes the trigger to the requested width',
   {
     args: {
@@ -634,7 +680,7 @@ WithRenderValue.test(
     });
 
     await step('Select Bob', async () => {
-      await clickOption(() =>
+      await userEvent.click(
         within(canvas.getByRole('listbox')).getByRole('option', {
           name: 'Bob Smith',
         })
@@ -1023,3 +1069,121 @@ export const MobileControlled = meta.story({
     );
   },
 });
+
+/**
+ * `dependencies` invalidates React Aria's per-item render cache, so it only
+ * matters for `items` plus a render function that reads state living outside
+ * the collection — a setup none of the stories above has, and one with nothing
+ * to look at: the cache is the subject, and both states render the same way.
+ * The tests below therefore carry that setup as their own `render` instead of
+ * exporting a story a reader can take nothing from.
+ */
+const withShift: Parameters<typeof Basic.test>[1] = {
+  args: { label: 'Assign to', width: 80 },
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => {
+    const [shift, setShift] = useState('early');
+
+    return (
+      <Stack space={2}>
+        <Button onPress={() => setShift('late')}>Switch shift</Button>
+        {/* `people` never changes, so only `dependencies` can refresh the options. */}
+        <Select {...args} items={people} dependencies={[shift]}>
+          {(person: (typeof people)[number]) => (
+            <Select.Option id={person.id}>
+              {person.name} — {shift}
+            </Select.Option>
+          )}
+        </Select>
+      </Stack>
+    );
+  },
+};
+
+Basic.test(
+  'Re-renders the options when a listed dependency changes',
+  withShift,
+  async ({ args, canvas, step, userEvent }) => {
+    const open = async () => {
+      await userEvent.click(
+        canvas.getByLabelText(new RegExp(`${args.label}`, 'i'))
+      );
+
+      return waitFor(() => canvas.getByRole('listbox'));
+    };
+
+    await step(
+      'The options render with the current outside state',
+      async () => {
+        const listbox = await open();
+
+        expect(
+          within(listbox).getByRole('option', { name: /Bob Smith — early/ })
+        ).toBeInTheDocument();
+        await userEvent.keyboard('{Escape}');
+      }
+    );
+
+    await step('Changing that state re-renders them', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Switch shift' })
+      );
+      const listbox = await open();
+
+      expect(
+        within(listbox).getByRole('option', { name: /Bob Smith — late/ })
+      ).toBeInTheDocument();
+    });
+  }
+);
+
+// The tray renders its own collection, so it needs the same `dependencies`
+// forward the popover gets — a component that only forwards to the popover
+// fails here and nowhere else.
+Basic.test(
+  'Re-renders the tray options when a listed dependency changes',
+  { ...withShift, globals: { viewport: { value: 'smallScreen' } } },
+  async ({ args, canvas, step, userEvent }) => {
+    const open = async () => {
+      // The tray title repeats the label, so scope the trigger to its role.
+      await userEvent.click(
+        canvas.getByRole('button', { name: new RegExp(`${args.label}`, 'i') })
+      );
+
+      return canvas.findByRole('dialog');
+    };
+
+    // The tray's underlay swallows clicks until it is gone, so wait it out
+    // before touching anything behind it.
+    const close = async () => {
+      await userEvent.keyboard('{Escape}');
+
+      return waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    };
+
+    await step(
+      'The tray options render with the current outside state',
+      async () => {
+        const tray = await open();
+
+        expect(
+          within(tray).getByRole('option', { name: /Bob Smith — early/ })
+        ).toBeInTheDocument();
+        await close();
+      }
+    );
+
+    await step('Changing that state re-renders them', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Switch shift' })
+      );
+      const tray = await open();
+
+      expect(
+        within(tray).getByRole('option', { name: /Bob Smith — late/ })
+      ).toBeInTheDocument();
+    });
+  }
+);

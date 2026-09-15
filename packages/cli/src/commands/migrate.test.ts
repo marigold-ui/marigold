@@ -314,8 +314,14 @@ const = broken(;
         files: 1,
         changes: 1,
       },
-      // stub-missing-slots does not fire: the fixture Switch already has
-      // every v18 slot and the Card restructure stubs its own new slots
+      // fires for the fixture Switch's one slot that is new in v18, `label`;
+      // the Card restructure stubs its own new slots
+      {
+        name: 'stub-missing-slots',
+        description: expect.stringContaining('stub new theme slots'),
+        files: 1,
+        changes: 1,
+      },
       {
         name: 'scaffold-components',
         description: expect.stringContaining('create theme styles'),
@@ -546,6 +552,7 @@ describe('runMigrateCommand', () => {
         options: [
           expect.objectContaining({ value: 'restructure-to-slots' }),
           expect.objectContaining({ value: 'swap-exact-classes' }),
+          expect.objectContaining({ value: 'stub-missing-slots' }),
           expect.objectContaining({ value: 'scaffold-components' }),
         ],
       })

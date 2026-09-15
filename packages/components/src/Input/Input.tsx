@@ -1,4 +1,4 @@
-import { ReactElement, Ref, cloneElement } from 'react';
+import { ReactElement, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Input } from 'react-aria-components/Input';
 import { cn, useClassNames } from '@marigold/system';
@@ -32,29 +32,6 @@ const _Input = ({
     size,
   });
 
-  const inputIcon = icon
-    ? cloneElement(icon, {
-        ...icon.props,
-        className: cn(
-          'pointer-events-none absolute',
-          classNames.icon,
-          icon.props.className
-        ),
-      })
-    : null;
-
-  const inputAction =
-    action && !props.readOnly
-      ? cloneElement(action, {
-          ...action.props,
-          className: cn(
-            'absolute cursor-pointer',
-            classNames.action,
-            action.props.className
-          ),
-        })
-      : null;
-
   return (
     <div
       className={cn(
@@ -76,8 +53,26 @@ const _Input = ({
         ref={ref}
         type={type}
       />
-      {inputIcon}
-      {inputAction}
+      {icon && (
+        <span
+          className={cn(
+            'pointer-events-none absolute *:size-full',
+            classNames.icon
+          )}
+        >
+          {icon}
+        </span>
+      )}
+      {action && !props.readOnly && (
+        <span
+          className={cn(
+            'absolute *:flex *:size-full *:cursor-pointer *:items-center *:justify-center',
+            classNames.action
+          )}
+        >
+          {action}
+        </span>
+      )}
     </div>
   );
 };

@@ -44,9 +44,17 @@ next-env.d.ts
 # Claude Code worktrees
 .claude/worktrees/
 
+# Per-ticket plans written by /pick-up
+.claude/tasks/
+
+# Reply bodies written by /triage-feedback
+.triage-reply.md
+
 # Playwright MCP
 .playwright-mcp
 
 # Vitest browser-mode failure artifacts
 **/__screenshots__
 .vitest-attachments
+
+.vale/bin/

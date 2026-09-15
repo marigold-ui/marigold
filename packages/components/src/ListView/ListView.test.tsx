@@ -66,7 +66,31 @@ describe('ListView', () => {
       expect(rows[0]).toHaveFocus();
     });
 
-    test('tab reaches a nested interactive control inside the focused row', async () => {
+    test('arrow right reaches a nested interactive control inside the focused row', async () => {
+      render(<NotificationsFeed.Component />);
+
+      const rows = screen.getAllByRole('row');
+      rows[0].focus();
+
+      await user.keyboard('{ArrowRight}');
+
+      const [archive] = screen.getAllByRole('button', { name: 'Archive' });
+      expect(archive).toHaveFocus();
+    });
+
+    test('arrow left returns focus from a nested control to its row', async () => {
+      render(<NotificationsFeed.Component />);
+
+      const rows = screen.getAllByRole('row');
+      rows[0].focus();
+      await user.keyboard('{ArrowRight}');
+
+      await user.keyboard('{ArrowLeft}');
+
+      expect(rows[0]).toHaveFocus();
+    });
+
+    test('tab leaves the list rather than entering the focused row', async () => {
       render(<NotificationsFeed.Component />);
 
       const rows = screen.getAllByRole('row');
@@ -74,8 +98,12 @@ describe('ListView', () => {
 
       await user.tab();
 
-      const [archive] = screen.getAllByRole('button', { name: 'Archive' });
-      expect(archive).toHaveFocus();
+      for (const element of [
+        ...screen.getAllByRole('row'),
+        ...screen.getAllByRole('button'),
+      ]) {
+        expect(element).not.toHaveFocus();
+      }
     });
   });
 

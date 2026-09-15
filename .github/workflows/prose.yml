@@ -1,0 +1,21 @@
+name: Prose
+
+on: ['push']
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  prose:
+    name: Check prose style
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Setup Node (using .node-version)
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.node-version'
+
+      - name: Check prose style (Vale is pinned in the script, checksum verified)
+        run: node scripts/vale.mjs .

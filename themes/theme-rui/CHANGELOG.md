@@ -1,5 +1,165 @@
 # @marigold/theme-rui
 
+## 6.1.0
+
+### Minor Changes
+
+- 1dfe461: feat(DST-1489): add non-form interactive list component
+
+  Adds `<ListView>` and `<ListView.Item>`, a non-form list built on React Aria's `GridList`/`GridListItem` for rows the user operates in place — dismissing with a `<Button>`, opening a per-row `<ActionMenu>`, or following a link — without leaving the page. Unlike `<SelectList>`/`<Select>`/`<ListBox>`, `<ListView>` has no selection, no hidden input, and never becomes a submitted form value.
+
+  A row is a named-area grid — `'label actions' 'description actions'` — so every region names the cell it wants instead of counting columns and rows. Row content is authored with Marigold's slot-aware components (`<TextValue>`, `<Description>`, `<Title>`), and each of them claims its cell through slot context, so text still lands correctly when it's wrapped in a fragment, behind `memo()`, or inside a consumer's own component. A bare string child is wrapped as the row's text value; to emphasise part of a line, nest `<Text as="span">` inside `<TextValue>`/`<Description>`. A row carries one `<Description>` — it takes inline markup, so several facts go on one line.
+
+  Trailing controls claim their cell through Marigold's `ButtonContext` and inherit the row's `ghost` cascade, the same mechanism `<Panel.Header>` and `<SelectList.Option>` use. A row with more than one control **must** wrap them in a `<ButtonGroup>`: each control reads the same context and would otherwise be placed in the same cell. A dev-only warning catches that at authoring time. The trailing cell takes Button-family controls only; trailing badges, pills or timestamps have no slot yet.
+
+  `<ListView.Item>` forces any nested `<Title>` to render as a `<span>` instead of a real heading, so a list of rows never emits one document heading per row.
+
+  The list is flat (divider lines only) and draws no surface of its own, the way `<Table>` does — a framed list nested in a container that already draws a surface is a ring inside a ring. A standalone framed list is `<Card><ListView /></Card>`.
+
+  This closes the gap between `<List>` (presentational, no roles), `<ListBox>` (selection only — forbids focusable controls inside a row), `<SelectList>`/`<Select>` (form fields), `<Table>` (tabular), and `<Menu>` (commands that close on activation). The motivating consumer is the Popover notifications panel (DST-1485), and the docs cover a second must-support scenario: a resource list with a per-row action menu.
+
+  v1 is intentionally minimal: no selection, no bulk-action bar, no async loading, no drag-and-drop, and no leading media. Leading icons and images need slot-aware icon/image components so placement doesn't depend on authoring order, which is tracked separately along with the rest of the follow-ups (selection ships together with a bulk-action bar, building on DST-1487).
+
+  **Documentation**
+
+  New `/components/collection/listview` docs page: anatomy, appearance, a "which list?" decision guide, the must-support demos, accessibility notes (including the `<Title>`-as-span caveat), and cross-links to `<List>`, `<ListBox>`, `<SelectList>`, `<Table>`, and `<Menu>`.
+
+- 1dfe461: feat(DST-1489): `ListView` is flat, and aligns like `Table` and `Accordion` inside a bled container.
+
+  **What changed:**
+
+  - The list ships one variant. `default` is the flat list (divider lines only) and there is no framed variant — the old `variant="plain"` is gone, since it is what `default` now does.
+  - Row padding is sourced from `--bleed-px` (via `--listview-item-px`) on the base rather than per variant. That is the custom property a bled `Panel.Content` / `Panel.CollapsibleContent` / `Drawer.Content` publishes; it falls back to the standalone row padding (`--spacing-stretch-regular-x`) when unset.
+
+  **Why:**
+
+  A framed list was what a consumer got without asking, and it collides with anything that draws its own surface — a `Card`, a `Panel`, a docs preview — as a ring inside a ring 8px apart. Every `ListView` in the repo lives inside such a container, so the frame had no consumer of its own; `Table` answers the same shape by drawing no frame at all and leaving the surface to its container. A standalone framed list is `<Card><ListView /></Card>`.
+
+  Binding the bleed to a variant had the same problem from the other side: `<Table>` and `<Accordion>` adopt `--bleed-px` unconditionally, so both align inside a bled `Panel` with no opt-in, while `<ListView>` needed two knobs to do the same thing.
+
+- ce2720e: feat(Table): expandable rows for grouped records
+
+  `<Table>` can now nest rows, so records that belong together (a settlement run
+  and its individual clearings, an order and its line items) share one table
+  instead of being faked with a button and a menu. Set `treeColumn` to the `id` of
+  the column that carries the hierarchy and nest `<Table.Row>` inside
+  `<Table.Row>`; use the new `<Table.ExpandableRows>` when the nested rows come from
+  data, and mark a row `expandable` when they are fetched only once it is opened.
+  Nested rows stay real table rows, so their values line up under the same headers
+  and each one carries its own actions.
+
+  The tree column renders the expand control itself, reusing the caret and morph
+  animation from `<Accordion>`. The caret starts where the column's values start:
+  its hit target is wider than the caret and hangs back into the cell's edge
+  padding (`--tree-caret-inset`), so the ghost button's own whitespace is the
+  gutter rather than something added to it. Behind it every row reserves that
+  gutter, so a group row and a childless row at the same level start their value at
+  the same x whether or not there is a control to show. Levels below the root
+  indent by one gutter (`--tree-indent`), so a nested row's caret starts where its
+  parent's value starts, and the column's own header label takes the same gutter,
+  so it sits above the values it heads. Containment is carried by the children
+  rather than the parent: nested rows share a filled band across the full row, so
+  what belongs to a group is legible in the leading drag and selection columns
+  too, which don't indent. Expansion is collapsed by default and can be controlled
+  with `expandedKeys` / `defaultExpandedKeys` / `onExpandedChange`.
+
+  Drop indicators are level-aware: the insertion line starts at the x of the level
+  the row would land at, so a reorder inside an expanded group reads as landing in
+  that group, while a root-level drop still spans the row. Moving a row from one
+  level to another is not supported.
+
+  The 32px control keeps that hit target without setting row height: a negative
+  block margin cancels the surplus over the line box, so a group row is exactly as
+  tall as a leaf row and the `size` variant's cell padding stays the only thing
+  that decides — 33 / 41 / 53px for `compact` / `default` / `spacious`.
+
+  New theme keys `treeIndent` and `expandButton`. The band is `foreground/8`,
+  which holds ~1.17:1 whether the rows sit on `surface`, on `background` or inside
+  a `muted` table, and yields to the hover wash so hovering still reads. `admin`
+  and `master` rows keep their access colour at every level — who may see a row
+  outranks where it sits in the tree.
+
+  Inline editing composes with it: `Table.EditableCell` renders the tree column's
+  gutter too, so a row keeps its expand control even when that cell is the editable
+  one. When the edited value lives outside the row items, pass `dependencies` to
+  `Table.ExpandableRows` as well as to `Table.Body`. Selection checkboxes, drag
+  handles and the `compact` / `default` / `spacious` paddings all keep working
+  alongside the tree column, and the tree column still takes its edge padding from
+  a `Panel`'s bleed contract.
+
+  Selection works on grouped rows but does not cascade: each row selects on its
+  own, and a group row shows no partial state while only some of its children are
+  selected. Cascading selection is not part of this release.
+
+  **Potentially breaking for opted-in tables:** setting `treeColumn` changes the
+  table's accessibility role from `grid` to `treegrid`, which is what makes screen
+  readers announce expanded state and nesting level. Tests asserting
+  `getByRole('grid')` on such a table need to become `getByRole('treegrid')`.
+  Tables that don't set `treeColumn` are unaffected.
+
+  Collapsed child rows are deliberately not rendered, so searching or deep-linking
+  to a nested row means expanding its ancestors first. Moving focus to a specific
+  row is not supported yet, which is tracked in DST-1713. Sorting doesn't reorder
+  levels for you either, so sort each level in your own data, and there is no
+  expand all control, so set `expandedKeys` to every group's key when you need one.
+
+### Patch Changes
+
+- c7b5c1d: style(DST-1386): give `Checkbox`, `Radio` and `Switch` a hover affordance, and fix the indeterminate `Checkbox`.
+
+  Hovering an unselected `Checkbox` or `Radio` now darkens its border, and hovering an off-state `Switch` darkens its track. These were the only interactive controls in the theme without a hover state, so the hit area DST-1295 widened moved silently under the cursor. Selected, indeterminate, disabled and read-only controls are unchanged on hover — the bold accent already carries those states, and a read-only control should not advertise that it can be changed.
+
+  No new token. `Checkbox` and `Radio` step the alpha on `--color-control-border`, the idiom `ToggleButton` already uses, and the `Switch` steps `--color-control` — which has been alpha-based since DST-1672, so the opaque `--color-control-hover` the ticket originally proposed is not needed. All three land on the same perceived step: a ~1.4× contrast multiplier, matching `ToggleButton`'s.
+
+  On `Checkbox` the hover rule also excludes `focus-visible`. Both declarations set `border-color`, and the hover one compiles to a higher specificity, so without the exclusion hovering a keyboard-focused checkbox would keep the hover border instead of flipping to `--color-ring` — leaving the soft halo as the only marker of focus, which is 2.08:1 on its own and below the 3:1 a focus indicator needs. `Radio` and `Switch` need no such clause: neither flips its border on focus, so there is nothing for hover to outrank.
+
+  The `Switch` tint is a `background-image` rather than a `background-color`. The track keeps the `transition-colors` DST-1436 left it for the toggled state, and `background-image` is not a transitioned property, so hover lands instantly while switching on and off still eases.
+
+  Separately, an indeterminate `Checkbox` now renders the filled box it was always meant to have. Its three state declarations used `group-[indeterminate]`, whose arbitrary-variant syntax takes a selector — the bare word compiled to a type selector for a nonexistent `<indeterminate>` element, so the rules never matched and the box rendered white with a resting border. They now use the `group-indeterminate` variant, which reads the `data-indeterminate` React Aria actually renders.
+
+- 17f9158: fix(DST-1675): treat `collapsed` as axis-less when resolving inset padding
+
+  `resolveInsetAxes` appended an axis suffix to every non-numeric inset token, including `collapsed` — the one token where an axis split is meaningless, since it means "no spacing" on both axes. So `<Panel p="collapsed">` resolved to `var(--spacing-collapsed-x)` rather than `var(--spacing-collapsed)`.
+
+  That variable went undeclared until it was added to `@marigold/theme-rui`, so the declaration was invalid at computed-value time and `padding` fell back to its initial value of `0` — the right answer for the wrong reason. The cost was that every theme implementing this API had to ship three variables that all mean `0` (`--spacing-collapsed`, `-x`, `-y`) to make one documented prop value work, with nothing to tell it so.
+
+  `collapsed` is now recognised as axis-less and passed through unsuffixed, so a theme declares `--spacing-collapsed` only. The same guard is applied to the deliberately-divergent copy of the axis logic in `SelectList`, which had the identical bug on its `p` prop. A new `isAxislessToken` predicate is exported from `@marigold/system` so the concept has one home instead of being inlined at both call sites.
+
+  `isScale` is unchanged: `collapsed` stays non-numeric there, because `createWidthVar`, `createHeightVar` and `createSpacingVar` depend on that classification.
+
+  **Theme:** `--spacing-collapsed-x` and `--spacing-collapsed-y` are removed from `@marigold/theme-rui`. They shipped in `theme-rui` 6.0.0 stable but existed only to satisfy the suffix that is no longer generated — nothing else referenced them, and the documented token has always been `collapsed`.
+
+- 1dfe461: fix(DST-1489): an icon `Button` keeps its square in any flex container.
+
+  `size="icon"` now carries `shrink-0`. An icon button is a fixed square, so in a tight flex row it could previously lose its aspect ratio to make room for a neighbour that won't compress — invisible until its hover fill revealed the squashed box.
+
+  This replaces a `[&>*]:shrink-0` that briefly sat on `ButtonGroup`. Putting it on the control that needs it protects icon buttons everywhere (a `Panel.Header`, a `Table` cell, an `ActionBar`), not only inside a group, and stops `ButtonGroup` pinning children it knows nothing about. Text buttons are unaffected either way: `ui-button-base` sets `whitespace-nowrap`, so their min-content floor is their own label.
+
+- eeb0a29: Fix the `Switch` cursor so it covers the whole control. Hovering the label text
+  showed the default arrow instead of the pointer, because `cursor-pointer` sat
+  only on the track. Moving it to the container also fixes the disabled and
+  read-only cursors, which the track's own rule was overriding.
+- f2dff15: fix(DST-1730): drop the duplicated focus z-index from `ToggleButton`'s theme styles.
+
+  `in-[.group]:focus-visible:z-10` sat in both the theme's `button` slot and `ToggleButton` itself.
+  Rendered output is unchanged — `cn()` was deduping the pair, which the component's inline class
+  snapshots confirm by still passing untouched. What it removes is the drift: two copies of one
+  stacking decision, either of which could be changed without the other.
+
+  Stacking order is a guarantee the component makes, not something a theme should be able to
+  reorder. `pnpm check:theme-zindex` now fails CI on any z-index in a `*.styles.ts`.
+
+- Updated dependencies [1dfe461]
+- Updated dependencies [17f9158]
+- Updated dependencies [148ef97]
+- Updated dependencies [1dfe461]
+- Updated dependencies [1fd3f85]
+- Updated dependencies [ce2720e]
+- Updated dependencies [4a18a38]
+- Updated dependencies [e41e633]
+  - @marigold/components@18.1.0
+  - @marigold/system@18.1.0
+
 ## 6.0.0
 
 ### Major Changes

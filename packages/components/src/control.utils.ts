@@ -22,3 +22,34 @@ export const controlIcon = (control: HTMLElement) => {
 };
 
 export const borderOf = (el: Element) => getComputedStyle(el).borderColor;
+
+/**
+ * Vertical centre of an element's border box, in viewport px.
+ */
+export const centerY = (el: Element) => {
+  const { top, height } = el.getBoundingClientRect();
+
+  return top + height / 2;
+};
+
+export const firstLineCenterY = (labelBlock: Element) => {
+  const lineHeight = parseFloat(getComputedStyle(labelBlock).lineHeight);
+
+  expect(lineHeight).toBeGreaterThan(0);
+
+  return labelBlock.getBoundingClientRect().top + lineHeight / 2;
+};
+
+export const firstLineOffset = (control: Element, labelBlock: Element) =>
+  Math.abs(centerY(control) - firstLineCenterY(labelBlock));
+
+const SUBPIXEL_TOLERANCE = 0.5;
+
+export const isSingleLine = (labelBlock: Element) => {
+  const lineHeight = parseFloat(getComputedStyle(labelBlock).lineHeight);
+
+  return (
+    Math.abs(labelBlock.getBoundingClientRect().height - lineHeight) <=
+    SUBPIXEL_TOLERANCE
+  );
+};

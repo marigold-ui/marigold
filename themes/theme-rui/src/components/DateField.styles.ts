@@ -24,6 +24,6 @@ export const DateField: ThemeComponent<'DateField'> = {
     ],
   }),
   action: cva({
-    base: 'fill-secondary disabled:text-disabled group-invalid/field:fill-destructive-accent',
+    base: 'flex size-control shrink-0 items-center justify-center fill-secondary disabled:text-disabled group-invalid/field:fill-destructive-accent',
   }),
 };
