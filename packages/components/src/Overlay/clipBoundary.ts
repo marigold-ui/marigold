@@ -1,3 +1,5 @@
+// A fixed element's containing block excludes the reserved scrollbar gutter,
+// so this spans the box that actually clips. Workaround for adobe/react-spectrum#10131.
 let boundary: HTMLElement | undefined;
 
 export const getClipBoundary = () => {
