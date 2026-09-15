@@ -14,6 +14,7 @@ import {
   Basic,
   EmptyState,
   InPanel,
+  MultipleSelection,
   NotificationsFeed,
   WithDescription,
 } from './ListView.stories';
@@ -33,7 +34,7 @@ describe('ListView', () => {
       expect(rows).toHaveLength(3);
     });
 
-    test('rows have no aria-selected — ListView has no selection', () => {
+    test('rows have no aria-selected without a selectionMode', () => {
       render(<Basic.Component />);
 
       for (const row of screen.getAllByRole('row')) {
@@ -346,6 +347,114 @@ describe('ListView', () => {
         'data-grid-area',
         'label'
       );
+    });
+  });
+
+  describe('selection', () => {
+    test('marks the grid multiselectable in multiple mode', () => {
+      render(<MultipleSelection.Component />);
+
+      expect(screen.getByRole('grid')).toHaveAttribute(
+        'aria-multiselectable',
+        'true'
+      );
+    });
+
+    test('leaves the grid single-selectable in single mode', () => {
+      render(<MultipleSelection.Component selectionMode="single" />);
+
+      expect(screen.getByRole('grid')).not.toHaveAttribute(
+        'aria-multiselectable'
+      );
+    });
+
+    test('reports the selection as a Set of keys', async () => {
+      const onSelectionChange = vi.fn();
+      render(
+        <MultipleSelection.Component onSelectionChange={onSelectionChange} />
+      );
+
+      await user.click(screen.getByRole('row', { name: /gasometer/i }));
+
+      // A `Selection` is a `Set` subclass, so compare contents not identity.
+      expect([...onSelectionChange.mock.calls[0][0]]).toEqual(['gasometer']);
+    });
+
+    test('marks every row when the selection is the `all` sentinel', () => {
+      render(<MultipleSelection.Component selectedKeys="all" />);
+
+      for (const row of screen.getAllByRole('row')) {
+        expect(row).toHaveAttribute('aria-selected', 'true');
+      }
+    });
+
+    test('honors a controlled selection', () => {
+      render(<MultipleSelection.Component selectedKeys={['tempodrom']} />);
+
+      expect(screen.getByRole('row', { name: /tempodrom/i })).toHaveAttribute(
+        'aria-selected',
+        'true'
+      );
+      expect(screen.getByRole('row', { name: /gasometer/i })).toHaveAttribute(
+        'aria-selected',
+        'false'
+      );
+    });
+
+    test('a disabled row cannot be selected', async () => {
+      const onSelectionChange = vi.fn();
+      render(
+        <MultipleSelection.Component
+          disabledKeys={['tempodrom']}
+          onSelectionChange={onSelectionChange}
+        />
+      );
+
+      await user.click(screen.getByRole('row', { name: /tempodrom/i }));
+
+      expect(onSelectionChange).not.toHaveBeenCalled();
+    });
+
+    // `disabledBehavior="selection"` is deliberately not a story: RAC sets
+    // neither `data-disabled` nor `aria-disabled` in that mode, so the row
+    // renders and announces like any other and only its checkbox is disabled.
+    // The behaviour is worth pinning; the appearance is not worth publishing.
+    test('a selection-disabled row takes focus but cannot be selected', async () => {
+      const onSelectionChange = vi.fn();
+      render(
+        <MultipleSelection.Component
+          disabledKeys={['tempodrom']}
+          disabledBehavior="selection"
+          onSelectionChange={onSelectionChange}
+        />
+      );
+
+      const rows = screen.getAllByRole('row');
+      rows[0].focus();
+
+      await user.keyboard('{ArrowDown}');
+
+      expect(rows[1]).toHaveFocus();
+
+      await user.keyboard(' ');
+
+      // RAC drops `aria-selected` altogether rather than reporting `false`: a
+      // row that cannot be selected should not advertise a selection state.
+      expect(rows[1]).not.toHaveAttribute('aria-selected');
+      expect(onSelectionChange).not.toHaveBeenCalled();
+    });
+
+    test('keeps the interactive cursor off a disabled row', () => {
+      render(<MultipleSelection.Component disabledKeys={['tempodrom']} />);
+
+      const enabled = screen.getByRole('row', { name: /gasometer/i });
+      const disabled = screen.getByRole('row', { name: /tempodrom/i });
+
+      // The pointer is gated behind `not-disabled:`: ungated, a
+      // `data-selection-mode:cursor-pointer` outranks `disabled:cursor-not-allowed`
+      // on source order and the disabled row still invites a click.
+      expect(getComputedStyle(enabled).cursor).toBe('pointer');
+      expect(getComputedStyle(disabled).cursor).toBe('not-allowed');
     });
   });
 });
