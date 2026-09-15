@@ -18,7 +18,7 @@ import {
 import { cn, textAlign, useSmallScreen, verticalAlign } from '@marigold/system';
 import { Dialog } from '../Dialog/Dialog';
 import { Form } from '../Form/Form';
-import { getClipBoundary } from '../Overlay/clipBoundary';
+import { useClipBoundary } from '../Overlay/clipBoundary';
 import { Check } from '../icons/Check';
 import { Pencil } from '../icons/Pencil';
 import { X } from '../icons/X';
@@ -94,6 +94,7 @@ const EditableCellPopover = ({
   const [triggerWidth, setTriggerWidth] = useState(0);
   const [tableWidth, setTableWidth] = useState(0);
   const [verticalOffset, setVerticalOffset] = useState(0);
+  const clipBoundary = useClipBoundary();
 
   // Position the popover correctly on top of the cell and matching its width
   useLayoutEffect(() => {
@@ -120,7 +121,7 @@ const EditableCellPopover = ({
       onOpenChange={onOpenChange}
       triggerRef={cellRef}
       offset={verticalOffset}
-      boundaryElement={getClipBoundary()}
+      boundaryElement={clipBoundary}
       placement="bottom start"
       style={{
         minWidth: `min(${triggerWidth}px, ${tableWidth}px)`,

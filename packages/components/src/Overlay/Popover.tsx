@@ -3,7 +3,7 @@ import type RAC from 'react-aria-components';
 import { Popover } from 'react-aria-components/Popover';
 import { cn, useClassNames } from '@marigold/system';
 import { ResetButtonContext } from '../Button/ResetButtonContext';
-import { getClipBoundary } from './clipBoundary';
+import { useClipBoundary } from './clipBoundary';
 
 // Internal Usage Notes
 // ---------------
@@ -54,7 +54,7 @@ const PopoverBase = ({
     isKeyboardDismissDisabled: keyboardDismissDisabled,
     isOpen: open,
     placement,
-    boundaryElement: getClipBoundary(),
+    boundaryElement: useClipBoundary(),
     ...rest,
   };
   const classNames = useClassNames({
