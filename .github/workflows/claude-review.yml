@@ -1,5 +1,6 @@
 # Baseline review of a pull request against the repository's own standards.
-# Ships SWITCHED OFF: opt in with the AI_REVIEW_ENABLED repository variable.
+# Runs on every PR whose title type maps to a review profile; `classify` below
+# owns that decision, and there is no repository variable in front of it.
 # Advisory only. claude-code-action cannot submit formal reviews or approve.
 name: Claude Review
 
@@ -25,7 +26,6 @@ jobs:
     # Forks excluded (unsupported upstream). Bots filtered by account TYPE:
     # Renovate posts as `marigold-renovate[bot]`, so a login list matches none.
     if: >-
-      vars.AI_REVIEW_ENABLED == 'true' &&
       github.event.pull_request.head.repo.full_name == github.repository &&
       github.event.pull_request.user.type != 'Bot'
 
@@ -95,8 +95,8 @@ jobs:
 
     # Static on purpose. An interpolated job name renders as the raw
     # `${{ … }}` template in the checks list whenever `classify` is skipped,
-    # which is its normal state while AI_REVIEW_ENABLED is off. The profile is
-    # logged by classify and passed to the prompt instead.
+    # which is what a fork or bot PR does. The profile is logged by classify
+    # and passed to the prompt instead.
     name: Baseline review
     runs-on: ubuntu-latest
     timeout-minutes: 15
