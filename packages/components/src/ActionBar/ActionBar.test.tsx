@@ -262,3 +262,68 @@ test('deselecting all rows hides ActionBar', async () => {
     ).not.toBeInTheDocument()
   );
 });
+
+// Regression: the measurement used to sit in the outer `ActionBar`, which renders
+// `null` while nothing is selected, so the observer never attached to an element.
+test('reserves the ActionBar height on the container once the bar reopens', async () => {
+  render(<IntegratedWithTable.Component />);
+
+  // The reservation lands on Table's content wrapper, which exposes no role.
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getByRole('grid').parentElement!;
+  const rowBoxes = screen.getAllByRole('checkbox').slice(1);
+  const checked = rowBoxes.filter(cb => (cb as HTMLInputElement).checked);
+
+  for (const cb of checked) {
+    await user.click(cb);
+  }
+
+  await waitFor(() =>
+    expect(
+      screen.queryByRole('toolbar', { name: /bulk actions/i })
+    ).not.toBeInTheDocument()
+  );
+
+  await user.click(rowBoxes[0]);
+
+  await waitFor(() => {
+    expect(container.style.paddingBottom).toMatch(/^calc\((?!0px)\d/);
+    expect(container.style.scrollPaddingBottom).toMatch(/^calc\((?!0px)\d/);
+  });
+});
+
+// The reservation must go on the content, never on the scroll container itself: a
+// scroller's own padding shrinks the rectangle its sticky children pin to, which
+// lifts the bar off the bottom by exactly the height that was reserved.
+test('keeps the ActionBar pinned to the bottom of the scroll container', async () => {
+  render(<IntegratedWithTable.Component />);
+
+  const bar = await screen.findByRole('toolbar', { name: /bulk actions/i });
+
+  /* eslint-disable testing-library/no-node-access */
+  const sticky = bar.closest('[class*="sticky"]') as HTMLElement;
+  let scroller = sticky.parentElement;
+  while (
+    scroller &&
+    scroller !== document.body &&
+    !/auto|scroll/.test(getComputedStyle(scroller).overflowY)
+  ) {
+    scroller = scroller.parentElement;
+  }
+  /* eslint-enable testing-library/no-node-access */
+
+  expect(scroller).not.toBe(document.body);
+
+  // The bar slides in on a transform. Wait for the entering flag to clear, then
+  // measure once: this has to hold always, and a `waitFor` around the assertion
+  // would pass on any single frame that happened to satisfy it.
+  await waitFor(() => expect(sticky).not.toHaveAttribute('data-entering'));
+
+  scroller!.scrollTop = 0;
+
+  const barBox = sticky.getBoundingClientRect();
+  const gap = scroller!.getBoundingClientRect().bottom - barBox.bottom;
+
+  expect(gap).toBeGreaterThanOrEqual(0);
+  expect(gap).toBeLessThan(barBox.height);
+});
