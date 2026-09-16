@@ -54,7 +54,7 @@
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-error-boundary": "6.1.5",
-    "react-hook-form": "7.84.0",
+    "react-hook-form": "7.88.0",
     "react-use": "^17.6.0",
     "remark-gfm": "^4.0.1",
     "remark-mdx": "^3.1.0",
@@ -64,7 +64,7 @@
     "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0",
     "yaml": "^2.9.0",
-    "zod": "4.4.3",
+    "zod": "4.6.4",
     "zod-form-data": "3.0.3"
   },
   "devDependencies": {
