@@ -19,34 +19,33 @@ concurrency:
 
 jobs:
   gate:
-    # Off with AI_MENTIONS_ENABLED='false'.
+    # No variable in front of this. `gh workflow disable "Claude Mentions"` is
+    # the off switch, and it stops the run rather than skipping the job.
     #
     # author_association is a pre-filter, not the boundary: MEMBER and
     # COLLABORATOR do not imply write. The real check is in the job below. Do
     # not set allowed_non_write_users, which would make this the only check.
     if: >-
-      vars.AI_MENTIONS_ENABLED != 'false' && (
-        (
-          github.event_name == 'issue_comment' &&
-          github.event.issue.pull_request &&
-          github.event.issue.state == 'open' &&
-          contains(github.event.comment.body, '@claude') &&
-          contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
-        ) ||
-        (
-          github.event_name == 'pull_request_review_comment' &&
-          github.event.pull_request.state == 'open' &&
-          github.event.pull_request.head.repo.full_name == github.repository &&
-          contains(github.event.comment.body, '@claude') &&
-          contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
-        ) ||
-        (
-          github.event_name == 'pull_request_review' &&
-          github.event.pull_request.state == 'open' &&
-          github.event.pull_request.head.repo.full_name == github.repository &&
-          contains(github.event.review.body, '@claude') &&
-          contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.review.author_association)
-        )
+      (
+        github.event_name == 'issue_comment' &&
+        github.event.issue.pull_request &&
+        github.event.issue.state == 'open' &&
+        contains(github.event.comment.body, '@claude') &&
+        contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
+      ) ||
+      (
+        github.event_name == 'pull_request_review_comment' &&
+        github.event.pull_request.state == 'open' &&
+        github.event.pull_request.head.repo.full_name == github.repository &&
+        contains(github.event.comment.body, '@claude') &&
+        contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
+      ) ||
+      (
+        github.event_name == 'pull_request_review' &&
+        github.event.pull_request.state == 'open' &&
+        github.event.pull_request.head.repo.full_name == github.repository &&
+        contains(github.event.review.body, '@claude') &&
+        contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.review.author_association)
       )
 
     name: Check the mention is actionable
