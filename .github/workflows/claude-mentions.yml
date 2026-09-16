@@ -142,7 +142,7 @@ jobs:
       - name: Assume the Bedrock role
         uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
         with:
-          role-to-assume: ${{ vars.AI_REVIEW_BEDROCK_ROLE_ARN }}
+          role-to-assume: ${{ secrets.AI_REVIEW_BEDROCK_ROLE_ARN }}
           aws-region: ${{ vars.AI_REVIEW_BEDROCK_REGION }}
           role-session-name: gha-claude-mentions-${{ github.run_id }}
 
