@@ -112,7 +112,7 @@ The `Claude Review` workflow is the floor. It runs unattended on a pull request,
 Two rules hold this together:
 
 - **The checklist has one home.** `skills/review-pr/references/review-checklist.md` is the agreed standard, and the CI prompt points at that path rather than restating it. A rule that exists in a workflow file and not in the checklist will drift out of review.
-- **CI never becomes required.** The floor stays advisory. Making it blocking would put a non-deterministic check on the merge path, and it is structurally impossible anyway: the action cannot submit a formal review.
+- **CI never becomes required.** The floor stays advisory. Making it blocking would put a non-deterministic check on the merge path. The action cannot submit a formal review, so it can never block on findings, but the job itself can be marked required in branch protection. Do not.
 
 ## Adding and removing
 

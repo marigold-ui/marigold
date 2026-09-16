@@ -138,6 +138,24 @@ jobs:
           node-version-file: '.node-version'
           cache: 'pnpm'
 
+      # An unset model id is the quiet failure: it folds to `--model
+      # --max-turns N`, eating the next flag.
+      - name: Check the Bedrock configuration is present
+        env:
+          ROLE_ARN: ${{ secrets.AI_REVIEW_BEDROCK_ROLE_ARN }}
+          REGION: ${{ vars.AI_REVIEW_BEDROCK_REGION }}
+          MODEL_ID: ${{ vars.AI_MENTIONS_MODEL_ID }}
+        run: |
+          set -euo pipefail
+          missing=
+          [ -n "$ROLE_ARN" ] || missing="$missing secret AI_REVIEW_BEDROCK_ROLE_ARN,"
+          [ -n "$REGION" ] || missing="$missing variable AI_REVIEW_BEDROCK_REGION,"
+          [ -n "$MODEL_ID" ] || missing="$missing variable AI_MENTIONS_MODEL_ID,"
+          if [ -n "$missing" ]; then
+            echo "::error::Missing repository configuration:${missing%,}"
+            exit 1
+          fi
+
       - name: Assume the Bedrock role
         uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
         with:

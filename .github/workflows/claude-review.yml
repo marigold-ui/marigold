@@ -7,8 +7,8 @@ name: Claude Review
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    # Narrower than visual-regression-tests.yml on purpose: docs/** is a Next.js
-    # app with ~600 reviewable .tsx files.
+    # Shorter ignore list than visual-regression-tests.yml on purpose, so this
+    # does run on docs/**: it is a Next.js app with ~600 reviewable .tsx files.
     paths-ignore:
       - '**/*.md'
       - '**/*.mdx'
@@ -67,21 +67,22 @@ jobs:
             feat|fix|refactor|style) profile=full ;;
             docs) profile=docs ;;
             test) profile=tests ;;
+            # GitHub's own `Revert "…"` titles parse as nothing and get full.
             chore|ci|build|release|revert) profile=skip ;;
             # Unparseable titles fail toward reviewing.
             *) profile=full ;;
           esac
 
-          # Nothing lints the title, so a skip-category PR touching real source
-          # is promoted. Matching src/** excludes package.json.
-          if [ "$profile" = "skip" ]; then
+          # Nothing lints the title, so any narrowed profile touching real
+          # source is promoted. Matching src/** excludes package.json.
+          if [ "$profile" != "full" ]; then
             # Not `| grep -q`: grep exits on first match, gh takes SIGPIPE, and
             # pipefail reads that as "no source changed" — unsafe direction.
             changed=$(gh pr diff "$PR_NUMBER" --repo "$REPOSITORY" --name-only)
             src_changed=$(printf '%s\n' "$changed" \
               | grep -cE '^(packages|themes)/[^/]+/src/' || true)
             if [ "$src_changed" -gt 0 ]; then
-              echo "::notice::Title type '${type:-none}' would skip, but $src_changed source file(s) changed. Escalating to a full review."
+              echo "::notice::Title type '${type:-none}' maps to profile '$profile', but $src_changed source file(s) changed. Escalating to a full review."
               profile=full
             fi
           fi
@@ -112,6 +113,24 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
+      # An unset model id is the quiet failure: it folds to `--model
+      # --max-turns N`, eating the next flag.
+      - name: Check the Bedrock configuration is present
+        env:
+          ROLE_ARN: ${{ secrets.AI_REVIEW_BEDROCK_ROLE_ARN }}
+          REGION: ${{ vars.AI_REVIEW_BEDROCK_REGION }}
+          MODEL_ID: ${{ vars.AI_REVIEW_MODEL_ID }}
+        run: |
+          set -euo pipefail
+          missing=
+          [ -n "$ROLE_ARN" ] || missing="$missing secret AI_REVIEW_BEDROCK_ROLE_ARN,"
+          [ -n "$REGION" ] || missing="$missing variable AI_REVIEW_BEDROCK_REGION,"
+          [ -n "$MODEL_ID" ] || missing="$missing variable AI_REVIEW_MODEL_ID,"
+          if [ -n "$missing" ]; then
+            echo "::error::Missing repository configuration:${missing%,}"
+            exit 1
+          fi
+
       - name: Assume the Bedrock role
         uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
         with:
@@ -128,8 +147,9 @@ jobs:
 
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-          # Not track_progress: with cancel-in-progress above, a cancelled run
-          # can strand a permanent "Claude is working" comment.
+          # track_progress forces tag mode. Agent mode, the default once a
+          # prompt is set, gets no PR context and no tool to post with.
+          track_progress: true
           use_sticky_comment: true
 
           prompt: |
@@ -195,8 +215,8 @@ jobs:
             You cannot approve or request changes on this PR and should not try.
             This review is advisory and never blocks a merge.
 
-          # No --allowedTools: an explicit list omitted the action's own MCP
-          # comment tool, leaving Claude no way to post its findings.
+          # No --allowedTools: tag mode sets its own and merges in any
+          # mcp__github_* we add. An explicit list drops the comment tool.
           claude_args: >-
             --model ${{ vars.AI_REVIEW_MODEL_ID }}
             --max-turns 30
