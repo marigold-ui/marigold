@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
-const VERSION = '3.19.0';
+const VERSION = '3.21.0';
 const REPO = 'https://github.com/vale-cli/vale/releases/download';
 
 const ROOT = path.join(import.meta.dirname, '..');
