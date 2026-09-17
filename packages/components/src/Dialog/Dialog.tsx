@@ -107,9 +107,7 @@ const InnerDialog = ({
       )}
     >
       {closeButton && (
-        // The label is what `CloseButton`'s fallback would produce anyway, but
-        // stating it here keeps `Dialog` out of the dev-warning path and names
-        // the intent at the call site. Do not delete it as redundant.
+        // Explicit on purpose: keeps `Dialog` out of `CloseButton`'s dev warning.
         <CloseButton
           aria-label={stringFormatter.format('close')}
           className={classNames.closeButton}

@@ -26,8 +26,7 @@ test('optionally renders a close button', async () => {
   const dialog = screen.getByRole('dialog');
   await waitFor(() => expect(dialog).toBeVisible());
 
-  // Queried by accessible name on purpose: a positional lookup used to hide
-  // that this button had no name at all (DST-1769).
+  // By name, not position: the positional lookup hid DST-1769.
   const closeButton = within(dialog).getByRole('button', { name: 'Close' });
 
   await user.click(closeButton);

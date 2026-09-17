@@ -39,19 +39,15 @@ test('an explicit aria-label wins over the fallback', () => {
 });
 
 test('a forwarded undefined aria-label does not wipe out the fallback', () => {
-  // The shape a wrapper produces with `aria-label={props.label}` when no label
-  // was given. The key exists on the props object with the value `undefined`,
-  // which used to overwrite the fallback through the spread.
+  // The shape a wrapper produces with `aria-label={props.label}`.
   render(<Basic.Component aria-label={undefined} />);
 
   expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument();
 });
 
 test('still falls back when a slot resolves no name from context', () => {
-  // A `slot` prop is not itself a name. With no provider above it nothing
-  // resolves, which is the same shape as RAC's `Dialog` `close` slot: it
-  // supplies `onPress` and no label. The slot that *does* carry a label is
-  // covered in `TagGroup.test.tsx`, against its real provider.
+  // Same shape as RAC Dialog's `close` slot: `onPress`, no label. The labelled
+  // slot is covered in `TagGroup.test.tsx`.
   render(<Basic.Component slot="remove" />);
 
   expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument();

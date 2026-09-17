@@ -144,11 +144,9 @@ test('collapseAt is ignored for dynamic collections (function children)', () => 
 });
 
 test('remove buttons keep the label RAC supplies through the slot', () => {
-  // CloseButton falls back to a generic "Close" when nothing names it, but a
-  // local aria-label would beat RAC's slot context. Guards DST-1769.
+  // CloseButton's fallback must not override RAC's slot label (DST-1769).
   render(<RemovableTags.Component />);
 
-  // RAC composes the slot label with the tag's own text ("Remove News").
   expect(screen.getAllByRole('button', { name: /^Remove / })).toHaveLength(4);
   expect(
     screen.queryByRole('button', { name: /close/i })

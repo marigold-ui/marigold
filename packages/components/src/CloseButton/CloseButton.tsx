@@ -32,11 +32,8 @@ export const CloseButton = ({
     variant,
   });
 
-  // A `slot` on its own is not proof of an accessible name. RAC's `TagGroup`
-  // labels its `remove` slot through context, but RAC's `Dialog` registers a
-  // `close` slot carrying only `onPress` (`dist/private/Dialog.cjs`), so
-  // trusting the prop would leave `<CloseButton slot="close" />` unnamed.
-  // Ask the resolved context which kind of slot this actually is.
+  // Not every RAC slot supplies a label (TagGroup's `remove` does, Dialog's
+  // `close` does not), so check the resolved context instead of `props.slot`.
   const slottedContext = useSlottedContext(ButtonContext, props.slot);
 
   const hasAccessibleName =
@@ -59,11 +56,8 @@ export const CloseButton = ({
       ref={ref}
       className={classNames}
       {...props}
-      // Set after the spread: a caller forwarding `aria-label={undefined}`
-      // would otherwise re-introduce the key and wipe out the fallback. When a
-      // name is already in scope this resolves to the caller's own value (or
-      // `undefined`), and RAC's prop merging lets a slotted context label win
-      // over an `undefined` local one.
+      // After the spread, so a forwarded `aria-label={undefined}` cannot
+      // overwrite the fallback.
       aria-label={
         hasAccessibleName
           ? props['aria-label']
