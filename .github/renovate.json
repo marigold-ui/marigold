@@ -134,6 +134,7 @@
     }
   ],
   "vulnerabilityAlerts": {
+    "description": "branchConcurrentLimit: 0 is load-bearing. The vulnerabilityAlerts default carries prConcurrentLimit: 0 but not branchConcurrentLimit, and branchConcurrentLimit inherits prConcurrentLimit only when it is not a number (calcLimit in lib/workers/global/limits.ts). The top level sets it, so the inheritance never fires and security branches would be capped at that number instead of unlimited.",
     "enabled": true,
     "labels": ["security"],
     "schedule": ["at any time"],
