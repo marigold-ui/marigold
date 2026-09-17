@@ -10,8 +10,12 @@ on:
 
 concurrency:
   # A run the `if` will skip gets its own group, so it cannot take the single
-  # pending slot from a tick queued behind a run in flight.
-  group: renovate-${{ github.event.sender.type == 'Bot' && github.run_id || 'shared' }}
+  # pending slot from a tick queued behind a run in flight. The condition has to
+  # mirror the job's `if` exactly, or a skipped run still lands in `shared`.
+  group: >-
+    renovate-${{ (github.event_name == 'issues' && (github.event.issue.title !=
+    'Dependency Dashboard' || github.event.sender.type == 'Bot')) &&
+    github.run_id || 'shared' }}
   cancel-in-progress: false
 
 jobs:
