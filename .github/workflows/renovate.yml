@@ -2,22 +2,21 @@ name: Renovate
 
 on:
   schedule:
-    # Monday and Thursday at 2am Europe/Berlin (0am UTC)
+    # Monday and Thursday at 00:00 UTC
     - cron: '0 0 * * 1,4'
   workflow_dispatch:
   issues:
     types: [edited]
 
 concurrency:
-  group: renovate
-  # A dashboard tick used to kill the run that was already working. GitHub keeps one
-  # pending run per group, so rapid ticks collapse into a single follow-up run.
+  # A run the `if` will skip gets its own group, so it cannot take the single
+  # pending slot from a tick queued behind a run in flight.
+  group: renovate-${{ github.event.sender.type == 'Bot' && github.run_id || 'shared' }}
   cancel-in-progress: false
 
 jobs:
   renovate:
-    # Renovate writes the dashboard itself, which is an issue edit, so without the
-    # sender check the bot triggers a run that cancels the run that wrote it.
+    # Renovate's own dashboard write is an issue edit, so a run would trigger another.
     if: >-
       github.event_name != 'issues' || (
         github.event.issue.title == 'Dependency Dashboard' &&
