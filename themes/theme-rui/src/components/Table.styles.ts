@@ -96,7 +96,6 @@ export const Table: ThemeComponent<'Table'> = {
     },
   }),
 
-  // <thead>
   head: cva({
     base: [
       // for sticky header
@@ -125,10 +124,8 @@ export const Table: ThemeComponent<'Table'> = {
     },
   }),
 
-  // <tbody>
   body: cva({}),
 
-  // <tfoot>
   footer: cva({
     base: [
       'bg-surface/90 border-border border-t',
@@ -186,7 +183,6 @@ export const Table: ThemeComponent<'Table'> = {
     ],
   }),
 
-  // Drag and drop
   dragHandle: cva({
     base: [
       'text-secondary rounded size-4',

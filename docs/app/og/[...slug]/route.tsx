@@ -78,7 +78,6 @@ export const GET = async (
 
   const title = page.data.title || '';
 
-  // Load Inter font
   const fontData = await fetch(new URL('/fonts/Inter-Black.ttf', baseUrl)).then(
     res => res.arrayBuffer()
   );
