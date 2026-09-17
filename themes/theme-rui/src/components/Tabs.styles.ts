@@ -2,12 +2,10 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Tabs: ThemeComponent<'Tabs'> = {
   container: cva({ base: 'flex flex-col gap-2' }),
-  // `py-1 -my-1` reserves vertical room for the focus rings and indicator that
-  // `overflow-x`'s implied `overflow-y` would otherwise clip. `scroll-px-6`
-  // keeps the adjacent tab peeking. Proximity snapping avoids fighting momentum
-  // and react-aria's auto-scroll, and `snap-x` is required alongside it: on its
-  // own `snap-proximity` only sets the strictness variable and never emits
-  // `scroll-snap-type`, leaving `snap-start` and `scroll-px-6` inert.
+  // `py-1 -my-1` reserves room for the focus rings and indicator that
+  // `overflow-x`'s implied `overflow-y` would clip. `scroll-px-6` keeps the next
+  // tab peeking. `snap-x` is required alongside `snap-proximity`: alone the latter
+  // sets only the strictness var and never emits `scroll-snap-type`.
   tabsListScroll: cva({
     base: 'ui-scroll-mask-x -my-1 snap-x snap-proximity scroll-px-6 overscroll-x-contain py-1 motion-safe:scroll-smooth',
   }),

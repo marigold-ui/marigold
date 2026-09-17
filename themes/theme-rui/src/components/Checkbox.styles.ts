@@ -13,16 +13,10 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
       'group-selected/checkbox:border-selected-bold group-selected/checkbox:bg-selected-bold group-selected/checkbox:text-selected-bold-foreground',
       'group-indeterminate/checkbox:border-selected-bold group-indeterminate/checkbox:bg-selected-bold group-indeterminate/checkbox:text-selected-bold-foreground',
       'group-hover/checkbox:group-disabled/checkbox:bg-disabled-surface',
-      // Matches ToggleButton's hover step, not its value — this slot idles at
-      // +0.06, so its +0.12 would be half the step. Each `:not()` outranks a
-      // state rule above; removing one lets hover repaint that state.
-      //
-      // `focus-visible` is in the chain for that reason and not for symmetry:
-      // this rule lands at (0,5,0) against (0,2,0) for the focus-visible border
-      // above, so without it hover wins on a focused checkbox and the border
-      // never flips to --color-ring. That leaves the halo as the only thing
-      // separating focused from hovered, and the halo alone is 2.08:1.
-      // `disabled` is absent by contrast: its rule carries `!important`.
+      // Matches ToggleButton's hover step, not its value: this slot idles at +0.06.
+      // Each `:not()` outranks a state rule above, so removing one lets hover
+      // repaint it. `focus-visible` is in the chain because this lands at (0,5,0)
+      // against the focus border's (0,2,0); `disabled` isn't, its rule is `!`.
       'group-hover/checkbox:not-group-focus-visible/checkbox:not-group-read-only/checkbox:not-group-selected/checkbox:not-group-indeterminate/checkbox:border-[oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_+_0.18))]',
     ],
   }),

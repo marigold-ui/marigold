@@ -1,16 +1,9 @@
 import { type ThemeComponent, cva } from '@marigold/system';
 
 /**
- * Two charcoal tiers of ink; the current page is an inset rounded pill with
- * whitespace to both sidebar edges:
- *
- * - Active — `foreground` text on a flat `selected` pill (a step darker than
- *   the sidebar).
- * - Idle   — a step lighter (`secondary`); hover previews the pill in `hover`.
- * - Labels — set apart by treatment (uppercase, smaller, heavier, tracked),
- *   not colour: charcoal-500 sits at 3.3:1, below the 4.5:1 AA floor.
- *
- * Extra top space on section labels separates groups without dividers.
+ * Two charcoal tiers of ink. Active is `foreground` on a flat `selected` pill,
+ * idle a step lighter, hover previews it. Section labels are set apart by
+ * treatment, not colour: charcoal-500 is 3.3:1, below the 4.5:1 AA floor.
  */
 export const Sidebar: ThemeComponent<'Sidebar'> = {
   // The full-width sheet covers the page, so there is nothing to dim.
@@ -151,10 +144,8 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   }),
 
   // ── Two-level rail (Sidebar.Rail) ──────────────────────────────────────────
-  // A narrow rail of top-level destinations beside a section panel. Same quiet
-  // skin as the single column. The sidebar's sole right edge is drawn by the
-  // panel (expanded) or the rail column (collapsed), never both — so railRoot
-  // has no border of its own.
+  // The sidebar's sole right edge is drawn by the panel (expanded) or the rail
+  // column (collapsed), never both, so railRoot has no border of its own.
   railRoot: cva({
     base: ['overflow-hidden bg-background'],
   }),
@@ -191,14 +182,10 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       '[&_svg]:size-5',
     ],
   }),
-  // The scrolling item list. overflow-x-hidden: fixed-width labels would
-  // otherwise grow a horizontal scrollbar. ui-scroll-mask-y owns the vertical
-  // overflow (hence no overflow-y here) and fades over the scrollbar instead
-  // of replacing it. scroll-py reads its --sc-mask-width so they can't drift,
-  // and scroll-smooth keeps focus from jumping to a tile below the fold.
-  // No overscroll containment, unlike the ui-scroll-mask-x consumers: theirs
-  // guards the browser's back/forward swipe, which has no block-axis twin, and
-  // the single column's nav doesn't contain either.
+  // overflow-x-hidden: fixed-width labels would otherwise grow a horizontal
+  // scrollbar. ui-scroll-mask-y owns the vertical overflow (hence no overflow-y)
+  // and scroll-py reads its --sc-mask-width so the two can't drift. No overscroll
+  // containment: the back/forward swipe that guards has no block-axis twin.
   rail: cva({
     base: [
       'flex flex-col gap-0.5 flex-1 min-h-0 overflow-x-hidden py-1.5',
@@ -206,14 +193,10 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'scroll-py-(--sc-mask-width) motion-safe:scroll-smooth',
     ],
   }),
-  // Stacked tile: icon above a visible label. Content-hugging so the pill never
-  // covers empty space and tile spacing is constant regardless of label lines.
-  //
-  // Collapsing folds the label row (grid-rows auto 1fr → 0fr) while py grows
-  // 2 → 3, keeping each icon-only tile a 44px WCAG 2.5.5 hit target.
-  //
-  // The label fades rather than unmounts — opacity-0 (not sr-only) keeps it in
-  // the a11y tree as the accessible name. hyphens-auto needs a document `lang`.
+  // Stacked tile: icon above label, content-hugging so spacing is constant
+  // whatever the label wraps to. Collapsing folds the label row (1fr → 0fr) while
+  // py grows 2 → 3, keeping a 44px WCAG 2.5.5 target. The label fades rather than
+  // unmounts: opacity-0, not sr-only, keeps it as the accessible name.
   railItem: cva({
     base: [
       // Cap the column at tile width so the fixed-width label can't drag the
@@ -242,6 +225,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // row clip it.
       '[&>span]:w-[calc(var(--spacing-rail)-0.75rem)] [&>span]:min-h-0 [&>span]:overflow-hidden',
       '[&>span]:text-[0.6875rem] [&>span]:font-medium [&>span]:leading-tight',
+      // hyphens-auto needs a document `lang`.
       '[&>span]:break-words [&>span]:hyphens-auto',
       // Fade out fast (no half-clipped text on the folding row), in late.
       '[&>span]:transition-opacity [&>span]:duration-150 [&>span]:delay-100 [&>span]:ease-out',
@@ -251,10 +235,8 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'motion-reduce:[&>span]:transition-none',
     ],
   }),
-  // Pinned below the list, same tiles and rhythm. Top seam mirrors the single
-  // column's: absent while the list fits, a hairline once it scrolls. Default
-  // --seam-color, 0.14 vs 0.13. The fallback hairline is opted out of, unlike
-  // the single column's: that nav usually overflows, a rail of 3-7 sections
+  // Pinned below the list. Top seam mirrors the single column's, but the fallback
+  // hairline is opted out: that nav usually overflows, a rail of 3-7 sections
   // usually fits, so pinning it on would be wrong more often than right.
   railFooter: cva({
     base: [

@@ -28,12 +28,10 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
       'selected:[--ui-background-color:var(--color-selected-bold)] selected:text-selected-bold-foreground',
       // Disabled comes from ui-button-base (disabled:ui-state-disabled), same as Button.
 
-      // In a group, segments share the group's frame + ring, so they drop their
-      // own ring. An opaque right border (--color-border,
-      // the divider token) draws the 1px separator between segments, removed on
-      // the last. The end segments round their outer corners to match the frame
-      // so the group needs no overflow clip. Border lives here, not
-      // ui-button-base.
+      // In a group, segments share the group's frame and ring, so they drop their own.
+      // An opaque `--color-border` draws the 1px separator, removed on the last. End
+      // segments round their outer corners to match the frame, so the group needs no
+      // overflow clip. Border lives here, not ui-button-base.
       'in-[.group]:rounded-none in-[.group]:first:rounded-l-surface in-[.group]:last:rounded-r-surface in-[.group]:ring-0 in-[.group]:shadow-none in-[.group]:border-r in-[.group]:border-r-border in-[.group]:last:border-r-0 in-[.group]:hover:[--ui-border-color:initial]',
     ],
     variants: {
