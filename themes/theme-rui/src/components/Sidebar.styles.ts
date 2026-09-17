@@ -250,7 +250,6 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   panel: cva({
     base: [
       'flex flex-col min-h-0 overflow-hidden',
-      // The nav fills the panel below the heading and clips its own overflow.
       '[&>nav]:flex-1 [&>nav]:min-h-0',
       'border-r border-border in-data-[panel=collapsed]:border-r-0',
     ],
