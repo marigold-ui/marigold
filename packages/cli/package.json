@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@babel/parser": "8.0.5",
-    "@clack/prompts": "1.8.0",
+    "@clack/prompts": "1.8.1",
     "ci-info": "4.4.0",
     "magic-string": "0.30.21",
     "picocolors": "1.1.1",
