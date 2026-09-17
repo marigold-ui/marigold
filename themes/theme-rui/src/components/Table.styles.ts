@@ -222,7 +222,6 @@ export const Table: ThemeComponent<'Table'> = {
     ],
   }),
 
-  // Editable cell
   editablePopover: cva({
     base: [
       'ui-surface shadow-elevation-overlay',

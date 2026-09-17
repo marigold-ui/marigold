@@ -75,7 +75,6 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
       // Only the label color animates; bg stays out of the transition (instant-bg
       // convention, DST-1436). No press scale — the sliding indicator is the feedback.
       'cursor-pointer outline-none transition-[color]',
-      // Text is muted by default and turns to the foreground color on selection.
       'text-secondary selected:text-foreground',
       // Keyboard focus ring, inset 2px. This is the ghost variant's ring (no thumb,
       // so it hugs the cell); the default variant suppresses it and draws the ring

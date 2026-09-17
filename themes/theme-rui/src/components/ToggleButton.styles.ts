@@ -24,7 +24,6 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
       // control boundary, so the segment drops its own ring (below).
       'ui-control',
 
-      // States
       'hover:[--ui-background-color:var(--color-hover)] hover:[--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_+_0.12))] hover:text-foreground',
       'selected:[--ui-background-color:var(--color-selected-bold)] selected:text-selected-bold-foreground',
       // Disabled comes from ui-button-base (disabled:ui-state-disabled), same as Button.

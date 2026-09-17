@@ -134,7 +134,6 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // 11px and can't go lighter. `foreground` would flatten idle against the
       // active row. Hover lifts to `foreground`.
       'text-secondary-bold hover:bg-hover hover:text-foreground',
-      // Active: flat `selected` pill + `foreground` text at medium weight.
       'data-active:bg-selected data-active:font-medium data-active:text-foreground',
     ],
   }),
