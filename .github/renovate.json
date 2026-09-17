@@ -137,7 +137,8 @@
     "enabled": true,
     "labels": ["security"],
     "schedule": ["at any time"],
-    "minimumReleaseAge": "0 days"
+    "minimumReleaseAge": "0 days",
+    "branchConcurrentLimit": 0
   },
   "osvVulnerabilityAlerts": true,
   "customManagers": [
