@@ -60,16 +60,13 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // No horizontal gutter — rows full-bleed so the active tick reaches the
       // edge; min-w-0 lets the row column collapse to the aside width.
       'flex flex-col min-w-0 py-1 overflow-y-auto outline-none',
-      // Declares the named timeline the footer seam animates against.
       'ui-scrollbar ui-scroll-seam-timeline',
     ],
   }),
   // Ambient escape hatches, a step quieter than nav rows so they never compete
-  // with navigation. Left-aligned on the nav's content column (not
-  // ui-surface-actions' right-aligned padding): px-4 to the 16px column, link
-  // children echo the nav pill (-mx-2 to the 8px inset, px-2, h-7.5, rounded,
-  // secondary ink lifting to foreground on hover). Top seam mirrors the
-  // header's, fading out as the list bottoms out.
+  // with navigation. Left-aligned on the nav's content column, not
+  // ui-surface-actions' right-aligned padding. Top seam mirrors the header's,
+  // fading out as the list bottoms out.
   footer: cva({
     base: [
       'flex flex-col gap-1 min-w-0 px-4 py-2 ui-scroll-seam-footer',
@@ -142,7 +139,6 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // Same pill geometry as nav rows (mx-2 + px-2 + h-7.5) so the chevron sits
       // on the shared 16px content column.
       'mx-2 flex items-center gap-2 px-2 h-7.5 text-sm rounded-surface',
-      // Finger-sized like the nav rows below it (mobile drawer).
       'max-sm:min-h-touch-target',
       // Button label ships font-medium; reset so it matches a regular nav row.
       '[&_span]:font-normal',
@@ -186,8 +182,8 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     ],
   }),
   // The top-bar panel toggle. SidebarToggle already composes the icon Button
-  // base (hitbox, ghost hover, press); this only adds the rail deltas: quieter
-  // ink, 20px icon, and shrink-0 so shrinking breadcrumbs can't squeeze it.
+  // base (hitbox, ghost hover, press); this adds only the rail deltas, plus
+  // shrink-0 so shrinking breadcrumbs can't squeeze it.
   railToggle: cva({
     base: [
       'shrink-0',

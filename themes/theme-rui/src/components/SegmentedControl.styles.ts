@@ -36,17 +36,14 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
       size: 'default',
     },
   }),
-  // Inner scroll container: rows the options and scrolls them horizontally on
-  // overflow, with an edge fade (`ui-scroll-mask-x`).
-  //   `p-[3px]` is the frame around the thumbs (`inset-y-[3px]` below is its
+  // `p-[3px]` is the frame around the thumbs (`inset-y-[3px]` below is its
   // vertical half), and 3px is the floor: a scrollport clips at its padding box,
   // so this is the only room the thumb's outset focus ring has to grow into, and
   // `ui-state-focus` needs 3px of it. Below that the first and last thumbs get a
   // visibly shaved ring. `-my-[3px]` cancels the vertical padding so it adds no
   // height; a negative `-mx` would overflow the rounded track (broke at 320px).
-  //   - `motion-safe:scroll-smooth` makes the selection-reveal scroll animate for
-  //     users who allow motion and jump instantly for those who don't; the
-  //     component's `scrollTo` defers to it via `behavior: 'auto'` (matches Tabs).
+  //   - The component's `scrollTo` defers to `motion-safe:scroll-smooth` via
+  //     `behavior: 'auto'` (matches Tabs).
   //   - `overscroll-x-contain` keeps horizontal overscroll from triggering the
   //     browser back/forward gesture at the track ends (matches Tabs).
   list: cva({
@@ -76,17 +73,16 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
       // convention, DST-1436). No press scale — the sliding indicator is the feedback.
       'cursor-pointer outline-none transition-[color]',
       'text-secondary selected:text-foreground',
-      // Keyboard focus ring, inset 2px. This is the ghost variant's ring (no thumb,
-      // so it hugs the cell); the default variant suppresses it and draws the ring
-      // on the indicator instead.
+      // Keyboard focus ring, inset 2px. This is the ghost variant's ring: no thumb,
+      // so it hugs the cell. See `indicator` for where the default variant puts it.
       'focus-visible:outline-3 focus-visible:outline-solid focus-visible:outline-ring/50 focus-visible:-outline-offset-2',
       'disabled:cursor-not-allowed disabled:text-disabled',
     ],
     variants: {
       variant: {
         // Hover only brightens the label; the moving indicator is the background
-        // affordance. The focus ring is drawn on the indicator (see below), so the
-        // cell suppresses its own outline here. (Ghost keeps it, having no thumb.)
+        // affordance, and carries the focus ring too, so the cell suppresses its
+        // own outline here. (Ghost keeps it, having no thumb.)
         default:
           'not-selected:hover:text-foreground focus-visible:outline-none',
         // Track-less: hover is a translucent overlay, applied on the selected item
@@ -141,7 +137,6 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
         // rounding unit on all four grounds. ui-state-focus overrides it on focus.
         default:
           'inset-y-[3px] left-0 w-full ui-control [--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc((alpha_-_var(--control-alpha))_/_(1_-_var(--control-alpha))))] group-has-[[data-focus-visible]]/segmented:ui-state-focus',
-        // Resembles a ghost Button's surface.
         ghost: 'inset-y-0 left-0 w-full rounded-surface ui-state-hover-ghost',
       },
     },

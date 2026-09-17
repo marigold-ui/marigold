@@ -6,9 +6,9 @@ export const SelectList: ThemeComponent<'SelectList'> = {
       'flex',
       'has-orientation-vertical:w-full',
       'has-orientation-horizontal:w-fit has-orientation-horizontal:max-w-full',
-      // When horizontal and the @container/selectlist scope is narrower than
-      // 40rem, the surface fills its parent so the stacked layout reads as a
-      // regular vertical list.
+      // Container-query flip: below 40rem in the `@container/selectlist` scope a
+      // horizontal list stacks into a vertical one. Keyboard navigation still
+      // works on both axes thanks to `layout="grid"` on the underlying GridList.
       'has-orientation-horizontal:@max-[40rem]/selectlist:w-full',
     ],
     variants: {
@@ -28,10 +28,6 @@ export const SelectList: ThemeComponent<'SelectList'> = {
       'outline-0 flex',
       'orientation-vertical:w-full orientation-vertical:flex-col orientation-vertical:overflow-x-hidden orientation-vertical:overflow-y-auto',
       'orientation-horizontal:w-fit orientation-horizontal:max-w-full orientation-horizontal:flex-row orientation-horizontal:overflow-x-auto orientation-horizontal:overflow-y-hidden',
-      // Container-query flip: a horizontally arranged list switches to a
-      // vertical stack once the wrapping `@container/selectlist` is narrower
-      // than 40rem. Keyboard navigation still works on both axes thanks to
-      // `layout="grid"` on the underlying GridList.
       'orientation-horizontal:@max-[40rem]/selectlist:w-full',
       'orientation-horizontal:@max-[40rem]/selectlist:flex-col',
       'orientation-horizontal:@max-[40rem]/selectlist:overflow-x-hidden',
@@ -70,8 +66,6 @@ export const SelectList: ThemeComponent<'SelectList'> = {
       'transition-[border,color]',
       'disabled:cursor-not-allowed disabled:text-disabled',
       'group-orientation-horizontal/list:min-w-40',
-      // Container-query flip: drop the horizontal min-width so stacked rows
-      // can take the full container width.
       'group-orientation-horizontal/list:@max-[40rem]/selectlist:min-w-0',
     ],
     variants: {
@@ -86,8 +80,6 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           // hover, and the selected fill alike.
           'group-orientation-vertical/list:not-last:border-b group-orientation-vertical/list:not-last:border-border',
           'group-orientation-horizontal/list:not-last:border-r group-orientation-horizontal/list:not-last:border-border',
-          // Container-query flip: in narrow containers, swap horizontal
-          // rounding/borders for the vertical equivalents.
           'group-orientation-horizontal/list:@max-[40rem]/selectlist:first:rounded-bl-none',
           'group-orientation-horizontal/list:@max-[40rem]/selectlist:first:rounded-tr-(--selectlist-item-radius)',
           'group-orientation-horizontal/list:@max-[40rem]/selectlist:last:rounded-tr-none',
@@ -96,8 +88,6 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           'group-orientation-horizontal/list:@max-[40rem]/selectlist:not-last:border-b',
         ],
         bordered: [
-          // Each item is a control: a dense control-border ring, flat (the list
-          // pads itself so the ring isn't clipped).
           'ui-control min-h-14',
           // Selected just recolors the ring opaque, so its stroke keeps the same
           // geometry as the unselected rows.
