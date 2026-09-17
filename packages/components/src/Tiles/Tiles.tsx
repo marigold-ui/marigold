@@ -9,7 +9,7 @@ export interface TilesProps extends AriaRegionProps {
    */
   space?: SpaceProp<SpacingTokens>['space'];
   /**
-   * The children of the component.
+   * Children of the component.
    */
   children: ReactNode;
 

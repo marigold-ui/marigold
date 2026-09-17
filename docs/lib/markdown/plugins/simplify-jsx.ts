@@ -284,7 +284,7 @@ export function remarkSimplifyJsx() {
               return;
             }
           } catch {
-            //
+            // Unparseable expression: fall through to dropping the node below.
           }
         }
         (parent.children as Node[]).splice(index, 1);

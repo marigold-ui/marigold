@@ -75,7 +75,6 @@ test('tablist has correct container structure', () => {
 });
 
 test('supports render prop children on Tabs.Item', async () => {
-  // Arrange
   render(<WithRenderProps.Component />);
   const securityTab = screen.getAllByRole('tab', { name: 'Security' })[0];
 
@@ -85,10 +84,8 @@ test('supports render prop children on Tabs.Item', async () => {
   ).toBeInTheDocument();
   expect(securityTab).toBeInTheDocument();
 
-  // Act
   await user.click(securityTab);
 
-  // Assert
   expect(
     screen.getAllByRole('tab', { name: 'Security (current)' })[0]
   ).toBeInTheDocument();

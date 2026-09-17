@@ -18,7 +18,6 @@ const customFrontmatterSchema = pageSchema.extend({
   badge: z.string().optional(),
 });
 
-// Define blog collection for release blog posts
 export const blogPosts = defineCollections({
   type: 'doc',
   dir: 'content/releases/blog',

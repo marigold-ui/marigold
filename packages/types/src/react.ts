@@ -40,11 +40,8 @@ export type DistributiveOmit<T, TOmitted extends PropertyKey> = T extends any
   ? Omit<T, TOmitted>
   : never;
 
-/**********************************************/
-/*                                            */
-/*            POLYMORPIC COMPONENT            */
-/*                                            */
-/**********************************************/
+// Polymorphic component
+// ----------------
 /**
  * Polymorphic types are based on Radix's (now deprecated) types.
  * They can be found here: https://github.com/radix-ui/primitives/blob/2f139a832ba0cdfd445c937ebf63c2e79e0ef7ed/packages/react/polymorphic/src/polymorphic.ts
