@@ -45,9 +45,7 @@ export interface ComponentDemoProps {
  * e.g., "./button-appearance.demo.tsx" -> "button-appearance"
  */
 function fileToRegistryKey(file: string): string {
-  // Remove leading ./ or ../
   const normalized = file.replace(/^\.\//, '').replace(/^\.\.\//, '');
-  // Extract the base name without .demo.tsx
   const match = normalized.match(/([^/]+)\.demo\.tsx$/);
   return match ? match[1] : normalized;
 }
@@ -136,7 +134,6 @@ export const ComponentDemo = ({
     );
   }
 
-  // Full mode with Preview + Code tabs
   return (
     <DemoTabs>
       <Tab value="Preview" className="p-0">
