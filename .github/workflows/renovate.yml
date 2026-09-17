@@ -2,22 +2,27 @@ name: Renovate
 
 on:
   schedule:
-    # Monday at 2am Europe/Berlin (0am UTC)
-    - cron: '0 0 * * 1'
+    # Monday and Thursday at 2am Europe/Berlin (0am UTC)
+    - cron: '0 0 * * 1,4'
   workflow_dispatch:
   issues:
     types: [edited]
 
 concurrency:
   group: renovate
-  cancel-in-progress: true
+  # A dashboard tick used to kill the run that was already working. GitHub keeps one
+  # pending run per group, so rapid ticks collapse into a single follow-up run.
+  cancel-in-progress: false
 
 jobs:
   renovate:
-    # On issue edits, only react to the Renovate Dependency Dashboard.
+    # Renovate writes the dashboard itself, which is an issue edit, so without the
+    # sender check the bot triggers a run that cancels the run that wrote it.
     if: >-
-      github.event_name != 'issues' ||
-      github.event.issue.title == 'Dependency Dashboard'
+      github.event_name != 'issues' || (
+        github.event.issue.title == 'Dependency Dashboard' &&
+        github.event.sender.type != 'Bot'
+      )
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -25,7 +30,7 @@ jobs:
       - uses: actions/create-github-app-token@v3
         id: app-token
         with:
-          app-id: ${{ vars.RENOVATE_APP_ID }}
+          client-id: ${{ vars.RENOVATE_APP_CLIENT_ID }}
           private-key: ${{ secrets.RENOVATE_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
 
@@ -36,4 +41,4 @@ jobs:
         env:
           NODE_OPTIONS: '--max-old-space-size=6144'
           LOG_LEVEL: info
-          RENOVATE_AUTODISCOVER: true
+          RENOVATE_REPOSITORIES: ${{ github.repository }}
