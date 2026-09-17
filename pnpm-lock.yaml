@@ -667,7 +667,7 @@ importers:
         version: 3.13.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       cva:
         specifier: ^1.0.0-beta.1
-        version: 1.0.0-beta.9(typescript@6.0.3)
+        version: 1.0.0-beta.10(typescript@6.0.3)
       deepmerge:
         specifier: 4.3.1
         version: 4.3.1
@@ -4441,8 +4441,8 @@ packages:
   csstype@3.2.3:
     resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
 
-  cva@1.0.0-beta.9:
-    resolution: {integrity: sha512-hSiw3E2Z5IBAUhqSBcH32Zu5A73oZnCXCb7h5vWRs2QTMVLnqtj1dUGYVRcT7p0nqEJOJJ7jT0EvqkSA35Z5ZA==}
+  cva@1.0.0-beta.10:
+    resolution: {integrity: sha512-A2kkl9zsfu1NRhHYOM2SwDhC89ZO97wb7qO2/+Amj/rbRbZDj+bM0yi1CV+YN2fAP/oPi4oip7jcIdb+cZtv0A==}
     peerDependencies:
       typescript: '>= 6.0.0'
     peerDependenciesMeta:
@@ -11863,7 +11863,7 @@ snapshots:
 
   csstype@3.2.3: {}
 
-  cva@1.0.0-beta.9(typescript@6.0.3):
+  cva@1.0.0-beta.10(typescript@6.0.3):
     dependencies:
       clsx: 2.1.1
     optionalDependencies:
