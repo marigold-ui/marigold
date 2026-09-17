@@ -175,10 +175,8 @@ const releaseDates = await getReleaseData();
 
 // generate folder structure for changelogs
 for (const file of changelogPath) {
-  // Ensure we have an absolute path
   const absolutePath = path.isAbsolute(file) ? file : path.join(rootDir, file);
   const data = fs.readFileSync(absolutePath, 'utf8');
-  // Get relative path from root directory
   const relativePath = path.relative(rootDir, absolutePath);
   let packages = path.dirname(relativePath);
 
