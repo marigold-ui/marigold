@@ -1,7 +1,11 @@
 import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { mockMatchMedia, renderWithOverlay } from '../test.utils';
+import {
+  mockMatchMedia,
+  renderWithOverlay,
+  smallScreenQuery,
+} from '../test.utils';
 import { Basic } from './Select.stories';
 
 // DSTSUP-261 regression test.
@@ -30,7 +34,7 @@ vi.mock('@react-aria/collections', async importActual => {
 });
 
 const user = userEvent.setup();
-window.matchMedia = mockMatchMedia(['(width < 640px)']);
+window.matchMedia = mockMatchMedia([smallScreenQuery]);
 
 // Import the existing story instead of hand-rolling a fixture (CLAUDE.md:
 // "Don't create test fixtures/themes — import stories"). `Basic` is labelled

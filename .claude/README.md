@@ -31,7 +31,7 @@ One shape, no exceptions:
 
 The `description` is the only part of a skill that enters the context window before it runs — everything else loads on invocation. So write it as a trigger, not a summary: say what the skill does *and* the phrases that should reach for it. A vague description is why a good skill never fires.
 
-Open it with `Marigold repo — ` so ours group visibly in a `/` menu that also lists plugin and personal skills. Use the em dash, not a colon: descriptions are read raw rather than as quoted YAML, so quotes leak through literally, and `Marigold repo: ` would need them.
+Open it with `DST — ` so ours group visibly in a `/` menu that also lists plugin and personal skills. The marker names the team whose workflow the skill encodes, not the checkout it happens to sit in. `DST` is the design system team's project across the Core app, ClearingAdministration, the Cypress suite and the Insights scanner as well as this repository, so a skill that talks only to Jira or to a resolved remote is usable from any of them. Write the body that way: a skill that reaches for `CLAUDE.md`, `pnpm` or a path under `packages/` has pinned itself here, and only the ones that genuinely cannot work elsewhere should. Use the em dash, not a colon: descriptions are read raw rather than as quoted YAML, so quotes leak through literally, and `DST: ` would need them.
 
 Don't put that marker in the `name`. Plugin and directory-scoped skills are namespaced by the harness with a colon (`vercel:react-best-practices`, `apps/web:deploy`), so a hand-written prefix in the name impersonates a mechanism it isn't part of. The invocation stays `/create-pr`.
 
@@ -65,6 +65,10 @@ These carry two extra obligations:
 2. **Confirmation is a numbered step of its own, immediately before the first outward call.** Not a note, not a caveat at the end. A skill that dispatches straight away confirms in step 1. One that reads and plans first confirms in the step just before its first outward call, and says in its opening lines where that boundary falls. `/pick-up` is the worked example: it writes its plan to disk with no gate at all, because a local file is not an outward action, and puts its gate in the step directly before the one that creates a branch and moves the ticket.
 
 Narrow `allowed-tools` to the exact commands the skill needs. It is the one guardrail in a skill that is structural rather than a matter of prose.
+
+**A confirmation only holds if the question reaches a human.** `AskUserQuestion` is resolved by the permission component, so on a machine running `skipAutoPermissionPrompt` under `permissions.defaultMode: "auto"` it never renders. The tool returns the first option and nothing in the result distinguishes that from a real answer, so the model believes it was approved. This was found the slow way: seven questions in one session came back selecting the recommended option every time, and the person at the keyboard had seen none of them.
+
+Two things follow. It fails toward performing the outward action, which is the worst direction for a guardrail to fail in. And it is invisible on a machine where the setting is off, so a gate that works for you can be silently open for a teammate. Check `/config` if a gate ever seems to answer itself. A skill that must hold regardless of anyone's configuration can render its options and end the turn instead, which no setting can resolve.
 
 ## Hooks
 
