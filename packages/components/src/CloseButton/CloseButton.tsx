@@ -58,12 +58,17 @@ export const CloseButton = ({
     <Button
       ref={ref}
       className={classNames}
-      aria-label={
-        // Left undefined so the name already in scope wins, whether it came
-        // from props or from the slotted context.
-        hasAccessibleName ? undefined : stringFormatter.format('close')
-      }
       {...props}
+      // Set after the spread: a caller forwarding `aria-label={undefined}`
+      // would otherwise re-introduce the key and wipe out the fallback. When a
+      // name is already in scope this resolves to the caller's own value (or
+      // `undefined`), and RAC's prop merging lets a slotted context label win
+      // over an `undefined` local one.
+      aria-label={
+        hasAccessibleName
+          ? props['aria-label']
+          : stringFormatter.format('close')
+      }
     >
       <X />
     </Button>

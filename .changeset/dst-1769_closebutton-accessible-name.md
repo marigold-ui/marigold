@@ -10,7 +10,7 @@ This was a WCAG 2.1 SC 4.1.2 (Name, Role, Value) failure for every product embed
 
 **`Dialog` now passes a localized `close` label**, matching `Toast`, `SectionMessage`, `Drawer`, `SidebarModal` and `FileFieldItem`.
 
-**`CloseButton` gained a fallback**, because it is public API and consumer code cannot be linted from here. When nothing else names the button, it falls back to the localized `close` string, so an unnamed close button can no longer reach production.
+**`CloseButton` gained a fallback.** The export is marked `@internal`, so this is not about consumer code. It is a floor for the call sites inside this package: `Dialog` shipped without a name because nothing forced one, and the next component to render a `CloseButton` could do the same. When nothing else names the button, it falls back to the localized `close` string, so an unnamed close button can no longer reach production from here.
 
 **The fallback reads the slot's resolved context, not the `slot` prop.** That guard is load-bearing, not defensive tidiness, but a `slot` on its own proves nothing about naming. React Aria's `TagGroup` names its `remove` slot through context, and a locally set `aria-label` wins over a context one, so an unconditional fallback relabelled every removable tag's button from "Remove News" to "Close". React Aria's `Dialog` registers a `close` slot that carries only `onPress` and no label at all, so trusting the prop would have left `<CloseButton slot="close" />` unnamed, which is this very bug reached through its own fix. `CloseButton` asks `useSlottedContext` what the slot resolved to and falls back only when that context supplies no name. A test in `TagGroup.test.tsx` now pins the labelled case.
 
