@@ -7,7 +7,7 @@
   "timezone": "Europe/Berlin",
   "ignoreScripts": true,
   "prHourlyLimit": 5,
-  "branchConcurrentLimit": 5,
+  "branchConcurrentLimit": 10,
   "packageRules": [
     {
       "matchDatasources": ["npm"],
