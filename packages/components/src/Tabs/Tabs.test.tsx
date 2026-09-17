@@ -12,9 +12,7 @@ const user = userEvent.setup();
 test('rendering content correctly', () => {
   render(<Basic.Component />);
 
-  // rendering the tab controller
   expect(screen.getAllByText('Mouse Settings')[0]).toBeInTheDocument();
-  // rendering tabpanel
   expect(screen.getAllByText(/Adjust the sensitivity/)[0]).toBeInTheDocument();
 });
 
@@ -46,13 +44,9 @@ test('allows tab navigation via keyboard', async () => {
   render(<Basic.Component />);
   const firstTab = screen.getAllByText('Mouse Settings')[0];
 
-  // Focus the first tab
   await user.click(firstTab);
-
-  // Navigate to next tab with arrow key
   await user.keyboard('{ArrowRight}');
 
-  // Second tab should now be focused
   expect(screen.getAllByText('Keyboard Settings')[0]).toHaveFocus();
 });
 
@@ -78,7 +72,6 @@ test('supports render prop children on Tabs.Item', async () => {
   render(<WithRenderProps.Component />);
   const securityTab = screen.getAllByRole('tab', { name: 'Security' })[0];
 
-  // Assert (initial state)
   expect(
     screen.getAllByRole('tab', { name: 'General (current)' })[0]
   ).toBeInTheDocument();

@@ -152,12 +152,10 @@ test('router useHref rewrites the rendered href while navigate gets the raw path
   );
   const link = screen.getByRole('link', { name: 'Overview' });
 
-  // Assert (rendered href is prefixed)
   expect(link).toHaveAttribute('href', '/base/overview');
 
   await user.click(link);
 
-  // Assert (navigate still receives the unprefixed path)
   expect(navigate).toHaveBeenCalledWith('/overview', undefined);
 });
 
@@ -190,12 +188,10 @@ test('back button returns to root panel', async () => {
 test('re-entering the same branch after back reopens sub-panel', async () => {
   render(<WithActiveBranch.Component />);
 
-  // Go back to root
   const backButton = await screen.findByRole('button', { name: /Back/ });
   await user.click(backButton);
   await screen.findByRole('link', { name: 'Overview' });
 
-  // Re-enter the Management branch
   const managementTrigger = await screen.findByRole('link', {
     name: /Management/,
   });
@@ -212,7 +208,6 @@ test('re-entering the same branch after back reopens sub-panel', async () => {
 test('navigating between branches via stateful active prop', async () => {
   render(<Complex.Component />);
 
-  // Navigate into Tickets branch
   await user.click(screen.getByRole('link', { name: 'Tickets' }));
 
   const myTicketsLink = await screen.findByRole('link', { name: 'My Tickets' });
@@ -221,7 +216,6 @@ test('navigating between branches via stateful active prop', async () => {
     'active'
   );
 
-  // Back to root
   await user.click(
     await screen.findByRole('button', { name: /Back to Tickets/ })
   );
@@ -232,7 +226,6 @@ test('navigating between branches via stateful active prop', async () => {
     'active'
   );
 
-  // Navigate into Projects branch
   await user.click(await screen.findByRole('link', { name: 'Projects' }));
 
   const activeLink = await screen.findByRole('link', { name: 'Active' });
@@ -241,7 +234,6 @@ test('navigating between branches via stateful active prop', async () => {
     'active'
   );
 
-  // Back to root
   await user.click(
     await screen.findByRole('button', { name: /Back to Projects/ })
   );
@@ -252,7 +244,6 @@ test('navigating between branches via stateful active prop', async () => {
     'active'
   );
 
-  // Navigate into Reports branch
   await user.click(await screen.findByRole('link', { name: 'Reports' }));
 
   const ticketVolume = await screen.findByRole('link', {
@@ -293,12 +284,10 @@ test('data-state attribute reflects expanded after toggle', async () => {
 test('non-active panels have inert attribute', () => {
   render(<WithActiveBranch.Component />);
 
-  // Root panel is in "before" position → should be inert.
   // Use linkByText since inert elements are invisible to getByRole.
   const rootPanel = closest(linkByText('Overview'), '[data-position]');
   expect(rootPanel).toHaveAttribute('inert');
 
-  // Management panel is active → should NOT be inert
   const activePanel = closest(
     screen.getByRole('link', { name: 'Users' }),
     '[data-position]'
@@ -405,7 +394,6 @@ test('mobile renders sheet overlay', () => {
 
   render(<Basic.Component />);
 
-  // On mobile, sidebar link is not visible until toggled
   expect(
     screen.queryByRole('link', { name: 'Overview' })
   ).not.toBeInTheDocument();
@@ -423,12 +411,10 @@ test('mobile toggle opens sheet, close button closes it', async () => {
     screen.queryByRole('link', { name: 'Overview' })
   ).not.toBeInTheDocument();
 
-  // Open the mobile sheet
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
   await mobileUser.click(trigger);
   expect(screen.getByRole('link', { name: 'Overview' })).toBeInTheDocument();
 
-  // Close via close button
   const closeButton = screen.getByRole('button', {
     name: 'Close navigation',
   });
@@ -449,15 +435,12 @@ test('mobile closes sheet when leaf nav item is clicked', async () => {
 
   render(<Basic.Component />);
 
-  // Open the mobile sheet
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
   await mobileUser.click(trigger);
   expect(screen.getByRole('link', { name: 'Overview' })).toBeInTheDocument();
 
-  // Click a leaf nav item
   await mobileUser.click(screen.getByRole('link', { name: 'Overview' }));
 
-  // Modal should close
   await waitFor(() => {
     expect(
       screen.queryByRole('link', { name: 'Overview' })
@@ -472,7 +455,6 @@ test('mobile closes sheet when overlay backdrop is clicked', async () => {
 
   render(<Basic.Component />);
 
-  // Open the mobile sheet
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
   await mobileUser.click(trigger);
   expect(screen.getByRole('link', { name: 'Overview' })).toBeInTheDocument();
@@ -495,14 +477,12 @@ test('mobile keeps sheet open when branch item is clicked', async () => {
 
   render(<Basic.Component />);
 
-  // Open the mobile sheet
   const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
   await mobileUser.click(trigger);
 
   // Click a branch item — should NOT close the modal, should open sub-panel
   await mobileUser.click(screen.getByRole('link', { name: 'Management' }));
 
-  // Sub-panel should be visible (modal still open)
   expect(linkByText('Users')).toBeInTheDocument();
 });
 
@@ -643,14 +623,12 @@ test('group label inside branch renders correctly', () => {
 test('switching branches focuses active item in new branch', async () => {
   render(<Complex.Component />);
 
-  // Navigate into Tickets, then back to root
   await user.click(screen.getByRole('link', { name: 'Tickets' }));
   await screen.findByRole('link', { name: 'My Tickets' });
   await user.click(
     await screen.findByRole('button', { name: /Back to Tickets/ })
   );
 
-  // Switch to Projects branch
   const projectsTrigger = await screen.findByRole('link', { name: 'Projects' });
   await user.click(projectsTrigger);
 
@@ -764,7 +742,6 @@ test('direct branch-to-branch switch via active prop change focuses active item'
     'active'
   );
 
-  // Focus should be on the active item (not back button)
   await vi.advanceTimersByTimeAsync(400);
   expect(generalLink).toHaveFocus();
 });
@@ -911,7 +888,6 @@ describe('Keyboard Navigation', () => {
 
     render(<PanelFocusTest />);
 
-    // Branch trigger is in root panel (active)
     const branchTrigger = screen.getByRole('link', { name: /Branch/ });
     await user.click(branchTrigger);
 
@@ -922,14 +898,12 @@ describe('Keyboard Navigation', () => {
     await vi.advanceTimersByTimeAsync(400);
     expect(backButton).toHaveFocus();
 
-    // Go back to root, then activate child and re-enter
     await user.click(backButton);
     await vi.advanceTimersByTimeAsync(400);
 
     // Activate Child A which will auto-open the branch panel
     await user.click(screen.getByTestId('activate-child-a'));
 
-    // Branch panel opens with Child A active → focus should be on Child A
     const childA = await screen.findByRole('link', { name: 'Child A' });
     await vi.advanceTimersByTimeAsync(400);
     expect(childA).toHaveFocus();
@@ -1058,7 +1032,6 @@ describe('Sidebar.Nav `current` integration', () => {
     const usersLink = await screen.findByRole('link', { name: 'Users' });
     expect(usersLink).toHaveAttribute('aria-current', 'page');
 
-    // Management panel should be the active panel
     expect(closest(usersLink, '[data-position]')).toHaveAttribute(
       'data-position',
       'active'

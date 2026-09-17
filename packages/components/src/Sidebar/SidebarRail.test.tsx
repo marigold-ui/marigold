@@ -526,12 +526,10 @@ describe('modified clicks & keyboard activation', () => {
     );
     const link = screen.getByRole('link', { name: 'Berichte' });
 
-    // Assert (rendered href is prefixed)
     expect(link).toHaveAttribute('href', '/base/reports');
 
     await user.click(link);
 
-    // Assert (navigate still receives the unprefixed path)
     expect(navigate).toHaveBeenCalledWith('/reports', undefined);
   });
 });

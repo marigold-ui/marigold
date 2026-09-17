@@ -57,7 +57,6 @@ const ExtendedButtonUsingReactUtils = forwardRef<
   return <Button {...props} ref={forwardedRef} />;
 });
 
-// Inline component
 export const ExtendedButtonUsingReactUtilsWithInternalInlineAs = (
   props: ComponentProps<typeof Button>
 ) => {
@@ -139,7 +138,6 @@ export const Test = () => (
     {/* Button as Link accepts isPrimary prop */}
     <Button as={Link} isPrimary />
 
-    {/* Button as Link accepts isDisabled prop */}
     <Button as={Link} />
 
     {/* Button as Link does not accept form prop */}
