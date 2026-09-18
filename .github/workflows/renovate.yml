@@ -27,6 +27,10 @@ jobs:
         github.event.sender.type != 'Bot'
       )
     runs-on: ubuntu-latest
+    # Renovate authenticates with the app token below, so the only thing the
+    # default token is needed for is the checkout.
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v6
 
