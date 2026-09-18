@@ -26,7 +26,11 @@ import { usePageContext } from './Context';
  *   usePageFocus(pathname);
  *   return null;
  * };
- * // <Page><PageFocus pathname={location.pathname} /><Outlet /></Page>
+ *
+ * <Page>
+ *   <PageFocus pathname={location.pathname} />
+ *   <Outlet />
+ * </Page>
  * ```
  */
 // TODO(follow-up): a `routeKey` prop on <Page> would remove the null-rendering

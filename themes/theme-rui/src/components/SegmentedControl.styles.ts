@@ -12,7 +12,9 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
         // `bg-control` matches the Switch groove and Slider rail; never paint it
         // twice. The 3px outer margin lives on the list, not here. Radius departs
         // from `rounded-surface` because nested rounded rects are only concentric
-        // at `R_outer = R_inner + d`: the thumb's 8px plus its 3px inset.
+        // at `R_outer = R_inner + d`: the thumb's 8px plus its 3px inset, so 11px.
+        // (The thumb's outset 1px rim doesn't change the sum: it widens the inner
+        // arc to 9px and closes the gap to 2px.)
         default: 'bg-control rounded-[calc(var(--radius-surface)+3px)]',
         // No track to frame, so no gap to compensate for.
         ghost: 'rounded-surface',
@@ -91,9 +93,14 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
     variants: {
       variant: {
         // Flat `ui-control` thumb, inset 3px (not 4px: 30px tall, still clears the
-        // focus ring, which is drawn here rather than on the cell). Rim alpha is
-        // solved from `--control-alpha`: an outset rim composites over the track,
-        // so a hard-coded step detunes when the track is retuned (it did, at -0.08).
+        // focus ring, which is drawn here rather than on the cell, as the shared
+        // `ui-state-focus` so it matches a focused Input). Rim alpha is solved from
+        // `--control-alpha`: an outset rim composites over the track, and two layers
+        // of one colour stack to `a + (1 - a) * x`, so inverting that gives 0.119 at
+        // the current tokens. Derived, not hard-coded, because a hard-coded step
+        // detunes when the track is retuned (it did: -0.08 left the rim at an
+        // effective 0.31 against 0.26 on a field). Verified on rendered pixels:
+        // #c0bfbf on `surface`, matching an Input on all four grounds.
         default:
           'inset-y-[3px] left-0 w-full ui-control [--ui-border-color:oklch(from_var(--color-control-border)_l_c_h_/_calc((alpha_-_var(--control-alpha))_/_(1_-_var(--control-alpha))))] group-has-[[data-focus-visible]]/segmented:ui-state-focus',
         ghost: 'inset-y-0 left-0 w-full rounded-surface ui-state-hover-ghost',

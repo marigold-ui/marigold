@@ -183,9 +183,10 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     ],
   }),
   // overflow-x-hidden: fixed-width labels would otherwise grow a horizontal
-  // scrollbar. ui-scroll-mask-y owns the vertical overflow (hence no overflow-y)
-  // and scroll-py reads its --sc-mask-width so the two can't drift. No overscroll
-  // containment: the back/forward swipe that guards has no block-axis twin.
+  // scrollbar. ui-scroll-mask-y owns the vertical overflow (hence no overflow-y).
+  // scroll-py reads its --sc-mask-width so the two can't drift, and scroll-smooth
+  // keeps focus from jumping to a tile below the fold. No overscroll containment:
+  // the back/forward swipe that guards has no block-axis twin.
   rail: cva({
     base: [
       'flex flex-col gap-0.5 flex-1 min-h-0 overflow-x-hidden py-1.5',

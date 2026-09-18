@@ -88,6 +88,8 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           'group-orientation-horizontal/list:@max-[40rem]/selectlist:not-last:border-b',
         ],
         bordered: [
+          // Dense control-border ring, flat. The list pads itself so this ring
+          // isn't clipped: tightening that padding has to keep the room.
           'ui-control min-h-14',
           // Selected just recolors the ring opaque, so its stroke keeps the same
           // geometry as the unselected rows.
