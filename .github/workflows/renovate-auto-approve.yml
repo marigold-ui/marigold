@@ -1,18 +1,10 @@
 name: Renovate auto-approve
 
-# main requires one approving review, and GitHub's auto-merge does not use the
-# Renovate app's bypass allowance, so a green PR waits for a human. An approval
-# from github-actions[bot] satisfies the rule and lets auto-merge finish the job.
-# Renovate cannot approve its own PR, which is why this runs as a second identity.
-# Which updates qualify stays in renovate.json: Renovate writes that verdict into
-# the PR body, and the job reads it, so a major still needs a human.
-
 on:
   pull_request:
     types: [opened, reopened, synchronize]
 
-permissions:
-  pull-requests: write
+permissions: {}
 
 jobs:
   approve:
@@ -23,12 +15,17 @@ jobs:
       contains(github.event.pull_request.body, '**Automerge**: Enabled')
     runs-on: ubuntu-latest
     steps:
-      # Approvals survive a push here (dismiss_stale_reviews is off), so the
-      # rebases Renovate does would otherwise stack a review each time. A
-      # dismissed review reports its own state, so this counts live ones only.
+      # No owner or repositories, so the token is scoped to this repo alone.
+      - uses: actions/create-github-app-token@v3
+        id: app-token
+        with:
+          client-id: ${{ vars.APPROVER_APP_CLIENT_ID }}
+          private-key: ${{ secrets.APPROVER_APP_PRIVATE_KEY }}
+
+      # Renovate rebases often, and a push does not dismiss approvals here.
       - name: Approve unless already approved
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
         run: |
