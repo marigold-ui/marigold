@@ -323,6 +323,36 @@ MultipleThumbs.test(
   }
 );
 
+export const ThumbLabels = meta.story({
+  tags: ['component-test'],
+  args: { label: 'Fee split' },
+  render: args => (
+    <Stack space={4}>
+      <Slider {...args} defaultValue={70} thumbLabels="Organiser share" />
+      <Slider
+        {...args}
+        label="Ticket price"
+        defaultValue={[20, 80]}
+        thumbLabels={['Lowest', 'Highest']}
+      />
+    </Stack>
+  ),
+});
+
+ThumbLabels.test(
+  'Names a single thumb from a string and each range thumb from its tuple entry',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const [single, lowest, highest] = canvas.getAllByRole('slider');
+
+    // react-aria appends the slider's own label after the thumb's, so match
+    // loosely rather than pinning that upstream composition order
+    expect(single).toHaveAccessibleName(/Organiser share/);
+    expect(lowest).toHaveAccessibleName(/Lowest/);
+    expect(highest).toHaveAccessibleName(/Highest/);
+  }
+);
+
 export const MultiThumbsControlled = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   args: { label: 'Tickets for sale' },
