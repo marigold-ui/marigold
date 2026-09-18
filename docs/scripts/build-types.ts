@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 // Pre-compute prop-table data from all MDX <AutoTypeTable> references and
-// write to .registry/props.json — one ts-morph pass at build time so ts-morph
-// stays out of the Next.js bundle.
+// write to .registry/props.json — one type-checker pass at build time so the
+// TypeScript compiler stays out of the Next.js bundle.
 import type { DocEntry } from 'fumadocs-typescript';
 import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
