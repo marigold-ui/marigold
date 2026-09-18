@@ -19,17 +19,14 @@ type Project = Context['program'];
 type NodeHandle = PropertySymbol['declarations'][number];
 type AstNode = NonNullable<ReturnType<NodeHandle['resolve']>>;
 
-// fumadocs-typescript drives the TypeScript 7 API (`typescript/unstable/*`),
-// which this package cannot import: it is on TypeScript 6, and 7 arrives only
-// as a transitive dependency. So the few compiler constants and node shapes
-// this transform needs are spelled out here instead of imported.
+// fumadocs-typescript runs the TypeScript 7 API, which docs cannot import (it
+// is on 6), so the constants and node shapes below are spelled out instead.
 
-// `NodeBuilderFlags.NoTruncation | NodeBuilderFlags.UseFullyQualifiedType`.
-// Fully qualified is what prints alias provenance as `import("/path").Alias`.
+// NodeBuilderFlags.NoTruncation | UseFullyQualifiedType, which prints an alias
+// as `import("/path").Alias`.
 const FULLY_QUALIFIED = 1 | 64;
 
-// The `prop: Wrapper['key']` chain, by key. No other node shape carries all
-// three links, so presence alone identifies it — no `SyntaxKind` needed.
+// The `prop: Wrapper['key']` chain, walked by key: only it carries all three.
 type AstNodeLinks = Partial<
   Record<'type' | 'objectType' | 'typeName', AstNode>
 >;
@@ -42,8 +39,7 @@ const DESIGN_SYSTEM_PATH_REGEX = /\/(?:@marigold|packages)\/(?:system|types)\//;
 const isFromDesignSystemPath = (filePath: string) =>
   DESIGN_SYSTEM_PATH_REGEX.test(filePath);
 
-// `getAliasedSymbol` answers with the checker's unknown symbol rather than
-// undefined when there is no alias to follow.
+// `getAliasedSymbol` answers with the unknown symbol, not undefined.
 const resolveAliasedSymbol = (checker: Checker, symbol: PropertySymbol) => {
   const aliased = checker.getAliasedSymbol(symbol);
   return checker.isUnknownSymbol(aliased) ? symbol : aliased;
