@@ -8,7 +8,7 @@ export interface TableBodyProps extends Omit<
   'children' | 'loadingState' | 'items'
 > {
   /**
-   * The children of the component.
+   * Children of the component.
    */
   children?: ReactNode;
 

@@ -4,7 +4,7 @@ import { Tab } from 'react-aria-components/Tabs';
 import { cn } from '@marigold/system';
 import { useTabContext } from './Context';
 
-// props
+// Props
 // ----------------------
 export type TabProps = Omit<RAC.TabProps, 'className' | 'style'>;
 
@@ -13,7 +13,7 @@ const INDICATOR_TRANSITION = {
   ease: [0.165, 0.84, 0.44, 1] as const,
 };
 
-// component
+// Component
 // ----------------------
 const _Tab = (props: TabProps) => {
   const { classNames } = useTabContext();

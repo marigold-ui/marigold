@@ -45,9 +45,7 @@ export interface ComponentDemoProps {
  * e.g., "./button-appearance.demo.tsx" -> "button-appearance"
  */
 function fileToRegistryKey(file: string): string {
-  // Remove leading ./ or ../
   const normalized = file.replace(/^\.\//, '').replace(/^\.\.\//, '');
-  // Extract the base name without .demo.tsx
   const match = normalized.match(/([^/]+)\.demo\.tsx$/);
   return match ? match[1] : normalized;
 }
@@ -106,7 +104,6 @@ export const ComponentDemo = ({
   mode = 'full',
   background,
 }: ComponentDemoProps) => {
-  // Resolve the registry key from either name or file prop
   const registryKey = name ?? (file ? fileToRegistryKey(file) : undefined);
 
   if (!registryKey || !registry[registryKey as RegistryKey]) {
@@ -123,7 +120,6 @@ export const ComponentDemo = ({
   const entry = registry[key];
   const codeString = entry.source ?? '';
 
-  // Preview only mode
   if (mode === 'preview') {
     return (
       <div className="overflow-hidden rounded-xl border">
@@ -132,14 +128,12 @@ export const ComponentDemo = ({
     );
   }
 
-  // Code only mode
   if (mode === 'code') {
     return (
       <DynamicCodeBlock lang="tsx" code={codeString} options={codeOptions} />
     );
   }
 
-  // Full mode with Preview + Code tabs
   return (
     <DemoTabs>
       <Tab value="Preview" className="p-0">

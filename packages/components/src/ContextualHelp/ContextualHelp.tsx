@@ -43,9 +43,7 @@ const DialogTrigger = ({ open, ...rest }: DialogTriggerProps) => (
  */
 type Placement =
   'top' | 'bottom' | 'left' | 'right' | 'top start' | 'bottom start';
-/**
- * Props for the ContextualHelp component.
- */
+
 export interface ContextualHelpProps {
   /** Size of the button and popover. */
   size?: string;

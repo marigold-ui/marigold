@@ -6,7 +6,6 @@ export const Label: ThemeComponent<'Label'> = cva({
     'text-sm font-medium leading-none text-foreground',
     'group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled',
 
-    // required indicator
     'group-required/field:after:ui-required-indicator',
     'group-required/field:after:-ml-1',
     'group-required/field:after:text-destructive-accent',

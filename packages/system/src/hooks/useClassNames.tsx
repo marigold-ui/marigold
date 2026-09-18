@@ -44,7 +44,6 @@ export const useClassNames = <C extends ComponentNames>({
   const currentSize = size ?? ctx?.size;
   const currentVariant = variant ?? ctx?.variant;
 
-  // Get component styles
   const styles = theme.components[component];
 
   if (!styles) {
