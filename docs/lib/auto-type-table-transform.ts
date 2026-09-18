@@ -1,39 +1,62 @@
 /**
  * Rewrites `entry.simplifiedType` for props whose type references an alias
  * from `@marigold/system` or `@marigold/types`, so the docs' prop table shows
- * the alias name (e.g. `Scale | SpacingTokens`) instead of the full expanded
- * literal union. The full expanded form remains available on row expand via
- * fumadocs' `entry.type`.
+ * the alias name (e.g. `Scale | SpacingTokens`) instead of the bare `union`
+ * label fumadocs falls back to. The form it replaces moves to `entry.type`.
  *
  * Escape hatch: a `@remarks \`...\`` tag on the prop wins — fumadocs sets
  * `simplifiedType` from the tag before this transform runs, and we skip when
  * the tag is present.
  */
 import type { GenerateOptions } from 'fumadocs-typescript';
-import { Node, type Symbol as TsMorphSymbol } from 'ts-morph';
 
 type Transformer = NonNullable<GenerateOptions['transform']>;
 type Entry = Parameters<Transformer>[0];
+type PropertySymbol = Parameters<Transformer>[2];
+type Context = ThisParameterType<Transformer>;
+type Checker = Context['checker'];
+type Project = Context['program'];
+type NodeHandle = PropertySymbol['declarations'][number];
+type AstNode = NonNullable<ReturnType<NodeHandle['resolve']>>;
+
+// fumadocs-typescript drives the TypeScript 7 API (`typescript/unstable/*`),
+// which this package cannot import: it is on TypeScript 6, and 7 arrives only
+// as a transitive dependency. So the few compiler constants and node shapes
+// this transform needs are spelled out here instead of imported.
+
+// `NodeBuilderFlags.NoTruncation | NodeBuilderFlags.UseFullyQualifiedType`.
+// Fully qualified is what prints alias provenance as `import("/path").Alias`.
+const FULLY_QUALIFIED = 1 | 64;
+
+// The `prop: Wrapper['key']` chain, by key. No other node shape carries all
+// three links, so presence alone identifies it — no `SyntaxKind` needed.
+type AstNodeLinks = Partial<
+  Record<'type' | 'objectType' | 'typeName', AstNode>
+>;
+
+const link = (node: AstNode | undefined, key: keyof AstNodeLinks) =>
+  (node as AstNodeLinks | undefined)?.[key];
 
 const DESIGN_SYSTEM_PATH_REGEX = /\/(?:@marigold|packages)\/(?:system|types)\//;
 
 const isFromDesignSystemPath = (filePath: string) =>
   DESIGN_SYSTEM_PATH_REGEX.test(filePath);
 
-const resolveAliasedSymbol = (
-  symbol: TsMorphSymbol | undefined
-): TsMorphSymbol | undefined => {
-  if (!symbol) return undefined;
-  const aliased = symbol.getAliasedSymbol?.();
-  return aliased ?? symbol;
+// `getAliasedSymbol` answers with the checker's unknown symbol rather than
+// undefined when there is no alias to follow.
+const resolveAliasedSymbol = (checker: Checker, symbol: PropertySymbol) => {
+  const aliased = checker.getAliasedSymbol(symbol);
+  return checker.isUnknownSymbol(aliased) ? symbol : aliased;
 };
 
-const isFromDesignSystemPackage = (symbol: TsMorphSymbol | undefined) => {
-  const resolved = resolveAliasedSymbol(symbol);
-  return !!resolved
-    ?.getDeclarations()
-    .some(d => isFromDesignSystemPath(d.getSourceFile().getFilePath()));
-};
+const isFromDesignSystemPackage = (
+  checker: Checker,
+  symbol: PropertySymbol | undefined
+) =>
+  !!symbol &&
+  resolveAliasedSymbol(checker, symbol).declarations.some(declaration =>
+    isFromDesignSystemPath(declaration.path)
+  );
 
 // TS preserves alias provenance in the printed form as `import("/path").AliasName`
 // even when `getAliasSymbol()` returns undefined for a flattened union.
@@ -51,20 +74,22 @@ const collectDesignSystemAliasesFromText = (text: string): string[] => {
 // (e.g. `WidthProp['width']` → `'auto' | 'full' | ...`). Surfaces the
 // wrapper type name when its declaration lives in a design-system package.
 const getIndexedAccessWrapperName = (
-  propertySymbol: TsMorphSymbol
+  checker: Checker,
+  program: Project,
+  propertySymbol: PropertySymbol
 ): string | undefined => {
-  for (const decl of propertySymbol.getDeclarations()) {
-    if (!Node.isPropertySignature(decl)) continue;
-    const typeNode = decl.getTypeNode();
-    if (!typeNode || !Node.isIndexedAccessTypeNode(typeNode)) continue;
+  for (const declaration of propertySymbol.declarations) {
+    const typeName = link(
+      link(link(declaration.resolve(program), 'type'), 'objectType'),
+      'typeName'
+    );
+    if (!typeName) continue;
+    if (
+      !isFromDesignSystemPackage(checker, checker.getSymbolAtLocation(typeName))
+    )
+      continue;
 
-    const objectTypeNode = typeNode.getObjectTypeNode();
-    if (!Node.isTypeReference(objectTypeNode)) continue;
-
-    const typeName = objectTypeNode.getTypeName();
-    if (!isFromDesignSystemPackage(typeName.getSymbol())) continue;
-
-    return typeName.getText();
+    return (typeName as { text?: string }).text;
   }
   return undefined;
 };
@@ -81,12 +106,22 @@ export const autoTypeTableTransform: Transformer = function (
 ) {
   if (entry.tags.some(t => t.name === 'remarks')) return;
 
-  const aliases = collectDesignSystemAliasesFromText(propertyType.getText());
+  const printed = this.checker.typeToString(
+    propertyType,
+    undefined,
+    FULLY_QUALIFIED
+  );
+
+  const aliases = collectDesignSystemAliasesFromText(printed);
   if (aliases.length > 0) {
     promoteExpanded(entry, aliases.join(' | '));
     return;
   }
 
-  const wrapperName = getIndexedAccessWrapperName(propertySymbol);
+  const wrapperName = getIndexedAccessWrapperName(
+    this.checker,
+    this.program,
+    propertySymbol
+  );
   if (wrapperName) promoteExpanded(entry, wrapperName);
 };
