@@ -597,7 +597,7 @@ must remove the `SectionMessage.close` slot (see B6).
 - **`SelectList` `layout` / `keyboardNavigationBehavior`** removed. The list is
   always a `layout="grid"` GridList and react-aria derives
   `keyboardNavigationBehavior: 'tab'` from that, so neither value ever reached the
-  DOM. Drop them; behavior is unchanged.
+  DOM. Drop them. Behavior is unchanged.
 - **`Loader` `loaderType`**: the v17 JSDoc documented a `cycle` value that never
   existed. The type only ever accepted `xloader` and `circle` (default `circle`),
   so this is a doc fix, not a code change. Unrelated to the `Spinner` → `Loader`
@@ -735,7 +735,7 @@ keeps every call site valid:
 | `Deal`            | `BadgePercent`         | `Zoom`                   | `ZoomIn`                |
 | `Print`           | `Printer`              |                          |                         |
 
-`Close` is not in the official mapping table; it maps to Lucide's `X`. Three legacy
+`Close` is not in the official mapping table. It maps to Lucide's `X`. Three legacy
 names have no Lucide equivalent and each needs a decision: `PauseAlt` →
 `CirclePause`, `PlayAlt` → `CirclePlay`, and `Whatsapp` is gone with no replacement
 (Lucide dropped brand icons and it is not among the 13 retained ones, so vendor the

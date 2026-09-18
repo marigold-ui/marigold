@@ -79,6 +79,22 @@ describe('intl messages', () => {
       expect(de.presetNext30Days).toBe('Nächste 30 Tage');
       expect(de.presetThisQuarter).toBe('Dieses Quartal');
     });
+
+    test('stepper state messages are strings', () => {
+      expect(de.progress).toBe('Fortschritt');
+      expect(de.stepCompleted).toBe('abgeschlossen');
+      expect(de.stepCurrent).toBe('aktueller Schritt');
+      expect(de.stepNotCompleted).toBe('nicht abgeschlossen');
+      expect(de.stepError).toBe('Fehler');
+      expect(de.stepDisabled).toBe('nicht verfügbar');
+    });
+
+    test('stepPosition interpolates current and total', () => {
+      const fn = de.stepPosition as (
+        vars: Record<string, string | number>
+      ) => string;
+      expect(fn({ current: 2, total: 4 })).toBe('Schritt 2 von 4');
+    });
   });
 
   describe('en-US', () => {
@@ -127,6 +143,22 @@ describe('intl messages', () => {
       expect(en.presetNext7Days).toBe('Next 7 days');
       expect(en.presetNext30Days).toBe('Next 30 days');
       expect(en.presetThisQuarter).toBe('This quarter');
+    });
+
+    test('stepper state messages are strings', () => {
+      expect(en.progress).toBe('Progress');
+      expect(en.stepCompleted).toBe('completed');
+      expect(en.stepCurrent).toBe('current step');
+      expect(en.stepNotCompleted).toBe('not completed');
+      expect(en.stepError).toBe('error');
+      expect(en.stepDisabled).toBe('not available');
+    });
+
+    test('stepPosition interpolates current and total', () => {
+      const fn = en.stepPosition as (
+        vars: Record<string, string | number>
+      ) => string;
+      expect(fn({ current: 2, total: 4 })).toBe('Step 2 of 4');
     });
   });
 });

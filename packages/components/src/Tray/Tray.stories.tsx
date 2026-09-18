@@ -9,6 +9,7 @@ import { Inset } from '../Inset/Inset';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { Title } from '../Title/Title';
+import { TRAY_CONTENT_ATTR } from './Context';
 import { Tray } from './Tray';
 
 const meta = preview.meta({
@@ -271,6 +272,151 @@ SlotPrimitives.test(
     expect(
       canvas.getByRole('toolbar', { name: 'Event actions' })
     ).toBeInTheDocument();
+  }
+);
+
+export const ScrollableContent = meta.story({
+  tags: ['component-test'],
+  // Snapshot the opened tray in the test below instead.
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => (
+    <Tray.Trigger>
+      <Button>Open Tray</Button>
+      <Tray {...args}>
+        <Tray.Title>Pick a city</Tray.Title>
+        <Tray.Content>
+          <Stack space={2}>
+            {Array.from({ length: 40 }, (_, i) => (
+              <Text key={i}>City {i + 1}</Text>
+            ))}
+          </Stack>
+        </Tray.Content>
+        <Tray.Actions>
+          <Button slot="close">Close</Button>
+        </Tray.Actions>
+      </Tray>
+    </Tray.Trigger>
+  ),
+});
+
+/** Current drag offset, in px. */
+const translateY = (element: HTMLElement) => {
+  const { transform } = getComputedStyle(element);
+  return transform === 'none' ? 0 : new DOMMatrixReadOnly(transform).m42;
+};
+
+/** Drives a vertical touch drag; uses page coords and RAF frames so `PanSession`'s 3px threshold triggers. */
+const dragVertically = async (
+  // Must use the context's userEvent.pointer — the module-scope import is a
+  // different instance.
+  pointer: (input: Parameters<typeof userEvent.pointer>[0]) => Promise<unknown>,
+  target: Element,
+  { from, to, steps = 6 }: { from: number; to: number; steps?: number }
+) => {
+  const { left, width } = target.getBoundingClientRect();
+  const x = Math.round(left + width / 2);
+  const at = (y: number) => ({
+    x,
+    y,
+    clientX: x,
+    clientY: y,
+    pageX: x + window.scrollX,
+    pageY: y + window.scrollY,
+  });
+  const frame = () =>
+    new Promise(resolve => requestAnimationFrame(() => resolve(null)));
+
+  await pointer({ keys: '[TouchA>]', target, coords: at(from) });
+  await frame();
+
+  for (let i = 1; i <= steps; i++) {
+    await pointer({
+      pointerName: 'TouchA',
+      target,
+      coords: at(from + ((to - from) * i) / steps),
+    });
+    await frame();
+  }
+
+  await pointer({ keys: '[/TouchA]', target, coords: at(to) });
+  await frame();
+};
+
+ScrollableContent.test(
+  'Opens a tray whose content overflows',
+  // Keep snapshot: the only story where content actually scrolls.
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open Tray' }));
+
+    const dialog = await waitFor(() => canvas.getByRole('dialog'));
+
+    expect(dialog).toBeVisible();
+    expect(canvas.getByText('City 1')).toBeInTheDocument();
+  }
+);
+
+ScrollableContent.test(
+  'drags only from the chrome, so a gesture in the content scrolls it',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open Tray' }));
+    const dialog = await waitFor(() => canvas.getByRole('dialog'));
+    // `drag`/`dragListener` live on the dialog's parent (RAC `Modal` + `TrayModal`).
+    const modal = dialog.parentElement as HTMLElement;
+    const content = dialog.querySelector(
+      `[${TRAY_CONTENT_ATTR}]`
+    ) as HTMLElement;
+    const handle = dialog.querySelector(
+      '[class*="grid-area:drag"]'
+    ) as HTMLElement;
+
+    // Wait for the open animation to settle before measuring drag.
+    await waitFor(() => expect(translateY(modal)).toBe(0));
+
+    await step('the content can pan and select on touch', async () => {
+      // pan-x/user-select come from motion's drag listener; fail if
+      // `dragListener={false}` is dropped.
+      expect(getComputedStyle(modal).touchAction).not.toBe('pan-x');
+      expect(getComputedStyle(content).userSelect).not.toBe('none');
+      // Chrome owns the vertical gesture.
+      expect(getComputedStyle(handle).touchAction).toBe('none');
+    });
+
+    await step('the content is a scroll container', async () => {
+      expect(content.scrollHeight).toBeGreaterThan(content.clientHeight);
+
+      content.scrollTop = 120;
+      expect(content.scrollTop).toBeGreaterThan(0);
+      content.scrollTop = 0;
+    });
+
+    await step('a downward drag inside the content is ignored', async () => {
+      const { top } = content.getBoundingClientRect();
+
+      await dragVertically(userEvent.pointer, content, {
+        from: top + 20,
+        to: top + 20 + window.innerHeight,
+      });
+
+      // Without the `startsInTrayContent` guard, this would dismiss the tray.
+      expect(translateY(modal)).toBe(0);
+      expect(canvas.getByRole('dialog')).toBeInTheDocument();
+    });
+
+    await step('the same drag from the chrome dismisses the tray', async () => {
+      const { top } = handle.getBoundingClientRect();
+
+      await dragVertically(userEvent.pointer, handle, {
+        from: top,
+        to: top + window.innerHeight,
+      });
+
+      expect(translateY(modal)).toBeGreaterThan(0);
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    });
   }
 );
 

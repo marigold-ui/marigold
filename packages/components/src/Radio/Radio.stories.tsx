@@ -1,7 +1,13 @@
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
-import { borderOf, controlIcon } from '../control.utils';
+import { Badge } from '../Badge/Badge';
+import {
+  borderOf,
+  controlIcon,
+  firstLineOffset,
+  isSingleLine,
+} from '../control.utils';
 import { Radio } from './Radio';
 import { RadioGroup } from './RadioGroup';
 
@@ -173,6 +179,73 @@ export const WithOwnWidth = meta.story({
     </div>
   ),
 });
+
+export const WithBadge = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <Radio.Group {...args} defaultValue="standard">
+      <Radio value="standard">Standard admission</Radio>
+      <Radio value="early-bird" badge={<Badge variant="master">Master</Badge>}>
+        Early bird pricing
+      </Radio>
+    </Radio.Group>
+  ),
+});
+
+WithBadge.test(
+  'The badge leaves the dot on the label line',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    const radio = await canvas.findByRole('radio', { name: /Early bird/ });
+    const dot = controlIcon(radio);
+    const labelBlock = canvas.getByText('Early bird pricing');
+
+    await step('the badge fits the line', async () => {
+      expect(isSingleLine(labelBlock)).toBe(true);
+    });
+
+    await step('the dot is centred on it', async () => {
+      expect(firstLineOffset(dot, labelBlock)).toBeLessThanOrEqual(0.5);
+    });
+
+    await step('and so is the badge', async () => {
+      expect(
+        firstLineOffset(canvas.getByText('Master'), labelBlock)
+      ).toBeLessThanOrEqual(0.5);
+    });
+  }
+);
+
+export const LongMultilineLabel = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <div className="w-64">
+      <Radio.Group {...args} defaultValue="all">
+        <Radio value="all">
+          Notify me about every registration, cancellation and waitlist movement
+          as it happens
+        </Radio>
+        <Radio value="daily">Send one digest per day</Radio>
+      </Radio.Group>
+    </div>
+  ),
+});
+
+LongMultilineLabel.test(
+  'The dot stays on the first line of a wrapping label',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const radio = await canvas.findByRole('radio', {
+      name: /every registration/,
+    });
+    const dot = controlIcon(radio);
+    const labelBlock = canvas.getByText(/Notify me about every registration/);
+
+    expect(isSingleLine(labelBlock)).toBe(false);
+
+    expect(firstLineOffset(dot, labelBlock)).toBeLessThanOrEqual(0.5);
+  }
+);
 
 export const Error = meta.story({
   render: args => (

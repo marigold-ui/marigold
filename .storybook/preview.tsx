@@ -1,8 +1,7 @@
 import addonA11y from '@storybook/addon-a11y';
 import addonDocs from '@storybook/addon-docs';
 import { definePreview } from '@storybook/react-vite';
-// @ts-expect-error - no type declarations available for this module
-import * as storybookAddonTestCodegen from 'storybook-addon-test-codegen/preview';
+import addonTestCodegen from 'storybook-addon-test-codegen';
 import { MINIMAL_VIEWPORTS } from 'storybook/viewport';
 import withMarigoldProviders from './decorators.js';
 // @ts-expect-error - CSS side-effect import handled by Vite bundler
@@ -31,7 +30,7 @@ const customViewports = {
 };
 
 export default definePreview({
-  addons: [addonA11y(), addonDocs(), storybookAddonTestCodegen],
+  addons: [addonA11y(), addonDocs(), addonTestCodegen()],
   parameters: {
     layout: 'padded',
     chromatic: {

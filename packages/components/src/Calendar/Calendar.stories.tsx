@@ -228,6 +228,70 @@ Basic.test(
 );
 
 Basic.test(
+  'Anchors the year list at year 1 instead of rolling into the previous era',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: {
+      defaultValue: new CalendarDate(5, 6, 15),
+    },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: '5' }));
+
+    const years = within(canvas.getByRole('listbox', { name: 'year' }))
+      .getAllByRole('option')
+      .map(option => option.textContent);
+
+    await expect(years).toEqual(
+      Array.from({ length: 41 }, (_, index) => String(index + 1))
+    );
+  }
+);
+
+Basic.test(
+  'Selects year 1 from the anchored list',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: {
+      defaultValue: new CalendarDate(5, 6, 15),
+    },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: '5' }));
+
+    await userEvent.click(canvas.getByRole('option', { name: '1' }));
+
+    await expect(canvas.getByRole('button', { name: '1' })).toBeVisible();
+  }
+);
+
+Basic.test(
+  'Keeps the centred window in calendars without an era floor',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    decorators: [
+      Story => (
+        <I18nProvider locale="en-US-u-ca-japanese">
+          <Story />
+        </I18nProvider>
+      ),
+    ],
+    args: {
+      defaultValue: new CalendarDate(2026, 6, 15),
+    },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: '8' }));
+
+    const years = within(
+      canvas.getByRole('listbox', { name: 'year' })
+    ).getAllByRole('option');
+
+    await expect(years).toHaveLength(41);
+  }
+);
+
+Basic.test(
   'Keeps the maxValue year reachable and renders no later years',
   {
     parameters: { chromatic: { disableSnapshot: true } },

@@ -99,7 +99,7 @@ Reach for an override only when a screen has a reason the defaults cannot antici
 - **Tighter padding** with `p` (or `px` and `py` for one axis) when the page is embedded in a surface that already supplies its own outer spacing. Set one or the other. Passing `p` together with `px` or `py` is a type error, since they would fight over the same edges.
 - **A different rhythm** with `space` when a sparse screen wants more air between the header and a lone panel, or when a dense screen reads better pulled tight.
 
-Whatever those props resolve to is published as `--page-px`, `--page-py` and `--page-gap` on the Page root, so content in the subtree can line up with the page frame without repeating the value. They are read-only — see [Reading container spacing](/foundations/spacing#reading-container-spacing).
+Whatever those props resolve to is published as `--page-px`, `--page-py` and `--page-gap` on the Page root, so content in the subtree can line up with the page frame without repeating the value. They are read-only. See [Reading container spacing](/foundations/spacing#reading-container-spacing).
 
 ### Content
 

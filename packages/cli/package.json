@@ -1,6 +1,6 @@
 {
   "name": "@marigold/cli",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Marigold Design System CLI — component docs, discovery, and project setup.",
   "license": "MIT",
   "keywords": [
@@ -41,8 +41,8 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@babel/parser": "8.0.4",
-    "@clack/prompts": "1.7.0",
+    "@babel/parser": "8.0.5",
+    "@clack/prompts": "1.8.1",
     "ci-info": "4.4.0",
     "magic-string": "0.30.21",
     "picocolors": "1.1.1",
@@ -51,8 +51,8 @@
   },
   "peerDependencies": {
     "@axe-core/playwright": ">=4.10.0",
-    "@marigold/components": ">=18.0.0",
-    "@marigold/theme-rui": ">=6.0.0",
+    "@marigold/components": ">=18.1.0",
+    "@marigold/theme-rui": ">=6.1.0",
     "@vitejs/plugin-react": ">=4.0.0",
     "playwright": ">=1.40.0",
     "react": ">=18.0.0",
@@ -87,21 +87,21 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.0",
-    "@babel/types": "8.0.4",
+    "@babel/types": "8.0.5",
     "@marigold/components": "workspace:*",
     "@marigold/system": "workspace:*",
     "@marigold/theme-rui": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
-    "@types/node": "24.13.2",
-    "@types/react": "19.2.17",
-    "@types/react-dom": "19.2.3",
-    "@vitejs/plugin-react": "6.0.3",
-    "playwright": "1.61.1",
-    "react": "19.2.7",
-    "react-dom": "19.2.7",
-    "tsdown": "0.22.14",
-    "vite": "8.1.3",
-    "vitest": "4.1.10"
+    "@types/node": "24.13.4",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.1",
+    "playwright": "1.63.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "tsdown": "0.23.0",
+    "vite": "8.3.0",
+    "vitest": "4.1.11"
   },
   "scripts": {
     "build": "tsdown",

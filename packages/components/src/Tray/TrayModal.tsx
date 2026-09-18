@@ -2,16 +2,19 @@ import {
   AnimatePresence,
   animate,
   cubicBezier,
+  useDragControls,
   useMotionValue,
   useReducedMotion,
 } from 'motion/react';
 import { create } from 'motion/react-m';
+import type { PointerEvent as ReactPointerEvent } from 'react';
 import { use } from 'react';
 import type RAC from 'react-aria-components';
 import { OverlayTriggerStateContext } from 'react-aria-components/Dialog';
 import { Modal, ModalOverlay } from 'react-aria-components/Modal';
 import { cn, useClassNames } from '@marigold/system';
 import { MotionFeatures } from '../lazyMotion';
+import { TRAY_CONTENT_ATTR } from './Context';
 
 type RemovedProps =
   | 'isOpen'
@@ -44,6 +47,13 @@ const staticTransition = {
   ease: cubicBezier(0.32, 0.72, 0, 1),
 };
 
+// Denylist, not allowlist: drag is armed everywhere except tray content.
+// Custom gesture widgets outside `Tray.Content` still fight drag-to-dismiss
+// (DSTSUP-272) — no opt-out yet. Decided once at pointerdown; scrolling to
+// the top mid-drag won't hand off into a dismiss (DSTSUP-272, req. 9).
+const startsInTrayContent = (target: Element) =>
+  target.closest(`[${TRAY_CONTENT_ATTR}]`) !== null;
+
 export const TrayModal = ({
   open,
   onOpenChange,
@@ -56,6 +66,15 @@ export const TrayModal = ({
   const reducedMotion = useReducedMotion();
   const h = typeof window !== 'undefined' ? window.innerHeight : 0;
   const y = useMotionValue(h);
+  const dragControls = useDragControls();
+
+  const startDrag = (event: ReactPointerEvent<Element>) => {
+    if (startsInTrayContent(event.target as Element)) {
+      return;
+    }
+
+    dragControls.start(event);
+  };
 
   const handleOpenChange = (isOpen: boolean) => {
     onOpenChange?.(isOpen);
@@ -103,6 +122,15 @@ export const TrayModal = ({
               transition={staticTransition}
               style={{ y }}
               drag="y"
+              // Disarms motion's own listener, which forces `touch-action:
+              // pan-x` on the whole subtree and blocks content scrolling.
+              // Drag starts manually via `startDrag`; `touch-none`/
+              // `select-none` are re-applied on the chrome only (`Tray.tsx`,
+              // `TrayHeader.tsx`, `TrayActions.tsx`). Don't restore
+              // `dragListener` — it brings the scroll bug back (DSTSUP-272).
+              dragListener={false}
+              dragControls={dragControls}
+              onPointerDown={startDrag}
               dragConstraints={{ top: 0 }}
               onDragEnd={(_e, { offset, velocity }) => {
                 if (offset.y > window.innerHeight * 0.75 || velocity.y > 10) {

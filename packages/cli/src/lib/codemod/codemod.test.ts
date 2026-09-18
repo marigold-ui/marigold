@@ -226,7 +226,16 @@ export const Select: ThemeComponent<'Select'> = { select: cva({}) };
   });
 
   test('leaves complete slot objects unchanged', () => {
-    const result = stubMissingSlots(v18).apply(PORTAL_SWITCH);
+    const source = `import { cva, ThemeComponent } from '@marigold/system';
+
+export const Switch: ThemeComponent<'Switch'> = {
+    container: cva({}),
+    label: cva({}),
+    track: cva({}),
+    thumb: cva({})
+};
+`;
+    const result = stubMissingSlots(v18).apply(source);
     expect(result.kind).toBe('unchanged');
   });
 });

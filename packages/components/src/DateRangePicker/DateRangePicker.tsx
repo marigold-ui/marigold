@@ -202,7 +202,7 @@ const DateRangePickerBase = ({
 export { DateRangePickerBase as DateRangePicker };
 
 interface DateRangeInputProps {
-  action?: ReactElement<any>;
+  action: ReactElement<any>;
 }
 
 const DateRangeInput = ({ action }: DateRangeInputProps) => {
@@ -256,7 +256,7 @@ const DateRangeInput = ({ action }: DateRangeInputProps) => {
         <div className="min-w-0" onPaste={handlePaste('end')}>
           <AriaDateInput
             slot="end"
-            className={cn('flex items-center pl-0', classNames.input)}
+            className={cn('flex items-center pr-0 pl-0', classNames.input)}
           >
             {segment => (
               <DateSegment className={classNames.segment} segment={segment} />
@@ -264,7 +264,14 @@ const DateRangeInput = ({ action }: DateRangeInputProps) => {
           </AriaDateInput>
         </div>
       </div>
-      {action}
+      <span
+        className={cn(
+          '*:flex *:size-full *:items-center *:justify-center',
+          classNames.action
+        )}
+      >
+        {action}
+      </span>
     </Group>
   );
 };

@@ -1,5 +1,7 @@
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Badge } from '../Badge/Badge';
+import { firstLineOffset, isSingleLine } from '../control.utils';
 import { Switch } from './Switch';
 
 const meta = preview.meta({
@@ -145,12 +147,10 @@ Basic.test(
   }
 );
 
-// There is no accessible way to reach the track. It is the direct child div of
-// the label; the thumb is nested inside it. Matching on `rounded-full` would
-// also match the thumb, and every assertion here reads `'none'` off a wrong
-// element just as happily as off the right one — so pin the shape instead.
 const getTrack = (switchEl: HTMLElement) => {
-  const track = switchEl.closest('label')?.querySelector('div > div');
+  const track = switchEl
+    .closest('label')
+    ?.querySelector(':scope > div:has(> div)');
 
   expect(track).not.toBeNull();
   // The track is the `w-7` box; the thumb is `size-3`. If this ever matches the
@@ -306,6 +306,65 @@ WithDescription.test(
   }
 );
 
+export const WithBadge = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Enable early bird pricing',
+    badge: <Badge variant="master">Master</Badge>,
+  },
+});
+
+WithBadge.test(
+  'The badge leaves the track on the label line',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    const track = getTrack(await canvas.findByRole('switch'));
+    const labelBlock = canvas.getByText('Enable early bird pricing');
+
+    await step('the badge fits the line', async () => {
+      expect(isSingleLine(labelBlock)).toBe(true);
+    });
+
+    await step('the track is centred on it', async () => {
+      expect(firstLineOffset(track, labelBlock)).toBeLessThanOrEqual(0.5);
+    });
+
+    await step('and so is the badge', async () => {
+      expect(
+        firstLineOffset(canvas.getByText('Master'), labelBlock)
+      ).toBeLessThanOrEqual(0.5);
+    });
+  }
+);
+
+export const LongMultilineLabel = meta.story({
+  tags: ['component-test'],
+  args: {
+    variant: 'settings',
+    label:
+      'Notify the organiser about every registration, cancellation and waitlist movement as it happens',
+    description: 'Applies to this event only.',
+  },
+  render: args => (
+    <div className="w-72">
+      <Switch {...args} />
+    </div>
+  ),
+});
+
+LongMultilineLabel.test(
+  'The track stays on the first line of a wrapping label',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const track = getTrack(await canvas.findByRole('switch'));
+    const labelBlock = canvas.getByText(/Notify the organiser/);
+
+    expect(isSingleLine(labelBlock)).toBe(false);
+
+    expect(firstLineOffset(track, labelBlock)).toBeLessThanOrEqual(0.5);
+  }
+);
+
 export const WithError = meta.story({
   tags: ['component-test'],
   args: {
@@ -326,5 +385,52 @@ WithError.test(
     await expect(switchEl).toHaveAccessibleDescription(
       'This setting is required'
     );
+  }
+);
+
+Basic.test(
+  'Hidden input travels with the control inside a scroll container',
+  {
+    parameters: { surface: false, chromatic: { disableSnapshot: true } },
+    render: () => (
+      <div className="border-border h-32 w-64 overflow-auto rounded border p-3">
+        <div className="flex flex-col gap-2">
+          <Switch label="Email digest" />
+          <Switch label="Push alerts" />
+          <Switch label="Weekly report" />
+          <Switch label="Beta features" />
+          <Switch label="Developer mode" />
+          <Switch label="Auto-refresh" />
+          <Switch label="Compact rows" />
+          <Switch label="Sound effects" />
+        </div>
+      </div>
+    ),
+  },
+  async ({ canvas }) => {
+    // The last row, the one you have to scroll down to reach.
+    const input = await canvas.findByRole('switch', { name: 'Sound effects' });
+    const label = input.closest('label')!;
+    const scroller = label.closest('.overflow-auto')!;
+
+    const before = {
+      input: input.getBoundingClientRect().top,
+      label: label.getBoundingClientRect().top,
+    };
+
+    scroller.scrollTop = scroller.scrollHeight;
+
+    // Read back the real offset instead of assuming how far the list overflows.
+    const scrolled = scroller.scrollTop;
+
+    const after = {
+      input: input.getBoundingClientRect().top,
+      label: label.getBoundingClientRect().top,
+    };
+
+    // Guard: without a real scroll, the comparison is two zeroes agreeing.
+    expect(scrolled).toBeGreaterThan(0);
+    expect(after.label - before.label).toBe(-scrolled);
+    expect(after.input - before.input).toBe(after.label - before.label);
   }
 );

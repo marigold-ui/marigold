@@ -27,7 +27,7 @@ The `<NumericFormat>` component can also format a pair of values as a localized 
 
 <ComponentDemo name="numericformat-range-format" />
 
-For accessibility, screen readers will treat the formatted range as one continuous string (for example, "1,000 – 5,000"). This works well in most cases, but if your interface needs to convey the start and end values as distinct pieces of information, you can render them as two separate `<NumericFormat>` components and supply explicit ARIA labels. This ensures that assistive technologies announce each value in context.
+For accessibility, screen readers will treat the formatted range as one continuous string (for example, "1,000–5,000"). This works well in most cases, but if your interface needs to convey the start and end values as distinct pieces of information, you can render them as two separate `<NumericFormat>` components and supply explicit ARIA labels. This ensures that assistive technologies announce each value in context.
 
 ```tsx
 <Stack role="group" aria-labelledby="price-range-label">

@@ -9,6 +9,7 @@ Claude Code already injects every available skill's name and description into ea
 | Source | Lives in | Applies to |
 | --- | --- | --- |
 | First-party skills | `.claude/skills/<name>/SKILL.md` | Committed, ours to edit |
+| Project hooks | registered in `.claude/settings.json`, scripts in `.claude/hooks/` | Committed, run automatically for everyone |
 | Plugins | declared in `.claude/settings.json` | Installed per-user, versioned upstream |
 | Personal skills | `~/.claude/skills/` | One developer's machine, never the repo |
 
@@ -30,11 +31,29 @@ One shape, no exceptions:
 
 The `description` is the only part of a skill that enters the context window before it runs — everything else loads on invocation. So write it as a trigger, not a summary: say what the skill does *and* the phrases that should reach for it. A vague description is why a good skill never fires.
 
-Open it with `Marigold repo — ` so ours group visibly in a `/` menu that also lists plugin and personal skills. Use the em dash, not a colon: descriptions are read raw rather than as quoted YAML, so quotes leak through literally, and `Marigold repo: ` would need them.
+Open it with `DST — ` so ours group visibly in a `/` menu that also lists plugin and personal skills. The marker names the team whose workflow the skill encodes, not the checkout it happens to sit in. `DST` is the design system team's project across the Core app, ClearingAdministration, the Cypress suite and the Insights scanner as well as this repository, so a skill that talks only to Jira or to a resolved remote is usable from any of them. Write the body that way: a skill that reaches for `CLAUDE.md`, `pnpm` or a path under `packages/` has pinned itself here, and only the ones that genuinely cannot work elsewhere should. Use the em dash, not a colon: descriptions are read raw rather than as quoted YAML, so quotes leak through literally, and `DST: ` would need them.
 
 Don't put that marker in the `name`. Plugin and directory-scoped skills are namespaced by the harness with a colon (`vercel:react-best-practices`, `apps/web:deploy`), so a hand-written prefix in the name impersonates a mechanism it isn't part of. The invocation stays `/create-pr`.
 
 Keep the body in `SKILL.md` and push bulk into `references/`. Skills are cheap when idle and expensive when bloated at the top level.
+
+**When two skills need the same reference, it moves up to `skills/references/`** and both link to it:
+
+```
+.claude/skills/
+  references/       # shared across skills, loaded on demand
+  <name>/SKILL.md
+```
+
+Not into `CLAUDE.md`, which loads every session and so would make a rarely-needed reference permanently expensive. Not into `.memory/`, which is domain vocabulary and decision history rather than operational how-to. And not duplicated into both skills, because the copies drift and the one you read is not necessarily the corrected one. `references/jira-board.md` is the worked example: `/pick-up` and `/review-queue` hit the same JQL traps and field ids, so those are written down once.
+
+## Gates and questions
+
+`AskUserQuestion` is the normal way to confirm something, and `/create-pr` uses it at its confirmation step to good effect.
+
+The one thing worth knowing is that it is resolved by the permission component, so a machine configured with `skipAutoPermissionPrompt` can have it return the first option without a person seeing it. That is a property of one setting rather than of the tool, but it means a gate built on it fails toward acting. So for the last step before something irreversible, some skills prefer to render the options as text and end the turn, which no setting can answer on anyone's behalf. `/pick-up` and `/triage-feedback` both make that choice and say why.
+
+Either is fine. Pick per gate, on how expensive the wrong answer is.
 
 ## Skills with side effects
 
@@ -43,9 +62,44 @@ Some skills spend money or touch the outside world. `vrt` dispatches a Chromatic
 These carry two extra obligations:
 
 1. **The description must rule out proactive use.** State plainly that the skill runs only on an explicit request. A description that merely describes the capability invites the model to fire it on its own.
-2. **Confirmation is step 1 of the workflow, before anything is dispatched.** Not a note, not a caveat at the end — the first numbered step.
+2. **Confirmation is a numbered step of its own, immediately before the first outward call.** Not a note, not a caveat at the end. A skill that dispatches straight away confirms in step 1. One that reads and plans first confirms in the step just before its first outward call, and says in its opening lines where that boundary falls. `/pick-up` is the worked example: it writes its plan to disk with no gate at all, because a local file is not an outward action, and puts its gate in the step directly before the one that creates a branch and moves the ticket.
 
 Narrow `allowed-tools` to the exact commands the skill needs. It is the one guardrail in a skill that is structural rather than a matter of prose.
+
+**A confirmation only holds if the question reaches a human.** `AskUserQuestion` is resolved by the permission component, so on a machine running `skipAutoPermissionPrompt` under `permissions.defaultMode: "auto"` it never renders. The tool returns the first option and nothing in the result distinguishes that from a real answer, so the model believes it was approved. This was found the slow way: seven questions in one session came back selecting the recommended option every time, and the person at the keyboard had seen none of them.
+
+Two things follow. It fails toward performing the outward action, which is the worst direction for a guardrail to fail in. And it is invisible on a machine where the setting is off, so a gate that works for you can be silently open for a teammate. Check `/config` if a gate ever seems to answer itself. A skill that must hold regardless of anyone's configuration can render its options and end the turn instead, which no setting can resolve.
+
+## Hooks
+
+Hooks are the opposite of skills. A skill is offered to the model, which decides whether to reach for it. A hook is a shell command Claude Code runs itself at a fixed point in the session, whether anyone wanted it or not. Registration lives in `.claude/settings.json`, scripts live in `.claude/hooks/`, and both are committed, so a hook added here runs on every teammate's machine. Nothing gates it: [workspace trust](https://code.claude.com/docs/en/permissions#project-allow-rules-and-workspace-trust) holds back a project's `permissions.allow` rules, not its hooks, and the file watcher picks up a settings edit mid-session, so a pull can start one running before the next session.
+
+That removes the confirmation gate the section above depends on. A side-effecting skill can be told to ask first. A hook has nobody to ask, so the rule is stricter instead:
+
+1. **A hook may read, and may write only to a cache.** No edits to tracked files, no network, nothing outward-facing. `node_modules/.cache/` is the place for state, because it is gitignored, per-checkout and disposable. A hook must never dirty the working tree.
+2. **It must reject the cases it does not care about in the first few lines**, before doing any work, because it fires on every occurrence of its event. Past that filter, a couple of seconds after a source edit is the ceiling the team accepts: the typecheck hook sits at ~2.6s and is the most expensive hook here. Anything slower needs a change gate, the way that hook gates its `Stop` run on whether the tree moved since the last answer.
+3. **It must degrade to silence, never to noise.** A hook that cannot do its job exits 0 and says nothing. `preflight.mjs` swallows every probe failure for this reason: `SessionStart` discards the output of a hook that exits non-zero, so a crash would cost the session its context block and tell nobody why.
+4. **It carries a named opt-out**, documented here. Personal settings cannot remove a single hook the project registers, only `disableAllHooks` can, and that is all or nothing. Never set `"disableAllHooks": false` in this repo's settings: project settings win, so it would override every teammate's personal opt-out.
+
+Write hooks as `#!/usr/bin/env node` ESM with Node built-ins only, matching `scripts/check-*.mjs`. The payload arrives as JSON on stdin and `jq` is not guaranteed to be installed. Note that `.claude` is in `.prettierignore`, so nothing will reformat or lint these files for you.
+
+Exit codes are per-event and worth checking against the [hooks reference](https://code.claude.com/docs/en/hooks) rather than assumed. Two that this repo relies on: on `SessionStart`, stdout on exit 0 becomes context the model reads, and on `PostToolUse`, only exit 2 puts stderr in front of the model.
+
+Test one by piping a payload at it, which needs no session:
+
+```sh
+echo '{"hook_event_name":"Stop"}' | .claude/hooks/typecheck-changed.mjs; echo "exit=$?"
+```
+
+Then `/hooks` in a session lists what is registered, and `claude --debug-file /tmp/claude.log` shows which hooks matched and what they returned.
+
+### Opting out
+
+| What | How |
+| --- | --- |
+| The post-edit typecheck | `MARIGOLD_SKIP_TYPECHECK_HOOK=1` in your shell |
+| The session pre-flight | `MARIGOLD_SKIP_PREFLIGHT_HOOK=1` in your shell |
+| Every hook at once | `"disableAllHooks": true` in `~/.claude/settings.json` |
 
 ## Adding and removing
 

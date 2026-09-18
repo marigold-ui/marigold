@@ -3,6 +3,8 @@ title: DatePicker
 description: Component used to pick date value.
 ---
 
+import { DatePickerAnatomy } from './datepicker-anatomy';
+
 The `<DatePicker>` component is a user interface element that allows users to select a date from a calendar.
 
 The typical practice is to provide a date picker and when you click on calendar button it pops up a calendar below the date field, allowing the user to populate the field with an appropriate date.
@@ -11,13 +13,12 @@ The typical practice is to provide a date picker and when you click on calendar 
 
 The Label defines the purpose of the Date Field, where users can enter a date directly. Tapping the Calendar Button opens a calendar view with a Header for selecting the month and year, and Next/Previous Buttons for easy month navigation.
 
-<ImageZoom
-  src="/datepicker/datepicker-anatomy.jpg"
-  alt="Anatomy of datepicker"
-  width={800}
-  height={550}
-  className="mx-auto block"
-/>
+<DatePickerAnatomy />
+
+- **Label:** Describes which date the user should enter.
+- **Date field:** The field where a date can be typed segment by segment.
+- **Calendar button:** Opens the calendar for picking a date visually.
+- **Header:** The top area of the calendar for selecting month and year.
 
 ## Appearance
 

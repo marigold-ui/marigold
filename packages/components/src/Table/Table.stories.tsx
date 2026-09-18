@@ -2033,8 +2033,6 @@ DataEntryGrid.test(
       }
     );
 
-    // Asserted for the TextField only: Home inside the NumberField still
-    // reaches the grid, which looks like an upstream useSpinButton issue.
     await step('Home and End keep focus inside a text field', async () => {
       await userEvent.click(first);
       first.setSelectionRange(2, 2);
@@ -2058,6 +2056,17 @@ DataEntryGrid.test(
       await userEvent.keyboard('{ArrowRight}');
       await userEvent.keyboard('{Tab}');
 
+      expect(document.activeElement).toBe(balance);
+    });
+
+    // The field has no minValue or maxValue, so useSpinButton claims both keys
+    // and they no-op. Focus is all there is to assert. Give the field a bound
+    // and they start jumping the value while these assertions still pass.
+    await step('Home and End keep focus inside a number field', async () => {
+      await userEvent.keyboard('{Home}');
+      expect(document.activeElement).toBe(balance);
+
+      await userEvent.keyboard('{End}');
       expect(document.activeElement).toBe(balance);
     });
 
@@ -2114,6 +2123,18 @@ DataEntryGridDefaultNavigation.test(
       await userEvent.keyboard('{Home}');
 
       expect(document.activeElement).not.toBe(first);
+    });
+
+    // Unlike the TextField above, useSpinButton claims Home before the grid
+    // sees it, so the number field keeps focus under arrow navigation too.
+    await step('Home stays put in a number field', async () => {
+      const balance = canvas.getByLabelText(`Balance for ${users[0].name}`);
+
+      await userEvent.click(balance);
+
+      await userEvent.keyboard('{Home}');
+
+      expect(document.activeElement).toBe(balance);
     });
   }
 );
