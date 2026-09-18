@@ -1,0 +1,67 @@
+name: Renovate auto-approve
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+permissions: {}
+
+# Serialize per PR: two overlapping runs would both read zero reviews and both approve.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  approve:
+    if: >-
+      github.event.pull_request.user.login == 'marigold-renovate[bot]' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      startsWith(github.head_ref, 'renovate/')
+    runs-on: ubuntu-latest
+    steps:
+      # No owner or repositories, so the token is scoped to this repo alone.
+      - uses: actions/create-github-app-token@v3
+        id: app-token
+        with:
+          client-id: ${{ vars.APPROVER_APP_CLIENT_ID }}
+          private-key: ${{ secrets.APPROVER_APP_PRIVATE_KEY }}
+
+      - name: Approve what Renovate queued for auto-merge
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          APP: ${{ steps.app-token.outputs.app-slug }}
+        run: |
+          set -euo pipefail
+
+          # Renovate queues auto-merge only on what renovate.json says may automerge,
+          # a second or so after opening the PR. The body says the same thing, but a
+          # dependency's release notes are pasted into it and could forge the line.
+          queued=false
+          for _ in 1 2 3 4 5 6; do
+            if [ "$(gh pr view "$PR" --repo "$REPO" --json autoMergeRequest --jq '.autoMergeRequest != null')" = "true" ]; then
+              queued=true
+              break
+            fi
+            sleep 5
+          done
+
+          if [ "$queued" != "true" ]; then
+            echo "Renovate did not queue auto-merge here, leaving it for a human."
+            exit 0
+          fi
+
+          # Any state, not just APPROVED. A dismissed approval is how someone stops
+          # a queued merge, and re-approving on the next rebase would undo that.
+          reviewed=$(gh pr view "$PR" --repo "$REPO" --json reviews \
+            --jq '[.reviews[] | select(.author.login | test(env.APP))] | length')
+
+          if [ "$reviewed" != "0" ]; then
+            echo "Already reviewed by $APP, nothing to do."
+            exit 0
+          fi
+
+          gh pr review "$PR" --repo "$REPO" --approve \
+            --body 'Renovate queued auto-merge for this update, approving so it can complete.'
