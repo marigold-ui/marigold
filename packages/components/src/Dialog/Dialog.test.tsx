@@ -1,5 +1,4 @@
-/* eslint-disable testing-library/no-node-access */
-import { screen, waitFor } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MockInstance, vi } from 'vitest';
 import { renderWithOverlay } from '../test.utils';
@@ -27,10 +26,8 @@ test('optionally renders a close button', async () => {
   const dialog = screen.getByRole('dialog');
   await waitFor(() => expect(dialog).toBeVisible());
 
-  // The close button is the first child of the dialog (rendered before content)
-  const closeButton = dialog.firstChild as HTMLButtonElement;
-  expect(closeButton).toBeInTheDocument();
-  expect(closeButton.tagName).toBe('BUTTON');
+  // By name, not position: the positional lookup hid DST-1769.
+  const closeButton = within(dialog).getByRole('button', { name: 'Close' });
 
   await user.click(closeButton);
   await waitFor(() => expect(dialog).not.toBeVisible());

@@ -64,7 +64,7 @@
     "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0",
     "yaml": "^2.9.0",
-    "zod": "4.6.4",
+    "zod": "4.6.5",
     "zod-form-data": "3.0.3"
   },
   "devDependencies": {
