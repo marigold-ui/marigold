@@ -11,6 +11,10 @@ export interface BadgeProps {
    * Children of the component
    */
   children?: ReactNode;
+  /**
+   * Set the visual style of the badge.
+   * @default default
+   */
   variant?:
     | 'default'
     | 'primary'
