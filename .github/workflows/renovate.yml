@@ -2,8 +2,10 @@ name: Renovate
 
 on:
   schedule:
-    # Monday and Thursday at 00:00 UTC
-    - cron: '0 0 * * 1,4'
+    # Daily at 00:00 UTC. The routine cadence is Monday and Thursday, set by
+    # `schedule` in renovate.json. Only vulnerability updates ignore it, so the
+    # other five runs exist to keep a security fix from waiting for Monday.
+    - cron: '0 0 * * *'
   workflow_dispatch:
   issues:
     types: [edited]

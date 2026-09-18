@@ -8,6 +8,8 @@
   "ignoreScripts": true,
   "prHourlyLimit": 5,
   "branchConcurrentLimit": 10,
+  "schedule": ["* * * * 1,4"],
+  "updateNotScheduled": false,
   "packageRules": [
     {
       "matchDatasources": ["npm"],
