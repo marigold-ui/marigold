@@ -2,30 +2,44 @@ name: Renovate
 
 on:
   schedule:
-    # Monday at 2am Europe/Berlin (0am UTC)
-    - cron: '0 0 * * 1'
+    # Daily at 00:00 UTC. The routine cadence is Monday and Thursday, set by
+    # `schedule` in renovate.json. Only vulnerability updates ignore it, so the
+    # other five runs exist to keep a security fix from waiting for Monday.
+    - cron: '0 0 * * *'
   workflow_dispatch:
   issues:
     types: [edited]
 
 concurrency:
-  group: renovate
-  cancel-in-progress: true
+  # A run the `if` will skip gets its own group, so it cannot take the single
+  # pending slot from a tick queued behind a run in flight. The condition has to
+  # mirror the job's `if` inverted, or a skipped run still lands in `shared`.
+  group: >-
+    renovate-${{ (github.event_name == 'issues' && (github.event.issue.title !=
+    'Dependency Dashboard' || github.event.sender.type == 'Bot')) &&
+    github.run_id || 'shared' }}
+  cancel-in-progress: false
 
 jobs:
   renovate:
-    # On issue edits, only react to the Renovate Dependency Dashboard.
+    # Renovate's own dashboard write is an issue edit, so a run would trigger another.
     if: >-
-      github.event_name != 'issues' ||
-      github.event.issue.title == 'Dependency Dashboard'
+      github.event_name != 'issues' || (
+        github.event.issue.title == 'Dependency Dashboard' &&
+        github.event.sender.type != 'Bot'
+      )
     runs-on: ubuntu-latest
+    # Renovate authenticates with the app token below, so the only thing the
+    # default token is needed for is the checkout.
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v6
 
       - uses: actions/create-github-app-token@v3
         id: app-token
         with:
-          app-id: ${{ vars.RENOVATE_APP_ID }}
+          client-id: ${{ vars.RENOVATE_APP_CLIENT_ID }}
           private-key: ${{ secrets.RENOVATE_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
 
@@ -36,4 +50,4 @@ jobs:
         env:
           NODE_OPTIONS: '--max-old-space-size=6144'
           LOG_LEVEL: info
-          RENOVATE_AUTODISCOVER: true
+          RENOVATE_REPOSITORIES: ${{ github.repository }}
