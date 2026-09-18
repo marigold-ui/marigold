@@ -36,9 +36,15 @@ A slider is useful when selecting a value or range within a continuous or evenly
 
 Use the range feature of a slider when users need to select both a minimum and maximum value within the same scale, such as defining a price range, date span, or acceptable measurement limits. This approach works best when the range boundaries are equally important and the relationship between them is immediately clear in a single, continuous control.
 
-When multiple thumbs are rendered, each thumb should have an `aria-label`, which is provided via the `thumbLabels` prop.
+Name both thumbs so users can tell the two ends of the range apart.
 
 <ComponentDemo name="slider-range" />
+
+### Labelling the thumbs
+
+Give a thumb its own name whenever the slider's label does not already say what that thumb controls. Screen readers announce the thumb name ahead of the slider label, so a slider labelled "Fee split" whose thumb is named "Organiser share" tells the user exactly which side of the split they are about to move.
+
+This matters most when one slider stands for two related quantities, or when a page holds several sliders adjusting the same kind of value. Set the names with the `thumbLabels` prop: one name for a single-thumb slider, one name per thumb for a range.
 
 ### Scale and Granularity
 
