@@ -54,7 +54,7 @@
   "devDependencies": {
     "@babel/core": "8.0.5",
     "@marigold/tsconfig": "workspace:*",
-    "@types/react": "19.2.18",
+    "@types/react": "19.3.0",
     "react": "^19.2.8",
     "tailwindcss": "4.3.3",
     "tsdown": "0.23.0"

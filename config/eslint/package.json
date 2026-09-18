@@ -24,7 +24,7 @@
     "@babel/eslint-parser": "^8.0.0",
     "@babel/plugin-syntax-flow": "^8.0.0",
     "@babel/plugin-transform-react-jsx": "^8.0.0",
-    "@eslint-react/eslint-plugin": "5.19.0",
+    "@eslint-react/eslint-plugin": "5.19.1",
     "@eslint/js": "10.0.1",
     "@typescript-eslint/eslint-plugin": "8.70.0",
     "@typescript-eslint/parser": "8.70.0",
