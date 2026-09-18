@@ -324,6 +324,8 @@ MultipleThumbs.test(
 );
 
 export const ThumbLabels = meta.story({
+  // thumbLabels only sets aria-label, so there is nothing here to snapshot
+  parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
   args: { label: 'Fee split' },
   render: args => (
