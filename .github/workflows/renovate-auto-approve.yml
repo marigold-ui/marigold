@@ -61,15 +61,28 @@ jobs:
             sleep 5
           done
 
-          # Two causes, and from in here they look identical: renovate.json holds
-          # this update back (major, or the vale-cli/vale carve-out), or Renovate
-          # queued auto-merge after the poll gave up. Both want a human, so say so
-          # as an annotation rather than guessing which one it was.
+          # Nothing queued. Renovate states the reason in the body, and reading it
+          # here only picks the wording of a log line, never whether to approve, so
+          # a release note that happened to carry the marker costs a wrong message
+          # and nothing more. `enabledBy` above is the gate, and a changelog cannot
+          # forge that.
           if [ -z "$enabled_by" ]; then
-            echo "::warning::No auto-merge request after 60s. Either renovate.json" \
-              "holds this update back, or Renovate queued it too late for this run." \
-              "Either way it needs a human: the only automatic retry is the next" \
-              "rebase, and those are scheduled twice a week."
+            body=$(gh pr view "$PR" --repo "$REPO" --json body --jq '.body')
+
+            # The expected case: major, 0.x range, or the vale-cli/vale carve-out.
+            # Routine and frequent, so it stays a plain line with no annotation.
+            if printf '%s' "$body" | grep -qF 'Automerge**: Disabled by config'; then
+              echo "renovate.json holds this update back, leaving it for a human."
+              exit 0
+            fi
+
+            # Renovate said it would automerge and then queued nothing we could see.
+            # That is the missed window, and it is worth an annotation: the only
+            # automatic retry is the next rebase, which can be days out.
+            echo "::warning::Renovate marked this automergeable but no auto-merge" \
+              "request appeared within 60s. The only automatic retry is the next" \
+              "rebase, and those run twice a week. Approve by hand if it should" \
+              "not wait that long."
             exit 0
           fi
 
