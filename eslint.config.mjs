@@ -49,9 +49,10 @@ export default defineConfig([
     },
   },
   {
-    // `toLocale*()` with no argument reads the JS runtime default: en-US under
-    // Node, the viewer's own locale in the browser. Docs pages are server
-    // rendered and then hydrated, so the two disagree and React logs a
+    // `toLocale*()` with no locale reads the JS runtime default: en-US under
+    // Node, the viewer's own locale in the browser. An explicit `undefined`
+    // reads that same default, so both forms are caught. Docs pages are
+    // server rendered and then hydrated, so the two disagree and React logs a
     // hydration mismatch on every value with a grouping separator. The demo
     // wrappers pin `I18nProvider`, which `NumericFormat`/`DateFormat` read and
     // `toLocale*()` ignores.
@@ -61,9 +62,9 @@ export default defineConfig([
         'error',
         {
           selector:
-            'CallExpression[arguments.length=0][callee.property.name=/^toLocale(String|DateString|TimeString)$/]',
+            "CallExpression[callee.property.name=/^toLocale(String|DateString|TimeString)$/]:matches([arguments.length=0], [arguments.0.type='Identifier'][arguments.0.name='undefined'])",
           message:
-            'Bare toLocale*() reads the runtime locale and mismatches on hydration. Use NumericFormat/DateFormat, or pass an explicit locale.',
+            'toLocale*() without a locale reads the runtime locale and mismatches on hydration. Use NumericFormat/DateFormat, or pass an explicit locale.',
         },
       ],
     },

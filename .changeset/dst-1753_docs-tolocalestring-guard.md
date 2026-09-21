@@ -13,5 +13,6 @@ wrapper pins. This finishes what DST-1689 started.
 `ComponentDemo`. That visibly changes published `/examples` pages for non-en-US readers, who
 saw `1.000` where the rest of the site showed `1,000`.
 
-A `no-restricted-syntax` rule scoped to `docs/**` rejects the no-argument form of
-`toLocaleString`, `toLocaleDateString` and `toLocaleTimeString`.
+A `no-restricted-syntax` rule scoped to `docs/**` rejects `toLocaleString`,
+`toLocaleDateString` and `toLocaleTimeString` whenever they are called without a locale,
+whether that is no argument at all or an explicit `undefined`.
