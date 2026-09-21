@@ -117,13 +117,15 @@ jobs:
       # --max-turns N`, eating the next flag.
       - name: Check the Bedrock configuration is present
         env:
-          ROLE_ARN: ${{ secrets.AI_REVIEW_BEDROCK_ROLE_ARN }}
+          ENTRY_ROLE_ARN: ${{ secrets.AI_REVIEW_BEDROCK_ENTRY_ROLE_ARN }}
+          TARGET_ROLE_ARN: ${{ secrets.AI_REVIEW_BEDROCK_TARGET_ROLE_ARN }}
           REGION: ${{ vars.AI_REVIEW_BEDROCK_REGION }}
           MODEL_ID: ${{ vars.AI_REVIEW_MODEL_ID }}
         run: |
           set -euo pipefail
           missing=
-          [ -n "$ROLE_ARN" ] || missing="$missing secret AI_REVIEW_BEDROCK_ROLE_ARN,"
+          [ -n "$ENTRY_ROLE_ARN" ] || missing="$missing secret AI_REVIEW_BEDROCK_ENTRY_ROLE_ARN,"
+          [ -n "$TARGET_ROLE_ARN" ] || missing="$missing secret AI_REVIEW_BEDROCK_TARGET_ROLE_ARN,"
           [ -n "$REGION" ] || missing="$missing variable AI_REVIEW_BEDROCK_REGION,"
           [ -n "$MODEL_ID" ] || missing="$missing variable AI_REVIEW_MODEL_ID,"
           if [ -n "$missing" ]; then
@@ -131,12 +133,20 @@ jobs:
             exit 1
           fi
 
-      - name: Assume the Bedrock role
+      - name: Assume the Bedrock entry role (management)
         uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
         with:
-          role-to-assume: ${{ secrets.AI_REVIEW_BEDROCK_ROLE_ARN }}
+          role-to-assume: ${{ secrets.AI_REVIEW_BEDROCK_ENTRY_ROLE_ARN }}
           aws-region: ${{ vars.AI_REVIEW_BEDROCK_REGION }}
-          role-session-name: gha-claude-review-${{ github.run_id }}
+          role-session-name: gha-claude-review-entry-${{ github.run_id }}
+
+      - name: Chain into the Bedrock role (dst-prod)
+        uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
+        with:
+          role-to-assume: ${{ secrets.AI_REVIEW_BEDROCK_TARGET_ROLE_ARN }}
+          aws-region: ${{ vars.AI_REVIEW_BEDROCK_REGION }}
+          role-chaining: true
+          role-session-name: gha-claude-review-target${{ github.run_id }}
 
       - name: Review
         uses: anthropics/claude-code-action@fa2b2666b747000bf42767d1f332065b375e3c8f # v1.0.214
