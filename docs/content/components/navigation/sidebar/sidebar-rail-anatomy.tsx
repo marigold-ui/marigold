@@ -150,7 +150,7 @@ export const SidebarRailAnatomy = () => (
       className="fill-fd-muted-foreground/50 transition-colors duration-300"
     />
 
-    {/* Connector Lines */}
+    {/* Connector lines */}
     <g
       className="stroke-fd-primary transition-colors duration-300"
       fill="none"
@@ -166,7 +166,7 @@ export const SidebarRailAnatomy = () => (
       <path d="M 516 309 L 578 309" />
     </g>
 
-    {/* Connector Dots */}
+    {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="257" cy="196" r="4" />
       <circle cx="235" cy="309" r="4" />

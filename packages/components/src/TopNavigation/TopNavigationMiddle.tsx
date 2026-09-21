@@ -20,7 +20,7 @@ export interface TopNavigationMiddleProps {
    */
   alignY?: keyof typeof alignment.horizontal.alignmentY;
   /**
-   * The children of the component.
+   * Children of the component.
    */
   children?: ReactNode;
 }

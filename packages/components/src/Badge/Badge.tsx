@@ -8,7 +8,7 @@ import { BadgeContext } from './Context';
 // ---------------
 export interface BadgeProps {
   /**
-   * Children of the component
+   * Children of the component.
    */
   children?: ReactNode;
   variant?:

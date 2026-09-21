@@ -1,9 +1,5 @@
 import { type ThemeComponent } from '@marigold/system';
 import { DatePicker } from './DatePicker.styles';
 
-/**
- * The DateRangePicker trigger button styling is identical to DatePicker today.
- * Re-export the DatePicker styles under a dedicated key so the two components
- * can diverge later without touching the component implementation.
- */
+/** Identical to DatePicker today. A dedicated key lets the two diverge later. */
 export const DateRangePicker: ThemeComponent<'DateRangePicker'> = DatePicker;

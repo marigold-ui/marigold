@@ -14,7 +14,6 @@ export const Modal: ThemeComponent<'Modal'> = cva({
       small: '[--dialog-width:640px]', // sm breakpoint
       medium: '[--dialog-width:768px]', // md breakpoint
       large: '[--dialog-width:1024px]', // lg breakpoint
-      // Fills the viewport minus a small margin at every breakpoint.
       fullscreen: [
         '[--dialog-width:100vw]',
         '[--dialog-max-h:calc(100dvh_-_var(--dialog-spacing-y))]',

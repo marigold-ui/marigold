@@ -8,7 +8,7 @@ export interface TooltipTriggerProps extends Omit<
   RemovedProps
 > {
   /**
-   * The children of the component.
+   * Children of the component.
    */
   children: ReactNode;
   /**

@@ -14,10 +14,9 @@ export interface DrawerDescriptionProps {
  * by the `TextContext` published by `<Drawer>` (or `<Drawer.Header>`),
  * equivalent to a `<Description slot="description">` inside the drawer.
  *
- * **Important:** When used outside of `<Drawer.Header>`, this component is
- * placed in the `content` grid area — the same area as `<Drawer.Content>`.
- * Using both at the root level will cause them to overlap. Prefer wrapping
- * title and description together in `<Drawer.Header>`.
+ * **Important:** outside `<Drawer.Header>` this lands in the `content` grid
+ * area, the same one as `<Drawer.Content>`, and the two overlap. Wrap title and
+ * description together in `<Drawer.Header>`.
  */
 export const DrawerDescription = ({ children }: DrawerDescriptionProps) => {
   const insideHeader = useIsInsideOverlayHeader();

@@ -22,7 +22,6 @@ export const Calendar: ThemeComponent<'Calendar'> = {
       // In a Popover (DatePicker) the Popover paints the overlay surface; the
       // calendar drops its own ring. Standalone keeps it.
       'group-data-trigger/popover:ring-0',
-      // In a Tray
       'group-[[role=dialog]]/tray:ring-0 group-[[role=dialog]]/tray:p-0 group-[[role=dialog]]/tray:place-self-center',
     ],
   }),

@@ -6,11 +6,10 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
       "grid-cols-[min-content_auto_min-content] [grid-template-areas:'icon_title_close''icon_description_close''icon_content_close']",
       'ui-surface text-foreground px-3 py-4',
     ],
-    // Neutral surface (Toast-aligned, DST-1439) so standard actions/links read
-    // correctly. The variant is carried at the edge, away from the content: a
-    // muted accent border (accent mixed 50% into the neutral border) via
-    // `--ui-border-color`, the hook `ui-surface` reads. No tinted background —
-    // a fill would re-introduce the "actions float on a colored surface" problem.
+    // Neutral surface (Toast-aligned, DST-1439) so standard actions and links read
+    // correctly. The variant is carried at the edge instead: a muted accent border
+    // via `--ui-border-color`. No tinted background, which would re-introduce the
+    // "actions float on a colored surface" problem.
     variants: {
       variant: {
         info: '[--ui-border-color:color-mix(in_oklab,var(--color-info-accent)_50%,var(--ui-divider-solid))]',
