@@ -63,7 +63,6 @@ export const TableCellContent = ({
   // Cell-level overrides table-level
   const selectable = allowTextSelection ?? tableAllowTextSelection;
 
-  // Get alignX prop from column
   const columnAlign =
     columnIndex != null
       ? (state?.collection.columns[columnIndex].props

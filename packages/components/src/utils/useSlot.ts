@@ -2,28 +2,20 @@ import type { RefCallback } from 'react';
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 
 /**
- * Detect whether a slot child is present in the component tree without
- * inspecting `React.Children`. Returns a callback ref and a boolean.
+ * Detect whether a slot child is present without inspecting `React.Children`.
+ * Attach the returned callback ref to the slot child's DOM element: the boolean
+ * flips on mount and unmount, so a parent can react to the child's presence
+ * without brittle tree traversal. Same pattern as RAC's internal `useSlot`.
  *
- * Attach the returned ref to the slot child's DOM element. When the child
- * mounts the ref fires and the boolean flips to `true`; when it unmounts
- * the boolean returns to `false`. This lets a parent react to the
- * presence or absence of a child without brittle tree traversal.
- *
- * Follows the same pattern as react-aria-components' internal `useSlot`.
- *
- * @param initialState - Set to `true` when the slot is expected to be
- *   present (the common case) so no re-render is needed on mount. Set to
- *   `false` when the slot is not expected (e.g. the parent already has an
- *   explicit label). Choosing the right default avoids a layout-phase
+ * @param initialState - `true` when the slot is expected (the common case), so
+ *   no re-render is needed on mount. `false` when it is not (e.g. the parent
+ *   already has an explicit label). The right default avoids a layout-phase
  *   re-render in the happy path.
  *
  * @example
  * ```tsx
  * const [slotRef, hasSlot] = useSlot();
- * // … pass slotRef via context …
- * // In the child: <div ref={slotRef}>…</div>
- * // hasSlot is true once the child mounts
+ * // pass slotRef via context, then in the child: <div ref={slotRef}>…</div>
  * ```
  */
 export const useSlot = (
@@ -37,9 +29,8 @@ export const useSlot = (
     setHasSlot(!!el);
   }, []);
 
-  // Correct the initial assumption: if the callback ref was never called
-  // after mount, the slot child is absent. The setState is intentional —
-  // it must happen before paint (same pattern as react-aria's useSlot).
+  // Correct the initial assumption: no ref call after mount means no slot
+  // child. The setState has to happen before paint (as in react-aria's useSlot).
   useLayoutEffect(() => {
     if (!hasRunRef.current) {
       // eslint-disable-next-line

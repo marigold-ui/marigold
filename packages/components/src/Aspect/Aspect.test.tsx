@@ -14,7 +14,8 @@ test('supports  maxWidth', () => {
   `);
 });
 
-// Note: jest does not support aspect-ratio so we can not really test ist here...
+// Unit tests load no stylesheet, so the aspect-ratio utility resolves to `auto`.
+// The class is asserted above instead.
 
 test('supports default ratio', () => {
   render(<Aspect ratio="ultrawide">aspect</Aspect>);

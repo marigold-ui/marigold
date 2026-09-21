@@ -4,25 +4,18 @@ import { usePageContext } from './Context';
 /**
  * Move focus to the page's `<h1>` when the route changes, the standard
  * single-page-app technique for announcing a navigation to screen-reader and
- * keyboard users. `<Page>` owns the heading and the plumbing to target it
- * (`titleId`), but it is router-agnostic and cannot observe navigation on its
- * own, so the route signal is supplied by the caller.
+ * keyboard users. `<Page>` owns the heading but is router-agnostic, so the
+ * caller supplies the route signal.
  *
- * Pass the current route key (typically the pathname) from the app router.
- * On each change the page heading is made programmatically focusable
- * (`tabIndex={-1}`) and focused. The **initial mount is skipped**, so the first
- * paint of the app never steals focus, and the call is a **no-op when the page
- * has no `<h1>`** (an `aria-label`-only `<Page>`).
+ * On each change the heading is made focusable (`tabIndex={-1}`) and focused.
+ * The initial mount is skipped, so the first paint never steals focus, and the
+ * call is a no-op when the page has no `<h1>` (an `aria-label`-only `<Page>`).
  *
- * Must be called from a component rendered inside a `<Page>`. Because the skip
- * is per-mount, call it from a component that persists across navigations (the
- * layout / shell level), not one that remounts on every route.
- *
- * The heading lookup happens synchronously when the effect runs, so the `<h1>`
- * must already be mounted at that point. A route's `<Title>` rendered behind a
- * `React.lazy` + `<Suspense>` boundary can still be loading when this fires, in
- * which case focus silently stays put; hoist the title (or the route signal)
- * above the boundary if a route lazy-loads its content.
+ * Call it from a component inside `<Page>` that persists across navigations
+ * (the layout / shell level): the skip is per-mount, so one that remounts per
+ * route never fires. The `<h1>` has to be mounted when the effect runs, so a
+ * `<Title>` behind a `React.lazy` boundary can still be loading, and focus
+ * silently stays put. Hoist the title above the boundary in that case.
  *
  * @param routeKey - A value that changes on navigation, usually the pathname.
  *
@@ -34,46 +27,38 @@ import { usePageContext } from './Context';
  *   return null;
  * };
  *
- * <RouterProvider navigate={navigate}>
- *   <Page>
- *     <PageFocus pathname={location.pathname} />
- *     <Outlet />
- *   </Page>
- * </RouterProvider>
+ * <Page>
+ *   <PageFocus pathname={location.pathname} />
+ *   <Outlet />
+ * </Page>
  * ```
  */
-// TODO(follow-up): every consumer writes the same null-rendering wrapper to
-// call this hook. A `routeKey` prop directly on <Page> would remove that
-// boilerplate (raised in review, out of scope for DST-1492).
+// TODO(follow-up): a `routeKey` prop on <Page> would remove the null-rendering
+// wrapper every consumer writes (raised in review, out of scope for DST-1492).
 export const usePageFocus = (routeKey: string) => {
   const { titleId } = usePageContext();
   const previousRouteKeyRef = useRef(routeKey);
 
   useEffect(() => {
-    // Only act once the route key actually changes. Tracking the previous key
-    // (rather than an "is this the first run" flag) keeps the skip resilient to
-    // React StrictMode's dev-only setup → cleanup → setup remount: refs survive
-    // that remount, so a boolean flipped to `false` on the first setup would
-    // read as "not the first run" on the second setup and steal focus on the
-    // initial page load.
+    // Track the previous key rather than an "is this the first run" flag: refs
+    // survive StrictMode's dev-only setup → cleanup → setup remount, so a
+    // boolean flipped on the first setup would read as "not the first run" on
+    // the second and steal focus on the initial page load.
     const changed = previousRouteKeyRef.current !== routeKey;
     previousRouteKeyRef.current = routeKey;
     if (!changed) {
       return;
     }
 
-    // The heading is looked up by the id `<Page>` assigns to it. When the page
-    // has no `<Title>` there is nothing to focus, so this is a no-op.
+    // Looked up by the id `<Page>` assigns to the heading.
     const heading = document.getElementById(titleId);
     if (!heading) {
-      // TODO(follow-up): fall back to focusing <Page>'s <main> here instead of
-      // leaving focus wherever it was (raised in review, deliberately out of
-      // scope for DST-1492 — the no-op is intentional and covered by a test).
+      // TODO(follow-up): fall back to focusing <Page>'s <main> (raised in
+      // review, out of scope for DST-1492. The no-op is intentional and tested).
       return;
     }
 
-    // Headings are not focusable by default. Make it programmatically focusable
-    // without adding it to the tab order (`tabIndex={-1}`), then focus it.
+    // Headings are not focusable by default.
     heading.tabIndex = -1;
     heading.focus();
   }, [routeKey, titleId]);

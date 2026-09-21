@@ -55,7 +55,7 @@ export interface CheckboxGroupProps
     Omit<RAC.CheckboxGroupProps, RemovedProps>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   /**
-   * The children of the component
+   * Children of the component.
    */
   children?: ReactNode;
   variant?: string;
