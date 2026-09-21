@@ -3,6 +3,9 @@ name: Renovate auto-approve
 on:
   pull_request:
     types: [opened, reopened, synchronize]
+    # Only the trunk. A Renovate PR aimed at a release branch is governed by a
+    # different ruleset, so it stays a human decision.
+    branches: [main]
 
 permissions: {}
 
@@ -39,22 +42,49 @@ jobs:
           # Renovate queues auto-merge only on what renovate.json says may automerge,
           # a second or so after opening the PR. The body says the same thing, but a
           # dependency's release notes are pasted into it and could forge the line.
-          queued=false
-          for _ in 1 2 3 4 5 6; do
-            if [ "$(gh pr view "$PR" --repo "$REPO" --json autoMergeRequest --jq '.autoMergeRequest != null')" = "true" ]; then
-              queued=true
+          #
+          # Who queued it matters as much as whether: anyone with write access can
+          # press "Enable auto-merge" on a major bump this config deliberately holds
+          # back, and an approval from this app would let it land unreviewed.
+          #
+          # `gh` spells the bot `app/marigold-renovate` where the job condition above
+          # gets `marigold-renovate[bot]` from the webhook. Same actor, two APIs.
+          enabled_by=''
+          for _ in $(seq 12); do
+            # Assigned outside the `if` on purpose: `set -e` is suppressed in a
+            # condition, so a failing API call there would read as "not queued".
+            enabled_by=$(gh pr view "$PR" --repo "$REPO" --json autoMergeRequest \
+              --jq '.autoMergeRequest.enabledBy.login // ""')
+            if [ -n "$enabled_by" ]; then
               break
             fi
             sleep 5
           done
 
-          if [ "$queued" != "true" ]; then
-            echo "Renovate did not queue auto-merge here, leaving it for a human."
+          # Two causes, and from in here they look identical: renovate.json holds
+          # this update back (major, or the vale-cli/vale carve-out), or Renovate
+          # queued auto-merge after the poll gave up. Both want a human, so say so
+          # as an annotation rather than guessing which one it was.
+          if [ -z "$enabled_by" ]; then
+            echo "::warning::No auto-merge request after 60s. Either renovate.json" \
+              "holds this update back, or Renovate queued it too late for this run." \
+              "Either way it needs a human: the only automatic retry is the next" \
+              "rebase, and those are scheduled twice a week."
+            exit 0
+          fi
+
+          if [ "$enabled_by" != "app/marigold-renovate" ]; then
+            echo "Auto-merge was queued by $enabled_by, not Renovate. Leaving it for a human."
             exit 0
           fi
 
           # Any state, not just APPROVED. A dismissed approval is how someone stops
           # a queued merge, and re-approving on the next rebase would undo that.
+          #
+          # `test()` is a substring match on purpose, because it has to hold whether
+          # this field renders the app as `app/<slug>` or `<slug>[bot]`. Tightened to
+          # `==` against the wrong spelling it would match nothing, and the job would
+          # re-approve on every rebase, undoing the dismissal this line protects.
           reviewed=$(gh pr view "$PR" --repo "$REPO" --json reviews \
             --jq '[.reviews[] | select(.author.login | test(env.APP))] | length')
 
