@@ -49,6 +49,26 @@ export default defineConfig([
     },
   },
   {
+    // `toLocale*()` with no argument reads the JS runtime default: en-US under
+    // Node, the viewer's own locale in the browser. Docs pages are server
+    // rendered and then hydrated, so the two disagree and React logs a
+    // hydration mismatch on every value with a grouping separator. The demo
+    // wrappers pin `I18nProvider`, which `NumericFormat`/`DateFormat` read and
+    // `toLocale*()` ignores.
+    files: ['docs/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector:
+            'CallExpression[arguments.length=0][callee.property.name=/^toLocale(String|DateString|TimeString)$/]',
+          message:
+            'Bare toLocale*() reads the runtime locale and mismatches on hydration. Use NumericFormat/DateFormat, or pass an explicit locale.',
+        },
+      ],
+    },
+  },
+  {
     ignores: [
       '**/.next',
       '**/out',

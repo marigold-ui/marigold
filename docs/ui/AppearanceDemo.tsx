@@ -13,6 +13,7 @@ import { Check, ChevronDown, Info } from 'lucide-react';
 import type { ComponentType } from 'react';
 import { useState } from 'react';
 import {
+  I18nProvider,
   MarigoldProvider,
   OverlayContainerProvider,
 } from '@marigold/components';
@@ -179,17 +180,20 @@ export const AppearanceDemo = ({
         </div>
         <div data-theme="rui">
           <OverlayContainerProvider container="portalContainer">
-            <MarigoldProvider
-              theme={ruiTheme}
-              className={cn(
-                'min-h-56',
-                background === 'page' ? 'bg-background' : 'bg-white'
-              )}
-            >
-              <div className="not-prose flex size-full items-center justify-center overflow-x-auto px-4 pt-24 pb-10">
-                <Demo {...selected} />
-              </div>
-            </MarigoldProvider>
+            {/* Pin the locale so demos render identically on server and client. */}
+            <I18nProvider locale="en-US">
+              <MarigoldProvider
+                theme={ruiTheme}
+                className={cn(
+                  'min-h-56',
+                  background === 'page' ? 'bg-background' : 'bg-white'
+                )}
+              >
+                <div className="not-prose flex size-full items-center justify-center overflow-x-auto px-4 pt-24 pb-10">
+                  <Demo {...selected} />
+                </div>
+              </MarigoldProvider>
+            </I18nProvider>
           </OverlayContainerProvider>
         </div>
       </div>

@@ -5,6 +5,7 @@ import {
   Badge,
   Description,
   NumberField,
+  NumericFormat,
   Panel,
   Select,
   Table,
@@ -137,7 +138,7 @@ export default () => {
                     />
                   }
                 >
-                  {venue.capacity.toLocaleString()}
+                  <NumericFormat value={venue.capacity} />
                 </Table.EditableCell>
                 <Table.EditableCell
                   onSubmit={e => update(venue.id, 'status', e)}
