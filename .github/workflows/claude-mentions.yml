@@ -163,7 +163,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AI_REVIEW_BEDROCK_ENTRY_ROLE_ARN }}
           aws-region: ${{ vars.AI_REVIEW_BEDROCK_REGION }}
-          role-session-name: gha-claude-review-entry-${{ github.run_id }}
+          role-session-name: gha-claude-mentions-entry-${{ github.run_id }}
 
       - name: Chain into the Bedrock role (dst-prod)
         uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
@@ -171,7 +171,7 @@ jobs:
           role-to-assume: ${{ secrets.AI_REVIEW_BEDROCK_TARGET_ROLE_ARN }}
           aws-region: ${{ vars.AI_REVIEW_BEDROCK_REGION }}
           role-chaining: true
-          role-session-name: gha-claude-review-target${{ github.run_id }}
+          role-session-name: gha-claude-mentions-target-${{ github.run_id }}
 
       - name: Run Claude
         uses: anthropics/claude-code-action@fa2b2666b747000bf42767d1f332065b375e3c8f # v1.0.214

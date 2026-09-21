@@ -146,7 +146,7 @@ jobs:
           role-to-assume: ${{ secrets.AI_REVIEW_BEDROCK_TARGET_ROLE_ARN }}
           aws-region: ${{ vars.AI_REVIEW_BEDROCK_REGION }}
           role-chaining: true
-          role-session-name: gha-claude-review-target${{ github.run_id }}
+          role-session-name: gha-claude-review-target-${{ github.run_id }}
 
       - name: Review
         uses: anthropics/claude-code-action@fa2b2666b747000bf42767d1f332065b375e3c8f # v1.0.214
