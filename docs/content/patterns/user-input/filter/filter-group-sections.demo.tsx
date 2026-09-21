@@ -34,7 +34,6 @@ export default () => (
           </Checkbox.Group>
           <Slider
             label="Max. Price"
-            thumbLabels="price"
             maxValue={500}
             step={10}
             defaultValue={500}

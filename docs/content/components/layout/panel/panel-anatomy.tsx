@@ -108,7 +108,7 @@ export const PanelAnatomy = () => (
       className="fill-fd-foreground transition-colors duration-300"
     />
 
-    {/* Connector Lines */}
+    {/* Connector lines */}
     <g
       className="stroke-fd-primary transition-colors duration-300"
       fill="none"
@@ -128,7 +128,7 @@ export const PanelAnatomy = () => (
       <path d="M 435 47 L 483 47" />
     </g>
 
-    {/* Connector Dots */}
+    {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="241" cy="46" r="4" />
       <circle cx="241" cy="60" r="4" />

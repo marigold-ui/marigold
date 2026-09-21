@@ -9,7 +9,7 @@ type RemovedProps = 'className' | 'isOpen' | 'style';
 
 export interface TooltipProps extends Omit<RAC.TooltipProps, RemovedProps> {
   /**
-   * The children of the component.
+   * Children of the component.
    */
   children?: ReactNode;
   variant?: 'default' | 'white' | (string & {});

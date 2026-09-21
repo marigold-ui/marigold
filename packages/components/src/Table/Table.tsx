@@ -20,7 +20,6 @@ import { TableFooter } from './TableFooter';
 import { TableHeader } from './TableHeader';
 import { TableRow } from './TableRow';
 
-// Remove props that we want to customize
 type RemovedProps = 'className' | 'style' | 'selectionBehavior' | 'render';
 
 export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {

@@ -3,7 +3,7 @@ import { Description } from '../Description/Description';
 
 export interface ContextualHelpDescriptionProps {
   /**
-   * The children of the component.
+   * Children of the component.
    */
   children?: ReactNode;
 }

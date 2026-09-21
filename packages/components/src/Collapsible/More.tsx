@@ -10,7 +10,7 @@ export interface MoreProps extends Pick<
   'unstyled' | 'defaultExpanded'
 > {
   /**
-   * The children of the component
+   * Children of the component.
    */
   children?: ReactNode;
 

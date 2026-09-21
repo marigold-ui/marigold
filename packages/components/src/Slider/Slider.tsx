@@ -29,6 +29,8 @@ export interface SliderProps<T>
 
   /**
    * Aria labels for the thumbs in the slider.
+   * - For single-thumb sliders, provide a string.
+   * - For range sliders (two thumbs), provide a tuple of two strings, one for each thumb.
    */
   thumbLabels?: string | [string, string];
 
@@ -72,6 +74,9 @@ const _Slider = <T extends number | number[]>({
   });
 
   const names = Array.isArray(name) ? name : [name];
+  const thumbLabelsList = Array.isArray(thumbLabels)
+    ? thumbLabels
+    : [thumbLabels];
   const props = {
     isDisabled: disabled,
     ...rest,
@@ -135,8 +140,8 @@ const _Slider = <T extends number | number[]>({
                 className={cn('top-1/2 cursor-pointer', classNames.thumb)}
                 key={i}
                 index={i}
-                aria-label={thumbLabels?.[i]}
-                name={names?.[i]}
+                aria-label={thumbLabelsList[i]}
+                name={names[i]}
               />
             ))}
           </>

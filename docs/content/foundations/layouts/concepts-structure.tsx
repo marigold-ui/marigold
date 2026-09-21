@@ -246,7 +246,7 @@ export const ConceptsStructure = () => (
       className="fill-fd-muted-foreground/30 transition-colors duration-300"
     />
 
-    {/* Connector Lines */}
+    {/* Connector lines */}
     <g
       className="stroke-fd-primary transition-colors duration-300"
       fill="none"
@@ -264,7 +264,7 @@ export const ConceptsStructure = () => (
       <path d="M 670 155 L 740 155" />
     </g>
 
-    {/* Connector Dots */}
+    {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="150" cy="45" r="4" />
       <circle cx="170" cy="200" r="4" />

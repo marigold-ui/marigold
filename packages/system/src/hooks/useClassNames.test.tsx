@@ -224,7 +224,6 @@ test('gracefully handles missing styles', () => {
   );
 });
 
-// Additional Style Props
 test('additional style props are supported', () => {
   const alignment = {
     left: 'text-left',
