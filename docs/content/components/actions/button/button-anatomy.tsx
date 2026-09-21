@@ -52,7 +52,7 @@ export const ButtonAnatomy = () => (
       className="fill-fd-foreground transition-colors duration-300"
     />
 
-    {/* Connector Lines */}
+    {/* Connector lines */}
     <g
       className="stroke-fd-primary transition-colors duration-300"
       fill="none"
@@ -70,7 +70,7 @@ export const ButtonAnatomy = () => (
       <path d="M 620 213 L 702 213" />
     </g>
 
-    {/* Connector Dots */}
+    {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="303" cy="213" r="4" />
       <circle cx="339" cy="203" r="4" />

@@ -32,7 +32,6 @@ const releaseInfos = published
   })
   .join('\n');
 
-// Get current date formatted in "YYYY-MM-DD"
 const currentDate = new Date().toISOString().split('T')[0];
 
 // Slack Message (to edit copy/paste to https://app.slack.com/block-kit-builder/)

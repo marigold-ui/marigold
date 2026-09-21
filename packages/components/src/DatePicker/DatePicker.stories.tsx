@@ -344,7 +344,6 @@ Mobile.test(
         expect(focusedCell).not.toBeNull();
       });
 
-      // Ensure focus is on the calendar cell
       const focusedCell = calendar.querySelector(
         '[tabindex="0"]'
       ) as HTMLElement;

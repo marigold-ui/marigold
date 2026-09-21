@@ -154,16 +154,13 @@ export const UploadFile = meta.story({
 UploadFile.test(
   'Shows the uploaded file in the list',
   async ({ canvas, userEvent }) => {
-    // Arrange
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
     const fileA = makeFile('a.pdf', 'application/pdf', 2 * 1024 * 1024);
 
-    // Act
     await userEvent.upload(input, fileA);
 
-    // Assert
     await expect(canvas.queryByText('a.pdf', { exact: true })).toBeVisible();
   }
 );
@@ -185,7 +182,6 @@ UploadFile.test(
     ],
   },
   async ({ canvas, userEvent }) => {
-    // Arrange
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
@@ -198,7 +194,6 @@ UploadFile.test(
     // Act
     await userEvent.upload(input, [fileA, fileB, fileC, fileD]);
 
-    // Assert
     await expect(canvas.getByText('abc.pdf')).toBeInTheDocument();
     await expect(canvas.getByText('test.txt')).toBeInTheDocument();
     await expect(canvas.getByText('pic1.jpg')).toBeInTheDocument();
@@ -228,16 +223,13 @@ Small.test(
   'Shows the uploaded file in the compact layout',
   { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
-    // Arrange
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
     const file = makeFile('compact.pdf', 'application/pdf', 1 * 1024 * 1024);
 
-    // Act
     await userEvent.upload(input, file);
 
-    // Assert
     await expect(canvas.getByText('compact.pdf')).toBeInTheDocument();
   }
 );
@@ -293,17 +285,14 @@ InForm.test(
   'Submits the uploaded file with the form',
   { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
-    // Arrange
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
     const file = makeFile('report.pdf', 'application/pdf', 1024 * 1024);
 
-    // Act
     await userEvent.upload(input, file);
     await userEvent.click(canvas.getByRole('button', { name: 'Submit' }));
 
-    // Assert
     await expect(canvas.getByTestId('submitted-files')).toBeInTheDocument();
     await expect(
       canvas.getByText('report.pdf (1048576 bytes)')

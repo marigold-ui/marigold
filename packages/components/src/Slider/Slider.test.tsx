@@ -38,3 +38,39 @@ test('applies width prop via --container-width CSS variable', () => {
     'calc((1 / 2) * 100%)'
   );
 });
+
+test('applies a string thumbLabels to the single thumb', () => {
+  render(
+    <Basic.Component label="Gebühren-Splitting" thumbLabels="Anteil Reservix" />
+  );
+
+  // react-aria appends the slider's own label after the thumb's, so match
+  // loosely rather than pinning that upstream composition order
+  expect(screen.getByRole('slider')).toHaveAccessibleName(/Anteil Reservix/);
+});
+
+test('applies each tuple thumbLabels entry to its own thumb', () => {
+  render(<MultipleThumbs.Component />);
+
+  const [start, end] = screen.getAllByRole('slider');
+
+  expect(start).toHaveAccessibleName(/start/);
+  expect(end).toHaveAccessibleName(/end/);
+});
+
+test('does not spread a string thumbLabels across a range slider', () => {
+  render(
+    <Basic.Component
+      defaultValue={[20, 40]}
+      label="Range"
+      thumbLabels="Anteil Reservix"
+    />
+  );
+
+  const [start, end] = screen.getAllByRole('slider');
+
+  expect(start).toHaveAccessibleName(/Anteil Reservix/);
+  // The unnamed thumb falls back to the slider's own label, so pin that
+  // rather than asserting the absence of a name
+  expect(end).toHaveAccessibleName('Range');
+});

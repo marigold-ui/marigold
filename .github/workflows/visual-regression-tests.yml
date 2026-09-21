@@ -65,7 +65,7 @@ jobs:
           echo "owner=$OWNER" >> "$GITHUB_OUTPUT"
 
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           # Pick the right ref depending on the trigger:
           # 1. If merged PR: Use the merge commit on the target branch.

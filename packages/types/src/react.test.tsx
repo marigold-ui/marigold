@@ -9,11 +9,8 @@ import {
 } from 'react';
 import { IntrinsicElement, OwnProps, PolymorphicComponent, PropsOf } from '.';
 
-/**********************************************/
-/*                                            */
-/*                  BOX TEST                  */
-/*                                            */
-/**********************************************/
+// Box test
+// ----------------
 
 type BoxOwnProps = {
   children?: ReactNode;
@@ -40,11 +37,8 @@ export const BrokenBox = () => <Box as="span" href="http://example.com"></Box>;
 // @ts-expect-error
 export const BoxHasNoClass = () => <Box className="foo">Hello</Box>;
 
-/**********************************************/
-/*                                            */
-/*               TEST COMPONENTS              */
-/*                                            */
-/**********************************************/
+// Test components
+// ----------------
 
 type ButtonProps = {
   isDisabled?: boolean;
@@ -63,7 +57,6 @@ const ExtendedButtonUsingReactUtils = forwardRef<
   return <Button {...props} ref={forwardedRef} />;
 });
 
-// Inline component
 export const ExtendedButtonUsingReactUtilsWithInternalInlineAs = (
   props: ComponentProps<typeof Button>
 ) => {
@@ -112,11 +105,8 @@ export const Anchor = forwardRef((props, forwardedRef) => {
   return <Comp {...anchorProps} ref={forwardedRef} />;
 }) as PolymorphicComponent<'a', AnchorProps>;
 
-/**********************************************/
-/*                                            */
-/*               USE CASE TESTS               */
-/*                                            */
-/**********************************************/
+// Use case tests
+// ----------------
 export const Test = () => (
   <div data-testid="test-wrapper">
     {/* Link accepts onToggle prop */}
@@ -148,7 +138,6 @@ export const Test = () => (
     {/* Button as Link accepts isPrimary prop */}
     <Button as={Link} isPrimary />
 
-    {/* Button as Link accepts isDisabled prop */}
     <Button as={Link} />
 
     {/* Button as Link does not accept form prop */}
@@ -214,7 +203,7 @@ export const Test = () => (
   </div>
 );
 
-// Make jest happy since this files ends with *.test.tsx
+// Verified by tsc, not run: packages/types is excluded in vitest.config.shared.ts.
 it('should render', async () => {
   render(<Test />);
 

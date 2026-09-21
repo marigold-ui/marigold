@@ -52,7 +52,6 @@ export const Menu: ThemeComponent<'Menu'> = {
   description: cva({
     base: 'col-start-2 row-start-2 text-secondary text-xs whitespace-normal group-disabled/option:text-disabled',
   }),
-  // Shortcut hint, right-aligned in col 3 and vertically centered.
   keyboard: cva({
     base: 'col-start-3 row-span-full self-center justify-self-end ps-4 text-secondary text-xs',
   }),
