@@ -33,7 +33,7 @@ export const ToggleButtonAnatomy = () => (
       className="fill-fd-foreground transition-colors duration-300"
     />
 
-    {/* Connector Lines */}
+    {/* Connector lines */}
     <g
       className="stroke-fd-primary transition-colors duration-300"
       fill="none"
@@ -47,7 +47,7 @@ export const ToggleButtonAnatomy = () => (
       <path d="M 270 76 L 270 96 L 110 96" />
     </g>
 
-    {/* Connector Dots */}
+    {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="382" cy="64" r="4" />
       <circle cx="240" cy="64" r="4" />
@@ -138,7 +138,7 @@ export const ToggleButtonGroupAnatomy = () => (
       className="fill-fd-border transition-colors duration-300"
     />
 
-    {/* Connector Lines */}
+    {/* Connector lines */}
     <g
       className="stroke-fd-primary transition-colors duration-300"
       fill="none"
@@ -154,7 +154,7 @@ export const ToggleButtonGroupAnatomy = () => (
       <path d="M 320 68 L 320 96 L 530 96" />
     </g>
 
-    {/* Connector Dots */}
+    {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="142" cy="44" r="4" />
       <circle cx="500" cy="44" r="4" />

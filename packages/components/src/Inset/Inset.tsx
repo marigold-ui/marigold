@@ -10,7 +10,7 @@ import type { AriaRegionProps } from '@marigold/types';
 export type InsetProps =
   | (AriaRegionProps & {
       /**
-       * The children of the component
+       * Children of the component.
        */
       children: ReactNode;
       p?: never;

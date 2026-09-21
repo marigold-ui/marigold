@@ -223,7 +223,7 @@ export const AppFrameStructure = () => (
       strokeWidth="1.5"
     />
 
-    {/* Connector Lines */}
+    {/* Connector lines */}
     <g
       className="stroke-fd-primary transition-colors duration-300"
       fill="none"
@@ -237,7 +237,7 @@ export const AppFrameStructure = () => (
       <path d="M 530 220 L 590 220" />
     </g>
 
-    {/* Connector Dots */}
+    {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="200" cy="94" r="4" />
       <circle cx="232" cy="300" r="4" />
@@ -493,7 +493,7 @@ export const AppFrameStructureSingle = () => (
       strokeWidth="1.5"
     />
 
-    {/* Connector Lines */}
+    {/* Connector lines */}
     <g
       className="stroke-fd-primary transition-colors duration-300"
       fill="none"
@@ -506,7 +506,7 @@ export const AppFrameStructureSingle = () => (
       <path d="M 530 220 L 590 220" />
     </g>
 
-    {/* Connector Dots */}
+    {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="245" cy="300" r="4" />
       <circle cx="530" cy="94" r="4" />

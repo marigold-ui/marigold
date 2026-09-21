@@ -37,7 +37,6 @@ const IconListItem = ({ icon }: IconListItemProps) => {
       cancel();
     }
 
-    // Get SVG HTML and remove class attribute
     const svg = svgRef.current!.outerHTML.replace(
       / class="[a-zA-Z0-9:;.\s()\-,]*"/,
       ''
