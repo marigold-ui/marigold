@@ -33,7 +33,7 @@ export interface ButtonProps
    */
   fullWidth?: boolean;
   /**
-   * Children of the component
+   * Children of the component.
    */
   children?: ReactNode;
 

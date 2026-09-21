@@ -284,7 +284,7 @@ export function remarkSimplifyJsx() {
               return;
             }
           } catch {
-            //
+            // Unparseable expression: fall through to dropping the node below.
           }
         }
         (parent.children as Node[]).splice(index, 1);
@@ -311,7 +311,6 @@ export function remarkSimplifyJsx() {
         return;
       }
 
-      // Convert JSX <ul>/<ol>/<li> to proper markdown list nodes
       if (name === 'ul' || name === 'ol') {
         const listItems = (node.children || []).map(child => {
           const liNode = child as MdxJsxElement;

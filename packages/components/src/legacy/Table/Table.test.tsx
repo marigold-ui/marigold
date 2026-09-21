@@ -106,14 +106,11 @@ test('sorting', async () => {
   // Initial order from Sorting story
   expect(rows[1].textContent).toContain('Luke Skywalker');
 
-  // Get the Name column header
   const nameHeader = screen.getByRole('columnheader', { name: 'Name' });
   expect(nameHeader).toHaveAttribute('aria-sort', 'none');
 
-  // Click on Name header to sort
   await user.click(nameHeader);
 
-  // Verify aria-sort changed after clicking
   expect(nameHeader).toHaveAttribute('aria-sort', 'ascending');
 });
 

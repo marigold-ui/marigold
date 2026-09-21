@@ -32,7 +32,6 @@ export const useAutoCollapse = (
     const widths = breadcrumbs.map(el => el.getBoundingClientRect().width);
     const ellipsisWidth = ellipsis ? ellipsis.getBoundingClientRect().width : 0;
 
-    // Check if everything fits without collapsing
     const totalWidth = widths.reduce(
       (sum, w, i) => sum + w + (i > 0 ? gap : 0),
       0
