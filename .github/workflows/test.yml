@@ -39,7 +39,7 @@ jobs:
         run: echo "version=$(pnpm exec playwright --version)" >> $GITHUB_OUTPUT
       - name: Cache Playwright browsers
         id: playwright-cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ steps.playwright-version.outputs.version }}-${{ runner.os }}
@@ -97,7 +97,7 @@ jobs:
         run: echo "version=$(pnpm exec playwright --version)" >> $GITHUB_OUTPUT
       - name: Cache Playwright browsers
         id: playwright-cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ steps.playwright-version.outputs.version }}-${{ runner.os }}
@@ -186,7 +186,7 @@ jobs:
         run: echo "version=$(pnpm exec playwright --version)" >> $GITHUB_OUTPUT
       - name: Cache Playwright browsers
         id: playwright-cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           # Distinct from the other jobs' `playwright-<version>-<os>` key: this
