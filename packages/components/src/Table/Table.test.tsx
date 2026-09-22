@@ -1,8 +1,6 @@
 import { render, renderHook, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import type { ReactNode } from 'react';
 import { theme } from '@marigold/theme-rui';
-import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import { mockMatchMedia } from '../test.utils';
 import { useTableContext } from './Context';
 import { Table } from './Table';
@@ -19,36 +17,13 @@ import {
 } from './Table.stories';
 import { renderDragPreview } from './TableDragPreview';
 import { TableDropIndicator, renderDropIndicator } from './TableDropIndicator';
+import { GuestTable, rowNamed, typeFromTheFirstRow } from './test.utils';
 
 const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
 window.matchMedia = mockMatchMedia([smallScreenQuery]);
 
 describe('Row text value', () => {
-  // A row's name for type to select comes from its `rowHeader` cell, and
-  // `textValue` never renders as an attribute. So a keyboard probe is the only
-  // way to observe any of this, and a fresh render per test keeps react-aria's
-  // one-second typeahead buffer from bleeding between them.
-  const rowNamed = (name: RegExp) => screen.getByRole('row', { name });
-
-  const typeFromTheFirstRow = async (key: string) => {
-    const [, firstBodyRow] = screen.getAllByRole('row');
-    firstBodyRow.focus();
-    await userEvent.keyboard(key);
-  };
-
-  const GuestTable = ({ children }: { children: ReactNode }) => (
-    <MarigoldProvider theme={theme}>
-      <Table aria-label="Guests" selectionMode="single">
-        <Table.Header>
-          <Table.Column rowHeader>Guest</Table.Column>
-          <Table.Column>Seat</Table.Column>
-        </Table.Header>
-        <Table.Body>{children}</Table.Body>
-      </Table>
-    </MarigoldProvider>
-  );
-
   // React Aria reads strings only, so the number case is Marigold's addition
   // and would regress silently without a case of its own.
   test.each([

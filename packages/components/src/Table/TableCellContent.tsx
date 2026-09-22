@@ -40,10 +40,11 @@ export interface TableCellContentProps {
    */
   allowTextSelection?: boolean;
   /**
-   * Whether the cell resolved no `textValue`. Set by the cell components, which
-   * is where the value is derived, and only to drive the development warning below.
+   * The cell component to name in the development warning below, set only when
+   * that cell resolved no `textValue`. Carrying the name rather than a bare
+   * boolean keeps the warning about the component the author actually wrote.
    */
-  missingTextValue?: boolean;
+  missingTextValueOn?: 'Table.Cell' | 'Table.EditableCell';
 }
 
 // Development warning
@@ -60,8 +61,10 @@ export interface TableCellContentProps {
  */
 const RowHeaderNameWarning = ({
   columnIndex,
+  component,
 }: {
   columnIndex?: number | null;
+  component: 'Table.Cell' | 'Table.EditableCell';
 }) => {
   const state = use(TableStateContext);
   const warnedRef = useRef(false);
@@ -80,9 +83,9 @@ const RowHeaderNameWarning = ({
 
     warnedRef.current = true;
     console.warn(
-      'A `textValue` prop is required for <Table.Cell> and <Table.EditableCell> elements in a `rowHeader` column whose children are not plain text, in order to support accessibility features such as type to select.'
+      `A \`textValue\` prop is required for <${component}> elements in a \`rowHeader\` column whose children are not plain text, in order to support accessibility features such as type to select.`
     );
-  }, [isRowHeader]);
+  }, [isRowHeader, component]);
 
   return null;
 };
@@ -96,7 +99,7 @@ export const TableCellContent = ({
   children,
   className,
   allowTextSelection,
-  missingTextValue,
+  missingTextValueOn,
 }: TableCellContentProps) => {
   const {
     overflow: tableOverflow,
@@ -128,8 +131,11 @@ export const TableCellContent = ({
       tabIndex={selectable ? -1 : undefined}
       {...(selectable ? stopPropagationProps : {})}
     >
-      {process.env.NODE_ENV !== 'production' && missingTextValue && (
-        <RowHeaderNameWarning columnIndex={columnIndex} />
+      {process.env.NODE_ENV !== 'production' && missingTextValueOn && (
+        <RowHeaderNameWarning
+          columnIndex={columnIndex}
+          component={missingTextValueOn}
+        />
       )}
       {children}
     </div>

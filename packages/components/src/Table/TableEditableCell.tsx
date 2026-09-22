@@ -157,11 +157,6 @@ interface TableEditableCellInnerProps extends TableEditableCellProps {
    * `useTableOptions` is only available in React Aria's collection build pass.
    */
   hasSelection: boolean;
-  /**
-   * Whether the cell resolved no `textValue`. Set by the outer cell, which is
-   * where the value is derived, and only to drive the development warning.
-   */
-  missingTextValue?: boolean;
   /** Column index, provided by the `<Cell>` render prop. */
   columnIndex?: number | null;
   /** Ref to the `<Cell>`, used to position and anchor the editor popover. */
@@ -192,7 +187,7 @@ const TableEditableCellInner = ({
   action,
   alignX,
   overflow: cellOverflow,
-  missingTextValue,
+  textValue,
   hasSelection,
   columnIndex,
   cellRef,
@@ -203,6 +198,12 @@ const TableEditableCellInner = ({
   const { classNames } = useTableContext();
   const isSmallScreen = useSmallScreen();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+
+  // The outer cell resolves this too, for the `<Cell>` itself, but it renders in
+  // React Aria's collection build pass where nothing is mounted. The warning has
+  // to be raised from here, which is what actually renders, and repeating one
+  // `typeof` check is cheaper than threading the answer down.
+  const missingTextValue = resolveTextValue(textValue, children) === undefined;
 
   const [open, setOpen] = useState(false);
   const submittedRef = useRef(false);
@@ -287,7 +288,7 @@ const TableEditableCellInner = ({
         cellOverflow={disabled ? cellOverflow : 'truncate'}
         className="min-w-0 flex-1"
         allowTextSelection={!hasSelection || undefined}
-        missingTextValue={missingTextValue}
+        missingTextValueOn={missingTextValue ? 'Table.EditableCell' : undefined}
       >
         {children}
       </TableCellContent>
@@ -380,10 +381,6 @@ export const TableEditableCell = (props: TableEditableCellProps) => {
       {({ columnIndex, isTreeColumn, hasChildItems, isExpanded }) => (
         <TableEditableCellInner
           {...props}
-          // This component body runs only in React Aria's collection pass, so
-          // the warning has to be raised from the inner component, which is what
-          // actually renders.
-          missingTextValue={resolvedTextValue === undefined}
           hasSelection={hasSelection}
           columnIndex={columnIndex}
           cellRef={cellRef}

@@ -71,7 +71,9 @@ const TableCell = ({
             // This component body runs only in React Aria's collection pass,
             // where nothing is mounted, so the warning has to be raised from the
             // content, which is what actually renders.
-            missingTextValue={resolvedTextValue === undefined}
+            missingTextValueOn={
+              resolvedTextValue === undefined ? 'Table.Cell' : undefined
+            }
           >
             {children}
           </TableCellContent>
