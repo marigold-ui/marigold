@@ -103,6 +103,9 @@ jobs:
           app-id: ${{ vars.CLAUDE_APP_ID }}
           private-key: ${{ secrets.CLAUDE_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
+          # Without this the token covers every repo in the installation, and
+          # this one is installed on insights too. The job holds contents:write.
+          repositories: ${{ github.event.repository.name }}
 
       # Allowlist, never a denylist. On a PUBLIC repo this endpoint answers
       # `read` for a total stranger, so refusing only `none` lets everyone in.
@@ -145,14 +148,14 @@ jobs:
           ENTRY_ROLE_ARN: ${{ secrets.AI_REVIEW_BEDROCK_ENTRY_ROLE_ARN }}
           TARGET_ROLE_ARN: ${{ secrets.AI_REVIEW_BEDROCK_TARGET_ROLE_ARN }}
           REGION: ${{ vars.AI_REVIEW_BEDROCK_REGION }}
-          MODEL_ID: ${{ vars.AI_REVIEW_MODEL_ID }}
+          MODEL_ID: ${{ vars.AI_MENTIONS_MODEL_ID }}
         run: |
           set -euo pipefail
           missing=
           [ -n "$ENTRY_ROLE_ARN" ] || missing="$missing secret AI_REVIEW_BEDROCK_ENTRY_ROLE_ARN,"
           [ -n "$TARGET_ROLE_ARN" ] || missing="$missing secret AI_REVIEW_BEDROCK_TARGET_ROLE_ARN,"
           [ -n "$REGION" ] || missing="$missing variable AI_REVIEW_BEDROCK_REGION,"
-          [ -n "$MODEL_ID" ] || missing="$missing variable AI_REVIEW_MODEL_ID,"
+          [ -n "$MODEL_ID" ] || missing="$missing variable AI_MENTIONS_MODEL_ID,"
           if [ -n "$missing" ]; then
             echo "::error::Missing repository configuration:${missing%,}"
             exit 1
