@@ -13,7 +13,8 @@ export interface BadgeProps {
    */
   children?: ReactNode;
   /**
-   * Set the visual style of the badge.
+   * Set the visual style of the badge. The semantic values carry meaning,
+   * so pick by intent rather than by colour.
    * @default default
    */
   variant?:
