@@ -178,25 +178,29 @@ Basic.test(
   {
     parameters: { chromatic: { disableSnapshot: false } },
   },
-  async ({ canvas, userEvent }) => {
-    const combobox = canvas.getByRole('combobox');
+  async ({ canvas, userEvent, step }) => {
+    await step('Select Dog from the list', async () => {
+      const combobox = canvas.getByRole('combobox');
 
-    await userEvent.type(combobox, 'dog');
-    await userEvent.click(await canvas.findByRole('option', { name: 'Dog' }));
-    await waitFor(() => expect(combobox).toHaveValue('Dog'));
+      await userEvent.type(combobox, 'dog');
+      await userEvent.click(await canvas.findByRole('option', { name: 'Dog' }));
 
-    await userEvent.type(combobox, '{arrowdown}');
+      await waitFor(() => expect(combobox).toHaveValue('Dog'));
+    });
 
-    await canvas.findByRole('listbox');
+    await step('Reopened option keeps its ring inside its box', async () => {
+      await userEvent.type(canvas.getByRole('combobox'), '{arrowdown}');
+      await canvas.findByRole('listbox');
 
-    await waitFor(() => {
-      const focused = canvas
-        .getAllByRole('option')
-        .find(option => option.hasAttribute('data-focus-visible'));
-      const style = focused ? getComputedStyle(focused) : undefined;
+      await waitFor(() => {
+        const focused = canvas
+          .getAllByRole('option')
+          .find(option => option.hasAttribute('data-focus-visible'));
+        const style = focused ? getComputedStyle(focused) : undefined;
 
-      expect(style?.outlineStyle).toBe('none');
-      expect(style?.boxShadow).toContain('inset');
+        expect(style?.outlineStyle).toBe('none');
+        expect(style?.boxShadow).toContain('inset');
+      });
     });
   }
 );
