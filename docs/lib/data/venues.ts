@@ -1,3 +1,5 @@
+// AI-generated imagery: these venues and their photos are invented. See /impressum.
+
 // TODO: Types and options should be key value pairs not an array.
 
 // Bounds for the static demo dataset. They match the actual data range and

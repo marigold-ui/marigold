@@ -1,3 +1,5 @@
+// AI-generated imagery: these people and their portraits are invented. See /impressum.
+
 export const people = [
   {
     id: 'chippy',
