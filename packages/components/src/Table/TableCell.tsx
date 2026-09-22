@@ -16,6 +16,20 @@ export interface TableCellProps extends Omit<RAC.CellProps, RemovedProps> {
    */
   children?: ReactNode;
   /**
+   * A string representation of the cell's contents, used to give the row an
+   * accessible name and to support type to select.
+   *
+   * Derived automatically when the cell's content is a plain string or number.
+   * Set it by hand for a composite cell, such as one wrapping several `<Text>`
+   * nodes, since its content cannot be read as text. Only cells in a `rowHeader`
+   * column name the row, so those are the ones that need it.
+   *
+   * Type to select matches from the *start* of the value, so lead with what a
+   * user would type. `"Jane Doe"` is findable by name, `"4711 Jane Doe"` only by
+   * its number.
+   */
+  textValue?: RAC.CellProps['textValue'];
+  /**
    * Horizontal text alignment of the cell content.
    * @default 'left'
    */
@@ -33,12 +47,31 @@ const TableCell = ({
   children,
   alignX,
   overflow: cellOverflow,
+  textValue,
   ...props
 }: TableCellProps) => {
   const { classNames, alignY = 'middle' } = useTableContext();
 
+  // React Aria reads a cell's text off `children` when it is a plain string, and
+  // we always hand it a render function, so that check can never pass and no
+  // cell would contribute anything to its row's accessible name. Resolving the
+  // value here restores the automatic path for every consumer.
+  //
+  // Numbers count too, where `SelectListOption` takes strings alone: a numeric
+  // row header (an order number, a seat) is ordinary in a table and rare in an
+  // option list.
+  const resolvedTextValue =
+    textValue ??
+    (typeof children === 'string' || typeof children === 'number'
+      ? String(children)
+      : undefined);
+
   return (
-    <Cell className={cn(classNames.cell, verticalAlign[alignY])} {...props}>
+    <Cell
+      className={cn(classNames.cell, verticalAlign[alignY])}
+      textValue={resolvedTextValue}
+      {...props}
+    >
       {({ columnIndex, isTreeColumn, hasChildItems, isExpanded }) => {
         const content = (
           <TableCellContent
@@ -46,6 +79,10 @@ const TableCell = ({
             alignX={alignX}
             cellOverflow={cellOverflow}
             className={isTreeColumn ? 'col-start-2 min-w-0' : undefined}
+            // This component body runs only in React Aria's collection pass,
+            // where nothing is mounted, so the warning has to be raised from the
+            // content, which is what actually renders.
+            missingTextValue={resolvedTextValue === undefined}
           >
             {children}
           </TableCellContent>

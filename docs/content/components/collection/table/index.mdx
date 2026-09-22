@@ -420,6 +420,34 @@ Mark the column that best identifies each row, typically a name, title, or ID co
 </Table.Header>
 ```
 
+#### Naming a row
+
+The row header also gives the row its name for type to select, where typing a few
+characters moves focus to the first matching row. That name is read from the row
+header cell's content, so a cell holding a plain string or a number needs nothing
+extra.
+
+Content that is not plain text cannot be read, so such a cell states its own
+`textValue`. In development, a row header cell that needs one and does not have it
+logs a warning.
+
+```tsx
+<Table.Cell textValue={user.name}>
+  <Stack space="0.5">
+    <Text weight="medium">{user.name}</Text>
+    <Text size="xs">{user.handle}</Text>
+  </Stack>
+</Table.Cell>
+```
+
+Type to select matches from the **start** of the value, so lead with what someone
+would actually type. `"Jane Doe"` is findable by name, while `"4711 Jane Doe"` is
+findable only by its number.
+
+A `textValue` on `Table.Row` names the whole row and overrides anything its cells
+derive. Prefer the cell, which sits next to the content it describes and cannot
+drift when columns are reordered.
+
 ### Accessibility
 
 A table with [grouped rows](#grouped-rows) reports itself as a `treegrid` instead of a `grid`, which is what lets screen readers announce how deep a row sits and whether it is expanded. Tests that query `getByRole('grid')` have to move to `getByRole('treegrid')`.

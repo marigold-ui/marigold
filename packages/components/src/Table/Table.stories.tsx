@@ -167,7 +167,7 @@ export const Basic = meta.story({
       <Table.Body>
         {users.map(user => (
           <Table.Row key={user.email}>
-            <Table.Cell>
+            <Table.Cell textValue={user.name}>
               <Stack space="0.5">
                 <Text weight="medium">{user.name}</Text>
                 <Text size="xs" color="secondary">
@@ -221,6 +221,81 @@ Basic.test(
       const rows = canvas.getAllByRole('row');
       // 10 users + 1 header row = 11 rows
       expect(rows).toHaveLength(11);
+    });
+  }
+);
+
+/**
+ * A row is named by its `rowHeader` cell, which is what type to select matches
+ * and what a screen reader announces alongside every other cell in the row.
+ * Plain string and number content is read automatically. Composite content is
+ * not, so it declares a `textValue` of its own.
+ */
+export const RowTypeahead = meta.story({
+  tags: ['component-test'],
+  args: {
+    selectionMode: 'single',
+  },
+  render: args => (
+    <Table aria-label="Seats" {...args}>
+      <Table.Header>
+        <Table.Column rowHeader>Guest</Table.Column>
+        <Table.Column>Seat</Table.Column>
+        <Table.Column>Note</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        {/* Plain string, read automatically. */}
+        <Table.Row id="alma">
+          <Table.Cell>Alma Fischer</Table.Cell>
+          <Table.Cell>12</Table.Cell>
+          <Table.Cell>Aisle</Table.Cell>
+        </Table.Row>
+        {/* Composite content cannot be read as text, so it says what it is. */}
+        <Table.Row id="bruno">
+          <Table.Cell textValue="Bruno Weiss">
+            <Stack space="0.5">
+              <Text weight="medium">Bruno Weiss</Text>
+              <Text size="xs" color="secondary">
+                Wheelchair space
+              </Text>
+            </Stack>
+          </Table.Cell>
+          <Table.Cell>4</Table.Cell>
+          <Table.Cell>Front row</Table.Cell>
+        </Table.Row>
+        {/* A number is read too, so a numeric row header stays findable. */}
+        <Table.Row id="group">
+          <Table.Cell>{4711}</Table.Cell>
+          <Table.Cell>20-28</Table.Cell>
+          <Table.Cell>Group booking</Table.Cell>
+        </Table.Row>
+        <Table.Row id="zoe">
+          <Table.Cell>Zoe Novak</Table.Cell>
+          <Table.Cell>7</Table.Cell>
+          <Table.Cell>Late arrival</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  ),
+});
+
+RowTypeahead.test(
+  'Type to select finds a row by its derived name',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    // Invisible in the DOM: `textValue` never renders as an attribute, so a
+    // keyboard probe is the only thing that can catch this regressing.
+    const rowOf = (name: string) =>
+      canvas.getByRole('row', { name: new RegExp(name) });
+
+    await step('Focus the first row', async () => {
+      await userEvent.click(rowOf('Alma Fischer'));
+      await expect(rowOf('Alma Fischer')).toHaveFocus();
+    });
+
+    await step('Typing moves focus to the matching row', async () => {
+      await userEvent.keyboard('Z');
+      await expect(rowOf('Zoe Novak')).toHaveFocus();
     });
   }
 );
@@ -721,7 +796,7 @@ export const WithActions = meta.story({
       <Table.Body>
         {users.map(user => (
           <Table.Row key={user.email}>
-            <Table.Cell>
+            <Table.Cell textValue={user.name}>
               <Stack space="0.5">
                 <Text weight="medium">{user.name}</Text>
                 <Text size="xs" color="secondary">
@@ -896,7 +971,7 @@ export const Links = meta.story({
         <Table.Body>
           {websites.map(site => (
             <Table.Row key={site.name} href={site.url}>
-              <Table.Cell>
+              <Table.Cell textValue={site.name}>
                 <Text weight="medium">{site.name}</Text>
               </Table.Cell>
               <Table.Cell>{site.description}</Table.Cell>

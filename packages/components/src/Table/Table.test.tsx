@@ -1,6 +1,8 @@
 import { render, renderHook, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import type { ReactNode } from 'react';
 import { theme } from '@marigold/theme-rui';
+import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import { mockMatchMedia } from '../test.utils';
 import { useTableContext } from './Context';
 import { Table } from './Table';
@@ -10,6 +12,7 @@ import {
   ExpandableRowsDynamic,
   ExpandableRowsLazyChildren,
   FooterTotals,
+  RowTypeahead,
   ScrollableAndSticky,
   VerticalAlignment,
   WidthsAndOverflow,
@@ -20,6 +23,169 @@ import { TableDropIndicator, renderDropIndicator } from './TableDropIndicator';
 const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
 window.matchMedia = mockMatchMedia([smallScreenQuery]);
+
+describe('Row text value', () => {
+  // A row's name for type to select comes from its `rowHeader` cell, and
+  // `textValue` never renders as an attribute. So a keyboard probe is the only
+  // way to observe any of this, and a fresh render per test keeps react-aria's
+  // one-second typeahead buffer from bleeding between them.
+  const rowNamed = (name: RegExp) => screen.getByRole('row', { name });
+
+  const typeFromTheFirstRow = async (key: string) => {
+    const [, firstBodyRow] = screen.getAllByRole('row');
+    firstBodyRow.focus();
+    await userEvent.keyboard(key);
+  };
+
+  const GuestTable = ({ children }: { children: ReactNode }) => (
+    <MarigoldProvider theme={theme}>
+      <Table aria-label="Guests" selectionMode="single">
+        <Table.Header>
+          <Table.Column rowHeader>Guest</Table.Column>
+          <Table.Column>Seat</Table.Column>
+        </Table.Header>
+        <Table.Body>{children}</Table.Body>
+      </Table>
+    </MarigoldProvider>
+  );
+
+  test('derives the row name from a plain string cell', async () => {
+    render(<RowTypeahead.Component />);
+
+    await typeFromTheFirstRow('Z');
+
+    expect(rowNamed(/Zoe Novak/)).toHaveFocus();
+  });
+
+  test('derives the row name from a number cell', async () => {
+    // React Aria reads strings only, so numbers are Marigold's addition and
+    // would regress silently without this.
+    render(<RowTypeahead.Component />);
+
+    await typeFromTheFirstRow('4');
+
+    expect(rowNamed(/4711/)).toHaveFocus();
+  });
+
+  test('uses the textValue a composite cell declares', async () => {
+    render(<RowTypeahead.Component />);
+
+    await typeFromTheFirstRow('B');
+
+    expect(rowNamed(/Bruno Weiss/)).toHaveFocus();
+  });
+
+  test('an explicit cell textValue wins over the cell content', async () => {
+    render(
+      <GuestTable>
+        <Table.Row id="a">
+          <Table.Cell>Alma Fischer</Table.Cell>
+          <Table.Cell>12</Table.Cell>
+        </Table.Row>
+        <Table.Row id="b">
+          <Table.Cell textValue="Zebra">Bruno Weiss</Table.Cell>
+          <Table.Cell>4</Table.Cell>
+        </Table.Row>
+      </GuestTable>
+    );
+
+    await typeFromTheFirstRow('Z');
+
+    expect(rowNamed(/Bruno Weiss/)).toHaveFocus();
+  });
+
+  test('an explicit row textValue wins over the derived value', async () => {
+    render(
+      <GuestTable>
+        <Table.Row id="a">
+          <Table.Cell>Alma Fischer</Table.Cell>
+          <Table.Cell>12</Table.Cell>
+        </Table.Row>
+        <Table.Row id="b" textValue="Zebra">
+          <Table.Cell>Bruno Weiss</Table.Cell>
+          <Table.Cell>4</Table.Cell>
+        </Table.Row>
+      </GuestTable>
+    );
+
+    await typeFromTheFirstRow('Z');
+
+    expect(rowNamed(/Bruno Weiss/)).toHaveFocus();
+  });
+
+  test('composite content without a textValue still derives nothing', async () => {
+    // Upstream behaviour, not ours: react-aria reads a cell's text off plain
+    // string children, so wrapped content is unreadable in a plain react-aria
+    // table too. Pinned so the limitation stays documented.
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    render(
+      <GuestTable>
+        <Table.Row id="a">
+          <Table.Cell>Alma Fischer</Table.Cell>
+          <Table.Cell>12</Table.Cell>
+        </Table.Row>
+        <Table.Row id="z">
+          <Table.Cell>
+            <span>Zoe Novak</span>
+          </Table.Cell>
+          <Table.Cell>7</Table.Cell>
+        </Table.Row>
+      </GuestTable>
+    );
+
+    await typeFromTheFirstRow('Z');
+
+    expect(rowNamed(/Alma Fischer/)).toHaveFocus();
+
+    warnSpy.mockRestore();
+  });
+
+  test('warns once for a row header cell that cannot be read', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    render(
+      <GuestTable>
+        <Table.Row id="named">
+          <Table.Cell textValue="Alma Fischer">
+            <span>Alma Fischer</span>
+          </Table.Cell>
+          <Table.Cell>12</Table.Cell>
+        </Table.Row>
+        <Table.Row id="unnamed">
+          <Table.Cell>
+            <span>Bruno Weiss</span>
+          </Table.Cell>
+          <Table.Cell>4</Table.Cell>
+        </Table.Row>
+      </GuestTable>
+    );
+
+    expect(warnSpy).toHaveBeenCalledTimes(1);
+    expect(warnSpy.mock.calls[0][0]).toContain('`textValue`');
+
+    warnSpy.mockRestore();
+  });
+
+  test('stays silent for a composite cell outside the row header', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    render(
+      <GuestTable>
+        <Table.Row id="a">
+          <Table.Cell>Alma Fischer</Table.Cell>
+          <Table.Cell>
+            <span>12</span>
+          </Table.Cell>
+        </Table.Row>
+      </GuestTable>
+    );
+
+    expect(warnSpy).not.toHaveBeenCalled();
+
+    warnSpy.mockRestore();
+  });
+});
 
 describe('Edge cell padding', () => {
   test('derives from --bleed-px only, never from --panel-px', () => {
