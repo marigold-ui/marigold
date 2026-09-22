@@ -107,6 +107,22 @@ jobs:
       id-token: write # exchanged for AWS credentials below
 
     steps:
+      # Not GITHUB_TOKEN. use_sticky_comment only reuses a comment whose author
+      # is the Claude App bot id, or a Bot whose login contains "claude", or
+      # whose body is byte-identical. github-actions[bot] is none of those, so
+      # the review posted a fresh comment every run. This token is narrowed to
+      # what the job needs, which is less than the App installation carries.
+      - name: Generate App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ vars.CLAUDE_APP_ID }}
+          private-key: ${{ secrets.CLAUDE_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ github.event.repository.name }}
+          permission-contents: read
+          permission-pull-requests: write
+
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
@@ -155,11 +171,12 @@ jobs:
           # silently skipped.
           use_bedrock: 'true'
 
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ steps.app-token.outputs.token }}
 
           # track_progress forces tag mode. Agent mode, the default once a
           # prompt is set, gets no PR context and no tool to post with.
           track_progress: true
+          # Only effective because the App token above makes the author match.
           use_sticky_comment: true
 
           prompt: |
