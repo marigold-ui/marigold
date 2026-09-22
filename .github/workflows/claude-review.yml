@@ -6,7 +6,12 @@ name: Claude Review
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    # No `synchronize`. A review costs about $0.70 and takes ~3.5 minutes, and
+    # PRs average 4.3 commits, so reviewing every push paid ~4x for a verdict
+    # that later pushes mostly do not change. `ready_for_review` is the honest
+    # "look at this now" signal, and an `@claude` comment re-runs it on demand
+    # through claude-mentions.yml.
+    types: [opened, ready_for_review, reopened]
     # Shorter ignore list than visual-regression-tests.yml on purpose, so this
     # does run on docs/**: it is a Next.js app with ~600 reviewable .tsx files.
     #
@@ -21,7 +26,8 @@ on:
 permissions: {}
 
 concurrency:
-  # PRs average 4.3 commits; without this one PR pays for four reviews.
+  # Kept for the narrow races the trigger list still allows, such as opening a
+  # PR and marking it ready inside the same few minutes.
   group: claude-review-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
@@ -31,7 +37,8 @@ jobs:
     # Renovate posts as `marigold-renovate[bot]`, so a login list matches none.
     if: >-
       github.event.pull_request.head.repo.full_name == github.repository &&
-      github.event.pull_request.user.type != 'Bot'
+      github.event.pull_request.user.type != 'Bot' &&
+      github.event.pull_request.draft == false
 
     name: Decide whether this PR gets reviewed
     runs-on: ubuntu-latest
@@ -253,8 +260,18 @@ jobs:
             push to main, after merge.
 
             If nothing is worth raising, reply with exactly "No issues found
-            against the Marigold review checklist." and stop. An empty review is
-            a correct outcome and is much better than padding it out.
+            against the Marigold review checklist." An empty review is a correct
+            outcome and is much better than padding it out.
+
+            Whatever the outcome, end the comment with this line and nothing
+            after it:
+
+            Reviewed ${{ github.event.pull_request.head.sha }}
+
+            This review runs when the PR is opened or marked ready, not on every
+            push, so it can describe an older commit than the branch head. The
+            footer names only the branch, so without this line a stale review
+            reads as a current one.
 
             You cannot approve or request changes on this PR and should not try.
             This review is advisory and never blocks a merge.
