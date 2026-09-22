@@ -49,30 +49,18 @@ describe('Row text value', () => {
     </MarigoldProvider>
   );
 
-  test('derives the row name from a plain string cell', async () => {
+  // React Aria reads strings only, so the number case is Marigold's addition
+  // and would regress silently without a case of its own.
+  test.each([
+    ['a plain string cell', 'Z', /Zoe Novak/],
+    ['a number cell', '4', /4711/],
+    ['the textValue a composite cell declares', 'B', /Bruno Weiss/],
+  ])('names a row from %s', async (_, key, expected) => {
     render(<RowTypeahead.Component />);
 
-    await typeFromTheFirstRow('Z');
+    await typeFromTheFirstRow(key);
 
-    expect(rowNamed(/Zoe Novak/)).toHaveFocus();
-  });
-
-  test('derives the row name from a number cell', async () => {
-    // React Aria reads strings only, so numbers are Marigold's addition and
-    // would regress silently without this.
-    render(<RowTypeahead.Component />);
-
-    await typeFromTheFirstRow('4');
-
-    expect(rowNamed(/4711/)).toHaveFocus();
-  });
-
-  test('uses the textValue a composite cell declares', async () => {
-    render(<RowTypeahead.Component />);
-
-    await typeFromTheFirstRow('B');
-
-    expect(rowNamed(/Bruno Weiss/)).toHaveFocus();
+    expect(rowNamed(expected)).toHaveFocus();
   });
 
   test('an explicit cell textValue wins over the cell content', async () => {

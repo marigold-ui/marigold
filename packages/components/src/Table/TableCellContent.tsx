@@ -46,6 +46,47 @@ export interface TableCellContentProps {
   missingTextValue?: boolean;
 }
 
+// Development warning
+// ---------------
+/**
+ * Warns that a row header cell carries content React Aria cannot read, leaving
+ * its row unnamed for type to select and for screen readers.
+ *
+ * React Aria raises the equivalent for `GridListItem`, `ListBoxItem`, `Tag` and
+ * `TreeItem`, and for nothing in a table, which is why unnamed rows go
+ * unnoticed. It is a separate component so that the hooks it needs, and the
+ * collection lookup it does, exist only where the warning does. The call site
+ * renders it behind `process.env.NODE_ENV`, so production carries none of it.
+ */
+const RowHeaderNameWarning = ({
+  columnIndex,
+}: {
+  columnIndex?: number | null;
+}) => {
+  const state = use(TableStateContext);
+  const warnedRef = useRef(false);
+
+  const column =
+    columnIndex != null ? state?.collection.columns[columnIndex] : undefined;
+  // Only a row header names its row, so unreadable content in any other column
+  // is fine and has to stay silent.
+  const isRowHeader =
+    column != null &&
+    state != null &&
+    state.collection.rowHeaderColumnKeys.has(column.key);
+
+  useEffect(() => {
+    if (!isRowHeader || warnedRef.current) return;
+
+    warnedRef.current = true;
+    console.warn(
+      'A `textValue` prop is required for <Table.Cell> elements in a `rowHeader` column whose children are not plain text, in order to support accessibility features such as type to select.'
+    );
+  }, [isRowHeader]);
+
+  return null;
+};
+
 // Component
 // ---------------
 export const TableCellContent = ({
@@ -75,29 +116,6 @@ export const TableCellContent = ({
           .alignX as keyof typeof textAlign)
       : undefined;
 
-  // Only a row header names its row, so composite content in any other column
-  // is fine and has to stay silent.
-  const column =
-    columnIndex != null ? state?.collection.columns[columnIndex] : undefined;
-  const isRowHeader =
-    column != null && state != null
-      ? state.collection.rowHeaderColumnKeys.has(column.key)
-      : false;
-
-  const warnedRef = useRef(false);
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'production') return;
-    if (!missingTextValue || !isRowHeader || warnedRef.current) return;
-
-    warnedRef.current = true;
-    // React Aria raises this for `GridListItem`, `ListBoxItem`, `Tag` and
-    // `TreeItem`, and for nothing in a table, which is why unnamed rows go
-    // unnoticed.
-    console.warn(
-      'A `textValue` prop is required for <Table.Cell> elements in a `rowHeader` column whose children are not plain text, in order to support accessibility features such as type to select.'
-    );
-  }, [missingTextValue, isRowHeader]);
-
   return (
     <div
       data-cell-content=""
@@ -110,6 +128,9 @@ export const TableCellContent = ({
       tabIndex={selectable ? -1 : undefined}
       {...(selectable ? stopPropagationProps : {})}
     >
+      {process.env.NODE_ENV !== 'production' && missingTextValue && (
+        <RowHeaderNameWarning columnIndex={columnIndex} />
+      )}
       {children}
     </div>
   );
