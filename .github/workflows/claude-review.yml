@@ -259,8 +259,17 @@ jobs:
             You cannot approve or request changes on this PR and should not try.
             This review is advisory and never blocks a merge.
 
+            You also cannot run installs, builds, linters, tests or any other
+            shell command: the tools are not granted and the checkout has no
+            dependencies installed. Do not attempt them. Review by reading the
+            files, and do not note the absence of a tool-verified pass. CI runs
+            lint, typecheck and the test suites separately.
+
           # No --allowedTools: tag mode sets its own and merges in any
           # mcp__github_* we add. An explicit list drops the comment tool.
+          # 30 was not enough for a checklist review that reads the diff plus
+          # several source files: the action fails the whole job when the SDK
+          # reports more turns than this, even on a successful review.
           claude_args: >-
             --model ${{ vars.AI_REVIEW_MODEL_ID }}
-            --max-turns 30
+            --max-turns 45
