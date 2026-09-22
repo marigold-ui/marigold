@@ -174,6 +174,34 @@ Basic.test('Shows a selected value from list', async ({ canvas }) => {
 });
 
 Basic.test(
+  'Keeps the option focus ring inside the list',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }) => {
+    const combobox = canvas.getByRole('combobox');
+
+    await userEvent.type(combobox, 'dog');
+    await userEvent.click(await canvas.findByRole('option', { name: 'Dog' }));
+    await waitFor(() => expect(combobox).toHaveValue('Dog'));
+
+    await userEvent.type(combobox, '{arrowdown}');
+
+    await canvas.findByRole('listbox');
+
+    await waitFor(() => {
+      const focused = canvas
+        .getAllByRole('option')
+        .find(option => option.hasAttribute('data-focus-visible'));
+      const style = focused ? getComputedStyle(focused) : undefined;
+
+      expect(style?.outlineStyle).toBe('none');
+      expect(style?.boxShadow).toContain('inset');
+    });
+  }
+);
+
+Basic.test(
   'Opens with manual trigger showing a list',
   {
     parameters: { chromatic: { disableSnapshot: false } },
