@@ -56,8 +56,6 @@ const matchesAcceptedToken = (file: File, token: string): boolean => {
   return fileType === t;
 };
 
-// Identity of a file for de-duplication and removal: two files with the same
-// name, size, and last-modified time are treated as the same file.
 export const fileKey = (file: File): string =>
   `${file.name}:${file.size}:${file.lastModified}`;
 
@@ -69,6 +67,38 @@ const dedupeFiles = (files: File[]): File[] => {
     seen.add(key);
     return true;
   });
+};
+
+const FILE_SIZE_UNITS = ['B', 'kB', 'MB', 'GB', 'TB'] as const;
+const FILE_SIZE_STEP = 1000;
+const FILE_SIZE_FRACTION_DIGITS = 2;
+const FILE_SIZE_ROUNDING = 10 ** FILE_SIZE_FRACTION_DIGITS;
+
+export const FILE_SIZE_FORMAT_OPTIONS: Intl.NumberFormatOptions = {
+  maximumFractionDigits: FILE_SIZE_FRACTION_DIGITS,
+};
+
+export const formatFileSize = (
+  size: number,
+  formatter: Intl.NumberFormat
+): string => {
+  const bytes = Number.isFinite(size) && size > 0 ? size : 0;
+  const top = FILE_SIZE_UNITS.length - 1;
+  const magnitude =
+    bytes === 0
+      ? 0
+      : Math.min(
+          Math.max(Math.floor(Math.log(bytes) / Math.log(FILE_SIZE_STEP)), 0),
+          top
+        );
+  const rounded =
+    Math.round((bytes / FILE_SIZE_STEP ** magnitude) * FILE_SIZE_ROUNDING) /
+    FILE_SIZE_ROUNDING;
+  const exponent =
+    magnitude < top && rounded >= FILE_SIZE_STEP ? magnitude + 1 : magnitude;
+  const value = formatter.format(bytes / FILE_SIZE_STEP ** exponent);
+
+  return `${value} ${FILE_SIZE_UNITS[exponent]}`;
 };
 
 export const normalizeAndLimitFiles = (
