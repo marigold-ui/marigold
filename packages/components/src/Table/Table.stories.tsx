@@ -1366,6 +1366,28 @@ export const EditableCell = meta.story({
 });
 
 EditableCell.test(
+  'Type to select finds a row by its editable cell',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    // The row header here is itself editable, so the row's name has to come off
+    // `Table.EditableCell`. Invisible in the DOM: `textValue` never renders as an
+    // attribute, so a keyboard probe is the only thing that can catch this.
+    const rowOf = (name: string) =>
+      canvas.getByRole('row', { name: new RegExp(name) });
+
+    await step('Focus the first row', async () => {
+      await userEvent.click(rowOf('Hans Müller'));
+      await expect(rowOf('Hans Müller')).toHaveFocus();
+    });
+
+    await step('Typing moves focus to the matching row', async () => {
+      await userEvent.keyboard('U');
+      await expect(rowOf('Ursula Weber')).toHaveFocus();
+    });
+  }
+);
+
+EditableCell.test(
   'Edits, saves and cancels editable cells',
   async ({ canvas, userEvent, step }) => {
     const editButtons = canvas.getAllByLabelText('Edit');

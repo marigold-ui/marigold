@@ -26,6 +26,7 @@ import { intlMessages } from '../intl/messages';
 import { useTableContext } from './Context';
 import { TableCellContent } from './TableCellContent';
 import { TableTreeColumn } from './TableTreeColumn';
+import { resolveTextValue } from './textValue';
 
 // Props
 // ---------------
@@ -34,6 +35,20 @@ export interface TableEditableCellProps {
    * Display content shown when the cell is not being edited.
    */
   children: ReactNode;
+  /**
+   * A string representation of the cell's contents, used to give the row an
+   * accessible name and to support type to select.
+   *
+   * Derived automatically when the cell's display content is a plain string or
+   * number. Set it by hand for a composite cell, such as one wrapping several
+   * `<Text>` nodes, since its content cannot be read as text. Only cells in a
+   * `rowHeader` column name the row, so those are the ones that need it.
+   *
+   * Type to select matches from the *start* of the value, so lead with what a
+   * user would type. `"Jane Doe"` is findable by name, `"4711 Jane Doe"` only by
+   * its number.
+   */
+  textValue?: string;
   /**
    * Form field shown when editing. Must include `name` attribute for form data.
    * Supports input elements like TextField, Select, etc.
@@ -142,6 +157,11 @@ interface TableEditableCellInnerProps extends TableEditableCellProps {
    * `useTableOptions` is only available in React Aria's collection build pass.
    */
   hasSelection: boolean;
+  /**
+   * Whether the cell resolved no `textValue`. Set by the outer cell, which is
+   * where the value is derived, and only to drive the development warning.
+   */
+  missingTextValue?: boolean;
   /** Column index, provided by the `<Cell>` render prop. */
   columnIndex?: number | null;
   /** Ref to the `<Cell>`, used to position and anchor the editor popover. */
@@ -172,6 +192,7 @@ const TableEditableCellInner = ({
   action,
   alignX,
   overflow: cellOverflow,
+  missingTextValue,
   hasSelection,
   columnIndex,
   cellRef,
@@ -266,6 +287,7 @@ const TableEditableCellInner = ({
         cellOverflow={disabled ? cellOverflow : 'truncate'}
         className="min-w-0 flex-1"
         allowTextSelection={!hasSelection || undefined}
+        missingTextValue={missingTextValue}
       >
         {children}
       </TableCellContent>
@@ -347,11 +369,21 @@ export const TableEditableCell = (props: TableEditableCellProps) => {
   const hasSelection = selectionMode !== 'none';
   const cellRef = useRef<HTMLTableCellElement>(null);
 
+  const resolvedTextValue = resolveTextValue(props.textValue, props.children);
+
   return (
-    <Cell ref={cellRef} className={cn(classNames.cell, verticalAlign[alignY])}>
+    <Cell
+      ref={cellRef}
+      className={cn(classNames.cell, verticalAlign[alignY])}
+      textValue={resolvedTextValue}
+    >
       {({ columnIndex, isTreeColumn, hasChildItems, isExpanded }) => (
         <TableEditableCellInner
           {...props}
+          // This component body runs only in React Aria's collection pass, so
+          // the warning has to be raised from the inner component, which is what
+          // actually renders.
+          missingTextValue={resolvedTextValue === undefined}
           hasSelection={hasSelection}
           columnIndex={columnIndex}
           cellRef={cellRef}

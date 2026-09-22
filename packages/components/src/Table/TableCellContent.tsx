@@ -40,8 +40,8 @@ export interface TableCellContentProps {
    */
   allowTextSelection?: boolean;
   /**
-   * Whether the cell resolved no `textValue`. Only `Table.Cell` sets this, and
-   * only to drive the development warning below.
+   * Whether the cell resolved no `textValue`. Set by the cell components, which
+   * is where the value is derived, and only to drive the development warning below.
    */
   missingTextValue?: boolean;
 }
@@ -80,7 +80,7 @@ const RowHeaderNameWarning = ({
 
     warnedRef.current = true;
     console.warn(
-      'A `textValue` prop is required for <Table.Cell> elements in a `rowHeader` column whose children are not plain text, in order to support accessibility features such as type to select.'
+      'A `textValue` prop is required for <Table.Cell> and <Table.EditableCell> elements in a `rowHeader` column whose children are not plain text, in order to support accessibility features such as type to select.'
     );
   }, [isRowHeader]);
 

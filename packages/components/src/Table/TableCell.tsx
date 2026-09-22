@@ -5,6 +5,7 @@ import { cn, textAlign, verticalAlign } from '@marigold/system';
 import { useTableContext } from './Context';
 import { TableCellContent } from './TableCellContent';
 import { TableTreeColumn } from './TableTreeColumn';
+import { resolveTextValue } from './textValue';
 
 // Props
 // ---------------
@@ -52,19 +53,7 @@ const TableCell = ({
 }: TableCellProps) => {
   const { classNames, alignY = 'middle' } = useTableContext();
 
-  // React Aria reads a cell's text off `children` when it is a plain string, and
-  // we always hand it a render function, so that check can never pass and no
-  // cell would contribute anything to its row's accessible name. Resolving the
-  // value here restores the automatic path for every consumer.
-  //
-  // Numbers count too, where `SelectListOption` takes strings alone: a numeric
-  // row header (an order number, a seat) is ordinary in a table and rare in an
-  // option list.
-  const resolvedTextValue =
-    textValue ??
-    (typeof children === 'string' || typeof children === 'number'
-      ? String(children)
-      : undefined);
+  const resolvedTextValue = resolveTextValue(textValue, children);
 
   return (
     <Cell

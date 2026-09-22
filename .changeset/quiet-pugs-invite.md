@@ -15,6 +15,10 @@ wrote a `textValue` by hand.
 named again with no change at any call site. Typing a few characters moves focus
 to the matching row, and selection is announced with something useful.
 
+`Table.EditableCell` derives its name the same way, from the display content it
+shows when it is not being edited, and it accepts a `textValue` of its own for the
+first time.
+
 Content that is not plain text still cannot be read, so such a cell states its own
 `textValue`. That prop was always accepted and is now documented, and in
 development a row header cell that needs one and does not have it logs a warning.

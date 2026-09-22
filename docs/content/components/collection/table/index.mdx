@@ -448,6 +448,9 @@ A `textValue` on `Table.Row` names the whole row and overrides anything its cell
 derive. Prefer the cell, which sits next to the content it describes and cannot
 drift when columns are reordered.
 
+`Table.EditableCell` follows the same rule, reading its name from the display
+content it shows when it is not being edited.
+
 ### Accessibility
 
 A table with [grouped rows](#grouped-rows) reports itself as a `treegrid` instead of a `grid`, which is what lets screen readers announce how deep a row sits and whether it is expanded. Tests that query `getByRole('grid')` have to move to `getByRole('treegrid')`.

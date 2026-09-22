@@ -1,7 +1,11 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import type { ReactNode } from 'react';
 import { theme } from '@marigold/theme-rui';
+import { MarigoldProvider } from '../Provider/MarigoldProvider';
+import { TextField } from '../TextField/TextField';
 import { mockMatchMedia } from '../test.utils';
+import { Table } from './Table';
 import { EditableCell } from './Table.stories';
 
 const smallScreenQuery = `(width < ${theme.screens!.sm})`;
@@ -141,5 +145,83 @@ describe('TableEditableCell - Advanced Features', () => {
     await waitFor(() => {
       expect(screen.queryByLabelText('Name')).not.toBeInTheDocument();
     });
+  });
+});
+
+describe('TableEditableCell - Row text value', () => {
+  // Same probe as `Table.Cell`'s: `textValue` never renders as an attribute, so
+  // typeahead is the only way to observe it, and a fresh render per test keeps
+  // react-aria's one-second buffer from bleeding between them.
+  const rowNamed = (name: RegExp) => screen.getByRole('row', { name });
+
+  const typeFromTheFirstRow = async (key: string) => {
+    const [, firstBodyRow] = screen.getAllByRole('row');
+    firstBodyRow.focus();
+    await userEvent.keyboard(key);
+  };
+
+  const GuestTable = ({ children }: { children: ReactNode }) => (
+    <MarigoldProvider theme={theme}>
+      <Table aria-label="Guests" selectionMode="single">
+        <Table.Header>
+          <Table.Column rowHeader>Guest</Table.Column>
+          <Table.Column>Seat</Table.Column>
+        </Table.Header>
+        <Table.Body>{children}</Table.Body>
+      </Table>
+    </MarigoldProvider>
+  );
+
+  const nameField = <TextField aria-label="Name" name="name" />;
+
+  test('names a row from plain string display content', async () => {
+    render(<EditableCell.Component />);
+
+    await typeFromTheFirstRow('U');
+
+    expect(rowNamed(/Ursula Weber/)).toHaveFocus();
+  });
+
+  test('an explicit textValue wins over the display content', async () => {
+    render(
+      <GuestTable>
+        <Table.Row id="a">
+          <Table.EditableCell field={nameField}>
+            Alma Fischer
+          </Table.EditableCell>
+          <Table.Cell>12</Table.Cell>
+        </Table.Row>
+        <Table.Row id="b">
+          <Table.EditableCell field={nameField} textValue="Zebra">
+            Bruno Weiss
+          </Table.EditableCell>
+          <Table.Cell>4</Table.Cell>
+        </Table.Row>
+      </GuestTable>
+    );
+
+    await typeFromTheFirstRow('Z');
+
+    expect(rowNamed(/Bruno Weiss/)).toHaveFocus();
+  });
+
+  test('warns for a row header cell that cannot be read', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    render(
+      <GuestTable>
+        <Table.Row id="unnamed">
+          <Table.EditableCell field={nameField}>
+            <span>Bruno Weiss</span>
+          </Table.EditableCell>
+          <Table.Cell>4</Table.Cell>
+        </Table.Row>
+      </GuestTable>
+    );
+
+    expect(warnSpy).toHaveBeenCalledTimes(1);
+    expect(warnSpy.mock.calls[0][0]).toContain('`textValue`');
+
+    warnSpy.mockRestore();
   });
 });
