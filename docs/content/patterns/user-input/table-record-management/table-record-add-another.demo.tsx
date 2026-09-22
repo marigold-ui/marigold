@@ -7,6 +7,7 @@ import {
   EmptyState,
   Form,
   NumberField,
+  NumericFormat,
   Panel,
   Select,
   Stack,
@@ -156,7 +157,7 @@ export default () => {
                 <Table.Cell>{venue.city}</Table.Cell>
                 <Table.Cell>{typeLabels[venue.type]}</Table.Cell>
                 <Table.Cell alignX="right">
-                  {venue.capacity.toLocaleString()}
+                  <NumericFormat value={venue.capacity} />
                 </Table.Cell>
               </Table.Row>
             )}
