@@ -8,7 +8,8 @@ import { BadgeContext } from './Context';
 // ---------------
 export interface BadgeProps {
   /**
-   * Children of the component.
+   * Content of the badge. Keep it short, a badge is a label rather than a
+   * container.
    */
   children?: ReactNode;
   /**
