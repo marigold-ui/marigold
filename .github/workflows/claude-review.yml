@@ -9,6 +9,10 @@ on:
     types: [opened, synchronize, reopened]
     # Shorter ignore list than visual-regression-tests.yml on purpose, so this
     # does run on docs/**: it is a Next.js app with ~600 reviewable .tsx files.
+    #
+    # Prose never starts a run: a PR touching only .md/.mdx is filtered here,
+    # before classify. The docs profile's "Prose, MDX" therefore only applies
+    # to MDX riding along with a non-markdown file. Vale gates prose on its own.
     paths-ignore:
       - '**/*.md'
       - '**/*.mdx'
@@ -74,13 +78,15 @@ jobs:
           esac
 
           # Nothing lints the title, so any narrowed profile touching real
-          # source is promoted. Matching src/** excludes package.json.
+          # source is promoted. Matching src/** excludes package.json, and
+          # docs/**.tsx counts as source for the same reason paths-ignore
+          # lets this workflow run on docs/ at all: it is a Next.js app.
           if [ "$profile" != "full" ]; then
             # Not `| grep -q`: grep exits on first match, gh takes SIGPIPE, and
             # pipefail reads that as "no source changed" — unsafe direction.
             changed=$(gh pr diff "$PR_NUMBER" --repo "$REPOSITORY" --name-only)
             src_changed=$(printf '%s\n' "$changed" \
-              | grep -cE '^(packages|themes)/[^/]+/src/' || true)
+              | grep -cE '^(packages|themes)/[^/]+/src/|^docs/.*\.tsx?$' || true)
             if [ "$src_changed" -gt 0 ]; then
               echo "::notice::Title type '${type:-none}' maps to profile '$profile', but $src_changed source file(s) changed. Escalating to a full review."
               profile=full
@@ -124,10 +130,21 @@ jobs:
           permission-pull-requests: write
 
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 1
           persist-credentials: false
+
+      # The prompt points at this file and has no fallback, so if it goes
+      # missing the review quietly degrades to CLAUDE.md alone and nothing
+      # fails. Fail here instead, before the AWS credentials are assumed.
+      - name: Check the review checklist is present
+        run: |
+          f=.claude/skills/review-pr/references/review-checklist.md
+          if [ ! -f "$f" ]; then
+            echo "::error::$f is missing. The review prompt reads it and has no fallback, so the review would silently fall back to CLAUDE.md alone. If the DST skills moved out to a plugin, keep a copy in this repo and repoint the prompt: CI cannot read a per-user plugin install."
+            exit 1
+          fi
 
       # An unset model id is the quiet failure: it folds to `--model
       # --max-turns N`, eating the next flag.

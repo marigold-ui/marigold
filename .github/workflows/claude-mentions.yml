@@ -87,7 +87,10 @@ jobs:
 
     name: Respond to @claude
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # Sized to --max-turns 60 plus the install and typecheck the system prompt
+    # asks for. A timeout cancels mid-run, which is the half-finished push the
+    # concurrency block above gives up cancel-in-progress to avoid.
+    timeout-minutes: 45
     permissions:
       contents: write # Claude pushes its fix as a commit on the PR branch
       pull-requests: write
@@ -106,6 +109,12 @@ jobs:
           # Without this the token covers every repo in the installation, and
           # this one is installed on insights too. The job holds contents:write.
           repositories: ${{ github.event.repository.name }}
+          # Stated rather than inherited: nothing extra today, but it pins the
+          # grant if the App gains a permission for another consumer.
+          permission-contents: write
+          permission-pull-requests: write
+          permission-issues: write
+          permission-actions: read
 
       # Allowlist, never a denylist. On a PUBLIC repo this endpoint answers
       # `read` for a total stranger, so refusing only `none` lets everyone in.
@@ -125,7 +134,7 @@ jobs:
       # No `ref:`. The action manages the branch itself, and its security guide
       # forbids checking out an untrusted ref ahead of it.
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 1
           persist-credentials: false
