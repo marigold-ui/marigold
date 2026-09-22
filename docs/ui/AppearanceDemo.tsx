@@ -180,8 +180,6 @@ export const AppearanceDemo = ({
         </div>
         <div data-theme="rui">
           <OverlayContainerProvider container="portalContainer">
-            {/* Pin the locale so demos keep en-US after hydration instead of
-                flipping to the viewer's. */}
             <I18nProvider locale="en-US">
               <MarigoldProvider
                 theme={ruiTheme}

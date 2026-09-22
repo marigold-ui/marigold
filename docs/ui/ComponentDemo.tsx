@@ -79,8 +79,6 @@ const Preview = ({
       className="flex w-full flex-col justify-center overflow-hidden [&>*:first-child]:flex [&>*:first-child]:place-items-center"
     >
       <OverlayContainerProvider container="portalContainer">
-        {/* Pin the locale so demos keep en-US after hydration instead of
-            flipping to the viewer's. */}
         <I18nProvider locale="en-US">
           <MarigoldProvider
             theme={ruiTheme}

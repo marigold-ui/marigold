@@ -49,13 +49,6 @@ export default defineConfig([
     },
   },
   {
-    // `toLocale*()` with no locale reads the JS runtime default: en-US under
-    // Node, the viewer's own locale in the browser. An explicit `undefined`
-    // reads that same default, so both forms are caught. Docs pages are
-    // server rendered and then hydrated, so the two disagree and React logs a
-    // hydration mismatch on every value with a grouping separator. The demo
-    // wrappers pin `I18nProvider`, which `NumericFormat`/`DateFormat` read and
-    // `toLocale*()` ignores.
     files: ['docs/**/*.{ts,tsx}'],
     rules: {
       'no-restricted-syntax': [

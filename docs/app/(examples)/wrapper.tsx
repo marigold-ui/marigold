@@ -26,8 +26,6 @@ export const Wrapper = ({
     <div data-theme="rui" className={className}>
       <QueryClientProvider client={queryClient}>
         <OverlayContainerProvider container="portalContainer">
-          {/* Pin the locale so demos keep en-US after hydration instead of
-              flipping to the viewer's. */}
           <I18nProvider locale="en-US">
             <MarigoldProvider theme={ruiTheme}>{children}</MarigoldProvider>
           </I18nProvider>
