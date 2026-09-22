@@ -144,7 +144,7 @@ export const PanelCollapsibleAnatomy = () => (
       className="fill-fd-muted-foreground/30 transition-colors duration-300"
     />
 
-    {/* Connector Lines */}
+    {/* Connector lines */}
     <g
       className="stroke-fd-primary transition-colors duration-300"
       fill="none"
@@ -162,7 +162,7 @@ export const PanelCollapsibleAnatomy = () => (
       <path d="M 435 229 L 483 229" />
     </g>
 
-    {/* Connector Dots */}
+    {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="254" cy="161" r="4" />
       <circle cx="254" cy="174" r="4" />

@@ -96,7 +96,6 @@ export const Table: ThemeComponent<'Table'> = {
     },
   }),
 
-  // <thead>
   head: cva({
     base: [
       // for sticky header
@@ -125,10 +124,8 @@ export const Table: ThemeComponent<'Table'> = {
     },
   }),
 
-  // <tbody>
   body: cva({}),
 
-  // <tfoot>
   footer: cva({
     base: [
       'bg-surface/90 border-border border-t',
@@ -148,17 +145,13 @@ export const Table: ThemeComponent<'Table'> = {
     ],
   }),
 
-  // Expandable rows (tree grid)
-  //
   // Indent lives here rather than on the cell's padding, so it composes with
   // `--cell-edge-padding` instead of colliding with it on the same property.
   treeIndent: cva({
     base: [
-      // A fixed leading track, so a group row and a childless row at the same
-      // level still put their value at the same x. The track holds its width
-      // with no control in it, so leaf rows need no spacer. The control is
-      // wider than the track and hangs into the cell's edge padding — see
-      // `--tree-caret-inset`.
+      // A fixed leading track, so a group row and a childless row at the same level
+      // put their value at the same x, and leaf rows need no spacer. The control is
+      // wider than the track and hangs into the cell's edge padding.
       'grid grid-cols-[var(--tree-gutter)_1fr] items-center',
       // Indents past `--tree-indent-skip`, i.e. everything below the root, so
       // depth is visible. `--table-row-level` is React Aria's, and starts at 1;
@@ -186,7 +179,6 @@ export const Table: ThemeComponent<'Table'> = {
     ],
   }),
 
-  // Drag and drop
   dragHandle: cva({
     base: [
       'text-secondary rounded size-4',
@@ -210,15 +202,10 @@ export const Table: ThemeComponent<'Table'> = {
   dropIndicator: cva({
     base: [
       'relative',
-      // Starts where the drop target's own level puts its text, so a drop inside
-      // an expanded group reads as landing in that group rather than at the
-      // root, which spans the full row. The edge padding and gutter are added
-      // once for anything below the root, then the per-level indent.
-      //
-      // `--drop-level` is the collection's level, which is 0-based — unlike
-      // `--table-row-level`. Hence the `+1` before comparing against
-      // `--tree-indent-skip`, so both indents stay driven by that one token.
-      // Unset (a flat table) resolves to 0.
+      // Starts where the drop target's own level puts its text, so a drop in an
+      // expanded group reads as landing there rather than at the root. Note
+      // `--drop-level` is 0-based, unlike `--table-row-level`, hence the `+1`
+      // before comparing against `--tree-indent-skip`. Unset resolves to 0.
       '[--drop-indent:calc(clamp(0,var(--drop-level,0),1)*(var(--cell-edge-padding)+var(--tree-gutter))+max(var(--drop-level,0)+1-var(--tree-indent-skip),0)*var(--tree-indent))]',
       'before:absolute before:top-0 before:end-0 before:start-(--drop-indent)',
       'before:h-0.5 before:-translate-y-1/2 before:bg-border',
@@ -226,7 +213,6 @@ export const Table: ThemeComponent<'Table'> = {
     ],
   }),
 
-  // Editable cell
   editablePopover: cva({
     base: [
       'ui-surface shadow-elevation-overlay',

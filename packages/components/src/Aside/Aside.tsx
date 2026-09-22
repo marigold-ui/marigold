@@ -6,7 +6,7 @@ import type { AriaRegionProps, NonZeroPercentage } from '@marigold/types';
 
 export interface AsideProps extends AriaRegionProps {
   /**
-   * The children of the component.
+   * Children of the component.
    */
   children: [ReactElement, ReactElement];
 

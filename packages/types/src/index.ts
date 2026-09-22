@@ -1,4 +1,3 @@
-// Re-export from type-fest
 export * from 'type-fest';
 
 // HTML types

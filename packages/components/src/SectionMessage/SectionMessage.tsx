@@ -40,7 +40,7 @@ export interface SectionMessageProps {
   variant?: keyof typeof icons;
   size?: string;
   /**
-   * The children of the component.
+   * Children of the component.
    */
   children?: ReactNode;
   /**

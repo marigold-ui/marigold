@@ -16,7 +16,7 @@ export interface ThemeProviderProps<T extends Theme> {
    */
   theme: T;
   /**
-   * The children of the component.
+   * Children of the component.
    */
   children: ReactNode;
   /**

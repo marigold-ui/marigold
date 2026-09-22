@@ -3,7 +3,7 @@ import { Title } from '../Title/Title';
 
 export interface SectionMessageTitleProps {
   /**
-   * The children of the component.
+   * Children of the component.
    */
   children?: ReactNode;
 }

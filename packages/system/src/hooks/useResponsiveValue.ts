@@ -53,6 +53,5 @@ export const useResponsiveValue = <T>(
 
   const index = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  // Return the index or last existing index of given values
   return values[index >= values.length ? values.length - 1 : index];
 };
