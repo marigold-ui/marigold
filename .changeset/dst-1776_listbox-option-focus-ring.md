@@ -31,6 +31,12 @@ This affects every list built on the shared `ListBox` item slot: `ComboBox`,
 `Select`, `Autocomplete` and a standalone `ListBox`. `Menu`, `SelectList` and
 `ListView` already drew an inset ring and are unchanged.
 
+The slot has a fifth consumer that is not a list option: `CalendarPresets` puts
+it on the button that opens the presets dialog. On an option the wash tracks a
+cursor that moves on, but on that button a fill left behind by a mouse click
+reads as "selected", so the button opts out of the wash at the call site and
+keeps the focus appearance it had.
+
 `ListBoxItem` also drops `focus-visible:z-1`. It existed only to lift an outset
 ring above neighbouring options, and an inset ring cannot overlap one.
 
