@@ -144,9 +144,9 @@ const _Table = ({
           defaultSelectedKeys={actionBar ? undefined : defaultSelectedKeysProp}
           onSelectionChange={onSelectionChange}
           // React Aria drops `aria-busy`, so it is set on the element directly.
-          // Marigold never virtualizes a table, so these are always `<table>` props.
           render={domProps => (
             <table
+              // Only a virtualized table renders a `<div>`, and Marigold's never is.
               {...(domProps as ComponentProps<'table'>)}
               aria-busy={loading || undefined}
             />
@@ -155,7 +155,7 @@ const _Table = ({
         />
         {/* Stays mounted, screen readers skip a live region inserted with text. */}
         <div className="sr-only" role="status" aria-live="polite">
-          {loading ? stringFormatter.format('loadingMessage') : null}
+          {loading && stringFormatter.format('loadingMessage')}
         </div>
         {actionBarOverlay}
       </ResizableTableContainer>
