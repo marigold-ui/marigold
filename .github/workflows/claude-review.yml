@@ -188,6 +188,11 @@ jobs:
           # silently skipped.
           use_bedrock: 'true'
 
+          # PROBE BRANCH ONLY. Prints the full SDK stream, including the
+          # Bedrock error the action otherwise swallows. Do not merge: this
+          # repository is public and the stream carries prompt and tool output.
+          show_full_output: 'true'
+
           github_token: ${{ steps.app-token.outputs.token }}
 
           # track_progress forces tag mode. Agent mode, the default once a
