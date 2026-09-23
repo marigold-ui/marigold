@@ -49,16 +49,6 @@ export interface TableCellContentProps {
 
 // Development warning
 // ---------------
-/**
- * Warns that a row header cell carries content React Aria cannot read, leaving
- * its row unnamed for type to select and for screen readers.
- *
- * React Aria raises the equivalent for `GridListItem`, `ListBoxItem`, `Tag` and
- * `TreeItem`, and for nothing in a table, which is why unnamed rows go
- * unnoticed. It is a separate component so that the hooks it needs, and the
- * collection lookup it does, exist only where the warning does. The call site
- * renders it behind `process.env.NODE_ENV`, so production carries none of it.
- */
 const RowHeaderNameWarning = ({
   columnIndex,
   component,

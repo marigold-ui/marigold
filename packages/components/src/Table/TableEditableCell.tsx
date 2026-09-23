@@ -36,17 +36,9 @@ export interface TableEditableCellProps {
    */
   children: ReactNode;
   /**
-   * A string representation of the cell's contents, used to give the row an
-   * accessible name and to support type to select.
-   *
-   * Derived automatically when the cell's display content is a plain string or
-   * number. Set it by hand for a composite cell, such as one wrapping several
-   * `<Text>` nodes, since its content cannot be read as text. Only cells in a
-   * `rowHeader` column name the row, so those are the ones that need it.
-   *
-   * Type to select matches from the *start* of the value, so lead with what a
-   * user would type. `"Jane Doe"` is findable by name, `"4711 Jane Doe"` only by
-   * its number.
+   * Text that names the row for type to select and screen readers. Derived from
+   * plain string or number content, so set it only for composite content in a
+   * `rowHeader` column.
    */
   textValue?: string;
   /**

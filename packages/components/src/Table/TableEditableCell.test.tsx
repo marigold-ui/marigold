@@ -147,10 +147,7 @@ describe('TableEditableCell - Advanced Features', () => {
   });
 });
 
-describe('TableEditableCell - Row text value', () => {
-  // Deriving a name from plain string content is covered by the `EditableCell`
-  // story test, which exercises it in a real browser. What is left here is what
-  // the story cannot show: the explicit prop winning, and the warning.
+describe('TableEditableCell - explicit textValue and warning (derivation is covered by the EditableCell story test)', () => {
   const nameField = <TextField aria-label="Name" name="name" />;
 
   test('an explicit textValue wins over the display content', async () => {

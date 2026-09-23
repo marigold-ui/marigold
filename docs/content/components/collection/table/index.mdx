@@ -422,14 +422,9 @@ Mark the column that best identifies each row, typically a name, title, or ID co
 
 #### Naming a row
 
-The row header also gives the row its name for type to select, where typing a few
-characters moves focus to the first matching row. That name is read from the row
-header cell's content, so a cell holding a plain string or a number needs nothing
-extra.
-
-Content that is not plain text cannot be read, so such a cell states its own
-`textValue`. In development, a row header cell that needs one and does not have it
-logs a warning.
+The row header also names the row for type to select, where typing a few
+characters moves focus to the first matching row. A cell holding plain text or a
+number needs nothing extra. For any other content, set `textValue`.
 
 ```tsx
 <Table.Cell textValue={user.name}>
@@ -444,12 +439,8 @@ Type to select matches from the **start** of the value, so lead with what someon
 would actually type. `"Jane Doe"` is findable by name, while `"4711 Jane Doe"` is
 findable only by its number.
 
-A `textValue` on `Table.Row` names the whole row and overrides anything its cells
-derive. Prefer the cell, which sits next to the content it describes and cannot
-drift when columns are reordered.
-
-`Table.EditableCell` follows the same rule, reading its name from the display
-content it shows when it is not being edited.
+`Table.EditableCell` works the same way, using the content it shows when it is not
+being edited.
 
 ### Accessibility
 
