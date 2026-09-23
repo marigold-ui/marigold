@@ -54,7 +54,7 @@ export default () => (
       <Table.Body>
         {members.map(member => (
           <Table.Row key={member.id} id={member.id}>
-            <Table.Cell>
+            <Table.Cell textValue={member.name}>
               <Stack space="0.5">
                 <Text weight="medium">{member.name}</Text>
                 <Text size="xs" color="secondary">

@@ -13,7 +13,7 @@ export default () => (
     <Table.Body>
       {venues.slice(0, 5).map(item => (
         <Table.Row key={item.id}>
-          <Table.Cell>
+          <Table.Cell textValue={item.name}>
             <Inline space={1} noWrap>
               <Text variant="muted">#{item.id}</Text>
               <Text weight="medium" wrap="noWrap">

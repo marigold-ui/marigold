@@ -1,19 +1,20 @@
 ---
 '@marigold/components': patch
+'@marigold/docs': patch
 ---
 
-fix(DST-1790): give table rows an accessible name again
+fix(DST-1790): restore type to select and selection announcements in tables
 
-A row is named by its `rowHeader` cell, and that name is what type to select
-matches and what a screen reader announces alongside every other cell in the row.
-React Aria reads it from the cell's content when that content is a plain string.
-`Table.Cell` always handed React Aria a render function instead, so the check
-could never pass, and every row in every table came out unnamed unless its author
+A row's text value comes from its `rowHeader` cell, and it is what type to select
+matches and what a screen reader reads when a row is selected. React Aria reads it
+from the cell's content when that content is a plain string. `Table.Cell` always
+handed React Aria a render function instead, so the check could never pass, and
+every row in every table came out with an empty text value unless its author
 wrote a `textValue` by hand.
 
-`Table.Cell` now derives `textValue` from string and number content, so rows are
-named again with no change at any call site. Typing a few characters moves focus
-to the matching row, and selection is announced with something useful.
+`Table.Cell` now derives `textValue` from string and number content, with no
+change at any call site. Typing a few characters moves focus to the matching row,
+and selection is announced with something useful.
 
 `Table.EditableCell` derives its name the same way, from the display content it
 shows when it is not being edited, and it accepts a `textValue` of its own for the

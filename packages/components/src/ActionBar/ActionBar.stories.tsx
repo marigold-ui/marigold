@@ -359,7 +359,7 @@ export const IntegratedWithTable = meta.story({
           <Table.Body>
             {users.map(user => (
               <Table.Row key={user.email} id={user.email}>
-                <Table.Cell>
+                <Table.Cell textValue={user.name}>
                   <Stack space="0.5">
                     <Text weight="medium">{user.name}</Text>
                     <Text size="xs" color="secondary">

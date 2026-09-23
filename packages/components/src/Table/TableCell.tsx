@@ -53,10 +53,11 @@ const TableCell = ({
       textValue={resolvedTextValue}
       {...props}
     >
-      {({ columnIndex, isTreeColumn, hasChildItems, isExpanded }) => {
+      {({ id, columnIndex, isTreeColumn, hasChildItems, isExpanded }) => {
         const content = (
           <TableCellContent
             columnIndex={columnIndex}
+            cellKey={id}
             alignX={alignX}
             cellOverflow={cellOverflow}
             className={isTreeColumn ? 'col-start-2 min-w-0' : undefined}

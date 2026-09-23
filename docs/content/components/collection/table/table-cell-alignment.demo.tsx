@@ -32,7 +32,7 @@ export default () => (
     <Table.Body>
       {bookings.map(booking => (
         <Table.Row key={booking.id}>
-          <Table.Cell>
+          <Table.Cell textValue={booking.name}>
             <Stack space={1}>
               <Text weight="semibold">{booking.name}</Text>
               <Text fontSize="xs" color="text-secondary-muted">

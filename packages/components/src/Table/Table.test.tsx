@@ -148,6 +148,25 @@ describe('Row text value', () => {
 
     warnSpy.mockRestore();
   });
+
+  test('stays silent for a composite row header when the row has a textValue', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    render(
+      <GuestTable>
+        <Table.Row id="a" textValue="Bruno Weiss">
+          <Table.Cell>
+            <span>Bruno Weiss</span>
+          </Table.Cell>
+          <Table.Cell>4</Table.Cell>
+        </Table.Row>
+      </GuestTable>
+    );
+
+    expect(warnSpy).not.toHaveBeenCalled();
+
+    warnSpy.mockRestore();
+  });
 });
 
 describe('Edge cell padding', () => {

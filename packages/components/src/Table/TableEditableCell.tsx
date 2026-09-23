@@ -5,6 +5,7 @@ import type {
   RefObject,
 } from 'react';
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import type { Key } from 'react-aria-components';
 import { Button } from 'react-aria-components/Button';
 import { Popover } from 'react-aria-components/Popover';
 import { Cell, useTableOptions } from 'react-aria-components/Table';
@@ -151,6 +152,8 @@ interface TableEditableCellInnerProps extends TableEditableCellProps {
   hasSelection: boolean;
   /** Column index, provided by the `<Cell>` render prop. */
   columnIndex?: number | null;
+  /** Cell key, provided by the `<Cell>` render prop. */
+  cellKey?: Key;
   /** Ref to the `<Cell>`, used to position and anchor the editor popover. */
   cellRef: RefObject<HTMLTableCellElement | null>;
   /** Tree state, provided by the `<Cell>` render prop. */
@@ -182,6 +185,7 @@ const TableEditableCellInner = ({
   textValue,
   hasSelection,
   columnIndex,
+  cellKey,
   cellRef,
   isTreeColumn,
   hasChildItems,
@@ -191,10 +195,8 @@ const TableEditableCellInner = ({
   const isSmallScreen = useSmallScreen();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
-  // The outer cell resolves this too, for the `<Cell>` itself, but it renders in
-  // React Aria's collection build pass where nothing is mounted. The warning has
-  // to be raised from here, which is what actually renders, and repeating one
-  // `typeof` check is cheaper than threading the answer down.
+  // Repeating the outer cell's `typeof` check is cheaper than threading the
+  // answer down through the render prop.
   const missingTextValue = resolveTextValue(textValue, children) === undefined;
 
   const [open, setOpen] = useState(false);
@@ -276,6 +278,7 @@ const TableEditableCellInner = ({
     >
       <TableCellContent
         columnIndex={columnIndex}
+        cellKey={cellKey}
         alignX={alignX}
         cellOverflow={disabled ? cellOverflow : 'truncate'}
         className="min-w-0 flex-1"
@@ -370,11 +373,12 @@ export const TableEditableCell = (props: TableEditableCellProps) => {
       className={cn(classNames.cell, verticalAlign[alignY])}
       textValue={resolvedTextValue}
     >
-      {({ columnIndex, isTreeColumn, hasChildItems, isExpanded }) => (
+      {({ id, columnIndex, isTreeColumn, hasChildItems, isExpanded }) => (
         <TableEditableCellInner
           {...props}
           hasSelection={hasSelection}
           columnIndex={columnIndex}
+          cellKey={id}
           cellRef={cellRef}
           isTreeColumn={isTreeColumn}
           hasChildItems={hasChildItems}

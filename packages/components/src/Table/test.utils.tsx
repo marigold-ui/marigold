@@ -7,15 +7,16 @@ import { Table } from './Table';
 
 /**
  * Probes for a row's accessible name, shared by the `Table.Cell` and
- * `Table.EditableCell` suites.
- *
- * A row is named by its `rowHeader` cell and `textValue` never renders as an
- * attribute, so typing at the table is the only way to observe any of it. Render
- * fresh per test: react-aria coalesces keystrokes for about a second, so a
- * leftover buffer bleeds into the next assertion.
+ * `Table.EditableCell` suites. A row is named by its `rowHeader` cell and
+ * `textValue` never renders as an attribute, so typing at the table is the only
+ * way to observe any of it.
  */
 export const rowNamed = (name: RegExp) => screen.getByRole('row', { name });
 
+/**
+ * Render fresh per test: react-aria coalesces keystrokes for about a second, so
+ * a leftover buffer bleeds into the next assertion.
+ */
 export const typeFromTheFirstRow = async (key: string) => {
   const [, firstBodyRow] = screen.getAllByRole('row');
   firstBodyRow.focus();

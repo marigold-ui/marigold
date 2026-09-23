@@ -1,4 +1,5 @@
-import { type ReactNode, use, useEffect, useRef } from 'react';
+import { type ReactNode, use, useEffect } from 'react';
+import type { Key } from 'react-aria-components';
 import { TableStateContext } from 'react-aria-components/Table';
 import { cn, textAlign } from '@marigold/system';
 import { useTableContext } from './Context';
@@ -39,25 +40,25 @@ export interface TableCellContentProps {
    * Whether text selection is allowed. Overrides the table-level `allowTextSelection` setting.
    */
   allowTextSelection?: boolean;
-  /**
-   * The cell component to name in the development warning below, set only when
-   * that cell resolved no `textValue`. Carrying the name rather than a bare
-   * boolean keeps the warning about the component the author actually wrote.
-   */
+  /** Names the component in the dev warning below, so it points at the author's code. */
   missingTextValueOn?: 'Table.Cell' | 'Table.EditableCell';
+  /** The cell's key, from the `<Cell>` render prop. Used to find its row. */
+  cellKey?: Key;
 }
 
 // Development warning
 // ---------------
 const RowHeaderNameWarning = ({
   columnIndex,
+  cellKey,
   component,
 }: {
   columnIndex?: number | null;
+  cellKey?: Key;
   component: 'Table.Cell' | 'Table.EditableCell';
 }) => {
   const state = use(TableStateContext);
-  const warnedRef = useRef(false);
+  const { warnedMissingTextValue } = useTableContext();
 
   const column =
     columnIndex != null ? state?.collection.columns[columnIndex] : undefined;
@@ -68,14 +69,22 @@ const RowHeaderNameWarning = ({
     state != null &&
     state.collection.rowHeaderColumnKeys.has(column.key);
 
-  useEffect(() => {
-    if (!isRowHeader || warnedRef.current) return;
+  // React Aria takes a row's own `textValue` before any cell's, so a row named
+  // that way needs nothing from its row header.
+  const parentKey =
+    cellKey != null ? state?.collection.getItem(cellKey)?.parentKey : null;
+  const isRowNamed =
+    parentKey != null && !!state?.collection.getItem(parentKey)?.textValue;
 
-    warnedRef.current = true;
+  useEffect(() => {
+    if (!isRowHeader || isRowNamed || warnedMissingTextValue.has(component))
+      return;
+
+    warnedMissingTextValue.add(component);
     console.warn(
       `A \`textValue\` prop is required for <${component}> elements in a \`rowHeader\` column whose children are not plain text, in order to support accessibility features such as type to select.`
     );
-  }, [isRowHeader, component]);
+  }, [isRowHeader, isRowNamed, component, warnedMissingTextValue]);
 
   return null;
 };
@@ -90,6 +99,7 @@ export const TableCellContent = ({
   className,
   allowTextSelection,
   missingTextValueOn,
+  cellKey,
 }: TableCellContentProps) => {
   const {
     overflow: tableOverflow,
@@ -124,6 +134,7 @@ export const TableCellContent = ({
       {process.env.NODE_ENV !== 'production' && missingTextValueOn && (
         <RowHeaderNameWarning
           columnIndex={columnIndex}
+          cellKey={cellKey}
           component={missingTextValueOn}
         />
       )}

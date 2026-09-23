@@ -226,13 +226,14 @@ Basic.test(
 );
 
 /**
- * A row is named by its `rowHeader` cell, which is what type to select matches
- * and what a screen reader announces alongside every other cell in the row.
- * Plain string and number content is read automatically. Composite content is
- * not, so it declares a `textValue` of its own.
+ * A row's `textValue` comes from its `rowHeader` cell, and it is what type to
+ * select matches and what selection announcements read. Plain string and number
+ * content is read automatically. Composite content is not, so it declares a
+ * `textValue` of its own.
  */
 export const RowTypeahead = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     selectionMode: 'single',
   },
@@ -281,10 +282,7 @@ export const RowTypeahead = meta.story({
 
 RowTypeahead.test(
   'Type to select finds a row by its derived name',
-  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent, step }) => {
-    // Invisible in the DOM: `textValue` never renders as an attribute, so a
-    // keyboard probe is the only thing that can catch this regressing.
     const rowOf = (name: string) =>
       canvas.getByRole('row', { name: new RegExp(name) });
 
@@ -1367,11 +1365,9 @@ export const EditableCell = meta.story({
 
 EditableCell.test(
   'Type to select finds a row by its editable cell',
-  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent, step }) => {
     // The row header here is itself editable, so the row's name has to come off
-    // `Table.EditableCell`. Invisible in the DOM: `textValue` never renders as an
-    // attribute, so a keyboard probe is the only thing that can catch this.
+    // `Table.EditableCell`.
     const rowOf = (name: string) =>
       canvas.getByRole('row', { name: new RegExp(name) });
 
