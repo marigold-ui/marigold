@@ -133,6 +133,11 @@
       "matchDepNames": ["vale-cli/vale"],
       "automerge": false,
       "minimumReleaseAge": "3 days"
+    },
+    {
+      "description": "The Claude Code CLI drives the AI review job, and nothing in CI exercises that job on a Renovate PR: claude-review.yml skips pull requests whose author is a Bot. An automerged bump would land unverified and first show up as a red Baseline review on everyone else's PRs, so review this one by hand.",
+      "matchPackageNames": ["@anthropic-ai/claude-code"],
+      "automerge": false
     }
   ],
   "vulnerabilityAlerts": {
@@ -153,6 +158,16 @@
       "depNameTemplate": "vale-cli/vale",
       "datasourceTemplate": "github-releases",
       "extractVersionTemplate": "^v(?<version>.+)$"
+    },
+    {
+      "customType": "regex",
+      "description": "The review workflow installs the Claude Code CLI itself, so no native manager sees that pin: the github-actions manager only reads `uses:` lines",
+      "managerFilePatterns": ["/^\\.github/workflows/claude-review\\.yml$/"],
+      "matchStrings": [
+        "@anthropic-ai/claude-code@(?<currentValue>[0-9][^\\s'\"]*)"
+      ],
+      "depNameTemplate": "@anthropic-ai/claude-code",
+      "datasourceTemplate": "npm"
     }
   ]
 }
