@@ -259,9 +259,10 @@ jobs:
             package. Nothing gates that on a PR: changesets/action only runs on
             push to main, after merge.
 
-            If nothing is worth raising, reply with exactly "No issues found
-            against the Marigold review checklist." An empty review is a correct
-            outcome and is much better than padding it out.
+            If nothing is worth raising, reply with "No issues found against
+            the Marigold review checklist." and nothing else before the footer
+            below. An empty review is a correct outcome and is much better than
+            padding it out.
 
             Whatever the outcome, end the comment with this line and nothing
             after it:
