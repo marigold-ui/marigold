@@ -199,7 +199,37 @@ Basic.test(
         const style = focused ? getComputedStyle(focused) : undefined;
 
         expect(style?.outlineStyle).toBe('none');
-        expect(style?.boxShadow).toContain('inset');
+        // Width, not just "some inset shadow": the contrast floor rests on a
+        // full 2px ring, and a weakened one would still contain 'inset'.
+        expect(style?.boxShadow).toContain('0px 0px 0px 2px inset');
+      });
+    });
+
+    await step('An unselected option takes the focus wash', async () => {
+      // Dog is selected as well as focused, so its selected fill would mask a
+      // missing wash.
+      await userEvent.type(canvas.getByRole('combobox'), '{arrowdown}');
+
+      await waitFor(() => {
+        const options = canvas.getAllByRole('option');
+        const focused = options.find(option =>
+          option.hasAttribute('data-focus-visible')
+        );
+        const resting = options.find(
+          option =>
+            !option.hasAttribute('data-focus-visible') &&
+            option.getAttribute('aria-selected') === 'false'
+        );
+        const wash = focused
+          ? getComputedStyle(focused).backgroundColor
+          : undefined;
+        const unpainted = resting
+          ? getComputedStyle(resting).backgroundColor
+          : undefined;
+
+        expect(focused).toHaveAttribute('aria-selected', 'false');
+        expect(unpainted).toBe('rgba(0, 0, 0, 0)');
+        expect(wash).not.toBe(unpainted);
       });
     });
   }
