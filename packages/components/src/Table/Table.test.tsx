@@ -456,6 +456,16 @@ describe('Expandable rows', () => {
     expect(screen.queryByRole('grid')).not.toBeInTheDocument();
   });
 
+  test('marks the treegrid busy while loading', () => {
+    const { rerender } = render(<ExpandableRows.Component loading />);
+
+    expect(screen.getByRole('treegrid')).toHaveAttribute('aria-busy', 'true');
+
+    rerender(<ExpandableRows.Component />);
+
+    expect(screen.getByRole('treegrid')).not.toHaveAttribute('aria-busy');
+  });
+
   test('a table without treeColumn stays a plain grid', () => {
     render(<Basic.Component />);
 
