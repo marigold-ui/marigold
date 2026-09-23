@@ -1,12 +1,14 @@
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import { useMemo } from 'react';
 import type RAC from 'react-aria-components';
 import {
   Table as RACTable,
   ResizableTableContainer,
 } from 'react-aria-components/Table';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
 import { useActionBar } from '../ActionBar/useActionBar';
+import { intlMessages } from '../intl/messages';
 import type { Selection } from '../types';
 import { TableContext } from './Context';
 import { TableBody } from './TableBody';
@@ -41,6 +43,12 @@ export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
    */
   alignY?: 'top' | 'middle' | 'bottom' | 'baseline';
   /**
+   * Whether the table's data is loading. Marks the table as busy and announces
+   * the loading state to screen readers.
+   * @default false
+   */
+  loading?: boolean;
+  /**
    * Render function that receives the current selection and returns an ActionBar.
    * When provided, the Table manages selection wiring and ActionBar positioning automatically.
    */
@@ -71,6 +79,7 @@ const _Table = ({
   overflow = 'wrap',
   allowTextSelection = false,
   alignY = 'middle',
+  loading = false,
   actionBar,
   treeColumn,
   selectedKeys: selectedKeysProp,
@@ -83,6 +92,7 @@ const _Table = ({
     variant,
     size,
   });
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   const ctx = useMemo(
     () => ({
@@ -133,8 +143,20 @@ const _Table = ({
           selectedKeys={selectedKeys}
           defaultSelectedKeys={actionBar ? undefined : defaultSelectedKeysProp}
           onSelectionChange={onSelectionChange}
+          // React Aria drops `aria-busy`, so it is set on the element directly.
+          // Marigold never virtualizes a table, so these are always `<table>` props.
+          render={domProps => (
+            <table
+              {...(domProps as ComponentProps<'table'>)}
+              aria-busy={loading || undefined}
+            />
+          )}
           {...props}
         />
+        {/* Stays mounted, screen readers skip a live region inserted with text. */}
+        <div className="sr-only" role="status" aria-live="polite">
+          {loading ? stringFormatter.format('loadingMessage') : null}
+        </div>
         {actionBarOverlay}
       </ResizableTableContainer>
     </TableContext>

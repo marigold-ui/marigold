@@ -120,6 +120,24 @@ describe('Accessibility', () => {
 
     expect(grid).toBeInstanceOf(HTMLTableElement);
   });
+
+  test('marks the grid busy and announces loading', () => {
+    render(<Basic.Component loading />);
+
+    expect(screen.getByRole('grid')).toHaveAttribute('aria-busy', 'true');
+    expect(screen.getByRole('status')).toHaveTextContent('Loading...');
+  });
+
+  test('is not busy once loaded, and keeps the status region mounted', () => {
+    const { rerender } = render(<Basic.Component loading />);
+    const status = screen.getByRole('status');
+
+    rerender(<Basic.Component />);
+
+    expect(screen.getByRole('grid')).not.toHaveAttribute('aria-busy');
+    expect(screen.getByRole('status')).toBe(status);
+    expect(status).toBeEmptyDOMElement();
+  });
 });
 
 describe('Cell Alignment', () => {

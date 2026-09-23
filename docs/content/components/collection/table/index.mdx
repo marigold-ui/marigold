@@ -333,6 +333,18 @@ When a table has no data to display, whether from empty search results, filters 
   </Dont>
 </GuidelineTiles>
 
+### Loading state
+
+Set `loading` while the table's data is being fetched. The table is marked as busy and screen readers announce that it is loading. Nothing is announced when loading finishes, since the rows appearing are the signal.
+
+```tsx
+<Table aria-label="Orders" loading={isLoading}>
+  …
+</Table>
+```
+
+Use `loading` instead of passing `aria-busy` to the table. React Aria drops that attribute, so it never reaches the page.
+
 ### Sticky headers and footers
 
 For tables with many rows that require scrolling, sticky headers keep column labels visible as users scroll through data. This helps users maintain context about what each column represents.
