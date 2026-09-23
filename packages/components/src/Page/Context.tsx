@@ -1,4 +1,4 @@
-import type { RefCallback } from 'react';
+import type { RefCallback, RefObject } from 'react';
 import { createContext, use } from 'react';
 import type { ThemeComponent } from '@marigold/system';
 
@@ -7,6 +7,7 @@ export interface PageContextValue {
     [Key in keyof ThemeComponent<'Page'>]: string;
   };
   titleId: string;
+  mainRef: RefObject<HTMLElement | null>;
   headingLevel: number;
   hasTitle: boolean;
   titleSlotRef: RefCallback<Element>;

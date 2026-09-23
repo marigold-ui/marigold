@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { StrictMode } from 'react';
 import { FocusOnRouteChange, FocusWithoutHeading } from './Page.stories';
@@ -21,6 +21,16 @@ describe('usePageFocus', () => {
     expect(h1).not.toHaveFocus();
   });
 
+  test('does not steal focus on the initial mount without a heading', () => {
+    render(
+      <StrictMode>
+        <FocusWithoutHeading.Component />
+      </StrictMode>
+    );
+
+    expect(screen.getByRole('main')).not.toHaveFocus();
+  });
+
   test('moves focus to the new page heading on a route change', async () => {
     const user = userEvent.setup();
     render(<FocusOnRouteChange.Component />);
@@ -36,15 +46,18 @@ describe('usePageFocus', () => {
     expect(heading).toHaveAttribute('tabindex', '-1');
   });
 
-  test('is a no-op on a route change when the page has no heading', async () => {
+  test('falls back to the main landmark when the page has no heading', async () => {
     const user = userEvent.setup();
     render(<FocusWithoutHeading.Component />);
-    const openTeam = screen.getByRole('button', { name: 'Open Team members' });
+    // The breadcrumb repeats the section name, so scope to the sidebar's nav.
+    const nav = within(
+      screen.getByRole('navigation', { name: 'Settings sections' })
+    );
 
-    await user.click(openTeam);
+    await user.click(nav.getByRole('link', { name: 'Team members' }));
 
     expect(screen.queryByRole('heading', { level: 1 })).not.toBeInTheDocument();
-    expect(openTeam).toHaveFocus();
+    expect(screen.getByRole('main')).toHaveFocus();
   });
 
   test('throws when used outside a Page', () => {
