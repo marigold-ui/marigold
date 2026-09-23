@@ -77,7 +77,6 @@ const Preview = ({
       className="flex w-full flex-col justify-center overflow-hidden [&>*:first-child]:flex [&>*:first-child]:place-items-center"
     >
       <OverlayContainerProvider container="portalContainer">
-        {/* Pin the locale so demos render identically on server and client. */}
         <I18nProvider locale="en-US">
           <MarigoldProvider
             theme={ruiTheme}

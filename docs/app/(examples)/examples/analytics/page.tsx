@@ -5,6 +5,7 @@ import {
   Card,
   Columns,
   Description,
+  NumericFormat,
   Page,
   Panel,
   Stack,
@@ -114,7 +115,7 @@ const AnalyticsPage = () => (
                   <Table.Cell>{venue.name}</Table.Cell>
                   <Table.Cell>{venue.city}</Table.Cell>
                   <Table.Cell alignX="right">
-                    {venue.ticketsSold.toLocaleString()}
+                    <NumericFormat value={venue.ticketsSold} />
                   </Table.Cell>
                   <Table.Cell alignX="right">{`★ ${venue.rating}`}</Table.Cell>
                 </Table.Row>
