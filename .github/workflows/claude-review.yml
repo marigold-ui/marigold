@@ -181,9 +181,25 @@ jobs:
           role-chaining: true
           role-session-name: gha-claude-review-target-${{ github.run_id }}
 
+      # The action pins the CLI through @anthropic-ai/claude-agent-sdk, and the
+      # two versions move together: sdk 0.3.N ships claude-code 2.1.N. v1.0.231
+      # is the newest release and still ships 2.1.278, below the 2.1.280 that
+      # AI_REVIEW_MODEL_ID's Opus id requires, so the CLI is installed here and
+      # handed to the action. Drop this step once a release bundles 0.3.280 or
+      # newer: the action installs its own CLI when no path is given.
+      - name: Install a Claude Code that supports the model
+        id: cli
+        run: |
+          set -euo pipefail
+          npm install -g @anthropic-ai/claude-code@2.1.280
+          echo "path=$(command -v claude)" >> "$GITHUB_OUTPUT"
+          claude --version
+
       - name: Review
-        uses: anthropics/claude-code-action@fa2b2666b747000bf42767d1f332065b375e3c8f # v1.0.214
+        uses: anthropics/claude-code-action@cfc3eb22bfed5c26ef66e3223c982af27e4524de # v1.0.231
         with:
+          path_to_claude_code_executable: ${{ steps.cli.outputs.path }}
+
           # Do not add anthropic_api_key: it takes precedence and Bedrock is
           # silently skipped.
           use_bedrock: 'true'
