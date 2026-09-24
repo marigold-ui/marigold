@@ -14,7 +14,7 @@ Claude Code already injects every available skill's name and description into ea
 | --- | --- | --- |
 | First-party skills | `.claude/skills/<name>/SKILL.md` | Committed, ours to edit. Only `vrt` is left here |
 | Project hooks | registered in `.claude/settings.json`, scripts in `.claude/hooks/` | Committed, run automatically for everyone |
-| Plugins | declared in `.claude/settings.json`, or installed per-user | Installed per-user, versioned upstream. The team's workflow skills are the `dst` plugin, installed at user scope from the private `dst-toolkit` marketplace, so nothing in this public repo points at it |
+| Plugins | declared in `.claude/settings.json`, or installed per-user | Installed per-user, versioned upstream. The team's workflow skills are the `dst` plugin, installed at user scope from the private `dst-toolkit` marketplace, so it is never declared in this public repo's `settings.json` |
 | Personal skills | `~/.claude/skills/` | One developer's machine, never the repo |
 
 A skill you did not write and do not intend to maintain belongs in a plugin, not in `skills/`. Vendoring third-party packs into this repo was tried and abandoned: the copy stopped tracking upstream within two months and nobody noticed until it was audited. The same reasoning is what moved our own workflow skills out: `review-pr` existed in two repos and had diverged by 140 lines, with neither copy authoritative.

@@ -434,7 +434,8 @@ Jira Cloud ID: `reservix.atlassian.net` | Project key: `DST`
 
 ### Issue Types and Title Emojis
 
-Both tables live in the `dst` plugin, at `skills/create-ticket/references/dst-conventions.md`:
+Both tables live in the [`dst` plugin](https://github.com/marigold-ui/dst-toolkit), at
+`skills/create-ticket/references/dst-conventions.md`:
 the issue types with their ids, and the title emoji convention every DST title starts
 with. They are the team's conventions rather than this repository's, and `/dst:create-ticket`
 has to apply them from the Core, ClearingAdministration and Insights checkouts too, so
