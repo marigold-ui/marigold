@@ -440,8 +440,13 @@ const ROUTES: Record<string, string> = {
   '/team': 'Team members',
 };
 
-const RouteFocusHarness = () => {
+const RouteFocusHarness = ({
+  untitledRoutes = [],
+}: {
+  untitledRoutes?: string[];
+}) => {
   const [route, setRoute] = useState('/billing');
+  const untitled = untitledRoutes.includes(route);
 
   return (
     <>
@@ -455,12 +460,14 @@ const RouteFocusHarness = () => {
         </Inline>
       </nav>
       <FocusReadout />
-      <Page>
+      <Page aria-label={untitled ? ROUTES[route] : undefined}>
         <RouteFocus routeKey={route} />
-        <Page.Header>
-          <Title>{ROUTES[route]}</Title>
-          <Description>You are viewing {ROUTES[route]}.</Description>
-        </Page.Header>
+        {!untitled && (
+          <Page.Header>
+            <Title>{ROUTES[route]}</Title>
+            <Description>You are viewing {ROUTES[route]}.</Description>
+          </Page.Header>
+        )}
         <Panel>
           <Panel.Content>
             <Text>Route: {route}</Text>
@@ -569,4 +576,16 @@ export const FocusWithoutHeading = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   render: ({ tabIndex }) => <NoHeadingFocusHarness tabIndex={tabIndex} />,
+});
+
+/**
+ * An app usually mixes both kinds of page under one persistent `<Page>`. Here
+ * "Team members" has no `<h1>`, so focus falls back to the `<main>`. Going back
+ * to "Billing" focuses its `<h1>` and removes the fallback `tabindex` again, so
+ * the landmark does not stay focusable on titled routes.
+ */
+export const FocusAcrossMixedRoutes = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: () => <RouteFocusHarness untitledRoutes={['/team']} />,
 });

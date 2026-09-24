@@ -42,6 +42,7 @@ import { usePageContext } from './Context';
 export const usePageFocus = (routeKey: string) => {
   const { titleId, mainRef } = usePageContext();
   const previousRouteKeyRef = useRef(routeKey);
+  const addedTabIndexRef = useRef(false);
 
   useEffect(() => {
     // Track the previous key rather than an "is this the first run" flag: refs
@@ -56,6 +57,10 @@ export const usePageFocus = (routeKey: string) => {
 
     const heading = document.getElementById(titleId);
     if (heading) {
+      if (addedTabIndexRef.current) {
+        mainRef.current?.removeAttribute('tabindex');
+        addedTabIndexRef.current = false;
+      }
       // Headings are not focusable by default.
       heading.tabIndex = -1;
       heading.focus();
@@ -68,6 +73,7 @@ export const usePageFocus = (routeKey: string) => {
     }
     if (!main.hasAttribute('tabindex')) {
       main.tabIndex = -1;
+      addedTabIndexRef.current = true;
     }
     main.focus();
   }, [routeKey, titleId, mainRef]);

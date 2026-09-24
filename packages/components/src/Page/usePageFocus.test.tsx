@@ -1,7 +1,11 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { StrictMode } from 'react';
-import { FocusOnRouteChange, FocusWithoutHeading } from './Page.stories';
+import {
+  FocusAcrossMixedRoutes,
+  FocusOnRouteChange,
+  FocusWithoutHeading,
+} from './Page.stories';
 import { usePageFocus } from './usePageFocus';
 
 describe('usePageFocus', () => {
@@ -66,6 +70,20 @@ describe('usePageFocus', () => {
 
     await user.click(screen.getByRole('button', { name: 'Open Team members' }));
 
+    expect(screen.getByRole('main')).not.toHaveAttribute('tabindex');
+  });
+
+  test('removes the fallback tabindex once a later route has a heading', async () => {
+    const user = userEvent.setup();
+    render(<FocusAcrossMixedRoutes.Component />);
+
+    await user.click(screen.getByRole('button', { name: 'Open Team members' }));
+    expect(screen.getByRole('main')).toHaveAttribute('tabindex', '-1');
+
+    await user.click(screen.getByRole('button', { name: 'Open Billing' }));
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Billing' })
+    ).toHaveFocus();
     expect(screen.getByRole('main')).not.toHaveAttribute('tabindex');
   });
 
