@@ -41,7 +41,7 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@babel/parser": "8.0.5",
+    "@babel/parser": "8.0.6",
     "@clack/prompts": "1.8.1",
     "ci-info": "4.4.0",
     "magic-string": "0.30.21",
@@ -87,7 +87,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.0",
-    "@babel/types": "8.0.5",
+    "@babel/types": "8.0.6",
     "@marigold/components": "workspace:*",
     "@marigold/system": "workspace:*",
     "@marigold/theme-rui": "workspace:*",
