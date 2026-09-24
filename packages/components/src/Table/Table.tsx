@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import type RAC from 'react-aria-components';
 import {
   Table as RACTable,
@@ -84,6 +84,8 @@ const _Table = ({
     size,
   });
 
+  const [warnedMissingTextValue] = useState(() => new Set<string>());
+
   const ctx = useMemo(
     () => ({
       classNames,
@@ -93,6 +95,7 @@ const _Table = ({
       allowTextSelection,
       alignY,
       treeColumn,
+      warnedMissingTextValue,
     }),
     [
       classNames,
@@ -102,6 +105,7 @@ const _Table = ({
       allowTextSelection,
       alignY,
       treeColumn,
+      warnedMissingTextValue,
     ]
   );
 
