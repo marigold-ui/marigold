@@ -12,12 +12,14 @@ import {
   ExpandableRowsDynamic,
   ExpandableRowsLazyChildren,
   FooterTotals,
+  RowTypeahead,
   ScrollableAndSticky,
   VerticalAlignment,
   WidthsAndOverflow,
 } from './Table.stories';
 import { renderDragPreview } from './TableDragPreview';
 import { TableDropIndicator, renderDropIndicator } from './TableDropIndicator';
+import { GuestTable, rowNamed, typeFromTheFirstRow } from './test.utils';
 
 const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
@@ -29,6 +31,152 @@ vi.mock('@react-aria/live-announcer', () => ({
 
 afterEach(() => {
   vi.mocked(announce).mockClear();
+});
+
+describe('Row text value', () => {
+  // React Aria reads strings only, so the number case is Marigold's addition
+  // and would regress silently without a case of its own.
+  test.each([
+    ['a plain string cell', 'Z', /Zoe Novak/],
+    ['a number cell', '4', /4711/],
+    ['the textValue a composite cell declares', 'B', /Bruno Weiss/],
+  ])('names a row from %s', async (_, key, expected) => {
+    render(<RowTypeahead.Component />);
+
+    await typeFromTheFirstRow(key);
+
+    expect(rowNamed(expected)).toHaveFocus();
+  });
+
+  test('an explicit cell textValue wins over the cell content', async () => {
+    render(
+      <GuestTable>
+        <Table.Row id="a">
+          <Table.Cell>Alma Fischer</Table.Cell>
+          <Table.Cell>12</Table.Cell>
+        </Table.Row>
+        <Table.Row id="b">
+          <Table.Cell textValue="Zebra">Bruno Weiss</Table.Cell>
+          <Table.Cell>4</Table.Cell>
+        </Table.Row>
+      </GuestTable>
+    );
+
+    await typeFromTheFirstRow('Z');
+
+    expect(rowNamed(/Bruno Weiss/)).toHaveFocus();
+  });
+
+  test('an explicit row textValue wins over the derived value', async () => {
+    render(
+      <GuestTable>
+        <Table.Row id="a">
+          <Table.Cell>Alma Fischer</Table.Cell>
+          <Table.Cell>12</Table.Cell>
+        </Table.Row>
+        <Table.Row id="b" textValue="Zebra">
+          <Table.Cell>Bruno Weiss</Table.Cell>
+          <Table.Cell>4</Table.Cell>
+        </Table.Row>
+      </GuestTable>
+    );
+
+    await typeFromTheFirstRow('Z');
+
+    expect(rowNamed(/Bruno Weiss/)).toHaveFocus();
+  });
+
+  test('composite content without a textValue still derives nothing', async () => {
+    // Upstream behaviour, not ours: react-aria reads a cell's text off plain
+    // string children, so wrapped content is unreadable in a plain react-aria
+    // table too. Pinned so the limitation stays documented.
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    render(
+      <GuestTable>
+        <Table.Row id="a">
+          <Table.Cell>Alma Fischer</Table.Cell>
+          <Table.Cell>12</Table.Cell>
+        </Table.Row>
+        <Table.Row id="z">
+          <Table.Cell>
+            <span>Zoe Novak</span>
+          </Table.Cell>
+          <Table.Cell>7</Table.Cell>
+        </Table.Row>
+      </GuestTable>
+    );
+
+    await typeFromTheFirstRow('Z');
+
+    expect(rowNamed(/Alma Fischer/)).toHaveFocus();
+
+    warnSpy.mockRestore();
+  });
+
+  test('warns once for a row header cell that cannot be read', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    render(
+      <GuestTable>
+        <Table.Row id="named">
+          <Table.Cell textValue="Alma Fischer">
+            <span>Alma Fischer</span>
+          </Table.Cell>
+          <Table.Cell>12</Table.Cell>
+        </Table.Row>
+        <Table.Row id="unnamed">
+          <Table.Cell>
+            <span>Bruno Weiss</span>
+          </Table.Cell>
+          <Table.Cell>4</Table.Cell>
+        </Table.Row>
+      </GuestTable>
+    );
+
+    expect(warnSpy).toHaveBeenCalledTimes(1);
+    expect(warnSpy.mock.calls[0][0]).toContain('`textValue`');
+
+    warnSpy.mockRestore();
+  });
+
+  test('stays silent for a composite cell outside the row header', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    render(
+      <GuestTable>
+        <Table.Row id="a">
+          <Table.Cell>Alma Fischer</Table.Cell>
+          <Table.Cell>
+            <span>12</span>
+          </Table.Cell>
+        </Table.Row>
+      </GuestTable>
+    );
+
+    expect(warnSpy).not.toHaveBeenCalled();
+
+    warnSpy.mockRestore();
+  });
+
+  test('stays silent for a composite row header when the row has a textValue', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    render(
+      <GuestTable>
+        <Table.Row id="a" textValue="Bruno Weiss">
+          <Table.Cell>
+            <span>Bruno Weiss</span>
+          </Table.Cell>
+          <Table.Cell>4</Table.Cell>
+        </Table.Row>
+      </GuestTable>
+    );
+
+    expect(warnSpy).not.toHaveBeenCalled();
+
+    warnSpy.mockRestore();
+  });
 });
 
 describe('Edge cell padding', () => {

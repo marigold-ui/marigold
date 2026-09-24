@@ -434,6 +434,28 @@ Mark the column that best identifies each row, typically a name, title, or ID co
 </Table.Header>
 ```
 
+#### Naming a row
+
+The row header also names the row for type to select, where typing a few
+characters moves focus to the first matching row. A cell holding plain text or a
+number needs nothing extra. For any other content, set `textValue`.
+
+```tsx
+<Table.Cell textValue={user.name}>
+  <Stack space="0.5">
+    <Text weight="medium">{user.name}</Text>
+    <Text size="xs">{user.handle}</Text>
+  </Stack>
+</Table.Cell>
+```
+
+Type to select matches from the **start** of the value, so lead with what someone
+would actually type. `"Jane Doe"` is findable by name, while `"4711 Jane Doe"` is
+findable only by its number.
+
+`Table.EditableCell` works the same way, using the content it shows when it is not
+being edited.
+
 ### Accessibility
 
 A table with [grouped rows](#grouped-rows) reports itself as a `treegrid` instead of a `grid`, which is what lets screen readers announce how deep a row sits and whether it is expanded. Tests that query `getByRole('grid')` have to move to `getByRole('treegrid')`.

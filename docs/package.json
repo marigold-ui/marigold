@@ -1,6 +1,6 @@
 {
   "name": "@marigold/docs",
-  "version": "18.1.0",
+  "version": "18.2.0",
   "private": true,
   "scripts": {
     "build": "pnpm -w build:themes && pnpm build:assets && next build",
@@ -82,7 +82,7 @@
     "p-limit": "7.3.3",
     "postcss": "^8.5.10",
     "tailwindcss": "^4.3.3",
-    "tsx": "4.23.13",
+    "tsx": "4.23.15",
     "typescript": "^6.0.0",
     "zx": "8.8.5"
   }
