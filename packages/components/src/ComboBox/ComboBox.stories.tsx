@@ -174,6 +174,64 @@ Basic.test('Shows a selected value from list', async ({ canvas }) => {
 });
 
 Basic.test(
+  'Keeps the option focus ring inside the list',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent, step }) => {
+    await step('Select Dog from the list', async () => {
+      const combobox = canvas.getByRole('combobox');
+
+      await userEvent.type(combobox, 'dog');
+      await userEvent.click(await canvas.findByRole('option', { name: 'Dog' }));
+
+      await waitFor(() => expect(combobox).toHaveValue('Dog'));
+    });
+
+    await step('Reopened option keeps its ring inside its box', async () => {
+      await userEvent.type(canvas.getByRole('combobox'), '{arrowdown}');
+      await canvas.findByRole('listbox');
+
+      await waitFor(() => {
+        const focused = canvas
+          .getAllByRole('option')
+          .find(option => option.hasAttribute('data-focus-visible'));
+        const style = focused ? getComputedStyle(focused) : undefined;
+
+        expect(style?.outlineStyle).toBe('none');
+        expect(style?.boxShadow).toContain('0px 0px 0px 2px inset');
+      });
+    });
+
+    await step('An unselected option takes the focus wash', async () => {
+      await userEvent.type(canvas.getByRole('combobox'), '{arrowdown}');
+
+      await waitFor(() => {
+        const options = canvas.getAllByRole('option');
+        const focused = options.find(option =>
+          option.hasAttribute('data-focus-visible')
+        );
+        const resting = options.find(
+          option =>
+            !option.hasAttribute('data-focus-visible') &&
+            option.getAttribute('aria-selected') === 'false'
+        );
+        const wash = focused
+          ? getComputedStyle(focused).backgroundColor
+          : undefined;
+        const unpainted = resting
+          ? getComputedStyle(resting).backgroundColor
+          : undefined;
+
+        expect(focused).toHaveAttribute('aria-selected', 'false');
+        expect(unpainted).toBe('rgba(0, 0, 0, 0)');
+        expect(wash).not.toBe(unpainted);
+      });
+    });
+  }
+);
+
+Basic.test(
   'Opens with manual trigger showing a list',
   {
     parameters: { chromatic: { disableSnapshot: false } },
