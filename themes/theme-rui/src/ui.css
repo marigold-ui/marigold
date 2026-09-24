@@ -229,15 +229,29 @@
 }
 
 /*
- * Applies a consistent visual style for disabled elements.
+ * Applies a consistent visual style for disabled (and pending) elements.
+ *
+ * Label and fill are derived from the ink rather than painted from fixed charcoal
+ * rungs, so the state keeps one weight on white, on the charcoal-100 page and on a
+ * dark ui-contrast ground (e.g. a ghost Button on the ActionBar). The element's
+ * own color and background are replaced, so every variant reads the same.
+ *
+ * - `color`: in the color property `currentColor` is the *inherited* color, so the
+ *   label fades relative to the ground's ink, not the variant's own text color.
+ * - `background`: here `currentColor` is the element's *computed* color, i.e. the
+ *   already-faded label. The two alphas multiply: 0.45 × 0.11 ≈ 0.05, the
+ *   charcoal-100 step on white (≈1.1:1 against the ground).
  */
 @utility ui-state-disabled {
-  @apply text-disabled cursor-not-allowed;
-  background: var(--color-disabled-surface);
+  @apply cursor-not-allowed;
+  color: color-mix(in oklab, currentColor 45%, transparent);
+  background: color-mix(in oklab, currentColor 11%, transparent);
   background-clip: border-box;
   /* Dim the boundary rather than remove it: a borderless input reads as broken.
-     Recolor the ring to the light disabled-border for a soft, receding edge. */
-  --ui-border-color: var(--color-disabled-border);
+     Derived from the faded label like the fill (0.45 × 0.45 ≈ 0.2, the
+     charcoal-300 disabled-border step on white), so it recedes on a dark ground
+     instead of drawing a light outline. */
+  --ui-border-color: color-mix(in oklab, currentColor 45%, transparent);
   /* No top highlight when disabled. Zeroing `--tw-inset-shadow` is reliable where a
      raw `box-shadow: none` lost the cascade to the surface utilities' box-shadow. */
   @apply inset-shadow-none;

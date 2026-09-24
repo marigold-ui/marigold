@@ -6,6 +6,9 @@ export const Button: ThemeComponent<'Button'> = cva({
     'ui-button-base gap-2',
     'duration-150 active:scale-[0.97] pressed:not-aria-expanded:scale-[0.97]',
     'pending:ui-state-disabled',
+    // The spinner's arc hard-codes `stroke-foreground`; follow the (faded) label
+    // instead, so it stays visible on a dark ground like the ActionBar.
+    'pending:[&_circle+circle]:stroke-current',
   ],
   variants: {
     variant: {
