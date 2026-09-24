@@ -56,7 +56,7 @@ const UsersPage = () => (
                   key={person.id}
                   href={`/examples/users/${person.id}`}
                 >
-                  <Table.Cell>
+                  <Table.Cell textValue={person.name}>
                     <Inline space="related" alignY="center" noWrap>
                       <img
                         src={person.avatar}
