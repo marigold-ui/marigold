@@ -18,7 +18,15 @@ export const CliCommandEventSchema = z.strictObject({
   durationBucket: z.enum(['0-100', '100-500', '500-2000', '2000+']),
   exitCode: z.number().int().min(-1).max(255),
   cacheHit: z.boolean().optional(),
-  args: z.record(z.string(), z.string().max(64)).optional(),
+  // Strictness above covers top-level keys only; `args` is a record, so its
+  // keys are bounded here instead. This limits how much an arbitrary sender
+  // can smuggle in, not what it says: a UUID is slug-shaped and fits in a
+  // legitimate key. The guarantee that no identifier is sent is client-side,
+  // in packages/cli/src/lib/telemetry.ts.
+  args: z
+    .record(z.string().max(32), z.string().max(64))
+    .refine(a => Object.keys(a).length <= 16)
+    .optional(),
 });
 
 // hashedCallerId is a SHA-256 of the Keycloak `sub` — never the raw claim.

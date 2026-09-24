@@ -70,6 +70,36 @@ describe('POST /api/telemetry', () => {
     expect(record).not.toHaveBeenCalled();
   });
 
+  it('accepts identifier-shaped args', async () => {
+    const res = await post(
+      makeCliEvent({ command: 'docs', args: { component: 'Button' } })
+    );
+
+    expect(res.status).toBe(204);
+  });
+
+  // `args` is a record, so the strict top-level check does not reach its
+  // keys. Bounding them keeps an arbitrary sender from using it as a free-form
+  // payload.
+  it('rejects an args key over 32 characters with 400', async () => {
+    const res = await post(
+      makeCliEvent({ command: 'docs', args: { ['k'.repeat(33)]: 'v' } })
+    );
+
+    expect(res.status).toBe(400);
+    expect(record).not.toHaveBeenCalled();
+  });
+
+  it('rejects more than 16 args with 400', async () => {
+    const args = Object.fromEntries(
+      Array.from({ length: 17 }, (_, i) => [`k${i}`, 'v'])
+    );
+    const res = await post(makeCliEvent({ command: 'docs', args }));
+
+    expect(res.status).toBe(400);
+    expect(record).not.toHaveBeenCalled();
+  });
+
   it('maps a rate-limited event to 429', async () => {
     record.mockResolvedValue('rate-limited');
 

@@ -31,6 +31,7 @@ import {
   TELEMETRY_NOTICE_URL,
   emit,
   enumArg,
+  intArg,
   slugArg,
 } from '../lib/telemetry.js';
 
@@ -371,7 +372,7 @@ export const main = async (
       telemetryArgs = {
         format: enumArg(values.format, FORMAT_VALUES, 'markdown'),
         ...(query ? { query: 'used' } : {}),
-        ...(values.limit ? { limit: slugArg(values.limit) } : {}),
+        ...(values.limit ? { limit: intArg(values.limit) } : {}),
         ...(values.fresh ? { fresh: 'true' } : {}),
         ...(values.offline ? { offline: 'true' } : {}),
       };

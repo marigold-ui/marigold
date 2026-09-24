@@ -42,17 +42,31 @@ export interface TelemetryEvent {
 }
 
 // `args` must stay low-cardinality and must never echo prose a user typed. The
-// two helpers below are the only sanctioned way to build it, so an unvalidated
+// helpers below are the only sanctioned way to build it, so an unvalidated
 // value can't reach the wire by omission at a call site.
 
 // Identifier-shaped values only — component names, page/example slugs,
-// categories. Anything else (a stray sentence, a path, an over-long string)
-// collapses to 'invalid' rather than being forwarded verbatim.
+// categories. Anything else (a stray sentence, an absolute or `./` path, an
+// over-long string) collapses to 'invalid' rather than being forwarded
+// verbatim. `/` and `.` have to stay legal for slugs like
+// `getting-started/cli` and `form.field`, which also admits a relative path,
+// so values ending in a source-file extension are rejected on top.
 const SLUG_PATTERN = /^[A-Za-z0-9][A-Za-z0-9/._-]{0,63}$/;
+const FILE_EXTENSION_PATTERN =
+  /\.(?:[cm]?[jt]sx?|json|mdx?|css|scss|html?|ya?ml|txt)$/i;
 
 export const slugArg = (value: string | undefined): string => {
   if (!value) return '';
-  return SLUG_PATTERN.test(value) ? value : 'invalid';
+  return SLUG_PATTERN.test(value) && !FILE_EXTENSION_PATTERN.test(value)
+    ? value
+    : 'invalid';
+};
+
+// Positive integers only (`--limit`). Anything else lands as 'invalid', so a
+// mistyped value is not echoed back.
+export const intArg = (value: string | undefined): string => {
+  if (!value) return '';
+  return /^[1-9]\d{0,5}$/.test(value) ? value : 'invalid';
 };
 
 // Clamp a flag to its documented enum. Call sites record telemetry args before
