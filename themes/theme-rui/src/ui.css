@@ -241,17 +241,25 @@
  * - `background`: here `currentColor` is the element's *computed* color, i.e. the
  *   already-faded label. The two alphas multiply: 0.45 × 0.11 ≈ 0.05, the
  *   charcoal-100 step on white (≈1.1:1 against the ground).
+ * - Chroma: a 5% wash keeps only 5% of the ink's chroma, so plain charcoal ink
+ *   (c 0.008) composites to a cold neutral gray. The wash keeps the ink's
+ *   lightness and hue but carries c 0.06, which lands on charcoal-100's warmth
+ *   (c 0.003 at hue 54) on white: rendered 245 243 242, identical to the rung.
  */
 @utility ui-state-disabled {
   @apply cursor-not-allowed;
   color: color-mix(in oklab, currentColor 45%, transparent);
+  /* Fallback for engines without currentColor as a relative-color origin: same
+     weight, neutral instead of warm. */
   background: color-mix(in oklab, currentColor 11%, transparent);
+  background: oklch(from currentColor l 0.06 h / calc(alpha* 0.11));
   background-clip: border-box;
   /* Dim the boundary rather than remove it: a borderless input reads as broken.
      Derived from the faded label like the fill (0.45 × 0.45 ≈ 0.2, the
      charcoal-300 disabled-border step on white), so it recedes on a dark ground
-     instead of drawing a light outline. */
-  --ui-border-color: color-mix(in oklab, currentColor 45%, transparent);
+     instead of drawing a light outline. Chroma lifted the same way (c 0.025 at
+     0.2 ≈ charcoal-300's c 0.005). */
+  --ui-border-color: oklch(from currentColor l 0.025 h / calc(alpha* 0.45));
   /* No top highlight when disabled. Zeroing `--tw-inset-shadow` is reliable where a
      raw `box-shadow: none` lost the cascade to the surface utilities' box-shadow. */
   @apply inset-shadow-none;
