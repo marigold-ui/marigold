@@ -19,22 +19,16 @@ describe('Page', () => {
     expect(screen.getByRole('main')).toBeInTheDocument();
   });
 
-  test('leaves the main landmark programmatically focusable', () => {
+  // Only `usePageFocus` makes the landmark focusable, and only when it falls
+  // back to it, so clicking page content never moves focus on its own.
+  test('does not make the main landmark focusable by default', () => {
     render(<Basic.Component />);
 
-    expect(screen.getByRole('main')).toHaveAttribute('tabindex', '-1');
+    expect(screen.getByRole('main')).not.toHaveAttribute('tabindex');
   });
 
-  test('lets a consumer override the main landmark tabIndex', () => {
-    render(<Basic.Component tabIndex={0} />);
-
-    expect(screen.getByRole('main')).toHaveAttribute('tabindex', '0');
-  });
-
-  // The `<main>` is `usePageFocus`'s fallback target, so an explicit
-  // `undefined` must not strip the attribute and kill the fallback.
-  test('keeps the main landmark focusable when tabIndex is undefined', () => {
-    render(<Basic.Component tabIndex={undefined} />);
+  test('lets a consumer set the main landmark tabIndex', () => {
+    render(<Basic.Component tabIndex={-1} />);
 
     expect(screen.getByRole('main')).toHaveAttribute('tabindex', '-1');
   });
@@ -42,7 +36,7 @@ describe('Page', () => {
   // A programmatically focused element does draw a ring in this browser, so
   // the computed outline is the contract worth asserting, not the class.
   test('suppresses the focus ring on the main landmark', () => {
-    render(<Basic.Component />);
+    render(<Basic.Component tabIndex={-1} />);
     const main = screen.getByRole('main');
 
     main.focus();

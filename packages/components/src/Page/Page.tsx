@@ -41,13 +41,11 @@ interface PageBaseProps extends Omit<
    */
   headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
   /**
-   * Tab index of the `<main>` landmark. The default keeps it programmatically
-   * focusable without putting it in the tab order, which is what `usePageFocus`
-   * needs to move focus there on a route change, and what a skip link needs to
-   * target it. On the default the landmark draws no focus ring, because that
-   * focus move is meant to be invisible. Pass `0` to make it a real tab stop,
-   * which gives it the standard focus ring back.
-   * @default -1
+   * Tab index of the `<main>` landmark. Pass `-1` to make it a skip-link
+   * target: programmatically focusable, never a tab stop, and drawing no focus
+   * ring. Pass `0` to make it a real tab stop, which gives it the standard
+   * focus ring. `usePageFocus` makes an untitled page's landmark focusable
+   * itself, so it needs neither.
    */
   tabIndex?: number;
   /**
@@ -105,9 +103,6 @@ export const Page = ({
   // caller cannot bust the context memo and re-run every consumer's effects.
   const mainRef = useRef<HTMLElement>(null);
   const forwardedRef = useMemo(() => mergeRefs(mainRef, ref), [ref]);
-  // Programmatically focusable, not tabbable: the target `usePageFocus` falls
-  // back to. A default, not a lock, so a consumer's `tabIndex` still wins.
-  const resolvedTabIndex = tabIndex ?? -1;
   const classNames = useClassNames({ component: 'Page' });
   const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
 
@@ -175,7 +170,7 @@ export const Page = ({
         {...props}
         ref={forwardedRef}
         data-page
-        tabIndex={resolvedTabIndex}
+        tabIndex={tabIndex}
         aria-labelledby={hasTitle ? titleId : props['aria-labelledby']}
         aria-label={!hasTitle ? ariaLabel : undefined}
         className={cn(
@@ -183,7 +178,8 @@ export const Page = ({
           // `ui-state-focus-item`, not `ui-state-focus`: that one needs a
           // border to flip to clear 3:1, and this landmark has none. It stays
           // here, not in the theme, because `tabIndex` picks which applies.
-          resolvedTabIndex < 0
+          // No `tabIndex` counts as `-1`: `usePageFocus` sets it on the DOM.
+          tabIndex === undefined || tabIndex < 0
             ? 'outline-none'
             : 'focus-visible:ui-state-focus-item',
           classNames.root

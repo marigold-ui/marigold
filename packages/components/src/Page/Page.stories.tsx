@@ -500,7 +500,7 @@ const SETTINGS: Record<string, { name: string; panels: string[] }> = {
   },
 };
 
-const NoHeadingFocusHarness = () => {
+const NoHeadingFocusHarness = ({ tabIndex }: { tabIndex?: number }) => {
   const [route, setRoute] = useState('/settings/billing');
   const { name, panels } = SETTINGS[route];
 
@@ -536,7 +536,7 @@ const NoHeadingFocusHarness = () => {
             </Breadcrumbs>
           </TopNavigation.Middle>
         </TopNavigation>
-        <Page aria-label={name}>
+        <Page aria-label={name} tabIndex={tabIndex}>
           <RouteFocus routeKey={route} />
           <FocusReadout />
           {panels.map(panel => (
@@ -564,12 +564,9 @@ const NoHeadingFocusHarness = () => {
  * It falls back to the `<main>`, so the screen is still announced. Watch the
  * focus readout: it reports `<main> "Team members"` where the titled story
  * above reports the `<h1>`.
- *
- * Covered by unit tests in `usePageFocus.test.tsx`, which render this story's
- * `.Component`.
  */
 export const FocusWithoutHeading = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
-  render: () => <NoHeadingFocusHarness />,
+  render: ({ tabIndex }) => <NoHeadingFocusHarness tabIndex={tabIndex} />,
 });

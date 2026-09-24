@@ -8,11 +8,11 @@ import { usePageContext } from './Context';
  * a page that has none. `<Page>` owns the heading but is router-agnostic, so the
  * caller supplies the route signal.
  *
- * On each change the heading is made focusable (`tabIndex={-1}`) and focused.
+ * On each change the target is made focusable (`tabIndex={-1}`) and focused.
  * The initial mount is skipped, so the first paint never steals focus. When
- * there is no `<h1>` to find (an `aria-label`-only `<Page>`), focus moves to
- * the page's `<main>` landmark instead, which `<Page>` always renders and
- * always leaves programmatically focusable.
+ * there is no `<h1>` to find (an `aria-label`-only `<Page>`), the target is the
+ * page's `<main>` landmark, which `<Page>` always renders. A `tabIndex` passed
+ * to `<Page>` is left as it is.
  *
  * Call it from a component inside `<Page>` that persists across navigations
  * (the layout / shell level): the skip is per-mount, so one that remounts per
@@ -54,14 +54,21 @@ export const usePageFocus = (routeKey: string) => {
       return;
     }
 
-    // Looked up by the id `<Page>` assigns to the heading.
     const heading = document.getElementById(titleId);
     if (heading) {
       // Headings are not focusable by default.
       heading.tabIndex = -1;
       heading.focus();
-    } else {
-      mainRef.current?.focus();
+      return;
     }
+
+    const main = mainRef.current;
+    if (!main) {
+      return;
+    }
+    if (!main.hasAttribute('tabindex')) {
+      main.tabIndex = -1;
+    }
+    main.focus();
   }, [routeKey, titleId, mainRef]);
 };

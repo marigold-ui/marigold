@@ -35,7 +35,6 @@ export const PageHeader = ({ children }: PageHeaderProps) => {
 
   // Re-publish (rather than inherit) the title slot config from the Page root:
   // Provider values do not merge, so `level`, `id`, and `ref` must be restated.
-  // The added contribution is `[grid-area:title]` for the header's grid.
   const headingProps = useMemo(
     () => ({
       slots: {

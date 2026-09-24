@@ -42,7 +42,6 @@ describe('usePageFocus', () => {
       name: 'Team members',
     });
     expect(heading).toHaveFocus();
-    // Made programmatically focusable, not tabbable.
     expect(heading).toHaveAttribute('tabindex', '-1');
   });
 
@@ -58,6 +57,29 @@ describe('usePageFocus', () => {
 
     expect(screen.queryByRole('heading', { level: 1 })).not.toBeInTheDocument();
     expect(screen.getByRole('main')).toHaveFocus();
+    expect(screen.getByRole('main')).toHaveAttribute('tabindex', '-1');
+  });
+
+  test('leaves the main landmark alone when the page has a heading', async () => {
+    const user = userEvent.setup();
+    render(<FocusOnRouteChange.Component />);
+
+    await user.click(screen.getByRole('button', { name: 'Open Team members' }));
+
+    expect(screen.getByRole('main')).not.toHaveAttribute('tabindex');
+  });
+
+  test('keeps a tabIndex the consumer passed to the page', async () => {
+    const user = userEvent.setup();
+    render(<FocusWithoutHeading.Component tabIndex={0} />);
+    const nav = within(
+      screen.getByRole('navigation', { name: 'Settings sections' })
+    );
+
+    await user.click(nav.getByRole('link', { name: 'Team members' }));
+
+    expect(screen.getByRole('main')).toHaveFocus();
+    expect(screen.getByRole('main')).toHaveAttribute('tabindex', '0');
   });
 
   test('throws when used outside a Page', () => {
