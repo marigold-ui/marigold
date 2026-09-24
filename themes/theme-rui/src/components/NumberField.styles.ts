@@ -4,6 +4,9 @@ export const NumberField: ThemeComponent<'NumberField'> = {
   group: cva({
     base: [
       'ui-control h-control',
+      // The control's own ink, so a stepper disabled at a bound fades from it
+      // rather than from the ground (light on a dark one).
+      'text-foreground',
       'has-invalid:ui-state-error',
       'group-data-disabled/field:ui-state-disabled',
       'group-read-only/field:ui-state-readonly',
@@ -15,7 +18,11 @@ export const NumberField: ThemeComponent<'NumberField'> = {
     base: [
       'w-8 h-full text-center shrink-0 grid palce-items-center',
       'text-foreground',
-      'disabled:text-inherit disabled:bg-transparent',
+      // Field disabled: the group already carries `ui-state-disabled`, so
+      // inherit its faded ink rather than fading a second time.
+      'group-data-disabled/field:text-inherit',
+      // Only this stepper disabled, at `minValue`/`maxValue` of an enabled field.
+      'not-group-data-disabled/field:disabled:ui-state-disabled',
       'border-border!',
       'first-of-type:border-r! first-of-type:rounded-l-[calc(var(--radius-lg)-1px)]',
       'last-of-type:border-l! last-of-type:rounded-r-[calc(var(--radius-lg)-1px)]',

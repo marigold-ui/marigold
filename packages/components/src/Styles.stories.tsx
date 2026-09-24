@@ -265,13 +265,18 @@ const DisabledSpecimen = () => (
     <div className="w-40">
       <NumberField aria-label="Amount" defaultValue={3} disabled />
     </div>
+    <div className="w-40">
+      <NumberField aria-label="Minimum" defaultValue={0} minValue={0} />
+    </div>
   </Inline>
 );
 
 /**
  * `ui-state-disabled` on the three grounds a control meets: the charcoal-100
  * page, a white panel and the dark `ui-contrast` ground of the ActionBar. The
- * first ghost Button of each row is enabled, for reference.
+ * first ghost Button of each row is enabled, for reference. The last
+ * NumberField is enabled at its `minValue`, so only its decrement stepper is
+ * disabled.
  *
  * Before, the state painted a fixed charcoal-100 fill and charcoal-400 label: a
  * 1:1 fill on the page and a near-white pill on the dark ground. Now label and
