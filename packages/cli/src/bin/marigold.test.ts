@@ -102,6 +102,15 @@ describe('main() — telemetry on validation failure', () => {
     );
   });
 
+  // `/` and `.` are legal in slugs, so a relative path would otherwise pass.
+  test('records a relative file path as invalid', async () => {
+    await main(['docs', 'packages/components/src/Button.tsx']);
+
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      args: expect.objectContaining({ component: 'invalid' }),
+    });
+  });
+
   test('emits exitCode 1 when the component positional is missing', async () => {
     const code = await main(['docs']);
 
@@ -130,6 +139,34 @@ describe('main() — telemetry on validation failure', () => {
 
     expect(code).toBe(1);
     expect(emitMock).not.toHaveBeenCalled();
+  });
+});
+
+describe('main() — unknown command', () => {
+  test('suggests the nearest command for a typo', async () => {
+    const code = await main(['serach']);
+
+    expect(code).toBe(1);
+    expect(stderrSpy.mock.calls.flat().join('')).toContain(
+      'Did you mean "search"?'
+    );
+  });
+
+  test('suggests regardless of case', async () => {
+    await main(['DOCS']);
+
+    expect(stderrSpy.mock.calls.flat().join('')).toContain(
+      'Did you mean "docs"?'
+    );
+  });
+
+  test('omits the suggestion when nothing is close', async () => {
+    const code = await main(['xyzzy']);
+    const stderr = stderrSpy.mock.calls.flat().join('');
+
+    expect(code).toBe(1);
+    expect(stderr).toContain('Unknown command: xyzzy');
+    expect(stderr).not.toContain('Did you mean');
   });
 });
 
@@ -232,14 +269,26 @@ describe('main() — search command', () => {
     });
   });
 
-  test('fails when --limit is not a positive integer', async () => {
-    const code = await main(['search', 'tag', '--limit', '0']);
+  // A rejected --limit is clamped like --format, so a typo is never echoed back.
+  test.each(['0', 'abc123'])(
+    'fails and records invalid when --limit is %s',
+    async limit => {
+      const code = await main(['search', 'tag', '--limit', limit]);
 
-    expect(code).toBe(1);
+      expect(code).toBe(1);
+      expect(emitMock.mock.calls[0][0]).toMatchObject({
+        command: 'search',
+        exitCode: 1,
+        args: expect.objectContaining({ limit: 'invalid' }),
+      });
+    }
+  );
+
+  test('records a valid --limit as-is', async () => {
+    await main(['search', 'tag', '--limit', '5']);
+
     expect(emitMock.mock.calls[0][0]).toMatchObject({
-      command: 'search',
-      exitCode: 1,
-      args: expect.objectContaining({ limit: '0' }),
+      args: expect.objectContaining({ limit: '5' }),
     });
   });
 
