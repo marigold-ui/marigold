@@ -199,15 +199,11 @@ Basic.test(
         const style = focused ? getComputedStyle(focused) : undefined;
 
         expect(style?.outlineStyle).toBe('none');
-        // Width, not just "some inset shadow": the contrast floor rests on a
-        // full 2px ring, and a weakened one would still contain 'inset'.
         expect(style?.boxShadow).toContain('0px 0px 0px 2px inset');
       });
     });
 
     await step('An unselected option takes the focus wash', async () => {
-      // Dog is selected as well as focused, so its selected fill would mask a
-      // missing wash.
       await userEvent.type(canvas.getByRole('combobox'), '{arrowdown}');
 
       await waitFor(() => {
