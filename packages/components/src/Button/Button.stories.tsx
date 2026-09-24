@@ -160,8 +160,7 @@ export const GhostOnBackground = meta.story({
  *
  * `GhostOnBackground` above covers the resting state. The inactive ones take
  * their look from `ui-state-disabled`, which derives label and fill from the
- * ink, so they recede on `bg-surface`, `bg-background` and `bg-primary` alike
- * (DST-1817). Snapshotted to guard that in VRT.
+ * ink, so they recede on `bg-surface`, `bg-background` and `bg-primary` alike.
  */
 export const GhostStatesOnBackground = meta.story({
   parameters: {

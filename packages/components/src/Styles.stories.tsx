@@ -228,7 +228,7 @@ export const Surface = meta.story({
   ),
 });
 
-// The pre-DST-1817 `ui-state-disabled`: opaque charcoal rungs calibrated for
+// The previous `ui-state-disabled`: opaque charcoal rungs calibrated for
 // white. Re-applied here (with `!`, so it beats the live utility) to put the old
 // look next to the new one.
 const legacyDisabled = cn(
@@ -276,7 +276,7 @@ const DisabledSpecimen = () => (
  * Before, the state painted a fixed charcoal-100 fill and charcoal-400 label: a
  * 1:1 fill on the page and a near-white pill on the dark ground. Now label and
  * fill are derived from the ink, so the state carries the same weight on every
- * ground and every variant reads the same (DST-1817).
+ * ground and every variant reads the same.
  */
 export const DisabledState = meta.story({
   render: () => (

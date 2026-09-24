@@ -128,8 +128,7 @@ export const WithoutClearButton = meta.story({
  * The bar cascades `variant="ghost"` onto its plain `<Button>` children, and a
  * ghost Button takes its disabled/pending look from `ui-state-disabled`. That
  * state derives label and fill from the ink, so the actions recede into the dark
- * ground instead of painting a light block (DST-1817). Kept as a snapshot to
- * guard that in VRT.
+ * ground instead of painting a light block.
  */
 export const DisabledAndLoading = meta.story({
   tags: ['component-test'],
