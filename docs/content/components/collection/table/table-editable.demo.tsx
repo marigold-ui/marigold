@@ -49,7 +49,7 @@ export default () => {
       <Table.Body>
         {data.map(venue => (
           <Table.Row key={venue.id}>
-            <Table.Cell>
+            <Table.Cell textValue={venue.name}>
               <Text weight="medium">{venue.name}</Text>
             </Table.Cell>
             <Table.EditableCell
