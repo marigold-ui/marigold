@@ -149,7 +149,9 @@ personal data. That reading was wrong: a stable per-machine UUID is pseudonymous
 anonymous under GDPR Recital 26, and persisting it to the config file made the write "storage
 on terminal equipment" under ePrivacy Art. 5(3) / § 25 TDDDG, which needs consent. The field is
 gone from the payload, the schema and the CLI's config, and the schema is strict so a stale CLI
-still sending it gets a 400 rather than a silent strip. `mcp_tool_call` carries `hashedCallerId`, a
+still sending it gets a 400 rather than a silent strip. Strictness covers top-level keys only:
+`args` is a record whose keys are bounded in length and count, not enumerated, so the guarantee
+that no identifier is sent is the CLI's, which builds `args` only from validated values. `mcp_tool_call` carries `hashedCallerId`, a
 SHA-256 of a Keycloak `sub`: pseudonymous, not anonymous, since anyone holding both Redis read
 access and a list of `sub`s to test against can re-identify a named Reservix employee.
 

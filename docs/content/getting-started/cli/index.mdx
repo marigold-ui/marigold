@@ -296,7 +296,7 @@ marigold completion fish > ~/.config/fish/completions/marigold.fish
 
 Tab-completes subcommands, flag names, enum values (e.g. `--format markdown|json|plain`), categories (`marigold list --category <TAB>`), and component names (`marigold docs <TAB>`). Component and category suggestions are sourced from the local manifest cache. Run `marigold list` once to warm it.
 
-<Callout variant="warning" title="PowerShell not supported">
+<Callout type="warning" title="PowerShell not supported">
   Tab-completion is available for `bash`, `zsh`, and `fish` only. PowerShell is
   not yet supported.
 </Callout>
@@ -331,7 +331,7 @@ One event per command invocation, with these fields and nothing else:
 | `isAIAgent`      | `true`                    | Whether an agent runtime env var was set            |
 | `receivedAt`     | `2026-07-30T14:00:00Z`    | Added server-side, truncated to the hour            |
 
-`args` keeps only flag presence and values from a closed set. Enum flags (`--format`, `--section`, `--limit`) are recorded as their validated value, or as `invalid` if unrecognised, so a typo is never echoed back. Identifier-shaped positionals (a component name, an example slug, a `--category`) are recorded only when they look like an identifier. **Free-text is never sent**: a `marigold search` query or a `list --search` term is recorded as `used`, so we learn that search was used but not what you searched for.
+`args` keeps only flag presence and values from a closed set. Closed-set flags (`--format`, `--section`, and `--limit` as a positive integer) are recorded as their validated value, or as `invalid` if unrecognised, so a typo is never echoed back. Identifier-shaped positionals (a component name, an example slug, a `--category`) are recorded only when they look like an identifier. A file path, absolute or relative, is recorded as `invalid`. **Free-text is never sent**: a `marigold search` query or a `list --search` term is recorded as `used`, so we learn that search was used but not what you searched for.
 
 `receivedAt` is deliberately hour-granular: exact timestamps would let separate events be stitched back into a per-session sequence by timing alone, undoing the point of having no identifier.
 
@@ -341,7 +341,7 @@ One event per command invocation, with these fields and nothing else:
 - Search queries and any other free-form text you type
 - Your name, email, username, hostname, or any account data
 - Any persistent identifier, of any kind
-- Your IP address is not stored. It's necessarily visible to our host in transit, as with any HTTP request, but it is never written into a telemetry record.
+- Your IP address is never written into a telemetry record. It's necessarily visible to our host in transit, as with any HTTP request.
 
 Events are kept indefinitely, to support long-run usage trends. That is a decision about volume, not about you: with no identifier in a record and timestamps rounded to the hour, a five-year-old event says no more about you than a five-minute-old one.
 
@@ -349,7 +349,7 @@ Events are kept indefinitely, to support long-run usage trends. That is a decisi
 
 Because there's nothing to consent to storing. We removed the per-machine identifier the CLI used to send, which means we can count **invocations, not people**. Unique-user numbers come from public npm download counts instead. In exchange, the data stops being personal data, the CLI stops writing an identifier onto your device, and no per-user history exists to secure or hand over. An opt-in prompt would also be close to meaningless here: most runs are non-interactive, driven by AI agents in pipelines where no human is at a prompt to ask.
 
-<Callout variant="warning" title="If this ever changes">
+<Callout type="warning" title="If this ever changes">
   This reasoning holds only as long as the payload stays identifier-free. If a
   future version needs to link events to a person or a machine, the default has
   to flip to opt-in rather than being disclosed after the fact.
