@@ -1,6 +1,7 @@
 // Single source of truth for the CLI's command surface, used by the tab
 // completion suggester. Keep in sync with the parseArgs blocks in
 // bin/marigold.ts and the help template.
+import type { OutputFormat } from './format.js';
 
 export type PositionalKind =
   | 'component'
@@ -42,6 +43,19 @@ export const COMPLETION_SHELLS = completionShellValues;
 // guard/type from it instead of re-declaring the enum.
 export const doctorFormatValues = ['text', 'json'] as const;
 export type DoctorFormat = (typeof doctorFormatValues)[number];
+
+// Default --format when the flag is omitted: human-readable in an interactive
+// terminal, JSON when stdout is piped or captured (agents, scripts, CI). An
+// explicit --format always wins. Resolved only in the bin; the programmatic
+// run*() APIs keep their fixed markdown/text fallback.
+export const defaultOutputFormat = (
+  isTTY: boolean = Boolean(process.stdout.isTTY)
+): OutputFormat => (isTTY ? 'markdown' : 'json');
+
+// For the commands whose human format is `text` (doctor, validate).
+export const defaultReportFormat = (
+  isTTY: boolean = Boolean(process.stdout.isTTY)
+): DoctorFormat => (isTTY ? 'text' : 'json');
 
 export type SubcommandName =
   | 'docs'
