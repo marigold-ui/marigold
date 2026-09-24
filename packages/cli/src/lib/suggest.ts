@@ -18,18 +18,20 @@ const levenshtein = (a: string, b: string): number => {
 };
 
 // Return the closest candidate to `input`, or undefined when nothing is near
-// enough to be a helpful suggestion. The threshold scales with input length so
-// short words (`lst` → `list`) still match without suggesting wild guesses for
-// long typos.
+// enough to be a helpful suggestion. The threshold is half the input length,
+// so longer input tolerates more edits; the floor of 2 is what lets short
+// words (`lst` → `list`) match at all. Input is lowercased first so
+// `marigold DOCS` still suggests `docs`; every candidate is already lowercase.
 export const nearest = (
   input: string,
   candidates: readonly string[]
 ): string | undefined => {
   const threshold = Math.max(2, Math.floor(input.length / 2));
+  const normalized = input.toLowerCase();
   let best: string | undefined;
   let bestDistance = Infinity;
   for (const candidate of candidates) {
-    const distance = levenshtein(input, candidate);
+    const distance = levenshtein(normalized, candidate);
     if (distance < bestDistance) {
       bestDistance = distance;
       best = candidate;

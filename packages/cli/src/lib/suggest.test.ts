@@ -18,6 +18,10 @@ describe('nearest', () => {
     expect(nearest('telemetry', TOP_LEVEL_NAMES)).toBe('telemetry');
   });
 
+  test('ignores case in the input', () => {
+    expect(nearest('DOCS', TOP_LEVEL_NAMES)).toBe('docs');
+  });
+
   test('returns undefined for input too far from any candidate', () => {
     expect(nearest('xyzzy', TOP_LEVEL_NAMES)).toBeUndefined();
   });
