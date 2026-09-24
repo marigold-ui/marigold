@@ -1,11 +1,12 @@
 import type { ComponentProps, ReactNode } from 'react';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import type RAC from 'react-aria-components';
 import {
   Table as RACTable,
   ResizableTableContainer,
 } from 'react-aria-components/Table';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { announce } from '@react-aria/live-announcer';
 import { cn, useClassNames } from '@marigold/system';
 import { useActionBar } from '../ActionBar/useActionBar';
 import { intlMessages } from '../intl/messages';
@@ -123,6 +124,14 @@ const _Table = ({
       actionBar,
     });
 
+  // A live region rendered with the table would be inserted with its text
+  // already in it on mount, which screen readers skip. The shared announcer's
+  // region exists ahead of time, so the first load is announced too.
+  useEffect(() => {
+    if (!loading) return;
+    announce(stringFormatter.format('loadingMessage'), 'polite');
+  }, [loading, stringFormatter]);
+
   return (
     <TableContext value={ctx}>
       <ResizableTableContainer
@@ -153,10 +162,6 @@ const _Table = ({
           )}
           {...props}
         />
-        {/* Stays mounted, screen readers skip a live region inserted with text. */}
-        <div className="sr-only" role="status" aria-live="polite">
-          {loading && stringFormatter.format('loadingMessage')}
-        </div>
         {actionBarOverlay}
       </ResizableTableContainer>
     </TableContext>

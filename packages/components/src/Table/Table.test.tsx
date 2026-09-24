@@ -1,5 +1,7 @@
 import { render, renderHook, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { afterEach, vi } from 'vitest';
+import { announce } from '@react-aria/live-announcer';
 import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia } from '../test.utils';
 import { useTableContext } from './Context';
@@ -20,6 +22,14 @@ import { TableDropIndicator, renderDropIndicator } from './TableDropIndicator';
 const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
 window.matchMedia = mockMatchMedia([smallScreenQuery]);
+
+vi.mock('@react-aria/live-announcer', () => ({
+  announce: vi.fn(),
+}));
+
+afterEach(() => {
+  vi.mocked(announce).mockClear();
+});
 
 describe('Edge cell padding', () => {
   test('derives from --bleed-px only, never from --panel-px', () => {
@@ -121,22 +131,40 @@ describe('Accessibility', () => {
     expect(grid).toBeInstanceOf(HTMLTableElement);
   });
 
-  test('marks the grid busy and announces loading', () => {
+  test('marks the grid busy and announces loading on mount', () => {
     render(<Basic.Component loading />);
 
     expect(screen.getByRole('grid')).toHaveAttribute('aria-busy', 'true');
-    expect(screen.getByRole('status')).toHaveTextContent('Loading...');
+    expect(announce).toHaveBeenCalledExactlyOnceWith('Loading...', 'polite');
   });
 
-  test('is not busy once loaded, and keeps the status region mounted', () => {
+  test('is not busy once loaded, and announces nothing when loading finishes', () => {
     const { rerender } = render(<Basic.Component loading />);
-    const status = screen.getByRole('status');
 
     rerender(<Basic.Component />);
 
     expect(screen.getByRole('grid')).not.toHaveAttribute('aria-busy');
-    expect(screen.getByRole('status')).toBe(status);
-    expect(status).toBeEmptyDOMElement();
+    expect(announce).toHaveBeenCalledTimes(1);
+  });
+
+  test('announces again each time loading starts', () => {
+    const { rerender } = render(<Basic.Component />);
+
+    expect(announce).not.toHaveBeenCalled();
+
+    rerender(<Basic.Component loading />);
+    rerender(<Basic.Component />);
+    rerender(<Basic.Component loading />);
+
+    expect(announce).toHaveBeenCalledTimes(2);
+  });
+
+  test('renders no status region of its own', () => {
+    render(<Basic.Component loading />);
+
+    // The shared announcer owns the live region, so a table next to an
+    // ActionBar leaves a single `status` on the page.
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
   });
 });
 
