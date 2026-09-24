@@ -258,8 +258,14 @@
      Derived from the faded label like the fill (0.45 × 0.45 ≈ 0.2, the
      charcoal-300 disabled-border step on white), so it recedes on a dark ground
      instead of drawing a light outline. Chroma lifted the same way (c 0.025 at
-     0.2 ≈ charcoal-300's c 0.005). */
-  --ui-border-color: oklch(from currentColor l 0.025 h / calc(alpha* 0.45));
+     0.2 ≈ charcoal-300's c 0.005).
+     A custom property is never validated, so a duplicated declaration cannot
+     fall back the way `background` does: the relative-color value would always
+     win and only fail where `var()` substitutes it, dropping the ring. Gate it. */
+  --ui-border-color: color-mix(in oklab, currentColor 45%, transparent);
+  @supports (color: oklch(from currentColor l c h)) {
+    --ui-border-color: oklch(from currentColor l 0.025 h / calc(alpha * 0.45));
+  }
   /* No top highlight when disabled. Zeroing `--tw-inset-shadow` is reliable where a
      raw `box-shadow: none` lost the cascade to the surface utilities' box-shadow. */
   @apply inset-shadow-none;
