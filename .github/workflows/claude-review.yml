@@ -236,6 +236,20 @@ jobs:
               userEvent over fireEvent, stories imported instead of fixtures,
               accessible queries over getByTestId.
 
+            Do not review the diff on its own. The turn budget is there to be
+            spent: before concluding, read the code around the change. The
+            thing a diff-only read misses most often is a change that solves a
+            problem the repo already solves elsewhere, and no checklist can
+            name every such pattern in advance.
+
+            So for each substantive change, find the nearest existing
+            precedent and compare against it. Grep for the mechanism rather
+            than the component name, because the precedent usually sits in a
+            different component: a live region, a context, a hook, a prop
+            another component already models. Report a divergence as a finding
+            and name the file that establishes the pattern. Keep this bounded,
+            a handful of targeted reads rather than a survey.
+
             Report a single comment with these sections, omitting any that are
             empty:
 
@@ -288,6 +302,8 @@ jobs:
           # 30 was not enough for a checklist review that reads the diff plus
           # several source files: the action fails the whole job when the SDK
           # reports more turns than this, even on a successful review.
+          # The precedent-reading paragraph in the prompt spends into this
+          # headroom on purpose, so treat 45 as budgeted rather than spare.
           claude_args: >-
             --model ${{ vars.AI_REVIEW_MODEL_ID }}
             --max-turns 45
