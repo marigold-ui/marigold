@@ -86,7 +86,7 @@ export const EmptyStateAnatomy = () => (
       className="fill-fd-accent-foreground transition-colors duration-300"
     />
 
-    {/* Connector Lines */}
+    {/* Connector lines */}
     <g
       className="stroke-fd-primary transition-colors duration-300"
       fill="none"
@@ -106,7 +106,7 @@ export const EmptyStateAnatomy = () => (
       <path d="M 509 309 L 666 309" />
     </g>
 
-    {/* Connector Dots */}
+    {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="357" cy="128" r="4" />
       <circle cx="327" cy="236" r="4" />

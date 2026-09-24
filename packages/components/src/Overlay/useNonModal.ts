@@ -5,9 +5,6 @@ import type { DOMAttributes, RefObject } from '@react-types/shared';
 // Props
 // ---------------
 export interface AriaNonModalProps {
-  /**
-   * The ref for the non-modal element.
-   */
   nonModalRef: RefObject<Element | null>;
 
   /**
@@ -18,7 +15,6 @@ export interface AriaNonModalProps {
 }
 
 export interface NonModalAria {
-  /** Props for the non-modal element. */
   nonModalProps: DOMAttributes;
 }
 

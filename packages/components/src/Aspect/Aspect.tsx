@@ -5,7 +5,7 @@ import type { AriaRegionProps } from '@marigold/types';
 
 export interface AspectProps extends AspectProp, AriaRegionProps {
   /**
-   * The children of the component.
+   * Children of the component.
    */
   children?: ReactNode;
 

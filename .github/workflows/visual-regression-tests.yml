@@ -65,7 +65,7 @@ jobs:
           echo "owner=$OWNER" >> "$GITHUB_OUTPUT"
 
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           # Pick the right ref depending on the trigger:
           # 1. If merged PR: Use the merge commit on the target branch.
@@ -152,11 +152,11 @@ jobs:
           if-no-files-found: ignore
 
       - name: Send Slack notification
-        if: always() && steps.chromatic.outputs.changeCount != '0'
+        if: always() && steps.chromatic.outputs.changeCount != '0' && startsWith(steps.chromatic.outputs.buildUrl, 'http')
         uses: slackapi/slack-github-action@v4.0.0
         with:
           webhook: ${{ secrets.SLACK_HOOK_DST_REPO_STREAM }}
-          webhook-type: webhook-trigger
+          webhook-type: incoming-webhook
           payload: |
             {
               "blocks": [
@@ -172,7 +172,7 @@ jobs:
                   "elements": [
                     {
                       "type": "mrkdwn",
-                      "text": "*Branch:* `${{ steps.resolve-branch.outputs.branch }}` | *Commit:* `${{ github.sha }}` | *Triggered by:* ${{ github.actor }} (${{ github.event_name }})"
+                      "text": "*Branch:* `${{ steps.resolve-branch.outputs.branch }}` | *Commit:* `${{ steps.sha.outputs.sha }}` | *Triggered by:* ${{ github.actor }} (${{ github.event_name }})"
                     }
                   ]
                 },

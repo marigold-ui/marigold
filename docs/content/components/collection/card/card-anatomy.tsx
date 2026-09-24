@@ -134,7 +134,7 @@ export const CardAnatomy = () => (
       className="fill-fd-muted-foreground/60 transition-colors duration-300"
     />
 
-    {/* Connector Lines */}
+    {/* Connector lines */}
     <g
       className="stroke-fd-primary transition-colors duration-300"
       fill="none"
@@ -158,7 +158,7 @@ export const CardAnatomy = () => (
       <path d="M 474 322 L 578 322" />
     </g>
 
-    {/* Connector Dots */}
+    {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="248" cy="88" r="4" />
       <circle cx="268" cy="159" r="4" />

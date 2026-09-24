@@ -31,7 +31,7 @@ One shape, no exceptions:
 
 The `description` is the only part of a skill that enters the context window before it runs — everything else loads on invocation. So write it as a trigger, not a summary: say what the skill does *and* the phrases that should reach for it. A vague description is why a good skill never fires.
 
-Open it with `Marigold repo — ` so ours group visibly in a `/` menu that also lists plugin and personal skills. Use the em dash, not a colon: descriptions are read raw rather than as quoted YAML, so quotes leak through literally, and `Marigold repo: ` would need them.
+Open it with `DST — ` so ours group visibly in a `/` menu that also lists plugin and personal skills. The marker names the team whose workflow the skill encodes, not the checkout it happens to sit in. `DST` is the design system team's project across the Core app, ClearingAdministration, the Cypress suite and the Insights scanner as well as this repository, so a skill that talks only to Jira or to a resolved remote is usable from any of them. Write the body that way: a skill that reaches for `CLAUDE.md`, `pnpm` or a path under `packages/` has pinned itself here, and only the ones that genuinely cannot work elsewhere should. Use the em dash, not a colon: descriptions are read raw rather than as quoted YAML, so quotes leak through literally, and `DST: ` would need them.
 
 Don't put that marker in the `name`. Plugin and directory-scoped skills are namespaced by the harness with a colon (`vercel:react-best-practices`, `apps/web:deploy`), so a hand-written prefix in the name impersonates a mechanism it isn't part of. The invocation stays `/create-pr`.
 
@@ -66,6 +66,10 @@ These carry two extra obligations:
 
 Narrow `allowed-tools` to the exact commands the skill needs. It is the one guardrail in a skill that is structural rather than a matter of prose.
 
+**A confirmation only holds if the question reaches a human.** `AskUserQuestion` is resolved by the permission component, so on a machine running `skipAutoPermissionPrompt` under `permissions.defaultMode: "auto"` it never renders. The tool returns the first option and nothing in the result distinguishes that from a real answer, so the model believes it was approved. This was found the slow way: seven questions in one session came back selecting the recommended option every time, and the person at the keyboard had seen none of them.
+
+Two things follow. It fails toward performing the outward action, which is the worst direction for a guardrail to fail in. And it is invisible on a machine where the setting is off, so a gate that works for you can be silently open for a teammate. Check `/config` if a gate ever seems to answer itself. A skill that must hold regardless of anyone's configuration can render its options and end the turn instead, which no setting can resolve.
+
 ## Hooks
 
 Hooks are the opposite of skills. A skill is offered to the model, which decides whether to reach for it. A hook is a shell command Claude Code runs itself at a fixed point in the session, whether anyone wanted it or not. Registration lives in `.claude/settings.json`, scripts live in `.claude/hooks/`, and both are committed, so a hook added here runs on every teammate's machine. Nothing gates it: [workspace trust](https://code.claude.com/docs/en/permissions#project-allow-rules-and-workspace-trust) holds back a project's `permissions.allow` rules, not its hooks, and the file watcher picks up a settings edit mid-session, so a pull can start one running before the next session.
@@ -96,6 +100,19 @@ Then `/hooks` in a session lists what is registered, and `claude --debug-file /t
 | The post-edit typecheck | `MARIGOLD_SKIP_TYPECHECK_HOOK=1` in your shell |
 | The session pre-flight | `MARIGOLD_SKIP_PREFLIGHT_HOOK=1` in your shell |
 | Every hook at once | `"disableAllHooks": true` in `~/.claude/settings.json` |
+
+## AI review: local and CI
+
+Review runs in two places and they are not the same tool.
+
+`/review-pr` is on demand, for the author, before anyone else looks. It can reach things CI does not: Jira context, the VRT freshness check, whatever you want to ask it next.
+
+The `Claude Review` workflow is the floor. It runs unattended on a pull request, posts one advisory comment, and cannot approve, request changes or block a merge. Which pull requests it runs on is decided by category, read from the Conventional Commits type in the title. `Claude Mentions` is the interactive half, triggered by writing `@claude` in a thread.
+
+Two rules hold this together:
+
+- **The checklist has one home.** `skills/review-pr/references/review-checklist.md` is the agreed standard, and the CI prompt points at that path rather than restating it. A rule that exists in a workflow file and not in the checklist will drift out of review.
+- **CI never becomes required.** The floor stays advisory. Making it blocking would put a non-deterministic check on the merge path. The action cannot submit a formal review, so it can never block on findings, but the job itself can be marked required in branch protection. Do not.
 
 ## Adding and removing
 

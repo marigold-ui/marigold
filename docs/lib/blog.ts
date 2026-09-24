@@ -15,9 +15,7 @@ export interface BlogPost {
  */
 const extractIntroduction = (filePath: string): string => {
   try {
-    // Read raw markdown file
     const rawContent = readFileSync(filePath, 'utf8');
-    // Strip frontmatter by splitting on --- markers
     // Frontmatter is between the first two --- markers
     const parts = rawContent.split(/^---$/m);
     let contentWithoutFrontmatter = rawContent;
@@ -84,9 +82,6 @@ export const getAllBlogPosts = (): BlogPost[] => {
   return posts.sort((a, b) => b.date.getTime() - a.date.getTime());
 };
 
-/**
- * Gets the latest blog post (most recent by date).
- */
 export const getLatestPost = (): BlogPost | null => {
   const posts = getAllBlogPosts();
   return posts.length > 0 ? posts[0] : null;

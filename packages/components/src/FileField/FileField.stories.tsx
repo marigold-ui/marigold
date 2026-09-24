@@ -154,16 +154,13 @@ export const UploadFile = meta.story({
 UploadFile.test(
   'Shows the uploaded file in the list',
   async ({ canvas, userEvent }) => {
-    // Arrange
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
     const fileA = makeFile('a.pdf', 'application/pdf', 2 * 1024 * 1024);
 
-    // Act
     await userEvent.upload(input, fileA);
 
-    // Assert
     await expect(canvas.queryByText('a.pdf', { exact: true })).toBeVisible();
   }
 );
@@ -176,26 +173,35 @@ UploadFile.test(
       label: 'Multifile Upload',
       multiple: true,
     },
+    decorators: [
+      Story => (
+        <I18nProvider locale="en-US">
+          <Story />
+        </I18nProvider>
+      ),
+    ],
   },
   async ({ canvas, userEvent }) => {
-    // Arrange
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
-    const fileA = makeFile('abc.pdf', 'application/pdf', 2 * 1024 * 1024);
-    const fileB = makeFile('test.txt', 'text/plain', 5 * 1024 * 1024);
-    const fileC = makeFile('pic1.jpg', 'image/*', 0.5 * 1024 * 1024);
+    const fileA = makeFile('abc.pdf', 'application/pdf', 2_000_000);
+    const fileB = makeFile('test.txt', 'text/plain', 5_000_000);
+    const fileC = makeFile('pic1.jpg', 'image/*', 512_000);
+    // Small enough that a fixed MB divisor rendered it as "0.00 MB" (DSTSUP-275).
+    const fileD = makeFile('import.csv', 'text/csv', 2400);
 
     // Act
-    await userEvent.upload(input, [fileA, fileB, fileC]);
+    await userEvent.upload(input, [fileA, fileB, fileC, fileD]);
 
-    // Assert
     await expect(canvas.getByText('abc.pdf')).toBeInTheDocument();
     await expect(canvas.getByText('test.txt')).toBeInTheDocument();
     await expect(canvas.getByText('pic1.jpg')).toBeInTheDocument();
-    await expect(canvas.getByText('2.00 MB')).toBeInTheDocument();
-    await expect(canvas.getByText('5.00 MB')).toBeInTheDocument();
-    await expect(canvas.getByText('0.50 MB')).toBeInTheDocument();
+    await expect(canvas.getByText('import.csv')).toBeInTheDocument();
+    await expect(canvas.getByText('2 MB')).toBeInTheDocument();
+    await expect(canvas.getByText('5 MB')).toBeInTheDocument();
+    await expect(canvas.getByText('512 kB')).toBeInTheDocument();
+    await expect(canvas.getByText('2.4 kB')).toBeInTheDocument();
   }
 );
 
@@ -217,16 +223,13 @@ Small.test(
   'Shows the uploaded file in the compact layout',
   { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
-    // Arrange
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
     const file = makeFile('compact.pdf', 'application/pdf', 1 * 1024 * 1024);
 
-    // Act
     await userEvent.upload(input, file);
 
-    // Assert
     await expect(canvas.getByText('compact.pdf')).toBeInTheDocument();
   }
 );
@@ -282,17 +285,14 @@ InForm.test(
   'Submits the uploaded file with the form',
   { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
-    // Arrange
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
     const file = makeFile('report.pdf', 'application/pdf', 1024 * 1024);
 
-    // Act
     await userEvent.upload(input, file);
     await userEvent.click(canvas.getByRole('button', { name: 'Submit' }));
 
-    // Assert
     await expect(canvas.getByTestId('submitted-files')).toBeInTheDocument();
     await expect(
       canvas.getByText('report.pdf (1048576 bytes)')

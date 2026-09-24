@@ -1,0 +1,110 @@
+name: Renovate auto-approve
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    # Only the trunk. A Renovate PR aimed at a release branch is governed by a
+    # different ruleset, so it stays a human decision.
+    branches: [main]
+
+permissions: {}
+
+# Serialize per PR: two overlapping runs would both read zero reviews and both approve.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  approve:
+    if: >-
+      github.event.pull_request.user.login == 'marigold-renovate[bot]' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      startsWith(github.head_ref, 'renovate/')
+    runs-on: ubuntu-latest
+    steps:
+      # No owner or repositories, so the token is scoped to this repo alone.
+      - uses: actions/create-github-app-token@v3
+        id: app-token
+        with:
+          client-id: ${{ vars.APPROVER_APP_CLIENT_ID }}
+          private-key: ${{ secrets.APPROVER_APP_PRIVATE_KEY }}
+
+      - name: Approve what Renovate queued for auto-merge
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          APP: ${{ steps.app-token.outputs.app-slug }}
+        run: |
+          set -euo pipefail
+
+          # Renovate queues auto-merge only on what renovate.json says may automerge,
+          # a second or so after opening the PR. The body says the same thing, but a
+          # dependency's release notes are pasted into it and could forge the line.
+          #
+          # Who queued it matters as much as whether: anyone with write access can
+          # press "Enable auto-merge" on a major bump this config deliberately holds
+          # back, and an approval from this app would let it land unreviewed.
+          #
+          # `gh` spells the bot `app/marigold-renovate` where the job condition above
+          # gets `marigold-renovate[bot]` from the webhook. Same actor, two APIs.
+          enabled_by=''
+          for _ in $(seq 12); do
+            # Assigned outside the `if` on purpose: `set -e` is suppressed in a
+            # condition, so a failing API call there would read as "not queued".
+            enabled_by=$(gh pr view "$PR" --repo "$REPO" --json autoMergeRequest \
+              --jq '.autoMergeRequest.enabledBy.login // ""')
+            if [ -n "$enabled_by" ]; then
+              break
+            fi
+            sleep 5
+          done
+
+          # Nothing queued. Renovate states the reason in the body, and reading it
+          # here only picks the wording of a log line, never whether to approve, so
+          # a release note that happened to carry the marker costs a wrong message
+          # and nothing more. `enabledBy` above is the gate, and a changelog cannot
+          # forge that.
+          if [ -z "$enabled_by" ]; then
+            body=$(gh pr view "$PR" --repo "$REPO" --json body --jq '.body')
+
+            # The expected case: major, 0.x range, or the vale-cli/vale carve-out.
+            # Routine and frequent, so it stays a plain line with no annotation.
+            if printf '%s' "$body" | grep -qF 'Automerge**: Disabled by config'; then
+              echo "renovate.json holds this update back, leaving it for a human."
+              exit 0
+            fi
+
+            # Renovate said it would automerge and then queued nothing we could see.
+            # That is the missed window, and it is worth an annotation: the only
+            # automatic retry is the next rebase, which can be days out.
+            echo "::warning::Renovate marked this automergeable but no auto-merge" \
+              "request appeared within 60s. The only automatic retry is the next" \
+              "rebase, and those run twice a week. Approve by hand if it should" \
+              "not wait that long."
+            exit 0
+          fi
+
+          if [ "$enabled_by" != "app/marigold-renovate" ]; then
+            echo "Auto-merge was queued by $enabled_by, not Renovate. Leaving it for a human."
+            exit 0
+          fi
+
+          # Any state, not just APPROVED. A dismissed approval is how someone stops
+          # a queued merge, and re-approving on the next rebase would undo that.
+          #
+          # `test()` is a substring match on purpose, because it has to hold whether
+          # this field renders the app as `app/<slug>` or `<slug>[bot]`. Tightened to
+          # `==` against the wrong spelling it would match nothing, and the job would
+          # re-approve on every rebase, undoing the dismissal this line protects.
+          reviewed=$(gh pr view "$PR" --repo "$REPO" --json reviews \
+            --jq '[.reviews[] | select(.author.login | test(env.APP))] | length')
+
+          if [ "$reviewed" != "0" ]; then
+            echo "Already reviewed by $APP, nothing to do."
+            exit 0
+          fi
+
+          gh pr review "$PR" --repo "$REPO" --approve \
+            --body 'Renovate queued auto-merge for this update, approving so it can complete.'

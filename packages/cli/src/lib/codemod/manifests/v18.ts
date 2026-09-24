@@ -112,7 +112,15 @@ export const v18: MigrationManifest = {
       'label',
       'description',
     ],
-    ListView: ['list', 'item', 'label', 'description', 'title', 'actions'],
+    ListView: [
+      'list',
+      'item',
+      'label',
+      'description',
+      'title',
+      'indicator',
+      'actions',
+    ],
     Menu: [
       'container',
       'section',
@@ -692,10 +700,21 @@ export const v18: MigrationManifest = {
       },
     },
     // grep of packages/components/src for `added`-token utilities: only the
-    // SelectList selection indicator hardcodes new tokens (codegen should
-    // re-run that scan per release)
+    // shared grid selection indicator hardcodes new tokens, and both GridList
+    // wrappers render it (codegen should re-run that scan per release)
     componentDependencies: {
       SelectList: {
+        tokens: [
+          'selected-bold',
+          'selected-bold-foreground',
+          'disabled-surface',
+        ],
+        url: 'https://github.com/marigold-ui/marigold/blob/946dc9f30/packages/components/src/SelectList/SelectionIndicator.tsx#L18-L26',
+      },
+      // The same indicator, since it was lifted to `utils/GridSelectionIndicator`
+      // and `ListView` gained `selectionMode`. Only the single-select radio
+      // hardcodes — the multiple branch is a themeable `<Checkbox>`.
+      ListView: {
         tokens: [
           'selected-bold',
           'selected-bold-foreground',

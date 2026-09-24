@@ -4,7 +4,7 @@ import { useSectionMessageContext } from './Context';
 
 export interface SectionMessageContentProps {
   /**
-   * The children of the component.
+   * Children of the component.
    */
   children?: ReactNode;
 }

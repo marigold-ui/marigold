@@ -142,3 +142,13 @@ test('collapseAt is ignored for dynamic collections (function children)', () => 
   expect(screen.getByText('Shopping')).toBeInTheDocument();
   expect(screen.queryByText(/show \d+ more/i)).not.toBeInTheDocument();
 });
+
+test('remove buttons keep the label RAC supplies through the slot', () => {
+  // CloseButton's fallback must not override RAC's slot label (DST-1769).
+  render(<RemovableTags.Component />);
+
+  expect(screen.getAllByRole('button', { name: /^Remove / })).toHaveLength(4);
+  expect(
+    screen.queryByRole('button', { name: /close/i })
+  ).not.toBeInTheDocument();
+});

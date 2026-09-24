@@ -176,7 +176,7 @@ export const SidebarAnatomy = () => (
       <path d="M 518 99 L 534 99" />
     </g>
 
-    {/* Connector Lines */}
+    {/* Connector lines */}
     <g
       className="stroke-fd-primary transition-colors duration-300"
       fill="none"
@@ -194,7 +194,7 @@ export const SidebarAnatomy = () => (
       <path d="M 474 407 L 608 407" />
     </g>
 
-    {/* Connector Dots */}
+    {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="281" cy="105" r="4" />
       <circle cx="309" cy="150" r="4" />

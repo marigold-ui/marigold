@@ -24,7 +24,7 @@ export const TextValueAnatomy = () => (
       className="fill-fd-foreground transition-colors duration-300"
     />
 
-    {/* Connector Lines */}
+    {/* Connector lines */}
     <g
       className="stroke-fd-primary transition-colors duration-300"
       fill="none"
@@ -38,7 +38,7 @@ export const TextValueAnatomy = () => (
       <path d="M 218 60 L 100 60" />
     </g>
 
-    {/* Connector Dots */}
+    {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="480" cy="60" r="4" />
       <circle cx="218" cy="60" r="4" />

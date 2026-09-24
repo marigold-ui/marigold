@@ -8,14 +8,14 @@ import { MotionFeatures } from '../lazyMotion';
 import { useWheelScrollX } from '../utils/useWheelScrollX';
 import { useTabContext } from './Context';
 
-// props
+// Props
 // ----------------------
 export type TabListProps = Omit<
   RAC.TabListProps<object>,
   'className' | 'style'
 >;
 
-// component
+// Component
 // ----------------------
 const _TabList = (props: TabListProps) => {
   const { classNames } = useTabContext();

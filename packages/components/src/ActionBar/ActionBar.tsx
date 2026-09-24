@@ -64,6 +64,7 @@ interface ActionBarInnerProps {
   id?: string;
   children?: ReactNode;
   onClearSelection?: () => void;
+  onHeightChange?: (height: number) => void;
   lastCount: number | 'all';
   isExiting: boolean;
   variant?: string;
@@ -74,6 +75,7 @@ const ActionBarInner = ({
   id,
   children,
   onClearSelection,
+  onHeightChange,
   lastCount,
   isExiting,
   variant,
@@ -84,6 +86,13 @@ const ActionBarInner = ({
   const ref = (forwardedRef ??
     internalRef) as React.RefObject<HTMLDivElement | null>;
   const isEntering = useEnterAnimation(ref);
+
+  // Observed here, not in the outer: `useResizeObserver` reads `ref.current` on
+  // mount only, and the outer renders `null` until something is selected.
+  useResizeObserver({
+    ref,
+    onResize: () => onHeightChange?.(ref.current?.offsetHeight ?? 0),
+  });
 
   const classNames = useClassNames({
     component: 'ActionBar',
@@ -190,14 +199,6 @@ const ActionBar = ({
   const isExiting = useExitAnimation(ref, isOpen);
   const shouldRender = !isSSR && (isOpen || isExiting);
 
-  // Report measured height back to useActionBar via context
-  useResizeObserver({
-    ref,
-    onResize: () => {
-      onHeightChange?.(ref.current?.offsetHeight ?? 0);
-    },
-  });
-
   useLayoutEffect(() => {
     if (shouldRender) return;
     onHeightChange?.(0);
@@ -219,6 +220,7 @@ const ActionBar = ({
       ref={ref}
       id={id}
       onClearSelection={onClearSelection}
+      onHeightChange={onHeightChange}
       lastCount={lastCount}
       isExiting={isExiting}
       variant={variant}

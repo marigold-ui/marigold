@@ -6,10 +6,11 @@ import { Basic, MultiSelectSummary, WithRenderValue } from './Select.stories';
 
 const user = userEvent.setup();
 
-// `useSmallScreen` matches `(width < 640px)`. Force the desktop (Popover) branch
-// deterministically so these unit tests do not depend on the real browser
-// window size. The small-screen (Tray) branch is covered by the `*Mobile` and
-// `MobileControlled` play stories (real Firefox, `smallScreen` viewport).
+// `useSmallScreen` matches the theme's `sm` breakpoint (see `smallScreenQuery`).
+// Matching nothing forces the desktop (Popover) branch deterministically, so
+// these unit tests do not depend on the real browser window size. The
+// small-screen (Tray) branch is covered by the `*Mobile` and `MobileControlled`
+// play stories (real Firefox, `smallScreen` viewport).
 window.matchMedia = mockMatchMedia([]);
 
 test('renders a field (label, helptext, select)', () => {

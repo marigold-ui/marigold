@@ -2,11 +2,10 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Slider: ThemeComponent<'Slider'> = {
   container: cva({ base: '*:aria-hidden:hidden' }),
-  // The rail. `bg-control` is the shared unselected-track fill — the same token
-  // the Switch groove and the SegmentedControl track use, so the three read as
-  // one control family. Not `bg-border`: that token is for structural lines
-  // (dividers, grid lines, table rules), and being translucent it also
-  // compounded when it was painted twice.
+  // `bg-control` is the shared unselected-track fill, same token as the Switch
+  // groove and SegmentedControl track, so the three read as one family. Not
+  // `bg-border`: that is for structural lines, and being translucent it compounded
+  // when painted twice.
   track: cva({
     base: [
       'relative bg-control rounded-full flex w-full touch-none select-none items-center',

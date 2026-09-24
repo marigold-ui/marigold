@@ -76,7 +76,7 @@ export const ActionMenuAnatomy = () => (
       className="fill-fd-primary/60 transition-colors duration-300"
     />
 
-    {/* Connector Lines */}
+    {/* Connector lines */}
     <g
       className="stroke-fd-primary transition-colors duration-300"
       fill="none"
@@ -92,7 +92,7 @@ export const ActionMenuAnatomy = () => (
       <path d="M 432 154 L 540 154" />
     </g>
 
-    {/* Connector Dots */}
+    {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="312" cy="48" r="4" />
       <circle cx="232" cy="110" r="4" />

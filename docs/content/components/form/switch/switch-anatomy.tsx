@@ -40,7 +40,7 @@ export const SwitchAnatomy = () => (
       className="fill-fd-muted-foreground/50 transition-colors duration-300"
     />
 
-    {/* Connector Lines */}
+    {/* Connector lines */}
     <g
       className="stroke-fd-primary transition-colors duration-300"
       fill="none"
@@ -58,7 +58,7 @@ export const SwitchAnatomy = () => (
       <path d="M 446 63 L 530 63" />
     </g>
 
-    {/* Connector Dots */}
+    {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="260" cy="50" r="4" />
       <circle cx="291" cy="60" r="4" />

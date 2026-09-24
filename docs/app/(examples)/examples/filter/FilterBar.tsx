@@ -172,7 +172,6 @@ const FilterForm = ({
           />
           <Slider
             label="Max. Price"
-            thumbLabels="price"
             name="price"
             defaultValue={filter.price}
             step={100}

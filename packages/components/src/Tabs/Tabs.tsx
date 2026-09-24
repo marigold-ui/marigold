@@ -6,7 +6,7 @@ import { Tab } from './Tab';
 import { TabList } from './TabList';
 import { TabPanel } from './TabPanel';
 
-// props
+// Props
 // ----------------------
 export interface TabsProps extends Omit<
   RAC.TabsProps,
@@ -21,7 +21,7 @@ export interface TabsProps extends Omit<
   variant?: string;
 }
 
-// component
+// Component
 // ----------------------
 const _Tabs = ({ disabled, variant, size, ...rest }: TabsProps) => {
   const props: RAC.TabsProps = {

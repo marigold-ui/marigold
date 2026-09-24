@@ -57,11 +57,9 @@ const renderMarkdownToTerminal = (md: string): string => {
       out.push(pc.bold(line.replace(/^###\s+/, '')));
       continue;
     }
-    // inline code
     const withInlineCode = line.replace(/`([^`]+)`/g, (_, code) =>
       pc.cyan(code)
     );
-    // bold
     const withBold = withInlineCode.replace(/\*\*([^*]+)\*\*/g, (_, t) =>
       pc.bold(t)
     );

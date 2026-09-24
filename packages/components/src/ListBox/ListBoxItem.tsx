@@ -13,7 +13,7 @@ export type ListBoxItemProps = Omit<
   'style' | 'className' | 'children'
 > & {
   /**
-   * The children of the component
+   * Children of the component.
    */
   children?: ReactNode;
 };
