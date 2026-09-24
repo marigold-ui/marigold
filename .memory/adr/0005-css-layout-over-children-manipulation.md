@@ -54,19 +54,11 @@ That is precisely the wrapper-per-region approach this record rejects below. It 
 
 So the test is not "does this component read children" but "does it _infer_ what its children are". `Aside` is told. That is the narrow exception the Decision allows, not a precedent for reading children whenever a layout is awkward.
 
-`Input` is the other side of the same test, and fails it:
+`Input` used to be the other side of the same test. It called `cloneElement(icon, …)` to inject `absolute` plus the theme's placement classes into a child it had been handed — the alternative rejected below — which did nothing at all for a Fragment and silently swallowed a `className` the consumer had set. DST-1731 removed it: `Input` now renders its own absolutely-positioned box per adornment and lets the child fill it.
 
-```tsx
-cloneElement(icon, {
-  className: cn(
-    'pointer-events-none absolute',
-    classNames.icon,
-    icon.props.className
-  ),
-});
-```
+That resolution is worth reading against the test above, because it looks like the wrapper-per-region approach and is not. `icon` and `action` are named props, so nothing is inferred and no child is inspected — `Input` is told, the way `Aside` is told. And the wrappers sit in an `absolute` decoration layer, so there is no grid or flex relationship for an intervening element to break. The rejection below is about wrappers _derived from sorting an opaque `children` list_ in normal flow. A wrapper around a named prop, positioned out of flow, is not that.
 
-Nothing declared that the icon is an icon — the prop name did, and the component then decided the child needs `absolute`. It clones to inject placement into a child it was handed, which is the alternative rejected below, and it silently overrides a `ref` the consumer set while doing nothing at all for a Fragment. Tracked as DST-1731.
+(One claim in the earlier draft of this record was wrong: cloning did _not_ override a consumer's `ref`. `cloneElement` preserves it, and in React 19 `element.props` carries `ref`, so the `{...icon.props}` spread re-applied it. The Fragment and `className` problems were real; the `ref` one was not.)
 
 ## Decision
 
@@ -90,9 +82,9 @@ When you do manipulate children, prefer `Children.toArray` (stable keys) over `c
 
 ## Alternatives rejected
 
-**A wrapper `<div>` per region.** The obvious approach: sort children, wrap each group. Rejected because the wrappers are load-bearing but invisible in the consumer's JSX, every optional region needs a conditional, and extra elements between a container and its parts break `grid`/`flex` inheritance and `subgrid`. It also forces the container to type-sniff children to know which bucket each belongs in.
+**A wrapper `<div>` per region.** The obvious approach: sort children, wrap each group. Rejected because the wrappers are load-bearing but invisible in the consumer's JSX, every optional region needs a conditional, and extra elements between a container and its parts break `grid`/`flex` inheritance and `subgrid`. It also forces the container to type-sniff children to know which bucket each belongs in. Read that as scoped to what it describes: wrappers derived from sorting an opaque `children` list, in normal flow. A wrapper around a _named prop_, positioned out of flow, sniffs nothing and has no grid or flex relationship to break — see the `Input` note above.
 
-**`cloneElement` to inject placement classes.** Rejected on React's own advice — fragile, opaque data flow — and because it silently fails on Fragments and non-element children, and quietly overrides a `ref` the consumer set. Context delivers the same class without any of that.
+**`cloneElement` to inject placement classes.** Rejected on React's own advice — fragile, opaque data flow — and because it silently fails on Fragments and non-element children, and swallows a `className` the consumer set unless every call site remembers to merge it back in. Context delivers the same class without any of that.
 
 **Render props for placement** (`renderHeader`, `renderActions`). Rejected under the composition rules in `CLAUDE.md`: children compose, callbacks make consumers learn a signature. React lists render props as a legitimate `cloneElement` alternative, but for _placement_ the grid already solves it without an API surface.
 

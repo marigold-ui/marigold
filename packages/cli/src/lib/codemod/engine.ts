@@ -110,7 +110,6 @@ export const classStringsIn = (node: AnyNode): string[] => {
   return out;
 };
 
-/** individual class utilities used across a set of class strings */
 export const classTokens = (classes: string[]): Set<string> =>
   new Set(classes.flatMap(s => s.split(/\s+/)).filter(Boolean));
 

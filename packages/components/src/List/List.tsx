@@ -12,7 +12,7 @@ export interface ListProps {
    */
   as?: 'ul' | 'ol';
   /**
-   * The children of the component.
+   * Children of the component.
    */
   children?: ReactNode;
 }

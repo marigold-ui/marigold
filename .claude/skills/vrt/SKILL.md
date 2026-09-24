@@ -1,6 +1,6 @@
 ---
 name: vrt
-description: Marigold repo — Trigger the Visual-Regression-Tests (Chromatic) GitHub Actions workflow on the current or a given branch. Use ONLY when the user explicitly asks to run visual regression tests, run Chromatic, or types `/vrt`. Dispatching consumes Chromatic snapshot quota, so never invoke this proactively, never as a follow-up to unrelated work, and never to "verify" a change nobody asked to verify.
+description: DST — Trigger the Visual-Regression-Tests (Chromatic) GitHub Actions workflow on the current or a given branch. Use ONLY when the user explicitly asks to run visual regression tests, run Chromatic, or types `/vrt`. Dispatching consumes Chromatic snapshot quota, so never invoke this proactively, never as a follow-up to unrelated work, and never to "verify" a change nobody asked to verify.
 allowed-tools: Bash(gh workflow run *), Bash(gh run list *), Bash(gh run view *), Bash(gh run watch *), Bash(git branch --show-current), Bash(git rev-list *)
 ---
 
@@ -64,6 +64,6 @@ A dispatch can therefore succeed while no job runs. If nothing is queued, check 
 
 ## Alternative trigger
 
-On an open PR, commenting `/run-chromatic` starts the same workflow against the PR's head branch. It only works for users whose author association is `OWNER`, `MEMBER`, or `COLLABORATOR`. Prefer this when the goal is to attach a run to a specific PR — the `review-pr` skill suggests it for exactly that reason.
+On an open PR, commenting `/run-chromatic` starts the same workflow against the PR's head branch. It only works for users whose author association is `OWNER`, `MEMBER`, or `COLLABORATOR`. Prefer this when the goal is to attach a run to a specific PR — the `/dst:review-pr` skill suggests it for exactly that reason.
 
 The workflow also runs automatically when a PR is merged into `main`, unless the PR only touches `docs/**`, `**/*.md`, `**/*.mdx`, or `.changeset/**`.

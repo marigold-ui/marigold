@@ -4,6 +4,7 @@ import {
   isSameDay,
   today,
 } from '@internationalized/date';
+import type { BoundFunctions, queries } from '@testing-library/dom';
 import { useState } from 'react';
 import type { DateValue } from 'react-aria-components';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
@@ -12,6 +13,7 @@ import preview from '.storybook/preview';
 import type { RangeValue } from '@react-types/shared';
 import { theme } from '../../../../themes/theme-rui/src/index.js';
 import { Stack } from '../Stack/Stack';
+import { assertCalendarTriggerHitArea } from '../calendarTrigger.utils';
 import { firePaste } from '../firePaste';
 import { DateRangePicker } from './DateRangePicker';
 
@@ -229,6 +231,14 @@ export const Mobile: any = meta.story({
 });
 
 Basic.tags = ['component-test'];
+
+Basic.test(
+  'gives the calendar trigger slack on every side of the icon',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }: { canvas: BoundFunctions<typeof queries> }) => {
+    assertCalendarTriggerHitArea(canvas.getByRole('button'));
+  }
+);
 
 Basic.test(
   'opens the calendar popover and selects a range',

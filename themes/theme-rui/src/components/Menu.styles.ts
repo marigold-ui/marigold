@@ -37,8 +37,8 @@ export const Menu: ThemeComponent<'Menu'> = {
       variant: {
         default: `${itemBase} ${itemIconMuted}`,
         destructive: 'text-destructive-accent focus:bg-destructive-accent/10',
-        master: `${itemBase} [&_svg]:text-access-master-foreground`,
-        admin: `${itemBase} [&_svg]:text-access-admin-foreground`,
+        master: `${itemBase} [&_.access-icon]:text-access-master-foreground`,
+        admin: `${itemBase} [&_.access-icon]:text-access-admin-foreground`,
       },
     },
     defaultVariants: {
@@ -52,7 +52,6 @@ export const Menu: ThemeComponent<'Menu'> = {
   description: cva({
     base: 'col-start-2 row-start-2 text-secondary text-xs whitespace-normal group-disabled/option:text-disabled',
   }),
-  // Shortcut hint, right-aligned in col 3 and vertically centered.
   keyboard: cva({
     base: 'col-start-3 row-span-full self-center justify-self-end ps-4 text-secondary text-xs',
   }),

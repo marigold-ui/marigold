@@ -11,6 +11,7 @@ import { expect, fn, spyOn, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { theme } from '../../../../themes/theme-rui/src/index.js';
 import { Stack } from '../Stack/Stack';
+import { assertCalendarTriggerHitArea } from '../calendarTrigger.utils';
 import { DatePicker } from './DatePicker';
 
 const smallScreenQuery = `(width < ${theme.screens?.sm})`;
@@ -123,6 +124,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
   render: args => {
     return (
       <I18nProvider locale="de-DE">
@@ -136,6 +138,14 @@ export const Basic = meta.story({
     );
   },
 });
+
+Basic.test(
+  'gives the calendar trigger slack on every side of the icon',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    assertCalendarTriggerHitArea(canvas.getByRole('button'));
+  }
+);
 
 export const Controlled = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
@@ -334,7 +344,6 @@ Mobile.test(
         expect(focusedCell).not.toBeNull();
       });
 
-      // Ensure focus is on the calendar cell
       const focusedCell = calendar.querySelector(
         '[tabindex="0"]'
       ) as HTMLElement;

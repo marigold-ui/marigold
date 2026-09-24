@@ -5,6 +5,7 @@ import type {
   RefObject,
 } from 'react';
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import type { Key } from 'react-aria-components';
 import { Button } from 'react-aria-components/Button';
 import { Popover } from 'react-aria-components/Popover';
 import { Cell, useTableOptions } from 'react-aria-components/Table';
@@ -18,6 +19,7 @@ import {
 import { cn, textAlign, useSmallScreen, verticalAlign } from '@marigold/system';
 import { Dialog } from '../Dialog/Dialog';
 import { Form } from '../Form/Form';
+import { useClipBoundary } from '../Overlay/clipBoundary';
 import { Check } from '../icons/Check';
 import { Pencil } from '../icons/Pencil';
 import { X } from '../icons/X';
@@ -25,6 +27,7 @@ import { intlMessages } from '../intl/messages';
 import { useTableContext } from './Context';
 import { TableCellContent } from './TableCellContent';
 import { TableTreeColumn } from './TableTreeColumn';
+import { resolveTextValue } from './textValue';
 
 // Props
 // ---------------
@@ -33,6 +36,12 @@ export interface TableEditableCellProps {
    * Display content shown when the cell is not being edited.
    */
   children: ReactNode;
+  /**
+   * Text that names the row for type to select and screen readers. Derived from
+   * plain string or number content, so set it only for composite content in a
+   * `rowHeader` column.
+   */
+  textValue?: string;
   /**
    * Form field shown when editing. Must include `name` attribute for form data.
    * Supports input elements like TextField, Select, etc.
@@ -93,6 +102,7 @@ const EditableCellPopover = ({
   const [triggerWidth, setTriggerWidth] = useState(0);
   const [tableWidth, setTableWidth] = useState(0);
   const [verticalOffset, setVerticalOffset] = useState(0);
+  const clipBoundary = useClipBoundary();
 
   // Position the popover correctly on top of the cell and matching its width
   useLayoutEffect(() => {
@@ -119,6 +129,7 @@ const EditableCellPopover = ({
       onOpenChange={onOpenChange}
       triggerRef={cellRef}
       offset={verticalOffset}
+      boundaryElement={clipBoundary}
       placement="bottom start"
       style={{
         minWidth: `min(${triggerWidth}px, ${tableWidth}px)`,
@@ -141,6 +152,8 @@ interface TableEditableCellInnerProps extends TableEditableCellProps {
   hasSelection: boolean;
   /** Column index, provided by the `<Cell>` render prop. */
   columnIndex?: number | null;
+  /** Cell key, provided by the `<Cell>` render prop. */
+  cellKey?: Key;
   /** Ref to the `<Cell>`, used to position and anchor the editor popover. */
   cellRef: RefObject<HTMLTableCellElement | null>;
   /** Tree state, provided by the `<Cell>` render prop. */
@@ -169,8 +182,10 @@ const TableEditableCellInner = ({
   action,
   alignX,
   overflow: cellOverflow,
+  textValue,
   hasSelection,
   columnIndex,
+  cellKey,
   cellRef,
   isTreeColumn,
   hasChildItems,
@@ -179,6 +194,10 @@ const TableEditableCellInner = ({
   const { classNames } = useTableContext();
   const isSmallScreen = useSmallScreen();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+
+  // Repeating the outer cell's `typeof` check is cheaper than threading the
+  // answer down through the render prop.
+  const missingTextValue = resolveTextValue(textValue, children) === undefined;
 
   const [open, setOpen] = useState(false);
   const submittedRef = useRef(false);
@@ -259,10 +278,12 @@ const TableEditableCellInner = ({
     >
       <TableCellContent
         columnIndex={columnIndex}
+        cellKey={cellKey}
         alignX={alignX}
         cellOverflow={disabled ? cellOverflow : 'truncate'}
         className="min-w-0 flex-1"
         allowTextSelection={!hasSelection || undefined}
+        missingTextValueOn={missingTextValue ? 'Table.EditableCell' : undefined}
       >
         {children}
       </TableCellContent>
@@ -344,13 +365,20 @@ export const TableEditableCell = (props: TableEditableCellProps) => {
   const hasSelection = selectionMode !== 'none';
   const cellRef = useRef<HTMLTableCellElement>(null);
 
+  const resolvedTextValue = resolveTextValue(props.textValue, props.children);
+
   return (
-    <Cell ref={cellRef} className={cn(classNames.cell, verticalAlign[alignY])}>
-      {({ columnIndex, isTreeColumn, hasChildItems, isExpanded }) => (
+    <Cell
+      ref={cellRef}
+      className={cn(classNames.cell, verticalAlign[alignY])}
+      textValue={resolvedTextValue}
+    >
+      {({ id, columnIndex, isTreeColumn, hasChildItems, isExpanded }) => (
         <TableEditableCellInner
           {...props}
           hasSelection={hasSelection}
           columnIndex={columnIndex}
+          cellKey={id}
           cellRef={cellRef}
           isTreeColumn={isTreeColumn}
           hasChildItems={hasChildItems}

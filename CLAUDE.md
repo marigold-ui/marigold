@@ -56,6 +56,7 @@ The CLI fetches from the Marigold docs site, caches for 24h, and works offline (
 - Use the `useClassNames` hook from `@marigold/system` for theming
 - Rename react-aria props: `isDisabled` → `disabled`, `isPending` → `loading`
 - Export components with named exports
+- **Barrel exports**: an export is internal when it exists for composition by other Marigold packages rather than for consumers. Documented exports (own page, or an API on a parent page) are public; consumer-facing exports that still lack docs stay public with a docs ticket (DST-1758). Internal exports get a bare `/** @internal */` on the line above, one export per tagged statement. The Insights scanner reads the tag from the barrel source only, so the barrel line is the one that has to carry it: tagging a component file instead does not register the export. A component file may still carry `@internal` in its own JSDoc where it tells a reader the symbol is not public API, as `HiddenSelection` does. That tag is documentation, not the scanner's input, so it neither substitutes for the barrel line nor needs removing (see `.memory/CONTEXT.md` → Internal export)
 - Use React Context for component composition (see `AccordionContext` patterns)
 
 ## Testing
@@ -71,10 +72,57 @@ The CLI fetches from the Marigold docs site, caches for 24h, and works offline (
 
 - **Typecheck**: Run `pnpm typecheck:only` after code changes
 - **Lint**: Run `pnpm lint` to check code style
+- **Prose**: Run `pnpm lint:prose` after editing docs prose (see [Prose Style](#prose-style))
 - **Format**: Run `pnpm format` before committing
 - **Branch from**: `main` (use GitHub Flow)
 - **Changesets**: Use `pnpm changeset` for version management
 - **Storybook**: Run `pnpm sb` to preview components locally
+
+## Prose Style
+
+Documentation prose is linted. `pnpm lint:prose` runs Vale over the docs site, the changesets
+and the published READMEs, and the Prose CI check runs the same rules. The binary is pinned and downloaded by
+`scripts/vale.mjs` on first use, and pinned there so Renovate can see it.
+
+- **No em dashes.** Rephrase with a comma, a colon, or a second sentence. In a
+  `- **Term** — definition` list item, write `- **Term**: definition`, which is already the
+  dominant form in these docs.
+- **No semicolons in prose.** Use a period or a comma. Semicolons in code are untouched:
+  fenced blocks, code spans and MDX `import` statements are all outside the linted scope.
+- **No en dash asides.** German uses a spaced en dash where English uses an em dash, so this
+  is an easy slip to make. Ranges keep the en dash: `4–9`, `Jan 1 – Dec 31`.
+
+Table cells are exempt from all three. There an em dash is a legitimate "not applicable"
+marker, as in `| — (no class) |`.
+
+These rules govern prose written **for a reader**: `docs/content/**`, `.changeset/*.md`,
+published package READMEs, and the repo's top-level markdown. They do **not** govern prose
+written for an agent. `CLAUDE.md`, `.memory/**`, `.claude/**`, `docs/superpowers/**` and
+`packages/*/src/**/README.md` are deliberately out of scope, and `.claude/README.md` positively
+_requires_ an em dash in skill descriptions. Do not "fix" those files. Generated output
+(`CHANGELOG.md`, `docs/content/releases/*/release.mdx`) is out of scope too, which is why
+changesets are linted at the source instead, and so are the dated release posts under
+`docs/content/releases/blog/`, which are historical announcements rather than living docs.
+
+The rules live in `.vale/styles/Marigold/`. A rule at `error` blocks CI. A rule at `warning` is
+advisory, which is how a new rule lands until its existing violations are cleaned up.
+
+## GitHub and GitLab CLIs
+
+**Never pass a comment, review or PR body as an inline shell string.** Write it to a file and point `gh` at the file. Shell quoting eats backticks, newlines, `$` and emoji, and the mangled result is posted publicly before anyone notices.
+
+| Command                                                            | Flag                 | Notes                                                                                                     |
+| ------------------------------------------------------------------ | -------------------- | --------------------------------------------------------------------------------------------------------- |
+| `gh pr create`, `gh pr comment`, `gh pr review`, `gh issue create` | `--body-file <path>` | Short form `-F`. Use `-` to read stdin                                                                    |
+| `gh api`, single field                                             | `-F key=@<path>`     | `-F`/`--field` reads `@path`. **`-f`/`--raw-field` does not**                                             |
+| `gh api`, whole JSON body                                          | `--input <path>`     | Use for nested payloads, such as a review carrying inline comments                                        |
+| `glab api`, single field                                           | `-F key=@<path>`     | Same split as `gh api`. The wrapper only mounts the repo root, so the file has to sit inside the checkout |
+
+The trap worth naming out loud: `gh api -f body=@reply.md` posts the literal string `@reply.md` and **exits 0**. There is no error to catch, only a nonsense comment on someone's PR. `-F` is the flag that reads the file. Verified on `gh 2.92.0`.
+
+`-F` means two different things depending on the command. In `gh api` it is `--field`, in `gh pr *` and `gh issue *` it is `--body-file`. Both read a file, so the habit transfers, but the long forms are not interchangeable.
+
+`glab api` splits the same way, with one extra catch: it runs in a Docker container that mounts only the repository root, so a body file under `/tmp` is invisible to it. Write the file inside the checkout and pass a relative path.
 
 ## Monorepo Structure
 
@@ -324,13 +372,22 @@ Run with `pnpm test:unit`.
 
 ## AI Toolkit
 
-Committed skills live in `.claude/skills/`; plugins are declared in `.claude/settings.json`. See [.claude/README.md](.claude/README.md) for the conventions they follow and the extra rules for skills with side effects.
+Project hooks live in `.claude/hooks/` and are registered in `.claude/settings.json`. See [.claude/README.md](.claude/README.md) for the conventions they follow and how to opt out of one.
 
-### Scoping work: `/grill`
+The team's workflow skills are **not in this repo**. They are the `dst` plugin, installed per-user from the private `dst-toolkit` marketplace, so one copy serves every DST checkout:
 
-Start non-trivial work with `/grill`. It interrogates an under-specified idea one question at a time — each with a recommended answer — until every decision branch is resolved, and answers from the codebase rather than asking whenever it can.
+```sh
+claude plugin marketplace add marigold-ui/dst-toolkit
+claude plugin install dst@dst-toolkit
+```
 
-When the session concerns this codebase, it also records what is worth keeping, without being asked: settled vocabulary goes to `.memory/CONTEXT.md`, and decisions that are hard to reverse become ADRs under `.memory/adr/`. Sessions that are not about the code record nothing.
+That gives you `/dst:grill`, `/dst:create-ticket`, `/dst:pick-up`, `/dst:create-pr`, `/dst:review-pr`, `/dst:review-queue` and `/dst:triage-feedback`. `vrt` stays here, unnamespaced as `/vrt`, because only this repository has a Chromatic workflow to dispatch.
+
+### Scoping work: `/dst:grill`
+
+Start non-trivial work with `/dst:grill`. It interrogates an under-specified idea one question at a time — each with a recommended answer — until every decision branch is resolved, and answers from the codebase rather than asking whenever it can.
+
+Because this repo keeps a `.memory/` store, it also records what is worth keeping, without being asked: settled vocabulary goes to `.memory/CONTEXT.md`, and decisions that are hard to reverse become ADRs under `.memory/adr/`. Sessions that are not about the code record nothing, and in a repo with no store nothing is recorded at all.
 
 `.memory/` is committed and reviewed like code — see [.memory/README.md](.memory/README.md) for what belongs there, what does not, and the rule that keeps it from duplicating this file.
 
@@ -364,7 +421,7 @@ Remember: A story name might not reflect the property name correctly, so always 
 - Docs depend on `@marigold/theme-rui` - rebuild theme package for changes to be visible in docs
 - Storybook uses source folders directly (not dist) - no build needed for stories
 - Git hooks run lint-staged on commit via Husky
-- Node.js 22.x required (check `.node-version`)
+- Node.js version is pinned in `.node-version` (the pre-flight hook reports the installed one and flags a mismatch)
 - **Build before test**: Components must be built before running docs locally
 - **React 19**: This project uses React 19 patterns (newer than many examples online)
 - **Strict TypeScript**: The project enforces strict type checking
@@ -375,27 +432,56 @@ Remember: A story name might not reflect the property name correctly, so always 
 
 Jira Cloud ID: `reservix.atlassian.net` | Project key: `DST`
 
-### Issue Types
+### Issue Types and Title Emojis
 
-| Type      | ID    | Use for                     |
-| --------- | ----- | --------------------------- |
-| Task      | 10697 | Standard work items         |
-| Bug       | 10698 | Defects and errors          |
-| Epic      | 10671 | Collection of related tasks |
-| Sub-task  | 10672 | Breakdown of a parent task  |
-| Unplanned | 10860 | Unplanned/ad-hoc work       |
+Both tables live in the [`dst` plugin](https://github.com/marigold-ui/dst-toolkit), at
+`skills/create-ticket/references/dst-conventions.md`:
+the issue types with their ids, and the title emoji convention every DST title starts
+with. They are the team's conventions rather than this repository's, and `/dst:create-ticket`
+has to apply them from the Core, ClearingAdministration and Insights checkouts too, so
+they travel with the skill instead of living here. One copy, wherever you are reading from.
 
-### Required Custom Fields (Task)
+The two you will reach for most: `Task` is work planned into a sprint, `Unplanned` is
+work picked up inside an already-planned one. They are used in roughly equal numbers, so
+`Unplanned` is a normal case rather than an exception. The two differ by **planning
+provenance**, not by the kind of work: a feature and a defect can both be `Unplanned`.
+The title emoji is what says which kind of work it is.
 
-When creating Task issues via the API, these fields are **required** in `additional_fields`:
+### Custom Fields by Issue Type
+
+The `Task` create screen marks these three required. They are set through `additional_fields`:
 
 - **Appetite** (`customfield_11370`) — Free text time estimate. Examples: `"2 days"`, `"1 week"`, `"3 weeks"`
 - **Rollout Communication** (`customfield_12908`) — Select field. Defaults to `"no communication"` (id: `13833`). Options: `"internal communication"` (`13834`), `"internal & external communication"` (`13835`)
 - **Requires UI Kit Update** (`customfield_13205`) — Select field. Defaults to `"No"` (id: `14326`). Other option: `"Yes"` (`14325`)
 
+**These fields do not exist on every issue type.** `Appetite` and `Rollout Communication`
+are on the `Task` create screen only. `Requires UI Kit Update` is also on `Unplanned`,
+where it is optional and carries no default. `Bug` has none of the three. Sending a field
+the chosen type does not carry gets the whole create rejected, so omit what does not apply
+and put the appetite in the description instead. Since `Unplanned` is about half of what
+the team files, this is the common case rather than an edge one.
+
+On `Task`, only `Appetite` actually needs a value. The other two carry server-side
+defaults, so Jira fills them when they are omitted.
+
+Required fields are Jira configuration and can change without notice. When creating an
+issue programmatically, read them with `getJiraIssueTypeMetaWithFields` for the issue
+type you are about to create rather than trusting this list.
+
 Always use `contentFormat: "markdown"` for descriptions.
 
 ### Description Template
+
+**Each issue type has its own template**, and Jira carries it as that type's `description`
+field default. The one below is `Task`'s. `Unplanned` uses `Summary`, `Context / Trigger`
+and `Impact`, carried as bold paragraphs rather than headings. `Bug` uses `Which version
+of Marigold are you using?`, `Description`, `How to reproduce`, `Expected behavior`,
+`Screenshots` and `Stakeholders`. When creating programmatically, take the section
+headings from `description.defaultValue` in the `getJiraIssueTypeMetaWithFields` response
+for the type you are creating. That call needs `requiredFieldsOnly: false`. It defaults to
+true, and `description` is not a required field, so the plain call returns every required
+field and no template at all.
 
 ```markdown
 #### **Problem:**
@@ -425,30 +511,3 @@ Always use `contentFormat: "markdown"` for descriptions.
 
 - [Links to files, related tickets, Confluence pages, RFCs]
 ```
-
-### Title Emoji Convention
-
-Every issue title **must** start with an emoji indicating its type of work (see [Confluence: Emojis](https://reservix.atlassian.net/wiki/spaces/DST/pages/3797942472/Emojis)):
-
-| Emoji | Category                  |
-| ----- | ------------------------- |
-| 🐛    | Bug                       |
-| 🩹    | Hotfix                    |
-| 🏗️    | Infrastructure            |
-| 🧹    | Refactor / Cleanup        |
-| 📝    | Documentation             |
-| 💄    | Style / Theme             |
-| ✨    | Feature                   |
-| 🧩    | New Component             |
-| ✍️    | Blog / Confluence article |
-
-**Modifier emojis** (combine with a type emoji above):
-
-| Emoji | Meaning                      |
-| ----- | ---------------------------- |
-| ⚡️    | Quick task / spare-time work |
-| 🏚️    | Core-only task               |
-
-Examples: `📝⚡️ Quick docs fix`, `🧹🏚️ Core-only refactor`, `✨ New feature title`
-
-**Exception**: Epics use text prefixes instead of emojis: `[CPB]`, `[RUI]`, `[Infra]`

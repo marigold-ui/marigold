@@ -69,7 +69,6 @@ const isValidDate = (year: number, month: number, day: number): boolean => {
 
   const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-  // Check for leap year
   const isLeapYear = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
   if (month === 2 && isLeapYear) {
     return day <= 29;
@@ -117,14 +116,27 @@ const _DateInput = ({
       onPaste={handlePaste}
     >
       <DateInput
-        className={cn('flex flex-1 items-center', classNames.input)}
+        className={cn(
+          'flex flex-1 items-center',
+          classNames.input,
+          action && 'pr-0'
+        )}
         {...props}
       >
         {segment => (
           <DateSegment className={classNames.segment} segment={segment} />
         )}
       </DateInput>
-      {action ? action : null}
+      {action && (
+        <span
+          className={cn(
+            '*:flex *:size-full *:items-center *:justify-center',
+            classNames.action
+          )}
+        >
+          {action}
+        </span>
+      )}
     </Group>
   );
 };

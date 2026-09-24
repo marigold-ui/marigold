@@ -101,10 +101,12 @@ export const OrganizerInfo = () => (
           />
           <Select
             label={
-              <Inline space="related" alignY="center">
-                Preferred contact method
-                <Badge variant="admin">Admin</Badge>
-              </Inline>
+              <>
+                Preferred contact method{' '}
+                <Badge variant="admin" size="inline">
+                  Admin
+                </Badge>
+              </>
             }
             placeholder="Select preference"
             description="Controls which channel attendees see first when reaching out."

@@ -64,7 +64,7 @@ export interface TextProps
     TextWrapProp,
     WhiteSpaceProps {
   /**
-   * The children of the component
+   * Children of the component.
    */
   children?: ReactNode;
   /**

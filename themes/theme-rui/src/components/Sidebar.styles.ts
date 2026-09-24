@@ -1,16 +1,9 @@
 import { type ThemeComponent, cva } from '@marigold/system';
 
 /**
- * Two charcoal tiers of ink; the current page is an inset rounded pill with
- * whitespace to both sidebar edges:
- *
- * - Active — `foreground` text on a flat `selected` pill (a step darker than
- *   the sidebar).
- * - Idle   — a step lighter (`secondary`); hover previews the pill in `hover`.
- * - Labels — set apart by treatment (uppercase, smaller, heavier, tracked),
- *   not colour: charcoal-500 sits at 3.3:1, below the 4.5:1 AA floor.
- *
- * Extra top space on section labels separates groups without dividers.
+ * Two charcoal tiers of ink. Active is `foreground` on a flat `selected` pill,
+ * idle a step lighter, hover previews it. Section labels are set apart by
+ * treatment, not colour: charcoal-500 is 3.3:1, below the 4.5:1 AA floor.
  */
 export const Sidebar: ThemeComponent<'Sidebar'> = {
   // The full-width sheet covers the page, so there is nothing to dim.
@@ -60,16 +53,13 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // No horizontal gutter — rows full-bleed so the active tick reaches the
       // edge; min-w-0 lets the row column collapse to the aside width.
       'flex flex-col min-w-0 py-1 overflow-y-auto outline-none',
-      // Declares the named timeline the footer seam animates against.
       'ui-scrollbar ui-scroll-seam-timeline',
     ],
   }),
   // Ambient escape hatches, a step quieter than nav rows so they never compete
-  // with navigation. Left-aligned on the nav's content column (not
-  // ui-surface-actions' right-aligned padding): px-4 to the 16px column, link
-  // children echo the nav pill (-mx-2 to the 8px inset, px-2, h-7.5, rounded,
-  // secondary ink lifting to foreground on hover). Top seam mirrors the
-  // header's, fading out as the list bottoms out.
+  // with navigation. Left-aligned on the nav's content column, not
+  // ui-surface-actions' right-aligned padding. Top seam mirrors the header's,
+  // fading out as the list bottoms out.
   footer: cva({
     base: [
       'flex flex-col gap-1 min-w-0 px-4 py-2 ui-scroll-seam-footer',
@@ -134,7 +124,6 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // 11px and can't go lighter. `foreground` would flatten idle against the
       // active row. Hover lifts to `foreground`.
       'text-secondary-bold hover:bg-hover hover:text-foreground',
-      // Active: flat `selected` pill + `foreground` text at medium weight.
       'data-active:bg-selected data-active:font-medium data-active:text-foreground',
     ],
   }),
@@ -143,7 +132,6 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // Same pill geometry as nav rows (mx-2 + px-2 + h-7.5) so the chevron sits
       // on the shared 16px content column.
       'mx-2 flex items-center gap-2 px-2 h-7.5 text-sm rounded-surface',
-      // Finger-sized like the nav rows below it (mobile drawer).
       'max-sm:min-h-touch-target',
       // Button label ships font-medium; reset so it matches a regular nav row.
       '[&_span]:font-normal',
@@ -156,10 +144,8 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   }),
 
   // ── Two-level rail (Sidebar.Rail) ──────────────────────────────────────────
-  // A narrow rail of top-level destinations beside a section panel. Same quiet
-  // skin as the single column. The sidebar's sole right edge is drawn by the
-  // panel (expanded) or the rail column (collapsed), never both — so railRoot
-  // has no border of its own.
+  // The sidebar's sole right edge is drawn by the panel (expanded) or the rail
+  // column (collapsed), never both, so railRoot has no border of its own.
   railRoot: cva({
     base: ['overflow-hidden bg-background'],
   }),
@@ -176,15 +162,19 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'motion-reduce:transition-none',
     ],
   }),
-  // Carries the always-on vertical divider (`border-r`) between rail and panel.
-  // overflow-x-clip: fixed-width labels overhang the narrowing column mid-
-  // animation (see railItem) — clip them instead of bleeding across the divider.
+  // Always-on divider between rail and panel. overflow-x-clip: fixed-width
+  // labels overhang the narrowing column mid-animation (see railItem).
+  // Hoists railFooter's seam timeline, and stays on this column: the panel's
+  // `nav` declares the same name, and two in one scope kill the animation.
   railColumn: cva({
-    base: ['flex flex-col min-h-0 overflow-x-clip', 'border-r border-border'],
+    base: [
+      'flex flex-col min-h-0 overflow-x-clip',
+      'border-r border-border ui-scroll-seam-scope',
+    ],
   }),
   // The top-bar panel toggle. SidebarToggle already composes the icon Button
-  // base (hitbox, ghost hover, press); this only adds the rail deltas: quieter
-  // ink, 20px icon, and shrink-0 so shrinking breadcrumbs can't squeeze it.
+  // base (hitbox, ghost hover, press); this adds only the rail deltas, plus
+  // shrink-0 so shrinking breadcrumbs can't squeeze it.
   railToggle: cva({
     base: [
       'shrink-0',
@@ -192,21 +182,22 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       '[&_svg]:size-5',
     ],
   }),
-  // The scrolling item list (footer pinned below). overflow-x-hidden: the
-  // fixed-width labels would otherwise grow a horizontal scrollbar.
+  // overflow-x-hidden: fixed-width labels would otherwise grow a horizontal
+  // scrollbar. ui-scroll-mask-y owns the vertical overflow (hence no overflow-y).
+  // scroll-py reads its --sc-mask-width so the two can't drift, and scroll-smooth
+  // keeps focus from jumping to a tile below the fold. No overscroll containment:
+  // the back/forward swipe that guards has no block-axis twin.
   rail: cva({
     base: [
-      'flex flex-col gap-0.5 flex-1 min-h-0 overflow-y-auto overflow-x-hidden py-1.5 ui-scrollbar',
+      'flex flex-col gap-0.5 flex-1 min-h-0 overflow-x-hidden py-1.5',
+      'ui-scrollbar ui-scroll-mask-y ui-scroll-seam-timeline',
+      'scroll-py-(--sc-mask-width) motion-safe:scroll-smooth',
     ],
   }),
-  // Stacked tile: icon above a visible label. Content-hugging so the pill never
-  // covers empty space and tile spacing is constant regardless of label lines.
-  //
-  // Collapsing folds the label row (grid-rows auto 1fr → 0fr) while py grows
-  // 2 → 3, keeping each icon-only tile a 44px WCAG 2.5.5 hit target.
-  //
-  // The label fades rather than unmounts — opacity-0 (not sr-only) keeps it in
-  // the a11y tree as the accessible name. hyphens-auto needs a document `lang`.
+  // Stacked tile: icon above label, content-hugging so spacing is constant
+  // whatever the label wraps to. Collapsing folds the label row (1fr → 0fr) while
+  // py grows 2 → 3, keeping a 44px WCAG 2.5.5 target. The label fades rather than
+  // unmounts: opacity-0, not sr-only, keeps it as the accessible name.
   railItem: cva({
     base: [
       // Cap the column at tile width so the fixed-width label can't drag the
@@ -235,6 +226,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // row clip it.
       '[&>span]:w-[calc(var(--spacing-rail)-0.75rem)] [&>span]:min-h-0 [&>span]:overflow-hidden',
       '[&>span]:text-[0.6875rem] [&>span]:font-medium [&>span]:leading-tight',
+      // hyphens-auto needs a document `lang`.
       '[&>span]:break-words [&>span]:hyphens-auto',
       // Fade out fast (no half-clipped text on the folding row), in late.
       '[&>span]:transition-opacity [&>span]:duration-150 [&>span]:delay-100 [&>span]:ease-out',
@@ -244,15 +236,21 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'motion-reduce:[&>span]:transition-none',
     ],
   }),
-  // Pinned below the scrolling list; same tiles, same rhythm.
-  railFooter: cva({ base: ['shrink-0 flex flex-col gap-0.5 py-1.5'] }),
+  // Pinned below the list. Top seam mirrors the single column's, but the fallback
+  // hairline is opted out: that nav usually overflows, a rail of 3-7 sections
+  // usually fits, so pinning it on would be wrong more often than right.
+  railFooter: cva({
+    base: [
+      'shrink-0 flex flex-col gap-0.5 py-1.5',
+      'ui-scroll-seam-footer [--seam-fallback-color:transparent]',
+    ],
+  }),
   // The section panel. Draws the sidebar's outer right edge; dropped when
   // collapsed so the rail column's border becomes the single edge (see
   // railRoot).
   panel: cva({
     base: [
       'flex flex-col min-h-0 overflow-hidden',
-      // The nav fills the panel below the heading and clips its own overflow.
       '[&>nav]:flex-1 [&>nav]:min-h-0',
       'border-r border-border in-data-[panel=collapsed]:border-r-0',
     ],

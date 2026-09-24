@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { RefObject } from 'react';
 import { MockInstance, vi } from 'vitest';
-import { AccessVariants, Basic } from './Link.stories';
+import { AccessVariants, Basic, NewTab } from './Link.stories';
 
 const user = userEvent.setup();
 
@@ -52,8 +52,10 @@ test('renders span element when no href', () => {
   expect(ref.current).toBeInstanceOf(HTMLSpanElement);
 });
 
+// `href="#"` because the story's real URL would navigate the test iframe away
+// now that `Basic` no longer forces `target="_blank"`.
 test('supports "onPress"', async () => {
-  render(<Basic.Component onPress={() => {}} />);
+  render(<Basic.Component href="#" onPress={() => {}} />);
 
   const link = screen.getAllByRole('link')[0];
   await user.click(link);
@@ -77,4 +79,30 @@ test('admin variant appends a hidden "Admin" label to the accessible name', () =
   const [admin] = screen.getAllByRole('link', { name: 'freigeben Admin' });
 
   expect(admin).toBeInTheDocument();
+});
+
+// The `NewTab` story tests cover the rest. Only the no-`href` case lives here,
+// because a story's args cannot drop an arg the meta supplies.
+test('leaves a link that cannot navigate unmarked', () => {
+  render(<NewTab.Component href={undefined} />);
+
+  const [link] = screen.getAllByRole('link', { name: 'Marigold docs' });
+
+  expect(link).toBeInstanceOf(HTMLSpanElement);
+  expect(link).not.toHaveAttribute('rel');
+});
+
+test('references the warning from an aria-labelledby name', () => {
+  render(
+    <>
+      <span id="release-notes">Marigold release notes</span>
+      <NewTab.Component aria-labelledby="release-notes" />
+    </>
+  );
+
+  const [link] = screen.getAllByRole('link', {
+    name: 'Marigold release notes opens in a new window',
+  });
+
+  expect(link.getAttribute('aria-labelledby')).toMatch(/^release-notes \S+$/);
 });

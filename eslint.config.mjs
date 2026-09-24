@@ -49,6 +49,20 @@ export default defineConfig([
     },
   },
   {
+    files: ['docs/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector:
+            "CallExpression[callee.property.name=/^toLocale(String|DateString|TimeString)$/]:matches([arguments.length=0], [arguments.0.type='Identifier'][arguments.0.name='undefined'])",
+          message:
+            'toLocale*() without a locale reads the runtime locale and mismatches on hydration. Use NumericFormat/DateFormat, or pass an explicit locale.',
+        },
+      ],
+    },
+  },
+  {
     ignores: [
       '**/.next',
       '**/out',

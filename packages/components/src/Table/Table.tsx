@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import type RAC from 'react-aria-components';
 import {
   Table as RACTable,
@@ -20,7 +20,6 @@ import { TableFooter } from './TableFooter';
 import { TableHeader } from './TableHeader';
 import { TableRow } from './TableRow';
 
-// Remove props that we want to customize
 type RemovedProps = 'className' | 'style' | 'selectionBehavior' | 'render';
 
 export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
@@ -85,6 +84,8 @@ const _Table = ({
     size,
   });
 
+  const [warnedMissingTextValue] = useState(() => new Set<string>());
+
   const ctx = useMemo(
     () => ({
       classNames,
@@ -94,6 +95,7 @@ const _Table = ({
       allowTextSelection,
       alignY,
       treeColumn,
+      warnedMissingTextValue,
     }),
     [
       classNames,
@@ -103,6 +105,7 @@ const _Table = ({
       allowTextSelection,
       alignY,
       treeColumn,
+      warnedMissingTextValue,
     ]
   );
 

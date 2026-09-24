@@ -28,7 +28,7 @@ test('check classname slots', () => {
   const button = screen.getByRole('button');
 
   expect(button.className).toMatchInlineSnapshot(
-    `"shrink-0 outline-0 absolute cursor-pointer right-0 flex size-control items-center justify-center text-secondary/80"`
+    `"shrink-0 cursor-pointer outline-0 text-secondary/80"`
   );
   expect(container?.className).toMatchInlineSnapshot(
     `"group/field flex min-w-0 flex-col w-auto"`

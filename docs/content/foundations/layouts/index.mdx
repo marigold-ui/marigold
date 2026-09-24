@@ -102,8 +102,8 @@ A layout component's whole job is to _arrange_ elements in relation to one anoth
 This keeps the JSX tree honest: every layout component in the markup signals a real arrangement decision, not incidental nesting.
 
 <Callout title="Padding and centering wrappers are different">
-  Components whose intent is to wrap a _single_ element — `Inset` for padding
-  and `Center` for centering — legitimately take one child. The two-or-more rule
+  Components whose intent is to wrap a _single_ element, `Inset` for padding and
+  `Center` for centering, legitimately take one child. The two-or-more rule
   applies to arrangement components like `Stack`, `Inline`, `Columns`, `Grid`
   and `Tiles`, where a single child carries no arrangement.
 </Callout>

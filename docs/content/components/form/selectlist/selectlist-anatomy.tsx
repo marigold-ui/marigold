@@ -149,7 +149,7 @@ export const SelectListAnatomy = () => (
       <circle cx="449" cy="338" r="2" />
     </g>
 
-    {/* Connector Lines */}
+    {/* Connector lines */}
     <g
       className="stroke-fd-primary transition-colors duration-300"
       fill="none"
@@ -174,7 +174,7 @@ export const SelectListAnatomy = () => (
       <path d="M 458 329 L 541 329" />
     </g>
 
-    {/* Connector Dots */}
+    {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="183" cy="79" r="4" />
       <circle cx="183" cy="101" r="4" />

@@ -13,6 +13,7 @@
 .npmrc
 .nvmrc
 .prettierignore
+.vale.ini
 .claude
 
 coverage
@@ -34,3 +35,5 @@ docs-internal/
 *.svg
 *.ico
 *.ttf
+
+.github/review-checklist.md

@@ -70,7 +70,7 @@ export const SectionMessageAnatomy = () => (
       <path d="M 469 139 L 459 149" />
     </g>
 
-    {/* Connector Lines */}
+    {/* Connector lines */}
     <g
       className="stroke-fd-primary transition-colors duration-300"
       fill="none"
@@ -90,7 +90,7 @@ export const SectionMessageAnatomy = () => (
       <path d="M 471 144 L 538 144" />
     </g>
 
-    {/* Connector Dots */}
+    {/* Connector dots */}
     <g className="fill-fd-primary transition-colors duration-300">
       <circle cx="158" cy="144" r="4" />
       <circle cx="139" cy="233" r="4" />

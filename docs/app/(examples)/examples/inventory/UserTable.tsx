@@ -37,7 +37,7 @@ export const UserTable = () => (
         <Table.Body>
           {people.map(person => (
             <Table.Row key={person.id}>
-              <Table.Cell>
+              <Table.Cell textValue={person.name}>
                 <Text weight="semibold">{person.name}</Text>
               </Table.Cell>
               <Table.Cell>{person.email}</Table.Cell>

@@ -1,3 +1,4 @@
 {
-  "*": "prettier --write"
+  "*": "prettier --write",
+  "*.{md,mdx}": "node scripts/vale.mjs"
 }
