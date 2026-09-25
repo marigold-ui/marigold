@@ -1,7 +1,11 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { StrictMode } from 'react';
-import { FocusOnRouteChange, FocusWithoutHeading } from './Page.stories';
+import {
+  FocusAcrossMixedRoutes,
+  FocusOnRouteChange,
+  FocusWithoutHeading,
+} from './Page.stories';
 import { usePageFocus } from './usePageFocus';
 
 describe('usePageFocus', () => {
@@ -21,6 +25,16 @@ describe('usePageFocus', () => {
     expect(h1).not.toHaveFocus();
   });
 
+  test('does not steal focus on the initial mount without a heading', () => {
+    render(
+      <StrictMode>
+        <FocusWithoutHeading.Component />
+      </StrictMode>
+    );
+
+    expect(screen.getByRole('main')).not.toHaveFocus();
+  });
+
   test('moves focus to the new page heading on a route change', async () => {
     const user = userEvent.setup();
     render(<FocusOnRouteChange.Component />);
@@ -32,19 +46,58 @@ describe('usePageFocus', () => {
       name: 'Team members',
     });
     expect(heading).toHaveFocus();
-    // Made programmatically focusable, not tabbable.
     expect(heading).toHaveAttribute('tabindex', '-1');
   });
 
-  test('is a no-op on a route change when the page has no heading', async () => {
+  test('falls back to the main landmark when the page has no heading', async () => {
     const user = userEvent.setup();
     render(<FocusWithoutHeading.Component />);
-    const openTeam = screen.getByRole('button', { name: 'Open Team members' });
+    // The breadcrumb repeats the section name, so scope to the sidebar's nav.
+    const nav = within(
+      screen.getByRole('navigation', { name: 'Settings sections' })
+    );
 
-    await user.click(openTeam);
+    await user.click(nav.getByRole('link', { name: 'Team members' }));
 
     expect(screen.queryByRole('heading', { level: 1 })).not.toBeInTheDocument();
-    expect(openTeam).toHaveFocus();
+    expect(screen.getByRole('main')).toHaveFocus();
+    expect(screen.getByRole('main')).toHaveAttribute('tabindex', '-1');
+  });
+
+  test('leaves the main landmark alone when the page has a heading', async () => {
+    const user = userEvent.setup();
+    render(<FocusOnRouteChange.Component />);
+
+    await user.click(screen.getByRole('button', { name: 'Open Team members' }));
+
+    expect(screen.getByRole('main')).not.toHaveAttribute('tabindex');
+  });
+
+  test('removes the fallback tabindex once a later route has a heading', async () => {
+    const user = userEvent.setup();
+    render(<FocusAcrossMixedRoutes.Component />);
+
+    await user.click(screen.getByRole('button', { name: 'Open Team members' }));
+    expect(screen.getByRole('main')).toHaveAttribute('tabindex', '-1');
+
+    await user.click(screen.getByRole('button', { name: 'Open Billing' }));
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Billing' })
+    ).toHaveFocus();
+    expect(screen.getByRole('main')).not.toHaveAttribute('tabindex');
+  });
+
+  test('keeps a tabIndex the consumer passed to the page', async () => {
+    const user = userEvent.setup();
+    render(<FocusWithoutHeading.Component tabIndex={0} />);
+    const nav = within(
+      screen.getByRole('navigation', { name: 'Settings sections' })
+    );
+
+    await user.click(nav.getByRole('link', { name: 'Team members' }));
+
+    expect(screen.getByRole('main')).toHaveFocus();
+    expect(screen.getByRole('main')).toHaveAttribute('tabindex', '0');
   });
 
   test('throws when used outside a Page', () => {

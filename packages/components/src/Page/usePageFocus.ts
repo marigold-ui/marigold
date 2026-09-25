@@ -2,20 +2,24 @@ import { useEffect, useRef } from 'react';
 import { usePageContext } from './Context';
 
 /**
- * Move focus to the page's `<h1>` when the route changes, the standard
+ * Move focus to the top of the page when the route changes, the standard
  * single-page-app technique for announcing a navigation to screen-reader and
- * keyboard users. `<Page>` owns the heading but is router-agnostic, so the
+ * keyboard users. The target is the page's `<h1>`, or its `<main>` landmark on
+ * a page that has none. `<Page>` owns the heading but is router-agnostic, so the
  * caller supplies the route signal.
  *
- * On each change the heading is made focusable (`tabIndex={-1}`) and focused.
- * The initial mount is skipped, so the first paint never steals focus, and the
- * call is a no-op when the page has no `<h1>` (an `aria-label`-only `<Page>`).
+ * On each change the target is made focusable (`tabIndex={-1}`) and focused.
+ * The initial mount is skipped, so the first paint never steals focus. When
+ * there is no `<h1>` to find (an `aria-label`-only `<Page>`), the target is the
+ * page's `<main>` landmark, which `<Page>` always renders. A `tabIndex` passed
+ * to `<Page>` is left as it is.
  *
  * Call it from a component inside `<Page>` that persists across navigations
  * (the layout / shell level): the skip is per-mount, so one that remounts per
- * route never fires. The `<h1>` has to be mounted when the effect runs, so a
- * `<Title>` behind a `React.lazy` boundary can still be loading, and focus
- * silently stays put. Hoist the title above the boundary in that case.
+ * route never fires. The heading has to be mounted when the effect runs, so a
+ * `<Title>` behind a `React.lazy` boundary can still be loading. That route
+ * falls back to its `<main>`, which is unnamed unless the page also carries an
+ * `aria-label`, so hoist the title above the boundary for lazy routes.
  *
  * @param routeKey - A value that changes on navigation, usually the pathname.
  *
@@ -36,8 +40,9 @@ import { usePageContext } from './Context';
 // TODO(follow-up): a `routeKey` prop on <Page> would remove the null-rendering
 // wrapper every consumer writes (raised in review, out of scope for DST-1492).
 export const usePageFocus = (routeKey: string) => {
-  const { titleId } = usePageContext();
+  const { titleId, mainRef } = usePageContext();
   const previousRouteKeyRef = useRef(routeKey);
+  const addedTabIndexRef = useRef(false);
 
   useEffect(() => {
     // Track the previous key rather than an "is this the first run" flag: refs
@@ -50,16 +55,26 @@ export const usePageFocus = (routeKey: string) => {
       return;
     }
 
-    // Looked up by the id `<Page>` assigns to the heading.
     const heading = document.getElementById(titleId);
-    if (!heading) {
-      // TODO(follow-up): fall back to focusing <Page>'s <main> (raised in
-      // review, out of scope for DST-1492. The no-op is intentional and tested).
+    if (heading) {
+      if (addedTabIndexRef.current) {
+        mainRef.current?.removeAttribute('tabindex');
+        addedTabIndexRef.current = false;
+      }
+      // Headings are not focusable by default.
+      heading.tabIndex = -1;
+      heading.focus();
       return;
     }
 
-    // Headings are not focusable by default.
-    heading.tabIndex = -1;
-    heading.focus();
-  }, [routeKey, titleId]);
+    const main = mainRef.current;
+    if (!main) {
+      return;
+    }
+    if (!main.hasAttribute('tabindex')) {
+      main.tabIndex = -1;
+      addedTabIndexRef.current = true;
+    }
+    main.focus();
+  }, [routeKey, titleId, mainRef]);
 };
