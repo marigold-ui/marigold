@@ -18,17 +18,20 @@ export const Radio: ThemeComponent<'Radio'> = {
   radio: cva({
     base: [
       'aspect-square size-4 rounded-full',
-      // Matches Checkbox: tiny, always on white, so a +0.06 alpha step on
-      // control-border restores the old opaque-border weight. Token-derived.
-      'border border-[oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_+_0.06))] bg-surface',
+      // The same shared edge Checkbox draws; see tokens.css.
+      'border border-control-edge bg-surface',
       'group-focus-visible/radio:ui-state-focus outline-none',
-      'group-disabled/radio:group-selected/radio:bg-disabled-surface group-disabled/radio:border-disabled-surface! group-disabled/radio:cursor-not-allowed',
+      // `text-disabled!` rather than plain: the dot is `bg-current`, and
+      // `group-selected` sorts after `group-disabled`, so the unforced rule
+      // loses and the dot paints `selected-bold-foreground` on
+      // `disabled-surface` at 1.06:1. Same reason as the border above.
+      'group-disabled/radio:group-selected/radio:bg-disabled-surface group-disabled/radio:border-control-edge-disabled! group-disabled/radio:text-disabled! group-disabled/radio:cursor-not-allowed',
       'group-selected/radio:border-selected-bold group-selected/radio:bg-selected-bold group-selected/radio:text-selected-bold-foreground',
-      // Same step and exclusions as Checkbox, minus `focus-visible`: this slot never
+      // Same exclusions as Checkbox, minus `focus-visible`: this slot never
       // flips its border on focus, so there is no declaration for hover to outrank.
-      // `disabled` is absent because `border-disabled-surface!` wins regardless.
+      // `disabled` is absent because `border-control-edge-disabled!` wins regardless.
       // Switch names it explicitly because its rule does not.
-      'group-hover/radio:not-group-read-only/radio:not-group-selected/radio:border-[oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_+_0.18))]',
+      'group-hover/radio:not-group-read-only/radio:not-group-selected/radio:border-control-edge-hover',
     ],
   }),
   group: cva({}),

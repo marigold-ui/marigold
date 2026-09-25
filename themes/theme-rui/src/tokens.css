@@ -114,7 +114,7 @@
   --color-disabled-surface: var(--color-charcoal-100);
 
   /* --- Boundaries & Focus Ring --- */
-  /* The three edge tokens are translucent, so each holds one *contrast* against
+  /* The edge tokens are translucent, so each holds one *contrast* against
      whatever ground it sits on rather than one lightness; `disabled-border` is a
      solid rung. See /foundations/token-overview. */
 
@@ -124,10 +124,44 @@
      the page nearly vanishes (white surface on a charcoal-100 ground). */
   --color-surface-border: oklch(from var(--color-charcoal-950) l c h / 0.13);
 
-  /* Functional control edge (inputs, selects, fields, checkboxes, radios).
-     Measures ~2:1 on white, short of WCAG 1.4.11's 3:1 — a deliberate call; the
-     focus ring stays the perceivable affordance. State overrides stay opaque. */
+  /* Functional control edge (inputs, selects, fields). Measures ~2:1 on white,
+     short of WCAG 1.4.11's 3:1 — a deliberate call; the focus ring stays the
+     perceivable affordance. State overrides stay opaque.
+
+     The small boolean controls derive their three edge steps from this one, see
+     `control-edge` below. */
   --color-control-border: oklch(from var(--color-charcoal-950) l c h / 0.26);
+
+  /* Edge of a small boolean control: Checkbox, Radio, and the selection mark a
+     grid row draws to mimic them. Three steps off `control-border` so they
+     track it: resting +0.06, hover +0.18, disabled -0.06.
+
+     These boxes are tiny, where `control-border` composites lighter than the
+     old opaque edge did, and +0.06 puts it back on that weight (2.15:1 on
+     white). One token per step, because the edge is all that announces an
+     empty box. */
+  --color-control-edge: oklch(
+    from var(--color-control-border) l c h / calc(alpha + 0.06)
+  );
+
+  /* Hover step, +0.18 (3.06:1). A step rather than a value: this edge idles at
+     +0.06, so a hover borrowed from a control idling at the base token would
+     land at half the change. */
+  --color-control-edge-hover: oklch(
+    from var(--color-control-border) l c h / calc(alpha + 0.18)
+  );
+
+  /* Disabled step, -0.06 (1.57:1). Translucent because each solid rung matches
+     one of the three grounds exactly: `disabled-surface` is the page ground,
+     `disabled-border` the `selected` fill, so each hits 1.00:1 somewhere a
+     Checkbox renders. At -0.06 it holds 1.54:1 to 1.57:1 on all three.
+
+     Not `disabled-border` itself, which every input and field shares. That
+     rung is the real root though, and converting it to an alpha step is the
+     follow-up, the same treatment DST-1672 gave `--color-control`. */
+  --color-control-edge-disabled: oklch(
+    from var(--color-control-border) l c h / calc(alpha - 0.06)
+  );
 
   /* Dimmed rather than absent — a borderless input reads as broken. */
   --color-disabled-border: var(--color-charcoal-300);

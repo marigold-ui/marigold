@@ -20,10 +20,7 @@ const Icon = ({ className, checked, indeterminate, ...props }: IconProps) => {
     <div
       aria-hidden="true"
       className={cn(
-        'flex shrink-0 grow-0 basis-4 items-center justify-center',
-        'h-4 w-4 p-px',
-        'bg-surface',
-        'border-control-border rounded-[3px] border border-solid',
+        'grow-0 basis-4 items-center justify-center p-px',
         className
       )}
       {...props}
