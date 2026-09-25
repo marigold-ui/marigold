@@ -69,13 +69,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  emitMock.mockClear();
-  runValidateMock.mockClear();
-  vi.mocked(runDocs).mockClear();
-  vi.mocked(runList).mockClear();
-  vi.mocked(runSearch).mockClear();
-  vi.mocked(runExamples).mockClear();
-  vi.mocked(runDoctor).mockClear();
+  vi.clearAllMocks();
   stdoutSpy.mockRestore();
   stderrSpy.mockRestore();
   if (originalIsTTY) {

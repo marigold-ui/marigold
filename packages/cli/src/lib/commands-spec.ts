@@ -1,6 +1,7 @@
 // Single source of truth for the CLI's command surface, used by the tab
 // completion suggester. Keep in sync with the parseArgs blocks in
 // bin/marigold.ts and the help template.
+import type { ValidateFormat } from '../commands/validate.js';
 import type { OutputFormat } from './format.js';
 
 export type PositionalKind =
@@ -52,10 +53,11 @@ export const defaultOutputFormat = (
   isTTY: boolean = Boolean(process.stdout.isTTY)
 ): OutputFormat => (isTTY ? 'markdown' : 'json');
 
-// For the commands whose human format is `text` (doctor, validate).
+// For the commands whose human format is `text` (doctor, validate). Typed as
+// both formats so the compiler flags it if the two enums ever diverge.
 export const defaultReportFormat = (
   isTTY: boolean = Boolean(process.stdout.isTTY)
-): DoctorFormat => (isTTY ? 'text' : 'json');
+): DoctorFormat & ValidateFormat => (isTTY ? 'text' : 'json');
 
 export type SubcommandName =
   | 'docs'
