@@ -3,7 +3,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const Checkbox: ThemeComponent<'Checkbox'> = {
   checkbox: cva({
     base: [
-      'grid size-4 shrink-0 place-content-center rounded',
+      'grid size-4 shrink-0 place-content-center rounded p-px',
       // One shared edge for every small boolean control. Weight and reasoning
       // live on the token, so Radio and GridSelectionIndicator cannot drift.
       'border border-control-edge bg-surface',

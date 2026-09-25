@@ -17,14 +17,7 @@ interface IconProps extends StateAttrProps {
 
 const Icon = ({ className, checked, indeterminate, ...props }: IconProps) => {
   return (
-    <div
-      aria-hidden="true"
-      className={cn(
-        'grow-0 basis-4 items-center justify-center p-px',
-        className
-      )}
-      {...props}
-    >
+    <div aria-hidden="true" className={className} {...props}>
       {indeterminate ? (
         <Minus size="12" strokeWidth="4" />
       ) : checked ? (

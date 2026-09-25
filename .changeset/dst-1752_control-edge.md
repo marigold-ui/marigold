@@ -22,6 +22,15 @@ inline in `Checkbox.tsx`, is deleted rather than repointed, because it never
 shipped: the theme slot's edge already beat it in the merged class list. A
 resting checkbox therefore looks exactly as it did.
 
+Neither component draws its own box any more. `Checkbox.tsx` and `Radio.tsx`
+handed the last of it to their theme slots: the checkbox's padding, and the
+radio's layout, centering and dot inset. What they kept back was a mix of dead
+and duplicated rules. The checkbox's `grow-0` and `basis-4` are flex properties
+on a grid child, and `justify-center` restated the slot's `place-content-center`.
+The radio repeated `size-4`, `rounded-full` and `border` outright, and that last
+one pinned the edge at 1px whatever a theme asked for, which is the drift this
+ticket set out to close.
+
 The disabled step is a token rather than a palette rung because a disabled mark
 has three grounds to survive, and both of the opaque values this family reached
 for before vanish on one of them:

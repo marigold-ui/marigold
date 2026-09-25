@@ -17,7 +17,7 @@ export const Radio: ThemeComponent<'Radio'> = {
   }),
   radio: cva({
     base: [
-      'aspect-square size-4 rounded-full',
+      'flex aspect-square size-4 items-center justify-center rounded-full p-1',
       // The same shared edge Checkbox draws; see tokens.css.
       'border border-control-edge bg-surface',
       'group-focus-visible/radio:ui-state-focus outline-none',
