@@ -2,8 +2,10 @@ import type { PropsWithChildren } from 'react';
 import { expect, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { cn } from '@marigold/system';
+import { Button } from './Button/Button';
 import { Headline } from './Headline/Headline';
 import { Inline } from './Inline/Inline';
+import { NumberField } from './NumberField/NumberField';
 import { RouterProvider } from './RouterProvider/RouterProvider';
 import { Sidebar } from './Sidebar/Sidebar';
 import { Stack } from './Stack/Stack';
@@ -222,6 +224,79 @@ export const Surface = meta.story({
           readOnly
         />
       </Inline>
+    </Stack>
+  ),
+});
+
+// The previous `ui-state-disabled`: opaque charcoal rungs calibrated for
+// white. Re-applied here (with `!`, so it beats the live utility) to put the old
+// look next to the new one.
+const legacyDisabled = cn(
+  '[&_:is([data-disabled],[data-pending],:disabled)]:text-disabled!',
+  '[&_:is([data-disabled],[data-pending],:disabled)]:[background:var(--color-disabled-surface)]!',
+  '[&_:is([data-disabled],[data-pending],:disabled)]:[--ui-border-color:var(--color-disabled-border)]!',
+  '[&_[data-pending]_circle+circle]:stroke-foreground!'
+);
+
+const grounds = [
+  { name: 'Page', className: 'bg-background text-foreground' },
+  { name: 'Panel', className: 'ui-surface text-foreground' },
+  { name: 'Dark (ActionBar)', className: 'ui-contrast rounded-full' },
+] as const;
+
+const DisabledSpecimen = () => (
+  <Inline space="related" alignY="center" noWrap>
+    <Button variant="ghost">Ghost</Button>
+    <Button variant="ghost" disabled>
+      Ghost
+    </Button>
+    <Button variant="ghost" loading>
+      Ghost
+    </Button>
+    <Button variant="secondary" disabled>
+      Secondary
+    </Button>
+    <Button variant="primary" disabled>
+      Primary
+    </Button>
+    <Button variant="destructive" disabled>
+      Destructive
+    </Button>
+    <div className="w-40">
+      <NumberField aria-label="Amount" defaultValue={3} disabled />
+    </div>
+    <div className="w-40">
+      <NumberField aria-label="Minimum" defaultValue={0} minValue={0} />
+    </div>
+  </Inline>
+);
+
+/**
+ * `ui-state-disabled` on the page, a white panel and the dark ActionBar ground.
+ * Label and fill derive from the ink, so the state reads the same on each.
+ */
+export const DisabledState = meta.story({
+  render: () => (
+    <Stack space="group">
+      {grounds.map(ground => (
+        <Stack key={ground.name} space="related">
+          <Headline level="3">{ground.name}</Headline>
+          {(['Before', 'After'] as const).map(version => (
+            <Inline key={version} space="regular" alignY="center" noWrap>
+              <span className="text-secondary w-12 text-xs">{version}</span>
+              <div
+                className={cn(
+                  'p-4',
+                  ground.className,
+                  version === 'Before' && legacyDisabled
+                )}
+              >
+                <DisabledSpecimen />
+              </div>
+            </Inline>
+          ))}
+        </Stack>
+      ))}
     </Stack>
   ),
 });
