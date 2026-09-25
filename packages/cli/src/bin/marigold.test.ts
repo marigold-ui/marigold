@@ -7,7 +7,11 @@ import { main } from './marigold.js';
 
 const emitMock = vi.hoisted(() => vi.fn());
 
-vi.mock('../lib/telemetry.js', () => ({
+// Partial mock: only `emit` is stubbed, so the real `slugArg`/`enumArg` clamps
+// stay in the path and the args asserted below are the ones that would actually
+// be sent.
+vi.mock('../lib/telemetry.js', async importOriginal => ({
+  ...(await importOriginal<typeof import('../lib/telemetry.js')>()),
   emit: emitMock,
 }));
 
@@ -61,7 +65,10 @@ afterEach(() => {
 });
 
 describe('main() — telemetry on validation failure', () => {
-  test('emits exitCode 1 with args when --section is invalid', async () => {
+  // A failed run still reports which flags were supplied, but the rejected value
+  // is clamped to 'invalid' rather than echoed back — telemetry must never carry
+  // raw user input.
+  test('emits exitCode 1 and clamps an invalid --section', async () => {
     const code = await main(['docs', 'Button', '--section', 'bogus']);
 
     expect(code).toBe(1);
@@ -73,8 +80,34 @@ describe('main() — telemetry on validation failure', () => {
       exitCode: 1,
       args: expect.objectContaining({
         component: 'Button',
-        section: 'bogus',
+        section: 'invalid',
       }),
+    });
+  });
+
+  // Guards the identifier-free contract at the point of emit: no field in the
+  // payload may single out a machine, user, or session.
+  test('emits no identifying field', async () => {
+    await main(['docs', 'Button']);
+
+    const event = emitMock.mock.calls[0][0];
+    expect(event).not.toHaveProperty('anonymousId');
+    expect(Object.keys(event)).toEqual(
+      expect.not.arrayContaining([
+        'anonymousId',
+        'userId',
+        'sessionId',
+        'machineId',
+      ])
+    );
+  });
+
+  // `/` and `.` are legal in slugs, so a relative path would otherwise pass.
+  test('records a relative file path as invalid', async () => {
+    await main(['docs', 'packages/components/src/Button.tsx']);
+
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      args: expect.objectContaining({ component: 'invalid' }),
     });
   });
 
@@ -106,6 +139,34 @@ describe('main() — telemetry on validation failure', () => {
 
     expect(code).toBe(1);
     expect(emitMock).not.toHaveBeenCalled();
+  });
+});
+
+describe('main() — unknown command', () => {
+  test('suggests the nearest command for a typo', async () => {
+    const code = await main(['serach']);
+
+    expect(code).toBe(1);
+    expect(stderrSpy.mock.calls.flat().join('')).toContain(
+      'Did you mean "search"?'
+    );
+  });
+
+  test('suggests regardless of case', async () => {
+    await main(['DOCS']);
+
+    expect(stderrSpy.mock.calls.flat().join('')).toContain(
+      'Did you mean "docs"?'
+    );
+  });
+
+  test('omits the suggestion when nothing is close', async () => {
+    const code = await main(['xyzzy']);
+    const stderr = stderrSpy.mock.calls.flat().join('');
+
+    expect(code).toBe(1);
+    expect(stderr).toContain('Unknown command: xyzzy');
+    expect(stderr).not.toContain('Did you mean');
   });
 });
 
@@ -208,14 +269,26 @@ describe('main() — search command', () => {
     });
   });
 
-  test('fails when --limit is not a positive integer', async () => {
-    const code = await main(['search', 'tag', '--limit', '0']);
+  // A rejected --limit is clamped like --format, so a typo is never echoed back.
+  test.each(['0', 'abc123'])(
+    'fails and records invalid when --limit is %s',
+    async limit => {
+      const code = await main(['search', 'tag', '--limit', limit]);
 
-    expect(code).toBe(1);
+      expect(code).toBe(1);
+      expect(emitMock.mock.calls[0][0]).toMatchObject({
+        command: 'search',
+        exitCode: 1,
+        args: expect.objectContaining({ limit: 'invalid' }),
+      });
+    }
+  );
+
+  test('records a valid --limit as-is', async () => {
+    await main(['search', 'tag', '--limit', '5']);
+
     expect(emitMock.mock.calls[0][0]).toMatchObject({
-      command: 'search',
-      exitCode: 1,
-      args: expect.objectContaining({ limit: '0' }),
+      args: expect.objectContaining({ limit: '5' }),
     });
   });
 

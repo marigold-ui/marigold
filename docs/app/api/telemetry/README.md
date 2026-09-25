@@ -39,9 +39,11 @@ since DST-1264 — so there is no history there anyone has ever read or charted.
 unbounded retention is about the trends this store is now actually read for, not about
 reconstructing a window nothing ever looked at.
 
-Rate-limit keys carry a source prefix — `telemetry:rl:cli:{anonymousId}:{date}` and
-`telemetry:rl:mcp:{hashedCallerId}:{date}` — so the keyspace stays greppable by caller type.
-The endpoint-wide counter is `telemetry:rl:public:{date}`.
+The one rate-limit key is `telemetry:rl:mcp:{hashedCallerId}:{date}`, and the endpoint-wide
+counter is `telemetry:rl:public:{date}`. There is no `telemetry:rl:cli:…` any more: the CLI
+stopped sending `anonymousId` (see packages/cli/src/lib/config.ts), so there is nothing in a
+`cli_command` payload to key one on. The `mcp:` prefix is kept so the keyspace stays greppable
+by caller type if a second authenticated source ever appears.
 
 ## Retention is unbounded, deliberately
 
@@ -81,19 +83,25 @@ year, and until it exists trimming means losing the history it is meant to prese
 
 With no window, the quotas are the only thing left.
 
-**Per caller.** 10000/day, the same for both sources. It is not an abuse bound — the
-endpoint-wide ceiling below is — but a guard against a runaway writer, which matters because
-nothing expires to clean up after one: a looping agent on the MCP side, or a broken script on
-the CLI side. Since that is the only job, there is no reason to treat the two sources
-differently, and an earlier split (1000 for CLI, on the theory that its endpoint is
-unauthenticated) just duplicated what the endpoint-wide ceiling already does. A caller past the
-ceiling is dropped rather than truncated, so it sits far above realistic usage — but a caller
-crossing it in a UTC day does under-report.
+**Per caller.** 10000/day, MCP only. It is not an abuse bound — the endpoint-wide ceiling below
+is — but a guard against a runaway writer, which matters because nothing expires to clean up
+after one: a looping agent on the MCP side. A caller past the ceiling is dropped rather than
+truncated, so it sits far above realistic usage — but a caller crossing it in a UTC day does
+under-report.
 
-**Endpoint-wide.** 50000/day on `telemetry:rl:public:{date}`. `POST /api/telemetry` has to stay
-unauthenticated — `@marigold/cli` is a public npm package — and the per-caller key above comes
-out of the request body, so rotating `anonymousId` walks past it. A single fixed key can't be
-influenced by any header, body field or rotation, which makes it a hard bound where the
+It once covered `cli_command` too, keyed on `anonymousId`. That identifier is gone, so the
+broken script on the CLI side that this ceiling was also meant to catch is now caught only by
+the endpoint-wide one below, three orders of magnitude higher. That is a real loosening and it
+is accepted rather than worked around: the alternatives are re-introducing a per-machine
+identifier, which is the thing being removed, or keying on IP, which the section above already
+rejects for putting personal data in Redis. Bounding a single misbehaving CLI belongs in WAF
+rate limiting in front of the route, which needs no identifier in the body.
+
+**Endpoint-wide.** 50000/day on `telemetry:rl:public:{date}`, and since the CLI went
+identifier-free this is that route's only ceiling. `POST /api/telemetry` has to stay
+unauthenticated — `@marigold/cli` is a public npm package — and a key derived from the request
+body would be walked past by rotating whatever it keys on. A single fixed key can't be
+influenced by any header, body field or rotation, which makes it a hard bound where a
 per-caller ceiling is not. Worth stating precisely, since the imprecise version is what a
 future reader will trust when deciding whether the ceiling is enough: it bounds the write
 **rate**, not the total. At 50000/day times ~250 bytes it permits ~12.5 MB/day — roughly
@@ -118,13 +126,9 @@ so the request that trips the ceiling spends the counter and returns without an 
 does one whose `XADD` then fails. Reconciling the counter against stream length will always show
 the counter ahead; that is not lost events.
 
-That bounds what a single caller can take: its own 10000/day ceiling stops it at a fifth of the
-shared budget, so it takes a sixth rotated `anonymousId` to exhaust the day — five spend exactly
-50000, which the `>` comparison still lets through. Note the ceilings do not protect each other
-symmetrically: the per-caller counter is charged before the shared gate is consulted, so once the
-day's shared budget is gone, every caller keeps burning its own allowance on requests that are
-dropped. A caller can therefore end the day marked rate-limited with nothing written, which reads
-like a runaway writer and is not one.
+Nothing bounds what a single CLI caller can take out of that budget, since the two ceilings no
+longer stack: one source, one ceiling each. A single looping CLI can spend the whole day's
+shared budget on its own, which is the loosening named under **Per caller** above.
 
 Once the shared budget is exhausted, every CLI's telemetry is dropped for the rest of the UTC
 day, silently on both sides: the CLI's sender neither inspects the response status nor retries.
@@ -139,8 +143,15 @@ DST-1264 introduced it** — worth knowing before citing "we have CLI usage data
 the long-run-trends argument above is weaker for that half than it reads.
 
 They are also different classes of data, which is why only one made retention a question.
-`cli_command` carries `anonymousId`, a UUID minted locally by `crypto.randomUUID()` and tied to
-no identity — there is no personal data in it. `mcp_tool_call` carries `hashedCallerId`, a
+`cli_command` carries no identifier at all. It used to carry `anonymousId`, a UUID minted
+locally by `crypto.randomUUID()`, on the reading that a value tied to no identity is not
+personal data. That reading was wrong: a stable per-machine UUID is pseudonymous rather than
+anonymous under GDPR Recital 26, and persisting it to the config file made the write "storage
+on terminal equipment" under ePrivacy Art. 5(3) / § 25 TDDDG, which needs consent. The field is
+gone from the payload, the schema and the CLI's config, and the schema is strict so a stale CLI
+still sending it gets a 400 rather than a silent strip. Strictness covers top-level keys only:
+`args` is a record whose keys are bounded in length and count, not enumerated, so the guarantee
+that no identifier is sent is the CLI's, which builds `args` only from validated values. `mcp_tool_call` carries `hashedCallerId`, a
 SHA-256 of a Keycloak `sub`: pseudonymous, not anonymous, since anyone holding both Redis read
 access and a list of `sub`s to test against can re-identify a named Reservix employee.
 

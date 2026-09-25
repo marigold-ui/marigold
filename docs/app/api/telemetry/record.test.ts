@@ -86,16 +86,18 @@ describe('recordTelemetryEvent', () => {
     });
   });
 
-  it('uses a cli-prefixed rate-limit key for cli_command events', async () => {
+  // There is no per-caller key for the CLI to use: its payload carries no
+  // identifier to build one from. Asserting the absence keeps a future
+  // `telemetry:rl:cli:…` from quietly reintroducing one, which is the whole
+  // thing packages/cli/src/lib/config.ts removed.
+  it('charges no per-caller key for cli_command events', async () => {
     incr.mockResolvedValue(1);
     const { recordTelemetryEvent } = await loadRecord();
 
     await recordTelemetryEvent(cliEvent);
 
-    expect(incr).toHaveBeenCalledWith(
-      expect.stringMatching(
-        /^telemetry:rl:cli:00000000-0000-4000-8000-000000000000:\d{4}-\d{2}-\d{2}$/
-      )
+    expect(incr).not.toHaveBeenCalledWith(
+      expect.stringContaining('telemetry:rl:cli:')
     );
   });
 
@@ -122,8 +124,9 @@ describe('recordTelemetryEvent', () => {
     expect(xadd).not.toHaveBeenCalled();
   });
 
-  // Spending the shared budget on traffic that was never written lets one
-  // stuck script silence every other CLI. Ordering is the whole fix.
+  // The two sources sit on different ceilings, and the shared one must be
+  // charged by CLI traffic only. Spending it on MCP traffic, which never
+  // passes through this endpoint, would let /mcp silence every CLI.
   describe('quota ordering', () => {
     // Both keys go through the same `incr` spy, so drive them by key.
     const counters = (perCaller: number, publicCount: number) =>
@@ -131,15 +134,17 @@ describe('recordTelemetryEvent', () => {
         Promise.resolve(key.includes(':public:') ? publicCount : perCaller)
       );
 
-    it('does not charge the shared budget for a caller past its own ceiling', async () => {
-      counters(10_001, 1);
+    // One counter, not two: the shared key is the CLI's whole ceiling now, so
+    // a per-caller INCR appearing here would be a reintroduced identifier.
+    it('charges only the shared key for a cli_command event', async () => {
+      counters(1, 1);
       const { recordTelemetryEvent } = await loadRecord();
 
       const result = await recordTelemetryEvent(cliEvent);
 
-      expect(result).toBe('rate-limited');
+      expect(result).toBe('recorded');
       expect(incr).toHaveBeenCalledTimes(1);
-      expect(incr).not.toHaveBeenCalledWith(
+      expect(incr).toHaveBeenCalledWith(
         expect.stringContaining('telemetry:rl:public:')
       );
     });
@@ -233,6 +238,35 @@ describe('recordTelemetryEvent', () => {
     expect(JSON.parse(payload)).toMatchObject({ event: 'mcp_tool_call' });
   });
 
+  // Hour-granular for the CLI only. Without an identifier, timing is the
+  // remaining way to correlate two CLI events, so the resolution is the
+  // control. MCP events keep full precision: they are already identified.
+  describe('receivedAt granularity', () => {
+    beforeEach(() => {
+      incr.mockResolvedValue(1);
+    });
+
+    const written = () => JSON.parse(xadd.mock.calls[0][2].data).receivedAt;
+
+    it('truncates a cli_command timestamp to the hour', async () => {
+      const { recordTelemetryEvent } = await loadRecord();
+
+      await recordTelemetryEvent(cliEvent);
+
+      expect(written()).toMatch(/T\d{2}:00:00\.000Z$/);
+    });
+
+    it('keeps full precision on an mcp_tool_call timestamp', async () => {
+      const { recordTelemetryEvent } = await loadRecord();
+
+      await recordTelemetryEvent(mcpEvent);
+
+      // Not the hour-truncated shape. A real run lands on :00:00.000 once in
+      // 3.6M, so vi.setSystemTime would buy nothing but a second fake clock.
+      expect(written()).not.toMatch(/T\d{2}:00:00\.000Z$/);
+    });
+  });
+
   // A stray trim option would drop the tail silently, so assert its absence.
   describe('retention', () => {
     beforeEach(() => {
@@ -286,8 +320,11 @@ describe('recordTelemetryEvent', () => {
     incr.mockRejectedValue(new Error('upstash down'));
     const { recordTelemetryEvent } = await loadRecord();
 
-    await recordTelemetryEvent(cliEvent);
-    await recordTelemetryEvent(cliEvent);
+    // MCP: its INCR failure propagates to the general handler. The CLI's only
+    // INCR is the shared quota check, which catches its own failure and warns
+    // under a different cause.
+    await recordTelemetryEvent(mcpEvent);
+    await recordTelemetryEvent(mcpEvent);
 
     expect(warn).toHaveBeenCalledTimes(1);
     expect(warn.mock.calls[0][0]).toContain('upstash down');
@@ -354,38 +391,33 @@ describe('recordTelemetryEvent', () => {
   });
 
   // `count > limit`, so the ceiling itself is still allowed. Pins the
-  // comparison against an off-by-one to `>=`, for both sources since one
-  // ceiling now covers them.
-  it.each([
-    ['cli_command', () => cliEvent],
-    ['mcp_tool_call', () => mcpEvent],
-  ])(
-    'records the %s event landing exactly on the ceiling',
-    async (_, event) => {
-      incr.mockResolvedValue(10_000);
-      const { recordTelemetryEvent } = await loadRecord();
+  // comparison against an off-by-one to `>=`. MCP only: the sources no longer
+  // share a ceiling, and the CLI's pair sits in `quota ordering` above,
+  // against the shared 50000 rather than this per-caller 10000.
+  it('records an mcp_tool_call event landing exactly on its ceiling', async () => {
+    incr.mockResolvedValue(10_000);
+    const { recordTelemetryEvent } = await loadRecord();
 
-      await expect(recordTelemetryEvent(event())).resolves.toBe('recorded');
-    }
-  );
+    await expect(recordTelemetryEvent(mcpEvent)).resolves.toBe('recorded');
+  });
 
-  it.each([
-    ['cli_command', () => cliEvent],
-    ['mcp_tool_call', () => mcpEvent],
-  ])('rate-limits the %s event one past the ceiling', async (_, event) => {
+  it('rate-limits an mcp_tool_call event one past its ceiling', async () => {
     incr.mockResolvedValue(10_001);
     const { recordTelemetryEvent } = await loadRecord();
 
-    await expect(recordTelemetryEvent(event())).resolves.toBe('rate-limited');
+    await expect(recordTelemetryEvent(mcpEvent)).resolves.toBe('rate-limited');
   });
 
   // The defense-in-depth re-parse guards both halves of the union, but only the
   // MCP half was covered — that is the hand-built path, so it got the attention.
-  it('returns "invalid" for a malformed cli_command event', async () => {
+  // `anonymousId` is the case worth pinning on the CLI half: the schema is
+  // strict, so the field the CLI stopped sending is rejected here too and not
+  // just at the route.
+  it('returns "invalid" for a cli_command event carrying an anonymousId', async () => {
     const { recordTelemetryEvent } = await loadRecord();
     const malformed = {
       ...cliEvent,
-      anonymousId: 'not-a-uuid',
+      anonymousId: '00000000-0000-4000-8000-000000000000',
     } as unknown as TelemetryEvent;
 
     await expect(recordTelemetryEvent(malformed)).resolves.toBe('invalid');
