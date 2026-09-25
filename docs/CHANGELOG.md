@@ -1,5 +1,26 @@
 # @marigold/docs
 
+## 18.3.0
+
+### Patch Changes
+
+- 44533cd: docs(DST-1817): describe how `ui-state-disabled` derives its colors
+
+  The token overview said the utility paints the `disabled` tokens. It now derives label, fill and border from the text color, so the docs say that and point to the controls that still use the tokens directly.
+
+- e1f2e28: feat(DST-1819): default the CLI to JSON output when stdout is not a terminal
+
+  When `--format` is omitted, `docs`, `list`, `search`, `examples`, `doctor` and `validate` now print `json` whenever their output is piped or captured, as it is for an AI agent, a script, CI or a redirect to a file. In an interactive terminal nothing changes: `docs`, `list`, `search` and `examples` still print `markdown`, and `doctor` and `validate` still print `text`. An explicit `--format` always wins.
+
+  **Breaking:** a script that reads the default output of one of these commands through a pipe now receives JSON. Pass `--format markdown`, `--format plain` or `--format text` to keep the previous output. The programmatic `run*()` exports are unchanged and keep their `markdown`/`text` fallback.
+
+- Updated dependencies [e9df73e]
+- Updated dependencies [44533cd]
+  - @marigold/components@18.3.0
+  - @marigold/theme-rui@6.2.1
+  - @marigold/system@18.3.0
+  - @marigold/icons@2.0.3
+
 ## 18.2.0
 
 ### Patch Changes
