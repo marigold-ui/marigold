@@ -31,6 +31,11 @@ The radio repeated `size-4`, `rounded-full` and `border` outright, and that last
 one pinned the edge at 1px whatever a theme asked for, which is the drift this
 ticket set out to close.
 
+The radio box also gains `shrink-0`, which the checkbox and the grid indicator
+both already carried. It is the only one of the three that sits in a flex row,
+so it was the only one that could be squeezed by a long label, and the slot now
+matches the mark a list row draws exactly.
+
 The disabled step is a token rather than a palette rung because a disabled mark
 has three grounds to survive, and both of the opaque values this family reached
 for before vanish on one of them:
