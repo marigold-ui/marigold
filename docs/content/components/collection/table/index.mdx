@@ -333,6 +333,20 @@ When a table has no data to display, whether from empty search results, filters 
   </Dont>
 </GuidelineTiles>
 
+### Loading state
+
+Use `loading` whenever the rows are about to change because data is on its way: the first fetch when the page opens, and every refetch after a user sorts, filters, searches or pages through the table. Sighted users can see a spinner or stale rows being replaced, while screen reader users would otherwise hear nothing and may start acting on rows that are about to disappear. With `loading` set, they hear that the table is loading. Nothing is announced when it finishes, because the new rows are the signal.
+
+Keep it tied to the fetch that feeds this table. A save or an export that leaves the rows as they are is not a loading state, so give it its own feedback, such as a [Toast](/components/overlay/toast) once it is done.
+
+```tsx
+<Table aria-label="Orders" loading={isLoading}>
+  …
+</Table>
+```
+
+Use `loading` instead of passing `aria-busy` to the table. React Aria drops that attribute, so it never reaches the page.
+
 ### Sticky headers and footers
 
 For tables with many rows that require scrolling, sticky headers keep column labels visible as users scroll through data. This helps users maintain context about what each column represents.

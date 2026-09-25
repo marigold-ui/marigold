@@ -1,12 +1,15 @@
-import type { ReactNode } from 'react';
-import { useMemo, useState } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type RAC from 'react-aria-components';
 import {
   Table as RACTable,
   ResizableTableContainer,
 } from 'react-aria-components/Table';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { announce } from '@react-aria/live-announcer';
 import { cn, useClassNames } from '@marigold/system';
 import { useActionBar } from '../ActionBar/useActionBar';
+import { intlMessages } from '../intl/messages';
 import type { Selection } from '../types';
 import { TableContext } from './Context';
 import { TableBody } from './TableBody';
@@ -41,6 +44,12 @@ export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
    */
   alignY?: 'top' | 'middle' | 'bottom' | 'baseline';
   /**
+   * Whether the table's data is loading. Marks the table as busy and announces
+   * the loading state to screen readers.
+   * @default false
+   */
+  loading?: boolean;
+  /**
    * Render function that receives the current selection and returns an ActionBar.
    * When provided, the Table manages selection wiring and ActionBar positioning automatically.
    */
@@ -71,6 +80,7 @@ const _Table = ({
   overflow = 'wrap',
   allowTextSelection = false,
   alignY = 'middle',
+  loading = false,
   actionBar,
   treeColumn,
   selectedKeys: selectedKeysProp,
@@ -83,6 +93,7 @@ const _Table = ({
     variant,
     size,
   });
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   const [warnedMissingTextValue] = useState(() => new Set<string>());
 
@@ -117,6 +128,14 @@ const _Table = ({
       actionBar,
     });
 
+  // A live region rendered with the table would be inserted with its text
+  // already in it on mount, which screen readers skip. The shared announcer's
+  // region exists ahead of time, so the first load is announced too.
+  useEffect(() => {
+    if (!loading) return;
+    announce(stringFormatter.format('loadingMessage'), 'polite');
+  }, [loading, stringFormatter]);
+
   return (
     <TableContext value={ctx}>
       <ResizableTableContainer
@@ -137,6 +156,14 @@ const _Table = ({
           selectedKeys={selectedKeys}
           defaultSelectedKeys={actionBar ? undefined : defaultSelectedKeysProp}
           onSelectionChange={onSelectionChange}
+          // React Aria drops `aria-busy`, so it is set on the element directly.
+          render={domProps => (
+            <table
+              // Only a virtualized table renders a `<div>`, and Marigold's never is.
+              {...(domProps as ComponentProps<'table'>)}
+              aria-busy={loading || undefined}
+            />
+          )}
           {...props}
         />
         {actionBarOverlay}

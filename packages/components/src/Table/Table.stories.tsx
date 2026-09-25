@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { useDragAndDrop } from 'react-aria-components/useDragAndDrop';
-import { expect, waitFor, within } from 'storybook/test';
+import { expect, screen, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { SortDescriptor } from '@react-types/shared';
 import { NumericFormat } from '@marigold/system';
+import { ActionBar } from '../ActionBar/ActionBar';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Checkbox } from '../Checkbox/Checkbox';
@@ -568,6 +569,74 @@ Empty.test(
       const rows = canvas.getAllByRole('row');
       expect(rows).toHaveLength(2);
     });
+  }
+);
+
+export const Loading = meta.story({
+  tags: ['component-test'],
+  // `loading` changes no pixels, the tests below guard it instead.
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    loading: true,
+  },
+  render: args => (
+    <Table aria-label="Orders" {...args}>
+      <Table.Header>
+        <Table.Column rowHeader>Name</Table.Column>
+        <Table.Column>Email</Table.Column>
+        <Table.Column>Status</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        {users.slice(0, 3).map(user => (
+          <Table.Row key={user.email}>
+            <Table.Cell>{user.name}</Table.Cell>
+            <Table.Cell>{user.email}</Table.Cell>
+            <Table.Cell>
+              <Badge>{user.status}</Badge>
+            </Table.Cell>
+          </Table.Row>
+        ))}
+      </Table.Body>
+    </Table>
+  ),
+});
+
+Loading.test(
+  'Marks the grid busy and announces loading on the first render',
+  async ({ canvas }) => {
+    expect(canvas.getByRole('grid')).toHaveAttribute('aria-busy', 'true');
+
+    // The announcer lives outside the canvas, at the start of `<body>`.
+    await waitFor(() => {
+      const polite = screen
+        .getAllByRole('log', { hidden: true })
+        .find(log => log.getAttribute('aria-live') === 'polite');
+
+      expect(polite).toHaveTextContent('Loading...');
+    });
+  }
+);
+
+Loading.test(
+  'Leaves a single status region when an ActionBar is open',
+  {
+    args: {
+      selectionMode: 'multiple',
+      actionBar: () => (
+        <ActionBar>
+          <Button>Delete</Button>
+        </ActionBar>
+      ),
+    },
+  },
+  async ({ canvas, userEvent }) => {
+    const [firstRow] = canvas.getAllByRole('row').slice(1);
+    await userEvent.click(within(firstRow).getByRole('checkbox'));
+
+    await waitFor(() => {
+      expect(screen.getByRole('toolbar')).toBeInTheDocument();
+    });
+    expect(screen.getAllByRole('status')).toHaveLength(1);
   }
 );
 
