@@ -40,14 +40,7 @@ interface IconProps {
 }
 
 const Icon = ({ checked, className, ...props }: IconProps) => (
-  <div
-    className={cn(
-      'flex h-4 w-4 items-center justify-center rounded-full border p-1',
-      className
-    )}
-    aria-hidden="true"
-    {...props}
-  >
+  <div className={className} aria-hidden="true" {...props}>
     {checked ? <div className="size-full rounded-full bg-current" /> : null}
   </div>
 );

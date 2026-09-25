@@ -3,13 +3,26 @@ import { expect, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { cn } from '@marigold/system';
 import { Button } from './Button/Button';
+import { Checkbox } from './Checkbox/Checkbox';
+import { Description } from './Description/Description';
 import { Headline } from './Headline/Headline';
 import { Inline } from './Inline/Inline';
 import { NumberField } from './NumberField/NumberField';
+import { Radio } from './Radio/Radio';
 import { RouterProvider } from './RouterProvider/RouterProvider';
+import { SelectList } from './SelectList/SelectList';
 import { Sidebar } from './Sidebar/Sidebar';
 import { Stack } from './Stack/Stack';
 import { Text } from './Text/Text';
+import { TextValue } from './TextValue/TextValue';
+import {
+  CONTROL_EDGE_MIN,
+  DISABLED_EDGE_BAND,
+  DISABLED_INK_MIN,
+  edgeContrast,
+  inkContrast,
+} from './contrast.utils';
+import { borderOf, controlIcon, selectionMark } from './control.utils';
 
 const meta = preview.meta({
   title: 'Styles/RUI',
@@ -474,5 +487,211 @@ SidebarBackAction.test(
     await expect(getComputedStyle(backLabel).fontWeight).toBe(
       getComputedStyle(child).fontWeight
     );
+  }
+);
+
+/*
+ * Control edge
+ * -------------------------------------------------------------------------
+ */
+
+// One edge for every small boolean control. Four separate values before, which
+// is how a single-select row ended up 1.6x fainter than the checkbox beside it.
+const ControlEdgeSpecimen = () => (
+  <Inline space="regular">
+    <Checkbox label="Checkbox" />
+    <Radio.Group label="Radio">
+      <Radio value="radio">Radio</Radio>
+      <Radio value="alternative">Alternative</Radio>
+    </Radio.Group>
+    <div className="w-56">
+      <SelectList label="SelectList">
+        <SelectList.Option id="row" textValue="SelectList row">
+          <TextValue>SelectList row</TextValue>
+          <Description>Single select draws the same mark.</Description>
+        </SelectList.Option>
+      </SelectList>
+    </div>
+  </Inline>
+);
+
+export const ControlEdge = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <Stack space="group">
+      <Headline level="3">Control edge</Headline>
+      <p className="text-secondary max-w-prose text-sm">
+        The thin box edge is the only thing announcing an empty checkbox, radio
+        or selection mark before you click it, so all three resolve one token:{' '}
+        <code>--color-control-edge</code>. It is{' '}
+        <code>--color-control-border</code> stepped +0.06 in alpha, translucent
+        like the other edge tokens, so it composites over whatever ground it
+        lands on instead of painting a fixed gray.
+      </p>
+      <ControlEdgeSpecimen />
+    </Stack>
+  ),
+});
+
+// Computed values, not class names: a copy that drifts is what this catches.
+ControlEdge.test(
+  'Checkbox, Radio and the selection mark draw one edge',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const checkbox = controlIcon(await canvas.findByRole('checkbox'));
+    const radio = controlIcon(canvas.getByRole('radio', { name: 'Radio' }));
+    const mark = selectionMark(
+      canvas.getByRole('row', { name: /SelectList row/i })
+    );
+
+    expect(borderOf(radio)).toBe(borderOf(checkbox));
+    expect(borderOf(mark)).toBe(borderOf(checkbox));
+  }
+);
+
+ControlEdge.test(
+  'Holds the agreed edge weight against its ground',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const ratio = edgeContrast(
+      controlIcon(await canvas.findByRole('checkbox'))
+    );
+
+    expect(
+      ratio,
+      `control edge is ${ratio.toFixed(2)}:1, needs ${CONTROL_EDGE_MIN}:1`
+    ).toBeGreaterThanOrEqual(CONTROL_EDGE_MIN);
+  }
+);
+
+// Translucent because each solid rung matches one of the three grounds exactly:
+// `disabled-surface` is the page ground, `disabled-border` the `selected` fill.
+const ControlEdgeDisabledSpecimen = () => (
+  <Inline space="regular">
+    <Checkbox label="Checkbox" checked disabled />
+    <Checkbox label="Indeterminate" indeterminate disabled />
+    <Radio.Group label="Radio" value="radio" disabled>
+      <Radio value="radio">Radio</Radio>
+      <Radio value="alternative">Alternative</Radio>
+    </Radio.Group>
+    <div className="w-56">
+      <SelectList label="SelectList" disabled defaultSelectedKeys={['row']}>
+        <SelectList.Option id="row" textValue="Picked row">
+          <TextValue>Picked row</TextValue>
+          <Description>Sits on the selected fill.</Description>
+        </SelectList.Option>
+        <SelectList.Option id="other" textValue="Spare row">
+          <TextValue>Spare row</TextValue>
+          <Description>Sits on the surface.</Description>
+        </SelectList.Option>
+      </SelectList>
+    </div>
+  </Inline>
+);
+
+export const ControlEdgeDisabled = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <Stack space="group">
+      <Headline level="3">Control edge, disabled</Headline>
+      <p className="text-secondary max-w-prose text-sm">
+        The same edge dimmed: <code>--color-control-edge-disabled</code>, which
+        is <code>--color-control-border</code> stepped &minus;0.06. It stays
+        translucent because a disabled mark has three grounds to survive, and
+        the picked row is the hard one: its <code>selected</code> fill and{' '}
+        <code>disabled-border</code> are the same palette step, so an opaque
+        edge there is not dim but gone.
+      </p>
+      <ControlEdgeDisabledSpecimen />
+    </Stack>
+  ),
+});
+
+ControlEdgeDisabled.test(
+  'The disabled edge holds its weight on every ground the family lands on',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const marks: [string, HTMLElement][] = [
+      [
+        'Checkbox',
+        controlIcon(await canvas.findByRole('checkbox', { name: 'Checkbox' })),
+      ],
+      [
+        'Indeterminate',
+        controlIcon(canvas.getByRole('checkbox', { name: 'Indeterminate' })),
+      ],
+      ['Radio', controlIcon(canvas.getByRole('radio', { name: 'Radio' }))],
+      [
+        'picked row',
+        selectionMark(canvas.getByRole('row', { name: /Picked row/i })),
+      ],
+      [
+        'spare row',
+        selectionMark(canvas.getByRole('row', { name: /Spare row/i })),
+      ],
+    ];
+
+    const [floor, ceiling] = DISABLED_EDGE_BAND;
+    for (const [label, mark] of marks) {
+      const ratio = edgeContrast(mark);
+
+      expect(
+        ratio,
+        `${label}: disabled edge is ${ratio.toFixed(2)}:1, wanted ${floor}-${ceiling}:1`
+      ).toBeGreaterThan(floor);
+      expect(ratio, label).toBeLessThan(ceiling);
+    }
+  }
+);
+
+// `indeterminate` never sets `data-selected`, so it needs its own fill rule.
+ControlEdgeDisabled.test(
+  'Dims the box the same way whether it is checked or indeterminate',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const checked = controlIcon(
+      await canvas.findByRole('checkbox', { name: 'Checkbox' })
+    );
+    const indeterminate = controlIcon(
+      canvas.getByRole('checkbox', { name: 'Indeterminate' })
+    );
+
+    expect(getComputedStyle(indeterminate).backgroundColor).toBe(
+      getComputedStyle(checked).backgroundColor
+    );
+  }
+);
+
+// The check, dash and dot are `currentColor`, and `group-selected` sorts after
+// `group-disabled`, so unforced `text-disabled` loses the cascade.
+ControlEdgeDisabled.test(
+  'A disabled control still shows what it is set to',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    // No spare row: unselected, so it draws no ink to measure.
+    const marks: [string, HTMLElement][] = [
+      [
+        'Checkbox',
+        controlIcon(await canvas.findByRole('checkbox', { name: 'Checkbox' })),
+      ],
+      [
+        'Indeterminate',
+        controlIcon(canvas.getByRole('checkbox', { name: 'Indeterminate' })),
+      ],
+      ['Radio', controlIcon(canvas.getByRole('radio', { name: 'Radio' }))],
+      [
+        'picked row',
+        selectionMark(canvas.getByRole('row', { name: /Picked row/i })),
+      ],
+    ];
+
+    for (const [label, mark] of marks) {
+      const ink = inkContrast(mark);
+
+      expect(
+        ink,
+        `${label}: disabled mark ink is ${ink.toFixed(2)}:1 against its own fill`
+      ).toBeGreaterThan(DISABLED_INK_MIN);
+    }
   }
 );
