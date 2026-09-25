@@ -95,16 +95,16 @@ marigold docs getting-started/installation
 Flags:
 
 - `--section <name>`: `props`, `usage`, `examples`, or `all` (default: `all`)
-- `--format <name>`: `markdown` (default), `json`, or `plain`
+- `--format <name>`: `markdown`, `json`, or `plain` (default: [auto](#output-format))
 - `--fresh`: bypass the local cache
 - `--offline`: use only the local cache, failing if it is missing
 
 Pass a component name (case-insensitive, so `Button`, `button`, `BUTTON` all resolve to the same component) or the slug of a non-component docs page (e.g. `foundations/spacing`, `getting-started/installation`). The `props` section is component-only. Requesting it for a page emits a note instead.
 
-The default `markdown` output is a best-effort terminal render (headings, code
-fences, inline code, bold). For non-trivial docs prefer `--format json` (the
-recommended path for AI agents, returns a structured payload) or `--format
-plain` (ANSI-stripped, ideal for piping into other tools).
+In a terminal, the default `markdown` output is a best-effort render (headings,
+code fences, inline code, bold). For non-trivial docs prefer `--format json` (a
+structured payload) or `--format plain` (ANSI-stripped, ideal for piping into
+other tools).
 
 ### `marigold search <query>`
 
@@ -125,7 +125,7 @@ marigold search modal --format plain
 Flags:
 
 - `--limit <n>`: max results (default: `5`)
-- `--format <name>`: `markdown` (default), `json`, or `plain`
+- `--format <name>`: `markdown`, `json`, or `plain` (default: [auto](#output-format))
 - `--fresh`: bypass the local cache
 - `--offline`: use only the local cache, failing if it is missing
 
@@ -158,7 +158,7 @@ Flags:
 
 - `--category <name>`: filter by category, including component categories (e.g. `actions`, `form`, `layout`) and page categories (e.g. `foundations`, `patterns`, `getting-started`)
 - `--search <term>`: substring filter on component and page names
-- `--format <name>`: `markdown` (default), `json`, or `plain`
+- `--format <name>`: `markdown`, `json`, or `plain` (default: [auto](#output-format))
 - `--fresh`: bypass the local cache
 - `--offline`: use only the local cache, failing if it is missing
 
@@ -183,7 +183,7 @@ Subcommands:
 
 Flags (for `get`/`list`):
 
-- `--format <name>`: `markdown` (default), `json`, or `plain`
+- `--format <name>`: `markdown`, `json`, or `plain` (default: [auto](#output-format))
 - `--fresh`: bypass the local cache
 - `--offline`: use only the local cache, failing if it is missing
 
@@ -230,7 +230,7 @@ marigold doctor --offline       # skip the network; freshness uses the cache onl
 
 Flags:
 
-- `--format <name>`: `text` (default) or `json`
+- `--format <name>`: `text` or `json` (default: [auto](#output-format))
 - `--offline`: skip the network. The freshness check uses the cache only
 
 Checks, run against the current working directory:
@@ -257,7 +257,7 @@ marigold validate src/components/Card.tsx --checks technical --format json
 Flags:
 
 - `--checks <name>`: `technical`, `spatial`, `a11y`, or `all` (default: `all`)
-- `--format <name>`: `text` (default) or `json`
+- `--format <name>`: `text` or `json` (default: [auto](#output-format))
 
 Validation runs in two passes:
 
@@ -305,6 +305,15 @@ Telemetry is automatically suppressed when:
 - `DO_NOT_TRACK=1` is set ([consoledonottrack.com](https://consoledonottrack.com) standard)
 - CI is detected (via [`ci-info`](https://github.com/watson/ci-info), which covers GitHub Actions, GitLab CI, CircleCI, etc.)
 
+### Output format
+
+When `--format` is omitted, the CLI picks one based on where its output goes:
+
+- **Interactive terminal**: human-readable output, `markdown` for `docs`, `list`, `search` and `examples`, and `text` for `doctor` and `validate`.
+- **Piped or captured** (an AI agent, a script, CI, `> file`): `json`.
+
+An explicit `--format` always wins. The programmatic `run*()` exports are unaffected and keep their `markdown`/`text` fallback.
+
 ### Global flags
 
 - `-h`, `--help`: print usage
@@ -312,7 +321,7 @@ Telemetry is automatically suppressed when:
 
 ## For AI agents
 
-When invoked by an AI coding agent, prefer `--format json` and `--section props` for structured, precise component data. When you don't yet know the component name, start with `marigold search <query> --format json` to find the right component in one call, then fetch `marigold docs <Component> --section props --format json`. See the `## Marigold CLI` section in [CLAUDE.md](https://github.com/marigold-ui/marigold/blob/main/CLAUDE.md) for recommended patterns.
+An AI coding agent captures the CLI's output, so it gets JSON by default (see [Output format](#output-format)). Pair it with `--section props` for structured, precise component data, and pass `--format json` explicitly when the output has to stay the same wherever the command runs. When you don't yet know the component name, start with `marigold search <query> --format json` to find the right component in one call, then fetch `marigold docs <Component> --section props --format json`. See the `## Marigold CLI` section in [CLAUDE.md](https://github.com/marigold-ui/marigold/blob/main/CLAUDE.md) for recommended patterns.
 
 To adopt a whole feature pattern (rather than a single component), use `marigold examples list` to discover patterns and `marigold examples get <slug> --format json` to retrieve a pattern's source plus the metadata needed to adapt it. Then read `marigold docs getting-started/examples-for-agents` once for the framework-transformation rules.
 
