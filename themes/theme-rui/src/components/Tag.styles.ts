@@ -29,6 +29,9 @@ export const Tag: ThemeComponent<'Tag'> = {
       'h-6 px-2 cursor-default',
       'selected:text-selected-bold-foreground selected:[--ui-background-color:var(--color-selected-bold)]',
       'data-disabled:cursor-not-allowed data-disabled:text-disabled data-disabled:bg-disabled-surface',
+      // A disabled TagField already washes its trigger, so a chip keeps only the
+      // faded label and sits on that wash instead of painting its own fill.
+      'in-[.tagfield-trigger]:data-disabled:bg-transparent in-[.tagfield-trigger]:data-disabled:[--ui-background-color:transparent]',
       'focus-visible:ui-state-focus outline-none',
     ],
   }),
@@ -36,6 +39,7 @@ export const Tag: ThemeComponent<'Tag'> = {
     base: [
       'size-4',
       'disabled:bg-disabled-surface disabled:text-disabled disabled:cursor-not-allowed',
+      'in-[.tagfield-trigger]:disabled:bg-transparent',
     ],
   }),
   listItems: cva({

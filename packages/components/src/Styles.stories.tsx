@@ -272,16 +272,8 @@ const DisabledSpecimen = () => (
 );
 
 /**
- * `ui-state-disabled` on the three grounds a control meets: the charcoal-100
- * page, a white panel and the dark `ui-contrast` ground of the ActionBar. The
- * first ghost Button of each row is enabled, for reference. The last
- * NumberField is enabled at its `minValue`, so only its decrement stepper is
- * disabled.
- *
- * Before, the state painted a fixed charcoal-100 fill and charcoal-400 label: a
- * 1:1 fill on the page and a near-white pill on the dark ground. Now label and
- * fill are derived from the ink, so the state carries the same weight on every
- * ground and every variant reads the same.
+ * `ui-state-disabled` on the page, a white panel and the dark ActionBar ground.
+ * Label and fill derive from the ink, so the state reads the same on each.
  */
 export const DisabledState = meta.story({
   render: () => (

@@ -145,7 +145,7 @@ test('renders loader with loaderType circle', () => {
         stroke-width="4"
       />
       <circle
-        class="animate-progress-cycle origin-center -rotate-90 stroke-foreground"
+        class="animate-progress-cycle origin-center -rotate-90 stroke-current"
         cx="50%"
         cy="50%"
         pathLength="100"
