@@ -158,11 +158,9 @@ export const GhostOnBackground = meta.story({
 /**
  * A ghost Button in every state, on each ground it actually lands on.
  *
- * `GhostOnBackground` above covers the resting state; the inactive ones behave
- * differently, because `ui-state-disabled` paints the opaque
- * `--color-disabled-surface`. That fill is calibrated for a white surface, so on
- * `bg-background` it matches the page exactly and on `bg-primary` it reads as a
- * light block. Snapshotted so both stay visible in VRT; see DST-1590.
+ * `GhostOnBackground` above covers the resting state. The inactive ones take
+ * their look from `ui-state-disabled`, which derives label and fill from the
+ * ink, so they recede on `bg-surface`, `bg-background` and `bg-primary` alike.
  */
 export const GhostStatesOnBackground = meta.story({
   parameters: {

@@ -542,7 +542,7 @@ Disabled elements must look visually inactive so users don't try to interact wit
       name: 'disabled-border',
       value: 'charcoal-300',
       useFor:
-        'Boundary of a disabled control: a soft, receding edge (applied via ui-state-disabled, so the border dims rather than disappears)',
+        'Boundary of a disabled control that paints its own edge, such as a checkbox or a switch: a soft, receding edge',
     },
   ]}
 />
@@ -557,7 +557,7 @@ Most token pairs follow the pattern `bg-X` + `text-X-foreground`. Disabled is di
 <input className="bg-disabled-surface text-disabled cursor-not-allowed" />
 ```
 
-The `ui-state-disabled` utility bundles background, text, and cursor into one class. Its edge is the `disabled-border` token, listed with the other boundaries under [Borders](#borders).
+The `ui-state-disabled` utility bundles background, text, border and cursor into one class, and it does not read these tokens. It derives all three colors from the element's own text color instead, so a disabled button or input recedes the same way on a white panel, the page background or a dark surface like the ActionBar. Reach for the tokens directly only when a control paints its disabled look itself, as Checkbox, Radio, Switch and Slider do.
 
 <GuidelineTiles>
   <Do>
