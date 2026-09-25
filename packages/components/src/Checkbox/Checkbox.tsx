@@ -34,7 +34,7 @@ const Icon = ({ className, checked, indeterminate, ...props }: IconProps) => {
   );
 };
 
-// Component
+// Props
 // ---------------
 export type RemovedProps =
   | 'children'
