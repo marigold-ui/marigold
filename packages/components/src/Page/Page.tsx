@@ -1,6 +1,7 @@
 import type { HTMLAttributes, ReactNode, Ref } from 'react';
-import { useEffect, useId, useMemo } from 'react';
+import { useEffect, useId, useMemo, useRef } from 'react';
 import { HeadingContext, Provider } from 'react-aria-components';
+import { mergeRefs } from '@react-aria/utils';
 import type {
   InsetSpacingTokens,
   PaddingSpacingTokens,
@@ -39,6 +40,14 @@ interface PageBaseProps extends Omit<
    * @default 1
    */
   headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
+  /**
+   * Tab index of the `<main>` landmark. Pass `-1` to make it a skip-link
+   * target: programmatically focusable, never a tab stop, and drawing no focus
+   * ring. Pass `0` to make it a real tab stop, which gives it the standard
+   * focus ring. `usePageFocus` makes an untitled page's landmark focusable
+   * itself, so it needs neither.
+   */
+  tabIndex?: number;
   /**
    * Vertical rhythm between page sections (the `<Page.Header>` and the
    * `<Panel>`s below it).
@@ -85,10 +94,15 @@ export const Page = ({
   p,
   px,
   py,
+  tabIndex,
   ref,
   ...props
 }: PageProps) => {
   const titleId = useId();
+  // The ref on the context stays stable, so an inline `ref` callback from a
+  // caller cannot bust the context memo and re-run every consumer's effects.
+  const mainRef = useRef<HTMLElement>(null);
+  const forwardedRef = useMemo(() => mergeRefs(mainRef, ref), [ref]);
   const classNames = useClassNames({ component: 'Page' });
   const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
 
@@ -103,7 +117,7 @@ export const Page = ({
     () => ({
       slots: {
         title: {
-          className: cn(classNames.title),
+          className: cn('outline-none', classNames.title),
           level: headingLevel,
           id: titleId,
           ref: titleSlotRef,
@@ -117,11 +131,12 @@ export const Page = ({
     () => ({
       classNames,
       titleId,
+      mainRef,
       headingLevel,
       hasTitle,
       titleSlotRef,
     }),
-    [classNames, titleId, headingLevel, hasTitle, titleSlotRef]
+    [classNames, titleId, mainRef, headingLevel, hasTitle, titleSlotRef]
   );
 
   // The `<main>` landmark must have an accessible name. It is named by the
@@ -153,12 +168,20 @@ export const Page = ({
     >
       <main
         {...props}
-        ref={ref}
+        ref={forwardedRef}
         data-page
+        tabIndex={tabIndex}
         aria-labelledby={hasTitle ? titleId : props['aria-labelledby']}
         aria-label={!hasTitle ? ariaLabel : undefined}
         className={cn(
           'flex min-w-0 flex-col gap-y-(--page-gap) px-(--page-px) py-(--page-py) [grid-area:main]',
+          // `ui-state-focus-item`, not `ui-state-focus`: that one needs a
+          // border to flip to clear 3:1, and this landmark has none. It stays
+          // here, not in the theme, because `tabIndex` picks which applies.
+          // No `tabIndex` counts as `-1`: `usePageFocus` sets it on the DOM.
+          tabIndex === undefined || tabIndex < 0
+            ? 'outline-none'
+            : 'focus-visible:ui-state-focus-item',
           classNames.root
         )}
         style={{
