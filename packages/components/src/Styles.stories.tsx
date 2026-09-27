@@ -228,16 +228,6 @@ export const Surface = meta.story({
   ),
 });
 
-// The previous `ui-state-disabled`: opaque charcoal rungs calibrated for
-// white. Re-applied here (with `!`, so it beats the live utility) to put the old
-// look next to the new one.
-const legacyDisabled = cn(
-  '[&_:is([data-disabled],[data-pending],:disabled)]:text-disabled!',
-  '[&_:is([data-disabled],[data-pending],:disabled)]:[background:var(--color-disabled-surface)]!',
-  '[&_:is([data-disabled],[data-pending],:disabled)]:[--ui-border-color:var(--color-disabled-border)]!',
-  '[&_[data-pending]_circle+circle]:stroke-foreground!'
-);
-
 const grounds = [
   { name: 'Page', className: 'bg-background text-foreground' },
   { name: 'Panel', className: 'ui-surface text-foreground' },
@@ -281,20 +271,9 @@ export const DisabledState = meta.story({
       {grounds.map(ground => (
         <Stack key={ground.name} space="related">
           <Headline level="3">{ground.name}</Headline>
-          {(['Before', 'After'] as const).map(version => (
-            <Inline key={version} space="regular" alignY="center" noWrap>
-              <span className="text-secondary w-12 text-xs">{version}</span>
-              <div
-                className={cn(
-                  'p-4',
-                  ground.className,
-                  version === 'Before' && legacyDisabled
-                )}
-              >
-                <DisabledSpecimen />
-              </div>
-            </Inline>
-          ))}
+          <div className={cn('p-4', ground.className)}>
+            <DisabledSpecimen />
+          </div>
         </Stack>
       ))}
     </Stack>
