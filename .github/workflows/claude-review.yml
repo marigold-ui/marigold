@@ -236,8 +236,8 @@ jobs:
               userEvent over fireEvent, stories imported instead of fixtures,
               accessible queries over getByTestId.
 
-            Do not review the diff on its own. The turn budget is there to be
-            spent: before concluding, read the code around the change. The
+            Do not review the diff on its own. Before concluding, read the
+            code around the change. The
             thing a diff-only read misses most often is a change that solves a
             problem the repo already solves elsewhere, and no checklist can
             name every such pattern in advance.
