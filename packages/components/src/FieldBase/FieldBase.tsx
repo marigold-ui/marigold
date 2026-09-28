@@ -11,6 +11,7 @@ import { cn, useClassNames } from '@marigold/system';
 import type { DistributiveOmit } from '@marigold/types';
 import type { HelpTextProps } from '../HelpText/HelpText';
 import { HelpText } from '../HelpText/HelpText';
+import { hasAddonContent, joinIds } from '../utils/useLabelAddon';
 import { FieldLabel } from './FieldLabel';
 
 // Props
@@ -76,15 +77,12 @@ const _FieldBase = <T extends ElementType>({
   const addonId = addonIdProp ?? generatedAddonId;
   // RAC fields merge this with their own description ids.
   const addonDescription =
-    addon && typeof Component !== 'string'
+    hasAddonContent(addon) && typeof Component !== 'string'
       ? {
-          'aria-describedby':
-            [
-              (rest as { 'aria-describedby'?: string })['aria-describedby'],
-              addonId,
-            ]
-              .filter(Boolean)
-              .join(' ') || undefined,
+          'aria-describedby': joinIds(
+            (rest as { 'aria-describedby'?: string })['aria-describedby'],
+            addonId
+          ),
         }
       : null;
 

@@ -19,6 +19,7 @@ import { ButtonContext } from '../Button/Context';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
 import { splitChildren } from '../utils/children.utils';
+import { hasAddonContent, joinIds } from '../utils/useLabelAddon';
 import { TagGroupContext } from './Context';
 import { TagGroupRemoveAll } from './TagGroupRemoveAll';
 import { TagGroupShowMore } from './TagGroupShowMore';
@@ -277,11 +278,10 @@ const _TagGroup = ({
         <RACTagGroup
           {...(rest as RAC.TagGroupProps)}
           aria-labelledby={ariaLabelledBy}
-          aria-describedby={
-            [rest['aria-describedby'], addon && addonId]
-              .filter(Boolean)
-              .join(' ') || undefined
-          }
+          aria-describedby={joinIds(
+            rest['aria-describedby'],
+            hasAddonContent(addon) ? addonId : undefined
+          )}
           aria-disabled={disabled || undefined}
           selectionMode={selectionMode}
           selectedKeys={selection}

@@ -1,6 +1,7 @@
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
+import { ContextualHelp } from '../ContextualHelp/ContextualHelp';
 import {
   WCAG_NON_TEXT,
   contrast,
@@ -372,6 +373,20 @@ WrappingLabelWithBadge.test(
     });
   }
 );
+
+export const WithContextualHelp = meta.story({
+  args: {
+    label: 'Enable early bird pricing',
+    addon: (
+      <ContextualHelp>
+        <ContextualHelp.Content>
+          Early bird prices end a week before the event.
+        </ContextualHelp.Content>
+      </ContextualHelp>
+    ),
+    description: undefined,
+  },
+});
 
 // Pins `LabelAddon`'s overflow guarantee: a consumer who ignores the
 // slot's auto-sizing and passes a full-size badge still stays centred.

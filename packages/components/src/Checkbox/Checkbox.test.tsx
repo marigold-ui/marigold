@@ -1,7 +1,9 @@
 /* eslint-disable testing-library/no-node-access */
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import type { RefObject } from 'react';
-import { Basic, WithBadge } from './Checkbox.stories';
+import { renderWithOverlay } from '../test.utils';
+import { Basic, WithBadge, WithContextualHelp } from './Checkbox.stories';
 
 // There is no real accesible way to get to the element that acts as checkbox
 const getVisibleCheckbox = () => {
@@ -134,4 +136,25 @@ test('does not repeat the addon in the description of an unnamed checkbox', () =
   render(<WithBadge.Component label={undefined} />);
 
   expect(screen.getByRole('checkbox')).toHaveAccessibleDescription('');
+});
+
+test('opens a help addon without toggling the checkbox', async () => {
+  renderWithOverlay(<WithContextualHelp.Component />);
+
+  const checkbox = screen.getByRole('checkbox', {
+    name: 'Enable early bird pricing',
+  });
+
+  await userEvent.click(screen.getByRole('button', { name: 'Help' }));
+
+  expect(await screen.findByRole('dialog')).toBeInTheDocument();
+  expect(checkbox).not.toBeChecked();
+});
+
+test('keeps a help addon out of the checkbox description', () => {
+  render(<WithContextualHelp.Component />);
+
+  expect(
+    screen.getByRole('checkbox', { name: 'Enable early bird pricing' })
+  ).toHaveAccessibleDescription('');
 });

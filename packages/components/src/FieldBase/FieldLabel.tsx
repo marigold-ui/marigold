@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Label } from '../Label/Label';
-import { AddonContext } from '../utils/AddonContext';
+import { ADDON_CONTENT, ADDON_HELP, AddonContext } from '../utils/AddonContext';
 import { splitAddon } from '../utils/useLabelAddon';
 
 export interface FieldLabelProps {
@@ -35,12 +35,10 @@ export const FieldLabel = ({
       {labelElement}
       {/* Zero height, so the addon overhangs instead of growing the row. */}
       <span className="flex h-0 shrink-0 items-center gap-1">
-        <AddonContext value={{ size: 'inline' }}>
-          <span id={addonId} className="flex items-center gap-1 empty:hidden">
-            {content}
-          </span>
-          {help}
-        </AddonContext>
+        <span id={addonId} className="flex items-center gap-1 empty:hidden">
+          <AddonContext value={ADDON_CONTENT}>{content}</AddonContext>
+        </span>
+        <AddonContext value={ADDON_HELP}>{help}</AddonContext>
       </span>
     </div>
   );

@@ -1,5 +1,5 @@
 import type { ComponentProps, ReactNode, Ref } from 'react';
-import { useMemo } from 'react';
+import { use, useMemo } from 'react';
 import { Button } from 'react-aria-components/Button';
 import {
   Dialog,
@@ -14,7 +14,7 @@ import { Popover } from '../Overlay/Popover';
 import { CircleQuestionMark } from '../icons/CircleQuestionMark';
 import { Info } from '../icons/Info';
 import { intlMessages } from '../intl/messages';
-import { AddonContext } from '../utils/AddonContext';
+import { AddonContext, markAddonHelp } from '../utils/AddonContext';
 import { ContextualHelpContent } from './ContextualHelpContent';
 import { ContextualHelpDescription } from './ContextualHelpDescription';
 import { ContextualHelpTitle } from './ContextualHelpTitle';
@@ -97,6 +97,14 @@ const ContextualHelpBase = ({
     size,
   });
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const { described } = use(AddonContext);
+  if (process.env.NODE_ENV !== 'production' && described) {
+    console.warn(
+      '[ContextualHelp] is wrapped in another component inside a label addon, ' +
+        'so the field reads its button as part of its description. ' +
+        'Pass <ContextualHelp> to `addon` directly.'
+    );
+  }
 
   // Configure the `description` slot for the `<Description>` primitive
   // (wrapped by `<ContextualHelp.Description>`). The title slot is NOT
@@ -162,8 +170,10 @@ const ContextualHelpBase = ({
   );
 };
 
-export const ContextualHelp = Object.assign(ContextualHelpBase, {
-  Title: ContextualHelpTitle,
-  Description: ContextualHelpDescription,
-  Content: ContextualHelpContent,
-});
+export const ContextualHelp = markAddonHelp(
+  Object.assign(ContextualHelpBase, {
+    Title: ContextualHelpTitle,
+    Description: ContextualHelpDescription,
+    Content: ContextualHelpContent,
+  })
+);

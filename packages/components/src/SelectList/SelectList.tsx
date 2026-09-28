@@ -30,6 +30,7 @@ import {
 } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
+import { hasAddonContent, joinIds } from '../utils/useLabelAddon';
 import { SelectListContext } from './Context';
 import { SelectListOption } from './SelectListOption';
 
@@ -374,11 +375,10 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
               })}
               ref={gridListRef}
               aria-labelledby={label ? labelId : rest['aria-labelledby']}
-              aria-describedby={
-                [rest['aria-describedby'], addon && addonId]
-                  .filter(Boolean)
-                  .join(' ') || undefined
-              }
+              aria-describedby={joinIds(
+                rest['aria-describedby'],
+                hasAddonContent(addon) ? addonId : undefined
+              )}
               aria-disabled={disabled || undefined}
               layout="grid"
               orientation={orientation}

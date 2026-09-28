@@ -10,6 +10,7 @@ import {
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { FieldLabel } from '../FieldBase/FieldLabel';
+import { hasAddonContent, joinIds } from '../utils/useLabelAddon';
 
 export interface SliderProps<T>
   extends
@@ -83,9 +84,10 @@ const _Slider = <T extends number | number[]>({
   const props = {
     isDisabled: disabled,
     ...rest,
-    'aria-describedby':
-      [rest['aria-describedby'], addon && addonId].filter(Boolean).join(' ') ||
-      undefined,
+    'aria-describedby': joinIds(
+      rest['aria-describedby'],
+      hasAddonContent(addon) ? addonId : undefined
+    ),
   } satisfies RAC.SliderProps<T>;
 
   return (

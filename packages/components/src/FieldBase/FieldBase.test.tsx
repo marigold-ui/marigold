@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { TextField } from 'react-aria-components/TextField';
 import { Badge } from '../Badge/Badge';
+import { ContextualHelp } from '../ContextualHelp/ContextualHelp';
 import { Basic, LabelAddon } from './FieldBase.stories';
 
 // Tests
@@ -179,4 +180,39 @@ test('describes the field by the static part of its addon', () => {
   expect(
     screen.getByRole('textbox', { name: 'Contextual help' })
   ).toHaveAccessibleDescription('');
+});
+
+test('does not reference a description for a help-only addon', () => {
+  render(<LabelAddon.Component />);
+
+  expect(
+    screen.getByRole('textbox', { name: 'Contextual help' })
+  ).not.toHaveAttribute('aria-describedby');
+});
+
+test('warns when a help addon is wrapped in another component', () => {
+  const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+  const WrappedHelp = () => (
+    <ContextualHelp>
+      <ContextualHelp.Content>Tip</ContextualHelp.Content>
+    </ContextualHelp>
+  );
+
+  render(<Basic.Component addon={<WrappedHelp />} />);
+
+  expect(warn).toHaveBeenCalledWith(
+    expect.stringContaining('[ContextualHelp]')
+  );
+  warn.mockRestore();
+});
+
+test('does not warn for a help addon passed directly', () => {
+  const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+  render(<LabelAddon.Component />);
+
+  expect(warn).not.toHaveBeenCalledWith(
+    expect.stringContaining('[ContextualHelp]')
+  );
+  warn.mockRestore();
 });

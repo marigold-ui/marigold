@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { Badge } from '../Badge/Badge';
 import { Basic, MultipleThumbs } from './Slider.stories';
 
 test('supports disabled prop', () => {
@@ -73,4 +74,10 @@ test('does not spread a string thumbLabels across a range slider', () => {
   // The unnamed thumb falls back to the slider's own label, so pin that
   // rather than asserting the absence of a name
   expect(end).toHaveAccessibleName('Range');
+});
+
+test('describes the slider by its addon', () => {
+  render(<Basic.Component addon={<Badge variant="master">Master</Badge>} />);
+
+  expect(screen.getByRole('slider')).toHaveAccessibleDescription('Master');
 });

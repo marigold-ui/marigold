@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Fragment, isValidElement, useId } from 'react';
-import { ContextualHelp } from '../ContextualHelp/ContextualHelp';
+import { isAddonHelp } from './AddonContext';
 
 interface AddonPart {
   key: string;
@@ -22,7 +22,7 @@ const render = (parts: AddonPart[]) =>
   parts.map(({ key, node }) => <Fragment key={key}>{node}</Fragment>);
 
 const isHelp = ({ node }: AddonPart) =>
-  isValidElement(node) && node.type === ContextualHelp;
+  isValidElement(node) && isAddonHelp(node.type);
 
 /** Separates an addon's static content from a `<ContextualHelp>`, which stays out of the description. */
 export const splitAddon = (addon: ReactNode) => {
@@ -33,6 +33,14 @@ export const splitAddon = (addon: ReactNode) => {
     help: render(parts.filter(isHelp)),
   };
 };
+
+/** Whether the addon has static content to reference as a description. */
+export const hasAddonContent = (addon: ReactNode) =>
+  flatten(addon).some(part => !isHelp(part));
+
+/** Joins ids for `aria-describedby`, `undefined` when there are none. */
+export const joinIds = (...ids: (string | null | undefined)[]) =>
+  ids.filter(Boolean).join(' ') || undefined;
 
 interface AriaLabelling {
   'aria-label'?: string;
@@ -60,11 +68,10 @@ export const useLabelAddon = (
     addonId,
     ariaProps: {
       ...(label && !isNamed && { 'aria-labelledby': labelId }),
-      ...(isDescribed && {
-        'aria-describedby': [props['aria-describedby'], addonId]
-          .filter(Boolean)
-          .join(' '),
-      }),
+      ...(isDescribed &&
+        hasAddonContent(addon) && {
+          'aria-describedby': joinIds(props['aria-describedby'], addonId),
+        }),
     },
   };
 };
