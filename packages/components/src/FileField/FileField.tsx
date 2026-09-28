@@ -135,6 +135,7 @@ export const FileField = ({
   validate,
   validationBehavior: validationBehaviorProp,
   onBeforeRemove,
+  'aria-describedby': ariaDescribedBy,
   ...props
 }: FileFieldProps) => {
   const [files, setFiles] = useState<File[] | null>(null);
@@ -255,11 +256,17 @@ export const FileField = ({
     ? { ...validationState.displayValidation, isInvalid: true }
     : validationState.displayValidation;
 
-  const describedBy = displayValidation.isInvalid
-    ? errorId
-    : description
-      ? descriptionId
-      : undefined;
+  const describedBy =
+    [
+      ariaDescribedBy,
+      displayValidation.isInvalid
+        ? errorId
+        : description
+          ? descriptionId
+          : undefined,
+    ]
+      .filter(Boolean)
+      .join(' ') || undefined;
 
   const classNames = useClassNames({
     component: 'FileField',
@@ -285,13 +292,11 @@ export const FileField = ({
         ],
       ]}
     >
-      {/* @ts-expect-error type intrinsic elements ("div") are not working correctly */}
       <FieldBase
         as="div"
         width={width}
         label={label}
         className={classNames.container}
-        {...props}
         description={description}
         errorMessage={
           rejectionMessages.length ? rejectionMessages : errorMessage
@@ -313,11 +318,11 @@ export const FileField = ({
             />
           ) : (
             <DropZone
+              {...props}
               onDrop={handleDrop}
               isDisabled={disabled}
               className={classNames.dropZone}
               data-testid="dropzone"
-              {...props}
               aria-describedby={describedBy}
             >
               <div className={classNames.dropZoneContent}>

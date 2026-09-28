@@ -24,3 +24,12 @@ Server errors arrive through `<Form validationErrors>`, keyed by the field's
 One behaviour change worth knowing: the hidden input now renders even when no
 `name` is given, because constraint validation needs the element inside the
 form. `name` still decides whether the file is submitted.
+
+`<FileField>` also used to spread its remaining props onto both the field
+wrapper and the drop zone. Those are `DropZone` props, so they now reach the
+drop zone only, and the component applies its own wiring after them. An
+`onDrop` passed by a consumer no longer replaces the internal handler, which
+used to stop files being added at all. An `aria-describedby` passed by a
+consumer is merged with the id of the description or error instead of
+replacing it. `id` and `slot` now land on the drop zone rather than on the
+wrapper.
