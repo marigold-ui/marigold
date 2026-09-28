@@ -15,4 +15,6 @@ Every form field now takes an `addon` that renders at the end of its label, such
 
 A badge no longer needs `size="inline"` in a field label, since the slot sets it. Labels that built the badge into `label` by hand were 16px tall. Through the slot they stay at the 14px of a bare label.
 
+An addon is no longer part of the field's accessible name. Screen readers read a badge in it as the field's description when the field gets focus, and a `<ContextualHelp>` stays its own button.
+
 A `<Badge>` inside a `<ContextualHelp>` popover keeps its own size when the help sits in an addon.
