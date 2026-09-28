@@ -214,7 +214,7 @@ export const Small = meta.story({
   },
   render: args => (
     <I18nProvider locale="en-US">
-      <FileField width={'1/5'} {...args} />
+      <FileField width={64} {...args} />
     </I18nProvider>
   ),
 });

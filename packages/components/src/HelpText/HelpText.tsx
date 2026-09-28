@@ -46,7 +46,7 @@ export const HelpText = ({
   }
 
   return (
-    <div className={cn('in-field:mt-1', classNames.container)}>
+    <div className={cn('in-field:mt-1 wrap-anywhere', classNames.container)}>
       <FieldError {...props} className="flex flex-col">
         {validation => {
           /**
@@ -61,22 +61,17 @@ export const HelpText = ({
               ? errorMessage(validation)
               : errorMessage) || validation.validationErrors;
 
-          return Array.isArray(messages) ? (
-            messages.map((msg, idx) => (
-              <div key={idx} className="flex items-center justify-start gap-1">
+          // `items-start` keeps the icon on the first line once a message
+          // wraps, which it now does instead of overflowing.
+          return (Array.isArray(messages) ? messages : [messages]).map(
+            (msg, idx) => (
+              <div key={idx} className="flex items-start justify-start gap-1">
                 <TriangleAlert
                   className={cn('h-4 w-4 shrink-0', classNames.icon)}
                 />
                 {msg}
               </div>
-            ))
-          ) : (
-            <div className="flex items-start justify-start gap-1">
-              <TriangleAlert
-                className={cn('h-4 w-4 shrink-0', classNames.icon)}
-              />
-              {messages}
-            </div>
+            )
           );
         }}
       </FieldError>

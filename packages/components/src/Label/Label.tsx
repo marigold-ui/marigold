@@ -12,7 +12,10 @@ const _Label = ({ size, variant, children, ...props }: LabelProps) => {
   const className = useClassNames({ component: 'Label', size, variant });
 
   return (
-    <Label {...props} className={cn(className, 'in-field:mb-1.5 inline-flex')}>
+    <Label
+      {...props}
+      className={cn(className, 'in-field:mb-1.5 inline-flex wrap-anywhere')}
+    >
       {children}
     </Label>
   );

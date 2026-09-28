@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Form } from 'react-aria-components/Form';
 import { TextField } from 'react-aria-components/TextField';
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Input } from '../Input/Input';
@@ -64,6 +65,35 @@ export const WithinAField = meta.story({
   ),
 });
 
+export const OverflowSmallScreen = meta.story({
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
+  parameters: { chromatic: { viewports: [320] } },
+  tags: ['component-test'],
+  render: () => (
+    <TextField isInvalid>
+      <Label>Password</Label>
+      <Input />
+      <HelpText
+        errorMessage={[
+          'Passwortrichtlinienverstossbenachrichtigungsdokumentation.pdf',
+        ]}
+      />
+    </TextField>
+  ),
+});
+
+OverflowSmallScreen.test(
+  'breaks a message without break opportunities instead of overflowing',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    expect(canvasElement.scrollWidth).toBeLessThanOrEqual(
+      canvasElement.clientWidth
+    );
+  }
+);
+
 export const MultipleMessages = meta.story({
   render: () => {
     const [password, setPassword] = useState('');
@@ -80,7 +110,7 @@ export const MultipleMessages = meta.story({
     }
 
     return (
-      <div className="w-96">
+      <div className="max-w-96">
         <Stack space={8} alignX="left">
           <TextField
             isInvalid={errors.length > 0}
