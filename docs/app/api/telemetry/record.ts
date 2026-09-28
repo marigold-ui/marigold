@@ -15,7 +15,12 @@ const SECONDS_PER_DAY = 24 * 60 * 60;
 // ceiling rather than a backstop behind a per-caller one.
 const PUBLIC_LIMIT_PER_DAY = 50_000;
 
-const STREAM_KEY = 'telemetry:events';
+// One stream per source. Insights reads MCP events from `telemetry:events`, so
+// that key stays where it is.
+const MCP_STREAM_KEY = 'telemetry:events';
+const CLI_STREAM_KEY = 'telemetry:cli';
+
+const MS_PER_HOUR = 60 * 60 * 1000;
 
 const utcDate = (): string => {
   const now = new Date();
@@ -39,12 +44,37 @@ const mcpRateLimitKey = (event: McpToolCallEvent): string =>
 // timing alone. An MCP event is already tied to a hashed caller, so coarse
 // timestamps would protect nothing there while costing Insights the resolution
 // it reads these for.
-const receivedAt = (event: TelemetryEvent['event']): string => {
-  const now = new Date();
+//
+// Rounding `receivedAt` alone is not enough, because the entry id is a
+// timestamp too: with `*`, Redis stamps `<epochMillis>-<seq>`. So a CLI entry
+// is written under `<hourMs>-*`, which pins the millisecond part to the hour
+// and leaves Redis to fill in only the sequence number. That needs a stream of
+// its own. Ids must increase, so a shared stream would reject an hour-stamped
+// id as soon as a later MCP event had been written in that hour, and MCP
+// entries on either side of a CLI one would bound its time anyway.
+//
+// What survives is the order of CLI events within an hour, through `<seq>`.
+// And if one instance's clock lags another's across an hour boundary, its
+// write lands below the stream's top id and Redis rejects it. That event is
+// dropped as an 'error'. Retrying with `*` would be the precise timestamp this
+// exists to avoid.
+const streamEntry = (
+  event: TelemetryEvent['event'],
+  now: number
+): { key: string; id: string; receivedAt: string } => {
   if (event === 'cli_command') {
-    now.setUTCMinutes(0, 0, 0);
+    const hourMs = now - (now % MS_PER_HOUR);
+    return {
+      key: CLI_STREAM_KEY,
+      id: `${hourMs}-*`,
+      receivedAt: new Date(hourMs).toISOString(),
+    };
   }
-  return now.toISOString();
+  return {
+    key: MCP_STREAM_KEY,
+    id: '*',
+    receivedAt: new Date(now).toISOString(),
+  };
 };
 
 const warnOnce = createWarnOnce();
@@ -117,11 +147,9 @@ export async function recordTelemetryEvent(
       return 'quota-exceeded';
     }
 
-    const payload = {
-      ...parsed.data,
-      receivedAt: receivedAt(parsed.data.event),
-    };
-    await client.xadd(STREAM_KEY, '*', { data: JSON.stringify(payload) });
+    const { key, id, receivedAt } = streamEntry(parsed.data.event, Date.now());
+    const payload = { ...parsed.data, receivedAt };
+    await client.xadd(key, id, { data: JSON.stringify(payload) });
     return 'recorded';
   } catch (err) {
     warnOnce('redis', `[telemetry] Redis call failed: ${err}`);

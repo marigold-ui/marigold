@@ -18,10 +18,33 @@ reach `record.ts` in-process only.
 
 ## Storage layout
 
-One stream, `telemetry:events`, carrying both sources and discriminated on `event`. Each entry
-has exactly one field, `data`, holding the whole event as JSON with a `receivedAt` timestamp
-added on write — `receivedAt` is inside that JSON, not a second entry field. Ids are `<epochMillis>-<seq>`, so a reader seeks by time with `XRANGE <fromMs> <toMs>`
+One stream per source: `telemetry:events` for `mcp_tool_call`, `telemetry:cli` for
+`cli_command`. Each entry has exactly one field, `data`, holding the whole event as JSON with a
+`receivedAt` timestamp added on write — `receivedAt` is inside that JSON, not a second entry
+field. Ids are `<epochMillis>-<seq>`, so a reader seeks by time with `XRANGE <fromMs> <toMs>`
 and pages with `(<lastId>`.
+
+The two differ in how that id is made. MCP entries are written with `*`, so Redis stamps the
+exact millisecond. CLI entries are written with `<hourMs>-*`: the millisecond part is pinned to
+the top of the hour and Redis fills in only the sequence number, which is what makes the CLI's
+hour-granular `receivedAt` true of what is stored rather than just of the JSON. An id is a
+timestamp too, so rounding only the field would leave the precise time one `XRANGE` away.
+
+That is why the CLI needed a stream of its own. Stream ids have to increase, so an
+hour-stamped id is rejected as soon as any later entry exists, and in a shared stream every MCP
+write is one. Even if it were accepted, the MCP entries on either side of a CLI one would bound
+its time to the millisecond.
+
+Two things the coarse id does not hide. The order of CLI events within an hour survives through
+`<seq>`: with every CLI in that hour writing into the same sequence it says little about any one
+of them, but it is not nothing. And an instance whose clock lags another's across an hour
+boundary writes below the stream's top id, so Redis rejects the entry and the event is dropped
+as an `error`. That is rare and costs one event, and retrying with `*` would store the precise
+time this exists to avoid.
+
+`cli_command` entries written before the split sit in `telemetry:events` with millisecond ids.
+They are not migrated. Insights discards them already, and they are the ones that still carry
+`anonymousId`, so if anything is ever cleaned up there it is those.
 
 This replaced one list per UTC day (`telemetry:YYYY-MM-DD`), which cost the reader one `LRANGE`
 per day in the window — 180 for [Insights](https://github.com/marigold-ui/insights)' 90-day
@@ -48,8 +71,8 @@ by caller type if a second authenticated source ever appears.
 ## Retention is unbounded, deliberately
 
 The stream carries no TTL and is never trimmed. This reverses the 90-day `EXPIRE` DST-1475 put
-on the old daily lists, and it applies to `cli_command` events too now that both sources share
-one stream — worth knowing, because nothing in DST-1625 would lead you to expect CLI retention
+on the old daily lists, and it applies to `cli_command` events too, which DST-1625 moved into
+the same stream and which kept the policy when they moved out to `telemetry:cli` — worth knowing, because nothing in DST-1625 would lead you to expect CLI retention
 to change.
 
 It had been settled three different ways without ever being written down: DST-1264 set no
@@ -219,16 +242,15 @@ unlike the CLI's `DO_NOT_TRACK` does not exist.
 The shapes are not symmetric either: the CLI reports its outcome as `exitCode` and its duration
 as a coarse `durationBucket` (its [public docs](../../../content/getting-started/cli/index.mdx)
 promise the bucket, not a timing), while MCP reports `success` and an exact `latencyMs`.
-Anything aggregating across both has to special-case, which is a third reason the shared stream
-is a storage decision rather than a common data model.
+Anything aggregating across both has to special-case, which is a third reason the store was
+never a common data model, and part of why splitting it cost nothing.
 
 One consequence that is easy to miss: Insights pages the stream at `STREAM_PAGE_SIZE = 5_000`
 with `MAX_STREAM_PAGES = 20` (as of marigold-ui/insights#86 — they live in that repo, so treat
 the numbers as illustrative and the headroom argument as the durable part), and the page counter
-counts every entry in the window — including
-the `cli_command` ones it is about to discard. Past 100000 entries in a window it logs and
-returns **incomplete aggregates**, which look like a drop in usage rather than an error. At
-~35 events a day the window holds ~6000, so there is roughly 16x headroom. The point is where
-that headroom goes: it is spent by `cli_command`, the half nobody reads, and nothing on the read
-side notices, because the budget is exhausted by entries Insights discards after paying for
-them. If it ever gets close, the fix is one stream per source, not a bigger page budget.
+counts every entry in the window. Past 100000 entries in a window it logs and returns
+**incomplete aggregates**, which look like a drop in usage rather than an error. At ~35 events
+a day the window holds ~6000, so there is roughly 16x headroom. Until the CLI moved to
+`telemetry:cli`, that headroom was spent mostly by `cli_command` entries Insights discarded
+after paying for them. Now only MCP events spend it, apart from the pre-split `cli_command`
+entries still sitting in `telemetry:events`, which age out of any fixed window.

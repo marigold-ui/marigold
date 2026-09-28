@@ -241,9 +241,19 @@ describe('recordTelemetryEvent', () => {
   // Hour-granular for the CLI only. Without an identifier, timing is the
   // remaining way to correlate two CLI events, so the resolution is the
   // control. MCP events keep full precision: they are already identified.
-  describe('receivedAt granularity', () => {
+  // The entry id is a timestamp as well, so both have to be coarse.
+  describe('timestamp granularity', () => {
+    const now = Date.UTC(2026, 6, 30, 14, 27, 13, 456);
+    const hourMs = Date.UTC(2026, 6, 30, 14);
+
     beforeEach(() => {
       incr.mockResolvedValue(1);
+      vi.useFakeTimers({ toFake: ['Date'] });
+      vi.setSystemTime(now);
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
     });
 
     const written = () => JSON.parse(xadd.mock.calls[0][2].data).receivedAt;
@@ -253,17 +263,44 @@ describe('recordTelemetryEvent', () => {
 
       await recordTelemetryEvent(cliEvent);
 
-      expect(written()).toMatch(/T\d{2}:00:00\.000Z$/);
+      expect(written()).toBe('2026-07-30T14:00:00.000Z');
     });
 
-    it('keeps full precision on an mcp_tool_call timestamp', async () => {
+    // With `*` Redis would stamp the id with the exact millisecond, which
+    // would undo the rounding above for anyone reading the stream.
+    it('writes a cli_command under an hour-stamped id, leaving only the sequence to Redis', async () => {
+      const { recordTelemetryEvent } = await loadRecord();
+
+      await recordTelemetryEvent(cliEvent);
+
+      expect(xadd).toHaveBeenCalledWith('telemetry:cli', `${hourMs}-*`, {
+        data: expect.any(String),
+      });
+    });
+
+    // A shared stream would reject an hour-stamped id after any later MCP
+    // write, and MCP neighbours would bound a CLI entry's time regardless.
+    it('keeps cli_command events out of the MCP stream', async () => {
+      const { recordTelemetryEvent } = await loadRecord();
+
+      await recordTelemetryEvent(cliEvent);
+
+      expect(xadd).not.toHaveBeenCalledWith(
+        'telemetry:events',
+        expect.anything(),
+        expect.anything()
+      );
+    });
+
+    it('keeps full precision on an mcp_tool_call timestamp and id', async () => {
       const { recordTelemetryEvent } = await loadRecord();
 
       await recordTelemetryEvent(mcpEvent);
 
-      // Not the hour-truncated shape. A real run lands on :00:00.000 once in
-      // 3.6M, so vi.setSystemTime would buy nothing but a second fake clock.
-      expect(written()).not.toMatch(/T\d{2}:00:00\.000Z$/);
+      expect(written()).toBe('2026-07-30T14:27:13.456Z');
+      expect(xadd).toHaveBeenCalledWith('telemetry:events', '*', {
+        data: expect.any(String),
+      });
     });
   });
 
@@ -290,6 +327,7 @@ describe('recordTelemetryEvent', () => {
 
       const expiredKeys = expireMock.mock.calls.map(([key]) => key);
       expect(expiredKeys).not.toContain('telemetry:events');
+      expect(expiredKeys).not.toContain('telemetry:cli');
       expect(
         expiredKeys.every(k => String(k).startsWith('telemetry:rl:'))
       ).toBe(true);
