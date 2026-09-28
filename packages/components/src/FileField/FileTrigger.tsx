@@ -1,15 +1,14 @@
 import type { Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { FileTrigger } from 'react-aria-components/FileTrigger';
+import type { AriaLabelingProps } from '@marigold/types';
 import { Button } from '../Button/Button';
 import { Upload } from '../icons/Upload';
 
 type RemovedProps = 'className' | 'style';
 
-export interface FileTriggerProps extends Omit<
-  RAC.FileTriggerProps,
-  RemovedProps
-> {
+export interface FileTriggerProps
+  extends Omit<RAC.FileTriggerProps, RemovedProps>, AriaLabelingProps {
   allowsMultiple?: RAC.FileTriggerProps['allowsMultiple'];
   acceptDirectory?: RAC.FileTriggerProps['acceptDirectory'];
   onSelect?: RAC.FileTriggerProps['onSelect'];
@@ -23,7 +22,6 @@ export interface FileTriggerProps extends Omit<
    * If true, the button stretches to fill the available width.
    */
   fullWidth?: boolean;
-  'aria-describedby'?: string;
   ref?: Ref<HTMLButtonElement>;
 }
 

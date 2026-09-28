@@ -1,4 +1,4 @@
-import { useId, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import type RAC from 'react-aria-components';
 import { DropZone } from 'react-aria-components/DropZone';
 import { FieldErrorContext } from 'react-aria-components/FieldError';
@@ -8,17 +8,22 @@ import { VisuallyHidden } from 'react-aria-components/VisuallyHidden';
 import { Provider, useSlottedContext } from 'react-aria-components/slots';
 import { useFormValidation } from '@react-aria/form';
 import {
+  useListFormatter,
   useLocalizedStringFormatter,
   useNumberFormatter,
 } from '@react-aria/i18n';
+import { useField } from '@react-aria/label';
 import { useFormReset, useLayoutEffect } from '@react-aria/utils';
-import { useFormValidationState } from '@react-stately/form';
+import {
+  VALID_VALIDITY_STATE,
+  useFormValidationState,
+} from '@react-stately/form';
 import type { ValidationError } from '@react-types/shared';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, type FieldBaseProps } from '../FieldBase/FieldBase';
 import { intlMessages } from '../intl/messages';
 import { FileFieldItem } from './FileFieldItem';
-import { FileTrigger } from './FileTrigger';
+import { FileTrigger, type FileTriggerProps } from './FileTrigger';
 import {
   FILE_SIZE_FORMAT_OPTIONS,
   type RejectedFile,
@@ -114,6 +119,7 @@ export interface FileFieldProps
 }
 
 const NO_FILES: File[] = [];
+const NO_REJECTIONS: RejectedFile[] = [];
 
 // Component
 // ---------------
@@ -138,14 +144,13 @@ export const FileField = ({
   'aria-describedby': ariaDescribedBy,
   ...props
 }: FileFieldProps) => {
-  const [files, setFiles] = useState<File[] | null>(null);
-  const [rejected, setRejected] = useState<RejectedFile[]>([]);
-  const descriptionId = useId();
-  const errorId = useId();
+  const [files, setFiles] = useState<File[]>(NO_FILES);
+  const [rejected, setRejected] = useState<RejectedFile[]>(NO_REJECTIONS);
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const sizeFormatter = useNumberFormatter(FILE_SIZE_FORMAT_OPTIONS);
+  const listFormatter = useListFormatter();
   const dropZoneLabel = stringFormatter.format('dropZoneLabel');
   const buttonLabel = stringFormatter.format('uploadLabel');
 
@@ -158,17 +163,47 @@ export const FileField = ({
   useLayoutEffect(() => {
     if (!hiddenInputRef.current || typeof DataTransfer === 'undefined') return;
     const dt = new DataTransfer();
-    files?.forEach(f => dt.items.add(f));
+    files.forEach(f => dt.items.add(f));
     hiddenInputRef.current.files = dt.files;
   }, [files]);
 
+  const namesFor = (reason: RejectedFile['reason']) =>
+    listFormatter.format(
+      rejected.filter(r => r.reason === reason).map(r => r.file.name)
+    );
+  const rejectedTypes = namesFor('type');
+  const rejectedSizes = namesFor('size');
+
+  const rejectionMessages = [
+    rejectedTypes &&
+      stringFormatter.format('fileTypeRejected', { names: rejectedTypes }),
+    rejectedSizes &&
+      stringFormatter.format('fileTooLarge', {
+        names: rejectedSizes,
+        maxSize: formatFileSize(maxSize ?? 0, sizeFormatter),
+      }),
+  ].filter(Boolean);
+
   const validationState = useFormValidationState<File[]>({
     name,
-    value: files ?? NO_FILES,
+    value: files,
     isInvalid: error,
     validate,
     validationBehavior,
+    builtinValidation: rejectionMessages.length
+      ? {
+          isInvalid: true,
+          validationErrors: rejectionMessages,
+          validationDetails: {
+            ...VALID_VALIDITY_STATE,
+            customError: true,
+            valid: false,
+          },
+        }
+      : undefined,
   });
+
+  const displayValidation = validationState.displayValidation;
 
   useFormValidation(
     { validationBehavior, focus: () => triggerRef.current?.focus() },
@@ -176,17 +211,17 @@ export const FileField = ({
     hiddenInputRef
   );
 
-  useFormReset(hiddenInputRef, null, () => {
-    setFiles(null);
-    setRejected([]);
+  useFormReset(hiddenInputRef, NO_FILES, reset => {
+    setFiles(reset);
+    setRejected(NO_REJECTIONS);
   });
 
   // Single place that mutates the selection. Takes an updater so it derives
   // from the latest state, not a stale closure - concurrent async drops can't
   // clobber each other. The hidden input is synced from `files` in an effect
-  // below, so this updater stays pure.
+  // above, so this updater stays pure.
   const updateFiles = (update: (prev: File[]) => File[]) => {
-    setFiles(prev => update(prev ?? []));
+    setFiles(update);
     validationState.commitValidation();
   };
 
@@ -211,7 +246,7 @@ export const FileField = ({
   const handleRemove = async (file: File) => {
     const key = fileKey(file);
     if (!onBeforeRemove || (await onBeforeRemove(file))) {
-      setRejected([]);
+      setRejected(NO_REJECTIONS);
       updateFiles(prev => prev.filter(f => fileKey(f) !== key));
     }
   };
@@ -230,43 +265,24 @@ export const FileField = ({
     }
   };
 
-  const fileTriggerProps: RAC.FileTriggerProps = {
+  const { fieldProps, descriptionProps, errorMessageProps } = useField({
+    label,
+    description,
+    errorMessage,
+    isInvalid: displayValidation.isInvalid,
+    'aria-describedby': ariaDescribedBy,
+  });
+  const describedBy = fieldProps['aria-describedby'];
+
+  const fileTriggerProps: FileTriggerProps = {
     acceptedFileTypes: accept,
     allowsMultiple: multiple,
     onSelect: handleSelect,
+    ref: triggerRef,
+    'aria-describedby': describedBy,
+    label: buttonLabel,
+    disabled,
   };
-
-  const namesFor = (reason: RejectedFile['reason']) =>
-    rejected
-      .filter(r => r.reason === reason)
-      .map(r => r.file.name)
-      .join(', ');
-
-  const rejectionMessages = [
-    namesFor('type') &&
-      stringFormatter.format('fileTypeRejected', { names: namesFor('type') }),
-    namesFor('size') &&
-      stringFormatter.format('fileTooLarge', {
-        names: namesFor('size'),
-        maxSize: formatFileSize(maxSize ?? 0, sizeFormatter),
-      }),
-  ].filter(Boolean) as string[];
-
-  const displayValidation = rejectionMessages.length
-    ? { ...validationState.displayValidation, isInvalid: true }
-    : validationState.displayValidation;
-
-  const describedBy =
-    [
-      ariaDescribedBy,
-      displayValidation.isInvalid
-        ? errorId
-        : description
-          ? descriptionId
-          : undefined,
-    ]
-      .filter(Boolean)
-      .join(' ') || undefined;
 
   const classNames = useClassNames({
     component: 'FileField',
@@ -285,8 +301,8 @@ export const FileField = ({
           TextContext,
           {
             slots: {
-              description: { id: descriptionId },
-              errorMessage: { id: errorId, role: 'alert' },
+              description: descriptionProps,
+              errorMessage: { ...errorMessageProps, role: 'alert' },
             },
           },
         ],
@@ -298,24 +314,14 @@ export const FileField = ({
         label={label}
         className={classNames.container}
         description={description}
-        errorMessage={
-          rejectionMessages.length ? rejectionMessages : errorMessage
-        }
+        errorMessage={errorMessage}
         isInvalid={displayValidation.isInvalid}
         isRequired={required}
         isDisabled={disabled}
       >
         <div className="flex w-(--field-width) max-w-full min-w-0 flex-col gap-2">
           {isSmall ? (
-            <FileTrigger
-              {...fileTriggerProps}
-              ref={triggerRef}
-              aria-describedby={describedBy}
-              label={buttonLabel}
-              disabled={disabled}
-              size={size}
-              fullWidth
-            />
+            <FileTrigger {...fileTriggerProps} size={size} fullWidth />
           ) : (
             <DropZone
               {...props}
@@ -327,17 +333,11 @@ export const FileField = ({
             >
               <div className={classNames.dropZoneContent}>
                 <p className={classNames.dropZoneLabel}>{dropZoneLabel}</p>
-                <FileTrigger
-                  {...fileTriggerProps}
-                  ref={triggerRef}
-                  aria-describedby={describedBy}
-                  label={buttonLabel}
-                  disabled={disabled}
-                />
+                <FileTrigger {...fileTriggerProps} />
               </div>
             </DropZone>
           )}
-          {files?.map(file => (
+          {files.map(file => (
             <FileField.Item
               key={fileKey(file)}
               size={size}

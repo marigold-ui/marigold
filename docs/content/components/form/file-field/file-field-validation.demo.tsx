@@ -10,7 +10,6 @@ export default () => (
         maxSize={2_000_000}
         required
         description="PDF, up to 2 MB."
-        errorMessage="Please attach the signed contract."
       />
       <Button type="submit" variant="primary">
         Submit

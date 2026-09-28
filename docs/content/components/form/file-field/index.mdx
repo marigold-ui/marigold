@@ -66,6 +66,10 @@ Use `maxSize` to cap a single file, in bytes. A file that is too large, or whose
 
 <ComponentDemo name="file-field-validation" />
 
+Setting `errorMessage` replaces the built-in messages, the same way it does on
+every other field. Leave it unset when you want the localised messages for a
+wrong type or an oversized file.
+
 For rules the built-in ones do not cover, pass `validate`. It receives the current selection, and returns a message to mark the field invalid or `null` when the selection is fine.
 
 ```tsx

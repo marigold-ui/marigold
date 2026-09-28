@@ -12,11 +12,6 @@ export const isAcceptedType = (
   return acceptedFileTypes.some(token => matchesAcceptedToken(file, token));
 };
 
-export const filterAcceptedFiles = (
-  files: File[],
-  acceptedFileTypes?: ReadonlyArray<string>
-): File[] => files.filter(file => isAcceptedType(file, acceptedFileTypes));
-
 export const isFileDropItem = (
   item: any
 ): item is { kind: 'file'; getFile: () => Promise<File> } =>
@@ -104,16 +99,9 @@ export const formatFileSize = (
   return `${value} ${FILE_SIZE_UNITS[exponent]}`;
 };
 
-export type FileRejectionReason = 'type' | 'size';
-
 export interface RejectedFile {
   file: File;
-  reason: FileRejectionReason;
-}
-
-export interface NormalizedFiles {
-  accepted: File[];
-  rejected: RejectedFile[];
+  reason: 'type' | 'size';
 }
 
 export const normalizeAndLimitFiles = (
@@ -127,7 +115,7 @@ export const normalizeAndLimitFiles = (
     multiple?: boolean;
     maxSize?: number;
   }
-): NormalizedFiles => {
+): { accepted: File[]; rejected: RejectedFile[] } => {
   const accepted: File[] = [];
   const rejected: RejectedFile[] = [];
 
