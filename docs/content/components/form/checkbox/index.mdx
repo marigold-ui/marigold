@@ -172,7 +172,7 @@ Adding a description to a checkbox is helpful when the label alone isn't enough 
 
 To add something to the end of a checkbox's label, such as a `<Badge>` for an access level or a "New" flag, or a `<ContextualHelp>` that explains the option, pass it to `addon` rather than building it into `label` yourself. The slot holds it to the height of the label's line and sizes it to fit, so the box stays centred on the text instead of drifting above it, and a label that wraps still keeps the box on its first line.
 
-A badge in the slot joins the checkbox's accessible name, announced right after the label text. That's right for an access-level mark, but a purely decorative badge should get `aria-hidden` instead.
+A badge in the slot isn't part of the checkbox's accessible name. When the checkbox gets focus, screen readers read it as part of the description, after the label. That's right for an access-level mark, but a purely decorative badge should get `aria-hidden` instead.
 
 <ComponentDemo name="checkbox-badge" />
 
