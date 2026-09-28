@@ -66,14 +66,8 @@ export const Form = meta.story({
     <div className="max-w-md">
       <Stack space={8}>
         <TextField
-          label={
-            <>
-              Label{' '}
-              <Badge variant="master" size="inline">
-                Master
-              </Badge>
-            </>
-          }
+          label="Label"
+          addon={<Badge variant="master">Master</Badge>}
         />
         <Checkbox
           label="Enable Feature"
@@ -84,14 +78,8 @@ export const Form = meta.story({
           addon={<Badge variant="master">Master</Badge>}
         />
         <Radio.Group
-          label={
-            <>
-              Role{' '}
-              <Badge variant="admin" size="inline">
-                Admin
-              </Badge>
-            </>
-          }
+          label="Role"
+          addon={<Badge variant="admin">Admin</Badge>}
           defaultValue="admin"
         >
           <Radio value="admin">Admin</Radio>

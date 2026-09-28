@@ -39,14 +39,8 @@ export default () => (
         <Card variant="master">
           <Card.Content>
             <Select
-              label={
-                <>
-                  Associated Team{' '}
-                  <Badge variant="master" size="inline">
-                    Master
-                  </Badge>
-                </>
-              }
+              label="Associated Team"
+              addon={<Badge variant="master">Master</Badge>}
               width={56}
               description="Select the team responsible for this organizer."
               defaultSelectedKey={'regional'}
