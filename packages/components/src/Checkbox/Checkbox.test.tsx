@@ -119,3 +119,19 @@ test('names the checkbox by its label and describes it by the addon', () => {
 
   expect(checkbox).toHaveAccessibleDescription(/Master/);
 });
+
+test('describes a checkbox named by aria-label by its addon', () => {
+  render(
+    <WithBadge.Component label={undefined} aria-label="Early bird pricing" />
+  );
+
+  const checkbox = screen.getByRole('checkbox', { name: 'Early bird pricing' });
+
+  expect(checkbox).toHaveAccessibleDescription(/Master/);
+});
+
+test('does not repeat the addon in the description of an unnamed checkbox', () => {
+  render(<WithBadge.Component label={undefined} />);
+
+  expect(screen.getByRole('checkbox')).toHaveAccessibleDescription('');
+});

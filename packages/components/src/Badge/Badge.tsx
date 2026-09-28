@@ -24,8 +24,8 @@ export interface BadgeProps {
   /**
    * Set the size of the badge. Use `inline` for a badge that sits *inside* a
    * text line, where a default-sized badge would make the line taller than
-   * surrounding text. `Checkbox`, `Radio` and `Switch` set this automatically
-   * for a `<Badge>` passed to their `addon` slot.
+   * surrounding text. Every form field sets this automatically for a
+   * `<Badge>` passed to its `addon`.
    * @default default
    */
   size?: 'default' | 'inline' | (string & {});

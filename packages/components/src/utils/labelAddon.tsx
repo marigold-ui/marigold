@@ -51,16 +51,20 @@ export const useLabelAddon = (
 
   if (!addon) return { labelId: undefined, addonId: undefined, ariaProps: {} };
 
-  const isNamed = props['aria-label'] || props['aria-labelledby'];
+  const isNamed = Boolean(props['aria-label'] || props['aria-labelledby']);
+  // Without label text or a name, the whole `<label>` names it, addon included.
+  const isDescribed = Boolean(label) || isNamed;
 
   return {
     labelId,
     addonId,
     ariaProps: {
       ...(label && !isNamed && { 'aria-labelledby': labelId }),
-      'aria-describedby': [props['aria-describedby'], addonId]
-        .filter(Boolean)
-        .join(' '),
+      ...(isDescribed && {
+        'aria-describedby': [props['aria-describedby'], addonId]
+          .filter(Boolean)
+          .join(' '),
+      }),
     },
   };
 };
