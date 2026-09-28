@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { TextField } from 'react-aria-components/TextField';
-import { Basic } from './FieldBase.stories';
+import { Badge } from '../Badge/Badge';
+import { Basic, LabelAddon } from './FieldBase.stories';
 
 // Tests
 // ---------------
@@ -137,4 +138,26 @@ test('applies width variables for fraction width', () => {
     'calc((1 / 2) * 100%)'
   );
   expect(container.style.getPropertyValue('--field-width')).toBe('100%');
+});
+
+test('renders the addon inside the label', () => {
+  render(<LabelAddon.Component />);
+
+  const label = screen.getByText('Badge');
+
+  expect(label).toContainElement(screen.getByText('Master'));
+});
+
+test('adds the addon to the accessible name', () => {
+  render(<LabelAddon.Component />);
+
+  expect(
+    screen.getByRole('textbox', { name: 'Badge Master' })
+  ).toBeInTheDocument();
+});
+
+test('renders the label for an addon without label text', () => {
+  render(<Basic.Component label={undefined} addon={<Badge>New</Badge>} />);
+
+  expect(screen.getByText('New')).toBeInTheDocument();
 });
