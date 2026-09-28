@@ -36,7 +36,7 @@ export const FieldLabel = ({
       {/* Zero height, so the addon overhangs instead of growing the row. */}
       <span className="flex h-0 shrink-0 items-center gap-1">
         <AddonContext value={{ size: 'inline' }}>
-          <span id={addonId} className="flex items-center gap-1">
+          <span id={addonId} className="flex items-center gap-1 empty:hidden">
             {content}
           </span>
           {help}

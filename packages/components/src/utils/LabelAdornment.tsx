@@ -14,7 +14,7 @@ export const LabelAdornment = ({ children, id }: LabelAdornmentProps) => {
   return (
     <span className="inline-flex h-lh shrink-0 items-center gap-1 align-top">
       <AddonContext value={{ size: 'inline' }}>
-        <span id={id} className="inline-flex items-center gap-1">
+        <span id={id} className="inline-flex items-center gap-1 empty:hidden">
           {content}
         </span>
         {help}

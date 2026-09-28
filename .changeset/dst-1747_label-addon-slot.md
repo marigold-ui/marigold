@@ -5,7 +5,7 @@
 
 feat(DST-1747): add an `addon` slot to every form field label
 
-Every form field now takes an `addon` that renders at the end of its label, such as a `<Badge>` for an access level or a `<ContextualHelp>` that explains the field. The slot sizes its content to the label's line, so a label with an addon is as tall as one without and the field below it doesn't move. This covers `Autocomplete`, `Checkbox.Group`, `ComboBox`, `DateField`, `DatePicker`, `DateRangePicker`, `FileField`, `NumberField`, `Radio.Group`, `SearchField`, `SegmentedControl`, `Select`, `SelectList`, `Slider`, `TagField`, `TagGroup`, `TextArea`, `TextField` and `TimeField`.
+Every form field now takes an `addon` that renders at the end of its label, such as a `<Badge>` for an access level or a `<ContextualHelp>` that explains the field. The slot sizes a badge to the label's line and keeps the label row at its height, so a label with an addon is as tall as one without and the field below it doesn't move. This covers `Autocomplete`, `Checkbox.Group`, `ComboBox`, `DateField`, `DatePicker`, `DateRangePicker`, `FileField`, `NumberField`, `Radio.Group`, `SearchField`, `SegmentedControl`, `Select`, `SelectList`, `Slider`, `TagField`, `TagGroup`, `TextArea`, `TextField` and `TimeField`.
 
 ```tsx
 <Select label="Associated Team" addon={<Badge variant="master">Master</Badge>} />
