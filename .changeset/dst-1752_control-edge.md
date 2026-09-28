@@ -22,15 +22,6 @@ inline in `Checkbox.tsx`, is deleted rather than repointed, because it never
 shipped: the theme slot's edge already beat it in the merged class list. A
 resting checkbox therefore looks exactly as it did.
 
-Neither component draws its own box any more. `Checkbox.tsx` and `Radio.tsx`
-handed the last of it to their theme slots: the checkbox's padding, and the
-radio's layout, centering and dot inset. What they kept back was a mix of dead
-and duplicated rules. The checkbox's `grow-0` and `basis-4` are flex properties
-on a grid child, and `justify-center` restated the slot's `place-content-center`.
-The radio repeated `size-4`, `rounded-full` and `border` outright, and that last
-one pinned the edge at 1px whatever a theme asked for, which is the drift this
-ticket set out to close.
-
 The radio box also gains `shrink-0`, which the checkbox and the grid indicator
 both already carried. It is the only one of the three that sits in a flex row,
 so it was the only one that could be squeezed by a long label, and the slot now
@@ -49,8 +40,7 @@ for before vanish on one of them:
 `disabled-border` is the same palette step as `selected`, so on a picked row an
 opaque edge is not dim but gone. The translucent step holds 1.54:1 to 1.57:1
 everywhere, which is the weight `disabled-border` was chosen for in the first
-place. `--color-disabled-border` itself is unchanged and still the rung the
-`ui-control` family uses.
+place. `--color-disabled-border` itself is unchanged.
 
 Three visible fixes come with it. The selection mark now dims whenever its row
 is disabled, instead of waiting for the row to also be selected, so a disabled
@@ -64,12 +54,6 @@ and the mark painted `selected-bold-foreground` on `disabled-surface` at 1.06:1.
 The selection mark deliberately has no hover step. Inside a row the row is the
 click target and already carries its own hover, so a second hover on a
 decorative mark would answer a gesture nobody made.
-
-The mark stays a hand-drawn `div` rather than a real `Radio`. React Aria hands
-a grid row a `CheckboxContext` under `slot="selection"`, which is what the
-multi-select branch renders, but there is no radio equivalent: a real `Radio`
-wants a radio group's state and would put a second focusable input inside a row
-that already owns its own selection.
 
 A disabled checkbox also dims its box when it is indeterminate, not only when
 it is checked. Indeterminate never sets `data-selected`, so it needed its own

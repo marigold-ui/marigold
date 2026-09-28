@@ -156,9 +156,7 @@
      `disabled-border` the `selected` fill, so each hits 1.00:1 somewhere a
      Checkbox renders. At -0.06 it holds 1.54:1 to 1.57:1 on all three.
 
-     Not `disabled-border` itself, which every input and field shares. That
-     rung is the real root though, and converting it to an alpha step is the
-     follow-up, the same treatment DST-1672 gave `--color-control`. */
+     Nothing reads `disabled-border` any more, see DST-1828. */
   --color-control-edge-disabled: oklch(
     from var(--color-control-border) l c h / calc(alpha - 0.06)
   );
