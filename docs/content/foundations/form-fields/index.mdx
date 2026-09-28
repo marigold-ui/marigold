@@ -42,7 +42,7 @@ However, labels might not be necessary when the purpose of the input is obvious 
 
 Some fields need a marker or a pointer to more information right next to the label, such as a `<Badge>` showing that only admins see the field, or a `<ContextualHelp>` that explains a term. Pass it to the field's `addon` prop rather than building it into `label` yourself. Every form field has one. The slot places it at the end of the label and sizes a badge to the label's line, so a label with an addon is as tall as one without and the field below it stays in place.
 
-The addon sits beside the label rather than inside it, so it isn't part of the field's accessible name. When the field gets focus, screen readers read a badge in the addon as part of the field's description, after its name. A `<ContextualHelp>` stays its own button and isn't read with the field. Pass it directly, not wrapped in your own component, so the field can keep it out of the description.
+The addon sits beside the label rather than inside it, so it isn't part of the field's accessible name. When the field gets focus, screen readers read a badge in the addon as part of the field's description, after its name. That's right for an access-level mark, but a purely decorative badge should get `aria-hidden` instead. A `<ContextualHelp>` stays its own button and isn't read with the field. Pass it directly, not wrapped in your own component, so the field can keep it out of the description.
 
 <ComponentDemo file="./form-fields-label-addon.demo.tsx" />
 
