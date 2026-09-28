@@ -3,8 +3,8 @@ import type RAC from 'react-aria-components';
 import { SwitchButton, SwitchField } from 'react-aria-components/Switch';
 import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
 import { BooleanField } from '../FieldBase/BooleanField';
-import { LabelAdornment } from '../utils/LabelAdornment';
-import { useLabelAddon } from '../utils/labelAddon';
+import { LabelAddon } from '../utils/LabelAddon';
+import { useLabelAddon } from '../utils/useLabelAddon';
 
 type RemovedProps =
   | 'children'
@@ -104,7 +104,7 @@ const _Switch = ({
   const labelSlot = (label || addon) && (
     <div className={classNames.label}>
       {labelId ? <span id={labelId}>{label}</span> : label}
-      {addon && <LabelAdornment id={addonId}>{addon}</LabelAdornment>}
+      {addon && <LabelAddon id={addonId}>{addon}</LabelAddon>}
     </div>
   );
 

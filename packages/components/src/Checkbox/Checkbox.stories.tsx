@@ -373,7 +373,7 @@ WrappingLabelWithBadge.test(
   }
 );
 
-// Pins `LabelAdornment`'s overflow guarantee: a consumer who ignores the
+// Pins `LabelAddon`'s overflow guarantee: a consumer who ignores the
 // slot's auto-sizing and passes a full-size badge still stays centred.
 export const OversizedBadge = meta.story({
   tags: ['component-test'],

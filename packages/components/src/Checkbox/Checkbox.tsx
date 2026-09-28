@@ -5,8 +5,8 @@ import { StateAttrProps, cn, useClassNames } from '@marigold/system';
 import { BooleanField } from '../FieldBase/BooleanField';
 import { Check } from '../icons/Check';
 import { Minus } from '../icons/Minus';
-import { LabelAdornment } from '../utils/LabelAdornment';
-import { useLabelAddon } from '../utils/labelAddon';
+import { LabelAddon } from '../utils/LabelAddon';
+import { useLabelAddon } from '../utils/useLabelAddon';
 import { CheckboxGroup } from './CheckboxGroup';
 import { useCheckboxGroupContext } from './Context';
 
@@ -183,7 +183,7 @@ const _Checkbox = ({
             {(label || addon) && (
               <div className={classNames.label}>
                 {labelId ? <span id={labelId}>{label}</span> : label}
-                {addon && <LabelAdornment id={addonId}>{addon}</LabelAdornment>}
+                {addon && <LabelAddon id={addonId}>{addon}</LabelAddon>}
               </div>
             )}
           </>

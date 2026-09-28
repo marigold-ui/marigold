@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Label } from '../Label/Label';
 import { AddonContext } from '../utils/AddonContext';
-import { splitAddon } from '../utils/labelAddon';
+import { splitAddon } from '../utils/useLabelAddon';
 
 export interface FieldLabelProps {
   label?: ReactNode;

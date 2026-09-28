@@ -2,8 +2,8 @@ import { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { RadioButton, RadioField } from 'react-aria-components/RadioGroup';
 import { cn, createWidthVar, useClassNames } from '@marigold/system';
-import { LabelAdornment } from '../utils/LabelAdornment';
-import { useLabelAddon } from '../utils/labelAddon';
+import { LabelAddon } from '../utils/LabelAddon';
+import { useLabelAddon } from '../utils/useLabelAddon';
 import { useRadioGroupContext } from './Context';
 import { RadioGroup } from './RadioGroup';
 
@@ -107,7 +107,7 @@ const _Radio = ({
               {addon && (
                 <>
                   {' '}
-                  <LabelAdornment id={addonId}>{addon}</LabelAdornment>
+                  <LabelAddon id={addonId}>{addon}</LabelAddon>
                 </>
               )}
             </div>

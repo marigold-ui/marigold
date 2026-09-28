@@ -1,14 +1,14 @@
 import type { ReactNode } from 'react';
 import { AddonContext } from './AddonContext';
-import { splitAddon } from './labelAddon';
+import { splitAddon } from './useLabelAddon';
 
-export interface LabelAdornmentProps {
+export interface LabelAddonProps {
   children?: ReactNode;
   /** Id of the static content, referenced as the control's description. */
   id?: string;
 }
 
-export const LabelAdornment = ({ children, id }: LabelAdornmentProps) => {
+export const LabelAddon = ({ children, id }: LabelAddonProps) => {
   const { content, help } = splitAddon(children);
 
   return (
