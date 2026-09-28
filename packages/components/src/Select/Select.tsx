@@ -65,6 +65,14 @@ export interface SelectProps<
    * Set a label for the select.
    */
   label?: ReactNode;
+
+  /**
+   * Content shown at the end of the label, such as a `<Badge>` or a
+   * `<ContextualHelp>`. Use this instead of putting it in `label` yourself:
+   * the slot sizes it to the line so the label row doesn't grow and push the
+   * field down.
+   */
+  addon?: ReactNode;
   /**
    * Set a description for the select.
    */
@@ -165,6 +173,7 @@ function SelectBase<T extends object, M extends SelectionMode = 'single'>({
   error,
   open,
   label,
+  addon,
   children,
   selectionMode,
   onChange,
@@ -200,6 +209,7 @@ function SelectBase<T extends object, M extends SelectionMode = 'single'>({
       variant={variant}
       size={size}
       label={label}
+      addon={addon}
       {...props}
     >
       {isSmallScreen ? (

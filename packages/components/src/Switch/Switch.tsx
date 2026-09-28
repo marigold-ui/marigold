@@ -25,11 +25,12 @@ export interface SwitchProps extends Omit<RAC.SwitchFieldProps, RemovedProps> {
   label?: ReactNode;
 
   /**
-   * A `<Badge>` shown at the end of the label's first line. Use this instead
-   * of putting it in `label` yourself: the slot sizes it to the line so it
-   * doesn't make the line taller than the track next to it.
+   * Content shown at the end of the label's first line, such as a `<Badge>`
+   * or a `<ContextualHelp>`. Use this instead of putting it in `label`
+   * yourself: the slot sizes it to the line so it doesn't make the line
+   * taller than the track next to it.
    */
-  badge?: ReactNode;
+  addon?: ReactNode;
 
   /**
    * A helpful text.
@@ -82,7 +83,7 @@ const _Switch = ({
   size,
   width = 'full',
   label,
-  badge,
+  addon,
   description,
   error,
   errorMessage,
@@ -100,10 +101,10 @@ const _Switch = ({
     ...rest,
   } satisfies RAC.SwitchFieldProps;
 
-  const labelSlot = (label || badge) && (
+  const labelSlot = (label || addon) && (
     <div className={classNames.label}>
       {label}
-      {badge && <LabelAdornment>{badge}</LabelAdornment>}
+      {addon && <LabelAdornment>{addon}</LabelAdornment>}
     </div>
   );
 

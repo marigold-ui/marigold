@@ -75,14 +75,13 @@ export const Form = meta.story({
             </>
           }
         />
-        {/* Boolean fields take the mark through `badge`, which sizes it. */}
         <Checkbox
           label="Enable Feature"
-          badge={<Badge variant="admin">Admin</Badge>}
+          addon={<Badge variant="admin">Admin</Badge>}
         />
         <Switch
           label="Require Approval"
-          badge={<Badge variant="master">Master</Badge>}
+          addon={<Badge variant="master">Master</Badge>}
         />
         <Radio.Group
           label={

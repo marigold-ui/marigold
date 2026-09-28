@@ -26,7 +26,10 @@ type RemovedProps =
 export interface TimeFieldProps
   extends
     Omit<RAC.TimeFieldProps<TimeValue>, RemovedProps>,
-    Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
+    Pick<
+      FieldBaseProps<'label'>,
+      'label' | 'addon' | 'description' | 'errorMessage'
+    > {
   variant?: string;
   size?: string;
 

@@ -274,7 +274,7 @@ export const WithBadge = meta.story({
   tags: ['component-test'],
   args: {
     label: 'Enable early bird pricing',
-    badge: <Badge variant="master">Master</Badge>,
+    addon: <Badge variant="master">Master</Badge>,
     description: undefined,
   },
 });
@@ -336,7 +336,7 @@ export const WrappingLabelWithBadge = meta.story({
   args: {
     label:
       'Send a reminder email to everyone on the guest list 24 hours before the event starts, including attendees who registered through a partner site',
-    badge: <Badge variant="master">Master</Badge>,
+    addon: <Badge variant="master">Master</Badge>,
     description: undefined,
   },
   render: args => (
@@ -376,7 +376,7 @@ export const OversizedBadge = meta.story({
   tags: ['component-test'],
   args: {
     label: 'Enable early bird pricing',
-    badge: (
+    addon: (
       <Badge variant="master" size="default">
         Master
       </Badge>

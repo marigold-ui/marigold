@@ -53,6 +53,14 @@ export interface TagGroupProps
    * The label of the field.
    */
   label?: ReactNode;
+
+  /**
+   * Content shown at the end of the label, such as a `<Badge>` or a
+   * `<ContextualHelp>`. Use this instead of putting it in `label` yourself:
+   * the slot sizes it to the line so the label row doesn't grow and push the
+   * field down.
+   */
+  addon?: ReactNode;
   /**
    * A helpful description rendered below the list.
    */
@@ -156,6 +164,7 @@ const _TagGroup = ({
   variant,
   size,
   label,
+  addon,
   description,
   errorMessage,
   error,
@@ -258,6 +267,7 @@ const _TagGroup = ({
         variant={variant}
         size={size}
         label={label}
+        addon={addon}
         description={description}
         errorMessage={errorMessage}
         isInvalid={validationState.displayValidation.isInvalid}

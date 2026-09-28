@@ -56,6 +56,14 @@ export interface TagFieldProps<T extends object>
   label?: ReactNode;
 
   /**
+   * Content shown at the end of the label, such as a `<Badge>` or a
+   * `<ContextualHelp>`. Use this instead of putting it in `label` yourself:
+   * the slot sizes it to the line so the label row doesn't grow and push the
+   * field down.
+   */
+  addon?: ReactNode;
+
+  /**
    * Set a description for the field.
    */
   description?: string;

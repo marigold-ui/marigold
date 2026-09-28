@@ -21,11 +21,12 @@ export interface RadioProps extends Omit<RAC.RadioFieldProps, RemovedProps> {
   width?: string;
   children?: ReactNode;
   /**
-   * A `<Badge>` shown at the end of the label's first line. Use this instead
-   * of putting it in `children` yourself: the slot sizes it to the line so it
-   * doesn't make the line taller than the radio next to it.
+   * Content shown at the end of the label's first line, such as a `<Badge>`
+   * or a `<ContextualHelp>`. Use this instead of putting it in `children`
+   * yourself: the slot sizes it to the line so it doesn't make the line
+   * taller than the radio next to it.
    */
-  badge?: ReactNode;
+  addon?: ReactNode;
   /**
    * Set the radio disabled.
    * @default false
@@ -57,7 +58,7 @@ const _Radio = ({
   disabled,
   width,
   children,
-  badge,
+  addon,
   variant: variantProp,
   size: sizeProp,
   ref,
@@ -102,10 +103,10 @@ const _Radio = ({
             />
             <div className={classNames.label}>
               {children}
-              {badge && (
+              {addon && (
                 <>
                   {' '}
-                  <LabelAdornment>{badge}</LabelAdornment>
+                  <LabelAdornment>{addon}</LabelAdornment>
                 </>
               )}
             </div>

@@ -9,6 +9,7 @@ import {
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { Label } from '../Label/Label';
+import { LabelAdornment } from '../utils/LabelAdornment';
 
 export interface SliderProps<T>
   extends
@@ -16,7 +17,7 @@ export interface SliderProps<T>
       RAC.SliderProps<T>,
       'children' | 'isDisabled' | 'orientation' | 'style'
     >,
-    Pick<FieldBaseProps<'label'>, 'description'> {
+    Pick<FieldBaseProps<'label'>, 'description' | 'addon'> {
   variant?: string;
   size?: string;
 
@@ -62,6 +63,7 @@ const _Slider = <T extends number | number[]>({
   width = 'full',
   disabled,
   label,
+  addon,
   name,
   thumbLabels,
   ref,
@@ -93,7 +95,12 @@ const _Slider = <T extends number | number[]>({
       ref={ref}
       {...props}
     >
-      {label && <Label>{label}</Label>}
+      {(label || addon) && (
+        <Label>
+          {label}
+          {addon && <LabelAdornment>{addon}</LabelAdornment>}
+        </Label>
+      )}
       <SliderOutput className={cn('flex justify-end', classNames.output)}>
         {({ state }) =>
           state.values.map((_, i) => state.getThumbValueLabel(i)).join(' - ')

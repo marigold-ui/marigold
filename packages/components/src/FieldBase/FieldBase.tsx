@@ -11,6 +11,7 @@ import type { DistributiveOmit } from '@marigold/types';
 import type { HelpTextProps } from '../HelpText/HelpText';
 import { HelpText } from '../HelpText/HelpText';
 import { Label } from '../Label/Label';
+import { LabelAdornment } from '../utils/LabelAdornment';
 
 // Props
 // ---------------
@@ -21,6 +22,13 @@ export interface FieldBaseProps<T extends ElementType>
    * Specifies the label of the field.
    */
   label?: ReactNode;
+  /**
+   * Content shown at the end of the label, such as a `<Badge>` or a
+   * `<ContextualHelp>`. Use this instead of putting it in `label` yourself:
+   * the slot sizes it to the line so the label row doesn't grow and push the
+   * field down.
+   */
+  addon?: ReactNode;
   variant?: string;
   size?: string;
   children?: ReactNode;
@@ -39,6 +47,7 @@ const _FieldBase = <T extends ElementType>({
   as: Component = 'div' as T,
   children,
   label,
+  addon,
   size,
   variant,
   width,
@@ -102,9 +111,10 @@ const _FieldBase = <T extends ElementType>({
 
   return (
     <ComponentWithRef {...componentProps}>
-      {label ? (
+      {label || addon ? (
         <Label variant={variant} size={size}>
           {label}
+          {addon && <LabelAdornment>{addon}</LabelAdornment>}
         </Label>
       ) : null}
       {children}

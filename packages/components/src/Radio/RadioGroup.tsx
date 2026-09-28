@@ -61,6 +61,14 @@ export interface RadioGroupProps extends Omit<
   label?: ReactNode;
 
   /**
+   * Content shown at the end of the label, such as a `<Badge>` or a
+   * `<ContextualHelp>`. Use this instead of putting it in `label` yourself:
+   * the slot sizes it to the line so the label row doesn't grow and push the
+   * field down.
+   */
+  addon?: ReactNode;
+
+  /**
    * Set the radio group help text.
    * @default none
    */
@@ -134,6 +142,7 @@ const _RadioGroup = ({
   variant,
   size,
   label,
+  addon,
   error,
   disabled,
   required,
@@ -166,6 +175,7 @@ const _RadioGroup = ({
       as={RadioGroup}
       width={width}
       label={label}
+      addon={addon}
       description={description}
       errorMessage={errorMessage}
       variant={variant}

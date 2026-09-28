@@ -62,7 +62,7 @@ export default () => (
           <Card.Content>
             <Checkbox
               label="Enable Diagnostics"
-              badge={<Badge variant="admin">Admin</Badge>}
+              addon={<Badge variant="admin">Admin</Badge>}
               description="Allow system diagnostics and data collection for this organizer to improve service quality."
               defaultChecked
             />

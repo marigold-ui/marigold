@@ -1,4 +1,7 @@
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Badge } from '../Badge/Badge';
+import { ContextualHelp } from '../ContextualHelp/ContextualHelp';
 import { DateField } from '../DateField/DateField';
 import { Grid } from '../Grid/Grid';
 import { Headline } from '../Headline/Headline';
@@ -92,6 +95,72 @@ export const Basic = meta.story({
     </FieldBase>
   ),
 });
+
+export const LabelAddon = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <Inline space={4} alignY="top" noWrap>
+      <TextField label="Bare" />
+      <TextField label="Badge" addon={<Badge variant="master">Master</Badge>} />
+      <TextField
+        label="Contextual help"
+        addon={
+          <ContextualHelp>
+            <ContextualHelp.Title>Email format</ContextualHelp.Title>
+            <ContextualHelp.Content>
+              Enter an address like user@example.com.
+            </ContextualHelp.Content>
+          </ContextualHelp>
+        }
+      />
+      <TextField
+        label="Both"
+        required
+        addon={
+          <>
+            <Badge variant="admin">Admin</Badge>
+            <ContextualHelp>
+              <ContextualHelp.Content>
+                Only admins see this.
+              </ContextualHelp.Content>
+            </ContextualHelp>
+          </>
+        }
+      />
+    </Inline>
+  ),
+});
+
+LabelAddon.test(
+  'An addon leaves the label as tall as a bare one',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    const labels = ['Bare', 'Badge', 'Contextual help', 'Both'].map(text =>
+      canvas.getByText(text)
+    );
+    const inputs = canvas.getAllByRole('textbox');
+    const [bareLabel, ...addonLabels] = labels;
+    const [bareInput, ...addonInputs] = inputs;
+
+    await step('the label row keeps its height', async () => {
+      for (const label of addonLabels) {
+        expect(label.getBoundingClientRect().height).toBeCloseTo(
+          bareLabel.getBoundingClientRect().height,
+          0
+        );
+      }
+    });
+
+    await step('so the input below it does not move', async () => {
+      for (const input of addonInputs) {
+        expect(input.getBoundingClientRect().top).toBeCloseTo(
+          bareInput.getBoundingClientRect().top,
+          0
+        );
+      }
+    });
+  }
+);
 
 export const LayoutVariations = meta.story({
   render: () => (

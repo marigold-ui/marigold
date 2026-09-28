@@ -185,7 +185,7 @@ export const WithBadge = meta.story({
   render: args => (
     <Radio.Group {...args} defaultValue="standard">
       <Radio value="standard">Standard admission</Radio>
-      <Radio value="early-bird" badge={<Badge variant="master">Master</Badge>}>
+      <Radio value="early-bird" addon={<Badge variant="master">Master</Badge>}>
         Early bird pricing
       </Radio>
     </Radio.Group>

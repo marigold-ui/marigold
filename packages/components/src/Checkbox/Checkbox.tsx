@@ -102,11 +102,12 @@ export interface CheckboxProps extends Omit<
    */
   label?: ReactNode;
   /**
-   * A `<Badge>` shown at the end of the label's first line. Use this instead
-   * of putting it in `label` yourself: the slot sizes it to the line so it
-   * doesn't make the line taller than the checkbox next to it.
+   * Content shown at the end of the label's first line, such as a `<Badge>`
+   * or a `<ContextualHelp>`. Use this instead of putting it in `label`
+   * yourself: the slot sizes it to the line so it doesn't make the line
+   * taller than the checkbox next to it.
    */
-  badge?: ReactNode;
+  addon?: ReactNode;
   /**
    * A helpful text.
    */
@@ -128,7 +129,7 @@ const _Checkbox = ({
   variant,
   size,
   label,
-  badge,
+  addon,
   description,
   ref,
   ...rest
@@ -177,10 +178,10 @@ const _Checkbox = ({
               indeterminate={isIndeterminate}
               className={classNames.checkbox}
             />
-            {(label || badge) && (
+            {(label || addon) && (
               <div className={classNames.label}>
                 {label}
-                {badge && <LabelAdornment>{badge}</LabelAdornment>}
+                {addon && <LabelAdornment>{addon}</LabelAdornment>}
               </div>
             )}
           </>
