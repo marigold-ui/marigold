@@ -4,14 +4,14 @@ import type {
   ElementType,
   ReactNode,
 } from 'react';
+import { useId } from 'react';
 import { createWidthVar, isFraction } from '@marigold/system';
 import { type WidthProp } from '@marigold/system';
 import { cn, useClassNames } from '@marigold/system';
 import type { DistributiveOmit } from '@marigold/types';
 import type { HelpTextProps } from '../HelpText/HelpText';
 import { HelpText } from '../HelpText/HelpText';
-import { Label } from '../Label/Label';
-import { LabelAdornment } from '../utils/LabelAdornment';
+import { FieldLabel } from './FieldLabel';
 
 // Props
 // ---------------
@@ -29,6 +29,12 @@ export interface FieldBaseProps<T extends ElementType>
    * field down.
    */
   addon?: ReactNode;
+  /**
+   * Id for the addon's static content. Components that render `FieldBase`
+   * as a plain element pass it and wire `aria-describedby` themselves.
+   * @internal
+   */
+  addonId?: string;
   variant?: string;
   size?: string;
   children?: ReactNode;
@@ -48,6 +54,7 @@ const _FieldBase = <T extends ElementType>({
   children,
   label,
   addon,
+  addonId: addonIdProp,
   size,
   variant,
   width,
@@ -68,6 +75,22 @@ const _FieldBase = <T extends ElementType>({
       ? null
       : { isInvalid, isRequired, isDisabled };
 
+  const generatedAddonId = useId();
+  const addonId = addonIdProp ?? generatedAddonId;
+  // RAC fields merge this with their own description ids.
+  const addonDescription =
+    addon && typeof Component !== 'string'
+      ? {
+          'aria-describedby':
+            [
+              (rest as { 'aria-describedby'?: string })['aria-describedby'],
+              addonId,
+            ]
+              .filter(Boolean)
+              .join(' ') || undefined,
+        }
+      : null;
+
   const classNames = useClassNames({
     component: 'Field',
     variant,
@@ -81,6 +104,7 @@ const _FieldBase = <T extends ElementType>({
   const componentProps = {
     ...rest,
     ...racValidationProps,
+    ...addonDescription,
     ref: ref as ComponentPropsWithRef<T>['ref'],
     className: cn(
       'group/field flex min-w-0 flex-col',
@@ -111,12 +135,13 @@ const _FieldBase = <T extends ElementType>({
 
   return (
     <ComponentWithRef {...componentProps}>
-      {label || addon ? (
-        <Label variant={variant} size={size}>
-          {label}
-          {addon && <LabelAdornment>{addon}</LabelAdornment>}
-        </Label>
-      ) : null}
+      <FieldLabel
+        label={label}
+        addon={addon}
+        addonId={addonId}
+        variant={variant}
+        size={size}
+      />
       {children}
       <HelpText
         variant={variant}

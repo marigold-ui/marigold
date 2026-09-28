@@ -1,7 +1,7 @@
 /* eslint-disable testing-library/no-node-access */
 import { render, screen } from '@testing-library/react';
 import type { RefObject } from 'react';
-import { Basic } from './Checkbox.stories';
+import { Basic, WithBadge } from './Checkbox.stories';
 
 // There is no real accesible way to get to the element that acts as checkbox
 const getVisibleCheckbox = () => {
@@ -108,4 +108,14 @@ test('forwards ref', () => {
   render(<Basic.Component label="Check it" ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLLabelElement);
+});
+
+test('names the checkbox by its label and describes it by the addon', () => {
+  render(<WithBadge.Component />);
+
+  const checkbox = screen.getByRole('checkbox', {
+    name: 'Enable early bird pricing',
+  });
+
+  expect(checkbox).toHaveAccessibleDescription(/Master/);
 });

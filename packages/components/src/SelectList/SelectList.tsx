@@ -249,6 +249,7 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
     disallowEmptySelection ?? resolvedSelectionMode === 'single';
   const classNames = useClassNames({ component: 'SelectList', variant });
   const labelId = useId();
+  const addonId = useId();
   const gridListRef = useObjectRef(ref);
 
   // Resolve the optional `p` / `px` / `py` props to per-axis CSS custom
@@ -354,6 +355,7 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
         size={size}
         label={label}
         addon={addon}
+        addonId={addonId}
         description={description}
         errorMessage={errorMessage}
         isInvalid={validationState.displayValidation.isInvalid}
@@ -374,6 +376,11 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
               })}
               ref={gridListRef}
               aria-labelledby={label ? labelId : rest['aria-labelledby']}
+              aria-describedby={
+                [rest['aria-describedby'], addon && addonId]
+                  .filter(Boolean)
+                  .join(' ') || undefined
+              }
               aria-disabled={disabled || undefined}
               layout="grid"
               orientation={orientation}

@@ -12,6 +12,7 @@ import {
   controlIcon,
   firstLineOffset,
   isSingleLine,
+  labelBlockOf,
 } from '../control.utils';
 import { Checkbox } from './Checkbox';
 
@@ -285,7 +286,9 @@ WithBadge.test(
   async ({ canvas, step }) => {
     const checkbox = await canvas.findByRole('checkbox');
     const box = controlIcon(checkbox);
-    const labelBlock = canvas.getByText('Enable early bird pricing');
+    const labelBlock = labelBlockOf(
+      canvas.getByText('Enable early bird pricing')
+    );
 
     await step('the badge fits the line', async () => {
       expect(isSingleLine(labelBlock)).toBe(true);
@@ -352,7 +355,7 @@ WrappingLabelWithBadge.test(
   async ({ canvas, step }) => {
     const checkbox = await canvas.findByRole('checkbox');
     const box = controlIcon(checkbox);
-    const labelBlock = canvas.getByText(/Send a reminder email/);
+    const labelBlock = labelBlockOf(canvas.getByText(/Send a reminder email/));
 
     await step('the label still wraps', async () => {
       expect(isSingleLine(labelBlock)).toBe(false);
@@ -391,7 +394,9 @@ OversizedBadge.test(
   async ({ canvas, step }) => {
     const checkbox = await canvas.findByRole('checkbox');
     const box = controlIcon(checkbox);
-    const labelBlock = canvas.getByText('Enable early bird pricing');
+    const labelBlock = labelBlockOf(
+      canvas.getByText('Enable early bird pricing')
+    );
 
     await step('the line itself is unaffected', async () => {
       expect(isSingleLine(labelBlock)).toBe(true);

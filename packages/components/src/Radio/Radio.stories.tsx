@@ -7,6 +7,7 @@ import {
   controlIcon,
   firstLineOffset,
   isSingleLine,
+  labelBlockOf,
 } from '../control.utils';
 import { Radio } from './Radio';
 import { RadioGroup } from './RadioGroup';
@@ -198,7 +199,7 @@ WithBadge.test(
   async ({ canvas, step }) => {
     const radio = await canvas.findByRole('radio', { name: /Early bird/ });
     const dot = controlIcon(radio);
-    const labelBlock = canvas.getByText('Early bird pricing');
+    const labelBlock = labelBlockOf(canvas.getByText('Early bird pricing'));
 
     await step('the badge fits the line', async () => {
       expect(isSingleLine(labelBlock)).toBe(true);

@@ -3,6 +3,7 @@ import type RAC from 'react-aria-components';
 import { RadioButton, RadioField } from 'react-aria-components/RadioGroup';
 import { cn, createWidthVar, useClassNames } from '@marigold/system';
 import { LabelAdornment } from '../utils/LabelAdornment';
+import { useLabelAddon } from '../utils/labelAddon';
 import { useRadioGroupContext } from './Context';
 import { RadioGroup } from './RadioGroup';
 
@@ -65,6 +66,7 @@ const _Radio = ({
   ...props
 }: RadioProps) => {
   const { variant, size } = useRadioGroupContext();
+  const { labelId, addonId, ariaProps } = useLabelAddon(children, addon, props);
 
   const classNames = useClassNames({
     component: 'Radio',
@@ -83,6 +85,7 @@ const _Radio = ({
       value={value}
       isDisabled={disabled}
       {...props}
+      {...ariaProps}
     >
       <RadioButton
         ref={ref}
@@ -102,11 +105,11 @@ const _Radio = ({
               )}
             />
             <div className={classNames.label}>
-              {children}
+              {labelId ? <span id={labelId}>{children}</span> : children}
               {addon && (
                 <>
                   {' '}
-                  <LabelAdornment>{addon}</LabelAdornment>
+                  <LabelAdornment id={addonId}>{addon}</LabelAdornment>
                 </>
               )}
             </div>

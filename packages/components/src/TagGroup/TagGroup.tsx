@@ -186,6 +186,7 @@ const _TagGroup = ({
 }: TagGroupProps) => {
   const classNames = useClassNames({ component: 'Tag', variant, size });
   const labelId = useId();
+  const addonId = useId();
   const tagListRef = useObjectRef(ref);
 
   const staticChildren = typeof children === 'function' ? undefined : children;
@@ -268,6 +269,7 @@ const _TagGroup = ({
         size={size}
         label={label}
         addon={addon}
+        addonId={addonId}
         description={description}
         errorMessage={errorMessage}
         isInvalid={validationState.displayValidation.isInvalid}
@@ -277,6 +279,11 @@ const _TagGroup = ({
         <RACTagGroup
           {...(rest as RAC.TagGroupProps)}
           aria-labelledby={ariaLabelledBy}
+          aria-describedby={
+            [rest['aria-describedby'], addon && addonId]
+              .filter(Boolean)
+              .join(' ') || undefined
+          }
           aria-disabled={disabled || undefined}
           selectionMode={selectionMode}
           selectedKeys={selection}

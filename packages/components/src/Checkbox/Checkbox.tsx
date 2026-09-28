@@ -6,6 +6,7 @@ import { BooleanField } from '../FieldBase/BooleanField';
 import { Check } from '../icons/Check';
 import { Minus } from '../icons/Minus';
 import { LabelAdornment } from '../utils/LabelAdornment';
+import { useLabelAddon } from '../utils/labelAddon';
 import { CheckboxGroup } from './CheckboxGroup';
 import { useCheckboxGroupContext } from './Context';
 
@@ -144,6 +145,8 @@ const _Checkbox = ({
     ...rest,
   } as const;
 
+  const { labelId, addonId, ariaProps } = useLabelAddon(label, addon, rest);
+
   const group = useCheckboxGroupContext();
 
   const classNames = useClassNames({
@@ -160,6 +163,7 @@ const _Checkbox = ({
       error={error}
       size={size || group?.size}
       {...props}
+      {...ariaProps}
     >
       <CheckboxButton
         ref={ref}
@@ -180,8 +184,8 @@ const _Checkbox = ({
             />
             {(label || addon) && (
               <div className={classNames.label}>
-                {label}
-                {addon && <LabelAdornment>{addon}</LabelAdornment>}
+                {labelId ? <span id={labelId}>{label}</span> : label}
+                {addon && <LabelAdornment id={addonId}>{addon}</LabelAdornment>}
               </div>
             )}
           </>

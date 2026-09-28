@@ -140,24 +140,43 @@ test('applies width variables for fraction width', () => {
   expect(container.style.getPropertyValue('--field-width')).toBe('100%');
 });
 
-test('renders the addon inside the label', () => {
+test('renders the addon beside the label, not inside it', () => {
   render(<LabelAddon.Component />);
 
-  const label = screen.getByText('Badge');
+  const [help] = screen.getAllByRole('button', { name: 'Help' });
 
-  expect(label).toContainElement(screen.getByText('Master'));
+  expect(screen.getByText('Badge')).not.toContainElement(
+    screen.getByText('Master')
+  );
+  expect(screen.getByText('Contextual help')).not.toContainElement(help);
 });
 
-test('adds the addon to the accessible name', () => {
+test('keeps the addon out of the accessible name', () => {
   render(<LabelAddon.Component />);
 
+  expect(screen.getByRole('textbox', { name: 'Badge' })).toBeInTheDocument();
   expect(
-    screen.getByRole('textbox', { name: 'Badge Master' })
+    screen.getByRole('textbox', { name: 'Contextual help' })
   ).toBeInTheDocument();
+  expect(screen.getByRole('textbox', { name: 'Both' })).toBeInTheDocument();
 });
 
-test('renders the label for an addon without label text', () => {
+test('renders an addon without label text', () => {
   render(<Basic.Component label={undefined} addon={<Badge>New</Badge>} />);
 
   expect(screen.getByText('New')).toBeInTheDocument();
+});
+
+test('describes the field by the static part of its addon', () => {
+  render(<LabelAddon.Component />);
+
+  expect(
+    screen.getByRole('textbox', { name: 'Badge' })
+  ).toHaveAccessibleDescription('Master');
+  expect(
+    screen.getByRole('textbox', { name: 'Both' })
+  ).toHaveAccessibleDescription('Admin');
+  expect(
+    screen.getByRole('textbox', { name: 'Contextual help' })
+  ).toHaveAccessibleDescription('');
 });
