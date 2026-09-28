@@ -19,6 +19,9 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     dropZoneLabel: 'Dateien hierher ziehen',
     edit: 'Bearbeiten',
     editCell: 'Zelle bearbeiten',
+    fileTooLarge: vars =>
+      `Datei zu groß (max. ${vars?.maxSize}): ${vars?.names}`,
+    fileTypeRejected: vars => `Nicht unterstützter Dateityp: ${vars?.names}`,
     help: 'Hilfe',
     globalNavigation: 'Globale Navigation',
     globalNavigationUtilities: 'Hilfsfunktionen',
@@ -90,6 +93,9 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     dropZoneLabel: 'Drop files here',
     edit: 'Edit',
     editCell: 'Edit cell',
+    fileTooLarge: vars =>
+      `File too large (max ${vars?.maxSize}): ${vars?.names}`,
+    fileTypeRejected: vars => `Unsupported file type: ${vars?.names}`,
     help: 'Help',
     globalNavigation: 'Global navigation',
     globalNavigationUtilities: 'Utilities',

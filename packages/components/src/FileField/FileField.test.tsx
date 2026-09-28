@@ -3,7 +3,13 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { vi } from 'vitest';
-import { Basic, UploadFile } from './FileField.stories';
+import {
+  Basic,
+  InForm,
+  Required,
+  ServerValidation,
+  UploadFile,
+} from './FileField.stories';
 import { makeFile } from './makeFile';
 
 const dropFiles = (dropzone: Element, files: File[]) => {
@@ -285,11 +291,14 @@ test('renders with default props', () => {
   expect(screen.getByRole('button', { name: /Upload/i })).toBeInTheDocument();
 });
 
-test('does not render hidden input when name is not set', () => {
+test('renders the hidden input without a name when name is not set', () => {
   render(<Basic.Component label="Label" />);
 
-  const hiddenInput = document.querySelector('input[type="file"][hidden]');
-  expect(hiddenInput).not.toBeInTheDocument();
+  const hiddenInput = document.querySelector(
+    'input[type="file"][aria-hidden]'
+  ) as HTMLInputElement;
+  expect(hiddenInput).toBeInTheDocument();
+  expect(hiddenInput).not.toHaveAttribute('name');
 });
 
 test('renders hidden input when name is set', () => {
@@ -316,7 +325,7 @@ test('hidden input persists after file selection', async () => {
   render(<UploadFile.Component label="Label" name="docs" multiple />);
 
   const triggerInput = document.querySelector(
-    'input[type="file"]:not([hidden])'
+    'input[type="file"]:not([aria-hidden])'
   ) as HTMLInputElement;
 
   const fileA = makeFile('a.pdf', 'application/pdf');
@@ -337,7 +346,7 @@ test('hidden input persists after file removal', async () => {
   render(<UploadFile.Component label="Label" name="docs" multiple />);
 
   const triggerInput = document.querySelector(
-    'input[type="file"]:not([hidden])'
+    'input[type="file"]:not([aria-hidden])'
   ) as HTMLInputElement;
 
   const fileA = makeFile('a.pdf', 'application/pdf');
@@ -373,7 +382,7 @@ test('when multiple, a dropped file is added to already selected files', async (
   render(<UploadFile.Component label="Label" multiple />);
 
   const input = document.querySelector(
-    'input[type="file"]:not([hidden])'
+    'input[type="file"]:not([aria-hidden])'
   ) as HTMLInputElement;
 
   const selected = makeFile('selected.pdf', 'application/pdf');
@@ -388,4 +397,226 @@ test('when multiple, a dropped file is added to already selected files', async (
     expect(screen.getByText('dropped.pdf')).toBeInTheDocument();
   });
   expect(screen.getByText('selected.pdf')).toBeInTheDocument();
+});
+
+test('renders a description below the field', () => {
+  render(<Basic.Component label="Label" description="Max 5 MB." />);
+
+  expect(screen.getByText('Max 5 MB.')).toBeInTheDocument();
+});
+
+test('renders the error message when error is set', () => {
+  render(
+    <Basic.Component label="Label" error errorMessage="Upload a document." />
+  );
+
+  expect(screen.getByText('Upload a document.')).toBeInTheDocument();
+});
+
+test('hides the description while an error is shown', () => {
+  render(
+    <Basic.Component
+      label="Label"
+      description="Max 5 MB."
+      error
+      errorMessage="Upload a document."
+    />
+  );
+
+  expect(screen.queryByText('Max 5 MB.')).not.toBeInTheDocument();
+});
+
+test('moves focus to the upload button when a required field blocks submit', async () => {
+  const user = userEvent.setup();
+  render(<Required.Component />);
+
+  await user.click(screen.getByRole('button', { name: /submit/i }));
+
+  await waitFor(() =>
+    expect(document.activeElement).toBe(
+      screen.getByRole('button', { name: /upload/i })
+    )
+  );
+});
+
+test('submits once a file satisfies a required field', async () => {
+  const user = userEvent.setup();
+  render(<Required.Component />);
+  const input = document.querySelector(
+    'input[type="file"]:not([aria-hidden])'
+  ) as HTMLInputElement;
+
+  await user.upload(input, [makeFile('a.pdf', 'application/pdf')]);
+  await screen.findByText('a.pdf');
+  await user.click(screen.getByRole('button', { name: /submit/i }));
+
+  expect(await screen.findByTestId('submitted')).toBeInTheDocument();
+});
+
+test('describes the upload button by the error after a blocked submit', async () => {
+  const user = userEvent.setup();
+  render(<Required.Component />);
+
+  await user.click(screen.getByRole('button', { name: /submit/i }));
+  const error = await screen.findByText('Please upload a document.');
+
+  expect(screen.getByRole('button', { name: /upload/i })).toHaveAttribute(
+    'aria-describedby',
+    error.closest('[id]')?.id
+  );
+});
+
+test('announces the error through a live region', async () => {
+  const user = userEvent.setup();
+  render(<Required.Component />);
+
+  await user.click(screen.getByRole('button', { name: /submit/i }));
+  const error = await screen.findByText('Please upload a document.');
+
+  expect(error.closest('[role="alert"]')).not.toBeNull();
+});
+
+test('describes the upload button by the description while valid', () => {
+  render(<Basic.Component label="Label" description="Max 5 MB." />);
+
+  expect(screen.getByRole('button', { name: /upload/i })).toHaveAttribute(
+    'aria-describedby',
+    screen.getByText('Max 5 MB.').id
+  );
+});
+
+test('shows an error when a dropped file has the wrong type', async () => {
+  render(<Basic.Component label="Label" accept={['application/pdf']} />);
+
+  dropFiles(screen.getByTestId('dropzone'), [
+    makeFile('sheet.xlsx', 'application/vnd.ms-excel'),
+  ]);
+
+  expect(
+    await screen.findByText(/Unsupported file type: sheet\.xlsx/)
+  ).toBeInTheDocument();
+});
+
+test('shows an error when a file is larger than maxSize', async () => {
+  const user = userEvent.setup();
+  render(<Basic.Component label="Label" maxSize={1000} />);
+  const input = document.querySelector(
+    'input[type="file"]:not([aria-hidden])'
+  ) as HTMLInputElement;
+
+  await user.upload(input, [makeFile('big.pdf', 'application/pdf', 5000)]);
+
+  expect(
+    await screen.findByText(/File too large \(max 1 kB\): big\.pdf/)
+  ).toBeInTheDocument();
+});
+
+test('clears a rejection once an accepted file arrives', async () => {
+  render(<Basic.Component label="Label" accept={['application/pdf']} />);
+  const dropzone = screen.getByTestId('dropzone');
+  dropFiles(dropzone, [makeFile('a.xlsx', 'application/vnd.ms-excel')]);
+  await screen.findByText(/Unsupported file type/);
+
+  dropFiles(dropzone, [makeFile('good.pdf', 'application/pdf')]);
+
+  await waitFor(() =>
+    expect(screen.queryByText(/Unsupported file type/)).not.toBeInTheDocument()
+  );
+});
+
+test('clears the selection when the form is reset', async () => {
+  const user = userEvent.setup();
+  render(<InForm.Component />);
+  const input = document.querySelector(
+    'input[type="file"]:not([aria-hidden])'
+  ) as HTMLInputElement;
+  await user.upload(input, [makeFile('a.pdf', 'application/pdf')]);
+  await screen.findByText('a.pdf');
+
+  await user.click(screen.getByRole('button', { name: 'Reset' }));
+
+  await waitFor(() =>
+    expect(screen.queryByText('a.pdf')).not.toBeInTheDocument()
+  );
+});
+
+test('clears a rejection when the form is reset', async () => {
+  const user = userEvent.setup();
+  render(<InForm.Component accept={['application/pdf']} maxSize={1000} />);
+  const input = document.querySelector(
+    'input[type="file"]:not([aria-hidden])'
+  ) as HTMLInputElement;
+  await user.upload(input, [makeFile('big.pdf', 'application/pdf', 5000)]);
+  await screen.findByText(/File too large/);
+
+  await user.click(screen.getByRole('button', { name: 'Reset' }));
+
+  await waitFor(() =>
+    expect(screen.queryByText(/File too large/)).not.toBeInTheDocument()
+  );
+});
+
+test('marks the field invalid when custom validate rejects the selection', async () => {
+  const user = userEvent.setup();
+  render(
+    <Basic.Component
+      label="Label"
+      validate={files =>
+        files.some(f => f.name.startsWith('draft'))
+          ? 'No drafts, please.'
+          : null
+      }
+    />
+  );
+  const input = document.querySelector(
+    'input[type="file"]:not([aria-hidden])'
+  ) as HTMLInputElement;
+
+  await user.upload(input, [makeFile('draft.pdf', 'application/pdf')]);
+
+  expect(await screen.findByText('No drafts, please.')).toBeInTheDocument();
+});
+
+test('renders server errors passed through Form validationErrors', async () => {
+  render(<ServerValidation.Component />);
+
+  expect(
+    await screen.findByText('The server rejected this file.')
+  ).toBeInTheDocument();
+});
+
+test('clears the required error as soon as a file is selected', async () => {
+  const user = userEvent.setup();
+  render(<Required.Component />);
+  await user.click(screen.getByRole('button', { name: /submit/i }));
+  await screen.findByText('Please upload a document.');
+  const input = document.querySelector(
+    'input[type="file"]:not([aria-hidden])'
+  ) as HTMLInputElement;
+
+  await user.upload(input, [makeFile('a.pdf', 'application/pdf')]);
+
+  await waitFor(() =>
+    expect(
+      screen.queryByText('Please upload a document.')
+    ).not.toBeInTheDocument()
+  );
+});
+
+test('brings the required error back when the last file is removed', async () => {
+  const user = userEvent.setup();
+  render(<Required.Component />);
+  await user.click(screen.getByRole('button', { name: /submit/i }));
+  await screen.findByText('Please upload a document.');
+  const input = document.querySelector(
+    'input[type="file"]:not([aria-hidden])'
+  ) as HTMLInputElement;
+  await user.upload(input, [makeFile('a.pdf', 'application/pdf')]);
+  await screen.findByText('a.pdf');
+
+  await user.click(screen.getByRole('button', { name: /Remove a\.pdf/i }));
+
+  expect(
+    await screen.findByText('Please upload a document.')
+  ).toBeInTheDocument();
 });

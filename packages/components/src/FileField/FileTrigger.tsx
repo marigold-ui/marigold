@@ -1,3 +1,4 @@
+import type { Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { FileTrigger } from 'react-aria-components/FileTrigger';
 import { Button } from '../Button/Button';
@@ -22,6 +23,8 @@ export interface FileTriggerProps extends Omit<
    * If true, the button stretches to fill the available width.
    */
   fullWidth?: boolean;
+  'aria-describedby'?: string;
+  ref?: Ref<HTMLButtonElement>;
 }
 
 const _FileTrigger = ({
@@ -29,11 +32,19 @@ const _FileTrigger = ({
   disabled,
   size,
   fullWidth,
+  ref,
+  'aria-describedby': describedBy,
   ...rest
 }: FileTriggerProps) => {
   return (
     <FileTrigger {...rest}>
-      <Button disabled={disabled} size={size} fullWidth={fullWidth}>
+      <Button
+        ref={ref}
+        aria-describedby={describedBy}
+        disabled={disabled}
+        size={size}
+        fullWidth={fullWidth}
+      >
         <Upload />
         {label}
       </Button>

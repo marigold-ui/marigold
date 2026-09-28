@@ -114,8 +114,8 @@ describe('normalizeAndLimitFiles', () => {
       multiple: false,
     });
 
-    expect(result).toHaveLength(1);
-    expect(result[0].name).toBe('doc.pdf');
+    expect(result.accepted).toHaveLength(1);
+    expect(result.accepted[0].name).toBe('doc.pdf');
   });
 
   it('returns all accepted when multiple is true', () => {
@@ -129,7 +129,7 @@ describe('normalizeAndLimitFiles', () => {
       multiple: true,
     });
 
-    expect(result.map(f => f.name)).toEqual(['doc.pdf', 'pic.jpg']);
+    expect(result.accepted.map(f => f.name)).toEqual(['doc.pdf', 'pic.jpg']);
   });
 
   it('keeps first of all files when no accept is given and multiple is false', () => {
@@ -139,8 +139,82 @@ describe('normalizeAndLimitFiles', () => {
     ];
     const result = normalizeAndLimitFiles(files, { multiple: false });
 
-    expect(result).toHaveLength(1);
-    expect(result[0].name).toBe('a.txt');
+    expect(result.accepted).toHaveLength(1);
+    expect(result.accepted[0].name).toBe('a.txt');
+  });
+
+  it('reports files that do not match accept as type rejections', () => {
+    const files = [
+      makeFile('doc.pdf', 'application/pdf'),
+      makeFile('sheet.xlsx', 'application/vnd.ms-excel'),
+    ];
+    const result = normalizeAndLimitFiles(files, {
+      accept: ['application/pdf'],
+      multiple: true,
+    });
+
+    expect(result.accepted.map(f => f.name)).toEqual(['doc.pdf']);
+    expect(result.rejected).toEqual([{ file: files[1], reason: 'type' }]);
+  });
+
+  it('reports files over maxSize as size rejections', () => {
+    const files = [
+      makeFile('small.pdf', 'application/pdf', 100),
+      makeFile('big.pdf', 'application/pdf', 5000),
+    ];
+    const result = normalizeAndLimitFiles(files, {
+      maxSize: 1000,
+      multiple: true,
+    });
+
+    expect(result.accepted.map(f => f.name)).toEqual(['small.pdf']);
+    expect(result.rejected).toEqual([{ file: files[1], reason: 'size' }]);
+  });
+
+  it('accepts a file that is exactly maxSize', () => {
+    const files = [makeFile('exact.pdf', 'application/pdf', 1000)];
+    const result = normalizeAndLimitFiles(files, {
+      maxSize: 1000,
+      multiple: true,
+    });
+
+    expect(result.accepted).toHaveLength(1);
+    expect(result.rejected).toEqual([]);
+  });
+
+  it('does not report files dropped by the single-file limit', () => {
+    const files = [
+      makeFile('a.pdf', 'application/pdf'),
+      makeFile('b.pdf', 'application/pdf'),
+    ];
+    const result = normalizeAndLimitFiles(files, {
+      accept: ['application/pdf'],
+      multiple: false,
+    });
+
+    expect(result.accepted.map(f => f.name)).toEqual(['a.pdf']);
+    expect(result.rejected).toEqual([]);
+  });
+
+  it('reports a wrong-type file as a type rejection even when it is also oversized', () => {
+    const files = [makeFile('huge.txt', 'text/plain', 5000)];
+    const result = normalizeAndLimitFiles(files, {
+      accept: ['application/pdf'],
+      maxSize: 1000,
+      multiple: true,
+    });
+
+    expect(result.rejected).toEqual([{ file: files[0], reason: 'type' }]);
+  });
+
+  it('reports a duplicated rejection only once', () => {
+    const file = makeFile('sheet.xlsx', 'application/vnd.ms-excel');
+    const result = normalizeAndLimitFiles([file, file], {
+      accept: ['application/pdf'],
+      multiple: true,
+    });
+
+    expect(result.rejected).toEqual([{ file, reason: 'type' }]);
   });
 });
 
