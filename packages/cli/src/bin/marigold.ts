@@ -33,7 +33,7 @@ import {
   emit,
   enumArg,
   intArg,
-  slugArg,
+  unresolvedArg,
 } from '../lib/telemetry.js';
 
 // Package root: dist/bin/marigold.mjs → ../.. = packages/cli/
@@ -332,9 +332,10 @@ export const main = async (
       // Record telemetry args before validation so failed runs still report
       // which flags were supplied. Values go through the clamps in
       // lib/telemetry so an invalid or free-form input is reported as
-      // 'invalid' rather than echoed back verbatim.
+      // 'invalid' rather than echoed back verbatim, and the component only
+      // once it has resolved.
       telemetryArgs = {
-        component: slugArg(componentInput),
+        component: unresolvedArg(componentInput),
         section: enumArg(values.section, SECTION_VALUES, 'all'),
         format: telemetryFormat,
         ...(values.fresh ? { fresh: 'true' } : {}),
@@ -357,13 +358,16 @@ export const main = async (
 
       writeOutput(result.output);
       cacheHit = result.cacheHit;
+      telemetryArgs = { ...telemetryArgs, component: result.slug };
     } else if (command === 'list') {
       const { values } = parseListCommand(rest);
       const { format, telemetryFormat } = resolveOutputFormat(values.format);
 
       telemetryArgs = {
         format: telemetryFormat,
-        ...(values.category ? { category: slugArg(values.category) } : {}),
+        ...(values.category
+          ? { category: unresolvedArg(values.category) }
+          : {}),
         ...(values.search ? { search: 'used' } : {}),
         ...(values.fresh ? { fresh: 'true' } : {}),
         ...(values.offline ? { offline: 'true' } : {}),
@@ -381,6 +385,9 @@ export const main = async (
 
       writeOutput(result.output);
       cacheHit = result.cacheHit;
+      if (result.category) {
+        telemetryArgs = { ...telemetryArgs, category: result.category };
+      }
     } else if (command === 'search') {
       const { positionals, values } = parseSearchCommand(rest);
       // Join positionals so both `search "field validation"` and the
@@ -424,7 +431,7 @@ export const main = async (
       telemetryArgs = {
         sub: enumArg(sub, EXAMPLES_SUBCOMMANDS, ''),
         format: telemetryFormat,
-        ...(slug ? { slug: slugArg(slug) } : {}),
+        ...(slug ? { slug: unresolvedArg(slug) } : {}),
         ...(values.fresh ? { fresh: 'true' } : {}),
         ...(values.offline ? { offline: 'true' } : {}),
       };
@@ -453,6 +460,9 @@ export const main = async (
 
       writeOutput(result.output);
       cacheHit = result.cacheHit;
+      if (result.slug) {
+        telemetryArgs = { ...telemetryArgs, slug: result.slug };
+      }
     } else if (command === 'validate') {
       // Enforced only in runValidate, so CLI and programmatic callers behave
       // identically: it returns hasErrors: false and exits 0.
@@ -508,9 +518,9 @@ export const main = async (
     } else if (command === 'doctor') {
       const { positionals, values } = parseDoctorCommand(rest);
       const format = values.format ?? defaultReportFormat();
-      // Only { format }: the pending DST-1600 GDPR review scopes doctor
-      // telemetry to the output format, so --offline isn't tracked. Clamped so
-      // an invalid value never leaks the raw string into telemetry.
+      // Only { format }, deliberately: doctor telemetry is scoped to the output
+      // format, so --offline isn't tracked. Clamped so an invalid value never
+      // leaks the raw string into telemetry.
       telemetryArgs = { format: isDoctorFormat(format) ? format : 'invalid' };
 
       if (positionals.length > 0) {

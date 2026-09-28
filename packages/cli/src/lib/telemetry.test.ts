@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { readConfig, writeConfig } from './config.js';
-import { emit, enumArg, intArg, slugArg } from './telemetry.js';
+import { emit, enumArg, intArg, unresolvedArg } from './telemetry.js';
 
 // This suite's own CI run has CI=true set, which ci-info detects and which
 // isTelemetryDisabled() treats as an opt-out — short-circuiting emit()
@@ -147,37 +147,21 @@ describe('first-run notice', () => {
   });
 });
 
-describe('slugArg', () => {
-  it.each(['Button', 'DateRangePicker', 'getting-started/cli', 'form.field'])(
-    'passes identifier-shaped value %s through',
-    value => {
-      expect(slugArg(value)).toBe(value);
-    }
-  );
-
-  it('reports free-form prose as invalid rather than echoing it', () => {
-    expect(slugArg('how do I validate a form')).toBe('invalid');
-  });
-
-  it('reports an over-long value as invalid', () => {
-    expect(slugArg('a'.repeat(65))).toBe('invalid');
+describe('unresolvedArg', () => {
+  // Identifier-shaped input is not safe to send either: a project name, a
+  // mistyped internal name or a directory path all look like a slug.
+  it.each([
+    'Button',
+    'acme-checkout-v2',
+    'packages/components/src',
+    'how do I validate a form',
+  ])('records %s as unknown rather than echoing it', value => {
+    expect(unresolvedArg(value)).toBe('unknown');
   });
 
   it('collapses missing and empty input to an empty string', () => {
-    expect(slugArg(undefined)).toBe('');
-    expect(slugArg('')).toBe('');
-  });
-
-  // `/` and `.` are legal for slugs, so a relative path matches the slug
-  // pattern; its file extension is what gives it away.
-  it('reports a relative file path as invalid', () => {
-    expect(slugArg('packages/components/src/Button.tsx')).toBe('invalid');
-    expect(slugArg('src/app.config.mjs')).toBe('invalid');
-  });
-
-  it('keeps dotted and nested slugs', () => {
-    expect(slugArg('form.field')).toBe('form.field');
-    expect(slugArg('getting-started/cli')).toBe('getting-started/cli');
+    expect(unresolvedArg(undefined)).toBe('');
+    expect(unresolvedArg('')).toBe('');
   });
 });
 

@@ -12,7 +12,7 @@ import { main } from './marigold.js';
 
 const emitMock = vi.hoisted(() => vi.fn());
 
-// Partial mock: only `emit` is stubbed, so the real `slugArg`/`enumArg` clamps
+// Partial mock: only `emit` is stubbed, so the real `unresolvedArg`/`enumArg` clamps
 // stay in the path and the args asserted below are the ones that would actually
 // be sent.
 vi.mock('../lib/telemetry.js', async importOriginal => ({
@@ -21,7 +21,11 @@ vi.mock('../lib/telemetry.js', async importOriginal => ({
 }));
 
 vi.mock('../commands/docs.js', () => ({
-  runDocs: vi.fn(async () => ({ output: 'docs output', cacheHit: false })),
+  runDocs: vi.fn(async () => ({
+    output: 'docs output',
+    cacheHit: false,
+    slug: 'components/actions/button',
+  })),
 }));
 
 vi.mock('../commands/list.js', () => ({
@@ -32,6 +36,7 @@ vi.mock('../commands/examples.js', () => ({
   runExamples: vi.fn(async () => ({
     output: 'examples output',
     cacheHit: false,
+    slug: 'filter',
   })),
 }));
 
@@ -159,7 +164,7 @@ describe('main() — telemetry on validation failure', () => {
       command: 'docs',
       exitCode: 1,
       args: expect.objectContaining({
-        component: 'Button',
+        component: 'unknown',
         section: 'invalid',
       }),
     });
@@ -182,14 +187,33 @@ describe('main() — telemetry on validation failure', () => {
     );
   });
 
-  // `/` and `.` are legal in slugs, so a relative path would otherwise pass.
-  test('records a relative file path as invalid', async () => {
-    await main(['docs', 'packages/components/src/Button.tsx']);
+  // What was typed never reaches the wire, only what the manifest resolved it
+  // to, so a project name or a path cannot ride along in a component slot.
+  test('records the resolved slug rather than the input', async () => {
+    await main(['docs', 'button']);
 
     expect(emitMock.mock.calls[0][0]).toMatchObject({
-      args: expect.objectContaining({ component: 'invalid' }),
+      args: expect.objectContaining({
+        component: 'components/actions/button',
+      }),
     });
   });
+
+  test.each(['acme-checkout-v2', 'packages/components/src'])(
+    'records %s as unknown when it resolves to nothing',
+    async input => {
+      vi.mocked(runDocs).mockRejectedValueOnce(
+        new Error(`No component or page "${input}" found.`)
+      );
+
+      const code = await main(['docs', input]);
+
+      expect(code).toBe(1);
+      expect(emitMock.mock.calls[0][0]).toMatchObject({
+        args: expect.objectContaining({ component: 'unknown' }),
+      });
+    }
+  );
 
   test('emits exitCode 1 when the component positional is missing', async () => {
     const code = await main(['docs']);
@@ -320,7 +344,49 @@ describe('main() — examples command', () => {
     expect(emitMock.mock.calls[0][0]).toMatchObject({
       command: 'examples',
       exitCode: 1,
-      args: expect.objectContaining({ sub: 'get', slug: 'filter' }),
+      args: expect.objectContaining({ sub: 'get', slug: 'unknown' }),
+    });
+  });
+
+  test('records an example slug that resolves to nothing as unknown', async () => {
+    vi.mocked(runExamples).mockRejectedValueOnce(
+      new Error('No example "acme-checkout" found.')
+    );
+
+    const code = await main(['examples', 'get', 'acme-checkout']);
+
+    expect(code).toBe(1);
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      args: expect.objectContaining({ sub: 'get', slug: 'unknown' }),
+    });
+  });
+});
+
+describe('main() — list command', () => {
+  test('records the manifest spelling of a matched --category', async () => {
+    vi.mocked(runList).mockResolvedValueOnce({
+      output: 'list output',
+      cacheHit: false,
+      category: 'form',
+    });
+
+    await main(['list', '--category', 'Form']);
+
+    expect(runList).toHaveBeenCalledWith(
+      expect.objectContaining({ category: 'Form' })
+    );
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      command: 'list',
+      args: expect.objectContaining({ category: 'form' }),
+    });
+  });
+
+  test('records an unmatched --category as unknown', async () => {
+    await main(['list', '--category', 'acme-internal']);
+
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      command: 'list',
+      args: expect.objectContaining({ category: 'unknown' }),
     });
   });
 });

@@ -45,22 +45,14 @@ export interface TelemetryEvent {
 // helpers below are the only sanctioned way to build it, so an unvalidated
 // value can't reach the wire by omission at a call site.
 
-// Identifier-shaped values only — component names, page/example slugs,
-// categories. Anything else (a stray sentence, an absolute or `./` path, an
-// over-long string) collapses to 'invalid' rather than being forwarded
-// verbatim. `/` and `.` have to stay legal for slugs like
-// `getting-started/cli` and `form.field`, which also admits a relative path,
-// so values ending in a source-file extension are rejected on top.
-const SLUG_PATTERN = /^[A-Za-z0-9][A-Za-z0-9/._-]{0,63}$/;
-const FILE_EXTENSION_PATTERN =
-  /\.(?:[cm]?[jt]sx?|json|mdx?|css|scss|html?|ya?ml|txt)$/i;
-
-export const slugArg = (value: string | undefined): string => {
-  if (!value) return '';
-  return SLUG_PATTERN.test(value) && !FILE_EXTENSION_PATTERN.test(value)
-    ? value
-    : 'invalid';
-};
+// Positionals that name something (a component or page, an example slug, a
+// `--category`) are never sent as typed: a mistyped internal name or a project
+// name is just as identifier-shaped as a real slug, and so is a directory path.
+// Until the command has resolved one against the docs manifest it is recorded
+// as 'unknown'. The call site then swaps in the manifest's own slug, so only
+// values the docs site itself publishes reach the wire.
+export const unresolvedArg = (value: string | undefined): string =>
+  value ? 'unknown' : '';
 
 // Positive integers only (`--limit`). Anything else lands as 'invalid', so a
 // mistyped value is not echoed back.
