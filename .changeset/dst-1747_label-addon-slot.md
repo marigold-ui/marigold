@@ -5,16 +5,12 @@
 
 feat(DST-1747): add an `addon` slot to every form field label
 
-Every form field now takes an `addon` that renders at the end of its label, such as a `<Badge>` for an access level or a `<ContextualHelp>` that explains the field. The slot sizes a badge to the label's line and keeps the label row at its height, so a label with an addon is as tall as one without and the field below it doesn't move. This covers `Autocomplete`, `Checkbox.Group`, `ComboBox`, `DateField`, `DatePicker`, `DateRangePicker`, `FileField`, `NumberField`, `Radio.Group`, `SearchField`, `SegmentedControl`, `Select`, `SelectList`, `Slider`, `TagField`, `TagGroup`, `TextArea`, `TextField` and `TimeField`.
+Every form field now takes an `addon` at the end of its label, such as a `<Badge>` or a `<ContextualHelp>`. A badge there is sized automatically, so it no longer needs `size="inline"`, and the label row keeps the height of a bare label.
 
 ```tsx
 <Select label="Associated Team" addon={<Badge variant="master">Master</Badge>} />
 ```
 
-`Checkbox`, `Radio` and `Switch` rename their `badge` slot to `addon`, so one name works across all form fields. Replace `badge={…}` with `addon={…}`.
+`Checkbox`, `Radio` and `Switch` rename their `badge` slot to `addon`. Replace `badge={…}` with `addon={…}`.
 
-A badge no longer needs `size="inline"` in a field label, since the slot sets it. Labels that built the badge into `label` by hand were 16px tall. Through the slot they stay at the 14px of a bare label.
-
-An addon is no longer part of the field's accessible name. Screen readers read a badge in it as the field's description when the field gets focus, and a `<ContextualHelp>` stays its own button.
-
-A `<Badge>` inside a `<ContextualHelp>` popover keeps its own size when the help sits in an addon.
+The addon is no longer part of the field's accessible name. A badge is read as the field's description instead. `FileField` doesn't announce its addon yet. The required indicator now sits before the addon.
