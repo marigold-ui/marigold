@@ -1,5 +1,317 @@
 # @marigold/components
 
+## 18.2.0
+
+### Minor Changes
+
+- d7cf7e4: fix(DST-1607): align boolean-field controls to the first line of their label
+
+  A `<Badge variant="master">` placed inline in a `<Checkbox>` label left the box sitting 2px above the text it belongs to. The box was not the problem: `Checkbox` and `Radio` anchor their control to the **first line** of the label with `items-start`, which is correct: it is what keeps the box on line one of a label that wraps. The problem was the line. The label line is `text-sm leading-4` (16px). A default `Badge` is 20px (18px line box plus 1px borders), so the badge inflated the first line and the 16px control, pinned to its top, stopped reaching the line's optical centre.
+
+  Flipping to `items-center` fixes the badge and breaks wrapping labels: the control floats to the middle of the block, 32px off a five-line label. So the fix keeps `items-start` and stops tall decorations from inflating the line.
+
+  **`Badge` gains `size="inline"`**: 16px tall, sized to sit _inside_ a line of text rather than next to one, with the access icon scaled to match. The default size is unchanged.
+
+  **`Checkbox`, `Radio` and `Switch` gain a `badge` slot.** Pass the badge there instead of building it into the label:
+
+  ```tsx
+  <Checkbox
+    label="Enable early bird pricing"
+    badge={<Badge variant="master">Master</Badge>}
+  />
+  ```
+
+  The slot takes the height of the label's line (`1lh`, so it follows the theme), centres the decoration in it, and sizes a `<Badge>` passed to it to `inline` automatically via context. An explicit `size` on the badge still wins. A decoration that fits lands dead on the line. One that does not overflows symmetrically instead of pushing the line apart, so the control stays put either way. The guardrail holds even if a consumer passes a default-sized badge. Those classes live in the component, not in a theme file, so a theme cannot reopen the bug.
+
+  **`Switch` carried the mirror of the same bug** and is now consistent with the other two. It used `items-center`, so a wrapping `variant="settings"` label dropped the track to the middle of the block instead of the first line, measured 28.5px off. It also rendered its label through the shared `Label`, whose `leading-none` gives a 14px line against a 16px track. It now uses its own label slot with a 16px line box, matching `Checkbox` and `Radio`. The accessible name is unchanged, because it comes from the wrapping `<label>`'s text either way. Single-line switches keep their exact height and position.
+
+  Checkbox's and Radio's label rows moved from `items-center` to `items-start`, which is identical for a single-line label and correct for a wrapping one. `Radio`'s label stays a plain text block rather than becoming a flex row: `children` is arbitrary, and consumer layouts (e.g. `<Inline alignX="between">`) rely on filling a block-level label the way they fill any other block container.
+
+  `WithBadge` and `LongMultilineLabel` stories for all three components pin both cases under Chromatic, each with a test asserting the control is within 0.5px of the first line's centre.
+
+  **Breaking for external themes:** `Theme['components']['Switch']` is a `Record` with required keys, so a theme outside this repo that defines `Switch` without the new `label` slot now fails `tsc`. `Badge`'s `size="inline"` and the `badge` prop on `Checkbox`/`Radio`/`Switch` are additive.
+
+- 455eca2: feat(DST-1665): add selection to `<ListView>`
+
+  `<ListView>` shipped with selection deliberately omitted: all six selection props were stripped from its public type and `selectionMode` was hardcoded to `"none"`. It now takes `selectionMode="single"` or `"multiple"`, defaulting to `"none"` so a list that does not ask for selection is byte-identical to before.
+
+  The selection is **view state, not a field value**. Read it through `onSelectionChange`, hold it yourself, and decide when it commits. `<ListView>` has no `FieldBase` wiring, no hidden input, and no `name`, `form` or `validate`, and it will not grow them: a selection that has to submit and validate with a form is what `<SelectList>` is for. That split is what keeps two `GridList` wrappers from being redundant, now that both render a nearly identical stack of rows.
+
+  `onSelectionChange` receives React Aria's raw `Selection` (`'all' | Set<Key>`), deliberately not `<SelectList>`'s mode-typed `onChange`, because `'all'` is meaningful for a view and unsubmittable for a field. `disallowEmptySelection` passes React Aria's default through in both modes, unlike `<SelectList>`, which defaults it to `true` in single mode for radio-group semantics. A view's selection has to be abandonable, and `true` would also disable Escape-to-clear.
+
+  `selectionBehavior` is fixed to `"toggle"` and stays unexposed, matching `<Table>`. There is no equivalent of React Spectrum's `selectionStyle="highlight"`, so no press replaces the whole selection. Range selection is unaffected: React Aria checks <kbd>Shift</kbd> before it consults `selectionBehavior`, so <kbd>Shift</kbd>+click and <kbd>Shift</kbd>+<kbd>↑</kbd>/<kbd>↓</kbd> extend a range in `"multiple"` mode.
+
+  **Row layout**
+
+  The row's named-area grid gains a leading `indicator` region, so the template goes from `'label actions' 'description actions'` to `'indicator label actions' 'indicator description actions'`. The `ListView` slot union in `@marigold/system` gains `indicator` to match. Spacing rides on the cell (`me-3`) rather than a column gap, mirroring how `actions` carries `ms-3`, so with nothing in the area the `auto` track sizes to 0 and the margin does not exist.
+
+  The indicator is centred against the whole text stack and pinned to the start of its column. Pinning matters once the column widens, which it does when a row carries an unslotted child.
+
+  That is worth knowing when authoring: a child claiming none of the row's three regions, a `<Badge>` being the likely case, is auto-placed by the grid and lands in the indicator column, widening it so that **row's** text no longer lines up with any other row's. Nest it in `<TextValue>` or `<Description>` instead. Before selection this misplaced a badge onto its own line. Now it misaligns the list.
+
+  **Selecting and opening a row**
+
+  `onAction` still works alongside `selectionMode`, and which gesture a press performs depends on whether anything is selected. With an empty selection a row press, or <kbd>Enter</kbd>, opens the item, and the checkbox or <kbd>Space</kbd> selects without opening. Once anything is selected a press marks a row instead and nothing opens. <kbd>Escape</kbd> clears the selection and opening works again.
+
+  One rough edge in that second state, measured rather than inferred: <kbd>Enter</kbd> does nothing at all. It neither opens nor toggles, so a keyboard user gets no response of any kind, where a mouse click at least marks the row. React Aria's own guidance covers only clicking and taps, so this is undocumented upstream. A story test pins all four keys.
+
+  **Bulk actions**
+
+  A multi-select list composes with `<ActionBar>` with no new API. The bar carries `sticky bottom-(--actionbar-offset)` in the component, so rendered inside the list's scroll container it pins itself to the bottom. Drive it with the exported `useActionBar` hook, which holds the selection, fills in the count and clear button, and measures the bar so you can reserve its height in `padding-bottom` and `scroll-padding-bottom`.
+
+  **There is no select-all control.** The Bulk Actions pattern puts it in a header checkbox and a list has no header row to hold one, so a flow where users select every visible record still wants a `<Table>`. Tracked separately. <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> does still select every row, and React Aria exposes no way to turn it off, so handle the `'all'` sentinel even in a list that shows no select-all of its own.
+
+  **Internal**
+
+  `SelectList/SelectionIndicator.tsx` moves to `utils/GridSelectionIndicator.tsx` and is shared by both wrappers. Nothing here was publicly exported, so this is internal naming only, chosen because three separate things share the bare name `SelectionIndicator`: `ListBox`'s, this one, and React Aria's own.
+
+  **Documentation**
+
+  `/components/collection/listview` gains a Selection section covering the modes, the view-state rule, the gesture switch, and the bulk-actions composition, with three new demos. The indicator is added to the anatomy. Both component pages lead with one decision test, "does the selection need to submit with the form?", with one exception named: a pick that never submits but needs a visible label, helper text, or a validation message is still a `<SelectList>`, because `<ListView>` renders none of those.
+
+  The Pick pattern moves with it. Its "List or table" section now chooses by surface, and the people pick, a dialog that stages a selection and commits it with its own button, migrates from `<SelectList>` to `<ListView>`. The Abonnement pick stays a `<SelectList>`, being the labelled-field case.
+
+- 4b9631c: feat(DST-889): mark links that open in a new window
+
+  A `<Link>` that opens a new window or tab now shows an external-link icon after its label plus a hidden, localized "opens in a new window" warning (WCAG G201). Targets that stay in the current window (`_self`, `_top`, `_parent`, in any casing) are untouched, and so are links that open nothing: `disabled` ones, ones with no `href`, and `download` ones, where the browser saves the file and ignores `target`.
+
+  `target="_blank"` also defaults `rel` to `noopener`, which your own `rel` still overrides. A named window gets no default `rel`, because `noopener` makes the browser ignore the window name and open a new tab on every click instead of reusing the window. The cost is that a named window keeps a live `window.opener` handle on your page, which browsers still allow for named targets even though they severed it for `_blank`, so don't point one at an origin you don't control.
+
+  **This is automatic and retroactive.** Every existing `target="_blank"` link gains the icon and a longer accessible name, so tests asserting an exact name need updating: `getByRole('link', { name: 'Terms' })` becomes `getByRole('link', { name: 'Terms opens in a new window' })`.
+
+  An `aria-label` replaces a link's content in its accessible name, so the warning is appended to it rather than dropped. With `aria-labelledby` it is referenced by id instead. That also fixes the `master`/`admin` access label, which an `aria-label` used to swallow.
+
+  There is no `external` prop and no opt-out. Deriving from `target` keeps the API unchanged and makes the indicator reliable, since an opt-in prop gets forgotten and a missing icon reads as "this one stays here". If a link should not carry the icon, do not force the new window.
+
+  **Theme:** `master` and `admin` render slightly differently. They coloured every descendant `svg` with the access token, which would have painted the new-tab glyph too, so `AccessIcon` now carries an `access-icon` class for the theme to select instead. `Menu`'s `master` and `admin` items moved to that same selector. Nothing renders differently today, because an access item's only glyph is the access one, but a consumer icon dropped into such an item no longer picks up the access colour. They also placed their icon with `inline-flex items-center gap-1`, which puts a trailing icon beside a wrapped label instead of after its last word. Both icons are now inline and sized in `em`, so they follow `size="small"` instead of staying at 16px.
+
+- 0c56a11: feat(DST-1391): add `Stepper`, a progress indicator for multi-step tasks.
+
+  `<Stepper>` shows where a user stands in a checkout, an onboarding flow, or a multi-page form, replacing the one-off "Step 1 of 4" widgets that several product flows had each built for themselves. It renders a `<nav>` landmark around an ordered list, announces each step's label, position, and state, and never relies on colour alone to convey which step is which.
+
+  State is entirely consumer-owned. `completedKeys` is a set rather than a high-water mark, so non-contiguous completion coming from a server is expressible, and the component never infers that a step is finished: only your code knows whether validation passed. `selectableKeys` replaces the built-in "completed, errored, or current" rule when a backend decides what is reachable, and `disabledKeys` always wins over both. Errored steps stay clickable by default, so a user who is told a step failed has a way back to it, unless `selectableKeys` leaves them out.
+
+  Steps with an `href` render as real links and route through `RouterProvider`. Steps without one render as buttons. Steps that are not reachable render as plain text rather than as disabled controls, since an unreachable step is not a disabled widget. `hideLabels` drops labels visually for flows with too many steps to label, keeping them for screen readers and adding a visible "Step 3 of 5" counter so sighted users still know how far along they are.
+
+- 2780c9f: fix(Select, ComboBox, TagGroup, TagField, Autocomplete): expose `dependencies`
+
+  Collections cache each rendered item against the item object, so a render
+  function that reads anything else, such as a label from state or a lookup by id,
+  keeps rendering the value it first saw. React Aria's escape hatch is `dependencies`,
+  listed like a hook's dependency array, but it only exists on the collection
+  components themselves. These five own their collection internally, so there was
+  no way to reach it: the option or tag went stale and stayed stale.
+
+  They now accept `dependencies` and forward it to every collection they render,
+  including the tray and popover copies. Nothing changes for tables of static
+  children or for items that are replaced rather than mutated.
+
+  ```tsx
+  <Select items={people} dependencies={[shift]}>
+    {person => (
+      <Select.Option id={person.id}>
+        {person.name} — {shift}
+      </Select.Option>
+    )}
+  </Select>
+  ```
+
+  `Autocomplete` also gains the item render function on its `children` type, which
+  is what `dependencies` exists for. It was typed as React Aria's render props, so
+  `items` plus a function only type-checked through a cast. `AutocompleteProps`
+  takes an optional item type (`AutocompleteProps<Person>`) like `TagFieldProps`
+  does. Existing uses keep working unchanged.
+
+### Patch Changes
+
+- 455eca2: fix(DST-1665): measure the `<ActionBar>` height so consumers can reserve room for it
+
+  `useActionBar` returned `actionBarHeight: 0` for the whole lifetime of a bar that
+  was closed when it mounted, which is every bar that starts with an empty
+  selection. `<Table>` reserves that height in `padding-bottom` and
+  `scroll-padding-bottom`, so the bar covered the last rows and keyboard navigation
+  parked a focused row underneath it.
+
+  The observation ran in the outer `<ActionBar>`, which renders `null` until
+  something is selected. React Aria's `useResizeObserver` reads `ref.current` when
+  its effect first runs and declares its dependencies as `[ref, box]`, so a `ref`
+  that was empty at that moment is never looked at again and the observer never
+  attaches to an element. It now runs one layer in, in the component that mounts
+  with the bar itself, so the ref is live and a close-then-reopen cycle
+  re-establishes the observation.
+
+  Nothing to change in consuming code. A `<Table>` with an `actionBar` starts
+  reserving the room it always claimed to, and `actionBarHeight` reports a real
+  measurement for anything driving the layout by hand.
+
+- 86f5901: fix(DST-1754): keep popovers inside the viewport's clip box at the window edge
+
+  A `<Menu>` / `<ActionMenu>` opened at the right edge of the window lost its right border and rounded corners, 3.42px worth at a 1280px viewport. `theme-rui` reserves a scrollbar gutter on `<html>` and clips the `<body>`, but react-aria's default boundary is the visual viewport, which does not account for a gutter that is reserved and unfilled.
+
+  `<Popover>` and the table's inline editor now hand react-aria a `boundaryElement` spanning the real clip box. It is a live element, so react-aria measures it at position time and nothing has to be kept in sync with zoom or scrolling.
+
+  `<Tooltip>` is not covered: RAC's `TooltipProps` has no `boundaryElement`, and its only lever, `containerPadding`, is symmetric, so correcting the right edge would push left-anchored overlays off their trigger. Tracked against adobe/react-spectrum#10131.
+
+- 9a77767: fix(DST-1769): give `CloseButton` an accessible name so screen readers can announce it
+
+  `<Dialog closeButton>` rendered its close button with no accessible name at all. `CloseButton` renders an icon only, `Dialog` passed no `aria-label`, and the `X` glyph contributes nothing to the name computation, so the computed name was the empty string. VoiceOver announced it as a bare "button". Every other call site in the package already passed a localized label, so `Dialog` was the only component affected, but it is one of the most used, and `closeButton` is on in most of our examples.
+
+  This was a WCAG 2.1 SC 4.1.2 (Name, Role, Value) failure for every product embedding a Marigold dialog. It was not a total loss of function: React Aria's `Modal` still renders its own visually hidden dismiss button, and Escape still closes the dialog. The visible affordance was the unlabelled one.
+
+  **`Dialog` now passes a localized `close` label**, matching `Toast`, `SectionMessage`, `Drawer`, `SidebarModal` and `FileFieldItem`.
+
+  **`CloseButton` gained a fallback.** The export is marked `@internal`, so this is not about consumer code. It is a floor for the call sites inside this package: `Dialog` shipped without a name because nothing forced one, and the next component to render a `CloseButton` could do the same. When nothing else names the button, it falls back to the localized `close` string, so an unnamed close button can no longer reach production from here.
+
+  **The fallback reads the slot's resolved context, not the `slot` prop.** That guard is load-bearing, not defensive tidiness, but a `slot` on its own proves nothing about naming. React Aria's `TagGroup` names its `remove` slot through context, and a locally set `aria-label` wins over a context one, so an unconditional fallback relabelled every removable tag's button from "Remove News" to "Close". React Aria's `Dialog` registers a `close` slot that carries only `onPress` and no label at all, so trusting the prop would have left `<CloseButton slot="close" />` unnamed, which is this very bug reached through its own fix. `CloseButton` asks `useSlottedContext` what the slot resolved to and falls back only when that context supplies no name. A test in `TagGroup.test.tsx` now pins the labelled case.
+
+  **The fallback also warns in development.** A silent fallback would trade a loud bug for a quiet one. `CloseButton` is labelled "Close navigation", "Dismiss drawer" and "Remove file" at its existing call sites, so a generic "Close" is frequently the wrong word. An unnamed button fails an automated accessibility check. A confidently mislabelled one passes every check and misinforms the user. The warning keeps the signal where the fallback would have swallowed it, following the same pattern `Dialog` already uses when it renders without an accessible name.
+
+  `Dialog`'s own close button test now queries by accessible name instead of by DOM position. The positional lookup is what let this ship.
+
+- d816f21: fix(DST-1776): keep the ListBox option focus ring inside the list
+
+  A focused option in a `ListBox` drew its keyboard focus ring with
+  `ui-state-focus`, an outset `outline-3` halo. Options sit 1px off the list's
+  edge, and in a `Popover` the list is clipped to an 8px corner radius, so the
+  halo landed under the popover rim: cut flat along the left edge and truncated at
+  the corners. In a `ComboBox` that clipped band sits a few pixels below the
+  field, close enough to read as the input's own ring fallen out of alignment,
+  which is how it was originally reported.
+
+  The ring is now `ui-state-focus-item`, the inset variant, matching `Menu`. An
+  inset ring cannot leave the option's own box, so nothing clips it. It also
+  carries the full-opacity `--color-ring` instead of the `/50` the outset halo
+  used, which is what a focus indicator needs to clear the 3:1 contrast floor on a
+  borderless row.
+
+  Options also gain `focus:bg-focus-highlight`, the roving-cursor wash that
+  `ui-state-focus-item` is documented to pair with rather than replace, and which
+  `Menu` already had. A focused option now carries the focus-highlight fill, and a
+  focused option that is also selected keeps the stronger selected fill, so
+  selection stays visible under the cursor. Measured against the ring, that is
+  4.97:1 over focus-highlight and 3.59:1 over selected, both clear of the 3:1 a
+  focus indicator needs.
+
+  This affects every list built on the shared `ListBox` item slot: `ComboBox`,
+  `Select`, `Autocomplete` and a standalone `ListBox`. `Menu`, `SelectList` and
+  `ListView` already drew an inset ring and are unchanged.
+
+  The slot has a fifth consumer that is not a list option: `CalendarPresets` puts
+  it on the button that opens the presets dialog. On an option the wash tracks a
+  cursor that moves on, but on that button a fill left behind by a mouse click
+  reads as "selected", so the button opts out of the wash at the call site and
+  keeps the focus appearance it had.
+
+  `ListBoxItem` also drops `focus-visible:z-1`. It existed only to lift an outset
+  ring above neighbouring options, and an inset ring cannot overlap one.
+
+  No API change.
+
+- ee811e1: fix(DSTSUP-275): pick the file size unit from the file's magnitude
+
+  `<FileField>` rendered every selected file's size with a fixed megabyte divisor and two decimals, `(file.size / 1024 / 1024).toFixed(2)`, so anything under ~5 kB read `0.00 MB`. For consumers importing CSVs, where files are routinely 1–50 kB, the item description carried no information at all, and there was no way to override it from the outside: `<FileField>` owns the file list in internal state and renders the items itself.
+
+  Sizes now step through `B`, `kB`, `MB`, `GB` and `TB`, picking the unit that fits: a 2,400-byte CSV reads `2.4 kB`, a 2,000,000-byte PDF reads `2 MB`, and a `0`-byte file reads `0 B`. Sizes past the top unit stay in `TB` rather than running off the end of the scale.
+
+  The step is 1000, not the 1024 the field used to divide by, because `kB`/`MB`/`GB`/`TB` are SI symbols and 1000 is their SI value. That matches Finder, GNOME Files and the browser download UIs a user has open next to the field. Numbers therefore shift slightly against the old output beyond the unit change (`0.50 MB` is now `524.29 kB` for the same file, `2.00 MB` is now `2.1 MB`).
+
+  The number is run through `Intl.NumberFormat` for the active locale, so a German consumer gets `2,4 kB` next to the field's already-localized labels.
+
+- d5f277a: fix(DSTSUP-276): anchor the `Calendar` year list at year 1
+
+  Opening the year dropdown on a year below 21 produced a list that counted down and then back up: focused on AD 5 it read `16 15 14 … 2 1 1 2 3 … 25`, with two options sharing the accessible name `1`.
+
+  `CalendarYearPicker` centres a fixed `visibleYears` window on the focused year, so a 41-year window reaches 20 years back. There is no year 0 in the Gregorian calendar, so from AD 5 that lands in 16 BC, and react-aria renders an era marker only when the _focused_ date is BC, never the individual entries. The first 16 options were BC years wearing bare AD numbers.
+
+  The window is now anchored at year 1 rather than centred whenever the focused year sits too close to the boundary to centre it. This applies to the Gregorian calendar only, whose era floor is the cause. Other calendar systems change era every few decades, so their windows stay centred and keep crossing eras as before. `Calendar` and `RangeCalendar` both keep a 41-year list: AD 5 offers `1 … 41`, as does AD 1. Since react-aria only shifts its window for `minValue`, which this component does not own, the window is instead sized to guarantee 41 in-era years and the entries that rolled into the previous era are dropped.
+
+  `minValue` calendars are untouched: react-aria re-anchors its own window there, and a BC `minValue` is an explicit opt-in, so neither the anchor nor the era filter applies. A `maxValue`-only calendar focused below AD 21 does change: the clamp drags the window back across the era boundary and those entries are dropped the same way, so `maxValue` AD 10 focused on AD 5 lists `1 … 10` instead of `31 BC … AD 10`. Every other bounded calendar renders exactly as before: the window still reaches whichever bound is farther and renders every in-range year.
+
+- ea092c1: fix(DSTSUP-277): give the DatePicker calendar button a symmetric hit area
+
+  The calendar trigger was `h-control pr-3`: 28×36px with all of its padding on the right. The icon sat **flush against the button's left edge**, so every pixel to the left of the 16px glyph belonged to the date input, not to the button. Approaching from above, below or the right worked. Approaching from the left meant landing on the glyph itself. A customer reported the picker "hanging" for exactly this reason: they came at it horizontally from the left, missed by a pixel or two, and nothing happened.
+
+  The trigger is now the same control-sized square that `Input` already hands to `ComboBox` and `SearchField`: 36×36 with the icon centred, so there is 10px of slack on **every** side and the icon lands at the same inset as a ComboBox chevron.
+
+  Three things follow from making the box bigger:
+
+  - **The extra room has to be visible.** An invisible hit area is still "aim at the icon", so the whole box now takes a hover wash (`ui-state-hover-ghost`) alongside the existing icon darkening, the same affordance a ghost `Button` uses. It is suppressed while the trigger is disabled.
+  - **The trigger stays marked while the overlay is open.** The popover takes focus as soon as it opens, so the trigger keeps the hover surface on `aria-expanded`.
+  - **Focus is now visible on the button itself.** The field's `has-focus` ring fires for the date segments too, so it could never show _which_ part held focus. Tabbing to the calendar button looked identical to tabbing into the date. The button now draws its own inset ring (`ui-state-focus-item`, inset because the field is `overflow-hidden` and would clip an outline).
+
+  `ui-touch-hitbox` is gone from the trigger: it only guaranteed a 24×24 minimum, which a 36×36 button clears on its own.
+
+  `DateRangePicker` re-exports these styles, so it gets the identical fix.
+
+  The date input drops its right padding when an action is present (`DateField` and the `DateRangePicker` end input). The action box already centres its own icon, so the two insets would otherwise stack and push the icon 22px away from the text it belongs to, 12px further than every other field. With this, the text-to-icon gap is 10px, matching `ComboBox` exactly, and the fit-width `DateRangePicker` field is 4px narrower than before rather than 8px wider.
+
+  Visually the icon shifts 2px left in both components. Nothing else moves.
+
+- 8ba1cc4: fix(DST-1684): ignore virtualized ListBox row measurements taken before the list has a width
+
+  `ListLayout` sizes each virtualized row from the virtualizer's own width, which is `0` on the
+  first layout pass and non-finite in browser-mode test runs. Either way the row wrapper collapses,
+  and since `wrap-anywhere` removed the `min-width: auto` floor on options (DSTSUP-269), a row
+  measured in that state wraps character by character and reports a height in the hundreds of pixels.
+  The resulting scroll-into-view puts the list behind React Aria's 300ms `pointer-events: none`
+  cooldown, which swallows a click on an option.
+
+  The observable failure was confined to browser-mode test runs, where the width never becomes
+  finite. In a real browser the first-pass window never reaches the DOM, because `ScrollView` settles its
+  width before commit, so no change in behaviour is expected for `Select`, `ComboBox`,
+  `Autocomplete` or `TagField`. `ListBoxLayout` now rejects measurements taken in that state, closing
+  both paths.
+
+- 7ef7733: `Input` no longer clones its `icon` and `action` children to inject positioning
+  classes. It renders the positioned box itself and lets the child fill it, so a
+  Fragment or a non-element child is placed like anything else, and a `className`
+  you set on the icon or action is left alone instead of being merged. Rendered
+  geometry is unchanged. The icon and action each gain a wrapping `<span>`.
+- 95821ea: fix(DST-1790): restore type to select and selection announcements in tables
+
+  A row's text value comes from its `rowHeader` cell, and it is what type to select
+  matches and what a screen reader reads when a row is selected. React Aria reads it
+  from the cell's content when that content is a plain string. `Table.Cell` always
+  handed React Aria a render function instead, so the check could never pass, and
+  every row in every table came out with an empty text value unless its author
+  wrote a `textValue` by hand.
+
+  `Table.Cell` now derives `textValue` from string and number content, with no
+  change at any call site. Typing a few characters moves focus to the matching row,
+  and selection is announced with something useful.
+
+  `Table.EditableCell` derives its name the same way, from the display content it
+  shows when it is not being edited, and it accepts a `textValue` of its own for the
+  first time.
+
+  Content that is not plain text still cannot be read, so such a cell states its own
+  `textValue`. That prop was always accepted and is now documented, and in
+  development a row header cell that needs one and does not have it logs a warning.
+  An explicit `textValue` on `Table.Cell` or `Table.Row` continues to win.
+
+  Worth knowing when you write one by hand: type to select matches from the start of
+  the value, so lead with what someone would actually type. `"Jane Doe"` is findable
+  by name, while `"4711 Jane Doe"` is findable only by its number.
+
+- 30ecf9d: fix(DST-1719): apply a string `thumbLabels` to the whole thumb, not its first character
+
+  `Slider` indexed `thumbLabels` positionally without normalising the string case, so `thumbLabels="Anteil Reservix"` named the thumb `"A"`. It is now normalised the same way the sibling `name` prop already was. The tuple form keeps working unchanged.
+
+- 2fc0951: fix: keep `Tray.Trigger` children alive during a collection's hidden pass
+
+  `Select`, `ComboBox`, `Autocomplete` and the `Calendar` presets render their children twice: once into a `<template>` to build the collection, then for real. On a small screen those children are wrapped in a `Tray.Trigger`, and react-aria-components 1.21 made its `DialogTrigger` return `null` during that hidden pass. The `<ListBox>` holding the options went with it, so the collection built empty and the tray opened with nothing in it.
+
+  `Tray.Trigger` now renders its children bare during the hidden pass instead of going through `DialogTrigger`, which is what `Tray` itself already did. The options register again and the tray opens populated.
+
+  The guard `Tray` used for this moved into a shared `useIsHiddenTree` hook, so both components share one copy of the `useIsHidden` context check and the DOM probe that backs it up when two react-aria generations split that context.
+
+- Updated dependencies [d7cf7e4]
+- Updated dependencies [455eca2]
+- Updated dependencies [165377c]
+- Updated dependencies [23a7323]
+- Updated dependencies [0c56a11]
+  - @marigold/system@18.2.0
+
 ## 18.1.0
 
 ### Minor Changes

@@ -46,7 +46,7 @@ export default () => {
       <Table.Body>
         {list.map(item => (
           <Table.Row key={item.id}>
-            <Table.Cell>
+            <Table.Cell textValue={item.name}>
               <Text weight="medium">{item.name}</Text>
             </Table.Cell>
             <Table.Cell alignX="right">

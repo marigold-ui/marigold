@@ -122,7 +122,7 @@ const SecurityPage = () => {
             <Table.Body>
               {sessions.map(session => (
                 <Table.Row key={session.id}>
-                  <Table.Cell>
+                  <Table.Cell textValue={session.device}>
                     <Inline space="related" alignY="center" noWrap>
                       <Text weight="semibold">{session.device}</Text>
                       {session.current && (

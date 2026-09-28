@@ -11,15 +11,15 @@ export const DateField: ThemeComponent<'DateField'> = {
       'has-invalid:ui-state-error has-focus:has-invalid:outline-destructive-accent/20 has-focus:has-invalid:[--ui-border-color:var(--color-destructive-accent)]',
     ],
   }),
-  input: cva({ base: ['ui-input', 'cursor-text'] }),
+  input: cva({ base: ['ui-input', 'cursor-text', 'disabled:text-inherit'] }),
   segment: cva({
     base: [
       'group/segment inline rounded leading-none whitespace-pre p-0.5 outline-0 caret-transparent',
       'text-foreground',
       'data-placeholder:text-placeholder type-literal:text-placeholder type-literal:px-0',
       'data-focused:bg-focus-highlight-bold data-focused:text-foreground data-focused:data-placeholder:text-foreground',
-      'disabled:cursor-not-allowed disabled:text-disabled disabled:bg-disabled-surface',
-      'data-placeholder:disabled:text-disabled',
+      'disabled:cursor-not-allowed disabled:text-inherit disabled:bg-transparent',
+      'data-placeholder:disabled:text-inherit',
       'invalid:text-destructive-accent invalid:data-focused:bg-destructive-bold invalid:data-focused:text-destructive-bold-foreground invalid:data-focused:data-placeholder:text-destructive-bold-foreground',
     ],
   }),

@@ -140,9 +140,9 @@ jobs:
       # fails. Fail here instead, before the AWS credentials are assumed.
       - name: Check the review checklist is present
         run: |
-          f=.claude/skills/review-pr/references/review-checklist.md
+          f=.github/review-checklist.md
           if [ ! -f "$f" ]; then
-            echo "::error::$f is missing. The review prompt reads it and has no fallback, so the review would silently fall back to CLAUDE.md alone. If the DST skills moved out to a plugin, keep a copy in this repo and repoint the prompt: CI cannot read a per-user plugin install."
+            echo "::error::$f is missing. The review prompt reads it and has no fallback, so the review would silently fall back to CLAUDE.md alone. It is held here rather than in the dst plugin because CI cannot read a per-user plugin install, and the plugin copy is de-pinned: it drops the Marigold-specific rules by design."
             exit 1
           fi
 
@@ -182,7 +182,7 @@ jobs:
           role-session-name: gha-claude-review-target-${{ github.run_id }}
 
       - name: Review
-        uses: anthropics/claude-code-action@8cf3482550831fb35a4fc3fbf7ca139cf8028b4c # v1.0.233
+        uses: anthropics/claude-code-action@756cc22e19660d20e8cc9496b4f242475a7f7790 # v1.0.235
         with:
           # Do not add anthropic_api_key: it takes precedence and Bedrock is
           # silently skipped.
@@ -210,9 +210,9 @@ jobs:
 
             Review against the repository's own standards, in this order:
 
-            1. `.claude/skills/review-pr/references/review-checklist.md` — the
-               agreed checklist, including its Critical / Warning / Suggestion
-               severity guide. Read it. Do not restate it, apply it.
+            1. `.github/review-checklist.md` — the agreed checklist, including
+               its Critical / Warning / Suggestion severity guide. Read it. Do
+               not restate it, apply it.
             2. `CLAUDE.md` — project conventions, already loaded for you.
 
             The REVIEW PROFILE above narrows what to spend attention on:

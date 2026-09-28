@@ -1,0 +1,89 @@
+---
+title: Marigold v18.2.0
+date: 2026-09-24
+type: Blog
+changed:
+  - components/navigation/stepper
+  - components/collection/listview
+  - components/actions/link
+  - components/form/checkbox
+  - components/form/radio
+  - components/form/switch
+  - components/content/badge
+  - components/navigation/sidebar
+---
+
+v18.2.0 brings a new `<Stepper>`, selection for `<ListView>`, and links that tell users when they open a new window. Along the way, badges finally line up with checkbox labels, and a long list of small fixes lands across dates, popovers and forms.
+
+## Components
+
+### Stepper
+
+The new [`<Stepper>`](/components/navigation/stepper) shows where a user stands in a checkout, an onboarding flow or a multi-page form. It replaces the one-off "Step 1 of 4" widgets that several product flows had built for themselves.
+
+State stays in your hands. `completedKeys` marks finished steps, `selectableKeys` decides which steps are reachable when your backend knows best, and `disabledKeys` always wins. Steps with an `href` render as links, steps without one render as buttons, and unreachable steps render as plain text. For flows with many steps, `hideLabels` hides the labels visually and shows a "Step 3 of 5" counter instead.
+
+### ListView selection
+
+[`<ListView>`](/components/collection/listview) now supports `selectionMode="single"` and `"multiple"`. The default is still `"none"`, so existing lists don't change.
+
+The selection is view state, not a form value. Read it through `onSelectionChange` and decide yourself when it commits. If the selection has to submit and validate with a form, use [`<SelectList>`](/components/form/selectlist) instead.
+
+A multi-select list works with [`<ActionBar>`](/components/collection/actionbar) and the `useActionBar` hook for bulk actions, with no new API.
+
+### Badges in boolean fields
+
+[`<Checkbox>`](/components/form/checkbox), [`<Radio>`](/components/form/radio) and [`<Switch>`](/components/form/switch) gain a `badge` slot. A badge placed there sits centered on the first line of the label instead of pushing the control out of alignment.
+
+```tsx
+<Checkbox
+  label="Enable early bird pricing"
+  badge={<Badge variant="master">Master</Badge>}
+/>
+```
+
+[`<Badge>`](/components/content/badge) gets a matching `size="inline"`, which the slot applies automatically. `<Switch>` also keeps its track on the first line when a label wraps, just like the other two.
+
+<Callout title="Custom themes" type="warning">
+  If you maintain your own theme, the `Switch` theme entry now needs a `label`
+  slot, or `tsc` will fail.
+</Callout>
+
+### Links that open a new window
+
+A [`<Link>`](/components/actions/link) with a `target` that opens a new window or tab now shows an external-link icon and a hidden, localized "opens in a new window" hint for screen readers. `target="_blank"` also defaults `rel` to `noopener`.
+
+This is automatic, so tests that assert an exact accessible name need an update. `getByRole('link', { name: 'Terms' })` becomes `getByRole('link', { name: 'Terms opens in a new window' })`.
+
+### `dependencies` for collections
+
+`<Select>`, `<ComboBox>`, `<TagGroup>`, `<TagField>` and `<Autocomplete>` now accept `dependencies`. Use it when an item's render function reads something other than the item, such as a value from state, so the options don't go stale.
+
+## Bug fixes
+
+- **Popovers at the window edge.** Menus opened at the right edge no longer lose their border and rounded corners.
+- **Dialog close button.** The close button of `<Dialog closeButton>` now has an accessible name, so screen readers announce more than a bare "button".
+- **ActionBar height.** `useActionBar` now measures the bar, so a `<Table>` with an action bar reserves room for it and the last rows stay visible.
+- **Tray trigger on small screens.** `<Select>`, `<ComboBox>`, `<Autocomplete>` and the calendar presets open their tray with options again, instead of an empty one.
+- **DatePicker calendar button.** The button now has a symmetric hit area, so it no longer feels unresponsive when approached from the left.
+- **Calendar year list.** Years below 21 no longer produce a list that counts down and back up.
+- **FileField sizes.** File sizes pick a fitting unit, so a small CSV reads `2.4 kB` instead of `0.00 MB`.
+- **Slider labels.** A string `thumbLabels` now names the whole thumb, not only its first character.
+- **Virtualized ListBox rows.** Rows no longer collapse when measured before the list has a width.
+- **Input icons.** `Input` positions its `icon` and `action` without cloning them, so fragments and custom class names work as expected.
+- **`cva` pinned.** `@marigold/system` pins `cva` to `1.0.0-beta.12`, so a fresh install no longer breaks on a newer beta.
+
+## Design
+
+- **Sidebar rail overflow.** A `Sidebar.Rail` that scrolls now fades its overflowing edges and shows a seam above the footer.
+- **ListView focus ring.** The row focus ring is drawn inside the row.
+- **SelectList indicator.** The selection indicator is centered against the text next to it.
+
+## Under the hood
+
+- **Prose style is linted.** Vale now checks the docs, changesets and package READMEs in CI.
+- **Docs fixes.** Number formatting and the Table alignment demo no longer cause hydration mismatches, and the Slider docs cover the single-thumb form of `thumbLabels`.
+
+---
+
+That's v18.2.0. Try the new `<Stepper>` in your next multi-step flow and tell us how it fits.

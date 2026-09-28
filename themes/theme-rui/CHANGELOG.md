@@ -1,5 +1,216 @@
 # @marigold/theme-rui
 
+## 6.2.0
+
+### Minor Changes
+
+- d7cf7e4: fix(DST-1607): align boolean-field controls to the first line of their label
+
+  A `<Badge variant="master">` placed inline in a `<Checkbox>` label left the box sitting 2px above the text it belongs to. The box was not the problem: `Checkbox` and `Radio` anchor their control to the **first line** of the label with `items-start`, which is correct: it is what keeps the box on line one of a label that wraps. The problem was the line. The label line is `text-sm leading-4` (16px). A default `Badge` is 20px (18px line box plus 1px borders), so the badge inflated the first line and the 16px control, pinned to its top, stopped reaching the line's optical centre.
+
+  Flipping to `items-center` fixes the badge and breaks wrapping labels: the control floats to the middle of the block, 32px off a five-line label. So the fix keeps `items-start` and stops tall decorations from inflating the line.
+
+  **`Badge` gains `size="inline"`**: 16px tall, sized to sit _inside_ a line of text rather than next to one, with the access icon scaled to match. The default size is unchanged.
+
+  **`Checkbox`, `Radio` and `Switch` gain a `badge` slot.** Pass the badge there instead of building it into the label:
+
+  ```tsx
+  <Checkbox
+    label="Enable early bird pricing"
+    badge={<Badge variant="master">Master</Badge>}
+  />
+  ```
+
+  The slot takes the height of the label's line (`1lh`, so it follows the theme), centres the decoration in it, and sizes a `<Badge>` passed to it to `inline` automatically via context. An explicit `size` on the badge still wins. A decoration that fits lands dead on the line. One that does not overflows symmetrically instead of pushing the line apart, so the control stays put either way. The guardrail holds even if a consumer passes a default-sized badge. Those classes live in the component, not in a theme file, so a theme cannot reopen the bug.
+
+  **`Switch` carried the mirror of the same bug** and is now consistent with the other two. It used `items-center`, so a wrapping `variant="settings"` label dropped the track to the middle of the block instead of the first line, measured 28.5px off. It also rendered its label through the shared `Label`, whose `leading-none` gives a 14px line against a 16px track. It now uses its own label slot with a 16px line box, matching `Checkbox` and `Radio`. The accessible name is unchanged, because it comes from the wrapping `<label>`'s text either way. Single-line switches keep their exact height and position.
+
+  Checkbox's and Radio's label rows moved from `items-center` to `items-start`, which is identical for a single-line label and correct for a wrapping one. `Radio`'s label stays a plain text block rather than becoming a flex row: `children` is arbitrary, and consumer layouts (e.g. `<Inline alignX="between">`) rely on filling a block-level label the way they fill any other block container.
+
+  `WithBadge` and `LongMultilineLabel` stories for all three components pin both cases under Chromatic, each with a test asserting the control is within 0.5px of the first line's centre.
+
+  **Breaking for external themes:** `Theme['components']['Switch']` is a `Record` with required keys, so a theme outside this repo that defines `Switch` without the new `label` slot now fails `tsc`. `Badge`'s `size="inline"` and the `badge` prop on `Checkbox`/`Radio`/`Switch` are additive.
+
+- 741774f: fix(DST-1640): give the `Sidebar.Rail` an overflow affordance and a footer seam
+
+  When a rail's top-level list outgrew the viewport it scrolled, but nothing except the scrollbar said so, and the pinned footer had no seam against the scrolling list, so the two ran together and the scrollbar ended against a hard footer edge. Two scroll-state-aware cues now sit on top of the scrollbar, and a rail that fits still shows no extra chrome:
+
+  - The list fades its overflowing edges via a new `ui-scroll-mask-y` utility, the block-axis twin of `ui-scroll-mask-x` (already behind `Tabs` and `SegmentedControl`). `scroll-padding` keeps a focused tile clear of the fade so its focus ring is never half-erased.
+  - The footer takes the `ui-scroll-seam-*` top hairline the single-column sidebar's footer already had, fading out as the list bottoms out. Being a following sibling of the list is not enough to see its named scroll timeline, so the rail column hoists the name with `ui-scroll-seam-scope`. That scope belongs on the column and no higher: the section panel's `nav` declares the same name, and two declarations in one scope are ambiguous, which kills the animation.
+
+  `ui-scroll-mask-y` differs from the horizontal version in two ways. Its fade defaults narrower (1.25rem), because a row is shorter than a horizontal scroller is wide and 2.5rem would swallow a whole one. And it keeps the scrollbar, where `ui-scroll-mask-x` hides it: a horizontal scrollbar under a row of tabs is unconventional chrome a fade can replace outright, but down the block axis the scrollbar is the conventional affordance and the one a pointer user looks for, so the fade is additive. Pair it with `ui-scrollbar` to theme the scrollbar as usual.
+
+  One caveat, since a mask applies to the whole element: the fade also thins the ends of the scrollbar track. The animation ranges keep the thumb clear of it where it matters (the top fade is 0 exactly when the thumb is at the top), and the narrow default keeps the rest subtle, but it is why the utility wants no border of its own on the masked element.
+
+  Progressive enhancement follows the horizontal version: without scroll-driven animation support (Firefox as of 153) there is no fade, just the scrollbar. The seam now degrades the same way. Its `@supports not` branch pins a hairline on unconditionally, which suits the single-column sidebar, whose nav usually overflows, but not a rail of three to seven sections, which usually fits. Pinning it on there would put a permanent divider under a rail that never scrolls, the one thing a scroll-state-aware affordance exists to avoid. So `ui-scroll-seam-footer` gained a `--seam-fallback-color` hook, and the rail's footer sets it to `transparent`. The cost is that the footer-meets-scrollbar seam stays unfixed in that engine, exactly as it is today. Existing consumers are untouched: leave the property unset and the fallback hairline behaves as before.
+
+  The rail's guidance is unchanged. It is still meant for a small, stable set of sections, and this only makes sure it never looks broken past that, on a short viewport, at high zoom, or with large text.
+
+- 455eca2: feat(DST-1665): add selection to `<ListView>`
+
+  `<ListView>` shipped with selection deliberately omitted: all six selection props were stripped from its public type and `selectionMode` was hardcoded to `"none"`. It now takes `selectionMode="single"` or `"multiple"`, defaulting to `"none"` so a list that does not ask for selection is byte-identical to before.
+
+  The selection is **view state, not a field value**. Read it through `onSelectionChange`, hold it yourself, and decide when it commits. `<ListView>` has no `FieldBase` wiring, no hidden input, and no `name`, `form` or `validate`, and it will not grow them: a selection that has to submit and validate with a form is what `<SelectList>` is for. That split is what keeps two `GridList` wrappers from being redundant, now that both render a nearly identical stack of rows.
+
+  `onSelectionChange` receives React Aria's raw `Selection` (`'all' | Set<Key>`), deliberately not `<SelectList>`'s mode-typed `onChange`, because `'all'` is meaningful for a view and unsubmittable for a field. `disallowEmptySelection` passes React Aria's default through in both modes, unlike `<SelectList>`, which defaults it to `true` in single mode for radio-group semantics. A view's selection has to be abandonable, and `true` would also disable Escape-to-clear.
+
+  `selectionBehavior` is fixed to `"toggle"` and stays unexposed, matching `<Table>`. There is no equivalent of React Spectrum's `selectionStyle="highlight"`, so no press replaces the whole selection. Range selection is unaffected: React Aria checks <kbd>Shift</kbd> before it consults `selectionBehavior`, so <kbd>Shift</kbd>+click and <kbd>Shift</kbd>+<kbd>↑</kbd>/<kbd>↓</kbd> extend a range in `"multiple"` mode.
+
+  **Row layout**
+
+  The row's named-area grid gains a leading `indicator` region, so the template goes from `'label actions' 'description actions'` to `'indicator label actions' 'indicator description actions'`. The `ListView` slot union in `@marigold/system` gains `indicator` to match. Spacing rides on the cell (`me-3`) rather than a column gap, mirroring how `actions` carries `ms-3`, so with nothing in the area the `auto` track sizes to 0 and the margin does not exist.
+
+  The indicator is centred against the whole text stack and pinned to the start of its column. Pinning matters once the column widens, which it does when a row carries an unslotted child.
+
+  That is worth knowing when authoring: a child claiming none of the row's three regions, a `<Badge>` being the likely case, is auto-placed by the grid and lands in the indicator column, widening it so that **row's** text no longer lines up with any other row's. Nest it in `<TextValue>` or `<Description>` instead. Before selection this misplaced a badge onto its own line. Now it misaligns the list.
+
+  **Selecting and opening a row**
+
+  `onAction` still works alongside `selectionMode`, and which gesture a press performs depends on whether anything is selected. With an empty selection a row press, or <kbd>Enter</kbd>, opens the item, and the checkbox or <kbd>Space</kbd> selects without opening. Once anything is selected a press marks a row instead and nothing opens. <kbd>Escape</kbd> clears the selection and opening works again.
+
+  One rough edge in that second state, measured rather than inferred: <kbd>Enter</kbd> does nothing at all. It neither opens nor toggles, so a keyboard user gets no response of any kind, where a mouse click at least marks the row. React Aria's own guidance covers only clicking and taps, so this is undocumented upstream. A story test pins all four keys.
+
+  **Bulk actions**
+
+  A multi-select list composes with `<ActionBar>` with no new API. The bar carries `sticky bottom-(--actionbar-offset)` in the component, so rendered inside the list's scroll container it pins itself to the bottom. Drive it with the exported `useActionBar` hook, which holds the selection, fills in the count and clear button, and measures the bar so you can reserve its height in `padding-bottom` and `scroll-padding-bottom`.
+
+  **There is no select-all control.** The Bulk Actions pattern puts it in a header checkbox and a list has no header row to hold one, so a flow where users select every visible record still wants a `<Table>`. Tracked separately. <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> does still select every row, and React Aria exposes no way to turn it off, so handle the `'all'` sentinel even in a list that shows no select-all of its own.
+
+  **Internal**
+
+  `SelectList/SelectionIndicator.tsx` moves to `utils/GridSelectionIndicator.tsx` and is shared by both wrappers. Nothing here was publicly exported, so this is internal naming only, chosen because three separate things share the bare name `SelectionIndicator`: `ListBox`'s, this one, and React Aria's own.
+
+  **Documentation**
+
+  `/components/collection/listview` gains a Selection section covering the modes, the view-state rule, the gesture switch, and the bulk-actions composition, with three new demos. The indicator is added to the anatomy. Both component pages lead with one decision test, "does the selection need to submit with the form?", with one exception named: a pick that never submits but needs a visible label, helper text, or a validation message is still a `<SelectList>`, because `<ListView>` renders none of those.
+
+  The Pick pattern moves with it. Its "List or table" section now chooses by surface, and the people pick, a dialog that stages a selection and commits it with its own button, migrates from `<SelectList>` to `<ListView>`. The Abonnement pick stays a `<SelectList>`, being the labelled-field case.
+
+- 0c56a11: feat(DST-1391): add `Stepper`, a progress indicator for multi-step tasks.
+
+  `<Stepper>` shows where a user stands in a checkout, an onboarding flow, or a multi-page form, replacing the one-off "Step 1 of 4" widgets that several product flows had each built for themselves. It renders a `<nav>` landmark around an ordered list, announces each step's label, position, and state, and never relies on colour alone to convey which step is which.
+
+  State is entirely consumer-owned. `completedKeys` is a set rather than a high-water mark, so non-contiguous completion coming from a server is expressible, and the component never infers that a step is finished: only your code knows whether validation passed. `selectableKeys` replaces the built-in "completed, errored, or current" rule when a backend decides what is reachable, and `disabledKeys` always wins over both. Errored steps stay clickable by default, so a user who is told a step failed has a way back to it, unless `selectableKeys` leaves them out.
+
+  Steps with an `href` render as real links and route through `RouterProvider`. Steps without one render as buttons. Steps that are not reachable render as plain text rather than as disabled controls, since an unreachable step is not a disabled widget. `hideLabels` drops labels visually for flows with too many steps to label, keeping them for screen readers and adding a visible "Step 3 of 5" counter so sighted users still know how far along they are.
+
+### Patch Changes
+
+- 455eca2: fix(DST-1665): draw `<ListView>`'s row focus ring inside the row
+
+  A focused row used `ui-state-focus`, which paints a 3px outline outside the border box. Rows are siblings painting in tree order, so the next row down covered the focused row's bottom edge with its own background. The divider did it faintly at rest. A selected neighbour did it across the full width. The ring looked cut off along the bottom.
+
+  The row now uses an inset ring, `inset-ring-2 inset-ring-ring/50`, the same treatment `<SelectList>` applies to its options. An inset ring is painted within the border box, so no sibling can reach it and the four edges read the same weight.
+
+  Selection is what made this systematic rather than occasional, which is why the fix ships here: before this release no `<ListView>` row had a selected background to paint over its neighbour.
+
+  Two related notes. The theme documents `ui-state-focus` as carrying its weight only on something with a border to flip, naming `ui-state-focus-item` for borderless rows instead. That utility is the same inset mechanism at full opacity. This change matches `<SelectList>`'s `/50` for visual parity between the two, and the ring opacity question across both is tracked in DST-1590 and DST-1662.
+
+  Expect a visual diff on every focused `<ListView>` row.
+
+- 455eca2: fix(DST-1665): centre `<SelectList>`'s selection indicator against the text stack
+
+  The `indicator` slot occupied `row-start-1` only, so on a two-line option the radio or checkbox aligned to the label row and sat high against the label-plus-description block. The `action` slot beside it already spanned both rows. The indicator now carries `row-span-2` to match.
+
+  This lands here because `<ListView>` gained the same region in this release and had to pick a rule. Centring against the whole text stack is the one both wrappers now follow, so the two cannot be told apart on this point and neither needs a comment explaining why it differs. The alternative was shipping a divergence plus a ticket to undo it.
+
+  Expect a visual diff on description-bearing options, where the indicator drops by roughly 8px. Single-line options are unchanged, since one row and two rows centre identically.
+
+- d816f21: fix(DST-1776): keep the ListBox option focus ring inside the list
+
+  A focused option in a `ListBox` drew its keyboard focus ring with
+  `ui-state-focus`, an outset `outline-3` halo. Options sit 1px off the list's
+  edge, and in a `Popover` the list is clipped to an 8px corner radius, so the
+  halo landed under the popover rim: cut flat along the left edge and truncated at
+  the corners. In a `ComboBox` that clipped band sits a few pixels below the
+  field, close enough to read as the input's own ring fallen out of alignment,
+  which is how it was originally reported.
+
+  The ring is now `ui-state-focus-item`, the inset variant, matching `Menu`. An
+  inset ring cannot leave the option's own box, so nothing clips it. It also
+  carries the full-opacity `--color-ring` instead of the `/50` the outset halo
+  used, which is what a focus indicator needs to clear the 3:1 contrast floor on a
+  borderless row.
+
+  Options also gain `focus:bg-focus-highlight`, the roving-cursor wash that
+  `ui-state-focus-item` is documented to pair with rather than replace, and which
+  `Menu` already had. A focused option now carries the focus-highlight fill, and a
+  focused option that is also selected keeps the stronger selected fill, so
+  selection stays visible under the cursor. Measured against the ring, that is
+  4.97:1 over focus-highlight and 3.59:1 over selected, both clear of the 3:1 a
+  focus indicator needs.
+
+  This affects every list built on the shared `ListBox` item slot: `ComboBox`,
+  `Select`, `Autocomplete` and a standalone `ListBox`. `Menu`, `SelectList` and
+  `ListView` already drew an inset ring and are unchanged.
+
+  The slot has a fifth consumer that is not a list option: `CalendarPresets` puts
+  it on the button that opens the presets dialog. On an option the wash tracks a
+  cursor that moves on, but on that button a fill left behind by a mouse click
+  reads as "selected", so the button opts out of the wash at the call site and
+  keeps the focus appearance it had.
+
+  `ListBoxItem` also drops `focus-visible:z-1`. It existed only to lift an outset
+  ring above neighbouring options, and an inset ring cannot overlap one.
+
+  No API change.
+
+- 4b9631c: feat(DST-889): mark links that open in a new window
+
+  A `<Link>` that opens a new window or tab now shows an external-link icon after its label plus a hidden, localized "opens in a new window" warning (WCAG G201). Targets that stay in the current window (`_self`, `_top`, `_parent`, in any casing) are untouched, and so are links that open nothing: `disabled` ones, ones with no `href`, and `download` ones, where the browser saves the file and ignores `target`.
+
+  `target="_blank"` also defaults `rel` to `noopener`, which your own `rel` still overrides. A named window gets no default `rel`, because `noopener` makes the browser ignore the window name and open a new tab on every click instead of reusing the window. The cost is that a named window keeps a live `window.opener` handle on your page, which browsers still allow for named targets even though they severed it for `_blank`, so don't point one at an origin you don't control.
+
+  **This is automatic and retroactive.** Every existing `target="_blank"` link gains the icon and a longer accessible name, so tests asserting an exact name need updating: `getByRole('link', { name: 'Terms' })` becomes `getByRole('link', { name: 'Terms opens in a new window' })`.
+
+  An `aria-label` replaces a link's content in its accessible name, so the warning is appended to it rather than dropped. With `aria-labelledby` it is referenced by id instead. That also fixes the `master`/`admin` access label, which an `aria-label` used to swallow.
+
+  There is no `external` prop and no opt-out. Deriving from `target` keeps the API unchanged and makes the indicator reliable, since an opt-in prop gets forgotten and a missing icon reads as "this one stays here". If a link should not carry the icon, do not force the new window.
+
+  **Theme:** `master` and `admin` render slightly differently. They coloured every descendant `svg` with the access token, which would have painted the new-tab glyph too, so `AccessIcon` now carries an `access-icon` class for the theme to select instead. `Menu`'s `master` and `admin` items moved to that same selector. Nothing renders differently today, because an access item's only glyph is the access one, but a consumer icon dropped into such an item no longer picks up the access colour. They also placed their icon with `inline-flex items-center gap-1`, which puts a trailing icon beside a wrapped label instead of after its last word. Both icons are now inline and sized in `em`, so they follow `size="small"` instead of staying at 16px.
+
+- ea092c1: fix(DSTSUP-277): give the DatePicker calendar button a symmetric hit area
+
+  The calendar trigger was `h-control pr-3`: 28×36px with all of its padding on the right. The icon sat **flush against the button's left edge**, so every pixel to the left of the 16px glyph belonged to the date input, not to the button. Approaching from above, below or the right worked. Approaching from the left meant landing on the glyph itself. A customer reported the picker "hanging" for exactly this reason: they came at it horizontally from the left, missed by a pixel or two, and nothing happened.
+
+  The trigger is now the same control-sized square that `Input` already hands to `ComboBox` and `SearchField`: 36×36 with the icon centred, so there is 10px of slack on **every** side and the icon lands at the same inset as a ComboBox chevron.
+
+  Three things follow from making the box bigger:
+
+  - **The extra room has to be visible.** An invisible hit area is still "aim at the icon", so the whole box now takes a hover wash (`ui-state-hover-ghost`) alongside the existing icon darkening, the same affordance a ghost `Button` uses. It is suppressed while the trigger is disabled.
+  - **The trigger stays marked while the overlay is open.** The popover takes focus as soon as it opens, so the trigger keeps the hover surface on `aria-expanded`.
+  - **Focus is now visible on the button itself.** The field's `has-focus` ring fires for the date segments too, so it could never show _which_ part held focus. Tabbing to the calendar button looked identical to tabbing into the date. The button now draws its own inset ring (`ui-state-focus-item`, inset because the field is `overflow-hidden` and would clip an outline).
+
+  `ui-touch-hitbox` is gone from the trigger: it only guaranteed a 24×24 minimum, which a 36×36 button clears on its own.
+
+  `DateRangePicker` re-exports these styles, so it gets the identical fix.
+
+  The date input drops its right padding when an action is present (`DateField` and the `DateRangePicker` end input). The action box already centres its own icon, so the two insets would otherwise stack and push the icon 22px away from the text it belongs to, 12px further than every other field. With this, the text-to-icon gap is 10px, matching `ComboBox` exactly, and the fit-width `DateRangePicker` field is 4px narrower than before rather than 8px wider.
+
+  Visually the icon shifts 2px left in both components. Nothing else moves.
+
+- Updated dependencies [d7cf7e4]
+- Updated dependencies [455eca2]
+- Updated dependencies [455eca2]
+- Updated dependencies [86f5901]
+- Updated dependencies [9a77767]
+- Updated dependencies [d816f21]
+- Updated dependencies [165377c]
+- Updated dependencies [23a7323]
+- Updated dependencies [4b9631c]
+- Updated dependencies [ee811e1]
+- Updated dependencies [d5f277a]
+- Updated dependencies [ea092c1]
+- Updated dependencies [8ba1cc4]
+- Updated dependencies [7ef7733]
+- Updated dependencies [95821ea]
+- Updated dependencies [30ecf9d]
+- Updated dependencies [0c56a11]
+- Updated dependencies [2780c9f]
+- Updated dependencies [2fc0951]
+  - @marigold/components@18.2.0
+  - @marigold/system@18.2.0
+
 ## 6.1.0
 
 ### Minor Changes

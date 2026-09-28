@@ -127,7 +127,7 @@ const VenueRow = ({
   deleteDisabled: boolean;
 }) => (
   <Table.Row id={venue.id}>
-    <Table.Cell>
+    <Table.Cell textValue={venue.name}>
       <Text weight="medium">{venue.name}</Text>
     </Table.Cell>
     <Table.Cell>{venueTypes[venue.type] ?? 'Unknown'}</Table.Cell>

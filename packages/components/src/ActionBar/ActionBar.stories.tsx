@@ -126,10 +126,9 @@ export const WithoutClearButton = meta.story({
  * Inactive states on the ActionBar's dark `ui-contrast` ground.
  *
  * The bar cascades `variant="ghost"` onto its plain `<Button>` children, and a
- * ghost Button takes its disabled/pending fill from `ui-state-disabled` — which
- * paints the opaque, white-calibrated `--color-disabled-surface`. On this ground
- * that reads as a light block rather than a receding one. Kept as a snapshot so
- * the regression is visible in VRT; see DST-1590.
+ * ghost Button takes its disabled/pending look from `ui-state-disabled`. That
+ * state derives label and fill from the ink, so the actions recede into the dark
+ * ground instead of painting a light block.
  */
 export const DisabledAndLoading = meta.story({
   tags: ['component-test'],
@@ -359,7 +358,7 @@ export const IntegratedWithTable = meta.story({
           <Table.Body>
             {users.map(user => (
               <Table.Row key={user.email} id={user.email}>
-                <Table.Cell>
+                <Table.Cell textValue={user.name}>
                   <Stack space="0.5">
                     <Text weight="medium">{user.name}</Text>
                     <Text size="xs" color="secondary">

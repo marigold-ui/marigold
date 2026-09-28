@@ -64,6 +64,6 @@ A dispatch can therefore succeed while no job runs. If nothing is queued, check 
 
 ## Alternative trigger
 
-On an open PR, commenting `/run-chromatic` starts the same workflow against the PR's head branch. It only works for users whose author association is `OWNER`, `MEMBER`, or `COLLABORATOR`. Prefer this when the goal is to attach a run to a specific PR — the `review-pr` skill suggests it for exactly that reason.
+On an open PR, commenting `/run-chromatic` starts the same workflow against the PR's head branch. It only works for users whose author association is `OWNER`, `MEMBER`, or `COLLABORATOR`. Prefer this when the goal is to attach a run to a specific PR — the `/dst:review-pr` skill suggests it for exactly that reason.
 
 The workflow also runs automatically when a PR is merged into `main`, unless the PR only touches `docs/**`, `**/*.md`, `**/*.mdx`, or `.changeset/**`.

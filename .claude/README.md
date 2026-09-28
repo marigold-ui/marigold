@@ -1,6 +1,10 @@
 # AI toolkit conventions
 
-How the committed AI tooling in this repo is shaped. **Conventions only — this file deliberately does not list the tools it describes.**
+How the committed AI tooling in this repo is shaped: **hooks, and the one skill that is still
+repo-local.** The team's workflow skills live in the `dst` plugin and carry their own conventions
+with them, so this file no longer describes them.
+
+**Conventions only — this file deliberately does not list the tools it describes.**
 
 Claude Code already injects every available skill's name and description into each session, so a hand-maintained inventory here would be a second copy of that list, kept by hand, drifting a little further with every change. That is what happened last time: the ticket that produced this file (DST-1529) was itself written as a verified-on-disk inventory, and three of its five findings were wrong eight weeks later. Rules only change when we decide to change them, so this file records rules. To see what exists, look in `skills/` or ask Claude what it has.
 
@@ -8,67 +12,35 @@ Claude Code already injects every available skill's name and description into ea
 
 | Source | Lives in | Applies to |
 | --- | --- | --- |
-| First-party skills | `.claude/skills/<name>/SKILL.md` | Committed, ours to edit |
+| First-party skills | `.claude/skills/<name>/SKILL.md` | Committed, ours to edit. Only `vrt` is left here |
 | Project hooks | registered in `.claude/settings.json`, scripts in `.claude/hooks/` | Committed, run automatically for everyone |
-| Plugins | declared in `.claude/settings.json` | Installed per-user, versioned upstream |
+| Plugins | declared in `.claude/settings.json`, or installed per-user | Installed per-user, versioned upstream. The team's workflow skills are the `dst` plugin, installed at user scope from the private `dst-toolkit` marketplace, so it is never declared in this public repo's `settings.json` |
 | Personal skills | `~/.claude/skills/` | One developer's machine, never the repo |
 
-A skill you did not write and do not intend to maintain belongs in a plugin, not in `skills/`. Vendoring third-party packs into this repo was tried and abandoned: the copy stopped tracking upstream within two months and nobody noticed until it was audited.
+A skill you did not write and do not intend to maintain belongs in a plugin, not in `skills/`. Vendoring third-party packs into this repo was tried and abandoned: the copy stopped tracking upstream within two months and nobody noticed until it was audited. The same reasoning is what moved our own workflow skills out: `review-pr` existed in two repos and had diverged by 140 lines, with neither copy authoritative.
 
-## Writing a first-party skill
+## Writing a skill
 
-One shape, no exceptions:
+**The authoring rules live in [`dst-toolkit`](https://github.com/marigold-ui/dst-toolkit)'s
+`CONTRIBUTING.md`**, not here. The skill layout, how to write a `description` that actually
+triggers, when a reference moves up to a shared directory, how gates and prerequisites are
+written, and the extra obligations a side-effecting skill carries: one copy, and it is that one.
 
-```
-.claude/skills/<name>/
-  SKILL.md          # required
-  references/       # optional — loaded on demand, not up front
-  scripts/          # optional
-  assets/           # optional
-```
+That is where they belong because that is where the skills are. The team's workflow skills were
+extracted into the `dst` plugin (DST-1778) precisely so one copy could serve every DST checkout,
+and keeping a second copy of their conventions here would recreate the drift the extraction
+removed.
 
-`SKILL.md` starts with frontmatter carrying `name` and `description`, then a `## Usage` block, then a numbered `## Workflow`. See `skills/create-pr/SKILL.md` for the reference shape.
+What is still true in this repo:
 
-The `description` is the only part of a skill that enters the context window before it runs — everything else loads on invocation. So write it as a trigger, not a summary: say what the skill does *and* the phrases that should reach for it. A vague description is why a good skill never fires.
-
-Open it with `DST — ` so ours group visibly in a `/` menu that also lists plugin and personal skills. The marker names the team whose workflow the skill encodes, not the checkout it happens to sit in. `DST` is the design system team's project across the Core app, ClearingAdministration, the Cypress suite and the Insights scanner as well as this repository, so a skill that talks only to Jira or to a resolved remote is usable from any of them. Write the body that way: a skill that reaches for `CLAUDE.md`, `pnpm` or a path under `packages/` has pinned itself here, and only the ones that genuinely cannot work elsewhere should. Use the em dash, not a colon: descriptions are read raw rather than as quoted YAML, so quotes leak through literally, and `DST: ` would need them.
-
-Don't put that marker in the `name`. Plugin and directory-scoped skills are namespaced by the harness with a colon (`vercel:react-best-practices`, `apps/web:deploy`), so a hand-written prefix in the name impersonates a mechanism it isn't part of. The invocation stays `/create-pr`.
-
-Keep the body in `SKILL.md` and push bulk into `references/`. Skills are cheap when idle and expensive when bloated at the top level.
-
-**When two skills need the same reference, it moves up to `skills/references/`** and both link to it:
-
-```
-.claude/skills/
-  references/       # shared across skills, loaded on demand
-  <name>/SKILL.md
-```
-
-Not into `CLAUDE.md`, which loads every session and so would make a rarely-needed reference permanently expensive. Not into `.memory/`, which is domain vocabulary and decision history rather than operational how-to. And not duplicated into both skills, because the copies drift and the one you read is not necessarily the corrected one. `references/jira-board.md` is the worked example: `/pick-up` and `/review-queue` hit the same JQL traps and field ids, so those are written down once.
-
-## Gates and questions
-
-`AskUserQuestion` is the normal way to confirm something, and `/create-pr` uses it at its confirmation step to good effect.
-
-The one thing worth knowing is that it is resolved by the permission component, so a machine configured with `skipAutoPermissionPrompt` can have it return the first option without a person seeing it. That is a property of one setting rather than of the tool, but it means a gate built on it fails toward acting. So for the last step before something irreversible, some skills prefer to render the options as text and end the turn, which no setting can answer on anyone's behalf. `/pick-up` and `/triage-feedback` both make that choice and say why.
-
-Either is fine. Pick per gate, on how expensive the wrong answer is.
-
-## Skills with side effects
-
-Some skills spend money or touch the outside world. `vrt` dispatches a Chromatic run; a deploy or release skill would be the same class.
-
-These carry two extra obligations:
-
-1. **The description must rule out proactive use.** State plainly that the skill runs only on an explicit request. A description that merely describes the capability invites the model to fire it on its own.
-2. **Confirmation is a numbered step of its own, immediately before the first outward call.** Not a note, not a caveat at the end. A skill that dispatches straight away confirms in step 1. One that reads and plans first confirms in the step just before its first outward call, and says in its opening lines where that boundary falls. `/pick-up` is the worked example: it writes its plan to disk with no gate at all, because a local file is not an outward action, and puts its gate in the step directly before the one that creates a branch and moves the ticket.
-
-Narrow `allowed-tools` to the exact commands the skill needs. It is the one guardrail in a skill that is structural rather than a matter of prose.
-
-**A confirmation only holds if the question reaches a human.** `AskUserQuestion` is resolved by the permission component, so on a machine running `skipAutoPermissionPrompt` under `permissions.defaultMode: "auto"` it never renders. The tool returns the first option and nothing in the result distinguishes that from a real answer, so the model believes it was approved. This was found the slow way: seven questions in one session came back selecting the recommended option every time, and the person at the keyboard had seen none of them.
-
-Two things follow. It fails toward performing the outward action, which is the worst direction for a guardrail to fail in. And it is invisible on a machine where the setting is off, so a gate that works for you can be silently open for a teammate. Check `/config` if a gate ever seems to answer itself. A skill that must hold regardless of anyone's configuration can render its options and end the turn instead, which no setting can resolve.
+- `skills/vrt/` is the only first-party skill left, and it stays because exactly one repository
+  has a Chromatic workflow for it to dispatch. A configurable VRT dispatcher would be speculation.
+- It keeps its `DST — ` description prefix. The `dst:` namespace does that job for the plugin's
+  skills, and `/vrt` is unnamespaced, so the marker is still the only thing saying whose workflow
+  it encodes.
+- It is **side-effecting**: a dispatch spends Chromatic snapshot quota. `CONTRIBUTING.md`'s rules
+  for that class apply in full, and the reason they matter here is that the cost is real and lands
+  on the team's plan rather than on the person who ran it.
 
 ## Hooks
 
@@ -116,6 +88,16 @@ Two rules hold this together:
 
 ## Adding and removing
 
-Anything committed here is a claim that the team works this way, so add a skill when a workflow is worth standardising, not to record that you once did something twice.
+**A new workflow skill goes in the `dst` plugin, not here.** That is the default now, and the bar
+for adding one back to `.claude/skills/` is that it genuinely cannot work anywhere else: it has to
+depend on something only this repository has, the way `vrt` depends on this repository being the
+only one with a Chromatic workflow. "It is convenient here" is not that bar, and a skill that
+starts repo-local because it was quicker is how `review-pr` ended up existing twice.
 
-Removing is the cheaper direction than it looks. An unused skill costs about one line of context, so "unused" alone is a weak reason to keep one around — and everything deleted stays in git history.
+A hook is the opposite: it is always repo-local, because it runs for everyone who opens the
+checkout and has no business firing in someone else's.
+
+Anything committed here is a claim that the team works this way, so add a hook when a check is
+worth running for everyone, not to record that you once forgot something.
+
+Removing is a cheaper direction than it looks. Everything deleted stays in git history.

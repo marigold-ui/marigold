@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { useDragAndDrop } from 'react-aria-components/useDragAndDrop';
-import { expect, waitFor, within } from 'storybook/test';
+import { expect, screen, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { SortDescriptor } from '@react-types/shared';
 import { NumericFormat } from '@marigold/system';
+import { ActionBar } from '../ActionBar/ActionBar';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Checkbox } from '../Checkbox/Checkbox';
@@ -167,7 +168,7 @@ export const Basic = meta.story({
       <Table.Body>
         {users.map(user => (
           <Table.Row key={user.email}>
-            <Table.Cell>
+            <Table.Cell textValue={user.name}>
               <Stack space="0.5">
                 <Text weight="medium">{user.name}</Text>
                 <Text size="xs" color="secondary">
@@ -221,6 +222,79 @@ Basic.test(
       const rows = canvas.getAllByRole('row');
       // 10 users + 1 header row = 11 rows
       expect(rows).toHaveLength(11);
+    });
+  }
+);
+
+/**
+ * A row's `textValue` comes from its `rowHeader` cell, and it is what type to
+ * select matches and what selection announcements read. Plain string and number
+ * content is read automatically. Composite content is not, so it declares a
+ * `textValue` of its own.
+ */
+export const RowTypeahead = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    selectionMode: 'single',
+  },
+  render: args => (
+    <Table aria-label="Seats" {...args}>
+      <Table.Header>
+        <Table.Column rowHeader>Guest</Table.Column>
+        <Table.Column>Seat</Table.Column>
+        <Table.Column>Note</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        {/* Plain string, read automatically. */}
+        <Table.Row id="alma">
+          <Table.Cell>Alma Fischer</Table.Cell>
+          <Table.Cell>12</Table.Cell>
+          <Table.Cell>Aisle</Table.Cell>
+        </Table.Row>
+        {/* Composite content cannot be read as text, so it says what it is. */}
+        <Table.Row id="bruno">
+          <Table.Cell textValue="Bruno Weiss">
+            <Stack space="0.5">
+              <Text weight="medium">Bruno Weiss</Text>
+              <Text size="xs" color="secondary">
+                Wheelchair space
+              </Text>
+            </Stack>
+          </Table.Cell>
+          <Table.Cell>4</Table.Cell>
+          <Table.Cell>Front row</Table.Cell>
+        </Table.Row>
+        {/* A number is read too, so a numeric row header stays findable. */}
+        <Table.Row id="group">
+          <Table.Cell>{4711}</Table.Cell>
+          <Table.Cell>20-28</Table.Cell>
+          <Table.Cell>Group booking</Table.Cell>
+        </Table.Row>
+        <Table.Row id="zoe">
+          <Table.Cell>Zoe Novak</Table.Cell>
+          <Table.Cell>7</Table.Cell>
+          <Table.Cell>Late arrival</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  ),
+});
+
+RowTypeahead.test(
+  'Type to select finds a row by its derived name',
+  async ({ canvas, userEvent, step }) => {
+    const rowOf = (name: string) =>
+      canvas.getByRole('row', { name: new RegExp(name) });
+
+    await step('Focus the first row', async () => {
+      await userEvent.click(rowOf('Alma Fischer'));
+      await expect(rowOf('Alma Fischer')).toHaveFocus();
+    });
+
+    await step('Typing moves focus to the matching row', async () => {
+      await userEvent.keyboard('Z');
+      await expect(rowOf('Zoe Novak')).toHaveFocus();
     });
   }
 );
@@ -498,6 +572,74 @@ Empty.test(
   }
 );
 
+export const Loading = meta.story({
+  tags: ['component-test'],
+  // `loading` changes no pixels, the tests below guard it instead.
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    loading: true,
+  },
+  render: args => (
+    <Table aria-label="Orders" {...args}>
+      <Table.Header>
+        <Table.Column rowHeader>Name</Table.Column>
+        <Table.Column>Email</Table.Column>
+        <Table.Column>Status</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        {users.slice(0, 3).map(user => (
+          <Table.Row key={user.email}>
+            <Table.Cell>{user.name}</Table.Cell>
+            <Table.Cell>{user.email}</Table.Cell>
+            <Table.Cell>
+              <Badge>{user.status}</Badge>
+            </Table.Cell>
+          </Table.Row>
+        ))}
+      </Table.Body>
+    </Table>
+  ),
+});
+
+Loading.test(
+  'Marks the grid busy and announces loading on the first render',
+  async ({ canvas }) => {
+    expect(canvas.getByRole('grid')).toHaveAttribute('aria-busy', 'true');
+
+    // The announcer lives outside the canvas, at the start of `<body>`.
+    await waitFor(() => {
+      const polite = screen
+        .getAllByRole('log', { hidden: true })
+        .find(log => log.getAttribute('aria-live') === 'polite');
+
+      expect(polite).toHaveTextContent('Loading...');
+    });
+  }
+);
+
+Loading.test(
+  'Leaves a single status region when an ActionBar is open',
+  {
+    args: {
+      selectionMode: 'multiple',
+      actionBar: () => (
+        <ActionBar>
+          <Button>Delete</Button>
+        </ActionBar>
+      ),
+    },
+  },
+  async ({ canvas, userEvent }) => {
+    const [firstRow] = canvas.getAllByRole('row').slice(1);
+    await userEvent.click(within(firstRow).getByRole('checkbox'));
+
+    await waitFor(() => {
+      expect(screen.getByRole('toolbar')).toBeInTheDocument();
+    });
+    expect(screen.getAllByRole('status')).toHaveLength(1);
+  }
+);
+
 export const Sorting = meta.story({
   tags: ['component-test'],
   render: args => {
@@ -721,7 +863,7 @@ export const WithActions = meta.story({
       <Table.Body>
         {users.map(user => (
           <Table.Row key={user.email}>
-            <Table.Cell>
+            <Table.Cell textValue={user.name}>
               <Stack space="0.5">
                 <Text weight="medium">{user.name}</Text>
                 <Text size="xs" color="secondary">
@@ -896,7 +1038,7 @@ export const Links = meta.story({
         <Table.Body>
           {websites.map(site => (
             <Table.Row key={site.name} href={site.url}>
-              <Table.Cell>
+              <Table.Cell textValue={site.name}>
                 <Text weight="medium">{site.name}</Text>
               </Table.Cell>
               <Table.Cell>{site.description}</Table.Cell>
@@ -1289,6 +1431,26 @@ export const EditableCell = meta.story({
     );
   },
 });
+
+EditableCell.test(
+  'Type to select finds a row by its editable cell',
+  async ({ canvas, userEvent, step }) => {
+    // The row header here is itself editable, so the row's name has to come off
+    // `Table.EditableCell`.
+    const rowOf = (name: string) =>
+      canvas.getByRole('row', { name: new RegExp(name) });
+
+    await step('Focus the first row', async () => {
+      await userEvent.click(rowOf('Hans Müller'));
+      await expect(rowOf('Hans Müller')).toHaveFocus();
+    });
+
+    await step('Typing moves focus to the matching row', async () => {
+      await userEvent.keyboard('U');
+      await expect(rowOf('Ursula Weber')).toHaveFocus();
+    });
+  }
+);
 
 EditableCell.test(
   'Edits, saves and cancels editable cells',

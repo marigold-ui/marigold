@@ -11,7 +11,7 @@ export default () => (
     <Table.Body>
       {venues.slice(2, 5).map(venue => (
         <Table.Row key={venue.id}>
-          <Table.Cell>
+          <Table.Cell textValue={venue.name}>
             <Text weight="medium">{venue.name}</Text>
           </Table.Cell>
           <Table.Cell>

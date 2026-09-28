@@ -30,6 +30,14 @@ In short, when you submit code changes, your submissions are understood to be un
 
 We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/marigold-ui/marigold/issues/new?assignees=&labels=bug&template=2.bug.md&title=).
 
+## Images in the documentation
+
+Do not add new photorealistic AI-generated people or places. We treat illustration, diagram and abstract artwork as outside the scope of the EU AI Act's transparency rules, so reach for those first when you need filler imagery.
+
+If a photorealistic AI image is genuinely needed, give it a visible AI-generated label. We take the date an image was generated as the point that counts, so assets created from 2 August 2026 onwards are the ones this applies to.
+
+The demo portraits, venue photos and illustrative filler images already in the docs predate that date. They are disclosed in the [legal notice](https://www.marigold-ui.io/impressum) under "Image credits", or "Bildnachweis" in the German section, and the two demo data modules (`docs/lib/data/people.ts` and `docs/lib/data/venues.ts`) carry the same note so it travels with the code.
+
 ## Deployment (Vercel)
 
 The docs and Storybook projects deploy on Vercel. Each Vercel project (docs and

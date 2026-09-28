@@ -21,7 +21,7 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
   }),
   toolbar: cva({
     base: [
-      'flex items-center',
+      'flex items-center gap-1',
       'flex-1 justify-center',
       'overflow-x-auto',
       'p-1 -m-1',

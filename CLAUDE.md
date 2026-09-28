@@ -23,7 +23,7 @@ When you don't yet know the component name, start with `search`. It ranks compon
 - `marigold doctor --format json` — diagnose a project's Marigold setup (packages, versions, provider, theme, Tailwind, React peer deps) when components render unstyled or throw; returns `{ errors, warnings, passed, text }` so you can apply the suggested fixes
 - `marigold validate <file.tsx> --checks all --format json` — check a generated/edited Marigold component file against the design system's rules (hallucinated components, invalid props, missing compound parts, raw HTML vs. components, rendered a11y/layout issues); exits non-zero only on an error, so it's safe to loop on until clean
 
-The CLI fetches from the Marigold docs site, caches for 24h, and works offline (`--offline`). For AI use, prefer `--format json` — it returns a structured payload instead of formatted markdown.
+The CLI fetches from the Marigold docs site, caches for 24h, and works offline (`--offline`). When `--format` is omitted, output is JSON whenever stdout is not a terminal (your Bash tool included) and markdown/text in an interactive terminal. Passing `--format json` explicitly is still fine and keeps the output independent of how the command is run.
 
 ## Build System
 
@@ -372,13 +372,22 @@ Run with `pnpm test:unit`.
 
 ## AI Toolkit
 
-Committed skills live in `.claude/skills/`, project hooks in `.claude/hooks/`, and plugins are declared in `.claude/settings.json`. See [.claude/README.md](.claude/README.md) for the conventions they follow, the extra rules for skills with side effects, and how to opt out of a hook.
+Project hooks live in `.claude/hooks/` and are registered in `.claude/settings.json`. See [.claude/README.md](.claude/README.md) for the conventions they follow and how to opt out of one.
 
-### Scoping work: `/grill`
+The team's workflow skills are **not in this repo**. They are the `dst` plugin, installed per-user from the private `dst-toolkit` marketplace, so one copy serves every DST checkout:
 
-Start non-trivial work with `/grill`. It interrogates an under-specified idea one question at a time — each with a recommended answer — until every decision branch is resolved, and answers from the codebase rather than asking whenever it can.
+```sh
+claude plugin marketplace add marigold-ui/dst-toolkit
+claude plugin install dst@dst-toolkit
+```
 
-When the session concerns this codebase, it also records what is worth keeping, without being asked: settled vocabulary goes to `.memory/CONTEXT.md`, and decisions that are hard to reverse become ADRs under `.memory/adr/`. Sessions that are not about the code record nothing.
+That gives you `/dst:grill`, `/dst:create-ticket`, `/dst:pick-up`, `/dst:create-pr`, `/dst:review-pr`, `/dst:review-queue` and `/dst:triage-feedback`. `vrt` stays here, unnamespaced as `/vrt`, because only this repository has a Chromatic workflow to dispatch.
+
+### Scoping work: `/dst:grill`
+
+Start non-trivial work with `/dst:grill`. It interrogates an under-specified idea one question at a time — each with a recommended answer — until every decision branch is resolved, and answers from the codebase rather than asking whenever it can.
+
+Because this repo keeps a `.memory/` store, it also records what is worth keeping, without being asked: settled vocabulary goes to `.memory/CONTEXT.md`, and decisions that are hard to reverse become ADRs under `.memory/adr/`. Sessions that are not about the code record nothing, and in a repo with no store nothing is recorded at all.
 
 `.memory/` is committed and reviewed like code — see [.memory/README.md](.memory/README.md) for what belongs there, what does not, and the rule that keeps it from duplicating this file.
 
@@ -425,11 +434,12 @@ Jira Cloud ID: `reservix.atlassian.net` | Project key: `DST`
 
 ### Issue Types and Title Emojis
 
-Both tables live in [`.claude/skills/create-ticket/references/dst-conventions.md`](.claude/skills/create-ticket/references/dst-conventions.md):
+Both tables live in the [`dst` plugin](https://github.com/marigold-ui/dst-toolkit), at
+`skills/create-ticket/references/dst-conventions.md`:
 the issue types with their ids, and the title emoji convention every DST title starts
-with. They are the team's conventions rather than this repository's, and `/create-ticket`
+with. They are the team's conventions rather than this repository's, and `/dst:create-ticket`
 has to apply them from the Core, ClearingAdministration and Insights checkouts too, so
-they travel with the skill instead of living here. One copy, read from either side.
+they travel with the skill instead of living here. One copy, wherever you are reading from.
 
 The two you will reach for most: `Task` is work planned into a sprint, `Unplanned` is
 work picked up inside an already-planned one. They are used in roughly equal numbers, so

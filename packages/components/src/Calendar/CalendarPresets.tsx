@@ -246,7 +246,10 @@ const PresetsNavButton = ({
       onPress={onPress}
       autoFocus={autoFocus}
       aria-haspopup={opensDialog ? 'dialog' : undefined}
-      className={cn(listBoxClassNames.item, 'w-full cursor-pointer')}
+      className={cn(
+        listBoxClassNames.item,
+        'w-full cursor-pointer focus:bg-transparent!'
+      )}
     >
       {variant === 'back' ? (
         <span className="flex items-center gap-2">

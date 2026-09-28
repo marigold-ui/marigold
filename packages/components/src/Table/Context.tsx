@@ -14,6 +14,8 @@ export interface TableContextProps {
    * render props, but the header column has to compare its own `id`.
    */
   treeColumn?: RAC.TableProps['treeColumn'];
+  /** Components that already logged the missing `textValue` warning in this table. */
+  warnedMissingTextValue: Set<string>;
 }
 
 export const TableContext = createContext<TableContextProps | null>(null);

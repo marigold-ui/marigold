@@ -1,8 +1,11 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { theme } from '@marigold/theme-rui';
+import { TextField } from '../TextField/TextField';
 import { mockMatchMedia } from '../test.utils';
+import { Table } from './Table';
 import { EditableCell } from './Table.stories';
+import { GuestTable, rowNamed, typeFromTheFirstRow } from './test.utils';
 
 const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
@@ -141,5 +144,52 @@ describe('TableEditableCell - Advanced Features', () => {
     await waitFor(() => {
       expect(screen.queryByLabelText('Name')).not.toBeInTheDocument();
     });
+  });
+});
+
+describe('TableEditableCell - explicit textValue and warning (derivation is covered by the EditableCell story test)', () => {
+  const nameField = <TextField aria-label="Name" name="name" />;
+
+  test('an explicit textValue wins over the display content', async () => {
+    render(
+      <GuestTable>
+        <Table.Row id="a">
+          <Table.EditableCell field={nameField}>
+            Alma Fischer
+          </Table.EditableCell>
+          <Table.Cell>12</Table.Cell>
+        </Table.Row>
+        <Table.Row id="b">
+          <Table.EditableCell field={nameField} textValue="Zebra">
+            Bruno Weiss
+          </Table.EditableCell>
+          <Table.Cell>4</Table.Cell>
+        </Table.Row>
+      </GuestTable>
+    );
+
+    await typeFromTheFirstRow('Z');
+
+    expect(rowNamed(/Bruno Weiss/)).toHaveFocus();
+  });
+
+  test('warns for a row header cell that cannot be read', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    render(
+      <GuestTable>
+        <Table.Row id="unnamed">
+          <Table.EditableCell field={nameField}>
+            <span>Bruno Weiss</span>
+          </Table.EditableCell>
+          <Table.Cell>4</Table.Cell>
+        </Table.Row>
+      </GuestTable>
+    );
+
+    expect(warnSpy).toHaveBeenCalledTimes(1);
+    expect(warnSpy.mock.calls[0][0]).toContain('`textValue`');
+
+    warnSpy.mockRestore();
   });
 });

@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const ProgressCircle: ThemeComponent<'ProgressCircle'> = {
   container: cva({
-    base: 'stroke-foreground',
+    base: 'stroke-current',
     variants: {
       variant: {
         default: '',

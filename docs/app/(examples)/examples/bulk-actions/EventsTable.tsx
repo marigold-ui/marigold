@@ -140,7 +140,7 @@ const EventRow = ({
   actionsDisabled: boolean;
 }) => (
   <Table.Row id={event.id}>
-    <Table.Cell>
+    <Table.Cell textValue={event.name}>
       <Text weight="medium">{event.name}</Text>
     </Table.Cell>
     <Table.Cell>{formatDate(event.date)}</Table.Cell>

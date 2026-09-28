@@ -19,6 +19,67 @@ describe('Page', () => {
     expect(screen.getByRole('main')).toBeInTheDocument();
   });
 
+  // Only `usePageFocus` makes the landmark focusable, and only when it falls
+  // back to it, so clicking page content never moves focus on its own.
+  test('does not make the main landmark focusable by default', () => {
+    render(<Basic.Component />);
+
+    expect(screen.getByRole('main')).not.toHaveAttribute('tabindex');
+  });
+
+  test('lets a consumer set the main landmark tabIndex', () => {
+    render(<Basic.Component tabIndex={-1} />);
+
+    expect(screen.getByRole('main')).toHaveAttribute('tabindex', '-1');
+  });
+
+  // A programmatically focused element does draw a ring in this browser, so
+  // the computed outline is the contract worth asserting, not the class.
+  test('suppresses the focus ring on the main landmark', () => {
+    render(<Basic.Component tabIndex={-1} />);
+    const main = screen.getByRole('main');
+
+    main.focus();
+
+    expect(getComputedStyle(main).outlineStyle).toBe('none');
+  });
+
+  // A tabbable landmark is one a keyboard user can land on, so the ring the
+  // invisible focus move suppresses has to come back with it. The landmark is
+  // borderless, so that ring is `ui-state-focus-item`, an inset ring painted as
+  // a box-shadow rather than an outline.
+  test('restores the focus ring when the main landmark is made tabbable', () => {
+    render(<Basic.Component tabIndex={0} />);
+    const main = screen.getByRole('main');
+
+    main.focus();
+
+    expect(getComputedStyle(main).boxShadow).toContain('inset');
+  });
+
+  // `<Page>` and `<Page.Header>` publish the title slot through separate
+  // heading contexts, so cover both: one can't regress while the other stays
+  // green. The `tabIndex` mirrors what `usePageFocus` sets before it focuses.
+  test('suppresses the focus ring on a title in the page header', () => {
+    render(<Basic.Component />);
+    const h1 = screen.getByRole('heading', { level: 1, name: 'Billing' });
+
+    h1.tabIndex = -1;
+    h1.focus();
+
+    expect(getComputedStyle(h1).outlineStyle).toBe('none');
+  });
+
+  test('suppresses the focus ring on a bare page title', () => {
+    render(<TitleOnly.Component />);
+    const h1 = screen.getByRole('heading', { level: 1, name: 'Reports' });
+
+    h1.tabIndex = -1;
+    h1.focus();
+
+    expect(getComputedStyle(h1).outlineStyle).toBe('none');
+  });
+
   test('labels the main landmark with the page title', () => {
     render(<Basic.Component />);
 

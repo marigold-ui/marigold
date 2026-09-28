@@ -17,11 +17,12 @@ import type { ValidateChecks, ValidateFormat } from '../commands/validate.js';
 import {
   type DoctorFormat,
   EXAMPLES_SUBCOMMANDS,
-  FORMAT_VALUES,
   SECTION_VALUES,
   type SubcommandName,
   TELEMETRY_SUBCOMMANDS,
   TOP_LEVEL_NAMES,
+  defaultOutputFormat,
+  defaultReportFormat,
   doctorFormatValues,
 } from '../lib/commands-spec.js';
 import type { Section } from '../lib/docs.js';
@@ -84,7 +85,7 @@ ${pc.bold('Commands:')}
 
 ${pc.bold('Docs options:')}
   --section <name>    props | usage | examples | all (default: all)
-  --format  <name>    markdown | json | plain (default: markdown)
+  --format  <name>    markdown | json | plain (default: see below)
   --fresh             Bypass the local cache
   --offline           Use only the local cache
 
@@ -92,29 +93,29 @@ ${pc.bold('List options:')}
   --category <name>   Filter by category (actions, form, foundations,
                       patterns, getting-started, ...)
   --search   <term>   Filter by name
-  --format   <name>   markdown | json | plain
+  --format   <name>   markdown | json | plain (default: see below)
 
 ${pc.bold('Search options:')}
   --limit    <n>      Max results (default: 5)
-  --format   <name>   markdown | json | plain (default: markdown)
+  --format   <name>   markdown | json | plain (default: see below)
   --fresh             Bypass the local cache
   --offline           Use only the local cache
 
 ${pc.bold('Examples options:')}
-  --format   <name>   markdown | json | plain (default: markdown)
+  --format   <name>   markdown | json | plain (default: see below)
   --fresh             Bypass the local cache
   --offline           Use only the local cache
 
 ${pc.bold('Validate options:')}
   --checks <name>     technical | spatial | a11y | all (default: all)
-  --format <name>     text | json (default: text)
+  --format <name>     text | json (default: see below)
 
 ${pc.bold('Init options:')}
   --yes               Skip confirmation prompts
   --skip-install      Don't run the package install step
 
 ${pc.bold('Doctor options:')}
-  --format  <name>    text | json (default: text)
+  --format  <name>    text | json (default: see below)
   --offline           Skip the network; use only the local cache
 
 ${pc.bold('Migrate options:')}
@@ -126,6 +127,11 @@ ${pc.bold('Migrate options:')}
   --only <names>      Apply only these changes (comma-separated codemod
                       names from the pre-analysis); skips the interactive
                       selection. Warnings always run.
+
+${pc.bold('Output format:')}
+  When --format is omitted, output is human-readable (markdown or text) in
+  an interactive terminal and json when stdout is piped or captured, e.g.
+  by an AI agent, a script or CI.
 
 ${pc.bold('Environment:')}
   MARIGOLD_DOCS_URL              Override docs site base URL
@@ -144,6 +150,20 @@ See https://www.marigold-ui.io for component documentation.
 
 const isOutputFormat = (v: string): v is OutputFormat =>
   v === 'markdown' || v === 'json' || v === 'plain';
+
+// Shared by docs, list, search and examples. `format` is null only when an
+// explicit --format is invalid, since the TTY default is always valid.
+// `telemetryFormat` is clamped so the raw string never leaks into telemetry.
+const resolveOutputFormat = (
+  flag: string | undefined
+): {
+  format: OutputFormat | null;
+  telemetryFormat: OutputFormat | 'invalid';
+} => {
+  const value = flag ?? defaultOutputFormat();
+  const format = isOutputFormat(value) ? value : null;
+  return { format, telemetryFormat: format ?? 'invalid' };
+};
 
 // From the babel-free commands-spec.ts rather than ../commands/doctor.js, so
 // the doctor module and its @babel/parser stay off the hot path.
@@ -224,7 +244,7 @@ const parseValidateCommand = (argv: string[]) =>
     allowPositionals: true,
     options: {
       checks: { type: 'string', default: 'all' },
-      format: { type: 'string', default: 'text' },
+      format: { type: 'string' },
     },
   });
 
@@ -307,6 +327,7 @@ export const main = async (
     if (command === 'docs') {
       const { positionals, values } = parseDocsCommand(rest);
       const [componentInput] = positionals;
+      const { format, telemetryFormat } = resolveOutputFormat(values.format);
 
       // Record telemetry args before validation so failed runs still report
       // which flags were supplied. Values go through the clamps in
@@ -315,7 +336,7 @@ export const main = async (
       telemetryArgs = {
         component: slugArg(componentInput),
         section: enumArg(values.section, SECTION_VALUES, 'all'),
-        format: enumArg(values.format, FORMAT_VALUES, 'markdown'),
+        format: telemetryFormat,
         ...(values.fresh ? { fresh: 'true' } : {}),
         ...(values.offline ? { offline: 'true' } : {}),
       };
@@ -324,14 +345,12 @@ export const main = async (
       if (values.section && !isSection(values.section)) {
         fail(`Invalid --section: ${values.section}`);
       }
-      if (values.format && !isOutputFormat(values.format)) {
-        fail(`Invalid --format: ${values.format}`);
-      }
+      if (!format) fail(`Invalid --format: ${values.format}`);
 
       const result = await runDocs({
         component: componentInput,
         section: (values.section as Section | undefined) ?? 'all',
-        format: (values.format as OutputFormat | undefined) ?? 'markdown',
+        format,
         fresh: values.fresh,
         offline: values.offline,
       });
@@ -340,23 +359,22 @@ export const main = async (
       cacheHit = result.cacheHit;
     } else if (command === 'list') {
       const { values } = parseListCommand(rest);
+      const { format, telemetryFormat } = resolveOutputFormat(values.format);
 
       telemetryArgs = {
-        format: enumArg(values.format, FORMAT_VALUES, 'markdown'),
+        format: telemetryFormat,
         ...(values.category ? { category: slugArg(values.category) } : {}),
         ...(values.search ? { search: 'used' } : {}),
         ...(values.fresh ? { fresh: 'true' } : {}),
         ...(values.offline ? { offline: 'true' } : {}),
       };
 
-      if (values.format && !isOutputFormat(values.format)) {
-        fail(`Invalid --format: ${values.format}`);
-      }
+      if (!format) fail(`Invalid --format: ${values.format}`);
 
       const result = await runList({
         category: values.category,
         search: values.search,
-        format: (values.format as OutputFormat | undefined) ?? 'markdown',
+        format,
         fresh: values.fresh,
         offline: values.offline,
       });
@@ -368,9 +386,10 @@ export const main = async (
       // Join positionals so both `search "field validation"` and the
       // unquoted `search field validation` resolve to the same query.
       const query = positionals.join(' ').trim();
+      const { format, telemetryFormat } = resolveOutputFormat(values.format);
 
       telemetryArgs = {
-        format: enumArg(values.format, FORMAT_VALUES, 'markdown'),
+        format: telemetryFormat,
         ...(query ? { query: 'used' } : {}),
         ...(values.limit ? { limit: intArg(values.limit) } : {}),
         ...(values.fresh ? { fresh: 'true' } : {}),
@@ -378,9 +397,7 @@ export const main = async (
       };
 
       if (!query) fail('Usage: marigold search <query>');
-      if (values.format && !isOutputFormat(values.format)) {
-        fail(`Invalid --format: ${values.format}`);
-      }
+      if (!format) fail(`Invalid --format: ${values.format}`);
       let limit: number | undefined;
       if (values.limit !== undefined) {
         limit = Number(values.limit);
@@ -392,7 +409,7 @@ export const main = async (
       const result = await runSearch({
         query,
         limit,
-        format: (values.format as OutputFormat | undefined) ?? 'markdown',
+        format,
         fresh: values.fresh,
         offline: values.offline,
       });
@@ -402,10 +419,11 @@ export const main = async (
     } else if (command === 'examples') {
       const { positionals, values } = parseExamplesCommand(rest);
       const [sub, slug] = positionals;
+      const { format, telemetryFormat } = resolveOutputFormat(values.format);
 
       telemetryArgs = {
         sub: enumArg(sub, EXAMPLES_SUBCOMMANDS, ''),
-        format: enumArg(values.format, FORMAT_VALUES, 'markdown'),
+        format: telemetryFormat,
         ...(slug ? { slug: slugArg(slug) } : {}),
         ...(values.fresh ? { fresh: 'true' } : {}),
         ...(values.offline ? { offline: 'true' } : {}),
@@ -423,14 +441,12 @@ export const main = async (
       if (sub === 'get' && positionals.length > 2) {
         fail('Usage: marigold examples get <slug>');
       }
-      if (values.format && !isOutputFormat(values.format)) {
-        fail(`Invalid --format: ${values.format}`);
-      }
+      if (!format) fail(`Invalid --format: ${values.format}`);
 
       const result = await runExamples({
         subcommand: sub,
         slug,
-        format: (values.format as OutputFormat | undefined) ?? 'markdown',
+        format,
         fresh: values.fresh,
         offline: values.offline,
       });
@@ -443,7 +459,7 @@ export const main = async (
       const { positionals, values } = parseValidateCommand(rest);
       const [fileInput] = positionals;
       const checks = values.checks ?? 'all';
-      const format = values.format ?? 'text';
+      const format = values.format ?? defaultReportFormat();
 
       // Clamp to a known enum value so an invalid flag never leaks the raw
       // string into telemetry (validation below runs after telemetryArgs is
@@ -471,7 +487,7 @@ export const main = async (
       const result = await runValidate({
         file: fileInput,
         checks: (values.checks as ValidateChecks | undefined) ?? 'all',
-        format: (values.format as ValidateFormat | undefined) ?? 'text',
+        format: format as ValidateFormat,
       });
 
       writeOutput(result.output);
@@ -491,7 +507,7 @@ export const main = async (
       });
     } else if (command === 'doctor') {
       const { positionals, values } = parseDoctorCommand(rest);
-      const format = values.format ?? 'text';
+      const format = values.format ?? defaultReportFormat();
       // Only { format }: the pending DST-1600 GDPR review scopes doctor
       // telemetry to the output format, so --offline isn't tracked. Clamped so
       // an invalid value never leaks the raw string into telemetry.

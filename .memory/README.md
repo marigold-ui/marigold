@@ -2,9 +2,9 @@
 
 Context an agent would otherwise re-derive every session: what our words mean, and why decisions were made the way they were.
 
-**This directory is committed and must not be added to `.gitignore`.** That is the whole point. Shared context has to travel with the repo and go through review like code — an agent-written note that nobody reviewed is not team knowledge, it is a rumour with a file path. It also happens to be the control that matters most for safety: `/grill` sessions read Jira tickets, PR comments and web pages, and content from those sources can end up proposed as a memory. Review is what stops a bad one from becoming something every future session treats as fact.
+**This directory is committed and must not be added to `.gitignore`.** That is the whole point. Shared context has to travel with the repo and go through review like code — an agent-written note that nobody reviewed is not team knowledge, it is a rumour with a file path. It also happens to be the control that matters most for safety: `/dst:grill` sessions read Jira tickets, PR comments and web pages, and content from those sources can end up proposed as a memory. Review is what stops a bad one from becoming something every future session treats as fact.
 
-`/grill` writes here. So can you, by hand.
+`/dst:grill` writes here, and only because this repo has a store for it to write to: the skill checks for this file and skips its recording step in a repo that has none. So can you, by hand.
 
 ## What lives here
 
@@ -13,7 +13,7 @@ Context an agent would otherwise re-derive every session: what our words mean, a
 | `CONTEXT.md`         | Glossary — what our terms mean | Descriptive, corrected in place     |
 | `adr/NNNN-<slug>.md` | Why a decision was made        | Historical, immutable once accepted |
 
-There is no `tasks/`. Per-ticket specs were reserved here once and then moved out: `/pick-up` writes its plans to `.claude/tasks/`, untracked. A plan for one ticket is task-local and dead the day the ticket ships, so it fails the write rule below, and this store is only worth loading while everything in it is still true.
+There is no `tasks/`. Per-ticket specs were reserved here once and then moved out: `/dst:pick-up` writes its plans to `.claude/tasks/`, untracked. A plan for one ticket is task-local and dead the day the ticket ships, so it fails the write rule below, and this store is only worth loading while everything in it is still true.
 
 ## The boundary with CLAUDE.md
 

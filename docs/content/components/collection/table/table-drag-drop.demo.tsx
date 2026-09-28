@@ -35,7 +35,7 @@ export default () => {
       <Table.Body items={list.items}>
         {item => (
           <Table.Row>
-            <Table.Cell>
+            <Table.Cell textValue={item.name}>
               <Text weight="medium">{item.name}</Text>
             </Table.Cell>
             <Table.Cell>

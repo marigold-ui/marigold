@@ -125,7 +125,7 @@ export default function (props: DrawerProps) {
       <Table.Body>
         {tickets.map(ticket => (
           <Table.Row key={ticket.id} id={ticket.id}>
-            <Table.Cell>
+            <Table.Cell textValue={ticket.subject}>
               #{ticket.id} – {ticket.subject}
             </Table.Cell>
             <Table.Cell>{ticket.priority}</Table.Cell>
