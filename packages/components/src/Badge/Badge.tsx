@@ -2,7 +2,7 @@ import { use } from 'react';
 import type { ReactNode } from 'react';
 import { useClassNames } from '@marigold/system';
 import { AccessIcon } from '../utils/AccessIcon';
-import { BadgeContext } from './Context';
+import { AddonContext } from '../utils/AddonContext';
 
 // Props
 // ---------------
@@ -34,7 +34,7 @@ export interface BadgeProps {
 // Component
 // ---------------
 export const Badge = ({ variant, size, children, ...props }: BadgeProps) => {
-  const context = use(BadgeContext);
+  const context = use(AddonContext);
   const classNames = useClassNames({
     component: 'Badge',
     variant,

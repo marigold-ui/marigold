@@ -14,6 +14,7 @@ import { Popover } from '../Overlay/Popover';
 import { CircleQuestionMark } from '../icons/CircleQuestionMark';
 import { Info } from '../icons/Info';
 import { intlMessages } from '../intl/messages';
+import { AddonContext } from '../utils/AddonContext';
 import { ContextualHelpContent } from './ContextualHelpContent';
 import { ContextualHelpDescription } from './ContextualHelpDescription';
 import { ContextualHelpTitle } from './ContextualHelpTitle';
@@ -149,6 +150,8 @@ const ContextualHelpBase = ({
               // Scope action buttons in the help content to a clean baseline,
               // consistent with the `Popover`'s own `ResetButtonContext`.
               [ButtonContext, RESET_BUTTON_CONTEXT],
+              // Undo a label addon's inline badge size inside the popover.
+              [AddonContext, {}],
             ]}
           >
             {children}

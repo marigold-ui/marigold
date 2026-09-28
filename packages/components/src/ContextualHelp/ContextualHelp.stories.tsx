@@ -1,5 +1,6 @@
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Badge } from '../Badge/Badge';
 import { Link } from '../Link/Link';
 import { TextField } from '../TextField/TextField';
 import { ContextualHelp } from './ContextualHelp';
@@ -153,5 +154,22 @@ export const WithTextField = meta.story({
         width="fit"
       />
     </div>
+  ),
+});
+
+export const WithBadgeInLabelAddon = meta.story({
+  render: args => (
+    <TextField
+      label="Plan"
+      addon={
+        <ContextualHelp {...args}>
+          <ContextualHelp.Title>Plans</ContextualHelp.Title>
+          <ContextualHelp.Content>
+            Exports are included in <Badge variant="info">Pro</Badge>.
+          </ContextualHelp.Content>
+        </ContextualHelp>
+      }
+      width="fit"
+    />
   ),
 });
