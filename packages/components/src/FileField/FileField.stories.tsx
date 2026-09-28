@@ -340,6 +340,7 @@ export const Required = meta.story({
 
 Required.test(
   'blocks submit and shows the error when no file is selected',
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Submit' }));
 
