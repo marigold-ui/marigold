@@ -103,10 +103,8 @@ export interface CheckboxProps extends Omit<
    */
   label?: ReactNode;
   /**
-   * Content shown at the end of the label's first line, such as a `<Badge>`
-   * or a `<ContextualHelp>`. Use this instead of putting it in `label`
-   * yourself: the slot sizes it to the line so it doesn't make the line
-   * taller than the checkbox next to it.
+   * Content on the label's first line, such as a `<Badge>` or `<ContextualHelp>`.
+   * Keeps the checkbox centred, and a badge is read as the checkbox's description.
    */
   addon?: ReactNode;
   /**

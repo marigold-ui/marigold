@@ -4,5 +4,5 @@ export interface AddonContextValue {
   size?: string;
 }
 
-// Set by `LabelAdornment` for the content of a label addon. `Badge` reads it.
+// Inline size for a `Badge` in a label addon. `ContextualHelp` resets it in its popover.
 export const AddonContext = createContext<AddonContextValue>({});

@@ -22,10 +22,8 @@ export interface RadioProps extends Omit<RAC.RadioFieldProps, RemovedProps> {
   width?: string;
   children?: ReactNode;
   /**
-   * Content shown at the end of the label's first line, such as a `<Badge>`
-   * or a `<ContextualHelp>`. Use this instead of putting it in `children`
-   * yourself: the slot sizes it to the line so it doesn't make the line
-   * taller than the radio next to it.
+   * Content on the label's first line, such as a `<Badge>` or `<ContextualHelp>`.
+   * Keeps the radio centred, and a badge is read as the radio's description.
    */
   addon?: ReactNode;
   /**

@@ -55,10 +55,8 @@ export interface TagGroupProps
   label?: ReactNode;
 
   /**
-   * Content shown at the end of the label, such as a `<Badge>` or a
-   * `<ContextualHelp>`. Use this instead of putting it in `label` yourself:
-   * the slot sizes it to the line so the label row doesn't grow and push the
-   * field down.
+   * Content after the label, such as a `<Badge>` or `<ContextualHelp>`. Keeps
+   * the label row's height, and a badge is read as the field's description.
    */
   addon?: ReactNode;
   /**

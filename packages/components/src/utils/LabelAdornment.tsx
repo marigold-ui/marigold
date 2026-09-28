@@ -4,7 +4,7 @@ import { splitAddon } from './labelAddon';
 
 export interface LabelAdornmentProps {
   children?: ReactNode;
-  /** Id for the static content, which the control references as its description. */
+  /** Id of the static content, referenced as the control's description. */
   id?: string;
 }
 

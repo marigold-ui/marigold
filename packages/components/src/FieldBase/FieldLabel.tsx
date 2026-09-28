@@ -6,10 +6,7 @@ import { splitAddon } from '../utils/labelAddon';
 export interface FieldLabelProps {
   label?: ReactNode;
   addon?: ReactNode;
-  /**
-   * Id of the element holding the addon's static content, which the field
-   * references through `aria-describedby`.
-   */
+  /** Id of the addon's static content, referenced by `aria-describedby`. */
   addonId?: string;
   variant?: string;
   size?: string;
@@ -32,9 +29,7 @@ export const FieldLabel = ({
 
   const { content, help } = splitAddon(addon);
 
-  // The addon sits beside the `<label>`, so it stays out of the field's name.
-  // Its static content describes the field. A ContextualHelp is left out, or
-  // its "Help" would be read as part of the description.
+  // Beside the `<label>` to stay out of the name. Help sits outside the described span.
   return (
     <div className="in-field:mb-1.5 flex items-center gap-1">
       {labelElement}

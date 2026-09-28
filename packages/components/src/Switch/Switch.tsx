@@ -26,10 +26,8 @@ export interface SwitchProps extends Omit<RAC.SwitchFieldProps, RemovedProps> {
   label?: ReactNode;
 
   /**
-   * Content shown at the end of the label's first line, such as a `<Badge>`
-   * or a `<ContextualHelp>`. Use this instead of putting it in `label`
-   * yourself: the slot sizes it to the line so it doesn't make the line
-   * taller than the track next to it.
+   * Content on the label's first line, such as a `<Badge>` or `<ContextualHelp>`.
+   * Keeps the track centred, and a badge is read as the switch's description.
    */
   addon?: ReactNode;
 

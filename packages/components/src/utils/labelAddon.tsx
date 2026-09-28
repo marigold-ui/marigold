@@ -24,11 +24,7 @@ const render = (parts: AddonPart[]) =>
 const isHelp = ({ node }: AddonPart) =>
   isValidElement(node) && node.type === ContextualHelp;
 
-/**
- * Splits an addon into its static content, which describes the field, and
- * any `<ContextualHelp>`, which stays its own button and out of the
- * description.
- */
+/** Separates an addon's static content from a `<ContextualHelp>`, which stays out of the description. */
 export const splitAddon = (addon: ReactNode) => {
   const parts = flatten(addon);
 
@@ -44,10 +40,7 @@ interface AriaLabelling {
   'aria-describedby'?: string;
 }
 
-/**
- * For controls whose whole row is the `<label>`: names the control by the
- * label text alone and describes it by the addon's static content.
- */
+/** For controls whose whole row is the `<label>`: name by the label text, describe by the addon. */
 export const useLabelAddon = (
   label: ReactNode,
   addon: ReactNode,

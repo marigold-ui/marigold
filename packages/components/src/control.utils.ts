@@ -21,10 +21,7 @@ export const controlIcon = (control: HTMLElement) => {
   return icon!;
 };
 
-/**
- * The block that lays out a label's text and addon. With an addon the text
- * sits in its own inline span, whose box is shorter than the line.
- */
+/** A label's layout block. With an addon, the text is an inline span shorter than the line. */
 export const labelBlockOf = (labelText: Element) => {
   const block = labelText.parentElement;
 
