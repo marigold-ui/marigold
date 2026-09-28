@@ -325,23 +325,23 @@ Telemetry is on by default and carries **no identifier**: no account, user, mach
 
 One event per command invocation, with these fields and nothing else:
 
-| Field            | Example                   | Notes                                               |
-| ---------------- | ------------------------- | --------------------------------------------------- |
-| `command`        | `docs`                    | Which command ran                                   |
-| `args`           | `{ component: "Button" }` | Flag presence and closed-set values only, see below |
-| `cliVersion`     | `1.4.0`                   | Which release is in use                             |
-| `nodeVersion`    | `v24.3.0`                 | Which Node versions we still need to support        |
-| `platform`       | `darwin`                  | `darwin`, `linux`, or `win32`                       |
-| `exitCode`       | `0`                       | Whether the command succeeded                       |
-| `durationBucket` | `100-500`                 | A coarse bucket in ms, never an exact timing        |
-| `cacheHit`       | `true`                    | Whether the local docs cache was used               |
-| `isTTY`          | `false`                   | Whether output went to a terminal or a pipe         |
-| `isAIAgent`      | `true`                    | Whether an agent runtime env var was set            |
-| `receivedAt`     | `2026-07-30T14:00:00Z`    | Added server-side, truncated to the hour            |
+| Field            | Example                | Notes                                               |
+| ---------------- | ---------------------- | --------------------------------------------------- |
+| `command`        | `docs`                 | Which command ran                                   |
+| `args`           | `{ section: "props" }` | Flag presence and closed-set values only, see below |
+| `cliVersion`     | `1.4.0`                | Which release is in use                             |
+| `nodeVersion`    | `v24.3.0`              | Which Node versions we still need to support        |
+| `platform`       | `darwin`               | `darwin`, `linux`, or `win32`                       |
+| `exitCode`       | `0`                    | Whether the command succeeded                       |
+| `durationBucket` | `100-500`              | A coarse bucket in ms, never an exact timing        |
+| `cacheHit`       | `true`                 | Whether the local docs cache was used               |
+| `isTTY`          | `false`                | Whether output went to a terminal or a pipe         |
+| `isAIAgent`      | `true`                 | Whether an agent runtime env var was set            |
+| `receivedAt`     | `2026-07-30T14:00:00Z` | Added server-side, truncated to the hour            |
 
-`args` keeps only flag presence and values from a closed set. Closed-set flags (`--format`, `--section`, and `--limit` as a positive integer) are recorded as their validated value, or as `invalid` if unrecognised, so a typo is never echoed back. Identifier-shaped positionals (a component name, an example slug, a `--category`) are recorded only when they look like an identifier. A file path, absolute or relative, is recorded as `invalid`. **Free-text is never sent**: a `marigold search` query or a `list --search` term is recorded as `used`, so we learn that search was used but not what you searched for.
+`args` keeps only flag presence and values from a closed set. Closed-set flags (`--format`, `--section`, and `--limit` as a positive integer) are recorded as their validated value, or as `invalid` if unrecognised, so a typo is never echoed back. A name you pass (a component or page for `docs`, an example slug, a `--category`) is never recorded as you typed it. Once it resolves against the published docs, the docs' own slug is recorded, such as `components/actions/button` for `marigold docs button`. Anything that doesn't resolve, whether a typo, a project name, or a path, is recorded as `unknown`. **Free-text is never sent**: a `marigold search` query or a `list --search` term is recorded as `used`, so we learn that search was used but not what you searched for.
 
-`receivedAt` is deliberately hour-granular: exact timestamps would let separate events be stitched back into a per-session sequence by timing alone, undoing the point of having no identifier.
+`receivedAt` is deliberately hour-granular: exact timestamps would let separate events be stitched back into a per-session sequence by timing alone, undoing the point of having no identifier. The same holds for how the event is stored: CLI events sit in a store of their own under an entry ID stamped with the hour, not the exact time. What that ID still keeps is the order in which events arrived within the hour.
 
 #### What is never sent
 
