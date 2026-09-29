@@ -119,7 +119,7 @@ All seven vars above live in Vercel (see [Deployment](#deployment)). At request 
 
 ## Telemetry
 
-Every `search_docs` call records one event so [Insights](https://github.com/marigold-ui/insights) can report call volume, unique callers, error rate, and top-searched doc topics. It reuses the same Redis-backed store the CLI's telemetry already writes to, rather than adding a second datastore — one `telemetry:events` stream carrying both sources, discriminated on `event`.
+Every `search_docs` call records one event so [Insights](https://github.com/marigold-ui/insights) can report call volume, unique callers, error rate, and top-searched doc topics. It reuses the same Redis-backed store the CLI's telemetry already writes to, rather than adding a second datastore. MCP events go to the `telemetry:events` stream and CLI events to `telemetry:cli`, for the reason in [`api/telemetry/README.md`](../api/telemetry/README.md#storage-layout).
 
 Recorded per call: `hashedCallerId`, `latencyMs`, `success`, and `topMatchFile` / `topMatchHeading` (the best-matching chunk, absent on failure or no results). **No query text and no similarity scores.**
 

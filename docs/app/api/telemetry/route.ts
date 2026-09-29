@@ -5,6 +5,9 @@ import { CliCommandEventSchema } from './schema';
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
+// Schema and ceilings live in ./schema.ts and ./record.ts, shared with /mcp.
+// CliCommandEventSchema is strict, so a stale CLI still sending `anonymousId`
+// gets a visible 400 instead of having the field stripped in silence.
 const MAX_BODY_BYTES = 4 * 1024;
 
 export async function POST(request: Request) {
@@ -27,8 +30,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'invalid event' }, { status: 400 });
   }
 
-  // Both ceilings live in recordTelemetryEvent, which charges the shared
-  // endpoint-wide budget only when a write is actually about to happen.
+  // The ceiling lives in recordTelemetryEvent, which charges the shared
+  // endpoint-wide budget only when a write is actually about to happen. For
+  // this route that budget is the only ceiling: there is no identifier in the
+  // payload to key a per-caller one on. 'rate-limited' can't come back here
+  // (it is the MCP path's verdict) but is mapped anyway, so adding a
+  // per-caller ceiling later doesn't silently start answering 204.
   const result = await recordTelemetryEvent(parsed.data);
   if (result === 'rate-limited' || result === 'quota-exceeded') {
     return new NextResponse(null, { status: 429 });

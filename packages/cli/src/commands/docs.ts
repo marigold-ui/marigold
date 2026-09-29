@@ -12,6 +12,8 @@ export interface RunDocsOptions {
 export interface RunDocsResult {
   output: string;
   cacheHit: boolean;
+  // The manifest slug the input resolved to, e.g. `components/actions/button`.
+  slug: string;
 }
 
 export const runDocs = async (
@@ -28,5 +30,5 @@ export const runDocs = async (
   });
 
   const output = formatDocs(docs, options.format ?? 'markdown');
-  return { output, cacheHit: docs.cacheHit };
+  return { output, cacheHit: docs.cacheHit, slug: docs.slug };
 };
