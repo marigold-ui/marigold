@@ -68,7 +68,7 @@ describe('recordTelemetryEvent', () => {
     expect(incr).not.toHaveBeenCalled();
   });
 
-  it('records an event and appends it to the events stream', async () => {
+  it('records an event and appends it to the MCP stream', async () => {
     incr.mockResolvedValue(1);
     const { recordTelemetryEvent } = await loadRecord();
 
@@ -79,7 +79,7 @@ describe('recordTelemetryEvent', () => {
       expect.stringMatching(/^telemetry:rl:mcp:a{64}:\d{4}-\d{2}-\d{2}$/)
     );
     expect(expireMock).toHaveBeenCalled();
-    expect(xadd).toHaveBeenCalledWith('telemetry:events', '*', {
+    expect(xadd).toHaveBeenCalledWith('telemetry:mcp', '*', {
       data: expect.stringContaining(
         '"hashedCallerId":"' + 'a'.repeat(64) + '"'
       ),
@@ -286,7 +286,7 @@ describe('recordTelemetryEvent', () => {
       await recordTelemetryEvent(cliEvent);
 
       expect(xadd).not.toHaveBeenCalledWith(
-        'telemetry:events',
+        'telemetry:mcp',
         expect.anything(),
         expect.anything()
       );
@@ -298,7 +298,7 @@ describe('recordTelemetryEvent', () => {
       await recordTelemetryEvent(mcpEvent);
 
       expect(written()).toBe('2026-07-30T14:27:13.456Z');
-      expect(xadd).toHaveBeenCalledWith('telemetry:events', '*', {
+      expect(xadd).toHaveBeenCalledWith('telemetry:mcp', '*', {
         data: expect.any(String),
       });
     });
@@ -326,7 +326,7 @@ describe('recordTelemetryEvent', () => {
       await recordTelemetryEvent(cliEvent);
 
       const expiredKeys = expireMock.mock.calls.map(([key]) => key);
-      expect(expiredKeys).not.toContain('telemetry:events');
+      expect(expiredKeys).not.toContain('telemetry:mcp');
       expect(expiredKeys).not.toContain('telemetry:cli');
       expect(
         expiredKeys.every(k => String(k).startsWith('telemetry:rl:'))
