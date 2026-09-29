@@ -165,7 +165,10 @@ test('keeps the addon out of the accessible name', () => {
 test('renders an addon without label text', () => {
   render(<Basic.Component label={undefined} addon={<Badge>New</Badge>} />);
 
-  expect(screen.getByText('New')).toBeInTheDocument();
+  const badge = screen.getByText('New').getBoundingClientRect();
+  const input = screen.getByRole('textbox').getBoundingClientRect();
+
+  expect(badge.bottom).toBeLessThanOrEqual(input.top);
 });
 
 test('describes the field by the static part of its addon', () => {

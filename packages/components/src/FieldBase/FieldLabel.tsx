@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { cn } from '@marigold/system';
 import { Label } from '../Label/Label';
 import { ADDON_CONTENT, ADDON_HELP, AddonContext } from '../utils/AddonContext';
 import { splitAddon } from '../utils/useLabelAddon';
@@ -33,8 +34,13 @@ export const FieldLabel = ({
   return (
     <div className="in-field:mb-1.5 flex items-center gap-1">
       {labelElement}
-      {/* Zero height, so the addon overhangs instead of growing the row. */}
-      <span className="flex h-0 shrink-0 items-center gap-1">
+      {/* Zero height beside a label, so the addon overhangs instead of growing the row. */}
+      <span
+        className={cn(
+          'flex shrink-0 items-center gap-1',
+          labelElement && 'h-0'
+        )}
+      >
         <span id={addonId} className="flex items-center gap-1 empty:hidden">
           <AddonContext value={ADDON_CONTENT}>{content}</AddonContext>
         </span>
