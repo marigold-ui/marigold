@@ -28,11 +28,6 @@ export interface FieldBaseProps<T extends ElementType>
    * the label row's height, and a badge is read as the field's description.
    */
   addon?: ReactNode;
-  /**
-   * Id for the addon's static content, when the field wires `aria-describedby` itself.
-   * @internal
-   */
-  addonId?: string;
   variant?: string;
   size?: string;
   children?: ReactNode;
@@ -43,6 +38,14 @@ export interface FieldBaseProps<T extends ElementType>
   isInvalid?: boolean;
   isRequired?: boolean;
   isDisabled?: boolean;
+}
+
+// Not exported from the barrel, so `addonId` stays off the public props.
+interface FieldBaseInternalProps<
+  T extends ElementType,
+> extends FieldBaseProps<T> {
+  /** Id for the addon's static content, when the field wires `aria-describedby` itself. */
+  addonId?: string;
 }
 
 // Component
@@ -64,7 +67,8 @@ const _FieldBase = <T extends ElementType>({
   isDisabled,
   ref,
   ...rest
-}: FieldBaseProps<T> & DistributiveOmit<ComponentPropsWithRef<T>, 'as'>) => {
+}: FieldBaseInternalProps<T> &
+  DistributiveOmit<ComponentPropsWithRef<T>, 'as'>) => {
   // Forward `isInvalid` / `isRequired` / `isDisabled` to any non-string `as`
   // (RAC components or wrappers using RAC's prop names) and skip them on plain
   // DOM elements where they'd emit unknown-attribute warnings.
