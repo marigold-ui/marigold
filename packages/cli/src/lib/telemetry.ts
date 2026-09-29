@@ -178,9 +178,9 @@ export const TELEMETRY_NOTICE_URL =
 // invocation and let the reader opt out before anything is sent.
 const showFirstRunNoticeIfNeeded = (): boolean => {
   try {
+    if (!process.stderr.isTTY) return false;
     const config = readConfig();
     if (config.telemetryNoticeShown) return false;
-    if (!process.stderr.isTTY) return false;
 
     process.stderr.write(
       [

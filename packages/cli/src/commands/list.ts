@@ -1,5 +1,9 @@
-import { type OutputFormat, formatList } from '../lib/format.js';
-import { type Manifest, loadManifest, normalize } from '../lib/manifest.js';
+import {
+  type OutputFormat,
+  formatList,
+  matchesCategory,
+} from '../lib/format.js';
+import { type Manifest, loadManifest } from '../lib/manifest.js';
 
 export interface RunListOptions {
   category?: string;
@@ -17,18 +21,15 @@ export interface RunListResult {
   category?: string;
 }
 
-// Matches the way formatList filters: normalized, against component categories
-// and page groups alike.
+// Component categories and page groups alike, as formatList filters them.
 const resolveCategory = (
   manifest: Manifest,
   input: string
-): string | undefined => {
-  const needle = normalize(input);
-  return [
+): string | undefined =>
+  [
     ...manifest.categories.map(c => c.name),
     ...manifest.pages.map(p => p.category),
-  ].find(name => normalize(name) === needle);
-};
+  ].find(name => matchesCategory(name, input));
 
 export const runList = async (
   options: RunListOptions = {}

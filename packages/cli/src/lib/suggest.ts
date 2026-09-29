@@ -37,5 +37,5 @@ export const nearest = (
       best = candidate;
     }
   }
-  return best !== undefined && bestDistance <= threshold ? best : undefined;
+  return bestDistance <= threshold ? best : undefined;
 };

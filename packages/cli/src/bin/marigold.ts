@@ -171,10 +171,18 @@ const isDoctorFormat = (v: string): v is DoctorFormat =>
   (doctorFormatValues as readonly string[]).includes(v);
 
 const isSection = (v: string): v is Section =>
-  v === 'props' || v === 'usage' || v === 'examples' || v === 'all';
+  (SECTION_VALUES as readonly string[]).includes(v);
 
 const isTelemetrySub = (v: string): v is TelemetrySubcommand =>
-  v === 'status' || v === 'enable' || v === 'disable';
+  (TELEMETRY_SUBCOMMANDS as readonly string[]).includes(v);
+
+const cacheFlagArgs = (values: {
+  fresh?: boolean;
+  offline?: boolean;
+}): Record<string, string> => ({
+  ...(values.fresh ? { fresh: 'true' } : {}),
+  ...(values.offline ? { offline: 'true' } : {}),
+});
 
 const isValidateChecks = (v: string): v is ValidateChecks =>
   v === 'technical' || v === 'spatial' || v === 'a11y' || v === 'all';
@@ -338,8 +346,7 @@ export const main = async (
         component: unresolvedArg(componentInput),
         section: enumArg(values.section, SECTION_VALUES, 'all'),
         format: telemetryFormat,
-        ...(values.fresh ? { fresh: 'true' } : {}),
-        ...(values.offline ? { offline: 'true' } : {}),
+        ...cacheFlagArgs(values),
       };
 
       if (!componentInput) fail('Usage: marigold docs <name-or-slug>');
@@ -369,8 +376,7 @@ export const main = async (
           ? { category: unresolvedArg(values.category) }
           : {}),
         ...(values.search ? { search: 'used' } : {}),
-        ...(values.fresh ? { fresh: 'true' } : {}),
-        ...(values.offline ? { offline: 'true' } : {}),
+        ...cacheFlagArgs(values),
       };
 
       if (!format) fail(`Invalid --format: ${values.format}`);
@@ -399,8 +405,7 @@ export const main = async (
         format: telemetryFormat,
         ...(query ? { query: 'used' } : {}),
         ...(values.limit ? { limit: intArg(values.limit) } : {}),
-        ...(values.fresh ? { fresh: 'true' } : {}),
-        ...(values.offline ? { offline: 'true' } : {}),
+        ...cacheFlagArgs(values),
       };
 
       if (!query) fail('Usage: marigold search <query>');
@@ -432,8 +437,7 @@ export const main = async (
         sub: enumArg(sub, EXAMPLES_SUBCOMMANDS, ''),
         format: telemetryFormat,
         ...(slug ? { slug: unresolvedArg(slug) } : {}),
-        ...(values.fresh ? { fresh: 'true' } : {}),
-        ...(values.offline ? { offline: 'true' } : {}),
+        ...cacheFlagArgs(values),
       };
 
       if (!sub || !isExamplesSub(sub)) {
@@ -521,7 +525,9 @@ export const main = async (
       // Only { format }, deliberately: doctor telemetry is scoped to the output
       // format, so --offline isn't tracked. Clamped so an invalid value never
       // leaks the raw string into telemetry.
-      telemetryArgs = { format: isDoctorFormat(format) ? format : 'invalid' };
+      telemetryArgs = {
+        format: enumArg(format, doctorFormatValues, 'invalid'),
+      };
 
       if (positionals.length > 0) {
         fail('Usage: marigold doctor (takes no arguments)');
