@@ -248,9 +248,10 @@ const _TagGroup = ({
     validationState.commitValidation();
   };
 
-  const ariaLabelledBy =
-    [label && labelId, rest['aria-labelledby']].filter(Boolean).join(' ') ||
-    undefined;
+  const ariaLabelledBy = joinIds(
+    label ? labelId : undefined,
+    rest['aria-labelledby']
+  );
 
   return (
     <Provider
