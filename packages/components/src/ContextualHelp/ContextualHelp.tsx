@@ -1,5 +1,5 @@
 import type { ComponentProps, ReactNode, Ref } from 'react';
-import { use, useMemo } from 'react';
+import { use, useEffect, useMemo } from 'react';
 import { Button } from 'react-aria-components/Button';
 import {
   Dialog,
@@ -98,13 +98,15 @@ const ContextualHelpBase = ({
   });
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const { described } = use(AddonContext);
-  if (process.env.NODE_ENV !== 'production' && described) {
+  // In an effect, so a controlled field doesn't warn on every keystroke.
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'production' || !described) return;
     console.warn(
       '[ContextualHelp] is wrapped in another component inside a label addon, ' +
         'so the field reads its button as part of its description. ' +
         'Pass <ContextualHelp> to `addon` directly.'
     );
-  }
+  }, [described]);
 
   // Configure the `description` slot for the `<Description>` primitive
   // (wrapped by `<ContextualHelp.Description>`). The title slot is NOT
