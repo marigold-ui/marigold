@@ -143,8 +143,9 @@ LabelAddon.test(
     const [bareInput, ...addonInputs] = inputs;
 
     await step('the label row keeps its height', async () => {
+      // The row, not the inline `<label>`, whose box is the font's content area.
       for (const label of addonLabels) {
-        expect(label.getBoundingClientRect().height).toBeCloseTo(
+        expect(label.parentElement!.getBoundingClientRect().height).toBeCloseTo(
           bareLabel.getBoundingClientRect().height,
           0
         );
