@@ -2,8 +2,6 @@
 // the recovery-from-error pattern git/cargo/npm use. Kept dependency-free.
 
 const levenshtein = (a: string, b: string): number => {
-  // Classic two-row dynamic-programming edit distance. O(a*b) time, O(b) space,
-  // which is trivial for the short command/flag names this compares.
   const prev = Array.from({ length: b.length + 1 }, (_, i) => i);
   const curr = new Array<number>(b.length + 1);
   for (let i = 1; i <= a.length; i++) {

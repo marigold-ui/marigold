@@ -21,7 +21,6 @@ export interface RunListResult {
   category?: string;
 }
 
-// Component categories and page groups alike, as formatList filters them.
 const resolveCategory = (
   manifest: Manifest,
   input: string

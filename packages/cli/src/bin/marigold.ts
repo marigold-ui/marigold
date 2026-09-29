@@ -338,10 +338,7 @@ export const main = async (
       const { format, telemetryFormat } = resolveOutputFormat(values.format);
 
       // Record telemetry args before validation so failed runs still report
-      // which flags were supplied. Values go through the clamps in
-      // lib/telemetry so an invalid or free-form input is reported as
-      // 'invalid' rather than echoed back verbatim, and the component only
-      // once it has resolved.
+      // which flags were supplied.
       telemetryArgs = {
         component: unresolvedArg(componentInput),
         section: enumArg(values.section, SECTION_VALUES, 'all'),

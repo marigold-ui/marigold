@@ -39,8 +39,6 @@ export const configDir = (): string =>
 
 export interface UserConfig {
   telemetryEnabled?: boolean;
-  // Set once the first-run telemetry disclosure has been printed, so the notice
-  // shows exactly once per machine.
   telemetryNoticeShown?: boolean;
 }
 
