@@ -162,6 +162,79 @@ LabelAddon.test(
   }
 );
 
+export const LabelAddonWrapping = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <Grid
+      areas={['badge help both']}
+      columns={['10rem', '10rem', '10rem']}
+      rows={['auto']}
+      space={4}
+    >
+      <Grid.Area name="badge">
+        <TextField
+          label="Billing contact for all invoices"
+          addon={<Badge variant="master">Master</Badge>}
+        />
+      </Grid.Area>
+      <Grid.Area name="help">
+        <TextField
+          label="Billing contact for all invoices"
+          addon={
+            <ContextualHelp>
+              <ContextualHelp.Content>
+                Invoices go to this address.
+              </ContextualHelp.Content>
+            </ContextualHelp>
+          }
+        />
+      </Grid.Area>
+      <Grid.Area name="both">
+        <TextField
+          label="Billing contact for all invoices"
+          addon={
+            <>
+              <Badge variant="admin">Admin</Badge>
+              <ContextualHelp>
+                <ContextualHelp.Content>
+                  Only admins see this.
+                </ContextualHelp.Content>
+              </ContextualHelp>
+            </>
+          }
+        />
+      </Grid.Area>
+    </Grid>
+  ),
+});
+
+LabelAddonWrapping.test(
+  'An addon follows the last word of a label that wraps',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const labels = canvas.getAllByText('Billing contact for all invoices');
+    const addons = [
+      canvas.getByText('Master'),
+      ...canvas.getAllByRole('button'),
+      canvas.getByText('Admin'),
+    ];
+
+    for (const addon of addons) {
+      const label = labels.find(l =>
+        l.closest('.group\\/field')?.contains(addon)
+      )!;
+      const { bottom, height } = label.getBoundingClientRect();
+      const line = parseFloat(getComputedStyle(label).lineHeight);
+      const rect = addon.getBoundingClientRect();
+      const centre = rect.top + rect.height / 2;
+
+      expect(height).toBeGreaterThan(line);
+      expect(centre).toBeGreaterThanOrEqual(bottom - line);
+      expect(centre).toBeLessThanOrEqual(bottom);
+    }
+  }
+);
+
 export const LayoutVariations = meta.story({
   render: () => (
     <Stack space={32}>

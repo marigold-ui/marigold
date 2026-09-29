@@ -31,14 +31,22 @@ export const FieldLabel = ({
   const { content, help } = splitAddon(addon);
 
   // Beside the `<label>` to stay out of the name. Help sits outside the described span.
+  // Inline, so the addon follows the last word. `leading-[0]` stops the strut growing the row.
   return (
-    <div className="in-field:mb-1.5 flex items-center gap-1">
+    <div
+      className={cn(
+        'in-field:mb-1.5',
+        labelElement
+          ? 'leading-[0] [&>label]:inline [&>label]:after:ml-0!'
+          : 'flex'
+      )}
+    >
       {labelElement}
       {/* Zero height beside a label, so the addon overhangs instead of growing the row. */}
       <span
         className={cn(
-          'flex shrink-0 items-center gap-1',
-          labelElement && 'h-0'
+          'items-center gap-1 whitespace-nowrap',
+          labelElement ? 'ms-1 inline-flex h-0 align-middle' : 'flex'
         )}
       >
         <span id={addonId} className="flex items-center gap-1 empty:hidden">
