@@ -49,7 +49,10 @@ export const HelpText = ({
     <div
       // `wrap-anywhere`: an unbreakable error message would otherwise set the
       // field's min-content width and overflow it. Not themeable on purpose.
-      className={cn('in-field:mt-1 wrap-anywhere', classNames.container)}
+      className={cn(
+        'in-field:mt-1 wrap-anywhere hyphens-auto',
+        classNames.container
+      )}
     >
       <FieldError {...props} className="flex flex-col">
         {validation => {
