@@ -15,9 +15,8 @@ const SECONDS_PER_DAY = 24 * 60 * 60;
 // ceiling rather than a backstop behind a per-caller one.
 const PUBLIC_LIMIT_PER_DAY = 50_000;
 
-// One stream per source. Insights reads MCP events from `telemetry:events`, so
-// that key stays where it is.
-const MCP_STREAM_KEY = 'telemetry:events';
+// One stream per source, see ./README.md#storage-layout.
+const MCP_STREAM_KEY = 'telemetry:mcp';
 const CLI_STREAM_KEY = 'telemetry:cli';
 
 const MS_PER_HOUR = 60 * 60 * 1000;

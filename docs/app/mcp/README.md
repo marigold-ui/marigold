@@ -17,7 +17,7 @@ flowchart LR
     ClientIn(["Client<br/>receives response"])
     Emit["emitTelemetry<br/>SHA-256 of caller `sub`"]
     Record["recordTelemetryEvent<br/>env: KV_REST_API_*"]
-    Redis[("Upstash Redis<br/>telemetry:events")]
+    Redis[("Upstash Redis<br/>telemetry:mcp")]
 
     ClientOut -- "1 · HTTP + OAuth bearer token" --> Auth
     Auth --> Handler --> Embed
@@ -119,7 +119,7 @@ All seven vars above live in Vercel (see [Deployment](#deployment)). At request 
 
 ## Telemetry
 
-Every `search_docs` call records one event so [Insights](https://github.com/marigold-ui/insights) can report call volume, unique callers, error rate, and top-searched doc topics. It reuses the same Redis-backed store the CLI's telemetry already writes to, rather than adding a second datastore. MCP events go to the `telemetry:events` stream and CLI events to `telemetry:cli`, for the reason in [`api/telemetry/README.md`](../api/telemetry/README.md#storage-layout).
+Every `search_docs` call records one event so [Insights](https://github.com/marigold-ui/insights) can report call volume, unique callers, error rate, and top-searched doc topics. It reuses the same Redis-backed store the CLI's telemetry already writes to, rather than adding a second datastore. MCP events go to the `telemetry:mcp` stream and CLI events to `telemetry:cli`, for the reason in [`api/telemetry/README.md`](../api/telemetry/README.md#storage-layout).
 
 Recorded per call: `hashedCallerId`, `latencyMs`, `success`, and `topMatchFile` / `topMatchHeading` (the best-matching chunk, absent on failure or no results). **No query text and no similarity scores.**
 
@@ -128,7 +128,7 @@ Recorded per call: `hashedCallerId`, `latencyMs`, `success`, and `topMatchFile` 
 - **Nothing recorded is ever a hard failure, but it is never silent either.** Most ways telemetry can fail are systematic: whatever breaks one call breaks all of them for the life of that instance. So each distinct cause is logged **once per process** rather than once per call — loud enough to diagnose an empty dashboard, quiet enough not to fill the logs. The causes are a verified token that carries no subject (which would follow a dependency changing how `AuthInfo` travels), `after()` throwing, and `recordTelemetryEvent` returning `'rate-limited'`, `'invalid'` (the event failed its own schema — a bug on our side), or `'error'` (the Redis call failed). `'error'` costs two lines rather than one: `record.ts` has its own warner and logs the underlying Redis failure first, then this one reports that the event went unrecorded. Two of those causes are per-call rather than systematic — `'rate-limited'` is per caller and per day, `'invalid'` per event — so warn-once logs only the first one an instance sees. That is deliberate: the alternative is a log line per throttled call, and a throttled caller shows up in the dashboard rather than the log. The one exception is `'unconfigured'`, i.e. no `KV_REST_API_*`: that's the normal steady state in local dev and preview deploys, so it stays silent. `search_docs` behaves identically in all of them.
 
 The recording itself lives outside this directory, in
-[`app/api/telemetry/`](../api/telemetry/), and is shared with the CLI. Its [README](../api/telemetry/README.md) covers the storage layout, the quotas that bound it, and why retention is unbounded — including the parts that are only true because both sources share one store: that Insights reads `mcp_tool_call` events only, and that a `cli_command` event and an `mcp_tool_call` event are not the same class of data.
+[`app/api/telemetry/`](../api/telemetry/), and is shared with the CLI. Its [README](../api/telemetry/README.md) covers the storage layout, the quotas that bound it, and why retention is unbounded — including why a `cli_command` event and an `mcp_tool_call` event are not the same class of data, although both share one store.
 
 ## Deployment
 
