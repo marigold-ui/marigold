@@ -21,6 +21,15 @@ export const controlIcon = (control: HTMLElement) => {
   return icon!;
 };
 
+/** A label's layout block. With an addon, the text is an inline span shorter than the line. */
+export const labelBlockOf = (labelText: Element) => {
+  const block = labelText.parentElement;
+
+  expect(block).not.toBeNull();
+
+  return block!;
+};
+
 export const borderOf = (el: Element) => getComputedStyle(el).borderColor;
 
 /**

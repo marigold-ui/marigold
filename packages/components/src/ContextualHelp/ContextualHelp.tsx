@@ -1,5 +1,5 @@
 import type { ComponentProps, ReactNode, Ref } from 'react';
-import { useMemo } from 'react';
+import { use, useEffect, useMemo } from 'react';
 import { Button } from 'react-aria-components/Button';
 import {
   Dialog,
@@ -14,6 +14,7 @@ import { Popover } from '../Overlay/Popover';
 import { CircleQuestionMark } from '../icons/CircleQuestionMark';
 import { Info } from '../icons/Info';
 import { intlMessages } from '../intl/messages';
+import { AddonContext, markAddonHelp } from '../utils/AddonContext';
 import { ContextualHelpContent } from './ContextualHelpContent';
 import { ContextualHelpDescription } from './ContextualHelpDescription';
 import { ContextualHelpTitle } from './ContextualHelpTitle';
@@ -96,6 +97,16 @@ const ContextualHelpBase = ({
     size,
   });
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const { described } = use(AddonContext);
+  // In an effect, so a controlled field doesn't warn on every keystroke.
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'production' || !described) return;
+    console.warn(
+      '[ContextualHelp] is wrapped in another component inside a label addon, ' +
+        'so the field reads its button as part of its description. ' +
+        'Pass <ContextualHelp> to `addon` directly.'
+    );
+  }, [described]);
 
   // Configure the `description` slot for the `<Description>` primitive
   // (wrapped by `<ContextualHelp.Description>`). The title slot is NOT
@@ -149,6 +160,8 @@ const ContextualHelpBase = ({
               // Scope action buttons in the help content to a clean baseline,
               // consistent with the `Popover`'s own `ResetButtonContext`.
               [ButtonContext, RESET_BUTTON_CONTEXT],
+              // Undo a label addon's inline badge size inside the popover.
+              [AddonContext, {}],
             ]}
           >
             {children}
@@ -159,8 +172,10 @@ const ContextualHelpBase = ({
   );
 };
 
-export const ContextualHelp = Object.assign(ContextualHelpBase, {
-  Title: ContextualHelpTitle,
-  Description: ContextualHelpDescription,
-  Content: ContextualHelpContent,
-});
+export const ContextualHelp = markAddonHelp(
+  Object.assign(ContextualHelpBase, {
+    Title: ContextualHelpTitle,
+    Description: ContextualHelpDescription,
+    Content: ContextualHelpContent,
+  })
+);

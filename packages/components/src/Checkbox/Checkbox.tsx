@@ -5,7 +5,8 @@ import { StateAttrProps, cn, useClassNames } from '@marigold/system';
 import { BooleanField } from '../FieldBase/BooleanField';
 import { Check } from '../icons/Check';
 import { Minus } from '../icons/Minus';
-import { LabelAdornment } from '../utils/LabelAdornment';
+import { LabelAddon } from '../utils/LabelAddon';
+import { useLabelAddon } from '../utils/useLabelAddon';
 import { CheckboxGroup } from './CheckboxGroup';
 import { useCheckboxGroupContext } from './Context';
 
@@ -102,11 +103,10 @@ export interface CheckboxProps extends Omit<
    */
   label?: ReactNode;
   /**
-   * A `<Badge>` shown at the end of the label's first line. Use this instead
-   * of putting it in `label` yourself: the slot sizes it to the line so it
-   * doesn't make the line taller than the checkbox next to it.
+   * Content on the label's first line, such as a `<Badge>` or `<ContextualHelp>`.
+   * Keeps the checkbox centred, and a badge is read as the checkbox's description.
    */
-  badge?: ReactNode;
+  addon?: ReactNode;
   /**
    * A helpful text.
    */
@@ -128,7 +128,7 @@ const _Checkbox = ({
   variant,
   size,
   label,
-  badge,
+  addon,
   description,
   ref,
   ...rest
@@ -142,6 +142,8 @@ const _Checkbox = ({
     defaultSelected: defaultChecked,
     ...rest,
   } as const;
+
+  const { labelId, addonId, ariaProps } = useLabelAddon(label, addon, rest);
 
   const group = useCheckboxGroupContext();
 
@@ -159,6 +161,7 @@ const _Checkbox = ({
       error={error}
       size={size || group?.size}
       {...props}
+      {...ariaProps}
     >
       <CheckboxButton
         ref={ref}
@@ -177,10 +180,10 @@ const _Checkbox = ({
               indeterminate={isIndeterminate}
               className={classNames.checkbox}
             />
-            {(label || badge) && (
+            {(label || addon) && (
               <div className={classNames.label}>
-                {label}
-                {badge && <LabelAdornment>{badge}</LabelAdornment>}
+                {labelId ? <span id={labelId}>{label}</span> : label}
+                {addon && <LabelAddon id={addonId}>{addon}</LabelAddon>}
               </div>
             )}
           </>

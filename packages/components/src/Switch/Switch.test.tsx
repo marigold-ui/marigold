@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { RefObject } from 'react';
 import { vi } from 'vitest';
-import { Basic, Settings } from './Switch.stories';
+import { Basic, Settings, WithBadge } from './Switch.stories';
 
 const user = userEvent.setup();
 
@@ -136,4 +136,14 @@ test('renders settings variant with description', () => {
   expect(
     screen.getByText('Receive email notifications when someone mentions you')
   ).toBeInTheDocument();
+});
+
+test('names the switch by its label and describes it by the addon', () => {
+  render(<WithBadge.Component />);
+
+  const control = screen.getByRole('switch', {
+    name: 'Enable early bird pricing',
+  });
+
+  expect(control).toHaveAccessibleDescription(/Master/);
 });
