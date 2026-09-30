@@ -259,7 +259,7 @@ Exactly three components use it, and all three are tracks: the Switch groove, th
       name: 'control-border',
       value: 'charcoal-950 / 26%',
       useFor:
-        'Visible boundary of a bordered control (inputs, selects), applied via ui-control. Denser than surface-border and above the contrast threshold, so the edge stays visible',
+        'Visible boundary of a bordered control (inputs, selects), applied via ui-control. Denser than surface-border and above the contrast threshold, so the edge stays visible. The three control-edge steps are derived from it',
     },
     {
       name: 'control',
@@ -278,8 +278,8 @@ Exactly three components use it, and all three are tracks: the Switch groove, th
 <Callout title="Not a default for all controls">
   Most form controls sit on `bg-surface` (white) and define their shape with a
   border. That border is the `ui-control` ring for inputs and selects, or
-  `border-control-border` for checkboxes and radios, and its color is the
-  `control-border` token documented with the other edges under
+  `border-control-edge` for checkboxes, radios and selection marks, a step
+  derived from `control-border` and documented with the other edges under
   [Borders](#borders). Only reach for `bg-control` when a control communicates
   its state through a filled background rather than a border, like switch
   tracks, slider tracks, and similar "trough" elements. The name is broader than
@@ -576,7 +576,7 @@ The `ui-state-disabled` utility bundles background, text, border and cursor into
 
 ### Borders
 
-Every boundary token in one place. Marigold draws element edges with five tokens, and each one answers a different question. There is the decorative rim of a surface, the visible edge of a control, that edge dimmed for a disabled control, the structural divider, and the focus ring. `surface-border` also appears in the [Surfaces](#surfaces) section, `control-border` in the [Control](#control) section, and `disabled-border` in the [Disabled](#disabled) section, and they are repeated here so the whole set is discoverable at a glance. See [Form Fields](/foundations/form-fields) for component-level guidelines and [Elevation](/foundations/elevation#surfaces-and-controls) for the surface and control rule these tokens implement.
+Every boundary token in one place. Marigold draws element edges with eight tokens, and each one answers a different question. There is the decorative rim of a surface, the visible edge of a control, that edge dimmed for a disabled control, the three steps a small boolean control draws, the structural divider, and the focus ring. `surface-border` also appears in the [Surfaces](#surfaces) section, `control-border` in the [Control](#control) section, and `disabled-border` in the [Disabled](#disabled) section, and they are repeated here so the whole set is discoverable at a glance. See [Form Fields](/foundations/form-fields) for component-level guidelines and [Elevation](/foundations/elevation#surfaces-and-controls) for the surface and control rule these tokens implement.
 
 <TokenTable
   tokens={[
@@ -590,7 +590,25 @@ Every boundary token in one place. Marigold draws element edges with five tokens
       name: 'control-border',
       value: 'charcoal-950 / 26%',
       useFor:
-        'The boundary of a control such as inputs, selects, and date fields (via ui-control), plus checkboxes and radios (directly). An affordance the user must see (WCAG 1.4.11)',
+        'The boundary of a control such as inputs, selects, and date fields, applied via ui-control. An affordance the user must see (WCAG 1.4.11). The three control-edge steps below are derived from it, so retuning this retunes them',
+    },
+    {
+      name: 'control-edge',
+      value: 'control-border +0.06 alpha',
+      useFor:
+        'The box edge of a small boolean control: Checkbox, Radio, and the selection mark a SelectList option or ListView row draws. One token so all four are identical. 2.15:1, the weight the opaque edge it replaced used to carry',
+    },
+    {
+      name: 'control-edge-hover',
+      value: 'control-border +0.18 alpha',
+      useFor:
+        "The hover step for that edge, 3.06:1. Matches ToggleButton's hover step rather than its value, because this edge idles denser",
+    },
+    {
+      name: 'control-edge-disabled',
+      value: 'control-border -0.06 alpha',
+      useFor:
+        'That edge dimmed, 1.57:1. Translucent rather than a palette rung because a disabled mark lands on surface, on the page ground and on the selected fill of a picked row, and an opaque value matches one of those exactly and disappears into it',
     },
     {
       name: 'disabled-border',
@@ -620,11 +638,15 @@ Every boundary token in one place. Marigold draws element edges with five tokens
   charcoal stroke as `surface-border` at about twice the density, so it stays
   clearly visible and adapts to the ground beneath it. `disabled-border` is that
   control edge **dimmed** for an inactive control, receding rather than
-  vanishing. `border` draws **structural lines** such as dividers, grid lines,
-  and section rules. It is the lightest of the three translucent strokes, so a
-  divider carries the same weight on a white surface as it does on the page
-  ground. `ring` is the **focus** outline, the perceivable affordance for
-  keyboard users.
+  vanishing, and it is the rung the `ui-control` family uses. The three
+  `control-edge` steps are the same job for a **small boolean control**, where
+  the box is tiny and the edge is the whole affordance: they stay translucent in
+  every state, including disabled, because such a mark also has to hold its
+  weight on the `selected` fill of a picked row. `border` draws **structural
+  lines** such as dividers, grid lines, and section rules. It is translucent for
+  the same reason, so a divider carries the same weight on a white surface as it
+  does on the page ground. `ring` is the **focus** outline, the perceivable
+  affordance for keyboard users.
 </Callout>
 
 ### Status colors
