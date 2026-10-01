@@ -804,6 +804,13 @@ TableEdgeAlignment.test(
   }
 );
 
+const stickyHeaderActions = (
+  <Inline space={2}>
+    <Button onPress={() => alert('Do NOT click! Come on!')}>Delete</Button>
+    <Button onPress={() => alert('Do NOT click! Come on!')}>Edit</Button>
+  </Inline>
+);
+
 export const AccordionInside = meta.story(() => (
   <Stack space="regular">
     <Panel>
@@ -817,7 +824,7 @@ export const AccordionInside = meta.story(() => (
       <Panel.Content bleed>
         <Accordion defaultExpandedKeys={['variant']}>
           <Accordion.Item id="variant">
-            <Accordion.Header>
+            <Accordion.Header actions={stickyHeaderActions}>
               <Inline space={2} alignY="center">
                 <Text>variant</Text>
                 <Badge>3</Badge>
