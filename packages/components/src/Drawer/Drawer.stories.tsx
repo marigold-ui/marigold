@@ -656,3 +656,61 @@ BleedTable.test(
     expect(padding(first)).toBeGreaterThan(padding(second));
   }
 );
+
+// Regression guard for the 320px audit (DST-1616). Below `sm` the Drawer
+// renders as a full-screen modal, so the surface is flush with every viewport
+// edge: a corner radius there notched the corners and read as a cut-off edge.
+export const FlushSmallScreen = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
+  render: args => (
+    <Drawer.Trigger>
+      <Button>Open Drawer</Button>
+      <Drawer {...args} closeButton>
+        <Drawer.Title>Filter</Drawer.Title>
+        <Drawer.Content>
+          <p>
+            At 320px the Drawer fills the screen and sits flush to its edges.
+          </p>
+        </Drawer.Content>
+        <Drawer.Actions>
+          <Button slot="close">Close</Button>
+          <Button slot="close" variant="primary">
+            Save
+          </Button>
+        </Drawer.Actions>
+      </Drawer>
+    </Drawer.Trigger>
+  ),
+});
+
+FlushSmallScreen.test(
+  'fills the viewport without rounded corners or horizontal overflow',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }) => {
+    // Fail loudly if the 320px viewport did not apply, rather than pass a test
+    // that never rendered the full-screen variant.
+    expect(window.innerWidth).toBeLessThan(640);
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
+    const dialog = await waitFor(() => canvas.getByRole('dialog'));
+
+    const surface = dialog.getBoundingClientRect();
+    expect(surface.width).toBeCloseTo(window.innerWidth, 1);
+    expect(surface.left).toBeCloseTo(0, 1);
+
+    // Flush on all four edges, so any radius would show the page through the
+    // viewport corners.
+    const radii = getComputedStyle(dialog);
+    expect(radii.borderTopLeftRadius).toBe('0px');
+    expect(radii.borderBottomRightRadius).toBe('0px');
+
+    expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(
+      window.innerWidth
+    );
+  }
+);
