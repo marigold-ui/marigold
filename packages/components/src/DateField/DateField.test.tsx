@@ -37,7 +37,7 @@ test('renders correctly', () => {
       style="--container-width: 100%; --field-width: 100%;"
     >
       <span
-        class="items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled group-required/field:after:ui-required-indicator group-required/field:after:-ml-1 group-required/field:after:text-destructive-accent in-field:mb-1.5 inline-flex"
+        class="items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled group-required/field:after:ui-required-indicator group-required/field:after:-ml-1 group-required/field:after:text-destructive-accent in-field:mb-1.5 inline-flex wrap-anywhere hyphens-auto"
         id="react-aria-_r_2_"
       >
         My Label
@@ -186,7 +186,7 @@ test('renders correctly', () => {
         />
       </div>
       <div
-        class="in-field:mt-1 text-xs text-secondary group-disabled/field:text-disabled group-invalid/field:text-destructive-accent has-[+_[aria-hidden=true]]:mb-0"
+        class="in-field:mt-1 wrap-anywhere hyphens-auto text-xs text-secondary group-disabled/field:text-disabled group-invalid/field:text-destructive-accent has-[+_[aria-hidden=true]]:mb-0"
       >
         <span
           class="react-aria-Text"

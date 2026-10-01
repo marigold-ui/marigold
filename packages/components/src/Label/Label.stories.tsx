@@ -1,3 +1,4 @@
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Label } from './Label';
 
@@ -24,3 +25,25 @@ const meta = preview.meta({
 export const Basic = meta.story({
   render: ({ children, ...args }) => <Label {...args}>{children}</Label>,
 });
+
+export const OverflowSmallScreen = meta.story({
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
+  parameters: { chromatic: { viewports: [320] } },
+  tags: ['component-test'],
+  args: {
+    children: 'Rechnungsempfängeradressenzusatzinformationen',
+  },
+  render: ({ children, ...args }) => <Label {...args}>{children}</Label>,
+});
+
+OverflowSmallScreen.test(
+  'breaks a label without break opportunities instead of overflowing',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    expect(canvasElement.scrollWidth).toBeLessThanOrEqual(
+      canvasElement.clientWidth
+    );
+  }
+);
