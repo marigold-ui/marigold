@@ -171,14 +171,14 @@ jobs:
           fi
 
       - name: Assume the Bedrock entry role (management)
-        uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
         with:
           role-to-assume: ${{ secrets.AI_REVIEW_BEDROCK_ENTRY_ROLE_ARN }}
           aws-region: ${{ vars.AI_REVIEW_BEDROCK_REGION }}
           role-session-name: gha-claude-mentions-entry-${{ github.run_id }}
 
       - name: Chain into the Bedrock role (dst-prod)
-        uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6.2.4
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
         with:
           role-to-assume: ${{ secrets.AI_REVIEW_BEDROCK_TARGET_ROLE_ARN }}
           aws-region: ${{ vars.AI_REVIEW_BEDROCK_REGION }}
