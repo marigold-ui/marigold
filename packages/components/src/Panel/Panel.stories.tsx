@@ -824,7 +824,7 @@ export const AccordionInside = meta.story(() => (
       <Panel.Content bleed>
         <Accordion defaultExpandedKeys={['variant']}>
           <Accordion.Item id="variant">
-            <Accordion.Header actions={stickyHeaderActions}>
+            <Accordion.Header>
               <Inline space={2} alignY="center">
                 <Text>variant</Text>
                 <Badge>3</Badge>
@@ -857,6 +857,34 @@ export const AccordionInside = meta.story(() => (
             <Accordion.Content>
               <Text fontSize="sm">default, small</Text>
             </Accordion.Content>
+          </Accordion.Item>
+        </Accordion>
+      </Panel.Content>
+    </Panel>
+
+    <Panel>
+      <Panel.Header>
+        <Title>Customer area</Title>
+        <Description>
+          Accordion in a bled Panel: Actions still have space to the edge on
+          hover.
+        </Description>
+      </Panel.Header>
+      <Panel.Content bleed>
+        <Accordion
+          aria-label="With header actions"
+          defaultExpandedKeys={['a']}
+          iconPosition="left"
+        >
+          <Accordion.Item id="a">
+            <Accordion.Header actions={stickyHeaderActions}>
+              Bank data
+            </Accordion.Header>
+            <Accordion.Content>Enter password to see data.</Accordion.Content>
+          </Accordion.Item>
+          <Accordion.Item id="b">
+            <Accordion.Header>Depot data</Accordion.Header>
+            <Accordion.Content>Enter password to see data</Accordion.Content>
           </Accordion.Item>
         </Accordion>
       </Panel.Content>
