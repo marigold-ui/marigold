@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Inline, Stack } from '@marigold/components';
 import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
 import {
@@ -261,20 +262,25 @@ export const InForm = meta.story({
             setSubmitted(files.map(f => `${f.name} (${f.size} bytes)`));
           }}
         >
-          <FileField {...args} />
-          <Button type="submit" variant="primary">
-            Submit
-          </Button>
-          {submitted.length > 0 && (
-            <div data-testid="submitted-files">
-              <strong>Submitted files:</strong>
-              <ul>
-                {submitted.map((s, i) => (
-                  <li key={i}>{s}</li>
-                ))}
-              </ul>
-            </div>
-          )}
+          <Stack space="related">
+            <FileField {...args} />
+            <Inline space="related">
+              <Button type="submit" variant="primary">
+                Submit
+              </Button>
+              <Button type="reset">Reset</Button>
+            </Inline>
+            {submitted.length > 0 && (
+              <div data-testid="submitted-files">
+                <strong>Submitted files:</strong>
+                <ul>
+                  {submitted.map((s, i) => (
+                    <li key={i}>{s}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </Stack>
         </Form>
       </I18nProvider>
     );
@@ -299,3 +305,68 @@ InForm.test(
     ).toBeInTheDocument();
   }
 );
+
+export const Required = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    label: 'Upload attachment',
+    name: 'attachment',
+    required: true,
+    errorMessage: 'Please upload a document.',
+  },
+  render: args => {
+    const [submitted, setSubmitted] = useState(false);
+    return (
+      <I18nProvider locale="en-US">
+        <Form
+          onSubmit={e => {
+            e.preventDefault();
+            setSubmitted(true);
+          }}
+        >
+          <Stack space="related" alignX="left">
+            <FileField {...args} />
+            <Button type="submit" variant="primary">
+              Submit
+            </Button>
+            {submitted && <div data-testid="submitted">Submitted</div>}
+          </Stack>
+        </Form>
+      </I18nProvider>
+    );
+  },
+});
+
+Required.test(
+  'blocks submit and shows the error when no file is selected',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Submit' }));
+
+    await expect(
+      canvas.getByText('Please upload a document.')
+    ).toBeInTheDocument();
+    await expect(canvas.queryByTestId('submitted')).not.toBeInTheDocument();
+  }
+);
+
+export const ServerValidation = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    label: 'Upload attachment',
+    name: 'attachment',
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <Form validationErrors={{ attachment: 'The server rejected this file.' }}>
+        <Stack space="related" alignX="left">
+          <FileField {...args} />
+          <Button type="submit" variant="primary">
+            Submit
+          </Button>
+        </Stack>
+      </Form>
+    </I18nProvider>
+  ),
+});
