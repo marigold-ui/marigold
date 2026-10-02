@@ -60,4 +60,11 @@ export default definePreview({
     },
   },
   decorators: withMarigoldProviders,
+  loaders: [
+    () =>
+      Promise.all([
+        document.fonts.load('1em InterVariable'),
+        document.fonts.load('1em Inter'),
+      ]).catch(() => {}),
+  ],
 });
