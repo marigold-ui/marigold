@@ -354,14 +354,12 @@ Basic.test(
   }
 );
 
-// Regression guard for the 320px audit (DST-1616). The toast region is anchored
-// by a single inset, so its width was shrink-to-fit up to the opposite viewport
-// edge: at 320px a toast grew into the other margin and lost its edge there.
 export const SmallScreen = meta.story({
   tags: ['component-test'],
   globals: {
     viewport: { value: 'extraSmallScreen' },
   },
+  parameters: { chromatic: { disableSnapshot: true, viewports: [320] } },
   render: (_args: unknown) => {
     const args = toastArgs(_args);
     const { addToast } = useToast();
@@ -388,23 +386,29 @@ export const SmallScreen = meta.story({
 SmallScreen.test(
   'keeps both margins at 320px',
   { parameters: { chromatic: { disableSnapshot: false } } },
-  async ({ canvas, userEvent }) => {
-    // Fail loudly if the 320px viewport did not apply, rather than pass a test
-    // that never got narrow enough to overflow.
-    expect(window.innerWidth).toBeLessThan(640);
+  async ({ canvas, userEvent, step }) => {
+    let trigger: HTMLElement;
 
-    await userEvent.click(canvas.getByRole('button', { name: /show toast/i }));
+    await step('Arrange', async () => {
+      expect(window.innerWidth).toBeLessThan(640);
+      trigger = canvas.getByRole('button', { name: /show toast/i });
+    });
 
-    const toast = await canvas.findByText(defaults.title);
-    const region = toast.closest('[class*="fixed"]')!;
-    const { left, right } = region.getBoundingClientRect();
+    await step('Act', async () => {
+      await userEvent.click(trigger!);
+    });
 
-    // The region carries a 1rem inset; it has to hold on the unanchored side too.
-    expect(left).toBeGreaterThanOrEqual(16);
-    expect(right).toBeLessThanOrEqual(window.innerWidth - 16);
+    await step('Assert', async () => {
+      await canvas.findByText(defaults.title);
+      const region = canvas.getByRole('region', { name: /notification/i });
+      const { left, right } = region.getBoundingClientRect();
 
-    expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(
-      window.innerWidth
-    );
+      expect(left).toBeGreaterThanOrEqual(16);
+      expect(right).toBeLessThanOrEqual(window.innerWidth - 16);
+
+      expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(
+        window.innerWidth
+      );
+    });
   }
 );

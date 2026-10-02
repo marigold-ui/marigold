@@ -657,14 +657,12 @@ BleedTable.test(
   }
 );
 
-// Regression guard for the 320px audit (DST-1616). Below `sm` the Drawer
-// renders as a full-screen modal, so the surface is flush with every viewport
-// edge: a corner radius there notched the corners and read as a cut-off edge.
 export const FlushSmallScreen = meta.story({
   tags: ['component-test'],
   globals: {
     viewport: { value: 'extraSmallScreen' },
   },
+  parameters: { chromatic: { disableSnapshot: true, viewports: [320] } },
   render: args => (
     <Drawer.Trigger>
       <Button>Open Drawer</Button>
@@ -691,26 +689,34 @@ FlushSmallScreen.test(
   {
     parameters: { chromatic: { disableSnapshot: false } },
   },
-  async ({ canvas, userEvent }) => {
-    // Fail loudly if the 320px viewport did not apply, rather than pass a test
-    // that never rendered the full-screen variant.
-    expect(window.innerWidth).toBeLessThan(640);
+  async ({ canvas, userEvent, step }) => {
+    let trigger: HTMLElement;
 
-    await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
-    const dialog = await waitFor(() => canvas.getByRole('dialog'));
+    await step('Arrange', async () => {
+      expect(window.innerWidth).toBeLessThan(640);
+      trigger = canvas.getByRole('button', { name: 'Open Drawer' });
+    });
 
-    const surface = dialog.getBoundingClientRect();
-    expect(surface.width).toBeCloseTo(window.innerWidth, 1);
-    expect(surface.left).toBeCloseTo(0, 1);
+    await step('Act', async () => {
+      await userEvent.click(trigger!);
+    });
 
-    // Flush on all four edges, so any radius would show the page through the
-    // viewport corners.
-    const radii = getComputedStyle(dialog);
-    expect(radii.borderTopLeftRadius).toBe('0px');
-    expect(radii.borderBottomRightRadius).toBe('0px');
+    await step('Assert', async () => {
+      const dialog = await waitFor(() => canvas.getByRole('dialog'));
+      const surface = dialog.getBoundingClientRect();
 
-    expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(
-      window.innerWidth
-    );
+      expect(surface.left).toBeCloseTo(0, 1);
+      expect(surface.width).toBeCloseTo(window.innerWidth, 1);
+      expect(surface.top).toBeCloseTo(0, 1);
+      expect(surface.height).toBeCloseTo(window.innerHeight, 1);
+
+      const radii = getComputedStyle(dialog);
+      expect(radii.borderTopLeftRadius).toBe('0px');
+      expect(radii.borderBottomRightRadius).toBe('0px');
+
+      expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(
+        window.innerWidth
+      );
+    });
   }
 );

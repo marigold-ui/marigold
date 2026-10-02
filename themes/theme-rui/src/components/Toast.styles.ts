@@ -49,12 +49,6 @@ export const Toast: ThemeComponent<'Toast'> = {
     },
   }),
   content: cva({ base: ['contents'] }),
-  // The corner regions are anchored by a single inset, so their width is
-  // shrink-to-fit against everything up to the *opposite* viewport edge: a toast
-  // wider than that space grows into the other margin and loses its edge there.
-  // Capping at the viewport minus both insets keeps the margin symmetric, which
-  // is what starts to bite at 320px (DST-1616). `100%` resolves against the
-  // viewport here (the region is `fixed`) and excludes the scrollbar, unlike `100vw`.
   'bottom-left': cva({
     base: [
       'fixed bottom-4 left-4 flex flex-col-reverse max-w-[calc(100%-2rem)]',
