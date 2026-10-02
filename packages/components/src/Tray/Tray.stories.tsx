@@ -420,6 +420,46 @@ ScrollableContent.test(
   }
 );
 
+ScrollableContent.test(
+  'keeps the actions inside the tray when the viewport shrinks',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    // Imported here, not at module scope: `vitest/browser` throws on import
+    // outside Browser Mode, and Storybook itself loads this file too.
+    const { page } = await import('vitest/browser');
+
+    await page.viewport(400, 844);
+
+    try {
+      await userEvent.click(canvas.getByRole('button', { name: 'Open Tray' }));
+      const dialog = await waitFor(() => canvas.getByRole('dialog'));
+      const modal = dialog.parentElement as HTMLElement;
+      const content = dialog.querySelector(
+        `[${TRAY_CONTENT_ATTR}]`
+      ) as HTMLElement;
+      await waitFor(() => expect(translateY(modal)).toBe(0));
+
+      const pinned = parseFloat(content.style.minHeight);
+      expect(pinned).toBeGreaterThan(0);
+
+      await page.viewport(400, 500);
+
+      // The pin is re-measured, so the content row absorbs the lost height by
+      // scrolling instead of pushing `Tray.Actions` below the fold (DST-1739).
+      await waitFor(() =>
+        expect(parseFloat(content.style.minHeight)).toBeLessThan(pinned)
+      );
+      expect(content.scrollHeight).toBeGreaterThan(content.clientHeight);
+      expect(
+        canvas.getByRole('button', { name: 'Close' }).getBoundingClientRect()
+          .bottom
+      ).toBeLessThanOrEqual(window.innerHeight);
+    } finally {
+      await page.viewport(1280, 720);
+    }
+  }
+);
+
 /**
  * A bare `<Title slot="title">` (no `<Tray.Header>`, no description) labels the
  * tray dialog automatically via `aria-labelledby`.
