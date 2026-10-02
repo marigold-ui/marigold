@@ -18,7 +18,7 @@ reach `record.ts` in-process only.
 
 ## Storage layout
 
-One stream per source: `telemetry:events` for `mcp_tool_call`, `telemetry:cli` for
+One stream per source: `telemetry:mcp` for `mcp_tool_call`, `telemetry:cli` for
 `cli_command`. Each entry has exactly one field, `data`, holding the whole event as JSON with a
 `receivedAt` timestamp added on write — `receivedAt` is inside that JSON, not a second entry
 field. Ids are `<epochMillis>-<seq>`, so a reader seeks by time with `XRANGE <fromMs> <toMs>`
@@ -42,25 +42,23 @@ boundary writes below the stream's top id, so Redis rejects the entry and the ev
 as an `error`. That is rare and costs one event, and retrying with `*` would store the precise
 time this exists to avoid.
 
-`cli_command` entries written before the split sit in `telemetry:events` with millisecond ids.
-They are not migrated. Insights discards them already, and they are the ones that still carry
-`anonymousId`, so if anything is ever cleaned up there it is those.
+The two streams replaced two older layouts: one list per UTC day (`telemetry:YYYY-MM-DD`), which
+cost the reader one `LRANGE` per day in the window, and a single `telemetry:events` stream that
+held both sources. Their data is migrated into the two streams by a one-off `EVAL` in the Upstash
+console (DST-1765), and both old layouts are deleted once production no longer writes to
+`telemetry:events`. Until then [Insights](https://github.com/marigold-ui/insights) reads each
+source from its stream and from `telemetry:events`.
 
-This replaced one list per UTC day (`telemetry:YYYY-MM-DD`), which cost the reader one `LRANGE`
-per day in the window — 180 for [Insights](https://github.com/marigold-ui/insights)' 90-day
-view, whose KPI deltas compare against the preceding 90 days. Data written under that layout is
-not migrated and nothing reads it. Most of it needs no cleanup either, since those lists
-carried a 90-day TTL — but not all. The `EXPIRE` arrived with
-[#5619](https://github.com/marigold-ui/marigold/pull/5619) and ran only on a day whose key
-received a write, so any day that had already stopped receiving events by then never got one,
-and those keys are immortal. Worth a `TTL telemetry:YYYY-MM-DD` spot-check on the oldest days
-if the keyspace is ever audited.
+Old CLI events are stored the way a current one would be: fields the schema no longer has, such
+as `anonymousId`, are dropped, `receivedAt` and the id are truncated to the hour, and a name the
+docs manifest does not know is recorded as `unknown`. MCP events keep millisecond precision.
+Each migration rewrites its stream in time order, live entries included, in one atomic step,
+because ids have to increase and both streams already take writes.
 
-No backfill was done, deliberately, and that is not in tension with keeping everything from here
-forward: the only events in the old lists are `cli_command` ones, which have had no consumer
-since DST-1264 — so there is no history there anyone has ever read or charted. The argument for
-unbounded retention is about the trends this store is now actually read for, not about
-reconstructing a window nothing ever looked at.
+This reverses an earlier decision to leave the old lists alone, taken because nothing had ever
+read `cli_command` events. Insights' CLI page is the first reader, and four months of history
+is what gives its trends a baseline. Anonymising on the way keeps the guarantee above: nothing
+stored carries an identifier or an exact time, whenever it was written.
 
 The one rate-limit key is `telemetry:rl:mcp:{hashedCallerId}:{date}`, and the endpoint-wide
 counter is `telemetry:rl:public:{date}`. There is no `telemetry:rl:cli:…` any more: the CLI
@@ -88,10 +86,10 @@ Three reasons, in order of weight:
 - **Volume was never the constraint.** Measured at roughly 35 events a day at ~250 bytes, about
   3 MB a year. The "storage leak" framing had no cost behind it. That earlier concern was a
   different shape anyway: an unbounded number of _keys_, one per day, none read by anything.
-- **A bounded window needs a constant here that a different repo depends on.** Insights' widest
-  view is 90 days against the preceding 90, so 180 have to survive — and widening that range
-  would not fail anything on this side, it would silently truncate the tail and read as a drop
-  in usage. No trim, no constant, no drift.
+- **A bounded window needs a constant here that a different repo depends on.** Insights' CLI
+  page has an _All time_ range, and its MCP page compares 90 days against the preceding 90.
+  Trimming would not fail anything on this side, it would silently truncate the tail and read
+  as a drop in usage. No trim, no constant, no drift.
 
 **Rejected alternatives.** `MAXLEN ~` evicts the _oldest_ entries, so a flood would push out
 exactly the history this exists to keep. A per-client-address quota keys on a header, which is
@@ -158,12 +156,9 @@ day, silently on both sides: the CLI's sender neither inspects the response stat
 
 ## Two event types, one store
 
-Only one of them is read: Insights discards `cli_command` entries, because its read-side schema
-accepts the `mcp_tool_call` literal only (as of marigold-ui/insights#86 — that schema lives in
-that repo, so treat the shape as illustrative and "only MCP events are read" as the durable
-part). **CLI telemetry has had no consumer since
-DST-1264 introduced it** — worth knowing before citing "we have CLI usage data", and it means
-the long-run-trends argument above is weaker for that half than it reads.
+Both are read, each on its own Insights page with its own schema: _MCP-Server Usage_ reads
+`mcp_tool_call`, _CLI Usage_ reads `cli_command` (marigold-ui/insights#150). The schemas live in
+that repo, so treat their shape as illustrative.
 
 They are also different classes of data, which is why only one made retention a question.
 `cli_command` carries no identifier at all. It used to carry `anonymousId`, a UUID minted
@@ -245,12 +240,13 @@ promise the bucket, not a timing), while MCP reports `success` and an exact `lat
 Anything aggregating across both has to special-case, which is a third reason the store was
 never a common data model, and part of why splitting it cost nothing.
 
-One consequence that is easy to miss: Insights pages the stream at `STREAM_PAGE_SIZE = 5_000`
-with `MAX_STREAM_PAGES = 20` (as of marigold-ui/insights#86 — they live in that repo, so treat
+One consequence that is easy to miss: Insights pages each stream at `STREAM_PAGE_SIZE = 5_000`
+with `MAX_STREAM_PAGES = 20` (as of marigold-ui/insights#150 — they live in that repo, so treat
 the numbers as illustrative and the headroom argument as the durable part), and the page counter
-counts every entry in the window. Past 100000 entries in a window it logs and returns
-**incomplete aggregates**, which look like a drop in usage rather than an error. At ~35 events
+counts every entry in the window. Past 100000 entries in a window it returns **incomplete
+aggregates**. The CLI page flags that, the MCP page only logs it, so there it reads as a drop in
+usage rather than an error. At ~35 events
 a day the window holds ~6000, so there is roughly 16x headroom. Until the CLI moved to
 `telemetry:cli`, that headroom was spent mostly by `cli_command` entries Insights discarded
-after paying for them. Now only MCP events spend it, apart from the pre-split `cli_command`
-entries still sitting in `telemetry:events`, which age out of any fixed window.
+after paying for them. Once `telemetry:events` is deleted, each page pays only for its own
+source.
