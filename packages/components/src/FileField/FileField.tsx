@@ -13,7 +13,11 @@ import {
   useNumberFormatter,
 } from '@react-aria/i18n';
 import { useField } from '@react-aria/label';
-import { useFormReset, useLayoutEffect } from '@react-aria/utils';
+import {
+  filterDOMProps,
+  useFormReset,
+  useLayoutEffect,
+} from '@react-aria/utils';
 import {
   VALID_VALIDITY_STATE,
   useFormValidationState,
@@ -86,6 +90,7 @@ export interface FileFieldProps
 
   /**
    * If `true`, the field is required and an empty selection blocks submission.
+   * Only enforced with `validationBehavior="native"`.
    * @default false
    */
   required?: boolean;
@@ -101,7 +106,7 @@ export interface FileFieldProps
    * string (or array of strings) to mark the field invalid, or
    * `true`/`null`/`undefined` for valid.
    */
-  validate?: (files: File[]) => ValidationError | true | null;
+  validate?: (files: File[]) => ValidationError | true | null | undefined;
 
   /**
    * Whether to use native HTML form validation or ARIA validation.
@@ -318,6 +323,10 @@ export const FileField = ({
         isInvalid={displayValidation.isInvalid}
         isRequired={required}
         isDisabled={disabled}
+        {...(isSmall && {
+          ...filterDOMProps(props, { labelable: true }),
+          slot: props.slot ?? undefined,
+        })}
       >
         <div className="flex w-(--field-width) max-w-full min-w-0 flex-col gap-2">
           {isSmall ? (

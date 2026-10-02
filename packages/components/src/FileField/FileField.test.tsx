@@ -458,11 +458,11 @@ test('describes the upload button by the error after a blocked submit', async ()
   render(<Required.Component />);
 
   await user.click(screen.getByRole('button', { name: /submit/i }));
-  const error = await screen.findByText('Please upload a document.');
+  const error = await screen.findByRole('alert');
 
   expect(screen.getByRole('button', { name: /upload/i })).toHaveAttribute(
     'aria-describedby',
-    error.closest('[id]')?.id
+    error.id
   );
 });
 

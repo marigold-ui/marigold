@@ -32,4 +32,5 @@ drop zone only, and the component applies its own wiring after them. An
 used to stop files being added at all. An `aria-describedby` passed by a
 consumer is merged with the id of the description or error instead of
 replacing it. `id` and `slot` now land on the drop zone rather than on the
-wrapper.
+wrapper. With `size="small"` there is no drop zone, so they stay on the
+wrapper as before.
