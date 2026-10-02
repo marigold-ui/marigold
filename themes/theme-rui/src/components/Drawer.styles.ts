@@ -11,9 +11,6 @@ export const Drawer: ThemeComponent<'Drawer'> = {
   container: cva({
     base: [
       'w-full relative grid-rows-[auto_1fr_auto]',
-      // Below `sm` the Drawer renders full-bleed as a modal (see `DrawerModal`),
-      // so the surface corners sit exactly on the viewport corners. A radius
-      // there notches them and reads as a cut-off edge (DST-1616).
       'rounded-xl max-sm:rounded-none ui-surface ui-scrollbar',
       'shadow-elevation-overlay',
       '[--ui-border-color:oklch(from_var(--ui-divider-solid)_calc(l-0.1)_c_h)]',
