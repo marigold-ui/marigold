@@ -99,6 +99,8 @@ const BreadcrumbsBase = ({
       : [items[0], null, ...items.slice(sliceIndex)]
     : items;
 
+  const isAuto = maxVisibleItems === 'auto';
+
   const breadcrumbs = (
     <RACBreadcrumbs
       {...props}
@@ -106,8 +108,7 @@ const BreadcrumbsBase = ({
       isDisabled={disabled}
       className={cn(
         container,
-        maxVisibleItems === 'auto' &&
-          'flex-nowrap overflow-hidden whitespace-nowrap'
+        isAuto && 'flex-nowrap overflow-hidden whitespace-nowrap'
       )}
     >
       {displayedItems.map((item, index) => {
@@ -134,11 +135,22 @@ const BreadcrumbsBase = ({
           <RACBreadcrumb
             key={`${href}-${index}`}
             {...ariaProps}
-            className={breadcrumbsItem}
+            // Collapsing stops at [ellipsis, current]; if the current crumb
+            // still does not fit, it truncates instead of being clipped.
+            className={({ isCurrent }) =>
+              cn(breadcrumbsItem, isAuto && isCurrent && 'min-w-0')
+            }
           >
             {({ isCurrent }) => (
               <>
-                <Link href={href} className={cn(link, isCurrent && current)}>
+                <Link
+                  href={href}
+                  className={cn(
+                    link,
+                    isCurrent && current,
+                    isAuto && isCurrent && 'min-w-0 truncate'
+                  )}
+                >
                   {itemChildren}
                 </Link>
                 {!isCurrent && (
@@ -155,7 +167,7 @@ const BreadcrumbsBase = ({
     </RACBreadcrumbs>
   );
 
-  if (maxVisibleItems !== 'auto') {
+  if (!isAuto) {
     return breadcrumbs;
   }
 
