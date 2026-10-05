@@ -256,12 +256,12 @@ export const ShellLayout = ({
             <TopNavigation.Start>
               {/* The bar spans the full width; the brand holds the fixed
                   top-left spot and never moves when the panel collapses. */}
-              {/* `min-h-topbar` keeps the first row at full bar height once
-                  the trail adds a second row below it on phones. */}
+              {/* Keeps the first row at bar height when the trail wraps below. */}
               <div className="min-h-topbar flex items-center">
                 <Inline space="related" alignY="center" noWrap>
                   <Logo className="size-8 shrink-0" />
-                  {/* Logo only on phones, so the bar fits beside the user section. */}
+                  {/* `max-sm:hidden`, not `hidden sm:block`: the theme's scoped
+                      `.hidden` outranks the docs' unscoped `sm:block`. */}
                   <div className="max-sm:hidden">
                     <Text weight="bold" fontSize="lg">
                       Examples
@@ -270,16 +270,14 @@ export const ShellLayout = ({
                 </Inline>
               </div>
               <Sidebar.Toggle variant="rail" />
-              {/* Below `sm` the bar has no room left for the trail once the
-                  brand, toggle and user section are placed, so it moves to
-                  its own row (below). */}
+              {/* No room for the trail beside the user section below `sm`. */}
               <div className="w-full min-w-0 max-sm:hidden">{trail}</div>
             </TopNavigation.Start>
             <TopNavigation.End>
               <UserSection />
             </TopNavigation.End>
-            {/* Spans the bar as an implicit second grid row, so the trail
-                stays in the sticky header on phones. */}
+            {/* Relies on TopNavigation's single-row grid: `col-span-full`
+                auto-places this into an implicit second row. */}
             <div className="col-span-full min-w-0 pb-2 sm:hidden">{trail}</div>
           </TopNavigation>
           {children}

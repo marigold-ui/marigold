@@ -137,9 +137,7 @@ const BreadcrumbsBase = ({
             {...ariaProps}
             // Collapsing stops at [ellipsis, current]; if the current crumb
             // still does not fit, it truncates instead of being clipped.
-            className={({ isCurrent }) =>
-              cn(breadcrumbsItem, isAuto && isCurrent && 'min-w-0')
-            }
+            className={cn(breadcrumbsItem, isAuto && 'data-current:min-w-0')}
           >
             {({ isCurrent }) => (
               <>
