@@ -1,105 +1,80 @@
 import { describe, expect, it } from 'vitest';
 import {
   FILE_SIZE_FORMAT_OPTIONS,
-  filterAcceptedFiles,
   formatFileSize,
+  isAcceptedType,
   isFileDropItem,
   normalizeAndLimitFiles,
 } from './fileUtils';
 import { makeFile } from './makeFile';
 
-describe('filterAcceptedFiles', () => {
-  it('returns all files when accept is undefined', () => {
-    const files = [
-      makeFile('a.txt', 'text/plain'),
-      makeFile('b.jpg', 'image/jpeg'),
-    ];
-    const result = filterAcceptedFiles(files);
-
-    expect(result).toHaveLength(2);
-    expect(result.map(f => f.name)).toEqual(['a.txt', 'b.jpg']);
+describe('isAcceptedType', () => {
+  it('accepts any file when accept is undefined', () => {
+    expect(isAcceptedType(makeFile('a.txt', 'text/plain'))).toBe(true);
   });
 
-  it('returns all files when accept is empty', () => {
-    const files = [makeFile('a.txt', 'text/plain')];
-    const result = filterAcceptedFiles(files, []);
-
-    expect(result).toHaveLength(1);
-    expect(result[0].name).toBe('a.txt');
+  it('accepts any file when accept is empty', () => {
+    expect(isAcceptedType(makeFile('a.txt', 'text/plain'), [])).toBe(true);
   });
 
-  it("returns all files when any token allows all (e.g. '*')", () => {
-    const files = [
-      makeFile('a.txt', 'text/plain'),
-      makeFile('b.jpg', 'image/jpeg'),
-    ];
-
-    const result = filterAcceptedFiles(files, ['*']);
-    expect(result).toHaveLength(2);
+  it("accepts any file when a token allows all (e.g. '*')", () => {
+    expect(isAcceptedType(makeFile('a.txt', 'text/plain'), ['*'])).toBe(true);
   });
 
-  it("returns all files when any token allows all (e.g. '*/*')", () => {
-    const files = [
-      makeFile('a.txt', 'text/plain'),
-      makeFile('b.jpg', 'image/jpeg'),
-    ];
-    const result = filterAcceptedFiles(files, ['text/plain', '*/*']);
+  it("accepts any file when a token allows all (e.g. '*/*')", () => {
+    const file = makeFile('b.jpg', 'image/jpeg');
 
-    expect(result).toHaveLength(2);
+    expect(isAcceptedType(file, ['text/plain', '*/*'])).toBe(true);
   });
 
   it('matches by exact mime type', () => {
-    const files = [
-      makeFile('doc.pdf', 'application/pdf'),
-      makeFile('pic.jpg', 'image/jpeg'),
-    ];
-    const result = filterAcceptedFiles(files, ['application/pdf']);
+    const accept = ['application/pdf'];
 
-    expect(result).toHaveLength(1);
-    expect(result[0].name).toBe('doc.pdf');
+    expect(isAcceptedType(makeFile('doc.pdf', 'application/pdf'), accept)).toBe(
+      true
+    );
+    expect(isAcceptedType(makeFile('pic.jpg', 'image/jpeg'), accept)).toBe(
+      false
+    );
   });
 
   it('matches by mime wildcard (e.g., image/*)', () => {
-    const files = [
-      makeFile('pic.jpg', 'image/jpeg'),
-      makeFile('vector.svg', 'image/svg+xml'),
-      makeFile('doc.pdf', 'application/pdf'),
-    ];
-    const result = filterAcceptedFiles(files, ['image/*']);
+    const accept = ['image/*'];
 
-    expect(result.map(f => f.name)).toEqual(['pic.jpg', 'vector.svg']);
+    expect(isAcceptedType(makeFile('pic.jpg', 'image/jpeg'), accept)).toBe(
+      true
+    );
+    expect(
+      isAcceptedType(makeFile('vector.svg', 'image/svg+xml'), accept)
+    ).toBe(true);
+    expect(isAcceptedType(makeFile('doc.pdf', 'application/pdf'), accept)).toBe(
+      false
+    );
   });
 
   it('matches by extension without dot (e.g., pdf)', () => {
-    const files = [
-      makeFile('REPORT.PDF', 'application/pdf'),
-      makeFile('readme.txt', 'text/plain'),
-    ];
+    const accept = ['pdf'];
 
-    const result = filterAcceptedFiles(files, ['pdf']);
-    expect(result).toHaveLength(1);
-    expect(result[0].name).toBe('REPORT.PDF');
+    expect(
+      isAcceptedType(makeFile('REPORT.PDF', 'application/pdf'), accept)
+    ).toBe(true);
+    expect(isAcceptedType(makeFile('readme.txt', 'text/plain'), accept)).toBe(
+      false
+    );
   });
 
   it('matches by extension with dot (e.g., .txt) case-insensitively', () => {
-    const files = [
-      makeFile('notes.txt', 'text/plain'),
-      makeFile('script.TXT', 'text/plain'),
-      makeFile('pic.jpg', 'image/jpeg'),
-    ];
-    const result = filterAcceptedFiles(files, ['.Txt']);
+    const accept = ['.Txt'];
 
-    expect(result.map(f => f.name)).toEqual(['notes.txt', 'script.TXT']);
-  });
-
-  it('filters out non-matching files', () => {
-    const files = [
-      makeFile('a.txt', 'text/plain'),
-      makeFile('b.jpg', 'image/jpeg'),
-    ];
-    const result = filterAcceptedFiles(files, ['application/pdf']);
-
-    expect(result).toHaveLength(0);
+    expect(isAcceptedType(makeFile('notes.txt', 'text/plain'), accept)).toBe(
+      true
+    );
+    expect(isAcceptedType(makeFile('script.TXT', 'text/plain'), accept)).toBe(
+      true
+    );
+    expect(isAcceptedType(makeFile('pic.jpg', 'image/jpeg'), accept)).toBe(
+      false
+    );
   });
 });
 
@@ -114,8 +89,8 @@ describe('normalizeAndLimitFiles', () => {
       multiple: false,
     });
 
-    expect(result).toHaveLength(1);
-    expect(result[0].name).toBe('doc.pdf');
+    expect(result.accepted).toHaveLength(1);
+    expect(result.accepted[0].name).toBe('doc.pdf');
   });
 
   it('returns all accepted when multiple is true', () => {
@@ -129,7 +104,7 @@ describe('normalizeAndLimitFiles', () => {
       multiple: true,
     });
 
-    expect(result.map(f => f.name)).toEqual(['doc.pdf', 'pic.jpg']);
+    expect(result.accepted.map(f => f.name)).toEqual(['doc.pdf', 'pic.jpg']);
   });
 
   it('keeps first of all files when no accept is given and multiple is false', () => {
@@ -139,8 +114,82 @@ describe('normalizeAndLimitFiles', () => {
     ];
     const result = normalizeAndLimitFiles(files, { multiple: false });
 
-    expect(result).toHaveLength(1);
-    expect(result[0].name).toBe('a.txt');
+    expect(result.accepted).toHaveLength(1);
+    expect(result.accepted[0].name).toBe('a.txt');
+  });
+
+  it('reports files that do not match accept as type rejections', () => {
+    const files = [
+      makeFile('doc.pdf', 'application/pdf'),
+      makeFile('sheet.xlsx', 'application/vnd.ms-excel'),
+    ];
+    const result = normalizeAndLimitFiles(files, {
+      accept: ['application/pdf'],
+      multiple: true,
+    });
+
+    expect(result.accepted.map(f => f.name)).toEqual(['doc.pdf']);
+    expect(result.rejected).toEqual([{ file: files[1], reason: 'type' }]);
+  });
+
+  it('reports files over maxSize as size rejections', () => {
+    const files = [
+      makeFile('small.pdf', 'application/pdf', 100),
+      makeFile('big.pdf', 'application/pdf', 5000),
+    ];
+    const result = normalizeAndLimitFiles(files, {
+      maxSize: 1000,
+      multiple: true,
+    });
+
+    expect(result.accepted.map(f => f.name)).toEqual(['small.pdf']);
+    expect(result.rejected).toEqual([{ file: files[1], reason: 'size' }]);
+  });
+
+  it('accepts a file that is exactly maxSize', () => {
+    const files = [makeFile('exact.pdf', 'application/pdf', 1000)];
+    const result = normalizeAndLimitFiles(files, {
+      maxSize: 1000,
+      multiple: true,
+    });
+
+    expect(result.accepted).toHaveLength(1);
+    expect(result.rejected).toEqual([]);
+  });
+
+  it('does not report files dropped by the single-file limit', () => {
+    const files = [
+      makeFile('a.pdf', 'application/pdf'),
+      makeFile('b.pdf', 'application/pdf'),
+    ];
+    const result = normalizeAndLimitFiles(files, {
+      accept: ['application/pdf'],
+      multiple: false,
+    });
+
+    expect(result.accepted.map(f => f.name)).toEqual(['a.pdf']);
+    expect(result.rejected).toEqual([]);
+  });
+
+  it('reports a wrong-type file as a type rejection even when it is also oversized', () => {
+    const files = [makeFile('huge.txt', 'text/plain', 5000)];
+    const result = normalizeAndLimitFiles(files, {
+      accept: ['application/pdf'],
+      maxSize: 1000,
+      multiple: true,
+    });
+
+    expect(result.rejected).toEqual([{ file: files[0], reason: 'type' }]);
+  });
+
+  it('reports a duplicated rejection only once', () => {
+    const file = makeFile('sheet.xlsx', 'application/vnd.ms-excel');
+    const result = normalizeAndLimitFiles([file, file], {
+      accept: ['application/pdf'],
+      multiple: true,
+    });
+
+    expect(result.rejected).toEqual([{ file, reason: 'type' }]);
   });
 });
 
