@@ -804,10 +804,10 @@ TableEdgeAlignment.test(
   }
 );
 
-const stickyHeaderActions = (
+const headerActions = (
   <Inline space={2}>
-    <Button onPress={() => alert('Do NOT click! Come on!')}>Delete</Button>
-    <Button onPress={() => alert('Do NOT click! Come on!')}>Edit</Button>
+    <Button>Delete</Button>
+    <Button>Edit</Button>
   </Inline>
 );
 
@@ -877,7 +877,7 @@ export const AccordionInside = meta.story(() => (
           iconPosition="left"
         >
           <Accordion.Item id="a">
-            <Accordion.Header actions={stickyHeaderActions}>
+            <Accordion.Header actions={headerActions}>
               Bank data
             </Accordion.Header>
             <Accordion.Content>Enter password to see data.</Accordion.Content>

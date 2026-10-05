@@ -62,9 +62,12 @@ export default definePreview({
   decorators: withMarigoldProviders,
   loaders: [
     () =>
-      Promise.all([
-        document.fonts.load('1em InterVariable'),
-        document.fonts.load('1em Inter'),
+      Promise.race([
+        Promise.all([
+          document.fonts.load('1em InterVariable'),
+          document.fonts.load('1em Inter'),
+        ]),
+        new Promise(resolve => setTimeout(resolve, 3000)),
       ]).catch(() => {}),
   ],
 });
