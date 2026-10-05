@@ -1819,6 +1819,7 @@ CellOverrideTableTruncate.test(
 );
 
 export const VerticalAlignment = meta.story({
+  tags: ['component-test'],
   args: {
     alignY: 'top',
   },
@@ -1850,6 +1851,20 @@ export const VerticalAlignment = meta.story({
     </Table>
   ),
 });
+
+VerticalAlignment.test(
+  'Aligns the injected selection cell with the other cells',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple' },
+  },
+  async ({ canvas }) => {
+    const [, firstRow] = canvas.getAllByRole('row');
+    const selectionCell = within(firstRow).getByRole('checkbox').closest('td')!;
+
+    await expect(getComputedStyle(selectionCell).verticalAlign).toBe('top');
+  }
+);
 
 export const DragPreview = meta.story({
   tags: ['component-test'],
