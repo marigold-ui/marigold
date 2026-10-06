@@ -121,6 +121,7 @@ By default the shell claims the full viewport height. To render it inside a boun
 ### Accessibility
 
 - **Landmarks:** `<Page>` renders `<main>` and `<Sidebar>` renders `<aside>`, so both appear in the screen reader's landmark list automatically. Wrap them with [`useLandmark`](/components/hooks-and-utils/useLandmark) to add them to the `F6` cycle. See the [Landmarks foundation](/foundations/accessibility#landmarks) for details.
+- **Skip-link:** `<AppShell>` renders a "Skip to main content" link as its first focusable element, so keyboard users can bypass the sidebar and top navigation ([WCAG 2.4.1](https://www.w3.org/WAI/WCAG22/Understanding/bypass-blocks)). It stays visually hidden until it receives focus and moves focus to the `<main>` landmark of the `<Page>`. The label is localized, and no setup is needed.
 - **Stacking order:** The header uses `z-index: 1` to ensure it stays above the page content during scroll.
 
 <Callout title="Note">

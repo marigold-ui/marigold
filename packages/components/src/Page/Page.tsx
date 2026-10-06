@@ -1,5 +1,5 @@
 import type { HTMLAttributes, ReactNode, Ref } from 'react';
-import { useEffect, useId, useMemo, useRef } from 'react';
+import { use, useEffect, useId, useMemo, useRef } from 'react';
 import { HeadingContext, Provider } from 'react-aria-components';
 import { mergeRefs } from '@react-aria/utils';
 import type {
@@ -14,6 +14,7 @@ import {
   resolveInsetAxes,
   useClassNames,
 } from '@marigold/system';
+import { AppShellContext } from '../AppShell/Context';
 import { useSlot } from '../utils/useSlot';
 import { PageContext } from './Context';
 import { PageContent } from './PageContent';
@@ -102,7 +103,11 @@ export const Page = ({
   // The ref on the context stays stable, so an inline `ref` callback from a
   // caller cannot bust the context memo and re-run every consumer's effects.
   const mainRef = useRef<HTMLElement>(null);
-  const forwardedRef = useMemo(() => mergeRefs(mainRef, ref), [ref]);
+  const shell = use(AppShellContext);
+  const forwardedRef = useMemo(
+    () => mergeRefs(mainRef, shell?.mainRef, ref),
+    [shell?.mainRef, ref]
+  );
   const classNames = useClassNames({ component: 'Page' });
   const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
 
@@ -167,6 +172,7 @@ export const Page = ({
       ]}
     >
       <main
+        id={shell?.mainId}
         {...props}
         ref={forwardedRef}
         data-page
