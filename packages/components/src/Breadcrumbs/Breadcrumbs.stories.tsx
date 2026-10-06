@@ -129,3 +129,43 @@ TruncatedCurrent.test(
     );
   }
 );
+
+// Guards the clamp in `useAutoCollapse`. At 320px auto-collapse finds room for
+// every crumb but one, so the slot count it computes (first + ellipsis +
+// Summer + current = 4) equals the item count, which `shouldCollapse` reads as
+// "everything fits". The trail then rendered all four crumbs at their full
+// ~346px and overflowed the container. Measured in Firefox: the window where
+// this happens is roughly 310px to 346px. Found via TopNavigation at 320px
+// (DST-1613).
+export const CollapsesWhenAllButOneFit = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <I18nProvider locale="en-US">
+      <div className="border-border w-80 border">
+        <Breadcrumbs {...args}>
+          <Breadcrumbs.Item href="#">Home</Breadcrumbs.Item>
+          <Breadcrumbs.Item href="#">Events</Breadcrumbs.Item>
+          <Breadcrumbs.Item href="#">Summer</Breadcrumbs.Item>
+          <Breadcrumbs.Item href="#">Event Details</Breadcrumbs.Item>
+        </Breadcrumbs>
+      </div>
+    </I18nProvider>
+  ),
+});
+
+CollapsesWhenAllButOneFit.test(
+  'Collapses rather than rendering every item past the container edge',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    await canvas.findByRole('button', {
+      name: 'These breadcrumbs are hidden',
+    });
+
+    const list = canvas.getByRole('list');
+    await expect(list.scrollWidth).toBeLessThanOrEqual(list.clientWidth);
+
+    // Collapsed, so the current crumb has room to render in full.
+    const current = within(list).getByText('Event Details');
+    await expect(current.scrollWidth).toBeLessThanOrEqual(current.clientWidth);
+  }
+);

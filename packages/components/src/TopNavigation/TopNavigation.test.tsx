@@ -24,8 +24,11 @@ test('renders a header element with the banner role', () => {
   expect(header).toBeInTheDocument();
 });
 
+// Counts the header's children, so it uses the story that composes nothing
+// but the three slots. `WithBreadcrumbs` adds a fourth child, the row the
+// trail drops to below `sm`.
 test('renders all three slots', () => {
-  render(<WithBreadcrumbs.Component />);
+  render(<WithSearchField.Component />);
 
   const nav = screen.getByRole('banner');
   // eslint-disable-next-line testing-library/no-node-access
@@ -70,7 +73,7 @@ test('applies grid layout classes', () => {
 });
 
 test('applies min-w-0 to all slots', () => {
-  render(<WithBreadcrumbs.Component />);
+  render(<WithSearchField.Component />);
 
   const nav = screen.getByRole('banner');
   // eslint-disable-next-line testing-library/no-node-access
