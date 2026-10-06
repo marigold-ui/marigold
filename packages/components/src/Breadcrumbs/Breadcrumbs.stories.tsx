@@ -113,6 +113,7 @@ export const TruncatedCurrent = meta.story({
 
 TruncatedCurrent.test(
   'Truncates the current item instead of overflowing the container',
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
     await canvas.findByRole('button', {
       name: 'These breadcrumbs are hidden',
