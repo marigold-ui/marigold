@@ -23,7 +23,7 @@ export const Tabs: ThemeComponent<'Tabs'> = {
       // shrink-0 so the row overflows (and scrolls) rather than compressing.
       'shrink-0 snap-start',
       '[&_svg]:shrink-0',
-      'focus-visible:ui-state-focus outline-none',
+      'focus-visible:ui-state-focus-item outline-none',
       'hover:ui-state-hover-ghost',
       'disabled:cursor-not-allowed disabled:text-disabled',
       'selected:text-foreground selected:hover:ui-state-hover-ghost',
@@ -36,6 +36,6 @@ export const Tabs: ThemeComponent<'Tabs'> = {
     ],
   }),
   tabpanel: cva({
-    base: ['py-4 rounded-sm', 'focus-visible:ui-state-focus outline-none'],
+    base: ['py-4 rounded-sm', 'focus-visible:ui-state-focus-item outline-none'],
   }),
 };
