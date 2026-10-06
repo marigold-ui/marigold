@@ -208,6 +208,9 @@ UploadFile.test(
 
 export const Small = meta.story({
   tags: ['component-test'],
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
   parameters: { chromatic: { disableSnapshot: true } },
   args: {
     label: 'Upload file (compact)',
@@ -215,7 +218,7 @@ export const Small = meta.story({
   },
   render: args => (
     <I18nProvider locale="en-US">
-      <FileField width={'1/5'} {...args} />
+      <FileField {...args} />
     </I18nProvider>
   ),
 });

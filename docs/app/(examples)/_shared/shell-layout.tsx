@@ -161,6 +161,48 @@ export const ShellLayout = ({
   const docsHref =
     (tile.kind === 'link' ? tile.docsHref : leaf?.docsHref) ?? '/';
 
+  const trail = (
+    <Breadcrumbs>
+      {/* The active tile leads the trail so the location stays
+          readable when the rail is collapsed to icons. On the
+          landing page it can share its href with the leaf crumb,
+          so crumbs are keyed by role, not href. */}
+      <Breadcrumbs.Item
+        key={`tile-${tile.id}`}
+        href={tileLanding(tile, config.base)}
+      >
+        {tile.label}
+      </Breadcrumbs.Item>
+      {ancestors
+        // Every ancestor crumb links to its first real page; a
+        // branch without one has nowhere to go and drops out.
+        .filter(ancestor => ancestor.slug)
+        .map(ancestor => (
+          <Breadcrumbs.Item
+            key={`ancestor-${ancestor.label}`}
+            href={`${config.base}/${ancestor.slug}`}
+          >
+            {ancestor.label}
+          </Breadcrumbs.Item>
+        ))}
+      {leaf && (
+        // On a drill-in the leaf becomes a real link back to the list.
+        <Breadcrumbs.Item key="leaf" href={leafHref}>
+          {leaf.label}
+        </Breadcrumbs.Item>
+      )}
+      {trailing.map((segment, index) => (
+        <Breadcrumbs.Item
+          key={`trailing-${segment}`}
+          // The last trailing segment is the page we are on.
+          href={index === trailing.length - 1 ? pathname : '#'}
+        >
+          {config.resolveLabel?.(segment) ?? segment}
+        </Breadcrumbs.Item>
+      ))}
+    </Breadcrumbs>
+  );
+
   return (
     <RouterProvider navigate={href => router.push(href)}>
       <Sidebar.Provider defaultOpen>
@@ -214,56 +256,29 @@ export const ShellLayout = ({
             <TopNavigation.Start>
               {/* The bar spans the full width; the brand holds the fixed
                   top-left spot and never moves when the panel collapses. */}
-              <Inline space="related" alignY="center" noWrap>
-                <Logo className="size-8 shrink-0" />
-                <Text weight="bold" fontSize="lg">
-                  Examples
-                </Text>
-              </Inline>
+              {/* Keeps the first row at bar height when the trail wraps below. */}
+              <div className="min-h-topbar flex items-center">
+                <Inline space="related" alignY="center" noWrap>
+                  <Logo className="size-8 shrink-0" />
+                  {/* `max-sm:hidden`, not `hidden sm:block`: the theme's scoped
+                      `.hidden` outranks the docs' unscoped `sm:block`. */}
+                  <div className="max-sm:hidden">
+                    <Text weight="bold" fontSize="lg">
+                      Examples
+                    </Text>
+                  </div>
+                </Inline>
+              </div>
               <Sidebar.Toggle variant="rail" />
-              <Breadcrumbs>
-                {/* The active tile leads the trail so the location stays
-                    readable when the rail is collapsed to icons. On the
-                    landing page it can share its href with the leaf crumb,
-                    so crumbs are keyed by role, not href. */}
-                <Breadcrumbs.Item
-                  key={`tile-${tile.id}`}
-                  href={tileLanding(tile, config.base)}
-                >
-                  {tile.label}
-                </Breadcrumbs.Item>
-                {ancestors
-                  // Every ancestor crumb links to its first real page; a
-                  // branch without one has nowhere to go and drops out.
-                  .filter(ancestor => ancestor.slug)
-                  .map(ancestor => (
-                    <Breadcrumbs.Item
-                      key={`ancestor-${ancestor.label}`}
-                      href={`${config.base}/${ancestor.slug}`}
-                    >
-                      {ancestor.label}
-                    </Breadcrumbs.Item>
-                  ))}
-                {leaf && (
-                  // On a drill-in the leaf becomes a real link back to the list.
-                  <Breadcrumbs.Item key="leaf" href={leafHref}>
-                    {leaf.label}
-                  </Breadcrumbs.Item>
-                )}
-                {trailing.map((segment, index) => (
-                  <Breadcrumbs.Item
-                    key={`trailing-${segment}`}
-                    // The last trailing segment is the page we are on.
-                    href={index === trailing.length - 1 ? pathname : '#'}
-                  >
-                    {config.resolveLabel?.(segment) ?? segment}
-                  </Breadcrumbs.Item>
-                ))}
-              </Breadcrumbs>
+              {/* No room for the trail beside the user section below `sm`. */}
+              <div className="w-full min-w-0 max-sm:hidden">{trail}</div>
             </TopNavigation.Start>
             <TopNavigation.End>
               <UserSection />
             </TopNavigation.End>
+            {/* Relies on TopNavigation's single-row grid: `col-span-full`
+                auto-places this into an implicit second row. */}
+            <div className="col-span-full min-w-0 pb-2 sm:hidden">{trail}</div>
           </TopNavigation>
           {children}
         </AppShell>
