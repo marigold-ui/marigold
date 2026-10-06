@@ -305,6 +305,28 @@ const translateY = (element: HTMLElement) => {
   return transform === 'none' ? 0 : new DOMMatrixReadOnly(transform).m42;
 };
 
+interface TrayTestContext {
+  canvas: {
+    getByRole: (role: string, options?: { name: string }) => HTMLElement;
+  };
+  userEvent: { click: (element: Element) => Promise<void> };
+}
+
+const openTray = async ({ canvas, userEvent: user }: TrayTestContext) => {
+  await user.click(canvas.getByRole('button', { name: 'Open Tray' }));
+
+  const dialog = await waitFor(() => canvas.getByRole('dialog'));
+  const modal = dialog.parentElement as HTMLElement;
+  const content = dialog.querySelector(`[${TRAY_CONTENT_ATTR}]`) as HTMLElement;
+
+  await waitFor(() => expect(translateY(modal)).toBe(0));
+
+  return { dialog, modal, content };
+};
+
+const closeButtonBottom = (canvas: TrayTestContext['canvas']) =>
+  canvas.getByRole('button', { name: 'Close' }).getBoundingClientRect().bottom;
+
 /** Drives a vertical touch drag; uses page coords and RAF frames so `PanSession`'s 3px threshold triggers. */
 const dragVertically = async (
   // Must use the context's userEvent.pointer — the module-scope import is a
@@ -360,19 +382,10 @@ ScrollableContent.test(
   'drags only from the chrome, so a gesture in the content scrolls it',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent, step }) => {
-    await userEvent.click(canvas.getByRole('button', { name: 'Open Tray' }));
-    const dialog = await waitFor(() => canvas.getByRole('dialog'));
-    // `drag`/`dragListener` live on the dialog's parent (RAC `Modal` + `TrayModal`).
-    const modal = dialog.parentElement as HTMLElement;
-    const content = dialog.querySelector(
-      `[${TRAY_CONTENT_ATTR}]`
-    ) as HTMLElement;
+    const { dialog, modal, content } = await openTray({ canvas, userEvent });
     const handle = dialog.querySelector(
       '[class*="grid-area:drag"]'
     ) as HTMLElement;
-
-    // Wait for the open animation to settle before measuring drag.
-    await waitFor(() => expect(translateY(modal)).toBe(0));
 
     await step('the content can pan and select on touch', async () => {
       // pan-x/user-select come from motion's drag listener; fail if
@@ -423,7 +436,7 @@ ScrollableContent.test(
 ScrollableContent.test(
   'keeps the actions inside the tray when the viewport shrinks',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas, userEvent }) => {
+  async ({ canvas, userEvent, step }) => {
     // Imported here, not at module scope: `vitest/browser` throws on import
     // outside Browser Mode, and Storybook itself loads this file too.
     const { page } = await import('vitest/browser');
@@ -431,29 +444,89 @@ ScrollableContent.test(
     await page.viewport(400, 844);
 
     try {
-      await userEvent.click(canvas.getByRole('button', { name: 'Open Tray' }));
-      const dialog = await waitFor(() => canvas.getByRole('dialog'));
-      const modal = dialog.parentElement as HTMLElement;
-      const content = dialog.querySelector(
-        `[${TRAY_CONTENT_ATTR}]`
-      ) as HTMLElement;
-      await waitFor(() => expect(translateY(modal)).toBe(0));
+      await step('opens with the actions on screen', async () => {
+        await openTray({ canvas, userEvent });
 
-      const pinned = parseFloat(content.style.minHeight);
-      expect(pinned).toBeGreaterThan(0);
+        expect(closeButtonBottom(canvas)).toBeLessThanOrEqual(
+          window.innerHeight
+        );
+      });
 
-      await page.viewport(400, 500);
+      await step('keeps them on screen after a shrink', async () => {
+        await page.viewport(400, 500);
 
-      // The pin is re-measured, so the content row absorbs the lost height by
-      // scrolling instead of pushing `Tray.Actions` below the fold (DST-1739).
-      await waitFor(() =>
-        expect(parseFloat(content.style.minHeight)).toBeLessThan(pinned)
-      );
-      expect(content.scrollHeight).toBeGreaterThan(content.clientHeight);
-      expect(
-        canvas.getByRole('button', { name: 'Close' }).getBoundingClientRect()
-          .bottom
-      ).toBeLessThanOrEqual(window.innerHeight);
+        await waitFor(() =>
+          expect(closeButtonBottom(canvas)).toBeLessThanOrEqual(
+            window.innerHeight
+          )
+        );
+      });
+    } finally {
+      await page.viewport(1280, 720);
+    }
+  }
+);
+
+export const ShrinkingContent = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => {
+    const [count, setCount] = useState(40);
+
+    return (
+      <Tray.Trigger>
+        <Button>Open Tray</Button>
+        <Tray {...args}>
+          <Tray.Title>Pick a city</Tray.Title>
+          <Tray.Content>
+            <Stack space={2}>
+              <Button onPress={() => setCount(2)}>Filter</Button>
+              {Array.from({ length: count }, (_, i) => (
+                <Text key={i}>City {i + 1}</Text>
+              ))}
+            </Stack>
+          </Tray.Content>
+          <Tray.Actions>
+            <Button slot="close">Close</Button>
+          </Tray.Actions>
+        </Tray>
+      </Tray.Trigger>
+    );
+  },
+});
+
+ShrinkingContent.test(
+  'keeps the height it opened with when the content shrinks',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const { page } = await import('vitest/browser');
+
+    await page.viewport(400, 844);
+
+    try {
+      const { dialog } = await openTray({ canvas, userEvent });
+      const opened = dialog.getBoundingClientRect().height;
+
+      await step('filtering the list down keeps the height', async () => {
+        await userEvent.click(canvas.getByRole('button', { name: 'Filter' }));
+
+        await waitFor(() =>
+          expect(canvas.queryByText('City 3')).not.toBeInTheDocument()
+        );
+        expect(dialog.getBoundingClientRect().height).toBeCloseTo(opened, 0);
+      });
+
+      await step('and a viewport change afterwards restores it', async () => {
+        await page.viewport(400, 500);
+        await waitFor(() =>
+          expect(dialog.getBoundingClientRect().height).toBeLessThan(opened)
+        );
+
+        await page.viewport(400, 844);
+        await waitFor(() =>
+          expect(dialog.getBoundingClientRect().height).toBeCloseTo(opened, 0)
+        );
+      });
     } finally {
       await page.viewport(1280, 720);
     }

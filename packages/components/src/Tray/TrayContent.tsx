@@ -1,6 +1,4 @@
 import type { ReactNode } from 'react';
-import { useEffect, useRef } from 'react';
-import { useViewportSize } from '@react-aria/utils';
 import { cn } from '@marigold/system';
 import { TRAY_CONTENT_ATTR, useTrayContext } from './Context';
 
@@ -22,22 +20,19 @@ export interface TrayContentProps {
 // ---------------
 export const TrayContent = ({ children, className }: TrayContentProps) => {
   const { classNames } = useTrayContext();
-  const ref = useRef<HTMLDivElement>(null);
-  const { height } = useViewportSize();
-
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) {
-      return;
-    }
-
-    node.style.minHeight = '';
-    node.style.minHeight = `${node.offsetHeight}px`;
-  }, [height]);
 
   return (
     <div
-      ref={ref}
+      ref={node => {
+        const container = node?.parentElement;
+        if (!node || !container || node.style.minHeight || !node.offsetHeight) {
+          return;
+        }
+        const pinned = node.offsetHeight;
+        const chrome = container.offsetHeight - pinned;
+
+        node.style.minHeight = `min(${pinned}px, calc(var(--tray-available) - ${chrome}px))`;
+      }}
       {...{ [TRAY_CONTENT_ATTR]: true }}
       className={cn('[grid-area:content]', classNames.content, className)}
     >

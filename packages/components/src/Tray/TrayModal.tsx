@@ -14,7 +14,7 @@ import { OverlayTriggerStateContext } from 'react-aria-components/Dialog';
 import { Modal, ModalOverlay } from 'react-aria-components/Modal';
 import { cn, useClassNames } from '@marigold/system';
 import { MotionFeatures } from '../lazyMotion';
-import { TRAY_CONTENT_ATTR } from './Context';
+import { TRAY_CONTENT_ATTR, TRAY_MAX_HEIGHT } from './Context';
 
 type RemovedProps =
   | 'isOpen'
@@ -97,7 +97,9 @@ export const TrayModal = ({
         isKeyboardDismissDisabled={!keyboardDismissable}
         className={cn('z-50', classNames.overlay)}
       >
-        <Modal className={classNames.container}>{children}</Modal>
+        <Modal className={cn(TRAY_MAX_HEIGHT, classNames.container)}>
+          {children}
+        </Modal>
       </ModalOverlay>
     );
   }
@@ -115,7 +117,7 @@ export const TrayModal = ({
             className={cn('z-50', classNames.overlay)}
           >
             <MotionModal
-              className={classNames.container}
+              className={cn(TRAY_MAX_HEIGHT, classNames.container)}
               initial={{ y: h }}
               animate={{ y: 0 }}
               exit={{ y: h }}
