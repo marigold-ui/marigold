@@ -1176,6 +1176,20 @@ DragAndDrop.test(
 );
 
 DragAndDrop.test(
+  'Aligns the injected drag-handle cell with the other cells',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { alignY: 'top' },
+  },
+  async ({ canvas }) => {
+    const [, firstRow] = canvas.getAllByRole('row');
+    const [dragHandleCell] = within(firstRow).getAllByRole('gridcell');
+
+    await expect(getComputedStyle(dragHandleCell).verticalAlign).toBe('top');
+  }
+);
+
+DragAndDrop.test(
   'Reorders rows with keyboard drag and drop',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent, step }) => {
@@ -1819,6 +1833,7 @@ CellOverrideTableTruncate.test(
 );
 
 export const VerticalAlignment = meta.story({
+  tags: ['component-test'],
   args: {
     alignY: 'top',
   },
@@ -1850,6 +1865,18 @@ export const VerticalAlignment = meta.story({
     </Table>
   ),
 });
+
+VerticalAlignment.test(
+  'Aligns the injected selection cell with the other cells',
+  // Keep the snapshot: it is the only baseline of a top-aligned checkbox.
+  { args: { selectionMode: 'multiple' } },
+  async ({ canvas }) => {
+    const [, firstRow] = canvas.getAllByRole('row');
+    const selectionCell = within(firstRow).getByRole('checkbox').closest('td')!;
+
+    await expect(getComputedStyle(selectionCell).verticalAlign).toBe('top');
+  }
+);
 
 export const DragPreview = meta.story({
   tags: ['component-test'],
