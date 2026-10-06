@@ -1,5 +1,5 @@
 import { I18nProvider } from 'react-aria-components';
-import { expect, screen, userEvent } from 'storybook/test';
+import { expect, screen, userEvent, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Breadcrumbs } from './Breadcrumbs';
 
@@ -93,5 +93,39 @@ AutoCollapse.test(
     await expect(
       screen.getByRole('menuitem', { name: 'Summer Festival' })
     ).toBeInTheDocument();
+  }
+);
+
+export const TruncatedCurrent = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <I18nProvider locale="en-US">
+      <div className="border-border w-40 border p-2">
+        <Breadcrumbs {...args}>
+          <Breadcrumbs.Item href="#">Events</Breadcrumbs.Item>
+          <Breadcrumbs.Item href="#">Summer Festival</Breadcrumbs.Item>
+          <Breadcrumbs.Item href="#">Ticket Category Details</Breadcrumbs.Item>
+        </Breadcrumbs>
+      </div>
+    </I18nProvider>
+  ),
+});
+
+TruncatedCurrent.test(
+  'Truncates the current item instead of overflowing the container',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    await canvas.findByRole('button', {
+      name: 'These breadcrumbs are hidden',
+    });
+
+    const list = canvas.getByRole('list');
+    const current = within(list).getByText('Ticket Category Details');
+
+    await expect(getComputedStyle(current).textOverflow).toBe('ellipsis');
+    await expect(current.scrollWidth).toBeGreaterThan(current.clientWidth);
+    await expect(current.getBoundingClientRect().right).toBeLessThanOrEqual(
+      list.getBoundingClientRect().right
+    );
   }
 );
