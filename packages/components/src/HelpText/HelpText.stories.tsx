@@ -69,7 +69,6 @@ export const OverflowSmallScreen = meta.story({
   globals: {
     viewport: { value: 'extraSmallScreen' },
   },
-  parameters: { chromatic: { viewports: [320] } },
   tags: ['component-test'],
   render: () => (
     <TextField isInvalid>

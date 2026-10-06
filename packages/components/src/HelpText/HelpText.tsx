@@ -47,11 +47,6 @@ export const HelpText = ({
 
   return (
     <div
-      // `wrap-anywhere`: an unbreakable error message would otherwise set the
-      // field's min-content width and overflow it. Not themeable on purpose.
-      // `hyphens-auto` breaks at a syllable and adds a hyphen first, but only
-      // when the page's `lang` matches the text's language (see `Label`). Both
-      // reach `Description` too, which inherits from this container.
       className={cn(
         'in-field:mt-1 wrap-anywhere hyphens-auto',
         classNames.container
