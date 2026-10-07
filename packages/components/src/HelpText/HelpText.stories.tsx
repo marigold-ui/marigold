@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Form } from 'react-aria-components/Form';
-import { TextField } from 'react-aria-components/TextField';
+import { TextField as RACTextField } from 'react-aria-components/TextField';
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Input } from '../Input/Input';
 import { Label } from '../Label/Label';
 import { Stack } from '../Stack/Stack';
+import { TextField } from '../TextField/TextField';
 import { HelpText } from './HelpText';
 
 const meta = preview.meta({
@@ -49,11 +50,11 @@ export const WithinAField = meta.story({
     <>
       <Form onSubmit={e => e.preventDefault()}>
         <Stack space={8} alignX="left">
-          <TextField name="email" type="email" isRequired>
+          <RACTextField name="email" type="email" isRequired>
             <Label>Email</Label>
             <Input />
             <HelpText description="Please enter your email!" />
-          </TextField>
+          </RACTextField>
           <Button variant="primary" type="submit">
             Submit
           </Button>
@@ -71,15 +72,13 @@ export const OverflowSmallScreen = meta.story({
   },
   tags: ['component-test'],
   render: () => (
-    <TextField isInvalid>
-      <Label>Password</Label>
-      <Input />
-      <HelpText
-        errorMessage={[
-          'Passwortrichtlinienverstossbenachrichtigungsdokumentation.pdf',
-        ]}
-      />
-    </TextField>
+    <TextField
+      error
+      label="Password"
+      errorMessage={[
+        'Passwortrichtlinienverstossbenachrichtigungsdokumentation.pdf',
+      ]}
+    />
   ),
 });
 
@@ -111,7 +110,7 @@ export const MultipleMessages = meta.story({
     return (
       <div className="max-w-96">
         <Stack space={8} alignX="left">
-          <TextField
+          <RACTextField
             isInvalid={errors.length > 0}
             value={password}
             onChange={setPassword}
@@ -119,7 +118,7 @@ export const MultipleMessages = meta.story({
             <Label>Name</Label>
             <Input />
             <HelpText errorMessage={errors} />
-          </TextField>
+          </RACTextField>
           <hr />
           <p>Note that the HelpText is not styled in this example!</p>
         </Stack>
