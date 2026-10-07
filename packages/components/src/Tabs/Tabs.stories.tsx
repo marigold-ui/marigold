@@ -1,5 +1,6 @@
 import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
+import { expectInsetFocusRingContrast } from '../contrast.utils';
 import { Tabs } from './Tabs';
 
 const meta = preview.meta({
@@ -77,6 +78,39 @@ Basic.test(
         () => canvas.getAllByTestId('tab-indicator')[0]
       );
       await expect(indicator).toBeVisible();
+    });
+  }
+);
+
+Basic.test(
+  'Keyboard focus draws an inset ring that clears 3:1 on a tab',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent, step }) => {
+    await step('Act', async () => {
+      await userEvent.tab();
+    });
+
+    await step('Assert', async () => {
+      const tab = canvas.getAllByRole('tab', { name: 'Mouse Settings' })[0]!;
+      await expect(tab).toHaveFocus();
+      expectInsetFocusRingContrast(tab);
+    });
+  }
+);
+
+Basic.test(
+  'Keyboard focus draws an inset ring that clears 3:1 on the panel',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent, step }) => {
+    await step('Act', async () => {
+      await userEvent.tab();
+      await userEvent.tab();
+    });
+
+    await step('Assert', async () => {
+      const panel = canvas.getAllByRole('tabpanel')[0]!;
+      await expect(panel).toHaveFocus();
+      expectInsetFocusRingContrast(panel);
     });
   }
 );

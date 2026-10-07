@@ -1,6 +1,7 @@
 import { I18nProvider } from 'react-aria-components';
 import { expect, screen, userEvent, within } from 'storybook/test';
 import preview from '.storybook/preview';
+import { expectInsetFocusRingContrast } from '../contrast.utils';
 import { Breadcrumbs } from './Breadcrumbs';
 
 const meta = preview.meta({
@@ -42,6 +43,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
   render: args => (
     <Breadcrumbs {...args}>
       <Breadcrumbs.Item href="https://marigold-ui.io">Home</Breadcrumbs.Item>
@@ -54,6 +56,22 @@ export const Basic = meta.story({
     </Breadcrumbs>
   ),
 });
+
+Basic.test(
+  'Keyboard focus draws an inset ring that clears 3:1 on a link',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent, step }) => {
+    await step('Act', async () => {
+      await userEvent.tab();
+    });
+
+    await step('Assert', async () => {
+      const link = canvas.getByRole('link', { name: 'Home' });
+      await expect(link).toHaveFocus();
+      expectInsetFocusRingContrast(link);
+    });
+  }
+);
 
 export const AutoCollapse = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
