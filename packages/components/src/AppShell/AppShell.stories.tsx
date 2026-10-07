@@ -289,6 +289,18 @@ Basic.test(
   }
 );
 
+Basic.test(
+  'main landmark drops the skip-link tabindex once focus leaves it',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.tab();
+    await userEvent.keyboard('{Enter}');
+    await userEvent.tab();
+
+    await expect(canvas.getByRole('main')).not.toHaveAttribute('tabindex');
+  }
+);
+
 /**
  * Controlled sidebar state via an outer `Sidebar.Provider`. `<AppShell>`
  * detects the provider and passes through instead of creating its own.

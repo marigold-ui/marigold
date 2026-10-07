@@ -60,12 +60,18 @@ export const AppShell = ({
   const mainRef = useRef<HTMLElement>(null);
   const contextValue = useMemo(() => ({ mainId, mainRef }), [mainId]);
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
-  const skipLinkClassNames = useClassNames({ component: 'Button' });
+  const skipLinkClassNames = useClassNames({
+    component: 'Button',
+    variant: 'secondary',
+  });
 
   const skipToMain = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
-    if (mainRef.current) {
-      focusLandmark(mainRef.current);
+    const main = mainRef.current;
+    if (main && focusLandmark(main)) {
+      main.addEventListener('blur', () => main.removeAttribute('tabindex'), {
+        once: true,
+      });
     }
   };
 
