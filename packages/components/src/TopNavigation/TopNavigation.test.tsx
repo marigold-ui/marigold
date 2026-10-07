@@ -24,9 +24,6 @@ test('renders a header element with the banner role', () => {
   expect(header).toBeInTheDocument();
 });
 
-// Counts the header's children, so it uses the story that composes nothing
-// but the three slots. `WithBreadcrumbs` adds a fourth child, the row the
-// trail drops to below `sm`.
 test('renders all three slots', () => {
   render(<WithSearchField.Component />);
 

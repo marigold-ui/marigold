@@ -94,17 +94,9 @@ const Trail = () => (
   </Breadcrumbs>
 );
 
-/**
- * A breadcrumb trail beside the user section, the way the docs AppShell
- * example composes it: the trail shares the bar from `sm` up, and moves to
- * its own row below it. At 320px the middle column is only ~108px wide, so a
- * trail kept in the bar collapses to the ellipsis and then truncates the one
- * crumb that matters. The second row gives it the full width instead.
- */
 const Shell = (args: TopNavigationProps) => (
   <TopNavigation {...args}>
     <TopNavigation.Start>
-      {/* Keeps the first row at bar height when the trail wraps below. */}
       <div className="min-h-topbar flex items-center">
         <Sidebar.Toggle />
       </div>
@@ -117,8 +109,6 @@ const Shell = (args: TopNavigationProps) => (
     <TopNavigation.End>
       <UserSection />
     </TopNavigation.End>
-    {/* Relies on TopNavigation's single-row grid: `col-span-full`
-        auto-places this into an implicit second row. */}
     <div className="col-span-full min-w-0 pb-2 sm:hidden">
       <Trail />
     </div>
@@ -146,11 +136,6 @@ export const WithBreadcrumbs = meta.story({
   ),
 });
 
-// Guards the trail's narrow-width layout above. The 320px audit (DST-1519)
-// failed this story for unreadable content: the trail sat in the bar's ~108px
-// middle column, where it collapsed to the ellipsis and then clipped the
-// current crumb mid-word. Pinned to the 320px viewport, where the second row
-// is the one that renders.
 export const OverflowSmallScreen = meta.story({
   tags: ['component-test'],
   globals: {
@@ -172,15 +157,9 @@ OverflowSmallScreen.test(
       canvasElement.clientWidth
     );
 
-    // The trail still collapses on its own row: the four crumbs want ~340px
-    // and the row offers ~296px. What matters is that it collapses instead of
-    // overflowing, which is what the clipped list used to do.
     const list = canvas.getByRole('list');
     await expect(list.scrollWidth).toBeLessThanOrEqual(list.clientWidth);
 
-    // Whatever survives the collapse renders at its full width. In the bar's
-    // ~108px middle column the current crumb was truncated to "Event Deta…";
-    // on its own row it fits, which is the readability the audit asked for.
     const current = canvas.getByRole('link', { name: 'Event Details' });
     await expect(current.scrollWidth).toBeLessThanOrEqual(current.clientWidth);
 

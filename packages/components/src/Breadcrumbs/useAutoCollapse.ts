@@ -63,19 +63,7 @@ export const useAutoCollapse = (
       count++;
     }
 
-    // +1 because the component displays count real items PLUS the ellipsis.
-    //
-    // Clamped below `totalItems`: we only get here because the full trail does
-    // not fit, so the component has to collapse. It decides that with
-    // `total > maxVisibleItems`, and a slot count equal to `totalItems` reads
-    // as "everything fits" there — it would then render every real item at
-    // full width and overflow, because the ellipsis a slot stands for is
-    // narrower than the crumb it replaces.
-    //
-    // ponytail: costs one crumb that would have fit (it moves under the
-    // ellipsis instead). Returning the real-item count plus a separate
-    // "collapsed" flag would keep it, at the price of threading that flag
-    // through the slice math in Breadcrumbs.
+    // +1 because the component displays count real items PLUS the ellipsis
     setVisibleItems(Math.min(count + 1, totalItems - 1));
   }, [containerRef, hiddenRef, totalItems]);
 
