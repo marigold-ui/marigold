@@ -107,8 +107,21 @@ Pair a multi-select list with an [`<ActionBar>`](/components/collection/actionba
 
 <ComponentDemo name="listview-bulk-actions" />
 
-<Callout type="info" title="No select-all in a list">
-  Select-all is a checkbox in the collection's header, and a list has no header row to hold one, so a flow where users regularly select every visible record belongs in a [`<Table>`](/components/collection/table). Everything else in the [Bulk Actions](/patterns/user-input/bulk-actions) pattern applies to a `<ListView>` unchanged.
+Add a `<ListView.Header>` when users regularly select every visible row. It renders one checkbox above the rows, lined up with their indicators, mixed while the selection is partial, and checked once every row that can be selected is. It appears only in `selectionMode="multiple"`, and only when you render it: a list where users pick a handful of rows by hand is better off without it.
+
+```tsx
+<ListView aria-label="Uploads" selectionMode="multiple" items={uploads}>
+  <ListView.Header />
+  {upload => <ListView.Item textValue={upload.name}>…</ListView.Item>}
+</ListView>
+```
+
+The header takes the place of a row in the list's children, beside the render function in the dynamic form above. Its label reads "Select all" in the current locale, and children replace it when the list needs something more specific, as in `<ListView.Header>Select all uploads</ListView.Header>`.
+
+Pressing it reports the string `'all'`, the same value <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> already reports, so there is one selection shape to resolve either way. The scope is the rows the list is rendering: it never reaches rows behind pagination, which the [Bulk Actions](/patterns/user-input/bulk-actions#pagination) pattern explains at length.
+
+<Callout type="info" title="Where the header is not the answer">
+  A select-all needs an `id` on every row to know what it covers, so a row without one is left out of it (a dynamic collection takes them from its `items`). And a select-all is for marking rows, not for naming the list: a `<ListView>` renders no visible label of its own, so a list that has to name itself on screen is a [`<SelectList>`](/components/form/selectlist).
 </Callout>
 
 ### Empty state
@@ -167,6 +180,10 @@ In a selectable list, moving focus never changes the selection. <kbd>Space</kbd>
 ### ListView.Item
 
 <AutoTypeTable path="ListView/ListViewItem" name="ListViewItemProps" />
+
+### ListView.Header
+
+<AutoTypeTable path="ListView/ListViewHeader" name="ListViewHeaderProps" />
 
 ## Alternative components
 

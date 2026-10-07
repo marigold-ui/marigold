@@ -336,6 +336,117 @@ WithMultiSelection.test(
   }
 );
 
+export const WithSelectAll = meta.story({
+  tags: ['component-test'],
+  args: {
+    selectionMode: 'multiple',
+    onChange: fn(),
+  },
+  render: args => (
+    <SelectList {...args} label="Shipping add-ons">
+      <SelectList.Header />
+      <SelectList.Option id="insurance" textValue="Parcel insurance">
+        <TextValue>Parcel insurance</TextValue>
+        <Description>Covers loss or damage up to $500.</Description>
+      </SelectList.Option>
+      <SelectList.Option id="signature" textValue="Signature on delivery">
+        <TextValue>Signature on delivery</TextValue>
+        <Description>Require a signature when handed over.</Description>
+      </SelectList.Option>
+      <SelectList.Option id="gift-wrap" textValue="Gift wrap">
+        <TextValue>Gift wrap</TextValue>
+        <Description>Premium paper and a handwritten note.</Description>
+      </SelectList.Option>
+    </SelectList>
+  ),
+});
+
+WithSelectAll.test(
+  'selects every option by key, reads mixed while partial, and clears',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onChange: fn() },
+  },
+  async ({ args, canvas, userEvent, step }) => {
+    const selectAll = canvas.getByRole('checkbox', { name: 'Select all' });
+
+    await step('it selects every option', async () => {
+      await userEvent.click(selectAll);
+
+      for (const row of canvas.getAllByRole('row')) {
+        expect(row).toHaveAttribute('aria-selected', 'true');
+      }
+      // Concrete keys, never the `'all'` sentinel: this is a form field, and
+      // its hidden `<select>` can only submit keys it can enumerate.
+      expect(args.onChange).toHaveBeenLastCalledWith([
+        'insurance',
+        'signature',
+        'gift-wrap',
+      ]);
+    });
+
+    await step('it clears the selection', async () => {
+      await userEvent.click(selectAll);
+
+      expect(args.onChange).toHaveBeenLastCalledWith([]);
+      expect(selectAll).not.toBeChecked();
+    });
+
+    await step('a partial selection reads as mixed', async () => {
+      await userEvent.click(canvas.getByRole('row', { name: /gift wrap/i }));
+
+      expect(selectAll).toBePartiallyChecked();
+    });
+  }
+);
+
+WithSelectAll.test(
+  'puts the header checkbox on the option indicator column',
+  // The row padding is a custom property on the list, so only the component
+  // can line a header up with it. Measured, because every class involved is
+  // indirection.
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const x = (element: Element) =>
+      Math.round(element.getBoundingClientRect().x);
+    const header = canvas
+      .getByRole('checkbox', { name: 'Select all' })
+      .closest('label')!;
+    const [firstRow] = canvas.getAllByRole('row');
+    // The option's indicator is its first grid cell; the row carries the
+    // padding, so the indicator's x is where the column starts.
+    const indicator = firstRow.querySelector('.col-start-1')!;
+
+    expect(x(header)).toBe(x(indicator));
+  }
+);
+
+// `Mod` is `metaKey` on Mac and `ctrlKey` elsewhere. Firefox exposes no
+// `userAgentData`, so react-aria's `isMac()` reads `navigator.platform` here
+// too and this agrees with the implementation on either platform.
+const modKey = /^Mac/i.test(navigator.platform) ? 'Meta' : 'Control';
+
+WithSelectAll.test(
+  'Mod+A reports the same keys the select-all does',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onChange: fn() },
+  },
+  async ({ args, canvas, userEvent }) => {
+    // Pressing an option first puts keyboard focus in the list.
+    await userEvent.click(canvas.getByRole('row', { name: /gift wrap/i }));
+    await userEvent.keyboard(`{${modKey}>}a{/${modKey}}`);
+
+    // React Aria reports its own select-all as the string `'all'`. A field
+    // resolves it, so the value stays submittable either way.
+    expect(args.onChange).toHaveBeenLastCalledWith([
+      'insurance',
+      'signature',
+      'gift-wrap',
+    ]);
+  }
+);
+
 const paymentMethods = [
   {
     id: 'credit-card',
@@ -736,10 +847,13 @@ WithCustomPadding.test(
       'py-(--selectlist-item-py)'
     );
     const list = standardRow.closest('[role="grid"]') as HTMLElement;
-    expect(list.style.getPropertyValue('--selectlist-item-px')).toBe(
+    // Written onto the list's wrapper, so a `<SelectList.Header>` above the
+    // list reads the same padding and the two checkboxes share an x.
+    const paddingHost = list.parentElement as HTMLElement;
+    expect(paddingHost.style.getPropertyValue('--selectlist-item-px')).toBe(
       'var(--spacing-square-loose-x)'
     );
-    expect(list.style.getPropertyValue('--selectlist-item-py')).toBe(
+    expect(paddingHost.style.getPropertyValue('--selectlist-item-py')).toBe(
       'var(--spacing-square-loose-y)'
     );
   }
@@ -754,12 +868,13 @@ WithCustomPadding.test(
   async ({ canvas }) => {
     const standardRow = await canvas.findByRole('row', { name: /standard/i });
     const list = standardRow.closest('[role="grid"]') as HTMLElement;
+    const paddingHost = list.parentElement as HTMLElement;
 
     // No `-x` / `-y` suffix: a theme only declares `--spacing-collapsed`.
-    expect(list.style.getPropertyValue('--selectlist-item-px')).toBe(
+    expect(paddingHost.style.getPropertyValue('--selectlist-item-px')).toBe(
       'var(--spacing-collapsed)'
     );
-    expect(list.style.getPropertyValue('--selectlist-item-py')).toBe(
+    expect(paddingHost.style.getPropertyValue('--selectlist-item-py')).toBe(
       'var(--spacing-collapsed)'
     );
 
@@ -934,6 +1049,7 @@ export const WithForm = meta.story({
           description="Bundle extras with your order."
           name="addons"
         >
+          <SelectList.Header />
           <SelectList.Option id="insurance" textValue="Parcel insurance">
             <TextValue>Parcel insurance</TextValue>
             <Description>Covers loss or damage up to $500.</Description>
@@ -955,6 +1071,25 @@ export const WithForm = meta.story({
     </Form>
   ),
 });
+
+WithForm.test(
+  'submits every option after a select-all',
+  // The hidden `<select>` submits nothing for the `'all'` sentinel, so this is
+  // the test that catches a select-all that leaves the selection unresolved.
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(
+      await canvas.findByRole('checkbox', { name: 'Select all' })
+    );
+    await userEvent.click(canvas.getByRole('button', { name: /submit/i }));
+
+    await waitFor(() => {
+      expect(canvas.getByTestId('submitted')).toHaveTextContent(
+        'submitted: insurance,signature,gift-wrap'
+      );
+    });
+  }
+);
 
 WithForm.test(
   'submits the selected values as form data',
