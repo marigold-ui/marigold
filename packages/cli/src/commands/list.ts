@@ -1,5 +1,9 @@
-import { type OutputFormat, formatList } from '../lib/format.js';
-import { loadManifest } from '../lib/manifest.js';
+import {
+  type OutputFormat,
+  formatList,
+  matchesCategory,
+} from '../lib/format.js';
+import { type Manifest, loadManifest } from '../lib/manifest.js';
 
 export interface RunListOptions {
   category?: string;
@@ -12,7 +16,19 @@ export interface RunListOptions {
 export interface RunListResult {
   output: string;
   cacheHit: boolean;
+  // The manifest's spelling of `category`, or undefined when none was given or
+  // it matched nothing.
+  category?: string;
 }
+
+const resolveCategory = (
+  manifest: Manifest,
+  input: string
+): string | undefined =>
+  [
+    ...manifest.categories.map(c => c.name),
+    ...manifest.pages.map(p => p.category),
+  ].find(name => matchesCategory(name, input));
 
 export const runList = async (
   options: RunListOptions = {}
@@ -28,5 +44,9 @@ export const runList = async (
     options.format ?? 'markdown'
   );
 
-  return { output, cacheHit };
+  const category = options.category
+    ? resolveCategory(manifest, options.category)
+    : undefined;
+
+  return { output, cacheHit, category };
 };

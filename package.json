@@ -40,7 +40,7 @@
     "@vitest/ui": "4.1.11",
     "autoprefixer": "10.6.1",
     "concurrently": "10.0.5",
-    "eslint": "10.10.0",
+    "eslint": "10.11.0",
     "eslint-plugin-storybook": "10.6.0",
     "husky": "9.1.7",
     "playwright": "1.63.0",
@@ -54,7 +54,7 @@
     "tailwindcss": "4.3.3",
     "turbo": "2.10.13",
     "typescript": "6.0.3",
-    "vite": "8.3.1",
+    "vite": "8.3.2",
     "vitest": "4.1.11",
     "zx": "8.8.5"
   },

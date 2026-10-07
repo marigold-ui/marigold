@@ -18,36 +18,59 @@ reach `record.ts` in-process only.
 
 ## Storage layout
 
-One stream, `telemetry:events`, carrying both sources and discriminated on `event`. Each entry
-has exactly one field, `data`, holding the whole event as JSON with a `receivedAt` timestamp
-added on write — `receivedAt` is inside that JSON, not a second entry field. Ids are `<epochMillis>-<seq>`, so a reader seeks by time with `XRANGE <fromMs> <toMs>`
+One stream per source: `telemetry:mcp` for `mcp_tool_call`, `telemetry:cli` for
+`cli_command`. Each entry has exactly one field, `data`, holding the whole event as JSON with a
+`receivedAt` timestamp added on write — `receivedAt` is inside that JSON, not a second entry
+field. Ids are `<epochMillis>-<seq>`, so a reader seeks by time with `XRANGE <fromMs> <toMs>`
 and pages with `(<lastId>`.
 
-This replaced one list per UTC day (`telemetry:YYYY-MM-DD`), which cost the reader one `LRANGE`
-per day in the window — 180 for [Insights](https://github.com/marigold-ui/insights)' 90-day
-view, whose KPI deltas compare against the preceding 90 days. Data written under that layout is
-not migrated and nothing reads it. Most of it needs no cleanup either, since those lists
-carried a 90-day TTL — but not all. The `EXPIRE` arrived with
-[#5619](https://github.com/marigold-ui/marigold/pull/5619) and ran only on a day whose key
-received a write, so any day that had already stopped receiving events by then never got one,
-and those keys are immortal. Worth a `TTL telemetry:YYYY-MM-DD` spot-check on the oldest days
-if the keyspace is ever audited.
+The two differ in how that id is made. MCP entries are written with `*`, so Redis stamps the
+exact millisecond. CLI entries are written with `<hourMs>-*`: the millisecond part is pinned to
+the top of the hour and Redis fills in only the sequence number, which is what makes the CLI's
+hour-granular `receivedAt` true of what is stored rather than just of the JSON. An id is a
+timestamp too, so rounding only the field would leave the precise time one `XRANGE` away.
 
-No backfill was done, deliberately, and that is not in tension with keeping everything from here
-forward: the only events in the old lists are `cli_command` ones, which have had no consumer
-since DST-1264 — so there is no history there anyone has ever read or charted. The argument for
-unbounded retention is about the trends this store is now actually read for, not about
-reconstructing a window nothing ever looked at.
+That is why the CLI needed a stream of its own. Stream ids have to increase, so an
+hour-stamped id is rejected as soon as any later entry exists, and in a shared stream every MCP
+write is one. Even if it were accepted, the MCP entries on either side of a CLI one would bound
+its time to the millisecond.
 
-Rate-limit keys carry a source prefix — `telemetry:rl:cli:{anonymousId}:{date}` and
-`telemetry:rl:mcp:{hashedCallerId}:{date}` — so the keyspace stays greppable by caller type.
-The endpoint-wide counter is `telemetry:rl:public:{date}`.
+Two things the coarse id does not hide. The order of CLI events within an hour survives through
+`<seq>`: with every CLI in that hour writing into the same sequence it says little about any one
+of them, but it is not nothing. And an instance whose clock lags another's across an hour
+boundary writes below the stream's top id, so Redis rejects the entry and the event is dropped
+as an `error`. That is rare and costs one event, and retrying with `*` would store the precise
+time this exists to avoid.
+
+The two streams replaced two older layouts: one list per UTC day (`telemetry:YYYY-MM-DD`), which
+cost the reader one `LRANGE` per day in the window, and a single `telemetry:events` stream that
+held both sources. Their data is migrated into the two streams by a one-off `EVAL` in the Upstash
+console (DST-1765), and both old layouts are deleted once production no longer writes to
+`telemetry:events`. Until then [Insights](https://github.com/marigold-ui/insights) reads each
+source from its stream and from `telemetry:events`.
+
+Old CLI events are stored the way a current one would be: fields the schema no longer has, such
+as `anonymousId`, are dropped, `receivedAt` and the id are truncated to the hour, and a name the
+docs manifest does not know is recorded as `unknown`. MCP events keep millisecond precision.
+Each migration rewrites its stream in time order, live entries included, in one atomic step,
+because ids have to increase and both streams already take writes.
+
+This reverses an earlier decision to leave the old lists alone, taken because nothing had ever
+read `cli_command` events. Insights' CLI page is the first reader, and four months of history
+is what gives its trends a baseline. Anonymising on the way keeps the guarantee above: nothing
+stored carries an identifier or an exact time, whenever it was written.
+
+The one rate-limit key is `telemetry:rl:mcp:{hashedCallerId}:{date}`, and the endpoint-wide
+counter is `telemetry:rl:public:{date}`. There is no `telemetry:rl:cli:…` any more: the CLI
+stopped sending `anonymousId` (see packages/cli/src/lib/config.ts), so there is nothing in a
+`cli_command` payload to key one on. The `mcp:` prefix is kept so the keyspace stays greppable
+by caller type if a second authenticated source ever appears.
 
 ## Retention is unbounded, deliberately
 
 The stream carries no TTL and is never trimmed. This reverses the 90-day `EXPIRE` DST-1475 put
-on the old daily lists, and it applies to `cli_command` events too now that both sources share
-one stream — worth knowing, because nothing in DST-1625 would lead you to expect CLI retention
+on the old daily lists, and it applies to `cli_command` events too, which DST-1625 moved into
+the same stream and which kept the policy when they moved out to `telemetry:cli` — worth knowing, because nothing in DST-1625 would lead you to expect CLI retention
 to change.
 
 It had been settled three different ways without ever being written down: DST-1264 set no
@@ -63,10 +86,10 @@ Three reasons, in order of weight:
 - **Volume was never the constraint.** Measured at roughly 35 events a day at ~250 bytes, about
   3 MB a year. The "storage leak" framing had no cost behind it. That earlier concern was a
   different shape anyway: an unbounded number of _keys_, one per day, none read by anything.
-- **A bounded window needs a constant here that a different repo depends on.** Insights' widest
-  view is 90 days against the preceding 90, so 180 have to survive — and widening that range
-  would not fail anything on this side, it would silently truncate the tail and read as a drop
-  in usage. No trim, no constant, no drift.
+- **A bounded window needs a constant here that a different repo depends on.** Insights' CLI
+  page has an _All time_ range, and its MCP page compares 90 days against the preceding 90.
+  Trimming would not fail anything on this side, it would silently truncate the tail and read
+  as a drop in usage. No trim, no constant, no drift.
 
 **Rejected alternatives.** `MAXLEN ~` evicts the _oldest_ entries, so a flood would push out
 exactly the history this exists to keep. A per-client-address quota keys on a header, which is
@@ -81,19 +104,25 @@ year, and until it exists trimming means losing the history it is meant to prese
 
 With no window, the quotas are the only thing left.
 
-**Per caller.** 10000/day, the same for both sources. It is not an abuse bound — the
-endpoint-wide ceiling below is — but a guard against a runaway writer, which matters because
-nothing expires to clean up after one: a looping agent on the MCP side, or a broken script on
-the CLI side. Since that is the only job, there is no reason to treat the two sources
-differently, and an earlier split (1000 for CLI, on the theory that its endpoint is
-unauthenticated) just duplicated what the endpoint-wide ceiling already does. A caller past the
-ceiling is dropped rather than truncated, so it sits far above realistic usage — but a caller
-crossing it in a UTC day does under-report.
+**Per caller.** 10000/day, MCP only. It is not an abuse bound — the endpoint-wide ceiling below
+is — but a guard against a runaway writer, which matters because nothing expires to clean up
+after one: a looping agent on the MCP side. A caller past the ceiling is dropped rather than
+truncated, so it sits far above realistic usage — but a caller crossing it in a UTC day does
+under-report.
 
-**Endpoint-wide.** 50000/day on `telemetry:rl:public:{date}`. `POST /api/telemetry` has to stay
-unauthenticated — `@marigold/cli` is a public npm package — and the per-caller key above comes
-out of the request body, so rotating `anonymousId` walks past it. A single fixed key can't be
-influenced by any header, body field or rotation, which makes it a hard bound where the
+It once covered `cli_command` too, keyed on `anonymousId`. That identifier is gone, so the
+broken script on the CLI side that this ceiling was also meant to catch is now caught only by
+the endpoint-wide one below, three orders of magnitude higher. That is a real loosening and it
+is accepted rather than worked around: the alternatives are re-introducing a per-machine
+identifier, which is the thing being removed, or keying on IP, which the section above already
+rejects for putting personal data in Redis. Bounding a single misbehaving CLI belongs in WAF
+rate limiting in front of the route, which needs no identifier in the body.
+
+**Endpoint-wide.** 50000/day on `telemetry:rl:public:{date}`, and since the CLI went
+identifier-free this is that route's only ceiling. `POST /api/telemetry` has to stay
+unauthenticated — `@marigold/cli` is a public npm package — and a key derived from the request
+body would be walked past by rotating whatever it keys on. A single fixed key can't be
+influenced by any header, body field or rotation, which makes it a hard bound where a
 per-caller ceiling is not. Worth stating precisely, since the imprecise version is what a
 future reader will trust when deciding whether the ceiling is enough: it bounds the write
 **rate**, not the total. At 50000/day times ~250 bytes it permits ~12.5 MB/day — roughly
@@ -118,29 +147,29 @@ so the request that trips the ceiling spends the counter and returns without an 
 does one whose `XADD` then fails. Reconciling the counter against stream length will always show
 the counter ahead; that is not lost events.
 
-That bounds what a single caller can take: its own 10000/day ceiling stops it at a fifth of the
-shared budget, so it takes a sixth rotated `anonymousId` to exhaust the day — five spend exactly
-50000, which the `>` comparison still lets through. Note the ceilings do not protect each other
-symmetrically: the per-caller counter is charged before the shared gate is consulted, so once the
-day's shared budget is gone, every caller keeps burning its own allowance on requests that are
-dropped. A caller can therefore end the day marked rate-limited with nothing written, which reads
-like a runaway writer and is not one.
+Nothing bounds what a single CLI caller can take out of that budget, since the two ceilings no
+longer stack: one source, one ceiling each. A single looping CLI can spend the whole day's
+shared budget on its own, which is the loosening named under **Per caller** above.
 
 Once the shared budget is exhausted, every CLI's telemetry is dropped for the rest of the UTC
 day, silently on both sides: the CLI's sender neither inspects the response status nor retries.
 
 ## Two event types, one store
 
-Only one of them is read: Insights discards `cli_command` entries, because its read-side schema
-accepts the `mcp_tool_call` literal only (as of marigold-ui/insights#86 — that schema lives in
-that repo, so treat the shape as illustrative and "only MCP events are read" as the durable
-part). **CLI telemetry has had no consumer since
-DST-1264 introduced it** — worth knowing before citing "we have CLI usage data", and it means
-the long-run-trends argument above is weaker for that half than it reads.
+Both are read, each on its own Insights page with its own schema: _MCP-Server Usage_ reads
+`mcp_tool_call`, _CLI Usage_ reads `cli_command` (marigold-ui/insights#150). The schemas live in
+that repo, so treat their shape as illustrative.
 
 They are also different classes of data, which is why only one made retention a question.
-`cli_command` carries `anonymousId`, a UUID minted locally by `crypto.randomUUID()` and tied to
-no identity — there is no personal data in it. `mcp_tool_call` carries `hashedCallerId`, a
+`cli_command` carries no identifier at all. It used to carry `anonymousId`, a UUID minted
+locally by `crypto.randomUUID()`, on the reading that a value tied to no identity is not
+personal data. That reading was wrong: a stable per-machine UUID is pseudonymous rather than
+anonymous under GDPR Recital 26, and persisting it to the config file made the write "storage
+on terminal equipment" under ePrivacy Art. 5(3) / § 25 TDDDG, which needs consent. The field is
+gone from the payload, the schema and the CLI's config, and the schema is strict so a stale CLI
+still sending it gets a 400 rather than a silent strip. Strictness covers top-level keys only:
+`args` is a record whose keys are bounded in length and count, not enumerated, so the guarantee
+that no identifier is sent is the CLI's, which builds `args` only from validated values. `mcp_tool_call` carries `hashedCallerId`, a
 SHA-256 of a Keycloak `sub`: pseudonymous, not anonymous, since anyone holding both Redis read
 access and a list of `sub`s to test against can re-identify a named Reservix employee.
 
@@ -208,16 +237,16 @@ unlike the CLI's `DO_NOT_TRACK` does not exist.
 The shapes are not symmetric either: the CLI reports its outcome as `exitCode` and its duration
 as a coarse `durationBucket` (its [public docs](../../../content/getting-started/cli/index.mdx)
 promise the bucket, not a timing), while MCP reports `success` and an exact `latencyMs`.
-Anything aggregating across both has to special-case, which is a third reason the shared stream
-is a storage decision rather than a common data model.
+Anything aggregating across both has to special-case, which is a third reason the store was
+never a common data model, and part of why splitting it cost nothing.
 
-One consequence that is easy to miss: Insights pages the stream at `STREAM_PAGE_SIZE = 5_000`
-with `MAX_STREAM_PAGES = 20` (as of marigold-ui/insights#86 — they live in that repo, so treat
+One consequence that is easy to miss: Insights pages each stream at `STREAM_PAGE_SIZE = 5_000`
+with `MAX_STREAM_PAGES = 20` (as of marigold-ui/insights#150 — they live in that repo, so treat
 the numbers as illustrative and the headroom argument as the durable part), and the page counter
-counts every entry in the window — including
-the `cli_command` ones it is about to discard. Past 100000 entries in a window it logs and
-returns **incomplete aggregates**, which look like a drop in usage rather than an error. At
-~35 events a day the window holds ~6000, so there is roughly 16x headroom. The point is where
-that headroom goes: it is spent by `cli_command`, the half nobody reads, and nothing on the read
-side notices, because the budget is exhausted by entries Insights discards after paying for
-them. If it ever gets close, the fix is one stream per source, not a bigger page budget.
+counts every entry in the window. Past 100000 entries in a window it returns **incomplete
+aggregates**. The CLI page flags that, the MCP page only logs it, so there it reads as a drop in
+usage rather than an error. At ~35 events
+a day the window holds ~6000, so there is roughly 16x headroom. Until the CLI moved to
+`telemetry:cli`, that headroom was spent mostly by `cli_command` entries Insights discarded
+after paying for them. Once `telemetry:events` is deleted, each page pays only for its own
+source.

@@ -98,6 +98,9 @@ export interface ListFilter {
   search?: string;
 }
 
+export const matchesCategory = (category: string, input: string): boolean =>
+  normalize(category) === normalize(input);
+
 // Shared list filter: optional category match (normalized) + optional search
 // substring over a caller-supplied haystack. Both component and page filtering
 // use the same two checks.
@@ -106,7 +109,7 @@ const matchesListFilter = (
   haystack: string,
   filter: ListFilter
 ): boolean => {
-  if (filter.category && normalize(category) !== normalize(filter.category))
+  if (filter.category && !matchesCategory(category, filter.category))
     return false;
   if (
     filter.search &&

@@ -12,12 +12,20 @@ import { main } from './marigold.js';
 
 const emitMock = vi.hoisted(() => vi.fn());
 
-vi.mock('../lib/telemetry.js', () => ({
+// Partial mock: only `emit` is stubbed, so the real `unresolvedArg`/`enumArg` clamps
+// stay in the path and the args asserted below are the ones that would actually
+// be sent.
+vi.mock('../lib/telemetry.js', async importOriginal => ({
+  ...(await importOriginal<typeof import('../lib/telemetry.js')>()),
   emit: emitMock,
 }));
 
 vi.mock('../commands/docs.js', () => ({
-  runDocs: vi.fn(async () => ({ output: 'docs output', cacheHit: false })),
+  runDocs: vi.fn(async () => ({
+    output: 'docs output',
+    cacheHit: false,
+    slug: 'components/actions/button',
+  })),
 }));
 
 vi.mock('../commands/list.js', () => ({
@@ -28,6 +36,7 @@ vi.mock('../commands/examples.js', () => ({
   runExamples: vi.fn(async () => ({
     output: 'examples output',
     cacheHit: false,
+    slug: 'filter',
   })),
 }));
 
@@ -141,7 +150,10 @@ describe('main() — default --format', () => {
 });
 
 describe('main() — telemetry on validation failure', () => {
-  test('emits exitCode 1 with args when --section is invalid', async () => {
+  // A failed run still reports which flags were supplied, but the rejected value
+  // is clamped to 'invalid' rather than echoed back — telemetry must never carry
+  // raw user input.
+  test('emits exitCode 1 and clamps an invalid --section', async () => {
     const code = await main(['docs', 'Button', '--section', 'bogus']);
 
     expect(code).toBe(1);
@@ -152,11 +164,56 @@ describe('main() — telemetry on validation failure', () => {
       command: 'docs',
       exitCode: 1,
       args: expect.objectContaining({
-        component: 'Button',
-        section: 'bogus',
+        component: 'unknown',
+        section: 'invalid',
       }),
     });
   });
+
+  // Guards the identifier-free contract at the point of emit: no field in the
+  // payload may single out a machine, user, or session.
+  test('emits no identifying field', async () => {
+    await main(['docs', 'Button']);
+
+    const event = emitMock.mock.calls[0][0];
+    expect(event).not.toHaveProperty('anonymousId');
+    expect(Object.keys(event)).toEqual(
+      expect.not.arrayContaining([
+        'anonymousId',
+        'userId',
+        'sessionId',
+        'machineId',
+      ])
+    );
+  });
+
+  // What was typed never reaches the wire, only what the manifest resolved it
+  // to, so a project name or a path cannot ride along in a component slot.
+  test('records the resolved slug rather than the input', async () => {
+    await main(['docs', 'button']);
+
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      args: expect.objectContaining({
+        component: 'components/actions/button',
+      }),
+    });
+  });
+
+  test.each(['acme-checkout-v2', 'packages/components/src'])(
+    'records %s as unknown when it resolves to nothing',
+    async input => {
+      vi.mocked(runDocs).mockRejectedValueOnce(
+        new Error(`No component or page "${input}" found.`)
+      );
+
+      const code = await main(['docs', input]);
+
+      expect(code).toBe(1);
+      expect(emitMock.mock.calls[0][0]).toMatchObject({
+        args: expect.objectContaining({ component: 'unknown' }),
+      });
+    }
+  );
 
   test('emits exitCode 1 when the component positional is missing', async () => {
     const code = await main(['docs']);
@@ -186,6 +243,34 @@ describe('main() — telemetry on validation failure', () => {
 
     expect(code).toBe(1);
     expect(emitMock).not.toHaveBeenCalled();
+  });
+});
+
+describe('main() — unknown command', () => {
+  test('suggests the nearest command for a typo', async () => {
+    const code = await main(['serach']);
+
+    expect(code).toBe(1);
+    expect(stderrSpy.mock.calls.flat().join('')).toContain(
+      'Did you mean "search"?'
+    );
+  });
+
+  test('suggests regardless of case', async () => {
+    await main(['DOCS']);
+
+    expect(stderrSpy.mock.calls.flat().join('')).toContain(
+      'Did you mean "docs"?'
+    );
+  });
+
+  test('omits the suggestion when nothing is close', async () => {
+    const code = await main(['xyzzy']);
+    const stderr = stderrSpy.mock.calls.flat().join('');
+
+    expect(code).toBe(1);
+    expect(stderr).toContain('Unknown command: xyzzy');
+    expect(stderr).not.toContain('Did you mean');
   });
 });
 
@@ -259,7 +344,49 @@ describe('main() — examples command', () => {
     expect(emitMock.mock.calls[0][0]).toMatchObject({
       command: 'examples',
       exitCode: 1,
-      args: expect.objectContaining({ sub: 'get', slug: 'filter' }),
+      args: expect.objectContaining({ sub: 'get', slug: 'unknown' }),
+    });
+  });
+
+  test('records an example slug that resolves to nothing as unknown', async () => {
+    vi.mocked(runExamples).mockRejectedValueOnce(
+      new Error('No example "acme-checkout" found.')
+    );
+
+    const code = await main(['examples', 'get', 'acme-checkout']);
+
+    expect(code).toBe(1);
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      args: expect.objectContaining({ sub: 'get', slug: 'unknown' }),
+    });
+  });
+});
+
+describe('main() — list command', () => {
+  test('records the manifest spelling of a matched --category', async () => {
+    vi.mocked(runList).mockResolvedValueOnce({
+      output: 'list output',
+      cacheHit: false,
+      category: 'form',
+    });
+
+    await main(['list', '--category', 'Form']);
+
+    expect(runList).toHaveBeenCalledWith(
+      expect.objectContaining({ category: 'Form' })
+    );
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      command: 'list',
+      args: expect.objectContaining({ category: 'form' }),
+    });
+  });
+
+  test('records an unmatched --category as unknown', async () => {
+    await main(['list', '--category', 'acme-internal']);
+
+    expect(emitMock.mock.calls[0][0]).toMatchObject({
+      command: 'list',
+      args: expect.objectContaining({ category: 'unknown' }),
     });
   });
 });
@@ -288,14 +415,26 @@ describe('main() — search command', () => {
     });
   });
 
-  test('fails when --limit is not a positive integer', async () => {
-    const code = await main(['search', 'tag', '--limit', '0']);
+  // A rejected --limit is clamped like --format, so a typo is never echoed back.
+  test.each(['0', 'abc123'])(
+    'fails and records invalid when --limit is %s',
+    async limit => {
+      const code = await main(['search', 'tag', '--limit', limit]);
 
-    expect(code).toBe(1);
+      expect(code).toBe(1);
+      expect(emitMock.mock.calls[0][0]).toMatchObject({
+        command: 'search',
+        exitCode: 1,
+        args: expect.objectContaining({ limit: 'invalid' }),
+      });
+    }
+  );
+
+  test('records a valid --limit as-is', async () => {
+    await main(['search', 'tag', '--limit', '5']);
+
     expect(emitMock.mock.calls[0][0]).toMatchObject({
-      command: 'search',
-      exitCode: 1,
-      args: expect.objectContaining({ limit: '0' }),
+      args: expect.objectContaining({ limit: '5' }),
     });
   });
 

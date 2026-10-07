@@ -17,7 +17,9 @@ import type { ValidateChecks, ValidateFormat } from '../commands/validate.js';
 import {
   type DoctorFormat,
   EXAMPLES_SUBCOMMANDS,
+  SECTION_VALUES,
   type SubcommandName,
+  TELEMETRY_SUBCOMMANDS,
   TOP_LEVEL_NAMES,
   defaultOutputFormat,
   defaultReportFormat,
@@ -25,7 +27,14 @@ import {
 } from '../lib/commands-spec.js';
 import type { Section } from '../lib/docs.js';
 import type { OutputFormat } from '../lib/format.js';
-import { emit } from '../lib/telemetry.js';
+import { nearest } from '../lib/suggest.js';
+import {
+  TELEMETRY_NOTICE_URL,
+  emit,
+  enumArg,
+  intArg,
+  unresolvedArg,
+} from '../lib/telemetry.js';
 
 // Package root: dist/bin/marigold.mjs → ../.. = packages/cli/
 const packageRoot = path.join(
@@ -131,6 +140,11 @@ ${pc.bold('Environment:')}
   MARIGOLD_TELEMETRY_DISABLED=1  Opt out of telemetry
   DO_NOT_TRACK=1                 Opt out of telemetry (standard)
 
+${pc.bold('Telemetry:')}
+  Anonymous, identifier-free usage data is reported by default so we can see
+  which commands and components matter. Opt out with "marigold telemetry
+  disable". What is collected: ${TELEMETRY_NOTICE_URL}
+
 See https://www.marigold-ui.io for component documentation.
 `;
 
@@ -157,10 +171,18 @@ const isDoctorFormat = (v: string): v is DoctorFormat =>
   (doctorFormatValues as readonly string[]).includes(v);
 
 const isSection = (v: string): v is Section =>
-  v === 'props' || v === 'usage' || v === 'examples' || v === 'all';
+  (SECTION_VALUES as readonly string[]).includes(v);
 
 const isTelemetrySub = (v: string): v is TelemetrySubcommand =>
-  v === 'status' || v === 'enable' || v === 'disable';
+  (TELEMETRY_SUBCOMMANDS as readonly string[]).includes(v);
+
+const cacheFlagArgs = (values: {
+  fresh?: boolean;
+  offline?: boolean;
+}): Record<string, string> => ({
+  ...(values.fresh ? { fresh: 'true' } : {}),
+  ...(values.offline ? { offline: 'true' } : {}),
+});
 
 const isValidateChecks = (v: string): v is ValidateChecks =>
   v === 'technical' || v === 'spatial' || v === 'a11y' || v === 'all';
@@ -318,11 +340,10 @@ export const main = async (
       // Record telemetry args before validation so failed runs still report
       // which flags were supplied.
       telemetryArgs = {
-        component: componentInput ?? '',
-        section: values.section ?? 'all',
+        component: unresolvedArg(componentInput),
+        section: enumArg(values.section, SECTION_VALUES, 'all'),
         format: telemetryFormat,
-        ...(values.fresh ? { fresh: 'true' } : {}),
-        ...(values.offline ? { offline: 'true' } : {}),
+        ...cacheFlagArgs(values),
       };
 
       if (!componentInput) fail('Usage: marigold docs <name-or-slug>');
@@ -341,16 +362,18 @@ export const main = async (
 
       writeOutput(result.output);
       cacheHit = result.cacheHit;
+      telemetryArgs = { ...telemetryArgs, component: result.slug };
     } else if (command === 'list') {
       const { values } = parseListCommand(rest);
       const { format, telemetryFormat } = resolveOutputFormat(values.format);
 
       telemetryArgs = {
         format: telemetryFormat,
-        ...(values.category ? { category: values.category } : {}),
+        ...(values.category
+          ? { category: unresolvedArg(values.category) }
+          : {}),
         ...(values.search ? { search: 'used' } : {}),
-        ...(values.fresh ? { fresh: 'true' } : {}),
-        ...(values.offline ? { offline: 'true' } : {}),
+        ...cacheFlagArgs(values),
       };
 
       if (!format) fail(`Invalid --format: ${values.format}`);
@@ -365,6 +388,9 @@ export const main = async (
 
       writeOutput(result.output);
       cacheHit = result.cacheHit;
+      if (result.category) {
+        telemetryArgs = { ...telemetryArgs, category: result.category };
+      }
     } else if (command === 'search') {
       const { positionals, values } = parseSearchCommand(rest);
       // Join positionals so both `search "field validation"` and the
@@ -375,9 +401,8 @@ export const main = async (
       telemetryArgs = {
         format: telemetryFormat,
         ...(query ? { query: 'used' } : {}),
-        ...(values.limit ? { limit: values.limit } : {}),
-        ...(values.fresh ? { fresh: 'true' } : {}),
-        ...(values.offline ? { offline: 'true' } : {}),
+        ...(values.limit ? { limit: intArg(values.limit) } : {}),
+        ...cacheFlagArgs(values),
       };
 
       if (!query) fail('Usage: marigold search <query>');
@@ -406,11 +431,10 @@ export const main = async (
       const { format, telemetryFormat } = resolveOutputFormat(values.format);
 
       telemetryArgs = {
-        sub: sub ?? '',
+        sub: enumArg(sub, EXAMPLES_SUBCOMMANDS, ''),
         format: telemetryFormat,
-        ...(slug ? { slug } : {}),
-        ...(values.fresh ? { fresh: 'true' } : {}),
-        ...(values.offline ? { offline: 'true' } : {}),
+        ...(slug ? { slug: unresolvedArg(slug) } : {}),
+        ...cacheFlagArgs(values),
       };
 
       if (!sub || !isExamplesSub(sub)) {
@@ -437,6 +461,9 @@ export const main = async (
 
       writeOutput(result.output);
       cacheHit = result.cacheHit;
+      if (result.slug) {
+        telemetryArgs = { ...telemetryArgs, slug: result.slug };
+      }
     } else if (command === 'validate') {
       // Enforced only in runValidate, so CLI and programmatic callers behave
       // identically: it returns hasErrors: false and exits 0.
@@ -492,10 +519,12 @@ export const main = async (
     } else if (command === 'doctor') {
       const { positionals, values } = parseDoctorCommand(rest);
       const format = values.format ?? defaultReportFormat();
-      // Only { format }: the pending DST-1600 GDPR review scopes doctor
-      // telemetry to the output format, so --offline isn't tracked. Clamped so
-      // an invalid value never leaks the raw string into telemetry.
-      telemetryArgs = { format: isDoctorFormat(format) ? format : 'invalid' };
+      // Only { format }, deliberately: doctor telemetry is scoped to the output
+      // format, so --offline isn't tracked. Clamped so an invalid value never
+      // leaks the raw string into telemetry.
+      telemetryArgs = {
+        format: enumArg(format, doctorFormatValues, 'invalid'),
+      };
 
       if (positionals.length > 0) {
         fail('Usage: marigold doctor (takes no arguments)');
@@ -567,13 +596,19 @@ export const main = async (
       });
     } else if (command === 'telemetry') {
       const [sub] = rest;
-      telemetryArgs = sub ? { sub } : {};
+      telemetryArgs = sub
+        ? { sub: enumArg(sub, TELEMETRY_SUBCOMMANDS, '') }
+        : {};
       if (!sub || !isTelemetrySub(sub)) {
         fail('Usage: marigold telemetry <status|enable|disable>');
       }
       writeOutput(runTelemetry({ subcommand: sub }));
     } else {
-      fail(`Unknown command: ${command}\n\nRun "marigold --help" for usage.`);
+      const suggestion = nearest(command, TOP_LEVEL_NAMES);
+      const didYouMean = suggestion ? `\n\nDid you mean "${suggestion}"?` : '';
+      fail(
+        `Unknown command: ${command}${didYouMean}\n\nRun "marigold --help" for usage.`
+      );
     }
   } catch (err) {
     if (err instanceof Error && err.name === 'InitCancelError') {

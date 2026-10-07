@@ -43,15 +43,61 @@ describe('POST /api/telemetry', () => {
     expect(record).not.toHaveBeenCalled();
   });
 
-  it('hands the parsed event on, dropping unknown keys', async () => {
+  // The schema is strict, so an unknown key fails the parse rather than being
+  // stripped. Stripping would be enough to keep the field out of the store,
+  // but it is invisible: nobody learns the sender is wrong, and the field
+  // reappears the moment someone relaxes the schema.
+  it('rejects an unknown key with 400 rather than stripping it', async () => {
     const res = await post({
       ...makeCliEvent({ command: 'docs' }),
       injected: 'nope',
     });
 
+    expect(res.status).toBe(400);
+    expect(record).not.toHaveBeenCalled();
+  });
+
+  // The identifying key this endpoint used to require. A stale CLI still
+  // sending it gets a visible 400 instead of a quiet drop. See
+  // packages/cli/src/lib/config.ts for why the payload is identifier-free.
+  it('rejects an event carrying an anonymousId with 400', async () => {
+    const res = await post({
+      ...makeCliEvent({ command: 'docs' }),
+      anonymousId: '00000000-0000-4000-8000-000000000000',
+    });
+
+    expect(res.status).toBe(400);
+    expect(record).not.toHaveBeenCalled();
+  });
+
+  it('accepts identifier-shaped args', async () => {
+    const res = await post(
+      makeCliEvent({ command: 'docs', args: { component: 'Button' } })
+    );
+
     expect(res.status).toBe(204);
-    expect(record).toHaveBeenCalledTimes(1);
-    expect(record.mock.calls[0][0]).not.toHaveProperty('injected');
+  });
+
+  // `args` is a record, so the strict top-level check does not reach its
+  // keys. Bounding them keeps an arbitrary sender from using it as a free-form
+  // payload.
+  it('rejects an args key over 32 characters with 400', async () => {
+    const res = await post(
+      makeCliEvent({ command: 'docs', args: { ['k'.repeat(33)]: 'v' } })
+    );
+
+    expect(res.status).toBe(400);
+    expect(record).not.toHaveBeenCalled();
+  });
+
+  it('rejects more than 16 args with 400', async () => {
+    const args = Object.fromEntries(
+      Array.from({ length: 17 }, (_, i) => [`k${i}`, 'v'])
+    );
+    const res = await post(makeCliEvent({ command: 'docs', args }));
+
+    expect(res.status).toBe(400);
+    expect(record).not.toHaveBeenCalled();
   });
 
   it('maps a rate-limited event to 429', async () => {
@@ -114,8 +160,9 @@ describe('POST /api/telemetry', () => {
     expect(record).not.toHaveBeenCalled();
   });
 
-  // Both ceilings live in recordTelemetryEvent now; the route just maps
-  // either exhaustion onto 429. Ordering is pinned in record.test.ts.
+  // The ceiling lives in recordTelemetryEvent now; the route just maps
+  // exhaustion onto 429. This is the only one a CLI event can trip, since
+  // there is no identifier to key a per-caller ceiling on.
   it('maps an exhausted endpoint-wide quota to 429', async () => {
     record.mockResolvedValue('quota-exceeded');
 
