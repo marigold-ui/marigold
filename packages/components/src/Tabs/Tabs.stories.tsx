@@ -86,12 +86,19 @@ Basic.test(
   'Keyboard focus draws an inset ring that clears 3:1 on a tab',
   { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent, step }) => {
+    const tab = await waitFor(
+      () => canvas.getAllByRole('tab', { name: 'Mouse Settings' })[0]!
+    );
+
+    await step('Arrange', async () => {
+      canvas.getAllByRole('tabpanel')[0]!.focus();
+    });
+
     await step('Act', async () => {
-      await userEvent.tab();
+      await userEvent.tab({ shift: true });
     });
 
     await step('Assert', async () => {
-      const tab = canvas.getAllByRole('tab', { name: 'Mouse Settings' })[0]!;
       await expect(tab).toHaveFocus();
       expectInsetFocusRingContrast(tab);
     });
@@ -102,13 +109,17 @@ Basic.test(
   'Keyboard focus draws an inset ring that clears 3:1 on the panel',
   { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent, step }) => {
+    const panel = await waitFor(() => canvas.getAllByRole('tabpanel')[0]!);
+
+    await step('Arrange', async () => {
+      canvas.getAllByRole('tab', { name: 'Mouse Settings' })[0]!.focus();
+    });
+
     await step('Act', async () => {
-      await userEvent.tab();
       await userEvent.tab();
     });
 
     await step('Assert', async () => {
-      const panel = canvas.getAllByRole('tabpanel')[0]!;
       await expect(panel).toHaveFocus();
       expectInsetFocusRingContrast(panel);
     });

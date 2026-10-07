@@ -61,12 +61,17 @@ Basic.test(
   'Keyboard focus draws an inset ring that clears 3:1 on a link',
   { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent, step }) => {
+    const link = canvas.getByRole('link', { name: 'Home' });
+
+    await step('Arrange', async () => {
+      canvas.getByRole('link', { name: 'Breadcrumb1' }).focus();
+    });
+
     await step('Act', async () => {
-      await userEvent.tab();
+      await userEvent.tab({ shift: true });
     });
 
     await step('Assert', async () => {
-      const link = canvas.getByRole('link', { name: 'Home' });
       await expect(link).toHaveFocus();
       expectInsetFocusRingContrast(link);
     });
