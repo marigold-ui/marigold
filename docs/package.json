@@ -30,7 +30,7 @@
     "@marigold/icons": "workspace:*",
     "@marigold/system": "workspace:*",
     "@marigold/theme-rui": "workspace:*",
-    "@modelcontextprotocol/server": "2.0.0",
+    "@modelcontextprotocol/server": "2.3.0",
     "@octokit/core": "7.0.8",
     "@react-aria/i18n": "3.13.1",
     "@react-types/shared": "3.36.1",
