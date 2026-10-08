@@ -9,7 +9,8 @@ import { cn, useClassNames } from '@marigold/system';
 import { TooltipArrow } from './TooltipArrow';
 import { TooltipTrigger } from './TooltipTrigger';
 
-type RemovedProps = 'className' | 'isOpen' | 'style';
+type RemovedProps =
+  'className' | 'isOpen' | 'defaultOpen' | 'onOpenChange' | 'style';
 
 export interface TooltipProps extends Omit<RAC.TooltipProps, RemovedProps> {
   /**
