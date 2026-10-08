@@ -56,6 +56,7 @@ export default () => {
           onSelectionChange={onSelectionChange}
           items={uploads}
         >
+          <ListView.Header /> {/* [!code highlight] */}
           {(upload: (typeof uploads)[number]) => (
             <ListView.Item textValue={upload.name}>
               <TextValue>{upload.name}</TextValue>

@@ -3,7 +3,7 @@ import { type ThemeComponent, cva } from '@marigold/system';
 export const SelectList: ThemeComponent<'SelectList'> = {
   container: cva({
     base: [
-      'flex',
+      'flex flex-col',
       'has-orientation-vertical:w-full',
       'has-orientation-horizontal:w-fit has-orientation-horizontal:max-w-full',
       // Container-query flip: below 40rem in the `@container/selectlist` scope a
@@ -17,8 +17,20 @@ export const SelectList: ThemeComponent<'SelectList'> = {
         // dividers should read as one weight, so both use the opaque --color-border.
         // (A translucent control ring would composite lighter than the opaque
         // dividers, so left/right wouldn't match top/bottom.)
-        default: 'ui-surface [--ui-border-color:var(--color-border)]',
-        bordered: '',
+        default: [
+          'ui-surface [--ui-border-color:var(--color-border)]',
+          // The item padding is declared here, not on the list, so a header
+          // above the list reads the same value the options do and the two
+          // checkboxes share an x. The `p` / `px` / `py` props write these same
+          // custom properties onto this element and override these defaults.
+          '[--selectlist-item-px:var(--spacing-stretch-regular-x)]',
+          '[--selectlist-item-py:var(--spacing-stretch-regular-y)]',
+          '[--selectlist-item-radius:calc(var(--radius-surface)-1px)]',
+        ],
+        bordered: [
+          '[--selectlist-item-px:var(--spacing-square-relaxed-x)]',
+          '[--selectlist-item-py:var(--spacing-square-relaxed-y)]',
+        ],
       },
     },
     defaultVariants: { variant: 'default' },
@@ -35,11 +47,7 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     ],
     variants: {
       variant: {
-        default: [
-          '[--selectlist-item-px:var(--spacing-stretch-regular-x)]',
-          '[--selectlist-item-py:var(--spacing-stretch-regular-y)]',
-          '[--selectlist-item-radius:calc(var(--radius-surface)-1px)]',
-        ],
+        default: '',
         bordered: [
           'gap-2',
           // Each item is its own control; its ring lives in the box-shadow
@@ -47,9 +55,26 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           // both axes, so p-1 gives the rings room inside the scrollport (the
           // padding box) instead of being cut at the edges.
           'p-1',
-          '[--selectlist-item-px:var(--spacing-square-relaxed-x)]',
-          '[--selectlist-item-py:var(--spacing-square-relaxed-y)]',
         ],
+      },
+    },
+    defaultVariants: { variant: 'default' },
+  }),
+  header: cva({
+    base: [
+      'flex items-center',
+      'px-(--selectlist-item-px) py-(--selectlist-item-py)',
+      'max-sm:min-h-touch-target',
+      'border-b border-border',
+      'text-sm font-medium text-foreground',
+    ],
+    variants: {
+      variant: {
+        default: '',
+        // The list pads itself by `p-1` to keep its item rings inside the
+        // scrollport, and the header sits outside the list, so it shifts by the
+        // same amount to stay on the indicator column.
+        bordered: 'mx-1 border-b-0',
       },
     },
     defaultVariants: { variant: 'default' },

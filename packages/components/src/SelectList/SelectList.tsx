@@ -30,7 +30,11 @@ import {
 } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
+import { SelectAllContext, useSelectableKeys } from '../utils/SelectAll';
+import type { CollectionChildren } from '../utils/children.utils';
+import { splitCollectionHeader } from '../utils/children.utils';
 import { SelectListContext } from './Context';
+import { SelectListHeader } from './SelectListHeader';
 import { SelectListOption } from './SelectListOption';
 
 export type SelectionMode = 'single' | 'multiple';
@@ -47,12 +51,19 @@ type RemoveProps =
   | 'keyboardNavigationBehavior'
   | 'isDisabled'
   | 'isInvalid'
-  | 'isRequired';
+  | 'isRequired'
+  | 'children';
 
 type SelectListBaseProps<Mode extends SelectionMode = 'single'> = Omit<
   RAC.GridListProps<object>,
   RemoveProps
 > & {
+  /**
+   * The options of the list, plus an optional `<SelectList.Header>` carrying
+   * the select-all. Options are either `<SelectList.Option>` children or,
+   * together with `items`, a render function.
+   */
+  children?: CollectionChildren<object>;
   /**
    * Visual variant of the list.
    * - `default`: full-width rows separated by dividers.
@@ -183,15 +194,20 @@ interface SelectListComponent {
     props: SelectListProps<Mode>
   ): ReactNode;
   Option: typeof SelectListOption;
+  Header: typeof SelectListHeader;
 }
 
 // Stable empty style so unset padding props don't churn `style`'s identity on
 // every render (avoids unnecessary work for any consumer that compares it).
 const EMPTY_STYLE: CSSProperties = {};
 
+// A `Set` is passed through rather than copied, and the result is memoised on
+// the prop: react-aria resets the range anchor when the selection it is handed
+// changes identity, so a fresh `Set` per render would break Shift+click.
 const toSelection = (
   value: Selection | Iterable<Key> | undefined
-): Selection => (value === 'all' ? 'all' : new Set(value ?? []));
+): Selection =>
+  value === 'all' ? 'all' : value instanceof Set ? value : new Set(value ?? []);
 
 const toValidationValue = (
   selection: Selection,
@@ -234,6 +250,9 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
   ...rest
 }: SelectListProps<Mode>) => {
   const resolvedSelectionMode = (selectionMode ?? 'single') as SelectionMode;
+  // The header is a part, not an option, so it never reaches the collection.
+  const [header, options] = splitCollectionHeader(children, SelectListHeader);
+  const hasSelectAll = header !== null && resolvedSelectionMode === 'multiple';
   // Radio-group semantics for a field. `ListView` passes RAC's default through
   // instead, because a view's selection has to be abandonable.
   const resolvedDisallowEmptySelection =
@@ -286,8 +305,10 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
   const validationBehavior =
     validationBehaviorProp ?? formCtx?.validationBehavior ?? 'native';
 
-  const controlledSelection =
-    selectedKeys !== undefined ? toSelection(selectedKeys) : undefined;
+  const controlledSelection = useMemo(
+    () => (selectedKeys !== undefined ? toSelection(selectedKeys) : undefined),
+    [selectedKeys]
+  );
   const [initialSelection] = useState<Selection>(() =>
     defaultSelectedKeys !== undefined
       ? toSelection(defaultSelectedKeys)
@@ -317,12 +338,44 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
     validationBehavior,
   });
 
+  const selectableKeys = useSelectableKeys({
+    children: options,
+    items: rest.items,
+    disabledKeys: rest.disabledKeys,
+    warn: hasSelectAll,
+  });
+
+  // A field submits concrete keys, so this list never holds `'all'`: it
+  // resolves the sentinel React Aria's Cmd/Ctrl+A reports (and that the
+  // select-all would otherwise produce) to the keys it covers. Without the
+  // keys, `'all'` is passed through unchanged rather than read as "nothing" —
+  // see `HiddenSelection`, which submits nothing for it.
   const handleSelectionChange = useCallback(
     (keys: Selection) => {
-      setSelection(keys);
+      setSelection(
+        keys === 'all' && selectableKeys.length > 0
+          ? new Set(selectableKeys)
+          : keys
+      );
       validationState.commitValidation();
     },
-    [setSelection, validationState]
+    [setSelection, validationState, selectableKeys]
+  );
+
+  const onSelectAll = useCallback(
+    (selected: boolean) =>
+      handleSelectionChange(selected ? new Set(selectableKeys) : new Set()),
+    [handleSelectionChange, selectableKeys]
+  );
+
+  const selectAll = useMemo(
+    () => ({
+      keys: selectableKeys,
+      selection,
+      onChange: onSelectAll,
+      disabled,
+    }),
+    [selectableKeys, selection, onSelectAll, disabled]
   );
 
   const contextValue = useMemo(
@@ -356,7 +409,10 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
               wrapper. Putting `container-type: inline-size` on the surface
               itself applies size containment and breaks `w-fit`, which would
               cause the flip query to fire even in wide parents. */}
-          <div className={classNames.container}>
+          <div className={classNames.container} style={itemPaddingStyle}>
+            {hasSelectAll && (
+              <SelectAllContext value={selectAll}>{header}</SelectAllContext>
+            )}
             <RACGridList
               {...(rest as RAC.GridListProps<object>)}
               {...(emptyState !== undefined && {
@@ -373,9 +429,8 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
               selectedKeys={selection}
               onSelectionChange={handleSelectionChange}
               className={cn('group/list', classNames.list)}
-              style={itemPaddingStyle}
             >
-              {children}
+              {options}
             </RACGridList>
             <HiddenSelection
               name={name}
@@ -398,5 +453,6 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
 
 const SelectListExported = SelectList as SelectListComponent;
 SelectListExported.Option = SelectListOption;
+SelectListExported.Header = SelectListHeader;
 
 export { SelectListExported as SelectList };
