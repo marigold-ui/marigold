@@ -441,6 +441,43 @@ Rail.test(
   }
 );
 
+Rail.test(
+  'a tile tooltip does not get stuck after the panel expands',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const body = within(document.body);
+    const rail = canvas.getByRole('navigation', { name: 'Hauptnavigation' });
+    const toggle = canvas.getByRole('button', {
+      name: 'Navigation umschalten',
+    });
+    const kontakte = within(rail).getByRole('link', { name: 'Kontakte' });
+
+    await step('swap tooltips on the collapsed rail', async () => {
+      await userEvent.click(toggle);
+      await userEvent.hover(kontakte);
+      await waitFor(
+        () => expect(body.getByRole('tooltip')).toHaveTextContent('Kontakte'),
+        { timeout: 3000 }
+      );
+      await userEvent.hover(
+        within(rail).getByRole('link', { name: 'Übersicht' })
+      );
+      await waitFor(() =>
+        expect(body.getByRole('tooltip')).toHaveTextContent('Übersicht')
+      );
+    });
+
+    await step('click the swapped-out tile on the expanded rail', async () => {
+      await userEvent.click(toggle);
+      await userEvent.click(kontakte);
+
+      await waitFor(() =>
+        expect(body.queryByRole('tooltip')).not.toBeInTheDocument()
+      );
+    });
+  }
+);
+
 // Walks the tree instead of matching a theme class, so assertions stay behavioural.
 const closestScrollable = (element: HTMLElement) => {
   let node = element.parentElement;
