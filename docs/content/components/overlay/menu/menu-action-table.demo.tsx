@@ -51,6 +51,7 @@ export default () => {
             <Table.Cell>
               <ActionMenu
                 variant="ghost"
+                size="icon"
                 aria-label={`Actions for ${ticket.eventName}`}
               >
                 <Menu.Item

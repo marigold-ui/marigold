@@ -146,7 +146,7 @@ The Table component supports two selection modes:
 
 Row actions let users interact with individual records directly from a table, such as editing, viewing details, or triggering specific operations. These interactions are essential for working with tabular data, and thoughtful design helps users stay oriented and confident. To support clarity, predictability, and efficiency, it's important to align how and where these actions appear.
 
-Use the `<Button>` component with the secondary (default) variant for row actions. If the action is destructive, use the destructive variant instead. In both cases, apply the small button size to maintain visual consistency and minimize visual noise in dense table layouts.
+Use the `ghost` variant for row actions so they recede into the row until the user scans for them. Labeled buttons take the `small` size, icon-only buttons the `icon` size.
 
 When it comes to placement, always position row actions at the end of the row. This improves scannability and clearly signals which parts of the row are interactive, helping users quickly locate available actions.
 
@@ -154,7 +154,11 @@ When it comes to placement, always position row actions at the end of the row. T
 
 Show only the most important 1 to 3 actions per row. These should be the actions users are most likely to need or expect to find without having to open a menu, such as "Edit" or "View." If you need to support more than three actions, prioritize them by frequency and importance: display the most critical ones directly, and group the rest into a contextual menu using an `<ActionMenu>` (see [ActionMenu](/components/overlay/action-menu)). This keeps the row clean and scannable while still offering access to all necessary actions.
 
-Using too many visible actions at once can overwhelm users, make it hard to identify what to do, and increase visual clutter. If space is limited or the layout feels crowded, consider using icon buttons to keep actions compact. Pair them with tooltips to clearly communicate each action's purpose without adding visual noise.
+Destructive actions follow the same rule. When deleting is something users do often in this table, show it as a visible `destructive-ghost` button and place it last. When it is rare, put it in the menu as an `<ActionMenu.Item variant="destructive">`. Whether the action asks for a confirmation or offers an undo is decided by the [Destructive actions](/patterns/feedback/destructive-actions) pattern, not by where the button sits.
+
+Wrap two or more visible actions in a `<ButtonGroup>` and set `variant="ghost"` and the size on the group, so every button in the cluster picks them up.
+
+Using too many visible actions at once can overwhelm users, make it hard to identify what to do, and increase visual clutter. If space is limited or the layout feels crowded, consider using icon buttons to keep actions compact. Give each one an `aria-label` and pair it with a tooltip to clearly communicate the action's purpose without adding visual noise.
 
 <Callout title="Use icons with care">
   Only use icons when their meaning is clear without explanation. If the icon
