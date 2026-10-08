@@ -29,3 +29,6 @@ export const useTrayContext = () => use(TrayContext);
  * here, not `TrayContent.tsx`, so `TrayModal` doesn't depend on it.
  */
 export const TRAY_CONTENT_ATTR = 'data-tray-content';
+
+export const TRAY_MAX_HEIGHT =
+  '[--tray-available:calc(var(--visual-viewport-height)*0.95)] max-h-(--tray-available)';

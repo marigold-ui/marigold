@@ -11,7 +11,7 @@ import { ActionMenuContext } from '../Menu/ActionMenuContext';
 import { useIsHiddenTree } from '../utils/useIsHiddenTree';
 import { useOverlayRootSlotProps } from '../utils/useOverlayRootSlotProps';
 import { useSlot } from '../utils/useSlot';
-import { TrayContext } from './Context';
+import { TRAY_MAX_HEIGHT, TrayContext } from './Context';
 import { TrayActions } from './TrayActions';
 import { TrayContent } from './TrayContent';
 import { TrayDescription } from './TrayDescription';
@@ -141,6 +141,7 @@ export const Tray = ({
             }
             className={cn(
               "group/tray [grid-template-areas:'drag'_'title'_'content'_'actions']",
+              TRAY_MAX_HEIGHT,
               classNames.container
             )}
           >
