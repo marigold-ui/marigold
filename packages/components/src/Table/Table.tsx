@@ -1,9 +1,11 @@
 import type { ComponentProps, ReactNode } from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import { use, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import type RAC from 'react-aria-components';
 import {
   Table as RACTable,
   ResizableTableContainer,
+  TableColumnResizeStateContext,
+  TableStateContext,
 } from 'react-aria-components/Table';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { announce } from '@react-aria/live-announcer';
@@ -74,6 +76,51 @@ export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
   onExpandedChange?: RAC.TableProps['onExpandedChange'];
 }
 
+// Helper
+// ---------------
+const isRelative = (size: unknown) =>
+  typeof size === 'string' && size.endsWith('%');
+
+interface TableElementProps extends ComponentProps<'table'> {
+  loading: boolean;
+  onMinWidthChange: (width: number) => void;
+}
+
+/**
+ * The `<table>` is the one Marigold element React Aria renders inside its own
+ * providers, so it is where the column layout can be read.
+ */
+const TableElement = ({
+  loading,
+  onMinWidthChange,
+  ...props
+}: TableElementProps) => {
+  const state = use(TableStateContext);
+  const layout = use(TableColumnResizeStateContext);
+
+  // Includes React Aria's 75px default and the selection and drag columns.
+  // Percentage minimums resolve against the container's width, which this
+  // value sets, so counting them would feed the width back into itself.
+  const minWidth =
+    state && layout
+      ? state.collection.columns.reduce(
+          (sum, column) =>
+            isRelative(column.props.minWidth)
+              ? sum
+              : sum + layout.getColumnMinWidth(column.key),
+          0
+        )
+      : undefined;
+
+  useLayoutEffect(() => {
+    if (minWidth === undefined || !Number.isFinite(minWidth)) return;
+    onMinWidthChange(minWidth);
+  }, [minWidth, onMinWidthChange]);
+
+  // React Aria drops `aria-busy`, so it is set on the element directly.
+  return <table {...props} aria-busy={loading || undefined} />;
+};
+
 const _Table = ({
   variant,
   size,
@@ -96,6 +143,7 @@ const _Table = ({
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   const [warnedMissingTextValue] = useState(() => new Set<string>());
+  const [minTableWidth, setMinTableWidth] = useState<number>();
 
   const ctx = useMemo(
     () => ({
@@ -139,8 +187,13 @@ const _Table = ({
   return (
     <TableContext value={ctx}>
       <ResizableTableContainer
-        className="w-full"
+        // React Aria sizes the columns to this container's width. Containment
+        // keeps that width from following the table, which would otherwise
+        // lock a content-sized parent to its widest width. The column minimums
+        // stand in as the floor the table used to provide.
+        className="w-full [contain:inline-size]"
         style={{
+          minWidth: minTableWidth,
           paddingBottom: actionBarHeight
             ? `calc(${actionBarHeight}px + var(--actionbar-offset, 8px))`
             : undefined,
@@ -156,12 +209,12 @@ const _Table = ({
           selectedKeys={selectedKeys}
           defaultSelectedKeys={actionBar ? undefined : defaultSelectedKeysProp}
           onSelectionChange={onSelectionChange}
-          // React Aria drops `aria-busy`, so it is set on the element directly.
           render={domProps => (
-            <table
+            <TableElement
               // Only a virtualized table renders a `<div>`, and Marigold's never is.
               {...(domProps as ComponentProps<'table'>)}
-              aria-busy={loading || undefined}
+              loading={loading}
+              onMinWidthChange={setMinTableWidth}
             />
           )}
           {...props}

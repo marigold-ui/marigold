@@ -9,6 +9,7 @@ import { ActionBar } from '../ActionBar/ActionBar';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Checkbox } from '../Checkbox/Checkbox';
+import { Columns } from '../Columns/Columns';
 import { EmptyState } from '../EmptyState/EmptyState';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { NumberField } from '../NumberField/NumberField';
@@ -1005,6 +1006,69 @@ ScrollableAndSticky.test(
       const containerTop = scrollContainer.getBoundingClientRect().top;
       expect(Math.abs(headerTop - containerTop)).toBeLessThan(5);
     });
+  }
+);
+
+// A content-sized parent: `Columns` sizes its tracks to the Table's width,
+// while React Aria sizes the columns to the track's width.
+export const FollowsParentWidth = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => (
+    <Columns columns={[1, 2]} space={4}>
+      <Text>Filters</Text>
+      <Panel>
+        <Panel.Header>
+          <Title>Organizers</Title>
+        </Panel.Header>
+        <Panel.Content bleed>
+          <Table aria-label="Organizers" {...args}>
+            <Table.Header>
+              <Table.Column rowHeader width="2fr" minWidth={160}>
+                Name
+              </Table.Column>
+              <Table.Column width="1fr" minWidth={140}>
+                City
+              </Table.Column>
+              <Table.Column width="2fr" minWidth={180}>
+                Email
+              </Table.Column>
+              <Table.Column width={100}>Status</Table.Column>
+            </Table.Header>
+            <Table.Body>
+              {[1, 2, 3].map(id => (
+                <Table.Row key={id}>
+                  <Table.Cell>Organizer {id}</Table.Cell>
+                  <Table.Cell>Freiburg im Breisgau</Table.Cell>
+                  <Table.Cell>contact{id}@example.com</Table.Cell>
+                  <Table.Cell>active</Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+        </Panel.Content>
+      </Panel>
+    </Columns>
+  ),
+});
+
+FollowsParentWidth.test(
+  'Columns narrow again after the viewport widens and shrinks',
+  async ({ canvas }) => {
+    // Only resolvable inside Vitest; a static import breaks the story in Storybook.
+    const { page } = await import('vitest/browser');
+    const table = canvas.getByRole('grid');
+    const width = () => table.getBoundingClientRect().width;
+
+    await page.viewport(900, 800);
+    await waitFor(() => expect(width()).toBeGreaterThan(0));
+    const narrow = width();
+
+    await page.viewport(1440, 800);
+    await waitFor(() => expect(width()).toBeGreaterThan(narrow));
+
+    await page.viewport(900, 800);
+    await waitFor(() => expect(width()).toBe(narrow));
   }
 );
 
