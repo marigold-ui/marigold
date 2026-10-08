@@ -41,7 +41,7 @@
     "autoprefixer": "10.6.1",
     "concurrently": "10.0.5",
     "eslint": "10.11.0",
-    "eslint-plugin-storybook": "10.6.0",
+    "eslint-plugin-storybook": "10.6.1",
     "husky": "9.1.7",
     "playwright": "1.63.0",
     "postcss-import": "16.2.0",
