@@ -34,7 +34,10 @@ export const MorphCaret = ({
       className={cn('shrink-0', className)}
       {...props}
     >
+      {/* The `d` attribute is the fallback for Safari, which ignores the
+          CSS `d` property. Where CSS `d` is supported it wins and animates. */}
       <path
+        d={expanded ? CARET_OPEN : CARET_CLOSED}
         style={
           {
             d: `path("${expanded ? CARET_OPEN : CARET_CLOSED}")`,
