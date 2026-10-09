@@ -64,7 +64,7 @@ const TicketDrawer = ({
   ...props
 }: { ticket: Ticket } & DrawerProps) => (
   <Drawer.Trigger>
-    <Button variant="secondary" size="small">
+    <Button variant="ghost" size="small">
       View
     </Button>
     <Drawer {...props} size="medium">

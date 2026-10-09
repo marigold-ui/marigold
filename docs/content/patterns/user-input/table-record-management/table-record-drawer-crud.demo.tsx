@@ -313,7 +313,7 @@ export default () => {
                 <Table.Cell alignX="right">
                   {/* [!code highlight:7] */}
                   <Button
-                    variant="secondary"
+                    variant="ghost"
                     size="small"
                     onPress={() => openEdit(venue)}
                   >
