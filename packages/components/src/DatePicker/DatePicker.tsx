@@ -34,7 +34,10 @@ type RemovedProps =
 export interface DatePickerProps
   extends
     Omit<RAC.DatePickerProps<DateValue>, RemovedProps>,
-    Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
+    Pick<
+      FieldBaseProps<'label'>,
+      'label' | 'addon' | 'description' | 'errorMessage'
+    > {
   /**
    * Callback that is called for each date of the calendar. If it returns true, then the date is unavailable.
    */

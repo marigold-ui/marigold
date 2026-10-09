@@ -43,7 +43,10 @@ type RemovedProps =
 export interface FileFieldProps
   extends
     Omit<RAC.DropZoneProps, RemovedProps>,
-    Pick<FieldBaseProps<'input'>, 'label' | 'description' | 'errorMessage'> {
+    Pick<
+      FieldBaseProps<'input'>,
+      'label' | 'addon' | 'description' | 'errorMessage'
+    > {
   variant?: string;
   size?: 'default' | 'small' | (string & {});
 
@@ -134,6 +137,7 @@ export const FileField = ({
   multiple = false,
   width,
   label,
+  addon,
   name,
   size,
   variant,
@@ -317,6 +321,7 @@ export const FileField = ({
         as="div"
         width={width}
         label={label}
+        addon={addon}
         className={classNames.container}
         description={description}
         errorMessage={errorMessage}

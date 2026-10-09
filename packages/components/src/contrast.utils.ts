@@ -131,3 +131,27 @@ export const insetFocusRing = (element: HTMLElement) => {
     )?.[0],
   };
 };
+
+/**
+ * Asserts the element paints an inset focus ring that clears 3:1 against both
+ * adjacent colors: its own fill inside the ring and its parent's ground outside.
+ */
+export const expectInsetFocusRingContrast = (element: HTMLElement) => {
+  const { boxShadow, ring, color } = insetFocusRing(element);
+  expect(ring, `no inset focus ring in box-shadow: ${boxShadow}`).toBeTruthy();
+  expect(color, `no color found in shadow: ${ring}`).toBeTruthy();
+
+  const outside = paintedGround(element.parentElement);
+  expect(outside.length).toBeGreaterThan(0);
+
+  for (const [side, ground] of [
+    ['inside', paintedGround(element)],
+    ['outside', outside],
+  ] as const) {
+    const ratio = contrastOn(ground, color!);
+    expect(
+      ratio,
+      `focus ring vs ${side} is ${ratio.toFixed(2)}:1, needs ${WCAG_NON_TEXT}:1`
+    ).toBeGreaterThanOrEqual(WCAG_NON_TEXT);
+  }
+};

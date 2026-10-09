@@ -21,7 +21,10 @@ type RemovedProps =
 export interface SearchFieldProps
   extends
     Omit<RAC.SearchFieldProps, RemovedProps>,
-    Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
+    Pick<
+      FieldBaseProps<'label'>,
+      'label' | 'addon' | 'description' | 'errorMessage'
+    > {
   /**
    * Action element to display in the search field.
    */

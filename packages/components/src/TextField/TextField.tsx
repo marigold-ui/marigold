@@ -22,7 +22,10 @@ type RemovedProps =
 export interface TextFieldProps
   extends
     Omit<RAC.TextFieldProps, RemovedProps>,
-    Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
+    Pick<
+      FieldBaseProps<'label'>,
+      'label' | 'addon' | 'description' | 'errorMessage'
+    > {
   variant?: string;
   size?: string;
 

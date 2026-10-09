@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { theme } from '@marigold/theme-rui';
+import { Badge } from '../Badge/Badge';
 import { Description } from '../Description/Description';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import { SelectList } from './SelectList';
@@ -144,6 +145,16 @@ describe('SelectList', () => {
       const grid = screen.getByRole('grid');
 
       expect(grid).toHaveAttribute('aria-label', 'Saved methods');
+    });
+
+    test('describes the list by its addon', () => {
+      render(
+        <Basic.Component addon={<Badge variant="master">Master</Badge>} />
+      );
+
+      const grid = screen.getByRole('grid');
+
+      expect(grid).toHaveAccessibleDescription(/Master/);
     });
   });
 

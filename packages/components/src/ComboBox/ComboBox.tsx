@@ -32,7 +32,10 @@ type RemovedProps =
 export interface ComboBoxProps
   extends
     Omit<RAC.ComboBoxProps<any>, RemovedProps>,
-    Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
+    Pick<
+      FieldBaseProps<'label'>,
+      'label' | 'addon' | 'description' | 'errorMessage'
+    > {
   variant?: string;
   size?: string;
 

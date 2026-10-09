@@ -4,13 +4,15 @@ import type {
   ElementType,
   ReactNode,
 } from 'react';
+import { useId } from 'react';
 import { createWidthVar, isFraction } from '@marigold/system';
 import { type WidthProp } from '@marigold/system';
 import { cn, useClassNames } from '@marigold/system';
 import type { DistributiveOmit } from '@marigold/types';
 import type { HelpTextProps } from '../HelpText/HelpText';
 import { HelpText } from '../HelpText/HelpText';
-import { Label } from '../Label/Label';
+import { hasAddonContent, joinIds } from '../utils/useLabelAddon';
+import { FieldLabel } from './FieldLabel';
 
 // Props
 // ---------------
@@ -21,6 +23,11 @@ export interface FieldBaseProps<T extends ElementType>
    * Specifies the label of the field.
    */
   label?: ReactNode;
+  /**
+   * Content after the label, such as a `<Badge>` or `<ContextualHelp>`. Keeps
+   * the label row's height, and a badge is read as the field's description.
+   */
+  addon?: ReactNode;
   variant?: string;
   size?: string;
   children?: ReactNode;
@@ -33,12 +40,22 @@ export interface FieldBaseProps<T extends ElementType>
   isDisabled?: boolean;
 }
 
+// Not exported from the barrel, so `addonId` stays off the public props.
+interface FieldBaseInternalProps<
+  T extends ElementType,
+> extends FieldBaseProps<T> {
+  /** Id for the addon's static content, when the field wires `aria-describedby` itself. */
+  addonId?: string;
+}
+
 // Component
 // ---------------
 const _FieldBase = <T extends ElementType>({
   as: Component = 'div' as T,
   children,
   label,
+  addon,
+  addonId: addonIdProp,
   size,
   variant,
   width,
@@ -50,7 +67,8 @@ const _FieldBase = <T extends ElementType>({
   isDisabled,
   ref,
   ...rest
-}: FieldBaseProps<T> & DistributiveOmit<ComponentPropsWithRef<T>, 'as'>) => {
+}: FieldBaseInternalProps<T> &
+  DistributiveOmit<ComponentPropsWithRef<T>, 'as'>) => {
   // Forward `isInvalid` / `isRequired` / `isDisabled` to any non-string `as`
   // (RAC components or wrappers using RAC's prop names) and skip them on plain
   // DOM elements where they'd emit unknown-attribute warnings.
@@ -58,6 +76,19 @@ const _FieldBase = <T extends ElementType>({
     typeof Component === 'string'
       ? null
       : { isInvalid, isRequired, isDisabled };
+
+  const generatedAddonId = useId();
+  const addonId = addonIdProp ?? generatedAddonId;
+  // RAC fields merge this with their own description ids.
+  const addonDescription =
+    hasAddonContent(addon) && typeof Component !== 'string'
+      ? {
+          'aria-describedby': joinIds(
+            (rest as { 'aria-describedby'?: string })['aria-describedby'],
+            addonId
+          ),
+        }
+      : null;
 
   const classNames = useClassNames({
     component: 'Field',
@@ -72,6 +103,7 @@ const _FieldBase = <T extends ElementType>({
   const componentProps = {
     ...rest,
     ...racValidationProps,
+    ...addonDescription,
     ref: ref as ComponentPropsWithRef<T>['ref'],
     className: cn(
       'group/field flex min-w-0 flex-col',
@@ -102,11 +134,13 @@ const _FieldBase = <T extends ElementType>({
 
   return (
     <ComponentWithRef {...componentProps}>
-      {label ? (
-        <Label variant={variant} size={size}>
-          {label}
-        </Label>
-      ) : null}
+      <FieldLabel
+        label={label}
+        addon={addon}
+        addonId={addonId}
+        variant={variant}
+        size={size}
+      />
       {children}
       <HelpText
         variant={variant}

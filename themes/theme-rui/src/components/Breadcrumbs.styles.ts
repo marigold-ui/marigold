@@ -36,7 +36,7 @@ export const Breadcrumbs: ThemeComponent<'Breadcrumbs'> = {
     defaultVariants: { size: 'default' },
   }),
   link: cva({
-    base: 'transition-[color] hover:text-foreground cursor-pointer',
+    base: 'transition-[color] hover:text-foreground cursor-pointer rounded-sm px-1 outline-none focus-visible:ui-state-focus-item',
   }),
   // The current page reads a tier above the trail: medium weight (the theme's
   // emphasis weight, same as the sidebar's active pill) in the foreground ink.
