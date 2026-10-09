@@ -188,7 +188,7 @@ describe('useAutoCollapse', () => {
 
     act(() => capturedOnResize!());
 
-    expect(result.current).toBe(5);
+    expect(result.current).toBeNull();
   });
 
   test('collapses to minimum when nothing fits', () => {
@@ -238,7 +238,7 @@ describe('useAutoCollapse', () => {
 
     act(() => capturedOnResize!());
 
-    expect(result.current).toBe(5);
+    expect(result.current).toBeNull();
   });
 
   test('resets when item count changes', async () => {
@@ -259,6 +259,6 @@ describe('useAutoCollapse', () => {
     // eslint-disable-next-line testing-library/no-unnecessary-act -- async act needed to flush requestAnimationFrame in useLayoutEffect
     await act(async () => rerender({ total: 3 }));
 
-    expect(result.current).toBe(3);
+    expect(result.current).toBeNull();
   });
 });

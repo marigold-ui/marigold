@@ -152,3 +152,72 @@ TruncatedCurrent.test(
     );
   }
 );
+
+export const CollapsesWhenAllButOneFit = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <I18nProvider locale="en-US">
+      <div className="border-border w-80 border">
+        <Breadcrumbs {...args}>
+          <Breadcrumbs.Item href="#">Home</Breadcrumbs.Item>
+          <Breadcrumbs.Item href="#">Events</Breadcrumbs.Item>
+          <Breadcrumbs.Item href="#">Summer</Breadcrumbs.Item>
+          <Breadcrumbs.Item href="#">Event Details</Breadcrumbs.Item>
+        </Breadcrumbs>
+      </div>
+    </I18nProvider>
+  ),
+});
+
+CollapsesWhenAllButOneFit.test(
+  'Collapses rather than rendering every item past the container edge',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    await canvas.findByRole('button', {
+      name: 'These breadcrumbs are hidden',
+    });
+
+    const list = canvas.getByRole('list');
+    await expect(list.scrollWidth).toBeLessThanOrEqual(list.clientWidth);
+
+    const current = within(list).getByText('Event Details');
+    await expect(current.scrollWidth).toBeLessThanOrEqual(current.clientWidth);
+  }
+);
+
+export const CollapsesThreeItems = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <I18nProvider locale="en-US">
+      <div className="border-border w-60 border">
+        <Breadcrumbs {...args}>
+          <Breadcrumbs.Item href="#">Home</Breadcrumbs.Item>
+          <Breadcrumbs.Item href="#">
+            Summer Festival Programme
+          </Breadcrumbs.Item>
+          <Breadcrumbs.Item href="#">Details</Breadcrumbs.Item>
+        </Breadcrumbs>
+      </div>
+    </I18nProvider>
+  ),
+});
+
+CollapsesThreeItems.test(
+  'Keeps the root item when only the middle one has to collapse',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    await canvas.findByRole('button', {
+      name: 'These breadcrumbs are hidden',
+    });
+
+    const list = canvas.getByRole('list');
+
+    // The trail is [Home, …, Details]: only the middle item collapses, the
+    // root one stays because it fits beside the ellipsis.
+    await expect(within(list).getByText('Home')).toBeVisible();
+    await expect(
+      within(list).queryByText('Summer Festival Programme')
+    ).toBeNull();
+    await expect(list.scrollWidth).toBeLessThanOrEqual(list.clientWidth);
+  }
+);
