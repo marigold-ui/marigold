@@ -142,6 +142,7 @@ describe('Sidebar.Rail — arrow-key navigation', () => {
     render(<Rail.Component />);
     const rail = screen.getByRole('navigation', { name: 'Hauptnavigation' });
     await user.tab();
+    await user.tab();
     const uebersicht = within(rail).getByRole('link', { name: 'Übersicht' });
     expect(uebersicht).toHaveFocus();
 
@@ -156,6 +157,7 @@ describe('Sidebar.Rail — arrow-key navigation', () => {
 
   test('End and Home jump across the whole rail, including the pinned footer', async () => {
     render(<Rail.Component />);
+    await user.tab();
     await user.tab();
 
     await user.keyboard('{End}');
@@ -217,7 +219,9 @@ describe('Sidebar.Rail — tooltips on the collapsed rail', () => {
   test('an expanded rail tile shows no tooltip — the visible label is the hint', async () => {
     render(<Rail.Component />);
 
-    // First Tab lands on the first rail tile (the aside precedes the top bar).
+    // The first Tab lands on the AppShell skip-link, the second on the first
+    // rail tile (the aside precedes the top bar).
+    await user.tab();
     await user.tab();
     await vi.advanceTimersByTimeAsync(2000);
 

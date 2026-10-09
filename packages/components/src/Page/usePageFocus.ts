@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { usePageContext } from './Context';
+import { focusLandmark } from './focusLandmark';
 
 /**
  * Move focus to the top of the page when the route changes, the standard
@@ -71,10 +72,8 @@ export const usePageFocus = (routeKey: string) => {
     if (!main) {
       return;
     }
-    if (!main.hasAttribute('tabindex')) {
-      main.tabIndex = -1;
+    if (focusLandmark(main)) {
       addedTabIndexRef.current = true;
     }
-    main.focus();
   }, [routeKey, titleId, mainRef]);
 };

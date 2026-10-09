@@ -1,7 +1,11 @@
-import type { HTMLAttributes, ReactNode, Ref } from 'react';
-import { use } from 'react';
-import { cn } from '@marigold/system';
+import type { HTMLAttributes, MouseEvent, ReactNode, Ref } from 'react';
+import { use, useId, useMemo, useRef } from 'react';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { cn, useClassNames } from '@marigold/system';
+import { focusLandmark } from '../Page/focusLandmark';
 import { SidebarContext, SidebarProvider } from '../Sidebar/Context';
+import { intlMessages } from '../intl/messages';
+import { AppShellContext } from './Context';
 
 // Props
 // ---------------
@@ -52,6 +56,25 @@ export const AppShell = ({
   // any boilerplate.
   const hasOuterProvider = use(SidebarContext) !== null;
 
+  const mainId = useId();
+  const mainRef = useRef<HTMLElement>(null);
+  const contextValue = useMemo(() => ({ mainId, mainRef }), [mainId]);
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const skipLinkClassNames = useClassNames({
+    component: 'Button',
+    variant: 'secondary',
+  });
+
+  const skipToMain = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    const main = mainRef.current;
+    if (main && focusLandmark(main)) {
+      main.addEventListener('blur', () => main.removeAttribute('tabindex'), {
+        once: true,
+      });
+    }
+  };
+
   const grid = (
     <div
       ref={ref}
@@ -69,7 +92,17 @@ export const AppShell = ({
       )}
       {...props}
     >
-      {children}
+      <a
+        href={`#${mainId}`}
+        onClick={skipToMain}
+        className={cn(
+          skipLinkClassNames,
+          'fixed top-2 left-2 z-10 not-focus:sr-only!'
+        )}
+      >
+        {stringFormatter.format('skipToMainContent')}
+      </a>
+      <AppShellContext value={contextValue}>{children}</AppShellContext>
     </div>
   );
 

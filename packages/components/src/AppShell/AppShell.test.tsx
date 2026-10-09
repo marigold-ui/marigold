@@ -26,6 +26,20 @@ describe('AppShell', () => {
     expect(screen.getByRole('main')).not.toHaveClass('overflow-y-auto');
   });
 
+  test('points the skip-link at the main landmark', () => {
+    render(<Basic.Component />);
+
+    const skipLink = screen.getByRole('link', { name: 'Skip to main content' });
+
+    expect(skipLink).toHaveAttribute('href', `#${screen.getByRole('main').id}`);
+  });
+
+  test('leaves the main landmark out of the focus order until the skip-link is used', () => {
+    render(<Basic.Component />);
+
+    expect(screen.getByRole('main')).not.toHaveAttribute('tabindex');
+  });
+
   test('absorbs Sidebar.Provider so the toggle is wired without extra setup', () => {
     render(<Basic.Component />);
 
