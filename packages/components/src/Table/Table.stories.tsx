@@ -1368,9 +1368,16 @@ DragAndDrop.test(
     const dragHandle = within(firstRow).getByRole('button', { name: /drag/i });
 
     await step('Pick up the first row (Hans Müller)', async () => {
+      // Reach the handle by keyboard: Tab lands on the first row, ArrowRight
+      // on its drag button. A programmatic `focus()` leaves React Aria's
+      // interaction modality unset, so Enter selects the row instead of
+      // starting the drag, unless an earlier test happened to set it.
+      await userEvent.tab();
+      await userEvent.keyboard('{ArrowRight}');
+      await expect(dragHandle).toHaveFocus();
+
       // Enter starts the keyboard drag and moves focus straight to a drop
       // indicator inside the collection (Tab would leave drop navigation).
-      dragHandle.focus();
       await userEvent.keyboard('{Enter}');
     });
 
