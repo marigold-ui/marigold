@@ -70,12 +70,17 @@ const BreadcrumbsBase = ({
 
   const autoMax = useAutoCollapse(objRef, hiddenRef, total);
 
-  const effectiveMax = maxVisibleItems === 'auto' ? autoMax : maxVisibleItems;
+  const isAuto = maxVisibleItems === 'auto';
+  const effectiveMax = isAuto ? autoMax : maxVisibleItems;
 
+  // The hook signals "everything fits" with `null`, so any number it returns
+  // asks for a collapse. Its count includes the ellipsis slot, which means a
+  // count equal to `total` still hides one item: hence `>=` in auto mode,
+  // where a numeric `maxVisibleItems` counts items and collapses on `>`.
   const shouldCollapse =
     typeof effectiveMax === 'number' &&
     effectiveMax >= 2 &&
-    total > effectiveMax;
+    (isAuto ? total >= effectiveMax : total > effectiveMax);
 
   // When collapsed, show: [first, ellipsis, ...trailing, current]
   // effectiveMax=2: [ellipsis, current] (no first item)
@@ -98,8 +103,6 @@ const BreadcrumbsBase = ({
       ? [null, ...items.slice(sliceIndex)]
       : [items[0], null, ...items.slice(sliceIndex)]
     : items;
-
-  const isAuto = maxVisibleItems === 'auto';
 
   const breadcrumbs = (
     <RACBreadcrumbs

@@ -4,15 +4,16 @@ import { useResizeObserver } from '@react-aria/utils';
 const MIN_VISIBLE = 2;
 
 /**
- * Measures hidden breadcrumb items in one pass to determine
- * how many fit within the container width.
+ * Measures hidden breadcrumb items in one pass to determine how many fit
+ * within the container width. Returns the number of slots to render, the
+ * ellipsis included, or `null` while every item fits and nothing collapses.
  */
 export const useAutoCollapse = (
   containerRef: RefObject<HTMLOListElement | null>,
   hiddenRef: RefObject<HTMLDivElement | null>,
   totalItems: number
-): number => {
-  const [visibleItems, setVisibleItems] = useState(totalItems);
+): number | null => {
+  const [visibleItems, setVisibleItems] = useState<number | null>(null);
 
   const calculate = useCallback(() => {
     const container = containerRef.current;
@@ -37,7 +38,7 @@ export const useAutoCollapse = (
       0
     );
     if (totalWidth <= containerWidth) {
-      setVisibleItems(totalItems);
+      setVisibleItems(null);
       return;
     }
 
@@ -64,7 +65,7 @@ export const useAutoCollapse = (
     }
 
     // +1 because the component displays count real items PLUS the ellipsis
-    setVisibleItems(Math.min(count + 1, totalItems - 1));
+    setVisibleItems(count + 1);
   }, [containerRef, hiddenRef, totalItems]);
 
   useResizeObserver({ ref: containerRef, onResize: calculate });
