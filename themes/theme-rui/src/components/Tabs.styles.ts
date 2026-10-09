@@ -2,10 +2,11 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Tabs: ThemeComponent<'Tabs'> = {
   container: cva({ base: 'flex flex-col gap-2' }),
-  // `py-1 -my-1` reserves room for the focus rings and indicator that
-  // `overflow-x`'s implied `overflow-y` would clip. `scroll-px-6` keeps the next
-  // tab peeking. `snap-x` is required alongside `snap-proximity`: alone the latter
-  // sets only the strictness var and never emits `scroll-snap-type`.
+  // `py-1 -my-1` reserves room for the indicator (`-mb-1`) that `overflow-x`'s
+  // implied `overflow-y` would clip. The tab's focus ring is inset and needs
+  // none. `scroll-px-6` keeps the next tab peeking. `snap-x` is required
+  // alongside `snap-proximity`: alone the latter sets only the strictness var
+  // and never emits `scroll-snap-type`.
   tabsListScroll: cva({
     base: 'ui-scroll-mask-x -my-1 snap-x snap-proximity scroll-px-6 overscroll-x-contain py-1 motion-safe:scroll-smooth',
   }),
@@ -23,7 +24,7 @@ export const Tabs: ThemeComponent<'Tabs'> = {
       // shrink-0 so the row overflows (and scrolls) rather than compressing.
       'shrink-0 snap-start',
       '[&_svg]:shrink-0',
-      'focus-visible:ui-state-focus outline-none',
+      'focus-visible:ui-state-focus-item outline-none',
       'hover:ui-state-hover-ghost',
       'disabled:cursor-not-allowed disabled:text-disabled',
       'selected:text-foreground selected:hover:ui-state-hover-ghost',
@@ -36,6 +37,9 @@ export const Tabs: ThemeComponent<'Tabs'> = {
     ],
   }),
   tabpanel: cva({
-    base: ['py-4 rounded-sm', 'focus-visible:ui-state-focus outline-none'],
+    base: [
+      '-mx-1 px-1 py-4 rounded-sm',
+      'focus-visible:ui-state-focus-item outline-none',
+    ],
   }),
 };
