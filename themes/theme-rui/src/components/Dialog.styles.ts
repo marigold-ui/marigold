@@ -24,8 +24,10 @@ export const Dialog: ThemeComponent<'Dialog'> = {
     },
   }),
   // Always-on bottom divider, matching the top divider on `actions` and the
-  // Drawer/Tray anatomy (`ui-surface-header`). On `header` so it also covers
-  // the bare `<Title>` chrome, which reuses these classNames.
+  // Drawer/Tray anatomy. The divider is copied from `ui-surface-header` (ui.css)
+  // instead of reusing it because the header needs its own top padding, so
+  // keep the two in sync. On `header` so it also covers the bare `<Title>`
+  // chrome, which reuses these classNames.
   header: cva({
     base: 'flex flex-col text-center sm:text-left px-6 pt-6 pb-4 border-b border-border',
   }),
@@ -34,8 +36,9 @@ export const Dialog: ThemeComponent<'Dialog'> = {
   content: cva({ base: 'ui-surface-content text-sm' }),
   // The top divider separates the actions from the content. Without content
   // (title + actions only) the header's divider already does that, so drop
-  // this one rather than stack two lines.
+  // this one rather than stack two lines. Checks the parent, not the previous
+  // sibling: the parts are placed by grid area, so their JSX order is free.
   actions: cva({
-    base: 'ui-surface-actions flex-col-reverse sm:flex-row [:not(.ui-surface-content)+&]:border-t-0',
+    base: 'ui-surface-actions flex-col-reverse sm:flex-row [:not(:has(>.ui-surface-content))>&]:border-t-0',
   }),
 };
