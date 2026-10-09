@@ -1089,31 +1089,41 @@ export const FollowsParentWidth = meta.story({
 
 FollowsParentWidth.test(
   'Columns narrow again after the viewport widens and shrinks',
-  async ({ canvas }) => {
+  async ({ canvas, step }) => {
     // Only resolvable inside Vitest; a static import breaks the story in Storybook.
     const { page } = await import('vitest/browser');
     const table = canvas.getByRole('grid');
     const width = () => table.getBoundingClientRect().width;
+    let narrow = 0;
     // The slider starts at its maximum, so the viewport is what limits the width.
 
     await page.viewport(900, 800);
-    await waitFor(() => expect(width()).toBeGreaterThan(0));
-    const narrow = width();
 
-    await page.viewport(1440, 800);
-    await waitFor(() => expect(width()).toBeGreaterThan(narrow));
+    try {
+      await step('measures the table at 900px', async () => {
+        await waitFor(() => expect(width()).toBeGreaterThan(0));
+        narrow = width();
+      });
 
-    await page.viewport(900, 800);
-    await waitFor(() => expect(width()).toBe(narrow));
+      await step('widens with the viewport', async () => {
+        await page.viewport(1440, 800);
+        await waitFor(() => expect(width()).toBeGreaterThan(narrow));
+      });
+
+      await step('narrows back with the viewport', async () => {
+        await page.viewport(900, 800);
+        await waitFor(() => expect(width()).toBeCloseTo(narrow, 0));
+      });
+    } finally {
+      await page.viewport(1280, 720);
+    }
   }
 );
 
 FollowsParentWidth.test(
   'Columns narrow again after the slider widens and narrows the container',
-  async ({ canvas, userEvent }) => {
+  async ({ canvas, userEvent, step }) => {
     const { page } = await import('vitest/browser');
-    await page.viewport(1440, 800);
-
     const table = canvas.getByRole('grid');
     const width = () => table.getBoundingClientRect().width;
     const slider = canvas.getByRole('slider');
@@ -1121,18 +1131,31 @@ FollowsParentWidth.test(
       await userEvent.keyboard('{Home}');
       for (let i = 0; i < 10; i++) await userEvent.keyboard('{ArrowRight}');
     };
+    let narrow = 0;
 
-    await userEvent.click(slider);
-    await setTo900();
-    await waitFor(() => expect(slider).toHaveValue('900'));
-    await waitFor(() => expect(width()).toBeGreaterThan(0));
-    const narrow = width();
+    await page.viewport(1440, 800);
 
-    await userEvent.keyboard('{End}');
-    await waitFor(() => expect(width()).toBeGreaterThan(narrow));
+    try {
+      await step('measures the table in a 900px container', async () => {
+        await userEvent.click(slider);
+        await setTo900();
+        await waitFor(() => expect(slider).toHaveValue('900'));
+        await waitFor(() => expect(width()).toBeGreaterThan(0));
+        narrow = width();
+      });
 
-    await setTo900();
-    await waitFor(() => expect(width()).toBe(narrow));
+      await step('widens with the container', async () => {
+        await userEvent.keyboard('{End}');
+        await waitFor(() => expect(width()).toBeGreaterThan(narrow));
+      });
+
+      await step('narrows back with the container', async () => {
+        await setTo900();
+        await waitFor(() => expect(width()).toBeCloseTo(narrow, 0));
+      });
+    } finally {
+      await page.viewport(1280, 720);
+    }
   }
 );
 
@@ -1148,7 +1171,7 @@ FollowsParentWidth.test(
       ),
     ],
   },
-  async ({ canvas }) => {
+  async ({ canvas, step }) => {
     const { page } = await import('vitest/browser');
     const table = canvas.getByRole('grid');
     const panel = table.closest<HTMLElement>('[data-panel]')!;
@@ -1158,22 +1181,36 @@ FollowsParentWidth.test(
         // 1px absorbs subpixel rounding of the fractional columns.
         panel.getBoundingClientRect().right + 1
       );
+    let narrow = 0;
 
     // Narrower than the column minimums, so the floor alone sizes the panel.
     await page.viewport(600, 800);
-    await waitFor(() => expect(width()).toBeGreaterThan(0));
-    await waitFor(fitsPanel);
 
-    await page.viewport(1100, 800);
-    await waitFor(() => expect(width()).toBeGreaterThan(0));
-    const narrow = width();
+    try {
+      await step('fits the panel below the column minimums', async () => {
+        await waitFor(() => expect(width()).toBeGreaterThan(0));
+        await waitFor(fitsPanel);
+      });
 
-    await page.viewport(1440, 800);
-    await waitFor(() => expect(width()).toBeGreaterThan(narrow));
+      await step('measures the table at 1100px', async () => {
+        await page.viewport(1100, 800);
+        await waitFor(() => expect(width()).toBeGreaterThan(0));
+        narrow = width();
+      });
 
-    await page.viewport(1100, 800);
-    await waitFor(() => expect(width()).toBe(narrow));
-    await waitFor(fitsPanel);
+      await step('widens with the viewport', async () => {
+        await page.viewport(1440, 800);
+        await waitFor(() => expect(width()).toBeGreaterThan(narrow));
+      });
+
+      await step('narrows back and still fits the panel', async () => {
+        await page.viewport(1100, 800);
+        await waitFor(() => expect(width()).toBeCloseTo(narrow, 0));
+        await waitFor(fitsPanel);
+      });
+    } finally {
+      await page.viewport(1280, 720);
+    }
   }
 );
 
