@@ -1,5 +1,185 @@
 # @marigold/components
 
+## 18.3.0
+
+### Minor Changes
+
+- ab9b05e: feat(DST-1491): `<AppShell>` renders a skip-link to the page content
+
+  `<AppShell>` now renders a localized "Skip to main content" link as its first focusable element. It stays visually hidden until it receives focus, and activating it moves focus to the `<main>` landmark of the `<Page>`, so keyboard and screen-reader users can bypass the sidebar and top navigation (WCAG 2.4.1). No setup is needed. The landmark is focusable (`tabindex="-1"`) only while the link has moved focus there, so pages keep their current click behavior.
+
+- d6b5d77: feat(DST-1668): `usePageFocus` falls back to the `<main>` landmark when a page has no `<h1>`
+
+  On an `aria-label`-only `<Page>`, a route change now moves focus to the `<main>` landmark instead of leaving it on the clicked link. The hook makes the landmark focusable (`tabindex="-1"`) at that point, so afterwards clicking non-interactive page content also moves focus there. Pages with a `<Title>` still move focus to the heading and never make the landmark focusable. Neither focus move draws a focus ring. `<Page>` now accepts a `tabIndex` for the landmark, for example `-1` for a skip-link target, and the hook keeps it as it is.
+
+- 947b7a9: feat(DST-1741): wire `<FileField>` into the form validation system
+
+  `<FileField>` was the only field-shaped component that could not validate. A
+  required upload could not block submission, and a file rejected by `accept`
+  disappeared with no message and nothing announced.
+
+  It now takes `required`, `error`, `errorMessage`, `description`, `form`,
+  `validate` and `validationBehavior` like every other field, plus `maxSize` to
+  cap a single file in bytes. Errors render through the same `HelpText` path as a
+  `<TextField>`, so they look identical, and they are associated with the upload
+  button so a screen reader reads them.
+
+  A file rejected by `accept` or by `maxSize` now produces a localised error
+  instead of vanishing. Only drag and drop can deliver such a file, because the
+  file browser already filters by `accept`.
+
+  Server errors arrive through `<Form validationErrors>`, keyed by the field's
+  `name`. Resetting the form clears the selection together with any error.
+
+  One behaviour change worth knowing: the hidden input now renders even when no
+  `name` is given, because constraint validation needs the element inside the
+  form. `name` still decides whether the file is submitted.
+
+  `<FileField>` also used to spread its remaining props onto both the field
+  wrapper and the drop zone. Those are `DropZone` props, so they now reach the
+  drop zone only, and the component applies its own wiring after them. An
+  `onDrop` passed by a consumer no longer replaces the internal handler, which
+  used to stop files being added at all. An `aria-describedby` passed by a
+  consumer is merged with the id of the description or error instead of
+  replacing it. `id` and `slot` now land on the drop zone rather than on the
+  wrapper. With `size="small"` there is no drop zone, so they stay on the
+  wrapper as before.
+
+- 2319875: feat(DST-1747): add an `addon` slot to every form field label
+
+  Every form field now takes an `addon` at the end of its label, such as a `<Badge>` or a `<ContextualHelp>`. A badge there is sized automatically, so it no longer needs `size="inline"`, and the label row keeps the height of a bare label.
+
+  ```tsx
+  <Select
+    label="Associated Team"
+    addon={<Badge variant="master">Master</Badge>}
+  />
+  ```
+
+  `Checkbox`, `Radio` and `Switch` rename their `badge` slot to `addon`. Replace `badge={…}` with `addon={…}`.
+
+  The addon is no longer part of the field's accessible name. A badge is read as the field's description instead. `FileField` doesn't announce its addon yet. The required indicator now sits before the addon.
+
+- e9df73e: feat(DST-1791): add a `loading` prop to `<Table>`
+
+  `aria-busy` passed to a `<Table>` never reached the page. React Aria filters it
+  out, and nothing warned about it, so tables that tried to announce their loading
+  state announced nothing.
+
+  `<Table loading>` now sets `aria-busy="true"` on the grid itself and announces
+  the loading state through a polite live region. Nothing is announced when
+  loading finishes.
+
+  Replace `aria-busy` on a `<Table>`, or on a wrapper around it, with
+  `loading={isLoading}`.
+
+### Patch Changes
+
+- b67903a: Fix form fields overflowing the 320px minimum supported width.
+
+  `Label` and `HelpText` now break text that has no break opportunity, such as a long compound word, a URL or a file name. Before, that text set its own minimum width and pushed the whole field past the screen. A wrapped error message also keeps its icon on the first line instead of centering it against the block.
+
+- d1b1f15: fix(Tray): keep `Tray.Actions` reachable when the viewport shrinks
+
+  `Tray.Content` pinned its `min-height` to the height it measured at mount and never let go of it. When the viewport shrank afterwards, the tray box shrank but that grid row could not, so the grid overflowed and `Tray.Actions` walked off the bottom of the screen: at a 390px viewport the close/confirm buttons ended up 432px below the fold, with no way to reach them. Rotation, the on-screen keyboard opening in a ComboBox or Autocomplete tray, and mobile browser UI appearing all trigger it.
+
+  The pin is still measured once, since it is what stops the tray resizing while a list filters down, but it is now capped at the height the viewport actually leaves for it. The content area absorbs the difference by scrolling, which is what it is for. The cap is a CSS `min()` against the tray's own maximum height, so the browser re-resolves it on every viewport change and a filtered list is never re-measured.
+
+  The tray container also capped itself at `95vh`. On mobile `vh` is the _large_ viewport, so the tray could be laid out taller than what is actually visible while browser UI is showing. It now uses the visual viewport height that `Drawer` already used, applied in the component rather than the theme, so no theme has to know about it.
+
+- ec15520: refactor(DST-1752): draw the checkbox and radio box edge from one token
+
+  The thin edge around a checkbox, a radio and the selection mark of a list row is
+  the only thing announcing the control before you click it, and it was written
+  four times: twice in the theme, once inline in `Checkbox.tsx`, and once in the
+  shared grid indicator. The indicator reached for `--color-border`, the divider
+  token, so a single-select `SelectList` option and a `ListView` row drew their
+  mark about 1.6 times fainter than the checkbox beside it.
+
+  There are now three tokens, all derived from `--color-control-border` so they
+  track any change to it: `--color-control-edge` at +0.06 alpha for the resting
+  edge, `--color-control-edge-hover` at +0.18, and
+  `--color-control-edge-disabled` at -0.06. Three files read them: the `Checkbox`
+  and `Radio` theme slots, and the shared grid indicator. The fourth copy, the one
+  inline in `Checkbox.tsx`, is deleted rather than repointed, because it never
+  shipped: the theme slot's edge already beat it in the merged class list. A
+  resting checkbox therefore looks exactly as it did.
+
+  The radio box also gains `shrink-0`, which the checkbox and the grid indicator
+  both already carried. It is the only one of the three that sits in a flex row,
+  so it was the only one that could be squeezed by a long label, and the slot now
+  matches the mark a list row draws exactly.
+
+  The disabled step is a token rather than a palette rung because a disabled mark
+  has three grounds to survive, and both of the opaque values this family reached
+  for before vanish on one of them:
+
+  | Disabled edge                     | on `surface` | on the page ground | on a `selected` row |
+  | --------------------------------- | ------------ | ------------------ | ------------------- |
+  | `disabled-surface` (charcoal-100) | 1.11:1       | **1.00:1**         | 1.38:1              |
+  | `disabled-border` (charcoal-300)  | 1.53:1       | 1.38:1             | **1.00:1**          |
+  | `control-edge-disabled` (-0.06)   | 1.57:1       | 1.57:1             | 1.54:1              |
+
+  `disabled-border` is the same palette step as `selected`, so on a picked row an
+  opaque edge is not dim but gone. The translucent step holds 1.54:1 to 1.57:1
+  everywhere, which is the weight `disabled-border` was chosen for in the first
+  place. `--color-disabled-border` itself is unchanged.
+
+  Three visible fixes come with it. The selection mark now dims whenever its row
+  is disabled, instead of waiting for the row to also be selected, so a disabled
+  unselected row no longer keeps an edge that reads as live. The disabled edge
+  across the whole family holds its weight on every ground rather than on white
+  alone. And a disabled control that is checked now shows what it is set to: the
+  check glyph and the radio dot are drawn in `currentColor`, `group-selected`
+  sorts after `group-disabled`, so the unforced `text-disabled` lost the cascade
+  and the mark painted `selected-bold-foreground` on `disabled-surface` at 1.06:1.
+
+  The selection mark deliberately has no hover step. Inside a row the row is the
+  click target and already carries its own hover, so a second hover on a
+  decorative mark would answer a gesture nobody made.
+
+  A disabled checkbox also dims its box when it is indeterminate, not only when
+  it is checked. Indeterminate never sets `data-selected`, so it needed its own
+  fill rule, and without it the newly forced `text-disabled` ink landed on a box
+  still painted the live `selected-bold`.
+
+  No API changes. Expect visual diffs on single-select `SelectList` and `ListView`
+  rows, and on disabled checkboxes and radios, including every disabled checked
+  one and every disabled indeterminate one.
+
+- 25b45b3: fix(DST-1836): `<Table>` columns follow their container when it narrows again
+
+  In a parent that sizes itself to its content, such as `Columns` or a `Panel`
+  with `min-width: fit-content`, a `<Table>` only ever grew. React Aria sizes the
+  columns to the table's container, and the container took its width from the
+  table, so after the window widened, the columns kept their widest width.
+
+  The container no longer takes its width from the table. It keeps the sum of the
+  column minimums as its own minimum width, so a parent that sizes to its content
+  still makes room for the columns.
+
+- e9324b2: Fix the keyboard focus ring of `Breadcrumbs` and `Tabs`.
+
+  Breadcrumb links, tabs and the tab panel now show the theme's full-contrast inset focus ring. Before, breadcrumb links fell back to the browser's default outline, and tabs showed a faint halo below the 3:1 contrast a focus indicator needs. Both were clipped by their scroll or overflow container.
+
+  The tab panel gains 4px of inline padding, offset by a matching negative margin, so the ring clears its content without moving it. Breadcrumbs' auto-collapse now measures the link padding too, so it collapses at the right width.
+
+- f4e2236: fix(DSTSUP-280): align the Table selection and drag-handle cells with `alignY`
+
+  The checkbox cell that `selectionMode` adds, and the drag-handle cell that drag and drop adds, now follow the table's `alignY` like every other cell. With `alignY="top"`, the checkbox used to stay vertically centered on tall rows.
+
+- c860eb4: fix(DSTSUP-281): stop tooltips from getting stuck in the top left corner
+
+  A tooltip that another tooltip had replaced could come back after a click on its trigger, pinned to the top left corner of the screen and never closing. This showed up most often on the icon-only `Sidebar.Rail`. Closed tooltips now unmount, so they can no longer return unpositioned.
+
+  `Tooltip` no longer accepts `defaultOpen` and `onOpenChange`. They never worked on `Tooltip` itself. Set them on `Tooltip.Trigger` instead, which is where `open` moved in v18.
+
+- ce5eaec: fix(DSTSUP-283): truncate the current breadcrumb when it does not fit
+
+  When auto-collapsed Breadcrumbs are down to the ellipsis and the current item, and the current item still does not fit, it now truncates with an ellipsis. Before, it was clipped mid-word at the container edge. The full label stays available to assistive technology.
+
+- @marigold/system@18.3.0
+
 ## 18.2.0
 
 ### Minor Changes

@@ -1,5 +1,152 @@
 # @marigold/docs
 
+## 18.3.0
+
+### Patch Changes
+
+- a7c4d00: feat: make CLI telemetry identifier-free, and document it in full
+
+  Telemetry stays on by default, but it no longer carries anything that can single out a machine, user, or session. This is what makes the opt-out default defensible under GDPR and ePrivacy: with no identifier there is no personal data to have a lawful basis for, and the CLI no longer stores an identifier on the user's device, which would otherwise require consent under ePrivacy Art. 5(3) / § 25 TDDDG.
+
+  - **Removed the `anonymousId`.** The persistent per-machine UUID is gone from the event payload, from `UserConfig`, and from the server schema. A stale value written by an older CLI is stripped on the next config read and erased from disk. The trade is deliberate: we can now count invocations, not people, and unique-user numbers come from public npm download counts instead.
+  - **Corrected the first-run notice.** It previously claimed that no arguments and no personal data were collected, while the event did carry `args` and a persistent UUID. The notice now states exactly what is sent and links to the telemetry section of the CLI docs.
+  - **Clamped `args`.** Enum flags are recorded as their validated value or as `invalid`, so a mistyped `--format=jsonn` is no longer echoed back verbatim. `--limit` is recorded only as a positive integer. A name passed as a positional or `--category` is never forwarded as typed: once it resolves against the docs manifest, the manifest's slug is recorded, and anything else is recorded as `unknown`. Free-text search terms remain recorded as `used`.
+  - **Hour-granular timestamps, not expiry.** `receivedAt` is truncated to the hour, and so is the ID each event is stored under, in a stream of its own, so events cannot be stitched back into per-session sequences by timing once the identifier is gone. That is also what lets events be kept for long-run usage trends rather than expiring: with no identifier in a record, an old event says no more about you than a new one. The reasoning is in the [telemetry endpoint README](https://github.com/marigold-ui/marigold/blob/main/docs/app/api/telemetry/README.md).
+  - **Strict event schema.** The endpoint rejects unknown top-level keys rather than stripping them, so a stale `anonymousId` gets a visible 400 instead of a silent drop. Keys inside `args` are bounded in length and count. The guarantee that no identifier is sent lives in the CLI, which builds `args` only from validated values.
+  - **Endpoint-wide rate limit only.** The former per-`anonymousId` quota is gone, since there is no longer a client identifier to key one on, which leaves the endpoint-wide ceiling as the CLI's only bound. That ceiling is a cost backstop, not a security control. Bounding a single misbehaving caller belongs behind WAF rate limiting, which needs no identifier in the body.
+  - **Full disclosure in the docs.** The `marigold telemetry` section of the [CLI page](https://www.marigold-ui.io/getting-started/cli#marigold-telemetry) now documents every field sent, what is never sent, why the default is opt-out, and every way to turn it off. It lives there rather than on a standalone privacy page, which nobody would navigate to. `marigold --help` links the anchor, so non-interactive users have a discoverable disclosure too.
+
+- ab9b05e: feat(DST-1491): `<AppShell>` renders a skip-link to the page content
+
+  `<AppShell>` now renders a localized "Skip to main content" link as its first focusable element. It stays visually hidden until it receives focus, and activating it moves focus to the `<main>` landmark of the `<Page>`, so keyboard and screen-reader users can bypass the sidebar and top navigation (WCAG 2.4.1). No setup is needed. The landmark is focusable (`tabindex="-1"`) only while the link has moved focus there, so pages keep their current click behavior.
+
+- 2319875: feat(DST-1747): add an `addon` slot to every form field label
+
+  Every form field now takes an `addon` at the end of its label, such as a `<Badge>` or a `<ContextualHelp>`. A badge there is sized automatically, so it no longer needs `size="inline"`, and the label row keeps the height of a bare label.
+
+  ```tsx
+  <Select
+    label="Associated Team"
+    addon={<Badge variant="master">Master</Badge>}
+  />
+  ```
+
+  `Checkbox`, `Radio` and `Switch` rename their `badge` slot to `addon`. Replace `badge={…}` with `addon={…}`.
+
+  The addon is no longer part of the field's accessible name. A badge is read as the field's description instead. `FileField` doesn't announce its addon yet. The required indicator now sits before the addon.
+
+- ec15520: refactor(DST-1752): draw the checkbox and radio box edge from one token
+
+  The thin edge around a checkbox, a radio and the selection mark of a list row is
+  the only thing announcing the control before you click it, and it was written
+  four times: twice in the theme, once inline in `Checkbox.tsx`, and once in the
+  shared grid indicator. The indicator reached for `--color-border`, the divider
+  token, so a single-select `SelectList` option and a `ListView` row drew their
+  mark about 1.6 times fainter than the checkbox beside it.
+
+  There are now three tokens, all derived from `--color-control-border` so they
+  track any change to it: `--color-control-edge` at +0.06 alpha for the resting
+  edge, `--color-control-edge-hover` at +0.18, and
+  `--color-control-edge-disabled` at -0.06. Three files read them: the `Checkbox`
+  and `Radio` theme slots, and the shared grid indicator. The fourth copy, the one
+  inline in `Checkbox.tsx`, is deleted rather than repointed, because it never
+  shipped: the theme slot's edge already beat it in the merged class list. A
+  resting checkbox therefore looks exactly as it did.
+
+  The radio box also gains `shrink-0`, which the checkbox and the grid indicator
+  both already carried. It is the only one of the three that sits in a flex row,
+  so it was the only one that could be squeezed by a long label, and the slot now
+  matches the mark a list row draws exactly.
+
+  The disabled step is a token rather than a palette rung because a disabled mark
+  has three grounds to survive, and both of the opaque values this family reached
+  for before vanish on one of them:
+
+  | Disabled edge                     | on `surface` | on the page ground | on a `selected` row |
+  | --------------------------------- | ------------ | ------------------ | ------------------- |
+  | `disabled-surface` (charcoal-100) | 1.11:1       | **1.00:1**         | 1.38:1              |
+  | `disabled-border` (charcoal-300)  | 1.53:1       | 1.38:1             | **1.00:1**          |
+  | `control-edge-disabled` (-0.06)   | 1.57:1       | 1.57:1             | 1.54:1              |
+
+  `disabled-border` is the same palette step as `selected`, so on a picked row an
+  opaque edge is not dim but gone. The translucent step holds 1.54:1 to 1.57:1
+  everywhere, which is the weight `disabled-border` was chosen for in the first
+  place. `--color-disabled-border` itself is unchanged.
+
+  Three visible fixes come with it. The selection mark now dims whenever its row
+  is disabled, instead of waiting for the row to also be selected, so a disabled
+  unselected row no longer keeps an edge that reads as live. The disabled edge
+  across the whole family holds its weight on every ground rather than on white
+  alone. And a disabled control that is checked now shows what it is set to: the
+  check glyph and the radio dot are drawn in `currentColor`, `group-selected`
+  sorts after `group-disabled`, so the unforced `text-disabled` lost the cascade
+  and the mark painted `selected-bold-foreground` on `disabled-surface` at 1.06:1.
+
+  The selection mark deliberately has no hover step. Inside a row the row is the
+  click target and already carries its own hover, so a second hover on a
+  decorative mark would answer a gesture nobody made.
+
+  A disabled checkbox also dims its box when it is indeterminate, not only when
+  it is checked. Indeterminate never sets `data-selected`, so it needed its own
+  fill rule, and without it the newly forced `text-disabled` ink landed on a box
+  still painted the live `selected-bold`.
+
+  No API changes. Expect visual diffs on single-select `SelectList` and `ListView`
+  rows, and on disabled checkboxes and radios, including every disabled checked
+  one and every disabled indeterminate one.
+
+- dd322e0: feat(DST-1765): record MCP telemetry in its own `telemetry:mcp` stream
+
+  Each source now has one stream named after it, `telemetry:cli` and `telemetry:mcp`. The older daily lists and the shared `telemetry:events` stream are migrated into them, with CLI events anonymised the way a current event is stored. The layout and the migration are documented in the [telemetry endpoint README](https://github.com/marigold-ui/marigold/blob/main/docs/app/api/telemetry/README.md).
+
+- 44533cd: docs(DST-1817): describe how `ui-state-disabled` derives its colors
+
+  The token overview said the utility paints the `disabled` tokens. It now derives label, fill and border from the text color, so the docs say that and point to the controls that still use the tokens directly.
+
+- e1f2e28: feat(DST-1819): default the CLI to JSON output when stdout is not a terminal
+
+  When `--format` is omitted, `docs`, `list`, `search`, `examples`, `doctor` and `validate` now print `json` whenever their output is piped or captured, as it is for an AI agent, a script, CI or a redirect to a file. In an interactive terminal nothing changes: `docs`, `list`, `search` and `examples` still print `markdown`, and `doctor` and `validate` still print `text`. An explicit `--format` always wins.
+
+  **Breaking:** a script that reads the default output of one of these commands through a pipe now receives JSON. Pass `--format markdown`, `--format plain` or `--format text` to keep the previous output. The programmatic `run*()` exports are unchanged and keep their `markdown`/`text` fallback.
+
+- 8d8830b: docs(DST-1860): show surface demos on the page background
+
+  Demos that render a `<Panel>`, `<Card>` or `<Tiles>` now use the gray page background, so the surface stands out instead of disappearing into a white preview.
+
+- 613e27a: docs(DSTSUP-284): give row actions one rule for variant and size
+
+  The Table and ButtonGroup pages gave different answers for styling row actions. Table said secondary at the small size, and ButtonGroup said ghost at the icon size. Both pages, the ListView and Menu pages, and the row actions in the Drawer and pattern demos now follow the same rule:
+
+  - Row actions use the `ghost` variant.
+  - Labeled buttons use `size="small"`, icon-only buttons use `size="icon"`.
+  - A visible destructive action uses `destructive-ghost` and sits last.
+
+  Where a destructive action lives now depends on how often users need it, like any other row action. A frequent one stays visible, a rare one goes in the `<ActionMenu>` as `<ActionMenu.Item variant="destructive">`. The [Destructive actions](https://www.marigold-ui.io/patterns/feedback/destructive-actions) pattern still decides whether it asks for a confirmation or offers an undo.
+
+  ListView and Menu now allow 1 to 3 visible row actions, the same limit as Table, instead of at most two.
+
+  The Table action-menu demo also gains `aria-label`s on its icon-only buttons and on the row toolbar.
+
+- Updated dependencies [ab9b05e]
+- Updated dependencies [b67903a]
+- Updated dependencies [d6b5d77]
+- Updated dependencies [d1b1f15]
+- Updated dependencies [947b7a9]
+- Updated dependencies [2319875]
+- Updated dependencies [ec15520]
+- Updated dependencies [e9df73e]
+- Updated dependencies [44533cd]
+- Updated dependencies [8bf58b2]
+- Updated dependencies [25b45b3]
+- Updated dependencies [e9324b2]
+- Updated dependencies [f4e2236]
+- Updated dependencies [c860eb4]
+- Updated dependencies [ce5eaec]
+  - @marigold/components@18.3.0
+  - @marigold/theme-rui@6.2.1
+  - @marigold/system@18.3.0
+  - @marigold/icons@2.0.3
+
 ## 18.2.0
 
 ### Patch Changes
