@@ -1064,6 +1064,7 @@ export const FollowsParentWidth = meta.story({
                       Email
                     </Table.Column>
                     <Table.Column width={100}>Status</Table.Column>
+                    <Table.Column defaultWidth={120}>Tickets</Table.Column>
                   </Table.Header>
                   <Table.Body>
                     {[1, 2, 3].map(id => (
@@ -1072,6 +1073,7 @@ export const FollowsParentWidth = meta.story({
                         <Table.Cell>Freiburg im Breisgau</Table.Cell>
                         <Table.Cell>contact{id}@example.com</Table.Cell>
                         <Table.Cell>active</Table.Cell>
+                        <Table.Cell>{id * 120}</Table.Cell>
                       </Table.Row>
                     ))}
                   </Table.Body>
@@ -1131,6 +1133,47 @@ FollowsParentWidth.test(
 
     await setTo900();
     await waitFor(() => expect(width()).toBe(narrow));
+  }
+);
+
+FollowsParentWidth.test(
+  "Stays inside the panel with Core's fit-content rule",
+  {
+    decorators: [
+      Story => (
+        <>
+          <style>{'[data-panel]:has(table) { min-width: fit-content; }'}</style>
+          <Story />
+        </>
+      ),
+    ],
+  },
+  async ({ canvas }) => {
+    const { page } = await import('vitest/browser');
+    const table = canvas.getByRole('grid');
+    const panel = table.closest<HTMLElement>('[data-panel]')!;
+    const width = () => table.getBoundingClientRect().width;
+    const fitsPanel = () =>
+      expect(table.getBoundingClientRect().right).toBeLessThanOrEqual(
+        // 1px absorbs subpixel rounding of the fractional columns.
+        panel.getBoundingClientRect().right + 1
+      );
+
+    // Narrower than the column minimums, so the floor alone sizes the panel.
+    await page.viewport(600, 800);
+    await waitFor(() => expect(width()).toBeGreaterThan(0));
+    await waitFor(fitsPanel);
+
+    await page.viewport(1100, 800);
+    await waitFor(() => expect(width()).toBeGreaterThan(0));
+    const narrow = width();
+
+    await page.viewport(1440, 800);
+    await waitFor(() => expect(width()).toBeGreaterThan(narrow));
+
+    await page.viewport(1100, 800);
+    await waitFor(() => expect(width()).toBe(narrow));
+    await waitFor(fitsPanel);
   }
 );
 

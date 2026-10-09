@@ -81,6 +81,14 @@ export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
 const isRelative = (size: unknown) =>
   typeof size === 'string' && size.endsWith('%');
 
+// Pixel sizes only: a number or a numeric string. `fr` and `%` return 0.
+const staticSize = (size: unknown) => {
+  if (typeof size === 'number') return size;
+  if (typeof size === 'string' && /^\d+(\.\d+)?$/.test(size))
+    return Number(size);
+  return 0;
+};
+
 interface TableElementProps extends ComponentProps<'table'> {
   loading: boolean;
   onMinWidthChange: (width: number) => void;
@@ -101,13 +109,18 @@ const TableElement = ({
   // Includes React Aria's 75px default and the selection and drag columns.
   // Percentage minimums resolve against the container's width, which this
   // value sets, so counting them would feed the width back into itself.
+  // A static `defaultWidth` renders at that width, so it counts in full.
   const minWidth =
     state && layout
       ? state.collection.columns.reduce(
           (sum, column) =>
             isRelative(column.props.minWidth)
               ? sum
-              : sum + layout.getColumnMinWidth(column.key),
+              : sum +
+                Math.max(
+                  layout.getColumnMinWidth(column.key),
+                  staticSize(column.props.defaultWidth)
+                ),
           0
         )
       : undefined;
@@ -117,7 +130,6 @@ const TableElement = ({
     onMinWidthChange(minWidth);
   }, [minWidth, onMinWidthChange]);
 
-  // React Aria drops `aria-busy`, so it is set on the element directly.
   return <table {...props} aria-busy={loading || undefined} />;
 };
 
@@ -187,10 +199,7 @@ const _Table = ({
   return (
     <TableContext value={ctx}>
       <ResizableTableContainer
-        // React Aria sizes the columns to this container's width. Containment
-        // keeps that width from following the table, which would otherwise
-        // lock a content-sized parent to its widest width. The column minimums
-        // stand in as the floor the table used to provide.
+        // Containment keeps the measured width from following the table (DST-1836).
         className="w-full [contain:inline-size]"
         style={{
           minWidth: minTableWidth,
