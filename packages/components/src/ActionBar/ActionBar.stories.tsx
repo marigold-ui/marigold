@@ -5,6 +5,7 @@ import { Copy, Pencil, Trash2 } from '@marigold/icons';
 import { NumericFormat } from '@marigold/system';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
+import { Menu } from '../Menu/Menu';
 import { Scrollable } from '../Scrollable/Scrollable';
 import { Stack } from '../Stack/Stack';
 import { Table } from '../Table/Table';
@@ -118,6 +119,45 @@ export const WithoutClearButton = meta.story({
         <Trash2 />
         Delete
       </Button>
+    </ActionBar>
+  ),
+});
+
+/**
+ * A labelled `<Menu>` next to plain `<Button>`s. Its trigger takes the bar's
+ * cascaded `ghost` variant, so it reads and hovers like its siblings.
+ */
+export const WithMenu = meta.story({
+  tags: ['component-test'],
+  args: {
+    selectedItemCount: 2,
+  },
+  render: args => (
+    <ActionBar {...args}>
+      <Button>
+        <Pencil />
+        Edit
+      </Button>
+      <Menu label="More actions">
+        <Menu.Item id="copy">Copy</Menu.Item>
+        <Menu.Item id="delete">Delete</Menu.Item>
+      </Menu>
+    </ActionBar>
+  ),
+});
+
+// Fixture for the "local variant wins" unit test, so not snapshotted.
+export const MenuLocalVariant = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    selectedItemCount: 2,
+  },
+  render: args => (
+    <ActionBar {...args}>
+      <Menu label="More actions" variant="default">
+        <Menu.Item id="copy">Copy</Menu.Item>
+      </Menu>
     </ActionBar>
   ),
 });
