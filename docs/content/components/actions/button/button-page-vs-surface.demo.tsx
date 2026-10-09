@@ -58,7 +58,8 @@ export default () => (
               <Badge variant={member.variant}>{member.role}</Badge>
               <ButtonGroup
                 aria-label={`Actions for ${member.name}`}
-                size="small"
+                variant="ghost"
+                size="icon"
               >
                 <Tooltip.Trigger>
                   <Button aria-label="Edit role">
