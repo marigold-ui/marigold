@@ -20,7 +20,7 @@ Use `<ErrorState>` when content is gone: an error boundary caught a render failu
 - **Page tier**: the route's error boundary renders a complete `Page` with the route's `Title` and an `<ErrorState headingLevel={2}>` below it, and moves focus to the error state.
 - **Region tier**: a boundary around a `Panel`'s content renders `<ErrorState role="alert" headingLevel={3}>`, announcing the failure without stealing focus.
 
-<ComponentDemo name="error-state-panel" />
+<ComponentDemo name="error-state-panel" background="page" />
 
 ### Content strategy
 

@@ -45,7 +45,7 @@ For destructive row actions, reach for `destructive-ghost` so the danger reads w
 
 Surfaces like `<Panel>`, `<Dialog>`, and `<Drawer>` carry their own set of secondary actions like bookmark, share, settings, and dismiss. These actions belong to the container, not to the page, so they should stay subordinate to the container's title and to any primary `<Button>` it might host.
 
-<ComponentDemo name="button-group-panel-chrome" />
+<ComponentDemo name="button-group-panel-chrome" background="page" />
 
 The container can publish shared defaults to every `<Button>` inside via `ButtonContext`. A Panel header, for example, can publish the variant and size for every button it contains, and individual call sites stay free of repetitive props. See [Slot-Driven Composition](/foundations/component-principles#slot-driven-composition) for how container providers wire this up.
 
