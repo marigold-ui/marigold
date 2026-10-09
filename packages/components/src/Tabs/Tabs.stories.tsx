@@ -91,7 +91,7 @@ Basic.test(
     );
 
     await step('Arrange', async () => {
-      canvas.getAllByRole('tabpanel')[0]!.focus();
+      (await canvas.findAllByRole('tabpanel'))[0]!.focus();
     });
 
     await step('Act', async () => {
@@ -112,7 +112,9 @@ Basic.test(
     const panel = await waitFor(() => canvas.getAllByRole('tabpanel')[0]!);
 
     await step('Arrange', async () => {
-      canvas.getAllByRole('tab', { name: 'Mouse Settings' })[0]!.focus();
+      (
+        await canvas.findAllByRole('tab', { name: 'Mouse Settings' })
+      )[0]!.focus();
     });
 
     await step('Act', async () => {
