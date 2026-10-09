@@ -1039,7 +1039,14 @@ export const FollowsParentWidth = meta.story({
         />
         <div style={{ maxWidth }}>
           <Columns columns={[1, 2]} space={4}>
-            <Text>Sidebar (1/3)</Text>
+            <Panel>
+              <Panel.Header>
+                <Title>Sidebar</Title>
+              </Panel.Header>
+              <Panel.Content>
+                <Text>Takes one third of the row.</Text>
+              </Panel.Content>
+            </Panel>
             <Panel>
               <Panel.Header>
                 <Title>Organizers</Title>
