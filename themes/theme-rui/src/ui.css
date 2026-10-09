@@ -609,12 +609,12 @@
  *   - Footer: top hairline shows until the body bottoms out, fading over the
  *     last 12px.
  *
- * Consumers: Dialog (header only), Sidebar (header + footer). The hairline
+ * Consumers: Sidebar (footer only, in both the single-column and rail layouts).
+ * The header seam has no in-repo consumer but stays public. The hairline
  * color is `--seam-color` (default `--color-border`). The Sidebar overrides it
  * to `--color-surface-border` on its grid wrapper. A `box-shadow` hairline, so
  * it never affects layout. Sharing one timeline name across components is safe:
- * each `timeline-scope` confines resolution to its own subtree, and Dialogs
- * render in an overlay portal (never nested in the Sidebar's scope). Without
+ * each `timeline-scope` confines resolution to its own subtree. Without
  * scroll-driven animation the fallback pins the seam on as an always-on divider.
  * That suits a body that usually scrolls. Where it usually fits, the divider
  * would be wrong more often than right: set `--seam-fallback-color: transparent`
