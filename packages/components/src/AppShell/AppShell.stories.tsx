@@ -242,6 +242,65 @@ Basic.test(
   }
 );
 
+Basic.test(
+  'skip-link is the first tab stop',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.tab();
+
+    await expect(
+      canvas.getByRole('link', { name: 'Skip to main content' })
+    ).toHaveFocus();
+  }
+);
+
+Basic.test(
+  'skip-link is visually hidden until focused',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const skipLink = canvas.getByRole('link', { name: 'Skip to main content' });
+
+    await expect(skipLink.getBoundingClientRect().width).toBeLessThanOrEqual(1);
+  }
+);
+
+Basic.test(
+  'skip-link is revealed on focus',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.tab();
+
+    await expect(
+      canvas
+        .getByRole('link', { name: 'Skip to main content' })
+        .getBoundingClientRect().width
+    ).toBeGreaterThan(1);
+  }
+);
+
+Basic.test(
+  'skip-link moves focus to the main landmark',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.tab();
+    await userEvent.keyboard('{Enter}');
+
+    await expect(canvas.getByRole('main')).toHaveFocus();
+  }
+);
+
+Basic.test(
+  'main landmark drops the skip-link tabindex once focus leaves it',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.tab();
+    await userEvent.keyboard('{Enter}');
+    await userEvent.tab();
+
+    await expect(canvas.getByRole('main')).not.toHaveAttribute('tabindex');
+  }
+);
+
 /**
  * Controlled sidebar state via an outer `Sidebar.Provider`. `<AppShell>`
  * detects the provider and passes through instead of creating its own.

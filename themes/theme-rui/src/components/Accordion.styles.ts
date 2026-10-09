@@ -78,7 +78,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
     base: 'shrink-0',
     variants: {
       variant: {
-        default: '',
+        default: 'pe-(--accordion-x-padding)',
         card: 'pe-4',
       },
     },

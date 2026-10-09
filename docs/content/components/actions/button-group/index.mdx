@@ -35,17 +35,17 @@ Most toolbars are incidental chrome that sits beside the content, so let the clu
 
 ### Inline row actions
 
-Lists and rows of equal-weight items often need a per-row cluster of quick actions like view, edit, and delete. Render them as a `<ButtonGroup>` so the cluster is exposed as a toolbar and stays arrow-key navigable. Set `variant="ghost"` so the buttons recede into the row until the user scans for them.
+Table rows and list rows often need a per-row cluster of quick actions like view, edit, and delete. Render them as a `<ButtonGroup>` so the cluster is exposed as a toolbar and stays arrow-key navigable. Set `variant="ghost"` so the buttons recede into the row until the user scans for them. Labeled buttons take `size="small"`, icon-only buttons `size="icon"`.
 
 <ComponentDemo name="button-group-row-actions" />
 
-For destructive row actions, reach for `destructive-ghost` so the danger reads without overpowering the row. A `variant` set on the child always wins over one set on the group, so a single destructive button can sit inside an otherwise uniform cluster. Place the destructive action last so the user reads the safer ones first, and keep the action order identical on every row so the cluster stays predictable to scan. See [Button: Destructive buttons](/components/actions/button#destructive-buttons) for the variants.
+Show a destructive action in the row only when users need it often, as in the events above. A rare one belongs in an `<ActionMenu>` as an `<ActionMenu.Item variant="destructive">`. When it is visible, reach for `destructive-ghost` so the danger reads without overpowering the row. A `variant` set on the child always wins over one set on the group, so a single destructive button can sit inside an otherwise uniform cluster. Place the destructive action last so the user reads the safer ones first, and keep the action order identical on every row so the cluster stays predictable to scan. See [Button: Destructive buttons](/components/actions/button#destructive-buttons) for the variants.
 
 ### Container actions
 
 Surfaces like `<Panel>`, `<Dialog>`, and `<Drawer>` carry their own set of secondary actions like bookmark, share, settings, and dismiss. These actions belong to the container, not to the page, so they should stay subordinate to the container's title and to any primary `<Button>` it might host.
 
-<ComponentDemo name="button-group-panel-chrome" />
+<ComponentDemo name="button-group-panel-chrome" background="page" />
 
 The container can publish shared defaults to every `<Button>` inside via `ButtonContext`. A Panel header, for example, can publish the variant and size for every button it contains, and individual call sites stay free of repetitive props. See [Slot-Driven Composition](/foundations/component-principles#slot-driven-composition) for how container providers wire this up.
 

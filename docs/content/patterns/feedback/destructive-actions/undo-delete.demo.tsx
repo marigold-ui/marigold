@@ -76,7 +76,7 @@ const Lists = () => {
               <Table.Cell>
                 <Button
                   variant="destructive-ghost"
-                  size="small"
+                  size="icon"
                   aria-label={`Delete ${list.name}`}
                   onPress={() => deleteList(list)}
                 >
