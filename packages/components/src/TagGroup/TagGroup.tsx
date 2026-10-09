@@ -19,6 +19,7 @@ import { ButtonContext } from '../Button/Context';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
 import { splitChildren } from '../utils/children.utils';
+import { hasAddonContent, joinIds } from '../utils/useLabelAddon';
 import { TagGroupContext } from './Context';
 import { TagGroupRemoveAll } from './TagGroupRemoveAll';
 import { TagGroupShowMore } from './TagGroupShowMore';
@@ -53,6 +54,12 @@ export interface TagGroupProps
    * The label of the field.
    */
   label?: ReactNode;
+
+  /**
+   * Content after the label, such as a `<Badge>` or `<ContextualHelp>`. Keeps
+   * the label row's height, and a badge is read as the field's description.
+   */
+  addon?: ReactNode;
   /**
    * A helpful description rendered below the list.
    */
@@ -156,6 +163,7 @@ const _TagGroup = ({
   variant,
   size,
   label,
+  addon,
   description,
   errorMessage,
   error,
@@ -177,6 +185,7 @@ const _TagGroup = ({
 }: TagGroupProps) => {
   const classNames = useClassNames({ component: 'Tag', variant, size });
   const labelId = useId();
+  const addonId = useId();
   const tagListRef = useObjectRef(ref);
 
   const staticChildren = typeof children === 'function' ? undefined : children;
@@ -239,9 +248,10 @@ const _TagGroup = ({
     validationState.commitValidation();
   };
 
-  const ariaLabelledBy =
-    [label && labelId, rest['aria-labelledby']].filter(Boolean).join(' ') ||
-    undefined;
+  const ariaLabelledBy = joinIds(
+    label ? labelId : undefined,
+    rest['aria-labelledby']
+  );
 
   return (
     <Provider
@@ -258,6 +268,8 @@ const _TagGroup = ({
         variant={variant}
         size={size}
         label={label}
+        addon={addon}
+        addonId={addonId}
         description={description}
         errorMessage={errorMessage}
         isInvalid={validationState.displayValidation.isInvalid}
@@ -267,6 +279,10 @@ const _TagGroup = ({
         <RACTagGroup
           {...(rest as RAC.TagGroupProps)}
           aria-labelledby={ariaLabelledBy}
+          aria-describedby={joinIds(
+            rest['aria-describedby'],
+            hasAddonContent(addon) ? addonId : undefined
+          )}
           aria-disabled={disabled || undefined}
           selectionMode={selectionMode}
           selectedKeys={selection}

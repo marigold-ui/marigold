@@ -41,6 +41,12 @@ export interface SegmentedControlProps extends Omit<
    * Set the label of the control.
    */
   label?: ReactNode;
+
+  /**
+   * Content after the label, such as a `<Badge>` or `<ContextualHelp>`. Keeps
+   * the label row's height, and a badge is read as the field's description.
+   */
+  addon?: ReactNode;
   /**
    * Set the control's help text.
    */
@@ -84,6 +90,7 @@ function SegmentedControlBase({
   variant,
   size,
   label,
+  addon,
   error,
   disabled,
   required,
@@ -167,6 +174,7 @@ function SegmentedControlBase({
       as={RadioGroup}
       width={width}
       label={label}
+      addon={addon}
       description={description}
       errorMessage={errorMessage}
       variant={variant}

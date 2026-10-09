@@ -168,11 +168,9 @@ Adding a description to a checkbox is helpful when the label alone isn't enough 
 
 <ComponentDemo name="checkbox-description" />
 
-### Badge
+### Label addon
 
-To mark a checkbox with a `<Badge>`, such as an access level or a "New" flag, pass it to `badge` rather than building the decoration into `label` yourself. The slot holds it to the height of the label's line and sizes it to fit, so the box stays centred on the text instead of drifting above it, and a label that wraps still keeps the box on its first line.
-
-The badge joins the checkbox's accessible name, announced right after the label text. That's right for an access-level mark, but a purely decorative badge should get `aria-hidden` instead.
+To add something to the end of a checkbox's label, such as a `<Badge>` for an access level or a "New" flag, or a `<ContextualHelp>` that explains the option, pass it to `addon` rather than building it into `label` yourself. The slot holds it to the height of the label's line and sizes it to fit, so the box stays centred on the text instead of drifting above it, and a label that wraps still keeps the box on its first line. The addon isn't part of the accessible name. [Form Fields](/foundations/form-fields#label-addon) explains how screen readers announce it and when a decorative badge needs `aria-hidden`.
 
 <ComponentDemo name="checkbox-badge" />
 

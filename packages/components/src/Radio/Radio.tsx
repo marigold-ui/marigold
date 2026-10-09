@@ -2,7 +2,8 @@ import { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { RadioButton, RadioField } from 'react-aria-components/RadioGroup';
 import { cn, createWidthVar, useClassNames } from '@marigold/system';
-import { LabelAdornment } from '../utils/LabelAdornment';
+import { LabelAddon } from '../utils/LabelAddon';
+import { useLabelAddon } from '../utils/useLabelAddon';
 import { useRadioGroupContext } from './Context';
 import { RadioGroup } from './RadioGroup';
 
@@ -21,11 +22,10 @@ export interface RadioProps extends Omit<RAC.RadioFieldProps, RemovedProps> {
   width?: string;
   children?: ReactNode;
   /**
-   * A `<Badge>` shown at the end of the label's first line. Use this instead
-   * of putting it in `children` yourself: the slot sizes it to the line so it
-   * doesn't make the line taller than the radio next to it.
+   * Content on the label's first line, such as a `<Badge>` or `<ContextualHelp>`.
+   * Keeps the radio centred, and a badge is read as the radio's description.
    */
-  badge?: ReactNode;
+  addon?: ReactNode;
   /**
    * Set the radio disabled.
    * @default false
@@ -50,13 +50,14 @@ const _Radio = ({
   disabled,
   width,
   children,
-  badge,
+  addon,
   variant: variantProp,
   size: sizeProp,
   ref,
   ...props
 }: RadioProps) => {
   const { variant, size } = useRadioGroupContext();
+  const { labelId, addonId, ariaProps } = useLabelAddon(children, addon, props);
 
   const classNames = useClassNames({
     component: 'Radio',
@@ -75,6 +76,7 @@ const _Radio = ({
       value={value}
       isDisabled={disabled}
       {...props}
+      {...ariaProps}
     >
       <RadioButton
         ref={ref}
@@ -94,11 +96,11 @@ const _Radio = ({
               )}
             />
             <div className={classNames.label}>
-              {children}
-              {badge && (
+              {labelId ? <span id={labelId}>{children}</span> : children}
+              {addon && (
                 <>
                   {' '}
-                  <LabelAdornment>{badge}</LabelAdornment>
+                  <LabelAddon id={addonId}>{addon}</LabelAddon>
                 </>
               )}
             </div>

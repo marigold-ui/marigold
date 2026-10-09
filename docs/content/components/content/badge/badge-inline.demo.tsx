@@ -34,11 +34,11 @@ export default () => (
       <Text fontSize="xs" color="text-secondary-muted">
         Inline, inside the text: in a checkbox label the badge is drawn to the
         height of the line, so the checkbox stays level with the words. The
-        badge slot sets the size here, so no size prop is needed.
+        addon slot sets the size here, so no size prop is needed.
       </Text>
       <Checkbox
         label="Enable early bird pricing"
-        badge={<Badge variant="master">Master</Badge>}
+        addon={<Badge variant="master">Master</Badge>}
         description="Sells a limited contingent at a reduced price before regular sales open."
       />
     </Stack>

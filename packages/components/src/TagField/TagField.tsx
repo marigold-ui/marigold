@@ -56,6 +56,12 @@ export interface TagFieldProps<T extends object>
   label?: ReactNode;
 
   /**
+   * Content after the label, such as a `<Badge>` or `<ContextualHelp>`. Keeps
+   * the label row's height, and a badge is read as the field's description.
+   */
+  addon?: ReactNode;
+
+  /**
    * Set a description for the field.
    */
   description?: string;
