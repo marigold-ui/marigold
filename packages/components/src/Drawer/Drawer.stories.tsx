@@ -656,3 +656,67 @@ BleedTable.test(
     expect(padding(first)).toBeGreaterThan(padding(second));
   }
 );
+
+export const FlushSmallScreen = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
+  parameters: { chromatic: { disableSnapshot: true, viewports: [320] } },
+  render: args => (
+    <Drawer.Trigger>
+      <Button>Open Drawer</Button>
+      <Drawer {...args} closeButton>
+        <Drawer.Title>Filter</Drawer.Title>
+        <Drawer.Content>
+          <p>
+            At 320px the Drawer fills the screen and sits flush to its edges.
+          </p>
+        </Drawer.Content>
+        <Drawer.Actions>
+          <Button slot="close">Close</Button>
+          <Button slot="close" variant="primary">
+            Save
+          </Button>
+        </Drawer.Actions>
+      </Drawer>
+    </Drawer.Trigger>
+  ),
+});
+
+FlushSmallScreen.test(
+  'fills the viewport without rounded corners or horizontal overflow',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent, step }) => {
+    let trigger: HTMLElement;
+
+    await step('Arrange', async () => {
+      expect(window.innerWidth).toBeLessThan(640);
+      trigger = canvas.getByRole('button', { name: 'Open Drawer' });
+    });
+
+    await step('Act', async () => {
+      await userEvent.click(trigger!);
+    });
+
+    await step('Assert', async () => {
+      const dialog = await waitFor(() => canvas.getByRole('dialog'));
+      const surface = dialog.getBoundingClientRect();
+
+      expect(surface.left).toBeCloseTo(0, 1);
+      expect(surface.width).toBeCloseTo(window.innerWidth, 1);
+      expect(surface.top).toBeCloseTo(0, 1);
+      expect(surface.height).toBeCloseTo(window.innerHeight, 1);
+
+      const radii = getComputedStyle(dialog);
+      expect(radii.borderTopLeftRadius).toBe('0px');
+      expect(radii.borderBottomRightRadius).toBe('0px');
+
+      expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(
+        window.innerWidth
+      );
+    });
+  }
+);
