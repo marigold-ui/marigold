@@ -2,9 +2,11 @@ import { Key, ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { Button as RACButton } from 'react-aria-components/Button';
 import { Menu, MenuTrigger } from 'react-aria-components/Menu';
+import { useContextProps } from 'react-aria-components/slots';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { useClassNames, useSmallScreen } from '@marigold/system';
+import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Button } from '../Button/Button';
+import { ButtonContext, type ButtonContextValue } from '../Button/Context';
 import type { PopoverProps } from '../Overlay/Popover';
 import { Popover } from '../Overlay/Popover';
 import { Tray } from '../Tray/Tray';
@@ -65,16 +67,44 @@ const _Menu = ({
   'aria-label': ariaLabel,
   ...props
 }: MenuProps) => {
-  const classNames = useClassNames({ component: 'Menu', variant, size });
+  // Read the Marigold `ButtonContext` so the trigger sits in a button container
+  // (`ActionBar`, `ButtonGroup`, `Panel.Header`, …) like a sibling `<Button>`:
+  // its size, disabled state and positional className. A local prop wins.
+  const [trigger, triggerRef] = useContextProps(
+    { variant, size, disabled } as ButtonContextValue,
+    undefined,
+    ButtonContext
+  );
+  const {
+    variant: cascadedVariant,
+    size: triggerSize,
+    disabled: triggerDisabled,
+    className: triggerClassName,
+    ...triggerProps
+  } = trigger;
+
+  // `Menu.button` only knows `default` and `ghost`, so of the cascaded
+  // variants only `ghost` is taken over; anything else (a `ButtonGroup`'s
+  // `secondary`, …) falls back to the default trigger.
+  const triggerVariant =
+    variant ?? (cascadedVariant === 'ghost' ? 'ghost' : undefined);
+
+  const classNames = useClassNames({
+    component: 'Menu',
+    variant: triggerVariant,
+    size: triggerSize,
+  });
   const isSmallScreen = useSmallScreen();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   return (
     <MenuTrigger {...props}>
       <RACButton
-        className={classNames.button}
+        {...triggerProps}
+        ref={triggerRef}
+        className={cn(triggerClassName, classNames.button)}
         aria-label={ariaLabel}
-        isDisabled={disabled}
+        isDisabled={triggerDisabled}
       >
         {label}
       </RACButton>
