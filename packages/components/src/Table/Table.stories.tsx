@@ -16,6 +16,7 @@ import { NumberField } from '../NumberField/NumberField';
 import { Panel } from '../Panel/Panel';
 import { Scrollable } from '../Scrollable/Scrollable';
 import { Select } from '../Select/Select';
+import { Slider } from '../Slider/Slider';
 import { Stack } from '../Stack/Stack';
 import { Switch } from '../Switch/Switch';
 import { Text } from '../Text/Text';
@@ -1011,45 +1012,70 @@ ScrollableAndSticky.test(
 
 // A content-sized parent: `Columns` sizes its tracks to the Table's width,
 // while React Aria sizes the columns to the track's width.
+/**
+ * Regression story for DST-1836. The panel sits in `Columns`, so its width
+ * comes from the table. Before the fix the columns only ever grew: widen the
+ * container and they widened, narrow it again and they kept their widest width.
+ *
+ * Drag the slider up and back down. The columns should follow both ways and
+ * never shrink below the sum of their minimum widths.
+ */
 export const FollowsParentWidth = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => (
-    <Columns columns={[1, 2]} space={4}>
-      <Text>Filters</Text>
-      <Panel>
-        <Panel.Header>
-          <Title>Organizers</Title>
-        </Panel.Header>
-        <Panel.Content bleed>
-          <Table aria-label="Organizers" {...args}>
-            <Table.Header>
-              <Table.Column rowHeader width="2fr" minWidth={160}>
-                Name
-              </Table.Column>
-              <Table.Column width="1fr" minWidth={140}>
-                City
-              </Table.Column>
-              <Table.Column width="2fr" minWidth={180}>
-                Email
-              </Table.Column>
-              <Table.Column width={100}>Status</Table.Column>
-            </Table.Header>
-            <Table.Body>
-              {[1, 2, 3].map(id => (
-                <Table.Row key={id}>
-                  <Table.Cell>Organizer {id}</Table.Cell>
-                  <Table.Cell>Freiburg im Breisgau</Table.Cell>
-                  <Table.Cell>contact{id}@example.com</Table.Cell>
-                  <Table.Cell>active</Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
-        </Panel.Content>
-      </Panel>
-    </Columns>
-  ),
+  render: function Render(args) {
+    const [maxWidth, setMaxWidth] = useState(1600);
+
+    return (
+      <Stack space={6}>
+        <Slider<number>
+          label="Container width (px)"
+          minValue={400}
+          maxValue={1600}
+          step={50}
+          value={maxWidth}
+          onChange={setMaxWidth}
+          width={96}
+        />
+        <div style={{ maxWidth }}>
+          <Columns columns={[1, 2]} space={4}>
+            <Text>Sidebar (1/3)</Text>
+            <Panel>
+              <Panel.Header>
+                <Title>Organizers</Title>
+              </Panel.Header>
+              <Panel.Content bleed>
+                <Table aria-label="Organizers" {...args}>
+                  <Table.Header>
+                    <Table.Column rowHeader width="2fr" minWidth={160}>
+                      Name
+                    </Table.Column>
+                    <Table.Column width="1fr" minWidth={140}>
+                      City
+                    </Table.Column>
+                    <Table.Column width="2fr" minWidth={180}>
+                      Email
+                    </Table.Column>
+                    <Table.Column width={100}>Status</Table.Column>
+                  </Table.Header>
+                  <Table.Body>
+                    {[1, 2, 3].map(id => (
+                      <Table.Row key={id}>
+                        <Table.Cell>{`Organizer ${id}`}</Table.Cell>
+                        <Table.Cell>Freiburg im Breisgau</Table.Cell>
+                        <Table.Cell>contact{id}@example.com</Table.Cell>
+                        <Table.Cell>active</Table.Cell>
+                      </Table.Row>
+                    ))}
+                  </Table.Body>
+                </Table>
+              </Panel.Content>
+            </Panel>
+          </Columns>
+        </div>
+      </Stack>
+    );
+  },
 });
 
 FollowsParentWidth.test(
@@ -1059,6 +1085,7 @@ FollowsParentWidth.test(
     const { page } = await import('vitest/browser');
     const table = canvas.getByRole('grid');
     const width = () => table.getBoundingClientRect().width;
+    // The slider starts at its maximum, so the viewport is what limits the width.
 
     await page.viewport(900, 800);
     await waitFor(() => expect(width()).toBeGreaterThan(0));
@@ -1068,6 +1095,34 @@ FollowsParentWidth.test(
     await waitFor(() => expect(width()).toBeGreaterThan(narrow));
 
     await page.viewport(900, 800);
+    await waitFor(() => expect(width()).toBe(narrow));
+  }
+);
+
+FollowsParentWidth.test(
+  'Columns narrow again after the slider widens and narrows the container',
+  async ({ canvas, userEvent }) => {
+    const { page } = await import('vitest/browser');
+    await page.viewport(1440, 800);
+
+    const table = canvas.getByRole('grid');
+    const width = () => table.getBoundingClientRect().width;
+    const slider = canvas.getByRole('slider');
+    const setTo900 = async () => {
+      await userEvent.keyboard('{Home}');
+      for (let i = 0; i < 10; i++) await userEvent.keyboard('{ArrowRight}');
+    };
+
+    await userEvent.click(slider);
+    await setTo900();
+    await waitFor(() => expect(slider).toHaveValue('900'));
+    await waitFor(() => expect(width()).toBeGreaterThan(0));
+    const narrow = width();
+
+    await userEvent.keyboard('{End}');
+    await waitFor(() => expect(width()).toBeGreaterThan(narrow));
+
+    await setTo900();
     await waitFor(() => expect(width()).toBe(narrow));
   }
 );
