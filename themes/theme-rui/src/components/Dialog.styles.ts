@@ -10,8 +10,6 @@ export const Dialog: ThemeComponent<'Dialog'> = {
       // surface; the dialog drops its own border + elevation to avoid a double
       // frame. As a modal (no popover ancestor) it keeps them.
       'group-data-trigger/popover:ring-0 group-data-trigger/popover:shadow-none',
-      // Hoists the body's scroll timeline into scope for the sibling header's seam.
-      'ui-scroll-seam-scope',
     ],
     variants: {
       variant: {},
@@ -25,16 +23,22 @@ export const Dialog: ThemeComponent<'Dialog'> = {
       },
     },
   }),
-  // Borderless at rest, grows a bottom seam as the body scrolls under it
-  // (scroll-driven, see `ui-scroll-seam-*` in ui.css). On `header` so it also
-  // covers the bare `<Title>` chrome, which reuses these classNames.
+  // Always-on bottom divider, matching the top divider on `actions` and the
+  // Drawer/Tray anatomy. The divider is copied from `ui-surface-header` (ui.css)
+  // instead of reusing it because the header needs its own top padding, so
+  // keep the two in sync. On `header` so it also covers the bare `<Title>`
+  // chrome, which reuses these classNames.
   header: cva({
-    base: 'flex flex-col text-center sm:text-left px-6 pt-6 ui-scroll-seam-header',
+    base: 'flex flex-col text-center sm:text-left px-6 pt-6 pb-4 border-b border-border',
   }),
   title: cva({ base: 'text-lg font-semibold mb-1' }),
   description: cva({ base: 'text-sm text-secondary' }),
-  content: cva({ base: 'ui-surface-content text-sm ui-scroll-seam-timeline' }),
+  content: cva({ base: 'ui-surface-content text-sm' }),
+  // The top divider separates the actions from the content. Without content
+  // (title + actions only) the header's divider already does that, so drop
+  // this one rather than stack two lines. Checks the parent, not the previous
+  // sibling: the parts are placed by grid area, so their JSX order is free.
   actions: cva({
-    base: 'ui-surface-actions flex-col-reverse sm:flex-row',
+    base: 'ui-surface-actions flex-col-reverse sm:flex-row [:not(:has(>.ui-surface-content))>&]:border-t-0',
   }),
 };
