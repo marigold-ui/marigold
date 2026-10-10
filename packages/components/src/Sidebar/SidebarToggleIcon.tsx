@@ -66,7 +66,10 @@ export const SidebarToggleIcon = ({
             : `translate 150ms ${HOVER_BEZIER}`,
         }}
       >
+        {/* The `d` attribute is the fallback for Safari, which ignores the
+            CSS `d` property. Where CSS `d` is supported it wins and animates. */}
         <path
+          d={expanded ? CHEVRON_LEFT : CHEVRON_RIGHT}
           style={
             {
               d: `path("${expanded ? CHEVRON_LEFT : CHEVRON_RIGHT}")`,

@@ -42,3 +42,17 @@ test('spreads additional SVG props', () => {
 
   expect(svg).toHaveAttribute('aria-label', 'Toggle sidebar');
 });
+
+// Safari ignores the CSS `d` property, so the chevron needs a `d` attribute.
+test('draws the chevron with a d attribute in both states', () => {
+  const { rerender } = render(<SidebarToggleIcon data-testid="icon" />);
+  const chevron = () =>
+    // eslint-disable-next-line testing-library/no-node-access
+    screen.getByTestId('icon').querySelectorAll('path')[1];
+
+  expect(chevron()).toHaveAttribute('d', 'M 16 15 L 13 12 L 16 9');
+
+  rerender(<SidebarToggleIcon data-testid="icon" expanded={false} />);
+
+  expect(chevron()).toHaveAttribute('d', 'M 13 15 L 16 12 L 13 9');
+});
