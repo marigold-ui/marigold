@@ -1,17 +1,15 @@
-export const filterAcceptedFiles = (
-  files: File[],
+export const isAcceptedType = (
+  file: File,
   acceptedFileTypes?: ReadonlyArray<string>
-): File[] => {
-  if (!acceptedFileTypes || acceptedFileTypes.length === 0) return files;
+): boolean => {
+  if (!acceptedFileTypes || acceptedFileTypes.length === 0) return true;
   // If any token allows all, short-circuit
   if (
     acceptedFileTypes.some(token => tokenAllowsAll(token.trim().toLowerCase()))
   ) {
-    return files;
+    return true;
   }
-  return files.filter(file =>
-    acceptedFileTypes.some(token => matchesAcceptedToken(file, token))
-  );
+  return acceptedFileTypes.some(token => matchesAcceptedToken(file, token));
 };
 
 export const isFileDropItem = (
@@ -101,17 +99,35 @@ export const formatFileSize = (
   return `${value} ${FILE_SIZE_UNITS[exponent]}`;
 };
 
+export interface RejectedFile {
+  file: File;
+  reason: 'type' | 'size';
+}
+
 export const normalizeAndLimitFiles = (
   files: File[],
   {
     accept,
     multiple,
+    maxSize,
   }: {
     accept?: ReadonlyArray<string>;
     multiple?: boolean;
+    maxSize?: number;
   }
-): File[] => {
-  const accepted = dedupeFiles(filterAcceptedFiles(files, accept));
+): { accepted: File[]; rejected: RejectedFile[] } => {
+  const accepted: File[] = [];
+  const rejected: RejectedFile[] = [];
 
-  return multiple ? accepted : accepted.slice(0, 1);
+  for (const file of dedupeFiles(files)) {
+    if (!isAcceptedType(file, accept)) {
+      rejected.push({ file, reason: 'type' });
+    } else if (maxSize !== undefined && file.size > maxSize) {
+      rejected.push({ file, reason: 'size' });
+    } else {
+      accepted.push(file);
+    }
+  }
+
+  return { accepted: multiple ? accepted : accepted.slice(0, 1), rejected };
 };

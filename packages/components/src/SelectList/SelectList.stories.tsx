@@ -8,6 +8,13 @@ import { ActionMenu } from '../Menu/ActionMenu';
 import { Menu } from '../Menu/Menu';
 import { Stack } from '../Stack/Stack';
 import { TextValue } from '../TextValue/TextValue';
+import {
+  DISABLED_EDGE_BAND,
+  DISABLED_INK_MIN,
+  edgeContrast,
+  inkContrast,
+} from '../contrast.utils';
+import { selectionMark } from '../control.utils';
 import { Info } from '../icons/Info';
 import { SelectList } from './SelectList';
 
@@ -829,6 +836,49 @@ Disabled.test(
     await userEvent.click(expressRow);
 
     expect(args.onChange).not.toHaveBeenCalled();
+  }
+);
+
+// The mark used to dim only when the row was disabled *and* selected, so an
+// unselected row kept an edge that read as live.
+Disabled.test(
+  'dims the selection mark whether or not the row is selected',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvas }) => {
+    const selected = await canvas.findByRole('row', { name: /standard/i });
+    const unselected = canvas.getByRole('row', { name: /express/i });
+
+    // A disabled row drops `aria-selected`, so `data-selected` is what still
+    // says which one carries the selection.
+    expect(selected).toHaveAttribute('data-selected', 'true');
+    expect(unselected).not.toHaveAttribute('data-selected');
+
+    // Measured per row, not compared as colours: the rows sit on different
+    // grounds, so matching border strings would pass on the bug.
+    const [floor, ceiling] = DISABLED_EDGE_BAND;
+    for (const [label, row] of [
+      ['unselected', unselected],
+      ['selected', selected],
+    ] as const) {
+      const ratio = edgeContrast(selectionMark(row));
+
+      expect(
+        ratio,
+        `disabled ${label} mark edge is ${ratio.toFixed(2)}:1, wanted a dimmed ${floor}-${ceiling}:1`
+      ).toBeGreaterThan(floor);
+      expect(ratio, label).toBeLessThan(ceiling);
+    }
+
+    // The dot is `bg-current`. Left as `selected-bold-foreground` it lands on
+    // `disabled-surface` at 1.06:1.
+    const ink = inkContrast(selectionMark(selected));
+
+    expect(
+      ink,
+      `disabled selected dot is ${ink.toFixed(2)}:1 against its own fill`
+    ).toBeGreaterThan(DISABLED_INK_MIN);
   }
 );
 

@@ -1,19 +1,22 @@
 import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { useDragAndDrop } from 'react-aria-components/useDragAndDrop';
-import { expect, waitFor, within } from 'storybook/test';
+import { expect, screen, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { SortDescriptor } from '@react-types/shared';
 import { NumericFormat } from '@marigold/system';
+import { ActionBar } from '../ActionBar/ActionBar';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Checkbox } from '../Checkbox/Checkbox';
+import { Columns } from '../Columns/Columns';
 import { EmptyState } from '../EmptyState/EmptyState';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { NumberField } from '../NumberField/NumberField';
 import { Panel } from '../Panel/Panel';
 import { Scrollable } from '../Scrollable/Scrollable';
 import { Select } from '../Select/Select';
+import { Slider } from '../Slider/Slider';
 import { Stack } from '../Stack/Stack';
 import { Switch } from '../Switch/Switch';
 import { Text } from '../Text/Text';
@@ -571,6 +574,74 @@ Empty.test(
   }
 );
 
+export const Loading = meta.story({
+  tags: ['component-test'],
+  // `loading` changes no pixels, the tests below guard it instead.
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    loading: true,
+  },
+  render: args => (
+    <Table aria-label="Orders" {...args}>
+      <Table.Header>
+        <Table.Column rowHeader>Name</Table.Column>
+        <Table.Column>Email</Table.Column>
+        <Table.Column>Status</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        {users.slice(0, 3).map(user => (
+          <Table.Row key={user.email}>
+            <Table.Cell>{user.name}</Table.Cell>
+            <Table.Cell>{user.email}</Table.Cell>
+            <Table.Cell>
+              <Badge>{user.status}</Badge>
+            </Table.Cell>
+          </Table.Row>
+        ))}
+      </Table.Body>
+    </Table>
+  ),
+});
+
+Loading.test(
+  'Marks the grid busy and announces loading on the first render',
+  async ({ canvas }) => {
+    expect(canvas.getByRole('grid')).toHaveAttribute('aria-busy', 'true');
+
+    // The announcer lives outside the canvas, at the start of `<body>`.
+    await waitFor(() => {
+      const polite = screen
+        .getAllByRole('log', { hidden: true })
+        .find(log => log.getAttribute('aria-live') === 'polite');
+
+      expect(polite).toHaveTextContent('Loading...');
+    });
+  }
+);
+
+Loading.test(
+  'Leaves a single status region when an ActionBar is open',
+  {
+    args: {
+      selectionMode: 'multiple',
+      actionBar: () => (
+        <ActionBar>
+          <Button>Delete</Button>
+        </ActionBar>
+      ),
+    },
+  },
+  async ({ canvas, userEvent }) => {
+    const [firstRow] = canvas.getAllByRole('row').slice(1);
+    await userEvent.click(within(firstRow).getByRole('checkbox'));
+
+    await waitFor(() => {
+      expect(screen.getByRole('toolbar')).toBeInTheDocument();
+    });
+    expect(screen.getAllByRole('status')).toHaveLength(1);
+  }
+);
+
 export const Sorting = meta.story({
   tags: ['component-test'],
   render: args => {
@@ -939,6 +1010,210 @@ ScrollableAndSticky.test(
   }
 );
 
+// A content-sized parent: `Columns` sizes its tracks to the Table's width,
+// while React Aria sizes the columns to the track's width.
+/**
+ * Regression story for DST-1836. The panel sits in `Columns`, so its width
+ * comes from the table. Before the fix the columns only ever grew: widen the
+ * container and they widened, narrow it again and they kept their widest width.
+ *
+ * Drag the slider up and back down. The columns should follow both ways and
+ * never shrink below the sum of their minimum widths.
+ */
+export const FollowsParentWidth = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: function Render(args) {
+    const [maxWidth, setMaxWidth] = useState(1600);
+
+    return (
+      <Stack space={6}>
+        <Slider<number>
+          label="Container width (px)"
+          minValue={400}
+          maxValue={1600}
+          step={50}
+          value={maxWidth}
+          onChange={setMaxWidth}
+          width={96}
+        />
+        <div style={{ maxWidth }}>
+          <Columns columns={[1, 2]} space={4}>
+            <Panel>
+              <Panel.Header>
+                <Title>Sidebar</Title>
+              </Panel.Header>
+              <Panel.Content>
+                <Text>Takes one third of the row.</Text>
+              </Panel.Content>
+            </Panel>
+            <Panel>
+              <Panel.Header>
+                <Title>Organizers</Title>
+              </Panel.Header>
+              <Panel.Content bleed>
+                <Table aria-label="Organizers" {...args}>
+                  <Table.Header>
+                    <Table.Column rowHeader width="2fr" minWidth={160}>
+                      Name
+                    </Table.Column>
+                    <Table.Column width="1fr" minWidth={140}>
+                      City
+                    </Table.Column>
+                    <Table.Column width="2fr" minWidth={180}>
+                      Email
+                    </Table.Column>
+                    <Table.Column width={100}>Status</Table.Column>
+                    <Table.Column defaultWidth={120}>Tickets</Table.Column>
+                  </Table.Header>
+                  <Table.Body>
+                    {[1, 2, 3].map(id => (
+                      <Table.Row key={id}>
+                        <Table.Cell>{`Organizer ${id}`}</Table.Cell>
+                        <Table.Cell>Freiburg im Breisgau</Table.Cell>
+                        <Table.Cell>contact{id}@example.com</Table.Cell>
+                        <Table.Cell>active</Table.Cell>
+                        <Table.Cell>{id * 120}</Table.Cell>
+                      </Table.Row>
+                    ))}
+                  </Table.Body>
+                </Table>
+              </Panel.Content>
+            </Panel>
+          </Columns>
+        </div>
+      </Stack>
+    );
+  },
+});
+
+FollowsParentWidth.test(
+  'Columns narrow again after the viewport widens and shrinks',
+  async ({ canvas, step }) => {
+    // Only resolvable inside Vitest; a static import breaks the story in Storybook.
+    const { page } = await import('vitest/browser');
+    const table = canvas.getByRole('grid');
+    const width = () => table.getBoundingClientRect().width;
+    let narrow = 0;
+    // The slider starts at its maximum, so the viewport is what limits the width.
+
+    await page.viewport(900, 800);
+
+    try {
+      await step('measures the table at 900px', async () => {
+        await waitFor(() => expect(width()).toBeGreaterThan(0));
+        narrow = width();
+      });
+
+      await step('widens with the viewport', async () => {
+        await page.viewport(1440, 800);
+        await waitFor(() => expect(width()).toBeGreaterThan(narrow));
+      });
+
+      await step('narrows back with the viewport', async () => {
+        await page.viewport(900, 800);
+        await waitFor(() => expect(width()).toBeCloseTo(narrow, 0));
+      });
+    } finally {
+      await page.viewport(1280, 720);
+    }
+  }
+);
+
+FollowsParentWidth.test(
+  'Columns narrow again after the slider widens and narrows the container',
+  async ({ canvas, userEvent, step }) => {
+    const { page } = await import('vitest/browser');
+    const table = canvas.getByRole('grid');
+    const width = () => table.getBoundingClientRect().width;
+    const slider = canvas.getByRole('slider');
+    const setTo900 = async () => {
+      await userEvent.keyboard('{Home}');
+      for (let i = 0; i < 10; i++) await userEvent.keyboard('{ArrowRight}');
+    };
+    let narrow = 0;
+
+    await page.viewport(1440, 800);
+
+    try {
+      await step('measures the table in a 900px container', async () => {
+        await userEvent.click(slider);
+        await setTo900();
+        await waitFor(() => expect(slider).toHaveValue('900'));
+        await waitFor(() => expect(width()).toBeGreaterThan(0));
+        narrow = width();
+      });
+
+      await step('widens with the container', async () => {
+        await userEvent.keyboard('{End}');
+        await waitFor(() => expect(width()).toBeGreaterThan(narrow));
+      });
+
+      await step('narrows back with the container', async () => {
+        await setTo900();
+        await waitFor(() => expect(width()).toBeCloseTo(narrow, 0));
+      });
+    } finally {
+      await page.viewport(1280, 720);
+    }
+  }
+);
+
+FollowsParentWidth.test(
+  "Stays inside the panel with Core's fit-content rule",
+  {
+    decorators: [
+      Story => (
+        <>
+          <style>{'[data-panel]:has(table) { min-width: fit-content; }'}</style>
+          <Story />
+        </>
+      ),
+    ],
+  },
+  async ({ canvas, step }) => {
+    const { page } = await import('vitest/browser');
+    const table = canvas.getByRole('grid');
+    const panel = table.closest<HTMLElement>('[data-panel]')!;
+    const width = () => table.getBoundingClientRect().width;
+    const fitsPanel = () =>
+      expect(table.getBoundingClientRect().right).toBeLessThanOrEqual(
+        // 1px absorbs subpixel rounding of the fractional columns.
+        panel.getBoundingClientRect().right + 1
+      );
+    let narrow = 0;
+
+    // Narrower than the column minimums, so the floor alone sizes the panel.
+    await page.viewport(600, 800);
+
+    try {
+      await step('fits the panel below the column minimums', async () => {
+        await waitFor(() => expect(width()).toBeGreaterThan(0));
+        await waitFor(fitsPanel);
+      });
+
+      await step('measures the table at 1100px', async () => {
+        await page.viewport(1100, 800);
+        await waitFor(() => expect(width()).toBeGreaterThan(0));
+        narrow = width();
+      });
+
+      await step('widens with the viewport', async () => {
+        await page.viewport(1440, 800);
+        await waitFor(() => expect(width()).toBeGreaterThan(narrow));
+      });
+
+      await step('narrows back and still fits the panel', async () => {
+        await page.viewport(1100, 800);
+        await waitFor(() => expect(width()).toBeCloseTo(narrow, 0));
+        await waitFor(fitsPanel);
+      });
+    } finally {
+      await page.viewport(1280, 720);
+    }
+  }
+);
+
 export const Links = meta.story({
   tags: ['component-test'],
   render: args => {
@@ -1107,6 +1382,20 @@ DragAndDrop.test(
 );
 
 DragAndDrop.test(
+  'Aligns the injected drag-handle cell with the other cells',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { alignY: 'top' },
+  },
+  async ({ canvas }) => {
+    const [, firstRow] = canvas.getAllByRole('row');
+    const [dragHandleCell] = within(firstRow).getAllByRole('gridcell');
+
+    await expect(getComputedStyle(dragHandleCell).verticalAlign).toBe('top');
+  }
+);
+
+DragAndDrop.test(
   'Reorders rows with keyboard drag and drop',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent, step }) => {
@@ -1116,9 +1405,16 @@ DragAndDrop.test(
     const dragHandle = within(firstRow).getByRole('button', { name: /drag/i });
 
     await step('Pick up the first row (Hans Müller)', async () => {
+      // Reach the handle by keyboard: Tab lands on the first row, ArrowRight
+      // on its drag button. A programmatic `focus()` leaves React Aria's
+      // interaction modality unset, so Enter selects the row instead of
+      // starting the drag, unless an earlier test happened to set it.
+      await userEvent.tab();
+      await userEvent.keyboard('{ArrowRight}');
+      await expect(dragHandle).toHaveFocus();
+
       // Enter starts the keyboard drag and moves focus straight to a drop
       // indicator inside the collection (Tab would leave drop navigation).
-      dragHandle.focus();
       await userEvent.keyboard('{Enter}');
     });
 
@@ -1750,6 +2046,7 @@ CellOverrideTableTruncate.test(
 );
 
 export const VerticalAlignment = meta.story({
+  tags: ['component-test'],
   args: {
     alignY: 'top',
   },
@@ -1781,6 +2078,18 @@ export const VerticalAlignment = meta.story({
     </Table>
   ),
 });
+
+VerticalAlignment.test(
+  'Aligns the injected selection cell with the other cells',
+  // Keep the snapshot: it is the only baseline of a top-aligned checkbox.
+  { args: { selectionMode: 'multiple' } },
+  async ({ canvas }) => {
+    const [, firstRow] = canvas.getAllByRole('row');
+    const selectionCell = within(firstRow).getByRole('checkbox').closest('td')!;
+
+    await expect(getComputedStyle(selectionCell).verticalAlign).toBe('top');
+  }
+);
 
 export const DragPreview = meta.story({
   tags: ['component-test'],

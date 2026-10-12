@@ -1,6 +1,7 @@
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { RefObject } from 'react';
+import { Badge } from '../Badge/Badge';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic, MultiSelectSummary, WithRenderValue } from './Select.stories';
 
@@ -164,4 +165,17 @@ test('renderValue count reflects a single selection with static children', async
   await user.click(await screen.findByRole('option', { name: 'Bold' }));
 
   await waitFor(() => expect(button).toHaveTextContent(/1 selected/));
+});
+
+test('describes the trigger by its label addon', () => {
+  render(
+    <Basic.Component
+      label="Team"
+      addon={<Badge variant="master">Master</Badge>}
+    />
+  );
+
+  expect(
+    screen.getByRole('button', { name: /Team/ })
+  ).toHaveAccessibleDescription(/Master/);
 });

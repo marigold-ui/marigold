@@ -1,4 +1,5 @@
 import type { ReactNode, Ref } from 'react';
+import { useId } from 'react';
 import type RAC from 'react-aria-components';
 import {
   Slider,
@@ -8,7 +9,8 @@ import {
 } from 'react-aria-components/Slider';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
-import { Label } from '../Label/Label';
+import { FieldLabel } from '../FieldBase/FieldLabel';
+import { hasAddonContent, joinIds } from '../utils/useLabelAddon';
 
 export interface SliderProps<T>
   extends
@@ -16,7 +18,7 @@ export interface SliderProps<T>
       RAC.SliderProps<T>,
       'children' | 'isDisabled' | 'orientation' | 'style'
     >,
-    Pick<FieldBaseProps<'label'>, 'description'> {
+    Pick<FieldBaseProps<'label'>, 'description' | 'addon'> {
   variant?: string;
   size?: string;
 
@@ -62,6 +64,7 @@ const _Slider = <T extends number | number[]>({
   width = 'full',
   disabled,
   label,
+  addon,
   name,
   thumbLabels,
   ref,
@@ -77,9 +80,14 @@ const _Slider = <T extends number | number[]>({
   const thumbLabelsList = Array.isArray(thumbLabels)
     ? thumbLabels
     : [thumbLabels];
+  const addonId = useId();
   const props = {
     isDisabled: disabled,
     ...rest,
+    'aria-describedby': joinIds(
+      rest['aria-describedby'],
+      hasAddonContent(addon) ? addonId : undefined
+    ),
   } satisfies RAC.SliderProps<T>;
 
   return (
@@ -93,7 +101,7 @@ const _Slider = <T extends number | number[]>({
       ref={ref}
       {...props}
     >
-      {label && <Label>{label}</Label>}
+      <FieldLabel label={label} addon={addon} addonId={addonId} />
       <SliderOutput className={cn('flex justify-end', classNames.output)}>
         {({ state }) =>
           state.values.map((_, i) => state.getThumbValueLabel(i)).join(' - ')

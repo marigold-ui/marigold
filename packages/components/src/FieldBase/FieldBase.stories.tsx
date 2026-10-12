@@ -1,4 +1,7 @@
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Badge } from '../Badge/Badge';
+import { ContextualHelp } from '../ContextualHelp/ContextualHelp';
 import { DateField } from '../DateField/DateField';
 import { Grid } from '../Grid/Grid';
 import { Headline } from '../Headline/Headline';
@@ -92,6 +95,146 @@ export const Basic = meta.story({
     </FieldBase>
   ),
 });
+
+export const LabelAddon = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <Inline space={4} alignY="top" noWrap>
+      <TextField label="Bare" />
+      <TextField label="Badge" addon={<Badge variant="master">Master</Badge>} />
+      <TextField
+        label="Contextual help"
+        addon={
+          <ContextualHelp>
+            <ContextualHelp.Title>Email format</ContextualHelp.Title>
+            <ContextualHelp.Content>
+              Enter an address like user@example.com.
+            </ContextualHelp.Content>
+          </ContextualHelp>
+        }
+      />
+      <TextField
+        label="Both"
+        required
+        addon={
+          <>
+            <Badge variant="admin">Admin</Badge>
+            <ContextualHelp>
+              <ContextualHelp.Content>
+                Only admins see this.
+              </ContextualHelp.Content>
+            </ContextualHelp>
+          </>
+        }
+      />
+    </Inline>
+  ),
+});
+
+LabelAddon.test(
+  'An addon leaves the label as tall as a bare one',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    const labels = ['Bare', 'Badge', 'Contextual help', 'Both'].map(text =>
+      canvas.getByText(text)
+    );
+    const inputs = canvas.getAllByRole('textbox');
+    const [bareLabel, ...addonLabels] = labels;
+    const [bareInput, ...addonInputs] = inputs;
+
+    await step('the label row keeps its height', async () => {
+      // The row, not the inline `<label>`, whose box is the font's content area.
+      for (const label of addonLabels) {
+        expect(label.parentElement!.getBoundingClientRect().height).toBeCloseTo(
+          bareLabel.getBoundingClientRect().height,
+          0
+        );
+      }
+    });
+
+    await step('so the input below it does not move', async () => {
+      for (const input of addonInputs) {
+        expect(input.getBoundingClientRect().top).toBeCloseTo(
+          bareInput.getBoundingClientRect().top,
+          0
+        );
+      }
+    });
+  }
+);
+
+export const LabelAddonWrapping = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <Grid
+      areas={['badge help both']}
+      columns={['10rem', '10rem', '10rem']}
+      rows={['auto']}
+      space={4}
+    >
+      <Grid.Area name="badge">
+        <TextField
+          label="Billing contact for all invoices"
+          addon={<Badge variant="master">Master</Badge>}
+        />
+      </Grid.Area>
+      <Grid.Area name="help">
+        <TextField
+          label="Billing contact for all invoices"
+          addon={
+            <ContextualHelp>
+              <ContextualHelp.Content>
+                Invoices go to this address.
+              </ContextualHelp.Content>
+            </ContextualHelp>
+          }
+        />
+      </Grid.Area>
+      <Grid.Area name="both">
+        <TextField
+          label="Billing contact for all invoices"
+          addon={
+            <>
+              <Badge variant="admin">Admin</Badge>
+              <ContextualHelp>
+                <ContextualHelp.Content>
+                  Only admins see this.
+                </ContextualHelp.Content>
+              </ContextualHelp>
+            </>
+          }
+        />
+      </Grid.Area>
+    </Grid>
+  ),
+});
+
+LabelAddonWrapping.test(
+  'An addon follows the last word of a label that wraps',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const labels = canvas.getAllByText('Billing contact for all invoices');
+    const addons = [
+      canvas.getByText('Master'),
+      ...canvas.getAllByRole('button'),
+      canvas.getByText('Admin'),
+    ];
+
+    for (const addon of addons) {
+      const label = labels.find(l =>
+        l.closest('.group\\/field')?.contains(addon)
+      )!;
+      const { bottom, height } = label.getBoundingClientRect();
+      const line = parseFloat(getComputedStyle(label).lineHeight);
+      const rect = addon.getBoundingClientRect();
+      const centre = rect.top + rect.height / 2;
+
+      expect(height).toBeGreaterThan(line);
+      expect(centre).toBeGreaterThanOrEqual(bottom - line);
+      expect(centre).toBeLessThanOrEqual(bottom);
+    }
+  }
+);
 
 export const LayoutVariations = meta.story({
   render: () => (

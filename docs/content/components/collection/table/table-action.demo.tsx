@@ -18,7 +18,9 @@ export default () => (
           </Table.Cell>
           <Table.Cell>{item.rating}</Table.Cell>
           <Table.Cell>
-            <Button size="small">View Details</Button>
+            <Button variant="ghost" size="small">
+              View Details
+            </Button>
           </Table.Cell>
         </Table.Row>
       ))}

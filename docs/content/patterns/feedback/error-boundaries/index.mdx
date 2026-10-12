@@ -101,13 +101,13 @@ const { pathname } = useLocation();
 
 Try it out: breaking the page swaps the content for the fallback while the header keeps the route title as the h1, and focus moves to the error state.
 
-<ComponentDemo name="error-page-tier" />
+<ComponentDemo name="error-page-tier" background="page" />
 
 ## Region tier inside a Panel
 
 The boundary wraps only the panel's content. The fallback is an `ErrorState` with `role="alert"`, so the failure is announced without pulling the user out of a page that still works:
 
-<ComponentDemo name="error-region-tier" />
+<ComponentDemo name="error-region-tier" background="page" />
 
 ## Recovery and retry microcopy
 

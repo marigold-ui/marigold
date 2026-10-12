@@ -1,5 +1,7 @@
 import { render, renderHook, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { afterEach, vi } from 'vitest';
+import { announce } from '@react-aria/live-announcer';
 import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia } from '../test.utils';
 import { useTableContext } from './Context';
@@ -22,6 +24,14 @@ import { GuestTable, rowNamed, typeFromTheFirstRow } from './test.utils';
 const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
 window.matchMedia = mockMatchMedia([smallScreenQuery]);
+
+vi.mock('@react-aria/live-announcer', () => ({
+  announce: vi.fn(),
+}));
+
+afterEach(() => {
+  vi.mocked(announce).mockClear();
+});
 
 describe('Row text value', () => {
   // React Aria reads strings only, so the number case is Marigold's addition
@@ -267,6 +277,42 @@ describe('Accessibility', () => {
     const grid = screen.getByRole('grid');
 
     expect(grid).toBeInstanceOf(HTMLTableElement);
+  });
+
+  test('marks the grid busy and announces loading on mount', () => {
+    render(<Basic.Component loading />);
+
+    expect(screen.getByRole('grid')).toHaveAttribute('aria-busy', 'true');
+    expect(announce).toHaveBeenCalledExactlyOnceWith('Loading...', 'polite');
+  });
+
+  test('is not busy once loaded, and announces nothing when loading finishes', () => {
+    const { rerender } = render(<Basic.Component loading />);
+
+    rerender(<Basic.Component />);
+
+    expect(screen.getByRole('grid')).not.toHaveAttribute('aria-busy');
+    expect(announce).toHaveBeenCalledTimes(1);
+  });
+
+  test('announces again each time loading starts', () => {
+    const { rerender } = render(<Basic.Component />);
+
+    expect(announce).not.toHaveBeenCalled();
+
+    rerender(<Basic.Component loading />);
+    rerender(<Basic.Component />);
+    rerender(<Basic.Component loading />);
+
+    expect(announce).toHaveBeenCalledTimes(2);
+  });
+
+  test('renders no status region of its own', () => {
+    render(<Basic.Component loading />);
+
+    // The shared announcer owns the live region, so a table next to an
+    // ActionBar leaves a single `status` on the page.
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
   });
 });
 
@@ -584,6 +630,16 @@ describe('Expandable rows', () => {
 
     expect(screen.getByRole('treegrid')).toBeInTheDocument();
     expect(screen.queryByRole('grid')).not.toBeInTheDocument();
+  });
+
+  test('marks the treegrid busy while loading', () => {
+    const { rerender } = render(<ExpandableRows.Component loading />);
+
+    expect(screen.getByRole('treegrid')).toHaveAttribute('aria-busy', 'true');
+
+    rerender(<ExpandableRows.Component />);
+
+    expect(screen.getByRole('treegrid')).not.toHaveAttribute('aria-busy');
   });
 
   test('a table without treeColumn stays a plain grid', () => {

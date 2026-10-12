@@ -113,9 +113,9 @@ When a radio group is long enough to create clutter, overload, or excessive scro
 
 Options should be arranged by relevance to help users find what they need quickly. Prioritizing by factors such as frequency of use, overall popularity, or recency of interaction ensures the most useful items appear first. Alphabetical order should be considered only when no meaningful ranking criteria are available, as it may not align with user priorities or usage patterns.
 
-### Badge
+### Label addon
 
-To mark a single option with a `<Badge>`, such as an access level or a "New" flag, pass it to `badge` rather than putting it inside the radio's children. The slot holds it to the height of the label's line and sizes it to fit, so the dot stays centred on the text instead of drifting above it, and a label that wraps still keeps the dot on its first line.
+To add something to the end of a single option's label, such as a `<Badge>` for an access level or a "New" flag, or a `<ContextualHelp>` that explains the option, pass it to `addon` rather than putting it inside the radio's children. The slot holds it to the height of the label's line and sizes it to fit, so the dot stays centred on the text instead of drifting above it, and a label that wraps still keeps the dot on its first line. The addon isn't part of the accessible name. [Form Fields](/foundations/form-fields#label-addon) explains how screen readers announce it and when a decorative badge needs `aria-hidden`.
 
 <ComponentDemo name="radio-badge" />
 

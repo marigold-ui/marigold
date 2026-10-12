@@ -2,7 +2,7 @@ import { use } from 'react';
 import type { ReactNode } from 'react';
 import { useClassNames } from '@marigold/system';
 import { AccessIcon } from '../utils/AccessIcon';
-import { BadgeContext } from './Context';
+import { AddonContext } from '../utils/AddonContext';
 
 // Props
 // ---------------
@@ -24,8 +24,8 @@ export interface BadgeProps {
   /**
    * Set the size of the badge. Use `inline` for a badge that sits *inside* a
    * text line, where a default-sized badge would make the line taller than
-   * surrounding text. `Checkbox`, `Radio` and `Switch` set this automatically
-   * for a `<Badge>` passed to their `badge` slot.
+   * surrounding text. Every form field sets this automatically for a
+   * `<Badge>` passed to its `addon`.
    * @default default
    */
   size?: 'default' | 'inline' | (string & {});
@@ -34,7 +34,7 @@ export interface BadgeProps {
 // Component
 // ---------------
 export const Badge = ({ variant, size, children, ...props }: BadgeProps) => {
-  const context = use(BadgeContext);
+  const context = use(AddonContext);
   const classNames = useClassNames({
     component: 'Badge',
     variant,

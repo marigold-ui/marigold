@@ -53,7 +53,10 @@ type RemovedProps =
 export interface CheckboxGroupProps
   extends
     Omit<RAC.CheckboxGroupProps, RemovedProps>,
-    Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
+    Pick<
+      FieldBaseProps<'label'>,
+      'label' | 'addon' | 'description' | 'errorMessage'
+    > {
   /**
    * Children of the component.
    */

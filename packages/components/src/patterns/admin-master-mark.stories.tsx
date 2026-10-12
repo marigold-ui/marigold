@@ -66,33 +66,20 @@ export const Form = meta.story({
     <div className="max-w-md">
       <Stack space={8}>
         <TextField
-          label={
-            <>
-              Label{' '}
-              <Badge variant="master" size="inline">
-                Master
-              </Badge>
-            </>
-          }
+          label="Label"
+          addon={<Badge variant="master">Master</Badge>}
         />
-        {/* Boolean fields take the mark through `badge`, which sizes it. */}
         <Checkbox
           label="Enable Feature"
-          badge={<Badge variant="admin">Admin</Badge>}
+          addon={<Badge variant="admin">Admin</Badge>}
         />
         <Switch
           label="Require Approval"
-          badge={<Badge variant="master">Master</Badge>}
+          addon={<Badge variant="master">Master</Badge>}
         />
         <Radio.Group
-          label={
-            <>
-              Role{' '}
-              <Badge variant="admin" size="inline">
-                Admin
-              </Badge>
-            </>
-          }
+          label="Role"
+          addon={<Badge variant="admin">Admin</Badge>}
           defaultValue="admin"
         >
           <Radio value="admin">Admin</Radio>

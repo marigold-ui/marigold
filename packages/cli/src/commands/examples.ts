@@ -18,6 +18,8 @@ export interface RunExamplesOptions {
 export interface RunExamplesResult {
   output: string;
   cacheHit: boolean;
+  // `get` only: the manifest slug the input resolved to.
+  slug?: string;
 }
 
 export const runExamples = async (
@@ -36,5 +38,9 @@ export const runExamples = async (
   }
 
   const { example, cacheHit } = await getExample(options.slug, cacheOptions);
-  return { output: formatExample(example, format), cacheHit };
+  return {
+    output: formatExample(example, format),
+    cacheHit,
+    slug: example.slug,
+  };
 };

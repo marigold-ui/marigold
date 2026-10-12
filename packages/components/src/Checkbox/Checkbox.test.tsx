@@ -1,7 +1,9 @@
 /* eslint-disable testing-library/no-node-access */
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import type { RefObject } from 'react';
-import { Basic } from './Checkbox.stories';
+import { renderWithOverlay } from '../test.utils';
+import { Basic, WithBadge, WithContextualHelp } from './Checkbox.stories';
 
 // There is no real accesible way to get to the element that acts as checkbox
 const getVisibleCheckbox = () => {
@@ -44,7 +46,7 @@ test('check if all slot class names are applied correctly', () => {
     `"group/checkbox relative data-disabled:cursor-not-allowed grid grid-cols-[auto_1fr] gap-x-2 items-start cursor-pointer read-only:cursor-default group-data-[booleanfield]/booleanfield:grid-cols-subgrid group-data-[booleanfield]/booleanfield:col-span-full group-data-[orientation=vertical]/checkboxgroup:py-1 group-data-[orientation=horizontal]/checkboxgroup:px-1.5"`
   );
   expect(getVisibleCheckbox()?.className).toMatchInlineSnapshot(
-    `"grow-0 basis-4 items-center justify-center p-px border-solid grid size-4 shrink-0 place-content-center rounded border border-[oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_+_0.06))] bg-surface group-focus-visible/checkbox:ui-state-focus group-focus-visible/checkbox:border-(--ui-border-color) outline-none group-disabled/checkbox:group-selected/checkbox:bg-disabled-surface group-disabled/checkbox:border-disabled-surface! group-disabled/checkbox:text-disabled group-disabled/checkbox:cursor-not-allowed group-selected/checkbox:border-selected-bold group-selected/checkbox:bg-selected-bold group-selected/checkbox:text-selected-bold-foreground group-indeterminate/checkbox:border-selected-bold group-indeterminate/checkbox:bg-selected-bold group-indeterminate/checkbox:text-selected-bold-foreground group-hover/checkbox:group-disabled/checkbox:bg-disabled-surface group-hover/checkbox:not-group-focus-visible/checkbox:not-group-read-only/checkbox:not-group-selected/checkbox:not-group-indeterminate/checkbox:border-[oklch(from_var(--color-control-border)_l_c_h_/_calc(alpha_+_0.18))]"`
+    `"grid size-4 shrink-0 place-content-center rounded p-px border border-control-edge bg-surface group-focus-visible/checkbox:ui-state-focus group-focus-visible/checkbox:border-(--ui-border-color) outline-none group-disabled/checkbox:group-selected/checkbox:bg-disabled-surface group-disabled/checkbox:group-indeterminate/checkbox:bg-disabled-surface group-disabled/checkbox:border-control-edge-disabled! group-disabled/checkbox:text-disabled! group-disabled/checkbox:cursor-not-allowed group-selected/checkbox:border-selected-bold group-selected/checkbox:bg-selected-bold group-selected/checkbox:text-selected-bold-foreground group-indeterminate/checkbox:border-selected-bold group-indeterminate/checkbox:bg-selected-bold group-indeterminate/checkbox:text-selected-bold-foreground group-hover/checkbox:group-disabled/checkbox:bg-disabled-surface group-hover/checkbox:not-group-focus-visible/checkbox:not-group-read-only/checkbox:not-group-selected/checkbox:not-group-indeterminate/checkbox:border-control-edge-hover"`
   );
   expect(label.className).toMatchInlineSnapshot(
     `"flex items-start gap-1 text-sm leading-4 group-[&]/checkboxgroup:font-normal font-medium text-foreground group-disabled/checkbox:text-disabled"`
@@ -108,4 +110,51 @@ test('forwards ref', () => {
   render(<Basic.Component label="Check it" ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLLabelElement);
+});
+
+test('names the checkbox by its label and describes it by the addon', () => {
+  render(<WithBadge.Component />);
+
+  const checkbox = screen.getByRole('checkbox', {
+    name: 'Enable early bird pricing',
+  });
+
+  expect(checkbox).toHaveAccessibleDescription(/Master/);
+});
+
+test('describes a checkbox named by aria-label by its addon', () => {
+  render(
+    <WithBadge.Component label={undefined} aria-label="Early bird pricing" />
+  );
+
+  const checkbox = screen.getByRole('checkbox', { name: 'Early bird pricing' });
+
+  expect(checkbox).toHaveAccessibleDescription(/Master/);
+});
+
+test('does not repeat the addon in the description of an unnamed checkbox', () => {
+  render(<WithBadge.Component label={undefined} />);
+
+  expect(screen.getByRole('checkbox')).toHaveAccessibleDescription('');
+});
+
+test('opens a help addon without toggling the checkbox', async () => {
+  renderWithOverlay(<WithContextualHelp.Component />);
+
+  const checkbox = screen.getByRole('checkbox', {
+    name: 'Enable early bird pricing',
+  });
+
+  await userEvent.click(screen.getByRole('button', { name: 'Help' }));
+
+  expect(await screen.findByRole('dialog')).toBeInTheDocument();
+  expect(checkbox).not.toBeChecked();
+});
+
+test('keeps a help addon out of the checkbox description', () => {
+  render(<WithContextualHelp.Component />);
+
+  expect(
+    screen.getByRole('checkbox', { name: 'Enable early bird pricing' })
+  ).toHaveAccessibleDescription('');
 });

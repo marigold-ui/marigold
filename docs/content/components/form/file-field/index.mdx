@@ -56,7 +56,35 @@ For specific use cases where only certain file types are appropriate, such as ac
 
 <ComponentDemo name="file-field-restrict" />
 
-The `accept` prop accepts an array of MIME types (like `'application/pdf'` or `'image/*'`) or file extensions (like `'.pdf'` or `'.jpg'`). Users will only be able to select files that match these criteria, and dropped files that don't match will be filtered out automatically.
+The `accept` prop accepts an array of MIME types (like `'application/pdf'` or `'image/*'`) or file extensions (like `'.pdf'` or `'.jpg'`). In the file browser, users can only pick files that match. A file that does not match can still arrive by drag and drop, and that one is reported as an error rather than dropped silently. See [Validation](#validation) below.
+
+### Validation
+
+A `<FileField>` takes part in form validation the same way a `<TextField>` does. Mark it `required` to block submission while nothing is attached. The message appears under the field, and focus moves to the upload button so the problem is announced.
+
+Use `maxSize` to cap a single file, in bytes. A file that is too large, or whose type does not match `accept`, produces a visible error instead of vanishing. Both messages are translated.
+
+<ComponentDemo name="file-field-validation" />
+
+Setting `errorMessage` replaces the built-in messages, the same way it does on
+every other field. Leave it unset when you want the localised messages for a
+wrong type or an oversized file.
+
+For rules the built-in ones do not cover, pass `validate`. It receives the current selection, and returns a message to mark the field invalid or `null` when the selection is fine.
+
+```tsx
+<FileField
+  label="Signed contract"
+  name="contract"
+  validate={files =>
+    files.some(file => file.name.startsWith('draft'))
+      ? 'Drafts cannot be submitted.'
+      : null
+  }
+/>
+```
+
+Errors raised by a server arrive through `<Form validationErrors>`, keyed by the field's `name`. Resetting the form clears the selection together with any error.
 
 ### Confirming before a file is removed
 

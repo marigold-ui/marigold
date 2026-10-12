@@ -24,9 +24,14 @@ export const TrayContent = ({ children, className }: TrayContentProps) => {
   return (
     <div
       ref={node => {
-        if (node && !node.style.minHeight) {
-          node.style.minHeight = `${node.offsetHeight}px`;
+        const container = node?.parentElement;
+        if (!node || !container || node.style.minHeight || !node.offsetHeight) {
+          return;
         }
+        const pinned = node.offsetHeight;
+        const chrome = container.offsetHeight - pinned;
+
+        node.style.minHeight = `min(${pinned}px, calc(var(--tray-available) - ${chrome}px))`;
       }}
       {...{ [TRAY_CONTENT_ATTR]: true }}
       className={cn('[grid-area:content]', classNames.content, className)}

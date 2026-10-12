@@ -21,13 +21,19 @@ const RadioIndicator = ({
     aria-hidden="true"
     className={cn(
       'flex aspect-square size-4 shrink-0 items-center justify-center rounded-full p-1',
-      'border-border bg-surface border',
+      // The same edge a real Radio draws, so switching a list between `single`
+      // and `multiple` cannot change the weight of its mark. No hover step
+      // though: the row is the click target and already carries its own.
+      'border-control-edge bg-surface border',
       isSelected &&
         'border-selected-bold bg-selected-bold text-selected-bold-foreground',
-      isDisabled &&
-        isSelected &&
-        'border-disabled-surface! bg-disabled-surface',
-      isDisabled && 'cursor-not-allowed'
+      // Dim on `disabled` alone, like a real control. Only the fill and the
+      // dot are selection-specific.
+      isDisabled && 'border-control-edge-disabled! cursor-not-allowed',
+      // `text-disabled` last, so it outranks the `selected` ink above: the dot
+      // is `bg-current`, and `selected-bold-foreground` on `disabled-surface`
+      // measures 1.06:1.
+      isDisabled && isSelected && 'bg-disabled-surface text-disabled'
     )}
   >
     {isSelected ? <div className="size-full rounded-full bg-current" /> : null}

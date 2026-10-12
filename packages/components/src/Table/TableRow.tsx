@@ -2,7 +2,7 @@ import type RAC from 'react-aria-components';
 import { Button } from 'react-aria-components/Button';
 import { Collection } from 'react-aria-components/Collection';
 import { Cell, Row, useTableOptions } from 'react-aria-components/Table';
-import { cn, useClassNames } from '@marigold/system';
+import { cn, useClassNames, verticalAlign } from '@marigold/system';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { GripVertical } from '../icons/GripVertical';
 import { useTableContext } from './Context';
@@ -50,6 +50,11 @@ const TableRow = <T extends object>({
     variant: variantProp ?? context.variant,
     size: sizeProp ?? context.size,
   });
+  // The injected cells follow the table's `alignY` like `TableCell` does.
+  const cellClassName = cn(
+    classNames.cell,
+    verticalAlign[context.alignY ?? 'middle']
+  );
 
   return (
     <Row
@@ -59,7 +64,7 @@ const TableRow = <T extends object>({
       {...otherProps}
     >
       {allowsDragging && (
-        <Cell className={classNames.cell}>
+        <Cell className={cellClassName}>
           <Button
             slot="drag"
             className={cn(
@@ -72,7 +77,7 @@ const TableRow = <T extends object>({
         </Cell>
       )}
       {selectionBehavior === 'toggle' && (
-        <Cell className={classNames.cell}>
+        <Cell className={cellClassName}>
           <Checkbox slot="selection" />
         </Cell>
       )}

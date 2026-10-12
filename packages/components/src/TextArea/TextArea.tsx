@@ -22,7 +22,10 @@ export interface TextAreaProps
   extends
     Omit<RAC.TextFieldProps, RemovedProps>,
     Pick<RAC.TextAreaProps, 'rows'>,
-    Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
+    Pick<
+      FieldBaseProps<'label'>,
+      'label' | 'addon' | 'description' | 'errorMessage'
+    > {
   variant?: string;
   size?: string;
 

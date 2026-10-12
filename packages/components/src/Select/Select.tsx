@@ -65,6 +65,12 @@ export interface SelectProps<
    * Set a label for the select.
    */
   label?: ReactNode;
+
+  /**
+   * Content after the label, such as a `<Badge>` or `<ContextualHelp>`. Keeps
+   * the label row's height, and a badge is read as the field's description.
+   */
+  addon?: ReactNode;
   /**
    * Set a description for the select.
    */
@@ -165,6 +171,7 @@ function SelectBase<T extends object, M extends SelectionMode = 'single'>({
   error,
   open,
   label,
+  addon,
   children,
   selectionMode,
   onChange,
@@ -200,6 +207,7 @@ function SelectBase<T extends object, M extends SelectionMode = 'single'>({
       variant={variant}
       size={size}
       label={label}
+      addon={addon}
       {...props}
     >
       {isSmallScreen ? (

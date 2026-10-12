@@ -7,7 +7,7 @@ export const Tray: ThemeComponent<'Tray'> = {
   container: cva({
     base: [
       'w-full border-0 inset-shadow-black inset-shadow-sm/20',
-      'relative grid-rows-[auto_auto_1fr_auto] max-h-[95vh] rounded-b-none',
+      'relative grid-rows-[auto_auto_1fr_auto] rounded-b-none',
       'ui-surface shadow-elevation-overlay',
       'outline-hidden grid',
       "after:absolute after:inset-x-0 after:top-full after:h-screen after:bg-surface after:content-['']",

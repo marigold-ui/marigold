@@ -30,6 +30,7 @@ import {
 } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
+import { hasAddonContent, joinIds } from '../utils/useLabelAddon';
 import { SelectListContext } from './Context';
 import { SelectListOption } from './SelectListOption';
 
@@ -66,6 +67,12 @@ type SelectListBaseProps<Mode extends SelectionMode = 'single'> = Omit<
    * The label of the field.
    */
   label?: ReactNode;
+
+  /**
+   * Content after the label, such as a `<Badge>` or `<ContextualHelp>`. Keeps
+   * the label row's height, and a badge is read as the field's description.
+   */
+  addon?: ReactNode;
   /**
    * A helpful description rendered below the list.
    */
@@ -210,6 +217,7 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
   variant,
   size,
   label,
+  addon,
   description,
   errorMessage,
   error,
@@ -240,6 +248,7 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
     disallowEmptySelection ?? resolvedSelectionMode === 'single';
   const classNames = useClassNames({ component: 'SelectList', variant });
   const labelId = useId();
+  const addonId = useId();
   const gridListRef = useObjectRef(ref);
 
   // Resolve the optional `p` / `px` / `py` props to per-axis CSS custom
@@ -344,6 +353,8 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
         variant={variant}
         size={size}
         label={label}
+        addon={addon}
+        addonId={addonId}
         description={description}
         errorMessage={errorMessage}
         isInvalid={validationState.displayValidation.isInvalid}
@@ -364,6 +375,10 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
               })}
               ref={gridListRef}
               aria-labelledby={label ? labelId : rest['aria-labelledby']}
+              aria-describedby={joinIds(
+                rest['aria-describedby'],
+                hasAddonContent(addon) ? addonId : undefined
+              )}
               aria-disabled={disabled || undefined}
               layout="grid"
               orientation={orientation}

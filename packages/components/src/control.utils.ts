@@ -14,11 +14,31 @@ import { expect } from 'storybook/test';
  * The `aria-hidden` box inside the label that paints a Checkbox or Radio.
  */
 export const controlIcon = (control: HTMLElement) => {
-  const icon = control.closest('label')?.querySelector('[aria-hidden="true"]');
+  const icon = control
+    .closest('label')
+    ?.querySelector<HTMLElement>('[aria-hidden="true"]');
 
   expect(icon).not.toBeNull();
 
   return icon!;
+};
+
+/** A label's layout block. With an addon, the text is an inline span shorter than the line. */
+export const labelBlockOf = (labelText: Element) => {
+  const block = labelText.parentElement;
+
+  expect(block).not.toBeNull();
+
+  return block!;
+};
+
+/** The `aria-hidden` mark a grid row draws for its selection state. */
+export const selectionMark = (row: HTMLElement) => {
+  const mark = row.querySelector<HTMLElement>('[aria-hidden="true"]');
+
+  expect(mark).not.toBeNull();
+
+  return mark!;
 };
 
 export const borderOf = (el: Element) => getComputedStyle(el).borderColor;

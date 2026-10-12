@@ -3,7 +3,8 @@ import type RAC from 'react-aria-components';
 import { SwitchButton, SwitchField } from 'react-aria-components/Switch';
 import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
 import { BooleanField } from '../FieldBase/BooleanField';
-import { LabelAdornment } from '../utils/LabelAdornment';
+import { LabelAddon } from '../utils/LabelAddon';
+import { useLabelAddon } from '../utils/useLabelAddon';
 
 type RemovedProps =
   | 'children'
@@ -25,11 +26,10 @@ export interface SwitchProps extends Omit<RAC.SwitchFieldProps, RemovedProps> {
   label?: ReactNode;
 
   /**
-   * A `<Badge>` shown at the end of the label's first line. Use this instead
-   * of putting it in `label` yourself: the slot sizes it to the line so it
-   * doesn't make the line taller than the track next to it.
+   * Content on the label's first line, such as a `<Badge>` or `<ContextualHelp>`.
+   * Keeps the track centred, and a badge is read as the switch's description.
    */
-  badge?: ReactNode;
+  addon?: ReactNode;
 
   /**
    * A helpful text.
@@ -82,7 +82,7 @@ const _Switch = ({
   size,
   width = 'full',
   label,
-  badge,
+  addon,
   description,
   error,
   errorMessage,
@@ -99,11 +99,12 @@ const _Switch = ({
     isSelected: selected,
     ...rest,
   } satisfies RAC.SwitchFieldProps;
+  const { labelId, addonId, ariaProps } = useLabelAddon(label, addon, rest);
 
-  const labelSlot = (label || badge) && (
+  const labelSlot = (label || addon) && (
     <div className={classNames.label}>
-      {label}
-      {badge && <LabelAdornment>{badge}</LabelAdornment>}
+      {labelId ? <span id={labelId}>{label}</span> : label}
+      {addon && <LabelAddon id={addonId}>{addon}</LabelAddon>}
     </div>
   );
 
@@ -118,6 +119,7 @@ const _Switch = ({
       variant={variant}
       size={size}
       {...props}
+      {...ariaProps}
     >
       <SwitchButton
         ref={ref}
