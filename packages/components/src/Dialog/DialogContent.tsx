@@ -23,6 +23,7 @@ export const DialogContent = ({
         classNames.content
       )}
       data-testid="dialog-content"
+      data-slot="content"
     >
       {children}
     </div>

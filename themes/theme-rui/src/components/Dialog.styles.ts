@@ -4,7 +4,7 @@ export const Dialog: ThemeComponent<'Dialog'> = {
   closeButton: cva({ base: ['absolute top-6 right-3', 'size-7'] }),
   container: cva({
     base: [
-      'flex flex-col gap-0 rounded-xl overflow-y-auto',
+      'group/dialog flex flex-col gap-0 rounded-xl overflow-y-auto',
       'ui-surface shadow-elevation-overlay ui-scrollbar',
       // Inside a Popover (ContextualHelp) the Popover paints the overlay
       // surface; the dialog drops its own border + elevation to avoid a double
@@ -23,22 +23,19 @@ export const Dialog: ThemeComponent<'Dialog'> = {
       },
     },
   }),
-  // Always-on bottom divider, matching the top divider on `actions` and the
-  // Drawer/Tray anatomy. The divider is copied from `ui-surface-header` (ui.css)
-  // instead of reusing it because the header needs its own top padding, so
-  // keep the two in sync. On `header` so it also covers the bare `<Title>`
-  // chrome, which reuses these classNames.
+  // A bare `<Title>` takes `header` and `title` together, so the title/description
+  // spacing is a `gap` here rather than a margin on the heading.
   header: cva({
-    base: 'flex flex-col text-center sm:text-left px-6 pt-6 pb-4 border-b border-border',
+    base: 'flex flex-col gap-1 text-center sm:text-left px-6 pt-6 pb-4',
   }),
-  title: cva({ base: 'text-lg font-semibold mb-1' }),
+  title: cva({ base: 'text-lg font-semibold' }),
   description: cva({ base: 'text-sm text-secondary' }),
-  content: cva({ base: 'ui-surface-content text-sm' }),
-  // The top divider separates the actions from the content. Without content
-  // (title + actions only) the header's divider already does that, so drop
-  // this one rather than stack two lines. Checks the parent, not the previous
-  // sibling: the parts are placed by grid area, so their JSX order is free.
+  // A divider is drawn by the lower part of a pair, and only when the part above
+  // it exists. Hidden when empty, e.g. a ConfirmationDialog without children.
+  content: cva({
+    base: 'ui-surface-content text-sm border-border group-has-[>[data-slot=header]]/dialog:border-t empty:hidden',
+  }),
   actions: cva({
-    base: 'ui-surface-actions flex-col-reverse sm:flex-row [:not(:has(>.ui-surface-content))>&]:border-t-0',
+    base: 'ui-surface-actions flex-col-reverse sm:flex-row group-not-has-[>[data-slot=header],>[data-slot=content]:not(:empty)]/dialog:border-t-0',
   }),
 };

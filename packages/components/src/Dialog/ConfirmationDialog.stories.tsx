@@ -255,3 +255,24 @@ Basic.test(
     await waitFor(() => expect(confirmButton).toHaveFocus());
   }
 );
+
+Basic.test(
+  'Shows a single divider when there is no content',
+  {
+    args: { children: undefined },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+    await canvas.findByRole('alertdialog');
+
+    const title = canvas.getByRole('heading', { name: 'Confirmation' });
+    const actions = canvas.getByRole('button', { name: 'Confirm' })
+      .parentElement as HTMLElement;
+
+    expect(getComputedStyle(actions).borderTopWidth).toBe('1px');
+    // No empty content band, and with it no second divider, between the two.
+    expect(
+      actions.getBoundingClientRect().top - title.getBoundingClientRect().bottom
+    ).toBe(0);
+  }
+);

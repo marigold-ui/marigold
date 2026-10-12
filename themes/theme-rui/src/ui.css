@@ -338,7 +338,8 @@
  * Shared anatomy for sectioned overlay surfaces (Dialog, Drawer, Tray, Sidebar):
  * a header with a bottom divider, a scrollable content area, and an actions row
  * with a top divider, on one padding rhythm. Consumers override via composition
- * (e.g. Dialog stacks actions responsively).
+ * (e.g. Dialog stacks actions responsively, and draws each divider on the lower
+ * part only when the part above it exists).
  *
  * Named after `ui-surface` above: those containers wear the surface role, these
  * style its parts. Panel is a `ui-surface` too but opts out — it derives padding
@@ -598,19 +599,15 @@
 }
 
 /*
- * Scroll-revealed seams for a sticky header/footer that flank a scrolling body
- * which is a grid *sibling* (not an ancestor) of them, so an anonymous
- * `scroll()` timeline (as `ui-scroll-edge` uses) can't reach it. The scroller
- * declares a NAMED timeline (`--scroll-seam` via `ui-scroll-seam-timeline`),
- * hoisted with `timeline-scope` on the common grid wrapper
- * (`ui-scroll-seam-scope`) so a preceding-sibling header can reference it too.
+ * Scroll-revealed seam for a sticky footer below a scrolling body which is a
+ * grid *sibling* (not an ancestor) of it, so an anonymous `scroll()` timeline
+ * (as `ui-scroll-edge` uses) can't reach it. The scroller declares a NAMED
+ * timeline (`--scroll-seam` via `ui-scroll-seam-timeline`), hoisted with
+ * `timeline-scope` on the common grid wrapper (`ui-scroll-seam-scope`). The
+ * footer's top hairline shows until the body bottoms out, fading over the last
+ * 12px.
  *
- *   - Header: seamless at rest; bottom hairline fades in over the first 12px.
- *   - Footer: top hairline shows until the body bottoms out, fading over the
- *     last 12px.
- *
- * Consumers: Sidebar (footer only, in both the single-column and rail layouts).
- * The header seam has no in-repo consumer but stays public. The hairline
+ * Consumers: Sidebar, in both the single-column and rail layouts. The hairline
  * color is `--seam-color` (default `--color-border`). The Sidebar overrides it
  * to `--color-surface-border` on its grid wrapper. A `box-shadow` hairline, so
  * it never affects layout. Sharing one timeline name across components is safe:
@@ -620,11 +617,6 @@
  * would be wrong more often than right: set `--seam-fallback-color: transparent`
  * to drop it and keep "fits means no chrome" true in every engine.
  */
-@keyframes scroll-seam-header {
-  to {
-    box-shadow: 0 1px 0 0 var(--seam-color, var(--color-border));
-  }
-}
 @keyframes scroll-seam-footer {
   from {
     box-shadow: 0 -1px 0 0 var(--seam-color, var(--color-border));
@@ -641,16 +633,6 @@
   scroll-timeline: --scroll-seam block;
 }
 
-@utility ui-scroll-seam-header {
-  @supports (animation-timeline: scroll()) {
-    animation: scroll-seam-header linear both;
-    animation-timeline: --scroll-seam;
-    animation-range: 0 12px;
-  }
-  @supports not (animation-timeline: scroll()) {
-    box-shadow: 0 1px 0 0 var(--seam-color, var(--color-border));
-  }
-}
 @utility ui-scroll-seam-footer {
   @supports (animation-timeline: scroll()) {
     animation: scroll-seam-footer linear both;

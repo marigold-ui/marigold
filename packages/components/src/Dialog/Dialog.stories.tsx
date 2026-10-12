@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { useMemo, useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
@@ -10,6 +11,7 @@ import { EmptyState } from '../EmptyState/EmptyState';
 import { Form } from '../Form/Form';
 import { Inline } from '../Inline/Inline';
 import { ActionMenu } from '../Menu/ActionMenu';
+import { OverlayContainerProvider } from '../Provider/OverlayContainerProvider';
 import { SearchField } from '../SearchField/SearchField';
 import { Select } from '../Select/Select';
 import { Table } from '../Table/Table';
@@ -781,5 +783,224 @@ TitleOnlyWithoutHeader.test(
 
     expect(title.tagName).toBe('H2');
     expect(dialog).toHaveAttribute('aria-labelledby', title.id);
+  }
+);
+
+TitleOnlyWithoutHeader.test(
+  'Starts the content right at the header divider',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+
+    // Any gap between the bare Title and the content's top border is margin
+    // that shifts the divider away from where Dialog.Header puts it.
+    const title = canvas.getByRole('heading', { name: 'Session expiring' });
+    const content = canvas.getByText(/Your session will expire/);
+
+    expect(
+      content.getBoundingClientRect().top - title.getBoundingClientRect().bottom
+    ).toBe(0);
+  }
+);
+
+// Each dialog portals into its own cell. The transform makes the cell the
+// containing block for the modal's fixed overlay, so all of them can be open
+// side by side. A cell must be in the DOM before its dialog mounts, so the
+// dialog waits for the cell's ref.
+const ConfigurationCell = ({
+  id,
+  label,
+  children,
+}: {
+  id: string;
+  label: string;
+  children: ReactNode;
+}) => {
+  const [cell, setCell] = useState<HTMLDivElement | null>(null);
+
+  return (
+    <figure className="flex flex-col gap-2">
+      <figcaption className="text-secondary text-xs font-medium">
+        {label}
+      </figcaption>
+      <div
+        id={id}
+        ref={setCell}
+        className="relative h-80 transform-[translateZ(0)] overflow-hidden rounded-lg border border-dashed"
+      >
+        {cell && (
+          <OverlayContainerProvider container={id}>
+            {children}
+          </OverlayContainerProvider>
+        )}
+      </div>
+    </figure>
+  );
+};
+
+const content = (
+  <Dialog.Content>Update the name and date of the event.</Dialog.Content>
+);
+const actions = (
+  <Dialog.Actions>
+    <Button variant="secondary">Cancel</Button>
+    <Button variant="primary">Save</Button>
+  </Dialog.Actions>
+);
+
+// `dividers` is the expected top border of the content and of the actions,
+// `null` where the part is missing or hidden.
+const configurations: {
+  id: string;
+  label: string;
+  dialog: ReactNode;
+  dividers: [string | null, string | null];
+}[] = [
+  {
+    id: 'config-header',
+    label: 'Header + content + actions',
+    dialog: (
+      <Dialog open size="xsmall">
+        <Dialog.Header>
+          <Dialog.Title>Edit event</Dialog.Title>
+          <Dialog.Description>Changes apply immediately.</Dialog.Description>
+        </Dialog.Header>
+        {content}
+        {actions}
+      </Dialog>
+    ),
+    dividers: ['1px', '1px'],
+  },
+  {
+    id: 'config-title',
+    label: 'Title + content + actions',
+    dialog: (
+      <Dialog open size="xsmall">
+        <Dialog.Title>Edit event</Dialog.Title>
+        {content}
+        {actions}
+      </Dialog>
+    ),
+    dividers: ['1px', '1px'],
+  },
+  {
+    id: 'config-no-actions',
+    label: 'Title + content',
+    dialog: (
+      <Dialog open size="xsmall">
+        <Dialog.Title>Edit event</Dialog.Title>
+        {content}
+      </Dialog>
+    ),
+    dividers: ['1px', null],
+  },
+  {
+    id: 'config-no-content',
+    label: 'Title + actions',
+    dialog: (
+      <Dialog open size="xsmall">
+        <Dialog.Title>Publish the event?</Dialog.Title>
+        {actions}
+      </Dialog>
+    ),
+    dividers: [null, '1px'],
+  },
+  {
+    id: 'config-empty-content',
+    label: 'Title + empty content + actions',
+    dialog: (
+      <Dialog open size="xsmall">
+        <Dialog.Title>Publish the event?</Dialog.Title>
+        <Dialog.Content />
+        {actions}
+      </Dialog>
+    ),
+    dividers: [null, '1px'],
+  },
+  {
+    id: 'config-title-only',
+    label: 'Title only',
+    dialog: (
+      <Dialog open size="xsmall">
+        <Dialog.Title>Event published</Dialog.Title>
+      </Dialog>
+    ),
+    dividers: [null, null],
+  },
+  {
+    id: 'config-label',
+    label: 'aria-label + content + actions',
+    dialog: (
+      <Dialog open size="xsmall" aria-label="Edit event">
+        {content}
+        {actions}
+      </Dialog>
+    ),
+    dividers: ['0px', '1px'],
+  },
+  {
+    id: 'config-label-actions',
+    label: 'aria-label + actions',
+    dialog: (
+      <Dialog open size="xsmall" aria-label="Publish the event?">
+        {actions}
+      </Dialog>
+    ),
+    dividers: [null, '0px'],
+  },
+  {
+    id: 'config-label-content',
+    label: 'aria-label + content',
+    dialog: (
+      <Dialog open size="xsmall" aria-label="Edit event">
+        {content}
+      </Dialog>
+    ),
+    dividers: ['0px', null],
+  },
+];
+
+/**
+ * Every combination of title, content and actions, open side by side, to check
+ * which dividers each one draws.
+ */
+export const Configurations = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true }, layout: 'fullscreen' },
+  render: () => (
+    <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2 xl:grid-cols-4">
+      {configurations.map(({ id, label, dialog }) => (
+        <ConfigurationCell key={id} id={id} label={label}>
+          {dialog}
+        </ConfigurationCell>
+      ))}
+    </div>
+  ),
+});
+
+Configurations.test(
+  'Draws one divider per boundary between parts',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async () => {
+    const divider = (id: string, selector: string) => {
+      const el = document.querySelector<HTMLElement>(`#${id} ${selector}`);
+      if (!el || getComputedStyle(el).display === 'none') return null;
+      return getComputedStyle(el).borderTopWidth;
+    };
+
+    await waitFor(() =>
+      expect(document.querySelectorAll('[role=dialog]')).toHaveLength(
+        configurations.length
+      )
+    );
+
+    for (const { id, dividers } of configurations) {
+      expect([
+        divider(id, '[data-slot=content]'),
+        divider(id, '[data-slot=actions]'),
+      ]).toEqual(dividers);
+    }
   }
 );

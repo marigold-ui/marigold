@@ -41,7 +41,10 @@ export const DialogHeader = ({ children }: DialogHeaderProps) => {
           [TextContext, textProps],
         ]}
       >
-        <div className={cn('[grid-area:title]', classNames.header)}>
+        <div
+          data-slot="header"
+          className={cn('[grid-area:title]', classNames.header)}
+        >
           {children}
         </div>
       </Provider>
