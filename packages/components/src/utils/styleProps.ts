@@ -173,8 +173,11 @@ export const cursorStyle = {
   alias: 'cursor-alias',
   copy: 'cursor-copy',
   noDrop: 'cursor-no-drop',
+  grab: 'cursor-grab',
+  grabbing: 'cursor-grabbing',
+  // Deprecated misspellings, remove in the next major.
   grap: 'cursor-grab',
-  grapping: 'cursor-grapping',
+  grapping: 'cursor-grabbing',
   scroll: 'cursor-all-scroll',
   colResize: 'cursor-col-resize',
   rowResize: 'cursor-row-resize',

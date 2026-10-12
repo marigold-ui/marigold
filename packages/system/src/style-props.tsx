@@ -569,6 +569,8 @@ export type AlignmentProp = {
 export type CursorProp = {
   /**
    * Set the cursor for the element. You can see allowed tokens [here](https://tailwindcss.com/docs/cursor).
+   * `grap` and `grapping` are deprecated misspellings of `grab` and `grabbing`
+   * and will be removed in the next major.
    */
   cursor?:
     | 'auto'
@@ -587,6 +589,8 @@ export type CursorProp = {
     | 'alias'
     | 'copy'
     | 'noDrop'
+    | 'grab'
+    | 'grabbing'
     | 'grap'
     | 'grapping'
     | 'scroll'
