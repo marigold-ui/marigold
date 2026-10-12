@@ -1,5 +1,117 @@
 # @marigold/theme-rui
 
+## 6.2.1
+
+### Patch Changes
+
+- d1b1f15: fix(Tray): keep `Tray.Actions` reachable when the viewport shrinks
+
+  `Tray.Content` pinned its `min-height` to the height it measured at mount and never let go of it. When the viewport shrank afterwards, the tray box shrank but that grid row could not, so the grid overflowed and `Tray.Actions` walked off the bottom of the screen: at a 390px viewport the close/confirm buttons ended up 432px below the fold, with no way to reach them. Rotation, the on-screen keyboard opening in a ComboBox or Autocomplete tray, and mobile browser UI appearing all trigger it.
+
+  The pin is still measured once, since it is what stops the tray resizing while a list filters down, but it is now capped at the height the viewport actually leaves for it. The content area absorbs the difference by scrolling, which is what it is for. The cap is a CSS `min()` against the tray's own maximum height, so the browser re-resolves it on every viewport change and a filtered list is never re-measured.
+
+  The tray container also capped itself at `95vh`. On mobile `vh` is the _large_ viewport, so the tray could be laid out taller than what is actually visible while browser UI is showing. It now uses the visual viewport height that `Drawer` already used, applied in the component rather than the theme, so no theme has to know about it.
+
+- ec15520: refactor(DST-1752): draw the checkbox and radio box edge from one token
+
+  The thin edge around a checkbox, a radio and the selection mark of a list row is
+  the only thing announcing the control before you click it, and it was written
+  four times: twice in the theme, once inline in `Checkbox.tsx`, and once in the
+  shared grid indicator. The indicator reached for `--color-border`, the divider
+  token, so a single-select `SelectList` option and a `ListView` row drew their
+  mark about 1.6 times fainter than the checkbox beside it.
+
+  There are now three tokens, all derived from `--color-control-border` so they
+  track any change to it: `--color-control-edge` at +0.06 alpha for the resting
+  edge, `--color-control-edge-hover` at +0.18, and
+  `--color-control-edge-disabled` at -0.06. Three files read them: the `Checkbox`
+  and `Radio` theme slots, and the shared grid indicator. The fourth copy, the one
+  inline in `Checkbox.tsx`, is deleted rather than repointed, because it never
+  shipped: the theme slot's edge already beat it in the merged class list. A
+  resting checkbox therefore looks exactly as it did.
+
+  The radio box also gains `shrink-0`, which the checkbox and the grid indicator
+  both already carried. It is the only one of the three that sits in a flex row,
+  so it was the only one that could be squeezed by a long label, and the slot now
+  matches the mark a list row draws exactly.
+
+  The disabled step is a token rather than a palette rung because a disabled mark
+  has three grounds to survive, and both of the opaque values this family reached
+  for before vanish on one of them:
+
+  | Disabled edge                     | on `surface` | on the page ground | on a `selected` row |
+  | --------------------------------- | ------------ | ------------------ | ------------------- |
+  | `disabled-surface` (charcoal-100) | 1.11:1       | **1.00:1**         | 1.38:1              |
+  | `disabled-border` (charcoal-300)  | 1.53:1       | 1.38:1             | **1.00:1**          |
+  | `control-edge-disabled` (-0.06)   | 1.57:1       | 1.57:1             | 1.54:1              |
+
+  `disabled-border` is the same palette step as `selected`, so on a picked row an
+  opaque edge is not dim but gone. The translucent step holds 1.54:1 to 1.57:1
+  everywhere, which is the weight `disabled-border` was chosen for in the first
+  place. `--color-disabled-border` itself is unchanged.
+
+  Three visible fixes come with it. The selection mark now dims whenever its row
+  is disabled, instead of waiting for the row to also be selected, so a disabled
+  unselected row no longer keeps an edge that reads as live. The disabled edge
+  across the whole family holds its weight on every ground rather than on white
+  alone. And a disabled control that is checked now shows what it is set to: the
+  check glyph and the radio dot are drawn in `currentColor`, `group-selected`
+  sorts after `group-disabled`, so the unforced `text-disabled` lost the cascade
+  and the mark painted `selected-bold-foreground` on `disabled-surface` at 1.06:1.
+
+  The selection mark deliberately has no hover step. Inside a row the row is the
+  click target and already carries its own hover, so a second hover on a
+  decorative mark would answer a gesture nobody made.
+
+  A disabled checkbox also dims its box when it is indeterminate, not only when
+  it is checked. Indeterminate never sets `data-selected`, so it needed its own
+  fill rule, and without it the newly forced `text-disabled` ink landed on a box
+  still painted the live `selected-bold`.
+
+  No API changes. Expect visual diffs on single-select `SelectList` and `ListView`
+  rows, and on disabled checkboxes and radios, including every disabled checked
+  one and every disabled indeterminate one.
+
+- 44533cd: fix(DST-1817): derive the disabled state from the ink so it holds on every background
+
+  A disabled or loading Button on the ActionBar rendered as a near-white pill on the dark bar. `ui-state-disabled` painted a fixed `charcoal-100` fill and a `charcoal-400` label, both calibrated for white. On the `charcoal-900` bar that became the brightest thing on screen, and on the `charcoal-100` page the fill matched the background exactly and disappeared.
+
+  `ui-state-disabled` now derives label, fill and ring from `currentColor`. The label fades relative to the inherited text color, and fill and ring are faint washes of that faded label. The result is dark on light backgrounds and light on dark ones, with no new tokens:
+
+  - **White surfaces** (Panel, Card): the fill matches the previous `charcoal-100` step (1.1:1 against the background).
+  - **The page**: disabled controls gain the same faint fill instead of an invisible one.
+  - **Dark backgrounds** (ActionBar): no light pill and no light outline. Actions recede into the bar.
+
+  Because the state replaces the element's own color and background, every Button variant looks the same when disabled or loading. The loading spinner follows the label color, so it stays visible on a dark background. `NumberField` steppers and input, and `DateField` segments, inherit the field's disabled look instead of painting their own opaque fill on top of it.
+
+  `ProgressCircle` now draws its arc in the current text color instead of a fixed `foreground` stroke, so a spinner inside a loading Button or a pending Menu item fades with its label. The `inverted` variant is unchanged. The ActionBar now leaves a small gap between its actions, so two adjacent disabled or loading Buttons no longer merge into one pill. Tags inside a disabled `TagField` drop their own opaque fill and sit on the field's wash, so they no longer show as lighter blocks on the page background. The `NumberField` stepper centers its glyph as intended, because a misspelled `place-items-center` class never applied.
+
+- 8bf58b2: fix(DST-1831): inset Accordion header actions in a bled Panel
+
+  Inside `Panel.Content bleed`, the actions passed to `Accordion.Header` now line up with the Panel's horizontal padding instead of sitting flush against its edge. Standalone and non-bled Accordions are unchanged.
+
+- e9324b2: Fix the keyboard focus ring of `Breadcrumbs` and `Tabs`.
+
+  Breadcrumb links, tabs and the tab panel now show the theme's full-contrast inset focus ring. Before, breadcrumb links fell back to the browser's default outline, and tabs showed a faint halo below the 3:1 contrast a focus indicator needs. Both were clipped by their scroll or overflow container.
+
+  The tab panel gains 4px of inline padding, offset by a matching negative margin, so the ring clears its content without moving it. Breadcrumbs' auto-collapse now measures the link padding too, so it collapses at the right width.
+
+- Updated dependencies [ab9b05e]
+- Updated dependencies [b67903a]
+- Updated dependencies [d6b5d77]
+- Updated dependencies [d1b1f15]
+- Updated dependencies [947b7a9]
+- Updated dependencies [2319875]
+- Updated dependencies [ec15520]
+- Updated dependencies [e9df73e]
+- Updated dependencies [25b45b3]
+- Updated dependencies [e9324b2]
+- Updated dependencies [f4e2236]
+- Updated dependencies [c860eb4]
+- Updated dependencies [ce5eaec]
+  - @marigold/components@18.3.0
+  - @marigold/system@18.3.0
+
 ## 6.2.0
 
 ### Minor Changes
