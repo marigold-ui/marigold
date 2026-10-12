@@ -48,6 +48,8 @@ export type {
 export { defaultTheme } from './defaultTheme';
 
 // Style Props
+export { fontWeight } from './style-props';
+export { textSize } from './style-props';
 export type {
   AspectProp,
   AlignmentProp,

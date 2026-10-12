@@ -514,6 +514,42 @@ export const paddingBottom = {
   96: 'pb-96',
 } as const;
 
+/**
+ * @deprecated Components resolve this in `@marigold/components` now. Kept for
+ * direct consumers, will be removed in the next major.
+ */
+export const fontWeight = {
+  thin: 'font-thin',
+  extralight: 'font-extralight',
+  light: 'font-light',
+  regular: 'font-normal',
+  medium: 'font-medium',
+  semibold: 'font-semibold',
+  bold: 'font-bold',
+  extrabold: 'font-extrabold',
+  black: 'font-black',
+} as const satisfies Record<NonNullable<FontWeightProp['weight']>, string>;
+
+/**
+ * @deprecated Components resolve this in `@marigold/components` now. Kept for
+ * direct consumers, will be removed in the next major.
+ */
+export const textSize = {
+  xs: 'text-xs',
+  sm: 'text-sm',
+  base: 'text-base',
+  lg: 'text-lg',
+  xl: 'text-xl',
+  '2xl': 'text-2xl',
+  '3xl': 'text-3xl',
+  '4xl': 'text-4xl',
+  '5xl': 'text-5xl',
+  '6xl': 'text-6xl',
+  '7xl': 'text-7xl',
+  '8xl': 'text-8xl',
+  '9xl': 'text-9xl',
+} as const satisfies Record<NonNullable<FontSizeProp['fontSize']>, string>;
+
 export type AspectProp = {
   ratio?:
     'square' | 'landscape' | 'portrait' | 'widescreen' | 'ultrawide' | 'golden';
