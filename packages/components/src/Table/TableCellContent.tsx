@@ -1,7 +1,8 @@
 import { type ReactNode, use, useEffect } from 'react';
 import type { Key } from 'react-aria-components';
 import { TableStateContext } from 'react-aria-components/Table';
-import { cn, textAlign } from '@marigold/system';
+import { cn } from '@marigold/system';
+import { textAlign } from '../utils/styleProps';
 import { useTableContext } from './Context';
 
 // Helpers

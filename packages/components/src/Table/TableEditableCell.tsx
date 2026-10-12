@@ -16,7 +16,7 @@ import {
   getOwnerDocument,
   nodeContains,
 } from '@react-aria/utils';
-import { cn, textAlign, useSmallScreen, verticalAlign } from '@marigold/system';
+import { cn, useSmallScreen } from '@marigold/system';
 import { Dialog } from '../Dialog/Dialog';
 import { Form } from '../Form/Form';
 import { useClipBoundary } from '../Overlay/clipBoundary';
@@ -24,6 +24,7 @@ import { Check } from '../icons/Check';
 import { Pencil } from '../icons/Pencil';
 import { X } from '../icons/X';
 import { intlMessages } from '../intl/messages';
+import { textAlign, verticalAlign } from '../utils/styleProps';
 import { useTableContext } from './Context';
 import { TableCellContent } from './TableCellContent';
 import { TableTreeColumn } from './TableTreeColumn';

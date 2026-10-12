@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
-import { alignment } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
 import { Switch } from '../Switch/Switch';
 import { TextField } from '../TextField/TextField';
 import { Block } from '../__internal__/Block';
+import { alignment } from '../utils/styleProps';
 import { Inline } from './Inline';
 
 const meta = preview.meta({

@@ -1,5 +1,6 @@
 import type { ReactNode, Ref } from 'react';
-import { alignment, cn } from '@marigold/system';
+import { cn } from '@marigold/system';
+import { alignment } from '../utils/styleProps';
 import { useTopNavigationContext } from './Context';
 
 export interface TopNavigationStartProps {

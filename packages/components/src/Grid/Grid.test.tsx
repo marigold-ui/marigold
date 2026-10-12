@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { alignment } from '@marigold/system';
+import { alignment } from '../utils/styleProps';
 import { Content } from './Grid.stories';
 
 describe('Grid', () => {

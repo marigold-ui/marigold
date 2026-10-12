@@ -1,8 +1,8 @@
 import preview from '.storybook/preview';
-import { alignment } from '@marigold/system';
 import { Headline } from '../Headline/Headline';
 import { Text } from '../Text/Text';
 import { Block } from '../__internal__/Block';
+import { alignment } from '../utils/styleProps';
 import { Stack } from './Stack';
 
 const meta = preview.meta({
