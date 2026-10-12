@@ -4,8 +4,9 @@ import type {
   SpaceProp,
   SpacingTokens,
 } from '@marigold/system';
-import { cn, createSpacingVar, createVar, placeItems } from '@marigold/system';
+import { cn, createSpacingVar, createVar } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
+import { placeItems } from '../utils/styleProps';
 
 // Helpers
 // ---------------

@@ -1,12 +1,8 @@
 import type { ReactNode } from 'react';
 import type { HeightProp, SpaceProp, SpacingTokens } from '@marigold/system';
-import {
-  alignment,
-  cn,
-  createHeightVar,
-  createSpacingVar,
-} from '@marigold/system';
+import { cn, createHeightVar, createSpacingVar } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
+import { alignment } from '../utils/styleProps';
 import { GridArea } from './GridArea';
 
 // Helpers

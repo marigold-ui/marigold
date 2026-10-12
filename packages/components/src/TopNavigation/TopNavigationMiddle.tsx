@@ -1,7 +1,8 @@
 import type { ReactNode, Ref } from 'react';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { alignment, cn } from '@marigold/system';
+import { cn } from '@marigold/system';
 import { intlMessages } from '../intl/messages';
+import { alignment } from '../utils/styleProps';
 import { useTopNavigationContext } from './Context';
 
 export interface TopNavigationMiddleProps {

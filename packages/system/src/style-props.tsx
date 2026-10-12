@@ -218,64 +218,6 @@ export const height = {
   '11/12': 'h-11/12',
 } as const;
 
-export const fontWeight = {
-  thin: 'font-thin',
-  extralight: 'font-extralight',
-  light: 'font-light',
-  regular: 'font-normal',
-  medium: 'font-medium',
-  semibold: 'font-semibold',
-  bold: 'font-bold',
-  extrabold: 'font-extrabold',
-  black: 'font-black',
-} as const;
-
-export const textSize = {
-  xs: 'text-xs',
-  sm: 'text-sm',
-  base: 'text-base',
-  lg: 'text-lg',
-  xl: 'text-xl',
-  '2xl': 'text-2xl',
-  '3xl': 'text-3xl',
-  '4xl': 'text-4xl',
-  '5xl': 'text-5xl',
-  '6xl': 'text-6xl',
-  '7xl': 'text-7xl',
-  '8xl': 'text-8xl',
-  '9xl': 'text-9xl',
-} as const;
-
-export const textStyle = {
-  italic: 'italic',
-  normal: 'not-italic',
-} as const;
-
-export const textWrap = {
-  wrap: 'text-wrap',
-  noWrap: 'text-nowrap',
-  balance: 'text-balance',
-  pretty: 'text-pretty',
-} as const;
-
-export const whiteSpace = {
-  normal: 'whitespace-normal',
-  nowrap: 'whitespace-nowrap',
-  pre: 'whitespace-pre',
-  preLine: 'whitespace-pre-line',
-  preWrap: 'whitespace-pre-wrap',
-  breakSpaces: 'whitespace-break-spaces',
-};
-
-export const lineHeight = {
-  none: 'leading-none',
-  tight: 'leading-tight',
-  snug: 'leading-snug',
-  normal: 'leading-normal',
-  relaxed: 'leading-relaxed',
-  loose: 'leading-loose',
-} as const;
-
 export const gapSpace = {
   0: 'gap-0',
   '0.5': 'gap-0.5',
@@ -572,107 +514,19 @@ export const paddingBottom = {
   96: 'pb-96',
 } as const;
 
-export const alignment = {
-  vertical: {
-    alignmentX: {
-      left: 'items-start',
-      center: 'items-center',
-      right: 'items-end',
-      stretch: 'items-stretch',
-    },
-    alignmentY: {
-      top: 'justify-start',
-      center: 'justify-center',
-      bottom: 'justify-end',
-      between: 'justify-between',
-      around: 'justify-around',
-      evenly: 'justify-evenly',
-    },
-  },
-  horizontal: {
-    alignmentY: {
-      top: 'items-start',
-      center: 'items-center',
-      bottom: 'items-end',
-    },
-    alignmentX: {
-      left: 'justify-start',
-      center: 'justify-center',
-      right: 'justify-end',
-      between: 'justify-between',
-      around: 'justify-around',
-      evenly: 'justify-evenly',
-    },
-  },
-} as const;
-
-export const placeItems = {
-  none: undefined,
-  left: 'place-items-start',
-  center: 'place-items-center',
-  right: 'place-items-end',
-} as const;
-
-export const textAlign = {
-  left: 'text-left',
-  center: 'text-center',
-  right: 'text-right',
-} as const;
-
-export const verticalAlign = {
-  top: 'align-top',
-  middle: 'align-middle',
-  bottom: 'align-bottom',
-  baseline: 'align-baseline',
-} as const;
-
-export const aspect = {
-  square: 'aspect-[1]',
-  landscape: 'aspect-4/3',
-  portrait: 'aspect-3/4',
-  widescreen: 'aspect-16/9',
-  ultrawide: 'aspect-18/5',
-  golden: 'aspect-[1.6180/1]',
-} as const;
-
-export const cursorStyle = {
-  auto: 'cursor-auto',
-  default: 'cursor-default',
-  pointer: 'cursor-pointer',
-  wait: 'cursor-wait',
-  text: 'cursor-text',
-  move: 'cursor-move',
-  help: 'cursor-help',
-  notAllowed: 'cursor-not-allowed',
-  none: 'cursor-none',
-  progress: 'cursor-progress',
-  cell: 'cursor-cell',
-  crosshair: 'cursor-crosshair',
-  vertical: 'cursor-vertical-text',
-  alias: 'cursor-alias',
-  copy: 'cursor-copy',
-  noDrop: 'cursor-no-drop',
-  grap: 'cursor-grab',
-  grapping: 'cursor-grapping',
-  scroll: 'cursor-all-scroll',
-  colResize: 'cursor-col-resize',
-  rowResize: 'cursor-row-resize',
-  ewResize: 'cursor-ew-resize',
-  nsResize: 'cursor-ns-resize',
-  zoomIn: 'cursor-zoom-in',
-  zoomOut: 'cursor-zoom-out',
-} as const;
-
-export type AspectProp = { ratio?: keyof typeof aspect };
+export type AspectProp = {
+  ratio?:
+    'square' | 'landscape' | 'portrait' | 'widescreen' | 'ultrawide' | 'golden';
+};
 export type AlignmentProp = {
   orientation?: {
     vertical?: {
-      alignY?: keyof typeof alignment.vertical.alignmentY;
-      alignX?: keyof typeof alignment.vertical.alignmentX;
+      alignY?: 'top' | 'center' | 'bottom' | 'between' | 'around' | 'evenly';
+      alignX?: 'left' | 'center' | 'right' | 'stretch';
     };
     horizontal?: {
-      alignX?: keyof typeof alignment.horizontal.alignmentX;
-      alignY?: keyof typeof alignment.horizontal.alignmentY;
+      alignX?: 'left' | 'center' | 'right' | 'between' | 'around' | 'evenly';
+      alignY?: 'top' | 'center' | 'bottom';
     };
   };
 };
@@ -680,47 +534,95 @@ export type CursorProp = {
   /**
    * Set the cursor for the element. You can see allowed tokens [here](https://tailwindcss.com/docs/cursor).
    */
-  cursor?: keyof typeof cursorStyle;
+  cursor?:
+    | 'auto'
+    | 'default'
+    | 'pointer'
+    | 'wait'
+    | 'text'
+    | 'move'
+    | 'help'
+    | 'notAllowed'
+    | 'none'
+    | 'progress'
+    | 'cell'
+    | 'crosshair'
+    | 'vertical'
+    | 'alias'
+    | 'copy'
+    | 'noDrop'
+    | 'grap'
+    | 'grapping'
+    | 'scroll'
+    | 'colResize'
+    | 'rowResize'
+    | 'ewResize'
+    | 'nsResize'
+    | 'zoomIn'
+    | 'zoomOut';
 };
 
 export type FontStyleProp = {
   /**
    * Set the font style for the text element.
    */
-  fontStyle?: keyof typeof textStyle;
+  fontStyle?: 'italic' | 'normal';
 };
 
 export type TextWrapProp = {
   /**
    * Set text wrapping behavior.
    */
-  wrap?: keyof typeof textWrap;
+  wrap?: 'wrap' | 'noWrap' | 'balance' | 'pretty';
 };
 
 export type WhiteSpaceProps = {
   /**
    * Set how white space inside the element is handled.
    */
-  whiteSpace?: keyof typeof whiteSpace;
+  whiteSpace?:
+    'normal' | 'nowrap' | 'pre' | 'preLine' | 'preWrap' | 'breakSpaces';
 };
 
 export type LineHeightProp = {
   /**
    * Set the line height for the text element.
    */
-  lineHeight?: keyof typeof lineHeight;
+  lineHeight?: 'none' | 'tight' | 'snug' | 'normal' | 'relaxed' | 'loose';
 };
 
 export type FontWeightProp = {
   /**
    * Set the font weight for the text element.   */
-  weight?: keyof typeof fontWeight;
+  weight?:
+    | 'thin'
+    | 'extralight'
+    | 'light'
+    | 'regular'
+    | 'medium'
+    | 'semibold'
+    | 'bold'
+    | 'extrabold'
+    | 'black';
 };
 
 export type FontSizeProp = {
   /**
    * Set the font size for the text element.   */
-  fontSize?: keyof typeof textSize;
+  fontSize?:
+    | 'xs'
+    | 'sm'
+    | 'base'
+    | 'lg'
+    | 'xl'
+    | '2xl'
+    | '3xl'
+    | '4xl'
+    | '5xl'
+    | '6xl'
+    | '7xl'
+    | '8xl'
+    | '9xl';
 };
 
 export type GapSpaceProp = {
@@ -775,21 +677,21 @@ export type PlaceItemsProp = {
   /**
    * Set the alignment of place-items property for the element.
    */
-  align?: keyof typeof placeItems;
+  align?: 'none' | 'left' | 'center' | 'right';
 };
 
 export type TextAlignProp = {
   /**
    * Set the text alignment for the element.
    */
-  align?: keyof typeof textAlign;
+  align?: 'left' | 'center' | 'right';
 };
 
 export type VerticalAlignProp = {
   /**
    * Set the vertical alignment for the element.
    */
-  verticalAlign?: keyof typeof verticalAlign;
+  verticalAlign?: 'top' | 'middle' | 'bottom' | 'baseline';
 };
 
 export type WidthProp = {

@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
-import { aspect, cn, createVar } from '@marigold/system';
+import { cn, createVar } from '@marigold/system';
 import type { AspectProp } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
+import { aspect } from '../utils/styleProps';
 
 export interface AspectProps extends AspectProp, AriaRegionProps {
   /**
