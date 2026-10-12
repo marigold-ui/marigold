@@ -37,7 +37,7 @@ Last release gave `<Checkbox>`, `<Radio>` and `<Switch>` a `badge` slot. Now eve
 A badge in the slot is sized automatically, so it no longer needs `size="inline"`. The addon is also no longer part of the field's accessible name. Screen readers read a badge as the field's description instead, and the required indicator now sits before the addon. See [Form fields](/foundations/form-fields) for where an addon fits.
 
 <Callout title="Rename `badge` to `addon`" type="warning">
-  `Checkbox`, `Radio` and `Switch` rename their `badge` slot to `addon`. Replace
+  `<Checkbox>`, `<Radio>` and `<Switch>` rename their `badge` slot to `addon`. Replace
   `badge={…}` with `addon={…}`.
 </Callout>
 
@@ -84,30 +84,23 @@ Replace `aria-busy` on a `<Table>`, or on a wrapper around it, with `loading`.
 
 ## Bug fixes
 
-- **Form fields at 320px.** `Label` and `HelpText` now break long words, URLs and file names instead of pushing the field past the screen. A wrapped error message keeps its icon on the first line.
-- **Tray actions on small screens.** `Tray.Actions` stays reachable when the viewport shrinks, for example when the on-screen keyboard opens in a `<ComboBox>` or `<Autocomplete>` tray. The content scrolls instead.
-- **Table columns narrow again.** Inside a parent that sizes to its content, such as `Columns` or a `Panel`, a `<Table>` no longer keeps its widest column widths after the window shrinks.
+- **Form fields at 320px.** `<Label>` and `<HelpText>` now break long words, URLs and file names instead of pushing the field past the screen. A wrapped error message keeps its icon on the first line.
+- **Tray actions on small screens.** `<Tray.Actions>` stays reachable when the viewport shrinks, for example when the on-screen keyboard opens in a `<ComboBox>` or `<Autocomplete>` tray. The content scrolls instead.
+- **Table columns narrow again.** Inside a parent that sizes to its content, such as `<Columns>` or a `<Panel>`, a `<Table>` no longer keeps its widest column widths after the window shrinks.
 - **Table selection cells.** The checkbox and drag-handle cells now follow the table's `alignY`.
-- **Stuck tooltips.** A tooltip could come back pinned to the top left corner and never close, most often on the icon-only `Sidebar.Rail`. Closed tooltips now unmount.
+- **Stuck tooltips.** A tooltip could come back pinned to the top left corner and never close, most often on the icon-only `<Sidebar.Rail>`. Closed tooltips now unmount.
 - **Focus ring on Breadcrumbs and Tabs.** Breadcrumb links, tabs and the tab panel show the theme's full-contrast focus ring, no longer clipped by their container.
-- **Long current breadcrumb.** When collapsed `Breadcrumbs` still don't fit, the current item truncates with an ellipsis instead of being cut off mid-word.
-- **Accordion in a bled Panel.** Header actions of an `Accordion` inside `Panel.Content bleed` line up with the Panel's padding.
-
-<Callout title="Tooltip props moved to the trigger" type="warning">
-  `Tooltip` no longer accepts `defaultOpen` and `onOpenChange`. They never
-  worked on `Tooltip` itself, so nothing changes at runtime, but passing them
-  now fails `tsc`. Set them on `Tooltip.Trigger` instead, where `open` already
-  moved in v18.
-</Callout>
+- **Long current breadcrumb.** When collapsed `<Breadcrumbs>` still don't fit, the current item truncates with an ellipsis instead of being cut off mid-word.
+- **Accordion in a bled Panel.** Header actions of an `<Accordion>` inside `<Panel.Content bleed>` line up with the panel's padding.
 
 ## Design
 
-- **Disabled state on any background.** Disabled and loading controls now derive their look from the text color, so they stay dark on light backgrounds and light on dark ones. A disabled Button on the `ActionBar` no longer shows up as a bright pill, and every Button variant looks the same when disabled.
-- **One edge for checkboxes and radios.** Checkbox, radio and list row selection marks draw their edge from shared `--color-control-edge` tokens. Single-select `SelectList` and `ListView` marks are no longer fainter than a checkbox, and disabled checked or indeterminate controls now show their value.
+- **Disabled state on any background.** Disabled and loading controls now derive their look from the text color, so they stay dark on light backgrounds and light on dark ones. A disabled `<Button>` on the `<ActionBar>` no longer shows up as a bright pill, and every `<Button>` variant looks the same when disabled.
+- **One edge for checkboxes and radios.** Checkbox, radio and list row selection marks draw their edge from shared `--color-control-edge` tokens. Single-select `<SelectList>` and `<ListView>` marks are no longer fainter than a checkbox, and disabled checked or indeterminate controls now show their value.
 
 ## Under the hood
 
-- **One rule for row actions.** The Table, ButtonGroup, ListView and Menu pages now agree: row actions use `ghost`, labeled buttons use `size="small"`, icon-only buttons use `size="icon"`, and a visible destructive action uses `destructive-ghost` and sits last.
+- **One rule for row actions.** The `<Table>`, `<ButtonGroup>`, `<ListView>` and `<Menu>` pages now agree: row actions use `ghost`, labeled buttons use `size="small"`, icon-only buttons use `size="icon"`, and a visible destructive action uses `destructive-ghost` and sits last.
 - **Docs fixes.** Surface demos show the gray page background, the "Customizing text" demo on the Text page is readable again, and the token overview explains how `ui-state-disabled` derives its colors.
 - **Telemetry streams.** CLI and MCP telemetry each have their own stream now.
 
