@@ -515,8 +515,8 @@ export const paddingBottom = {
 } as const;
 
 /**
- * @deprecated Components resolve this in `@marigold/components` now. Kept for
- * direct consumers, will be removed in the next major.
+ * @deprecated Use the `weight` prop on `<Text>`, or the Tailwind class
+ * directly. Will be removed in the next major.
  */
 export const fontWeight = {
   thin: 'font-thin',
@@ -531,8 +531,8 @@ export const fontWeight = {
 } as const satisfies Record<NonNullable<FontWeightProp['weight']>, string>;
 
 /**
- * @deprecated Components resolve this in `@marigold/components` now. Kept for
- * direct consumers, will be removed in the next major.
+ * @deprecated Use the `fontSize` prop on `<Text>`, or the Tailwind class
+ * directly. Will be removed in the next major.
  */
 export const textSize = {
   xs: 'text-xs',

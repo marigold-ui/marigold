@@ -48,7 +48,9 @@ export type {
 export { defaultTheme } from './defaultTheme';
 
 // Style Props
+/** @internal */
 export { fontWeight } from './style-props';
+/** @internal */
 export { textSize } from './style-props';
 export type {
   AspectProp,
