@@ -38,7 +38,10 @@ export const DrawerHeader = ({ children }: DrawerHeaderProps) => {
           [TextContext, textProps],
         ]}
       >
-        <div className={cn('[grid-area:title]', classNames.header)}>
+        <div
+          data-slot="header"
+          className={cn('[grid-area:title]', classNames.header)}
+        >
           {children}
         </div>
       </Provider>

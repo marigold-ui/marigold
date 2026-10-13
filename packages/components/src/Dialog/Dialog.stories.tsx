@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { useMemo, useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
@@ -10,8 +11,10 @@ import { EmptyState } from '../EmptyState/EmptyState';
 import { Form } from '../Form/Form';
 import { Inline } from '../Inline/Inline';
 import { ActionMenu } from '../Menu/ActionMenu';
+import { OverlayContainerProvider } from '../Provider/OverlayContainerProvider';
 import { SearchField } from '../SearchField/SearchField';
 import { Select } from '../Select/Select';
+import { Stack } from '../Stack/Stack';
 import { Table } from '../Table/Table';
 import { Tag } from '../TagGroup/Tag';
 import { Text } from '../Text/Text';
@@ -781,5 +784,385 @@ TitleOnlyWithoutHeader.test(
 
     expect(title.tagName).toBe('H2');
     expect(dialog).toHaveAttribute('aria-labelledby', title.id);
+  }
+);
+
+TitleOnlyWithoutHeader.test(
+  'Starts the content right at the header divider',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+
+    // Any gap between the bare Title and the content's top border is margin
+    // that shifts the divider away from where Dialog.Header puts it.
+    const title = canvas.getByRole('heading', { name: 'Session expiring' });
+    const content = canvas.getByText(/Your session will expire/);
+
+    expect(
+      content.getBoundingClientRect().top - title.getBoundingClientRect().bottom
+    ).toBe(0);
+  }
+);
+
+// Each dialog portals into its own cell, so all of them can be open side by
+// side. A `capped` cell caps the dialog below its content, so the content
+// scrolls whatever the viewport height. A `viewport` cell fits a fullscreen one.
+const cellHeights = {
+  capped: 'h-112 [&_[role=dialog]]:max-h-96',
+  viewport: 'h-dvh',
+};
+
+const ConfigurationCell = ({
+  id,
+  label,
+  height,
+  children,
+}: {
+  id: string;
+  label: string;
+  height?: keyof typeof cellHeights;
+  children: ReactNode;
+}) => {
+  const [cell, setCell] = useState<HTMLDivElement | null>(null);
+
+  return (
+    <figure className="flex flex-col gap-2">
+      <figcaption className="text-secondary text-xs font-medium">
+        {label}
+      </figcaption>
+      <div
+        id={id}
+        ref={setCell}
+        className={`relative ${height ? cellHeights[height] : 'h-112'} transform-[translateZ(0)] overflow-hidden rounded-lg border border-dashed`}
+      >
+        {cell && (
+          <OverlayContainerProvider container={id}>
+            {children}
+          </OverlayContainerProvider>
+        )}
+      </div>
+    </figure>
+  );
+};
+
+const content = (
+  <Dialog.Content>Update the name and date of the event.</Dialog.Content>
+);
+const actions = (
+  <Dialog.Actions>
+    <Button variant="secondary">Cancel</Button>
+    <Button variant="primary">Save</Button>
+  </Dialog.Actions>
+);
+const terms = (
+  <Stack space={3}>
+    {Array.from({ length: 8 }, (_, i) => (
+      <Text key={i}>
+        Section {i + 1}. Tickets are personal and may only be resold through the
+        official resale platform at the original price.
+      </Text>
+    ))}
+  </Stack>
+);
+
+// Scrolls the dialog content it sits in once mounted, for the scrolled cells.
+const ScrollTo = ({ position }: { position: 'middle' | 'end' }) => (
+  <span
+    hidden
+    ref={el => {
+      const scroller = el?.parentElement;
+      if (!scroller) return;
+      requestAnimationFrame(() => {
+        const max = scroller.scrollHeight - scroller.clientHeight;
+        scroller.scrollTop = position === 'end' ? max : max / 2;
+      });
+    }}
+  />
+);
+
+const longDialog = (position?: 'middle' | 'end') => (
+  <Dialog open size="xsmall">
+    <Dialog.Title>Terms of service</Dialog.Title>
+    <Dialog.Content>
+      {position && <ScrollTo position={position} />}
+      {terms}
+    </Dialog.Content>
+    {actions}
+  </Dialog>
+);
+
+// `<Form unstyled>` renders `display: contents` around the parts.
+const longFormDialog = (
+  <Dialog open size="xsmall">
+    <Form unstyled>
+      <Dialog.Title>Terms of service</Dialog.Title>
+      <Dialog.Content>
+        <ScrollTo position="middle" />
+        {terms}
+      </Dialog.Content>
+      {actions}
+    </Form>
+  </Dialog>
+);
+
+// `edges`: which dividers can show at all (header or actions present, content
+// not empty). `cut`: where the content is cut off by scrolling, the only
+// dividers a browser with scroll-driven animations shows.
+const configurations: {
+  id: string;
+  label: string;
+  height?: keyof typeof cellHeights;
+  dialog: ReactNode;
+  edges: [boolean, boolean];
+  cut?: [boolean, boolean];
+}[] = [
+  {
+    id: 'config-header',
+    label: 'Header + content + actions',
+    dialog: (
+      <Dialog open size="xsmall">
+        <Dialog.Header>
+          <Dialog.Title>Edit event</Dialog.Title>
+          <Dialog.Description>Changes apply immediately.</Dialog.Description>
+        </Dialog.Header>
+        {content}
+        {actions}
+      </Dialog>
+    ),
+    edges: [true, true],
+  },
+  {
+    id: 'config-title',
+    label: 'Title + content + actions',
+    dialog: (
+      <Dialog open size="xsmall">
+        <Dialog.Title>Edit event</Dialog.Title>
+        {content}
+        {actions}
+      </Dialog>
+    ),
+    edges: [true, true],
+  },
+  {
+    id: 'config-form',
+    label: 'Title + form content + actions',
+    dialog: (
+      <Dialog open size="xsmall">
+        <Dialog.Title>Share document</Dialog.Title>
+        <Dialog.Content>
+          <Form>
+            <Stack space={4}>
+              <Text>Invite someone and choose what they can do.</Text>
+              <TextField label="Email address" type="email" />
+              <Select label="Role" defaultValue="view">
+                <Select.Option id="view">Viewer</Select.Option>
+                <Select.Option id="edit">Editor</Select.Option>
+              </Select>
+            </Stack>
+          </Form>
+        </Dialog.Content>
+        {actions}
+      </Dialog>
+    ),
+    edges: [true, true],
+  },
+  {
+    id: 'config-scroll-top',
+    label: 'Long content, at the top',
+    height: 'capped',
+    dialog: longDialog(),
+    edges: [true, true],
+    cut: [false, true],
+  },
+  {
+    id: 'config-scroll-middle',
+    label: 'Long content, scrolled to the middle',
+    height: 'capped',
+    dialog: longDialog('middle'),
+    edges: [true, true],
+    cut: [true, true],
+  },
+  {
+    id: 'config-scroll-end',
+    label: 'Long content, scrolled to the end',
+    height: 'capped',
+    dialog: longDialog('end'),
+    edges: [true, true],
+    cut: [true, false],
+  },
+  {
+    id: 'config-fullscreen',
+    label: 'Fullscreen, content fits',
+    height: 'viewport',
+    dialog: (
+      <Dialog open size="fullscreen">
+        <Dialog.Title>Select venues</Dialog.Title>
+        {content}
+        {actions}
+      </Dialog>
+    ),
+    edges: [true, true],
+    cut: [true, true],
+  },
+  {
+    id: 'config-form-unstyled',
+    label: 'Long content in <Form unstyled>, scrolled to the middle',
+    height: 'capped',
+    dialog: longFormDialog,
+    edges: [true, true],
+    cut: [true, true],
+  },
+  {
+    id: 'config-no-actions',
+    label: 'Title + content',
+    dialog: (
+      <Dialog open size="xsmall">
+        <Dialog.Title>Edit event</Dialog.Title>
+        {content}
+      </Dialog>
+    ),
+    edges: [true, false],
+  },
+  {
+    id: 'config-no-content',
+    label: 'Title + actions',
+    dialog: (
+      <Dialog open size="xsmall">
+        <Dialog.Title>Publish the event?</Dialog.Title>
+        {actions}
+      </Dialog>
+    ),
+    edges: [false, false],
+  },
+  {
+    id: 'config-empty-content',
+    label: 'Title + empty content + actions',
+    dialog: (
+      <Dialog open size="xsmall">
+        <Dialog.Title>Publish the event?</Dialog.Title>
+        <Dialog.Content />
+        {actions}
+      </Dialog>
+    ),
+    edges: [false, false],
+  },
+  {
+    id: 'config-title-only',
+    label: 'Title only',
+    dialog: (
+      <Dialog open size="xsmall">
+        <Dialog.Title>Event published</Dialog.Title>
+      </Dialog>
+    ),
+    edges: [false, false],
+  },
+  {
+    id: 'config-label',
+    label: 'aria-label + content + actions',
+    dialog: (
+      <Dialog open size="xsmall" aria-label="Edit event">
+        {content}
+        {actions}
+      </Dialog>
+    ),
+    edges: [false, true],
+  },
+  {
+    id: 'config-label-actions',
+    label: 'aria-label + actions',
+    dialog: (
+      <Dialog open size="xsmall" aria-label="Publish the event?">
+        {actions}
+      </Dialog>
+    ),
+    edges: [false, false],
+  },
+  {
+    id: 'config-label-content',
+    label: 'aria-label + content',
+    dialog: (
+      <Dialog open size="xsmall" aria-label="Edit event">
+        {content}
+      </Dialog>
+    ),
+    edges: [false, false],
+  },
+];
+
+/**
+ * Every combination of title, content and actions, open side by side, to check
+ * which dividers each one draws. The long content is shown at the top, in the
+ * middle and at the end, because its dividers follow the scroll position.
+ */
+export const Configurations = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true }, layout: 'fullscreen' },
+  // The open modals lock the page scroll. Undo that for this story only, so the
+  // page scrolls to every cell and Chromatic captures the full grid.
+  render: () => (
+    <>
+      <style>{'html { overflow: auto !important; }'}</style>
+      <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2 xl:grid-cols-4">
+        {configurations.map(({ id, label, height, dialog }) => (
+          <ConfigurationCell key={id} id={id} label={label} height={height}>
+            {dialog}
+          </ConfigurationCell>
+        ))}
+      </div>
+    </>
+  ),
+});
+
+Configurations.test(
+  'Draws a divider only between parts, where the content is cut off',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async () => {
+    // Firefox and Chromatic (see `.storybook/preview.tsx`) show the fallback.
+    const scrollDriven =
+      CSS.supports('animation-timeline: scroll()') &&
+      !('chromatic' in document.documentElement.dataset);
+    // Whether the header's or the actions' seam shows as a line, i.e. any
+    // shadow layer that is not transparent.
+    const shows = (el: Element | null) => {
+      const shadow = el ? getComputedStyle(el).boxShadow : 'none';
+      return (
+        shadow !== 'none' &&
+        shadow
+          .split(/,(?![^(]*\))/)
+          .some(
+            layer =>
+              !/^\s*(transparent|rgba\([^)]*,\s*0\)|\w+\([^)]*\/\s*0\))/.test(
+                layer
+              )
+          )
+      );
+    };
+    const lines = (id: string) => [
+      shows(document.querySelector(`#${id} [data-slot=header]`)),
+      shows(document.querySelector(`#${id} [data-slot=actions]`)),
+    ];
+
+    await waitFor(() =>
+      expect(document.querySelectorAll('[role=dialog]')).toHaveLength(
+        configurations.length
+      )
+    );
+
+    // The actions never draw a divider of their own.
+    for (const actions of document.querySelectorAll('[data-slot=actions]')) {
+      expect(getComputedStyle(actions).borderTopWidth).toBe('0px');
+    }
+
+    // The scrolled cells settle a frame after mounting.
+    await waitFor(() => {
+      for (const { id, edges, cut = [false, false] } of configurations) {
+        const expected = scrollDriven
+          ? [edges[0] && cut[0], edges[1] && cut[1]]
+          : edges;
+        expect({ id, lines: lines(id) }).toEqual({ id, lines: expected });
+      }
+    });
   }
 );

@@ -10,3 +10,18 @@
 @source './../packages/{components,system,themes}/**/*.{tsx,ts}';
 @source '!../packages/{components,system,themes}/node_modules/**/*.{tsx,ts}';
 @source '!../packages/{components,system,themes}/**/*.{test}.{tsx,ts}';
+
+/* In Chromatic, show the Dialog's seams in their static fallback instead of
+   the frozen end state. See preview.tsx. */
+[data-chromatic] :is([role='dialog'], [role='alertdialog']) {
+  & .ui-scroll-seam-header {
+    animation: none !important;
+    box-shadow: 0 1px 0 0
+      var(--seam-fallback-color, var(--seam-color, var(--color-border))) !important;
+  }
+  & .ui-scroll-seam-footer {
+    animation: none !important;
+    box-shadow: 0 -1px 0 0
+      var(--seam-fallback-color, var(--seam-color, var(--color-border))) !important;
+  }
+}

@@ -338,7 +338,8 @@
  * Shared anatomy for sectioned overlay surfaces (Dialog, Drawer, Tray, Sidebar):
  * a header with a bottom divider, a scrollable content area, and an actions row
  * with a top divider, on one padding rhythm. Consumers override via composition
- * (e.g. Dialog stacks actions responsively).
+ * (e.g. Dialog stacks actions responsively, and swaps the dividers for
+ * `ui-scroll-seam-*`, so they only show where content is cut off).
  *
  * Named after `ui-surface` above: those containers wear the surface role, these
  * style its parts. Panel is a `ui-surface` too but opts out — it derives padding
@@ -609,10 +610,11 @@
  *   - Footer: top hairline shows until the body bottoms out, fading over the
  *     last 12px.
  *
- * Consumers: Dialog (header only), Sidebar (header + footer). The hairline
- * color is `--seam-color` (default `--color-border`). The Sidebar overrides it
- * to `--color-surface-border` on its grid wrapper. A `box-shadow` hairline, so
- * it never affects layout. Sharing one timeline name across components is safe:
+ * Consumers: Dialog (header + footer), Sidebar (footer, in both the
+ * single-column and rail layouts). The hairline color is `--seam-color`
+ * (default `--color-border`). The Sidebar overrides it to
+ * `--color-surface-border` on its grid wrapper. A `box-shadow` hairline, so it
+ * never affects layout. Sharing one timeline name across components is safe:
  * each `timeline-scope` confines resolution to its own subtree, and Dialogs
  * render in an overlay portal (never nested in the Sidebar's scope). Without
  * scroll-driven animation the fallback pins the seam on as an always-on divider.
@@ -648,7 +650,8 @@
     animation-range: 0 12px;
   }
   @supports not (animation-timeline: scroll()) {
-    box-shadow: 0 1px 0 0 var(--seam-color, var(--color-border));
+    box-shadow: 0 1px 0 0
+      var(--seam-fallback-color, var(--seam-color, var(--color-border)));
   }
 }
 @utility ui-scroll-seam-footer {
