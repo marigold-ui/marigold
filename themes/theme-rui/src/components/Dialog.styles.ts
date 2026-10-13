@@ -26,17 +26,23 @@ export const Dialog: ThemeComponent<'Dialog'> = {
   // A bare `<Title>` takes `header` and `title` together, so the title/description
   // spacing is a `gap` here rather than a margin on the heading.
   header: cva({
-    base: 'flex flex-col gap-1 text-center sm:text-left px-6 pt-6 pb-4',
+    base: 'flex flex-col gap-1 text-center sm:text-left px-6 pt-6 pb-1',
   }),
   title: cva({ base: 'text-lg font-semibold' }),
   description: cva({ base: 'text-sm text-secondary' }),
-  // Dividers only bound the content: above it when there is a header, below it
-  // when there are actions. Hidden when empty, e.g. a ConfirmationDialog without
-  // children, which takes both dividers with it.
+  // The content draws both dividers, and only where it is cut off by scrolling
+  // (`ui-scroll-dividers-y`). The top one needs a header above it, the bottom
+  // one actions below it. Hidden when empty, e.g. a ConfirmationDialog without
+  // children.
   content: cva({
-    base: 'ui-surface-content text-sm border-border group-has-[>[data-slot=header]]/dialog:border-t empty:hidden',
+    base: [
+      'ui-surface-content ui-scroll-dividers-y text-sm empty:hidden',
+      'group-has-[>[data-slot=header]]/dialog:border-t',
+      'group-has-[>[data-slot=actions]]/dialog:border-b',
+    ],
   }),
+  // The content's bottom divider replaces the actions' own.
   actions: cva({
-    base: 'ui-surface-actions flex-col-reverse sm:flex-row group-not-has-[>[data-slot=content]:not(:empty)]/dialog:border-t-0',
+    base: 'ui-surface-actions flex-col-reverse sm:flex-row border-t-0',
   }),
 };

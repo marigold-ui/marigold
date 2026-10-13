@@ -21,7 +21,7 @@ A dialog consists of an optional title, content, actions, an optional close butt
 - **Actions:** The controls for confirming or canceling.
 - **Underlay:** Dims the page behind the dialog and prevents interaction with it.
 
-A divider always separates the title from the content and the content from the actions, whether or not the content scrolls. This matches the [Drawer](/components/overlay/drawer). A dialog without content, with only a title and actions, has no divider. A dialog without a title has no divider above its content.
+A divider separates the title from the content and the content from the actions only where the content is cut off by scrolling. Content that fits shows no dividers, so short dialogs stay calm. When the content scrolls, a divider fades in under the title once you scroll down, and the divider above the actions fades out when you reach the end. In browsers without scroll-driven animations, and in high-contrast mode, both dividers are always shown.
 
 ## Appearance
 

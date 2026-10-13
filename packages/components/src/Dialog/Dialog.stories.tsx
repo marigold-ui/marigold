@@ -851,15 +851,54 @@ const actions = (
     <Button variant="primary">Save</Button>
   </Dialog.Actions>
 );
+const terms = (
+  <Stack space={3}>
+    {Array.from({ length: 8 }, (_, i) => (
+      <Text key={i}>
+        Section {i + 1}. Tickets are personal and may only be resold through the
+        official resale platform at the original price.
+      </Text>
+    ))}
+  </Stack>
+);
 
-// `dividers` is the expected top border of the content and of the actions,
-// `null` where the part is missing or hidden.
+// Scrolls the dialog content it sits in once mounted, for the scrolled cells.
+const ScrollTo = ({ position }: { position: 'middle' | 'end' }) => (
+  <span
+    hidden
+    ref={el => {
+      const scroller = el?.parentElement;
+      if (!scroller) return;
+      requestAnimationFrame(() => {
+        const max = scroller.scrollHeight - scroller.clientHeight;
+        scroller.scrollTop = position === 'end' ? max : max / 2;
+      });
+    }}
+  />
+);
+
+const longDialog = (position?: 'middle' | 'end') => (
+  <Dialog open size="xsmall">
+    <Dialog.Title>Terms of service</Dialog.Title>
+    <Dialog.Content>
+      {position && <ScrollTo position={position} />}
+      {terms}
+    </Dialog.Content>
+    {actions}
+  </Dialog>
+);
+
+// `edges` says which edges of the content can have a divider at all: the top
+// one needs a header, the bottom one actions. `cut` says where the content is
+// cut off by scrolling, which is where a browser with scroll-driven animations
+// shows them. Without that support, every edge in `edges` shows a divider.
 const configurations: {
   id: string;
   label: string;
   tall?: boolean;
   dialog: ReactNode;
-  dividers: [string | null, string | null];
+  edges: [boolean, boolean];
+  cut?: [boolean, boolean];
 }[] = [
   {
     id: 'config-header',
@@ -874,7 +913,7 @@ const configurations: {
         {actions}
       </Dialog>
     ),
-    dividers: ['1px', '1px'],
+    edges: [true, true],
   },
   {
     id: 'config-title',
@@ -886,7 +925,7 @@ const configurations: {
         {actions}
       </Dialog>
     ),
-    dividers: ['1px', '1px'],
+    edges: [true, true],
   },
   {
     id: 'config-form',
@@ -909,29 +948,31 @@ const configurations: {
         {actions}
       </Dialog>
     ),
-    dividers: ['1px', '1px'],
+    edges: [true, true],
   },
   {
-    id: 'config-scroll',
-    label: 'Title + long, scrolling content + actions',
+    id: 'config-scroll-top',
+    label: 'Long content, at the top',
     tall: true,
-    dialog: (
-      <Dialog open size="xsmall">
-        <Dialog.Title>Terms of service</Dialog.Title>
-        <Dialog.Content>
-          <Stack space={3}>
-            {Array.from({ length: 8 }, (_, i) => (
-              <Text key={i}>
-                Section {i + 1}. Tickets are personal and may only be resold
-                through the official resale platform at the original price.
-              </Text>
-            ))}
-          </Stack>
-        </Dialog.Content>
-        {actions}
-      </Dialog>
-    ),
-    dividers: ['1px', '1px'],
+    dialog: longDialog(),
+    edges: [true, true],
+    cut: [false, true],
+  },
+  {
+    id: 'config-scroll-middle',
+    label: 'Long content, scrolled to the middle',
+    tall: true,
+    dialog: longDialog('middle'),
+    edges: [true, true],
+    cut: [true, true],
+  },
+  {
+    id: 'config-scroll-end',
+    label: 'Long content, scrolled to the end',
+    tall: true,
+    dialog: longDialog('end'),
+    edges: [true, true],
+    cut: [true, false],
   },
   {
     id: 'config-no-actions',
@@ -942,7 +983,7 @@ const configurations: {
         {content}
       </Dialog>
     ),
-    dividers: ['1px', null],
+    edges: [true, false],
   },
   {
     id: 'config-no-content',
@@ -953,7 +994,7 @@ const configurations: {
         {actions}
       </Dialog>
     ),
-    dividers: [null, '0px'],
+    edges: [false, false],
   },
   {
     id: 'config-empty-content',
@@ -965,7 +1006,7 @@ const configurations: {
         {actions}
       </Dialog>
     ),
-    dividers: [null, '0px'],
+    edges: [false, false],
   },
   {
     id: 'config-title-only',
@@ -975,7 +1016,7 @@ const configurations: {
         <Dialog.Title>Event published</Dialog.Title>
       </Dialog>
     ),
-    dividers: [null, null],
+    edges: [false, false],
   },
   {
     id: 'config-label',
@@ -986,7 +1027,7 @@ const configurations: {
         {actions}
       </Dialog>
     ),
-    dividers: ['0px', '1px'],
+    edges: [false, true],
   },
   {
     id: 'config-label-actions',
@@ -996,7 +1037,7 @@ const configurations: {
         {actions}
       </Dialog>
     ),
-    dividers: [null, '0px'],
+    edges: [false, false],
   },
   {
     id: 'config-label-content',
@@ -1006,13 +1047,14 @@ const configurations: {
         {content}
       </Dialog>
     ),
-    dividers: ['0px', null],
+    edges: [false, false],
   },
 ];
 
 /**
  * Every combination of title, content and actions, open side by side, to check
- * which dividers each one draws.
+ * which dividers each one draws. The long content is shown at the top, in the
+ * middle and at the end, because its dividers follow the scroll position.
  */
 export const Configurations = meta.story({
   tags: ['component-test'],
@@ -1034,15 +1076,25 @@ export const Configurations = meta.story({
 });
 
 Configurations.test(
-  'Draws one divider per boundary between parts',
+  'Draws a divider only between parts, where the content is cut off',
   {
     parameters: { chromatic: { disableSnapshot: false } },
   },
   async () => {
-    const divider = (id: string, selector: string) => {
-      const el = document.querySelector<HTMLElement>(`#${id} ${selector}`);
-      if (!el || getComputedStyle(el).display === 'none') return null;
-      return getComputedStyle(el).borderTopWidth;
+    const scrollDriven = CSS.supports('animation-timeline: scroll()');
+    // Whether the content's top and bottom border show as a line.
+    const lines = (id: string) => {
+      const el = document.querySelector<HTMLElement>(
+        `#${id} [data-slot=content]`
+      );
+      if (!el || getComputedStyle(el).display === 'none') return [false, false];
+      const style = getComputedStyle(el);
+      const shows = (width: string, color: string) =>
+        width !== '0px' && !/(\/\s*0|,\s*0)\)$/.test(color);
+      return [
+        shows(style.borderTopWidth, style.borderTopColor),
+        shows(style.borderBottomWidth, style.borderBottomColor),
+      ];
     };
 
     await waitFor(() =>
@@ -1051,11 +1103,19 @@ Configurations.test(
       )
     );
 
-    for (const { id, dividers } of configurations) {
-      expect([
-        divider(id, '[data-slot=content]'),
-        divider(id, '[data-slot=actions]'),
-      ]).toEqual(dividers);
+    // The actions never draw a divider of their own.
+    for (const actions of document.querySelectorAll('[data-slot=actions]')) {
+      expect(getComputedStyle(actions).borderTopWidth).toBe('0px');
     }
+
+    // The scrolled cells settle a frame after mounting.
+    await waitFor(() => {
+      for (const { id, edges, cut = [false, false] } of configurations) {
+        const expected = scrollDriven
+          ? [edges[0] && cut[0], edges[1] && cut[1]]
+          : edges;
+        expect({ id, lines: lines(id) }).toEqual({ id, lines: expected });
+      }
+    });
   }
 );

@@ -338,8 +338,8 @@
  * Shared anatomy for sectioned overlay surfaces (Dialog, Drawer, Tray, Sidebar):
  * a header with a bottom divider, a scrollable content area, and an actions row
  * with a top divider, on one padding rhythm. Consumers override via composition
- * (e.g. Dialog stacks actions responsively, and draws its dividers only next to
- * content).
+ * (e.g. Dialog stacks actions responsively, and draws its dividers on the
+ * content with `ui-scroll-dividers-y`, so they only show where content is cut off).
  *
  * Named after `ui-surface` above: those containers wear the surface role, these
  * style its parts. Panel is a `ui-surface` too but opts out — it derives padding
@@ -563,6 +563,54 @@
     animation:
       sc-reveal-top linear both,
       sc-hide-bottom linear both;
+    animation-timeline: scroll(self block), scroll(self block);
+    animation-range:
+      0 var(--sc-scroll-buffer),
+      calc(100% - var(--sc-scroll-buffer)) 100%;
+  }
+}
+
+@keyframes sc-divider-top {
+  from {
+    border-top-color: transparent;
+  }
+  to {
+    border-top-color: var(--color-border);
+  }
+}
+@keyframes sc-divider-bottom {
+  from {
+    border-bottom-color: var(--color-border);
+  }
+  to {
+    border-bottom-color: transparent;
+  }
+}
+
+/*
+ * Scroll-revealed dividers on a scroller's own top and bottom border: a line
+ * shows only at an edge where content is cut off, so content that fits has
+ * none. The top line fades in once the content is scrolled, the bottom line
+ * fades out at the end. Same scroll(self) mechanics as `ui-scroll-mask-y`.
+ *
+ * Only sets colours. The consumer sets the border widths, which decides which
+ * edges can have a line at all.
+ *
+ * Without scroll-driven animation support the lines are always shown. In
+ * forced-colors mode the browser repaints the transparent borders, so the
+ * lines are always shown there too. Scroll-linked, so not gated by
+ * `prefers-reduced-motion`.
+ */
+@utility ui-scroll-dividers-y {
+  --sc-scroll-buffer: 1rem;
+
+  border-color: var(--color-border);
+
+  @supports (animation-timeline: scroll()) {
+    border-color: transparent;
+    animation:
+      sc-divider-top linear both,
+      sc-divider-bottom linear both;
     animation-timeline: scroll(self block), scroll(self block);
     animation-range:
       0 var(--sc-scroll-buffer),
