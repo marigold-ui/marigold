@@ -338,8 +338,8 @@
  * Shared anatomy for sectioned overlay surfaces (Dialog, Drawer, Tray, Sidebar):
  * a header with a bottom divider, a scrollable content area, and an actions row
  * with a top divider, on one padding rhythm. Consumers override via composition
- * (e.g. Dialog stacks actions responsively, and draws each divider on the lower
- * part only when the part above it exists).
+ * (e.g. Dialog stacks actions responsively, and draws its dividers only next to
+ * content).
  *
  * Named after `ui-surface` above: those containers wear the surface role, these
  * style its parts. Panel is a `ui-surface` too but opts out — it derives padding

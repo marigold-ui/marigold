@@ -30,12 +30,13 @@ export const Dialog: ThemeComponent<'Dialog'> = {
   }),
   title: cva({ base: 'text-lg font-semibold' }),
   description: cva({ base: 'text-sm text-secondary' }),
-  // A divider is drawn by the lower part of a pair, and only when the part above
-  // it exists. Hidden when empty, e.g. a ConfirmationDialog without children.
+  // Dividers only bound the content: above it when there is a header, below it
+  // when there are actions. Hidden when empty, e.g. a ConfirmationDialog without
+  // children, which takes both dividers with it.
   content: cva({
     base: 'ui-surface-content text-sm border-border group-has-[>[data-slot=header]]/dialog:border-t empty:hidden',
   }),
   actions: cva({
-    base: 'ui-surface-actions flex-col-reverse sm:flex-row group-not-has-[>[data-slot=header],>[data-slot=content]:not(:empty)]/dialog:border-t-0',
+    base: 'ui-surface-actions flex-col-reverse sm:flex-row group-not-has-[>[data-slot=content]:not(:empty)]/dialog:border-t-0',
   }),
 };

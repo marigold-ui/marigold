@@ -903,7 +903,7 @@ const configurations: {
         {actions}
       </Dialog>
     ),
-    dividers: [null, '1px'],
+    dividers: [null, '0px'],
   },
   {
     id: 'config-empty-content',
@@ -915,7 +915,7 @@ const configurations: {
         {actions}
       </Dialog>
     ),
-    dividers: [null, '1px'],
+    dividers: [null, '0px'],
   },
   {
     id: 'config-title-only',

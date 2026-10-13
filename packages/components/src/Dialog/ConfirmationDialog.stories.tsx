@@ -257,7 +257,7 @@ Basic.test(
 );
 
 Basic.test(
-  'Shows a single divider when there is no content',
+  'Shows no divider when there is no content',
   {
     args: { children: undefined },
   },
@@ -269,8 +269,8 @@ Basic.test(
     const actions = canvas.getByRole('button', { name: 'Confirm' })
       .parentElement as HTMLElement;
 
-    expect(getComputedStyle(actions).borderTopWidth).toBe('1px');
-    // No empty content band, and with it no second divider, between the two.
+    expect(getComputedStyle(actions).borderTopWidth).toBe('0px');
+    // No empty content band between the title and the buttons either.
     expect(
       actions.getBoundingClientRect().top - title.getBoundingClientRect().bottom
     ).toBe(0);
