@@ -14,6 +14,7 @@ import { ActionMenu } from '../Menu/ActionMenu';
 import { OverlayContainerProvider } from '../Provider/OverlayContainerProvider';
 import { SearchField } from '../SearchField/SearchField';
 import { Select } from '../Select/Select';
+import { Stack } from '../Stack/Stack';
 import { Table } from '../Table/Table';
 import { Tag } from '../TagGroup/Tag';
 import { Text } from '../Text/Text';
@@ -806,14 +807,17 @@ TitleOnlyWithoutHeader.test(
 // Each dialog portals into its own cell. The transform makes the cell the
 // containing block for the modal's fixed overlay, so all of them can be open
 // side by side. A cell must be in the DOM before its dialog mounts, so the
-// dialog waits for the cell's ref.
+// dialog waits for the cell's ref. A `tall` cell outgrows the dialog's 80vh cap,
+// so long content scrolls inside the dialog instead of being clipped by the cell.
 const ConfigurationCell = ({
   id,
   label,
+  tall,
   children,
 }: {
   id: string;
   label: string;
+  tall?: boolean;
   children: ReactNode;
 }) => {
   const [cell, setCell] = useState<HTMLDivElement | null>(null);
@@ -826,7 +830,7 @@ const ConfigurationCell = ({
       <div
         id={id}
         ref={setCell}
-        className="relative h-80 transform-[translateZ(0)] overflow-hidden rounded-lg border border-dashed"
+        className={`relative ${tall ? 'h-[calc(80vh+4rem)]' : 'h-112'} transform-[translateZ(0)] overflow-hidden rounded-lg border border-dashed`}
       >
         {cell && (
           <OverlayContainerProvider container={id}>
@@ -853,6 +857,7 @@ const actions = (
 const configurations: {
   id: string;
   label: string;
+  tall?: boolean;
   dialog: ReactNode;
   dividers: [string | null, string | null];
 }[] = [
@@ -878,6 +883,51 @@ const configurations: {
       <Dialog open size="xsmall">
         <Dialog.Title>Edit event</Dialog.Title>
         {content}
+        {actions}
+      </Dialog>
+    ),
+    dividers: ['1px', '1px'],
+  },
+  {
+    id: 'config-form',
+    label: 'Title + form content + actions',
+    dialog: (
+      <Dialog open size="xsmall">
+        <Dialog.Title>Share document</Dialog.Title>
+        <Dialog.Content>
+          <Form>
+            <Stack space={4}>
+              <Text>Invite someone and choose what they can do.</Text>
+              <TextField label="Email address" type="email" />
+              <Select label="Role" defaultValue="view">
+                <Select.Option id="view">Viewer</Select.Option>
+                <Select.Option id="edit">Editor</Select.Option>
+              </Select>
+            </Stack>
+          </Form>
+        </Dialog.Content>
+        {actions}
+      </Dialog>
+    ),
+    dividers: ['1px', '1px'],
+  },
+  {
+    id: 'config-scroll',
+    label: 'Title + long, scrolling content + actions',
+    tall: true,
+    dialog: (
+      <Dialog open size="xsmall">
+        <Dialog.Title>Terms of service</Dialog.Title>
+        <Dialog.Content>
+          <Stack space={3}>
+            {Array.from({ length: 8 }, (_, i) => (
+              <Text key={i}>
+                Section {i + 1}. Tickets are personal and may only be resold
+                through the official resale platform at the original price.
+              </Text>
+            ))}
+          </Stack>
+        </Dialog.Content>
         {actions}
       </Dialog>
     ),
@@ -973,8 +1023,8 @@ export const Configurations = meta.story({
     <>
       <style>{'html { overflow: auto !important; }'}</style>
       <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2 xl:grid-cols-4">
-        {configurations.map(({ id, label, dialog }) => (
-          <ConfigurationCell key={id} id={id} label={label}>
+        {configurations.map(({ id, label, tall, dialog }) => (
+          <ConfigurationCell key={id} id={id} label={label} tall={tall}>
             {dialog}
           </ConfigurationCell>
         ))}
