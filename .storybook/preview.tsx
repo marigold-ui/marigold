@@ -7,6 +7,17 @@ import withMarigoldProviders from './decorators.js';
 // @ts-expect-error - CSS side-effect import handled by Vite bundler
 import './styles.css';
 
+// Chromatic freezes CSS animations at their last frame before it captures. That
+// would pin scroll-driven styles, such as the Dialog's `ui-scroll-dividers-y`, to
+// their end state whatever the scroll position. `styles.css` swaps them for their
+// static fallback under this flag. Same check as Chromatic's own `isChromatic()`.
+if (
+  /Chromatic/.test(navigator.userAgent) ||
+  /chromatic=true/.test(location.href)
+) {
+  document.documentElement.dataset.chromatic = '';
+}
+
 // Storybook viewports only accept fixed pixel values, so we can't use the
 // theme's rem-based `sm` breakpoint directly. 639px = 40rem - 1px (at the
 // default 16px root font size), ensuring this viewport triggers `(width < 40rem)`.

@@ -891,7 +891,7 @@ const longDialog = (position?: 'middle' | 'end') => (
 // `edges` says which edges of the content can have a divider at all: the top
 // one needs a header, the bottom one actions. `cut` says where the content is
 // cut off by scrolling, which is where a browser with scroll-driven animations
-// shows them. Without that support, every edge in `edges` shows a divider.
+// shows them. Without that support every edge in `edges` shows a divider.
 const configurations: {
   id: string;
   label: string;
@@ -1081,7 +1081,11 @@ Configurations.test(
     parameters: { chromatic: { disableSnapshot: false } },
   },
   async () => {
-    const scrollDriven = CSS.supports('animation-timeline: scroll()');
+    // Firefox, and Chromatic (see `.storybook/preview.tsx`), show the static
+    // fallback, where every possible divider shows.
+    const scrollDriven =
+      CSS.supports('animation-timeline: scroll()') &&
+      !('chromatic' in document.documentElement.dataset);
     // Whether the content's top and bottom border show as a line.
     const lines = (id: string) => {
       const el = document.querySelector<HTMLElement>(
