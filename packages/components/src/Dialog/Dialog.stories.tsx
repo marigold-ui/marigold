@@ -967,14 +967,19 @@ const configurations: {
 export const Configurations = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true }, layout: 'fullscreen' },
+  // The open modals lock the page scroll. Undo that for this story only, so the
+  // page scrolls to every cell and Chromatic captures the full grid.
   render: () => (
-    <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2 xl:grid-cols-4">
-      {configurations.map(({ id, label, dialog }) => (
-        <ConfigurationCell key={id} id={id} label={label}>
-          {dialog}
-        </ConfigurationCell>
-      ))}
-    </div>
+    <>
+      <style>{'html { overflow: auto !important; }'}</style>
+      <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2 xl:grid-cols-4">
+        {configurations.map(({ id, label, dialog }) => (
+          <ConfigurationCell key={id} id={id} label={label}>
+            {dialog}
+          </ConfigurationCell>
+        ))}
+      </div>
+    </>
   ),
 });
 
