@@ -67,9 +67,6 @@ const _Menu = ({
   'aria-label': ariaLabel,
   ...props
 }: MenuProps) => {
-  // Read the Marigold `ButtonContext` so the trigger sits in a button container
-  // (`ActionBar`, `ButtonGroup`, `Panel.Header`, …) like a sibling `<Button>`:
-  // its size, disabled state and positional className. A local prop wins.
   const [trigger, triggerRef] = useContextProps(
     { variant, size, disabled } as ButtonContextValue,
     undefined,
@@ -83,9 +80,6 @@ const _Menu = ({
     ...triggerProps
   } = trigger;
 
-  // `Menu.button` only knows `default` and `ghost`, so of the cascaded
-  // variants only `ghost` is taken over; anything else (a `ButtonGroup`'s
-  // `secondary`, …) falls back to the default trigger.
   const triggerVariant =
     variant ?? (cascadedVariant === 'ghost' ? 'ghost' : undefined);
 
