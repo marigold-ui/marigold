@@ -11,7 +11,9 @@ import {
   Basic,
   DisabledAndLoading,
   IntegratedWithTable,
+  MenuLocalVariant,
   NoSelection,
+  WithMenu,
   WithoutClearButton,
 } from './ActionBar.stories';
 import { useActionBar } from './useActionBar';
@@ -117,6 +119,26 @@ test('marks a loading action as pending rather than disabled', () => {
   // marks it `aria-disabled` rather than removing it from the tree.
   expect(pending).toHaveAttribute('aria-disabled', 'true');
   expect(pending).toHaveAttribute('tabindex', '0');
+});
+
+test('a Menu trigger takes the cascaded ghost variant like a sibling Button', () => {
+  render(<WithMenu.Component />);
+
+  const button = screen.getByRole('button', { name: 'Edit' });
+  const trigger = screen.getByRole('button', { name: 'More actions' });
+
+  expect(button).toHaveClass('hover:ui-state-hover-ghost', 'h-control');
+  expect(trigger).toHaveClass('hover:ui-state-hover-ghost', 'h-control');
+  expect(trigger).not.toHaveClass('ui-soft');
+});
+
+test('a local Menu variant wins over the cascaded ghost', () => {
+  render(<MenuLocalVariant.Component />);
+
+  const trigger = screen.getByRole('button', { name: 'More actions' });
+
+  expect(trigger).toHaveClass('ui-soft');
+  expect(trigger).not.toHaveClass('hover:ui-state-hover-ghost');
 });
 
 test('calls onClearSelection when Escape is pressed', async () => {
