@@ -809,15 +809,18 @@ TitleOnlyWithoutHeader.test(
 // side by side. A cell must be in the DOM before its dialog mounts, so the
 // dialog waits for the cell's ref. A `tall` cell outgrows the dialog's 80vh cap,
 // so long content scrolls inside the dialog instead of being clipped by the cell.
+// A `viewport` cell is as high as the viewport, for a fullscreen dialog.
+const cellHeights = { tall: 'h-[calc(80vh+4rem)]', viewport: 'h-dvh' };
+
 const ConfigurationCell = ({
   id,
   label,
-  tall,
+  height,
   children,
 }: {
   id: string;
   label: string;
-  tall?: boolean;
+  height?: keyof typeof cellHeights;
   children: ReactNode;
 }) => {
   const [cell, setCell] = useState<HTMLDivElement | null>(null);
@@ -830,7 +833,7 @@ const ConfigurationCell = ({
       <div
         id={id}
         ref={setCell}
-        className={`relative ${tall ? 'h-[calc(80vh+4rem)]' : 'h-112'} transform-[translateZ(0)] overflow-hidden rounded-lg border border-dashed`}
+        className={`relative ${height ? cellHeights[height] : 'h-112'} transform-[translateZ(0)] overflow-hidden rounded-lg border border-dashed`}
       >
         {cell && (
           <OverlayContainerProvider container={id}>
@@ -891,11 +894,12 @@ const longDialog = (position?: 'middle' | 'end') => (
 // `edges` says which edges of the content can have a divider at all: the top
 // one needs a header, the bottom one actions. `cut` says where the content is
 // cut off by scrolling, which is where a browser with scroll-driven animations
-// shows them. Without that support every edge in `edges` shows a divider.
+// shows them. Without that support every edge in `edges` shows a divider. A
+// fullscreen dialog always shows them, so its `cut` lists every edge.
 const configurations: {
   id: string;
   label: string;
-  tall?: boolean;
+  height?: keyof typeof cellHeights;
   dialog: ReactNode;
   edges: [boolean, boolean];
   cut?: [boolean, boolean];
@@ -953,7 +957,7 @@ const configurations: {
   {
     id: 'config-scroll-top',
     label: 'Long content, at the top',
-    tall: true,
+    height: 'tall',
     dialog: longDialog(),
     edges: [true, true],
     cut: [false, true],
@@ -961,7 +965,7 @@ const configurations: {
   {
     id: 'config-scroll-middle',
     label: 'Long content, scrolled to the middle',
-    tall: true,
+    height: 'tall',
     dialog: longDialog('middle'),
     edges: [true, true],
     cut: [true, true],
@@ -969,10 +973,24 @@ const configurations: {
   {
     id: 'config-scroll-end',
     label: 'Long content, scrolled to the end',
-    tall: true,
+    height: 'tall',
     dialog: longDialog('end'),
     edges: [true, true],
     cut: [true, false],
+  },
+  {
+    id: 'config-fullscreen',
+    label: 'Fullscreen, content fits',
+    height: 'viewport',
+    dialog: (
+      <Dialog open size="fullscreen">
+        <Dialog.Title>Select venues</Dialog.Title>
+        {content}
+        {actions}
+      </Dialog>
+    ),
+    edges: [true, true],
+    cut: [true, true],
   },
   {
     id: 'config-no-actions',
@@ -1065,8 +1083,8 @@ export const Configurations = meta.story({
     <>
       <style>{'html { overflow: auto !important; }'}</style>
       <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2 xl:grid-cols-4">
-        {configurations.map(({ id, label, tall, dialog }) => (
-          <ConfigurationCell key={id} id={id} label={label} tall={tall}>
+        {configurations.map(({ id, label, height, dialog }) => (
+          <ConfigurationCell key={id} id={id} label={label} height={height}>
             {dialog}
           </ConfigurationCell>
         ))}

@@ -13,13 +13,21 @@ export const Dialog: ThemeComponent<'Dialog'> = {
     ],
     variants: {
       variant: {},
-      // Does not do anything, just to make the size appear in the appearance demo (Modal is setting the size)
+      // Modal sets the width and height. These exist so the sizes appear in the
+      // appearance demo, and so `fullscreen` can adjust the dividers.
       size: {
         xsmall: '',
         small: '',
         medium: '',
         large: '',
-        fullscreen: '',
+        // A fullscreen dialog often scrolls an inner region, such as a table,
+        // instead of its content, and `scroll(self)` cannot see that. So its
+        // content always shows both dividers, which frame a large area without
+        // looking heavy.
+        fullscreen: [
+          '*:data-[slot=content]:animate-none',
+          '*:data-[slot=content]:border-border',
+        ],
       },
     },
   }),
@@ -31,9 +39,9 @@ export const Dialog: ThemeComponent<'Dialog'> = {
   title: cva({ base: 'text-lg font-semibold' }),
   description: cva({ base: 'text-sm text-secondary' }),
   // The content draws both dividers, and only where it is cut off by scrolling
-  // (`ui-scroll-dividers-y`). The top one needs a header above it, the bottom
-  // one actions below it. Hidden when empty, e.g. a ConfirmationDialog without
-  // children.
+  // (`ui-scroll-dividers-y`), except in a fullscreen dialog (see `container`).
+  // The top one needs a header above it, the bottom one actions below it.
+  // Hidden when empty, e.g. a ConfirmationDialog without children.
   content: cva({
     base: [
       'ui-surface-content ui-scroll-dividers-y text-sm empty:hidden',
