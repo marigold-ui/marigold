@@ -7,10 +7,9 @@ import withMarigoldProviders from './decorators.js';
 // @ts-expect-error - CSS side-effect import handled by Vite bundler
 import './styles.css';
 
-// Chromatic freezes CSS animations at their last frame before it captures. That
-// would pin scroll-driven styles, such as the Dialog's `ui-scroll-dividers-y`, to
-// their end state whatever the scroll position. `styles.css` swaps them for their
-// static fallback under this flag. Same check as Chromatic's own `isChromatic()`.
+// Chromatic freezes animations at their last frame, which would pin scroll-driven
+// styles, such as the Dialog's seams, whatever the scroll position. `styles.css`
+// swaps them for their fallback under this flag, set like Chromatic's `isChromatic()`.
 if (
   /Chromatic/.test(navigator.userAgent) ||
   /chromatic=true/.test(location.href)

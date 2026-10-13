@@ -804,13 +804,13 @@ TitleOnlyWithoutHeader.test(
   }
 );
 
-// Each dialog portals into its own cell. The transform makes the cell the
-// containing block for the modal's fixed overlay, so all of them can be open
-// side by side. A cell must be in the DOM before its dialog mounts, so the
-// dialog waits for the cell's ref. A `tall` cell outgrows the dialog's 80vh cap,
-// so long content scrolls inside the dialog instead of being clipped by the cell.
-// A `viewport` cell is as high as the viewport, for a fullscreen dialog.
-const cellHeights = { tall: 'h-[calc(80vh+4rem)]', viewport: 'h-dvh' };
+// Each dialog portals into its own cell, so all of them can be open side by
+// side. A `capped` cell caps the dialog below its content, so the content
+// scrolls whatever the viewport height. A `viewport` cell fits a fullscreen one.
+const cellHeights = {
+  capped: 'h-112 [&_[role=dialog]]:max-h-96',
+  viewport: 'h-dvh',
+};
 
 const ConfigurationCell = ({
   id,
@@ -891,11 +891,23 @@ const longDialog = (position?: 'middle' | 'end') => (
   </Dialog>
 );
 
-// `edges` says which edges of the content can have a divider at all: the top
-// one needs a header, the bottom one actions. `cut` says where the content is
-// cut off by scrolling, which is where a browser with scroll-driven animations
-// shows them. Without that support every edge in `edges` shows a divider. A
-// fullscreen dialog always shows them, so its `cut` lists every edge.
+// `<Form unstyled>` renders `display: contents` around the parts.
+const longFormDialog = (
+  <Dialog open size="xsmall">
+    <Form unstyled>
+      <Dialog.Title>Terms of service</Dialog.Title>
+      <Dialog.Content>
+        <ScrollTo position="middle" />
+        {terms}
+      </Dialog.Content>
+      {actions}
+    </Form>
+  </Dialog>
+);
+
+// `edges`: which dividers can show at all (header or actions present, content
+// not empty). `cut`: where the content is cut off by scrolling, the only
+// dividers a browser with scroll-driven animations shows.
 const configurations: {
   id: string;
   label: string;
@@ -957,7 +969,7 @@ const configurations: {
   {
     id: 'config-scroll-top',
     label: 'Long content, at the top',
-    height: 'tall',
+    height: 'capped',
     dialog: longDialog(),
     edges: [true, true],
     cut: [false, true],
@@ -965,7 +977,7 @@ const configurations: {
   {
     id: 'config-scroll-middle',
     label: 'Long content, scrolled to the middle',
-    height: 'tall',
+    height: 'capped',
     dialog: longDialog('middle'),
     edges: [true, true],
     cut: [true, true],
@@ -973,7 +985,7 @@ const configurations: {
   {
     id: 'config-scroll-end',
     label: 'Long content, scrolled to the end',
-    height: 'tall',
+    height: 'capped',
     dialog: longDialog('end'),
     edges: [true, true],
     cut: [true, false],
@@ -989,6 +1001,14 @@ const configurations: {
         {actions}
       </Dialog>
     ),
+    edges: [true, true],
+    cut: [true, true],
+  },
+  {
+    id: 'config-form-unstyled',
+    label: 'Long content in <Form unstyled>, scrolled to the middle',
+    height: 'capped',
+    dialog: longFormDialog,
     edges: [true, true],
     cut: [true, true],
   },
@@ -1099,25 +1119,30 @@ Configurations.test(
     parameters: { chromatic: { disableSnapshot: false } },
   },
   async () => {
-    // Firefox, and Chromatic (see `.storybook/preview.tsx`), show the static
-    // fallback, where every possible divider shows.
+    // Firefox and Chromatic (see `.storybook/preview.tsx`) show the fallback.
     const scrollDriven =
       CSS.supports('animation-timeline: scroll()') &&
       !('chromatic' in document.documentElement.dataset);
-    // Whether the content's top and bottom border show as a line.
-    const lines = (id: string) => {
-      const el = document.querySelector<HTMLElement>(
-        `#${id} [data-slot=content]`
+    // Whether the header's or the actions' seam shows as a line, i.e. any
+    // shadow layer that is not transparent.
+    const shows = (el: Element | null) => {
+      const shadow = el ? getComputedStyle(el).boxShadow : 'none';
+      return (
+        shadow !== 'none' &&
+        shadow
+          .split(/,(?![^(]*\))/)
+          .some(
+            layer =>
+              !/^\s*(transparent|rgba\([^)]*,\s*0\)|\w+\([^)]*\/\s*0\))/.test(
+                layer
+              )
+          )
       );
-      if (!el || getComputedStyle(el).display === 'none') return [false, false];
-      const style = getComputedStyle(el);
-      const shows = (width: string, color: string) =>
-        width !== '0px' && !/(\/\s*0|,\s*0)\)$/.test(color);
-      return [
-        shows(style.borderTopWidth, style.borderTopColor),
-        shows(style.borderBottomWidth, style.borderBottomColor),
-      ];
     };
+    const lines = (id: string) => [
+      shows(document.querySelector(`#${id} [data-slot=header]`)),
+      shows(document.querySelector(`#${id} [data-slot=actions]`)),
+    ];
 
     await waitFor(() =>
       expect(document.querySelectorAll('[role=dialog]')).toHaveLength(
