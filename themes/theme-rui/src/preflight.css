@@ -36,6 +36,13 @@
   }
 }
 
+/* Chrome subtracts the gutter from the ICB and 100vw, so full-bleed overlays stop short of the right edge. !important beats react-aria's inline lock. */
+@media (width < 40rem) {
+  html {
+    scrollbar-gutter: auto !important;
+  }
+}
+
 /*
  * Keep @keyframes animations intact so entering:/exiting:/spinner motion still
  * works; components can opt out per-animation via motion-reduce:animate-none.

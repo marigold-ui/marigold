@@ -714,6 +714,11 @@ FlushSmallScreen.test(
       expect(radii.borderTopLeftRadius).toBe('0px');
       expect(radii.borderBottomRightRadius).toBe('0px');
 
+      // A reserved gutter shrinks the containing block, so the width assertion above only holds with classic scrollbars.
+      expect(getComputedStyle(document.documentElement).scrollbarGutter).toBe(
+        'auto'
+      );
+
       expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(
         window.innerWidth
       );
