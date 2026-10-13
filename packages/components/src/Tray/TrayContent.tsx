@@ -23,6 +23,7 @@ export const TrayContent = ({ children, className }: TrayContentProps) => {
 
   return (
     <div
+      data-slot="content"
       ref={node => {
         const container = node?.parentElement;
         if (!node || !container || node.style.minHeight || !node.offsetHeight) {

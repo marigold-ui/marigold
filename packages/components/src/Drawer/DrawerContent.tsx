@@ -42,6 +42,7 @@ export const DrawerContent = ({
 
   return (
     <div
+      data-slot="content"
       className={cn(
         '[grid-area:content]',
         // Bled: drop the padding and re-publish `--ui-surface-px` as `--bleed-px`

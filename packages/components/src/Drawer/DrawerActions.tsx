@@ -25,6 +25,7 @@ export const DrawerActions = ({ variant, size, children }: DrawerActions) => {
 
   return (
     <div
+      data-slot="actions"
       className={cn('[grid-area:actions]', classNames.actions)}
       style={{ '--i': 2 } as CSSProperties}
     >
