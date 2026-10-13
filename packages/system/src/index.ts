@@ -47,31 +47,11 @@ export type {
 // Default Theme
 export { defaultTheme } from './defaultTheme';
 
-// Style Props - only export what exists
+// Style Props
 /** @internal */
 export { fontWeight } from './style-props';
 /** @internal */
 export { textSize } from './style-props';
-/** @internal */
-export { textStyle } from './style-props';
-/** @internal */
-export { textWrap } from './style-props';
-/** @internal */
-export { whiteSpace } from './style-props';
-/** @internal */
-export { lineHeight } from './style-props';
-/** @internal */
-export { alignment } from './style-props';
-/** @internal */
-export { placeItems } from './style-props';
-/** @internal */
-export { textAlign } from './style-props';
-/** @internal */
-export { verticalAlign } from './style-props';
-/** @internal */
-export { aspect } from './style-props';
-/** @internal */
-export { cursorStyle } from './style-props';
 export type {
   AspectProp,
   AlignmentProp,

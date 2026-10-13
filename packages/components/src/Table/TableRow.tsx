@@ -2,9 +2,10 @@ import type RAC from 'react-aria-components';
 import { Button } from 'react-aria-components/Button';
 import { Collection } from 'react-aria-components/Collection';
 import { Cell, Row, useTableOptions } from 'react-aria-components/Table';
-import { cn, useClassNames, verticalAlign } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { GripVertical } from '../icons/GripVertical';
+import { verticalAlign } from '../utils/styleProps';
 import { useTableContext } from './Context';
 
 type RemovedProps = 'className' | 'style';

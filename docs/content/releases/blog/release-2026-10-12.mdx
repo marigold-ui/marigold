@@ -1,0 +1,109 @@
+---
+title: Marigold v18.3.0
+date: 2026-10-12
+type: Blog
+changed:
+  - foundations/form-fields
+  - foundations/token-overview
+  - components/form/file-field
+  - components/form/checkbox
+  - components/form/radio
+  - components/form/switch
+  - components/collection/table
+  - components/layout/app-shell
+  - components/layout/page
+  - components/overlay/tooltip
+  - components/navigation/breadcrumbs
+  - components/navigation/tabs
+  - components/actions/button-group
+  - getting-started/cli
+---
+
+v18.3.0 gives every form field label an `addon` slot, teaches `<FileField>` to validate like the rest of your form, and lets a `<Table>` say that it is loading. `<AppShell>` gains a skip-link, and `@marigold/cli` reaches v3 with JSON output for agents and telemetry that carries no identifier at all.
+
+## Components
+
+### An `addon` for every label
+
+Last release gave `<Checkbox>`, `<Radio>` and `<Switch>` a `badge` slot. Now every form field gets one, under a more general name. Pass a [`<Badge>`](/components/content/badge) or a [`<ContextualHelp>`](/components/overlay/contextual-help) as `addon`, and it sits at the end of the label without making the label row taller.
+
+```tsx
+<Select
+  label="Associated Team"
+  addon={<Badge variant="master">Master</Badge>}
+/>
+```
+
+A badge in the slot is sized automatically, so it no longer needs `size="inline"`. The addon is also no longer part of the field's accessible name. Screen readers read a badge as the field's description instead, and the required indicator now sits before the addon. See [Form fields](/foundations/form-fields) for where an addon fits.
+
+<Callout title="Rename `badge` to `addon`" type="warning">
+  `<Checkbox>`, `<Radio>` and `<Switch>` rename their `badge` slot to `addon`. Replace
+  `badge={…}` with `addon={…}`.
+</Callout>
+
+### FileField validation
+
+[`<FileField>`](/components/form/file-field) was the only field that could not validate. A required upload could not block submission, and a file rejected by `accept` disappeared without a word.
+
+It now takes `required`, `error`, `errorMessage`, `description`, `validate` and `validationBehavior` like every other field, plus `maxSize` to cap a single file in bytes. A file rejected by `accept` or `maxSize` shows a localized error instead of vanishing. Errors look exactly like a `<TextField>` error and are announced with the upload button. Server errors arrive through `<Form validationErrors>`, and resetting the form clears both the selection and the error.
+
+Two details worth knowing. The hidden input now renders even without a `name`, because validation needs it inside the form. And the remaining props now reach the drop zone only, so an `onDrop` you pass no longer replaces the internal handler and stops files from being added.
+
+### Table loading state
+
+`aria-busy` on a `<Table>` never reached the page, because React Aria filters it out. [`<Table loading>`](/components/collection/table) now marks the grid as busy and announces the loading state through a polite live region. Nothing is announced when loading finishes, because the new rows are the signal.
+
+```tsx
+<Table aria-label="Orders" loading={isLoading}>
+  {/* … */}
+</Table>
+```
+
+Replace `aria-busy` on a `<Table>`, or on a wrapper around it, with `loading`.
+
+### Skip-link and page focus
+
+[`<AppShell>`](/components/layout/app-shell) now renders a localized "Skip to main content" link as its first focusable element. It stays hidden until it receives focus and moves focus to the `<main>` landmark of the [`<Page>`](/components/layout/page), so keyboard and screen reader users can jump past the sidebar and top navigation. No setup is needed.
+
+`usePageFocus` gets a matching fallback. On a `<Page>` with only an `aria-label` and no `<Title>`, a route change now moves focus to the `<main>` landmark instead of leaving it on the clicked link. Pages with a `<Title>` still focus the heading. `<Page>` also accepts a `tabIndex` for the landmark.
+
+## CLI
+
+`@marigold/cli` jumps to v3.0.0.
+
+- **JSON when nobody is watching.** When `--format` is omitted, `docs`, `list`, `search`, `examples`, `doctor` and `validate` print JSON whenever their output is piped or captured, as it is for an AI agent, a script or CI. In an interactive terminal nothing changes, and an explicit `--format` always wins.
+- **"Did you mean?"** A mistyped command suggests the closest valid one, so `marigold serach` points you to `search`.
+- **Telemetry without an identifier.** The per-machine ID is gone, and the CLI erases any value an older version stored. Arguments are recorded only as validated values, and timestamps are cut to the hour. A one-time notice on the first interactive run explains what is sent and how to opt out, and that run itself is not tracked. Every field is documented in the [`marigold telemetry`](/getting-started/cli#marigold-telemetry) section.
+
+<Callout title="Breaking change for scripts" type="warning">
+  A script that reads the default output of one of these commands through a pipe
+  now receives JSON. Pass `--format markdown`, `--format plain` or `--format
+  text` to keep the previous output. The programmatic `run*()` exports are
+  unchanged.
+</Callout>
+
+## Bug fixes
+
+- **Form fields at 320px.** `<Label>` and `<HelpText>` now break long words, URLs and file names instead of pushing the field past the screen. A wrapped error message keeps its icon on the first line.
+- **Tray actions on small screens.** `<Tray.Actions>` stays reachable when the viewport shrinks, for example when the on-screen keyboard opens in a `<ComboBox>` or `<Autocomplete>` tray. The content scrolls instead.
+- **Table columns narrow again.** Inside a parent that sizes to its content, such as `<Columns>` or a `<Panel>`, a `<Table>` no longer keeps its widest column widths after the window shrinks.
+- **Table selection cells.** The checkbox and drag-handle cells now follow the table's `alignY`.
+- **Stuck tooltips.** A tooltip could come back pinned to the top left corner and never close, most often on the icon-only `<Sidebar.Rail>`. Closed tooltips now unmount.
+- **Focus ring on Breadcrumbs and Tabs.** Breadcrumb links, tabs and the tab panel show the theme's full-contrast focus ring, no longer clipped by their container.
+- **Long current breadcrumb.** When collapsed `<Breadcrumbs>` still don't fit, the current item truncates with an ellipsis instead of being cut off mid-word.
+- **Accordion in a bled Panel.** Header actions of an `<Accordion>` inside `<Panel.Content bleed>` line up with the panel's padding.
+
+## Design
+
+- **Disabled state on any background.** Disabled and loading controls now derive their look from the text color, so they stay dark on light backgrounds and light on dark ones. A disabled `<Button>` on the `<ActionBar>` no longer shows up as a bright pill, and every `<Button>` variant looks the same when disabled.
+- **One edge for checkboxes and radios.** Checkbox, radio and list row selection marks draw their edge from shared `--color-control-edge` tokens. Single-select `<SelectList>` and `<ListView>` marks are no longer fainter than a checkbox, and disabled checked or indeterminate controls now show their value.
+
+## Under the hood
+
+- **One rule for row actions.** The `<Table>`, `<ButtonGroup>`, `<ListView>` and `<Menu>` pages now agree: row actions use `ghost`, labeled buttons use `size="small"`, icon-only buttons use `size="icon"`, and a visible destructive action uses `destructive-ghost` and sits last.
+- **Docs fixes.** Surface demos show the gray page background, the "Customizing text" demo on the Text page is readable again, and the token overview explains how `ui-state-disabled` derives its colors.
+- **Telemetry streams.** CLI and MCP telemetry each have their own stream now.
+
+---
+
+That's v18.3.0. If you have badges or help icons squeezed into labels, give the new `addon` slot a try.

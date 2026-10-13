@@ -69,9 +69,8 @@ export default () => {
         >
           <TextValue>{notification.title}</TextValue>
           <Description>{notification.timestamp}</Description>
-          <ButtonGroup>
+          <ButtonGroup size="icon">
             <Button
-              size="icon"
               aria-label={`Archive ${notification.title}`}
               onPress={() => archive(notification.id)}
             >

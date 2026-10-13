@@ -3,7 +3,7 @@ import { Archive, CloudDownload, UserCog } from 'lucide-react';
 import {
   ActionMenu,
   Button,
-  Inline,
+  ButtonGroup,
   Table,
   Tooltip,
 } from '@marigold/components';
@@ -26,20 +26,24 @@ export default () => (
           </Table.Cell>
           <Table.Cell>{item.rating}</Table.Cell>
           <Table.Cell>
-            <Inline space={1} noWrap>
+            <ButtonGroup
+              aria-label={`Actions for ${item.name}`}
+              variant="ghost"
+              size="icon"
+            >
               <Tooltip.Trigger>
-                <Button size="small">
+                <Button aria-label="Edit">
                   <Edit />
                 </Button>
                 <Tooltip>Edit</Tooltip>
               </Tooltip.Trigger>
               <Tooltip.Trigger>
-                <Button size="small">
+                <Button aria-label="View Ratings">
                   <Star />
                 </Button>
                 <Tooltip>View Ratings</Tooltip>
               </Tooltip.Trigger>
-              <ActionMenu size="small">
+              <ActionMenu aria-label="More actions">
                 <ActionMenu.Item id="assign">
                   <UserCog /> Assign account manager
                 </ActionMenu.Item>
@@ -51,7 +55,7 @@ export default () => (
                   <Archive /> Archive
                 </ActionMenu.Item>
               </ActionMenu>
-            </Inline>
+            </ButtonGroup>
           </Table.Cell>
         </Table.Row>
       ))}
