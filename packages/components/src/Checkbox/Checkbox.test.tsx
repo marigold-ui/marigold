@@ -1,7 +1,9 @@
 /* eslint-disable testing-library/no-node-access */
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import type { RefObject } from 'react';
-import { Basic } from './Checkbox.stories';
+import { renderWithOverlay } from '../test.utils';
+import { Basic, WithBadge, WithContextualHelp } from './Checkbox.stories';
 
 // There is no real accesible way to get to the element that acts as checkbox
 const getVisibleCheckbox = () => {
@@ -108,4 +110,51 @@ test('forwards ref', () => {
   render(<Basic.Component label="Check it" ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLLabelElement);
+});
+
+test('names the checkbox by its label and describes it by the addon', () => {
+  render(<WithBadge.Component />);
+
+  const checkbox = screen.getByRole('checkbox', {
+    name: 'Enable early bird pricing',
+  });
+
+  expect(checkbox).toHaveAccessibleDescription(/Master/);
+});
+
+test('describes a checkbox named by aria-label by its addon', () => {
+  render(
+    <WithBadge.Component label={undefined} aria-label="Early bird pricing" />
+  );
+
+  const checkbox = screen.getByRole('checkbox', { name: 'Early bird pricing' });
+
+  expect(checkbox).toHaveAccessibleDescription(/Master/);
+});
+
+test('does not repeat the addon in the description of an unnamed checkbox', () => {
+  render(<WithBadge.Component label={undefined} />);
+
+  expect(screen.getByRole('checkbox')).toHaveAccessibleDescription('');
+});
+
+test('opens a help addon without toggling the checkbox', async () => {
+  renderWithOverlay(<WithContextualHelp.Component />);
+
+  const checkbox = screen.getByRole('checkbox', {
+    name: 'Enable early bird pricing',
+  });
+
+  await userEvent.click(screen.getByRole('button', { name: 'Help' }));
+
+  expect(await screen.findByRole('dialog')).toBeInTheDocument();
+  expect(checkbox).not.toBeChecked();
+});
+
+test('keeps a help addon out of the checkbox description', () => {
+  render(<WithContextualHelp.Component />);
+
+  expect(
+    screen.getByRole('checkbox', { name: 'Enable early bird pricing' })
+  ).toHaveAccessibleDescription('');
 });

@@ -1,7 +1,8 @@
 import preview from '.storybook/preview';
-import { alignment, cn } from '@marigold/system';
+import { cn } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { Text } from '../Text/Text';
+import { alignment } from '../utils/styleProps';
 import { Grid } from './Grid';
 
 const meta = preview.meta({

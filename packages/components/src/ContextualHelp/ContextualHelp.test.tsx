@@ -2,7 +2,11 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
-import { Basic, WithDescription } from './ContextualHelp.stories';
+import {
+  Basic,
+  WithBadgeInLabelAddon,
+  WithDescription,
+} from './ContextualHelp.stories';
 
 const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
@@ -88,4 +92,15 @@ test('renders an optional description via the description slot', () => {
   const description = screen.getByText('A short summary of this feature.');
   expect(description.tagName).toBe('P');
   expect(description).toHaveClass('[grid-area:description]');
+});
+
+test('keeps a badge in the popover at its own size inside a label addon', async () => {
+  renderWithOverlay(<WithBadgeInLabelAddon.Component />);
+
+  await userEvent.click(screen.getByRole('button'));
+
+  const badge = screen.getByText('Pro');
+
+  expect(badge).toHaveClass('bg-info');
+  expect(badge).not.toHaveClass('h-4');
 });

@@ -1,7 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { TextField } from 'react-aria-components/TextField';
-import { Basic } from './FieldBase.stories';
+import { Badge } from '../Badge/Badge';
+import { ContextualHelp } from '../ContextualHelp/ContextualHelp';
+import { Basic, LabelAddon } from './FieldBase.stories';
 
 // Tests
 // ---------------
@@ -137,4 +139,83 @@ test('applies width variables for fraction width', () => {
     'calc((1 / 2) * 100%)'
   );
   expect(container.style.getPropertyValue('--field-width')).toBe('100%');
+});
+
+test('renders the addon beside the label, not inside it', () => {
+  render(<LabelAddon.Component />);
+
+  const [help] = screen.getAllByRole('button', { name: 'Help' });
+
+  expect(screen.getByText('Badge')).not.toContainElement(
+    screen.getByText('Master')
+  );
+  expect(screen.getByText('Contextual help')).not.toContainElement(help);
+});
+
+test('keeps the addon out of the accessible name', () => {
+  render(<LabelAddon.Component />);
+
+  expect(screen.getByRole('textbox', { name: 'Badge' })).toBeInTheDocument();
+  expect(
+    screen.getByRole('textbox', { name: 'Contextual help' })
+  ).toBeInTheDocument();
+  expect(screen.getByRole('textbox', { name: 'Both' })).toBeInTheDocument();
+});
+
+test('renders an addon without label text', () => {
+  render(<Basic.Component label={undefined} addon={<Badge>New</Badge>} />);
+
+  const badge = screen.getByText('New').getBoundingClientRect();
+  const input = screen.getByRole('textbox').getBoundingClientRect();
+
+  expect(badge.bottom).toBeLessThanOrEqual(input.top);
+});
+
+test('describes the field by the static part of its addon', () => {
+  render(<LabelAddon.Component />);
+
+  expect(
+    screen.getByRole('textbox', { name: 'Badge' })
+  ).toHaveAccessibleDescription('Master');
+  expect(
+    screen.getByRole('textbox', { name: 'Both' })
+  ).toHaveAccessibleDescription('Admin');
+  expect(
+    screen.getByRole('textbox', { name: 'Contextual help' })
+  ).toHaveAccessibleDescription('');
+});
+
+test('does not reference a description for a help-only addon', () => {
+  render(<LabelAddon.Component />);
+
+  expect(
+    screen.getByRole('textbox', { name: 'Contextual help' })
+  ).not.toHaveAttribute('aria-describedby');
+});
+
+test('warns when a help addon is wrapped in another component', () => {
+  const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+  const WrappedHelp = () => (
+    <ContextualHelp>
+      <ContextualHelp.Content>Tip</ContextualHelp.Content>
+    </ContextualHelp>
+  );
+
+  render(<Basic.Component addon={<WrappedHelp />} />);
+
+  expect(warn).toHaveBeenCalledWith(
+    expect.stringContaining('[ContextualHelp]')
+  );
+  warn.mockRestore();
+});
+
+test('does not warn for a help addon passed directly', () => {
+  const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+  render(<LabelAddon.Component />);
+
+  expect(warn).not.toHaveBeenCalledWith(
+    expect.stringContaining('[ContextualHelp]')
+  );
+  warn.mockRestore();
 });

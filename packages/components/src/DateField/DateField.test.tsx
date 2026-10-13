@@ -38,34 +38,34 @@ test('renders correctly', () => {
     >
       <span
         class="items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled group-required/field:after:ui-required-indicator group-required/field:after:-ml-1 group-required/field:after:text-destructive-accent in-field:mb-1.5 inline-flex wrap-anywhere hyphens-auto"
-        id="react-aria-_r_2_"
+        id="react-aria-_r_3_"
       >
         My Label
       </span>
       <div
-        aria-describedby="react-aria-description-0 react-aria-_r_4_"
-        aria-labelledby="react-aria-_r_2_"
+        aria-describedby="react-aria-description-0 react-aria-_r_5_"
+        aria-labelledby="react-aria-_r_3_"
         class="ui-control h-control flex items-center disabled:ui-state-disabled group-read-only/field:ui-state-readonly has-focus:ui-state-focus has-invalid:ui-state-error has-focus:has-invalid:outline-destructive-accent/20 has-focus:has-invalid:[--ui-border-color:var(--color-destructive-accent)] w-(--field-width) max-w-full min-w-0 overflow-hidden"
         data-rac=""
         data-react-aria-pressable="true"
-        id="react-aria-_r_1_"
+        id="react-aria-_r_2_"
         role="group"
         style="unicode-bidi: isolate;"
       >
         <div
-          aria-describedby="react-aria-description-0 react-aria-_r_4_"
-          aria-labelledby="react-aria-_r_2_"
+          aria-describedby="react-aria-description-0 react-aria-_r_5_"
+          aria-labelledby="react-aria-_r_3_"
           class="flex flex-1 items-center ui-input cursor-text disabled:text-inherit"
           data-rac=""
           data-react-aria-pressable="true"
-          id="react-aria-_r_1_"
+          id="react-aria-_r_2_"
           role="group"
           style="unicode-bidi: isolate;"
         >
           <span
-            aria-describedby="react-aria-description-0 react-aria-_r_4_"
+            aria-describedby="react-aria-description-0 react-aria-_r_5_"
             aria-label="Tag, "
-            aria-labelledby="react-aria-_r_6_ react-aria-_r_2_"
+            aria-labelledby="react-aria-_r_7_ react-aria-_r_3_"
             aria-valuemax="31"
             aria-valuemin="1"
             aria-valuenow="1"
@@ -76,7 +76,7 @@ test('renders correctly', () => {
             data-rac=""
             data-type="day"
             enterkeyhint="next"
-            id="react-aria-_r_6_"
+            id="react-aria-_r_7_"
             inputmode="numeric"
             role="spinbutton"
             spellcheck="false"
@@ -107,7 +107,7 @@ test('renders correctly', () => {
           </span>
           <span
             aria-label="Monat, "
-            aria-labelledby="react-aria-_r_a_ react-aria-_r_2_"
+            aria-labelledby="react-aria-_r_b_ react-aria-_r_3_"
             aria-valuemax="12"
             aria-valuemin="1"
             aria-valuenow="1"
@@ -118,7 +118,7 @@ test('renders correctly', () => {
             data-rac=""
             data-type="month"
             enterkeyhint="next"
-            id="react-aria-_r_a_"
+            id="react-aria-_r_b_"
             inputmode="numeric"
             role="spinbutton"
             spellcheck="false"
@@ -149,7 +149,7 @@ test('renders correctly', () => {
           </span>
           <span
             aria-label="Jahr, "
-            aria-labelledby="react-aria-_r_e_ react-aria-_r_2_"
+            aria-labelledby="react-aria-_r_f_ react-aria-_r_3_"
             aria-valuemax="9999"
             aria-valuemin="1"
             aria-valuenow="2026"
@@ -160,7 +160,7 @@ test('renders correctly', () => {
             data-rac=""
             data-type="year"
             enterkeyhint="next"
-            id="react-aria-_r_e_"
+            id="react-aria-_r_f_"
             inputmode="numeric"
             role="spinbutton"
             spellcheck="false"
@@ -190,7 +190,7 @@ test('renders correctly', () => {
       >
         <span
           class="react-aria-Text"
-          id="react-aria-_r_4_"
+          id="react-aria-_r_5_"
           slot="description"
         >
           This is a help text description

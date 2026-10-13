@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { Basic, Error, WithOwnWidth } from './Radio.stories';
+import { Basic, Error, WithBadge, WithOwnWidth } from './Radio.stories';
 
 // Tests
 // ---------------
@@ -75,4 +75,12 @@ test('does not re-apply width on individual radios inside a sized group', () => 
 
   expect(field).toHaveClass('w-full');
   expect(field).not.toHaveClass('w-(--field-width)');
+});
+
+test('names the radio by its label and describes it by the addon', () => {
+  render(<WithBadge.Component />);
+
+  const radio = screen.getByRole('radio', { name: 'Early bird pricing' });
+
+  expect(radio).toHaveAccessibleDescription(/Master/);
 });

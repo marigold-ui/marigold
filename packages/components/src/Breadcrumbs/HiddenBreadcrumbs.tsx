@@ -7,6 +7,7 @@ import type { BreadcrumbsItemProps } from './BreadcrumbsItem';
 interface HiddenBreadcrumbsProps {
   items: ReactNode[];
   itemClassName: string;
+  linkClassName: string;
   hiddenRef: RefObject<HTMLDivElement | null>;
   children: ReactNode;
 }
@@ -14,6 +15,7 @@ interface HiddenBreadcrumbsProps {
 export const HiddenBreadcrumbs = ({
   items,
   itemClassName,
+  linkClassName,
   hiddenRef,
   children,
 }: HiddenBreadcrumbsProps) => (
@@ -32,7 +34,7 @@ export const HiddenBreadcrumbs = ({
             key={idx}
             className={cn('shrink-0', itemClassName)}
           >
-            <span>{itemChildren}</span>
+            <span className={linkClassName}>{itemChildren}</span>
             {idx < items.length - 1 && <ChevronRight aria-hidden="true" />}
           </div>
         );

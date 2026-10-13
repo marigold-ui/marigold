@@ -56,11 +56,11 @@ Anything else the row shows, like a `<Badge>` or a status pill, belongs inside t
 
 ### Row actions
 
-Keep the action users reach for most often visible as an icon button and group the rest behind an `<ActionMenu>`. More than two visible buttons per row turns the list into a wall of controls that competes with the text people are scanning.
+Show the 1 to 3 actions users reach for most often as icon buttons and group the rest behind an `<ActionMenu>`. Any more visible buttons turn the list into a wall of controls that competes with the text people are scanning.
 
 Pick an icon that says what happens to the row, like `Archive`, `Check`, or `BellOff`. An `X` means "close this" everywhere else in Marigold, and a row's action doesn't close anything.
 
-Rare or irreversible commands like deleting belong in the menu, as an `<ActionMenu.Item variant="destructive">`, rather than behind a one-click icon button.
+Deleting follows the same split as any other action: it goes in the menu, unless users do it often. Then it can stay visible as a `destructive-ghost` icon button, placed last. Either way, the [Destructive actions](/patterns/feedback/destructive-actions) pattern decides whether it asks for a confirmation or offers an undo.
 
 <ComponentDemo name="listview-notifications" />
 

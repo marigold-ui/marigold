@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
+import { Badge } from '../Badge/Badge';
 import { Form } from '../Form/Form';
 import {
   Basic,
@@ -151,4 +152,10 @@ test('remove buttons keep the label RAC supplies through the slot', () => {
   expect(
     screen.queryByRole('button', { name: /close/i })
   ).not.toBeInTheDocument();
+});
+
+test('describes the tag group by its addon', () => {
+  render(<Basic.Component addon={<Badge variant="master">Master</Badge>} />);
+
+  expect(screen.getByRole('grid')).toHaveAccessibleDescription('Master');
 });

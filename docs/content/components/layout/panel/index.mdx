@@ -43,7 +43,7 @@ A Panel can also wrap part of its content in a **Collapsible** to hide fields un
 
 ## Appearance
 
-<AppearanceDemo component={'Panel'} />
+<AppearanceDemo component={'Panel'} background="page" />
 
 <AppearanceTable component={'Panel'} />
 
@@ -134,7 +134,7 @@ Multiple actions belong in a `<ButtonGroup>` so the cluster claims one grid cell
 
 When a Panel has only a title (no description, no actions), drop a bare `<Title>` directly inside `<Panel>` and skip the wrapper. Accessibility wires up the same way (`aria-labelledby` resolves to the title), and the title still aligns with the panel's horizontal padding. As soon as a Panel needs a description or actions, reach for `<Panel.Header>` so the slot context arranges them in the grid.
 
-<ComponentDemo name="panel-without-header" />
+<ComponentDemo name="panel-without-header" background="page" />
 
 ### Content
 
@@ -152,7 +152,7 @@ By default, content sits inside the Panel's horizontal padding so its left and r
 
 Tables, media, charts, and status bars are the exceptions. They look cramped when inset and read best edge-to-edge. Opt in with the `bleed` prop on the content area.
 
-<ComponentDemo name="panel-bleed" />
+<ComponentDemo name="panel-bleed" background="page" />
 
 Tables get a small bonus: when bled, their cell edges line up with the Panel's header and footer, so what's inside a row still reads in rhythm with the title above it. That works because a bled content area publishes the Panel's horizontal padding as `--bleed-px`, which your own content can read too. See [Reading container spacing](/foundations/spacing#reading-container-spacing).
 
@@ -160,7 +160,7 @@ An `<Accordion>` behaves the same way. Drop one into a bled content area and its
 
 Reach for this only when the Panel's body **is** a set of peer, equally-weighted sections that each expand: a per-field breakdown, a list of records each with details. For a single optional or advanced fold _alongside_ visible primary content, use [`Panel.Collapsible`](#collapsible) instead. The two aren't interchangeable: a stack of Collapsibles is exactly the anti-pattern Accordion exists to solve (see [One Collapsible per Panel](#one-collapsible-per-panel)).
 
-<ComponentDemo name="panel-bleed-accordion" />
+<ComponentDemo name="panel-bleed-accordion" background="page" />
 
 Two details are intentional for now: there is no divider between the `Panel.Header` and the first item, and the last item's bottom corners stay square rather than following the Panel's radius.
 
@@ -174,7 +174,7 @@ Reach for a Collapsible when a handful of fields in a Panel are:
 - **Advanced**, meant for power users who already know what they're looking for.
 - **Uncommon**, edited rarely enough that showing them by default adds noise.
 
-<ComponentDemo name="panel-collapsible" />
+<ComponentDemo name="panel-collapsible" background="page" />
 
 #### What to keep visible
 
@@ -188,7 +188,7 @@ A Collapsible is for fields that are safe to miss. Anything else belongs in the 
 
 The example wraps the Panel in a `<Form>` and validates on submit. The invalid tracking ID is pre-filled inside a closed Collapsible. Click **Save** to run the submit handler: it reads the form data, checks the field, and forces the Collapsible open when validation fails.
 
-<ComponentDemo name="panel-collapsible-error" />
+<ComponentDemo name="panel-collapsible-error" background="page" />
 
 #### One Collapsible per Panel
 
@@ -207,7 +207,7 @@ A Panel has three places for actions, each carrying a different scope:
 
 - **Header.** For controls that act on the whole section, like "Invite member" or "Reset to defaults". Putting them in the header anchors them to the title, so their scope is clear: they act on this section, not on the page or on a row inside it. Keep the set small: one prominent button, or an overflow menu when a handful of related controls belong together. More than that usually means the scope is too broad, and one of the actions probably belongs in its own Panel.
 
-<ComponentDemo name="panel-header-actions" />
+<ComponentDemo name="panel-header-actions" background="page" />
 
 - **Footer.** For a single, weighty action scoped to the Panel, most often a destructive one. Rare, because header actions cover most section-scoped controls and page-level Save/Cancel sit outside the Panel. Reach for it when a Panel needs its own action space. See [Danger zone](#danger-zone) below for the canonical pattern.
 - **Outside the Panel.** For page-level controls like **Save changes** and **Cancel** at the bottom of a settings form. A Panel owns one region. A page-level action crosses every region on the page, and anchoring it to any single Panel misrepresents its scope.
@@ -228,11 +228,11 @@ Anything reversible or low-stakes, like sign-out or reset-to-defaults, does not 
 
 Most Danger zones hold one action. Put it in the Footer (see [Actions](#actions) for why), with a short paragraph in the Content explaining what disappears. Lead with the consequence, not the verb.
 
-<ComponentDemo name="panel-footer" />
+<ComponentDemo name="panel-footer" background="page" />
 
 If a couple of destructive actions genuinely belong together (say "Archive" next to "Delete"), stack them as rows inside the Content, each with a one-line consequence and its own destructive button. The Footer stays empty in that shape.
 
-<ComponentDemo name="panel-danger-zone-rows" />
+<ComponentDemo name="panel-danger-zone-rows" background="page" />
 
 ### Spacing
 

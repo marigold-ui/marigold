@@ -42,7 +42,7 @@ You'll find them on settings pages, notification preferences, feature toggles, a
 
 Use the default variant when the switch is embedded inside another element, such as a card or list item. For standalone settings pages, use `variant="settings"`. See [Settings and preference](#settings-and-preference) below.
 
-<ComponentDemo name="switch-card" />
+<ComponentDemo name="switch-card" background="page" />
 
 Default a switch to on when the setting reflects an active, recommended, or previously saved state. Default to off when the feature is opt-in or when turning it on has consequences the user should consciously choose. When in doubt, default to off.
 
@@ -71,9 +71,9 @@ Add a description when the label alone doesn't explain what toggling actually do
 
 <ComponentDemo name="switch-description" />
 
-### Badge
+### Label addon
 
-To mark a switch with a `<Badge>`, such as an access level or a "New" flag, pass it to `badge` rather than building the decoration into `label` yourself. The slot holds it to the height of the label's line and sizes it to fit, so the track stays centred on the text instead of drifting above it, and a label that wraps still keeps the track on its first line.
+To add something to the end of a switch's label, such as a `<Badge>` for an access level or a "New" flag, or a `<ContextualHelp>` that explains the setting, pass it to `addon` rather than building it into `label` yourself. The slot holds it to the height of the label's line and sizes it to fit, so the track stays centred on the text instead of drifting above it, and a label that wraps still keeps the track on its first line. The addon isn't part of the accessible name. [Form Fields](/foundations/form-fields#label-addon) explains how screen readers announce it and when a decorative badge needs `aria-hidden`.
 
 <ComponentDemo name="switch-badge" />
 

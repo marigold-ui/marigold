@@ -12,8 +12,13 @@ import {
   TextWrapProp,
   WhiteSpaceProps,
   cn,
-  cursorStyle,
   ensureCssVar,
+  useClassNames,
+} from '@marigold/system';
+import type { AriaLabelingProps } from '@marigold/types';
+import type { SlotProps } from '../types';
+import {
+  cursorStyle,
   fontWeight,
   textAlign,
   textSize,
@@ -21,10 +26,7 @@ import {
   textWrap,
   lineHeight as twLineHeight,
   whiteSpace as twWhiteSpace,
-  useClassNames,
-} from '@marigold/system';
-import type { AriaLabelingProps } from '@marigold/types';
-import type { SlotProps } from '../types';
+} from '../utils/styleProps';
 
 /**
  * The shared body-text variant scale. Reused by `Description` so body

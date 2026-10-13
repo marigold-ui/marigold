@@ -24,7 +24,10 @@ type RemovedProps =
 export interface DateFieldProps
   extends
     Omit<RAC.DateFieldProps<DateValue>, RemovedProps>,
-    Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
+    Pick<
+      FieldBaseProps<'label'>,
+      'label' | 'addon' | 'description' | 'errorMessage'
+    > {
   variant?: string;
   size?: string;
 

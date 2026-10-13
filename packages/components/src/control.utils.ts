@@ -23,6 +23,15 @@ export const controlIcon = (control: HTMLElement) => {
   return icon!;
 };
 
+/** A label's layout block. With an addon, the text is an inline span shorter than the line. */
+export const labelBlockOf = (labelText: Element) => {
+  const block = labelText.parentElement;
+
+  expect(block).not.toBeNull();
+
+  return block!;
+};
+
 /** The `aria-hidden` mark a grid row draws for its selection state. */
 export const selectionMark = (row: HTMLElement) => {
   const mark = row.querySelector<HTMLElement>('[aria-hidden="true"]');

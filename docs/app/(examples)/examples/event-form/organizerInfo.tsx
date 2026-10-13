@@ -100,14 +100,8 @@ export const OrganizerInfo = () => (
             description="Adds the organizer name, email, and phone to every booking confirmation."
           />
           <Select
-            label={
-              <>
-                Preferred contact method{' '}
-                <Badge variant="admin" size="inline">
-                  Admin
-                </Badge>
-              </>
-            }
+            label="Preferred contact method"
+            addon={<Badge variant="admin">Admin</Badge>}
             placeholder="Select preference"
             description="Controls which channel attendees see first when reaching out."
             width={56}

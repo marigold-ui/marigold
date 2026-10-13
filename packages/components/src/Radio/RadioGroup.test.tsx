@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { Badge } from '../Badge/Badge';
 import { Basic, CollapseAt } from './Radio.stories';
 
 // Tests
@@ -77,4 +78,17 @@ test('expand if a value would be hidden', () => {
   expect(screen.getByTestId('five')).toBeVisible();
   expect(screen.getByTestId('six')).toBeVisible();
   expect(screen.getByTestId('seven')).toBeVisible();
+});
+
+test('describes the group by its label addon', () => {
+  render(
+    <Basic.Component
+      label="Plan"
+      addon={<Badge variant="master">Master</Badge>}
+    />
+  );
+
+  expect(
+    screen.getByRole('radiogroup', { name: 'Plan' })
+  ).toHaveAccessibleDescription(/Master/);
 });

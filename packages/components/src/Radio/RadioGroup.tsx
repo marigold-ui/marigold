@@ -61,6 +61,12 @@ export interface RadioGroupProps extends Omit<
   label?: ReactNode;
 
   /**
+   * Content after the label, such as a `<Badge>` or `<ContextualHelp>`. Keeps
+   * the label row's height, and a badge is read as the field's description.
+   */
+  addon?: ReactNode;
+
+  /**
    * Set the radio group help text.
    * @default none
    */
@@ -134,6 +140,7 @@ const _RadioGroup = ({
   variant,
   size,
   label,
+  addon,
   error,
   disabled,
   required,
@@ -166,6 +173,7 @@ const _RadioGroup = ({
       as={RadioGroup}
       width={width}
       label={label}
+      addon={addon}
       description={description}
       errorMessage={errorMessage}
       variant={variant}

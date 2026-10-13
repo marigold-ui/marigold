@@ -1,6 +1,7 @@
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
+import { ContextualHelp } from '../ContextualHelp/ContextualHelp';
 import {
   WCAG_NON_TEXT,
   contrast,
@@ -12,6 +13,7 @@ import {
   controlIcon,
   firstLineOffset,
   isSingleLine,
+  labelBlockOf,
 } from '../control.utils';
 import { Checkbox } from './Checkbox';
 
@@ -274,7 +276,7 @@ export const WithBadge = meta.story({
   tags: ['component-test'],
   args: {
     label: 'Enable early bird pricing',
-    badge: <Badge variant="master">Master</Badge>,
+    addon: <Badge variant="master">Master</Badge>,
     description: undefined,
   },
 });
@@ -285,7 +287,9 @@ WithBadge.test(
   async ({ canvas, step }) => {
     const checkbox = await canvas.findByRole('checkbox');
     const box = controlIcon(checkbox);
-    const labelBlock = canvas.getByText('Enable early bird pricing');
+    const labelBlock = labelBlockOf(
+      canvas.getByText('Enable early bird pricing')
+    );
 
     await step('the badge fits the line', async () => {
       expect(isSingleLine(labelBlock)).toBe(true);
@@ -336,7 +340,7 @@ export const WrappingLabelWithBadge = meta.story({
   args: {
     label:
       'Send a reminder email to everyone on the guest list 24 hours before the event starts, including attendees who registered through a partner site',
-    badge: <Badge variant="master">Master</Badge>,
+    addon: <Badge variant="master">Master</Badge>,
     description: undefined,
   },
   render: args => (
@@ -352,7 +356,7 @@ WrappingLabelWithBadge.test(
   async ({ canvas, step }) => {
     const checkbox = await canvas.findByRole('checkbox');
     const box = controlIcon(checkbox);
-    const labelBlock = canvas.getByText(/Send a reminder email/);
+    const labelBlock = labelBlockOf(canvas.getByText(/Send a reminder email/));
 
     await step('the label still wraps', async () => {
       expect(isSingleLine(labelBlock)).toBe(false);
@@ -370,13 +374,27 @@ WrappingLabelWithBadge.test(
   }
 );
 
-// Pins `LabelAdornment`'s overflow guarantee: a consumer who ignores the
+export const WithContextualHelp = meta.story({
+  args: {
+    label: 'Enable early bird pricing',
+    addon: (
+      <ContextualHelp>
+        <ContextualHelp.Content>
+          Early bird prices end a week before the event.
+        </ContextualHelp.Content>
+      </ContextualHelp>
+    ),
+    description: undefined,
+  },
+});
+
+// Pins `LabelAddon`'s overflow guarantee: a consumer who ignores the
 // slot's auto-sizing and passes a full-size badge still stays centred.
 export const OversizedBadge = meta.story({
   tags: ['component-test'],
   args: {
     label: 'Enable early bird pricing',
-    badge: (
+    addon: (
       <Badge variant="master" size="default">
         Master
       </Badge>
@@ -391,7 +409,9 @@ OversizedBadge.test(
   async ({ canvas, step }) => {
     const checkbox = await canvas.findByRole('checkbox');
     const box = controlIcon(checkbox);
-    const labelBlock = canvas.getByText('Enable early bird pricing');
+    const labelBlock = labelBlockOf(
+      canvas.getByText('Enable early bird pricing')
+    );
 
     await step('the line itself is unaffected', async () => {
       expect(isSingleLine(labelBlock)).toBe(true);

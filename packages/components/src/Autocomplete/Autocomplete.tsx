@@ -108,7 +108,10 @@ type RemovedProps =
 export interface AutocompleteProps<T extends object = object>
   extends
     Omit<RAC.ComboBoxProps<T>, RemovedProps>,
-    Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
+    Pick<
+      FieldBaseProps<'label'>,
+      'label' | 'addon' | 'description' | 'errorMessage'
+    > {
   /**
    * ReactNode or function to render the list of items.
    */

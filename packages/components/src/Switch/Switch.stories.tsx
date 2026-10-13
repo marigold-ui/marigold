@@ -1,7 +1,7 @@
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
-import { firstLineOffset, isSingleLine } from '../control.utils';
+import { firstLineOffset, isSingleLine, labelBlockOf } from '../control.utils';
 import { Switch } from './Switch';
 
 const meta = preview.meta({
@@ -310,7 +310,7 @@ export const WithBadge = meta.story({
   tags: ['component-test'],
   args: {
     label: 'Enable early bird pricing',
-    badge: <Badge variant="master">Master</Badge>,
+    addon: <Badge variant="master">Master</Badge>,
   },
 });
 
@@ -319,7 +319,9 @@ WithBadge.test(
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }) => {
     const track = getTrack(await canvas.findByRole('switch'));
-    const labelBlock = canvas.getByText('Enable early bird pricing');
+    const labelBlock = labelBlockOf(
+      canvas.getByText('Enable early bird pricing')
+    );
 
     await step('the badge fits the line', async () => {
       expect(isSingleLine(labelBlock)).toBe(true);
