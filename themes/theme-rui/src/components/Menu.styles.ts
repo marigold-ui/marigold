@@ -70,7 +70,7 @@ export const Menu: ThemeComponent<'Menu'> = {
           'hover:[--ui-background-color:var(--color-soft-hover)] hover:[--soft-edge:var(--color-soft-edge-hover)]',
           'expanded:[--ui-background-color:var(--color-soft-hover)] expanded:[--soft-edge:var(--color-soft-edge-hover)]',
         ],
-        ghost: 'hover:ui-state-hover',
+        ghost: 'hover:ui-state-hover-ghost',
       },
       size: {
         default: 'text-sm',

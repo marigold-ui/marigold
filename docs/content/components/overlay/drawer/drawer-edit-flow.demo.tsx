@@ -39,7 +39,7 @@ const members: Member[] = [
 
 const EditDrawer = ({ member }: { member: Member }) => (
   <Drawer.Trigger>
-    <Button variant="secondary" size="small">
+    <Button variant="ghost" size="small">
       Edit
     </Button>
     <Drawer>

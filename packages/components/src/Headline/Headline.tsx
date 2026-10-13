@@ -5,13 +5,12 @@ import {
   TextAlignProp,
   cn,
   ensureCssVar,
-  textAlign,
-  lineHeight as twLineHeight,
   useClassNames,
 } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
 import type { SlotProps } from '../types';
 import { noSlot } from '../utils/noSlot';
+import { textAlign, lineHeight as twLineHeight } from '../utils/styleProps';
 
 /**
  * The shared heading size scale. Reused by `Title` so heading primitives

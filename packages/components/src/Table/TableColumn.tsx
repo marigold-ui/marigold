@@ -2,10 +2,11 @@ import type { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { Group } from 'react-aria-components/Group';
 import { Column } from 'react-aria-components/Table';
-import { alignment, cn, textAlign } from '@marigold/system';
+import { cn } from '@marigold/system';
 import { SortAscending } from '../icons/SortAscending';
 import { SortDescending } from '../icons/SortDescending';
 import { Sortable } from '../icons/Sortable';
+import { alignment, textAlign } from '../utils/styleProps';
 import { useTableContext } from './Context';
 import { TableTreeColumn } from './TableTreeColumn';
 

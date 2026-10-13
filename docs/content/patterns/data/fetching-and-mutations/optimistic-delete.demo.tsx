@@ -132,8 +132,8 @@ const Products = () => {
               <Table.Cell>{product.name}</Table.Cell>
               <Table.Cell>
                 <Button
-                  variant="ghost"
-                  size="small"
+                  variant="destructive-ghost"
+                  size="icon"
                   aria-label={`Delete ${product.name}`}
                   onPress={() => deleteProduct(product)}
                 >

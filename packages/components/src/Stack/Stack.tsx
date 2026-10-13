@@ -1,7 +1,8 @@
 import { Children, ReactNode } from 'react';
 import type { SpaceProp, SpacingTokens } from '@marigold/system';
-import { alignment, cn, createSpacingVar } from '@marigold/system';
+import { cn, createSpacingVar } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
+import { alignment } from '../utils/styleProps';
 
 // Props
 // ---------------
