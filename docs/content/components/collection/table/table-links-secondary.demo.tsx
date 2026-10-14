@@ -42,7 +42,11 @@ export default () => (
           </Table.Cell>
           <Table.Cell>{event.category}</Table.Cell>
           <Table.Cell>
-            <Link variant="secondary" href="#">
+            <Link
+              variant="secondary"
+              href="#"
+              aria-label={`${event.reservations} reservations for ${event.name}`}
+            >
               <NumericFormat value={event.reservations} />
             </Link>
           </Table.Cell>

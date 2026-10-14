@@ -23,7 +23,7 @@ export default () => (
       {venues.slice(0, 4).map(venue => (
         <Table.Row key={venue.id}>
           <Table.Cell textValue={venue.name}>
-            <Stack space="0.5">
+            <Stack space="0.5" alignX="left">
               <Text weight="medium">{venue.name}</Text>
               <Link
                 href={`https://${website(venue.name)}`}
