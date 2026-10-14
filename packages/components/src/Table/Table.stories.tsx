@@ -2045,6 +2045,22 @@ CellOverrideTableTruncate.test(
   }
 );
 
+// Sharing the cell's edge isn't enough: the 16px box has to sit on the middle
+// of the neighbouring text line, which is taller than the box.
+const expectCheckboxOnTextLine = async (row: HTMLElement) => {
+  const box = within(row)
+    .getByRole('checkbox')
+    .closest('label')!
+    .querySelector('[aria-hidden]')!;
+  const text = within(row).getByText('Short');
+  const center = (el: Element) => {
+    const { top, height } = el.getBoundingClientRect();
+    return top + height / 2;
+  };
+
+  await expect(center(box)).toBeCloseTo(center(text), 0);
+};
+
 export const VerticalAlignment = meta.story({
   tags: ['component-test'],
   args: {
@@ -2088,17 +2104,35 @@ VerticalAlignment.test(
     const selectionCell = within(firstRow).getByRole('checkbox').closest('td')!;
 
     await expect(getComputedStyle(selectionCell).verticalAlign).toBe('top');
+    await expectCheckboxOnTextLine(firstRow);
+  }
+);
 
-    // Sharing the cell's top edge isn't enough: the 16px box has to sit on the
-    // middle of the first text line, which is taller than the box.
-    const box = selectionCell.querySelector('label > [aria-hidden]')!;
-    const text = within(firstRow).getByText('Short');
-    const center = (el: Element) => {
-      const { top, height } = el.getBoundingClientRect();
-      return top + height / 2;
-    };
+VerticalAlignment.test(
+  'Centers the selection checkbox on the text line with bottom alignment',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple', alignY: 'bottom' },
+  },
+  async ({ canvas }) => {
+    const [, firstRow] = canvas.getAllByRole('row');
 
-    await expect(center(box)).toBeCloseTo(center(text), 0);
+    await expectCheckboxOnTextLine(firstRow);
+  }
+);
+
+// Baseline is the case that relies on `lineBox`'s zero-width strut: without
+// it the box has no text baseline and the checkbox sits 3px high.
+VerticalAlignment.test(
+  'Centers the selection checkbox on the text line with baseline alignment',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple', alignY: 'baseline' },
+  },
+  async ({ canvas }) => {
+    const [, firstRow] = canvas.getAllByRole('row');
+
+    await expectCheckboxOnTextLine(firstRow);
   }
 );
 
