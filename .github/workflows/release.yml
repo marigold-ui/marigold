@@ -33,15 +33,15 @@ jobs:
         run: pnpm build
       # Pushes made with the default GITHUB_TOKEN never trigger workflows, so
       # the release PR got no CI and stayed blocked on its required checks.
-      # An App token's pushes do. Reuses the App behind the Claude workflows.
+      # An App token's pushes do. A dedicated App, so releasing does not
+      # depend on the Claude integration staying installed.
+      # No owner or repositories, so the token is scoped to this repo alone.
       - name: Generate App token
         id: app-token
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.CLAUDE_APP_ID }}
-          private-key: ${{ secrets.CLAUDE_APP_PRIVATE_KEY }}
-          owner: ${{ github.repository_owner }}
-          repositories: ${{ github.event.repository.name }}
+          client-id: ${{ vars.RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
           permission-contents: write
           permission-pull-requests: write
       - name: Create Release Pull Request or Publish to npm
