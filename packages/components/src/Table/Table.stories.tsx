@@ -2088,6 +2088,17 @@ VerticalAlignment.test(
     const selectionCell = within(firstRow).getByRole('checkbox').closest('td')!;
 
     await expect(getComputedStyle(selectionCell).verticalAlign).toBe('top');
+
+    // Sharing the cell's top edge isn't enough: the 16px box has to sit on the
+    // middle of the first text line, which is taller than the box.
+    const box = selectionCell.querySelector('label > [aria-hidden]')!;
+    const text = within(firstRow).getByText('Short');
+    const center = (el: Element) => {
+      const { top, height } = el.getBoundingClientRect();
+      return top + height / 2;
+    };
+
+    await expect(center(box)).toBeCloseTo(center(text), 0);
   }
 );
 
