@@ -199,6 +199,20 @@ If you cannot place all row actions at the end of the row, be mindful of clarity
   </Dont>
 </GuidelineTiles>
 
+### Links
+
+Inline links can be mistaken for regular content and add visual noise, so use them with care. A common and appropriate use of a link in a table is the identifying attribute of a record, such as a name or title, when it leads to the related item or its detail view. A link takes the user somewhere, while a [row action](#row-actions) does something to the record, so keep the two apart.
+
+When using links in tables, default to the standard `<Link>` component. Links also fit details that point away from the table, such as a website. Show them as supporting information, not as the row's label. In the example below, the website opens in a new tab and marks itself accordingly.
+
+<ComponentDemo name="table-links" />
+
+If the table contains many links, consider simplifying the layout to reduce visual clutter. If the links cannot be reduced, for example because every row links to the event, its venue and its reservations, use `variant="secondary"` to keep the table calm and readable.
+
+<ComponentDemo name="table-links-secondary" />
+
+A cell that holds a link instead of plain text needs a `textValue`, so the row still has a name for type to select and screen readers (see [Naming a row](#naming-a-row)). A link that opens a new window or tab marks itself with an icon and a hidden warning for screen readers, so don't add your own (see [Opening in new windows or tabs](/components/actions/link#opening-in-new-windows-or-tabs)).
+
 ### Grouped rows
 
 When a record contains records of its own, like a settlement run that bundles individual clearings, users still need to read those children against the same columns as everything else. Grouped rows keep them in the table instead of moving them into a detail view, and each child stays a row in its own right, with its own actions and its own selection.
