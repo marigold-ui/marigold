@@ -2,16 +2,15 @@ import { venues } from '@/lib/data/venues';
 import { Link, NumericFormat, Stack, Table, Text } from '@marigold/components';
 
 // Reserved `.example` domains, so the demo never links to a real site.
-const website = (name: string) =>
-  `${name.toLowerCase().replace(/[^a-z0-9]+/g, '')}.example`;
+const website = (name: string) => `${name.split(' ')[0].toLowerCase()}.example`;
 
 export default () => (
   <Table aria-label="Venues with their websites">
     <Table.Header>
-      <Table.Column rowHeader minWidth={240}>
+      <Table.Column rowHeader minWidth={260}>
         Venue
       </Table.Column>
-      <Table.Column minWidth={160}>City</Table.Column>
+      <Table.Column minWidth={140}>Location</Table.Column>
       <Table.Column alignX="right" width={100}>
         Capacity
       </Table.Column>

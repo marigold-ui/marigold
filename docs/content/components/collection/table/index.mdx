@@ -203,13 +203,13 @@ If you cannot place all row actions at the end of the row, be mindful of clarity
 
 Inline links can be mistaken for regular content and add visual noise, so use them with care. A common and appropriate use of a link in a table is the identifying attribute of a record, such as a name or title, when it leads to the related item or its detail view. A link takes the user somewhere, while a [row action](#row-actions) does something to the record, so keep the two apart.
 
-When using links in tables, default to the standard `<Link>` component. Links also fit details that point away from the table, such as a website. Show them as supporting information, not as the row's label. The first example below shows this case: the website opens in a new tab and marks itself accordingly. The second example links each event to its detail view.
-
-<ComponentDemo name="table-links" />
-
-If the table contains many links, consider simplifying the layout to reduce visual clutter. If the links cannot be reduced, for example because every row links to the event, its venue and its reservations, use `variant="secondary"` to keep the table calm and readable.
+A table usually has many rows, so a link on each row's name repeats down the whole column. Use `variant="secondary"` for these links to keep the table calm and readable. If a row needs several links, for example to the event, its venue and its reservations, check first whether you can reduce them.
 
 <ComponentDemo name="table-links-secondary" />
+
+Use the standard `<Link>` for details that point away from the table, such as a website. Show them as supporting information, not as the row's label. In the example below, each venue's website opens in a new tab and marks itself accordingly.
+
+<ComponentDemo name="table-links" />
 
 When the row header cell holds a link instead of plain text, set `textValue` so the row still has a name for type to select and screen readers (see [Naming a row](#naming-a-row)). A link that opens a new window or tab marks itself with an icon and a hidden warning for screen readers, so don't add your own (see [Opening in new windows or tabs](/components/actions/link#opening-in-new-windows-or-tabs)).
 
