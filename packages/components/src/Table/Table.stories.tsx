@@ -1386,12 +1386,47 @@ DragAndDrop.test(
   {
     parameters: { chromatic: { disableSnapshot: true } },
     args: { alignY: 'top' },
+    // The story's rows are one line tall, where a handle centered on the cell
+    // and one centered on the text line land in the same place. A taller
+    // neighbour tells them apart.
+    render: args => {
+      const { dragAndDropHooks } = useDragAndDrop({
+        getItems: () => [{ 'text/plain': 'Short' }],
+      });
+
+      return (
+        <I18nProvider locale="en">
+          <Table
+            aria-label="Draggable row next to a tall cell"
+            dragAndDropHooks={dragAndDropHooks}
+            {...args}
+          >
+            <Table.Header>
+              <Table.Column rowHeader>Item</Table.Column>
+              <Table.Column>Description</Table.Column>
+            </Table.Header>
+            <Table.Body>
+              <Table.Row textValue="Short">
+                <Table.Cell>Short</Table.Cell>
+                <Table.Cell>
+                  <div className="h-20">Tall cell content</div>
+                </Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          </Table>
+        </I18nProvider>
+      );
+    },
   },
   async ({ canvas }) => {
     const [, firstRow] = canvas.getAllByRole('row');
     const [dragHandleCell] = within(firstRow).getAllByRole('gridcell');
 
     await expect(getComputedStyle(dragHandleCell).verticalAlign).toBe('top');
+    await expectOnTextLine(
+      within(firstRow).getByRole('button', { name: /drag/i }),
+      firstRow
+    );
   }
 );
 
@@ -2045,20 +2080,25 @@ CellOverrideTableTruncate.test(
   }
 );
 
-// Sharing the cell's edge isn't enough: the 16px box has to sit on the middle
-// of the neighbouring text line, which is taller than the box.
-const expectCheckboxOnTextLine = async (row: HTMLElement) => {
-  const box = within(row)
-    .getByRole('checkbox')
-    .closest('label')!
-    .querySelector('[aria-hidden]')!;
+// Sharing the cell's edge isn't enough: a 16px control has to sit on the middle
+// of the neighbouring text line, which is taller than the control.
+const expectOnTextLine = async (control: Element, row: HTMLElement) => {
   const text = within(row).getByText('Short');
   const center = (el: Element) => {
     const { top, height } = el.getBoundingClientRect();
     return top + height / 2;
   };
 
-  await expect(center(box)).toBeCloseTo(center(text), 0);
+  await expect(center(control)).toBeCloseTo(center(text), 0);
+};
+
+// The selection checkbox has no label text, so its label is exactly the box.
+// Measuring the label keeps the check off Checkbox's inner markup.
+const expectCheckboxOnTextLine = async (row: HTMLElement) => {
+  const label = within(row).getByRole('checkbox').closest('label');
+
+  await expect(label).not.toBeNull();
+  await expectOnTextLine(label!, row);
 };
 
 export const VerticalAlignment = meta.story({
