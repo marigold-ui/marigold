@@ -101,6 +101,9 @@ const scrollFocusedRowClearOfActionBar = (e: FocusEvent<HTMLElement>) => {
 
   // After React Aria has scrolled the row into view.
   requestAnimationFrame(() => {
+    // The bar may have closed, or the table unmounted, within the frame.
+    if (!row.isConnected || !bar.isConnected) return;
+
     // The bar's own pin offset doubles as the gap to keep above it.
     const gap = parseFloat(getComputedStyle(bar).bottom) || 0;
     const overlap =
@@ -222,6 +225,8 @@ const _Table = ({
   return (
     <TableContext value={ctx}>
       <div
+        // Keeps the container filling its parent when the parent doesn't stretch.
+        className="w-full"
         onFocus={actionBarHeight ? scrollFocusedRowClearOfActionBar : undefined}
       >
         <ResizableTableContainer
