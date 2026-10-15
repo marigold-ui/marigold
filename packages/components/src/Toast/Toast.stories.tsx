@@ -353,3 +353,62 @@ Basic.test(
     });
   }
 );
+
+export const SmallScreen = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
+  parameters: { chromatic: { disableSnapshot: true, viewports: [320] } },
+  render: (_args: unknown) => {
+    const args = toastArgs(_args);
+    const { addToast } = useToast();
+    return (
+      <I18nProvider locale="en">
+        <ToastProvider />
+        <Button
+          onPress={() =>
+            addToast({
+              title: args.title,
+              description: args.description,
+              variant: args.variant,
+              timeout: args.timeout,
+            })
+          }
+        >
+          Show Toast
+        </Button>
+      </I18nProvider>
+    );
+  },
+});
+
+SmallScreen.test(
+  'keeps both margins at 320px',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent, step }) => {
+    let trigger: HTMLElement;
+
+    await step('Arrange', async () => {
+      expect(window.innerWidth).toBeLessThan(640);
+      trigger = canvas.getByRole('button', { name: /show toast/i });
+    });
+
+    await step('Act', async () => {
+      await userEvent.click(trigger!);
+    });
+
+    await step('Assert', async () => {
+      await canvas.findByText(defaults.title);
+      const region = canvas.getByRole('region', { name: /notification/i });
+      const { left, right } = region.getBoundingClientRect();
+
+      expect(left).toBeGreaterThanOrEqual(16);
+      expect(right).toBeLessThanOrEqual(window.innerWidth - 16);
+
+      expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(
+        window.innerWidth
+      );
+    });
+  }
+);
