@@ -202,6 +202,7 @@ export type { ListBoxProps } from './ListBox/ListBox';
 export { ListView } from './ListView/ListView';
 export type { ListViewProps } from './ListView/ListView';
 export type { ListViewItemProps } from './ListView/ListViewItem';
+export type { ListViewHeaderProps } from './ListView/ListViewHeader';
 
 export { ActionMenu } from './Menu/ActionMenu';
 export type { ActionMenuProps } from './Menu/ActionMenu';

@@ -31,7 +31,7 @@ The pattern arranges five areas. The collection displays the records with a chec
 
 <BulkActionsAnatomy />
 
-- **Select All:** The header checkbox selects every visible row and shows an indeterminate state when only some rows are selected.
+- **Select All:** One checkbox above the rows, on the same column as the row checkboxes, that selects every visible row and shows an indeterminate state when only some of them are selected. A [`<Table>`](/components/collection/table) carries it in its header row, a [`<ListView>`](/components/collection/listview) and a [`<SelectList>`](/components/form/selectlist) in a `Header` part.
 - **Selection:** Checkboxes on each row, with selected rows visually highlighted so the scope of the next action stays visible.
 - **Action Bar:** A floating [`<ActionBar>`](/components/collection/actionbar) that appears once something is selected. It states the selection count, offers the actions, and carries a clear button to dismiss the selection.
 - **Confirm Dialog:** A [`<Dialog>`](/components/overlay/dialog) that interrupts destructive actions with the exact count and impact before anything happens.
@@ -39,14 +39,14 @@ The pattern arranges five areas. The collection displays the records with a chec
 
 Each stage of the flow maps to an existing Marigold component, so the pattern is composed rather than installed:
 
-| Stage         | The user...                            | Built with                                                                         |
-| ------------- | -------------------------------------- | ---------------------------------------------------------------------------------- |
-| Selection     | picks the records to act on            | [`<Table>`](/components/collection/table) with `selectionMode="multiple"`          |
-| Action choice | picks an operation for the selection   | [`<ActionBar>`](/components/collection/actionbar) via the Table's `actionBar` prop |
-| Configuration | fills in values for a multi-field edit | [`<Drawer>`](/components/overlay/drawer) opened from an action                     |
-| Confirmation  | approves a destructive operation       | [`<Dialog>`](/components/overlay/dialog) via the `useConfirmation` hook            |
-| Execution     | waits for the operation to finish      | [`<Button>`](/components/actions/button) `loading` or an inline `<ProgressCircle>` |
-| Result        | learns what happened                   | [`<Toast>`](/components/overlay/toast) plus the retained selection on failures     |
+| Stage         | The user...                            | Built with                                                                                                                                                                                |
+| ------------- | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Selection     | picks the records to act on            | a collection with `selectionMode="multiple"`: [`<Table>`](/components/collection/table), [`<ListView>`](/components/collection/listview) or [`<SelectList>`](/components/form/selectlist) |
+| Action choice | picks an operation for the selection   | [`<ActionBar>`](/components/collection/actionbar), via the Table's `actionBar` prop or as a sibling of the collection                                                                     |
+| Configuration | fills in values for a multi-field edit | [`<Drawer>`](/components/overlay/drawer) opened from an action                                                                                                                            |
+| Confirmation  | approves a destructive operation       | [`<Dialog>`](/components/overlay/dialog) via the `useConfirmation` hook                                                                                                                   |
+| Execution     | waits for the operation to finish      | [`<Button>`](/components/actions/button) `loading` or an inline `<ProgressCircle>`                                                                                                        |
+| Result        | learns what happened                   | [`<Toast>`](/components/overlay/toast) plus the retained selection on failures                                                                                                            |
 
 ## Choosing actions
 
@@ -73,11 +73,11 @@ While the bar is visible, the selection is the object the user works on. Avoid c
 
 ## Selection
 
-Selection begins the flow, and it must be visible and cheap to change. Use a [`<Table>`](/components/collection/table) with `selectionMode="multiple"` and pass the [`<ActionBar>`](/components/collection/actionbar) through its `actionBar` prop. These two components cover the selection mechanics on their own, so the work in this pattern lies in the decisions around them: which actions to offer, how far the selection reaches, and what happens after a press.
+Selection begins the flow, and it must be visible and cheap to change. Any multi-select collection can carry it: a [`<Table>`](/components/collection/table) when each record is a row of fields to compare, a [`<ListView>`](/components/collection/listview) when it is one operable item, a [`<SelectList>`](/components/form/selectlist) when the selection is a field value that submits. Set `selectionMode="multiple"`, render the select-all, and pair the collection with an [`<ActionBar>`](/components/collection/actionbar). These components cover the selection mechanics on their own, so the work in this pattern lies in the decisions around them: which actions to offer, how far the selection reaches, and what happens after a press.
 
 <ComponentDemo name="bulk-actions-selection" />
 
-The pattern is written around a `<Table>` because select-all needs a header checkbox, and a table is the collection that has a header to put one in. A [`<ListView>`](/components/collection/listview) carries everything else: set `selectionMode="multiple"` and render the `<ActionBar>` as a sibling, passing `selectedItemCount` and `onClearSelection` yourself. Reach for it when users pick a handful of rows by hand, and for a `<Table>` when selecting every visible record is part of the job.
+Choose the collection by what one record looks like, not by which one can select, because all three now can. What differs is the wiring. A `<Table>` takes the bar through its `actionBar` prop, reserves the bar's height for you, and puts the select-all in its header row. A `<ListView>` or `<SelectList>` renders `<ListView.Header>` or `<SelectList.Header>` for the select-all and takes the `<ActionBar>` as a sibling, with `selectedItemCount` and `onClearSelection` passed yourself or supplied by [`useActionBar`](/components/collection/actionbar#useactionbar), which leaves reserving the bar's height to you as well.
 
 ### Scope
 
@@ -209,7 +209,7 @@ Staleness is a failure like any other. When a colleague edits or removes a recor
 
 ## Accessibility
 
-The [`<Table>`](/components/collection/table) selection column and the [`<ActionBar>`](/components/collection/actionbar) already cover the announcements and keyboard behavior a bulk-selection pattern is expected to have. The remaining work sits in how you compose the flow:
+The collection's selection column and the [`<ActionBar>`](/components/collection/actionbar) already cover the announcements and keyboard behavior a bulk-selection pattern is expected to have. A list's select-all carries a visible label of its own, because a list has no column for a header checkbox to head. The remaining work sits in how you compose the flow:
 
 - **Give every icon-only action a text label**, visible or via `aria-label`, so each action is announced clearly.
 - **Carry the count into the result toast.** The toast text is what assistive technology announces, so the same precision reaches everyone.
@@ -222,7 +222,7 @@ The demos above apply a few practices that are easy to miss but make the differe
 
 ### Resolve the selection to records once
 
-The Table's `actionBar` render prop and `onSelectionChange` hand you a `Selection`, which is either a `Set` of keys or the string `'all'` when the select-all checkbox is used. Resolve it to a concrete list of records in one place before acting, so counts, confirmation messages, and the operation itself always agree:
+`onSelectionChange`, and the Table's `actionBar` render prop, hand you a `Selection`, which is either a `Set` of keys or the string `'all'` when the select-all is used. Resolve it to a concrete list of records in one place before acting, so counts, confirmation messages, and the operation itself always agree:
 
 ```tsx
 const keys = selected === 'all' ? events.map(event => event.id) : [...selected];

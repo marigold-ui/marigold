@@ -434,10 +434,17 @@ describe('SelectList', () => {
   });
 
   describe('item padding', () => {
+    // The `p` / `px` / `py` props write their vars onto the list's wrapper
+    // rather than the list element, so a `<SelectList.Header>` above the list
+    // reads the same padding the options do and the two checkboxes share an x.
+    const paddingHost = () =>
+      // eslint-disable-next-line testing-library/no-node-access
+      screen.getByRole('grid').parentElement as HTMLElement;
+
     test('does not set inline padding vars when no prop is passed (theme provides defaults)', () => {
       render(<Basic.Component aria-label="Test" />);
 
-      const grid = screen.getByRole('grid') as HTMLElement;
+      const grid = paddingHost();
 
       expect(grid.style.getPropertyValue('--selectlist-item-px')).toBe('');
       expect(grid.style.getPropertyValue('--selectlist-item-py')).toBe('');
@@ -446,7 +453,7 @@ describe('SelectList', () => {
     test('numeric `p` writes both axis vars as scale values (not -x/-y suffixed)', () => {
       render(<Basic.Component p={4} />);
 
-      const grid = screen.getByRole('grid') as HTMLElement;
+      const grid = paddingHost();
 
       expect(grid.style.getPropertyValue('--selectlist-item-px')).toBe(
         'calc(var(--spacing) * 4)'
@@ -459,7 +466,7 @@ describe('SelectList', () => {
     test('uniform `p` writes both axis vars inline, deriving from the inset token', () => {
       render(<Basic.Component p="square-loose" />);
 
-      const grid = screen.getByRole('grid') as HTMLElement;
+      const grid = paddingHost();
 
       expect(grid.style.getPropertyValue('--selectlist-item-px')).toBe(
         'var(--spacing-square-loose-x)'
@@ -472,7 +479,7 @@ describe('SelectList', () => {
     test('`p="collapsed"` writes the unsuffixed token on both axes', () => {
       render(<Basic.Component p="collapsed" />);
 
-      const grid = screen.getByRole('grid') as HTMLElement;
+      const grid = paddingHost();
 
       // `collapsed` means "no spacing" on both axes, so there is no
       // `--spacing-collapsed-x` / `-y` for a theme to declare.
@@ -487,7 +494,7 @@ describe('SelectList', () => {
     test('axis-specific `px` / `py` write only the matching axis var inline', () => {
       render(<Basic.Component px="padding-relaxed" py="padding-tight" />);
 
-      const grid = screen.getByRole('grid') as HTMLElement;
+      const grid = paddingHost();
 
       expect(grid.style.getPropertyValue('--selectlist-item-px')).toBe(
         'var(--spacing-padding-relaxed)'
@@ -599,6 +606,52 @@ describe('SelectList', () => {
       ) as HTMLSelectElement;
 
       expect(select.disabled).toBe(true);
+    });
+  });
+
+  describe('select-all header', () => {
+    // What the checkbox does is covered by the story tests; this is what the
+    // part is — chrome beside the collection rather than an option inside it.
+    const Addons = (props: {
+      selectionMode?: 'single' | 'multiple';
+      disabled?: boolean;
+    }) => (
+      <MarigoldProvider theme={theme}>
+        <SelectList label="Add-ons" selectionMode="multiple" {...props}>
+          <SelectList.Header />
+          <SelectList.Option id="insurance" textValue="Insurance">
+            <Description>Covers loss or damage</Description>
+          </SelectList.Option>
+          <SelectList.Option id="gift-wrap" textValue="Gift wrap">
+            <Description>Premium paper</Description>
+          </SelectList.Option>
+        </SelectList>
+      </MarigoldProvider>
+    );
+
+    test('is not an option of the collection', () => {
+      render(<Addons />);
+
+      const selectAll = screen.getByRole('checkbox', { name: 'Select all' });
+
+      expect(screen.getAllByRole('row')).toHaveLength(2);
+      expect(screen.getByRole('grid')).not.toContainElement(selectAll);
+    });
+
+    test('renders nothing in single selection mode', () => {
+      render(<Addons selectionMode="single" />);
+
+      expect(
+        screen.queryByRole('checkbox', { name: 'Select all' })
+      ).not.toBeInTheDocument();
+    });
+
+    test('disables the select-all with the list', () => {
+      render(<Addons disabled />);
+
+      expect(
+        screen.getByRole('checkbox', { name: 'Select all' })
+      ).toBeDisabled();
     });
   });
 });

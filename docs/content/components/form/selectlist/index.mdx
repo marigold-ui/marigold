@@ -109,6 +109,22 @@ Set `selectionMode="multiple"` to switch the list to checkboxes.
 
 <ComponentDemo name="selectlist-multiple-selection" />
 
+#### Select all
+
+Add a `<SelectList.Header>` when picking every option is a normal thing to do, a list of notification channels or permissions rather than a shortlist of two. It renders one checkbox above the options, lined up with their indicators, mixed while the selection is partial, and checked once every option that can be selected is:
+
+```tsx
+<SelectList label="Channels" name="channels" selectionMode="multiple">
+  <SelectList.Header />
+  <SelectList.Option id="email">Email</SelectList.Option>
+  <SelectList.Option id="sms">SMS</SelectList.Option>
+</SelectList>
+```
+
+The header takes the place of an option in the list's children, appears only in `selectionMode="multiple"`, and labels itself "Select all" in the current locale. Children replace that label, as in `<SelectList.Header>Select every channel</SelectList.Header>`.
+
+Pressing it reports every option's key through `onChange`, so the value a select-all produces is the same shape as one assembled by hand and submits with the form unchanged. Each option needs an `id` for that, which a submitted field wants anyway. Disabled options are left out, which is why a list with one of them still reads as fully selected once the rest are.
+
 ### Per-row actions
 
 Reach for a per-row action when a row needs context it can't carry on its own, or when the picker doubles as configuration for each item. Without it, users either commit to a choice they don't fully understand or leave the form to look something up, losing their place. Two patterns hold up: actions that help the user **decide** which row to pick, and actions that **configure** the row they're already keeping.
@@ -224,6 +240,13 @@ When an option carries an image, decide whether it conveys information. A decora
 <AutoTypeTable
   path="SelectList/SelectListOption"
   name="SelectListOptionProps"
+/>
+
+### SelectList.Header
+
+<AutoTypeTable
+  path="SelectList/SelectListHeader"
+  name="SelectListHeaderProps"
 />
 
 ## Alternative components

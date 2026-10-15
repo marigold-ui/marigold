@@ -1,11 +1,37 @@
 import { type ThemeComponent, cva } from '@marigold/system';
 
 export const ListView: ThemeComponent<'ListView'> = {
-  list: cva({
+  container: cva({
     base: [
-      'w-full outline-0 flex flex-col divide-y divide-border',
+      'w-full flex flex-col',
+      // Declared here rather than on the list, so the header above the list
+      // reads the same padding the rows do and their checkboxes share an x.
       '[--listview-item-px:var(--bleed-px,var(--spacing-stretch-regular-x))]',
     ],
+    variants: {
+      variant: {
+        default: '',
+      },
+    },
+    defaultVariants: { variant: 'default' },
+  }),
+  header: cva({
+    base: [
+      'flex items-center',
+      'px-(--listview-item-px) py-(--spacing-stretch-regular-y)',
+      'max-sm:min-h-touch-target',
+      'border-b border-border',
+      'text-sm text-foreground',
+    ],
+    variants: {
+      variant: {
+        default: '',
+      },
+    },
+    defaultVariants: { variant: 'default' },
+  }),
+  list: cva({
+    base: ['w-full outline-0 flex flex-col divide-y divide-border'],
     variants: {
       variant: {
         default: '',

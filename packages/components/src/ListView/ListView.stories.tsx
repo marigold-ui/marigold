@@ -787,6 +787,88 @@ SingleSelection.test(
   }
 );
 
+export const WithSelectAll = meta.story({
+  tags: ['component-test'],
+  args: { selectionMode: 'multiple', onSelectionChange: fn() },
+  render: args => (
+    <ListView {...args} aria-label="Venues">
+      <ListView.Header />
+      {VENUES.map(venue => (
+        <ListView.Item key={venue.id} id={venue.id} textValue={venue.name}>
+          <TextValue>{venue.name}</TextValue>
+          <Description>{venue.detail}</Description>
+        </ListView.Item>
+      ))}
+    </ListView>
+  ),
+});
+
+WithSelectAll.test(
+  'selects every row, reads mixed while partial, and clears',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onSelectionChange: fn() },
+  },
+  async ({ args, canvas, userEvent, step }) => {
+    const selectAll = canvas.getByRole('checkbox', { name: 'Select all' });
+
+    await step('it selects every row', async () => {
+      await userEvent.click(selectAll);
+
+      for (const row of canvas.getAllByRole('row')) {
+        expect(row).toHaveAttribute('aria-selected', 'true');
+      }
+      // The same sentinel Mod+A reports, so a consumer has one shape to handle.
+      expect(args.onSelectionChange).toHaveBeenLastCalledWith('all');
+      expect(selectAll).toBeChecked();
+    });
+
+    await step('it clears the selection', async () => {
+      await userEvent.click(selectAll);
+
+      for (const row of canvas.getAllByRole('row')) {
+        expect(row).toHaveAttribute('aria-selected', 'false');
+      }
+      expect(selectAll).not.toBeChecked();
+    });
+
+    await step('a partial selection reads as mixed', async () => {
+      await userEvent.click(canvas.getByRole('row', { name: /gasometer/i }));
+
+      expect(selectAll).toBePartiallyChecked();
+    });
+
+    await step('selecting the rest by hand checks it', async () => {
+      await userEvent.click(canvas.getByRole('row', { name: /tempodrom/i }));
+      await userEvent.click(
+        canvas.getByRole('row', { name: /columbiahalle/i })
+      );
+
+      expect(selectAll).toBeChecked();
+      expect(selectAll).not.toBePartiallyChecked();
+    });
+  }
+);
+
+WithSelectAll.test(
+  'puts the header checkbox on the row indicator column',
+  // The one thing a consumer cannot build themselves: the row padding is a
+  // custom property on the list, so only the component can line a header up
+  // with it. Measured, because every class involved is indirection.
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const x = (element: Element) =>
+      Math.round(element.getBoundingClientRect().x);
+    const header = canvas
+      .getByRole('checkbox', { name: 'Select all' })
+      .closest('label')!;
+    const [firstRow] = canvas.getAllByRole('row');
+    const indicator = firstRow.querySelector('[data-grid-area="indicator"]')!;
+
+    expect(x(header)).toBe(x(indicator));
+  }
+);
+
 const onOpenVenue = fn();
 const onArchiveVenue = fn();
 
@@ -913,8 +995,8 @@ const onBulkArchive = fn();
 
 // The Bulk Actions pattern's action bar, which needs no new API: `<ActionBar>`
 // takes `selectedItemCount` / `onClearSelection` as props and only falls back to
-// the context Table publishes. There is deliberately no select-all — that is a
-// header checkbox in the collection, which `ListView` has no region for yet.
+// the context Table publishes. The select-all comes from `<ListView.Header>`,
+// which sits beside the render function in the dynamic form's children.
 const BulkActionsExample = (args: ListViewProps) => {
   const [selected, setSelected] = useState<Selection>(() => new Set());
   const count = selected === 'all' ? VENUES.length : selected.size;
@@ -928,6 +1010,7 @@ const BulkActionsExample = (args: ListViewProps) => {
         onSelectionChange={setSelected}
         items={VENUES}
       >
+        <ListView.Header />
         {(venue: (typeof VENUES)[number]) => (
           <ListView.Item id={venue.id} textValue={venue.name}>
             <TextValue>{venue.name}</TextValue>

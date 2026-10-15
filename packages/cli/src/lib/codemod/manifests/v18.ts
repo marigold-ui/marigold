@@ -113,6 +113,8 @@ export const v18: MigrationManifest = {
       'description',
     ],
     ListView: [
+      'container',
+      'header',
       'list',
       'item',
       'label',
@@ -169,6 +171,7 @@ export const v18: MigrationManifest = {
     Select: ['select', 'icon'],
     SelectList: [
       'container',
+      'header',
       'list',
       'item',
       'label',
