@@ -6,10 +6,13 @@ import { NumericFormat } from '@marigold/system';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Menu } from '../Menu/Menu';
+import { Pagination } from '../Pagination/Pagination';
+import { Panel } from '../Panel/Panel';
 import { Scrollable } from '../Scrollable/Scrollable';
 import { Stack } from '../Stack/Stack';
 import { Table } from '../Table/Table';
 import { Text } from '../Text/Text';
+import { Title } from '../Title/Title';
 import { ActionBar } from './ActionBar';
 
 const meta = preview.meta({
@@ -480,6 +483,94 @@ IntegratedWithTable.test(
     });
   }
 );
+
+// A small users table with a bar, shared by the layout stories below (DST-1813).
+const UsersTable = ({ label, rows }: { label: string; rows: typeof users }) => (
+  <Table
+    aria-label={label}
+    selectionMode="multiple"
+    defaultSelectedKeys={new Set([rows[0].email])}
+    actionBar={() => (
+      <ActionBar>
+        <Button>
+          <Pencil />
+          Edit
+        </Button>
+        <Button>
+          <Trash2 />
+          Delete
+        </Button>
+      </ActionBar>
+    )}
+  >
+    <Table.Header>
+      <Table.Column rowHeader>Name</Table.Column>
+      <Table.Column>Email</Table.Column>
+      <Table.Column>Status</Table.Column>
+    </Table.Header>
+    <Table.Body>
+      {rows.map(user => (
+        <Table.Row key={user.email} id={user.email}>
+          <Table.Cell>{user.name}</Table.Cell>
+          <Table.Cell>{user.email}</Table.Cell>
+          <Table.Cell>
+            <Badge>{user.status}</Badge>
+          </Table.Cell>
+        </Table.Row>
+      ))}
+    </Table.Body>
+  </Table>
+);
+
+// The most common layout: a Pagination right after the table. The bar keeps its
+// own room in the flow, so it never covers the controls below.
+export const TableWithPagination = meta.story({
+  parameters: {
+    controls: { exclude: ['selectedItemCount', 'onClearSelection'] },
+  },
+  render: () => (
+    <Panel>
+      <Panel.Header>
+        <Title>User accounts</Title>
+      </Panel.Header>
+      <Panel.Content>
+        <Stack space={4}>
+          <UsersTable label="User accounts" rows={users.slice(0, 4)} />
+          <Pagination totalItems={users.length} pageSize={4} />
+        </Stack>
+      </Panel.Content>
+    </Panel>
+  ),
+});
+
+// A table tall enough to scroll the page, then a small one. Each bar pins to the
+// screen while its table scrolls past and keeps its own room below the table,
+// so neither covers the other panel.
+export const TablesOnPage = meta.story({
+  // No snapshot: what this story shows is the pinning while scrolling, which a
+  // full-page capture can't. `TableWithPagination` guards the layout.
+  parameters: {
+    chromatic: { disableSnapshot: true },
+    controls: { exclude: ['selectedItemCount', 'onClearSelection'] },
+  },
+  render: () => (
+    <Stack space={6}>
+      {[
+        { title: 'User accounts', rows: users },
+        { title: 'Suspended accounts', rows: users.slice(0, 4) },
+      ].map(({ title, rows }) => (
+        <Panel key={title}>
+          <Panel.Header>
+            <Title>{title}</Title>
+          </Panel.Header>
+          <Panel.Content>
+            <UsersTable label={title} rows={rows} />
+          </Panel.Content>
+        </Panel>
+      ))}
+    </Stack>
+  ),
+});
 
 // No snapshot: with nothing selected the bar renders nothing, so the baseline
 // is the surrounding paragraph alone. The absence is asserted below instead.

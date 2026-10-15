@@ -1,4 +1,4 @@
-import type { ComponentProps, ReactNode } from 'react';
+import type { ComponentProps, FocusEvent, ReactNode } from 'react';
 import { use, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import type RAC from 'react-aria-components';
 import {
@@ -9,6 +9,7 @@ import {
 } from 'react-aria-components/Table';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { announce } from '@react-aria/live-announcer';
+import { getScrollParent } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import { useActionBar } from '../ActionBar/useActionBar';
 import { intlMessages } from '../intl/messages';
@@ -87,6 +88,28 @@ const staticSize = (size: unknown) => {
   if (typeof size === 'string' && /^\d+(\.\d+)?$/.test(size))
     return Number(size);
   return 0;
+};
+
+/**
+ * Scrolls a focused row clear of the pinned ActionBar. The bar pins to the
+ * page or a `Scrollable`, so `scroll-padding` on the table can't do it.
+ */
+const scrollFocusedRowClearOfActionBar = (e: FocusEvent<HTMLElement>) => {
+  const row = (e.target as Element).closest('[role=row]');
+  const bar = e.currentTarget.querySelector<HTMLElement>('[data-actionbar]');
+  if (!row || !bar) return;
+
+  // After React Aria has scrolled the row into view.
+  requestAnimationFrame(() => {
+    // The bar's own pin offset doubles as the gap to keep above it.
+    const gap = parseFloat(getComputedStyle(bar).bottom) || 0;
+    const overlap =
+      row.getBoundingClientRect().bottom -
+      (bar.getBoundingClientRect().top - gap);
+    if (overlap <= 0) return;
+
+    getScrollParent(row).scrollBy({ top: overlap });
+  });
 };
 
 interface TableElementProps extends ComponentProps<'table'> {
@@ -198,38 +221,55 @@ const _Table = ({
 
   return (
     <TableContext value={ctx}>
-      <ResizableTableContainer
-        // Containment keeps the measured width from following the table (DST-1836).
-        className="w-full [contain:inline-size]"
-        style={{
-          minWidth: minTableWidth,
-          paddingBottom: actionBarHeight
-            ? `calc(${actionBarHeight}px + var(--actionbar-offset, 8px))`
-            : undefined,
-          scrollPaddingBottom: actionBarHeight
-            ? `calc(${actionBarHeight}px + var(--actionbar-offset, 8px))`
-            : undefined,
-        }}
+      <div
+        onFocus={actionBarHeight ? scrollFocusedRowClearOfActionBar : undefined}
       >
-        <RACTable
-          className={cn('group/table', classNames.table)}
-          treeColumn={treeColumn}
-          selectionBehavior="toggle"
-          selectedKeys={selectedKeys}
-          defaultSelectedKeys={actionBar ? undefined : defaultSelectedKeysProp}
-          onSelectionChange={onSelectionChange}
-          render={domProps => (
-            <TableElement
-              // Only a virtualized table renders a `<div>`, and Marigold's never is.
-              {...(domProps as ComponentProps<'table'>)}
-              loading={loading}
-              onMinWidthChange={setMinTableWidth}
-            />
+        <ResizableTableContainer
+          // Containment keeps the measured width from following the table (DST-1836).
+          className="w-full [contain:inline-size]"
+          style={{ minWidth: minTableWidth }}
+        >
+          <RACTable
+            className={cn('group/table', classNames.table)}
+            treeColumn={treeColumn}
+            selectionBehavior="toggle"
+            selectedKeys={selectedKeys}
+            defaultSelectedKeys={
+              actionBar ? undefined : defaultSelectedKeysProp
+            }
+            onSelectionChange={onSelectionChange}
+            render={domProps => (
+              <TableElement
+                // Only a virtualized table renders a `<div>`, and Marigold's never is.
+                {...(domProps as ComponentProps<'table'>)}
+                loading={loading}
+                onMinWidthChange={setMinTableWidth}
+              />
+            )}
+            {...props}
+          />
+          {actionBar && (
+            <>
+              {/* Gap between the last row and the bar. */}
+              <div
+                aria-hidden
+                className={classNames.actionBarSpacer}
+                style={{
+                  height: actionBarHeight ? 'var(--actionbar-offset, 8px)' : 0,
+                }}
+              />
+              {actionBarOverlay}
+              {/* Cancels the bar's own height, then slides open to it, so the
+                  content below moves smoothly instead of jumping. */}
+              <div
+                aria-hidden
+                className={classNames.actionBarSpacer}
+                style={{ marginTop: -actionBarHeight, height: actionBarHeight }}
+              />
+            </>
           )}
-          {...props}
-        />
-        {actionBarOverlay}
-      </ResizableTableContainer>
+        </ResizableTableContainer>
+      </div>
     </TableContext>
   );
 };

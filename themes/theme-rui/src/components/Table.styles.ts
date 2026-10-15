@@ -255,4 +255,8 @@ export const Table: ThemeComponent<'Table'> = {
       '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4.5',
     ],
   }),
+  // The room around the ActionBar slides with it instead of jumping.
+  actionBarSpacer: cva({
+    base: 'motion-safe:transition-[height] motion-safe:duration-200',
+  }),
 };

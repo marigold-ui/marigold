@@ -103,7 +103,7 @@ Keep a clear button in reach on a list like this. While anything is selected the
 
 #### Bulk actions
 
-Pair a multi-select list with an [`<ActionBar>`](/components/collection/actionbar), driven by [`useActionBar`](/components/collection/actionbar#useactionbar). One thing is yours to do that a [`<Table>`](/components/collection/table) does for you: reserve the bar's height on the list's content, or the bar covers the last rows and keyboard navigation parks a focused row underneath it. A list short enough not to scroll needs none of that.
+Pair a multi-select list with an [`<ActionBar>`](/components/collection/actionbar), driven by [`useActionBar`](/components/collection/actionbar#useactionbar). Render the bar right after the list, and it takes its own room below the last row. One thing is yours to do that a [`<Table>`](/components/collection/table) does for you: set the bar's height as `scroll-padding-bottom` on the list's scroll container, or keyboard navigation parks a focused row underneath the pinned bar. A list short enough not to scroll needs none of that.
 
 <ComponentDemo name="listview-bulk-actions" />
 

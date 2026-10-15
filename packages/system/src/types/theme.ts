@@ -261,7 +261,8 @@ export type Theme = {
       | 'editablePopover'
       | 'editTrigger'
       | 'editCancel'
-      | 'editSave',
+      | 'editSave'
+      | 'actionBarSpacer',
       ComponentStyleFunction<string, string>
     >;
     LegacyTable?: Record<
