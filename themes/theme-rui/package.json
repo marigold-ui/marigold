@@ -83,7 +83,7 @@
     "postcss-prefix-selector": "2.2.1",
     "shx": "^0.4.0",
     "tailwindcss": "4.3.3",
-    "tsdown": "0.23.0",
+    "tsdown": "0.23.1",
     "typescript": "6.0.3"
   },
   "dependencies": {
