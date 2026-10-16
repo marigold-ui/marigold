@@ -1,5 +1,53 @@
 # @marigold/theme-rui
 
+## 6.2.2
+
+### Patch Changes
+
+- c41a890: fix(DST-1616): stop Drawer and Toast losing their edges at 320px
+
+  Both surfaces lost an edge at the smallest supported width, for two unrelated reasons.
+
+  - **Drawer.** Below `sm` the Drawer renders as a full-screen modal, so its surface is flush with every viewport edge. It kept its `rounded-xl` corners there, which notched the four viewport corners and read as a cut-off edge. The radius is now dropped for that full-bleed variant, and kept everywhere else.
+  - **Reserved scrollbar gutter.** The preflight reserves the scrollbar gutter on `html` so content does not reflow. Chrome subtracts that gutter from the initial containing block and from `100vw`, so with classic scrollbars a full-bleed `fixed inset-0` overlay stopped 15px short of the right viewport edge: the mobile Drawer was 305px wide at 320px, with its dividers ending short of the edge. The gutter is now given up below `sm`, where touch devices have no gutter to lose and the reflow it prevents costs less than the missing edge.
+  - **Toast.** A toast region is anchored by a single inset (`bottom-4 right-4`), so its width is shrink-to-fit against all the space up to the opposite viewport edge. A toast wider than that space filled it and sat flush against the unanchored side: at 320px the default `bottom-right` region spanned 0 to 304 instead of 16 to 304. The corner regions are now capped at the viewport minus both insets, so the margin stays symmetric. Nothing changes above 416px, where the existing `max-w-sm` is the narrower bound.
+
+- 164a8cd: fix(DST-1813): stop the Table's ActionBar from leaving an empty strip below it
+
+  While rows were selected, the Table made room for its ActionBar twice: the bar's own slot below the last row and, on top of that, a bottom padding of the same height. The panel around the table grew by about 128px, and half of that was empty space below the bar. The padding is gone. The Table now keeps room for the bar and an 8px gap only, and that room slides open and closed, so the content after the table moves smoothly instead of jumping.
+
+  The bar still never covers the rows or whatever follows the table, such as a pagination, and it still pins to the bottom of the screen or of a `Scrollable` while the table scrolls past. Keyboard focus now also keeps the focused row clear of the pinned bar on a scrolling page, where the previous `scroll-padding-bottom` on the table had no effect.
+
+  The ActionBar and ListView docs describe the new behaviour, and the ListView bulk actions example drops its own bottom padding.
+
+  The slide is themeable through the new `actionBarSpacer` slot on `Table`. `theme-rui` sets a 200ms height transition, and themes without the slot fall back to the room snapping into place.
+
+- c60cb28: fix(DSTSUP-287): show Dialog dividers only where the content is cut off
+
+  The divider under the Dialog title and the divider above `Dialog.Actions` now follow the same rule: each one shows only where the content is cut off by scrolling. Before, the title divider faded in once the content scrolled, but the actions divider was always shown, so a dialog that fit its content had a line above the actions and none under the title. Content that fits now shows no dividers. A fullscreen dialog always shows both, because it often scrolls an inner region, such as a table, which the dividers cannot detect. In browsers without scroll-driven animations (Firefox today), both dividers are always shown.
+
+  A dialog with only a title and actions has no divider, a `ConfirmationDialog` without `children` no longer leaves a blank band, and a dialog without a title has no divider at its top edge. A bare `Dialog.Title` and a `Dialog.Header` now space the title the same way.
+
+  Both dividers are scroll-revealed seams again: the title keeps `ui-scroll-seam-header` and `Dialog.Actions` now uses `ui-scroll-seam-footer`, like the Sidebar footer. `ui-scroll-seam-header` honors `--seam-fallback-color` like the footer seam. The header, content and actions of Dialog, Drawer and Tray carry a `data-slot` attribute (`header`, `content`, `actions`).
+
+- e08584c: fix(Menu): make the trigger match ghost buttons inside button containers
+
+  A labelled `Menu` in an `ActionBar` did not look or hover like the `Button`s next to it. Two things were off.
+
+  The trigger's `ghost` variant hovered with the opaque `ui-state-hover`, a light fill with dark text, while a ghost `Button` uses the translucent `ui-state-hover-ghost`. On the dark ActionBar the trigger lit up as a light block. It now uses `ui-state-hover-ghost` as well.
+
+  The trigger also ignored the context that button containers pass to their buttons, so it kept the default look unless `variant="ghost"` was set by hand. It now takes that context like `Button` and `ActionMenu` do: the `ghost` variant, the size, the disabled state and the container's placement class reach it inside `ActionBar`, `ButtonGroup`, `Panel.Header`, `Accordion` header actions, `SelectList` and `ListView`. A `variant` or `size` set on the `Menu` still wins. The trigger only has a `default` and a `ghost` look, so any other variant a container passes down, such as the `secondary` a `ButtonGroup` uses, keeps the default look.
+
+- Updated dependencies [5288355]
+- Updated dependencies [fa1aa20]
+- Updated dependencies [164a8cd]
+- Updated dependencies [84c7a60]
+- Updated dependencies [43b619c]
+- Updated dependencies [c60cb28]
+- Updated dependencies [e08584c]
+  - @marigold/system@18.3.1
+  - @marigold/components@18.3.1
+
 ## 6.2.1
 
 ### Patch Changes

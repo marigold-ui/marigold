@@ -1,5 +1,36 @@
 # @marigold/docs
 
+## 18.3.1
+
+### Patch Changes
+
+- 164a8cd: fix(DST-1813): stop the Table's ActionBar from leaving an empty strip below it
+
+  While rows were selected, the Table made room for its ActionBar twice: the bar's own slot below the last row and, on top of that, a bottom padding of the same height. The panel around the table grew by about 128px, and half of that was empty space below the bar. The padding is gone. The Table now keeps room for the bar and an 8px gap only, and that room slides open and closed, so the content after the table moves smoothly instead of jumping.
+
+  The bar still never covers the rows or whatever follows the table, such as a pagination, and it still pins to the bottom of the screen or of a `Scrollable` while the table scrolls past. Keyboard focus now also keeps the focused row clear of the pinned bar on a scrolling page, where the previous `scroll-padding-bottom` on the table had no effect.
+
+  The ActionBar and ListView docs describe the new behaviour, and the ListView bulk actions example drops its own bottom padding.
+
+  The slide is themeable through the new `actionBarSpacer` slot on `Table`. `theme-rui` sets a 200ms height transition, and themes without the slot fall back to the room snapping into place.
+
+- 9cbf57c: docs(DST-1878): restore the Links section on the Table page
+
+  The Table page explains again when to put a link in a table and which `<Link>` variant to use. The section was lost during the docs migration. A table has many rows, so a link on each row's name repeats down the whole column: the section now recommends `variant="secondary"` for these and shows it with an events table. The standard `<Link>` is for supporting details that point away from the table, shown with venue websites that open in a new tab. The section also points to `textValue` for cells that hold a link, and notes that links opening a new window mark themselves. The Link page's variant table and the Sidebar detail page demo follow the same guidance.
+
+- Updated dependencies [5288355]
+- Updated dependencies [fa1aa20]
+- Updated dependencies [c41a890]
+- Updated dependencies [164a8cd]
+- Updated dependencies [84c7a60]
+- Updated dependencies [43b619c]
+- Updated dependencies [c60cb28]
+- Updated dependencies [e08584c]
+  - @marigold/system@18.3.1
+  - @marigold/components@18.3.1
+  - @marigold/theme-rui@6.2.2
+  - @marigold/icons@2.0.4
+
 ## 18.3.0
 
 ### Patch Changes
