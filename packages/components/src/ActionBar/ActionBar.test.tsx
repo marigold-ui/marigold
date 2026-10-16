@@ -403,16 +403,16 @@ test('scrolls a focused row clear of the pinned ActionBar', async () => {
   }
 });
 
-test('never covers the content right after the table', async () => {
+// The bar may overlap what follows while the room slides open: measure once settled.
+test('does not cover the content after the table once the room has opened', async () => {
   render(<TableWithPagination.Component />);
 
   const toolbar = await waitForBarToSettle();
+  await waitForStableHeight(getTableContainer());
   const pagination = screen.getByRole('navigation');
 
-  await waitFor(() =>
-    expect(getBar(toolbar).getBoundingClientRect().bottom).toBeLessThanOrEqual(
-      pagination.getBoundingClientRect().top
-    )
+  expect(getBar(toolbar).getBoundingClientRect().bottom).toBeLessThanOrEqual(
+    pagination.getBoundingClientRect().top
   );
 });
 
