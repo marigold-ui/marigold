@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components';
 import { expect, screen, userEvent, within } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Button } from '../Button/Button';
 import { expectInsetFocusRingContrast } from '../contrast.utils';
 import { Breadcrumbs } from './Breadcrumbs';
 
@@ -219,5 +221,107 @@ CollapsesThreeItems.test(
       within(list).queryByText('Summer Festival Programme')
     ).toBeNull();
     await expect(list.scrollWidth).toBeLessThanOrEqual(list.clientWidth);
+  }
+);
+
+const ContentSizedTrail = (args: Parameters<typeof Breadcrumbs>[0]) => {
+  const [crumbs, setCrumbs] = useState(['Home', 'Events', 'Summer Festival']);
+
+  return (
+    <I18nProvider locale="en-US">
+      <Button
+        size="small"
+        onPress={() => setCrumbs(current => [...current, 'Event Details'])}
+      >
+        Add crumb
+      </Button>
+      <div
+        data-slot-row
+        className="border-border mt-4 grid w-250 grid-cols-[auto_1fr] border"
+      >
+        <Breadcrumbs {...args}>
+          {crumbs.map(crumb => (
+            <Breadcrumbs.Item key={crumb} href="#">
+              {crumb}
+            </Breadcrumbs.Item>
+          ))}
+        </Breadcrumbs>
+        <div />
+      </div>
+    </I18nProvider>
+  );
+};
+
+const settle = () => new Promise(resolve => setTimeout(resolve, 200));
+
+export const ContentSizedSlot = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => <ContentSizedTrail {...args} />,
+});
+
+const ellipsis = { name: 'These breadcrumbs are hidden' };
+
+const expectFullTrail = async (canvas: ReturnType<typeof within>) => {
+  await settle();
+  await expect(canvas.queryByRole('button', ellipsis)).toBeNull();
+  await expect(
+    within(canvas.getByRole('list')).getByText('Home')
+  ).toBeVisible();
+};
+
+ContentSizedSlot.test(
+  'Shows every item when the trail fits at small size',
+  { args: { size: 'small' } },
+  async ({ canvas }) => {
+    await expectFullTrail(canvas);
+  }
+);
+
+ContentSizedSlot.test(
+  'Shows every item when the trail fits at default size',
+  { args: { size: 'default' } },
+  async ({ canvas }) => {
+    await expectFullTrail(canvas);
+  }
+);
+
+ContentSizedSlot.test(
+  'Shows every item when the trail fits at large size',
+  { args: { size: 'large' } },
+  async ({ canvas }) => {
+    await expectFullTrail(canvas);
+  }
+);
+
+ContentSizedSlot.test(
+  'Collapses when narrowed and expands again when widened',
+  async ({ canvas, canvasElement, step }) => {
+    const row = canvasElement.querySelector<HTMLElement>('[data-slot-row]')!;
+    await settle();
+
+    await step('Narrow', async () => {
+      row.style.width = '150px';
+      await canvas.findByRole('button', ellipsis);
+    });
+
+    await step('Widen', async () => {
+      row.style.width = '';
+      await expectFullTrail(canvas);
+    });
+  }
+);
+
+ContentSizedSlot.test(
+  'Shows every item after the trail grows and still fits',
+  async ({ canvas, userEvent }) => {
+    await settle();
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Add crumb' }));
+
+    await expect(
+      within(canvas.getByRole('list')).getByText('Event Details')
+    ).toBeVisible();
+    await expectFullTrail(canvas);
   }
 );
