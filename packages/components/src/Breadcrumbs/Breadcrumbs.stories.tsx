@@ -252,7 +252,10 @@ const ContentSizedTrail = (args: Parameters<typeof Breadcrumbs>[0]) => {
   );
 };
 
-const settle = () => new Promise(resolve => setTimeout(resolve, 200));
+const nextFrames = () =>
+  new Promise(resolve =>
+    requestAnimationFrame(() => requestAnimationFrame(resolve))
+  );
 
 export const ContentSizedSlot = meta.story({
   tags: ['component-test'],
@@ -263,7 +266,7 @@ export const ContentSizedSlot = meta.story({
 const ellipsis = { name: 'These breadcrumbs are hidden' };
 
 const expectFullTrail = async (canvas: ReturnType<typeof within>) => {
-  await settle();
+  await nextFrames();
   await expect(canvas.queryByRole('button', ellipsis)).toBeNull();
   await expect(
     within(canvas.getByRole('list')).getByText('Home')
@@ -280,7 +283,6 @@ ContentSizedSlot.test(
 
 ContentSizedSlot.test(
   'Shows every item when the trail fits at default size',
-  { args: { size: 'default' } },
   async ({ canvas }) => {
     await expectFullTrail(canvas);
   }
@@ -298,7 +300,6 @@ ContentSizedSlot.test(
   'Collapses when narrowed and expands again when widened',
   async ({ canvas, canvasElement, step }) => {
     const row = canvasElement.querySelector<HTMLElement>('[data-slot-row]')!;
-    await settle();
 
     await step('Narrow', async () => {
       row.style.width = '150px';
@@ -315,8 +316,6 @@ ContentSizedSlot.test(
 ContentSizedSlot.test(
   'Shows every item after the trail grows and still fits',
   async ({ canvas, userEvent }) => {
-    await settle();
-
     await userEvent.click(canvas.getByRole('button', { name: 'Add crumb' }));
 
     await expect(

@@ -29,7 +29,7 @@ export const HiddenBreadcrumbs = ({
       ref={hiddenRef}
       className={cn(
         containerClassName,
-        'invisible h-0 flex-nowrap overflow-hidden whitespace-nowrap'
+        'invisible h-0 flex-nowrap overflow-hidden'
       )}
     >
       {items.map((item, idx) => {
