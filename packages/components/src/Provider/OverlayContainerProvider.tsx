@@ -7,6 +7,10 @@ import { UNSAFE_PortalProvider as PortalProvider } from '@react-aria/overlays';
 // would otherwise warn each time. Once per id is enough.
 const warnedMissingContainers = new Set<string>();
 
+// Test-only: lets each test assert the warning without racing another.
+export const __resetMissingContainerWarnings = () =>
+  warnedMissingContainers.clear();
+
 const getContainer = (container?: string) => () => {
   if (container) {
     const element = document.getElementById(container);

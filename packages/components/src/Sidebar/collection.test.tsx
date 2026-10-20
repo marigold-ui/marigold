@@ -5,6 +5,7 @@ import {
   SidebarSeparator,
 } from './SidebarItem';
 import {
+  __resetDuplicateHrefWarnings,
   applyCurrent,
   buildCollection,
   findActiveBranch,
@@ -338,6 +339,10 @@ describe('resolveCurrent: function mode', () => {
 });
 
 describe('resolveCurrent: dev-mode duplicate href warning', () => {
+  beforeEach(() => {
+    __resetDuplicateHrefWarnings();
+  });
+
   test('resolveCurrent: warns in dev when two leaves share an href', () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
     const jsx = [

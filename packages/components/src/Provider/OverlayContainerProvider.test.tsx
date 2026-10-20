@@ -4,7 +4,10 @@ import { Theme, cva } from '@marigold/system';
 import { Select } from '../Select/Select';
 import { mockMatchMedia } from '../test.utils';
 import { MarigoldProvider } from './MarigoldProvider';
-import { OverlayContainerProvider } from './OverlayContainerProvider';
+import {
+  OverlayContainerProvider,
+  __resetMissingContainerWarnings,
+} from './OverlayContainerProvider';
 
 // Setup
 // ---------------
@@ -96,6 +99,7 @@ test('renders without container prop', () => {
 });
 
 test('warns once about a missing container, however often overlays open', async () => {
+  __resetMissingContainerWarnings();
   const warnMock = vi.spyOn(console, 'warn').mockImplementation(() => null);
 
   render(

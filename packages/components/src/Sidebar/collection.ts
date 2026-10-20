@@ -219,6 +219,9 @@ export const matchLeaves = (
 
 const warnedDuplicateHrefs = new Set<string>();
 
+// Test-only: lets each test assert the warning without racing another.
+export const __resetDuplicateHrefWarnings = () => warnedDuplicateHrefs.clear();
+
 /**
  * Dev-only guard against leaves that resolve to the same normalized href —
  * `matchLeaves` would silently pick the first in document order. Shared by
