@@ -16,19 +16,26 @@ import { useEffect, useRef } from 'react';
  * useDevWarning(!hasAccessibleName, '[CloseButton] Renders without …');
  * ```
  */
-export const useDevWarning = (
+// A function declaration that is empty in production, on purpose: esbuild,
+// Rolldown, Terser and SWC then drop every call site together with its message
+// string. An arrow function, or a guard inside the effect, ships the strings.
+export function useDevWarning(
   shouldWarn: boolean,
   message: string,
   ref?: RefObject<Element | null>
-) => {
+) {
+  if (process.env.NODE_ENV === 'production') {
+    return;
+  }
+
+  // The condition is a build-time constant, so the hook order never changes
+  // within a build.
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const hasWarnedRef = useRef(false);
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
-    if (
-      process.env.NODE_ENV === 'production' ||
-      hasWarnedRef.current ||
-      !shouldWarn
-    ) {
+    if (hasWarnedRef.current || !shouldWarn) {
       return;
     }
 
@@ -44,4 +51,4 @@ export const useDevWarning = (
       console.warn(message);
     }
   }, [shouldWarn, message, ref]);
-};
+}
