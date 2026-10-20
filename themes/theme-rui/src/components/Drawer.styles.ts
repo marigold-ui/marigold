@@ -15,6 +15,7 @@ export const Drawer: ThemeComponent<'Drawer'> = {
       'shadow-elevation-overlay',
       '[--ui-border-color:oklch(from_var(--ui-divider-solid)_calc(l-0.1)_c_h)]',
       'h-full',
+      'has-[>[data-slot=close]]:**:data-[slot=header]:pe-12',
     ],
     variants: {
       size: {
