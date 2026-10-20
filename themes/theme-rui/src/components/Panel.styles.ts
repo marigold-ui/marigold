@@ -31,7 +31,9 @@ export const Panel: ThemeComponent<'Panel'> = {
   description: cva({
     base: 'mt-0.5 text-sm text-secondary',
   }),
-  actions: cva({}),
+  // Spacing sits on the actions, not as a column gap on the header grid, so
+  // a header without actions gets no phantom inset (as in ListView).
+  actions: cva({ base: 'ms-4' }),
   content: cva({}),
   collapsible: cva({ base: 'border-t border-border' }),
   collapsibleHeader: cva({
