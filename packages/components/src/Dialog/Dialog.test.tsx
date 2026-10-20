@@ -157,7 +157,9 @@ describe('accessible name warning', () => {
   const wrapper = ({ children }: { children: ReactNode }) => (
     <MarigoldProvider theme={theme}>{children}</MarigoldProvider>
   );
-  // Only Marigold's own warning, React Aria logs its own on top.
+  // No story renders an unnamed dialog, and one shouldn't: it would put the
+  // anti-pattern into Storybook. The unnamed and labelled cases stay inline.
+  // Only Marigold's own warning counts, React Aria logs its own on top.
   const isDialogWarning = (call: unknown[]) =>
     String(call[0]).startsWith('[Dialog]');
 
@@ -185,12 +187,7 @@ describe('accessible name warning', () => {
   });
 
   test.each([
-    [
-      'a Dialog.Title',
-      <Dialog key="title" open>
-        <Dialog.Title>Edit event</Dialog.Title>
-      </Dialog>,
-    ],
+    ['a Dialog.Title', <Basic.Component key="title" open />],
     [
       'an aria-label',
       <Dialog key="label" open aria-label="Edit event">
@@ -206,6 +203,7 @@ describe('accessible name warning', () => {
   ])('does not warn for a dialog with %s', (_, element) => {
     render(element, { wrapper });
 
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
     expect(warnSpy.mock.calls.filter(isDialogWarning)).toHaveLength(0);
   });
 });

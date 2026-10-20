@@ -1,11 +1,9 @@
 /* eslint-disable testing-library/no-node-access */
 import { render, screen } from '@testing-library/react';
-import type { ReactNode } from 'react';
-import { theme } from '@marigold/theme-rui';
-import { MarigoldProvider } from '../Provider/MarigoldProvider';
-import { Card } from './Card';
+import type { CardProps } from './Card';
 import {
   Basic,
+  LoadingSkeleton,
   MasterAndAdmin,
   TitleOnlyWithoutHeader,
   WithBleedContent,
@@ -282,13 +280,13 @@ describe('Card', () => {
   });
 
   describe('Accessible name warning', () => {
-    const unnamed = <Card.Content>Loading…</Card.Content>;
+    // The skeleton story is an unnamed card. `aria-hidden={false}` turns it
+    // into a visible one, which is what the warning is about.
+    const unnamed = (props?: Partial<CardProps>) => (
+      <LoadingSkeleton.Component aria-hidden={false} {...props} />
+    );
     const isCardWarning = (call: unknown[]) =>
       String(call[0]).startsWith('[Card]');
-
-    const wrapper = ({ children }: { children: ReactNode }) => (
-      <MarigoldProvider theme={theme}>{children}</MarigoldProvider>
-    );
 
     let warnSpy: ReturnType<typeof vi.spyOn>;
 
@@ -301,9 +299,9 @@ describe('Card', () => {
     });
 
     test('warns once per card, however often it re-renders', () => {
-      const { rerender } = render(<Card>{unnamed}</Card>, { wrapper });
-      rerender(<Card stretch>{unnamed}</Card>);
-      rerender(<Card>{unnamed}</Card>);
+      const { rerender } = render(unnamed());
+      rerender(unnamed({ stretch: true }));
+      rerender(unnamed());
 
       const calls = warnSpy.mock.calls.filter(isCardWarning);
 
@@ -315,10 +313,9 @@ describe('Card', () => {
     test('warns once for each unnamed card', () => {
       render(
         <>
-          <Card>{unnamed}</Card>
-          <Card>{unnamed}</Card>
-        </>,
-        { wrapper }
+          {unnamed()}
+          {unnamed()}
+        </>
       );
 
       expect(warnSpy.mock.calls.filter(isCardWarning)).toHaveLength(2);
@@ -326,50 +323,25 @@ describe('Card', () => {
 
     test.each([
       ['a Title', <Basic.Component key="title" />],
-      [
-        'an aria-label',
-        <Card key="label" aria-label="Stats">
-          {unnamed}
-        </Card>,
-      ],
-      [
-        'an aria-labelledby',
-        <Card key="labelledby" aria-labelledby="external">
-          {unnamed}
-        </Card>,
-      ],
-      [
-        'aria-hidden on the card',
-        <Card key="hidden" aria-hidden="true">
-          {unnamed}
-        </Card>,
-      ],
+      ['an aria-label', unnamed({ 'aria-label': 'Stats' })],
+      ['an aria-labelledby', unnamed({ 'aria-labelledby': 'external' })],
+      ['aria-hidden on the card', <LoadingSkeleton.Component key="skeleton" />],
       [
         'an aria-hidden ancestor',
         <div key="ancestor" aria-hidden="true">
-          <Card>{unnamed}</Card>
+          {unnamed()}
         </div>,
       ],
       [
         'an inert ancestor',
         <div key="inert" inert>
-          <Card>{unnamed}</Card>
+          {unnamed()}
         </div>,
       ],
-      [
-        'role="presentation"',
-        <Card key="presentation" role="presentation">
-          {unnamed}
-        </Card>,
-      ],
-      [
-        'role="listitem"',
-        <Card key="listitem" role="listitem">
-          {unnamed}
-        </Card>,
-      ],
+      ['role="presentation"', unnamed({ role: 'presentation' })],
+      ['role="listitem"', unnamed({ role: 'listitem' })],
     ])('does not warn for a card with %s', (_, element) => {
-      render(element, { wrapper });
+      render(element);
 
       expect(warnSpy.mock.calls.filter(isCardWarning)).toHaveLength(0);
     });
@@ -378,17 +350,12 @@ describe('Card', () => {
       [
         'a hidden container',
         <div key="hidden" hidden>
-          <Card>{unnamed}</Card>
+          {unnamed()}
         </div>,
       ],
-      [
-        'an explicit role="article"',
-        <Card key="article" role="article">
-          {unnamed}
-        </Card>,
-      ],
+      ['an explicit role="article"', unnamed({ role: 'article' })],
     ])('still warns inside %s', (_, element) => {
-      render(element, { wrapper });
+      render(element);
 
       expect(warnSpy.mock.calls.filter(isCardWarning)).toHaveLength(1);
     });
