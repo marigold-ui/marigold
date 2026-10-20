@@ -114,6 +114,61 @@ Basic.test(
   }
 );
 
+export const LongTitle = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { closeButton: true },
+  render: args => (
+    <Drawer.Trigger>
+      <Button>Open Drawer</Button>
+      <Drawer {...args}>
+        <Drawer.Header>
+          <Drawer.Title>Rechnungsadresse für offene Rechnungen</Drawer.Title>
+          <Drawer.Description>
+            Applies to every invoice that has not been paid yet.
+          </Drawer.Description>
+        </Drawer.Header>
+        <Drawer.Content>The address is used for all reminders.</Drawer.Content>
+      </Drawer>
+    </Drawer.Trigger>
+  ),
+});
+
+LongTitle.test(
+  'Keeps the title clear of the close button',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
+    const title = await canvas.findByRole('heading');
+    const header = title.closest('[data-slot=header]')!;
+    const closeButton = canvas.getByRole('button', { name: 'Dismiss drawer' });
+
+    const contentRight =
+      header.getBoundingClientRect().right -
+      parseFloat(getComputedStyle(header).paddingRight);
+
+    expect(
+      closeButton.getBoundingClientRect().left - contentRight
+    ).toBeGreaterThanOrEqual(8);
+  }
+);
+
+LongTitle.test(
+  'Pads the header evenly without a close button',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+    args: { closeButton: false },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
+    const title = await canvas.findByRole('heading');
+    const header = title.closest('[data-slot=header]')!;
+    const { paddingLeft, paddingRight } = getComputedStyle(header);
+
+    expect(paddingRight).toBe(paddingLeft);
+  }
+);
+
 export const WithForms = meta.story({
   parameters: { surface: false, chromatic: { disableSnapshot: true } },
   render: args => (

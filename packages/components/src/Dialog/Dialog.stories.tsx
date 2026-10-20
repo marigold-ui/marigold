@@ -804,6 +804,59 @@ TitleOnlyWithoutHeader.test(
   }
 );
 
+export const LongTitle = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { closeButton: true },
+  render: ({ size, closeButton, ...args }) => (
+    <Dialog.Trigger {...args}>
+      <Button variant="primary">Open</Button>
+      <Dialog size={size} closeButton={closeButton}>
+        <Dialog.Title>
+          Saalplan an alle Veranstalter dieser Veranstaltungsreihe versenden
+          jetzt
+        </Dialog.Title>
+        <Dialog.Content>
+          Every organizer of this series receives the current seating plan.
+        </Dialog.Content>
+      </Dialog>
+    </Dialog.Trigger>
+  ),
+});
+
+LongTitle.test(
+  'Keeps the title clear of the close button',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+    const header = await canvas.findByRole('heading');
+    const closeButton = canvas.getByRole('button', { name: 'Close' });
+
+    const contentRight =
+      header.getBoundingClientRect().right -
+      parseFloat(getComputedStyle(header).paddingRight);
+
+    expect(
+      closeButton.getBoundingClientRect().left - contentRight
+    ).toBeGreaterThanOrEqual(8);
+  }
+);
+
+LongTitle.test(
+  'Pads the header evenly without a close button',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+    args: { closeButton: false },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+    const header = await canvas.findByRole('heading');
+    const { paddingLeft, paddingRight } = getComputedStyle(header);
+
+    expect(paddingRight).toBe(paddingLeft);
+  }
+);
+
 // Each dialog portals into its own cell, so all of them can be open side by
 // side. A `capped` cell caps the dialog below its content, so the content
 // scrolls whatever the viewport height. A `viewport` cell fits a fullscreen one.

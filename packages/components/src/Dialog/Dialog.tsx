@@ -104,6 +104,7 @@ const InnerDialog = ({
         // Explicit on purpose: keeps `Dialog` out of `CloseButton`'s dev warning.
         <CloseButton
           aria-label={stringFormatter.format('close')}
+          data-slot="close"
           className={classNames.closeButton}
           onPress={state?.close}
         />
