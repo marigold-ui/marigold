@@ -5,6 +5,7 @@ import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { expectInsetFocusRingContrast } from '../contrast.utils';
 import { Breadcrumbs } from './Breadcrumbs';
+import type { BreadcrumbsProps } from './Breadcrumbs';
 
 const meta = preview.meta({
   title: 'Components/Breadcrumbs',
@@ -224,14 +225,16 @@ CollapsesThreeItems.test(
   }
 );
 
-const ContentSizedTrail = (args: Parameters<typeof Breadcrumbs>[0]) => {
+const ContentSizedTrail = (args: BreadcrumbsProps) => {
   const [crumbs, setCrumbs] = useState(['Home', 'Events', 'Summer Festival']);
 
   return (
     <I18nProvider locale="en-US">
       <Button
         size="small"
-        onPress={() => setCrumbs(current => [...current, 'Event Details'])}
+        onPress={() =>
+          setCrumbs(current => [...current, `Level ${current.length + 1}`])
+        }
       >
         Add crumb
       </Button>
@@ -319,7 +322,7 @@ ContentSizedSlot.test(
     await userEvent.click(canvas.getByRole('button', { name: 'Add crumb' }));
 
     await expect(
-      within(canvas.getByRole('list')).getByText('Event Details')
+      within(canvas.getByRole('list')).getByText('Level 4')
     ).toBeVisible();
     await expectFullTrail(canvas);
   }
