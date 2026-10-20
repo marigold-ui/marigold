@@ -192,8 +192,8 @@
 }
 
 /*
- * Keyboard focus for borderless rows: menu items, list options, table rows --
- * anything that has no --ui-border-color for ui-state-focus to recolor.
+ * Keyboard focus for rows and list items: menu items, list options, table rows.
+ * Use ui-state-focus for buttons and controls.
  *
  * Full-opacity --color-ring, because this ring *is* the whole indicator: 4.97:1
  * over focus-highlight, 3.59:1 over selected, 3.14:1 on the contrast ground.
