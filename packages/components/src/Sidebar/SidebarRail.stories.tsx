@@ -750,13 +750,15 @@ RailMobile.test(
 
 Rail.test(
   'Keyboard focus draws a ring that clears 3:1 on a rail item',
-  { parameters: { chromatic: { disableSnapshot: false } } },
-  async ({ canvas, userEvent }) => {
+  // Vitest only: `vitest/browser` doesn't resolve in Chromatic.
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    // Real keys: tiles match native `:focus-visible`, which Firefox only sets
+    // after trusted input. Imported here, it throws outside Browser Mode.
+    const { userEvent } = await import('vitest/browser');
     const rail = canvas.getByRole('navigation', { name: 'Hauptnavigation' });
     const [first, second] = within(rail).getAllByRole('link');
 
-    // Enter with a real Tab: Firefox keeps `:focus-visible` off after a
-    // scripted focus, and the rail items match it natively, not via RAC.
     first!.focus();
     await userEvent.tab({ shift: true });
     await userEvent.tab();
