@@ -175,8 +175,8 @@ const BreadcrumbsBase = ({
   return (
     <HiddenBreadcrumbs
       items={items}
-      itemClassName={breadcrumbsItem}
-      linkClassName={link}
+      variant={variant}
+      size={size}
       hiddenRef={hiddenRef}
     >
       {breadcrumbs}
