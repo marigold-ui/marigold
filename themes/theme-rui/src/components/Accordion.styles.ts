@@ -41,12 +41,11 @@ export const Accordion: ThemeComponent<'Accordion'> = {
     variants: {
       variant: {
         default: [
-          'focus-visible:ui-state-focus outline-none',
+          'focus-visible:ui-state-focus-item outline-none',
           // In a bled Panel the header spans the full width, so inset it and its focus
           // ring off the Panel border by one spacing step, like `Panel.Collapsible`.
-          // `--accordion-ring-inset` is `0` unless bled, so everything else collapses to
-          // a plain full-width header.
-          '[--accordion-ring-inset:min(var(--accordion-x-padding),var(--spacing))]',
+          // Unbled: overhang two steps so the ring clears the aligned title.
+          '[--accordion-ring-inset:min(calc(var(--accordion-x-padding)-var(--spacing)*2),var(--spacing))]',
           'mx-(--accordion-ring-inset)',
           'w-[calc(100%-var(--accordion-ring-inset)-var(--accordion-ring-inset))]',
           'px-[calc(var(--accordion-x-padding)-var(--accordion-ring-inset))]',

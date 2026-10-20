@@ -1,10 +1,11 @@
 import { FormEvent, useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
-import { expect } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
 import { Stack } from '../Stack/Stack';
+import { expectFocusRingContrast } from '../contrast.utils';
 import { Slider } from './Slider';
 
 const meta = preview.meta({
@@ -390,3 +391,17 @@ export const MultiThumbsDisabled = meta.story({
     />
   ),
 });
+
+Basic.test(
+  'Keyboard focus draws a ring around the thumb',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    const slider = canvas.getByRole('slider');
+    const thumb = slider.parentElement!.parentElement!;
+
+    await userEvent.tab();
+
+    await expect(slider).toHaveFocus();
+    await waitFor(() => expectFocusRingContrast(thumb));
+  }
+);

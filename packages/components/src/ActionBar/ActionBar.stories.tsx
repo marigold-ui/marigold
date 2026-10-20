@@ -13,6 +13,7 @@ import { Stack } from '../Stack/Stack';
 import { Table } from '../Table/Table';
 import { Text } from '../Text/Text';
 import { Title } from '../Title/Title';
+import { expectFocusRingContrast } from '../contrast.utils';
 import { ActionBar } from './ActionBar';
 
 const meta = preview.meta({
@@ -601,5 +602,33 @@ NoSelection.test(
     await expect(
       canvas.queryByRole('toolbar', { name: /bulk actions/i })
     ).not.toBeInTheDocument();
+  }
+);
+
+// Clear and ghost actions share one ring. The halo alone is 1.72:1 here.
+Basic.test(
+  'Keyboard focus draws a 1px ring that clears 3:1 on the clear button and actions',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent, step }) => {
+    const clear = await canvas.findByRole('button', {
+      name: 'Clear selection',
+    });
+    const edit = await canvas.findByRole('button', { name: 'Edit' });
+
+    await step('clear button', async () => {
+      clear.focus();
+      await userEvent.tab();
+      await userEvent.tab({ shift: true });
+
+      await expect(clear).toHaveFocus();
+      await waitFor(() => expectFocusRingContrast(clear));
+    });
+
+    await step('ghost action', async () => {
+      await userEvent.tab();
+
+      await expect(edit).toHaveFocus();
+      await waitFor(() => expectFocusRingContrast(edit));
+    });
   }
 );

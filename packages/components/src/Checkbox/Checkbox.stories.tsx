@@ -1,13 +1,8 @@
-import { expect } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { ContextualHelp } from '../ContextualHelp/ContextualHelp';
-import {
-  WCAG_NON_TEXT,
-  contrast,
-  flatten,
-  paintedGround,
-} from '../contrast.utils';
+import { expectFocusRingContrast } from '../contrast.utils';
 import {
   borderOf,
   controlIcon,
@@ -158,10 +153,7 @@ Basic.test(
   }
 );
 
-// Hover and focus-visible both set `border-color`, and the hover rule compiles
-// to (0,5,0) against (0,2,0) for the focus-visible border — so it wins unless it
-// excludes `focus-visible` explicitly. Without that clause the border stays at
-// the hover colour and the halo is all that marks focus, which is 2.08:1 alone.
+// Hover recolors the border, so focus must not rely on it.
 Basic.test(
   'Hover does not weaken the focus indicator',
   { parameters: { chromatic: { disableSnapshot: false } } },
@@ -171,20 +163,27 @@ Basic.test(
 
     await userEvent.tab();
     await expect(checkbox).toHaveFocus();
-    const focused = borderOf(icon);
 
     await userEvent.hover(checkbox);
 
-    expect(borderOf(icon)).toBe(focused);
+    await waitFor(() => expectFocusRingContrast(icon));
+  }
+);
 
-    const ground = paintedGround(icon.parentElement as HTMLElement);
-    expect(ground.length).toBeGreaterThan(0);
+Basic.test(
+  'Keyboard focus draws a ring around a checked box',
+  {
+    args: { defaultChecked: true },
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }) => {
+    const checkbox = await canvas.findByRole('checkbox');
+    const icon = controlIcon(checkbox);
 
-    const ratio = contrast(flatten([...ground, focused]), flatten(ground));
-    expect(
-      ratio,
-      `focused + hovered border is ${ratio.toFixed(2)}:1, needs ${WCAG_NON_TEXT}:1`
-    ).toBeGreaterThanOrEqual(WCAG_NON_TEXT);
+    await userEvent.tab();
+
+    await expect(checkbox).toHaveFocus();
+    await waitFor(() => expectFocusRingContrast(icon));
   }
 );
 

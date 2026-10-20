@@ -110,6 +110,25 @@ export const inkContrast = (element: HTMLElement) => {
   return contrastOn([...ground, backgroundColor], color);
 };
 
+/** Asserts the 1px `ui-state-focus` ring clears 3:1 against the ground. */
+export const expectFocusRingContrast = (element: HTMLElement) => {
+  const style = getComputedStyle(element);
+  const color = style.getPropertyValue('--ui-border-color');
+  expect(
+    style.boxShadow,
+    `no 1px focus ring in box-shadow: ${style.boxShadow}`
+  ).toContain(`${color} 0px 0px 0px 1px`);
+
+  const ground = paintedGround(element.parentElement);
+  expect(ground.length).toBeGreaterThan(0);
+
+  const ratio = contrastOn(ground, color);
+  expect(
+    ratio,
+    `focus ring is ${ratio.toFixed(2)}:1, needs ${WCAG_NON_TEXT}:1`
+  ).toBeGreaterThanOrEqual(WCAG_NON_TEXT);
+};
+
 /**
  * The inset `box-shadow` layer `ui-state-focus-item` paints, and the color in
  * it. Returns `undefined` for either part that is missing so callers can assert

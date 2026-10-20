@@ -25,6 +25,7 @@ import { RouterProvider } from '../RouterProvider/RouterProvider';
 import { Text } from '../Text/Text';
 import { Title } from '../Title/Title';
 import { TopNavigation } from '../TopNavigation/TopNavigation';
+import { expectFocusRingContrast } from '../contrast.utils';
 import { Sidebar } from './Sidebar';
 
 const meta = preview.meta({
@@ -744,5 +745,21 @@ RailMobile.test(
         expect(toggle).toHaveAttribute('aria-expanded', 'false')
       );
     });
+  }
+);
+
+Rail.test(
+  'Keyboard focus draws a ring that clears 3:1 on a rail item',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    const rail = canvas.getByRole('navigation', { name: 'Hauptnavigation' });
+    const [first, second] = within(rail).getAllByRole('link');
+
+    first!.focus();
+
+    await userEvent.keyboard('{ArrowDown}');
+
+    await expect(second).toHaveFocus();
+    await waitFor(() => expectFocusRingContrast(second!));
   }
 );

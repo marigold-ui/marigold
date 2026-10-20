@@ -2,7 +2,7 @@ import { ArrowLeft } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
-import { expect } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
@@ -12,6 +12,7 @@ import { LinkButton } from '../LinkButton/LinkButton';
 import { RouterProvider } from '../RouterProvider/RouterProvider';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
+import { expectInsetFocusRingContrast } from '../contrast.utils';
 import { Sidebar } from './Sidebar';
 
 const meta = preview.meta({
@@ -448,5 +449,20 @@ WithFooterLinks.test(
     await expect(footerStyle.height).toBe(navStyle.height);
     await expect(footerStyle.fontSize).toBe(navStyle.fontSize);
     await expect(footerStyle.fontWeight).toBe(navStyle.fontWeight);
+  }
+);
+
+Basic.test(
+  'Keyboard focus draws an inset ring that clears 3:1 on a nav link',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    const analytics = canvas.getByRole('link', { name: 'Analytics' });
+
+    await userEvent.click(canvas.getByRole('link', { name: 'Overview' }));
+
+    await userEvent.keyboard('{ArrowDown}');
+
+    await expect(analytics).toHaveFocus();
+    await waitFor(() => expectInsetFocusRingContrast(analytics));
   }
 );
