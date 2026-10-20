@@ -15,6 +15,7 @@ export const Dialog: ThemeComponent<'Dialog'> = {
       'ui-scroll-seam-scope',
       // Without content, the seams' fallback would stack two lines.
       'not-has-[[data-slot=content]:not(:empty)]:[--seam-fallback-color:transparent]',
+      'has-[>[data-slot=close]]:**:data-[slot=header]:pe-12',
     ],
     variants: {
       variant: {},
