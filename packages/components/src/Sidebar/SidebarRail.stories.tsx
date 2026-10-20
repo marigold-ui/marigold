@@ -755,7 +755,11 @@ Rail.test(
     const rail = canvas.getByRole('navigation', { name: 'Hauptnavigation' });
     const [first, second] = within(rail).getAllByRole('link');
 
+    // Enter with a real Tab: Firefox keeps `:focus-visible` off after a
+    // scripted focus, and the rail items match it natively, not via RAC.
     first!.focus();
+    await userEvent.tab({ shift: true });
+    await userEvent.tab();
 
     await userEvent.keyboard('{ArrowDown}');
 

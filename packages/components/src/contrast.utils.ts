@@ -110,19 +110,29 @@ export const inkContrast = (element: HTMLElement) => {
   return contrastOn([...ground, backgroundColor], color);
 };
 
+// Split on top-level commas only -- color functions contain their own.
+const shadowLayers = (boxShadow: string) =>
+  boxShadow.split(/,(?![^(]*\))/).map(shadow => shadow.trim());
+
+const colorOf = (shadow?: string) =>
+  shadow?.match(/(?:oklch|oklab|rgba?|color)\([^)]*\)|#[0-9a-f]{3,8}/i)?.[0];
+
 /** Asserts the 1px `ui-state-focus` ring clears 3:1 against the ground. */
 export const expectFocusRingContrast = (element: HTMLElement) => {
-  const style = getComputedStyle(element);
-  const color = style.getPropertyValue('--ui-border-color');
-  expect(
-    style.boxShadow,
-    `no 1px focus ring in box-shadow: ${style.boxShadow}`
-  ).toContain(`${color} 0px 0px 0px 1px`);
+  const { boxShadow } = getComputedStyle(element);
+  // Color from the shadow, not `--ui-border-color`: a custom property keeps its
+  // minified source text (`oklch(52% .008 54)`), the shadow is normalized.
+  const color = colorOf(
+    shadowLayers(boxShadow).find(
+      shadow => !shadow.includes('inset') && shadow.endsWith(' 0px 0px 0px 1px')
+    )
+  );
+  expect(color, `no 1px focus ring in box-shadow: ${boxShadow}`).toBeTruthy();
 
   const ground = paintedGround(element.parentElement);
   expect(ground.length).toBeGreaterThan(0);
 
-  const ratio = contrastOn(ground, color);
+  const ratio = contrastOn(ground, color!);
   expect(
     ratio,
     `focus ring is ${ratio.toFixed(2)}:1, needs ${WCAG_NON_TEXT}:1`
@@ -136,19 +146,9 @@ export const expectFocusRingContrast = (element: HTMLElement) => {
  */
 export const insetFocusRing = (element: HTMLElement) => {
   const { boxShadow } = getComputedStyle(element);
-  // Split on top-level commas only -- color functions contain their own.
-  const ring = boxShadow
-    .split(/,(?![^(]*\))/)
-    .map(shadow => shadow.trim())
-    .find(shadow => shadow.includes('inset'));
+  const ring = shadowLayers(boxShadow).find(shadow => shadow.includes('inset'));
 
-  return {
-    boxShadow,
-    ring,
-    color: ring?.match(
-      /(?:oklch|oklab|rgba?|color)\([^)]*\)|#[0-9a-f]{3,8}/i
-    )?.[0],
-  };
+  return { boxShadow, ring, color: colorOf(ring) };
 };
 
 /**
