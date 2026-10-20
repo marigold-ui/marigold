@@ -1,5 +1,9 @@
 /* eslint-disable testing-library/no-node-access */
 import { render, screen } from '@testing-library/react';
+import type { ReactNode } from 'react';
+import { theme } from '@marigold/theme-rui';
+import { MarigoldProvider } from '../Provider/MarigoldProvider';
+import { Card } from './Card';
 import {
   Basic,
   MasterAndAdmin,
@@ -274,6 +278,119 @@ describe('Card', () => {
 
       expect(screen.getByText(/Master Access/)).toBeInTheDocument();
       expect(screen.getByText(/Admin Access/)).toBeInTheDocument();
+    });
+  });
+
+  describe('Accessible name warning', () => {
+    const unnamed = <Card.Content>Loading…</Card.Content>;
+    const isCardWarning = (call: unknown[]) =>
+      String(call[0]).startsWith('[Card]');
+
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <MarigoldProvider theme={theme}>{children}</MarigoldProvider>
+    );
+
+    let warnSpy: ReturnType<typeof vi.spyOn>;
+
+    beforeEach(() => {
+      warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      warnSpy.mockRestore();
+    });
+
+    test('warns once per card, however often it re-renders', () => {
+      const { rerender } = render(<Card>{unnamed}</Card>, { wrapper });
+      rerender(<Card stretch>{unnamed}</Card>);
+      rerender(<Card>{unnamed}</Card>);
+
+      const calls = warnSpy.mock.calls.filter(isCardWarning);
+
+      expect(calls).toHaveLength(1);
+      expect(calls[0][0]).not.toContain('landmark');
+      expect(calls[0][1]).toBe(screen.getByRole('article'));
+    });
+
+    test('warns once for each unnamed card', () => {
+      render(
+        <>
+          <Card>{unnamed}</Card>
+          <Card>{unnamed}</Card>
+        </>,
+        { wrapper }
+      );
+
+      expect(warnSpy.mock.calls.filter(isCardWarning)).toHaveLength(2);
+    });
+
+    test.each([
+      ['a Title', <Basic.Component key="title" />],
+      [
+        'an aria-label',
+        <Card key="label" aria-label="Stats">
+          {unnamed}
+        </Card>,
+      ],
+      [
+        'an aria-labelledby',
+        <Card key="labelledby" aria-labelledby="external">
+          {unnamed}
+        </Card>,
+      ],
+      [
+        'aria-hidden on the card',
+        <Card key="hidden" aria-hidden="true">
+          {unnamed}
+        </Card>,
+      ],
+      [
+        'an aria-hidden ancestor',
+        <div key="ancestor" aria-hidden="true">
+          <Card>{unnamed}</Card>
+        </div>,
+      ],
+      [
+        'an inert ancestor',
+        <div key="inert" inert>
+          <Card>{unnamed}</Card>
+        </div>,
+      ],
+      [
+        'role="presentation"',
+        <Card key="presentation" role="presentation">
+          {unnamed}
+        </Card>,
+      ],
+      [
+        'role="listitem"',
+        <Card key="listitem" role="listitem">
+          {unnamed}
+        </Card>,
+      ],
+    ])('does not warn for a card with %s', (_, element) => {
+      render(element, { wrapper });
+
+      expect(warnSpy.mock.calls.filter(isCardWarning)).toHaveLength(0);
+    });
+
+    test.each([
+      [
+        'a hidden container',
+        <div key="hidden" hidden>
+          <Card>{unnamed}</Card>
+        </div>,
+      ],
+      [
+        'an explicit role="article"',
+        <Card key="article" role="article">
+          {unnamed}
+        </Card>,
+      ],
+    ])('still warns inside %s', (_, element) => {
+      render(element, { wrapper });
+
+      expect(warnSpy.mock.calls.filter(isCardWarning)).toHaveLength(1);
     });
   });
 });

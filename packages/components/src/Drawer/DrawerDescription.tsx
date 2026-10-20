@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Description } from '../Description/Description';
 import { useIsInsideOverlayHeader } from '../utils/OverlayHeaderContext';
+import { useDevWarning } from '../utils/useDevWarning';
 
 export interface DrawerDescriptionProps {
   /**
@@ -20,12 +21,11 @@ export interface DrawerDescriptionProps {
  */
 export const DrawerDescription = ({ children }: DrawerDescriptionProps) => {
   const insideHeader = useIsInsideOverlayHeader();
-  if (process.env.NODE_ENV !== 'production' && !insideHeader) {
-    console.warn(
-      '[Drawer.Description] is rendered outside of <Drawer.Header>. ' +
-        'It will land in the same grid area as <Drawer.Content> and the two will overlap. ' +
-        'Wrap your title and description in <Drawer.Header> to avoid this.'
-    );
-  }
+  useDevWarning(
+    !insideHeader,
+    '[Drawer.Description] is rendered outside of <Drawer.Header>. ' +
+      'It will land in the same grid area as <Drawer.Content> and the two will overlap. ' +
+      'Wrap your title and description in <Drawer.Header> to avoid this.'
+  );
   return <Description slot="description">{children}</Description>;
 };

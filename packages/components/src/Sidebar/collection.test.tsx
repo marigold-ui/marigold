@@ -357,6 +357,27 @@ describe('resolveCurrent: dev-mode duplicate href warning', () => {
     spy.mockRestore();
   });
 
+  test('resolveCurrent: warns once for the same collision across re-resolves', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const jsx = [
+      <SidebarItem key="x" id="x" href="/again">
+        X
+      </SidebarItem>,
+      <SidebarItem key="y" id="y" href="/again">
+        Y
+      </SidebarItem>,
+    ];
+
+    // `useSidebarNavState` rebuilds on every parent render, since `children`
+    // is a new array each time.
+    resolveCurrent(buildCollection(jsx), '/again');
+    resolveCurrent(buildCollection(jsx), '/again');
+    resolveCurrent(buildCollection(jsx), '/again');
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    spy.mockRestore();
+  });
+
   test('resolveCurrent: duplicate-href tiebreak picks first in document order', () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
     const jsx = [

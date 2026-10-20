@@ -94,3 +94,29 @@ test('renders without container prop', () => {
 
   expect(screen.getByTestId('child')).toBeInTheDocument();
 });
+
+test('warns once about a missing container, however often overlays open', async () => {
+  const warnMock = vi.spyOn(console, 'warn').mockImplementation(() => null);
+
+  render(
+    <OverlayContainerProvider container="does-not-exist">
+      <MarigoldProvider theme={theme}>
+        <Select label="Label">
+          <Select.Option id="one">one</Select.Option>
+          <Select.Option id="two">two</Select.Option>
+        </Select>
+      </MarigoldProvider>
+    </OverlayContainerProvider>
+  );
+
+  await user.click(screen.getByRole('button'));
+  await user.keyboard('{Escape}');
+  await user.click(screen.getByRole('button'));
+
+  const calls = warnMock.mock.calls.filter(call =>
+    String(call[0]).includes('"does-not-exist" not found')
+  );
+
+  expect(calls).toHaveLength(1);
+  warnMock.mockRestore();
+});

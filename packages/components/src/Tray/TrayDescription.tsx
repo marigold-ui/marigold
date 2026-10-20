@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Description } from '../Description/Description';
 import { useIsInsideOverlayHeader } from '../utils/OverlayHeaderContext';
+import { useDevWarning } from '../utils/useDevWarning';
 
 // Props
 // ---------------
@@ -24,12 +25,11 @@ export interface TrayDescriptionProps {
  */
 export const TrayDescription = ({ children }: TrayDescriptionProps) => {
   const insideHeader = useIsInsideOverlayHeader();
-  if (process.env.NODE_ENV !== 'production' && !insideHeader) {
-    console.warn(
-      '[Tray.Description] is rendered outside of <Tray.Header>. ' +
-        'It will land in the same grid area as <Tray.Content> and the two will overlap. ' +
-        'Wrap your title and description in <Tray.Header> to avoid this.'
-    );
-  }
+  useDevWarning(
+    !insideHeader,
+    '[Tray.Description] is rendered outside of <Tray.Header>. ' +
+      'It will land in the same grid area as <Tray.Content> and the two will overlap. ' +
+      'Wrap your title and description in <Tray.Header> to avoid this.'
+  );
   return <Description slot="description">{children}</Description>;
 };
