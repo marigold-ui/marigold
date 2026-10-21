@@ -32,3 +32,16 @@ export const TRAY_CONTENT_ATTR = 'data-tray-content';
 
 export const TRAY_MAX_HEIGHT =
   '[--tray-available:calc(var(--visual-viewport-height)*0.95)] max-h-(--tray-available)';
+
+/**
+ * Pins tray content at its measured height so the tray does not shrink while
+ * the content changes, capped so the tray (content plus `chrome`, the title
+ * and actions around it) still fits `TRAY_MAX_HEIGHT`.
+ */
+export const pinTrayContentHeight = (
+  node: HTMLElement,
+  pinned: number,
+  chrome: number
+) => {
+  node.style.minHeight = `min(${pinned}px, calc(var(--tray-available) - ${chrome}px))`;
+};

@@ -9,16 +9,11 @@ import {
   useState,
 } from 'react';
 import type RAC from 'react-aria-components';
-import {
-  Autocomplete,
-  FieldInputContext,
-  SelectableCollectionContext,
-  useFilter,
-} from 'react-aria-components/Autocomplete';
-import { Provider } from 'react-aria-components/slots';
+import { Autocomplete, useFilter } from 'react-aria-components/Autocomplete';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { SearchField } from '../SearchField/SearchField';
 import { intlMessages } from '../intl/messages';
+import { AutocompleteBoundary } from '../utils/AutocompleteBoundary';
 import { usePopoverContext } from './Context';
 
 // Context
@@ -43,33 +38,6 @@ const PopoverSearchContext = createContext<PopoverSearchContextValue | null>(
 // Scope
 // ---------------
 /**
- * Passes React Aria's autocomplete contexts through only while a search is
- * mounted. Without one, a collection in the popover (say a `ListView`) would
- * switch to virtual focus with no field to drive it.
- */
-const SearchGate = ({
-  active,
-  children,
-}: {
-  active: boolean;
-  children?: ReactNode;
-}) => {
-  const collection = use(SelectableCollectionContext);
-  const input = use(FieldInputContext);
-
-  return (
-    <Provider
-      values={[
-        [SelectableCollectionContext, active ? collection : null],
-        [FieldInputContext, active ? input : null],
-      ]}
-    >
-      {children}
-    </Provider>
-  );
-};
-
-/**
  * Wraps the popover's children in React Aria's `Autocomplete`, which links a
  * search field to a collection through context and renders no element. That
  * is what lets `<Popover.Search>` sit next to `<Popover.Content>` instead of
@@ -90,21 +58,31 @@ export const PopoverSearchScope = ({ children }: { children?: ReactNode }) => {
     () => ({ registerSearch, optionsRef, setInputValue }),
     [registerSearch]
   );
+  // Stable, so React Aria only re-filters the collection when the text changes.
+  const handleInputChange = useCallback((value: string) => {
+    setInputValue(value);
+    optionsRef.current.onInputChange?.(value);
+  }, []);
+  const filter = useCallback<NonNullable<PopoverSearchOptions['filter']>>(
+    (textValue, input, node) =>
+      (optionsRef.current.filter ?? contains)(textValue, input, node),
+    [contains]
+  );
 
   return (
     <PopoverSearchContext value={ctx}>
       <Autocomplete<object>
         inputValue={inputValue}
-        onInputChange={value => {
-          setInputValue(value);
-          optionsRef.current.onInputChange?.(value);
-        }}
-        filter={(textValue, input, node) =>
-          (optionsRef.current.filter ?? contains)(textValue, input, node)
-        }
+        onInputChange={handleInputChange}
+        filter={filter}
         disableVirtualFocus={!hasSearch}
       >
-        <SearchGate active={hasSearch}>{children}</SearchGate>
+        {/* Without a mounted search, a collection in the popover (say a
+            `ListView`) would switch to virtual focus with no field to drive
+            it, so the contexts only pass through while one is mounted. */}
+        <AutocompleteBoundary disabled={hasSearch}>
+          {children}
+        </AutocompleteBoundary>
       </Autocomplete>
     </PopoverSearchContext>
   );
@@ -163,9 +141,10 @@ export interface PopoverSearchProps {
  * `<Popover.Content>`, e.g. a `<ListView>`. It renders as a borderless row
  * spanning the popover, so it stays in view while the results scroll. Under a
  * `<Title>` it sits between two dividers. Without a title it becomes the
- * popover's header (name the popover with `aria-label` then). Tab moves into the results: React
- * Aria keeps real focus in a `ListView` (a `GridList`), because its rows hold
- * their own controls. A `ListBox` would take arrow keys from the field.
+ * popover's header (name the popover with `aria-label` then). Tab moves into
+ * the results: React Aria keeps real focus in a `ListView` (a `GridList`),
+ * because its rows hold their own controls. A `ListBox` would take arrow keys
+ * from the field.
  */
 export const PopoverSearch = ({
   'aria-label': ariaLabel,
@@ -177,16 +156,11 @@ export const PopoverSearch = ({
   filter,
 }: PopoverSearchProps) => {
   const { classNames } = usePopoverContext();
-  const search = use(PopoverSearchContext);
+  // Always set: `<Popover>` renders the scope inside the popover context, and
+  // `usePopoverContext` above already throws outside of it.
+  const { registerSearch, optionsRef, setInputValue } =
+    use(PopoverSearchContext)!;
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
-
-  if (search === null) {
-    throw new Error(
-      'Popover sub-components must be used within a <Popover> component.'
-    );
-  }
-
-  const { registerSearch, optionsRef, setInputValue } = search;
 
   useLayoutEffect(() => registerSearch(), [registerSearch]);
 

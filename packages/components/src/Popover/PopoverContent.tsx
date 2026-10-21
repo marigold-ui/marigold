@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { cn } from '@marigold/system';
+import { pinTrayContentHeight } from '../Tray/Context';
 import { usePopoverContext } from './Context';
 
 // Props
@@ -49,8 +50,7 @@ const pinTrayHeight = (node: HTMLDivElement | null) => {
       return;
     }
     pinned = height;
-    const chrome = tray.offsetHeight - height;
-    node.style.minHeight = `min(${pinned}px, calc(var(--tray-available) - ${chrome}px))`;
+    pinTrayContentHeight(node, pinned, tray.offsetHeight - height);
   });
   observer.observe(node);
 

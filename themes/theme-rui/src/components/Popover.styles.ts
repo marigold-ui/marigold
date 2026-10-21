@@ -21,10 +21,10 @@ export const Popover: ThemeComponent<'Popover'> = {
   body: cva({
     base: [
       'flex min-h-0 flex-col outline-none',
-      // Popover padding. Anchored popovers (they always carry a width) are
-      // tighter than the dialog rhythm, the tray keeps it like every tray.
-      '[--popover-px:var(--ui-surface-px)]',
-      '[&:is([data-small],[data-medium],[data-large])]:[--popover-px:calc(var(--spacing)*4)]',
+      // Popover padding. Anchored popovers are tighter than the dialog
+      // rhythm, the tray keeps it like every tray.
+      '[--popover-px:calc(var(--spacing)*4)]',
+      'data-tray:[--popover-px:var(--ui-surface-px)]',
       'data-small:w-3xs data-medium:w-xs data-large:w-md',
       // Without a `<Popover.Content>`, the body takes the content's role: it
       // pads and scrolls, and title, description and search sit flush in it.

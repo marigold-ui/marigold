@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { use } from 'react';
 import {
   FieldInputContext,
   SelectableCollectionContext,
@@ -12,18 +13,28 @@ import { Provider } from 'react-aria-components/slots';
  * would also filter the options of a `Select` or the items of a `Menu` opened
  * from inside the popover. An `Autocomplete` inside the overlay (as in
  * `TagField`) provides its contexts again and is unaffected.
+ *
+ * `disabled` lets the outer contexts through. The element tree stays the
+ * same either way, so toggling it does not remount the children.
  */
 export const AutocompleteBoundary = ({
+  disabled = false,
   children,
 }: {
+  disabled?: boolean;
   children?: ReactNode;
-}) => (
-  <Provider
-    values={[
-      [SelectableCollectionContext, null],
-      [FieldInputContext, null],
-    ]}
-  >
-    {children}
-  </Provider>
-);
+}) => {
+  const collection = use(SelectableCollectionContext);
+  const input = use(FieldInputContext);
+
+  return (
+    <Provider
+      values={[
+        [SelectableCollectionContext, disabled ? collection : null],
+        [FieldInputContext, disabled ? input : null],
+      ]}
+    >
+      {children}
+    </Provider>
+  );
+};
