@@ -8,7 +8,7 @@ import {
 
 export default () => (
   <Popover.Trigger>
-    <Button>Event details</Button>
+    <Button>Show event details</Button>
     <Popover>
       <Title>Summer Open Air</Title>
       <Description>Sat, 12 July · Stadtgarten</Description>

@@ -11,7 +11,7 @@ test('renders only the trigger until opened', () => {
   renderWithOverlay(<Basic.Component />);
 
   expect(
-    screen.getByRole('button', { name: 'Event details' })
+    screen.getByRole('button', { name: 'Show event details' })
   ).toBeInTheDocument();
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 });
@@ -19,7 +19,7 @@ test('renders only the trigger until opened', () => {
 test('opens on press and is named by its title', async () => {
   renderWithOverlay(<Basic.Component />);
 
-  await user.click(screen.getByRole('button', { name: 'Event details' }));
+  await user.click(screen.getByRole('button', { name: 'Show event details' }));
 
   expect(
     screen.getByRole('dialog', { name: 'Summer Open Air' })
