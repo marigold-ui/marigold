@@ -19,7 +19,7 @@ Add a select-all to `ListView` and `SelectList`.
 </ListView>
 ```
 
-The checkbox is mixed while the selection is partial, checked once every selectable row is, and labels itself "Select all" in the current locale. Beside it sits a count of what is selected. The prop is read only in `selectionMode="multiple"`, since there is nothing for a select-all to do in the other modes. The header sits outside the grid element rather than claiming column-header semantics a single-column collection does not have, so the checkbox carries its own visible label.
+The checkbox is mixed while the selection is partial, and becomes checked once every selectable row has been picked. It labels itself "Select all" in the current locale, and a count beside it reports how many rows are selected. The prop only takes effect when `selectionMode="multiple"`, since there is nothing for a select-all to do in the other modes. The header sits outside the grid element rather than claiming column-header semantics a single-column collection does not have, so the checkbox carries its own visible label.
 
 `ListView` reports `'all'` from its select-all, the same value <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> already reported. `SelectList` reports concrete keys instead, because a field has to submit a value: it now resolves the `'all'` sentinel to the keys it covers, which also fixes <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> in a multi-select `SelectList` submitting nothing at all.
 

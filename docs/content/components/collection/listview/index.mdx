@@ -109,11 +109,11 @@ Pair a multi-select list with an [`<ActionBar>`](/components/collection/actionba
 
 #### Select all
 
-Set `allowSelectAll` when users regularly select every visible row. It renders one checkbox above the rows, lined up with their indicators, mixed while the selection is partial, and checked once every row that can be selected is. Beside it sits a count of what is selected, so the scope of the next action stays legible after one press.
+Set `allowSelectAll` when users regularly select every visible row. It renders one checkbox above the rows, on the same column as their indicators. The checkbox is mixed while the selection is partial, and becomes checked once every selectable row has been picked. Beside it, a count reports how many rows are selected, so the scope of the next action stays legible after one press.
 
 <ComponentDemo name="listview-select-all" />
 
-The prop is read only in `selectionMode="multiple"`: there is nothing for a select-all to do in the other modes, so it renders nothing there rather than showing a control that cannot act. The label reads "Select all" in the current locale.
+The prop only takes effect when `selectionMode="multiple"`: there is nothing for a select-all to do in the other modes, so it renders nothing there rather than showing a control that cannot act. The label reads "Select all" in the current locale.
 
 Pressing it reports the string `'all'`, the same value <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> already reports, so there is one selection shape to resolve either way. The scope is the rows the list is rendering: it never reaches rows behind pagination, which the [Bulk Actions](/patterns/user-input/bulk-actions#pagination) pattern explains at length.
 

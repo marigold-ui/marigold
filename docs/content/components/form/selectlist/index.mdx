@@ -111,11 +111,11 @@ Set `selectionMode="multiple"` to switch the list to checkboxes.
 
 #### Select all
 
-Set `allowSelectAll` when picking every option is a normal thing to do. It renders one checkbox above the options, lined up with their indicators, mixed while the selection is partial, and checked once every option that can be selected is. Beside it sits a count of what is selected.
+Set `allowSelectAll` when picking every option is a normal thing to do. It renders one checkbox above the options, on the same column as their indicators. The checkbox is mixed while the selection is partial, and becomes checked once every selectable option has been picked. Beside it, a count reports how many options are selected.
 
 <ComponentDemo name="selectlist-select-all" />
 
-The prop is read only in `selectionMode="multiple"`, and the checkbox labels itself "Select all" in the current locale.
+The prop only takes effect when `selectionMode="multiple"`, and the checkbox labels itself "Select all" in the current locale.
 
 Pressing it reports every option's key through `onChange`, so the value a select-all produces is the same shape as one assembled by hand and submits with the form unchanged. Each option needs an `id` for that, which a submitted field wants anyway. Disabled options are left out, which is why the list above reads as fully selected while "Manage billing" stays unticked.
 
