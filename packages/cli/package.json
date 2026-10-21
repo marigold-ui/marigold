@@ -57,7 +57,7 @@
     "playwright": ">=1.40.0",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0",
-    "vite": ">=5.0.0"
+    "vite": ">=8.3.3"
   },
   "peerDependenciesMeta": {
     "@axe-core/playwright": {
@@ -100,7 +100,7 @@
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "tsdown": "0.23.1",
-    "vite": "8.3.2",
+    "vite": "8.3.3",
     "vitest": "4.1.11"
   },
   "scripts": {
