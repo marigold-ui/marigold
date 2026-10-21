@@ -12,7 +12,7 @@ export default () => (
     <Button>
       <Tag /> Add label
     </Button>
-    <Popover modal="trap-focus" width="small">
+    <Popover width="small">
       <Title>New label</Title>
       <Popover.Content>
         <TextField label="Name" />
