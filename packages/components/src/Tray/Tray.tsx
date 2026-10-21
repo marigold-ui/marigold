@@ -8,6 +8,7 @@ import {
 import { cn, useClassNames } from '@marigold/system';
 import { ResetButtonContext } from '../Button/ResetButtonContext';
 import { ActionMenuContext } from '../Menu/ActionMenuContext';
+import { AutocompleteBoundary } from '../utils/AutocompleteBoundary';
 import { useIsHiddenTree } from '../utils/useIsHiddenTree';
 import { useOverlayRootSlotProps } from '../utils/useOverlayRootSlotProps';
 import { useSlot } from '../utils/useSlot';
@@ -160,7 +161,7 @@ export const Tray = ({
                 [ActionMenuContext, {}],
               ]}
             >
-              {children}
+              <AutocompleteBoundary>{children}</AutocompleteBoundary>
             </Provider>
           </Dialog>
         </TrayModal>

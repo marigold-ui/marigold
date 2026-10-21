@@ -585,6 +585,80 @@ SearchableList.test(
   }
 );
 
+// The search filters the popover's own list, never the options of a field or
+// the items of a menu opened from inside it (`AutocompleteBoundary`).
+export const SearchWithNestedOverlays = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => (
+    <Popover.Trigger>
+      <Button>Assign to</Button>
+      <Popover {...args}>
+        <Title>Assign to</Title>
+        <Popover.Search aria-label="Search people" />
+        <Popover.Content>
+          <Inline space={2} alignY="bottom">
+            <Select label="Team" defaultValue="all">
+              <Select.Option id="all">All teams</Select.Option>
+              <Select.Option id="box-office">Box office</Select.Option>
+            </Select>
+            <ActionMenu aria-label="List actions">
+              <ActionMenu.Item>Invite people</ActionMenu.Item>
+              <ActionMenu.Item>Export list</ActionMenu.Item>
+            </ActionMenu>
+          </Inline>
+          <ListView aria-label="People" items={PEOPLE}>
+            {(person: (typeof PEOPLE)[number]) => (
+              <ListView.Item id={person.id} textValue={person.name}>
+                {person.name}
+              </ListView.Item>
+            )}
+          </ListView>
+        </Popover.Content>
+      </Popover>
+    </Popover.Trigger>
+  ),
+});
+
+SearchWithNestedOverlays.test(
+  'Keeps nested select options and menu items unfiltered',
+  async ({ canvas, userEvent, step }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Assign to' }));
+    const search = await canvas.findByRole('searchbox', {
+      name: 'Search people',
+    });
+    await waitFor(() => expect(search).toHaveFocus());
+    await userEvent.keyboard('jane');
+
+    await step('the list is filtered', async () => {
+      await waitFor(() =>
+        expect(canvas.getAllByRole('row').map(row => row.textContent)).toEqual([
+          'Jane Doe',
+        ])
+      );
+    });
+
+    await step('the select keeps all its options', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: /Team/ }));
+      await canvas.findByRole('listbox');
+      await expect(
+        canvas.getAllByRole('option').map(option => option.textContent)
+      ).toEqual(['All teams', 'Box office']);
+      await userEvent.keyboard('{Escape}');
+    });
+
+    await step('the menu keeps all its items', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'List actions' })
+      );
+      await canvas.findByRole('menu');
+      await expect(
+        canvas.getAllByRole('menuitem').map(item => item.textContent)
+      ).toEqual(['Invite people', 'Export list']);
+    });
+  }
+);
+
 // Must-support case 6: a mini-form with one or two optional fields.
 export const MiniForm = meta.story({
   tags: ['component-test'],
