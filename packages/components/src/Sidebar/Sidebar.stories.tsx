@@ -466,3 +466,21 @@ Basic.test(
     await waitFor(() => expectInsetFocusRingContrast(analytics));
   }
 );
+
+// Opening Management focuses its active item, Users. The back button sits above it.
+Basic.test(
+  'Keyboard focus draws an inset ring that clears 3:1 on the back button',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    canvas.getByRole('link', { name: /Management/ }).focus();
+    await userEvent.keyboard('{Enter}');
+    const users = await canvas.findByRole('link', { name: 'Users' });
+    await waitFor(() => expect(users).toHaveFocus());
+
+    await userEvent.keyboard('{ArrowUp}');
+
+    const back = canvas.getByRole('button', { name: /Back/ });
+    await expect(back).toHaveFocus();
+    await waitFor(() => expectInsetFocusRingContrast(back));
+  }
+);

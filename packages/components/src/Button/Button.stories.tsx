@@ -282,7 +282,7 @@ Loading.test(
 );
 
 ButtonVariants.test(
-  'Keyboard focus draws the same 1px ring on ghost buttons as on framed ones',
+  'Keyboard focus draws a 1px ring that clears 3:1 on ghost buttons',
   { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent, step }) => {
     for (const name of ['Ghost', 'Destructive Ghost']) {
