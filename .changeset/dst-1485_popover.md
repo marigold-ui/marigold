@@ -27,7 +27,7 @@ feat(DST-1485): add a general-purpose `Popover` for arbitrary content
 - `<Popover>` renders a positioned panel on larger screens and a tray on small ones. A `<Title>` and `<Description>` inside it form the header, and the title becomes the panel's accessible name.
 - `<Popover.Content>` holds the body and is the only part that scrolls. Without it, the popover lays out all its children as the body. A `ListView` placed directly inside reaches the popover's edges by itself, and sits flush at the bottom and under a search. For other content, `bleed` removes the horizontal padding, like in `Drawer.Content` and `Panel.Content`.
 - `<Popover>` is modal by default, following React Aria. `nonModal` lets focus leave and keeps the page interactive.
-- `<Popover.Search>` sits next to `<Popover.Content>` and filters the list in it as the user types, for lists whose rows people act on in place. It is a borderless row spanning the popover that stays in view above the results. Under a `<Title>` it sits between two dividers, and without one it becomes the popover's header. Its children, like a filter `Select` or an `ActionMenu` for the whole list, sit in the same row after the field.
+- `<Popover.Search>` sits next to `<Popover.Content>` and filters the list in it as the user types, for lists whose rows people act on in place. It is a borderless row spanning the popover that stays in view above the results. Under a `<Title>` it sits between two dividers, and without one it becomes the popover's header.
 
 **BREAKING CHANGE:** the `Popover` theme entry is now a set of slots, and the `Popover` export is a different component.
 

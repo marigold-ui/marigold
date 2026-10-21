@@ -52,11 +52,8 @@ export const Popover: ThemeComponent<'Popover'> = {
     base: [
       'border-border border-b py-1',
       'not-first:border-t not-first:mt-3',
-      // Trailing controls (a filter, list actions) share the row.
-      'flex items-center gap-2',
-      // Inset so the field's icon lines up with the title text, and the last
-      // control with the row actions of the list below.
-      'pl-[calc(var(--popover-px)-var(--spacing)*2.5)] pr-(--popover-px)',
+      // Inset so the field's icon lines up with the title text.
+      'px-[calc(var(--popover-px)-var(--spacing)*2.5)]',
       // The field drops its frame: the row is the field.
       '[&_input]:rounded-none [&_input]:bg-transparent [&_input]:ring-0',
       '[&_input:focus]:outline-hidden',
