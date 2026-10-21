@@ -64,6 +64,8 @@ Deleting follows the same split as any other action: it goes in the menu, unless
 
 <ComponentDemo name="listview-notifications" />
 
+To open a feed like this from a bell icon, put the list in a [`<Popover>`](/components/overlay/popover). Its rows keep their controls, which a [`<Menu>`](/components/overlay/menu) can't offer.
+
 When no single action stands out, or the available actions differ from row to row, drop the visible button and use the menu on its own.
 
 <ComponentDemo name="listview-resource-menu" />
@@ -176,6 +178,7 @@ In a selectable list, moving focus never changes the selection. <kbd>Space</kbd>
 - [Radio](/components/form/radio): Use for a small set of mutually exclusive choices as a labelled form field, with plain text options rather than rich rows.
 - [Table](/components/collection/table): Use when each row is a record with multiple columns of structured data to compare, not a flat list of operable items.
 - [Menu](/components/overlay/menu): Use for a set of commands that close the surface on activation.
+- [Popover](/components/overlay/popover): Use to open a list like this in a floating panel from a trigger.
 - [Card](/components/collection/card): Use to present one item, like an event or a product, as a self-contained visual unit.
 
 ## Related

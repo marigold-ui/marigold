@@ -1,0 +1,155 @@
+---
+title: Popover
+description: A floating panel for arbitrary content, opened from a trigger
+---
+
+The `<Popover>` component opens a floating panel next to a trigger. The panel holds whatever you put in it: text, a list whose rows have their own controls, a few form fields, or a search over a list. People stay in the panel and work with its content, and it closes when they dismiss it.
+
+Use `<Popover>` when the content is a small surface of its own, like a notifications panel, a set of filters or a profile card. When the panel is a list of commands that run and close, use a [`<Menu>`](/components/overlay/menu) instead.
+
+## Usage
+
+A popover takes two parts. The first child of `<Popover>` is the trigger, usually a [`<Button>`](/components/actions/button). `<Popover.Content>` holds the panel. Start the content with a [`<Title>`](/components/content/title) and an optional [`<Description>`](/components/content/description): they are styled as the panel's header and the title becomes its accessible name.
+
+<ComponentDemo name="popover-basic" />
+
+On small screens the panel opens as a tray from the bottom of the screen, with a close button. You write the content once and it works in both places.
+
+### Popover vs Menu
+
+A menu is a choice. A popover is a place. In a menu every row is a command: the user picks one, it runs, and the menu closes. In a popover the user stays and works with whatever is inside.
+
+Ask one question to decide: after the user does the main thing inside, should the panel close on its own? If yes, use a menu. If no, use a popover.
+
+There is also a hard rule. If any row contains its own interactive control, such as a switch, a second button, a link or an input, it can't be a menu. Screen readers do not expose controls inside a menu item, and keyboard focus never reaches them.
+
+| Question                                                     | Menu                                               | Popover                                                      |
+| ------------------------------------------------------------ | -------------------------------------------------- | ------------------------------------------------------------ |
+| Is every row a command?                                      | Yes                                                | —                                                            |
+| Does it close after one selection?                           | Yes                                                | No, it stays open                                            |
+| Can rows contain their own controls?                         | No                                                 | Yes                                                          |
+| Can it hold any layout, like text, sections and form fields? | No                                                 | Yes                                                          |
+| Keyboard                                                     | One tab stop, arrow keys between items, type-ahead | Tab moves through the controls inside                        |
+| Selecting rows                                               | Built in with `selectionMode`                      | Put a [`<ListView>`](/components/collection/listview) inside |
+
+Toggles are where this gets mixed up. When the row itself is the toggle, like showing or hiding table columns, use a menu with selection. When each row is content that happens to have a switch, like a notification you can mute, use a popover with a list inside, so the switch is reachable.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use a popover when rows carry their own controls or the user needs to stay
+      and work in the panel.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't put switches, buttons or links inside menu items. Screen reader
+      users can't reach them.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Lists with controls
+
+For rows that people operate, put a [`<ListView>`](/components/collection/listview) inside the popover. Each row can carry its own buttons and an action menu, and the list keeps arrow key navigation between rows. A notifications panel is the typical case.
+
+<ComponentDemo name="popover-notifications" />
+
+### Searching a list
+
+Wrap a list in `<Popover.Search>` to filter it as the user types. The search field takes focus when the panel opens, and the arrow keys move through the results without leaving the field. Give the field an `aria-label` or a visible `label`. Items are matched by their `textValue`.
+
+<ComponentDemo name="popover-search" />
+
+### Filters and short forms
+
+A popover can hold a few form fields, like a filter panel that applies on a button press. Put the closing buttons in the `close` slot with `slot="close"` and the panel closes when they are pressed.
+
+<ComponentDemo name="popover-filter" />
+
+Keep forms in a popover short and optional. A popover closes when the user clicks away, so ask whether dismissing it loses work or blocks the user. If it does, use a [`<Dialog>`](/components/overlay/dialog).
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use a popover for one to three optional fields, where dismissing the panel
+      loses nothing.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use a popover for required input, blocking validation, several steps
+      or a destructive confirmation. Use a Dialog.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+<ComponentDemo name="popover-mini-form" />
+
+### Modality
+
+The `modal` prop on `<Popover.Content>` controls how much the panel takes over the page. It follows React Aria and defaults to `true`.
+
+| Value          | Behavior                                                                                     | When to use                                             |
+| -------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| `true`         | Hides the rest of the page from assistive technology, locks scrolling and keeps focus inside | The default. Right for most panels                      |
+| `'trap-focus'` | Keeps focus inside, but the page keeps scrolling and stays visible to assistive technology   | Short forms next to content the user still needs to see |
+| `false`        | Focus can leave and the page stays fully interactive                                         | Only for panels without focusable controls              |
+
+React Aria warns against a non-modal popover that holds focusable controls, because screen reader users can lose track of where they are. Prefer `true` or `'trap-focus'` whenever the panel contains buttons, links or fields. On small screens the panel opens as a tray, which is always modal.
+
+### Placement and width
+
+Use `placement` to position the panel relative to its trigger, for example `bottom end` for a panel opened from an icon in the top right corner. React Aria flips the panel when there is not enough room. Set `width` to `small`, `medium` or `large` to match the content. The default is `medium`.
+
+### When not to use a popover
+
+A popover can hold anything, which makes it easy to reach for. Most needs already have a more specific component.
+
+| Need                                                                      | Use instead                                                                            |
+| ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| A list of commands that run and close                                     | [Menu](/components/overlay/menu)                                                       |
+| Context or overflow actions behind a "⋮" button                           | [ActionMenu](/components/overlay/action-menu)                                          |
+| Choosing one or more values for a form                                    | [Select](/components/form/select)                                                      |
+| Typing to pick a value                                                    | [Autocomplete](/components/form/autocomplete) or [ComboBox](/components/form/combobox) |
+| Entering several tags                                                     | [TagField](/components/form/tag-field)                                                 |
+| A short, passive hint on hover                                            | [Tooltip](/components/overlay/tooltip)                                                 |
+| A "?" or "i" help button                                                  | [ContextualHelp](/components/overlay/contextual-help)                                  |
+| Required input, several steps, a destructive confirmation or wide content | [Dialog](/components/overlay/dialog)                                                   |
+| A system message without a trigger                                        | [Toast](/components/overlay/toast)                                                     |
+
+### Things to avoid
+
+- **Don't nest popovers.** Opening a popover from inside another one is hard to follow and hard to dismiss. Field dropdowns, like a Select inside a filter panel, are fine.
+- **Don't put required or critical input in a popover.** If the content is wider than about four columns, it needs a Dialog.
+- **Don't repeat what is already on the page.** A popover should add information, not copy it.
+- **Don't open a popover from the primary action.** Popovers carry secondary and contextual content.
+
+## Accessibility
+
+The panel is a dialog. A `<Title>` inside `<Popover.Content>` becomes its accessible name automatically. When the panel has no visible title, give `<Popover.Content>` an `aria-label`. An icon-only trigger needs an `aria-label` too.
+
+The trigger exposes whether the panel is open. When the panel opens, focus moves into it. Tab moves through the controls inside, and Escape closes the panel and returns focus to the trigger. Set `keyboardDismissable={false}` on `<Popover>` only when there is another clear way out, because a panel the keyboard can't leave is a barrier.
+
+## Props
+
+<StorybookHintMessage component={'Popover'} />
+
+### Popover
+
+<AutoTypeTable path="Popover" name="PopoverProps" />
+
+### Popover.Content
+
+<AutoTypeTable path="Popover/PopoverContent" name="PopoverContentProps" />
+
+### Popover.Search
+
+<AutoTypeTable path="Popover/PopoverSearch" name="PopoverSearchProps" />
+
+## Alternative components
+
+- [Menu](/components/overlay/menu): Use for a list of commands that run and close.
+- [Dialog](/components/overlay/dialog): Use for required input, several steps or content that needs the user's full attention.
+- [ContextualHelp](/components/overlay/contextual-help): Use for a help button next to a label or heading.
+- [Tooltip](/components/overlay/tooltip): Use for a short, passive hint on hover or focus.
