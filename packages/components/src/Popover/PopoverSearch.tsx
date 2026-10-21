@@ -19,6 +19,7 @@ import { Provider } from 'react-aria-components/slots';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { SearchField } from '../SearchField/SearchField';
 import { intlMessages } from '../intl/messages';
+import { AutocompleteBoundary } from '../utils/AutocompleteBoundary';
 import { usePopoverContext } from './Context';
 
 // Context
@@ -154,6 +155,14 @@ export interface PopoverSearchProps {
    * @default case- and accent-insensitive "contains"
    */
   filter?: RAC.AutocompleteProps<object>['filter'];
+
+  /**
+   * Compact controls that sit after the field in the same row, like a filter
+   * `<Select>` with an `aria-label` and a fixed `width`, or an `<ActionMenu>`
+   * with actions for the whole list. They are not part of the search, so a
+   * field among them is never driven by it.
+   */
+  children?: ReactNode;
 }
 
 // Component
@@ -163,9 +172,10 @@ export interface PopoverSearchProps {
  * `<Popover.Content>`, e.g. a `<ListView>`. It renders as a borderless row
  * spanning the popover, so it stays in view while the results scroll. Under a
  * `<Title>` it sits between two dividers. Without a title it becomes the
- * popover's header (name the popover with `aria-label` then). Tab moves into the results: React
- * Aria keeps real focus in a `ListView` (a `GridList`), because its rows hold
- * their own controls. A `ListBox` would take arrow keys from the field.
+ * popover's header (name the popover with `aria-label` then). Children sit
+ * after the field in the same row. Tab moves through them into the results:
+ * React Aria keeps real focus in a `ListView` (a `GridList`), because its rows
+ * hold their own controls. A `ListBox` would take arrow keys from the field.
  */
 export const PopoverSearch = ({
   'aria-label': ariaLabel,
@@ -175,6 +185,7 @@ export const PopoverSearch = ({
   defaultInputValue,
   onInputChange,
   filter,
+  children,
 }: PopoverSearchProps) => {
   const { classNames } = usePopoverContext();
   const search = use(PopoverSearchContext);
@@ -205,11 +216,18 @@ export const PopoverSearch = ({
 
   return (
     <div data-slot="search" className={classNames.search}>
-      <SearchField
-        aria-label={ariaLabel ?? stringFormatter.format('search')}
-        placeholder={placeholder}
-        autoFocus={autoFocus}
-      />
+      <div className="min-w-0 flex-1">
+        <SearchField
+          aria-label={ariaLabel ?? stringFormatter.format('search')}
+          placeholder={placeholder}
+          autoFocus={autoFocus}
+        />
+      </div>
+      {/* Trailing controls stay out of the search: a field among them must
+          not become its input. */}
+      {children ? (
+        <AutocompleteBoundary>{children}</AutocompleteBoundary>
+      ) : null}
     </div>
   );
 };
