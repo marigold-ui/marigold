@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { expect, fn, userEvent } from 'storybook/test';
+import { expect, fn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Facebook } from '@marigold/icons';
 import { Stack } from '../Stack/Stack';
+import { expectFocusRingContrast } from '../contrast.utils';
 import { Button } from './Button';
 
 const meta = preview.meta({
@@ -277,5 +278,23 @@ Loading.test(
     await expect(
       canvas.getByRole('button', { name: 'Submit' })
     ).toHaveAttribute('data-pending', 'true');
+  }
+);
+
+ButtonVariants.test(
+  'Keyboard focus draws a 1px ring that clears 3:1 on ghost buttons',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent, step }) => {
+    for (const name of ['Ghost', 'Destructive Ghost']) {
+      await step(name, async () => {
+        const [button] = await canvas.findAllByRole('button', { name });
+        button!.focus();
+        await userEvent.tab();
+        await userEvent.tab({ shift: true });
+
+        await expect(button).toHaveFocus();
+        await waitFor(() => expectFocusRingContrast(button!));
+      });
+    }
   }
 );

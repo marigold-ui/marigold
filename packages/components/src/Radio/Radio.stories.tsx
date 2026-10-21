@@ -1,7 +1,8 @@
 import { I18nProvider } from 'react-aria-components/I18nProvider';
-import { expect } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
+import { expectFocusRingContrast } from '../contrast.utils';
 import {
   borderOf,
   controlIcon,
@@ -96,6 +97,20 @@ export const Basic = meta.story({
     </Radio.Group>
   ),
 });
+
+Basic.test(
+  'Keyboard focus draws a ring around a selected radio',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    const radio = await canvas.findByRole('radio', { name: 'Option 1' });
+    const icon = controlIcon(radio);
+
+    await userEvent.tab();
+
+    await expect(radio).toHaveFocus();
+    await waitFor(() => expectFocusRingContrast(icon));
+  }
+);
 
 // The one positive assertion: the "leaves the border alone" cases below pass
 // just as happily against a rule that never matches at all.

@@ -13,6 +13,10 @@ import preview from '.storybook/preview';
 import { Key } from '@react-types/shared';
 import { Stack } from '../Stack/Stack';
 import { Tag } from '../TagGroup/Tag';
+import {
+  expectFocusRingContrast,
+  expectInsetFocusRingContrast,
+} from '../contrast.utils';
 import { Calendar } from './Calendar';
 
 const meta = preview.meta({
@@ -793,5 +797,47 @@ PresetsMobile.test(
     await expect(
       within(tray).getByRole('option', { name: 'Kickoff' })
     ).toHaveAttribute('aria-selected', 'true');
+  }
+);
+
+Basic.test(
+  'Keyboard focus clears 3:1 on the month trigger, controls and month options',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { defaultValue: new CalendarDate(2019, 6, 5) },
+  },
+  async ({ canvas, userEvent, step }) => {
+    const month = canvas.getByRole('button', { name: 'Jun' });
+
+    await step('month trigger', async () => {
+      month.focus();
+      await userEvent.tab();
+      await userEvent.tab({ shift: true });
+
+      await expect(month).toHaveFocus();
+      await waitFor(() => expectFocusRingContrast(month));
+    });
+
+    await step('previous control', async () => {
+      const previous = canvas
+        .getAllByRole('button')
+        .find(button => button.getAttribute('slot') === 'previous')!;
+      previous.focus();
+      await userEvent.tab();
+      await userEvent.tab({ shift: true });
+
+      await expect(previous).toHaveFocus();
+      await waitFor(() => expectFocusRingContrast(previous));
+    });
+
+    await step('month option', async () => {
+      await userEvent.click(month);
+      const [first] = await canvas.findAllByRole('option');
+      first!.focus();
+      await userEvent.keyboard('{ArrowDown}{ArrowUp}');
+
+      await expect(first).toHaveFocus();
+      await waitFor(() => expectInsetFocusRingContrast(first!));
+    });
   }
 );

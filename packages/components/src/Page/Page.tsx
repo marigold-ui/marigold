@@ -181,9 +181,7 @@ export const Page = ({
         aria-label={!hasTitle ? ariaLabel : undefined}
         className={cn(
           'flex min-w-0 flex-col gap-y-(--page-gap) px-(--page-px) py-(--page-py) [grid-area:main]',
-          // `ui-state-focus-item`, not `ui-state-focus`: that one needs a
-          // border to flip to clear 3:1, and this landmark has none. It stays
-          // here, not in the theme, because `tabIndex` picks which applies.
+          // Inset ring for a container. Set here, not in the theme: `tabIndex` decides.
           // No `tabIndex` counts as `-1`: `usePageFocus` sets it on the DOM.
           tabIndex === undefined || tabIndex < 0
             ? 'outline-none'

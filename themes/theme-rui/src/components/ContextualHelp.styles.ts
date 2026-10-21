@@ -4,8 +4,10 @@ export const ContextualHelp: ThemeComponent<'ContextualHelp'> = {
   trigger: cva({
     base: [
       'inline-flex items-center justify-center rounded-full transition-[color,box-shadow]',
-      'hover:ui-state-focus hover:text-foreground',
+      'hover:ui-state-hover-ghost hover:text-foreground',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0',
+      // Room for the focus ring, layout unchanged.
+      'p-1 -m-1',
       'focus-visible:ui-state-focus outline-none',
       'cursor-pointer ui-touch-hitbox',
     ],

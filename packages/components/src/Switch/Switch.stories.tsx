@@ -1,6 +1,7 @@
-import { expect } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
+import { expectFocusRingContrast } from '../contrast.utils';
 import { firstLineOffset, isSingleLine, labelBlockOf } from '../control.utils';
 import { Switch } from './Switch';
 
@@ -434,5 +435,28 @@ Basic.test(
     expect(scrolled).toBeGreaterThan(0);
     expect(after.label - before.label).toBe(-scrolled);
     expect(after.input - before.input).toBe(after.label - before.label);
+  }
+);
+
+Basic.test(
+  'Keyboard focus draws a 1px ring around the track, off and on',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent, step }) => {
+    const switchEl = await canvas.findByRole('switch');
+    const track = getTrack(switchEl) as HTMLElement;
+
+    await step('off', async () => {
+      await userEvent.tab();
+
+      await expect(switchEl).toHaveFocus();
+      await waitFor(() => expectFocusRingContrast(track));
+    });
+
+    await step('on', async () => {
+      await userEvent.keyboard(' ');
+
+      await expect(switchEl).toBeChecked();
+      await waitFor(() => expectFocusRingContrast(track));
+    });
   }
 );

@@ -6,7 +6,9 @@ export const Accordion: ThemeComponent<'Accordion'> = {
     // this keeps item dividers edge-to-edge while header and content align with the
     // Panel title, mirroring Table. Falls back to `0px`, so standalone Accordions
     // and those in a non-bled `Panel.Content` are unchanged.
-    base: 'flex-col [--accordion-x-padding:var(--bleed-px,0px)]',
+    // `--accordion-px` is that inset, or two steps unbled, so the focus ring
+    // has room inside the header instead of overhanging the column.
+    base: 'flex-col [--accordion-x-padding:var(--bleed-px,0px)] [--accordion-px:max(var(--accordion-x-padding),calc(var(--spacing)*2))]',
     variants: {
       variant: {
         default: '',
@@ -41,15 +43,13 @@ export const Accordion: ThemeComponent<'Accordion'> = {
     variants: {
       variant: {
         default: [
-          'focus-visible:ui-state-focus outline-none',
+          'focus-visible:ui-state-focus-item outline-none',
           // In a bled Panel the header spans the full width, so inset it and its focus
           // ring off the Panel border by one spacing step, like `Panel.Collapsible`.
-          // `--accordion-ring-inset` is `0` unless bled, so everything else collapses to
-          // a plain full-width header.
           '[--accordion-ring-inset:min(var(--accordion-x-padding),var(--spacing))]',
           'mx-(--accordion-ring-inset)',
           'w-[calc(100%-var(--accordion-ring-inset)-var(--accordion-ring-inset))]',
-          'px-[calc(var(--accordion-x-padding)-var(--accordion-ring-inset))]',
+          'px-[calc(var(--accordion-px)-var(--accordion-ring-inset))]',
         ],
         card: 'px-4 outline-none',
       },
@@ -65,7 +65,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
     base: 'pt-1 pb-2',
     variants: {
       variant: {
-        default: 'px-(--accordion-x-padding)',
+        default: 'px-(--accordion-px)',
         card: 'px-4',
       },
     },
@@ -78,7 +78,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
     base: 'shrink-0',
     variants: {
       variant: {
-        default: 'pe-(--accordion-x-padding)',
+        default: 'pe-(--accordion-px)',
         card: 'pe-4',
       },
     },
