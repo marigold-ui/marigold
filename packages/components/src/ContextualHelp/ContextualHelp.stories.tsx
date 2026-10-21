@@ -1,8 +1,9 @@
-import { expect } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Link } from '../Link/Link';
 import { TextField } from '../TextField/TextField';
+import { expectFocusRingContrast } from '../contrast.utils';
 import { ContextualHelp } from './ContextualHelp';
 
 const meta = preview.meta({
@@ -173,3 +174,19 @@ export const WithBadgeInLabelAddon = meta.story({
     />
   ),
 });
+
+Basic.test(
+  'Keyboard focus draws a ring that clears 3:1 on the trigger',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    const trigger = await canvas.findByRole('button');
+
+    trigger.focus();
+    await userEvent.tab();
+
+    await userEvent.tab({ shift: true });
+
+    await expect(trigger).toHaveFocus();
+    await waitFor(() => expectFocusRingContrast(trigger));
+  }
+);

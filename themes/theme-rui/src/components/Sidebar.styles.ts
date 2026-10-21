@@ -118,7 +118,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'max-sm:min-h-touch-target',
       'transition-[color,background-color,box-shadow]',
       'motion-reduce:transition-none',
-      'outline-none focus-visible:ui-state-focus',
+      'outline-none focus-visible:ui-state-focus-item',
       // Idle `secondary-bold` (charcoal-700): clickable rows must out-rank the
       // `secondary` groupLabel captions, which already sit at the AA floor for
       // 11px and can't go lighter. `foreground` would flatten idle against the
@@ -137,7 +137,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       '[&_span]:font-normal',
       'transition-[color,background-color]',
       'motion-reduce:transition-none',
-      'outline-none focus-visible:ui-state-focus',
+      'outline-none focus-visible:ui-state-focus-item',
       'cursor-pointer mb-1',
       'text-secondary hover:bg-hover hover:text-foreground',
     ],
@@ -218,6 +218,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // on the collapsed rail (`hover`). Hover elsewhere is ink-lift only.
       'in-data-[state=collapsed]:data-active:bg-hover',
       'aria-[current=page]:bg-selected',
+      // Outer ring: the label fills the tile, an inset ring would hit it.
       'focus-visible:ui-state-focus',
       '[&_svg]:size-5 [&_svg]:shrink-0',
       // Label: caption size. Fixed width = expanded rail minus tile chrome

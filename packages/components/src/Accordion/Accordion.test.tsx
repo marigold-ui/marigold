@@ -134,17 +134,21 @@ test('wires up the bleed inset custom properties (Panel alignment)', () => {
   expect(container.className).toContain(
     '[--accordion-x-padding:var(--bleed-px,0px)]'
   );
+  // Unbled, the padding floors at two steps so the focus ring has room.
+  expect(container.className).toContain(
+    '[--accordion-px:max(var(--accordion-x-padding),calc(var(--spacing)*2))]'
+  );
 
   // Header insets itself (and its focus ring) by the inset when bled.
   expect(trigger.className).toContain('mx-(--accordion-ring-inset)');
   expect(trigger.className).toContain(
-    'px-[calc(var(--accordion-x-padding)-var(--accordion-ring-inset))]'
+    'px-[calc(var(--accordion-px)-var(--accordion-ring-inset))]'
   );
 
-  // Expanded content picks up the same inset.
+  // Expanded content picks up the same padding.
   const content = screen
     .getByText('Here are some infos')
     // eslint-disable-next-line testing-library/no-node-access
-    .closest('[class*="px-(--accordion-x-padding)"]');
+    .closest('[class*="px-(--accordion-px)"]');
   expect(content).not.toBeNull();
 });

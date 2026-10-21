@@ -181,24 +181,19 @@
 /* ========================= */
 
 /*
- * Applies a consistent visual style used for keyboard focus states across components.
- * Used this when the border of the component can be changed.
- *
- * Two-part indicator, and both parts matter: the *border* flips to full-opacity
- * --color-ring (5.5:1 on white) and the outline is a soft halo around it. The
- * halo alone measures 2.08:1 -- below the 3:1 a focus indicator needs -- so this
- * utility only carries its weight on something that has a border to flip
- * (ui-frame / ui-surface / ui-control). On a borderless row it silently
- * degrades to the halo. Use ui-state-focus-item there instead.
+ * Focus for buttons and controls: a 1px --color-ring edge plus a soft halo.
+ * The halo alone is 2.08:1, so the edge is drawn here, not left to the caller.
+ * Use ui-state-focus-item for rows and list items.
  */
 @utility ui-state-focus {
   @apply outline-ring/50 outline-3 outline-offset-0 outline-solid;
+  @apply ring-1 ring-(--ui-border-color);
   --ui-border-color: var(--color-ring);
 }
 
 /*
- * Keyboard focus for borderless rows: menu items, list options, table rows --
- * anything that has no --ui-border-color for ui-state-focus to recolor.
+ * Keyboard focus for rows and list items: menu items, list options, table rows.
+ * Use ui-state-focus for buttons and controls.
  *
  * Full-opacity --color-ring, because this ring *is* the whole indicator: 4.97:1
  * over focus-highlight, 3.59:1 over selected, 3.14:1 on the contrast ground.
