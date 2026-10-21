@@ -93,7 +93,7 @@ export const v18: MigrationManifest = {
     Field: null,
     BooleanField: ['container', 'description'],
     Headline: null,
-    Popover: ['container', 'body', 'title', 'description', 'search', 'content'],
+    Popover: null,
     HelpText: ['container', 'icon'],
     IconButton: null,
     Checkbox: ['container', 'label', 'checkbox', 'group'],
@@ -285,12 +285,7 @@ export const v18: MigrationManifest = {
     ],
     TopNavigation: ['container', 'start', 'middle', 'end'],
   },
-  restructures: [
-    { component: 'Card', primarySlot: 'container' },
-    // DST-1485: the Popover surface moved into `container` so the compound
-    // `<Popover>` can add its own slots on the same theme entry.
-    { component: 'Popover', primarySlot: 'container' },
-  ],
+  restructures: [{ component: 'Card', primarySlot: 'container' }],
   scaffolds: [
     {
       name: 'BooleanField',
