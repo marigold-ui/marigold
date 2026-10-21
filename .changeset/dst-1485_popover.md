@@ -26,7 +26,7 @@ feat(DST-1485): add a general-purpose `Popover` for arbitrary content
 - `<Popover.Trigger>` wraps the trigger and the panel, like `Dialog.Trigger`. Its `dismissable` and `keyboardDismissable` props control how the panel closes. Both default to `true`.
 - `<Popover>` renders a positioned panel on larger screens and a tray on small ones. A `<Title>` and `<Description>` inside it form the header, and the title becomes the panel's accessible name.
 - `<Popover.Content>` holds the body and is the only part that scrolls. Without it, the popover lays out all its children as the body.
-- `modal` follows React Aria and defaults to `true`. `'trap-focus'` keeps focus inside without locking the page, and `false` makes the panel non-modal.
+- `<Popover>` is modal by default, following React Aria. `nonModal` lets focus leave and keeps the page interactive.
 - `<Popover.Search>` sits next to `<Popover.Content>` and filters the list in it as the user types. Its field stays in view above the results.
 
 The `Popover` export used to be the internal overlay primitive behind `Select`, `Menu` and the date pickers. That primitive is no longer exported. It was marked internal and had no documented use outside Marigold.

@@ -90,15 +90,9 @@ Keep forms in a popover short and optional. A popover closes when the user click
 
 ### Modality
 
-The `modal` prop on `<Popover>` controls how much the panel takes over the page. It follows React Aria and defaults to `true`.
+A popover is modal by default, following React Aria. While it is open, the rest of the page is hidden from assistive technology, scrolling is locked, and focus stays inside the panel. This is right for almost every popover.
 
-| Value          | Behavior                                                                                     | When to use                                             |
-| -------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
-| `true`         | Hides the rest of the page from assistive technology, locks scrolling and keeps focus inside | The default. Right for most panels                      |
-| `'trap-focus'` | Keeps focus inside, but the page keeps scrolling and stays visible to assistive technology   | Short forms next to content the user still needs to see |
-| `false`        | Focus can leave and the page stays fully interactive                                         | Only for panels without focusable controls              |
-
-React Aria warns against a non-modal popover that holds focusable controls, because screen reader users can lose track of where they are. Prefer `true` or `'trap-focus'` whenever the panel contains buttons, links or fields. On small screens the panel opens as a tray, which is always modal.
+Set `nonModal` to let focus leave the panel and keep the page interactive. React Aria warns against this when the panel holds buttons, links or fields, because screen reader users can lose track of where they are. Keep `nonModal` for panels without focusable controls. On small screens the panel opens as a tray, which is always modal.
 
 ### Placement and width
 

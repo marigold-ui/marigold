@@ -40,11 +40,11 @@ const meta = preview.meta({
     ),
   ],
   argTypes: {
-    modal: {
-      control: { type: 'radio' },
-      options: [true, 'trap-focus', false],
-      description: 'How strongly the popover takes over the page.',
-      table: { defaultValue: { summary: 'true' } },
+    nonModal: {
+      control: { type: 'boolean' },
+      description:
+        'Whether the popover is non-modal: focus can leave and the page stays interactive.',
+      table: { defaultValue: { summary: 'false' } },
     },
     width: {
       control: { type: 'radio' },
@@ -60,7 +60,7 @@ const meta = preview.meta({
     },
   },
   args: {
-    modal: true,
+    nonModal: false,
     width: 'medium',
     placement: 'bottom',
   },
@@ -204,14 +204,13 @@ Controlled.test(
   }
 );
 
-// The three `modal` modes side by side. They look the same; the difference is
+// Modal and non-modal side by side. They look the same; the difference is
 // what the rest of the page does while one is open. Open one, then try Tab,
 // scroll the page, and press the counter: it sits on the trigger row, so it
 // stays visible above the popovers, which open downwards.
 const MODES = [
-  { modal: true, label: 'Modal (true)' },
-  { modal: 'trap-focus', label: "Trap focus ('trap-focus')" },
-  { modal: false, label: 'Non-modal (false)' },
+  { nonModal: false, label: 'Modal (default)' },
+  { nonModal: true, label: 'Non-modal (nonModal)' },
 ] as const;
 
 export const Modality = meta.story({
@@ -226,7 +225,7 @@ export const Modality = meta.story({
           {MODES.map(mode => (
             <Popover.Trigger key={mode.label}>
               <Button>{mode.label}</Button>
-              <Popover {...args} modal={mode.modal}>
+              <Popover {...args} nonModal={mode.nonModal}>
                 <Title>{mode.label}</Title>
                 <Popover.Content>
                   <TextField label="Name" />
@@ -255,64 +254,45 @@ Modality.test(
     const outside = () =>
       canvas.getByRole('button', { name: /^Outside: pressed/ });
 
-    await step(
-      'true: outside press is caught, page scroll locked',
-      async () => {
-        await userEvent.click(
-          canvas.getByRole('button', { name: 'Modal (true)' })
-        );
-        await canvas.findByRole('dialog', { name: 'Modal (true)' });
-        await waitFor(() =>
-          expect(document.documentElement.style.overflow).toBe('hidden')
-        );
+    await step('modal: focus stays inside, the page is blocked', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Modal (default)' })
+      );
+      const dialog = await canvas.findByRole('dialog', {
+        name: 'Modal (default)',
+      });
+      await waitFor(() =>
+        expect(document.documentElement.style.overflow).toBe('hidden')
+      );
 
-        await userEvent.click(outside());
-
-        await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
-        await expect(outside()).toHaveTextContent('pressed 0 times');
+      for (let i = 0; i < 4; i++) {
+        await userEvent.tab();
+        await expect(dialog).toContainElement(
+          document.activeElement as HTMLElement
+        );
       }
-    );
 
-    await step(
-      "'trap-focus': Tab stays inside, outside press goes through",
-      async () => {
-        await userEvent.click(
-          canvas.getByRole('button', { name: "Trap focus ('trap-focus')" })
-        );
-        const dialog = await canvas.findByRole('dialog', {
-          name: "Trap focus ('trap-focus')",
-        });
-        await expect(document.documentElement.style.overflow).not.toBe(
-          'hidden'
-        );
+      await userEvent.click(outside());
 
-        for (let i = 0; i < 4; i++) {
-          await userEvent.tab();
-          await expect(dialog).toContainElement(
-            document.activeElement as HTMLElement
-          );
-        }
+      await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
+      await expect(outside()).toHaveTextContent('pressed 0 times');
+    });
 
-        await userEvent.click(outside());
+    await step('non-modal: the page stays interactive', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Non-modal (nonModal)' })
+      );
+      await canvas.findByRole('dialog', { name: 'Non-modal (nonModal)' });
+      await expect(document.documentElement.style.overflow).not.toBe('hidden');
+      await expect(
+        outside().closest('[aria-hidden="true"], [inert]')
+      ).toBeNull();
 
-        await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
-        await expect(outside()).toHaveTextContent('pressed 1 times');
-      }
-    );
+      await userEvent.click(outside());
 
-    await step(
-      'false: the page stays visible to assistive technology',
-      async () => {
-        await userEvent.click(
-          canvas.getByRole('button', { name: 'Non-modal (false)' })
-        );
-        await canvas.findByRole('dialog', { name: 'Non-modal (false)' });
-
-        await expect(
-          outside().closest('[aria-hidden="true"], [inert]')
-        ).toBeNull();
-      }
-    );
+      await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
+      await expect(outside()).toHaveTextContent('pressed 1 times');
+    });
   }
 );
 
@@ -703,7 +683,7 @@ SearchWithNestedOverlays.test(
 // Must-support case 6: a mini-form with one or two optional fields.
 export const MiniForm = meta.story({
   tags: ['component-test'],
-  args: { modal: 'trap-focus', width: 'small' },
+  args: { width: 'small' },
   render: args => (
     <Popover.Trigger>
       <Button>

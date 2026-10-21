@@ -22,7 +22,7 @@ import { PopoverTrigger } from './PopoverTrigger';
 // ---------------
 // RAC's popover API minus what the compound owns or what is internal: the
 // open state and dismiss behaviour live on `<Popover.Trigger>`, `isNonModal`
-// becomes `modal`, and the enter/exit flags are RAC animation internals.
+// becomes `nonModal`, and the enter/exit flags are RAC animation internals.
 type RemovedProps =
   | 'open'
   | 'keyboardDismissDisabled'
@@ -37,20 +37,17 @@ type RemovedProps =
 
 export interface PopoverProps extends Omit<OverlayPopoverProps, RemovedProps> {
   /**
-   * How strongly the popover takes over the page, following React Aria.
-   *
-   * - `true`: modal. The rest of the page is hidden from assistive technology,
-   *   scrolling is locked and focus stays inside.
-   * - `'trap-focus'`: focus stays inside, but the page keeps scrolling and stays
-   *   visible to assistive technology.
-   * - `false`: non-modal. Focus can leave and the page stays interactive. React
-   *   Aria advises against this when the popover holds focusable controls,
-   *   because screen reader users can lose track of it.
+   * Whether the popover is non-modal, React Aria's `isNonModal`. A modal
+   * popover (the default) hides the rest of the page from assistive
+   * technology, locks scrolling and keeps focus inside. A non-modal one lets
+   * focus leave and keeps the page interactive. React Aria advises against it
+   * when the popover holds focusable controls, because screen reader users can
+   * lose track of it.
    *
    * On small screens the popover renders as a tray, which is always modal.
-   * @default true
+   * @default false
    */
-  modal?: boolean | 'trap-focus';
+  nonModal?: boolean;
 
   /**
    * Width of the popover on larger screens.
@@ -160,7 +157,7 @@ const PopoverTrayBody = ({
 // Component
 // ---------------
 const PopoverBase = ({
-  modal = true,
+  nonModal = false,
   width = 'medium',
   placement = 'bottom',
   shouldCloseOnInteractOutside,
@@ -227,16 +224,16 @@ const PopoverBase = ({
       {...props}
       placement={placement}
       matchTriggerWidth={false}
-      isNonModal={modal !== true}
+      isNonModal={nonModal}
       keyboardDismissDisabled={!keyboardDismissable}
       shouldCloseOnInteractOutside={
         dismissable ? shouldCloseOnInteractOutside : () => false
       }
     >
       {/* React Aria only contains focus when the popover is its own dialog.
-          Ours nests a `<Dialog>` for the close slot and labelling, so
-          containment is applied here for both focus-holding modes. */}
-      {modal === false ? dialog : <FocusScope contain>{dialog}</FocusScope>}
+          Ours nests a `<Dialog>` for the close slot and labelling, so a modal
+          popover contains focus here. */}
+      {nonModal ? dialog : <FocusScope contain>{dialog}</FocusScope>}
     </OverlayPopover>
   );
 };
