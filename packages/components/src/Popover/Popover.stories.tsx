@@ -204,74 +204,115 @@ Controlled.test(
   }
 );
 
-export const TrapFocus = meta.story({
+// The three `modal` modes side by side. They look the same; the difference is
+// what the rest of the page does while one is open. Open one, then try Tab,
+// scroll the page, and press the counter: it sits on the trigger row, so it
+// stays visible above the popovers, which open downwards.
+const MODES = [
+  { modal: true, label: 'Modal (true)' },
+  { modal: 'trap-focus', label: "Trap focus ('trap-focus')" },
+  { modal: false, label: 'Non-modal (false)' },
+] as const;
+
+export const Modality = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
-  args: { modal: 'trap-focus' },
-  render: args => (
-    <Stack space={4} alignX="left">
-      <Popover.Trigger>
-        <Button>Share</Button>
-        <Popover {...args}>
-          <Title>Share event</Title>
-          <Popover.Content>
-            <TextField label="Email" />
-            <Button slot="close">Send invite</Button>
-          </Popover.Content>
-        </Popover>
-      </Popover.Trigger>
-      <Button>Outside</Button>
-    </Stack>
-  ),
-});
+  render: args => {
+    const [clicks, setClicks] = useState(0);
 
-TrapFocus.test(
-  'Keeps Tab inside the popover',
-  async ({ canvas, userEvent }) => {
-    await userEvent.click(canvas.getByRole('button', { name: 'Share' }));
-    const dialog = await canvas.findByRole('dialog', { name: 'Share event' });
-
-    for (let i = 0; i < 4; i++) {
-      await userEvent.tab();
-      await expect(dialog).toContainElement(
-        document.activeElement as HTMLElement
-      );
-    }
-  }
-);
-
-export const NonModal = meta.story({
-  tags: ['component-test'],
-  parameters: { chromatic: { disableSnapshot: true } },
-  args: { modal: false },
-  render: args => (
-    <Stack space={4} alignX="left">
-      <Popover.Trigger>
-        <Button>Event details</Button>
-        <Popover {...args} aria-label="Event details">
-          <Popover.Content>
-            <Text>Doors open at 17:00.</Text>
-          </Popover.Content>
-        </Popover>
-      </Popover.Trigger>
-      <Button>Outside</Button>
-    </Stack>
-  ),
-});
-
-NonModal.test(
-  'Leaves the page reachable for assistive technology',
-  async ({ canvas, userEvent }) => {
-    await userEvent.click(
-      canvas.getByRole('button', { name: 'Event details' })
+    return (
+      <Stack space={4}>
+        <Inline space={2} alignY="center">
+          {MODES.map(mode => (
+            <Popover.Trigger key={mode.label}>
+              <Button>{mode.label}</Button>
+              <Popover {...args} modal={mode.modal}>
+                <Title>{mode.label}</Title>
+                <Popover.Content>
+                  <TextField label="Name" />
+                  <Button slot="close">Done</Button>
+                </Popover.Content>
+              </Popover>
+            </Popover.Trigger>
+          ))}
+          <Button variant="secondary" onPress={() => setClicks(c => c + 1)}>
+            Outside: pressed {clicks} times
+          </Button>
+        </Inline>
+        <Stack space={2}>
+          {Array.from({ length: 40 }, (_, i) => (
+            <Text key={i}>Page content, line {i + 1}</Text>
+          ))}
+        </Stack>
+      </Stack>
     );
-    await canvas.findByRole('dialog', { name: 'Event details' });
+  },
+});
 
-    // A modal popover hides the rest of the page (see `Basic`); a non-modal
-    // one leaves it alone.
-    const outside = canvas.getByRole('button', { name: 'Outside' });
-    await expect(outside).toBeVisible();
-    await expect(outside.closest('[aria-hidden="true"], [inert]')).toBeNull();
+Modality.test(
+  'Each mode blocks exactly what it promises',
+  async ({ canvas, userEvent, step }) => {
+    const outside = () =>
+      canvas.getByRole('button', { name: /^Outside: pressed/ });
+
+    await step(
+      'true: outside press is caught, page scroll locked',
+      async () => {
+        await userEvent.click(
+          canvas.getByRole('button', { name: 'Modal (true)' })
+        );
+        await canvas.findByRole('dialog', { name: 'Modal (true)' });
+        await waitFor(() =>
+          expect(document.documentElement.style.overflow).toBe('hidden')
+        );
+
+        await userEvent.click(outside());
+
+        await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
+        await expect(outside()).toHaveTextContent('pressed 0 times');
+      }
+    );
+
+    await step(
+      "'trap-focus': Tab stays inside, outside press goes through",
+      async () => {
+        await userEvent.click(
+          canvas.getByRole('button', { name: "Trap focus ('trap-focus')" })
+        );
+        const dialog = await canvas.findByRole('dialog', {
+          name: "Trap focus ('trap-focus')",
+        });
+        await expect(document.documentElement.style.overflow).not.toBe(
+          'hidden'
+        );
+
+        for (let i = 0; i < 4; i++) {
+          await userEvent.tab();
+          await expect(dialog).toContainElement(
+            document.activeElement as HTMLElement
+          );
+        }
+
+        await userEvent.click(outside());
+
+        await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
+        await expect(outside()).toHaveTextContent('pressed 1 times');
+      }
+    );
+
+    await step(
+      'false: the page stays visible to assistive technology',
+      async () => {
+        await userEvent.click(
+          canvas.getByRole('button', { name: 'Non-modal (false)' })
+        );
+        await canvas.findByRole('dialog', { name: 'Non-modal (false)' });
+
+        await expect(
+          outside().closest('[aria-hidden="true"], [inert]')
+        ).toBeNull();
+      }
+    );
   }
 );
 
