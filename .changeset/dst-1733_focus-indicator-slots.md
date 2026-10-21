@@ -14,4 +14,4 @@ The Calendar month and year triggers are now drawn like a `Select`. The Contextu
 
 The token overview's focus highlight section now names the same rule: `ui-state-focus` on buttons and controls, `ui-state-focus-item` on rows and list items.
 
-Four slots gained room so the ring does not sit on their content, without moving it: a standalone Accordion header extends slightly past the content column with its title still aligned, and the ContextualHelp trigger, the Collapsible trigger and Stepper step links grow around the same icon or label.
+The ContextualHelp trigger, the Collapsible trigger and Stepper step links grow around the same icon or label, so the ring does not sit on their content and nothing moves. A standalone Accordion, outside a bled Panel, now insets its header and content by 8px, so the header's ring has room and the title stays aligned with the content.

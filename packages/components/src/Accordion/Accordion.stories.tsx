@@ -985,3 +985,28 @@ Basic.test(
     await waitFor(() => expectInsetFocusRingContrast(header));
   }
 );
+
+// An unpadded `Scrollable` clips anything past its edge, so the header must
+// not overhang the column, or its inset ring loses a side.
+StickyHeaderScrollContainer.test(
+  'Keeps the header and its focus ring inside the scroll container',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    const header = canvas.getByRole('button', {
+      name: /Symfonie Abo 2025\/2026/i,
+    });
+    const scroller = header.closest('.overflow-auto') as HTMLElement;
+
+    header.focus();
+    await userEvent.tab();
+
+    await userEvent.tab({ shift: true });
+
+    const box = header.getBoundingClientRect();
+    const frame = scroller.getBoundingClientRect();
+    await expect(header).toHaveFocus();
+    expect(box.left).toBeGreaterThanOrEqual(frame.left);
+    expect(box.right).toBeLessThanOrEqual(frame.right);
+    await waitFor(() => expectInsetFocusRingContrast(header));
+  }
+);
