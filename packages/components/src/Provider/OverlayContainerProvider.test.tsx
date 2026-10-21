@@ -19,7 +19,9 @@ const theme: Theme = {
     black: '#000',
   },
   components: {
-    Popover: cva({}),
+    Popover: {
+      container: cva({}),
+    },
     Underlay: cva({}),
     Select: {
       icon: cva({}),

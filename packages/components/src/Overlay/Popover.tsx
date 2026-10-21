@@ -62,7 +62,9 @@ const PopoverBase = ({
     variant: placement,
     // Match the trigger's width so field dropdowns line up with the field. A
     // calendar sizes to its own content, so it opts out (matchTriggerWidth).
-    className: matchTriggerWidth ? 'min-w-(--trigger-width)' : undefined,
+    className: {
+      container: matchTriggerWidth ? 'min-w-(--trigger-width)' : undefined,
+    },
   });
 
   return (
@@ -70,7 +72,7 @@ const PopoverBase = ({
       <Popover
         ref={ref}
         {...props}
-        className={cn('z-30 flex', classNames)}
+        className={cn('z-30 flex', classNames.container)}
         placement={placement}
         offset={offset}
       >
