@@ -821,7 +821,6 @@ WithSelectAll.test(
       for (const row of canvas.getAllByRole('row')) {
         expect(row).toHaveAttribute('aria-selected', 'true');
       }
-      // The same sentinel Mod+A reports, so a consumer has one shape to handle.
       expect(args.onSelectionChange).toHaveBeenLastCalledWith('all');
       expect(selectAll).toBeChecked();
     });
@@ -855,9 +854,6 @@ WithSelectAll.test(
 
 WithSelectAll.test(
   'puts the header checkbox on the row indicator column',
-  // The one thing a consumer cannot build themselves: the row padding is a
-  // custom property on the list, so only the component can line a header up
-  // with it. Measured, because every class involved is indirection.
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
     const x = (element: Element) =>
@@ -998,7 +994,6 @@ const onBulkArchive = fn();
 
 // The Bulk Actions pattern's action bar, which needs no new API: `<ActionBar>`
 // takes `selectedItemCount` / `onClearSelection` as props and only falls back to
-// the context Table publishes. The select-all comes from `allowSelectAll`.
 const BulkActionsExample = (args: ListViewProps) => {
   const [selected, setSelected] = useState<Selection>(() => new Set());
   const count = selected === 'all' ? VENUES.length : selected.size;

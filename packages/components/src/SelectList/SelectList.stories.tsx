@@ -376,8 +376,6 @@ WithSelectAll.test(
       for (const row of canvas.getAllByRole('row')) {
         expect(row).toHaveAttribute('aria-selected', 'true');
       }
-      // Concrete keys, never the `'all'` sentinel: this is a form field, and
-      // its hidden `<select>` can only submit keys it can enumerate.
       expect(args.onChange).toHaveBeenLastCalledWith([
         'insurance',
         'signature',
@@ -402,9 +400,6 @@ WithSelectAll.test(
 
 WithSelectAll.test(
   'puts the header checkbox on the option indicator column',
-  // The row padding is a custom property on the list, so only the component
-  // can line a header up with it. Measured, because every class involved is
-  // indirection.
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
     const x = (element: Element) =>
@@ -413,17 +408,12 @@ WithSelectAll.test(
       .getByRole('checkbox', { name: 'Select all' })
       .closest('label')!;
     const [firstRow] = canvas.getAllByRole('row');
-    // The option's indicator is its first grid cell; the row carries the
-    // padding, so the indicator's x is where the column starts.
     const indicator = firstRow.querySelector('.col-start-1')!;
 
     expect(x(header)).toBe(x(indicator));
   }
 );
 
-// `Mod` is `metaKey` on Mac and `ctrlKey` elsewhere. Firefox exposes no
-// `userAgentData`, so react-aria's `isMac()` reads `navigator.platform` here
-// too and this agrees with the implementation on either platform.
 const modKey = /^Mac/i.test(navigator.platform) ? 'Meta' : 'Control';
 
 WithSelectAll.test(
@@ -433,12 +423,9 @@ WithSelectAll.test(
     args: { onChange: fn() },
   },
   async ({ args, canvas, userEvent }) => {
-    // Pressing an option first puts keyboard focus in the list.
     await userEvent.click(canvas.getByRole('row', { name: /gift wrap/i }));
     await userEvent.keyboard(`{${modKey}>}a{/${modKey}}`);
 
-    // React Aria reports its own select-all as the string `'all'`. A field
-    // resolves it, so the value stays submittable either way.
     expect(args.onChange).toHaveBeenLastCalledWith([
       'insurance',
       'signature',
@@ -806,10 +793,6 @@ export const Bordered = meta.story({
   ),
 });
 
-// The bordered list has no outer frame — each option carries its own ring and
-// the list pads itself to keep those rings inside its scrollport. The header
-// sits outside the list, so it shifts by that same padding to stay on the
-// indicator column. Snapshotted: the alignment is the whole point.
 export const BorderedWithSelectAll = meta.story({
   args: {
     variant: 'bordered',
@@ -889,8 +872,6 @@ WithCustomPadding.test(
       'py-(--selectlist-item-py)'
     );
     const list = standardRow.closest('[role="grid"]') as HTMLElement;
-    // Written onto the list's wrapper, so the select-all header above the
-    // list reads the same padding and the two checkboxes share an x.
     const paddingHost = list.parentElement as HTMLElement;
     expect(paddingHost.style.getPropertyValue('--selectlist-item-px')).toBe(
       'var(--spacing-square-loose-x)'
@@ -1116,8 +1097,6 @@ export const WithForm = meta.story({
 
 WithForm.test(
   'submits every option after a select-all',
-  // The hidden `<select>` submits nothing for the `'all'` sentinel, so this is
-  // the test that catches a select-all that leaves the selection unresolved.
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent }) => {
     await userEvent.click(

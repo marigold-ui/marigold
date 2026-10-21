@@ -11,8 +11,6 @@ import {
 
 export default () => {
   const [selected, setSelected] = useState<Selection>(() => new Set());
-  // The select-all reports `'all'`, the same value Cmd/Ctrl+A reports, so
-  // resolve it to keys once before acting on it.
   const keys =
     selected === 'all' ? uploads.map(upload => upload.id) : [...selected];
 

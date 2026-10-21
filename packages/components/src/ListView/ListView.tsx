@@ -60,9 +60,6 @@ interface ListViewComponent {
   Item: typeof ListViewItem;
 }
 
-// A `Set` is passed through rather than copied, and the result is memoised on
-// the prop: react-aria resets the range anchor when the selection it is handed
-// changes identity, so a fresh `Set` per render would break Shift+click.
 const toSelection = (
   value: Selection | Iterable<Key> | undefined
 ): Selection =>
@@ -83,14 +80,8 @@ const ListViewBase = ({
 }: ListViewProps) => {
   const classNames = useClassNames({ component: 'ListView', variant, size });
 
-  // Nothing for a select-all to do in the other modes, so the prop is ignored
-  // there rather than rendering a control that cannot act.
   const hasSelectAll = allowSelectAll === true && selectionMode === 'multiple';
 
-  // Held here rather than inside the GridList, because the select-all sits
-  // outside it and RAC publishes its collection state only to its own
-  // children. This is the same hook RAC uses internally, so an uncontrolled
-  // list keeps behaving as it did.
   const controlledSelection = useMemo(
     () => (selectedKeys !== undefined ? toSelection(selectedKeys) : undefined),
     [selectedKeys]
@@ -111,9 +102,6 @@ const ListViewBase = ({
     warn: hasSelectAll,
   });
 
-  // `'all'` rather than the resolved keys: that is what React Aria's own
-  // Cmd/Ctrl+A reports on this list already, so a consumer has one shape to
-  // handle either way.
   const onSelectAll = useCallback(
     (selected: boolean) => setSelection(selected ? 'all' : new Set()),
     [setSelection]

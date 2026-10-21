@@ -203,9 +203,6 @@ interface SelectListComponent {
 // every render (avoids unnecessary work for any consumer that compares it).
 const EMPTY_STYLE: CSSProperties = {};
 
-// A `Set` is passed through rather than copied, and the result is memoised on
-// the prop: react-aria resets the range anchor when the selection it is handed
-// changes identity, so a fresh `Set` per render would break Shift+click.
 const toSelection = (
   value: Selection | Iterable<Key> | undefined
 ): Selection =>
@@ -254,8 +251,6 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
   ...rest
 }: SelectListProps<Mode>) => {
   const resolvedSelectionMode = (selectionMode ?? 'single') as SelectionMode;
-  // Nothing for a select-all to do in single mode, so the prop is ignored
-  // there rather than rendering a control that cannot act.
   const hasSelectAll =
     allowSelectAll === true && resolvedSelectionMode === 'multiple';
   // Radio-group semantics for a field. `ListView` passes RAC's default through
@@ -351,11 +346,6 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
     warn: hasSelectAll,
   });
 
-  // A field submits concrete keys, so this list never holds `'all'`: it
-  // resolves the sentinel React Aria's Cmd/Ctrl+A reports (and that the
-  // select-all would otherwise produce) to the keys it covers. Without the
-  // keys, `'all'` is passed through unchanged rather than read as "nothing" —
-  // see `HiddenSelection`, which submits nothing for it.
   const handleSelectionChange = useCallback(
     (keys: Selection) => {
       setSelection(

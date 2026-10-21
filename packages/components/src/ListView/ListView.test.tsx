@@ -297,8 +297,6 @@ describe('ListView', () => {
 
       const list = screen.getByRole('grid', { name: 'Attachments' });
 
-      // Declared on the list's own wrapper rather than the list element, so a
-      // the select-all header above the list reads the same value the rows do.
       // eslint-disable-next-line testing-library/no-node-access
       expect(list.parentElement!.className).toContain(
         '[--listview-item-px:var(--bleed-px,var(--spacing-stretch-regular-x))]'
@@ -493,8 +491,6 @@ describe('ListView', () => {
   });
 
   describe('select-all header', () => {
-    // The story tests cover what the checkbox does. These cover what the
-    // header is: chrome beside the collection rather than a row inside it.
     beforeEach(__resetMissingIdsWarning);
 
     const Venues = ({
@@ -526,7 +522,6 @@ describe('ListView', () => {
       const selectAll = screen.getByRole('checkbox', { name: 'Select all' });
 
       expect(screen.getAllByRole('row')).toHaveLength(2);
-      // Outside the grid element, so it adds neither a row nor a cell to it.
       expect(grid).not.toContainElement(selectAll);
     });
 
@@ -543,8 +538,6 @@ describe('ListView', () => {
 
       await user.click(screen.getByRole('row', { name: /gasometer/i }));
 
-      // One of the two rows is selected, and the other one cannot be: a
-      // select-all that counted it would stay mixed forever.
       expect(
         screen.getByRole('checkbox', { name: 'Select all' })
       ).toBeChecked();
@@ -572,9 +565,6 @@ describe('ListView', () => {
 
       render(<Venues />);
 
-      // Static children are re-assembled into an array once the header is
-      // pulled out of them, and React's key warning is the thing that would
-      // catch that going wrong.
       expect(errorSpy).not.toHaveBeenCalled();
 
       errorSpy.mockRestore();

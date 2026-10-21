@@ -14,10 +14,6 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     variants: {
       variant: {
         default: [
-          // The item padding is declared here, not on the list, so a header
-          // above the list reads the same value the options do and the two
-          // checkboxes share an x. The `p` / `px` / `py` props write these same
-          // custom properties onto this element and override these defaults.
           '[--selectlist-item-px:var(--spacing-stretch-regular-x)]',
           '[--selectlist-item-py:var(--spacing-stretch-regular-y)]',
           '[--selectlist-item-radius:calc(var(--radius-surface)-1px)]',
@@ -42,13 +38,6 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     ],
     variants: {
       variant: {
-        // The box is drawn here rather than on the container, so it wraps the
-        // options alone and the select-all header sits above it. `ui-surface`
-        // is a ring, which takes no layout space, so the header's padding and
-        // the options' resolve to the same x. Frame edge and row dividers read
-        // as one weight, hence the opaque --color-border on both. (A
-        // translucent control ring would composite lighter than the opaque
-        // dividers, so left/right wouldn't match top/bottom.)
         default: 'ui-surface [--ui-border-color:var(--color-border)]',
         bordered: [
           'gap-2',
@@ -65,11 +54,6 @@ export const SelectList: ThemeComponent<'SelectList'> = {
   header: cva({
     base: [
       'flex items-center gap-2',
-      // Only the x axis: the header sits above the box rather than inside it,
-      // so it shares the options' indicator column but not their row height.
-      // `mb-2` is the gap to the box, and it rides on the header because the
-      // header is the part that is conditionally rendered — a list without a
-      // select-all must not pay for a gap it has no row above.
       'px-(--selectlist-item-px) mb-2',
       'max-sm:min-h-touch-target',
       'text-sm font-medium text-foreground',
@@ -77,21 +61,13 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     variants: {
       variant: {
         default: '',
-        // The list pads itself by `p-1` to keep its item rings inside the
-        // scrollport, and the header sits outside the list, so it shifts by the
-        // same amount to stay on the indicator column.
         bordered: 'mx-1',
       },
     },
     defaultVariants: { variant: 'default' },
   }),
   count: cva({
-    base: [
-      // Decorative separator: a middot earns no place in the accessible name,
-      // and the count reads as a complete phrase without it.
-      "before:content-['·'] before:me-2",
-      'text-secondary',
-    ],
+    base: ["before:content-['·'] before:me-2", 'text-secondary'],
   }),
   item: cva({
     base: [
