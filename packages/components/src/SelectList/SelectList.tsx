@@ -30,12 +30,9 @@ import {
 } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
-import { SelectAllContext, useSelectableKeys } from '../utils/SelectAll';
-import type { CollectionChildren } from '../utils/children.utils';
-import { splitCollectionHeader } from '../utils/children.utils';
+import { SelectAllHeader, useSelectableKeys } from '../utils/SelectAll';
 import { hasAddonContent, joinIds } from '../utils/useLabelAddon';
 import { SelectListContext } from './Context';
-import { SelectListHeader } from './SelectListHeader';
 import { SelectListOption } from './SelectListOption';
 
 export type SelectionMode = 'single' | 'multiple';
@@ -52,19 +49,12 @@ type RemoveProps =
   | 'keyboardNavigationBehavior'
   | 'isDisabled'
   | 'isInvalid'
-  | 'isRequired'
-  | 'children';
+  | 'isRequired';
 
 type SelectListBaseProps<Mode extends SelectionMode = 'single'> = Omit<
   RAC.GridListProps<object>,
   RemoveProps
 > & {
-  /**
-   * The options of the list, plus an optional `<SelectList.Header>` carrying
-   * the select-all. Options are either `<SelectList.Option>` children or,
-   * together with `items`, a render function.
-   */
-  children?: CollectionChildren<object>;
   /**
    * Visual variant of the list.
    * - `default`: full-width rows separated by dividers.
@@ -139,6 +129,12 @@ type SelectListBaseProps<Mode extends SelectionMode = 'single'> = Omit<
    */
   selectionMode?: Mode;
   /**
+   * Whether to show a select-all checkbox above the options, with a count of
+   * what is selected. Has no effect unless `selectionMode="multiple"`.
+   * @default false
+   */
+  allowSelectAll?: boolean;
+  /**
    * Whether the user may deselect the currently selected row by clicking it.
    * Defaults to `true` in `single` mode (radio-group semantics: clicking the
    * selected row keeps it selected) and `false` in `multiple` mode (checkbox
@@ -201,7 +197,6 @@ interface SelectListComponent {
     props: SelectListProps<Mode>
   ): ReactNode;
   Option: typeof SelectListOption;
-  Header: typeof SelectListHeader;
 }
 
 // Stable empty style so unset padding props don't churn `style`'s identity on
@@ -247,6 +242,7 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
   selectedKeys,
   defaultSelectedKeys,
   selectionMode,
+  allowSelectAll,
   disallowEmptySelection,
   onChange,
   orientation = 'vertical',
@@ -258,9 +254,10 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
   ...rest
 }: SelectListProps<Mode>) => {
   const resolvedSelectionMode = (selectionMode ?? 'single') as SelectionMode;
-  // The header is a part, not an option, so it never reaches the collection.
-  const [header, options] = splitCollectionHeader(children, SelectListHeader);
-  const hasSelectAll = header !== null && resolvedSelectionMode === 'multiple';
+  // Nothing for a select-all to do in single mode, so the prop is ignored
+  // there rather than rendering a control that cannot act.
+  const hasSelectAll =
+    allowSelectAll === true && resolvedSelectionMode === 'multiple';
   // Radio-group semantics for a field. `ListView` passes RAC's default through
   // instead, because a view's selection has to be abandonable.
   const resolvedDisallowEmptySelection =
@@ -348,7 +345,7 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
   });
 
   const selectableKeys = useSelectableKeys({
-    children: options,
+    children,
     items: rest.items,
     disabledKeys: rest.disabledKeys,
     warn: hasSelectAll,
@@ -375,16 +372,6 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
     (selected: boolean) =>
       handleSelectionChange(selected ? new Set(selectableKeys) : new Set()),
     [handleSelectionChange, selectableKeys]
-  );
-
-  const selectAll = useMemo(
-    () => ({
-      keys: selectableKeys,
-      selection,
-      onChange: onSelectAll,
-      disabled,
-    }),
-    [selectableKeys, selection, onSelectAll, disabled]
   );
 
   const contextValue = useMemo(
@@ -422,7 +409,16 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
               cause the flip query to fire even in wide parents. */}
           <div className={classNames.container} style={itemPaddingStyle}>
             {hasSelectAll && (
-              <SelectAllContext value={selectAll}>{header}</SelectAllContext>
+              <SelectAllHeader
+                keys={selectableKeys}
+                selection={selection}
+                onChange={onSelectAll}
+                disabled={disabled}
+                classNames={{
+                  header: classNames.header,
+                  count: classNames.count,
+                }}
+              />
             )}
             <RACGridList
               {...(rest as RAC.GridListProps<object>)}
@@ -445,7 +441,7 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
               onSelectionChange={handleSelectionChange}
               className={cn('group/list', classNames.list)}
             >
-              {options}
+              {children}
             </RACGridList>
             <HiddenSelection
               name={name}
@@ -468,6 +464,5 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
 
 const SelectListExported = SelectList as SelectListComponent;
 SelectListExported.Option = SelectListOption;
-SelectListExported.Header = SelectListHeader;
 
 export { SelectListExported as SelectList };

@@ -111,19 +111,31 @@ Set `selectionMode="multiple"` to switch the list to checkboxes.
 
 #### Select all
 
-Add a `<SelectList.Header>` when picking every option is a normal thing to do, a list of notification channels or permissions rather than a shortlist of two. It renders one checkbox above the options, lined up with their indicators, mixed while the selection is partial, and checked once every option that can be selected is:
+Set `allowSelectAll` when picking every option is a normal thing to do. It renders one checkbox above the options, lined up with their indicators, mixed while the selection is partial, and checked once every option that can be selected is. Beside it sits a count of what is selected.
 
-```tsx
-<SelectList label="Channels" name="channels" selectionMode="multiple">
-  <SelectList.Header />
-  <SelectList.Option id="email">Email</SelectList.Option>
-  <SelectList.Option id="sms">SMS</SelectList.Option>
-</SelectList>
-```
+<ComponentDemo name="selectlist-select-all" />
 
-The header takes the place of an option in the list's children, appears only in `selectionMode="multiple"`, and labels itself "Select all" in the current locale. Children replace that label, as in `<SelectList.Header>Select every channel</SelectList.Header>`.
+The prop is read only in `selectionMode="multiple"`, and the checkbox labels itself "Select all" in the current locale.
 
-Pressing it reports every option's key through `onChange`, so the value a select-all produces is the same shape as one assembled by hand and submits with the form unchanged. Each option needs an `id` for that, which a submitted field wants anyway. Disabled options are left out, which is why a list with one of them still reads as fully selected once the rest are.
+Pressing it reports every option's key through `onChange`, so the value a select-all produces is the same shape as one assembled by hand and submits with the form unchanged. Each option needs an `id` for that, which a submitted field wants anyway. Disabled options are left out, which is why the list above reads as fully selected while "Manage billing" stays unticked.
+
+**List length is the wrong question.** What decides it is whether "all of them" is an answer users actually give, often enough that ticking each row by hand is busywork rather than a decision. Three field shapes where it is:
+
+- **Permissions and scopes.** A role that may do everything is a real role, and an API token that reads everything is a real token. Granting it should cost one press, not one per row.
+- **Channels, formats, recipients.** Fields where the full set is the common setting and leaving one out is the exception, like the notification channels an alert goes to or the columns an export carries.
+- **Lists users re-pick often.** A select-all is also a clear-all, so it is the fastest way back out of a half-ticked list. That matters on a field users revisit, less so on one they fill in once.
+
+**Leave it off everywhere else.** The header is one more control on the field, so it has to pay for the row it takes:
+
+- **A shortlist of two or three.** The extra checkbox costs a row of its own and reads like a fourth option, which is more to parse than the three it saves.
+- **Single selection.** There is nothing for a select-all to do, which is why the prop is ignored unless `selectionMode="multiple"`.
+- **Choices with a per-option cost.** Picking everything is not a shortcut when each option bills, notifies, or widens access. Keep the work visible, and consider making the consequence visible too with a description per row.
+
+<Callout type="info" title="A select-all is not a label">
+  The header is for marking options, not for naming the list. A list that needs
+  a name uses `label`, which a `<SelectList>` already renders above the options
+  with the required marker and validation message attached to it.
+</Callout>
 
 ### Per-row actions
 

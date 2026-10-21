@@ -17,10 +17,13 @@ export const ListView: ThemeComponent<'ListView'> = {
   }),
   header: cva({
     base: [
-      'flex items-center',
-      'px-(--listview-item-px) py-(--spacing-stretch-regular-y)',
+      'flex items-center gap-2',
+      // Only the x axis: the header shares the rows' indicator column but not
+      // their row height. `mb-2` is the gap to the rows, and it rides on the
+      // header because the header is the part that is conditionally rendered —
+      // a list without a select-all must not pay for a gap it has no row above.
+      'px-(--listview-item-px) mb-2',
       'max-sm:min-h-touch-target',
-      'border-b border-border',
       'text-sm text-foreground',
     ],
     variants: {
@@ -29,6 +32,14 @@ export const ListView: ThemeComponent<'ListView'> = {
       },
     },
     defaultVariants: { variant: 'default' },
+  }),
+  count: cva({
+    base: [
+      // Decorative separator: a middot earns no place in the accessible name,
+      // and the count reads as a complete phrase without it.
+      "before:content-['·'] before:me-2",
+      'text-secondary',
+    ],
   }),
   list: cva({
     base: ['w-full outline-0 flex flex-col divide-y divide-border'],

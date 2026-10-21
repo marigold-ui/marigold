@@ -161,6 +161,7 @@ export type Theme = {
     ListView?: Record<
       | 'container'
       | 'header'
+      | 'count'
       | 'list'
       | 'item'
       | 'label'
@@ -231,6 +232,7 @@ export type Theme = {
     SelectList?: Record<
       | 'container'
       | 'header'
+      | 'count'
       | 'list'
       | 'item'
       | 'label'

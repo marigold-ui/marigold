@@ -5,11 +5,8 @@ import { GridList as RACGridList } from 'react-aria-components/GridList';
 import { useControlledState } from '@react-stately/utils';
 import type { Key, Selection, SelectionMode } from '@react-types/shared';
 import { useClassNames } from '@marigold/system';
-import { SelectAllContext, useSelectableKeys } from '../utils/SelectAll';
-import type { CollectionChildren } from '../utils/children.utils';
-import { splitCollectionHeader } from '../utils/children.utils';
+import { SelectAllHeader, useSelectableKeys } from '../utils/SelectAll';
 import { ListViewContext } from './Context';
-import { ListViewHeader } from './ListViewHeader';
 import { ListViewItem } from './ListViewItem';
 
 // A collection view, not a form field: selection is view state the consumer
@@ -26,14 +23,8 @@ type RemovedProps =
 
 export interface ListViewProps extends Omit<
   RAC.GridListProps<object>,
-  RemovedProps | 'children'
+  RemovedProps
 > {
-  /**
-   * The rows of the list, plus an optional `<ListView.Header>` carrying the
-   * select-all. Rows are either `<ListView.Item>` children or, together with
-   * `items`, a render function.
-   */
-  children?: CollectionChildren<object>;
   /**
    * Visual variant of the list. `default` draws no outer frame, divider lines
    * only — the container around it owns the surface.
@@ -55,13 +46,18 @@ export interface ListViewProps extends Omit<
    * @default 'none'
    */
   selectionMode?: SelectionMode;
+  /**
+   * Whether to show a select-all checkbox above the rows, with a count of what
+   * is selected. Has no effect unless `selectionMode="multiple"`.
+   * @default false
+   */
+  allowSelectAll?: boolean;
   ref?: Ref<HTMLDivElement>;
 }
 
 interface ListViewComponent {
   (props: ListViewProps): ReactNode;
   Item: typeof ListViewItem;
-  Header: typeof ListViewHeader;
 }
 
 // A `Set` is passed through rather than copied, and the result is memoised on
@@ -77,6 +73,7 @@ const ListViewBase = ({
   size,
   emptyState,
   selectionMode = 'none',
+  allowSelectAll,
   selectedKeys,
   defaultSelectedKeys,
   onSelectionChange,
@@ -86,9 +83,9 @@ const ListViewBase = ({
 }: ListViewProps) => {
   const classNames = useClassNames({ component: 'ListView', variant, size });
 
-  // The header is a part, not a row, so it never reaches the collection.
-  const [header, items] = splitCollectionHeader(children, ListViewHeader);
-  const hasSelectAll = header !== null && selectionMode === 'multiple';
+  // Nothing for a select-all to do in the other modes, so the prop is ignored
+  // there rather than rendering a control that cannot act.
+  const hasSelectAll = allowSelectAll === true && selectionMode === 'multiple';
 
   // Held here rather than inside the GridList, because the select-all sits
   // outside it and RAC publishes its collection state only to its own
@@ -108,7 +105,7 @@ const ListViewBase = ({
   );
 
   const keys = useSelectableKeys({
-    children: items,
+    children,
     items: rest.items,
     disabledKeys: rest.disabledKeys,
     warn: hasSelectAll,
@@ -122,15 +119,11 @@ const ListViewBase = ({
     [setSelection]
   );
 
-  const selectAll = useMemo(
-    () => ({ keys, selection, onChange: onSelectAll }),
-    [keys, selection, onSelectAll]
-  );
-
   // `useClassNames` returns a fresh object, so memoise on the slot strings.
   const {
     container,
-    header: headerClassName,
+    header,
+    count,
     list,
     item,
     label,
@@ -143,7 +136,8 @@ const ListViewBase = ({
     () => ({
       classNames: {
         container,
-        header: headerClassName,
+        header,
+        count,
         list,
         item,
         label,
@@ -155,7 +149,8 @@ const ListViewBase = ({
     }),
     [
       container,
-      headerClassName,
+      header,
+      count,
       list,
       item,
       label,
@@ -170,7 +165,12 @@ const ListViewBase = ({
     <ListViewContext value={contextValue}>
       <div className={container}>
         {hasSelectAll && (
-          <SelectAllContext value={selectAll}>{header}</SelectAllContext>
+          <SelectAllHeader
+            keys={keys}
+            selection={selection}
+            onChange={onSelectAll}
+            classNames={{ header, count }}
+          />
         )}
         <RACGridList
           {...(rest as RAC.GridListProps<object>)}
@@ -184,7 +184,7 @@ const ListViewBase = ({
           onSelectionChange={setSelection}
           className={list}
         >
-          {items}
+          {children}
         </RACGridList>
       </div>
     </ListViewContext>
@@ -193,6 +193,5 @@ const ListViewBase = ({
 
 const ListViewExported = ListViewBase as ListViewComponent;
 ListViewExported.Item = ListViewItem;
-ListViewExported.Header = ListViewHeader;
 
 export { ListViewExported as ListView };

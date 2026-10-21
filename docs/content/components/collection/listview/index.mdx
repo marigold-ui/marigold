@@ -107,20 +107,23 @@ Pair a multi-select list with an [`<ActionBar>`](/components/collection/actionba
 
 <ComponentDemo name="listview-bulk-actions" />
 
-Add a `<ListView.Header>` when users regularly select every visible row. It renders one checkbox above the rows, lined up with their indicators, mixed while the selection is partial, and checked once every row that can be selected is. It appears only in `selectionMode="multiple"`, and only when you render it: a list where users pick a handful of rows by hand is better off without it.
+#### Select all
 
-```tsx
-<ListView aria-label="Uploads" selectionMode="multiple" items={uploads}>
-  <ListView.Header />
-  {upload => <ListView.Item textValue={upload.name}>…</ListView.Item>}
-</ListView>
-```
+Set `allowSelectAll` when users regularly select every visible row. It renders one checkbox above the rows, lined up with their indicators, mixed while the selection is partial, and checked once every row that can be selected is. Beside it sits a count of what is selected, so the scope of the next action stays legible after one press.
 
-The header takes the place of a row in the list's children, beside the render function in the dynamic form above. Its label reads "Select all" in the current locale, and children replace it when the list needs something more specific, as in `<ListView.Header>Select all uploads</ListView.Header>`.
+<ComponentDemo name="listview-select-all" />
+
+The prop is read only in `selectionMode="multiple"`: there is nothing for a select-all to do in the other modes, so it renders nothing there rather than showing a control that cannot act. The label reads "Select all" in the current locale.
 
 Pressing it reports the string `'all'`, the same value <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> already reports, so there is one selection shape to resolve either way. The scope is the rows the list is rendering: it never reaches rows behind pagination, which the [Bulk Actions](/patterns/user-input/bulk-actions#pagination) pattern explains at length.
 
-<Callout type="info" title="Where the header is not the answer">
+**What decides it is the action, not the list.** A select-all is worth its row when one operation plausibly applies to everything on screen: archiving a finished import, marking a notification feed read, downloading an attachment set, retrying every failed job. Those are the lists where "all of them" is the normal answer and ticking each row is busywork.
+
+Leave it off when the user's job is picking a few rows out of many. A review queue where each row is judged on its own merits, or a list of records staged for one targeted action, gets no faster with a select-all, and a mis-aimed press there selects far more than the user meant.
+
+The other half of its value is the way back out: the same checkbox clears a half-ticked list in one press. On a list where users select, act, and select again, that round trip is the reason to switch it on even if selecting everything is rare.
+
+<Callout type="info" title="Where a select-all is not the answer">
   A select-all needs an `id` on every row to know what it covers, so a row without one is left out of it (a dynamic collection takes them from its `items`). And a select-all is for marking rows, not for naming the list: a `<ListView>` renders no visible label of its own, so a list that has to name itself on screen is a [`<SelectList>`](/components/form/selectlist).
 </Callout>
 

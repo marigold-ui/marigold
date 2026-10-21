@@ -55,8 +55,8 @@ export default () => {
           selectedKeys={selectedKeys}
           onSelectionChange={onSelectionChange}
           items={uploads}
+          allowSelectAll // [!code highlight]
         >
-          <ListView.Header /> {/* [!code highlight] */}
           {(upload: (typeof uploads)[number]) => (
             <ListView.Item textValue={upload.name}>
               <TextValue>{upload.name}</TextValue>

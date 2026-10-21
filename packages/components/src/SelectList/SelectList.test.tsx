@@ -435,7 +435,7 @@ describe('SelectList', () => {
 
   describe('item padding', () => {
     // The `p` / `px` / `py` props write their vars onto the list's wrapper
-    // rather than the list element, so a `<SelectList.Header>` above the list
+    // rather than the list element, so the select-all header above the list
     // reads the same padding the options do and the two checkboxes share an x.
     const paddingHost = () =>
       // eslint-disable-next-line testing-library/no-node-access
@@ -611,14 +611,18 @@ describe('SelectList', () => {
 
   describe('select-all header', () => {
     // What the checkbox does is covered by the story tests; this is what the
-    // part is — chrome beside the collection rather than an option inside it.
+    // header is — chrome beside the collection rather than an option inside it.
     const Addons = (props: {
       selectionMode?: 'single' | 'multiple';
       disabled?: boolean;
     }) => (
       <MarigoldProvider theme={theme}>
-        <SelectList label="Add-ons" selectionMode="multiple" {...props}>
-          <SelectList.Header />
+        <SelectList
+          label="Add-ons"
+          selectionMode="multiple"
+          allowSelectAll
+          {...props}
+        >
           <SelectList.Option id="insurance" textValue="Insurance">
             <Description>Covers loss or damage</Description>
           </SelectList.Option>

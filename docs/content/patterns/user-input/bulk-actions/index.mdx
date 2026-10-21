@@ -31,7 +31,7 @@ The pattern arranges five areas. The collection displays the records with a chec
 
 <BulkActionsAnatomy />
 
-- **Select All:** One checkbox above the rows, on the same column as the row checkboxes, that selects every visible row and shows an indeterminate state when only some of them are selected. A [`<Table>`](/components/collection/table) carries it in its header row, a [`<ListView>`](/components/collection/listview) and a [`<SelectList>`](/components/form/selectlist) in a `Header` part.
+- **Select All:** One checkbox above the rows, on the same column as the row checkboxes, that selects every visible row and shows an indeterminate state when only some of them are selected. A [`<Table>`](/components/collection/table) carries it in its header row, a [`<ListView>`](/components/collection/listview) and a [`<SelectList>`](/components/form/selectlist) above the rows with `allowSelectAll`.
 - **Selection:** Checkboxes on each row, with selected rows visually highlighted so the scope of the next action stays visible.
 - **Action Bar:** A floating [`<ActionBar>`](/components/collection/actionbar) that appears once something is selected. It states the selection count, offers the actions, and carries a clear button to dismiss the selection.
 - **Confirm Dialog:** A [`<Dialog>`](/components/overlay/dialog) that interrupts destructive actions with the exact count and impact before anything happens.
@@ -77,7 +77,7 @@ Selection begins the flow, and it must be visible and cheap to change. Any multi
 
 <ComponentDemo name="bulk-actions-selection" />
 
-Choose the collection by what one record looks like, not by which one can select, because all three now can. What differs is the wiring. A `<Table>` takes the bar through its `actionBar` prop, reserves the bar's height for you, and puts the select-all in its header row. A `<ListView>` or `<SelectList>` renders `<ListView.Header>` or `<SelectList.Header>` for the select-all and takes the `<ActionBar>` as a sibling, with `selectedItemCount` and `onClearSelection` passed yourself or supplied by [`useActionBar`](/components/collection/actionbar#useactionbar), which leaves reserving the bar's height to you as well.
+Choose the collection by what one record looks like, not by which one can select, because all three now can. What differs is the wiring. A `<Table>` takes the bar through its `actionBar` prop, reserves the bar's height for you, and puts the select-all in its header row. A `<ListView>` or `<SelectList>` takes `allowSelectAll` for the select-all and the `<ActionBar>` as a sibling, with `selectedItemCount` and `onClearSelection` passed yourself or supplied by [`useActionBar`](/components/collection/actionbar#useactionbar), which leaves reserving the bar's height to you as well.
 
 ### Scope
 

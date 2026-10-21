@@ -340,11 +340,11 @@ export const WithSelectAll = meta.story({
   tags: ['component-test'],
   args: {
     selectionMode: 'multiple',
+    allowSelectAll: true,
     onChange: fn(),
   },
   render: args => (
     <SelectList {...args} label="Shipping add-ons">
-      <SelectList.Header />
       <SelectList.Option id="insurance" textValue="Parcel insurance">
         <TextValue>Parcel insurance</TextValue>
         <Description>Covers loss or damage up to $500.</Description>
@@ -806,6 +806,48 @@ export const Bordered = meta.story({
   ),
 });
 
+// The bordered list has no outer frame — each option carries its own ring and
+// the list pads itself to keep those rings inside its scrollport. The header
+// sits outside the list, so it shifts by that same padding to stay on the
+// indicator column. Snapshotted: the alignment is the whole point.
+export const BorderedWithSelectAll = meta.story({
+  args: {
+    variant: 'bordered',
+    selectionMode: 'multiple',
+    allowSelectAll: true,
+  },
+  render: args => (
+    <SelectList {...args} label="Shipping add-ons">
+      <SelectList.Option id="insurance" textValue="Parcel insurance">
+        <TextValue>Parcel insurance</TextValue>
+        <Description>Covers loss or damage up to $500.</Description>
+      </SelectList.Option>
+      <SelectList.Option id="signature" textValue="Signature on delivery">
+        <TextValue>Signature on delivery</TextValue>
+        <Description>Require a signature when handed over.</Description>
+      </SelectList.Option>
+      <SelectList.Option id="gift-wrap" textValue="Gift wrap">
+        <TextValue>Gift wrap</TextValue>
+        <Description>Premium paper and a handwritten note.</Description>
+      </SelectList.Option>
+    </SelectList>
+  ),
+});
+
+BorderedWithSelectAll.test(
+  'the select-all sits on the same column as the option indicators',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const indicatorX = (within: HTMLElement) =>
+      within.querySelector('input[type="checkbox"]')!.getBoundingClientRect().x;
+
+    const selectAll = canvas.getByRole('checkbox', { name: 'Select all' });
+    const [firstRow] = canvas.getAllByRole('row');
+
+    expect(selectAll.getBoundingClientRect().x).toBe(indicatorX(firstRow));
+  }
+);
+
 export const WithCustomPadding = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
@@ -847,7 +889,7 @@ WithCustomPadding.test(
       'py-(--selectlist-item-py)'
     );
     const list = standardRow.closest('[role="grid"]') as HTMLElement;
-    // Written onto the list's wrapper, so a `<SelectList.Header>` above the
+    // Written onto the list's wrapper, so the select-all header above the
     // list reads the same padding and the two checkboxes share an x.
     const paddingHost = list.parentElement as HTMLElement;
     expect(paddingHost.style.getPropertyValue('--selectlist-item-px')).toBe(
@@ -1030,6 +1072,7 @@ export const WithForm = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   args: {
     selectionMode: 'multiple',
+    allowSelectAll: true,
   },
   render: args => (
     <Form
@@ -1049,7 +1092,6 @@ export const WithForm = meta.story({
           description="Bundle extras with your order."
           name="addons"
         >
-          <SelectList.Header />
           <SelectList.Option id="insurance" textValue="Parcel insurance">
             <TextValue>Parcel insurance</TextValue>
             <Description>Covers loss or damage up to $500.</Description>

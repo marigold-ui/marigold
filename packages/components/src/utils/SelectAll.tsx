@@ -1,12 +1,5 @@
 import type { ReactNode } from 'react';
-import {
-  Children,
-  createContext,
-  isValidElement,
-  use,
-  useEffect,
-  useMemo,
-} from 'react';
+import { Children, isValidElement, useEffect, useMemo } from 'react';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import type { Key, Selection } from '@react-types/shared';
 import { Checkbox } from '../Checkbox/Checkbox';
@@ -23,38 +16,7 @@ import { intlMessages } from '../intl/messages';
 // accessible name through a visible label, and the region around it carries no
 // role: it is chrome, not data. What the collection still owns is the
 // alignment, because only the component can line the checkbox up with the row
-// indicators (the padding is a custom property declared on the list itself).
-
-// Context
-// ---------------
-export interface SelectAllContextValue {
-  /** The keys a select-all covers: every item, minus the disabled ones. */
-  keys: Key[];
-  /** The collection's current selection, as its parent holds it. */
-  selection: Selection;
-  /** Called with the next checked state. The parent owns what "all" means. */
-  onChange: (selected: boolean) => void;
-  /** Whether the whole collection is disabled. */
-  disabled?: boolean;
-}
-
-export const SelectAllContext = createContext<SelectAllContextValue | null>(
-  null
-);
-
-const useSelectAll = () => {
-  const context = use(SelectAllContext);
-
-  if (!context) {
-    throw new Error(
-      'Marigold: a select-all header has to be a child of its own list — ' +
-        '`<ListView.Header>` inside a `<ListView>`, `<SelectList.Header>` ' +
-        'inside a `<SelectList>`.'
-    );
-  }
-
-  return context;
-};
+// indicators (the padding is a custom property declared on the list's wrapper).
 
 // Keys
 // ---------------
@@ -139,13 +101,31 @@ export const useSelectableKeys = <T,>({
 
 // Component
 // ---------------
-export interface SelectAllCheckboxProps {
-  /** Replaces the default "Select all" label. */
-  children?: ReactNode;
+export interface SelectAllHeaderProps {
+  /** The keys a select-all covers: every item, minus the disabled ones. */
+  keys: Key[];
+  /** The collection's current selection, as its parent holds it. */
+  selection: Selection;
+  /** Called with the next checked state. The parent owns what "all" means. */
+  onChange: (selected: boolean) => void;
+  /** Whether the whole collection is disabled. */
+  disabled?: boolean;
+  /** The `header` and `count` slots of the owning collection's theme. */
+  classNames?: { header?: string; count?: string };
 }
 
-export const SelectAllCheckbox = ({ children }: SelectAllCheckboxProps) => {
-  const { keys, selection, onChange, disabled } = useSelectAll();
+/**
+ * The region above a multi-select collection, holding its select-all checkbox
+ * and a count of what is selected. Rendered by the collection itself, which is
+ * what lets it line the checkbox up with the row indicators.
+ */
+export const SelectAllHeader = ({
+  keys,
+  selection,
+  onChange,
+  disabled,
+  classNames,
+}: SelectAllHeaderProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');
 
   // Counted against the selectable keys rather than read off `selection.size`:
@@ -158,12 +138,20 @@ export const SelectAllCheckbox = ({ children }: SelectAllCheckboxProps) => {
   const checked = keys.length > 0 && selectedCount === keys.length;
 
   return (
-    <Checkbox
-      checked={checked}
-      indeterminate={selectedCount > 0 && !checked}
-      disabled={disabled}
-      onChange={onChange}
-      label={children ?? stringFormatter.format('selectAll')}
-    />
+    <div className={classNames?.header}>
+      <Checkbox
+        checked={checked}
+        indeterminate={selectedCount > 0 && !checked}
+        disabled={disabled}
+        onChange={onChange}
+        label={stringFormatter.format('selectAll')}
+      />
+      <span className={classNames?.count}>
+        {stringFormatter.format('selectAllCount', {
+          count: selectedCount,
+          total: keys.length,
+        })}
+      </span>
+    </div>
   );
 };

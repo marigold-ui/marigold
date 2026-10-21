@@ -24,14 +24,17 @@ Two things had to be settled: what the control's accessibility shape is, and whe
 
 ## Decision
 
-**A select-all is a compound part rendered outside the grid element, and the checkbox carries its own visible label.** `ListView.Header` and `SelectList.Header`, not an `allowsSelectAll` boolean: a part that is absent costs nothing, and a boolean that switches what a component renders is the `CLAUDE.md` rule this would break.
+**A select-all is rendered outside the grid element by the list itself, switched on by an `allowSelectAll` prop, and the checkbox carries its own visible label.**
+
+The accessibility shape below was the substance of this decision and is independent of how the control is switched on. The switch itself was reopened after the first implementation: three API options were written up and the team chose the boolean (see "Alternatives rejected").
 
 Specifically:
 
 - **The region carries no role.** It is chrome, not data. No faked `columnheader`, no `role="row"`, no `aria-labelledby` pointing at the grid.
-- **The checkbox owns its accessible name**, a visible "Select all" label from `intlMessages`, overridable through children. This is the shape that does not promise semantics the collection cannot back.
+- **The checkbox owns its accessible name**, a visible "Select all" label from `intlMessages`. This is the shape that does not promise semantics the collection cannot back.
+- **A count sits beside it**, reading "N of M selected". It is not optional, because a boolean leaves the consumer no slot to add one, and the scope of the next action has to stay legible after one press.
 - **The component owns the alignment.** The row-padding custom property moves up to the element that wraps both the header and the list, so the header reads the same value the rows do. A test measures the shared `x`, because every class involved is indirection.
-- **The parent lifts the selection** (`useControlledState`, as `SelectList` and `TagGroup` already do) and publishes `{ keys, selection, onChange, disabled }` on one internal context that both lists' header parts consume, the way they already share `GridSelectionIndicator`.
+- **The parent lifts the selection** (`useControlledState`, as `SelectList` and `TagGroup` already do) and passes `{ keys, selection, onChange, disabled }` straight to the shared `SelectAllHeader`, the way both lists already share `GridSelectionIndicator`.
 - **`ListView` reports `'all'`, `SelectList` reports keys.** `'all'` is what React Aria's own Cmd/Ctrl+A reports, so a view's consumer has one shape to resolve either way. A field cannot use it: `HiddenSelection` submits nothing for `'all'`, so `SelectList` resolves the sentinel to the keys it covers.
 - **The keys come from the collection the consumer passed**, the data for a dynamic collection and the elements for a static one, with disabled items left out. An item without an `id` is left out and warned about once, in dev.
 
@@ -43,15 +46,17 @@ Specifically:
 
 **A bridge component inside the grid that publishes the collection state upward.** The only way to get RAC's own `isSelectAll` / `toggleSelectAll` and its exact notion of selectable keys. It would have to live inside a row (the only thing allowed in the grid), publish through a layout effect, and be present N times for N rows. Rejected as invisible machinery: correct, and unexplainable at 3am.
 
-**An `allowsSelectAll` prop.** Rejected under the "no mode booleans" rule in `CLAUDE.md`.
+**A compound part, `ListView.Header` / `SelectList.Header`.** Shipped first, and reverted here. It composes: a count or a "select all 2,431 rows" link fits the same region with no new props, the label is replaceable through children, and `<Sidebar.Toggle>` sets the precedent. It is also what the "no mode booleans" rule in `CLAUDE.md` asks for. Rejected by the team on discoverability: a part does not appear in autocomplete or the props table, so the feature is invisible to anyone not reading the docs page. The cost is accepted knowingly: `allowSelectAll` is a boolean that switches what the component renders, which is the rule it breaks, and every later addition to that region needs another prop. The label is no longer replaceable, and a `selectAllLabel` prop is the next thing this will ask for.
+
+**Automatic, from `selectionMode="multiple"` alone.** Exactly what `<Table>` does, one rule for the whole system, nothing to discover or forget. Rejected because it cannot be switched off, and a list where selecting 200 rows at once is a bad idea would get one anyway. Worth recording that if "it must feel like `<Table>`" is ever the goal again, this is the answer, not the boolean.
 
 **Deriving the keys with RAC's `CollectionBuilder`.** Would give exact keys including nested and fragment children. Rejected because it builds the collection a second time and leans on API that exists for RAC's own components.
 
-**One shared part for both lists** (a single `Collection.SelectAll`), as PatternFly's `BulkSelect` does. Rejected for the part, kept for the implementation: each list owns its own theme slot and its own docs page, so the part is per component and the checkbox, the keys hook and the context are shared.
+**One shared part for both lists** (a single `Collection.SelectAll`), as PatternFly's `BulkSelect` does. Moot once the part became a prop, but the implementation went the way it pointed: each list owns its own theme slots, and the header component, the keys hook and the count are shared.
 
 ## Consequences
 
-**What this buys.** Both lists can carry the flow the Bulk Actions pattern describes, and the pattern could be rewritten for collections generally. The alignment is the component's problem, which is the only reason the part has to exist. A list that should not offer a select-all renders no part and pays nothing.
+**What this buys.** Both lists can carry the flow the Bulk Actions pattern describes, and the pattern could be rewritten for collections generally. The alignment is the component's problem, which is the only reason this cannot be composed by a consumer. A list that should not offer a select-all leaves the prop off and pays nothing.
 
 **What it costs.**
 
@@ -59,6 +64,8 @@ Specifically:
 - **The keys are derived, not read from the collection.** An item without an `id` is invisible to a select-all, and the dev warning is the only thing that says so. RAC knows better and will not tell us.
 - **`ListView` reports `'all'` and `SelectList` reports keys.** Defensible per component, surprising when read side by side.
 - **`ListView` gained a wrapper element.** Its root is no longer the `role="grid"` element. Nothing in the public API changed, but a test or a selector reaching for `firstChild` would notice.
-- **Children are inspected.** `splitCollectionHeader` flattens arrays to find the part, which is the collection exception in [ADR-0005](0005-css-layout-over-children-manipulation.md) rather than a new licence to sort children. It also means the header can be found wherever the author put it, including beside a render function, which the collection's own `children` type cannot express and the helper casts around.
+- **`SelectList`'s frame moved onto the list element.** The box has to wrap the options alone for the header to sit above it. `ui-surface` is a ring rather than a border, so it takes no layout space and the two checkbox columns still resolve to the same `x`.
+- **The region cannot grow without new props.** A count is built in; anything after it ("select all 2,431 rows", a label override) is another prop on a component that now has one boolean deciding a layout. This is the known ceiling of the choice, not an oversight.
+- **Children are no longer inspected.** Dropping the part took `splitCollectionHeader` with it, and with it a crash: JSX leaves a text node in `<List.Header /> {/* comment */}`, and a RAC collection's renderer has no `createTextNode` to put it in.
 
 **Not enforced.** No check verifies any of this. Advisory, like every record here.

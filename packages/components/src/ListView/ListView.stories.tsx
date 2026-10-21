@@ -789,10 +789,13 @@ SingleSelection.test(
 
 export const WithSelectAll = meta.story({
   tags: ['component-test'],
-  args: { selectionMode: 'multiple', onSelectionChange: fn() },
+  args: {
+    selectionMode: 'multiple',
+    allowSelectAll: true,
+    onSelectionChange: fn(),
+  },
   render: args => (
     <ListView {...args} aria-label="Venues">
-      <ListView.Header />
       {VENUES.map(venue => (
         <ListView.Item key={venue.id} id={venue.id} textValue={venue.name}>
           <TextValue>{venue.name}</TextValue>
@@ -995,8 +998,7 @@ const onBulkArchive = fn();
 
 // The Bulk Actions pattern's action bar, which needs no new API: `<ActionBar>`
 // takes `selectedItemCount` / `onClearSelection` as props and only falls back to
-// the context Table publishes. The select-all comes from `<ListView.Header>`,
-// which sits beside the render function in the dynamic form's children.
+// the context Table publishes. The select-all comes from `allowSelectAll`.
 const BulkActionsExample = (args: ListViewProps) => {
   const [selected, setSelected] = useState<Selection>(() => new Set());
   const count = selected === 'all' ? VENUES.length : selected.size;
@@ -1010,7 +1012,6 @@ const BulkActionsExample = (args: ListViewProps) => {
         onSelectionChange={setSelected}
         items={VENUES}
       >
-        <ListView.Header />
         {(venue: (typeof VENUES)[number]) => (
           <ListView.Item id={venue.id} textValue={venue.name}>
             <TextValue>{venue.name}</TextValue>
@@ -1036,7 +1037,7 @@ export const WithActionBar = meta.story({
   // Nothing is selected at rest, so the bar is closed and the snapshot would be
   // `MultipleSelection` with a third row. `ActionBar` guards its own appearance.
   parameters: { chromatic: { disableSnapshot: true } },
-  args: { selectionMode: 'multiple' },
+  args: { selectionMode: 'multiple', allowSelectAll: true },
   render: args => <BulkActionsExample {...args} />,
 });
 

@@ -298,7 +298,7 @@ describe('ListView', () => {
       const list = screen.getByRole('grid', { name: 'Attachments' });
 
       // Declared on the list's own wrapper rather than the list element, so a
-      // `<ListView.Header>` above the list reads the same value the rows do.
+      // the select-all header above the list reads the same value the rows do.
       // eslint-disable-next-line testing-library/no-node-access
       expect(list.parentElement!.className).toContain(
         '[--listview-item-px:var(--bleed-px,var(--spacing-stretch-regular-x))]'
@@ -493,8 +493,8 @@ describe('ListView', () => {
   });
 
   describe('select-all header', () => {
-    // The story tests cover what the checkbox does. These cover what the part
-    // is: chrome beside the collection rather than a row inside it.
+    // The story tests cover what the checkbox does. These cover what the
+    // header is: chrome beside the collection rather than a row inside it.
     beforeEach(__resetMissingIdsWarning);
 
     const Venues = ({
@@ -502,8 +502,13 @@ describe('ListView', () => {
       ...props
     }: Partial<ListViewProps> & { children?: ReactNode }) => (
       <MarigoldProvider theme={theme}>
-        <ListView aria-label="Venues" selectionMode="multiple" {...props}>
-          {children ?? <ListView.Header />}
+        <ListView
+          aria-label="Venues"
+          selectionMode="multiple"
+          allowSelectAll
+          {...props}
+        >
+          {children}
           <ListView.Item id="gasometer" textValue="Gasometer">
             <TextValue>Gasometer</TextValue>
           </ListView.Item>
@@ -550,7 +555,6 @@ describe('ListView', () => {
 
       render(
         <Venues>
-          <ListView.Header />
           {/* eslint-disable-next-line @eslint-react/no-missing-key */}
           <ListView.Item textValue="Keyless" />
         </Venues>
