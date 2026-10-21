@@ -59,7 +59,7 @@ For rows that people operate, put a [`<ListView>`](/components/collection/listvi
 
 ### Searching a list
 
-Wrap the `<Popover.Content>` holding a list in `<Popover.Search>` to filter the list as the user types. The search field renders as its own row above the content, so it stays in view while the results scroll. It takes focus when the panel opens, and the arrow keys move through the results without leaving the field. Give the field an `aria-label` or a visible `label`. Items are matched by their `textValue`.
+Put a `<Popover.Search>` above the `<Popover.Content>` holding a list to filter the list as the user types. The search field stays in view while the results scroll. It takes focus when the panel opens, and Tab moves on into the results. Give the field an `aria-label` or a visible `label`. Items are matched by their `textValue`.
 
 <ComponentDemo name="popover-search" />
 
