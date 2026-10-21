@@ -61,7 +61,7 @@ const meta = preview.meta({
         'destructive-ghost',
         'ghost',
         'icon',
-        'text',
+        'link',
       ],
       description: 'Variant of the button',
     },
