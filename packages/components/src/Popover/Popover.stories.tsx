@@ -509,11 +509,36 @@ Notifications.test(
 // `Autocomplete` or `ComboBox`. `Popover.Search` sits next to the content it
 // filters and stays in view while the results scroll.
 const MEMBERS = [
-  { id: 'jane', name: 'Jane Doe', email: 'jane.doe@example.com' },
-  { id: 'john', name: 'John Smith', email: 'john.smith@example.com' },
-  { id: 'priya', name: 'Priya Natarajan', email: 'priya.n@example.com' },
-  { id: 'lukas', name: 'Lukas Weber', email: 'lukas.weber@example.com' },
-  { id: 'mara', name: 'Mara Jensen', email: 'mara.jensen@example.com' },
+  {
+    id: 'jane',
+    name: 'Jane Doe',
+    email: 'jane.doe@example.com',
+    team: 'box-office',
+  },
+  {
+    id: 'john',
+    name: 'John Smith',
+    email: 'john.smith@example.com',
+    team: 'marketing',
+  },
+  {
+    id: 'priya',
+    name: 'Priya Natarajan',
+    email: 'priya.n@example.com',
+    team: 'box-office',
+  },
+  {
+    id: 'lukas',
+    name: 'Lukas Weber',
+    email: 'lukas.weber@example.com',
+    team: 'finance',
+  },
+  {
+    id: 'mara',
+    name: 'Mara Jensen',
+    email: 'mara.jensen@example.com',
+    team: 'marketing',
+  },
 ];
 
 type Member = (typeof MEMBERS)[number];
@@ -521,10 +546,10 @@ type Member = (typeof MEMBERS)[number];
 const onRemove = fn();
 const onRoleChange = fn();
 
-const TeamList = () => (
+const TeamList = ({ items = MEMBERS }: { items?: Member[] }) => (
   <ListView
     aria-label="Team members"
-    items={MEMBERS}
+    items={items}
     emptyState={<Text>No team members match your search.</Text>}
   >
     {(member: Member) => (
@@ -720,47 +745,128 @@ SearchableList.test(
   }
 );
 
-// The search filters the popover's own list, never the options of a field or
-// the items of a menu opened from inside it (`AutocompleteBoundary`). A test
-// fixture, not a layout to copy.
-export const SearchWithNestedOverlays = meta.story({
-  tags: ['component-test', '!autodocs'],
-  parameters: { chromatic: { disableSnapshot: true } },
+// Search with a team filter and list actions in the same row, as the filter
+// pattern's bar layout puts them: search first, the quick filter next to it,
+// actions at the end. The filter has no visible label and a fixed width, and
+// the placeholder stays short so the field keeps room in the tray. The
+// search filters the popover's own list, never the options of the filter or
+// the items of the menu (`AutocompleteBoundary`).
+const TEAMS = [
+  { id: 'all', name: 'All teams' },
+  { id: 'box-office', name: 'Box office' },
+  { id: 'marketing', name: 'Marketing' },
+  { id: 'finance', name: 'Finance' },
+];
+
+export const SearchWithFilterAndActions = meta.story({
+  tags: ['component-test'],
   args: { width: 'large' },
-  render: args => (
-    <Popover.Trigger>
-      <Button>
-        <Users /> Manage team
-      </Button>
-      <Popover {...args}>
-        <Title>Team members</Title>
-        <Popover.Search
-          aria-label="Search team members"
-          placeholder="Search team members"
-        />
-        <Popover.Content>
-          <Inline space="related" alignY="input">
-            <Select label="Team" defaultValue="all">
-              <Select.Option id="all">All teams</Select.Option>
-              <Select.Option id="box-office">Box office</Select.Option>
-              <Select.Option id="marketing">Marketing</Select.Option>
-              <Select.Option id="finance">Finance</Select.Option>
+  render: args => {
+    const [team, setTeam] = useState<string>('all');
+    const members =
+      team === 'all' ? MEMBERS : MEMBERS.filter(member => member.team === team);
+
+    return (
+      <Popover.Trigger>
+        <Button>
+          <Users /> Manage team
+        </Button>
+        <Popover {...args}>
+          <Title>Team members</Title>
+          <Popover.Search
+            aria-label="Search team members"
+            placeholder="Search members"
+          >
+            <Select
+              aria-label="Team"
+              width={28}
+              value={team}
+              onChange={key => setTeam(String(key))}
+            >
+              {TEAMS.map(item => (
+                <Select.Option key={item.id} id={item.id}>
+                  {item.name}
+                </Select.Option>
+              ))}
             </Select>
             <ActionMenu aria-label="More list actions">
               <ActionMenu.Item>Invite people</ActionMenu.Item>
               <ActionMenu.Item>Export list</ActionMenu.Item>
               <ActionMenu.Item>Print list</ActionMenu.Item>
             </ActionMenu>
-          </Inline>
-          <TeamList />
-        </Popover.Content>
-      </Popover>
-    </Popover.Trigger>
-  ),
+          </Popover.Search>
+          <Popover.Content>
+            <TeamList items={members} />
+          </Popover.Content>
+        </Popover>
+      </Popover.Trigger>
+    );
+  },
 });
 
-SearchWithNestedOverlays.test(
-  'Keeps nested select options and menu items unfiltered',
+SearchWithFilterAndActions.test(
+  'Keeps filter and actions in the search row, in tab order',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Manage team' }));
+    const search = await canvas.findByRole('searchbox', {
+      name: 'Search team members',
+    });
+    await waitFor(() => expect(search).toHaveFocus());
+    const row = search.closest<HTMLElement>('[data-slot=search]')!;
+    const filter = canvas.getByRole('button', { name: /Team/ });
+    const actions = canvas.getByRole('button', { name: 'More list actions' });
+
+    await expect(row).toContainElement(filter);
+    await expect(row).toContainElement(actions);
+    // One row: the controls share the field's line.
+    const field = search.getBoundingClientRect();
+    await expect(
+      Math.abs(
+        filter.getBoundingClientRect().top +
+          filter.getBoundingClientRect().height / 2 -
+          (field.top + field.height / 2)
+      )
+    ).toBeLessThan(2);
+
+    await userEvent.tab();
+    await expect(filter).toHaveFocus();
+    await userEvent.tab();
+    await expect(actions).toHaveFocus();
+    await userEvent.tab();
+    await expect(canvas.getAllByRole('row')[0]).toHaveFocus();
+  }
+);
+
+SearchWithFilterAndActions.test(
+  'Narrows the list by team and by search together',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    const names = () =>
+      canvas
+        .getAllByRole('row')
+        .map(row => row.querySelector('[slot=label]')?.textContent);
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Manage team' }));
+    await canvas.findByRole('searchbox', { name: 'Search team members' });
+
+    await userEvent.click(canvas.getByRole('button', { name: /Team/ }));
+    await userEvent.click(
+      await canvas.findByRole('option', { name: 'Marketing' })
+    );
+    await waitFor(() => expect(names()).toEqual(['John Smith', 'Mara Jensen']));
+
+    await userEvent.click(
+      canvas.getByRole('searchbox', { name: 'Search team members' })
+    );
+    await userEvent.keyboard('mara');
+    await waitFor(() => expect(names()).toEqual(['Mara Jensen']));
+  }
+);
+
+SearchWithFilterAndActions.test(
+  'Keeps the filter options and menu items unfiltered',
+  { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent, step }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Manage team' }));
     const search = await canvas.findByRole('searchbox', {
@@ -779,7 +885,7 @@ SearchWithNestedOverlays.test(
       );
     });
 
-    await step('the select keeps all its options', async () => {
+    await step('the filter keeps all its options', async () => {
       await userEvent.click(canvas.getByRole('button', { name: /Team/ }));
       await canvas.findByRole('listbox');
       await expect(
@@ -797,6 +903,19 @@ SearchWithNestedOverlays.test(
         canvas.getAllByRole('menuitem').map(item => item.textContent)
       ).toEqual(['Invite people', 'Export list', 'Print list']);
     });
+  }
+);
+
+// Visual regression: Chromatic snapshots a story before any click, so this
+// test opens the panel and keeps its snapshot.
+SearchWithFilterAndActions.test(
+  'Open panel',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Manage team' }));
+    await expect(
+      await canvas.findByRole('dialog', { name: 'Team members' })
+    ).toBeVisible();
   }
 );
 
@@ -919,5 +1038,33 @@ SmallScreen.test(
       expect(content.scrollHeight).toBeGreaterThan(content.clientHeight)
     );
     await expect(canvas.getByRole('button', { name: 'Close' })).toBeVisible();
+  }
+);
+
+export const SmallScreenSearch = meta.story({
+  tags: ['component-test', '!autodocs'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  globals: {
+    viewport: { value: 'smallScreen' },
+  },
+  args: { width: 'large', showTitle: true } as SearchableListArgs,
+  render: SearchableList.input.render,
+});
+
+SmallScreenSearch.test(
+  'Keeps the tray height while the search narrows the list',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Manage team' }));
+    const tray = await canvas.findByRole('dialog', { name: 'Team members' });
+    // The list renders in a second pass, wait for its rows.
+    await waitFor(() => expect(canvas.getAllByRole('row')).toHaveLength(5));
+    const before = tray.getBoundingClientRect().height;
+
+    await userEvent.keyboard('mara');
+
+    await waitFor(() => expect(canvas.getAllByRole('row')).toHaveLength(1));
+    await expect(Math.round(tray.getBoundingClientRect().height)).toBe(
+      Math.round(before)
+    );
   }
 );

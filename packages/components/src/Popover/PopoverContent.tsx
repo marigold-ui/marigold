@@ -30,20 +30,31 @@ export interface PopoverContentProps {
 // Helpers
 // ---------------
 /**
- * Pins the content's height on first layout so the tray does not shrink
- * while the user filters a list inside it. Same measurement as
- * `Tray.Content`, but against the tray dialog, since this content sits one
- * level deeper.
+ * Pins the content's height so the tray does not shrink while the user
+ * filters a list inside it. Same measurement as `Tray.Content`, but against
+ * the tray dialog, since this content sits one level deeper. It follows the
+ * height instead of measuring once: a React Aria collection renders its items
+ * in a second pass, so the first layout only holds the padding. The pin only
+ * grows, so filtering never shrinks the tray.
  */
 const pinTrayHeight = (node: HTMLDivElement | null) => {
   const tray = node?.closest<HTMLElement>('[role=dialog]');
-  if (!node || !tray || node.style.minHeight || !node.offsetHeight) {
+  if (!node || !tray) {
     return;
   }
-  const pinned = node.offsetHeight;
-  const chrome = tray.offsetHeight - pinned;
+  let pinned = 0;
+  const observer = new ResizeObserver(() => {
+    const height = node.offsetHeight;
+    if (height <= pinned) {
+      return;
+    }
+    pinned = height;
+    const chrome = tray.offsetHeight - height;
+    node.style.minHeight = `min(${pinned}px, calc(var(--tray-available) - ${chrome}px))`;
+  });
+  observer.observe(node);
 
-  node.style.minHeight = `min(${pinned}px, calc(var(--tray-available) - ${chrome}px))`;
+  return () => observer.disconnect();
 };
 
 // Component
