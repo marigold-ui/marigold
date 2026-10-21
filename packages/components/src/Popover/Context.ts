@@ -1,14 +1,27 @@
 import { createContext, use } from 'react';
+import type { ComponentClassNames } from '@marigold/system';
 
 /**
- * Carries the dismiss behaviour from the `<Popover>` root down to
- * `<Popover.Content>`, which applies it to whichever overlay it renders
- * (the positioned popover on desktop, the tray on small screens). Same split
- * as `Dialog.Trigger` and `DialogContext`.
+ * Carries the dismiss behaviour from `<Popover.Trigger>` to `<Popover>`, which
+ * applies it to whichever overlay it renders (the positioned popover on
+ * desktop, the tray on small screens). Same split as `Dialog.Trigger` and
+ * `DialogContext`.
  */
-export interface PopoverContextValue {
+export interface PopoverTriggerContextValue {
   dismissable: boolean;
   keyboardDismissable: boolean;
+}
+
+export const PopoverTriggerContext =
+  createContext<PopoverTriggerContextValue | null>(null);
+
+/**
+ * Carries the resolved theme classes from `<Popover>` to its parts, and
+ * whether it currently renders as a tray.
+ */
+export interface PopoverContextValue {
+  classNames: ComponentClassNames<'Popover'>;
+  isTray: boolean;
 }
 
 export const PopoverContext = createContext<PopoverContextValue | null>(null);

@@ -21,34 +21,36 @@ export default () => {
 
   return (
     <Stack space={2} alignX="left">
-      <Popover>
+      <Popover.Trigger>
         <Button>
           <UserPlus /> Assign to
         </Button>
-        <Popover.Content>
+        <Popover>
           <Title>Assign to</Title>
           <Popover.Search aria-label="Search people" placeholder="Search…">
-            <ListView
-              aria-label="People"
-              items={people}
-              selectionMode="single"
-              onSelectionChange={keys =>
-                setAssignee(
-                  keys === 'all'
-                    ? undefined
-                    : people.find(person => keys.has(person.id))?.name
-                )
-              }
-            >
-              {(person: (typeof people)[number]) => (
-                <ListView.Item id={person.id} textValue={person.name}>
-                  {person.name}
-                </ListView.Item>
-              )}
-            </ListView>
+            <Popover.Content>
+              <ListView
+                aria-label="People"
+                items={people}
+                selectionMode="single"
+                onSelectionChange={keys =>
+                  setAssignee(
+                    keys === 'all'
+                      ? undefined
+                      : people.find(person => keys.has(person.id))?.name
+                  )
+                }
+              >
+                {(person: (typeof people)[number]) => (
+                  <ListView.Item id={person.id} textValue={person.name}>
+                    {person.name}
+                  </ListView.Item>
+                )}
+              </ListView>
+            </Popover.Content>
           </Popover.Search>
-        </Popover.Content>
-      </Popover>
+        </Popover>
+      </Popover.Trigger>
       <Text>Assigned to: {assignee ?? 'nobody'}</Text>
     </Stack>
   );
