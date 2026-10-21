@@ -16,6 +16,7 @@ import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { Description } from '../Description/Description';
 import { Inline } from '../Inline/Inline';
+import { LinkButton } from '../LinkButton/LinkButton';
 import { ListView } from '../ListView/ListView';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Select } from '../Select/Select';
@@ -376,8 +377,13 @@ ScrollingContent.test(
 
 // Must-support case 1: the notifications panel. Rows carry real controls, so
 // they are a `ListView`, not a `Menu` (DST-1489). Same row design as the
-// ListView `NotificationsFeed` story: archive plus an overflow menu, no
-// per-row switch.
+// ListView `NotificationsFeed` story: archive plus an overflow menu. The list
+// sits flush under the header, and the link below it keeps its spacing.
+const NOTIFICATIONS = [
+  { id: 'sold-out', title: 'Summer Open Air sold out', time: '2 minutes ago' },
+  { id: 'payout', title: 'Payout sent', time: '1 hour ago' },
+];
+
 const onArchive = fn();
 
 export const Notifications = meta.story({
@@ -391,43 +397,39 @@ export const Notifications = meta.story({
       <Popover {...args}>
         <Title>Notifications</Title>
         <Description>2 unread</Description>
-        <Popover.Content bleed>
-          <ListView aria-label="Notifications">
-            <ListView.Item id="sold-out" textValue="Summer Open Air sold out">
-              <TextValue>Summer Open Air sold out</TextValue>
-              <Description>2 minutes ago</Description>
-              <ButtonGroup>
-                <Button
+        <Popover.Content>
+          <ListView aria-label="Notifications" items={NOTIFICATIONS}>
+            {(item: (typeof NOTIFICATIONS)[number]) => (
+              <ListView.Item id={item.id} textValue={item.title}>
+                <TextValue>{item.title}</TextValue>
+                <Description>{item.time}</Description>
+                <ButtonGroup
+                  aria-label={`Actions for ${item.title}`}
                   size="icon"
-                  aria-label="Archive"
-                  onPress={() => onArchive('sold-out')}
                 >
-                  <Archive />
-                </Button>
-                <ActionMenu aria-label="Summer Open Air sold out actions">
-                  <ActionMenu.Item>Mute thread</ActionMenu.Item>
-                  <ActionMenu.Item>Mark as read</ActionMenu.Item>
-                </ActionMenu>
-              </ButtonGroup>
-            </ListView.Item>
-            <ListView.Item id="payout" textValue="Payout sent">
-              <TextValue>Payout sent</TextValue>
-              <Description>1 hour ago</Description>
-              <ButtonGroup>
-                <Button
-                  size="icon"
-                  aria-label="Archive"
-                  onPress={() => onArchive('payout')}
-                >
-                  <Archive />
-                </Button>
-                <ActionMenu aria-label="Payout sent actions">
-                  <ActionMenu.Item>Mute thread</ActionMenu.Item>
-                  <ActionMenu.Item>Mark as read</ActionMenu.Item>
-                </ActionMenu>
-              </ButtonGroup>
-            </ListView.Item>
+                  <Tooltip.Trigger>
+                    <Button
+                      aria-label={`Archive ${item.title}`}
+                      onPress={() => onArchive(item.id)}
+                    >
+                      <Archive />
+                    </Button>
+                    <Tooltip>Archive</Tooltip>
+                  </Tooltip.Trigger>
+                  <ActionMenu aria-label={`More actions for ${item.title}`}>
+                    <ActionMenu.Item>Mark as read</ActionMenu.Item>
+                    <ActionMenu.Item>Mute thread</ActionMenu.Item>
+                    <ActionMenu.Item>
+                      Turn off these notifications
+                    </ActionMenu.Item>
+                  </ActionMenu>
+                </ButtonGroup>
+              </ListView.Item>
+            )}
           </ListView>
+          <LinkButton href="#notifications" variant="ghost">
+            View all notifications
+          </LinkButton>
         </Popover.Content>
       </Popover>
     </Popover.Trigger>
@@ -444,17 +446,14 @@ Notifications.test(
     );
     const dialog = await canvas.findByRole('dialog', { name: 'Notifications' });
 
-    const [archive] = await canvas.findAllByRole('button', { name: 'Archive' });
-    await userEvent.click(archive);
+    await userEvent.click(
+      await canvas.findByRole('button', {
+        name: 'Archive Summer Open Air sold out',
+      })
+    );
 
     await expect(onArchive).toHaveBeenCalledWith('sold-out');
     await expect(dialog).toBeVisible();
-
-    // `bleed`: rows span the popover edge to edge, so their dividers do too.
-    const row = canvas.getAllByRole('row')[0].getBoundingClientRect();
-    const panel = dialog.getBoundingClientRect();
-    await expect(Math.round(row.left)).toBe(Math.round(panel.left));
-    await expect(Math.round(row.right)).toBe(Math.round(panel.right));
 
     // No `Popover.Search` here, so the list keeps real focus (no virtual
     // focus without a field to drive it).
@@ -462,6 +461,33 @@ Notifications.test(
     first.focus();
     await userEvent.keyboard('{ArrowDown}');
     await expect(second).toHaveFocus();
+  }
+);
+
+Notifications.test(
+  'Lays the list out edge to edge, spaced from header and link',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Notifications' })
+    );
+    const dialog = await canvas.findByRole('dialog', { name: 'Notifications' });
+    const content = dialog.querySelector<HTMLElement>('[data-slot=content]')!;
+    const list = canvas.getByRole('grid').getBoundingClientRect();
+    const box = content.getBoundingClientRect();
+    const link = canvas
+      .getByRole('link', { name: 'View all notifications' })
+      .getBoundingClientRect();
+
+    // Rows span the popover, so their dividers do too, without `bleed`.
+    await expect(Math.round(list.left)).toBe(Math.round(box.left));
+    await expect(Math.round(list.right)).toBe(Math.round(box.right));
+    // Under a plain header (no search row and its divider) the list keeps
+    // the content's top padding.
+    await expect(Math.round(list.top - box.top)).toBe(12);
+    // The link below keeps the content's gap and bottom padding.
+    await expect(Math.round(link.top - list.bottom)).toBe(12);
+    await expect(Math.round(box.bottom - link.bottom)).toBe(12);
   }
 );
 
@@ -610,7 +636,7 @@ export const SearchableList = meta.story({
           aria-label="Search team members"
           placeholder="Search team members"
         />
-        <Popover.Content bleed>
+        <Popover.Content>
           <TeamList />
         </Popover.Content>
       </Popover>
@@ -632,6 +658,18 @@ SearchableList.test(
     await step('the search is a row of its own, focused on open', async () => {
       await waitFor(() => expect(search).toHaveFocus());
       await expect(search.closest('[data-slot=content]')).toBeNull();
+    });
+
+    await step('the list sits flush between search and edge', async () => {
+      const row = search
+        .closest<HTMLElement>('[data-slot=search]')!
+        .getBoundingClientRect();
+      const list = canvas.getByRole('grid').getBoundingClientRect();
+      const panel = dialog.getBoundingClientRect();
+
+      await expect(Math.round(list.top)).toBe(Math.round(row.bottom));
+      await expect(Math.round(list.bottom)).toBe(Math.round(panel.bottom));
+      await expect(Math.round(list.left)).toBe(Math.round(panel.left));
     });
 
     await step('typing filters the rows', async () => {
@@ -696,7 +734,7 @@ export const SearchAsHeader = meta.story({
           aria-label="Search team members"
           placeholder="Search team members"
         />
-        <Popover.Content bleed>
+        <Popover.Content>
           <TeamList />
         </Popover.Content>
       </Popover>

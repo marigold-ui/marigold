@@ -53,7 +53,9 @@ Toggles are where this gets mixed up. When the row itself is the toggle, like sh
 
 ### Lists with controls
 
-For rows that people operate, put a [`<ListView>`](/components/collection/listview) inside the popover. Each row can carry its own buttons and an action menu, and the list keeps arrow key navigation between rows. A notifications panel is the typical case. Set `bleed` on `<Popover.Content>` so the list's divider lines reach the popover's edges while the row text stays aligned with the title.
+For rows that people operate, put a [`<ListView>`](/components/collection/listview) inside the popover. Each row can carry its own buttons and an action menu, and the list keeps arrow key navigation between rows. A notifications panel is the typical case. Put the list directly in `<Popover.Content>`. Its divider lines then reach the popover's edges while the row text stays aligned with the title. At the bottom of the panel, and right under a search, the list also drops the content's padding, because its rows bring their own. Content before or after the list keeps its spacing.
+
+When the list sits inside another element, or for other edge-to-edge content like an [`<Accordion>`](/components/navigation/accordion), set `bleed` on `<Popover.Content>` to remove its horizontal padding.
 
 <ComponentDemo name="popover-notifications" />
 

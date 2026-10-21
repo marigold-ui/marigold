@@ -79,7 +79,7 @@ export default () => {
           aria-label="Search team members"
           placeholder="Search team members"
         />
-        <Popover.Content bleed>
+        <Popover.Content>
           <ListView
             aria-label="Team members"
             items={members}
