@@ -5,6 +5,7 @@
     "dialog",
     "drawer",
     "menu",
+    "popover",
     "toast",
     "tooltip"
   ]
