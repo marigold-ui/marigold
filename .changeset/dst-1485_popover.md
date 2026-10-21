@@ -36,7 +36,7 @@ feat(DST-1485): add a general-purpose `Popover` for arbitrary content
 
 ### Migrating a custom theme
 
-Every theme maintained outside this repository that defines `Popover` needs this change. Move the existing styles into `container` and add the new slots:
+Every theme maintained outside this repository that defines `Popover` needs this change. After upgrading, run `marigold migrate` from the project root. On 19.x it proposes the v19 migration, which does the change below. To do it by hand, move the existing styles into `container` and add the new slots:
 
 ```ts
 // Before
