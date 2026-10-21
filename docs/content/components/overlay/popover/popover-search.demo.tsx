@@ -21,6 +21,7 @@ export default () => {
 
   return (
     <Stack space={2} alignX="left">
+      <Text>Assigned to: {assignee ?? 'nobody'}</Text>
       <Popover.Trigger>
         <Button>
           <UserPlus /> Assign to
@@ -50,7 +51,6 @@ export default () => {
           </Popover.Content>
         </Popover>
       </Popover.Trigger>
-      <Text>Assigned to: {assignee ?? 'nobody'}</Text>
     </Stack>
   );
 };

@@ -174,6 +174,7 @@ export const Controlled = meta.story({
 
     return (
       <Stack space={2} alignX="left">
+        <Text>Open: {String(open)}</Text>
         <Button onPress={() => setOpen(true)}>Open from outside</Button>
         <Popover.Trigger open={open} onOpenChange={setOpen}>
           <Button>Event details</Button>
@@ -183,7 +184,6 @@ export const Controlled = meta.story({
             </Popover.Content>
           </Popover>
         </Popover.Trigger>
-        <Text>Open: {String(open)}</Text>
       </Stack>
     );
   },
@@ -527,6 +527,7 @@ export const SearchableList = meta.story({
 
     return (
       <Stack space={2} alignX="left">
+        <Text>Assigned: {assignee ?? 'nobody'}</Text>
         <Popover.Trigger>
           <Button>
             <UserPlus /> Assign to
@@ -552,7 +553,6 @@ export const SearchableList = meta.story({
             </Popover.Content>
           </Popover>
         </Popover.Trigger>
-        <Text>Assigned: {assignee ?? 'nobody'}</Text>
       </Stack>
     );
   },
