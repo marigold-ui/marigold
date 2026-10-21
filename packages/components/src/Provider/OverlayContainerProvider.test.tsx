@@ -18,9 +18,11 @@ const theme: Theme = {
   components: {
     Popover: {
       container: cva({}),
-      content: cva({}),
+      body: cva({}),
       title: cva({}),
       description: cva({}),
+      search: cva({}),
+      content: cva({}),
     },
     Underlay: cva({}),
     Select: {

@@ -240,6 +240,7 @@ export type { PaginationProps } from './Pagination/Pagination';
 
 export { Popover } from './Popover/Popover';
 export type { PopoverProps } from './Popover/Popover';
+export type { PopoverTriggerProps } from './Popover/PopoverTrigger';
 export type { PopoverContentProps } from './Popover/PopoverContent';
 export type { PopoverSearchProps } from './Popover/PopoverSearch';
 

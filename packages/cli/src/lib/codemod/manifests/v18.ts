@@ -93,7 +93,7 @@ export const v18: MigrationManifest = {
     Field: null,
     BooleanField: ['container', 'description'],
     Headline: null,
-    Popover: ['container', 'content', 'title', 'description'],
+    Popover: ['container', 'body', 'title', 'description', 'search', 'content'],
     HelpText: ['container', 'icon'],
     IconButton: null,
     Checkbox: ['container', 'label', 'checkbox', 'group'],

@@ -4,6 +4,7 @@ import { Autocomplete, useFilter } from 'react-aria-components/Autocomplete';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { SearchField } from '../SearchField/SearchField';
 import { intlMessages } from '../intl/messages';
+import { usePopoverContext } from './Context';
 
 // Props
 // ---------------
@@ -37,8 +38,9 @@ export interface PopoverSearchProps extends Omit<
   autoFocus?: boolean;
 
   /**
-   * The collection to filter, e.g. a `<ListView>`. Each item is matched by its
-   * `textValue`, or by its text when it has none.
+   * The `<Popover.Content>` holding the collection to filter, e.g. a
+   * `<ListView>`. Each item is matched by its `textValue`, or by its text when
+   * it has none.
    */
   children: ReactNode;
 }
@@ -46,10 +48,11 @@ export interface PopoverSearchProps extends Omit<
 // Component
 // ---------------
 /**
- * A search field that filters the collection below it, built on React Aria's
- * `Autocomplete` like `TagField`'s dropdown. The collection keeps virtual
- * focus while the user types, so arrow keys move through the results without
- * leaving the field.
+ * A search field that filters the collection in the `<Popover.Content>` it
+ * wraps, built on React Aria's `Autocomplete` like `TagField`'s dropdown.
+ * `Autocomplete` connects field and collection through context and renders no
+ * element itself, so the field becomes its own row above the content and
+ * stays in place while the results scroll.
  */
 export const PopoverSearch = ({
   label,
@@ -60,19 +63,22 @@ export const PopoverSearch = ({
   children,
   ...props
 }: PopoverSearchProps) => {
+  const { classNames } = usePopoverContext();
   const { contains } = useFilter({ sensitivity: 'base' });
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   return (
     <Autocomplete {...props} filter={filter ?? contains}>
-      <SearchField
-        label={label}
-        aria-label={
-          label ? undefined : (ariaLabel ?? stringFormatter.format('search'))
-        }
-        placeholder={placeholder}
-        autoFocus={autoFocus}
-      />
+      <div data-slot="search" className={classNames.search}>
+        <SearchField
+          label={label}
+          aria-label={
+            label ? undefined : (ariaLabel ?? stringFormatter.format('search'))
+          }
+          placeholder={placeholder}
+          autoFocus={autoFocus}
+        />
+      </div>
       {children}
     </Autocomplete>
   );

@@ -7,15 +7,17 @@ import {
 } from '@marigold/components';
 
 export default () => (
-  <Popover>
+  <Popover.Trigger>
     <Button>Event details</Button>
-    <Popover.Content>
+    <Popover>
       <Title>Summer Open Air</Title>
       <Description>Sat, 12 July · Stadtgarten</Description>
-      <Text>
-        Doors open at 17:00. Seating is unreserved, so arrive early for a spot
-        near the stage.
-      </Text>
-    </Popover.Content>
-  </Popover>
+      <Popover.Content>
+        <Text>
+          Doors open at 17:00. Seating is unreserved, so arrive early for a spot
+          near the stage.
+        </Text>
+      </Popover.Content>
+    </Popover>
+  </Popover.Trigger>
 );

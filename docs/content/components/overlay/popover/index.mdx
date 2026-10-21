@@ -9,11 +9,13 @@ Use `<Popover>` when the content is a small surface of its own, like a notificat
 
 ## Usage
 
-A popover takes two parts. The first child of `<Popover>` is the trigger, usually a [`<Button>`](/components/actions/button). `<Popover.Content>` holds the panel. Start the content with a [`<Title>`](/components/content/title) and an optional [`<Description>`](/components/content/description): they are styled as the panel's header and the title becomes its accessible name.
+`<Popover.Trigger>` wraps the trigger, usually a [`<Button>`](/components/actions/button), and the `<Popover>` it opens. Inside the popover, start with a [`<Title>`](/components/content/title) and an optional [`<Description>`](/components/content/description). They form the panel's header, and the title becomes its accessible name. Put the body in `<Popover.Content>`. When the panel runs out of room, only the content scrolls and the header stays in place.
 
 <ComponentDemo name="popover-basic" />
 
 On small screens the panel opens as a tray from the bottom of the screen, with a close button. You write the content once and it works in both places.
+
+`<Popover.Content>` is optional. Without it, the popover lays out all its children as the body and scrolls them together, title included. Use it whenever the panel has a title or can get long. When the body is a form, put the [`<Form>`](/components/form/form) inside `<Popover.Content>`, not around it, so the content can still scroll.
 
 ### Popover vs Menu
 
@@ -57,7 +59,7 @@ For rows that people operate, put a [`<ListView>`](/components/collection/listvi
 
 ### Searching a list
 
-Wrap a list in `<Popover.Search>` to filter it as the user types. The search field takes focus when the panel opens, and the arrow keys move through the results without leaving the field. Give the field an `aria-label` or a visible `label`. Items are matched by their `textValue`.
+Wrap the `<Popover.Content>` holding a list in `<Popover.Search>` to filter the list as the user types. The search field renders as its own row above the content, so it stays in view while the results scroll. It takes focus when the panel opens, and the arrow keys move through the results without leaving the field. Give the field an `aria-label` or a visible `label`. Items are matched by their `textValue`.
 
 <ComponentDemo name="popover-search" />
 
@@ -88,7 +90,7 @@ Keep forms in a popover short and optional. A popover closes when the user click
 
 ### Modality
 
-The `modal` prop on `<Popover.Content>` controls how much the panel takes over the page. It follows React Aria and defaults to `true`.
+The `modal` prop on `<Popover>` controls how much the panel takes over the page. It follows React Aria and defaults to `true`.
 
 | Value          | Behavior                                                                                     | When to use                                             |
 | -------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
@@ -127,13 +129,17 @@ A popover can hold anything, which makes it easy to reach for. Most needs alread
 
 ## Accessibility
 
-The panel is a dialog. A `<Title>` inside `<Popover.Content>` becomes its accessible name automatically. When the panel has no visible title, give `<Popover.Content>` an `aria-label`. An icon-only trigger needs an `aria-label` too.
+The panel is a dialog. A `<Title>` inside `<Popover>` becomes its accessible name automatically. When the panel has no visible title, give `<Popover>` an `aria-label`. An icon-only trigger needs an `aria-label` too.
 
-The trigger exposes whether the panel is open. When the panel opens, focus moves into it. Tab moves through the controls inside, and Escape closes the panel and returns focus to the trigger. Set `keyboardDismissable={false}` on `<Popover>` only when there is another clear way out, because a panel the keyboard can't leave is a barrier.
+The trigger exposes whether the panel is open. When the panel opens, focus moves into it. Tab moves through the controls inside, and Escape closes the panel and returns focus to the trigger. Set `keyboardDismissable={false}` on `<Popover.Trigger>` only when there is another clear way out, because a panel the keyboard can't leave is a barrier.
 
 ## Props
 
 <StorybookHintMessage component={'Popover'} />
+
+### Popover.Trigger
+
+<AutoTypeTable path="Popover/PopoverTrigger" name="PopoverTriggerProps" />
 
 ### Popover
 

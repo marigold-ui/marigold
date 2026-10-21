@@ -17,30 +17,32 @@ const notifications = [
 ];
 
 export default () => (
-  <Popover>
+  <Popover.Trigger>
     <Button size="icon" aria-label="Notifications">
       <Bell />
     </Button>
-    <Popover.Content placement="bottom end" width="large">
+    <Popover placement="bottom end" width="large">
       <Title>Notifications</Title>
       <Description>{notifications.length} unread</Description>
-      <ListView aria-label="Notifications" items={notifications}>
-        {(item: (typeof notifications)[number]) => (
-          <ListView.Item id={item.id} textValue={item.title}>
-            <TextValue>{item.title}</TextValue>
-            <Description>{item.time}</Description>
-            <ButtonGroup>
-              <Button size="icon" aria-label="Archive">
-                <Archive />
-              </Button>
-              <ActionMenu aria-label={`${item.title} actions`}>
-                <ActionMenu.Item>Mute thread</ActionMenu.Item>
-                <ActionMenu.Item>Mark as read</ActionMenu.Item>
-              </ActionMenu>
-            </ButtonGroup>
-          </ListView.Item>
-        )}
-      </ListView>
-    </Popover.Content>
-  </Popover>
+      <Popover.Content>
+        <ListView aria-label="Notifications" items={notifications}>
+          {(item: (typeof notifications)[number]) => (
+            <ListView.Item id={item.id} textValue={item.title}>
+              <TextValue>{item.title}</TextValue>
+              <Description>{item.time}</Description>
+              <ButtonGroup>
+                <Button size="icon" aria-label="Archive">
+                  <Archive />
+                </Button>
+                <ActionMenu aria-label={`${item.title} actions`}>
+                  <ActionMenu.Item>Mute thread</ActionMenu.Item>
+                  <ActionMenu.Item>Mark as read</ActionMenu.Item>
+                </ActionMenu>
+              </ButtonGroup>
+            </ListView.Item>
+          )}
+        </ListView>
+      </Popover.Content>
+    </Popover>
+  </Popover.Trigger>
 );
