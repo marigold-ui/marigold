@@ -77,7 +77,54 @@ Selection begins the flow, and it must be visible and cheap to change. Any multi
 
 <ComponentDemo name="bulk-actions-selection" />
 
+### Choosing the collection
+
 Choose the collection by what one record looks like, not by which one can select, because all three now can. What differs is the wiring. A `<Table>` takes the bar through its `actionBar` prop, reserves the bar's height for you, and puts the select-all in its header row. A `<ListView>` or `<SelectList>` takes `allowSelectAll` for the select-all and the `<ActionBar>` as a sibling, with `selectedItemCount` and `onClearSelection` passed yourself or supplied by [`useActionBar`](/components/collection/actionbar#useactionbar), which leaves reserving the bar's height to you as well.
+
+**A record that is one operable item belongs in a list.** When there are no fields worth lining up in columns, a table's grid is scaffolding around a single name, and the row is easier to read as a title with a line of context under it. The flow is otherwise identical to the table above: the same selection, the same bar, the same actions.
+
+<ComponentDemo name="bulk-actions-list-selection" />
+
+Reserving the bar's height is the one thing the list does not do for you. Without it the bar covers the last rows, and keyboard navigation parks a focused row underneath it. The demo reserves it on the content inside the scroll container rather than on the scroller itself, because a scroller's own padding shrinks the rectangle its sticky children pin to.
+
+**A selection that submits belongs in a field.** When the set is part of a form rather than a list of records to act on, the operation is the form's own submit, so there is no bar and no floating actions. A [`<SelectList>`](/components/form/selectlist) carries the selection under a `name`, with a visible label and validation attached to it.
+
+<ComponentDemo name="bulk-actions-field-selection" />
+
+This is the one case where the select-all resolves to concrete keys rather than the `'all'` sentinel, because a field has to submit a value. Everything in [Implementation](#implementation) about resolving `'all'` therefore applies to `<Table>` and `<ListView>`, not here.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Pick the collection by what one record looks like: a table when records
+      are rows of fields to compare, a list when each is one operable item, a
+      field when the selection submits with a form.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't reach for a table just because it is the familiar bulk-actions
+      shape. A single-column table of names is scaffolding around a list, and
+      its empty columns read as missing data.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Reserve the action bar's height on the content when you compose
+      `<ActionBar>` as a sibling, so the bar never covers the last rows.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't put a floating `<ActionBar>` on a `<SelectList>`. A field commits
+      through its form's submit, and a bar hovering over a form field competes
+      with the button that actually applies the change.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 ### Scope
 
@@ -161,6 +208,31 @@ Repeat the action verb and the count in the confirm button, "Delete 12 events" r
     <DontDescription>
       Don't confirm routine, recoverable actions. Overused dialogs train users
       to click through the one that matters.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Select-all raises the stakes
+
+A select-all makes the largest possible selection the cheapest one to make, which is precisely what a destructive action does not need. It is also easy to hit by accident, and the accident is not a small one: pressing the select-all while the selection is partial selects **everything** rather than clearing it, so a stray press on a carefully picked set of three rows leaves the whole visible set selected instead.
+
+That is an argument for the confirmation rather than against the select-all. The dialog is what turns one cheap press into a deliberate second decision, and because it names the resolved count, an accidental "all" becomes visible before anything runs. Pair the two or offer neither, and never run a destructive action directly from the bar on a collection that also offers a select-all.
+
+Where the operation is irreversible and the list is long, the safer answer is to leave `allowSelectAll` off entirely and let users build the scope by hand. The effort of selecting then matches the cost of getting it wrong, and the [Filter](/patterns/user-input/filter) pattern is the better tool for narrowing a large set down to the records that should be acted on.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Keep a select-all behind a confirmation that names the resolved count
+      whenever the bar carries a destructive action, so selecting everything
+      still takes a deliberate second decision.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't run a destructive action straight from the bar on a collection that
+      offers a select-all. Two presses, one of them a miss, is then enough to
+      destroy the whole visible set.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
