@@ -57,11 +57,29 @@ export const Popover: ThemeComponent<'Popover'> = {
       // The field drops its frame: the row is the field.
       '[&_input]:rounded-none [&_input]:bg-transparent [&_input]:ring-0',
       '[&_input:focus]:outline-hidden',
-      // Focus shows on the row's bottom divider.
-      'focus-within:border-b-ring',
+      // Keyboard focus marks the whole row, like a ListView row.
+      'has-[input[data-focus-visible]]:inset-ring-2',
+      'has-[input[data-focus-visible]]:inset-ring-ring/50',
     ],
   }),
   content: cva({
-    base: 'flex flex-col gap-3 px-(--popover-px) py-3 outline-none',
+    base: [
+      'flex flex-col gap-3 px-(--popover-px) py-3 outline-none',
+      '[--bleed-px:initial]',
+      'data-bleed:px-0 data-bleed:[--bleed-px:var(--popover-px)]',
+      // A ListView or Table (both `role=grid`) placed directly in the content
+      // spans it edge to edge. As the last child it sits flush against the
+      // popover's bottom, and as the first child right under the search row's
+      // divider: its rows carry their own padding. Under a plain header it
+      // keeps the top padding, since there is no divider to separate them.
+      // Content around it keeps its spacing. "First" and "last" skip the
+      // hidden nodes React Aria renders beside a collection (a `<template>`
+      // and focus scope markers).
+      'not-data-bleed:*:[&[role=grid]]:-mx-(--popover-px)',
+      '*:[&[role=grid]]:w-auto',
+      '*:[&[role=grid]]:[--bleed-px:var(--popover-px)]',
+      '[[data-slot=search]+&]:*:[&[role=grid]:nth-child(1_of_:not(template,[hidden]))]:-mt-3',
+      '*:[&[role=grid]:nth-last-child(1_of_:not(template,[hidden]))]:-mb-3',
+    ],
   }),
 };

@@ -18,6 +18,10 @@ export interface PopoverContentProps {
    * (`ListView`, `Accordion`, `Table`) inset their own content to stay aligned
    * with the title while their dividers reach the popover's edge. Mirrors
    * `Drawer.Content`'s and `Panel.Content`'s `bleed`.
+   *
+   * A `ListView` or `Table` placed directly in the content needs no `bleed`:
+   * it reaches the popover's edges on its own, and drops the content's
+   * vertical padding on the side where it is the first or last child.
    * @default false
    */
   bleed?: boolean;
@@ -50,15 +54,9 @@ export const PopoverContent = ({ children, bleed }: PopoverContentProps) => {
   return (
     <div
       data-slot="content"
+      data-bleed={bleed || undefined}
       ref={isTray ? pinTrayHeight : undefined}
-      className={cn(
-        'min-h-0 flex-1 overflow-y-auto',
-        classNames.content,
-        // Bled: drop the horizontal padding and re-publish it as `--bleed-px`
-        // so edge-aware children inset to align with the title. Non-bled
-        // clears it, as in `Drawer.Content` and `Panel.Content`.
-        bleed ? 'px-0 [--bleed-px:var(--popover-px)]' : '[--bleed-px:initial]'
-      )}
+      className={cn('min-h-0 flex-1 overflow-y-auto', classNames.content)}
     >
       {children}
     </div>
