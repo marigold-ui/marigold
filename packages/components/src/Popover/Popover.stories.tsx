@@ -425,6 +425,13 @@ Notifications.test(
 
     await expect(onArchive).toHaveBeenCalledWith('sold-out');
     await expect(dialog).toBeVisible();
+
+    // No `Popover.Search` here, so the list keeps real focus (no virtual
+    // focus without a field to drive it).
+    const [first, second] = canvas.getAllByRole('row');
+    first.focus();
+    await userEvent.keyboard('{ArrowDown}');
+    await expect(second).toHaveFocus();
   }
 );
 
@@ -505,8 +512,8 @@ export const QuickSettings = meta.story({
   ),
 });
 
-// Must-support case 5: a searchable list. `Popover.Search` wraps the content
-// it filters, but renders its field as its own row above it.
+// Must-support case 5: a searchable list. `Popover.Search` sits next to the
+// content it filters and stays in view while the results scroll.
 const PEOPLE = [
   { id: 'jane', name: 'Jane Doe' },
   { id: 'john', name: 'John Smith' },
@@ -526,24 +533,23 @@ export const SearchableList = meta.story({
           </Button>
           <Popover {...args}>
             <Title>Assign to</Title>
-            <Popover.Search aria-label="Search people" placeholder="Search…">
-              <Popover.Content>
-                <ListView
-                  aria-label="People"
-                  items={PEOPLE}
-                  selectionMode="single"
-                  onSelectionChange={keys =>
-                    setAssignee(keys === 'all' ? null : String([...keys][0]))
-                  }
-                >
-                  {(person: (typeof PEOPLE)[number]) => (
-                    <ListView.Item id={person.id} textValue={person.name}>
-                      {person.name}
-                    </ListView.Item>
-                  )}
-                </ListView>
-              </Popover.Content>
-            </Popover.Search>
+            <Popover.Search aria-label="Search people" placeholder="Search…" />
+            <Popover.Content>
+              <ListView
+                aria-label="People"
+                items={PEOPLE}
+                selectionMode="single"
+                onSelectionChange={keys =>
+                  setAssignee(keys === 'all' ? null : String([...keys][0]))
+                }
+              >
+                {(person: (typeof PEOPLE)[number]) => (
+                  <ListView.Item id={person.id} textValue={person.name}>
+                    {person.name}
+                  </ListView.Item>
+                )}
+              </ListView>
+            </Popover.Content>
           </Popover>
         </Popover.Trigger>
         <Text>Assigned: {assignee ?? 'nobody'}</Text>
@@ -563,6 +569,7 @@ SearchableList.test(
 
     await waitFor(() => expect(search).toHaveFocus());
     await expect(search.closest('[data-slot=content]')).toBeNull();
+
     await userEvent.keyboard('pri');
 
     await waitFor(() =>
@@ -570,6 +577,11 @@ SearchableList.test(
         'Priya Natarajan',
       ])
     );
+
+    // A `ListView` keeps real focus (its rows hold their own controls), so
+    // Tab moves from the field into the results.
+    await userEvent.tab();
+    await expect(canvas.getByRole('row')).toHaveFocus();
   }
 );
 

@@ -15,7 +15,7 @@ import { intlMessages } from '../intl/messages';
 import { useSlot } from '../utils/useSlot';
 import { PopoverContext, PopoverTriggerContext } from './Context';
 import { PopoverContent } from './PopoverContent';
-import { PopoverSearch } from './PopoverSearch';
+import { PopoverSearch, PopoverSearchScope } from './PopoverSearch';
 import { PopoverTrigger } from './PopoverTrigger';
 
 // Props
@@ -60,8 +60,9 @@ export interface PopoverProps extends Omit<OverlayPopoverProps, RemovedProps> {
 
   /**
    * Content of the popover: an optional `<Title>` and `<Description>`, an
-   * optional `<Popover.Search>`, and the body in `<Popover.Content>`. Without a
-   * `<Popover.Content>`, all children are laid out as the body.
+   * optional `<Popover.Search>`, and the body in `<Popover.Content>`, all as
+   * siblings. Without a `<Popover.Content>`, all children are laid out as the
+   * body.
    */
   children?: ReactNode;
 }
@@ -149,7 +150,7 @@ const PopoverTrayBody = ({
             [TextContext, textProps],
           ]}
         >
-          {children}
+          <PopoverSearchScope>{children}</PopoverSearchScope>
         </Provider>
       </PopoverContext>
     </div>
@@ -215,7 +216,7 @@ const PopoverBase = ({
             [TextContext, textProps],
           ]}
         >
-          {children}
+          <PopoverSearchScope>{children}</PopoverSearchScope>
         </Provider>
       </PopoverContext>
     </Dialog>
