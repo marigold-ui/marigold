@@ -8,7 +8,8 @@ import {
   ListFilter,
   Settings2,
   Tag,
-  UserPlus,
+  UserMinus,
+  Users,
 } from '@marigold/icons';
 import { Button } from '../Button/Button';
 import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
@@ -24,6 +25,7 @@ import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import { TextValue } from '../TextValue/TextValue';
 import { Title } from '../Title/Title';
+import { Tooltip } from '../Tooltip/Tooltip';
 import { Popover } from './Popover';
 
 const meta = preview.meta({
@@ -540,76 +542,179 @@ export const QuickSettings = meta.story({
   ),
 });
 
-// Must-support case 5: a searchable list. `Popover.Search` sits next to the
-// content it filters and stays in view while the results scroll.
-const PEOPLE = [
-  { id: 'jane', name: 'Jane Doe' },
-  { id: 'john', name: 'John Smith' },
-  { id: 'priya', name: 'Priya Natarajan' },
+// Must-support case 5: a searchable list. Search earns its place in a popover
+// when the user acts on the rows in place. Picking one person by typing is an
+// `Autocomplete` or `ComboBox`. `Popover.Search` sits next to the content it
+// filters and stays in view while the results scroll.
+const MEMBERS = [
+  { id: 'jane', name: 'Jane Doe', email: 'jane.doe@example.com' },
+  { id: 'john', name: 'John Smith', email: 'john.smith@example.com' },
+  { id: 'priya', name: 'Priya Natarajan', email: 'priya.n@example.com' },
+  { id: 'lukas', name: 'Lukas Weber', email: 'lukas.weber@example.com' },
+  { id: 'mara', name: 'Mara Jensen', email: 'mara.jensen@example.com' },
 ];
+
+type Member = (typeof MEMBERS)[number];
+
+const onRemove = fn();
+const onRoleChange = fn();
+
+const TeamList = () => (
+  <ListView
+    aria-label="Team members"
+    items={MEMBERS}
+    emptyState={<Text>No team members match your search.</Text>}
+  >
+    {(member: Member) => (
+      <ListView.Item id={member.id} textValue={member.name}>
+        <TextValue>{member.name}</TextValue>
+        <Description>{member.email}</Description>
+        <ButtonGroup aria-label={`Actions for ${member.name}`} size="icon">
+          <ActionMenu aria-label={`Change role of ${member.name}`}>
+            <ActionMenu.Item onAction={() => onRoleChange(member.id, 'admin')}>
+              Make admin
+            </ActionMenu.Item>
+            <ActionMenu.Item onAction={() => onRoleChange(member.id, 'editor')}>
+              Make editor
+            </ActionMenu.Item>
+            <ActionMenu.Item onAction={() => onRoleChange(member.id, 'viewer')}>
+              Make viewer
+            </ActionMenu.Item>
+          </ActionMenu>
+          <Tooltip.Trigger>
+            <Button
+              aria-label={`Remove ${member.name}`}
+              onPress={() => onRemove(member.id)}
+            >
+              <UserMinus />
+            </Button>
+            <Tooltip>Remove</Tooltip>
+          </Tooltip.Trigger>
+        </ButtonGroup>
+      </ListView.Item>
+    )}
+  </ListView>
+);
 
 export const SearchableList = meta.story({
   tags: ['component-test'],
-  render: args => {
-    const [assignee, setAssignee] = useState<string | null>(null);
-
-    return (
-      <Stack space={2} alignX="left">
-        <Text>Assigned: {assignee ?? 'nobody'}</Text>
-        <Popover.Trigger>
-          <Button>
-            <UserPlus /> Assign to
-          </Button>
-          <Popover {...args}>
-            <Title>Assign to</Title>
-            <Popover.Search aria-label="Search people" placeholder="Search…" />
-            <Popover.Content bleed>
-              <ListView
-                aria-label="People"
-                items={PEOPLE}
-                selectionMode="single"
-                onSelectionChange={keys =>
-                  setAssignee(keys === 'all' ? null : String([...keys][0]))
-                }
-              >
-                {(person: (typeof PEOPLE)[number]) => (
-                  <ListView.Item id={person.id} textValue={person.name}>
-                    {person.name}
-                  </ListView.Item>
-                )}
-              </ListView>
-            </Popover.Content>
-          </Popover>
-        </Popover.Trigger>
-      </Stack>
-    );
-  },
+  args: { width: 'large' },
+  render: args => (
+    <Popover.Trigger>
+      <Button>
+        <Users /> Manage team
+      </Button>
+      <Popover {...args}>
+        <Title>Team members</Title>
+        <Popover.Search
+          aria-label="Search team members"
+          placeholder="Search team members"
+        />
+        <Popover.Content bleed>
+          <TeamList />
+        </Popover.Content>
+      </Popover>
+    </Popover.Trigger>
+  ),
 });
 
 SearchableList.test(
-  'Filters the list as the user types',
+  'Filters the list and acts on a result in place',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas, userEvent }) => {
-    await userEvent.click(canvas.getByRole('button', { name: 'Assign to' }));
+  async ({ canvas, userEvent, step }) => {
+    onRemove.mockClear();
+    await userEvent.click(canvas.getByRole('button', { name: 'Manage team' }));
+    const dialog = await canvas.findByRole('dialog', { name: 'Team members' });
     const search = await canvas.findByRole('searchbox', {
-      name: 'Search people',
+      name: 'Search team members',
     });
 
+    await step('the search is a row of its own, focused on open', async () => {
+      await waitFor(() => expect(search).toHaveFocus());
+      await expect(search.closest('[data-slot=content]')).toBeNull();
+    });
+
+    await step('typing filters the rows', async () => {
+      await userEvent.keyboard('pri');
+
+      await waitFor(() =>
+        expect(
+          canvas
+            .getAllByRole('row')
+            .map(row => row.querySelector('[slot=label]')?.textContent)
+        ).toEqual(['Priya Natarajan'])
+      );
+    });
+
+    await step('Tab moves into the results', async () => {
+      // A `ListView` keeps real focus (its rows hold their own controls).
+      await userEvent.tab();
+      await expect(canvas.getByRole('row')).toHaveFocus();
+    });
+
+    await step('a row action runs and the popover stays open', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Remove Priya Natarajan' })
+      );
+
+      await expect(onRemove).toHaveBeenCalledWith('priya');
+      await expect(dialog).toBeVisible();
+    });
+  }
+);
+
+SearchableList.test(
+  'Shows an empty state when nothing matches',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Manage team' }));
+    const search = await canvas.findByRole('searchbox', {
+      name: 'Search team members',
+    });
     await waitFor(() => expect(search).toHaveFocus());
-    await expect(search.closest('[data-slot=content]')).toBeNull();
 
-    await userEvent.keyboard('pri');
+    await userEvent.keyboard('zzz');
 
-    await waitFor(() =>
-      expect(canvas.getAllByRole('row').map(row => row.textContent)).toEqual([
-        'Priya Natarajan',
-      ])
-    );
+    await expect(
+      await canvas.findByText('No team members match your search.')
+    ).toBeVisible();
+  }
+);
 
-    // A `ListView` keeps real focus (its rows hold their own controls), so
-    // Tab moves from the field into the results.
-    await userEvent.tab();
-    await expect(canvas.getByRole('row')).toHaveFocus();
+// Without a `<Title>` the search row is the popover's header. The popover is
+// then named by its `aria-label`.
+export const SearchAsHeader = meta.story({
+  tags: ['component-test'],
+  args: { width: 'large' },
+  render: args => (
+    <Popover.Trigger>
+      <Button>
+        <Users /> Manage team
+      </Button>
+      <Popover {...args} aria-label="Team members">
+        <Popover.Search
+          aria-label="Search team members"
+          placeholder="Search team members"
+        />
+        <Popover.Content bleed>
+          <TeamList />
+        </Popover.Content>
+      </Popover>
+    </Popover.Trigger>
+  ),
+});
+
+SearchAsHeader.test(
+  'Puts the search row at the top, with only the divider below',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Manage team' }));
+    const dialog = await canvas.findByRole('dialog', { name: 'Team members' });
+    const row = dialog.querySelector<HTMLElement>('[data-slot=search]')!;
+
+    await expect(dialog.firstElementChild).toBe(row);
+    await expect(getComputedStyle(row).borderTopWidth).toBe('0px');
+    await expect(getComputedStyle(row).borderBottomWidth).toBe('1px');
   }
 );
 
@@ -635,8 +740,8 @@ export const SearchWithNestedOverlays = meta.story({
               <ActionMenu.Item>Export list</ActionMenu.Item>
             </ActionMenu>
           </Inline>
-          <ListView aria-label="People" items={PEOPLE}>
-            {(person: (typeof PEOPLE)[number]) => (
+          <ListView aria-label="People" items={MEMBERS}>
+            {(person: Member) => (
               <ListView.Item id={person.id} textValue={person.name}>
                 {person.name}
               </ListView.Item>

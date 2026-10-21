@@ -39,10 +39,10 @@ test('applies the width token to the dialog', async () => {
 test('labels the search field by its aria-label', async () => {
   renderWithOverlay(<SearchableList.Component />);
 
-  await user.click(screen.getByRole('button', { name: 'Assign to' }));
+  await user.click(screen.getByRole('button', { name: 'Manage team' }));
 
   expect(
-    screen.getByRole('searchbox', { name: 'Search people' })
+    screen.getByRole('searchbox', { name: 'Search team members' })
   ).toBeInTheDocument();
 });
 

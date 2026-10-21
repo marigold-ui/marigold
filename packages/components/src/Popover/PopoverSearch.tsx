@@ -114,18 +114,16 @@ export const PopoverSearchScope = ({ children }: { children?: ReactNode }) => {
 // ---------------
 export interface PopoverSearchProps {
   /**
-   * Visible label of the search field. Without it, the field is labelled by
-   * `aria-label`, and falls back to a localized "Search".
-   */
-  label?: ReactNode;
-
-  /**
-   * Accessible label of the search field when there is no visible `label`.
+   * Accessible label of the search field. The field has no visible label, it
+   * is a row of the popover, so name what is searched, e.g. "Search team
+   * members".
+   * @default localized "Search"
    */
   'aria-label'?: string;
 
   /**
-   * Placeholder text of the search field.
+   * Placeholder text of the search field. Say what the user can search for,
+   * since the placeholder is the only visible hint.
    */
   placeholder?: string;
 
@@ -162,13 +160,14 @@ export interface PopoverSearchProps {
 // ---------------
 /**
  * A search field that filters the collection in the popover's
- * `<Popover.Content>`, e.g. a `<ListView>`. It renders as its own row, so it
- * stays in view while the results scroll. Tab moves into the results: React
+ * `<Popover.Content>`, e.g. a `<ListView>`. It renders as a borderless row
+ * spanning the popover, so it stays in view while the results scroll. Under a
+ * `<Title>` it sits between two dividers. Without a title it becomes the
+ * popover's header (name the popover with `aria-label` then). Tab moves into the results: React
  * Aria keeps real focus in a `ListView` (a `GridList`), because its rows hold
  * their own controls. A `ListBox` would take arrow keys from the field.
  */
 export const PopoverSearch = ({
-  label,
   'aria-label': ariaLabel,
   placeholder,
   autoFocus = true,
@@ -207,10 +206,7 @@ export const PopoverSearch = ({
   return (
     <div data-slot="search" className={classNames.search}>
       <SearchField
-        label={label}
-        aria-label={
-          label ? undefined : (ariaLabel ?? stringFormatter.format('search'))
-        }
+        aria-label={ariaLabel ?? stringFormatter.format('search')}
         placeholder={placeholder}
         autoFocus={autoFocus}
       />
