@@ -29,7 +29,7 @@ export default () => {
         <Popover>
           <Title>Assign to</Title>
           <Popover.Search aria-label="Search people" placeholder="Search…" />
-          <Popover.Content>
+          <Popover.Content bleed>
             <ListView
               aria-label="People"
               items={people}

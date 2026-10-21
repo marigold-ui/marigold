@@ -25,7 +25,7 @@ feat(DST-1485): add a general-purpose `Popover` for arbitrary content
 
 - `<Popover.Trigger>` wraps the trigger and the panel, like `Dialog.Trigger`. Its `dismissable` and `keyboardDismissable` props control how the panel closes. Both default to `true`.
 - `<Popover>` renders a positioned panel on larger screens and a tray on small ones. A `<Title>` and `<Description>` inside it form the header, and the title becomes the panel's accessible name.
-- `<Popover.Content>` holds the body and is the only part that scrolls. Without it, the popover lays out all its children as the body.
+- `<Popover.Content>` holds the body and is the only part that scrolls. Without it, the popover lays out all its children as the body. With `bleed`, a list inside reaches the popover's edges, like in `Drawer.Content` and `Panel.Content`.
 - `<Popover>` is modal by default, following React Aria. `nonModal` lets focus leave and keeps the page interactive.
 - `<Popover.Search>` sits next to `<Popover.Content>` and filters the list in it as the user types. Its field stays in view above the results.
 
