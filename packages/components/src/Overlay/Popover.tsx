@@ -3,6 +3,7 @@ import type RAC from 'react-aria-components';
 import { Popover } from 'react-aria-components/Popover';
 import { cn, useClassNames } from '@marigold/system';
 import { ResetButtonContext } from '../Button/ResetButtonContext';
+import { AutocompleteBoundary } from '../utils/AutocompleteBoundary';
 import { useClipBoundary } from './clipBoundary';
 
 // Internal Usage Notes
@@ -76,7 +77,7 @@ const PopoverBase = ({
         placement={placement}
         offset={offset}
       >
-        {children}
+        <AutocompleteBoundary>{children}</AutocompleteBoundary>
       </Popover>
     </ResetButtonContext>
   );
