@@ -24,7 +24,7 @@ export default () => (
     <Popover placement="bottom end" width="large">
       <Title>Notifications</Title>
       <Description>{notifications.length} unread</Description>
-      <Popover.Content>
+      <Popover.Content bleed>
         <ListView aria-label="Notifications" items={notifications}>
           {(item: (typeof notifications)[number]) => (
             <ListView.Item id={item.id} textValue={item.title}>

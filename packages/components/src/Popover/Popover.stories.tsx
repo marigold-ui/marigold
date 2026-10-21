@@ -323,7 +323,8 @@ WithoutContent.test(
     });
     const title = canvas.getByRole('heading', { name: 'Summer Open Air' });
 
-    await expect(getComputedStyle(dialog).paddingTop).toBe('16px');
+    await expect(getComputedStyle(dialog).paddingTop).toBe('12px');
+    await expect(getComputedStyle(dialog).paddingLeft).toBe('16px');
     await expect(getComputedStyle(title).paddingLeft).toBe('0px');
   }
 );
@@ -388,7 +389,7 @@ export const Notifications = meta.story({
       <Popover {...args}>
         <Title>Notifications</Title>
         <Description>2 unread</Description>
-        <Popover.Content>
+        <Popover.Content bleed>
           <ListView aria-label="Notifications">
             <ListView.Item id="sold-out" textValue="Summer Open Air sold out">
               <TextValue>Summer Open Air sold out</TextValue>
@@ -446,6 +447,12 @@ Notifications.test(
 
     await expect(onArchive).toHaveBeenCalledWith('sold-out');
     await expect(dialog).toBeVisible();
+
+    // `bleed`: rows span the popover edge to edge, so their dividers do too.
+    const row = canvas.getAllByRole('row')[0].getBoundingClientRect();
+    const panel = dialog.getBoundingClientRect();
+    await expect(Math.round(row.left)).toBe(Math.round(panel.left));
+    await expect(Math.round(row.right)).toBe(Math.round(panel.right));
 
     // No `Popover.Search` here, so the list keeps real focus (no virtual
     // focus without a field to drive it).
@@ -556,7 +563,7 @@ export const SearchableList = meta.story({
           <Popover {...args}>
             <Title>Assign to</Title>
             <Popover.Search aria-label="Search people" placeholder="Search…" />
-            <Popover.Content>
+            <Popover.Content bleed>
               <ListView
                 aria-label="People"
                 items={PEOPLE}
