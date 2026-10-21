@@ -503,6 +503,21 @@ Notifications.test(
   }
 );
 
+// Visual regression: Chromatic snapshots a story before any click, so this
+// test opens the panel and keeps its snapshot.
+Notifications.test(
+  'Open panel',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Notifications' })
+    );
+    await expect(
+      await canvas.findByRole('dialog', { name: 'Notifications' })
+    ).toBeVisible();
+  }
+);
+
 // Must-support case: a searchable list. Search earns its place in a popover
 // when the user acts on the rows in place. Picking one person by typing is an
 // `Autocomplete` or `ComboBox`. `Popover.Search` sits next to the content it
@@ -561,21 +576,6 @@ const TeamList = () => (
 // search sits between two dividers, without one it is the popover's header
 // and the popover is named by its `aria-label`.
 type SearchableListArgs = PopoverProps & { showTitle?: boolean };
-
-// Visual regression: Chromatic snapshots a story before any click, so this
-// test opens the panel and keeps its snapshot.
-Notifications.test(
-  'Open panel',
-  { parameters: { chromatic: { disableSnapshot: false } } },
-  async ({ canvas, userEvent }) => {
-    await userEvent.click(
-      canvas.getByRole('button', { name: 'Notifications' })
-    );
-    await expect(
-      await canvas.findByRole('dialog', { name: 'Notifications' })
-    ).toBeVisible();
-  }
-);
 
 export const SearchableList = meta.story({
   tags: ['component-test'],

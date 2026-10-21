@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactNode, RefCallback } from 'react';
 import { use, useId, useMemo } from 'react';
 import { HeadingContext, Provider, TextContext } from 'react-aria-components';
 import { Dialog } from 'react-aria-components/Dialog';
@@ -12,6 +12,7 @@ import { Popover as OverlayPopover } from '../Overlay/Popover';
 import { TRAY_CONTENT_ATTR, useTrayContext } from '../Tray/Context';
 import { Tray } from '../Tray/Tray';
 import { intlMessages } from '../intl/messages';
+import { useOverlayHeaderSlotProps } from '../utils/useOverlayHeaderSlotProps';
 import { useSlot } from '../utils/useSlot';
 import { PopoverContext, PopoverTriggerContext } from './Context';
 import { PopoverContent } from './PopoverContent';
@@ -74,43 +75,42 @@ interface PopoverComponent {
 // Helpers
 // ---------------
 /**
- * Slot config for the shared `<Title>`/`<Description>` primitives. A `<Title>`
- * gets the id that labels the popover and reports its presence through
- * `titleSlotRef`. `data-slot` lets the theme lay out the parts.
+ * Hands the theme classes, the `<Title>`/`<Description>` slots and the search
+ * scope to the popover's parts. A `<Title>` gets the id that labels the
+ * popover and reports its presence through `titleSlotRef`.
  */
-const useSlotProps = (
-  classNames: ComponentClassNames<'Popover'>,
-  titleId: string | undefined,
-  titleSlotRef: ((el: Element | null) => void) | undefined
-) => {
-  const headingProps = useMemo(
-    () => ({
-      slots: {
-        title: {
-          className: classNames.title,
-          'data-slot': 'title',
-          level: 2,
-          id: titleId,
-          ref: titleSlotRef,
-        },
-      },
-    }),
-    [classNames.title, titleId, titleSlotRef]
-  );
-  const textProps = useMemo(
-    () => ({
-      slots: {
-        description: {
-          className: classNames.description,
-          'data-slot': 'description',
-          elementType: 'p' as const,
-        },
-      },
-    }),
-    [classNames.description]
-  );
+const PopoverParts = ({
+  classNames,
+  isTray,
+  titleId,
+  titleSlotRef,
+  children,
+}: {
+  classNames: ComponentClassNames<'Popover'>;
+  isTray: boolean;
+  titleId?: string;
+  titleSlotRef?: RefCallback<Element>;
+  children?: ReactNode;
+}) => {
+  const { headingProps, textProps } = useOverlayHeaderSlotProps({
+    classNames,
+    titleId,
+    titleSlotRef,
+  });
+  const ctx = useMemo(() => ({ classNames, isTray }), [classNames, isTray]);
 
-  return { headingProps, textProps };
+  return (
+    <PopoverContext value={ctx}>
+      <Provider
+        values={[
+          [HeadingContext, headingProps],
+          [TextContext, textProps],
+        ]}
+      >
+        <PopoverSearchScope>{children}</PopoverSearchScope>
+      </Provider>
+    </PopoverContext>
+  );
 };
 
 /**
@@ -127,30 +127,61 @@ const PopoverTrayBody = ({
   children?: ReactNode;
 }) => {
   const { titleId, titleSlotRef } = useTrayContext();
-  const { headingProps, textProps } = useSlotProps(
-    classNames,
-    titleId,
-    titleSlotRef
-  );
-  const ctx = useMemo(() => ({ classNames, isTray: true }), [classNames]);
 
   return (
     <div
       // Content gestures scroll instead of dragging the tray (DSTSUP-272).
       {...{ [TRAY_CONTENT_ATTR]: true }}
+      data-tray
       className={cn('[grid-row:title/content]', classNames.body)}
     >
-      <PopoverContext value={ctx}>
-        <Provider
-          values={[
-            [HeadingContext, headingProps],
-            [TextContext, textProps],
-          ]}
-        >
-          <PopoverSearchScope>{children}</PopoverSearchScope>
-        </Provider>
-      </PopoverContext>
+      <PopoverParts
+        classNames={classNames}
+        isTray
+        titleId={titleId}
+        titleSlotRef={titleSlotRef}
+      >
+        {children}
+      </PopoverParts>
     </div>
+  );
+};
+
+/**
+ * Body of the anchored popover. Rendered only while open, so the title slot
+ * is detected when the popover opens rather than while it is closed.
+ */
+const PopoverDialog = ({
+  classNames,
+  width,
+  'aria-label': ariaLabel,
+  'aria-labelledby': ariaLabelledby,
+  children,
+}: Pick<PopoverProps, 'aria-label' | 'aria-labelledby' | 'children'> & {
+  classNames: ComponentClassNames<'Popover'>;
+  width: NonNullable<PopoverProps['width']>;
+}) => {
+  const titleId = useId();
+  const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
+
+  return (
+    <Dialog
+      aria-label={ariaLabel}
+      aria-labelledby={!ariaLabel && hasTitle ? titleId : ariaLabelledby}
+      // Inherits the max height React Aria computes for the popover, so a
+      // long body scrolls inside instead of being clipped by the surface.
+      className={cn('max-h-[inherit]', classNames.body)}
+      {...{ [`data-${width}`]: true }}
+    >
+      <PopoverParts
+        classNames={classNames}
+        isTray={false}
+        titleId={titleId}
+        titleSlotRef={titleSlotRef}
+      >
+        {children}
+      </PopoverParts>
+    </Dialog>
   );
 };
 
@@ -166,20 +197,10 @@ const PopoverBase = ({
   'aria-labelledby': ariaLabelledby,
   ...props
 }: PopoverProps) => {
-  const trigger = use(PopoverTriggerContext);
-  const dismissable = trigger?.dismissable ?? true;
-  const keyboardDismissable = trigger?.keyboardDismissable ?? true;
+  const { dismissable, keyboardDismissable } = use(PopoverTriggerContext);
   const classNames = useClassNames({ component: 'Popover' });
   const isSmallScreen = useSmallScreen();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
-  const titleId = useId();
-  const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
-  const { headingProps, textProps } = useSlotProps(
-    classNames,
-    titleId,
-    titleSlotRef
-  );
-  const ctx = useMemo(() => ({ classNames, isTray: false }), [classNames]);
 
   if (isSmallScreen) {
     return (
@@ -198,25 +219,14 @@ const PopoverBase = ({
   }
 
   const dialog = (
-    <Dialog
+    <PopoverDialog
+      classNames={classNames}
+      width={width}
       aria-label={ariaLabel}
-      aria-labelledby={!ariaLabel && hasTitle ? titleId : ariaLabelledby}
-      // Inherits the max height React Aria computes for the popover, so a
-      // long body scrolls inside instead of being clipped by the surface.
-      className={cn('max-h-[inherit]', classNames.body)}
-      {...{ [`data-${width}`]: true }}
+      aria-labelledby={ariaLabelledby}
     >
-      <PopoverContext value={ctx}>
-        <Provider
-          values={[
-            [HeadingContext, headingProps],
-            [TextContext, textProps],
-          ]}
-        >
-          <PopoverSearchScope>{children}</PopoverSearchScope>
-        </Provider>
-      </PopoverContext>
-    </Dialog>
+      {children}
+    </PopoverDialog>
   );
 
   return (

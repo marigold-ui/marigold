@@ -12,8 +12,10 @@ export interface PopoverTriggerContextValue {
   keyboardDismissable: boolean;
 }
 
-export const PopoverTriggerContext =
-  createContext<PopoverTriggerContextValue | null>(null);
+export const PopoverTriggerContext = createContext<PopoverTriggerContextValue>({
+  dismissable: true,
+  keyboardDismissable: true,
+});
 
 /**
  * Carries the resolved theme classes from `<Popover>` to its parts, and
