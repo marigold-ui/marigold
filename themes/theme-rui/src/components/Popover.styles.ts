@@ -36,14 +36,31 @@ export const Popover: ThemeComponent<'Popover'> = {
       'not-has-[[data-slot=content]]:*:data-[slot=title]:p-0',
       'not-has-[[data-slot=content]]:*:data-[slot=description]:p-0',
       'not-has-[[data-slot=content]]:*:data-[slot=description]:-mt-2',
-      'not-has-[[data-slot=content]]:*:data-[slot=search]:p-0',
+      // The search row still spans the popover edge to edge.
+      'not-has-[[data-slot=content]]:*:data-[slot=search]:-mx-(--popover-px)',
+      'not-has-[[data-slot=content]]:*:data-[slot=search]:mt-0',
+      'not-has-[[data-slot=content]]:*:data-[slot=search]:first:-mt-3',
     ],
   }),
   title: cva({ base: 'px-(--popover-px) pt-3 text-base font-semibold' }),
   description: cva({
     base: 'text-secondary px-(--popover-px) pt-1 text-sm',
   }),
-  search: cva({ base: 'px-(--popover-px) pt-3' }),
+  // A borderless row spanning the popover. Under a title it sits between two
+  // dividers. As the first part it is the header, with only the divider below.
+  search: cva({
+    base: [
+      'border-border border-b py-1',
+      'not-first:border-t not-first:mt-3',
+      // Inset so the field's icon lines up with the title text.
+      'px-[calc(var(--popover-px)-var(--spacing)*2.5)]',
+      // The field drops its frame: the row is the field.
+      '[&_input]:rounded-none [&_input]:bg-transparent [&_input]:ring-0',
+      '[&_input:focus]:outline-hidden',
+      // Focus shows on the row's bottom divider.
+      'focus-within:border-b-ring',
+    ],
+  }),
   content: cva({
     base: 'flex flex-col gap-3 px-(--popover-px) py-3 outline-none',
   }),
