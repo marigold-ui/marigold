@@ -69,8 +69,6 @@ The search is a borderless row that spans the popover and stays in view while th
 
 Under a `<Title>`, the search sits between two dividers. Leave the title out and the search becomes the popover's header, for a more compact panel. The popover then needs an `aria-label`.
 
-Controls that act on the whole list go into the same row: pass them as children of `<Popover.Search>`. A quick filter, like a [`<Select>`](/components/form/select) for the team, comes first, with an `aria-label` instead of a visible label and a fixed `width`. Actions for the whole list, like inviting people or exporting, go into an [`<ActionMenu>`](/components/overlay/action-menu) at the end. This follows the bar layout of the [filter pattern](/patterns/user-input/filter#bar-layout). Keep the placeholder short so the field keeps its room on small screens.
-
 ### Short forms
 
 A popover can hold a short form, like a note on an order. Put the [`<Form>`](/components/form/form) inside `<Popover.Content>` so Enter submits it, and close the popover from your submit handler. A button with `slot="close"` closes the panel without submitting, which suits Cancel.
