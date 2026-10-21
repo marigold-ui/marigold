@@ -3,9 +3,9 @@ title: Popover
 description: A floating panel for arbitrary content, opened from a trigger
 ---
 
-The `<Popover>` component opens a floating panel next to a trigger. The panel holds whatever you put in it: text, a list whose rows have their own controls, a few form fields, or a search over a list. People stay in the panel and work with its content, and it closes when they dismiss it.
+The `<Popover>` component opens a floating panel next to a trigger. The panel holds whatever you put in it: text, a list whose rows have their own controls, a search over such a list, or a short optional form. People stay in the panel and work with its content, and it closes when they dismiss it.
 
-Use `<Popover>` when the content is a small surface of its own, like a notifications panel, a set of filters or a profile card. When the panel is a list of commands that run and close, use a [`<Menu>`](/components/overlay/menu) instead.
+Use `<Popover>` when the content is a small surface of its own, like a notifications panel or a team list people manage in place. When the panel is a list of commands that run and close, like an account menu, use a [`<Menu>`](/components/overlay/menu) instead. Filter panels belong in a [`<Drawer>`](/components/overlay/drawer), see the [filter pattern](/patterns/user-input/filter).
 
 ## Usage
 
@@ -69,11 +69,11 @@ The search is a borderless row that spans the popover and stays in view while th
 
 Under a `<Title>`, the search sits between two dividers. Leave the title out and the search becomes the popover's header, for a more compact panel. The popover then needs an `aria-label`.
 
-### Filters and short forms
+### Short forms
 
-A popover can hold a few form fields, like a filter panel that applies on a button press. Put the closing buttons in the `close` slot with `slot="close"` and the panel closes when they are pressed.
+A popover can hold a short form, like a note on an order. Put the [`<Form>`](/components/form/form) inside `<Popover.Content>` so Enter submits it, and close the popover from your submit handler. A button with `slot="close"` closes the panel without submitting, which suits Cancel.
 
-<ComponentDemo name="popover-filter" />
+<ComponentDemo name="popover-mini-form" />
 
 Keep forms in a popover short and optional. A popover closes when the user clicks away, so ask whether dismissing it loses work or blocks the user. If it does, use a [`<Dialog>`](/components/overlay/dialog).
 
@@ -91,8 +91,6 @@ Keep forms in a popover short and optional. A popover closes when the user click
     </DontDescription>
   </Dont>
 </GuidelineTiles>
-
-<ComponentDemo name="popover-mini-form" />
 
 ### Modality
 
@@ -122,7 +120,7 @@ A popover can hold anything, which makes it easy to reach for. Most needs alread
 
 ### Things to avoid
 
-- **Don't nest popovers.** Opening a popover from inside another one is hard to follow and hard to dismiss. Field dropdowns, like a Select inside a filter panel, are fine.
+- **Don't nest popovers.** Opening a popover from inside another one is hard to follow and hard to dismiss. Field dropdowns, like a Select in a form, and the action menus of list rows are fine.
 - **Don't put required or critical input in a popover.** If the content is wider than about four columns, it needs a Dialog.
 - **Don't repeat what is already on the page.** A popover should add information, not copy it.
 - **Don't open a popover from the primary action.** Popovers carry secondary and contextual content.

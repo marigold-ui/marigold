@@ -7,7 +7,7 @@
 
 feat(DST-1485): add a general-purpose `Popover` for arbitrary content
 
-`<Popover>` opens a floating panel next to a trigger and holds any content: a list whose rows have their own controls, a few filters, a profile card or a short form. Until now the only "button opens a panel" component was `Menu`, whose items can't contain interactive controls, so panels like a notifications list had no accessible way to be built.
+`<Popover>` opens a floating panel next to a trigger and holds any content: a list whose rows have their own controls, a search over such a list, or a short optional form. Until now the only "button opens a panel" component was `Menu`, whose items can't contain interactive controls, so panels like a notifications list had no accessible way to be built.
 
 ```tsx
 <Popover.Trigger>

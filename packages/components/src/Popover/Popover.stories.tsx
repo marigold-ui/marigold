@@ -1,33 +1,25 @@
 import { useState } from 'react';
 import { expect, fn, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
-import {
-  Archive,
-  Bell,
-  CircleUser,
-  ListFilter,
-  Settings2,
-  Tag,
-  UserMinus,
-  Users,
-} from '@marigold/icons';
+import { Archive, Bell, StickyNote, UserMinus, Users } from '@marigold/icons';
 import { Button } from '../Button/Button';
 import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
-import { Checkbox } from '../Checkbox/Checkbox';
 import { Description } from '../Description/Description';
+import { Form } from '../Form/Form';
 import { Inline } from '../Inline/Inline';
 import { LinkButton } from '../LinkButton/LinkButton';
+import { List } from '../List/List';
 import { ListView } from '../ListView/ListView';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Select } from '../Select/Select';
 import { Stack } from '../Stack/Stack';
-import { Switch } from '../Switch/Switch';
 import { Text } from '../Text/Text';
-import { TextField } from '../TextField/TextField';
+import { TextArea } from '../TextArea/TextArea';
 import { TextValue } from '../TextValue/TextValue';
 import { Title } from '../Title/Title';
 import { Tooltip } from '../Tooltip/Tooltip';
 import { Popover } from './Popover';
+import type { PopoverProps } from './Popover';
 
 const meta = preview.meta({
   title: 'Components/Popover',
@@ -73,7 +65,7 @@ export const Basic = meta.story({
   tags: ['component-test'],
   render: args => (
     <Popover.Trigger>
-      <Button>Event details</Button>
+      <Button>Show event details</Button>
       <Popover {...args}>
         <Title>Summer Open Air</Title>
         <Description>Sat, 12 July · Stadtgarten</Description>
@@ -82,11 +74,6 @@ export const Basic = meta.story({
             Doors open at 17:00. Seating is unreserved, so arrive early for a
             spot near the stage.
           </Text>
-          <Inline space={2}>
-            <Button slot="close" variant="primary">
-              Got it
-            </Button>
-          </Inline>
         </Popover.Content>
       </Popover>
     </Popover.Trigger>
@@ -97,7 +84,7 @@ Basic.test(
   'Opens a labelled dialog and returns focus to the trigger on Escape',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent, step }) => {
-    const trigger = canvas.getByRole('button', { name: 'Event details' });
+    const trigger = canvas.getByRole('button', { name: 'Show event details' });
 
     await step('opens on press, named by its title', async () => {
       await userEvent.click(trigger);
@@ -124,30 +111,35 @@ Basic.test(
   }
 );
 
+// Visual regression: Chromatic snapshots a story before any click, so this
+// test opens the panel and keeps its snapshot.
 Basic.test(
-  'Closes from a button in the close slot',
-  { parameters: { chromatic: { disableSnapshot: true } } },
+  'Open panel',
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
     await userEvent.click(
-      canvas.getByRole('button', { name: 'Event details' })
+      canvas.getByRole('button', { name: 'Show event details' })
     );
-    await userEvent.click(
-      await canvas.findByRole('button', { name: 'Got it' })
-    );
-
-    await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
+    await expect(
+      await canvas.findByRole('dialog', { name: 'Summer Open Air' })
+    ).toBeVisible();
   }
 );
 
-export const NotDismissable = meta.story({
-  tags: ['component-test'],
+// `dismissable` and `keyboardDismissable` on `Popover.Trigger`. Turning both
+// off needs another clear way out, here the close button.
+export const Dismissal = meta.story({
+  tags: ['component-test', '!autodocs'],
   parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
-    <Popover.Trigger dismissable={false}>
-      <Button>Event details</Button>
-      <Popover {...args} aria-label="Event details">
+    <Popover.Trigger dismissable={false} keyboardDismissable={false}>
+      <Button>Show seat map legend</Button>
+      <Popover {...args}>
+        <Title>Seat map legend</Title>
         <Popover.Content>
-          <Text>Doors open at 17:00.</Text>
+          <Text>
+            Dark seats are sold. Outlined seats are wheelchair spaces.
+          </Text>
           <Button slot="close">Close</Button>
         </Popover.Content>
       </Popover>
@@ -155,32 +147,47 @@ export const NotDismissable = meta.story({
   ),
 });
 
-NotDismissable.test(
-  'Stays open on outside interaction',
-  async ({ canvas, userEvent }) => {
-    await userEvent.click(
-      canvas.getByRole('button', { name: 'Event details' })
-    );
-    const dialog = await canvas.findByRole('dialog');
+Dismissal.test(
+  'Stays open on outside press and Escape, closes from the close slot',
+  async ({ canvas, userEvent, step }) => {
+    const trigger = canvas.getByRole('button', {
+      name: 'Show seat map legend',
+    });
+    await userEvent.click(trigger);
+    const dialog = await canvas.findByRole('dialog', {
+      name: 'Seat map legend',
+    });
 
-    await userEvent.click(document.body);
+    await step('outside press keeps it open', async () => {
+      await userEvent.click(document.body);
+      await expect(dialog).toBeVisible();
+    });
 
-    await expect(dialog).toBeVisible();
+    await step('Escape keeps it open', async () => {
+      await userEvent.keyboard('{Escape}');
+      await expect(dialog).toBeVisible();
+    });
+
+    await step('the close slot closes it', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: 'Close' }));
+      await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
+      await expect(trigger).toHaveFocus();
+    });
   }
 );
 
 export const Controlled = meta.story({
-  tags: ['component-test'],
+  tags: ['component-test', '!autodocs'],
   parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [open, setOpen] = useState(false);
 
     return (
-      <Stack space={2} alignX="left">
+      <Stack space="related" alignX="left">
         <Text>Open: {String(open)}</Text>
         <Button onPress={() => setOpen(true)}>Open from outside</Button>
         <Popover.Trigger open={open} onOpenChange={setOpen}>
-          <Button>Event details</Button>
+          <Button>Show event details</Button>
           <Popover {...args} aria-label="Event details">
             <Popover.Content>
               <Text>Doors open at 17:00.</Text>
@@ -210,38 +217,44 @@ Controlled.test(
 // Modal and non-modal side by side. They look the same; the difference is
 // what the rest of the page does while one is open. Open one, then try Tab,
 // scroll the page, and press the counter: it sits on the trigger row, so it
-// stays visible above the popovers, which open downwards.
-const MODES = [
-  { nonModal: false, label: 'Modal (default)' },
-  { nonModal: true, label: 'Non-modal (nonModal)' },
-] as const;
-
+// stays visible above the popovers, which open downwards. The non-modal panel
+// holds no focusable controls, as the docs advise.
 export const Modality = meta.story({
-  tags: ['component-test'],
+  tags: ['component-test', '!autodocs'],
   parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
-    const [clicks, setClicks] = useState(0);
+    const [presses, setPresses] = useState(0);
 
     return (
-      <Stack space={4}>
-        <Inline space={2} alignY="center">
-          {MODES.map(mode => (
-            <Popover.Trigger key={mode.label}>
-              <Button>{mode.label}</Button>
-              <Popover {...args} nonModal={mode.nonModal}>
-                <Title>{mode.label}</Title>
-                <Popover.Content>
-                  <TextField label="Name" />
-                  <Button slot="close">Done</Button>
-                </Popover.Content>
-              </Popover>
-            </Popover.Trigger>
-          ))}
-          <Button variant="secondary" onPress={() => setClicks(c => c + 1)}>
-            Outside: pressed {clicks} times
+      <Stack space="regular">
+        <Inline space="related" alignY="center">
+          <Popover.Trigger>
+            <Button>Open modal popover</Button>
+            <Popover {...args} nonModal={false}>
+              <Title>Modal popover</Title>
+              <Popover.Content>
+                <Text>
+                  Focus stays in here, and the page behind is blocked.
+                </Text>
+                <Button slot="close">Close</Button>
+              </Popover.Content>
+            </Popover>
+          </Popover.Trigger>
+          <Popover.Trigger>
+            <Button>Open non-modal popover</Button>
+            <Popover {...args} nonModal>
+              <Title>Non-modal popover</Title>
+              <Popover.Content>
+                <Text>The page stays interactive. Try the counter.</Text>
+              </Popover.Content>
+            </Popover>
+          </Popover.Trigger>
+          <Button onPress={() => setPresses(count => count + 1)}>
+            Increase counter
           </Button>
+          <Text>Pressed {presses} times</Text>
         </Inline>
-        <Stack space={2}>
+        <Stack space="related">
           {Array.from({ length: 40 }, (_, i) => (
             <Text key={i}>Page content, line {i + 1}</Text>
           ))}
@@ -254,61 +267,61 @@ export const Modality = meta.story({
 Modality.test(
   'Each mode blocks exactly what it promises',
   async ({ canvas, userEvent, step }) => {
-    const outside = () =>
-      canvas.getByRole('button', { name: /^Outside: pressed/ });
+    const counter = () =>
+      canvas.getByRole('button', { name: 'Increase counter' });
 
     await step('modal: focus stays inside, the page is blocked', async () => {
       await userEvent.click(
-        canvas.getByRole('button', { name: 'Modal (default)' })
+        canvas.getByRole('button', { name: 'Open modal popover' })
       );
       const dialog = await canvas.findByRole('dialog', {
-        name: 'Modal (default)',
+        name: 'Modal popover',
       });
       await waitFor(() =>
         expect(document.documentElement.style.overflow).toBe('hidden')
       );
 
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 3; i++) {
         await userEvent.tab();
         await expect(dialog).toContainElement(
           document.activeElement as HTMLElement
         );
       }
 
-      await userEvent.click(outside());
+      await userEvent.click(counter());
 
       await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
-      await expect(outside()).toHaveTextContent('pressed 0 times');
+      await expect(canvas.getByText('Pressed 0 times')).toBeVisible();
     });
 
     await step('non-modal: the page stays interactive', async () => {
       await userEvent.click(
-        canvas.getByRole('button', { name: 'Non-modal (nonModal)' })
+        canvas.getByRole('button', { name: 'Open non-modal popover' })
       );
-      await canvas.findByRole('dialog', { name: 'Non-modal (nonModal)' });
+      await canvas.findByRole('dialog', { name: 'Non-modal popover' });
       await expect(document.documentElement.style.overflow).not.toBe('hidden');
       await expect(
-        outside().closest('[aria-hidden="true"], [inert]')
+        counter().closest('[aria-hidden="true"], [inert]')
       ).toBeNull();
 
-      await userEvent.click(outside());
+      await userEvent.click(counter());
 
       await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
-      await expect(outside()).toHaveTextContent('pressed 1 times');
+      await expect(canvas.getByText('Pressed 1 times')).toBeVisible();
     });
   }
 );
 
 // Without `<Popover.Content>`, the children are laid out as the body: the
-// popover pads and scrolls them itself, and the title sits flush.
+// popover pads and scrolls them itself. Fits a short panel without a title,
+// named by its `aria-label`.
 export const WithoutContent = meta.story({
   tags: ['component-test'],
   render: args => (
     <Popover.Trigger>
-      <Button>Event details</Button>
-      <Popover {...args}>
-        <Title>Summer Open Air</Title>
-        <Text>Doors open at 17:00.</Text>
+      <Button>Show opening hours</Button>
+      <Popover {...args} aria-label="Opening hours">
+        <Text>The box office is open Monday to Friday, 10:00 to 18:00.</Text>
       </Popover>
     </Popover.Trigger>
   ),
@@ -319,16 +332,14 @@ WithoutContent.test(
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent }) => {
     await userEvent.click(
-      canvas.getByRole('button', { name: 'Event details' })
+      canvas.getByRole('button', { name: 'Show opening hours' })
     );
     const dialog = await canvas.findByRole('dialog', {
-      name: 'Summer Open Air',
+      name: 'Opening hours',
     });
-    const title = canvas.getByRole('heading', { name: 'Summer Open Air' });
 
     await expect(getComputedStyle(dialog).paddingTop).toBe('12px');
     await expect(getComputedStyle(dialog).paddingLeft).toBe('16px');
-    await expect(getComputedStyle(title).paddingLeft).toBe('0px');
   }
 );
 
@@ -342,13 +353,15 @@ export const ScrollingContent = meta.story({
   tags: ['component-test'],
   render: args => (
     <Popover.Trigger>
-      <Button>Upcoming events</Button>
+      <Button>Show upcoming events</Button>
       <Popover {...args}>
         <Title>Upcoming events</Title>
         <Popover.Content>
-          {EVENTS.map(event => (
-            <Text key={event.id}>{event.name}</Text>
-          ))}
+          <List>
+            {EVENTS.map(event => (
+              <List.Item key={event.id}>{event.name}</List.Item>
+            ))}
+          </List>
         </Popover.Content>
       </Popover>
     </Popover.Trigger>
@@ -360,7 +373,7 @@ ScrollingContent.test(
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent }) => {
     await userEvent.click(
-      canvas.getByRole('button', { name: 'Upcoming events' })
+      canvas.getByRole('button', { name: 'Show upcoming events' })
     );
     const dialog = await canvas.findByRole('dialog', {
       name: 'Upcoming events',
@@ -375,10 +388,10 @@ ScrollingContent.test(
   }
 );
 
-// Must-support case 1: the notifications panel. Rows carry real controls, so
+// Must-support case: the notifications panel. Rows carry real controls, so
 // they are a `ListView`, not a `Menu` (DST-1489). Same row design as the
 // ListView `NotificationsFeed` story: archive plus an overflow menu. The list
-// sits flush under the header, and the link below it keeps its spacing.
+// reaches the edges on its own, and the link below it keeps its spacing.
 const NOTIFICATIONS = [
   { id: 'sold-out', title: 'Summer Open Air sold out', time: '2 minutes ago' },
   { id: 'payout', title: 'Payout sent', time: '1 hour ago' },
@@ -491,84 +504,7 @@ Notifications.test(
   }
 );
 
-// Must-support case 2: a filter panel. Several inputs, committed on Apply.
-export const FilterPanel = meta.story({
-  args: { placement: 'bottom start' },
-  render: args => (
-    <Popover.Trigger>
-      <Button>
-        <ListFilter /> Filters
-      </Button>
-      <Popover {...args}>
-        <Title>Filters</Title>
-        <Popover.Content>
-          <Select label="Status" defaultValue="on-sale">
-            <Select.Option id="on-sale">On sale</Select.Option>
-            <Select.Option id="sold-out">Sold out</Select.Option>
-            <Select.Option id="cancelled">Cancelled</Select.Option>
-          </Select>
-          <TextField label="Venue" />
-          <Checkbox label="Only my events" />
-          <Inline space={2} alignX="right">
-            <Button>Reset</Button>
-            <Button slot="close" variant="primary">
-              Apply
-            </Button>
-          </Inline>
-        </Popover.Content>
-      </Popover>
-    </Popover.Trigger>
-  ),
-});
-
-// Must-support case 3: a profile card. Identity and a couple of actions.
-export const ProfileCard = meta.story({
-  args: { placement: 'bottom end', width: 'small' },
-  render: args => (
-    <Popover.Trigger>
-      <Button size="icon" aria-label="Account">
-        <CircleUser />
-      </Button>
-      <Popover {...args}>
-        <Title>Jane Doe</Title>
-        <Description>jane.doe@example.com</Description>
-        <Popover.Content>
-          <Text>Box office · Freiburg</Text>
-          <Inline space={2}>
-            <Button size="small">Profile</Button>
-            <Button size="small">Sign out</Button>
-          </Inline>
-        </Popover.Content>
-      </Popover>
-    </Popover.Trigger>
-  ),
-});
-
-// Must-support case 4: quick settings. Switches, not menu checkbox items: the
-// row is content and the switch is one control in it.
-export const QuickSettings = meta.story({
-  args: { width: 'small' },
-  render: args => (
-    <Popover.Trigger>
-      <Button size="icon" aria-label="Display settings">
-        <Settings2 />
-      </Button>
-      <Popover {...args}>
-        <Title>Display</Title>
-        <Popover.Content>
-          <Switch label="Compact rows" defaultSelected />
-          <Switch label="Show seat map" />
-          <Select label="Density" defaultValue="cozy">
-            <Select.Option id="cozy">Cozy</Select.Option>
-            <Select.Option id="comfortable">Comfortable</Select.Option>
-          </Select>
-        </Popover.Content>
-      </Popover>
-    </Popover.Trigger>
-  ),
-});
-
-// Must-support case 5: a searchable list. Search earns its place in a popover
+// Must-support case: a searchable list. Search earns its place in a popover
 // when the user acts on the rows in place. Picking one person by typing is an
 // `Autocomplete` or `ComboBox`. `Popover.Search` sits next to the content it
 // filters and stays in view while the results scroll.
@@ -622,16 +558,37 @@ const TeamList = () => (
   </ListView>
 );
 
+// `showTitle` is a story control, not a `Popover` prop: with a `<Title>` the
+// search sits between two dividers, without one it is the popover's header
+// and the popover is named by its `aria-label`.
+type SearchableListArgs = PopoverProps & { showTitle?: boolean };
+
+// Visual regression: Chromatic snapshots a story before any click, so this
+// test opens the panel and keeps its snapshot.
+Notifications.test(
+  'Open panel',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Notifications' })
+    );
+    await expect(
+      await canvas.findByRole('dialog', { name: 'Notifications' })
+    ).toBeVisible();
+  }
+);
+
 export const SearchableList = meta.story({
   tags: ['component-test'],
-  args: { width: 'large' },
-  render: args => (
+  // Storybook infers a boolean control for `showTitle` from its value.
+  args: { width: 'large', showTitle: true } as SearchableListArgs,
+  render: ({ showTitle, ...args }: SearchableListArgs) => (
     <Popover.Trigger>
       <Button>
         <Users /> Manage team
       </Button>
-      <Popover {...args}>
-        <Title>Team members</Title>
+      <Popover {...args} aria-label={showTitle ? undefined : 'Team members'}>
+        {showTitle ? <Title>Team members</Title> : null}
         <Popover.Search
           aria-label="Search team members"
           placeholder="Search team members"
@@ -719,32 +676,12 @@ SearchableList.test(
   }
 );
 
-// Without a `<Title>` the search row is the popover's header. The popover is
-// then named by its `aria-label`.
-export const SearchAsHeader = meta.story({
-  tags: ['component-test'],
-  args: { width: 'large' },
-  render: args => (
-    <Popover.Trigger>
-      <Button>
-        <Users /> Manage team
-      </Button>
-      <Popover {...args} aria-label="Team members">
-        <Popover.Search
-          aria-label="Search team members"
-          placeholder="Search team members"
-        />
-        <Popover.Content>
-          <TeamList />
-        </Popover.Content>
-      </Popover>
-    </Popover.Trigger>
-  ),
-});
-
-SearchAsHeader.test(
-  'Puts the search row at the top, with only the divider below',
-  { parameters: { chromatic: { disableSnapshot: true } } },
+SearchableList.test(
+  'Without a title, puts the search row at the top with only the divider below',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { showTitle: false } as SearchableListArgs,
+  },
   async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Manage team' }));
     const dialog = await canvas.findByRole('dialog', { name: 'Team members' });
@@ -756,35 +693,66 @@ SearchAsHeader.test(
   }
 );
 
+// Visual regression: Chromatic snapshots a story before any click, so this
+// test opens the panel and keeps its snapshot.
+SearchableList.test(
+  'Open panel',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Manage team' }));
+    await expect(
+      await canvas.findByRole('dialog', { name: 'Team members' })
+    ).toBeVisible();
+  }
+);
+
+SearchableList.test(
+  'Open panel without title',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+    args: { showTitle: false } as SearchableListArgs,
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Manage team' }));
+    await expect(
+      await canvas.findByRole('dialog', { name: 'Team members' })
+    ).toBeVisible();
+  }
+);
+
 // The search filters the popover's own list, never the options of a field or
-// the items of a menu opened from inside it (`AutocompleteBoundary`).
+// the items of a menu opened from inside it (`AutocompleteBoundary`). A test
+// fixture, not a layout to copy.
 export const SearchWithNestedOverlays = meta.story({
-  tags: ['component-test'],
+  tags: ['component-test', '!autodocs'],
   parameters: { chromatic: { disableSnapshot: true } },
+  args: { width: 'large' },
   render: args => (
     <Popover.Trigger>
-      <Button>Assign to</Button>
+      <Button>
+        <Users /> Manage team
+      </Button>
       <Popover {...args}>
-        <Title>Assign to</Title>
-        <Popover.Search aria-label="Search people" />
+        <Title>Team members</Title>
+        <Popover.Search
+          aria-label="Search team members"
+          placeholder="Search team members"
+        />
         <Popover.Content>
-          <Inline space={2} alignY="bottom">
+          <Inline space="related" alignY="input">
             <Select label="Team" defaultValue="all">
               <Select.Option id="all">All teams</Select.Option>
               <Select.Option id="box-office">Box office</Select.Option>
+              <Select.Option id="marketing">Marketing</Select.Option>
+              <Select.Option id="finance">Finance</Select.Option>
             </Select>
-            <ActionMenu aria-label="List actions">
+            <ActionMenu aria-label="More list actions">
               <ActionMenu.Item>Invite people</ActionMenu.Item>
               <ActionMenu.Item>Export list</ActionMenu.Item>
+              <ActionMenu.Item>Print list</ActionMenu.Item>
             </ActionMenu>
           </Inline>
-          <ListView aria-label="People" items={MEMBERS}>
-            {(person: Member) => (
-              <ListView.Item id={person.id} textValue={person.name}>
-                {person.name}
-              </ListView.Item>
-            )}
-          </ListView>
+          <TeamList />
         </Popover.Content>
       </Popover>
     </Popover.Trigger>
@@ -794,18 +762,20 @@ export const SearchWithNestedOverlays = meta.story({
 SearchWithNestedOverlays.test(
   'Keeps nested select options and menu items unfiltered',
   async ({ canvas, userEvent, step }) => {
-    await userEvent.click(canvas.getByRole('button', { name: 'Assign to' }));
+    await userEvent.click(canvas.getByRole('button', { name: 'Manage team' }));
     const search = await canvas.findByRole('searchbox', {
-      name: 'Search people',
+      name: 'Search team members',
     });
     await waitFor(() => expect(search).toHaveFocus());
     await userEvent.keyboard('jane');
 
     await step('the list is filtered', async () => {
       await waitFor(() =>
-        expect(canvas.getAllByRole('row').map(row => row.textContent)).toEqual([
-          'Jane Doe',
-        ])
+        expect(
+          canvas
+            .getAllByRole('row')
+            .map(row => row.querySelector('[slot=label]')?.textContent)
+        ).toEqual(['Jane Doe'])
       );
     });
 
@@ -814,57 +784,109 @@ SearchWithNestedOverlays.test(
       await canvas.findByRole('listbox');
       await expect(
         canvas.getAllByRole('option').map(option => option.textContent)
-      ).toEqual(['All teams', 'Box office']);
+      ).toEqual(['All teams', 'Box office', 'Marketing', 'Finance']);
       await userEvent.keyboard('{Escape}');
     });
 
     await step('the menu keeps all its items', async () => {
       await userEvent.click(
-        canvas.getByRole('button', { name: 'List actions' })
+        canvas.getByRole('button', { name: 'More list actions' })
       );
       await canvas.findByRole('menu');
       await expect(
         canvas.getAllByRole('menuitem').map(item => item.textContent)
-      ).toEqual(['Invite people', 'Export list']);
+      ).toEqual(['Invite people', 'Export list', 'Print list']);
     });
   }
 );
 
-// Must-support case 6: a mini-form with one or two optional fields.
+// Must-support case: a short form. One optional field that is cheap to lose
+// when the popover is dismissed: an empty note just removes the note. Inside
+// a `<Form>` so Enter submits, with the primary action first.
+const onSaveNote = fn();
+
 export const MiniForm = meta.story({
   tags: ['component-test'],
-  args: { width: 'small' },
-  render: args => (
-    <Popover.Trigger>
-      <Button>
-        <Tag /> Add label
-      </Button>
-      <Popover {...args}>
-        <Title>New label</Title>
-        <Popover.Content>
-          <TextField label="Name" />
-          <Inline space={2} alignX="right">
-            <Button slot="close">Cancel</Button>
-            <Button slot="close" variant="primary">
-              Add
-            </Button>
-          </Inline>
-        </Popover.Content>
-      </Popover>
-    </Popover.Trigger>
-  ),
+  render: args => {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <Popover.Trigger open={open} onOpenChange={setOpen}>
+        <Button>
+          <StickyNote /> Add note
+        </Button>
+        <Popover {...args}>
+          <Title>Order note</Title>
+          <Description>Only your team sees this note.</Description>
+          <Popover.Content>
+            <Form
+              onSubmit={event => {
+                event.preventDefault();
+                onSaveNote(new FormData(event.currentTarget).get('note'));
+                setOpen(false);
+              }}
+            >
+              <Stack space="regular" alignX="left">
+                <TextArea label="Note" name="note" rows={3} />
+                <Inline space="related">
+                  <Button type="submit" variant="primary">
+                    Save note
+                  </Button>
+                  <Button slot="close">Cancel</Button>
+                </Inline>
+              </Stack>
+            </Form>
+          </Popover.Content>
+        </Popover>
+      </Popover.Trigger>
+    );
+  },
 });
 
 MiniForm.test(
-  'Cancel closes the popover',
+  'Saves on submit and closes',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent }) => {
-    await userEvent.click(canvas.getByRole('button', { name: 'Add label' }));
+    onSaveNote.mockClear();
+    await userEvent.click(canvas.getByRole('button', { name: 'Add note' }));
+    await userEvent.type(
+      await canvas.findByRole('textbox', { name: 'Note' }),
+      'Guest list is at the side entrance.'
+    );
+    await userEvent.click(canvas.getByRole('button', { name: 'Save note' }));
+
+    await expect(onSaveNote).toHaveBeenCalledWith(
+      'Guest list is at the side entrance.'
+    );
+    await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
+  }
+);
+
+MiniForm.test(
+  'Cancel closes without saving',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    onSaveNote.mockClear();
+    await userEvent.click(canvas.getByRole('button', { name: 'Add note' }));
     await userEvent.click(
       await canvas.findByRole('button', { name: 'Cancel' })
     );
 
     await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
+    await expect(onSaveNote).not.toHaveBeenCalled();
+  }
+);
+
+// Visual regression: Chromatic snapshots a story before any click, so this
+// test opens the panel and keeps its snapshot.
+MiniForm.test(
+  'Open panel',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Add note' }));
+    await expect(
+      await canvas.findByRole('dialog', { name: 'Order note' })
+    ).toBeVisible();
   }
 );
 
@@ -882,7 +904,7 @@ SmallScreen.test(
   { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
     await userEvent.click(
-      canvas.getByRole('button', { name: 'Upcoming events' })
+      canvas.getByRole('button', { name: 'Show upcoming events' })
     );
 
     const tray = await canvas.findByRole('dialog', {
