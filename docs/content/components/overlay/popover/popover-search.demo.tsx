@@ -5,9 +5,11 @@ import {
   Button,
   ButtonGroup,
   Card,
+  DateFormat,
   Description,
   Inline,
   ListView,
+  NumericFormat,
   Popover,
   Stack,
   Text,
@@ -79,17 +81,26 @@ export default () => {
     <Card>
       <Card.Header>
         <Title>Jazz Night</Title>
-        <Description>Fri, 18 July · Jazzhaus</Description>
+        <Description>
+          <DateFormat
+            value={new Date(2026, 6, 18)}
+            weekday="short"
+            day="numeric"
+            month="long"
+          />{' '}
+          · Jazzhaus
+        </Description>
       </Card.Header>
       <Card.Content>
         <Stack space="tight">
           <Text>
-            {members.length} people have access to this event and its orders.
+            <NumericFormat value={members.length} /> people have access to this
+            event and its orders.
           </Text>
           <Inline space="related">
             {roles.map(role => (
               <Badge key={role}>
-                {count(role)} {role.toLowerCase()}
+                <NumericFormat value={count(role)} /> {role.toLowerCase()}
                 {count(role) === 1 ? '' : 's'}
               </Badge>
             ))}

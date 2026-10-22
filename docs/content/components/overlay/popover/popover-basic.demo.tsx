@@ -1,9 +1,11 @@
 import {
   Button,
+  DateFormat,
   Description,
   Divider,
   Inline,
   Link,
+  NumericFormat,
   Popover,
   Split,
   Stack,
@@ -16,7 +18,7 @@ import {
 interface Event {
   id: string;
   name: string;
-  date: string;
+  date: Date;
   venue: string;
   sold: number;
   capacity: number;
@@ -27,7 +29,7 @@ const events: Event[] = [
   {
     id: 'open-air',
     name: 'Summer Open Air',
-    date: 'Sat, 12 July',
+    date: new Date(2026, 6, 12),
     venue: 'Stadtgarten',
     sold: 1840,
     capacity: 2000,
@@ -40,7 +42,7 @@ const events: Event[] = [
   {
     id: 'jazz-night',
     name: 'Jazz Night',
-    date: 'Fri, 18 July',
+    date: new Date(2026, 6, 18),
     venue: 'Jazzhaus',
     sold: 212,
     capacity: 250,
@@ -52,7 +54,7 @@ const events: Event[] = [
   {
     id: 'season-preview',
     name: 'Season Preview',
-    date: 'Sun, 27 July',
+    date: new Date(2026, 6, 27),
     venue: 'Konzerthaus',
     sold: 640,
     capacity: 900,
@@ -64,12 +66,11 @@ const events: Event[] = [
   },
 ];
 
-const format = new Intl.NumberFormat('en-US');
-
 const TicketSales = ({ event }: { event: Event }) => (
   <Popover.Trigger>
     <Button variant="link" size="small">
-      {format.format(event.sold)} / {format.format(event.capacity)}
+      <NumericFormat value={event.sold} /> /{' '}
+      <NumericFormat value={event.capacity} />
       <VisuallyHidden> tickets sold for {event.name}</VisuallyHidden>
     </Button>
     <Popover placement="bottom end">
@@ -86,9 +87,14 @@ const TicketSales = ({ event }: { event: Event }) => (
                   category.sold === category.capacity ? 'default' : 'muted'
                 }
               >
-                {category.sold === category.capacity
-                  ? 'Sold out'
-                  : `${format.format(category.sold)} / ${format.format(category.capacity)}`}
+                {category.sold === category.capacity ? (
+                  'Sold out'
+                ) : (
+                  <>
+                    <NumericFormat value={category.sold} /> /{' '}
+                    <NumericFormat value={category.capacity} />
+                  </>
+                )}
               </Text>
             </Inline>
           ))}
@@ -112,7 +118,14 @@ export default () => (
       {events.map(event => (
         <Table.Row key={event.id} id={event.id}>
           <Table.Cell>{event.name}</Table.Cell>
-          <Table.Cell>{event.date}</Table.Cell>
+          <Table.Cell>
+            <DateFormat
+              value={event.date}
+              weekday="short"
+              day="numeric"
+              month="long"
+            />
+          </Table.Cell>
           <Table.Cell>{event.venue}</Table.Cell>
           <Table.Cell>
             <TicketSales event={event} />
