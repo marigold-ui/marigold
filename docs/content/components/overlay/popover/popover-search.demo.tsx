@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import {
   ActionMenu,
+  Badge,
   Button,
   ButtonGroup,
+  Card,
   Description,
+  Inline,
   ListView,
   Popover,
+  Stack,
   Text,
   TextValue,
   Title,
@@ -68,60 +72,86 @@ export default () => {
   const remove = (id: string) =>
     setMembers(current => current.filter(member => member.id !== id));
 
+  const count = (role: Role) =>
+    members.filter(member => member.role === role).length;
+
   return (
-    <Popover.Trigger>
-      <Button>
-        <Users /> Manage team
-      </Button>
-      <Popover size="large">
-        <Title>Team members</Title>
-        <Popover.Search
-          aria-label="Search team members"
-          placeholder="Search team members"
-        />
-        <Popover.Content>
-          <ListView
-            aria-label="Team members"
-            items={members}
-            emptyState={<Text>No team members match your search.</Text>}
-          >
-            {(member: Member) => (
-              <ListView.Item id={member.id} textValue={member.name}>
-                <TextValue>{member.name}</TextValue>
-                <Description>
-                  {member.role} · {member.email}
-                </Description>
-                <ButtonGroup
-                  aria-label={`Actions for ${member.name}`}
-                  size="icon"
-                >
-                  <ActionMenu aria-label={`Change role of ${member.name}`}>
-                    {roles
-                      .filter(role => role !== member.role)
-                      .map(role => (
-                        <ActionMenu.Item
-                          key={role}
-                          onAction={() => changeRole(member.id, role)}
-                        >
-                          {`Make ${role.toLowerCase()}`}
-                        </ActionMenu.Item>
-                      ))}
-                  </ActionMenu>
-                  <Tooltip.Trigger>
-                    <Button
-                      aria-label={`Remove ${member.name}`}
-                      onPress={() => remove(member.id)}
+    <Card>
+      <Card.Header>
+        <Title>Jazz Night</Title>
+        <Description>Fri, 18 July · Jazzhaus</Description>
+      </Card.Header>
+      <Card.Content>
+        <Stack space="tight">
+          <Text>
+            {members.length} people have access to this event and its orders.
+          </Text>
+          <Inline space="related">
+            {roles.map(role => (
+              <Badge key={role}>
+                {count(role)} {role.toLowerCase()}
+                {count(role) === 1 ? '' : 's'}
+              </Badge>
+            ))}
+          </Inline>
+        </Stack>
+      </Card.Content>
+      <Card.Footer>
+        <Popover.Trigger>
+          <Button>
+            <Users /> Manage team
+          </Button>
+          <Popover size="large">
+            <Title>Team members</Title>
+            <Popover.Search
+              aria-label="Search team members"
+              placeholder="Search team members"
+            />
+            <Popover.Content>
+              <ListView
+                aria-label="Team members"
+                items={members}
+                emptyState={<Text>No team members match your search.</Text>}
+              >
+                {(member: Member) => (
+                  <ListView.Item id={member.id} textValue={member.name}>
+                    <TextValue>{member.name}</TextValue>
+                    <Description>
+                      {member.role} · {member.email}
+                    </Description>
+                    <ButtonGroup
+                      aria-label={`Actions for ${member.name}`}
+                      size="icon"
                     >
-                      <UserMinus />
-                    </Button>
-                    <Tooltip>Remove</Tooltip>
-                  </Tooltip.Trigger>
-                </ButtonGroup>
-              </ListView.Item>
-            )}
-          </ListView>
-        </Popover.Content>
-      </Popover>
-    </Popover.Trigger>
+                      <ActionMenu aria-label={`Change role of ${member.name}`}>
+                        {roles
+                          .filter(role => role !== member.role)
+                          .map(role => (
+                            <ActionMenu.Item
+                              key={role}
+                              onAction={() => changeRole(member.id, role)}
+                            >
+                              {`Make ${role.toLowerCase()}`}
+                            </ActionMenu.Item>
+                          ))}
+                      </ActionMenu>
+                      <Tooltip.Trigger>
+                        <Button
+                          aria-label={`Remove ${member.name}`}
+                          onPress={() => remove(member.id)}
+                        >
+                          <UserMinus />
+                        </Button>
+                        <Tooltip>Remove</Tooltip>
+                      </Tooltip.Trigger>
+                    </ButtonGroup>
+                  </ListView.Item>
+                )}
+              </ListView>
+            </Popover.Content>
+          </Popover>
+        </Popover.Trigger>
+      </Card.Footer>
+    </Card>
   );
 };
