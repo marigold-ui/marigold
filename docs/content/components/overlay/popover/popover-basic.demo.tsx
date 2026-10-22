@@ -2,7 +2,6 @@ import {
   Button,
   DateFormat,
   Description,
-  Divider,
   Inline,
   Link,
   NumericFormat,
@@ -99,7 +98,6 @@ const TicketSales = ({ event }: { event: Event }) => (
             </Inline>
           ))}
         </Stack>
-        <Divider />
         <Link href="#">View all orders</Link>
       </Popover.Content>
     </Popover>
