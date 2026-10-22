@@ -14,12 +14,15 @@ const config = {
   },
   reactStrictMode: true,
   experimental: {
-    // On Vercel, run webpack loaders (mostly the MDX compile) in worker threads
-    // instead of a pool of child processes, to keep the build's peak memory under
-    // the 8 GB limit (DST-1904). `force` skips Next's fallback on Node >= 24.13.1,
-    // which guards against https://github.com/nodejs/node/issues/65100. Its known
-    // trigger is fsevents, which is macOS-only, so local builds keep the default.
-    turbopackPluginRuntimeStrategy: process.env.VERCEL
+    // On Vercel preview and production builds, run webpack loaders (mostly the
+    // MDX compile) in worker threads instead of a pool of child processes, to keep
+    // the build's peak memory under the 8 GB limit (DST-1904). `force` skips Next's
+    // fallback on Node >= 24.13.1, which guards against
+    // https://github.com/nodejs/node/issues/65100. Its known trigger is fsevents,
+    // which is macOS-only, so local runs (including `vercel dev`) keep the default.
+    turbopackPluginRuntimeStrategy: ['preview', 'production'].includes(
+      process.env.VERCEL_ENV
+    )
       ? 'forceWorkerThreads'
       : undefined,
   },
