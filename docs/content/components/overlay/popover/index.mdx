@@ -7,6 +7,15 @@ import { PopoverAnatomy } from './popover-anatomy';
 
 The `<Popover>` component is a floating panel anchored to a trigger. Unlike a menu, it is not limited to commands: it holds content people work with in place, including rows with their own controls, and stays open until they dismiss it. On small screens it opens as a tray from the bottom of the screen.
 
+<Callout title="Look for a dedicated component first" type="info">
+  Select, Menu, ComboBox, DatePicker, Tooltip and ContextualHelp open a panel
+  like this one too, with the right keyboard behaviour and screen reader
+  support built in. Reach for `<Popover>` only when none of them fits, for
+  example when the panel combines several things or its rows carry their own
+  controls. [Which component covers
+  what](#dedicated-components-to-use-instead).
+</Callout>
+
 ## Anatomy
 
 A popover opens below its trigger by default. It is composed of an optional header with a title and a description, an optional search row, and the content.
@@ -169,7 +178,7 @@ Set `nonModal` only for a panel without focusable controls, like a short piece o
 
 Use `placement` to position the panel relative to its trigger, for example `bottom end` for a panel opened from an icon in the top right corner. React Aria flips the panel when there is not enough room. Set `size` to `small`, `medium` or `large` to match the content. The default is `medium`. With `fit`, the panel is as wide as its content and wraps at the `large` width, which suits a short text without a title. On small screens the panel opens as a tray that spans the screen, whatever the size.
 
-### When not to use a popover
+### Dedicated components to use instead
 
 A popover can hold anything, which makes it easy to reach for. Most needs already have a more specific component.
 
