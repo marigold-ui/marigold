@@ -65,17 +65,52 @@ If the content fails one of these, it belongs somewhere else. Information most p
   </Dont>
 </GuidelineTiles>
 
-### Structure
+### Details on demand
 
-`<Popover.Trigger>` wraps the trigger, usually a [`<Button>`](/components/actions/button), and the `<Popover>` it opens. Inside the popover, start with a [`<Title>`](/components/content/title) and an optional [`<Description>`](/components/content/description). They form the panel's header, and the title becomes its accessible name. Put the body in `<Popover.Content>`.
-
-Keep the content short enough to fit without scrolling. A popover that scrolls hides part of what it holds and is easy to lose track of. If the content only fits with scrolling, it is too much for a popover: use a [`<Drawer>`](/components/overlay/drawer), a [`<Dialog>`](/components/overlay/dialog) or a page instead. Scrolling is only a safety net for small windows, and then only the content scrolls while the header stays in place.
+People scan a list or a schedule and need a few more facts about one entry, like the opening time of an event or the terms behind a price. Showing those facts on the page would crowd it for everyone, and opening a new page would lose their place. A popover shows the details right next to the entry and disappears again with the next click.
 
 <ComponentDemo name="popover-basic" />
 
-On small screens the panel opens as a tray from the bottom of the screen, with a close button. You write the content once and it works in both places.
+Keep it to a few facts. When people need the whole record, with its history, related items or edit options, the popover becomes a page in disguise. Use a [`<Drawer>`](/components/overlay/drawer) or a page instead.
 
-`<Popover.Content>` is optional. Without it, the popover lays out all its children as the body. Use it whenever the panel has a title. When the body is a form, put the [`<Form>`](/components/form/form) inside `<Popover.Content>`, not around it.
+### Rows people act on in place
+
+Some panels are lists where each row has its own actions, like notifications people archive or mark as read. A menu can't hold this, because its rows are commands and can't contain controls. Put a [`<ListView>`](/components/collection/listview) in the popover instead. Each row can carry its own buttons and an action menu, and people can deal with several rows without the panel closing.
+
+<ComponentDemo name="popover-notifications" />
+
+Put the list directly in `<Popover.Content>`. Its dividers then reach the popover's edges while the row text lines up with the title, and the list sits flush at the bottom of the panel. For other edge-to-edge content, like an [`<Accordion>`](/components/navigation/accordion), set `bleed` on `<Popover.Content>`.
+
+### Finding and managing items in a list
+
+When the list gets longer, people need to find the row before they can act on it, like a team member whose role they want to change. Put a `<Popover.Search>` above the content to filter the list as people type. The search takes focus when the panel opens, and Tab moves on into the results.
+
+<ComponentDemo name="popover-search" />
+
+Search belongs in a popover only when people act on the rows in place. To let people type and pick one value, use an [`<Autocomplete>`](/components/form/autocomplete) or a [`<ComboBox>`](/components/form/combobox) instead. The field has no visible label, so give it an `aria-label` and a placeholder that both say what is searched. Under a `<Title>`, the search sits between two dividers. Without one it becomes the popover's header, and the popover then needs an `aria-label`.
+
+### Quick, optional input
+
+Sometimes people want to add a small detail without leaving what they are doing, like a note on an order. A popover holds one to three optional fields right next to the thing they belong to. Put the [`<Form>`](/components/form/form) inside `<Popover.Content>` so Enter submits it, and close the popover from your submit handler. A button with `slot="close"` closes it without submitting, which suits Cancel.
+
+<ComponentDemo name="popover-mini-form" />
+
+A popover closes when people click away, and that must never cost them anything. Either the input is so cheap that losing it doesn't matter, or the popover saves as people go. Closing the panel must never submit or delete anything. If dismissing it would lose work or leave people stuck, use a [`<Dialog>`](/components/overlay/dialog).
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use a popover for one to three optional fields, where dismissing the panel
+      loses nothing.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use a popover for required input, blocking validation, several steps
+      or a destructive confirmation. Use a Dialog.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 ### Popover vs Menu
 
@@ -125,47 +160,6 @@ All three open on top of the current page, so people keep their place. They diff
 | Typical content   | a short list, a few details, one field | a record's details, a filter panel, comments | a confirmation, a required form, a choice |
 
 A quick way to decide: if people should keep the panel open while they work on the page, use a drawer. If they must respond before they go on, use a dialog. If they look, change something small and move on, use a popover.
-
-### Lists with controls
-
-For rows that people operate, put a [`<ListView>`](/components/collection/listview) inside the popover. Each row can carry its own buttons and an action menu, and the list keeps arrow key navigation between rows. A notifications panel is the typical case. Put the list directly in `<Popover.Content>`. Its divider lines then reach the popover's edges while the row text stays aligned with the title. At the bottom of the panel, and right under a search, the list also drops the content's padding, because its rows bring their own. Content before or after the list keeps its spacing.
-
-When the list sits inside another element, or for other edge-to-edge content like an [`<Accordion>`](/components/navigation/accordion), set `bleed` on `<Popover.Content>` to remove its horizontal padding.
-
-<ComponentDemo name="popover-notifications" />
-
-### Searching a list
-
-Put a `<Popover.Search>` above the `<Popover.Content>` holding a list to filter the list as the user types. Search belongs in a popover when people act on the rows in place, like changing a team member's role or removing them. To let people type and pick one value, use an [`<Autocomplete>`](/components/form/autocomplete) or a [`<ComboBox>`](/components/form/combobox) instead.
-
-The search is a borderless row that spans the popover above the results. It takes focus when the panel opens, and Tab moves on into the results. Items are matched by their `textValue`. The field has no visible label, so give it an `aria-label` and a placeholder that both say what is searched.
-
-<ComponentDemo name="popover-search" />
-
-Under a `<Title>`, the search sits between two dividers. Leave the title out and the search becomes the popover's header, for a more compact panel. The popover then needs an `aria-label`.
-
-### Short forms
-
-A popover can hold a short form, like a note on an order. Put the [`<Form>`](/components/form/form) inside `<Popover.Content>` so Enter submits it, and close the popover from your submit handler. A button with `slot="close"` closes the panel without submitting, which suits Cancel.
-
-<ComponentDemo name="popover-mini-form" />
-
-Keep forms in a popover short and optional. A popover closes when the user clicks away, and that must never cost them anything. Either the field is so cheap that losing it doesn't matter, or the popover saves as people go. Closing the panel must never submit or delete anything. If dismissing it would lose work or leave the user stuck, use a [`<Dialog>`](/components/overlay/dialog).
-
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Use a popover for one to three optional fields, where dismissing the panel
-      loses nothing.
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't use a popover for required input, blocking validation, several steps
-      or a destructive confirmation. Use a Dialog.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
 
 ### Modality
 
