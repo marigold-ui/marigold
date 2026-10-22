@@ -67,7 +67,16 @@ export const PopoverContent = ({ children, bleed }: PopoverContentProps) => {
       data-slot="content"
       data-bleed={bleed || undefined}
       ref={isTray ? pinTrayHeight : undefined}
-      className={cn('min-h-0 flex-1 overflow-y-auto', classNames.content)}
+      className={cn(
+        'min-h-0 flex-1 overflow-y-auto',
+        // Bled: drop the padding and publish `--bleed-px` so edge-aware
+        // children inset their own content to align with the title.
+        // Non-bled clears it, as in `Panel.Content` and `Drawer.Content`.
+        bleed
+          ? '[--bleed-px:var(--popover-px)]'
+          : 'px-(--popover-px) [--bleed-px:initial]',
+        classNames.content
+      )}
     >
       {children}
     </div>

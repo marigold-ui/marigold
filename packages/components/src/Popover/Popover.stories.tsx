@@ -8,7 +8,6 @@ import { Description } from '../Description/Description';
 import { Form } from '../Form/Form';
 import { Inline } from '../Inline/Inline';
 import { LinkButton } from '../LinkButton/LinkButton';
-import { List } from '../List/List';
 import { ListView } from '../ListView/ListView';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Stack } from '../Stack/Stack';
@@ -40,10 +39,11 @@ const meta = preview.meta({
         'Whether the popover is non-modal: focus can leave and the page stays interactive.',
       table: { defaultValue: { summary: 'false' } },
     },
-    width: {
+    size: {
       control: { type: 'radio' },
-      options: ['small', 'medium', 'large'],
-      description: 'Width of the popover on larger screens.',
+      options: ['small', 'medium', 'large', 'fit'],
+      description:
+        'Width of the popover on larger screens. `fit` sizes it to its content.',
       table: { defaultValue: { summary: 'medium' } },
     },
     placement: {
@@ -55,7 +55,7 @@ const meta = preview.meta({
   },
   args: {
     nonModal: false,
-    width: 'medium',
+    size: 'medium',
     placement: 'bottom',
   },
 });
@@ -213,11 +213,12 @@ Controlled.test(
   }
 );
 
-// Modal and non-modal side by side. They look the same; the difference is
-// what the rest of the page does while one is open. Open one, then try Tab,
-// scroll the page, and press the counter: it sits on the trigger row, so it
-// stays visible above the popovers, which open downwards. The non-modal panel
-// holds no focusable controls, as the docs advise.
+// Modal (the default) and non-modal side by side. They look the same; the
+// difference is what the rest of the page does while one is open. Open one,
+// then try Tab, scroll the page, click the page, and press the counter: it
+// sits on the trigger row, so it stays visible above the popovers, which open
+// downwards. The non-modal panel holds no focusable controls, as the docs
+// advise.
 export const Modality = meta.story({
   tags: ['component-test', '!autodocs'],
   parameters: { chromatic: { disableSnapshot: true } },
@@ -244,7 +245,10 @@ export const Modality = meta.story({
             <Popover {...args} nonModal>
               <Title>Non-modal popover</Title>
               <Popover.Content>
-                <Text>The page stays interactive. Try the counter.</Text>
+                <Text>
+                  The page stays interactive. Try the counter, or click the page
+                  to close this.
+                </Text>
               </Popover.Content>
             </Popover>
           </Popover.Trigger>
@@ -308,19 +312,44 @@ Modality.test(
       await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
       await expect(canvas.getByText('Pressed 1 times')).toBeVisible();
     });
+
+    await step('non-modal: a click on the page closes it', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Open non-modal popover' })
+      );
+      await canvas.findByRole('dialog', { name: 'Non-modal popover' });
+
+      // Plain text takes no focus, so only the outside press closes it.
+      await userEvent.click(canvas.getByText('Page content, line 5'));
+
+      await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
+    });
+
+    await step('non-modal: scrolling the page closes it', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Open non-modal popover' })
+      );
+      await canvas.findByRole('dialog', { name: 'Non-modal popover' });
+
+      window.scrollTo(0, 100);
+
+      await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
+      window.scrollTo(0, 0);
+    });
   }
 );
 
 // Without `<Popover.Content>`, the children are laid out as the body: the
-// popover pads and scrolls them itself. Fits a short panel without a title,
-// named by its `aria-label`.
+// popover pads them itself. Fits a short panel without a title,
+// named by its `aria-label`, sized to its text with `fit`.
 export const WithoutContent = meta.story({
   tags: ['component-test'],
+  args: { size: 'fit' },
   render: args => (
     <Popover.Trigger>
       <Button>Show opening hours</Button>
       <Popover {...args} aria-label="Opening hours">
-        <Text>The box office is open Monday to Friday, 10:00 to 18:00.</Text>
+        <Text>Box office: Monday to Friday, 10:00 to 18:00</Text>
       </Popover>
     </Popover.Trigger>
   ),
@@ -342,48 +371,102 @@ WithoutContent.test(
   }
 );
 
-// A long body scrolls on its own, while the title above it stays put.
-const EVENTS = Array.from({ length: 30 }, (_, i) => ({
-  id: `event-${i + 1}`,
-  name: `Event ${i + 1}`,
-}));
+// Every size side by side. `fit` follows its content, so it gets two cases:
+// a short text that keeps the panel narrower than `small`, and a long one
+// that wraps at the `large` width.
+const SIZES = [
+  { id: 'small', label: 'small', size: 'small', short: false },
+  { id: 'medium', label: 'medium', size: 'medium', short: false },
+  { id: 'large', label: 'large', size: 'large', short: false },
+  { id: 'fit-short', label: 'fit, short text', size: 'fit', short: true },
+  { id: 'fit-long', label: 'fit, long text', size: 'fit', short: false },
+] as const;
 
-export const ScrollingContent = meta.story({
-  tags: ['component-test'],
+// The theme's widths: `w-3xs`, `w-xs` and `w-md`. `fit` caps at `w-md`.
+const SIZE_WIDTHS = { small: 256, medium: 320, large: 448 };
+
+// Distinct line tops of an element's text, so a test can tell wrapped text.
+const lineCount = (el: Element) => {
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  const tops = [...range.getClientRects()].map(rect => Math.round(rect.top));
+
+  return new Set(tops).size;
+};
+
+export const Sizes = meta.story({
+  tags: ['component-test', '!autodocs'],
   render: args => (
-    <Popover.Trigger>
-      <Button>Show upcoming events</Button>
-      <Popover {...args}>
-        <Title>Upcoming events</Title>
-        <Popover.Content>
-          <List>
-            {EVENTS.map(event => (
-              <List.Item key={event.id}>{event.name}</List.Item>
-            ))}
-          </List>
-        </Popover.Content>
-      </Popover>
-    </Popover.Trigger>
+    <Inline space="related">
+      {SIZES.map(({ id, label, size, short }) => (
+        <Popover.Trigger key={id}>
+          <Button>Open {label}</Button>
+          <Popover {...args} size={size}>
+            <Title>Box office</Title>
+            <Popover.Content>
+              <Text>
+                {short
+                  ? 'Mon to Fri, 10:00 to 18:00'
+                  : 'Open Monday to Friday from 10:00 to 18:00, and two hours before every show. Tickets reserved online can be collected here until the show starts.'}
+              </Text>
+            </Popover.Content>
+          </Popover>
+        </Popover.Trigger>
+      ))}
+    </Inline>
   ),
 });
 
-ScrollingContent.test(
-  'Scrolls the content, not the title',
+Sizes.test(
+  'Each size sets the width, fit follows its content',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas, userEvent }) => {
-    await userEvent.click(
-      canvas.getByRole('button', { name: 'Show upcoming events' })
-    );
-    const dialog = await canvas.findByRole('dialog', {
-      name: 'Upcoming events',
-    });
-    const content = dialog.querySelector<HTMLElement>('[data-slot=content]')!;
-    const title = canvas.getByRole('heading', { name: 'Upcoming events' });
+  async ({ canvas, userEvent, step }) => {
+    const open = async (label: string) => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: `Open ${label}` })
+      );
+      const dialog = await canvas.findByRole('dialog', { name: 'Box office' });
+      const text = dialog.querySelector('[data-slot=content] > *')!;
 
-    await waitFor(() =>
-      expect(content.scrollHeight).toBeGreaterThan(content.clientHeight)
+      return { dialog, text, width: dialog.getBoundingClientRect().width };
+    };
+    const close = async () => {
+      await userEvent.keyboard('{Escape}');
+      await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
+    };
+
+    for (const size of ['small', 'medium', 'large'] as const) {
+      await step(size, async () => {
+        const { width } = await open(size);
+
+        await expect(Math.round(width)).toBe(SIZE_WIDTHS[size]);
+        await close();
+      });
+    }
+
+    await step(
+      'fit, short text: narrower than small, on one line',
+      async () => {
+        const { dialog, text, width } = await open('fit, short text');
+
+        await expect(width).toBeLessThan(SIZE_WIDTHS.small);
+        await expect(lineCount(text)).toBe(1);
+        // The content keeps its padding around the text.
+        await expect(width).toBeGreaterThanOrEqual(
+          text.getBoundingClientRect().width + 2 * 16
+        );
+        await expect(dialog.scrollWidth).toBe(dialog.clientWidth);
+        await close();
+      }
     );
-    await expect(content).not.toContainElement(title);
+
+    await step('fit, long text: wraps at the large width', async () => {
+      const { text, width } = await open('fit, long text');
+
+      await expect(Math.round(width)).toBe(SIZE_WIDTHS.large);
+      await expect(lineCount(text)).toBeGreaterThan(1);
+      await close();
+    });
   }
 );
 
@@ -400,7 +483,7 @@ const onArchive = fn();
 
 export const Notifications = meta.story({
   tags: ['component-test'],
-  args: { placement: 'bottom end', width: 'large' },
+  args: { placement: 'bottom end', size: 'large' },
   render: args => (
     <Popover.Trigger>
       <Button size="icon" aria-label="Notifications">
@@ -580,7 +663,7 @@ type SearchableListArgs = PopoverProps & { showTitle?: boolean };
 export const SearchableList = meta.story({
   tags: ['component-test'],
   // Storybook infers a boolean control for `showTitle` from its value.
-  args: { width: 'large', showTitle: true } as SearchableListArgs,
+  args: { size: 'large', showTitle: true } as SearchableListArgs,
   render: ({ showTitle, ...args }: SearchableListArgs) => (
     <Popover.Trigger>
       <Button>
@@ -840,29 +923,25 @@ export const SmallScreen = meta.story({
   globals: {
     viewport: { value: 'smallScreen' },
   },
-  render: ScrollingContent.input.render,
+  args: Notifications.input.args,
+  render: Notifications.input.render,
 });
 
 SmallScreen.test(
-  'Renders a tray whose title stays above the scrolling content',
+  'Renders a tray with the title above the content',
   // Keep the snapshot: the open tray is the small-screen visual state.
   { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
     await userEvent.click(
-      canvas.getByRole('button', { name: 'Show upcoming events' })
+      canvas.getByRole('button', { name: 'Notifications' })
     );
 
-    const tray = await canvas.findByRole('dialog', {
-      name: 'Upcoming events',
-    });
+    const tray = await canvas.findByRole('dialog', { name: 'Notifications' });
     await waitFor(() => expect(tray).toBeVisible());
 
     const content = tray.querySelector<HTMLElement>('[data-slot=content]')!;
-    const title = canvas.getByRole('heading', { name: 'Upcoming events' });
+    const title = canvas.getByRole('heading', { name: 'Notifications' });
     await expect(content).not.toContainElement(title);
-    await waitFor(() =>
-      expect(content.scrollHeight).toBeGreaterThan(content.clientHeight)
-    );
     await expect(canvas.getByRole('button', { name: 'Close' })).toBeVisible();
   }
 );
@@ -873,7 +952,7 @@ export const SmallScreenSearch = meta.story({
   globals: {
     viewport: { value: 'smallScreen' },
   },
-  args: { width: 'large', showTitle: true } as SearchableListArgs,
+  args: { size: 'large', showTitle: true } as SearchableListArgs,
   render: SearchableList.input.render,
 });
 

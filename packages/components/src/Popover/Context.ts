@@ -1,4 +1,6 @@
+import type { RefObject } from 'react';
 import { createContext, use } from 'react';
+import type RAC from 'react-aria-components';
 import type { ComponentClassNames } from '@marigold/system';
 
 /**
@@ -39,3 +41,24 @@ export const usePopoverContext = () => {
 
   return ctx;
 };
+
+/**
+ * Links `<Popover.Search>` to the `PopoverSearchScope` that `<Popover>`
+ * renders around its parts. The scope owns the search text, the search only
+ * registers itself and hands over its options.
+ */
+export interface PopoverSearchOptions {
+  filter?: RAC.AutocompleteProps<object>['filter'];
+  onInputChange?: (value: string) => void;
+}
+
+export interface PopoverSearchContextValue {
+  /** Marks a search as present; returns the cleanup that unmarks it. */
+  registerSearch: () => () => void;
+  /** Latest callbacks of the mounted search, read when they are called. */
+  optionsRef: RefObject<PopoverSearchOptions>;
+  setInputValue: (value: string) => void;
+}
+
+export const PopoverSearchContext =
+  createContext<PopoverSearchContextValue | null>(null);

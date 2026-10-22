@@ -23,6 +23,9 @@ import { TrayTrigger } from './TrayTrigger';
 
 // Internal Usage Notes
 // ---------------
+// `<Popover>` below means the internal overlay primitive in `../Overlay`, not
+// the public `Popover` component, which switches to a `<Tray>` by itself.
+//
 // `<Tray>` is the mobile counterpart to `<Popover>`. Use it whenever an overlay
 // needs to be presented as a bottom sheet on small screens, and switch to
 // `<Popover>` on larger viewports.
