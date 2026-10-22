@@ -3,8 +3,10 @@ import {
   ActionMenu,
   Button,
   ButtonGroup,
+  DateFormat,
   Description,
   ListView,
+  NumericFormat,
   Popover,
   TextValue,
   Title,
@@ -13,9 +15,9 @@ import {
 import { Pin } from '@marigold/icons';
 
 const events = [
-  { id: 'open-air', name: 'Summer Open Air', date: 'Sat, 12 July' },
-  { id: 'jazz-night', name: 'Jazz Night', date: 'Fri, 18 July' },
-  { id: 'season-preview', name: 'Season Preview', date: 'Sun, 27 July' },
+  { id: 'open-air', name: 'Summer Open Air', date: new Date(2026, 6, 12) },
+  { id: 'jazz-night', name: 'Jazz Night', date: new Date(2026, 6, 18) },
+  { id: 'season-preview', name: 'Season Preview', date: new Date(2026, 6, 27) },
 ];
 
 export default (props: PopoverProps) => (
@@ -23,13 +25,22 @@ export default (props: PopoverProps) => (
     <Button>Upcoming events</Button>
     <Popover {...props}>
       <Title>Upcoming events</Title>
-      <Description>3 events on sale</Description>
+      <Description>
+        <NumericFormat value={events.length} /> events on sale
+      </Description>
       <Popover.Content>
         <ListView aria-label="Upcoming events" items={events}>
           {(event: (typeof events)[number]) => (
             <ListView.Item id={event.id} textValue={event.name}>
               <TextValue>{event.name}</TextValue>
-              <Description>{event.date}</Description>
+              <Description>
+                <DateFormat
+                  value={event.date}
+                  weekday="short"
+                  day="numeric"
+                  month="long"
+                />
+              </Description>
               <ButtonGroup aria-label={`Actions for ${event.name}`} size="icon">
                 <Tooltip.Trigger>
                   <Button aria-label={`Pin ${event.name}`}>

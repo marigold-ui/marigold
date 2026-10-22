@@ -6,6 +6,7 @@ import {
   Description,
   Form,
   Inline,
+  NumericFormat,
   Popover,
   Stack,
   Text,
@@ -28,7 +29,10 @@ export default () => {
         <Stack space="tight">
           <Inline space="related" alignY="center">
             <Badge variant="success">Paid</Badge>
-            <Text>2 × Summer Open Air · 98,00 €</Text>
+            <Text>
+              <NumericFormat value={2} /> × Summer Open Air ·{' '}
+              <NumericFormat value={98} style="currency" currency="EUR" />
+            </Text>
           </Inline>
           {note ? (
             <Inline space="related" alignY="center">
