@@ -49,7 +49,7 @@
     "prettier": "3.9.10",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "storybook": "^10.4.6",
+    "storybook": "^10.6.2",
     "storybook-addon-test-codegen": "3.0.4",
     "tailwindcss": "4.3.3",
     "turbo": "2.11.8",
