@@ -14,7 +14,7 @@ feat(DST-1485): add a general-purpose `Popover` for arbitrary content
   <Button size="icon" aria-label="Notifications">
     <Bell />
   </Button>
-  <Popover placement="bottom end" width="large">
+  <Popover placement="bottom end" size="large">
     <Title>Notifications</Title>
     <Popover.Content>
       <ListView aria-label="Notifications">…</ListView>
@@ -24,9 +24,9 @@ feat(DST-1485): add a general-purpose `Popover` for arbitrary content
 ```
 
 - `<Popover.Trigger>` wraps the trigger and the panel, like `Dialog.Trigger`. Its `dismissable` and `keyboardDismissable` props control how the panel closes. Both default to `true`.
-- `<Popover>` renders a positioned panel on larger screens and a tray on small ones. A `<Title>` and `<Description>` inside it form the header, and the title becomes the panel's accessible name.
-- `<Popover.Content>` holds the body and is the only part that scrolls. Without it, the popover lays out all its children as the body. A `ListView` placed directly inside reaches the popover's edges by itself, and sits flush at the bottom and under a search. For other content, `bleed` removes the horizontal padding, like in `Drawer.Content` and `Panel.Content`.
-- `<Popover>` is modal by default, following React Aria. `nonModal` lets focus leave and keeps the page interactive.
+- `<Popover>` renders a positioned panel on larger screens and a tray on small ones. `size` sets the panel's width: `small`, `medium` (the default), `large`, or `fit` to size it to its content. A `<Title>` and `<Description>` inside it form the header, and the title becomes the panel's accessible name.
+- `<Popover.Content>` holds the body. If the window is too small for it, only the content scrolls and the header stays in place. Without it, the popover lays out all its children as the body. A `ListView` placed directly inside reaches the popover's edges by itself, and sits flush at the bottom and under a search. For other content, `bleed` removes the horizontal padding, like in `Drawer.Content` and `Panel.Content`.
+- `<Popover>` is modal by default, following React Aria: focus stays inside and the rest of the page is hidden from assistive technology, while the page stays visible and a press outside or Escape closes the panel. `nonModal` keeps the page interactive, for panels without focusable controls. A non-modal popover now also closes on a press outside of it, not only when focus leaves it.
 - `<Popover.Search>` sits next to `<Popover.Content>` and filters the list in it as the user types, for lists whose rows people act on in place. It is a borderless row spanning the popover that stays in view above the results. Under a `<Title>` it sits between two dividers, and without one it becomes the popover's header.
 
 **BREAKING CHANGE:** the `Popover` theme entry is now a set of slots, and the `Popover` export is a different component.

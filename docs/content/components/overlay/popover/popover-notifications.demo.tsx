@@ -30,7 +30,7 @@ export default () => {
       <Button size="icon" aria-label="Notifications">
         <Bell />
       </Button>
-      <Popover placement="bottom end" width="large">
+      <Popover placement="bottom end" size="large">
         <Title>Notifications</Title>
         <Description>{notifications.length} unread</Description>
         <Popover.Content>
