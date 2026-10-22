@@ -25,7 +25,6 @@ export const Popover: ThemeComponent<'Popover'> = {
       // rhythm, the tray keeps it like every tray.
       '[--popover-px:calc(var(--spacing)*4)]',
       'data-tray:[--popover-px:var(--ui-surface-px)]',
-      'data-small:w-3xs data-medium:w-xs data-large:w-md',
       // Without a `<Popover.Content>`, the body takes the content's role: it
       // pads and scrolls, and title, description and search sit flush in it.
       // Spelled out in full so Tailwind's source scan picks the classes up.
@@ -41,6 +40,15 @@ export const Popover: ThemeComponent<'Popover'> = {
       'not-has-[[data-slot=content]]:*:data-[slot=search]:mt-0',
       'not-has-[[data-slot=content]]:*:data-[slot=search]:first:-mt-3',
     ],
+    variants: {
+      size: {
+        small: 'w-3xs',
+        medium: 'w-xs',
+        large: 'w-md',
+        // As wide as the content needs, wrapping at the large width.
+        fit: 'w-max max-w-md',
+      },
+    },
   }),
   title: cva({ base: 'px-(--popover-px) pt-3 text-base font-semibold' }),
   description: cva({
@@ -66,9 +74,7 @@ export const Popover: ThemeComponent<'Popover'> = {
   }),
   content: cva({
     base: [
-      'flex flex-col gap-3 px-(--popover-px) py-3 outline-none',
-      '[--bleed-px:initial]',
-      'data-bleed:px-0 data-bleed:[--bleed-px:var(--popover-px)]',
+      'flex flex-col gap-3 py-3 outline-none',
       // A ListView or Table (both `role=grid`) placed directly in the content
       // spans it edge to edge. As the last child it sits flush against the
       // popover's bottom, and as the first child right under the search row's

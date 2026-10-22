@@ -1,14 +1,16 @@
-import type { ReactNode, RefCallback } from 'react';
-import { use, useId, useMemo } from 'react';
+import type { ReactNode, Ref, RefCallback } from 'react';
+import { use, useId, useMemo, useRef } from 'react';
 import { HeadingContext, Provider, TextContext } from 'react-aria-components';
 import { Dialog } from 'react-aria-components/Dialog';
 import { FocusScope } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { mergeRefs } from '@react-aria/utils';
 import type { ComponentClassNames } from '@marigold/system';
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Button } from '../Button/Button';
 import type { PopoverProps as OverlayPopoverProps } from '../Overlay/Popover';
 import { Popover as OverlayPopover } from '../Overlay/Popover';
+import { useLightDismiss } from '../Overlay/useLightDismiss';
 import { TRAY_CONTENT_ATTR, useTrayContext } from '../Tray/Context';
 import { Tray } from '../Tray/Tray';
 import { intlMessages } from '../intl/messages';
@@ -16,7 +18,8 @@ import { useOverlayHeaderSlotProps } from '../utils/useOverlayHeaderSlotProps';
 import { useSlot } from '../utils/useSlot';
 import { PopoverContext, PopoverTriggerContext } from './Context';
 import { PopoverContent } from './PopoverContent';
-import { PopoverSearch, PopoverSearchScope } from './PopoverSearch';
+import { PopoverSearch } from './PopoverSearch';
+import { PopoverSearchScope } from './PopoverSearchScope';
 import { PopoverTrigger } from './PopoverTrigger';
 
 // Props
@@ -40,10 +43,12 @@ export interface PopoverProps extends Omit<OverlayPopoverProps, RemovedProps> {
   /**
    * Whether the popover is non-modal, React Aria's `isNonModal`. A modal
    * popover (the default) hides the rest of the page from assistive
-   * technology, locks scrolling and keeps focus inside. A non-modal one lets
-   * focus leave and keeps the page interactive. React Aria advises against it
-   * when the popover holds focusable controls, because screen reader users can
-   * lose track of it.
+   * technology, locks scrolling and keeps focus inside, while the page stays
+   * visible and a press outside or Escape closes it. A non-modal one keeps
+   * the page interactive: it closes when the user presses outside of it,
+   * moves focus elsewhere, presses Escape or scrolls the page. Use it only for
+   * panels without focusable controls, because screen reader users can lose
+   * track of a non-modal panel.
    *
    * On small screens the popover renders as a tray, which is always modal.
    * @default false
@@ -51,10 +56,11 @@ export interface PopoverProps extends Omit<OverlayPopoverProps, RemovedProps> {
   nonModal?: boolean;
 
   /**
-   * Width of the popover on larger screens.
+   * Width of the popover on larger screens. `fit` sizes it to its content,
+   * up to the `large` width. On small screens the tray spans the screen.
    * @default 'medium'
    */
-  width?: 'small' | 'medium' | 'large';
+  size?: 'small' | 'medium' | 'large' | 'fit' | (string & {});
 
   /**
    * Content of the popover: an optional `<Title>` and `<Description>`, an
@@ -63,13 +69,11 @@ export interface PopoverProps extends Omit<OverlayPopoverProps, RemovedProps> {
    * body.
    */
   children?: ReactNode;
-}
 
-interface PopoverComponent {
-  (props: PopoverProps): ReactNode;
-  Trigger: typeof PopoverTrigger;
-  Content: typeof PopoverContent;
-  Search: typeof PopoverSearch;
+  /**
+   * Ref to the popover's dialog element (the tray's on small screens).
+   */
+  ref?: Ref<HTMLElement>;
 }
 
 // Helpers
@@ -153,25 +157,42 @@ const PopoverTrayBody = ({
  */
 const PopoverDialog = ({
   classNames,
-  width,
+  lightDismiss,
+  shouldCloseOnInteractOutside,
   'aria-label': ariaLabel,
   'aria-labelledby': ariaLabelledby,
   children,
-}: Pick<PopoverProps, 'aria-label' | 'aria-labelledby' | 'children'> & {
+  ref,
+}: Pick<
+  PopoverProps,
+  | 'aria-label'
+  | 'aria-labelledby'
+  | 'children'
+  | 'ref'
+  | 'shouldCloseOnInteractOutside'
+> & {
   classNames: ComponentClassNames<'Popover'>;
-  width: NonNullable<PopoverProps['width']>;
+  /** Close on a press outside, which React Aria skips for non-modal ones. */
+  lightDismiss: boolean;
 }) => {
   const titleId = useId();
   const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
+  const dialogRef = useRef<HTMLElement>(null);
+  const mergedRef = useMemo(() => mergeRefs(ref, dialogRef), [ref]);
+  const { lightDismissProps } = useLightDismiss(dialogRef, {
+    isDisabled: !lightDismiss,
+    shouldCloseOnInteractOutside,
+  });
 
   return (
     <Dialog
+      {...lightDismissProps}
+      ref={mergedRef}
       aria-label={ariaLabel}
       aria-labelledby={!ariaLabel && hasTitle ? titleId : ariaLabelledby}
       // Inherits the max height React Aria computes for the popover, so a
       // long body scrolls inside instead of being clipped by the surface.
       className={cn('max-h-[inherit]', classNames.body)}
-      {...{ [`data-${width}`]: true }}
     >
       <PopoverParts
         classNames={classNames}
@@ -189,17 +210,22 @@ const PopoverDialog = ({
 // ---------------
 const PopoverBase = ({
   nonModal = false,
-  width = 'medium',
+  size = 'medium',
   placement = 'bottom',
   shouldCloseOnInteractOutside,
   children,
   'aria-label': ariaLabel,
   'aria-labelledby': ariaLabelledby,
+  ref,
   ...props
 }: PopoverProps) => {
   const { dismissable, keyboardDismissable } = use(PopoverTriggerContext);
-  const classNames = useClassNames({ component: 'Popover' });
   const isSmallScreen = useSmallScreen();
+  // The tray spans the screen, so `size` only applies to the anchored popover.
+  const classNames = useClassNames({
+    component: 'Popover',
+    size: isSmallScreen ? undefined : size,
+  });
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   if (isSmallScreen) {
@@ -209,6 +235,7 @@ const PopoverBase = ({
         aria-labelledby={ariaLabelledby}
         dismissable={dismissable}
         keyboardDismissable={keyboardDismissable}
+        ref={ref}
       >
         <PopoverTrayBody classNames={classNames}>{children}</PopoverTrayBody>
         <Tray.Actions>
@@ -221,9 +248,11 @@ const PopoverBase = ({
   const dialog = (
     <PopoverDialog
       classNames={classNames}
-      width={width}
+      lightDismiss={nonModal && dismissable}
+      shouldCloseOnInteractOutside={shouldCloseOnInteractOutside}
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledby}
+      ref={ref}
     >
       {children}
     </PopoverDialog>
@@ -248,8 +277,8 @@ const PopoverBase = ({
   );
 };
 
-PopoverBase.Trigger = PopoverTrigger;
-PopoverBase.Content = PopoverContent;
-PopoverBase.Search = PopoverSearch;
-
-export const Popover: PopoverComponent = PopoverBase;
+export const Popover = Object.assign(PopoverBase, {
+  Trigger: PopoverTrigger,
+  Content: PopoverContent,
+  Search: PopoverSearch,
+});

@@ -8,6 +8,9 @@ import { useClipBoundary } from './clipBoundary';
 
 // Internal Usage Notes
 // ---------------
+// `<Popover>` here is the internal overlay primitive, not the public
+// `Popover` component in `../Popover`, which is built on top of it.
+//
 // `<Tray>` is the mobile counterpart to `<Popover>`. Use it whenever an overlay
 // needs to be presented as a bottom sheet on small screens, and switch to
 // `<Popover>` on larger viewports.

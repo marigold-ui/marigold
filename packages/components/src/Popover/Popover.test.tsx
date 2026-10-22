@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { createRef } from 'react';
 import { vi } from 'vitest';
 import { renderWithOverlay } from '../test.utils';
 import { Popover } from './Popover';
@@ -26,13 +27,24 @@ test('opens on press and is named by its title', async () => {
   ).toBeInTheDocument();
 });
 
-test('applies the width token to the dialog', async () => {
+test('forwards the ref to the dialog', async () => {
+  const ref = createRef<HTMLElement>();
+  renderWithOverlay(<Basic.Component ref={ref} />);
+
+  await user.click(screen.getByRole('button', { name: 'Show event details' }));
+
+  expect(ref.current).toBe(
+    screen.getByRole('dialog', { name: 'Summer Open Air' })
+  );
+});
+
+test('applies the size to the dialog', async () => {
   renderWithOverlay(<Notifications.Component />);
 
   await user.click(screen.getByRole('button', { name: 'Notifications' }));
 
-  expect(screen.getByRole('dialog', { name: 'Notifications' })).toHaveAttribute(
-    'data-large'
+  expect(screen.getByRole('dialog', { name: 'Notifications' })).toHaveClass(
+    'w-md'
   );
 });
 
