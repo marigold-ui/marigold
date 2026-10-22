@@ -348,11 +348,10 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
 
   const handleSelectionChange = useCallback(
     (keys: Selection) => {
-      setSelection(
-        keys === 'all' && selectableKeys.length > 0
-          ? new Set(selectableKeys)
-          : keys
-      );
+      // A field has to submit a value, and `HiddenSelection` submits nothing
+      // for `'all'`, so the sentinel is always resolved to concrete keys,
+      // including to an empty set, which at least matches what is reported.
+      setSelection(keys === 'all' ? new Set(selectableKeys) : keys);
       validationState.commitValidation();
     },
     [setSelection, validationState, selectableKeys]

@@ -548,7 +548,6 @@ describe('ListView', () => {
 
       render(
         <Venues>
-          {/* eslint-disable-next-line @eslint-react/no-missing-key */}
           <ListView.Item textValue="Keyless" />
         </Venues>
       );
@@ -558,6 +557,28 @@ describe('ListView', () => {
       );
 
       warnSpy.mockRestore();
+    });
+
+    test('describes the select-all with the count', () => {
+      render(<Venues />);
+
+      expect(
+        screen.getByRole('checkbox', { name: 'Select all' })
+      ).toHaveAccessibleDescription('0 of 2 selected');
+    });
+
+    test('has nothing to address in an empty list', () => {
+      render(
+        <MarigoldProvider theme={theme}>
+          <ListView aria-label="Venues" selectionMode="multiple" allowSelectAll>
+            {[]}
+          </ListView>
+        </MarigoldProvider>
+      );
+
+      expect(
+        screen.getByRole('checkbox', { name: 'Select all' })
+      ).toBeDisabled();
     });
 
     test('splitting the header off keeps the rows keyed', () => {

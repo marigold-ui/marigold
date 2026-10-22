@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Children, isValidElement, useEffect, useMemo } from 'react';
+import { Children, isValidElement, useEffect, useId, useMemo } from 'react';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import type { Key, Selection } from '@react-types/shared';
 import { Checkbox } from '../Checkbox/Checkbox';
@@ -84,6 +84,7 @@ export const SelectAllHeader = ({
   classNames,
 }: SelectAllHeaderProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');
+  const countId = useId();
 
   const selectedCount =
     selection === 'all'
@@ -96,11 +97,17 @@ export const SelectAllHeader = ({
       <Checkbox
         checked={checked}
         indeterminate={selectedCount > 0 && !checked}
-        disabled={disabled}
+        // Nothing to address: an enabled checkbox that cannot change the
+        // selection reads as broken. Covers an empty collection and one whose
+        // items carry no `id` (see `useSelectableKeys`' warning).
+        disabled={disabled || keys.length === 0}
         onChange={onChange}
         label={stringFormatter.format('selectAll')}
+        // The count is the only thing saying what the next bulk action covers,
+        // so it has to reach a screen reader, not just the eye.
+        aria-describedby={countId}
       />
-      <span className={classNames?.count}>
+      <span id={countId} className={classNames?.count}>
         {stringFormatter.format('selectAllCount', {
           count: selectedCount,
           total: keys.length,
