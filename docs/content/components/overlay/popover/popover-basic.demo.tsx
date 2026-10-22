@@ -1,10 +1,16 @@
 import {
   Button,
   Description,
+  Divider,
+  Inline,
+  Link,
   Popover,
+  Split,
+  Stack,
   Table,
   Text,
   Title,
+  VisuallyHidden,
 } from '@marigold/components';
 
 interface Event {
@@ -12,8 +18,9 @@ interface Event {
   name: string;
   date: string;
   venue: string;
-  sold: string;
-  details: string;
+  sold: number;
+  capacity: number;
+  categories: { name: string; sold: number; capacity: number }[];
 }
 
 const events: Event[] = [
@@ -22,46 +29,72 @@ const events: Event[] = [
     name: 'Summer Open Air',
     date: 'Sat, 12 July',
     venue: 'Stadtgarten',
-    sold: '1,840 / 2,000',
-    details:
-      'Doors open at 17:00. Seating is unreserved, so arrive early for a spot near the stage.',
+    sold: 1840,
+    capacity: 2000,
+    categories: [
+      { name: 'Standing', sold: 1500, capacity: 1500 },
+      { name: 'Seated', sold: 300, capacity: 400 },
+      { name: 'VIP', sold: 40, capacity: 100 },
+    ],
   },
   {
     id: 'jazz-night',
     name: 'Jazz Night',
     date: 'Fri, 18 July',
     venue: 'Jazzhaus',
-    sold: '212 / 250',
-    details:
-      'Doors open at 19:30. Table seating, the bar stays open until midnight.',
+    sold: 212,
+    capacity: 250,
+    categories: [
+      { name: 'Table seat', sold: 120, capacity: 120 },
+      { name: 'Bar', sold: 92, capacity: 130 },
+    ],
   },
   {
     id: 'season-preview',
     name: 'Season Preview',
     date: 'Sun, 27 July',
     venue: 'Konzerthaus',
-    sold: '640 / 900',
-    details:
-      'Doors open at 10:30. Free entry for season ticket holders, bring your pass.',
+    sold: 640,
+    capacity: 900,
+    categories: [
+      { name: 'Parquet', sold: 420, capacity: 500 },
+      { name: 'Balcony', sold: 180, capacity: 300 },
+      { name: 'Season pass', sold: 40, capacity: 100 },
+    ],
   },
 ];
 
-const EventDetails = ({ event }: { event: Event }) => (
+const format = new Intl.NumberFormat('en-US');
+
+const TicketSales = ({ event }: { event: Event }) => (
   <Popover.Trigger>
-    <Button
-      variant="ghost"
-      size="small"
-      aria-label={`Details for ${event.name}`}
-    >
-      Details
+    <Button variant="link" size="small">
+      {format.format(event.sold)} / {format.format(event.capacity)}
+      <VisuallyHidden> tickets sold for {event.name}</VisuallyHidden>
     </Button>
-    <Popover>
+    <Popover placement="bottom end">
       <Title>{event.name}</Title>
-      <Description>
-        {event.date} · {event.venue}
-      </Description>
+      <Description>Ticket sales by category</Description>
       <Popover.Content>
-        <Text>{event.details}</Text>
+        <Stack space="tight">
+          {event.categories.map(category => (
+            <Inline key={category.name} space="related">
+              <Text>{category.name}</Text>
+              <Split />
+              <Text
+                variant={
+                  category.sold === category.capacity ? 'default' : 'muted'
+                }
+              >
+                {category.sold === category.capacity
+                  ? 'Sold out'
+                  : `${format.format(category.sold)} / ${format.format(category.capacity)}`}
+              </Text>
+            </Inline>
+          ))}
+        </Stack>
+        <Divider />
+        <Link href="#">View all orders</Link>
       </Popover.Content>
     </Popover>
   </Popover.Trigger>
@@ -74,7 +107,6 @@ export default () => (
       <Table.Column>Date</Table.Column>
       <Table.Column>Venue</Table.Column>
       <Table.Column alignX="right">Tickets sold</Table.Column>
-      <Table.Column alignX="right">Action</Table.Column>
     </Table.Header>
     <Table.Body>
       {events.map(event => (
@@ -82,9 +114,8 @@ export default () => (
           <Table.Cell>{event.name}</Table.Cell>
           <Table.Cell>{event.date}</Table.Cell>
           <Table.Cell>{event.venue}</Table.Cell>
-          <Table.Cell>{event.sold}</Table.Cell>
           <Table.Cell>
-            <EventDetails event={event} />
+            <TicketSales event={event} />
           </Table.Cell>
         </Table.Row>
       ))}
