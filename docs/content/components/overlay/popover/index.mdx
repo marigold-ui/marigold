@@ -34,7 +34,7 @@ A popover opens below its trigger by default. It is composed of an optional head
 
 ## Appearance
 
-<AppearanceDemo component={'Popover'} />
+<AppearanceDemo component={'Popover'} defaults={{ size: 'medium' }} />
 
 <AppearanceTable component={'Popover'} />
 
@@ -67,11 +67,11 @@ If the content fails one of these, it belongs somewhere else. Information most p
 
 ### Details on demand
 
-People scan a list or a schedule and need a few more facts about one entry, like the opening time of an event or the terms behind a price. Showing those facts on the page would crowd it for everyone, and opening a new page would lose their place. A popover shows the details right next to the entry and disappears again with the next click.
+People scan a list or a table and want to know what is behind one number, like how the ticket sales of an event split up by category. Showing that breakdown on the page would crowd it for everyone, and opening a new page would lose their place. A popover shows the breakdown right next to the number, with a link to go deeper, and disappears again with the next click.
 
 <ComponentDemo name="popover-basic" />
 
-Keep it to a few facts. When people need the whole record, with its history, related items or edit options, the popover becomes a page in disguise. Use a [`<Drawer>`](/components/overlay/drawer) or a page instead.
+The details are data about the entry, laid out as rows, with a link or a button to act on them. That is what sets this apart from a [`<ContextualHelp>`](/components/overlay/contextual-help), which explains a control in a sentence or two. If the content is a help text, use ContextualHelp. Keep the popover to a few rows. When people need the whole record, with its history, related items or edit options, the popover becomes a page in disguise. Use a [`<Drawer>`](/components/overlay/drawer) or a page instead.
 
 ### Rows people act on in place
 
@@ -91,7 +91,7 @@ Search belongs in a popover only when people act on the rows in place. To let pe
 
 ### Quick, optional input
 
-Sometimes people want to add a small detail without leaving what they are doing, like a note on an order. A popover holds one to three optional fields right next to the thing they belong to. Put the [`<Form>`](/components/form/form) inside `<Popover.Content>` so Enter submits it, and close the popover from your submit handler. A button with `slot="close"` closes it without submitting, which suits Cancel.
+Sometimes people want to add a small detail without leaving what they are doing, like a note on an order. A popover holds one to three optional fields right next to the thing they belong to. Put the fields in a [`<Form>`](/components/form/form) inside `<Popover.Content>` and close the popover from its submit handler. Enter submits the form from a single-line field. In a text area it adds a line, so always give the form a Save button. A button with `slot="close"` closes the popover without submitting, which suits Cancel.
 
 <ComponentDemo name="popover-mini-form" />
 
