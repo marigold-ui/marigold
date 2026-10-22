@@ -54,7 +54,7 @@
     "tailwindcss": "4.3.3",
     "turbo": "2.11.8",
     "typescript": "6.0.3",
-    "vite": "8.3.2",
+    "vite": "8.3.3",
     "vitest": "4.1.11",
     "zx": "8.8.5"
   },
