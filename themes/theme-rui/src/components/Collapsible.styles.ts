@@ -6,6 +6,8 @@ export const Collapsible: ThemeComponent<'Collapsible'> = {
     base: [
       'inline-flex gap-2 whitespace-nowrap rounded-md font-medium transition-[color,box-shadow,transform]',
       'ui-interactive',
+      // Room for the focus ring, layout unchanged.
+      'p-1 -m-1',
       'ui-press',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0',
     ],

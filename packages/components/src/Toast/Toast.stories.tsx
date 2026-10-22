@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
-import { expect, userEvent } from 'storybook/test';
+import { expect, screen, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Link } from '../Link/Link';
+import { expectFocusRingContrast } from '../contrast.utils';
 import { Toast } from './Toast';
 import { ToastProvider } from './ToastProvider';
 import { getToastQueue, useToast } from './ToastQueue';
@@ -410,5 +411,22 @@ SmallScreen.test(
         window.innerWidth
       );
     });
+  }
+);
+
+Basic.test(
+  'Keyboard focus draws a 1px ring that clears 3:1 on the close button',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Show Toast' }));
+    const close = await screen.findByRole('button', { name: /close/i });
+
+    close.focus();
+    await userEvent.tab();
+
+    await userEvent.tab({ shift: true });
+
+    await expect(close).toHaveFocus();
+    await waitFor(() => expectFocusRingContrast(close));
   }
 );

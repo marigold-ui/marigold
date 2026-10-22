@@ -22,6 +22,7 @@ import { Switch } from '../Switch/Switch';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import { Title } from '../Title/Title';
+import { expectFocusRingContrast } from '../contrast.utils';
 import { useListData } from '../hooks';
 import type { Selection } from '../types';
 import type { TableProps } from './Table';
@@ -3631,5 +3632,38 @@ ExpandableRowsInPanel.test(
     expect(left(chevronOf(group).querySelector('svg')!)).toBe(
       left(canvas.getByText('Clearings'))
     );
+  }
+);
+
+DragAndDrop.test(
+  'Keyboard focus draws a ring that clears 3:1 on the drag handle',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    const handle = canvas.getByRole('button', { name: 'Drag Hans Müller' });
+
+    canvas.getByRole('row', { name: /Hans Müller/ }).focus();
+
+    await userEvent.keyboard('{ArrowRight}');
+
+    await expect(handle).toHaveFocus();
+    await waitFor(() => expectFocusRingContrast(handle));
+  }
+);
+
+EditableCell.test(
+  'Keyboard focus draws a ring that clears 3:1 on cancel and save',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    await userEvent.click(canvas.getAllByRole('button', { name: 'Edit' })[0]!);
+
+    for (const name of ['Cancel', 'Save']) {
+      await step(name, async () => {
+        const button = await screen.findByRole('button', { name });
+        await userEvent.tab();
+
+        await expect(button).toHaveFocus();
+        await waitFor(() => expectFocusRingContrast(button));
+      });
+    }
   }
 );

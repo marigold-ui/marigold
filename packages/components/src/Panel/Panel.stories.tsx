@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { expect, userEvent } from 'storybook/test';
+import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import {
   Copy,
@@ -26,6 +26,7 @@ import { Table } from '../Table/Table';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import { Title } from '../Title/Title';
+import { expectInsetFocusRingContrast } from '../contrast.utils';
 import { Panel } from './Panel';
 
 const meta = preview.meta({
@@ -1059,3 +1060,22 @@ export const CustomPadding = meta.story(() => (
     </Panel>
   </Stack>
 ));
+
+WithCollapsible.test(
+  'Keyboard focus draws an inset ring that clears 3:1 on the collapsible header',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    const header = (
+      await canvas.findAllByRole('button', { expanded: false })
+    )[0]!;
+
+    // Last tab stop: enter from before it.
+    header.focus();
+    await userEvent.tab({ shift: true });
+
+    await userEvent.tab();
+
+    await expect(header).toHaveFocus();
+    await waitFor(() => expectInsetFocusRingContrast(header));
+  }
+);

@@ -1,6 +1,6 @@
 import type { Key } from 'react';
 import { useState } from 'react';
-import { expect } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
@@ -10,6 +10,7 @@ import { RouterProvider } from '../RouterProvider/RouterProvider';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
+import { expectFocusRingContrast } from '../contrast.utils';
 import { Stepper } from './Stepper';
 
 const meta = preview.meta({
@@ -625,5 +626,20 @@ ValidationErrors.test(
     await expect(
       canvas.getByRole('textbox', { name: 'Card number' })
     ).toBeInTheDocument();
+  }
+);
+
+WithHrefs.test(
+  'Keyboard focus draws a ring that clears 3:1 on a step link',
+  async ({ canvas, userEvent }) => {
+    const [link] = canvas.getAllByRole('link');
+
+    link!.focus();
+    await userEvent.tab();
+
+    await userEvent.tab({ shift: true });
+
+    await expect(link).toHaveFocus();
+    await waitFor(() => expectFocusRingContrast(link!));
   }
 );
