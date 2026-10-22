@@ -98,29 +98,38 @@ test('renders without container prop', () => {
   expect(screen.getByTestId('child')).toBeInTheDocument();
 });
 
-test('warns once about a missing container, however often overlays open', async () => {
-  __resetMissingContainerWarnings();
-  const warnMock = vi.spyOn(console, 'warn').mockImplementation(() => null);
+describe('Missing container warning', () => {
+  let warnSpy: ReturnType<typeof vi.spyOn>;
 
-  render(
-    <OverlayContainerProvider container="does-not-exist">
-      <MarigoldProvider theme={theme}>
-        <Select label="Label">
-          <Select.Option id="one">one</Select.Option>
-          <Select.Option id="two">two</Select.Option>
-        </Select>
-      </MarigoldProvider>
-    </OverlayContainerProvider>
-  );
+  beforeEach(() => {
+    __resetMissingContainerWarnings();
+    warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+  });
 
-  await user.click(screen.getByRole('button'));
-  await user.keyboard('{Escape}');
-  await user.click(screen.getByRole('button'));
+  afterEach(() => {
+    warnSpy.mockRestore();
+  });
 
-  const calls = warnMock.mock.calls.filter(call =>
-    String(call[0]).includes('"does-not-exist" not found')
-  );
+  test('warns once about a missing container, however often overlays open', async () => {
+    render(
+      <OverlayContainerProvider container="does-not-exist">
+        <MarigoldProvider theme={theme}>
+          <Select label="Label">
+            <Select.Option id="one">one</Select.Option>
+            <Select.Option id="two">two</Select.Option>
+          </Select>
+        </MarigoldProvider>
+      </OverlayContainerProvider>
+    );
 
-  expect(calls).toHaveLength(1);
-  warnMock.mockRestore();
+    await user.click(screen.getByRole('button'));
+    await user.keyboard('{Escape}');
+    await user.click(screen.getByRole('button'));
+
+    const calls = warnSpy.mock.calls.filter((call: unknown[]) =>
+      String(call[0]).includes('"does-not-exist" not found')
+    );
+
+    expect(calls).toHaveLength(1);
+  });
 });

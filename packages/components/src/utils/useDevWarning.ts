@@ -9,7 +9,10 @@ import { useEffect, useRef } from 'react';
  *
  * Pass the component's `ref` to skip elements assistive technology never
  * reaches (`aria-hidden="true"` or `inert` on the element or an ancestor),
- * and to log the element so devtools can point at it.
+ * and to log the element so devtools can point at it. The hidden check runs at
+ * mount and whenever `shouldWarn`, `message` or `ref` change, so an instance
+ * that mounts hidden and is revealed later without one of those changing never
+ * warns.
  *
  * @example
  * ```tsx
