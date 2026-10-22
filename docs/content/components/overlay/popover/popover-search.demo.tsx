@@ -73,7 +73,7 @@ export default () => {
       <Button>
         <Users /> Manage team
       </Button>
-      <Popover width="large">
+      <Popover size="large">
         <Title>Team members</Title>
         <Popover.Search
           aria-label="Search team members"

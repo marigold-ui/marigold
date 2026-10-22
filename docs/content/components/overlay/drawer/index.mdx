@@ -92,6 +92,10 @@ This is the canonical drawer-vs-dialog confusion. The underlying difference: a d
 
 Choose a [dialog](/components/overlay/dialog) when the user must acknowledge or confirm before moving on, especially for destructive actions. The same applies when the task simply demands full attention and interacting with the page behind would be a distraction. Choose a drawer when the work is supplementary to whatever is already on screen.
 
+### Drawer vs Popover
+
+A [popover](/components/overlay/popover) also keeps the page in view, but it belongs to one button and is gone with the next click outside. Use it for something people glance at or change in passing, like their notifications. Use a drawer when the content is about what is on screen as a whole, or when people should keep it open while they work on the page. A filter panel is the typical case: people change a filter, look at the results, and change it again.
+
 ### Detail-row inspection
 
 The user's task here is "scan rows, drill into one." Keeping the list visible preserves orientation, while routing away breaks the rhythm.
@@ -212,6 +216,7 @@ On small screens, the drawer falls back to a modal sheet that traps focus inside
 - [Dialog](/components/overlay/dialog): Use for modal, attention-required moments like confirmations, destructive actions, and parent-form quick-create.
 - [ActionBar](/components/collection/actionbar): Use for single-verb bulk actions on a selection (delete, archive, assign). Pair with a drawer when bulk-editing several fields.
 - [Menu](/components/overlay/menu): Use for a small set of toggles or quick choices, like table column settings, sort order, or density. A drawer is overkill when the controls are a handful of options that fit inline next to their trigger.
+- [Popover](/components/overlay/popover): Use for a small panel about one button, like a notifications list, that people look at and close again.
 - [Sidebar](/components/navigation/sidebar): Use for app-level navigation, not for in-context content alongside a record.
 
 ## Related

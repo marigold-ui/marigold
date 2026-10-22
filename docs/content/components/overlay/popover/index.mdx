@@ -3,19 +3,67 @@ title: Popover
 description: A floating panel for arbitrary content, opened from a trigger
 ---
 
-The `<Popover>` component opens a floating panel next to a trigger. The panel holds whatever you put in it: text, a list whose rows have their own controls, a search over such a list, or a short optional form. People stay in the panel and work with its content, and it closes when they dismiss it.
+import { PopoverAnatomy } from './popover-anatomy';
 
-Use `<Popover>` when the content is a small surface of its own, like a notifications panel or a team list people manage in place. When the panel is a list of commands that run and close, like an account menu, use a [`<Menu>`](/components/overlay/menu) instead. Filter panels belong in a [`<Drawer>`](/components/overlay/drawer), see the [filter pattern](/patterns/user-input/filter).
+The `<Popover>` component is a floating panel anchored to a trigger. Unlike a menu, it is not limited to commands: it holds content people work with in place, including rows with their own controls, and stays open until they dismiss it. On small screens it opens as a tray from the bottom of the screen.
+
+## Anatomy
+
+A popover opens below its trigger by default. It is composed of an optional header with a title and a description, an optional search row, and the content.
+
+<PopoverAnatomy />
+
+- **Trigger:** The button that opens the popover.
+- **Popover:** The floating panel itself, placed next to its trigger.
+- **Title:** Optional heading at the top of the panel. It becomes the panel's accessible name.
+- **Description:** Optional short text under the title. Together they form the header.
+- **Search:** Optional row above the content that filters the list in it.
+- **Content:** The body of the panel.
+
+## Appearance
+
+<AppearanceDemo component={'Popover'} />
+
+<AppearanceTable component={'Popover'} />
 
 ## Usage
 
-`<Popover.Trigger>` wraps the trigger, usually a [`<Button>`](/components/actions/button), and the `<Popover>` it opens. Inside the popover, start with a [`<Title>`](/components/content/title) and an optional [`<Description>`](/components/content/description). They form the panel's header, and the title becomes its accessible name. Put the body in `<Popover.Content>`. When the panel runs out of room, only the content scrolls and the header stays in place.
+A popover lets people deal with something without leaving where they are. The panel opens right next to the button it belongs to, the page stays in view around it, and clicking away or pressing Escape puts everything back as it was. Opening it commits people to nothing. Compared to the alternatives, it saves a trip to another page, it doesn't interrupt like a dialog, and it doesn't push the page around like content that expands inline.
+
+That makes a popover the right place for content that is:
+
+- **About its trigger.** The content belongs to one thing on the page, like the notifications behind a bell or the members behind a "Manage team" button. Showing it next to that thing keeps the connection obvious.
+- **Secondary.** Most people can finish their task without it and open it only when they need it, so the page stays uncluttered.
+- **Quick to deal with.** People look at something or change something small and move on. Closing the panel loses nothing.
+
+If the content fails one of these, it belongs somewhere else. Information most people need, and input they have to give, belongs on the page. People can miss a popover, and they can close it by accident with one click outside. Content about the page as a whole, or work people want to keep open while they use the page, like a filter panel, belongs in a [`<Drawer>`](/components/overlay/drawer). A decision people have to make before they go on belongs in a [`<Dialog>`](/components/overlay/dialog). A list of commands that run and close, like an account menu, is a [`<Menu>`](/components/overlay/menu).
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use a popover for optional content about one button, like a notifications
+      panel or a team list people manage in place.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't hide what most people need behind a popover. If the content is
+      essential, show it on the page.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Structure
+
+`<Popover.Trigger>` wraps the trigger, usually a [`<Button>`](/components/actions/button), and the `<Popover>` it opens. Inside the popover, start with a [`<Title>`](/components/content/title) and an optional [`<Description>`](/components/content/description). They form the panel's header, and the title becomes its accessible name. Put the body in `<Popover.Content>`.
+
+Keep the content short enough to fit without scrolling. A popover that scrolls hides part of what it holds and is easy to lose track of. If the content only fits with scrolling, it is too much for a popover: use a [`<Drawer>`](/components/overlay/drawer), a [`<Dialog>`](/components/overlay/dialog) or a page instead. Scrolling is only a safety net for small windows, and then only the content scrolls while the header stays in place.
 
 <ComponentDemo name="popover-basic" />
 
 On small screens the panel opens as a tray from the bottom of the screen, with a close button. You write the content once and it works in both places.
 
-`<Popover.Content>` is optional. Without it, the popover lays out all its children as the body and scrolls them together, title included. Use it whenever the panel has a title or can get long. When the body is a form, put the [`<Form>`](/components/form/form) inside `<Popover.Content>`, not around it, so the content can still scroll.
+`<Popover.Content>` is optional. Without it, the popover lays out all its children as the body. Use it whenever the panel has a title. When the body is a form, put the [`<Form>`](/components/form/form) inside `<Popover.Content>`, not around it.
 
 ### Popover vs Menu
 
@@ -51,6 +99,21 @@ Toggles are where this gets mixed up. When the row itself is the toggle, like sh
   </Dont>
 </GuidelineTiles>
 
+### Popover vs Drawer and Dialog
+
+All three open on top of the current page, so people keep their place. They differ in what the content is about and in how much it asks of people.
+
+|                   | Popover                                | Drawer                                       | Dialog                                    |
+| ----------------- | -------------------------------------- | -------------------------------------------- | ----------------------------------------- |
+| The content is    | about one element, the trigger         | about what is on screen, like a record       | a task or decision people started         |
+| It opens          | next to its trigger                    | at the side of the page                      | in the middle of the screen               |
+| The page behind   | stays visible, a click there closes it | stays visible and usable                     | is blocked until people respond           |
+| It asks of people | nothing, they can ignore it            | light work, up to about five fields          | a response before they go on              |
+| It closes         | by clicking away or pressing Escape    | when people close it                         | when people confirm, cancel or close it   |
+| Typical content   | a short list, a few details, one field | a record's details, a filter panel, comments | a confirmation, a required form, a choice |
+
+A quick way to decide: if people should keep the panel open while they work on the page, use a drawer. If they must respond before they go on, use a dialog. If they look, change something small and move on, use a popover.
+
 ### Lists with controls
 
 For rows that people operate, put a [`<ListView>`](/components/collection/listview) inside the popover. Each row can carry its own buttons and an action menu, and the list keeps arrow key navigation between rows. A notifications panel is the typical case. Put the list directly in `<Popover.Content>`. Its divider lines then reach the popover's edges while the row text stays aligned with the title. At the bottom of the panel, and right under a search, the list also drops the content's padding, because its rows bring their own. Content before or after the list keeps its spacing.
@@ -63,7 +126,7 @@ When the list sits inside another element, or for other edge-to-edge content lik
 
 Put a `<Popover.Search>` above the `<Popover.Content>` holding a list to filter the list as the user types. Search belongs in a popover when people act on the rows in place, like changing a team member's role or removing them. To let people type and pick one value, use an [`<Autocomplete>`](/components/form/autocomplete) or a [`<ComboBox>`](/components/form/combobox) instead.
 
-The search is a borderless row that spans the popover and stays in view while the results scroll. It takes focus when the panel opens, and Tab moves on into the results. Items are matched by their `textValue`. The field has no visible label, so give it an `aria-label` and a placeholder that both say what is searched.
+The search is a borderless row that spans the popover above the results. It takes focus when the panel opens, and Tab moves on into the results. Items are matched by their `textValue`. The field has no visible label, so give it an `aria-label` and a placeholder that both say what is searched.
 
 <ComponentDemo name="popover-search" />
 
@@ -75,7 +138,7 @@ A popover can hold a short form, like a note on an order. Put the [`<Form>`](/co
 
 <ComponentDemo name="popover-mini-form" />
 
-Keep forms in a popover short and optional. A popover closes when the user clicks away, so ask whether dismissing it loses work or blocks the user. If it does, use a [`<Dialog>`](/components/overlay/dialog).
+Keep forms in a popover short and optional. A popover closes when the user clicks away, and that must never cost them anything. Either the field is so cheap that losing it doesn't matter, or the popover saves as people go. Closing the panel must never submit or delete anything. If dismissing it would lose work or leave the user stuck, use a [`<Dialog>`](/components/overlay/dialog).
 
 <GuidelineTiles>
   <Do>
@@ -94,13 +157,17 @@ Keep forms in a popover short and optional. A popover closes when the user click
 
 ### Modality
 
-A popover is modal by default, following React Aria. While it is open, the rest of the page is hidden from assistive technology, scrolling is locked, and focus stays inside the panel. This is right for almost every popover.
+A popover is light to look at but modal for keyboard and screen reader users. Both matter, and they don't contradict each other.
 
-Set `nonModal` to let focus leave the panel and keep the page interactive. React Aria warns against this when the panel holds buttons, links or fields, because screen reader users can lose track of where they are. Keep `nonModal` for panels without focusable controls. On small screens the panel opens as a tray, which is always modal.
+For people who see the screen, a popover doesn't block anything. There is no backdrop, the page stays visible around the panel, and a click outside or Escape closes it. This is what makes a popover cheap to open and cheap to leave.
 
-### Placement and width
+For keyboard and screen reader users, the panel is modal while it is open. Focus stays inside, the rest of the page is hidden from assistive technology, and the page doesn't scroll underneath. Without this, people who can't see the panel lose track of where they are: their reading position can drift onto the page while the panel is still open, and tabbing past the last control closes it without warning. Popovers that hold buttons, links or fields, which is almost every popover, need this. It follows the [React Aria guidance](https://react-spectrum.adobe.com/react-aria/Popover.html) and the [dialog pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/) of the WAI-ARIA Authoring Practices.
 
-Use `placement` to position the panel relative to its trigger, for example `bottom end` for a panel opened from an icon in the top right corner. React Aria flips the panel when there is not enough room. Set `width` to `small`, `medium` or `large` to match the content. The default is `medium`.
+Set `nonModal` only for a panel without focusable controls, like a short piece of read-only information. People can then keep using and scrolling the page while it is open. A non-modal popover closes when people click outside of it, move focus elsewhere, press Escape or scroll the page. On small screens the panel opens as a tray, which is always modal.
+
+### Placement and size
+
+Use `placement` to position the panel relative to its trigger, for example `bottom end` for a panel opened from an icon in the top right corner. React Aria flips the panel when there is not enough room. Set `size` to `small`, `medium` or `large` to match the content. The default is `medium`. With `fit`, the panel is as wide as its content and wraps at the `large` width, which suits a short text without a title. On small screens the panel opens as a tray that spans the screen, whatever the size.
 
 ### When not to use a popover
 
@@ -108,6 +175,9 @@ A popover can hold anything, which makes it easy to reach for. Most needs alread
 
 | Need                                                                      | Use instead                                                                            |
 | ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Information most people need to finish their task                         | Show it on the page                                                                    |
+| Work people keep open beside the page, like a record's details or filters | [Drawer](/components/overlay/drawer)                                                   |
+| Content with several sections, steps or its own navigation                | A page of its own                                                                      |
 | A list of commands that run and close                                     | [Menu](/components/overlay/menu)                                                       |
 | Context or overflow actions behind a "⋮" button                           | [ActionMenu](/components/overlay/action-menu)                                          |
 | Choosing one or more values for a form                                    | [Select](/components/form/select)                                                      |
@@ -115,13 +185,15 @@ A popover can hold anything, which makes it easy to reach for. Most needs alread
 | Entering several tags                                                     | [TagField](/components/form/tag-field)                                                 |
 | A short, passive hint on hover                                            | [Tooltip](/components/overlay/tooltip)                                                 |
 | A "?" or "i" help button                                                  | [ContextualHelp](/components/overlay/contextual-help)                                  |
-| Required input, several steps, a destructive confirmation or wide content | [Dialog](/components/overlay/dialog)                                                   |
+| Required input, a decision, a warning or a destructive confirmation       | [Dialog](/components/overlay/dialog)                                                   |
 | A system message without a trigger                                        | [Toast](/components/overlay/toast)                                                     |
 
 ### Things to avoid
 
 - **Don't nest popovers.** Opening a popover from inside another one is hard to follow and hard to dismiss. Field dropdowns, like a Select in a form, and the action menus of list rows are fine.
-- **Don't put required or critical input in a popover.** If the content is wider than about four columns, it needs a Dialog.
+- **Don't hide what people need.** Essential information, required input and warnings belong on the page or in a Dialog. People can miss a popover or close it by accident.
+- **Don't make a popover scroll, or let it grow into a page.** When the content needs scrolling, several sections, tabs or steps, or more room than the `large` size, use a Drawer, a Dialog or a page.
+- **Don't open a popover on hover or when the page loads.** It opens when people ask for it by pressing its trigger. For a hint on hover, use a Tooltip.
 - **Don't repeat what is already on the page.** A popover should add information, not copy it.
 - **Don't open a popover from the primary action.** Popovers carry secondary and contextual content.
 
@@ -154,6 +226,7 @@ The trigger exposes whether the panel is open. When the panel opens, focus moves
 ## Alternative components
 
 - [Menu](/components/overlay/menu): Use for a list of commands that run and close.
-- [Dialog](/components/overlay/dialog): Use for required input, several steps or content that needs the user's full attention.
+- [Dialog](/components/overlay/dialog): Use for required input, a decision or content that needs the user's full attention.
+- [Drawer](/components/overlay/drawer): Use for work people keep open beside the page, like a record's details or a filter panel.
 - [ContextualHelp](/components/overlay/contextual-help): Use for a help button next to a label or heading.
 - [Tooltip](/components/overlay/tooltip): Use for a short, passive hint on hover or focus.
