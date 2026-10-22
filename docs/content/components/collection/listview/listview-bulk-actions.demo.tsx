@@ -34,16 +34,13 @@ export default () => {
       },
     });
 
-  // Reserving the bar's height keeps it off the last rows and stops keyboard
-  // scrolling parking a row underneath it.
+  // The bar takes its own room after the list. The scroll padding keeps
+  // keyboard scrolling from parking a row underneath it while it is pinned.
   const room = actionBarHeight
     ? `calc(${actionBarHeight}px + var(--actionbar-offset, 8px))`
     : undefined;
 
   return (
-    // The reservation goes on the content, not on the scroll container: a
-    // scroller's own padding shrinks the rectangle its sticky children pin to,
-    // which lifts the bar off the bottom by exactly the height you reserved.
     <div
       className="max-h-64 overflow-y-auto"
       style={{ scrollPaddingBottom: room }}

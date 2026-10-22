@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
-import { expect, userEvent } from 'storybook/test';
+import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
+import { expectFocusRingContrast } from '../contrast.utils';
 import { Collapsible } from './Collapsible';
 
 const meta = preview.meta({
@@ -50,5 +51,21 @@ Basic.test(
         canvas.queryByText('This is the content of the collapsible component.')
       ).not.toBeVisible();
     });
+  }
+);
+
+Basic.test(
+  'Keyboard focus draws a ring that clears 3:1 on the trigger',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    const trigger = canvas.getByRole('button', { name: 'Click me' });
+
+    trigger.focus();
+    await userEvent.tab();
+
+    await userEvent.tab({ shift: true });
+
+    await expect(trigger).toHaveFocus();
+    await waitFor(() => expectFocusRingContrast(trigger));
   }
 );

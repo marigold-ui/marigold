@@ -73,7 +73,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     base: [
       'rounded-md text-sm font-medium transition-[color,box-shadow]',
       'px-4 py-2',
-      'focus-visible:ui-state-focus outline-none',
+      'focus-visible:ui-state-focus-item outline-none',
       'cursor-pointer',
       'hover:ui-state-hover',
       'aria-selected:bg-selected-bold aria-selected:text-selected-bold-foreground aria-selected:hover:bg-selected-bold/90',
@@ -82,9 +82,8 @@ export const Calendar: ThemeComponent<'Calendar'> = {
   select: cva({
     base: [
       '[&_svg]:text-secondary',
-      'flex w-full px-3 py-2 rounded-lg border border-control-border bg-surface text-sm text-foreground',
+      'flex ui-control ui-input',
       'focus-visible:ui-state-focus outline-none',
-      'h-control',
       'disabled:cursor-not-allowed disabled:text-disabled disabled:bg-disabled-surface',
       'cursor-pointer',
     ],

@@ -24,6 +24,8 @@ export const useOverlayRootSlotProps = ({
           ),
           level: 2,
           id: titleId,
+          // A bare title is the header, same as a `<*.Header>` wrapper.
+          'data-slot': 'header',
           ref: titleSlotRef,
         },
       },

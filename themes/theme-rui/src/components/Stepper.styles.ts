@@ -13,6 +13,8 @@ export const Stepper: ThemeComponent<'Stepper'> = {
       'flex min-h-11 items-center gap-2 rounded-sm bg-transparent',
       'text-left no-underline',
       '[&:is(a,button)]:ui-interactive',
+      // Room for the focus ring, layout unchanged.
+      'px-1 -mx-1',
       'transition-colors motion-reduce:transition-none',
     ],
   }),

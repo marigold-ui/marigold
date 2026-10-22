@@ -37,7 +37,9 @@ const OrderList = () => (
         {orders.map(order => (
           <Table.Row key={order.id}>
             <Table.Cell textValue={order.id}>
-              <Link href={`/orders/${order.id}`}>{order.id}</Link>
+              <Link variant="secondary" href={`/orders/${order.id}`}>
+                {order.id}
+              </Link>
             </Table.Cell>
             <Table.Cell>{order.customer}</Table.Cell>
             <Table.Cell>

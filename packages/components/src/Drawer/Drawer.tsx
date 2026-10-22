@@ -150,6 +150,7 @@ export const Drawer = ({
               {closeButton && (
                 <CloseButton
                   aria-label={stringFormatter.format('dismissDrawer')}
+                  data-slot="close"
                   style={{ '--i': 0 } as CSSProperties}
                   className={cn('z-80', classNames.closeButton)}
                   onPress={ctx?.close}

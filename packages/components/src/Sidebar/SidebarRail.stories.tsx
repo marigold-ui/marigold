@@ -25,6 +25,7 @@ import { RouterProvider } from '../RouterProvider/RouterProvider';
 import { Text } from '../Text/Text';
 import { Title } from '../Title/Title';
 import { TopNavigation } from '../TopNavigation/TopNavigation';
+import { expectFocusRingContrast } from '../contrast.utils';
 import { Sidebar } from './Sidebar';
 
 const meta = preview.meta({
@@ -744,5 +745,27 @@ RailMobile.test(
         expect(toggle).toHaveAttribute('aria-expanded', 'false')
       );
     });
+  }
+);
+
+Rail.test(
+  'Keyboard focus draws a ring that clears 3:1 on a rail item',
+  // Vitest only: `vitest/browser` doesn't resolve in Chromatic.
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    // Real keys: tiles match native `:focus-visible`, which Firefox only sets
+    // after trusted input. Imported here, it throws outside Browser Mode.
+    const { userEvent } = await import('vitest/browser');
+    const rail = canvas.getByRole('navigation', { name: 'Hauptnavigation' });
+    const [first, second] = within(rail).getAllByRole('link');
+
+    first!.focus();
+    await userEvent.tab({ shift: true });
+    await userEvent.tab();
+
+    await userEvent.keyboard('{ArrowDown}');
+
+    await expect(second).toHaveFocus();
+    await waitFor(() => expectFocusRingContrast(second!));
   }
 );

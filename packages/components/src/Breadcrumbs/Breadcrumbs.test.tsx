@@ -4,7 +4,9 @@ import userEvent from '@testing-library/user-event';
 import type { RefObject } from 'react';
 import { vi } from 'vitest';
 import { theme } from '@marigold/theme-rui';
+import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
+import { Breadcrumbs } from './Breadcrumbs';
 import { AutoCollapse, Basic } from './Breadcrumbs.stories';
 import { BreadcrumbsItem } from './BreadcrumbsItem';
 import { useAutoCollapse } from './useAutoCollapse';
@@ -79,6 +81,40 @@ test('shows only ellipsis and current item when collapsed to minimum', () => {
   ).toBeInTheDocument();
   // only the current item stays as a link; the rest sit behind the ellipsis
   expect(screen.getAllByRole('link')).toHaveLength(1);
+});
+
+test('collapses a two item trail to ellipsis and current item', async () => {
+  const rects = vi
+    .spyOn(Element.prototype, 'getBoundingClientRect')
+    .mockImplementation(function (this: Element) {
+      const width = this.hasAttribute('data-hidden-breadcrumb')
+        ? 80
+        : this.hasAttribute('data-hidden-ellipsis')
+          ? 30
+          : 100;
+      return { width } as DOMRect;
+    });
+
+  renderWithOverlay(
+    <MarigoldProvider theme={theme}>
+      <Breadcrumbs>
+        <BreadcrumbsItem href="https://marigold-ui.io">Home</BreadcrumbsItem>
+        <BreadcrumbsItem href="https://marigold-ui.io">
+          Event Details
+        </BreadcrumbsItem>
+      </Breadcrumbs>
+    </MarigoldProvider>
+  );
+
+  expect(
+    await screen.findByRole('button', { name: 'These breadcrumbs are hidden' })
+  ).toBeInTheDocument();
+  expect(
+    screen.getByRole('link', { name: 'Event Details' })
+  ).toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: 'Home' })).not.toBeInTheDocument();
+
+  rects.mockRestore();
 });
 
 test('does not collapse when items fit within visible limit', () => {
@@ -188,7 +224,7 @@ describe('useAutoCollapse', () => {
 
     act(() => capturedOnResize!());
 
-    expect(result.current).toBe(5);
+    expect(result.current).toBeNull();
   });
 
   test('collapses to minimum when nothing fits', () => {
@@ -238,7 +274,7 @@ describe('useAutoCollapse', () => {
 
     act(() => capturedOnResize!());
 
-    expect(result.current).toBe(5);
+    expect(result.current).toBeNull();
   });
 
   test('resets when item count changes', async () => {
@@ -259,6 +295,6 @@ describe('useAutoCollapse', () => {
     // eslint-disable-next-line testing-library/no-unnecessary-act -- async act needed to flush requestAnimationFrame in useLayoutEffect
     await act(async () => rerender({ total: 3 }));
 
-    expect(result.current).toBe(3);
+    expect(result.current).toBeNull();
   });
 });

@@ -268,7 +268,10 @@ export type Theme = {
       | 'editCancel'
       | 'editSave',
       ComponentStyleFunction<string, string>
-    >;
+    > & {
+      // Optional: without it the ActionBar room snaps instead of sliding.
+      actionBarSpacer?: ComponentStyleFunction<string, string>;
+    };
     LegacyTable?: Record<
       'table' | 'headerRow' | 'header' | 'thead' | 'body' | 'row' | 'cell',
       ComponentStyleFunction<string, string>

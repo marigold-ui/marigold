@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { expect, userEvent } from 'storybook/test';
+import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import {
   Copy,
@@ -26,6 +26,7 @@ import { Table } from '../Table/Table';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import { Title } from '../Title/Title';
+import { expectInsetFocusRingContrast } from '../contrast.utils';
 import { Panel } from './Panel';
 
 const meta = preview.meta({
@@ -298,6 +299,109 @@ export const WithHeaderActions = meta.story(() => (
     </Panel>
   </Stack>
 ));
+
+export const HeaderActionsWrappingDescription = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <div className="max-w-xl">
+      <Stack space="regular">
+        <Panel>
+          <Panel.Header>
+            <Title>Kontenprofile</Title>
+            <Description>
+              Kontenprofile legen fest, welche Erlöskonten beim Export an die
+              Finanzbuchhaltung verwendet werden.
+            </Description>
+            <Button variant="primary" size="default">
+              Kontenprofil anlegen
+            </Button>
+          </Panel.Header>
+          <Panel.Content>
+            <Text>Three profiles are assigned to this account.</Text>
+          </Panel.Content>
+        </Panel>
+
+        <Panel>
+          <Panel.Header>
+            <Title>Sommernachts-Konzert 2026</Title>
+            <Description>
+              Großer Saal der Elbphilharmonie Hamburg · Sat, June 14, 2026 ·
+              20:00 CEST
+            </Description>
+            <ButtonGroup size="icon" aria-label="Event actions">
+              <Button aria-label="Edit event">
+                <Pencil />
+              </Button>
+              <Button aria-label="Duplicate event">
+                <Copy />
+              </Button>
+            </ButtonGroup>
+          </Panel.Header>
+          <Panel.Content>
+            <Text>1,847 of 2,100 tickets sold.</Text>
+          </Panel.Content>
+        </Panel>
+
+        <Panel>
+          <Panel.Header>
+            <Title>Without actions</Title>
+            <Description>
+              A header without actions keeps the full width for its description,
+              so the text wraps at the panel's padding and not before.
+            </Description>
+          </Panel.Header>
+          <Panel.Content>
+            <Text>No actions in this header.</Text>
+          </Panel.Content>
+        </Panel>
+      </Stack>
+    </div>
+  ),
+});
+
+HeaderActionsWrappingDescription.test(
+  'keeps a gap between a wrapping description and the actions',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvasElement }) => {
+    const headers = canvasElement.querySelectorAll('[data-panel-header]');
+    const withActions = [...headers].filter(header =>
+      header.querySelector('[data-grid-area="actions"]')
+    );
+    expect(withActions).toHaveLength(2);
+
+    for (const header of withActions) {
+      const description = header
+        .querySelector('[data-grid-area="description"]')!
+        .getBoundingClientRect();
+      const actions = header
+        .querySelector('[data-grid-area="actions"]')!
+        .getBoundingClientRect();
+
+      expect(actions.left - description.right).toBeGreaterThanOrEqual(16);
+    }
+  }
+);
+
+HeaderActionsWrappingDescription.test(
+  'gives a header without actions no extra end inset',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+  },
+  async ({ canvasElement }) => {
+    const header = [
+      ...canvasElement.querySelectorAll('[data-panel-header]'),
+    ].find(el => !el.querySelector('[data-grid-area="actions"]'))!;
+    const description = header
+      .querySelector('[data-grid-area="description"]')!
+      .getBoundingClientRect();
+    const box = header.getBoundingClientRect();
+    const paddingEnd = parseFloat(getComputedStyle(header).paddingRight);
+
+    expect(box.right - paddingEnd - description.right).toBeLessThan(1);
+  }
+);
 
 export const SlotsButtonGroup = meta.story({
   tags: ['component-test'],
@@ -956,3 +1060,22 @@ export const CustomPadding = meta.story(() => (
     </Panel>
   </Stack>
 ));
+
+WithCollapsible.test(
+  'Keyboard focus draws an inset ring that clears 3:1 on the collapsible header',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    const header = (
+      await canvas.findAllByRole('button', { expanded: false })
+    )[0]!;
+
+    // Last tab stop: enter from before it.
+    header.focus();
+    await userEvent.tab({ shift: true });
+
+    await userEvent.tab();
+
+    await expect(header).toHaveFocus();
+    await waitFor(() => expectInsetFocusRingContrast(header));
+  }
+);

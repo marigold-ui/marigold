@@ -114,6 +114,61 @@ Basic.test(
   }
 );
 
+export const LongTitle = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { closeButton: true },
+  render: args => (
+    <Drawer.Trigger>
+      <Button>Open Drawer</Button>
+      <Drawer {...args}>
+        <Drawer.Header>
+          <Drawer.Title>Rechnungsadresse für offene Rechnungen</Drawer.Title>
+          <Drawer.Description>
+            Applies to every invoice that has not been paid yet.
+          </Drawer.Description>
+        </Drawer.Header>
+        <Drawer.Content>The address is used for all reminders.</Drawer.Content>
+      </Drawer>
+    </Drawer.Trigger>
+  ),
+});
+
+LongTitle.test(
+  'Keeps the title clear of the close button',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
+    const title = await canvas.findByRole('heading');
+    const header = title.closest('[data-slot=header]')!;
+    const closeButton = canvas.getByRole('button', { name: 'Dismiss drawer' });
+
+    const contentRight =
+      header.getBoundingClientRect().right -
+      parseFloat(getComputedStyle(header).paddingRight);
+
+    expect(
+      closeButton.getBoundingClientRect().left - contentRight
+    ).toBeGreaterThanOrEqual(8);
+  }
+);
+
+LongTitle.test(
+  'Pads the header evenly without a close button',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+    args: { closeButton: false },
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
+    const title = await canvas.findByRole('heading');
+    const header = title.closest('[data-slot=header]')!;
+    const { paddingLeft, paddingRight } = getComputedStyle(header);
+
+    expect(paddingRight).toBe(paddingLeft);
+  }
+);
+
 export const WithForms = meta.story({
   parameters: { surface: false, chromatic: { disableSnapshot: true } },
   render: args => (
@@ -654,5 +709,74 @@ BleedTable.test(
 
     expect(padding(first)).toBeCloseTo(padding(header), 1);
     expect(padding(first)).toBeGreaterThan(padding(second));
+  }
+);
+
+export const FlushSmallScreen = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
+  parameters: { chromatic: { disableSnapshot: true, viewports: [320] } },
+  render: args => (
+    <Drawer.Trigger>
+      <Button>Open Drawer</Button>
+      <Drawer {...args} closeButton>
+        <Drawer.Title>Filter</Drawer.Title>
+        <Drawer.Content>
+          <p>
+            At 320px the Drawer fills the screen and sits flush to its edges.
+          </p>
+        </Drawer.Content>
+        <Drawer.Actions>
+          <Button slot="close">Close</Button>
+          <Button slot="close" variant="primary">
+            Save
+          </Button>
+        </Drawer.Actions>
+      </Drawer>
+    </Drawer.Trigger>
+  ),
+});
+
+FlushSmallScreen.test(
+  'fills the viewport without rounded corners or horizontal overflow',
+  {
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent, step }) => {
+    let trigger: HTMLElement;
+
+    await step('Arrange', async () => {
+      expect(window.innerWidth).toBeLessThan(640);
+      trigger = canvas.getByRole('button', { name: 'Open Drawer' });
+    });
+
+    await step('Act', async () => {
+      await userEvent.click(trigger!);
+    });
+
+    await step('Assert', async () => {
+      const dialog = await waitFor(() => canvas.getByRole('dialog'));
+      const surface = dialog.getBoundingClientRect();
+
+      expect(surface.left).toBeCloseTo(0, 1);
+      expect(surface.width).toBeCloseTo(window.innerWidth, 1);
+      expect(surface.top).toBeCloseTo(0, 1);
+      expect(surface.height).toBeCloseTo(window.innerHeight, 1);
+
+      const radii = getComputedStyle(dialog);
+      expect(radii.borderTopLeftRadius).toBe('0px');
+      expect(radii.borderBottomRightRadius).toBe('0px');
+
+      // A reserved gutter shrinks the containing block, so the width assertion above only holds with classic scrollbars.
+      expect(getComputedStyle(document.documentElement).scrollbarGutter).toBe(
+        'auto'
+      );
+
+      expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(
+        window.innerWidth
+      );
+    });
   }
 );

@@ -25,7 +25,7 @@ test('renders a header element with the banner role', () => {
 });
 
 test('renders all three slots', () => {
-  render(<WithBreadcrumbs.Component />);
+  render(<WithSearchField.Component />);
 
   const nav = screen.getByRole('banner');
   // eslint-disable-next-line testing-library/no-node-access
@@ -70,7 +70,7 @@ test('applies grid layout classes', () => {
 });
 
 test('applies min-w-0 to all slots', () => {
-  render(<WithBreadcrumbs.Component />);
+  render(<WithSearchField.Component />);
 
   const nav = screen.getByRole('banner');
   // eslint-disable-next-line testing-library/no-node-access
