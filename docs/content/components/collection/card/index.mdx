@@ -197,9 +197,9 @@ Card renders an `<article>` and wires up its accessible name and heading level, 
 
 ### Labeling
 
-`<Card>` renders an `<article>` landmark. When a `<Title>` is present, the article is automatically labelled by it (`aria-labelledby`). Otherwise pass `aria-label` on the `<Card>` to give it an accessible name.
+`<Card>` renders an `<article>`. When a `<Title>` is present, the article is automatically labelled by it (`aria-labelledby`). Otherwise pass `aria-label` on the `<Card>` to give it an accessible name.
 
-Always give a card a name. A `<Card>` with neither a `<Title>` nor an `aria-label` produces an **unnamed** `article` landmark, which screen reader users cannot identify. In development, Card logs a `console.warn` when both are missing.
+Give a card a name, especially when cards repeat. An `article` does not require one, but without it screen readers announce every card the same way, and users cannot tell them apart without reading into each one. In development, Card logs a `console.warn` once for each card that has neither a `<Title>`, an `aria-label` nor an `aria-labelledby`. Cards that assistive technology never reaches, such as loading skeletons under `aria-hidden`, are skipped.
 
 ### Heading levels
 

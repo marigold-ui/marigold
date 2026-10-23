@@ -1,7 +1,9 @@
 /* eslint-disable testing-library/no-node-access */
 import { render, screen } from '@testing-library/react';
+import type { CardProps } from './Card';
 import {
   Basic,
+  LoadingSkeleton,
   MasterAndAdmin,
   TitleOnlyWithoutHeader,
   WithBleedContent,
@@ -274,6 +276,88 @@ describe('Card', () => {
 
       expect(screen.getByText(/Master Access/)).toBeInTheDocument();
       expect(screen.getByText(/Admin Access/)).toBeInTheDocument();
+    });
+  });
+
+  describe('Accessible name warning', () => {
+    // The skeleton story is an unnamed card. `aria-hidden={false}` turns it
+    // into a visible one, which is what the warning is about.
+    const unnamed = (props?: Partial<CardProps>) => (
+      <LoadingSkeleton.Component aria-hidden={false} {...props} />
+    );
+    const isCardWarning = (call: unknown[]) =>
+      String(call[0]).startsWith('[Card]');
+
+    let warnSpy: ReturnType<typeof vi.spyOn>;
+
+    beforeEach(() => {
+      warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      warnSpy.mockRestore();
+    });
+
+    test('warns once per card, however often it re-renders', () => {
+      const { rerender } = render(unnamed());
+      rerender(unnamed({ stretch: true }));
+      rerender(unnamed());
+
+      const calls = warnSpy.mock.calls.filter(isCardWarning);
+
+      expect(calls).toHaveLength(1);
+      expect(calls[0][0]).not.toContain('landmark');
+      expect(calls[0][1]).toBe(screen.getByRole('article'));
+    });
+
+    test('warns once for each unnamed card', () => {
+      render(
+        <>
+          {unnamed()}
+          {unnamed()}
+        </>
+      );
+
+      expect(warnSpy.mock.calls.filter(isCardWarning)).toHaveLength(2);
+    });
+
+    test.each([
+      ['a Title', <Basic.Component key="title" />],
+      ['an aria-label', unnamed({ 'aria-label': 'Stats' })],
+      ['an aria-labelledby', unnamed({ 'aria-labelledby': 'external' })],
+      ['aria-hidden on the card', <LoadingSkeleton.Component key="skeleton" />],
+      [
+        'an aria-hidden ancestor',
+        <div key="ancestor" aria-hidden="true">
+          {unnamed()}
+        </div>,
+      ],
+      [
+        'an inert ancestor',
+        <div key="inert" inert>
+          {unnamed()}
+        </div>,
+      ],
+      ['role="presentation"', unnamed({ role: 'presentation' })],
+      ['role="listitem"', unnamed({ role: 'listitem' })],
+    ])('does not warn for a card with %s', (_, element) => {
+      render(element);
+
+      expect(warnSpy.mock.calls.filter(isCardWarning)).toHaveLength(0);
+    });
+
+    test.each([
+      [
+        'a hidden container',
+        <div key="hidden" hidden>
+          {unnamed()}
+        </div>,
+      ],
+      ['an explicit role="article"', unnamed({ role: 'article' })],
+    ])('still warns inside %s', (_, element) => {
+      render(element);
+
+      expect(warnSpy.mock.calls.filter(isCardWarning)).toHaveLength(1);
     });
   });
 });

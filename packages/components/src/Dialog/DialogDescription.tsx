@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Description } from '../Description/Description';
 import { useIsInsideOverlayHeader } from '../utils/OverlayHeaderContext';
+import { useDevWarning } from '../utils/useDevWarning';
 
 export interface DialogDescriptionProps {
   /** Children of the component. */
@@ -19,12 +20,11 @@ export interface DialogDescriptionProps {
  */
 export const DialogDescription = ({ children }: DialogDescriptionProps) => {
   const insideHeader = useIsInsideOverlayHeader();
-  if (process.env.NODE_ENV !== 'production' && !insideHeader) {
-    console.warn(
-      '[Dialog.Description] is rendered outside of <Dialog.Header>. ' +
-        'It will land in the same grid area as <Dialog.Content> and the two will overlap. ' +
-        'Wrap your title and description in <Dialog.Header> to avoid this.'
-    );
-  }
+  useDevWarning(
+    !insideHeader,
+    '[Dialog.Description] is rendered outside of <Dialog.Header>. ' +
+      'It will land in the same grid area as <Dialog.Content> and the two will overlap. ' +
+      'Wrap your title and description in <Dialog.Header> to avoid this.'
+  );
   return <Description slot="description">{children}</Description>;
 };

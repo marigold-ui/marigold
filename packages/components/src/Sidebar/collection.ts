@@ -217,6 +217,11 @@ export const matchLeaves = (
   return new Set(exact ? [exact] : best ? [best.key] : []);
 };
 
+const warnedDuplicateHrefs = new Set<string>();
+
+// Test-only: lets each test assert the warning without racing another.
+export const __resetDuplicateHrefWarnings = () => warnedDuplicateHrefs.clear();
+
 /**
  * Dev-only guard against leaves that resolve to the same normalized href —
  * `matchLeaves` would silently pick the first in document order. Shared by
@@ -236,7 +241,13 @@ export const warnDuplicateHrefs = (
     const href = normalizePath(leaf.href);
     const existing = seen.get(href);
     if (existing !== undefined) {
-      console.error(format(href, existing, leaf.key));
+      // Called from a `useMemo` keyed on `children`, which changes on every
+      // parent render, so dedupe by message rather than per call.
+      const message = format(href, existing, leaf.key);
+      if (!warnedDuplicateHrefs.has(message)) {
+        warnedDuplicateHrefs.add(message);
+        console.error(message);
+      }
     } else {
       seen.set(href, leaf.key);
     }

@@ -4,7 +4,10 @@ import { Theme, cva } from '@marigold/system';
 import { Select } from '../Select/Select';
 import { mockMatchMedia } from '../test.utils';
 import { MarigoldProvider } from './MarigoldProvider';
-import { OverlayContainerProvider } from './OverlayContainerProvider';
+import {
+  OverlayContainerProvider,
+  __resetMissingContainerWarnings,
+} from './OverlayContainerProvider';
 
 // Setup
 // ---------------
@@ -100,4 +103,40 @@ test('renders without container prop', () => {
   );
 
   expect(screen.getByTestId('child')).toBeInTheDocument();
+});
+
+describe('Missing container warning', () => {
+  let warnSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    __resetMissingContainerWarnings();
+    warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    warnSpy.mockRestore();
+  });
+
+  test('warns once about a missing container, however often overlays open', async () => {
+    render(
+      <OverlayContainerProvider container="does-not-exist">
+        <MarigoldProvider theme={theme}>
+          <Select label="Label">
+            <Select.Option id="one">one</Select.Option>
+            <Select.Option id="two">two</Select.Option>
+          </Select>
+        </MarigoldProvider>
+      </OverlayContainerProvider>
+    );
+
+    await user.click(screen.getByRole('button'));
+    await user.keyboard('{Escape}');
+    await user.click(screen.getByRole('button'));
+
+    const calls = warnSpy.mock.calls.filter((call: unknown[]) =>
+      String(call[0]).includes('"does-not-exist" not found')
+    );
+
+    expect(calls).toHaveLength(1);
+  });
 });

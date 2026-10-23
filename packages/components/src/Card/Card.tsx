@@ -1,5 +1,5 @@
 import type { HTMLAttributes, ReactNode } from 'react';
-import { useId, useMemo } from 'react';
+import { useId, useMemo, useRef } from 'react';
 import { HeadingContext, Provider } from 'react-aria-components';
 import type {
   InsetSpacingTokens,
@@ -13,6 +13,7 @@ import {
   resolveInsetAxes,
   useClassNames,
 } from '@marigold/system';
+import { useDevWarning } from '../utils/useDevWarning';
 import { useSlot } from '../utils/useSlot';
 import { CardContent } from './CardContent';
 import { CardContext } from './CardContext';
@@ -87,6 +88,8 @@ export const Card = ({
   size,
   stretch,
   'aria-label': ariaLabel,
+  'aria-labelledby': ariaLabelledby,
+  role,
   headingLevel = 3,
   space = 'regular',
   p,
@@ -94,17 +97,22 @@ export const Card = ({
   py,
   ...props
 }: CardProps) => {
+  const ref = useRef<HTMLElement>(null);
   const titleId = useId();
   const classNames = useClassNames({ component: 'Card', variant, size });
   const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
 
-  if (process.env.NODE_ENV !== 'production' && !ariaLabel && !hasTitle) {
-    console.warn(
-      '[Card] Renders an unnamed `article` landmark. Provide a `<Title>` ' +
-        '(inside or outside `Card.Header`) or an `aria-label` so screen ' +
-        'reader users can identify the card.'
-    );
-  }
+  // An `article` needs no name, so this is a hint. An overridden role is the
+  // consumer's semantics (`presentation`, `none` and `generic` prohibit a
+  // name). Known gap: a card mounted while a modal is open sits under the
+  // modal's `aria-hidden` and is skipped.
+  useDevWarning(
+    !ariaLabel && !ariaLabelledby && !hasTitle && (!role || role === 'article'),
+    '[Card] Has no accessible name. Consider a `<Title>` (inside or ' +
+      'outside `Card.Header`) or an `aria-label` so screen reader users ' +
+      'can tell cards apart.',
+    ref
+  );
 
   const { px: resolvedPx, py: resolvedPy } = resolveInsetAxes({
     p,
@@ -147,9 +155,9 @@ export const Card = ({
     >
       <article
         {...props}
-        aria-labelledby={
-          !ariaLabel && hasTitle ? titleId : props['aria-labelledby']
-        }
+        ref={ref}
+        role={role}
+        aria-labelledby={!ariaLabel && hasTitle ? titleId : ariaLabelledby}
         aria-label={ariaLabel}
         className={cn(
           'flex flex-col overflow-hidden',
