@@ -1,5 +1,25 @@
 # @marigold/system
 
+## 18.3.1
+
+### Patch Changes
+
+- 5288355: chore(DST-1309): move the style-prop class maps into `@marigold/components`
+
+  The class names behind props such as `weight`, `align`, `verticalAlign`, `ratio` and `cursor` used to be defined only in `@marigold/system`. Tailwind generated CSS for them only when it scanned that package, so styling quietly depended on `@marigold/system` being installed directly. The 12 maps (`alignment`, `textAlign`, `verticalAlign`, `placeItems`, `aspect`, `fontWeight`, `textSize`, `textStyle`, `textWrap`, `whiteSpace`, `lineHeight`, `cursorStyle`) now live in `@marigold/components`, next to the components that use them.
+
+  Component props and the classes they render are unchanged. The `*Prop` types stay exported from `@marigold/system`. `fontWeight` and `textSize` stay exported too, because apps import them directly, but they are deprecated and will be removed in the next major. The other 10 maps are no longer exported. They were marked internal, so no consumer code should depend on them.
+
+- 164a8cd: fix(DST-1813): stop the Table's ActionBar from leaving an empty strip below it
+
+  While rows were selected, the Table made room for its ActionBar twice: the bar's own slot below the last row and, on top of that, a bottom padding of the same height. The panel around the table grew by about 128px, and half of that was empty space below the bar. The padding is gone. The Table now keeps room for the bar and an 8px gap only, and that room slides open and closed, so the content after the table moves smoothly instead of jumping.
+
+  The bar still never covers the rows or whatever follows the table, such as a pagination, and it still pins to the bottom of the screen or of a `Scrollable` while the table scrolls past. Keyboard focus now also keeps the focused row clear of the pinned bar on a scrolling page, where the previous `scroll-padding-bottom` on the table had no effect.
+
+  The ActionBar and ListView docs describe the new behaviour, and the ListView bulk actions example drops its own bottom padding.
+
+  The slide is themeable through the new `actionBarSpacer` slot on `Table`. `theme-rui` sets a 200ms height transition, and themes without the slot fall back to the room snapping into place.
+
 ## 18.3.0
 
 No changes in this release.
