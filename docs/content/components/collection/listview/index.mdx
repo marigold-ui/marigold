@@ -107,25 +107,7 @@ Pair a multi-select list with an [`<ActionBar>`](/components/collection/actionba
 
 <ComponentDemo name="listview-bulk-actions" />
 
-#### Select all
-
-Set `allowSelectAll` when users regularly select every visible row. It renders one checkbox above the rows, on the same column as their indicators. The checkbox is mixed while the selection is partial, and becomes checked once every selectable row has been picked. Beside it, a count reports how many rows are selected, so the scope of the next action stays legible after one press.
-
-<ComponentDemo name="listview-select-all" />
-
-The prop only takes effect when `selectionMode="multiple"`: there is nothing for a select-all to do in the other modes, so it renders nothing there rather than showing a control that cannot act. The label reads "Select all" in the current locale.
-
-Pressing it reports the string `'all'`, the same value <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> already reports, so there is one selection shape to resolve either way. The scope is the rows the list is rendering: it never reaches rows behind pagination, which the [Bulk Actions](/patterns/user-input/bulk-actions#pagination) pattern explains at length.
-
-**What decides it is the action, not the list.** A select-all is worth its row when one operation plausibly applies to everything on screen: archiving a finished import, marking a notification feed read, downloading an attachment set, retrying every failed job. Those are the lists where "all of them" is the normal answer and ticking each row is busywork.
-
-Leave it off when the user's job is picking a few rows out of many. A review queue where each row is judged on its own merits, or a list of records staged for one targeted action, gets no faster with a select-all, and a mis-aimed press there selects far more than the user meant.
-
-The other half of its value is the way back out: the same checkbox clears a half-ticked list in one press. On a list where users select, act, and select again, that round trip is the reason to switch it on even if selecting everything is rare.
-
-<Callout type="info" title="Where a select-all is not the answer">
-  A select-all needs an `id` on every row to know what it covers, so a row without one is left out of it (a dynamic collection takes them from its `items`). And a select-all is for marking rows, not for naming the list: a `<ListView>` renders no visible label of its own, so a list that has to name itself on screen is a [`<SelectList>`](/components/form/selectlist).
-</Callout>
+Add `allowSelectAll` when one operation plausibly applies to everything on screen: archiving a finished import, marking a notification feed read, retrying every failed job. Leave it off when the job is picking a few rows out of many. Pressing the checkbox while only some rows are selected selects the rest rather than clearing them, so a mis-aimed press there costs the user the selection they built by hand.
 
 ### Empty state
 

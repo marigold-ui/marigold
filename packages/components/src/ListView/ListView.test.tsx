@@ -543,6 +543,16 @@ describe('ListView', () => {
       ).toBeChecked();
     });
 
+    test('selects the remaining rows when pressed on a partial selection', async () => {
+      const onSelectionChange = vi.fn();
+      render(<Venues onSelectionChange={onSelectionChange} />);
+
+      await user.click(screen.getByRole('row', { name: /gasometer/i }));
+      await user.click(screen.getByRole('checkbox', { name: 'Select all' }));
+
+      expect(onSelectionChange).toHaveBeenLastCalledWith('all');
+    });
+
     test('warns about a row it cannot address', () => {
       const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 

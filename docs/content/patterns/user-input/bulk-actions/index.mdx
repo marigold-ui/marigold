@@ -31,7 +31,7 @@ The pattern arranges five areas. The collection displays the records with a chec
 
 <BulkActionsAnatomy />
 
-- **Select All:** One checkbox above the rows, on the same column as the row checkboxes, that selects every visible row and shows an indeterminate state when only some of them are selected. A [`<Table>`](/components/collection/table) carries it in its header row, a [`<ListView>`](/components/collection/listview) and a [`<SelectList>`](/components/form/selectlist) above the rows with `allowSelectAll`.
+- **Select All:** One checkbox that selects every visible row and shows an indeterminate state when only some of them are selected. A [`<Table>`](/components/collection/table) carries it in its header row, a [`<ListView>`](/components/collection/listview) above the rows with `allowSelectAll`.
 - **Selection:** Checkboxes on each row, with selected rows visually highlighted so the scope of the next action stays visible.
 - **Action Bar:** A floating [`<ActionBar>`](/components/collection/actionbar) that appears once something is selected. It states the selection count, offers the actions, and carries a clear button to dismiss the selection.
 - **Confirm Dialog:** A [`<Dialog>`](/components/overlay/dialog) that interrupts destructive actions with the exact count and impact before anything happens.
@@ -39,14 +39,14 @@ The pattern arranges five areas. The collection displays the records with a chec
 
 Each stage of the flow maps to an existing Marigold component, so the pattern is composed rather than installed:
 
-| Stage         | The user...                            | Built with                                                                                                                                                                                |
-| ------------- | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Selection     | picks the records to act on            | a collection with `selectionMode="multiple"`: [`<Table>`](/components/collection/table), [`<ListView>`](/components/collection/listview) or [`<SelectList>`](/components/form/selectlist) |
-| Action choice | picks an operation for the selection   | [`<ActionBar>`](/components/collection/actionbar), via the Table's `actionBar` prop or as a sibling of the collection                                                                     |
-| Configuration | fills in values for a multi-field edit | [`<Drawer>`](/components/overlay/drawer) opened from an action                                                                                                                            |
-| Confirmation  | approves a destructive operation       | [`<Dialog>`](/components/overlay/dialog) via the `useConfirmation` hook                                                                                                                   |
-| Execution     | waits for the operation to finish      | [`<Button>`](/components/actions/button) `loading` or an inline `<ProgressCircle>`                                                                                                        |
-| Result        | learns what happened                   | [`<Toast>`](/components/overlay/toast) plus the retained selection on failures                                                                                                            |
+| Stage         | The user...                            | Built with                                                                                                                   |
+| ------------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Selection     | picks the records to act on            | [`<Table>`](/components/collection/table) or [`<ListView>`](/components/collection/listview) with `selectionMode="multiple"` |
+| Action choice | picks an operation for the selection   | [`<ActionBar>`](/components/collection/actionbar), via the Table's `actionBar` prop or as a sibling of the collection        |
+| Configuration | fills in values for a multi-field edit | [`<Drawer>`](/components/overlay/drawer) opened from an action                                                               |
+| Confirmation  | approves a destructive operation       | [`<Dialog>`](/components/overlay/dialog) via the `useConfirmation` hook                                                      |
+| Execution     | waits for the operation to finish      | [`<Button>`](/components/actions/button) `loading` or an inline `<ProgressCircle>`                                           |
+| Result        | learns what happened                   | [`<Toast>`](/components/overlay/toast) plus the retained selection on failures                                               |
 
 ## Choosing actions
 
@@ -73,32 +73,22 @@ While the bar is visible, the selection is the object the user works on. Avoid c
 
 ## Selection
 
-Selection begins the flow, and it must be visible and cheap to change. Any multi-select collection can carry it: a [`<Table>`](/components/collection/table) when each record is a row of fields to compare, a [`<ListView>`](/components/collection/listview) when it is one operable item, a [`<SelectList>`](/components/form/selectlist) when the selection is a field value that submits. Set `selectionMode="multiple"`, render the select-all, and pair the collection with an [`<ActionBar>`](/components/collection/actionbar). These components cover the selection mechanics on their own, so the work in this pattern lies in the decisions around them: which actions to offer, how far the selection reaches, and what happens after a press.
+Selection begins the flow, and it must be visible and cheap to change. Use a multi-select collection, a [`<Table>`](/components/collection/table) when each record is a row of fields to compare and a [`<ListView>`](/components/collection/listview) when it is one operable item, and pair it with an [`<ActionBar>`](/components/collection/actionbar). These components cover the selection mechanics on their own, so the work in this pattern lies in the decisions around them: which actions to offer, how far the selection reaches, and what happens after a press.
 
 <ComponentDemo name="bulk-actions-selection" />
 
 ### Choosing the collection
 
-Choose the collection by what one record looks like, not by which one can select, because all three now can. What differs is the wiring. A `<Table>` takes the bar through its `actionBar` prop, reserves the bar's height for you, and puts the select-all in its header row. A `<ListView>` or `<SelectList>` takes `allowSelectAll` for the select-all and the `<ActionBar>` as a sibling, with `selectedItemCount` and `onClearSelection` passed yourself or supplied by [`useActionBar`](/components/collection/actionbar#useactionbar), which leaves reserving the bar's height to you as well.
-
-**A record that is one operable item belongs in a list.** When there are no fields worth lining up in columns, a table's grid is scaffolding around a single name, and the row is easier to read as a title with a line of context under it. The flow is otherwise identical to the table above: the same selection, the same bar, the same actions.
+Pick the collection by what one record looks like. When there are no fields worth lining up in columns, a table's grid is scaffolding around a single name, and the record reads better as a title with a line of context under it. The flow is otherwise identical to the table above: the same selection, the same bar, the same actions. How each collection takes the bar is covered on the [Table](/components/collection/table) and [ListView](/components/collection/listview#bulk-actions) pages.
 
 <ComponentDemo name="bulk-actions-list-selection" />
-
-Reserving the bar's height is the one thing the list does not do for you. Without it the bar covers the last rows, and keyboard navigation parks a focused row underneath it. The demo reserves it on the content inside the scroll container rather than on the scroller itself, because a scroller's own padding shrinks the rectangle its sticky children pin to.
-
-**A selection that submits belongs in a field.** When the set is part of a form rather than a list of records to act on, the operation is the form's own submit, so there is no bar and no floating actions. A [`<SelectList>`](/components/form/selectlist) carries the selection under a `name`, with a visible label and validation attached to it.
-
-<ComponentDemo name="bulk-actions-field-selection" />
-
-This is the one case where the select-all resolves to concrete keys rather than the `'all'` sentinel, because a field has to submit a value. Everything in [Implementation](#implementation) about resolving `'all'` therefore applies to `<Table>` and `<ListView>`, not here.
 
 <GuidelineTiles>
   <Do>
     <DoDescription>
       Pick the collection by what one record looks like: a table when records
-      are rows of fields to compare, a list when each is one operable item, a
-      field when the selection submits with a form.
+      are rows of fields to compare, a list when each one is a single operable
+      item.
     </DoDescription>
   </Do>
   <Dont>
@@ -106,22 +96,6 @@ This is the one case where the select-all resolves to concrete keys rather than 
       Don't reach for a table just because it is the familiar bulk-actions
       shape. A single-column table of names is scaffolding around a list, and
       its empty columns read as missing data.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
-
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Reserve the action bar's height on the content when you compose
-      `<ActionBar>` as a sibling, so the bar never covers the last rows.
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't put a floating `<ActionBar>` on a `<SelectList>`. A field commits
-      through its form's submit, and a bar hovering over a form field competes
-      with the button that actually applies the change.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
@@ -195,6 +169,8 @@ A bare "Are you sure?" protects nobody. The dialog must restate what is about to
 
 Repeat the action verb and the count in the confirm button, "Delete 12 events" rather than "OK", so the button reads as the decision it is. Focus the cancel button when the dialog opens, so pressing <kbd>Enter</kbd> out of habit chooses the safe path.
 
+A select-all makes the largest possible selection the cheapest one to make, and pressing it while the selection is partial selects everything rather than clearing it. That is an argument for the confirmation rather than against the select-all, because the dialog names the resolved count and an accidental "all" becomes visible before anything runs. Where the operation is irreversible and the list is long, leave `allowSelectAll` off and let users narrow the set with the [Filter](/patterns/user-input/filter) pattern instead.
+
 <ComponentDemo name="bulk-actions-confirm" />
 
 <GuidelineTiles>
@@ -208,31 +184,6 @@ Repeat the action verb and the count in the confirm button, "Delete 12 events" r
     <DontDescription>
       Don't confirm routine, recoverable actions. Overused dialogs train users
       to click through the one that matters.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
-
-### Select-all raises the stakes
-
-A select-all makes the largest possible selection the cheapest one to make, which is precisely what a destructive action does not need. It is also easy to hit by accident, and the accident is not a small one: pressing the select-all while the selection is partial selects **everything** rather than clearing it, so a stray press on a carefully picked set of three rows leaves the whole visible set selected instead.
-
-That is an argument for the confirmation rather than against the select-all. The dialog is what turns one cheap press into a deliberate second decision, and because it names the resolved count, an accidental "all" becomes visible before anything runs. Pair the two or offer neither, and never run a destructive action directly from the bar on a collection that also offers a select-all.
-
-Where the operation is irreversible and the list is long, the safer answer is to leave `allowSelectAll` off entirely and let users build the scope by hand. The effort of selecting then matches the cost of getting it wrong, and the [Filter](/patterns/user-input/filter) pattern is the better tool for narrowing a large set down to the records that should be acted on.
-
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Keep a select-all behind a confirmation that names the resolved count
-      whenever the bar carries a destructive action, so selecting everything
-      still takes a deliberate second decision.
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't run a destructive action straight from the bar on a collection that
-      offers a select-all. Two presses, one of them a miss, is then enough to
-      destroy the whole visible set.
     </DontDescription>
   </Dont>
 </GuidelineTiles>
