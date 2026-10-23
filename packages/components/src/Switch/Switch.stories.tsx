@@ -1,8 +1,19 @@
 import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
-import { expectFocusRingContrast } from '../contrast.utils';
-import { firstLineOffset, isSingleLine, labelBlockOf } from '../control.utils';
+import {
+  WCAG_NON_TEXT,
+  contrastOn,
+  expectFocusRingContrast,
+  paintedGround,
+} from '../contrast.utils';
+import {
+  borderOf,
+  fillOf,
+  firstLineOffset,
+  isSingleLine,
+  labelBlockOf,
+} from '../control.utils';
 import { Switch } from './Switch';
 
 const meta = preview.meta({
@@ -151,7 +162,7 @@ Basic.test(
 const getTrack = (switchEl: HTMLElement) => {
   const track = switchEl
     .closest('label')
-    ?.querySelector(':scope > div:has(> div)');
+    ?.querySelector<HTMLElement>(':scope > div:has(> div)');
 
   expect(track).not.toBeNull();
   // The track is the `w-7` box; the thumb is `size-3`. If this ever matches the
@@ -162,7 +173,6 @@ const getTrack = (switchEl: HTMLElement) => {
 };
 
 const tintOf = (el: Element) => getComputedStyle(el).backgroundImage;
-const fillOf = (el: Element) => getComputedStyle(el).backgroundColor;
 const cursorOf = (el: Element) => getComputedStyle(el).cursor;
 
 // The one positive assertion for the tint: the "leaves ... alone" cases below
@@ -286,6 +296,97 @@ Basic.test(
 
     expect(cursorOf(canvas.getByText('Default Switch'))).toBe('default');
     expect(cursorOf(getTrack(switchEl))).toBe('default');
+  }
+);
+
+export const ReadOnly = meta.story({
+  tags: ['component-test'],
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'A read-only switch keeps its value legible and drops the ' +
+          'affordances: quieter track, a visible rim when off, no hover, ' +
+          '`cursor-default`. It stays focusable and announces ' +
+          '`aria-readonly`, which is what separates it from `disabled`.',
+      },
+    },
+  },
+  args: { label: undefined },
+  render: args => (
+    <div className="grid grid-cols-2 gap-x-6 gap-y-2">
+      <Switch {...args} label="Editable, off" />
+      <Switch {...args} label="Read-only, off" readOnly />
+      <Switch {...args} label="Editable, on" defaultSelected />
+      <Switch {...args} label="Read-only, on" defaultSelected readOnly />
+    </div>
+  ),
+});
+
+ReadOnly.test(
+  'A read-only switch is distinguishable from an editable one at rest',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, step }) => {
+    await step('on — a quieter track fill', async () => {
+      const editable = getTrack(
+        canvas.getByRole('switch', { name: 'Editable, on' })
+      );
+      const readOnly = getTrack(
+        canvas.getByRole('switch', { name: 'Read-only, on' })
+      );
+
+      expect(fillOf(readOnly)).not.toBe(fillOf(editable));
+    });
+
+    await step('off — a visible rim on an unchanged fill', async () => {
+      const editable = getTrack(
+        canvas.getByRole('switch', { name: 'Editable, off' })
+      );
+      const readOnly = getTrack(
+        canvas.getByRole('switch', { name: 'Read-only, off' })
+      );
+
+      expect(fillOf(readOnly)).toBe(fillOf(editable));
+      expect(borderOf(readOnly)).not.toBe(borderOf(editable));
+    });
+  }
+);
+
+ReadOnly.test(
+  'The read-only value clears 3:1 against its track',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const track = getTrack(
+      canvas.getByRole('switch', { name: 'Read-only, on' })
+    );
+    const thumb = track.querySelector<HTMLElement>(':scope > div');
+
+    expect(thumb).not.toBeNull();
+
+    const ratio = contrastOn(paintedGround(track), fillOf(thumb!));
+
+    expect(
+      ratio,
+      `read-only thumb is ${ratio.toFixed(2)}:1, needs ${WCAG_NON_TEXT}:1`
+    ).toBeGreaterThanOrEqual(WCAG_NON_TEXT);
+  }
+);
+
+ReadOnly.test(
+  'A read-only switch stays focusable and announces aria-readonly',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    const switchEl: HTMLInputElement = canvas.getByRole('switch', {
+      name: 'Read-only, on',
+    });
+
+    expect(switchEl).toHaveAttribute('aria-readonly', 'true');
+
+    switchEl.focus();
+    await expect(switchEl).toHaveFocus();
+
+    await userEvent.click(switchEl);
+    expect(switchEl.checked).toBeTruthy();
   }
 );
 

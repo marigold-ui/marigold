@@ -106,6 +106,7 @@
   --color-selected: var(--color-charcoal-300);
   --color-selected-bold: var(--color-charcoal-900);
   --color-selected-bold-foreground: var(--color-charcoal-50);
+  --color-selected-readonly: var(--color-charcoal-700);
   --color-focus-highlight: var(--color-charcoal-100);
   --color-focus-highlight-bold: var(--color-charcoal-300);
 

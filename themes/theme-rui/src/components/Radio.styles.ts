@@ -12,6 +12,7 @@ export const Radio: ThemeComponent<'Radio'> = {
   label: cva({
     base: [
       'text-sm leading-4 font-normal cursor-pointer w-full min-w-0',
+      'group-read-only/radio:cursor-default',
       'group-disabled/radio:text-disabled group-disabled/radio:cursor-not-allowed',
     ],
   }),
@@ -27,6 +28,9 @@ export const Radio: ThemeComponent<'Radio'> = {
       // `disabled-surface` at 1.06:1. Same reason as the border above.
       'group-disabled/radio:group-selected/radio:bg-disabled-surface group-disabled/radio:border-control-edge-disabled! group-disabled/radio:text-disabled! group-disabled/radio:cursor-not-allowed',
       'group-selected/radio:border-selected-bold group-selected/radio:bg-selected-bold group-selected/radio:text-selected-bold-foreground',
+      'group-read-only/radio:not-group-disabled/radio:not-group-selected/radio:bg-control',
+      'group-read-only/radio:group-selected/radio:border-selected-readonly group-read-only/radio:group-selected/radio:bg-selected-readonly',
+      'group-read-only/radio:cursor-default',
       // Same exclusions as Checkbox.
       // `disabled` is absent because `border-control-edge-disabled!` wins regardless.
       // Switch names it explicitly because its rule does not.
