@@ -1,11 +1,37 @@
 import { type ThemeComponent, cva } from '@marigold/system';
 
 export const ListView: ThemeComponent<'ListView'> = {
-  list: cva({
+  container: cva({
     base: [
-      'w-full outline-0 flex flex-col divide-y divide-border',
+      'w-full flex flex-col',
       '[--listview-item-px:var(--bleed-px,var(--spacing-stretch-regular-x))]',
     ],
+    variants: {
+      variant: {
+        default: '',
+      },
+    },
+    defaultVariants: { variant: 'default' },
+  }),
+  header: cva({
+    base: [
+      'flex items-center gap-2',
+      'px-(--listview-item-px) mb-2',
+      'max-sm:min-h-touch-target',
+      'text-sm text-foreground',
+    ],
+    variants: {
+      variant: {
+        default: '',
+      },
+    },
+    defaultVariants: { variant: 'default' },
+  }),
+  count: cva({
+    base: ["before:content-['·'] before:me-2", 'text-secondary'],
+  }),
+  list: cva({
+    base: ['w-full outline-0 flex flex-col divide-y divide-border'],
     variants: {
       variant: {
         default: '',

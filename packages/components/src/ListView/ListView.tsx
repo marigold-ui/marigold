@@ -1,9 +1,11 @@
 import type { ReactNode, Ref } from 'react';
-import { useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import type RAC from 'react-aria-components';
 import { GridList as RACGridList } from 'react-aria-components/GridList';
-import type { SelectionMode } from '@react-types/shared';
+import { useControlledState } from '@react-stately/utils';
+import type { Key, Selection, SelectionMode } from '@react-types/shared';
 import { useClassNames } from '@marigold/system';
+import { SelectAllHeader, useSelectableKeys } from '../utils/SelectAll';
 import { ListViewContext } from './Context';
 import { ListViewItem } from './ListViewItem';
 
@@ -44,6 +46,12 @@ export interface ListViewProps extends Omit<
    * @default 'none'
    */
   selectionMode?: SelectionMode;
+  /**
+   * Whether to show a select-all checkbox above the rows, with a count of what
+   * is selected. Has no effect unless `selectionMode="multiple"`.
+   * @default false
+   */
+  allowSelectAll?: boolean;
   ref?: Ref<HTMLDivElement>;
 }
 
@@ -52,41 +60,121 @@ interface ListViewComponent {
   Item: typeof ListViewItem;
 }
 
+const toSelection = (
+  value: Selection | Iterable<Key> | undefined
+): Selection =>
+  value === 'all' ? 'all' : value instanceof Set ? value : new Set(value ?? []);
+
 const ListViewBase = ({
   variant,
   size,
   emptyState,
   selectionMode = 'none',
+  allowSelectAll,
+  selectedKeys,
+  defaultSelectedKeys,
+  onSelectionChange,
   children,
   ref,
   ...rest
 }: ListViewProps) => {
   const classNames = useClassNames({ component: 'ListView', variant, size });
 
+  const hasSelectAll = allowSelectAll === true && selectionMode === 'multiple';
+
+  const controlledSelection = useMemo(
+    () => (selectedKeys !== undefined ? toSelection(selectedKeys) : undefined),
+    [selectedKeys]
+  );
+  const [initialSelection] = useState<Selection>(() =>
+    toSelection(defaultSelectedKeys)
+  );
+  const [selection, setSelection] = useControlledState<Selection>(
+    controlledSelection,
+    initialSelection,
+    onSelectionChange
+  );
+
+  const keys = useSelectableKeys({
+    children,
+    items: rest.items,
+    disabledKeys: rest.disabledKeys,
+    warn: hasSelectAll,
+  });
+
+  const onSelectAll = useCallback(
+    (selected: boolean) => setSelection(selected ? 'all' : new Set()),
+    [setSelection]
+  );
+
   // `useClassNames` returns a fresh object, so memoise on the slot strings.
-  const { list, item, label, description, title, indicator, actions } =
-    classNames;
+  const {
+    container,
+    header,
+    count,
+    list,
+    item,
+    label,
+    description,
+    title,
+    indicator,
+    actions,
+  } = classNames;
   const contextValue = useMemo(
     () => ({
-      classNames: { list, item, label, description, title, indicator, actions },
+      classNames: {
+        container,
+        header,
+        count,
+        list,
+        item,
+        label,
+        description,
+        title,
+        indicator,
+        actions,
+      },
     }),
-    [list, item, label, description, title, indicator, actions]
+    [
+      container,
+      header,
+      count,
+      list,
+      item,
+      label,
+      description,
+      title,
+      indicator,
+      actions,
+    ]
   );
 
   return (
     <ListViewContext value={contextValue}>
-      <RACGridList
-        {...(rest as RAC.GridListProps<object>)}
-        {...(emptyState !== undefined && {
-          renderEmptyState: () => emptyState,
-        })}
-        ref={ref}
-        selectionMode={selectionMode}
-        selectionBehavior="toggle"
-        className={classNames.list}
-      >
-        {children}
-      </RACGridList>
+      <div className={container}>
+        {hasSelectAll && (
+          <SelectAllHeader
+            keys={keys}
+            selection={selection}
+            onChange={onSelectAll}
+            classNames={{ header, count }}
+          />
+        )}
+        <RACGridList
+          {...(rest as RAC.GridListProps<object>)}
+          {...(emptyState !== undefined && {
+            renderEmptyState: () => emptyState,
+          })}
+          ref={ref}
+          selectionMode={selectionMode}
+          selectionBehavior="toggle"
+          selectedKeys={selection}
+          onSelectionChange={setSelection}
+          className={list}
+        >
+          {children}
+        </RACGridList>
+      </div>
     </ListViewContext>
   );
 };

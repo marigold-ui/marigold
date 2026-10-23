@@ -9,6 +9,8 @@ import { Description } from '../Description/Description';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import { Text } from '../Text/Text';
 import { TextValue } from '../TextValue/TextValue';
+import { __resetMissingIdsWarning } from '../utils/SelectAll';
+import type { ListViewProps } from './ListView';
 import { ListView } from './ListView';
 import {
   Basic,
@@ -295,7 +297,8 @@ describe('ListView', () => {
 
       const list = screen.getByRole('grid', { name: 'Attachments' });
 
-      expect(list.className).toContain(
+      // eslint-disable-next-line testing-library/no-node-access
+      expect(list.parentElement!.className).toContain(
         '[--listview-item-px:var(--bleed-px,var(--spacing-stretch-regular-x))]'
       );
       // The publisher half: `Panel.Content bleed` declares the property the
@@ -324,7 +327,8 @@ describe('ListView', () => {
 
       // eslint-disable-next-line testing-library/no-node-access
       expect(list.closest('[class*="[--bleed-px:"]')).toBeNull();
-      expect(list.className).toContain(
+      // eslint-disable-next-line testing-library/no-node-access
+      expect(list.parentElement!.className).toContain(
         'var(--bleed-px,var(--spacing-stretch-regular-x))'
       );
     });
@@ -483,6 +487,118 @@ describe('ListView', () => {
       // on source order and the disabled row still invites a click.
       expect(getComputedStyle(enabled).cursor).toBe('pointer');
       expect(getComputedStyle(disabled).cursor).toBe('not-allowed');
+    });
+  });
+
+  describe('select-all header', () => {
+    beforeEach(__resetMissingIdsWarning);
+
+    const Venues = ({
+      children,
+      ...props
+    }: Partial<ListViewProps> & { children?: ReactNode }) => (
+      <MarigoldProvider theme={theme}>
+        <ListView
+          aria-label="Venues"
+          selectionMode="multiple"
+          allowSelectAll
+          {...props}
+        >
+          {children}
+          <ListView.Item id="gasometer" textValue="Gasometer">
+            <TextValue>Gasometer</TextValue>
+          </ListView.Item>
+          <ListView.Item id="tempodrom" textValue="Tempodrom">
+            <TextValue>Tempodrom</TextValue>
+          </ListView.Item>
+        </ListView>
+      </MarigoldProvider>
+    );
+
+    test('is not a row of the collection', () => {
+      render(<Venues />);
+
+      const grid = screen.getByRole('grid', { name: 'Venues' });
+      const selectAll = screen.getByRole('checkbox', { name: 'Select all' });
+
+      expect(screen.getAllByRole('row')).toHaveLength(2);
+      expect(grid).not.toContainElement(selectAll);
+    });
+
+    test('renders nothing in the other selection modes', () => {
+      render(<Venues selectionMode="single" />);
+
+      expect(
+        screen.queryByRole('checkbox', { name: 'Select all' })
+      ).not.toBeInTheDocument();
+    });
+
+    test('reads as fully selected once every selectable row is', async () => {
+      render(<Venues disabledKeys={['tempodrom']} />);
+
+      await user.click(screen.getByRole('row', { name: /gasometer/i }));
+
+      expect(
+        screen.getByRole('checkbox', { name: 'Select all' })
+      ).toBeChecked();
+    });
+
+    test('selects the remaining rows when pressed on a partial selection', async () => {
+      const onSelectionChange = vi.fn();
+      render(<Venues onSelectionChange={onSelectionChange} />);
+
+      await user.click(screen.getByRole('row', { name: /gasometer/i }));
+      await user.click(screen.getByRole('checkbox', { name: 'Select all' }));
+
+      expect(onSelectionChange).toHaveBeenLastCalledWith('all');
+    });
+
+    test('warns about a row it cannot address', () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+      render(
+        <Venues>
+          <ListView.Item textValue="Keyless" />
+        </Venues>
+      );
+
+      expect(warnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('needs an `id` on every item')
+      );
+
+      warnSpy.mockRestore();
+    });
+
+    test('describes the select-all with the count', () => {
+      render(<Venues />);
+
+      expect(
+        screen.getByRole('checkbox', { name: 'Select all' })
+      ).toHaveAccessibleDescription('0 of 2 selected');
+    });
+
+    test('has nothing to address in an empty list', () => {
+      render(
+        <MarigoldProvider theme={theme}>
+          <ListView aria-label="Venues" selectionMode="multiple" allowSelectAll>
+            {[]}
+          </ListView>
+        </MarigoldProvider>
+      );
+
+      expect(
+        screen.getByRole('checkbox', { name: 'Select all' })
+      ).toBeDisabled();
+    });
+
+    test('splitting the header off keeps the rows keyed', () => {
+      const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+      render(<Venues />);
+
+      expect(errorSpy).not.toHaveBeenCalled();
+
+      errorSpy.mockRestore();
     });
   });
 });

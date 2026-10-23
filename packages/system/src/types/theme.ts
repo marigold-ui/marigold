@@ -159,6 +159,9 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     ListView?: Record<
+      | 'container'
+      | 'header'
+      | 'count'
       | 'list'
       | 'item'
       | 'label'
@@ -228,6 +231,8 @@ export type Theme = {
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;
     SelectList?: Record<
       | 'container'
+      | 'header'
+      | 'count'
       | 'list'
       | 'item'
       | 'label'

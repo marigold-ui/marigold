@@ -30,6 +30,7 @@ import {
 } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
+import { SelectAllHeader, useSelectableKeys } from '../utils/SelectAll';
 import { hasAddonContent, joinIds } from '../utils/useLabelAddon';
 import { SelectListContext } from './Context';
 import { SelectListOption } from './SelectListOption';
@@ -128,6 +129,12 @@ type SelectListBaseProps<Mode extends SelectionMode = 'single'> = Omit<
    */
   selectionMode?: Mode;
   /**
+   * Whether to show a select-all checkbox above the options, with a count of
+   * what is selected. Has no effect unless `selectionMode="multiple"`.
+   * @default false
+   */
+  allowSelectAll?: boolean;
+  /**
    * Whether the user may deselect the currently selected row by clicking it.
    * Defaults to `true` in `single` mode (radio-group semantics: clicking the
    * selected row keeps it selected) and `false` in `multiple` mode (checkbox
@@ -198,7 +205,8 @@ const EMPTY_STYLE: CSSProperties = {};
 
 const toSelection = (
   value: Selection | Iterable<Key> | undefined
-): Selection => (value === 'all' ? 'all' : new Set(value ?? []));
+): Selection =>
+  value === 'all' ? 'all' : value instanceof Set ? value : new Set(value ?? []);
 
 const toValidationValue = (
   selection: Selection,
@@ -231,6 +239,7 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
   selectedKeys,
   defaultSelectedKeys,
   selectionMode,
+  allowSelectAll,
   disallowEmptySelection,
   onChange,
   orientation = 'vertical',
@@ -242,6 +251,8 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
   ...rest
 }: SelectListProps<Mode>) => {
   const resolvedSelectionMode = (selectionMode ?? 'single') as SelectionMode;
+  const hasSelectAll =
+    allowSelectAll === true && resolvedSelectionMode === 'multiple';
   // Radio-group semantics for a field. `ListView` passes RAC's default through
   // instead, because a view's selection has to be abandonable.
   const resolvedDisallowEmptySelection =
@@ -295,8 +306,10 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
   const validationBehavior =
     validationBehaviorProp ?? formCtx?.validationBehavior ?? 'native';
 
-  const controlledSelection =
-    selectedKeys !== undefined ? toSelection(selectedKeys) : undefined;
+  const controlledSelection = useMemo(
+    () => (selectedKeys !== undefined ? toSelection(selectedKeys) : undefined),
+    [selectedKeys]
+  );
   const [initialSelection] = useState<Selection>(() =>
     defaultSelectedKeys !== undefined
       ? toSelection(defaultSelectedKeys)
@@ -326,12 +339,28 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
     validationBehavior,
   });
 
+  const selectableKeys = useSelectableKeys({
+    children,
+    items: rest.items,
+    disabledKeys: rest.disabledKeys,
+    warn: hasSelectAll,
+  });
+
   const handleSelectionChange = useCallback(
     (keys: Selection) => {
-      setSelection(keys);
+      // A field has to submit a value, and `HiddenSelection` submits nothing
+      // for `'all'`, so the sentinel is always resolved to concrete keys,
+      // including to an empty set, which at least matches what is reported.
+      setSelection(keys === 'all' ? new Set(selectableKeys) : keys);
       validationState.commitValidation();
     },
-    [setSelection, validationState]
+    [setSelection, validationState, selectableKeys]
+  );
+
+  const onSelectAll = useCallback(
+    (selected: boolean) =>
+      handleSelectionChange(selected ? new Set(selectableKeys) : new Set()),
+    [handleSelectionChange, selectableKeys]
   );
 
   const contextValue = useMemo(
@@ -367,7 +396,19 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
               wrapper. Putting `container-type: inline-size` on the surface
               itself applies size containment and breaks `w-fit`, which would
               cause the flip query to fire even in wide parents. */}
-          <div className={classNames.container}>
+          <div className={classNames.container} style={itemPaddingStyle}>
+            {hasSelectAll && (
+              <SelectAllHeader
+                keys={selectableKeys}
+                selection={selection}
+                onChange={onSelectAll}
+                disabled={disabled}
+                classNames={{
+                  header: classNames.header,
+                  count: classNames.count,
+                }}
+              />
+            )}
             <RACGridList
               {...(rest as RAC.GridListProps<object>)}
               {...(emptyState !== undefined && {
@@ -388,7 +429,6 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
               selectedKeys={selection}
               onSelectionChange={handleSelectionChange}
               className={cn('group/list', classNames.list)}
-              style={itemPaddingStyle}
             >
               {children}
             </RACGridList>

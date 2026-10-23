@@ -336,6 +336,104 @@ WithMultiSelection.test(
   }
 );
 
+export const WithSelectAll = meta.story({
+  tags: ['component-test'],
+  args: {
+    selectionMode: 'multiple',
+    allowSelectAll: true,
+    onChange: fn(),
+  },
+  render: args => (
+    <SelectList {...args} label="Shipping add-ons">
+      <SelectList.Option id="insurance" textValue="Parcel insurance">
+        <TextValue>Parcel insurance</TextValue>
+        <Description>Covers loss or damage up to $500.</Description>
+      </SelectList.Option>
+      <SelectList.Option id="signature" textValue="Signature on delivery">
+        <TextValue>Signature on delivery</TextValue>
+        <Description>Require a signature when handed over.</Description>
+      </SelectList.Option>
+      <SelectList.Option id="gift-wrap" textValue="Gift wrap">
+        <TextValue>Gift wrap</TextValue>
+        <Description>Premium paper and a handwritten note.</Description>
+      </SelectList.Option>
+    </SelectList>
+  ),
+});
+
+WithSelectAll.test(
+  'selects every option by key, reads mixed while partial, and clears',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onChange: fn() },
+  },
+  async ({ args, canvas, userEvent, step }) => {
+    const selectAll = canvas.getByRole('checkbox', { name: 'Select all' });
+
+    await step('it selects every option', async () => {
+      await userEvent.click(selectAll);
+
+      for (const row of canvas.getAllByRole('row')) {
+        expect(row).toHaveAttribute('aria-selected', 'true');
+      }
+      expect(args.onChange).toHaveBeenLastCalledWith([
+        'insurance',
+        'signature',
+        'gift-wrap',
+      ]);
+    });
+
+    await step('it clears the selection', async () => {
+      await userEvent.click(selectAll);
+
+      expect(args.onChange).toHaveBeenLastCalledWith([]);
+      expect(selectAll).not.toBeChecked();
+    });
+
+    await step('a partial selection reads as mixed', async () => {
+      await userEvent.click(canvas.getByRole('row', { name: /gift wrap/i }));
+
+      expect(selectAll).toBePartiallyChecked();
+    });
+  }
+);
+
+WithSelectAll.test(
+  'puts the header checkbox on the option indicator column',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const x = (element: Element) =>
+      Math.round(element.getBoundingClientRect().x);
+    const header = canvas
+      .getByRole('checkbox', { name: 'Select all' })
+      .closest('label')!;
+    const [firstRow] = canvas.getAllByRole('row');
+    const indicator = firstRow.querySelector('.col-start-1')!;
+
+    expect(x(header)).toBe(x(indicator));
+  }
+);
+
+const modKey = /^Mac/i.test(navigator.platform) ? 'Meta' : 'Control';
+
+WithSelectAll.test(
+  'Mod+A reports the same keys the select-all does',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onChange: fn() },
+  },
+  async ({ args, canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('row', { name: /gift wrap/i }));
+    await userEvent.keyboard(`{${modKey}>}a{/${modKey}}`);
+
+    expect(args.onChange).toHaveBeenLastCalledWith([
+      'insurance',
+      'signature',
+      'gift-wrap',
+    ]);
+  }
+);
+
 const paymentMethods = [
   {
     id: 'credit-card',
@@ -695,6 +793,44 @@ export const Bordered = meta.story({
   ),
 });
 
+export const BorderedWithSelectAll = meta.story({
+  args: {
+    variant: 'bordered',
+    selectionMode: 'multiple',
+    allowSelectAll: true,
+  },
+  render: args => (
+    <SelectList {...args} label="Shipping add-ons">
+      <SelectList.Option id="insurance" textValue="Parcel insurance">
+        <TextValue>Parcel insurance</TextValue>
+        <Description>Covers loss or damage up to $500.</Description>
+      </SelectList.Option>
+      <SelectList.Option id="signature" textValue="Signature on delivery">
+        <TextValue>Signature on delivery</TextValue>
+        <Description>Require a signature when handed over.</Description>
+      </SelectList.Option>
+      <SelectList.Option id="gift-wrap" textValue="Gift wrap">
+        <TextValue>Gift wrap</TextValue>
+        <Description>Premium paper and a handwritten note.</Description>
+      </SelectList.Option>
+    </SelectList>
+  ),
+});
+
+BorderedWithSelectAll.test(
+  'the select-all sits on the same column as the option indicators',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const indicatorX = (within: HTMLElement) =>
+      within.querySelector('input[type="checkbox"]')!.getBoundingClientRect().x;
+
+    const selectAll = canvas.getByRole('checkbox', { name: 'Select all' });
+    const [firstRow] = canvas.getAllByRole('row');
+
+    expect(selectAll.getBoundingClientRect().x).toBe(indicatorX(firstRow));
+  }
+);
+
 export const WithCustomPadding = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
@@ -736,10 +872,11 @@ WithCustomPadding.test(
       'py-(--selectlist-item-py)'
     );
     const list = standardRow.closest('[role="grid"]') as HTMLElement;
-    expect(list.style.getPropertyValue('--selectlist-item-px')).toBe(
+    const paddingHost = list.parentElement as HTMLElement;
+    expect(paddingHost.style.getPropertyValue('--selectlist-item-px')).toBe(
       'var(--spacing-square-loose-x)'
     );
-    expect(list.style.getPropertyValue('--selectlist-item-py')).toBe(
+    expect(paddingHost.style.getPropertyValue('--selectlist-item-py')).toBe(
       'var(--spacing-square-loose-y)'
     );
   }
@@ -754,12 +891,13 @@ WithCustomPadding.test(
   async ({ canvas }) => {
     const standardRow = await canvas.findByRole('row', { name: /standard/i });
     const list = standardRow.closest('[role="grid"]') as HTMLElement;
+    const paddingHost = list.parentElement as HTMLElement;
 
     // No `-x` / `-y` suffix: a theme only declares `--spacing-collapsed`.
-    expect(list.style.getPropertyValue('--selectlist-item-px')).toBe(
+    expect(paddingHost.style.getPropertyValue('--selectlist-item-px')).toBe(
       'var(--spacing-collapsed)'
     );
-    expect(list.style.getPropertyValue('--selectlist-item-py')).toBe(
+    expect(paddingHost.style.getPropertyValue('--selectlist-item-py')).toBe(
       'var(--spacing-collapsed)'
     );
 
@@ -915,6 +1053,7 @@ export const WithForm = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   args: {
     selectionMode: 'multiple',
+    allowSelectAll: true,
   },
   render: args => (
     <Form
@@ -955,6 +1094,23 @@ export const WithForm = meta.story({
     </Form>
   ),
 });
+
+WithForm.test(
+  'submits every option after a select-all',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(
+      await canvas.findByRole('checkbox', { name: 'Select all' })
+    );
+    await userEvent.click(canvas.getByRole('button', { name: /submit/i }));
+
+    await waitFor(() => {
+      expect(canvas.getByTestId('submitted')).toHaveTextContent(
+        'submitted: insurance,signature,gift-wrap'
+      );
+    });
+  }
+);
 
 WithForm.test(
   'submits the selected values as form data',

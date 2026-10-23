@@ -787,6 +787,87 @@ SingleSelection.test(
   }
 );
 
+export const WithSelectAll = meta.story({
+  tags: ['component-test'],
+  args: {
+    selectionMode: 'multiple',
+    allowSelectAll: true,
+    onSelectionChange: fn(),
+  },
+  render: args => (
+    <ListView {...args} aria-label="Venues">
+      {VENUES.map(venue => (
+        <ListView.Item key={venue.id} id={venue.id} textValue={venue.name}>
+          <TextValue>{venue.name}</TextValue>
+          <Description>{venue.detail}</Description>
+        </ListView.Item>
+      ))}
+    </ListView>
+  ),
+});
+
+WithSelectAll.test(
+  'selects every row, reads mixed while partial, and clears',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onSelectionChange: fn() },
+  },
+  async ({ args, canvas, userEvent, step }) => {
+    const selectAll = canvas.getByRole('checkbox', { name: 'Select all' });
+
+    await step('it selects every row', async () => {
+      await userEvent.click(selectAll);
+
+      for (const row of canvas.getAllByRole('row')) {
+        expect(row).toHaveAttribute('aria-selected', 'true');
+      }
+      expect(args.onSelectionChange).toHaveBeenLastCalledWith('all');
+      expect(selectAll).toBeChecked();
+    });
+
+    await step('it clears the selection', async () => {
+      await userEvent.click(selectAll);
+
+      for (const row of canvas.getAllByRole('row')) {
+        expect(row).toHaveAttribute('aria-selected', 'false');
+      }
+      expect(selectAll).not.toBeChecked();
+    });
+
+    await step('a partial selection reads as mixed', async () => {
+      await userEvent.click(canvas.getByRole('row', { name: /gasometer/i }));
+
+      expect(selectAll).toBePartiallyChecked();
+    });
+
+    await step('selecting the rest by hand checks it', async () => {
+      await userEvent.click(canvas.getByRole('row', { name: /tempodrom/i }));
+      await userEvent.click(
+        canvas.getByRole('row', { name: /columbiahalle/i })
+      );
+
+      expect(selectAll).toBeChecked();
+      expect(selectAll).not.toBePartiallyChecked();
+    });
+  }
+);
+
+WithSelectAll.test(
+  'puts the header checkbox on the row indicator column',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const x = (element: Element) =>
+      Math.round(element.getBoundingClientRect().x);
+    const header = canvas
+      .getByRole('checkbox', { name: 'Select all' })
+      .closest('label')!;
+    const [firstRow] = canvas.getAllByRole('row');
+    const indicator = firstRow.querySelector('[data-grid-area="indicator"]')!;
+
+    expect(x(header)).toBe(x(indicator));
+  }
+);
+
 const onOpenVenue = fn();
 const onArchiveVenue = fn();
 
@@ -913,8 +994,7 @@ const onBulkArchive = fn();
 
 // The Bulk Actions pattern's action bar, which needs no new API: `<ActionBar>`
 // takes `selectedItemCount` / `onClearSelection` as props and only falls back to
-// the context Table publishes. There is deliberately no select-all — that is a
-// header checkbox in the collection, which `ListView` has no region for yet.
+// the context Table publishes. The select-all above the rows is `allowSelectAll`.
 const BulkActionsExample = (args: ListViewProps) => {
   const [selected, setSelected] = useState<Selection>(() => new Set());
   const count = selected === 'all' ? VENUES.length : selected.size;
@@ -953,7 +1033,7 @@ export const WithActionBar = meta.story({
   // Nothing is selected at rest, so the bar is closed and the snapshot would be
   // `MultipleSelection` with a third row. `ActionBar` guards its own appearance.
   parameters: { chromatic: { disableSnapshot: true } },
-  args: { selectionMode: 'multiple' },
+  args: { selectionMode: 'multiple', allowSelectAll: true },
   render: args => <BulkActionsExample {...args} />,
 });
 

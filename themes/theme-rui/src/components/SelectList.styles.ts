@@ -3,7 +3,7 @@ import { type ThemeComponent, cva } from '@marigold/system';
 export const SelectList: ThemeComponent<'SelectList'> = {
   container: cva({
     base: [
-      'flex',
+      'group/selectlist flex flex-col',
       'has-orientation-vertical:w-full',
       'has-orientation-horizontal:w-fit has-orientation-horizontal:max-w-full',
       // Container-query flip: below 40rem in the `@container/selectlist` scope a
@@ -13,12 +13,19 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     ],
     variants: {
       variant: {
-        // A default SelectList is a boxed list: its frame edge and the internal row
-        // dividers should read as one weight, so both use the opaque --color-border.
-        // (A translucent control ring would composite lighter than the opaque
-        // dividers, so left/right wouldn't match top/bottom.)
-        default: 'ui-surface [--ui-border-color:var(--color-border)]',
-        bordered: '',
+        default: [
+          // The frame wraps the select-all and the options together, so the
+          // header reads as the list's first row rather than a second label
+          // above the field's own (DST-1751 review).
+          'ui-surface [--ui-border-color:var(--color-border)]',
+          '[--selectlist-item-px:var(--spacing-stretch-regular-x)]',
+          '[--selectlist-item-py:var(--spacing-stretch-regular-y)]',
+          '[--selectlist-item-radius:calc(var(--radius-surface)-1px)]',
+        ],
+        bordered: [
+          '[--selectlist-item-px:var(--spacing-square-relaxed-x)]',
+          '[--selectlist-item-py:var(--spacing-square-relaxed-y)]',
+        ],
       },
     },
     defaultVariants: { variant: 'default' },
@@ -35,11 +42,7 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     ],
     variants: {
       variant: {
-        default: [
-          '[--selectlist-item-px:var(--spacing-stretch-regular-x)]',
-          '[--selectlist-item-py:var(--spacing-stretch-regular-y)]',
-          '[--selectlist-item-radius:calc(var(--radius-surface)-1px)]',
-        ],
+        default: '',
         bordered: [
           'gap-2',
           // Each item is its own control; its ring lives in the box-shadow
@@ -47,12 +50,31 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           // both axes, so p-1 gives the rings room inside the scrollport (the
           // padding box) instead of being cut at the edges.
           'p-1',
-          '[--selectlist-item-px:var(--spacing-square-relaxed-x)]',
-          '[--selectlist-item-py:var(--spacing-square-relaxed-y)]',
         ],
       },
     },
     defaultVariants: { variant: 'default' },
+  }),
+  header: cva({
+    base: [
+      'flex items-center gap-2',
+      'px-(--selectlist-item-px)',
+      'max-sm:min-h-touch-target',
+      'text-sm font-medium text-foreground',
+    ],
+    variants: {
+      variant: {
+        // Inside the frame: the divider below it is the same weight as the
+        // dividers between options, so the header reads as part of the list.
+        default: 'py-(--selectlist-item-py) border-b border-border',
+        // No frame to sit in, so it stays a control above the options.
+        bordered: 'mx-1 mb-2',
+      },
+    },
+    defaultVariants: { variant: 'default' },
+  }),
+  count: cva({
+    base: ["before:content-['·'] before:me-2", 'text-secondary'],
   }),
   item: cva({
     base: [
@@ -74,6 +96,10 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           'min-h-14',
           'selected:bg-selected hover:ui-state-hover',
           'group-orientation-vertical/list:first:rounded-t-(--selectlist-item-radius) group-orientation-vertical/list:last:rounded-b-(--selectlist-item-radius)',
+          // The header owns the frame's top corners once it is there, so no
+          // option rounds its top edge. Wins over the per-orientation rounding
+          // above, which is more specific.
+          'group-has-[[data-select-all]]/selectlist:rounded-t-none!',
           'group-orientation-horizontal/list:first:rounded-l-(--selectlist-item-radius) group-orientation-horizontal/list:last:rounded-r-(--selectlist-item-radius)',
           // Dividers use the opaque structural --color-border (like Table grid
           // lines): darker than every wash, so they stay crisp against rest,
