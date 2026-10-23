@@ -5,6 +5,7 @@ import {
   Button,
   ButtonGroup,
   Description,
+  EmptyState,
   Inline,
   Link,
   ListView,
@@ -87,7 +88,12 @@ export default () => {
                 // Opening a notification takes people to what it is about
                 // and marks it as read.
                 onAction={id => setRead(String(id), true)}
-                emptyState={<Text>You're all caught up.</Text>}
+                emptyState={
+                  <EmptyState
+                    title="You're all caught up"
+                    description="New notifications will show up here."
+                  />
+                }
               >
                 {(item: (typeof notifications)[number]) => (
                   <ListView.Item id={item.id} textValue={item.title}>

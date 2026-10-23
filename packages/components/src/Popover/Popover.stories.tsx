@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { expect, fn, waitFor } from 'storybook/test';
+import { expect, fn, screen, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Archive, Bell, StickyNote, UserMinus, Users } from '@marigold/icons';
 import { Button } from '../Button/Button';
 import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Description } from '../Description/Description';
+import { useConfirmation } from '../Dialog/useConfirmation';
+import { EmptyState } from '../EmptyState/EmptyState';
 import { Form } from '../Form/Form';
 import { Inline } from '../Inline/Inline';
 import { LinkButton } from '../LinkButton/LinkButton';
@@ -618,42 +620,69 @@ type Member = (typeof MEMBERS)[number];
 const onRemove = fn();
 const onRoleChange = fn();
 
-const TeamList = () => (
-  <ListView
-    aria-label="Team members"
-    items={MEMBERS}
-    emptyState={<Text>No team members match your search.</Text>}
-  >
-    {(member: Member) => (
-      <ListView.Item id={member.id} textValue={member.name}>
-        <TextValue>{member.name}</TextValue>
-        <Description>{member.email}</Description>
-        <ButtonGroup aria-label={`Actions for ${member.name}`} size="icon">
-          <ActionMenu aria-label={`Change role of ${member.name}`}>
-            <ActionMenu.Item onAction={() => onRoleChange(member.id, 'admin')}>
-              Make admin
-            </ActionMenu.Item>
-            <ActionMenu.Item onAction={() => onRoleChange(member.id, 'editor')}>
-              Make editor
-            </ActionMenu.Item>
-            <ActionMenu.Item onAction={() => onRoleChange(member.id, 'viewer')}>
-              Make viewer
-            </ActionMenu.Item>
-          </ActionMenu>
-          <Tooltip.Trigger>
-            <Button
-              aria-label={`Remove ${member.name}`}
-              onPress={() => onRemove(member.id)}
-            >
-              <UserMinus />
-            </Button>
-            <Tooltip>Remove</Tooltip>
-          </Tooltip.Trigger>
-        </ButtonGroup>
-      </ListView.Item>
-    )}
-  </ListView>
-);
+const TeamList = () => {
+  const confirm = useConfirmation();
+
+  // Removing someone can only be undone by inviting them again, so ask first.
+  const remove = async (member: Member) => {
+    const result = await confirm({
+      variant: 'destructive',
+      title: `Remove ${member.name}?`,
+      content: `${member.name} loses access to this event. You can invite them again later.`,
+      confirmationLabel: 'Remove member',
+    });
+    if (result === 'confirmed') onRemove(member.id);
+  };
+
+  return (
+    <ListView
+      aria-label="Team members"
+      items={MEMBERS}
+      emptyState={
+        <EmptyState
+          title="No team members found"
+          description="Check the spelling or search for an email address."
+        />
+      }
+    >
+      {(member: Member) => (
+        <ListView.Item id={member.id} textValue={member.name}>
+          <TextValue>{member.name}</TextValue>
+          <Description>{member.email}</Description>
+          <ButtonGroup aria-label={`Actions for ${member.name}`} size="icon">
+            <ActionMenu aria-label={`Change role of ${member.name}`}>
+              <ActionMenu.Item
+                onAction={() => onRoleChange(member.id, 'admin')}
+              >
+                Make admin
+              </ActionMenu.Item>
+              <ActionMenu.Item
+                onAction={() => onRoleChange(member.id, 'editor')}
+              >
+                Make editor
+              </ActionMenu.Item>
+              <ActionMenu.Item
+                onAction={() => onRoleChange(member.id, 'viewer')}
+              >
+                Make viewer
+              </ActionMenu.Item>
+            </ActionMenu>
+            <Tooltip.Trigger>
+              <Button
+                variant="destructive-ghost"
+                aria-label={`Remove ${member.name}`}
+                onPress={() => remove(member)}
+              >
+                <UserMinus />
+              </Button>
+              <Tooltip>Remove</Tooltip>
+            </Tooltip.Trigger>
+          </ButtonGroup>
+        </ListView.Item>
+      )}
+    </ListView>
+  );
+};
 
 // `showTitle` is a story control, not a `Popover` prop: with a `<Title>` the
 // search sits between two dividers, without one it is the popover's header
@@ -729,14 +758,26 @@ SearchableList.test(
       await expect(canvas.getByRole('row')).toHaveFocus();
     });
 
-    await step('a row action runs and the popover stays open', async () => {
-      await userEvent.click(
-        canvas.getByRole('button', { name: 'Remove Priya Natarajan' })
-      );
+    await step(
+      'a destructive row action asks first and the popover stays open',
+      async () => {
+        await userEvent.click(
+          canvas.getByRole('button', { name: 'Remove Priya Natarajan' })
+        );
+        // The confirmation portals to the document body, outside the canvas.
+        const confirmation = await screen.findByRole('alertdialog', {
+          name: 'Remove Priya Natarajan?',
+        });
+        await expect(onRemove).not.toHaveBeenCalled();
 
-      await expect(onRemove).toHaveBeenCalledWith('priya');
-      await expect(dialog).toBeVisible();
-    });
+        await userEvent.click(
+          within(confirmation).getByRole('button', { name: 'Remove member' })
+        );
+
+        await expect(onRemove).toHaveBeenCalledWith('priya');
+        await expect(dialog).toBeVisible();
+      }
+    );
   }
 );
 
@@ -753,7 +794,7 @@ SearchableList.test(
     await userEvent.keyboard('zzz');
 
     await expect(
-      await canvas.findByText('No team members match your search.')
+      await canvas.findByText('No team members found')
     ).toBeVisible();
   }
 );
