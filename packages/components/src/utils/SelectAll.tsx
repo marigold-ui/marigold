@@ -93,7 +93,7 @@ export const SelectAllHeader = ({
   const checked = keys.length > 0 && selectedCount === keys.length;
 
   return (
-    <div className={classNames?.header}>
+    <div data-select-all="" className={classNames?.header}>
       <Checkbox
         checked={checked}
         indeterminate={selectedCount > 0 && !checked}

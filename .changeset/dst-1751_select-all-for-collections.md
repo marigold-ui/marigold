@@ -25,4 +25,4 @@ The checkbox is mixed while the selection is partial, and becomes checked once e
 
 Two smaller fixes come with it. A `Set` passed to `selectedKeys` is no longer copied on every render, which kept React Aria resetting the range anchor and broke <kbd>Shift</kbd>+click on a controlled list. And `ListView` now renders its list inside a wrapper element that owns the row-padding custom property, so the header and the rows read the same value.
 
-A `SelectList`'s frame moves from its wrapper onto the list element, so the box wraps the options alone and the select-all sits above it. The `Theme` type gains `header` and `count` slots on both components, plus `container` on `ListView`.
+A `SelectList` keeps the select-all inside its frame, as the list's first row above the options, separated by a divider of the same weight as the ones between options. A `ListView` has no frame, so its select-all sits above the rows. The `Theme` type gains `header` and `count` slots on both components, plus `container` on `ListView`.
