@@ -64,7 +64,9 @@ export const Popover: ThemeComponent<'Popover'> = {
       'px-[calc(var(--popover-px)-var(--spacing)*2.5)]',
       // The field drops its frame: the row is the field.
       '[&_input]:rounded-none [&_input]:bg-transparent [&_input]:ring-0',
-      '[&_input:focus]:outline-hidden',
+      // Repeat on `:focus`: the input's own `focus:ui-state-focus` ring is
+      // more specific than the plain override above.
+      '[&_input:focus]:ring-0 [&_input:focus]:outline-hidden',
       // No clear button while empty, so the placeholder gets its room back.
       '[&_[data-empty]_input]:pr-2',
       // Keyboard focus marks the whole row, like a ListView row.

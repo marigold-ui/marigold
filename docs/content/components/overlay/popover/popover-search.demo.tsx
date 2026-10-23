@@ -7,6 +7,7 @@ import {
   Card,
   DateFormat,
   Description,
+  EmptyState,
   Inline,
   ListView,
   NumericFormat,
@@ -16,6 +17,7 @@ import {
   TextValue,
   Title,
   Tooltip,
+  useConfirmation,
 } from '@marigold/components';
 import { UserMinus, Users } from '@marigold/icons';
 
@@ -65,14 +67,26 @@ const roles: Role[] = ['Admin', 'Editor', 'Viewer'];
 
 export default () => {
   const [members, setMembers] = useState(initialMembers);
+  const [query, setQuery] = useState('');
+  const confirm = useConfirmation();
 
   const changeRole = (id: string, role: Role) =>
     setMembers(current =>
       current.map(member => (member.id === id ? { ...member, role } : member))
     );
 
-  const remove = (id: string) =>
-    setMembers(current => current.filter(member => member.id !== id));
+  // Removing someone can only be undone by inviting them again, so ask first.
+  const remove = async (member: Member) => {
+    const result = await confirm({
+      variant: 'destructive',
+      title: `Remove ${member.name}?`,
+      content: `${member.name} loses access to Jazz Night and its orders. You can invite them again later.`,
+      confirmationLabel: 'Remove member',
+    });
+    if (result === 'confirmed') {
+      setMembers(current => current.filter(item => item.id !== member.id));
+    }
+  };
 
   const count = (role: Role) =>
     members.filter(member => member.role === role).length;
@@ -100,8 +114,11 @@ export default () => {
           <Inline space="related">
             {roles.map(role => (
               <Badge key={role}>
-                <NumericFormat value={count(role)} /> {role.toLowerCase()}
-                {count(role) === 1 ? '' : 's'}
+                {/* One inline box: Badge is a flex row and drops a bare space. */}
+                <span>
+                  <NumericFormat value={count(role)} /> {role.toLowerCase()}
+                  {count(role) === 1 ? '' : 's'}
+                </span>
               </Badge>
             ))}
           </Inline>
@@ -117,12 +134,31 @@ export default () => {
             <Popover.Search
               aria-label="Search team members"
               placeholder="Search team members"
+              inputValue={query}
+              onInputChange={setQuery}
             />
             <Popover.Content>
               <ListView
                 aria-label="Team members"
                 items={members}
-                emptyState={<Text>No team members match your search.</Text>}
+                emptyState={
+                  query ? (
+                    <EmptyState
+                      title="No team members found"
+                      description={`Nobody matches "${query}". Check the spelling or search for an email address.`}
+                      action={
+                        <Button size="small" onPress={() => setQuery('')}>
+                          Show all team members
+                        </Button>
+                      }
+                    />
+                  ) : (
+                    <EmptyState
+                      title="No team members yet"
+                      description="People you invite to this event show up here."
+                    />
+                  )
+                }
               >
                 {(member: Member) => (
                   <ListView.Item id={member.id} textValue={member.name}>
@@ -148,8 +184,9 @@ export default () => {
                       </ActionMenu>
                       <Tooltip.Trigger>
                         <Button
+                          variant="destructive-ghost"
                           aria-label={`Remove ${member.name}`}
-                          onPress={() => remove(member.id)}
+                          onPress={() => remove(member)}
                         >
                           <UserMinus />
                         </Button>
