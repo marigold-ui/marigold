@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components';
 import { expect, screen, userEvent, within } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Button } from '../Button/Button';
 import { expectInsetFocusRingContrast } from '../contrast.utils';
 import { Breadcrumbs } from './Breadcrumbs';
+import type { BreadcrumbsProps } from './Breadcrumbs';
 
 const meta = preview.meta({
   title: 'Components/Breadcrumbs',
@@ -150,5 +153,177 @@ TruncatedCurrent.test(
     await expect(current.getBoundingClientRect().right).toBeLessThanOrEqual(
       list.getBoundingClientRect().right
     );
+  }
+);
+
+export const CollapsesWhenAllButOneFit = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <I18nProvider locale="en-US">
+      <div className="border-border w-80 border">
+        <Breadcrumbs {...args}>
+          <Breadcrumbs.Item href="#">Home</Breadcrumbs.Item>
+          <Breadcrumbs.Item href="#">Events</Breadcrumbs.Item>
+          <Breadcrumbs.Item href="#">Summer</Breadcrumbs.Item>
+          <Breadcrumbs.Item href="#">Event Details</Breadcrumbs.Item>
+        </Breadcrumbs>
+      </div>
+    </I18nProvider>
+  ),
+});
+
+CollapsesWhenAllButOneFit.test(
+  'Collapses rather than rendering every item past the container edge',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    await canvas.findByRole('button', {
+      name: 'These breadcrumbs are hidden',
+    });
+
+    const list = canvas.getByRole('list');
+    await expect(list.scrollWidth).toBeLessThanOrEqual(list.clientWidth);
+
+    const current = within(list).getByText('Event Details');
+    await expect(current.scrollWidth).toBeLessThanOrEqual(current.clientWidth);
+  }
+);
+
+export const CollapsesThreeItems = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <I18nProvider locale="en-US">
+      <div className="border-border w-60 border">
+        <Breadcrumbs {...args}>
+          <Breadcrumbs.Item href="#">Home</Breadcrumbs.Item>
+          <Breadcrumbs.Item href="#">
+            Summer Festival Programme
+          </Breadcrumbs.Item>
+          <Breadcrumbs.Item href="#">Details</Breadcrumbs.Item>
+        </Breadcrumbs>
+      </div>
+    </I18nProvider>
+  ),
+});
+
+CollapsesThreeItems.test(
+  'Keeps the root item when only the middle one has to collapse',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    await canvas.findByRole('button', {
+      name: 'These breadcrumbs are hidden',
+    });
+
+    const list = canvas.getByRole('list');
+
+    // The trail is [Home, …, Details]: only the middle item collapses, the
+    // root one stays because it fits beside the ellipsis.
+    await expect(within(list).getByText('Home')).toBeVisible();
+    await expect(
+      within(list).queryByText('Summer Festival Programme')
+    ).toBeNull();
+    await expect(list.scrollWidth).toBeLessThanOrEqual(list.clientWidth);
+  }
+);
+
+const ContentSizedTrail = (args: BreadcrumbsProps) => {
+  const [crumbs, setCrumbs] = useState(['Home', 'Events', 'Summer Festival']);
+
+  return (
+    <I18nProvider locale="en-US">
+      <Button
+        size="small"
+        onPress={() =>
+          setCrumbs(current => [...current, `Level ${current.length + 1}`])
+        }
+      >
+        Add crumb
+      </Button>
+      <div
+        data-slot-row
+        className="border-border mt-4 grid w-250 grid-cols-[auto_1fr] border"
+      >
+        <Breadcrumbs {...args}>
+          {crumbs.map(crumb => (
+            <Breadcrumbs.Item key={crumb} href="#">
+              {crumb}
+            </Breadcrumbs.Item>
+          ))}
+        </Breadcrumbs>
+        <div />
+      </div>
+    </I18nProvider>
+  );
+};
+
+const nextFrames = () =>
+  new Promise(resolve =>
+    requestAnimationFrame(() => requestAnimationFrame(resolve))
+  );
+
+export const ContentSizedSlot = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => <ContentSizedTrail {...args} />,
+});
+
+const ellipsis = { name: 'These breadcrumbs are hidden' };
+
+const expectFullTrail = async (canvas: ReturnType<typeof within>) => {
+  await nextFrames();
+  await expect(canvas.queryByRole('button', ellipsis)).toBeNull();
+  await expect(
+    within(canvas.getByRole('list')).getByText('Home')
+  ).toBeVisible();
+};
+
+ContentSizedSlot.test(
+  'Shows every item when the trail fits at small size',
+  { args: { size: 'small' } },
+  async ({ canvas }) => {
+    await expectFullTrail(canvas);
+  }
+);
+
+ContentSizedSlot.test(
+  'Shows every item when the trail fits at default size',
+  async ({ canvas }) => {
+    await expectFullTrail(canvas);
+  }
+);
+
+ContentSizedSlot.test(
+  'Shows every item when the trail fits at large size',
+  { args: { size: 'large' } },
+  async ({ canvas }) => {
+    await expectFullTrail(canvas);
+  }
+);
+
+ContentSizedSlot.test(
+  'Collapses when narrowed and expands again when widened',
+  async ({ canvas, canvasElement, step }) => {
+    const row = canvasElement.querySelector<HTMLElement>('[data-slot-row]')!;
+
+    await step('Narrow', async () => {
+      row.style.width = '150px';
+      await canvas.findByRole('button', ellipsis);
+    });
+
+    await step('Widen', async () => {
+      row.style.width = '';
+      await expectFullTrail(canvas);
+    });
+  }
+);
+
+ContentSizedSlot.test(
+  'Shows every item after the trail grows and still fits',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Add crumb' }));
+
+    await expect(
+      within(canvas.getByRole('list')).getByText('Level 4')
+    ).toBeVisible();
+    await expectFullTrail(canvas);
   }
 );

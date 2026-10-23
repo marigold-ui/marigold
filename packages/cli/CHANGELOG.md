@@ -1,5 +1,35 @@
 # @marigold/cli
 
+## 3.0.1
+
+### Patch Changes
+
+- 164a8cd: fix(DST-1813): stop the Table's ActionBar from leaving an empty strip below it
+
+  While rows were selected, the Table made room for its ActionBar twice: the bar's own slot below the last row and, on top of that, a bottom padding of the same height. The panel around the table grew by about 128px, and half of that was empty space below the bar. The padding is gone. The Table now keeps room for the bar and an 8px gap only, and that room slides open and closed, so the content after the table moves smoothly instead of jumping.
+
+  The bar still never covers the rows or whatever follows the table, such as a pagination, and it still pins to the bottom of the screen or of a `Scrollable` while the table scrolls past. Keyboard focus now also keeps the focused row clear of the pinned bar on a scrolling page, where the previous `scroll-padding-bottom` on the table had no effect.
+
+  The ActionBar and ListView docs describe the new behaviour, and the ListView bulk actions example drops its own bottom padding.
+
+  The slide is themeable through the new `actionBarSpacer` slot on `Table`. `theme-rui` sets a 200ms height transition, and themes without the slot fall back to the room snapping into place.
+
+- Updated dependencies [5288355]
+- Updated dependencies [fa1aa20]
+- Updated dependencies [c41a890]
+- Updated dependencies [7354d61]
+- Updated dependencies [164a8cd]
+- Updated dependencies [84c7a60]
+- Updated dependencies [43b619c]
+- Updated dependencies [c60cb28]
+- Updated dependencies [e08584c]
+- Updated dependencies [117f12f]
+- Updated dependencies [545a06b]
+- Updated dependencies [b3d5ae0]
+- Updated dependencies [3f4df0f]
+  - @marigold/components@18.3.1
+  - @marigold/theme-rui@6.2.2
+
 ## 3.0.0
 
 ### Major Changes

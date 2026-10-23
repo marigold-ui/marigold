@@ -27,8 +27,7 @@ export const Radio: ThemeComponent<'Radio'> = {
       // `disabled-surface` at 1.06:1. Same reason as the border above.
       'group-disabled/radio:group-selected/radio:bg-disabled-surface group-disabled/radio:border-control-edge-disabled! group-disabled/radio:text-disabled! group-disabled/radio:cursor-not-allowed',
       'group-selected/radio:border-selected-bold group-selected/radio:bg-selected-bold group-selected/radio:text-selected-bold-foreground',
-      // Same exclusions as Checkbox, minus `focus-visible`: this slot never
-      // flips its border on focus, so there is no declaration for hover to outrank.
+      // Same exclusions as Checkbox.
       // `disabled` is absent because `border-control-edge-disabled!` wins regardless.
       // Switch names it explicitly because its rule does not.
       'group-hover/radio:not-group-read-only/radio:not-group-selected/radio:border-control-edge-hover',

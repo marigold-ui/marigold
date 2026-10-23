@@ -11,7 +11,10 @@ import {
   Basic,
   DisabledAndLoading,
   IntegratedWithTable,
+  MenuLocalVariant,
   NoSelection,
+  TableWithPagination,
+  WithMenu,
   WithoutClearButton,
 } from './ActionBar.stories';
 import { useActionBar } from './useActionBar';
@@ -117,6 +120,26 @@ test('marks a loading action as pending rather than disabled', () => {
   // marks it `aria-disabled` rather than removing it from the tree.
   expect(pending).toHaveAttribute('aria-disabled', 'true');
   expect(pending).toHaveAttribute('tabindex', '0');
+});
+
+test('a Menu trigger takes the cascaded ghost variant like a sibling Button', () => {
+  render(<WithMenu.Component />);
+
+  const button = screen.getByRole('button', { name: 'Edit' });
+  const trigger = screen.getByRole('button', { name: 'More actions' });
+
+  expect(button).toHaveClass('hover:ui-state-hover-ghost', 'h-control');
+  expect(trigger).toHaveClass('hover:ui-state-hover-ghost', 'h-control');
+  expect(trigger).not.toHaveClass('ui-soft');
+});
+
+test('a local Menu variant wins over the cascaded ghost', () => {
+  render(<MenuLocalVariant.Component />);
+
+  const trigger = screen.getByRole('button', { name: 'More actions' });
+
+  expect(trigger).toHaveClass('ui-soft');
+  expect(trigger).not.toHaveClass('hover:ui-state-hover-ghost');
 });
 
 test('calls onClearSelection when Escape is pressed', async () => {
@@ -263,66 +286,153 @@ test('deselecting all rows hides ActionBar', async () => {
   );
 });
 
-// Regression: the measurement used to sit in the outer `ActionBar`, which renders
-// `null` while nothing is selected, so the observer never attached to an element.
-test('reserves the ActionBar height on the container once the bar reopens', async () => {
-  render(<IntegratedWithTable.Component />);
-
-  // The reservation lands on Table's content wrapper, which exposes no role.
-  // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByRole('grid').parentElement!;
-  const rowBoxes = screen.getAllByRole('checkbox').slice(1);
-  const checked = rowBoxes.filter(cb => (cb as HTMLInputElement).checked);
-
-  for (const cb of checked) {
-    await user.click(cb);
+/* eslint-disable testing-library/no-node-access */
+const getBar = (toolbar: HTMLElement) =>
+  toolbar.closest('[data-actionbar]') as HTMLElement;
+const getScroller = (el: HTMLElement) => {
+  let node = el.parentElement;
+  while (
+    node &&
+    node !== document.body &&
+    !/auto|scroll/.test(getComputedStyle(node).overflowY)
+  ) {
+    node = node.parentElement;
   }
+  return node!;
+};
+// The Table's content wrapper, which exposes no role.
+const getTableContainer = () => screen.getByRole('grid').parentElement!;
+/* eslint-enable testing-library/no-node-access */
 
-  await waitFor(() =>
-    expect(
-      screen.queryByRole('toolbar', { name: /bulk actions/i })
-    ).not.toBeInTheDocument()
+// The gap the Table keeps between its last row and the bar.
+const GAP = 8;
+
+const nextFrame = () =>
+  new Promise(resolve =>
+    requestAnimationFrame(() => requestAnimationFrame(resolve))
   );
 
-  await user.click(rowBoxes[0]);
-
-  await waitFor(() => {
-    expect(container.style.paddingBottom).toMatch(/^calc\((?!0px)\d/);
-    expect(container.style.scrollPaddingBottom).toMatch(/^calc\((?!0px)\d/);
+// The room slides open and closed, so measure once it has stopped moving.
+const waitForStableHeight = (el: HTMLElement) =>
+  waitFor(async () => {
+    const height = el.offsetHeight;
+    await nextFrame();
+    expect(el.offsetHeight).toBe(height);
   });
-});
 
-// The reservation must go on the content, never on the scroll container itself: a
-// scroller's own padding shrinks the rectangle its sticky children pin to, which
-// lifts the bar off the bottom by exactly the height that was reserved.
-test('keeps the ActionBar pinned to the bottom of the scroll container', async () => {
+const TOOLBAR = { name: /bulk actions/i };
+
+const queryToolbar = () => screen.queryByRole('toolbar', TOOLBAR);
+
+const waitForBarToSettle = async () => {
+  const toolbar = await screen.findByRole('toolbar', TOOLBAR);
+  await waitFor(() =>
+    expect(getBar(toolbar)).not.toHaveAttribute('data-entering')
+  );
+  return toolbar;
+};
+
+// Room only for the bar and its gap: the extra `paddingBottom` under the bar
+// left an empty strip in the consumer's panel (DST-1813). Reopening is a
+// regression check: the measurement used to sit in the outer `ActionBar`, which
+// renders `null` while nothing is selected, so the observer never attached.
+test('makes room for the ActionBar and its gap, also after it reopens', async () => {
   render(<IntegratedWithTable.Component />);
 
-  const bar = await screen.findByRole('toolbar', { name: /bulk actions/i });
+  const container = getTableContainer();
+  // Within a pixel: browsers round layout heights differently.
+  const expectRoom = (room: number, barHeight: number) =>
+    expect(Math.abs(room - (barHeight + GAP))).toBeLessThanOrEqual(1);
 
-  /* eslint-disable testing-library/no-node-access */
-  const sticky = bar.closest('[class*="sticky"]') as HTMLElement;
-  let scroller = sticky.parentElement;
-  while (
-    scroller &&
-    scroller !== document.body &&
-    !/auto|scroll/.test(getComputedStyle(scroller).overflowY)
-  ) {
-    scroller = scroller.parentElement;
+  const barHeight = getBar(await waitForBarToSettle()).offsetHeight;
+  await waitForStableHeight(container);
+  const withBar = container.offsetHeight;
+
+  await user.click(screen.getByRole('button', { name: /clear selection/i }));
+  await waitFor(() => expect(queryToolbar()).not.toBeInTheDocument());
+  await waitForStableHeight(container);
+  const withoutBar = container.offsetHeight;
+
+  await user.click(screen.getAllByRole('checkbox')[1]);
+  const reopenedHeight = getBar(await waitForBarToSettle()).offsetHeight;
+  await waitForStableHeight(container);
+
+  expectRoom(withBar - withoutBar, barHeight);
+  expectRoom(container.offsetHeight - withoutBar, reopenedHeight);
+  expect(container.style.paddingBottom).toBe('');
+});
+
+test('keeps the last row clear of the ActionBar at the end of the scroll container', async () => {
+  render(<IntegratedWithTable.Component />);
+
+  const toolbar = await waitForBarToSettle();
+  const scroller = getScroller(getBar(toolbar));
+
+  scroller.scrollTop = scroller.scrollHeight;
+  await nextFrame();
+
+  const lastRow = screen.getAllByRole('row').at(-1)!;
+
+  expect(lastRow.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+    getBar(toolbar).getBoundingClientRect().top
+  );
+});
+
+test('scrolls a focused row clear of the pinned ActionBar', async () => {
+  render(<IntegratedWithTable.Component />);
+
+  const toolbar = await waitForBarToSettle();
+  const firstUnchecked = screen
+    .getAllByRole('checkbox')
+    .slice(1)
+    .find(cb => !(cb as HTMLInputElement).checked)!;
+
+  await user.click(firstUnchecked);
+  await user.keyboard('{ArrowRight}');
+
+  for (let i = 0; i < 12; i++) {
+    await user.keyboard('{ArrowDown}');
+    await nextFrame();
+
+    // eslint-disable-next-line testing-library/no-node-access
+    const row = document.activeElement!.closest('[role="row"]')!;
+
+    expect(row.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+      getBar(toolbar).getBoundingClientRect().top
+    );
   }
-  /* eslint-enable testing-library/no-node-access */
+});
 
-  expect(scroller).not.toBe(document.body);
+// The bar may overlap what follows while the room slides open: measure once settled.
+test('does not cover the content after the table once the room has opened', async () => {
+  render(<TableWithPagination.Component />);
+
+  const toolbar = await waitForBarToSettle();
+  await waitForStableHeight(getTableContainer());
+  const pagination = screen.getByRole('navigation');
+
+  expect(getBar(toolbar).getBoundingClientRect().bottom).toBeLessThanOrEqual(
+    pagination.getBoundingClientRect().top
+  );
+});
+
+// Never pad the scroll container itself: a scroller's own padding shrinks the
+// rectangle its sticky children pin to, which lifts the bar off the bottom.
+test('keeps the ActionBar pinned to the bottom of the scroll container', async () => {
+  render(<IntegratedWithTable.Component />);
 
   // The bar slides in on a transform. Wait for the entering flag to clear, then
   // measure once: this has to hold always, and a `waitFor` around the assertion
   // would pass on any single frame that happened to satisfy it.
-  await waitFor(() => expect(sticky).not.toHaveAttribute('data-entering'));
+  const sticky = getBar(await waitForBarToSettle());
+  const scroller = getScroller(sticky);
 
-  scroller!.scrollTop = 0;
+  expect(scroller).not.toBe(document.body);
+
+  scroller.scrollTop = 0;
 
   const barBox = sticky.getBoundingClientRect();
-  const gap = scroller!.getBoundingClientRect().bottom - barBox.bottom;
+  const gap = scroller.getBoundingClientRect().bottom - barBox.bottom;
 
   expect(gap).toBeGreaterThanOrEqual(0);
   expect(gap).toBeLessThan(barBox.height);

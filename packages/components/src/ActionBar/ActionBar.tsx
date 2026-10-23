@@ -1,6 +1,6 @@
 import * as m from 'motion/react-m';
 import type { ReactNode, Ref } from 'react';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Toolbar } from 'react-aria-components/Toolbar';
 import { Provider } from 'react-aria-components/slots';
 import { FocusScope } from '@react-aria/focus';
@@ -87,12 +87,20 @@ const ActionBarInner = ({
     internalRef) as React.RefObject<HTMLDivElement | null>;
   const isEntering = useEnterAnimation(ref);
 
+  const reportHeight = useCallback(
+    () => onHeightChange?.(ref.current?.offsetHeight ?? 0),
+    [onHeightChange, ref]
+  );
+
+  // Measured before the first paint, so a Table can make room for the bar
+  // without a frame where it pushes the content down at full height.
+  useLayoutEffect(() => {
+    reportHeight();
+  }, [reportHeight]);
+
   // Observed here, not in the outer: `useResizeObserver` reads `ref.current` on
   // mount only, and the outer renders `null` until something is selected.
-  useResizeObserver({
-    ref,
-    onResize: () => onHeightChange?.(ref.current?.offsetHeight ?? 0),
-  });
+  useResizeObserver({ ref, onResize: reportHeight });
 
   const classNames = useClassNames({
     component: 'ActionBar',
@@ -119,6 +127,7 @@ const ActionBarInner = ({
           layout
           ref={ref}
           id={id}
+          data-actionbar
           onKeyDown={onKeyDown}
           onKeyUp={onKeyUp}
           className={cn(

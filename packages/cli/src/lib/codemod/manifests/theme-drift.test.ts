@@ -38,6 +38,27 @@ const literalNames = (node: AnyNode | undefined): string[] => {
 };
 
 /**
+ * Slots of one component's type: a `Record<'a' | 'b', …>`, optionally
+ * intersected with `{ c?: … }` for optional slots. `null` for anything else.
+ */
+const slotsOf = (node: AnyNode | undefined): string[] | null => {
+  if (!node) return null;
+  if (node.type === 'TSIntersectionType') {
+    const parts = (node.types as AnyNode[]).map(slotsOf);
+    return parts.some(p => p !== null) ? parts.flatMap(p => p ?? []) : null;
+  }
+  if (node.type === 'TSTypeLiteral') {
+    return ((node.members as AnyNode[] | undefined) ?? [])
+      .map(m => (m.key as { name?: string } | undefined)?.name)
+      .filter((name): name is string => typeof name === 'string');
+  }
+  const isRecord =
+    node.type === 'TSTypeReference' &&
+    (node.typeName as { name?: string } | undefined)?.name === 'Record';
+  return isRecord ? literalNames(typeArgs(node)[0]) : null;
+};
+
+/**
  * Slot sets of `Theme['components']`, keyed by component. `null` marks a
  * single style function — the same shape the manifest uses.
  */
@@ -51,13 +72,10 @@ const themeSlots = (source: string): Record<string, string[] | null> => {
     for (const member of (literal?.members as AnyNode[] | undefined) ?? []) {
       const name = (member.key as { name?: string } | undefined)?.name;
       if (!name) continue;
-      const annotation = (member.typeAnnotation as AnyNode | undefined)
-        ?.typeAnnotation as AnyNode | undefined;
-      const isRecord =
-        annotation?.type === 'TSTypeReference' &&
-        (annotation.typeName as { name?: string } | undefined)?.name ===
-          'Record';
-      out[name] = isRecord ? literalNames(typeArgs(annotation)[0]) : null;
+      out[name] = slotsOf(
+        (member.typeAnnotation as AnyNode | undefined)?.typeAnnotation as
+          AnyNode | undefined
+      );
     }
     return false;
   });

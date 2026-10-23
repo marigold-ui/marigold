@@ -3,10 +3,19 @@ import { UNSAFE_PortalProvider as PortalProvider } from '@react-aria/overlays';
 
 // Helper
 // ---------------
+// React Aria resolves the container on every overlay render, so a missing id
+// would otherwise warn each time. Once per id is enough.
+const warnedMissingContainers = new Set<string>();
+
+// Test-only: lets each test assert the warning without racing another.
+export const __resetMissingContainerWarnings = () =>
+  warnedMissingContainers.clear();
+
 const getContainer = (container?: string) => () => {
   if (container) {
     const element = document.getElementById(container);
-    if (!element) {
+    if (!element && !warnedMissingContainers.has(container)) {
+      warnedMissingContainers.add(container);
       console.warn(
         `OverlayContainerProvider: Container with id "${container}" not found.`
       );

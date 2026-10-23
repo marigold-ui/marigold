@@ -7,7 +7,7 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
       // One shared edge for every small boolean control. Weight and reasoning
       // live on the token, so Radio and GridSelectionIndicator cannot drift.
       'border border-control-edge bg-surface',
-      'group-focus-visible/checkbox:ui-state-focus group-focus-visible/checkbox:border-(--ui-border-color) outline-none',
+      'group-focus-visible/checkbox:ui-state-focus outline-none',
       // `text-disabled!` because `group-selected` and `group-indeterminate`
       // sort after `group-disabled`. Indeterminate needs its own fill rule
       // too, it never sets `data-selected`.
@@ -16,13 +16,9 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
       'group-indeterminate/checkbox:border-selected-bold group-indeterminate/checkbox:bg-selected-bold group-indeterminate/checkbox:text-selected-bold-foreground',
       'group-hover/checkbox:group-disabled/checkbox:bg-disabled-surface',
       // Each `:not()` outranks a state rule above, so removing one lets hover
-      // repaint it.
-      // `focus-visible` is in the chain because this lands at (0,5,0) against
-      // the focus border's (0,2,0): without it hover wins on a focused checkbox,
-      // the border never flips to --color-ring, and the halo alone (2.08:1) is
-      // all that separates focused from hovered. `disabled` isn't, its rule
-      // carries `!important`.
-      'group-hover/checkbox:not-group-focus-visible/checkbox:not-group-read-only/checkbox:not-group-selected/checkbox:not-group-indeterminate/checkbox:border-control-edge-hover',
+      // repaint it. `disabled` isn't, its rule carries `!important`. Focus
+      // needs none, its ring sits outside the border.
+      'group-hover/checkbox:not-group-read-only/checkbox:not-group-selected/checkbox:not-group-indeterminate/checkbox:border-control-edge-hover',
     ],
   }),
   container: cva({

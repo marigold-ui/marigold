@@ -255,6 +255,33 @@ Actions.test(
   }
 );
 
+Actions.test(
+  'Keeps a gap between the description and the actions',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    // Select the actions cell structurally: `LinkButton` takes the slot's
+    // className but not its `data-grid-area` marker.
+    const actionsCell =
+      ':scope > :not([data-grid-area="title"]):not([data-grid-area="description"])';
+    const headers = canvasElement.querySelectorAll('[data-page-header]');
+    const withActions = [...headers].filter(header =>
+      header.querySelector(actionsCell)
+    );
+    await expect(withActions).toHaveLength(5);
+
+    for (const header of withActions) {
+      const description = header
+        .querySelector('[data-grid-area="description"]')!
+        .getBoundingClientRect();
+      const actions = header
+        .querySelector(actionsCell)!
+        .getBoundingClientRect();
+
+      await expect(actions.left - description.right).toBeGreaterThanOrEqual(16);
+    }
+  }
+);
+
 /**
  * Use the optional `<Page.Content>` wrapper when the rhythm between sections
  * should differ from the header-to-content gap.

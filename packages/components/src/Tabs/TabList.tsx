@@ -5,6 +5,7 @@ import type RAC from 'react-aria-components';
 import { TabList } from 'react-aria-components/Tabs';
 import { cn } from '@marigold/system';
 import { MotionFeatures } from '../lazyMotion';
+import { useDevWarning } from '../utils/useDevWarning';
 import { useWheelScrollX } from '../utils/useWheelScrollX';
 import { useTabContext } from './Context';
 
@@ -27,13 +28,12 @@ const _TabList = (props: TabListProps) => {
   // it. Without the slot this wrapper gets no `overflow-x`/`snap-x`, so the row
   // blows the page wide instead of scrolling. Fail loudly in dev rather than
   // silently, keeping the strict contract without masking it with a fallback.
-  if (process.env.NODE_ENV !== 'production' && !classNames.tabsListScroll) {
-    console.warn(
-      '[Tabs] The theme is missing the required `tabsListScroll` slot, so the ' +
-        'tab row will overflow the page instead of scrolling. Add a ' +
-        '`tabsListScroll` entry to your `Tabs` theme (see theme-rui for a reference).'
-    );
-  }
+  useDevWarning(
+    !classNames.tabsListScroll,
+    '[Tabs] The theme is missing the required `tabsListScroll` slot, so the ' +
+      'tab row will overflow the page instead of scrolling. Add a ' +
+      '`tabsListScroll` entry to your `Tabs` theme (see theme-rui for a reference).'
+  );
 
   useWheelScrollX(scrollRef);
 

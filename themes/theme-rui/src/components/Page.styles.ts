@@ -10,6 +10,8 @@ export const Page: ThemeComponent<'Page'> = {
   description: cva({
     base: 'mt-1 text-base leading-none text-secondary',
   }),
-  actions: cva({}),
+  // Spacing sits on the actions, not as a column gap on the header grid, so
+  // a header without actions gets no phantom inset (as in ListView).
+  actions: cva({ base: 'ms-4' }),
   content: cva({}),
 };

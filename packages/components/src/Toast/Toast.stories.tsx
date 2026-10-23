@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
-import { expect, userEvent } from 'storybook/test';
+import { expect, screen, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Link } from '../Link/Link';
+import { expectFocusRingContrast } from '../contrast.utils';
 import { Toast } from './Toast';
 import { ToastProvider } from './ToastProvider';
 import { getToastQueue, useToast } from './ToastQueue';
@@ -351,5 +352,81 @@ Basic.test(
 
       await expect(action).toBeInTheDocument();
     });
+  }
+);
+
+export const SmallScreen = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
+  parameters: { chromatic: { disableSnapshot: true, viewports: [320] } },
+  render: (_args: unknown) => {
+    const args = toastArgs(_args);
+    const { addToast } = useToast();
+    return (
+      <I18nProvider locale="en">
+        <ToastProvider />
+        <Button
+          onPress={() =>
+            addToast({
+              title: args.title,
+              description: args.description,
+              variant: args.variant,
+              timeout: args.timeout,
+            })
+          }
+        >
+          Show Toast
+        </Button>
+      </I18nProvider>
+    );
+  },
+});
+
+SmallScreen.test(
+  'keeps both margins at 320px',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent, step }) => {
+    let trigger: HTMLElement;
+
+    await step('Arrange', async () => {
+      expect(window.innerWidth).toBeLessThan(640);
+      trigger = canvas.getByRole('button', { name: /show toast/i });
+    });
+
+    await step('Act', async () => {
+      await userEvent.click(trigger!);
+    });
+
+    await step('Assert', async () => {
+      await canvas.findByText(defaults.title);
+      const region = canvas.getByRole('region', { name: /notification/i });
+      const { left, right } = region.getBoundingClientRect();
+
+      expect(left).toBeGreaterThanOrEqual(16);
+      expect(right).toBeLessThanOrEqual(window.innerWidth - 16);
+
+      expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(
+        window.innerWidth
+      );
+    });
+  }
+);
+
+Basic.test(
+  'Keyboard focus draws a 1px ring that clears 3:1 on the close button',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Show Toast' }));
+    const close = await screen.findByRole('button', { name: /close/i });
+
+    close.focus();
+    await userEvent.tab();
+
+    await userEvent.tab({ shift: true });
+
+    await expect(close).toHaveFocus();
+    await waitFor(() => expectFocusRingContrast(close));
   }
 );

@@ -12,6 +12,7 @@ import { CloseButton } from '../CloseButton/CloseButton';
 import { ActionMenuContext } from '../Menu/ActionMenuContext';
 import { Modal, ModalProps } from '../Overlay/Modal';
 import { intlMessages } from '../intl/messages';
+import { useDevWarning } from '../utils/useDevWarning';
 import { useOverlayRootSlotProps } from '../utils/useOverlayRootSlotProps';
 import { useSlot } from '../utils/useSlot';
 import { DialogContext, DialogSlotContext } from './Context';
@@ -39,6 +40,7 @@ const InnerDialog = ({
   children,
   ref,
   'aria-label': ariaLabel,
+  'aria-labelledby': ariaLabelledby,
   ...props
 }: InnerDialogProps) => {
   const state = use(OverlayTriggerStateContext);
@@ -52,18 +54,12 @@ const InnerDialog = ({
   const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
   const isFullscreen = size === 'fullscreen';
 
-  if (
-    process.env.NODE_ENV !== 'production' &&
-    !ariaLabel &&
-    !hasTitle &&
-    !props['aria-labelledby']
-  ) {
-    console.warn(
-      '[Dialog] Renders a dialog without an accessible name. Provide a ' +
-        '`<Dialog.Title>` (or a bare `<Title slot="title">`) or an ' +
-        '`aria-label` so screen reader users can identify the dialog.'
-    );
-  }
+  useDevWarning(
+    !ariaLabel && !ariaLabelledby && !hasTitle,
+    '[Dialog] Renders a dialog without an accessible name. Provide a ' +
+      '`<Dialog.Title>` (or a bare `<Title slot="title">`) or an ' +
+      '`aria-label` so screen reader users can identify the dialog.'
+  );
 
   const resolvedChildren =
     typeof children === 'function'
@@ -89,9 +85,7 @@ const InnerDialog = ({
       {...props}
       ref={ref}
       aria-label={ariaLabel}
-      aria-labelledby={
-        !ariaLabel && hasTitle ? titleId : props['aria-labelledby']
-      }
+      aria-labelledby={!ariaLabel && hasTitle ? titleId : ariaLabelledby}
       className={cn(
         'relative mx-auto outline-hidden',
         // Fullscreen fills the Modal box, other sizes hug their content.
@@ -110,6 +104,7 @@ const InnerDialog = ({
         // Explicit on purpose: keeps `Dialog` out of `CloseButton`'s dev warning.
         <CloseButton
           aria-label={stringFormatter.format('close')}
+          data-slot="close"
           className={classNames.closeButton}
           onPress={state?.close}
         />

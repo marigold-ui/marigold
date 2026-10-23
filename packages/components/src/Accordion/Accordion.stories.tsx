@@ -1,4 +1,4 @@
-import { expect, userEvent } from 'storybook/test';
+import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import {
   Accessibility,
@@ -16,6 +16,7 @@ import { Split } from '../Split/Split';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
+import { expectInsetFocusRingContrast } from '../contrast.utils';
 import { Accordion } from './Accordion';
 
 const meta = preview.meta({
@@ -968,3 +969,44 @@ export const IconPositionLeft = meta.story({
     </Accordion>
   ),
 });
+
+Basic.test(
+  'Keyboard focus draws an inset ring that clears 3:1 on the header',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    const header = await canvas.findByRole('button', { name: 'Informations' });
+
+    header.focus();
+    await userEvent.tab();
+
+    await userEvent.tab({ shift: true });
+
+    await expect(header).toHaveFocus();
+    await waitFor(() => expectInsetFocusRingContrast(header));
+  }
+);
+
+// An unpadded `Scrollable` clips anything past its edge, so the header must
+// not overhang the column, or its inset ring loses a side.
+StickyHeaderScrollContainer.test(
+  'Keeps the header and its focus ring inside the scroll container',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    const header = canvas.getByRole('button', {
+      name: /Symfonie Abo 2025\/2026/i,
+    });
+    const scroller = header.closest('.overflow-auto') as HTMLElement;
+
+    header.focus();
+    await userEvent.tab();
+
+    await userEvent.tab({ shift: true });
+
+    const box = header.getBoundingClientRect();
+    const frame = scroller.getBoundingClientRect();
+    await expect(header).toHaveFocus();
+    expect(box.left).toBeGreaterThanOrEqual(frame.left);
+    expect(box.right).toBeLessThanOrEqual(frame.right);
+    await waitFor(() => expectInsetFocusRingContrast(header));
+  }
+);

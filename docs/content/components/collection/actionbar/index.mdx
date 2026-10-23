@@ -48,7 +48,7 @@ Keep the bar to a few high-value actions, the ones people reach for again and ag
 
 ### Bulk actions in a table
 
-The most common home for an `<ActionBar>` is a [`<Table>`](/components/collection/table) with `selectionMode="multiple"`. Pass the bar through the Table's `actionBar` prop, and the Table tracks the selection, shows and hides the bar, and reserves space at the bottom so the last row stays reachable while the bar floats above it.
+The most common home for an `<ActionBar>` is a [`<Table>`](/components/collection/table) with `selectionMode="multiple"`. Pass the bar through the Table's `actionBar` prop, and the Table tracks the selection, shows and hides the bar, and makes room for it right below the last row. The bar pins to the bottom of the screen, or of the `Scrollable` the table sits in, while the table scrolls past, and it never covers the rows or what comes after the table, such as a pagination.
 
 <ComponentDemo name="actionbar-table-bulk-actions" />
 
