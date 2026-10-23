@@ -336,6 +336,21 @@ export const BareChildrenAntiPattern = meta.story({
   ),
 });
 
+/**
+ * A loading placeholder. It is hidden from assistive technology, so it needs
+ * no accessible name, and Card does not warn about one.
+ */
+export const LoadingSkeleton = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => (
+    <Card aria-hidden="true" {...args}>
+      <Card.Content>
+        <Text>Loading…</Text>
+      </Card.Content>
+    </Card>
+  ),
+});
+
 export const MasterAndAdmin = meta.story({
   render: args => (
     <Stack space={5}>

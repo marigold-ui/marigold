@@ -26,6 +26,14 @@ test('warns when no accessible name is given', () => {
   );
 });
 
+test('warns once, however often it re-renders', () => {
+  const { rerender } = render(<Basic.Component />);
+  rerender(<Basic.Component size="small" />);
+  rerender(<Basic.Component />);
+
+  expect(warnMock).toHaveBeenCalledTimes(1);
+});
+
 test('an explicit aria-label wins over the fallback', () => {
   render(<Basic.Component aria-label="Remove file" />);
 

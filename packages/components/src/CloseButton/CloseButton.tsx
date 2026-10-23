@@ -7,6 +7,7 @@ import { useClassNames } from '@marigold/system';
 import { ButtonProps } from '../Button/Button';
 import { X } from '../icons/X';
 import { intlMessages } from '../intl/messages';
+import { useDevWarning } from '../utils/useDevWarning';
 
 interface CloseButtonProps extends Pick<
   ButtonProps,
@@ -42,14 +43,13 @@ export const CloseButton = ({
     !!slottedContext?.['aria-label'] ||
     !!slottedContext?.['aria-labelledby'];
 
-  if (process.env.NODE_ENV !== 'production' && !hasAccessibleName) {
-    console.warn(
-      '[CloseButton] Renders without an accessible name. Provide an ' +
-        '`aria-label` describing what closing does (for example "Remove ' +
-        'file") so screen reader users know what the button affects. ' +
-        'Falling back to a generic "Close".'
-    );
-  }
+  useDevWarning(
+    !hasAccessibleName,
+    '[CloseButton] Renders without an accessible name. Provide an ' +
+      '`aria-label` describing what closing does (for example "Remove ' +
+      'file") so screen reader users know what the button affects. ' +
+      'Falling back to a generic "Close".'
+  );
 
   return (
     <Button
