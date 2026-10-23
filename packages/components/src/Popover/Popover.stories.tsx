@@ -774,7 +774,8 @@ SearchableList.test(
           within(confirmation).getByRole('button', { name: 'Remove member' })
         );
 
-        await expect(onRemove).toHaveBeenCalledWith('priya');
+        // The confirmation settles once it has closed and returned focus.
+        await waitFor(() => expect(onRemove).toHaveBeenCalledWith('priya'));
         await expect(dialog).toBeVisible();
       }
     );
