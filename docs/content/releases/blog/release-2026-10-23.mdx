@@ -45,13 +45,14 @@ A `<ConfirmationDialog>` without `children` no longer leaves a blank band, and `
 - **Header actions keep their distance.** `<Panel.Header>` and `<Page.Header>` keep a 16px gap between the title and description and the actions.
 - **Drawer and Toast at 320px.** The full-screen mobile `<Drawer>` drops its rounded corners and reaches the right edge of the viewport again. Toasts keep the same margin on both sides.
 - **Table selection controls.** The selection checkbox and drag handle are centered on the first line of text for every `alignY` value, instead of sitting 2 to 3px off.
-- **Menu in button containers.** A labelled `<Menu>` in an `<ActionBar>`, `<ButtonGroup>`, `<Panel.Header>` or similar now picks up the same variant, size and disabled state as the buttons next to it, and hovers like a ghost button.
+- **Menu in button containers.** A labelled `<Menu>` in an `<ActionBar>`, `<Panel.Header>` or another button container now takes the ghost variant, size and disabled state from the container, and hovers like a ghost button. A `variant` or `size` set on the `Menu` still wins.
 - **Quieter dev warnings.** Development warnings fire once per instance instead of on every render. `<Card>` no longer warns about a missing name when it is hidden from assistive technology or labelled with `aria-labelledby`.
 
 ## Under the hood
 
 - **Style-prop classes ship with components.** The class names behind props like `weight`, `align` and `cursor` moved from `@marigold/system` into `@marigold/components`, so Tailwind finds them even when `@marigold/system` is not a direct dependency. Component props and the classes they render are unchanged.
 - **Links in tables.** The [Table](/components/collection/table) page has its Links section back. Use `variant="secondary"` for a link that repeats down a column, and the standard `<Link>` for details that point away from the table.
+- **No scrollbar gutter on small screens.** Below `sm` (640px), `html` no longer reserves room for the scrollbar, so full-screen overlays reach the right edge of the viewport. If you see a small layout shift below 640px, this is why.
 
 <Callout title="Deprecated: `fontWeight` and `textSize`" type="warning">
   `@marigold/system` still exports the `fontWeight` and `textSize` class maps,
@@ -61,4 +62,4 @@ A `<ConfirmationDialog>` without `children` no longer leaves a blank band, and `
 
 ---
 
-That's v18.3.1. Tab through your app once, the focus ring should now be visible everywhere it lands.
+That's v18.3.1. Tab through your app once: the focus ring should now be visible everywhere it lands.
