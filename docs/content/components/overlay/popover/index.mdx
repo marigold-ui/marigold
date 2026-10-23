@@ -73,25 +73,23 @@ People scan a list or a table and want to know what is behind one number, like h
 
 The details are data about the entry, laid out as rows, with a link or a button to act on them. That is what sets this apart from a [`<ContextualHelp>`](/components/overlay/contextual-help), which explains a control in a sentence or two. If the content is a help text, use ContextualHelp. Keep the popover to a few rows. When people need the whole record, with its history, related items or edit options, the popover becomes a page in disguise. Use a [`<Drawer>`](/components/overlay/drawer) or a page instead.
 
-### Rows people act on in place
+### Lists with actions on each item
 
-Some panels are lists where each row has its own actions, like notifications people archive or mark as read. A menu can't hold this, because its rows are commands and can't contain controls. Put a [`<ListView>`](/components/collection/listview) in the popover instead. Each row can carry its own buttons and an action menu, and people can deal with several rows without the panel closing.
+Some panels are lists where each row has its own actions, like notifications people open, mark as read or archive. A menu can't hold this, because its rows are commands and can't contain controls. Put a [`<ListView>`](/components/collection/listview) in the popover instead. Each row can carry its own buttons and an action menu, and people can deal with several rows without the panel closing.
 
 <ComponentDemo name="popover-notifications" />
 
-Put the list directly in `<Popover.Content>`. Its dividers then reach the popover's edges while the row text lines up with the title, and the list sits flush at the bottom of the panel. For other edge-to-edge content, like an [`<Accordion>`](/components/navigation/accordion), set `bleed` on `<Popover.Content>`.
-
 ### Finding and managing items in a list
 
-When the list gets longer, people need to find the row before they can act on it, like a team member whose role they want to change. Put a `<Popover.Search>` above the content to filter the list as people type. The search takes focus when the panel opens, and Tab moves on into the results.
+When the list gets longer, people need to find the row before they can act on it, like a team member whose role they want to change. A search field above the list filters it as people type. The search takes focus when the panel opens, and Tab moves on into the results.
 
 <ComponentDemo name="popover-search" />
 
-Search belongs in a popover only when people act on the rows in place. To let people type and pick one value, use an [`<Autocomplete>`](/components/form/autocomplete) or a [`<ComboBox>`](/components/form/combobox) instead. The field has no visible label, so give it an `aria-label` and a placeholder that both say what is searched. Under a `<Title>`, the search sits between two dividers. Without one it becomes the popover's header, and the popover then needs an `aria-label`.
+Search belongs in a popover only when each item in the list has its own actions. To let people type and pick one value, use an [`<Autocomplete>`](/components/form/autocomplete) or a [`<ComboBox>`](/components/form/combobox) instead.
 
 ### Quick, optional input
 
-Sometimes people want to add a small detail without leaving what they are doing, like a note on an order. A popover holds one to three optional fields right next to the thing they belong to. Put the fields in a [`<Form>`](/components/form/form) inside `<Popover.Content>` and close the popover from its submit handler. Enter submits the form from a single-line field. In a text area it adds a line, so always give the form a Save button. A button with `slot="close"` closes the popover without submitting, which suits Cancel.
+Sometimes people want to add a small detail without leaving what they are doing, like a note on an order. A popover holds one to three optional fields right next to the thing they belong to. Close the popover once the input is saved. Always give the form a Save and a Cancel button, since Enter in a text area adds a line instead of submitting.
 
 <ComponentDemo name="popover-mini-form" />
 
@@ -206,6 +204,8 @@ A popover can hold anything, which makes it easy to reach for. Most needs alread
 ## Accessibility
 
 The panel is a dialog. A `<Title>` inside `<Popover>` becomes its accessible name automatically. When the panel has no visible title, give `<Popover>` an `aria-label`. An icon-only trigger needs an `aria-label` too.
+
+The search field has no visible label, so give it an `aria-label` and a placeholder that both say what is searched. Without a title, the search becomes the panel's header and the panel needs an `aria-label`.
 
 The trigger exposes whether the panel is open. When the panel opens, focus moves into it. Tab moves through the controls inside, and Escape closes the panel and returns focus to the trigger. Set `keyboardDismissable={false}` on `<Popover.Trigger>` only when there is another clear way out, because a panel the keyboard can't leave is a barrier.
 
