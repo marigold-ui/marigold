@@ -97,6 +97,10 @@ Ask whether the choice does something now or stores a value for later. If it act
   </Dont>
 </GuidelineTiles>
 
+### Menu vs Popover
+
+A menu is a choice and a [`<Popover>`](/components/overlay/popover) is a place. If the panel should close after the user picks one thing, use a menu. If the user stays to work with what is inside, such as rows with their own buttons or a list to search and manage, use a popover. The [Popover page](/components/overlay/popover#popover-vs-menu) has the full comparison.
+
 ### Grouping related items
 
 A short menu needs no grouping, but once it holds several kinds of action the list gets harder to scan. Grouping breaks it into chunks a reader takes in at a glance, so they find the action they want without reading every row.
@@ -137,7 +141,7 @@ Selected rows show a checkmark and a highlighted background, aligned like `<List
 
 This is the one case where a menu row carries state, and it works because the whole row is the control. Clicking anywhere on the row flips the setting, and the checkmark only shows whether it is on. There is no separate switch inside the row to aim at, just the row itself.
 
-The moment a row needs its own control beside the label, such as a switch to flip or a link to follow, it becomes content that holds controls rather than a single command, and a menu is the wrong container. A menu item cannot expose interactive children to a screen reader or to keyboard focus, so use a surface built for arbitrary content instead.
+The moment a row needs its own control beside the label, such as a switch to flip or a link to follow, it becomes content that holds controls rather than a single command, and a menu is the wrong container. A menu item cannot expose interactive children to a screen reader or to keyboard focus, so use a [`<Popover>`](/components/overlay/popover) instead.
 
 ### Confirming and collecting input
 
@@ -175,7 +179,7 @@ Because a kebab hides its actions behind an extra click, keep it for secondary a
 
 `<Menu>` follows the ARIA menu pattern. The trigger opens the list, the whole menu is a single tab stop, and users move between items with the arrow keys, jump with type-ahead, and activate with Enter or Space. Escape closes the menu and returns focus to the trigger.
 
-Because it is a menu, an item is a single command and cannot contain interactive children. Screen readers do not expose controls nested inside a `menuitem`, and keyboard focus never lands on them. For a panel whose rows carry their own switches, buttons, or links, use a surface built for arbitrary content instead of a `<Menu>`. Toggling a menu's own rows is the exception, handled by selection mode, where the row itself is the control (`menuitemcheckbox` or `menuitemradio`).
+Because it is a menu, an item is a single command and cannot contain interactive children. Screen readers do not expose controls nested inside a `menuitem`, and keyboard focus never lands on them. For a panel whose rows carry their own switches, buttons, or links, use a [`<Popover>`](/components/overlay/popover) instead of a `<Menu>`. Toggling a menu's own rows is the exception, handled by selection mode, where the row itself is the control (`menuitemcheckbox` or `menuitemradio`).
 
 Give the trigger a clear name through the `label` prop, or an `aria-label` when the trigger is icon-only.
 
@@ -199,3 +203,4 @@ Give the trigger a clear name through the `label` prop, or an `aria-label` when 
 
 - [Select](/components/form/select): Use when the choice sets a value for a form rather than running an action.
 - [ActionMenu](/components/overlay/action-menu): The kebab-style companion for per-row and per-item actions.
+- [Popover](/components/overlay/popover): Use when the panel holds content the user works with, like rows with their own controls, instead of commands that close it.

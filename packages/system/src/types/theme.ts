@@ -126,7 +126,10 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Headline?: ComponentStyleFunction<string, string>;
-    Popover?: ComponentStyleFunction<string, string>;
+    Popover?: Record<
+      'container' | 'body' | 'title' | 'description' | 'search' | 'content',
+      ComponentStyleFunction<string, string>
+    >;
     HelpText?: Record<
       'container' | 'icon',
       ComponentStyleFunction<string, string>
