@@ -1,13 +1,7 @@
 import type { PropsWithChildren, ReactNode } from 'react';
-import {
-  createContext,
-  use,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import { createContext, use, useEffect, useRef, useState } from 'react';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { useEffectEvent } from '@react-aria/utils';
 import { intlMessages } from '../intl/messages';
 import { ConfirmationDialog } from './ConfirmationDialog';
 import type { ConfirmationDialogProps } from './ConfirmationDialog';
@@ -37,13 +31,10 @@ export const ConfirmationContext = createContext<ConfirmationFn | null>(null);
 // focus is back, so it can safely remove the trigger, e.g. delete the row
 // whose button opened the confirmation.
 const SettleOnUnmount = ({ onUnmount }: { onUnmount: () => void }) => {
-  const onUnmountRef = useRef(onUnmount);
-  useLayoutEffect(() => {
-    onUnmountRef.current = onUnmount;
-  });
+  const settle = useEffectEvent(onUnmount);
   useEffect(
     () => () => {
-      requestAnimationFrame(() => onUnmountRef.current());
+      requestAnimationFrame(settle);
     },
     []
   );
@@ -77,7 +68,8 @@ export const ConfirmationProvider = ({ children }: PropsWithChildren) => {
 
   const confirm = (config: ConfirmationConfig): Promise<ConfirmationResult> => {
     // Allow only one confirmation dialog at a time. Immediately resolve with a default status.
-    if (open) {
+    // The ref, not `open`: two calls in the same tick both see the stale state.
+    if (openRef.current) {
       console.warn(
         'A confirmation dialog is already open. Rejecting new request.'
       );
