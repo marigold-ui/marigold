@@ -167,13 +167,11 @@ export type Theme = {
       | 'indicator'
       | 'actions',
       ComponentStyleFunction<string, string>
-    > &
-      Partial<
-        Record<
-          'container' | 'header' | 'count',
-          ComponentStyleFunction<string, string>
-        >
-      >;
+    > & {
+      container?: ComponentStyleFunction<string, string>;
+      header?: ComponentStyleFunction<string, string>;
+      count?: ComponentStyleFunction<string, string>;
+    };
     Menu?: Record<
       | 'container'
       | 'section'
@@ -241,10 +239,10 @@ export type Theme = {
       | 'indicator'
       | 'action',
       ComponentStyleFunction<string, string>
-    > &
-      Partial<
-        Record<'header' | 'count', ComponentStyleFunction<string, string>>
-      >;
+    > & {
+      header?: ComponentStyleFunction<string, string>;
+      count?: ComponentStyleFunction<string, string>;
+    };
     NumberField?: Record<
       'group' | 'stepper' | 'input',
       ComponentStyleFunction<string, string>
