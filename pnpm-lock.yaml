@@ -377,7 +377,7 @@ importers:
         specifier: 3.0.3
         version: 3.0.3(zod@4.6.5)
     devDependencies:
-      '@tailwindcss/postcss':
+      '@tailwindcss/webpack':
         specifier: ^4.3.3
         version: 4.3.3
       '@types/mdast':
@@ -413,9 +413,6 @@ importers:
       p-limit:
         specifier: 7.3.3
         version: 7.3.3
-      postcss:
-        specifier: ^8.5.25
-        version: 8.5.31
       tailwindcss:
         specifier: ^4.3.3
         version: 4.3.3
@@ -3215,6 +3212,17 @@ packages:
     resolution: {integrity: sha512-yYU8cogLeSh/ms2jh8Fj7jaba/EWa7Ja6GoUqYZaraEuCI5YS6ms6ObZgjjedm+jm6XZjdNRWBpPP6Z86oOxcw==}
     peerDependencies:
       vite: ^5.2.0 || ^6 || ^7 || ^8
+
+  '@tailwindcss/webpack@4.3.3':
+    resolution: {integrity: sha512-e7A7ubt+D+MzXAlQcOaDaHMD5oYzxULVdZVjLzGVStIXebGfD4RcVHxBSRP7xE+G8sS3o691zyfIbhm/veOLjQ==}
+    peerDependencies:
+      '@rspack/core': ^1.0.0 || ^2.0.0
+      webpack: ^5.0.0
+    peerDependenciesMeta:
+      '@rspack/core':
+        optional: true
+      webpack:
+        optional: true
 
   '@tanstack/query-core@5.103.2':
     resolution: {integrity: sha512-I8DkFXls5jXLqtm8+QpOhEmG07hIblhSZFzafg9wHsMSEvMzULy9hK17wU1T/ahfhMbtITJhbxutwwCoihkR7A==}
@@ -10773,6 +10781,13 @@ snapshots:
       '@tailwindcss/oxide': 4.3.3
       tailwindcss: 4.3.3
       vite: 8.3.3(@types/node@24.13.5)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
+
+  '@tailwindcss/webpack@4.3.3':
+    dependencies:
+      '@alloc/quick-lru': 5.2.0
+      '@tailwindcss/node': 4.3.3
+      '@tailwindcss/oxide': 4.3.3
+      tailwindcss: 4.3.3
 
   '@tanstack/query-core@5.103.2': {}
 
