@@ -301,19 +301,23 @@ ButtonVariants.test(
 ButtonVariants.test(
   'Keyboard focus leaves room between the link label and its ring',
   { parameters: { chromatic: { disableSnapshot: false } } },
-  async ({ canvas, userEvent }) => {
-    const [link] = await canvas.findAllByRole('button', { name: 'Link' });
-    link!.focus();
-    await userEvent.tab();
+  async ({ canvas, userEvent, step }) => {
+    const links = await canvas.findAllByRole('button', { name: 'Link' });
+    for (const [index, link] of links.entries()) {
+      await step(index === 0 ? 'On surface' : 'On page', async () => {
+        link.focus();
+        await userEvent.tab();
+        await userEvent.tab({ shift: true });
 
-    await userEvent.tab({ shift: true });
-
-    const range = document.createRange();
-    range.selectNodeContents(link!);
-    const gap =
-      range.getBoundingClientRect().left - link!.getBoundingClientRect().left;
-    await expect(link).toHaveFocus();
-    expect(gap).toBeGreaterThanOrEqual(2);
-    await waitFor(() => expectFocusRingContrast(link!));
+        const range = document.createRange();
+        range.selectNodeContents(link);
+        const gap =
+          range.getBoundingClientRect().left -
+          link.getBoundingClientRect().left;
+        await expect(link).toHaveFocus();
+        expect(gap).toBeGreaterThanOrEqual(4);
+        await waitFor(() => expectFocusRingContrast(link));
+      });
+    }
   }
 );
