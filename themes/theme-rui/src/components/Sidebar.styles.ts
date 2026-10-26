@@ -3,7 +3,8 @@ import { type ThemeComponent, cva } from '@marigold/system';
 /**
  * Two charcoal tiers of ink. Active is `foreground` on a flat `selected` pill,
  * idle a step lighter, hover previews it. Section labels are set apart by
- * treatment, not colour: charcoal-500 is 3.3:1, below the 4.5:1 AA floor.
+ * size, weight and the gap above them, not colour: charcoal-500 is 3.3:1,
+ * below the 4.5:1 AA floor.
  */
 export const Sidebar: ThemeComponent<'Sidebar'> = {
   // The full-width sheet covers the page, so there is nothing to dim.
@@ -79,11 +80,15 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   // stays perceivable (the surface rim is now faint).
   separator: cva({ base: 'bg-border mx-3 my-1.5 h-px border-0' }),
   groupLabel: cva({
-    // Quiet caption aligned to the pill's item text (16px). pt-4 gives groups
-    // an even rhythm that reads as a section break. A leading caption has
-    // nothing above to separate from, so drop to `first:pt-[5px]` — the item
-    // row's centering offset — so its text lines up with a first item's.
-    base: 'pl-4 pr-3 pt-4 first:pt-[5px] pb-1 text-[0.6875rem] font-bold uppercase tracking-[0.07em] text-secondary',
+    // Quiet caption aligned to the pill's item text (16px): 12px medium in
+    // sentence case, a landmark rather than a shout. The gap does the
+    // separating — pt-6 (24px) is 0.8 of a 30px row, so a group break reads
+    // as one even without a separator; pt-4 was half a row and groups ran
+    // together once the list outgrew the viewport (see the LongNavigation
+    // story). A leading caption has nothing above to separate from, so drop
+    // to `first:pt-[7px]` — the offset that centres its 16px line box on the
+    // same axis as a first item's text.
+    base: 'pl-4 pr-3 pt-6 first:pt-[7px] pb-1.5 text-xs font-medium text-secondary',
   }),
   navPanel: cva({
     base: [
@@ -121,7 +126,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'outline-none focus-visible:ui-state-focus-item',
       // Idle `secondary-bold` (charcoal-700): clickable rows must out-rank the
       // `secondary` groupLabel captions, which already sit at the AA floor for
-      // 11px and can't go lighter. `foreground` would flatten idle against the
+      // 12px and can't go lighter. `foreground` would flatten idle against the
       // active row. Hover lifts to `foreground`.
       'text-secondary-bold hover:bg-hover hover:text-foreground',
       'data-active:bg-selected data-active:font-medium data-active:text-foreground',
@@ -257,7 +262,8 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     ],
   }),
   // Section heading atop the panel; also the focus target when the panel swaps.
-  // Full-strength ink, deliberately distinct from the uppercase groupLabels.
+  // Full-strength ink, deliberately distinct from the `secondary` groupLabel
+  // captions: semibold 14px against their medium 12px.
   panelTitle: cva({
     base: [
       // Centered via line-height, not flex: ellipsis needs a block container.
