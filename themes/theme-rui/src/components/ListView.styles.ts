@@ -28,7 +28,7 @@ export const ListView: ThemeComponent<'ListView'> = {
     defaultVariants: { variant: 'default' },
   }),
   count: cva({
-    base: ["before:content-['·'] before:me-2", 'text-secondary'],
+    base: ["before:content-['·'_/_''] before:me-2", 'text-secondary'],
   }),
   list: cva({
     base: ['w-full outline-0 flex flex-col divide-y divide-border'],

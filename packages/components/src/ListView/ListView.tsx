@@ -1,11 +1,11 @@
 import type { ReactNode, Ref } from 'react';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import type RAC from 'react-aria-components';
 import { GridList as RACGridList } from 'react-aria-components/GridList';
-import { useControlledState } from '@react-stately/utils';
-import type { Key, Selection, SelectionMode } from '@react-types/shared';
+import type { SelectionMode } from '@react-types/shared';
 import { useClassNames } from '@marigold/system';
 import { SelectAllHeader, useSelectableKeys } from '../utils/SelectAll';
+import { useLiftedSelection } from '../utils/useLiftedSelection';
 import { ListViewContext } from './Context';
 import { ListViewItem } from './ListViewItem';
 
@@ -60,11 +60,6 @@ interface ListViewComponent {
   Item: typeof ListViewItem;
 }
 
-const toSelection = (
-  value: Selection | Iterable<Key> | undefined
-): Selection =>
-  value === 'all' ? 'all' : value instanceof Set ? value : new Set(value ?? []);
-
 const ListViewBase = ({
   variant,
   size,
@@ -82,16 +77,9 @@ const ListViewBase = ({
 
   const hasSelectAll = allowSelectAll === true && selectionMode === 'multiple';
 
-  const controlledSelection = useMemo(
-    () => (selectedKeys !== undefined ? toSelection(selectedKeys) : undefined),
-    [selectedKeys]
-  );
-  const [initialSelection] = useState<Selection>(() =>
-    toSelection(defaultSelectedKeys)
-  );
-  const [selection, setSelection] = useControlledState<Selection>(
-    controlledSelection,
-    initialSelection,
+  const [selection, setSelection] = useLiftedSelection(
+    selectedKeys,
+    defaultSelectedKeys,
     onSelectionChange
   );
 
@@ -99,65 +87,41 @@ const ListViewBase = ({
     children,
     items: rest.items,
     disabledKeys: rest.disabledKeys,
-    warn: hasSelectAll,
+    enabled: hasSelectAll,
   });
 
   const onSelectAll = useCallback(
-    (selected: boolean) => setSelection(selected ? 'all' : new Set()),
-    [setSelection]
+    (selected: boolean) => {
+      if (!selected && rest.disallowEmptySelection) {
+        return;
+      }
+      setSelection(selected ? 'all' : new Set());
+    },
+    [setSelection, rest.disallowEmptySelection]
   );
 
   // `useClassNames` returns a fresh object, so memoise on the slot strings.
-  const {
-    container,
-    header,
-    count,
-    list,
-    item,
-    label,
-    description,
-    title,
-    indicator,
-    actions,
-  } = classNames;
+  const { item, label, description, title, indicator, actions } = classNames;
   const contextValue = useMemo(
     () => ({
-      classNames: {
-        container,
-        header,
-        count,
-        list,
-        item,
-        label,
-        description,
-        title,
-        indicator,
-        actions,
-      },
+      classNames: { item, label, description, title, indicator, actions },
     }),
-    [
-      container,
-      header,
-      count,
-      list,
-      item,
-      label,
-      description,
-      title,
-      indicator,
-      actions,
-    ]
+    [item, label, description, title, indicator, actions]
   );
 
   return (
     <ListViewContext value={contextValue}>
-      <div className={container}>
+      <div className={classNames.container}>
         {hasSelectAll && (
           <SelectAllHeader
             keys={keys}
             selection={selection}
             onChange={onSelectAll}
-            classNames={{ header, count }}
+            labelledBy={rest['aria-labelledby']}
+            classNames={{
+              header: classNames.header,
+              count: classNames.count,
+            }}
           />
         )}
         <RACGridList
@@ -170,7 +134,7 @@ const ListViewBase = ({
           selectionBehavior="toggle"
           selectedKeys={selection}
           onSelectionChange={setSelection}
-          className={list}
+          className={classNames.list}
         >
           {children}
         </RACGridList>

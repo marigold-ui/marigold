@@ -14,6 +14,10 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     variants: {
       variant: {
         default: [
+          // A default SelectList is a boxed list: its frame edge and the internal
+          // row dividers should read as one weight, so both use the opaque
+          // --color-border. (A translucent control ring would composite lighter
+          // than the opaque dividers, so left/right wouldn't match top/bottom.)
           // The frame wraps the select-all and the options together, so the
           // header reads as the list's first row rather than a second label
           // above the field's own (DST-1751 review).
@@ -25,6 +29,7 @@ export const SelectList: ThemeComponent<'SelectList'> = {
         bordered: [
           '[--selectlist-item-px:var(--spacing-square-relaxed-x)]',
           '[--selectlist-item-py:var(--spacing-square-relaxed-y)]',
+          '[--selectlist-list-inset:calc(var(--spacing)*1)]',
         ],
       },
     },
@@ -47,9 +52,9 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           'gap-2',
           // Each item is its own control; its ring lives in the box-shadow
           // chain. This list is a scroll container, which clips box-shadow on
-          // both axes, so p-1 gives the rings room inside the scrollport (the
-          // padding box) instead of being cut at the edges.
-          'p-1',
+          // both axes, so this padding gives the rings room inside the
+          // scrollport (the padding box) instead of being cut at the edges.
+          'p-(--selectlist-list-inset)',
         ],
       },
     },
@@ -68,13 +73,13 @@ export const SelectList: ThemeComponent<'SelectList'> = {
         // dividers between options, so the header reads as part of the list.
         default: 'py-(--selectlist-item-py) border-b border-border',
         // No frame to sit in, so it stays a control above the options.
-        bordered: 'mx-1 mb-2',
+        bordered: 'mx-(--selectlist-list-inset) mb-2',
       },
     },
     defaultVariants: { variant: 'default' },
   }),
   count: cva({
-    base: ["before:content-['·'] before:me-2", 'text-secondary'],
+    base: ["before:content-['·'_/_''] before:me-2", 'text-secondary'],
   }),
   item: cva({
     base: [

@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode, Ref } from 'react';
-import { useCallback, useId, useMemo, useState } from 'react';
+import { useCallback, useId, useMemo } from 'react';
 import type RAC from 'react-aria-components';
 import { FieldErrorContext } from 'react-aria-components/FieldError';
 import { FormContext } from 'react-aria-components/Form';
@@ -8,7 +8,6 @@ import { LabelContext } from 'react-aria-components/Label';
 import { Provider, useSlottedContext } from 'react-aria-components/slots';
 import { useObjectRef } from '@react-aria/utils';
 import { useFormValidationState } from '@react-stately/form';
-import { useControlledState } from '@react-stately/utils';
 import type {
   Key,
   Orientation,
@@ -32,6 +31,7 @@ import { FieldBase } from '../FieldBase/FieldBase';
 import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
 import { SelectAllHeader, useSelectableKeys } from '../utils/SelectAll';
 import { hasAddonContent, joinIds } from '../utils/useLabelAddon';
+import { useLiftedSelection } from '../utils/useLiftedSelection';
 import { SelectListContext } from './Context';
 import { SelectListOption } from './SelectListOption';
 
@@ -203,11 +203,6 @@ interface SelectListComponent {
 // every render (avoids unnecessary work for any consumer that compares it).
 const EMPTY_STYLE: CSSProperties = {};
 
-const toSelection = (
-  value: Selection | Iterable<Key> | undefined
-): Selection =>
-  value === 'all' ? 'all' : value instanceof Set ? value : new Set(value ?? []);
-
 const toValidationValue = (
   selection: Selection,
   selectionMode: SelectionMode
@@ -263,11 +258,11 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
   const gridListRef = useObjectRef(ref);
 
   // Resolve the optional `p` / `px` / `py` props to per-axis CSS custom
-  // properties on the list root. Each option reads `--selectlist-item-px` /
+  // properties. Each option reads `--selectlist-item-px` /
   // `--selectlist-item-py` via cascade, so any value set here flows down. When
   // the consumer leaves these props unset the theme provides the variant
-  // fallback (see `SelectList.styles.ts` `list` slot) — the component itself
-  // doesn't know any variant names.
+  // fallback (see `SelectList.styles.ts` `container` slot) — the component
+  // itself doesn't know any variant names.
   const itemPaddingStyle = useMemo<CSSProperties>(() => {
     if (p === undefined && px === undefined && py === undefined) {
       return EMPTY_STYLE;
@@ -306,19 +301,9 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
   const validationBehavior =
     validationBehaviorProp ?? formCtx?.validationBehavior ?? 'native';
 
-  const controlledSelection = useMemo(
-    () => (selectedKeys !== undefined ? toSelection(selectedKeys) : undefined),
-    [selectedKeys]
-  );
-  const [initialSelection] = useState<Selection>(() =>
-    defaultSelectedKeys !== undefined
-      ? toSelection(defaultSelectedKeys)
-      : new Set()
-  );
-
-  const [selection, setSelection] = useControlledState<Selection>(
-    controlledSelection,
-    initialSelection,
+  const [selection, setSelection] = useLiftedSelection(
+    selectedKeys,
+    defaultSelectedKeys,
     (value: Selection) => {
       if (!onChange) return;
       const next = toValidationValue(value, resolvedSelectionMode);
@@ -326,9 +311,32 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
     }
   );
 
+  const selectableKeys = useSelectableKeys({
+    children,
+    items: rest.items,
+    disabledKeys: rest.disabledKeys,
+    enabled: resolvedSelectionMode === 'multiple',
+  });
+
+  const lockedKeys = useMemo(() => {
+    if (selection === 'all' || selection.size === 0) {
+      return [];
+    }
+    const selectable = new Set(selectableKeys);
+    return Array.from(selection).filter(key => !selectable.has(key));
+  }, [selection, selectableKeys]);
+
+  const resolvedSelection = useMemo(
+    () =>
+      selection === 'all' && resolvedSelectionMode === 'multiple'
+        ? new Set(selectableKeys)
+        : selection,
+    [selection, selectableKeys, resolvedSelectionMode]
+  );
+
   const validationValue = useMemo(
-    () => toValidationValue(selection, resolvedSelectionMode),
-    [selection, resolvedSelectionMode]
+    () => toValidationValue(resolvedSelection, resolvedSelectionMode),
+    [resolvedSelection, resolvedSelectionMode]
   );
 
   const validationState = useFormValidationState<Key | null | Key[]>({
@@ -339,28 +347,28 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
     validationBehavior,
   });
 
-  const selectableKeys = useSelectableKeys({
-    children,
-    items: rest.items,
-    disabledKeys: rest.disabledKeys,
-    warn: hasSelectAll,
-  });
-
   const handleSelectionChange = useCallback(
     (keys: Selection) => {
-      // A field has to submit a value, and `HiddenSelection` submits nothing
-      // for `'all'`, so the sentinel is always resolved to concrete keys,
-      // including to an empty set, which at least matches what is reported.
-      setSelection(keys === 'all' ? new Set(selectableKeys) : keys);
+      setSelection(
+        keys === 'all' ? new Set([...selectableKeys, ...lockedKeys]) : keys
+      );
       validationState.commitValidation();
     },
-    [setSelection, validationState, selectableKeys]
+    [setSelection, validationState, selectableKeys, lockedKeys]
   );
 
   const onSelectAll = useCallback(
-    (selected: boolean) =>
-      handleSelectionChange(selected ? new Set(selectableKeys) : new Set()),
-    [handleSelectionChange, selectableKeys]
+    (selected: boolean) => {
+      if (selected) {
+        handleSelectionChange('all');
+        return;
+      }
+      if (lockedKeys.length === 0 && resolvedDisallowEmptySelection) {
+        return;
+      }
+      handleSelectionChange(new Set(lockedKeys));
+    },
+    [handleSelectionChange, lockedKeys, resolvedDisallowEmptySelection]
   );
 
   const contextValue = useMemo(
@@ -400,9 +408,10 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
             {hasSelectAll && (
               <SelectAllHeader
                 keys={selectableKeys}
-                selection={selection}
+                selection={resolvedSelection}
                 onChange={onSelectAll}
                 disabled={disabled}
+                labelledBy={label ? labelId : rest['aria-labelledby']}
                 classNames={{
                   header: classNames.header,
                   count: classNames.count,
@@ -426,9 +435,10 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
               selectionBehavior="toggle"
               selectionMode={resolvedSelectionMode}
               disallowEmptySelection={resolvedDisallowEmptySelection}
-              selectedKeys={selection}
+              selectedKeys={resolvedSelection}
               onSelectionChange={handleSelectionChange}
               className={cn('group/list', classNames.list)}
+              style={itemPaddingStyle}
             >
               {children}
             </RACGridList>
@@ -438,7 +448,7 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
               disabled={disabled}
               required={required}
               selectionMode={resolvedSelectionMode}
-              selection={selection}
+              selection={resolvedSelection}
               onSelectionChange={setSelection}
               validationBehavior={validationBehavior}
               validationState={validationState}

@@ -789,6 +789,7 @@ SingleSelection.test(
 
 export const WithSelectAll = meta.story({
   tags: ['component-test'],
+  parameters: { bleed: true },
   args: {
     selectionMode: 'multiple',
     allowSelectAll: true,
@@ -852,19 +853,35 @@ WithSelectAll.test(
   }
 );
 
-WithSelectAll.test(
-  'puts the header checkbox on the row indicator column',
-  { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas }) => {
-    const x = (element: Element) =>
-      Math.round(element.getBoundingClientRect().x);
-    const header = canvas
-      .getByRole('checkbox', { name: 'Select all' })
-      .closest('label')!;
-    const [firstRow] = canvas.getAllByRole('row');
-    const indicator = firstRow.querySelector('[data-grid-area="indicator"]')!;
+interface AlignmentCanvas {
+  getByRole: (role: string, options?: { name?: string }) => HTMLElement;
+  getAllByRole: (role: string) => HTMLElement[];
+}
 
-    expect(x(header)).toBe(x(indicator));
+const expectHeaderOnIndicatorColumn = (canvas: AlignmentCanvas) => {
+  const x = (element: Element) => Math.round(element.getBoundingClientRect().x);
+  const header = canvas
+    .getByRole('checkbox', { name: 'Select all' })
+    .closest('label')!;
+  const [firstRow] = canvas.getAllByRole('row');
+  const indicator = firstRow.querySelector('[data-grid-area="indicator"]')!;
+
+  expect(x(header)).toBe(x(indicator));
+};
+
+WithSelectAll.test(
+  'puts the header checkbox on the row indicator column when bled',
+  { parameters: { bleed: true, chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    expectHeaderOnIndicatorColumn(canvas);
+  }
+);
+
+WithSelectAll.test(
+  'puts the header checkbox on the row indicator column without bleed',
+  { parameters: { bleed: false, chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    expectHeaderOnIndicatorColumn(canvas);
   }
 );
 
@@ -1032,7 +1049,7 @@ export const WithActionBar = meta.story({
   tags: ['component-test'],
   // Nothing is selected at rest, so the bar is closed and the snapshot would be
   // `MultipleSelection` with a third row. `ActionBar` guards its own appearance.
-  parameters: { chromatic: { disableSnapshot: true } },
+  parameters: { bleed: true, chromatic: { disableSnapshot: true } },
   args: { selectionMode: 'multiple', allowSelectAll: true },
   render: args => <BulkActionsExample {...args} />,
 });

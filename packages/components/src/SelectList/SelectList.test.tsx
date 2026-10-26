@@ -438,6 +438,19 @@ describe('SelectList', () => {
       // eslint-disable-next-line testing-library/no-node-access
       screen.getByRole('grid').parentElement as HTMLElement;
 
+    test('writes the vars on the list too, so a theme declaring them there cannot win', () => {
+      render(<Basic.Component p="square-loose" />);
+
+      for (const element of [paddingHost(), screen.getByRole('grid')]) {
+        expect(element.style.getPropertyValue('--selectlist-item-px')).toBe(
+          'var(--spacing-square-loose-x)'
+        );
+        expect(element.style.getPropertyValue('--selectlist-item-py')).toBe(
+          'var(--spacing-square-loose-y)'
+        );
+      }
+    });
+
     test('does not set inline padding vars when no prop is passed (theme provides defaults)', () => {
       render(<Basic.Component aria-label="Test" />);
 
@@ -607,9 +620,16 @@ describe('SelectList', () => {
   });
 
   describe('select-all header', () => {
-    const Addons = (props: {
+    const Addons = ({
+      lockedDisabled,
+      ...props
+    }: {
       selectionMode?: 'single' | 'multiple';
       disabled?: boolean;
+      disallowEmptySelection?: boolean;
+      defaultSelectedKeys?: Iterable<string>;
+      onChange?: (keys: string[]) => void;
+      lockedDisabled?: boolean;
     }) => (
       <MarigoldProvider theme={theme}>
         <SelectList
@@ -624,6 +644,13 @@ describe('SelectList', () => {
           <SelectList.Option id="gift-wrap" textValue="Gift wrap">
             <Description>Premium paper</Description>
           </SelectList.Option>
+          <SelectList.Option
+            id="locked"
+            textValue="Locked"
+            disabled={lockedDisabled}
+          >
+            <Description>Set by the plan</Description>
+          </SelectList.Option>
         </SelectList>
       </MarigoldProvider>
     );
@@ -633,7 +660,7 @@ describe('SelectList', () => {
 
       const selectAll = screen.getByRole('checkbox', { name: 'Select all' });
 
-      expect(screen.getAllByRole('row')).toHaveLength(2);
+      expect(screen.getAllByRole('row')).toHaveLength(3);
       expect(screen.getByRole('grid')).not.toContainElement(selectAll);
     });
 
@@ -651,6 +678,92 @@ describe('SelectList', () => {
       expect(
         screen.getByRole('checkbox', { name: 'Select all' })
       ).toBeDisabled();
+    });
+
+    test('keeps a preselected disabled option when selecting everything', async () => {
+      const onChange = vi.fn();
+      render(
+        <Addons
+          lockedDisabled
+          defaultSelectedKeys={['locked']}
+          onChange={onChange}
+        />
+      );
+
+      await user.click(screen.getByRole('checkbox', { name: 'Select all' }));
+
+      expect(onChange).toHaveBeenLastCalledWith([
+        'insurance',
+        'gift-wrap',
+        'locked',
+      ]);
+    });
+
+    test('keeps a preselected disabled option when clearing', async () => {
+      const onChange = vi.fn();
+      render(
+        <Addons
+          lockedDisabled
+          defaultSelectedKeys={['locked', 'insurance', 'gift-wrap']}
+          onChange={onChange}
+        />
+      );
+
+      await user.click(screen.getByRole('checkbox', { name: 'Select all' }));
+
+      expect(onChange).toHaveBeenLastCalledWith(['locked']);
+    });
+
+    test('leaves the selection alone when it may not be emptied', async () => {
+      const onChange = vi.fn();
+      render(
+        <Addons
+          disallowEmptySelection
+          defaultSelectedKeys={['insurance', 'gift-wrap', 'locked']}
+          onChange={onChange}
+        />
+      );
+
+      const selectAll = screen.getByRole('checkbox', { name: 'Select all' });
+      expect(selectAll).toBeChecked();
+
+      await user.click(selectAll);
+
+      expect(onChange).not.toHaveBeenCalled();
+      expect(selectAll).toBeChecked();
+    });
+
+    test('names the list in the description so two can be told apart', () => {
+      render(<Addons />);
+
+      expect(
+        screen.getByRole('checkbox', { name: 'Select all' })
+      ).toHaveAccessibleDescription('0 of 3 selected Add-ons');
+    });
+
+    test('submits concrete keys for a controlled `selectedKeys="all"`', () => {
+      const { container } = render(
+        <MarigoldProvider theme={theme}>
+          <SelectList
+            label="Add-ons"
+            name="addons"
+            selectionMode="multiple"
+            allowSelectAll
+            selectedKeys="all"
+          >
+            <SelectList.Option id="insurance" textValue="Insurance" />
+            <SelectList.Option id="gift-wrap" textValue="Gift wrap" />
+          </SelectList>
+        </MarigoldProvider>
+      );
+
+      // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
+      const select = container.querySelector(
+        'select[name="addons"]'
+      ) as HTMLSelectElement;
+      const values = Array.from(select.selectedOptions, o => o.value);
+
+      expect(values).toEqual(['insurance', 'gift-wrap']);
     });
   });
 });

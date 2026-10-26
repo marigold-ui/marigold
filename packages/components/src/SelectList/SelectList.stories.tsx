@@ -17,6 +17,7 @@ import {
 import { selectionMark } from '../control.utils';
 import { Info } from '../icons/Info';
 import { SelectList } from './SelectList';
+import type { SelectListProps } from './SelectList';
 
 // `select` controls render `undefined` as a normal option only when an
 // explicit label is mapped to it — Storybook treats the literal `undefined`
@@ -336,6 +337,35 @@ WithMultiSelection.test(
   }
 );
 
+const SHIPPING_ADD_ONS = [
+  {
+    id: 'insurance',
+    name: 'Parcel insurance',
+    detail: 'Covers loss or damage up to $500.',
+  },
+  {
+    id: 'signature',
+    name: 'Signature on delivery',
+    detail: 'Require a signature when handed over.',
+  },
+  {
+    id: 'gift-wrap',
+    name: 'Gift wrap',
+    detail: 'Premium paper and a handwritten note.',
+  },
+];
+
+const renderAddOns = (args: SelectListProps<'multiple'>) => (
+  <SelectList {...args} label="Shipping add-ons">
+    {SHIPPING_ADD_ONS.map(addOn => (
+      <SelectList.Option key={addOn.id} id={addOn.id} textValue={addOn.name}>
+        <TextValue>{addOn.name}</TextValue>
+        <Description>{addOn.detail}</Description>
+      </SelectList.Option>
+    ))}
+  </SelectList>
+);
+
 export const WithSelectAll = meta.story({
   tags: ['component-test'],
   args: {
@@ -343,22 +373,7 @@ export const WithSelectAll = meta.story({
     allowSelectAll: true,
     onChange: fn(),
   },
-  render: args => (
-    <SelectList {...args} label="Shipping add-ons">
-      <SelectList.Option id="insurance" textValue="Parcel insurance">
-        <TextValue>Parcel insurance</TextValue>
-        <Description>Covers loss or damage up to $500.</Description>
-      </SelectList.Option>
-      <SelectList.Option id="signature" textValue="Signature on delivery">
-        <TextValue>Signature on delivery</TextValue>
-        <Description>Require a signature when handed over.</Description>
-      </SelectList.Option>
-      <SelectList.Option id="gift-wrap" textValue="Gift wrap">
-        <TextValue>Gift wrap</TextValue>
-        <Description>Premium paper and a handwritten note.</Description>
-      </SelectList.Option>
-    </SelectList>
-  ),
+  render: renderAddOns,
 });
 
 WithSelectAll.test(
@@ -398,19 +413,36 @@ WithSelectAll.test(
   }
 );
 
+interface AlignmentCanvas {
+  getByRole: (role: string, options?: { name?: string }) => HTMLElement;
+  getAllByRole: (role: string) => HTMLElement[];
+}
+
+const expectSelectAllOnIndicatorColumn = (canvas: AlignmentCanvas) => {
+  const x = (element: Element) => Math.round(element.getBoundingClientRect().x);
+  const selectAll = canvas.getByRole('checkbox', { name: 'Select all' });
+  const [firstRow] = canvas.getAllByRole('row');
+  const indicator = firstRow.querySelector('input[type="checkbox"]')!;
+
+  expect(x(selectAll)).toBe(x(indicator));
+};
+
 WithSelectAll.test(
   'puts the header checkbox on the option indicator column',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
-    const x = (element: Element) =>
-      Math.round(element.getBoundingClientRect().x);
-    const header = canvas
-      .getByRole('checkbox', { name: 'Select all' })
-      .closest('label')!;
-    const [firstRow] = canvas.getAllByRole('row');
-    const indicator = firstRow.querySelector('.col-start-1')!;
+    expectSelectAllOnIndicatorColumn(canvas);
+  }
+);
 
-    expect(x(header)).toBe(x(indicator));
+WithSelectAll.test(
+  'puts the header checkbox on the option indicator column when bordered',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { variant: 'bordered' },
+  },
+  async ({ canvas }) => {
+    expectSelectAllOnIndicatorColumn(canvas);
   }
 );
 
@@ -799,37 +831,8 @@ export const BorderedWithSelectAll = meta.story({
     selectionMode: 'multiple',
     allowSelectAll: true,
   },
-  render: args => (
-    <SelectList {...args} label="Shipping add-ons">
-      <SelectList.Option id="insurance" textValue="Parcel insurance">
-        <TextValue>Parcel insurance</TextValue>
-        <Description>Covers loss or damage up to $500.</Description>
-      </SelectList.Option>
-      <SelectList.Option id="signature" textValue="Signature on delivery">
-        <TextValue>Signature on delivery</TextValue>
-        <Description>Require a signature when handed over.</Description>
-      </SelectList.Option>
-      <SelectList.Option id="gift-wrap" textValue="Gift wrap">
-        <TextValue>Gift wrap</TextValue>
-        <Description>Premium paper and a handwritten note.</Description>
-      </SelectList.Option>
-    </SelectList>
-  ),
+  render: renderAddOns,
 });
-
-BorderedWithSelectAll.test(
-  'the select-all sits on the same column as the option indicators',
-  { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas }) => {
-    const indicatorX = (within: HTMLElement) =>
-      within.querySelector('input[type="checkbox"]')!.getBoundingClientRect().x;
-
-    const selectAll = canvas.getByRole('checkbox', { name: 'Select all' });
-    const [firstRow] = canvas.getAllByRole('row');
-
-    expect(selectAll.getBoundingClientRect().x).toBe(indicatorX(firstRow));
-  }
-);
 
 export const WithCustomPadding = meta.story({
   tags: ['component-test'],

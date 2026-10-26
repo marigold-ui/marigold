@@ -9,7 +9,6 @@ import { Description } from '../Description/Description';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import { Text } from '../Text/Text';
 import { TextValue } from '../TextValue/TextValue';
-import { __resetMissingIdsWarning } from '../utils/SelectAll';
 import type { ListViewProps } from './ListView';
 import { ListView } from './ListView';
 import {
@@ -491,8 +490,6 @@ describe('ListView', () => {
   });
 
   describe('select-all header', () => {
-    beforeEach(__resetMissingIdsWarning);
-
     const Venues = ({
       children,
       ...props
@@ -563,7 +560,7 @@ describe('ListView', () => {
       );
 
       expect(warnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('needs an `id` on every item')
+        expect.stringContaining('Give every item an `id`')
       );
 
       warnSpy.mockRestore();
@@ -591,14 +588,41 @@ describe('ListView', () => {
       ).toBeDisabled();
     });
 
-    test('splitting the header off keeps the rows keyed', () => {
-      const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    test('leaves the selection alone when it may not be emptied', async () => {
+      const onSelectionChange = vi.fn();
+      render(
+        <Venues disallowEmptySelection onSelectionChange={onSelectionChange} />
+      );
 
-      render(<Venues />);
+      const selectAll = screen.getByRole('checkbox', { name: 'Select all' });
+      await user.click(selectAll);
+      onSelectionChange.mockClear();
 
-      expect(errorSpy).not.toHaveBeenCalled();
+      await user.click(selectAll);
 
-      errorSpy.mockRestore();
+      expect(onSelectionChange).not.toHaveBeenCalled();
+      expect(selectAll).toBeChecked();
+    });
+
+    test('names the list in the description when it has a visible label', () => {
+      render(
+        <MarigoldProvider theme={theme}>
+          <span id="venues-label">Venues</span>
+          <ListView
+            aria-labelledby="venues-label"
+            selectionMode="multiple"
+            allowSelectAll
+          >
+            <ListView.Item id="gasometer" textValue="Gasometer">
+              <TextValue>Gasometer</TextValue>
+            </ListView.Item>
+          </ListView>
+        </MarigoldProvider>
+      );
+
+      expect(
+        screen.getByRole('checkbox', { name: 'Select all' })
+      ).toHaveAccessibleDescription('0 of 1 selected Venues');
     });
   });
 });
