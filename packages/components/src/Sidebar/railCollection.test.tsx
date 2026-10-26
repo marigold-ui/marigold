@@ -4,6 +4,7 @@ import { SidebarItem } from './SidebarItem';
 import { SidebarNav } from './SidebarNav';
 import { SidebarRailItem } from './SidebarRailItem';
 import { SidebarFooter, SidebarHeader } from './SidebarSlots';
+import { __resetDuplicateHrefWarnings } from './collection';
 import { buildRailCollection, resolveActiveRail } from './railCollection';
 import { useSidebarRailState } from './useSidebarRailState';
 
@@ -200,6 +201,10 @@ describe('resolveActiveRail (explicit active)', () => {
 });
 
 describe('duplicate hrefs', () => {
+  beforeEach(() => {
+    __resetDuplicateHrefWarnings();
+  });
+
   test('warns in dev when rail destinations share an href', () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
     const jsx = [

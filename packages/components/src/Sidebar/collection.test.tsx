@@ -5,6 +5,7 @@ import {
   SidebarSeparator,
 } from './SidebarItem';
 import {
+  __resetDuplicateHrefWarnings,
   applyCurrent,
   buildCollection,
   findActiveBranch,
@@ -338,6 +339,10 @@ describe('resolveCurrent: function mode', () => {
 });
 
 describe('resolveCurrent: dev-mode duplicate href warning', () => {
+  beforeEach(() => {
+    __resetDuplicateHrefWarnings();
+  });
+
   test('resolveCurrent: warns in dev when two leaves share an href', () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
     const jsx = [
@@ -354,6 +359,27 @@ describe('resolveCurrent: dev-mode duplicate href warning', () => {
 
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy.mock.calls[0][0]).toMatch(/share the same href "\/dup"/);
+    spy.mockRestore();
+  });
+
+  test('resolveCurrent: warns once for the same collision across re-resolves', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const jsx = [
+      <SidebarItem key="x" id="x" href="/again">
+        X
+      </SidebarItem>,
+      <SidebarItem key="y" id="y" href="/again">
+        Y
+      </SidebarItem>,
+    ];
+
+    // `useSidebarNavState` rebuilds on every parent render, since `children`
+    // is a new array each time.
+    resolveCurrent(buildCollection(jsx), '/again');
+    resolveCurrent(buildCollection(jsx), '/again');
+    resolveCurrent(buildCollection(jsx), '/again');
+
+    expect(spy).toHaveBeenCalledTimes(1);
     spy.mockRestore();
   });
 

@@ -1,7 +1,11 @@
-import { screen, waitFor, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import type { ReactNode } from 'react';
 import { MockInstance, vi } from 'vitest';
+import { theme } from '@marigold/theme-rui';
+import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import { renderWithOverlay } from '../test.utils';
+import { Dialog } from './Dialog';
 import { Basic, VeryLongContent, WithFormValidation } from './Dialog.stories';
 
 const user = userEvent.setup();
@@ -147,4 +151,59 @@ test('VeryLongContent story renders with proper structure', async () => {
 
   expect(button).toBeInTheDocument();
   expect(button).toHaveAttribute('type', 'button');
+});
+
+describe('accessible name warning', () => {
+  const wrapper = ({ children }: { children: ReactNode }) => (
+    <MarigoldProvider theme={theme}>{children}</MarigoldProvider>
+  );
+  // No story renders an unnamed dialog, and one shouldn't: it would put the
+  // anti-pattern into Storybook. The unnamed and labelled cases stay inline.
+  // Only Marigold's own warning counts, React Aria logs its own on top.
+  const isDialogWarning = (call: unknown[]) =>
+    String(call[0]).startsWith('[Dialog]');
+
+  let warnSpy: MockInstance;
+
+  beforeEach(() => {
+    warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    warnSpy.mockRestore();
+  });
+
+  test('warns once per dialog, however often it re-renders', () => {
+    const unnamed = (size?: string) => (
+      <Dialog open size={size}>
+        <Dialog.Content>Unnamed</Dialog.Content>
+      </Dialog>
+    );
+    const { rerender } = render(unnamed(), { wrapper });
+    rerender(unnamed('small'));
+    rerender(unnamed());
+
+    expect(warnSpy.mock.calls.filter(isDialogWarning)).toHaveLength(1);
+  });
+
+  test.each([
+    ['a Dialog.Title', <Basic.Component key="title" open />],
+    [
+      'an aria-label',
+      <Dialog key="label" open aria-label="Edit event">
+        <Dialog.Content>Content</Dialog.Content>
+      </Dialog>,
+    ],
+    [
+      'an aria-labelledby',
+      <Dialog key="labelledby" open aria-labelledby="external">
+        <Dialog.Content>Content</Dialog.Content>
+      </Dialog>,
+    ],
+  ])('does not warn for a dialog with %s', (_, element) => {
+    render(element, { wrapper });
+
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(warnSpy.mock.calls.filter(isDialogWarning)).toHaveLength(0);
+  });
 });
