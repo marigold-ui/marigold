@@ -257,12 +257,6 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
   const addonId = useId();
   const gridListRef = useObjectRef(ref);
 
-  // Resolve the optional `p` / `px` / `py` props to per-axis CSS custom
-  // properties. Each option reads `--selectlist-item-px` /
-  // `--selectlist-item-py` via cascade, so any value set here flows down. When
-  // the consumer leaves these props unset the theme provides the variant
-  // fallback (see `SelectList.styles.ts` `container` slot) — the component
-  // itself doesn't know any variant names.
   const itemPaddingStyle = useMemo<CSSProperties>(() => {
     if (p === undefined && px === undefined && py === undefined) {
       return EMPTY_STYLE;

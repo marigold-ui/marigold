@@ -124,7 +124,6 @@ export const SelectAllHeader = ({
       <Checkbox
         checked={checked}
         indeterminate={selectedCount > 0 && !checked}
-        // An enabled checkbox that cannot change the selection reads as broken.
         disabled={disabled || keys.length === 0}
         onChange={onChange}
         label={stringFormatter.format('selectAll')}

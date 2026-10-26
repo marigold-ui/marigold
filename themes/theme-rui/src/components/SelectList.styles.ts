@@ -14,10 +14,6 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     variants: {
       variant: {
         default: [
-          // A default SelectList is a boxed list: its frame edge and the internal
-          // row dividers should read as one weight, so both use the opaque
-          // --color-border. (A translucent control ring would composite lighter
-          // than the opaque dividers, so left/right wouldn't match top/bottom.)
           // The frame wraps the select-all and the options together, so the
           // header reads as the list's first row rather than a second label
           // above the field's own (DST-1751 review).
@@ -48,14 +44,7 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     variants: {
       variant: {
         default: '',
-        bordered: [
-          'gap-2',
-          // Each item is its own control; its ring lives in the box-shadow
-          // chain. This list is a scroll container, which clips box-shadow on
-          // both axes, so this padding gives the rings room inside the
-          // scrollport (the padding box) instead of being cut at the edges.
-          'p-(--selectlist-list-inset)',
-        ],
+        bordered: ['gap-2', 'p-(--selectlist-list-inset)'],
       },
     },
     defaultVariants: { variant: 'default' },

@@ -25,8 +25,6 @@ test('passes a controlled Set through without copying it', () => {
 
   rerender();
 
-  // React Aria keys its range anchor off the identity of the selection it is
-  // given, so copying the Set resets the anchor and breaks Shift+click.
   for (const selection of seen) {
     expect(selection).toBe(selectedKeys);
   }
