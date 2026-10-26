@@ -24,7 +24,8 @@ export const Button: ThemeComponent<'Button'> = cva({
         'hover:[--ui-background-color:oklch(from_var(--color-destructive-bold)_calc(l-0.15)_c_h)]',
       ],
       'destructive-ghost': 'text-destructive-accent hover:ui-state-hover-ghost',
-      link: 'text-link ui-touch-hitbox',
+      // Room for the focus ring, layout unchanged.
+      link: 'text-link ui-touch-hitbox p-1 -m-1',
     },
     size: {
       default: 'text-sm',
