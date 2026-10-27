@@ -16,7 +16,8 @@ export const ListView: ThemeComponent<'ListView'> = {
   header: cva({
     base: [
       'flex items-center gap-2',
-      'px-(--listview-item-px) mb-2',
+      'px-(--listview-item-px) py-(--spacing-stretch-regular-y)',
+      'border-b border-border',
       'max-sm:min-h-touch-target',
       'text-sm text-foreground',
     ],
