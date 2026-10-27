@@ -107,7 +107,21 @@ Pair a multi-select list with an [`<ActionBar>`](/components/collection/actionba
 
 <ComponentDemo name="listview-bulk-actions" />
 
-Add `allowSelectAll` when one operation plausibly applies to everything on screen: archiving a finished import, marking a notification feed read, retrying every failed job. Leave it off when the job is picking a few rows out of many, where a press on a partial selection costs the user the set they built by hand.
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Add `allowSelectAll` when one operation plausibly applies to everything on
+      screen: archiving a finished import, marking a notification feed read,
+      retrying every failed job.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't add it when the job is picking a few rows out of many, where a press
+      on a partial selection costs the user the set they built by hand.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 ### Empty state
 

@@ -111,11 +111,26 @@ Set `selectionMode="multiple"` to switch the list to checkboxes.
 
 #### Select all
 
-Set `allowSelectAll` when "all of them" is an answer users actually give: a role that may do everything, an alert that goes to every channel, an export that carries every column.
+Set `allowSelectAll` to put a select-all above the options. It only takes effect in `selectionMode="multiple"`, since there is nothing for it to do in the other modes.
 
 <ComponentDemo name="selectlist-select-all" />
 
-Leave it off on a shortlist of two or three, where the extra checkbox reads as one more option to parse, and on choices that cost something per option. Picking everything is no shortcut when each option bills, notifies someone, or is hard to take back.
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Add it when "all of them" is an answer users actually give: a role that
+      may do everything, an alert that goes to every channel, an export that
+      carries every column.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't add it to a shortlist of two or three, where the extra checkbox
+      reads as one more option to parse, or where each option bills, notifies
+      someone, or is hard to take back. Picking everything is no shortcut then.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 ### Per-row actions
 
