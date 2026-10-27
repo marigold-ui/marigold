@@ -64,11 +64,11 @@
     "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0",
     "yaml": "^2.9.0",
-    "zod": "4.6.5",
+    "zod": "4.6.6",
     "zod-form-data": "3.0.3"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.3.3",
+    "@tailwindcss/webpack": "^4.3.3",
     "@types/mdast": "^4.0.4",
     "@types/mdx": "^2.0.13",
     "@types/node": "^25.0.5",
@@ -80,7 +80,6 @@
     "fumadocs-typescript": "^5.3.0",
     "next-validate-link": "^1.6.7",
     "p-limit": "7.3.3",
-    "postcss": "^8.5.10",
     "tailwindcss": "^4.3.3",
     "tsx": "4.23.15",
     "typescript": "^6.0.0",

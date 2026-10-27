@@ -105,3 +105,42 @@ test('only one confirmation dialog at a time', async () => {
 
   consoleWarnSpy.mockRestore();
 });
+
+test('rejects a second request made in the same tick', async () => {
+  const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+  const onFirst = vi.fn();
+  const onSecond = vi.fn();
+
+  const DoubleRequest = () => {
+    const confirm = useConfirmation();
+    return (
+      <Button
+        onPress={() => {
+          confirm({ title: 'First', confirmationLabel: 'OK' }).then(onFirst);
+          confirm({ title: 'Second', confirmationLabel: 'OK' }).then(onSecond);
+        }}
+      >
+        Request twice
+      </Button>
+    );
+  };
+
+  renderWithOverlay(
+    <MarigoldProvider theme={theme}>
+      <DoubleRequest />
+    </MarigoldProvider>
+  );
+
+  await user.click(screen.getByRole('button', { name: 'Request twice' }));
+
+  // The first dialog stays open and pending, the second is turned away.
+  expect(screen.getByText('First')).toBeInTheDocument();
+  expect(screen.queryByText('Second')).not.toBeInTheDocument();
+  await waitFor(() => expect(onSecond).toHaveBeenCalledWith('cancelled'));
+  expect(onFirst).not.toHaveBeenCalled();
+  expect(consoleWarnSpy).toHaveBeenCalledWith(
+    'A confirmation dialog is already open. Rejecting new request.'
+  );
+
+  consoleWarnSpy.mockRestore();
+});
