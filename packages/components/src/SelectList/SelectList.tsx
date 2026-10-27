@@ -310,6 +310,7 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
     items: rest.items,
     disabledKeys: rest.disabledKeys,
     enabled: resolvedSelectionMode === 'multiple',
+    warn: hasSelectAll,
   });
 
   const lockedKeys = useMemo(() => {

@@ -250,9 +250,13 @@ The demos above apply a few practices that are easy to miss but make the differe
 `onSelectionChange`, and the Table's `actionBar` render prop, hand you a `Selection`, which is either a `Set` of keys or the string `'all'` when the select-all is used. Resolve it to a concrete list of records in one place before acting, so counts, confirmation messages, and the operation itself always agree:
 
 ```tsx
-const keys = selected === 'all' ? events.map(event => event.id) : [...selected];
+const selectable = events.filter(event => !disabledKeys.has(event.id));
+const keys =
+  selected === 'all' ? selectable.map(event => event.id) : [...selected];
 const affected = events.filter(event => keys.includes(event.id));
 ```
+
+`'all'` covers the rows the user could select, not every row in the collection, so the same `disabledKeys` the collection gets has to come back out of it. Skip that and a list's select-all reads "2 of 2" while the action runs on a third record the user was never able to pick.
 
 Every message the user sees derives from `affected.length`, never from a separately tracked counter that can drift. Resolving this way also protects against two subtle mistakes. The selection is a set of record ids, not row positions, so a table that re-sorts or refreshes between selecting and pressing cannot shift the selection onto different rows. The server also receives this exact list of ids, never an instruction to run the current filter again. A query that runs again would quietly include records that only started matching after the user made their selection.
 

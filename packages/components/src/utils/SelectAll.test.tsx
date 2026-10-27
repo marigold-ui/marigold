@@ -5,6 +5,7 @@ import { announce } from '@react-aria/live-announcer';
 import { theme } from '@marigold/theme-rui';
 import { ListView } from '../ListView/ListView';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
+import { SelectList } from '../SelectList/SelectList';
 import { TextValue } from '../TextValue/TextValue';
 
 vi.mock('@react-aria/live-announcer', () => ({
@@ -44,10 +45,52 @@ test('announces the count when the header changes it', async () => {
   expect(announce).toHaveBeenCalledWith('2 of 2 selected', 'polite');
 });
 
-test('announces a count changed from inside the grid', async () => {
+// React Aria's GridList announces these itself, so a second announcement from
+// the header would read every row click out twice.
+test('says nothing when the count changes inside the grid', async () => {
   render(<Venues />);
 
   await user.click(screen.getByRole('row', { name: /gasometer/i }));
 
-  expect(announce).toHaveBeenCalledWith('1 of 2 selected', 'polite');
+  expect(announce).not.toHaveBeenCalled();
 });
+
+test('announces again on a second press', async () => {
+  render(<Venues />);
+  const selectAll = screen.getByRole('checkbox', { name: 'Select all' });
+
+  await user.click(selectAll);
+  await user.click(selectAll);
+
+  expect(announce).toHaveBeenLastCalledWith('0 of 2 selected', 'polite');
+});
+
+// The keys are derived for every multi-select SelectList, since Cmd/Ctrl+A
+// needs them, so the warning has to follow the select-all rather than the
+// derivation.
+test.each([
+  [true, 1],
+  [false, 0],
+])(
+  'allowSelectAll %s warns about a missing id %i time(s)',
+  (allowSelectAll, calls) => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => null);
+
+    render(
+      <MarigoldProvider theme={theme}>
+        <SelectList
+          label="Venues"
+          selectionMode="multiple"
+          allowSelectAll={allowSelectAll}
+        >
+          <SelectList.Option textValue="Gasometer">
+            <TextValue>Gasometer</TextValue>
+          </SelectList.Option>
+        </SelectList>
+      </MarigoldProvider>
+    );
+
+    expect(warn).toHaveBeenCalledTimes(calls);
+    warn.mockRestore();
+  }
+);
