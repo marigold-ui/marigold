@@ -44,8 +44,8 @@ export const usePopoverContext = () => {
 
 /**
  * Links `<Popover.Search>` to the `PopoverSearchScope` that `<Popover>`
- * renders around its parts. The scope owns the search text, the search only
- * registers itself and hands over its options.
+ * renders around its parts. The search owns the search text, registers itself
+ * and hands over its options.
  */
 export interface PopoverSearchOptions {
   filter?: RAC.AutocompleteProps<object>['filter'];
@@ -57,6 +57,7 @@ export interface PopoverSearchContextValue {
   registerSearch: () => () => void;
   /** Latest callbacks of the mounted search, read when they are called. */
   optionsRef: RefObject<PopoverSearchOptions>;
+  /** Mirrors the search's current text into the `Autocomplete`. */
   setInputValue: (value: string) => void;
 }
 

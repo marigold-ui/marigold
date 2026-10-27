@@ -11,8 +11,8 @@ import { PopoverSearchContext } from './Context';
  * Wraps the popover's children in React Aria's `Autocomplete`, which links a
  * search field to a collection through context and renders no element. That
  * is what lets `<Popover.Search>` sit next to `<Popover.Content>` instead of
- * around it. The scope owns the input value, so the search only registers
- * itself and its options.
+ * around it. The search owns the input value and mirrors it into the scope,
+ * the scope only hands each keystroke back to the search.
  */
 export const PopoverSearchScope = ({ children }: { children?: ReactNode }) => {
   const { contains } = useFilter({ sensitivity: 'base' });
@@ -30,7 +30,6 @@ export const PopoverSearchScope = ({ children }: { children?: ReactNode }) => {
   );
   // Stable, so React Aria only re-filters the collection when the text changes.
   const handleInputChange = useCallback((value: string) => {
-    setInputValue(value);
     optionsRef.current.onInputChange?.(value);
   }, []);
   const filter = useCallback<NonNullable<PopoverSearchOptions['filter']>>(

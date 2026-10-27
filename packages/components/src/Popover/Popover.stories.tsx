@@ -870,6 +870,54 @@ SearchableList.test(
   }
 );
 
+// A controlled search is the only source of truth: this one keeps at most
+// three characters, so the field and the filter never see a fourth.
+export const ControlledSearch = meta.story({
+  tags: ['component-test', '!autodocs'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => {
+    const [query, setQuery] = useState('');
+
+    return (
+      <Stack space="related" alignX="left">
+        <Text>Query: {query}</Text>
+        <Popover.Trigger>
+          <Button>
+            <Users /> Manage team
+          </Button>
+          <Popover {...args} size="large" aria-label="Team members">
+            <Popover.Search
+              aria-label="Search team members"
+              inputValue={query}
+              onInputChange={value => setQuery(value.slice(0, 3))}
+            />
+            <Popover.Content>
+              <TeamList />
+            </Popover.Content>
+          </Popover>
+        </Popover.Trigger>
+      </Stack>
+    );
+  },
+});
+
+ControlledSearch.test(
+  'Shows and filters by the value the consumer keeps',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Manage team' }));
+    const search = await canvas.findByRole('searchbox', {
+      name: 'Search team members',
+    });
+    await waitFor(() => expect(search).toHaveFocus());
+
+    await userEvent.keyboard('priya');
+
+    await expect(search).toHaveValue('pri');
+    await expect(canvas.getByText('Query: pri')).toBeVisible();
+    await waitFor(() => expect(canvas.getAllByRole('row')).toHaveLength(1));
+  }
+);
+
 // Must-support case: a short form. One optional field that is cheap to lose
 // when the popover is dismissed: an empty note just removes the note. Inside
 // a `<Form>` so Enter submits, with the primary action first.

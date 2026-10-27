@@ -1,6 +1,7 @@
-import { use, useLayoutEffect, useState } from 'react';
+import { use, useLayoutEffect } from 'react';
 import type RAC from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { useControlledState } from '@react-stately/utils';
 import { SearchField } from '../SearchField/SearchField';
 import { intlMessages } from '../intl/messages';
 import { PopoverSearchContext, usePopoverContext } from './Context';
@@ -81,18 +82,20 @@ export const PopoverSearch = ({
 
   useLayoutEffect(() => registerSearch(), [registerSearch]);
 
+  // The search owns the text, so a controlled `inputValue` is the only source
+  // of truth: a keystroke the consumer rejects or rewrites never reaches the
+  // field or the filter.
+  const [value, setValue] = useControlledState(
+    inputValue,
+    defaultInputValue ?? '',
+    onInputChange
+  );
+
   useLayoutEffect(() => {
-    optionsRef.current = { filter, onInputChange };
+    optionsRef.current = { filter, onInputChange: setValue };
   });
 
-  // Seed once from the uncontrolled default, then follow a controlled value.
-  const [defaultValue] = useState(defaultInputValue);
-  useLayoutEffect(() => {
-    const value = inputValue ?? defaultValue;
-    if (value !== undefined) {
-      setInputValue(value);
-    }
-  }, [inputValue, defaultValue, setInputValue]);
+  useLayoutEffect(() => setInputValue(value), [value, setInputValue]);
 
   return (
     <div data-slot="search" className={classNames.search}>
