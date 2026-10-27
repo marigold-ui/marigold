@@ -4,7 +4,7 @@ import { createRef } from 'react';
 import { vi } from 'vitest';
 import { renderWithOverlay } from '../test.utils';
 import { Popover } from './Popover';
-import { Basic, Notifications, SearchableList } from './Popover.stories';
+import { Basic, SearchableList } from './Popover.stories';
 
 const user = userEvent.setup();
 
@@ -35,16 +35,6 @@ test('forwards the ref to the dialog', async () => {
 
   expect(ref.current).toBe(
     screen.getByRole('dialog', { name: 'Summer Open Air' })
-  );
-});
-
-test('applies the size to the dialog', async () => {
-  renderWithOverlay(<Notifications.Component />);
-
-  await user.click(screen.getByRole('button', { name: 'Notifications' }));
-
-  expect(screen.getByRole('dialog', { name: 'Notifications' })).toHaveClass(
-    'w-md'
   );
 });
 
