@@ -109,11 +109,11 @@ A column without a `width` falls back to react-aria's 75px minimum, so a narrow 
 - **A number** for columns whose content has a predictable size, like a badge, a date or a row action.
 - **`minWidth`** on fraction columns, to set the width at which the column stops shrinking. A static `width` is its own floor already and needs no `minWidth`.
 
-Those floors added together are the smallest width the table can take. Where that can exceed the space available, wrap the table in a [`<Scrollable>`](/components/layout/scrollable) so the columns stay reachable instead of being clipped by the page.
+Those floors added together are the smallest width the table can take. Where less space than that is available, the table scrolls sideways inside its container rather than painting over it, so the columns stay reachable and the layout around the table stays intact.
 
 <ComponentDemo name="table-column-widths" />
 
-A table without a scroll container has to fit its container at every width, so keep its floors low: fraction widths on their own divide up the available space without raising the minimum.
+Scrolling sideways is a fallback, not a layout, so keep the floors low and it stays rare: fraction widths on their own divide up the available space without raising the minimum. While a table scrolls sideways, a sticky header or footer pins to that scroll area rather than to the page. Wrap the table in a [`<Scrollable>`](/components/layout/scrollable) where the header has to stay put: a scroll area with a height of its own takes over both directions and keeps the header pinned.
 
 ### Selecting rows
 

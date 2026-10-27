@@ -1,5 +1,13 @@
 import type { ComponentProps, FocusEvent, ReactNode } from 'react';
-import { use, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import {
+  use,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import type RAC from 'react-aria-components';
 import {
   Table as RACTable,
@@ -9,7 +17,7 @@ import {
 } from 'react-aria-components/Table';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { announce } from '@react-aria/live-announcer';
-import { getScrollParent } from '@react-aria/utils';
+import { getScrollParent, useResizeObserver } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import { useActionBar } from '../ActionBar/useActionBar';
 import { intlMessages } from '../intl/messages';
@@ -182,6 +190,24 @@ const _Table = ({
 
   const [warnedMissingTextValue] = useState(() => new Set<string>());
   const [minTableWidth, setMinTableWidth] = useState<number>();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scrolls, setScrolls] = useState(false);
+
+  const measure = useCallback(() => {
+    const container = containerRef.current;
+    if (!container || minTableWidth === undefined) return;
+
+    const scrollParent = getScrollParent(container);
+    if (/auto|scroll/.test(getComputedStyle(scrollParent).overflowX)) {
+      setScrolls(false);
+      return;
+    }
+
+    setScrolls(container.getBoundingClientRect().width < minTableWidth);
+  }, [minTableWidth]);
+
+  useResizeObserver({ ref: containerRef, onResize: measure });
+  useLayoutEffect(measure, [measure]);
 
   const ctx = useMemo(
     () => ({
@@ -225,8 +251,9 @@ const _Table = ({
   return (
     <TableContext value={ctx}>
       <div
+        ref={containerRef}
         // Keeps the container filling its parent when the parent doesn't stretch.
-        className="w-full"
+        className={cn('w-full', scrolls && 'overflow-x-auto')}
         onFocus={actionBarHeight ? scrollFocusedRowClearOfActionBar : undefined}
       >
         <ResizableTableContainer

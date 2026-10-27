@@ -1215,6 +1215,110 @@ FollowsParentWidth.test(
   }
 );
 
+export const NarrowContainer = meta.story({
+  tags: ['component-test'],
+  render: function Render(args) {
+    const organizers = [1, 2, 3].map(id => ({
+      id,
+      name: `Organizer ${id}`,
+      city: 'Freiburg im Breisgau',
+      email: `contact${id}@example.com`,
+    }));
+
+    const table = (label: string) => (
+      <Table aria-label={label} {...args}>
+        <Table.Header>
+          <Table.Column rowHeader minWidth={160}>
+            Name
+          </Table.Column>
+          <Table.Column minWidth={140}>City</Table.Column>
+          <Table.Column minWidth={180}>Email</Table.Column>
+        </Table.Header>
+        <Table.Body>
+          {organizers.map(organizer => (
+            <Table.Row key={organizer.id}>
+              <Table.Cell>{organizer.name}</Table.Cell>
+              <Table.Cell>{organizer.city}</Table.Cell>
+              <Table.Cell>{organizer.email}</Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    );
+
+    return (
+      <Stack space={6}>
+        <div data-testid="narrow-container" className="w-[320px]">
+          <Panel>
+            <Panel.Header>
+              <Title>320px</Title>
+            </Panel.Header>
+            <Panel.Content bleed>{table('Organizers at 320px')}</Panel.Content>
+          </Panel>
+        </div>
+        <div data-testid="wide-container">
+          <Panel>
+            <Panel.Header>
+              <Title>Full width</Title>
+            </Panel.Header>
+            <Panel.Content bleed>
+              {table('Organizers at full width')}
+            </Panel.Content>
+          </Panel>
+        </div>
+      </Stack>
+    );
+  },
+});
+
+NarrowContainer.test(
+  'Scrolls inside a 320px container instead of painting over it',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    const narrow = canvas.getByTestId('narrow-container');
+    const table = within(narrow).getByRole('grid');
+    const panel = table.closest<HTMLElement>('[data-panel]')!;
+    const scrollArea = () => table.closest<HTMLElement>('.overflow-x-auto');
+
+    await step('the scroll area stays inside the panel', async () => {
+      await waitFor(() =>
+        expect(table.getBoundingClientRect().width).toBeGreaterThan(0)
+      );
+      // The table's own box is wider than the panel, which is the point: the
+      // scroll area clips it, so nothing paints past the panel's edge.
+      await waitFor(() => expect(scrollArea()).not.toBeNull());
+      expect(scrollArea()!.getBoundingClientRect().right).toBeLessThanOrEqual(
+        // 1px absorbs subpixel rounding.
+        panel.getBoundingClientRect().right + 1
+      );
+    });
+
+    await step('the hidden columns stay reachable by scrolling', () => {
+      const scroll = scrollArea()!;
+      expect(scroll.scrollWidth).toBeGreaterThan(scroll.clientWidth);
+
+      scroll.scrollLeft = scroll.scrollWidth;
+      expect(scroll.scrollLeft).toBeGreaterThan(0);
+    });
+  }
+);
+
+NarrowContainer.test(
+  'Leaves a container that fits without a scroll area',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const wide = canvas.getByTestId('wide-container');
+    const table = within(wide).getByRole('grid');
+
+    // A scroll container here would become the scrollport a `sticky` header
+    // and the ActionBar pin to, and stop both from following the page.
+    await waitFor(() =>
+      expect(table.getBoundingClientRect().width).toBeGreaterThan(0)
+    );
+    await waitFor(() => expect(table.closest('.overflow-x-auto')).toBeNull());
+  }
+);
+
 export const Links = meta.story({
   tags: ['component-test'],
   render: args => {
