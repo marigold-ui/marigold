@@ -61,7 +61,7 @@ export const SelectList: ThemeComponent<'SelectList'> = {
         // Inside the frame: the divider below it is the same weight as the
         // dividers between options, so the header reads as part of the list.
         default: 'py-(--selectlist-item-py) border-b border-border',
-        bordered: 'mx-(--selectlist-list-inset) mt-1.5 mb-2',
+        bordered: 'mx-(--selectlist-list-inset) mt-3 mb-2',
       },
     },
     defaultVariants: { variant: 'default' },
