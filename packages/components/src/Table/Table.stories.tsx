@@ -1248,7 +1248,7 @@ export const NarrowContainer = meta.story({
 
     return (
       <Stack space={6}>
-        <div data-testid="narrow-container" className="w-[320px]">
+        <div className="w-[320px]">
           <Panel>
             <Panel.Header>
               <Title>320px</Title>
@@ -1256,16 +1256,14 @@ export const NarrowContainer = meta.story({
             <Panel.Content bleed>{table('Organizers at 320px')}</Panel.Content>
           </Panel>
         </div>
-        <div data-testid="wide-container">
-          <Panel>
-            <Panel.Header>
-              <Title>Full width</Title>
-            </Panel.Header>
-            <Panel.Content bleed>
-              {table('Organizers at full width')}
-            </Panel.Content>
-          </Panel>
-        </div>
+        <Panel>
+          <Panel.Header>
+            <Title>Full width</Title>
+          </Panel.Header>
+          <Panel.Content bleed>
+            {table('Organizers at full width')}
+          </Panel.Content>
+        </Panel>
       </Stack>
     );
   },
@@ -1275,8 +1273,7 @@ NarrowContainer.test(
   'Scrolls inside a 320px container instead of painting over it',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }) => {
-    const narrow = canvas.getByTestId('narrow-container');
-    const table = within(narrow).getByRole('grid');
+    const table = canvas.getByRole('grid', { name: 'Organizers at 320px' });
     const panel = table.closest<HTMLElement>('[data-panel]')!;
     const scrollArea = () => table.closest<HTMLElement>('.overflow-x-auto');
 
@@ -1307,8 +1304,9 @@ NarrowContainer.test(
   'Leaves a container that fits without a scroll area',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
-    const wide = canvas.getByTestId('wide-container');
-    const table = within(wide).getByRole('grid');
+    const table = canvas.getByRole('grid', {
+      name: 'Organizers at full width',
+    });
 
     // A scroll container here would become the scrollport a `sticky` header
     // and the ActionBar pin to, and stop both from following the page.
