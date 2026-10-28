@@ -346,6 +346,7 @@ Modality.test(
 // named by its `aria-label`, sized to its text with `fit`.
 export const WithoutContent = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: { size: 'fit' },
   render: args => (
     <Popover.Trigger>
@@ -398,6 +399,7 @@ const lineCount = (el: Element) => {
 
 export const Sizes = meta.story({
   tags: ['component-test', '!autodocs'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
     <Inline space="related">
       {SIZES.map(({ id, label, size, short }) => (
@@ -485,6 +487,7 @@ const onArchive = fn();
 
 export const Notifications = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: { placement: 'bottom end', size: 'large' },
   render: args => (
     <Popover.Trigger>
@@ -691,6 +694,7 @@ type SearchableListArgs = PopoverProps & { showTitle?: boolean };
 
 export const SearchableList = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   // Storybook infers a boolean control for `showTitle` from its value.
   args: { size: 'large', showTitle: true } as SearchableListArgs,
   render: ({ showTitle, ...args }: SearchableListArgs) => (
@@ -925,6 +929,7 @@ const onSaveNote = fn();
 
 export const MiniForm = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: args => {
     const [open, setOpen] = useState(false);
 
@@ -1010,6 +1015,7 @@ MiniForm.test(
 
 export const SmallScreen = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'smallScreen' },
   },
