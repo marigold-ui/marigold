@@ -9,7 +9,6 @@ import { Description } from '../Description/Description';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import { Text } from '../Text/Text';
 import { TextValue } from '../TextValue/TextValue';
-import type { ListViewProps } from './ListView';
 import { ListView } from './ListView';
 import {
   Basic,
@@ -18,6 +17,7 @@ import {
   MultipleSelection,
   NotificationsFeed,
   WithDescription,
+  WithSelectAll,
 } from './ListView.stories';
 import { __resetStackedActionsWarning } from './ListViewItem';
 
@@ -490,40 +490,18 @@ describe('ListView', () => {
   });
 
   describe('select-all header', () => {
-    const Venues = ({
-      children,
-      ...props
-    }: Partial<ListViewProps> & { children?: ReactNode }) => (
-      <MarigoldProvider theme={theme}>
-        <ListView
-          aria-label="Venues"
-          selectionMode="multiple"
-          allowSelectAll
-          {...props}
-        >
-          {children}
-          <ListView.Item id="gasometer" textValue="Gasometer">
-            <TextValue>Gasometer</TextValue>
-          </ListView.Item>
-          <ListView.Item id="tempodrom" textValue="Tempodrom">
-            <TextValue>Tempodrom</TextValue>
-          </ListView.Item>
-        </ListView>
-      </MarigoldProvider>
-    );
-
     test('is not a row of the collection', () => {
-      render(<Venues />);
+      render(<WithSelectAll.Component />);
 
       const grid = screen.getByRole('grid', { name: 'Venues' });
       const selectAll = screen.getByRole('checkbox', { name: 'Select all' });
 
-      expect(screen.getAllByRole('row')).toHaveLength(2);
+      expect(screen.getAllByRole('row')).toHaveLength(3);
       expect(grid).not.toContainElement(selectAll);
     });
 
     test('renders nothing in the other selection modes', () => {
-      render(<Venues selectionMode="single" />);
+      render(<WithSelectAll.Component selectionMode="single" />);
 
       expect(
         screen.queryByRole('checkbox', { name: 'Select all' })
@@ -531,7 +509,11 @@ describe('ListView', () => {
     });
 
     test('reads as fully selected once every selectable row is', async () => {
-      render(<Venues disabledKeys={['tempodrom']} />);
+      render(
+        <WithSelectAll.Component
+          disabledKeys={['tempodrom', 'columbiahalle']}
+        />
+      );
 
       await user.click(screen.getByRole('row', { name: /gasometer/i }));
 
@@ -542,7 +524,7 @@ describe('ListView', () => {
 
     test('selects the remaining rows when pressed on a partial selection', async () => {
       const onSelectionChange = vi.fn();
-      render(<Venues onSelectionChange={onSelectionChange} />);
+      render(<WithSelectAll.Component onSelectionChange={onSelectionChange} />);
 
       await user.click(screen.getByRole('row', { name: /gasometer/i }));
       await user.click(screen.getByRole('checkbox', { name: 'Select all' }));
@@ -553,10 +535,14 @@ describe('ListView', () => {
     test('warns about a row it cannot address', () => {
       const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
+      // No story renders a row without an `id`, since every story is also an
+      // example worth copying.
       render(
-        <Venues>
-          <ListView.Item textValue="Keyless" />
-        </Venues>
+        <MarigoldProvider theme={theme}>
+          <ListView aria-label="Venues" selectionMode="multiple" allowSelectAll>
+            <ListView.Item textValue="Keyless" />
+          </ListView>
+        </MarigoldProvider>
       );
 
       expect(warnSpy).toHaveBeenCalledWith(
@@ -567,11 +553,11 @@ describe('ListView', () => {
     });
 
     test('describes the select-all with the count', () => {
-      render(<Venues />);
+      render(<WithSelectAll.Component />);
 
       expect(
         screen.getByRole('checkbox', { name: 'Select all' })
-      ).toHaveAccessibleDescription('0 of 2 selected');
+      ).toHaveAccessibleDescription('0 of 3 selected Venues');
     });
 
     test('has nothing to address in an empty list', () => {
@@ -591,7 +577,10 @@ describe('ListView', () => {
     test('leaves the selection alone when it may not be emptied', async () => {
       const onSelectionChange = vi.fn();
       render(
-        <Venues disallowEmptySelection onSelectionChange={onSelectionChange} />
+        <WithSelectAll.Component
+          disallowEmptySelection
+          onSelectionChange={onSelectionChange}
+        />
       );
 
       const selectAll = screen.getByRole('checkbox', { name: 'Select all' });
@@ -602,6 +591,24 @@ describe('ListView', () => {
 
       expect(onSelectionChange).not.toHaveBeenCalled();
       expect(selectAll).toBeChecked();
+    });
+
+    test('keeps a preselected disabled row when clearing', async () => {
+      const onSelectionChange = vi.fn();
+      render(
+        <WithSelectAll.Component
+          disabledKeys={['tempodrom']}
+          defaultSelectedKeys={['tempodrom', 'gasometer']}
+          onSelectionChange={onSelectionChange}
+        />
+      );
+
+      await user.click(screen.getByRole('checkbox', { name: 'Select all' }));
+      await user.click(screen.getByRole('checkbox', { name: 'Select all' }));
+
+      expect(onSelectionChange).toHaveBeenLastCalledWith(
+        new Set(['tempodrom'])
+      );
     });
 
     test('names the list in the description when it has a visible label', () => {

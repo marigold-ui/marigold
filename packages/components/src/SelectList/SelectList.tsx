@@ -265,7 +265,8 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
     // 1. `p` short-circuits here — px/py are ignored when p is set. resolveInsetAxes
     //    does the opposite (explicit px/py win over p via `?? `).
     // 2. No theme-default fallback — the CSS vars cascade from the theme via the
-    //    list slot in SelectList.styles.ts, so we only write them when explicitly set.
+    //    container slot in SelectList.styles.ts, so we only write them when
+    //    explicitly set.
     // 3. Partial-axis overrides are valid — px and py are applied independently,
     //    letting the theme fill in whichever axis the consumer leaves unset.
     // Don't "consolidate" this with resolveInsetAxes without accounting for all three.
@@ -305,28 +306,25 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
     }
   );
 
-  const selectableKeys = useSelectableKeys({
+  const {
+    keys: selectableKeys,
+    lockedKeys,
+    incomplete,
+  } = useSelectableKeys({
     children,
     items: rest.items,
     disabledKeys: rest.disabledKeys,
+    selection,
     enabled: resolvedSelectionMode === 'multiple',
     warn: hasSelectAll,
   });
 
-  const lockedKeys = useMemo(() => {
-    if (selection === 'all' || selection.size === 0) {
-      return [];
-    }
-    const selectable = new Set(selectableKeys);
-    return Array.from(selection).filter(key => !selectable.has(key));
-  }, [selection, selectableKeys]);
-
   const resolvedSelection = useMemo(
     () =>
-      selection === 'all' && resolvedSelectionMode === 'multiple'
+      selection === 'all' && resolvedSelectionMode === 'multiple' && !incomplete
         ? new Set(selectableKeys)
         : selection,
-    [selection, selectableKeys, resolvedSelectionMode]
+    [selection, selectableKeys, resolvedSelectionMode, incomplete]
   );
 
   const validationValue = useMemo(
@@ -345,11 +343,18 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
   const handleSelectionChange = useCallback(
     (keys: Selection) => {
       setSelection(
-        keys === 'all' ? new Set([...selectableKeys, ...lockedKeys]) : keys
+        // Resolving the sentinel is what lets the field submit a value. When a
+        // row could not be addressed the derived set would be the smaller
+        // answer, so the sentinel stays and React Aria resolves it against the
+        // real collection, which is what makes Cmd/Ctrl+A work on a list whose
+        // options come from a wrapper component.
+        keys === 'all' && !incomplete
+          ? new Set([...selectableKeys, ...lockedKeys])
+          : keys
       );
       validationState.commitValidation();
     },
-    [setSelection, validationState, selectableKeys, lockedKeys]
+    [setSelection, validationState, selectableKeys, lockedKeys, incomplete]
   );
 
   const onSelectAll = useCallback(
@@ -407,6 +412,7 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
                 onChange={onSelectAll}
                 disabled={disabled}
                 labelledBy={label ? labelId : rest['aria-labelledby']}
+                label={rest['aria-label']}
                 classNames={{
                   header: classNames.header,
                   count: classNames.count,

@@ -107,6 +107,8 @@ Pair a multi-select list with an [`<ActionBar>`](/components/collection/actionba
 
 <ComponentDemo name="listview-bulk-actions" />
 
+The select-all covers the rows it can address, so give every row an `id` and render them as direct children of the list. Rows that come out of a wrapper component of your own are invisible to it, and passing an `items` array instead works in every case.
+
 <GuidelineTiles>
   <Do>
     <DoDescription>

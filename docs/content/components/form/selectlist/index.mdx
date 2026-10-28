@@ -113,6 +113,8 @@ Set `selectionMode="multiple"` to switch the list to checkboxes.
 
 Set `allowSelectAll` to put a select-all above the options. It only takes effect in `selectionMode="multiple"`, since there is nothing for it to do in the other modes.
 
+The select-all covers the options it can address, so give every option an `id` and render them as direct children of the list. Options that come out of a wrapper component of your own are invisible to it, and passing an `items` array instead works in every case.
+
 <ComponentDemo name="selectlist-select-all" />
 
 <GuidelineTiles>

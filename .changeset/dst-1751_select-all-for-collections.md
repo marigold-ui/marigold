@@ -6,7 +6,7 @@
 
 feat(DST-1751): add a select-all to ListView and SelectList
 
-`<Table>` used to be the only collection that could offer a select-all, because it was the only one with a header to put a checkbox in. `allowSelectAll` now renders one for the two multi-select lists, aligned with the row indicators by the component (the padding is a custom property on the list, so a consumer composing a checkbox above it cannot line one up).
+`<Table>` used to be the only collection that could offer a select-all, because it was the only one with a header to put a checkbox in. `allowSelectAll` now renders one for the two multi-select lists, aligned with the row indicators by the component (the padding is a custom property on the wrapper around the list, so a consumer composing a checkbox above it cannot line one up).
 
 ```tsx
 <ListView

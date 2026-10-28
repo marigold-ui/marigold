@@ -83,21 +83,26 @@ const ListViewBase = ({
     onSelectionChange
   );
 
-  const keys = useSelectableKeys({
+  const { keys, lockedKeys } = useSelectableKeys({
     children,
     items: rest.items,
     disabledKeys: rest.disabledKeys,
+    selection,
     enabled: hasSelectAll,
   });
 
   const onSelectAll = useCallback(
     (selected: boolean) => {
-      if (!selected && rest.disallowEmptySelection) {
+      if (selected) {
+        setSelection('all');
         return;
       }
-      setSelection(selected ? 'all' : new Set());
+      if (lockedKeys.length === 0 && rest.disallowEmptySelection) {
+        return;
+      }
+      setSelection(new Set(lockedKeys));
     },
-    [setSelection, rest.disallowEmptySelection]
+    [setSelection, lockedKeys, rest.disallowEmptySelection]
   );
 
   // `useClassNames` returns a fresh object, so memoise on the slot strings.
@@ -118,6 +123,7 @@ const ListViewBase = ({
             selection={selection}
             onChange={onSelectAll}
             labelledBy={rest['aria-labelledby']}
+            label={rest['aria-label']}
             classNames={{
               header: classNames.header,
               count: classNames.count,

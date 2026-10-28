@@ -16,9 +16,11 @@ import {
   WithError,
   WithIconAction,
   WithMultiSelection,
+  WithSelectAll,
 } from './SelectList.stories';
 
 const user = userEvent.setup({ pointerEventsCheck: 0 });
+const modKey = /^Mac/i.test(navigator.platform) ? 'Meta' : 'Control';
 
 describe('SelectList', () => {
   describe('rendering', () => {
@@ -620,43 +622,8 @@ describe('SelectList', () => {
   });
 
   describe('select-all header', () => {
-    const Addons = ({
-      lockedDisabled,
-      ...props
-    }: {
-      selectionMode?: 'single' | 'multiple';
-      disabled?: boolean;
-      disallowEmptySelection?: boolean;
-      defaultSelectedKeys?: Iterable<string>;
-      onChange?: (keys: string[]) => void;
-      lockedDisabled?: boolean;
-    }) => (
-      <MarigoldProvider theme={theme}>
-        <SelectList
-          label="Add-ons"
-          selectionMode="multiple"
-          allowSelectAll
-          {...props}
-        >
-          <SelectList.Option id="insurance" textValue="Insurance">
-            <Description>Covers loss or damage</Description>
-          </SelectList.Option>
-          <SelectList.Option id="gift-wrap" textValue="Gift wrap">
-            <Description>Premium paper</Description>
-          </SelectList.Option>
-          <SelectList.Option
-            id="locked"
-            textValue="Locked"
-            disabled={lockedDisabled}
-          >
-            <Description>Set by the plan</Description>
-          </SelectList.Option>
-        </SelectList>
-      </MarigoldProvider>
-    );
-
     test('is not an option of the collection', () => {
-      render(<Addons />);
+      render(<WithSelectAll.Component />);
 
       const selectAll = screen.getByRole('checkbox', { name: 'Select all' });
 
@@ -665,7 +632,7 @@ describe('SelectList', () => {
     });
 
     test('renders nothing in single selection mode', () => {
-      render(<Addons selectionMode="single" />);
+      render(<WithSelectAll.Component selectionMode="single" />);
 
       expect(
         screen.queryByRole('checkbox', { name: 'Select all' })
@@ -673,7 +640,7 @@ describe('SelectList', () => {
     });
 
     test('disables the select-all with the list', () => {
-      render(<Addons disabled />);
+      render(<WithSelectAll.Component disabled />);
 
       expect(
         screen.getByRole('checkbox', { name: 'Select all' })
@@ -683,9 +650,9 @@ describe('SelectList', () => {
     test('keeps a preselected disabled option when selecting everything', async () => {
       const onChange = vi.fn();
       render(
-        <Addons
-          lockedDisabled
-          defaultSelectedKeys={['locked']}
+        <WithSelectAll.Component
+          disabledKeys={['gift-wrap']}
+          defaultSelectedKeys={['gift-wrap']}
           onChange={onChange}
         />
       );
@@ -694,32 +661,32 @@ describe('SelectList', () => {
 
       expect(onChange).toHaveBeenLastCalledWith([
         'insurance',
+        'signature',
         'gift-wrap',
-        'locked',
       ]);
     });
 
     test('keeps a preselected disabled option when clearing', async () => {
       const onChange = vi.fn();
       render(
-        <Addons
-          lockedDisabled
-          defaultSelectedKeys={['locked', 'insurance', 'gift-wrap']}
+        <WithSelectAll.Component
+          disabledKeys={['gift-wrap']}
+          defaultSelectedKeys={['gift-wrap', 'insurance', 'signature']}
           onChange={onChange}
         />
       );
 
       await user.click(screen.getByRole('checkbox', { name: 'Select all' }));
 
-      expect(onChange).toHaveBeenLastCalledWith(['locked']);
+      expect(onChange).toHaveBeenLastCalledWith(['gift-wrap']);
     });
 
     test('leaves the selection alone when it may not be emptied', async () => {
       const onChange = vi.fn();
       render(
-        <Addons
+        <WithSelectAll.Component
           disallowEmptySelection
-          defaultSelectedKeys={['insurance', 'gift-wrap', 'locked']}
+          defaultSelectedKeys={['insurance', 'signature', 'gift-wrap']}
           onChange={onChange}
         />
       );
@@ -734,11 +701,35 @@ describe('SelectList', () => {
     });
 
     test('names the list in the description so two can be told apart', () => {
-      render(<Addons />);
+      render(<WithSelectAll.Component />);
 
       expect(
         screen.getByRole('checkbox', { name: 'Select all' })
-      ).toHaveAccessibleDescription('0 of 3 selected Add-ons');
+      ).toHaveAccessibleDescription('0 of 3 selected Shipping add-ons');
+    });
+
+    // A wrapper component is exactly what the derivation cannot see through, so
+    // this one has to be written out rather than taken from a story.
+    const Addon = ({ addOn }: { addOn: { id: string; name: string } }) => (
+      <SelectList.Option id={addOn.id} textValue={addOn.name} />
+    );
+
+    test('Mod+A still selects every option behind a wrapper component', async () => {
+      render(
+        <MarigoldProvider theme={theme}>
+          <SelectList label="Add-ons" selectionMode="multiple">
+            <Addon addOn={{ id: 'insurance', name: 'Insurance' }} />
+            <Addon addOn={{ id: 'gift-wrap', name: 'Gift wrap' }} />
+          </SelectList>
+        </MarigoldProvider>
+      );
+
+      await user.click(screen.getByRole('row', { name: /insurance/i }));
+      await user.keyboard(`{${modKey}>}a{/${modKey}}`);
+
+      for (const row of screen.getAllByRole('row')) {
+        expect(row).toHaveAttribute('aria-selected', 'true');
+      }
     });
 
     test('submits concrete keys for a controlled `selectedKeys="all"`', () => {

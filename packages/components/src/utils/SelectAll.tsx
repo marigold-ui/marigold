@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { VisuallyHidden } from 'react-aria-components/VisuallyHidden';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { announce } from '@react-aria/live-announcer';
 import type { Key, Selection } from '@react-types/shared';
@@ -19,6 +20,8 @@ interface SelectableKeysOptions<T> {
   children: ReactNode | ((item: T) => ReactNode);
   items?: Iterable<T>;
   disabledKeys?: Iterable<Key>;
+  /** The current selection, which decides which of its keys are locked. */
+  selection: Selection;
   enabled?: boolean;
   /**
    * Gates the missing-`id` warning. The keys are also derived for
@@ -29,51 +32,105 @@ interface SelectableKeysOptions<T> {
   warn?: boolean;
 }
 
-const EMPTY_KEYS: { keys: Key[]; hasMissingIds: boolean } = {
-  keys: [],
-  hasMissingIds: false,
-};
+export interface SelectableKeys {
+  /** The keys a select-all may tick. */
+  keys: Key[];
+  /**
+   * The selected keys whose row the user cannot toggle by hand, so a select-all
+   * has to leave them as they are in either direction.
+   */
+  lockedKeys: Key[];
+  /**
+   * `true` when a row could not be addressed, which makes `keys` an incomplete
+   * picture of the collection. React Aria resolves its own `'all'` sentinel
+   * against the real collection, so leaving the sentinel in place covers more
+   * rows than resolving it against a partial set.
+   */
+  incomplete: boolean;
+}
 
-const idOf = (item: unknown) => {
-  const candidate = item as { id?: Key; key?: Key } | null;
-  return candidate?.id ?? candidate?.key;
-};
+/** What the derivation needs off a row, however that row was written. */
+interface RowProps {
+  id?: Key;
+  disabled?: boolean;
+}
+
+const EMPTY_ROWS: RowProps[] = [];
 
 export const useSelectableKeys = <T,>({
   children,
   items,
   disabledKeys,
+  selection,
   enabled,
   warn,
-}: SelectableKeysOptions<T>): Key[] => {
+}: SelectableKeysOptions<T>): SelectableKeys => {
   const fromItems = items !== undefined;
   const source = items ?? children;
 
-  const { keys, hasMissingIds } = useMemo(() => {
+  const rows = useMemo<RowProps[]>(() => {
     if (enabled === false) {
-      return EMPTY_KEYS;
+      return EMPTY_ROWS;
     }
 
+    if (fromItems) {
+      const render =
+        typeof children === 'function'
+          ? (children as (item: T) => ReactNode)
+          : undefined;
+      return Array.from(source as Iterable<T>, item => {
+        const rendered = render?.(item);
+        const props = isValidElement<RowProps>(rendered)
+          ? rendered.props
+          : undefined;
+        const fallback = item as (RowProps & { key?: Key }) | null;
+        return {
+          id: props?.id ?? fallback?.key ?? fallback?.id,
+          disabled: props?.disabled,
+        };
+      });
+    }
+
+    return Children.toArray(source as ReactNode).flatMap(child =>
+      isValidElement<RowProps>(child) ? [child.props] : []
+    );
+  }, [enabled, fromItems, source, children]);
+
+  const { keys, incomplete, disabledRowKeys } = useMemo(() => {
     const disabled = new Set<Key>(disabledKeys ?? []);
-    const candidates: (Key | undefined)[] = fromItems
-      ? Array.from(source as Iterable<T>, idOf)
-      : Children.toArray(source as ReactNode).flatMap(child => {
-          if (!isValidElement<{ id?: Key; disabled?: boolean }>(child)) {
-            return [];
-          }
-          return child.props.disabled ? [] : [child.props.id];
-        });
+    const selectable = rows.filter(row => row.disabled !== true);
 
     return {
-      keys: candidates.filter(
-        (key): key is Key => key != null && !disabled.has(key)
+      keys: selectable
+        .map(row => row.id)
+        .filter((key): key is Key => key != null && !disabled.has(key)),
+      incomplete: selectable.some(row => row.id == null),
+      disabledRowKeys: new Set(
+        rows
+          .filter(
+            row =>
+              row.id != null && (row.disabled === true || disabled.has(row.id))
+          )
+          .map(row => row.id as Key)
       ),
-      hasMissingIds: candidates.some(key => key == null),
     };
-  }, [enabled, fromItems, source, disabledKeys]);
+  }, [rows, disabledKeys]);
+
+  const lockedKeys = useMemo(() => {
+    // `'all'` selects the disabled rows along with the rest, so all of them
+    // are locked. `ListView` keeps the sentinel in state, so this is the
+    // state a clear from its header starts from.
+    if (selection === 'all') {
+      return Array.from(disabledRowKeys);
+    }
+    if (selection.size === 0) {
+      return [];
+    }
+    return Array.from(selection).filter(key => disabledRowKeys.has(key));
+  }, [selection, disabledRowKeys]);
 
   useDevWarning(
-    (warn ?? enabled) === true && hasMissingIds,
+    (warn ?? enabled) === true && incomplete,
     '[ListView/SelectList] A select-all only covers the items it can address, ' +
       'and an item it cannot is left out of it. Give every item an `id`, and ' +
       'render them as direct children: items inside a Fragment, a ' +
@@ -81,7 +138,7 @@ export const useSelectableKeys = <T,>({
       '`items` array instead works in every case.'
   );
 
-  return keys;
+  return { keys, lockedKeys, incomplete };
 };
 
 export interface SelectAllHeaderProps {
@@ -89,7 +146,14 @@ export interface SelectAllHeaderProps {
   selection: Selection;
   onChange: (selected: boolean) => void;
   disabled?: boolean;
+  /** Id of the element naming the list, appended to the checkbox's description. */
   labelledBy?: string;
+  /**
+   * The list's own `aria-label`, used in place of `labelledBy` when the list has
+   * no labelling element to point at. Without it two lists on a page both get a
+   * checkbox that reads as nothing but "Select all".
+   */
+  label?: string;
   classNames?: { header?: string; count?: string };
 }
 
@@ -99,10 +163,13 @@ export const SelectAllHeader = ({
   onChange,
   disabled,
   labelledBy,
+  label,
   classNames,
 }: SelectAllHeaderProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');
   const countId = useId();
+  const labelId = useId();
+  const hasOwnLabel = labelledBy === undefined && label !== undefined;
 
   const selectedCount =
     selection === 'all'
@@ -138,7 +205,13 @@ export const SelectAllHeader = ({
           onChange(selected);
         }}
         label={stringFormatter.format('selectAll')}
-        aria-describedby={[countId, labelledBy].filter(Boolean).join(' ')}
+        aria-describedby={[
+          countId,
+          labelledBy,
+          hasOwnLabel ? labelId : undefined,
+        ]
+          .filter(Boolean)
+          .join(' ')}
       />
       <span id={countId} className={classNames?.count}>
         {stringFormatter.format('selectAllCount', {
@@ -146,6 +219,11 @@ export const SelectAllHeader = ({
           total: keys.length,
         })}
       </span>
+      {hasOwnLabel && (
+        <VisuallyHidden elementType="span" id={labelId}>
+          {label}
+        </VisuallyHidden>
+      )}
     </div>
   );
 };
