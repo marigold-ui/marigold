@@ -246,21 +246,58 @@ ReadOnly.test(
 ReadOnly.test(
   'A read-only radio stays focusable and the group announces aria-readonly',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas, userEvent }) => {
+  async ({ canvas, userEvent, step }) => {
     const selected = canvas.getByRole('radio', { name: 'Read-only, selected' });
     const unselected = canvas.getByRole('radio', {
       name: 'Read-only, unselected',
     });
 
-    expect(
-      canvas.getByRole('radiogroup', { name: 'Read-only' })
-    ).toHaveAttribute('aria-readonly', 'true');
+    await step('the group announces aria-readonly', async () => {
+      expect(
+        canvas.getByRole('radiogroup', { name: 'Read-only' })
+      ).toHaveAttribute('aria-readonly', 'true');
+    });
 
-    selected.focus();
-    await expect(selected).toHaveFocus();
+    await step('the selected radio stays focusable', async () => {
+      // Tab rather than `focus()`: the criterion is keyboard reach, and
+      // `focus()` would pass on a `tabIndex={-1}` radio too.
+      canvas.getByRole('radio', { name: 'Editable, selected' }).focus();
+      await userEvent.tab();
 
-    await userEvent.click(unselected);
-    expect(selected).toBeChecked();
+      await expect(selected).toHaveFocus();
+    });
+
+    await step(
+      'clicking another option does not move the selection',
+      async () => {
+        await userEvent.click(unselected);
+
+        expect(selected).toBeChecked();
+      }
+    );
+  }
+);
+
+ReadOnly.test(
+  'Disabled still wins over read-only',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { disabled: true },
+  },
+  async ({ canvas, step }) => {
+    for (const state of ['selected', 'unselected'] as const) {
+      await step(state, async () => {
+        const editable = controlIcon(
+          canvas.getByRole('radio', { name: `Editable, ${state}` })
+        );
+        const readOnly = controlIcon(
+          canvas.getByRole('radio', { name: `Read-only, ${state}` })
+        );
+
+        expect(fillOf(readOnly)).toBe(fillOf(editable));
+        expect(borderOf(readOnly)).toBe(borderOf(editable));
+      });
+    }
   }
 );
 

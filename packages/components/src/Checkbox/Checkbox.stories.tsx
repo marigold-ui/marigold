@@ -351,18 +351,52 @@ ReadOnly.test(
 ReadOnly.test(
   'A read-only box stays focusable and announces aria-readonly',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas, userEvent }) => {
+  async ({ canvas, userEvent, step }) => {
     const checkbox = await canvas.findByRole('checkbox', {
       name: 'Read-only, checked',
     });
 
-    expect(checkbox).toHaveAttribute('aria-readonly', 'true');
+    await step('announces aria-readonly', async () => {
+      expect(checkbox).toHaveAttribute('aria-readonly', 'true');
+    });
 
-    checkbox.focus();
-    await expect(checkbox).toHaveFocus();
+    await step('stays focusable', async () => {
+      // Tab rather than `focus()`: the criterion is keyboard reach, and
+      // `focus()` would pass on a `tabIndex={-1}` box too.
+      canvas.getByRole('checkbox', { name: 'Editable, checked' }).focus();
+      await userEvent.tab();
 
-    await userEvent.click(checkbox);
-    expect(checkbox).toBeChecked();
+      await expect(checkbox).toHaveFocus();
+    });
+
+    await step('ignores a click', async () => {
+      await userEvent.click(checkbox);
+
+      expect(checkbox).toBeChecked();
+    });
+  }
+);
+
+ReadOnly.test(
+  'Disabled still wins over read-only',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { disabled: true },
+  },
+  async ({ canvas, step }) => {
+    for (const state of ['unchecked', 'checked', 'indeterminate'] as const) {
+      await step(state, async () => {
+        const editable = controlIcon(
+          canvas.getByRole('checkbox', { name: `Editable, ${state}` })
+        );
+        const readOnly = controlIcon(
+          canvas.getByRole('checkbox', { name: `Read-only, ${state}` })
+        );
+
+        expect(fillOf(readOnly)).toBe(fillOf(editable));
+        expect(borderOf(readOnly)).toBe(borderOf(editable));
+      });
+    }
   }
 );
 

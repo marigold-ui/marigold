@@ -16,8 +16,10 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
       'group-indeterminate/checkbox:border-selected-bold group-indeterminate/checkbox:bg-selected-bold group-indeterminate/checkbox:text-selected-bold-foreground',
       'group-hover/checkbox:group-disabled/checkbox:bg-disabled-surface',
       'group-read-only/checkbox:not-group-disabled/checkbox:not-group-selected/checkbox:not-group-indeterminate/checkbox:bg-control',
-      'group-read-only/checkbox:group-selected/checkbox:border-selected-readonly group-read-only/checkbox:group-selected/checkbox:bg-selected-readonly',
-      'group-read-only/checkbox:group-indeterminate/checkbox:border-selected-readonly group-read-only/checkbox:group-indeterminate/checkbox:bg-selected-readonly',
+      // `not-group-disabled` so `disabled` wins by specificity rather than by
+      // the order the variants happen to sort in: the fills above carry no `!`.
+      'group-read-only/checkbox:not-group-disabled/checkbox:group-selected/checkbox:border-selected-readonly group-read-only/checkbox:not-group-disabled/checkbox:group-selected/checkbox:bg-selected-readonly',
+      'group-read-only/checkbox:not-group-disabled/checkbox:group-indeterminate/checkbox:border-selected-readonly group-read-only/checkbox:not-group-disabled/checkbox:group-indeterminate/checkbox:bg-selected-readonly',
       // Each `:not()` outranks a state rule above, so removing one lets hover
       // repaint it. `disabled` isn't, its rule carries `!important`. Focus
       // needs none, its ring sits outside the border.

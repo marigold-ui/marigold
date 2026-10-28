@@ -33,7 +33,7 @@ export const Switch: ThemeComponent<'Switch'> = {
       'group-disabled/switch:bg-disabled-surface group-disabled/switch:text-disabled group-selected/switch:group-disabled/switch:bg-disabled-surface group-selected/switch:group-disabled/switch:text-disabled',
       'group-selected/switch:bg-selected-bold bg-control',
       'group-read-only/switch:not-group-disabled/switch:border-control-edge',
-      'group-read-only/switch:group-selected/switch:bg-selected-readonly',
+      'group-read-only/switch:not-group-disabled/switch:group-selected/switch:bg-selected-readonly',
       'group-hover/switch:not-group-read-only/switch:not-group-selected/switch:not-group-disabled/switch:bg-[image:linear-gradient(oklch(from_var(--color-control)_l_c_h_/_calc(0.14_/_(1_-_alpha)))_0_0)]',
       'group-focus-visible/switch:ui-state-focus outline-none',
     ],

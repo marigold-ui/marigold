@@ -375,18 +375,52 @@ ReadOnly.test(
 ReadOnly.test(
   'A read-only switch stays focusable and announces aria-readonly',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas, userEvent }) => {
+  async ({ canvas, userEvent, step }) => {
     const switchEl: HTMLInputElement = canvas.getByRole('switch', {
       name: 'Read-only, on',
     });
 
-    expect(switchEl).toHaveAttribute('aria-readonly', 'true');
+    await step('announces aria-readonly', async () => {
+      expect(switchEl).toHaveAttribute('aria-readonly', 'true');
+    });
 
-    switchEl.focus();
-    await expect(switchEl).toHaveFocus();
+    await step('stays focusable', async () => {
+      // Tab rather than `focus()`: the criterion is keyboard reach, and
+      // `focus()` would pass on a `tabIndex={-1}` switch too.
+      canvas.getByRole('switch', { name: 'Editable, on' }).focus();
+      await userEvent.tab();
 
-    await userEvent.click(switchEl);
-    expect(switchEl.checked).toBeTruthy();
+      await expect(switchEl).toHaveFocus();
+    });
+
+    await step('ignores a click', async () => {
+      await userEvent.click(switchEl);
+
+      expect(switchEl.checked).toBeTruthy();
+    });
+  }
+);
+
+ReadOnly.test(
+  'Disabled still wins over read-only',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { disabled: true },
+  },
+  async ({ canvas, step }) => {
+    for (const state of ['off', 'on'] as const) {
+      await step(state, async () => {
+        const editable = getTrack(
+          canvas.getByRole('switch', { name: `Editable, ${state}` })
+        );
+        const readOnly = getTrack(
+          canvas.getByRole('switch', { name: `Read-only, ${state}` })
+        );
+
+        expect(fillOf(readOnly)).toBe(fillOf(editable));
+        expect(borderOf(readOnly)).toBe(borderOf(editable));
+      });
+    }
   }
 );
 
