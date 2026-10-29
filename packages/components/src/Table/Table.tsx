@@ -197,8 +197,12 @@ const _Table = ({
     const container = containerRef.current;
     if (!container || minTableWidth === undefined) return;
 
-    const scrollParent = getScrollParent(container);
-    if (/auto|scroll/.test(getComputedStyle(scrollParent).overflowX)) {
+    // Only a `Scrollable` is left alone: it scrolls sideways and has a height
+    // of its own for a sticky header to pin to. Reading `overflow-x` instead
+    // would catch every vertical scroller too, because CSS computes it to
+    // `auto` whenever `overflow-y` is not `visible`, and a `Dialog` or a
+    // scrolling app shell would keep the overflow this guard exists to stop.
+    if (getScrollParent(container).hasAttribute('data-scrollable')) {
       setScrolls(false);
       return;
     }

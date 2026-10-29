@@ -10,6 +10,7 @@ import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { Columns } from '../Columns/Columns';
+import { Dialog } from '../Dialog/Dialog';
 import { EmptyState } from '../EmptyState/EmptyState';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { NumberField } from '../NumberField/NumberField';
@@ -1395,6 +1396,80 @@ NarrowContainer.test(
     // A scroll container here would become the scrollport a `sticky` header
     // and the ActionBar pin to, and stop both from following the page.
     expect(wide.closest('.overflow-x-auto')).toBeNull();
+  }
+);
+
+/**
+ * Regression story for the scroll guard. `DialogContent` scrolls vertically,
+ * and CSS computes its `overflow-x` to `auto` along with it, so a guard that
+ * read the style alone took the dialog for a sideways scroll area and left the
+ * table to overflow the panel, which is the bug this ticket is about.
+ */
+export const InsideDialog = meta.story({
+  tags: ['component-test'],
+  parameters: { surface: false },
+  render: args => (
+    <Dialog.Trigger>
+      <Button variant="primary">Open</Button>
+      <Dialog size="xsmall" closeButton>
+        <Dialog.Title>Organizers</Dialog.Title>
+        <Dialog.Content>
+          <Panel>
+            <Panel.Content bleed>
+              <Table aria-label="Organizers in a dialog" {...args}>
+                <Table.Header>
+                  <Table.Column rowHeader>Name</Table.Column>
+                  <Table.Column>City</Table.Column>
+                  <Table.Column>Email</Table.Column>
+                  <Table.Column>Role</Table.Column>
+                </Table.Header>
+                <Table.Body>
+                  {[1, 2, 3].map(id => (
+                    <Table.Row key={id}>
+                      <Table.Cell>{`Organizer ${id}`}</Table.Cell>
+                      <Table.Cell>Freiburg im Breisgau</Table.Cell>
+                      <Table.Cell>{`contact${id}@example.com`}</Table.Cell>
+                      <Table.Cell>Owner</Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table>
+            </Panel.Content>
+          </Panel>
+        </Dialog.Content>
+      </Dialog>
+    </Dialog.Trigger>
+  ),
+});
+
+InsideDialog.test(
+  'Scrolls inside the panel rather than sliding the dialog sideways',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+
+    const table = await waitFor(() =>
+      canvas.getByRole('grid', { name: 'Organizers in a dialog' })
+    );
+    const panel = table.closest<HTMLElement>('[data-panel]')!;
+
+    await step('the Table takes the overflow itself', async () => {
+      // The dialog reports `overflow-x: auto` without being a sideways scroll
+      // area, so the table cannot hand its overflow over to it.
+      await waitFor(() =>
+        expect(table.closest('.overflow-x-auto')).not.toBeNull()
+      );
+    });
+
+    await step('nothing paints across the panel', () => {
+      const scroll = table.closest<HTMLElement>('.overflow-x-auto')!;
+
+      expect(scroll.scrollWidth).toBeGreaterThan(scroll.clientWidth);
+      expect(scroll.getBoundingClientRect().right).toBeLessThanOrEqual(
+        // 1px absorbs subpixel rounding.
+        panel.getBoundingClientRect().right + 1
+      );
+    });
   }
 );
 

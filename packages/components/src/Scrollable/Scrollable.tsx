@@ -26,6 +26,10 @@ export const Scrollable = ({
 }: ScrollableProps) => (
   <div
     {...props}
+    // Says this is a scroll area on both axes with a height of its own. CSS
+    // computes `overflow-x` to `auto` whenever `overflow-y` is not `visible`,
+    // so a child cannot tell that from a vertical-only scroller by style.
+    data-scrollable
     className={cn(
       'sticky h-(--height) w-(--width) overflow-auto overscroll-auto'
     )}
