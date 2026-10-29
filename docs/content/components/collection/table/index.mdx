@@ -103,7 +103,7 @@ Proper alignment makes data easier to scan and compare. Different data types ben
 
 ### Column widths
 
-A column without a `width` falls back to react-aria's 75px minimum, so a narrow container squeezes every column down to that floor. Cell content that cannot shrink then paints outside its own cell, because cells do not clip. Give columns a width to keep the table a predictable size:
+A column without a `width` falls back to a 120px minimum, so a narrow container squeezes every column down to that floor. Cell content that cannot shrink then paints outside its own cell, because cells do not clip. Give columns a width to keep the table a predictable size:
 
 - **A fraction (`2fr`, `1.5fr`)** for text columns that should absorb the space left over, like names, addresses or descriptions.
 - **A number** for columns whose content has a predictable size, like a badge, a date or a row action.
@@ -113,7 +113,7 @@ Those floors added together are the smallest width the table can take. Where les
 
 <ComponentDemo name="table-column-widths" />
 
-Scrolling sideways is a fallback, not a layout, so keep the floors low and it stays rare: fraction widths on their own divide up the available space without raising the minimum. While a table scrolls sideways, a sticky header or footer pins to that scroll area rather than to the page. Wrap the table in a [`<Scrollable>`](/components/layout/scrollable) where the header has to stay put: a scroll area with a height of its own takes over both directions and keeps the header pinned.
+Scrolling sideways is a fallback, not a layout, so keep the floors low and it stays rare: fraction widths on their own divide up the available space without raising the minimum. While a table scrolls sideways, a sticky header or footer and the `actionBar` pin to that scroll area rather than to the page, and because that area has no height of its own, none of them stay put as the page scrolls. Wrap the table in a [`<Scrollable>`](/components/layout/scrollable) where they have to: a scroll area with a height of its own takes over both directions and keeps them pinned.
 
 ### Selecting rows
 

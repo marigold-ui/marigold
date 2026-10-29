@@ -1286,7 +1286,9 @@ export const NarrowContainer = meta.story({
 
     const table = (label: string) => (
       <Table aria-label={label} {...args}>
-        <Table.Header>
+        {/* Sticky, to show what the scroll area costs: the wide table's header
+            follows the page, the narrow one's has nothing left to pin to. */}
+        <Table.Header sticky>
           <Table.Column rowHeader minWidth={160}>
             Name
           </Table.Column>
@@ -1396,6 +1398,43 @@ NarrowContainer.test(
     // A scroll container here would become the scrollport a `sticky` header
     // and the ActionBar pin to, and stop both from following the page.
     expect(wide.closest('.overflow-x-auto')).toBeNull();
+  }
+);
+
+NarrowContainer.test(
+  'Costs a sticky header its anchor while the scroll area is on',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    const narrow = canvas.getByRole('grid', { name: 'Organizers at 320px' });
+    const wide = canvas.getByRole('grid', { name: 'Organizers at full width' });
+    const headerOf = (table: HTMLElement) =>
+      within(table)
+        .getByRole('columnheader', { name: 'Name' })
+        .closest('thead')!;
+
+    await waitFor(() =>
+      expect(narrow.closest('.overflow-x-auto')).not.toBeNull()
+    );
+
+    await step('both headers still ask to stick', () => {
+      expect(headerOf(narrow)).toHaveClass('sticky');
+      expect(headerOf(wide)).toHaveClass('sticky');
+    });
+
+    await step('the narrow one has nothing left to pin to', () => {
+      const scroll = narrow.closest<HTMLElement>('.overflow-x-auto')!;
+
+      // `overflow-x: auto` forces the used `overflow-y` to `auto`, so this box
+      // is the header's scrollport now. It is exactly as tall as its content,
+      // so the header has no travel and stops following the page. That is the
+      // documented cost of the scroll area, and a fix for it should land here
+      // as a failure rather than quietly.
+      expect(scroll.scrollHeight).toBe(scroll.clientHeight);
+    });
+
+    await step('the wide one still pins against the page', () => {
+      expect(wide.closest('.overflow-x-auto')).toBeNull();
+    });
   }
 );
 
