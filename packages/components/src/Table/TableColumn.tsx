@@ -12,6 +12,14 @@ import { TableTreeColumn } from './TableTreeColumn';
 
 // Helper
 // ---------------
+/**
+ * React Aria floors a column at 75px, which is narrower than the content a
+ * cell usually holds. It only shows once a table is out of room: the columns
+ * are laid out at their minimums, and a value as short as a formatted price
+ * wraps. This is the width below which a column stops being readable.
+ */
+const DEFAULT_COLUMN_MIN_WIDTH = 120;
+
 const isStaticWidth = (
   width: RAC.ColumnProps['width']
 ): width is RAC.ColumnProps['minWidth'] => !`${width}`.endsWith('fr');
@@ -21,7 +29,8 @@ const ensureWidth = (
   minWdith: RAC.ColumnProps['minWidth']
 ) => {
   if (minWdith) return minWdith;
-  return isStaticWidth(width) ? width : minWdith;
+  if (isStaticWidth(width) && width != null) return width;
+  return DEFAULT_COLUMN_MIN_WIDTH;
 };
 
 // Props
