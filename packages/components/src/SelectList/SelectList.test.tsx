@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import type { ReactNode } from 'react';
 import { vi } from 'vitest';
 import { theme } from '@marigold/theme-rui';
 import { Badge } from '../Badge/Badge';
@@ -709,27 +710,116 @@ describe('SelectList', () => {
     });
 
     // A wrapper component is exactly what the derivation cannot see through, so
-    // this one has to be written out rather than taken from a story.
+    // these have to be written out rather than taken from a story.
     const Addon = ({ addOn }: { addOn: { id: string; name: string } }) => (
       <SelectList.Option id={addOn.id} textValue={addOn.name} />
     );
 
-    test('Mod+A still selects every option behind a wrapper component', async () => {
-      render(
+    // The dev warning is part of what this fixture is, so it is silenced here
+    // rather than asserted: `SelectAll.test.tsx` covers it.
+    const renderAddons = (options: ReactNode) => {
+      const onChange = vi.fn();
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => null);
+      const { container } = render(
         <MarigoldProvider theme={theme}>
-          <SelectList label="Add-ons" selectionMode="multiple">
-            <Addon addOn={{ id: 'insurance', name: 'Insurance' }} />
-            <Addon addOn={{ id: 'gift-wrap', name: 'Gift wrap' }} />
+          <SelectList
+            label="Add-ons"
+            name="addons"
+            selectionMode="multiple"
+            allowSelectAll
+            onChange={onChange}
+          >
+            {options}
           </SelectList>
         </MarigoldProvider>
       );
+      warn.mockRestore();
+
+      // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
+      const select = container.querySelector(
+        'select[name="addons"]'
+      ) as HTMLSelectElement;
+      const submitted = () =>
+        Array.from(select.selectedOptions, option => option.value);
+
+      return { onChange, submitted };
+    };
+
+    const selectAllPaths = [
+      ['Mod+A', () => user.keyboard(`{${modKey}>}a{/${modKey}}`)],
+      [
+        'the select-all',
+        () => user.click(screen.getByRole('checkbox', { name: 'Select all' })),
+      ],
+    ] as const;
+
+    // Both paths go through `handleSelectionChange('all')`, and what that
+    // resolves to is what the field submits.
+    test.each(selectAllPaths)(
+      '%s selects the options it can address, and reports exactly those',
+      async (_, selectAll) => {
+        const { onChange, submitted } = renderAddons([
+          <SelectList.Option
+            key="insurance"
+            id="insurance"
+            textValue="Insurance"
+          />,
+          <SelectList.Option
+            key="signature"
+            id="signature"
+            textValue="Signature"
+          />,
+          <Addon
+            key="gift-wrap"
+            addOn={{ id: 'gift-wrap', name: 'Gift wrap' }}
+          />,
+        ]);
+
+        await user.click(screen.getByRole('row', { name: /insurance/i }));
+        await selectAll();
+
+        expect(screen.getByRole('row', { name: /insurance/i })).toHaveAttribute(
+          'aria-selected',
+          'true'
+        );
+        expect(screen.getByRole('row', { name: /signature/i })).toHaveAttribute(
+          'aria-selected',
+          'true'
+        );
+        // The option behind the wrapper is left out instead of reading as
+        // selected while submitting nothing.
+        expect(screen.getByRole('row', { name: /gift wrap/i })).toHaveAttribute(
+          'aria-selected',
+          'false'
+        );
+        expect(onChange).toHaveBeenLastCalledWith(['insurance', 'signature']);
+        expect(submitted()).toEqual(['insurance', 'signature']);
+      }
+    );
+
+    test('Mod+A keeps the selection when it can address nothing', async () => {
+      const { onChange, submitted } = renderAddons([
+        <Addon
+          key="insurance"
+          addOn={{ id: 'insurance', name: 'Insurance' }}
+        />,
+        <Addon
+          key="gift-wrap"
+          addOn={{ id: 'gift-wrap', name: 'Gift wrap' }}
+        />,
+      ]);
 
       await user.click(screen.getByRole('row', { name: /insurance/i }));
       await user.keyboard(`{${modKey}>}a{/${modKey}}`);
 
-      for (const row of screen.getAllByRole('row')) {
-        expect(row).toHaveAttribute('aria-selected', 'true');
-      }
+      // A select-all never deselects: the row it cannot address keeps the
+      // selection it has instead of being dropped by the resolution.
+      expect(onChange).toHaveBeenLastCalledWith(['insurance']);
+      expect(submitted()).toEqual(['insurance']);
+      expect(screen.getByRole('row', { name: /gift wrap/i })).toHaveAttribute(
+        'aria-selected',
+        'false'
+      );
     });
 
     test('submits concrete keys for a controlled `selectedKeys="all"`', () => {

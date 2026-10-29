@@ -593,17 +593,41 @@ describe('ListView', () => {
       expect(selectAll).toBeChecked();
     });
 
-    test('keeps a preselected disabled row when clearing', async () => {
+    // Under `'all'` React Aria answers `isSelected` with `canSelectItem`, which
+    // is `false` for a disabled row, so there is no selected disabled row for a
+    // clear to keep. Handing one back would select a row the user cannot.
+    test('does not select a disabled row when clearing from `all`', async () => {
       const onSelectionChange = vi.fn();
       render(
         <WithSelectAll.Component
           disabledKeys={['tempodrom']}
-          defaultSelectedKeys={['tempodrom', 'gasometer']}
           onSelectionChange={onSelectionChange}
         />
       );
 
-      await user.click(screen.getByRole('checkbox', { name: 'Select all' }));
+      const selectAll = screen.getByRole('checkbox', { name: 'Select all' });
+      const disabledRow = screen.getByRole('row', { name: /tempodrom/i });
+
+      // A row RAC cannot select carries no `aria-selected` at all.
+      await user.click(selectAll);
+      expect(disabledRow).not.toHaveAttribute('aria-selected', 'true');
+
+      await user.click(selectAll);
+
+      expect(onSelectionChange).toHaveBeenLastCalledWith(new Set());
+      expect(disabledRow).not.toHaveAttribute('aria-selected', 'true');
+    });
+
+    test('keeps a selected disabled row when clearing a concrete selection', async () => {
+      const onSelectionChange = vi.fn();
+      render(
+        <WithSelectAll.Component
+          disabledKeys={['tempodrom']}
+          selectedKeys={['tempodrom', 'gasometer', 'columbiahalle']}
+          onSelectionChange={onSelectionChange}
+        />
+      );
+
       await user.click(screen.getByRole('checkbox', { name: 'Select all' }));
 
       expect(onSelectionChange).toHaveBeenLastCalledWith(

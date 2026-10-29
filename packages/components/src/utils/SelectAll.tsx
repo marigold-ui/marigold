@@ -40,13 +40,6 @@ export interface SelectableKeys {
    * has to leave them as they are in either direction.
    */
   lockedKeys: Key[];
-  /**
-   * `true` when a row could not be addressed, which makes `keys` an incomplete
-   * picture of the collection. React Aria resolves its own `'all'` sentinel
-   * against the real collection, so leaving the sentinel in place covers more
-   * rows than resolving it against a partial set.
-   */
-  incomplete: boolean;
 }
 
 /** What the derivation needs off a row, however that row was written. */
@@ -56,6 +49,7 @@ interface RowProps {
 }
 
 const EMPTY_ROWS: RowProps[] = [];
+const EMPTY_KEYS: Key[] = [];
 
 export const useSelectableKeys = <T,>({
   children,
@@ -117,14 +111,13 @@ export const useSelectableKeys = <T,>({
   }, [rows, disabledKeys]);
 
   const lockedKeys = useMemo(() => {
-    // `'all'` selects the disabled rows along with the rest, so all of them
-    // are locked. `ListView` keeps the sentinel in state, so this is the
-    // state a clear from its header starts from.
-    if (selection === 'all') {
-      return Array.from(disabledRowKeys);
-    }
-    if (selection.size === 0) {
-      return [];
+    // Under `'all'`, `SelectionManager.isSelected` answers with
+    // `canSelectItem`, which is `false` for a disabled row: nothing disabled is
+    // selected, so nothing is locked. `ListView` keeps the sentinel in state,
+    // so this is the state a clear from its header starts from, and returning
+    // the disabled rows here would select rows the user cannot select.
+    if (selection === 'all' || selection.size === 0) {
+      return EMPTY_KEYS;
     }
     return Array.from(selection).filter(key => disabledRowKeys.has(key));
   }, [selection, disabledRowKeys]);
@@ -138,7 +131,7 @@ export const useSelectableKeys = <T,>({
       '`items` array instead works in every case.'
   );
 
-  return { keys, lockedKeys, incomplete };
+  return { keys, lockedKeys };
 };
 
 export interface SelectAllHeaderProps {

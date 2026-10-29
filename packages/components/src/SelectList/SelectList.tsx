@@ -306,11 +306,7 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
     }
   );
 
-  const {
-    keys: selectableKeys,
-    lockedKeys,
-    incomplete,
-  } = useSelectableKeys({
+  const { keys: selectableKeys, lockedKeys } = useSelectableKeys({
     children,
     items: rest.items,
     disabledKeys: rest.disabledKeys,
@@ -319,12 +315,26 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
     warn: hasSelectAll,
   });
 
+  // A field submits what it shows, so the `'all'` sentinel is always resolved
+  // to concrete keys. Leaving it in state renders every row as selected while
+  // `onChange`, the hidden `<select>` and `validate` all see nothing, so a
+  // `required` list looks fully picked and submits empty. The keys that are
+  // already selected are kept rather than replaced: a row the derivation
+  // cannot address stays selected instead of being dropped by a select-all,
+  // which is the one thing a select-all must never do. Rows it cannot address
+  // are not added, which is what the dev warning and both docs pages say.
+  const resolveSelectAll = useCallback(
+    (keep: Selection): Set<Key> =>
+      new Set([...selectableKeys, ...(keep === 'all' ? [] : keep)]),
+    [selectableKeys]
+  );
+
   const resolvedSelection = useMemo(
     () =>
-      selection === 'all' && resolvedSelectionMode === 'multiple' && !incomplete
-        ? new Set(selectableKeys)
+      selection === 'all' && resolvedSelectionMode === 'multiple'
+        ? resolveSelectAll(selection)
         : selection,
-    [selection, selectableKeys, resolvedSelectionMode, incomplete]
+    [selection, resolvedSelectionMode, resolveSelectAll]
   );
 
   const validationValue = useMemo(
@@ -342,19 +352,10 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
 
   const handleSelectionChange = useCallback(
     (keys: Selection) => {
-      setSelection(
-        // Resolving the sentinel is what lets the field submit a value. When a
-        // row could not be addressed the derived set would be the smaller
-        // answer, so the sentinel stays and React Aria resolves it against the
-        // real collection, which is what makes Cmd/Ctrl+A work on a list whose
-        // options come from a wrapper component.
-        keys === 'all' && !incomplete
-          ? new Set([...selectableKeys, ...lockedKeys])
-          : keys
-      );
+      setSelection(keys === 'all' ? resolveSelectAll(selection) : keys);
       validationState.commitValidation();
     },
-    [setSelection, validationState, selectableKeys, lockedKeys, incomplete]
+    [setSelection, validationState, resolveSelectAll, selection]
   );
 
   const onSelectAll = useCallback(
