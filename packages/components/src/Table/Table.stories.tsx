@@ -1379,16 +1379,22 @@ NarrowContainer.test(
   'Leaves a container that fits without a scroll area',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas }) => {
-    const table = canvas.getByRole('grid', {
+    const narrow = canvas.getByRole('grid', { name: 'Organizers at 320px' });
+    const wide = canvas.getByRole('grid', {
       name: 'Organizers at full width',
     });
 
+    // Waiting for the narrow table to gain its scroll area is what proves the
+    // measurement has run. Both tables measure in the same commit, so by then
+    // the absence below is a decision rather than the initial render, where
+    // no table carries a scroll area yet.
+    await waitFor(() =>
+      expect(narrow.closest('.overflow-x-auto')).not.toBeNull()
+    );
+
     // A scroll container here would become the scrollport a `sticky` header
     // and the ActionBar pin to, and stop both from following the page.
-    await waitFor(() =>
-      expect(table.getBoundingClientRect().width).toBeGreaterThan(0)
-    );
-    await waitFor(() => expect(table.closest('.overflow-x-auto')).toBeNull());
+    expect(wide.closest('.overflow-x-auto')).toBeNull();
   }
 );
 
