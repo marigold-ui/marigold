@@ -126,6 +126,8 @@ The Table component supports two selection modes:
 - **Multiple selection:** Users can select any number of rows using checkboxes. Click individual checkboxes to select specific rows, or use the header checkbox to select all rows at once. This mode is ideal for bulk operations where users need flexibility in choosing which items to act upon.
 - **Single selection:** Users can select only one row at a time by clicking anywhere on the row. Selecting a new row automatically deselects the previous one. Use this mode when actions apply to only one item, like viewing details or editing a single record.
 
+In multiple selection, users don't have to tick every row of a long range one by one. <kbd>Shift</kbd>+click on a row or on its checkbox selects every row between the row they last clicked and this one, the way a file manager does. From the keyboard, <kbd>Shift</kbd>+<kbd>↑</kbd>/<kbd>↓</kbd> extends the range a row at a time and continues from a range that was clicked. A plain click still toggles one row and keeps the rest of the selection, and rows that can't be selected stay out of the range.
+
 <ComponentDemo name="table-selection" />
 
 <GuidelineTiles>
