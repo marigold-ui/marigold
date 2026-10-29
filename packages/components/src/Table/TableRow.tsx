@@ -42,7 +42,6 @@ export interface TableRowProps<T extends object = object> extends Omit<
 const SelectionCheckbox = ({ cellKey }: { cellKey?: RAC.Key }) => {
   const state = use(TableStateContext);
 
-  // What a Shift press extends the range to, or null when it keeps toggling.
   const rangeTarget = (e: MouseEvent) => {
     const manager = state?.selectionManager;
     const rowKey =

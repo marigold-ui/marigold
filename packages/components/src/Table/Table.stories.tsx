@@ -305,6 +305,24 @@ Basic.test(
 );
 
 Basic.test(
+  'Shift+Space on a focused checkbox still toggles only its row',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple' },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+
+    await userEvent.click(within(rows[1]).getByRole('checkbox'));
+    await userEvent.keyboard('{ArrowDown}{ArrowDown}{ArrowDown}');
+    expect(within(rows[4]).getByRole('checkbox')).toHaveFocus();
+    await userEvent.keyboard('{Shift>}{ }{/Shift}');
+
+    expect(selectedRows(rows)).toEqual([1, 4]);
+  }
+);
+
+Basic.test(
   'A plain click on a checkbox still toggles only its row',
   {
     parameters: { chromatic: { disableSnapshot: true } },
