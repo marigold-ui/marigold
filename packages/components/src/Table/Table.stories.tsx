@@ -1011,6 +1011,62 @@ ScrollableAndSticky.test(
   }
 );
 
+ScrollableAndSticky.test(
+  'Keeps the header sticky where the Scrollable takes the overflow',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    // Well under the 480px the four columns need, so the table overflows the
+    // `Scrollable` sideways by enough that a scrollbar's width can't account
+    // for it. A fixed box rather than a viewport, which the story would have
+    // to re-render to follow.
+    decorators: [
+      Story => (
+        <div className="w-[360px]">
+          <Story />
+        </div>
+      ),
+    ],
+  },
+  async ({ canvas, step }) => {
+    const table = canvas.getByRole('grid');
+    const scroll = table.closest<HTMLElement>('.overflow-auto')!;
+    const header = canvas
+      .getByRole('columnheader', { name: 'ID' })
+      .closest('thead')!;
+
+    await step('the Table adds no scroll area of its own', async () => {
+      await waitFor(() =>
+        // A couple of pixels of slack, so a vertical scrollbar on its own
+        // doesn't read as sideways overflow.
+        expect(scroll.scrollWidth).toBeGreaterThan(scroll.clientWidth + 2)
+      );
+      // The `Scrollable` already contains the table and has a height for the
+      // header to pin to. A second scroll area here would become the
+      // scrollport instead, and the header would pin to that.
+      expect(table.closest('.overflow-x-auto')).toBeNull();
+    });
+
+    await step('the header stays pinned through both axes', async () => {
+      scroll.scrollLeft = scroll.scrollWidth;
+      scroll.scrollTop = 150;
+
+      await waitFor(() => {
+        expect(scroll.scrollLeft).toBeGreaterThan(0);
+        expect(scroll.scrollTop).toBeGreaterThan(0);
+      });
+
+      // Sideways scrolling moves the header with the rows, downwards
+      // scrolling leaves it at the top edge of the `Scrollable`.
+      await waitFor(() =>
+        expect(header.getBoundingClientRect().top).toBeCloseTo(
+          scroll.getBoundingClientRect().top,
+          0
+        )
+      );
+    });
+  }
+);
+
 // A content-sized parent: `Columns` sizes its tracks to the Table's width,
 // while React Aria sizes the columns to the track's width.
 /**
@@ -1298,6 +1354,23 @@ NarrowContainer.test(
 
       scroll.scrollLeft = scroll.scrollWidth;
       expect(scroll.scrollLeft).toBeGreaterThan(0);
+    });
+
+    await step('the last column ends where the scroll area ends', async () => {
+      const scroll = scrollArea()!;
+      const lastColumn = within(table).getByRole('columnheader', {
+        name: 'Email',
+      });
+
+      // At the end of the scroll there is nothing left to reveal, so the last
+      // column's edge and the scroll area's edge are the same edge. A table
+      // that overflowed its area instead would leave the column past it.
+      await waitFor(() =>
+        expect(lastColumn.getBoundingClientRect().right).toBeCloseTo(
+          scroll.getBoundingClientRect().right,
+          0
+        )
+      );
     });
   }
 );
