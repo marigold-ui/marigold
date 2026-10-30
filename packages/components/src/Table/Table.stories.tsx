@@ -357,6 +357,24 @@ Basic.test(
 );
 
 Basic.test(
+  'Shift+click on a checkbox skips disabled rows inside the range',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple', disabledKeys: [users[2].email] },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+
+    await userEvent.click(within(rows[1]).getByRole('checkbox'));
+    await userEvent.keyboard('{Shift>}');
+    await userEvent.click(within(rows[4]).getByRole('checkbox'));
+    await userEvent.keyboard('{/Shift}');
+
+    expect(selectedRows(rows)).toEqual([1, 3, 4]);
+  }
+);
+
+Basic.test(
   'Shift+click on a checkbox after select-all still toggles its row',
   {
     parameters: { chromatic: { disableSnapshot: true } },
