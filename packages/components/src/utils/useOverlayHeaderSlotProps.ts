@@ -17,6 +17,7 @@ export const useOverlayHeaderSlotProps = ({
       slots: {
         title: {
           className: classNames.title,
+          'data-slot': 'title',
           level: 2,
           id: titleId,
           ref: titleSlotRef,
@@ -31,6 +32,7 @@ export const useOverlayHeaderSlotProps = ({
       slots: {
         description: {
           className: classNames.description,
+          'data-slot': 'description',
           elementType: 'p' as const,
         },
       },
