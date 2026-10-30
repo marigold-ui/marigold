@@ -1,5 +1,17 @@
 # @marigold/components
 
+## 18.3.2
+
+### Patch Changes
+
+- a7bacf0: fix(DST-1906): keep focus in place when a confirmed action removes its trigger
+
+  `useConfirmation` now resolves once the confirmation dialog has closed and returned focus, instead of on the button press. Deleting the row whose button opened the confirmation no longer drops focus out of the surrounding overlay: a list inside a dialog, drawer or popover moves focus to the next row. The promise still resolves to `confirmed` or `cancelled`, only slightly later, after the dialog's closing animation.
+
+  Two `confirm` calls in the same tick no longer replace each other: the second is rejected with `cancelled`, as it already was while a dialog is open.
+
+- @marigold/system@18.3.2
+
 ## 18.3.1
 
 ### Patch Changes
