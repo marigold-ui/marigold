@@ -194,6 +194,23 @@ describe('Edge cell padding', () => {
   });
 });
 
+describe('Column minimum width', () => {
+  test('falls back to a readable default instead of React Aria 75px', () => {
+    render(<Basic.Component />);
+
+    const table = screen.getByRole('grid', { name: 'label' });
+    const columns = screen.getAllByRole('columnheader');
+    // eslint-disable-next-line testing-library/no-node-access
+    const container = table.closest<HTMLElement>(
+      '[class*="contain:inline-size"]'
+    )!;
+
+    // The container's minimum is what the columns are laid out at once the
+    // table runs out of room, so it is where the default shows up.
+    expect(container.style.minWidth).toBe(`${columns.length * 120}px`);
+  });
+});
+
 describe('Basic Rendering', () => {
   test('applies colspans to cells', () => {
     render(<WidthsAndOverflow.Component />);
