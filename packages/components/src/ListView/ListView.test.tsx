@@ -535,8 +535,6 @@ describe('ListView', () => {
     test('warns about a row it cannot address', () => {
       const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-      // No story renders a row without an `id`, since every story is also an
-      // example worth copying.
       render(
         <MarigoldProvider theme={theme}>
           <ListView aria-label="Venues" selectionMode="multiple" allowSelectAll>
@@ -593,9 +591,23 @@ describe('ListView', () => {
       expect(selectAll).toBeChecked();
     });
 
-    // Under `'all'` React Aria answers `isSelected` with `canSelectItem`, which
-    // is `false` for a disabled row, so there is no selected disabled row for a
-    // clear to keep. Handing one back would select a row the user cannot.
+    test('keeps a preselected disabled row when selecting everything', async () => {
+      const onSelectionChange = vi.fn();
+      render(
+        <WithSelectAll.Component
+          disabledKeys={['tempodrom']}
+          defaultSelectedKeys={['tempodrom']}
+          onSelectionChange={onSelectionChange}
+        />
+      );
+
+      await user.click(screen.getByRole('checkbox', { name: 'Select all' }));
+
+      expect(onSelectionChange).toHaveBeenLastCalledWith(
+        new Set(['gasometer', 'tempodrom', 'columbiahalle'])
+      );
+    });
+
     test('does not select a disabled row when clearing from `all`', async () => {
       const onSelectionChange = vi.fn();
       render(
@@ -608,7 +620,6 @@ describe('ListView', () => {
       const selectAll = screen.getByRole('checkbox', { name: 'Select all' });
       const disabledRow = screen.getByRole('row', { name: /tempodrom/i });
 
-      // A row RAC cannot select carries no `aria-selected` at all.
       await user.click(selectAll);
       expect(disabledRow).not.toHaveAttribute('aria-selected', 'true');
 

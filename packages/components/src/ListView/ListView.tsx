@@ -94,7 +94,11 @@ const ListViewBase = ({
   const onSelectAll = useCallback(
     (selected: boolean) => {
       if (selected) {
-        setSelection('all');
+        setSelection(
+          lockedKeys.length === 0
+            ? 'all'
+            : new Set([...keys, ...(selection === 'all' ? [] : selection)])
+        );
         return;
       }
       if (lockedKeys.length === 0 && rest.disallowEmptySelection) {
@@ -102,7 +106,7 @@ const ListViewBase = ({
       }
       setSelection(new Set(lockedKeys));
     },
-    [setSelection, lockedKeys, rest.disallowEmptySelection]
+    [setSelection, keys, lockedKeys, selection, rest.disallowEmptySelection]
   );
 
   // `useClassNames` returns a fresh object, so memoise on the slot strings.

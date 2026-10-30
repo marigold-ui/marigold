@@ -709,14 +709,10 @@ describe('SelectList', () => {
       ).toHaveAccessibleDescription('0 of 3 selected Shipping add-ons');
     });
 
-    // A wrapper component is exactly what the derivation cannot see through, so
-    // these have to be written out rather than taken from a story.
     const Addon = ({ addOn }: { addOn: { id: string; name: string } }) => (
       <SelectList.Option id={addOn.id} textValue={addOn.name} />
     );
 
-    // The dev warning is part of what this fixture is, so it is silenced here
-    // rather than asserted: `SelectAll.test.tsx` covers it.
     const renderAddons = (options: ReactNode) => {
       const onChange = vi.fn();
       const warn = vi.spyOn(console, 'warn').mockImplementation(() => null);
@@ -753,8 +749,6 @@ describe('SelectList', () => {
       ],
     ] as const;
 
-    // Both paths go through `handleSelectionChange('all')`, and what that
-    // resolves to is what the field submits.
     test.each(selectAllPaths)(
       '%s selects the options it can address, and reports exactly those',
       async (_, selectAll) => {
@@ -786,8 +780,6 @@ describe('SelectList', () => {
           'aria-selected',
           'true'
         );
-        // The option behind the wrapper is left out instead of reading as
-        // selected while submitting nothing.
         expect(screen.getByRole('row', { name: /gift wrap/i })).toHaveAttribute(
           'aria-selected',
           'false'
@@ -812,8 +804,6 @@ describe('SelectList', () => {
       await user.click(screen.getByRole('row', { name: /insurance/i }));
       await user.keyboard(`{${modKey}>}a{/${modKey}}`);
 
-      // A select-all never deselects: the row it cannot address keeps the
-      // selection it has instead of being dropped by the resolution.
       expect(onChange).toHaveBeenLastCalledWith(['insurance']);
       expect(submitted()).toEqual(['insurance']);
       expect(screen.getByRole('row', { name: /gift wrap/i })).toHaveAttribute(

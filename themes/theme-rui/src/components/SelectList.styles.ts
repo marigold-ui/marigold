@@ -14,9 +14,6 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     variants: {
       variant: {
         default: [
-          // The frame wraps the select-all and the options together, so the
-          // header reads as the list's first row rather than a second label
-          // above the field's own (DST-1751 review).
           'ui-surface [--ui-border-color:var(--color-border)]',
           '[--selectlist-item-px:var(--spacing-stretch-regular-x)]',
           '[--selectlist-item-py:var(--spacing-stretch-regular-y)]',
@@ -58,8 +55,6 @@ export const SelectList: ThemeComponent<'SelectList'> = {
     ],
     variants: {
       variant: {
-        // Inside the frame: the divider below it is the same weight as the
-        // dividers between options, so the header reads as part of the list.
         default: 'py-(--selectlist-item-py) border-b border-border',
         bordered: 'mx-(--selectlist-list-inset) mt-3 mb-2',
       },
@@ -89,9 +84,6 @@ export const SelectList: ThemeComponent<'SelectList'> = {
           'min-h-14',
           'selected:bg-selected hover:ui-state-hover',
           'group-orientation-vertical/list:first:rounded-t-(--selectlist-item-radius) group-orientation-vertical/list:last:rounded-b-(--selectlist-item-radius)',
-          // The header owns the frame's top corners once it is there, so no
-          // option rounds its top edge. Wins over the per-orientation rounding
-          // above, which is more specific.
           'group-has-[[data-select-all]]/selectlist:rounded-t-none!',
           'group-orientation-horizontal/list:first:rounded-l-(--selectlist-item-radius) group-orientation-horizontal/list:last:rounded-r-(--selectlist-item-radius)',
           // Dividers use the opaque structural --color-border (like Table grid

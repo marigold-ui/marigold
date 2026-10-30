@@ -315,14 +315,6 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
     warn: hasSelectAll,
   });
 
-  // A field submits what it shows, so the `'all'` sentinel is always resolved
-  // to concrete keys. Leaving it in state renders every row as selected while
-  // `onChange`, the hidden `<select>` and `validate` all see nothing, so a
-  // `required` list looks fully picked and submits empty. The keys that are
-  // already selected are kept rather than replaced: a row the derivation
-  // cannot address stays selected instead of being dropped by a select-all,
-  // which is the one thing a select-all must never do. Rows it cannot address
-  // are not added, which is what the dev warning and both docs pages say.
   const resolveSelectAll = useCallback(
     (keep: Selection): Set<Key> =>
       new Set([...selectableKeys, ...(keep === 'all' ? [] : keep)]),

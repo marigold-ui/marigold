@@ -48,9 +48,6 @@ interface RowProps {
   disabled?: boolean;
 }
 
-const EMPTY_ROWS: RowProps[] = [];
-const EMPTY_KEYS: Key[] = [];
-
 export const useSelectableKeys = <T,>({
   children,
   items,
@@ -64,7 +61,7 @@ export const useSelectableKeys = <T,>({
 
   const rows = useMemo<RowProps[]>(() => {
     if (enabled === false) {
-      return EMPTY_ROWS;
+      return [];
     }
 
     if (fromItems) {
@@ -111,13 +108,8 @@ export const useSelectableKeys = <T,>({
   }, [rows, disabledKeys]);
 
   const lockedKeys = useMemo(() => {
-    // Under `'all'`, `SelectionManager.isSelected` answers with
-    // `canSelectItem`, which is `false` for a disabled row: nothing disabled is
-    // selected, so nothing is locked. `ListView` keeps the sentinel in state,
-    // so this is the state a clear from its header starts from, and returning
-    // the disabled rows here would select rows the user cannot select.
     if (selection === 'all' || selection.size === 0) {
-      return EMPTY_KEYS;
+      return [];
     }
     return Array.from(selection).filter(key => disabledRowKeys.has(key));
   }, [selection, disabledRowKeys]);

@@ -1009,9 +1009,6 @@ SelectionWithMixedRowContent.test(
 
 const onBulkArchive = fn();
 
-// The Bulk Actions pattern's action bar, which needs no new API: `<ActionBar>`
-// takes `selectedItemCount` / `onClearSelection` as props and only falls back to
-// the context Table publishes. The select-all above the rows is `allowSelectAll`.
 const BulkActionsExample = (args: ListViewProps) => {
   const [selected, setSelected] = useState<Selection>(() => new Set());
   const count = selected === 'all' ? VENUES.length : selected.size;

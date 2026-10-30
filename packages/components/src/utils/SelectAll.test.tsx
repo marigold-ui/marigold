@@ -34,8 +34,6 @@ test('announces the count when the header changes it', async () => {
   expect(announce).toHaveBeenCalledWith('3 of 3 selected', 'polite');
 });
 
-// React Aria's GridList announces these itself, so a second announcement from
-// the header would read every row click out twice.
 test('says nothing when the count changes inside the grid', async () => {
   render(<WithSelectAll.Component />);
 
@@ -54,9 +52,6 @@ test('announces again on a second press', async () => {
   expect(announce).toHaveBeenLastCalledWith('0 of 3 selected', 'polite');
 });
 
-// The keys are derived for every multi-select SelectList, since Cmd/Ctrl+A
-// needs them, so the warning has to follow the select-all rather than the
-// derivation.
 test.each([
   [true, 1],
   [false, 0],
@@ -84,8 +79,6 @@ test.each([
   }
 );
 
-// `items` keyed by something other than `id`/`key`, which no story covers: the
-// stories are examples too, and the idiomatic example keys items by `id`.
 interface Venue {
   slug: string;
   name: string;
