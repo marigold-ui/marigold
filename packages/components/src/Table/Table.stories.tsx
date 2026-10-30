@@ -170,7 +170,7 @@ export const Basic = meta.story({
       </Table.Header>
       <Table.Body>
         {users.map(user => (
-          <Table.Row key={user.email}>
+          <Table.Row key={user.email} id={user.email}>
             <Table.Cell textValue={user.name}>
               <Stack space="0.5">
                 <Text weight="medium">{user.name}</Text>
@@ -226,6 +226,188 @@ Basic.test(
       // 10 users + 1 header row = 11 rows
       expect(rows).toHaveLength(11);
     });
+  }
+);
+
+const selectedRows = (rows: HTMLElement[]) =>
+  rows.flatMap((row, i) =>
+    row.getAttribute('aria-selected') === 'true' ? [i] : []
+  );
+
+Basic.test(
+  'Shift+click on a row selects the range from the last selected row',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple' },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+
+    await userEvent.click(rows[1]);
+    await userEvent.keyboard('{Shift>}');
+    await userEvent.click(rows[4]);
+    await userEvent.keyboard('{/Shift}');
+
+    expect(selectedRows(rows)).toEqual([1, 2, 3, 4]);
+  }
+);
+
+Basic.test(
+  'Shift+click on a checkbox selects the range from the last selected row',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple' },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+
+    await userEvent.click(within(rows[1]).getByRole('checkbox'));
+    await userEvent.keyboard('{Shift>}');
+    await userEvent.click(within(rows[4]).getByRole('checkbox'));
+    await userEvent.keyboard('{/Shift}');
+
+    expect(selectedRows(rows)).toEqual([1, 2, 3, 4]);
+  }
+);
+
+Basic.test(
+  'Shift+ArrowDown extends the selection',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple' },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+
+    await userEvent.click(rows[1]);
+    await userEvent.keyboard('{Shift>}{ArrowDown}{ArrowDown}{/Shift}');
+
+    expect(selectedRows(rows)).toEqual([1, 2, 3]);
+  }
+);
+
+Basic.test(
+  'Shift+ArrowDown continues from a Shift+clicked checkbox',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple' },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+
+    await userEvent.click(within(rows[1]).getByRole('checkbox'));
+    await userEvent.keyboard('{Shift>}');
+    await userEvent.click(within(rows[4]).getByRole('checkbox'));
+    await userEvent.keyboard('{ArrowDown}{/Shift}');
+
+    expect(selectedRows(rows)).toEqual([1, 2, 3, 4, 5]);
+  }
+);
+
+Basic.test(
+  'Shift+Space on a focused checkbox still toggles only its row',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple' },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+
+    await userEvent.click(within(rows[1]).getByRole('checkbox'));
+    await userEvent.keyboard('{ArrowDown}{ArrowDown}{ArrowDown}');
+    expect(within(rows[4]).getByRole('checkbox')).toHaveFocus();
+    await userEvent.keyboard('{Shift>}{ }{/Shift}');
+
+    expect(selectedRows(rows)).toEqual([1, 4]);
+  }
+);
+
+Basic.test(
+  'A plain click on a checkbox still toggles only its row',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple' },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+
+    await userEvent.click(within(rows[1]).getByRole('checkbox'));
+    await userEvent.click(within(rows[4]).getByRole('checkbox'));
+
+    expect(selectedRows(rows)).toEqual([1, 4]);
+  }
+);
+
+Basic.test(
+  'Shift+click on a disabled row checkbox changes nothing',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple', disabledKeys: [users[4].email] },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+
+    await userEvent.click(within(rows[1]).getByRole('checkbox'));
+    await userEvent.keyboard('{Shift>}');
+    await userEvent.click(within(rows[4]).getByRole('checkbox'));
+    await userEvent.keyboard('{/Shift}');
+
+    expect(selectedRows(rows)).toEqual([1]);
+  }
+);
+
+Basic.test(
+  'Shift+click on a checkbox skips disabled rows inside the range',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple', disabledKeys: [users[2].email] },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+
+    await userEvent.click(within(rows[1]).getByRole('checkbox'));
+    await userEvent.keyboard('{Shift>}');
+    await userEvent.click(within(rows[4]).getByRole('checkbox'));
+    await userEvent.keyboard('{/Shift}');
+
+    expect(selectedRows(rows)).toEqual([1, 3, 4]);
+  }
+);
+
+Basic.test(
+  'Shift+click on a checkbox after select-all still toggles its row',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple' },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+    const [selectAll] = canvas.getAllByRole('checkbox');
+
+    await userEvent.click(selectAll);
+    await userEvent.keyboard('{Shift>}');
+    await userEvent.click(within(rows[4]).getByRole('checkbox'));
+    await userEvent.keyboard('{/Shift}');
+
+    expect(selectedRows(rows)).toEqual([0, 1, 2, 3, 5, 6, 7, 8, 9]);
+  }
+);
+
+Basic.test(
+  'Shift+click on a checkbox in single selection still deselects',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'single' },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+
+    await userEvent.click(within(rows[1]).getByRole('checkbox'));
+    await userEvent.keyboard('{Shift>}');
+    await userEvent.click(within(rows[1]).getByRole('checkbox'));
+    await userEvent.keyboard('{/Shift}');
+
+    expect(selectedRows(rows)).toEqual([]);
   }
 );
 
