@@ -17,6 +17,7 @@ import {
 import { selectionMark } from '../control.utils';
 import { Info } from '../icons/Info';
 import { SelectList } from './SelectList';
+import type { SelectListProps } from './SelectList';
 
 // `select` controls render `undefined` as a normal option only when an
 // explicit label is mapped to it — Storybook treats the literal `undefined`
@@ -333,6 +334,135 @@ WithMultiSelection.test(
       expect(notify).toHaveAttribute('aria-selected', 'true');
       expect(args.onChange).toHaveBeenLastCalledWith(['gift-wrap', 'notify']);
     });
+  }
+);
+
+const SHIPPING_ADD_ONS = [
+  {
+    id: 'insurance',
+    name: 'Parcel insurance',
+    detail: 'Covers loss or damage up to $500.',
+  },
+  {
+    id: 'signature',
+    name: 'Signature on delivery',
+    detail: 'Require a signature when handed over.',
+  },
+  {
+    id: 'gift-wrap',
+    name: 'Gift wrap',
+    detail: 'Premium paper and a handwritten note.',
+  },
+];
+
+const renderAddOns = (args: SelectListProps<'multiple'>) => (
+  <SelectList {...args} label="Shipping add-ons">
+    {SHIPPING_ADD_ONS.map(addOn => (
+      <SelectList.Option key={addOn.id} id={addOn.id} textValue={addOn.name}>
+        <TextValue>{addOn.name}</TextValue>
+        <Description>{addOn.detail}</Description>
+      </SelectList.Option>
+    ))}
+  </SelectList>
+);
+
+export const WithSelectAll = meta.story({
+  tags: ['component-test'],
+  args: {
+    selectionMode: 'multiple',
+    allowSelectAll: true,
+    onChange: fn(),
+  },
+  render: renderAddOns,
+});
+
+WithSelectAll.test(
+  'selects every option by key, reads mixed while partial, and clears',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onChange: fn() },
+  },
+  async ({ args, canvas, userEvent, step }) => {
+    const selectAll = canvas.getByRole('checkbox', { name: 'Select all' });
+
+    await step('it selects every option', async () => {
+      await userEvent.click(selectAll);
+
+      for (const row of canvas.getAllByRole('row')) {
+        expect(row).toHaveAttribute('aria-selected', 'true');
+      }
+      expect(args.onChange).toHaveBeenLastCalledWith([
+        'insurance',
+        'signature',
+        'gift-wrap',
+      ]);
+    });
+
+    await step('it clears the selection', async () => {
+      await userEvent.click(selectAll);
+
+      expect(args.onChange).toHaveBeenLastCalledWith([]);
+      expect(selectAll).not.toBeChecked();
+    });
+
+    await step('a partial selection reads as mixed', async () => {
+      await userEvent.click(canvas.getByRole('row', { name: /gift wrap/i }));
+
+      expect(selectAll).toBePartiallyChecked();
+    });
+  }
+);
+
+interface AlignmentCanvas {
+  getByRole: (role: string, options?: { name?: string }) => HTMLElement;
+  getAllByRole: (role: string) => HTMLElement[];
+}
+
+const expectSelectAllOnIndicatorColumn = (canvas: AlignmentCanvas) => {
+  const x = (element: Element) => Math.round(element.getBoundingClientRect().x);
+  const selectAll = canvas.getByRole('checkbox', { name: 'Select all' });
+  const [firstRow] = canvas.getAllByRole('row');
+  const indicator = firstRow.querySelector('input[type="checkbox"]')!;
+
+  expect(x(selectAll)).toBe(x(indicator));
+};
+
+WithSelectAll.test(
+  'puts the header checkbox on the option indicator column',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    expectSelectAllOnIndicatorColumn(canvas);
+  }
+);
+
+WithSelectAll.test(
+  'puts the header checkbox on the option indicator column when bordered',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { variant: 'bordered' },
+  },
+  async ({ canvas }) => {
+    expectSelectAllOnIndicatorColumn(canvas);
+  }
+);
+
+const modKey = /^Mac/i.test(navigator.platform) ? 'Meta' : 'Control';
+
+WithSelectAll.test(
+  'Mod+A reports the same keys the select-all does',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onChange: fn() },
+  },
+  async ({ args, canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('row', { name: /gift wrap/i }));
+    await userEvent.keyboard(`{${modKey}>}a{/${modKey}}`);
+
+    expect(args.onChange).toHaveBeenLastCalledWith([
+      'insurance',
+      'signature',
+      'gift-wrap',
+    ]);
   }
 );
 
@@ -695,6 +825,15 @@ export const Bordered = meta.story({
   ),
 });
 
+export const BorderedWithSelectAll = meta.story({
+  args: {
+    variant: 'bordered',
+    selectionMode: 'multiple',
+    allowSelectAll: true,
+  },
+  render: renderAddOns,
+});
+
 export const WithCustomPadding = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
@@ -736,10 +875,11 @@ WithCustomPadding.test(
       'py-(--selectlist-item-py)'
     );
     const list = standardRow.closest('[role="grid"]') as HTMLElement;
-    expect(list.style.getPropertyValue('--selectlist-item-px')).toBe(
+    const paddingHost = list.parentElement as HTMLElement;
+    expect(paddingHost.style.getPropertyValue('--selectlist-item-px')).toBe(
       'var(--spacing-square-loose-x)'
     );
-    expect(list.style.getPropertyValue('--selectlist-item-py')).toBe(
+    expect(paddingHost.style.getPropertyValue('--selectlist-item-py')).toBe(
       'var(--spacing-square-loose-y)'
     );
   }
@@ -754,12 +894,13 @@ WithCustomPadding.test(
   async ({ canvas }) => {
     const standardRow = await canvas.findByRole('row', { name: /standard/i });
     const list = standardRow.closest('[role="grid"]') as HTMLElement;
+    const paddingHost = list.parentElement as HTMLElement;
 
     // No `-x` / `-y` suffix: a theme only declares `--spacing-collapsed`.
-    expect(list.style.getPropertyValue('--selectlist-item-px')).toBe(
+    expect(paddingHost.style.getPropertyValue('--selectlist-item-px')).toBe(
       'var(--spacing-collapsed)'
     );
-    expect(list.style.getPropertyValue('--selectlist-item-py')).toBe(
+    expect(paddingHost.style.getPropertyValue('--selectlist-item-py')).toBe(
       'var(--spacing-collapsed)'
     );
 
@@ -915,6 +1056,7 @@ export const WithForm = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   args: {
     selectionMode: 'multiple',
+    allowSelectAll: true,
   },
   render: args => (
     <Form
@@ -955,6 +1097,23 @@ export const WithForm = meta.story({
     </Form>
   ),
 });
+
+WithForm.test(
+  'submits every option after a select-all',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(
+      await canvas.findByRole('checkbox', { name: 'Select all' })
+    );
+    await userEvent.click(canvas.getByRole('button', { name: /submit/i }));
+
+    await waitFor(() => {
+      expect(canvas.getByTestId('submitted')).toHaveTextContent(
+        'submitted: insurance,signature,gift-wrap'
+      );
+    });
+  }
+);
 
 WithForm.test(
   'submits the selected values as form data',

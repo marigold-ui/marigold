@@ -233,10 +233,13 @@ const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
               so the results collection is a list rather than a Table. A
               ListView, not a SelectList: the dialog stages the selection and
               its own button commits it, so nothing here submits. The dialog
-              scrolls, so the list needs no Scrollable of its own. */}
+              scrolls, so the list needs no Scrollable of its own. The
+              select-all covers the rows the search and filter left on screen,
+              which is what `onSelectionChange` resolves 'all' against. */}
           <ListView
             aria-label="People"
             selectionMode="multiple"
+            allowSelectAll
             items={results}
             selectedKeys={selected}
             onSelectionChange={onSelectionChange}

@@ -109,6 +109,31 @@ Set `selectionMode="multiple"` to switch the list to checkboxes.
 
 <ComponentDemo name="selectlist-multiple-selection" />
 
+#### Select all
+
+Set `allowSelectAll` to put a select-all above the options. It only takes effect in `selectionMode="multiple"`, since there is nothing for it to do in the other modes.
+
+The select-all covers the options it can address, so give every option an `id` and render them as direct children of the list. Options that come out of a wrapper component of your own are invisible to it, and passing an `items` array instead works in every case.
+
+<ComponentDemo name="selectlist-select-all" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Add it when "all of them" is an answer users actually give: a role that
+      may do everything, an alert that goes to every channel, an export that
+      carries every column.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't add it to a shortlist of two or three, where the extra checkbox
+      reads as one more option to parse, or where each option bills, notifies
+      someone, or is hard to take back. Picking everything is no shortcut then.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
 ### Per-row actions
 
 Reach for a per-row action when a row needs context it can't carry on its own, or when the picker doubles as configuration for each item. Without it, users either commit to a choice they don't fully understand or leave the form to look something up, losing their place. Two patterns hold up: actions that help the user **decide** which row to pick, and actions that **configure** the row they're already keeping.

@@ -107,9 +107,23 @@ Pair a multi-select list with an [`<ActionBar>`](/components/collection/actionba
 
 <ComponentDemo name="listview-bulk-actions" />
 
-<Callout type="info" title="No select-all in a list">
-  Select-all is a checkbox in the collection's header, and a list has no header row to hold one, so a flow where users regularly select every visible record belongs in a [`<Table>`](/components/collection/table). Everything else in the [Bulk Actions](/patterns/user-input/bulk-actions) pattern applies to a `<ListView>` unchanged.
-</Callout>
+The select-all covers the rows it can address, so give every row an `id` and render them as direct children of the list. Rows that come out of a wrapper component of your own are invisible to it, and passing an `items` array instead works in every case.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Add `allowSelectAll` when one operation plausibly applies to everything on
+      screen: archiving a finished import, marking a notification feed read,
+      retrying every failed job.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't add it when the job is picking a few rows out of many, where a press
+      on a partial selection costs the user the set they built by hand.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 ### Empty state
 

@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode, Ref } from 'react';
-import { useCallback, useId, useMemo, useState } from 'react';
+import { useCallback, useId, useMemo } from 'react';
 import type RAC from 'react-aria-components';
 import { FieldErrorContext } from 'react-aria-components/FieldError';
 import { FormContext } from 'react-aria-components/Form';
@@ -8,7 +8,6 @@ import { LabelContext } from 'react-aria-components/Label';
 import { Provider, useSlottedContext } from 'react-aria-components/slots';
 import { useObjectRef } from '@react-aria/utils';
 import { useFormValidationState } from '@react-stately/form';
-import { useControlledState } from '@react-stately/utils';
 import type {
   Key,
   Orientation,
@@ -30,7 +29,9 @@ import {
 } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
+import { SelectAllHeader, useSelectableKeys } from '../utils/SelectAll';
 import { hasAddonContent, joinIds } from '../utils/useLabelAddon';
+import { useLiftedSelection } from '../utils/useLiftedSelection';
 import { SelectListContext } from './Context';
 import { SelectListOption } from './SelectListOption';
 
@@ -128,6 +129,12 @@ type SelectListBaseProps<Mode extends SelectionMode = 'single'> = Omit<
    */
   selectionMode?: Mode;
   /**
+   * Whether to show a select-all checkbox above the options, with a count of
+   * what is selected. Has no effect unless `selectionMode="multiple"`.
+   * @default false
+   */
+  allowSelectAll?: boolean;
+  /**
    * Whether the user may deselect the currently selected row by clicking it.
    * Defaults to `true` in `single` mode (radio-group semantics: clicking the
    * selected row keeps it selected) and `false` in `multiple` mode (checkbox
@@ -196,10 +203,6 @@ interface SelectListComponent {
 // every render (avoids unnecessary work for any consumer that compares it).
 const EMPTY_STYLE: CSSProperties = {};
 
-const toSelection = (
-  value: Selection | Iterable<Key> | undefined
-): Selection => (value === 'all' ? 'all' : new Set(value ?? []));
-
 const toValidationValue = (
   selection: Selection,
   selectionMode: SelectionMode
@@ -231,6 +234,7 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
   selectedKeys,
   defaultSelectedKeys,
   selectionMode,
+  allowSelectAll,
   disallowEmptySelection,
   onChange,
   orientation = 'vertical',
@@ -242,6 +246,8 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
   ...rest
 }: SelectListProps<Mode>) => {
   const resolvedSelectionMode = (selectionMode ?? 'single') as SelectionMode;
+  const hasSelectAll =
+    allowSelectAll === true && resolvedSelectionMode === 'multiple';
   // Radio-group semantics for a field. `ListView` passes RAC's default through
   // instead, because a view's selection has to be abandonable.
   const resolvedDisallowEmptySelection =
@@ -251,12 +257,6 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
   const addonId = useId();
   const gridListRef = useObjectRef(ref);
 
-  // Resolve the optional `p` / `px` / `py` props to per-axis CSS custom
-  // properties on the list root. Each option reads `--selectlist-item-px` /
-  // `--selectlist-item-py` via cascade, so any value set here flows down. When
-  // the consumer leaves these props unset the theme provides the variant
-  // fallback (see `SelectList.styles.ts` `list` slot) — the component itself
-  // doesn't know any variant names.
   const itemPaddingStyle = useMemo<CSSProperties>(() => {
     if (p === undefined && px === undefined && py === undefined) {
       return EMPTY_STYLE;
@@ -265,7 +265,8 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
     // 1. `p` short-circuits here — px/py are ignored when p is set. resolveInsetAxes
     //    does the opposite (explicit px/py win over p via `?? `).
     // 2. No theme-default fallback — the CSS vars cascade from the theme via the
-    //    list slot in SelectList.styles.ts, so we only write them when explicitly set.
+    //    container slot in SelectList.styles.ts, so we only write them when
+    //    explicitly set.
     // 3. Partial-axis overrides are valid — px and py are applied independently,
     //    letting the theme fill in whichever axis the consumer leaves unset.
     // Don't "consolidate" this with resolveInsetAxes without accounting for all three.
@@ -295,17 +296,9 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
   const validationBehavior =
     validationBehaviorProp ?? formCtx?.validationBehavior ?? 'native';
 
-  const controlledSelection =
-    selectedKeys !== undefined ? toSelection(selectedKeys) : undefined;
-  const [initialSelection] = useState<Selection>(() =>
-    defaultSelectedKeys !== undefined
-      ? toSelection(defaultSelectedKeys)
-      : new Set()
-  );
-
-  const [selection, setSelection] = useControlledState<Selection>(
-    controlledSelection,
-    initialSelection,
+  const [selection, setSelection] = useLiftedSelection(
+    selectedKeys,
+    defaultSelectedKeys,
     (value: Selection) => {
       if (!onChange) return;
       const next = toValidationValue(value, resolvedSelectionMode);
@@ -313,9 +306,32 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
     }
   );
 
+  const { keys: selectableKeys, lockedKeys } = useSelectableKeys({
+    children,
+    items: rest.items,
+    disabledKeys: rest.disabledKeys,
+    selection,
+    enabled: resolvedSelectionMode === 'multiple',
+    warn: hasSelectAll,
+  });
+
+  const resolveSelectAll = useCallback(
+    (keep: Selection): Set<Key> =>
+      new Set([...selectableKeys, ...(keep === 'all' ? [] : keep)]),
+    [selectableKeys]
+  );
+
+  const resolvedSelection = useMemo(
+    () =>
+      selection === 'all' && resolvedSelectionMode === 'multiple'
+        ? resolveSelectAll(selection)
+        : selection,
+    [selection, resolvedSelectionMode, resolveSelectAll]
+  );
+
   const validationValue = useMemo(
-    () => toValidationValue(selection, resolvedSelectionMode),
-    [selection, resolvedSelectionMode]
+    () => toValidationValue(resolvedSelection, resolvedSelectionMode),
+    [resolvedSelection, resolvedSelectionMode]
   );
 
   const validationState = useFormValidationState<Key | null | Key[]>({
@@ -328,10 +344,24 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
 
   const handleSelectionChange = useCallback(
     (keys: Selection) => {
-      setSelection(keys);
+      setSelection(keys === 'all' ? resolveSelectAll(selection) : keys);
       validationState.commitValidation();
     },
-    [setSelection, validationState]
+    [setSelection, validationState, resolveSelectAll, selection]
+  );
+
+  const onSelectAll = useCallback(
+    (selected: boolean) => {
+      if (selected) {
+        handleSelectionChange('all');
+        return;
+      }
+      if (lockedKeys.length === 0 && resolvedDisallowEmptySelection) {
+        return;
+      }
+      handleSelectionChange(new Set(lockedKeys));
+    },
+    [handleSelectionChange, lockedKeys, resolvedDisallowEmptySelection]
   );
 
   const contextValue = useMemo(
@@ -367,7 +397,21 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
               wrapper. Putting `container-type: inline-size` on the surface
               itself applies size containment and breaks `w-fit`, which would
               cause the flip query to fire even in wide parents. */}
-          <div className={classNames.container}>
+          <div className={classNames.container} style={itemPaddingStyle}>
+            {hasSelectAll && (
+              <SelectAllHeader
+                keys={selectableKeys}
+                selection={resolvedSelection}
+                onChange={onSelectAll}
+                disabled={disabled}
+                labelledBy={label ? labelId : rest['aria-labelledby']}
+                label={rest['aria-label']}
+                classNames={{
+                  header: classNames.header,
+                  count: classNames.count,
+                }}
+              />
+            )}
             <RACGridList
               {...(rest as RAC.GridListProps<object>)}
               {...(emptyState !== undefined && {
@@ -385,7 +429,7 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
               selectionBehavior="toggle"
               selectionMode={resolvedSelectionMode}
               disallowEmptySelection={resolvedDisallowEmptySelection}
-              selectedKeys={selection}
+              selectedKeys={resolvedSelection}
               onSelectionChange={handleSelectionChange}
               className={cn('group/list', classNames.list)}
               style={itemPaddingStyle}
@@ -398,7 +442,7 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
               disabled={disabled}
               required={required}
               selectionMode={resolvedSelectionMode}
-              selection={selection}
+              selection={resolvedSelection}
               onSelectionChange={setSelection}
               validationBehavior={validationBehavior}
               validationState={validationState}
