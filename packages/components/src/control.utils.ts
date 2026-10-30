@@ -43,6 +43,8 @@ export const selectionMark = (row: HTMLElement) => {
 
 export const borderOf = (el: Element) => getComputedStyle(el).borderColor;
 
+export const fillOf = (el: Element) => getComputedStyle(el).backgroundColor;
+
 /**
  * Vertical centre of an element's border box, in viewport px.
  */

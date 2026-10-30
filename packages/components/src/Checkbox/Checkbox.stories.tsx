@@ -2,10 +2,15 @@ import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { ContextualHelp } from '../ContextualHelp/ContextualHelp';
-import { expectFocusRingContrast } from '../contrast.utils';
+import {
+  WCAG_NON_TEXT,
+  expectFocusRingContrast,
+  inkContrast,
+} from '../contrast.utils';
 import {
   borderOf,
   controlIcon,
+  fillOf,
   firstLineOffset,
   isSingleLine,
   labelBlockOf,
@@ -268,6 +273,130 @@ Basic.test(
     const style = getComputedStyle(controlIcon(checkbox));
 
     expect(style.backgroundColor).toBe(style.borderColor);
+  }
+);
+
+export const ReadOnly = meta.story({
+  tags: ['component-test'],
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'A read-only checkbox keeps its value legible and drops the ' +
+          'affordances: quieter fill, no hover, `cursor-default`. It stays ' +
+          'focusable and announces `aria-readonly`, which is what separates ' +
+          'it from `disabled`.',
+      },
+    },
+  },
+  args: { label: undefined, description: undefined },
+  render: args => (
+    <div className="grid grid-cols-2 gap-x-6 gap-y-2">
+      <Checkbox {...args} label="Editable, unchecked" />
+      <Checkbox {...args} label="Read-only, unchecked" readOnly />
+      <Checkbox {...args} label="Editable, checked" defaultChecked />
+      <Checkbox {...args} label="Read-only, checked" defaultChecked readOnly />
+      <Checkbox {...args} label="Editable, indeterminate" indeterminate />
+      <Checkbox
+        {...args}
+        label="Read-only, indeterminate"
+        indeterminate
+        readOnly
+      />
+    </div>
+  ),
+});
+
+ReadOnly.test(
+  'A read-only box is distinguishable from an editable one at rest',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, step }) => {
+    for (const state of ['unchecked', 'checked', 'indeterminate'] as const) {
+      await step(state, async () => {
+        const editable = canvas.getByRole('checkbox', {
+          name: `Editable, ${state}`,
+        });
+        const readOnly = canvas.getByRole('checkbox', {
+          name: `Read-only, ${state}`,
+        });
+
+        expect(fillOf(controlIcon(readOnly))).not.toBe(
+          fillOf(controlIcon(editable))
+        );
+      });
+    }
+  }
+);
+
+ReadOnly.test(
+  'The read-only value clears 3:1 against its own fill',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    for (const state of ['checked', 'indeterminate'] as const) {
+      await step(state, async () => {
+        const box = canvas.getByRole('checkbox', {
+          name: `Read-only, ${state}`,
+        });
+        const ratio = inkContrast(controlIcon(box));
+
+        expect(
+          ratio,
+          `read-only ${state} mark is ${ratio.toFixed(2)}:1, needs ${WCAG_NON_TEXT}:1`
+        ).toBeGreaterThanOrEqual(WCAG_NON_TEXT);
+      });
+    }
+  }
+);
+
+ReadOnly.test(
+  'A read-only box stays focusable and announces aria-readonly',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const checkbox = await canvas.findByRole('checkbox', {
+      name: 'Read-only, checked',
+    });
+
+    await step('announces aria-readonly', async () => {
+      expect(checkbox).toHaveAttribute('aria-readonly', 'true');
+    });
+
+    await step('stays focusable', async () => {
+      // Tab rather than `focus()`: the criterion is keyboard reach, and
+      // `focus()` would pass on a `tabIndex={-1}` box too.
+      canvas.getByRole('checkbox', { name: 'Editable, checked' }).focus();
+      await userEvent.tab();
+
+      await expect(checkbox).toHaveFocus();
+    });
+
+    await step('ignores a click', async () => {
+      await userEvent.click(checkbox);
+
+      expect(checkbox).toBeChecked();
+    });
+  }
+);
+
+ReadOnly.test(
+  'Disabled still wins over read-only',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { disabled: true },
+  },
+  async ({ canvas, step }) => {
+    for (const state of ['unchecked', 'checked', 'indeterminate'] as const) {
+      await step(state, async () => {
+        const editable = controlIcon(
+          canvas.getByRole('checkbox', { name: `Editable, ${state}` })
+        );
+        const readOnly = controlIcon(
+          canvas.getByRole('checkbox', { name: `Read-only, ${state}` })
+        );
+
+        expect(fillOf(readOnly)).toBe(fillOf(editable));
+        expect(borderOf(readOnly)).toBe(borderOf(editable));
+      });
+    }
   }
 );
 

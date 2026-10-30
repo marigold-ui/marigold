@@ -113,6 +113,14 @@ A [toggle button](/components/actions/toggle-button) is for temporary states tie
 
 Also watch out for opposing options. Two switches like "Light mode" and "Dark mode" side by side don't make sense because they aren't independent. Use a single switch or a [radio](/components/form/radio) group instead.
 
+### Read-only or disabled
+
+Use `readOnly` when the value matters but the user may not change it, such as a settings page the current user may view but not administer. A read-only switch keeps its value legible, stays focusable and announces `aria-readonly`, so people using a screen reader can still read what is set.
+
+Use `disabled` when the option itself is unavailable and its value is not worth reading. A disabled switch cannot be focused, which puts its value out of reach for keyboard and screen reader users, and its thumb is deliberately quiet. If you find yourself disabling a control only to stop someone editing it, `readOnly` is the prop you want.
+
+<ComponentDemo name="switch-readonly" />
+
 ## Props
 
 <StorybookHintMessage component={'Switch'} />

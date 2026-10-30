@@ -2,10 +2,15 @@ import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
-import { expectFocusRingContrast } from '../contrast.utils';
+import {
+  WCAG_NON_TEXT,
+  expectFocusRingContrast,
+  inkContrast,
+} from '../contrast.utils';
 import {
   borderOf,
   controlIcon,
+  fillOf,
   firstLineOffset,
   isSingleLine,
   labelBlockOf,
@@ -168,6 +173,143 @@ Basic.test(
     await userEvent.hover(radio);
 
     expect(borderOf(icon)).toBe(readOnly);
+  }
+);
+
+export const ReadOnly = meta.story({
+  tags: ['component-test'],
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'A read-only group keeps its selection legible and drops the ' +
+          'affordances: quieter fill, no hover, `cursor-default`. The radios ' +
+          'stay focusable and the group announces `aria-readonly`, which is ' +
+          'what separates it from `disabled`.',
+      },
+    },
+  },
+  render: args => (
+    <div className="grid grid-cols-2 gap-6">
+      <Radio.Group {...args} label="Editable" defaultValue="editable-on">
+        <Radio value="editable-on">Editable, selected</Radio>
+        <Radio value="editable-off">Editable, unselected</Radio>
+      </Radio.Group>
+      <Radio.Group
+        {...args}
+        label="Read-only"
+        defaultValue="read-only-on"
+        readOnly
+      >
+        <Radio value="read-only-on">Read-only, selected</Radio>
+        <Radio value="read-only-off">Read-only, unselected</Radio>
+      </Radio.Group>
+    </div>
+  ),
+});
+
+ReadOnly.test(
+  'A read-only radio is distinguishable from an editable one at rest',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, step }) => {
+    for (const state of ['selected', 'unselected'] as const) {
+      await step(state, async () => {
+        const editable = canvas.getByRole('radio', {
+          name: `Editable, ${state}`,
+        });
+        const readOnly = canvas.getByRole('radio', {
+          name: `Read-only, ${state}`,
+        });
+
+        expect(fillOf(controlIcon(readOnly))).not.toBe(
+          fillOf(controlIcon(editable))
+        );
+      });
+    }
+  }
+);
+
+ReadOnly.test(
+  'The read-only selection clears 3:1 against its own fill',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const radio = canvas.getByRole('radio', { name: 'Read-only, selected' });
+    const ratio = inkContrast(controlIcon(radio));
+
+    expect(
+      ratio,
+      `read-only dot is ${ratio.toFixed(2)}:1, needs ${WCAG_NON_TEXT}:1`
+    ).toBeGreaterThanOrEqual(WCAG_NON_TEXT);
+  }
+);
+
+ReadOnly.test(
+  'A read-only radio stays focusable and the group announces aria-readonly',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const selected = canvas.getByRole('radio', { name: 'Read-only, selected' });
+    const unselected = canvas.getByRole('radio', {
+      name: 'Read-only, unselected',
+    });
+
+    await step('the group announces aria-readonly', async () => {
+      expect(
+        canvas.getByRole('radiogroup', { name: 'Read-only' })
+      ).toHaveAttribute('aria-readonly', 'true');
+    });
+
+    await step('the selected radio stays focusable', async () => {
+      // Tab rather than `focus()`: the criterion is keyboard reach, and
+      // `focus()` would pass on a `tabIndex={-1}` radio too.
+      canvas.getByRole('radio', { name: 'Editable, selected' }).focus();
+      await userEvent.tab();
+
+      await expect(selected).toHaveFocus();
+    });
+
+    await step(
+      'clicking another option does not move the selection',
+      async () => {
+        await userEvent.click(unselected);
+
+        expect(selected).toBeChecked();
+      }
+    );
+  }
+);
+
+ReadOnly.test(
+  'Disabled still wins over read-only',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { disabled: true },
+  },
+  async ({ canvas, step }) => {
+    for (const state of ['selected', 'unselected'] as const) {
+      await step(state, async () => {
+        const editable = controlIcon(
+          canvas.getByRole('radio', { name: `Editable, ${state}` })
+        );
+        const readOnly = controlIcon(
+          canvas.getByRole('radio', { name: `Read-only, ${state}` })
+        );
+
+        expect(fillOf(readOnly)).toBe(fillOf(editable));
+        expect(borderOf(readOnly)).toBe(borderOf(editable));
+      });
+    }
+  }
+);
+
+ReadOnly.test(
+  'Read only swaps the cursor on the whole hit area',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const radio = canvas.getByRole('radio', { name: 'Read-only, unselected' });
+    const cursorOf = (el: Element) => getComputedStyle(el).cursor;
+
+    expect(cursorOf(controlIcon(radio))).toBe('default');
+    expect(cursorOf(canvas.getByText('Read-only, unselected'))).toBe('default');
   }
 );
 
