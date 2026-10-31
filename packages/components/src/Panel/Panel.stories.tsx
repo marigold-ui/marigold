@@ -300,6 +300,116 @@ export const WithHeaderActions = meta.story(() => (
   </Stack>
 ));
 
+const HEADER_ACTIONS = {
+  'No action': null,
+  'Labelled button': <Button>Edit</Button>,
+  'Icon button': (
+    <Button size="icon" aria-label="Edit">
+      <Pencil />
+    </Button>
+  ),
+  'Button group': (
+    <ButtonGroup aria-label="Member actions">
+      <Button>Edit</Button>
+      <Button>Export</Button>
+    </ButtonGroup>
+  ),
+  'Overflow menu': (
+    <ActionMenu size="icon" aria-label="More actions">
+      <ActionMenu.Item id="export">Export</ActionMenu.Item>
+    </ActionMenu>
+  ),
+  'Primary button': (
+    <Button variant="primary" size="default">
+      Invite member
+    </Button>
+  ),
+};
+
+/**
+ * Every header configuration side by side: a title on its own and a title
+ * with a description, each paired with every kind of action. Kept as a visual
+ * regression guard, so a layout change that only breaks one combination still
+ * shows up in a snapshot.
+ */
+export const HeaderConfigurations = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <Stack space="regular">
+      {Object.entries(HEADER_ACTIONS).flatMap(([name, action]) =>
+        [false, true].map(withDescription => (
+          <Panel key={`${name}-${withDescription}`}>
+            <Panel.Header>
+              <Title>
+                {name}
+                {withDescription ? ' with description' : ''}
+              </Title>
+              {withDescription && (
+                <Description>People with access to this workspace.</Description>
+              )}
+              {action}
+            </Panel.Header>
+          </Panel>
+        ))
+      )}
+    </Stack>
+  ),
+});
+
+HeaderConfigurations.test(
+  'Centers the title on the actions when there is no description',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    const headers = [
+      ...canvasElement.querySelectorAll('[data-panel-header]'),
+    ].filter(
+      header =>
+        !header.querySelector('[data-grid-area="description"]') &&
+        header.children.length > 1
+    );
+    await expect(headers).toHaveLength(5);
+
+    const center = (rect: DOMRect) => rect.top + rect.height / 2;
+    for (const header of headers) {
+      const [title, actions] = [...header.children].map(el =>
+        el.getBoundingClientRect()
+      );
+
+      await expect(Math.abs(center(title) - center(actions))).toBeLessThan(1);
+    }
+  }
+);
+
+HeaderConfigurations.test(
+  'Centers the actions on the title and description together',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    const headers = [
+      ...canvasElement.querySelectorAll('[data-panel-header]'),
+    ].filter(
+      header =>
+        header.querySelector('[data-grid-area="description"]') &&
+        header.children.length > 2
+    );
+    await expect(headers).toHaveLength(5);
+
+    for (const header of headers) {
+      const [title, description, actions] = [...header.children].map(el =>
+        el.getBoundingClientRect()
+      );
+
+      // The description sits right below the title, with only its own margin.
+      await expect(description.top - title.bottom).toBeLessThanOrEqual(2);
+      await expect(
+        Math.abs(
+          (title.top + description.bottom) / 2 -
+            (actions.top + actions.height / 2)
+        )
+      ).toBeLessThan(1);
+    }
+  }
+);
+
 export const HeaderActionsWrappingDescription = meta.story({
   tags: ['component-test'],
   render: () => (

@@ -21,12 +21,14 @@ export const PanelHeader = ({ children }: PanelHeaderProps) => {
 
   // Fully replaces the Panel root's `HeadingContext` for header descendants.
   // Provider values don't merge, so `level`/`id`/`ref` are re-published; the
-  // added `[grid-area:title]` places the title in the header grid.
+  // added `[grid-area:title]` places the title in the header grid. `self-center`
+  // plus the header's flexible title row keep a title without a description
+  // centered on the actions.
   const headingProps = useMemo(
     () => ({
       slots: {
         title: {
-          className: cn('[grid-area:title]', classNames.title),
+          className: cn('self-center [grid-area:title]', classNames.title),
           'data-grid-area': 'title',
           level: headingLevel,
           id: titleId,
@@ -77,7 +79,7 @@ export const PanelHeader = ({ children }: PanelHeaderProps) => {
       <div
         data-panel-header
         className={cn(
-          "grid grid-cols-[1fr_auto] [grid-template-areas:'title_actions'_'description_actions']",
+          "grid grid-cols-[1fr_auto] grid-rows-[1fr_auto] [grid-template-areas:'title_actions'_'description_actions']",
           'px-(--panel-px)',
           classNames.header
         )}
