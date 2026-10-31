@@ -2,11 +2,12 @@ import type { ReactNode } from 'react';
 import { useMemo } from 'react';
 import { useField } from '@react-aria/label';
 import type { HelpTextSlots } from '../FieldBase/FieldBase';
+import type { HelpTextProps } from '../HelpText/HelpText';
 
 export interface UseFieldHelpTextProps {
   label?: ReactNode;
   description?: ReactNode;
-  errorMessage?: unknown;
+  errorMessage?: HelpTextProps['errorMessage'];
   isInvalid?: boolean;
   'aria-label'?: string;
   'aria-labelledby'?: string;
@@ -34,7 +35,7 @@ export const useFieldHelpText = ({
     ...ariaProps,
     label,
     description,
-    errorMessage: errorMessage as ReactNode,
+    errorMessage,
     isInvalid,
   });
 

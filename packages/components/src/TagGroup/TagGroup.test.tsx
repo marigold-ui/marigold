@@ -93,6 +93,18 @@ test('renders the error message inside a Dialog', () => {
   ).toBeInTheDocument();
 });
 
+test('renders a Form validation error inside a Dialog', () => {
+  renderInDialog(
+    <Form validationErrors={{ categories: 'Please pick a category.' }}>
+      <Basic.Component name="categories" />
+    </Form>
+  );
+
+  expect(screen.getByRole('grid')).toHaveAccessibleDescription(
+    'Please pick a category.'
+  );
+});
+
 test('`disabled` cascades to tags so interaction is blocked', async () => {
   const onChange = vi.fn();
   const user = userEvent.setup();

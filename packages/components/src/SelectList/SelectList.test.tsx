@@ -145,16 +145,13 @@ describe('SelectList', () => {
 
     test('shows a Form validation error inside a Dialog', () => {
       renderInDialog(
-        <Form validationErrors={{ member: 'Please choose a member.' }}>
-          <SelectList label="Member" name="member">
-            <SelectList.Option id="anna">Anna</SelectList.Option>
-            <SelectList.Option id="ben">Ben</SelectList.Option>
-          </SelectList>
+        <Form validationErrors={{ payment: 'Please choose a payment method.' }}>
+          <Basic.Component name="payment" />
         </Form>
       );
 
       expect(screen.getByRole('grid')).toHaveAccessibleDescription(
-        'Please choose a member.'
+        'Please choose a payment method.'
       );
     });
 
