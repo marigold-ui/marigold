@@ -240,6 +240,7 @@ describe('Panel.Header', () => {
 
     expect(header.className).toContain('grid');
     expect(header.className).toContain('grid-cols-[1fr_auto]');
+    expect(header.className).toContain('grid-rows-[1fr_auto]');
     expect(header.className).toContain(
       "[grid-template-areas:'title_actions'_'description_actions']"
     );

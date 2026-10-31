@@ -282,6 +282,126 @@ Actions.test(
   }
 );
 
+const HEADER_ACTIONS = {
+  'No action': null,
+  'Primary button': <Button variant="primary">Upgrade plan</Button>,
+  'Link button': (
+    <LinkButton variant="primary" href="/events/new">
+      Create event
+    </LinkButton>
+  ),
+  'Button group': (
+    <ButtonGroup aria-label="Plan actions">
+      <Button variant="primary">Upgrade plan</Button>
+      <Button variant="secondary">Compare plans</Button>
+    </ButtonGroup>
+  ),
+  'Overflow menu': (
+    <ActionMenu size="icon" aria-label="Plan actions">
+      <ActionMenu.Item id="edit">Edit plan</ActionMenu.Item>
+    </ActionMenu>
+  ),
+  'Primary with overflow': (
+    <ButtonGroup aria-label="Plan actions">
+      <Button variant="primary">Upgrade plan</Button>
+      <ActionMenu size="icon" aria-label="More plan actions">
+        <ActionMenu.Item id="export">Export invoices</ActionMenu.Item>
+      </ActionMenu>
+    </ButtonGroup>
+  ),
+};
+
+/**
+ * Every header configuration side by side: a title on its own and a title
+ * with a description, each paired with every kind of action. Kept as a visual
+ * regression guard, so a layout change that only breaks one combination still
+ * shows up in a snapshot.
+ */
+export const HeaderConfigurations = meta.story({
+  tags: ['component-test'],
+  parameters: {
+    a11y: {
+      config: {
+        rules: [{ id: 'landmark-no-duplicate-main', enabled: false }],
+      },
+    },
+  },
+  render: () => (
+    <Stack space="section">
+      {Object.entries(HEADER_ACTIONS).flatMap(([name, action]) =>
+        [false, true].map(withDescription => (
+          <Page key={`${name}-${withDescription}`}>
+            <Page.Header>
+              <Title>
+                {name}
+                {withDescription ? ' with description' : ''}
+              </Title>
+              {withDescription && (
+                <Description>Manage your plan and invoices.</Description>
+              )}
+              {action}
+            </Page.Header>
+          </Page>
+        ))
+      )}
+    </Stack>
+  ),
+});
+
+HeaderConfigurations.test(
+  'Centers the title on the actions when there is no description',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    const headers = [
+      ...canvasElement.querySelectorAll('[data-page-header]'),
+    ].filter(
+      header =>
+        !header.querySelector('[data-grid-area="description"]') &&
+        header.children.length > 1
+    );
+    await expect(headers).toHaveLength(5);
+
+    const center = (rect: DOMRect) => rect.top + rect.height / 2;
+    for (const header of headers) {
+      const [title, actions] = [...header.children].map(el =>
+        el.getBoundingClientRect()
+      );
+
+      await expect(Math.abs(center(title) - center(actions))).toBeLessThan(1);
+    }
+  }
+);
+
+HeaderConfigurations.test(
+  'Centers the actions on the title and description together',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    const headers = [
+      ...canvasElement.querySelectorAll('[data-page-header]'),
+    ].filter(
+      header =>
+        header.querySelector('[data-grid-area="description"]') &&
+        header.children.length > 2
+    );
+    await expect(headers).toHaveLength(5);
+
+    for (const header of headers) {
+      const [title, description, actions] = [...header.children].map(el =>
+        el.getBoundingClientRect()
+      );
+
+      // The description sits right below the title, with only its own margin.
+      await expect(description.top - title.bottom).toBeLessThanOrEqual(4);
+      await expect(
+        Math.abs(
+          (title.top + description.bottom) / 2 -
+            (actions.top + actions.height / 2)
+        )
+      ).toBeLessThan(1);
+    }
+  }
+);
+
 /**
  * Use the optional `<Page.Content>` wrapper when the rhythm between sections
  * should differ from the header-to-content gap.
