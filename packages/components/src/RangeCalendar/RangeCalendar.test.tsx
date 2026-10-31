@@ -3,7 +3,11 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ReactNode } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
-import { mockMatchMedia, smallScreenQuery } from '../test.utils';
+import {
+  mockMatchMedia,
+  renderInDialog,
+  smallScreenQuery,
+} from '../test.utils';
 import {
   Basic,
   Presets,
@@ -52,6 +56,34 @@ describe('RangeCalendar', () => {
 
   test('renders error message when provided', () => {
     renderWithLocale(<WithErrorMessage.Component />);
+
+    expect(screen.getByText(/please select/i)).toBeInTheDocument();
+  });
+
+  test('describes the calendar by its description', () => {
+    renderWithLocale(
+      <Basic.Component description="Pick a start and end date for your reservation." />
+    );
+
+    expect(screen.getByRole('application')).toHaveAccessibleDescription(
+      'Pick a start and end date for your reservation.'
+    );
+  });
+
+  test('describes the calendar by the error message', () => {
+    renderWithLocale(<WithErrorMessage.Component />);
+
+    expect(screen.getByRole('application')).toHaveAccessibleDescription(
+      'Please select a valid date range.'
+    );
+  });
+
+  test('renders error message inside a Dialog', () => {
+    renderInDialog(
+      <I18nProvider locale="en-US">
+        <WithErrorMessage.Component />
+      </I18nProvider>
+    );
 
     expect(screen.getByText(/please select/i)).toBeInTheDocument();
   });
