@@ -38,7 +38,7 @@
     "@vitest/browser-playwright": "4.1.11",
     "@vitest/coverage-v8": "4.1.11",
     "@vitest/ui": "4.1.11",
-    "autoprefixer": "10.6.1",
+    "autoprefixer": "10.6.2",
     "concurrently": "10.0.6",
     "eslint": "10.13.0",
     "eslint-plugin-storybook": "10.6.1",
