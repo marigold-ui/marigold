@@ -99,8 +99,8 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(vitest@4.1.11)
       autoprefixer:
-        specifier: 10.6.1
-        version: 10.6.1(postcss@8.5.31)
+        specifier: 10.6.2
+        version: 10.6.2(postcss@8.5.31)
       concurrently:
         specifier: 10.0.6
         version: 10.0.6
@@ -4362,8 +4362,8 @@ packages:
   async-retry@1.3.3:
     resolution: {integrity: sha512-wfr/jstw9xNi/0teMHrRW7dsz3Lt5ARhYNZ2ewpadnhaIp5mbALhOAP+EAdsC7t4Z6wqsDVv9+W6gm1Dk9mEyw==}
 
-  autoprefixer@10.6.1:
-    resolution: {integrity: sha512-cL1Qz6ADZhcEbny/8HPfe99J6HhNoYtpX2LFLIbhgGE7Q1hlQVkYFdetDN7Id3KiQxhDrHwzlHr/YQCnZ8+xSA==}
+  autoprefixer@10.6.2:
+    resolution: {integrity: sha512-VOw9/yGTGwPPgzFcODtcv6zhEPIeIWkRSe10L2ri2f5vZ7ID7lCt6jZzRF5/ubgOZ+szYydmEF5AYsA5jxX1tA==}
     engines: {node: ^10 || ^12 || >=14}
     hasBin: true
     peerDependencies:
@@ -11947,7 +11947,7 @@ snapshots:
     dependencies:
       retry: 0.13.1
 
-  autoprefixer@10.6.1(postcss@8.5.31):
+  autoprefixer@10.6.2(postcss@8.5.31):
     dependencies:
       browserslist: 4.29.0
       caniuse-lite: 1.0.30001810
