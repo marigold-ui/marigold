@@ -38,7 +38,9 @@ export const Menu: ThemeComponent<'Menu'> = {
       'focus-visible:ui-state-focus-item',
       // The icon's margin, not a column gap, separates it from the label: a gap
       // would also open next to an empty icon column.
-      '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4 [&_svg]:col-start-1 [&_svg]:row-span-full [&_svg]:self-center [&_svg]:me-2',
+      '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4 [&_svg]:row-span-full [&_svg]:self-center',
+      // Only the leading icon (a direct child) goes into the icon column.
+      '[&>svg]:col-start-1 [&>svg]:me-2',
       // Selection visuals like ListBox: checkmark reserves col 1, row highlights on select. Don't also add a leading icon.
       '[&_.selection-indicator]:invisible [&_.selection-indicator]:text-foreground [&_.selection-indicator]:opacity-100',
       'selected:bg-selected selected:[&_.selection-indicator]:visible',
