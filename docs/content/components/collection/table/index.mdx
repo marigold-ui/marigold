@@ -115,6 +115,16 @@ Those floors added together are the smallest width the table can take. Where les
 
 Scrolling sideways is a fallback, not a layout, so keep the floors low and it stays rare: fraction widths on their own divide up the available space without raising the minimum. While a table scrolls sideways, a sticky header or footer and the `actionBar` pin to that scroll area rather than to the page, and because that area has no height of its own, none of them stay put as the page scrolls. Wrap the table in a [`<Scrollable>`](/components/layout/scrollable) where they have to: a scroll area with a height of its own takes over both directions and keeps them pinned.
 
+### Narrow screens
+
+A table that needs sideways scrolling to be read is the wrong presentation for a phone rather than a table that needs fixing. Comparing values across columns is what a table is for, and at 320px, the minimum supported width, there is room for two or three of them. Prefer a shape that reflows:
+
+- **[`<Card>`](/components/collection/card)** when each record is read on its own rather than compared with its neighbours.
+- **[`<ListView>`](/components/collection/listview)** when the records are scanned quickly and acted on one at a time.
+- **Fewer columns**, with the secondary values moved to a detail view, when the data really is tabular.
+
+Where a table is the right answer and the width is not negotiable, scrolling sideways is the fallback. The table contains its own overflow, so every column stays reachable and nothing paints over the layout around it, at the cost described under [Column widths](#column-widths). [Alternative components](#alternative-components) covers the same choice by the shape of the data rather than by the width of the screen.
+
 ### Selecting rows
 
 When users need to perform actions on multiple items at once, enable row selection. This allows users to select individual rows or all rows, then perform bulk operations like delete, export, or modify. The [Bulk Actions pattern](/patterns/user-input/bulk-actions) describes the complete flow from selection to result feedback, including the [`<ActionBar>`](/components/collection/actionbar) that carries the actions.
