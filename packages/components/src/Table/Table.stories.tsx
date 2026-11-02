@@ -952,10 +952,12 @@ export const ScrollableAndSticky = meta.story({
         <Scrollable height="400px">
           <Table aria-label="Todos Table" selectionMode="multiple" {...args}>
             <Table.Header sticky>
-              <Table.Column rowHeader>ID</Table.Column>
-              <Table.Column>Title</Table.Column>
-              <Table.Column>User</Table.Column>
-              <Table.Column>Completed</Table.Column>
+              <Table.Column rowHeader minWidth={80}>
+                ID
+              </Table.Column>
+              <Table.Column minWidth={200}>Title</Table.Column>
+              <Table.Column minWidth={100}>User</Table.Column>
+              <Table.Column minWidth={100}>Completed</Table.Column>
             </Table.Header>
             <Table.Body>
               {todos.map(todo => (
@@ -1455,11 +1457,15 @@ export const InsideDialog = meta.story({
           <Panel>
             <Panel.Content bleed>
               <Table aria-label="Organizers in a dialog" {...args}>
+                {/* 600px of columns in a 480px dialog, so the table has to
+                    take the overflow somewhere. */}
                 <Table.Header>
-                  <Table.Column rowHeader>Name</Table.Column>
-                  <Table.Column>City</Table.Column>
-                  <Table.Column>Email</Table.Column>
-                  <Table.Column>Role</Table.Column>
+                  <Table.Column rowHeader minWidth={160}>
+                    Name
+                  </Table.Column>
+                  <Table.Column minWidth={140}>City</Table.Column>
+                  <Table.Column minWidth={180}>Email</Table.Column>
+                  <Table.Column minWidth={120}>Role</Table.Column>
                 </Table.Header>
                 <Table.Body>
                   {[1, 2, 3].map(id => (

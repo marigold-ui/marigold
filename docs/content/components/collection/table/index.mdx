@@ -103,7 +103,7 @@ Proper alignment makes data easier to scan and compare. Different data types ben
 
 ### Column widths
 
-A column without a `width` falls back to a 120px minimum, so a narrow container squeezes every column down to that floor. Cell content that cannot shrink then paints outside its own cell, because cells do not clip. Give columns a width to keep the table a predictable size:
+A column without a `width` falls back to react-aria's 75px minimum, so a narrow container squeezes every column down to that floor. Cell content that cannot shrink then paints outside its own cell, because cells do not clip. Give columns a width to keep the table a predictable size:
 
 - **A fraction (`2fr`, `1.5fr`)** for text columns that should absorb the space left over, like names, addresses or descriptions.
 - **A number** for columns whose content has a predictable size, like a badge, a date or a row action.
