@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { useDragAndDrop } from 'react-aria-components/useDragAndDrop';
@@ -1271,6 +1272,126 @@ FollowsParentWidth.test(
     }
   }
 );
+
+/**
+ * The trade-off on a page, at the width where it actually bites. Not a phone:
+ * the column minimums below add up to 1586px inside a 1248px panel, which is
+ * the case measured in Core on a 1280px screen. With the selection column
+ * the table comes to 1622px, so it paints 374px past the panel.
+ *
+ * Both halves are the same page. **Before** is what the panel used to render,
+ * with the scroll area turned back off by CSS: the rows run past the panel
+ * and over everything beside it, and the columns past the edge cannot
+ * be reached. Its sticky header does pin to the page, which is the half of
+ * the deal that is easy to miss.
+ *
+ * **After** is what the Table ships. Nothing leaves the panel, every column
+ * is reachable by dragging, and the sticky header and the `actionBar` lose
+ * their anchor for as long as the scroll area is on. Scroll the page with a
+ * row selected to see both.
+ */
+export const WideColumnsOnAPage = meta.story({
+  // The story brings its own page frame, and the decorator's panel would nest.
+  parameters: { surface: false },
+  render: args => {
+    const events = Array.from({ length: 25 }, (_, i) => ({
+      id: i + 1,
+      name: `Jahreskonzert ${2026 + (i % 3)} · Abend ${i + 1}`,
+      venue: 'Konzerthaus Freiburg',
+      city: 'Freiburg im Breisgau',
+      date: `0${(i % 9) + 1}.06.2026`,
+      status: i % 4 === 0 ? 'Ausverkauft' : 'Im Verkauf',
+      sold: `${1200 - i * 37}`,
+      revenue: `${(48000 - i * 1150).toLocaleString('de-DE')} €`,
+      organizer: 'Reservix Ticketservice',
+      updated: `0${(i % 9) + 1}.11.2026, 09:12`,
+    }));
+
+    // 286 + 200 + 160 + 160 + 140 + 140 + 160 + 180 + 160 = 1586px, the sum
+    // Sebastian measured in Core. The selection column adds to it.
+    const table = (label: string) => (
+      <Table
+        {...args}
+        aria-label={label}
+        selectionMode="multiple"
+        actionBar={() => (
+          <ActionBar>
+            <Button>Duplizieren</Button>
+            <Button>Löschen</Button>
+          </ActionBar>
+        )}
+      >
+        <Table.Header sticky>
+          <Table.Column rowHeader minWidth={286}>
+            Veranstaltung
+          </Table.Column>
+          <Table.Column minWidth={200}>Spielstätte</Table.Column>
+          <Table.Column minWidth={160}>Ort</Table.Column>
+          <Table.Column minWidth={160}>Datum</Table.Column>
+          <Table.Column minWidth={140}>Status</Table.Column>
+          <Table.Column minWidth={140}>Verkauft</Table.Column>
+          <Table.Column minWidth={160}>Umsatz</Table.Column>
+          <Table.Column minWidth={180}>Veranstalter</Table.Column>
+          <Table.Column minWidth={160}>Aktualisiert</Table.Column>
+        </Table.Header>
+        <Table.Body>
+          {events.map(event => (
+            <Table.Row key={event.id}>
+              <Table.Cell>{event.name}</Table.Cell>
+              <Table.Cell>{event.venue}</Table.Cell>
+              <Table.Cell>{event.city}</Table.Cell>
+              <Table.Cell>{event.date}</Table.Cell>
+              <Table.Cell>
+                <Badge>{event.status}</Badge>
+              </Table.Cell>
+              <Table.Cell>{event.sold}</Table.Cell>
+              <Table.Cell>{event.revenue}</Table.Cell>
+              <Table.Cell>{event.organizer}</Table.Cell>
+              <Table.Cell>{event.updated}</Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    );
+
+    // A page the width of a 1280px screen, with the 1248px content column
+    // Core lays its panels out in.
+    const page = (heading: string, note: string, content: ReactNode) => (
+      <div className="w-[1280px] px-4 py-8">
+        <Stack space={4}>
+          <Title level={2}>{heading}</Title>
+          <Text>{note}</Text>
+          <Panel>
+            <Panel.Header>
+              <Title>Veranstaltungen</Title>
+            </Panel.Header>
+            <Panel.Content bleed>{content}</Panel.Content>
+          </Panel>
+          <Text>Weitere Inhalte der Seite stehen unterhalb des Panels.</Text>
+        </Stack>
+      </div>
+    );
+
+    return (
+      <Stack space={8}>
+        {page(
+          'Before',
+          '1586px of columns in a 1248px panel: the table paints 374px past it.',
+          // Undoes the one thing the fix adds, which is the whole of the
+          // pre-fix render.
+          <div className="[&_.overflow-x-auto]:overflow-x-visible">
+            {table('Veranstaltungen ohne Scrollbereich')}
+          </div>
+        )}
+        {page(
+          'After',
+          'The same table, contained. Sticky header and actionBar lose their anchor while it scrolls.',
+          table('Veranstaltungen im Scrollbereich')
+        )}
+      </Stack>
+    );
+  },
+});
 
 export const NarrowContainer = meta.story({
   tags: ['component-test'],
