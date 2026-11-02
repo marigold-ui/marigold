@@ -1274,7 +1274,6 @@ FollowsParentWidth.test(
 
 export const NarrowContainer = meta.story({
   tags: ['component-test'],
-  // The story brings its own panels, and the decorator's would nest inside it.
   parameters: { surface: false },
   render: function Render(args) {
     const organizers = [1, 2, 3].map(id => ({
