@@ -13,22 +13,32 @@ export const Menu: ThemeComponent<'Menu'> = {
       // The surrounding Popover (or Tray) paints the overlay surface; the menu
       // renders flat inside it.
       'w-full',
-      'text-foreground overflow-x-hidden p-1 outline-none overflow-y-auto space-y-px',
+      'text-foreground overflow-x-hidden p-1 outline-none overflow-y-auto',
+      // The menu owns the columns (icon, label, keyboard) and items/sections
+      // subgrid into them, so every label starts at the same x. The icon
+      // column is `auto`: as wide as the widest icon, 0 when there is none.
+      'grid grid-cols-[auto_1fr_auto] gap-y-px *:col-span-full',
+      '[&>section]:grid [&>section]:grid-cols-subgrid [&>section]:gap-y-px [&>section>*]:col-span-full',
       // Breathing room around dividers (the shared <Divider> rendered between items).
       '[&_[role=separator]]:my-1',
     ],
   }),
-  // Grid: col 1 = icon/checkmark, col 2 = label/description, col 3 = keyboard.
+  // Subgrid of the container: col 1 = icon/checkmark, col 2 = label/description, col 3 = keyboard.
   item: cva({
     base: [
-      'group/option relative grid grid-cols-[auto_1fr_auto] items-center [&:has(>svg)]:gap-x-2 cursor-pointer rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap max-sm:min-h-touch-target',
+      'group/option relative grid grid-cols-subgrid items-center cursor-pointer rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap max-sm:min-h-touch-target',
+      // Keep col 1 occupied, so plain-text children (no <Text> slot) auto-place
+      // into the label column instead of the icon column.
+      "before:content-[''] before:col-start-1 before:row-start-1",
       'disabled:cursor-not-allowed disabled:text-disabled',
       // On item, not itemBase: `destructive` doesn't share itemBase, and every
       // variant needs the ring. The variants' focus background is the roving
       // cursor (in a menu, focus follows the mouse, so it doubles as hover);
       // this is the part that only appears for real keyboard focus.
       'focus-visible:ui-state-focus-item',
-      '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4 [&_svg]:row-span-full [&_svg]:self-center',
+      // The icon's margin, not a column gap, separates it from the label: a gap
+      // would also open next to an empty icon column.
+      '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4 [&_svg]:col-start-1 [&_svg]:row-span-full [&_svg]:self-center [&_svg]:me-2',
       // Selection visuals like ListBox: checkmark reserves col 1, row highlights on select. Don't also add a leading icon.
       '[&_.selection-indicator]:invisible [&_.selection-indicator]:text-foreground [&_.selection-indicator]:opacity-100',
       'selected:bg-selected selected:[&_.selection-indicator]:visible',
