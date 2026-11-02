@@ -30,20 +30,20 @@
     "@testing-library/dom": "10.4.2",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.3",
-    "@testing-library/user-event": "14.6.7",
+    "@testing-library/user-event": "14.6.8",
     "@types/node": "24.13.5",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.1.2",
-    "@vitest/browser-playwright": "4.1.11",
-    "@vitest/coverage-v8": "4.1.11",
-    "@vitest/ui": "4.1.11",
+    "@vitest/browser-playwright": "4.1.12",
+    "@vitest/coverage-v8": "4.1.12",
+    "@vitest/ui": "4.1.12",
     "autoprefixer": "10.6.2",
     "concurrently": "10.0.6",
     "eslint": "10.13.0",
     "eslint-plugin-storybook": "10.6.1",
     "husky": "9.1.7",
-    "playwright": "1.63.0",
+    "playwright": "1.64.1",
     "postcss-import": "16.2.0",
     "postcss-loader": "8.2.1",
     "prettier": "3.9.10",
@@ -55,7 +55,7 @@
     "turbo": "2.11.10",
     "typescript": "6.0.3",
     "vite": "8.3.5",
-    "vitest": "4.1.11",
+    "vitest": "4.1.12",
     "zx": "8.8.5"
   },
   "scripts": {
@@ -92,7 +92,7 @@
   },
   "devDependencies": {
     "@storybook/addon-mcp": "^0.7.0",
-    "@vitest/coverage-istanbul": "4.1.11",
+    "@vitest/coverage-istanbul": "4.1.12",
     "lint-staged": "17.5.1"
   }
 }
