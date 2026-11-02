@@ -1018,10 +1018,6 @@ ScrollableAndSticky.test(
   'Keeps the header sticky where the Scrollable takes the overflow',
   {
     parameters: { chromatic: { disableSnapshot: true } },
-    // Well under the 480px the four columns need, so the table overflows the
-    // `Scrollable` sideways by enough that a scrollbar's width can't account
-    // for it. A fixed box rather than a viewport, which the story would have
-    // to re-render to follow.
     decorators: [
       Story => (
         <div className="w-[360px]">
@@ -1445,6 +1441,66 @@ NarrowContainer.test(
  * read the style alone took the dialog for a sideways scroll area and left the
  * table to overflow the panel, which is the bug this ticket is about.
  */
+/**
+ * The `NarrowContainer` case in a real phone frame: the Storybook 320px
+ * viewport rather than a fixed box inside a wide canvas. The page is the width
+ * of the screen here, so the `Panel`, the scroll area and the `actionBar` sit
+ * where a phone puts them. The three columns need 480px, so the table scrolls
+ * sideways and the sticky header has nothing left to pin to.
+ */
+export const Mobile = meta.story({
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
+  // The story brings its own panel, and the decorator's would nest.
+  parameters: { surface: false },
+  render: args => {
+    const organizers = [1, 2, 3, 4, 5, 6].map(id => ({
+      id,
+      name: `Organizer ${id}`,
+      city: 'Freiburg im Breisgau',
+      email: `contact${id}@example.com`,
+    }));
+
+    return (
+      <Panel>
+        <Panel.Header>
+          <Title>Organizers</Title>
+        </Panel.Header>
+        <Panel.Content bleed>
+          <Table
+            aria-label="Organizers on a phone"
+            selectionMode="multiple"
+            actionBar={() => (
+              <ActionBar>
+                <Button>Delete</Button>
+              </ActionBar>
+            )}
+            {...args}
+          >
+            <Table.Header sticky>
+              <Table.Column rowHeader minWidth={160}>
+                Name
+              </Table.Column>
+              <Table.Column minWidth={140}>City</Table.Column>
+              <Table.Column minWidth={180}>Email</Table.Column>
+            </Table.Header>
+            <Table.Body>
+              {organizers.map(organizer => (
+                <Table.Row key={organizer.id}>
+                  <Table.Cell>{organizer.name}</Table.Cell>
+                  <Table.Cell>{organizer.city}</Table.Cell>
+                  <Table.Cell>{organizer.email}</Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+        </Panel.Content>
+      </Panel>
+    );
+  },
+});
+
 export const InsideDialog = meta.story({
   tags: ['component-test'],
   parameters: { surface: false },
