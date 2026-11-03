@@ -768,6 +768,8 @@ RailMobile.test(
 
 RailMobile.test(
   'every tappable drawer control is at least 44 by 44px',
+  // Ends with the drawer open, so the snapshot guards the drawer's look.
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
     await userEvent.click(
       canvas.getByRole('button', { name: 'Navigation umschalten' })

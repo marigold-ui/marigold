@@ -400,9 +400,12 @@ describe('Sidebar.Rail — mobile', () => {
     });
 
     // Reachable while drilled into Tickets, without going back first, and
-    // outside the scrolling drill-down nav.
+    // outside the scrolling drill-down nav, in a navigation landmark of its own.
     const help = await screen.findByRole('link', { name: 'Hilfe-Center' });
     expect(nav).not.toContainElement(help);
+    expect(
+      screen.getByRole('navigation', { name: 'Weitere Navigation' })
+    ).toContainElement(help);
 
     await user.click(help);
 

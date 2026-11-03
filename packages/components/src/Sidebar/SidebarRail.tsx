@@ -332,9 +332,13 @@ const SidebarRail = ({
           {footerSections.map(renderMobileItem)}
         </SidebarNav>
         {/* Pinned below the scrolling list, like the desktop rail footer, so
-            help and account stay in reach at every drill-down level. */}
+            help and account stay in reach at every drill-down level. Its own
+            labelled landmark, since it sits outside the main nav. */}
         {pinnedNodes.length > 0 || footer ? (
-          <div className={cn('[grid-area:footer]', classNames.railFooter)}>
+          <nav
+            aria-label={stringFormatter.format('railFooterNavigation')}
+            className={cn('[grid-area:footer]', classNames.railFooter)}
+          >
             {pinnedNodes.map(node => (
               <RailFooterLink
                 key={node.key}
@@ -345,7 +349,7 @@ const SidebarRail = ({
               />
             ))}
             {footer}
-          </div>
+          </nav>
         ) : null}
       </SidebarModal>
     );
