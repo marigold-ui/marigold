@@ -117,7 +117,7 @@ Scrolling sideways is a fallback, not a layout, so keep the floors low and it st
 
 ### Narrow screens
 
-A table that needs sideways scrolling to be read is the wrong presentation for a phone rather than a table that needs fixing. Comparing values across columns is what a table is for, and at 320px, the minimum supported width, there is room for two or three of them. Prefer a shape that reflows:
+Avoid tables on phones. A table that only reads with sideways scrolling is the wrong presentation there, not a bug to fix. Comparing values across columns is what a table is for, and at 320px, the minimum supported width, there is room for two or three of them. Prefer a shape that reflows:
 
 - **[`<Card>`](/components/collection/card)** when each record is read on its own rather than compared with its neighbours.
 - **[`<ListView>`](/components/collection/listview)** when the records are scanned quickly and acted on one at a time.
