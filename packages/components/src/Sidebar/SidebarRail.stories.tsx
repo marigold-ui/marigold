@@ -126,6 +126,13 @@ const RailShell = ({
         : { key, href: key, label: pages[key] ?? 'Seite' };
     });
 
+  // Rendered in the bar on desktop and in a row below it on small screens.
+  const crumbs = trail.map(({ key, href, label: crumbLabel }) => (
+    <Breadcrumbs.Item key={key} href={href}>
+      {crumbLabel}
+    </Breadcrumbs.Item>
+  ));
+
   // The drawer portals outside the lang="de" wrapper, killing hyphens: auto.
   // A real app sets the document language, so mirror that.
   useEffect(() => {
@@ -304,20 +311,23 @@ const RailShell = ({
                 <Sidebar.Toggle variant="rail" />
                 {/* Keep the whole trail visible (it is at most three levels)
                     so the active section still reads when the rail collapses to
-                    icons, rather than auto-collapsing to an ellipsis. */}
-                <Breadcrumbs maxVisibleItems={4}>
-                  {trail.map(({ key, href, label: crumbLabel }) => (
-                    <Breadcrumbs.Item key={key} href={href}>
-                      {crumbLabel}
-                    </Breadcrumbs.Item>
-                  ))}
-                </Breadcrumbs>
+                    icons, rather than auto-collapsing to an ellipsis. Small
+                    screens move it to its own row below the bar instead. */}
+                <div className="min-w-0 max-sm:hidden">
+                  <Breadcrumbs maxVisibleItems={4}>{crumbs}</Breadcrumbs>
+                </div>
               </TopNavigation.Start>
               <TopNavigation.End>
                 <Text size="sm" weight="bold">
                   Mara Ellison
                 </Text>
               </TopNavigation.End>
+              {/* Same pattern as TopNavigation's WithBreadcrumbs story: a
+                  full-width second row, collapsing automatically if it runs
+                  out of room. */}
+              <div className="col-span-full min-w-0 pb-2 sm:hidden">
+                <Breadcrumbs>{crumbs}</Breadcrumbs>
+              </div>
             </TopNavigation>
 
             <Page>
