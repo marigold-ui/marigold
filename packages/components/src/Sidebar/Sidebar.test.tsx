@@ -1087,6 +1087,41 @@ describe('Sidebar.Nav `current` integration', () => {
     ).not.toHaveAttribute('aria-current');
   });
 
+  test('in the mobile drawer a branch holding the current page is marked', async () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    ensureOverlayContainer();
+
+    render(
+      <RouterProvider navigate={() => {}}>
+        <MarigoldProvider theme={theme}>
+          <Sidebar.Provider>
+            <Sidebar.Toggle />
+            <Sidebar>
+              <Sidebar.Nav current="/users">
+                <Sidebar.Item href="/overview">Overview</Sidebar.Item>
+                <Sidebar.Item id="management" textValue="Management">
+                  Management
+                  <Sidebar.Item href="/users">Users</Sidebar.Item>
+                </Sidebar.Item>
+              </Sidebar.Nav>
+            </Sidebar>
+          </Sidebar.Provider>
+        </MarigoldProvider>
+      </RouterProvider>
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Toggle navigation' }));
+    await user.click(await screen.findByRole('button', { name: /Management/ }));
+
+    expect(screen.getByRole('link', { name: 'Management' })).toHaveAttribute(
+      'aria-current',
+      'true'
+    );
+    expect(screen.getByRole('link', { name: 'Overview' })).not.toHaveAttribute(
+      'aria-current'
+    );
+  });
+
   test('Sidebar.Nav without current prop falls back to per-item active', () => {
     render(
       <RouterProvider navigate={() => {}}>

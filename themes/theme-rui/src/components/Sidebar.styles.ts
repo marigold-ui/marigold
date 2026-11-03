@@ -161,9 +161,6 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'outline-none focus-visible:ui-state-focus-item',
       'cursor-pointer mb-1',
       'text-secondary hover:bg-hover hover:text-foreground',
-      // In the drawer the back row doubles as the section heading: full ink,
-      // heading size, and the chevron in a round chip. The whole row stays the
-      // tap target.
       'max-sm:min-h-14 max-sm:mb-0 max-sm:text-lg max-sm:text-foreground max-sm:hover:bg-transparent',
       'max-sm:[&_span]:font-semibold',
       'max-sm:[&>span:first-child]:size-8 max-sm:[&>span:first-child]:shrink-0 max-sm:[&>span:first-child]:rounded-full max-sm:[&>span:first-child]:bg-hover',
