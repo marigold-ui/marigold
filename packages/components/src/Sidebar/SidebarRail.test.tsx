@@ -1,5 +1,6 @@
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { vi } from 'vitest';
 import { theme } from '@marigold/theme-rui';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
@@ -407,6 +408,48 @@ describe('Sidebar.Rail — mobile', () => {
 
     await waitFor(() =>
       expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    );
+  });
+
+  test('a footer section keeps its drill-down in the drawer', async () => {
+    render(
+      <I18nProvider locale="de-DE">
+        <RouterProvider navigate={() => {}}>
+          <MarigoldProvider theme={theme}>
+            <Sidebar.Provider>
+              <Sidebar.Toggle />
+              <Sidebar>
+                <Sidebar.Rail current="/uebersicht">
+                  <Sidebar.RailItem icon={<i />} href="/uebersicht">
+                    Übersicht
+                  </Sidebar.RailItem>
+                  <Sidebar.Footer>
+                    <Sidebar.RailItem id="hilfe" icon={<i />}>
+                      Hilfe
+                      <Sidebar.Nav aria-label="Hilfe">
+                        <Sidebar.Item href="/hilfe/faq">FAQ</Sidebar.Item>
+                      </Sidebar.Nav>
+                    </Sidebar.RailItem>
+                  </Sidebar.Footer>
+                </Sidebar.Rail>
+              </Sidebar>
+            </Sidebar.Provider>
+          </MarigoldProvider>
+        </RouterProvider>
+      </I18nProvider>
+    );
+    await openDrawer();
+    const nav = await screen.findByRole('navigation', {
+      name: 'Hauptnavigation',
+    });
+
+    const hilfe = within(nav).getByRole('link', { name: 'Hilfe' });
+    await user.click(hilfe);
+
+    await waitFor(() =>
+      expect(
+        panelPosition(within(nav).getByRole('link', { name: 'FAQ' }))
+      ).toHaveAttribute('data-position', 'active')
     );
   });
 

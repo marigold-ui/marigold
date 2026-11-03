@@ -7,7 +7,7 @@ import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
 import { intlMessages } from '../intl/messages';
 import { useSidebar } from './Context';
-import { SidebarLink } from './SidebarLink';
+import { SidebarLink, SidebarRowIcon } from './SidebarLink';
 import { containsActive } from './collection';
 import type { SidebarNode } from './collection';
 import {
@@ -134,12 +134,6 @@ export const SidebarPanel = ({
             );
           }
 
-          const icon = node.icon ? (
-            <span data-slot="icon" aria-hidden="true">
-              {node.icon}
-            </span>
-          ) : null;
-
           if (node.children.length > 0) {
             return (
               <SidebarLink
@@ -158,7 +152,7 @@ export const SidebarPanel = ({
                   node.onPress?.();
                 }}
               >
-                {icon}
+                <SidebarRowIcon icon={node.icon} />
                 <span className="flex-1 truncate">{node.triggerContent}</span>
                 <ChevronRight aria-hidden="true" size={16} />
               </SidebarLink>
@@ -178,7 +172,7 @@ export const SidebarPanel = ({
                 if (isMobile) toggleSidebar();
               }}
             >
-              {icon}
+              <SidebarRowIcon icon={node.icon} />
               {node.triggerContent}
             </SidebarLink>
           );

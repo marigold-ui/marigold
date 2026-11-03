@@ -19,6 +19,17 @@ export interface SidebarLinkProps {
   ref?: Ref<HTMLAnchorElement>;
 }
 
+/**
+ * Leading row icon. The theme styles it through `[data-slot=icon]`, so every
+ * row renders it through here. Renders nothing without an icon.
+ */
+export const SidebarRowIcon = ({ icon }: { icon?: ReactNode }) =>
+  icon ? (
+    <span data-slot="icon" aria-hidden="true">
+      {icon}
+    </span>
+  ) : null;
+
 export const SidebarLink = ({
   href,
   className,
