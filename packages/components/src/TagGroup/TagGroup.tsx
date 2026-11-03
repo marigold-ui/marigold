@@ -245,12 +245,9 @@ const _TagGroup = ({
   });
 
   const { describedBy, helpTextSlots } = useFieldHelpText({
-    label,
     description,
     errorMessage,
     isInvalid: validationState.displayValidation.isInvalid,
-    'aria-label': rest['aria-label'],
-    'aria-labelledby': rest['aria-labelledby'],
     'aria-describedby': joinIds(
       rest['aria-describedby'],
       hasAddonContent(addon) ? addonId : undefined

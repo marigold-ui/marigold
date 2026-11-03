@@ -180,8 +180,6 @@ const _RangeCalendar = <T extends DateValue>({
     description,
     errorMessage,
     isInvalid: error,
-    'aria-label': rest['aria-label'],
-    'aria-labelledby': rest['aria-labelledby'],
     'aria-describedby': rest['aria-describedby'],
   });
 
