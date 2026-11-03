@@ -375,14 +375,35 @@ describe('Sidebar.Rail — mobile', () => {
     );
   });
 
-  test('a pinned footer rail item is a row in the list and closes the drawer', async () => {
+  test('top-level rows keep their rail icon and mark the active section', async () => {
     render(<Rail.Component />);
-    const toggle = await openDrawer();
+    await openDrawer();
+    const drawer = await screen.findByRole('complementary', {
+      name: 'Seitenleiste',
+    });
     await user.click(
-      await screen.findByRole('button', { name: 'Zurück zu Tickets' })
+      within(drawer).getByRole('button', { name: 'Zurück zu Tickets' })
     );
 
-    await user.click(await screen.findByRole('link', { name: 'Hilfe-Center' }));
+    const tickets = within(drawer).getByRole('link', { name: 'Tickets' });
+    // eslint-disable-next-line testing-library/no-node-access
+    expect(tickets.querySelector('[aria-hidden="true"] svg')).not.toBeNull();
+    expect(tickets).toHaveAttribute('aria-current', 'true');
+  });
+
+  test('pinned footer rail items stay below the list at every level and close the drawer', async () => {
+    render(<Rail.Component />);
+    const toggle = await openDrawer();
+    const nav = await screen.findByRole('navigation', {
+      name: 'Hauptnavigation',
+    });
+
+    // Reachable while drilled into Tickets, without going back first, and
+    // outside the scrolling drill-down nav.
+    const help = await screen.findByRole('link', { name: 'Hilfe-Center' });
+    expect(nav).not.toContainElement(help);
+
+    await user.click(help);
 
     await waitFor(() =>
       expect(toggle).toHaveAttribute('aria-expanded', 'false')

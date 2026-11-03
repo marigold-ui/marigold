@@ -35,7 +35,9 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'motion-reduce:sm:transition-none',
     ],
   }),
-  closeButton: cva({ base: ['absolute top-3.5 right-3', 'size-7'] }),
+  // Drawer-only (mobile), so it takes the full 44px touch target. The offsets
+  // keep the glyph's centre where the old 28px button had it.
+  closeButton: cva({ base: ['absolute top-1.5 right-1', 'size-touch-target'] }),
   // Hoists the shared scroll-seam timeline (see `nav`) into scope so the footer
   // — a grid sibling, not a descendant — can drive its seam off it. --seam-color
   // tints that footer seam with the faint surface rim, not the opaque default.
@@ -67,6 +69,8 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       '[&_a]:-mx-2 [&_a]:h-7.5 [&_a]:px-2 [&_a]:rounded-surface [&_a]:text-sm',
       '[&_a]:text-secondary [&_a]:font-normal',
       '[&_a:hover]:bg-hover [&_a:hover]:text-foreground',
+      // Same finger-sized rows as the nav in the mobile drawer.
+      'max-sm:[&_a]:h-auto max-sm:[&_a]:min-h-touch-target',
     ],
   }),
   toggle: cva({
@@ -130,6 +134,18 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // active row. Hover lifts to `foreground`.
       'text-secondary-bold hover:bg-hover hover:text-foreground',
       'data-active:bg-selected data-active:font-medium data-active:text-foreground',
+      // Ancestor of the current page (a branch row whose leaf is out of view):
+      // the row is the only marker on this level, so it takes the hover fill,
+      // the same rule as the active tile on the collapsed rail.
+      'aria-[current=true]:bg-hover aria-[current=true]:font-medium aria-[current=true]:text-foreground',
+      // Leading icon: a step quieter than the label, full ink when the row
+      // is the current page or its ancestor.
+      '[&>[data-slot=icon]]:flex [&>[data-slot=icon]]:shrink-0 [&>[data-slot=icon]]:text-secondary',
+      '[&>[data-slot=icon]_svg]:size-4 max-sm:[&>[data-slot=icon]_svg]:size-5',
+      'data-active:[&>[data-slot=icon]]:text-foreground aria-[current=true]:[&>[data-slot=icon]]:text-foreground',
+      // Touch-sized type in the drawer: the rows already grow to the 44px
+      // target, 14px text left them looking empty.
+      'max-sm:text-base max-sm:gap-3',
     ],
   }),
   backButton: cva({
@@ -145,6 +161,12 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'outline-none focus-visible:ui-state-focus-item',
       'cursor-pointer mb-1',
       'text-secondary hover:bg-hover hover:text-foreground',
+      // In the drawer the back row doubles as the section heading: full ink,
+      // heading size, and the chevron in a round chip. The whole row stays the
+      // tap target.
+      'max-sm:min-h-14 max-sm:mb-0 max-sm:text-lg max-sm:text-foreground max-sm:hover:bg-transparent',
+      'max-sm:[&_span]:font-semibold',
+      'max-sm:[&>span:first-child]:size-8 max-sm:[&>span:first-child]:shrink-0 max-sm:[&>span:first-child]:rounded-full max-sm:[&>span:first-child]:bg-hover',
     ],
   }),
 
@@ -249,6 +271,8 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     base: [
       'shrink-0 flex flex-col gap-0.5 py-1.5',
       'ui-scroll-seam-footer [--seam-fallback-color:transparent]',
+      // The drawer's list usually does overflow, so keep the fallback hairline.
+      'max-sm:[--seam-fallback-color:var(--seam-color)]',
     ],
   }),
   // The section panel. Draws the sidebar's outer right edge; dropped when

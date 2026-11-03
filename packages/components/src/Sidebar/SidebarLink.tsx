@@ -11,7 +11,7 @@ import { useRovingItem } from './useSidebarNav';
 export interface SidebarLinkProps {
   href?: string;
   'data-key'?: string;
-  'aria-current'?: 'page';
+  'aria-current'?: 'page' | 'true';
   'data-active'?: boolean;
   className?: string;
   onPress?: () => void;

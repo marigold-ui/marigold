@@ -151,6 +151,14 @@ const RailShell = ({
           <AppShell>
             <Sidebar>
               <Sidebar.Rail current={path}>
+                {/* Brand row of the mobile drawer. On desktop the brand sits in
+                    the top bar, so the rail doesn't render this. */}
+                <Sidebar.Header>
+                  <Text weight="bold" fontSize="lg">
+                    reservix
+                  </Text>
+                </Sidebar.Header>
+
                 <Sidebar.RailItem icon={<LayoutDashboard />} href="/uebersicht">
                   Übersicht
                 </Sidebar.RailItem>
@@ -745,6 +753,37 @@ RailMobile.test(
         expect(toggle).toHaveAttribute('aria-expanded', 'false')
       );
     });
+  }
+);
+
+RailMobile.test(
+  'every tappable drawer control is at least 44 by 44px',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Navigation umschalten' })
+    );
+    const drawer = await canvas.findByRole('complementary', {
+      name: 'Seitenleiste',
+    });
+
+    // Inactive drill-down levels stay mounted but inert, so measure only the
+    // controls a finger can actually reach.
+    const targets = [
+      ...within(drawer).queryAllByRole('link'),
+      ...within(drawer).queryAllByRole('button'),
+    ].filter(element => !element.closest('[inert]'));
+
+    expect(targets.length).toBeGreaterThan(0);
+    for (const element of targets) {
+      const { width, height } = element.getBoundingClientRect();
+      expect(
+        { name: element.textContent, width, height },
+        'touch target'
+      ).toMatchObject({
+        width: expect.toSatisfy((w: number) => w >= 44),
+        height: expect.toSatisfy((h: number) => h >= 44),
+      });
+    }
   }
 );
 

@@ -8,7 +8,7 @@ import { cn } from '@marigold/system';
 import { Tooltip } from '../Tooltip/Tooltip';
 import { intlMessages } from '../intl/messages';
 import { useSidebar } from './Context';
-import { SidebarItem, SidebarSeparator } from './SidebarItem';
+import { SidebarItem, SidebarItemIcon } from './SidebarItem';
 import { SidebarModal } from './SidebarModal';
 import { SidebarNav } from './SidebarNav';
 import type { SidebarCurrent } from './collection';
@@ -113,6 +113,53 @@ const RailItemLink = ({
       </Focusable>
       <Tooltip placement="right">{node.textValue}</Tooltip>
     </Tooltip.Trigger>
+  );
+};
+
+interface RailFooterLinkProps {
+  node: SidebarRailNode;
+  /** Drives `aria-current` — the item that matches the live page. */
+  matched: boolean;
+  /** Closes the drawer once the link is followed. */
+  onNavigate: () => void;
+  className: string;
+}
+
+/**
+ * A pinned footer rail item in the mobile drawer: an icon + label row below
+ * the drill-down nav, so it stays visible at every level.
+ */
+const RailFooterLink = ({
+  node,
+  matched,
+  onNavigate,
+  className,
+}: RailFooterLinkProps) => {
+  const router = useRouter();
+  const routerLinkProps = useLinkProps(
+    node.href ? { href: node.href } : undefined
+  );
+
+  return (
+    <a
+      {...routerLinkProps}
+      role={node.href ? undefined : 'button'}
+      aria-current={matched ? 'page' : undefined}
+      data-active={matched || undefined}
+      className={className}
+      onClick={e => {
+        if (node.href && isModifiedClick(e)) return;
+        node.onPress?.();
+        onNavigate();
+        handleLinkClick(e, router, node.href, undefined);
+      }}
+      onKeyDown={node.href ? undefined : activateOnEnterOrSpace}
+    >
+      <span data-slot="icon" aria-hidden="true">
+        {node.icon}
+      </span>
+      {node.textValue}
+    </a>
   );
 };
 
@@ -235,9 +282,9 @@ const SidebarRail = ({
   // sidebar — one nav column, brand header, close button. Sections become
   // drill-in branches (their `Sidebar.Nav` children are spliced in as the
   // pushed level, so the drawer opens pre-drilled into the active section);
-  // direct links and pinned footer items become plain rows. Leaf taps close
-  // the drawer, branch taps and the back button keep it open — all inherited
-  // from `SidebarNav`, so the two sidebar variants stay pixel-identical here.
+  // direct links become plain rows, every row keeps its rail icon, and pinned
+  // footer items stay pinned below the list. Leaf taps close the drawer, branch
+  // taps and the back button keep it open — all inherited from `SidebarNav`.
   if (isMobile) {
     // Explicit ids keep drill-down state stable across renders (auto-ids are
     // position-based); the `rail:` prefix avoids collisions with ids inside
@@ -250,6 +297,7 @@ const SidebarRail = ({
           textValue={node.panelTitle ?? node.textValue}
           onPress={node.onPress}
         >
+          <SidebarItemIcon>{node.icon}</SidebarItemIcon>
           {node.textValue}
           {/* Splice the nav's children (not the element) so they become the
               branch's drilled-in level instead of a nested landmark. */}
@@ -262,6 +310,7 @@ const SidebarRail = ({
           href={node.href}
           onPress={node.onPress}
         >
+          <SidebarItemIcon>{node.icon}</SidebarItemIcon>
           {node.textValue}
         </SidebarItem>
       );
@@ -274,10 +323,27 @@ const SidebarRail = ({
           aria-label={ariaLabel || stringFormatter.format('railNavigation')}
         >
           {nodes.filter(node => !node.inFooter).map(renderMobileItem)}
-          {footerNodes.length > 0 ? <SidebarSeparator /> : null}
-          {footerNodes.map(renderMobileItem)}
         </SidebarNav>
-        {footer}
+        {/* Pinned below the scrolling list, like the desktop rail footer, so
+            help and account stay in reach at every drill-down level. */}
+        {footerNodes.length > 0 || footer ? (
+          <div className="flex flex-col [grid-area:footer]">
+            {footerNodes.length > 0 ? (
+              <div className={classNames.railFooter}>
+                {footerNodes.map(node => (
+                  <RailFooterLink
+                    key={node.key}
+                    node={node}
+                    matched={matchedKey === node.key}
+                    className={classNames.navLink}
+                    onNavigate={toggleSidebar}
+                  />
+                ))}
+              </div>
+            ) : null}
+            {footer}
+          </div>
+        ) : null}
       </SidebarModal>
     );
   }

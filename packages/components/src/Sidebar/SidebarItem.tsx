@@ -21,6 +21,18 @@ const _SidebarItem = (_props: SidebarItemProps): ReactElement | null => null;
 _SidebarItem.__SIDEBAR_ITEM__ = true as const;
 export const SidebarItem = _SidebarItem;
 
+// Internal icon marker, consumed by collection builder. Lets the mobile rail
+// drawer carry each RailItem's icon into its rows without a public `icon`
+// prop on `Sidebar.Item`. Not part of the `Sidebar` compound.
+export interface SidebarItemIconProps {
+  children?: ReactNode;
+}
+
+const _SidebarItemIcon = (_props: SidebarItemIconProps): ReactElement | null =>
+  null;
+_SidebarItemIcon.__SIDEBAR_ITEM_ICON__ = true as const;
+export const SidebarItemIcon = _SidebarItemIcon;
+
 // Divider marker, consumed by collection builder
 const _SidebarSeparator = (): ReactElement | null => null;
 _SidebarSeparator.__SIDEBAR_SEPARATOR__ = true as const;

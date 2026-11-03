@@ -3,12 +3,12 @@ import { Button } from 'react-aria-components/Button';
 import { Separator } from 'react-aria-components/Separator';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { isFocusVisible } from '@react-aria/interactions';
-import { cn } from '@marigold/system';
 import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
 import { intlMessages } from '../intl/messages';
 import { useSidebar } from './Context';
 import { SidebarLink } from './SidebarLink';
+import { containsActive } from './collection';
 import type { SidebarNode } from './collection';
 import {
   RovingTabIndexProvider,
@@ -134,19 +134,31 @@ export const SidebarPanel = ({
             );
           }
 
+          const icon = node.icon ? (
+            <span data-slot="icon" aria-hidden="true">
+              {node.icon}
+            </span>
+          ) : null;
+
           if (node.children.length > 0) {
             return (
               <SidebarLink
                 key={node.key}
                 href={node.href}
                 data-key={node.key}
-                className={cn(classNames.navLink, 'justify-between')}
+                // Ancestor of the current page: on this level the leaf itself
+                // is out of view, so the branch row is the only "you are here".
+                aria-current={
+                  containsActive(node.children) ? 'true' : undefined
+                }
+                className={classNames.navLink}
                 onPress={() => {
                   onBranchClick?.(node.key);
                   node.onPress?.();
                 }}
               >
-                <span className="truncate">{node.triggerContent}</span>
+                {icon}
+                <span className="flex-1 truncate">{node.triggerContent}</span>
                 <ChevronRight aria-hidden="true" size={16} />
               </SidebarLink>
             );
@@ -165,6 +177,7 @@ export const SidebarPanel = ({
                 if (isMobile) toggleSidebar();
               }}
             >
+              {icon}
               {node.triggerContent}
             </SidebarLink>
           );
