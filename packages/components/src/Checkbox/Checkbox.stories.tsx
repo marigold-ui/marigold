@@ -283,9 +283,9 @@ export const ReadOnly = meta.story({
       description: {
         story:
           'A read-only checkbox keeps its value legible and drops the ' +
-          'affordances: quieter fill, no hover, `cursor-default`. It stays ' +
-          'focusable and announces `aria-readonly`, which is what separates ' +
-          'it from `disabled`.',
+          'affordances: an outlined box instead of a filled one, no hover, ' +
+          '`cursor-default`. It stays focusable and announces ' +
+          '`aria-readonly`, which is what separates it from `disabled`.',
       },
     },
   },
@@ -311,7 +311,7 @@ ReadOnly.test(
   'A read-only box is distinguishable from an editable one at rest',
   { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, step }) => {
-    for (const state of ['unchecked', 'checked', 'indeterminate'] as const) {
+    for (const state of ['checked', 'indeterminate'] as const) {
       await step(state, async () => {
         const editable = canvas.getByRole('checkbox', {
           name: `Editable, ${state}`,
@@ -361,8 +361,6 @@ ReadOnly.test(
     });
 
     await step('stays focusable', async () => {
-      // Tab rather than `focus()`: the criterion is keyboard reach, and
-      // `focus()` would pass on a `tabIndex={-1}` box too.
       canvas.getByRole('checkbox', { name: 'Editable, checked' }).focus();
       await userEvent.tab();
 

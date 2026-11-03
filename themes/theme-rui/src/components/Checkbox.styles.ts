@@ -15,11 +15,8 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
       'group-selected/checkbox:border-selected-bold group-selected/checkbox:bg-selected-bold group-selected/checkbox:text-selected-bold-foreground',
       'group-indeterminate/checkbox:border-selected-bold group-indeterminate/checkbox:bg-selected-bold group-indeterminate/checkbox:text-selected-bold-foreground',
       'group-hover/checkbox:group-disabled/checkbox:bg-disabled-surface',
-      'group-read-only/checkbox:not-group-disabled/checkbox:not-group-selected/checkbox:not-group-indeterminate/checkbox:bg-control',
-      // `not-group-disabled` so `disabled` wins by specificity rather than by
-      // the order the variants happen to sort in: the fills above carry no `!`.
-      'group-read-only/checkbox:not-group-disabled/checkbox:group-selected/checkbox:border-selected-readonly group-read-only/checkbox:not-group-disabled/checkbox:group-selected/checkbox:bg-selected-readonly',
-      'group-read-only/checkbox:not-group-disabled/checkbox:group-indeterminate/checkbox:border-selected-readonly group-read-only/checkbox:not-group-disabled/checkbox:group-indeterminate/checkbox:bg-selected-readonly',
+      'group-read-only/checkbox:not-group-disabled/checkbox:group-selected/checkbox:border-control-edge group-read-only/checkbox:not-group-disabled/checkbox:group-selected/checkbox:bg-surface group-read-only/checkbox:not-group-disabled/checkbox:group-selected/checkbox:text-foreground',
+      'group-read-only/checkbox:not-group-disabled/checkbox:group-indeterminate/checkbox:border-control-edge group-read-only/checkbox:not-group-disabled/checkbox:group-indeterminate/checkbox:bg-surface group-read-only/checkbox:not-group-disabled/checkbox:group-indeterminate/checkbox:text-foreground',
       // Each `:not()` outranks a state rule above, so removing one lets hover
       // repaint it. `disabled` isn't, its rule carries `!important`. Focus
       // needs none, its ring sits outside the border.

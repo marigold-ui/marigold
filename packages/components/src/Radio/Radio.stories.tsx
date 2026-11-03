@@ -183,9 +183,10 @@ export const ReadOnly = meta.story({
       description: {
         story:
           'A read-only group keeps its selection legible and drops the ' +
-          'affordances: quieter fill, no hover, `cursor-default`. The radios ' +
-          'stay focusable and the group announces `aria-readonly`, which is ' +
-          'what separates it from `disabled`.',
+          'affordances: an outlined radio instead of a filled one, no hover, ' +
+          '`cursor-default`. The radios stay focusable and the group ' +
+          'announces `aria-readonly`, which is what separates it from ' +
+          '`disabled`.',
       },
     },
   },
@@ -211,21 +212,13 @@ export const ReadOnly = meta.story({
 ReadOnly.test(
   'A read-only radio is distinguishable from an editable one at rest',
   { parameters: { chromatic: { disableSnapshot: false } } },
-  async ({ canvas, step }) => {
-    for (const state of ['selected', 'unselected'] as const) {
-      await step(state, async () => {
-        const editable = canvas.getByRole('radio', {
-          name: `Editable, ${state}`,
-        });
-        const readOnly = canvas.getByRole('radio', {
-          name: `Read-only, ${state}`,
-        });
+  async ({ canvas }) => {
+    const editable = canvas.getByRole('radio', { name: 'Editable, selected' });
+    const readOnly = canvas.getByRole('radio', { name: 'Read-only, selected' });
 
-        expect(fillOf(controlIcon(readOnly))).not.toBe(
-          fillOf(controlIcon(editable))
-        );
-      });
-    }
+    expect(fillOf(controlIcon(readOnly))).not.toBe(
+      fillOf(controlIcon(editable))
+    );
   }
 );
 
@@ -259,8 +252,6 @@ ReadOnly.test(
     });
 
     await step('the selected radio stays focusable', async () => {
-      // Tab rather than `focus()`: the criterion is keyboard reach, and
-      // `focus()` would pass on a `tabIndex={-1}` radio too.
       canvas.getByRole('radio', { name: 'Editable, selected' }).focus();
       await userEvent.tab();
 

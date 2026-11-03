@@ -306,9 +306,10 @@ export const ReadOnly = meta.story({
       description: {
         story:
           'A read-only switch keeps its value legible and drops the ' +
-          'affordances: quieter track, a visible rim when off, no hover, ' +
-          '`cursor-default`. It stays focusable and announces ' +
-          '`aria-readonly`, which is what separates it from `disabled`.',
+          'affordances: an emptied track with a visible rim, a dark thumb to ' +
+          'carry the value, no hover, `cursor-default`. It stays focusable ' +
+          'and announces `aria-readonly`, which is what separates it from ' +
+          '`disabled`.',
       },
     },
   },
@@ -327,7 +328,7 @@ ReadOnly.test(
   'A read-only switch is distinguishable from an editable one at rest',
   { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, step }) => {
-    await step('on — a quieter track fill', async () => {
+    await step('on — an emptied track', async () => {
       const editable = getTrack(
         canvas.getByRole('switch', { name: 'Editable, on' })
       );
@@ -338,7 +339,7 @@ ReadOnly.test(
       expect(fillOf(readOnly)).not.toBe(fillOf(editable));
     });
 
-    await step('off — a visible rim on an unchanged fill', async () => {
+    await step('off — an emptied track with a visible rim', async () => {
       const editable = getTrack(
         canvas.getByRole('switch', { name: 'Editable, off' })
       );
@@ -346,7 +347,7 @@ ReadOnly.test(
         canvas.getByRole('switch', { name: 'Read-only, off' })
       );
 
-      expect(fillOf(readOnly)).toBe(fillOf(editable));
+      expect(fillOf(readOnly)).not.toBe(fillOf(editable));
       expect(borderOf(readOnly)).not.toBe(borderOf(editable));
     });
   }
@@ -385,8 +386,6 @@ ReadOnly.test(
     });
 
     await step('stays focusable', async () => {
-      // Tab rather than `focus()`: the criterion is keyboard reach, and
-      // `focus()` would pass on a `tabIndex={-1}` switch too.
       canvas.getByRole('switch', { name: 'Editable, on' }).focus();
       await userEvent.tab();
 
