@@ -23,6 +23,11 @@ import { __resetStackedActionsWarning } from './ListViewItem';
 
 const user = userEvent.setup({ pointerEventsCheck: 0 });
 
+// `Mod` is `metaKey` on Mac and `ctrlKey` elsewhere. Firefox exposes no
+// `userAgentData`, so react-aria's `isMac()` reads `navigator.platform` here
+// too and this agrees with the implementation on either platform.
+const modKey = /^Mac/i.test(navigator.platform) ? 'Meta' : 'Control';
+
 describe('ListView', () => {
   describe('rendering', () => {
     test('renders a non-form grid with the expected number of rows', () => {
@@ -591,7 +596,7 @@ describe('ListView', () => {
       expect(selectAll).toBeChecked();
     });
 
-    test('keeps a preselected disabled row when selecting everything', async () => {
+    test('reports the sentinel even when a disabled row is selected', async () => {
       const onSelectionChange = vi.fn();
       render(
         <WithSelectAll.Component
@@ -603,9 +608,24 @@ describe('ListView', () => {
 
       await user.click(screen.getByRole('checkbox', { name: 'Select all' }));
 
-      expect(onSelectionChange).toHaveBeenLastCalledWith(
-        new Set(['gasometer', 'tempodrom', 'columbiahalle'])
-      );
+      // `toggleSelectAll()` sends the sentinel whatever the data looks like. A
+      // disabled row that has to stay selected is the consumer's job, through
+      // controlled `selectedKeys`.
+      expect(onSelectionChange).toHaveBeenLastCalledWith('all');
+    });
+
+    test('reports the same value as Mod+A on the rows', async () => {
+      const onSelectionChange = vi.fn();
+      render(<WithSelectAll.Component onSelectionChange={onSelectionChange} />);
+
+      await user.click(screen.getByRole('checkbox', { name: 'Select all' }));
+      const fromHeader = onSelectionChange.mock.lastCall;
+
+      await user.click(screen.getByRole('row', { name: /gasometer/i }));
+      await user.keyboard(`{${modKey}>}a{/${modKey}}`);
+
+      expect(onSelectionChange.mock.lastCall).toStrictEqual(fromHeader);
+      expect(fromHeader).toStrictEqual(['all']);
     });
 
     test('does not select a disabled row when clearing from `all`', async () => {
@@ -629,21 +649,19 @@ describe('ListView', () => {
       expect(disabledRow).not.toHaveAttribute('aria-selected', 'true');
     });
 
-    test('keeps a selected disabled row when clearing a concrete selection', async () => {
-      const onSelectionChange = vi.fn();
+    test('reads as mixed while only a disabled row is selected', () => {
       render(
         <WithSelectAll.Component
           disabledKeys={['tempodrom']}
-          selectedKeys={['tempodrom', 'gasometer', 'columbiahalle']}
-          onSelectionChange={onSelectionChange}
+          defaultSelectedKeys={['tempodrom']}
         />
       );
 
-      await user.click(screen.getByRole('checkbox', { name: 'Select all' }));
-
-      expect(onSelectionChange).toHaveBeenLastCalledWith(
-        new Set(['tempodrom'])
-      );
+      // `<Table>` reads `!isEmpty && !isSelectAll`, so something selected that
+      // the select-all cannot tick still shows mixed rather than unchecked.
+      expect(
+        screen.getByRole('checkbox', { name: 'Select all' })
+      ).toBePartiallyChecked();
     });
 
     test('names the list in the description when it has a visible label', () => {

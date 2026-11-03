@@ -83,7 +83,7 @@ const ListViewBase = ({
     onSelectionChange
   );
 
-  const { keys, lockedKeys } = useSelectableKeys({
+  const { keys } = useSelectableKeys({
     children,
     items: rest.items,
     disabledKeys: rest.disabledKeys,
@@ -91,22 +91,23 @@ const ListViewBase = ({
     enabled: hasSelectAll,
   });
 
+  // The same two values React Aria's `toggleSelectAll()` sends, which is what
+  // <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> and `<Table>`'s header both go
+  // through, so the header, the keyboard and a table all report one shape. A
+  // disabled row that has to stay selected is the app's job, through controlled
+  // `selectedKeys`.
   const onSelectAll = useCallback(
     (selected: boolean) => {
       if (selected) {
-        setSelection(
-          lockedKeys.length === 0
-            ? 'all'
-            : new Set([...keys, ...(selection === 'all' ? [] : selection)])
-        );
+        setSelection('all');
         return;
       }
-      if (lockedKeys.length === 0 && rest.disallowEmptySelection) {
+      if (rest.disallowEmptySelection) {
         return;
       }
-      setSelection(new Set(lockedKeys));
+      setSelection(new Set());
     },
-    [setSelection, keys, lockedKeys, selection, rest.disallowEmptySelection]
+    [setSelection, rest.disallowEmptySelection]
   );
 
   // `useClassNames` returns a fresh object, so memoise on the slot strings.

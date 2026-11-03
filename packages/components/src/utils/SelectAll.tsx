@@ -160,7 +160,13 @@ export const SelectAllHeader = ({
     selection === 'all'
       ? keys.length
       : keys.filter(key => selection.has(key)).length;
-  const checked = keys.length > 0 && selectedCount === keys.length;
+  // React Aria's own `isEmpty` / `isSelectAll` / `!isEmpty && !isSelectAll`,
+  // which is what `<Table>`'s header checkbox reads. A selection holding only
+  // a disabled row counts for `isEmpty` but not for `selectedCount`, so it
+  // reads as mixed rather than unchecked.
+  const isEmpty = selection !== 'all' && selection.size === 0;
+  const checked =
+    !isEmpty && (selection === 'all' || selectedCount === keys.length);
 
   const [pressToken, setPressToken] = useState(0);
   const announcedTokenRef = useRef(0);
@@ -183,7 +189,7 @@ export const SelectAllHeader = ({
     <div data-select-all="" className={classNames?.header}>
       <Checkbox
         checked={checked}
-        indeterminate={selectedCount > 0 && !checked}
+        indeterminate={!isEmpty && !checked}
         disabled={disabled || keys.length === 0}
         onChange={selected => {
           setPressToken(token => token + 1);
