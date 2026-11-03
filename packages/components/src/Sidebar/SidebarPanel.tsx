@@ -146,10 +146,11 @@ export const SidebarPanel = ({
                 key={node.key}
                 href={node.href}
                 data-key={node.key}
-                // Ancestor of the current page: on this level the leaf itself
-                // is out of view, so the branch row is the only "you are here".
+                // Mobile drawer only: the ancestor of the current page. On this
+                // level the leaf itself is out of view, so the branch row is
+                // the only "you are here".
                 aria-current={
-                  containsActive(node.children) ? 'true' : undefined
+                  isMobile && containsActive(node.children) ? 'true' : undefined
                 }
                 className={classNames.navLink}
                 onPress={() => {

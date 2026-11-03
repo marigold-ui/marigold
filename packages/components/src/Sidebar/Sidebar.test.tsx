@@ -1075,17 +1075,16 @@ describe('Sidebar.Nav `current` integration', () => {
     expect(linkByText('Analytics')).toHaveAttribute('aria-current', 'page');
   });
 
-  test('a branch holding the current page is marked as its ancestor', async () => {
+  test('on desktop a branch holding the current page is not marked', async () => {
     renderSidebar('/users');
 
     // Leave the auto-opened branch so the root level (and its branch row) shows.
     await user.click(await screen.findByRole('button', { name: /Management/ }));
 
-    expect(screen.getByRole('link', { name: 'Management' })).toHaveAttribute(
-      'aria-current',
-      'true'
-    );
-    expect(linkByText('Overview')).not.toHaveAttribute('aria-current');
+    // The ancestor marker is a mobile drawer feature only.
+    expect(
+      screen.getByRole('link', { name: 'Management' })
+    ).not.toHaveAttribute('aria-current');
   });
 
   test('Sidebar.Nav without current prop falls back to per-item active', () => {

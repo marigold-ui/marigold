@@ -12,7 +12,7 @@ On small screens the `Sidebar.Rail` drawer now keeps what makes the rail easy to
 **New:**
 
 - Every top-level row shows its rail icon, and the text is 16px instead of 14px.
-- The section that holds the current page is marked at the top level and announced as the current section (`aria-current="true"`). The single-column `Sidebar` marks a branch row that holds the current page the same way.
+- The section that holds the current page is marked at the top level and announced as the current section (`aria-current="true"`).
 - Pinned footer items stay below the list at every level instead of scrolling with it.
 - Inside a section, its name is set as a heading, with the back chevron in a round chip. The whole row is still the back button.
 - The close button and footer links meet the 44 by 44px touch target, like the nav rows already did.
