@@ -565,6 +565,81 @@
   }
 }
 
+@keyframes sc-shadow-x-start {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes sc-shadow-x-end {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@utility ui-scroll-shadow-x-timeline {
+  scroll-timeline: --scroll-shadow-x inline;
+}
+
+@utility ui-scroll-shadow-x {
+  position: relative;
+  timeline-scope: --scroll-shadow-x;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    width: var(--scroll-shadow-width, 1.5rem);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  &::before {
+    inset-inline-start: 0;
+    background: linear-gradient(
+      to right,
+      var(
+        --scroll-shadow-color,
+        color-mix(in oklab, var(--color-foreground) 18%, transparent)
+      ),
+      transparent
+    );
+    opacity: 0;
+  }
+
+  &::after {
+    inset-inline-end: 0;
+    background: linear-gradient(
+      to left,
+      var(
+        --scroll-shadow-color,
+        color-mix(in oklab, var(--color-foreground) 18%, transparent)
+      ),
+      transparent
+    );
+    opacity: 1;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    &::before {
+      animation: sc-shadow-x-start linear both;
+      animation-timeline: --scroll-shadow-x;
+      animation-range: 0 var(--scroll-shadow-width, 1.5rem);
+    }
+    &::after {
+      animation: sc-shadow-x-end linear both;
+      animation-timeline: --scroll-shadow-x;
+      animation-range: calc(100% - var(--scroll-shadow-width, 1.5rem)) 100%;
+    }
+  }
+}
+
 @keyframes sc-edge-b {
   to {
     box-shadow: 0 1px 0 0 var(--color-border);
