@@ -399,7 +399,12 @@ HeaderConfigurations.test(
       );
 
       // The description sits right below the title, with only its own margin.
-      await expect(description.top - title.bottom).toBeLessThanOrEqual(2);
+      const descriptionMargin = parseFloat(
+        getComputedStyle(header.children[1]).marginTop
+      );
+      await expect(description.top - title.bottom).toBeLessThanOrEqual(
+        descriptionMargin + 0.5
+      );
       await expect(
         Math.abs(
           (title.top + description.bottom) / 2 -
