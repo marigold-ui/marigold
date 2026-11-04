@@ -4,7 +4,9 @@ import { vi } from 'vitest';
 import { theme } from '@marigold/theme-rui';
 import { Badge } from '../Badge/Badge';
 import { Description } from '../Description/Description';
+import { Form } from '../Form/Form';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
+import { renderInDialog } from '../test.utils';
 import { SelectList } from './SelectList';
 import {
   Basic,
@@ -95,6 +97,22 @@ describe('SelectList', () => {
       expect(description).toBeInTheDocument();
     });
 
+    test('describes the grid by its description', () => {
+      render(<Basic.Component />);
+
+      expect(screen.getByRole('grid')).toHaveAccessibleDescription(
+        "Choose how you'd like to pay."
+      );
+    });
+
+    test('describes the grid by the error message instead of the description', () => {
+      render(<WithError.Component description="Pick one." />);
+
+      expect(screen.getByRole('grid')).toHaveAccessibleDescription(
+        'Please choose a payment method to continue.'
+      );
+    });
+
     test('renders nested label/description slots inside options', () => {
       render(<Basic.Component />);
 
@@ -115,6 +133,26 @@ describe('SelectList', () => {
       );
 
       expect(message).toBeInTheDocument();
+    });
+
+    test('shows the errorMessage inside a Dialog', () => {
+      renderInDialog(<WithError.Component />);
+
+      expect(
+        screen.getByText('Please choose a payment method to continue.')
+      ).toBeInTheDocument();
+    });
+
+    test('shows a Form validation error inside a Dialog', () => {
+      renderInDialog(
+        <Form validationErrors={{ payment: 'Please choose a payment method.' }}>
+          <Basic.Component name="payment" />
+        </Form>
+      );
+
+      expect(screen.getByRole('grid')).toHaveAccessibleDescription(
+        'Please choose a payment method.'
+      );
     });
 
     test('does not render an errorMessage when error is not set', () => {

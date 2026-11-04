@@ -1,7 +1,8 @@
-import { expect, fn, spyOn, userEvent, waitFor } from 'storybook/test';
+import { expect, fn, screen, spyOn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Description } from '../Description/Description';
+import { Dialog } from '../Dialog/Dialog';
 import { Form } from '../Form/Form';
 import { Inline } from '../Inline/Inline';
 import { ActionMenu } from '../Menu/ActionMenu';
@@ -909,6 +910,55 @@ export const WithError = meta.story({
     </SelectList>
   ),
 });
+
+// A `<Dialog>` publishes its own description slot, which the list's error
+// message used to read, crashing with `Invalid slot "errorMessage"`.
+export const WithErrorInDialog = meta.story({
+  tags: ['component-test'],
+  parameters: { surface: false, chromatic: { disableSnapshot: true } },
+  // The dialog's portal target, as in the `Dialog` stories.
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
+  ],
+  render: args => (
+    <Dialog.Trigger>
+      <Button>Choose member</Button>
+      <Dialog closeButton>
+        <Dialog.Title>Personalisation</Dialog.Title>
+        <Dialog.Content>
+          <SelectList
+            {...args}
+            label="Member"
+            variant="bordered"
+            error
+            errorMessage="Please choose a member."
+          >
+            <SelectList.Option id="anna">Anna</SelectList.Option>
+            <SelectList.Option id="ben">Ben</SelectList.Option>
+          </SelectList>
+        </Dialog.Content>
+      </Dialog>
+    </Dialog.Trigger>
+  ),
+});
+
+WithErrorInDialog.test(
+  'shows the error message inside the dialog',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Choose member' })
+    );
+
+    // The dialog renders in a portal, outside the story's canvas.
+    await expect(
+      await screen.findByText('Please choose a member.')
+    ).toBeInTheDocument();
+  }
+);
 
 export const WithForm = meta.story({
   tags: ['component-test'],
