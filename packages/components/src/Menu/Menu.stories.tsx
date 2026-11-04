@@ -507,6 +507,82 @@ AccessSections.test(
   }
 );
 
+// Left edge of an item's visible label: its first text node, which is the
+// label whether it sits in a <Text> slot or directly in the item.
+const labelLeft = (item: HTMLElement) => {
+  const walker = document.createTreeWalker(item, NodeFilter.SHOW_TEXT, {
+    acceptNode: node =>
+      node.textContent?.trim()
+        ? NodeFilter.FILTER_ACCEPT
+        : NodeFilter.FILTER_REJECT,
+  });
+  const range = document.createRange();
+  range.selectNodeContents(walker.nextNode()!);
+
+  return range.getBoundingClientRect().left;
+};
+
+export const MixedIcons = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <ActionMenu aria-label="Edit">
+      <ActionMenu.Item id="cut">
+        <Scissors />
+        Cut
+      </ActionMenu.Item>
+      <ActionMenu.Item id="copy">
+        <Copy />
+        <TextValue>Copy</TextValue>
+        <Keyboard>⌘C</Keyboard>
+      </ActionMenu.Item>
+      <ActionMenu.Item id="rename">Rename</ActionMenu.Item>
+      <ActionMenu.Item id="duplicate" textValue="Duplicate">
+        <TextValue>Duplicate</TextValue>
+        <Description>Creates a copy next to the original.</Description>
+      </ActionMenu.Item>
+      <ActionMenu.Section title="Master-Aktionen">
+        <ActionMenu.Item id="move" variant="master">
+          Verschieben
+        </ActionMenu.Item>
+        <ActionMenu.Item id="archive">Archivieren</ActionMenu.Item>
+      </ActionMenu.Section>
+    </ActionMenu>
+  ),
+});
+
+MixedIcons.test(
+  'aligns every label when only some items have an icon',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Edit' }));
+
+    const items = await canvas.findAllByRole('menuitem');
+    const lefts = items.map(labelLeft);
+
+    expect(items).toHaveLength(6);
+    lefts.forEach(left => expect(left).toBeCloseTo(lefts[0], 0));
+  }
+);
+
+Basic.test(
+  'keeps the compact layout when no item has an icon',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button'));
+
+    const items = await canvas.findAllByRole('menuitem');
+
+    items.forEach(item => {
+      const padding = parseFloat(getComputedStyle(item).paddingInlineStart);
+
+      expect(labelLeft(item) - item.getBoundingClientRect().left).toBeCloseTo(
+        padding,
+        0
+      );
+    });
+  }
+);
+
 export const DisabledWithDescription = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
@@ -687,7 +763,7 @@ export const Advanced = meta.story({
 Advanced.test(
   'Renders icons and a divider, and wires the shortcut to the item description',
   { parameters: { chromatic: { disableSnapshot: false } } },
-  async ({ canvas }) => {
+  async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Edit' }));
 
     const copyItem = canvas.getByRole('menuitem', { name: /Copy/ });
