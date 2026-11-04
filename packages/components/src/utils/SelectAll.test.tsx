@@ -123,6 +123,34 @@ test('takes the key off the rendered row, not off the item', () => {
   ).toHaveAccessibleDescription('0 of 2 selected Venues');
 });
 
+const VenueRow = ({ venue }: { venue: Venue }) => (
+  <ListView.Item id={venue.slug} textValue={venue.name}>
+    <TextValue>{venue.name}</TextValue>
+  </ListView.Item>
+);
+
+test('never reads as fully selected when it can address nothing', async () => {
+  const warn = vi.spyOn(console, 'warn').mockImplementation(() => null);
+  render(
+    <MarigoldProvider theme={theme}>
+      <ListView aria-label="Venues" selectionMode="multiple" allowSelectAll>
+        {VENUES_BY_SLUG.map(venue => (
+          <VenueRow key={venue.slug} venue={venue} />
+        ))}
+      </ListView>
+    </MarigoldProvider>
+  );
+  warn.mockRestore();
+
+  await user.click(screen.getByRole('row', { name: /gasometer/i }));
+
+  // `selectedCount === keys.length` is `0 === 0` with no keys to tick.
+  const selectAll = screen.getByRole('checkbox', { name: 'Select all' });
+  expect(selectAll).toBeDisabled();
+  expect(selectAll).not.toBeChecked();
+  expect(selectAll).toBePartiallyChecked();
+});
+
 test('leaves out a row the render function disables', () => {
   render(
     <VenuesBySlug

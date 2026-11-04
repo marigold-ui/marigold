@@ -91,11 +91,7 @@ const ListViewBase = ({
     enabled: hasSelectAll,
   });
 
-  // The same two values React Aria's `toggleSelectAll()` sends, which is what
-  // <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> and `<Table>`'s header both go
-  // through, so the header, the keyboard and a table all report one shape. A
-  // disabled row that has to stay selected is the app's job, through controlled
-  // `selectedKeys`.
+  // The values `toggleSelectAll()` sends, so header, Mod+A and `<Table>` agree.
   const onSelectAll = useCallback(
     (selected: boolean) => {
       if (selected) {

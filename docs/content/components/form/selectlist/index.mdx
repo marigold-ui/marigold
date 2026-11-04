@@ -115,6 +115,8 @@ Set `allowSelectAll` to put a select-all above the options. It only takes effect
 
 The select-all covers the options it can address, so give every option an `id` and render them as direct children of the list. Options that come out of a wrapper component of your own are invisible to it, and passing an `items` array instead works in every case.
 
+A selected option the select-all cannot tick, a disabled one for example, leaves the checkbox mixed while the count still reads "0 of 3". The count speaks for the options the select-all can address, and nothing else.
+
 <ComponentDemo name="selectlist-select-all" />
 
 <GuidelineTiles>

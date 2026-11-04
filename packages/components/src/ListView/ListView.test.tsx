@@ -23,9 +23,7 @@ import { __resetStackedActionsWarning } from './ListViewItem';
 
 const user = userEvent.setup({ pointerEventsCheck: 0 });
 
-// `Mod` is `metaKey` on Mac and `ctrlKey` elsewhere. Firefox exposes no
-// `userAgentData`, so react-aria's `isMac()` reads `navigator.platform` here
-// too and this agrees with the implementation on either platform.
+// What react-aria's `isMac()` reads in a browser without `userAgentData`.
 const modKey = /^Mac/i.test(navigator.platform) ? 'Meta' : 'Control';
 
 describe('ListView', () => {
@@ -608,9 +606,7 @@ describe('ListView', () => {
 
       await user.click(screen.getByRole('checkbox', { name: 'Select all' }));
 
-      // `toggleSelectAll()` sends the sentinel whatever the data looks like. A
-      // disabled row that has to stay selected is the consumer's job, through
-      // controlled `selectedKeys`.
+      // The sentinel goes out whatever the data holds.
       expect(onSelectionChange).toHaveBeenLastCalledWith('all');
     });
 
@@ -657,8 +653,7 @@ describe('ListView', () => {
         />
       );
 
-      // `<Table>` reads `!isEmpty && !isSelectAll`, so something selected that
-      // the select-all cannot tick still shows mixed rather than unchecked.
+      // `<Table>` reads `!isEmpty && !isSelectAll`: mixed, not unchecked.
       expect(
         screen.getByRole('checkbox', { name: 'Select all' })
       ).toBePartiallyChecked();

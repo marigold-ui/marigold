@@ -739,6 +739,20 @@ describe('SelectList', () => {
       expect(selectAll).toBeChecked();
     });
 
+    test('reads as mixed while only a disabled option is selected', () => {
+      render(
+        <WithSelectAll.Component
+          disabledKeys={['gift-wrap']}
+          defaultSelectedKeys={['gift-wrap']}
+        />
+      );
+
+      // `<Table>` reads `!isEmpty && !isSelectAll`: mixed, not unchecked.
+      expect(
+        screen.getByRole('checkbox', { name: 'Select all' })
+      ).toBePartiallyChecked();
+    });
+
     test('names the list in the description so two can be told apart', () => {
       render(<WithSelectAll.Component />);
 
