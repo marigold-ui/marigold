@@ -5,6 +5,12 @@ name: Docs links
 # not run — a stale green check is indistinguishable from a fresh one.
 on:
   push:
+    # changesets/action creates this branch at main's SHA, then pushes the
+    # version bump onto it seconds later. That second push cancelled the first
+    # run, whose checks belong to main's commit. The release PR's own branch
+    # (changeset-release/main) still runs everything.
+    branches-ignore:
+      - 'changesets-ghcommit-temp/**'
     paths:
       - 'docs/content/**'
       - 'docs/app/**'
