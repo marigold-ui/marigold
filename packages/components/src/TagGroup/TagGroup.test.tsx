@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { Badge } from '../Badge/Badge';
 import { Form } from '../Form/Form';
+import { renderInDialog } from '../test.utils';
 import {
   Basic,
   CollapseAt,
@@ -66,6 +67,42 @@ test('renders error message when `error` is true', () => {
   expect(
     screen.getByText('Please pick at least one category.')
   ).toBeInTheDocument();
+});
+
+test('describes the tag list by its description', () => {
+  render(<Basic.Component description="Pick what you like." />);
+
+  expect(screen.getByRole('grid')).toHaveAccessibleDescription(
+    'Pick what you like.'
+  );
+});
+
+test('describes the tag list by the error message', () => {
+  render(<WithError.Component />);
+
+  expect(screen.getByRole('grid')).toHaveAccessibleDescription(
+    'Please pick at least one category.'
+  );
+});
+
+test('renders the error message inside a Dialog', () => {
+  renderInDialog(<WithError.Component />);
+
+  expect(
+    screen.getByText('Please pick at least one category.')
+  ).toBeInTheDocument();
+});
+
+test('renders a Form validation error inside a Dialog', () => {
+  renderInDialog(
+    <Form validationErrors={{ categories: 'Please pick a category.' }}>
+      <Basic.Component name="categories" />
+    </Form>
+  );
+
+  expect(screen.getByRole('grid')).toHaveAccessibleDescription(
+    'Please pick a category.'
+  );
 });
 
 test('`disabled` cascades to tags so interaction is blocked', async () => {

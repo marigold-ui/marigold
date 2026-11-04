@@ -30,6 +30,7 @@ import {
 } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
+import { useFieldHelpText } from '../utils/useFieldHelpText';
 import { hasAddonContent, joinIds } from '../utils/useLabelAddon';
 import { SelectListContext } from './Context';
 import { SelectListOption } from './SelectListOption';
@@ -326,6 +327,16 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
     validationBehavior,
   });
 
+  const { describedBy, helpTextSlots } = useFieldHelpText({
+    description,
+    errorMessage,
+    isInvalid: validationState.displayValidation.isInvalid,
+    'aria-describedby': joinIds(
+      rest['aria-describedby'],
+      hasAddonContent(addon) ? addonId : undefined
+    ),
+  });
+
   const handleSelectionChange = useCallback(
     (keys: Selection) => {
       setSelection(keys);
@@ -355,6 +366,7 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
         label={label}
         addon={addon}
         addonId={addonId}
+        helpTextSlots={helpTextSlots}
         description={description}
         errorMessage={errorMessage}
         isInvalid={validationState.displayValidation.isInvalid}
@@ -375,10 +387,7 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
               })}
               ref={gridListRef}
               aria-labelledby={label ? labelId : rest['aria-labelledby']}
-              aria-describedby={joinIds(
-                rest['aria-describedby'],
-                hasAddonContent(addon) ? addonId : undefined
-              )}
+              aria-describedby={describedBy}
               aria-disabled={disabled || undefined}
               layout="grid"
               orientation={orientation}
