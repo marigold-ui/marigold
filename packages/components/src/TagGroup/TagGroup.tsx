@@ -18,6 +18,7 @@ import { ButtonContext } from '../Button/Context';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
 import { splitChildren } from '../utils/children.utils';
+import { useFieldHelpText } from '../utils/useFieldHelpText';
 import { hasAddonContent, joinIds } from '../utils/useLabelAddon';
 import { useLiftedSelection } from '../utils/useLiftedSelection';
 import { TagGroupContext } from './Context';
@@ -237,6 +238,16 @@ const _TagGroup = ({
     validationBehavior,
   });
 
+  const { describedBy, helpTextSlots } = useFieldHelpText({
+    description,
+    errorMessage,
+    isInvalid: validationState.displayValidation.isInvalid,
+    'aria-describedby': joinIds(
+      rest['aria-describedby'],
+      hasAddonContent(addon) ? addonId : undefined
+    ),
+  });
+
   const handleSelectionChange = (keys: Selection) => {
     setSelection(keys);
     validationState.commitValidation();
@@ -264,6 +275,7 @@ const _TagGroup = ({
         label={label}
         addon={addon}
         addonId={addonId}
+        helpTextSlots={helpTextSlots}
         description={description}
         errorMessage={errorMessage}
         isInvalid={validationState.displayValidation.isInvalid}
@@ -273,10 +285,7 @@ const _TagGroup = ({
         <RACTagGroup
           {...(rest as RAC.TagGroupProps)}
           aria-labelledby={ariaLabelledBy}
-          aria-describedby={joinIds(
-            rest['aria-describedby'],
-            hasAddonContent(addon) ? addonId : undefined
-          )}
+          aria-describedby={describedBy}
           aria-disabled={disabled || undefined}
           selectionMode={selectionMode}
           selectedKeys={selection}
