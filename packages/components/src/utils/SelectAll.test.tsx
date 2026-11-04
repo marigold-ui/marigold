@@ -170,3 +170,56 @@ test('leaves out a row the render function disables', () => {
     screen.getByRole('checkbox', { name: 'Select all' })
   ).toHaveAccessibleDescription('0 of 1 selected Venues');
 });
+
+interface Permission {
+  id: string;
+  name: string;
+  locked?: boolean;
+}
+
+const PERMISSIONS: Permission[] = [
+  { id: 'read', name: 'Read' },
+  { id: 'billing', name: 'Billing', locked: true },
+];
+
+// The wrapper carries the `disabled`, so only `item.id` reaches the derivation.
+const PermissionRow = ({ permission }: { permission: Permission }) => (
+  <ListView.Item
+    id={permission.id}
+    textValue={permission.name}
+    disabled={permission.locked}
+  >
+    <TextValue>{permission.name}</TextValue>
+  </ListView.Item>
+);
+
+test.each([
+  [undefined, '0 of 2 selected Permissions'],
+  [['billing'], '0 of 1 selected Permissions'],
+])(
+  'only disabledKeys %s hides a row the wrapper disables',
+  (disabledKeys, description) => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => null);
+    render(
+      <MarigoldProvider theme={theme}>
+        <ListView
+          aria-label="Permissions"
+          selectionMode="multiple"
+          allowSelectAll
+          items={PERMISSIONS}
+          disabledKeys={disabledKeys}
+        >
+          {(permission: Permission) => (
+            <PermissionRow permission={permission} />
+          )}
+        </ListView>
+      </MarigoldProvider>
+    );
+
+    expect(
+      screen.getByRole('checkbox', { name: 'Select all' })
+    ).toHaveAccessibleDescription(description);
+    expect(warn).not.toHaveBeenCalled();
+    warn.mockRestore();
+  }
+);

@@ -55,20 +55,14 @@ export const useSelectableKeys = <T,>({
   enabled,
   warn,
 }: SelectableKeysOptions<T>): SelectableKeys => {
-  const fromItems = items !== undefined;
-  const source = items ?? children;
-
   const rows = useMemo<RowProps[]>(() => {
     if (enabled === false) {
       return [];
     }
 
-    if (fromItems) {
-      const render =
-        typeof children === 'function'
-          ? (children as (item: T) => ReactNode)
-          : undefined;
-      return Array.from(source as Iterable<T>, item => {
+    if (items !== undefined) {
+      const render = typeof children === 'function' ? children : undefined;
+      return Array.from(items, item => {
         const rendered = render?.(item);
         const props = isValidElement<RowProps>(rendered)
           ? rendered.props
@@ -81,10 +75,14 @@ export const useSelectableKeys = <T,>({
       });
     }
 
-    return Children.toArray(source as ReactNode).flatMap(child =>
+    if (typeof children === 'function') {
+      return [];
+    }
+
+    return Children.toArray(children).flatMap(child =>
       isValidElement<RowProps>(child) ? [child.props] : []
     );
-  }, [enabled, fromItems, source, children]);
+  }, [enabled, items, children]);
 
   const { keys, incomplete, disabledRowKeys } = useMemo(() => {
     const disabled = new Set<Key>(disabledKeys ?? []);
@@ -119,7 +117,8 @@ export const useSelectableKeys = <T,>({
       'and an item it cannot is left out of it. Give every item an `id`, and ' +
       'render them as direct children: items inside a Fragment, a ' +
       '`<Collection>` or a wrapper component are invisible here. Passing an ' +
-      '`items` array instead works in every case.'
+      '`items` array instead resolves every key, but an item a wrapper ' +
+      'disables is only seen through `disabledKeys`.'
   );
 
   return { keys, lockedKeys };
@@ -161,10 +160,13 @@ export const SelectAllHeader = ({
       : keys.filter(key => selection.has(key)).length;
   // `<Table>`'s header checkbox reads `isEmpty` / `isSelectAll` / neither.
   const isEmpty = selection !== 'all' && selection.size === 0;
-  const checked =
-    keys.length > 0 &&
-    !isEmpty &&
-    (selection === 'all' || selectedCount === keys.length);
+  // The guard keeps `0 === 0` from reading as full when there is nothing to tick.
+  const checked = keys.length > 0 && selectedCount === keys.length;
+
+  const countText = stringFormatter.format('selectAllCount', {
+    count: selectedCount,
+    total: keys.length,
+  });
 
   const [pressToken, setPressToken] = useState(0);
   const announcedTokenRef = useRef(0);
@@ -174,14 +176,8 @@ export const SelectAllHeader = ({
     }
     announcedTokenRef.current = pressToken;
 
-    announce(
-      stringFormatter.format('selectAllCount', {
-        count: selectedCount,
-        total: keys.length,
-      }),
-      'polite'
-    );
-  }, [pressToken, selectedCount, keys.length, stringFormatter]);
+    announce(countText, 'polite');
+  }, [pressToken, countText]);
 
   return (
     <div data-select-all="" className={classNames?.header}>
@@ -203,10 +199,7 @@ export const SelectAllHeader = ({
           .join(' ')}
       />
       <span id={countId} className={classNames?.count}>
-        {stringFormatter.format('selectAllCount', {
-          count: selectedCount,
-          total: keys.length,
-        })}
+        {countText}
       </span>
       {hasOwnLabel && (
         <VisuallyHidden elementType="span" id={labelId}>

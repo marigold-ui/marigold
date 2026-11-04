@@ -107,7 +107,7 @@ Pair a multi-select list with an [`<ActionBar>`](/components/collection/actionba
 
 <ComponentDemo name="listview-bulk-actions" />
 
-The select-all covers the rows it can address, so give every row an `id` and render them as direct children of the list. Rows that come out of a wrapper component of your own are invisible to it, and passing an `items` array instead works in every case.
+The select-all covers the rows it can address, so give every row an `id` and render them as direct children of the list. Rows that come out of a wrapper component of your own are invisible to it, and passing an `items` array instead resolves every key. What the array cannot show is a row the wrapper disables, so name that row in `disabledKeys` to keep the select-all off it.
 
 A selected row the select-all cannot tick, a disabled one for example, leaves the checkbox mixed while the count still reads "0 of 3". The count speaks for the rows the select-all can address, and nothing else.
 
