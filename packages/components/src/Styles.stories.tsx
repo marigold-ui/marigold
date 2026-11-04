@@ -442,8 +442,7 @@ SidebarBackAction.test(
     await waitFor(() => expect(back).toBeVisible());
 
     // The back action and the nav rows share one inset (mx-2 + px-2), so
-    // their content starts on the same column — the alignment we tuned. The
-    // inset sits on the back row, which holds the button and the heading.
+    // their content starts on the same column — the alignment we tuned.
     const backStyle = getComputedStyle(
       back.closest<HTMLElement>('[data-back-row]')!
     );
@@ -462,7 +461,6 @@ SidebarBackAction.test(
     const child = canvas.getByRole('link', { name: 'Users' });
     await waitFor(() => expect(back).toBeVisible());
 
-    // The section heading beside the button reads at the nav item weight.
     const backLabel = canvas.getByRole('heading', { name: 'Management' });
 
     await expect(getComputedStyle(backLabel).fontWeight).toBe(

@@ -144,9 +144,6 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     ],
   }),
   backButton: cva({
-    // The back row: a `relative` wrapper holding the chevron button (whose
-    // hit area covers the row) and the section heading. Hover and focus live
-    // on the row so the whole pill reacts, as when it was one button.
     base: [
       // Same pill geometry as nav rows (mx-2 + px-2 + h-7.5) so the chevron sits
       // on the shared 16px content column.
@@ -154,7 +151,8 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'max-sm:min-h-touch-target',
       'transition-[color,background-color]',
       'motion-reduce:transition-none',
-      'has-[:focus-visible]:ui-state-focus-item',
+      // The button takes focus, the row draws the ring.
+      '[&>button]:outline-none has-[:focus-visible]:ui-state-focus-item',
       'cursor-pointer mb-1',
       'text-secondary hover:bg-hover hover:text-foreground',
       'max-sm:min-h-14 max-sm:mb-0 max-sm:text-lg max-sm:text-foreground max-sm:hover:bg-transparent',

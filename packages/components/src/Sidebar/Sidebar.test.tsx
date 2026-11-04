@@ -180,7 +180,6 @@ test('a drilled-in level is headed and named by its section', () => {
     name: 'Back to Management',
   });
 
-  // The name is the panel heading, not part of the button.
   expect(backButton).not.toContainElement(heading);
   expect(screen.getByRole('region', { name: 'Management' })).toContainElement(
     heading

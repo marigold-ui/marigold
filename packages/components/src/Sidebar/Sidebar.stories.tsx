@@ -481,7 +481,6 @@ Basic.test(
 
     const back = canvas.getByRole('button', { name: /Back/ });
     await expect(back).toHaveFocus();
-    // The ring is drawn on the back row, the pill the button's hit area covers.
     const row = back.closest<HTMLElement>('[data-back-row]')!;
     await waitFor(() => expectInsetFocusRingContrast(row));
   }

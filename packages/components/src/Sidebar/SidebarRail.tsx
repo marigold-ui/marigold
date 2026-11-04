@@ -276,7 +276,6 @@ const SidebarRail = ({
         <h2 ref={titleRef} tabIndex={-1} className={classNames.panelTitle}>
           {selectedNode.panelTitle}
         </h2>
-        {/* The nav sits under the panel's `h2`, so its headings start at 3. */}
         <SidebarHeadingLevelContext value={2}>
           {cloneElement(selectedNode.nav, {
             current,

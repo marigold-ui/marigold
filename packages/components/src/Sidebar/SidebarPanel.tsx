@@ -30,11 +30,7 @@ type HeadingLevel = 2 | 3 | 4 | 5 | 6;
 const toHeadingLevel = (level: number): HeadingLevel =>
   Math.min(Math.max(level, 2), 6) as HeadingLevel;
 
-// The section name is the panel's heading, so it sits beside the back button
-// rather than inside it: heading navigation finds it, and the button keeps its
-// own "Back to …" name. The button's hit area is stretched over the whole row
-// (`after:inset-0` against the `relative` row), so tapping the name still goes
-// back.
+// The heading sits beside the button; the button's hit area covers the row.
 const BackButton = ({
   onBack,
   backLabel,
@@ -48,11 +44,11 @@ const BackButton = ({
   const label = backLabel ?? stringFormatter.format('back');
 
   return (
-    <div data-back-row className={cn('relative', className)}>
+    <div data-back-row className={cn(className, 'relative')}>
       <Button
         data-back-button
         aria-label={stringFormatter.format('backTo', { label })}
-        className="flex items-center justify-center outline-none after:absolute after:inset-0"
+        className="flex items-center justify-center after:absolute after:inset-0"
         onPress={onBack}
         excludeFromTabOrder={tabIndex < 0}
         onFocus={onFocus}
@@ -93,8 +89,6 @@ export const SidebarPanel = ({
   const panelRef = useRef<HTMLDivElement>(null);
   const { onKeyDown } = usePanelKeyboard(panelRef);
   const headingId = useId();
-  // A drilled-in level is headed one step below the enclosing heading, and
-  // its group labels one step below that.
   const parentLevel = use(SidebarHeadingLevelContext);
   const sectionLevel = toHeadingLevel(parentLevel + 1);
   const groupLabelLevel = toHeadingLevel(
@@ -132,8 +126,6 @@ export const SidebarPanel = ({
       <div
         ref={panelRef}
         role="region"
-        // A drilled-in level is named by its visible heading; the root level
-        // has none, so it falls back to the generic landmark name.
         aria-labelledby={onBack ? headingId : undefined}
         aria-label={
           onBack ? undefined : stringFormatter.format('appNavigation')

@@ -339,9 +339,6 @@ describe('Sidebar.Rail — mobile', () => {
       name: 'Zurück zu Tickets',
     });
     expect(backButton).not.toContainElement(heading);
-
-    // The button's hit area is stretched over the row, so a tap on the
-    // name lands on the button.
     await waitFor(() => {
       const { left, top, width, height } = heading.getBoundingClientRect();
       expect(
