@@ -144,21 +144,22 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     ],
   }),
   backButton: cva({
+    // The back row: a `relative` wrapper holding the chevron button (whose
+    // hit area covers the row) and the section heading. Hover and focus live
+    // on the row so the whole pill reacts, as when it was one button.
     base: [
       // Same pill geometry as nav rows (mx-2 + px-2 + h-7.5) so the chevron sits
       // on the shared 16px content column.
       'mx-2 flex items-center gap-2 px-2 h-7.5 text-sm rounded-surface',
       'max-sm:min-h-touch-target',
-      // Button label ships font-medium; reset so it matches a regular nav row.
-      '[&_span]:font-normal',
       'transition-[color,background-color]',
       'motion-reduce:transition-none',
-      'outline-none focus-visible:ui-state-focus-item',
+      'has-[:focus-visible]:ui-state-focus-item',
       'cursor-pointer mb-1',
       'text-secondary hover:bg-hover hover:text-foreground',
       'max-sm:min-h-14 max-sm:mb-0 max-sm:text-lg max-sm:text-foreground max-sm:hover:bg-transparent',
-      'max-sm:[&_span]:font-semibold',
-      'max-sm:[&>span:first-child]:size-8 max-sm:[&>span:first-child]:shrink-0 max-sm:[&>span:first-child]:rounded-full max-sm:[&>span:first-child]:bg-hover',
+      'max-sm:[&>[data-slot=title]]:font-semibold',
+      'max-sm:[&>button]:size-8 max-sm:[&>button]:shrink-0 max-sm:[&>button]:rounded-full max-sm:[&>button]:bg-hover',
     ],
   }),
 

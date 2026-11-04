@@ -787,7 +787,10 @@ RailMobile.test(
 
     expect(targets.length).toBeGreaterThan(0);
     for (const element of targets) {
-      const { width, height } = element.getBoundingClientRect();
+      // The back button's hit area is stretched over its row, so the row is
+      // what a finger actually has to hit.
+      const target = element.closest<HTMLElement>('[data-back-row]') ?? element;
+      const { width, height } = target.getBoundingClientRect();
       expect(
         { name: element.textContent, width, height },
         'touch target'

@@ -24,6 +24,13 @@ export const useSidebar = (): SidebarContextValue => {
   return ctx;
 };
 
+/**
+ * Level of the heading the nav sits under. Drill-down headings and group
+ * labels step down from it. A plain sidebar sits under the page's `h1`; the
+ * rail's desktop panel provides 2, since its section title is an `h2`.
+ */
+export const SidebarHeadingLevelContext = createContext(1);
+
 export interface SidebarProviderProps {
   /** Children of the component. */
   children: ReactNode;

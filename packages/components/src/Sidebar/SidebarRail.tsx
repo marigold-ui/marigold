@@ -7,7 +7,7 @@ import { handleLinkClick, useLinkProps, useRouter } from '@react-aria/utils';
 import { cn } from '@marigold/system';
 import { Tooltip } from '../Tooltip/Tooltip';
 import { intlMessages } from '../intl/messages';
-import { useSidebar } from './Context';
+import { SidebarHeadingLevelContext, useSidebar } from './Context';
 import { SidebarItem, SidebarItemIcon, SidebarSeparator } from './SidebarItem';
 import { SidebarRowIcon } from './SidebarLink';
 import { SidebarModal } from './SidebarModal';
@@ -276,12 +276,15 @@ const SidebarRail = ({
         <h2 ref={titleRef} tabIndex={-1} className={classNames.panelTitle}>
           {selectedNode.panelTitle}
         </h2>
-        {cloneElement(selectedNode.nav, {
-          current,
-          // Keep the panel landmark name in sync with the visible heading:
-          // fall back to the section title when the nav has no `aria-label`.
-          'aria-label': selectedNode.panelTitle,
-        })}
+        {/* The nav sits under the panel's `h2`, so its headings start at 3. */}
+        <SidebarHeadingLevelContext value={2}>
+          {cloneElement(selectedNode.nav, {
+            current,
+            // Keep the panel landmark name in sync with the visible heading:
+            // fall back to the section title when the nav has no `aria-label`.
+            'aria-label': selectedNode.panelTitle,
+          })}
+        </SidebarHeadingLevelContext>
       </>
     ) : null;
 
