@@ -3,12 +3,12 @@ import { Button } from 'react-aria-components/Button';
 import { Separator } from 'react-aria-components/Separator';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { isFocusVisible } from '@react-aria/interactions';
-import { cn } from '@marigold/system';
 import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
 import { intlMessages } from '../intl/messages';
 import { useSidebar } from './Context';
-import { SidebarLink } from './SidebarLink';
+import { SidebarLink, SidebarRowIcon } from './SidebarLink';
+import { containsActive } from './collection';
 import type { SidebarNode } from './collection';
 import {
   RovingTabIndexProvider,
@@ -140,13 +140,20 @@ export const SidebarPanel = ({
                 key={node.key}
                 href={node.href}
                 data-key={node.key}
-                className={cn(classNames.navLink, 'justify-between')}
+                // Mobile drawer only: the ancestor of the current page. On this
+                // level the leaf itself is out of view, so the branch row is
+                // the only "you are here".
+                aria-current={
+                  isMobile && containsActive(node.children) ? 'true' : undefined
+                }
+                className={classNames.navLink}
                 onPress={() => {
                   onBranchClick?.(node.key);
                   node.onPress?.();
                 }}
               >
-                <span className="truncate">{node.triggerContent}</span>
+                <SidebarRowIcon icon={node.icon} />
+                <span className="flex-1 truncate">{node.triggerContent}</span>
                 <ChevronRight aria-hidden="true" size={16} />
               </SidebarLink>
             );
@@ -165,6 +172,7 @@ export const SidebarPanel = ({
                 if (isMobile) toggleSidebar();
               }}
             >
+              <SidebarRowIcon icon={node.icon} />
               {node.triggerContent}
             </SidebarLink>
           );

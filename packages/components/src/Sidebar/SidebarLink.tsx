@@ -11,13 +11,24 @@ import { useRovingItem } from './useSidebarNav';
 export interface SidebarLinkProps {
   href?: string;
   'data-key'?: string;
-  'aria-current'?: 'page';
+  'aria-current'?: 'page' | 'true';
   'data-active'?: boolean;
   className?: string;
   onPress?: () => void;
   children?: ReactNode;
   ref?: Ref<HTMLAnchorElement>;
 }
+
+/**
+ * Leading row icon. The theme styles it through `[data-slot=icon]`, so every
+ * row renders it through here. Renders nothing without an icon.
+ */
+export const SidebarRowIcon = ({ icon }: { icon?: ReactNode }) =>
+  icon ? (
+    <span data-slot="icon" aria-hidden="true">
+      {icon}
+    </span>
+  ) : null;
 
 export const SidebarLink = ({
   href,
