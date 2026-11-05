@@ -142,7 +142,7 @@ jobs:
       # On PATH only. Installing here would resolve the base branch's lockfile,
       # since the action switches to the PR branch afterwards.
       - name: Setup pnpm
-        uses: pnpm/action-setup@v6.1.0 # version comes from package.json#packageManager
+        uses: pnpm/action-setup@v6.1.1 # version comes from package.json#packageManager
 
       - name: Setup Node
         uses: actions/setup-node@v6
