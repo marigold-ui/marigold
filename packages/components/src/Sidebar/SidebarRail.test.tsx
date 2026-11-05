@@ -171,6 +171,19 @@ describe('Sidebar.Rail — arrow-key navigation', () => {
   });
 });
 
+describe('Sidebar.Rail — panel heading levels', () => {
+  test('group labels sit one level below the panel title', () => {
+    render(<Rail.Component />);
+
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Tickets' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 3, name: 'Ansichten' })
+    ).toBeInTheDocument();
+  });
+});
+
 describe('Sidebar.Rail — panel focus management', () => {
   test('switching sections moves focus to the panel heading', async () => {
     render(<Rail.Component />);
@@ -309,6 +322,29 @@ describe('Sidebar.Rail — mobile', () => {
     expect(
       panelPosition(within(drawer).getByRole('link', { name: 'Meine Tickets' }))
     ).toHaveAttribute('data-position', 'active');
+  });
+
+  test('the drilled-in section name is a heading, and tapping it hits the back button', async () => {
+    render(<Rail.Component />);
+    await openDrawer();
+    const drawer = await screen.findByRole('complementary', {
+      name: 'Seitenleiste',
+    });
+
+    const heading = within(drawer).getByRole('heading', {
+      level: 2,
+      name: 'Tickets',
+    });
+    const backButton = within(drawer).getByRole('button', {
+      name: 'Zurück zu Tickets',
+    });
+    expect(backButton).not.toContainElement(heading);
+    await waitFor(() => {
+      const { left, top, width, height } = heading.getBoundingClientRect();
+      expect(
+        document.elementFromPoint(left + width / 2, top + height / 2)
+      ).toBe(backButton);
+    });
   });
 
   test('back returns to the rail-level list and keeps the drawer open', async () => {
