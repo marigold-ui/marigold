@@ -698,6 +698,29 @@ describe('accessible name and description', () => {
     ).not.toHaveAttribute('aria-describedby');
   });
 
+  test('keeps a consumer aria-label on the drop zone', () => {
+    render(<Basic.Component label={undefined} aria-label="Contract" />);
+
+    expect(
+      screen.getByRole('button', { name: 'Contract' })
+    ).toBeInTheDocument();
+  });
+
+  test('names the drop zone by the label and a consumer aria-labelledby', () => {
+    render(
+      <>
+        <span id="external">Contract</span>
+        <Basic.Component label="Attachment" aria-labelledby="external" />
+      </>
+    );
+
+    expect(
+      screen.getByRole('button', {
+        name: 'Drop files here Attachment Contract',
+      })
+    ).toBeInTheDocument();
+  });
+
   test('moves consumer labelling onto the button in small size', () => {
     render(
       <>

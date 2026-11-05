@@ -19,7 +19,7 @@ import { FieldBase } from '../FieldBase/FieldBase';
 import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
 import { splitChildren } from '../utils/children.utils';
 import { useFieldHelpText } from '../utils/useFieldHelpText';
-import { hasAddonContent, joinIds } from '../utils/useLabelAddon';
+import { joinIds, useAddonDescription } from '../utils/useLabelAddon';
 import { useLiftedSelection } from '../utils/useLiftedSelection';
 import { TagGroupContext } from './Context';
 import { TagGroupRemoveAll } from './TagGroupRemoveAll';
@@ -182,7 +182,6 @@ const _TagGroup = ({
 }: TagGroupProps) => {
   const classNames = useClassNames({ component: 'Tag', variant, size });
   const labelId = useId();
-  const addonId = useId();
   const tagListRef = useObjectRef(ref);
 
   const staticChildren = typeof children === 'function' ? undefined : children;
@@ -238,14 +237,15 @@ const _TagGroup = ({
     validationBehavior,
   });
 
+  const { addonId, describedBy: addonDescribedBy } = useAddonDescription(
+    addon,
+    rest['aria-describedby']
+  );
   const { describedBy, helpTextSlots } = useFieldHelpText({
     description,
     errorMessage,
     isInvalid: validationState.displayValidation.isInvalid,
-    'aria-describedby': joinIds(
-      rest['aria-describedby'],
-      hasAddonContent(addon) ? addonId : undefined
-    ),
+    'aria-describedby': addonDescribedBy,
   });
 
   const handleSelectionChange = (keys: Selection) => {

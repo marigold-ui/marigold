@@ -1,4 +1,4 @@
-import { useId, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import type RAC from 'react-aria-components';
 import { DropZone } from 'react-aria-components/DropZone';
 import { FieldErrorContext } from 'react-aria-components/FieldError';
@@ -27,7 +27,7 @@ import type { ValidationError } from '@react-types/shared';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, type FieldBaseProps } from '../FieldBase/FieldBase';
 import { intlMessages } from '../intl/messages';
-import { hasAddonContent, joinIds } from '../utils/useLabelAddon';
+import { useAddonDescription } from '../utils/useLabelAddon';
 import { FileFieldItem } from './FileFieldItem';
 import { FileTrigger, type FileTriggerProps } from './FileTrigger';
 import {
@@ -286,14 +286,13 @@ export const FileField = ({
       'aria-labelledby': props['aria-labelledby'],
       'aria-describedby': ariaDescribedBy,
     });
-  const addonId = useId();
   const isSmall = size === 'small';
 
   // The trigger that gets focus is named by the field label and described by
   // the addon's static content, like every other field (DST-1747).
-  const describedBy = joinIds(
-    fieldProps['aria-describedby'],
-    hasAddonContent(addon) ? addonId : undefined
+  const { addonId, describedBy } = useAddonDescription(
+    addon,
+    fieldProps['aria-describedby']
   );
   // `useField` joins the label id with the consumer's `aria-labelledby`. In
   // `small` the button is the only control, so it takes both.
@@ -366,8 +365,8 @@ export const FileField = ({
               // RAC puts these on the proxy button that takes focus. It
               // forwards no `aria-describedby`, so the upload button inside
               // carries the description.
-              aria-label={dropZoneLabel}
-              aria-labelledby={labelProps.id ?? props['aria-labelledby']}
+              aria-label={props['aria-label'] ?? dropZoneLabel}
+              aria-labelledby={fieldProps['aria-labelledby']}
             >
               <div className={classNames.dropZoneContent}>
                 <p className={classNames.dropZoneLabel}>{dropZoneLabel}</p>

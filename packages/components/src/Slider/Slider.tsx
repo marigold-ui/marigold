@@ -1,5 +1,4 @@
 import type { ReactNode, Ref } from 'react';
-import { useId } from 'react';
 import type RAC from 'react-aria-components';
 import {
   Slider,
@@ -10,7 +9,7 @@ import {
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { FieldLabel } from '../FieldBase/FieldLabel';
-import { hasAddonContent, joinIds } from '../utils/useLabelAddon';
+import { useAddonDescription } from '../utils/useLabelAddon';
 
 export interface SliderProps<T>
   extends
@@ -80,14 +79,14 @@ const _Slider = <T extends number | number[]>({
   const thumbLabelsList = Array.isArray(thumbLabels)
     ? thumbLabels
     : [thumbLabels];
-  const addonId = useId();
+  const { addonId, describedBy } = useAddonDescription(
+    addon,
+    rest['aria-describedby']
+  );
   const props = {
     isDisabled: disabled,
     ...rest,
-    'aria-describedby': joinIds(
-      rest['aria-describedby'],
-      hasAddonContent(addon) ? addonId : undefined
-    ),
+    'aria-describedby': describedBy,
   } satisfies RAC.SliderProps<T>;
 
   return (
