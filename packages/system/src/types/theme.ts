@@ -267,7 +267,6 @@ export type Theme = {
       // Optional: without it the ActionBar room snaps instead of sliding.
       actionBarSpacer?: ComponentStyleFunction<string, string>;
       container?: ComponentStyleFunction<string, string>;
-      scroller?: ComponentStyleFunction<string, string>;
     };
     LegacyTable?: Record<
       'table' | 'headerRow' | 'header' | 'thead' | 'body' | 'row' | 'cell',

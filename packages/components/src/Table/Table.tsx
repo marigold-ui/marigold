@@ -257,63 +257,57 @@ const _Table = ({
       <div
         ref={containerRef}
         // Keeps the container filling its parent when the parent doesn't stretch.
-        className={cn('w-full', scrolls && classNames.container)}
+        className={cn(
+          'w-full',
+          scrolls && ['overflow-x-auto', classNames.container]
+        )}
         onFocus={actionBarHeight ? scrollFocusedRowClearOfActionBar : undefined}
       >
-        <div
-          className={cn(scrolls && ['overflow-x-auto', classNames.scroller])}
+        <ResizableTableContainer
+          // Containment keeps the measured width from following the table (DST-1836).
+          className="w-full [contain:inline-size]"
+          style={{ minWidth: minTableWidth }}
         >
-          <ResizableTableContainer
-            // Containment keeps the measured width from following the table (DST-1836).
-            className="w-full [contain:inline-size]"
-            style={{ minWidth: minTableWidth }}
-          >
-            <RACTable
-              className={cn('group/table', classNames.table)}
-              treeColumn={treeColumn}
-              selectionBehavior="toggle"
-              selectedKeys={selectedKeys}
-              defaultSelectedKeys={
-                actionBar ? undefined : defaultSelectedKeysProp
-              }
-              onSelectionChange={onSelectionChange}
-              render={domProps => (
-                <TableElement
-                  // Only a virtualized table renders a `<div>`, and Marigold's never is.
-                  {...(domProps as ComponentProps<'table'>)}
-                  loading={loading}
-                  onMinWidthChange={setMinTableWidth}
-                />
-              )}
-              {...props}
-            />
-            {actionBar && (
-              <>
-                {/* Gap between the last row and the bar. */}
-                <div
-                  aria-hidden
-                  className={classNames.actionBarSpacer}
-                  style={{
-                    height: actionBarHeight
-                      ? 'var(--actionbar-offset, 8px)'
-                      : 0,
-                  }}
-                />
-                {actionBarOverlay}
-                {/* Cancels the bar's own height, then slides open to it, so the
-                  content below moves smoothly instead of jumping. */}
-                <div
-                  aria-hidden
-                  className={classNames.actionBarSpacer}
-                  style={{
-                    marginTop: -actionBarHeight,
-                    height: actionBarHeight,
-                  }}
-                />
-              </>
+          <RACTable
+            className={cn('group/table', classNames.table)}
+            treeColumn={treeColumn}
+            selectionBehavior="toggle"
+            selectedKeys={selectedKeys}
+            defaultSelectedKeys={
+              actionBar ? undefined : defaultSelectedKeysProp
+            }
+            onSelectionChange={onSelectionChange}
+            render={domProps => (
+              <TableElement
+                // Only a virtualized table renders a `<div>`, and Marigold's never is.
+                {...(domProps as ComponentProps<'table'>)}
+                loading={loading}
+                onMinWidthChange={setMinTableWidth}
+              />
             )}
-          </ResizableTableContainer>
-        </div>
+            {...props}
+          />
+          {actionBar && (
+            <>
+              {/* Gap between the last row and the bar. */}
+              <div
+                aria-hidden
+                className={classNames.actionBarSpacer}
+                style={{
+                  height: actionBarHeight ? 'var(--actionbar-offset, 8px)' : 0,
+                }}
+              />
+              {actionBarOverlay}
+              {/* Cancels the bar's own height, then slides open to it, so the
+                  content below moves smoothly instead of jumping. */}
+              <div
+                aria-hidden
+                className={classNames.actionBarSpacer}
+                style={{ marginTop: -actionBarHeight, height: actionBarHeight }}
+              />
+            </>
+          )}
+        </ResizableTableContainer>
       </div>
     </TableContext>
   );

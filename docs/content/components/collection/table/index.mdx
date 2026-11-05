@@ -123,7 +123,7 @@ Avoid tables on phones. A table that only reads with sideways scrolling is the w
 - **[`<ListView>`](/components/collection/listview)** when the records are scanned quickly and acted on one at a time.
 - **Fewer columns**, with the secondary values moved to a detail view, when the data really is tabular.
 
-Where a table is still the right choice on a small screen, it scrolls sideways inside its container, at the cost described under [Column widths](#column-widths).
+Where a table is still the right choice on a small screen, it scrolls sideways inside its container, at the cost described under [Column widths](#column-widths). While it scrolls, the edge that still has columns behind it fades out, so the hidden columns are visible as hidden rather than absent. The fade needs CSS scroll-driven animations. Without them the native scrollbar stays in place instead.
 
 ### Selecting rows
 

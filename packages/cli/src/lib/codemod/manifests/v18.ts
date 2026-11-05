@@ -198,7 +198,6 @@ export const v18: MigrationManifest = {
       'editSave',
       'actionBarSpacer',
       'container',
-      'scroller',
     ],
     LegacyTable: [
       'table',
