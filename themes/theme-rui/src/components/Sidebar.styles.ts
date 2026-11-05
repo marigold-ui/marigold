@@ -1,10 +1,11 @@
 import { type ThemeComponent, cva } from '@marigold/system';
 
 /**
- * Two charcoal tiers of ink. Active is `foreground` on a flat `selected` pill,
- * idle a step lighter, hover previews it. Section labels are set apart by
- * size, weight and the gap above them, not colour: charcoal-500 is 3.3:1,
- * below the 4.5:1 AA floor.
+ * Two charcoal tiers of ink. Rows are `foreground`; the active row is set apart
+ * by its `selected` pill and medium weight, not by colour. Group labels are the
+ * quieter `secondary` tier (charcoal-600, 5:1). It is already the lightest that
+ * passes AA for 12px (charcoal-500 is 3.3:1), so labels sit back because the
+ * rows come forward, together with size, weight and the gap above them.
  */
 export const Sidebar: ThemeComponent<'Sidebar'> = {
   // The full-width sheet covers the page, so there is nothing to dim.
@@ -83,15 +84,17 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   // stays perceivable (the surface rim is now faint).
   separator: cva({ base: 'bg-border mx-3 my-1.5 h-px border-0' }),
   groupLabel: cva({
-    // Quiet caption aligned to the pill's item text (16px): 12px medium in
-    // sentence case, a landmark rather than a shout. The gap does the
+    // Caption aligned to the pill's item text (16px): 12px semibold
+    // `secondary` in sentence case, a landmark rather than a shout. Without
+    // uppercase, weight carries "heading" and colour carries "not a link":
+    // grey against the rows' `foreground`. The gap does the
     // separating — pt-6 (24px) is 0.8 of a 30px row, so a group break reads
     // as one even without a separator; pt-4 was half a row and groups ran
     // together once the list outgrew the viewport (see the LongNavigation
     // story). A leading caption has nothing above to separate from, so drop
     // to `first:pt-[7px]` — the offset that centres its 16px line box on the
     // same axis as a first item's text.
-    base: 'pl-4 pr-3 pt-6 first:pt-[7px] pb-1.5 text-xs font-medium text-secondary',
+    base: 'pl-4 pr-3 pt-6 first:pt-[7px] pb-1.5 text-xs font-semibold text-secondary',
   }),
   navPanel: cva({
     base: [
@@ -124,17 +127,17 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // Finger-sized rows in the mobile drawer (same rule as ListBox/Menu
       // options in a Tray); min-height wins over the fixed desktop height.
       'max-sm:min-h-touch-target',
-      'transition-[color,background-color,box-shadow]',
+      'transition-[background-color,box-shadow]',
       'motion-reduce:transition-none',
       'outline-none focus-visible:ui-state-focus-item',
-      // Idle `secondary-bold` (charcoal-700): clickable rows must out-rank the
-      // `secondary` groupLabel captions, which already sit at the AA floor for
-      // 12px and can't go lighter. `foreground` would flatten idle against the
-      // active row. Hover lifts to `foreground`.
-      'text-secondary-bold hover:bg-hover hover:text-foreground',
-      'data-active:bg-selected data-active:font-medium data-active:text-foreground',
+      // Idle `foreground`: clickable rows must out-rank the `secondary`
+      // groupLabel captions, which can't go lighter (see the top comment), so
+      // the rows take full ink. Idle and active share the colour; the pill and
+      // medium weight mark the active row, and hover previews the fill.
+      'text-foreground hover:bg-hover',
+      'data-active:bg-selected data-active:font-medium',
       // Ancestor of the current page: the only marker on this level.
-      'aria-[current=true]:bg-hover aria-[current=true]:font-medium aria-[current=true]:text-foreground',
+      'aria-[current=true]:bg-hover aria-[current=true]:font-medium',
       // Leading icon, full ink when current or ancestor.
       '[&>[data-slot=icon]]:flex [&>[data-slot=icon]]:shrink-0 [&>[data-slot=icon]]:text-secondary',
       '[&>[data-slot=icon]_svg]:size-4 max-sm:[&>[data-slot=icon]_svg]:size-5',
@@ -278,8 +281,9 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     ],
   }),
   // Section heading atop the panel; also the focus target when the panel swaps.
-  // Full-strength ink, deliberately distinct from the `secondary` groupLabel
-  // captions: semibold 14px against their medium 12px.
+  // Full-strength ink like the rows, a step above them in weight, and above the
+  // `secondary` groupLabel captions in size and colour: semibold 14px
+  // `foreground` against their semibold 12px `secondary`.
   panelTitle: cva({
     base: [
       // Centered via line-height, not flex: ellipsis needs a block container.
