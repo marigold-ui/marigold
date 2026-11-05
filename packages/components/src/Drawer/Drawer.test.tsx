@@ -1,20 +1,49 @@
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import type { ReactNode } from 'react';
 import { useState } from 'react';
+import type { MockInstance } from 'vitest';
 import { vi } from 'vitest';
 import { theme } from '@marigold/theme-rui';
 import { Button } from '../Button/Button';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
-import { mockMatchMedia, renderWithOverlay } from '../test.utils';
+import {
+  mockMatchMedia,
+  renderWithOverlay,
+  smallScreenQuery,
+} from '../test.utils';
 import { Drawer } from './Drawer';
-import { Basic, BleedAccordion, OneAtATime } from './Drawer.stories';
+import {
+  Basic,
+  BleedAccordion,
+  ControlledWithoutTrigger,
+  DefaultOpen,
+  OneAtATime,
+} from './Drawer.stories';
 import { registerActiveDrawer } from './drawerRegistry';
 
-const smallScreenQuery = `(width < ${theme.screens!.sm})`;
-
-window.matchMedia = mockMatchMedia([]);
-
 const user = userEvent.setup();
+
+const renderThemed = (ui: ReactNode) =>
+  renderWithOverlay(<MarigoldProvider theme={theme}>{ui}</MarigoldProvider>);
+
+// Tests that need a small screen set it themselves, every other test runs on
+// the desktop path.
+beforeEach(() => {
+  window.matchMedia = mockMatchMedia([]);
+});
+
+// Scoped to the describe blocks that assert on warnings, so the rest of the
+// file still surfaces unrelated dev warnings.
+let warn: MockInstance<typeof console.warn>;
+const spyOnWarn = () => {
+  beforeEach(() => {
+    warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+  afterEach(() => {
+    warn.mockRestore();
+  });
+};
 
 test('renders nothing if isOpen is not set', () => {
   renderWithOverlay(<Basic.Component />);
@@ -158,11 +187,7 @@ test('controlled drawers receive onOpenChange(false) when preempted', async () =
     );
   };
 
-  renderWithOverlay(
-    <MarigoldProvider theme={theme}>
-      <TwoControlled />
-    </MarigoldProvider>
-  );
+  renderThemed(<TwoControlled />);
 
   await user.click(screen.getByRole('button', { name: 'Open A' }));
   expect(await screen.findByText('Title A')).toBeInTheDocument();
@@ -222,4 +247,109 @@ test('non-bled content keeps the padded ui-surface-content', async () => {
   // eslint-disable-next-line testing-library/no-node-access
   const content = paragraph.closest('[class*="ui-surface-content"]');
   expect(content).not.toBeNull();
+});
+
+describe('without Drawer.Trigger', () => {
+  spyOnWarn();
+
+  test('controlled drawer opens and closes on small screens', async () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    const onOpenChange = vi.fn();
+    renderWithOverlay(
+      <ControlledWithoutTrigger.Component onOpenChange={onOpenChange} />
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Edit selection' }));
+    expect(await screen.findByText('Edit events')).toBeInTheDocument();
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Dismiss drawer' }));
+    await waitFor(() =>
+      expect(screen.queryByText('Edit events')).not.toBeInTheDocument()
+    );
+    expect(onOpenChange).toHaveBeenLastCalledWith(false);
+    expect(warn).not.toHaveBeenCalledWith(
+      expect.stringContaining('PressResponder')
+    );
+  });
+
+  test('uncontrolled drawer with defaultOpen renders on small screens', async () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    renderWithOverlay(<DefaultOpen.Component />);
+
+    expect(await screen.findByText('Opened by default')).toBeInTheDocument();
+  });
+
+  test('receives onOpenChange(false) when another drawer opens', async () => {
+    const onOpenChange = vi.fn();
+
+    renderThemed(
+      <>
+        <ControlledWithoutTrigger.Component onOpenChange={onOpenChange} />
+        <Drawer.Trigger>
+          <Button>Open B</Button>
+          <Drawer>
+            <Drawer.Title>Title B</Drawer.Title>
+          </Drawer>
+        </Drawer.Trigger>
+      </>
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Edit selection' }));
+    expect(await screen.findByText('Edit events')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Open B' }));
+    expect(await screen.findByText('Title B')).toBeInTheDocument();
+
+    await waitFor(() => expect(onOpenChange).toHaveBeenLastCalledWith(false));
+    await waitFor(() =>
+      expect(screen.queryByText('Edit events')).not.toBeInTheDocument()
+    );
+  });
+});
+
+describe('inside Drawer.Trigger', () => {
+  spyOnWarn();
+
+  test("the drawer's own open state wins over the trigger's", async () => {
+    renderThemed(
+      <Drawer.Trigger>
+        <Button>Open</Button>
+        <Drawer open={false}>
+          <Drawer.Title>Title</Drawer.Title>
+        </Drawer>
+      </Drawer.Trigger>
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Open' }));
+    expect(screen.queryByText('Title')).not.toBeInTheDocument();
+  });
+
+  test('warns when onOpenChange is set on the Drawer instead of the trigger', () => {
+    renderThemed(
+      <Drawer.Trigger>
+        <Button>Open</Button>
+        <Drawer onOpenChange={() => {}}>
+          <Drawer.Title>Title</Drawer.Title>
+        </Drawer>
+      </Drawer.Trigger>
+    );
+
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining('place `onOpenChange` on the trigger instead')
+    );
+  });
+
+  test('does not warn when open is set on both', () => {
+    renderThemed(
+      <Drawer.Trigger open={false}>
+        <Button>Open</Button>
+        <Drawer open={false}>
+          <Drawer.Title>Title</Drawer.Title>
+        </Drawer>
+      </Drawer.Trigger>
+    );
+
+    expect(warn).not.toHaveBeenCalledWith(expect.stringContaining('[Drawer]'));
+  });
 });

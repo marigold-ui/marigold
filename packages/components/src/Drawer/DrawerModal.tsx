@@ -19,7 +19,14 @@ const MobileModal = ({ children, ...props }: RAC.ModalOverlayProps) => (
 
 // Props
 // ---------------
-type DrawerModalProps = NonModalProps;
+/**
+ * The open state is not a prop here: `Drawer` resolves it and publishes it
+ * through `OverlayTriggerStateContext`, which both paths read.
+ */
+type DrawerModalProps = Omit<
+  NonModalProps,
+  'open' | 'defaultOpen' | 'onOpenChange'
+>;
 
 // Component
 // ---------------

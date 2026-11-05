@@ -156,6 +156,14 @@ The [Bulk Actions pattern](/patterns/user-input/bulk-actions#editing-multiple-fi
 
 <ComponentDemo name="drawer-bulk-edit" />
 
+### Opening a drawer from elsewhere
+
+A drawer is often opened by something that is not next to it: a button in a table row, an [ActionBar](/components/collection/actionbar) action, or a route. In that case, skip `Drawer.Trigger` and control the drawer directly with `open` and `onOpenChange`. The close button, `slot="close"` buttons, <kbd>Escape</kbd> and another drawer opening all call `onOpenChange(false)`, so your state stays in sync.
+
+<ComponentDemo name="drawer-controlled" />
+
+For a drawer that should start open without tracking its state, use `defaultOpen` instead. When a drawer sits inside a `Drawer.Trigger`, put `open` and `onOpenChange` on the trigger. If the drawer sets `open` or `defaultOpen` itself, its own value wins over the trigger's.
+
 ### Full-width content
 
 By default, drawer content sits inside the drawer's horizontal padding, so its left and right edges line up with the title and actions. That shared edge is what keeps the drawer reading as one column.
