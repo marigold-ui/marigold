@@ -820,3 +820,119 @@ Rail.test(
     await waitFor(() => expectFocusRingContrast(second!));
   }
 );
+
+// A settings panel long enough to scroll, with captions that share a word with
+// their first item ("Module" over "Modulbibliothek") next to ones that share
+// none. A caption has to read as a heading for its group, not as one more row.
+const settingsGroups: { label: string; items: [string, string][] }[] = [
+  {
+    label: 'Allgemein',
+    items: [
+      ['/einstellungen/firma', 'Firmendaten'],
+      ['/einstellungen/sprache', 'Sprache und Region'],
+      ['/einstellungen/rechnungen', 'Rechnungsvorlagen'],
+    ],
+  },
+  {
+    label: 'Module',
+    items: [
+      ['/einstellungen/modulbibliothek', 'Modulbibliothek'],
+      ['/einstellungen/zusatzmodule', 'Zusatzmodule'],
+    ],
+  },
+  {
+    label: 'System',
+    items: [
+      ['/einstellungen/benutzer', 'Benutzer'],
+      ['/einstellungen/schnittstellen', 'Schnittstellen'],
+      ['/einstellungen/protokoll', 'Protokoll'],
+    ],
+  },
+  {
+    label: 'Verkauf',
+    items: [
+      ['/einstellungen/verkaufsstellen', 'Verkaufsstellen'],
+      ['/einstellungen/zahlungsarten', 'Zahlungsarten'],
+      ['/einstellungen/gebuehren', 'Gebühren'],
+      ['/einstellungen/gutscheine', 'Gutscheine'],
+    ],
+  },
+  {
+    label: 'Kommunikation',
+    items: [
+      ['/einstellungen/emailvorlagen', 'E-Mail-Vorlagen'],
+      ['/einstellungen/newsletter', 'Newsletter'],
+      ['/einstellungen/benachrichtigungen', 'Benachrichtigungen'],
+    ],
+  },
+  {
+    label: 'Sicherheit',
+    items: [
+      ['/einstellungen/rollen', 'Rollen und Rechte'],
+      ['/einstellungen/anmeldung', 'Anmeldung'],
+      ['/einstellungen/sicherheitsprotokoll', 'Sicherheitsprotokoll'],
+    ],
+  },
+];
+
+const SettingsShell = () => {
+  const [path, setPath] = useState('/einstellungen/benutzer');
+
+  return (
+    <div lang="de" id="storybook-root">
+      <RouterProvider navigate={setPath}>
+        <I18nProvider locale="de-DE">
+          <AppShell>
+            <Sidebar>
+              <Sidebar.Rail current={path}>
+                <Sidebar.RailItem icon={<LayoutDashboard />} href="/uebersicht">
+                  Übersicht
+                </Sidebar.RailItem>
+                <Sidebar.RailItem
+                  icon={<CalendarDays />}
+                  href="/veranstaltungen"
+                >
+                  Veranstaltungen
+                </Sidebar.RailItem>
+                <Sidebar.RailItem icon={<Settings />} id="einstellungen">
+                  Einstellungen
+                  <Sidebar.Nav aria-label="Einstellungen">
+                    {settingsGroups.flatMap(group => [
+                      <Sidebar.GroupLabel key={group.label}>
+                        {group.label}
+                      </Sidebar.GroupLabel>,
+                      ...group.items.map(([href, label]) => (
+                        <Sidebar.Item key={href} href={href}>
+                          {label}
+                        </Sidebar.Item>
+                      )),
+                    ])}
+                  </Sidebar.Nav>
+                </Sidebar.RailItem>
+              </Sidebar.Rail>
+            </Sidebar>
+
+            <TopNavigation>
+              <TopNavigation.Start>
+                <Text weight="bold" fontSize="lg">
+                  reservix
+                </Text>
+                <Sidebar.Toggle variant="rail" />
+              </TopNavigation.Start>
+            </TopNavigation>
+
+            <Page>
+              <Page.Header>
+                <Title>Benutzer</Title>
+              </Page.Header>
+            </Page>
+          </AppShell>
+        </I18nProvider>
+      </RouterProvider>
+    </div>
+  );
+};
+
+export const RailGroupLabels = meta.story({
+  render: () => <SettingsShell />,
+});
