@@ -1,5 +1,77 @@
 # @marigold/components
 
+## 18.4.0
+
+### Minor Changes
+
+- 0154b3a: feat(DST-1751): add a select-all to ListView and SelectList
+
+  `<Table>` used to be the only collection that could offer a select-all, because it was the only one with a header to put a checkbox in. `allowSelectAll` now renders one for the two multi-select lists, aligned with the row indicators by the component (the padding is a custom property on the wrapper around the list, so a consumer composing a checkbox above it cannot line one up).
+
+  ```tsx
+  <ListView
+    aria-label="Uploads"
+    selectionMode="multiple"
+    allowSelectAll
+    items={uploads}
+  >
+    {upload => <ListView.Item textValue={upload.name}>…</ListView.Item>}
+  </ListView>
+  ```
+
+  The checkbox is mixed while the selection is partial, and becomes checked once every selectable row has been picked. It labels itself "Select all" in the current locale, and a count beside it reports how many rows are selected. The prop only takes effect when `selectionMode="multiple"`, since there is nothing for a select-all to do in the other modes. The header sits outside the grid element rather than claiming column-header semantics a single-column collection does not have, so the checkbox carries its own visible label. A disabled `SelectList` option that was preselected keeps its selection in either direction, since the user cannot toggle it by hand either, and clearing from the header honours `disallowEmptySelection` the way React Aria's own `clearSelection` does.
+
+  `ListView` reports `'all'` from its select-all, the same value <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> already reported. `SelectList` reports concrete keys instead, because a field has to submit a value: it now resolves the `'all'` sentinel to the keys it covers, which also fixes <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> in a multi-select `SelectList` submitting nothing at all. A controlled `selectedKeys="all"` resolves the same way, so it submits and validates like any other selection instead of as nothing.
+
+  Two smaller fixes come with it. A `Set` passed to `selectedKeys` is no longer copied on every render, which kept React Aria resetting the range anchor and broke <kbd>Shift</kbd>+click on a controlled list. And `ListView` now renders its list inside a wrapper element that owns the row-padding custom property, so the header and the rows read the same value.
+
+  On both components the select-all reads as the list's first row: it takes the same padding as a row and is separated by a divider of the same weight as the ones between rows. A `SelectList` keeps it inside the frame. In the `bordered` variant there is no frame to sit in. The select-all stays a control above the option cards, closer to the first card than to the field's label, so it still groups with the list rather than with the label.
+
+  The `Theme` type gains `header` and `count` slots on both components, plus `container` on `ListView`. All three are optional, so a custom theme written before this release still compiles and renders: `useClassNames` returns `undefined` for a slot a theme does not supply, and the components render without it. A `SelectList`'s `p` / `px` / `py` props keep writing their custom properties onto the list as well as the new wrapper, so a theme that declares the same variables on its own `list` slot does not win over the prop.
+
+- 183d72c: feat(DST-1943): select a range of Table rows with Shift+click on their checkboxes
+
+  In a `<Table selectionMode="multiple">`, holding <kbd>Shift</kbd> while clicking a row's checkbox now selects every row between the row last clicked and this one. Before, the checkbox ignored <kbd>Shift</kbd> and toggled only its own row, while a <kbd>Shift</kbd>+click on the row itself already selected the range. Both now behave the same, with one exception: after the header checkbox has selected all rows, <kbd>Shift</kbd>+click on a checkbox deselects just that row instead of starting a new selection from it.
+
+  A plain click on a checkbox still toggles only its row. Nothing changes in the component API, and single selection is unaffected.
+
+### Patch Changes
+
+- a7bacf0: fix(DST-1906): keep focus in place when a confirmed action removes its trigger
+
+  `useConfirmation` now resolves once the confirmation dialog has closed and returned focus, instead of on the button press. Deleting the row whose button opened the confirmation no longer drops focus out of the surrounding overlay: a list inside a dialog, drawer or popover moves focus to the next row. The promise still resolves to `confirmed` or `cancelled`, only slightly later, after the dialog's closing animation.
+
+  Two `confirm` calls in the same tick no longer replace each other: the second is rejected with `cancelled`, as it already was while a dialog is open.
+
+- 3e77b24: fix(DSTSUP-301): stop SelectList, TagGroup and RangeCalendar crashing on an error inside a Dialog, and announce their help text
+
+  Inside a `Dialog`, `Drawer` or `Tray`, these fields threw `Invalid slot "errorMessage"` as soon as they showed an error, whether set through `error` or a `Form`'s `validationErrors`. Their help text read the overlay's text slots instead of the field's own. Each field now publishes its own slots, the way React Aria's fields do, so the error renders as it does outside an overlay.
+
+  Their description and error message are now also linked to the list or calendar through `aria-describedby`, so screen readers read them with the field.
+
+- c59fdc4: fix(DSTSUP-302): center the title on the header actions when there is no description
+
+  A `<Page.Header>` or `<Panel.Header>` with actions but no `<Description>` placed its title 6 to 9px above the center of the actions. The empty description row took part of the actions' height. The title row now absorbs that height and centers the title in it, so the title lines up with the actions. Headers with a description look the same as before.
+
+- 89e5b05: feat(DSTSUP-314): give the mobile Sidebar drawer icons, a clear hierarchy and 44px touch targets
+
+  On small screens the Sidebar drawer now keeps what makes the rail easy to scan on desktop. Most of this is about `Sidebar.Rail`, but the rows, the back row, the footer and the close button are shared, so the drawer of a plain `Sidebar` with `Sidebar.Nav` changes too: 16px rows, the marked current section, the section name as a heading row with the chevron chip, 44px footer links and the larger close button. Only the rail icons and the pinned footer items are rail-only.
+
+  **Current:** every rail item became a plain text row. The icons were dropped, pinned footer items (like a help center) sat at the end of the scrolling list behind a separator, and nothing at the top level showed which section the current page belongs to. The section name inside a section was a small grey back link, and the close button was 28px.
+
+  **New:**
+
+  - Every top-level row shows its rail icon, and the text is 16px instead of 14px.
+  - The section that holds the current page is marked at the top level and announced as the current section (`aria-current="true"`).
+  - Pinned footer items stay below the list at every level instead of scrolling with it.
+  - Inside a section, its name is styled as the section heading, with the back chevron in a round chip. The whole row is still the back button.
+  - The close button and footer links meet the 44 by 44px touch target, like the nav rows already did.
+
+  Nothing changes in the component API. Pass a `Sidebar.Header` to `Sidebar.Rail` to show your brand at the top of the drawer. On desktop the rail does not render it.
+
+- Updated dependencies [0154b3a]
+  - @marigold/system@18.4.0
+
 ## 18.3.1
 
 ### Patch Changes

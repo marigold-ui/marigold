@@ -1,5 +1,45 @@
 # @marigold/docs
 
+## 18.4.0
+
+### Patch Changes
+
+- 183d72c: feat(DST-1943): select a range of Table rows with Shift+click on their checkboxes
+
+  In a `<Table selectionMode="multiple">`, holding <kbd>Shift</kbd> while clicking a row's checkbox now selects every row between the row last clicked and this one. Before, the checkbox ignored <kbd>Shift</kbd> and toggled only its own row, while a <kbd>Shift</kbd>+click on the row itself already selected the range. Both now behave the same, with one exception: after the header checkbox has selected all rows, <kbd>Shift</kbd>+click on a checkbox deselects just that row instead of starting a new selection from it.
+
+  A plain click on a checkbox still toggles only its row. Nothing changes in the component API, and single selection is unaffected.
+
+- 89e5b05: feat(DSTSUP-314): give the mobile Sidebar drawer icons, a clear hierarchy and 44px touch targets
+
+  On small screens the Sidebar drawer now keeps what makes the rail easy to scan on desktop. Most of this is about `Sidebar.Rail`, but the rows, the back row, the footer and the close button are shared, so the drawer of a plain `Sidebar` with `Sidebar.Nav` changes too: 16px rows, the marked current section, the section name as a heading row with the chevron chip, 44px footer links and the larger close button. Only the rail icons and the pinned footer items are rail-only.
+
+  **Current:** every rail item became a plain text row. The icons were dropped, pinned footer items (like a help center) sat at the end of the scrolling list behind a separator, and nothing at the top level showed which section the current page belongs to. The section name inside a section was a small grey back link, and the close button was 28px.
+
+  **New:**
+
+  - Every top-level row shows its rail icon, and the text is 16px instead of 14px.
+  - The section that holds the current page is marked at the top level and announced as the current section (`aria-current="true"`).
+  - Pinned footer items stay below the list at every level instead of scrolling with it.
+  - Inside a section, its name is styled as the section heading, with the back chevron in a round chip. The whole row is still the back button.
+  - The close button and footer links meet the 44 by 44px touch target, like the nav rows already did.
+
+  Nothing changes in the component API. Pass a `Sidebar.Header` to `Sidebar.Rail` to show your brand at the top of the drawer. On desktop the rail does not render it.
+
+- Updated dependencies [0154b3a]
+- Updated dependencies [3b04f93]
+- Updated dependencies [0da7449]
+- Updated dependencies [a7bacf0]
+- Updated dependencies [183d72c]
+- Updated dependencies [3e77b24]
+- Updated dependencies [c59fdc4]
+- Updated dependencies [8ea74cc]
+- Updated dependencies [89e5b05]
+  - @marigold/components@18.4.0
+  - @marigold/theme-rui@6.3.0
+  - @marigold/system@18.4.0
+  - @marigold/icons@2.0.5
+
 ## 18.3.1
 
 ### Patch Changes
