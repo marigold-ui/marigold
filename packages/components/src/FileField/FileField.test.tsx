@@ -3,11 +3,14 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { vi } from 'vitest';
+import { Badge } from '../Badge/Badge';
+import { ContextualHelp } from '../ContextualHelp/ContextualHelp';
 import {
   Basic,
   InForm,
   Required,
   ServerValidation,
+  Small,
   UploadFile,
 } from './FileField.stories';
 import { makeFile } from './makeFile';
@@ -434,7 +437,7 @@ test('moves focus to the upload button when a required field blocks submit', asy
 
   await waitFor(() =>
     expect(document.activeElement).toBe(
-      screen.getByRole('button', { name: /upload/i })
+      screen.getByRole('button', { name: /upload$/i })
     )
   );
 });
@@ -460,7 +463,7 @@ test('describes the upload button by the error after a blocked submit', async ()
   await user.click(screen.getByRole('button', { name: /submit/i }));
   const error = await screen.findByRole('alert');
 
-  expect(screen.getByRole('button', { name: /upload/i })).toHaveAttribute(
+  expect(screen.getByRole('button', { name: /upload$/i })).toHaveAttribute(
     'aria-describedby',
     error.id
   );
@@ -479,7 +482,7 @@ test('announces the error through a live region', async () => {
 test('describes the upload button by the description while valid', () => {
   render(<Basic.Component label="Label" description="Max 5 MB." />);
 
-  expect(screen.getByRole('button', { name: /upload/i })).toHaveAttribute(
+  expect(screen.getByRole('button', { name: /upload$/i })).toHaveAttribute(
     'aria-describedby',
     screen.getByText('Max 5 MB.').id
   );
@@ -619,4 +622,92 @@ test('brings the required error back when the last file is removed', async () =>
   expect(
     await screen.findByText('Please upload a document.')
   ).toBeInTheDocument();
+});
+
+describe('accessible name and description', () => {
+  const badge = <Badge variant="master">Master</Badge>;
+  const sizes = [
+    ['default', Basic],
+    ['small', Small],
+  ] as const;
+
+  test.each(sizes)(
+    'names the upload button by the field label (%s)',
+    (_, Story) => {
+      render(<Story.Component label="Attachment" />);
+
+      expect(
+        screen.getByRole('button', { name: 'Attachment Upload' })
+      ).toBeInTheDocument();
+    }
+  );
+
+  test.each(sizes)(
+    'describes the upload button by a badge addon (%s)',
+    (_, Story) => {
+      render(<Story.Component label="Attachment" addon={badge} />);
+
+      expect(
+        screen.getByRole('button', { name: 'Attachment Upload' })
+      ).toHaveAccessibleDescription('Master');
+    }
+  );
+
+  test('names the drop zone by its text and the field label', () => {
+    render(<Basic.Component label="Attachment" />);
+
+    expect(
+      screen.getByRole('button', { name: 'Drop files here Attachment' })
+    ).toBeInTheDocument();
+  });
+
+  test('keeps the button text as its name without a label', () => {
+    render(<Basic.Component label={undefined} />);
+
+    expect(screen.getByRole('button', { name: 'Upload' })).toBeInTheDocument();
+  });
+
+  test('describes the upload button by both the description and the addon', () => {
+    render(
+      <Basic.Component
+        label="Attachment"
+        addon={badge}
+        description="Max 5 MB."
+      />
+    );
+
+    expect(
+      screen.getByRole('button', { name: 'Attachment Upload' })
+    ).toHaveAccessibleDescription('Max 5 MB. Master');
+  });
+
+  test('keeps a contextual help addon out of the description', () => {
+    render(
+      <Basic.Component
+        label="Attachment"
+        addon={
+          <ContextualHelp>
+            <ContextualHelp.Content>PDF only.</ContextualHelp.Content>
+          </ContextualHelp>
+        }
+      />
+    );
+
+    expect(
+      screen.getByRole('button', { name: 'Attachment Upload' })
+    ).not.toHaveAttribute('aria-describedby');
+  });
+
+  test('moves consumer labelling onto the button in small size', () => {
+    render(
+      <>
+        <span id="external">Contract</span>
+        <Small.Component label={undefined} aria-labelledby="external" />
+      </>
+    );
+
+    expect(
+      screen.getByRole('button', { name: 'Contract Upload' })
+    ).toBeInTheDocument();
+  });
 });
