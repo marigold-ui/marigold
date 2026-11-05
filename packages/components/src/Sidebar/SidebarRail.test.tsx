@@ -206,16 +206,12 @@ describe('Sidebar.Rail — panel focus management', () => {
   test('re-clicking the active section on a collapsed panel expands, focuses it and navigates', async () => {
     render(<Rail.Component />);
     const rail = screen.getByRole('navigation', { name: 'Hauptnavigation' });
+    const panel = screen.getByRole('navigation', { name: 'Tickets' });
     const toggle = screen.getByRole('button', {
       name: 'Navigation umschalten',
     });
 
-    await user.click(
-      within(screen.getByRole('navigation', { name: 'Tickets' })).getByRole(
-        'link',
-        { name: 'Alle Tickets' }
-      )
-    );
+    await user.click(within(panel).getByRole('link', { name: 'Alle Tickets' }));
     await user.click(toggle);
     expect(toggle).toHaveAttribute('aria-expanded', 'false');
 
@@ -225,10 +221,7 @@ describe('Sidebar.Rail — panel focus management', () => {
     const heading = screen.getByRole('heading', { name: 'Tickets' });
     await waitFor(() => expect(heading).toHaveFocus());
     expect(
-      within(screen.getByRole('navigation', { name: 'Tickets' })).getByRole(
-        'link',
-        { name: 'Meine Tickets' }
-      )
+      within(panel).getByRole('link', { name: 'Meine Tickets' })
     ).toHaveAttribute('aria-current', 'page');
   });
 

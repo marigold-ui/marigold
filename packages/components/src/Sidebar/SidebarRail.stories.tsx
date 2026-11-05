@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
@@ -103,16 +103,79 @@ const sections: Record<string, { label: string; href: string }> = {
   },
 };
 
+// A settings panel long enough to scroll, with captions that share a word with
+// their first item ("Module" over "Modulbibliothek") next to ones that share
+// none. A caption has to read as a heading for its group, not as one more row.
+type NavGroup = { label: string; items: [string, string][] };
+
+const settingsGroups: NavGroup[] = [
+  {
+    label: 'Allgemein',
+    items: [
+      ['/einstellungen/firma', 'Firmendaten'],
+      ['/einstellungen/sprache', 'Sprache und Region'],
+      ['/einstellungen/rechnungen', 'Rechnungsvorlagen'],
+    ],
+  },
+  {
+    label: 'Module',
+    items: [
+      ['/einstellungen/modulbibliothek', 'Modulbibliothek'],
+      ['/einstellungen/zusatzmodule', 'Zusatzmodule'],
+    ],
+  },
+  {
+    label: 'System',
+    items: [
+      ['/einstellungen/benutzer', 'Benutzer'],
+      ['/einstellungen/schnittstellen', 'Schnittstellen'],
+      ['/einstellungen/protokoll', 'Protokoll'],
+    ],
+  },
+  {
+    label: 'Verkauf',
+    items: [
+      ['/einstellungen/verkaufsstellen', 'Verkaufsstellen'],
+      ['/einstellungen/zahlungsarten', 'Zahlungsarten'],
+      ['/einstellungen/gebuehren', 'Gebühren'],
+      ['/einstellungen/gutscheine', 'Gutscheine'],
+    ],
+  },
+  {
+    label: 'Kommunikation',
+    items: [
+      ['/einstellungen/emailvorlagen', 'E-Mail-Vorlagen'],
+      ['/einstellungen/newsletter', 'Newsletter'],
+      ['/einstellungen/benachrichtigungen', 'Benachrichtigungen'],
+    ],
+  },
+  {
+    label: 'Sicherheit',
+    items: [
+      ['/einstellungen/rollen', 'Rollen und Rechte'],
+      ['/einstellungen/anmeldung', 'Anmeldung'],
+      ['/einstellungen/sicherheitsprotokoll', 'Sicherheitsprotokoll'],
+    ],
+  },
+];
+
 const RailShell = ({
   initialPath = '/tickets/meine',
   bounded = false,
+  settingsGroups: groups,
 }: {
   initialPath?: string;
   /** Bounds the shell to the docs demos' 25rem so the nine tiles overflow. */
   bounded?: boolean;
+  /** Replaces the Einstellungen panel with these groups. */
+  settingsGroups?: NavGroup[];
 }) => {
   const [path, setPath] = useState(initialPath);
-  const label = pages[path] ?? 'Seite';
+  const pageLabels: Record<string, string> = {
+    ...pages,
+    ...Object.fromEntries(groups?.flatMap(group => group.items) ?? []),
+  };
+  const label = pageLabels[path] ?? 'Seite';
 
   // Each path segment becomes a crumb: "Tickets › Archiv › Gelöst".
   const trail = path
@@ -123,7 +186,7 @@ const RailShell = ({
       const section = sections[key];
       return section
         ? { key, href: section.href, label: section.label }
-        : { key, href: key, label: pages[key] ?? 'Seite' };
+        : { key, href: key, label: pageLabels[key] ?? 'Seite' };
     });
 
   // Rendered in the bar on desktop and in a row below it on small screens.
@@ -263,24 +326,41 @@ const RailShell = ({
                 <Sidebar.RailItem icon={<Settings />} id="einstellungen">
                   Einstellungen
                   <Sidebar.Nav aria-label="Einstellungen">
-                    <Sidebar.GroupLabel>Arbeitsbereich</Sidebar.GroupLabel>
-                    <Sidebar.Item href="/einstellungen/allgemein">
-                      Allgemein
-                    </Sidebar.Item>
-                    <Sidebar.Item href="/einstellungen/team">Team</Sidebar.Item>
-                    <Sidebar.GroupLabel>Persönlich</Sidebar.GroupLabel>
-                    <Sidebar.Item
-                      id="benachrichtigungen"
-                      textValue="Benachrichtigungen"
-                    >
-                      Benachrichtigungen
-                      <Sidebar.Item href="/einstellungen/benachrichtigungen/email">
-                        E-Mail
-                      </Sidebar.Item>
-                      <Sidebar.Item href="/einstellungen/benachrichtigungen/push">
-                        Push
-                      </Sidebar.Item>
-                    </Sidebar.Item>
+                    {groups ? (
+                      groups.map(group => (
+                        <Fragment key={group.label}>
+                          <Sidebar.GroupLabel>{group.label}</Sidebar.GroupLabel>
+                          {group.items.map(([href, itemLabel]) => (
+                            <Sidebar.Item key={href} href={href}>
+                              {itemLabel}
+                            </Sidebar.Item>
+                          ))}
+                        </Fragment>
+                      ))
+                    ) : (
+                      <>
+                        <Sidebar.GroupLabel>Arbeitsbereich</Sidebar.GroupLabel>
+                        <Sidebar.Item href="/einstellungen/allgemein">
+                          Allgemein
+                        </Sidebar.Item>
+                        <Sidebar.Item href="/einstellungen/team">
+                          Team
+                        </Sidebar.Item>
+                        <Sidebar.GroupLabel>Persönlich</Sidebar.GroupLabel>
+                        <Sidebar.Item
+                          id="benachrichtigungen"
+                          textValue="Benachrichtigungen"
+                        >
+                          Benachrichtigungen
+                          <Sidebar.Item href="/einstellungen/benachrichtigungen/email">
+                            E-Mail
+                          </Sidebar.Item>
+                          <Sidebar.Item href="/einstellungen/benachrichtigungen/push">
+                            Push
+                          </Sidebar.Item>
+                        </Sidebar.Item>
+                      </>
+                    )}
                   </Sidebar.Nav>
                 </Sidebar.RailItem>
 
@@ -821,118 +901,13 @@ Rail.test(
   }
 );
 
-// A settings panel long enough to scroll, with captions that share a word with
-// their first item ("Module" over "Modulbibliothek") next to ones that share
-// none. A caption has to read as a heading for its group, not as one more row.
-const settingsGroups: { label: string; items: [string, string][] }[] = [
-  {
-    label: 'Allgemein',
-    items: [
-      ['/einstellungen/firma', 'Firmendaten'],
-      ['/einstellungen/sprache', 'Sprache und Region'],
-      ['/einstellungen/rechnungen', 'Rechnungsvorlagen'],
-    ],
-  },
-  {
-    label: 'Module',
-    items: [
-      ['/einstellungen/modulbibliothek', 'Modulbibliothek'],
-      ['/einstellungen/zusatzmodule', 'Zusatzmodule'],
-    ],
-  },
-  {
-    label: 'System',
-    items: [
-      ['/einstellungen/benutzer', 'Benutzer'],
-      ['/einstellungen/schnittstellen', 'Schnittstellen'],
-      ['/einstellungen/protokoll', 'Protokoll'],
-    ],
-  },
-  {
-    label: 'Verkauf',
-    items: [
-      ['/einstellungen/verkaufsstellen', 'Verkaufsstellen'],
-      ['/einstellungen/zahlungsarten', 'Zahlungsarten'],
-      ['/einstellungen/gebuehren', 'Gebühren'],
-      ['/einstellungen/gutscheine', 'Gutscheine'],
-    ],
-  },
-  {
-    label: 'Kommunikation',
-    items: [
-      ['/einstellungen/emailvorlagen', 'E-Mail-Vorlagen'],
-      ['/einstellungen/newsletter', 'Newsletter'],
-      ['/einstellungen/benachrichtigungen', 'Benachrichtigungen'],
-    ],
-  },
-  {
-    label: 'Sicherheit',
-    items: [
-      ['/einstellungen/rollen', 'Rollen und Rechte'],
-      ['/einstellungen/anmeldung', 'Anmeldung'],
-      ['/einstellungen/sicherheitsprotokoll', 'Sicherheitsprotokoll'],
-    ],
-  },
-];
-
-const SettingsShell = () => {
-  const [path, setPath] = useState('/einstellungen/benutzer');
-
-  return (
-    <div lang="de" id="storybook-root">
-      <RouterProvider navigate={setPath}>
-        <I18nProvider locale="de-DE">
-          <AppShell>
-            <Sidebar>
-              <Sidebar.Rail current={path}>
-                <Sidebar.RailItem icon={<LayoutDashboard />} href="/uebersicht">
-                  Übersicht
-                </Sidebar.RailItem>
-                <Sidebar.RailItem
-                  icon={<CalendarDays />}
-                  href="/veranstaltungen"
-                >
-                  Veranstaltungen
-                </Sidebar.RailItem>
-                <Sidebar.RailItem icon={<Settings />} id="einstellungen">
-                  Einstellungen
-                  <Sidebar.Nav aria-label="Einstellungen">
-                    {settingsGroups.flatMap(group => [
-                      <Sidebar.GroupLabel key={group.label}>
-                        {group.label}
-                      </Sidebar.GroupLabel>,
-                      ...group.items.map(([href, label]) => (
-                        <Sidebar.Item key={href} href={href}>
-                          {label}
-                        </Sidebar.Item>
-                      )),
-                    ])}
-                  </Sidebar.Nav>
-                </Sidebar.RailItem>
-              </Sidebar.Rail>
-            </Sidebar>
-
-            <TopNavigation>
-              <TopNavigation.Start>
-                <Text weight="bold" fontSize="lg">
-                  reservix
-                </Text>
-                <Sidebar.Toggle variant="rail" />
-              </TopNavigation.Start>
-            </TopNavigation>
-
-            <Page>
-              <Page.Header>
-                <Title>Benutzer</Title>
-              </Page.Header>
-            </Page>
-          </AppShell>
-        </I18nProvider>
-      </RouterProvider>
-    </div>
-  );
-};
-
+// Captions next to rows that share a word with them ("Module" over
+// "Modulbibliothek"), in a settings panel long enough to scroll.
 export const RailGroupLabels = meta.story({
-  render: () => <SettingsShell />,
+  render: () => (
+    <RailShell
+      initialPath="/einstellungen/benutzer"
+      settingsGroups={settingsGroups}
+    />
+  ),
 });

@@ -127,7 +127,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // Finger-sized rows in the mobile drawer (same rule as ListBox/Menu
       // options in a Tray); min-height wins over the fixed desktop height.
       'max-sm:min-h-touch-target',
-      'transition-[color,background-color,box-shadow]',
+      'transition-[background-color,box-shadow]',
       'motion-reduce:transition-none',
       'outline-none focus-visible:ui-state-focus-item',
       // Idle `foreground`: clickable rows must out-rank the `secondary`
@@ -135,9 +135,9 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       // the rows take full ink. Idle and active share the colour; the pill and
       // medium weight mark the active row, and hover previews the fill.
       'text-foreground hover:bg-hover',
-      'data-active:bg-selected data-active:font-medium data-active:text-foreground',
+      'data-active:bg-selected data-active:font-medium',
       // Ancestor of the current page: the only marker on this level.
-      'aria-[current=true]:bg-hover aria-[current=true]:font-medium aria-[current=true]:text-foreground',
+      'aria-[current=true]:bg-hover aria-[current=true]:font-medium',
       // Leading icon, full ink when current or ancestor.
       '[&>[data-slot=icon]]:flex [&>[data-slot=icon]]:shrink-0 [&>[data-slot=icon]]:text-secondary',
       '[&>[data-slot=icon]_svg]:size-4 max-sm:[&>[data-slot=icon]_svg]:size-5',
