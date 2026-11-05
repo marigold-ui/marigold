@@ -14,7 +14,6 @@ describe('direct links', () => {
       select: true,
       toggle: false,
       focusPanel: false,
-      navigate: true,
     });
   });
 });
@@ -30,7 +29,6 @@ describe('sections', () => {
       select: false,
       toggle: false,
       focusPanel: false,
-      navigate: true,
     });
   });
 
@@ -44,7 +42,6 @@ describe('sections', () => {
       select: false,
       toggle: true,
       focusPanel: true,
-      navigate: true,
     });
   });
 
@@ -58,7 +55,6 @@ describe('sections', () => {
       select: true,
       toggle: false,
       focusPanel: true,
-      navigate: true,
     });
   });
 
@@ -72,7 +68,6 @@ describe('sections', () => {
       select: true,
       toggle: true,
       focusPanel: true,
-      navigate: true,
     });
   });
 });

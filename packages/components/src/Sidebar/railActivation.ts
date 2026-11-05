@@ -15,13 +15,13 @@ export interface RailActivation {
   toggle: boolean;
   /** Move focus to the panel heading once the panel is shown. */
   focusPanel: boolean;
-  /** Let the anchor navigate to the item's href. */
-  navigate: boolean;
 }
 
 /**
- * Decide what activating a rail item does. Pure, so every branch of the
- * section/direct-link × re-click/switch matrix is directly testable —
+ * Decide what activating a rail item does to the panel. Every activation also
+ * navigates to the item's href, so that is not part of the decision. Pure, so
+ * every branch of the section/direct-link × re-click/switch matrix is directly
+ * testable —
  * `SidebarRail` only maps the result onto its state and refs. Desktop-only:
  * the mobile drawer renders a `SidebarNav` drill-down, which owns its own
  * activation semantics.
@@ -36,7 +36,6 @@ export const resolveRailActivation = (
       select: true,
       toggle: false,
       focusPanel: false,
-      navigate: true,
     };
   }
 
@@ -48,7 +47,6 @@ export const resolveRailActivation = (
       select: false,
       toggle: collapsed,
       focusPanel: collapsed,
-      navigate: true,
     };
   }
 
@@ -57,6 +55,5 @@ export const resolveRailActivation = (
     select: true,
     toggle: state === 'collapsed',
     focusPanel: true,
-    navigate: true,
   };
 };
