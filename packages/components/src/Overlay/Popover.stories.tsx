@@ -12,7 +12,7 @@ import { getClipBoundary } from './clipBoundary';
 const PORTAL_ID = 'popover-at-viewport-edge';
 
 const meta = preview.meta({
-  title: 'Components/Popover',
+  title: 'Components/Overlay/Popover',
   component: Popover,
   // stories don't show up in storybook and chromatic creates no snapshots for this
   tags: ['!autodocs', '!dev'],

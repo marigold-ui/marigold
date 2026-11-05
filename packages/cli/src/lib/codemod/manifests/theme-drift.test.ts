@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { type AnyNode, parseTsx, walk } from '../../tsx-ast.js';
-import { v18 } from './v18.js';
+import { v19 } from './v19.js';
 
 // The manifest's `slots` mirror the `Theme` type in @marigold/system, and the
 // two have drifted apart once already: components merged into `beta-release`
@@ -10,9 +10,9 @@ import { v18 } from './v18.js';
 // consumers without stubs and produced a false "not themeable" warning.
 // Until DST-1650 generates the manifests, this test is the re-check trigger.
 //
-// It pins the manifest of the CURRENT major against the live type. When v19
-// lands, point it at the v19 manifest: v18's slots are then frozen history,
-// not a mirror of the type.
+// It pins the manifest of the CURRENT major against the live type. Now that
+// v19 exists, v18's slots are frozen history, not a mirror of the type. When
+// v20 lands, point it at the v20 manifest.
 const THEME_TYPES = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
   '../../../../../system/src/types/theme.ts'
@@ -82,7 +82,7 @@ const themeSlots = (source: string): Record<string, string[] | null> => {
   return out;
 };
 
-describe('v18 manifest vs the @marigold/system Theme type', () => {
+describe('v19 manifest vs the @marigold/system Theme type', () => {
   const theme = themeSlots(readFileSync(THEME_TYPES, 'utf8'));
 
   test('reads the component map out of the Theme type', () => {
@@ -93,13 +93,13 @@ describe('v18 manifest vs the @marigold/system Theme type', () => {
   });
 
   test('knows every themeable component', () => {
-    const missing = Object.keys(theme).filter(name => !(name in v18.slots));
+    const missing = Object.keys(theme).filter(name => !(name in v19.slots));
 
     expect(missing).toEqual([]);
   });
 
   test('knows no component the Theme type does not have', () => {
-    const extra = Object.keys(v18.slots).filter(name => !(name in theme));
+    const extra = Object.keys(v19.slots).filter(name => !(name in theme));
 
     expect(extra).toEqual([]);
   });
@@ -107,7 +107,7 @@ describe('v18 manifest vs the @marigold/system Theme type', () => {
   test('mirrors every slot set', () => {
     const drifted: string[] = [];
     for (const [name, slots] of Object.entries(theme)) {
-      const known = v18.slots[name];
+      const known = v19.slots[name];
       if (known === undefined) continue; // reported by the test above
       if (slots === null || known === null) {
         if ((slots === null) !== (known === null)) {
