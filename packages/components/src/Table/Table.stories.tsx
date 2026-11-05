@@ -1028,7 +1028,7 @@ ScrollableAndSticky.test(
   },
   async ({ canvas, step }) => {
     const table = canvas.getByRole('grid');
-    const scroll = table.closest<HTMLElement>('.overflow-auto')!;
+    const scroll = table.closest<HTMLElement>('[data-scrollable]')!;
     const header = canvas
       .getByRole('columnheader', { name: 'ID' })
       .closest('thead')!;
@@ -1042,7 +1042,7 @@ ScrollableAndSticky.test(
       // The `Scrollable` already contains the table and has a height for the
       // header to pin to. A second scroll area here would become the
       // scrollport instead, and the header would pin to that.
-      expect(table.closest('.overflow-x-auto')).toBeNull();
+      expect(table.closest('[data-scrolls]')).toBeNull();
     });
 
     await step('the header stays pinned through both axes', async () => {
@@ -1333,7 +1333,7 @@ NarrowContainer.test(
   async ({ canvas, step }) => {
     const table = canvas.getByRole('grid', { name: 'Organizers at 320px' });
     const panel = table.closest<HTMLElement>('[data-panel]')!;
-    const scrollArea = () => table.closest<HTMLElement>('.overflow-x-auto');
+    const scrollArea = () => table.closest<HTMLElement>('[data-scrolls]');
 
     await step('the scroll area stays inside the panel', async () => {
       await waitFor(() =>
@@ -1389,12 +1389,12 @@ NarrowContainer.test(
     // the absence below is a decision rather than the initial render, where
     // no table carries a scroll area yet.
     await waitFor(() =>
-      expect(narrow.closest('.overflow-x-auto')).not.toBeNull()
+      expect(narrow.closest('[data-scrolls]')).not.toBeNull()
     );
 
     // A scroll container here would become the scrollport a `sticky` header
     // and the ActionBar pin to, and stop both from following the page.
-    expect(wide.closest('.overflow-x-auto')).toBeNull();
+    expect(wide.closest('[data-scrolls]')).toBeNull();
   }
 );
 
@@ -1410,7 +1410,7 @@ NarrowContainer.test(
         .closest('thead')!;
 
     await waitFor(() =>
-      expect(narrow.closest('.overflow-x-auto')).not.toBeNull()
+      expect(narrow.closest('[data-scrolls]')).not.toBeNull()
     );
 
     await step('both headers still ask to stick', () => {
@@ -1419,7 +1419,7 @@ NarrowContainer.test(
     });
 
     await step('the narrow one has nothing left to pin to', () => {
-      const scroll = narrow.closest<HTMLElement>('.overflow-x-auto')!;
+      const scroll = narrow.closest<HTMLElement>('[data-scrolls]')!;
 
       // `overflow-x: auto` forces the used `overflow-y` to `auto`, so this box
       // is the header's scrollport now. It is exactly as tall as its content,
@@ -1430,17 +1430,11 @@ NarrowContainer.test(
     });
 
     await step('the wide one still pins against the page', () => {
-      expect(wide.closest('.overflow-x-auto')).toBeNull();
+      expect(wide.closest('[data-scrolls]')).toBeNull();
     });
   }
 );
 
-/**
- * Regression story for the scroll guard. `DialogContent` scrolls vertically,
- * and CSS computes its `overflow-x` to `auto` along with it, so a guard that
- * read the style alone took the dialog for a sideways scroll area and left the
- * table to overflow the panel, which is the bug this ticket is about.
- */
 /**
  * The `NarrowContainer` case in a real phone frame: the Storybook 320px
  * viewport rather than a fixed box inside a wide canvas. The page is the width
@@ -1501,6 +1495,12 @@ export const Mobile = meta.story({
   },
 });
 
+/**
+ * Regression story for the scroll guard. `DialogContent` scrolls vertically,
+ * and CSS computes its `overflow-x` to `auto` along with it, so a guard that
+ * read the style alone took the dialog for a sideways scroll area and left the
+ * table to overflow the panel, which is the bug this ticket is about.
+ */
 export const InsideDialog = meta.story({
   tags: ['component-test'],
   parameters: { surface: false },
@@ -1557,12 +1557,12 @@ InsideDialog.test(
       // The dialog reports `overflow-x: auto` without being a sideways scroll
       // area, so the table cannot hand its overflow over to it.
       await waitFor(() =>
-        expect(table.closest('.overflow-x-auto')).not.toBeNull()
+        expect(table.closest('[data-scrolls]')).not.toBeNull()
       );
     });
 
     await step('nothing paints across the panel', () => {
-      const scroll = table.closest<HTMLElement>('.overflow-x-auto')!;
+      const scroll = table.closest<HTMLElement>('[data-scrolls]')!;
 
       expect(scroll.scrollWidth).toBeGreaterThan(scroll.clientWidth);
       expect(scroll.getBoundingClientRect().right).toBeLessThanOrEqual(

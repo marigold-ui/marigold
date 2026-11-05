@@ -256,6 +256,7 @@ const _Table = ({
     <TableContext value={ctx}>
       <div
         ref={containerRef}
+        data-scrolls={scrolls || undefined}
         // Keeps the container filling its parent when the parent doesn't stretch.
         className={cn(
           'w-full',
