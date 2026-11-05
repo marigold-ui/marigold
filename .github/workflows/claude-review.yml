@@ -189,7 +189,7 @@ jobs:
           role-session-name: gha-claude-review-target-${{ github.run_id }}
 
       - name: Review
-        uses: anthropics/claude-code-action@d535f5172dec02b204866b393d6b20b9b2aaf98d # v1.0.266
+        uses: anthropics/claude-code-action@c0949c50a78c1ec8ce2647db36629b870e715d0c # v1.0.268
         with:
           # Do not add anthropic_api_key: it takes precedence and Bedrock is
           # silently skipped.
