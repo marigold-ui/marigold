@@ -15,7 +15,7 @@ export interface RailActivation {
   toggle: boolean;
   /** Move focus to the panel heading once the panel is shown. */
   focusPanel: boolean;
-  /** Let the anchor navigate (false = the click only re-targets the panel). */
+  /** Let the anchor navigate to the item's href. */
   navigate: boolean;
 }
 
@@ -41,12 +41,14 @@ export const resolveRailActivation = (
   }
 
   if (node.key === selectedKey) {
-    // Re-click toggles the panel (VS Code model); focus it when expanding.
+    // Re-click goes to the section's page and only reopens a collapsed panel;
+    // collapsing is left to `Sidebar.Toggle` and Cmd/Ctrl+B.
+    const collapsed = state === 'collapsed';
     return {
       select: false,
-      toggle: true,
-      focusPanel: state === 'collapsed',
-      navigate: false,
+      toggle: collapsed,
+      focusPanel: collapsed,
+      navigate: true,
     };
   }
 

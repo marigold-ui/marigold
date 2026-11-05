@@ -20,7 +20,7 @@ describe('direct links', () => {
 });
 
 describe('sections', () => {
-  test('re-clicking the active section collapses the panel without navigating', () => {
+  test('re-clicking the active section navigates without collapsing the panel', () => {
     const action = resolveRailActivation(section, {
       selectedKey: 'tickets',
       state: 'expanded',
@@ -28,13 +28,13 @@ describe('sections', () => {
 
     expect(action).toEqual({
       select: false,
-      toggle: true,
+      toggle: false,
       focusPanel: false,
-      navigate: false,
+      navigate: true,
     });
   });
 
-  test('re-clicking while collapsed expands and focuses the panel', () => {
+  test('re-clicking the active section on a collapsed panel expands it and navigates', () => {
     const action = resolveRailActivation(section, {
       selectedKey: 'tickets',
       state: 'collapsed',
@@ -44,7 +44,7 @@ describe('sections', () => {
       select: false,
       toggle: true,
       focusPanel: true,
-      navigate: false,
+      navigate: true,
     });
   });
 

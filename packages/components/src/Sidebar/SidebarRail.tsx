@@ -77,7 +77,9 @@ const useRailAnchorProps = (node: SidebarRailNode, activate: () => boolean) => {
     onClick: (e: MouseEvent<HTMLAnchorElement>) => {
       // New-tab/window clicks: let the browser navigate, touch no state.
       if (node.href && isModifiedClick(e)) return;
-      if (activate()) {
+      // Activation runs even without an href (a section whose nav has no
+      // linkable leaf); there is simply nowhere to go then.
+      if (activate() && node.href) {
         handleLinkClick(e, router, node.href, undefined);
       } else {
         e.preventDefault();
@@ -103,8 +105,6 @@ const RailItemLink = ({
   const anchorProps = useRailAnchorProps(node, () => {
     const shouldNavigate = onActivate();
     node.onPress?.();
-    // Re-clicking the active section only toggles the panel — don't navigate
-    // away from the deeper page the user is on.
     return shouldNavigate;
   });
 
