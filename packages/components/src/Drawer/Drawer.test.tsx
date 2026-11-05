@@ -22,20 +22,28 @@ import {
 } from './Drawer.stories';
 import { registerActiveDrawer } from './drawerRegistry';
 
-window.matchMedia = mockMatchMedia([]);
-
 const user = userEvent.setup();
 
 const renderThemed = (ui: ReactNode) =>
   renderWithOverlay(<MarigoldProvider theme={theme}>{ui}</MarigoldProvider>);
 
-let warn: MockInstance<typeof console.warn>;
+// Tests that need a small screen set it themselves, every other test runs on
+// the desktop path.
 beforeEach(() => {
-  warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+  window.matchMedia = mockMatchMedia([]);
 });
-afterEach(() => {
-  warn.mockRestore();
-});
+
+// Scoped to the describe blocks that assert on warnings, so the rest of the
+// file still surfaces unrelated dev warnings.
+let warn: MockInstance<typeof console.warn>;
+const spyOnWarn = () => {
+  beforeEach(() => {
+    warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+  afterEach(() => {
+    warn.mockRestore();
+  });
+};
 
 test('renders nothing if isOpen is not set', () => {
   renderWithOverlay(<Basic.Component />);
@@ -242,6 +250,8 @@ test('non-bled content keeps the padded ui-surface-content', async () => {
 });
 
 describe('without Drawer.Trigger', () => {
+  spyOnWarn();
+
   test('controlled drawer opens and closes on small screens', async () => {
     window.matchMedia = mockMatchMedia([smallScreenQuery]);
     const onOpenChange = vi.fn();
@@ -299,6 +309,8 @@ describe('without Drawer.Trigger', () => {
 });
 
 describe('inside Drawer.Trigger', () => {
+  spyOnWarn();
+
   test("the drawer's own open state wins over the trigger's", async () => {
     renderThemed(
       <Drawer.Trigger>
