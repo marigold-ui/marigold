@@ -260,6 +260,6 @@ export const Table: ThemeComponent<'Table'> = {
     base: 'motion-safe:transition-[height] motion-safe:duration-200',
   }),
   container: cva({
-    base: 'ui-scroll-mask-x',
+    base: 'ui-scroll-mask-x ui-scrollbar',
   }),
 };

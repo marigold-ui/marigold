@@ -421,6 +421,14 @@
   }
 }
 
+@utility ui-scrollbar-none {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* ========================= */
 /*        Scroll Mask        */
 /* ========================= */
@@ -463,11 +471,15 @@
  * and trailing edges in/out based on scroll position so the user can tell more
  * items are hidden. Pure CSS via scroll-driven animations.
  *
- * Progressive enhancement: the fade (and scrollbar hiding) live behind
- * `@supports`, so non-supporting browsers (e.g. Firefox) fall back to a plain
- * scroll container with a native scrollbar — the affordance is preserved, just
- * not as a fade. The fade is scroll-linked (driven by the user's own scroll,
- * not autonomous), so it is intentionally not gated by `prefers-reduced-motion`.
+ * Progressive enhancement: the fade lives behind `@supports`, so non-supporting
+ * browsers (e.g. Firefox) fall back to a plain scroll container — the affordance
+ * is preserved, just not as a fade. The fade is scroll-linked (driven by the
+ * user's own scroll, not autonomous), so it is intentionally not gated by
+ * `prefers-reduced-motion`.
+ *
+ * Leaves the native scrollbar alone (DST-1106). Pair with `ui-scrollbar` to
+ * style it, or with `ui-scrollbar-none` where the fade is the only affordance
+ * you want. The mask covers the scrollbar, so its ends thin out mid-scroll.
  */
 @utility ui-scroll-mask-x {
   --sc-mask-width: 2.5rem;
@@ -476,12 +488,6 @@
   overflow-x: auto;
 
   @supports (animation-timeline: scroll()) {
-    /* Hide the scrollbar only where the fade can stand in for it. */
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
     --sc-mask: linear-gradient(
       to right,
       transparent 0,
@@ -532,10 +538,10 @@
 }
 
 /*
- * Vertical twin of `ui-scroll-mask-x`. Keeps the scrollbar rather than hiding it
- * (conventional down this axis, so pair with `ui-scrollbar`) and fades narrower,
- * since 2.5rem would swallow a whole row. The mask covers the scrollbar and any
- * border, thinning the track ends mid-scroll, so put borders on the parent.
+ * Vertical twin of `ui-scroll-mask-x`. Fades narrower, since 2.5rem would
+ * swallow a whole row, and a scrollbar is conventional down this axis, so pair
+ * with `ui-scrollbar`. The mask covers the scrollbar and any border, thinning
+ * the track ends mid-scroll, so put borders on the parent.
  * Won't compose with the x version: shared --sc-mask and animation shorthands.
  */
 @utility ui-scroll-mask-y {
