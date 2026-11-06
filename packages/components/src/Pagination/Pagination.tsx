@@ -1,4 +1,4 @@
-import { KeyboardEvent, useEffect, useRef } from 'react';
+import { FocusEvent, KeyboardEvent, useEffect, useRef } from 'react';
 import { FocusScope, useFocusManager } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useControlledState } from '@react-stately/utils';
@@ -68,6 +68,17 @@ const InnerPagination = ({
   const isLastPage = currentPage === totalPages || totalPages === 0;
   const prevPageSize = useRef(pageSize);
 
+  /* Previous/Next stay focusable at the ends (aria-disabled), so they have to
+  ignore presses themselves instead of relying on the native `disabled`. */
+  const goToPrevious = () => {
+    if (isFirstPage) return;
+    setCurrentPage(currentPage - 1);
+  };
+  const goToNext = () => {
+    if (isLastPage) return;
+    setCurrentPage(currentPage + 1);
+  };
+
   useEffect(() => {
     /* Only reset to page 1 when the page size actually changed, so neither
     mounting (e.g. with the page prop) nor an unstable setter triggers it */
@@ -77,6 +88,40 @@ const InnerPagination = ({
     prevPageSize.current = pageSize;
     setCurrentPage(1);
   }, [pageSize, setCurrentPage]);
+
+  /* When the focused page button is removed (e.g. `totalItems` shrank), the
+  browser drops focus to <body>. Move it to the current page's button, the
+  pager's tab stop, so keyboard users keep their place. Only when the last
+  focused button is gone, so focus is never pulled back after the user left. */
+  const pagesRef = useRef<HTMLDivElement>(null);
+  const lastFocusedRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const focusLost =
+      document.activeElement === null ||
+      document.activeElement === document.body;
+    if (
+      !focusLost ||
+      !lastFocusedRef.current ||
+      lastFocusedRef.current.isConnected
+    ) {
+      return;
+    }
+    pagesRef.current?.querySelector<HTMLElement>('[tabindex="0"]')?.focus();
+  }, [pageRange, totalPages]);
+
+  const trackFocus = (e: FocusEvent<HTMLDivElement>) => {
+    lastFocusedRef.current = e.target;
+  };
+  const untrackFocus = (e: FocusEvent<HTMLDivElement>) => {
+    // Focus left the page buttons on purpose; a removed button is not connected.
+    if (
+      e.target.isConnected &&
+      !e.currentTarget.contains(e.relatedTarget as Node | null)
+    ) {
+      lastFocusedRef.current = null;
+    }
+  };
 
   const { icon, container } = useClassNames({
     component: 'Pagination',
@@ -100,19 +145,22 @@ const InnerPagination = ({
   return (
     <>
       <NavigationButton
-        onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+        onClick={goToPrevious}
         aria-label={stringFormatter.format('pagePrevious')}
-        isDisabled={isFirstPage}
+        disabled={isFirstPage}
         controlLabel={controlLabels?.[0]}
         position="left"
-        onKeyDown={handleKeyDown(() =>
-          setCurrentPage(Math.max(1, currentPage - 1))
-        )}
+        onKeyDown={handleKeyDown(goToPrevious)}
       >
         <ChevronLeft className={icon} />
       </NavigationButton>
 
-      <div className={cn(container, 'max-sm:hidden')}>
+      <div
+        ref={pagesRef}
+        className={cn(container, 'max-sm:hidden')}
+        onFocus={trackFocus}
+        onBlur={untrackFocus}
+      >
         {totalPages > 0 ? (
           pageRange.map((pageNumber, index) =>
             pageNumber === 'ellipsis' ? (
@@ -128,19 +176,22 @@ const InnerPagination = ({
             )
           )
         ) : (
-          <PageButton key={1} page={1} isDisabled />
+          <PageButton
+            key={1}
+            page={1}
+            disabled
+            onKeyDown={handleKeyDown(() => {})}
+          />
         )}
       </div>
 
       <NavigationButton
-        onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+        onClick={goToNext}
         aria-label={stringFormatter.format('pageNext')}
-        isDisabled={isLastPage}
+        disabled={isLastPage}
         controlLabel={controlLabels?.[1]}
         position="right"
-        onKeyDown={handleKeyDown(() =>
-          setCurrentPage(Math.min(totalPages, currentPage + 1))
-        )}
+        onKeyDown={handleKeyDown(goToNext)}
       >
         <ChevronRight className={icon} />
       </NavigationButton>
