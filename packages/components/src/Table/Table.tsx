@@ -202,6 +202,9 @@ const _Table = ({
     // would catch every vertical scroller too, because CSS computes it to
     // `auto` whenever `overflow-y` is not `visible`, and a `Dialog` or a
     // scrolling app shell would keep the overflow this guard exists to stop.
+    // Only the nearest scroll parent is asked, so a vertical-only scroller
+    // between the table and a `Scrollable` hides it and the table takes the
+    // overflow itself. Contained either way, just not by the `Scrollable`.
     if (getScrollParent(container).hasAttribute('data-scrollable')) {
       setScrolls(false);
       return;
