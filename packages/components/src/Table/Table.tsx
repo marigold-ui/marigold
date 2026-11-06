@@ -263,6 +263,9 @@ const _Table = ({
         // Keeps the container filling its parent when the parent doesn't stretch.
         className={cn(
           'w-full',
+          // `overflow-x-auto` is the fallback that keeps the table scrolling for
+          // a theme that leaves `container` undefined. theme-rui's part sets it
+          // too, so don't "clean up" the duplicate.
           scrolls && ['overflow-x-auto', classNames.container]
         )}
         onFocus={actionBarHeight ? scrollFocusedRowClearOfActionBar : undefined}
