@@ -65,7 +65,8 @@ const InnerPagination = ({
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   const isFirstPage = currentPage === 1;
-  const isLastPage = currentPage === totalPages || totalPages === 0;
+  // `>=` also covers 0 pages and a current page the result set shrank below
+  const isLastPage = currentPage >= totalPages;
   const prevPageSize = useRef(pageSize);
 
   /* Previous/Next stay focusable at the ends (aria-disabled), so they have to
@@ -96,6 +97,8 @@ const InnerPagination = ({
   const pagesRef = useRef<HTMLDivElement>(null);
   const lastFocusedRef = useRef<HTMLElement | null>(null);
 
+  // No deps on purpose: any commit can remove the focused button, and the
+  // early return keeps the check cheap.
   useEffect(() => {
     const focusLost =
       document.activeElement === null ||
@@ -107,8 +110,14 @@ const InnerPagination = ({
     ) {
       return;
     }
-    pagesRef.current?.querySelector<HTMLElement>('[tabindex="0"]')?.focus();
-  }, [pageRange, totalPages]);
+    const pages = pagesRef.current;
+    // The current page's button, or the last page when the current page no
+    // longer exists because the app has not moved `page` back into range yet.
+    const target =
+      pages?.querySelector<HTMLElement>('[tabindex="0"]') ??
+      pages?.querySelector<HTMLElement>('button:last-of-type');
+    target?.focus();
+  });
 
   const trackFocus = (e: FocusEvent<HTMLDivElement>) => {
     lastFocusedRef.current = e.target;
