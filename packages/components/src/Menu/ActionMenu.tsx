@@ -2,14 +2,11 @@ import { Key, ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { MenuTrigger, Menu as RACMenu } from 'react-aria-components/Menu';
 import { useContextProps } from 'react-aria-components/slots';
-import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useClassNames, useSmallScreen } from '@marigold/system';
 import { Button } from '../Button/Button';
 import type { PopoverProps } from '../Overlay/Popover';
 import { Popover } from '../Overlay/Popover';
-import { Tray } from '../Tray/Tray';
 import { EllipsisVertical } from '../icons/EllipsisVertical';
-import { intlMessages } from '../intl/messages';
 import type { SlotProps } from '../types';
 import {
   ActionMenuContext,
@@ -17,6 +14,7 @@ import {
 } from './ActionMenuContext';
 import { MenuItem } from './MenuItem';
 import { MenuSection } from './MenuSection';
+import { MenuTray } from './MenuTray';
 
 type RemovedProps = 'isOpen' | 'className' | 'style' | 'children' | 'slot';
 
@@ -109,7 +107,6 @@ const _ActionMenu = ({ ref: refProp, ...inputProps }: ActionMenuProps) => {
 
   const classNames = useClassNames({ component: 'Menu', variant, size });
   const isSmallScreen = useSmallScreen();
-  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   return (
     <MenuTrigger
@@ -134,16 +131,11 @@ const _ActionMenu = ({ ref: refProp, ...inputProps }: ActionMenuProps) => {
         <EllipsisVertical />
       </Button>
       {isSmallScreen ? (
-        <Tray>
-          <Tray.Content>
-            <RACMenu {...props} className={classNames.container}>
-              {children}
-            </RACMenu>
-          </Tray.Content>
-          <Tray.Actions>
-            <Button slot="close">{stringFormatter.format('close')}</Button>
-          </Tray.Actions>
-        </Tray>
+        <MenuTray aria-label={ariaLabel} aria-labelledby={ariaLabelledBy}>
+          <RACMenu {...props} className={classNames.container}>
+            {children}
+          </RACMenu>
+        </MenuTray>
       ) : (
         <Popover placement={placement}>
           <RACMenu {...props} className={classNames.container}>
