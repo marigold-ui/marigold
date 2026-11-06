@@ -171,7 +171,7 @@ Basic.test(
 );
 
 Basic.test(
-  'Disables the previous button on the first page',
+  'Disables the previous button on the first page and keeps focus',
   {
     args: {
       defaultPage: 2,
@@ -183,12 +183,14 @@ Basic.test(
     await userEvent.click(previousButton);
 
     await expect(previousButton).not.toHaveAttribute('data-selected', 'true');
-    await expect(previousButton).toHaveAttribute('disabled');
+    await expect(previousButton).toHaveAttribute('aria-disabled', 'true');
+    // Stays focusable, so focus is not dropped to <body>
+    await expect(previousButton).toHaveFocus();
   }
 );
 
 Basic.test(
-  'Disables the next button on the last page',
+  'Disables the next button on the last page and keeps focus',
   {
     args: {
       defaultPage: 9,
@@ -200,7 +202,9 @@ Basic.test(
     await userEvent.click(nextButton);
 
     await expect(nextButton).not.toHaveAttribute('data-selected', 'true');
-    await expect(nextButton).toHaveAttribute('disabled');
+    await expect(nextButton).toHaveAttribute('aria-disabled', 'true');
+    // Stays focusable, so focus is not dropped to <body>
+    await expect(nextButton).toHaveFocus();
   }
 );
 
