@@ -23,6 +23,12 @@ export interface MenuTrayProps {
  * is a modal dialog and needs its own accessible name: the menu's label only
  * reaches the trigger button (DSTSUP-326). Must render inside `<MenuTrigger>`,
  * which publishes the trigger's id on `MenuContext`.
+ *
+ * Unlike the other Tray consumers (Select, DatePicker, ComboBox, …), this
+ * deliberately renders no visible `<Tray.Title>`. Their `label` is always
+ * text, while a Menu `label` is often an icon, which makes no usable heading.
+ * Pointing `aria-labelledby` at the trigger names the tray from whatever the
+ * trigger shows, without adding a visible title.
  */
 export const MenuTray = ({
   'aria-label': ariaLabel,

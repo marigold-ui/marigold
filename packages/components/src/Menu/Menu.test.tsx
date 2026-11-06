@@ -3,10 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { SVGProps } from 'react';
 import { vi } from 'vitest';
 import { theme } from '@marigold/theme-rui';
-import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
-import { ActionMenu } from './ActionMenu';
-import { AccessSections, Basic } from './Menu.stories';
+import { AccessSections, Basic, LabelledByActionMenu } from './Menu.stories';
 
 const smallScreenQuery = `(width < ${theme.screens!.sm})`;
 
@@ -87,14 +85,7 @@ describe('tray accessible name (small screen)', () => {
   });
 
   test('ActionMenu forwards its aria-labelledby to the tray', async () => {
-    renderWithOverlay(
-      <MarigoldProvider theme={theme}>
-        <span id="offer-label">Angebot 42</span>
-        <ActionMenu aria-labelledby="offer-label">
-          <ActionMenu.Item id="edit">Bearbeiten</ActionMenu.Item>
-        </ActionMenu>
-      </MarigoldProvider>
-    );
+    renderWithOverlay(<LabelledByActionMenu.Component />);
     await user.click(screen.getByRole('button', { name: 'Angebot 42' }));
 
     expect(
@@ -102,15 +93,38 @@ describe('tray accessible name (small screen)', () => {
     ).toBeInTheDocument();
   });
 
-  test('does not warn about an unlabelled dialog', async () => {
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    renderWithOverlay(<AccessSections.Component />);
-    await user.click(screen.getByRole('button', { name: 'Filial-Aktionen' }));
-    await screen.findByRole('dialog');
+  const unlabelledDialogWarning = expect.stringContaining(
+    'must have an aria-label or aria-labelledby'
+  );
 
-    expect(warn).not.toHaveBeenCalledWith(
-      expect.stringContaining('must have an aria-label or aria-labelledby')
-    );
-    warn.mockRestore();
+  test.each([
+    ['Menu named after its trigger', Basic.Component],
+    ['ActionMenu with an aria-label', AccessSections.Component],
+  ])('does not warn about an unlabelled dialog: %s', async (_, Story) => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    try {
+      renderWithOverlay(<Story />);
+      await user.click(screen.getByRole('button'));
+      await screen.findByRole('dialog');
+
+      expect(warn).not.toHaveBeenCalledWith(unlabelledDialogWarning);
+    } finally {
+      warn.mockRestore();
+    }
+  });
+
+  test('still warns when an ActionMenu has no label at all', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    try {
+      renderWithOverlay(
+        <LabelledByActionMenu.Component aria-labelledby={undefined} />
+      );
+      await user.click(screen.getByRole('button'));
+      await screen.findByRole('dialog');
+
+      expect(warn).toHaveBeenCalledWith(unlabelledDialogWarning);
+    } finally {
+      warn.mockRestore();
+    }
   });
 });
