@@ -49,9 +49,8 @@ interface RailItemLinkProps {
   onActivate: () => boolean;
   /**
    * Icon-only rail: enables the tooltip as the hover/focus hint. The label
-   * itself stays mounted — the theme folds its row away and fades it to
-   * opacity-0 (still the accessible name), so the tiles glide into the dense
-   * icon-only pitch instead of jumping.
+   * itself stays mounted — the theme fades it to opacity-0 (still the
+   * accessible name) and keeps its row, so the icons hold their position.
    */
   collapsed: boolean;
   className: string;

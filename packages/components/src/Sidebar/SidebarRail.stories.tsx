@@ -513,6 +513,52 @@ const closestScrollable = (element: HTMLElement) => {
   return null;
 };
 
+// Labels share one fade, so a single tile tells when the rail has settled.
+const waitForLabelOpacity = (tile: HTMLElement, opacity: '0' | '1') =>
+  waitFor(() =>
+    expect(getComputedStyle(tile.querySelector('span')!).opacity).toBe(opacity)
+  );
+
+Rail.test(
+  'icons keep their vertical position when the rail collapses',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const rail = canvas.getByRole('navigation', { name: 'Hauptnavigation' });
+    const toggle = canvas.getByRole('button', {
+      name: 'Navigation umschalten',
+    });
+    // List and footer tiles alike.
+    const tiles = within(rail).getAllByRole('link');
+    const iconTops = () =>
+      tiles.map(tile =>
+        Math.round(tile.querySelector('svg')!.getBoundingClientRect().top)
+      );
+
+    const expanded = iconTops();
+
+    await step('collapse: no icon moves, mid-glide or settled', async () => {
+      await userEvent.click(toggle);
+      expect(toggle).toHaveAttribute('aria-expanded', 'false');
+      expect(iconTops()).toEqual(expanded);
+
+      await waitForLabelOpacity(tiles[0], '0');
+      expect(iconTops()).toEqual(expanded);
+      // Icon-only tiles stay a 44px WCAG 2.5.5 target.
+      tiles.forEach(tile =>
+        expect(tile.getBoundingClientRect().height).toBeGreaterThanOrEqual(44)
+      );
+    });
+
+    await step('expand: icons are back where they were', async () => {
+      await userEvent.click(toggle);
+      expect(toggle).toHaveAttribute('aria-expanded', 'true');
+
+      await waitForLabelOpacity(tiles[0], '1');
+      expect(iconTops()).toEqual(expanded);
+    });
+  }
+);
+
 // Overflow: nine tiles in a 25rem viewport. Both cues are scroll-state aware,
 // so a rail that fits shows no extra chrome.
 export const RailOverflow = meta.story({
@@ -615,20 +661,16 @@ RailOverflow.test(
     const rail = canvas.getByRole('navigation', { name: 'Hauptnavigation' });
     const firstItem = within(rail).getByRole('link', { name: 'Übersicht' });
 
-    // The label row folds over 200ms, and the list is at its tallest for that
-    // window. Wait for the row to reach 0px or the overflow below would pass
-    // on the mid-fold height whether or not the settled list overflows.
-    await waitFor(() => {
-      const rows = getComputedStyle(firstItem).gridTemplateRows.split(' ');
-      expect(rows[rows.length - 1]).toBe('0px');
-    });
+    // Wait for the label fade so the assertions below run on the settled
+    // icon-only rail, not on a mid-collapse frame.
+    await waitForLabelOpacity(firstItem, '0');
 
-    // Icon-only tiles are shorter, but nine of them still outgrow 25rem.
+    // Tiles keep their height when collapsed, so nine of them outgrow 25rem.
     const scroller = closestScrollable(firstItem);
 
     expect(scroller).not.toBeNull();
 
-    // The folded label stays the accessible name (opacity-0, not unmounted).
+    // The faded label stays the accessible name (opacity-0, not unmounted).
     const pinnedItem = within(rail).getByRole('link', { name: 'Hilfe-Center' });
 
     expect(scroller).not.toContainElement(pinnedItem);

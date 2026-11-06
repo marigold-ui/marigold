@@ -176,7 +176,7 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     base: [
       '[--rail-w:var(--spacing-rail)] data-[state=collapsed]:[--rail-w:var(--spacing-rail-collapsed)]',
       '[--panel-w:var(--spacing-rail-panel)] data-[panel=collapsed]:[--panel-w:0rem]',
-      // Same 200ms glide as the tiles' label fold (railItem).
+      // 200ms glide; railItem's label fade is timed against it.
       'transition-[grid-template-columns] duration-200 ease-in-out',
       'motion-reduce:transition-none',
     ],
@@ -213,42 +213,45 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'scroll-py-(--sc-mask-width) motion-safe:scroll-smooth',
     ],
   }),
-  // Stacked tile: icon above label, content-hugging so spacing is constant
-  // whatever the label wraps to. Collapsing folds the label row (1fr → 0fr) while
-  // py grows 2 → 3, keeping a 44px WCAG 2.5.5 target. The label fades rather than
-  // unmounts: opacity-0, not sr-only, keeps it as the accessible name.
+  // Stacked tile: icon above label. The label only fades when the rail
+  // collapses (opacity-0, not sr-only, keeps it as the accessible name), so the
+  // tile keeps its height and icons never move vertically. Every label reserves
+  // two lines, so tiles are uniform whatever the label wraps to.
   railItem: cva({
     base: [
       // Cap the column at tile width so the fixed-width label can't drag the
-      // icon off-center. Icon–label gap is a row-gap so it folds with the row
-      // (a margin/padding would leak into the 0fr track).
-      'grid grid-cols-[minmax(0,1fr)] justify-items-center mx-1 px-0.5 py-2',
-      'grid-rows-[auto_1fr] gap-y-1',
-      'in-data-[state=collapsed]:grid-rows-[auto_0fr] in-data-[state=collapsed]:gap-y-0',
-      'in-data-[state=collapsed]:py-3',
-      'transition-[grid-template-rows,row-gap,padding,color,background-color] duration-200 ease-in-out',
+      // icon off-center.
+      'grid grid-cols-[minmax(0,1fr)] justify-items-center mx-1 px-0.5 py-2 gap-y-1',
+      'transition-[color,background-color] duration-200 ease-in-out',
       'motion-reduce:transition-none',
       'text-secondary text-center cursor-pointer',
       'outline-none rounded-surface',
       'hover:text-foreground data-active:text-foreground',
+      // Icon pill: the padding paints a 36px marker, the negative margin keeps
+      // the layout box at 20px so the pill never shifts the icon.
+      '[&_svg]:size-5',
+      '[&_svg]:box-content [&_svg]:p-2 [&_svg]:-m-2 [&_svg]:rounded-surface',
+      '[&_svg]:transition-[background-color] [&_svg]:duration-200 [&_svg]:ease-in-out',
+      'motion-reduce:[&_svg]:transition-none',
       // Fill = current page, ink = ancestor. A section ancestor is ink-only
       // (its big tile would outweigh the leaf pill), except when the tile is
       // the sole marker: a direct-link page (`selected`) or the active section
       // on the collapsed rail (`hover`). Hover elsewhere is ink-lift only.
-      'in-data-[state=collapsed]:data-active:bg-hover',
-      'aria-[current=page]:bg-selected',
-      // Outer ring: the label fills the tile, an inset ring would hit it.
-      'focus-visible:ui-state-focus',
-      '[&_svg]:size-5 [&_svg]:shrink-0',
+      // Expanded, the label fills the tile; collapsed, only the icon pill is.
+      'not-in-data-[state=collapsed]:aria-[current=page]:bg-selected',
+      'in-data-[state=collapsed]:aria-[current=page]:[&_svg]:bg-selected',
+      'in-data-[state=collapsed]:data-active:[&_svg]:bg-hover',
+      // Outer ring, scoped like the fill: an inset ring would hit the label.
+      'not-in-data-[state=collapsed]:focus-visible:ui-state-focus',
+      'in-data-[state=collapsed]:focus-visible:[&_svg]:ui-state-focus',
       // Label: caption size. Fixed width = expanded rail minus tile chrome
       // (--spacing-rail − 0.75rem), from the token not the animating --rail-w so
-      // it can't re-wrap mid-collapse. min-h-0 + overflow-hidden let the 0fr
-      // row clip it.
-      '[&>span]:w-[calc(var(--spacing-rail)-0.75rem)] [&>span]:min-h-0 [&>span]:overflow-hidden',
+      // it can't re-wrap mid-collapse. Two-line slot.
+      '[&>span]:w-[calc(var(--spacing-rail)-0.75rem)] [&>span]:min-h-[2lh]',
       '[&>span]:text-[0.6875rem] [&>span]:font-medium [&>span]:leading-tight',
       // hyphens-auto needs a document `lang`.
       '[&>span]:break-words [&>span]:hyphens-auto',
-      // Fade out fast (no half-clipped text on the folding row), in late.
+      // Fade out fast (no text overhanging the narrowing rail), in late.
       '[&>span]:transition-opacity [&>span]:duration-150 [&>span]:delay-100 [&>span]:ease-out',
       'in-data-[state=collapsed]:[&>span]:opacity-0',
       'in-data-[state=collapsed]:[&>span]:duration-100',
