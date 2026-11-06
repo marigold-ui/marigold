@@ -10,6 +10,7 @@ import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { Columns } from '../Columns/Columns';
+import { Dialog } from '../Dialog/Dialog';
 import { EmptyState } from '../EmptyState/EmptyState';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { NumberField } from '../NumberField/NumberField';
@@ -1151,10 +1152,12 @@ export const ScrollableAndSticky = meta.story({
         <Scrollable height="400px">
           <Table aria-label="Todos Table" selectionMode="multiple" {...args}>
             <Table.Header sticky>
-              <Table.Column rowHeader>ID</Table.Column>
-              <Table.Column>Title</Table.Column>
-              <Table.Column>User</Table.Column>
-              <Table.Column>Completed</Table.Column>
+              <Table.Column rowHeader minWidth={80}>
+                ID
+              </Table.Column>
+              <Table.Column minWidth={200}>Title</Table.Column>
+              <Table.Column minWidth={100}>User</Table.Column>
+              <Table.Column minWidth={100}>Completed</Table.Column>
             </Table.Header>
             <Table.Body>
               {todos.map(todo => (
@@ -1207,6 +1210,58 @@ ScrollableAndSticky.test(
       const headerTop = thead.getBoundingClientRect().top;
       const containerTop = scrollContainer.getBoundingClientRect().top;
       expect(Math.abs(headerTop - containerTop)).toBeLessThan(5);
+    });
+  }
+);
+
+ScrollableAndSticky.test(
+  'Keeps the header sticky where the Scrollable takes the overflow',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    decorators: [
+      Story => (
+        <div className="w-[360px]">
+          <Story />
+        </div>
+      ),
+    ],
+  },
+  async ({ canvas, step }) => {
+    const table = canvas.getByRole('grid');
+    const scroll = table.closest<HTMLElement>('[data-scrollable]')!;
+    const header = canvas
+      .getByRole('columnheader', { name: 'ID' })
+      .closest('thead')!;
+
+    await step('the Table adds no scroll area of its own', async () => {
+      await waitFor(() =>
+        // A couple of pixels of slack, so a vertical scrollbar on its own
+        // doesn't read as sideways overflow.
+        expect(scroll.scrollWidth).toBeGreaterThan(scroll.clientWidth + 2)
+      );
+      // The `Scrollable` already contains the table and has a height for the
+      // header to pin to. A second scroll area here would become the
+      // scrollport instead, and the header would pin to that.
+      expect(table.closest('[data-scrolls]')).toBeNull();
+    });
+
+    await step('the header stays pinned through both axes', async () => {
+      scroll.scrollLeft = scroll.scrollWidth;
+      scroll.scrollTop = 150;
+
+      await waitFor(() => {
+        expect(scroll.scrollLeft).toBeGreaterThan(0);
+        expect(scroll.scrollTop).toBeGreaterThan(0);
+      });
+
+      // Sideways scrolling moves the header with the rows, downwards
+      // scrolling leaves it at the top edge of the `Scrollable`.
+      await waitFor(() =>
+        expect(header.getBoundingClientRect().top).toBeCloseTo(
+          scroll.getBoundingClientRect().top,
+          0
+        )
+      );
     });
   }
 );
@@ -1412,6 +1467,309 @@ FollowsParentWidth.test(
     } finally {
       await page.viewport(1280, 720);
     }
+  }
+);
+
+export const NarrowContainer = meta.story({
+  tags: ['component-test'],
+  parameters: { surface: false },
+  render: function Render(args) {
+    const organizers = [1, 2, 3].map(id => ({
+      id,
+      name: `Organizer ${id}`,
+      city: 'Freiburg im Breisgau',
+      email: `contact${id}@example.com`,
+    }));
+
+    const table = (label: string) => (
+      <Table aria-label={label} {...args}>
+        {/* Sticky, to show what the scroll area costs: the wide table's header
+            follows the page, the narrow one's has nothing left to pin to. */}
+        <Table.Header sticky>
+          <Table.Column rowHeader minWidth={160}>
+            Name
+          </Table.Column>
+          <Table.Column minWidth={140}>City</Table.Column>
+          <Table.Column minWidth={180}>Email</Table.Column>
+        </Table.Header>
+        <Table.Body>
+          {organizers.map(organizer => (
+            <Table.Row key={organizer.id}>
+              <Table.Cell>{organizer.name}</Table.Cell>
+              <Table.Cell>{organizer.city}</Table.Cell>
+              <Table.Cell>{organizer.email}</Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    );
+
+    return (
+      <Stack space={6}>
+        <div className="w-[320px]">
+          <Panel>
+            <Panel.Header>
+              <Title>320px</Title>
+            </Panel.Header>
+            <Panel.Content bleed>{table('Organizers at 320px')}</Panel.Content>
+          </Panel>
+        </div>
+        <Panel>
+          <Panel.Header>
+            <Title>Full width</Title>
+          </Panel.Header>
+          <Panel.Content bleed>
+            {table('Organizers at full width')}
+          </Panel.Content>
+        </Panel>
+      </Stack>
+    );
+  },
+});
+
+NarrowContainer.test(
+  'Scrolls inside a 320px container instead of painting over it',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    const table = canvas.getByRole('grid', { name: 'Organizers at 320px' });
+    const panel = table.closest<HTMLElement>('[data-panel]')!;
+    const scrollArea = () => table.closest<HTMLElement>('[data-scrolls]');
+
+    await step('the scroll area stays inside the panel', async () => {
+      await waitFor(() =>
+        expect(table.getBoundingClientRect().width).toBeGreaterThan(0)
+      );
+      // The table's own box is wider than the panel, which is the point: the
+      // scroll area clips it, so nothing paints past the panel's edge.
+      await waitFor(() => expect(scrollArea()).not.toBeNull());
+      expect(scrollArea()!.getBoundingClientRect().right).toBeLessThanOrEqual(
+        // 1px absorbs subpixel rounding.
+        panel.getBoundingClientRect().right + 1
+      );
+    });
+
+    await step('the hidden columns stay reachable by scrolling', () => {
+      const scroll = scrollArea()!;
+      expect(scroll.scrollWidth).toBeGreaterThan(scroll.clientWidth);
+
+      scroll.scrollLeft = scroll.scrollWidth;
+      expect(scroll.scrollLeft).toBeGreaterThan(0);
+    });
+
+    await step('the last column ends where the scroll area ends', async () => {
+      const scroll = scrollArea()!;
+      const lastColumn = within(table).getByRole('columnheader', {
+        name: 'Email',
+      });
+
+      // At the end of the scroll there is nothing left to reveal, so the last
+      // column's edge and the scroll area's edge are the same edge. A table
+      // that overflowed its area instead would leave the column past it.
+      await waitFor(() =>
+        expect(lastColumn.getBoundingClientRect().right).toBeCloseTo(
+          scroll.getBoundingClientRect().right,
+          0
+        )
+      );
+    });
+  }
+);
+
+NarrowContainer.test(
+  'Leaves a container that fits without a scroll area',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const narrow = canvas.getByRole('grid', { name: 'Organizers at 320px' });
+    const wide = canvas.getByRole('grid', {
+      name: 'Organizers at full width',
+    });
+
+    // Waiting for the narrow table to gain its scroll area is what proves the
+    // measurement has run. Both tables measure in the same commit, so by then
+    // the absence below is a decision rather than the initial render, where
+    // no table carries a scroll area yet.
+    await waitFor(() =>
+      expect(narrow.closest('[data-scrolls]')).not.toBeNull()
+    );
+
+    // A scroll container here would become the scrollport a `sticky` header
+    // and the ActionBar pin to, and stop both from following the page.
+    expect(wide.closest('[data-scrolls]')).toBeNull();
+  }
+);
+
+NarrowContainer.test(
+  'Costs a sticky header its anchor while the scroll area is on',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    const narrow = canvas.getByRole('grid', { name: 'Organizers at 320px' });
+    const wide = canvas.getByRole('grid', { name: 'Organizers at full width' });
+    const headerOf = (table: HTMLElement) =>
+      within(table)
+        .getByRole('columnheader', { name: 'Name' })
+        .closest('thead')!;
+
+    await waitFor(() =>
+      expect(narrow.closest('[data-scrolls]')).not.toBeNull()
+    );
+
+    await step('both headers still ask to stick', () => {
+      expect(headerOf(narrow)).toHaveClass('sticky');
+      expect(headerOf(wide)).toHaveClass('sticky');
+    });
+
+    await step('the narrow one has nothing left to pin to', () => {
+      const scroll = narrow.closest<HTMLElement>('[data-scrolls]')!;
+
+      // `overflow-x: auto` forces the used `overflow-y` to `auto`, so this box
+      // is the header's scrollport now. It is exactly as tall as its content,
+      // so the header has no travel and stops following the page. That is the
+      // documented cost of the scroll area, and a fix for it should land here
+      // as a failure rather than quietly.
+      expect(scroll.scrollHeight).toBe(scroll.clientHeight);
+    });
+
+    await step('the wide one still pins against the page', () => {
+      expect(wide.closest('[data-scrolls]')).toBeNull();
+    });
+  }
+);
+
+/**
+ * The `NarrowContainer` case in a real phone frame: the Storybook 320px
+ * viewport rather than a fixed box inside a wide canvas. The page is the width
+ * of the screen here, so the `Panel`, the scroll area and the `actionBar` sit
+ * where a phone puts them. The three columns need 480px, so the table scrolls
+ * sideways and the sticky header has nothing left to pin to.
+ */
+export const Mobile = meta.story({
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
+  // The story brings its own panel, and the decorator's would nest.
+  parameters: { surface: false },
+  render: args => {
+    const organizers = [1, 2, 3, 4, 5, 6].map(id => ({
+      id,
+      name: `Organizer ${id}`,
+      city: 'Freiburg im Breisgau',
+      email: `contact${id}@example.com`,
+    }));
+
+    return (
+      <Panel>
+        <Panel.Header>
+          <Title>Organizers</Title>
+        </Panel.Header>
+        <Panel.Content bleed>
+          <Table
+            aria-label="Organizers on a phone"
+            selectionMode="multiple"
+            actionBar={() => (
+              <ActionBar>
+                <Button>Delete</Button>
+              </ActionBar>
+            )}
+            {...args}
+          >
+            <Table.Header sticky>
+              <Table.Column rowHeader minWidth={160}>
+                Name
+              </Table.Column>
+              <Table.Column minWidth={140}>City</Table.Column>
+              <Table.Column minWidth={180}>Email</Table.Column>
+            </Table.Header>
+            <Table.Body>
+              {organizers.map(organizer => (
+                <Table.Row key={organizer.id}>
+                  <Table.Cell>{organizer.name}</Table.Cell>
+                  <Table.Cell>{organizer.city}</Table.Cell>
+                  <Table.Cell>{organizer.email}</Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+        </Panel.Content>
+      </Panel>
+    );
+  },
+});
+
+/**
+ * Regression story for the scroll guard. `DialogContent` scrolls vertically,
+ * and CSS computes its `overflow-x` to `auto` along with it, so a guard that
+ * read the style alone took the dialog for a sideways scroll area and left the
+ * table to overflow the panel, which is the bug this ticket is about.
+ */
+export const InsideDialog = meta.story({
+  tags: ['component-test'],
+  parameters: { surface: false },
+  render: args => (
+    <Dialog.Trigger>
+      <Button variant="primary">Open</Button>
+      <Dialog size="xsmall" closeButton>
+        <Dialog.Title>Organizers</Dialog.Title>
+        <Dialog.Content>
+          <Panel>
+            <Panel.Content bleed>
+              <Table aria-label="Organizers in a dialog" {...args}>
+                {/* 600px of columns in a 480px dialog, so the table has to
+                    take the overflow somewhere. */}
+                <Table.Header>
+                  <Table.Column rowHeader minWidth={160}>
+                    Name
+                  </Table.Column>
+                  <Table.Column minWidth={140}>City</Table.Column>
+                  <Table.Column minWidth={180}>Email</Table.Column>
+                  <Table.Column minWidth={120}>Role</Table.Column>
+                </Table.Header>
+                <Table.Body>
+                  {[1, 2, 3].map(id => (
+                    <Table.Row key={id}>
+                      <Table.Cell>{`Organizer ${id}`}</Table.Cell>
+                      <Table.Cell>Freiburg im Breisgau</Table.Cell>
+                      <Table.Cell>{`contact${id}@example.com`}</Table.Cell>
+                      <Table.Cell>Owner</Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table>
+            </Panel.Content>
+          </Panel>
+        </Dialog.Content>
+      </Dialog>
+    </Dialog.Trigger>
+  ),
+});
+
+InsideDialog.test(
+  'Scrolls inside the panel rather than sliding the dialog sideways',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+
+    const table = await waitFor(() =>
+      canvas.getByRole('grid', { name: 'Organizers in a dialog' })
+    );
+    const panel = table.closest<HTMLElement>('[data-panel]')!;
+
+    await step('the Table takes the overflow itself', async () => {
+      // The dialog reports `overflow-x: auto` without being a sideways scroll
+      // area, so the table cannot hand its overflow over to it.
+      await waitFor(() =>
+        expect(table.closest('[data-scrolls]')).not.toBeNull()
+      );
+    });
+
+    await step('nothing paints across the panel', () => {
+      const scroll = table.closest<HTMLElement>('[data-scrolls]')!;
+
+      expect(scroll.scrollWidth).toBeGreaterThan(scroll.clientWidth);
+      expect(scroll.getBoundingClientRect().right).toBeLessThanOrEqual(
+        // 1px absorbs subpixel rounding.
+        panel.getBoundingClientRect().right + 1
+      );
+    });
   }
 );
 
