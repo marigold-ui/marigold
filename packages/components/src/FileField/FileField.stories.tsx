@@ -85,13 +85,13 @@ Basic.test(
       canvas.queryByText('Drop files here', { exact: true })
     ).toBeInTheDocument();
 
-    await expect(
-      canvas.queryByRole('button', { name: 'Upload' })
-    ).toBeInTheDocument();
+    // The trigger is named by the field label, then its own text.
+    const trigger = canvas.queryByRole('button', {
+      name: 'Upload file Upload',
+    });
 
-    await expect(
-      canvas.queryByRole('button', { name: 'Upload' })
-    ).toHaveTextContent('Upload');
+    await expect(trigger).toBeInTheDocument();
+    await expect(trigger).toHaveTextContent('Upload');
   }
 );
 

@@ -3,6 +3,7 @@ import type RAC from 'react-aria-components';
 import { DropZone } from 'react-aria-components/DropZone';
 import { FieldErrorContext } from 'react-aria-components/FieldError';
 import { FormContext } from 'react-aria-components/Form';
+import { LabelContext } from 'react-aria-components/Label';
 import { TextContext } from 'react-aria-components/Text';
 import { VisuallyHidden } from 'react-aria-components/VisuallyHidden';
 import { Provider, useSlottedContext } from 'react-aria-components/slots';
@@ -26,6 +27,7 @@ import type { ValidationError } from '@react-types/shared';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, type FieldBaseProps } from '../FieldBase/FieldBase';
 import { intlMessages } from '../intl/messages';
+import { useAddonDescription } from '../utils/useLabelAddon';
 import { FileFieldItem } from './FileFieldItem';
 import { FileTrigger, type FileTriggerProps } from './FileTrigger';
 import {
@@ -274,20 +276,37 @@ export const FileField = ({
     }
   };
 
-  const { fieldProps, descriptionProps, errorMessageProps } = useField({
-    label,
-    description,
-    errorMessage,
-    isInvalid: displayValidation.isInvalid,
-    'aria-describedby': ariaDescribedBy,
-  });
-  const describedBy = fieldProps['aria-describedby'];
+  const { labelProps, fieldProps, descriptionProps, errorMessageProps } =
+    useField({
+      label,
+      description,
+      errorMessage,
+      isInvalid: displayValidation.isInvalid,
+      'aria-label': props['aria-label'],
+      'aria-labelledby': props['aria-labelledby'],
+      'aria-describedby': ariaDescribedBy,
+    });
+  const isSmall = size === 'small';
+
+  // The trigger that gets focus is named by the field label and described by
+  // the addon's static content, like every other field (DST-1747).
+  const { addonId, describedBy } = useAddonDescription(
+    addon,
+    fieldProps['aria-describedby']
+  );
+  // `useField` joins the label id with the consumer's `aria-labelledby`. In
+  // `small` the button is the only control, so it takes both.
+  const triggerLabelledBy = isSmall
+    ? fieldProps['aria-labelledby']
+    : labelProps.id;
 
   const fileTriggerProps: FileTriggerProps = {
     acceptedFileTypes: accept,
     allowsMultiple: multiple,
     onSelect: handleSelect,
     ref: triggerRef,
+    'aria-label': isSmall ? props['aria-label'] : undefined,
+    'aria-labelledby': triggerLabelledBy,
     'aria-describedby': describedBy,
     label: buttonLabel,
     disabled,
@@ -299,13 +318,12 @@ export const FileField = ({
     variant,
   });
 
-  const isSmall = size === 'small';
-
   return (
     <Provider
       values={[
         [FieldErrorContext, displayValidation],
         [FormContext, { ...formCtx, validationBehavior }],
+        [LabelContext, { id: labelProps.id }],
         [
           TextContext,
           {
@@ -322,6 +340,7 @@ export const FileField = ({
         width={width}
         label={label}
         addon={addon}
+        addonId={addonId}
         className={classNames.container}
         description={description}
         errorMessage={errorMessage}
@@ -329,7 +348,7 @@ export const FileField = ({
         isRequired={required}
         isDisabled={disabled}
         {...(isSmall && {
-          ...filterDOMProps(props, { labelable: true }),
+          ...filterDOMProps(props),
           slot: props.slot ?? undefined,
         })}
       >
@@ -343,7 +362,11 @@ export const FileField = ({
               isDisabled={disabled}
               className={classNames.dropZone}
               data-testid="dropzone"
-              aria-describedby={describedBy}
+              // RAC puts these on the proxy button that takes focus. It
+              // forwards no `aria-describedby`, so the upload button inside
+              // carries the description.
+              aria-label={props['aria-label'] ?? dropZoneLabel}
+              aria-labelledby={fieldProps['aria-labelledby']}
             >
               <div className={classNames.dropZoneContent}>
                 <p className={classNames.dropZoneLabel}>{dropZoneLabel}</p>
