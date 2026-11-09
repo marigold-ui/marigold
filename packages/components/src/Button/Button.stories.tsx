@@ -60,8 +60,7 @@ const meta = preview.meta({
         'destructive',
         'destructive-ghost',
         'ghost',
-        'icon',
-        'text',
+        'link',
       ],
       description: 'Variant of the button',
     },
@@ -294,6 +293,30 @@ ButtonVariants.test(
 
         await expect(button).toHaveFocus();
         await waitFor(() => expectFocusRingContrast(button!));
+      });
+    }
+  }
+);
+
+ButtonVariants.test(
+  'Keyboard focus leaves room between the link label and its ring',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent, step }) => {
+    const links = await canvas.findAllByRole('button', { name: 'Link' });
+    for (const [index, link] of links.entries()) {
+      await step(index === 0 ? 'On surface' : 'On page', async () => {
+        link.focus();
+        await userEvent.tab();
+        await userEvent.tab({ shift: true });
+
+        const range = document.createRange();
+        range.selectNodeContents(link);
+        const gap =
+          range.getBoundingClientRect().left -
+          link.getBoundingClientRect().left;
+        await expect(link).toHaveFocus();
+        expect(gap).toBeGreaterThanOrEqual(4);
+        await waitFor(() => expectFocusRingContrast(link));
       });
     }
   }

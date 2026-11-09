@@ -1,5 +1,75 @@
 # @marigold/components
 
+## 18.3.1
+
+### Patch Changes
+
+- 5288355: chore(DST-1309): move the style-prop class maps into `@marigold/components`
+
+  The class names behind props such as `weight`, `align`, `verticalAlign`, `ratio` and `cursor` used to be defined only in `@marigold/system`. Tailwind generated CSS for them only when it scanned that package, so styling quietly depended on `@marigold/system` being installed directly. The 12 maps (`alignment`, `textAlign`, `verticalAlign`, `placeItems`, `aspect`, `fontWeight`, `textSize`, `textStyle`, `textWrap`, `whiteSpace`, `lineHeight`, `cursorStyle`) now live in `@marigold/components`, next to the components that use them.
+
+  Component props and the classes they render are unchanged. The `*Prop` types stay exported from `@marigold/system`. `fontWeight` and `textSize` stay exported too, because apps import them directly, but they are deprecated and will be removed in the next major. The other 10 maps are no longer exported. They were marked internal, so no consumer code should depend on them.
+
+- fa1aa20: Fix auto-collapsing `Breadcrumbs` not collapsing when all but one crumb fits.
+
+  At widths where auto-collapse found room for every crumb except one, it asked for as many visible slots as there are crumbs. That reads as "nothing to collapse", so the full trail rendered and the current crumb was truncated to fit. Auto-collapse now reports "everything fits" separately from a slot count, so the collapse it decided on actually happens and the current crumb stays readable. Surfaced by `TopNavigation` at the 320px minimum supported width.
+
+  One visible change beyond that: a two crumb trail too narrow for both crumbs now collapses to `… > Event Details` where it used to render `Home > Event Det…`. Trails of three crumbs or more are unaffected.
+
+- 164a8cd: fix(DST-1813): stop the Table's ActionBar from leaving an empty strip below it
+
+  While rows were selected, the Table made room for its ActionBar twice: the bar's own slot below the last row and, on top of that, a bottom padding of the same height. The panel around the table grew by about 128px, and half of that was empty space below the bar. The padding is gone. The Table now keeps room for the bar and an 8px gap only, and that room slides open and closed, so the content after the table moves smoothly instead of jumping.
+
+  The bar still never covers the rows or whatever follows the table, such as a pagination, and it still pins to the bottom of the screen or of a `Scrollable` while the table scrolls past. Keyboard focus now also keeps the focused row clear of the pinned bar on a scrolling page, where the previous `scroll-padding-bottom` on the table had no effect.
+
+  The ActionBar and ListView docs describe the new behaviour, and the ListView bulk actions example drops its own bottom padding.
+
+  The slide is themeable through the new `actionBarSpacer` slot on `Table`. `theme-rui` sets a 200ms height transition, and themes without the slot fall back to the room snapping into place.
+
+- 84c7a60: fix(Table): center the selection checkbox and drag handle on the first line of text
+
+  With `alignY="top"`, the row's selection checkbox and drag handle sat 2px above the text in the neighbouring cells. The 16px control shared the cell's top edge with a 20px line of text, so their centers did not match. `bottom` was off by the same amount in the other direction, and `baseline` by 3px.
+
+  Both controls now sit in a box that is exactly one line of the cell's text tall, so every `alignY` value centers them on the neighbouring text's line, at every table size. Row heights are unchanged, except with `baseline`, where the misaligned control used to push the row 1px taller.
+
+- 43b619c: fix(DSTSUP-282): show the Sidebar toggle chevron and the Accordion, Panel and Table carets in Safari
+
+  Both icons drew their path only through the CSS `d` property, which Safari does not support, so the arrow was missing. The path now also carries a `d` attribute. Browsers that support CSS `d` still animate between states.
+
+- c60cb28: fix(DSTSUP-287): show Dialog dividers only where the content is cut off
+
+  The divider under the Dialog title and the divider above `Dialog.Actions` now follow the same rule: each one shows only where the content is cut off by scrolling. Before, the title divider faded in once the content scrolled, but the actions divider was always shown, so a dialog that fit its content had a line above the actions and none under the title. Content that fits now shows no dividers. A fullscreen dialog always shows both, because it often scrolls an inner region, such as a table, which the dividers cannot detect. In browsers without scroll-driven animations (Firefox today), both dividers are always shown.
+
+  A dialog with only a title and actions has no divider, a `ConfirmationDialog` without `children` no longer leaves a blank band, and a dialog without a title has no divider at its top edge. A bare `Dialog.Title` and a `Dialog.Header` now space the title the same way.
+
+  Both dividers are scroll-revealed seams again: the title keeps `ui-scroll-seam-header` and `Dialog.Actions` now uses `ui-scroll-seam-footer`, like the Sidebar footer. `ui-scroll-seam-header` honors `--seam-fallback-color` like the footer seam. The header, content and actions of Dialog, Drawer and Tray carry a `data-slot` attribute (`header`, `content`, `actions`).
+
+- e08584c: fix(Menu): make the trigger match ghost buttons inside button containers
+
+  A labelled `Menu` in an `ActionBar` did not look or hover like the `Button`s next to it. Two things were off.
+
+  The trigger's `ghost` variant hovered with the opaque `ui-state-hover`, a light fill with dark text, while a ghost `Button` uses the translucent `ui-state-hover-ghost`. On the dark ActionBar the trigger lit up as a light block. It now uses `ui-state-hover-ghost` as well.
+
+  The trigger also ignored the context that button containers pass to their buttons, so it kept the default look unless `variant="ghost"` was set by hand. It now takes that context like `Button` and `ActionMenu` do: the `ghost` variant, the size, the disabled state and the container's placement class reach it inside `ActionBar`, `ButtonGroup`, `Panel.Header`, `Accordion` header actions, `SelectList` and `ListView`. A `variant` or `size` set on the `Menu` still wins. The trigger only has a `default` and a `ghost` look, so any other variant a container passes down, such as the `secondary` a `ButtonGroup` uses, keeps the default look.
+
+- 545a06b: Fix auto-collapsing `Breadcrumbs` shrinking to `… > current page` although the full trail fits.
+
+  Auto-collapse measured each crumb at the surrounding font size instead of the trail's own, so crumbs read about 10% too wide at the `small` and `default` sizes. In a slot sized by its content, such as `TopNavigation.Start`, each collapse also made the slot narrower, so the trail kept collapsing and never expanded again. Crumbs are now measured at the size they render, and the slot keeps room for the full trail, so it shows every crumb that fits and expands again when space comes back.
+
+- b3d5ae0: fix(DSTSUP-293): keep long Dialog and Drawer titles clear of the close button
+
+  With `closeButton`, the header now reserves the close button's width plus a gap on its end side, so a long title wraps before the button instead of running under it. Headers without a close button keep their even padding.
+
+- 3f4df0f: Development warnings no longer repeat on every render.
+
+  - `Card` warns about a missing accessible name once per card, and no longer warns for cards hidden from assistive technology (`aria-hidden` or `inert` on the card or an ancestor), cards labelled with `aria-labelledby` or cards with an overridden `role`. The message no longer calls the card's `article` a landmark.
+  - `Dialog`, `CloseButton`, `Dialog.Description`, `Drawer.Description`, `Tray.Description` and `Tabs` warn once per instance.
+  - `OverlayContainerProvider` warns once per missing container id, and `Sidebar` once per duplicate `href`.
+
+- Updated dependencies [5288355]
+- Updated dependencies [164a8cd]
+  - @marigold/system@18.3.1
+
 ## 18.3.0
 
 ### Minor Changes

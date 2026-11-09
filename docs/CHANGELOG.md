@@ -1,5 +1,54 @@
 # @marigold/docs
 
+## 18.3.1
+
+### Patch Changes
+
+- 7354d61: fix(DST-1733): give every keyboard focus indicator at least 3:1 contrast
+
+  Keyboard focus now comes from exactly two utilities, and both clear the 3:1 that WCAG 2.1 SC 1.4.11 asks of a focus indicator.
+
+  - **`ui-state-focus`** draws a 1px ring in `--color-ring` with a soft halo around it. Before, it only recolored an edge the component had to draw itself, and on anything without one only the halo was left, at 2.08:1. It now draws the edge too. Framed controls such as inputs, selects, tags and the primary and secondary buttons look the same as before, because they already drew this ring. Ghost buttons, close buttons, Checkbox, Radio, Switch, Slider thumbs, the ActionBar's clear button, Calendar navigation buttons, the ContextualHelp trigger, the Table's drag handle and edit buttons, and Sidebar rail items now get the same ring, as does every other component that builds on `ui-interactive`. Checkbox no longer recolors its own border on focus, the ring sits outside it instead.
+  - **`ui-state-focus-item`**, the full-opacity inset ring that Menu and Tabs already use, now marks focus on rows and list items: Accordion headers, the Panel's collapsible header, Calendar month and year options, and Sidebar links and the back button.
+
+  The Calendar month and year triggers are now drawn like a `Select`. The ContextualHelp trigger tints on hover like a ghost button instead of showing the focus halo.
+
+  The token overview's focus highlight section now names the same rule: `ui-state-focus` on buttons and controls, `ui-state-focus-item` on rows and list items.
+
+  The ContextualHelp trigger, the Collapsible trigger and Stepper step links grow around the same icon or label, so the ring does not sit on their content and nothing moves. A standalone Accordion, outside a bled Panel, now insets its header and content by 8px, so the header's ring has room and the title stays aligned with the content.
+
+- 164a8cd: fix(DST-1813): stop the Table's ActionBar from leaving an empty strip below it
+
+  While rows were selected, the Table made room for its ActionBar twice: the bar's own slot below the last row and, on top of that, a bottom padding of the same height. The panel around the table grew by about 128px, and half of that was empty space below the bar. The padding is gone. The Table now keeps room for the bar and an 8px gap only, and that room slides open and closed, so the content after the table moves smoothly instead of jumping.
+
+  The bar still never covers the rows or whatever follows the table, such as a pagination, and it still pins to the bottom of the screen or of a `Scrollable` while the table scrolls past. Keyboard focus now also keeps the focused row clear of the pinned bar on a scrolling page, where the previous `scroll-padding-bottom` on the table had no effect.
+
+  The ActionBar and ListView docs describe the new behaviour, and the ListView bulk actions example drops its own bottom padding.
+
+  The slide is themeable through the new `actionBarSpacer` slot on `Table`. `theme-rui` sets a 200ms height transition, and themes without the slot fall back to the room snapping into place.
+
+- 9cbf57c: docs(DST-1878): restore the Links section on the Table page
+
+  The Table page explains again when to put a link in a table and which `<Link>` variant to use. The section was lost during the docs migration. A table has many rows, so a link on each row's name repeats down the whole column: the section now recommends `variant="secondary"` for these and shows it with an events table. The standard `<Link>` is for supporting details that point away from the table, shown with venue websites that open in a new tab. The section also points to `textValue` for cells that hold a link, and notes that links opening a new window mark themselves. The Link page's variant table and the Sidebar detail page demo follow the same guidance.
+
+- Updated dependencies [5288355]
+- Updated dependencies [fa1aa20]
+- Updated dependencies [c41a890]
+- Updated dependencies [7354d61]
+- Updated dependencies [164a8cd]
+- Updated dependencies [84c7a60]
+- Updated dependencies [43b619c]
+- Updated dependencies [c60cb28]
+- Updated dependencies [e08584c]
+- Updated dependencies [117f12f]
+- Updated dependencies [545a06b]
+- Updated dependencies [b3d5ae0]
+- Updated dependencies [3f4df0f]
+  - @marigold/system@18.3.1
+  - @marigold/components@18.3.1
+  - @marigold/theme-rui@6.2.2
+  - @marigold/icons@2.0.4
+
 ## 18.3.0
 
 ### Patch Changes

@@ -1,11 +1,16 @@
 import { Children, Fragment, isValidElement } from 'react';
 import type { ReactElement, ReactNode } from 'react';
-import type { SidebarGroupLabelProps, SidebarItemProps } from './SidebarItem';
+import type {
+  SidebarGroupLabelProps,
+  SidebarItemIconProps,
+  SidebarItemProps,
+} from './SidebarItem';
 
 export interface SidebarItemNode {
   type: 'item';
   key: string;
   textValue: string;
+  icon?: ReactNode;
   triggerContent: ReactNode[];
   children: SidebarNode[];
   href?: string;
@@ -51,6 +56,13 @@ const isSidebarGroupLabel = (
   (child.type as { __SIDEBAR_GROUP_LABEL__?: boolean })
     .__SIDEBAR_GROUP_LABEL__ === true;
 
+const isSidebarItemIcon = (
+  child: ReactNode
+): child is ReactElement<SidebarItemIconProps> =>
+  isValidElement(child) &&
+  (child.type as { __SIDEBAR_ITEM_ICON__?: boolean }).__SIDEBAR_ITEM_ICON__ ===
+    true;
+
 /**
  * Flatten children like `Children.toArray`, but additionally unwrap
  * `<Fragment>`s: `toArray` treats a fragment as a single opaque element, so
@@ -89,17 +101,25 @@ export const extractTextValue = (children: readonly ReactNode[]): string => {
 /**
  * Separate children of a SidebarItem into:
  * - itemChildren: nested SidebarItem/SidebarSeparator elements (become sub-panel)
+ * - icon: the internal `SidebarItemIcon` marker's content (leading row icon)
  * - triggerContent: everything else (rendered in parent panel row)
  */
 const separateChildren = (
   children: ReactNode
-): { itemChildren: ReactNode[]; triggerContent: ReactNode[] } => {
+): {
+  itemChildren: ReactNode[];
+  triggerContent: ReactNode[];
+  icon?: ReactNode;
+} => {
   const itemChildren: ReactNode[] = [];
   const triggerContent: ReactNode[] = [];
+  let icon: ReactNode | undefined;
 
   const flat = flattenChildren(children);
   for (const child of flat) {
-    if (
+    if (isSidebarItemIcon(child)) {
+      icon = child.props.children;
+    } else if (
       isSidebarItem(child) ||
       isSidebarSeparator(child) ||
       isSidebarGroupLabel(child)
@@ -110,7 +130,7 @@ const separateChildren = (
     }
   }
 
-  return { itemChildren, triggerContent };
+  return { itemChildren, triggerContent, icon };
 };
 
 export const firstLeafHref = (nodes: SidebarNode[]): string | undefined => {
@@ -301,23 +321,24 @@ export const applyCurrent = (
   walk(collection.rootNodes);
 };
 
+/** True when any item in `nodes`, at any depth, is the current page. */
+export const containsActive = (nodes: SidebarNode[]): boolean => {
+  for (const node of nodes) {
+    if (node.type !== 'item') continue;
+    if (node.active) return true;
+    if (node.children.length > 0 && containsActive(node.children)) return true;
+  }
+  return false;
+};
+
 export const findActiveBranch = (
   collection: SidebarCollection
 ): string | null => {
-  const hasActive = (nodes: SidebarNode[]): boolean => {
-    for (const node of nodes) {
-      if (node.type !== 'item') continue;
-      if (node.active) return true;
-      if (node.children.length > 0 && hasActive(node.children)) return true;
-    }
-    return false;
-  };
-
   for (const node of collection.rootNodes) {
     if (
       node.type === 'item' &&
       node.children.length > 0 &&
-      hasActive(node.children)
+      containsActive(node.children)
     ) {
       return node.key;
     }
@@ -356,7 +377,7 @@ const buildNodes = (
     }
 
     if (isSidebarItem(child)) {
-      const { itemChildren, triggerContent } = separateChildren(
+      const { itemChildren, triggerContent, icon } = separateChildren(
         child.props.children
       );
 
@@ -371,6 +392,7 @@ const buildNodes = (
         type: 'item',
         key,
         textValue,
+        icon,
         triggerContent,
         children: childNodes,
         href: child.props.href ?? firstLeafHref(childNodes),

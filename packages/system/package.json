@@ -1,6 +1,6 @@
 {
   "name": "@marigold/system",
-  "version": "18.3.0",
+  "version": "18.3.1",
   "description": "Marigold System Library",
   "license": "MIT",
   "keywords": [
@@ -52,12 +52,12 @@
     "react-dom": ">=17.0.0"
   },
   "devDependencies": {
-    "@babel/core": "8.0.7",
+    "@babel/core": "8.0.10",
     "@marigold/tsconfig": "workspace:*",
     "@types/react": "19.3.0",
     "react": "^19.2.8",
     "tailwindcss": "4.3.3",
-    "tsdown": "0.23.1"
+    "tsdown": "0.23.4"
   },
   "scripts": {
     "build": "tsdown src/index.ts",

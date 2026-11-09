@@ -3,8 +3,10 @@ name: Format
 on: ['push']
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # On a branch a new push makes the old run moot, so cancel it. On main every
+  # merge is its own commit that needs a verdict, so each gets its own group.
+  group: ${{ github.workflow }}-${{ github.ref }}${{ github.ref == 'refs/heads/main' && format('-{0}', github.sha) || '' }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   format:
@@ -15,7 +17,7 @@ jobs:
     steps:
       # Setup
       - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6.1.0 # Uses version from package.json#packageManager
+      - uses: pnpm/action-setup@v6.1.1 # Uses version from package.json#packageManager
       - name: Setup Node (using .node-version)
         uses: actions/setup-node@v6
         with:

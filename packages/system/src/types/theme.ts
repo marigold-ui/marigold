@@ -167,7 +167,11 @@ export type Theme = {
       | 'indicator'
       | 'actions',
       ComponentStyleFunction<string, string>
-    >;
+    > & {
+      container?: ComponentStyleFunction<string, string>;
+      header?: ComponentStyleFunction<string, string>;
+      count?: ComponentStyleFunction<string, string>;
+    };
     Menu?: Record<
       | 'container'
       | 'section'
@@ -235,7 +239,10 @@ export type Theme = {
       | 'indicator'
       | 'action',
       ComponentStyleFunction<string, string>
-    >;
+    > & {
+      header?: ComponentStyleFunction<string, string>;
+      count?: ComponentStyleFunction<string, string>;
+    };
     NumberField?: Record<
       'group' | 'stepper' | 'input',
       ComponentStyleFunction<string, string>

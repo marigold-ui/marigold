@@ -1,6 +1,6 @@
 import { ArrowLeft } from 'lucide-react';
 import type { ReactNode } from 'react';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
@@ -484,3 +484,139 @@ Basic.test(
     await waitFor(() => expectInsetFocusRingContrast(back));
   }
 );
+
+// A nav that outgrows the viewport: seven groups, ~35 flat rows. This is the
+// shape a mature back office ends up with, and the case the single column's
+// hierarchy has to hold up against: groups must still read as groups once the
+// list is longer than the screen, and the active row must stay findable.
+const longNavGroups: { label?: string; items: [string, string][] }[] = [
+  {
+    items: [
+      ['/dashboard', 'Dashboard'],
+      ['/inbox', 'Inbox'],
+    ],
+  },
+  {
+    label: 'Events',
+    items: [
+      ['/events/upcoming', 'Upcoming events'],
+      ['/events/past', 'Past events'],
+      ['/events/series', 'Event series'],
+      ['/events/venues', 'Venues'],
+      ['/events/seating', 'Seating plans'],
+    ],
+  },
+  {
+    label: 'Ticketing',
+    items: [
+      ['/ticketing/orders', 'Orders'],
+      ['/ticketing/tickets', 'Tickets'],
+      ['/ticketing/refunds', 'Refunds'],
+      ['/ticketing/vouchers', 'Vouchers'],
+      ['/ticketing/price-categories', 'Price categories'],
+    ],
+  },
+  {
+    label: 'Sales',
+    items: [
+      ['/sales/box-office', 'Box office'],
+      ['/sales/shop', 'Online shop'],
+      ['/sales/resellers', 'Resellers'],
+      ['/sales/presale', 'Presale points'],
+    ],
+  },
+  {
+    label: 'Customers',
+    items: [
+      ['/customers/contacts', 'Contacts'],
+      ['/customers/companies', 'Companies'],
+      ['/customers/segments', 'Segments'],
+      ['/customers/newsletter', 'Newsletter'],
+    ],
+  },
+  {
+    label: 'Marketing',
+    items: [
+      ['/marketing/campaigns', 'Campaigns'],
+      ['/marketing/promo-codes', 'Promo codes'],
+      ['/marketing/landing-pages', 'Landing pages'],
+      ['/marketing/tracking', 'Tracking'],
+    ],
+  },
+  {
+    label: 'Finance',
+    items: [
+      ['/finance/invoices', 'Invoices'],
+      ['/finance/payouts', 'Payouts'],
+      ['/finance/settlements', 'Settlements'],
+      ['/finance/tax-reports', 'Tax reports'],
+    ],
+  },
+  {
+    label: 'Settings',
+    items: [
+      ['/settings/general', 'General'],
+      ['/settings/team', 'Team'],
+      ['/settings/roles', 'Roles'],
+      ['/settings/integrations', 'Integrations'],
+      ['/settings/api-keys', 'API keys'],
+    ],
+  },
+];
+
+const longNavPages = Object.fromEntries(
+  longNavGroups.flatMap(group => group.items)
+);
+
+const LongNavigationExample = ({
+  initialPath = '/ticketing/orders',
+}: {
+  initialPath?: string;
+}) => {
+  const [currentPath, setCurrentPath] = useState(initialPath);
+
+  return (
+    <RouterProvider navigate={setCurrentPath}>
+      <I18nProvider locale="en-US">
+        <Sidebar.Provider>
+          <div className="flex h-screen">
+            <Sidebar>
+              <Sidebar.Header>
+                <Text weight="bold">Acme Tickets</Text>
+              </Sidebar.Header>
+              <Sidebar.Nav current={currentPath}>
+                {longNavGroups.map(group => (
+                  <Fragment key={group.label ?? 'top'}>
+                    {group.label && (
+                      <Sidebar.GroupLabel>{group.label}</Sidebar.GroupLabel>
+                    )}
+                    {group.items.map(([href, label]) => (
+                      <Sidebar.Item key={href} href={href}>
+                        {label}
+                      </Sidebar.Item>
+                    ))}
+                  </Fragment>
+                ))}
+              </Sidebar.Nav>
+              <Sidebar.Footer>
+                <Text fontSize="xs">Footer content</Text>
+              </Sidebar.Footer>
+            </Sidebar>
+            <main className="flex-1 p-4">
+              <Sidebar.Toggle />
+              <Headline level={2}>{longNavPages[currentPath]}</Headline>
+              <Text>
+                You are viewing the <strong>{longNavPages[currentPath]}</strong>{' '}
+                page.
+              </Text>
+            </main>
+          </div>
+        </Sidebar.Provider>
+      </I18nProvider>
+    </RouterProvider>
+  );
+};
+
+export const LongNavigation = meta.story({
+  render: () => <LongNavigationExample />,
+});

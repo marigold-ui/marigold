@@ -1,0 +1,65 @@
+---
+title: Marigold v18.3.1
+date: 2026-10-23
+type: Blog
+changed:
+  - foundations/token-overview
+  - components/collection/table
+  - components/collection/actionbar
+  - components/collection/listview
+  - components/actions/link
+  - components/overlay/dialog
+  - components/navigation/breadcrumbs
+---
+
+v18.3.1 is a polish release. Every keyboard focus indicator now meets the 3:1 contrast WCAG asks for, the `<Table>` stops leaving an empty strip under its `<ActionBar>`, and `<Dialog>` dividers only show up when there is something to scroll. The rest is a long list of fixes for breadcrumbs, Safari, small screens and headers.
+
+## Components
+
+### Focus you can see
+
+Keyboard focus now comes from exactly two utilities, and both clear the 3:1 contrast that WCAG 2.1 SC 1.4.11 asks of a focus indicator.
+
+- **`ui-state-focus`** draws a 1px ring with a soft halo on buttons and controls. Before, it only recolored an edge the component had to draw itself. On anything without an edge only the halo was left, at 2.08:1. Inputs, selects, tags and primary and secondary buttons look the same as before. Ghost buttons, close buttons, `<Checkbox>`, `<Radio>`, `<Switch>`, slider thumbs, calendar navigation, the `<ContextualHelp>` trigger, table drag handles and edit buttons, and sidebar rail items now get the same ring.
+- **`ui-state-focus-item`**, the inset ring `<Menu>` and `<Tabs>` already use, now marks focus on rows and list items: accordion headers, the collapsible `<Panel>` header, calendar month and year options, and sidebar links.
+
+A few things move as a result. The calendar month and year triggers are drawn like a `<Select>`. A standalone `<Accordion>`, outside a bled `<Panel>`, insets its header and content by 8px, so the ring has room. The [token overview](/foundations/token-overview) describes the same rule.
+
+### Table and ActionBar
+
+While rows were selected, the [`<Table>`](/components/collection/table) made room for its [`<ActionBar>`](/components/collection/actionbar) twice, and about 64px of empty space showed up below the bar. The table now keeps room for the bar and an 8px gap only, and that room slides open and closed, so the content after the table no longer jumps.
+
+The bar still never covers the rows or a pagination below the table, and it still pins to the bottom of the screen while the table scrolls. Keyboard focus now keeps the focused row clear of the pinned bar on a scrolling page too. Themes can style the slide through the new `actionBarSpacer` slot on `Table`.
+
+### Dialog dividers
+
+The divider under the [`<Dialog>`](/components/overlay/dialog) title and the one above `<Dialog.Actions>` now follow the same rule: each shows only where scrolling cuts off the content. A dialog that fits its content has no dividers at all. A fullscreen dialog always shows both, because it often scrolls an inner region, like a table. Firefox does not support scroll-driven animations yet, so it always shows both.
+
+A `<ConfirmationDialog>` without `children` no longer leaves a blank band, and `<Dialog.Title>` and `<Dialog.Header>` space the title the same way.
+
+## Bug fixes
+
+- **Breadcrumbs collapse correctly.** Auto-collapsing [`<Breadcrumbs>`](/components/navigation/breadcrumbs) measured crumbs at the wrong font size, so the trail shrank to `… > current page` although everything fit, and inside `<TopNavigation.Start>` it never expanded again. When all but one crumb fit, it also failed to collapse and truncated the current page instead. A two crumb trail that is too narrow now collapses to `… > Event Details` rather than `Home > Event Det…`.
+- **Arrows in Safari.** The `<Sidebar>` toggle chevron and the `<Accordion>`, `<Panel>` and `<Table>` carets were missing in Safari. They show up now.
+- **Long titles and the close button.** A long `<Dialog>` or `<Drawer>` title with `closeButton` wraps before the button instead of running under it.
+- **Header actions keep their distance.** `<Panel.Header>` and `<Page.Header>` keep a 16px gap between the title and description and the actions.
+- **Drawer and Toast at 320px.** The full-screen mobile `<Drawer>` drops its rounded corners and reaches the right edge of the viewport again. Toasts keep the same margin on both sides.
+- **Table selection controls.** The selection checkbox and drag handle are centered on the first line of text for every `alignY` value, instead of sitting 2 to 3px off.
+- **Menu in button containers.** A labelled `<Menu>` in an `<ActionBar>`, `<Panel.Header>` or another button container now takes the ghost variant, size and disabled state from the container, and hovers like a ghost button. A `variant` or `size` set on the `Menu` still wins.
+- **Quieter dev warnings.** Development warnings fire once per instance instead of on every render. `<Card>` no longer warns about a missing name when it is hidden from assistive technology or labelled with `aria-labelledby`.
+
+## Under the hood
+
+- **Style-prop classes ship with components.** The class names behind props like `weight`, `align` and `cursor` moved from `@marigold/system` into `@marigold/components`, so Tailwind finds them even when `@marigold/system` is not a direct dependency. Component props and the classes they render are unchanged.
+- **Links in tables.** The [Table](/components/collection/table) page has its Links section back. Use `variant="secondary"` for a link that repeats down a column, and the standard `<Link>` for details that point away from the table.
+- **No scrollbar gutter on small screens.** Below `sm` (640px), `html` no longer reserves room for the scrollbar, so full-screen overlays reach the right edge of the viewport. If you see a small layout shift below 640px, this is why.
+
+<Callout title="Deprecated: `fontWeight` and `textSize`" type="warning">
+  `@marigold/system` still exports the `fontWeight` and `textSize` class maps,
+  but they are deprecated and will be removed in the next major. The other ten
+  maps were internal and are no longer exported.
+</Callout>
+
+---
+
+That's v18.3.1. Tab through your app once: the focus ring should now be visible everywhere it lands.
