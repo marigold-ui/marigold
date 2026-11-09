@@ -279,7 +279,7 @@
  * and other minimal elements that need to blend into any context.
  */
 @utility ui-state-hover-ghost {
-  @apply bg-current/10;
+  @apply bg-current/(--alpha-100);
 }
 
 /*
