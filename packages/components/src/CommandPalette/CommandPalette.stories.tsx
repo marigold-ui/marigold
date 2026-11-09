@@ -259,7 +259,9 @@ Basic.test(
   async ({ canvas, userEvent }) => {
     await openPalette({ canvas, userEvent });
 
-    await expect(await canvas.findByText('Searching…')).toBeVisible();
+    // The dialog fades in, so wait for it to become visible.
+    const loading = await canvas.findByText('Searching…');
+    await waitFor(() => expect(loading).toBeVisible());
     await expect(canvas.queryByText('No events found.')).toBeNull();
     await expect(canvas.getByRole('progressbar')).toBeInTheDocument();
   }
