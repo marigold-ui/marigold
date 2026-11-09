@@ -52,31 +52,58 @@ const ItemChildren = ({
   );
 };
 
+// Internal core
+// ---------------
+// Behaviour and structure of a menu item without a theme: `Menu.Item` styles
+// it with the Menu theme, `CommandPalette.Item` with its own, larger one.
+export interface MenuItemClassNames {
+  item?: string;
+  label?: string;
+  description?: string;
+  keyboard?: string;
+}
+
+export const MenuItemCore = ({
+  children,
+  variant,
+  textValue,
+  classNames,
+  ...props
+}: Omit<MenuItemProps, 'size'> & { classNames: MenuItemClassNames }) => (
+  <MenuItem
+    {...props}
+    // RAC gets a render function below, so it cannot derive the text used
+    // for typeahead and filtering. Plain-text children provide it.
+    textValue={
+      textValue ?? (typeof children === 'string' ? children : undefined)
+    }
+    className={classNames.item}
+  >
+    {renderProps => (
+      <>
+        <AccessIcon variant={variant} />
+        {/* Checkmark only in selection mode; keeps command menus unchanged. */}
+        {renderProps.selectionMode !== 'none' && (
+          <Check size={16} strokeWidth="3" className="selection-indicator" />
+        )}
+        <ItemChildren
+          labelClassName={classNames.label}
+          descriptionClassName={classNames.description}
+          keyboardClassName={classNames.keyboard}
+        >
+          {typeof children === 'function' ? children(renderProps) : children}
+        </ItemChildren>
+        <AccessLabel variant={variant} />
+      </>
+    )}
+  </MenuItem>
+);
+
 // Component
 // ---------------
-const _MenuItem = ({ children, variant, size, ...props }: MenuItemProps) => {
+const _MenuItem = ({ variant, size, ...props }: MenuItemProps) => {
   const classNames = useClassNames({ component: 'Menu', variant, size });
-  return (
-    <MenuItem {...props} className={classNames.item}>
-      {renderProps => (
-        <>
-          <AccessIcon variant={variant} />
-          {/* Checkmark only in selection mode; keeps command menus unchanged. */}
-          {renderProps.selectionMode !== 'none' && (
-            <Check size={16} strokeWidth="3" className="selection-indicator" />
-          )}
-          <ItemChildren
-            labelClassName={classNames.label}
-            descriptionClassName={classNames.description}
-            keyboardClassName={classNames.keyboard}
-          >
-            {typeof children === 'function' ? children(renderProps) : children}
-          </ItemChildren>
-          <AccessLabel variant={variant} />
-        </>
-      )}
-    </MenuItem>
-  );
+  return <MenuItemCore {...props} variant={variant} classNames={classNames} />;
 };
 
 export { _MenuItem as MenuItem };
