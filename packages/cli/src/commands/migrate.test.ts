@@ -108,13 +108,13 @@ describe('detectMigration', () => {
     });
   });
 
-  test('chains every migration from the installed major onwards', () => {
+  test('does not propose a migration that is unsafe to re-run once its major is installed', () => {
     const detected = detectMigration(setupRepo('19.0.0'));
 
     expect(detected).toEqual({
       installed: '19.0.0',
       source: 'node_modules',
-      versions: ['v19'],
+      versions: [],
     });
   });
 

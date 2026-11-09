@@ -84,11 +84,21 @@ export const detectMigration = (
 
   // Propose migrations targeting the installed major too (>=, not >): the
   // documented procedure is "upgrade the packages, then migrate", so someone
-  // on 18.x is exactly who needs the v18 migration. Re-running is a no-op.
+  // on 18.x is exactly who needs the v18 migration. That relies on re-runs
+  // being no-ops, so a manifest that is not rerun-safe is only proposed
+  // before its major is installed and otherwise has to be named explicitly.
   const major = Number.parseInt(found.installed, 10);
-  const versions = Object.keys(MANIFESTS)
-    .map(v => ({ v, target: Number.parseInt(v.replace(/^v/, ''), 10) }))
-    .filter(({ target }) => Number.isFinite(target) && target >= major)
+  const versions = Object.entries(MANIFESTS)
+    .map(([v, manifest]) => ({
+      v,
+      manifest,
+      target: Number.parseInt(v.replace(/^v/, ''), 10),
+    }))
+    .filter(
+      ({ manifest, target }) =>
+        Number.isFinite(target) &&
+        (target > major || (target === major && manifest.rerunSafe !== false))
+    )
     .sort((a, b) => a.target - b.target)
     .map(({ v }) => v);
   return { ...found, versions };

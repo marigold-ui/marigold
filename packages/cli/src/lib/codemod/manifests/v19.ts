@@ -28,4 +28,6 @@ export const v19: MigrationManifest = {
     componentDependencies: {},
   },
   transforms: [comboBoxValueProps],
+  // a second run renames a selection-only `value` again
+  rerunSafe: false,
 };

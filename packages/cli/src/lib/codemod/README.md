@@ -226,7 +226,10 @@ Per-version work should be data entry, not transform code:
 A change that no primitive can express gets a **one-off transform** for that
 version (same `Codemod` interface, in `transforms/`, listed in the manifest's
 `transforms`). v19's `combobox-value-props` is one: it swaps two prop sets in
-one pass and skips elements that already carry the new text props. Promote it to a
+one pass and skips elements that already carry the new text props. It is not
+idempotent for selection-only elements, so v19 sets `rerunSafe: false` and
+auto-detection stops proposing it once 19 is installed. Run it by name
+(`marigold migrate v19`) after upgrading. Promote it to a
 primitive only when the same shape shows up in a second major; designing a
 general abstraction from a single example is how wrong abstractions happen.
 

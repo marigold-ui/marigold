@@ -45,6 +45,19 @@ export const App = () => <ComboBox value={text} selectedKey={key} />;
     expect(second.kind).toBe('unchanged');
   });
 
+  test('renames a selection-only element again on re-run (run once)', () => {
+    const source = `import { ComboBox } from '@marigold/components';
+export const App = () => <ComboBox selectedKey={key} />;
+`;
+
+    const first = comboBoxValueProps.apply(source);
+    assertEdited(first);
+    const second = comboBoxValueProps.apply(first.output);
+
+    assertEdited(second);
+    expect(second.output).toContain('<ComboBox inputValue={key} />');
+  });
+
   test('renames text-only v18 props to the input props', () => {
     const source = `import { ComboBox } from '@marigold/components';
 export const App = () => <ComboBox value={text} onChange={setText} />;
