@@ -468,24 +468,26 @@ ShortcutInFields.test(
 
 // Controlled
 // ---------------
+const ControlledPalette = () => {
+  const [open, setOpen] = useState(false);
+  return (
+    <Stack space={2} alignX="left">
+      <Button onPress={() => setOpen(true)}>Open from anywhere</Button>
+      <CommandPalette open={open} onOpenChange={setOpen}>
+        <CommandPalette.Content>
+          <CommandPalette.Input />
+          <CommandPalette.List>
+            <CommandPalette.Item id="events">Events</CommandPalette.Item>
+            <CommandPalette.Item id="orders">Orders</CommandPalette.Item>
+          </CommandPalette.List>
+        </CommandPalette.Content>
+      </CommandPalette>
+    </Stack>
+  );
+};
+
 export const Controlled = meta.story({
-  render: () => {
-    const [open, setOpen] = useState(false);
-    return (
-      <Stack space={2} alignX="left">
-        <Button onPress={() => setOpen(true)}>Open from anywhere</Button>
-        <CommandPalette open={open} onOpenChange={setOpen}>
-          <CommandPalette.Content>
-            <CommandPalette.Input />
-            <CommandPalette.List>
-              <CommandPalette.Item id="events">Events</CommandPalette.Item>
-              <CommandPalette.Item id="orders">Orders</CommandPalette.Item>
-            </CommandPalette.List>
-          </CommandPalette.Content>
-        </CommandPalette>
-      </Stack>
-    );
-  },
+  render: () => <ControlledPalette />,
 });
 
 // Async search
@@ -495,49 +497,47 @@ interface Character {
   url: string;
 }
 
-export const AsyncSearch = meta.story({
-  render: () => {
-    const list = useAsyncList<Character>({
-      async load({ signal, filterText }) {
-        if (!filterText) return { items: [] };
-        const res = await fetch(
-          `https://swapi.py4e.com/api/people/?search=${encodeURIComponent(filterText)}`,
-          { signal }
-        );
-        const json = (await res.json()) as { results: Character[] };
-        return { items: json.results };
-      },
-    });
+const AsyncSearchPalette = () => {
+  const list = useAsyncList<Character>({
+    async load({ signal, filterText }) {
+      if (!filterText) return { items: [] };
+      const res = await fetch(
+        `https://swapi.py4e.com/api/people/?search=${encodeURIComponent(filterText)}`,
+        { signal }
+      );
+      const json = (await res.json()) as { results: Character[] };
+      return { items: json.results };
+    },
+  });
 
-    // Debouncing is left to the consumer; a real app would debounce here.
-    return (
-      <CommandPalette
-        filter={false}
-        inputValue={list.filterText}
-        onInputChange={list.setFilterText}
-      >
-        <CommandPalette.Trigger>Search characters…</CommandPalette.Trigger>
-        <CommandPalette.Content>
-          <CommandPalette.Input placeholder="Type a Star Wars name…" />
-          <CommandPalette.List items={list.items}>
-            {(item: Character) => (
-              <CommandPalette.Item id={item.url}>
-                {item.name}
-              </CommandPalette.Item>
-            )}
-          </CommandPalette.List>
-          {list.isLoading && (
-            <CommandPalette.Loading>Searching…</CommandPalette.Loading>
+  // Debouncing is left to the consumer; a real app would debounce here.
+  return (
+    <CommandPalette
+      filter={false}
+      inputValue={list.filterText}
+      onInputChange={list.setFilterText}
+    >
+      <CommandPalette.Trigger>Search characters…</CommandPalette.Trigger>
+      <CommandPalette.Content>
+        <CommandPalette.Input placeholder="Type a Star Wars name…" />
+        <CommandPalette.List items={list.items}>
+          {(item: Character) => (
+            <CommandPalette.Item id={item.url}>{item.name}</CommandPalette.Item>
           )}
-          <CommandPalette.Empty>
-            {list.filterText
-              ? 'No characters found.'
-              : 'Start typing to search.'}
-          </CommandPalette.Empty>
-        </CommandPalette.Content>
-      </CommandPalette>
-    );
-  },
+        </CommandPalette.List>
+        {list.isLoading && (
+          <CommandPalette.Loading>Searching…</CommandPalette.Loading>
+        )}
+        <CommandPalette.Empty>
+          {list.filterText ? 'No characters found.' : 'Start typing to search.'}
+        </CommandPalette.Empty>
+      </CommandPalette.Content>
+    </CommandPalette>
+  );
+};
+
+export const AsyncSearch = meta.story({
+  render: () => <AsyncSearchPalette />,
 });
 
 // Simulated async search
@@ -673,34 +673,32 @@ const pages = [
   { id: 'vouchers', label: 'Vouchers', href: '#vouchers' },
 ];
 
+const FavouritesPalette = () => {
+  const [query, setQuery] = useState('');
+  const [title, items] =
+    query === '' ? ['Favourites', favourites] : ['Pages', pages];
+  return (
+    <CommandPalette inputValue={query} onInputChange={setQuery}>
+      <CommandPalette.Trigger />
+      <CommandPalette.Content>
+        <CommandPalette.Input placeholder="Go to…" />
+        <CommandPalette.List>
+          <CommandPalette.Group title={title}>
+            {items.map(item => (
+              <CommandPalette.Item key={item.id} id={item.id} href={item.href}>
+                {item.label}
+              </CommandPalette.Item>
+            ))}
+          </CommandPalette.Group>
+        </CommandPalette.List>
+      </CommandPalette.Content>
+    </CommandPalette>
+  );
+};
+
 export const FavouritesOnEmptyQuery = meta.story({
   tags: ['component-test'],
-  render: () => {
-    const [query, setQuery] = useState('');
-    const [title, items] =
-      query === '' ? ['Favourites', favourites] : ['Pages', pages];
-    return (
-      <CommandPalette inputValue={query} onInputChange={setQuery}>
-        <CommandPalette.Trigger />
-        <CommandPalette.Content>
-          <CommandPalette.Input placeholder="Go to…" />
-          <CommandPalette.List>
-            <CommandPalette.Group title={title}>
-              {items.map(item => (
-                <CommandPalette.Item
-                  key={item.id}
-                  id={item.id}
-                  href={item.href}
-                >
-                  {item.label}
-                </CommandPalette.Item>
-              ))}
-            </CommandPalette.Group>
-          </CommandPalette.List>
-        </CommandPalette.Content>
-      </CommandPalette>
-    );
-  },
+  render: () => <FavouritesPalette />,
 });
 
 FavouritesOnEmptyQuery.test(
