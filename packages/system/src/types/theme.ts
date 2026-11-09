@@ -97,6 +97,24 @@ export type Theme = {
       | 'description',
       ComponentStyleFunction<string, string>
     >;
+    CommandPalette?: Record<
+      | 'trigger'
+      | 'container'
+      | 'header'
+      | 'input'
+      | 'list'
+      | 'group'
+      | 'item'
+      | 'label'
+      | 'description'
+      | 'keyboard'
+      | 'enter'
+      | 'match'
+      | 'empty'
+      | 'footer'
+      | 'legend',
+      ComponentStyleFunction<string, string>
+    >;
     Divider?: ComponentStyleFunction<string, string>;
     Drawer?: Record<
       | 'overlay'

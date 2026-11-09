@@ -92,6 +92,17 @@ export type { ColumnsProps } from './Columns/Columns';
 export { ComboBox } from './ComboBox/ComboBox';
 export type { ComboBoxProps } from './ComboBox/ComboBox';
 
+export { CommandPalette } from './CommandPalette/CommandPalette';
+export type { CommandPaletteProps } from './CommandPalette/CommandPalette';
+export type { CommandPaletteContentProps } from './CommandPalette/CommandPaletteContent';
+export type { CommandPaletteEmptyProps } from './CommandPalette/CommandPaletteEmpty';
+export type { CommandPaletteGroupProps } from './CommandPalette/CommandPaletteGroup';
+export type { CommandPaletteInputProps } from './CommandPalette/CommandPaletteInput';
+export type { CommandPaletteItemProps } from './CommandPalette/CommandPaletteItem';
+export type { CommandPaletteListProps } from './CommandPalette/CommandPaletteList';
+export type { CommandPaletteLoadingProps } from './CommandPalette/CommandPaletteLoading';
+export type { CommandPaletteTriggerProps } from './CommandPalette/CommandPaletteTrigger';
+
 export { Container } from './Container/Container';
 export type { ContainerProps } from './Container/Container';
 
