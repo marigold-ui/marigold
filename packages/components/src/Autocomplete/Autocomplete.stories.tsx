@@ -225,8 +225,8 @@ export const Controlled = meta.story({
       <Stack space={4}>
         <Autocomplete
           {...args}
-          value={current}
-          onChange={setCurrent}
+          inputValue={current}
+          onInputChange={setCurrent}
           onSubmit={val => setSubmitted(val)}
           disabledKeys={['star-trek']}
         >

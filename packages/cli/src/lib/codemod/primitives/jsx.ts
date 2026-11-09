@@ -15,7 +15,7 @@ import type { Codemod, CodemodOutcome, MigrationManifest } from '../types.js';
 // are touched; props hidden behind spreads are out of reach by design, and
 // the consumer's typecheck catches whatever we cannot see.
 
-const jsxElements = (file: AnyNode): AnyNode[] => {
+export const jsxElements = (file: AnyNode): AnyNode[] => {
   const out: AnyNode[] = [];
   walk(file, n => {
     if (n.type === 'JSXElement') out.push(n);
@@ -23,12 +23,12 @@ const jsxElements = (file: AnyNode): AnyNode[] => {
   return out;
 };
 
-const jsxAttributes = (opening: AnyNode | undefined): AnyNode[] =>
+export const jsxAttributes = (opening: AnyNode | undefined): AnyNode[] =>
   ((opening?.attributes as AnyNode[] | undefined) ?? []).filter(
     a => a.type === 'JSXAttribute'
   );
 
-const attrName = (attr: AnyNode): string | null =>
+export const attrName = (attr: AnyNode): string | null =>
   (attr.name as { name?: string } | undefined)?.name ?? null;
 
 /**
@@ -79,7 +79,7 @@ export interface JsxVisit {
  * skip, resolve the manifest's components to their local names, and skip
  * again when this file imports none of them.
  */
-const jsxCodemod = (
+export const jsxCodemod = (
   meta: { name: string; description: string },
   components: string[],
   run: (ctx: JsxVisit) => CodemodOutcome

@@ -98,9 +98,6 @@ type RemovedProps =
   | 'isRequired'
   | 'isInvalid'
   | 'isReadOnly'
-  | 'inputValue'
-  | 'onInputChange'
-  | 'defaultValue'
   | 'validate'
   | 'validationState'
   | 'slot';
@@ -118,11 +115,6 @@ export interface AutocompleteProps<T extends object = object>
   children?: ReactNode | ((item: T) => ReactNode);
 
   /**
-   * The value of the input (uncontrolled).
-   */
-  defaultValue?: RAC.ComboBoxProps<object>['defaultInputValue'];
-
-  /**
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
    * Note: `"fit"` is not supported because the virtualizer controls item sizing.
    *
@@ -133,21 +125,12 @@ export interface AutocompleteProps<T extends object = object>
   width?: Exclude<WidthProp['width'], 'fit'>;
 
   /**
-   * The value of the input (controlled).
-   */
-  value?: RAC.ComboBoxProps<object>['inputValue'];
-  /**
    * Values that invalidate the cached items, like a hook's dependency array.
    * Only needed for `items` plus a render function: rendered items are cached
    * per item object, so anything the function reads from outside the item —
    * state, a lookup, a prop — has to be listed here or it renders stale.
    */
   dependencies?: ListBoxProps['dependencies'];
-
-  /**
-   * Called when the input value changes.
-   */
-  onChange?: RAC.ComboBoxProps<object>['onInputChange'];
 
   /**
    * Called when the clear button is pressed.
@@ -213,31 +196,31 @@ export interface AutocompleteProps<T extends object = object>
 function AutocompleteBase<T extends object>({
   children,
   dependencies,
-  defaultValue,
-  value,
   disabled,
   error,
   readOnly,
   required,
   emptyState,
   loading,
-  onChange,
+  onSelectionChange,
   onClear,
   onSubmit,
   ref,
   ...rest
 }: AutocompleteProps<T> & { ref?: Ref<HTMLInputElement> }) {
   const props: RAC.ComboBoxProps<T> = {
-    onSelectionChange: key => key !== null && onSubmit?.(key, null),
-    defaultInputValue: defaultValue,
-    inputValue: value,
-    onInputChange: onChange,
     allowsCustomValue: true,
     isDisabled: disabled,
     isInvalid: error,
     isReadOnly: readOnly,
     isRequired: required,
     ...rest,
+    // `onSelectionChange` also fires when the selected option is picked again,
+    // `onChange` doesn't. Set after `...rest` so a consumer can't disable it.
+    onSelectionChange: key => {
+      onSelectionChange?.(key);
+      if (key !== null) onSubmit?.(key, null);
+    },
   };
 
   const stringFormatter = useLocalizedStringFormatter(intlMessages);

@@ -138,6 +138,10 @@ For options that need a primary label and a secondary line, compose with `<TextV
   </Dont>
 </GuidelineTiles>
 
+### Controlled usage
+
+An `<Autocomplete>` holds two values, and each can be controlled on its own. `inputValue`, `defaultInputValue` and `onInputChange` hold the text in the search field. `value`, `defaultValue` and `onChange` hold the `id` of the selected option, the same as on `<Select>`. Use `onSubmit` to react to both a picked option and a custom search.
+
 ### Async Loading
 
 - Large datasets that would be inefficient to load all at once

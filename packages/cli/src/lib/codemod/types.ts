@@ -188,6 +188,11 @@ export interface MigrationManifest {
   jsx: JsxChanges;
   tokens: TokenChanges;
   /**
+   * One-off transforms for changes no primitive can express. They run after
+   * the JSX primitives and are selectable like any other edit codemod.
+   */
+  transforms?: Codemod[];
+  /**
    * Pinned base URL of the default theme's component style sources
    * (`<url>/<Component>.styles.ts`), used in reports as the reference for
    * what a slot's styles look like in the target version.

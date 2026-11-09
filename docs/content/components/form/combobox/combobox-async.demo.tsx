@@ -19,8 +19,8 @@ export default () => {
   return (
     <ComboBox
       label="Star Wars Character Lookup"
-      value={list.filterText}
-      onChange={list.setFilterText}
+      inputValue={list.filterText}
+      onInputChange={list.setFilterText}
       items={list.items}
     >
       {(item: { name: string }) => (
