@@ -1,0 +1,167 @@
+---
+title: CommandPalette
+description: One keyboard-first entry point to search pages, actions and records.
+badge: alpha
+---
+
+The `<CommandPalette>` component opens a search field over a list of pages and actions. People press ⌘K (Ctrl+K on Windows and Linux) from anywhere in the app, type a few letters and press Enter to go to the top match. It suits power users who live in the keyboard and apps with more pages than a sidebar can show comfortably.
+
+On larger screens the palette opens as a centred dialog. On small screens it opens as a tray from the bottom edge.
+
+For a short list of actions next to the thing they act on, use [`<Menu>`](/components/overlay/menu) or [`<ActionMenu>`](/components/overlay/action-menu) instead. To pick a value inside a form, use [`<Autocomplete>`](/components/form/autocomplete) or [`<ComboBox>`](/components/form/combobox).
+
+## Anatomy
+
+- **Trigger**, written as `<CommandPalette.Trigger>`. An optional search button that shows the shortcut. The shortcut works without it.
+- **Search field**, written as `<CommandPalette.Input>`. It is the header of the dialog and gets focus when the palette opens.
+- **List**, written as `<CommandPalette.List>`. Holds the results. Group them with `<CommandPalette.Group>`, one `<CommandPalette.Item>` per page or action.
+- **Empty and loading states**, written as `<CommandPalette.Empty>` and `<CommandPalette.Loading>`. They replace the list when there is nothing to show.
+- **Legend**, a footer on larger screens that lists the keys to navigate, select and close. It is built in.
+
+## Usage
+
+Put everything people jump to often into one palette per app: pages, frequent actions such as "Create event", and records like an event or an order once the app loads them.
+
+<ComponentDemo name="command-palette-basic" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Name items by what people look for: "Orders", "Create event". Start
+      actions with a verb so they read apart from pages.
+    </DoDescription>
+  </Do>
+  <Do>
+    <DoDescription>
+      Group results, for example into Pages and Actions, and keep the order
+      stable. People learn where things are and type less over time.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't make the palette the only way to reach a page or action. It is a
+      shortcut for people who know the app, not a replacement for navigation.
+    </DontDescription>
+  </Dont>
+  <Dont>
+    <DontDescription>
+      Don't render more than one palette with the same shortcut on a page. Pass
+      `shortcut={false}` to any second palette.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Keyboard
+
+| Key         | Action                                                    |
+| ----------- | --------------------------------------------------------- |
+| ⌘K / Ctrl+K | Opens the palette from anywhere, also inside text fields. |
+| ↑ / ↓       | Moves the active row.                                     |
+| Enter       | Runs the active row.                                      |
+| Escape      | Clears the search, then closes the palette.               |
+
+One row is always active while there are results, so Enter always does something. When the search changes, the first row becomes active again.
+
+The shortcut also fires inside text fields, as it does in GitHub, Linear and Slack. If another handler already used the key, for example a rich-text editor that inserts a link on ⌘K, the palette leaves it alone. Change the key with `shortcut="j"`, or turn it off with `shortcut={false}` when your app already uses it.
+
+### Filtering
+
+By default the palette matches the query anywhere in an item's text and ignores case and accents, so "cafe" finds "Café". It keeps your groups and your order and highlights the matching text. Pass your own `filter` function for a different match, for example a fuzzy one.
+
+### Results from the server
+
+To search records on the server, pass `filter={false}`, control the query with `inputValue` and `onInputChange`, and render `<CommandPalette.Loading>` while results load. The search field shows a spinner while it is rendered. Debounce the requests in your own code.
+
+<ComponentDemo name="command-palette-async" />
+
+### Content before the user types
+
+The palette has no dedicated API for favourites or recent pages. Control the query and render different groups while it is empty.
+
+<ComponentDemo name="command-palette-favourites" />
+
+### Mobile behaviour
+
+On small screens the palette opens as a tray from the bottom edge. The search field and the list reach the edges of the tray. The ⌘K and Escape hints and the legend are hidden on touch devices.
+
+## Accessibility
+
+The palette follows the [combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/). Focus stays in the search field while the arrow keys move a virtual focus through the list, so screen readers announce the active row and people can keep typing. The empty and loading states sit inside the list, where screen readers announce them.
+
+The search field is the only Tab stop. The caret is its focus indicator, so the field has no extra ring. When the palette closes, focus returns to where it was.
+
+## Research
+
+Before building the palette we looked at cmdk (used by shadcn/ui and Vercel), Linear, GitHub, Raycast, Mantine Spotlight, macOS Spotlight and the React Aria command palette example.
+
+- **Pattern:** every one of them pairs a search field with a list and keeps a row active, so Enter runs the top match. Marigold builds on React Aria's `Autocomplete` over a `Menu`, which gives the combobox behaviour above.
+- **Name:** "command palette" is the term most apps and libraries use. "Command menu" stays for a plain `Menu` of actions next to a trigger, so the two don't get mixed up.
+- **Filtering:** a "contains" match keeps the authored order and groups, which people can learn. Fuzzy ranking finds more but reorders the list on every key. We start with "contains" and leave fuzzy matching to a custom `filter`.
+- **Small screens:** the palette uses a tray for now. It moves to a bottom sheet together with the other overlays once that component exists.
+
+## Props
+
+<StorybookHintMessage component={'CommandPalette'} />
+
+### CommandPalette
+
+<AutoTypeTable
+  path="CommandPalette/CommandPalette"
+  name="CommandPaletteProps"
+/>
+
+### CommandPalette.Trigger
+
+<AutoTypeTable
+  path="CommandPalette/CommandPaletteTrigger"
+  name="CommandPaletteTriggerProps"
+/>
+
+### CommandPalette.Input
+
+<AutoTypeTable
+  path="CommandPalette/CommandPaletteInput"
+  name="CommandPaletteInputProps"
+/>
+
+### CommandPalette.List
+
+<AutoTypeTable
+  path="CommandPalette/CommandPaletteList"
+  name="CommandPaletteListProps"
+/>
+
+### CommandPalette.Group
+
+<AutoTypeTable
+  path="CommandPalette/CommandPaletteGroup"
+  name="CommandPaletteGroupProps"
+/>
+
+### CommandPalette.Item
+
+<AutoTypeTable
+  path="CommandPalette/CommandPaletteItem"
+  name="CommandPaletteItemProps"
+/>
+
+### CommandPalette.Empty
+
+<AutoTypeTable
+  path="CommandPalette/CommandPaletteEmpty"
+  name="CommandPaletteEmptyProps"
+/>
+
+### CommandPalette.Loading
+
+<AutoTypeTable
+  path="CommandPalette/CommandPaletteLoading"
+  name="CommandPaletteLoadingProps"
+/>
+
+## Alternative components
+
+- [Menu](/components/overlay/menu): Use for a short list of actions opened from a labelled button.
+- [ActionMenu](/components/overlay/action-menu): Use for contextual actions on a row or item.
+- [Autocomplete](/components/form/autocomplete): Use to search and pick a value inside a form.
+- [Sidebar](/components/navigation/sidebar): Use for the app's main navigation, which the palette complements.
