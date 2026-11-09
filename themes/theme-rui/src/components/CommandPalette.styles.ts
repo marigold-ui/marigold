@@ -2,14 +2,10 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 // Rows share Menu's icon treatment and variants, but not its active state.
 // A palette always has one active row and is mostly used by keyboard, so the
-// row is marked like the Sidebar's current page (`selected` fill, medium
-// label, icon at full ink) plus a leading bar in `foreground`. The fill alone
-// is about 1.5:1 against the surface, the bar carries the 3:1 that WCAG
-// 1.4.11 asks of a state indicator. No keyboard ring, the bar replaces it.
-// The bar's colour comes from the variant.
-const activeBar =
-  'focus:font-medium focus:after:absolute focus:after:inset-y-2 focus:after:start-1 focus:after:w-0.75 focus:after:rounded-full';
-const itemBase = `text-foreground focus:bg-selected focus:after:bg-foreground ${activeBar}`;
+// row is marked like the Sidebar's current page: `selected` fill, medium
+// label, icon at full ink. No keyboard ring.
+const itemActive = 'focus:font-medium';
+const itemBase = `text-foreground focus:bg-selected ${itemActive}`;
 
 // Muted treatment for regular item icons, as in Menu, at full ink on the
 // active row. Access variants keep the full-opacity access colour on their
@@ -89,7 +85,7 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
     variants: {
       variant: {
         default: `${itemBase} ${itemIconMuted}`,
-        destructive: `text-destructive-accent focus:bg-destructive-accent/10 focus:after:bg-destructive-accent ${activeBar}`,
+        destructive: `text-destructive-accent focus:bg-destructive-accent/10 ${itemActive}`,
         master: `${itemBase} [&_.access-icon]:text-access-master-foreground`,
         admin: `${itemBase} [&_.access-icon]:text-access-admin-foreground`,
       },
@@ -99,8 +95,10 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
     },
   }),
   label: cva({ base: 'col-start-2 row-start-1' }),
+  // `secondary` on the active row's `selected` fill is 3.6:1 and fails AA.
+  // `secondary-bold` passes there.
   description: cva({
-    base: 'col-start-2 row-start-2 text-secondary text-xs whitespace-normal group-disabled/option:text-disabled',
+    base: 'col-start-2 row-start-2 text-secondary text-xs whitespace-normal group-data-focused/option:text-secondary-bold group-disabled/option:text-disabled',
   }),
   keyboard: cva({
     base: 'col-start-3 row-span-full self-center justify-self-end ps-4 text-secondary text-xs',
