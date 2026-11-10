@@ -9,7 +9,7 @@ import {
 import { CommandPalette } from '@marigold/components';
 
 export default () => (
-  <CommandPalette>
+  <CommandPalette shortcut={false}>
     <CommandPalette.Trigger />
     <CommandPalette.Content>
       <CommandPalette.Input placeholder="Search pages and actions…" />
