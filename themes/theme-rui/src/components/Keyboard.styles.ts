@@ -6,6 +6,7 @@ export const Keyboard: ThemeComponent<'Keyboard'> = cva({
   // Edge and fill derive from the text colour (alpha scale), so the cap sits
   // in any ground, e.g. a highlighted row, instead of on top of it. A
   // container that sets `text-current` on the cap makes it follow the row's
-  // colour too.
-  base: 'inline-flex min-w-5 items-center justify-center rounded-sm border border-current/(--alpha-300) bg-current/(--alpha-50) px-1.5 py-0.5 text-xs font-medium text-secondary',
+  // colour too. `font-sans` overrides the browser's monospace default for
+  // `<kbd>`, so ⌘K, Esc and ↵ match the surrounding UI text.
+  base: 'inline-flex min-w-5 items-center justify-center rounded-sm font-sans border border-current/(--alpha-300) bg-current/(--alpha-50) px-1.5 py-0.5 text-xs font-medium text-secondary',
 });
