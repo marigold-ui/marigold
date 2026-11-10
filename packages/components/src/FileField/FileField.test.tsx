@@ -733,4 +733,20 @@ describe('accessible name and description', () => {
       screen.getByRole('button', { name: 'Contract Upload' })
     ).toBeInTheDocument();
   });
+
+  test('keeps the button text in the name with a consumer aria-label in small size', () => {
+    render(<Small.Component label={undefined} aria-label="Contract" />);
+
+    expect(
+      screen.getByRole('button', { name: 'Contract Upload' })
+    ).toBeInTheDocument();
+  });
+
+  test('names the button by the label, a consumer aria-label and its text in small size', () => {
+    render(<Small.Component label="Attachment" aria-label="Contract" />);
+
+    expect(
+      screen.getByRole('button', { name: 'Attachment Contract Upload' })
+    ).toBeInTheDocument();
+  });
 });

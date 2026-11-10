@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import type RAC from 'react-aria-components';
 import { DropZone } from 'react-aria-components/DropZone';
 import { FieldErrorContext } from 'react-aria-components/FieldError';
@@ -27,7 +27,7 @@ import type { ValidationError } from '@react-types/shared';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, type FieldBaseProps } from '../FieldBase/FieldBase';
 import { intlMessages } from '../intl/messages';
-import { useAddonDescription } from '../utils/useLabelAddon';
+import { joinIds, useAddonDescription } from '../utils/useLabelAddon';
 import { FileFieldItem } from './FileFieldItem';
 import { FileTrigger, type FileTriggerProps } from './FileTrigger';
 import {
@@ -294,10 +294,20 @@ export const FileField = ({
     addon,
     fieldProps['aria-describedby']
   );
-  // `useField` joins the label id with the consumer's `aria-labelledby`. In
-  // `small` the button is the only control, so it takes both.
+  // In `small` the button is the only control, so it takes the field label
+  // and any consumer labelling. A consumer `aria-label` is rendered into a
+  // hidden span and referenced rather than set on the button: as an
+  // `aria-label` it would replace the visible "Upload" in the name, which
+  // fails WCAG 2.5.3 Label in Name. `FileTrigger` appends the button itself,
+  // so every path reads "<name> Upload".
+  const ariaLabelId = useId();
+  const smallAriaLabel = isSmall ? props['aria-label'] : undefined;
   const triggerLabelledBy = isSmall
-    ? fieldProps['aria-labelledby']
+    ? joinIds(
+        labelProps.id,
+        props['aria-labelledby'],
+        smallAriaLabel ? ariaLabelId : undefined
+      )
     : labelProps.id;
 
   const fileTriggerProps: FileTriggerProps = {
@@ -305,7 +315,6 @@ export const FileField = ({
     allowsMultiple: multiple,
     onSelect: handleSelect,
     ref: triggerRef,
-    'aria-label': isSmall ? props['aria-label'] : undefined,
     'aria-labelledby': triggerLabelledBy,
     'aria-describedby': describedBy,
     label: buttonLabel,
@@ -354,7 +363,14 @@ export const FileField = ({
       >
         <div className="flex w-(--field-width) max-w-full min-w-0 flex-col gap-2">
           {isSmall ? (
-            <FileTrigger {...fileTriggerProps} size={size} fullWidth />
+            <>
+              {smallAriaLabel ? (
+                <VisuallyHidden id={ariaLabelId}>
+                  {smallAriaLabel}
+                </VisuallyHidden>
+              ) : null}
+              <FileTrigger {...fileTriggerProps} size={size} fullWidth />
+            </>
           ) : (
             <DropZone
               {...props}
