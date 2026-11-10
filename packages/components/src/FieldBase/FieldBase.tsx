@@ -5,6 +5,8 @@ import type {
   ReactNode,
 } from 'react';
 import { useId } from 'react';
+import { TextContext, type TextProps } from 'react-aria-components/Text';
+import { Provider } from 'react-aria-components/slots';
 import { createWidthVar, isFraction } from '@marigold/system';
 import { type WidthProp } from '@marigold/system';
 import { cn, useClassNames } from '@marigold/system';
@@ -40,12 +42,18 @@ export interface FieldBaseProps<T extends ElementType>
   isDisabled?: boolean;
 }
 
-// Not exported from the barrel, so `addonId` stays off the public props.
+/** `TextContext` slots for the help text, as a RAC field publishes them. */
+export type HelpTextSlots = Record<'description' | 'errorMessage', TextProps>;
+
+// Not exported from the barrel, so `addonId` / `helpTextSlots` stay off the
+// public props.
 interface FieldBaseInternalProps<
   T extends ElementType,
 > extends FieldBaseProps<T> {
   /** Id for the addon's static content, when the field wires `aria-describedby` itself. */
   addonId?: string;
+  /** Slots for the help text of a plain DOM field, from `useFieldHelpText`. */
+  helpTextSlots?: HelpTextSlots;
 }
 
 // Component
@@ -56,6 +64,7 @@ const _FieldBase = <T extends ElementType>({
   label,
   addon,
   addonId: addonIdProp,
+  helpTextSlots,
   size,
   variant,
   width,
@@ -132,6 +141,15 @@ const _FieldBase = <T extends ElementType>({
     'data-error': isInvalid ? true : undefined,
   } as ComponentPropsWithRef<T>;
 
+  const helpText = (
+    <HelpText
+      variant={variant}
+      size={size}
+      description={description}
+      errorMessage={errorMessage}
+    />
+  );
+
   return (
     <ComponentWithRef {...componentProps}>
       <FieldLabel
@@ -142,12 +160,17 @@ const _FieldBase = <T extends ElementType>({
         size={size}
       />
       {children}
-      <HelpText
-        variant={variant}
-        size={size}
-        description={description}
-        errorMessage={errorMessage}
-      />
+      {helpTextSlots ? (
+        // A RAC field publishes `TextContext` with these slots itself. A
+        // plain DOM field has to, or the help text reads an ancestor's, e.g.
+        // a `<Dialog>`'s description-only slots, and RAC throws
+        // `Invalid slot "errorMessage"`.
+        <Provider values={[[TextContext, { slots: helpTextSlots }]]}>
+          {helpText}
+        </Provider>
+      ) : (
+        helpText
+      )}
     </ComponentWithRef>
   );
 };

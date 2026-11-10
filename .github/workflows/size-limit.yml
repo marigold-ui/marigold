@@ -2,6 +2,12 @@ name: Size Limit
 
 on:
   push:
+    # changesets/action creates this branch at main's SHA, then pushes the
+    # version bump onto it seconds later. That second push cancelled the first
+    # run, whose checks belong to main's commit. The release PR's own branch
+    # (changeset-release/main) still runs everything.
+    branches-ignore:
+      - 'changesets-ghcommit-temp/**'
     # Skip pushes that can't affect the bundle (mirrors build.yml). The check
     # stays push-triggered to match its sibling CI checks (lint/test/typecheck).
     paths-ignore:
@@ -25,7 +31,7 @@ jobs:
     steps:
       # Setup
       - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6.1.0 # Uses version from package.json#packageManager
+      - uses: pnpm/action-setup@v6.1.1 # Uses version from package.json#packageManager
       - name: Setup Node (using .node-version)
         uses: actions/setup-node@v6
         with:

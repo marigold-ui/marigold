@@ -45,21 +45,24 @@ export default () => {
       className="max-h-64 overflow-y-auto"
       style={{ scrollPaddingBottom: room }}
     >
-      <ListView
-        aria-label="Uploads"
-        selectionMode="multiple" // [!code highlight]
-        selectedKeys={selectedKeys}
-        onSelectionChange={onSelectionChange}
-        items={uploads}
-      >
-        {(upload: (typeof uploads)[number]) => (
-          <ListView.Item textValue={upload.name}>
-            <TextValue>{upload.name}</TextValue>
-            <Description>{upload.detail}</Description>
-          </ListView.Item>
-        )}
-      </ListView>
-      {actionBarOverlay}
+      <div style={{ paddingBottom: room }}>
+        <ListView
+          aria-label="Uploads"
+          selectionMode="multiple" // [!code highlight]
+          selectedKeys={selectedKeys}
+          onSelectionChange={onSelectionChange}
+          items={uploads}
+          allowSelectAll // [!code highlight]
+        >
+          {(upload: (typeof uploads)[number]) => (
+            <ListView.Item textValue={upload.name}>
+              <TextValue>{upload.name}</TextValue>
+              <Description>{upload.detail}</Description>
+            </ListView.Item>
+          )}
+        </ListView>
+        {actionBarOverlay}
+      </div>
     </div>
   );
 };

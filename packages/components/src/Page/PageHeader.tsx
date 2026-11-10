@@ -39,7 +39,10 @@ export const PageHeader = ({ children }: PageHeaderProps) => {
     () => ({
       slots: {
         title: {
-          className: cn('[grid-area:title] outline-none', classNames.title),
+          className: cn(
+            'self-center [grid-area:title] outline-none',
+            classNames.title
+          ),
           'data-grid-area': 'title',
           level: headingLevel,
           id: titleId,
@@ -90,7 +93,7 @@ export const PageHeader = ({ children }: PageHeaderProps) => {
       <div
         data-page-header
         className={cn(
-          "grid grid-cols-[1fr_auto] [grid-template-areas:'title_actions'_'description_actions']",
+          "grid grid-cols-[1fr_auto] grid-rows-[1fr_auto] [grid-template-areas:'title_actions'_'description_actions']",
           classNames.header
         )}
       >

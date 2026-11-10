@@ -172,6 +172,45 @@ test('sub-panel opens when child is active', () => {
   expect(backButton).toBeInTheDocument();
 });
 
+test('a drilled-in level is headed and named by its section', () => {
+  render(<WithActiveBranch.Component />);
+
+  const heading = screen.getByRole('heading', { level: 2, name: 'Management' });
+  const backButton = screen.getByRole('button', {
+    name: 'Back to Management',
+  });
+
+  expect(backButton).not.toContainElement(heading);
+  expect(screen.getByRole('region', { name: 'Management' })).toContainElement(
+    heading
+  );
+});
+
+test('group labels sit one level below the section heading', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Sidebar.Provider>
+        <Sidebar>
+          <Sidebar.Nav current="/users">
+            <Sidebar.GroupLabel>Workspace</Sidebar.GroupLabel>
+            <Sidebar.Item id="management" textValue="Management">
+              Management
+              <Sidebar.GroupLabel>People</Sidebar.GroupLabel>
+              <Sidebar.Item href="/users">Users</Sidebar.Item>
+            </Sidebar.Item>
+          </Sidebar.Nav>
+        </Sidebar>
+      </Sidebar.Provider>
+    </MarigoldProvider>
+  );
+
+  // The root level is inert while Management is open, so query the DOM.
+  expect(screen.getByText('Workspace')).toHaveAttribute('aria-level', '2');
+  expect(
+    screen.getByRole('heading', { level: 3, name: 'People' })
+  ).toBeInTheDocument();
+});
+
 test('back button returns to root panel', async () => {
   render(<WithActiveBranch.Component />);
   const backButton = await screen.findByRole('button', { name: /Back/ });
@@ -1073,6 +1112,53 @@ describe('Sidebar.Nav `current` integration', () => {
 
     expect(linkByText('Overview')).toHaveAttribute('aria-current', 'page');
     expect(linkByText('Analytics')).toHaveAttribute('aria-current', 'page');
+  });
+
+  test('on desktop a branch holding the current page is not marked', async () => {
+    renderSidebar('/users');
+
+    // Leave the auto-opened branch so the root level (and its branch row) shows.
+    await user.click(await screen.findByRole('button', { name: /Management/ }));
+
+    // The ancestor marker is a mobile drawer feature only.
+    expect(
+      screen.getByRole('link', { name: 'Management' })
+    ).not.toHaveAttribute('aria-current');
+  });
+
+  test('in the mobile drawer a branch holding the current page is marked', async () => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    ensureOverlayContainer();
+
+    render(
+      <RouterProvider navigate={() => {}}>
+        <MarigoldProvider theme={theme}>
+          <Sidebar.Provider>
+            <Sidebar.Toggle />
+            <Sidebar>
+              <Sidebar.Nav current="/users">
+                <Sidebar.Item href="/overview">Overview</Sidebar.Item>
+                <Sidebar.Item id="management" textValue="Management">
+                  Management
+                  <Sidebar.Item href="/users">Users</Sidebar.Item>
+                </Sidebar.Item>
+              </Sidebar.Nav>
+            </Sidebar>
+          </Sidebar.Provider>
+        </MarigoldProvider>
+      </RouterProvider>
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Toggle navigation' }));
+    await user.click(await screen.findByRole('button', { name: /Management/ }));
+
+    expect(screen.getByRole('link', { name: 'Management' })).toHaveAttribute(
+      'aria-current',
+      'true'
+    );
+    expect(screen.getByRole('link', { name: 'Overview' })).not.toHaveAttribute(
+      'aria-current'
+    );
   });
 
   test('Sidebar.Nav without current prop falls back to per-item active', () => {

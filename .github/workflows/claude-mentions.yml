@@ -142,7 +142,7 @@ jobs:
       # On PATH only. Installing here would resolve the base branch's lockfile,
       # since the action switches to the PR branch afterwards.
       - name: Setup pnpm
-        uses: pnpm/action-setup@v6.1.0 # version comes from package.json#packageManager
+        uses: pnpm/action-setup@v6.1.1 # version comes from package.json#packageManager
 
       - name: Setup Node
         uses: actions/setup-node@v6
@@ -186,7 +186,7 @@ jobs:
           role-session-name: gha-claude-mentions-target-${{ github.run_id }}
 
       - name: Run Claude
-        uses: anthropics/claude-code-action@925afb53776cf1a2b738c6bdbed37b4d4000ef13 # v1.0.262
+        uses: anthropics/claude-code-action@61a9c274fa7110a66dfafc1bbbced03833eb25fe # v1.0.269
         with:
           # Do not add anthropic_api_key: it takes precedence and Bedrock is
           # silently skipped.

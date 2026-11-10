@@ -1,9 +1,10 @@
-import type { Ref } from 'react';
+import { type Ref, useId } from 'react';
 import type RAC from 'react-aria-components';
 import { FileTrigger } from 'react-aria-components/FileTrigger';
 import type { AriaLabelingProps } from '@marigold/types';
 import { Button } from '../Button/Button';
 import { Upload } from '../icons/Upload';
+import { joinIds } from '../utils/useLabelAddon';
 
 type RemovedProps = 'className' | 'style';
 
@@ -31,13 +32,21 @@ const _FileTrigger = ({
   size,
   fullWidth,
   ref,
+  'aria-label': ariaLabel,
+  'aria-labelledby': labelledBy,
   'aria-describedby': describedBy,
   ...rest
 }: FileTriggerProps) => {
+  const id = useId();
+
   return (
     <FileTrigger {...rest}>
       <Button
         ref={ref}
+        id={id}
+        aria-label={ariaLabel}
+        // Reference the button itself last, so it reads "<label>, Upload".
+        aria-labelledby={labelledBy ? joinIds(labelledBy, id) : undefined}
         aria-describedby={describedBy}
         disabled={disabled}
         size={size}

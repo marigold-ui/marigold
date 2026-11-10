@@ -1,10 +1,13 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import type { ReactNode } from 'react';
 import { vi } from 'vitest';
 import { theme } from '@marigold/theme-rui';
 import { Badge } from '../Badge/Badge';
 import { Description } from '../Description/Description';
+import { Form } from '../Form/Form';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
+import { renderInDialog } from '../test.utils';
 import { SelectList } from './SelectList';
 import {
   Basic,
@@ -16,9 +19,11 @@ import {
   WithError,
   WithIconAction,
   WithMultiSelection,
+  WithSelectAll,
 } from './SelectList.stories';
 
 const user = userEvent.setup({ pointerEventsCheck: 0 });
+const modKey = /^Mac/i.test(navigator.platform) ? 'Meta' : 'Control';
 
 describe('SelectList', () => {
   describe('rendering', () => {
@@ -95,6 +100,22 @@ describe('SelectList', () => {
       expect(description).toBeInTheDocument();
     });
 
+    test('describes the grid by its description', () => {
+      render(<Basic.Component />);
+
+      expect(screen.getByRole('grid')).toHaveAccessibleDescription(
+        "Choose how you'd like to pay."
+      );
+    });
+
+    test('describes the grid by the error message instead of the description', () => {
+      render(<WithError.Component description="Pick one." />);
+
+      expect(screen.getByRole('grid')).toHaveAccessibleDescription(
+        'Please choose a payment method to continue.'
+      );
+    });
+
     test('renders nested label/description slots inside options', () => {
       render(<Basic.Component />);
 
@@ -115,6 +136,26 @@ describe('SelectList', () => {
       );
 
       expect(message).toBeInTheDocument();
+    });
+
+    test('shows the errorMessage inside a Dialog', () => {
+      renderInDialog(<WithError.Component />);
+
+      expect(
+        screen.getByText('Please choose a payment method to continue.')
+      ).toBeInTheDocument();
+    });
+
+    test('shows a Form validation error inside a Dialog', () => {
+      renderInDialog(
+        <Form validationErrors={{ payment: 'Please choose a payment method.' }}>
+          <Basic.Component name="payment" />
+        </Form>
+      );
+
+      expect(screen.getByRole('grid')).toHaveAccessibleDescription(
+        'Please choose a payment method.'
+      );
     });
 
     test('does not render an errorMessage when error is not set', () => {
@@ -434,10 +475,27 @@ describe('SelectList', () => {
   });
 
   describe('item padding', () => {
+    const paddingHost = () =>
+      // eslint-disable-next-line testing-library/no-node-access
+      screen.getByRole('grid').parentElement as HTMLElement;
+
+    test('writes the vars on the list too, so a theme declaring them there cannot win', () => {
+      render(<Basic.Component p="square-loose" />);
+
+      for (const element of [paddingHost(), screen.getByRole('grid')]) {
+        expect(element.style.getPropertyValue('--selectlist-item-px')).toBe(
+          'var(--spacing-square-loose-x)'
+        );
+        expect(element.style.getPropertyValue('--selectlist-item-py')).toBe(
+          'var(--spacing-square-loose-y)'
+        );
+      }
+    });
+
     test('does not set inline padding vars when no prop is passed (theme provides defaults)', () => {
       render(<Basic.Component aria-label="Test" />);
 
-      const grid = screen.getByRole('grid') as HTMLElement;
+      const grid = paddingHost();
 
       expect(grid.style.getPropertyValue('--selectlist-item-px')).toBe('');
       expect(grid.style.getPropertyValue('--selectlist-item-py')).toBe('');
@@ -446,7 +504,7 @@ describe('SelectList', () => {
     test('numeric `p` writes both axis vars as scale values (not -x/-y suffixed)', () => {
       render(<Basic.Component p={4} />);
 
-      const grid = screen.getByRole('grid') as HTMLElement;
+      const grid = paddingHost();
 
       expect(grid.style.getPropertyValue('--selectlist-item-px')).toBe(
         'calc(var(--spacing) * 4)'
@@ -459,7 +517,7 @@ describe('SelectList', () => {
     test('uniform `p` writes both axis vars inline, deriving from the inset token', () => {
       render(<Basic.Component p="square-loose" />);
 
-      const grid = screen.getByRole('grid') as HTMLElement;
+      const grid = paddingHost();
 
       expect(grid.style.getPropertyValue('--selectlist-item-px')).toBe(
         'var(--spacing-square-loose-x)'
@@ -472,7 +530,7 @@ describe('SelectList', () => {
     test('`p="collapsed"` writes the unsuffixed token on both axes', () => {
       render(<Basic.Component p="collapsed" />);
 
-      const grid = screen.getByRole('grid') as HTMLElement;
+      const grid = paddingHost();
 
       // `collapsed` means "no spacing" on both axes, so there is no
       // `--spacing-collapsed-x` / `-y` for a theme to declare.
@@ -487,7 +545,7 @@ describe('SelectList', () => {
     test('axis-specific `px` / `py` write only the matching axis var inline', () => {
       render(<Basic.Component px="padding-relaxed" py="padding-tight" />);
 
-      const grid = screen.getByRole('grid') as HTMLElement;
+      const grid = paddingHost();
 
       expect(grid.style.getPropertyValue('--selectlist-item-px')).toBe(
         'var(--spacing-padding-relaxed)'
@@ -599,6 +657,236 @@ describe('SelectList', () => {
       ) as HTMLSelectElement;
 
       expect(select.disabled).toBe(true);
+    });
+  });
+
+  describe('select-all header', () => {
+    test('is not an option of the collection', () => {
+      render(<WithSelectAll.Component />);
+
+      const selectAll = screen.getByRole('checkbox', { name: 'Select all' });
+
+      expect(screen.getAllByRole('row')).toHaveLength(3);
+      expect(screen.getByRole('grid')).not.toContainElement(selectAll);
+    });
+
+    test('renders nothing in single selection mode', () => {
+      render(<WithSelectAll.Component selectionMode="single" />);
+
+      expect(
+        screen.queryByRole('checkbox', { name: 'Select all' })
+      ).not.toBeInTheDocument();
+    });
+
+    test('disables the select-all with the list', () => {
+      render(<WithSelectAll.Component disabled />);
+
+      expect(
+        screen.getByRole('checkbox', { name: 'Select all' })
+      ).toBeDisabled();
+    });
+
+    test('keeps a preselected disabled option when selecting everything', async () => {
+      const onChange = vi.fn();
+      render(
+        <WithSelectAll.Component
+          disabledKeys={['gift-wrap']}
+          defaultSelectedKeys={['gift-wrap']}
+          onChange={onChange}
+        />
+      );
+
+      await user.click(screen.getByRole('checkbox', { name: 'Select all' }));
+
+      expect(onChange).toHaveBeenLastCalledWith([
+        'insurance',
+        'signature',
+        'gift-wrap',
+      ]);
+    });
+
+    test('keeps a preselected disabled option when clearing', async () => {
+      const onChange = vi.fn();
+      render(
+        <WithSelectAll.Component
+          disabledKeys={['gift-wrap']}
+          defaultSelectedKeys={['gift-wrap', 'insurance', 'signature']}
+          onChange={onChange}
+        />
+      );
+
+      await user.click(screen.getByRole('checkbox', { name: 'Select all' }));
+
+      expect(onChange).toHaveBeenLastCalledWith(['gift-wrap']);
+    });
+
+    test('leaves the selection alone when it may not be emptied', async () => {
+      const onChange = vi.fn();
+      render(
+        <WithSelectAll.Component
+          disallowEmptySelection
+          defaultSelectedKeys={['insurance', 'signature', 'gift-wrap']}
+          onChange={onChange}
+        />
+      );
+
+      const selectAll = screen.getByRole('checkbox', { name: 'Select all' });
+      expect(selectAll).toBeChecked();
+
+      await user.click(selectAll);
+
+      expect(onChange).not.toHaveBeenCalled();
+      expect(selectAll).toBeChecked();
+    });
+
+    test('reads as mixed while only a disabled option is selected', () => {
+      render(
+        <WithSelectAll.Component
+          disabledKeys={['gift-wrap']}
+          defaultSelectedKeys={['gift-wrap']}
+        />
+      );
+
+      // `<Table>` reads `!isEmpty && !isSelectAll`: mixed, not unchecked.
+      expect(
+        screen.getByRole('checkbox', { name: 'Select all' })
+      ).toBePartiallyChecked();
+    });
+
+    test('names the list in the description so two can be told apart', () => {
+      render(<WithSelectAll.Component />);
+
+      expect(
+        screen.getByRole('checkbox', { name: 'Select all' })
+      ).toHaveAccessibleDescription('0 of 3 selected Shipping add-ons');
+    });
+
+    const Addon = ({ addOn }: { addOn: { id: string; name: string } }) => (
+      <SelectList.Option id={addOn.id} textValue={addOn.name} />
+    );
+
+    const renderAddons = (options: ReactNode) => {
+      const onChange = vi.fn();
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => null);
+      const { container } = render(
+        <MarigoldProvider theme={theme}>
+          <SelectList
+            label="Add-ons"
+            name="addons"
+            selectionMode="multiple"
+            allowSelectAll
+            onChange={onChange}
+          >
+            {options}
+          </SelectList>
+        </MarigoldProvider>
+      );
+      warn.mockRestore();
+
+      // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
+      const select = container.querySelector(
+        'select[name="addons"]'
+      ) as HTMLSelectElement;
+      const submitted = () =>
+        Array.from(select.selectedOptions, option => option.value);
+
+      return { onChange, submitted };
+    };
+
+    const selectAllPaths = [
+      ['Mod+A', () => user.keyboard(`{${modKey}>}a{/${modKey}}`)],
+      [
+        'the select-all',
+        () => user.click(screen.getByRole('checkbox', { name: 'Select all' })),
+      ],
+    ] as const;
+
+    test.each(selectAllPaths)(
+      '%s selects the options it can address, and reports exactly those',
+      async (_, selectAll) => {
+        const { onChange, submitted } = renderAddons([
+          <SelectList.Option
+            key="insurance"
+            id="insurance"
+            textValue="Insurance"
+          />,
+          <SelectList.Option
+            key="signature"
+            id="signature"
+            textValue="Signature"
+          />,
+          <Addon
+            key="gift-wrap"
+            addOn={{ id: 'gift-wrap', name: 'Gift wrap' }}
+          />,
+        ]);
+
+        await user.click(screen.getByRole('row', { name: /insurance/i }));
+        await selectAll();
+
+        expect(screen.getByRole('row', { name: /insurance/i })).toHaveAttribute(
+          'aria-selected',
+          'true'
+        );
+        expect(screen.getByRole('row', { name: /signature/i })).toHaveAttribute(
+          'aria-selected',
+          'true'
+        );
+        expect(screen.getByRole('row', { name: /gift wrap/i })).toHaveAttribute(
+          'aria-selected',
+          'false'
+        );
+        expect(onChange).toHaveBeenLastCalledWith(['insurance', 'signature']);
+        expect(submitted()).toEqual(['insurance', 'signature']);
+      }
+    );
+
+    test('Mod+A keeps the selection when it can address nothing', async () => {
+      const { onChange, submitted } = renderAddons([
+        <Addon
+          key="insurance"
+          addOn={{ id: 'insurance', name: 'Insurance' }}
+        />,
+        <Addon
+          key="gift-wrap"
+          addOn={{ id: 'gift-wrap', name: 'Gift wrap' }}
+        />,
+      ]);
+
+      await user.click(screen.getByRole('row', { name: /insurance/i }));
+      await user.keyboard(`{${modKey}>}a{/${modKey}}`);
+
+      expect(onChange).toHaveBeenLastCalledWith(['insurance']);
+      expect(submitted()).toEqual(['insurance']);
+      expect(screen.getByRole('row', { name: /gift wrap/i })).toHaveAttribute(
+        'aria-selected',
+        'false'
+      );
+    });
+
+    test('submits concrete keys for a controlled `selectedKeys="all"`', () => {
+      const { container } = render(
+        <MarigoldProvider theme={theme}>
+          <SelectList
+            label="Add-ons"
+            name="addons"
+            selectionMode="multiple"
+            allowSelectAll
+            selectedKeys="all"
+          >
+            <SelectList.Option id="insurance" textValue="Insurance" />
+            <SelectList.Option id="gift-wrap" textValue="Gift wrap" />
+          </SelectList>
+        </MarigoldProvider>
+      );
+
+      // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
+      const select = container.querySelector(
+        'select[name="addons"]'
+      ) as HTMLSelectElement;
+      const values = Array.from(select.selectedOptions, o => o.value);
+
+      expect(values).toEqual(['insurance', 'gift-wrap']);
     });
   });
 });

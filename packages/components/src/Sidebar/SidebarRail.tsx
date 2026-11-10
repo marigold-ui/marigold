@@ -1,5 +1,5 @@
 import { cloneElement, useLayoutEffect, useRef } from 'react';
-import type { ReactNode, Ref } from 'react';
+import type { MouseEvent, ReactNode, Ref } from 'react';
 import { Focusable } from 'react-aria-components/Focusable';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { isFocusVisible } from '@react-aria/interactions';
@@ -7,8 +7,9 @@ import { handleLinkClick, useLinkProps, useRouter } from '@react-aria/utils';
 import { cn } from '@marigold/system';
 import { Tooltip } from '../Tooltip/Tooltip';
 import { intlMessages } from '../intl/messages';
-import { useSidebar } from './Context';
-import { SidebarItem, SidebarSeparator } from './SidebarItem';
+import { SidebarHeadingLevelContext, useSidebar } from './Context';
+import { SidebarItem, SidebarItemIcon, SidebarSeparator } from './SidebarItem';
+import { SidebarRowIcon } from './SidebarLink';
 import { SidebarModal } from './SidebarModal';
 import { SidebarNav } from './SidebarNav';
 import type { SidebarCurrent } from './collection';
@@ -57,6 +58,36 @@ interface RailItemLinkProps {
 }
 
 /**
+ * Anchor props shared by the rail's links: router-aware href, `role="button"`
+ * for href-less items, and the click/keyboard activation. `activate` runs the
+ * item's side effects and returns whether the click should still navigate.
+ */
+const useRailAnchorProps = (node: SidebarRailNode, activate: () => boolean) => {
+  const router = useRouter();
+  // Sole source of the rendered href, since a raw `href` would shadow the
+  // router's `useHref`. Pass undefined when there is none, or `useLinkProps`
+  // yields href="", which would make a section tile a link.
+  const routerLinkProps = useLinkProps(
+    node.href ? { href: node.href } : undefined
+  );
+
+  return {
+    ...routerLinkProps,
+    role: node.href ? undefined : 'button',
+    onClick: (e: MouseEvent<HTMLAnchorElement>) => {
+      // New-tab/window clicks: let the browser navigate, touch no state.
+      if (node.href && isModifiedClick(e)) return;
+      if (activate()) {
+        handleLinkClick(e, router, node.href, undefined);
+      } else {
+        e.preventDefault();
+      }
+    },
+    onKeyDown: node.href ? undefined : activateOnEnterOrSpace,
+  };
+};
+
+/**
  * A single rail destination: a plain, always-tabbable link (the rail is a flat
  * list, unlike the panel's roving tree). The icon sits above a visible label,
  * which is also the accessible name.
@@ -69,13 +100,13 @@ const RailItemLink = ({
   collapsed,
   className,
 }: RailItemLinkProps) => {
-  const router = useRouter();
-  // Sole source of the rendered href, since a raw `href` would shadow the
-  // router's `useHref`. Pass undefined when there is none, or `useLinkProps`
-  // yields href="", which would make a section tile a link.
-  const routerLinkProps = useLinkProps(
-    node.href ? { href: node.href } : undefined
-  );
+  const anchorProps = useRailAnchorProps(node, () => {
+    const shouldNavigate = onActivate();
+    node.onPress?.();
+    // Re-clicking the active section only toggles the panel — don't navigate
+    // away from the deeper page the user is on.
+    return shouldNavigate;
+  });
 
   // A section is only the current page's ancestor (`true`); a direct-link item
   // that is the page announces `page`. The leaf itself is marked in the panel.
@@ -87,25 +118,10 @@ const RailItemLink = ({
     <Tooltip.Trigger disabled={!collapsed}>
       <Focusable>
         <a
-          {...routerLinkProps}
-          role={node.href ? undefined : 'button'}
+          {...anchorProps}
           aria-current={ariaCurrent}
           data-active={selected || undefined}
           className={className}
-          onClick={e => {
-            // New-tab/window clicks: let the browser navigate, touch no state.
-            if (node.href && isModifiedClick(e)) return;
-            const shouldNavigate = onActivate();
-            node.onPress?.();
-            // Re-clicking the active section only toggles the panel — don't
-            // navigate away from the deeper page the user is on.
-            if (shouldNavigate) {
-              handleLinkClick(e, router, node.href, undefined);
-            } else {
-              e.preventDefault();
-            }
-          }}
-          onKeyDown={node.href ? undefined : activateOnEnterOrSpace}
         >
           {node.icon}
           <span>{node.textValue}</span>
@@ -113,6 +129,44 @@ const RailItemLink = ({
       </Focusable>
       <Tooltip placement="right">{node.textValue}</Tooltip>
     </Tooltip.Trigger>
+  );
+};
+
+interface RailFooterLinkProps {
+  node: SidebarRailNode;
+  /** Drives `aria-current` — the item that matches the live page. */
+  matched: boolean;
+  /** Closes the drawer once the link is followed. */
+  onNavigate: () => void;
+  className: string;
+}
+
+/**
+ * A pinned footer rail item in the mobile drawer: an icon + label row below
+ * the drill-down nav, so it stays visible at every level.
+ */
+const RailFooterLink = ({
+  node,
+  matched,
+  onNavigate,
+  className,
+}: RailFooterLinkProps) => {
+  const anchorProps = useRailAnchorProps(node, () => {
+    node.onPress?.();
+    onNavigate();
+    return true;
+  });
+
+  return (
+    <a
+      {...anchorProps}
+      aria-current={matched ? 'page' : undefined}
+      data-active={matched || undefined}
+      className={className}
+    >
+      <SidebarRowIcon icon={node.icon} />
+      {node.textValue}
+    </a>
   );
 };
 
@@ -222,12 +276,14 @@ const SidebarRail = ({
         <h2 ref={titleRef} tabIndex={-1} className={classNames.panelTitle}>
           {selectedNode.panelTitle}
         </h2>
-        {cloneElement(selectedNode.nav, {
-          current,
-          // Keep the panel landmark name in sync with the visible heading:
-          // fall back to the section title when the nav has no `aria-label`.
-          'aria-label': selectedNode.panelTitle,
-        })}
+        <SidebarHeadingLevelContext value={2}>
+          {cloneElement(selectedNode.nav, {
+            current,
+            // Keep the panel landmark name in sync with the visible heading:
+            // fall back to the section title when the nav has no `aria-label`.
+            'aria-label': selectedNode.panelTitle,
+          })}
+        </SidebarHeadingLevelContext>
       </>
     ) : null;
 
@@ -235,36 +291,36 @@ const SidebarRail = ({
   // sidebar — one nav column, brand header, close button. Sections become
   // drill-in branches (their `Sidebar.Nav` children are spliced in as the
   // pushed level, so the drawer opens pre-drilled into the active section);
-  // direct links and pinned footer items become plain rows. Leaf taps close
-  // the drawer, branch taps and the back button keep it open — all inherited
-  // from `SidebarNav`, so the two sidebar variants stay pixel-identical here.
+  // direct links become plain rows, every row keeps its rail icon, and pinned
+  // footer items stay pinned below the list. Leaf taps close the drawer, branch
+  // taps and the back button keep it open — all inherited from `SidebarNav`.
   if (isMobile) {
     // Explicit ids keep drill-down state stable across renders (auto-ids are
     // position-based); the `rail:` prefix avoids collisions with ids inside
     // the section navs.
-    const renderMobileItem = (node: SidebarRailNode) =>
-      node.isSection && node.nav ? (
+    const renderMobileItem = (node: SidebarRailNode) => {
+      const nav = node.isSection ? node.nav : undefined;
+      return (
         <SidebarItem
           key={node.key}
           id={`rail:${node.key}`}
-          textValue={node.panelTitle ?? node.textValue}
+          href={nav ? undefined : node.href}
+          textValue={nav ? (node.panelTitle ?? node.textValue) : undefined}
           onPress={node.onPress}
         >
+          <SidebarItemIcon>{node.icon}</SidebarItemIcon>
           {node.textValue}
           {/* Splice the nav's children (not the element) so they become the
               branch's drilled-in level instead of a nested landmark. */}
-          {node.nav.props.children}
-        </SidebarItem>
-      ) : (
-        <SidebarItem
-          key={node.key}
-          id={`rail:${node.key}`}
-          href={node.href}
-          onPress={node.onPress}
-        >
-          {node.textValue}
+          {nav?.props.children}
         </SidebarItem>
       );
+    };
+
+    // Footer links pin below the list; a footer *section* needs the drill-down,
+    // so it stays in the nav after a separator.
+    const pinnedNodes = footerNodes.filter(node => !node.isSection);
+    const footerSections = footerNodes.filter(node => node.isSection);
 
     return (
       <SidebarModal ref={ref}>
@@ -274,10 +330,29 @@ const SidebarRail = ({
           aria-label={ariaLabel || stringFormatter.format('railNavigation')}
         >
           {nodes.filter(node => !node.inFooter).map(renderMobileItem)}
-          {footerNodes.length > 0 ? <SidebarSeparator /> : null}
-          {footerNodes.map(renderMobileItem)}
+          {footerSections.length > 0 ? <SidebarSeparator /> : null}
+          {footerSections.map(renderMobileItem)}
         </SidebarNav>
-        {footer}
+        {/* Pinned below the scrolling list, like the desktop rail footer, so
+            help and account stay in reach at every drill-down level. Its own
+            labelled landmark, since it sits outside the main nav. */}
+        {pinnedNodes.length > 0 || footer ? (
+          <nav
+            aria-label={stringFormatter.format('railFooterNavigation')}
+            className={cn('[grid-area:footer]', classNames.railFooter)}
+          >
+            {pinnedNodes.map(node => (
+              <RailFooterLink
+                key={node.key}
+                node={node}
+                matched={matchedKey === node.key}
+                className={classNames.navLink}
+                onNavigate={toggleSidebar}
+              />
+            ))}
+            {footer}
+          </nav>
+        ) : null}
       </SidebarModal>
     );
   }

@@ -1,5 +1,6 @@
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { vi } from 'vitest';
 import { theme } from '@marigold/theme-rui';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
@@ -170,6 +171,54 @@ describe('Sidebar.Rail — arrow-key navigation', () => {
   });
 });
 
+describe('Sidebar.Rail — panel heading levels', () => {
+  test('group labels sit one level below the panel title', () => {
+    render(<Rail.Component />);
+
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Tickets' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 3, name: 'Ansichten' })
+    ).toBeInTheDocument();
+  });
+
+  test('a drilled-in level heads at 3 and its group labels at 4', () => {
+    render(
+      <MarigoldProvider theme={theme}>
+        <Sidebar.Provider>
+          <Sidebar>
+            <Sidebar.Rail current="/tickets/archiv/geloest">
+              <Sidebar.RailItem icon={<span />} id="tickets">
+                Tickets
+                <Sidebar.Nav aria-label="Tickets">
+                  <Sidebar.Item id="archiv" textValue="Archiv">
+                    Archiv
+                    <Sidebar.GroupLabel>Erledigt</Sidebar.GroupLabel>
+                    <Sidebar.Item href="/tickets/archiv/geloest">
+                      Gelöst
+                    </Sidebar.Item>
+                  </Sidebar.Item>
+                </Sidebar.Nav>
+              </Sidebar.RailItem>
+            </Sidebar.Rail>
+          </Sidebar>
+        </Sidebar.Provider>
+      </MarigoldProvider>
+    );
+
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Tickets' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 3, name: 'Archiv' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 4, name: 'Erledigt' })
+    ).toBeInTheDocument();
+  });
+});
+
 describe('Sidebar.Rail — panel focus management', () => {
   test('switching sections moves focus to the panel heading', async () => {
     render(<Rail.Component />);
@@ -310,6 +359,29 @@ describe('Sidebar.Rail — mobile', () => {
     ).toHaveAttribute('data-position', 'active');
   });
 
+  test('the drilled-in section name is a heading, and tapping it hits the back button', async () => {
+    render(<Rail.Component />);
+    await openDrawer();
+    const drawer = await screen.findByRole('complementary', {
+      name: 'Seitenleiste',
+    });
+
+    const heading = within(drawer).getByRole('heading', {
+      level: 2,
+      name: 'Tickets',
+    });
+    const backButton = within(drawer).getByRole('button', {
+      name: 'Zurück zu Tickets',
+    });
+    expect(backButton).not.toContainElement(heading);
+    await waitFor(() => {
+      const { left, top, width, height } = heading.getBoundingClientRect();
+      expect(
+        document.elementFromPoint(left + width / 2, top + height / 2)
+      ).toBe(backButton);
+    });
+  });
+
   test('back returns to the rail-level list and keeps the drawer open', async () => {
     render(<Rail.Component />);
     const toggle = await openDrawer();
@@ -375,17 +447,83 @@ describe('Sidebar.Rail — mobile', () => {
     );
   });
 
-  test('a pinned footer rail item is a row in the list and closes the drawer', async () => {
+  test('top-level rows keep their rail icon and mark the active section', async () => {
     render(<Rail.Component />);
-    const toggle = await openDrawer();
+    await openDrawer();
+    const drawer = await screen.findByRole('complementary', {
+      name: 'Seitenleiste',
+    });
     await user.click(
-      await screen.findByRole('button', { name: 'Zurück zu Tickets' })
+      within(drawer).getByRole('button', { name: 'Zurück zu Tickets' })
     );
 
-    await user.click(await screen.findByRole('link', { name: 'Hilfe-Center' }));
+    const tickets = within(drawer).getByRole('link', { name: 'Tickets' });
+    // eslint-disable-next-line testing-library/no-node-access
+    expect(tickets.querySelector('[aria-hidden="true"] svg')).not.toBeNull();
+    expect(tickets).toHaveAttribute('aria-current', 'true');
+  });
+
+  test('pinned footer rail items stay below the list at every level and close the drawer', async () => {
+    render(<Rail.Component />);
+    const toggle = await openDrawer();
+    const nav = await screen.findByRole('navigation', {
+      name: 'Hauptnavigation',
+    });
+
+    // Reachable while drilled into Tickets, without going back first, and
+    // outside the scrolling drill-down nav, in a navigation landmark of its own.
+    const help = await screen.findByRole('link', { name: 'Hilfe-Center' });
+    expect(nav).not.toContainElement(help);
+    expect(
+      screen.getByRole('navigation', { name: 'Weitere Navigation' })
+    ).toContainElement(help);
+
+    await user.click(help);
 
     await waitFor(() =>
       expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    );
+  });
+
+  test('a footer section keeps its drill-down in the drawer', async () => {
+    render(
+      <I18nProvider locale="de-DE">
+        <RouterProvider navigate={() => {}}>
+          <MarigoldProvider theme={theme}>
+            <Sidebar.Provider>
+              <Sidebar.Toggle />
+              <Sidebar>
+                <Sidebar.Rail current="/uebersicht">
+                  <Sidebar.RailItem icon={<i />} href="/uebersicht">
+                    Übersicht
+                  </Sidebar.RailItem>
+                  <Sidebar.Footer>
+                    <Sidebar.RailItem id="hilfe" icon={<i />}>
+                      Hilfe
+                      <Sidebar.Nav aria-label="Hilfe">
+                        <Sidebar.Item href="/hilfe/faq">FAQ</Sidebar.Item>
+                      </Sidebar.Nav>
+                    </Sidebar.RailItem>
+                  </Sidebar.Footer>
+                </Sidebar.Rail>
+              </Sidebar>
+            </Sidebar.Provider>
+          </MarigoldProvider>
+        </RouterProvider>
+      </I18nProvider>
+    );
+    await openDrawer();
+    const nav = await screen.findByRole('navigation', {
+      name: 'Hauptnavigation',
+    });
+
+    const hilfe = within(nav).getByRole('link', { name: 'Hilfe' });
+    await user.click(hilfe);
+
+    await waitFor(() =>
+      expect(
+        panelPosition(within(nav).getByRole('link', { name: 'FAQ' }))
+      ).toHaveAttribute('data-position', 'active')
     );
   });
 
