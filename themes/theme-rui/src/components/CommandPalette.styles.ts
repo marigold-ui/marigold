@@ -129,6 +129,9 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
   legend: cva({
     base: [
       'ms-auto flex items-center gap-4 [&>span]:inline-flex [&>span]:items-center [&>span]:gap-1.5',
+      // Compact caps: the legend is a quiet reminder, not a call to action.
+      // Smaller than the header's Esc cap and the ↵ on the active row.
+      '[&_kbd]:h-4.5 [&_kbd]:min-w-4.5 [&_kbd]:px-1 [&_kbd]:py-0 [&_kbd]:text-[10px] [&_kbd]:leading-none',
     ],
   }),
 };
