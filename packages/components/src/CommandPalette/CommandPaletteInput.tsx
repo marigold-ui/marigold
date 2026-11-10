@@ -13,7 +13,9 @@ import { useCommandPalette, useCommandPaletteEmptyState } from './Context';
 // ---------------
 export interface CommandPaletteInputProps {
   /**
-   * Placeholder text of the search input.
+   * Placeholder text of the search input. Name what people can find, for
+   * example "Search pages and actions…".
+   * @default 'Go to…'
    */
   placeholder?: string;
 
@@ -47,7 +49,12 @@ export const CommandPaletteInput = ({
       {({ isEmpty }) => (
         <>
           <Search aria-hidden="true" size="18" />
-          <Input placeholder={placeholder} className={classNames.input} />
+          <Input
+            placeholder={
+              placeholder ?? stringFormatter.format('commandPaletteGoTo')
+            }
+            className={classNames.input}
+          />
           {loading ? (
             <ProgressCircle />
           ) : isEmpty ? (

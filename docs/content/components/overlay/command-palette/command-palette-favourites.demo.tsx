@@ -27,7 +27,7 @@ export default () => {
     >
       <CommandPalette.Trigger />
       <CommandPalette.Content>
-        <CommandPalette.Input placeholder="Go to…" />
+        <CommandPalette.Input />
         <CommandPalette.List>
           <CommandPalette.Group title={title}>
             {items.map(item => (

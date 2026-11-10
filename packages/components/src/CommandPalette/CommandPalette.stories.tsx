@@ -54,6 +54,11 @@ const openPalette = ({
 }: Pick<StoryContext, 'canvas' | 'userEvent'>) =>
   userEvent.click(canvas.getByRole('button', { name: /go to|search/i }));
 
+// The overlay is not visible for a frame while it enters, even without a
+// fade, so wait for it instead of asserting once.
+const expectVisible = (element: HTMLElement) =>
+  waitFor(() => expect(element).toBeVisible());
+
 const onAction = fn();
 
 // Basic
@@ -64,7 +69,7 @@ export const Basic = meta.story({
     <CommandPalette {...args}>
       <CommandPalette.Trigger />
       <CommandPalette.Content>
-        <CommandPalette.Input placeholder="Search pages and actions…" />
+        <CommandPalette.Input />
         <CommandPalette.List onAction={onAction}>
           <CommandPalette.Group title="Pages">
             <CommandPalette.Item id="events" href="#events">
@@ -113,7 +118,7 @@ Basic.test(
     const dialog = await canvas.findByRole('dialog', {
       name: 'Command palette',
     });
-    await expect(dialog).toBeVisible();
+    await expectVisible(dialog);
     await expect(canvas.getByRole('searchbox')).toHaveFocus();
   }
 );
@@ -124,9 +129,9 @@ Basic.test(
   async ({ canvas, userEvent }) => {
     await userEvent.keyboard(shortcutKeys());
 
-    await expect(
+    await expectVisible(
       await canvas.findByRole('dialog', { name: 'Command palette' })
-    ).toBeVisible();
+    );
   }
 );
 
@@ -185,7 +190,7 @@ Basic.test(
     await openPalette({ canvas, userEvent });
     await userEvent.keyboard('xyz');
 
-    await expect(await canvas.findByText('No results for “xyz”')).toBeVisible();
+    await expectVisible(await canvas.findByText('No results for “xyz”'));
   }
 );
 
@@ -259,7 +264,7 @@ Basic.test(
     await openPalette({ canvas, userEvent });
 
     const legend = await canvas.findByText('Navigate');
-    await expect(legend).toBeVisible();
+    await expectVisible(legend);
     await expect(legend.closest('[aria-hidden="true"]')).not.toBeNull();
   }
 );
@@ -275,7 +280,7 @@ export const CustomEmptyState = meta.story({
     <CommandPalette {...args}>
       <CommandPalette.Trigger />
       <CommandPalette.Content>
-        <CommandPalette.Input placeholder="Search pages…" />
+        <CommandPalette.Input />
         <CommandPalette.List>
           <CommandPalette.Group title="Pages">
             <CommandPalette.Item id="events" href="#events">
@@ -303,9 +308,7 @@ CustomEmptyState.test(
     await openPalette({ canvas, userEvent });
     await userEvent.keyboard('xyz');
 
-    await expect(
-      await canvas.findByText(/No page with that name/)
-    ).toBeVisible();
+    await expectVisible(await canvas.findByText(/No page with that name/));
     await expect(canvas.queryByText(/No results for/)).toBeNull();
   }
 );
@@ -336,7 +339,7 @@ Loading.test(
   async ({ canvas, userEvent }) => {
     await openPalette({ canvas, userEvent });
 
-    await expect(await canvas.findByText('Searching events…')).toBeVisible();
+    await expectVisible(await canvas.findByText('Searching events…'));
     await expect(canvas.queryByText('No events found.')).toBeNull();
     await expect(canvas.getByRole('progressbar')).toBeInTheDocument();
   }
@@ -406,7 +409,7 @@ export const WithDescriptions = meta.story({
     <CommandPalette {...args}>
       <CommandPalette.Trigger />
       <CommandPalette.Content>
-        <CommandPalette.Input placeholder="Search pages and actions…" />
+        <CommandPalette.Input />
         <CommandPalette.List>
           <CommandPalette.Group title="Pages">
             <CommandPalette.Item id="events" href="#events" textValue="Events">
@@ -443,7 +446,7 @@ WithDescriptions.test(
   async ({ canvas, userEvent }) => {
     await openPalette({ canvas, userEvent });
 
-    await expect(await canvas.findByText('Analytics › Reports')).toBeVisible();
+    await expectVisible(await canvas.findByText('Analytics › Reports'));
   }
 );
 
@@ -482,7 +485,7 @@ ShortcutInFields.test(
     await userEvent.click(canvas.getByLabelText('Plain field'));
     await userEvent.keyboard(shortcutKeys());
 
-    await expect(await canvas.findByRole('dialog')).toBeVisible();
+    await expectVisible(await canvas.findByRole('dialog'));
   }
 );
 
@@ -542,14 +545,14 @@ Controlled.test(
     const opener = canvas.getByRole('button', { name: 'Open from anywhere' });
     await userEvent.click(opener);
 
-    await expect(await canvas.findByRole('dialog')).toBeVisible();
+    await expectVisible(await canvas.findByRole('dialog'));
 
     await userEvent.keyboard('{Escape}');
     await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
 
     // State went back to noSnapshot, so the button opens it again.
     await userEvent.click(opener);
-    await expect(await canvas.findByRole('dialog')).toBeVisible();
+    await expectVisible(await canvas.findByRole('dialog'));
   }
 );
 
@@ -661,17 +664,17 @@ SearchPrefix.test(
 
     await step('An unknown number shows the lookup message', async () => {
       await userEvent.keyboard('9');
-      await expect(
+      await expectVisible(
         await canvas.findByText('No event with a number starting with 10249.')
-      ).toBeVisible();
+      );
     });
 
     await step('The prefix alone explains itself', async () => {
       await userEvent.clear(input);
       await userEvent.keyboard('e:');
-      await expect(
+      await expectVisible(
         await canvas.findByText('Type an event number, for example e:1024.')
-      ).toBeVisible();
+      );
     });
 
     await step('Without the prefix the regular search applies', async () => {
@@ -826,7 +829,7 @@ const FavouritesPalette = () => {
     <CommandPalette inputValue={query} onInputChange={setQuery}>
       <CommandPalette.Trigger />
       <CommandPalette.Content>
-        <CommandPalette.Input placeholder="Go to…" />
+        <CommandPalette.Input />
         <CommandPalette.List>
           <CommandPalette.Group title={title}>
             {items.map(item => (
@@ -853,12 +856,12 @@ FavouritesOnEmptyQuery.test(
   async ({ canvas, userEvent }) => {
     await openPalette({ canvas, userEvent });
 
-    await expect(await canvas.findByText('Favourites')).toBeVisible();
+    await expectVisible(await canvas.findByText('Favourites'));
     await expect(canvas.getAllByRole('menuitem')).toHaveLength(2);
 
     await userEvent.keyboard('v');
 
-    await expect(await canvas.findByText('Pages')).toBeVisible();
+    await expectVisible(await canvas.findByText('Pages'));
     await expect(canvas.queryByText('Favourites')).toBeNull();
   }
 );
@@ -876,7 +879,7 @@ export const SmallScreen = meta.story({
 SmallScreen.test('Opens as a tray', snapshot, async ({ canvas, userEvent }) => {
   await openPalette({ canvas, userEvent });
 
-  await expect(
+  await expectVisible(
     await canvas.findByRole('dialog', { name: 'Command palette' })
-  ).toBeVisible();
+  );
 });
