@@ -42,6 +42,23 @@ export const hasAddonContent = (addon: ReactNode) =>
 export const joinIds = (...ids: (string | null | undefined)[]) =>
   ids.filter(Boolean).join(' ') || undefined;
 
+/**
+ * Points a field's focusable element at the addon's static content. Pass the
+ * returned `addonId` to `<FieldBase>` or `<FieldLabel>` and the `describedBy`
+ * to the element that gets focus.
+ */
+export const useAddonDescription = (addon: ReactNode, describedBy?: string) => {
+  const addonId = useId();
+
+  return {
+    addonId,
+    describedBy: joinIds(
+      describedBy,
+      hasAddonContent(addon) ? addonId : undefined
+    ),
+  };
+};
+
 interface AriaLabelling {
   'aria-label'?: string;
   'aria-labelledby'?: string;
