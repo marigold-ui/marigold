@@ -3,6 +3,9 @@ import { ReactElement, ReactNode } from 'react';
 import { vi } from 'vitest';
 import { Theme, ThemeProvider, ThemeProviderProps } from '@marigold/system';
 import { theme } from '@marigold/theme-rui';
+import { Button } from './Button/Button';
+import { Dialog } from './Dialog/Dialog';
+import { MarigoldProvider } from './Provider/MarigoldProvider';
 
 export type SetupProps<T extends Theme> = Omit<
   ThemeProviderProps<T>,
@@ -46,6 +49,23 @@ export const renderWithOverlay = (ui: ReactNode): RenderResult => {
   ensureOverlayContainer();
   return render(ui as ReactElement);
 };
+
+/**
+ * Renders `ui` inside an open `<Dialog>`. Overlays publish their own
+ * slot-keyed `TextContext`, so this catches a field whose help text reads it
+ * instead of its own.
+ */
+export const renderInDialog = (ui: ReactNode): RenderResult =>
+  render(
+    <MarigoldProvider theme={theme}>
+      <Dialog.Trigger open>
+        <Button>Open</Button>
+        <Dialog aria-label="Dialog">
+          <Dialog.Content>{ui}</Dialog.Content>
+        </Dialog>
+      </Dialog.Trigger>
+    </MarigoldProvider>
+  );
 
 /**
  * Mock `matchMedia` for jsdom which does not implement it.

@@ -17,10 +17,14 @@ import {
   MultipleSelection,
   NotificationsFeed,
   WithDescription,
+  WithSelectAll,
 } from './ListView.stories';
 import { __resetStackedActionsWarning } from './ListViewItem';
 
 const user = userEvent.setup({ pointerEventsCheck: 0 });
+
+// What react-aria's `isMac()` reads in a browser without `userAgentData`.
+const modKey = /^Mac/i.test(navigator.platform) ? 'Meta' : 'Control';
 
 describe('ListView', () => {
   describe('rendering', () => {
@@ -295,7 +299,8 @@ describe('ListView', () => {
 
       const list = screen.getByRole('grid', { name: 'Attachments' });
 
-      expect(list.className).toContain(
+      // eslint-disable-next-line testing-library/no-node-access
+      expect(list.parentElement!.className).toContain(
         '[--listview-item-px:var(--bleed-px,var(--spacing-stretch-regular-x))]'
       );
       // The publisher half: `Panel.Content bleed` declares the property the
@@ -324,7 +329,8 @@ describe('ListView', () => {
 
       // eslint-disable-next-line testing-library/no-node-access
       expect(list.closest('[class*="[--bleed-px:"]')).toBeNull();
-      expect(list.className).toContain(
+      // eslint-disable-next-line testing-library/no-node-access
+      expect(list.parentElement!.className).toContain(
         'var(--bleed-px,var(--spacing-stretch-regular-x))'
       );
     });
@@ -483,6 +489,195 @@ describe('ListView', () => {
       // on source order and the disabled row still invites a click.
       expect(getComputedStyle(enabled).cursor).toBe('pointer');
       expect(getComputedStyle(disabled).cursor).toBe('not-allowed');
+    });
+  });
+
+  describe('select-all header', () => {
+    test('is not a row of the collection', () => {
+      render(<WithSelectAll.Component />);
+
+      const grid = screen.getByRole('grid', { name: 'Venues' });
+      const selectAll = screen.getByRole('checkbox', { name: 'Select all' });
+
+      expect(screen.getAllByRole('row')).toHaveLength(3);
+      expect(grid).not.toContainElement(selectAll);
+    });
+
+    test('renders nothing in the other selection modes', () => {
+      render(<WithSelectAll.Component selectionMode="single" />);
+
+      expect(
+        screen.queryByRole('checkbox', { name: 'Select all' })
+      ).not.toBeInTheDocument();
+    });
+
+    test('reads as fully selected once every selectable row is', async () => {
+      render(
+        <WithSelectAll.Component
+          disabledKeys={['tempodrom', 'columbiahalle']}
+        />
+      );
+
+      await user.click(screen.getByRole('row', { name: /gasometer/i }));
+
+      expect(
+        screen.getByRole('checkbox', { name: 'Select all' })
+      ).toBeChecked();
+    });
+
+    test('selects the remaining rows when pressed on a partial selection', async () => {
+      const onSelectionChange = vi.fn();
+      render(<WithSelectAll.Component onSelectionChange={onSelectionChange} />);
+
+      await user.click(screen.getByRole('row', { name: /gasometer/i }));
+      await user.click(screen.getByRole('checkbox', { name: 'Select all' }));
+
+      expect(onSelectionChange).toHaveBeenLastCalledWith('all');
+    });
+
+    test('warns about a row it cannot address', () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+      render(
+        <MarigoldProvider theme={theme}>
+          <ListView aria-label="Venues" selectionMode="multiple" allowSelectAll>
+            <ListView.Item textValue="Keyless" />
+          </ListView>
+        </MarigoldProvider>
+      );
+
+      expect(warnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('Give every item an `id`')
+      );
+
+      warnSpy.mockRestore();
+    });
+
+    test('describes the select-all with the count', () => {
+      render(<WithSelectAll.Component />);
+
+      expect(
+        screen.getByRole('checkbox', { name: 'Select all' })
+      ).toHaveAccessibleDescription('0 of 3 selected Venues');
+    });
+
+    test('has nothing to address in an empty list', () => {
+      render(
+        <MarigoldProvider theme={theme}>
+          <ListView aria-label="Venues" selectionMode="multiple" allowSelectAll>
+            {[]}
+          </ListView>
+        </MarigoldProvider>
+      );
+
+      expect(
+        screen.getByRole('checkbox', { name: 'Select all' })
+      ).toBeDisabled();
+    });
+
+    test('leaves the selection alone when it may not be emptied', async () => {
+      const onSelectionChange = vi.fn();
+      render(
+        <WithSelectAll.Component
+          disallowEmptySelection
+          onSelectionChange={onSelectionChange}
+        />
+      );
+
+      const selectAll = screen.getByRole('checkbox', { name: 'Select all' });
+      await user.click(selectAll);
+      onSelectionChange.mockClear();
+
+      await user.click(selectAll);
+
+      expect(onSelectionChange).not.toHaveBeenCalled();
+      expect(selectAll).toBeChecked();
+    });
+
+    test('reports the sentinel even when a disabled row is selected', async () => {
+      const onSelectionChange = vi.fn();
+      render(
+        <WithSelectAll.Component
+          disabledKeys={['tempodrom']}
+          defaultSelectedKeys={['tempodrom']}
+          onSelectionChange={onSelectionChange}
+        />
+      );
+
+      await user.click(screen.getByRole('checkbox', { name: 'Select all' }));
+
+      // The sentinel goes out whatever the data holds.
+      expect(onSelectionChange).toHaveBeenLastCalledWith('all');
+    });
+
+    test('reports the same value as Mod+A on the rows', async () => {
+      const onSelectionChange = vi.fn();
+      render(<WithSelectAll.Component onSelectionChange={onSelectionChange} />);
+
+      await user.click(screen.getByRole('checkbox', { name: 'Select all' }));
+      const fromHeader = onSelectionChange.mock.lastCall;
+
+      await user.click(screen.getByRole('row', { name: /gasometer/i }));
+      await user.keyboard(`{${modKey}>}a{/${modKey}}`);
+
+      expect(onSelectionChange.mock.lastCall).toStrictEqual(fromHeader);
+      expect(fromHeader).toStrictEqual(['all']);
+    });
+
+    test('does not select a disabled row when clearing from `all`', async () => {
+      const onSelectionChange = vi.fn();
+      render(
+        <WithSelectAll.Component
+          disabledKeys={['tempodrom']}
+          onSelectionChange={onSelectionChange}
+        />
+      );
+
+      const selectAll = screen.getByRole('checkbox', { name: 'Select all' });
+      const disabledRow = screen.getByRole('row', { name: /tempodrom/i });
+
+      await user.click(selectAll);
+      expect(disabledRow).not.toHaveAttribute('aria-selected', 'true');
+
+      await user.click(selectAll);
+
+      expect(onSelectionChange).toHaveBeenLastCalledWith(new Set());
+      expect(disabledRow).not.toHaveAttribute('aria-selected', 'true');
+    });
+
+    test('reads as mixed while only a disabled row is selected', () => {
+      render(
+        <WithSelectAll.Component
+          disabledKeys={['tempodrom']}
+          defaultSelectedKeys={['tempodrom']}
+        />
+      );
+
+      // `<Table>` reads `!isEmpty && !isSelectAll`: mixed, not unchecked.
+      expect(
+        screen.getByRole('checkbox', { name: 'Select all' })
+      ).toBePartiallyChecked();
+    });
+
+    test('names the list in the description when it has a visible label', () => {
+      render(
+        <MarigoldProvider theme={theme}>
+          <span id="venues-label">Venues</span>
+          <ListView
+            aria-labelledby="venues-label"
+            selectionMode="multiple"
+            allowSelectAll
+          >
+            <ListView.Item id="gasometer" textValue="Gasometer">
+              <TextValue>Gasometer</TextValue>
+            </ListView.Item>
+          </ListView>
+        </MarigoldProvider>
+      );
+
+      expect(
+        screen.getByRole('checkbox', { name: 'Select all' })
+      ).toHaveAccessibleDescription('0 of 1 selected Venues');
     });
   });
 });
