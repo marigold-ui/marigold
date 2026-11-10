@@ -23,6 +23,26 @@ A command palette consists of an optional trigger and the palette itself, which 
 - **Legend:** A footer listing the keys to navigate, select and close. It is built in and hidden on touch devices.
 - **Underlay:** Dims the page behind the palette. Clicking it closes the palette.
 
+## Appearance
+
+<AppearanceDemo
+  component={'CommandPalette'}
+  exclude={{ variant: ['destructive', 'master', 'admin'] }}
+/>
+
+<AppearanceTable component={'CommandPalette'} />
+
+The palette itself has no variants or sizes. Its items take the same variants as menu items.
+
+| Variant       | Description                                       | When to use                                              |
+| ------------- | ------------------------------------------------- | -------------------------------------------------------- |
+| `default`     | Standard item. This is the default variant.       | Pages and regular actions.                               |
+| `destructive` | Red item signaling a dangerous action.            | Irreversible or high-impact actions like "Delete event". |
+| `master`      | Item with a lock icon in the master access color. | Actions reserved for Reservix employees (master access). |
+| `admin`       | Item with a key icon in the admin access color.   | Actions reserved for developers (admin access).          |
+
+See the [Admin- and Mastermark pattern](/patterns/layout/admin-master-mark) for guidance on access marks.
+
 ## Usage
 
 Put everything people jump to often into one palette per app: pages, frequent actions such as "Create event", and records like an event or an order once the app loads them.
