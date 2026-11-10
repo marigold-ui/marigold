@@ -32,6 +32,7 @@ Basic.test(
  * row and a dark ground alike, instead of an opaque box.
  */
 export const OnBackgrounds = meta.story({
+  tags: ['component-test'],
   args: {
     children: '⌘K',
   },
@@ -64,3 +65,35 @@ export const OnBackgrounds = meta.story({
     );
   },
 });
+
+/**
+ * Paints a computed colour onto a transparent pixel and reads its alpha back,
+ * so the check holds whatever colour syntax the browser serialises to.
+ */
+const alphaOf = (color: string) => {
+  const ctx = document.createElement('canvas').getContext('2d');
+  if (!ctx) throw new Error('No 2D canvas context');
+  ctx.fillStyle = color;
+  ctx.fillRect(0, 0, 1, 1);
+  return ctx.getImageData(0, 0, 1, 1).data[3];
+};
+
+OnBackgrounds.test(
+  'keeps the cap translucent and in the surrounding font on every ground',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const caps = canvas.getAllByText('⌘K');
+
+    await expect(caps).toHaveLength(5);
+
+    for (const cap of caps) {
+      const alpha = alphaOf(getComputedStyle(cap).backgroundColor);
+
+      await expect(alpha).toBeGreaterThan(0);
+      await expect(alpha).toBeLessThan(255);
+      await expect(getComputedStyle(cap).fontFamily).toBe(
+        getComputedStyle(cap.parentElement!).fontFamily
+      );
+    }
+  }
+);
