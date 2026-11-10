@@ -4,15 +4,24 @@ description: One keyboard-first entry point to search pages, actions and records
 badge: alpha
 ---
 
+import { CommandPaletteAnatomy } from './command-palette-anatomy';
+
 The `<CommandPalette>` component opens a search field over a list of pages and actions. People press <kbd>⌘</kbd>+<kbd>K</kbd> (<kbd>Ctrl</kbd>+<kbd>K</kbd> on Windows and Linux) from anywhere in the app, type a few letters and press <kbd>Enter</kbd> to go to the top match. It suits power users who live in the keyboard and apps with more pages than a sidebar can show comfortably.
 
 ## Anatomy
 
-- **Trigger**, written as `<CommandPalette.Trigger>`. An optional button that reads "Go to…" and shows the shortcut. The shortcut works without it.
-- **Search field**, written as `<CommandPalette.Input>`. It is the header of the dialog and gets focus when the palette opens. Its placeholder reads "Go to…" unless you pass one that names what people can find.
-- **List**, written as `<CommandPalette.List>`. Holds the results. Group them with `<CommandPalette.Group>`, one `<CommandPalette.Item>` per page or action.
-- **Empty and loading states**, written as `<CommandPalette.Empty>` and `<CommandPalette.Loading>`. They replace the list when there is nothing to show.
-- **Legend**, a footer on larger screens that lists the keys to navigate, select and close. It is built in.
+A command palette consists of an optional trigger and the palette itself, which opens on an underlay. The palette holds a search field, the list of results grouped under titles, and a legend of the keys. When nothing matches or results are still loading, a message takes the place of the list.
+
+<CommandPaletteAnatomy />
+
+- **Trigger:** An optional button that looks like a search field, reads "Go to…" and shows the shortcut. The shortcut works without it.
+- **Search field:** The header of the palette. It gets focus when the palette opens and shows an <kbd>Esc</kbd> hint, a clear button once there is a query, or a spinner while results load.
+- **Group:** An optional title over related items, for example Pages and Actions.
+- **Item:** A single page or action, with an optional icon and description.
+- **Active row:** The row <kbd>Enter</kbd> runs. There is always one while there are results, marked with a ↵ hint.
+- **List:** Holds the groups and items and scrolls when they don't fit.
+- **Legend:** A footer listing the keys to navigate, select and close. It is built in and hidden on touch devices.
+- **Underlay:** Dims the page behind the palette. Clicking it closes the palette.
 
 ## Usage
 
