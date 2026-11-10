@@ -24,13 +24,21 @@ export const typeFromTheFirstRow = async (key: string) => {
 };
 
 /** A minimal table whose first column is the row header. */
-export const GuestTable = ({ children }: { children: ReactNode }) => (
+export const GuestTable = ({
+  children,
+  columns = (
+    <>
+      <Table.Column rowHeader>Guest</Table.Column>
+      <Table.Column>Seat</Table.Column>
+    </>
+  ),
+}: {
+  children: ReactNode;
+  columns?: ReactNode;
+}) => (
   <MarigoldProvider theme={theme}>
     <Table aria-label="Guests" selectionMode="single">
-      <Table.Header>
-        <Table.Column rowHeader>Guest</Table.Column>
-        <Table.Column>Seat</Table.Column>
-      </Table.Header>
+      <Table.Header>{columns}</Table.Header>
       <Table.Body>{children}</Table.Body>
     </Table>
   </MarigoldProvider>

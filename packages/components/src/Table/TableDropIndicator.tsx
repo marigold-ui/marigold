@@ -59,7 +59,9 @@ export const TableDropIndicator = ({
       className={cn(
         'transform-gpu',
         classNames.dropIndicator,
-        'drop-target:before:z-10'
+        // The row is its own stacking context (`transform-gpu`), so the row
+        // itself has to rise above the sticky cells around it.
+        'drop-target:z-10'
       )}
     />
   );

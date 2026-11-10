@@ -19,6 +19,18 @@ export interface TableContextProps {
 }
 
 export const TableContext = createContext<TableContextProps | null>(null);
+
+export type StickyEdge = 'start' | 'end';
+
+/** Shared, so tables without sticky columns keep one stable value. */
+export const noStickyColumns: readonly (StickyEdge | undefined)[] = [];
+
+/**
+ * The edge each column sticks to, by column index. Provided from inside React
+ * Aria's table, where the column layout exists, so only rendered cells can
+ * read it.
+ */
+export const TableStickyContext = createContext(noStickyColumns);
 export const useTableContext = () => {
   const context = use(TableContext);
   if (context === null) {
