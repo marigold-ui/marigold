@@ -13,7 +13,7 @@ For a short list of actions next to the thing they act on, use [`<Menu>`](/compo
 ## Anatomy
 
 - **Trigger**, written as `<CommandPalette.Trigger>`. An optional button that reads "Go to…" and shows the shortcut. The shortcut works without it.
-- **Search field**, written as `<CommandPalette.Input>`. It is the header of the dialog and gets focus when the palette opens.
+- **Search field**, written as `<CommandPalette.Input>`. It is the header of the dialog and gets focus when the palette opens. Its placeholder reads "Go to…" unless you pass one that names what people can find.
 - **List**, written as `<CommandPalette.List>`. Holds the results. Group them with `<CommandPalette.Group>`, one `<CommandPalette.Item>` per page or action.
 - **Empty and loading states**, written as `<CommandPalette.Empty>` and `<CommandPalette.Loading>`. They replace the list when there is nothing to show.
 - **Legend**, a footer on larger screens that lists the keys to navigate, select and close. It is built in.
@@ -62,11 +62,21 @@ Put everything people jump to often into one palette per app: pages, frequent ac
 
 One row is always active while there are results, so Enter always does something. When the search changes, the first row becomes active again.
 
+Letters typed into the search field stay in the palette. Shortcuts your app binds to single keys, for example "c" to create, don't fire while people type a query.
+
 The shortcut also fires inside text fields, as it does in GitHub, Linear and Slack. If another handler already used the key, for example a rich-text editor that inserts a link on ⌘K, the palette leaves it alone. Change the key with `shortcut="j"`, or turn it off with `shortcut={false}` when your app already uses it.
 
 ### Filtering
 
 By default the palette matches the query anywhere in an item's text and ignores case and accents, so "cafe" finds "Café". It keeps your groups and your order and highlights the matching text. Pass your own `filter` function for a different match, for example a fuzzy one.
+
+An item's text is its plain-text label, also next to an icon. When the label is built from `<Text>` slots, for example with a description underneath, pass `textValue` so the item can still be found.
+
+### Empty state
+
+When nothing matches, the palette says so and suggests a different search. Before anyone types into an empty list, it asks them to type. Render `<CommandPalette.Empty>` to replace that message, for example to name what people can search for.
+
+<ComponentDemo name="command-palette-empty" />
 
 ### Results from the server
 
