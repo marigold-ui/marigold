@@ -353,16 +353,24 @@ describe('inside Drawer.Trigger', () => {
     );
   });
 
-  test('does not warn when open is set on both', () => {
+  // Same precedence as RAC's `ModalOverlay`: the Drawer's own `open` wins over
+  // the trigger, so closing goes through the Drawer's (handler-less) state and
+  // never reaches the trigger. RAC stays silent here too.
+  test('closes through its own state, not the trigger, when open is set on both', async () => {
+    const onOpenChange = vi.fn();
     renderThemed(
-      <Drawer.Trigger open={false}>
+      <Drawer.Trigger open onOpenChange={onOpenChange}>
         <Button>Open</Button>
-        <Drawer open={false}>
+        <Drawer open closeButton>
           <Drawer.Title>Title</Drawer.Title>
         </Drawer>
       </Drawer.Trigger>
     );
 
+    await user.click(screen.getByLabelText('Dismiss drawer'));
+
+    expect(onOpenChange).not.toHaveBeenCalled();
+    expect(screen.getByText('Title')).toBeInTheDocument();
     expect(warn).not.toHaveBeenCalledWith(expect.stringContaining('[Drawer]'));
   });
 });
