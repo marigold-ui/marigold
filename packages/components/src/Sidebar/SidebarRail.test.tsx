@@ -182,6 +182,41 @@ describe('Sidebar.Rail — panel heading levels', () => {
       screen.getByRole('heading', { level: 3, name: 'Ansichten' })
     ).toBeInTheDocument();
   });
+
+  test('a drilled-in level heads at 3 and its group labels at 4', () => {
+    render(
+      <MarigoldProvider theme={theme}>
+        <Sidebar.Provider>
+          <Sidebar>
+            <Sidebar.Rail current="/tickets/archiv/geloest">
+              <Sidebar.RailItem icon={<span />} id="tickets">
+                Tickets
+                <Sidebar.Nav aria-label="Tickets">
+                  <Sidebar.Item id="archiv" textValue="Archiv">
+                    Archiv
+                    <Sidebar.GroupLabel>Erledigt</Sidebar.GroupLabel>
+                    <Sidebar.Item href="/tickets/archiv/geloest">
+                      Gelöst
+                    </Sidebar.Item>
+                  </Sidebar.Item>
+                </Sidebar.Nav>
+              </Sidebar.RailItem>
+            </Sidebar.Rail>
+          </Sidebar>
+        </Sidebar.Provider>
+      </MarigoldProvider>
+    );
+
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Tickets' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 3, name: 'Archiv' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 4, name: 'Erledigt' })
+    ).toBeInTheDocument();
+  });
 });
 
 describe('Sidebar.Rail — panel focus management', () => {
