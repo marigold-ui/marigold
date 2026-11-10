@@ -42,7 +42,11 @@ const shortcutKeys = () => {
   return `{${modifier}>}k{/${modifier}}`;
 };
 
+// A closed palette is only its trigger, which `Basic` already shows. Stories
+// skip their own snapshot and tests that open a state worth guarding opt back
+// in, so Chromatic captures the open palette at the end of the test.
 const noSnapshot = { parameters: { chromatic: { disableSnapshot: true } } };
+const snapshot = { parameters: { chromatic: { disableSnapshot: false } } };
 
 const openPalette = ({
   canvas,
@@ -128,7 +132,7 @@ Basic.test(
 
 Basic.test(
   'Opens with the first item active',
-  noSnapshot,
+  snapshot,
   async ({ canvas, userEvent }) => {
     await openPalette({ canvas, userEvent });
 
@@ -176,7 +180,7 @@ Basic.test(
 
 Basic.test(
   'Shows the empty state when nothing matches',
-  noSnapshot,
+  snapshot,
   async ({ canvas, userEvent }) => {
     await openPalette({ canvas, userEvent });
     await userEvent.keyboard('xyz');
@@ -210,63 +214,6 @@ Basic.test(
   }
 );
 
-Basic.test(
-  'Shows a custom empty state',
-  {
-    ...noSnapshot,
-    render: () => (
-      <CommandPalette>
-        <CommandPalette.Trigger />
-        <CommandPalette.Content>
-          <CommandPalette.Input />
-          <CommandPalette.List>
-            <CommandPalette.Item id="events">Events</CommandPalette.Item>
-          </CommandPalette.List>
-          <CommandPalette.Empty>
-            Nothing here. Try "events".
-          </CommandPalette.Empty>
-        </CommandPalette.Content>
-      </CommandPalette>
-    ),
-  },
-  async ({ canvas, userEvent }) => {
-    await openPalette({ canvas, userEvent });
-    await userEvent.keyboard('xyz');
-
-    await expect(
-      await canvas.findByText('Nothing here. Try "events".')
-    ).toBeVisible();
-    await expect(canvas.queryByText(/No results for/)).toBeNull();
-  }
-);
-
-Basic.test(
-  'Shows the loading state and a spinner while loading',
-  {
-    ...noSnapshot,
-    render: () => (
-      <CommandPalette>
-        <CommandPalette.Trigger />
-        <CommandPalette.Content>
-          <CommandPalette.Input />
-          <CommandPalette.List>{[]}</CommandPalette.List>
-          <CommandPalette.Loading>Searching…</CommandPalette.Loading>
-          <CommandPalette.Empty>No events found.</CommandPalette.Empty>
-        </CommandPalette.Content>
-      </CommandPalette>
-    ),
-  },
-  async ({ canvas, userEvent }) => {
-    await openPalette({ canvas, userEvent });
-
-    // The dialog fades in, so wait for it to become visible.
-    const loading = await canvas.findByText('Searching…');
-    await waitFor(() => expect(loading).toBeVisible());
-    await expect(canvas.queryByText('No events found.')).toBeNull();
-    await expect(canvas.getByRole('progressbar')).toBeInTheDocument();
-  }
-);
-
 Basic.test('Closes with Escape', noSnapshot, async ({ canvas, userEvent }) => {
   await openPalette({ canvas, userEvent });
   await canvas.findByRole('dialog');
@@ -277,7 +224,7 @@ Basic.test('Closes with Escape', noSnapshot, async ({ canvas, userEvent }) => {
 
 Basic.test(
   'Marks the matched part of a label, accent-insensitively',
-  noSnapshot,
+  snapshot,
   async ({ canvas, userEvent }) => {
     await openPalette({ canvas, userEvent });
     await userEvent.keyboard('cafe');
@@ -312,9 +259,86 @@ Basic.test(
     await openPalette({ canvas, userEvent });
 
     const legend = await canvas.findByText('Navigate');
-    // The palette fades in.
-    await waitFor(() => expect(legend).toBeVisible());
+    await expect(legend).toBeVisible();
     await expect(legend.closest('[aria-hidden="true"]')).not.toBeNull();
+  }
+);
+
+// Custom empty state
+// ---------------
+// Replaces the built-in "No results" message, for example to point people to
+// what they can search for.
+export const CustomEmptyState = meta.story({
+  tags: ['component-test'],
+  ...noSnapshot,
+  render: args => (
+    <CommandPalette {...args}>
+      <CommandPalette.Trigger />
+      <CommandPalette.Content>
+        <CommandPalette.Input placeholder="Search pages…" />
+        <CommandPalette.List>
+          <CommandPalette.Group title="Pages">
+            <CommandPalette.Item id="events" href="#events">
+              <CalendarDays />
+              Events
+            </CommandPalette.Item>
+            <CommandPalette.Item id="orders" href="#orders">
+              <ShoppingCart />
+              Orders
+            </CommandPalette.Item>
+          </CommandPalette.Group>
+        </CommandPalette.List>
+        <CommandPalette.Empty>
+          No page with that name. Try “events” or “orders”.
+        </CommandPalette.Empty>
+      </CommandPalette.Content>
+    </CommandPalette>
+  ),
+});
+
+CustomEmptyState.test(
+  'Shows the custom message instead of the built-in one',
+  snapshot,
+  async ({ canvas, userEvent }) => {
+    await openPalette({ canvas, userEvent });
+    await userEvent.keyboard('xyz');
+
+    await expect(
+      await canvas.findByText(/No page with that name/)
+    ).toBeVisible();
+    await expect(canvas.queryByText(/No results for/)).toBeNull();
+  }
+);
+
+// Loading
+// ---------------
+// While results load and none are there yet, the loading message replaces
+// the list and the search field shows a spinner.
+export const Loading = meta.story({
+  tags: ['component-test'],
+  ...noSnapshot,
+  render: args => (
+    <CommandPalette {...args}>
+      <CommandPalette.Trigger />
+      <CommandPalette.Content>
+        <CommandPalette.Input placeholder="Search events…" />
+        <CommandPalette.List>{[]}</CommandPalette.List>
+        <CommandPalette.Loading>Searching events…</CommandPalette.Loading>
+        <CommandPalette.Empty>No events found.</CommandPalette.Empty>
+      </CommandPalette.Content>
+    </CommandPalette>
+  ),
+});
+
+Loading.test(
+  'Shows the loading message and a spinner instead of the empty state',
+  snapshot,
+  async ({ canvas, userEvent }) => {
+    await openPalette({ canvas, userEvent });
+
+    await expect(await canvas.findByText('Searching events…')).toBeVisible();
+    await expect(canvas.queryByText('No events found.')).toBeNull();
+    await expect(canvas.getByRole('progressbar')).toBeInTheDocument();
   }
 );
 
@@ -322,6 +346,7 @@ Basic.test(
 // ---------------
 export const Variants = meta.story({
   tags: ['component-test'],
+  ...noSnapshot,
   render: args => (
     <CommandPalette {...args}>
       <CommandPalette.Trigger />
@@ -350,6 +375,12 @@ export const Variants = meta.story({
   ),
 });
 
+Variants.test('Shows each variant', snapshot, async ({ canvas, userEvent }) => {
+  await openPalette({ canvas, userEvent });
+
+  await waitFor(() => expect(canvas.getAllByRole('menuitem')).toHaveLength(4));
+});
+
 Variants.test(
   'Filters variant items on their label, not the access marker',
   noSnapshot,
@@ -369,6 +400,8 @@ Variants.test(
 // A description line tells similar results apart. With `<Text>` slots the
 // children are not plain text, so pass `textValue` for filtering.
 export const WithDescriptions = meta.story({
+  tags: ['component-test'],
+  ...noSnapshot,
   render: args => (
     <CommandPalette {...args}>
       <CommandPalette.Trigger />
@@ -403,6 +436,16 @@ export const WithDescriptions = meta.story({
     </CommandPalette>
   ),
 });
+
+WithDescriptions.test(
+  'Shows a description under each label',
+  snapshot,
+  async ({ canvas, userEvent }) => {
+    await openPalette({ canvas, userEvent });
+
+    await expect(await canvas.findByText('Analytics › Reports')).toBeVisible();
+  }
+);
 
 // Shortcut in fields
 // ---------------
@@ -487,63 +530,164 @@ const ControlledPalette = () => {
 };
 
 export const Controlled = meta.story({
+  tags: ['component-test'],
+  ...noSnapshot,
   render: () => <ControlledPalette />,
 });
 
-// Async search
+Controlled.test(
+  'Opens from outside and reports closing back',
+  noSnapshot,
+  async ({ canvas, userEvent }) => {
+    const opener = canvas.getByRole('button', { name: 'Open from anywhere' });
+    await userEvent.click(opener);
+
+    await expect(await canvas.findByRole('dialog')).toBeVisible();
+
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
+
+    // State went back to noSnapshot, so the button opens it again.
+    await userEvent.click(opener);
+    await expect(await canvas.findByRole('dialog')).toBeVisible();
+  }
+);
+
+// Search prefix
 // ---------------
-interface Character {
-  name: string;
-  url: string;
-}
+// An app-level pattern, no component API: `e:1024` looks up an event by its
+// number. The built-in filter is off while the prefix is present, because the
+// query is not a label.
+const events = [
+  { id: '1024', name: 'Jazz im Park', date: 'Jun 14, 2026' },
+  { id: '1031', name: 'Stadtfest', date: 'Jul 2, 2026' },
+  { id: '2048', name: 'Open-Air Kino', date: 'Aug 21, 2026' },
+];
 
-const AsyncSearchPalette = () => {
-  const list = useAsyncList<Character>({
-    async load({ signal, filterText }) {
-      if (!filterText) return { items: [] };
-      const res = await fetch(
-        `https://swapi.py4e.com/api/people/?search=${encodeURIComponent(filterText)}`,
-        { signal }
-      );
-      const json = (await res.json()) as { results: Character[] };
-      return { items: json.results };
-    },
-  });
+const SearchPrefixPalette = () => {
+  const [query, setQuery] = useState('');
+  const lookup = query.toLowerCase().startsWith('e:');
+  const id = query.slice(2).trim();
+  const matches = lookup && id ? events.filter(e => e.id.startsWith(id)) : [];
 
-  // Debouncing is left to the consumer; a real app would debounce here.
   return (
     <CommandPalette
-      filter={false}
-      inputValue={list.filterText}
-      onInputChange={list.setFilterText}
+      inputValue={query}
+      onInputChange={setQuery}
+      filter={lookup ? false : undefined}
     >
-      <CommandPalette.Trigger>Search characters…</CommandPalette.Trigger>
+      <CommandPalette.Trigger />
       <CommandPalette.Content>
-        <CommandPalette.Input placeholder="Type a Star Wars name…" />
-        <CommandPalette.List items={list.items}>
-          {(item: Character) => (
-            <CommandPalette.Item id={item.url}>{item.name}</CommandPalette.Item>
+        <CommandPalette.Input placeholder="Search pages, or e:1024 for an event…" />
+        <CommandPalette.List>
+          {lookup ? (
+            matches.length > 0 && (
+              <CommandPalette.Group title="Events">
+                {matches.map(event => (
+                  <CommandPalette.Item
+                    key={event.id}
+                    id={event.id}
+                    href={`#event-${event.id}`}
+                    textValue={event.name}
+                  >
+                    <Ticket />
+                    <Text slot="label">{event.name}</Text>
+                    <Text slot="description">
+                      #{event.id}, {event.date}
+                    </Text>
+                  </CommandPalette.Item>
+                ))}
+              </CommandPalette.Group>
+            )
+          ) : (
+            <CommandPalette.Group title="Pages">
+              <CommandPalette.Item id="events" href="#events">
+                <CalendarDays />
+                Events
+              </CommandPalette.Item>
+              <CommandPalette.Item id="orders" href="#orders">
+                <ShoppingCart />
+                Orders
+              </CommandPalette.Item>
+            </CommandPalette.Group>
           )}
         </CommandPalette.List>
-        {list.isLoading && (
-          <CommandPalette.Loading>Searching…</CommandPalette.Loading>
+        {lookup && (
+          <CommandPalette.Empty>
+            {id
+              ? `No event with a number starting with ${id}.`
+              : 'Type an event number, for example e:1024.'}
+          </CommandPalette.Empty>
         )}
-        <CommandPalette.Empty>
-          {list.filterText ? 'No characters found.' : 'Start typing to search.'}
-        </CommandPalette.Empty>
       </CommandPalette.Content>
     </CommandPalette>
   );
 };
 
-export const AsyncSearch = meta.story({
-  render: () => <AsyncSearchPalette />,
+export const SearchPrefix = meta.story({
+  tags: ['component-test'],
+  ...noSnapshot,
+  render: () => <SearchPrefixPalette />,
 });
 
-// Simulated async search
+SearchPrefix.test(
+  'Lists the records that match a prefixed number',
+  snapshot,
+  async ({ canvas, userEvent }) => {
+    await openPalette({ canvas, userEvent });
+    await canvas.findByRole('searchbox');
+    await userEvent.keyboard('e:10');
+
+    await waitFor(() =>
+      expect(canvas.getAllByRole('menuitem')).toHaveLength(2)
+    );
+    await expect(canvas.getByText('Events')).toBeVisible();
+  }
+);
+
+SearchPrefix.test(
+  'Narrows the lookup, explains it, and falls back to the regular search',
+  noSnapshot,
+  async ({ canvas, step, userEvent }) => {
+    await openPalette({ canvas, userEvent });
+    const input = await canvas.findByRole('searchbox');
+    const rows = () => canvas.queryAllByRole('menuitem');
+
+    await step('A full number finds one event', async () => {
+      await userEvent.keyboard('e:1024');
+      await waitFor(() => expect(rows()).toHaveLength(1));
+      await expect(rows()[0]).toHaveTextContent('Jazz im Park');
+    });
+
+    await step('An unknown number shows the lookup message', async () => {
+      await userEvent.keyboard('9');
+      await expect(
+        await canvas.findByText('No event with a number starting with 10249.')
+      ).toBeVisible();
+    });
+
+    await step('The prefix alone explains itself', async () => {
+      await userEvent.clear(input);
+      await userEvent.keyboard('e:');
+      await expect(
+        await canvas.findByText('Type an event number, for example e:1024.')
+      ).toBeVisible();
+    });
+
+    await step('Without the prefix the regular search applies', async () => {
+      await userEvent.clear(input);
+      await userEvent.keyboard('ord');
+      await waitFor(() => expect(rows()).toHaveLength(1));
+      await expect(rows()[0]).toHaveTextContent('Orders');
+    });
+  }
+);
+
+// Async search
 // ---------------
-// Same flow as AsyncSearch, but the results come from a local list after a
-// short delay, so tests can cover async results without a live API.
+// Results come from the server: the built-in filter is off and the query is
+// controlled. A local list with a short delay stands in for the API, so the
+// story works offline. Debouncing is left to the consumer.
 const characters = [
   'Luke Skywalker',
   'C-3PO',
@@ -574,7 +718,7 @@ const searchCharacters = (query: string, signal: AbortSignal) =>
     });
   });
 
-const SimulatedAsyncPalette = () => {
+const AsyncSearchPalette = () => {
   const list = useAsyncList<(typeof characters)[number]>({
     async load({ signal, filterText }) {
       if (!filterText) return { items: [] };
@@ -607,9 +751,10 @@ const SimulatedAsyncPalette = () => {
   );
 };
 
-export const SimulatedAsyncSearch = meta.story({
+export const AsyncSearch = meta.story({
   tags: ['component-test'],
-  render: () => <SimulatedAsyncPalette />,
+  ...noSnapshot,
+  render: () => <AsyncSearchPalette />,
 });
 
 // The first row is the active one: the input points at it with
@@ -624,7 +769,7 @@ const expectFirstRowActive = (canvas: StoryContext['canvas'], name: string) =>
     );
   });
 
-SimulatedAsyncSearch.test(
+AsyncSearch.test(
   'Keeps the first result active as async results change',
   noSnapshot,
   async ({ canvas, step, userEvent }) => {
@@ -698,6 +843,7 @@ const FavouritesPalette = () => {
 
 export const FavouritesOnEmptyQuery = meta.story({
   tags: ['component-test'],
+  ...noSnapshot,
   render: () => <FavouritesPalette />,
 });
 
@@ -721,7 +867,16 @@ FavouritesOnEmptyQuery.test(
 // ---------------
 export const SmallScreen = meta.story({
   ...Basic.input,
+  ...noSnapshot,
   globals: {
     viewport: { value: 'smallScreen' },
   },
+});
+
+SmallScreen.test('Opens as a tray', snapshot, async ({ canvas, userEvent }) => {
+  await openPalette({ canvas, userEvent });
+
+  await expect(
+    await canvas.findByRole('dialog', { name: 'Command palette' })
+  ).toBeVisible();
 });
