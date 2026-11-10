@@ -1,6 +1,7 @@
 import { RenderOptions, RenderResult, render } from '@testing-library/react';
 import { ReactElement, ReactNode } from 'react';
 import { vi } from 'vitest';
+import { isAppleDevice } from '@react-aria/utils';
 import { Theme, ThemeProvider, ThemeProviderProps } from '@marigold/system';
 import { theme } from '@marigold/theme-rui';
 import { Button } from './Button/Button';
@@ -85,3 +86,13 @@ export const mockMatchMedia = (matches: string[]) =>
  * test on a small screen.
  */
 export const smallScreenQuery = `(width < ${theme.screens!.sm})`;
+
+/**
+ * user-event keys for a global ⌘/Ctrl shortcut on the platform the browser
+ * reports, e.g. `shortcutKeys('b')`. Pass `{ other: true }` for the modifier
+ * the platform does not use, to assert it is ignored.
+ */
+export const shortcutKeys = (key: string, { other = false } = {}) => {
+  const modifier = isAppleDevice() !== other ? 'Meta' : 'Control';
+  return `{${modifier}>}${key}{/${modifier}}`;
+};

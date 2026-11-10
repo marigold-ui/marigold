@@ -11,7 +11,7 @@ import {
 import { useState } from 'react';
 import { expect, fn, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
-import { isMac } from '@react-aria/utils';
+import { isAppleDevice } from '@react-aria/utils';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
@@ -38,7 +38,7 @@ const meta = preview.meta({
 });
 
 const shortcutKeys = () => {
-  const modifier = isMac() ? 'Meta' : 'Control';
+  const modifier = isAppleDevice() ? 'Meta' : 'Control';
   return `{${modifier}>}k{/${modifier}}`;
 };
 

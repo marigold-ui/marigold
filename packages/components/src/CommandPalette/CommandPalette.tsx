@@ -10,6 +10,7 @@ import {
 import { useControlledState } from '@react-stately/utils';
 import { useClassNames } from '@marigold/system';
 import type { SearchableCollectionFilter } from '../utils/SearchableCollection';
+import { useKeyboardShortcut } from '../utils/keyboardShortcut';
 import { CommandPaletteContent } from './CommandPaletteContent';
 import { CommandPaletteEmpty } from './CommandPaletteEmpty';
 import { CommandPaletteGroup } from './CommandPaletteGroup';
@@ -23,7 +24,6 @@ import {
   CommandPaletteEmptyStateContext,
   type EmptyStatePart,
 } from './Context';
-import { useCommandPaletteShortcut } from './useCommandPaletteShortcut';
 
 // Props
 // ---------------
@@ -149,7 +149,7 @@ const CommandPaletteBase = ({
     wasOpenRef.current = open;
   }, [open]);
 
-  useCommandPaletteShortcut(shortcut, () => setOpen(!open));
+  useKeyboardShortcut(shortcut, () => setOpen(!open));
 
   // `.Empty` and `.Loading` announce themselves by mounting, so a consumer
   // shows a loading state with `{isLoading && <CommandPalette.Loading />}`.

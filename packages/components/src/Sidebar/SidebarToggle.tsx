@@ -1,9 +1,9 @@
 import { Button } from 'react-aria-components/Button';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { isAppleDevice } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import { Tooltip } from '../Tooltip/Tooltip';
 import { intlMessages } from '../intl/messages';
+import { formatShortcut, useIsAppleDevice } from '../utils/keyboardShortcut';
 import { useSidebar } from './Context';
 import { SidebarToggleIcon } from './SidebarToggleIcon';
 
@@ -30,9 +30,7 @@ export const SidebarToggle = ({ variant = 'bar' }: SidebarToggleProps = {}) => {
     size: 'icon',
   });
 
-  // SSR-safe (false on the server); the tooltip renders only on interaction,
-  // so no hydration concern.
-  const shortcut = isAppleDevice() ? '⌘B' : 'Ctrl+B';
+  const shortcut = formatShortcut('b', useIsAppleDevice()).label;
 
   const expanded = state === 'expanded';
 

@@ -13,4 +13,6 @@ Compose it from `CommandPalette.Trigger`, `.Content`, `.Input`, `.List`, `.Group
 
 `Menu.Item` now derives its `textValue` from plain-text children. Typeahead in a `Menu` therefore works without setting `textValue` by hand.
 
+The `Sidebar` shortcut now follows the same rules as the palette's. It listens for ⌘B on Apple devices and Ctrl+B elsewhere, no longer both, so Ctrl+B on a Mac moves the cursor in text fields again. It also leaves the key to a field that handles it first, for example a rich-text editor that binds it to bold.
+
 The CLI knows the new component and its theme slots.

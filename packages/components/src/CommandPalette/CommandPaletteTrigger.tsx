@@ -1,19 +1,13 @@
 import type { ReactNode } from 'react';
-import { useSyncExternalStore } from 'react';
 import type RAC from 'react-aria-components';
 import { Button } from 'react-aria-components/Button';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { isMac } from '@react-aria/utils';
 import { cn } from '@marigold/system';
 import { Keyboard } from '../Keyboard/Keyboard';
 import { Search } from '../icons/Search';
 import { intlMessages } from '../intl/messages';
+import { formatShortcut, useIsAppleDevice } from '../utils/keyboardShortcut';
 import { useCommandPalette } from './Context';
-
-// `isMac()` reads the user agent, which the server does not have. Render the
-// non-mac hint there and correct it on the client without a hydration mismatch.
-const subscribe = () => () => {};
-const useIsMac = () => useSyncExternalStore(subscribe, isMac, () => false);
 
 // Props
 // ---------------
@@ -51,8 +45,8 @@ export const CommandPaletteTrigger = ({
 }: CommandPaletteTriggerProps) => {
   const { setOpen, shortcut, classNames } = useCommandPalette();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
-  const mac = useIsMac();
-  const key = shortcut ? shortcut.toUpperCase() : undefined;
+  const apple = useIsAppleDevice();
+  const hint = shortcut ? formatShortcut(shortcut, apple) : undefined;
 
   return (
     <Button
@@ -61,12 +55,7 @@ export const CommandPaletteTrigger = ({
       onPress={() => setOpen(true)}
       // RAC's Button filters `aria-keyshortcuts` out of its DOM props.
       render={domProps => (
-        <button
-          {...domProps}
-          aria-keyshortcuts={
-            key ? `${mac ? 'Meta' : 'Control'}+${key}` : undefined
-          }
-        />
+        <button {...domProps} aria-keyshortcuts={hint?.ariaKeyShortcuts} />
       )}
       className={cn('group/command-palette-trigger', classNames.trigger)}
     >
@@ -74,11 +63,7 @@ export const CommandPaletteTrigger = ({
       <span className="flex-1 text-start">
         {children ?? stringFormatter.format('searchEllipsis')}
       </span>
-      {key ? (
-        <Keyboard aria-hidden="true">
-          {mac ? `⌘${key}` : `Ctrl ${key}`}
-        </Keyboard>
-      ) : null}
+      {hint ? <Keyboard aria-hidden="true">{hint.label}</Keyboard> : null}
     </Button>
   );
 };
