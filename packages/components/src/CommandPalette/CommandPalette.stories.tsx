@@ -219,6 +219,30 @@ Basic.test(
   }
 );
 
+Basic.test(
+  'Keeps typed characters away from page shortcuts',
+  noSnapshot,
+  async ({ canvas, userEvent }) => {
+    // Stands in for an app (or Storybook) shortcut that ignores text fields.
+    const reached: string[] = [];
+    const listener = (e: KeyboardEvent) => reached.push(e.key);
+    document.addEventListener('keydown', listener);
+
+    try {
+      await openPalette({ canvas, userEvent });
+      await canvas.findByRole('searchbox');
+      await userEvent.keyboard('ab{ArrowDown}');
+
+      await expect(reached).not.toContain('a');
+      await expect(reached).not.toContain('b');
+      // Navigation keys still pass, so overlays and shortcuts keep working.
+      await expect(reached).toContain('ArrowDown');
+    } finally {
+      document.removeEventListener('keydown', listener);
+    }
+  }
+);
+
 Basic.test('Closes with Escape', noSnapshot, async ({ canvas, userEvent }) => {
   await openPalette({ canvas, userEvent });
   await canvas.findByRole('dialog');
