@@ -397,7 +397,10 @@
  */
 @utility ui-scrollbar {
   scrollbar-width: auto;
-  scrollbar-color: var(--color-scrollbar) var(--color-scrollbar-track);
+
+  @supports not selector(::-webkit-scrollbar) {
+    scrollbar-color: var(--color-scrollbar) var(--color-scrollbar-track);
+  }
 
   &::-webkit-scrollbar {
     display: block;
