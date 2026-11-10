@@ -78,18 +78,20 @@ export const Popover: ThemeComponent<'Popover'> = {
     base: [
       'flex flex-col gap-3 py-3 outline-none',
       // A ListView or Table (both `role=grid`) placed directly in the content
-      // spans it edge to edge. As the last child it sits flush against the
-      // popover's bottom, and as the first child right under the search row's
-      // divider: its rows carry their own padding. Under a plain header it
-      // keeps the top padding, since there is no divider to separate them.
-      // Content around it keeps its spacing. "First" and "last" skip the
-      // hidden nodes React Aria renders beside a collection (a `<template>`
-      // and focus scope markers).
-      'not-data-bleed:*:[&[role=grid]]:-mx-(--popover-px)',
-      '*:[&[role=grid]]:w-auto',
-      '*:[&[role=grid]]:[--bleed-px:var(--popover-px)]',
-      '[[data-slot=search]+&]:*:[&[role=grid]:nth-child(1_of_:not(template,[hidden]))]:-mt-3',
-      '*:[&[role=grid]:nth-last-child(1_of_:not(template,[hidden]))]:-mb-3',
+      // spans it edge to edge. The grid may sit in a wrapper of its own
+      // (ListView's container holds its select-all header), so the rules
+      // match the content's child that is the grid or directly holds it.
+      // As the last child it sits flush against the popover's bottom, and as
+      // the first child right under the search row's divider: its rows carry
+      // their own padding. Under a plain header it keeps the top padding,
+      // since there is no divider to separate them. Content around it keeps
+      // its spacing. "First" and "last" skip the hidden nodes React Aria
+      // renders beside a collection (a `<template>` and focus scope markers).
+      'not-data-bleed:*:[&:is([role=grid],:has(>[role=grid]))]:-mx-(--popover-px)',
+      '*:[&:is([role=grid],:has(>[role=grid]))]:w-auto',
+      '*:[&:is([role=grid],:has(>[role=grid]))]:[--bleed-px:var(--popover-px)]',
+      '[[data-slot=search]+&]:*:[&:is([role=grid],:has(>[role=grid])):nth-child(1_of_:not(template,[hidden]))]:-mt-3',
+      '*:[&:is([role=grid],:has(>[role=grid])):nth-last-child(1_of_:not(template,[hidden]))]:-mb-3',
     ],
   }),
 };
