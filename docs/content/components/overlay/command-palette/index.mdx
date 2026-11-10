@@ -8,6 +8,12 @@ import { CommandPaletteAnatomy } from './command-palette-anatomy';
 
 The `<CommandPalette>` component opens a search field over a list of pages and actions. People press <kbd>⌘</kbd>+<kbd>K</kbd> (<kbd>Ctrl</kbd>+<kbd>K</kbd> on Windows and Linux) from anywhere in the app, type a few letters and press <kbd>Enter</kbd> to go to the top match. It suits power users who live in the keyboard and apps with more pages than a sidebar can show comfortably.
 
+<Callout title="Trying the demos">
+  On this page, <kbd>⌘</kbd>+<kbd>K</kbd> opens the docs search, so the demos
+  don't react to it. Open them with their trigger instead. In your app the
+  trigger also shows the shortcut.
+</Callout>
+
 ## Anatomy
 
 A command palette consists of an optional trigger and the palette itself, which opens on an underlay. The palette holds a search field, the list of results grouped under titles, and a legend of the keys. When nothing matches or results are still loading, a message takes the place of the list.
@@ -46,12 +52,6 @@ See the [Admin- and Mastermark pattern](/patterns/layout/admin-master-mark) for 
 ## Usage
 
 Put everything people jump to often into one palette per app: pages, frequent actions such as "Create event", and records like an event or an order once the app loads them.
-
-<Callout title="Trying the demos">
-  On this page, <kbd>⌘</kbd>+<kbd>K</kbd> opens the docs search, so the demos
-  don't react to it. Open them with their trigger instead. In your app the
-  trigger also shows the shortcut.
-</Callout>
 
 <ComponentDemo name="command-palette-basic" />
 
