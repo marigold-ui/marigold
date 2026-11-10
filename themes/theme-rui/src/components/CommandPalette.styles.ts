@@ -14,13 +14,14 @@ const itemIconMuted =
   '[&_svg]:text-secondary [&_svg]:opacity-60 focus:[&_svg]:text-foreground focus:[&_svg]:opacity-100';
 
 export const CommandPalette: ThemeComponent<'CommandPalette'> = {
-  // Looks like a text field (same frame, height, padding and placeholder
-  // colour as Input), but is a button that opens the palette. No press
-  // scale or button weight, so it doesn't read as an action.
+  // Looks like an Input with a leading icon: the same `ui-control ui-input`
+  // frame, and the icon and text at Input's offsets (icon at `left-2.5`,
+  // text at `pl-8`). It is a button that opens the palette, but without a
+  // press scale or button weight, so it doesn't read as an action.
   // The shortcut hint is hidden on touch screens, where there is no keyboard.
   trigger: cva({
     base: [
-      'ui-control ui-input flex max-w-72 items-center gap-2 text-start text-placeholder cursor-text outline-none',
+      'ui-control ui-input flex max-w-72 items-center gap-1.5 ps-2.5 text-start text-placeholder cursor-text outline-none',
       'focus-visible:ui-state-focus',
       'disabled:ui-state-disabled',
       '[&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-secondary',
