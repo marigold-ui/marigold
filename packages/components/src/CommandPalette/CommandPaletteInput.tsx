@@ -36,7 +36,7 @@ export const CommandPaletteInput = ({
   placeholder,
   'aria-label': ariaLabel,
 }: CommandPaletteInputProps) => {
-  const { classNames } = useCommandPalette();
+  const { classNames, inputRef } = useCommandPalette();
   const { loading } = useCommandPaletteEmptyState();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
@@ -50,6 +50,7 @@ export const CommandPaletteInput = ({
         <>
           <Search aria-hidden="true" size="18" />
           <Input
+            ref={inputRef}
             placeholder={
               placeholder ?? stringFormatter.format('commandPaletteGoTo')
             }

@@ -1,8 +1,11 @@
-import type { ReactNode } from 'react';
 import { Fragment, createElement } from 'react';
 import { useCollator } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
-import { MenuItemCore, type MenuItemProps } from '../Menu/MenuItem';
+import {
+  MenuItemCore,
+  type MenuItemProps,
+  getItemText,
+} from '../Menu/MenuItem';
 import { useDevWarning } from '../utils/useDevWarning';
 import { useCommandPalette } from './Context';
 
@@ -59,42 +62,35 @@ export const CommandPaletteItem = ({
   textValue,
   ...props
 }: CommandPaletteItemProps) => {
-  const { inputValue, filter } = useCommandPalette();
+  const { inputValue, filter, keyCap } = useCommandPalette();
   const classNames = useClassNames({
     component: 'CommandPalette',
     variant,
     size,
   });
-  const keyCapClassNames = useClassNames({ component: 'Keyboard' });
-  // Top-level text is the label, also next to an icon (`<Icon /> Events`).
-  const parts: ReactNode[] =
-    typeof children === 'function'
-      ? []
-      : Array.isArray(children)
-        ? children
-        : [children];
-  const strings = parts.filter(part => typeof part === 'string');
-  const text = strings.length > 0 ? strings.join('').trim() : undefined;
 
+  // `MenuItemCore` only sees the render function below, so derive it here.
+  const text = textValue ?? getItemText(children);
   useDevWarning(
-    textValue === undefined && text === undefined,
+    text === undefined,
     '[CommandPalette.Item] Has no `textValue`, so it can never match a ' +
       'search query. Pass `textValue` when the children are not plain text.'
   );
 
   // Only the default filter has a known matching rule to highlight.
   const query = filter === undefined ? inputValue.trim() : '';
-  // Spread as arguments, so the static children need no keys.
+  // Top-level text is the label, also next to an icon. The parts are spread
+  // as arguments, so the static children need no keys.
   const label =
     typeof children === 'function'
       ? null
       : createElement(
           Fragment,
           null,
-          ...parts.map(part =>
+          ...(Array.isArray(children) ? children : [children]).map(part =>
             typeof part === 'string' ? (
+              // eslint-disable-next-line @eslint-react/no-missing-key -- spread as arguments, see above
               <Highlight
-                key={part}
                 text={part}
                 query={query}
                 className={classNames.match}
@@ -109,7 +105,7 @@ export const CommandPaletteItem = ({
     <MenuItemCore
       {...props}
       variant={variant}
-      textValue={textValue ?? text}
+      textValue={text}
       classNames={classNames}
     >
       {renderProps => (
@@ -119,10 +115,7 @@ export const CommandPaletteItem = ({
             // A plain `<kbd>` with the `Keyboard` styles. The `Keyboard`
             // component would join the item's slots and become its announced
             // description.
-            <kbd
-              aria-hidden="true"
-              className={cn(keyCapClassNames, classNames.enter)}
-            >
+            <kbd aria-hidden="true" className={cn(keyCap, classNames.enter)}>
               ↵
             </kbd>
           ) : null}

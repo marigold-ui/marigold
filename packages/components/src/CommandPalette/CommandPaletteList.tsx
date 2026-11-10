@@ -1,4 +1,5 @@
 import type { Key, ReactNode } from 'react';
+import type { RefObject } from 'react';
 import { useEffect, useRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Menu } from 'react-aria-components/Menu';
@@ -67,10 +68,11 @@ const FORWARD_TYPING = new Set([
   'insertFromComposition',
 ]);
 
-const getInput = (menu: HTMLElement | null) =>
-  menu?.closest('[role="dialog"]')?.querySelector('input') ?? null;
-
-const useKeepFirstItemActive = (inputValue: string, items: unknown) => {
+const useKeepFirstItemActive = (
+  inputRef: RefObject<HTMLInputElement | null>,
+  inputValue: string,
+  items: unknown
+) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const queryRef = useRef(inputValue);
   const itemsRef = useRef(items);
@@ -78,14 +80,14 @@ const useKeepFirstItemActive = (inputValue: string, items: unknown) => {
   const typedForwardRef = useRef(false);
 
   useEffect(() => {
-    const input = getInput(menuRef.current);
+    const input = inputRef.current;
     if (!input) return;
     const track = (e: InputEvent) => {
       typedForwardRef.current = FORWARD_TYPING.has(e.inputType);
     };
     input.addEventListener('beforeinput', track);
     return () => input.removeEventListener('beforeinput', track);
-  }, []);
+  }, [inputRef]);
 
   useEffect(() => {
     const queryChanged = queryRef.current !== inputValue;
@@ -102,7 +104,7 @@ const useKeepFirstItemActive = (inputValue: string, items: unknown) => {
 
     const menu = menuRef.current;
     const activateFirst = () =>
-      getInput(menu)?.dispatchEvent(
+      inputRef.current?.dispatchEvent(
         new KeyboardEvent('keydown', { key: 'Home', bubbles: true })
       );
 
@@ -118,7 +120,7 @@ const useKeepFirstItemActive = (inputValue: string, items: unknown) => {
     });
     observer.observe(menu, { childList: true, subtree: true });
     return () => observer.disconnect();
-  }, [inputValue, items]);
+  }, [inputRef, inputValue, items]);
 
   return menuRef;
 };
@@ -131,9 +133,9 @@ export const CommandPaletteList = <T extends object>({
   dependencies,
   onAction,
 }: CommandPaletteListProps<T>) => {
-  const { setOpen, inputValue, classNames } = useCommandPalette();
+  const { setOpen, inputValue, classNames, inputRef } = useCommandPalette();
   const { loading, hasEmpty, setTarget } = useCommandPaletteEmptyState();
-  const menuRef = useKeepFirstItemActive(inputValue, items);
+  const menuRef = useKeepFirstItemActive(inputRef, inputValue, items);
 
   return (
     <Menu

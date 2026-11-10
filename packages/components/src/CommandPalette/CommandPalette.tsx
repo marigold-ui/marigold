@@ -1,12 +1,6 @@
 import type { ReactNode } from 'react';
-import {
-  useCallback,
-  useEffectEvent,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useEffectEvent } from '@react-aria/utils';
 import { useControlledState } from '@react-stately/utils';
 import { useClassNames } from '@marigold/system';
 import type { SearchableCollectionFilter } from '../utils/SearchableCollection';
@@ -101,34 +95,14 @@ const CommandPaletteBase = ({
   variant,
   size,
 }: CommandPaletteProps) => {
-  // `useClassNames` returns a new object on every render. Keep the context
-  // value stable across unrelated parent renders by memoizing on the strings
-  // the parts read from it (items resolve their own, per variant).
-  const {
-    trigger,
-    container,
-    header,
-    input,
-    list,
-    group,
-    empty,
-    footer,
-    legend,
-  } = useClassNames({ component: 'CommandPalette', variant, size });
-  const classNames = useMemo(
-    () => ({
-      trigger,
-      container,
-      header,
-      input,
-      list,
-      group,
-      empty,
-      footer,
-      legend,
-    }),
-    [trigger, container, header, input, list, group, empty, footer, legend]
-  );
+  const classNames = useClassNames({
+    component: 'CommandPalette',
+    variant,
+    size,
+  });
+  // Resolved once here rather than in every item, which re-renders per keystroke.
+  const keyCap = useClassNames({ component: 'Keyboard' });
+  const inputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useControlledState(
     openProp,
     defaultOpen,
@@ -171,8 +145,19 @@ const CommandPaletteBase = ({
       filter,
       shortcut,
       classNames,
+      keyCap,
+      inputRef,
     }),
-    [open, setOpen, inputValue, setInputValue, filter, shortcut, classNames]
+    [
+      open,
+      setOpen,
+      inputValue,
+      setInputValue,
+      filter,
+      shortcut,
+      classNames,
+      keyCap,
+    ]
   );
   const emptyState = useMemo(
     () => ({ loading, hasEmpty, register, target, setTarget }),

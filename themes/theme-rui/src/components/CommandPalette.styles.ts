@@ -1,17 +1,18 @@
 import { ThemeComponent, cva } from '@marigold/system';
+import {
+  Menu,
+  menuItemBase,
+  menuItemIconMuted,
+  menuItemLayout,
+} from './Menu.styles';
 
-// Rows share Menu's icon treatment, variants and active fill
+// Rows share Menu's layout, icon treatment, variants and active fill
 // (`focus-highlight`). A palette always has one active row and is mostly
 // used by keyboard, so instead of Menu's keyboard ring the row adds a medium
 // label, its icon at full ink and the ↵ hint.
 const itemActive = 'focus:font-medium';
-const itemBase = `text-foreground focus:bg-focus-highlight ${itemActive}`;
-
-// Muted treatment for regular item icons, as in Menu, at full ink on the
-// active row. Access variants keep the full-opacity access colour on their
-// glyph.
-const itemIconMuted =
-  '[&_svg]:text-secondary [&_svg]:opacity-60 focus:[&_svg]:text-foreground focus:[&_svg]:opacity-100';
+const itemBase = `${menuItemBase} ${itemActive}`;
+const itemIconMuted = `${menuItemIconMuted} focus:[&_svg]:text-foreground focus:[&_svg]:opacity-100`;
 
 export const CommandPalette: ThemeComponent<'CommandPalette'> = {
   // Looks like an Input with a leading icon: the same `ui-control ui-input`
@@ -67,10 +68,11 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
       'ui-scrollbar ui-scroll-mask-y min-h-0 flex-1 overflow-x-hidden p-1.5 outline-none sm:h-[min(360px,55vh)] sm:flex-none',
       'grid grid-cols-[auto_1fr_auto] content-start gap-y-0.5 *:col-span-full data-empty:content-center',
       '[&>section]:grid [&>section]:grid-cols-subgrid [&>section]:gap-y-0.5 [&>section>*]:col-span-full',
+      '[&>section+section]:mt-3',
     ],
   }),
   group: cva({
-    base: 'text-secondary px-2.5 pt-4 pb-1 text-xs font-medium [section:first-child>&]:pt-1',
+    base: 'text-secondary px-2.5 pt-1 pb-1 text-xs font-medium',
   }),
   // Larger than a menu item, the palette being a primary navigation surface.
   // Icons and variants match Menu, the active state is the palette's own
@@ -78,11 +80,7 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
   item: cva({
     base: [
       'group/option relative grid grid-cols-subgrid items-center cursor-pointer rounded-[calc(var(--radius-surface)-3px)] min-h-10 px-2.5 py-2 text-sm outline-hidden select-none text-nowrap max-sm:min-h-touch-target',
-      // Keep col 1 occupied, so labels without an icon still align.
-      "before:content-[''] before:col-start-1 before:row-start-1",
-      'disabled:cursor-not-allowed disabled:text-disabled',
-      '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4 [&_svg]:row-span-full [&_svg]:self-center',
-      '[&>svg:first-child]:col-start-1 [&>svg:first-child]:me-2',
+      ...menuItemLayout,
     ],
     variants: {
       variant: {
@@ -96,13 +94,9 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
       variant: 'default',
     },
   }),
-  label: cva({ base: 'col-start-2 row-start-1' }),
-  description: cva({
-    base: 'col-start-2 row-start-2 text-secondary text-xs whitespace-normal group-disabled/option:text-disabled',
-  }),
-  keyboard: cva({
-    base: 'col-start-3 row-span-full self-center justify-self-end ps-4 text-secondary text-xs',
-  }),
+  label: Menu.label,
+  description: Menu.description,
+  keyboard: Menu.keyboard,
   // Places the Enter hint (a `Keyboard` key cap) on the active row. Keyboard only.
   enter: cva({
     base: 'col-start-3 row-span-full self-center justify-self-end ms-4 pointer-coarse:hidden',

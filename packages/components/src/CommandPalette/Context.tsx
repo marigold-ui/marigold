@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactNode, RefObject } from 'react';
 import { createContext, use, useLayoutEffect } from 'react';
 import { createPortal } from 'react-dom';
 import type { ComponentClassNames } from '@marigold/system';
@@ -14,18 +14,11 @@ export interface CommandPaletteContextValue {
   filter?: SearchableCollectionFilter | false;
   /** The shortcut key, or `false` when the shortcut is disabled. */
   shortcut: string | false;
-  classNames: Pick<
-    ComponentClassNames<'CommandPalette'>,
-    | 'trigger'
-    | 'container'
-    | 'header'
-    | 'input'
-    | 'list'
-    | 'group'
-    | 'empty'
-    | 'footer'
-    | 'legend'
-  >;
+  classNames: ComponentClassNames<'CommandPalette'>;
+  /** Classes of the `Keyboard` key cap, for the ↵ hint on the active row. */
+  keyCap: string;
+  /** The search field, so the list can activate its first row. */
+  inputRef: RefObject<HTMLInputElement | null>;
 }
 
 export const CommandPaletteContext =

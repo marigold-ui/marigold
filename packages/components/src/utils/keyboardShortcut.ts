@@ -1,5 +1,6 @@
-import { useEffect, useEffectEvent, useSyncExternalStore } from 'react';
-import { isAppleDevice } from '@react-aria/utils';
+import { useEffect } from 'react';
+import { useIsSSR } from '@react-aria/ssr';
+import { isAppleDevice, useEffectEvent } from '@react-aria/utils';
 
 // Global ⌘/Ctrl + key shortcuts (CommandPalette ⌘K, Sidebar ⌘B).
 //
@@ -14,7 +15,7 @@ import { isAppleDevice } from '@react-aria/utils';
 // ⌘B to "bold" wins. The listener sits on `document` in the bubble phase so
 // such element-level handlers run first.
 
-export type ShortcutEvent = Pick<
+type ShortcutEvent = Pick<
   KeyboardEvent,
   'key' | 'metaKey' | 'ctrlKey' | 'altKey' | 'shiftKey' | 'defaultPrevented'
 >;
@@ -54,11 +55,11 @@ export const useKeyboardShortcut = (
 };
 
 // `isAppleDevice()` reads the user agent, which the server does not have.
-// Render the non-Apple hint there and correct it on the client without a
-// hydration mismatch.
-const subscribe = () => () => {};
-export const useIsAppleDevice = () =>
-  useSyncExternalStore(subscribe, isAppleDevice, () => false);
+// Render the non-Apple hint there and correct it after hydration.
+export const useIsAppleDevice = () => {
+  const isSSR = useIsSSR();
+  return !isSSR && isAppleDevice();
+};
 
 /**
  * The visible hint (`⌘K` / `Ctrl+K`) and the `aria-keyshortcuts` value

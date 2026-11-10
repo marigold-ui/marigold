@@ -27,28 +27,6 @@ export interface CommandPaletteContentProps {
   'aria-label'?: string;
 }
 
-// Keeps typed characters inside the palette
-// ---------------
-// React Aria's Autocomplete moves virtual focus by re-dispatching every
-// keydown from the input on the active row. That copy bubbles to `document`
-// with a row as its target, so page-level shortcuts that skip events from
-// text fields (`c` to create, Storybook's own keys) would fire while people
-// type a query. Characters stop at the palette. Escape, arrows, Enter and
-// modifier shortcuts like ⌘K still pass.
-const isTypedCharacter = (e: KeyboardEvent) =>
-  e.key.length === 1 && !e.metaKey && !e.ctrlKey && !e.altKey;
-
-const stopTypedCharacter = (e: KeyboardEvent) => {
-  if (isTypedCharacter(e)) e.stopPropagation();
-};
-
-// A callback ref (with React 19 cleanup), because the element only mounts
-// while the palette is open.
-const containTypedCharacters = (el: HTMLDivElement | null) => {
-  el?.addEventListener('keydown', stopTypedCharacter);
-  return () => el?.removeEventListener('keydown', stopTypedCharacter);
-};
-
 // Component
 // ---------------
 // Desktop: a modal dialog near the top of the viewport. Small screens: a
@@ -65,17 +43,14 @@ export const CommandPaletteContent = ({
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const label = ariaLabel ?? stringFormatter.format('commandPalette');
 
-  // `contents`, so the wrapper doesn't take part in the dialog's layout.
   const collection = (
-    <div ref={containTypedCharacters} className="contents">
-      <SearchableCollection
-        filter={filter}
-        inputValue={inputValue}
-        onInputChange={setInputValue}
-      >
-        {children}
-      </SearchableCollection>
-    </div>
+    <SearchableCollection
+      filter={filter}
+      inputValue={inputValue}
+      onInputChange={setInputValue}
+    >
+      {children}
+    </SearchableCollection>
   );
 
   if (isSmallScreen) {

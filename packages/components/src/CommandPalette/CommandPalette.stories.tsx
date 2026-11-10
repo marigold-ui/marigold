@@ -22,6 +22,7 @@ import { CommandPalette } from './CommandPalette';
 const meta = preview.meta({
   title: 'Components/CommandPalette',
   component: CommandPalette,
+  tags: ['component-test'],
   decorators: [
     Story => (
       <div id="storybook-root">
@@ -59,12 +60,23 @@ const openPalette = ({
 const expectVisible = (element: HTMLElement) =>
   waitFor(() => expect(element).toBeVisible());
 
+// The first row is the active one: the input points at it with
+// `aria-activedescendant` (virtual focus).
+const expectFirstRowActive = (canvas: StoryContext['canvas'], name?: string) =>
+  waitFor(() => {
+    const [first] = canvas.getAllByRole('menuitem');
+    if (name) expect(first).toHaveTextContent(name);
+    expect(canvas.getByRole('searchbox')).toHaveAttribute(
+      'aria-activedescendant',
+      first.id
+    );
+  });
+
 const onAction = fn();
 
 // Basic
 // ---------------
 export const Basic = meta.story({
-  tags: ['component-test'],
   render: args => (
     <CommandPalette {...args}>
       <CommandPalette.Trigger />
@@ -142,11 +154,9 @@ Basic.test(
     await openPalette({ canvas, userEvent });
 
     const input = await canvas.findByRole('searchbox');
-    const [first] = await canvas.findAllByRole('menuitem');
+    await canvas.findAllByRole('menuitem');
     // Virtual focus: DOM focus stays in the input.
-    await waitFor(() =>
-      expect(input).toHaveAttribute('aria-activedescendant', first.id)
-    );
+    await expectFirstRowActive(canvas);
     await expect(input).toHaveFocus();
   }
 );
@@ -156,14 +166,11 @@ Basic.test(
   noSnapshot,
   async ({ canvas, userEvent }) => {
     await openPalette({ canvas, userEvent });
-    const input = await canvas.findByRole('searchbox');
+    await canvas.findByRole('searchbox');
     await userEvent.keyboard('re');
     await userEvent.keyboard('{Backspace}{Backspace}');
 
-    const [first] = canvas.getAllByRole('menuitem');
-    await waitFor(() =>
-      expect(input).toHaveAttribute('aria-activedescendant', first.id)
-    );
+    await expectFirstRowActive(canvas);
   }
 );
 
@@ -298,7 +305,6 @@ Basic.test(
 // Replaces the built-in "No results" message, for example to point people to
 // what they can search for.
 export const CustomEmptyState = meta.story({
-  tags: ['component-test'],
   ...noSnapshot,
   render: args => (
     <CommandPalette {...args}>
@@ -342,7 +348,6 @@ CustomEmptyState.test(
 // While results load and none are there yet, the loading message replaces
 // the list and the search field shows a spinner.
 export const Loading = meta.story({
-  tags: ['component-test'],
   ...noSnapshot,
   render: args => (
     <CommandPalette {...args}>
@@ -372,7 +377,6 @@ Loading.test(
 // Variants
 // ---------------
 export const Variants = meta.story({
-  tags: ['component-test'],
   ...noSnapshot,
   render: args => (
     <CommandPalette {...args}>
@@ -410,7 +414,6 @@ Variants.test('Shows each variant', snapshot, async ({ canvas, userEvent }) => {
 
 Variants.test(
   'Filters variant items on their label, not the access marker',
-  noSnapshot,
   async ({ canvas, userEvent }) => {
     await openPalette({ canvas, userEvent });
     await userEvent.keyboard('fees');
@@ -427,7 +430,6 @@ Variants.test(
 // A description line tells similar results apart. With `<Text>` slots the
 // children are not plain text, so pass `textValue` for filtering.
 export const WithDescriptions = meta.story({
-  tags: ['component-test'],
   ...noSnapshot,
   render: args => (
     <CommandPalette {...args}>
@@ -477,8 +479,7 @@ WithDescriptions.test(
 // Shortcut in fields
 // ---------------
 export const ShortcutInFields = meta.story({
-  tags: ['component-test'],
-  parameters: { chromatic: { disableSnapshot: true } },
+  ...noSnapshot,
   render: args => {
     // Stands in for a rich-text editor that binds ⌘K to "insert link".
     const claimShortcut = (e: React.KeyboardEvent) => {
@@ -557,14 +558,12 @@ const ControlledPalette = () => {
 };
 
 export const Controlled = meta.story({
-  tags: ['component-test'],
   ...noSnapshot,
   render: () => <ControlledPalette />,
 });
 
 Controlled.test(
   'Opens from outside and reports closing back',
-  noSnapshot,
   async ({ canvas, userEvent }) => {
     const opener = canvas.getByRole('button', { name: 'Open from anywhere' });
     await userEvent.click(opener);
@@ -574,7 +573,7 @@ Controlled.test(
     await userEvent.keyboard('{Escape}');
     await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
 
-    // State went back to noSnapshot, so the button opens it again.
+    // State went back to closed, so the button opens it again.
     await userEvent.click(opener);
     await expectVisible(await canvas.findByRole('dialog'));
   }
@@ -652,7 +651,6 @@ const SearchPrefixPalette = () => {
 };
 
 export const SearchPrefix = meta.story({
-  tags: ['component-test'],
   ...noSnapshot,
   render: () => <SearchPrefixPalette />,
 });
@@ -674,7 +672,6 @@ SearchPrefix.test(
 
 SearchPrefix.test(
   'Narrows the lookup, explains it, and falls back to the regular search',
-  noSnapshot,
   async ({ canvas, step, userEvent }) => {
     await openPalette({ canvas, userEvent });
     const input = await canvas.findByRole('searchbox');
@@ -779,26 +776,12 @@ const AsyncSearchPalette = () => {
 };
 
 export const AsyncSearch = meta.story({
-  tags: ['component-test'],
   ...noSnapshot,
   render: () => <AsyncSearchPalette />,
 });
 
-// The first row is the active one: the input points at it with
-// `aria-activedescendant` (virtual focus).
-const expectFirstRowActive = (canvas: StoryContext['canvas'], name: string) =>
-  waitFor(() => {
-    const [first] = canvas.getAllByRole('menuitem');
-    expect(first).toHaveTextContent(name);
-    expect(canvas.getByRole('searchbox')).toHaveAttribute(
-      'aria-activedescendant',
-      first.id
-    );
-  });
-
 AsyncSearch.test(
   'Keeps the first result active as async results change',
-  noSnapshot,
   async ({ canvas, step, userEvent }) => {
     await userEvent.click(
       canvas.getByRole('button', { name: /search characters/i })
@@ -869,14 +852,12 @@ const FavouritesPalette = () => {
 };
 
 export const FavouritesOnEmptyQuery = meta.story({
-  tags: ['component-test'],
   ...noSnapshot,
   render: () => <FavouritesPalette />,
 });
 
 FavouritesOnEmptyQuery.test(
   'Shows favourites until the user types',
-  noSnapshot,
   async ({ canvas, userEvent }) => {
     await openPalette({ canvas, userEvent });
 

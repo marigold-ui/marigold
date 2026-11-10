@@ -63,6 +63,19 @@ export interface MenuItemClassNames {
   keyboard?: string;
 }
 
+// RAC gets a render function, so it cannot derive the text used for
+// typeahead and filtering. Top-level text provides it, also next to an icon
+// (`<Icon /> Events`).
+export const getItemText = (children: MenuItemProps['children']) => {
+  if (typeof children === 'function') return undefined;
+  const parts: ReactNode[] = Array.isArray(children) ? children : [children];
+  const text = parts
+    .filter(part => typeof part === 'string')
+    .join('')
+    .trim();
+  return text || undefined;
+};
+
 export const MenuItemCore = ({
   children,
   variant,
@@ -72,11 +85,7 @@ export const MenuItemCore = ({
 }: Omit<MenuItemProps, 'size'> & { classNames: MenuItemClassNames }) => (
   <MenuItem
     {...props}
-    // RAC gets a render function below, so it cannot derive the text used
-    // for typeahead and filtering. Plain-text children provide it.
-    textValue={
-      textValue ?? (typeof children === 'string' ? children : undefined)
-    }
+    textValue={textValue ?? getItemText(children)}
     className={classNames.item}
   >
     {renderProps => (
