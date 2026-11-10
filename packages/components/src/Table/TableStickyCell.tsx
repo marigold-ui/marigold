@@ -1,7 +1,6 @@
 import type { ComponentProps } from 'react';
-import { use } from 'react';
 import { cn } from '@marigold/system';
-import { TableStickyContext } from './Context';
+import { useTableStickyContext } from './Context';
 
 // Helper
 // ---------------
@@ -33,7 +32,7 @@ const StickyElement = ({
   className,
   ...props
 }: StickyElementProps) => {
-  const stickyColumns = use(TableStickyContext);
+  const stickyColumns = useTableStickyContext();
   // A cell spanning several columns would hold all of them in place.
   const edge =
     columnIndex == null || (props.colSpan ?? 1) > 1

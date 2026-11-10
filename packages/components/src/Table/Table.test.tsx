@@ -781,31 +781,32 @@ describe('sticky columns', () => {
     ).not.toHaveAttribute('data-sticky');
   });
 
-  test('shows no edge while there is nothing to scroll', () => {
-    // Without scroll-driven animations the edge is a static line by design.
-    if (!CSS.supports('animation-timeline: scroll()')) return;
+  // Without scroll-driven animations the edge is a static line by design.
+  test.skipIf(!CSS.supports('animation-timeline: scroll()'))(
+    'shows no edge while there is nothing to scroll',
+    () => {
+      render(
+        <GuestTable
+          columns={
+            <>
+              <Table.Column rowHeader sticky="start">
+                Guest
+              </Table.Column>
+              <Table.Column>Seat</Table.Column>
+            </>
+          }
+        >
+          <Table.Row id="a">
+            <Table.Cell>Alma Fischer</Table.Cell>
+            <Table.Cell>12</Table.Cell>
+          </Table.Row>
+        </GuestTable>
+      );
 
-    render(
-      <GuestTable
-        columns={
-          <>
-            <Table.Column rowHeader sticky="start">
-              Guest
-            </Table.Column>
-            <Table.Column>Seat</Table.Column>
-          </>
-        }
-      >
-        <Table.Row id="a">
-          <Table.Cell>Alma Fischer</Table.Cell>
-          <Table.Cell>12</Table.Cell>
-        </Table.Row>
-      </GuestTable>
-    );
-
-    const guest = screen.getByRole('rowheader', { name: 'Alma Fischer' });
-    expect(getComputedStyle(guest, '::after').opacity).toBe('0');
-  });
+      const guest = screen.getByRole('rowheader', { name: 'Alma Fischer' });
+      expect(getComputedStyle(guest, '::after').opacity).toBe('0');
+    }
+  );
 
   test('warns once when sticky is set away from its edge', () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
