@@ -74,6 +74,14 @@ To search records on the server, pass `filter={false}`, control the query with `
 
 <ComponentDemo name="command-palette-async" />
 
+### Search prefixes
+
+People who use the app every day often know a record by its number. A short prefix lets them jump to it directly: in the demo below, `e:1024` finds the event with number 1024. Everyone else keeps using the regular search, so the prefix speeds up experienced users without getting in anyone's way.
+
+Read the prefix from the controlled `inputValue`, turn off the built-in filter while it is present and render the matching records. Show the prefix in the placeholder or the empty state, otherwise nobody finds out it exists. Keep the prefixes few and memorable, one letter per kind of record.
+
+<ComponentDemo name="command-palette-prefix" />
+
 ### Content before the user types
 
 The palette has no dedicated API for favourites or recent pages. Control the query and render different groups while it is empty.
@@ -97,6 +105,7 @@ Before building the palette we looked at cmdk (used by shadcn/ui and Vercel), Li
 - **Pattern:** every one of them pairs a search field with a list and keeps a row active, so Enter runs the top match. Marigold builds on React Aria's `Autocomplete` over a `Menu`, which gives the combobox behaviour above.
 - **Name:** "command palette" is the term most apps and libraries use. "Command menu" stays for a plain `Menu` of actions next to a trigger, so the two don't get mixed up.
 - **Filtering:** a "contains" match keeps the authored order and groups, which people can learn. Fuzzy ranking finds more but reorders the list on every key. We start with "contains" and leave fuzzy matching to a custom `filter`.
+- **Search prefixes:** VS Code, PowerToys and Retool let people narrow the search with a short prefix. This follows the usability heuristic of offering accelerators to expert users while the regular path stays available to everyone else. The common weak spot is that people don't know the prefixes exist, which is why the pattern above names them in the placeholder. Marigold has no prefix API yet and leaves the parsing to the app until more than one app needs it.
 - **Small screens:** the palette uses a tray for now. It moves to a bottom sheet together with the other overlays once that component exists.
 
 ## Props

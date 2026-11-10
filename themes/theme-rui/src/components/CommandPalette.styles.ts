@@ -64,7 +64,7 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
   // while typing.
   list: cva({
     base: [
-      'ui-scroll-mask-y min-h-0 flex-1 overflow-x-hidden p-1.5 outline-none sm:h-[min(360px,55vh)] sm:flex-none',
+      'ui-scrollbar ui-scroll-mask-y min-h-0 flex-1 overflow-x-hidden p-1.5 outline-none sm:h-[min(360px,55vh)] sm:flex-none',
       'grid grid-cols-[auto_1fr_auto] content-start gap-y-0.5 *:col-span-full data-empty:content-center',
       '[&>section]:grid [&>section]:grid-cols-subgrid [&>section]:gap-y-0.5 [&>section>*]:col-span-full',
     ],
