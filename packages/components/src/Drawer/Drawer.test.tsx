@@ -92,6 +92,19 @@ test('disable closing via esc key', async () => {
   expect(drawer).toBeInTheDocument();
 });
 
+test('disable closing via esc key on small screens', async () => {
+  window.matchMedia = mockMatchMedia([smallScreenQuery]);
+  renderWithOverlay(<Basic.Component keyboardDismissable={false} />);
+
+  await user.click(screen.getByRole('button', { name: 'Open Drawer' }));
+
+  const drawer = screen.getByText('Drawer Title');
+  expect(screen.getByRole('dialog')).toBeInTheDocument();
+
+  await user.keyboard('{Escape}');
+  expect(drawer).toBeInTheDocument();
+});
+
 test('has "complementary" role by default', async () => {
   renderWithOverlay(<Basic.Component />);
 
