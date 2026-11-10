@@ -481,7 +481,8 @@ Basic.test(
 
     const back = canvas.getByRole('button', { name: /Back/ });
     await expect(back).toHaveFocus();
-    await waitFor(() => expectInsetFocusRingContrast(back));
+    const row = back.closest<HTMLElement>('[data-back-row]')!;
+    await waitFor(() => expectInsetFocusRingContrast(row));
   }
 );
 
