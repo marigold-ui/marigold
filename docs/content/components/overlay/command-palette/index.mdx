@@ -4,11 +4,7 @@ description: One keyboard-first entry point to search pages, actions and records
 badge: alpha
 ---
 
-The `<CommandPalette>` component opens a search field over a list of pages and actions. People press ⌘K (Ctrl+K on Windows and Linux) from anywhere in the app, type a few letters and press Enter to go to the top match. It suits power users who live in the keyboard and apps with more pages than a sidebar can show comfortably.
-
-On larger screens the palette opens as a centred dialog. On small screens it opens as a tray from the bottom edge.
-
-For a short list of actions next to the thing they act on, use [`<Menu>`](/components/overlay/menu) or [`<ActionMenu>`](/components/overlay/action-menu) instead. To pick a value inside a form, use [`<Autocomplete>`](/components/form/autocomplete) or [`<ComboBox>`](/components/form/combobox).
+The `<CommandPalette>` component opens a search field over a list of pages and actions. People press <kbd>⌘</kbd>+<kbd>K</kbd> (<kbd>Ctrl</kbd>+<kbd>K</kbd> on Windows and Linux) from anywhere in the app, type a few letters and press <kbd>Enter</kbd> to go to the top match. It suits power users who live in the keyboard and apps with more pages than a sidebar can show comfortably.
 
 ## Anatomy
 
@@ -53,18 +49,18 @@ Put everything people jump to often into one palette per app: pages, frequent ac
 
 ### Keyboard
 
-| Key         | Action                                                    |
-| ----------- | --------------------------------------------------------- |
-| ⌘K / Ctrl+K | Opens the palette from anywhere, also inside text fields. |
-| ↑ / ↓       | Moves the active row.                                     |
-| Enter       | Runs the active row.                                      |
-| Escape      | Clears the search, then closes the palette.               |
+| Key                                                      | Action                                                    |
+| -------------------------------------------------------- | --------------------------------------------------------- |
+| <kbd>⌘</kbd>+<kbd>K</kbd> / <kbd>Ctrl</kbd>+<kbd>K</kbd> | Opens the palette from anywhere, also inside text fields. |
+| <kbd>↑</kbd> / <kbd>↓</kbd>                              | Moves the active row.                                     |
+| <kbd>Enter</kbd>                                         | Runs the active row.                                      |
+| <kbd>Escape</kbd>                                        | Clears the search, then closes the palette.               |
 
-One row is always active while there are results, so Enter always does something. When the search changes, the first row becomes active again.
+One row is always active while there are results, so <kbd>Enter</kbd> always does something. When the search changes, the first row becomes active again.
 
 Letters typed into the search field stay in the palette. Shortcuts your app binds to single keys, for example "c" to create, don't fire while people type a query.
 
-The shortcut also fires inside text fields, as it does in GitHub, Linear and Slack. If another handler already used the key, for example a rich-text editor that inserts a link on ⌘K, the palette leaves it alone. Change the key with `shortcut="j"`, or turn it off with `shortcut={false}` when your app already uses it.
+The shortcut also fires inside text fields, as it does in GitHub, Linear and Slack. If another handler already used the key, for example a rich-text editor that inserts a link on <kbd>⌘</kbd>+<kbd>K</kbd>, the palette leaves it alone. Change the key with `shortcut="j"`, or turn it off with `shortcut={false}` when your app already uses it.
 
 ### Filtering
 
@@ -100,7 +96,7 @@ The palette has no dedicated API for favourites or recent pages. Control the que
 
 ### Mobile behaviour
 
-On small screens the palette opens as a tray from the bottom edge. The search field and the list reach the edges of the tray. The ⌘K and Escape hints and the legend are hidden on touch devices.
+On small screens the palette opens as a tray from the bottom edge. The search field and the list reach the edges of the tray. The <kbd>⌘</kbd>+<kbd>K</kbd> and <kbd>Esc</kbd> hints and the legend are hidden on touch devices.
 
 ## Accessibility
 
@@ -112,7 +108,7 @@ The search field is the only Tab stop. The caret is its focus indicator, so the 
 
 Before building the palette we looked at cmdk (used by shadcn/ui and Vercel), Linear, GitHub, Raycast, Mantine Spotlight, macOS Spotlight and the React Aria command palette example.
 
-- **Pattern:** every one of them pairs a search field with a list and keeps a row active, so Enter runs the top match. Marigold builds on React Aria's `Autocomplete` over a `Menu`, which gives the combobox behaviour above.
+- **Pattern:** every one of them pairs a search field with a list and keeps a row active, so <kbd>Enter</kbd> runs the top match. Marigold builds on React Aria's `Autocomplete` over a `Menu`, which gives the combobox behaviour above.
 - **Name:** "command palette" is the term most apps and libraries use. "Command menu" stays for a plain `Menu` of actions next to a trigger, so the two don't get mixed up.
 - **Filtering:** a "contains" match keeps the authored order and groups, which people can learn. Fuzzy ranking finds more but reorders the list on every key. We start with "contains" and leave fuzzy matching to a custom `filter`.
 - **Search prefixes:** VS Code, PowerToys and Retool let people narrow the search with a short prefix. This follows the usability heuristic of offering accelerators to expert users while the regular path stays available to everyone else. The common weak spot is that people don't know the prefixes exist, which is why the pattern above names them in the placeholder. Marigold has no prefix API yet and leaves the parsing to the app until more than one app needs it.
@@ -183,4 +179,5 @@ Before building the palette we looked at cmdk (used by shadcn/ui and Vercel), Li
 - [Menu](/components/overlay/menu): Use for a short list of actions opened from a labelled button.
 - [ActionMenu](/components/overlay/action-menu): Use for contextual actions on a row or item.
 - [Autocomplete](/components/form/autocomplete): Use to search and pick a value inside a form.
+- [ComboBox](/components/form/combobox): Use to pick a value from a list inside a form, with free text allowed.
 - [Sidebar](/components/navigation/sidebar): Use for the app's main navigation, which the palette complements.
