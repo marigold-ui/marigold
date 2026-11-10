@@ -25,7 +25,7 @@ export default () => {
       inputValue={query}
       onInputChange={setQuery}
     >
-      <CommandPalette.Trigger>Go to…</CommandPalette.Trigger>
+      <CommandPalette.Trigger />
       <CommandPalette.Content>
         <CommandPalette.Input placeholder="Go to…" />
         <CommandPalette.List>

@@ -1,11 +1,11 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
-// Rows share Menu's icon treatment and variants, but not its active state.
-// A palette always has one active row and is mostly used by keyboard, so the
-// row is marked like the Sidebar's current page: `selected` fill, medium
-// label, icon at full ink. No keyboard ring.
+// Rows share Menu's icon treatment, variants and active fill
+// (`focus-highlight`). A palette always has one active row and is mostly
+// used by keyboard, so instead of Menu's keyboard ring the row adds a medium
+// label, its icon at full ink and the ↵ hint.
 const itemActive = 'focus:font-medium';
-const itemBase = `text-foreground focus:bg-selected ${itemActive}`;
+const itemBase = `text-foreground focus:bg-focus-highlight ${itemActive}`;
 
 // Muted treatment for regular item icons, as in Menu, at full ink on the
 // active row. Access variants keep the full-opacity access colour on their
@@ -14,14 +14,16 @@ const itemIconMuted =
   '[&_svg]:text-secondary [&_svg]:opacity-60 focus:[&_svg]:text-foreground focus:[&_svg]:opacity-100';
 
 export const CommandPalette: ThemeComponent<'CommandPalette'> = {
-  // Reads as a search field in a header, but is a button that opens the palette.
+  // Looks like a text field (same frame, height, padding and placeholder
+  // colour as Input), but is a button that opens the palette. No press
+  // scale or button weight, so it doesn't read as an action.
   // The shortcut hint is hidden on touch screens, where there is no keyboard.
   trigger: cva({
     base: [
-      'ui-button-base ui-soft h-control w-full max-w-72 gap-2 px-3 text-sm text-secondary',
-      'hover:[--ui-background-color:var(--color-soft-hover)] hover:[--soft-edge:var(--color-soft-edge-hover)]',
+      'ui-control ui-input flex max-w-72 items-center gap-2 text-start text-placeholder cursor-text outline-none',
       'focus-visible:ui-state-focus',
-      '[&_svg]:size-4 [&_svg]:shrink-0',
+      'disabled:ui-state-disabled',
+      '[&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-secondary',
       'pointer-coarse:[&_kbd]:hidden',
     ],
   }),
@@ -32,7 +34,6 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
       'self-start mt-[12vh] w-[min(calc(100%_-_2rem),640px)]',
       'flex flex-col max-h-[min(560px,80vh)]',
       'ui-surface shadow-elevation-overlay overflow-hidden',
-      'entering:animate-fade-in exiting:animate-fade-out',
     ],
   }),
   // The search is the dialog's header, not a field inside it: no frame and a
@@ -68,7 +69,7 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
     ],
   }),
   group: cva({
-    base: 'text-secondary px-2.5 pt-3 pb-1 text-xs font-medium in-first:pt-1',
+    base: 'text-secondary px-2.5 pt-4 pb-1 text-xs font-medium [section:first-child>&]:pt-1',
   }),
   // Larger than a menu item, the palette being a primary navigation surface.
   // Icons and variants match Menu, the active state is the palette's own
@@ -95,10 +96,8 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
     },
   }),
   label: cva({ base: 'col-start-2 row-start-1' }),
-  // `secondary` on the active row's `selected` fill is 3.6:1 and fails AA.
-  // `secondary-bold` passes there.
   description: cva({
-    base: 'col-start-2 row-start-2 text-secondary text-xs whitespace-normal group-data-focused/option:text-secondary-bold group-disabled/option:text-disabled',
+    base: 'col-start-2 row-start-2 text-secondary text-xs whitespace-normal group-disabled/option:text-disabled',
   }),
   keyboard: cva({
     base: 'col-start-3 row-span-full self-center justify-self-end ps-4 text-secondary text-xs',
@@ -109,25 +108,26 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
   }),
   // The part of a label that matched the query.
   match: cva({ base: 'bg-transparent font-semibold text-current' }),
+  // Fills the list's grid row, so the message is centred in the list.
   empty: cva({
     base: [
-      'flex flex-col items-center gap-1 px-2 py-10 text-center text-sm text-secondary',
+      'col-span-full flex w-full flex-col items-center gap-1 px-2 py-10 text-center text-sm text-secondary',
+      '[&>svg]:mb-2 [&>svg]:size-6 [&>svg]:opacity-60',
       '[&_strong]:font-medium [&_strong]:text-foreground',
     ],
   }),
   // Same divider as Dialog and Drawer footers, no fill of its own. The legend
-  // is as quiet as it can be while staying readable: 12px secondary text
-  // (5.7:1 on the surface), bare key glyphs instead of key caps.
+  // uses the same key caps as the header's Esc hint, with 12px secondary
+  // labels (5.7:1 on the surface).
   footer: cva({
     base: [
-      'flex shrink-0 items-center justify-between gap-3 px-4 py-1',
+      'flex h-10 shrink-0 items-center justify-between gap-3 px-4',
       'border-t border-border text-xs text-secondary',
     ],
   }),
   legend: cva({
     base: [
-      'ms-auto flex items-center gap-3 [&>span]:inline-flex [&>span]:items-center [&>span]:gap-1',
-      '[&_kbd]:min-w-0 [&_kbd]:border-0 [&_kbd]:bg-transparent [&_kbd]:p-0 [&_kbd]:font-normal [&_kbd]:text-inherit',
+      'ms-auto flex items-center gap-4 [&>span]:inline-flex [&>span]:items-center [&>span]:gap-1.5',
     ],
   }),
 };

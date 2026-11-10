@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Menu } from 'react-aria-components/Menu';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { Search } from '../icons/Search';
 import { intlMessages } from '../intl/messages';
 import { useCommandPalette, useCommandPaletteEmptyState } from './Context';
 
@@ -35,9 +36,10 @@ export interface CommandPaletteListProps<T extends object> {
 // ---------------
 const DefaultEmptyState = ({ query }: { query: string }) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
-  if (!query) return stringFormatter.format('noResultsFound');
+  if (!query) return stringFormatter.format('commandPaletteTypeToSearch');
   return (
     <>
+      <Search aria-hidden="true" />
       <strong>{stringFormatter.format('noResultsFor', { query })}</strong>
       <span>{stringFormatter.format('noResultsHint')}</span>
     </>

@@ -4,7 +4,7 @@ import { Button } from 'react-aria-components/Button';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn } from '@marigold/system';
 import { Keyboard } from '../Keyboard/Keyboard';
-import { Search } from '../icons/Search';
+import { Compass } from '../icons/Compass';
 import { intlMessages } from '../intl/messages';
 import { formatShortcut, useIsAppleDevice } from '../utils/keyboardShortcut';
 import { useCommandPalette } from './Context';
@@ -26,7 +26,7 @@ export interface CommandPaletteTriggerProps extends Omit<
 > {
   /**
    * The label of the trigger.
-   * @default 'Search…'
+   * @default 'Go to…'
    */
   children?: ReactNode;
 
@@ -59,9 +59,9 @@ export const CommandPaletteTrigger = ({
       )}
       className={cn('group/command-palette-trigger', classNames.trigger)}
     >
-      <Search aria-hidden="true" size="16" />
+      <Compass aria-hidden="true" size="16" />
       <span className="flex-1 text-start">
-        {children ?? stringFormatter.format('searchEllipsis')}
+        {children ?? stringFormatter.format('commandPaletteGoTo')}
       </span>
       {hint ? <Keyboard aria-hidden="true">{hint.label}</Keyboard> : null}
     </Button>

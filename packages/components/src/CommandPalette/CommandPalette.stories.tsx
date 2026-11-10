@@ -48,7 +48,7 @@ const openPalette = ({
   canvas,
   userEvent,
 }: Pick<StoryContext, 'canvas' | 'userEvent'>) =>
-  userEvent.click(canvas.getByRole('button', { name: /search/i }));
+  userEvent.click(canvas.getByRole('button', { name: /go to|search/i }));
 
 const onAction = fn();
 
@@ -190,7 +190,7 @@ Basic.test(
   noSnapshot,
   async ({ canvas, step, userEvent }) => {
     onAction.mockClear();
-    const trigger = canvas.getByRole('button', { name: /search/i });
+    const trigger = canvas.getByRole('button', { name: /go to/i });
 
     await step('Choose an action from the keyboard', async () => {
       await userEvent.click(trigger);

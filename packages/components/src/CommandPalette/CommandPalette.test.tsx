@@ -13,7 +13,7 @@ test('opens by default with defaultOpen', async () => {
 test('the trigger announces the shortcut', () => {
   render(<Basic.Component />);
 
-  expect(screen.getByRole('button', { name: /search/i })).toHaveAttribute(
+  expect(screen.getByRole('button', { name: /go to/i })).toHaveAttribute(
     'aria-keyshortcuts',
     expect.stringMatching(/^(Meta|Control)\+K$/)
   );
@@ -22,7 +22,7 @@ test('the trigger announces the shortcut', () => {
 test('the trigger hides the hint when the shortcut is disabled', () => {
   render(<Basic.Component shortcut={false} />);
 
-  const trigger = screen.getByRole('button', { name: /search/i });
+  const trigger = screen.getByRole('button', { name: /go to/i });
   expect(trigger).not.toHaveAttribute('aria-keyshortcuts');
   expect(within(trigger).queryByText(/⌘K|Ctrl\+K/)).toBeNull();
 });
