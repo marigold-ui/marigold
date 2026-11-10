@@ -584,7 +584,10 @@ describe('modified clicks & keyboard activation', () => {
     const toggle = screen.getByRole('button', {
       name: 'Navigation umschalten',
     });
-    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    // Collapse first: on a collapsed panel a plain click would reopen it, so
+    // only the modified-click guard keeps it closed.
+    await user.click(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
     const { result, stop } = observeNativeClick();
 
     await user.keyboard('{Control>}');
@@ -594,7 +597,7 @@ describe('modified clicks & keyboard activation', () => {
 
     // A browser-owned click must not touch the panel state.
     expect(result.prevented).toBe(false);
-    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
   });
 
   test('an onPress-only rail item activates with Enter and Space', async () => {

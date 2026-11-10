@@ -4,7 +4,7 @@ const section = { key: 'tickets', isSection: true };
 const link = { key: 'berichte', isSection: false };
 
 describe('direct links', () => {
-  test('selects and navigates without toggling', () => {
+  test('selects without toggling', () => {
     const action = resolveRailActivation(link, {
       selectedKey: 'tickets',
       state: 'expanded',
@@ -19,7 +19,7 @@ describe('direct links', () => {
 });
 
 describe('sections', () => {
-  test('re-clicking the active section navigates without collapsing the panel', () => {
+  test('re-clicking the active section does not collapse the panel', () => {
     const action = resolveRailActivation(section, {
       selectedKey: 'tickets',
       state: 'expanded',
@@ -32,7 +32,7 @@ describe('sections', () => {
     });
   });
 
-  test('re-clicking the active section on a collapsed panel expands it and navigates', () => {
+  test('re-clicking the active section on a collapsed panel expands it', () => {
     const action = resolveRailActivation(section, {
       selectedKey: 'tickets',
       state: 'collapsed',
@@ -45,7 +45,7 @@ describe('sections', () => {
     });
   });
 
-  test('switching sections swaps the panel, focuses it, and navigates', () => {
+  test('switching sections swaps the panel and focuses it', () => {
     const action = resolveRailActivation(section, {
       selectedKey: 'other',
       state: 'expanded',
