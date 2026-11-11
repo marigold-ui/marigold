@@ -2,6 +2,7 @@
 '@marigold/components': patch
 '@marigold/system': patch
 '@marigold/theme-rui': patch
+'@marigold/cli': patch
 ---
 
 refactor(DST-1865): build the mobile tray on React Aria's `Sheet`
@@ -16,3 +17,5 @@ What changes for users of those components on small screens:
 - Opening the mobile ComboBox or Autocomplete no longer scrolls the page behind the tray.
 
 For theme authors: the `Tray` theme component loses its `overlay` slot. The backdrop and the tray surface now come from a new `Sheet` theme component with `backdrop`, `container` and `content` slots.
+
+The v18 migration codemod in `@marigold/cli` knows the new `Sheet` theme component and no longer expects a `Tray.overlay` slot.
