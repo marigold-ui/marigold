@@ -58,31 +58,28 @@ To start documentation follow these steps:
 
 ### Command overview
 
-| Command                    | Description                                                                           |
-| -------------------------- | ------------------------------------------------------------------------------------- |
-| pnpm dev                   | Start the documentation app in dev mode.                                              |
-| pnpm start                 | Start the documentation app in production mode.                                       |
-| pnpm sb                    | Start Storybook using the components and system source folders.                       |
-| pnpm build                 | Build components and theme packages.                                                  |
-| pnpm build:docs            | Build the documentation app.                                                          |
-| pnpm build:sb              | Build the Storybook configuration.                                                    |
-| pnpm build:themes          | Build all theme packages.                                                             |
-| pnpm registry              | Run the documentation registry task.                                                  |
-| pnpm build:component-props | Generate/build component props tables for the docs.                                   |
-| pnpm test                  | Run tests with Vitest.                                                                |
-| pnpm test:coverage         | Run tests with coverage.                                                              |
-| pnpm test:ci               | Run tests for CI.                                                                     |
-| pnpm test:sb               | Run Storybook component tests.                                                        |
-| pnpm clean                 | Remove node_modules, dist, .next, .turbo, coverage, and storybook-static directories. |
-| pnpm clean:build           | Remove dist folders and coverage reports.                                             |
-| pnpm lint                  | Lint the repository with ESLint.                                                      |
-| pnpm lint:prose            | Lint docs prose with Vale.                                                            |
-| pnpm format                | Format files with Prettier.                                                           |
-| pnpm format:check          | Check formatting without writing (what CI runs).                                      |
-| pnpm format:fix            | Format and attempt to fix with Prettier.                                              |
-| pnpm typecheck             | Build docs, then run TypeScript type checking (no emit).                              |
-| pnpm typecheck:only        | Run TypeScript type checking only (no emit).                                          |
-| pnpm changeset             | Run the Changesets CLI.                                                               |
+| Command             | Description                                                                           |
+| ------------------- | ------------------------------------------------------------------------------------- |
+| pnpm start          | Start the documentation app in dev mode.                                              |
+| pnpm sb             | Start Storybook using the components and system source folders.                       |
+| pnpm build          | Build components and theme packages.                                                  |
+| pnpm build:docs     | Build the documentation app.                                                          |
+| pnpm build:sb       | Build the Storybook configuration.                                                    |
+| pnpm build:themes   | Build all theme packages.                                                             |
+| pnpm registry       | Run the documentation registry task.                                                  |
+| pnpm test           | Run tests with Vitest.                                                                |
+| pnpm test:coverage  | Run tests with coverage.                                                              |
+| pnpm test:sb        | Run Storybook component tests.                                                        |
+| pnpm clean          | Remove node_modules, dist, .next, .turbo, coverage, and storybook-static directories. |
+| pnpm clean:build    | Remove dist folders and coverage reports.                                             |
+| pnpm lint           | Lint the repository with ESLint.                                                      |
+| pnpm lint:prose     | Lint docs prose with Vale.                                                            |
+| pnpm format         | Format files with Prettier.                                                           |
+| pnpm format:check   | Check formatting without writing (what CI runs).                                      |
+| pnpm format:fix     | Format and attempt to fix with Prettier.                                              |
+| pnpm typecheck      | Run TypeScript type checking (no emit). Same as `typecheck:only`.                     |
+| pnpm typecheck:only | Run TypeScript type checking (no emit).                                               |
+| pnpm changeset      | Run the Changesets CLI.                                                               |
 
 ### Releasing
 
