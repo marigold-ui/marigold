@@ -77,13 +77,13 @@ Then `/hooks` in a session lists what is registered, and `claude --debug-file /t
 
 Review runs in two places and they are not the same tool.
 
-`/review-pr` is on demand, for the author, before anyone else looks. It can reach things CI does not: Jira context, the VRT freshness check, whatever you want to ask it next.
+`/dst:review-pr` is on demand, for the author, before anyone else looks. It can reach things CI does not: Jira context, the VRT freshness check, whatever you want to ask it next.
 
 The `Claude Review` workflow is the floor. It runs unattended on a pull request, posts one advisory comment, and cannot approve, request changes or block a merge. Which pull requests it runs on is decided by category, read from the Conventional Commits type in the title. `Claude Mentions` is the interactive half, triggered by writing `@claude` in a thread.
 
 Two rules hold this together:
 
-- **The checklist has one home.** `skills/review-pr/references/review-checklist.md` is the agreed standard, and the CI prompt points at that path rather than restating it. A rule that exists in a workflow file and not in the checklist will drift out of review.
+- **The checklist has one home.** `.github/review-checklist.md` is the agreed standard for this repo, and the CI prompt points at that path rather than restating it. It sits under `.github/` because CI cannot read a per-user plugin install. The `dst` plugin carries its own copy with the Marigold-specific rules removed, so a rule about Marigold components goes here, not there. A rule that exists in a workflow file and not in the checklist will drift out of review.
 - **CI never becomes required.** The floor stays advisory. Making it blocking would put a non-deterministic check on the merge path. The action cannot submit a formal review, so it can never block on findings, but the job itself can be marked required in branch protection. Do not.
 
 ## Adding and removing
