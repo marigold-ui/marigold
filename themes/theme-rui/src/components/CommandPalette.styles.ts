@@ -56,6 +56,11 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
       'flex shrink-0 items-center gap-2.5 h-13 px-4',
       'border-b border-border',
       '[&>svg]:size-4.5 [&>svg]:shrink-0 [&>svg]:text-secondary',
+      // Optical alignment. The boxes are centred, but the placeholder is
+      // mostly lowercase, whose x-height sits ~1.4px below the line's centre,
+      // and the magnifier's lens sits above its box's centre. Text up 1px and
+      // icon down 1px line the lens up with the lowercase letters.
+      '[&>svg]:translate-y-px [&>input]:-translate-y-px',
       // Clear button: quiet, round, appears once there is a query.
       '[&>button]:flex [&>button]:size-6 [&>button]:shrink-0 [&>button]:items-center [&>button]:justify-center [&>button]:rounded-full [&>button]:text-secondary [&>button]:cursor-pointer',
       '[&>button]:hover:bg-hover [&>button]:hover:text-foreground [&>button]:focus-visible:ui-state-focus',
@@ -108,12 +113,16 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
   label: Menu.label,
   description: Menu.description,
   keyboard: Menu.keyboard,
-  // Places the Enter hint (a `Keyboard` key cap) on the active row. Keyboard only.
-  // It spans label and description explicitly: `row-span-full` only covers
-  // explicit rows, so it put the cap, taller than a label line, into the first
-  // row alone and the row grew by 2px whenever it became active.
+  // Places the Enter hint (a `Keyboard` key cap). Every row renders it, only
+  // the active row shows it, so a row's layout is the same active or not. It
+  // sits beside the label, and spans label and description when there is one.
+  // Keyboard only.
   enter: cva({
-    base: 'col-start-3 row-start-1 row-span-2 self-center justify-self-end ms-4 pointer-coarse:hidden',
+    base: [
+      'col-start-3 row-start-1 self-center justify-self-end ms-4',
+      'group-has-[[slot=description]]/option:row-span-2',
+      'invisible group-data-focused/option:visible pointer-coarse:hidden',
+    ],
   }),
   // The part of a label that matched the query.
   match: cva({ base: 'bg-transparent font-semibold text-current' }),

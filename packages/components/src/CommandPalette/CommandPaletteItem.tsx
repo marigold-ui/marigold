@@ -111,14 +111,14 @@ export const CommandPaletteItem = ({
       {renderProps => (
         <>
           {typeof children === 'function' ? children(renderProps) : label}
-          {renderProps.isFocused ? (
-            // A plain `<kbd>` with the `Keyboard` styles. The `Keyboard`
-            // component would join the item's slots and become its announced
-            // description.
-            <kbd aria-hidden="true" className={cn(keyCap, classNames.enter)}>
-              ↵
-            </kbd>
-          ) : null}
+          {/* A plain `<kbd>` with the `Keyboard` styles. The `Keyboard`
+              component would join the item's slots and become its announced
+              description. Every row renders it and the theme shows it on the
+              active row only: mounting it on focus changed the row's grid and
+              moved the label. */}
+          <kbd aria-hidden="true" className={cn(keyCap, classNames.enter)}>
+            ↵
+          </kbd>
         </>
       )}
     </MenuItemCore>
