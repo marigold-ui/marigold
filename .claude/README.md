@@ -1,7 +1,7 @@
 # AI toolkit conventions
 
 How the committed AI tooling in this repo is shaped: **hooks, path-scoped rules, one subagent, and
-the few skills that are repo-local.** The team's workflow skills live in the `dst` plugin and carry
+the one skill that is still repo-local.** The team's workflow skills live in the `dst` plugin and carry
 their own conventions with them, so this file does not describe them.
 
 **Conventions only — this file deliberately does not list the tools it describes.**
@@ -44,8 +44,7 @@ What is still true in this repo:
   whose workflow they encode.
 - `vrt` is **side-effecting**: a dispatch spends Chromatic snapshot quota. `CONTRIBUTING.md`'s
   rules for that class apply in full, and the reason they matter here is that the cost is real and
-  lands on the team's plan rather than on the person who ran it. The other four only change files
-  in the working tree.
+  lands on the team's plan rather than on the person who ran it.
 
 ## Rules and the root file
 

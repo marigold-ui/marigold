@@ -24,13 +24,19 @@ Marigold is consumed by many product apps. The expensive mistakes are, in this o
 
 ## How to review
 
-1. Get the diff. Use only read-only commands: `git status --short`, `git diff main...HEAD`,
-   `git diff` for unstaged work, `git log --oneline main..HEAD`.
+1. Get the diff. Use only read-only commands. The base is the branch this work will merge
+   into: `origin/main` by default, or the next major's branch (`origin/v<major + 1>`) for
+   breaking work. Check `git rev-parse --abbrev-ref @{upstream}` and the branch name if unsure.
+   Then `git status --short`, `git diff <base>...HEAD`, `git diff` for unstaged work,
+   `git log --oneline <base>..HEAD`.
 2. Read the standards, in this order, and apply them without restating them:
    - `.github/review-checklist.md`, including its severity guide
    - the rule file for what changed: `.claude/rules/components.md`, `testing.md`, `theme.md`,
      `prose.md`
-   - any ADR whose `applies_to` covers a changed file: `grep -l "<Name>" .memory/adr/*.md`
+   - any ADR whose `applies_to` globs match a changed file. Most use globs rather than
+     component names, so read the `applies_to` blocks (`grep -A4 applies_to .memory/adr/*.md`)
+     instead of grepping for the name. Four apply to every component file: 0001 (RAC-first
+     imports), 0003 (stacking order), 0004 (slot configs) and 0005 (CSS layout over children).
 3. Do not review the diff on its own. For each substantive change, read the surrounding file
    and find the nearest existing precedent. Grep for the mechanism, not the component name: a
    context, a live region, a hook, a prop another component already models. A divergence from
@@ -47,7 +53,7 @@ Marigold is consumed by many product apps. The expensive mistakes are, in this o
 ## What to leave out
 
 - Formatting. Prettier runs on commit.
-- The 281 pre-existing lint warnings, unless the diff adds one.
+- Existing lint warnings, unless the diff adds one.
 - Style preferences the checklist and rules do not state.
 - Visual regression. Chromatic owns it and it is never yours to start.
 - Praise, and summaries of what the diff does.

@@ -6,7 +6,8 @@ paths:
 # Theme rules
 
 `themes/theme-rui` is the only theme. It is published, so a renamed token or removed variant is
-a breaking change for consumers.
+a breaking change for consumers. Ask before making one, and target the next major's branch
+(`.claude/rules/components.md`, "Public API is the product").
 
 | File                              | Holds                                                              |
 | --------------------------------- | ------------------------------------------------------------------ |
@@ -41,7 +42,7 @@ export const Badge: ThemeComponent<'Badge'> = cva({
 - A variant exists in two places, released separately: the style file here and the prop union
   in the component. Change both, or the value renders unstyled or cannot be reached, with no
   error either way. A component without its own style file shares one: see the alias map at
-  the top of `scripts/build-appearances.mjs`.
+  the top of `themes/theme-rui/scripts/build-appearances.mjs`.
 
 ## Seeing a change
 

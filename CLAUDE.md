@@ -43,7 +43,8 @@ Prettier and Vale run on commit through lint-staged, so there is nothing to form
 ## Rules that always apply
 
 - **Do not change public API without asking.** A removed or renamed prop or export, a changed
-  default or a changed DOM/ARIA contract is breaking for many apps.
+  default or a changed DOM/ARIA contract is breaking for many apps. Breaking work does not go
+  to `main` but to `v<major + 1>`, see `.claude/rules/components.md`.
 - **Never weaken a check to get green.** No skipped or loosened tests, no disabled lint rules,
   no `any`, no `@ts-ignore`.
 - **Do not edit generated files**: any `CHANGELOG.md`, `docs/content/releases/**/release.mdx`,
@@ -69,7 +70,7 @@ For a change to a published package (`components`, `system`, `icons`, `theme-rui
 
 Commits and PR titles: `<type>(DST-1234): description`, with `feat`, `fix`, `chore`, `docs`,
 `refactor`, `test`, `style` (a visual change, not formatting), `perf`, `build`, `ci`, `revert`.
-Branch from `main` as `<type>/DST-1234-slug`.
+Branch from `main` as `<type>/DST-1234-slug`, or from `v<major + 1>` for breaking work.
 
 ## Where the detail lives
 

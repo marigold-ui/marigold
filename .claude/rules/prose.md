@@ -4,6 +4,7 @@ paths:
   - '.changeset/*.md'
   - 'README.md'
   - 'contributing.md'
+  - 'CODE-OF-CONDUCT.md'
   - 'MIGRATION-v18.md'
   - 'packages/*/README.md'
   - 'themes/*/README.md'

@@ -132,7 +132,12 @@ Missing one fails late: no theme type fails typecheck, no barrel line ships noth
 An export is **internal** when it exists for other Marigold packages and not for consumers.
 Mark it with a bare `/** @internal */` on the line above, one export per tagged statement, **in
 the barrel** (`src/index.ts`). The Insights scanner reads only the barrel, so a tag in the
-component file does not register. Documented exports are public.
+component file does not register.
+
+Documented exports (own page, or an API on a parent page) are public. A consumer-facing export
+that still lacks docs stays public too, with a docs ticket (DST-1758). An `@internal` in a
+component file's own JSDoc, as on `HiddenSelection`, is documentation for readers: it does not
+replace the barrel tag and does not need removing (`.memory/CONTEXT.md`, Internal export).
 
 ## Decisions already made
 
