@@ -35,8 +35,6 @@ A command palette consists of an optional trigger and the palette itself, which 
 
 The palette itself has no variants or sizes. Its items take the same variants as menu items, set with `variant` on each item.
 
-<ComponentDemo name="command-palette-variants" />
-
 | Variant       | Description                                       | When to use                                              |
 | ------------- | ------------------------------------------------- | -------------------------------------------------------- |
 | `default`     | Standard item. This is the default variant.       | Pages and regular actions.                               |
@@ -47,6 +45,35 @@ The palette itself has no variants or sizes. Its items take the same variants as
 See the [Admin- and Mastermark pattern](/patterns/layout/admin-master-mark) for guidance on access marks.
 
 ## Usage
+
+As an app grows, the way to a page gets longer. Pages end up nested in the navigation, frequent actions sit several clicks deep, and opening a known event or order means going to a list, filtering and scanning. A command palette gives people one place they can reach from anywhere: they type what they want and land there. It complements the navigation for people who already know the app and doesn't replace it.
+
+<GuidelineTiles>
+<Do>
+  <DoDescription>
+    Use a command palette when
+    {/* prettier-ignore */}
+    <ul>
+      <li>the app has more pages than the sidebar shows comfortably, or pages nested several levels deep,</li>
+      <li>people repeat the same tasks every day and want to start them without leaving the keyboard, or</li>
+      <li>people know records by name or number, so the detour through a list page slows them down.</li>
+    </ul>
+  </DoDescription>
+</Do>
+
+<Dont>
+  <DontDescription>
+    Avoid a command palette when
+    {/* prettier-ignore */}
+    <ul>
+      <li>the app has a handful of pages the sidebar already shows at a glance,</li>
+      <li>it would be the only way to reach a page or action,</li>
+      <li>people pick a value inside a form, which is an [Autocomplete](/components/form/autocomplete) or a [ComboBox](/components/form/combobox), or</li>
+      <li>the actions belong to one item on screen, which is an [ActionMenu](/components/overlay/action-menu).</li>
+    </ul>
+  </DontDescription>
+</Dont>
+</GuidelineTiles>
 
 Put everything people jump to often into one palette per app: pages, frequent actions such as "Create event", and records like an event or an order once the app loads them.
 
@@ -65,12 +92,6 @@ Put everything people jump to often into one palette per app: pages, frequent ac
       stable. People learn where things are and type less over time.
     </DoDescription>
   </Do>
-  <Dont>
-    <DontDescription>
-      Don't make the palette the only way to reach a page or action. It is a
-      shortcut for people who know the app, not a replacement for navigation.
-    </DontDescription>
-  </Dont>
   <Dont>
     <DontDescription>
       Don't render more than one palette with the same shortcut on a page. Pass
