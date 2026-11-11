@@ -84,7 +84,7 @@ describe('detectMigration', () => {
     expect(detected).toEqual({
       installed: '17.9.1',
       source: 'node_modules',
-      versions: ['v18'],
+      versions: ['v18', 'v19'],
     });
   });
 
@@ -94,7 +94,7 @@ describe('detectMigration', () => {
     expect(detected).toEqual({
       installed: '17.0.0',
       source: 'package.json',
-      versions: ['v18'],
+      versions: ['v18', 'v19'],
     });
   });
 
@@ -104,15 +104,25 @@ describe('detectMigration', () => {
     expect(detected).toEqual({
       installed: '18.0.0-beta.4',
       source: 'node_modules',
-      versions: ['v18'],
+      versions: ['v18', 'v19'],
     });
   });
 
-  test('reports up to date when the installed major is past every migration', () => {
+  test('proposes only the v19 migration on 19.x', () => {
     const detected = detectMigration(setupRepo('19.0.0'));
 
     expect(detected).toEqual({
       installed: '19.0.0',
+      source: 'node_modules',
+      versions: ['v19'],
+    });
+  });
+
+  test('reports up to date when the installed major is past every migration', () => {
+    const detected = detectMigration(setupRepo('20.0.0'));
+
+    expect(detected).toEqual({
+      installed: '20.0.0',
       source: 'node_modules',
       versions: [],
     });
@@ -467,7 +477,7 @@ describe('runMigrateCommand', () => {
   });
 
   test('reports a target that has no migration left to run', async () => {
-    const root = setupDetectable('19.0.0');
+    const root = setupDetectable('20.0.0');
     const written: string[] = [];
 
     const code = await runMigrateCommand({

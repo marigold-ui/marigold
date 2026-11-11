@@ -8,6 +8,7 @@ import {
   stylesReference,
 } from '../lib/codemod/engine.js';
 import { v18 } from '../lib/codemod/manifests/v18.js';
+import { v19 } from '../lib/codemod/manifests/v19.js';
 import {
   removeJsxProps,
   renameImports,
@@ -43,7 +44,7 @@ import { highlightCode } from '../lib/format.js';
 import type { AnyNode } from '../lib/tsx-ast.js';
 import { parseTsx } from '../lib/tsx-ast.js';
 
-const MANIFESTS: Record<string, MigrationManifest> = { v18 };
+const MANIFESTS: Record<string, MigrationManifest> = { v18, v19 };
 
 export interface DetectedMigration {
   /** installed @marigold/components version (or the declared range minimum) */
