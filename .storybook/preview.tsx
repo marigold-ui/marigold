@@ -15,6 +15,19 @@ if (
   /chromatic=true/.test(location.href)
 ) {
   document.documentElement.dataset.chromatic = '';
+
+  // RAC's Sheet slides in with a JS smooth scroll, which Chromatic can't pause,
+  // so a tray would be captured below the screen. Under reduced motion it jumps
+  // into place. Only RAC's Sheet asks for this exact query (`motion` doesn't).
+  const matchMedia = window.matchMedia.bind(window);
+  window.matchMedia = query => {
+    const list = matchMedia(query);
+    if (query === '(prefers-reduced-motion: reduce)') {
+      Object.defineProperty(list, 'matches', { value: true });
+    }
+
+    return list;
+  };
 }
 
 // Storybook viewports only accept fixed pixel values, so we can't use the
