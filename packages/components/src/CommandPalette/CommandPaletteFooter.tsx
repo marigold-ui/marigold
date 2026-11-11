@@ -1,16 +1,24 @@
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import type { ComponentClassNames } from '@marigold/system';
 import { Keyboard } from '../Keyboard/Keyboard';
 import { intlMessages } from '../intl/messages';
-import { useCommandPalette, useCommandPaletteEmptyState } from './Context';
+
+// Props
+// ---------------
+export interface CommandPaletteFooterProps {
+  loading: boolean;
+  classNames: ComponentClassNames<'CommandPalette'>;
+}
 
 // Component
 // ---------------
-// Internal. Rendered by `CommandPalette.Content` on desktop only: a key legend
-// on the right and a loading status on the left. Hidden from assistive tech,
-// which already announces the combobox and menu keyboard pattern.
-export const CommandPaletteFooter = () => {
-  const { classNames } = useCommandPalette();
-  const { loading } = useCommandPaletteEmptyState();
+// Internal. Rendered on desktop only: a key legend on the right and a loading
+// status on the left. Hidden from assistive tech, which already announces the
+// combobox and menu keyboard pattern.
+export const CommandPaletteFooter = ({
+  loading,
+  classNames,
+}: CommandPaletteFooterProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   return (

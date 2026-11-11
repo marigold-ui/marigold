@@ -1,12 +1,12 @@
 export const CommandPaletteAnatomy = () => (
   <svg
     role="img"
-    aria-label="Anatomy of a CommandPalette: a Trigger above the open palette, which sits on the Underlay and holds a Search field, Groups of Items with an Active row, the List and a Legend"
+    aria-label="Anatomy of a CommandPalette: a Button above the open palette, which sits on the Underlay and holds a Search field, Groups of Items with an Active row, the List and a Legend"
     viewBox="0 0 660 320"
     className="mx-auto h-auto w-full max-w-[90%]"
     xmlns="http://www.w3.org/2000/svg"
   >
-    {/* Trigger: looks like a search field, with a compass and the shortcut */}
+    {/* Button: looks like a search field, with a compass and the shortcut */}
     <rect
       x="255"
       y="14"
@@ -202,7 +202,7 @@ export const CommandPaletteAnatomy = () => (
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      {/* Trigger -> left */}
+      {/* Button -> left */}
       <path d="M 255 28 L 160 28" />
       {/* Search field -> left */}
       <path d="M 200 90 L 160 90" />
@@ -241,7 +241,7 @@ export const CommandPaletteAnatomy = () => (
     >
       <g textAnchor="end">
         <text x="152" y="33">
-          Trigger
+          Button
         </text>
         <text x="152" y="95">
           Search field

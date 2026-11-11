@@ -10,17 +10,17 @@ The `<CommandPalette>` component opens a search field over a list of pages and a
 
 <Callout title="Trying the demos">
   On this page, <kbd>⌘</kbd>+<kbd>K</kbd> opens the docs search, so the demos
-  don't react to it. Open them with their trigger instead. In your app the
-  trigger also shows the shortcut.
+  don't react to it. Open them with their button instead. In your app the button
+  also shows the shortcut.
 </Callout>
 
 ## Anatomy
 
-A command palette consists of an optional trigger and the palette itself, which opens on an underlay. The palette holds a search field, the list of results grouped under titles, and a legend of the keys. When nothing matches or results are still loading, a message takes the place of the list.
+A command palette consists of an optional button and the palette itself, which opens on an underlay. The palette holds a search field, the list of results grouped under titles, and a legend of the keys. When nothing matches or results are still loading, a message takes the place of the list.
 
 <CommandPaletteAnatomy />
 
-- **Trigger:** An optional button that looks like a search field, reads "Go to…" and shows the shortcut. The shortcut works without it.
+- **Button:** An optional button that looks like a search field, reads "Go to…" and shows the shortcut. The shortcut works without it.
 - **Search field:** The header of the palette. It gets focus when the palette opens and shows an <kbd>Esc</kbd> hint, a clear button once there is a query, or a spinner while results load.
 - **Group:** An optional title over related items, for example Pages and Actions.
 - **Item:** A single page or action, with an optional icon and description.
@@ -84,9 +84,9 @@ Group the results, for example into Pages, Actions and Events, and keep the grou
 
 ### Placement
 
-Render one palette per app, inside the app shell, so the shortcut works on every page. Put the trigger in the middle of the [top navigation](/components/navigation/topnavigation), where the [App frame](/patterns/layout/app-frame) places search, as in the demo above. The trigger is optional, but it tells people the palette exists and shows the shortcut that opens it.
+Render one palette per app, inside the app shell, so the shortcut works on every page. Put the button in the middle of the [top navigation](/components/navigation/topnavigation), where the [App frame](/patterns/layout/app-frame) places search, as in the demo above. The button is optional, but it tells people the palette exists and shows the shortcut that opens it. Where the top navigation has little room, any other button inside `<CommandPalette.Trigger>` opens the palette too, for example an icon button.
 
-Don't render a second palette with the same shortcut. If a page needs its own palette, pass `shortcut={false}` to it.
+Don't render a second palette with the same shortcut. If a page needs its own palette, pass `shortcut={false}` to its trigger.
 
 ### Keyboard
 
@@ -99,7 +99,7 @@ Don't render a second palette with the same shortcut. If a page needs its own pa
 
 Letters typed into the search field stay in the palette. Shortcuts your app binds to single keys, for example "c" to create, don't fire while people type a query.
 
-The shortcut also fires inside text fields, as it does in GitHub, Linear and Slack. If another handler already used the key, for example a rich-text editor that inserts a link on <kbd>⌘</kbd>+<kbd>K</kbd>, the palette leaves it alone. Change the key with `shortcut="j"`, or turn it off with `shortcut={false}` when your app already uses it.
+The shortcut also fires inside text fields, as it does in GitHub, Linear and Slack. If another handler already used the key, for example a rich-text editor that inserts a link on <kbd>⌘</kbd>+<kbd>K</kbd>, the palette leaves it alone. Change the key with `shortcut="j"` on the trigger, or turn it off with `shortcut={false}` when your app already uses it.
 
 ### Filtering
 
@@ -109,13 +109,13 @@ An item's text is its plain-text label, also next to an icon. When the label is 
 
 ### Empty state
 
-Render `<CommandPalette.Empty>` to replace the default message, for example to name what people can search for.
+Pass `emptyState` to replace the default message, for example to name what people can search for.
 
 <ComponentDemo name="command-palette-empty" />
 
 ### Results from the server
 
-To search records on the server, pass `filter={false}`, control the query with `inputValue` and `onInputChange`, and render `<CommandPalette.Loading>` while results load. Debounce the requests in your own code.
+To search records on the server, pass `filter={false}`, control the query with `inputValue` and `onInputChange`, and set `loading` while results load. Debounce the requests in your own code.
 
 <ComponentDemo name="command-palette-async" />
 
@@ -171,18 +171,11 @@ Before building the palette we looked at cmdk (used by shadcn/ui and Vercel), Li
   name="CommandPaletteTriggerProps"
 />
 
-### CommandPalette.Input
+### CommandPalette.Button
 
 <AutoTypeTable
-  path="CommandPalette/CommandPaletteInput"
-  name="CommandPaletteInputProps"
-/>
-
-### CommandPalette.List
-
-<AutoTypeTable
-  path="CommandPalette/CommandPaletteList"
-  name="CommandPaletteListProps"
+  path="CommandPalette/CommandPaletteButton"
+  name="CommandPaletteButtonProps"
 />
 
 ### CommandPalette.Group
@@ -197,20 +190,6 @@ Before building the palette we looked at cmdk (used by shadcn/ui and Vercel), Li
 <AutoTypeTable
   path="CommandPalette/CommandPaletteItem"
   name="CommandPaletteItemProps"
-/>
-
-### CommandPalette.Empty
-
-<AutoTypeTable
-  path="CommandPalette/CommandPaletteEmpty"
-  name="CommandPaletteEmptyProps"
-/>
-
-### CommandPalette.Loading
-
-<AutoTypeTable
-  path="CommandPalette/CommandPaletteLoading"
-  name="CommandPaletteLoadingProps"
 />
 
 ## Alternative components

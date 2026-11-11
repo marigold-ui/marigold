@@ -1,69 +1,96 @@
 import type { ReactNode } from 'react';
-import type RAC from 'react-aria-components';
-import { Button } from 'react-aria-components/Button';
-import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { cn } from '@marigold/system';
-import { Keyboard } from '../Keyboard/Keyboard';
-import { Compass } from '../icons/Compass';
-import { intlMessages } from '../intl/messages';
-import { formatShortcut, useIsAppleDevice } from '../utils/keyboardShortcut';
-import { useCommandPalette } from './Context';
+import { Children, isValidElement, useMemo } from 'react';
+import { PressResponder } from '@react-aria/interactions';
+import { useControlledState } from '@react-stately/utils';
+import { useKeyboardShortcut } from '../utils/keyboardShortcut';
+import { CommandPaletteTriggerContext } from './Context';
 
 // Props
 // ---------------
-type RemovedProps =
-  | 'className'
-  | 'style'
-  | 'children'
-  | 'isDisabled'
-  | 'isPending'
-  | 'onPress'
-  | 'render';
-
-export interface CommandPaletteTriggerProps extends Omit<
-  RAC.ButtonProps,
-  RemovedProps
-> {
+export interface CommandPaletteTriggerProps {
   /**
-   * The label of the trigger.
-   * @default 'Go to…'
+   * The palette and, optionally, the button that opens it: a
+   * `CommandPalette.Button` or any other button.
    */
-  children?: ReactNode;
+  children: ReactNode;
 
   /**
-   * Whether the trigger is disabled.
+   * Whether the palette is open (controlled).
    */
-  disabled?: boolean;
+  open?: boolean;
+
+  /**
+   * Whether the palette is open by default (uncontrolled).
+   * @default false
+   */
+  defaultOpen?: boolean;
+
+  /**
+   * Handler that is called when the palette opens or closes.
+   */
+  onOpenChange?: (open: boolean) => void;
+
+  /**
+   * The key that opens the palette together with ⌘ (macOS) or Ctrl (elsewhere).
+   * Pass `false` to disable the global shortcut, e.g. when the app already
+   * uses the key.
+   * @default 'k'
+   */
+  shortcut?: string | false;
 }
 
 // Component
 // ---------------
+// Holds the open state and the shortcut, like `Dialog.Trigger` holds a
+// dialog's. Any pressable child opens the palette. The palette itself stays
+// outside the press responder: rendered without a button, for a palette that
+// opens by shortcut only, the responder would have no pressable child.
 export const CommandPaletteTrigger = ({
   children,
-  disabled,
-  ...props
+  open: openProp,
+  defaultOpen = false,
+  onOpenChange,
+  shortcut = 'k',
 }: CommandPaletteTriggerProps) => {
-  const { setOpen, shortcut, classNames } = useCommandPalette();
-  const stringFormatter = useLocalizedStringFormatter(intlMessages);
-  const apple = useIsAppleDevice();
-  const hint = shortcut ? formatShortcut(shortcut, apple) : undefined;
+  const [open, setOpen] = useControlledState(
+    openProp,
+    defaultOpen,
+    onOpenChange
+  );
+  useKeyboardShortcut(shortcut, () => setOpen(!open));
+
+  const value = useMemo(
+    () => ({ open, setOpen, shortcut }),
+    [open, setOpen, shortcut]
+  );
+
+  // eslint-disable-next-line @eslint-react/no-children-to-array -- the palette has to sit outside the press responder, see above
+  const parts = Children.toArray(children);
+  const palette = parts.filter(isPalette);
+  const pressables = parts.filter(part => !isPalette(part));
 
   return (
-    <Button
-      {...props}
-      isDisabled={disabled}
-      onPress={() => setOpen(true)}
-      // RAC's Button filters `aria-keyshortcuts` out of its DOM props.
-      render={domProps => (
-        <button {...domProps} aria-keyshortcuts={hint?.ariaKeyShortcuts} />
+    <CommandPaletteTriggerContext value={value}>
+      {pressables.length > 0 && (
+        <PressResponder
+          onPress={() => setOpen(true)}
+          isPressed={false}
+          aria-haspopup="dialog"
+          aria-expanded={open}
+        >
+          {pressables}
+        </PressResponder>
       )}
-      className={cn('group/command-palette-trigger', classNames.trigger)}
-    >
-      <Compass aria-hidden="true" size="16" />
-      <span className="flex-1 text-start">
-        {children ?? stringFormatter.format('commandPaletteGoTo')}
-      </span>
-      {hint ? <Keyboard aria-hidden="true">{hint.label}</Keyboard> : null}
-    </Button>
+      {palette}
+    </CommandPaletteTriggerContext>
   );
 };
+
+// Set by `CommandPalette`, so the trigger can tell the palette from a button
+// without importing it (the palette imports the trigger).
+export const PALETTE = Symbol.for('marigold.CommandPalette');
+
+const isPalette = (node: ReactNode) =>
+  isValidElement(node) &&
+  typeof node.type !== 'string' &&
+  PALETTE in (node.type as object);

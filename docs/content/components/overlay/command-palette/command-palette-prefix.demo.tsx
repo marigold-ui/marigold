@@ -18,59 +18,56 @@ export default () => {
   const matches = lookup && id ? events.filter(e => e.id.startsWith(id)) : [];
 
   return (
-    <CommandPalette
-      shortcut={false}
-      inputValue={query}
-      onInputChange={setQuery}
-      // The prefix query is not a label, so the built-in filter is off for it.
-      filter={lookup ? false : undefined}
-    >
-      <CommandPalette.Trigger />
-      <CommandPalette.Content>
-        <CommandPalette.Input placeholder="Search pages, or e:1024 for an event…" />
-        <CommandPalette.List>
-          {lookup ? (
-            // An empty group would still count as content, so it only
-            // renders with matches and the empty state shows otherwise.
-            matches.length > 0 && (
-              <CommandPalette.Group title="Events">
-                {matches.map(event => (
-                  <CommandPalette.Item
-                    key={event.id}
-                    id={event.id}
-                    href={`#event-${event.id}`}
-                    textValue={event.name}
-                  >
-                    <Ticket />
-                    <Text slot="label">{event.name}</Text>
-                    <Text slot="description">
-                      #{event.id}, {event.date}
-                    </Text>
-                  </CommandPalette.Item>
-                ))}
-              </CommandPalette.Group>
-            )
-          ) : (
-            <CommandPalette.Group title="Pages">
-              <CommandPalette.Item id="events" href="#events">
-                <CalendarDays />
-                Events
-              </CommandPalette.Item>
-              <CommandPalette.Item id="orders" href="#orders">
-                <ShoppingCart />
-                Orders
-              </CommandPalette.Item>
-            </CommandPalette.Group>
-          )}
-        </CommandPalette.List>
-        {lookup ? (
-          <CommandPalette.Empty>
-            {id
+    <CommandPalette.Trigger shortcut={false}>
+      <CommandPalette.Button />
+      <CommandPalette
+        placeholder="Search pages, or e:1024 for an event…"
+        inputValue={query}
+        onInputChange={setQuery}
+        // The prefix query is not a label, so the built-in filter is off for it.
+        filter={lookup ? false : undefined}
+        emptyState={
+          lookup
+            ? id
               ? `No event with a number starting with ${id}.`
-              : 'Type an event number, for example e:1024.'}
-          </CommandPalette.Empty>
-        ) : null}
-      </CommandPalette.Content>
-    </CommandPalette>
+              : 'Type an event number, for example e:1024.'
+            : undefined
+        }
+      >
+        {lookup ? (
+          // An empty group would still count as content, so it only
+          // renders with matches and the empty state shows otherwise.
+          matches.length > 0 && (
+            <CommandPalette.Group title="Events">
+              {matches.map(event => (
+                <CommandPalette.Item
+                  key={event.id}
+                  id={event.id}
+                  href={`#event-${event.id}`}
+                  textValue={event.name}
+                >
+                  <Ticket />
+                  <Text slot="label">{event.name}</Text>
+                  <Text slot="description">
+                    #{event.id}, {event.date}
+                  </Text>
+                </CommandPalette.Item>
+              ))}
+            </CommandPalette.Group>
+          )
+        ) : (
+          <CommandPalette.Group title="Pages">
+            <CommandPalette.Item id="events" href="#events">
+              <CalendarDays />
+              Events
+            </CommandPalette.Item>
+            <CommandPalette.Item id="orders" href="#orders">
+              <ShoppingCart />
+              Orders
+            </CommandPalette.Item>
+          </CommandPalette.Group>
+        )}
+      </CommandPalette>
+    </CommandPalette.Trigger>
   );
 };

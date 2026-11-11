@@ -1,51 +1,5 @@
-import type { Key, ReactNode } from 'react';
 import type { RefObject } from 'react';
 import { useEffect, useRef } from 'react';
-import type RAC from 'react-aria-components';
-import { Menu } from 'react-aria-components/Menu';
-import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { Search } from '../icons/Search';
-import { intlMessages } from '../intl/messages';
-import { useCommandPalette, useCommandPaletteEmptyState } from './Context';
-
-// Props
-// ---------------
-export interface CommandPaletteListProps<T extends object> {
-  /**
-   * The groups and items, or a render function when `items` is used.
-   */
-  children: ReactNode | ((item: T) => ReactNode);
-
-  /**
-   * Items for a dynamic collection, e.g. results of a server-side search.
-   */
-  items?: Iterable<T>;
-
-  /**
-   * Values that invalidate the cached items, like a hook's dependency array.
-   */
-  dependencies?: RAC.MenuProps<T>['dependencies'];
-
-  /**
-   * Handler that is called when an item is chosen. The palette closes
-   * afterwards.
-   */
-  onAction?: (key: Key) => void;
-}
-
-// Default empty state
-// ---------------
-const DefaultEmptyState = ({ query }: { query: string }) => {
-  const stringFormatter = useLocalizedStringFormatter(intlMessages);
-  if (!query) return stringFormatter.format('commandPaletteTypeToSearch');
-  return (
-    <>
-      <Search aria-hidden="true" />
-      <strong>{stringFormatter.format('noResultsFor', { query })}</strong>
-      <span>{stringFormatter.format('noResultsHint')}</span>
-    </>
-  );
-};
 
 // Keep the first row active
 // ---------------
@@ -68,7 +22,7 @@ const FORWARD_TYPING = new Set([
   'insertFromComposition',
 ]);
 
-const useKeepFirstItemActive = (
+export const useKeepFirstItemActive = (
   inputRef: RefObject<HTMLInputElement | null>,
   inputValue: string,
   items: unknown
@@ -123,45 +77,4 @@ const useKeepFirstItemActive = (
   }, [inputRef, inputValue, items]);
 
   return menuRef;
-};
-
-// Component
-// ---------------
-export const CommandPaletteList = <T extends object>({
-  children,
-  items,
-  dependencies,
-  onAction,
-}: CommandPaletteListProps<T>) => {
-  const { setOpen, inputValue, classNames, inputRef } = useCommandPalette();
-  const { loading, hasEmpty, setTarget } = useCommandPaletteEmptyState();
-  const menuRef = useKeepFirstItemActive(inputRef, inputValue, items);
-
-  return (
-    <Menu
-      ref={menuRef}
-      items={items}
-      dependencies={dependencies}
-      className={classNames.list}
-      // The first row is active on open, so Enter runs it right away. Focus
-      // stays in the input, the row only gets virtual focus.
-      autoFocus="first"
-      onAction={key => {
-        onAction?.(key);
-        setOpen(false);
-      }}
-      // `.Empty` and `.Loading` portal into this element, so their content
-      // sits inside the menu where RAC announces it. Without either part, a
-      // default "no results" message shows.
-      renderEmptyState={() => (
-        <div className={classNames.empty}>
-          {!loading && !hasEmpty && <DefaultEmptyState query={inputValue} />}
-          {/* A portal target must not hold React children of its own. */}
-          <div ref={setTarget} className="contents" />
-        </div>
-      )}
-    >
-      {children}
-    </Menu>
-  );
 };

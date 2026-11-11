@@ -5,11 +5,12 @@ import {
   Download,
   MapPin,
   Plus,
+  Search,
   ShoppingCart,
   Ticket,
 } from 'lucide-react';
 import { useState } from 'react';
-import { expect, fn, waitFor } from 'storybook/test';
+import { expect, fn, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { isAppleDevice } from '@react-aria/utils';
 import { Button } from '../Button/Button';
@@ -21,7 +22,8 @@ import { CommandPalette } from './CommandPalette';
 
 const meta = preview.meta({
   title: 'Components/CommandPalette',
-  component: CommandPalette,
+  component: CommandPalette.Trigger,
+  subcomponents: { CommandPalette },
   tags: ['component-test'],
   decorators: [
     Story => (
@@ -35,6 +37,8 @@ const meta = preview.meta({
   },
   args: {
     onOpenChange: fn(),
+    // Every story passes its own children, which replace this.
+    children: null,
   },
 });
 
@@ -78,46 +82,43 @@ const onAction = fn();
 // ---------------
 export const Basic = meta.story({
   render: args => (
-    <CommandPalette {...args}>
-      <CommandPalette.Trigger />
-      <CommandPalette.Content>
-        <CommandPalette.Input />
-        <CommandPalette.List onAction={onAction}>
-          <CommandPalette.Group title="Pages">
-            <CommandPalette.Item id="events" href="#events">
-              <CalendarDays />
-              Events
-            </CommandPalette.Item>
-            <CommandPalette.Item id="orders" href="#orders">
-              <ShoppingCart />
-              Orders
-            </CommandPalette.Item>
-            <CommandPalette.Item id="reports" href="#reports">
-              <ChartColumn />
-              Reports
-            </CommandPalette.Item>
-            <CommandPalette.Item id="venues" href="#venues">
-              <MapPin />
-              Venues
-            </CommandPalette.Item>
-          </CommandPalette.Group>
-          <CommandPalette.Group title="Actions">
-            <CommandPalette.Item id="create-event">
-              <Plus />
-              Create event
-            </CommandPalette.Item>
-            <CommandPalette.Item id="create-voucher">
-              <Ticket />
-              Create voucher
-            </CommandPalette.Item>
-            <CommandPalette.Item id="export">
-              <Download />
-              Export café sales
-            </CommandPalette.Item>
-          </CommandPalette.Group>
-        </CommandPalette.List>
-      </CommandPalette.Content>
-    </CommandPalette>
+    <CommandPalette.Trigger {...args}>
+      <CommandPalette.Button />
+      <CommandPalette onAction={onAction}>
+        <CommandPalette.Group title="Pages">
+          <CommandPalette.Item id="events" href="#events">
+            <CalendarDays />
+            Events
+          </CommandPalette.Item>
+          <CommandPalette.Item id="orders" href="#orders">
+            <ShoppingCart />
+            Orders
+          </CommandPalette.Item>
+          <CommandPalette.Item id="reports" href="#reports">
+            <ChartColumn />
+            Reports
+          </CommandPalette.Item>
+          <CommandPalette.Item id="venues" href="#venues">
+            <MapPin />
+            Venues
+          </CommandPalette.Item>
+        </CommandPalette.Group>
+        <CommandPalette.Group title="Actions">
+          <CommandPalette.Item id="create-event">
+            <Plus />
+            Create event
+          </CommandPalette.Item>
+          <CommandPalette.Item id="create-voucher">
+            <Ticket />
+            Create voucher
+          </CommandPalette.Item>
+          <CommandPalette.Item id="export">
+            <Download />
+            Export café sales
+          </CommandPalette.Item>
+        </CommandPalette.Group>
+      </CommandPalette>
+    </CommandPalette.Trigger>
   ),
 });
 
@@ -307,27 +308,21 @@ Basic.test(
 export const CustomEmptyState = meta.story({
   ...noSnapshot,
   render: args => (
-    <CommandPalette {...args}>
-      <CommandPalette.Trigger />
-      <CommandPalette.Content>
-        <CommandPalette.Input />
-        <CommandPalette.List>
-          <CommandPalette.Group title="Pages">
-            <CommandPalette.Item id="events" href="#events">
-              <CalendarDays />
-              Events
-            </CommandPalette.Item>
-            <CommandPalette.Item id="orders" href="#orders">
-              <ShoppingCart />
-              Orders
-            </CommandPalette.Item>
-          </CommandPalette.Group>
-        </CommandPalette.List>
-        <CommandPalette.Empty>
-          No page with that name. Try “events” or “orders”.
-        </CommandPalette.Empty>
-      </CommandPalette.Content>
-    </CommandPalette>
+    <CommandPalette.Trigger {...args}>
+      <CommandPalette.Button />
+      <CommandPalette emptyState="No page with that name. Try “events” or “orders”.">
+        <CommandPalette.Group title="Pages">
+          <CommandPalette.Item id="events" href="#events">
+            <CalendarDays />
+            Events
+          </CommandPalette.Item>
+          <CommandPalette.Item id="orders" href="#orders">
+            <ShoppingCart />
+            Orders
+          </CommandPalette.Item>
+        </CommandPalette.Group>
+      </CommandPalette>
+    </CommandPalette.Trigger>
   ),
 });
 
@@ -350,15 +345,16 @@ CustomEmptyState.test(
 export const Loading = meta.story({
   ...noSnapshot,
   render: args => (
-    <CommandPalette {...args}>
-      <CommandPalette.Trigger />
-      <CommandPalette.Content>
-        <CommandPalette.Input placeholder="Search events…" />
-        <CommandPalette.List>{[]}</CommandPalette.List>
-        <CommandPalette.Loading>Searching events…</CommandPalette.Loading>
-        <CommandPalette.Empty>No events found.</CommandPalette.Empty>
-      </CommandPalette.Content>
-    </CommandPalette>
+    <CommandPalette.Trigger {...args}>
+      <CommandPalette.Button />
+      <CommandPalette
+        placeholder="Search events…"
+        loading
+        emptyState="No events found."
+      >
+        {[]}
+      </CommandPalette>
+    </CommandPalette.Trigger>
   ),
 });
 
@@ -368,7 +364,10 @@ Loading.test(
   async ({ canvas, userEvent }) => {
     await openPalette({ canvas, userEvent });
 
-    await expectVisible(await canvas.findByText('Searching events…'));
+    // The footer repeats the status, hidden from assistive tech, so look
+    // inside the list.
+    const list = await canvas.findByRole('menu');
+    await expectVisible(await within(list).findByText('Loading...'));
     await expect(canvas.queryByText('No events found.')).toBeNull();
     await expect(canvas.getByRole('progressbar')).toBeInTheDocument();
   }
@@ -379,30 +378,27 @@ Loading.test(
 export const Variants = meta.story({
   ...noSnapshot,
   render: args => (
-    <CommandPalette {...args}>
-      <CommandPalette.Trigger />
-      <CommandPalette.Content>
-        <CommandPalette.Input />
-        <CommandPalette.List>
-          <CommandPalette.Group title="Actions">
-            <CommandPalette.Item id="duplicate">
-              Duplicate event
-            </CommandPalette.Item>
-            <CommandPalette.Item id="delete" variant="destructive">
-              Delete event
-            </CommandPalette.Item>
-          </CommandPalette.Group>
-          <CommandPalette.Group title="Restricted">
-            <CommandPalette.Item id="fees" variant="master">
-              Edit fees
-            </CommandPalette.Item>
-            <CommandPalette.Item id="impersonate" variant="admin">
-              Impersonate user
-            </CommandPalette.Item>
-          </CommandPalette.Group>
-        </CommandPalette.List>
-      </CommandPalette.Content>
-    </CommandPalette>
+    <CommandPalette.Trigger {...args}>
+      <CommandPalette.Button />
+      <CommandPalette>
+        <CommandPalette.Group title="Actions">
+          <CommandPalette.Item id="duplicate">
+            Duplicate event
+          </CommandPalette.Item>
+          <CommandPalette.Item id="delete" variant="destructive">
+            Delete event
+          </CommandPalette.Item>
+        </CommandPalette.Group>
+        <CommandPalette.Group title="Restricted">
+          <CommandPalette.Item id="fees" variant="master">
+            Edit fees
+          </CommandPalette.Item>
+          <CommandPalette.Item id="impersonate" variant="admin">
+            Impersonate user
+          </CommandPalette.Item>
+        </CommandPalette.Group>
+      </CommandPalette>
+    </CommandPalette.Trigger>
   ),
 });
 
@@ -432,37 +428,34 @@ Variants.test(
 export const WithDescriptions = meta.story({
   ...noSnapshot,
   render: args => (
-    <CommandPalette {...args}>
-      <CommandPalette.Trigger />
-      <CommandPalette.Content>
-        <CommandPalette.Input />
-        <CommandPalette.List>
-          <CommandPalette.Group title="Pages">
-            <CommandPalette.Item id="events" href="#events" textValue="Events">
-              <CalendarDays />
-              <Text slot="label">Events</Text>
-              <Text slot="description">Page</Text>
-            </CommandPalette.Item>
-            <CommandPalette.Item
-              id="reports"
-              href="#reports"
-              textValue="Daily report"
-            >
-              <ChartColumn />
-              <Text slot="label">Daily report</Text>
-              <Text slot="description">Analytics › Reports</Text>
-            </CommandPalette.Item>
-          </CommandPalette.Group>
-          <CommandPalette.Group title="Actions">
-            <CommandPalette.Item id="export" textValue="Export café sales">
-              <Download />
-              <Text slot="label">Export café sales</Text>
-              <Text slot="description">CSV, last 30 days</Text>
-            </CommandPalette.Item>
-          </CommandPalette.Group>
-        </CommandPalette.List>
-      </CommandPalette.Content>
-    </CommandPalette>
+    <CommandPalette.Trigger {...args}>
+      <CommandPalette.Button />
+      <CommandPalette>
+        <CommandPalette.Group title="Pages">
+          <CommandPalette.Item id="events" href="#events" textValue="Events">
+            <CalendarDays />
+            <Text slot="label">Events</Text>
+            <Text slot="description">Page</Text>
+          </CommandPalette.Item>
+          <CommandPalette.Item
+            id="reports"
+            href="#reports"
+            textValue="Daily report"
+          >
+            <ChartColumn />
+            <Text slot="label">Daily report</Text>
+            <Text slot="description">Analytics › Reports</Text>
+          </CommandPalette.Item>
+        </CommandPalette.Group>
+        <CommandPalette.Group title="Actions">
+          <CommandPalette.Item id="export" textValue="Export café sales">
+            <Download />
+            <Text slot="label">Export café sales</Text>
+            <Text slot="description">CSV, last 30 days</Text>
+          </CommandPalette.Item>
+        </CommandPalette.Group>
+      </CommandPalette>
+    </CommandPalette.Trigger>
   ),
 });
 
@@ -491,14 +484,11 @@ export const ShortcutInFields = meta.story({
         <div onKeyDown={claimShortcut}>
           <TextField label="Editor that claims the shortcut" />
         </div>
-        <CommandPalette {...args}>
-          <CommandPalette.Content>
-            <CommandPalette.Input />
-            <CommandPalette.List>
-              <CommandPalette.Item id="events">Events</CommandPalette.Item>
-            </CommandPalette.List>
-          </CommandPalette.Content>
-        </CommandPalette>
+        <CommandPalette.Trigger {...args}>
+          <CommandPalette>
+            <CommandPalette.Item id="events">Events</CommandPalette.Item>
+          </CommandPalette>
+        </CommandPalette.Trigger>
       </Stack>
     );
   },
@@ -537,6 +527,50 @@ ShortcutInFields.test(
   }
 );
 
+// Any button
+// ---------------
+// The trigger opens the palette from any button, for example an icon button
+// in a compact top bar.
+export const AnyButton = meta.story({
+  ...noSnapshot,
+  render: args => (
+    <CommandPalette.Trigger {...args}>
+      <Button aria-label="Search">
+        <Search />
+      </Button>
+      <CommandPalette>
+        <CommandPalette.Item id="events">Events</CommandPalette.Item>
+      </CommandPalette>
+    </CommandPalette.Trigger>
+  ),
+});
+
+AnyButton.test(
+  'Opens from a regular button and marks it as expanded',
+  async ({ canvas, userEvent }) => {
+    const button = canvas.getByRole('button', { name: 'Search' });
+    await expect(button).toHaveAttribute('aria-haspopup', 'dialog');
+    await expect(button).toHaveAttribute('aria-expanded', 'false');
+
+    await userEvent.click(button);
+
+    await expectVisible(
+      await canvas.findByRole('dialog', { name: 'Command palette' })
+    );
+    await expect(button).toHaveAttribute('aria-expanded', 'true');
+  }
+);
+
+AnyButton.test(
+  'Choosing an item does not reopen the palette',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Search' }));
+    await userEvent.click(await canvas.findByRole('menuitem'));
+
+    await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
+  }
+);
+
 // Controlled
 // ---------------
 const ControlledPalette = () => {
@@ -545,13 +579,8 @@ const ControlledPalette = () => {
     <Stack space={2} alignX="left">
       <Button onPress={() => setOpen(true)}>Open from anywhere</Button>
       <CommandPalette open={open} onOpenChange={setOpen}>
-        <CommandPalette.Content>
-          <CommandPalette.Input />
-          <CommandPalette.List>
-            <CommandPalette.Item id="events">Events</CommandPalette.Item>
-            <CommandPalette.Item id="orders">Orders</CommandPalette.Item>
-          </CommandPalette.List>
-        </CommandPalette.Content>
+        <CommandPalette.Item id="events">Events</CommandPalette.Item>
+        <CommandPalette.Item id="orders">Orders</CommandPalette.Item>
       </CommandPalette>
     </Stack>
   );
@@ -597,56 +626,54 @@ const SearchPrefixPalette = () => {
   const matches = lookup && id ? events.filter(e => e.id.startsWith(id)) : [];
 
   return (
-    <CommandPalette
-      inputValue={query}
-      onInputChange={setQuery}
-      filter={lookup ? false : undefined}
-    >
-      <CommandPalette.Trigger />
-      <CommandPalette.Content>
-        <CommandPalette.Input placeholder="Search pages, or e:1024 for an event…" />
-        <CommandPalette.List>
-          {lookup ? (
-            matches.length > 0 && (
-              <CommandPalette.Group title="Events">
-                {matches.map(event => (
-                  <CommandPalette.Item
-                    key={event.id}
-                    id={event.id}
-                    href={`#event-${event.id}`}
-                    textValue={event.name}
-                  >
-                    <Ticket />
-                    <Text slot="label">{event.name}</Text>
-                    <Text slot="description">
-                      #{event.id}, {event.date}
-                    </Text>
-                  </CommandPalette.Item>
-                ))}
-              </CommandPalette.Group>
-            )
-          ) : (
-            <CommandPalette.Group title="Pages">
-              <CommandPalette.Item id="events" href="#events">
-                <CalendarDays />
-                Events
-              </CommandPalette.Item>
-              <CommandPalette.Item id="orders" href="#orders">
-                <ShoppingCart />
-                Orders
-              </CommandPalette.Item>
-            </CommandPalette.Group>
-          )}
-        </CommandPalette.List>
-        {lookup && (
-          <CommandPalette.Empty>
-            {id
+    <CommandPalette.Trigger>
+      <CommandPalette.Button />
+      <CommandPalette
+        placeholder="Search pages, or e:1024 for an event…"
+        inputValue={query}
+        onInputChange={setQuery}
+        filter={lookup ? false : undefined}
+        emptyState={
+          lookup
+            ? id
               ? `No event with a number starting with ${id}.`
-              : 'Type an event number, for example e:1024.'}
-          </CommandPalette.Empty>
+              : 'Type an event number, for example e:1024.'
+            : undefined
+        }
+      >
+        {lookup ? (
+          matches.length > 0 && (
+            <CommandPalette.Group title="Events">
+              {matches.map(event => (
+                <CommandPalette.Item
+                  key={event.id}
+                  id={event.id}
+                  href={`#event-${event.id}`}
+                  textValue={event.name}
+                >
+                  <Ticket />
+                  <Text slot="label">{event.name}</Text>
+                  <Text slot="description">
+                    #{event.id}, {event.date}
+                  </Text>
+                </CommandPalette.Item>
+              ))}
+            </CommandPalette.Group>
+          )
+        ) : (
+          <CommandPalette.Group title="Pages">
+            <CommandPalette.Item id="events" href="#events">
+              <CalendarDays />
+              Events
+            </CommandPalette.Item>
+            <CommandPalette.Item id="orders" href="#orders">
+              <ShoppingCart />
+              Orders
+            </CommandPalette.Item>
+          </CommandPalette.Group>
         )}
-      </CommandPalette.Content>
-    </CommandPalette>
+      </CommandPalette>
+    </CommandPalette.Trigger>
   );
 };
 
@@ -751,27 +778,24 @@ const AsyncSearchPalette = () => {
   });
 
   return (
-    <CommandPalette
-      filter={false}
-      inputValue={list.filterText}
-      onInputChange={list.setFilterText}
-    >
-      <CommandPalette.Trigger>Search characters…</CommandPalette.Trigger>
-      <CommandPalette.Content>
-        <CommandPalette.Input placeholder="Type a Star Wars name…" />
-        <CommandPalette.List items={list.items}>
-          {item => (
-            <CommandPalette.Item id={item.id}>{item.name}</CommandPalette.Item>
-          )}
-        </CommandPalette.List>
-        {list.isLoading && (
-          <CommandPalette.Loading>Searching…</CommandPalette.Loading>
+    <CommandPalette.Trigger>
+      <CommandPalette.Button>Search characters…</CommandPalette.Button>
+      <CommandPalette
+        placeholder="Type a Star Wars name…"
+        filter={false}
+        inputValue={list.filterText}
+        onInputChange={list.setFilterText}
+        items={list.items}
+        loading={list.isLoading}
+        emptyState={
+          list.filterText ? 'No characters found.' : 'Start typing to search.'
+        }
+      >
+        {item => (
+          <CommandPalette.Item id={item.id}>{item.name}</CommandPalette.Item>
         )}
-        <CommandPalette.Empty>
-          {list.filterText ? 'No characters found.' : 'Start typing to search.'}
-        </CommandPalette.Empty>
-      </CommandPalette.Content>
-    </CommandPalette>
+      </CommandPalette>
+    </CommandPalette.Trigger>
   );
 };
 
@@ -833,21 +857,18 @@ const FavouritesPalette = () => {
   const [title, items] =
     query === '' ? ['Favourites', favourites] : ['Pages', pages];
   return (
-    <CommandPalette inputValue={query} onInputChange={setQuery}>
-      <CommandPalette.Trigger />
-      <CommandPalette.Content>
-        <CommandPalette.Input />
-        <CommandPalette.List>
-          <CommandPalette.Group title={title}>
-            {items.map(item => (
-              <CommandPalette.Item key={item.id} id={item.id} href={item.href}>
-                {item.label}
-              </CommandPalette.Item>
-            ))}
-          </CommandPalette.Group>
-        </CommandPalette.List>
-      </CommandPalette.Content>
-    </CommandPalette>
+    <CommandPalette.Trigger>
+      <CommandPalette.Button />
+      <CommandPalette inputValue={query} onInputChange={setQuery}>
+        <CommandPalette.Group title={title}>
+          {items.map(item => (
+            <CommandPalette.Item key={item.id} id={item.id} href={item.href}>
+              {item.label}
+            </CommandPalette.Item>
+          ))}
+        </CommandPalette.Group>
+      </CommandPalette>
+    </CommandPalette.Trigger>
   );
 };
 

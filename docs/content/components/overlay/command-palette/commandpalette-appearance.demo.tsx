@@ -8,7 +8,6 @@ import {
   Ticket,
   Users,
 } from 'lucide-react';
-import type { CommandPaletteProps } from '@marigold/components';
 import { CommandPalette, Text } from '@marigold/components';
 
 const pages = [
@@ -32,44 +31,41 @@ const events = [
   { id: 'event-1047', number: 1047, name: 'City Marathon', date: '5 Jul' },
 ];
 
-export default (props: CommandPaletteProps) => (
-  <CommandPalette shortcut={false} {...props}>
-    <CommandPalette.Trigger />
-    <CommandPalette.Content>
-      <CommandPalette.Input placeholder="Search pages, actions and events…" />
-      <CommandPalette.List>
-        <CommandPalette.Group title="Pages">
-          {pages.map(page => (
-            <CommandPalette.Item key={page.id} id={page.id}>
-              {page.icon}
-              {page.label}
-            </CommandPalette.Item>
-          ))}
-        </CommandPalette.Group>
-        <CommandPalette.Group title="Actions">
-          {actions.map(action => (
-            <CommandPalette.Item key={action.id} id={action.id}>
-              <Plus />
-              {action.label}
-            </CommandPalette.Item>
-          ))}
-        </CommandPalette.Group>
-        <CommandPalette.Group title="Events">
-          {events.map(event => (
-            <CommandPalette.Item
-              key={event.id}
-              id={event.id}
-              textValue={`${event.name} ${event.number}`}
-            >
-              <Ticket />
-              <Text slot="label">{event.name}</Text>
-              <Text slot="description">
-                #{event.number}, {event.date}
-              </Text>
-            </CommandPalette.Item>
-          ))}
-        </CommandPalette.Group>
-      </CommandPalette.List>
-    </CommandPalette.Content>
-  </CommandPalette>
+export default () => (
+  <CommandPalette.Trigger shortcut={false}>
+    <CommandPalette.Button />
+    <CommandPalette placeholder="Search pages, actions and events…">
+      <CommandPalette.Group title="Pages">
+        {pages.map(page => (
+          <CommandPalette.Item key={page.id} id={page.id}>
+            {page.icon}
+            {page.label}
+          </CommandPalette.Item>
+        ))}
+      </CommandPalette.Group>
+      <CommandPalette.Group title="Actions">
+        {actions.map(action => (
+          <CommandPalette.Item key={action.id} id={action.id}>
+            <Plus />
+            {action.label}
+          </CommandPalette.Item>
+        ))}
+      </CommandPalette.Group>
+      <CommandPalette.Group title="Events">
+        {events.map(event => (
+          <CommandPalette.Item
+            key={event.id}
+            id={event.id}
+            textValue={`${event.name} ${event.number}`}
+          >
+            <Ticket />
+            <Text slot="label">{event.name}</Text>
+            <Text slot="description">
+              #{event.number}, {event.date}
+            </Text>
+          </CommandPalette.Item>
+        ))}
+      </CommandPalette.Group>
+    </CommandPalette>
+  </CommandPalette.Trigger>
 );

@@ -19,27 +19,23 @@ export default () => {
   });
 
   return (
-    <CommandPalette
-      shortcut={false}
-      filter={false}
-      inputValue={list.filterText}
-      onInputChange={list.setFilterText}
-    >
-      <CommandPalette.Trigger>Search characters…</CommandPalette.Trigger>
-      <CommandPalette.Content>
-        <CommandPalette.Input placeholder="Type a Star Wars name…" />
-        <CommandPalette.List items={list.items}>
-          {(item: Character) => (
-            <CommandPalette.Item id={item.url}>{item.name}</CommandPalette.Item>
-          )}
-        </CommandPalette.List>
-        {list.isLoading && (
-          <CommandPalette.Loading>Searching…</CommandPalette.Loading>
+    <CommandPalette.Trigger shortcut={false}>
+      <CommandPalette.Button>Search characters…</CommandPalette.Button>
+      <CommandPalette
+        placeholder="Type a Star Wars name…"
+        filter={false}
+        inputValue={list.filterText}
+        onInputChange={list.setFilterText}
+        items={list.items}
+        loading={list.isLoading}
+        emptyState={
+          list.filterText ? 'No characters found.' : 'Start typing to search.'
+        }
+      >
+        {(item: Character) => (
+          <CommandPalette.Item id={item.url}>{item.name}</CommandPalette.Item>
         )}
-        <CommandPalette.Empty>
-          {list.filterText ? 'No characters found.' : 'Start typing to search.'}
-        </CommandPalette.Empty>
-      </CommandPalette.Content>
-    </CommandPalette>
+      </CommandPalette>
+    </CommandPalette.Trigger>
   );
 };

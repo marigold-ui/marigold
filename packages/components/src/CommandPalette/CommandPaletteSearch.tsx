@@ -1,48 +1,41 @@
+import type { Ref } from 'react';
 import { Button } from 'react-aria-components/Button';
 import { Input } from 'react-aria-components/Input';
 import { SearchField } from 'react-aria-components/SearchField';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import type { ComponentClassNames } from '@marigold/system';
 import { Keyboard } from '../Keyboard/Keyboard';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
 import { Search } from '../icons/Search';
 import { X } from '../icons/X';
 import { intlMessages } from '../intl/messages';
-import { useCommandPalette, useCommandPaletteEmptyState } from './Context';
 
 // Props
 // ---------------
-export interface CommandPaletteInputProps {
-  /**
-   * Placeholder text of the search input. Name what people can find, for
-   * example "Search pages and actions…".
-   * @default 'Go to…'
-   */
+export interface CommandPaletteSearchProps {
   placeholder?: string;
-
-  /**
-   * Accessible name of the search input.
-   * @default 'Search'
-   */
-  'aria-label'?: string;
+  loading: boolean;
+  classNames: ComponentClassNames<'CommandPalette'>;
+  ref: Ref<HTMLInputElement>;
 }
 
 // Component
 // ---------------
-// The palette's header rather than a form field: no frame of its own, a
-// divider towards the list, and a trailing hint that changes with the state.
-// Empty, it shows `Esc` (closes the palette). With a query, a clear button
-// (Escape clears first). While `.Loading` is mounted, a spinner.
-export const CommandPaletteInput = ({
+// Internal. The palette's header rather than a form field: no frame of its
+// own, a divider towards the list, and a trailing hint that changes with the
+// state. Empty, it shows `Esc` (closes the palette). With a query, a clear
+// button (Escape clears first). While loading, a spinner.
+export const CommandPaletteSearch = ({
   placeholder,
-  'aria-label': ariaLabel,
-}: CommandPaletteInputProps) => {
-  const { classNames, inputRef } = useCommandPalette();
-  const { loading } = useCommandPaletteEmptyState();
+  loading,
+  classNames,
+  ref,
+}: CommandPaletteSearchProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   return (
     <SearchField
-      aria-label={ariaLabel ?? stringFormatter.format('search')}
+      aria-label={stringFormatter.format('search')}
       autoFocus
       className={classNames.header}
     >
@@ -50,7 +43,7 @@ export const CommandPaletteInput = ({
         <>
           <Search aria-hidden="true" size="18" />
           <Input
-            ref={inputRef}
+            ref={ref}
             placeholder={
               placeholder ?? stringFormatter.format('commandPaletteGoTo')
             }

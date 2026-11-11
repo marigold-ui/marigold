@@ -29,7 +29,7 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
   // text at `pl-8`). It is a button that opens the palette, but without a
   // press scale or button weight, so it doesn't read as an action.
   // The shortcut hint is hidden on touch screens, where there is no keyboard.
-  trigger: cva({
+  button: cva({
     base: [
       'ui-control ui-input flex max-w-72 items-center gap-1.5 ps-2.5 text-start text-placeholder cursor-text outline-none',
       'focus-visible:ui-state-focus',

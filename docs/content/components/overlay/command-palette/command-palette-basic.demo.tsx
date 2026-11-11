@@ -128,45 +128,45 @@ export default () => {
             <Sidebar.Toggle />
           </TopNavigation.Start>
           <TopNavigation.Middle aria-label="Search" alignX="center">
-            <CommandPalette shortcut={false}>
-              <CommandPalette.Trigger />
-              <CommandPalette.Content>
-                <CommandPalette.Input placeholder="Search pages, actions and events…" />
-                <CommandPalette.List onAction={setCurrent}>
-                  <CommandPalette.Group title="Pages">
-                    {pages.map(page => (
-                      <CommandPalette.Item key={page.id} id={page.id}>
-                        {page.icon}
-                        {page.label}
-                      </CommandPalette.Item>
-                    ))}
-                  </CommandPalette.Group>
-                  <CommandPalette.Group title="Actions">
-                    {actions.map(action => (
-                      <CommandPalette.Item key={action.id} id={action.id}>
-                        <Plus />
-                        {action.label}
-                      </CommandPalette.Item>
-                    ))}
-                  </CommandPalette.Group>
-                  <CommandPalette.Group title="Events">
-                    {events.map(event => (
-                      <CommandPalette.Item
-                        key={event.id}
-                        id={event.id}
-                        textValue={`${event.name} ${event.number}`}
-                      >
-                        <Ticket />
-                        <Text slot="label">{event.name}</Text>
-                        <Text slot="description">
-                          #{event.number}, {event.date}
-                        </Text>
-                      </CommandPalette.Item>
-                    ))}
-                  </CommandPalette.Group>
-                </CommandPalette.List>
-              </CommandPalette.Content>
-            </CommandPalette>
+            <CommandPalette.Trigger shortcut={false}>
+              <CommandPalette.Button />
+              <CommandPalette
+                placeholder="Search pages, actions and events…"
+                onAction={setCurrent}
+              >
+                <CommandPalette.Group title="Pages">
+                  {pages.map(page => (
+                    <CommandPalette.Item key={page.id} id={page.id}>
+                      {page.icon}
+                      {page.label}
+                    </CommandPalette.Item>
+                  ))}
+                </CommandPalette.Group>
+                <CommandPalette.Group title="Actions">
+                  {actions.map(action => (
+                    <CommandPalette.Item key={action.id} id={action.id}>
+                      <Plus />
+                      {action.label}
+                    </CommandPalette.Item>
+                  ))}
+                </CommandPalette.Group>
+                <CommandPalette.Group title="Events">
+                  {events.map(event => (
+                    <CommandPalette.Item
+                      key={event.id}
+                      id={event.id}
+                      textValue={`${event.name} ${event.number}`}
+                    >
+                      <Ticket />
+                      <Text slot="label">{event.name}</Text>
+                      <Text slot="description">
+                        #{event.number}, {event.date}
+                      </Text>
+                    </CommandPalette.Item>
+                  ))}
+                </CommandPalette.Group>
+              </CommandPalette>
+            </CommandPalette.Trigger>
           </TopNavigation.Middle>
         </TopNavigation>
         <Page>

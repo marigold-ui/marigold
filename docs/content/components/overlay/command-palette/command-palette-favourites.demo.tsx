@@ -20,24 +20,17 @@ export default () => {
     query === '' ? ['Favourites', favourites] : ['Pages', pages];
 
   return (
-    <CommandPalette
-      shortcut={false}
-      inputValue={query}
-      onInputChange={setQuery}
-    >
-      <CommandPalette.Trigger />
-      <CommandPalette.Content>
-        <CommandPalette.Input />
-        <CommandPalette.List>
-          <CommandPalette.Group title={title}>
-            {items.map(item => (
-              <CommandPalette.Item key={item.id} id={item.id}>
-                {item.label}
-              </CommandPalette.Item>
-            ))}
-          </CommandPalette.Group>
-        </CommandPalette.List>
-      </CommandPalette.Content>
-    </CommandPalette>
+    <CommandPalette.Trigger shortcut={false}>
+      <CommandPalette.Button />
+      <CommandPalette inputValue={query} onInputChange={setQuery}>
+        <CommandPalette.Group title={title}>
+          {items.map(item => (
+            <CommandPalette.Item key={item.id} id={item.id}>
+              {item.label}
+            </CommandPalette.Item>
+          ))}
+        </CommandPalette.Group>
+      </CommandPalette>
+    </CommandPalette.Trigger>
   );
 };

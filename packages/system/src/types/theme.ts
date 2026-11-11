@@ -98,7 +98,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     CommandPalette?: Record<
-      | 'trigger'
+      | 'button'
       | 'container'
       | 'header'
       | 'input'

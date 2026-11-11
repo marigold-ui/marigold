@@ -59,7 +59,7 @@ export const v18: MigrationManifest = {
     CloseButton: null,
     Collapsible: ['container', 'trigger', 'content'],
     CommandPalette: [
-      'trigger',
+      'button',
       'container',
       'header',
       'input',
