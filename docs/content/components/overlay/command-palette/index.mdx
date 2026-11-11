@@ -43,7 +43,7 @@ The palette itself has no variants or sizes. Its items take the same variants as
 | Variant       | Description                                       | When to use                                              |
 | ------------- | ------------------------------------------------- | -------------------------------------------------------- |
 | `default`     | Standard item. This is the default variant.       | Pages and regular actions.                               |
-| `destructive` | Red item signaling a dangerous action.            | Irreversible or high-impact actions like "Delete event". |
+| `destructive` | Red item signaling a dangerous action.            | Rare high-impact actions, see [Content](#content).       |
 | `master`      | Item with a lock icon in the master access color. | Actions reserved for Reservix employees (master access). |
 | `admin`       | Item with a key icon in the admin access color.   | Actions reserved for developers (admin access).          |
 
@@ -72,22 +72,18 @@ Give a page the same icon it has in the navigation, so people recognise it in bo
 
 Records often share a name. Add a short description that tells them apart, like the event number and date. When people search for something the label doesn't show, add it to `textValue`, which the search matches against. In the demo above, typing "1031" finds "Jazz Night".
 
+<Callout title="Avoid destructive actions" type="warning">
+  Leave out destructive actions, like deleting a record. The first match is
+  always active, so a quick <kbd>Enter</kbd> can run something people didn't
+  mean to. If one belongs in the palette, open a confirmation dialog instead of
+  running it right away.
+</Callout>
+
 ### Placement
 
 Render one palette per app, inside the app shell, so the shortcut works on every page. Put the button in the middle of the [top navigation](/components/navigation/topnavigation), where the [App frame](/patterns/layout/app-frame) places search, as in the demo above. The button is optional, but it tells people the palette exists and shows the shortcut that opens it. Where the top navigation has little room, any other button inside `<CommandPalette.Trigger>` opens the palette too, for example an icon button.
 
 Don't render a second palette with the same shortcut. If a page needs its own palette, pass `shortcut={false}` to its trigger.
-
-### Keyboard
-
-| Key                                                      | Action                                                    |
-| -------------------------------------------------------- | --------------------------------------------------------- |
-| <kbd>⌘</kbd>+<kbd>K</kbd> / <kbd>Ctrl</kbd>+<kbd>K</kbd> | Opens the palette from anywhere, also inside text fields. |
-| <kbd>↑</kbd> / <kbd>↓</kbd>                              | Moves the active row.                                     |
-| <kbd>Enter</kbd>                                         | Runs the active row.                                      |
-| <kbd>Escape</kbd>                                        | Clears the search, then closes the palette.               |
-
-Letters typed into the search field stay in the palette. Shortcuts your app binds to single keys, for example "c" to create, don't fire while people type a query.
 
 The shortcut also fires inside text fields, as it does in GitHub, Linear and Slack. If another handler already used the key, for example a rich-text editor that inserts a link on <kbd>⌘</kbd>+<kbd>K</kbd>, the palette leaves it alone. Change the key with `shortcut="j"` on the trigger, or turn it off with `shortcut={false}` when your app already uses it.
 
@@ -130,6 +126,15 @@ On small screens the palette opens as a tray from the bottom edge. The <kbd>⌘<
 ## Accessibility
 
 The palette follows the [combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/). Focus stays in the search field while the arrow keys move a virtual focus through the list, so screen readers announce the active row and people can keep typing. The empty and loading states sit inside the list, where screen readers announce them.
+
+| Key                                                      | Action                                                    |
+| -------------------------------------------------------- | --------------------------------------------------------- |
+| <kbd>⌘</kbd>+<kbd>K</kbd> / <kbd>Ctrl</kbd>+<kbd>K</kbd> | Opens the palette from anywhere, also inside text fields. |
+| <kbd>↑</kbd> / <kbd>↓</kbd>                              | Moves the active row.                                     |
+| <kbd>Enter</kbd>                                         | Runs the active row.                                      |
+| <kbd>Escape</kbd>                                        | Clears the search, then closes the palette.               |
+
+Letters typed into the search field stay in the palette. Shortcuts your app binds to single keys, for example "c" to create, don't fire while people type a query.
 
 The search field is the only Tab stop. The caret is its focus indicator, so the field has no extra ring. When the palette closes, focus returns to where it was.
 
