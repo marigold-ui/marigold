@@ -16,6 +16,6 @@ What changes for users of those components on small screens:
 - Focus returns to the trigger on close, also without reduced motion.
 - Opening the mobile ComboBox or Autocomplete no longer scrolls the page behind the tray.
 
-For theme authors: the `Tray` theme component loses its `overlay` slot. The backdrop and the tray surface now come from a new `Sheet` theme component with `backdrop`, `container` and `content` slots.
+For theme authors: the `Tray` theme component loses its `overlay` slot. The backdrop and the tray surface now come from a new `Sheet` theme component with `backdrop`, `container` and `content` slots. Update `@marigold/theme-rui` together with `@marigold/components`, since an older theme without `Sheet` styles makes the tray throw on small screens.
 
 The v18 migration codemod in `@marigold/cli` knows the new `Sheet` theme component and no longer expects a `Tray.overlay` slot.
