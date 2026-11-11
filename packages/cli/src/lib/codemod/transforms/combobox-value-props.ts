@@ -2,6 +2,7 @@ import MagicString from 'magic-string';
 import { type AnyNode, jsxOpeningName } from '../../tsx-ast.js';
 import {
   attrName,
+  hasJsxSpread,
   jsxAttributes,
   jsxCodemod,
   jsxElements,
@@ -46,15 +47,11 @@ export const comboBoxValueProps: Codemod = jsxCodemod(
       if (!component) continue;
       const opening = el.openingElement as AnyNode | undefined;
       const attrs = jsxAttributes(opening);
-      const names = attrs.map(attrName);
 
       // any v19 text prop means the element is already migrated
-      if (names.some(name => name && V19_TEXT_PROPS.has(name))) continue;
+      if (attrs.some(a => V19_TEXT_PROPS.has(attrName(a) ?? ''))) continue;
 
-      const hasSpread = (
-        (opening?.attributes as AnyNode[] | undefined) ?? []
-      ).some(a => a.type === 'JSXSpreadAttribute');
-      if (hasSpread) {
+      if (hasJsxSpread(opening)) {
         warnings.push(
           `${component}: spread props may carry \`value\`/\`onChange\`, which now mean the selected key — if they hold the input text, pass them as \`inputValue\`/\`onInputChange\``
         );
@@ -62,10 +59,9 @@ export const comboBoxValueProps: Codemod = jsxCodemod(
 
       for (const attr of attrs) {
         const name = attrName(attr);
-        const to = name
-          ? (TEXT_RENAMES.get(name) ?? SELECTION_RENAMES.get(name))
-          : undefined;
-        if (!name || !to) continue;
+        const to =
+          name && (TEXT_RENAMES.get(name) ?? SELECTION_RENAMES.get(name));
+        if (!to) continue;
         const nameNode = attr.name as AnyNode;
         s.overwrite(nameNode.start as number, nameNode.end as number, to);
         changes.push(`${component}: renamed \`${name}\` to \`${to}\``);

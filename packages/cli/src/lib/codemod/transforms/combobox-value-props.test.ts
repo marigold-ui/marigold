@@ -1,9 +1,5 @@
-import { assertEdited } from '../test-helpers.js';
-import type { CodemodOutcome } from '../types.js';
+import { assertEdited, warningsOf } from '../test-helpers.js';
 import { comboBoxValueProps } from './combobox-value-props.js';
-
-const warningsOf = (result: CodemodOutcome): string[] =>
-  result.kind === 'skipped' ? [] : result.warnings;
 
 describe('combobox-value-props', () => {
   test('swaps text and selection props on a v18 element', () => {

@@ -28,6 +28,11 @@ export const jsxAttributes = (opening: AnyNode | undefined): AnyNode[] =>
     a => a.type === 'JSXAttribute'
   );
 
+export const hasJsxSpread = (opening: AnyNode | undefined): boolean =>
+  ((opening?.attributes as AnyNode[] | undefined) ?? []).some(
+    a => a.type === 'JSXSpreadAttribute'
+  );
+
 export const attrName = (attr: AnyNode): string | null =>
   (attr.name as { name?: string } | undefined)?.name ?? null;
 
@@ -75,9 +80,9 @@ export interface JsxVisit {
 
 /**
  * The shared frame of the primitives anchored on @marigold/components: skip
- * without parsing when the file cannot import the package at all, parse-or-
- * skip, resolve the manifest's components to their local names, and skip
- * again when this file imports none of them.
+ * without parsing when there is nothing to look for or the file cannot import
+ * the package at all, parse-or-skip, resolve the manifest's components to
+ * their local names, and skip again when this file imports none of them.
  */
 export const jsxCodemod = (
   meta: { name: string; description: string },
@@ -86,7 +91,7 @@ export const jsxCodemod = (
 ): Codemod => ({
   ...meta,
   apply: source => {
-    if (!source.includes(MARIGOLD_COMPONENTS)) {
+    if (components.length === 0 || !source.includes(MARIGOLD_COMPONENTS)) {
       return { kind: 'unchanged', warnings: [] };
     }
     return parseOr(source, file => {

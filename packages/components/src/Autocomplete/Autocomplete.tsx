@@ -22,7 +22,7 @@ interface AutocompleteInputProps {
   /**
    * Handler that is called when the SearchAutocomplete is submitted.
    * A `key` will be passed if the submission is a selected item (e.g. a user clicks or presses enter on an option).
-   * If the input is a custom `value`, `key` will be `null`.
+   * If the input is custom text, `key` will be `null`.
    *
    * A `value` will be passed if the submission is a custom value (e.g. a user types then presses enter).
    * If the input is a selected item, `value` will be `null`.
@@ -183,7 +183,7 @@ export interface AutocompleteProps<T extends object = object>
    * Handler that is called when the SearchAutocomplete is submitted.
    *
    * A `key` will be passed if the submission is a selected item (e.g. a user
-   * clicks or presses enter on an option). If the input is a custom `value`, `key` will be `null`.
+   * clicks or presses enter on an option). If the input is custom text, `key` will be `null`.
    *
    * A `value` will be passed if the submission is a custom value (e.g. a user
    * types then presses enter). If the input is a selected item, `value` will be `null`.
