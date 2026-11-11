@@ -109,8 +109,11 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
   description: Menu.description,
   keyboard: Menu.keyboard,
   // Places the Enter hint (a `Keyboard` key cap) on the active row. Keyboard only.
+  // It spans label and description explicitly: `row-span-full` only covers
+  // explicit rows, so it put the cap, taller than a label line, into the first
+  // row alone and the row grew by 2px whenever it became active.
   enter: cva({
-    base: 'col-start-3 row-span-full self-center justify-self-end ms-4 pointer-coarse:hidden',
+    base: 'col-start-3 row-start-1 row-span-2 self-center justify-self-end ms-4 pointer-coarse:hidden',
   }),
   // The part of a label that matched the query.
   match: cva({ base: 'bg-transparent font-semibold text-current' }),
