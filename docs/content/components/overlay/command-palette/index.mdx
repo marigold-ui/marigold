@@ -46,59 +46,48 @@ See the [Admin- and Mastermark pattern](/patterns/layout/admin-master-mark) for 
 
 ## Usage
 
-As an app grows, the way to a page gets longer. Pages end up nested in the navigation, frequent actions sit several clicks deep, and opening a known event or order means going to a list, filtering and scanning. A command palette gives people one place they can reach from anywhere: they type what they want and land there. It complements the navigation for people who already know the app and doesn't replace it.
+As an app grows, the way to a page gets longer. Pages end up nested in the navigation, frequent actions sit several clicks deep, and opening a known event or order means going to a list, filtering and scanning. A command palette gives people one place they can reach from anywhere: they type what they want and land there.
 
-<GuidelineTiles>
-<Do>
-  <DoDescription>
-    Use a command palette when
-    {/* prettier-ignore */}
-    <ul>
-      <li>the app has more pages than the sidebar shows comfortably, or pages nested several levels deep,</li>
-      <li>people repeat the same tasks every day and want to start them without leaving the keyboard, or</li>
-      <li>people know records by name or number, so the detour through a list page slows them down.</li>
-    </ul>
-  </DoDescription>
-</Do>
+Navigation is the core of it. People open the palette, type a few letters of a page name and go to that page without remembering where it sits in the sidebar. Two more kinds of content fit the same habit:
 
-<Dont>
-  <DontDescription>
-    Avoid a command palette when
-    {/* prettier-ignore */}
-    <ul>
-      <li>the app has a handful of pages the sidebar already shows at a glance,</li>
-      <li>it would be the only way to reach a page or action,</li>
-      <li>people pick a value inside a form, which is an [Autocomplete](/components/form/autocomplete) or a [ComboBox](/components/form/combobox), or</li>
-      <li>the actions belong to one item on screen, which is an [ActionMenu](/components/overlay/action-menu).</li>
-    </ul>
-  </DontDescription>
-</Dont>
-</GuidelineTiles>
+- **Actions** people start often, such as "Create event". They skip the detour to the page where the button lives.
+- **Records** people know by name or number, such as an event or an order. They skip the list page, the filter and the scanning.
 
-Put everything people jump to often into one palette per app: pages, frequent actions such as "Create event", and records like an event or an order once the app loads them.
+Picking a row closes the palette and goes there, the same as following a link. Try it in the demo: open the search, type "jazz" and press <kbd>Enter</kbd>.
 
 <ComponentDemo name="command-palette-basic" />
 
+A palette pays off in apps with more pages than the sidebar shows comfortably and for people who work in the app every day. In an app with a handful of pages the sidebar already shows everything at a glance, and the palette is one more thing to learn. It complements the navigation and never replaces it. People who don't know the shortcut, or who use a touch device, still need the sidebar and the buttons on the page, so don't make the palette the only way to reach a page or an action.
+
+The palette is for going somewhere or starting something, not for picking a value. To choose a value inside a form, use an [Autocomplete](/components/form/autocomplete) or a [ComboBox](/components/form/combobox). For actions on a single item on screen, use an [ActionMenu](/components/overlay/action-menu).
+
+### Content
+
+Name items by what people look for and use the same words as the sidebar and the page titles. Start actions with a verb, so "Create event" reads apart from the "Events" page.
+
+Group the results, for example into Pages, Actions and Events, and keep the groups and their order the same every time. People learn where things are and type less over time. Records usually come from the server, see [Results from the server](#results-from-the-server).
+
+Leave out what people can't open. A page someone has no access to doesn't belong in the palette, just as it doesn't belong in the sidebar.
+
 <GuidelineTiles>
   <Do>
     <DoDescription>
-      Name items by what people look for: "Orders", "Create event". Start
-      actions with a verb so they read apart from pages.
-    </DoDescription>
-  </Do>
-  <Do>
-    <DoDescription>
-      Group results, for example into Pages and Actions, and keep the order
-      stable. People learn where things are and type less over time.
+      Use the words people know from the app: "Orders", "Create event".
     </DoDescription>
   </Do>
   <Dont>
     <DontDescription>
-      Don't render more than one palette with the same shortcut on a page. Pass
-      `shortcut={false}` to any second palette.
+      Don't use system names or nouns for actions: "Order management", "Event
+      creation".
     </DontDescription>
   </Dont>
 </GuidelineTiles>
+
+### Placement
+
+Render one palette per app, inside the app shell, so the shortcut works on every page. Put the trigger in the middle of the [top navigation](/components/navigation/topnavigation), where the [App frame](/patterns/layout/app-frame) places search, as in the demo above. The trigger is optional, but it tells people the palette exists and shows the shortcut that opens it.
+
+Don't render a second palette with the same shortcut. If a page needs its own palette, pass `shortcut={false}` to it.
 
 ### Keyboard
 
