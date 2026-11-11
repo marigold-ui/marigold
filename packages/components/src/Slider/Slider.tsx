@@ -18,7 +18,15 @@ export interface SliderProps<T>
       'children' | 'isDisabled' | 'orientation' | 'style'
     >,
     Pick<FieldBaseProps<'label'>, 'description' | 'addon'> {
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: string;
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: string;
 
   /**
@@ -54,6 +62,7 @@ export interface SliderProps<T>
    * Set the label of the slider.
    */
   label?: ReactNode;
+  /** Ref to the DOM element the component renders. */
   ref?: Ref<HTMLDivElement>;
 }
 

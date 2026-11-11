@@ -8,6 +8,10 @@ import { ButtonContext } from '../Button/Context';
 type RemovedProps = 'isDisabled' | 'isPending' | 'className' | 'style';
 
 export interface LinkButtonProps extends Omit<RAC.LinkProps, RemovedProps> {
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?:
     | 'primary'
     | 'secondary'
@@ -16,6 +20,10 @@ export interface LinkButtonProps extends Omit<RAC.LinkProps, RemovedProps> {
     | 'ghost'
     | 'link'
     | (string & {});
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: 'default' | 'small' | 'large' | 'icon' | (string & {});
 
   /**
@@ -33,6 +41,7 @@ export interface LinkButtonProps extends Omit<RAC.LinkProps, RemovedProps> {
    * @default false
    */
   disabled?: RAC.LinkProps['isDisabled'];
+  /** Ref to the DOM element the component renders. */
   ref?: Ref<HTMLAnchorElement>;
 }
 

@@ -24,6 +24,7 @@ export type InsetProps =
       py?: SpaceProp<PaddingSpacingTokens>['space'];
     })
   | (AriaRegionProps & {
+      /** Children of the component. */
       children: ReactNode;
       /**
        * The padding of the children. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).

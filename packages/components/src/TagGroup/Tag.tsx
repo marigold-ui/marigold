@@ -11,9 +11,22 @@ type RemovedProps = 'className' | 'style' | 'isDisabled';
 // Props
 // ---------------
 export interface TagProps extends Omit<RAC.TagProps, RemovedProps> {
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: string;
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: string;
+  /** Children of the component. */
   children?: ReactNode;
+  /**
+   * Disables the tag. Takes precedence over `disabled` on the surrounding
+   * `<Tag.Group>`.
+   */
   disabled?: boolean;
 }
 

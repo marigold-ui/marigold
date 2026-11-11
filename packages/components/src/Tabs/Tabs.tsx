@@ -17,7 +17,15 @@ export interface TabsProps extends Omit<
    * @default false
    */
   disabled?: boolean;
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: string;
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: string;
 }
 

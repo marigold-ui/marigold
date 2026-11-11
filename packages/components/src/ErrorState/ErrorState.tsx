@@ -43,8 +43,17 @@ export interface ErrorStateProps {
    * never manages focus.
    */
   tabIndex?: number;
+  /** Ref to the DOM element the component renders. */
   ref?: Ref<HTMLDivElement>;
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: string;
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: string;
 }
 

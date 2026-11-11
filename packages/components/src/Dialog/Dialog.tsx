@@ -129,7 +129,15 @@ export interface DialogProps
   extends
     Omit<RAC.DialogProps, 'className' | 'style' | 'render'>,
     Pick<ModalProps, 'open' | 'onOpenChange'> {
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: string;
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: 'xsmall' | 'small' | 'medium' | 'large' | 'fullscreen' | (string & {});
   /**
    * Show the close button.

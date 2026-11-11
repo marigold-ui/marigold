@@ -10,7 +10,15 @@ import { RadioGroup } from './RadioGroup';
 type RemovedProps = 'className' | 'style' | 'children' | 'isDisabled';
 
 export interface RadioProps extends Omit<RAC.RadioFieldProps, RemovedProps> {
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: string;
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: string;
   /**
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
@@ -20,6 +28,7 @@ export interface RadioProps extends Omit<RAC.RadioFieldProps, RemovedProps> {
    * @default full
    */
   width?: string;
+  /** Children of the component. */
   children?: ReactNode;
   /**
    * Content on the label's first line, such as a `<Badge>` or `<ContextualHelp>`.
@@ -31,6 +40,7 @@ export interface RadioProps extends Omit<RAC.RadioFieldProps, RemovedProps> {
    * @default false
    */
   disabled?: RAC.RadioFieldProps['isDisabled'];
+  /** Ref to the DOM element the component renders. */
   ref?: Ref<HTMLLabelElement>;
 }
 
