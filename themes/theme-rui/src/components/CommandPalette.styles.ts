@@ -56,11 +56,11 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
       'flex shrink-0 items-center gap-2.5 h-13 px-4',
       'border-b border-border',
       '[&>svg]:size-4.5 [&>svg]:shrink-0 [&>svg]:text-secondary',
-      // Optical alignment. The boxes are centred, but the placeholder is
-      // mostly lowercase, whose x-height sits ~1.4px below the line's centre,
-      // and the magnifier's lens sits above its box's centre. Text up 1px and
-      // icon down 1px line the lens up with the lowercase letters.
-      '[&>svg]:translate-y-px [&>input]:-translate-y-px',
+      // Optical alignment, tuned by eye in Chrome. Centred boxes read too high
+      // in the header, so everything sits a little lower: the icon 1px, the
+      // text 2px (its cap height then lines up with the icon) and the Esc
+      // cap half a pixel.
+      '[&>svg]:translate-y-px [&>input]:translate-y-0.5 [&>kbd]:translate-y-[0.5px]',
       // Clear button: quiet, round, appears once there is a query.
       '[&>button]:flex [&>button]:size-6 [&>button]:shrink-0 [&>button]:items-center [&>button]:justify-center [&>button]:rounded-full [&>button]:text-secondary [&>button]:cursor-pointer',
       '[&>button]:hover:bg-hover [&>button]:hover:text-foreground [&>button]:focus-visible:ui-state-focus',
