@@ -505,7 +505,17 @@
     }
   }
 
-  /* Directional slides (Drawer, Sidebar, Tray) */
+  /* Sheet backdrop, driven by RAC's `swipeAnimation` */
+  @keyframes sheet-backdrop {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Directional slides (Drawer, Sidebar, ActionBar) */
   --animate-slide-in: slide-in 0.25s var(--ease-out-quart) forwards;
   --animate-slide-out: slide-out 0.2s var(--ease-out-quart) forwards;
 

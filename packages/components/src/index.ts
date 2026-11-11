@@ -227,6 +227,10 @@ export { NonModal } from './Overlay/NonModal';
 export type { NonModalProps } from './Overlay/NonModal';
 
 /** @internal */
+export { Sheet } from './Overlay/Sheet';
+export type { SheetProps } from './Overlay/Sheet';
+
+/** @internal */
 export { Underlay } from './Overlay/Underlay';
 export type { UnderlayProps } from './Overlay/Underlay';
 

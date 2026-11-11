@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { cn } from '@marigold/system';
-import { TRAY_CONTENT_ATTR, useTrayContext } from './Context';
+import { useTrayContext } from './Context';
 
 // Props
 // ---------------
@@ -32,9 +32,8 @@ export const TrayContent = ({ children, className }: TrayContentProps) => {
         const pinned = node.offsetHeight;
         const chrome = container.offsetHeight - pinned;
 
-        node.style.minHeight = `min(${pinned}px, calc(var(--tray-available) - ${chrome}px))`;
+        node.style.minHeight = `min(${pinned}px, calc(var(--sheet-available) - ${chrome}px))`;
       }}
-      {...{ [TRAY_CONTENT_ATTR]: true }}
       className={cn('[grid-area:content]', classNames.content, className)}
     >
       {children}

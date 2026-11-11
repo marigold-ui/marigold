@@ -573,6 +573,13 @@ Mobile.test('Mobile ComboBox keyboard navigation', async ({ canvas, step }) => {
   });
 
   await step('Filter options by typing', async () => {
+    // Typing during the slide-in can snap the tray shut.
+    await waitFor(() =>
+      expect(
+        canvas.getByRole('dialog').getBoundingClientRect().bottom
+      ).toBeLessThanOrEqual(window.innerHeight + 1)
+    );
+
     await userEvent.keyboard('cat');
 
     await waitFor(() => {

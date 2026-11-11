@@ -790,9 +790,12 @@ PresetsMobile.test(
     );
     const tray = await canvas.findByRole('dialog');
 
-    await expect(
-      within(tray).getByRole('listbox', { name: 'Quick selection' })
-    ).toBeVisible();
+    // The tray slides in, so wait for the list.
+    await waitFor(() =>
+      expect(
+        within(tray).getByRole('listbox', { name: 'Quick selection' })
+      ).toBeVisible()
+    );
     // The preset matching the calendar value shows as selected.
     await expect(
       within(tray).getByRole('option', { name: 'Kickoff' })
