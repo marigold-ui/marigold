@@ -5,7 +5,7 @@ import type { SearchableCollectionFilter } from '../utils/SearchableCollection';
 // Trigger state
 // ---------------
 // Provided by `CommandPalette.Trigger`, read by the palette and its button.
-export interface CommandPaletteTriggerContextValue {
+interface CommandPaletteTriggerContextValue {
   open: boolean;
   setOpen: (open: boolean) => void;
   /** The shortcut key, or `false` when the shortcut is disabled. */
@@ -29,7 +29,7 @@ export const useCommandPaletteTrigger =
 // Palette state
 // ---------------
 // Provided by `CommandPalette`, read by its groups and items.
-export interface CommandPaletteContextValue {
+interface CommandPaletteContextValue {
   inputValue: string;
   filter?: SearchableCollectionFilter | false;
   classNames: ComponentClassNames<'CommandPalette'>;

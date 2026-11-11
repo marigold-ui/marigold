@@ -54,7 +54,7 @@ const Highlight = ({ text, query, className }: HighlightProps) => {
 // ---------------
 // Shares the menu item's behaviour, not its styles: the palette's rows are
 // larger than a menu's. On top it marks the part of a plain-text label that
-// matched the query and shows an Enter hint on the active row.
+// matched the query.
 export const CommandPaletteItem = ({
   variant,
   size,
@@ -83,7 +83,7 @@ export const CommandPaletteItem = ({
   // as arguments, so the static children need no keys.
   const label =
     typeof children === 'function'
-      ? null
+      ? children
       : createElement(
           Fragment,
           null,
@@ -108,7 +108,7 @@ export const CommandPaletteItem = ({
       textValue={text}
       classNames={classNames}
     >
-      {typeof children === 'function' ? children : label}
+      {label}
     </MenuItemCore>
   );
 };

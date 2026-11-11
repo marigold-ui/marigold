@@ -1,5 +1,5 @@
 import type { Key, ReactNode } from 'react';
-import { use, useLayoutEffect, useMemo, useRef } from 'react';
+import { use, useLayoutEffect, useMemo } from 'react';
 import type RAC from 'react-aria-components';
 import { Dialog } from 'react-aria-components/Dialog';
 import { Menu } from 'react-aria-components/Menu';
@@ -7,7 +7,6 @@ import { Modal } from 'react-aria-components/Modal';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useEffectEvent } from '@react-aria/utils';
 import { useControlledState } from '@react-stately/utils';
-import type { ComponentClassNames } from '@marigold/system';
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { Underlay } from '../Overlay/Underlay';
@@ -75,7 +74,7 @@ export interface CommandPaletteProps<T extends object = object> {
   inputValue?: string;
 
   /**
-   * The initial search query (uncontrolled).
+   * The search query each opening starts with (uncontrolled).
    * @default ''
    */
   defaultInputValue?: string;
@@ -134,23 +133,12 @@ const DefaultEmptyState = ({ query }: { query: string }) => {
 
 // Body
 // ---------------
-// Search and list. A part of its own so it mounts with the open overlay: the
-// hook that keeps the first row active needs the input to exist.
-interface CommandPaletteBodyProps<T extends object> extends Pick<
+// Search and list. Mounts with the open overlay, so every opening starts with
+// fresh state and the query only re-renders this part, not the overlay.
+type CommandPaletteBodyProps<T extends object> = Omit<
   CommandPaletteProps<T>,
-  | 'children'
-  | 'items'
-  | 'dependencies'
-  | 'placeholder'
-  | 'emptyState'
-  | 'filter'
-> {
-  onAction: (key: Key) => void;
-  loading: boolean;
-  inputValue: string;
-  onInputChange: (value: string) => void;
-  classNames: ComponentClassNames<'CommandPalette'>;
-}
+  'open' | 'defaultOpen' | 'onOpenChange' | 'aria-label'
+>;
 
 const CommandPaletteBody = <T extends object>({
   children,
@@ -159,15 +147,30 @@ const CommandPaletteBody = <T extends object>({
   onAction,
   placeholder,
   emptyState,
-  loading,
-  inputValue,
+  loading = false,
+  inputValue: inputValueProp,
+  defaultInputValue = '',
   onInputChange,
   filter,
-  classNames,
 }: CommandPaletteBodyProps<T>) => {
+  const classNames = useClassNames({ component: 'CommandPalette' });
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const menuRef = useKeepFirstItemActive(inputRef, inputValue, items);
+  const [inputValue, setInputValue] = useControlledState(
+    inputValueProp,
+    defaultInputValue,
+    onInputChange
+  );
+
+  // A controlled query outlives the palette, so every opening clears it.
+  // Runs before paint, so the old query never flashes.
+  const clearQuery = useEffectEvent(() => {
+    if (inputValueProp) setInputValue('');
+  });
+  useLayoutEffect(() => {
+    clearQuery();
+  }, []);
+
+  const { inputRef, menuRef } = useKeepFirstItemActive(inputValue, items);
   const context = useMemo(
     () => ({ inputValue, filter, classNames }),
     [inputValue, filter, classNames]
@@ -178,13 +181,12 @@ const CommandPaletteBody = <T extends object>({
       <SearchableCollection
         filter={filter}
         inputValue={inputValue}
-        onInputChange={onInputChange}
+        onInputChange={setInputValue}
       >
         <CommandPaletteSearch
           ref={inputRef}
           placeholder={placeholder}
           loading={loading}
-          classNames={classNames}
         />
         <Menu
           ref={menuRef}
@@ -218,21 +220,13 @@ const CommandPaletteBody = <T extends object>({
 // that primitive does not exist yet, so this follows `Menu` and `TagField` on
 // `Tray` until the overlays migrate together.
 const CommandPaletteBase = <T extends object>({
-  children,
-  items,
-  dependencies,
-  onAction,
-  placeholder,
-  emptyState,
-  loading = false,
-  inputValue: inputValueProp,
-  defaultInputValue = '',
-  onInputChange,
-  filter,
   open: openProp,
   defaultOpen = false,
   onOpenChange,
   'aria-label': ariaLabel,
+  onAction,
+  loading = false,
+  ...props
 }: CommandPaletteProps<T>) => {
   const classNames = useClassNames({ component: 'CommandPalette' });
   const isSmallScreen = useSmallScreen();
@@ -248,39 +242,15 @@ const CommandPaletteBase = <T extends object>({
   const open = trigger ? trigger.open : ownOpen;
   const setOpen = trigger ? trigger.setOpen : setOwnOpen;
 
-  const [inputValue, setInputValue] = useControlledState(
-    inputValueProp,
-    defaultInputValue,
-    onInputChange
-  );
-
-  // Every opening starts from an empty query, including openings driven by a
-  // controlled `open`. Runs before paint, so the old query never flashes.
-  const clearQuery = useEffectEvent(() => setInputValue(''));
-  const wasOpenRef = useRef(open);
-  useLayoutEffect(() => {
-    if (open && !wasOpenRef.current) clearQuery();
-    wasOpenRef.current = open;
-  }, [open]);
-
   const body = (
     <CommandPaletteBody
-      items={items}
-      dependencies={dependencies}
+      {...props}
+      loading={loading}
       onAction={key => {
         onAction?.(key);
         setOpen(false);
       }}
-      placeholder={placeholder}
-      emptyState={emptyState}
-      loading={loading}
-      inputValue={inputValue}
-      onInputChange={setInputValue}
-      filter={filter}
-      classNames={classNames}
-    >
-      {children}
-    </CommandPaletteBody>
+    />
   );
 
   if (isSmallScreen) {

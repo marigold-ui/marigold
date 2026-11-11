@@ -3,19 +3,18 @@ import { Button } from 'react-aria-components/Button';
 import { Input } from 'react-aria-components/Input';
 import { SearchField } from 'react-aria-components/SearchField';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import type { ComponentClassNames } from '@marigold/system';
 import { Keyboard } from '../Keyboard/Keyboard';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
 import { Search } from '../icons/Search';
 import { X } from '../icons/X';
 import { intlMessages } from '../intl/messages';
+import { useCommandPalette } from './Context';
 
 // Props
 // ---------------
-export interface CommandPaletteSearchProps {
+interface CommandPaletteSearchProps {
   placeholder?: string;
   loading: boolean;
-  classNames: ComponentClassNames<'CommandPalette'>;
   ref: Ref<HTMLInputElement>;
 }
 
@@ -28,9 +27,9 @@ export interface CommandPaletteSearchProps {
 export const CommandPaletteSearch = ({
   placeholder,
   loading,
-  classNames,
   ref,
 }: CommandPaletteSearchProps) => {
+  const { classNames } = useCommandPalette();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   return (

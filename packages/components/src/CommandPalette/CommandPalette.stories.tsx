@@ -892,6 +892,22 @@ FavouritesOnEmptyQuery.test(
   }
 );
 
+FavouritesOnEmptyQuery.test(
+  'Clears a controlled query when the palette reopens',
+  async ({ canvas, userEvent }) => {
+    await openPalette({ canvas, userEvent });
+    await canvas.findByRole('searchbox');
+    await userEvent.keyboard('v');
+    await userEvent.keyboard('{Escape}{Escape}');
+    await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
+
+    await openPalette({ canvas, userEvent });
+
+    await expect(await canvas.findByRole('searchbox')).toHaveValue('');
+    await expectVisible(await canvas.findByText('Favourites'));
+  }
+);
+
 // Small screen
 // ---------------
 export const SmallScreen = meta.story({

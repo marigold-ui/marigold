@@ -5,7 +5,7 @@ import { intlMessages } from '../intl/messages';
 
 // Props
 // ---------------
-export interface CommandPaletteFooterProps {
+interface CommandPaletteFooterProps {
   loading: boolean;
   classNames: ComponentClassNames<'CommandPalette'>;
 }

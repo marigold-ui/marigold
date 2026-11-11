@@ -1,5 +1,4 @@
-import type { RefObject } from 'react';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 // Keep the first row active
 // ---------------
@@ -15,33 +14,35 @@ import { useEffect, useRef } from 'react';
 // own handling.
 //
 // `Home` in the search input is RAC's own way to activate the first row, and
-// DOM focus stays in the input.
+// DOM focus stays in the input. Returns refs for the input and the menu.
 const FORWARD_TYPING = new Set([
   'insertText',
   'insertCompositionText',
   'insertFromComposition',
 ]);
 
-export const useKeepFirstItemActive = (
-  inputRef: RefObject<HTMLInputElement | null>,
-  inputValue: string,
-  items: unknown
-) => {
+export const useKeepFirstItemActive = (inputValue: string, items: unknown) => {
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const queryRef = useRef(inputValue);
   const itemsRef = useRef(items);
   const awaitingResultsRef = useRef(false);
   const typedForwardRef = useRef(false);
 
-  useEffect(() => {
-    const input = inputRef.current;
+  // A callback ref, so the listener follows the input whenever it mounts.
+  // React's `onBeforeInput` is a polyfill without `inputType`.
+  const inputCallbackRef = useCallback((input: HTMLInputElement | null) => {
+    inputRef.current = input;
     if (!input) return;
     const track = (e: InputEvent) => {
       typedForwardRef.current = FORWARD_TYPING.has(e.inputType);
     };
     input.addEventListener('beforeinput', track);
-    return () => input.removeEventListener('beforeinput', track);
-  }, [inputRef]);
+    return () => {
+      input.removeEventListener('beforeinput', track);
+      inputRef.current = null;
+    };
+  }, []);
 
   useEffect(() => {
     const queryChanged = queryRef.current !== inputValue;
@@ -74,7 +75,7 @@ export const useKeepFirstItemActive = (
     });
     observer.observe(menu, { childList: true, subtree: true });
     return () => observer.disconnect();
-  }, [inputRef, inputValue, items]);
+  }, [inputValue, items]);
 
-  return menuRef;
+  return { inputRef: inputCallbackRef, menuRef };
 };
