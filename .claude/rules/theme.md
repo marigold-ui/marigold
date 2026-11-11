@@ -38,8 +38,10 @@ export const Badge: ThemeComponent<'Badge'> = cva({
   `tokens.css` and say so in the changeset.
 - **No z-index here.** Stacking order belongs to the component (`pnpm check:theme-zindex`).
 - Slot names must match the component's entry in `packages/system/src/types/theme.ts`.
-- A variant exists in two places: the style file here and the prop union in the component.
-  Keep them in step (`/add-variant`).
+- A variant exists in two places, released separately: the style file here and the prop union
+  in the component. Change both, or the value renders unstyled or cannot be reached, with no
+  error either way. A component without its own style file shares one: see the alias map at
+  the top of `scripts/build-appearances.mjs`.
 
 ## Seeing a change
 

@@ -78,10 +78,10 @@ up front.
 
 | When you are…                                   | Read / use                                                      |
 | ----------------------------------------------- | --------------------------------------------------------------- |
-| Editing component or system source              | `.claude/rules/components.md` (auto), `/new-component`          |
-| Editing stories or tests                        | `.claude/rules/testing.md` (auto), `/fix-bug`                   |
-| Editing the theme                               | `.claude/rules/theme.md` (auto), `/add-variant`                 |
-| Writing docs, changesets or READMEs             | `.claude/rules/prose.md` (auto), `docs/CLAUDE.md`, `/changeset` |
+| Editing component or system source              | `.claude/rules/components.md` (auto)                            |
+| Editing stories or tests                        | `.claude/rules/testing.md` (auto)                               |
+| Editing the theme                               | `.claude/rules/theme.md` (auto)                                 |
+| Writing docs, changesets or READMEs             | `.claude/rules/prose.md` (auto), `docs/CLAUDE.md`               |
 | Reviewing a diff before a PR                    | the `marigold-reviewer` subagent, `.github/review-checklist.md` |
 | Unsure what a term means or why something is so | `.memory/CONTEXT.md`, `.memory/adr/`                            |
 | Filing a DST ticket                             | `/dst:create-ticket` (conventions live in the `dst` plugin)     |

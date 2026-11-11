@@ -43,3 +43,16 @@ A page is a folder under `docs/content/components/<category>/<name>/`:
 
 Write for product developers: when to use the component, when not to, and what each variant
 means. Do not restate the props table.
+
+## Changesets
+
+Write the file by hand, `pnpm changeset` is interactive. Name it
+`.changeset/<ticket-lowercase>_<slug>.md`, e.g. `dst-1829_filefield-label-addon.md`.
+
+- One entry per published package whose source changed. `@marigold/system`,
+  `@marigold/components` and `@marigold/docs` are a fixed group with one version, so the
+  highest bump among them applies to all three.
+- `major` is never chosen alone. Ask first.
+- First line `<type>(DST-1234): summary`, as in the PR title. Then a paragraph for a consumer:
+  what changed for them and what to do. No file names or internals. A breaking change states
+  before, after and the migration.

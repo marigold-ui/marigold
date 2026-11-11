@@ -111,6 +111,22 @@ Stacking order is a convention applied **in component source**, never in a theme
 There is deliberately no `z-20`. `z-100` exists once, on the `ui-touch-hitbox` utility in
 `themes/theme-rui/src/ui.css`. To see who sits where: `grep -rnE '\bz-[0-9]' packages/components/src`.
 
+## A new component lives in eight places
+
+Missing one fails late: no theme type fails typecheck, no barrel line ships nothing, no
+`meta.json` entry hides the docs page.
+
+| File                                                 | What                                                    |
+| ---------------------------------------------------- | ------------------------------------------------------- |
+| `packages/system/src/types/theme.ts`                 | `<Name>` in `Theme['components']`, with its slot names  |
+| `themes/theme-rui/src/components/<Name>.styles.ts`   | The styles                                              |
+| `themes/theme-rui/src/components/index.ts`           | Re-export of the style file                             |
+| `packages/components/src/<Name>/<Name>.tsx`          | Component and `<Name>Props`                             |
+| `packages/components/src/index.ts`                   | Named export and `export type { <Name>Props }`          |
+| `packages/components/src/<Name>/<Name>.stories.tsx`  | Stories, `component-test` tag                           |
+| `packages/components/src/<Name>/<Name>.test.tsx`     | Unit tests                                              |
+| `docs/content/components/<category>/meta.json`       | The page folder in `pages`. Explicit list, alphabetical |
+
 ## Barrel exports
 
 An export is **internal** when it exists for other Marigold packages and not for consumers.

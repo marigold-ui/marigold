@@ -36,10 +36,9 @@ removed.
 What is still true in this repo:
 
 - A skill lives here only when it cannot work anywhere else. `vrt` stays because exactly one
-  repository has a Chromatic workflow for it to dispatch. `new-component`, `add-variant`, `fix-bug`
-  and `changeset` stay because every step names a path, a script or a convention of this checkout
-  (`packages/system/src/types/theme.ts`, `themes/theme-rui`, `.changeset/`), which is exactly what
-  the plugin's "nothing may be pinned to one repository" rule forbids over there.
+  repository has a Chromatic workflow for it to dispatch. Repo knowledge that is not a workflow,
+  such as where a new component is registered or how a changeset is written, belongs in
+  `.claude/rules/`, which loads when a matching file is touched.
 - Repo-local skills keep the `DST — ` description prefix. The `dst:` namespace does that job for
   the plugin's skills, and these are unnamespaced, so the marker is still the only thing saying
   whose workflow they encode.
@@ -114,8 +113,7 @@ Two rules hold this together:
 **A new workflow skill goes in the `dst` plugin, not here.** That is the default, and the bar for
 adding one to `.claude/skills/` is that it genuinely cannot work anywhere else: it has to depend on
 something only this repository has, the way `vrt` depends on this repository being the only one
-with a Chromatic workflow and `new-component` depends on where this repository keeps its theme
-types. "It is convenient here" is not that bar, and a skill that
+with a Chromatic workflow. "It is convenient here" is not that bar, and a skill that
 starts repo-local because it was quicker is how `review-pr` ended up existing twice.
 
 A hook is the opposite: it is always repo-local, because it runs for everyone who opens the
