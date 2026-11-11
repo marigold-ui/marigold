@@ -656,12 +656,22 @@ const resolveEntry = (p: string): string => {
 const isEntryPoint = process.argv[1]
   ? fileURLToPath(import.meta.url) === resolveEntry(process.argv[1])
   : false;
+
+// `process.exit()` does not wait for a pipe. When stdout is piped or captured
+// (an agent, `$(...)`, `| jq`), anything beyond the OS pipe buffer (64 KB) was
+// dropped and large `--format json` payloads arrived truncated. An empty write
+// is queued behind the pending output, so its callback fires once that output
+// has been handed over.
+const exitWhenFlushed = (code: number): void => {
+  const exit = () => process.exit(code);
+  // A reader that closes early (`| head`) is not an error worth a stack trace.
+  process.stdout.once('error', exit);
+  process.stdout.write('', () => process.stderr.write('', exit));
+};
+
 if (isEntryPoint) {
-  main().then(
-    code => process.exit(code),
-    err => {
-      process.stderr.write(String(err) + '\n');
-      process.exit(1);
-    }
-  );
+  main().then(exitWhenFlushed, err => {
+    process.stderr.write(String(err) + '\n');
+    exitWhenFlushed(1);
+  });
 }
