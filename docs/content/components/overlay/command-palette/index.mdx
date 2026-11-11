@@ -31,6 +31,11 @@ A command palette consists of an optional trigger and the palette itself, which 
 
 ## Appearance
 
+<AppearanceDemo
+  component={'CommandPalette'}
+  exclude={{ variant: ['destructive', 'master', 'admin'] }}
+/>
+
 <AppearanceTable component={'CommandPalette'} />
 
 The palette itself has no variants or sizes. Its items take the same variants as menu items, set with `variant` on each item.
