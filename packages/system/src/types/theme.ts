@@ -108,7 +108,6 @@ export type Theme = {
       | 'label'
       | 'description'
       | 'keyboard'
-      | 'enter'
       | 'match'
       | 'empty'
       | 'footer'

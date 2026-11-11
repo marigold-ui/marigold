@@ -110,7 +110,7 @@ export const CommandPaletteAnatomy = () => (
       className="fill-fd-muted-foreground/70 transition-colors duration-300"
     />
 
-    {/* Active row: highlight, icon, label and the ↵ hint */}
+    {/* Active row: highlight, icon and label */}
     <rect
       x="208"
       y="136"
@@ -134,23 +134,6 @@ export const CommandPaletteAnatomy = () => (
       height="8"
       rx="3"
       className="fill-fd-foreground transition-colors duration-300"
-    />
-    <rect
-      x="424"
-      y="142"
-      width="20"
-      height="16"
-      rx="3"
-      className="fill-fd-card stroke-fd-border transition-colors duration-300"
-      strokeWidth="1.5"
-    />
-    <path
-      d="M 438.5 146.5 L 438.5 151.5 L 429.5 151.5 M 432 149 L 429.5 151.5 L 432 154"
-      className="stroke-fd-muted-foreground transition-colors duration-300"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      fill="none"
     />
 
     {/* Item */}
@@ -228,7 +211,7 @@ export const CommandPaletteAnatomy = () => (
       {/* Underlay -> left */}
       <path d="M 185 300 L 160 300" />
       {/* Active row -> right */}
-      <path d="M 444 150 L 500 150" />
+      <path d="M 452 150 L 500 150" />
       {/* Item -> right */}
       <path d="M 452 182 L 500 182" />
       {/* List -> right */}
@@ -243,7 +226,7 @@ export const CommandPaletteAnatomy = () => (
       <circle cx="200" cy="90" r="4" />
       <circle cx="216" cy="124.5" r="4" />
       <circle cx="185" cy="300" r="4" />
-      <circle cx="444" cy="150" r="4" />
+      <circle cx="452" cy="150" r="4" />
       <circle cx="452" cy="182" r="4" />
       <circle cx="460" cy="236" r="4" />
       <circle cx="448" cy="283.5" r="4" />

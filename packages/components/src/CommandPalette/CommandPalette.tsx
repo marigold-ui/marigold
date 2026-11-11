@@ -100,8 +100,6 @@ const CommandPaletteBase = ({
     variant,
     size,
   });
-  // Resolved once here rather than in every item, which re-renders per keystroke.
-  const keyCap = useClassNames({ component: 'Keyboard' });
   const inputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useControlledState(
     openProp,
@@ -145,19 +143,9 @@ const CommandPaletteBase = ({
       filter,
       shortcut,
       classNames,
-      keyCap,
       inputRef,
     }),
-    [
-      open,
-      setOpen,
-      inputValue,
-      setInputValue,
-      filter,
-      shortcut,
-      classNames,
-      keyCap,
-    ]
+    [open, setOpen, inputValue, setInputValue, filter, shortcut, classNames]
   );
   const emptyState = useMemo(
     () => ({ loading, hasEmpty, register, target, setTarget }),

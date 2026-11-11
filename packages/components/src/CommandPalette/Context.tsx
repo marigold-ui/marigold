@@ -15,8 +15,6 @@ export interface CommandPaletteContextValue {
   /** The shortcut key, or `false` when the shortcut is disabled. */
   shortcut: string | false;
   classNames: ComponentClassNames<'CommandPalette'>;
-  /** Classes of the `Keyboard` key cap, for the ↵ hint on the active row. */
-  keyCap: string;
   /** The search field, so the list can activate its first row. */
   inputRef: RefObject<HTMLInputElement | null>;
 }

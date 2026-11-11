@@ -9,7 +9,8 @@ import {
 // Rows share Menu's layout, icon treatment, variants and active fill
 // (`focus-highlight`). A palette always has one active row and is mostly
 // used by keyboard, so instead of Menu's keyboard ring the row adds a heavier
-// label, its icon at full ink and the ↵ hint.
+// label and its icon at full ink. The legend explains ↵, so the row needs no
+// hint of its own.
 // The heavier label is a hairline text stroke, not `font-medium`: a real
 // weight change widens the glyphs, so the label jumped whenever the active
 // row followed the pointer. The stroke keeps every advance width. Inter has
@@ -113,17 +114,6 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
   label: Menu.label,
   description: Menu.description,
   keyboard: Menu.keyboard,
-  // Places the Enter hint (a `Keyboard` key cap). Every row renders it, only
-  // the active row shows it, so a row's layout is the same active or not. It
-  // sits beside the label, and spans label and description when there is one.
-  // Keyboard only.
-  enter: cva({
-    base: [
-      'col-start-3 row-start-1 self-center justify-self-end ms-4',
-      'group-has-[[slot=description]]/option:row-span-2',
-      'invisible group-data-focused/option:visible pointer-coarse:hidden',
-    ],
-  }),
   // The part of a label that matched the query.
   match: cva({ base: 'bg-transparent font-semibold text-current' }),
   // Fills the list's grid row, so the message is centred in the list.
@@ -147,7 +137,7 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
     base: [
       'ms-auto flex items-center gap-4 [&>span]:inline-flex [&>span]:items-center [&>span]:gap-1.5',
       // Compact caps: the legend is a quiet reminder, not a call to action.
-      // Smaller than the header's Esc cap and the ↵ on the active row.
+      // Smaller than the header's Esc cap.
       '[&_kbd]:h-4.5 [&_kbd]:min-w-4.5 [&_kbd]:px-1 [&_kbd]:py-0 [&_kbd]:text-[10px] [&_kbd]:leading-none',
     ],
   }),

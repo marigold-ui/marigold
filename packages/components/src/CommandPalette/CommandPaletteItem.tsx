@@ -1,6 +1,6 @@
 import { Fragment, createElement } from 'react';
 import { useCollator } from '@react-aria/i18n';
-import { cn, useClassNames } from '@marigold/system';
+import { useClassNames } from '@marigold/system';
 import {
   MenuItemCore,
   type MenuItemProps,
@@ -62,14 +62,14 @@ export const CommandPaletteItem = ({
   textValue,
   ...props
 }: CommandPaletteItemProps) => {
-  const { inputValue, filter, keyCap } = useCommandPalette();
+  const { inputValue, filter } = useCommandPalette();
   const classNames = useClassNames({
     component: 'CommandPalette',
     variant,
     size,
   });
 
-  // `MenuItemCore` only sees the render function below, so derive it here.
+  // `MenuItemCore` only sees the highlighted label, so derive it here.
   const text = textValue ?? getItemText(children);
   useDevWarning(
     text === undefined,
@@ -108,19 +108,7 @@ export const CommandPaletteItem = ({
       textValue={text}
       classNames={classNames}
     >
-      {renderProps => (
-        <>
-          {typeof children === 'function' ? children(renderProps) : label}
-          {/* A plain `<kbd>` with the `Keyboard` styles. The `Keyboard`
-              component would join the item's slots and become its announced
-              description. Every row renders it and the theme shows it on the
-              active row only: mounting it on focus changed the row's grid and
-              moved the label. */}
-          <kbd aria-hidden="true" className={cn(keyCap, classNames.enter)}>
-            ↵
-          </kbd>
-        </>
-      )}
+      {typeof children === 'function' ? children : label}
     </MenuItemCore>
   );
 };

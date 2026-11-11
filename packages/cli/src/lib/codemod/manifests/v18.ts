@@ -69,7 +69,6 @@ export const v18: MigrationManifest = {
       'label',
       'description',
       'keyboard',
-      'enter',
       'match',
       'empty',
       'footer',

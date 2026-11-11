@@ -24,7 +24,7 @@ A command palette consists of an optional trigger and the palette itself, which 
 - **Search field:** The header of the palette. It gets focus when the palette opens and shows an <kbd>Esc</kbd> hint, a clear button once there is a query, or a spinner while results load.
 - **Group:** An optional title over related items, for example Pages and Actions.
 - **Item:** A single page or action, with an optional icon and description.
-- **Active row:** The row <kbd>Enter</kbd> runs. There is always one while there are results, marked with a ↵ hint.
+- **Active row:** The highlighted row, which <kbd>Enter</kbd> runs. There is always one while there are results.
 - **List:** Holds the groups and items and scrolls when they don't fit.
 - **Legend:** A footer listing the keys to navigate, select and close. It is built in and hidden on touch devices.
 - **Underlay:** Dims the page behind the palette. Clicking it closes the palette.
@@ -58,11 +58,9 @@ Navigation is the core of it. People open the palette, type a few letters of a p
 - **Actions** people start often, such as "Create event". They skip the detour to the page where the button lives.
 - **Records** people know by name or number, such as an event or an order. They skip the list page, the filter and the scanning.
 
-<ComponentDemo name="command-palette-basic" />
-
 A palette pays off in apps with more pages than the sidebar shows comfortably and for people who work in the app every day. In an app with a handful of pages the sidebar already shows everything at a glance, and the palette is one more thing to learn. It complements the navigation and never replaces it. People who don't know the shortcut, or who use a touch device, still need the sidebar and the buttons on the page, so don't make the palette the only way to reach a page or an action.
 
-The palette is for going somewhere or starting something, not for picking a value. To choose a value inside a form, use an [Autocomplete](/components/form/autocomplete) or a [ComboBox](/components/form/combobox). For actions on a single item on screen, use an [ActionMenu](/components/overlay/action-menu).
+<ComponentDemo name="command-palette-basic" />
 
 ### Content
 
