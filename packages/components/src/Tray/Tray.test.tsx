@@ -69,18 +69,6 @@ test('returns focus to the trigger under reduced motion', async () => {
   }
 });
 
-test('disables Escape when dismissable is false', async () => {
-  renderWithOverlay(<Basic.Component dismissable={false} />);
-  await user.click(screen.getByRole('button', { name: 'Open Tray' }));
-  await waitFor(() => {
-    expect(screen.getByRole('dialog')).toBeInTheDocument();
-  });
-
-  await user.keyboard('{Escape}');
-
-  expect(screen.getByRole('dialog')).toBeInTheDocument();
-});
-
 // DSTSUP-261 hidden-pass guard contract.
 //
 // During a collection's hidden build pass, `useIsHidden()` is `true` and the

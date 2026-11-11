@@ -574,7 +574,7 @@ Mobile.test('Mobile ComboBox keyboard navigation', async ({ canvas, step }) => {
   });
 
   await step('Filter options by typing', async () => {
-    // Typing during the slide-in can snap the tray shut.
+    // Let the tray finish sliding in before typing.
     await waitFor(() =>
       expect(
         canvas.getByRole('dialog').getBoundingClientRect().bottom
