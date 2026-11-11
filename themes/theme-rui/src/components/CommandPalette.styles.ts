@@ -36,6 +36,9 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
       'self-start mt-[12vh] w-[min(calc(100%_-_2rem),640px)]',
       'flex flex-col max-h-[min(560px,80vh)]',
       'ui-surface shadow-elevation-overlay overflow-hidden',
+      // A short, barely visible scale on top of the Underlay's quick fade.
+      // Reduced motion keeps only the fade.
+      'motion-safe:entering:animate-scale-in motion-safe:exiting:animate-scale-out',
     ],
   }),
   // The search is the dialog's header, not a field inside it: no frame and a

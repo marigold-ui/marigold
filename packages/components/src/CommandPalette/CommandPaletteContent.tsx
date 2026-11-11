@@ -66,7 +66,7 @@ export const CommandPaletteContent = ({
   }
 
   return (
-    <Underlay open={open} onOpenChange={setOpen} dismissable variant="instant">
+    <Underlay open={open} onOpenChange={setOpen} dismissable variant="quick">
       <Modal className={cn('z-50', classNames.container)}>
         <Dialog
           aria-label={label}

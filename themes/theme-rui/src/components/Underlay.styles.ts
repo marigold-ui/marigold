@@ -5,9 +5,13 @@ export const Underlay: ThemeComponent<'Underlay'> = cva({
   variants: {
     variant: {
       // For overlays opened by a keyboard shortcut many times a day, such as
-      // the CommandPalette. They appear and disappear at once, a fade would
-      // only make them feel slow. Inherited by the overlay inside.
-      instant: '[--fade-in-duration:0s] [--fade-out-duration:0s]',
+      // the CommandPalette. The default fade would make them feel slow, no
+      // fade at all feels abrupt. A short one, and closing faster than
+      // opening. The durations are set on the animation itself: the
+      // `--fade-*-duration` tokens resolve on `:root`, so overriding them
+      // here would change nothing.
+      quick:
+        'entering:[animation-duration:150ms]! exiting:[animation-duration:100ms]!',
     },
   },
 });
