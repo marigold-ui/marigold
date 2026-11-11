@@ -1,7 +1,7 @@
 ---
 title: CommandPalette
 description: One keyboard-first entry point to search pages, actions and records.
-badge: alpha
+badge: beta
 ---
 
 import { CommandPaletteAnatomy } from './command-palette-anatomy';
@@ -79,11 +79,11 @@ Records often share a name. Add a short description that tells them apart, like 
   running it right away.
 </Callout>
 
-### Placement
+### Shortcut
 
-Render one palette per app, inside the app shell, so the shortcut works on every page. Put the button in the middle of the [top navigation](/components/navigation/topnavigation), where the [App frame](/patterns/layout/app-frame) places search, as in the demo above. The button is optional, but it tells people the palette exists and shows the shortcut that opens it. Where the top navigation has little room, any other button inside `<CommandPalette.Trigger>` opens the palette too, for example an icon button.
+The shortcut works on every page, so render one palette per app, inside the app shell. A second palette with the same shortcut would compete for the key. If a page needs its own palette, pass `shortcut={false}` to its trigger.
 
-Don't render a second palette with the same shortcut. If a page needs its own palette, pass `shortcut={false}` to its trigger.
+The button is optional, but it tells people the palette exists and shows the shortcut. The [App frame](/patterns/layout/app-frame) places it in the middle of the top navigation, as in the demo above. Any other button inside `<CommandPalette.Trigger>` opens the palette too, for example an icon button where space is tight.
 
 The shortcut also fires inside text fields, as it does in GitHub, Linear and Slack. If another handler already used the key, for example a rich-text editor that inserts a link on <kbd>⌘</kbd>+<kbd>K</kbd>, the palette leaves it alone. Change the key with `shortcut="j"` on the trigger, or turn it off with `shortcut={false}` when your app already uses it.
 
