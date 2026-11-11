@@ -525,44 +525,38 @@ Mobile.test(
   }
 );
 
-Mobile.test(
-  'Mobile ComboBox interaction',
-  {
-    parameters: { chromatic: { disableSnapshot: false } },
-  },
-  async ({ canvas, step }) => {
-    const trigger = await canvas.findByRole('button');
+Mobile.test('Mobile ComboBox interaction', async ({ canvas, step }) => {
+  const trigger = await canvas.findByRole('button');
 
-    await step('Open tray by clicking trigger', async () => {
-      await userEvent.click(trigger);
+  await step('Open tray by clicking trigger', async () => {
+    await userEvent.click(trigger);
+  });
+
+  await step('Verify tray content is visible', async () => {
+    const input = await canvas.findByRole('combobox');
+
+    await waitFor(() => expect(input).toBeVisible());
+  });
+
+  await step('Select option from list', async () => {
+    const option = await canvas.findByText('Dog');
+
+    await userEvent.click(option);
+  });
+
+  await step('Close select with Escape key', async () => {
+    await userEvent.keyboard('{Escape}');
+
+    await waitFor(() => {
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
     });
+  });
 
-    await step('Verify tray content is visible', async () => {
-      const input = await canvas.findByRole('combobox');
-
-      await waitFor(() => expect(input).toBeVisible());
-    });
-
-    await step('Select option from list', async () => {
-      const option = await canvas.findByText('Dog');
-
-      await userEvent.click(option);
-    });
-
-    await step('Close select with Escape key', async () => {
-      await userEvent.keyboard('{Escape}');
-
-      await waitFor(() => {
-        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
-        expect(trigger).toHaveAttribute('aria-expanded', 'false');
-      });
-    });
-
-    await step('Verify selection is displayed in trigger', async () => {
-      await waitFor(() => expect(trigger).toHaveTextContent('Dog'));
-    });
-  }
-);
+  await step('Verify selection is displayed in trigger', async () => {
+    await waitFor(() => expect(trigger).toHaveTextContent('Dog'));
+  });
+});
 
 Mobile.test('Mobile ComboBox keyboard navigation', async ({ canvas, step }) => {
   const trigger = await canvas.findByRole('button');

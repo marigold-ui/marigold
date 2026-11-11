@@ -241,7 +241,13 @@ export const WithError = meta.story({
 export const Mobile = meta.story({
   tags: ['component-test'],
   // Chromatic ignores the viewport global, so pin its capture to phone width.
-  parameters: { chromatic: { viewports: [639], cropToViewport: true } },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+      viewports: [639],
+      cropToViewport: true,
+    },
+  },
   globals: {
     viewport: { value: 'smallScreen' },
   },

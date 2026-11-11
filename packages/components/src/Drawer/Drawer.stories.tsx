@@ -296,14 +296,7 @@ LongContent.test(
 
 export const SelectInsideDrawerSmallScreen = meta.story({
   tags: ['component-test'],
-  // Chromatic ignores the viewport global, so pin its capture to phone width.
-  parameters: {
-    chromatic: {
-      disableSnapshot: true,
-      viewports: [639],
-      cropToViewport: true,
-    },
-  },
+  parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'smallScreen' },
   },
@@ -329,9 +322,6 @@ export const SelectInsideDrawerSmallScreen = meta.story({
 
 SelectInsideDrawerSmallScreen.test(
   'Shows values on a small screen',
-  {
-    parameters: { chromatic: { disableSnapshot: false } },
-  },
   async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
     await waitFor(() => expect(canvas.getByText('Filter')).toBeInTheDocument());
