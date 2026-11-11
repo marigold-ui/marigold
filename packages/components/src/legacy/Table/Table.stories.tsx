@@ -204,7 +204,7 @@ export const Basic = meta.story({
 });
 
 export const ControlledTable = meta.story({
-  render: args => {
+  render: function Render(args) {
     const columns = [
       { name: 'Name', key: 'name' },
       { name: 'Firstname', key: 'firstname' },
@@ -337,7 +337,7 @@ export const Empty = meta.story({
 });
 
 export const Sorting = meta.story({
-  render: args => {
+  render: function Render(args) {
     const data = [
       {
         name: 'Luke Skywalker',
@@ -642,7 +642,7 @@ const DataTable = ({ editable, ...rest }: { editable: boolean }) => (
 );
 
 export const WithParentProp = meta.story({
-  render: args => {
+  render: function Render(args) {
     const [editable, setEditable] = useState(true);
 
     return (
@@ -734,7 +734,7 @@ export const SelectedTable = meta.story({
 });
 
 export const ScrollableTable = meta.story({
-  render: args => {
+  render: function Render(args) {
     const [todos, setTodos] = useState<
       { userId: string; id: string; title: string; completed: boolean }[]
     >([]);
@@ -790,7 +790,7 @@ export const ScrollableTable = meta.story({
 });
 
 export const InputTable = meta.story({
-  render: args => {
+  render: function Render(args) {
     const columns = [
       { name: 'Name', key: 'name' },
       { name: 'Firstname', key: 'firstname' },

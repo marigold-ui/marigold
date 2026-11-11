@@ -253,7 +253,7 @@ export const InForm = meta.story({
     name: 'attachment',
     multiple: true,
   },
-  render: args => {
+  render: function Render(args) {
     const [submitted, setSubmitted] = useState<string[]>([]);
     return (
       <I18nProvider locale="en-US">
@@ -318,7 +318,7 @@ export const Required = meta.story({
     required: true,
     errorMessage: 'Please upload a document.',
   },
-  render: args => {
+  render: function Render(args) {
     const [submitted, setSubmitted] = useState(false);
     return (
       <I18nProvider locale="en-US">

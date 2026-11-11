@@ -77,7 +77,7 @@ Basic.test(
 
 export const RemovableTags = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const defaultItems = [
       { id: 1, name: 'News' },
       { id: 2, name: 'Travel' },
@@ -120,7 +120,7 @@ RemovableTags.test(
 
 export const RemovableAllTags = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const defaultItems = [
       { id: 1, name: 'News' },
       { id: 2, name: 'Travel' },
@@ -379,7 +379,7 @@ CollapseAt.test(
 
 export const CollapseAtWithRemove = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const defaultTags = [
       { id: 'news', name: 'News' },
       { id: 'travel', name: 'Travel' },
@@ -463,7 +463,7 @@ Basic.test(
   'Re-renders the tags when a listed dependency changes',
   {
     parameters: { chromatic: { disableSnapshot: true } },
-    render: args => {
+    render: function Render(args) {
       const [locale, setLocale] = useState('en');
       const labels: Record<string, Record<number, string>> = {
         en: { 1: 'News', 2: 'Travel' },
