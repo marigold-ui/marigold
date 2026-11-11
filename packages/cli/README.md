@@ -323,7 +323,17 @@ An explicit `--format` always wins. The programmatic `run*()` exports are unaffe
 
 ## For AI agents
 
-An AI coding agent captures the CLI's output, so it gets JSON by default (see [Output format](#output-format)). Pair it with `--section props` for structured, precise component data, and pass `--format json` explicitly when the output has to stay the same wherever the command runs. When you don't yet know the component name, start with `marigold search <query> --format json` to find the right component in one call, then fetch `marigold docs <Component> --section props --format json`. See the `## Marigold CLI` section in [CLAUDE.md](https://github.com/marigold-ui/marigold/blob/main/CLAUDE.md) for recommended patterns.
+An AI coding agent captures the CLI's output, so it gets JSON by default (see [Output format](#output-format)). Pair it with `--section props` for structured, precise component data, and pass `--format json` explicitly when the output has to stay the same wherever the command runs. When you don't yet know the component name, start with `marigold search <query> --format json` to find the right component in one call, then fetch `marigold docs <Component> --section props --format json`.
+
+A loop that works for a single screen:
+
+```sh
+marigold search "confirm a destructive action" --format json   # 1. find the component or pattern
+marigold docs Dialog --section props --format json             # 2. read its props before using it
+marigold validate src/EventList.tsx --checks technical         # 3. check what you wrote
+```
+
+`--checks technical` needs no browser and catches a component or prop that does not exist, a missing compound part, raw HTML where a component exists and a control without an accessible name. Fix every error it reports and run it again. It exits `1` only on an error.
 
 To adopt a whole feature pattern (rather than a single component), use `marigold examples list` to discover patterns and `marigold examples get <slug> --format json` to retrieve a pattern's source plus the metadata needed to adapt it. Then read `marigold docs getting-started/examples-for-agents` once for the framework-transformation rules.
 
