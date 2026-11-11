@@ -75,7 +75,7 @@
     "test:sb:browser": "HEADED=1 vitest --config vite.config.ts --project=storybook-tests",
     "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist' -o -name '.next' -o -name '.turbo' -o -name 'storybook-static' -o -name 'coverage'`",
     "clean:build": "rm -rf `find . -type d -name 'dist'` coverage",
-    "lint": "eslint . --no-warn-ignored",
+    "lint": "eslint . --no-warn-ignored --max-warnings=94",
     "lint:prose": "node scripts/vale.mjs .",
     "check:memory": "node scripts/check-memory-store.mjs",
     "check:rac-imports": "node scripts/check-rac-first-imports.mjs",

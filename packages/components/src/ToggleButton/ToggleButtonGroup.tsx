@@ -1,5 +1,6 @@
+import { useEffect } from 'react';
 import type RAC from 'react-aria-components';
-import { ToggleButtonGroup } from 'react-aria-components/ToggleButtonGroup';
+import { ToggleButtonGroup as RACToggleButtonGroup } from 'react-aria-components/ToggleButtonGroup';
 import { useClassNames } from '@marigold/system';
 import { ToggleButtonContext } from './Context';
 
@@ -22,7 +23,7 @@ export interface ToggleButtonGroupProps extends Omit<
   size?: 'small' | 'default' | 'icon' | (string & {});
 }
 
-export const _ToggleButtonGroup = ({
+const ToggleButtonGroup = ({
   children,
   disabled,
   variant,
@@ -35,29 +36,33 @@ export const _ToggleButtonGroup = ({
     size,
   });
 
-  if (
-    process.env.NODE_ENV !== 'production' &&
-    !hasWarnedSelectionMode &&
-    'selectionMode' in props
-  ) {
-    hasWarnedSelectionMode = true;
-    console.warn(
-      'Marigold: `ToggleButtonGroup` is for independent on/off actions. ' +
-        'For a single-select segmented/filter control, use `SegmentedControl` instead.'
-    );
-  }
+  // Warn from an effect: render must stay pure, and the module-level flag is a side effect.
+  const hasSelectionMode = 'selectionMode' in props;
+  useEffect(() => {
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      !hasWarnedSelectionMode &&
+      hasSelectionMode
+    ) {
+      hasWarnedSelectionMode = true;
+      console.warn(
+        'Marigold: `ToggleButtonGroup` is for independent on/off actions. ' +
+          'For a single-select segmented/filter control, use `SegmentedControl` instead.'
+      );
+    }
+  }, [hasSelectionMode]);
 
   return (
     <ToggleButtonContext value={{ variant, size }}>
-      <ToggleButtonGroup
+      <RACToggleButtonGroup
         className={classNames.group}
         isDisabled={disabled}
         {...props}
       >
         {children}
-      </ToggleButtonGroup>
+      </RACToggleButtonGroup>
     </ToggleButtonContext>
   );
 };
 
-export { _ToggleButtonGroup as ToggleButtonGroup };
+export { ToggleButtonGroup };

@@ -2,7 +2,7 @@ import { type ReactNode, use } from 'react';
 import type RAC from 'react-aria-components';
 import {
   OverlayArrow,
-  Tooltip,
+  Tooltip as RACTooltip,
   TooltipTriggerStateContext,
 } from 'react-aria-components/Tooltip';
 import { cn, useClassNames } from '@marigold/system';
@@ -21,14 +21,14 @@ export interface TooltipProps extends Omit<RAC.TooltipProps, RemovedProps> {
   size?: string;
 }
 
-const _Tooltip = ({ children, variant, size, ...rest }: TooltipProps) => {
+const Tooltip = ({ children, variant, size, ...rest }: TooltipProps) => {
   const classNames = useClassNames({ component: 'Tooltip', variant, size });
   const state = use(TooltipTriggerStateContext);
 
   if (state && !state.isOpen) return null;
 
   return (
-    <Tooltip
+    <RACTooltip
       {...rest}
       className={cn('group/tooltip z-30', classNames.container)}
     >
@@ -36,10 +36,10 @@ const _Tooltip = ({ children, variant, size, ...rest }: TooltipProps) => {
         <TooltipArrow />
       </OverlayArrow>
       {children}
-    </Tooltip>
+    </RACTooltip>
   );
 };
 
-export { _Tooltip as Tooltip };
+export { Tooltip };
 
-_Tooltip.Trigger = TooltipTrigger;
+Tooltip.Trigger = TooltipTrigger;

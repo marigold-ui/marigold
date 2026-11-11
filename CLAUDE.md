@@ -27,16 +27,16 @@ than most training data. Read the source or the docs tools below before relying 
 Always `pnpm`. On a fresh clone run `pnpm install && pnpm build` once. After that Storybook,
 typecheck and the tests read package source, and only the docs site and the CLI need a rebuild.
 
-| Task                       | Command                                                                       |
-| -------------------------- | ----------------------------------------------------------------------------- |
-| Typecheck                  | `pnpm typecheck:only` (a hook also runs it after every `.ts`/`.tsx` edit)     |
-| Lint                       | `pnpm lint` (0 errors is the bar, the existing warnings are not yours to fix) |
-| Unit tests, one component  | `pnpm vitest run --project=unit-tests packages/components/src/<Name>`         |
-| Story tests, one component | `pnpm vitest run --project=storybook-tests packages/components/src/<Name>`    |
-| All tests                  | `pnpm vitest run` (about 4 minutes, Firefox via Playwright)                   |
-| Docs prose                 | `pnpm lint:prose`                                                             |
-| Repo guards                | `pnpm check:rac-imports`, `pnpm check:theme-zindex`, `pnpm check:memory`      |
-| Storybook / docs site      | `pnpm sb` (port 6006) / `pnpm start` (port 3000, needs `pnpm build` first)    |
+| Task                       | Command                                                                      |
+| -------------------------- | ---------------------------------------------------------------------------- |
+| Typecheck                  | `pnpm typecheck:only` (a hook also runs it after every `.ts`/`.tsx` edit)    |
+| Lint                       | `pnpm lint` (0 errors, warnings capped by `--max-warnings`: a new one fails) |
+| Unit tests, one component  | `pnpm vitest run --project=unit-tests packages/components/src/<Name>`        |
+| Story tests, one component | `pnpm vitest run --project=storybook-tests packages/components/src/<Name>`   |
+| All tests                  | `pnpm vitest run` (about 4 minutes, Firefox via Playwright)                  |
+| Docs prose                 | `pnpm lint:prose`                                                            |
+| Repo guards                | `pnpm check:rac-imports`, `pnpm check:theme-zindex`, `pnpm check:memory`     |
+| Storybook / docs site      | `pnpm sb` (port 6006) / `pnpm start` (port 3000, needs `pnpm build` first)   |
 
 Prettier and Vale run on commit through lint-staged, so there is nothing to format by hand.
 
@@ -59,7 +59,7 @@ Prettier and Vale run on commit through lint-staged, so there is nothing to form
 For a change to a published package (`components`, `system`, `icons`, `theme-rui`, `cli`):
 
 1. The behaviour is covered by a test. For a bug, the failing test comes first.
-2. `pnpm typecheck:only` passes, `pnpm lint` reports no errors, the affected component's unit
+2. `pnpm typecheck:only` passes, `pnpm lint` passes, the affected component's unit
    and story tests pass.
 3. Stories are updated, tagged `component-test` where they carry tests.
 4. The docs page is updated when consumers can see the change.

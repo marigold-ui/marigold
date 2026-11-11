@@ -106,7 +106,7 @@ export interface CheckboxProps extends Omit<
 
 // Component
 // --------------
-const _Checkbox = ({
+const CheckboxRoot = ({
   error,
   errorMessage,
   disabled,
@@ -183,8 +183,8 @@ const _Checkbox = ({
   );
 };
 
-const _MgCheckbox = Object.assign(_Checkbox, {
+const Checkbox = Object.assign(CheckboxRoot, {
   Group: CheckboxGroup,
 });
 
-export { _MgCheckbox as Checkbox };
+export { Checkbox };

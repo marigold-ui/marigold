@@ -1,6 +1,6 @@
 import { type Ref, useId } from 'react';
 import type RAC from 'react-aria-components';
-import { FileTrigger } from 'react-aria-components/FileTrigger';
+import { FileTrigger as RACFileTrigger } from 'react-aria-components/FileTrigger';
 import type { AriaLabelingProps } from '@marigold/types';
 import { Button } from '../Button/Button';
 import { Upload } from '../icons/Upload';
@@ -26,7 +26,7 @@ export interface FileTriggerProps
   ref?: Ref<HTMLButtonElement>;
 }
 
-const _FileTrigger = ({
+const FileTrigger = ({
   label,
   disabled,
   size,
@@ -40,7 +40,7 @@ const _FileTrigger = ({
   const id = useId();
 
   return (
-    <FileTrigger {...rest}>
+    <RACFileTrigger {...rest}>
       <Button
         ref={ref}
         id={id}
@@ -55,8 +55,8 @@ const _FileTrigger = ({
         <Upload />
         {label}
       </Button>
-    </FileTrigger>
+    </RACFileTrigger>
   );
 };
 
-export { _FileTrigger as FileTrigger };
+export { FileTrigger };

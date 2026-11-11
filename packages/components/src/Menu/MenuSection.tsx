@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { Header } from 'react-aria-components/Header';
-import { MenuSection } from 'react-aria-components/Menu';
+import { MenuSection as RACMenuSection } from 'react-aria-components/Menu';
 import { useClassNames } from '@marigold/system';
 
 // Props
@@ -17,14 +17,14 @@ export interface MenuSectionProps extends Omit<
 
 // Component
 // ---------------
-const _MenuSection = ({ children, title, ...props }: MenuSectionProps) => {
+const MenuSection = ({ children, title, ...props }: MenuSectionProps) => {
   const className = useClassNames({ component: 'Menu' });
   return (
-    <MenuSection {...props}>
+    <RACMenuSection {...props}>
       <Header className={className.section}>{title}</Header>
       {children}
-    </MenuSection>
+    </RACMenuSection>
   );
 };
 
-export { _MenuSection as MenuSection };
+export { MenuSection };
