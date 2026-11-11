@@ -59,14 +59,11 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
       '[&>svg]:size-4.5 [&>svg]:shrink-0 [&>svg]:text-secondary',
       // Optical alignment, tuned by eye in Chrome. Centred boxes read too high
       // in the header, so everything sits a little lower: the icon 1px, the
-      // text 2px (its cap height then lines up with the icon) and the Esc
-      // cap half a pixel.
-      '[&>svg]:translate-y-px [&>input]:translate-y-0.5 [&>kbd]:translate-y-[0.5px]',
+      // text 2px (its cap height then lines up with the icon).
+      '[&>svg]:translate-y-px [&>input]:translate-y-0.5',
       // Clear button: quiet, round, appears once there is a query.
       '[&>button]:flex [&>button]:size-6 [&>button]:shrink-0 [&>button]:items-center [&>button]:justify-center [&>button]:rounded-full [&>button]:text-secondary [&>button]:cursor-pointer',
       '[&>button]:hover:bg-hover [&>button]:hover:text-foreground [&>button]:focus-visible:ui-state-focus',
-      // The Esc hint only makes sense with a keyboard.
-      'pointer-coarse:[&>kbd]:hidden',
     ],
   }),
   input: cva({
@@ -125,8 +122,7 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
     ],
   }),
   // Same divider as Dialog and Drawer footers, no fill of its own. The legend
-  // uses the same key caps as the header's Esc hint, with 12px secondary
-  // labels (5.7:1 on the surface).
+  // uses compact key caps with 12px secondary labels (5.7:1 on the surface).
   footer: cva({
     base: [
       'flex h-10 shrink-0 items-center justify-between gap-3 px-4',
@@ -137,7 +133,6 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
     base: [
       'ms-auto flex items-center gap-4 [&>span]:inline-flex [&>span]:items-center [&>span]:gap-1.5',
       // Compact caps: the legend is a quiet reminder, not a call to action.
-      // Smaller than the header's Esc cap.
       '[&_kbd]:h-4.5 [&_kbd]:min-w-4.5 [&_kbd]:px-1 [&_kbd]:py-0 [&_kbd]:text-[10px] [&_kbd]:leading-none',
     ],
   }),

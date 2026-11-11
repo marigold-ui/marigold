@@ -65,7 +65,7 @@ export const CommandPaletteAnatomy = () => (
       strokeWidth="2"
     />
 
-    {/* Search field: icon, query and the Esc hint */}
+    {/* Search field: icon and query */}
     <g
       className="stroke-fd-muted-foreground transition-colors duration-300"
       strokeWidth="1.5"
@@ -82,15 +82,6 @@ export const CommandPaletteAnatomy = () => (
       height="9"
       rx="3"
       className="fill-fd-foreground transition-colors duration-300"
-    />
-    <rect
-      x="420"
-      y="83"
-      width="26"
-      height="15"
-      rx="3"
-      className="fill-fd-muted stroke-fd-border transition-colors duration-300"
-      strokeWidth="1.5"
     />
     <rect
       x="200"
