@@ -8,9 +8,17 @@ import {
 
 // Rows share Menu's layout, icon treatment, variants and active fill
 // (`focus-highlight`). A palette always has one active row and is mostly
-// used by keyboard, so instead of Menu's keyboard ring the row adds a medium
+// used by keyboard, so instead of Menu's keyboard ring the row adds a heavier
 // label, its icon at full ink and the ↵ hint.
-const itemActive = 'focus:font-medium';
+// The heavier label is a hairline text stroke, not `font-medium`: a real
+// weight change widens the glyphs, so the label jumped whenever the active
+// row followed the pointer. The stroke keeps every advance width. Inter has
+// no grade axis that could do this natively. Description and key caps keep
+// their own weight.
+const itemActive = [
+  'focus:[-webkit-text-stroke:0.02em_currentColor]',
+  '[&_[slot=description]]:[-webkit-text-stroke:0] [&_kbd]:[-webkit-text-stroke:0]',
+].join(' ');
 const itemBase = `${menuItemBase} ${itemActive}`;
 const itemIconMuted = `${menuItemIconMuted} focus:[&_svg]:text-foreground focus:[&_svg]:opacity-100`;
 

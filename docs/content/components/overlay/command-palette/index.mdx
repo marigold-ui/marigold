@@ -53,8 +53,6 @@ Navigation is the core of it. People open the palette, type a few letters of a p
 - **Actions** people start often, such as "Create event". They skip the detour to the page where the button lives.
 - **Records** people know by name or number, such as an event or an order. They skip the list page, the filter and the scanning.
 
-Picking a row closes the palette and goes there, the same as following a link. Try it in the demo: open the search, type "jazz" and press <kbd>Enter</kbd>.
-
 <ComponentDemo name="command-palette-basic" />
 
 A palette pays off in apps with more pages than the sidebar shows comfortably and for people who work in the app every day. In an app with a handful of pages the sidebar already shows everything at a glance, and the palette is one more thing to learn. It complements the navigation and never replaces it. People who don't know the shortcut, or who use a touch device, still need the sidebar and the buttons on the page, so don't make the palette the only way to reach a page or an action.
@@ -98,27 +96,25 @@ Don't render a second palette with the same shortcut. If a page needs its own pa
 | <kbd>Enter</kbd>                                         | Runs the active row.                                      |
 | <kbd>Escape</kbd>                                        | Clears the search, then closes the palette.               |
 
-One row is always active while there are results, so <kbd>Enter</kbd> always does something. When the search changes, the first row becomes active again.
-
 Letters typed into the search field stay in the palette. Shortcuts your app binds to single keys, for example "c" to create, don't fire while people type a query.
 
 The shortcut also fires inside text fields, as it does in GitHub, Linear and Slack. If another handler already used the key, for example a rich-text editor that inserts a link on <kbd>⌘</kbd>+<kbd>K</kbd>, the palette leaves it alone. Change the key with `shortcut="j"`, or turn it off with `shortcut={false}` when your app already uses it.
 
 ### Filtering
 
-By default the palette matches the query anywhere in an item's text and ignores case and accents, so "cafe" finds "Café". It keeps your groups and your order and highlights the matching text. Pass your own `filter` function for a different match, for example a fuzzy one.
+By default the palette matches the query anywhere in an item's text and ignores case and accents, so "cafe" finds "Café". Pass your own `filter` function for a different match, for example a fuzzy one.
 
 An item's text is its plain-text label, also next to an icon. When the label is built from `<Text>` slots, for example with a description underneath, pass `textValue` so the item can still be found.
 
 ### Empty state
 
-When nothing matches, the palette says so and suggests a different search. Before anyone types into an empty list, it asks them to type. Render `<CommandPalette.Empty>` to replace that message, for example to name what people can search for.
+Render `<CommandPalette.Empty>` to replace the default message, for example to name what people can search for.
 
 <ComponentDemo name="command-palette-empty" />
 
 ### Results from the server
 
-To search records on the server, pass `filter={false}`, control the query with `inputValue` and `onInputChange`, and render `<CommandPalette.Loading>` while results load. The search field shows a spinner while it is rendered. Debounce the requests in your own code.
+To search records on the server, pass `filter={false}`, control the query with `inputValue` and `onInputChange`, and render `<CommandPalette.Loading>` while results load. Debounce the requests in your own code.
 
 <ComponentDemo name="command-palette-async" />
 
@@ -138,7 +134,7 @@ The palette has no dedicated API for favourites or recent pages. Control the que
 
 ### Mobile behaviour
 
-On small screens the palette opens as a tray from the bottom edge. The search field and the list reach the edges of the tray. The <kbd>⌘</kbd>+<kbd>K</kbd> and <kbd>Esc</kbd> hints and the legend are hidden on touch devices.
+On small screens the palette opens as a tray from the bottom edge. The <kbd>⌘</kbd>+<kbd>K</kbd> and <kbd>Esc</kbd> hints and the legend are hidden on touch devices.
 
 ## Accessibility
 
