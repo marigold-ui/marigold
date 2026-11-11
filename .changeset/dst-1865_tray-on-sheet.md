@@ -1,7 +1,7 @@
 ---
-'@marigold/components': patch
-'@marigold/system': patch
-'@marigold/theme-rui': patch
+'@marigold/components': major
+'@marigold/system': major
+'@marigold/theme-rui': major
 '@marigold/cli': patch
 ---
 
