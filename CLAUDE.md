@@ -84,7 +84,7 @@ up front.
 | Writing docs, changesets or READMEs             | `.claude/rules/prose.md` (auto), `docs/CLAUDE.md`, `/changeset` |
 | Reviewing a diff before a PR                    | the `marigold-reviewer` subagent, `.github/review-checklist.md` |
 | Unsure what a term means or why something is so | `.memory/CONTEXT.md`, `.memory/adr/`                            |
-| Filing a DST ticket by hand                     | `.claude/reference/jira.md`                                     |
+| Filing a DST ticket                             | `/dst:create-ticket` (conventions live in the `dst` plugin)     |
 | Releasing or prereleasing                       | `README.md`, "Releasing". CI publishes, never a local command   |
 | Adding a hook or skill                          | `.claude/README.md`                                             |
 

@@ -15,7 +15,6 @@ Claude Code already injects every available skill's name and description into ea
 | First-party skills | `.claude/skills/<name>/SKILL.md` | Committed, ours to edit. Only skills bound to this repository's own layout or workflows |
 | Path-scoped rules | `.claude/rules/<area>.md` | Committed. Loaded when a file matching the `paths:` frontmatter is read or edited, so detail stays out of the root `CLAUDE.md` |
 | Subagents | `.claude/agents/<name>.md` | Committed. `marigold-reviewer` reviews a local diff and never writes |
-| Reference | `.claude/reference/<topic>.md` | Committed. Never loaded automatically, `CLAUDE.md` says when to read one |
 | Project hooks | registered in `.claude/settings.json`, scripts in `.claude/hooks/` | Committed, run automatically for everyone |
 | Plugins | declared in `.claude/settings.json`, or installed per-user | Installed per-user, versioned upstream. The team's workflow skills are the `dst` plugin, installed at user scope from the private `dst-toolkit` marketplace, so it is never declared in this public repo's `settings.json` |
 | Personal skills | `~/.claude/skills/` | One developer's machine, never the repo |
