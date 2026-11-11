@@ -8,6 +8,15 @@
     "atlassian@claude-plugins-official": true
   },
   "permissions": {
+    "allow": [
+      "Bash(pnpm typecheck:only)",
+      "Bash(pnpm lint)",
+      "Bash(pnpm lint:prose)",
+      "Bash(pnpm check:memory)",
+      "Bash(pnpm check:rac-imports)",
+      "Bash(pnpm check:theme-zindex)",
+      "Bash(pnpm vitest run *)"
+    ],
     "deny": [
       "Bash(pnpm publish)",
       "Bash(pnpm publish *)",
