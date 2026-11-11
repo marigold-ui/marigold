@@ -95,6 +95,37 @@ const buildTable = (entries: DocEntry[]): Node =>
     ],
   }) as unknown as Node;
 
+// Every component that spreads onto a DOM element inherits about 70 handlers
+// (`onClick`, `onMouseDownCapture`, …) with no JSDoc. One row each made them
+// two thirds of a props table without telling a reader anything.
+const isBareDomHandler = (entry: DocEntry): boolean =>
+  /^on[A-Z]/.test(entry.name) && !entry.description.trim();
+
+const listDomHandlers = (entries: DocEntry[]): Node | null => {
+  const names = new Set(entries.map(entry => entry.name));
+  const base = [...names].filter(
+    name => !name.endsWith('Capture') || !names.has(name.slice(0, -7))
+  );
+  if (base.length === 0) return null;
+
+  const hasCapture = base.some(name => names.has(`${name}Capture`));
+  const children: Node[] = [text('Also accepts the DOM event handlers ')];
+  base.forEach((name, i) => {
+    if (i > 0) children.push(text(i === base.length - 1 ? ' and ' : ', '));
+    children.push({ type: 'inlineCode', value: name } as Node);
+  });
+  if (hasCapture) {
+    children.push(
+      text(', each with a '),
+      { type: 'inlineCode', value: 'Capture' } as Node,
+      text(' variant.')
+    );
+  } else {
+    children.push(text('.'));
+  }
+  return { type: 'paragraph', children } as unknown as Node;
+};
+
 export function remarkResolvePropsTable() {
   return (tree: Node) => {
     visit(
@@ -134,7 +165,15 @@ export function remarkResolvePropsTable() {
           return;
         }
 
-        children[index] = buildTable(entries);
+        const rows = entries.filter(entry => !isBareDomHandler(entry));
+        const handlers = listDomHandlers(entries.filter(isBareDomHandler));
+
+        children.splice(
+          index,
+          1,
+          ...(rows.length > 0 ? [buildTable(rows)] : []),
+          ...(handlers ? [handlers] : [])
+        );
       }
     );
   };

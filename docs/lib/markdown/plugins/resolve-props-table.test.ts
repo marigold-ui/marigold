@@ -57,6 +57,23 @@ const entries: DocEntry[] = [
   }),
 ];
 
+// Passed through from the DOM element: no JSDoc, same shape on every component.
+const domHandlers = [
+  'onClick',
+  'onClickCapture',
+  'onMouseDown',
+  'onMouseDownCapture',
+];
+for (const name of domHandlers) {
+  entries.push(
+    entry({
+      name,
+      type: 'MouseEventHandler<HTMLButtonElement> | undefined',
+      simplifiedType: 'function',
+    })
+  );
+}
+
 vi.mock('../../props-data', () => ({
   getPropTable: () => ({ entries }),
 }));
@@ -126,6 +143,21 @@ describe('remarkResolvePropsTable', () => {
     );
     expect(table.orientation.description).toBe(
       'The size of the button, see [sizes](/sizes) and `size`.'
+    );
+  });
+
+  it('lists undocumented DOM event handlers in one line instead of one row each', async () => {
+    const md = await toMarkdown(
+      '<AutoTypeTable path="Button" name="ButtonProps" />'
+    );
+    const table = await rows();
+
+    expect(Object.keys(table)).not.toContain('onClick');
+    expect(Object.keys(table)).not.toContain('onMouseDownCapture');
+    // Documented handlers are API, they keep their row.
+    expect(Object.keys(table)).toContain('onPress');
+    expect(md).toContain(
+      'Also accepts the DOM event handlers `onClick` and `onMouseDown`, each with a `Capture` variant.'
     );
   });
 });
