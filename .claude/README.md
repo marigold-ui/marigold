@@ -1,8 +1,8 @@
 # AI toolkit conventions
 
-How the committed AI tooling in this repo is shaped: **hooks, and the one skill that is still
-repo-local.** The team's workflow skills live in the `dst` plugin and carry their own conventions
-with them, so this file no longer describes them.
+How the committed AI tooling in this repo is shaped: **hooks, path-scoped rules, one subagent, and
+the few skills that are repo-local.** The team's workflow skills live in the `dst` plugin and carry
+their own conventions with them, so this file does not describe them.
 
 **Conventions only — this file deliberately does not list the tools it describes.**
 
@@ -12,7 +12,10 @@ Claude Code already injects every available skill's name and description into ea
 
 | Source | Lives in | Applies to |
 | --- | --- | --- |
-| First-party skills | `.claude/skills/<name>/SKILL.md` | Committed, ours to edit. Only `vrt` is left here |
+| First-party skills | `.claude/skills/<name>/SKILL.md` | Committed, ours to edit. Only skills bound to this repository's own layout or workflows |
+| Path-scoped rules | `.claude/rules/<area>.md` | Committed. Loaded when a file matching the `paths:` frontmatter is read or edited, so detail stays out of the root `CLAUDE.md` |
+| Subagents | `.claude/agents/<name>.md` | Committed. `marigold-reviewer` reviews a local diff and never writes |
+| Reference | `.claude/reference/<topic>.md` | Committed. Never loaded automatically, `CLAUDE.md` says when to read one |
 | Project hooks | registered in `.claude/settings.json`, scripts in `.claude/hooks/` | Committed, run automatically for everyone |
 | Plugins | declared in `.claude/settings.json`, or installed per-user | Installed per-user, versioned upstream. The team's workflow skills are the `dst` plugin, installed at user scope from the private `dst-toolkit` marketplace, so it is never declared in this public repo's `settings.json` |
 | Personal skills | `~/.claude/skills/` | One developer's machine, never the repo |
@@ -33,14 +36,35 @@ removed.
 
 What is still true in this repo:
 
-- `skills/vrt/` is the only first-party skill left, and it stays because exactly one repository
-  has a Chromatic workflow for it to dispatch. A configurable VRT dispatcher would be speculation.
-- It keeps its `DST — ` description prefix. The `dst:` namespace does that job for the plugin's
-  skills, and `/vrt` is unnamespaced, so the marker is still the only thing saying whose workflow
-  it encodes.
-- It is **side-effecting**: a dispatch spends Chromatic snapshot quota. `CONTRIBUTING.md`'s rules
-  for that class apply in full, and the reason they matter here is that the cost is real and lands
-  on the team's plan rather than on the person who ran it.
+- A skill lives here only when it cannot work anywhere else. `vrt` stays because exactly one
+  repository has a Chromatic workflow for it to dispatch. `new-component`, `add-variant`, `fix-bug`
+  and `changeset` stay because every step names a path, a script or a convention of this checkout
+  (`packages/system/src/types/theme.ts`, `themes/theme-rui`, `.changeset/`), which is exactly what
+  the plugin's "nothing may be pinned to one repository" rule forbids over there.
+- Repo-local skills keep the `DST — ` description prefix. The `dst:` namespace does that job for
+  the plugin's skills, and these are unnamespaced, so the marker is still the only thing saying
+  whose workflow they encode.
+- `vrt` is **side-effecting**: a dispatch spends Chromatic snapshot quota. `CONTRIBUTING.md`'s
+  rules for that class apply in full, and the reason they matter here is that the cost is real and
+  lands on the team's plan rather than on the person who ran it. The other four only change files
+  in the working tree.
+
+## Rules and the root file
+
+The root `CLAUDE.md` is loaded into every session, so every line in it is paid for every time.
+Keep it under roughly 150 lines: what the repo is, the commands, the rules that apply to every
+change, the definition of done, and a table saying where the rest lives.
+
+Anything that only matters for one kind of file goes in `.claude/rules/<area>.md` with a `paths:`
+list. Two things to know before writing one:
+
+- `paths` is the only frontmatter key that is read, and a rule **without** it loads at session
+  start like `CLAUDE.md` does. An unscoped rule file saves nothing.
+- A rule loads when a matching file is read or edited, not when it is merely discussed. A fact
+  needed before any file is opened belongs in the root file.
+
+One home per rule still holds: a rule in `rules/` is not repeated in `CLAUDE.md`, the review
+checklist or an ADR. Link instead.
 
 ## Hooks
 
@@ -88,10 +112,11 @@ Two rules hold this together:
 
 ## Adding and removing
 
-**A new workflow skill goes in the `dst` plugin, not here.** That is the default now, and the bar
-for adding one back to `.claude/skills/` is that it genuinely cannot work anywhere else: it has to
-depend on something only this repository has, the way `vrt` depends on this repository being the
-only one with a Chromatic workflow. "It is convenient here" is not that bar, and a skill that
+**A new workflow skill goes in the `dst` plugin, not here.** That is the default, and the bar for
+adding one to `.claude/skills/` is that it genuinely cannot work anywhere else: it has to depend on
+something only this repository has, the way `vrt` depends on this repository being the only one
+with a Chromatic workflow and `new-component` depends on where this repository keeps its theme
+types. "It is convenient here" is not that bar, and a skill that
 starts repo-local because it was quicker is how `review-pr` ended up existing twice.
 
 A hook is the opposite: it is always repo-local, because it runs for everyone who opens the
