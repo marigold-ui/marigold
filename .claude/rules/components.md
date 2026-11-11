@@ -14,8 +14,19 @@ RAC wrapper, `Dialog` for a compound).
 
 Every prop, export and default here is consumed by many product apps. A removed or renamed prop
 or export, a changed default, or a changed DOM/ARIA contract is **breaking**. Stop and ask before
-making one: it needs a `major` changeset and a migration path, and which branch it lands on is
-a team decision (a `v19` branch exists for breaking work).
+making one: it needs a `major` changeset and a migration path, and it does not land on `main`.
+
+Breaking work goes to the next major's branch, `v<current major + 1>`. Find it before asking:
+
+```bash
+node -p "require('./packages/components/package.json').version"   # 18.3.1 → look for v19
+git ls-remote --heads origin v19
+```
+
+- The branch exists: ask whether to target it.
+- It does not: ask whether to create it from `main`. Do not create or push it unasked.
+- `.changeset/pre.json` exists: `main` is itself in prerelease for a major, so the rule above
+  does not apply. Ask where the change goes.
 
 ## Shape
 

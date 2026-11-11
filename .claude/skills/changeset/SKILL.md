@@ -42,7 +42,7 @@ One entry per published package whose source changed.
 | --- | --- |
 | `patch` | A bug fix, or a visual correction that keeps the same API |
 | `minor` | New, additive API: a component, a prop, a variant, a token |
-| `major` | Anything a consumer must change code for. **Never choose this alone.** Stop and ask |
+| `major` | Anything a consumer must change code for. **Never choose this alone.** Stop and ask, and check the target branch (`.claude/rules/components.md`, "Public API is the product") |
 
 `@marigold/system`, `@marigold/components` and `@marigold/docs` are a fixed group and always
 get the same version, so the highest bump among them applies to all three.
