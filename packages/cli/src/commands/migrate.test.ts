@@ -85,6 +85,7 @@ describe('detectMigration', () => {
       installed: '17.9.1',
       source: 'node_modules',
       versions: ['v18', 'v19'],
+      heldBack: [],
     });
   });
 
@@ -95,6 +96,7 @@ describe('detectMigration', () => {
       installed: '17.0.0',
       source: 'package.json',
       versions: ['v18', 'v19'],
+      heldBack: [],
     });
   });
 
@@ -105,6 +107,7 @@ describe('detectMigration', () => {
       installed: '18.0.0-beta.4',
       source: 'node_modules',
       versions: ['v18', 'v19'],
+      heldBack: [],
     });
   });
 
@@ -115,6 +118,7 @@ describe('detectMigration', () => {
       installed: '19.0.0',
       source: 'node_modules',
       versions: [],
+      heldBack: ['v19'],
     });
   });
 
@@ -125,6 +129,7 @@ describe('detectMigration', () => {
       installed: '20.0.0',
       source: 'node_modules',
       versions: [],
+      heldBack: [],
     });
   });
 
@@ -489,6 +494,22 @@ describe('runMigrateCommand', () => {
 
     expect(code).toBe(0);
     expect(written.join('\n')).toContain('already up to date');
+  });
+
+  test('names a held-back migration instead of claiming up to date', async () => {
+    const root = setupDetectable('19.0.0');
+    const written: string[] = [];
+
+    const code = await runMigrateCommand({
+      targetPath: root,
+      dryRun: true,
+      write: output => written.push(output),
+      interactive: true,
+    });
+
+    expect(code).toBe(0);
+    expect(written.join('\n')).not.toContain('already up to date');
+    expect(written.join('\n')).toContain('marigold migrate v19 [path]');
   });
 
   test('fails when the target has no Marigold at all', async () => {
