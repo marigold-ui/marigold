@@ -362,12 +362,28 @@ const runWithRenderer = async (
   });
 };
 
+const SUPPORTED_EXTENSIONS = new Set(['.ts', '.tsx', '.js', '.jsx']);
+
 export const validate = async (
   filePath: string,
   options: ValidateOptions
 ): Promise<ValidationReport> => {
   if (!fs.existsSync(filePath)) {
     throw new Error(`File not found: ${filePath}`);
+  }
+  // Without these two guards every checker failed on its own and the report
+  // came back with warnings only, so the command exited 0 for a target it
+  // never validated.
+  if (fs.statSync(filePath).isDirectory()) {
+    throw new Error(
+      `"${filePath}" is a directory. marigold validate checks one file at a time, so run it once per .tsx file.`
+    );
+  }
+  const extension = path.extname(filePath);
+  if (!SUPPORTED_EXTENSIONS.has(extension)) {
+    throw new Error(
+      `Unsupported file type "${extension}". marigold validate checks TypeScript/JavaScript files (.ts, .tsx, .js, .jsx).`
+    );
   }
 
   const wantsRender =
