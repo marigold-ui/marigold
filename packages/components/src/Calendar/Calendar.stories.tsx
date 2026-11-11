@@ -759,7 +759,13 @@ PresetsWithMinValue.test(
 // so Chromatic can snapshot the open tray without daily diffs.
 export const PresetsMobile = meta.story({
   tags: ['component-test'],
-  parameters: { chromatic: { disableSnapshot: true, viewports: [320] } },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+      viewports: [320],
+      cropToViewport: true,
+    },
+  },
   globals: {
     viewport: { value: 'extraSmallScreen' },
   },

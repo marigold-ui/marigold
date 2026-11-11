@@ -16,9 +16,9 @@ if (
 ) {
   document.documentElement.dataset.chromatic = '';
 
-  // RAC's Sheet slides in with a JS smooth scroll, which Chromatic can't pause,
-  // so a tray would be captured below the screen. Under reduced motion it jumps
-  // into place. Only RAC's Sheet asks for this exact query (`motion` doesn't).
+  // RAC's Sheet slides in with a JS smooth scroll that the `prefersReducedMotion`
+  // parameter below doesn't stop, so a tray is captured below the screen. Forcing
+  // the query makes it jump into place. Only RAC's Sheet asks for this exact query.
   const matchMedia = window.matchMedia.bind(window);
   window.matchMedia = query => {
     const list = matchMedia(query);

@@ -394,6 +394,8 @@ LargeDataset.test(
 
 export const Mobile = meta.story({
   tags: ['component-test'],
+  // Chromatic ignores the viewport global, so pin its capture to phone width.
+  parameters: { chromatic: { viewports: [639], cropToViewport: true } },
   globals: {
     viewport: { value: 'smallScreen' },
   },

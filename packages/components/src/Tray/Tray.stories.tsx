@@ -13,7 +13,8 @@ import { Tray } from './Tray';
 
 const meta = preview.meta({
   title: 'Components/Tray',
-  parameters: { surface: false },
+  // A full-height capture resizes the viewport past an open tray, which closes it.
+  parameters: { surface: false, chromatic: { cropToViewport: true } },
   component: Tray,
   decorators: [
     Story => (
