@@ -6,8 +6,8 @@ import { useCallback, useEffect, useRef } from 'react';
 // cmdk do, so Enter always runs something. RAC activates the first row on
 // open (`autoFocus`) and when the user types forward. It clears the row after
 // a delete, paste or undo, and keeps the old row when async results replace
-// the list. This hook covers those two cases. Once people move to another
-// row, rows added later (the next page) keep their place.
+// the list. This hook covers those two cases. Once people pick another row,
+// rows added later (the next page) keep their place.
 //
 // Known gap: when typing swaps in a different static list that starts with
 // the same row, RAC activates nothing. Pressing `Home` there too races RAC's
@@ -80,25 +80,34 @@ export const useKeepFirstItemActive = (inputValue: string, items: unknown) => {
     // RAC rebuilds the collection one render after the children or `items`
     // change, and rows rendered as children can arrive later still, after a
     // loading state. So until the query changes again, every change to the
-    // rows activates the first one, unless it already is. Once people move
-    // to another row, by key or by pointer, the rows are theirs: a page
-    // loaded at the end of the list must not throw them back to the top.
+    // rows activates the first one, unless it already is. Once people pick
+    // another row, with the keys or by pointing at it, the rows are theirs: a
+    // page loaded at the end must not throw them back to the top. A pointer
+    // that only brushes the list picks nothing. And when no row is active at
+    // all, say the picked one was replaced, the first one is activated anyway,
+    // so Enter always runs something.
+    let picked = false;
     const observer = new MutationObserver(() => {
+      if (picked && menu.querySelector('[role^="menuitem"][data-focused]'))
+        return;
       const first = menu.querySelector('[role^="menuitem"]');
       if (first && !first.hasAttribute('data-focused')) activateFirst();
     });
     observer.observe(menu, { childList: true, subtree: true });
     const input = inputRef.current;
-    const stop = () => observer.disconnect();
     const onKeyDown = (e: KeyboardEvent) => {
-      if (NAVIGATION_KEYS.has(e.key)) stop();
+      if (NAVIGATION_KEYS.has(e.key)) picked = true;
+    };
+    const onPointerMove = (e: PointerEvent) => {
+      if (e.target instanceof Element && e.target.closest('[role^="menuitem"]'))
+        picked = true;
     };
     input?.addEventListener('keydown', onKeyDown);
-    menu.addEventListener('pointermove', stop);
+    menu.addEventListener('pointermove', onPointerMove);
     return () => {
       observer.disconnect();
       input?.removeEventListener('keydown', onKeyDown);
-      menu.removeEventListener('pointermove', stop);
+      menu.removeEventListener('pointermove', onPointerMove);
     };
   }, [inputValue, items]);
 
