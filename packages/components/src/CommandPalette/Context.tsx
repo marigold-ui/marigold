@@ -31,6 +31,8 @@ export const useCommandPaletteTrigger =
 // Provided by `CommandPalette`, read by its groups and items.
 interface CommandPaletteContextValue {
   inputValue: string;
+  /** Closes the palette, called after an item was chosen. */
+  close: () => void;
   filter?: SearchableCollectionFilter | false;
   classNames: ComponentClassNames<'CommandPalette'>;
 }

@@ -118,8 +118,14 @@ People often know exactly which record they need, an event by its name or an ord
 
 - **Match what people know:** search the fields people remember, such as the name and the number of an event, or the order number and the customer's name. Put an exact number match first, people who type a number mean that record.
 - **Show a few per kind:** about three to five records per group, and no more than about ten rows in total. Beyond that, people stop reading the suggestions and start scanning. Show what tells the records apart in the description, like the date of an event.
-- **Offer the full list:** if there are more matches, end the group with a row that opens the list page with the query applied. The palette is for jumping to a record, the list page is for browsing and comparing.
+- **Offer the full list:** if there are more matches than the group shows, end it with a row like "Show all events for “jazz”". It opens the list page of that kind with the query already in its search, so people can browse, sort and compare all matches there. The palette is for jumping to one record, the list page is for working through many.
 - **Keep the rest fast:** pages and actions show right away, only the records group waits for the server. Results that arrive after people have finished typing don't help them anymore, so keep the search quick and the number of results small.
+
+### Searching one kind of record
+
+Record search is invisible until people type a name, so many never find out the palette can do it. Offer a command for each kind of record people look up often, like "Search events". It is a row people come across while browsing the palette, and choosing it narrows the search to events. The palette stays open and only events show from then on, so people don't have to sort through pages and actions.
+
+The command fills in a short prefix, `e:` in the demo below. People who use the app every day learn it from the command's description and type it directly. Keep the prefixes few and memorable, one letter per kind of record. Deleting the prefix returns to the regular search.
 
 <ComponentDemo name="command-palette-async" />
 
@@ -128,16 +134,10 @@ People often know exactly which record they need, an event by its name or an ord
   `inputValue` and `onInputChange`, and set `loading` while results load. The
   built-in match is then off for every group, so match the static pages
   yourself, as the demo does. Wait until people pause typing before you send a
-  request, and cancel requests that are out of date.
+  request, and cancel requests that are out of date. For the "Search events"
+  command, set `shouldCloseOnSelect={false}` on the item and put the prefix into
+  the query in `onAction`.
 </Callout>
-
-### Search prefixes
-
-People who use the app every day often know a record by its number. A short prefix lets them jump to it directly: in the demo below, `e:1024` finds the event with number 1024. Everyone else keeps using the regular search, so the prefix speeds up experienced users without getting in anyone's way.
-
-Read the prefix from the controlled `inputValue`, turn off the built-in filter while it is present and render the matching records. Show the prefix in the placeholder or the empty state, otherwise nobody finds out it exists. Keep the prefixes few and memorable, one letter per kind of record.
-
-<ComponentDemo name="command-palette-prefix" />
 
 ### When nothing matches
 

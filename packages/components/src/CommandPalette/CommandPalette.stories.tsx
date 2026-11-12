@@ -839,6 +839,69 @@ AsyncSearch.test(
   }
 );
 
+// Search one kind of record
+// ---------------
+// An item that leads further keeps the palette open
+// (`shouldCloseOnSelect={false}`) and narrows the search with a prefix.
+const ScopePalette = () => {
+  const [query, setQuery] = useState('');
+  const scoped = query.startsWith('e:');
+  return (
+    <CommandPalette.Trigger>
+      <CommandPalette.Button />
+      <CommandPalette
+        inputValue={query}
+        onInputChange={setQuery}
+        filter={scoped ? false : undefined}
+        onAction={key => {
+          if (key === 'search-events') setQuery('e:');
+        }}
+      >
+        {scoped ? (
+          <CommandPalette.Group title="Events">
+            <CommandPalette.Item id="jazz">Jazz Night</CommandPalette.Item>
+          </CommandPalette.Group>
+        ) : (
+          <CommandPalette.Group title="Actions">
+            <CommandPalette.Item id="search-events" shouldCloseOnSelect={false}>
+              Search events
+            </CommandPalette.Item>
+            <CommandPalette.Item id="create-event">
+              Create event
+            </CommandPalette.Item>
+          </CommandPalette.Group>
+        )}
+      </CommandPalette>
+    </CommandPalette.Trigger>
+  );
+};
+
+export const SearchOneKind = meta.story({
+  ...noSnapshot,
+  render: () => <ScopePalette />,
+});
+
+SearchOneKind.test(
+  'Keeps the palette open for an item that narrows the search',
+  async ({ canvas, step, userEvent }) => {
+    await openPalette({ canvas, userEvent });
+    await canvas.findByRole('searchbox');
+
+    await step('Choosing the item keeps the palette open', async () => {
+      await userEvent.keyboard('{Enter}');
+      await expect(canvas.getByRole('searchbox')).toHaveValue('e:');
+      await expectFirstRowActive(canvas, 'Jazz Night');
+    });
+
+    await step('Other items still close it', async () => {
+      await userEvent.keyboard('{Enter}');
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    });
+  }
+);
+
 // Favourites on empty query
 // ---------------
 // No dedicated API: the consumer controls the query and renders different

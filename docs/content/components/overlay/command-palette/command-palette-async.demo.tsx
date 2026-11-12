@@ -13,6 +13,9 @@ const pages = [
   { id: 'orders', label: 'Orders', icon: <ShoppingCart /> },
 ];
 
+const PREFIX = 'e:';
+const LIMIT = 3;
+
 // Stands in for the server.
 const allEvents: Event[] = [
   'Summer Open Air',
@@ -31,15 +34,18 @@ const allEvents: Event[] = [
   date: `${10 + i} Jun`,
 }));
 
-const LIMIT = 3;
-
 const searchEvents = async (query: string, signal: AbortSignal) => {
   await new Promise(resolve => setTimeout(resolve, 600));
   signal.throwIfAborted();
   const q = query.toLowerCase();
-  const matches = allEvents.filter(
-    e => e.name.toLowerCase().includes(q) || String(e.number).includes(q)
-  );
+  const matches = allEvents
+    .filter(
+      e => e.name.toLowerCase().includes(q) || String(e.number).includes(q)
+    )
+    // An exact number match comes first.
+    .sort(
+      (a, b) => Number(String(b.number) === q) - Number(String(a.number) === q)
+    );
   // One more than shown, to know whether there are more.
   return matches.slice(0, LIMIT + 1);
 };
@@ -47,17 +53,24 @@ const searchEvents = async (query: string, signal: AbortSignal) => {
 export default () => {
   const list = useAsyncList<Event>({
     async load({ signal, filterText = '' }) {
-      if (!filterText) return { items: [] };
-      return { items: await searchEvents(filterText, signal) };
+      const term = filterText.startsWith(PREFIX)
+        ? filterText.slice(PREFIX.length).trim()
+        : filterText.trim();
+      if (!term) return { items: [] };
+      return { items: await searchEvents(term, signal) };
     },
   });
   const query = list.filterText;
+  const scoped = query.startsWith(PREFIX);
+  const term = scoped ? query.slice(PREFIX.length).trim() : query.trim();
   const more = list.items.length > LIMIT;
   // `filter={false}` turns off the built-in match for every group, so the
   // static pages are matched here.
-  const matchingPages = pages.filter(page =>
-    page.label.toLowerCase().includes(query.toLowerCase())
-  );
+  const matchingPages = scoped
+    ? []
+    : pages.filter(page =>
+        page.label.toLowerCase().includes(term.toLowerCase())
+      );
 
   return (
     <CommandPalette.Trigger shortcut={false}>
@@ -68,6 +81,12 @@ export default () => {
         inputValue={query}
         onInputChange={list.setFilterText}
         loading={list.isLoading}
+        onAction={key => {
+          if (key === 'search-events') list.setFilterText(PREFIX);
+        }}
+        emptyState={
+          scoped && !term ? 'Type the name or number of an event.' : undefined
+        }
       >
         <CommandPalette.Group title="Pages">
           {matchingPages.map(page => (
@@ -76,6 +95,20 @@ export default () => {
               {page.label}
             </CommandPalette.Item>
           ))}
+        </CommandPalette.Group>
+        <CommandPalette.Group title="Search">
+          {query === '' && (
+            // Keeps the palette open and narrows the search to events.
+            <CommandPalette.Item
+              id="search-events"
+              shouldCloseOnSelect={false}
+              textValue="Search events"
+            >
+              <Search />
+              <Text slot="label">Search events</Text>
+              <Text slot="description">Or type {PREFIX} and a name</Text>
+            </CommandPalette.Item>
+          )}
         </CommandPalette.Group>
         <CommandPalette.Group title="Events">
           {list.items.slice(0, LIMIT).map(event => (
@@ -94,10 +127,13 @@ export default () => {
           {more && (
             <CommandPalette.Item
               id="all-events"
-              textValue={`Show all events for ${query}`}
+              textValue={`Show all events for ${term}`}
             >
               <Search />
-              Show all events for “{query}”
+              <Text slot="label">Show all events for “{term}”</Text>
+              <Text slot="description">
+                Opens the event list with this search
+              </Text>
             </CommandPalette.Item>
           )}
         </CommandPalette.Group>

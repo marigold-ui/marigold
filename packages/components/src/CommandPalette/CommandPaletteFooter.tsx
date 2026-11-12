@@ -6,24 +6,21 @@ import { intlMessages } from '../intl/messages';
 // Props
 // ---------------
 interface CommandPaletteFooterProps {
-  loading: boolean;
   classNames: ComponentClassNames<'CommandPalette'>;
 }
 
 // Component
 // ---------------
-// Internal. Rendered on desktop only: a key legend on the right and a loading
-// status on the left. Hidden from assistive tech, which already announces the
+// Internal. Rendered on desktop only: a key legend. The spinner in the search
+// field and the message in the list already show loading. Hidden from assistive tech, which already announces the
 // combobox and menu keyboard pattern.
 export const CommandPaletteFooter = ({
-  loading,
   classNames,
 }: CommandPaletteFooterProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   return (
     <div aria-hidden="true" className={classNames.footer}>
-      <span>{loading ? stringFormatter.format('loadingMessage') : null}</span>
       <div className={classNames.legend}>
         <span>
           <Keyboard>↑↓</Keyboard>

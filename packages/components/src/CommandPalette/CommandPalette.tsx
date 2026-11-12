@@ -44,7 +44,7 @@ export interface CommandPaletteProps<T extends object = object> {
 
   /**
    * Handler that is called when an item is chosen. The palette closes
-   * afterwards.
+   * afterwards, unless the item sets `shouldCloseOnSelect={false}`.
    */
   onAction?: (key: Key) => void;
 
@@ -138,7 +138,7 @@ const DefaultEmptyState = ({ query }: { query: string }) => {
 type CommandPaletteBodyProps<T extends object> = Omit<
   CommandPaletteProps<T>,
   'open' | 'defaultOpen' | 'onOpenChange' | 'aria-label'
->;
+> & { close: () => void };
 
 const CommandPaletteBody = <T extends object>({
   children,
@@ -152,6 +152,7 @@ const CommandPaletteBody = <T extends object>({
   defaultInputValue = '',
   onInputChange,
   filter,
+  close,
 }: CommandPaletteBodyProps<T>) => {
   const classNames = useClassNames({ component: 'CommandPalette' });
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
@@ -172,8 +173,8 @@ const CommandPaletteBody = <T extends object>({
 
   const { inputRef, menuRef } = useKeepFirstItemActive(inputValue, items);
   const context = useMemo(
-    () => ({ inputValue, filter, classNames }),
-    [inputValue, filter, classNames]
+    () => ({ inputValue, filter, classNames, close }),
+    [inputValue, filter, classNames, close]
   );
 
   return (
@@ -196,7 +197,7 @@ const CommandPaletteBody = <T extends object>({
           // The first row is active on open, so Enter runs it right away.
           // Focus stays in the input, the row only gets virtual focus.
           autoFocus="first"
-          onAction={onAction}
+          onAction={key => onAction?.(key)}
           // Inside the menu, where RAC announces it.
           renderEmptyState={() => (
             <div className={classNames.empty}>
@@ -224,7 +225,6 @@ const CommandPaletteBase = <T extends object>({
   defaultOpen = false,
   onOpenChange,
   'aria-label': ariaLabel,
-  onAction,
   loading = false,
   ...props
 }: CommandPaletteProps<T>) => {
@@ -246,10 +246,8 @@ const CommandPaletteBase = <T extends object>({
     <CommandPaletteBody
       {...props}
       loading={loading}
-      onAction={key => {
-        onAction?.(key);
-        setOpen(false);
-      }}
+      // Each item closes the palette after its action, see `CommandPaletteItem`.
+      close={() => setOpen(false)}
     />
   );
 
@@ -273,7 +271,7 @@ const CommandPaletteBase = <T extends object>({
           className="flex max-h-[inherit] min-h-0 flex-col outline-hidden"
         >
           {body}
-          <CommandPaletteFooter loading={loading} classNames={classNames} />
+          <CommandPaletteFooter classNames={classNames} />
         </Dialog>
       </Modal>
     </Underlay>
