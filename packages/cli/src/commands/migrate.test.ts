@@ -805,6 +805,32 @@ describe('runMigrateCommand', () => {
       expect(written.some(line => line.startsWith('Skipped in'))).toBe(false);
     });
 
+    test('lists nothing as skipped when completing a recorded migration', async () => {
+      // migrated, selection-only: combobox-value-props would fire on it again
+      const root = setupDetectable('19.0.0', 'v19');
+      const appFile = path.join(root, 'app', 'Search.tsx');
+      mkdirSync(path.dirname(appFile), { recursive: true });
+      writeFileSync(
+        appFile,
+        `import { ComboBox } from '@marigold/components';\nexport const Search = () => <ComboBox value={key} label="Animals" />;\n`
+      );
+      const written: string[] = [];
+
+      await runMigrateCommand({
+        version: 'v19',
+        targetPath: root,
+        dryRun: false,
+        only: ['restructure-to-slots'],
+        write: output => written.push(output),
+        interactive: false,
+      });
+
+      expect(written.some(line => line.startsWith('Skipped in'))).toBe(false);
+      expect(readFileSync(appFile, 'utf8')).toContain(
+        '<ComboBox value={key} label="Animals" />'
+      );
+    });
+
     test('never lowers the marker on an --only run of an older migration', async () => {
       const root = setupDetectable('19.0.0', 'v19');
 

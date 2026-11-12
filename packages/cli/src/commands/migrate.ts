@@ -514,6 +514,13 @@ export interface MigrateCommandOptions {
   interactive?: boolean;
 }
 
+/** Whether the marker already covers `version`. */
+const isRecorded = (version: string, targetPath: string): boolean => {
+  const file = findMarkerFile(targetPath);
+  const current = file ? readMarker(file) : null;
+  return current !== null && migrationMajor(current) >= migrationMajor(version);
+};
+
 /**
  * Write the applied-migrations marker after a real run. Never lowers it (an
  * `--only` re-run of an older migration), and a failure to record only warns:
@@ -664,8 +671,12 @@ export const runMigrateCommand = async (
       }
     }
 
+    // the skipped list is only reliable on a migration's first run: once it
+    // is recorded, a non-idempotent change fires again on its own output
+    const firstRun = !isRecorded(version, targetPath);
+
     // analyse before applying: afterwards a non-idempotent change fires again
-    if (selected && !dryRun && !fired) {
+    if (firstRun && selected && !dryRun && !fired) {
       fired = runMigrate({ version, targetPath, dryRun: true }).summary.map(
         s => s.name
       );
@@ -674,9 +685,10 @@ export const runMigrateCommand = async (
     write(runMigrate({ version, targetPath, dryRun, only: selected }).output);
     if (dryRun) continue;
 
-    const skipped = selected
-      ? (fired ?? []).filter(name => !selected.includes(name))
-      : [];
+    const skipped =
+      firstRun && selected
+        ? (fired ?? []).filter(name => !selected.includes(name))
+        : [];
     if (skipped.length > 0) {
       write(
         `Skipped in ${version}: ${skipped.join(', ')}. To apply later: marigold migrate ${version} ${targetPath} --only ${skipped.join(',')}`
