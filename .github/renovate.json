@@ -153,6 +153,13 @@
       "depNameTemplate": "vale-cli/vale",
       "datasourceTemplate": "github-releases",
       "extractVersionTemplate": "^v(?<version>.+)$"
+    },
+    {
+      "customType": "regex",
+      "description": "MCP servers run through npx, which the pnpm release-age guard does not cover, so pin them and let Renovate bump them",
+      "managerFilePatterns": ["/^\\.mcp\\.json$/"],
+      "matchStrings": ["\"(?<depName>@?[^\"@]+(?:/[^\"@]+)?)@(?<currentValue>\\d[^\"]*)\""],
+      "datasourceTemplate": "npm"
     }
   ]
 }
