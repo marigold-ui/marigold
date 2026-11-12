@@ -180,7 +180,7 @@ Dismissal.test(
 export const Controlled = meta.story({
   tags: ['component-test', '!autodocs'],
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [open, setOpen] = useState(false);
 
     return (
@@ -224,7 +224,7 @@ Controlled.test(
 export const Modality = meta.story({
   tags: ['component-test', '!autodocs'],
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [presses, setPresses] = useState(0);
 
     return (
@@ -879,7 +879,7 @@ SearchableList.test(
 export const ControlledSearch = meta.story({
   tags: ['component-test', '!autodocs'],
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [query, setQuery] = useState('');
 
     return (
@@ -930,7 +930,7 @@ const onSaveNote = fn();
 export const MiniForm = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [open, setOpen] = useState(false);
 
     return (
