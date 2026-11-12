@@ -56,7 +56,6 @@ const meta = preview.meta({
   args: {
     disabled: false,
     size: 'default',
-    selectionMode: 'single',
   },
 });
 

@@ -83,3 +83,16 @@ test('respects disabled state', async () => {
   expect(averageButton).toBeDisabled();
   expect(onSelectionChange).not.toHaveBeenCalled();
 });
+
+test('does not warn about selectionMode when it is not set', () => {
+  const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+  render(<Basic.Component />);
+
+  expect(
+    warnSpy.mock.calls.filter(args =>
+      String(args[0]).includes('`ToggleButtonGroup` is for independent')
+    )
+  ).toHaveLength(0);
+  warnSpy.mockRestore();
+});
