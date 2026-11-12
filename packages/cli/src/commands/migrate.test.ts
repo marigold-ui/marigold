@@ -713,6 +713,132 @@ describe('runMigrateCommand', () => {
     ).toContain(`'grid gap-x-2 items-center'`);
   });
 
+  describe('applied-migrations marker', () => {
+    const marker = (root: string): unknown =>
+      JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8'))
+        .marigold;
+
+    test('records a real run in the declaring package.json', async () => {
+      const root = setupDetectable('18.0.0');
+      const written: string[] = [];
+
+      await runMigrateCommand({
+        version: 'v18',
+        targetPath: root,
+        dryRun: false,
+        write: output => written.push(output),
+        interactive: false,
+      });
+
+      expect(marker(root)).toEqual({ migrated: 'v18' });
+      expect(written.join('\n')).toContain('Recorded v18 as applied in');
+    });
+
+    test('never records a dry run', async () => {
+      const root = setupDetectable('18.0.0');
+
+      await runMigrateCommand({
+        version: 'v18',
+        targetPath: root,
+        dryRun: true,
+        write: () => {},
+        interactive: false,
+      });
+
+      expect(marker(root)).toBeUndefined();
+    });
+
+    test('records the last migration of a multi-version run', async () => {
+      const root = setupDetectable('19.0.0');
+      prompts.confirm.mockResolvedValue(true);
+      prompts.multiselect.mockImplementation(
+        async ({ initialValues }: { initialValues: string[] }) => initialValues
+      );
+
+      await runMigrateCommand({
+        targetPath: root,
+        dryRun: false,
+        write: () => {},
+        interactive: true,
+      });
+
+      expect(marker(root)).toEqual({ migrated: 'v19' });
+    });
+
+    test('records a partial run and names what was skipped', async () => {
+      const root = setupDetectable('18.0.0');
+      const written: string[] = [];
+
+      await runMigrateCommand({
+        version: 'v18',
+        targetPath: root,
+        dryRun: false,
+        only: ['swap-exact-classes'],
+        write: output => written.push(output),
+        interactive: false,
+      });
+
+      const skippedLine = written.find(line =>
+        line.startsWith('Skipped in v18:')
+      );
+      expect(skippedLine).toBeDefined();
+      expect(skippedLine).toContain(`marigold migrate v18 ${root} --only `);
+      expect(skippedLine).not.toContain('swap-exact-classes');
+      expect(marker(root)).toEqual({ migrated: 'v18' });
+    });
+
+    test('lists nothing as skipped when every fired change ran', async () => {
+      const root = setupDetectable('18.0.0');
+      const written: string[] = [];
+      prompts.confirm.mockResolvedValue(true);
+      prompts.multiselect.mockImplementation(
+        async ({ initialValues }: { initialValues: string[] }) => initialValues
+      );
+
+      await runMigrateCommand({
+        targetPath: root,
+        dryRun: false,
+        write: output => written.push(output),
+        interactive: true,
+      });
+
+      expect(written.some(line => line.startsWith('Skipped in'))).toBe(false);
+    });
+
+    test('never lowers the marker on an --only run of an older migration', async () => {
+      const root = setupDetectable('19.0.0', 'v19');
+
+      await runMigrateCommand({
+        version: 'v18',
+        targetPath: root,
+        dryRun: false,
+        only: ['swap-exact-classes'],
+        write: () => {},
+        interactive: false,
+      });
+
+      expect(marker(root)).toEqual({ migrated: 'v19' });
+    });
+
+    test('warns when no package.json declares @marigold/components', async () => {
+      const root = setupFixture();
+      const written: string[] = [];
+
+      const code = await runMigrateCommand({
+        version: 'v18',
+        targetPath: root,
+        dryRun: false,
+        write: output => written.push(output),
+        interactive: false,
+      });
+
+      expect(code).toBe(0);
+      expect(written.join('\n')).toContain(
+        'Could not record v18 as applied: no package.json at or above'
+      );
+    });
+  });
+
   test('offers every change that fired, described, for selection', async () => {
     const root = setupDetectable('18.0.0');
     prompts.confirm.mockResolvedValue(true);

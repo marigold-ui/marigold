@@ -9,7 +9,11 @@ import {
 } from '../lib/codemod/engine.js';
 import { v18 } from '../lib/codemod/manifests/v18.js';
 import { v19 } from '../lib/codemod/manifests/v19.js';
-import { findMarkerFile, readMarker } from '../lib/codemod/marker.js';
+import {
+  findMarkerFile,
+  readMarker,
+  writeMarker,
+} from '../lib/codemod/marker.js';
 import {
   removeJsxProps,
   renameImports,
@@ -511,6 +515,37 @@ export interface MigrateCommandOptions {
 }
 
 /**
+ * Write the applied-migrations marker after a real run. Never lowers it (an
+ * `--only` re-run of an older migration), and a failure to record only warns:
+ * the code edits have already landed.
+ */
+const recordMigration = (
+  version: string,
+  targetPath: string,
+  write: (output: string) => void
+): void => {
+  const file = findMarkerFile(targetPath);
+  if (!file) {
+    write(
+      `Could not record ${version} as applied: no package.json at or above ${targetPath} declares @marigold/components. ` +
+        `Add "marigold": { "migrated": "${version}" } to the one that does, or a bare marigold migrate offers ${version} again.`
+    );
+    return;
+  }
+  try {
+    const current = readMarker(file);
+    if (current && migrationMajor(current) >= migrationMajor(version)) return;
+    if (writeMarker(file, version)) {
+      write(`Recorded ${version} as applied in ${file}.`);
+    }
+  } catch (error) {
+    write(
+      `Could not record ${version} as applied: ${error instanceof Error ? error.message : String(error)}`
+    );
+  }
+};
+
+/**
  * Guards for an explicitly named migration. Returns false when it must not
  * run: already applied per the marker, unless `--only` names the changes.
  * A migration for a major that is not installed yet warns but still runs.
@@ -605,8 +640,10 @@ export const runMigrateCommand = async (
     // pre-analysis: dry-run in memory, offer the fired changes for
     // selection. Skipped for explicit --only / --dry-run / non-TTY runs.
     let selected = only;
+    let fired: string[] | undefined;
     if (!selected && !dryRun && interactive) {
       const analysis = runMigrate({ version, targetPath, dryRun: true });
+      fired = analysis.summary.map(s => s.name);
       if (analysis.summary.length > 0) {
         const { multiselect, isCancel } = await import('@clack/prompts');
         const chosen = await multiselect({
@@ -627,7 +664,25 @@ export const runMigrateCommand = async (
       }
     }
 
+    // analyse before applying: afterwards a non-idempotent change fires again
+    if (selected && !dryRun && !fired) {
+      fired = runMigrate({ version, targetPath, dryRun: true }).summary.map(
+        s => s.name
+      );
+    }
+
     write(runMigrate({ version, targetPath, dryRun, only: selected }).output);
+    if (dryRun) continue;
+
+    const skipped = selected
+      ? (fired ?? []).filter(name => !selected.includes(name))
+      : [];
+    if (skipped.length > 0) {
+      write(
+        `Skipped in ${version}: ${skipped.join(', ')}. To apply later: marigold migrate ${version} ${targetPath} --only ${skipped.join(',')}`
+      );
+    }
+    recordMigration(version, targetPath, write);
   }
   return 0;
 };
