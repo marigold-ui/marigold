@@ -37,6 +37,10 @@ export default [
   // those children. Avoiding `Children`/`cloneElement` means a different API
   // (compound parts that register through context, or `items` props), which
   // is breaking and belongs in a major, not in a lint cleanup.
+  // Tracked per component: DST-1957 (TagGroup, Sidebar: cloneElement to
+  // context, non-breaking), DST-1958 to DST-1965 (Columns, Stack, Aside,
+  // Breadcrumbs, OverflowRegion, More, Stepper, SelectAll: next major).
+  // Re-enable the rules once those are done.
   {
     files: ['packages/components/**', 'docs/ui/**'],
     rules: {
