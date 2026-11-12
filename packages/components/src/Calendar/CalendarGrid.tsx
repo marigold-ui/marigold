@@ -2,8 +2,8 @@ import type { DateDuration } from '@internationalized/date';
 import { useContext } from 'react';
 import {
   CalendarCell,
-  CalendarGrid,
   CalendarGridBody,
+  CalendarGrid as RACCalendarGrid,
 } from 'react-aria-components/Calendar';
 import { RangeCalendarStateContext } from 'react-aria-components/RangeCalendar';
 import { cn } from '@marigold/system';
@@ -18,7 +18,7 @@ export interface CalendarGridProps {
   offset?: DateDuration;
 }
 
-const _CalendarGrid = ({ offset }: CalendarGridProps) => {
+const CalendarGrid = ({ offset }: CalendarGridProps) => {
   const { classNames } = useCalendarContext();
   // RAC strips `data-selected` from every cell when the calendar is disabled,
   // so the in-range fill disappears in disabled <RangeCalendar>. We mark
@@ -30,7 +30,7 @@ const _CalendarGrid = ({ offset }: CalendarGridProps) => {
   const range = rangeState?.highlightedRange ?? null;
 
   return (
-    <CalendarGrid
+    <RACCalendarGrid
       offset={offset}
       weekdayStyle="short"
       className={classNames.calendarGrid}
@@ -51,8 +51,8 @@ const _CalendarGrid = ({ offset }: CalendarGridProps) => {
           );
         }}
       </CalendarGridBody>
-    </CalendarGrid>
+    </RACCalendarGrid>
   );
 };
 
-export { _CalendarGrid as CalendarGrid };
+export { CalendarGrid };

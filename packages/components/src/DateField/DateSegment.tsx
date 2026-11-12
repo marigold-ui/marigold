@@ -1,12 +1,12 @@
 import type RAC from 'react-aria-components';
-import { DateSegment } from 'react-aria-components/DateField';
+import { DateSegment as RACDateSegment } from 'react-aria-components/DateField';
 import { cn } from '@marigold/system';
 
 export type DateSegmentProps = RAC.DateSegmentProps;
 
-const _DateSegment = ({ segment, ...props }: DateSegmentProps) => {
+const DateSegment = ({ segment, ...props }: DateSegmentProps) => {
   return (
-    <DateSegment
+    <RACDateSegment
       {...props}
       segment={segment}
       style={{
@@ -36,8 +36,8 @@ const _DateSegment = ({ segment, ...props }: DateSegmentProps) => {
           </span>
         </>
       )}
-    </DateSegment>
+    </RACDateSegment>
   );
 };
 
-export { _DateSegment as DateSegment };
+export { DateSegment };

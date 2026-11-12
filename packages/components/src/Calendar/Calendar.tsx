@@ -1,6 +1,9 @@
 import { use, useState } from 'react';
 import type RAC from 'react-aria-components';
-import { Calendar, DateValue } from 'react-aria-components/Calendar';
+import {
+  DateValue,
+  Calendar as RACCalendar,
+} from 'react-aria-components/Calendar';
 import { DatePickerStateContext } from 'react-aria-components/DatePicker';
 import { WidthProp, cn, createWidthVar, useClassNames } from '@marigold/system';
 import { CalendarBody } from './CalendarBody';
@@ -72,7 +75,7 @@ export interface CalendarProps extends Omit<
 
 // Component
 // ---------------
-const _Calendar = ({
+const Calendar = ({
   disabled,
   readOnly,
   size,
@@ -133,7 +136,7 @@ const _Calendar = ({
         isRange: false,
       }}
     >
-      <Calendar
+      <RACCalendar
         className={cn(
           'relative flex w-(--width) flex-col',
           // gap-3 below `sm`: with gap-4 a 5-week month overflows the picker
@@ -159,9 +162,9 @@ const _Calendar = ({
         ) : (
           body
         )}
-      </Calendar>
+      </RACCalendar>
     </CalendarContext>
   );
 };
 
-export { _Calendar as Calendar };
+export { Calendar };

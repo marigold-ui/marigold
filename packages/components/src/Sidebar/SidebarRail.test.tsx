@@ -171,6 +171,54 @@ describe('Sidebar.Rail — arrow-key navigation', () => {
   });
 });
 
+describe('Sidebar.Rail — panel heading levels', () => {
+  test('group labels sit one level below the panel title', () => {
+    render(<Rail.Component />);
+
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Tickets' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 3, name: 'Ansichten' })
+    ).toBeInTheDocument();
+  });
+
+  test('a drilled-in level heads at 3 and its group labels at 4', () => {
+    render(
+      <MarigoldProvider theme={theme}>
+        <Sidebar.Provider>
+          <Sidebar>
+            <Sidebar.Rail current="/tickets/archiv/geloest">
+              <Sidebar.RailItem icon={<span />} id="tickets">
+                Tickets
+                <Sidebar.Nav aria-label="Tickets">
+                  <Sidebar.Item id="archiv" textValue="Archiv">
+                    Archiv
+                    <Sidebar.GroupLabel>Erledigt</Sidebar.GroupLabel>
+                    <Sidebar.Item href="/tickets/archiv/geloest">
+                      Gelöst
+                    </Sidebar.Item>
+                  </Sidebar.Item>
+                </Sidebar.Nav>
+              </Sidebar.RailItem>
+            </Sidebar.Rail>
+          </Sidebar>
+        </Sidebar.Provider>
+      </MarigoldProvider>
+    );
+
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Tickets' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 3, name: 'Archiv' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 4, name: 'Erledigt' })
+    ).toBeInTheDocument();
+  });
+});
+
 describe('Sidebar.Rail — panel focus management', () => {
   test('switching sections moves focus to the panel heading', async () => {
     render(<Rail.Component />);
@@ -181,13 +229,37 @@ describe('Sidebar.Rail — panel focus management', () => {
     await waitFor(() => expect(heading).toHaveFocus());
   });
 
-  test('re-clicking the active section on a collapsed panel expands and focuses it', async () => {
+  test('re-clicking the active section navigates to its page and keeps the panel open', async () => {
     render(<Rail.Component />);
     const rail = screen.getByRole('navigation', { name: 'Hauptnavigation' });
+    const panel = screen.getByRole('navigation', { name: 'Tickets' });
     const toggle = screen.getByRole('button', {
       name: 'Navigation umschalten',
     });
 
+    // Go deeper than the section's landing page first.
+    await user.click(within(panel).getByRole('link', { name: 'Alle Tickets' }));
+    expect(
+      within(panel).getByRole('link', { name: 'Alle Tickets' })
+    ).toHaveAttribute('aria-current', 'page');
+
+    await user.click(within(rail).getByRole('link', { name: 'Tickets' }));
+
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(panel).getByRole('link', { name: 'Meine Tickets' })
+    ).toHaveAttribute('aria-current', 'page');
+  });
+
+  test('re-clicking the active section on a collapsed panel expands, focuses it and navigates', async () => {
+    render(<Rail.Component />);
+    const rail = screen.getByRole('navigation', { name: 'Hauptnavigation' });
+    const panel = screen.getByRole('navigation', { name: 'Tickets' });
+    const toggle = screen.getByRole('button', {
+      name: 'Navigation umschalten',
+    });
+
+    await user.click(within(panel).getByRole('link', { name: 'Alle Tickets' }));
     await user.click(toggle);
     expect(toggle).toHaveAttribute('aria-expanded', 'false');
 
@@ -196,6 +268,39 @@ describe('Sidebar.Rail — panel focus management', () => {
     expect(toggle).toHaveAttribute('aria-expanded', 'true');
     const heading = screen.getByRole('heading', { name: 'Tickets' });
     await waitFor(() => expect(heading).toHaveFocus());
+    expect(
+      within(panel).getByRole('link', { name: 'Meine Tickets' })
+    ).toHaveAttribute('aria-current', 'page');
+  });
+
+  test('re-clicking an active section without a linkable leaf does not navigate', async () => {
+    const navigate = vi.fn();
+    render(
+      <RouterProvider navigate={navigate}>
+        <MarigoldProvider theme={theme}>
+          <Sidebar.Provider>
+            <Sidebar>
+              <Sidebar.Rail aria-label="Hauptnavigation">
+                <Sidebar.RailItem id="werkzeuge" icon={<i />} active>
+                  Werkzeuge
+                  <Sidebar.Nav aria-label="Werkzeuge">
+                    <Sidebar.Item onPress={() => {}}>Export</Sidebar.Item>
+                  </Sidebar.Nav>
+                </Sidebar.RailItem>
+              </Sidebar.Rail>
+            </Sidebar>
+          </Sidebar.Provider>
+        </MarigoldProvider>
+      </RouterProvider>
+    );
+    const rail = screen.getByRole('navigation', { name: 'Hauptnavigation' });
+
+    await user.click(within(rail).getByRole('button', { name: 'Werkzeuge' }));
+
+    expect(navigate).not.toHaveBeenCalled();
+    expect(
+      screen.getByRole('navigation', { name: 'Werkzeuge' })
+    ).toBeInTheDocument();
   });
 });
 
@@ -309,6 +414,29 @@ describe('Sidebar.Rail — mobile', () => {
     expect(
       panelPosition(within(drawer).getByRole('link', { name: 'Meine Tickets' }))
     ).toHaveAttribute('data-position', 'active');
+  });
+
+  test('the drilled-in section name is a heading, and tapping it hits the back button', async () => {
+    render(<Rail.Component />);
+    await openDrawer();
+    const drawer = await screen.findByRole('complementary', {
+      name: 'Seitenleiste',
+    });
+
+    const heading = within(drawer).getByRole('heading', {
+      level: 2,
+      name: 'Tickets',
+    });
+    const backButton = within(drawer).getByRole('button', {
+      name: 'Zurück zu Tickets',
+    });
+    expect(backButton).not.toContainElement(heading);
+    await waitFor(() => {
+      const { left, top, width, height } = heading.getBoundingClientRect();
+      expect(
+        document.elementFromPoint(left + width / 2, top + height / 2)
+      ).toBe(backButton);
+    });
   });
 
   test('back returns to the rail-level list and keeps the drawer open', async () => {
@@ -527,7 +655,10 @@ describe('modified clicks & keyboard activation', () => {
     const toggle = screen.getByRole('button', {
       name: 'Navigation umschalten',
     });
-    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    // Collapse first: on a collapsed panel a plain click would reopen it, so
+    // only the modified-click guard keeps it closed.
+    await user.click(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
     const { result, stop } = observeNativeClick();
 
     await user.keyboard('{Control>}');
@@ -535,10 +666,9 @@ describe('modified clicks & keyboard activation', () => {
     await user.keyboard('{/Control}');
     stop();
 
-    // Re-clicking the active section normally toggles the panel and prevents
-    // navigation — a browser-owned click must do neither.
+    // A browser-owned click must not touch the panel state.
     expect(result.prevented).toBe(false);
-    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
   });
 
   test('an onPress-only rail item activates with Enter and Space', async () => {
@@ -641,5 +771,49 @@ describe('explicit active override', () => {
       'aria-current'
     );
     expect(screen.getByRole('heading', { name: 'Hilfe' })).toBeInTheDocument();
+  });
+});
+
+describe('panel nav props', () => {
+  const renderRail = (nav: { current?: string; 'aria-label'?: string }) =>
+    render(
+      <MarigoldProvider theme={theme}>
+        <Sidebar.Provider>
+          <Sidebar>
+            <Sidebar.Rail current="/tickets/meine">
+              <Sidebar.RailItem id="tickets" icon={<i />}>
+                Tickets
+                <Sidebar.Nav {...nav}>
+                  <Sidebar.Item href="/tickets/meine">
+                    Meine Tickets
+                  </Sidebar.Item>
+                  <Sidebar.Item href="/tickets/alle">Alle Tickets</Sidebar.Item>
+                </Sidebar.Nav>
+              </Sidebar.RailItem>
+            </Sidebar.Rail>
+          </Sidebar>
+        </Sidebar.Provider>
+      </MarigoldProvider>
+    );
+
+  test('the panel nav takes the rail’s current and the section title as its name', () => {
+    renderRail({});
+
+    const panel = screen.getByRole('navigation', { name: 'Tickets' });
+    expect(
+      within(panel).getByRole('link', { name: 'Meine Tickets' })
+    ).toHaveAttribute('aria-current', 'page');
+  });
+
+  test('a current set on the panel nav itself wins over the rail’s', () => {
+    renderRail({ current: '/tickets/alle', 'aria-label': 'Ticketliste' });
+
+    const panel = screen.getByRole('navigation', { name: 'Ticketliste' });
+    expect(
+      within(panel).getByRole('link', { name: 'Alle Tickets' })
+    ).toHaveAttribute('aria-current', 'page');
+    expect(
+      within(panel).getByRole('link', { name: 'Meine Tickets' })
+    ).not.toHaveAttribute('aria-current');
   });
 });

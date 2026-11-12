@@ -307,7 +307,7 @@ Basic.test(
  */
 export const ControlledSidebar = meta.story({
   tags: ['component-test'],
-  render: () => {
+  render: function Render() {
     const [open, setOpen] = useState(false);
     return (
       <Sidebar.Provider open={open} onOpenChange={setOpen}>

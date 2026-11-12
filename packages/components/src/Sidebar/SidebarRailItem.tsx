@@ -37,9 +37,8 @@ export interface SidebarRailItemProps {
   children?: ReactNode;
 }
 
-const _SidebarRailItem = (_props: SidebarRailItemProps): ReactElement | null =>
-  null;
+export const SidebarRailItem = (
+  _props: SidebarRailItemProps
+): ReactElement | null => null;
 
-_SidebarRailItem.__SIDEBAR_RAIL_ITEM__ = true as const;
-
-export const SidebarRailItem = _SidebarRailItem;
+SidebarRailItem.__SIDEBAR_RAIL_ITEM__ = true as const;

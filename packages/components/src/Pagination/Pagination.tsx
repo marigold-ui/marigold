@@ -148,7 +148,7 @@ const InnerPagination = ({
   );
 };
 
-const _Pagination = ({
+const Pagination = ({
   defaultPage = 1,
   page,
   totalItems,
@@ -188,4 +188,4 @@ const _Pagination = ({
   );
 };
 
-export { _Pagination as Pagination };
+export { Pagination };

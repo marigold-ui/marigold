@@ -44,7 +44,7 @@ The docs and Storybook projects deploy on Vercel. Each Vercel project (docs and
 storybook, in both **Production** and **Preview** environments) **must** have the
 environment variable `ENABLE_EXPERIMENTAL_COREPACK=1` set.
 
-Without it, Vercel ignores the pinned `packageManager` (`pnpm@11.1.2`) and falls
+Without it, Vercel ignores the pnpm version pinned in `packageManager` and falls
 back to pnpm 9, which reads `overrides` from `package.json` instead of
 `pnpm-workspace.yaml`. That mismatch causes `ERR_PNPM_LOCKFILE_CONFIG_MISMATCH`
 and the deploy fails. With Corepack enabled, Vercel uses the pinned pnpm version,

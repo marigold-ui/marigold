@@ -217,7 +217,7 @@ WithSections.test(
 export const Controlled = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [submitted, setSubmitted] = useState<string | number | null>('');
     const [current, setCurrent] = useState<string>('');
 
@@ -537,7 +537,7 @@ const SHIFT_ITEMS = [
 const withShift: Parameters<typeof Basic.test>[1] = {
   args: { label: 'Assign to', description: undefined },
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [shift, setShift] = useState('early');
 
     return (

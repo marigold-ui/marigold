@@ -172,7 +172,7 @@ export const BooleanFields = meta.story({
 
 export const WithRef = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
-  render: () => {
+  render: function Render() {
     const formRef = useRef<HTMLFormElement>(null);
 
     return (

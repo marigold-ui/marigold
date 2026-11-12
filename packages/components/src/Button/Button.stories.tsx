@@ -214,7 +214,7 @@ export const Loading = meta.story({
     // snapshot lives on the test below that actually reaches it.
     chromatic: { disableSnapshot: true },
   },
-  render: ({ children, ...args }) => {
+  render: function Render({ children, ...args }) {
     const [loading, setLoading] = useState<boolean | undefined>(false);
     const handleSubmit = async () => {
       //avoid multiple submits while loading

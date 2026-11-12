@@ -1,6 +1,6 @@
 import { ReactElement, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Input } from 'react-aria-components/Input';
+import { Input as RACInput } from 'react-aria-components/Input';
 import { cn, useClassNames } from '@marigold/system';
 
 // Props
@@ -16,7 +16,7 @@ export interface InputProps extends Omit<RAC.InputProps, RemovedProps> {
   ref?: Ref<HTMLInputElement>;
 }
 
-const _Input = ({
+const Input = ({
   type,
   icon,
   action,
@@ -40,7 +40,7 @@ const _Input = ({
       data-icon={icon && ''}
       data-action={action && ''}
     >
-      <Input
+      <RACInput
         {...props}
         className={cn(
           'flex-1',
@@ -77,4 +77,4 @@ const _Input = ({
   );
 };
 
-export { _Input as Input };
+export { Input };

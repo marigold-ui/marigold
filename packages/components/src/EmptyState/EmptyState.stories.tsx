@@ -78,7 +78,7 @@ export const WithAction = meta.story({
 export const WithAutocompleteAndData = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [inputValue, setInputValue] = useState('');
 
     const items = [

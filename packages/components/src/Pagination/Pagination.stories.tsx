@@ -226,7 +226,11 @@ export const SurfaceVariants = meta.story({
 export const Controlled = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
-  render: ({ totalItems, pageSize, ...rest }: Partial<PaginationProps>) => {
+  render: function Render({
+    totalItems,
+    pageSize,
+    ...rest
+  }: Partial<PaginationProps>) {
     const [basicPage, setBasicPage] = useState(1);
 
     return (
@@ -335,7 +339,7 @@ export const WithTable = meta.story({
   parameters: {
     controls: { exclude: ['totalItems', 'pageSize'] },
   },
-  render: args => {
+  render: function Render(args) {
     interface User {
       id: number;
       name: string;
@@ -431,7 +435,7 @@ export const Mobile = meta.story({
   args: {
     pageSize: 3,
   },
-  render: ({ pageSize, ...rest }) => {
+  render: function Render({ pageSize, ...rest }) {
     const data = Array.from({ length: 12 }, (_, i) => ({
       id: i + 1,
       name: `User ${i + 1}`,

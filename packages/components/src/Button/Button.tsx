@@ -1,6 +1,6 @@
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Button } from 'react-aria-components/Button';
+import { Button as RACButton } from 'react-aria-components/Button';
 import { useContextProps } from 'react-aria-components/slots';
 import { cn, useClassNames } from '@marigold/system';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
@@ -50,7 +50,7 @@ export interface ButtonProps
   ref?: Ref<HTMLButtonElement>;
 }
 
-const _Button = ({ ref: refProp, ...inputProps }: ButtonProps) => {
+const Button = ({ ref: refProp, ...inputProps }: ButtonProps) => {
   // Consume the Marigold `ButtonContext` (NOT RAC's) so a bare `<Button>`
   // adapts inside `<ButtonGroup>`/`<Panel.Header>`. A local prop always wins;
   // `slot={null}` opts out, any other `slot` forwards to RAC's `<Button>`.
@@ -78,7 +78,7 @@ const _Button = ({ ref: refProp, ...inputProps }: ButtonProps) => {
   });
 
   return (
-    <Button
+    <RACButton
       {...props}
       ref={ref}
       className={cn(
@@ -107,8 +107,8 @@ const _Button = ({ ref: refProp, ...inputProps }: ButtonProps) => {
       ) : (
         children
       )}
-    </Button>
+    </RACButton>
   );
 };
 
-export { _Button as Button };
+export { Button };

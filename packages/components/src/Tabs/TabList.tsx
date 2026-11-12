@@ -2,7 +2,7 @@ import { LayoutGroup } from 'motion/react';
 import * as m from 'motion/react-m';
 import { useId, useRef } from 'react';
 import type RAC from 'react-aria-components';
-import { TabList } from 'react-aria-components/Tabs';
+import { TabList as RACTabList } from 'react-aria-components/Tabs';
 import { cn } from '@marigold/system';
 import { MotionFeatures } from '../lazyMotion';
 import { useDevWarning } from '../utils/useDevWarning';
@@ -18,7 +18,7 @@ export type TabListProps = Omit<
 
 // Component
 // ----------------------
-const _TabList = (props: TabListProps) => {
+const TabList = (props: TabListProps) => {
   const { classNames } = useTabContext();
   const layoutId = useId();
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -50,13 +50,13 @@ const _TabList = (props: TabListProps) => {
           layoutScroll
           className={classNames.tabsListScroll}
         >
-          <TabList {...props} className={cn('flex', classNames.tabsList)}>
+          <RACTabList {...props} className={cn('flex', classNames.tabsList)}>
             {props.children}
-          </TabList>
+          </RACTabList>
         </m.div>
       </LayoutGroup>
     </MotionFeatures>
   );
 };
 
-export { _TabList as TabList };
+export { TabList };
