@@ -12,9 +12,8 @@ import type { Codemod, MigrationManifest } from '../types.js';
 /**
  * Adds slot keys the target version requires but the consumer theme lacks,
  * as `cva({})` stubs or the manifest's `slotDefaults` — never touching
- * existing slots. Slot keys the target
- * version dropped are reported as warnings (they fail the exhaustive-Record
- * typecheck and are dead weight).
+ * existing slots. Slot keys the target version dropped are reported as
+ * warnings (they fail the exhaustive-Record typecheck and are dead weight).
  */
 export const stubMissingSlots = (manifest: MigrationManifest): Codemod =>
   themeCodemod(

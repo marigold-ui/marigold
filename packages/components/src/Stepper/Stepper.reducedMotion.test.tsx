@@ -10,6 +10,11 @@ vi.mock('motion/react', async importOriginal => ({
   useReducedMotion: () => motion.reduced,
 }));
 
+// A long glide, so the control is still mid-flight however slow the runner.
+vi.mock('../motionTransitions', () => ({
+  INDICATOR_TRANSITION: { duration: 10, ease: 'linear' },
+}));
+
 const nextFrame = () =>
   new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
 

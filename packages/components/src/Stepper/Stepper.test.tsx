@@ -8,7 +8,9 @@ import { Stepper } from './Stepper';
 import {
   Basic,
   HideLabels,
+  LongLabel,
   ManySteps,
+  SmallScreenManySteps,
   States,
   WithHrefs,
 } from './Stepper.stories';
@@ -397,6 +399,15 @@ describe('on a small screen', () => {
     expect(hasIndicator(stepParts(items[1]).segment)).toBe(true);
   });
 
+  test('keeps a disabled current step dashed on its segment', () => {
+    render(<Basic.Component disabledKeys={['plan']} />);
+
+    const { segment } = stepParts(screen.getAllByRole('listitem')[1]);
+
+    expect(hasIndicator(segment)).toBe(false);
+    expect(getComputedStyle(segment).borderTopStyle).toBe('dashed');
+  });
+
   test('flags nothing when only the current step has failed', () => {
     render(<Basic.Component errorKeys={['plan']} />);
 
@@ -416,27 +427,12 @@ describe('on a small screen', () => {
 
   test('keeps twelve segments at 24px on a 320px phone with 16px gutters', async () => {
     await page.viewport(320, 800);
-    const steps = Array.from({ length: 12 }, (_, i) => `step-${i + 1}`);
-    // 320px minus a 16px gutter on each side.
-    render(
-      <MarigoldProvider theme={theme}>
-        <div style={{ width: 288 }}>
-          <Stepper
-            aria-label="Event creation progress"
-            selectedKey="step-12"
-            completedKeys={steps.slice(0, 11)}
-          >
-            {steps.map(id => (
-              <Stepper.Item key={id} id={id}>
-                {id}
-              </Stepper.Item>
-            ))}
-          </Stepper>
-        </div>
-      </MarigoldProvider>
-    );
+    render(<SmallScreenManySteps.Component />);
 
-    for (const step of screen.getAllByRole('button')) {
+    const steps = screen.getAllByRole('listitem');
+
+    expect(steps).toHaveLength(12);
+    for (const step of steps) {
       expect(step.getBoundingClientRect().width).toBeGreaterThanOrEqual(24);
     }
   });
@@ -452,16 +448,7 @@ describe('on a small screen', () => {
   });
 
   test('keeps a long current label whole instead of truncating it', () => {
-    render(
-      <MarigoldProvider theme={theme}>
-        <Stepper aria-label="Checkout progress" selectedKey="seats">
-          <Stepper.Item id="event">Event</Stepper.Item>
-          <Stepper.Item id="seats">
-            Ticket categories and seat reservations for the whole season
-          </Stepper.Item>
-        </Stepper>
-      </MarigoldProvider>
-    );
+    render(<LongLabel.Component />);
 
     const currentLabel = currentLabelLine(
       'Ticket categories and seat reservations for the whole season'
@@ -521,6 +508,18 @@ describe('progress fill', () => {
     expect(hasIndicator(marker)).toBe(true);
     // The error border would otherwise ring the current fill.
     expect(getComputedStyle(marker).borderTopColor).toBe('rgba(0, 0, 0, 0)');
+  });
+
+  test('keeps a disabled current step dashed on its marker', () => {
+    render(<Basic.Component disabledKeys={['plan']} />);
+
+    const { marker } = stepParts(screen.getAllByRole('listitem')[1]);
+
+    expect(hasIndicator(marker)).toBe(false);
+    expect(getComputedStyle(marker).borderTopStyle).toBe('dashed');
+    expect(getComputedStyle(marker).borderTopColor).not.toBe(
+      'rgba(0, 0, 0, 0)'
+    );
   });
 
   test('fills the whole current marker, border included', () => {

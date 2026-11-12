@@ -64,7 +64,8 @@ export const Stepper: ThemeComponent<'Stepper'> = {
       'in-data-[state=disabled]:text-secondary in-data-[state=disabled]:border-dashed',
       'in-data-[state=completed]:bg-success-accent in-data-[state=completed]:text-success-foreground in-data-[state=completed]:border-transparent',
       // The fill comes from `currentIndicator`, which glides between steps.
-      'in-data-current:text-primary-foreground in-data-current:border-transparent',
+      // A disabled step keeps its dashed look, even when current.
+      'in-data-current:not-in-data-[state=disabled]:text-primary-foreground in-data-current:not-in-data-[state=disabled]:border-transparent',
       // A failed step that is current keeps the current fill.
       'in-data-[state=error]:not-in-data-current:text-destructive-accent in-data-[state=error]:not-in-data-current:border-destructive-accent',
       '[&_svg]:size-4',

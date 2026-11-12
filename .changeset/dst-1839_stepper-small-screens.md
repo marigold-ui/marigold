@@ -9,7 +9,7 @@ feat(DST-1839): give `Stepper` a compact layout on small screens and animated st
 
 On phones the stepper no longer overflows its container. Below the small-screen breakpoint it switches on its own to a "Step 2 of 4" counter, the name of the current step and a track with one segment per step, so any number of steps fits and the user always sees where they are. Finished steps stay tappable, and a step that failed earlier is flagged on the counter line as well as in red. `hideLabels` now only affects large screens, because small screens show the current step's label anyway.
 
-Moving to another step now fills the line toward it and glides the highlight to the new step, with the same timing as the `Tabs` indicator. The motion is turned off when the user prefers reduced motion.
+Moving to another step now fills the line toward it and glides the highlight to the new step, with the same timing as the `Tabs` indicator. The motion is turned off when the user prefers reduced motion. A failed step that is current now gets the current fill on large screens too, with its warning icon on top, instead of a red outline.
 
 Nothing changes in the component API, and apps using `@marigold/theme-rui` need no code changes. Upgrade `@marigold/components` and `@marigold/theme-rui` together.
 
@@ -20,14 +20,14 @@ Nothing changes in the component API, and apps using `@marigold/theme-rui` need 
 
 ### Migrating a custom theme
 
-Every theme maintained outside this repository that defines `Stepper` needs the seven new slots. After upgrading, run `marigold migrate` from the project root. It adds them with styles that keep the theme's current row on every screen size. Empty slots are not enough here, because the small-screen parts would show on large screens too.
+Every theme maintained outside this repository that defines `Stepper` needs the seven new slots. After upgrading, run `marigold migrate` from the project root. It adds them with styles that keep the theme's current row on every screen size. The component hides the small-screen parts until a theme styles them, so most slots start empty. Only `summary` needs styles, to keep the `hideLabels` counter visible.
 
 ```ts
-root: cva({ base: 'flex items-center gap-3' }),
-summary: cva({ base: 'hidden items-center gap-x-2 in-data-hide-labels:flex' }),
-errorCount: cva({ base: 'hidden' }),
-currentLabel: cva({ base: 'hidden' }),
-segment: cva({ base: 'hidden' }),
+root: cva({}),
+summary: cva({ base: 'items-center gap-x-2 in-data-hide-labels:flex' }),
+errorCount: cva({}),
+currentLabel: cva({}),
+segment: cva({}),
 progressFill: cva({}),
 currentIndicator: cva({}),
 ```

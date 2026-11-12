@@ -694,8 +694,22 @@ SmallScreen.test(
  * Twelve steps still fit a phone, because only the current label is shown and
  * the segments share the width. `hideLabels` changes nothing here.
  */
-export const SmallScreenManySteps = ManySteps.extend({
-  globals: { viewport: { value: 'smallScreen' } },
+export const SmallScreenManySteps = meta.story({
+  globals: { viewport: { value: 'extraSmallScreen' } },
+  parameters: { surface: false },
+  args: ManySteps.input.args,
+  // The narrowest phone with 16px page gutters.
+  render: args => (
+    <div className="px-4">
+      <Stepper {...args}>
+        {EVENT_STEPS.map(step => (
+          <Stepper.Item key={step.id} id={step.id}>
+            {step.label}
+          </Stepper.Item>
+        ))}
+      </Stepper>
+    </div>
+  ),
 });
 
 /**
@@ -703,6 +717,25 @@ export const SmallScreenManySteps = ManySteps.extend({
  * counter line says how many need attention, so the error does not rest on
  * colour alone. A failed current step shows the warning on its label instead.
  */
+/**
+ * A long current label wraps onto a second line instead of being cut off.
+ */
+export const LongLabel = meta.story({
+  globals: { viewport: { value: 'smallScreen' } },
+  args: {
+    'aria-label': 'Checkout progress',
+    selectedKey: 'seats',
+  },
+  render: args => (
+    <Stepper {...args}>
+      <Stepper.Item id="event">Event</Stepper.Item>
+      <Stepper.Item id="seats">
+        Ticket categories and seat reservations for the whole season
+      </Stepper.Item>
+    </Stepper>
+  ),
+});
+
 export const SmallScreenErrors = meta.story({
   globals: { viewport: { value: 'smallScreen' } },
   args: {

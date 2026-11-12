@@ -292,6 +292,8 @@ const _Stepper = ({
               const stateText = stringFormatter.format(STATE_MESSAGE[state]);
               // Not `state === 'current'`: a failed step can be current too.
               const isCurrent = id === selectedKey;
+              // A disabled step keeps its dashed look, even when current.
+              const hasIndicator = isCurrent && state !== 'disabled';
 
               return (
                 <li
@@ -314,7 +316,7 @@ const _Stepper = ({
                     onSelect={() => setSelectedKey(id)}
                   >
                     <span className={cn('relative', classNames.marker)}>
-                      {isCurrent && !isSmallScreen && indicator('marker')}
+                      {hasIndicator && !isSmallScreen && indicator('marker')}
                       {/* Positioned, so it paints above the indicator. */}
                       <span aria-hidden="true" className="relative">
                         {state === 'completed' ? (
@@ -342,7 +344,7 @@ const _Stepper = ({
                       className={cn('relative hidden', classNames.segment)}
                     >
                       {progressFill}
-                      {isCurrent && isSmallScreen && indicator('segment')}
+                      {hasIndicator && isSmallScreen && indicator('segment')}
                     </span>
                   </StepContent>
                   {index < items.length - 1 && (
