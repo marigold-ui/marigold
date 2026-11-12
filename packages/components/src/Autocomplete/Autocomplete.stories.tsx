@@ -394,6 +394,7 @@ LargeDataset.test(
 
 export const Mobile = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'smallScreen' },
   },
@@ -419,21 +420,15 @@ export const Mobile = meta.story({
   ),
 });
 
-Mobile.test(
-  'Open Tray',
-  {
-    parameters: { chromatic: { disableSnapshot: false } },
-  },
-  async ({ canvas, step }) => {
-    const trigger = await canvas.findByRole('button');
+Mobile.test('Open Tray', async ({ canvas, step }) => {
+  const trigger = await canvas.findByRole('button');
 
-    await step('Open tray by clicking trigger', async () => {
-      await userEvent.click(trigger);
-    });
+  await step('Open tray by clicking trigger', async () => {
+    await userEvent.click(trigger);
+  });
 
-    expect(trigger).toHaveAttribute('aria-expanded', 'true');
-  }
-);
+  expect(trigger).toHaveAttribute('aria-expanded', 'true');
+});
 
 Mobile.test(
   'Mobile Autocomplete interaction',

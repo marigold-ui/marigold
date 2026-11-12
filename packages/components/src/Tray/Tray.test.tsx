@@ -1,6 +1,6 @@
-import { act, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderWithOverlay } from '../test.utils';
+import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic, DismissControlsWithCallbacks } from './Tray.stories';
 
 // Lets the hidden-pass test drive the `useIsHidden()` guard (DSTSUP-261).
@@ -45,135 +45,28 @@ test('calls onOpenChange callback when closing', async () => {
   expect(screen.getByText(/Tray closed/)).toBeInTheDocument();
 });
 
-test('disables keyboard dismiss when keyboardDismissable is false', async () => {
-  renderWithOverlay(<Basic.Component keyboardDismissable={false} />);
-  await user.click(screen.getByRole('button', { name: 'Open Tray' }));
-  await waitFor(() => {
-    expect(screen.getByRole('dialog')).toBeInTheDocument();
-  });
+test('returns focus to the trigger under reduced motion', async () => {
+  const matchMedia = window.matchMedia;
+  // The query RAC's Sheet reads to skip its smooth scroll.
+  window.matchMedia = mockMatchMedia(['(prefers-reduced-motion: reduce)']);
 
-  await user.keyboard('{Escape}');
+  try {
+    renderWithOverlay(<Basic.Component />);
+    const trigger = screen.getByRole('button', { name: 'Open Tray' });
+    await user.click(trigger);
+    const dialog = await screen.findByRole('dialog');
+    // RAC focuses the dialog once it has entered.
+    await waitFor(() => expect(dialog).toHaveFocus());
 
-  expect(screen.getByRole('dialog')).toBeInTheDocument();
-});
+    await user.keyboard('{Escape}');
 
-const dragState = vi.hoisted(() => ({
-  onDragEnd: undefined as
-    | ((
-        e: unknown,
-        info: { offset: { y: number }; velocity: { y: number } }
-      ) => void)
-    | undefined,
-}));
-
-const mockAnimate = vi.hoisted(() => vi.fn());
-const mockDragControls = vi.hoisted(() => ({ start: vi.fn() }));
-
-vi.mock('motion/react', async () => {
-  const React = await import('react');
-  return {
-    AnimatePresence: ({ children }: { children: React.ReactNode }) =>
-      React.createElement(React.Fragment, null, children),
-    LayoutGroup: ({ children }: { children: React.ReactNode }) =>
-      React.createElement(React.Fragment, null, children),
-    // `MotionFeatures` (src/lazyMotion.tsx) wraps motion subtrees in
-    // `LazyMotion`; mock it as a pass-through so children render without
-    // loading the real feature bundle.
-    LazyMotion: ({ children }: { children: React.ReactNode }) =>
-      React.createElement(React.Fragment, null, children),
-    domMax: {},
-    useMotionValue: () => ({ get: () => 0, set: () => {} }),
-    useDragControls: () => mockDragControls,
-    useReducedMotion: () => false,
-    animate: mockAnimate,
-    cubicBezier: () => [0, 0, 0, 0],
-  };
-});
-
-// `TrayModal` now creates its motion components via `create` from
-// `motion/react-m` (the lazy `m` entry), so the drag wrapper lives here.
-vi.mock('motion/react-m', async () => {
-  const React = await import('react');
-  return {
-    create: (Component: React.ComponentType<any>) =>
-      React.forwardRef(function MotionWrapper(props: any, ref: any) {
-        const { onDragEnd, ...rest } = props;
-        if (onDragEnd) dragState.onDragEnd = onDragEnd;
-        return React.createElement(Component, { ...rest, ref });
-      }),
-  };
-});
-
-beforeEach(() => {
-  dragState.onDragEnd = undefined;
-  mockAnimate.mockClear();
-  mockDragControls.start.mockClear();
-});
-
-const openTray = async () => {
-  renderWithOverlay(<Basic.Component />);
-  await user.click(screen.getByRole('button', { name: 'Open Tray' }));
-  await waitFor(() => {
-    expect(screen.getByRole('dialog')).toBeInTheDocument();
-  });
-};
-
-test('drag down far enough dismisses the tray', async () => {
-  await openTray();
-  expect(dragState.onDragEnd).toBeDefined();
-
-  act(() => {
-    dragState.onDragEnd!({}, { offset: { y: 1000 }, velocity: { y: 0 } });
-  });
-
-  await waitFor(() => {
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-  });
-});
-
-test('fast swipe dismisses the tray', async () => {
-  await openTray();
-
-  act(() => {
-    dragState.onDragEnd!({}, { offset: { y: 10 }, velocity: { y: 15 } });
-  });
-
-  await waitFor(() => {
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-  });
-});
-
-test('small drag snaps tray back', async () => {
-  await openTray();
-
-  act(() => {
-    dragState.onDragEnd!({}, { offset: { y: 10 }, velocity: { y: 0 } });
-  });
-
-  expect(screen.getByRole('dialog')).toBeInTheDocument();
-  expect(mockAnimate).toHaveBeenCalled();
-});
-
-test('does not start a drag from inside the tray content', async () => {
-  await openTray();
-
-  await user.pointer({
-    keys: '[MouseLeft>]',
-    target: screen.getByText(/slides in from the bottom/),
-  });
-
-  expect(mockDragControls.start).not.toHaveBeenCalled();
-});
-
-test('starts a drag from the tray chrome', async () => {
-  await openTray();
-
-  await user.pointer({
-    keys: '[MouseLeft>]',
-    target: screen.getByText('Tray Title'),
-  });
-
-  expect(mockDragControls.start).toHaveBeenCalled();
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+    await waitFor(() => expect(trigger).toHaveFocus());
+  } finally {
+    window.matchMedia = matchMedia;
+  }
 });
 
 // DSTSUP-261 hidden-pass guard contract.

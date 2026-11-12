@@ -264,10 +264,13 @@ PriorityNavigation.test(
 
     await step('Every hidden link is reachable through the menu', async () => {
       await userEvent.click(canvas.getByRole('button', { name: /more/i }));
-      expect(
-        await canvas.findByRole('menuitem', { name: 'Team' })
-      ).toBeVisible();
-      expect(canvas.getByRole('menuitem', { name: 'Settings' })).toBeVisible();
+      // Small screens open the menu in a sliding tray.
+      await waitFor(() => {
+        expect(canvas.getByRole('menuitem', { name: 'Team' })).toBeVisible();
+        expect(
+          canvas.getByRole('menuitem', { name: 'Settings' })
+        ).toBeVisible();
+      });
       // Visible links do not show up in the menu.
       expect(canvas.queryByRole('menuitem', { name: 'Dashboard' })).toBeNull();
     });

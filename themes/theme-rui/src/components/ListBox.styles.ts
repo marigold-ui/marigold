@@ -9,7 +9,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
       // In a Popover or Tray the frame paints the surface, so the list drops its
       // own ring and just fills it.
       'group-data-trigger/popover:ring-0 group-data-trigger/popover:w-full',
-      'group-[[role=dialog]]/tray:ring-0',
+      'group-data-tray/tray:ring-0',
     ],
   }),
   list: cva({

@@ -620,7 +620,14 @@ DisabledWithDescription.test(
 
 export const Mobile = meta.story({
   tags: ['component-test'],
-  parameters: { chromatic: { disableSnapshot: true } },
+  // Chromatic ignores the viewport global, so pin its capture to phone width.
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+      viewports: [639],
+      cropToViewport: true,
+    },
+  },
   globals: {
     viewport: { value: 'smallScreen' },
   },

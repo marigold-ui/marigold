@@ -54,6 +54,12 @@ Not to be confused with a blanket ban on `@react-aria/*`. `packages/system` has 
 
 A standalone component that carries a _role_ rather than a position — `<Title>`, `<Description>`, `<TextValue>` — and picks up its appearance, semantics and placement from whichever container it is rendered in. The same `<Title>` is an `<h2>` in a `<Panel>` and a `<span>` inside `Panel.CollapsibleHeader`'s button.
 
+### Sheet
+
+The internal overlay primitive in `packages/components/src/Overlay/` that small-screen edge overlays render through. It wraps react-aria's `SheetOverlay`, `SheetBackdrop`, `Sheet` and `SheetContent`, and owns the backdrop, swipe-to-dismiss, the single `dismissable` flag and the `z-50` layer. `Tray` composes it today, the mobile `Drawer` and mobile `Sidebar` are meant to follow ([ADR-0007](adr/0007-mobile-overlays-on-sheet.md)).
+
+Not to be confused with `Tray`, which renders its own parts inside a Sheet, or with react-aria's `Sheet`, the single upstream part the primitive is named after. There is no public `Sheet` component.
+
 ### Slot config
 
 The object a container publishes on a slot-keyed context, keyed by role name: `{ slots: { title: {…}, description: {…} } }`. Each entry carries what the container knows and the consumer should not have to — heading `level`, `id` and `ref` for ARIA wiring, `elementType`, `as`, and the `className` that includes the part's grid area.

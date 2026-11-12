@@ -44,6 +44,7 @@ export { RangeCalendar } from './RangeCalendar.styles';
 export { SectionMessage } from './SectionMessage.styles';
 export { Select } from './Select.styles';
 export { SelectList } from './SelectList.styles';
+export { Sheet } from './Sheet.styles';
 export { Sidebar } from './Sidebar.styles';
 export { Slider } from './Slider.styles';
 export { Stepper } from './Stepper.styles';

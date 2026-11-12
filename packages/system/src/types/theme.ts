@@ -110,7 +110,6 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Tray?: Record<
-      | 'overlay'
       | 'container'
       | 'dragHandle'
       | 'header'
@@ -246,6 +245,10 @@ export type Theme = {
       header?: ComponentStyleFunction<string, string>;
       count?: ComponentStyleFunction<string, string>;
     };
+    Sheet?: Record<
+      'backdrop' | 'container' | 'content',
+      ComponentStyleFunction<string, string>
+    >;
     NumberField?: Record<
       'group' | 'stepper' | 'input',
       ComponentStyleFunction<string, string>

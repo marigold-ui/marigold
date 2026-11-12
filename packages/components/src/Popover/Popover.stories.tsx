@@ -127,13 +127,22 @@ Basic.test(
   }
 );
 
-// `dismissable` and `keyboardDismissable` on `Popover.Trigger`. Turning both
-// off needs another clear way out, here the close button.
+// `dismissable` and `keyboardDismissable` on `Popover.Trigger`, as story
+// controls. Turning both off needs another clear way out, here the close button.
+type DismissalArgs = PopoverProps & {
+  dismissable?: boolean;
+  keyboardDismissable?: boolean;
+};
+
 export const Dismissal = meta.story({
   tags: ['component-test', '!autodocs'],
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => (
-    <Popover.Trigger dismissable={false} keyboardDismissable={false}>
+  args: { dismissable: false, keyboardDismissable: false } as DismissalArgs,
+  render: ({ dismissable, keyboardDismissable, ...args }: DismissalArgs) => (
+    <Popover.Trigger
+      dismissable={dismissable}
+      keyboardDismissable={keyboardDismissable}
+    >
       <Button>Show seat map legend</Button>
       <Popover {...args}>
         <Title>Seat map legend</Title>
@@ -177,10 +186,39 @@ Dismissal.test(
   }
 );
 
+// A sheet has one dismissal flag, so on small screens `keyboardDismissable`
+// also blocks swipe and outside press (ADR-0007).
+Dismissal.test(
+  'Keeps the tray open on Escape on small screens',
+  {
+    globals: { viewport: { value: 'smallScreen' } },
+    args: { dismissable: true, keyboardDismissable: false } as DismissalArgs,
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Show seat map legend' })
+    );
+    const tray = await canvas.findByRole('dialog', { name: 'Seat map legend' });
+    // RAC ignores Escape until focus has entered the sheet.
+    await waitFor(() =>
+      expect(tray.contains(document.activeElement)).toBe(true)
+    );
+
+    await userEvent.keyboard('{Escape}');
+    await expect(tray).toBeVisible();
+
+    // The story's close slot comes first, the tray's Close action last.
+    await userEvent.click(
+      canvas.getAllByRole('button', { name: 'Close' }).at(-1)!
+    );
+    await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
+  }
+);
+
 export const Controlled = meta.story({
   tags: ['component-test', '!autodocs'],
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [open, setOpen] = useState(false);
 
     return (
@@ -224,7 +262,7 @@ Controlled.test(
 export const Modality = meta.story({
   tags: ['component-test', '!autodocs'],
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [presses, setPresses] = useState(0);
 
     return (
@@ -879,7 +917,7 @@ SearchableList.test(
 export const ControlledSearch = meta.story({
   tags: ['component-test', '!autodocs'],
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [query, setQuery] = useState('');
 
     return (
@@ -930,7 +968,7 @@ const onSaveNote = fn();
 export const MiniForm = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [open, setOpen] = useState(false);
 
     return (

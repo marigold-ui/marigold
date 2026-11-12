@@ -15,6 +15,19 @@ if (
   /chromatic=true/.test(location.href)
 ) {
   document.documentElement.dataset.chromatic = '';
+
+  // RAC's Sheet slides in with a JS smooth scroll that the `prefersReducedMotion`
+  // parameter below doesn't stop, so a tray is captured below the screen. Forcing
+  // the query makes it jump into place. Only RAC's Sheet asks for this exact query.
+  const matchMedia = window.matchMedia.bind(window);
+  window.matchMedia = query => {
+    const list = matchMedia(query);
+    if (query === '(prefers-reduced-motion: reduce)') {
+      Object.defineProperty(list, 'matches', { value: true });
+    }
+
+    return list;
+  };
 }
 
 // Storybook viewports only accept fixed pixel values, so we can't use the
