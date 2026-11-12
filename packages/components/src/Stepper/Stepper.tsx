@@ -163,6 +163,7 @@ const Stepper = ({
   const classNames = useClassNames({ component: 'Stepper', variant, size });
   const layoutGroupId = useId();
   const reducedMotion = useReducedMotion();
+  // Picks the indicator's placement, since motion can't measure a hidden one.
   const isSmallScreen = useSmallScreen();
   const indicatorTransition = reducedMotion
     ? { duration: 0 }
