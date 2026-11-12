@@ -1,12 +1,5 @@
 import type { Key, ReactNode } from 'react';
-import {
-  use,
-  useCallback,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { use, useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import type RAC from 'react-aria-components';
 import { useFilter } from 'react-aria-components/Autocomplete';
 import { Dialog } from 'react-aria-components/Dialog';
@@ -29,7 +22,6 @@ import { CommandPaletteGroup } from './CommandPaletteGroup';
 import { CommandPaletteItem } from './CommandPaletteItem';
 import { CommandPaletteSearch } from './CommandPaletteSearch';
 import { CommandPaletteTrigger, PALETTE } from './CommandPaletteTrigger';
-import type { CommandPaletteScope } from './Context';
 import { CommandPaletteContext, CommandPaletteTriggerContext } from './Context';
 import { useKeepFirstItemActive } from './useKeepFirstItemActive';
 
@@ -180,53 +172,36 @@ const CommandPaletteBody = <T extends object>({
     clearQuery();
   }, []);
 
-  // Groups with a `prefix` register here. Typing a prefix narrows the search
-  // to its group: the prefix leaves the query and shows as a chip, so the
-  // query, also the one an app sends to its server, is only the search term.
-  const prefixesRef = useRef(new Map<string, string>());
-  const [scope, setScope] = useState<CommandPaletteScope | null>(null);
-  const registerPrefix = useCallback((prefix: string, title: string) => {
-    prefixesRef.current.set(prefix, title);
-    return () => {
-      prefixesRef.current.delete(prefix);
-    };
+  // Groups with a `prefix` register here. A query that starts with one
+  // narrows the search to that group, and only the rest is matched.
+  const [prefixes, setPrefixes] = useState<readonly string[]>([]);
+  const registerPrefix = useCallback((prefix: string) => {
+    setPrefixes(current => [...current, prefix]);
+    return () => setPrefixes(current => current.filter(p => p !== prefix));
   }, []);
-  const { startsWith } = useFilter({ sensitivity: 'base' });
-  const changeQuery = (value: string) => {
-    if (scope === null) {
-      for (const [prefix, title] of prefixesRef.current) {
-        if (startsWith(value, prefix)) {
-          setScope({ prefix, title });
-          setInputValue(value.slice(prefix.length).trimStart());
-          return;
-        }
-      }
-    }
-    setInputValue(value);
-  };
+  const { contains, startsWith } = useFilter({ sensitivity: 'base' });
+  const scope = prefixes.find(prefix => startsWith(inputValue, prefix)) ?? null;
+  const query = scope ? inputValue.slice(scope.length).trimStart() : inputValue;
+  const match = useMemo(() => {
+    if (filter === false) return false;
+    const base = filter ?? contains;
+    if (!scope) return base;
+    return (text: string, input: string) =>
+      base(text, input.slice(scope.length).trimStart());
+  }, [filter, contains, scope]);
 
-  const { inputRef, menuRef } = useKeepFirstItemActive(
-    `${scope?.prefix ?? ''}${inputValue}`,
-    items
-  );
+  const { inputRef, menuRef } = useKeepFirstItemActive(inputValue, items);
   const context = useMemo(
-    () => ({
-      inputValue,
-      filter,
-      classNames,
-      scope,
-      leaveScope: () => setScope(null),
-      registerPrefix,
-    }),
-    [inputValue, filter, classNames, scope, registerPrefix]
+    () => ({ query, filter, classNames, scope, registerPrefix }),
+    [query, filter, classNames, scope, registerPrefix]
   );
 
   return (
     <CommandPaletteContext value={context}>
       <SearchableCollection
-        filter={filter}
+        filter={match}
         inputValue={inputValue}
-        onInputChange={changeQuery}
+        onInputChange={setInputValue}
       >
         <CommandPaletteSearch
           ref={inputRef}
@@ -251,7 +226,7 @@ const CommandPaletteBody = <T extends object>({
             <div className={classNames.empty}>
               {loading
                 ? stringFormatter.format('loadingMessage')
-                : (emptyState ?? <DefaultEmptyState query={inputValue} />)}
+                : (emptyState ?? <DefaultEmptyState query={query} />)}
             </div>
           )}
         >

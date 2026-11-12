@@ -62,7 +62,7 @@ export const CommandPaletteItem = ({
   textValue,
   ...props
 }: CommandPaletteItemProps) => {
-  const { inputValue, filter } = useCommandPalette();
+  const { query: term, filter } = useCommandPalette();
   const classNames = useClassNames({
     component: 'CommandPalette',
     variant,
@@ -78,7 +78,7 @@ export const CommandPaletteItem = ({
   );
 
   // Only the default filter has a known matching rule to highlight.
-  const query = filter === undefined ? inputValue.trim() : '';
+  const query = filter === undefined ? term.trim() : '';
   // Top-level text is the label, also next to an icon. The parts are spread
   // as arguments, so the static children need no keys.
   const label =

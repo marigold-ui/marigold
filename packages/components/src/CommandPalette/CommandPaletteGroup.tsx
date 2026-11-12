@@ -4,7 +4,6 @@ import type RAC from 'react-aria-components';
 import { Header } from 'react-aria-components/Header';
 import { MenuSection } from 'react-aria-components/Menu';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { Keyboard } from '../Keyboard/Keyboard';
 import { intlMessages } from '../intl/messages';
 import { useCommandPalette } from './Context';
 
@@ -22,7 +21,7 @@ export interface CommandPaletteGroupProps extends Omit<
 
   /**
    * Typing this at the start of the query narrows the search to this group,
-   * for example `e:` for events. The group title shows it as a hint.
+   * for example `e:` for events. The group title shows it next to its name.
    */
   prefix?: string;
 
@@ -43,40 +42,36 @@ export const CommandPaletteGroup = ({
   const { classNames, scope, registerPrefix } = useCommandPalette();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   useLayoutEffect(() => {
-    if (prefix) return registerPrefix(prefix, title ?? prefix);
-  }, [prefix, title, registerPrefix]);
+    if (prefix) return registerPrefix(prefix);
+  }, [prefix, registerPrefix]);
 
   // While the search is narrowed to one group, the others step aside.
-  if (scope && scope.prefix !== prefix) return null;
+  if (scope && scope !== prefix) return null;
   // The built-in match drops groups without matches. With `filter={false}`
   // the app filters, and a group it leaves empty (e.g. while server results
   // load) would show a lone title, so it renders nothing.
   // `toArray`, not `count`: `count` also counts `false` from `{cond && …}`.
   // eslint-disable-next-line @eslint-react/no-children-to-array -- an empty group must not render its title
   if (Children.toArray(children).length === 0) return null;
-  // The narrowed group is named by the chip in the search field instead.
-  if (scope) {
-    return (
-      <MenuSection {...props} aria-label={title}>
-        {children}
-      </MenuSection>
-    );
-  }
   return (
     <MenuSection {...props}>
       <Header className={classNames.group}>
         {title}
         {prefix && (
           <>
-            {/* The key cap teaches the prefix by sight, the hidden sentence
-                by ear, as part of the group's name. */}
-            <Keyboard aria-hidden="true">{prefix}</Keyboard>
-            <span className="sr-only">
-              {stringFormatter.format('commandPalettePrefixHint', {
-                prefix,
-                title: title ?? prefix,
-              })}
+            {/* The prefix teaches itself by sight, the hidden sentence by
+                ear, as part of the group's name. */}
+            <span aria-hidden="true" className={classNames.prefix}>
+              ({prefix})
             </span>
+            {!scope && (
+              <span className="sr-only">
+                {stringFormatter.format('commandPalettePrefixHint', {
+                  prefix,
+                  title: title ?? prefix,
+                })}
+              </span>
+            )}
           </>
         )}
       </Header>

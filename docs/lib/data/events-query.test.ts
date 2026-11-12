@@ -22,6 +22,12 @@ describe('queryEvents', () => {
     expect(result.items.length).toBeGreaterThan(0);
   });
 
+  it('puts an event whose id equals the search first', () => {
+    const result = queryEvents({ q: '13', pageSize: 'all' });
+    expect(result.items[0].id).toBe('13');
+    expect(result.totalItems).toBe(1);
+  });
+
   it('searches name and venue', () => {
     const byName = queryEvents({ q: 'jazz night', pageSize: 'all' });
     expect(byName.totalItems).toBeGreaterThan(0);

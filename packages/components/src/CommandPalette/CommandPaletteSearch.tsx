@@ -1,4 +1,4 @@
-import type { KeyboardEvent, Ref } from 'react';
+import type { Ref } from 'react';
 import { Button } from 'react-aria-components/Button';
 import { Input } from 'react-aria-components/Input';
 import { SearchField } from 'react-aria-components/SearchField';
@@ -28,54 +28,24 @@ export const CommandPaletteSearch = ({
   loading,
   ref,
 }: CommandPaletteSearchProps) => {
-  const { classNames, scope, leaveScope } = useCommandPalette();
+  const { classNames } = useCommandPalette();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
-  const scopedLabel = scope
-    ? stringFormatter.format('commandPaletteSearchIn', { scope: scope.title })
-    : null;
-
-  // Backspace in the empty field leaves the scope from the keyboard.
-  const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key !== 'Backspace' || !scope || e.currentTarget.value !== '') return;
-    leaveScope();
-  };
 
   return (
     <SearchField
-      aria-label={scopedLabel ?? stringFormatter.format('search')}
+      aria-label={stringFormatter.format('search')}
       autoFocus
       className={classNames.header}
     >
       {({ isEmpty }) => (
         <>
           <Search aria-hidden="true" size="18" />
-          {scope && (
-            <span className={classNames.scope}>
-              {scope.title}
-              {/* A plain button, not a Tab stop, like the clear button.
-                  Marigold's CloseButton would be one, and inside the
-                  SearchField it would take over the clear button's role. */}
-              <button
-                type="button"
-                tabIndex={-1}
-                aria-label={stringFormatter.format(
-                  'commandPaletteSearchEverywhere'
-                )}
-                onClick={leaveScope}
-              >
-                <X size="12" />
-              </button>
-            </span>
-          )}
           <Input
             ref={ref}
             placeholder={
-              scopedLabel ??
-              placeholder ??
-              stringFormatter.format('commandPaletteGoTo')
+              placeholder ?? stringFormatter.format('commandPaletteGoTo')
             }
             className={classNames.input}
-            onKeyDown={onKeyDown}
           />
           {loading ? (
             <ProgressCircle />

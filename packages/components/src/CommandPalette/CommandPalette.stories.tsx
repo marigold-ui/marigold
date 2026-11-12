@@ -841,7 +841,8 @@ AsyncSearch.test(
 
 // Search one kind of record
 // ---------------
-// A group with a `prefix`: typing it narrows the search to that group.
+// A group with a `prefix`: a query that starts with it narrows the search
+// to that group.
 const onScopedQuery = fn();
 
 export const SearchOneKind = meta.story({
@@ -871,7 +872,7 @@ SearchOneKind.test(
     const search = await canvas.findByRole('searchbox');
 
     await step('The group title shows its prefix', async () => {
-      await expect(canvas.getByText('e:')).toBeInTheDocument();
+      await expect(canvas.getByText('(e:)')).toBeInTheDocument();
       await expect(
         canvas.getByRole('group', {
           name: 'Events Type e: to search only Events',
@@ -881,32 +882,22 @@ SearchOneKind.test(
 
     await step('Typing the prefix narrows the search', async () => {
       await userEvent.keyboard('e:');
-      await waitFor(() => expect(search).toHaveValue(''));
-      await expect(search).toHaveAccessibleName('Search in Events…');
-      await expect(canvas.queryByText('Orders')).toBeNull();
+      await waitFor(() =>
+        expect(canvas.queryByRole('menuitem', { name: 'Orders' })).toBeNull()
+      );
       await expect(canvas.getAllByRole('menuitem')).toHaveLength(2);
     });
 
-    await step('The query is only the search term', async () => {
+    await step('Only the rest of the query is matched', async () => {
       await userEvent.keyboard('jazz');
-      await expect(search).toHaveValue('jazz');
-      await expect(onScopedQuery).toHaveBeenLastCalledWith('jazz');
+      await expect(search).toHaveValue('e:jazz');
+      await expect(onScopedQuery).toHaveBeenLastCalledWith('e:jazz');
       await expectFirstRowActive(canvas, 'Jazz Night');
+      await expect(canvas.getAllByRole('menuitem')).toHaveLength(1);
     });
 
-    await step('Backspace in the empty field widens the search', async () => {
-      await userEvent.keyboard('{Backspace>5/}');
-      await waitFor(() =>
-        expect(canvas.getByRole('menuitem', { name: 'Orders' })).toBeVisible()
-      );
-      await expect(search).toHaveAccessibleName('Search');
-    });
-
-    await step('The chip widens the search too', async () => {
-      await userEvent.keyboard('e:');
-      await userEvent.click(
-        await canvas.findByRole('button', { name: 'Search everywhere' })
-      );
+    await step('Deleting the prefix widens the search', async () => {
+      await userEvent.clear(search);
       await waitFor(() =>
         expect(canvas.getByRole('menuitem', { name: 'Orders' })).toBeVisible()
       );

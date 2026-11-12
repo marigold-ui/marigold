@@ -1,11 +1,29 @@
-import { CalendarDays, Search, ShoppingCart, Ticket } from 'lucide-react';
-import { CommandPalette, Text, useAsyncList } from '@marigold/components';
+import {
+  CalendarDays,
+  MapPin,
+  Search,
+  ShoppingCart,
+  Ticket,
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { CommandPalette, Text } from '@marigold/components';
 
 interface Event {
   id: string;
-  number: number;
   name: string;
   date: string;
+  venue?: string;
+}
+
+interface Venue {
+  id: string;
+  name: string;
+  city: string;
+}
+
+interface Results<T> {
+  items: T[];
+  totalItems: number;
 }
 
 const pages = [
@@ -13,72 +31,103 @@ const pages = [
   { id: 'orders', label: 'Orders', icon: <ShoppingCart /> },
 ];
 
+// Shown before people type, so the groups and their prefixes are visible.
+const recent: Event[] = [
+  { id: '1', name: 'Jazz Night', date: '2026-08-12', venue: 'Jazzhaus' },
+  { id: '16', name: 'Comedy Slam', date: '2026-09-13', venue: 'Vorderhaus' },
+];
+
+const recentVenues: Venue[] = [
+  { id: '2', name: 'Shakytown Comedy Club', city: 'Shakytown' },
+];
+
 const LIMIT = 3;
+const PREFIXES = { events: 'e:', venues: 'v:' } as const;
+type Kind = keyof typeof PREFIXES;
 
-// Stands in for the server.
-const allEvents: Event[] = [
-  'Summer Open Air',
-  'Jazz Night',
-  'City Marathon',
-  'Jazz Brunch',
-  'Comedy Club',
-  'Jazz on the Lake',
-  'Open Stage',
-  'Jazz Classics',
-  'Winter Market',
-].map((name, i) => ({
-  id: `event-${1024 + i}`,
-  number: 1024 + i,
-  name,
-  date: `${10 + i} Jun`,
-}));
-
-const searchEvents = async (query: string, signal: AbortSignal) => {
-  await new Promise(resolve => setTimeout(resolve, 600));
-  signal.throwIfAborted();
-  const q = query.toLowerCase();
-  const matches = allEvents
-    .filter(
-      e => e.name.toLowerCase().includes(q) || String(e.number).includes(q)
-    )
-    // An exact number match comes first.
-    .sort(
-      (a, b) => Number(String(b.number) === q) - Number(String(a.number) === q)
-    );
-  // One more than shown, to know whether there are more.
-  return matches.slice(0, LIMIT + 1);
+// The query keeps the prefix people typed. The palette narrows the groups,
+// the app takes the prefix off before it asks the server.
+const parse = (query: string) => {
+  for (const [kind, prefix] of Object.entries(PREFIXES)) {
+    if (query.toLowerCase().startsWith(prefix)) {
+      return { kind: kind as Kind, term: query.slice(prefix.length).trim() };
+    }
+  }
+  return { kind: null, term: query.trim() };
 };
 
-// Shown before people type, so the group and its prefix are visible from
-// the start.
-const recent = [allEvents[1], allEvents[4]];
+const none = { items: [], totalItems: 0 };
+
+const search = async <T,>(path: string, term: string, signal: AbortSignal) => {
+  const params = new URLSearchParams({
+    q: term,
+    pageSize: String(LIMIT),
+    delay: '400',
+  });
+  const res = await fetch(`${path}?${params}`, { signal });
+  return (await res.json()) as Results<T>;
+};
+
+const formatDate = (date: string) =>
+  new Date(date).toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+  });
 
 export default () => {
-  const list = useAsyncList<Event>({
-    async load({ signal, filterText = '' }) {
-      const term = filterText.trim();
-      return { items: term ? await searchEvents(term, signal) : [] };
-    },
-  });
-  // Without the prefix: the palette takes it out of the query.
-  const query = list.filterText.trim();
-  const events = query ? list.items.slice(0, LIMIT) : recent;
-  const more = list.items.length > LIMIT;
+  const [query, setQuery] = useState('');
+  const { kind, term } = parse(query);
+  const key = `${kind}:${term}`;
+  const [results, setResults] = useState<{
+    key: string;
+    events: Results<Event>;
+    venues: Results<Venue>;
+  } | null>(null);
+
+  useEffect(() => {
+    if (!term) return;
+    const controller = new AbortController();
+    // Wait until people pause typing, and cancel requests that are out of date.
+    const timer = setTimeout(async () => {
+      try {
+        const [events, venues] = await Promise.all([
+          kind === 'venues'
+            ? none
+            : search<Event>('/api/events', term, controller.signal),
+          kind === 'events'
+            ? none
+            : search<Venue>('/api/venues', term, controller.signal),
+        ]);
+        setResults({ key, events, venues });
+      } catch {
+        // Aborted, a newer query is on its way.
+      }
+    }, 250);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [key, kind, term]);
+
+  const current = term && results?.key === key ? results : null;
+  const events = term ? (current?.events.items ?? []) : recent;
+  const venues = term ? (current?.venues.items ?? []) : recentVenues;
+  const moreEvents = (current?.events.totalItems ?? 0) - LIMIT;
   // `filter={false}` turns off the built-in match for every group, so the
   // static pages are matched here.
   const matchingPages = pages.filter(page =>
-    page.label.toLowerCase().includes(query.toLowerCase())
+    page.label.toLowerCase().includes(term.toLowerCase())
   );
 
   return (
     <CommandPalette.Trigger shortcut={false}>
       <CommandPalette.Button />
       <CommandPalette
-        placeholder="Search pages and events…"
+        placeholder="Search pages, events and venues…"
         filter={false}
-        inputValue={list.filterText}
-        onInputChange={list.setFilterText}
-        loading={list.isLoading}
+        inputValue={query}
+        onInputChange={setQuery}
+        loading={term !== '' && current === null}
       >
         <CommandPalette.Group title="Pages">
           {matchingPages.map(page => (
@@ -88,32 +137,48 @@ export default () => {
             </CommandPalette.Item>
           ))}
         </CommandPalette.Group>
-        <CommandPalette.Group title="Events" prefix="e:">
+        <CommandPalette.Group title="Events" prefix={PREFIXES.events}>
           {events.map(event => (
             <CommandPalette.Item
               key={event.id}
-              id={event.id}
-              textValue={`${event.name} ${event.number}`}
+              id={`event-${event.id}`}
+              textValue={event.name}
             >
               <Ticket />
               <Text slot="label">{event.name}</Text>
               <Text slot="description">
-                #{event.number}, {event.date}
+                #{event.id}, {formatDate(event.date)}
+                {event.venue && `, ${event.venue}`}
               </Text>
             </CommandPalette.Item>
           ))}
-          {more && (
+          {moreEvents > 0 && (
             <CommandPalette.Item
               id="all-events"
-              textValue={`Show all events for ${query}`}
+              textValue={`Show all events for ${term}`}
             >
               <Search />
-              <Text slot="label">Show all events for “{query}”</Text>
+              <Text slot="label">
+                Show all {current?.events.totalItems} events for “{term}”
+              </Text>
               <Text slot="description">
                 Opens the event list with this search
               </Text>
             </CommandPalette.Item>
           )}
+        </CommandPalette.Group>
+        <CommandPalette.Group title="Venues" prefix={PREFIXES.venues}>
+          {venues.map(venue => (
+            <CommandPalette.Item
+              key={venue.id}
+              id={`venue-${venue.id}`}
+              textValue={venue.name}
+            >
+              <MapPin />
+              <Text slot="label">{venue.name}</Text>
+              <Text slot="description">{venue.city}</Text>
+            </CommandPalette.Item>
+          ))}
         </CommandPalette.Group>
       </CommandPalette>
     </CommandPalette.Trigger>

@@ -104,7 +104,8 @@ export const applySession = (session?: EventsSession): Event[] => {
 /**
  * Pure overlay → search → filter → paginate pipeline over the static events
  * fixture. Deterministic and side-effect free. Events keep their fixture
- * order (by date), so there is no sort step.
+ * order (by date), except that an event whose id equals the search comes
+ * first: people who type a number mean that event.
  */
 export const queryEvents = (
   params: EventQueryParams = {}
@@ -119,10 +120,11 @@ export const queryEvents = (
 
   const search = q.trim().toLowerCase();
 
-  const filtered = applySession(session).filter(event => {
+  const matches = applySession(session).filter(event => {
     if (status && event.status !== status) return false;
     if (
       search &&
+      event.id !== search &&
       !event.name.toLowerCase().includes(search) &&
       !event.venue?.toLowerCase().includes(search)
     ) {
@@ -130,6 +132,10 @@ export const queryEvents = (
     }
     return true;
   });
+  const exact = matches.find(event => event.id === search);
+  const filtered = exact
+    ? [exact, ...matches.filter(event => event !== exact)]
+    : matches;
 
   const totalItems = filtered.length;
 

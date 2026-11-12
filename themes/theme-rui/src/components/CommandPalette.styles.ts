@@ -66,13 +66,6 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
       '[&>button]:hover:bg-hover [&>button]:hover:text-foreground [&>button]:focus-visible:ui-state-focus',
     ],
   }),
-  // The group the search is narrowed to, a quiet chip before the query.
-  scope: cva({
-    base: [
-      'inline-flex h-6 shrink-0 items-center gap-1 rounded-full bg-muted ps-2.5 pe-1 text-xs font-medium text-foreground translate-y-px',
-      '[&>button]:flex [&>button]:size-4 [&>button]:items-center [&>button]:justify-center [&>button]:rounded-full [&>button]:text-secondary [&>button]:cursor-pointer [&>button]:hover:bg-hover [&>button]:hover:text-foreground',
-    ],
-  }),
   input: cva({
     base: [
       'min-w-0 flex-1 bg-transparent text-[15px] font-medium text-foreground outline-none',
@@ -92,13 +85,11 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
       '[&>section+section]:mt-3',
     ],
   }),
-  // The title, and the group's prefix as a compact key cap on the right.
   group: cva({
-    base: [
-      'flex items-center justify-between gap-2 text-secondary px-2.5 pt-1 pb-1 text-xs font-medium',
-      '[&_kbd]:h-4.5 [&_kbd]:min-w-4.5 [&_kbd]:px-1 [&_kbd]:py-0 [&_kbd]:text-[10px] [&_kbd]:leading-none',
-    ],
+    base: 'text-secondary px-2.5 pt-1 pb-1 text-xs font-medium',
   }),
+  // The group's prefix next to its title, quieter than the title.
+  prefix: cva({ base: 'ms-1 font-normal text-placeholder' }),
   // Larger than a menu item, the palette being a primary navigation surface.
   // Icons and variants match Menu, the active state is the palette's own
   // (see `itemBase`).

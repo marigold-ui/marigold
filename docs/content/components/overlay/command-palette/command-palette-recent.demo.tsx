@@ -10,16 +10,16 @@ const pages = [
 const actions = [{ id: 'create-event', label: 'Create event' }];
 
 const events = [
-  { id: 'event-1024', number: 1024, name: 'Summer Open Air', date: '12 Jun' },
-  { id: 'event-1031', number: 1031, name: 'Jazz Night', date: '20 Jun' },
-  { id: 'event-1047', number: 1047, name: 'City Marathon', date: '5 Jul' },
-  { id: 'event-1052', number: 1052, name: 'Comedy Club', date: '9 Jul' },
+  { id: 'event-1', number: 1, name: 'Jazz Night', date: '12 Aug' },
+  { id: 'event-13', number: 13, name: 'Jazz Matinee', date: '6 Sep' },
+  { id: 'event-16', number: 16, name: 'Comedy Slam', date: '13 Sep' },
+  { id: 'event-6', number: 6, name: 'Poetry Slam', date: '21 Aug' },
 ];
 
 // In a real app, the server keeps each person's favourites and what they
 // opened last. A favourite doesn't show again under Recent.
 const favourites = [events[0]];
-const recent = [events[1], events[3]];
+const recent = [events[2], events[3]];
 
 const EventItem = ({ event }: { event: (typeof events)[number] }) => (
   <CommandPalette.Item

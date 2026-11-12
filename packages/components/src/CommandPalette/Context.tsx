@@ -28,19 +28,13 @@ export const useCommandPaletteTrigger =
 
 // Palette state
 // ---------------
-export interface CommandPaletteScope {
-  prefix: string;
-  title: string;
-}
-
 // Provided by `CommandPalette`, read by its groups and items.
 interface CommandPaletteContextValue {
-  inputValue: string;
-  /** The group the search is narrowed to, if any. */
-  scope: CommandPaletteScope | null;
-  /** Widens the search to all groups again. */
-  leaveScope: () => void;
-  registerPrefix: (prefix: string, title: string) => () => void;
+  /** The search term: the query without a group's prefix. */
+  query: string;
+  /** The prefix of the group the search is narrowed to, if any. */
+  scope: string | null;
+  registerPrefix: (prefix: string) => () => void;
   filter?: SearchableCollectionFilter | false;
   classNames: ComponentClassNames<'CommandPalette'>;
 }

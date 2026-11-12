@@ -19,8 +19,6 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     commandPaletteNavigate: 'Navigieren',
     commandPaletteOpen: 'Öffnen',
     commandPaletteTypeToSearch: 'Tippe, um zu suchen.',
-    commandPaletteSearchIn: vars => `In ${vars?.scope} suchen…`,
-    commandPaletteSearchEverywhere: 'Überall suchen',
     commandPalettePrefixHint: vars =>
       `Tippe ${vars?.prefix}, um nur in ${vars?.title} zu suchen`,
     confirm: 'Bestätigen',
@@ -108,8 +106,6 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     commandPaletteNavigate: 'Navigate',
     commandPaletteOpen: 'Open',
     commandPaletteTypeToSearch: 'Type to search.',
-    commandPaletteSearchIn: vars => `Search in ${vars?.scope}…`,
-    commandPaletteSearchEverywhere: 'Search everywhere',
     commandPalettePrefixHint: vars =>
       `Type ${vars?.prefix} to search only ${vars?.title}`,
     confirm: 'Confirm',
