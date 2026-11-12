@@ -53,8 +53,7 @@ export const Stack = ({
 }: StackProps) => {
   const Component = asList ? 'ul' : 'div';
   const stackChildren = asList
-    ? // eslint-disable-next-line @eslint-react/no-children-map -- each child is wrapped in its own <li>, skipping null/undefined
-      Children.map(children, child => (child != null ? <li>{child}</li> : null))
+    ? Children.map(children, child => (child != null ? <li>{child}</li> : null))
     : children;
 
   return (

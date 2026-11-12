@@ -1,12 +1,16 @@
 import { Scrollable } from '@marigold/components';
 import { Rectangle } from '@/ui/Rectangle';
 
+const rectangles = Array.from(
+  { length: 10 },
+  (_, index) => `rectangle-${index}`
+);
+
 export default () => (
   <Scrollable height="150px">
     <div className="flex flex-col items-center gap-2 p-2">
-      {Array.from({ length: 10 }).map((_, index) => (
-        // eslint-disable-next-line @eslint-react/no-array-index-key -- static, identical placeholders that never reorder
-        <Rectangle key={index} height="100px" width="200px" />
+      {rectangles.map(id => (
+        <Rectangle key={id} height="100px" width="200px" />
       ))}
     </div>
   </Scrollable>

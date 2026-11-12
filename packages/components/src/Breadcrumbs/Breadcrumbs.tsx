@@ -64,7 +64,6 @@ const BreadcrumbsBase = ({
 
   // `toArray` flattens fragments/arrays and assigns every element a stable key,
   // which is used below to key the rendered crumbs.
-  // eslint-disable-next-line @eslint-react/no-children-to-array -- needs a flat, keyed list to slice into visible and hidden crumbs
   const items = Children.toArray(children);
   const total = items.length;
 

@@ -44,7 +44,6 @@ export const DontDescription = DoDescription;
 const splitChildren = (children: ReactNode) => {
   const figure: ReactNode[] = [];
   const description: ReactNode[] = [];
-  // eslint-disable-next-line @eslint-react/no-children-for-each -- partitions the children by slot type into two lists, which needs to visit each child once
   Children.forEach(children, child => {
     if (
       isValidElement(child) &&

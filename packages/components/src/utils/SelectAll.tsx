@@ -79,7 +79,6 @@ export const useSelectableKeys = <T,>({
       return [];
     }
 
-    // eslint-disable-next-line @eslint-react/no-children-to-array -- row ids/disabled flags are read from the child elements' props
     return Children.toArray(children).flatMap(child =>
       isValidElement<RowProps>(child) ? [child.props] : []
     );

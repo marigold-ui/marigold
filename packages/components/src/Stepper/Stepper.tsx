@@ -157,7 +157,6 @@ const Stepper = ({
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const classNames = useClassNames({ component: 'Stepper', variant, size });
 
-  // eslint-disable-next-line @eslint-react/no-children-to-array -- steps are collected from the children and must survive fragments/arrays
   const items = Children.toArray(children).filter(
     (child): child is ReactElement<StepperItemProps> =>
       isValidElement(child) && child.type === StepperItem

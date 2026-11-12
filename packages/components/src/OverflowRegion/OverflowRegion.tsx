@@ -71,7 +71,6 @@ export const OverflowRegion = ({
   onOverflowChange,
   ...props
 }: OverflowRegionProps) => {
-  // eslint-disable-next-line @eslint-react/no-children-to-array -- needs a flat, keyed list: each item gets its own wrapper that is measured and hidden
   const items = Children.toArray(children);
   // Signature of the children's keys. When it changes (items replaced or
   // reordered, even at the same count) the hook re-attaches its observer to

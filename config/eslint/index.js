@@ -32,6 +32,21 @@ export default [
       '@eslint-react/no-create-ref': 'error',
     },
   },
+  // Components take their content as `children` by public API (`<Columns>`,
+  // `<Stack>`, `<Breadcrumbs>`, …) and have to inspect, count, wrap or clone
+  // those children. Avoiding `Children`/`cloneElement` means a different API
+  // (compound parts that register through context, or `items` props), which
+  // is breaking and belongs in a major, not in a lint cleanup.
+  {
+    files: ['packages/components/**', 'docs/ui/**'],
+    rules: {
+      '@eslint-react/no-children-count': 'off',
+      '@eslint-react/no-children-for-each': 'off',
+      '@eslint-react/no-children-map': 'off',
+      '@eslint-react/no-children-to-array': 'off',
+      '@eslint-react/no-clone-element': 'off',
+    },
+  },
   vitestPlugin.configs.recommended,
   // Testing Library support
   {

@@ -1,6 +1,7 @@
 import {
   type ReactNode,
   useEffect,
+  useEffectEvent,
   useId,
   useMemo,
   useRef,
@@ -134,17 +135,21 @@ export const SectionMessage = ({
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const isOpen = open ?? internalOpen;
 
-  // Re-announce on each hidden -> visible transition. Same-content re-announce
-  // without a visibility change still needs a `key` remount.
-  useEffect(() => {
-    if (!isOpen) return;
+  // Reads the latest `announce`, `variant` and content without being an
+  // effect dependency, so changing them while open does not re-announce.
+  const announceContent = useEffectEvent(() => {
     const shouldAnnounce = announceProp ?? variant === 'error';
     if (!shouldAnnounce) return;
     const text = containerRef.current?.textContent?.trim();
     if (!text) return;
     const priority = variant === 'error' ? 'assertive' : 'polite';
     announce(text, priority);
-    // eslint-disable-next-line react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps -- announce only on the hidden -> visible transition; `announceProp`, `variant` and the content are read fresh from that render's closure and must not re-announce when they change while open
+  });
+
+  // Re-announce on each hidden -> visible transition. Same-content re-announce
+  // without a visibility change still needs a `key` remount.
+  useEffect(() => {
+    if (isOpen) announceContent();
   }, [isOpen]);
 
   const handleClose = () => {
