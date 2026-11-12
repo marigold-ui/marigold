@@ -16,7 +16,7 @@ The `<CommandPalette>` component opens a search field over a list of pages and a
 
 ## Anatomy
 
-A command palette consists of an optional button and the palette itself, which opens on an underlay. The palette holds a search field, the list of results grouped under titles, and a legend of the keys. When nothing matches or results are still loading, a message takes the place of the list.
+A command palette consists of an optional button and the palette itself, which opens on an underlay. The palette holds a search field, the list of results grouped under titles, and a legend of the keys. When nothing matches or results are still loading, a message takes the place of the list. On small screens the palette opens as a tray from the bottom edge.
 
 <CommandPaletteAnatomy />
 
@@ -66,7 +66,7 @@ A palette pays off in apps with more pages than the sidebar shows comfortably an
 
 Name items by what people look for and use the same words as the sidebar and the page titles. Start actions with a verb, so "Create event" reads apart from the "Events" page.
 
-Group the results, for example into Pages, Actions and Events, and keep the groups and their order the same every time. People learn where things are and type less over time. Records usually come from the server, see [Results from the server](#results-from-the-server).
+Group the results, for example into Pages, Actions and Events, and keep the groups and their order the same every time. People learn where things are and type less over time. Records usually come from the server, see [Searching many records](#searching-many-records).
 
 Give a page the same icon it has in the navigation, so people recognise it in both places. Records and actions get one icon for their kind, for example a ticket for every event, not one per record. Within a group, give every item an icon or none, as in the [Menu](/components/overlay/menu). The label carries the meaning and the icon only helps people scan.
 
@@ -87,23 +87,46 @@ The button is optional, but it tells people the palette exists and shows the sho
 
 The shortcut also fires inside text fields, as it does in GitHub, Linear and Slack. If another handler already used the key, for example a rich-text editor that inserts a link on <kbd>⌘</kbd>+<kbd>K</kbd>, the palette leaves it alone. Change the key with `shortcut="j"` on the trigger, or turn it off with `shortcut={false}` when your app already uses it.
 
-### Filtering
+### Pages as links
 
-By default the palette matches the query anywhere in an item's text and ignores case and accents, so "cafe" finds "Café". Pass your own `filter` function for a different match, for example a fuzzy one.
+Give every page an `href` instead of handling it in `onAction`. The palette then navigates like a link: <kbd>⌘</kbd>+<kbd>Enter</kbd> (<kbd>Ctrl</kbd>+<kbd>Enter</kbd> on Windows and Linux) opens the page in a new tab, and your router takes over the navigation once it is set up as described in the [App frame](/patterns/layout/app-frame). Keep `onAction` for actions that don't lead to a page of their own. The demo above uses `onAction` only because it stays on this page.
 
-An item's text is its plain-text label, also next to an icon. When the label is built from `<Text>` slots, for example with a description underneath, pass `textValue` so the item can still be found.
+```tsx
+<CommandPalette.Item id="orders" href="/orders">
+  <ShoppingCart />
+  Orders
+</CommandPalette.Item>
+```
 
-### Empty state
+### Before people type
 
-Pass `emptyState` to replace the default message, for example to name what people can search for.
+An empty query is the most common start, and the full list is the least helpful answer to it. Show what people most likely want next: the records they opened last and the actions they start most. Keep it short, a handful of rows is enough. Once people type, switch to the regular groups.
 
-<ComponentDemo name="command-palette-empty" />
+Control the query to know when it is empty. The recent records come from your app, ideally from the server, so they follow people across devices.
 
-### Results from the server
+<ComponentDemo name="command-palette-recent" />
 
-To search records on the server, pass `filter={false}`, control the query with `inputValue` and `onInputChange`, and set `loading` while results load. Debounce the requests in your own code.
+### Actions for the current page
+
+People often open the palette to do something with what they are looking at. On the page of an event, put that event's actions in a group at the top and name the group after the event. The global groups stay below and keep their order, so people still find them where they expect them. Leave out the group on pages that have no actions of their own.
+
+If an action has its own keyboard shortcut, show it on the row with [`<Keyboard>`](/components/content/keyboard). The palette then teaches the shortcut, and people who use the action often learn to skip the palette. Only show shortcuts that work on the current page.
+
+<ComponentDemo name="command-palette-context" />
+
+### Searching many records
+
+Most apps have more events or orders than they can load up front. Search them on the server and keep the rest of the palette fast:
+
+- Pages and actions show right away, without waiting for the server. Only the records group waits.
+- Show the first few matches per kind and end the group with a row that opens the full list for the query. The palette is for jumping to a record, the list page is for browsing.
+- Wait until people pause typing before you send a request, and cancel requests that are out of date.
+
+Pass `filter={false}` to turn off the built-in match, control the query with `inputValue` and `onInputChange`, and set `loading` while results load. The built-in match is off for every group then, so match the static pages yourself, as the demo does.
 
 <ComponentDemo name="command-palette-async" />
+
+The built-in match finds the query anywhere in an item's text and ignores case and accents, so "cafe" finds "Café". It keeps the authored order, which people can learn. For long lists of names people often misspell, pass a fuzzy `filter` instead.
 
 ### Search prefixes
 
@@ -113,15 +136,17 @@ Read the prefix from the controlled `inputValue`, turn off the built-in filter w
 
 <ComponentDemo name="command-palette-prefix" />
 
-### Content before the user types
+### When nothing matches
 
-The palette has no dedicated API for favourites or recent pages. Control the query and render different groups while it is empty.
+Say what people can search for, so they know whether to rephrase or look elsewhere, for example "No page with that name. Try “events” or “orders”." Don't blame the query. Pass the message as `emptyState`.
 
-<ComponentDemo name="command-palette-favourites" />
+If your app has a full search, end the list with a row that runs it for the query. The list is then never empty, and <kbd>Enter</kbd> always leads somewhere.
 
-### Mobile behaviour
+<ComponentDemo name="command-palette-empty" />
 
-On small screens the palette opens as a tray from the bottom edge. The <kbd>⌘</kbd>+<kbd>K</kbd> hint and the legend are hidden on touch devices.
+### Palette or search field
+
+The palette and a [search field](/components/form/search-field) can sit in the same place in the top navigation, but they solve different problems. The palette takes people somewhere: to a page, a record or an action, from anywhere in the app. A search field narrows what is already on the page, for example the rows of a table. Use a search field when people look through results together, compare them or refine a filter, and the palette when they know what they want and need to get there fast.
 
 ## Accessibility
 
@@ -193,4 +218,5 @@ Before building the palette we looked at cmdk (used by shadcn/ui and Vercel), Li
 - [ActionMenu](/components/overlay/action-menu): Use for contextual actions on a row or item.
 - [Autocomplete](/components/form/autocomplete): Use to search and pick a value inside a form.
 - [ComboBox](/components/form/combobox): Use to pick a value from a list inside a form, with free text allowed.
+- [SearchField](/components/form/search-field): Use to narrow what is already on the page, see [Palette or search field](#palette-or-search-field).
 - [Sidebar](/components/navigation/sidebar): Use for the app's main navigation, which the palette complements.
