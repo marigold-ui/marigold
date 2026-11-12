@@ -163,6 +163,23 @@ A row of markers and labels does not fit a phone. Below the small-screen breakpo
 
 <StepperSmallScreenAnatomy />
 
+<ul>
+  <li>
+    <b>Counter:</b> Where the user stands, as "Step 2 of 4". It is hidden from
+    screen readers, because every step already announces its own position.
+  </li>
+  <li>
+    <b>Current label:</b> The name of the step the user is on, the only label
+    shown on small screens. It wraps onto a second line instead of being cut
+    off.
+  </li>
+  <li>
+    <b>Segment:</b> One bar per step, taking over from the marker and the
+    connector. It fills once the step is done, turns red when it failed, and
+    stays the step's button or link, so a finished step can be tapped.
+  </li>
+</ul>
+
 Take a customer reselling tickets on their phone. The stepper sits as two lines above the content, and the current label is the only step name they see. Name each step after what the user does there, such as "Tickets", "Price" or "Payout". A long name wraps onto a second line instead of being cut off, but one or two words read best.
 
 Once the customer reaches the review step and wants a different price, they tap the price segment to go back. Finished steps stay buttons or links on small screens, so this needs no extra code, and screen readers announce every step the same way they do on a large screen. The touch target is the full height of the step, not only the thin bar.
