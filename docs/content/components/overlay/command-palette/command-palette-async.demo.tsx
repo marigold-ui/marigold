@@ -42,7 +42,9 @@ const recentVenues: Venue[] = [
   { id: '2', name: 'Shakytown Comedy Club', city: 'Shakytown' },
 ];
 
+// A few per kind in the mixed list, more once a prefix leaves one kind.
 const LIMIT = 3;
+const NARROWED_LIMIT = 8;
 const PREFIXES = { events: 'e:', venues: 'v:' } as const;
 
 const none = { items: [], totalItems: 0 };
@@ -50,16 +52,39 @@ const none = { items: [], totalItems: 0 };
 const fetchResults = async <T,>(
   path: string,
   term: string,
+  limit: number,
   signal: AbortSignal
 ) => {
   const params = new URLSearchParams({
     q: term,
-    pageSize: String(LIMIT),
+    pageSize: String(limit),
     delay: '400',
   });
   const res = await fetch(`${path}?${params}`, { signal });
   return (await res.json()) as Results<T>;
 };
+
+// Ends a group when the server has more than it shows.
+const ShowAll = ({
+  id,
+  kind,
+  total,
+  term,
+}: {
+  id: string;
+  kind: string;
+  total: number;
+  term: string;
+}) => (
+  <CommandPalette.Item id={id} textValue={`Show all ${kind} ${term}`}>
+    <Search />
+    <Text slot="label">
+      Show all {total} {kind}
+      {term && ` for “${term}”`}
+    </Text>
+    <Text slot="description">Opens the {kind} list with this search</Text>
+  </CommandPalette.Item>
+);
 
 const formatDate = (date: string) =>
   new Date(date).toLocaleDateString('en-GB', {
@@ -76,6 +101,7 @@ export default () => {
   });
   const { term, prefix } = search;
   const searching = term !== '' || prefix !== null;
+  const limit = prefix ? NARROWED_LIMIT : LIMIT;
   const key = `${prefix}:${term}`;
   const [results, setResults] = useState<{
     key: string;
@@ -94,10 +120,20 @@ export default () => {
         const [events, venues] = await Promise.all([
           prefix === PREFIXES.venues
             ? none
-            : fetchResults<Event>('/api/events', term, controller.signal),
+            : fetchResults<Event>(
+                '/api/events',
+                term,
+                limit,
+                controller.signal
+              ),
           prefix === PREFIXES.events
             ? none
-            : fetchResults<Venue>('/api/venues', term, controller.signal),
+            : fetchResults<Venue>(
+                '/api/venues',
+                term,
+                limit,
+                controller.signal
+              ),
         ]);
         setResults({ key, events, venues });
       } catch {
@@ -108,12 +144,11 @@ export default () => {
       clearTimeout(timer);
       controller.abort();
     };
-  }, [key, prefix, searching, term]);
+  }, [key, limit, prefix, searching, term]);
 
   const current = searching && results?.key === key ? results : null;
   const events = searching ? (current?.events.items ?? []) : recent;
   const venues = searching ? (current?.venues.items ?? []) : recentVenues;
-  const moreEvents = (current?.events.totalItems ?? 0) - LIMIT;
   // `filter={false}` turns off the built-in match for every group, so the
   // static pages are matched here.
   const matchingPages = pages.filter(page =>
@@ -152,20 +187,13 @@ export default () => {
               </Text>
             </CommandPalette.Item>
           ))}
-          {moreEvents > 0 && (
-            <CommandPalette.Item
+          {current && current.events.totalItems > limit && (
+            <ShowAll
               id="all-events"
-              textValue={`Show all events ${term}`}
-            >
-              <Search />
-              <Text slot="label">
-                Show all {current?.events.totalItems} events
-                {term && ` for “${term}”`}
-              </Text>
-              <Text slot="description">
-                Opens the event list with this search
-              </Text>
-            </CommandPalette.Item>
+              kind="events"
+              total={current.events.totalItems}
+              term={term}
+            />
           )}
         </CommandPalette.Group>
         <CommandPalette.Group title="Venues" prefix={PREFIXES.venues}>
@@ -180,6 +208,14 @@ export default () => {
               <Text slot="description">{venue.city}</Text>
             </CommandPalette.Item>
           ))}
+          {current && current.venues.totalItems > limit && (
+            <ShowAll
+              id="all-venues"
+              kind="venues"
+              total={current.venues.totalItems}
+              term={term}
+            />
+          )}
         </CommandPalette.Group>
       </CommandPalette>
     </CommandPalette.Trigger>
