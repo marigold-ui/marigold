@@ -8,6 +8,7 @@ import {
   useState,
 } from 'react';
 import type RAC from 'react-aria-components';
+import { useFilter } from 'react-aria-components/Autocomplete';
 import { Dialog } from 'react-aria-components/Dialog';
 import { Menu } from 'react-aria-components/Menu';
 import { Modal } from 'react-aria-components/Modal';
@@ -28,6 +29,7 @@ import { CommandPaletteGroup } from './CommandPaletteGroup';
 import { CommandPaletteItem } from './CommandPaletteItem';
 import { CommandPaletteSearch } from './CommandPaletteSearch';
 import { CommandPaletteTrigger, PALETTE } from './CommandPaletteTrigger';
+import type { CommandPaletteScope } from './Context';
 import { CommandPaletteContext, CommandPaletteTriggerContext } from './Context';
 import { useKeepFirstItemActive } from './useKeepFirstItemActive';
 
@@ -181,34 +183,30 @@ const CommandPaletteBody = <T extends object>({
   // Groups with a `prefix` register here. Typing a prefix narrows the search
   // to its group: the prefix leaves the query and shows as a chip, so the
   // query, also the one an app sends to its server, is only the search term.
-  const prefixes = useRef(new Map<string, string>());
-  const [scope, setScope] = useState<string | null>(null);
+  const prefixesRef = useRef(new Map<string, string>());
+  const [scope, setScope] = useState<CommandPaletteScope | null>(null);
   const registerPrefix = useCallback((prefix: string, title: string) => {
-    prefixes.current.set(prefix, title);
+    prefixesRef.current.set(prefix, title);
     return () => {
-      prefixes.current.delete(prefix);
+      prefixesRef.current.delete(prefix);
     };
   }, []);
-  const leaveScope = useCallback(() => setScope(null), []);
-
-  const narrowToTypedPrefix = useEffectEvent(() => {
-    if (scope !== null) return;
-    const query = inputValue.toLocaleLowerCase();
-    for (const prefix of prefixes.current.keys()) {
-      if (query.startsWith(prefix.toLocaleLowerCase())) {
-        setScope(prefix);
-        setInputValue(inputValue.slice(prefix.length).trimStart());
-        return;
+  const { startsWith } = useFilter({ sensitivity: 'base' });
+  const changeQuery = (value: string) => {
+    if (scope === null) {
+      for (const [prefix, title] of prefixesRef.current) {
+        if (startsWith(value, prefix)) {
+          setScope({ prefix, title });
+          setInputValue(value.slice(prefix.length).trimStart());
+          return;
+        }
       }
     }
-  });
-  // Before paint, so the typed prefix never flashes in the field.
-  useLayoutEffect(() => {
-    narrowToTypedPrefix();
-  }, [inputValue]);
+    setInputValue(value);
+  };
 
   const { inputRef, menuRef } = useKeepFirstItemActive(
-    `${scope ?? ''}${inputValue}`,
+    `${scope?.prefix ?? ''}${inputValue}`,
     items
   );
   const context = useMemo(
@@ -216,13 +214,11 @@ const CommandPaletteBody = <T extends object>({
       inputValue,
       filter,
       classNames,
-      close,
       scope,
-      scopeTitle: scope === null ? null : (prefixes.current.get(scope) ?? null),
-      leaveScope,
+      leaveScope: () => setScope(null),
       registerPrefix,
     }),
-    [inputValue, filter, classNames, close, scope, leaveScope, registerPrefix]
+    [inputValue, filter, classNames, scope, registerPrefix]
   );
 
   return (
@@ -230,7 +226,7 @@ const CommandPaletteBody = <T extends object>({
       <SearchableCollection
         filter={filter}
         inputValue={inputValue}
-        onInputChange={setInputValue}
+        onInputChange={changeQuery}
       >
         <CommandPaletteSearch
           ref={inputRef}
@@ -245,7 +241,11 @@ const CommandPaletteBody = <T extends object>({
           // The first row is active on open, so Enter runs it right away.
           // Focus stays in the input, the row only gets virtual focus.
           autoFocus="first"
+          // RAC passes more than the key, the public handler takes the key.
           onAction={key => onAction?.(key)}
+          // Called after an item's action, unless the item sets
+          // `shouldCloseOnSelect={false}`.
+          onClose={close}
           // Inside the menu, where RAC announces it.
           renderEmptyState={() => (
             <div className={classNames.empty}>
@@ -289,14 +289,10 @@ const CommandPaletteBase = <T extends object>({
   );
   const open = trigger ? trigger.open : ownOpen;
   const setOpen = trigger ? trigger.setOpen : setOwnOpen;
+  const close = useCallback(() => setOpen(false), [setOpen]);
 
   const body = (
-    <CommandPaletteBody
-      {...props}
-      loading={loading}
-      // Each item closes the palette after its action, see `CommandPaletteItem`.
-      close={() => setOpen(false)}
-    />
+    <CommandPaletteBody {...props} loading={loading} close={close} />
   );
 
   if (isSmallScreen) {

@@ -11,9 +11,8 @@ interface CommandPaletteFooterProps {
 
 // Component
 // ---------------
-// Internal. Rendered on desktop only: a key legend. The spinner in the search
-// field and the message in the list already show loading. Hidden from assistive tech, which already announces the
-// combobox and menu keyboard pattern.
+// Internal. Desktop only: a key legend, hidden from assistive tech, which
+// already announces the combobox and menu keyboard pattern.
 export const CommandPaletteFooter = ({
   classNames,
 }: CommandPaletteFooterProps) => {

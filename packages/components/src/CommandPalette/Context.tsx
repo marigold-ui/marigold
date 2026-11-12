@@ -28,18 +28,18 @@ export const useCommandPaletteTrigger =
 
 // Palette state
 // ---------------
+export interface CommandPaletteScope {
+  prefix: string;
+  title: string;
+}
+
 // Provided by `CommandPalette`, read by its groups and items.
 interface CommandPaletteContextValue {
   inputValue: string;
-  /** Closes the palette, called after an item was chosen. */
-  close: () => void;
-  /** The prefix of the group the search is narrowed to, if any. */
-  scope: string | null;
-  /** The title of that group, shown in the search field. */
-  scopeTitle: string | null;
+  /** The group the search is narrowed to, if any. */
+  scope: CommandPaletteScope | null;
   /** Widens the search to all groups again. */
   leaveScope: () => void;
-  /** Lets a group with a `prefix` take part in narrowing the search. */
   registerPrefix: (prefix: string, title: string) => () => void;
   filter?: SearchableCollectionFilter | false;
   classNames: ComponentClassNames<'CommandPalette'>;

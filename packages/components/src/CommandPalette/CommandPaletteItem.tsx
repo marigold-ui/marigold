@@ -60,11 +60,9 @@ export const CommandPaletteItem = ({
   size,
   children,
   textValue,
-  onAction,
-  shouldCloseOnSelect = true,
   ...props
 }: CommandPaletteItemProps) => {
-  const { inputValue, filter, close } = useCommandPalette();
+  const { inputValue, filter } = useCommandPalette();
   const classNames = useClassNames({
     component: 'CommandPalette',
     variant,
@@ -109,12 +107,6 @@ export const CommandPaletteItem = ({
       variant={variant}
       textValue={text}
       classNames={classNames}
-      // An item that leads further, e.g. into a search for one kind of
-      // record, keeps the palette open with `shouldCloseOnSelect={false}`.
-      onAction={() => {
-        onAction?.();
-        if (shouldCloseOnSelect) close();
-      }}
     >
       {label}
     </MenuItemCore>

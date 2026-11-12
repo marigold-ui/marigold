@@ -56,8 +56,8 @@ const recent = [allEvents[1], allEvents[4]];
 export default () => {
   const list = useAsyncList<Event>({
     async load({ signal, filterText = '' }) {
-      if (!filterText.trim()) return { items: [] };
-      return { items: await searchEvents(filterText.trim(), signal) };
+      const term = filterText.trim();
+      return { items: term ? await searchEvents(term, signal) : [] };
     },
   });
   // Without the prefix: the palette takes it out of the query.

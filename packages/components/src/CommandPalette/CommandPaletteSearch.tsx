@@ -1,4 +1,4 @@
-import type { Ref } from 'react';
+import type { KeyboardEvent, Ref } from 'react';
 import { Button } from 'react-aria-components/Button';
 import { Input } from 'react-aria-components/Input';
 import { SearchField } from 'react-aria-components/SearchField';
@@ -28,12 +28,17 @@ export const CommandPaletteSearch = ({
   loading,
   ref,
 }: CommandPaletteSearchProps) => {
-  const { classNames, scopeTitle, leaveScope } = useCommandPalette();
+  const { classNames, scope, leaveScope } = useCommandPalette();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
-  const scopedLabel =
-    scopeTitle === null
-      ? null
-      : stringFormatter.format('commandPaletteSearchIn', { scope: scopeTitle });
+  const scopedLabel = scope
+    ? stringFormatter.format('commandPaletteSearchIn', { scope: scope.title })
+    : null;
+
+  // Backspace in the empty field leaves the scope from the keyboard.
+  const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== 'Backspace' || !scope || e.currentTarget.value !== '') return;
+    leaveScope();
+  };
 
   return (
     <SearchField
@@ -44,11 +49,12 @@ export const CommandPaletteSearch = ({
       {({ isEmpty }) => (
         <>
           <Search aria-hidden="true" size="18" />
-          {scopeTitle !== null && (
+          {scope && (
             <span className={classNames.scope}>
-              {scopeTitle}
-              {/* Not a Tab stop, like the clear button: Backspace in the
-                  empty field leaves the scope from the keyboard. */}
+              {scope.title}
+              {/* A plain button, not a Tab stop, like the clear button.
+                  Marigold's CloseButton would be one, and inside the
+                  SearchField it would take over the clear button's role. */}
               <button
                 type="button"
                 tabIndex={-1}
@@ -69,14 +75,7 @@ export const CommandPaletteSearch = ({
               stringFormatter.format('commandPaletteGoTo')
             }
             className={classNames.input}
-            onKeyDown={e => {
-              if (
-                e.key === 'Backspace' &&
-                scopeTitle !== null &&
-                e.currentTarget.value === ''
-              )
-                leaveScope();
-            }}
+            onKeyDown={onKeyDown}
           />
           {loading ? (
             <ProgressCircle />

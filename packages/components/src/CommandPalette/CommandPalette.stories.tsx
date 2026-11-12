@@ -872,6 +872,11 @@ SearchOneKind.test(
 
     await step('The group title shows its prefix', async () => {
       await expect(canvas.getByText('e:')).toBeInTheDocument();
+      await expect(
+        canvas.getByRole('group', {
+          name: 'Events Type e: to search only Events',
+        })
+      ).toBeInTheDocument();
     });
 
     await step('Typing the prefix narrows the search', async () => {

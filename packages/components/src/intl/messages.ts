@@ -21,6 +21,8 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     commandPaletteTypeToSearch: 'Tippe, um zu suchen.',
     commandPaletteSearchIn: vars => `In ${vars?.scope} suchen…`,
     commandPaletteSearchEverywhere: 'Überall suchen',
+    commandPalettePrefixHint: vars =>
+      `Tippe ${vars?.prefix}, um nur in ${vars?.title} zu suchen`,
     confirm: 'Bestätigen',
     dismissDrawer: 'Seitenleiste schließen',
     dropZoneLabel: 'Dateien hierher ziehen',
@@ -108,6 +110,8 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     commandPaletteTypeToSearch: 'Type to search.',
     commandPaletteSearchIn: vars => `Search in ${vars?.scope}…`,
     commandPaletteSearchEverywhere: 'Search everywhere',
+    commandPalettePrefixHint: vars =>
+      `Type ${vars?.prefix} to search only ${vars?.title}`,
     confirm: 'Confirm',
     dismissDrawer: 'Dismiss drawer',
     dropZoneLabel: 'Drop files here',
