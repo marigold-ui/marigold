@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { CommandPalette, Text } from '@marigold/components';
+import type { CommandPaletteSearchState } from '@marigold/components';
 
 interface Event {
   id: string;
@@ -43,22 +44,14 @@ const recentVenues: Venue[] = [
 
 const LIMIT = 3;
 const PREFIXES = { events: 'e:', venues: 'v:' } as const;
-type Kind = keyof typeof PREFIXES;
-
-// The query keeps the prefix people typed. The palette narrows the groups,
-// the app takes the prefix off before it asks the server.
-const parse = (query: string) => {
-  for (const [kind, prefix] of Object.entries(PREFIXES)) {
-    if (query.toLowerCase().startsWith(prefix)) {
-      return { kind: kind as Kind, term: query.slice(prefix.length).trim() };
-    }
-  }
-  return { kind: null, term: query.trim() };
-};
 
 const none = { items: [], totalItems: 0 };
 
-const search = async <T,>(path: string, term: string, signal: AbortSignal) => {
+const fetchResults = async <T,>(
+  path: string,
+  term: string,
+  signal: AbortSignal
+) => {
   const params = new URLSearchParams({
     q: term,
     pageSize: String(LIMIT),
@@ -75,9 +68,14 @@ const formatDate = (date: string) =>
   });
 
 export default () => {
-  const [query, setQuery] = useState('');
-  const { kind, term } = parse(query);
-  const key = `${kind}:${term}`;
+  // The palette hands over the term without the prefix, and the prefix of
+  // the group the search is narrowed to.
+  const [search, setSearch] = useState<CommandPaletteSearchState>({
+    term: '',
+    prefix: null,
+  });
+  const { term, prefix } = search;
+  const key = `${prefix}:${term}`;
   const [results, setResults] = useState<{
     key: string;
     events: Results<Event>;
@@ -91,12 +89,12 @@ export default () => {
     const timer = setTimeout(async () => {
       try {
         const [events, venues] = await Promise.all([
-          kind === 'venues'
+          prefix === PREFIXES.venues
             ? none
-            : search<Event>('/api/events', term, controller.signal),
-          kind === 'events'
+            : fetchResults<Event>('/api/events', term, controller.signal),
+          prefix === PREFIXES.events
             ? none
-            : search<Venue>('/api/venues', term, controller.signal),
+            : fetchResults<Venue>('/api/venues', term, controller.signal),
         ]);
         setResults({ key, events, venues });
       } catch {
@@ -107,7 +105,7 @@ export default () => {
       clearTimeout(timer);
       controller.abort();
     };
-  }, [key, kind, term]);
+  }, [key, prefix, term]);
 
   const current = term && results?.key === key ? results : null;
   const events = term ? (current?.events.items ?? []) : recent;
@@ -125,8 +123,7 @@ export default () => {
       <CommandPalette
         placeholder="Search pages, events and venues…"
         filter={false}
-        inputValue={query}
-        onInputChange={setQuery}
+        onSearchChange={setSearch}
         loading={term !== '' && current === null}
       >
         <CommandPalette.Group title="Pages">

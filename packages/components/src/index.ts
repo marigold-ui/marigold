@@ -93,7 +93,10 @@ export { ComboBox } from './ComboBox/ComboBox';
 export type { ComboBoxProps } from './ComboBox/ComboBox';
 
 export { CommandPalette } from './CommandPalette/CommandPalette';
-export type { CommandPaletteProps } from './CommandPalette/CommandPalette';
+export type {
+  CommandPaletteProps,
+  CommandPaletteSearchState,
+} from './CommandPalette/CommandPalette';
 export type { CommandPaletteButtonProps } from './CommandPalette/CommandPaletteButton';
 export type { CommandPaletteGroupProps } from './CommandPalette/CommandPaletteGroup';
 export type { CommandPaletteItemProps } from './CommandPalette/CommandPaletteItem';

@@ -844,13 +844,17 @@ AsyncSearch.test(
 // A group with a `prefix`: a query that starts with it narrows the search
 // to that group.
 const onScopedQuery = fn();
+const onSearchChange = fn();
 
 export const SearchOneKind = meta.story({
   ...noSnapshot,
   render: args => (
     <CommandPalette.Trigger {...args}>
       <CommandPalette.Button />
-      <CommandPalette onInputChange={onScopedQuery}>
+      <CommandPalette
+        onInputChange={onScopedQuery}
+        onSearchChange={onSearchChange}
+      >
         <CommandPalette.Group title="Pages">
           <CommandPalette.Item id="events">Events</CommandPalette.Item>
           <CommandPalette.Item id="orders">Orders</CommandPalette.Item>
@@ -868,6 +872,7 @@ SearchOneKind.test(
   'Narrows the search to a group by its prefix',
   async ({ canvas, step, userEvent }) => {
     onScopedQuery.mockClear();
+    onSearchChange.mockClear();
     await openPalette({ canvas, userEvent });
     const search = await canvas.findByRole('searchbox');
 
@@ -892,6 +897,12 @@ SearchOneKind.test(
       await userEvent.keyboard('jazz');
       await expect(search).toHaveValue('e:jazz');
       await expect(onScopedQuery).toHaveBeenLastCalledWith('e:jazz');
+      await waitFor(() =>
+        expect(onSearchChange).toHaveBeenLastCalledWith({
+          term: 'jazz',
+          prefix: 'e:',
+        })
+      );
       await expectFirstRowActive(canvas, 'Jazz Night');
       await expect(canvas.getAllByRole('menuitem')).toHaveLength(1);
     });

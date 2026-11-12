@@ -133,12 +133,12 @@ The group title shows its prefix in brackets, like "Events (e:)", wherever the g
 <ComponentDemo name="command-palette-async" />
 
 <Callout title="Connecting the server">
-  Pass `filter={false}` to turn off the built-in match, control the query with
-  `inputValue` and `onInputChange`, and set `loading` while results load. The
-  built-in match is then off for every group, so match the static pages
-  yourself, as the demo does. The query keeps the prefix people typed, so take
-  it off before you send the search to the server. Wait until people pause
-  typing before you send a request, and cancel requests that are out of date.
+  Pass `filter={false}` to turn off the built-in match and set `loading` while
+  results load. `onSearchChange` hands over the term to search for, without the
+  prefix, and the prefix of the group the search is narrowed to. The built-in
+  match is off for every group then, so match the static pages yourself, as the
+  demo does. Wait until people pause typing before you send a request, and
+  cancel requests that are out of date.
 </Callout>
 
 ### When nothing matches

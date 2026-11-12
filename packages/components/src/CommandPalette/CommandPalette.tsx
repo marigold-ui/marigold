@@ -1,5 +1,12 @@
 import type { Key, ReactNode } from 'react';
-import { use, useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import {
+  use,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react';
 import type RAC from 'react-aria-components';
 import { useFilter } from 'react-aria-components/Autocomplete';
 import { Dialog } from 'react-aria-components/Dialog';
@@ -86,6 +93,13 @@ export interface CommandPaletteProps<T extends object = object> {
   onInputChange?: (value: string) => void;
 
   /**
+   * Handler that is called with the search term and the prefix of the group
+   * it is narrowed to, also when the palette opens. The term is the query
+   * without the prefix, ready to send to a server search.
+   */
+  onSearchChange?: (search: CommandPaletteSearchState) => void;
+
+  /**
    * How items are matched against the query. Defaults to a locale- and
    * accent-aware "contains" match that keeps the authored order and groups.
    * Pass `false` to filter yourself, e.g. on the server.
@@ -116,6 +130,13 @@ export interface CommandPaletteProps<T extends object = object> {
    * @default 'Command palette'
    */
   'aria-label'?: string;
+}
+
+export interface CommandPaletteSearchState {
+  /** The query without the prefix. */
+  term: string;
+  /** The prefix of the group the search is narrowed to, if any. */
+  prefix: string | null;
 }
 
 // Default empty state
@@ -152,6 +173,7 @@ const CommandPaletteBody = <T extends object>({
   inputValue: inputValueProp,
   defaultInputValue = '',
   onInputChange,
+  onSearchChange,
   filter,
   close,
 }: CommandPaletteBodyProps<T>) => {
@@ -189,6 +211,14 @@ const CommandPaletteBody = <T extends object>({
     return (text: string, input: string) =>
       base(text, input.slice(scope.length).trimStart());
   }, [filter, contains, scope]);
+
+  // An effect, so the app also hears the empty search of a fresh opening.
+  const reportSearch = useEffectEvent(() =>
+    onSearchChange?.({ term: query.trim(), prefix: scope })
+  );
+  useEffect(() => {
+    reportSearch();
+  }, [query, scope]);
 
   const { inputRef, menuRef } = useKeepFirstItemActive(inputValue, items);
   const context = useMemo(
