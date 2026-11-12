@@ -77,7 +77,9 @@ Name items by what people look for and use the same words as the sidebar and the
 
 Group the results, for example into Pages, Actions and Events, and keep the groups and their order the same every time. People learn where things are and type less over time. Records usually come from the server, see [Searching many records](#searching-many-records).
 
-Give a page the same icon it has in the navigation, so people recognise it in both places. Records and actions get one icon for their kind, for example a ticket for every event, not one per record. Within a group, give every item an icon or none, as in the [Menu](/components/overlay/menu). The label carries the meaning and the icon only helps people scan. If an action has its own keyboard shortcut, show it on the row with [`<Keyboard>`](/components/content/keyboard), so the palette teaches it.
+Give a page the same icon it has in the navigation, so people recognise it in both places. Records and actions get one icon for their kind, for example a ticket for every event, not one per record. Within a group, give every item an icon or none, as in the [Menu](/components/overlay/menu). The label carries the meaning and the icon only helps people scan.
+
+Some actions also have their own keyboard shortcut. People who run such an action every day are faster with the shortcut than with the palette, but most never find out it exists. Show the shortcut on the row with [`<Keyboard>`](/components/content/keyboard), so they pick it up while they use the palette.
 
 Records often share a name. Add a short description that tells them apart, like the event number and date. When people search for something the label doesn't show, add it to `textValue`, which the search matches against. In the demo above, typing "1031" finds "Jazz Night".
 
