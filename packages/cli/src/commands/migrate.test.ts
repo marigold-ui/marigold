@@ -548,6 +548,67 @@ describe('runMigrateCommand', () => {
     expect(prompts.confirm).not.toHaveBeenCalled();
   });
 
+  test('refuses a named migration at or below the marker', async () => {
+    const root = setupDetectable('19.0.0', 'v19');
+    const cardPath = path.join(root, 'theme', 'components', 'Card.styles.ts');
+    const before = readFileSync(cardPath, 'utf8');
+    const written: string[] = [];
+
+    const code = await runMigrateCommand({
+      version: 'v18',
+      targetPath: root,
+      dryRun: false,
+      write: output => written.push(output),
+      interactive: false,
+    });
+
+    expect(code).toBe(0);
+    expect(written.join('\n')).toContain(
+      'v18 is already applied (last applied: v19), so nothing was run'
+    );
+    expect(written.join('\n')).toContain(
+      'marigold migrate v18 [path] --only <names>'
+    );
+    expect(readFileSync(cardPath, 'utf8')).toBe(before);
+  });
+
+  test('runs an applied migration when --only names the changes', async () => {
+    const root = setupDetectable('19.0.0', 'v19');
+    const written: string[] = [];
+
+    const code = await runMigrateCommand({
+      version: 'v18',
+      targetPath: root,
+      dryRun: true,
+      only: ['swap-exact-classes'],
+      write: output => written.push(output),
+      interactive: false,
+    });
+
+    expect(code).toBe(0);
+    expect(written.join('\n')).not.toContain('already applied');
+    expect(written.join('\n')).toContain('marigold migrate v18 (dry run)');
+  });
+
+  test('warns but runs a named migration for a major that is not installed', async () => {
+    const root = setupDetectable('18.0.0');
+    const written: string[] = [];
+
+    const code = await runMigrateCommand({
+      version: 'v19',
+      targetPath: root,
+      dryRun: true,
+      write: output => written.push(output),
+      interactive: false,
+    });
+
+    expect(code).toBe(0);
+    expect(written.join('\n')).toContain(
+      'Warning: v19 targets @marigold/components 19, but 18.0.0 is installed'
+    );
+    expect(written.join('\n')).toContain('marigold migrate v19 (dry run)');
+  });
+
   test('refuses to auto-detect without a terminal to confirm in', async () => {
     const root = setupDetectable('18.0.0');
 

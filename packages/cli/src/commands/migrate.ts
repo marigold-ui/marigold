@@ -511,6 +511,42 @@ export interface MigrateCommandOptions {
 }
 
 /**
+ * Guards for an explicitly named migration. Returns false when it must not
+ * run: already applied per the marker, unless `--only` names the changes.
+ * A migration for a major that is not installed yet warns but still runs.
+ */
+const checkNamedRun = (
+  version: string,
+  targetPath: string,
+  only: readonly string[] | undefined,
+  write: (output: string) => void
+): boolean => {
+  // unknown names are reported by runMigrate
+  if (!MANIFESTS[version]) return true;
+  const detected = detectMigration(targetPath);
+  if (!detected) return true;
+  const target = migrationMajor(version);
+  if (
+    !only &&
+    detected.migrated &&
+    target <= migrationMajor(detected.migrated)
+  ) {
+    write(
+      `${version} is already applied (last applied: ${detected.migrated}), so nothing was run: a second run can rename props it already renamed. ` +
+        `To apply changes you skipped, name them: marigold migrate ${version} [path] --only <names>`
+    );
+    return false;
+  }
+  if (target > Number.parseInt(detected.installed, 10)) {
+    write(
+      `Warning: ${version} targets @marigold/components ${target}, but ${detected.installed} is installed. ` +
+        `It rewrites code still typed against the older version, so upgrade first if you can. Running it because it was named explicitly.`
+    );
+  }
+  return true;
+};
+
+/**
  * The `marigold migrate` flow: resolve which migration(s) to run (explicit,
  * or detected from the target and confirmed), offer the changes that fire
  * for deselection, then apply. Prompts happen only on a real terminal; every
@@ -525,6 +561,7 @@ export const runMigrateCommand = async (
 
   let versions: string[];
   if (options.version) {
+    if (!checkNamedRun(options.version, targetPath, only, write)) return 0;
     versions = [options.version];
   } else {
     const detected = detectMigration(targetPath);
