@@ -77,7 +77,7 @@ Name items by what people look for and use the same words as the sidebar and the
 
 Group the results, for example into Pages, Actions and Events, and keep the groups and their order the same every time. People learn where things are and type less over time. Records usually come from the server, see [Searching many records](#searching-many-records).
 
-Give a page the same icon it has in the navigation, so people recognise it in both places. Records and actions get one icon for their kind, for example a ticket for every event, not one per record. Within a group, give every item an icon or none, as in the [Menu](/components/overlay/menu). The label carries the meaning and the icon only helps people scan.
+Give a page the same icon it has in the navigation, so people recognise it in both places. Records and actions get one icon for their kind, for example a ticket for every event, not one per record. Within a group, give every item an icon or none, as in the [Menu](/components/overlay/menu). The label carries the meaning and the icon only helps people scan. If an action has its own keyboard shortcut, show it on the row with [`<Keyboard>`](/components/content/keyboard), so the palette teaches it.
 
 Records often share a name. Add a short description that tells them apart, like the event number and date. When people search for something the label doesn't show, add it to `textValue`, which the search matches against. In the demo above, typing "1031" finds "Jazz Night".
 
@@ -103,14 +103,6 @@ An empty query is the most common start, and the full list is the least helpful 
 Control the query to know when it is empty. The recent records come from your app, ideally from the server, so they follow people across devices.
 
 <ComponentDemo name="command-palette-recent" />
-
-### Actions for the current page
-
-People often open the palette to do something with what they are looking at. On the page of an event, put that event's actions in a group at the top and name the group after the event. The global groups stay below and keep their order, so people still find them where they expect them. Leave out the group on pages that have no actions of their own.
-
-If an action has its own keyboard shortcut, show it on the row with [`<Keyboard>`](/components/content/keyboard). The palette then teaches the shortcut, and people who use the action often learn to skip the palette. Only show shortcuts that work on the current page.
-
-<ComponentDemo name="command-palette-context" />
 
 ### Searching many records
 
@@ -170,6 +162,7 @@ Before building the palette we looked at cmdk (used by shadcn/ui and Vercel), Li
 - **Filtering:** a "contains" match keeps the authored order and groups, which people can learn. Fuzzy ranking finds more but reorders the list on every key. We start with "contains" and leave fuzzy matching to a custom `filter`.
 - **Search prefixes:** VS Code, PowerToys and Retool let people narrow the search with a short prefix. This follows the usability heuristic of offering accelerators to expert users while the regular path stays available to everyone else. The common weak spot is that people don't know the prefixes exist, which is why the pattern above names them in the placeholder. Marigold has no prefix API yet and leaves the parsing to the app until more than one app needs it.
 - **Small screens:** the palette uses a tray for now. It moves to a bottom sheet together with the other overlays once that component exists.
+- **Actions for the open page:** GitHub, Linear and Sentry also show actions for the page or record that is open. That needs every page to register its actions with the palette, and those actions compete with recent and favourite items for the top of the list. We left them out for now.
 
 ## Props
 
