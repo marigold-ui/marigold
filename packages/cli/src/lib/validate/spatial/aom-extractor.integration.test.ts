@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { runAxeAudit } from './aom-extractor.js';
 import { type SharedRenderer, createRenderer } from './renderer.js';
+import { skipIntegration } from './skipIntegration.js';
 
 // The axe audit is invoked behind a per-check try/catch in spatial/index.ts, so
 // a run that silently returns nothing is indistinguishable from a clean page —
@@ -42,7 +43,10 @@ afterAll(async () => {
 
 describe('axe audit (requires a working render environment)', () => {
   it('returns a non-empty violation set for a page axe has findings on', async ctx => {
-    if (!renderWorks || !renderer) return ctx.skip();
+    if (!renderWorks || !renderer)
+      return skipIntegration(ctx, 'No working Chromium render', {
+        inCI: 'fail',
+      });
 
     const handle = await renderer.render(example('valid-button.tsx'), viewport);
     try {

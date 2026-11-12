@@ -6,6 +6,7 @@ import type { Socket } from 'node:net';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { type SharedRenderer, createRenderer } from './renderer.js';
+import { skipIntegration } from './skipIntegration.js';
 
 // Integration coverage for the render sandbox's network egress control.
 // page.route only intercepts HTTP(S); a WebSocket opened by untrusted
@@ -146,7 +147,8 @@ describe('render sandbox network egress (requires a working render environment)'
     try {
       wsServer = await startWsHandshakeServer();
     } catch (err) {
-      if (err instanceof PortBusyError) return ctx.skip();
+      if (err instanceof PortBusyError)
+        return skipIntegration(ctx, 'The test port is busy', { inCI: 'skip' });
       throw err;
     }
     const socket = new WebSocket(`ws://127.0.0.1:${WS_TARGET_PORT}/`);
@@ -167,11 +169,15 @@ describe('render sandbox network egress (requires a working render environment)'
   }, 10_000);
 
   it('closes a WebSocket opened by the rendered component instead of letting it connect', async ctx => {
-    if (!renderWorks || !renderer) return ctx.skip();
+    if (!renderWorks || !renderer)
+      return skipIntegration(ctx, 'No working Chromium render', {
+        inCI: 'fail',
+      });
     try {
       wsServer = await startWsHandshakeServer();
     } catch (err) {
-      if (err instanceof PortBusyError) return ctx.skip();
+      if (err instanceof PortBusyError)
+        return skipIntegration(ctx, 'The test port is busy', { inCI: 'skip' });
       throw err;
     }
 

@@ -2,6 +2,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validate } from '../index.js';
+import { skipIntegration } from './skipIntegration.js';
 
 // Integration coverage for `display:contents` handling in the "disappeared
 // component" check: the real selfHidden computation runs inside
@@ -30,7 +31,10 @@ beforeAll(async () => {
 
 describe('responsive disappeared-component check (requires a working render environment)', () => {
   it('does not flag a display:contents element as a genuine zero-dimension collapse', async ctx => {
-    if (!renderWorks) return ctx.skip();
+    if (!renderWorks)
+      return skipIntegration(ctx, 'No working Chromium render', {
+        inCI: 'fail',
+      });
 
     const report = await validate(example('display-contents-wrapper.tsx'), {
       checks: ['spatial'],

@@ -2,6 +2,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validate } from '../index.js';
+import { skipIntegration } from './skipIntegration.js';
 
 // Integration coverage for auto-fit/auto-fill grid detection: the real
 // `declaresAutoFitGrid` (overflow.ts) has to scan stylesheet rules against a
@@ -34,7 +35,10 @@ beforeAll(async () => {
 
 describe('auto-fit/auto-fill grid overflow detection (requires a working render environment)', () => {
   it('does not flag a wrapping Tiles (auto-fit) grid as an overflow/wrapping defect', async ctx => {
-    if (!renderWorks) return ctx.skip();
+    if (!renderWorks)
+      return skipIntegration(ctx, 'No working Chromium render', {
+        inCI: 'fail',
+      });
 
     const report = await validate(example('auto-fit-tiles.tsx'), {
       checks: ['spatial'],

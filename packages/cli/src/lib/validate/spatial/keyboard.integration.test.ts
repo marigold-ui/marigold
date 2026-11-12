@@ -2,6 +2,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validate } from '../index.js';
+import { skipIntegration } from './skipIntegration.js';
 
 // Integration coverage for arrow-key navigation orientation: the real
 // key-press/focus-check loop drives an actual keyboard event against a live
@@ -30,7 +31,10 @@ beforeAll(async () => {
 
 describe('arrow-key navigation orientation (requires a working render environment)', () => {
   it('does not flag a horizontally-oriented radiogroup as non-navigable', async ctx => {
-    if (!renderWorks) return ctx.skip();
+    if (!renderWorks)
+      return skipIntegration(ctx, 'No working Chromium render', {
+        inCI: 'fail',
+      });
 
     const report = await validate(example('horizontal-radio-group.tsx'), {
       checks: ['spatial'],

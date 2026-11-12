@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { driveInteractions } from './interaction-driver.js';
 import { type SharedRenderer, createRenderer } from './renderer.js';
+import { skipIntegration } from './skipIntegration.js';
 
 // Integration coverage for disclosure detection: driving a real Accordion
 // (built on react-aria-components' Disclosure, whose panel renders
@@ -37,7 +38,10 @@ afterAll(async () => {
 
 describe('driveInteractions disclosure detection (requires a working render environment)', () => {
   it('detects an Accordion panel (role="group") as revealed, not just toggled', async ctx => {
-    if (!renderWorks || !renderer) return ctx.skip();
+    if (!renderWorks || !renderer)
+      return skipIntegration(ctx, 'No working Chromium render', {
+        inCI: 'fail',
+      });
 
     const handle = await renderer.render(
       example('accordion-disclosure.tsx'),

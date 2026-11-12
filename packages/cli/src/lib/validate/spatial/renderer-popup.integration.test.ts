@@ -3,6 +3,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { type SharedRenderer, createRenderer } from './renderer.js';
+import { skipIntegration } from './skipIntegration.js';
 
 // Integration coverage for the render sandbox's network egress control.
 // page.route only ever covers the single Page it's registered on — a popup
@@ -36,7 +37,10 @@ afterAll(async () => {
 
 describe('render sandbox network egress (requires a working render environment)', () => {
   it('closes a popup opened by the rendered component instead of letting it reach the network', async ctx => {
-    if (!renderWorks || !renderer) return ctx.skip();
+    if (!renderWorks || !renderer)
+      return skipIntegration(ctx, 'No working Chromium render', {
+        inCI: 'fail',
+      });
 
     const handle = await renderer.render(
       example('popup-attempt.tsx'),
@@ -63,7 +67,10 @@ describe('render sandbox network egress (requires a working render environment)'
   }, 60_000);
 
   it("does not close a page opened directly on the context (e.g. axe-core's own finishRun helper page)", async ctx => {
-    if (!renderWorks || !renderer) return ctx.skip();
+    if (!renderWorks || !renderer)
+      return skipIntegration(ctx, 'No working Chromium render', {
+        inCI: 'fail',
+      });
 
     // A page opened via `context.newPage()` (as opposed to
     // `window.open()`/`target="_blank"` from inside the rendered page) has a
