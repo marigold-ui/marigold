@@ -1,7 +1,6 @@
 import {
   type ReactNode,
   useEffect,
-  useEffectEvent,
   useId,
   useMemo,
   useRef,
@@ -12,6 +11,7 @@ import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { announce } from '@react-aria/live-announcer';
+import { useEffectEvent } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import { ButtonContext, RESET_BUTTON_CONTEXT } from '../Button/Context';
 import { CloseButton } from '../CloseButton/CloseButton';

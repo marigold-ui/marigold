@@ -35,11 +35,9 @@ export const Columns = ({
   children,
   ...props
 }: ColumnsProps) => {
-  // The `columns` array must line up with the children one to one.
-  const childCount = Children.count(children);
-  if (childCount !== columns.length) {
+  if (Children.count(children) !== columns.length) {
     throw new Error(
-      `Columns: expected ${columns.length} children, got ${childCount}`
+      `Columns: expected ${columns.length} children, got ${Children.count(children)}`
     );
   }
 

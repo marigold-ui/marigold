@@ -46,8 +46,6 @@ export const Aside = ({
   side = 'left',
   wrap = '50%',
 }: AsideProps) => {
-  // `toArray` flattens fragments and arrays so the first two children land in
-  // the two columns, whatever shape the consumer passes.
   const [left, right] = Children.toArray(children);
   const vars = {
     aside: createVar({ sideWidth }),

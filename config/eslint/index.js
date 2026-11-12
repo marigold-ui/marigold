@@ -32,15 +32,8 @@ export default [
       '@eslint-react/no-create-ref': 'error',
     },
   },
-  // Components take their content as `children` by public API (`<Columns>`,
-  // `<Stack>`, `<Breadcrumbs>`, …) and have to inspect, count, wrap or clone
-  // those children. Avoiding `Children`/`cloneElement` means a different API
-  // (compound parts that register through context, or `items` props), which
-  // is breaking and belongs in a major, not in a lint cleanup.
-  // Tracked per component: DST-1957 (TagGroup, Sidebar: cloneElement to
-  // context, non-breaking), DST-1958 to DST-1965 (Columns, Stack, Aside,
-  // Breadcrumbs, OverflowRegion, More, Stepper, SelectAll: next major).
-  // Re-enable the rules once those are done.
+  // Components take their content as `children` by public API, so moving off
+  // `Children`/`cloneElement` is an API change. Re-enable after DST-1957 to DST-1965.
   {
     files: ['packages/components/**', 'docs/ui/**'],
     rules: {

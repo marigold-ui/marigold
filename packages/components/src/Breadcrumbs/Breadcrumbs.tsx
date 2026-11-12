@@ -62,8 +62,6 @@ const BreadcrumbsBase = ({
     size,
   });
 
-  // `toArray` flattens fragments/arrays and assigns every element a stable key,
-  // which is used below to key the rendered crumbs.
   const items = Children.toArray(children);
   const total = items.length;
 
