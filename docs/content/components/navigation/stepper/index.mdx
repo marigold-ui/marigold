@@ -5,6 +5,7 @@ badge: beta
 ---
 
 import { StepperAnatomy } from './stepper-anatomy';
+import { StepperSmallScreenAnatomy } from './stepper-small-screen-anatomy';
 
 The `<Stepper>` component shows where a user stands in a task that spans several steps, such as a checkout, an onboarding flow, or a multi-page form. Each step reports whether it is done, current, failed, or still ahead, so the progress is visible at a glance and announced to screen readers.
 
@@ -158,13 +159,17 @@ Hiding the labels also takes away a sighted user's sense of how far along they a
 
 ### Small screens
 
-A row of markers and labels does not fit a phone. Below the small-screen breakpoint the stepper switches on its own to a compact layout: a "Step 2 of 4" counter, the name of the current step, and a track with one segment per step. You do not need to change your code for this, and twelve steps fit as well as three.
+A row of markers and labels does not fit a phone. Below the small-screen breakpoint the stepper switches to a compact layout by itself: a "Step 2 of 4" counter, the name of the current step, and a track with one segment per step. You do not need to change your code for this, but a few choices in your flow decide how well it reads on a phone.
 
-Each segment is still the step itself. A finished step stays a button or a link, so the user can tap its segment to go back, and screen readers announce every step the same way they do on a large screen. The segments share the width equally, so on the narrowest phones up to twelve steps keep a touch target of at least 24 pixels. Longer flows get smaller targets, which is one more reason to keep a flow short.
+<StepperSmallScreenAnatomy />
 
-Only the current step is named on small screens, so a step that failed earlier needs a cue that does not depend on colour. Its segment turns red and the counter line adds "1 step needs attention". When the current step is the one that failed, its name shows the warning icon instead.
+Take a customer reselling tickets on their phone. The stepper sits as two lines above the content, and the current label is the only step name they see. Name each step after what the user does there, such as "Tickets", "Price" or "Payout". A long name wraps onto a second line instead of being cut off, but one or two words read best.
 
-The name of the current step wraps onto a second line rather than being cut off. Short labels still read best, so keep them to one or two words.
+Once the customer reaches the review step and wants a different price, they tap the price segment to go back. Finished steps stay buttons or links on small screens, so this needs no extra code, and screen readers announce every step the same way they do on a large screen. The touch target is the full height of the step, not only the thin bar.
+
+Longer flows fit as well. Setting up an event can run to twelve steps, and because the segments share the width equally, each one still keeps a touch target at least 24 pixels wide on the narrowest phones. Beyond twelve the targets shrink, so split such a flow into stages instead of adding steps. `hideLabels` changes nothing here, because small screens show only the current label anyway.
+
+With only one step named, an error further back would go unnoticed. Say the event's dates fail validation while the user is already on the prices step. Mark the dates step with `errorKeys`: its segment turns red, the counter line adds "1 step needs attention", so the error does not rest on colour alone, and the step stays selectable, so the user can tap it and fix it. When the current step is the one that failed, its name shows the warning icon instead.
 
 ### Accessibility
 
