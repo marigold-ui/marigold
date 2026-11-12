@@ -377,9 +377,24 @@ CollapseAt.test(
   }
 );
 
-// A consumer component around `Tag` that does not forward `hidden`.
+// Consumer components around `Tag`: one does not forward `hidden`, the other
+// forwards it and so passes `hidden={undefined}` when TagGroup sets nothing.
 const CategoryTag = ({ id, name }: { id: string; name: string }) => (
   <Tag id={id}>{name}</Tag>
+);
+
+const ForwardingTag = ({
+  id,
+  name,
+  hidden,
+}: {
+  id: string;
+  name: string;
+  hidden?: boolean;
+}) => (
+  <Tag id={id} hidden={hidden}>
+    {name}
+  </Tag>
 );
 
 export const CollapseAtWrappedTags = meta.story({
@@ -393,7 +408,7 @@ export const CollapseAtWrappedTags = meta.story({
         <CategoryTag id="news" name="News" />
         <CategoryTag id="travel" name="Travel" />
         <CategoryTag id="gaming" name="Gaming" />
-        <CategoryTag id="music" name="Music" />
+        <ForwardingTag id="music" name="Music" />
       </Tag.Group>
     </I18nProvider>
   ),
@@ -402,7 +417,7 @@ export const CollapseAtWrappedTags = meta.story({
 CollapseAtWrappedTags.test(
   'collapses tags wrapped in a consumer component',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas }) => {
+  async ({ canvas, userEvent }) => {
     expect(canvas.getByText('Travel')).toBeVisible();
     expect(canvas.queryByText('Gaming')).not.toBeVisible();
     expect(canvas.queryByText('Music')).not.toBeVisible();

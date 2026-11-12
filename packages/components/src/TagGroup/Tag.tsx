@@ -17,7 +17,14 @@ export interface TagProps extends Omit<RAC.TagProps, RemovedProps> {
   disabled?: boolean;
 }
 
-const Tag = ({ variant, size, children, disabled, ...rest }: TagProps) => {
+const Tag = ({
+  variant,
+  size,
+  children,
+  disabled,
+  hidden,
+  ...rest
+}: TagProps) => {
   let textValue = typeof children === 'string' ? children : undefined;
 
   const classNames = useClassNames({ component: 'Tag', variant, size });
@@ -26,7 +33,7 @@ const Tag = ({ variant, size, children, disabled, ...rest }: TagProps) => {
 
   const props = {
     isDisabled: disabled ?? groupDisabled,
-    hidden: collapsed,
+    hidden: hidden ?? collapsed,
     ...rest,
   };
 
