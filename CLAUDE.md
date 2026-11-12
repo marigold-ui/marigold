@@ -38,7 +38,8 @@ typecheck and the tests read package source, and only the docs site and the CLI 
 | Repo guards                | `pnpm check:rac-imports`, `pnpm check:theme-zindex`, `pnpm check:memory`     |
 | Storybook / docs site      | `pnpm sb` (port 6006) / `pnpm start` (port 3000, needs `pnpm build` first)   |
 
-Prettier and Vale run on commit through lint-staged, so there is nothing to format by hand.
+Prettier, Vale and ESLint (errors only) run on commit through lint-staged, so there is nothing to
+format by hand and a lint error stops the commit.
 
 ## Rules that always apply
 

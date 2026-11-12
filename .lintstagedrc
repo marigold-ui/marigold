@@ -1,4 +1,5 @@
 {
-  "*": "prettier --write",
+  "*.{js,jsx,mjs,cjs,ts,tsx}": ["prettier --write", "eslint --no-warn-ignored"],
+  "!(*.{js,jsx,mjs,cjs,ts,tsx})": "prettier --write",
   "*.{md,mdx}": "node scripts/vale.mjs"
 }
