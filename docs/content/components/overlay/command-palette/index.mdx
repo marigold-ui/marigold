@@ -166,17 +166,6 @@ Letters typed into the search field stay in the palette. Shortcuts your app bind
 
 The search field is the only Tab stop. The caret is its focus indicator, so the field has no extra ring. When the palette closes, focus returns to where it was.
 
-## Research
-
-Before building the palette we looked at cmdk (used by shadcn/ui and Vercel), Linear, GitHub, Raycast, Mantine Spotlight, macOS Spotlight and the React Aria command palette example.
-
-- **Pattern:** every one of them pairs a search field with a list and keeps a row active, so <kbd>Enter</kbd> runs the top match. Marigold builds on React Aria's `Autocomplete` over a `Menu`, which gives the combobox behaviour above.
-- **Name:** "command palette" is the term most apps and libraries use. "Command menu" stays for a plain `Menu` of actions next to a trigger, so the two don't get mixed up.
-- **Filtering:** a "contains" match keeps the authored order and groups, which people can learn. Fuzzy ranking finds more but reorders the list on every key. We start with "contains" and leave fuzzy matching to a custom `filter`.
-- **Search prefixes:** VS Code, PowerToys and Retool let people narrow the search with a short prefix. This follows the usability heuristic of offering accelerators to expert users while the regular path stays available to everyone else. The common weak spot is that people don't know the prefixes exist, which is why the pattern above names them in the placeholder. Marigold has no prefix API yet and leaves the parsing to the app until more than one app needs it.
-- **Small screens:** the palette uses a tray for now. It moves to a bottom sheet together with the other overlays once that component exists.
-- **Actions for the open page:** GitHub, Linear and Sentry also show actions for the page or record that is open. That needs every page to register its actions with the palette, and those actions compete with recent and favourite items for the top of the list. We left them out for now.
-
 ## Props
 
 <StorybookHintMessage component={'CommandPalette'} />
