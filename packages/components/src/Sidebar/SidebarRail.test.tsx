@@ -773,3 +773,47 @@ describe('explicit active override', () => {
     expect(screen.getByRole('heading', { name: 'Hilfe' })).toBeInTheDocument();
   });
 });
+
+describe('panel nav props', () => {
+  const renderRail = (nav: { current?: string; 'aria-label'?: string }) =>
+    render(
+      <MarigoldProvider theme={theme}>
+        <Sidebar.Provider>
+          <Sidebar>
+            <Sidebar.Rail current="/tickets/meine">
+              <Sidebar.RailItem id="tickets" icon={<i />}>
+                Tickets
+                <Sidebar.Nav {...nav}>
+                  <Sidebar.Item href="/tickets/meine">
+                    Meine Tickets
+                  </Sidebar.Item>
+                  <Sidebar.Item href="/tickets/alle">Alle Tickets</Sidebar.Item>
+                </Sidebar.Nav>
+              </Sidebar.RailItem>
+            </Sidebar.Rail>
+          </Sidebar>
+        </Sidebar.Provider>
+      </MarigoldProvider>
+    );
+
+  test('the panel nav takes the rail’s current and the section title as its name', () => {
+    renderRail({});
+
+    const panel = screen.getByRole('navigation', { name: 'Tickets' });
+    expect(
+      within(panel).getByRole('link', { name: 'Meine Tickets' })
+    ).toHaveAttribute('aria-current', 'page');
+  });
+
+  test('a current set on the panel nav itself wins over the rail’s', () => {
+    renderRail({ current: '/tickets/alle', 'aria-label': 'Ticketliste' });
+
+    const panel = screen.getByRole('navigation', { name: 'Ticketliste' });
+    expect(
+      within(panel).getByRole('link', { name: 'Alle Tickets' })
+    ).toHaveAttribute('aria-current', 'page');
+    expect(
+      within(panel).getByRole('link', { name: 'Meine Tickets' })
+    ).not.toHaveAttribute('aria-current');
+  });
+});

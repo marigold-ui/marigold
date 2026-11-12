@@ -3,7 +3,7 @@ import type RAC from 'react-aria-components';
 import { Tag as RACTag } from 'react-aria-components/TagGroup';
 import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
-import { useTagGroupContext } from './Context';
+import { useTagCollapseContext, useTagGroupContext } from './Context';
 import { TagGroup } from './TagGroup';
 
 type RemovedProps = 'className' | 'style' | 'isDisabled';
@@ -22,9 +22,11 @@ const Tag = ({ variant, size, children, disabled, ...rest }: TagProps) => {
 
   const classNames = useClassNames({ component: 'Tag', variant, size });
   const { disabled: groupDisabled } = useTagGroupContext();
+  const { hidden: collapsed } = useTagCollapseContext();
 
   const props = {
     isDisabled: disabled ?? groupDisabled,
+    hidden: collapsed,
     ...rest,
   };
 

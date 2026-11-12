@@ -377,6 +377,43 @@ CollapseAt.test(
   }
 );
 
+// A consumer component around `Tag` that does not forward `hidden`.
+const CategoryTag = ({ id, name }: { id: string; name: string }) => (
+  <Tag id={id}>{name}</Tag>
+);
+
+export const CollapseAtWrappedTags = meta.story({
+  tags: ['component-test'],
+  args: {
+    collapseAt: 2,
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <Tag.Group {...args} label="Categories">
+        <CategoryTag id="news" name="News" />
+        <CategoryTag id="travel" name="Travel" />
+        <CategoryTag id="gaming" name="Gaming" />
+        <CategoryTag id="music" name="Music" />
+      </Tag.Group>
+    </I18nProvider>
+  ),
+});
+
+CollapseAtWrappedTags.test(
+  'collapses tags wrapped in a consumer component',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    expect(canvas.getByText('Travel')).toBeVisible();
+    expect(canvas.queryByText('Gaming')).not.toBeVisible();
+    expect(canvas.queryByText('Music')).not.toBeVisible();
+
+    await userEvent.click(canvas.getByText('Show 2 more'));
+
+    expect(canvas.getByText('Gaming')).toBeVisible();
+    expect(canvas.getByText('Music')).toBeVisible();
+  }
+);
+
 export const CollapseAtWithRemove = meta.story({
   tags: ['component-test'],
   render: function Render(args) {

@@ -1,5 +1,5 @@
-import type { ReactElement, ReactNode, Ref } from 'react';
-import { cloneElement, isValidElement, useId, useMemo, useState } from 'react';
+import type { ReactNode, Ref } from 'react';
+import { isValidElement, useId, useMemo, useState } from 'react';
 import type RAC from 'react-aria-components';
 import { FieldErrorContext } from 'react-aria-components/FieldError';
 import { FormContext } from 'react-aria-components/Form';
@@ -21,7 +21,7 @@ import { splitChildren } from '../utils/children.utils';
 import { useFieldHelpText } from '../utils/useFieldHelpText';
 import { joinIds, useAddonDescription } from '../utils/useLabelAddon';
 import { useLiftedSelection } from '../utils/useLiftedSelection';
-import { TagGroupContext } from './Context';
+import { TagCollapseContext, TagGroupContext } from './Context';
 import { TagGroupRemoveAll } from './TagGroupRemoveAll';
 import { TagGroupShowMore } from './TagGroupShowMore';
 
@@ -212,13 +212,9 @@ const TagGroup = ({
   const renderedChildren = canCollapse
     ? [
         ...visibleChildren,
-        ...collapsedChildren.map(child =>
-          isValidElement(child)
-            ? cloneElement(child as ReactElement<{ hidden?: boolean }>, {
-                hidden: !expanded,
-              })
-            : child
-        ),
+        <TagCollapseContext key="collapsed" value={{ hidden: !expanded }}>
+          {collapsedChildren}
+        </TagCollapseContext>,
       ]
     : children;
 
