@@ -16,6 +16,7 @@ import {
   Panel,
   Sidebar,
   Text,
+  TextValue,
   Title,
   TopNavigation,
 } from '@marigold/components';
@@ -158,10 +159,10 @@ export default () => {
                       textValue={`${event.name} ${event.number}`}
                     >
                       <Ticket />
-                      <Text slot="label">{event.name}</Text>
-                      <Text slot="description">
+                      <TextValue>{event.name}</TextValue>
+                      <Description>
                         #{event.number}, {event.date}
-                      </Text>
+                      </Description>
                     </CommandPalette.Item>
                   ))}
                 </CommandPalette.Group>

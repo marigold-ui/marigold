@@ -1,6 +1,6 @@
 import { CalendarDays, Plus, ShoppingCart, Ticket } from 'lucide-react';
 import { useState } from 'react';
-import { CommandPalette, Text } from '@marigold/components';
+import { CommandPalette, Description, TextValue } from '@marigold/components';
 
 const pages = [
   { id: 'events', label: 'Events', icon: <CalendarDays /> },
@@ -27,10 +27,10 @@ const EventItem = ({ event }: { event: (typeof events)[number] }) => (
     textValue={`${event.name} ${event.number}`}
   >
     <Ticket />
-    <Text slot="label">{event.name}</Text>
-    <Text slot="description">
+    <TextValue>{event.name}</TextValue>
+    <Description>
       #{event.number}, {event.date}
-    </Text>
+    </Description>
   </CommandPalette.Item>
 );
 

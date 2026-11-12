@@ -14,9 +14,10 @@ import { expect, fn, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { isAppleDevice } from '@react-aria/utils';
 import { Button } from '../Button/Button';
+import { Description } from '../Description/Description';
 import { Stack } from '../Stack/Stack';
-import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
+import { TextValue } from '../TextValue/TextValue';
 import { useAsyncList } from '../hooks';
 import { CommandPalette } from './CommandPalette';
 
@@ -437,8 +438,8 @@ export const WithDescriptions = meta.story({
         <CommandPalette.Group title="Pages">
           <CommandPalette.Item id="events" href="#events" textValue="Events">
             <CalendarDays />
-            <Text slot="label">Events</Text>
-            <Text slot="description">Page</Text>
+            <TextValue>Events</TextValue>
+            <Description>Page</Description>
           </CommandPalette.Item>
           <CommandPalette.Item
             id="reports"
@@ -446,15 +447,15 @@ export const WithDescriptions = meta.story({
             textValue="Daily report"
           >
             <ChartColumn />
-            <Text slot="label">Daily report</Text>
-            <Text slot="description">Analytics › Reports</Text>
+            <TextValue>Daily report</TextValue>
+            <Description>Analytics › Reports</Description>
           </CommandPalette.Item>
         </CommandPalette.Group>
         <CommandPalette.Group title="Actions">
           <CommandPalette.Item id="export" textValue="Export café sales">
             <Download />
-            <Text slot="label">Export café sales</Text>
-            <Text slot="description">CSV, last 30 days</Text>
+            <TextValue>Export café sales</TextValue>
+            <Description>CSV, last 30 days</Description>
           </CommandPalette.Item>
         </CommandPalette.Group>
       </CommandPalette>
@@ -655,10 +656,10 @@ const SearchPrefixPalette = () => {
                   textValue={event.name}
                 >
                   <Ticket />
-                  <Text slot="label">{event.name}</Text>
-                  <Text slot="description">
+                  <TextValue>{event.name}</TextValue>
+                  <Description>
                     #{event.id}, {event.date}
-                  </Text>
+                  </Description>
                 </CommandPalette.Item>
               ))}
             </CommandPalette.Group>

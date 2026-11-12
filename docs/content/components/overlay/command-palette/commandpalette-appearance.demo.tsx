@@ -8,7 +8,7 @@ import {
   Ticket,
   Users,
 } from 'lucide-react';
-import { CommandPalette, Text } from '@marigold/components';
+import { CommandPalette, Description, TextValue } from '@marigold/components';
 
 const pages = [
   { id: 'events', label: 'Events', icon: <CalendarDays /> },
@@ -59,10 +59,10 @@ export default () => (
             textValue={`${event.name} ${event.number}`}
           >
             <Ticket />
-            <Text slot="label">{event.name}</Text>
-            <Text slot="description">
+            <TextValue>{event.name}</TextValue>
+            <Description>
               #{event.number}, {event.date}
-            </Text>
+            </Description>
           </CommandPalette.Item>
         ))}
       </CommandPalette.Group>

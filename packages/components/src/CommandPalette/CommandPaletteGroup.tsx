@@ -4,7 +4,8 @@ import type RAC from 'react-aria-components';
 import { Header } from 'react-aria-components/Header';
 import { MenuSection } from 'react-aria-components/Menu';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { Text } from '../Text/Text';
+import { Description } from '../Description/Description';
+import { TextValue } from '../TextValue/TextValue';
 import { ChevronRight } from '../icons/ChevronRight';
 import { intlMessages } from '../intl/messages';
 import { CommandPaletteItem } from './CommandPaletteItem';
@@ -95,10 +96,10 @@ export const CommandPaletteGroup = ({
           onAction={() => narrowTo(prefix)}
         >
           <ChevronRight />
-          <Text slot="label">{more}</Text>
-          <Text slot="description">
+          <TextValue>{more}</TextValue>
+          <Description>
             {stringFormatter.format('commandPaletteOrType', { prefix })}
-          </Text>
+          </Description>
         </CommandPaletteItem>
       )}
     </MenuSection>

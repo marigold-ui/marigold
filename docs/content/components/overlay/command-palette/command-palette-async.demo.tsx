@@ -6,7 +6,7 @@ import {
   Ticket,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { CommandPalette, Text } from '@marigold/components';
+import { CommandPalette, Description, TextValue } from '@marigold/components';
 import type { CommandPaletteSearchState } from '@marigold/components';
 
 interface Event {
@@ -79,11 +79,11 @@ const ShowAll = ({
 }) => (
   <CommandPalette.Item id={id} textValue={`Show all ${kind} ${term}`}>
     <ArrowRight />
-    <Text slot="label">
+    <TextValue>
       Show all {total} {kind}
       {term && ` for “${term}”`}
-    </Text>
-    <Text slot="description">Opens the {kind} list with this search</Text>
+    </TextValue>
+    <Description>Opens the {kind} list with this search</Description>
   </CommandPalette.Item>
 );
 
@@ -190,11 +190,11 @@ export default () => {
               textValue={event.name}
             >
               <Ticket />
-              <Text slot="label">{event.name}</Text>
-              <Text slot="description">
+              <TextValue>{event.name}</TextValue>
+              <Description>
                 #{event.id}, {formatDate(event.date)}
                 {event.venue && `, ${event.venue}`}
-              </Text>
+              </Description>
             </CommandPalette.Item>
           ))}
           {prefix && current && current.events.totalItems > limit && (
@@ -222,8 +222,8 @@ export default () => {
               textValue={venue.name}
             >
               <MapPin />
-              <Text slot="label">{venue.name}</Text>
-              <Text slot="description">{venue.city}</Text>
+              <TextValue>{venue.name}</TextValue>
+              <Description>{venue.city}</Description>
             </CommandPalette.Item>
           ))}
           {prefix && current && current.venues.totalItems > limit && (
