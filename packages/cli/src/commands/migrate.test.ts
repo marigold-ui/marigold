@@ -12,7 +12,7 @@ import {
 const prompts = vi.hoisted(() => ({
   confirm: vi.fn(),
   multiselect: vi.fn(),
-  isCancel: vi.fn(() => false),
+  isCancel: vi.fn<(value: unknown) => boolean>(() => false),
 }));
 vi.mock('@clack/prompts', () => prompts);
 
@@ -591,6 +591,29 @@ describe('runMigrateCommand', () => {
     expect(readFileSync(cardPath, 'utf8')).toBe(before);
   });
 
+  test('dry-runs a recorded migration and says applying would be refused', async () => {
+    // migrated, selection-only: combobox-value-props would fire on it again
+    const root = setupDetectable('19.0.0', 'v19');
+    const appFile = path.join(root, 'app', 'Search.tsx');
+    mkdirSync(path.dirname(appFile), { recursive: true });
+    const source = `import { ComboBox } from '@marigold/components';\nexport const Search = () => <ComboBox value={key} label="Animals" />;\n`;
+    writeFileSync(appFile, source);
+
+    const { code, output } = await migrate({
+      version: 'v19',
+      targetPath: root,
+      dryRun: true,
+    });
+
+    expect(code).toBe(0);
+    expect(output).toContain(
+      'v19 is already applied (last applied: v19). This dry run shows what a re-run would change.'
+    );
+    expect(output).toContain('marigold migrate v19 (dry run)');
+    expect(output).toContain('ComboBox: renamed `value` to `inputValue`');
+    expect(readFileSync(appFile, 'utf8')).toBe(source);
+  });
+
   test('runs an applied migration when --only names the changes', async () => {
     const root = setupDetectable('19.0.0', 'v19');
 
@@ -812,6 +835,62 @@ describe('runMigrateCommand', () => {
       });
 
       expect(marker(root)).toEqual({ migrated: 'v19' });
+    });
+
+    test('stops with exit 1 when the marker cannot be written', async () => {
+      const root = setupDetectable('19.0.0');
+      // reads as "no marker", but writeMarker refuses to overwrite it
+      writeFileSync(
+        path.join(root, 'package.json'),
+        JSON.stringify({
+          dependencies: { '@marigold/components': '19.0.0' },
+          marigold: 'something else',
+        })
+      );
+      prompts.confirm.mockResolvedValue(true);
+      prompts.multiselect.mockImplementation(acceptAll);
+
+      const { code, output } = await migrate({
+        targetPath: root,
+        interactive: true,
+      });
+
+      expect(code).toBe(1);
+      expect(output).toContain(
+        'Warning: the v18 changes were applied but could not be recorded in'
+      );
+      expect(output).toContain(
+        'Add "marigold": { "migrated": "v18" } to it by hand'
+      );
+      expect(prompts.multiselect).toHaveBeenCalledTimes(1);
+    });
+
+    test('names what already ran when a later migration is aborted', async () => {
+      const root = setupDetectable('19.0.0');
+      // gives v19 a change to offer, so its multiselect is shown
+      const appFile = path.join(root, 'app', 'Search.tsx');
+      mkdirSync(path.dirname(appFile), { recursive: true });
+      writeFileSync(
+        appFile,
+        `import { ComboBox } from '@marigold/components';\nexport const Search = () => <ComboBox value={text} label="Animals" />;\n`
+      );
+      const cancel = Symbol('cancel');
+      prompts.confirm.mockResolvedValue(true);
+      prompts.multiselect
+        .mockImplementationOnce(acceptAll)
+        .mockResolvedValueOnce(cancel);
+      prompts.isCancel.mockImplementation(value => value === cancel);
+
+      const { code, lines } = await migrate({
+        targetPath: root,
+        interactive: true,
+      });
+
+      expect(code).toBe(130);
+      expect(lines.at(-1)).toBe(
+        'Aborted — v19 not applied. Already applied and recorded: v18.'
+      );
+      expect(marker(root)).toEqual({ migrated: 'v18' });
     });
 
     test('refuses to apply where no package.json declares @marigold/components', async () => {

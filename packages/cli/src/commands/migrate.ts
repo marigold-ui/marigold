@@ -537,33 +537,39 @@ const packageScope = (targetPath: string, command: string): string => {
 
 /**
  * Write the applied-migrations marker after a real run. A failure to record
- * only warns: the code edits have already landed.
+ * Returns false when it could not: the code edits have already landed, so
+ * the caller stops before a later migration builds on an unrecorded one.
  */
 const recordMigration = (
   version: string,
   file: string,
   write: (output: string) => void
-): void => {
+): boolean => {
   try {
     if (writeMarker(file, version)) {
       write(`Recorded ${version} as applied in ${file}.`);
     }
+    return true;
   } catch (error) {
     write(
-      `Could not record ${version} as applied: ${error instanceof Error ? error.message : String(error)}`
+      `Warning: the ${version} changes were applied but could not be recorded in ${file}: ${error instanceof Error ? error.message : String(error)}. ` +
+        `Add "marigold": { "migrated": "${version}" } to it by hand, otherwise marigold migrate will offer ${version} again.`
     );
+    return false;
   }
 };
 
 /**
  * How an explicitly named migration runs: refused when the marker already
- * covers it, unless `--only` names the changes, which completes it. One for a
- * major that is not installed yet warns but still runs.
+ * covers it, unless `--only` names the changes, which completes it, or it is
+ * a dry run, which writes nothing. One for a major that is not installed yet
+ * warns but still runs.
  */
 const checkNamedRun = (
   version: string,
   targetPath: string,
   only: readonly string[] | undefined,
+  dryRun: boolean,
   write: (output: string) => void
 ): 'refuse' | 'complete' | 'first' => {
   // unknown names are reported by runMigrate
@@ -571,7 +577,11 @@ const checkNamedRun = (
   const detected = detectMigration(targetPath);
   if (!detected) return 'first';
   const recorded = covers(detected.migrated, version);
-  if (recorded && !only) {
+  if (recorded && !only && dryRun) {
+    write(
+      `${version} is already applied (last applied: ${detected.migrated}). This dry run shows what a re-run would change. Applying it would be refused.`
+    );
+  } else if (recorded && !only) {
     write(
       `${version} is already applied (last applied: ${detected.migrated}), so nothing was run: a second run can rename props it already renamed. ` +
         `To apply changes you skipped, name them: marigold migrate ${version} ${targetPath} --only <names>`
@@ -607,7 +617,13 @@ export const runMigrateCommand = async (
   // completing a recorded migration: what it skipped before is unknowable
   let completing = false;
   if (options.version) {
-    const mode = checkNamedRun(options.version, targetPath, only, write);
+    const mode = checkNamedRun(
+      options.version,
+      targetPath,
+      only,
+      dryRun,
+      write
+    );
     if (mode === 'refuse') return 0;
     if (!dryRun) {
       markerFile = packageScope(
@@ -656,6 +672,8 @@ export const runMigrateCommand = async (
     versions = detected.versions;
   }
 
+  // applied and recorded so far, so an abort can say what already changed
+  const applied: string[] = [];
   for (const version of versions) {
     // pre-analysis: dry-run in memory, offer the fired changes for
     // selection. Skipped for explicit --only / --dry-run / non-TTY runs.
@@ -677,7 +695,11 @@ export const runMigrateCommand = async (
           required: false,
         });
         if (isCancel(chosen)) {
-          write('Aborted — nothing changed.');
+          write(
+            applied.length > 0
+              ? `Aborted — ${version} not applied. Already applied and recorded: ${applied.join(', ')}.`
+              : 'Aborted — nothing changed.'
+          );
           return 130;
         }
         selected = chosen as string[];
@@ -701,7 +723,8 @@ export const runMigrateCommand = async (
         `Skipped in ${version}: ${skipped.join(', ')}. To apply later: marigold migrate ${version} ${targetPath} --only ${skipped.join(',')}`
       );
     }
-    recordMigration(version, markerFile, write);
+    if (!recordMigration(version, markerFile, write)) return 1;
+    applied.push(version);
   }
   return 0;
 };
