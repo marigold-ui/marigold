@@ -274,6 +274,44 @@ export const Profile = () => (
     expect(output).toContain('Tooltip[open]');
   });
 
+  test('v19 slots the Popover theme and swaps the ComboBox value props in one run', () => {
+    const root = setupFixture();
+    const components = path.join(root, 'theme', 'components');
+    writeFileSync(
+      path.join(components, 'Popover.styles.ts'),
+      `import { cva, ThemeComponent } from '@marigold/system';
+
+export const Popover: ThemeComponent<'Popover'> = cva({
+    base: ['bg-white rounded-md shadow-md']
+});
+`
+    );
+    const appFile = path.join(root, 'app', 'Search.tsx');
+    mkdirSync(path.dirname(appFile), { recursive: true });
+    writeFileSync(
+      appFile,
+      `import { ComboBox } from '@marigold/components';
+
+export const Search = () => (
+  <ComboBox value={text} onChange={setText} selectedKey={key} label="Animals" />
+);
+`
+    );
+
+    runMigrate({ version: 'v19', targetPath: root, dryRun: false });
+
+    const popover = readFileSync(
+      path.join(components, 'Popover.styles.ts'),
+      'utf8'
+    );
+    expect(popover).toContain('container: cva({');
+    expect(popover).toContain('bg-white rounded-md shadow-md');
+    expect(popover).toContain('body: cva({}),');
+    expect(readFileSync(appFile, 'utf8')).toContain(
+      '<ComboBox inputValue={text} onInputChange={setText} value={key} label="Animals" />'
+    );
+  });
+
   test('scans .jsx and .js application files too', () => {
     const root = mkdtempSync(path.join(os.tmpdir(), 'marigold-migrate-'));
     const appFile = path.join(root, 'App.jsx');

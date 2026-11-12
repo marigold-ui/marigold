@@ -10,9 +10,9 @@ import { v19 } from './v19.js';
 // consumers without stubs and produced a false "not themeable" warning.
 // Until DST-1650 generates the manifests, this test is the re-check trigger.
 //
-// It pins the manifest of the CURRENT major against the live type. When v20
-// lands, point it at the v20 manifest: v19's slots are then frozen history,
-// not a mirror of the type.
+// It pins the manifest of the CURRENT major against the live type. Now that
+// v19 exists, v18's slots are frozen history, not a mirror of the type. When
+// v20 lands, point it at the v20 manifest.
 const THEME_TYPES = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
   '../../../../../system/src/types/theme.ts'
