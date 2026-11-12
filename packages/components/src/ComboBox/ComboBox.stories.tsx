@@ -1,7 +1,8 @@
-import { Key, useState } from 'react';
+import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
+import type { Key } from '@react-types/shared';
 import { Button } from '../Button/Button';
 import { Description } from '../Description/Description';
 import { Stack } from '../Stack/Stack';
@@ -312,7 +313,7 @@ export const Controlled = meta.story({
     const [id, setId] = useState<Key | null>(null);
     return (
       <Stack>
-        <ComboBox {...args} onSelectionChange={setId} label="Animals">
+        <ComboBox {...args} value={id} onChange={setId} label="Animals">
           <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
           <ComboBox.Option id="cat">Cat</ComboBox.Option>
           <ComboBox.Option id="dog">Dog</ComboBox.Option>

@@ -49,7 +49,8 @@ lib/codemod/
   anchor.ts                finds ThemeComponent<'X'> declarations
   engine.ts                indent detection, reindent, class-string helpers
   primitives/              version-agnostic transforms (see below)
-  manifests/v18.ts         per-version data driving the primitives
+  transforms/              one-off transforms a single version needs
+  manifests/v18.ts, v19.ts per-version data driving the primitives
 ```
 
 Consumer code is located via the **type anchor**: a
@@ -68,7 +69,8 @@ The pipeline order matters and is fixed in `commands/migrate.ts`:
 3. `stub-missing-slots`: missing slot keys are added as `cva({})` stubs;
    dropped slot keys are reported.
 4. `rename-jsx-members` / `rename-jsx-props` / `remove-jsx-props`: safe
-   application-code edits (see below).
+   application-code edits (see below), followed by the manifest's one-off
+   `transforms`.
 5. `report-dead-keys` / `report-structure` / `report-jsx-usage` /
    `report-namespace-imports` / `report-token-dependencies` /
    `report-token-usage`: report-only passes.
@@ -222,7 +224,12 @@ Per-version work should be data entry, not transform code:
    line of the report.
 
 A change that no primitive can express gets a **one-off transform** for that
-version (same `Codemod` interface, added to the pipeline). Promote it to a
+version (same `Codemod` interface, in `transforms/`, listed in the manifest's
+`transforms`). v19's `combobox-value-props` is one: it swaps two prop sets in
+one pass and skips elements that already carry the new text props. It is not
+idempotent for selection-only elements, so v19 sets `rerunSafe: false` and
+auto-detection stops proposing it once 19 is installed. Run it by name
+(`marigold migrate v19`) after upgrading. Promote it to a
 primitive only when the same shape shows up in a second major; designing a
 general abstraction from a single example is how wrong abstractions happen.
 

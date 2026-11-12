@@ -3,10 +3,14 @@ import type RAC from 'react-aria-components';
 import { Popover } from 'react-aria-components/Popover';
 import { cn, useClassNames } from '@marigold/system';
 import { ResetButtonContext } from '../Button/ResetButtonContext';
+import { AutocompleteBoundary } from '../utils/AutocompleteBoundary';
 import { useClipBoundary } from './clipBoundary';
 
 // Internal Usage Notes
 // ---------------
+// `<Popover>` here is the internal overlay primitive, not the public
+// `Popover` component in `../Popover`, which is built on top of it.
+//
 // `<Tray>` is the mobile counterpart to `<Popover>`. Use it whenever an overlay
 // needs to be presented as a bottom sheet on small screens, and switch to
 // `<Popover>` on larger viewports.
@@ -62,7 +66,9 @@ const PopoverBase = ({
     variant: placement,
     // Match the trigger's width so field dropdowns line up with the field. A
     // calendar sizes to its own content, so it opts out (matchTriggerWidth).
-    className: matchTriggerWidth ? 'min-w-(--trigger-width)' : undefined,
+    className: {
+      container: matchTriggerWidth ? 'min-w-(--trigger-width)' : undefined,
+    },
   });
 
   return (
@@ -70,11 +76,11 @@ const PopoverBase = ({
       <Popover
         ref={ref}
         {...props}
-        className={cn('z-30 flex', classNames)}
+        className={cn('z-30 flex', classNames.container)}
         placement={placement}
         offset={offset}
       >
-        {children}
+        <AutocompleteBoundary>{children}</AutocompleteBoundary>
       </Popover>
     </ResetButtonContext>
   );

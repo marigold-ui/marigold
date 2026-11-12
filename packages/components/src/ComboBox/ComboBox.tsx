@@ -24,10 +24,7 @@ type RemovedProps =
   | 'isDisabled'
   | 'isRequired'
   | 'isInvalid'
-  | 'isReadOnly'
-  | 'defaultInputValue'
-  | 'inputValue'
-  | 'onInputChange';
+  | 'isReadOnly';
 
 export interface ComboBoxProps
   extends
@@ -69,21 +66,6 @@ export interface ComboBoxProps
   error?: RAC.ComboBoxProps<any>['isInvalid'];
 
   /**
-   * The value of the input (uncontrolled).
-   */
-  defaultValue?: RAC.ComboBoxProps<any>['defaultInputValue'];
-
-  /**
-   * The value of the input (controlled).
-   */
-  value?: RAC.ComboBoxProps<any>['inputValue'];
-
-  /**
-   * Called when the input value changes.
-   */
-  onChange?: RAC.ComboBoxProps<any>['onInputChange'];
-
-  /**
    * ReactNode or function to render the list of items.
    */
   children?: ReactNode | ((item: any) => ReactNode);
@@ -121,10 +103,7 @@ const ComboBoxBase = ({
   disabled,
   readOnly,
   error,
-  defaultValue,
-  value,
   emptyState,
-  onChange,
   children,
   dependencies,
   loading,
@@ -136,9 +115,6 @@ const ComboBoxBase = ({
     isReadOnly: readOnly,
     isRequired: required,
     isInvalid: error,
-    defaultInputValue: defaultValue,
-    inputValue: value,
-    onInputChange: onChange,
     ...rest,
   };
 

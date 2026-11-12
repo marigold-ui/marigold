@@ -42,8 +42,8 @@ export default () => {
         label="Star Wars Character"
         menuTrigger="focus"
         items={list.items}
-        value={list.filterText}
-        onChange={list.setFilterText}
+        inputValue={list.filterText}
+        onInputChange={list.setFilterText}
         onSubmit={handleSubmit}
       >
         {(item: any) => (

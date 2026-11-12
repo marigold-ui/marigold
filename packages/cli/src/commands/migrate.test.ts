@@ -84,7 +84,8 @@ describe('detectMigration', () => {
     expect(detected).toEqual({
       installed: '17.9.1',
       source: 'node_modules',
-      versions: ['v18'],
+      versions: ['v18', 'v19'],
+      heldBack: [],
     });
   });
 
@@ -94,7 +95,8 @@ describe('detectMigration', () => {
     expect(detected).toEqual({
       installed: '17.0.0',
       source: 'package.json',
-      versions: ['v18'],
+      versions: ['v18', 'v19'],
+      heldBack: [],
     });
   });
 
@@ -104,17 +106,30 @@ describe('detectMigration', () => {
     expect(detected).toEqual({
       installed: '18.0.0-beta.4',
       source: 'node_modules',
-      versions: ['v18'],
+      versions: ['v18', 'v19'],
+      heldBack: [],
     });
   });
 
-  test('reports up to date when the installed major is past every migration', () => {
+  test('does not propose a migration that is unsafe to re-run once its major is installed', () => {
     const detected = detectMigration(setupRepo('19.0.0'));
 
     expect(detected).toEqual({
       installed: '19.0.0',
       source: 'node_modules',
       versions: [],
+      heldBack: ['v19'],
+    });
+  });
+
+  test('reports up to date when the installed major is past every migration', () => {
+    const detected = detectMigration(setupRepo('20.0.0'));
+
+    expect(detected).toEqual({
+      installed: '20.0.0',
+      source: 'node_modules',
+      versions: [],
+      heldBack: [],
     });
   });
 
@@ -257,6 +272,44 @@ export const Profile = () => (
     expect(app).toContain('<TextField label="Age" />');
     expect(app).toContain('<Tooltip open>'); // warning only, never edited
     expect(output).toContain('Tooltip[open]');
+  });
+
+  test('v19 slots the Popover theme and swaps the ComboBox value props in one run', () => {
+    const root = setupFixture();
+    const components = path.join(root, 'theme', 'components');
+    writeFileSync(
+      path.join(components, 'Popover.styles.ts'),
+      `import { cva, ThemeComponent } from '@marigold/system';
+
+export const Popover: ThemeComponent<'Popover'> = cva({
+    base: ['bg-white rounded-md shadow-md']
+});
+`
+    );
+    const appFile = path.join(root, 'app', 'Search.tsx');
+    mkdirSync(path.dirname(appFile), { recursive: true });
+    writeFileSync(
+      appFile,
+      `import { ComboBox } from '@marigold/components';
+
+export const Search = () => (
+  <ComboBox value={text} onChange={setText} selectedKey={key} label="Animals" />
+);
+`
+    );
+
+    runMigrate({ version: 'v19', targetPath: root, dryRun: false });
+
+    const popover = readFileSync(
+      path.join(components, 'Popover.styles.ts'),
+      'utf8'
+    );
+    expect(popover).toContain('container: cva({');
+    expect(popover).toContain('bg-white rounded-md shadow-md');
+    expect(popover).toContain('body: cva({}),');
+    expect(readFileSync(appFile, 'utf8')).toContain(
+      '<ComboBox inputValue={text} onInputChange={setText} value={key} label="Animals" />'
+    );
   });
 
   test('scans .jsx and .js application files too', () => {
@@ -467,7 +520,7 @@ describe('runMigrateCommand', () => {
   });
 
   test('reports a target that has no migration left to run', async () => {
-    const root = setupDetectable('19.0.0');
+    const root = setupDetectable('20.0.0');
     const written: string[] = [];
 
     const code = await runMigrateCommand({
@@ -479,6 +532,22 @@ describe('runMigrateCommand', () => {
 
     expect(code).toBe(0);
     expect(written.join('\n')).toContain('already up to date');
+  });
+
+  test('names a held-back migration instead of claiming up to date', async () => {
+    const root = setupDetectable('19.0.0');
+    const written: string[] = [];
+
+    const code = await runMigrateCommand({
+      targetPath: root,
+      dryRun: true,
+      write: output => written.push(output),
+      interactive: true,
+    });
+
+    expect(code).toBe(0);
+    expect(written.join('\n')).not.toContain('already up to date');
+    expect(written.join('\n')).toContain('marigold migrate v19 [path]');
   });
 
   test('fails when the target has no Marigold at all', async () => {

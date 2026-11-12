@@ -1,5 +1,6 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
 import { theme } from '@marigold/theme-rui';
 import { mockMatchMedia, renderWithOverlay } from '../test.utils';
 import { Basic } from './ComboBox.stories';
@@ -94,12 +95,35 @@ test('supporst showing an error', () => {
   expect(screen.getByText('Error!')).toBeInTheDocument();
 });
 
-test('supports default value', () => {
-  renderWithOverlay(<Basic.Component defaultValue="garlic" />);
+test('supports default input value', () => {
+  renderWithOverlay(<Basic.Component defaultInputValue="garlic" />);
 
   const textField = screen.getAllByLabelText(/Label/i)[0];
 
   expect(textField).toHaveValue('garlic');
+});
+
+test('supports default value as the selected key', () => {
+  renderWithOverlay(<Basic.Component defaultValue="cat" />);
+
+  const textField = screen.getAllByLabelText(/Label/i)[0];
+
+  expect(textField).toHaveValue('Cat');
+});
+
+test('calls onChange with the selected key', async () => {
+  const onChange = vi.fn();
+  const onInputChange = vi.fn();
+  renderWithOverlay(
+    <Basic.Component onChange={onChange} onInputChange={onInputChange} />
+  );
+
+  const textField = screen.getAllByLabelText(/Label/i)[0];
+  await user.type(textField, 'do');
+  await user.click(await screen.findByRole('option', { name: 'Dog' }));
+
+  expect(onInputChange).toHaveBeenCalledWith('do');
+  expect(onChange).toHaveBeenLastCalledWith('dog');
 });
 
 test('supports loading state', () => {

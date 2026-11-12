@@ -4,6 +4,7 @@ import { HeadingContext, Provider, TextContext } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { ActionMenuContext } from '../Menu/ActionMenuContext';
 import { Sheet } from '../Overlay/Sheet';
+import { AutocompleteBoundary } from '../utils/AutocompleteBoundary';
 import { useIsHiddenTree } from '../utils/useIsHiddenTree';
 import { useOverlayRootSlotProps } from '../utils/useOverlayRootSlotProps';
 import { useSlot } from '../utils/useSlot';
@@ -17,6 +18,9 @@ import { TrayTrigger } from './TrayTrigger';
 
 // Internal Usage Notes
 // ---------------
+// `<Popover>` below means the internal overlay primitive in `../Overlay`, not
+// the public `Popover` component, which switches to a `<Tray>` by itself.
+//
 // `<Tray>` is the mobile counterpart to `<Popover>`. Use it whenever an overlay
 // needs to be presented as a bottom sheet on small screens, and switch to
 // `<Popover>` on larger viewports.
@@ -137,7 +141,7 @@ export const Tray = ({
               [ActionMenuContext, {}],
             ]}
           >
-            {children}
+            <AutocompleteBoundary>{children}</AutocompleteBoundary>
           </Provider>
         </div>
       </Sheet>

@@ -21,3 +21,16 @@ export const TrayContext = createContext<TrayContextProps>(
 );
 
 export const useTrayContext = () => use(TrayContext);
+
+/**
+ * Pins tray content at its measured height so the tray does not shrink while
+ * the content changes, capped so the tray (content plus `chrome`, the title
+ * and actions around it) still fits the sheet's `--sheet-available` height.
+ */
+export const pinTrayContentHeight = (
+  node: HTMLElement,
+  pinned: number,
+  chrome: number
+) => {
+  node.style.minHeight = `min(${pinned}px, calc(var(--sheet-available) - ${chrome}px))`;
+};
