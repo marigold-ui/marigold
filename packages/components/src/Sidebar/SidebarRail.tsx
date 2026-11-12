@@ -1,4 +1,4 @@
-import { cloneElement, useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import type { MouseEvent, ReactNode, Ref } from 'react';
 import { Focusable } from 'react-aria-components/Focusable';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
@@ -7,7 +7,11 @@ import { handleLinkClick, useLinkProps, useRouter } from '@react-aria/utils';
 import { cn } from '@marigold/system';
 import { Tooltip } from '../Tooltip/Tooltip';
 import { intlMessages } from '../intl/messages';
-import { SidebarHeadingLevelContext, useSidebar } from './Context';
+import {
+  SidebarHeadingLevelContext,
+  SidebarRailPanelContext,
+  useSidebar,
+} from './Context';
 import { SidebarItem, SidebarItemIcon, SidebarSeparator } from './SidebarItem';
 import { SidebarRowIcon } from './SidebarLink';
 import { SidebarModal } from './SidebarModal';
@@ -273,12 +277,15 @@ const SidebarRail = ({
           {selectedNode.panelTitle}
         </h2>
         <SidebarHeadingLevelContext value={2}>
-          {cloneElement(selectedNode.nav, {
-            current,
-            // Keep the panel landmark name in sync with the visible heading:
-            // fall back to the section title when the nav has no `aria-label`.
-            'aria-label': selectedNode.panelTitle,
-          })}
+          {/*
+            Keep the panel landmark name in sync with the visible heading:
+            fall back to the section title when the nav has no `aria-label`.
+          */}
+          <SidebarRailPanelContext
+            value={{ current, 'aria-label': selectedNode.panelTitle }}
+          >
+            {selectedNode.nav}
+          </SidebarRailPanelContext>
         </SidebarHeadingLevelContext>
       </>
     ) : null;
