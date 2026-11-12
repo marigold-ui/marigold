@@ -28,24 +28,55 @@ export const CommandPaletteSearch = ({
   loading,
   ref,
 }: CommandPaletteSearchProps) => {
-  const { classNames } = useCommandPalette();
+  const { classNames, scopeTitle, leaveScope } = useCommandPalette();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const scopedLabel =
+    scopeTitle === null
+      ? null
+      : stringFormatter.format('commandPaletteSearchIn', { scope: scopeTitle });
 
   return (
     <SearchField
-      aria-label={stringFormatter.format('search')}
+      aria-label={scopedLabel ?? stringFormatter.format('search')}
       autoFocus
       className={classNames.header}
     >
       {({ isEmpty }) => (
         <>
           <Search aria-hidden="true" size="18" />
+          {scopeTitle !== null && (
+            <span className={classNames.scope}>
+              {scopeTitle}
+              {/* Not a Tab stop, like the clear button: Backspace in the
+                  empty field leaves the scope from the keyboard. */}
+              <button
+                type="button"
+                tabIndex={-1}
+                aria-label={stringFormatter.format(
+                  'commandPaletteSearchEverywhere'
+                )}
+                onClick={leaveScope}
+              >
+                <X size="12" />
+              </button>
+            </span>
+          )}
           <Input
             ref={ref}
             placeholder={
-              placeholder ?? stringFormatter.format('commandPaletteGoTo')
+              scopedLabel ??
+              placeholder ??
+              stringFormatter.format('commandPaletteGoTo')
             }
             className={classNames.input}
+            onKeyDown={e => {
+              if (
+                e.key === 'Backspace' &&
+                scopeTitle !== null &&
+                e.currentTarget.value === ''
+              )
+                leaveScope();
+            }}
           />
           {loading ? (
             <ProgressCircle />

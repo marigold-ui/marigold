@@ -1,5 +1,12 @@
 import type { Key, ReactNode } from 'react';
-import { use, useLayoutEffect, useMemo } from 'react';
+import {
+  use,
+  useCallback,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import type RAC from 'react-aria-components';
 import { Dialog } from 'react-aria-components/Dialog';
 import { Menu } from 'react-aria-components/Menu';
@@ -171,10 +178,51 @@ const CommandPaletteBody = <T extends object>({
     clearQuery();
   }, []);
 
-  const { inputRef, menuRef } = useKeepFirstItemActive(inputValue, items);
+  // Groups with a `prefix` register here. Typing a prefix narrows the search
+  // to its group: the prefix leaves the query and shows as a chip, so the
+  // query, also the one an app sends to its server, is only the search term.
+  const prefixes = useRef(new Map<string, string>());
+  const [scope, setScope] = useState<string | null>(null);
+  const registerPrefix = useCallback((prefix: string, title: string) => {
+    prefixes.current.set(prefix, title);
+    return () => {
+      prefixes.current.delete(prefix);
+    };
+  }, []);
+  const leaveScope = useCallback(() => setScope(null), []);
+
+  const narrowToTypedPrefix = useEffectEvent(() => {
+    if (scope !== null) return;
+    const query = inputValue.toLocaleLowerCase();
+    for (const prefix of prefixes.current.keys()) {
+      if (query.startsWith(prefix.toLocaleLowerCase())) {
+        setScope(prefix);
+        setInputValue(inputValue.slice(prefix.length).trimStart());
+        return;
+      }
+    }
+  });
+  // Before paint, so the typed prefix never flashes in the field.
+  useLayoutEffect(() => {
+    narrowToTypedPrefix();
+  }, [inputValue]);
+
+  const { inputRef, menuRef } = useKeepFirstItemActive(
+    `${scope ?? ''}${inputValue}`,
+    items
+  );
   const context = useMemo(
-    () => ({ inputValue, filter, classNames, close }),
-    [inputValue, filter, classNames, close]
+    () => ({
+      inputValue,
+      filter,
+      classNames,
+      close,
+      scope,
+      scopeTitle: scope === null ? null : (prefixes.current.get(scope) ?? null),
+      leaveScope,
+      registerPrefix,
+    }),
+    [inputValue, filter, classNames, close, scope, leaveScope, registerPrefix]
   );
 
   return (

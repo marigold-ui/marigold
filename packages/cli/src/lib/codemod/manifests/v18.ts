@@ -62,6 +62,7 @@ export const v18: MigrationManifest = {
       'button',
       'container',
       'header',
+      'scope',
       'input',
       'list',
       'group',

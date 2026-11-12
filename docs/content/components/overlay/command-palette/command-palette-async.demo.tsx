@@ -13,7 +13,6 @@ const pages = [
   { id: 'orders', label: 'Orders', icon: <ShoppingCart /> },
 ];
 
-const PREFIX = 'e:';
 const LIMIT = 3;
 
 // Stands in for the server.
@@ -50,27 +49,26 @@ const searchEvents = async (query: string, signal: AbortSignal) => {
   return matches.slice(0, LIMIT + 1);
 };
 
+// Shown before people type, so the group and its prefix are visible from
+// the start.
+const recent = [allEvents[1], allEvents[4]];
+
 export default () => {
   const list = useAsyncList<Event>({
     async load({ signal, filterText = '' }) {
-      const term = filterText.startsWith(PREFIX)
-        ? filterText.slice(PREFIX.length).trim()
-        : filterText.trim();
-      if (!term) return { items: [] };
-      return { items: await searchEvents(term, signal) };
+      if (!filterText.trim()) return { items: [] };
+      return { items: await searchEvents(filterText.trim(), signal) };
     },
   });
-  const query = list.filterText;
-  const scoped = query.startsWith(PREFIX);
-  const term = scoped ? query.slice(PREFIX.length).trim() : query.trim();
+  // Without the prefix: the palette takes it out of the query.
+  const query = list.filterText.trim();
+  const events = query ? list.items.slice(0, LIMIT) : recent;
   const more = list.items.length > LIMIT;
   // `filter={false}` turns off the built-in match for every group, so the
   // static pages are matched here.
-  const matchingPages = scoped
-    ? []
-    : pages.filter(page =>
-        page.label.toLowerCase().includes(term.toLowerCase())
-      );
+  const matchingPages = pages.filter(page =>
+    page.label.toLowerCase().includes(query.toLowerCase())
+  );
 
   return (
     <CommandPalette.Trigger shortcut={false}>
@@ -78,15 +76,9 @@ export default () => {
       <CommandPalette
         placeholder="Search pages and events…"
         filter={false}
-        inputValue={query}
+        inputValue={list.filterText}
         onInputChange={list.setFilterText}
         loading={list.isLoading}
-        onAction={key => {
-          if (key === 'search-events') list.setFilterText(PREFIX);
-        }}
-        emptyState={
-          scoped && !term ? 'Type the name or number of an event.' : undefined
-        }
       >
         <CommandPalette.Group title="Pages">
           {matchingPages.map(page => (
@@ -96,22 +88,8 @@ export default () => {
             </CommandPalette.Item>
           ))}
         </CommandPalette.Group>
-        <CommandPalette.Group title="Search">
-          {query === '' && (
-            // Keeps the palette open and narrows the search to events.
-            <CommandPalette.Item
-              id="search-events"
-              shouldCloseOnSelect={false}
-              textValue="Search events"
-            >
-              <Search />
-              <Text slot="label">Search events</Text>
-              <Text slot="description">Or type {PREFIX} and a name</Text>
-            </CommandPalette.Item>
-          )}
-        </CommandPalette.Group>
-        <CommandPalette.Group title="Events">
-          {list.items.slice(0, LIMIT).map(event => (
+        <CommandPalette.Group title="Events" prefix="e:">
+          {events.map(event => (
             <CommandPalette.Item
               key={event.id}
               id={event.id}
@@ -127,10 +105,10 @@ export default () => {
           {more && (
             <CommandPalette.Item
               id="all-events"
-              textValue={`Show all events for ${term}`}
+              textValue={`Show all events for ${query}`}
             >
               <Search />
-              <Text slot="label">Show all events for “{term}”</Text>
+              <Text slot="label">Show all events for “{query}”</Text>
               <Text slot="description">
                 Opens the event list with this search
               </Text>

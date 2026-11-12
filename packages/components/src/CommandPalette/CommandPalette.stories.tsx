@@ -841,64 +841,103 @@ AsyncSearch.test(
 
 // Search one kind of record
 // ---------------
-// An item that leads further keeps the palette open
-// (`shouldCloseOnSelect={false}`) and narrows the search with a prefix.
-const ScopePalette = () => {
-  const [query, setQuery] = useState('');
-  const scoped = query.startsWith('e:');
-  return (
-    <CommandPalette.Trigger>
-      <CommandPalette.Button />
-      <CommandPalette
-        inputValue={query}
-        onInputChange={setQuery}
-        filter={scoped ? false : undefined}
-        onAction={key => {
-          if (key === 'search-events') setQuery('e:');
-        }}
-      >
-        {scoped ? (
-          <CommandPalette.Group title="Events">
-            <CommandPalette.Item id="jazz">Jazz Night</CommandPalette.Item>
-          </CommandPalette.Group>
-        ) : (
-          <CommandPalette.Group title="Actions">
-            <CommandPalette.Item id="search-events" shouldCloseOnSelect={false}>
-              Search events
-            </CommandPalette.Item>
-            <CommandPalette.Item id="create-event">
-              Create event
-            </CommandPalette.Item>
-          </CommandPalette.Group>
-        )}
-      </CommandPalette>
-    </CommandPalette.Trigger>
-  );
-};
+// A group with a `prefix`: typing it narrows the search to that group.
+const onScopedQuery = fn();
 
 export const SearchOneKind = meta.story({
   ...noSnapshot,
-  render: () => <ScopePalette />,
+  render: args => (
+    <CommandPalette.Trigger {...args}>
+      <CommandPalette.Button />
+      <CommandPalette onInputChange={onScopedQuery}>
+        <CommandPalette.Group title="Pages">
+          <CommandPalette.Item id="events">Events</CommandPalette.Item>
+          <CommandPalette.Item id="orders">Orders</CommandPalette.Item>
+        </CommandPalette.Group>
+        <CommandPalette.Group title="Events" prefix="e:">
+          <CommandPalette.Item id="jazz">Jazz Night</CommandPalette.Item>
+          <CommandPalette.Item id="summer">Summer Open Air</CommandPalette.Item>
+        </CommandPalette.Group>
+      </CommandPalette>
+    </CommandPalette.Trigger>
+  ),
 });
 
 SearchOneKind.test(
-  'Keeps the palette open for an item that narrows the search',
+  'Narrows the search to a group by its prefix',
   async ({ canvas, step, userEvent }) => {
+    onScopedQuery.mockClear();
     await openPalette({ canvas, userEvent });
-    await canvas.findByRole('searchbox');
+    const search = await canvas.findByRole('searchbox');
 
-    await step('Choosing the item keeps the palette open', async () => {
-      await userEvent.keyboard('{Enter}');
-      await expect(canvas.getByRole('searchbox')).toHaveValue('e:');
+    await step('The group title shows its prefix', async () => {
+      await expect(canvas.getByText('e:')).toBeInTheDocument();
+    });
+
+    await step('Typing the prefix narrows the search', async () => {
+      await userEvent.keyboard('e:');
+      await waitFor(() => expect(search).toHaveValue(''));
+      await expect(search).toHaveAccessibleName('Search in Events…');
+      await expect(canvas.queryByText('Orders')).toBeNull();
+      await expect(canvas.getAllByRole('menuitem')).toHaveLength(2);
+    });
+
+    await step('The query is only the search term', async () => {
+      await userEvent.keyboard('jazz');
+      await expect(search).toHaveValue('jazz');
+      await expect(onScopedQuery).toHaveBeenLastCalledWith('jazz');
       await expectFirstRowActive(canvas, 'Jazz Night');
     });
 
-    await step('Other items still close it', async () => {
-      await userEvent.keyboard('{Enter}');
+    await step('Backspace in the empty field widens the search', async () => {
+      await userEvent.keyboard('{Backspace>5/}');
       await waitFor(() =>
-        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+        expect(canvas.getByRole('menuitem', { name: 'Orders' })).toBeVisible()
+      );
+      await expect(search).toHaveAccessibleName('Search');
+    });
+
+    await step('The chip widens the search too', async () => {
+      await userEvent.keyboard('e:');
+      await userEvent.click(
+        await canvas.findByRole('button', { name: 'Search everywhere' })
+      );
+      await waitFor(() =>
+        expect(canvas.getByRole('menuitem', { name: 'Orders' })).toBeVisible()
       );
     });
+  }
+);
+
+// Keep open
+// ---------------
+// `shouldCloseOnSelect={false}`, as on `Menu.Item`.
+export const KeepOpen = meta.story({
+  ...noSnapshot,
+  render: args => (
+    <CommandPalette.Trigger {...args}>
+      <CommandPalette.Button />
+      <CommandPalette>
+        <CommandPalette.Item id="stay" shouldCloseOnSelect={false}>
+          Stay open
+        </CommandPalette.Item>
+        <CommandPalette.Item id="close">Close</CommandPalette.Item>
+      </CommandPalette>
+    </CommandPalette.Trigger>
+  ),
+});
+
+KeepOpen.test(
+  'Keeps the palette open for an item that asks for it',
+  async ({ canvas, userEvent }) => {
+    await openPalette({ canvas, userEvent });
+    await canvas.findByRole('searchbox');
+
+    await userEvent.keyboard('{Enter}');
+    await expect(canvas.getByRole('dialog')).toBeInTheDocument();
+
+    await userEvent.keyboard('{ArrowDown}{Enter}');
+    await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
   }
 );
 

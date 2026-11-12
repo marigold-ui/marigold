@@ -62,13 +62,14 @@ A palette pays off in apps with more pages than the sidebar shows comfortably an
 
 <ComponentDemo name="command-palette-basic" />
 
-<Callout title="Pages are links">
-  Give every page an `href` instead of handling it in `onAction`. People can
-  then open it in a new tab with <kbd>⌘</kbd>+<kbd>Enter</kbd>, or{' '}
-  <kbd>Ctrl</kbd>+<kbd>Enter</kbd>
-  on Windows and Linux, and the
-  [RouterProvider](/components/application/routerprovider) navigates without a
-  page load. The demo uses `onAction` only because it stays on this page.
+<Callout title="Pages and actions">
+  Give every page an `href`. People can then open it in a new tab with
+  <kbd>⌘</kbd>+<kbd>Enter</kbd>, or <kbd>Ctrl</kbd>+<kbd>Enter</kbd> on Windows
+  and Linux, and the [RouterProvider](/components/application/routerprovider)
+  navigates without a page load. Actions like "Create event" have no `href`. Run
+  them in `onAction`, on the palette or on the item, and the palette closes
+  afterwards. The demo uses `onAction` for its pages only because it stays on
+  this page.
 </Callout>
 
 ### Content
@@ -123,9 +124,9 @@ People often know exactly which record they need, an event by its name or an ord
 
 ### Searching one kind of record
 
-Record search is invisible until people type a name, so many never find out the palette can do it. Offer a command for each kind of record people look up often, like "Search events". It is a row people come across while browsing the palette, and choosing it narrows the search to events. The palette stays open and only events show from then on, so people don't have to sort through pages and actions.
+In a mixed list, records compete with pages and actions, and record search stays invisible until people type a name. For each kind of record people look up often, give its group a short prefix, like `e:` for events. Typing it narrows the search to that group: the prefix turns into a chip in the search field, and from then on only events show.
 
-The command fills in a short prefix, `e:` in the demo below. People who use the app every day learn it from the command's description and type it directly. Keep the prefixes few and memorable, one letter per kind of record. Deleting the prefix returns to the regular search.
+The group title shows its prefix wherever the group appears, so people pick it up along the way, for example while the group lists their recent events before they type. Keep the prefixes few and memorable, one letter per kind of record. <kbd>Backspace</kbd> in the empty field, or the chip's close button, returns to the full search.
 
 <ComponentDemo name="command-palette-async" />
 
@@ -133,10 +134,9 @@ The command fills in a short prefix, `e:` in the demo below. People who use the 
   Pass `filter={false}` to turn off the built-in match, control the query with
   `inputValue` and `onInputChange`, and set `loading` while results load. The
   built-in match is then off for every group, so match the static pages
-  yourself, as the demo does. Wait until people pause typing before you send a
-  request, and cancel requests that are out of date. For the "Search events"
-  command, set `shouldCloseOnSelect={false}` on the item and put the prefix into
-  the query in `onAction`.
+  yourself, as the demo does. The palette takes a group's prefix out of the
+  query, so your search only gets the term people typed. Wait until people pause
+  typing before you send a request, and cancel requests that are out of date.
 </Callout>
 
 ### When nothing matches

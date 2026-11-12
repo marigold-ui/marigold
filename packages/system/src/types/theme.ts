@@ -101,6 +101,7 @@ export type Theme = {
       | 'button'
       | 'container'
       | 'header'
+      | 'scope'
       | 'input'
       | 'list'
       | 'group'
