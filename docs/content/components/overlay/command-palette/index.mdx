@@ -62,6 +62,15 @@ A palette pays off in apps with more pages than the sidebar shows comfortably an
 
 <ComponentDemo name="command-palette-basic" />
 
+<Callout title="Pages are links">
+  Give every page an `href` instead of handling it in `onAction`. People can
+  then open it in a new tab with <kbd>⌘</kbd>+<kbd>Enter</kbd>, or{' '}
+  <kbd>Ctrl</kbd>+<kbd>Enter</kbd>
+  on Windows and Linux, and the
+  [RouterProvider](/components/application/routerprovider) navigates without a
+  page load. The demo uses `onAction` only because it stays on this page.
+</Callout>
+
 ### Content
 
 Name items by what people look for and use the same words as the sidebar and the page titles. Start actions with a verb, so "Create event" reads apart from the "Events" page.
@@ -86,17 +95,6 @@ The shortcut works on every page, so render one palette per app, inside the app 
 The button is optional, but it tells people the palette exists and shows the shortcut. The [App frame](/patterns/layout/app-frame) places it in the middle of the top navigation, as in the demo above. Any other button inside `<CommandPalette.Trigger>` opens the palette too, for example an icon button where space is tight.
 
 The shortcut also fires inside text fields, as it does in GitHub, Linear and Slack. If another handler already used the key, for example a rich-text editor that inserts a link on <kbd>⌘</kbd>+<kbd>K</kbd>, the palette leaves it alone. Change the key with `shortcut="j"` on the trigger, or turn it off with `shortcut={false}` when your app already uses it.
-
-### Pages as links
-
-Give every page an `href` instead of handling it in `onAction`. The palette then navigates like a link: <kbd>⌘</kbd>+<kbd>Enter</kbd> (<kbd>Ctrl</kbd>+<kbd>Enter</kbd> on Windows and Linux) opens the page in a new tab, and your router takes over the navigation once it is set up as described in the [App frame](/patterns/layout/app-frame). Keep `onAction` for actions that don't lead to a page of their own. The demo above uses `onAction` only because it stays on this page.
-
-```tsx
-<CommandPalette.Item id="orders" href="/orders">
-  <ShoppingCart />
-  Orders
-</CommandPalette.Item>
-```
 
 ### Before people type
 
