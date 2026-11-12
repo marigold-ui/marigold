@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import { use, useId, useMemo, useRef } from 'react';
+import { useId, useMemo, useRef } from 'react';
 import { HeadingContext, Provider, TextContext } from 'react-aria-components';
 import {
   Dialog,
@@ -13,6 +13,7 @@ import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { ResetButtonContext } from '../Button/ResetButtonContext';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { ActionMenuContext } from '../Menu/ActionMenuContext';
+import { useOverlayState } from '../Overlay/useOverlayState';
 import { intlMessages } from '../intl/messages';
 import { useOverlayRootSlotProps } from '../utils/useOverlayRootSlotProps';
 import { useSlot } from '../utils/useSlot';
@@ -35,10 +36,26 @@ export interface DrawerProps extends Omit<
   size?: 'xsmall' | 'small' | 'medium' | (string & {});
   variant?: string;
   /**
-   * Whether the overlay is open by default (controlled).
+   * Whether the drawer is open (controlled). Works with or without
+   * `Drawer.Trigger`. Inside a trigger, this takes precedence over the
+   * trigger's state.
    * @default undefined
    */
   open?: boolean;
+
+  /**
+   * Whether the drawer is open by default (uncontrolled).
+   * @default undefined
+   */
+  defaultOpen?: boolean;
+
+  /**
+   * Handler that is called when the drawer's open state changes, e.g. when
+   * it is closed via the close button, <kbd>Escape</kbd> or because another
+   * drawer opens. When the drawer is inside a `Drawer.Trigger` that owns the
+   * state, set this on the trigger instead.
+   */
+  onOpenChange?: (isOpen: boolean) => void;
 
   /**
    * Whether pressing the escape key closes the modal.
@@ -71,6 +88,8 @@ export const Drawer = ({
   size = 'medium',
   variant,
   open,
+  defaultOpen,
+  onOpenChange,
   keyboardDismissable,
   closeButton,
   role = 'complementary',
@@ -92,18 +111,21 @@ export const Drawer = ({
   // unlabelled dialog at open time.
   const [titleSlotRef, hasTitle] = useSlot(!ariaLabel);
 
-  const ctx = use(OverlayTriggerStateContext);
+  const state = useOverlayState(
+    { isOpen: open, defaultOpen, onOpenChange },
+    'Drawer'
+  );
 
   // Resolve render-function children up front (mirroring `<Dialog>`) so the
   // slot Provider below always receives plain `ReactNode`.
   const resolvedChildren =
     typeof children === 'function'
-      ? children({ close: ctx?.close ?? (() => {}) })
+      ? children({ close: state.close })
       : children;
 
   // Called here (not in a child) so it reads the ancestor's `DrawerNestingContext`,
   // not the provider this component publishes below.
-  useDrawerCoordination();
+  useDrawerCoordination(state);
 
   /**
    * On smaller screens the we render a modal dialog instead of a non-modal drawer
@@ -124,51 +146,52 @@ export const Drawer = ({
 
   return (
     <ResetButtonContext>
-      <DrawerModal
-        className={classNames.overlay}
-        open={open}
-        keyboardDismissable={keyboardDismissable}
-        data-testid="drawer-modal"
-      >
-        <DrawerNestingContext value={true}>
-          <DrawerContext value={drawerContextValue}>
-            <Dialog
-              {...props}
-              // Override RAC here so we can set an appropriate role
-              {...(landmarkProps as any)}
-              aria-label={ariaLabel}
-              aria-labelledby={
-                !ariaLabel && hasTitle ? titleId : props['aria-labelledby']
-              }
-              className={cn(
-                'h-(--visual-viewport-height) outline-none',
-                // Use single quotes, in some enviroments the class is not correctly applied otherwise
-                "grid [grid-template-areas:'title'_'content'_'actions']",
-                classNames.container
-              )}
-            >
-              {closeButton && (
-                <CloseButton
-                  aria-label={stringFormatter.format('dismissDrawer')}
-                  data-slot="close"
-                  style={{ '--i': 0 } as CSSProperties}
-                  className={cn('z-80', classNames.closeButton)}
-                  onPress={ctx?.close}
-                />
-              )}
-              <Provider
-                values={[
-                  [HeadingContext, rootHeadingProps],
-                  [TextContext, textProps],
-                  [ActionMenuContext, {}],
-                ]}
+      <OverlayTriggerStateContext value={state}>
+        <DrawerModal
+          className={classNames.overlay}
+          keyboardDismissable={keyboardDismissable}
+          data-testid="drawer-modal"
+        >
+          <DrawerNestingContext value={true}>
+            <DrawerContext value={drawerContextValue}>
+              <Dialog
+                {...props}
+                // Override RAC here so we can set an appropriate role
+                {...(landmarkProps as any)}
+                aria-label={ariaLabel}
+                aria-labelledby={
+                  !ariaLabel && hasTitle ? titleId : props['aria-labelledby']
+                }
+                className={cn(
+                  'h-(--visual-viewport-height) outline-none',
+                  // Use single quotes, in some enviroments the class is not correctly applied otherwise
+                  "grid [grid-template-areas:'title'_'content'_'actions']",
+                  classNames.container
+                )}
               >
-                {resolvedChildren}
-              </Provider>
-            </Dialog>
-          </DrawerContext>
-        </DrawerNestingContext>
-      </DrawerModal>
+                {closeButton && (
+                  <CloseButton
+                    aria-label={stringFormatter.format('dismissDrawer')}
+                    data-slot="close"
+                    style={{ '--i': 0 } as CSSProperties}
+                    className={cn('z-80', classNames.closeButton)}
+                    onPress={state.close}
+                  />
+                )}
+                <Provider
+                  values={[
+                    [HeadingContext, rootHeadingProps],
+                    [TextContext, textProps],
+                    [ActionMenuContext, {}],
+                  ]}
+                >
+                  {resolvedChildren}
+                </Provider>
+              </Dialog>
+            </DrawerContext>
+          </DrawerNestingContext>
+        </DrawerModal>
+      </OverlayTriggerStateContext>
     </ResetButtonContext>
   );
 };

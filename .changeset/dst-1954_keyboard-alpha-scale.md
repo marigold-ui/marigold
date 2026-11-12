@@ -8,4 +8,4 @@ The theme now has a five-step alpha scale (`--alpha-50` to `--alpha-400`: 5, 10,
 
 The `Keyboard` key cap takes its border and fill from its text colour instead of an opaque fill, so it blends into a highlighted or coloured row instead of showing as a white box.
 
-Key caps also use the UI font now. Before, they showed in the browser's monospace font.
+Key caps also inherit the surrounding font now. Before, they showed in the browser's monospace font.

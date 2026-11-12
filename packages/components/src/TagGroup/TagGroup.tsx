@@ -1,5 +1,5 @@
-import type { ReactElement, ReactNode, Ref } from 'react';
-import { cloneElement, isValidElement, useId, useMemo, useState } from 'react';
+import type { ReactNode, Ref } from 'react';
+import { isValidElement, useId, useMemo, useState } from 'react';
 import type RAC from 'react-aria-components';
 import { FieldErrorContext } from 'react-aria-components/FieldError';
 import { FormContext } from 'react-aria-components/Form';
@@ -19,9 +19,9 @@ import { FieldBase } from '../FieldBase/FieldBase';
 import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
 import { splitChildren } from '../utils/children.utils';
 import { useFieldHelpText } from '../utils/useFieldHelpText';
-import { hasAddonContent, joinIds } from '../utils/useLabelAddon';
+import { joinIds, useAddonDescription } from '../utils/useLabelAddon';
 import { useLiftedSelection } from '../utils/useLiftedSelection';
-import { TagGroupContext } from './Context';
+import { TagCollapseContext, TagGroupContext } from './Context';
 import { TagGroupRemoveAll } from './TagGroupRemoveAll';
 import { TagGroupShowMore } from './TagGroupShowMore';
 
@@ -151,7 +151,7 @@ const removeAllButtonContext = { variant: 'link', size: 'small' } as const;
 
 // Component
 // ---------------
-const _TagGroup = ({
+const TagGroup = ({
   ref,
   items,
   children,
@@ -182,7 +182,6 @@ const _TagGroup = ({
 }: TagGroupProps) => {
   const classNames = useClassNames({ component: 'Tag', variant, size });
   const labelId = useId();
-  const addonId = useId();
   const tagListRef = useObjectRef(ref);
 
   const staticChildren = typeof children === 'function' ? undefined : children;
@@ -213,13 +212,9 @@ const _TagGroup = ({
   const renderedChildren = canCollapse
     ? [
         ...visibleChildren,
-        ...collapsedChildren.map(child =>
-          isValidElement(child)
-            ? cloneElement(child as ReactElement<{ hidden?: boolean }>, {
-                hidden: !expanded,
-              })
-            : child
-        ),
+        <TagCollapseContext key="collapsed" value={{ hidden: !expanded }}>
+          {collapsedChildren}
+        </TagCollapseContext>,
       ]
     : children;
 
@@ -238,14 +233,15 @@ const _TagGroup = ({
     validationBehavior,
   });
 
+  const { addonId, describedBy: addonDescribedBy } = useAddonDescription(
+    addon,
+    rest['aria-describedby']
+  );
   const { describedBy, helpTextSlots } = useFieldHelpText({
     description,
     errorMessage,
     isInvalid: validationState.displayValidation.isInvalid,
-    'aria-describedby': joinIds(
-      rest['aria-describedby'],
-      hasAddonContent(addon) ? addonId : undefined
-    ),
+    'aria-describedby': addonDescribedBy,
   });
 
   const handleSelectionChange = (keys: Selection) => {
@@ -374,4 +370,4 @@ const _TagGroup = ({
   );
 };
 
-export { _TagGroup as TagGroup };
+export { TagGroup };

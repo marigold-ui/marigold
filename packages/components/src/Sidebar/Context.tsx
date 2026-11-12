@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import type { ComponentClassNames } from '@marigold/system';
 import { useClassNames, useSmallScreen } from '@marigold/system';
 import { useKeyboardShortcut } from '../utils/keyboardShortcut';
+import type { SidebarCurrent } from './collection';
 import type { SidebarState } from './useSidebarState';
 import { useSidebarState } from './useSidebarState';
 
@@ -24,6 +25,22 @@ export const useSidebar = (): SidebarContextValue => {
   }
   return ctx;
 };
+
+/** Level of the heading the nav sits under. Internal on purpose: the sidebar always sits under the page `h1`. */
+export const SidebarHeadingLevelContext = createContext(1);
+
+/**
+ * Set by `Sidebar.Rail` around a section's nested `Sidebar.Nav` in the panel:
+ * the rail's `current` and the panel title as the nav's accessible name. Props
+ * set on the `Sidebar.Nav` itself win. Internal.
+ */
+export interface SidebarRailPanelContextValue {
+  current?: SidebarCurrent;
+  'aria-label'?: string;
+}
+
+export const SidebarRailPanelContext =
+  createContext<SidebarRailPanelContextValue>({});
 
 export interface SidebarProviderProps {
   /** Children of the component. */

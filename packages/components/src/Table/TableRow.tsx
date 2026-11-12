@@ -14,6 +14,7 @@ import { Checkbox } from '../Checkbox/Checkbox';
 import { GripVertical } from '../icons/GripVertical';
 import { verticalAlign } from '../utils/styleProps';
 import { useTableContext } from './Context';
+import { renderStickyCell } from './TableStickyCell';
 
 type RemovedProps = 'className' | 'style';
 
@@ -122,7 +123,7 @@ const TableRow = <T extends object>({
       {...otherProps}
     >
       {allowsDragging && (
-        <Cell className={cellClassName}>
+        <Cell className={cellClassName} render={renderStickyCell}>
           <div className={lineBox}>
             <Button
               slot="drag"
@@ -137,7 +138,7 @@ const TableRow = <T extends object>({
         </Cell>
       )}
       {selectionBehavior === 'toggle' && (
-        <Cell className={cellClassName}>
+        <Cell className={cellClassName} render={renderStickyCell}>
           {({ id }) => <SelectionCheckbox cellKey={id} />}
         </Cell>
       )}

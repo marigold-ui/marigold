@@ -17,9 +17,9 @@ export interface SidebarItemProps {
   children?: ReactNode;
 }
 
-const _SidebarItem = (_props: SidebarItemProps): ReactElement | null => null;
-_SidebarItem.__SIDEBAR_ITEM__ = true as const;
-export const SidebarItem = _SidebarItem;
+export const SidebarItem = (_props: SidebarItemProps): ReactElement | null =>
+  null;
+SidebarItem.__SIDEBAR_ITEM__ = true as const;
 
 // Internal icon marker, consumed by collection builder. Lets the mobile rail
 // drawer carry each RailItem's icon into its rows without a public `icon`
@@ -28,15 +28,14 @@ export interface SidebarItemIconProps {
   children?: ReactNode;
 }
 
-const _SidebarItemIcon = (_props: SidebarItemIconProps): ReactElement | null =>
-  null;
-_SidebarItemIcon.__SIDEBAR_ITEM_ICON__ = true as const;
-export const SidebarItemIcon = _SidebarItemIcon;
+export const SidebarItemIcon = (
+  _props: SidebarItemIconProps
+): ReactElement | null => null;
+SidebarItemIcon.__SIDEBAR_ITEM_ICON__ = true as const;
 
 // Divider marker, consumed by collection builder
-const _SidebarSeparator = (): ReactElement | null => null;
-_SidebarSeparator.__SIDEBAR_SEPARATOR__ = true as const;
-export const SidebarSeparator = _SidebarSeparator;
+export const SidebarSeparator = (): ReactElement | null => null;
+SidebarSeparator.__SIDEBAR_SEPARATOR__ = true as const;
 
 // Label marker, consumed by collection builder
 export interface SidebarGroupLabelProps {
@@ -44,8 +43,7 @@ export interface SidebarGroupLabelProps {
   children?: ReactNode;
 }
 
-const _SidebarGroupLabel = (
+export const SidebarGroupLabel = (
   _props: SidebarGroupLabelProps
 ): ReactElement | null => null;
-_SidebarGroupLabel.__SIDEBAR_GROUP_LABEL__ = true as const;
-export const SidebarGroupLabel = _SidebarGroupLabel;
+SidebarGroupLabel.__SIDEBAR_GROUP_LABEL__ = true as const;

@@ -1,7 +1,7 @@
 import { Key, ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { Button as RACButton } from 'react-aria-components/Button';
-import { Menu, MenuTrigger } from 'react-aria-components/Menu';
+import { MenuTrigger, Menu as RACMenu } from 'react-aria-components/Menu';
 import { useContextProps } from 'react-aria-components/slots';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
@@ -56,7 +56,7 @@ export interface MenuProps
   disabled?: boolean;
 }
 
-const _Menu = ({
+const Menu = ({
   children,
   label,
   variant,
@@ -105,9 +105,9 @@ const _Menu = ({
       {isSmallScreen ? (
         <Tray>
           <Tray.Content>
-            <Menu {...props} className={classNames.container}>
+            <RACMenu {...props} className={classNames.container}>
               {children}
-            </Menu>
+            </RACMenu>
           </Tray.Content>
           <Tray.Actions>
             <Button slot="close">{stringFormatter.format('close')}</Button>
@@ -115,16 +115,16 @@ const _Menu = ({
         </Tray>
       ) : (
         <Popover open={open} placement={placement}>
-          <Menu {...props} className={classNames.container}>
+          <RACMenu {...props} className={classNames.container}>
             {children}
-          </Menu>
+          </RACMenu>
         </Popover>
       )}
     </MenuTrigger>
   );
 };
 
-export { _Menu as Menu };
+export { Menu };
 
-_Menu.Item = MenuItem;
-_Menu.Section = MenuSection;
+Menu.Item = MenuItem;
+Menu.Section = MenuSection;

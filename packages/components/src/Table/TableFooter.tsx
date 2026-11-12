@@ -27,7 +27,11 @@ const TableFooter = <T extends object>({
 
   return (
     <RACTableFooter
-      className={cn(classNames.footer, sticky && 'sticky bottom-0 z-1')}
+      className={cn(
+        classNames.footer,
+        // Above the sticky cells in the body, which pass under it.
+        sticky && 'sticky bottom-0 z-10'
+      )}
       {...props}
     />
   );

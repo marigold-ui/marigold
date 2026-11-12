@@ -55,22 +55,29 @@ export const Button = ({ label, onClick }: ButtonProps) => { ... }
 
 ## Component Patterns
 
-### Use `forwardRef` for DOM-Wrapping Components
+### `ref` Is a Prop, Not `forwardRef`
 
-**Rule**: All components wrapping DOM elements must forward refs.
+**Rule**: Components wrapping a DOM element accept `ref` as a prop and pass it on. React 19 makes `forwardRef` unnecessary, no component in `packages/components` uses it, and `@eslint-react/no-forward-ref` flags it.
 
 ```typescript
-// Bad
+// Bad: the ref is dropped
 export const Button = (props: ButtonProps) => {
   return <button {...props} />;
 };
 
-// Good
+// Bad: forwardRef in new code
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  (props, ref) => {
-    return <button ref={ref} {...props} />;
-  }
+  (props, ref) => <button ref={ref} {...props} />
 );
+
+// Good
+export interface ButtonProps {
+  ref?: Ref<HTMLButtonElement>;
+}
+
+export const Button = ({ ref, ...props }: ButtonProps) => {
+  return <button ref={ref} {...props} />;
+};
 ```
 
 ### Rename RAC Props
@@ -92,21 +99,20 @@ type RemovedProps = 'isDisabled' | 'isPending' | 'className' | 'style';
 export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
   disabled?: RAC.ButtonProps['isDisabled'];
   loading?: RAC.ButtonProps['isPending'];
+  ref?: Ref<HTMLButtonElement>;
 }
 
 // Component implementation
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ disabled, loading, ...props }, ref) => {
-    return (
-      <RAC.Button
-        ref={ref}
-        isDisabled={disabled}
-        isPending={loading}
-        {...props}
-      />
-    );
-  }
-);
+export const Button = ({ ref, disabled, loading, ...props }: ButtonProps) => {
+  return (
+    <RAC.Button
+      {...props}
+      ref={ref}
+      isDisabled={disabled}
+      isPending={loading}
+    />
+  );
+};
 ```
 
 ### Do Not Expose `className` or `style` Props
@@ -258,27 +264,34 @@ screen.getByText('Welcome');
 screen.getByPlaceholderText('Enter email');
 ```
 
-### Story Tests Must Have Tags
+### Story Tests Use `.test()` and a Tag
 
-**Rule**: Story tests need `tags: ['component-test']` to be picked up by the test runner.
+**Rule**: Interaction tests are attached with `.test()`, not written as `play` functions, and the story needs `tags: ['component-test']` to be picked up by the test runner.
 
 ```typescript
-// Bad
-export const Basic = {
+// Bad: a play function, and no tag
+export const Basic = meta.story({
   render: () => <Button>Click</Button>,
-  play: async ({ canvas }) => {
+  play: async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button'));
   },
-};
+});
 
 // Good
-export const Basic = {
+export const Basic = meta.story({
   tags: ['component-test'],
-  render: () => <Button>Click</Button>,
-  play: async ({ canvas }) => {
+  render: args => <Button {...args}>Click</Button>,
+});
+
+Basic.test(
+  'Calls onPress when clicked',
+  { args: { onPress: fn() } },
+  async ({ args, canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button'));
-  },
-};
+
+    await expect(args.onPress).toHaveBeenCalled();
+  }
+);
 ```
 
 ### Import Stories in Unit Tests
@@ -383,19 +396,18 @@ export const Button = () => { ... };
 
 - Security vulnerabilities
 - `any` types without justification
-- Missing `forwardRef` on DOM components
+- A DOM-wrapping component that drops `ref`, or `forwardRef` in new code
 - Jest APIs in new code
 - `fireEvent` usage
 - Broken accessibility (missing ARIA, no keyboard support)
 - Type errors
-- Missing, stale, or failed visual regression tests when UI-affecting files are changed
 
 ### Warnings (Should Fix)
 
 - Missing `import type`
 - Exposed `className`/`style` props
 - `getByTestId` usage
-- Missing story tags
+- Missing story tags, or a `play` function where `.test()` belongs
 - Class components
 - Nested conditionals
 

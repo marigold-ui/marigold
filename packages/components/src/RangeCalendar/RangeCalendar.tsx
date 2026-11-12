@@ -108,7 +108,7 @@ const EMPTY_VALIDITY_STATE: ValidityState = {
 
 // Component
 // ---------------
-const _RangeCalendar = <T extends DateValue>({
+const RangeCalendar = <T extends DateValue>({
   disabled,
   readOnly,
   error,
@@ -256,4 +256,4 @@ const _RangeCalendar = <T extends DateValue>({
   );
 };
 
-export { _RangeCalendar as RangeCalendar };
+export { RangeCalendar };
