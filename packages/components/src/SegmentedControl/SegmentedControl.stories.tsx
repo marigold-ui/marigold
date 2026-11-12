@@ -102,7 +102,7 @@ export const Controlled = meta.story({
   args: {
     label: 'Layout',
   },
-  render: args => {
+  render: function Render(args) {
     const [value, setValue] = useState('list');
 
     return (
@@ -296,7 +296,7 @@ export const InForm = meta.story({
   args: {
     label: 'Status',
   },
-  render: args => {
+  render: function Render(args) {
     const [submitted, setSubmitted] = useState('');
 
     return (

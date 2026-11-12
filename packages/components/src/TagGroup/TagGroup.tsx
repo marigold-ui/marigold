@@ -151,7 +151,7 @@ const removeAllButtonContext = { variant: 'link', size: 'small' } as const;
 
 // Component
 // ---------------
-const _TagGroup = ({
+const TagGroup = ({
   ref,
   items,
   children,
@@ -374,4 +374,4 @@ const _TagGroup = ({
   );
 };
 
-export { _TagGroup as TagGroup };
+export { TagGroup };

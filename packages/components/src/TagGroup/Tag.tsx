@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
-import { Tag } from 'react-aria-components/TagGroup';
+import { Tag as RACTag } from 'react-aria-components/TagGroup';
 import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { useTagGroupContext } from './Context';
@@ -17,7 +17,7 @@ export interface TagProps extends Omit<RAC.TagProps, RemovedProps> {
   disabled?: boolean;
 }
 
-const _Tag = ({ variant, size, children, disabled, ...rest }: TagProps) => {
+const Tag = ({ variant, size, children, disabled, ...rest }: TagProps) => {
   let textValue = typeof children === 'string' ? children : undefined;
 
   const classNames = useClassNames({ component: 'Tag', variant, size });
@@ -29,7 +29,7 @@ const _Tag = ({ variant, size, children, disabled, ...rest }: TagProps) => {
   };
 
   return (
-    <Tag
+    <RACTag
       textValue={textValue}
       {...props}
       className={cn('data-selection-mode:cursor-pointer', classNames.tag)}
@@ -42,9 +42,9 @@ const _Tag = ({ variant, size, children, disabled, ...rest }: TagProps) => {
           )}
         </>
       )}
-    </Tag>
+    </RACTag>
   );
 };
 
-_Tag.Group = TagGroup;
-export { _Tag as Tag };
+Tag.Group = TagGroup;
+export { Tag };

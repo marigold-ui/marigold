@@ -231,7 +231,7 @@ const TableElement = ({
   );
 };
 
-const _Table = ({
+const TableRoot = ({
   variant,
   size,
   overflow = 'wrap',
@@ -353,7 +353,7 @@ const _Table = ({
   );
 };
 
-const Table = Object.assign(_Table, {
+const Table = Object.assign(TableRoot, {
   Header: TableHeader,
   Column: TableColumn,
   Body: TableBody,

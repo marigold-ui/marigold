@@ -18,7 +18,7 @@ export interface KeyboardProps extends Omit<
 // Renders a `<kbd>` shortcut hint as a standalone key-cap. Inside a container
 // that styles the hint via KeyboardContext (e.g. Menu.Item), defer to it. The
 // context also carries the id used for the container's aria-describedby.
-const _Keyboard = (props: KeyboardProps) => {
+const Keyboard = (props: KeyboardProps) => {
   const classNames = useClassNames({ component: 'Keyboard' });
   const context = useSlottedContext(KeyboardContext);
 
@@ -30,4 +30,4 @@ const _Keyboard = (props: KeyboardProps) => {
   );
 };
 
-export { _Keyboard as Keyboard };
+export { Keyboard };

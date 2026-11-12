@@ -507,7 +507,7 @@ export const DynamicData = meta.story({
   args: {
     selectionMode: 'single',
   },
-  render: args => {
+  render: function Render(args) {
     const columns = [
       { name: 'Name', id: 'name', rowHeader: true },
       { name: 'Firstname', id: 'firstname', rowHeader: false },
@@ -613,7 +613,7 @@ DynamicData.test(
 
 export const WidthsAndOverflow = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const [overflow, setOverflow] = useState<'truncate' | 'wrap'>('wrap');
 
     return (
@@ -845,7 +845,7 @@ Loading.test(
 
 export const Sorting = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const columns = [
       { name: 'Name', id: 'name', alignX: 'left', rowHeader: true },
       { name: 'Height', id: 'height', alignX: 'right', rowHeader: false },
@@ -1630,7 +1630,7 @@ export const StickyColumnsExpandable = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   args: { treeColumn: 'clearing', selectionMode: 'multiple' },
-  render: args => {
+  render: function Render(args) {
     const { list, dragAndDropHooks } = useReorderableSettlementRuns();
 
     return (
@@ -2001,7 +2001,7 @@ export const DragAndDrop = meta.story({
   args: {
     selectionMode: 'multiple',
   },
-  render: args => {
+  render: function Render(args) {
     const list = useListData({
       initialItems: users.slice(0, 5).map((user, index) => ({
         id: index + 1,
@@ -2104,7 +2104,7 @@ DragAndDrop.test(
     // The story's rows are one line tall, where a handle centered on the cell
     // and one centered on the text line land in the same place. A taller
     // neighbour tells them apart.
-    render: args => {
+    render: function Render(args) {
       const { dragAndDropHooks } = useDragAndDrop({
         getItems: () => [{ 'text/plain': 'Short' }],
       });
@@ -2211,7 +2211,7 @@ export const AllowTextSelection = meta.story({
   args: {
     selectionMode: 'multiple',
   },
-  render: args => {
+  render: function Render(args) {
     const [allowTextSelection, setAllowTextSelection] = useState(false);
 
     return (
@@ -2301,7 +2301,7 @@ AllowTextSelection.test(
 export const EditableCell = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [data, setData] = useState(users.slice(0, 5).map(u => ({ ...u })));
 
     const handleSubmit = (
@@ -2575,7 +2575,7 @@ EditableCell.test(
 export const DynamicColumnsAndRows = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const columns = [
       { name: 'Name', id: 'name', rowHeader: true },
       { name: 'Email', id: 'email', rowHeader: false },
@@ -3387,7 +3387,7 @@ export const DataEntryGridWithEditableCell = meta.story({
     keyboardNavigationBehavior: 'tab',
     selectionMode: 'none',
   },
-  render: args => {
+  render: function Render(args) {
     const [data, setData] = useState(users.slice(0, 3).map(u => ({ ...u })));
 
     return (
@@ -4008,7 +4008,7 @@ export const ExpandableRowsWithEditableCell = meta.story({
   tags: ['component-test'],
   args: { treeColumn: 'clearing' },
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [notes, setNotes] = useState<Record<string, string>>({
       'run-2026-06-01': 'Checked by Finance',
       'CLR-10188': 'Awaiting receipt',
@@ -4198,7 +4198,7 @@ export const ExpandableRowsWithDragAndDrop = meta.story({
   tags: ['component-test'],
   args: { treeColumn: 'clearing', selectionMode: 'multiple' },
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const { list, dragAndDropHooks } = useReorderableSettlementRuns();
 
     return (

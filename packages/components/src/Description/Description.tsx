@@ -16,7 +16,7 @@ export interface DescriptionProps
   ref?: Ref<HTMLElement>;
 }
 
-const _Description = ({
+const Description = ({
   slot = 'description',
   children,
   ref,
@@ -32,4 +32,4 @@ const _Description = ({
   </Text>
 );
 
-export { _Description as Description };
+export { Description };

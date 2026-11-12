@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { KeyboardContext } from 'react-aria-components/Keyboard';
-import { MenuItem } from 'react-aria-components/Menu';
+import { MenuItem as RACMenuItem } from 'react-aria-components/Menu';
 import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
 import { useClassNames } from '@marigold/system';
@@ -54,10 +54,10 @@ const ItemChildren = ({
 
 // Component
 // ---------------
-const _MenuItem = ({ children, variant, size, ...props }: MenuItemProps) => {
+const MenuItem = ({ children, variant, size, ...props }: MenuItemProps) => {
   const classNames = useClassNames({ component: 'Menu', variant, size });
   return (
-    <MenuItem {...props} className={classNames.item}>
+    <RACMenuItem {...props} className={classNames.item}>
       {renderProps => (
         <>
           <AccessIcon variant={variant} />
@@ -75,8 +75,8 @@ const _MenuItem = ({ children, variant, size, ...props }: MenuItemProps) => {
           <AccessLabel variant={variant} />
         </>
       )}
-    </MenuItem>
+    </RACMenuItem>
   );
 };
 
-export { _MenuItem as MenuItem };
+export { MenuItem };

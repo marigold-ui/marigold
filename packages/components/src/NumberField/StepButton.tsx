@@ -15,7 +15,7 @@ export interface StepButtonProps extends AriaButtonProps {
 
 // Components
 // ---------------
-const _StepButton = ({ direction, className, ...props }: StepButtonProps) => {
+const StepButton = ({ direction, className, ...props }: StepButtonProps) => {
   const Icon = direction === 'up' ? Plus : Minus;
 
   return (
@@ -34,4 +34,4 @@ const _StepButton = ({ direction, className, ...props }: StepButtonProps) => {
   );
 };
 
-export { _StepButton as StepButton };
+export { StepButton };
