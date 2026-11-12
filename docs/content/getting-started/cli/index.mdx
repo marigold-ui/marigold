@@ -272,6 +272,8 @@ After an applied run, `marigold migrate` records the last migration in the `pack
 - Without a version, only migrations newer than the recorded one are proposed, and only once their major version is installed. Upgrade first, then migrate.
 - A migration named explicitly that is already recorded prints a warning and changes nothing.
 
+Because the record belongs to a package, an applied run has to target that package's folder, the one with the `package.json` that declares `@marigold/components`. A subfolder or a monorepo root is refused with the command to run instead. In a monorepo, migrate each package that declares `@marigold/components`. A dry run works on any path.
+
 It anchors on imports rather than on file names or directory layout, so it works whatever your project structure is:
 
 1. **Theme files** (anchored on `ThemeComponent<'X'>` from `@marigold/system`): restructures single-style components into the slot shape the new version requires, moving your classes verbatim, swaps a baseline style only when it still matches the old baseline byte for byte (proof you never customized it), stubs new slots as `cva({})`, and scaffolds theme files for components the new version requires.

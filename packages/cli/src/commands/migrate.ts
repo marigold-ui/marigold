@@ -513,22 +513,37 @@ export interface MigrateCommandOptions {
 }
 
 /**
+ * The package.json an applied run records into. The marker is per package, so
+ * the path has to be that package's folder: from a subfolder it would mark
+ * code the run never touched, from a folder above it records nothing.
+ */
+const packageScope = (targetPath: string, command: string): string => {
+  const file = findMarkerFile(targetPath);
+  if (!file) {
+    throw new Error(
+      `Cannot apply a migration to ${targetPath}: no package.json at or above it declares @marigold/components, so the CLI cannot record what it applied. ` +
+        `Run it on each package that declares @marigold/components, or add --dry-run to only report.`
+    );
+  }
+  const dir = path.dirname(file);
+  if (dir !== path.resolve(targetPath)) {
+    throw new Error(
+      `Cannot apply a migration to ${targetPath} alone: migrations are recorded per package, and it is part of ${dir}. ` +
+        `Run it on the package instead: ${command} ${dir}. Add --dry-run to report on ${targetPath} only.`
+    );
+  }
+  return file;
+};
+
+/**
  * Write the applied-migrations marker after a real run. A failure to record
  * only warns: the code edits have already landed.
  */
 const recordMigration = (
   version: string,
-  targetPath: string,
+  file: string,
   write: (output: string) => void
 ): void => {
-  const file = findMarkerFile(targetPath);
-  if (!file) {
-    write(
-      `Could not record ${version} as applied: no package.json at or above ${targetPath} declares @marigold/components. ` +
-        `Add "marigold": { "migrated": "${version}" } to the one that does, or a bare marigold migrate offers ${version} again.`
-    );
-    return;
-  }
   try {
     if (writeMarker(file, version)) {
       write(`Recorded ${version} as applied in ${file}.`);
@@ -559,7 +574,7 @@ const checkNamedRun = (
   if (recorded && !only) {
     write(
       `${version} is already applied (last applied: ${detected.migrated}), so nothing was run: a second run can rename props it already renamed. ` +
-        `To apply changes you skipped, name them: marigold migrate ${version} [path] --only <names>`
+        `To apply changes you skipped, name them: marigold migrate ${version} ${targetPath} --only <names>`
     );
     return 'refuse';
   }
@@ -587,11 +602,19 @@ export const runMigrateCommand = async (
   const interactive = options.interactive ?? canPrompt();
 
   let versions: string[];
+  // null exactly when nothing is written: a dry run
+  let markerFile: string | null = null;
   // completing a recorded migration: what it skipped before is unknowable
   let completing = false;
   if (options.version) {
     const mode = checkNamedRun(options.version, targetPath, only, write);
     if (mode === 'refuse') return 0;
+    if (!dryRun) {
+      markerFile = packageScope(
+        targetPath,
+        `marigold migrate ${options.version}`
+      );
+    }
     completing = mode === 'complete';
     versions = [options.version];
   } else {
@@ -613,6 +636,7 @@ export const runMigrateCommand = async (
       );
       return 0;
     }
+    if (!dryRun) markerFile = packageScope(targetPath, 'marigold migrate');
     if (!interactive) {
       throw new Error(
         `Detected @marigold/components ${detected.installed} — would run ${detected.versions.join(', then ')}. ` +
@@ -668,7 +692,7 @@ export const runMigrateCommand = async (
     }
 
     write(runMigrate({ version, targetPath, dryRun, only: selected }).output);
-    if (dryRun) continue;
+    if (!markerFile) continue;
 
     const skipped =
       selected && fired ? fired.filter(name => !selected.includes(name)) : [];
@@ -677,7 +701,7 @@ export const runMigrateCommand = async (
         `Skipped in ${version}: ${skipped.join(', ')}. To apply later: marigold migrate ${version} ${targetPath} --only ${skipped.join(',')}`
       );
     }
-    recordMigration(version, targetPath, write);
+    recordMigration(version, markerFile, write);
   }
   return 0;
 };

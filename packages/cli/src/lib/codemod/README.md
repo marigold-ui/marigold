@@ -24,8 +24,12 @@ npx marigold migrate [version] [path] [--dry-run] [--only <names>]
   A missing marker means nothing has been applied. A migration named
   explicitly that the marker already covers warns and does not run, unless
   `--only` names the changes, which is how a partial run is completed.
-- `path` defaults to the current directory; point it at the consumer repo
-  (or its theme directory) you want to migrate.
+- `path` defaults to the current directory. An applied run needs the folder
+  of the package.json that declares `@marigold/components`, because the
+  marker is per package: run from a subfolder it would mark code it never
+  touched as migrated, run from a monorepo root it has nowhere to record.
+  Anything else is refused with the command to run instead. `--dry-run`
+  works on any path.
 - **Pre-analysis and selection**: before writing anything, an interactive
   run analyzes the target (a dry run in memory) and lists the changes that
   actually fire — name, description, change and file counts — as a

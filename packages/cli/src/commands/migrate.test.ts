@@ -587,7 +587,7 @@ describe('runMigrateCommand', () => {
     expect(output).toContain(
       'v18 is already applied (last applied: v19), so nothing was run'
     );
-    expect(output).toContain('marigold migrate v18 [path] --only <names>');
+    expect(output).toContain(`marigold migrate v18 ${root} --only <names>`);
     expect(readFileSync(cardPath, 'utf8')).toBe(before);
   });
 
@@ -814,18 +814,59 @@ describe('runMigrateCommand', () => {
       expect(marker(root)).toEqual({ migrated: 'v19' });
     });
 
-    test('warns when no package.json declares @marigold/components', async () => {
+    test('refuses to apply where no package.json declares @marigold/components', async () => {
       const root = setupFixture();
+      const cardPath = path.join(root, 'theme', 'components', 'Card.styles.ts');
+      const before = readFileSync(cardPath, 'utf8');
+
+      const run = migrate({ version: 'v18', targetPath: root });
+
+      await expect(run).rejects.toThrow(
+        /no package.json at or above it declares @marigold\/components/
+      );
+      expect(readFileSync(cardPath, 'utf8')).toBe(before);
+    });
+
+    test('refuses to apply a named migration to a subfolder of the package', async () => {
+      const root = setupDetectable('18.0.0');
+      const cardPath = path.join(root, 'theme', 'components', 'Card.styles.ts');
+      const before = readFileSync(cardPath, 'utf8');
+
+      const run = migrate({
+        version: 'v18',
+        targetPath: path.join(root, 'theme'),
+      });
+
+      await expect(run).rejects.toThrow(
+        `Run it on the package instead: marigold migrate v18 ${root}.`
+      );
+      expect(readFileSync(cardPath, 'utf8')).toBe(before);
+      expect(marker(root)).toBeUndefined();
+    });
+
+    test('refuses a detected migration on a subfolder before confirming', async () => {
+      const root = setupDetectable('18.0.0');
+
+      const run = migrate({
+        targetPath: path.join(root, 'theme'),
+        interactive: true,
+      });
+
+      await expect(run).rejects.toThrow(/migrations are recorded per package/);
+      expect(prompts.confirm).not.toHaveBeenCalled();
+    });
+
+    test('reports on a subfolder in a dry run', async () => {
+      const root = setupDetectable('18.0.0');
 
       const { code, output } = await migrate({
         version: 'v18',
-        targetPath: root,
+        targetPath: path.join(root, 'theme'),
+        dryRun: true,
       });
 
       expect(code).toBe(0);
-      expect(output).toContain(
-        'Could not record v18 as applied: no package.json at or above'
-      );
+      expect(output).toContain('marigold migrate v18 (dry run)');
     });
   });
 

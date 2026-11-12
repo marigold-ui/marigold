@@ -123,7 +123,9 @@ ${pc.bold('Migrate options:')}
                       migrations newer than the one recorded in package.json
                       and up to the installed major are confirmed
                       interactively
-  [path]              Directory to migrate (default: current directory)
+  [path]              Directory to migrate (default: current directory).
+                      Applying needs the package that declares
+                      @marigold/components; dry runs work anywhere
   --dry-run           Report what would change without writing files
   --only <names>      Apply only these changes (comma-separated codemod
                       names from the pre-analysis); skips the interactive
