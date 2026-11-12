@@ -24,6 +24,9 @@ export const useSidebar = (): SidebarContextValue => {
   return ctx;
 };
 
+/** Level of the heading the nav sits under. Internal on purpose: the sidebar always sits under the page `h1`. */
+export const SidebarHeadingLevelContext = createContext(1);
+
 export interface SidebarProviderProps {
   /** Children of the component. */
   children: ReactNode;
