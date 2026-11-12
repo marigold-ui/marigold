@@ -114,17 +114,22 @@ Control the query to know when it is empty. Favourites and recent records come f
 
 ### Searching many records
 
-Most apps have more events or orders than they can load up front. Search them on the server and keep the rest of the palette fast:
+People often know exactly which record they need, an event by its name or an order by its number. Without the palette they open the list page, filter it and scan the rows to get there. Searching records from the palette turns this into a few keystrokes, from any page.
 
-- Pages and actions show right away, without waiting for the server. Only the records group waits.
-- Show the first few matches per kind and end the group with a row that opens the full list for the query. The palette is for jumping to a record, the list page is for browsing.
-- Wait until people pause typing before you send a request, and cancel requests that are out of date.
-
-Pass `filter={false}` to turn off the built-in match, control the query with `inputValue` and `onInputChange`, and set `loading` while results load. The built-in match is off for every group then, so match the static pages yourself, as the demo does.
+- **Match what people know:** search the fields people remember, such as the name and the number of an event, or the order number and the customer's name. Put an exact number match first, people who type a number mean that record.
+- **Show a few per kind:** about three to five records per group, and no more than about ten rows in total. Beyond that, people stop reading the suggestions and start scanning. Show what tells the records apart in the description, like the date of an event.
+- **Offer the full list:** if there are more matches, end the group with a row that opens the list page with the query applied. The palette is for jumping to a record, the list page is for browsing and comparing.
+- **Keep the rest fast:** pages and actions show right away, only the records group waits for the server. Results that arrive after people have finished typing don't help them anymore, so keep the search quick and the number of results small.
 
 <ComponentDemo name="command-palette-async" />
 
-The built-in match finds the query anywhere in an item's text and ignores case and accents, so "cafe" finds "Café". It keeps the authored order, which people can learn. For long lists of names people often misspell, pass a fuzzy `filter` instead.
+<Callout title="Connecting the server">
+  Pass `filter={false}` to turn off the built-in match, control the query with
+  `inputValue` and `onInputChange`, and set `loading` while results load. The
+  built-in match is then off for every group, so match the static pages
+  yourself, as the demo does. Wait until people pause typing before you send a
+  request, and cancel requests that are out of date.
+</Callout>
 
 ### Search prefixes
 
