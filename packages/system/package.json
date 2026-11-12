@@ -57,7 +57,7 @@
     "@types/react": "19.3.0",
     "react": "^19.2.8",
     "tailwindcss": "4.3.5",
-    "tsdown": "0.23.5"
+    "tsdown": "0.23.7"
   },
   "scripts": {
     "build": "tsdown src/index.ts",
