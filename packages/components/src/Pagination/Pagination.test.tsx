@@ -231,7 +231,7 @@ describe('Pagination tests', () => {
     );
   });
 
-  test('ignores presses on the disabled Previous and Next buttons', async () => {
+  test('ignores presses on the disabled Previous button', async () => {
     const onChange = vi.fn();
     render(
       <Basic.Component totalItems={20} pageSize={10} onChange={onChange} />
@@ -353,7 +353,7 @@ describe('Pagination tests', () => {
     rerender(<Basic.Component totalItems={50} pageSize={10} page={10} />);
 
     expect(screen.queryByLabelText('Page 10')).not.toBeInTheDocument();
-    expect(document.body).not.toHaveFocus();
+    expect(screen.getByLabelText('Page 5')).toHaveFocus();
     expect(screen.getByLabelText('Next page')).toHaveAttribute(
       'aria-disabled',
       'true'
