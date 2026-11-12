@@ -155,7 +155,7 @@ Every resource `renderer.ts` creates during a render (browser context, Vite serv
    - `myCheckToValidationIssues(data): ValidationIssue[]` — a pure, Node-side function that turns the raw data into findings. **This is the function that gets unit-tested in `*.test.ts`** (no browser needed) — see `non-text-contrast.test.ts` as a template.
 2. Import it in `spatial/index.ts` and wire it into the appropriate block (`enableSpatial`/`enableA11y`/its own switch) with its own `try/catch`, matching the existing blocks.
 3. Add a new `IssueSource` value to the `DYNAMIC_ISSUE_SOURCES` array in `types.ts` — not the `StaticIssueSource` union. That array is what `index.ts` builds its `DYNAMIC_SOURCES` set from, so listing it there is also what gets the finding source-location enrichment (rendered findings arrive without a `location`); adding it to the static union typechecks fine but silently leaves the finding printing bare.
-4. If the check needs real browser behavior that can't be meaningfully mocked: add a `*.integration.test.ts` next to it that self-skips when no Chromium is available (pattern: `beforeAll` attempts a real render, sets a `renderWorks` flag, every test checks `if (!renderWorks) return ctx.skip()`).
+4. If the check needs real browser behavior that can't be meaningfully mocked: add a `*.integration.test.ts` next to it (pattern: `beforeAll` attempts a real render, sets a `renderWorks` flag and keeps the error as `probeError`, every test starts with `if (!renderWorks) return skipIntegration(ctx, 'No working Chromium render', { inCI: 'fail', cause: probeError })`). It skips locally without Chromium and fails in CI, which installs it.
 
 ---
 
@@ -209,7 +209,7 @@ These principles run through the entire codebase and should be kept in mind for 
 ## 7. Tests
 
 - **Unit tests** (`*.test.ts`) — right next to the file being tested, no browser needed. For checkers: use `tmpFile()` from `test-support/tmp.ts` for small inline fixtures, or a file under `examples/` for fixtures shared across multiple tests.
-- **Integration tests** (`*.integration.test.ts`) — need a real Chromium. Self-skip (`ctx.skip()`) when no browser is available (e.g. a CI runner without Playwright pre-installed) — the pattern is right at the top of each of these files.
+- **Integration tests** (`*.integration.test.ts`) — need a real Chromium. Without a browser they skip locally through `skipIntegration()` and fail in CI, where the `cli-tests` job installs Chromium. The pattern is right at the top of each of these files.
 - **`examples/`** — shared fixture files: both "valid" code (should report nothing) and deliberately broken code (should trigger a specific finding), for checks that test the same fixture from multiple angles.
 
 All tests run via `pnpm --filter @marigold/cli test` (see `packages/cli/vitest.config.ts`). Important: that config sets `NO_COLOR=1`, so CLI text output in tests is always uncolored and therefore deterministic to assert on, regardless of whether a `CI` environment variable is set (e.g. on GitHub Actions).

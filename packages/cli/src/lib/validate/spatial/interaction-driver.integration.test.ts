@@ -9,9 +9,8 @@ import { skipIntegration } from './skipIntegration.js';
 // Integration coverage for disclosure detection: driving a real Accordion
 // (built on react-aria-components' Disclosure, whose panel renders
 // role="group") only reproduces through an actual render — OVERLAY_ROLES not
-// including "group" is exactly the gap this test targets. Same self-skip
-// rationale as renderer.integration.test.ts: a real render needs a working
-// Chromium, which isn't available on a bare CI runner.
+// including "group" is exactly the gap this test targets. Needs a working
+// Chromium: see skipIntegration.ts for when this skips and when it fails.
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const example = (name: string): string =>
   path.join(__dirname, '..', 'examples', name);
@@ -20,6 +19,7 @@ const viewport = { width: 1280, height: 720 };
 
 let renderer: SharedRenderer | undefined;
 let renderWorks = false;
+let probeError: unknown;
 
 beforeAll(async () => {
   try {
@@ -27,8 +27,9 @@ beforeAll(async () => {
     const handle = await renderer.render(example('valid-button.tsx'), viewport);
     renderWorks = handle.result.renderTimeMs > 0;
     await handle.close();
-  } catch {
+  } catch (error) {
     renderWorks = false;
+    probeError = error;
   }
 }, 60_000);
 
@@ -41,6 +42,7 @@ describe('driveInteractions disclosure detection (requires a working render envi
     if (!renderWorks || !renderer)
       return skipIntegration(ctx, 'No working Chromium render', {
         inCI: 'fail',
+        cause: probeError,
       });
 
     const handle = await renderer.render(

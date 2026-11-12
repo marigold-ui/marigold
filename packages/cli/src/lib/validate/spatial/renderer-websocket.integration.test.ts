@@ -9,10 +9,9 @@ import { type SharedRenderer, createRenderer } from './renderer.js';
 import { skipIntegration } from './skipIntegration.js';
 
 // Integration coverage for the render sandbox's network egress control.
-// page.route only intercepts HTTP(S); a WebSocket opened by untrusted
-// generated code would otherwise bypass it. Same self-skip rationale as
-// renderer.integration.test.ts: a real render needs a working Chromium, which
-// isn't available on a bare CI runner.
+// page.route only intercepts HTTP(S); a WebSocket opened by untrusted generated
+// code would otherwise bypass it. Needs a working Chromium: see
+// skipIntegration.ts for when this skips and when it fails.
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const example = (name: string): string =>
   path.join(__dirname, '..', 'examples', name);
@@ -114,6 +113,7 @@ const startWsHandshakeServer = (
 
 let renderer: SharedRenderer | undefined;
 let renderWorks = false;
+let probeError: unknown;
 
 beforeAll(async () => {
   try {
@@ -121,8 +121,9 @@ beforeAll(async () => {
     const handle = await renderer.render(example('valid-button.tsx'), viewport);
     renderWorks = handle.result.renderTimeMs > 0;
     await handle.close();
-  } catch {
+  } catch (error) {
     renderWorks = false;
+    probeError = error;
   }
 }, 60_000);
 
@@ -172,6 +173,7 @@ describe('render sandbox network egress (requires a working render environment)'
     if (!renderWorks || !renderer)
       return skipIntegration(ctx, 'No working Chromium render', {
         inCI: 'fail',
+        cause: probeError,
       });
     try {
       wsServer = await startWsHandshakeServer();

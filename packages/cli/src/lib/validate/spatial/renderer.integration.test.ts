@@ -6,10 +6,9 @@ import { skipIntegration } from './skipIntegration.js';
 
 // Integration coverage for the render path (renderer + spatial checks), which
 // the unit tests deliberately do not exercise. A real render needs a working
-// Chromium AND resolvable project modules (the harness). That environment is
-// present in the eval Docker image but not on a bare CI runner, so this suite
-// probes once whether rendering actually works and self-skips when it does not,
-// rather than failing.
+// Chromium AND resolvable project modules (the harness). This suite probes once
+// whether rendering works. Without it, tests skip locally and fail in CI, which
+// installs Chromium (see skipIntegration.ts).
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const example = (name: string): string =>
   path.join(__dirname, '..', 'examples', name);
@@ -17,6 +16,7 @@ const example = (name: string): string =>
 const viewport = { width: 1280, height: 720 };
 
 let renderWorks = false;
+let probeError: unknown;
 
 beforeAll(async () => {
   try {
@@ -25,8 +25,9 @@ beforeAll(async () => {
       viewport,
     });
     renderWorks = probe.metadata.renderTimeMs > 0;
-  } catch {
+  } catch (error) {
     renderWorks = false;
+    probeError = error;
   }
 }, 60_000);
 
@@ -35,6 +36,7 @@ describe('render integration (requires a working render environment)', () => {
     if (!renderWorks)
       return skipIntegration(ctx, 'No working Chromium render', {
         inCI: 'fail',
+        cause: probeError,
       });
     const report = await validate(example('valid-button.tsx'), {
       checks: ['spatial'],
@@ -60,6 +62,7 @@ describe('render integration (requires a working render environment)', () => {
     if (!renderWorks)
       return skipIntegration(ctx, 'No working Chromium render', {
         inCI: 'fail',
+        cause: probeError,
       });
     // memo/forwardRef/lazy return objects, not functions. A typeof-function
     // gate in the harness rejects them, which surfaces as a runtime error and
@@ -79,6 +82,7 @@ describe('render integration (requires a working render environment)', () => {
     if (!renderWorks)
       return skipIntegration(ctx, 'No working Chromium render', {
         inCI: 'fail',
+        cause: probeError,
       });
     // dialog-open.tsx exercises the overlay/interaction-driver path.
     const report = await validate(example('dialog-open.tsx'), {

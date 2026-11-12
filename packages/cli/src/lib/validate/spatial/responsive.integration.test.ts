@@ -5,10 +5,10 @@ import { validate } from '../index.js';
 import { skipIntegration } from './skipIntegration.js';
 
 // Integration coverage for `display:contents` handling in the "disappeared
-// component" check: the real selfHidden computation runs inside
-// page.evaluate against live computed styles, which only a real render can
-// verify. Same self-skip rationale as renderer.integration.test.ts: a real
-// render needs a working Chromium, which isn't available on a bare CI runner.
+// component" check: the real selfHidden computation runs inside page.evaluate
+// against live computed styles, which only a real render can verify. Needs a
+// working Chromium: see skipIntegration.ts for when this skips and when it
+// fails.
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const example = (name: string): string =>
   path.join(__dirname, '..', 'examples', name);
@@ -16,6 +16,7 @@ const example = (name: string): string =>
 const viewport = { width: 375, height: 720 };
 
 let renderWorks = false;
+let probeError: unknown;
 
 beforeAll(async () => {
   try {
@@ -24,8 +25,9 @@ beforeAll(async () => {
       viewport,
     });
     renderWorks = probe.metadata.renderTimeMs > 0;
-  } catch {
+  } catch (error) {
     renderWorks = false;
+    probeError = error;
   }
 }, 60_000);
 
@@ -34,6 +36,7 @@ describe('responsive disappeared-component check (requires a working render envi
     if (!renderWorks)
       return skipIntegration(ctx, 'No working Chromium render', {
         inCI: 'fail',
+        cause: probeError,
       });
 
     const report = await validate(example('display-contents-wrapper.tsx'), {

@@ -6,9 +6,8 @@ import { skipIntegration } from './skipIntegration.js';
 
 // Integration coverage for arrow-key navigation orientation: the real
 // key-press/focus-check loop drives an actual keyboard event against a live
-// page, which only a real render can verify. Same self-skip rationale as
-// renderer.integration.test.ts: a real render needs a working Chromium, which
-// isn't available on a bare CI runner.
+// page, which only a real render can verify. Needs a working Chromium: see
+// skipIntegration.ts for when this skips and when it fails.
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const example = (name: string): string =>
   path.join(__dirname, '..', 'examples', name);
@@ -16,6 +15,7 @@ const example = (name: string): string =>
 const viewport = { width: 1280, height: 720 };
 
 let renderWorks = false;
+let probeError: unknown;
 
 beforeAll(async () => {
   try {
@@ -24,8 +24,9 @@ beforeAll(async () => {
       viewport,
     });
     renderWorks = probe.metadata.renderTimeMs > 0;
-  } catch {
+  } catch (error) {
     renderWorks = false;
+    probeError = error;
   }
 }, 60_000);
 
@@ -34,6 +35,7 @@ describe('arrow-key navigation orientation (requires a working render environmen
     if (!renderWorks)
       return skipIntegration(ctx, 'No working Chromium render', {
         inCI: 'fail',
+        cause: probeError,
       });
 
     const report = await validate(example('horizontal-radio-group.tsx'), {
