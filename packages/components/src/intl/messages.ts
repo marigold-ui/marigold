@@ -22,7 +22,6 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     commandPalettePrefixHint: vars =>
       `Tippe ${vars?.prefix}, um nur in ${vars?.title} zu suchen`,
     commandPaletteOrType: vars => `oder tippe ${vars?.prefix}`,
-    commandPaletteSearchIn: vars => `In ${vars?.title} suchen…`,
     confirm: 'Bestätigen',
     dismissDrawer: 'Seitenleiste schließen',
     dropZoneLabel: 'Dateien hierher ziehen',
@@ -111,7 +110,6 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     commandPalettePrefixHint: vars =>
       `Type ${vars?.prefix} to search only ${vars?.title}`,
     commandPaletteOrType: vars => `or type ${vars?.prefix}`,
-    commandPaletteSearchIn: vars => `Search in ${vars?.title}…`,
     confirm: 'Confirm',
     dismissDrawer: 'Dismiss drawer',
     dropZoneLabel: 'Drop files here',

@@ -6,8 +6,8 @@ import { useCallback, useEffect, useRef } from 'react';
 // cmdk do, so Enter always runs something. RAC activates the first row on
 // open (`autoFocus`) and when the user types forward. It clears the row after
 // a delete, paste or undo, and keeps the old row when async results replace
-// the list. This hook covers those two cases. Results loaded for the same
-// query (the next page) keep the user's place.
+// the list. This hook covers those two cases. Once people move to another
+// row, rows added later (the next page) keep their place.
 //
 // Known gap: when typing swaps in a different static list that starts with
 // the same row, RAC activates nothing. Pressing `Home` there too races RAC's
@@ -15,6 +15,16 @@ import { useCallback, useEffect, useRef } from 'react';
 //
 // `Home` in the search input is RAC's own way to activate the first row, and
 // DOM focus stays in the input. Returns refs for the input and the menu.
+// Keys that move the active row away from the first one. `Home` is missing on
+// purpose: the hook presses it itself.
+const NAVIGATION_KEYS = new Set([
+  'ArrowDown',
+  'ArrowUp',
+  'PageDown',
+  'PageUp',
+  'End',
+]);
+
 const FORWARD_TYPING = new Set([
   'insertText',
   'insertCompositionText',
@@ -70,14 +80,26 @@ export const useKeepFirstItemActive = (inputValue: string, items: unknown) => {
     // RAC rebuilds the collection one render after the children or `items`
     // change, and rows rendered as children can arrive later still, after a
     // loading state. So until the query changes again, every change to the
-    // rows activates the first one, unless it already is. Moving with the
-    // arrow keys changes no rows, so it stays put.
+    // rows activates the first one, unless it already is. Once people move
+    // to another row, by key or by pointer, the rows are theirs: a page
+    // loaded at the end of the list must not throw them back to the top.
     const observer = new MutationObserver(() => {
       const first = menu.querySelector('[role^="menuitem"]');
       if (first && !first.hasAttribute('data-focused')) activateFirst();
     });
     observer.observe(menu, { childList: true, subtree: true });
-    return () => observer.disconnect();
+    const input = inputRef.current;
+    const stop = () => observer.disconnect();
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (NAVIGATION_KEYS.has(e.key)) stop();
+    };
+    input?.addEventListener('keydown', onKeyDown);
+    menu.addEventListener('pointermove', stop);
+    return () => {
+      observer.disconnect();
+      input?.removeEventListener('keydown', onKeyDown);
+      menu.removeEventListener('pointermove', stop);
+    };
   }, [inputValue, items]);
 
   return { inputRef: inputCallbackRef, menuRef };

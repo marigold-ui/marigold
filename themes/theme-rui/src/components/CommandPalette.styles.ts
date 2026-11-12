@@ -128,6 +128,10 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
       '[&_strong]:font-medium [&_strong]:text-foreground',
     ],
   }),
+  // The spinner at the end of a group while its next page loads.
+  loadMore: cva({
+    base: 'col-span-full flex justify-center py-2 text-secondary',
+  }),
   // Same divider as Dialog and Drawer footers, no fill of its own. The legend
   // uses compact key caps with 12px secondary labels (5.7:1 on the surface).
   footer: cva({

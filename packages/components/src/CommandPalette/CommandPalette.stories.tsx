@@ -886,12 +886,10 @@ SearchOneKind.test(
       ).toBeInTheDocument();
     });
 
-    await step('Before typing, the group offers to narrow to it', async () => {
-      const searchIn = canvas.getByRole('menuitem', {
-        name: /Search in Events…/,
-      });
-      await expect(searchIn).toHaveTextContent('or type e:');
-      await userEvent.click(searchIn);
+    await step('Before typing, the more row narrows to the group', async () => {
+      const more = canvas.getByRole('menuitem', { name: /More events…/ });
+      await expect(more).toHaveTextContent('or type e:');
+      await userEvent.click(more);
       await expect(search).toHaveValue('e:');
       await expect(
         canvas.queryByRole('menuitem', { name: 'Orders' })
@@ -945,6 +943,94 @@ SearchOneKind.test(
         await expectFirstRowActive(canvas, 'Jazz Night');
       }
     );
+  }
+);
+
+// Load more
+// ---------------
+// `CommandPalette.LoadMore` at the end of a group loads the next page as
+// people scroll towards it.
+const onLoadMore = fn();
+const allTickets = Array.from({ length: 30 }, (_, i) => `Ticket ${i + 1}`);
+
+export const LoadMore = meta.story({
+  ...noSnapshot,
+  render: function Render(args) {
+    const [count, setCount] = useState(10);
+    const [loading, setLoading] = useState(false);
+    const loadMore = () => {
+      if (loading) return;
+      onLoadMore();
+      setLoading(true);
+      setTimeout(() => {
+        setCount(c => Math.min(c + 10, allTickets.length));
+        setLoading(false);
+      }, 300);
+    };
+    return (
+      <CommandPalette.Trigger {...args}>
+        <CommandPalette.Button />
+        <CommandPalette filter={false}>
+          <CommandPalette.Group title="Tickets">
+            {allTickets.slice(0, count).map(ticket => (
+              <CommandPalette.Item key={ticket} id={ticket}>
+                {ticket}
+              </CommandPalette.Item>
+            ))}
+            {count < allTickets.length && (
+              <CommandPalette.LoadMore
+                onLoadMore={loadMore}
+                loading={loading}
+              />
+            )}
+          </CommandPalette.Group>
+        </CommandPalette>
+      </CommandPalette.Trigger>
+    );
+  },
+});
+
+LoadMore.test(
+  'Loads the next page at the end and keeps the active row',
+  async ({ canvas, step, userEvent }) => {
+    onLoadMore.mockClear();
+    await openPalette({ canvas, userEvent });
+    const search = canvas.getByRole('searchbox');
+    // A query that is not typed forward, as when a more row narrows the
+    // search: the palette then watches the rows to keep the first active.
+    await userEvent.paste('Ticket');
+    await expect(search).toHaveValue('Ticket');
+    await expectFirstRowActive(canvas, 'Ticket 1');
+
+    await step('Moving down keeps the row as pages load', async () => {
+      await userEvent.keyboard('{ArrowDown}{ArrowDown}');
+      const third = canvas.getByRole('menuitem', { name: 'Ticket 3' });
+      await expect(search).toHaveAttribute('aria-activedescendant', third.id);
+
+      const before = canvas.getAllByRole('menuitem').length;
+      const list = canvas.getByRole('menu');
+      await waitFor(() => {
+        list.scrollTop = list.scrollHeight;
+        expect(canvas.getAllByRole('menuitem').length).toBeGreaterThan(before);
+      });
+      await expect(onLoadMore).toHaveBeenCalled();
+      // The appended rows settle a render later, give them the chance to
+      // move the active row before checking it stayed.
+      await new Promise(resolve => setTimeout(resolve, 100));
+      await expect(search).toHaveAttribute('aria-activedescendant', third.id);
+    });
+
+    await step('Stops once everything is loaded', async () => {
+      const list = canvas.getByRole('menu');
+      await waitFor(
+        async () => {
+          list.scrollTop = list.scrollHeight;
+          await expect(canvas.getAllByRole('menuitem')).toHaveLength(30);
+        },
+        { timeout: 5000 }
+      );
+      await expect(canvas.queryByRole('progressbar')).not.toBeInTheDocument();
+    });
   }
 );
 

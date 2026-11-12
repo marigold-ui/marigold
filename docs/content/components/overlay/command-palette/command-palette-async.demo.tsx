@@ -43,8 +43,11 @@ const recentVenues: Venue[] = [
 ];
 
 // A few per kind in the mixed list, more once a prefix leaves one kind.
+// Narrowed, the next page loads as people scroll, up to MAX_ROWS. Beyond
+// that, the list page serves them better.
 const LIMIT = 3;
 const NARROWED_LIMIT = 8;
+const MAX_ROWS = 24;
 const PREFIXES = { events: 'e:', venues: 'v:' } as const;
 
 const none = { items: [], totalItems: 0 };
@@ -53,10 +56,12 @@ const fetchResults = async <T,>(
   path: string,
   term: string,
   limit: number,
-  signal: AbortSignal
+  signal?: AbortSignal,
+  page = 1
 ) => {
   const params = new URLSearchParams({
     q: term,
+    page: String(page),
     pageSize: String(limit),
     delay: '400',
   });
@@ -64,8 +69,8 @@ const fetchResults = async <T,>(
   return (await res.json()) as Results<T>;
 };
 
-// Ends a narrowed group when the server has more than it shows. It leaves
-// the palette for the list page, so it gets an arrow.
+// Ends a narrowed group once it holds MAX_ROWS and the server has more. It
+// leaves the palette for the list page, so it gets an arrow.
 const ShowAll = ({
   id,
   kind,
@@ -148,10 +153,69 @@ export default () => {
   }, [key, limit, prefix, searching, term]);
 
   const current = searching && results?.key === key ? results : null;
-  // Before people type, the palette ends each group with "Search in …".
-  // Once they type, offer more only when the server has more.
+  // The recent records before people type are a few of many. Once they
+  // type, offer more only when the server has more.
   const hasMore = (kind: 'events' | 'venues') =>
-    current !== null && current[kind].totalItems > limit;
+    !searching || (current !== null && current[kind].totalItems > limit);
+
+  // Narrowed to one kind, the next page loads as people scroll to the end.
+  const [loadingMore, setLoadingMore] = useState(false);
+  const loaded = (kind: 'events' | 'venues') =>
+    current?.[kind].items.length ?? 0;
+  const canLoadMore = (kind: 'events' | 'venues') =>
+    current !== null &&
+    loaded(kind) < current[kind].totalItems &&
+    loaded(kind) < MAX_ROWS;
+  const loadMore = async (kind: 'events' | 'venues') => {
+    if (!current || loadingMore) return;
+    setLoadingMore(true);
+    const page = loaded(kind) / NARROWED_LIMIT + 1;
+    try {
+      const next = await fetchResults<Event & Venue>(
+        `/api/${kind}`,
+        term,
+        NARROWED_LIMIT,
+        undefined,
+        page
+      );
+      // Drop the page if the search changed meanwhile.
+      setResults(prev =>
+        prev?.key === key
+          ? {
+              ...prev,
+              [kind]: {
+                ...prev[kind],
+                items: [...prev[kind].items, ...next.items],
+              },
+            }
+          : prev
+      );
+    } finally {
+      setLoadingMore(false);
+    }
+  };
+  // The end of a narrowed group: load more while it may, then hand over to
+  // the list page if the server still has more.
+  const end = (kind: 'events' | 'venues') => {
+    if (!prefix || !current) return null;
+    if (canLoadMore(kind))
+      return (
+        <CommandPalette.LoadMore
+          onLoadMore={() => loadMore(kind)}
+          loading={loadingMore}
+        />
+      );
+    if (loaded(kind) < current[kind].totalItems)
+      return (
+        <ShowAll
+          id={`all-${kind}`}
+          kind={kind}
+          total={current[kind].totalItems}
+          term={term}
+        />
+      );
+    return null;
+  };
   const events = searching ? (current?.events.items ?? []) : recent;
   const venues = searching ? (current?.venues.items ?? []) : recentVenues;
   // `filter={false}` turns off the built-in match for every group, so the
@@ -197,14 +261,7 @@ export default () => {
               </Description>
             </CommandPalette.Item>
           ))}
-          {prefix && current && current.events.totalItems > limit && (
-            <ShowAll
-              id="all-events"
-              kind="events"
-              total={current.events.totalItems}
-              term={term}
-            />
-          )}
+          {end('events')}
         </CommandPalette.Group>
         <CommandPalette.Group
           title="Venues"
@@ -222,14 +279,7 @@ export default () => {
               <Description>{venue.city}</Description>
             </CommandPalette.Item>
           ))}
-          {prefix && current && current.venues.totalItems > limit && (
-            <ShowAll
-              id="all-venues"
-              kind="venues"
-              total={current.venues.totalItems}
-              term={term}
-            />
-          )}
+          {end('venues')}
         </CommandPalette.Group>
       </CommandPalette>
     </CommandPalette.Trigger>

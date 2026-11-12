@@ -27,15 +27,15 @@ export interface CommandPaletteGroupProps extends Omit<
   /**
    * Typing this at the start of the query narrows the search to this group,
    * for example `e:` for events. The footer lists it with the group's title.
-   * Before people type, the group ends with a "Search in Events…" row that
-   * narrows the search to it, so the first rows never look like all there is.
    */
   prefix?: string;
 
   /**
-   * Full label of a last row that narrows the search to this group once
-   * people type, for example "More events…". Set it when the group has more
-   * matches than it shows. Needs a `prefix`.
+   * Full label of a last row that narrows the search to this group, for
+   * example "More events…". Set it whenever the group shows only some of its
+   * records: before people type, when it lists a few recent ones, and when
+   * the server has more matches than the group shows. Needs a `prefix`, and
+   * hides once the search is narrowed.
    */
   more?: string;
 
@@ -73,17 +73,6 @@ export const CommandPaletteGroup = ({
   // `toArray`, not `count`: `count` also counts `false` from `{cond && …}`.
   // eslint-disable-next-line @eslint-react/no-children-to-array -- an empty group must not render its title
   if (Children.toArray(children).length === 0) return null;
-
-  // The last row narrows the search to this group. Before people type, the
-  // palette offers it itself. Once they type, only the app knows whether
-  // there are more matches, so it sets `more`.
-  const narrowLabel = scope
-    ? undefined
-    : query === ''
-      ? stringFormatter.format('commandPaletteSearchIn', {
-          title: title ?? prefix ?? '',
-        })
-      : more;
   return (
     <MenuSection {...props}>
       <Header className={classNames.group}>
@@ -104,16 +93,16 @@ export const CommandPaletteGroup = ({
         )}
       </Header>
       {children}
-      {narrowLabel && prefix && (
+      {more && prefix && !scope && (
         // Keeps the palette open: it narrows the search, with the term.
         <CommandPaletteItem
           id={`${MORE_KEY}${prefix}`}
-          textValue={`${narrowLabel} ${query}`}
+          textValue={`${more} ${query}`}
           shouldCloseOnSelect={false}
           onAction={() => narrowTo(prefix)}
         >
           <ChevronRight />
-          <TextValue>{narrowLabel}</TextValue>
+          <TextValue>{more}</TextValue>
           <Description>
             {stringFormatter.format('commandPaletteOrType', { prefix })}
           </Description>

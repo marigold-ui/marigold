@@ -27,6 +27,7 @@ import { CommandPaletteButton } from './CommandPaletteButton';
 import { CommandPaletteFooter } from './CommandPaletteFooter';
 import { CommandPaletteGroup } from './CommandPaletteGroup';
 import { CommandPaletteItem } from './CommandPaletteItem';
+import { CommandPaletteLoadMore } from './CommandPaletteLoadMore';
 import { CommandPaletteSearch } from './CommandPaletteSearch';
 import { CommandPaletteTrigger, PALETTE } from './CommandPaletteTrigger';
 import type { GroupPrefix } from './Context';
@@ -366,4 +367,5 @@ export const CommandPalette = Object.assign(CommandPaletteBase, {
   Button: CommandPaletteButton,
   Group: CommandPaletteGroup,
   Item: CommandPaletteItem,
+  LoadMore: CommandPaletteLoadMore,
 });
