@@ -95,6 +95,14 @@ describe('intl messages', () => {
       ) => string;
       expect(fn({ current: 2, total: 4 })).toBe('Schritt 2 von 4');
     });
+
+    test('stepsNeedAttention picks singular or plural', () => {
+      const fn = de.stepsNeedAttention as (
+        vars: Record<string, string | number>
+      ) => string;
+      expect(fn({ count: 1 })).toBe('1 Schritt fehlerhaft');
+      expect(fn({ count: 2 })).toBe('2 Schritte fehlerhaft');
+    });
   });
 
   describe('en-US', () => {
@@ -159,6 +167,14 @@ describe('intl messages', () => {
         vars: Record<string, string | number>
       ) => string;
       expect(fn({ current: 2, total: 4 })).toBe('Step 2 of 4');
+    });
+
+    test('stepsNeedAttention picks singular or plural', () => {
+      const fn = en.stepsNeedAttention as (
+        vars: Record<string, string | number>
+      ) => string;
+      expect(fn({ count: 1 })).toBe('1 step needs attention');
+      expect(fn({ count: 2 })).toBe('2 steps need attention');
     });
   });
 });

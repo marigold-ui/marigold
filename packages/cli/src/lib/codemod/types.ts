@@ -185,6 +185,13 @@ export interface MigrationManifest {
   removedComponents: string[];
   swaps: SwapEntry[];
   structureWarnings: StructureWarning[];
+  /**
+   * Starting styles for slots `stub-missing-slots` adds, keyed by component
+   * and slot, as cva() argument source (2-space indented). For new slots an
+   * empty `cva({})` would break, e.g. a part that must stay hidden until the
+   * theme styles it. Unlisted slots are stubbed as `cva({})`.
+   */
+  slotDefaults?: Record<string, Record<string, string>>;
   jsx: JsxChanges;
   tokens: TokenChanges;
   /**

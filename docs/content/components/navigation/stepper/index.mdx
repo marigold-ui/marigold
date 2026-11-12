@@ -16,7 +16,7 @@ The `<Stepper>` component shows where a user stands in a task that spans several
 
 ## Anatomy
 
-A `<Stepper>` is a navigation landmark wrapping an ordered list. Each step carries a marker, a label, and a connector running to the next step.
+A `<Stepper>` is a navigation landmark wrapping an ordered list. Each step carries a marker, a label, and a connector running to the next step. On small screens the same steps are drawn as a compact track instead, see [small screens](#small-screens).
 
 <StepperAnatomy />
 
@@ -150,11 +150,21 @@ Modifier clicks are deliberately left alone. Cmd-click and middle-click still op
 
 ### Long flows
 
-When there are more steps than labels will fit, the row overflows its container and the labels become unreadable anyway. `hideLabels` drops them visually while keeping them for screen readers. Do not remove the labels from your JSX to achieve this: an unlabelled step has no accessible name.
+When there are more steps than labels will fit, the row overflows its container and the labels become unreadable anyway. `hideLabels` drops them visually while keeping them for screen readers. It only affects large screens, because on [small screens](#small-screens) the stepper shows just the current step's label already. Do not remove the labels from your JSX to achieve this: an unlabelled step has no accessible name.
 
 Hiding the labels also takes away a sighted user's sense of how far along they are, so `hideLabels` adds a visible "Step 3 of 5" counter in exchange. The counter is hidden from assistive technology, because every step already announces its own position and the counter would only repeat it.
 
 <ComponentDemo name="stepper-hide-labels" />
+
+### Small screens
+
+A row of markers and labels does not fit a phone. Below the small-screen breakpoint the stepper switches on its own to a compact layout: a "Step 2 of 4" counter, the name of the current step, and a track with one segment per step. You do not need to change your code for this, and twelve steps fit as well as three.
+
+Each segment is still the step itself. A finished step stays a button or a link, so the user can tap its segment to go back, and screen readers announce every step the same way they do on a large screen. The segments share the width equally, so on the narrowest phones up to twelve steps keep a touch target of at least 24 pixels. Longer flows get smaller targets, which is one more reason to keep a flow short.
+
+Only the current step is named on small screens, so a step that failed earlier needs a cue that does not depend on colour. Its segment turns red and the counter line adds "1 step needs attention". When the current step is the one that failed, its name shows the warning icon instead.
+
+The name of the current step wraps onto a second line rather than being cut off. Short labels still read best, so keep them to one or two words.
 
 ### Accessibility
 
@@ -163,7 +173,7 @@ Hiding the labels also takes away a sighted user's sense of how far along they a
 - Each step announces its label, its position, and its state, for example "Choose plan Step 2 of 4, current step".
 - Activation follows the element: Enter on a link step, Enter or Space on a button step.
 - Move focus into the new panel after a step change, to its heading for example. Activating a step swaps the content but leaves focus on the stepper, so without this nothing tells a keyboard or screen reader user that the page moved on.
-- Colour transitions are removed when the user prefers reduced motion.
+- Moving to another step fills the line toward it and glides the highlight to the new step. All of this motion is removed when the user prefers reduced motion.
 
 ## Props
 

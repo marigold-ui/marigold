@@ -198,6 +198,10 @@ Per-version work should be data entry, not transform code:
      styles (`container` is the default).
    - `structureWarnings`: hand-written texts for DOM changes that break
      consumer CSS selectors. Not auto-fixable, but must not go unannounced.
+   - `slotDefaults`: starting styles for new slots where an empty
+     `cva({})` stub would break the component, e.g. a part that has to stay
+     hidden until the theme styles it. Take them from the current theme-rui
+     and keep them to what restores the previous behaviour.
    - `tokens`: `renamed` from the release notes' rename tables, `added` from
      the `--color-*` diff of the two theme-rui token files, and
      `componentDependencies` from a grep of `packages/components/src` for

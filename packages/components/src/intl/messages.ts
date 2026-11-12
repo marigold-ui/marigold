@@ -71,6 +71,10 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     stepError: 'Fehler',
     stepNotCompleted: 'nicht abgeschlossen',
     stepPosition: vars => `Schritt ${vars?.current} von ${vars?.total}`,
+    stepsNeedAttention: vars =>
+      vars?.count === 1
+        ? '1 Schritt fehlerhaft'
+        : `${vars?.count} Schritte fehlerhaft`,
     toggleNavigation: 'Navigation umschalten',
     undo: 'Rückgängig',
     undoNamed: vars => `${vars?.title} rückgängig machen`,
@@ -149,6 +153,10 @@ export const intlMessages: Record<string, Record<string, LocalizedMessage>> = {
     stepError: 'error',
     stepNotCompleted: 'not completed',
     stepPosition: vars => `Step ${vars?.current} of ${vars?.total}`,
+    stepsNeedAttention: vars =>
+      vars?.count === 1
+        ? '1 step needs attention'
+        : `${vars?.count} steps need attention`,
     toggleNavigation: 'Toggle navigation',
     undo: 'Undo',
     undoNamed: vars => `Undo: ${vars?.title}`,

@@ -2,16 +2,12 @@ import * as m from 'motion/react-m';
 import type RAC from 'react-aria-components';
 import { Tab } from 'react-aria-components/Tabs';
 import { cn } from '@marigold/system';
+import { INDICATOR_TRANSITION } from '../motionTransitions';
 import { useTabContext } from './Context';
 
 // Props
 // ----------------------
 export type TabProps = Omit<RAC.TabProps, 'className' | 'style'>;
-
-const INDICATOR_TRANSITION = {
-  duration: 0.25,
-  ease: [0.165, 0.84, 0.44, 1] as const,
-};
 
 // Component
 // ----------------------
