@@ -15,14 +15,14 @@ export interface RailActivation {
   toggle: boolean;
   /** Move focus to the panel heading once the panel is shown. */
   focusPanel: boolean;
-  /** Let the anchor navigate (false = the click only re-targets the panel). */
-  navigate: boolean;
 }
 
 /**
- * Decide what activating a rail item does. Pure, so every branch of the
- * section/direct-link × re-click/switch matrix is directly testable —
- * `SidebarRail` only maps the result onto its state and refs. Desktop-only:
+ * Decide what activating a rail item does to the panel. Every activation also
+ * navigates to the item's href, so that is not part of the decision. Pure, so
+ * every branch of the section/direct-link × re-click/switch matrix is directly
+ * testable — `SidebarRail` only maps the result onto its state and refs.
+ * Desktop-only:
  * the mobile drawer renders a `SidebarNav` drill-down, which owns its own
  * activation semantics.
  */
@@ -36,25 +36,17 @@ export const resolveRailActivation = (
       select: true,
       toggle: false,
       focusPanel: false,
-      navigate: true,
     };
   }
 
-  if (node.key === selectedKey) {
-    // Re-click toggles the panel (VS Code model); focus it when expanding.
-    return {
-      select: false,
-      toggle: true,
-      focusPanel: state === 'collapsed',
-      navigate: false,
-    };
-  }
-
-  // Switch section: swap the panel, open it if collapsed, focus it.
+  // A section only ever opens the panel (collapsing is left to
+  // `Sidebar.Toggle` and Cmd/Ctrl+B). Switching swaps and focuses the panel;
+  // re-clicking the active one focuses it only when it had to reopen.
+  const switching = node.key !== selectedKey;
+  const collapsed = state === 'collapsed';
   return {
-    select: true,
-    toggle: state === 'collapsed',
-    focusPanel: true,
-    navigate: true,
+    select: switching,
+    toggle: collapsed,
+    focusPanel: switching || collapsed,
   };
 };
