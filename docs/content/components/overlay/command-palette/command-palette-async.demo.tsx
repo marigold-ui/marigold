@@ -148,10 +148,10 @@ export default () => {
   }, [key, limit, prefix, searching, term]);
 
   const current = searching && results?.key === key ? results : null;
-  // Before typing, the recent records are only a few of many, so each group
-  // offers its "More…" row. Once searching, only when the server has more.
+  // Before people type, the palette ends each group with "Search in …".
+  // Once they type, offer more only when the server has more.
   const hasMore = (kind: 'events' | 'venues') =>
-    !searching || (current !== null && current[kind].totalItems > limit);
+    current !== null && current[kind].totalItems > limit;
   const events = searching ? (current?.events.items ?? []) : recent;
   const venues = searching ? (current?.venues.items ?? []) : recentVenues;
   // `filter={false}` turns off the built-in match for every group, so the

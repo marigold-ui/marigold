@@ -8,6 +8,7 @@ import { Description } from '../Description/Description';
 import { TextValue } from '../TextValue/TextValue';
 import { ChevronRight } from '../icons/ChevronRight';
 import { intlMessages } from '../intl/messages';
+import { useDevWarning } from '../utils/useDevWarning';
 import { CommandPaletteItem } from './CommandPaletteItem';
 import { MORE_KEY, useCommandPalette } from './Context';
 
@@ -26,14 +27,15 @@ export interface CommandPaletteGroupProps extends Omit<
   /**
    * Typing this at the start of the query narrows the search to this group,
    * for example `e:` for events. The footer lists it with the group's title.
+   * Before people type, the group ends with a "Search in Events…" row that
+   * narrows the search to it, so the first rows never look like all there is.
    */
   prefix?: string;
 
   /**
-   * Full label of a last row that narrows the search to this group, for
-   * example "More events…". Set it when there are more results than the
-   * group shows.
-   * Needs a `prefix`, and only shows while the search is not narrowed yet.
+   * Full label of a last row that narrows the search to this group once
+   * people type, for example "More events…". Set it when the group has more
+   * matches than it shows. Needs a `prefix`.
    */
   more?: string;
 
@@ -55,6 +57,10 @@ export const CommandPaletteGroup = ({
   const { classNames, scope, query, registerPrefix, narrowTo } =
     useCommandPalette();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  useDevWarning(
+    Boolean(more) && !prefix,
+    `[CommandPalette.Group] "${title}" sets \`more\` without a \`prefix\`. The row narrows the search by the prefix, so it does not render.`
+  );
   useLayoutEffect(() => {
     if (prefix) return registerPrefix({ prefix, title: title ?? prefix });
   }, [prefix, title, registerPrefix]);
@@ -67,6 +73,17 @@ export const CommandPaletteGroup = ({
   // `toArray`, not `count`: `count` also counts `false` from `{cond && …}`.
   // eslint-disable-next-line @eslint-react/no-children-to-array -- an empty group must not render its title
   if (Children.toArray(children).length === 0) return null;
+
+  // The last row narrows the search to this group. Before people type, the
+  // palette offers it itself. Once they type, only the app knows whether
+  // there are more matches, so it sets `more`.
+  const narrowLabel = scope
+    ? undefined
+    : query === ''
+      ? stringFormatter.format('commandPaletteSearchIn', {
+          title: title ?? prefix ?? '',
+        })
+      : more;
   return (
     <MenuSection {...props}>
       <Header className={classNames.group}>
@@ -87,16 +104,16 @@ export const CommandPaletteGroup = ({
         )}
       </Header>
       {children}
-      {more && prefix && !scope && (
+      {narrowLabel && prefix && (
         // Keeps the palette open: it narrows the search, with the term.
         <CommandPaletteItem
           id={`${MORE_KEY}${prefix}`}
-          textValue={`${more} ${query}`}
+          textValue={`${narrowLabel} ${query}`}
           shouldCloseOnSelect={false}
           onAction={() => narrowTo(prefix)}
         >
           <ChevronRight />
-          <TextValue>{more}</TextValue>
+          <TextValue>{narrowLabel}</TextValue>
           <Description>
             {stringFormatter.format('commandPaletteOrType', { prefix })}
           </Description>

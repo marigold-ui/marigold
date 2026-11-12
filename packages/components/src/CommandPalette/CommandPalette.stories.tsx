@@ -886,6 +886,19 @@ SearchOneKind.test(
       ).toBeInTheDocument();
     });
 
+    await step('Before typing, the group offers to narrow to it', async () => {
+      const searchIn = canvas.getByRole('menuitem', {
+        name: /Search in Events…/,
+      });
+      await expect(searchIn).toHaveTextContent('or type e:');
+      await userEvent.click(searchIn);
+      await expect(search).toHaveValue('e:');
+      await expect(
+        canvas.queryByRole('menuitem', { name: 'Orders' })
+      ).toBeNull();
+      await userEvent.clear(search);
+    });
+
     await step('Typing the prefix narrows the search', async () => {
       await userEvent.keyboard('e:');
       await waitFor(() =>
