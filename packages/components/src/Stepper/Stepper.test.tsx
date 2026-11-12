@@ -8,9 +8,9 @@ import { Stepper } from './Stepper';
 import {
   Basic,
   HideLabels,
-  LongLabel,
+  LongLabelSmallScreen,
   ManySteps,
-  SmallScreenManySteps,
+  ManyStepsSmallScreen,
   States,
   WithHrefs,
 } from './Stepper.stories';
@@ -427,7 +427,7 @@ describe('on a small screen', () => {
 
   test('keeps twelve segments at 24px on a 320px phone with 16px gutters', async () => {
     await page.viewport(320, 800);
-    render(<SmallScreenManySteps.Component />);
+    render(<ManyStepsSmallScreen.Component />);
 
     const steps = screen.getAllByRole('listitem');
 
@@ -448,7 +448,7 @@ describe('on a small screen', () => {
   });
 
   test('keeps a long current label whole instead of truncating it', () => {
-    render(<LongLabel.Component />);
+    render(<LongLabelSmallScreen.Component />);
 
     const currentLabel = currentLabelLine(
       'Ticket categories and seat reservations for the whole season'

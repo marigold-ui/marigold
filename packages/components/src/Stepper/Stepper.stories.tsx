@@ -278,29 +278,6 @@ export const WithHrefs = meta.story({
   },
 });
 
-/**
- * Long flows drop the labels visually so the markers still fit, but every label
- * is still authored and still read aloud.
- */
-export const HideLabels = meta.story({
-  parameters: { chromatic: { disableSnapshot: true } },
-  args: {
-    'aria-label': 'Event creation progress',
-    hideLabels: true,
-    selectedKey: 'categories',
-    completedKeys: ['basics', 'dates'],
-  },
-  render: args => (
-    <Stepper {...args}>
-      <Stepper.Item id="basics">Basic data</Stepper.Item>
-      <Stepper.Item id="dates">Dates</Stepper.Item>
-      <Stepper.Item id="categories">Ticket categories</Stepper.Item>
-      <Stepper.Item id="prices">Prices</Stepper.Item>
-      <Stepper.Item id="publish">Publish</Stepper.Item>
-    </Stepper>
-  ),
-});
-
 WithHrefs.test(
   'routes through the RouterProvider instead of leaving the page',
   { parameters: { chromatic: { disableSnapshot: true } } },
@@ -338,6 +315,44 @@ WithHrefs.test(
     ).toBeInTheDocument();
   }
 );
+
+WithHrefs.test(
+  'Keyboard focus draws a ring that clears 3:1 on a step link',
+  async ({ canvas, userEvent }) => {
+    const [link] = canvas.getAllByRole('link');
+
+    link!.focus();
+    await userEvent.tab();
+
+    await userEvent.tab({ shift: true });
+
+    await expect(link).toHaveFocus();
+    await waitFor(() => expectFocusRingContrast(link!));
+  }
+);
+
+/**
+ * Long flows drop the labels visually so the markers still fit, but every label
+ * is still authored and still read aloud.
+ */
+export const HideLabels = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    'aria-label': 'Event creation progress',
+    hideLabels: true,
+    selectedKey: 'categories',
+    completedKeys: ['basics', 'dates'],
+  },
+  render: args => (
+    <Stepper {...args}>
+      <Stepper.Item id="basics">Basic data</Stepper.Item>
+      <Stepper.Item id="dates">Dates</Stepper.Item>
+      <Stepper.Item id="categories">Ticket categories</Stepper.Item>
+      <Stepper.Item id="prices">Prices</Stepper.Item>
+      <Stepper.Item id="publish">Publish</Stepper.Item>
+    </Stepper>
+  ),
+});
 
 const FORM_STEPS = [
   { id: 'contact', label: 'Contact' },
@@ -632,28 +647,12 @@ ValidationErrors.test(
   }
 );
 
-WithHrefs.test(
-  'Keyboard focus draws a ring that clears 3:1 on a step link',
-  async ({ canvas, userEvent }) => {
-    const [link] = canvas.getAllByRole('link');
-
-    link!.focus();
-    await userEvent.tab();
-
-    await userEvent.tab({ shift: true });
-
-    await expect(link).toHaveFocus();
-    await waitFor(() => expectFocusRingContrast(link!));
-  }
-);
-
 /**
  * Below the `sm` breakpoint the row turns into a counter, the current step's
  * label and a segmented track. Every segment is still the step's button or
  * link, so the user can tap back to a finished step.
  */
 export const SmallScreen = Basic.extend({
-  tags: ['component-test'],
   globals: { viewport: { value: 'smallScreen' } },
 });
 
@@ -694,7 +693,7 @@ SmallScreen.test(
  * Twelve steps still fit a phone, because only the current label is shown and
  * the segments share the width. `hideLabels` changes nothing here.
  */
-export const SmallScreenManySteps = meta.story({
+export const ManyStepsSmallScreen = meta.story({
   globals: { viewport: { value: 'extraSmallScreen' } },
   parameters: { surface: false },
   args: ManySteps.input.args,
@@ -717,26 +716,7 @@ export const SmallScreenManySteps = meta.story({
  * counter line says how many need attention, so the error does not rest on
  * colour alone. A failed current step shows the warning on its label instead.
  */
-/**
- * A long current label wraps onto a second line instead of being cut off.
- */
-export const LongLabel = meta.story({
-  globals: { viewport: { value: 'smallScreen' } },
-  args: {
-    'aria-label': 'Checkout progress',
-    selectedKey: 'seats',
-  },
-  render: args => (
-    <Stepper {...args}>
-      <Stepper.Item id="event">Event</Stepper.Item>
-      <Stepper.Item id="seats">
-        Ticket categories and seat reservations for the whole season
-      </Stepper.Item>
-    </Stepper>
-  ),
-});
-
-export const SmallScreenErrors = meta.story({
+export const ErrorsSmallScreen = meta.story({
   globals: { viewport: { value: 'smallScreen' } },
   args: {
     'aria-label': 'Event creation progress',
@@ -752,6 +732,25 @@ export const SmallScreenErrors = meta.story({
           {step.label}
         </Stepper.Item>
       ))}
+    </Stepper>
+  ),
+});
+
+/**
+ * A long current label wraps onto a second line instead of being cut off.
+ */
+export const LongLabelSmallScreen = meta.story({
+  globals: { viewport: { value: 'smallScreen' } },
+  args: {
+    'aria-label': 'Checkout progress',
+    selectedKey: 'seats',
+  },
+  render: args => (
+    <Stepper {...args}>
+      <Stepper.Item id="event">Event</Stepper.Item>
+      <Stepper.Item id="seats">
+        Ticket categories and seat reservations for the whole season
+      </Stepper.Item>
     </Stepper>
   ),
 });
@@ -831,7 +830,7 @@ const ResalePanel = ({ step }: { step: Key }) => {
  * stepper takes two lines above the content, names the current step, and
  * lets the user tap back to anything already finished.
  */
-export const MobileResaleFlow = meta.story({
+export const ResaleFlowSmallScreen = meta.story({
   tags: ['component-test'],
   globals: { viewport: { value: 'smallScreen' } },
   args: {
@@ -884,7 +883,7 @@ export const MobileResaleFlow = meta.story({
   },
 });
 
-MobileResaleFlow.test(
+ResaleFlowSmallScreen.test(
   'walks to the last step and back from the stepper',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent, step }) => {
