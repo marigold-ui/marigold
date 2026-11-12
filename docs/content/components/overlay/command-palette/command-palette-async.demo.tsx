@@ -1,4 +1,10 @@
 import {
+  QueryClient,
+  QueryClientProvider,
+  keepPreviousData,
+  useQuery,
+} from '@tanstack/react-query';
+import {
   ArrowRight,
   CalendarDays,
   MapPin,
@@ -29,83 +35,91 @@ interface Venue {
   city: string;
 }
 
-interface Results<T> {
-  items: T[];
-  totalItems: number;
-}
-
 const pages = [
   { id: 'events', label: 'Events', icon: <CalendarDays /> },
   { id: 'orders', label: 'Orders', icon: <ShoppingCart /> },
 ];
 
 // Shown before people type, so the groups and their prefixes are visible.
-const recent: Event[] = [
+const recentEvents: Event[] = [
   { id: '1', name: 'Jazz Night', date: '2026-08-12', venue: 'Jazzhaus' },
   { id: '16', name: 'Comedy Slam', date: '2026-09-13', venue: 'Vorderhaus' },
 ];
-
 const recentVenues: Venue[] = [
   { id: '2', name: 'Shakytown Comedy Club', city: 'Shakytown' },
 ];
 
 // A few per kind in the mixed list, more once a prefix leaves one kind.
-// Narrowed, the next page loads as people scroll, up to MAX_ROWS. Beyond
-// that, the list page serves them better.
 const LIMIT = 3;
 const NARROWED_LIMIT = 8;
-const MAX_ROWS = 24;
 const PREFIXES = { events: 'e:', venues: 'v:' } as const;
 
-const none = { items: [], totalItems: 0 };
-
-const fetchResults = async <T,>(
-  path: string,
-  term: string,
-  limit: number,
-  signal?: AbortSignal,
-  page = 1
-) => {
-  const params = new URLSearchParams({
-    q: term,
-    page: String(page),
-    pageSize: String(limit),
-    delay: '400',
-  });
-  const res = await fetch(`${path}?${params}`, { signal });
-  return (await res.json()) as Results<T>;
+// Wait until people pause typing before asking the server.
+const useDebounced = <T,>(value: T, ms = 250) => {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), ms);
+    return () => clearTimeout(timer);
+  }, [value, ms]);
+  return debounced;
 };
 
-// Ends a narrowed group once it holds MAX_ROWS and the server has more. It
-// leaves the palette for the list page, so it gets an arrow.
-const ShowAll = ({
-  id,
+// One hook per kind. `keepPreviousData` leaves the last results in place
+// while the next ones load, so the list doesn't flash empty as people type.
+const useSearch = <T,>(
+  kind: 'events' | 'venues',
+  { term, prefix }: CommandPaletteSearchState
+) => {
+  const searching = term !== '' || prefix !== null;
+  const inScope = prefix === null || prefix === PREFIXES[kind];
+  const limit = prefix ? NARROWED_LIMIT : LIMIT;
+  const query = useQuery({
+    queryKey: [kind, { term, limit }],
+    queryFn: async ({ signal }) => {
+      const params = new URLSearchParams({
+        q: term,
+        pageSize: String(limit),
+        delay: '400',
+      });
+      const res = await fetch(`/api/${kind}?${params}`, { signal });
+      return (await res.json()) as { items: T[]; totalItems: number };
+    },
+    enabled: searching && inScope,
+    placeholderData: keepPreviousData,
+  });
+  const items = inScope ? (query.data?.items ?? []) : [];
+  const total = inScope ? (query.data?.totalItems ?? 0) : 0;
+  return { searching, items, total, limit, loading: query.isFetching };
+};
+
+// Ends a narrowed group when the server has more than it shows. It leaves
+// the palette for the list page, so it is named after it and has an arrow.
+const AllRecords = ({
   kind,
   total,
   term,
 }: {
-  id: string;
-  kind: string;
+  kind: 'events' | 'venues';
   total: number;
   term: string;
 }) => (
-  <CommandPalette.Item id={id} textValue={`Show all ${kind} ${term}`}>
+  <CommandPalette.Item id={`all-${kind}`} textValue={`All ${kind} ${term}`}>
     <ArrowRight />
     <TextValue>
-      Show all {total} {kind}
+      All {kind}
       {term && ` for “${term}”`}
     </TextValue>
-    <Description>Opens the {kind} list with this search</Description>
+    <Description>
+      {total} results, opens the {kind} list
+    </Description>
   </CommandPalette.Item>
 );
 
-// Where a real app would go for a picked row. Pages and records open their
-// page, "Show all" opens the list page with the search in its URL.
+// Where a real app would go for a picked row.
 const routeFor = (key: Key, term: string) => {
   const id = String(key);
   const q = term ? `?q=${encodeURIComponent(term)}` : '';
-  if (id === 'all-events') return `/events${q}`;
-  if (id === 'all-venues') return `/venues${q}`;
+  if (id.startsWith('all-')) return `/${id.slice(4)}${q}`;
   if (id.startsWith('event-')) return `/events/${id.slice(6)}`;
   if (id.startsWith('venue-')) return `/venues/${id.slice(6)}`;
   return `/${id}`;
@@ -117,132 +131,31 @@ const formatDate = (date: string) =>
     month: 'short',
   });
 
-export default () => {
+const Palette = () => {
   // The palette hands over the term without the prefix, and the prefix of
   // the group the search is narrowed to.
-  const [search, setSearch] = useState<CommandPaletteSearchState>({
+  const [input, setInput] = useState<CommandPaletteSearchState>({
     term: '',
     prefix: null,
   });
+  const search = useDebounced(input);
   const { term, prefix } = search;
+  const events = useSearch<Event>('events', search);
+  const venues = useSearch<Venue>('venues', search);
   // Stands in for the router: the demo shows where the app would go.
   const [route, setRoute] = useState<string | null>(null);
-  const searching = term !== '' || prefix !== null;
-  const limit = prefix ? NARROWED_LIMIT : LIMIT;
-  const key = `${prefix}:${term}`;
-  const [results, setResults] = useState<{
-    key: string;
-    events: Results<Event>;
-    venues: Results<Venue>;
-  } | null>(null);
 
-  useEffect(() => {
-    // A prefix alone already searches: it lists the first records of that
-    // kind, so nobody takes the recent ones for everything there is.
-    if (!searching) return;
-    const controller = new AbortController();
-    // Wait until people pause typing, and cancel requests that are out of date.
-    const timer = setTimeout(async () => {
-      try {
-        const [events, venues] = await Promise.all([
-          prefix === PREFIXES.venues
-            ? none
-            : fetchResults<Event>(
-                '/api/events',
-                term,
-                limit,
-                controller.signal
-              ),
-          prefix === PREFIXES.events
-            ? none
-            : fetchResults<Venue>(
-                '/api/venues',
-                term,
-                limit,
-                controller.signal
-              ),
-        ]);
-        setResults({ key, events, venues });
-      } catch {
-        // Aborted, a newer query is on its way.
-      }
-    }, 250);
-    return () => {
-      clearTimeout(timer);
-      controller.abort();
-    };
-  }, [key, limit, prefix, searching, term]);
-
-  const current = searching && results?.key === key ? results : null;
-  // The recent records before people type are a few of many. Once they
-  // type, offer more only when the server has more.
-  const hasMore = (kind: 'events' | 'venues') =>
-    !searching || (current !== null && current[kind].totalItems > limit);
-
-  // Narrowed to one kind, the next page loads as people scroll to the end.
-  const [loadingMore, setLoadingMore] = useState(false);
-  const loaded = (kind: 'events' | 'venues') =>
-    current?.[kind].items.length ?? 0;
-  const canLoadMore = (kind: 'events' | 'venues') =>
-    current !== null &&
-    loaded(kind) < current[kind].totalItems &&
-    loaded(kind) < MAX_ROWS;
-  const loadMore = async (kind: 'events' | 'venues') => {
-    if (!current || loadingMore) return;
-    setLoadingMore(true);
-    const page = loaded(kind) / NARROWED_LIMIT + 1;
-    try {
-      const next = await fetchResults<Event & Venue>(
-        `/api/${kind}`,
-        term,
-        NARROWED_LIMIT,
-        undefined,
-        page
-      );
-      // Drop the page if the search changed meanwhile.
-      setResults(prev =>
-        prev?.key === key
-          ? {
-              ...prev,
-              [kind]: {
-                ...prev[kind],
-                items: [...prev[kind].items, ...next.items],
-              },
-            }
-          : prev
-      );
-    } finally {
-      setLoadingMore(false);
-    }
-  };
-  // The end of a narrowed group: load more while it may, then hand over to
-  // the list page if the server still has more.
-  const end = (kind: 'events' | 'venues') => {
-    if (!prefix || !current) return null;
-    if (canLoadMore(kind))
-      return (
-        <CommandPalette.LoadMore
-          onLoadMore={() => loadMore(kind)}
-          loading={loadingMore}
-        />
-      );
-    if (loaded(kind) < current[kind].totalItems)
-      return (
-        <ShowAll
-          id={`all-${kind}`}
-          kind={kind}
-          total={current[kind].totalItems}
-          term={term}
-        />
-      );
-    return null;
-  };
-  const events = searching ? (current?.events.items ?? []) : recent;
-  const venues = searching ? (current?.venues.items ?? []) : recentVenues;
+  // Before people type, the recent records are a few of many. After, offer
+  // more only when the server has more.
+  const more = (results: {
+    searching: boolean;
+    total: number;
+    limit: number;
+  }) => !results.searching || results.total > results.limit;
   // `filter={false}` turns off the built-in match for every group, so the
-  // static pages are matched here.
+  // static pages are matched here, without waiting for the pause.
   const matchingPages = pages.filter(page =>
-    page.label.toLowerCase().includes(term.toLowerCase())
+    page.label.toLowerCase().includes(input.term.toLowerCase())
   );
 
   return (
@@ -252,8 +165,8 @@ export default () => {
         <CommandPalette
           placeholder="Search pages, events and venues…"
           filter={false}
-          onSearchChange={setSearch}
-          loading={searching && current === null}
+          onSearchChange={setInput}
+          loading={events.loading || venues.loading}
           onAction={key => setRoute(routeFor(key, term))}
         >
           <CommandPalette.Group title="Pages">
@@ -268,9 +181,9 @@ export default () => {
             title="Events"
             prefix={PREFIXES.events}
             // In the mixed list, a last row narrows the search to events.
-            more={hasMore('events') ? 'More events…' : undefined}
+            more={more(events) ? 'More events…' : undefined}
           >
-            {events.map(event => (
+            {(events.searching ? events.items : recentEvents).map(event => (
               <CommandPalette.Item
                 key={event.id}
                 id={`event-${event.id}`}
@@ -284,14 +197,16 @@ export default () => {
                 </Description>
               </CommandPalette.Item>
             ))}
-            {end('events')}
+            {prefix && events.total > events.items.length && (
+              <AllRecords kind="events" total={events.total} term={term} />
+            )}
           </CommandPalette.Group>
           <CommandPalette.Group
             title="Venues"
             prefix={PREFIXES.venues}
-            more={hasMore('venues') ? 'More venues…' : undefined}
+            more={more(venues) ? 'More venues…' : undefined}
           >
-            {venues.map(venue => (
+            {(venues.searching ? venues.items : recentVenues).map(venue => (
               <CommandPalette.Item
                 key={venue.id}
                 id={`venue-${venue.id}`}
@@ -302,7 +217,9 @@ export default () => {
                 <Description>{venue.city}</Description>
               </CommandPalette.Item>
             ))}
-            {end('venues')}
+            {prefix && venues.total > venues.items.length && (
+              <AllRecords kind="venues" total={venues.total} term={term} />
+            )}
           </CommandPalette.Group>
         </CommandPalette>
       </CommandPalette.Trigger>
@@ -318,3 +235,11 @@ export default () => {
     </Stack>
   );
 };
+
+const queryClient = new QueryClient();
+
+export default () => (
+  <QueryClientProvider client={queryClient}>
+    <Palette />
+  </QueryClientProvider>
+);

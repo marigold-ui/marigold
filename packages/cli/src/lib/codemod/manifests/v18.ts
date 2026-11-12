@@ -71,7 +71,6 @@ export const v18: MigrationManifest = {
       'keyboard',
       'match',
       'empty',
-      'loadMore',
       'footer',
       'prefixes',
       'legend',

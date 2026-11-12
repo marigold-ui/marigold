@@ -100,7 +100,6 @@ export type {
 export type { CommandPaletteButtonProps } from './CommandPalette/CommandPaletteButton';
 export type { CommandPaletteGroupProps } from './CommandPalette/CommandPaletteGroup';
 export type { CommandPaletteItemProps } from './CommandPalette/CommandPaletteItem';
-export type { CommandPaletteLoadMoreProps } from './CommandPalette/CommandPaletteLoadMore';
 export type { CommandPaletteTriggerProps } from './CommandPalette/CommandPaletteTrigger';
 
 export { Container } from './Container/Container';

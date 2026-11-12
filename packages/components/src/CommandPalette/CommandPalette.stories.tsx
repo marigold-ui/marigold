@@ -9,7 +9,7 @@ import {
   ShoppingCart,
   Ticket,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { expect, fn, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { isAppleDevice } from '@react-aria/utils';
@@ -946,43 +946,35 @@ SearchOneKind.test(
   }
 );
 
-// Load more
+// Late results
 // ---------------
-// `CommandPalette.LoadMore` at the end of a group loads the next page as
-// people scroll towards it.
-const onLoadMore = fn();
+// Server results that arrive after people moved to a row must not move the
+// active row back to the top.
 const allTickets = Array.from({ length: 30 }, (_, i) => `Ticket ${i + 1}`);
 
-export const LoadMore = meta.story({
+export const LateResults = meta.story({
   ...noSnapshot,
   render: function Render(args) {
+    const [term, setTerm] = useState('');
     const [count, setCount] = useState(10);
-    const [loading, setLoading] = useState(false);
-    const loadMore = () => {
-      if (loading) return;
-      onLoadMore();
-      setLoading(true);
-      setTimeout(() => {
-        setCount(c => Math.min(c + 10, allTickets.length));
-        setLoading(false);
-      }, 300);
-    };
+    useEffect(() => {
+      if (!term) return;
+      const timer = setTimeout(() => setCount(allTickets.length), 800);
+      return () => clearTimeout(timer);
+    }, [term]);
     return (
       <CommandPalette.Trigger {...args}>
         <CommandPalette.Button />
-        <CommandPalette filter={false}>
+        <CommandPalette
+          filter={false}
+          onSearchChange={search => setTerm(search.term)}
+        >
           <CommandPalette.Group title="Tickets">
             {allTickets.slice(0, count).map(ticket => (
               <CommandPalette.Item key={ticket} id={ticket}>
                 {ticket}
               </CommandPalette.Item>
             ))}
-            {count < allTickets.length && (
-              <CommandPalette.LoadMore
-                onLoadMore={loadMore}
-                loading={loading}
-              />
-            )}
           </CommandPalette.Group>
         </CommandPalette>
       </CommandPalette.Trigger>
@@ -990,47 +982,27 @@ export const LoadMore = meta.story({
   },
 });
 
-LoadMore.test(
-  'Loads the next page at the end and keeps the active row',
-  async ({ canvas, step, userEvent }) => {
-    onLoadMore.mockClear();
+LateResults.test(
+  'Keeps the row people moved to when more results arrive',
+  async ({ canvas, userEvent }) => {
     await openPalette({ canvas, userEvent });
     const search = canvas.getByRole('searchbox');
     // A query that is not typed forward, as when a more row narrows the
     // search: the palette then watches the rows to keep the first active.
     await userEvent.paste('Ticket');
-    await expect(search).toHaveValue('Ticket');
     await expectFirstRowActive(canvas, 'Ticket 1');
 
-    await step('Moving down keeps the row as pages load', async () => {
-      await userEvent.keyboard('{ArrowDown}{ArrowDown}');
-      const third = canvas.getByRole('menuitem', { name: 'Ticket 3' });
-      await expect(search).toHaveAttribute('aria-activedescendant', third.id);
+    await userEvent.keyboard('{ArrowDown}{ArrowDown}');
+    const third = canvas.getByRole('menuitem', { name: 'Ticket 3' });
+    await expect(search).toHaveAttribute('aria-activedescendant', third.id);
 
-      const before = canvas.getAllByRole('menuitem').length;
-      const list = canvas.getByRole('menu');
-      await waitFor(() => {
-        list.scrollTop = list.scrollHeight;
-        expect(canvas.getAllByRole('menuitem').length).toBeGreaterThan(before);
-      });
-      await expect(onLoadMore).toHaveBeenCalled();
-      // The appended rows settle a render later, give them the chance to
-      // move the active row before checking it stayed.
-      await new Promise(resolve => setTimeout(resolve, 100));
-      await expect(search).toHaveAttribute('aria-activedescendant', third.id);
-    });
-
-    await step('Stops once everything is loaded', async () => {
-      const list = canvas.getByRole('menu');
-      await waitFor(
-        async () => {
-          list.scrollTop = list.scrollHeight;
-          await expect(canvas.getAllByRole('menuitem')).toHaveLength(30);
-        },
-        { timeout: 5000 }
-      );
-      await expect(canvas.queryByRole('progressbar')).not.toBeInTheDocument();
-    });
+    await waitFor(() =>
+      expect(canvas.getAllByRole('menuitem')).toHaveLength(30)
+    );
+    // The new rows settle a render later, give them the chance to move the
+    // active row before checking it stayed.
+    await new Promise(resolve => setTimeout(resolve, 100));
+    await expect(search).toHaveAttribute('aria-activedescendant', third.id);
   }
 );
 

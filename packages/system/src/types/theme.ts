@@ -110,7 +110,6 @@ export type Theme = {
       | 'keyboard'
       | 'match'
       | 'empty'
-      | 'loadMore'
       | 'footer'
       | 'prefixes'
       | 'legend',
