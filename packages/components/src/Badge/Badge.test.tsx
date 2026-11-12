@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { Basic } from './Badge.stories';
 
 // Variant order rendered by the `Basic` showcase story. Deriving the index from
@@ -45,4 +45,13 @@ test('admin variant announces its visible text only', () => {
   const admin = screen.getAllByText('Status')[VARIANT_ORDER.indexOf('admin')];
 
   expect(admin).toHaveTextContent(/^Status$/);
+});
+
+test('compact badge still renders its text', () => {
+  act(() => {
+    render(<Basic.Component compact>Neu</Basic.Component>);
+  });
+
+  fireEvent.click(screen.getByText('Neu'));
+  expect(screen.getByText('Neu')).toBeInTheDocument();
 });

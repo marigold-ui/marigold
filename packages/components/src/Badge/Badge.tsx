@@ -29,11 +29,21 @@ export interface BadgeProps {
    * @default default
    */
   size?: 'default' | 'inline' | (string & {});
+  /**
+   * Hide the access icon and render a compact badge.
+   */
+  compact?: boolean;
 }
 
 // Component
 // ---------------
-export const Badge = ({ variant, size, children, ...props }: BadgeProps) => {
+export const Badge = ({
+  variant,
+  size,
+  compact,
+  children,
+  ...props
+}: BadgeProps) => {
   const context = use(AddonContext);
   const classNames = useClassNames({
     component: 'Badge',
@@ -43,8 +53,8 @@ export const Badge = ({ variant, size, children, ...props }: BadgeProps) => {
 
   return (
     <div className={classNames} {...props}>
-      <AccessIcon variant={variant} />
-      {children}
+      {compact ? null : <AccessIcon variant={variant} />}
+      {compact ? <span className="text-[10px]">{children}</span> : children}
     </div>
   );
 };

@@ -6,6 +6,7 @@ export const Badge: ThemeComponent<'Badge'> = cva({
     'focus-visible:ui-state-focus outline-none',
     'has-[svg]:gap-1',
     'px-2 leading-normal',
+    'relative z-20',
   ],
   variants: {
     size: {
