@@ -200,7 +200,7 @@ The panel is a dialog. A `<Title>` inside `<Popover>` becomes its accessible nam
 
 The search field has no visible label, so give it an `aria-label` and a placeholder that both say what is searched. Without a title, the search becomes the panel's header and the panel needs an `aria-label`.
 
-The trigger exposes whether the panel is open. When the panel opens, focus moves into it. Tab moves through the controls inside, and Escape closes the panel and returns focus to the trigger. Set `keyboardDismissable={false}` on `<Popover.Trigger>` only when there is another clear way out, because a panel the keyboard can't leave is a barrier.
+The trigger exposes whether the panel is open. When the panel opens, focus moves into it. Tab moves through the controls inside, and Escape closes the panel and returns focus to the trigger. Set `keyboardDismissable={false}` on `<Popover.Trigger>` only when there is another clear way out, because a panel the keyboard can't leave is a barrier. On small screens the panel opens as a tray, where `keyboardDismissable={false}` also keeps a swipe or a press outside from closing it. The tray's close button stays as the way out.
 
 ## Props
 
