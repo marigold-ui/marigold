@@ -2,7 +2,12 @@ import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { existsSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { detectMigration, runMigrate, runMigrateCommand } from './migrate.js';
+import {
+  type MigrateCommandOptions,
+  detectMigration,
+  runMigrate,
+  runMigrateCommand,
+} from './migrate.js';
 
 const prompts = vi.hoisted(() => ({
   confirm: vi.fn(),
@@ -56,6 +61,13 @@ const setupFixture = (): string => {
   return root;
 };
 
+// a consumer package.json declaring @marigold/components, optionally migrated
+const consumerPackageJson = (version: string, migrated?: string): string =>
+  JSON.stringify({
+    dependencies: { '@marigold/components': version },
+    ...(migrated && { marigold: { migrated } }),
+  });
+
 describe('detectMigration', () => {
   const setupRepo = (
     version: string,
@@ -76,10 +88,7 @@ describe('detectMigration', () => {
     if (!installed || migrated) {
       writeFileSync(
         path.join(root, 'package.json'),
-        JSON.stringify({
-          dependencies: { '@marigold/components': version },
-          ...(migrated && { marigold: { migrated } }),
-        })
+        consumerPackageJson(version, migrated)
       );
     }
     // the migration target usually sits far below the repo root
@@ -518,10 +527,7 @@ describe('runMigrateCommand', () => {
     const root = setupFixture();
     writeFileSync(
       path.join(root, 'package.json'),
-      JSON.stringify({
-        dependencies: { '@marigold/components': version },
-        ...(migrated && { marigold: { migrated } }),
-      })
+      consumerPackageJson(version, migrated)
     );
     return root;
   };
@@ -530,6 +536,25 @@ describe('runMigrateCommand', () => {
     vi.clearAllMocks();
     prompts.isCancel.mockReturnValue(false);
   });
+
+  // drives the command, non-interactive and applying by default
+  const migrate = async (
+    options: Omit<MigrateCommandOptions, 'write' | 'dryRun'> & {
+      dryRun?: boolean;
+    }
+  ) => {
+    const lines: string[] = [];
+    const code = await runMigrateCommand({
+      dryRun: false,
+      interactive: false,
+      ...options,
+      write: output => lines.push(output),
+    });
+    return { code, lines, output: lines.join('\n') };
+  };
+
+  const acceptAll = async ({ initialValues }: { initialValues: string[] }) =>
+    initialValues;
 
   test('runs the explicitly named migration without prompting', async () => {
     const root = setupFixture();
@@ -552,61 +577,49 @@ describe('runMigrateCommand', () => {
     const root = setupDetectable('19.0.0', 'v19');
     const cardPath = path.join(root, 'theme', 'components', 'Card.styles.ts');
     const before = readFileSync(cardPath, 'utf8');
-    const written: string[] = [];
 
-    const code = await runMigrateCommand({
+    const { code, output } = await migrate({
       version: 'v18',
       targetPath: root,
-      dryRun: false,
-      write: output => written.push(output),
-      interactive: false,
     });
 
     expect(code).toBe(0);
-    expect(written.join('\n')).toContain(
+    expect(output).toContain(
       'v18 is already applied (last applied: v19), so nothing was run'
     );
-    expect(written.join('\n')).toContain(
-      'marigold migrate v18 [path] --only <names>'
-    );
+    expect(output).toContain('marigold migrate v18 [path] --only <names>');
     expect(readFileSync(cardPath, 'utf8')).toBe(before);
   });
 
   test('runs an applied migration when --only names the changes', async () => {
     const root = setupDetectable('19.0.0', 'v19');
-    const written: string[] = [];
 
-    const code = await runMigrateCommand({
+    const { code, output } = await migrate({
       version: 'v18',
       targetPath: root,
       dryRun: true,
       only: ['swap-exact-classes'],
-      write: output => written.push(output),
-      interactive: false,
     });
 
     expect(code).toBe(0);
-    expect(written.join('\n')).not.toContain('already applied');
-    expect(written.join('\n')).toContain('marigold migrate v18 (dry run)');
+    expect(output).not.toContain('already applied');
+    expect(output).toContain('marigold migrate v18 (dry run)');
   });
 
   test('warns but runs a named migration for a major that is not installed', async () => {
     const root = setupDetectable('18.0.0');
-    const written: string[] = [];
 
-    const code = await runMigrateCommand({
+    const { code, output } = await migrate({
       version: 'v19',
       targetPath: root,
       dryRun: true,
-      write: output => written.push(output),
-      interactive: false,
     });
 
     expect(code).toBe(0);
-    expect(written.join('\n')).toContain(
+    expect(output).toContain(
       'Warning: v19 targets @marigold/components 19, but 18.0.0 is installed'
     );
-    expect(written.join('\n')).toContain('marigold migrate v19 (dry run)');
+    expect(output).toContain('marigold migrate v19 (dry run)');
   });
 
   test('refuses to auto-detect without a terminal to confirm in', async () => {
@@ -624,38 +637,32 @@ describe('runMigrateCommand', () => {
 
   test('reports a migrated target as up to date', async () => {
     const root = setupDetectable('19.0.0', 'v19');
-    const written: string[] = [];
 
-    const code = await runMigrateCommand({
+    const { code, output } = await migrate({
       targetPath: root,
       dryRun: true,
-      write: output => written.push(output),
       interactive: true,
     });
 
     expect(code).toBe(0);
-    expect(written.join('\n')).toContain(
-      '(last applied: v19) — already up to date'
-    );
+    expect(output).toContain('(last applied: v19) — already up to date');
     expect(prompts.confirm).not.toHaveBeenCalled();
   });
 
   test('says to upgrade first when the next migration is for a newer major', async () => {
     const root = setupDetectable('18.3.0', 'v18');
-    const written: string[] = [];
 
-    const code = await runMigrateCommand({
+    const { code, output } = await migrate({
       targetPath: root,
       dryRun: true,
-      write: output => written.push(output),
       interactive: true,
     });
 
     expect(code).toBe(0);
-    expect(written.join('\n')).toContain(
+    expect(output).toContain(
       'the v19 migration needs @marigold/components 19 installed first'
     );
-    expect(written.join('\n')).not.toContain('already up to date');
+    expect(output).not.toContain('already up to date');
     expect(prompts.confirm).not.toHaveBeenCalled();
   });
 
@@ -720,30 +727,17 @@ describe('runMigrateCommand', () => {
 
     test('records a real run in the declaring package.json', async () => {
       const root = setupDetectable('18.0.0');
-      const written: string[] = [];
 
-      await runMigrateCommand({
-        version: 'v18',
-        targetPath: root,
-        dryRun: false,
-        write: output => written.push(output),
-        interactive: false,
-      });
+      const { output } = await migrate({ version: 'v18', targetPath: root });
 
       expect(marker(root)).toEqual({ migrated: 'v18' });
-      expect(written.join('\n')).toContain('Recorded v18 as applied in');
+      expect(output).toContain('Recorded v18 as applied in');
     });
 
     test('never records a dry run', async () => {
       const root = setupDetectable('18.0.0');
 
-      await runMigrateCommand({
-        version: 'v18',
-        targetPath: root,
-        dryRun: true,
-        write: () => {},
-        interactive: false,
-      });
+      await migrate({ version: 'v18', targetPath: root, dryRun: true });
 
       expect(marker(root)).toBeUndefined();
     });
@@ -751,34 +745,23 @@ describe('runMigrateCommand', () => {
     test('records the last migration of a multi-version run', async () => {
       const root = setupDetectable('19.0.0');
       prompts.confirm.mockResolvedValue(true);
-      prompts.multiselect.mockImplementation(
-        async ({ initialValues }: { initialValues: string[] }) => initialValues
-      );
+      prompts.multiselect.mockImplementation(acceptAll);
 
-      await runMigrateCommand({
-        targetPath: root,
-        dryRun: false,
-        write: () => {},
-        interactive: true,
-      });
+      await migrate({ targetPath: root, interactive: true });
 
       expect(marker(root)).toEqual({ migrated: 'v19' });
     });
 
     test('records a partial run and names what was skipped', async () => {
       const root = setupDetectable('18.0.0');
-      const written: string[] = [];
 
-      await runMigrateCommand({
+      const { lines } = await migrate({
         version: 'v18',
         targetPath: root,
-        dryRun: false,
         only: ['swap-exact-classes'],
-        write: output => written.push(output),
-        interactive: false,
       });
 
-      const skippedLine = written.find(line =>
+      const skippedLine = lines.find(line =>
         line.startsWith('Skipped in v18:')
       );
       expect(skippedLine).toBeDefined();
@@ -789,20 +772,12 @@ describe('runMigrateCommand', () => {
 
     test('lists nothing as skipped when every fired change ran', async () => {
       const root = setupDetectable('18.0.0');
-      const written: string[] = [];
       prompts.confirm.mockResolvedValue(true);
-      prompts.multiselect.mockImplementation(
-        async ({ initialValues }: { initialValues: string[] }) => initialValues
-      );
+      prompts.multiselect.mockImplementation(acceptAll);
 
-      await runMigrateCommand({
-        targetPath: root,
-        dryRun: false,
-        write: output => written.push(output),
-        interactive: true,
-      });
+      const { lines } = await migrate({ targetPath: root, interactive: true });
 
-      expect(written.some(line => line.startsWith('Skipped in'))).toBe(false);
+      expect(lines.some(line => line.startsWith('Skipped in'))).toBe(false);
     });
 
     test('lists nothing as skipped when completing a recorded migration', async () => {
@@ -814,18 +789,14 @@ describe('runMigrateCommand', () => {
         appFile,
         `import { ComboBox } from '@marigold/components';\nexport const Search = () => <ComboBox value={key} label="Animals" />;\n`
       );
-      const written: string[] = [];
 
-      await runMigrateCommand({
+      const { lines } = await migrate({
         version: 'v19',
         targetPath: root,
-        dryRun: false,
         only: ['restructure-to-slots'],
-        write: output => written.push(output),
-        interactive: false,
       });
 
-      expect(written.some(line => line.startsWith('Skipped in'))).toBe(false);
+      expect(lines.some(line => line.startsWith('Skipped in'))).toBe(false);
       expect(readFileSync(appFile, 'utf8')).toContain(
         '<ComboBox value={key} label="Animals" />'
       );
@@ -834,13 +805,10 @@ describe('runMigrateCommand', () => {
     test('never lowers the marker on an --only run of an older migration', async () => {
       const root = setupDetectable('19.0.0', 'v19');
 
-      await runMigrateCommand({
+      await migrate({
         version: 'v18',
         targetPath: root,
-        dryRun: false,
         only: ['swap-exact-classes'],
-        write: () => {},
-        interactive: false,
       });
 
       expect(marker(root)).toEqual({ migrated: 'v19' });
@@ -848,18 +816,14 @@ describe('runMigrateCommand', () => {
 
     test('warns when no package.json declares @marigold/components', async () => {
       const root = setupFixture();
-      const written: string[] = [];
 
-      const code = await runMigrateCommand({
+      const { code, output } = await migrate({
         version: 'v18',
         targetPath: root,
-        dryRun: false,
-        write: output => written.push(output),
-        interactive: false,
       });
 
       expect(code).toBe(0);
-      expect(written.join('\n')).toContain(
+      expect(output).toContain(
         'Could not record v18 as applied: no package.json at or above'
       );
     });

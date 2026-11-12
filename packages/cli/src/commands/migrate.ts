@@ -10,7 +10,9 @@ import {
 import { v18 } from '../lib/codemod/manifests/v18.js';
 import { v19 } from '../lib/codemod/manifests/v19.js';
 import {
+  covers,
   findMarkerFile,
+  migrationMajor,
   readMarker,
   writeMarker,
 } from '../lib/codemod/marker.js';
@@ -50,10 +52,6 @@ import type { AnyNode } from '../lib/tsx-ast.js';
 import { parseTsx } from '../lib/tsx-ast.js';
 
 const MANIFESTS: Record<string, MigrationManifest> = { v18, v19 };
-
-/** 'v19' -> 19 */
-const migrationMajor = (version: string): number =>
-  Number.parseInt(version.replace(/^v/, ''), 10);
 
 export interface DetectedMigration {
   /** installed @marigold/components version (or the declared range minimum) */
@@ -99,11 +97,11 @@ export const detectMigration = (
   // a migration runs once its major is installed, never against older types.
   const markerFile = findMarkerFile(targetPath);
   const migrated = markerFile ? readMarker(markerFile) : null;
-  const done = migrated ? migrationMajor(migrated) : -Infinity;
   const major = Number.parseInt(found.installed, 10);
   const pending = Object.keys(MANIFESTS)
+    .filter(v => !covers(migrated, v))
     .map(v => ({ v, target: migrationMajor(v) }))
-    .filter(({ target }) => Number.isFinite(target) && target > done)
+    .filter(({ target }) => Number.isFinite(target))
     .sort((a, b) => a.target - b.target);
   return {
     ...found,
@@ -514,17 +512,9 @@ export interface MigrateCommandOptions {
   interactive?: boolean;
 }
 
-/** Whether the marker already covers `version`. */
-const isRecorded = (version: string, targetPath: string): boolean => {
-  const file = findMarkerFile(targetPath);
-  const current = file ? readMarker(file) : null;
-  return current !== null && migrationMajor(current) >= migrationMajor(version);
-};
-
 /**
- * Write the applied-migrations marker after a real run. Never lowers it (an
- * `--only` re-run of an older migration), and a failure to record only warns:
- * the code edits have already landed.
+ * Write the applied-migrations marker after a real run. A failure to record
+ * only warns: the code edits have already landed.
  */
 const recordMigration = (
   version: string,
@@ -540,8 +530,6 @@ const recordMigration = (
     return;
   }
   try {
-    const current = readMarker(file);
-    if (current && migrationMajor(current) >= migrationMajor(version)) return;
     if (writeMarker(file, version)) {
       write(`Recorded ${version} as applied in ${file}.`);
     }
@@ -553,39 +541,36 @@ const recordMigration = (
 };
 
 /**
- * Guards for an explicitly named migration. Returns false when it must not
- * run: already applied per the marker, unless `--only` names the changes.
- * A migration for a major that is not installed yet warns but still runs.
+ * How an explicitly named migration runs: refused when the marker already
+ * covers it, unless `--only` names the changes, which completes it. One for a
+ * major that is not installed yet warns but still runs.
  */
 const checkNamedRun = (
   version: string,
   targetPath: string,
   only: readonly string[] | undefined,
   write: (output: string) => void
-): boolean => {
+): 'refuse' | 'complete' | 'first' => {
   // unknown names are reported by runMigrate
-  if (!MANIFESTS[version]) return true;
+  if (!MANIFESTS[version]) return 'first';
   const detected = detectMigration(targetPath);
-  if (!detected) return true;
-  const target = migrationMajor(version);
-  if (
-    !only &&
-    detected.migrated &&
-    target <= migrationMajor(detected.migrated)
-  ) {
+  if (!detected) return 'first';
+  const recorded = covers(detected.migrated, version);
+  if (recorded && !only) {
     write(
       `${version} is already applied (last applied: ${detected.migrated}), so nothing was run: a second run can rename props it already renamed. ` +
         `To apply changes you skipped, name them: marigold migrate ${version} [path] --only <names>`
     );
-    return false;
+    return 'refuse';
   }
+  const target = migrationMajor(version);
   if (target > Number.parseInt(detected.installed, 10)) {
     write(
       `Warning: ${version} targets @marigold/components ${target}, but ${detected.installed} is installed. ` +
         `It rewrites code still typed against the older version, so upgrade first if you can. Running it because it was named explicitly.`
     );
   }
-  return true;
+  return recorded ? 'complete' : 'first';
 };
 
 /**
@@ -602,8 +587,12 @@ export const runMigrateCommand = async (
   const interactive = options.interactive ?? canPrompt();
 
   let versions: string[];
+  // completing a recorded migration: what it skipped before is unknowable
+  let completing = false;
   if (options.version) {
-    if (!checkNamedRun(options.version, targetPath, only, write)) return 0;
+    const mode = checkNamedRun(options.version, targetPath, only, write);
+    if (mode === 'refuse') return 0;
+    completing = mode === 'complete';
     versions = [options.version];
   } else {
     const detected = detectMigration(targetPath);
@@ -671,12 +660,8 @@ export const runMigrateCommand = async (
       }
     }
 
-    // the skipped list is only reliable on a migration's first run: once it
-    // is recorded, a non-idempotent change fires again on its own output
-    const firstRun = !isRecorded(version, targetPath);
-
-    // analyse before applying: afterwards a non-idempotent change fires again
-    if (firstRun && selected && !dryRun && !fired) {
+    // analyse before applying, first run only: a non-idempotent change re-fires on its own output
+    if (!completing && selected && !dryRun && !fired) {
       fired = runMigrate({ version, targetPath, dryRun: true }).summary.map(
         s => s.name
       );
@@ -686,9 +671,7 @@ export const runMigrateCommand = async (
     if (dryRun) continue;
 
     const skipped =
-      firstRun && selected
-        ? (fired ?? []).filter(name => !selected.includes(name))
-        : [];
+      selected && fired ? fired.filter(name => !selected.includes(name)) : [];
     if (skipped.length > 0) {
       write(
         `Skipped in ${version}: ${skipped.join(', ')}. To apply later: marigold migrate ${version} ${targetPath} --only ${skipped.join(',')}`

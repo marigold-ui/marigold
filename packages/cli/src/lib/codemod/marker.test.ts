@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { findMarkerFile, readMarker, writeMarker } from './marker.js';
+import { covers, findMarkerFile, readMarker, writeMarker } from './marker.js';
 
 let dir: string;
 
@@ -97,6 +97,21 @@ describe('readMarker', () => {
   });
 });
 
+describe('covers', () => {
+  test('is false without a marker', () => {
+    expect(covers(null, 'v18')).toBe(false);
+  });
+
+  test('covers the recorded migration and every older one', () => {
+    expect(covers('v19', 'v19')).toBe(true);
+    expect(covers('v19', 'v18')).toBe(true);
+  });
+
+  test('does not cover a newer migration', () => {
+    expect(covers('v18', 'v19')).toBe(false);
+  });
+});
+
 describe('writeMarker', () => {
   test('appends the field and keeps 2-space indentation and key order', () => {
     const file = writePkg('.', `${declaring}\n`);
@@ -168,6 +183,26 @@ describe('writeMarker', () => {
     expect(fs.readFileSync(file, 'utf8')).toBe(
       '{\n  "marigold": {\n    "other": true,\n    "migrated": "v19"\n  },\n  "name": "app"\n}\n'
     );
+  });
+
+  test('never lowers the marker', () => {
+    const before = '{\n  "marigold": { "migrated": "v19" }\n}\n';
+    const file = writePkg('.', before);
+
+    const written = writeMarker(file, 'v18');
+
+    expect(written).toBe(false);
+    expect(fs.readFileSync(file, 'utf8')).toBe(before);
+  });
+
+  test('refuses to overwrite a malformed marker', () => {
+    const before = JSON.stringify({ marigold: { migrated: '19' } });
+    const file = writePkg('.', before);
+
+    expect(() => writeMarker(file, 'v19')).toThrow(
+      /expected a migration like "v19"/
+    );
+    expect(fs.readFileSync(file, 'utf8')).toBe(before);
   });
 
   test('leaves the file untouched when the version is already recorded', () => {
