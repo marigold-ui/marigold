@@ -57,7 +57,13 @@ const setupFixture = (): string => {
 };
 
 describe('detectMigration', () => {
-  const setupRepo = (version: string, installed = true): string => {
+  const setupRepo = (
+    version: string,
+    {
+      installed = true,
+      migrated,
+    }: { installed?: boolean; migrated?: string } = {}
+  ): string => {
     const root = mkdtempSync(path.join(os.tmpdir(), 'marigold-detect-'));
     if (installed) {
       const pkgDir = path.join(root, 'node_modules', '@marigold', 'components');
@@ -66,10 +72,14 @@ describe('detectMigration', () => {
         path.join(pkgDir, 'package.json'),
         JSON.stringify({ name: '@marigold/components', version })
       );
-    } else {
+    }
+    if (!installed || migrated) {
       writeFileSync(
         path.join(root, 'package.json'),
-        JSON.stringify({ dependencies: { '@marigold/components': version } })
+        JSON.stringify({
+          dependencies: { '@marigold/components': version },
+          ...(migrated && { marigold: { migrated } }),
+        })
       );
     }
     // the migration target usually sits far below the repo root
@@ -78,59 +88,87 @@ describe('detectMigration', () => {
     return target;
   };
 
-  test('walks up to node_modules and proposes the applicable migration', () => {
+  test('walks up to node_modules and holds back migrations for a major not installed yet', () => {
     const detected = detectMigration(setupRepo('17.9.1'));
 
     expect(detected).toEqual({
       installed: '17.9.1',
       source: 'node_modules',
-      versions: ['v18', 'v19'],
-      heldBack: [],
+      migrated: null,
+      versions: [],
+      awaitingUpgrade: ['v18', 'v19'],
     });
   });
 
   test('falls back to the declared range when nothing is installed', () => {
-    const detected = detectMigration(setupRepo('^17.0.0', false));
+    const detected = detectMigration(
+      setupRepo('^17.0.0', { installed: false })
+    );
 
     expect(detected).toEqual({
       installed: '17.0.0',
       source: 'package.json',
-      versions: ['v18', 'v19'],
-      heldBack: [],
+      migrated: null,
+      versions: [],
+      awaitingUpgrade: ['v18', 'v19'],
     });
   });
 
-  test('proposes the same-major migration (upgrade first, then migrate)', () => {
+  test('proposes the migration for the installed major (upgrade first, then migrate)', () => {
     const detected = detectMigration(setupRepo('18.0.0-beta.4'));
 
-    expect(detected).toEqual({
-      installed: '18.0.0-beta.4',
-      source: 'node_modules',
-      versions: ['v18', 'v19'],
-      heldBack: [],
+    expect(detected).toMatchObject({
+      versions: ['v18'],
+      awaitingUpgrade: ['v19'],
     });
   });
 
-  test('does not propose a migration that is unsafe to re-run once its major is installed', () => {
+  test('proposes every pending migration without a marker', () => {
     const detected = detectMigration(setupRepo('19.0.0'));
 
-    expect(detected).toEqual({
-      installed: '19.0.0',
-      source: 'node_modules',
-      versions: [],
-      heldBack: ['v19'],
+    expect(detected).toMatchObject({
+      migrated: null,
+      versions: ['v18', 'v19'],
+      awaitingUpgrade: [],
     });
   });
 
-  test('reports up to date when the installed major is past every migration', () => {
-    const detected = detectMigration(setupRepo('20.0.0'));
+  test('skips migrations at or below the marker', () => {
+    const detected = detectMigration(setupRepo('19.0.0', { migrated: 'v18' }));
 
-    expect(detected).toEqual({
-      installed: '20.0.0',
-      source: 'node_modules',
-      versions: [],
-      heldBack: [],
+    expect(detected).toMatchObject({
+      migrated: 'v18',
+      versions: ['v19'],
+      awaitingUpgrade: [],
     });
+  });
+
+  test('proposes nothing once the installed major is migrated', () => {
+    const detected = detectMigration(setupRepo('19.0.0', { migrated: 'v19' }));
+
+    expect(detected).toMatchObject({
+      migrated: 'v19',
+      versions: [],
+      awaitingUpgrade: [],
+    });
+  });
+
+  test('holds back the next migration until its major is installed', () => {
+    const detected = detectMigration(setupRepo('18.3.0', { migrated: 'v18' }));
+
+    expect(detected).toMatchObject({
+      migrated: 'v18',
+      versions: [],
+      awaitingUpgrade: ['v19'],
+    });
+  });
+
+  test('fails on a malformed marker instead of guessing', () => {
+    const target = setupRepo('19.0.0', { migrated: '19' });
+
+    expect(() => detectMigration(target)).toThrow(
+      /expected a migration like "v19"/
+    );
   });
 
   test('returns null when no @marigold/components exists anywhere', () => {
@@ -476,16 +514,20 @@ export const List = () => <SelectList aria-label="x" />;
 describe('runMigrateCommand', () => {
   // a fixture whose Marigold version is discoverable, so the command can be
   // driven through detection + confirmation instead of an explicit version
-  const setupDetectable = (version: string): string => {
+  const setupDetectable = (version: string, migrated?: string): string => {
     const root = setupFixture();
     writeFileSync(
       path.join(root, 'package.json'),
-      JSON.stringify({ dependencies: { '@marigold/components': version } })
+      JSON.stringify({
+        dependencies: { '@marigold/components': version },
+        ...(migrated && { marigold: { migrated } }),
+      })
     );
     return root;
   };
 
   beforeEach(() => {
+    vi.clearAllMocks();
     prompts.isCancel.mockReturnValue(false);
   });
 
@@ -507,7 +549,7 @@ describe('runMigrateCommand', () => {
   });
 
   test('refuses to auto-detect without a terminal to confirm in', async () => {
-    const root = setupDetectable('17.9.1');
+    const root = setupDetectable('18.0.0');
 
     const run = runMigrateCommand({
       targetPath: root,
@@ -519,8 +561,8 @@ describe('runMigrateCommand', () => {
     await expect(run).rejects.toThrow(/Non-interactive session/);
   });
 
-  test('reports a target that has no migration left to run', async () => {
-    const root = setupDetectable('20.0.0');
+  test('reports a migrated target as up to date', async () => {
+    const root = setupDetectable('19.0.0', 'v19');
     const written: string[] = [];
 
     const code = await runMigrateCommand({
@@ -531,11 +573,14 @@ describe('runMigrateCommand', () => {
     });
 
     expect(code).toBe(0);
-    expect(written.join('\n')).toContain('already up to date');
+    expect(written.join('\n')).toContain(
+      '(last applied: v19) — already up to date'
+    );
+    expect(prompts.confirm).not.toHaveBeenCalled();
   });
 
-  test('names a held-back migration instead of claiming up to date', async () => {
-    const root = setupDetectable('19.0.0');
+  test('says to upgrade first when the next migration is for a newer major', async () => {
+    const root = setupDetectable('18.3.0', 'v18');
     const written: string[] = [];
 
     const code = await runMigrateCommand({
@@ -546,8 +591,11 @@ describe('runMigrateCommand', () => {
     });
 
     expect(code).toBe(0);
+    expect(written.join('\n')).toContain(
+      'the v19 migration needs @marigold/components 19 installed first'
+    );
     expect(written.join('\n')).not.toContain('already up to date');
-    expect(written.join('\n')).toContain('marigold migrate v19 [path]');
+    expect(prompts.confirm).not.toHaveBeenCalled();
   });
 
   test('fails when the target has no Marigold at all', async () => {
@@ -564,7 +612,7 @@ describe('runMigrateCommand', () => {
   });
 
   test('aborts with 130 when the detected migration is declined', async () => {
-    const root = setupDetectable('17.9.1');
+    const root = setupDetectable('18.0.0');
     const written: string[] = [];
     prompts.confirm.mockResolvedValue(false);
 
@@ -580,7 +628,7 @@ describe('runMigrateCommand', () => {
   });
 
   test('applies only the changes left selected in the multiselect', async () => {
-    const root = setupDetectable('17.9.1');
+    const root = setupDetectable('18.0.0');
     const components = path.join(root, 'theme', 'components');
     const cardBefore = readFileSync(
       path.join(components, 'Card.styles.ts'),
@@ -605,7 +653,7 @@ describe('runMigrateCommand', () => {
   });
 
   test('offers every change that fired, described, for selection', async () => {
-    const root = setupDetectable('17.9.1');
+    const root = setupDetectable('18.0.0');
     prompts.confirm.mockResolvedValue(true);
     prompts.multiselect.mockResolvedValue([]);
 

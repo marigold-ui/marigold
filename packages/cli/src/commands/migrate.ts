@@ -9,6 +9,7 @@ import {
 } from '../lib/codemod/engine.js';
 import { v18 } from '../lib/codemod/manifests/v18.js';
 import { v19 } from '../lib/codemod/manifests/v19.js';
+import { findMarkerFile, readMarker } from '../lib/codemod/marker.js';
 import {
   removeJsxProps,
   renameImports,
@@ -46,15 +47,21 @@ import { parseTsx } from '../lib/tsx-ast.js';
 
 const MANIFESTS: Record<string, MigrationManifest> = { v18, v19 };
 
+/** 'v19' -> 19 */
+const migrationMajor = (version: string): number =>
+  Number.parseInt(version.replace(/^v/, ''), 10);
+
 export interface DetectedMigration {
   /** installed @marigold/components version (or the declared range minimum) */
   installed: string;
   /** where the version was read from */
   source: 'node_modules' | 'package.json';
-  /** applicable migrations in run order, e.g. ['v18'] — empty: up to date */
+  /** last applied migration from the package.json marker, null when none */
+  migrated: string | null;
+  /** pending migrations up to the installed major, in run order */
   versions: string[];
-  /** migrations for the installed major that are not rerun-safe, so not proposed */
-  heldBack: string[];
+  /** pending migrations for a major that is not installed yet */
+  awaitingUpgrade: string[];
 }
 
 /**
@@ -84,26 +91,21 @@ export const detectMigration = (
   })();
   if (!found) return null;
 
-  // Propose migrations targeting the installed major too (>=, not >): the
-  // documented procedure is "upgrade the packages, then migrate", so someone
-  // on 18.x is exactly who needs the v18 migration. That relies on re-runs
-  // being no-ops, so a manifest that is not rerun-safe is only proposed
-  // before its major is installed and otherwise has to be named explicitly.
+  // Pending = newer than the marker. "Upgrade the packages, then migrate":
+  // a migration runs once its major is installed, never against older types.
+  const markerFile = findMarkerFile(targetPath);
+  const migrated = markerFile ? readMarker(markerFile) : null;
+  const done = migrated ? migrationMajor(migrated) : -Infinity;
   const major = Number.parseInt(found.installed, 10);
-  const candidates = Object.entries(MANIFESTS)
-    .map(([v, manifest]) => ({
-      v,
-      manifest,
-      target: Number.parseInt(v.replace(/^v/, ''), 10),
-    }))
-    .filter(({ target }) => Number.isFinite(target) && target >= major)
+  const pending = Object.keys(MANIFESTS)
+    .map(v => ({ v, target: migrationMajor(v) }))
+    .filter(({ target }) => Number.isFinite(target) && target > done)
     .sort((a, b) => a.target - b.target);
-  const isHeldBack = ({ manifest, target }: (typeof candidates)[number]) =>
-    target === major && manifest.rerunSafe === false;
   return {
     ...found,
-    versions: candidates.filter(c => !isHeldBack(c)).map(({ v }) => v),
-    heldBack: candidates.filter(isHeldBack).map(({ v }) => v),
+    migrated,
+    versions: pending.filter(p => p.target <= major).map(({ v }) => v),
+    awaitingUpgrade: pending.filter(p => p.target > major).map(({ v }) => v),
   };
 };
 
@@ -532,11 +534,14 @@ export const runMigrateCommand = async (
       );
     }
     if (detected.versions.length === 0) {
-      const [heldBack] = detected.heldBack;
+      const [next] = detected.awaitingUpgrade;
+      const applied = detected.migrated
+        ? ` (last applied: ${detected.migrated})`
+        : '';
       write(
-        heldBack
-          ? `Detected @marigold/components ${detected.installed} (${detected.source}) — the ${heldBack} migration is not proposed automatically because it is not safe to re-run. If you have not migrated yet, run: marigold migrate ${heldBack} [path] --dry-run`
-          : `Detected @marigold/components ${detected.installed} (${detected.source}) — already up to date, no migration to run.`
+        next
+          ? `Detected @marigold/components ${detected.installed} (${detected.source})${applied} — the ${next} migration needs @marigold/components ${migrationMajor(next)} installed first. Upgrade, then run marigold migrate again.`
+          : `Detected @marigold/components ${detected.installed} (${detected.source})${applied} — already up to date, no migration to run.`
       );
       return 0;
     }
