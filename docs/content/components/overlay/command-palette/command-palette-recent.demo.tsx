@@ -16,7 +16,9 @@ const events = [
   { id: 'event-1052', number: 1052, name: 'Comedy Club', date: '9 Jul' },
 ];
 
-// In a real app, the server keeps track of what each person opened last.
+// In a real app, the server keeps each person's favourites and what they
+// opened last. A favourite doesn't show again under Recent.
+const favourites = [events[0]];
 const recent = [events[1], events[3]];
 
 const EventItem = ({ event }: { event: (typeof events)[number] }) => (
@@ -45,6 +47,15 @@ export default () => {
       >
         {query === '' ? (
           <>
+            <CommandPalette.Group title="Favourites">
+              <CommandPalette.Item id="orders">
+                <ShoppingCart />
+                Orders
+              </CommandPalette.Item>
+              {favourites.map(event => (
+                <EventItem key={event.id} event={event} />
+              ))}
+            </CommandPalette.Group>
             <CommandPalette.Group title="Recent">
               {recent.map(event => (
                 <EventItem key={event.id} event={event} />

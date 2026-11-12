@@ -100,9 +100,15 @@ The shortcut also fires inside text fields, as it does in GitHub, Linear and Sla
 
 ### Before people type
 
-An empty query is the most common start, and the full list is the least helpful answer to it. Show what people most likely want next: the records they opened last and the actions they start most. Keep it short, a handful of rows is enough. Once people type, switch to the regular groups.
+An empty query is the most common start, and the full list is the least helpful answer to it. Show what people most likely want next, in this order:
 
-Control the query to know when it is empty. The recent records come from your app, ideally from the server, so they follow people across devices.
+- **Favourites:** pages and records people marked themselves. They come first, because people chose them.
+- **Recent:** the records people opened last, newest first.
+- **Frequent actions:** the few actions people start most, such as "Create event".
+
+Keep each group to about five rows, so everything fits without scrolling. Show an item only once: a favourite that was also opened recently stays under Favourites. Leave out the full list of pages, the sidebar already shows it, and anything people didn't ask for, like news or tips. Once people type, switch to the regular groups.
+
+Control the query to know when it is empty. Favourites and recent records come from your app, ideally from the server, so they follow people across devices.
 
 <ComponentDemo name="command-palette-recent" />
 
