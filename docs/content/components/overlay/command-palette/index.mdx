@@ -26,7 +26,7 @@ A command palette consists of an optional button and the palette itself, which o
 - **Item:** A single page or action, with an optional icon and description.
 - **Active row:** The highlighted row, which <kbd>Enter</kbd> runs. There is always one while there are results.
 - **List:** Holds the groups and items and scrolls when they don't fit.
-- **Legend:** A footer listing the keys to navigate, select and close. It is built in and hidden on touch devices.
+- **Legend:** A footer listing the keys to navigate, select and close, and the prefixes that narrow the search to one group. It is built in and hidden on touch devices.
 - **Underlay:** Dims the page behind the palette. Clicking it closes the palette.
 
 ## Appearance
@@ -128,7 +128,7 @@ People often know exactly which record they need, an event by its name or an ord
 
 In a mixed list, records compete with pages and actions, and record search stays invisible until people type a name. For each kind of record people look up often, give its group a short prefix, like `e:` for events and `v:` for venues. A query that starts with the prefix narrows the search to that group: `e:jazz` shows only events that match "jazz".
 
-The group title shows its prefix in brackets, like "Events (e:)", wherever the group appears. People pick it up along the way, for example while the group lists their recent events before they type. Screen readers hear it as part of the group's name. Keep the prefixes few and memorable, one letter per kind of record.
+The footer lists the prefixes next to the keys, like "e: Events", so people come across them every time they open the palette. Screen readers hear each prefix as part of its group's name. A prefix alone should list the first records of that kind, not only the recent ones, so people don't take a short list for everything there is. Keep the prefixes few and memorable, one letter per kind of record.
 
 <ComponentDemo name="command-palette-async" />
 

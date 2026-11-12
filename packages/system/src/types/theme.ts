@@ -104,7 +104,6 @@ export type Theme = {
       | 'input'
       | 'list'
       | 'group'
-      | 'prefix'
       | 'item'
       | 'label'
       | 'description'
@@ -112,6 +111,7 @@ export type Theme = {
       | 'match'
       | 'empty'
       | 'footer'
+      | 'prefixes'
       | 'legend',
       ComponentStyleFunction<string, string>
     >;

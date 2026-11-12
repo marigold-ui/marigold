@@ -29,6 +29,7 @@ import { CommandPaletteGroup } from './CommandPaletteGroup';
 import { CommandPaletteItem } from './CommandPaletteItem';
 import { CommandPaletteSearch } from './CommandPaletteSearch';
 import { CommandPaletteTrigger, PALETTE } from './CommandPaletteTrigger';
+import type { GroupPrefix } from './Context';
 import { CommandPaletteContext, CommandPaletteTriggerContext } from './Context';
 import { useKeepFirstItemActive } from './useKeepFirstItemActive';
 
@@ -160,7 +161,11 @@ const DefaultEmptyState = ({ query }: { query: string }) => {
 type CommandPaletteBodyProps<T extends object> = Omit<
   CommandPaletteProps<T>,
   'open' | 'defaultOpen' | 'onOpenChange' | 'aria-label'
-> & { close: () => void };
+> & {
+  close: () => void;
+  prefixes: readonly GroupPrefix[];
+  registerPrefix: (prefix: GroupPrefix) => () => void;
+};
 
 const CommandPaletteBody = <T extends object>({
   children,
@@ -176,6 +181,8 @@ const CommandPaletteBody = <T extends object>({
   onSearchChange,
   filter,
   close,
+  prefixes,
+  registerPrefix,
 }: CommandPaletteBodyProps<T>) => {
   const classNames = useClassNames({ component: 'CommandPalette' });
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
@@ -194,15 +201,12 @@ const CommandPaletteBody = <T extends object>({
     clearQuery();
   }, []);
 
-  // Groups with a `prefix` register here. A query that starts with one
-  // narrows the search to that group, and only the rest is matched.
-  const [prefixes, setPrefixes] = useState<readonly string[]>([]);
-  const registerPrefix = useCallback((prefix: string) => {
-    setPrefixes(current => [...current, prefix]);
-    return () => setPrefixes(current => current.filter(p => p !== prefix));
-  }, []);
+  // A query that starts with a group's prefix narrows the search to that
+  // group, and only the rest is matched.
   const { contains, startsWith } = useFilter({ sensitivity: 'base' });
-  const scope = prefixes.find(prefix => startsWith(inputValue, prefix)) ?? null;
+  const scope =
+    prefixes.find(({ prefix }) => startsWith(inputValue, prefix))?.prefix ??
+    null;
   const query = scope ? inputValue.slice(scope.length).trimStart() : inputValue;
   const match = useMemo(() => {
     if (filter === false) return false;
@@ -296,8 +300,23 @@ const CommandPaletteBase = <T extends object>({
   const setOpen = trigger ? trigger.setOpen : setOwnOpen;
   const close = useCallback(() => setOpen(false), [setOpen]);
 
+  // Groups with a `prefix` register here, so the search can narrow to them
+  // and the footer can list them. Held here, as the footer sits outside the
+  // search and list.
+  const [prefixes, setPrefixes] = useState<readonly GroupPrefix[]>([]);
+  const registerPrefix = useCallback((entry: GroupPrefix) => {
+    setPrefixes(current => [...current, entry]);
+    return () => setPrefixes(current => current.filter(e => e !== entry));
+  }, []);
+
   const body = (
-    <CommandPaletteBody {...props} loading={loading} close={close} />
+    <CommandPaletteBody
+      {...props}
+      loading={loading}
+      close={close}
+      prefixes={prefixes}
+      registerPrefix={registerPrefix}
+    />
   );
 
   if (isSmallScreen) {
@@ -320,7 +339,7 @@ const CommandPaletteBase = <T extends object>({
           className="flex max-h-[inherit] min-h-0 flex-col outline-hidden"
         >
           {body}
-          <CommandPaletteFooter classNames={classNames} />
+          <CommandPaletteFooter classNames={classNames} prefixes={prefixes} />
         </Dialog>
       </Modal>
     </Underlay>

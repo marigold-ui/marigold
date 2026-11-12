@@ -876,8 +876,8 @@ SearchOneKind.test(
     await openPalette({ canvas, userEvent });
     const search = await canvas.findByRole('searchbox');
 
-    await step('The group title shows its prefix', async () => {
-      await expect(canvas.getByText('(e:)')).toBeInTheDocument();
+    await step('The footer lists the prefix', async () => {
+      await expect(canvas.getByText('e:')).toBeInTheDocument();
       await expect(
         canvas.getByRole('group', {
           name: 'Events Type e: to search only Events',

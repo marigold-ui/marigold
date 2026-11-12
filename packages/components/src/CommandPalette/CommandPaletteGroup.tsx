@@ -21,7 +21,7 @@ export interface CommandPaletteGroupProps extends Omit<
 
   /**
    * Typing this at the start of the query narrows the search to this group,
-   * for example `e:` for events. The group title shows it next to its name.
+   * for example `e:` for events. The footer lists it with the group's title.
    */
   prefix?: string;
 
@@ -42,8 +42,8 @@ export const CommandPaletteGroup = ({
   const { classNames, scope, registerPrefix } = useCommandPalette();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   useLayoutEffect(() => {
-    if (prefix) return registerPrefix(prefix);
-  }, [prefix, registerPrefix]);
+    if (prefix) return registerPrefix({ prefix, title: title ?? prefix });
+  }, [prefix, title, registerPrefix]);
 
   // While the search is narrowed to one group, the others step aside.
   if (scope && scope !== prefix) return null;
@@ -59,11 +59,8 @@ export const CommandPaletteGroup = ({
         {title}
         {prefix && (
           <>
-            {/* The prefix teaches itself by sight, the hidden sentence by
-                ear, as part of the group's name. */}
-            <span aria-hidden="true" className={classNames.prefix}>
-              ({prefix})
-            </span>
+            {/* The footer shows the prefix, this sentence tells screen
+                readers, as part of the group's name. */}
             {!scope && (
               <span className="sr-only">
                 {stringFormatter.format('commandPalettePrefixHint', {

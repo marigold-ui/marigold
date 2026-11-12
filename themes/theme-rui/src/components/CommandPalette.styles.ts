@@ -23,6 +23,13 @@ const itemActive = [
 const itemBase = `${menuItemBase} ${itemActive}`;
 const itemIconMuted = `${menuItemIconMuted} focus:[&_svg]:text-foreground focus:[&_svg]:opacity-100`;
 
+// A row of key caps with labels, used by the legend and the prefixes.
+// Compact caps: a quiet reminder, not a call to action.
+const keyList = [
+  'flex items-center gap-4 [&>span]:inline-flex [&>span]:items-center [&>span]:gap-1.5',
+  '[&_kbd]:h-4.5 [&_kbd]:min-w-4.5 [&_kbd]:px-1 [&_kbd]:py-0 [&_kbd]:text-[10px] [&_kbd]:leading-none',
+];
+
 export const CommandPalette: ThemeComponent<'CommandPalette'> = {
   // Looks like an Input with a leading icon: the same `ui-control ui-input`
   // frame, and the icon and text at Input's offsets (icon at `left-2.5`,
@@ -88,8 +95,6 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
   group: cva({
     base: 'text-secondary px-2.5 pt-1 pb-1 text-xs font-medium',
   }),
-  // The group's prefix next to its title, quieter than the title.
-  prefix: cva({ base: 'ms-1 font-normal text-placeholder' }),
   // Larger than a menu item, the palette being a primary navigation surface.
   // Icons and variants match Menu, the active state is the palette's own
   // (see `itemBase`).
@@ -131,11 +136,7 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
       'border-t border-border text-xs text-secondary',
     ],
   }),
-  legend: cva({
-    base: [
-      'ms-auto flex items-center gap-4 [&>span]:inline-flex [&>span]:items-center [&>span]:gap-1.5',
-      // Compact caps: the legend is a quiet reminder, not a call to action.
-      '[&_kbd]:h-4.5 [&_kbd]:min-w-4.5 [&_kbd]:px-1 [&_kbd]:py-0 [&_kbd]:text-[10px] [&_kbd]:leading-none',
-    ],
-  }),
+  // The groups' prefixes, on the left of the footer.
+  prefixes: cva({ base: keyList }),
+  legend: cva({ base: ['ms-auto', ...keyList] }),
 };

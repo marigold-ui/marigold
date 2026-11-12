@@ -28,13 +28,19 @@ export const useCommandPaletteTrigger =
 
 // Palette state
 // ---------------
+/** A group's prefix and the title the footer lists it under. */
+export interface GroupPrefix {
+  prefix: string;
+  title: string;
+}
+
 // Provided by `CommandPalette`, read by its groups and items.
 interface CommandPaletteContextValue {
   /** The search term: the query without a group's prefix. */
   query: string;
   /** The prefix of the group the search is narrowed to, if any. */
   scope: string | null;
-  registerPrefix: (prefix: string) => () => void;
+  registerPrefix: (prefix: GroupPrefix) => () => void;
   filter?: SearchableCollectionFilter | false;
   classNames: ComponentClassNames<'CommandPalette'>;
 }
