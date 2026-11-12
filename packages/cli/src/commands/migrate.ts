@@ -521,8 +521,8 @@ const packageScope = (targetPath: string, command: string): string => {
   const file = findMarkerFile(targetPath);
   if (!file) {
     throw new Error(
-      `Cannot apply a migration to ${targetPath}: no package.json at or above it declares @marigold/components, so the CLI cannot record what it applied. ` +
-        `Run it on each package that declares @marigold/components, or add --dry-run to only report.`
+      `Cannot apply a migration to ${targetPath}: no package.json at or above it declares @marigold/components or @marigold/system, so the CLI cannot record what it applied. ` +
+        `Run it on each package that declares one of them, or add --dry-run to only report.`
     );
   }
   const dir = path.dirname(file);
@@ -536,8 +536,8 @@ const packageScope = (targetPath: string, command: string): string => {
 };
 
 /**
- * Write the applied-migrations marker after a real run. A failure to record
- * Returns false when it could not: the code edits have already landed, so
+ * Write the applied-migrations marker after a real run. Returns false when
+ * the marker could not be written: the code edits have already landed, so
  * the caller stops before a later migration builds on an unrecorded one.
  */
 const recordMigration = (

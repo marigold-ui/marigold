@@ -267,12 +267,12 @@ marigold migrate v18 --only rename-imports    # apply a subset, non-interactivel
 
 Both positionals are optional. Without a version, the installed `@marigold/components` is detected and the pending migrations are proposed for confirmation. Without a path, the current directory is used.
 
-After an applied run, `marigold migrate` records the last migration in the `package.json` that declares `@marigold/components`, as `"marigold": { "migrated": "v19" }`. Commit this field with the migrated code. It is how the CLI knows what is pending:
+After an applied run, `marigold migrate` records the last migration in the `package.json` that declares `@marigold/components`, or `@marigold/system` for a standalone theme package, as `"marigold": { "migrated": "v19" }`. Commit this field with the migrated code. It is how the CLI knows what is pending:
 
 - Without a version, only migrations newer than the recorded one are proposed, and only once their major version is installed. Upgrade first, then migrate.
 - A migration named explicitly that is already recorded prints a warning and changes nothing.
 
-Because the record belongs to a package, an applied run has to target that package's folder, the one with the `package.json` that declares `@marigold/components`. A subfolder or a monorepo root is refused with the command to run instead. In a monorepo, migrate each package that declares `@marigold/components`. A dry run works on any path.
+Because the record belongs to a package, an applied run has to target that package's folder, the one with the `package.json` that declares `@marigold/components` or `@marigold/system`. A subfolder or a monorepo root is refused with the command to run instead. In a monorepo, migrate each package that declares one of them. A dry run works on any path.
 
 It anchors on imports rather than on file names or directory layout, so it works whatever your project structure is:
 

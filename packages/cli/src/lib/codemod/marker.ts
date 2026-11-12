@@ -3,10 +3,11 @@ import path from 'node:path';
 import { declaredVersion, readPackageJson } from '../doctor/package-json.js';
 
 // The applied-migrations marker: `"marigold": { "migrated": "v19" }` in the
-// package.json that declares @marigold/components. It records the last
+// package.json that declares a Marigold package. It records the last
 // migration applied, so `marigold migrate` never offers one twice (DST-1969).
 
-const PACKAGE = '@marigold/components';
+// @marigold/system too, so a standalone theme package can be migrated
+const PACKAGES = ['@marigold/components', '@marigold/system'];
 const MIGRATION = /^v\d+$/;
 
 const isPlainObject = (value: unknown): value is Record<string, unknown> =>
@@ -14,14 +15,16 @@ const isPlainObject = (value: unknown): value is Record<string, unknown> =>
 
 /**
  * The nearest package.json at or above `targetPath` that declares
- * @marigold/components, or null. Detection can stop at a directory that only
- * has node_modules (a hoisted monorepo root), so this walks on its own.
+ * @marigold/components or @marigold/system, or null. Detection can stop at a
+ * directory that only has node_modules (a hoisted monorepo root), so this
+ * walks on its own.
  */
 export const findMarkerFile = (targetPath: string): string | null => {
   let dir = path.resolve(targetPath);
   for (;;) {
     const file = path.join(dir, 'package.json');
-    if (declaredVersion(readPackageJson(file), PACKAGE)) return file;
+    const pkg = readPackageJson(file);
+    if (PACKAGES.some(name => declaredVersion(pkg, name))) return file;
     const parent = path.dirname(dir);
     if (parent === dir) return null;
     dir = parent;

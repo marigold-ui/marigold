@@ -893,7 +893,19 @@ describe('runMigrateCommand', () => {
       expect(marker(root)).toEqual({ migrated: 'v18' });
     });
 
-    test('refuses to apply where no package.json declares @marigold/components', async () => {
+    test('records a run in a standalone theme package that declares only @marigold/system', async () => {
+      const root = setupFixture();
+      writeFileSync(
+        path.join(root, 'package.json'),
+        JSON.stringify({ dependencies: { '@marigold/system': '^18.0.0' } })
+      );
+
+      await migrate({ version: 'v18', targetPath: root });
+
+      expect(marker(root)).toEqual({ migrated: 'v18' });
+    });
+
+    test('refuses to apply where no package.json declares a Marigold package', async () => {
       const root = setupFixture();
       const cardPath = path.join(root, 'theme', 'components', 'Card.styles.ts');
       const before = readFileSync(cardPath, 'utf8');

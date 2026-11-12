@@ -55,6 +55,16 @@ describe('findMarkerFile', () => {
     expect(findMarkerFile(dir)).toBe(file);
   });
 
+  test('accepts a standalone theme package that declares only @marigold/system', () => {
+    writePkg('.', declaring);
+    const theme = writePkg(
+      'packages/theme',
+      JSON.stringify({ dependencies: { '@marigold/system': '^19.0.0' } })
+    );
+
+    expect(findMarkerFile(path.join(dir, 'packages/theme'))).toBe(theme);
+  });
+
   test('returns null when nothing declares it, even with node_modules present', () => {
     writePkg('.', JSON.stringify({ name: 'hoisted-root' }));
     fs.mkdirSync(path.join(dir, 'node_modules/@marigold/components'), {
