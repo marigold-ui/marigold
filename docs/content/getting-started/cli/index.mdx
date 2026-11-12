@@ -265,7 +265,12 @@ marigold migrate v18 --only rename-imports    # apply a subset, non-interactivel
 | `--dry-run`      | Report what would change without writing files                          |         |
 | `--only <names>` | Apply only these changes (comma-separated), skipping the selection step |         |
 
-Both positionals are optional. Without a version, the installed `@marigold/components` is detected and the applicable migration is proposed for confirmation. Without a path, the current directory is used.
+Both positionals are optional. Without a version, the installed `@marigold/components` is detected and the pending migrations are proposed for confirmation. Without a path, the current directory is used.
+
+After an applied run, `marigold migrate` records the last migration in the `package.json` that declares `@marigold/components`, as `"marigold": { "migrated": "v19" }`. Commit this field with the migrated code. It is how the CLI knows what is pending:
+
+- Without a version, only migrations newer than the recorded one are proposed, and only once their major version is installed. Upgrade first, then migrate.
+- A migration named explicitly that is already recorded prints a warning and changes nothing.
 
 It anchors on imports rather than on file names or directory layout, so it works whatever your project structure is:
 
@@ -278,10 +283,10 @@ Anything that cannot be decided from the source, a spread that hides slots, a cu
 <Callout title="Dry run first">
   `--dry-run` prints the full report and writes nothing. Interactive runs
   pre-analyze the project and list the changes that actually fire, so you can
-  deselect any of them before applying. Report-only checks always run. Applying
-  twice is a no-op, so a partial run can be completed later. After an applied
-  run, your typechecker is the completeness check: the slot `Record`s in
-  `@marigold/system` are exhaustive.
+  deselect any of them before applying. Report-only checks always run. A partial
+  run lists what it skipped, with the `--only` command that applies it later.
+  After an applied run, your typechecker is the completeness check: the slot
+  `Record`s in `@marigold/system` are exhaustive.
 </Callout>
 
 ### marigold completion
