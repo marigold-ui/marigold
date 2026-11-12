@@ -27,7 +27,7 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const [open, setOpen] = useState(false);
 
     return (
