@@ -546,7 +546,9 @@ export const DynamicData = meta.story({
       },
     ] as const;
 
-    const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set(['2']));
+    const [selectedKeys, setSelectedKeys] = useState<Selection>(
+      () => new Set(['2'])
+    );
 
     return (
       <Stack space={3}>

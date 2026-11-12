@@ -33,7 +33,7 @@ const statusVariants = {
 
 export default () => {
   const [events, setEvents] = useState(initialEvents);
-  const [selected, setSelected] = useState<Selection>(new Set());
+  const [selected, setSelected] = useState<Selection>(() => new Set());
   const { addToast } = useToast();
 
   const applyStatus = (status: Event['status']) => {

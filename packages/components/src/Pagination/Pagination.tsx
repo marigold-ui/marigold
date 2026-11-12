@@ -9,7 +9,7 @@ import { intlMessages } from '../intl/messages';
 import { Ellipsis } from './Ellipsis';
 import { NavigationButton } from './NavigationButton';
 import { PageButton } from './PageButton';
-import { usePageRange } from './usePageRange';
+import { calculatePageRange } from './pageRange';
 
 /*
 TODO:
@@ -67,7 +67,7 @@ const InnerPagination = ({
   const isFirstPage = currentPage === 1;
   // `>=` also covers 0 pages and a current page the result set shrank below
   const isLastPage = currentPage >= totalPages;
-  const prevPageSize = useRef(pageSize);
+  const prevPageSizeRef = useRef(pageSize);
 
   /* Previous/Next stay focusable at the ends (aria-disabled), so they have to
   ignore presses themselves instead of relying on the native `disabled`. */
@@ -83,10 +83,10 @@ const InnerPagination = ({
   useEffect(() => {
     /* Only reset to page 1 when the page size actually changed, so neither
     mounting (e.g. with the page prop) nor an unstable setter triggers it */
-    if (prevPageSize.current === pageSize) {
+    if (prevPageSizeRef.current === pageSize) {
       return;
     }
-    prevPageSize.current = pageSize;
+    prevPageSizeRef.current = pageSize;
     setCurrentPage(1);
   }, [pageSize, setCurrentPage]);
 
@@ -222,7 +222,7 @@ const Pagination = ({
     onChange
   );
   const totalPages = Math.ceil(totalItems / pageSize);
-  const pageRange = usePageRange({ currentPage, totalPages });
+  const pageRange = calculatePageRange({ currentPage, totalPages });
   const { container } = useClassNames({ component: 'Pagination' });
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 

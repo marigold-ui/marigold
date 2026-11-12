@@ -156,7 +156,9 @@ const BulkEditForm = ({
 
 export default () => {
   const [events, setEvents] = useState(initialEvents);
-  const [selected, setSelected] = useState<Selection>(new Set(['1', '2', '3']));
+  const [selected, setSelected] = useState<Selection>(
+    () => new Set(['1', '2', '3'])
+  );
   const { addToast } = useToast();
 
   const selectedIds =

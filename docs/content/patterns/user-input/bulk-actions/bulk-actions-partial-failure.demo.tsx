@@ -29,7 +29,7 @@ const initialEvents: Event[] = [
 export default () => {
   const [events, setEvents] = useState(initialEvents);
   const [selected, setSelected] = useState<Selection>(
-    new Set(initialEvents.map(event => event.id))
+    () => new Set(initialEvents.map(event => event.id))
   );
   const { addToast } = useToast();
 

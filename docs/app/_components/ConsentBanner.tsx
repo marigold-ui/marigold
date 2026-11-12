@@ -26,14 +26,14 @@ export const ConsentBanner = () => {
   );
   const reopened = state === 'reopened';
   const ref = useRef<HTMLDivElement>(null);
-  const previouslyFocused = useRef<HTMLElement | null>(null);
+  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
 
   // Reopened, the banner is a dialog the visitor asked for: focus moves in
   // (APG) and back to the trigger on close. On a first visit it is ambient.
   useEffect(() => {
     if (!reopened) return;
 
-    previouslyFocused.current = document.activeElement as HTMLElement | null;
+    previouslyFocusedRef.current = document.activeElement as HTMLElement | null;
     ref.current?.focus();
 
     const onKeyDown = (event: KeyboardEvent) => {
@@ -43,8 +43,8 @@ export const ConsentBanner = () => {
 
     return () => {
       document.removeEventListener('keydown', onKeyDown);
-      previouslyFocused.current?.focus();
-      previouslyFocused.current = null;
+      previouslyFocusedRef.current?.focus();
+      previouslyFocusedRef.current = null;
     };
   }, [reopened]);
 

@@ -3,7 +3,9 @@ import type { Selection } from '@react-types/shared';
 import { Tag } from '@marigold/components';
 
 export default () => {
-  const [selected, setSelected] = useState<Selection>(new Set(['parking']));
+  const [selected, setSelected] = useState<Selection>(
+    () => new Set(['parking'])
+  );
 
   return (
     <>

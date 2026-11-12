@@ -459,7 +459,9 @@ Basic.test(
 export const Controlled = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   render: function Render(args) {
-    const [value, setValue] = useState<DateValue>(new CalendarDate(2019, 6, 5));
+    const [value, setValue] = useState<DateValue>(
+      () => new CalendarDate(2019, 6, 5)
+    );
     return (
       <>
         <Calendar {...args} value={value} onChange={setValue} autoFocus />
