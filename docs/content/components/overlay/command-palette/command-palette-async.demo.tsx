@@ -148,6 +148,10 @@ export default () => {
   }, [key, limit, prefix, searching, term]);
 
   const current = searching && results?.key === key ? results : null;
+  // Before typing, the recent records are only a few of many, so each group
+  // offers its "More…" row. Once searching, only when the server has more.
+  const hasMore = (kind: 'events' | 'venues') =>
+    !searching || (current !== null && current[kind].totalItems > limit);
   const events = searching ? (current?.events.items ?? []) : recent;
   const venues = searching ? (current?.venues.items ?? []) : recentVenues;
   // `filter={false}` turns off the built-in match for every group, so the
@@ -177,11 +181,7 @@ export default () => {
           title="Events"
           prefix={PREFIXES.events}
           // In the mixed list, a last row narrows the search to events.
-          more={
-            current && current.events.totalItems > limit
-              ? 'More events…'
-              : undefined
-          }
+          more={hasMore('events') ? 'More events…' : undefined}
         >
           {events.map(event => (
             <CommandPalette.Item
@@ -209,11 +209,7 @@ export default () => {
         <CommandPalette.Group
           title="Venues"
           prefix={PREFIXES.venues}
-          more={
-            current && current.venues.totalItems > limit
-              ? 'More venues…'
-              : undefined
-          }
+          more={hasMore('venues') ? 'More venues…' : undefined}
         >
           {venues.map(venue => (
             <CommandPalette.Item
