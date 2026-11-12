@@ -42,7 +42,7 @@ export interface TitleProps extends AriaLabelingProps, SlotProps {
   ref?: Ref<HTMLElement>;
 }
 
-const _Title = ({ ref: refProp, ...inputProps }: TitleProps) => {
+const Title = ({ ref: refProp, ...inputProps }: TitleProps) => {
   const [merged, ref] = useContextProps(
     // Title's local props are a subset of `HeadingProps`; the cast bridges
     // the narrower `ref` (`HTMLHeadingElement`) that `HeadingContext`
@@ -60,6 +60,10 @@ const _Title = ({ ref: refProp, ...inputProps }: TitleProps) => {
     // Render the dynamic element via `createElement` rather than a
     // capitalized JSX component variable, which would otherwise trip
     // `@eslint-react/static-components` for creating a component during render.
+    // `react-hooks/refs` then reads passing `ref` to a call as reading it during
+    // render. It is only handed on, exactly as the JSX form would, so the
+    // report is a false positive.
+    // eslint-disable-next-line react-hooks/refs
     return createElement(as as ElementType, { ref, ...props }, children);
   }
 
@@ -81,4 +85,4 @@ const _Title = ({ ref: refProp, ...inputProps }: TitleProps) => {
   );
 };
 
-export { _Title as Title };
+export { Title };
