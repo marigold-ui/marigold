@@ -1,3 +1,4 @@
+import { comboBoxValueProps } from '../transforms/combobox-value-props.js';
 import type { MigrationManifest } from '../types.js';
 import { v18 } from './v18.js';
 
@@ -66,4 +67,7 @@ export const v19: MigrationManifest = {
     repurposed: {},
     componentDependencies: {},
   },
+  transforms: [comboBoxValueProps],
+  // a second run renames a selection-only `value` again
+  rerunSafe: false,
 };

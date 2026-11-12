@@ -100,7 +100,7 @@ export const Trigger = meta.story({
 
 export const ControlledTooltipTrigger = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [open, setOpen] = useState(false);
     return (
       <div className="ms-auto me-auto flex w-[min(100%_-_3rem,60ch)] flex-col gap-2 pt-32">

@@ -279,7 +279,7 @@
  * and other minimal elements that need to blend into any context.
  */
 @utility ui-state-hover-ghost {
-  @apply bg-current/10;
+  @apply bg-current/(--alpha-100);
 }
 
 /*
@@ -590,6 +590,52 @@
     animation: sc-edge-b linear both;
     animation-timeline: scroll();
     animation-range: 0 2rem;
+  }
+}
+
+/*
+ * Edge for a table column that stays put while its row scrolls sideways under
+ * it. Reads `data-sticky="start|end"` off the cell and draws only on the
+ * innermost one at each edge: the last of a run stuck to the start, and the one
+ * stuck to the end. Claims `::after`, drawn just outside the cell, which must
+ * be positioned (sticky is), because a collapsed table border stays behind when
+ * the cell sticks.
+ *
+ * A hairline like `ui-scroll-edge`, faded in only while content sits under the
+ * column, read off the nearest scroll container. A table that fits has nothing
+ * to scroll, so its timeline is inactive and nothing shows. Without
+ * scroll-driven animations the hairline stays on, which is never wrong.
+ * Scroll-linked, so not gated by `prefers-reduced-motion`.
+ */
+@utility ui-sticky-edge {
+  &[data-sticky='start']:not(:has(+ [data-sticky='start']))::after,
+  &[data-sticky='end']::after {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    width: 1px;
+    background: var(--color-border);
+    pointer-events: none;
+  }
+  &[data-sticky='start']::after {
+    inset-inline-start: 100%;
+  }
+  &[data-sticky='end']::after {
+    inset-inline-end: 100%;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    &[data-sticky]::after {
+      /* Hidden unless the animation shows it, so nothing shows without scrolling. */
+      opacity: 0;
+      animation: fade-in linear both;
+      animation-timeline: scroll(nearest inline);
+      animation-range: 0 1.5rem;
+    }
+    &[data-sticky='end']::after {
+      animation-direction: reverse;
+      animation-range: calc(100% - 1.5rem) 100%;
+    }
   }
 }
 

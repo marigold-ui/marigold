@@ -458,7 +458,7 @@ Basic.test(
 
 export const Controlled = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [value, setValue] = useState<DateValue>(new CalendarDate(2019, 6, 5));
     return (
       <>
@@ -571,7 +571,7 @@ export const MultipleSelection = meta.story({
     defaultValue: new CalendarDate(2025, 2, 15),
     onChange: fn(),
   },
-  render: args => {
+  render: function Render(args) {
     const [selectedDates, setSelectedDates] = useState<SelectedDate[]>([]);
 
     const formatter = new DateFormatter('en-US', {

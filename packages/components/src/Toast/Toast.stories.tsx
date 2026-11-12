@@ -72,7 +72,7 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
-  render: (_args: unknown) => {
+  render: function Render(_args: unknown) {
     const args = toastArgs(_args);
     const { addToast } = useToast();
     return (
@@ -129,7 +129,7 @@ Basic.test(
   'Toggles the toast on and off with the same button',
   {
     parameters: { chromatic: { disableSnapshot: true } },
-    render: (_args: unknown) => {
+    render: function Render(_args: unknown) {
       const args = toastArgs(_args);
       const [toastKey, setToastKey] = useState<string | null>(null);
       const { addToast, removeToast } = useToast();
@@ -186,7 +186,7 @@ Basic.test(
   // Keep the snapshot so Chromatic captures the toast with links.
   {
     parameters: { chromatic: { disableSnapshot: false } },
-    render: (_args: unknown) => {
+    render: function Render(_args: unknown) {
       const args = toastArgs(_args);
       const { addToast } = useToast();
       const description = (
@@ -251,7 +251,7 @@ Basic.test(
     // `wrapUpdate` runs on add and close. The toast auto-dismisses after 5s, so
     // a snapshot would race the commit.
     parameters: { chromatic: { disableSnapshot: true } },
-    render: () => {
+    render: function Render() {
       const [status, setStatus] = useState('idle');
       const { addUndoToast } = useToast();
 
@@ -301,7 +301,7 @@ Basic.test(
   // Keep the snapshot so Chromatic captures the toast with its action.
   {
     parameters: { chromatic: { disableSnapshot: false } },
-    render: (_args: unknown) => {
+    render: function Render(_args: unknown) {
       const args = toastArgs(_args);
       const { addToast } = useToast();
 
@@ -361,7 +361,7 @@ export const SmallScreen = meta.story({
     viewport: { value: 'extraSmallScreen' },
   },
   parameters: { chromatic: { disableSnapshot: true, viewports: [320] } },
-  render: (_args: unknown) => {
+  render: function Render(_args: unknown) {
     const args = toastArgs(_args);
     const { addToast } = useToast();
     return (

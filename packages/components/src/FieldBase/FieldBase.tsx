@@ -58,7 +58,7 @@ interface FieldBaseInternalProps<
 
 // Component
 // ---------------
-const _FieldBase = <T extends ElementType>({
+export const FieldBase = <T extends ElementType>({
   as: Component = 'div' as T,
   children,
   label,
@@ -174,5 +174,3 @@ const _FieldBase = <T extends ElementType>({
     </ComponentWithRef>
   );
 };
-
-export const FieldBase = _FieldBase;

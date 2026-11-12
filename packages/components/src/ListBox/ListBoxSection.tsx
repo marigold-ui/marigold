@@ -19,7 +19,7 @@ export interface SectionProps extends Omit<
   children: ReactNode;
 }
 
-const _Section = ({ header, children, ...props }: SectionProps) => {
+const Section = ({ header, children, ...props }: SectionProps) => {
   const { classNames } = useListBoxContext();
   return (
     <ListBoxSection
@@ -32,4 +32,4 @@ const _Section = ({ header, children, ...props }: SectionProps) => {
   );
 };
 
-export { _Section as Section };
+export { Section };

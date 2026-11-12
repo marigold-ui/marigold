@@ -1,7 +1,7 @@
 import type { Ref } from 'react';
 import { useId } from 'react';
 import type RAC from 'react-aria-components';
-import { Link } from 'react-aria-components/Link';
+import { Link as RACLink } from 'react-aria-components/Link';
 import { VisuallyHidden } from 'react-aria-components/VisuallyHidden';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
@@ -30,7 +30,7 @@ export interface LinkProps extends Omit<RAC.LinkProps, RemovedProps> {
   ref?: Ref<HTMLAnchorElement>;
 }
 
-const _Link = ({
+const Link = ({
   variant,
   size,
   disabled,
@@ -73,7 +73,7 @@ const _Link = ({
     .join(' ');
 
   return (
-    <Link
+    <RACLink
       {...props}
       aria-label={
         foldIntoLabel && suffix ? `${ariaLabel} ${suffix}` : ariaLabel
@@ -111,8 +111,8 @@ const _Link = ({
           ) : null}
         </>
       )}
-    </Link>
+    </RACLink>
   );
 };
 
-export { _Link as Link };
+export { Link };

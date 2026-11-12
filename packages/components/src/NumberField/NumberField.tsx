@@ -2,7 +2,7 @@ import type { Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Group } from 'react-aria-components/Group';
 import { Input } from 'react-aria-components/Input';
-import { NumberField } from 'react-aria-components/NumberField';
+import { NumberField as RACNumberField } from 'react-aria-components/NumberField';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { StepButton } from './StepButton';
@@ -78,7 +78,7 @@ export interface NumberFieldProps
 
 // Component
 // ---------------
-const _NumberField = ({
+const NumberField = ({
   variant,
   size,
   disabled,
@@ -107,7 +107,7 @@ const _NumberField = ({
 
   return (
     <FieldBase
-      as={NumberField}
+      as={RACNumberField}
       {...props}
       data-readonly={readOnly ? 'true' : undefined}
       data-stepper={showStepper ? 'true' : undefined}
@@ -142,4 +142,4 @@ const _NumberField = ({
   );
 };
 
-export { _NumberField as NumberField };
+export { NumberField };

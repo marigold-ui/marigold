@@ -37,7 +37,7 @@ export interface HeadlineProps
   children?: ReactNode;
 }
 
-const _Headline = ({
+const Headline = ({
   variant,
   size,
   children,
@@ -81,4 +81,4 @@ const _Headline = ({
   );
 };
 
-export { _Headline as Headline };
+export { Headline };

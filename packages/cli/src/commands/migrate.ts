@@ -53,6 +53,8 @@ export interface DetectedMigration {
   source: 'node_modules' | 'package.json';
   /** applicable migrations in run order, e.g. ['v18'] — empty: up to date */
   versions: string[];
+  /** migrations for the installed major that are not rerun-safe, so not proposed */
+  heldBack: string[];
 }
 
 /**
@@ -64,7 +66,7 @@ export interface DetectedMigration {
 export const detectMigration = (
   targetPath: string
 ): DetectedMigration | null => {
-  const found = ((): Omit<DetectedMigration, 'versions'> | null => {
+  const found = ((): Pick<DetectedMigration, 'installed' | 'source'> | null => {
     let dir = path.resolve(targetPath);
     for (;;) {
       const installed = installedVersion(dir, '@marigold/components');
@@ -84,14 +86,25 @@ export const detectMigration = (
 
   // Propose migrations targeting the installed major too (>=, not >): the
   // documented procedure is "upgrade the packages, then migrate", so someone
-  // on 18.x is exactly who needs the v18 migration. Re-running is a no-op.
+  // on 18.x is exactly who needs the v18 migration. That relies on re-runs
+  // being no-ops, so a manifest that is not rerun-safe is only proposed
+  // before its major is installed and otherwise has to be named explicitly.
   const major = Number.parseInt(found.installed, 10);
-  const versions = Object.keys(MANIFESTS)
-    .map(v => ({ v, target: Number.parseInt(v.replace(/^v/, ''), 10) }))
+  const candidates = Object.entries(MANIFESTS)
+    .map(([v, manifest]) => ({
+      v,
+      manifest,
+      target: Number.parseInt(v.replace(/^v/, ''), 10),
+    }))
     .filter(({ target }) => Number.isFinite(target) && target >= major)
-    .sort((a, b) => a.target - b.target)
-    .map(({ v }) => v);
-  return { ...found, versions };
+    .sort((a, b) => a.target - b.target);
+  const isHeldBack = ({ manifest, target }: (typeof candidates)[number]) =>
+    target === major && manifest.rerunSafe === false;
+  return {
+    ...found,
+    versions: candidates.filter(c => !isHeldBack(c)).map(({ v }) => v),
+    heldBack: candidates.filter(isHeldBack).map(({ v }) => v),
+  };
 };
 
 export interface MigrateOptions {
@@ -264,6 +277,7 @@ export const runMigrate = (options: MigrateOptions): MigrateResult => {
     renameJsxProps(manifest),
     removeJsxProps(manifest),
     renameImports(manifest),
+    ...(manifest.transforms ?? []),
   ];
   if (options.only) {
     const known = new Set([...editCodemods.map(c => c.name), SCAFFOLD]);
@@ -518,8 +532,11 @@ export const runMigrateCommand = async (
       );
     }
     if (detected.versions.length === 0) {
+      const [heldBack] = detected.heldBack;
       write(
-        `Detected @marigold/components ${detected.installed} (${detected.source}) — already up to date, no migration to run.`
+        heldBack
+          ? `Detected @marigold/components ${detected.installed} (${detected.source}) — the ${heldBack} migration is not proposed automatically because it is not safe to re-run. If you have not migrated yet, run: marigold migrate ${heldBack} [path] --dry-run`
+          : `Detected @marigold/components ${detected.installed} (${detected.source}) — already up to date, no migration to run.`
       );
       return 0;
     }

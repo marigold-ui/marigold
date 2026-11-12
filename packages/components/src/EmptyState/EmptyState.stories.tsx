@@ -78,7 +78,7 @@ export const WithAction = meta.story({
 export const WithAutocompleteAndData = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [inputValue, setInputValue] = useState('');
 
     const items = [
@@ -95,8 +95,8 @@ export const WithAutocompleteAndData = meta.story({
       <Autocomplete
         label="Search Characters"
         items={filteredItems}
-        value={inputValue}
-        onChange={setInputValue}
+        inputValue={inputValue}
+        onInputChange={setInputValue}
         allowsEmptyCollection
         emptyState={
           <EmptyState description="Try adjusting your search terms" {...args} />

@@ -5,12 +5,13 @@ import { cn } from '@marigold/system';
 import { textAlign, verticalAlign } from '../utils/styleProps';
 import { useTableContext } from './Context';
 import { TableCellContent } from './TableCellContent';
+import { renderStickyCell } from './TableStickyCell';
 import { TableTreeColumn } from './TableTreeColumn';
 import { resolveTextValue } from './textValue';
 
 // Props
 // ---------------
-type RemovedProps = 'className' | 'style' | 'children';
+type RemovedProps = 'className' | 'style' | 'children' | 'render';
 
 export interface TableCellProps extends Omit<RAC.CellProps, RemovedProps> {
   /**
@@ -52,6 +53,7 @@ const TableCell = ({
     <Cell
       className={cn(classNames.cell, verticalAlign[alignY])}
       textValue={resolvedTextValue}
+      render={renderStickyCell}
       {...props}
     >
       {({ id, columnIndex, isTreeColumn, hasChildItems, isExpanded }) => {

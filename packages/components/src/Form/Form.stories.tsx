@@ -104,7 +104,7 @@ export const Selected = meta.story({
             <ComboBox
               label="Job Role"
               width={40}
-              defaultSelectedKey={'software-engineer'}
+              defaultValue={'software-engineer'}
             >
               <ComboBox.Option id="software-engineer">
                 Software Engineer
@@ -123,7 +123,7 @@ export const Selected = meta.story({
             <Autocomplete
               label="Office Location"
               width={40}
-              defaultSelectedKey={'san-francisco'}
+              defaultValue={'san-francisco'}
             >
               <Autocomplete.Option id="berlin">Berlin</Autocomplete.Option>
               <Autocomplete.Option id="new-york">New York</Autocomplete.Option>
@@ -172,7 +172,7 @@ export const BooleanFields = meta.story({
 
 export const WithRef = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
-  render: () => {
+  render: function Render() {
     const formRef = useRef<HTMLFormElement>(null);
 
     return (

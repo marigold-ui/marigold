@@ -1,7 +1,8 @@
-import { Key, useState } from 'react';
+import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
+import type { Key } from '@react-types/shared';
 import { Button } from '../Button/Button';
 import { Description } from '../Description/Description';
 import { Stack } from '../Stack/Stack';
@@ -308,11 +309,11 @@ Basic.test(
 
 export const Controlled = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [id, setId] = useState<Key | null>(null);
     return (
       <Stack>
-        <ComboBox {...args} onSelectionChange={setId} label="Animals">
+        <ComboBox {...args} value={id} onChange={setId} label="Animals">
           <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
           <ComboBox.Option id="cat">Cat</ComboBox.Option>
           <ComboBox.Option id="dog">Dog</ComboBox.Option>
@@ -639,7 +640,7 @@ const SHIFT_ITEMS = [{ id: 'ada' }, { id: 'grace' }];
 const withShift: Parameters<typeof Basic.test>[1] = {
   args: { label: 'Assign to' },
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [shift, setShift] = useState('early');
 
     return (

@@ -195,6 +195,17 @@ export interface MigrationManifest {
   jsx: JsxChanges;
   tokens: TokenChanges;
   /**
+   * One-off transforms for changes no primitive can express. They run after
+   * the JSX primitives and are selectable like any other edit codemod.
+   */
+  transforms?: Codemod[];
+  /**
+   * `false` when a second run would edit migrated code again (v19's
+   * `value` swap). Auto-detection then skips the migration once its major is
+   * installed, so it only re-runs when requested by version.
+   */
+  rerunSafe?: false;
+  /**
    * Pinned base URL of the default theme's component style sources
    * (`<url>/<Component>.styles.ts`), used in reports as the reference for
    * what a slot's styles look like in the target version.
