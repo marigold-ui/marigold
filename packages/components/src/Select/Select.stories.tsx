@@ -87,7 +87,7 @@ const meta = preview.meta({
 export const Basic = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const [selected, setSelected] = useState<any>('');
     return (
       <Stack space={6}>
@@ -534,7 +534,7 @@ export const Multiple = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   // No args here, it breaks the types
-  render: ({ label }) => {
+  render: function Render({ label }) {
     const [selected, setSelected] = useState<Key[]>([]);
     return (
       <Form
@@ -1053,7 +1053,7 @@ export const MobileControlled = meta.story({
   args: {
     label: 'Favorite character',
   },
-  render: ({ label }) => {
+  render: function Render({ label }) {
     const [value, setValue] = useState<Key | null>(null);
     return (
       <Stack space={6}>
@@ -1088,7 +1088,7 @@ export const MobileControlled = meta.story({
 const withShift: Parameters<typeof Basic.test>[1] = {
   args: { label: 'Assign to', width: 80 },
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [shift, setShift] = useState('early');
 
     return (

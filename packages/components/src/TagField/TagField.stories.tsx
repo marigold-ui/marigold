@@ -129,7 +129,7 @@ Basic.test(
 export const Controlled = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [selected, setSelected] = useState<Key[]>(['rock', 'pop']);
     return (
       <Stack space={6}>
@@ -393,7 +393,7 @@ const SHIFT_ITEMS = [
 const withShift: Parameters<typeof Basic.test>[1] = {
   args: { label: 'Assign to', width: 80 },
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [shift, setShift] = useState('early');
 
     return (

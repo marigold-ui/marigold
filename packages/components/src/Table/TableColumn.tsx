@@ -8,6 +8,7 @@ import { SortDescending } from '../icons/SortDescending';
 import { Sortable } from '../icons/Sortable';
 import { alignment, textAlign } from '../utils/styleProps';
 import { useTableContext } from './Context';
+import { renderStickyColumn } from './TableStickyCell';
 import { TableTreeColumn } from './TableTreeColumn';
 
 // Helper
@@ -52,6 +53,11 @@ export interface TableColumnProps extends Omit<RAC.ColumnProps, RemovedProps> {
   minWidth?: RAC.ColumnProps['minWidth'];
   /** The maximum width of the column. */
   maxWidth?: RAC.ColumnProps['maxWidth'];
+  /**
+   * Keeps the column in place at an edge while the rest of the table scrolls
+   * sideways. `start` applies to the first column only, `end` to the last.
+   */
+  sticky?: 'start' | 'end';
 }
 
 // Component
@@ -73,6 +79,7 @@ const TableColumn = ({
       // Enforces width to be applied if its static (non-fraction)
       minWidth={ensureWidth(width, minWidth)}
       isRowHeader={rowHeader}
+      render={renderStickyColumn}
       // @ts-expect-error will be passed down
       alignX={alignX}
       {...props}

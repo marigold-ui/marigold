@@ -367,7 +367,7 @@ SelectInsideDrawerSmallScreen.test(
 
 export const Controlled = meta.story({
   parameters: { surface: false, chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [open, setOpen] = useState(false);
     const onOpenChange = (open: boolean) => {
       setOpen(open);
@@ -398,7 +398,7 @@ export const Controlled = meta.story({
 export const ControlledWithoutTrigger = meta.story({
   tags: ['component-test'],
   parameters: { surface: false, chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [open, setOpen] = useState(false);
     return (
       <Stack space={8} alignX="left">

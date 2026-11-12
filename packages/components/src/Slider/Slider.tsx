@@ -1,7 +1,7 @@
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import {
-  Slider,
+  Slider as RACSlider,
   SliderOutput,
   SliderThumb,
   SliderTrack,
@@ -57,7 +57,7 @@ export interface SliderProps<T>
   ref?: Ref<HTMLDivElement>;
 }
 
-const _Slider = <T extends number | number[]>({
+const Slider = <T extends number | number[]>({
   variant,
   size,
   width = 'full',
@@ -91,7 +91,7 @@ const _Slider = <T extends number | number[]>({
 
   return (
     <FieldBase
-      as={Slider}
+      as={RACSlider}
       width={width}
       className={cn(
         'grid w-(--container-width) grid-cols-[auto_1fr] gap-y-1',
@@ -158,4 +158,4 @@ const _Slider = <T extends number | number[]>({
   );
 };
 
-export { _Slider as Slider };
+export { Slider };

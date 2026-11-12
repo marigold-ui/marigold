@@ -1,9 +1,15 @@
 @AGENTS.md
 
+# Typecheck
+
+The typecheck hook skips `docs/`, because the docs check first generates MDX and Next.js
+types. After editing a `.ts` or `.tsx` file here (a demo, an anatomy diagram, site code), run
+`pnpm typecheck:docs` before you call the change done. Otherwise the error shows up only in CI.
+
 # Anatomy diagrams
 
 Moved here verbatim from `.claude/skills/component-docs-writer/references/anatomy-diagrams.md`,
-retired in DST-1528. The 59 `*-anatomy.tsx` files under `docs/content/**` are built to this
+retired in DST-1528. The `*-anatomy.tsx` files under `docs/content/**` are built to this
 contract and it was specified nowhere else.
 
 ## Canonical Frame (applies to every `*-anatomy.tsx`)

@@ -169,7 +169,7 @@ Basic.test(
   {
     parameters: { chromatic: { disableSnapshot: true } },
     args: { label: 'Opacity' },
-    render: args => {
+    render: function Render(args) {
       const [opacity, setOpacity] = useState<string | null>(null);
 
       return (
@@ -267,7 +267,7 @@ MultipleThumbs.test(
   {
     parameters: { chromatic: { disableSnapshot: true } },
     args: { label: 'Age' },
-    render: args => {
+    render: function Render(args) {
       const [age, setAge] = useState<{
         start: string | null;
         end: string | null;
@@ -359,7 +359,7 @@ ThumbLabels.test(
 export const MultiThumbsControlled = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   args: { label: 'Tickets for sale' },
-  render: args => {
+  render: function Render(args) {
     const [value, setValue] = useState<number | number[]>([25, 75]);
 
     return (

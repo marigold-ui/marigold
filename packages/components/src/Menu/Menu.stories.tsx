@@ -401,7 +401,7 @@ Basic.test(
 export const MultiSelection = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
-  render: () => {
+  render: function Render() {
     const [selectedKeys, setSelected] = useState(new Set());
     const selected = Array.from(selectedKeys);
 

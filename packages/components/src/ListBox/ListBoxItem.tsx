@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
-import { ListBoxItem } from 'react-aria-components/ListBox';
+import { ListBoxItem as RACListBoxItem } from 'react-aria-components/ListBox';
 import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
 import { useMergedTextSlots } from '../utils/useMergedTextSlots';
@@ -46,10 +46,10 @@ const ItemChildren = ({
   );
 };
 
-export const _ListBoxItem = (props: ListBoxItemProps) => {
+const ListBoxItem = (props: ListBoxItemProps) => {
   const { classNames, virtualized } = useListBoxContext();
   return (
-    <ListBoxItem
+    <RACListBoxItem
       {...props}
       className={classNames.item}
       style={virtualized ? { height: '100%', minHeight: 0 } : undefined}
@@ -62,8 +62,8 @@ export const _ListBoxItem = (props: ListBoxItemProps) => {
       >
         {props.children}
       </ItemChildren>
-    </ListBoxItem>
+    </RACListBoxItem>
   );
 };
 
-export { _ListBoxItem as ListBoxItem };
+export { ListBoxItem };

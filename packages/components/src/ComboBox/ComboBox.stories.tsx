@@ -309,7 +309,7 @@ Basic.test(
 
 export const Controlled = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [id, setId] = useState<Key | null>(null);
     return (
       <Stack>
@@ -648,7 +648,7 @@ const SHIFT_ITEMS = [{ id: 'ada' }, { id: 'grace' }];
 const withShift: Parameters<typeof Basic.test>[1] = {
   args: { label: 'Assign to' },
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [shift, setShift] = useState('early');
 
     return (

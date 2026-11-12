@@ -337,7 +337,7 @@ export const Unavailable = meta.story({
       end: new CalendarDate(2025, 8, 6),
     },
   },
-  render: args => {
+  render: function Render(args) {
     const { locale } = useLocale();
     return (
       <RangeCalendar
@@ -365,7 +365,7 @@ export const NonContiguous = meta.story({
   args: {
     allowsNonContiguousRanges: true,
   },
-  render: args => {
+  render: function Render(args) {
     const { locale } = useLocale();
     const [value, setValue] = useState<RangeValue<DateValue> | null>({
       start: new CalendarDate(2025, 8, 4),

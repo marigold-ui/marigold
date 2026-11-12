@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react';
 import type RAC from 'react-aria-components';
-import { TooltipTrigger } from 'react-aria-components/Tooltip';
+import { TooltipTrigger as RACTooltipTrigger } from 'react-aria-components/Tooltip';
 
 type RemovedProps = 'isDisabled' | 'isOpen' | 'children';
 export interface TooltipTriggerProps extends Omit<
@@ -21,7 +21,7 @@ export interface TooltipTriggerProps extends Omit<
   open?: boolean;
 }
 
-const _TooltipTrigger = ({
+const TooltipTrigger = ({
   delay = 1000,
   children,
   disabled,
@@ -35,7 +35,7 @@ const _TooltipTrigger = ({
     delay,
   };
 
-  return <TooltipTrigger {...props}>{children}</TooltipTrigger>;
+  return <RACTooltipTrigger {...props}>{children}</RACTooltipTrigger>;
 };
 
-export { _TooltipTrigger as TooltipTrigger };
+export { TooltipTrigger };

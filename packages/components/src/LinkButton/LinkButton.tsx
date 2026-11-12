@@ -36,7 +36,7 @@ export interface LinkButtonProps extends Omit<RAC.LinkProps, RemovedProps> {
   ref?: Ref<HTMLAnchorElement>;
 }
 
-const _LinkButton = ({
+const LinkButton = ({
   children,
   variant: propVariant,
   size: propSize,
@@ -79,4 +79,4 @@ const _LinkButton = ({
   );
 };
 
-export { _LinkButton as LinkButton };
+export { LinkButton };

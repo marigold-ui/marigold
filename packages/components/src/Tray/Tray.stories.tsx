@@ -125,7 +125,7 @@ Basic.test(
 
 export const DismissControlsWithCallbacks = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [open, setOpen] = useState(false);
     const [log, setLog] = useState<string[]>([]);
 
@@ -478,7 +478,7 @@ ScrollableContent.test(
 export const ShrinkingContent = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [count, setCount] = useState(40);
 
     return (
