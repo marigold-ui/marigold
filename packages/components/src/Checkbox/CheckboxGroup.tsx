@@ -2,8 +2,8 @@ import type { ReactNode } from 'react';
 import { isValidElement, use } from 'react';
 import type RAC from 'react-aria-components';
 import {
-  CheckboxGroup,
   CheckboxGroupStateContext,
+  CheckboxGroup as RACCheckboxGroup,
 } from 'react-aria-components/CheckboxGroup';
 import { Orientation } from '@react-types/shared';
 import type { WidthProp } from '@marigold/system';
@@ -114,7 +114,7 @@ export interface CheckboxGroupProps
 
 // Component
 // ---------------
-const _CheckboxGroup = ({
+const CheckboxGroup = ({
   children,
   variant,
   size,
@@ -147,7 +147,7 @@ const _CheckboxGroup = ({
   );
 
   return (
-    <FieldBase as={CheckboxGroup} width={width} {...props}>
+    <FieldBase as={RACCheckboxGroup} width={width} {...props}>
       <div
         role="presentation"
         data-orientation={orientation}
@@ -166,4 +166,4 @@ const _CheckboxGroup = ({
   );
 };
 
-export { _CheckboxGroup as CheckboxGroup };
+export { CheckboxGroup };

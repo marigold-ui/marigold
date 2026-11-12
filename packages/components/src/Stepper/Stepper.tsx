@@ -140,7 +140,7 @@ const StepContent = ({
   );
 };
 
-const _Stepper = ({
+const Stepper = ({
   children,
   selectedKey: selectedKeyProp,
   defaultSelectedKey,
@@ -266,6 +266,6 @@ const _Stepper = ({
   );
 };
 
-_Stepper.Item = StepperItem;
+Stepper.Item = StepperItem;
 
-export { _Stepper as Stepper };
+export { Stepper };

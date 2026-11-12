@@ -45,7 +45,7 @@
     "directory": "packages/components"
   },
   "dependencies": {
-    "@internationalized/date": "^3.12.3",
+    "@internationalized/date": "^3.12.4",
     "@marigold/system": "workspace:*",
     "@marigold/types": "workspace:*",
     "@react-aria/button": "^3.15.1",
@@ -74,10 +74,10 @@
     "@react-types/button": "~3.15.0",
     "@react-types/checkbox": "~3.10.0",
     "@react-types/grid": "~3.3.0",
-    "@react-types/shared": "^3.36.1",
+    "@react-types/shared": "^3.37.0",
     "@react-types/table": "~3.13.0",
     "motion": "12.43.0",
-    "react-aria-components": "^1.20.0"
+    "react-aria-components": "^1.22.1"
   },
   "peerDependencies": {
     "react": ">=17.0.0",
@@ -93,7 +93,7 @@
     "react-dom": "^19.2.8",
     "react-error-boundary": "6.1.6",
     "size-limit": "^12.1.0",
-    "tsdown": "0.23.5"
+    "tsdown": "0.23.7"
   },
   "scripts": {
     "build": "tsdown",

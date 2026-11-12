@@ -1,6 +1,6 @@
 import { use } from 'react';
 import type RAC from 'react-aria-components';
-import { ToggleButton } from 'react-aria-components/ToggleButton';
+import { ToggleButton as RACToggleButton } from 'react-aria-components/ToggleButton';
 import { cn, useClassNames } from '@marigold/system';
 import { ToggleButtonContext } from './Context';
 import { ToggleButtonGroup } from './ToggleButtonGroup';
@@ -23,7 +23,7 @@ export interface ToggleButtonProps extends Omit<
   size?: 'small' | 'default' | 'icon' | (string & {});
 }
 
-export const _ToggleButton = ({
+const ToggleButton = ({
   children,
   selected,
   disabled,
@@ -40,7 +40,7 @@ export const _ToggleButton = ({
   });
 
   return (
-    <ToggleButton
+    <RACToggleButton
       isSelected={selected}
       isDisabled={disabled}
       // With the group no longer clipping, the standard ui-state-focus outline
@@ -50,10 +50,10 @@ export const _ToggleButton = ({
       {...props}
     >
       {children}
-    </ToggleButton>
+    </RACToggleButton>
   );
 };
 
-_ToggleButton.Group = ToggleButtonGroup;
+ToggleButton.Group = ToggleButtonGroup;
 
-export { _ToggleButton as ToggleButton };
+export { ToggleButton };

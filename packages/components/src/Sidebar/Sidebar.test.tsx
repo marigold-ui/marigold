@@ -176,6 +176,45 @@ test('sub-panel opens when child is active', () => {
   expect(backButton).toBeInTheDocument();
 });
 
+test('a drilled-in level is headed and named by its section', () => {
+  render(<WithActiveBranch.Component />);
+
+  const heading = screen.getByRole('heading', { level: 2, name: 'Management' });
+  const backButton = screen.getByRole('button', {
+    name: 'Back to Management',
+  });
+
+  expect(backButton).not.toContainElement(heading);
+  expect(screen.getByRole('region', { name: 'Management' })).toContainElement(
+    heading
+  );
+});
+
+test('group labels sit one level below the section heading', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Sidebar.Provider>
+        <Sidebar>
+          <Sidebar.Nav current="/users">
+            <Sidebar.GroupLabel>Workspace</Sidebar.GroupLabel>
+            <Sidebar.Item id="management" textValue="Management">
+              Management
+              <Sidebar.GroupLabel>People</Sidebar.GroupLabel>
+              <Sidebar.Item href="/users">Users</Sidebar.Item>
+            </Sidebar.Item>
+          </Sidebar.Nav>
+        </Sidebar>
+      </Sidebar.Provider>
+    </MarigoldProvider>
+  );
+
+  // The root level is inert while Management is open, so query the DOM.
+  expect(screen.getByText('Workspace')).toHaveAttribute('aria-level', '2');
+  expect(
+    screen.getByRole('heading', { level: 3, name: 'People' })
+  ).toBeInTheDocument();
+});
+
 test('back button returns to root panel', async () => {
   render(<WithActiveBranch.Component />);
   const backButton = await screen.findByRole('button', { name: /Back/ });

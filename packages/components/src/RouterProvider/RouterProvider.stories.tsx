@@ -43,7 +43,7 @@ function CustomTab(props: any) {
 }
 
 export const Basic = meta.story({
-  render: () => {
+  render: function Render() {
     const [url, setUrl] = useState<string>('/FoR');
     return (
       <>
@@ -89,7 +89,7 @@ export const Basic = meta.story({
 // covered by the unit tests in `Sidebar.test.tsx` and `SidebarRail.test.tsx`.
 export const WithBasePath = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
-  render: () => {
+  render: function Render() {
     const [navigated, setNavigated] = useState<string>('/start');
     return (
       <>

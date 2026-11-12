@@ -1,6 +1,6 @@
 import { use, useEffect } from 'react';
-import { OverlayTriggerStateContext } from 'react-aria-components/Dialog';
 import { useEffectEvent } from '@react-aria/utils';
+import type { OverlayTriggerState } from '@react-stately/overlays';
 import { DrawerNestingContext } from './Context';
 import { registerActiveDrawer } from './drawerRegistry';
 
@@ -10,11 +10,10 @@ import { registerActiveDrawer } from './drawerRegistry';
  * their own trigger. `useEffectEvent` keeps the registered handler stable
  * while always invoking the latest `state.close`.
  */
-export const useDrawerCoordination = () => {
-  const state = use(OverlayTriggerStateContext);
+export const useDrawerCoordination = (state: OverlayTriggerState) => {
   const isNested = use(DrawerNestingContext);
-  const isOpen = state?.isOpen ?? false;
-  const close = useEffectEvent(() => state?.close());
+  const isOpen = state.isOpen;
+  const close = useEffectEvent(() => state.close());
 
   useEffect(() => {
     if (!isOpen || isNested) return;

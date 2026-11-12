@@ -21,7 +21,7 @@ export interface TextValueProps
   ref?: Ref<HTMLElement>;
 }
 
-const _TextValue = ({
+const TextValue = ({
   as = 'span',
   slot = 'label',
   children,
@@ -36,4 +36,4 @@ const _TextValue = ({
   </Text>
 );
 
-export { _TextValue as TextValue };
+export { TextValue };

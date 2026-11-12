@@ -1,6 +1,6 @@
 import { ReactElement, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { SearchField } from 'react-aria-components/SearchField';
+import { SearchField as RACSearchField } from 'react-aria-components/SearchField';
 import { WidthProp } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { SearchInput } from '../Input/SearchInput';
@@ -86,7 +86,7 @@ export interface SearchFieldProps
   ref?: Ref<HTMLInputElement>;
 }
 
-const _SearchField = ({
+const SearchField = ({
   disabled,
   required,
   readOnly,
@@ -103,7 +103,7 @@ const _SearchField = ({
   };
 
   return (
-    <FieldBase as={SearchField} {...props}>
+    <FieldBase as={RACSearchField} {...props}>
       <SearchInput
         ref={ref}
         className={{
@@ -114,4 +114,4 @@ const _SearchField = ({
   );
 };
 
-export { _SearchField as SearchField };
+export { SearchField };

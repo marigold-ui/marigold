@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { JSX } from 'react';
 import type RAC from 'react-aria-components';
-import { Text } from 'react-aria-components/Text';
+import { Text as RACText } from 'react-aria-components/Text';
 import {
   CursorProp,
   FontSizeProp,
@@ -85,7 +85,7 @@ export interface TextProps
 
 // Component
 // ---------------
-const _Text = ({
+const Text = ({
   variant,
   size,
   color,
@@ -112,7 +112,7 @@ const _Text = ({
    * Use `<Text>` when a `slot` is used. Make sure `elementType`
    * prop is only used in combination the `<Text>`.
    */
-  const Component = slot ? Text : as;
+  const Component = slot ? RACText : as;
   const elementType = slot ? { elementType: as } : {};
 
   return (
@@ -143,4 +143,4 @@ const _Text = ({
   );
 };
 
-export { _Text as Text };
+export { Text };

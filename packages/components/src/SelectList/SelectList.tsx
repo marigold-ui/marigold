@@ -31,7 +31,7 @@ import { FieldBase } from '../FieldBase/FieldBase';
 import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
 import { SelectAllHeader, useSelectableKeys } from '../utils/SelectAll';
 import { useFieldHelpText } from '../utils/useFieldHelpText';
-import { hasAddonContent, joinIds } from '../utils/useLabelAddon';
+import { useAddonDescription } from '../utils/useLabelAddon';
 import { useLiftedSelection } from '../utils/useLiftedSelection';
 import { SelectListContext } from './Context';
 import { SelectListOption } from './SelectListOption';
@@ -255,7 +255,6 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
     disallowEmptySelection ?? resolvedSelectionMode === 'single';
   const classNames = useClassNames({ component: 'SelectList', variant });
   const labelId = useId();
-  const addonId = useId();
   const gridListRef = useObjectRef(ref);
 
   const itemPaddingStyle = useMemo<CSSProperties>(() => {
@@ -343,14 +342,15 @@ const SelectList = <Mode extends SelectionMode = 'single'>({
     validationBehavior,
   });
 
+  const { addonId, describedBy: addonDescribedBy } = useAddonDescription(
+    addon,
+    rest['aria-describedby']
+  );
   const { describedBy, helpTextSlots } = useFieldHelpText({
     description,
     errorMessage,
     isInvalid: validationState.displayValidation.isInvalid,
-    'aria-describedby': joinIds(
-      rest['aria-describedby'],
-      hasAddonContent(addon) ? addonId : undefined
-    ),
+    'aria-describedby': addonDescribedBy,
   });
 
   const handleSelectionChange = useCallback(

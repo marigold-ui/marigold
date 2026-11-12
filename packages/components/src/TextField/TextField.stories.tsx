@@ -136,7 +136,7 @@ export const WithError = meta.story({
 
 export const Controlled = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [value, setValue] = useState('');
     return (
       <>

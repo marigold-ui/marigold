@@ -5,7 +5,7 @@ import type { TimeValue } from 'react-aria-components/TimeField';
 import {
   DateInput,
   DateSegment,
-  TimeField,
+  TimeField as RACTimeField,
 } from 'react-aria-components/TimeField';
 import { WidthProp, cn } from '@marigold/system';
 import { useClassNames } from '@marigold/system';
@@ -88,7 +88,7 @@ export interface TimeFieldProps
 
 // Component
 // ---------------
-const _TimeField = ({
+const TimeField = ({
   required,
   disabled,
   readOnly,
@@ -111,7 +111,7 @@ const _TimeField = ({
 
   return (
     <FieldBase
-      as={TimeField}
+      as={RACTimeField}
       variant={variant}
       size={size}
       width={width}
@@ -131,4 +131,4 @@ const _TimeField = ({
   );
 };
 
-export { _TimeField as TimeField };
+export { TimeField };

@@ -7,6 +7,7 @@ import { renderInDialog } from '../test.utils';
 import {
   Basic,
   CollapseAt,
+  CollapseAtWrappedTags,
   RemovableTags,
   WithError,
 } from './TagGroup.stories';
@@ -171,6 +172,14 @@ test('collapseAt expands automatically when a hidden tag is selected', () => {
 
   expect(screen.getByText('Music')).toBeVisible();
   expect(screen.getByText('Show 5 less')).toBeVisible();
+});
+
+test('collapseAt hides tags wrapped in a consumer component', () => {
+  render(<CollapseAtWrappedTags.Component />);
+
+  expect(screen.getByText('Travel')).toBeVisible();
+  expect(screen.queryByText('Gaming')).not.toBeVisible();
+  expect(screen.queryByText('Music')).not.toBeVisible();
 });
 
 test('collapseAt is ignored for dynamic collections (function children)', () => {

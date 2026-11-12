@@ -1,4 +1,3 @@
-import { use } from 'react';
 import { OverlayTriggerStateContext } from 'react-aria-components/Dialog';
 import { Provider, SlotProps } from 'react-aria-components/slots';
 import { useRenderProps } from 'react-aria-components/useRenderProps';
@@ -14,14 +13,14 @@ import {
   useObjectRef,
   useViewportSize,
 } from '@react-aria/utils';
-import {
+import type {
   OverlayTriggerProps,
   OverlayTriggerState,
-  useOverlayTriggerState,
 } from '@react-stately/overlays';
 import type { AriaLabelingProps, RefObject } from '@react-types/shared';
 import type { AriaNonModalProps } from './useNonModal';
 import { useNonModal } from './useNonModal';
+import { useOverlayState } from './useOverlayState';
 
 /* eslint-disable react-hooks/refs */
 // This component uses React Aria hooks (useEnterAnimation, useExitAnimation) that
@@ -156,12 +155,7 @@ export const NonModal = ({ open, ref: refProp, ...rest }: NonModalProps) => {
   };
 
   const ref = useObjectRef(refProp);
-  const contextState = use(OverlayTriggerStateContext);
-  const localState = useOverlayTriggerState(props);
-  const state =
-    props.isOpen != null || props.defaultOpen != null || !contextState
-      ? localState
-      : contextState;
+  const state = useOverlayState(props, 'NonModal');
 
   const isExiting =
     useExitAnimation(ref, state.isOpen) || props.isExiting || false;

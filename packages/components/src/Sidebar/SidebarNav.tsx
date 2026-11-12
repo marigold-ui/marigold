@@ -1,9 +1,9 @@
-import { useCallback } from 'react';
+import { use, useCallback } from 'react';
 import type { ReactNode, Ref } from 'react';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn } from '@marigold/system';
 import { intlMessages } from '../intl/messages';
-import { useSidebar } from './Context';
+import { SidebarRailPanelContext, useSidebar } from './Context';
 import { SidebarPanel } from './SidebarPanel';
 import type { SidebarCurrent } from './collection';
 import { panelPosition, useLastDistinctValue } from './useSidebarNav';
@@ -25,10 +25,15 @@ export interface SidebarNavProps {
 
 const SidebarNav = ({
   children,
-  'aria-label': ariaLabel,
-  current,
+  'aria-label': ariaLabelProp,
+  current: currentProp,
   ref,
 }: SidebarNavProps & { ref?: Ref<HTMLElement> }) => {
+  // Inside a `Sidebar.Rail` panel the rail supplies `current` and the panel
+  // title; props set on this nav win.
+  const railPanel = use(SidebarRailPanelContext);
+  const current = currentProp ?? railPanel.current;
+  const ariaLabel = ariaLabelProp ?? railPanel['aria-label'];
   const { classNames } = useSidebar();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 

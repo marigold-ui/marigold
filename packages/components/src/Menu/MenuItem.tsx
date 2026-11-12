@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { KeyboardContext } from 'react-aria-components/Keyboard';
-import { MenuItem } from 'react-aria-components/Menu';
+import { MenuItem as RACMenuItem } from 'react-aria-components/Menu';
 import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
 import { useClassNames } from '@marigold/system';
@@ -70,7 +70,7 @@ export const MenuItemCore = ({
   classNames,
   ...props
 }: Omit<MenuItemProps, 'size'> & { classNames: MenuItemClassNames }) => (
-  <MenuItem
+  <RACMenuItem
     {...props}
     // RAC gets a render function below, so it cannot derive the text used
     // for typeahead and filtering. Plain-text children provide it.
@@ -96,14 +96,14 @@ export const MenuItemCore = ({
         <AccessLabel variant={variant} />
       </>
     )}
-  </MenuItem>
+  </RACMenuItem>
 );
 
 // Component
 // ---------------
-const _MenuItem = ({ variant, size, ...props }: MenuItemProps) => {
+const MenuItem = ({ variant, size, ...props }: MenuItemProps) => {
   const classNames = useClassNames({ component: 'Menu', variant, size });
   return <MenuItemCore {...props} variant={variant} classNames={classNames} />;
 };
 
-export { _MenuItem as MenuItem };
+export { MenuItem };
