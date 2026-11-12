@@ -76,7 +76,6 @@ To start documentation follow these steps:
 | pnpm lint:prose     | Lint docs prose with Vale.                                                            |
 | pnpm format         | Format files with Prettier.                                                           |
 | pnpm format:check   | Check formatting without writing (what CI runs).                                      |
-| pnpm format:fix     | Format and attempt to fix with Prettier.                                              |
 | pnpm typecheck      | Run TypeScript type checking (no emit). Same as `typecheck:only`.                     |
 | pnpm typecheck:only | Run TypeScript type checking (no emit).                                               |
 | pnpm changeset      | Run the Changesets CLI.                                                               |

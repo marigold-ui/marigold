@@ -14,7 +14,9 @@ import { cn, useClassNames } from '@marigold/system';
 import { useActionBar } from '../ActionBar/useActionBar';
 import { intlMessages } from '../intl/messages';
 import type { Selection } from '../types';
-import { TableContext } from './Context';
+import { useDevWarning } from '../utils/useDevWarning';
+import type { StickyEdge } from './Context';
+import { TableContext, TableStickyContext, noStickyColumns } from './Context';
 import { TableBody } from './TableBody';
 import { TableCell } from './TableCell';
 import { TableColumn } from './TableColumn';
@@ -23,7 +25,7 @@ import { renderDropIndicator } from './TableDropIndicator';
 import { TableEditableCell } from './TableEditableCell';
 import { TableExpandableRows } from './TableExpandableRows';
 import { TableFooter } from './TableFooter';
-import { TableHeader } from './TableHeader';
+import { TableHeader, injectedColumnKeys } from './TableHeader';
 import { TableRow } from './TableRow';
 
 type RemovedProps = 'className' | 'style' | 'selectionBehavior' | 'render';
@@ -156,7 +158,77 @@ const TableElement = ({
     onMinWidthChange(minWidth);
   }, [minWidth, onMinWidthChange]);
 
-  return <table {...props} aria-busy={loading || undefined} />;
+  // Only the first consumer column sticks to the start, taking the injected
+  // drag and selection columns with it, and only the last sticks to the end.
+  const columns = state?.collection.columns ?? [];
+  const injected = columns.filter(column =>
+    injectedColumnKeys.has(column.key)
+  ).length;
+  const first = columns.at(injected);
+  const last = columns.at(-1);
+  const edges = columns.map((column, index): StickyEdge | undefined =>
+    index <= injected && first?.props.sticky === 'start'
+      ? 'start'
+      : column === last && column.props.sticky === 'end'
+        ? 'end'
+        : undefined
+  );
+
+  // Keyed on the edges alone, so cells re-render only when those change.
+  const edgesKey = edges.join();
+  const stickyColumns = useMemo(
+    () =>
+      /\w/.test(edgesKey)
+        ? edgesKey
+            .split(',')
+            .map(edge =>
+              edge === 'start' || edge === 'end' ? edge : undefined
+            )
+        : noStickyColumns,
+    [edgesKey]
+  );
+
+  const widthAt = (edge: StickyEdge) =>
+    columns.reduce<number>(
+      (sum, column, index) =>
+        edges[index] === edge
+          ? sum + (layout?.getColumnWidth(column.key) ?? 0)
+          : sum,
+      0
+    );
+  const stickyStart = widthAt('start');
+  const stickyEnd = widthAt('end');
+
+  // Named by position: the label is a render function by now.
+  const ignored = columns.flatMap((column, index) =>
+    column.props.sticky && !edges[index]
+      ? [`column ${index - injected + 1}`]
+      : []
+  );
+
+  useDevWarning(
+    ignored.length > 0,
+    ignored.length > 0
+      ? `[Table] \`sticky="start"\` only applies to the first column and \`sticky="end"\` to the last. It is ignored on: ${ignored.join(', ')}.`
+      : ''
+  );
+
+  return (
+    <TableStickyContext value={stickyColumns}>
+      <table
+        {...props}
+        style={{
+          ...props.style,
+          // Read by the cells that scroll, to keep focus clear of the sticky ones.
+          ...((stickyStart > 0 || stickyEnd > 0) && {
+            '--table-sticky-start': `${stickyStart}px`,
+            '--table-sticky-end': `${stickyEnd}px`,
+          }),
+        }}
+        aria-busy={loading || undefined}
+      />
+    </TableStickyContext>
+  );
 };
 
 const TableRoot = ({
@@ -235,7 +307,9 @@ const TableRoot = ({
           style={{ minWidth: minTableWidth }}
         >
           <RACTable
-            className={cn('group/table', classNames.table)}
+            // Its own stacking context, so the sticky header, footer and
+            // columns order among themselves and never against the page.
+            className={cn('group/table isolate', classNames.table)}
             treeColumn={treeColumn}
             selectionBehavior="toggle"
             selectedKeys={selectedKeys}

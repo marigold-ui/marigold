@@ -45,8 +45,8 @@ interface RailItemLinkProps {
   selected: boolean;
   /** Drives `aria-current` — the item that matches the live page. */
   matched: boolean;
-  /** Runs on activation; returns whether the click should still navigate. */
-  onActivate: () => boolean;
+  /** Runs the item's side effects on activation, before it navigates. */
+  onActivate: () => void;
   /**
    * Icon-only rail: enables the tooltip as the hover/focus hint. The label
    * itself stays mounted — the theme folds its row away and fades it to
@@ -60,9 +60,9 @@ interface RailItemLinkProps {
 /**
  * Anchor props shared by the rail's links: router-aware href, `role="button"`
  * for href-less items, and the click/keyboard activation. `activate` runs the
- * item's side effects and returns whether the click should still navigate.
+ * item's side effects; the click then follows the href, if there is one.
  */
-const useRailAnchorProps = (node: SidebarRailNode, activate: () => boolean) => {
+const useRailAnchorProps = (node: SidebarRailNode, activate: () => void) => {
   const router = useRouter();
   // Sole source of the rendered href, since a raw `href` would shadow the
   // router's `useHref`. Pass undefined when there is none, or `useLinkProps`
@@ -77,7 +77,9 @@ const useRailAnchorProps = (node: SidebarRailNode, activate: () => boolean) => {
     onClick: (e: MouseEvent<HTMLAnchorElement>) => {
       // New-tab/window clicks: let the browser navigate, touch no state.
       if (node.href && isModifiedClick(e)) return;
-      if (activate()) {
+      activate();
+      // A section whose nav has no linkable leaf has no href: nowhere to go.
+      if (node.href) {
         handleLinkClick(e, router, node.href, undefined);
       } else {
         e.preventDefault();
@@ -101,11 +103,8 @@ const RailItemLink = ({
   className,
 }: RailItemLinkProps) => {
   const anchorProps = useRailAnchorProps(node, () => {
-    const shouldNavigate = onActivate();
+    onActivate();
     node.onPress?.();
-    // Re-clicking the active section only toggles the panel — don't navigate
-    // away from the deeper page the user is on.
-    return shouldNavigate;
   });
 
   // A section is only the current page's ancestor (`true`); a direct-link item
@@ -154,7 +153,6 @@ const RailFooterLink = ({
   const anchorProps = useRailAnchorProps(node, () => {
     node.onPress?.();
     onNavigate();
-    return true;
   });
 
   return (
@@ -219,9 +217,8 @@ const SidebarRail = ({
     titleRef.current?.focus({ focusVisible: isFocusVisible() } as FocusOptions);
   }, [hasPanel, selectedKey]);
 
-  // Maps `resolveRailActivation`'s decision onto state/refs; returns whether
-  // the click should navigate.
-  const activateRail = (node: SidebarRailNode): boolean => {
+  // Maps `resolveRailActivation`'s decision onto state/refs.
+  const activateRail = (node: SidebarRailNode) => {
     const action = resolveRailActivation(node, {
       selectedKey,
       state,
@@ -229,7 +226,6 @@ const SidebarRail = ({
     if (action.select) selectRail(node.key);
     if (action.focusPanel) focusPendingRef.current = true;
     if (action.toggle) toggleSidebar();
-    return action.navigate;
   };
 
   // Same column in both shells; only desktop collapses to icons (the drawer
