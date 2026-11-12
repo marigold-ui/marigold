@@ -401,7 +401,6 @@ export const Button = () => { ... };
 - `fireEvent` usage
 - Broken accessibility (missing ARIA, no keyboard support)
 - Type errors
-- Missing, stale, or failed visual regression tests when UI-affecting files are changed
 
 ### Warnings (Should Fix)
 
