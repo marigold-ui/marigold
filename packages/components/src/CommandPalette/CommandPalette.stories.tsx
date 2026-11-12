@@ -349,10 +349,12 @@ export const Loading = meta.story({
       <CommandPalette.Button />
       <CommandPalette
         placeholder="Search events…"
+        filter={false}
         loading
         emptyState="No events found."
       >
-        {[]}
+        {/* Empty while the server answers: renders no lone title. */}
+        <CommandPalette.Group title="Events">{[]}</CommandPalette.Group>
       </CommandPalette>
     </CommandPalette.Trigger>
   ),
@@ -370,6 +372,7 @@ Loading.test(
     await expectVisible(await within(list).findByText('Loading...'));
     await expect(canvas.queryByText('No events found.')).toBeNull();
     await expect(canvas.getByRole('progressbar')).toBeInTheDocument();
+    await expect(within(list).queryByText('Events')).toBeNull();
   }
 );
 
