@@ -75,6 +75,7 @@ export default () => {
     prefix: null,
   });
   const { term, prefix } = search;
+  const searching = term !== '' || prefix !== null;
   const key = `${prefix}:${term}`;
   const [results, setResults] = useState<{
     key: string;
@@ -83,7 +84,9 @@ export default () => {
   } | null>(null);
 
   useEffect(() => {
-    if (!term) return;
+    // A prefix alone already searches: it lists the first records of that
+    // kind, so nobody takes the recent ones for everything there is.
+    if (!searching) return;
     const controller = new AbortController();
     // Wait until people pause typing, and cancel requests that are out of date.
     const timer = setTimeout(async () => {
@@ -105,11 +108,11 @@ export default () => {
       clearTimeout(timer);
       controller.abort();
     };
-  }, [key, prefix, term]);
+  }, [key, prefix, searching, term]);
 
-  const current = term && results?.key === key ? results : null;
-  const events = term ? (current?.events.items ?? []) : recent;
-  const venues = term ? (current?.venues.items ?? []) : recentVenues;
+  const current = searching && results?.key === key ? results : null;
+  const events = searching ? (current?.events.items ?? []) : recent;
+  const venues = searching ? (current?.venues.items ?? []) : recentVenues;
   const moreEvents = (current?.events.totalItems ?? 0) - LIMIT;
   // `filter={false}` turns off the built-in match for every group, so the
   // static pages are matched here.
@@ -124,7 +127,7 @@ export default () => {
         placeholder="Search pages, events and venues…"
         filter={false}
         onSearchChange={setSearch}
-        loading={term !== '' && current === null}
+        loading={searching && current === null}
       >
         <CommandPalette.Group title="Pages">
           {matchingPages.map(page => (
@@ -152,11 +155,12 @@ export default () => {
           {moreEvents > 0 && (
             <CommandPalette.Item
               id="all-events"
-              textValue={`Show all events for ${term}`}
+              textValue={`Show all events ${term}`}
             >
               <Search />
               <Text slot="label">
-                Show all {current?.events.totalItems} events for “{term}”
+                Show all {current?.events.totalItems} events
+                {term && ` for “${term}”`}
               </Text>
               <Text slot="description">
                 Opens the event list with this search
