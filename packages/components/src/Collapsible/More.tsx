@@ -33,6 +33,7 @@ export const More = ({
    */
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');
+  // eslint-disable-next-line @eslint-react/no-children-count -- the label shows how many items the consumer passed, which only Children.count reports (arrays and fragments flattened)
   const count = `${Children.count(children)}`;
 
   return (

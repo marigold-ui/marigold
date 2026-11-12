@@ -145,6 +145,7 @@ const Slider = <T extends number | number[]>({
             {state.values.map((_, i) => (
               <SliderThumb
                 className={cn('top-1/2 cursor-pointer', classNames.thumb)}
+                // eslint-disable-next-line @eslint-react/no-array-index-key -- the thumb's `index` prop is its identity: thumbs are fixed by position and have no id
                 key={i}
                 index={i}
                 aria-label={thumbLabelsList[i]}

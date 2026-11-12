@@ -27,17 +27,13 @@ export const BreadcrumbEllipsis = ({
       </IconButton>
       <Popover>
         <Menu className={container}>
-          {hiddenItems.map((item, index) => {
+          {hiddenItems.map(item => {
             if (!isValidElement<BreadcrumbsItemProps>(item)) return null;
 
             const { href, children: itemChildren } = item.props;
 
             return (
-              <MenuItem
-                key={`${href}-${index}`}
-                className={menuItem}
-                href={href}
-              >
+              <MenuItem key={item.key} className={menuItem} href={href}>
                 {itemChildren}
               </MenuItem>
             );

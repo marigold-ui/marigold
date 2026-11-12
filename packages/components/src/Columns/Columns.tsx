@@ -35,9 +35,12 @@ export const Columns = ({
   children,
   ...props
 }: ColumnsProps) => {
-  if (Children.count(children) !== columns.length) {
+  // The `columns` array must line up with the children one to one.
+  // eslint-disable-next-line @eslint-react/no-children-count -- validating the consumer's child count against `columns` needs the flattened count
+  const childCount = Children.count(children);
+  if (childCount !== columns.length) {
     throw new Error(
-      `Columns: expected ${columns.length} children, got ${Children.count(children)}`
+      `Columns: expected ${columns.length} children, got ${childCount}`
     );
   }
 
@@ -50,6 +53,7 @@ export const Columns = ({
       style={createSpacingVar('space', `${space}`)}
       {...props}
     >
+      {/* eslint-disable-next-line @eslint-react/no-children-map -- each child needs its own sized wrapper, indexed to match `columns` */}
       {Children.map(children, (child, idx) => (
         <div
           className={cn(

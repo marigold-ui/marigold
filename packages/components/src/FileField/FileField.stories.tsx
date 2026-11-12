@@ -278,6 +278,7 @@ export const InForm = meta.story({
                 <strong>Submitted files:</strong>
                 <ul>
                   {submitted.map((s, i) => (
+                    // eslint-disable-next-line @eslint-react/no-array-index-key -- story: the same file can be submitted twice, so the text is not unique
                     <li key={i}>{s}</li>
                   ))}
                 </ul>

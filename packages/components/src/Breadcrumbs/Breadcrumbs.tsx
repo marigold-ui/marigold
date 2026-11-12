@@ -62,6 +62,9 @@ const BreadcrumbsBase = ({
     size,
   });
 
+  // `toArray` flattens fragments/arrays and assigns every element a stable key,
+  // which is used below to key the rendered crumbs.
+  // eslint-disable-next-line @eslint-react/no-children-to-array -- needs a flat, keyed list to slice into visible and hidden crumbs
   const items = Children.toArray(children);
   const total = items.length;
 
@@ -114,7 +117,7 @@ const BreadcrumbsBase = ({
         isAuto && 'flex-nowrap overflow-hidden whitespace-nowrap'
       )}
     >
-      {displayedItems.map((item, index) => {
+      {displayedItems.map(item => {
         if (item === null) {
           return (
             <RACBreadcrumb key="ellipsis" className={breadcrumbsItem}>
@@ -136,7 +139,7 @@ const BreadcrumbsBase = ({
 
         return (
           <RACBreadcrumb
-            key={`${href}-${index}`}
+            key={item.key}
             {...ariaProps}
             // Collapsing stops at [ellipsis, current]; if the current crumb
             // still does not fit, it truncates instead of being clipped.

@@ -71,6 +71,7 @@ const isSidebarItemIcon = (
  */
 export const flattenChildren = (children: ReactNode): ReactNode[] => {
   const result: ReactNode[] = [];
+  // eslint-disable-next-line @eslint-react/no-children-to-array -- this is the flatten helper itself (toArray plus fragment unwrapping)
   for (const child of Children.toArray(children)) {
     if (isValidElement(child) && child.type === Fragment) {
       result.push(

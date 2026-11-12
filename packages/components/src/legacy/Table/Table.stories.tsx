@@ -761,7 +761,7 @@ export const ScrollableTable = meta.story({
                       width={
                         index === tableHeaders.length - 1 ? 'full' : 'auto'
                       }
-                      key={index}
+                      key={header}
                     >
                       {header}
                     </Table.Column>

@@ -144,7 +144,7 @@ export const SectionMessage = ({
     if (!text) return;
     const priority = variant === 'error' ? 'assertive' : 'polite';
     announce(text, priority);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps -- announce only on the hidden -> visible transition; `announceProp`, `variant` and the content are read fresh from that render's closure and must not re-announce when they change while open
   }, [isOpen]);
 
   const handleClose = () => {

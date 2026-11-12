@@ -46,6 +46,9 @@ export const Aside = ({
   side = 'left',
   wrap = '50%',
 }: AsideProps) => {
+  // `toArray` flattens fragments and arrays so the first two children land in
+  // the two columns, whatever shape the consumer passes.
+  // eslint-disable-next-line @eslint-react/no-children-to-array -- needs a flat list to pick the first two children
   const [left, right] = Children.toArray(children);
   const vars = {
     aside: createVar({ sideWidth }),
