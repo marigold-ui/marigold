@@ -4,8 +4,11 @@ import type RAC from 'react-aria-components';
 import { Header } from 'react-aria-components/Header';
 import { MenuSection } from 'react-aria-components/Menu';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { Text } from '../Text/Text';
+import { ChevronRight } from '../icons/ChevronRight';
 import { intlMessages } from '../intl/messages';
-import { useCommandPalette } from './Context';
+import { CommandPaletteItem } from './CommandPaletteItem';
+import { MORE_KEY, useCommandPalette } from './Context';
 
 // Props
 // ---------------
@@ -26,6 +29,14 @@ export interface CommandPaletteGroupProps extends Omit<
   prefix?: string;
 
   /**
+   * Full label of a last row that narrows the search to this group, for
+   * example "More events…". Set it when there are more results than the
+   * group shows.
+   * Needs a `prefix`, and only shows while the search is not narrowed yet.
+   */
+  more?: string;
+
+  /**
    * The items of the group.
    */
   children: ReactNode;
@@ -37,9 +48,11 @@ export const CommandPaletteGroup = ({
   children,
   title,
   prefix,
+  more,
   ...props
 }: CommandPaletteGroupProps) => {
-  const { classNames, scope, registerPrefix } = useCommandPalette();
+  const { classNames, scope, query, registerPrefix, narrowTo } =
+    useCommandPalette();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   useLayoutEffect(() => {
     if (prefix) return registerPrefix({ prefix, title: title ?? prefix });
@@ -73,6 +86,21 @@ export const CommandPaletteGroup = ({
         )}
       </Header>
       {children}
+      {more && prefix && !scope && (
+        // Keeps the palette open: it narrows the search, with the term.
+        <CommandPaletteItem
+          id={`${MORE_KEY}${prefix}`}
+          textValue={`${more} ${query}`}
+          shouldCloseOnSelect={false}
+          onAction={() => narrowTo(prefix)}
+        >
+          <ChevronRight />
+          <Text slot="label">{more}</Text>
+          <Text slot="description">
+            {stringFormatter.format('commandPaletteOrType', { prefix })}
+          </Text>
+        </CommandPaletteItem>
+      )}
     </MenuSection>
   );
 };

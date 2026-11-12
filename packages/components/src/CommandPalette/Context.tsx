@@ -34,6 +34,9 @@ export interface GroupPrefix {
   title: string;
 }
 
+/** Key of a group's "more" row, which the palette handles itself. */
+export const MORE_KEY = 'marigold-command-palette-more:';
+
 // Provided by `CommandPalette`, read by its groups and items.
 interface CommandPaletteContextValue {
   /** The search term: the query without a group's prefix. */
@@ -41,6 +44,8 @@ interface CommandPaletteContextValue {
   /** The prefix of the group the search is narrowed to, if any. */
   scope: string | null;
   registerPrefix: (prefix: GroupPrefix) => () => void;
+  /** Narrows the search to the group with this prefix, keeping the term. */
+  narrowTo: (prefix: string) => void;
   filter?: SearchableCollectionFilter | false;
   classNames: ComponentClassNames<'CommandPalette'>;
 }

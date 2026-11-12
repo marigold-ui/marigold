@@ -1,7 +1,7 @@
 import {
+  ArrowRight,
   CalendarDays,
   MapPin,
-  Search,
   ShoppingCart,
   Ticket,
 } from 'lucide-react';
@@ -64,7 +64,8 @@ const fetchResults = async <T,>(
   return (await res.json()) as Results<T>;
 };
 
-// Ends a group when the server has more than it shows.
+// Ends a narrowed group when the server has more than it shows. It leaves
+// the palette for the list page, so it gets an arrow.
 const ShowAll = ({
   id,
   kind,
@@ -77,7 +78,7 @@ const ShowAll = ({
   term: string;
 }) => (
   <CommandPalette.Item id={id} textValue={`Show all ${kind} ${term}`}>
-    <Search />
+    <ArrowRight />
     <Text slot="label">
       Show all {total} {kind}
       {term && ` for “${term}”`}
@@ -172,7 +173,16 @@ export default () => {
             </CommandPalette.Item>
           ))}
         </CommandPalette.Group>
-        <CommandPalette.Group title="Events" prefix={PREFIXES.events}>
+        <CommandPalette.Group
+          title="Events"
+          prefix={PREFIXES.events}
+          // In the mixed list, a last row narrows the search to events.
+          more={
+            current && current.events.totalItems > limit
+              ? 'More events…'
+              : undefined
+          }
+        >
           {events.map(event => (
             <CommandPalette.Item
               key={event.id}
@@ -187,7 +197,7 @@ export default () => {
               </Text>
             </CommandPalette.Item>
           ))}
-          {current && current.events.totalItems > limit && (
+          {prefix && current && current.events.totalItems > limit && (
             <ShowAll
               id="all-events"
               kind="events"
@@ -196,7 +206,15 @@ export default () => {
             />
           )}
         </CommandPalette.Group>
-        <CommandPalette.Group title="Venues" prefix={PREFIXES.venues}>
+        <CommandPalette.Group
+          title="Venues"
+          prefix={PREFIXES.venues}
+          more={
+            current && current.venues.totalItems > limit
+              ? 'More venues…'
+              : undefined
+          }
+        >
           {venues.map(venue => (
             <CommandPalette.Item
               key={venue.id}
@@ -208,7 +226,7 @@ export default () => {
               <Text slot="description">{venue.city}</Text>
             </CommandPalette.Item>
           ))}
-          {current && current.venues.totalItems > limit && (
+          {prefix && current && current.venues.totalItems > limit && (
             <ShowAll
               id="all-venues"
               kind="venues"

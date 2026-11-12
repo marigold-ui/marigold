@@ -30,7 +30,11 @@ import { CommandPaletteItem } from './CommandPaletteItem';
 import { CommandPaletteSearch } from './CommandPaletteSearch';
 import { CommandPaletteTrigger, PALETTE } from './CommandPaletteTrigger';
 import type { GroupPrefix } from './Context';
-import { CommandPaletteContext, CommandPaletteTriggerContext } from './Context';
+import {
+  CommandPaletteContext,
+  CommandPaletteTriggerContext,
+  MORE_KEY,
+} from './Context';
 import { useKeepFirstItemActive } from './useKeepFirstItemActive';
 
 // Props
@@ -226,8 +230,15 @@ const CommandPaletteBody = <T extends object>({
 
   const { inputRef, menuRef } = useKeepFirstItemActive(inputValue, items);
   const context = useMemo(
-    () => ({ query, filter, classNames, scope, registerPrefix }),
-    [query, filter, classNames, scope, registerPrefix]
+    () => ({
+      query,
+      filter,
+      classNames,
+      scope,
+      registerPrefix,
+      narrowTo: (prefix: string) => setInputValue(`${prefix}${query}`),
+    }),
+    [query, filter, classNames, scope, registerPrefix, setInputValue]
   );
 
   return (
@@ -251,7 +262,10 @@ const CommandPaletteBody = <T extends object>({
           // Focus stays in the input, the row only gets virtual focus.
           autoFocus="first"
           // RAC passes more than the key, the public handler takes the key.
-          onAction={key => onAction?.(key)}
+          // A group's "more" row is the palette's own, not the app's.
+          onAction={key => {
+            if (!String(key).startsWith(MORE_KEY)) onAction?.(key);
+          }}
           // Called after an item's action, unless the item sets
           // `shouldCloseOnSelect={false}`.
           onClose={close}

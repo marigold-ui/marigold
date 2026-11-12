@@ -53,8 +53,10 @@ export const useKeepFirstItemActive = (inputValue: string, items: unknown) => {
     if (queryChanged) awaitingResultsRef.current = true;
     const newResults = resultsArrived && awaitingResultsRef.current;
     if (resultsArrived) awaitingResultsRef.current = false;
-    // Forward typing over a static list is RAC's job.
+    // Forward typing over a static list is RAC's job. Anything else, also a
+    // query set in code, counts as an edit. The flag only covers one change.
     const edited = queryChanged && !typedForwardRef.current;
+    if (queryChanged) typedForwardRef.current = false;
     if (!edited && !newResults) return;
 
     const menu = menuRef.current;
@@ -64,12 +66,13 @@ export const useKeepFirstItemActive = (inputValue: string, items: unknown) => {
       );
 
     activateFirst();
-    // RAC rebuilds the collection one render after the children or `items`
-    // change, so the press above can land on the old rows. Press again once
-    // the new rows are in, unless the first row is already active.
     if (!menu) return;
+    // RAC rebuilds the collection one render after the children or `items`
+    // change, and rows rendered as children can arrive later still, after a
+    // loading state. So until the query changes again, every change to the
+    // rows activates the first one, unless it already is. Moving with the
+    // arrow keys changes no rows, so it stays put.
     const observer = new MutationObserver(() => {
-      observer.disconnect();
       const first = menu.querySelector('[role^="menuitem"]');
       if (first && !first.hasAttribute('data-focused')) activateFirst();
     });

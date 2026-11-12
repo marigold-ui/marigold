@@ -859,7 +859,7 @@ export const SearchOneKind = meta.story({
           <CommandPalette.Item id="events">Events</CommandPalette.Item>
           <CommandPalette.Item id="orders">Orders</CommandPalette.Item>
         </CommandPalette.Group>
-        <CommandPalette.Group title="Events" prefix="e:">
+        <CommandPalette.Group title="Events" prefix="e:" more="More events…">
           <CommandPalette.Item id="jazz">Jazz Night</CommandPalette.Item>
           <CommandPalette.Item id="summer">Summer Open Air</CommandPalette.Item>
         </CommandPalette.Group>
@@ -913,6 +913,24 @@ SearchOneKind.test(
         expect(canvas.getByRole('menuitem', { name: 'Orders' })).toBeVisible()
       );
     });
+
+    await step(
+      'The more row narrows the search, keeping the term',
+      async () => {
+        await userEvent.keyboard('jazz');
+        const more = await canvas.findByRole('menuitem', {
+          name: /More events/,
+        });
+        await expect(more).toHaveTextContent('or type e:');
+        await userEvent.click(more);
+        await expect(search).toHaveValue('e:jazz');
+        await expect(canvas.getByRole('dialog')).toBeInTheDocument();
+        await expect(
+          canvas.queryByRole('menuitem', { name: /More events/ })
+        ).toBeNull();
+        await expectFirstRowActive(canvas, 'Jazz Night');
+      }
+    );
   }
 );
 
