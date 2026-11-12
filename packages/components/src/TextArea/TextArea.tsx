@@ -1,6 +1,6 @@
 import type { Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { TextArea } from 'react-aria-components/TextArea';
+import { TextArea as RACTextArea } from 'react-aria-components/TextArea';
 import { TextField } from 'react-aria-components/TextField';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
@@ -90,7 +90,7 @@ export interface TextAreaProps
 
 // Component
 // ---------------
-const _TextArea = ({
+const TextArea = ({
   variant,
   size,
   required,
@@ -113,7 +113,7 @@ const _TextArea = ({
 
   return (
     <FieldBase as={TextField} {...props} variant={variant} size={size}>
-      <TextArea
+      <RACTextArea
         className={cn(classNames, 'w-(--field-width) max-w-full min-w-0')}
         ref={ref}
         rows={rows}
@@ -122,4 +122,4 @@ const _TextArea = ({
   );
 };
 
-export { _TextArea as TextArea };
+export { TextArea };

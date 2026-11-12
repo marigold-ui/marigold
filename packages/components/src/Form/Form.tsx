@@ -1,6 +1,6 @@
 import type { Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Form } from 'react-aria-components/Form';
+import { Form as RACForm } from 'react-aria-components/Form';
 import { cn, createWidthVar } from '@marigold/system';
 import type { MaxWidthProp } from '@marigold/system';
 
@@ -15,8 +15,8 @@ export interface FormProps extends Omit<RAC.FormProps, 'className' | 'style'> {
   ref?: Ref<HTMLFormElement>;
 }
 
-const _Form = ({ unstyled, maxWidth = 'full', ref, ...props }: FormProps) => (
-  <Form
+const Form = ({ unstyled, maxWidth = 'full', ref, ...props }: FormProps) => (
+  <RACForm
     {...props}
     ref={ref}
     className={cn('max-w-(--max-width)', unstyled && 'contents')}
@@ -24,4 +24,4 @@ const _Form = ({ unstyled, maxWidth = 'full', ref, ...props }: FormProps) => (
   />
 );
 
-export { _Form as Form };
+export { Form };

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { expect, waitFor } from 'storybook/test';
+import { expect, fn, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Copy, Download, Pencil, Trash2 } from '@marigold/icons';
 import { Accordion } from '../Accordion/Accordion';
@@ -370,7 +370,7 @@ SelectInsideDrawerSmallScreen.test(
 
 export const Controlled = meta.story({
   parameters: { surface: false, chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [open, setOpen] = useState(false);
     const onOpenChange = (open: boolean) => {
       setOpen(open);
@@ -393,6 +393,105 @@ export const Controlled = meta.story({
     );
   },
 });
+
+/**
+ * A controlled Drawer without `Drawer.Trigger`, opened from elsewhere on the
+ * page (an ActionBar action, a table row, a route).
+ */
+export const ControlledWithoutTrigger = meta.story({
+  tags: ['component-test'],
+  parameters: { surface: false, chromatic: { disableSnapshot: true } },
+  render: function Render(args) {
+    const [open, setOpen] = useState(false);
+    return (
+      <Stack space={8} alignX="left">
+        <Button onPress={() => setOpen(true)}>Edit selection</Button>
+        <Drawer
+          closeButton
+          {...args}
+          open={open}
+          onOpenChange={next => {
+            args.onOpenChange?.(next);
+            setOpen(next);
+          }}
+        >
+          <Drawer.Title>Edit events</Drawer.Title>
+          <Drawer.Content>Drawer Content</Drawer.Content>
+          <Drawer.Actions>
+            <Button slot="close">Cancel</Button>
+            <Button variant="primary">Apply</Button>
+          </Drawer.Actions>
+        </Drawer>
+        <pre>Drawer is {open ? 'open' : 'closed'}</pre>
+      </Stack>
+    );
+  },
+});
+
+ControlledWithoutTrigger.test(
+  'Closes via close button, slot="close" and Escape',
+  { args: { onOpenChange: fn() } },
+  async ({ args, canvas, step, userEvent }) => {
+    const open = async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Edit selection' })
+      );
+      expect(await canvas.findByText('Edit events')).toBeInTheDocument();
+    };
+    const expectClosed = async () => {
+      await waitFor(() =>
+        expect(canvas.queryByText('Edit events')).not.toBeInTheDocument()
+      );
+      expect(args.onOpenChange).toHaveBeenLastCalledWith(false);
+    };
+
+    await step('close button', async () => {
+      await open();
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Dismiss drawer' })
+      );
+      await expectClosed();
+    });
+
+    await step('slot="close"', async () => {
+      await open();
+      await userEvent.click(canvas.getByRole('button', { name: 'Cancel' }));
+      await expectClosed();
+    });
+
+    await step('Escape', async () => {
+      await open();
+      await userEvent.keyboard('{Escape}');
+      await expectClosed();
+    });
+  }
+);
+
+/** An uncontrolled Drawer without `Drawer.Trigger` that starts open. */
+export const DefaultOpen = meta.story({
+  tags: ['component-test'],
+  parameters: { surface: false, chromatic: { disableSnapshot: true } },
+  render: args => (
+    <Drawer closeButton defaultOpen {...args}>
+      <Drawer.Title>Opened by default</Drawer.Title>
+      <Drawer.Content>Drawer Content</Drawer.Content>
+    </Drawer>
+  ),
+});
+
+DefaultOpen.test(
+  'Starts open and closes on its own',
+  async ({ canvas, userEvent }) => {
+    expect(await canvas.findByText('Opened by default')).toBeInTheDocument();
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Dismiss drawer' })
+    );
+    await waitFor(() =>
+      expect(canvas.queryByText('Opened by default')).not.toBeInTheDocument()
+    );
+  }
+);
 
 /** Opening a second Drawer while one is open dismisses the first. */
 export const OneAtATime = meta.story({

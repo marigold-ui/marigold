@@ -75,7 +75,7 @@ export interface ActionMenuProps
   ref?: Ref<HTMLButtonElement>;
 }
 
-const _ActionMenu = ({ ref: refProp, ...inputProps }: ActionMenuProps) => {
+const ActionMenu = ({ ref: refProp, ...inputProps }: ActionMenuProps) => {
   const [merged, ref] = useContextProps(
     inputProps as ActionMenuContextValue,
     refProp,
@@ -147,7 +147,7 @@ const _ActionMenu = ({ ref: refProp, ...inputProps }: ActionMenuProps) => {
   );
 };
 
-_ActionMenu.Item = MenuItem;
-_ActionMenu.Section = MenuSection;
+ActionMenu.Item = MenuItem;
+ActionMenu.Section = MenuSection;
 
-export { _ActionMenu as ActionMenu };
+export { ActionMenu };

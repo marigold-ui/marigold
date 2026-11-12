@@ -1,7 +1,7 @@
 import { Key, ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { Button as RACButton } from 'react-aria-components/Button';
-import { Menu, MenuTrigger } from 'react-aria-components/Menu';
+import { MenuTrigger, Menu as RACMenu } from 'react-aria-components/Menu';
 import { useContextProps } from 'react-aria-components/slots';
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { ButtonContext, type ButtonContextValue } from '../Button/Context';
@@ -53,7 +53,7 @@ export interface MenuProps
   disabled?: boolean;
 }
 
-const _Menu = ({
+const Menu = ({
   children,
   label,
   variant,
@@ -104,22 +104,22 @@ const _Menu = ({
           aria-labelledby={props['aria-labelledby']}
           nameFromTrigger
         >
-          <Menu {...props} className={classNames.container}>
+          <RACMenu {...props} className={classNames.container}>
             {children}
-          </Menu>
+          </RACMenu>
         </MenuTray>
       ) : (
         <Popover open={open} placement={placement}>
-          <Menu {...props} className={classNames.container}>
+          <RACMenu {...props} className={classNames.container}>
             {children}
-          </Menu>
+          </RACMenu>
         </Popover>
       )}
     </MenuTrigger>
   );
 };
 
-export { _Menu as Menu };
+export { Menu };
 
-_Menu.Item = MenuItem;
-_Menu.Section = MenuSection;
+Menu.Item = MenuItem;
+Menu.Section = MenuSection;

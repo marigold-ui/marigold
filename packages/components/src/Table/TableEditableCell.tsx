@@ -27,6 +27,7 @@ import { intlMessages } from '../intl/messages';
 import { textAlign, verticalAlign } from '../utils/styleProps';
 import { useTableContext } from './Context';
 import { TableCellContent } from './TableCellContent';
+import { renderStickyCell } from './TableStickyCell';
 import { TableTreeColumn } from './TableTreeColumn';
 import { resolveTextValue } from './textValue';
 
@@ -373,6 +374,7 @@ export const TableEditableCell = (props: TableEditableCellProps) => {
       ref={cellRef}
       className={cn(classNames.cell, verticalAlign[alignY])}
       textValue={resolvedTextValue}
+      render={renderStickyCell}
     >
       {({ id, columnIndex, isTreeColumn, hasChildItems, isExpanded }) => (
         <TableEditableCellInner

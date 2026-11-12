@@ -8,7 +8,7 @@ export interface DividerProps extends Omit<RAC.SeparatorProps, RemovedProps> {
   size?: string & {};
 }
 
-const _Divider = ({ variant, size, orientation, ...props }: DividerProps) => {
+const Divider = ({ variant, size, orientation, ...props }: DividerProps) => {
   const classNames = useClassNames({
     component: 'Divider',
     variant,
@@ -27,4 +27,4 @@ const _Divider = ({ variant, size, orientation, ...props }: DividerProps) => {
   );
 };
 
-export { _Divider as Divider };
+export { Divider };

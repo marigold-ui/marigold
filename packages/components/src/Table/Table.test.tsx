@@ -749,3 +749,95 @@ describe('Expandable rows', () => {
     expect(row).toHaveAttribute('data-has-child-items', 'true');
   });
 });
+
+describe('sticky columns', () => {
+  test('a cell spanning several columns does not stick', () => {
+    render(
+      <GuestTable
+        columns={
+          <>
+            <Table.Column rowHeader sticky="start">
+              Guest
+            </Table.Column>
+            <Table.Column>Seat</Table.Column>
+          </>
+        }
+      >
+        <Table.Row id="a">
+          <Table.Cell>Alma Fischer</Table.Cell>
+          <Table.Cell>12</Table.Cell>
+        </Table.Row>
+        <Table.Row id="b">
+          <Table.Cell colSpan={2}>Nobody else yet</Table.Cell>
+        </Table.Row>
+      </GuestTable>
+    );
+
+    expect(
+      screen.getByRole('rowheader', { name: 'Alma Fischer' })
+    ).toHaveAttribute('data-sticky', 'start');
+    expect(
+      screen.getByRole('rowheader', { name: 'Nobody else yet' })
+    ).not.toHaveAttribute('data-sticky');
+  });
+
+  // Without scroll-driven animations the edge is a static line by design.
+  test.skipIf(!CSS.supports('animation-timeline: scroll()'))(
+    'shows no edge while there is nothing to scroll',
+    () => {
+      render(
+        <GuestTable
+          columns={
+            <>
+              <Table.Column rowHeader sticky="start">
+                Guest
+              </Table.Column>
+              <Table.Column>Seat</Table.Column>
+            </>
+          }
+        >
+          <Table.Row id="a">
+            <Table.Cell>Alma Fischer</Table.Cell>
+            <Table.Cell>12</Table.Cell>
+          </Table.Row>
+        </GuestTable>
+      );
+
+      const guest = screen.getByRole('rowheader', { name: 'Alma Fischer' });
+      expect(getComputedStyle(guest, '::after').opacity).toBe('0');
+    }
+  );
+
+  test('warns once when sticky is set away from its edge', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    render(
+      <GuestTable
+        columns={
+          <>
+            <Table.Column rowHeader>Guest</Table.Column>
+            <Table.Column sticky="start">Seat</Table.Column>
+            <Table.Column sticky="end">Table</Table.Column>
+            <Table.Column>Course</Table.Column>
+          </>
+        }
+      >
+        <Table.Row id="a">
+          <Table.Cell>Alma Fischer</Table.Cell>
+          <Table.Cell>12</Table.Cell>
+          <Table.Cell>3</Table.Cell>
+          <Table.Cell>Fish</Table.Cell>
+        </Table.Row>
+      </GuestTable>
+    );
+
+    const stickyWarnings = warnSpy.mock.calls.filter(([message]) =>
+      String(message).includes('sticky')
+    );
+
+    expect(stickyWarnings).toHaveLength(1);
+    expect(stickyWarnings[0][0]).toContain('column 2, column 3');
+
+    warnSpy.mockRestore();
+  });
+});
