@@ -1264,6 +1264,47 @@ ServerResultsInOneGroup.test(
   }
 );
 
+// A pause after "j" sends a search of its own: its rows arrive while people
+// still type, and the rows for "japan" then replace them.
+const pauseAfterFirstLetter = async (userEvent: StoryContext['userEvent']) => {
+  await userEvent.keyboard('j');
+  await new Promise(resolve => setTimeout(resolve, 260));
+};
+
+ServerResultsInOneGroup.test(
+  'Enter after a pause in typing runs the first new row',
+  async ({ canvas, userEvent }) => {
+    onServerAction.mockClear();
+    await openPalette({ canvas, userEvent });
+    await canvas.findByRole('searchbox');
+    await pauseAfterFirstLetter(userEvent);
+    await userEvent.keyboard('apan{Enter}');
+    await waitFor(() => expect(onServerAction).toHaveBeenCalledWith('event-8'));
+    await expect(onServerAction).toHaveBeenCalledTimes(1);
+  }
+);
+
+ServerResultsInOneGroup.test(
+  'Keeps the first row active when server rows replace earlier ones',
+  async ({ canvas, userEvent }) => {
+    onServerAction.mockClear();
+    await openPalette({ canvas, userEvent });
+    await canvas.findByRole('searchbox');
+    await pauseAfterFirstLetter(userEvent);
+    await userEvent.keyboard('apan');
+    await waitFor(() =>
+      expect(canvas.getAllByRole('menuitem')).toHaveLength(1)
+    );
+    await waitFor(() =>
+      expect(
+        canvas.getByRole('menuitem', { name: /Japan Day/ })
+      ).toHaveAttribute('data-focused')
+    );
+    await userEvent.keyboard('{Enter}');
+    await expect(onServerAction).toHaveBeenCalledWith('event-8');
+  }
+);
+
 ServerResultsInOneGroup.test(
   'Enter on a picked row runs it right away',
   async ({ canvas, userEvent }) => {

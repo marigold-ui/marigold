@@ -300,7 +300,7 @@ const CommandPaletteBody = <T extends object>({
   const { inputRef, menuRef, searchReported } = useKeepFirstItemActive(
     inputValue,
     items,
-    { loading, searchWaiting: appSearches && searchWaiting }
+    { loading, searchWaiting: appSearches && searchWaiting, appSearches }
   );
 
   // An effect, so the app also hears the empty search of a fresh opening.

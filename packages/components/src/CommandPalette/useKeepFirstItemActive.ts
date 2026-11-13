@@ -29,6 +29,11 @@ import { useCallback, useEffect, useRef } from 'react';
 // `loading` a little later (from their own effect or a transition) and apps
 // without `loading`, whose rows change right away. Changed rows are no
 // signal: the palette's own rows change at the same time.
+//
+// Once answered, the Enter still waits for the rows: until they stopped
+// changing for a frame and the first one is active. RAC moves the active row
+// a moment after new rows arrive, up to half a second when the old active row
+// is gone, and an Enter before that runs the old row or nothing at all.
 // Keys that move the active row away from the first one. `Home` is missing on
 // purpose: the hook presses it itself.
 const NAVIGATION_KEYS = new Set([
@@ -55,12 +60,14 @@ interface SearchStatus {
   loading: boolean;
   /** Whether the app's search waits for people to pause typing. */
   searchWaiting: boolean;
+  /** Whether the app searches some rows itself, which arrive later. */
+  appSearches: boolean;
 }
 
 export const useKeepFirstItemActive = (
   inputValue: string,
   items: unknown,
-  { loading, searchWaiting }: SearchStatus
+  { loading, searchWaiting, appSearches }: SearchStatus
 ) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -78,6 +85,8 @@ export const useKeepFirstItemActive = (
   const answerRef = useRef({ sawLoading: false, graceOver: true });
   const graceTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const frameRef = useRef(0);
+  // Whether the rows changed since the last frame of a waiting Enter.
+  const rowsChangedRef = useRef(false);
 
   const answered = useCallback(() => {
     const { loading, searchWaiting } = statusRef.current;
@@ -113,7 +122,8 @@ export const useKeepFirstItemActive = (
           e.key === 'Enter' &&
           !e.isComposing &&
           !pickedRef.current &&
-          !answered()
+          // Another Enter while one waits joins it, the row runs once.
+          (!answered() || enterWaitingRef.current)
         ) {
           e.preventDefault();
           e.stopImmediatePropagation();
@@ -144,7 +154,8 @@ export const useKeepFirstItemActive = (
     [answered]
   );
 
-  // A pointer that lands on a row picks it.
+  // A pointer that lands on a row picks it. Row changes are tracked for a
+  // waiting Enter.
   const menuCallbackRef = useCallback((menu: HTMLDivElement | null) => {
     menuRef.current = menu;
     if (!menu) return;
@@ -152,20 +163,43 @@ export const useKeepFirstItemActive = (
       if (e.target instanceof Element && e.target.closest('[role^="menuitem"]'))
         pickedRef.current = true;
     };
+    const observer = new MutationObserver(() => {
+      rowsChangedRef.current = true;
+    });
+    observer.observe(menu, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['data-focused'],
+    });
     menu.addEventListener('pointermove', onPointerMove);
     return () => {
+      observer.disconnect();
       menu.removeEventListener('pointermove', onPointerMove);
       menuRef.current = null;
     };
   }, []);
 
-  // Runs the Enter that waited, once the app has answered. A frame later,
-  // so the first of the new rows is active by then, and checked again there.
+  // Whether the rows settled with the first one active.
+  const firstRowReady = useCallback(() => {
+    const changed = rowsChangedRef.current;
+    rowsChangedRef.current = false;
+    const first = menuRef.current?.querySelector('[role^="menuitem"]');
+    return !changed && first?.hasAttribute('data-focused') === true;
+  }, []);
+
+  // Runs the Enter that waited, once the app has answered and the first of
+  // the new rows is active. Checked every frame until then.
   const release = useCallback(() => {
     if (!enterWaitingRef.current || !answered()) return;
     cancelAnimationFrame(frameRef.current);
-    frameRef.current = requestAnimationFrame(() => {
+    rowsChangedRef.current = true;
+    const check = () => {
       if (!enterWaitingRef.current || !answered()) return;
+      if (!firstRowReady()) {
+        frameRef.current = requestAnimationFrame(check);
+        return;
+      }
       enterWaitingRef.current = false;
       // Cancelable like a real key press: RAC cancels it once the row ran,
       // otherwise it clicks the row a second time.
@@ -176,8 +210,9 @@ export const useKeepFirstItemActive = (
           cancelable: true,
         })
       );
-    });
-  }, [answered]);
+    };
+    frameRef.current = requestAnimationFrame(check);
+  }, [answered, firstRowReady]);
 
   useEffect(() => {
     statusRef.current = { loading, searchWaiting };
@@ -225,10 +260,14 @@ export const useKeepFirstItemActive = (
     // query set in code, counts as an edit. The flag only covers one change.
     const edited = queryChanged && !typedForwardRef.current;
     if (queryChanged) typedForwardRef.current = false;
-    if (!edited && !newResults) return;
+    // Rows the app searched arrive after forward typing too, and replace
+    // the list without RAC moving the active row. They are watched, without
+    // pressing `Home` now, which would race RAC's handling of the keystroke.
+    const appRowsComing = queryChanged && appSearches;
+    if (!edited && !newResults && !appRowsComing) return;
 
     const menu = menuRef.current;
-    activateFirst();
+    if (edited || newResults) activateFirst();
     if (!menu) return;
     // RAC rebuilds the collection one render after the children or `items`
     // change, and rows rendered as children can arrive later still, after a
@@ -246,7 +285,7 @@ export const useKeepFirstItemActive = (
     });
     observer.observe(menu, { childList: true, subtree: true });
     return () => observer.disconnect();
-  }, [inputValue, items, activateFirst]);
+  }, [inputValue, items, appSearches, activateFirst]);
 
   return {
     inputRef: inputCallbackRef,
