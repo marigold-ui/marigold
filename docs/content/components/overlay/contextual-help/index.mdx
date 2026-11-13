@@ -25,6 +25,8 @@ Use `<ContextualHelp>` when users might need deeper guidance or context, especia
 
 ContextualHelp is ideal when brief tooltips are insufficient and users might benefit from more elaborate information. Avoid overusing it. Too many help popovers can clutter the UI. Use tooltips for short, simple hints (e.g., labeling an icon), and reserve ContextualHelp for situations where users need deeper guidance or clarification. Aim to use it selectively on parts of your app where extra support truly adds value.
 
+Contextual help is for information people can do without. People can miss the button or close the popover with one click outside, so never put anything there that most people need to fill in a field or finish a task. Show that on the page, for example as the field's description.
+
 <GuidelineTiles>
   <Do>
     <DoFigure>
@@ -113,3 +115,8 @@ Unlike tooltips, ContextualHelp supports complex and interactive content inside 
   path="ContextualHelp/ContextualHelpContent"
   name="ContextualHelpContentProps"
 />
+
+## Alternative components
+
+- [Tooltip](/components/overlay/tooltip): Use for a short, passive hint on hover or focus.
+- [Popover](/components/overlay/popover): Opens the same kind of floating panel. Use it for a custom panel that is not help content, like a notifications list.
