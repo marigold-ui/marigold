@@ -1,10 +1,7 @@
 import { render, screen, within } from '@testing-library/react';
 import { vi } from 'vitest';
-import { theme } from '@marigold/theme-rui';
-import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import { renderWithOverlay } from '../test.utils';
-import { CommandPalette } from './CommandPalette';
-import { Basic } from './CommandPalette.stories';
+import { Basic, MoreWithoutPrefix } from './CommandPalette.stories';
 
 test('opens by default with defaultOpen', async () => {
   renderWithOverlay(<Basic.Component defaultOpen />);
@@ -33,17 +30,7 @@ test('the trigger hides the hint when the shortcut is disabled', () => {
 
 test('warns when a group sets more without a prefix', async () => {
   const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
-  renderWithOverlay(
-    <MarigoldProvider theme={theme}>
-      <CommandPalette.Trigger defaultOpen>
-        <CommandPalette>
-          <CommandPalette.Group title="Events" more="More events…">
-            <CommandPalette.Item id="jazz">Jazz Night</CommandPalette.Item>
-          </CommandPalette.Group>
-        </CommandPalette>
-      </CommandPalette.Trigger>
-    </MarigoldProvider>
-  );
+  renderWithOverlay(<MoreWithoutPrefix.Component defaultOpen />);
 
   await screen.findByRole('menuitem', { name: 'Jazz Night' });
   expect(warn).toHaveBeenCalledWith(

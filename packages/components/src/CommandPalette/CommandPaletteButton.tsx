@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactNode, Ref } from 'react';
 import { Button } from 'react-aria-components/Button';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useClassNames } from '@marigold/system';
@@ -21,6 +21,11 @@ export interface CommandPaletteButtonProps {
    * Whether the button is disabled.
    */
   disabled?: boolean;
+
+  /**
+   * Ref to the button element, for example to anchor a tooltip.
+   */
+  ref?: Ref<HTMLButtonElement>;
 }
 
 // Component
@@ -30,6 +35,7 @@ export interface CommandPaletteButtonProps {
 export const CommandPaletteButton = ({
   children,
   disabled,
+  ref,
 }: CommandPaletteButtonProps) => {
   const { shortcut } = useCommandPaletteTrigger();
   const classNames = useClassNames({ component: 'CommandPalette' });
@@ -39,6 +45,7 @@ export const CommandPaletteButton = ({
 
   return (
     <Button
+      ref={ref}
       isDisabled={disabled}
       // RAC's Button filters `aria-keyshortcuts` out of its DOM props.
       render={domProps => (

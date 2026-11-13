@@ -301,6 +301,18 @@ Basic.test(
 );
 
 Basic.test(
+  'Closes with the shortcut while open',
+  noSnapshot,
+  async ({ canvas, userEvent }) => {
+    await openPalette({ canvas, userEvent });
+    await canvas.findByRole('searchbox');
+
+    await userEvent.keyboard(shortcutKeys());
+    await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
+  }
+);
+
+Basic.test(
   'Escape clears the query first, then closes',
   noSnapshot,
   async ({ canvas, userEvent }) => {
@@ -327,6 +339,60 @@ Basic.test(
     await expect(legend.closest('[aria-hidden="true"]')).not.toBeNull();
   }
 );
+
+// Button ref
+// ---------------
+// `CommandPalette.Button` passes its ref on to the button, for example to
+// anchor a tooltip or to move focus back to it.
+export const ButtonRef = meta.story({
+  ...noSnapshot,
+  render: function Render(args) {
+    const buttonRef = useRef<HTMLButtonElement>(null);
+    return (
+      <Stack space="related" alignX="left">
+        <CommandPalette.Trigger {...args}>
+          <CommandPalette.Button ref={buttonRef} />
+          <CommandPalette>
+            <CommandPalette.Item id="events">Events</CommandPalette.Item>
+          </CommandPalette>
+        </CommandPalette.Trigger>
+        <Button onPress={() => buttonRef.current?.focus()}>
+          Focus the palette button
+        </Button>
+      </Stack>
+    );
+  },
+});
+
+ButtonRef.test(
+  'Passes the ref on to the button',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Focus the palette button' })
+    );
+
+    await expect(canvas.getByRole('button', { name: /go to/i })).toHaveFocus();
+  }
+);
+
+// More without a prefix
+// ---------------
+// The `more` row narrows the search by the group's prefix. Without one there
+// is nothing to narrow to: the row does not render, and development builds
+// warn.
+export const MoreWithoutPrefix = meta.story({
+  ...noSnapshot,
+  render: args => (
+    <CommandPalette.Trigger {...args}>
+      <CommandPalette.Button />
+      <CommandPalette>
+        <CommandPalette.Group title="Events" more="More events…">
+          <CommandPalette.Item id="jazz">Jazz Night</CommandPalette.Item>
+        </CommandPalette.Group>
+      </CommandPalette>
+    </CommandPalette.Trigger>
+  ),
+});
 
 // Custom empty state
 // ---------------

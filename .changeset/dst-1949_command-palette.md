@@ -15,4 +15,6 @@ feat(DST-1949): add CommandPalette
 
 The `Sidebar` shortcut now follows the same rules as the palette's. It listens for ⌘B on Apple devices and Ctrl+B elsewhere, no longer both, so Ctrl+B on a Mac moves the cursor in text fields again. It also leaves the key to a field that handles it first, for example a rich-text editor that binds it to bold.
 
+The theme adds a `--text-2xs` token (10px), a step below `text-xs`, used by the palette's key caps.
+
 The CLI knows the new component and its theme slots.
