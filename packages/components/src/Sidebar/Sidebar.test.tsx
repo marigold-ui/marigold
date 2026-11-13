@@ -5,7 +5,11 @@ import { vi } from 'vitest';
 import { theme } from '@marigold/theme-rui';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import { RouterProvider } from '../RouterProvider/RouterProvider';
-import { ensureOverlayContainer, mockMatchMedia } from '../test.utils';
+import {
+  ensureOverlayContainer,
+  mockMatchMedia,
+  shortcutKeys,
+} from '../test.utils';
 import { useSidebar } from './Context';
 import { Sidebar } from './Sidebar';
 import {
@@ -81,21 +85,21 @@ test('toggle button re-expands collapsed sidebar', async () => {
   expect(trigger).toHaveAttribute('aria-expanded', 'true');
 });
 
-test('keyboard shortcut Cmd+B collapses sidebar', async () => {
+test('keyboard shortcut ⌘B / Ctrl+B collapses sidebar', async () => {
   render(<Basic.Component />);
   const toggle = screen.getByRole('button', { name: 'Toggle navigation' });
 
-  await user.keyboard('{Meta>}b{/Meta}');
+  await user.keyboard(shortcutKeys('b'));
 
   expect(toggle).toHaveAttribute('aria-expanded', 'false');
 });
 
-test('keyboard shortcut Cmd+B expands sidebar', async () => {
+test('keyboard shortcut ⌘B / Ctrl+B expands sidebar', async () => {
   render(<Basic.Component />);
   const toggle = screen.getByRole('button', { name: 'Toggle navigation' });
 
-  await user.keyboard('{Meta>}b{/Meta}');
-  await user.keyboard('{Meta>}b{/Meta}');
+  await user.keyboard(shortcutKeys('b'));
+  await user.keyboard(shortcutKeys('b'));
 
   expect(toggle).toHaveAttribute('aria-expanded', 'true');
 });
@@ -1022,15 +1026,34 @@ describe('Roving Tabindex', () => {
   });
 });
 
-describe('Ctrl+B keyboard shortcut (non-meta, ctrlKey)', () => {
-  test('keyboard shortcut Ctrl+B toggles sidebar', async () => {
-    render(<Basic.Component />);
-    const toggle = screen.getByRole('button', { name: 'Toggle navigation' });
+test('the other platform modifier does not toggle the sidebar', async () => {
+  render(<Basic.Component />);
+  const toggle = screen.getByRole('button', { name: 'Toggle navigation' });
 
-    await user.keyboard('{Control>}b{/Control}');
+  await user.keyboard(shortcutKeys('b', { other: true }));
 
-    expect(toggle).toHaveAttribute('aria-expanded', 'false');
-  });
+  expect(toggle).toHaveAttribute('aria-expanded', 'true');
+});
+
+test('the shortcut yields to a field that claims it', async () => {
+  render(
+    <>
+      <Basic.Component />
+      {/* Stands in for a rich-text editor that binds ⌘B to "bold". */}
+      <input
+        aria-label="Editor"
+        onKeyDown={e => {
+          if (e.key === 'b' && (e.metaKey || e.ctrlKey)) e.preventDefault();
+        }}
+      />
+    </>
+  );
+  const toggle = screen.getByRole('button', { name: 'Toggle navigation' });
+
+  await user.click(screen.getByRole('textbox', { name: 'Editor' }));
+  await user.keyboard(shortcutKeys('b'));
+
+  expect(toggle).toHaveAttribute('aria-expanded', 'true');
 });
 
 describe('Sidebar.Nav `current` integration', () => {

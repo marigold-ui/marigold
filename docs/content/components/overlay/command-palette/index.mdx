@@ -1,0 +1,212 @@
+---
+title: CommandPalette
+description: One keyboard-first entry point to search pages, actions and records.
+badge: beta
+---
+
+import { CommandPaletteAnatomy } from './command-palette-anatomy';
+
+The `<CommandPalette>` component opens a search field over a list of pages and actions. People press <kbd>⌘</kbd>+<kbd>K</kbd> (<kbd>Ctrl</kbd>+<kbd>K</kbd> on Windows and Linux) from anywhere in the app, type a few letters and press <kbd>Enter</kbd> to go to the top match. It suits power users who live in the keyboard and apps with more pages than a sidebar can show comfortably.
+
+<Callout title="Trying the demos">
+  On this page, <kbd>⌘</kbd>+<kbd>K</kbd> opens the docs search, so the demos
+  don't react to it. Open them with their button instead. In your app the button
+  also shows the shortcut.
+</Callout>
+
+## Anatomy
+
+A command palette consists of an optional button and the palette itself, which opens on an underlay. The palette holds a search field, the list of results grouped under titles, and a legend of the keys. When nothing matches or results are still loading, a message takes the place of the list. On small screens the palette opens as a tray from the bottom edge.
+
+<CommandPaletteAnatomy />
+
+- **Button:** An optional button that looks like a search field, reads "Go to…" and shows the shortcut. The shortcut works without it.
+- **Search field:** The header of the palette. It gets focus when the palette opens and shows a clear button once there is a query, or a spinner while results load.
+- **Group:** An optional title over related items, for example Pages and Actions.
+- **Item:** A single page or action, with an optional icon and description.
+- **Active row:** The highlighted row, which <kbd>Enter</kbd> runs. There is always one while there are results.
+- **List:** Holds the groups and items and scrolls when they don't fit.
+- **Legend:** A footer listing the keys to navigate, select and close, and the prefixes that narrow the search to one group. It is built in and hidden on touch devices.
+- **Underlay:** Dims the page behind the palette. Clicking it closes the palette.
+
+## Appearance
+
+<AppearanceDemo
+  component={'CommandPalette'}
+  exclude={{ variant: ['destructive', 'master', 'admin'] }}
+/>
+
+<AppearanceTable component={'CommandPalette'} />
+
+The palette itself has no variants or sizes. Its items take the same variants as menu items, set with `variant` on each item.
+
+| Variant       | Description                                       | When to use                                              |
+| ------------- | ------------------------------------------------- | -------------------------------------------------------- |
+| `default`     | Standard item. This is the default variant.       | Pages and regular actions.                               |
+| `destructive` | Red item signaling a dangerous action.            | Rare high-impact actions, see [Content](#content).       |
+| `master`      | Item with a lock icon in the master access color. | Actions reserved for Reservix employees (master access). |
+| `admin`       | Item with a key icon in the admin access color.   | Actions reserved for developers (admin access).          |
+
+See the [Admin- and Mastermark pattern](/patterns/layout/admin-master-mark) for guidance on access marks.
+
+## Usage
+
+As an app grows, the way to a page gets longer. Pages end up nested in the navigation, frequent actions sit several clicks deep, and opening a known event or order means going to a list, filtering and scanning. A command palette gives people one place they can reach from anywhere: they type what they want and land there.
+
+Navigation is the core of it. People open the palette, type a few letters of a page name and go to that page without remembering where it sits in the sidebar. Two more kinds of content fit the same habit:
+
+- **Actions** people start often, such as "Create event". They skip the detour to the page where the button lives.
+- **Records** people know by name or number, such as an event or an order. They skip the list page, the filter and the scanning.
+
+A palette pays off in apps with more pages than the sidebar shows comfortably and for people who work in the app every day. In an app with a handful of pages the sidebar already shows everything at a glance, and the palette is one more thing to learn. It complements the navigation and never replaces it. People who don't know the shortcut, or who use a touch device, still need the sidebar and the buttons on the page, so don't make the palette the only way to reach a page or an action. To narrow what is already on a page, like the rows of a table, use a [search field](/components/form/search-field) instead: the palette takes people somewhere else.
+
+<ComponentDemo name="command-palette-basic" />
+
+<Callout title="Pages and actions">
+  Give every page an `href`. People can then open it in a new tab with
+  <kbd>⌘</kbd>+<kbd>Enter</kbd>, or <kbd>Ctrl</kbd>+<kbd>Enter</kbd> on Windows
+  and Linux, and the [RouterProvider](/components/application/routerprovider)
+  navigates without a page load. Actions like "Create event" have no `href`. Run
+  them in `onAction`, on the palette or on the item, and the palette closes
+  afterwards. The demo uses `onAction` for its pages only because it stays on
+  this page.
+</Callout>
+
+### Content
+
+Name items by what people look for and use the same words as the sidebar and the page titles. Start actions with a verb, so "Create event" reads apart from the "Events" page.
+
+Group the results, for example into Pages, Actions and Events, and keep the groups and their order the same every time. People learn where things are and type less over time. Records usually come from the server, see [Searching many records](#searching-many-records).
+
+Give a page the same icon it has in the navigation, so people recognise it in both places. Records and actions get one icon for their kind, for example a ticket for every event, not one per record. Within a group, give every item an icon or none, as in the [Menu](/components/overlay/menu). The label carries the meaning and the icon only helps people scan.
+
+Some actions also have their own keyboard shortcut. People who run such an action every day are faster with the shortcut than with the palette, but most never find out it exists. Show the shortcut on the row with [`<Keyboard>`](/components/content/keyboard), so they pick it up while they use the palette.
+
+Records often share a name. Add a short description that tells them apart, like the event number and date. When people search for something the label doesn't show, add it to `textValue`, which the search matches against. In the demo above, typing "16" finds "Comedy Slam".
+
+<Callout title="Avoid destructive actions" type="warning">
+  Leave out destructive actions, like deleting a record. The first match is
+  always active, so a quick <kbd>Enter</kbd> can run something people didn't
+  mean to. If one belongs in the palette, open a confirmation dialog instead of
+  running it right away.
+</Callout>
+
+### Shortcut
+
+The shortcut works on every page, so render one palette per app, inside the app shell. A second palette with the same shortcut would compete for the key. If a page needs its own palette, pass `shortcut={false}` to its trigger.
+
+The button is optional, but it tells people the palette exists and shows the shortcut. The [App frame](/patterns/layout/app-frame) places it in the middle of the top navigation, as in the demo above. Any other button inside `<CommandPalette.Trigger>` opens the palette too, for example an icon button where space is tight.
+
+The shortcut also fires inside text fields, as it does in GitHub, Linear and Slack. If another handler already used the key, for example a rich-text editor that inserts a link on <kbd>⌘</kbd>+<kbd>K</kbd>, the palette leaves it alone. Change the key with `shortcut="j"` on the trigger, or turn it off with `shortcut={false}` when your app already uses it.
+
+### Before people type
+
+An empty query is the most common start, and the full list is the least helpful answer to it. Show what people most likely want next, in this order:
+
+- **Favourites:** pages and records people marked themselves. They come first, because people chose them.
+- **Recent:** the records people opened last, newest first.
+- **Frequent actions:** the few actions people start most, such as "Create event".
+
+Keep each group to about five rows, so everything fits without scrolling. Show an item only once: a favourite that was also opened recently stays under Favourites. Leave out the full list of pages, the sidebar already shows it, and anything people didn't ask for, like news or tips. Once people type, switch to the regular groups.
+
+Control the query with `inputValue` to know when it is empty. It changes with every keystroke, while `onSearchChange` waits until people pause typing. Favourites and recent records come from your app, ideally from the server, so they follow people across devices.
+
+<ComponentDemo name="command-palette-recent" />
+
+### Searching many records
+
+People often know exactly which record they need, an event by its name or an order by its number. Without the palette they open the list page, filter it and scan the rows to get there. Searching records from the palette turns this into a few keystrokes, from any page.
+
+#### What to show
+
+- **Match what people know:** search the fields people remember, such as the name and the number of an event, or the order number and the customer's name. Put an exact number match first, people who type a number mean that record.
+- **Show a few per kind:** about three to five records per group, and no more than about ten rows in total. Beyond that, people stop reading the suggestions and start scanning. Once a prefix leaves only one kind, the group has the list to itself and can show more, about eight. Show what tells the records apart in the description, like the date of an event.
+- **Offer more in the mixed list:** end a group that shows only some of its records with "More events…". Set `more` on the group for it: the row narrows the search to that group and keeps the term, so people get more of one kind without knowing its prefix. Offer it before people type too, so the few recent records don't pass for everything there is.
+- **Hand over to the list page:** in the narrowed list, end the group with a row like "All events for “jazz”" whenever the server has more than it shows, with the count in its description. It opens the list page with the term in its search, where sorting and filters help people who are browsing rather than looking for one record. Name the row after where it goes, as the other rows do, and give it an arrow, since it leaves the palette. Don't load more rows as people scroll: typing another letter finds a record faster than scrolling does.
+- **Keep the rest fast:** pages and actions show right away, only the records group waits for the server. People who press <kbd>Enter</kbd> before the results are there wait for them, so keep the search quick and the number of results small.
+
+#### Narrowing to one kind
+
+In a mixed list, records compete with pages and actions, and record search stays invisible until people type a name. For each kind of record people look up often, give its group a short prefix, like `e:` for events and `v:` for venues. A query that starts with the prefix narrows the search to that group: `e:jazz` shows only events that match "jazz".
+
+The footer lists the prefixes next to the keys, like "e: Events", so people come across them every time they open the palette. Screen readers hear each prefix as part of its group's name. A prefix alone should list the first records of that kind, not only the recent ones, so people don't take a short list for everything there is. Keep the prefixes few and memorable, one letter per kind of record.
+
+<ComponentDemo name="command-palette-async" />
+
+#### Connecting the server
+
+The demo searches with [TanStack Query](/patterns/data/fetching-and-mutations), one query per kind of record.
+
+- **Mark the server's groups:** set `filter={false}` on each group whose rows come from the server. The palette shows those rows as they arrive and keeps matching the other groups, like the pages, as people type. A group without rows hides, title included. When every row comes from the server, set `filter={false}` on the palette instead.
+- **Search from `onSearchChange`:** it hands over the term without the prefix, and the prefix of the group the search is narrowed to. It waits until people pause typing, and reports right away when the palette opens, the query is cleared or the search narrows to a group. Don't add a debounce of your own, it only adds to the wait. Use `onInputChange` only for what has to follow every keystroke.
+- **Set `loading` as the request starts:** the search field shows a spinner, and <kbd>Enter</kbd> waits for the results. Without `loading`, the palette waits only a moment and then runs the row on screen, even if newer results are still on their way.
+- **Keep the last results while new ones load:** a list that empties on every keystroke flickers. With TanStack Query, `placeholderData: keepPreviousData` keeps them, and passing its `signal` to `fetch` cancels requests that are out of date.
+
+If people press <kbd>Enter</kbd> before the results for what they typed are there, the palette waits for them and runs the first new row. A quick "jazz" and <kbd>Enter</kbd> then opens the jazz event, not the row that matched "ja". A row people picked with the arrow keys or the pointer runs right away, as does a click.
+
+### When nothing matches
+
+Say what people can search for, so they know whether to rephrase or look elsewhere, for example "No page with that name. Try “events” or “orders”." Don't blame the query. Pass the message as `emptyState`.
+
+If your app has a full search, end the list with a row that runs it for the query. The list is then never empty, and <kbd>Enter</kbd> always leads somewhere.
+
+<ComponentDemo name="command-palette-empty" />
+
+## Accessibility
+
+The palette follows the [combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/). Focus stays in the search field while the arrow keys move a virtual focus through the list, so screen readers announce the active row and people can keep typing. When a search finds nothing, screen readers hear the empty message once people pause typing. When loading takes longer than a second, they hear the loading message. Quick searches stay quiet, and new results need no announcement, because their first row becomes active and is read.
+
+| Key                                                      | Action                                                                               |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| <kbd>⌘</kbd>+<kbd>K</kbd> / <kbd>Ctrl</kbd>+<kbd>K</kbd> | Opens the palette from anywhere, also inside text fields.                            |
+| <kbd>↑</kbd> / <kbd>↓</kbd>                              | Moves the active row.                                                                |
+| <kbd>Enter</kbd>                                         | Runs the active row. While results load, runs the first new row once they are there. |
+| <kbd>Escape</kbd>                                        | Clears the search, then closes the palette.                                          |
+
+Letters typed into the search field stay in the palette. Shortcuts your app binds to single keys, for example "c" to create, don't fire while people type a query.
+
+The search field is the only Tab stop. The caret is its focus indicator, so the field has no extra ring. When the palette closes, focus returns to where it was.
+
+## Props
+
+<StorybookHintMessage component={'CommandPalette'} />
+
+### CommandPalette
+
+<AutoTypeTable
+  path="CommandPalette/CommandPalette"
+  name="CommandPaletteProps"
+/>
+
+### CommandPalette.Trigger
+
+<AutoTypeTable
+  path="CommandPalette/CommandPaletteTrigger"
+  name="CommandPaletteTriggerProps"
+/>
+
+### CommandPalette.Button
+
+<AutoTypeTable
+  path="CommandPalette/CommandPaletteButton"
+  name="CommandPaletteButtonProps"
+/>
+
+### CommandPalette.Group
+
+<AutoTypeTable
+  path="CommandPalette/CommandPaletteGroup"
+  name="CommandPaletteGroupProps"
+/>
+
+### CommandPalette.Item
+
+<AutoTypeTable
+  path="CommandPalette/CommandPaletteItem"
+  name="CommandPaletteItemProps"
+/>
+
+## Alternative components
+
+- [Sidebar](/components/navigation/sidebar): Use for the app's main navigation. The palette complements it and never replaces it.
+- [SearchField](/components/form/search-field): Use to narrow what is already on the page, for example the rows of a table.
