@@ -246,7 +246,9 @@ export type Theme = {
     NumberField?: Record<
       'group' | 'stepper' | 'input',
       ComponentStyleFunction<string, string>
-    >;
+    > & {
+      maxValue?: ComponentStyleFunction<string, string>;
+    };
     SectionMessage?: Record<
       'container' | 'icon' | 'title' | 'description' | 'content',
       ComponentStyleFunction<string, string>

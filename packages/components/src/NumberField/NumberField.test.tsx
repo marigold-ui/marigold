@@ -293,3 +293,86 @@ test('allows formatting of displayed value', () => {
   const unit: HTMLInputElement = screen.getByDisplayValue('150 cm');
   expect(unit.value).toEqual('150 cm');
 });
+
+test('shows the maximum next to the value with showMaxValue', () => {
+  render(
+    <Basic.Component
+      label="Tickets"
+      maxValue={2}
+      defaultValue={1}
+      showMaxValue
+    />
+  );
+
+  expect(screen.getByText('/ 2')).toHaveAttribute('aria-hidden', 'true');
+});
+
+test('describes the input with the maximum with showMaxValue', () => {
+  render(
+    <Basic.Component
+      label="Tickets"
+      description="Single tickets"
+      maxValue={2}
+      defaultValue={1}
+      showMaxValue
+    />
+  );
+
+  expect(
+    screen.getByRole('textbox', { name: 'Tickets' })
+  ).toHaveAccessibleDescription('Single tickets of 2');
+});
+
+test('keeps a consumer aria-describedby with showMaxValue', () => {
+  render(
+    <>
+      <span id="hint">Resale</span>
+      <Basic.Component
+        label="Tickets"
+        description={undefined}
+        aria-describedby="hint"
+        maxValue={2}
+        showMaxValue
+      />
+    </>
+  );
+
+  expect(screen.getByRole('textbox')).toHaveAccessibleDescription(
+    'Resale of 2'
+  );
+});
+
+test('formats the maximum with formatOptions', () => {
+  render(
+    <Basic.Component
+      label="Amount"
+      maxValue={1000}
+      formatOptions={{ style: 'currency', currency: 'EUR' }}
+      showMaxValue
+    />
+  );
+
+  expect(screen.getByText('/ €1,000.00')).toBeInTheDocument();
+});
+
+test('shows the maximum on a read-only field', () => {
+  render(
+    <Basic.Component label="Tickets" maxValue={2} readOnly showMaxValue />
+  );
+
+  expect(screen.getByText('/ 2')).toBeInTheDocument();
+});
+
+test('does not show the maximum by default', () => {
+  render(<Basic.Component label="Tickets" maxValue={2} />);
+
+  expect(screen.queryByText('/ 2')).not.toBeInTheDocument();
+});
+
+test('shows no maximum with showMaxValue but without maxValue', () => {
+  render(
+    <Basic.Component label="Tickets" description={undefined} showMaxValue />
+  );
+
+  expect(screen.getByRole('textbox')).not.toHaveAttribute('aria-describedby');
+});

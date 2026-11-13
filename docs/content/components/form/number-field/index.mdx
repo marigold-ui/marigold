@@ -53,6 +53,28 @@ when using stepper buttons it is better to have shorter fields, so that the user
   </Do>
 </GuidelineTiles>
 
+### Show the maximum
+
+When the maximum is small and matters for the decision, such as the tickets left in a listing, set `showMaxValue`. The field then shows the value together with the `maxValue`, for example "1 / 2", so people see the limit without pressing the stepper. Screen readers hear the limit as part of the field's description ("of 2") when focus enters the field.
+
+The maximum carries no unit of its own, so the label has to name what is counted. Use "Tickets", not "Amount". If one step could mean more than one item, say so in the description.
+
+<ComponentDemo name="number-field-max-value" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Show the maximum when it is small and limits what people can choose.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't show the maximum when it is only a technical limit, such as 100 for
+      a percentage.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
 ### Use Format Options
 
 With `<NumberField>` you can use `Intl.NumberFormatOptions` which comes in handy to format the numbers in a certain format, e.g. `percent`,`unit`, `decimal` and `currency`.

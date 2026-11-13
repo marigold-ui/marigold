@@ -84,6 +84,15 @@ const meta = preview.meta({
         defaultValue: { summary: 'false' },
       },
     },
+    showMaxValue: {
+      control: {
+        type: 'boolean',
+      },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
     width: {
       control: {
         type: 'text',
@@ -95,6 +104,7 @@ const meta = preview.meta({
     description: 'This is a help text description',
     label: 'Label',
     hideStepper: false,
+    showMaxValue: false,
     readOnly: false,
     disabled: false,
     errorMessage: 'Something went wrong',
@@ -177,6 +187,25 @@ export const MinMax = meta.story({
       />
       <small>min: 0, max: 100</small>
     </>
+  ),
+});
+
+export const MaxValue = meta.story({
+  args: {
+    label: 'Tickets',
+    description: 'Single tickets from one ReSale listing',
+    showMaxValue: true,
+    width: 44,
+    minValue: 0,
+    maxValue: 2,
+    defaultValue: 1,
+  },
+  render: args => (
+    <Inline space={4}>
+      <NumberField {...args} />
+      <NumberField {...args} defaultValue={2} hideStepper />
+      <NumberField {...args} disabled />
+    </Inline>
   ),
 });
 
