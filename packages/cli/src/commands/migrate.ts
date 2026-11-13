@@ -10,6 +10,15 @@ import {
 import { v18 } from '../lib/codemod/manifests/v18.js';
 import { v19 } from '../lib/codemod/manifests/v19.js';
 import {
+  MARIGOLD_PACKAGES,
+  covers,
+  declaresMarigold,
+  findMarkerFile,
+  migrationMajor,
+  readMarker,
+  writeMarker,
+} from '../lib/codemod/marker.js';
+import {
   removeJsxProps,
   renameImports,
   renameJsxMembers,
@@ -47,36 +56,45 @@ import { parseTsx } from '../lib/tsx-ast.js';
 const MANIFESTS: Record<string, MigrationManifest> = { v18, v19 };
 
 export interface DetectedMigration {
-  /** installed @marigold/components version (or the declared range minimum) */
+  /** the package the version was read from; released in lockstep */
+  package: (typeof MARIGOLD_PACKAGES)[number];
+  /** its installed version (or the declared range minimum) */
   installed: string;
   /** where the version was read from */
   source: 'node_modules' | 'package.json';
-  /** applicable migrations in run order, e.g. ['v18'] — empty: up to date */
+  /** last applied migration from the package.json marker, null when none */
+  migrated: string | null;
+  /** pending migrations up to the installed major, in run order */
   versions: string[];
-  /** migrations for the installed major that are not rerun-safe, so not proposed */
-  heldBack: string[];
+  /** pending migrations for a major that is not installed yet */
+  awaitingUpgrade: string[];
 }
 
 /**
  * Detect the consumer's Marigold version by walking up from the target path
  * (theme directories usually sit far below the repo root that owns
- * node_modules), preferring the installed package over the declared range.
- * Returns null when no @marigold/components is found at all.
+ * node_modules), preferring the installed package over the declared range
+ * and @marigold/components over @marigold/system. Returns null when neither
+ * is found at all.
  */
 export const detectMigration = (
   targetPath: string
 ): DetectedMigration | null => {
-  const found = ((): Pick<DetectedMigration, 'installed' | 'source'> | null => {
+  type Found = Pick<DetectedMigration, 'package' | 'installed' | 'source'>;
+  const found = ((): Found | null => {
     let dir = path.resolve(targetPath);
     for (;;) {
-      const installed = installedVersion(dir, '@marigold/components');
-      if (installed) return { installed, source: 'node_modules' };
-      const declared = declaredVersion(
-        readPackageJson(path.join(dir, 'package.json')),
-        '@marigold/components'
-      );
-      const min = declared ? minVersionFromRange(declared) : null;
-      if (min) return { installed: min, source: 'package.json' };
+      const pkg = readPackageJson(path.join(dir, 'package.json'));
+      for (const name of MARIGOLD_PACKAGES) {
+        const installed = installedVersion(dir, name);
+        if (installed) {
+          return { package: name, installed, source: 'node_modules' };
+        }
+        const declared = declaredVersion(pkg, name);
+        const min = declared ? minVersionFromRange(declared) : null;
+        if (min)
+          return { package: name, installed: min, source: 'package.json' };
+      }
       const parent = path.dirname(dir);
       if (parent === dir) return null;
       dir = parent;
@@ -84,26 +102,21 @@ export const detectMigration = (
   })();
   if (!found) return null;
 
-  // Propose migrations targeting the installed major too (>=, not >): the
-  // documented procedure is "upgrade the packages, then migrate", so someone
-  // on 18.x is exactly who needs the v18 migration. That relies on re-runs
-  // being no-ops, so a manifest that is not rerun-safe is only proposed
-  // before its major is installed and otherwise has to be named explicitly.
+  // Pending = newer than the marker. "Upgrade the packages, then migrate":
+  // a migration runs once its major is installed, never against older types.
+  const markerFile = findMarkerFile(targetPath);
+  const migrated = markerFile ? readMarker(markerFile) : null;
   const major = Number.parseInt(found.installed, 10);
-  const candidates = Object.entries(MANIFESTS)
-    .map(([v, manifest]) => ({
-      v,
-      manifest,
-      target: Number.parseInt(v.replace(/^v/, ''), 10),
-    }))
-    .filter(({ target }) => Number.isFinite(target) && target >= major)
+  const pending = Object.keys(MANIFESTS)
+    .filter(v => !covers(migrated, v))
+    .map(v => ({ v, target: migrationMajor(v) }))
+    .filter(({ target }) => Number.isFinite(target))
     .sort((a, b) => a.target - b.target);
-  const isHeldBack = ({ manifest, target }: (typeof candidates)[number]) =>
-    target === major && manifest.rerunSafe === false;
   return {
     ...found,
-    versions: candidates.filter(c => !isHeldBack(c)).map(({ v }) => v),
-    heldBack: candidates.filter(isHeldBack).map(({ v }) => v),
+    migrated,
+    versions: pending.filter(p => p.target <= major).map(({ v }) => v),
+    awaitingUpgrade: pending.filter(p => p.target > major).map(({ v }) => v),
   };
 };
 
@@ -152,12 +165,18 @@ const IGNORED_DIRS = new Set([
   '.turbo',
 ]);
 
-const collectSourceFiles = (dir: string): string[] => {
+// `nested` set: stop at packages that declare Marigold, they record their own run
+const collectSourceFiles = (dir: string, nested?: string[]): string[] => {
   const out: string[] = [];
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     if (entry.isDirectory()) {
       if (IGNORED_DIRS.has(entry.name) || entry.name.startsWith('.')) continue;
-      out.push(...collectSourceFiles(path.join(dir, entry.name)));
+      const sub = path.join(dir, entry.name);
+      if (nested && declaresMarigold(path.join(sub, 'package.json'))) {
+        nested.push(sub);
+        continue;
+      }
+      out.push(...collectSourceFiles(sub, nested));
     } else if (
       /\.(tsx?|jsx?|css)$/.test(entry.name) &&
       !entry.name.endsWith('.d.ts') &&
@@ -226,8 +245,10 @@ export const runMigrate = (options: MigrateOptions): MigrateResult => {
 
   // read each candidate once; every later pass works on this snapshot
   const root = path.resolve(options.targetPath);
+  // inside a package, a run stays in it; elsewhere (a dry run) it spans all
+  const nested: string[] | undefined = findMarkerFile(root) ? [] : undefined;
   const texts = new Map<string, string>();
-  for (const file of collectSourceFiles(root).sort()) {
+  for (const file of collectSourceFiles(root, nested).sort()) {
     texts.set(file, readFileSync(file, 'utf8'));
   }
   // '@marigold/' covers system (themes), components (JSX) and icons (imports)
@@ -447,6 +468,12 @@ export const runMigrate = (options: MigrateOptions): MigrateResult => {
     ),
     '',
   ];
+  for (const dir of (nested ?? []).sort()) {
+    lines.push(
+      `${pc.yellow('!')} Skipped ${path.relative(root, dir)}: a separate package with its own record. Migrate it on its own: marigold migrate ${manifest.version} ${dir}`
+    );
+  }
+  if (nested?.length) lines.push('');
   if (sources.size === 0) {
     lines.push(
       `No files importing @marigold/system or @marigold/components found under ${root}.`
@@ -509,11 +536,104 @@ export interface MigrateCommandOptions {
 }
 
 /**
+ * The package.json an applied run records into. The marker is per package, so
+ * the path has to be that package's folder: from a subfolder it would mark
+ * code the run never touched, from a folder above it records nothing.
+ */
+const packageScope = (targetPath: string, command: string): string => {
+  const file = findMarkerFile(targetPath);
+  if (!file) {
+    throw new Error(
+      `Cannot apply a migration to ${targetPath}: no package.json at or above it declares @marigold/components or @marigold/system, so the CLI cannot record what it applied. ` +
+        `Run it on each package that declares one of them, or add --dry-run to only report.`
+    );
+  }
+  const dir = path.dirname(file);
+  if (dir !== path.resolve(targetPath)) {
+    throw new Error(
+      `Cannot apply a migration to ${targetPath} alone: migrations are recorded per package, and it is part of ${dir}. ` +
+        `Run it on the package instead: ${command} ${dir}. Add --dry-run to report on ${targetPath} only.`
+    );
+  }
+  return file;
+};
+
+/**
+ * Write the applied-migrations marker after a real run. Returns false when
+ * the marker could not be written: the code edits have already landed, so
+ * the caller stops before a later migration builds on an unrecorded one.
+ */
+const recordMigration = (
+  version: string,
+  file: string,
+  write: (output: string) => void
+): boolean => {
+  try {
+    if (writeMarker(file, version)) {
+      write(`Recorded ${version} as applied in ${file}.`);
+    }
+    return true;
+  } catch (error) {
+    write(
+      `Warning: the ${version} changes were applied but could not be recorded in ${file}: ${error instanceof Error ? error.message : String(error)}. ` +
+        `Add "marigold": { "migrated": "${version}" } to it by hand, otherwise marigold migrate will offer ${version} again.`
+    );
+    return false;
+  }
+};
+
+/**
+ * How an explicitly named migration runs: refused when the marker already
+ * covers it, unless `--only` names the changes, which completes it with a
+ * warning, or it is a dry run, which writes nothing. One for a major that is not installed yet
+ * warns but still runs.
+ */
+const checkNamedRun = (
+  version: string,
+  targetPath: string,
+  only: readonly string[] | undefined,
+  dryRun: boolean,
+  write: (output: string) => void
+): 'refuse' | 'complete' | 'first' => {
+  // unknown names are reported by runMigrate
+  if (!MANIFESTS[version]) return 'first';
+  // read directly: detection gives up on ranges like ^19 or workspace:*
+  const markerFile = findMarkerFile(targetPath);
+  const migrated = markerFile ? readMarker(markerFile) : null;
+  const recorded = covers(migrated, version);
+  if (recorded && !only && dryRun) {
+    write(
+      `${version} is already applied (last applied: ${migrated}). This dry run shows what a re-run would change. Applying it would be refused.`
+    );
+  } else if (recorded && !only) {
+    write(
+      `${version} is already applied (last applied: ${migrated}), so nothing was run: a second run can rename props it already renamed. ` +
+        `To apply changes you skipped, name them: marigold migrate ${version} ${markerFile ? path.dirname(markerFile) : targetPath} --only <names>`
+    );
+    return 'refuse';
+  } else if (recorded && !dryRun) {
+    write(
+      `Completing ${version}, which is already applied (last applied: ${migrated}). Name only changes that did not run before: one that already ran can rename props again.`
+    );
+  }
+  const detected = detectMigration(targetPath);
+  const target = migrationMajor(version);
+  if (detected && target > Number.parseInt(detected.installed, 10)) {
+    write(
+      `Warning: ${version} targets ${detected.package} ${target}, but ${detected.installed} is installed. ` +
+        `It rewrites code still typed against the older version, so upgrade first if you can. Running it because it was named explicitly.`
+    );
+  }
+  return recorded ? 'complete' : 'first';
+};
+
+/**
  * The `marigold migrate` flow: resolve which migration(s) to run (explicit,
  * or detected from the target and confirmed), offer the changes that fire
  * for deselection, then apply. Prompts happen only on a real terminal; every
  * non-interactive path either runs unattended or throws with instructions.
- * Returns the exit code (130 when the user aborted a prompt).
+ * Returns the exit code (1 when a named migration was refused or could not
+ * be recorded, 130 when the user aborted a prompt).
  */
 export const runMigrateCommand = async (
   options: MigrateCommandOptions
@@ -522,34 +642,58 @@ export const runMigrateCommand = async (
   const interactive = options.interactive ?? canPrompt();
 
   let versions: string[];
+  // null exactly when nothing is written: a dry run
+  let markerFile: string | null = null;
+  // completing a recorded migration: what it skipped before is unknowable
+  let completing = false;
   if (options.version) {
+    const mode = checkNamedRun(
+      options.version,
+      targetPath,
+      only,
+      dryRun,
+      write
+    );
+    // nothing ran, so `migrate && commit` must not go on
+    if (mode === 'refuse') return 1;
+    if (!dryRun) {
+      markerFile = packageScope(
+        targetPath,
+        `marigold migrate ${options.version}`
+      );
+    }
+    completing = mode === 'complete';
     versions = [options.version];
   } else {
     const detected = detectMigration(targetPath);
     if (!detected) {
       throw new Error(
-        `Could not find @marigold/components under ${targetPath} — pass the migration explicitly: marigold migrate v18 [path]`
+        `Could not find @marigold/components or @marigold/system under ${targetPath} — pass the migration explicitly: marigold migrate v18 [path]`
       );
     }
     if (detected.versions.length === 0) {
-      const [heldBack] = detected.heldBack;
+      const [next] = detected.awaitingUpgrade;
+      const applied = detected.migrated
+        ? ` (last applied: ${detected.migrated})`
+        : '';
       write(
-        heldBack
-          ? `Detected @marigold/components ${detected.installed} (${detected.source}) — the ${heldBack} migration is not proposed automatically because it is not safe to re-run. If you have not migrated yet, run: marigold migrate ${heldBack} [path] --dry-run`
-          : `Detected @marigold/components ${detected.installed} (${detected.source}) — already up to date, no migration to run.`
+        next
+          ? `Detected ${detected.package} ${detected.installed} (${detected.source})${applied} — the ${next} migration needs ${detected.package} ${migrationMajor(next)} installed first. Upgrade, then run marigold migrate again.`
+          : `Detected ${detected.package} ${detected.installed} (${detected.source})${applied} — already up to date, no migration to run.`
       );
       return 0;
     }
+    if (!dryRun) markerFile = packageScope(targetPath, 'marigold migrate');
     if (!interactive) {
       throw new Error(
-        `Detected @marigold/components ${detected.installed} — would run ${detected.versions.join(', then ')}. ` +
+        `Detected ${detected.package} ${detected.installed} — would run ${detected.versions.join(', then ')}. ` +
           `Non-interactive session: confirm by passing the version explicitly, e.g. marigold migrate ${detected.versions[0]} [path]`
       );
     }
     const { confirm, isCancel } = await import('@clack/prompts');
     const proceed = await confirm({
       message:
-        `Detected @marigold/components ${detected.installed} (${detected.source}). ` +
+        `Detected ${detected.package} ${detected.installed} (${detected.source}). ` +
         `Run the ${detected.versions.join(', then the ')} migration${dryRun ? ' (dry run)' : ''}?`,
     });
     if (isCancel(proceed) || proceed !== true) {
@@ -559,12 +703,16 @@ export const runMigrateCommand = async (
     versions = detected.versions;
   }
 
+  // applied and recorded so far, so an abort can say what already changed
+  const applied: string[] = [];
   for (const version of versions) {
     // pre-analysis: dry-run in memory, offer the fired changes for
     // selection. Skipped for explicit --only / --dry-run / non-TTY runs.
     let selected = only;
+    let fired: string[] | undefined;
     if (!selected && !dryRun && interactive) {
       const analysis = runMigrate({ version, targetPath, dryRun: true });
+      fired = analysis.summary.map(s => s.name);
       if (analysis.summary.length > 0) {
         const { multiselect, isCancel } = await import('@clack/prompts');
         const chosen = await multiselect({
@@ -578,14 +726,45 @@ export const runMigrateCommand = async (
           required: false,
         });
         if (isCancel(chosen)) {
-          write('Aborted — nothing changed.');
+          write(
+            applied.length > 0
+              ? `Aborted — ${version} not applied. Already applied and recorded: ${applied.join(', ')}.`
+              : 'Aborted — nothing changed.'
+          );
           return 130;
         }
         selected = chosen as string[];
+        // recording an empty run would mark untouched code as migrated
+        if (selected.length === 0) {
+          write(
+            applied.length > 0
+              ? `Nothing selected — ${version} not applied. Already applied and recorded: ${applied.join(', ')}.`
+              : `Nothing selected — ${version} not applied.`
+          );
+          return 0;
+        }
       }
     }
 
+    // analyse before applying, first run only: a non-idempotent change re-fires on its own output
+    if (!completing && selected && !dryRun && !fired) {
+      fired = runMigrate({ version, targetPath, dryRun: true }).summary.map(
+        s => s.name
+      );
+    }
+
     write(runMigrate({ version, targetPath, dryRun, only: selected }).output);
+    if (!markerFile) continue;
+
+    const skipped =
+      selected && fired ? fired.filter(name => !selected.includes(name)) : [];
+    if (skipped.length > 0) {
+      write(
+        `Skipped in ${version}: ${skipped.join(', ')}. To apply later: marigold migrate ${version} ${targetPath} --only ${skipped.join(',')}`
+      );
+    }
+    if (!recordMigration(version, markerFile, write)) return 1;
+    applied.push(version);
   }
   return 0;
 };

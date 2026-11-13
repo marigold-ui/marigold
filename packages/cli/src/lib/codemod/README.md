@@ -13,11 +13,31 @@ npx marigold migrate [version] [path] [--dry-run] [--only <names>]
 
 - `version` is optional: when omitted, the installed
   `@marigold/components` is detected (walking up from the target path,
-  falling back to the declared package.json range) and the applicable
-  migration is proposed for interactive confirmation — Enter runs it.
-  Non-interactive sessions must pass the version explicitly.
-- `path` defaults to the current directory; point it at the consumer repo
-  (or its theme directory) you want to migrate.
+  falling back to the declared package.json range, and to `@marigold/system`
+  in a standalone theme package) and the pending
+  migrations are proposed for interactive confirmation — Enter runs them.
+  Pending means newer than the marker (below) and no newer than the
+  installed major: upgrade first, then migrate. Non-interactive sessions must
+  pass the version explicitly.
+- **Applied-migrations marker** (`marker.ts`): every real run records the
+  last applied migration as `"marigold": { "migrated": "v19" }` in the
+  package.json that declares `@marigold/components`, or `@marigold/system`
+  for a standalone theme package, partial runs included.
+  A missing marker means nothing has been applied. A migration named
+  explicitly that the marker already covers warns, does not run and exits
+  with code 1, unless
+  `--only` names the changes, which is how a partial run is completed (with
+  a warning to name only changes that did not run). A dry run of it still
+  reports. A marker that cannot be written stops the
+  run with exit code 1 and says to add the field by hand.
+- `path` defaults to the current directory. An applied run needs the folder
+  of the package.json that declares `@marigold/components` or
+  `@marigold/system`, because the
+  marker is per package: run from a subfolder it would mark code it never
+  touched as migrated, run from a monorepo root it has nowhere to record.
+  Anything else is refused with the command to run instead. Inside a
+  package, the run skips nested packages that declare Marigold and names
+  them, since each records its own run. `--dry-run` works on any path.
 - **Pre-analysis and selection**: before writing anything, an interactive
   run analyzes the target (a dry run in memory) and lists the changes that
   actually fire — name, description, change and file counts — as a
@@ -173,8 +193,10 @@ skipped as build artifacts.
    diff churn.
 3. **Warn, never guess.** Spread elements, non-cva helpers, unmatched
    baselines: all bail to structured warnings.
-4. **Idempotent.** Re-running a migration is a no-op; already-swapped slots
-   are recognized as being on the target baseline.
+4. **Idempotent primitives.** Re-running a primitive is a no-op;
+   already-swapped slots are recognized as being on the target baseline. A
+   one-off transform may not manage that (see below), which is why the CLI
+   relies on the marker, not on idempotency, to never offer a migration twice.
 5. **The Theme contract is a stable API of this system.** The primitives and
    the manifest format assume optional component keys, exhaustive slot
    Records, and cva-based style functions. Changing that contract in
@@ -227,9 +249,9 @@ A change that no primitive can express gets a **one-off transform** for that
 version (same `Codemod` interface, in `transforms/`, listed in the manifest's
 `transforms`). v19's `combobox-value-props` is one: it swaps two prop sets in
 one pass and skips elements that already carry the new text props. It is not
-idempotent for selection-only elements, so v19 sets `rerunSafe: false` and
-auto-detection stops proposing it once 19 is installed. Run it by name
-(`marigold migrate v19`) after upgrading. Promote it to a
+idempotent for selection-only elements: a second run renames their `value`
+again. The applied-migrations marker is what keeps that second run from
+happening, so a transform needs no flag of its own. Promote it to a
 primitive only when the same shape shows up in a second major; designing a
 general abstraction from a single example is how wrong abstractions happen.
 
