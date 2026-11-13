@@ -2,13 +2,13 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validate } from '../index.js';
+import { probeFailureCause, skipIntegration } from './skipIntegration.js';
 
 // Integration coverage for auto-fit/auto-fill grid detection: the real
 // `declaresAutoFitGrid` (overflow.ts) has to scan stylesheet rules against a
 // live DOM, which only a real render can verify — a unit test feeding a
-// pre-resolved `gridTemplateColumns` string never exercises it. Same
-// self-skip rationale as renderer.integration.test.ts: a real render needs a
-// working Chromium, which isn't available on a bare CI runner.
+// pre-resolved `gridTemplateColumns` string never exercises it. Needs a working
+// Chromium: see skipIntegration.ts for when this skips and when it fails.
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const example = (name: string): string =>
   path.join(__dirname, '..', 'examples', name);
@@ -19,6 +19,7 @@ const example = (name: string): string =>
 const viewport = { width: 400, height: 720 };
 
 let renderWorks = false;
+let probeError: unknown;
 
 beforeAll(async () => {
   try {
@@ -27,14 +28,20 @@ beforeAll(async () => {
       viewport,
     });
     renderWorks = probe.metadata.renderTimeMs > 0;
-  } catch {
+    if (!renderWorks) probeError = probeFailureCause(probe);
+  } catch (error) {
     renderWorks = false;
+    probeError = error;
   }
 }, 60_000);
 
 describe('auto-fit/auto-fill grid overflow detection (requires a working render environment)', () => {
   it('does not flag a wrapping Tiles (auto-fit) grid as an overflow/wrapping defect', async ctx => {
-    if (!renderWorks) return ctx.skip();
+    if (!renderWorks)
+      return skipIntegration(ctx, 'No working Chromium render', {
+        inCI: 'fail',
+        cause: probeError,
+      });
 
     const report = await validate(example('auto-fit-tiles.tsx'), {
       checks: ['spatial'],
