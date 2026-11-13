@@ -180,12 +180,12 @@ export const SEARCH_DELAY = 250;
 const ANNOUNCE_EMPTY_AFTER = 500;
 const ANNOUNCE_LOADING_AFTER = 1000;
 
-// Announces the message politely once `key` stayed the same for `delay`
-// ms. `null` announces nothing.
+// Announces `key` politely once it stayed the same for `delay` ms, or what
+// `message` returns then. `null` announces nothing.
 const useAnnounceAfter = (
   key: string | null,
   delay: number,
-  message: () => string | undefined
+  message: () => string | undefined = () => key ?? undefined
 ) => {
   const getMessage = useEffectEvent(message);
   useEffect(() => {
@@ -198,7 +198,7 @@ const useAnnounceAfter = (
   }, [key, delay]);
 };
 
-// The message for no results, announced while `announceFor` stays the same.
+// The message for no results, announced once `announceFor` stayed the same.
 const EmptyState = ({
   className,
   announceFor,
@@ -326,11 +326,7 @@ const CommandPaletteBody = <T extends object>({
   }, [settledSearch]);
 
   const loadingMessage = stringFormatter.format('loadingMessage');
-  useAnnounceAfter(
-    loading ? loadingMessage : null,
-    ANNOUNCE_LOADING_AFTER,
-    () => loadingMessage
-  );
+  useAnnounceAfter(loading ? loadingMessage : null, ANNOUNCE_LOADING_AFTER);
   // Nothing to announce before people type, or while the answer is pending.
   const emptyAnnouncement =
     inputValue.trim() === '' || loading || appSearchWaiting ? null : inputValue;
