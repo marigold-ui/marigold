@@ -779,3 +779,17 @@ Advanced.test(
     expect(copyItem.getAttribute('aria-describedby')).toContain(shortcut.id);
   }
 );
+
+export const LabelledByActionMenu = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { 'aria-labelledby': 'offer-label' },
+  render: args => (
+    <div className="flex items-center gap-2">
+      <span id="offer-label">Angebot 42</span>
+      <ActionMenu aria-labelledby={args['aria-labelledby']}>
+        <ActionMenu.Item id="edit">Bearbeiten</ActionMenu.Item>
+        <ActionMenu.Item id="withdraw">Zurückziehen</ActionMenu.Item>
+      </ActionMenu>
+    </div>
+  ),
+});
