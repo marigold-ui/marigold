@@ -1,5 +1,21 @@
 # @marigold/components
 
+## 18.5.0
+
+### Minor Changes
+
+- fb9256b: fix(DST-1885): Pagination keeps keyboard focus when a button becomes unusable or disappears
+
+  "Previous" on the first page, "Next" on the last page and the "1" shown when there are no pages are no longer natively disabled. They now use `aria-disabled`, ignore presses and stay reachable with Tab, so focus is not dropped to the page body when you reach either end. Tests that check these buttons with `toBeDisabled()` or `be.disabled` need to assert `aria-disabled="true"` instead. When the focused page button is removed, for example because `totalItems` shrank, focus moves to the current page's button.
+
+### Patch Changes
+
+- 4c5665a: refactor: clean up internal lint warnings
+
+  `Breadcrumbs` now keys its items by their element key instead of their position, and `createFilledIcon` no longer uses `forwardRef`. Custom icons still forward `ref` to the `<svg>`. Nothing changes in how you use these components.
+
+- @marigold/system@18.5.0
+
 ## 18.4.0
 
 ### Minor Changes

@@ -1,5 +1,15 @@
 # @marigold/icons
 
+## 2.0.6
+
+### Patch Changes
+
+- 4c5665a: refactor: clean up internal lint warnings
+
+  `Breadcrumbs` now keys its items by their element key instead of their position, and `createFilledIcon` no longer uses `forwardRef`. Custom icons still forward `ref` to the `<svg>`. Nothing changes in how you use these components.
+
+- @marigold/system@18.5.0
+
 ## 2.0.5
 
 ### Patch Changes
