@@ -608,7 +608,7 @@ const checkNamedRun = (
   } else if (recorded && !only) {
     write(
       `${version} is already applied (last applied: ${migrated}), so nothing was run: a second run can rename props it already renamed. ` +
-        `To apply changes you skipped, name them: marigold migrate ${version} ${targetPath} --only <names>`
+        `To apply changes you skipped, name them: marigold migrate ${version} ${markerFile ? path.dirname(markerFile) : targetPath} --only <names>`
     );
     return 'refuse';
   } else if (recorded && !dryRun) {
@@ -734,6 +734,15 @@ export const runMigrateCommand = async (
           return 130;
         }
         selected = chosen as string[];
+        // recording an empty run would mark untouched code as migrated
+        if (selected.length === 0) {
+          write(
+            applied.length > 0
+              ? `Nothing selected — ${version} not applied. Already applied and recorded: ${applied.join(', ')}.`
+              : `Nothing selected — ${version} not applied.`
+          );
+          return 0;
+        }
       }
     }
 

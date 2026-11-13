@@ -615,6 +615,19 @@ describe('runMigrateCommand', () => {
     expect(readFileSync(cardPath, 'utf8')).toBe(before);
   });
 
+  test('names the package folder when refusing a recorded migration on a subfolder', async () => {
+    const root = setupDetectable('19.0.0', 'v19');
+    const subfolder = path.join(root, 'theme');
+
+    const { code, output } = await migrate({
+      version: 'v18',
+      targetPath: subfolder,
+    });
+
+    expect(code).toBe(1);
+    expect(output).toContain(`marigold migrate v18 ${root} --only <names>`);
+  });
+
   test.each(['^19', '19.x', 'latest', 'workspace:*'])(
     'refuses a recorded migration when the declared range %s has no version to detect',
     async range => {
@@ -792,6 +805,26 @@ describe('runMigrateCommand', () => {
     expect(
       readFileSync(path.join(components, 'Switch.styles.ts'), 'utf8')
     ).toContain(`'grid gap-x-2 items-center'`);
+  });
+
+  test('neither applies nor records a migration when every change is deselected', async () => {
+    const root = setupDetectable('18.0.0');
+    const cardPath = path.join(root, 'theme', 'components', 'Card.styles.ts');
+    const before = readFileSync(cardPath, 'utf8');
+    prompts.confirm.mockResolvedValue(true);
+    prompts.multiselect.mockResolvedValue([]);
+
+    const { code, output } = await migrate({
+      targetPath: root,
+      interactive: true,
+    });
+
+    expect(code).toBe(0);
+    expect(output).toContain('Nothing selected — v18 not applied.');
+    expect(readFileSync(cardPath, 'utf8')).toBe(before);
+    expect(
+      JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8')).marigold
+    ).toBeUndefined();
   });
 
   describe('applied-migrations marker', () => {
