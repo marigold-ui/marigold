@@ -125,7 +125,8 @@ ${pc.bold('Migrate options:')}
                       interactively
   [path]              Directory to migrate (default: current directory).
                       Applying needs the package that declares
-                      @marigold/components; dry runs work anywhere
+                      @marigold/components or @marigold/system; dry runs
+                      work anywhere
   --dry-run           Report what would change without writing files
   --only <names>      Apply only these changes (comma-separated codemod
                       names from the pre-analysis); skips the interactive

@@ -251,7 +251,7 @@ It checks, against the current working directory:
 
 ### marigold migrate
 
-Apply codemods for a breaking Marigold release, to your theme files and your application code. Run it after upgrading `@marigold/components`, from your project root.
+Apply codemods for a breaking Marigold release, to your theme files and your application code. Run it after upgrading `@marigold/components`, from the package that declares it.
 
 ```bash
 marigold migrate v18                          # migrate the current directory
@@ -265,14 +265,14 @@ marigold migrate v18 --only rename-imports    # apply a subset, non-interactivel
 | `--dry-run`      | Report what would change without writing files                          |         |
 | `--only <names>` | Apply only these changes (comma-separated), skipping the selection step |         |
 
-Both positionals are optional. Without a version, the installed `@marigold/components` is detected and the pending migrations are proposed for confirmation. Without a path, the current directory is used.
+Both positionals are optional. Without a version, the installed `@marigold/components` is detected, or `@marigold/system` in a standalone theme package, and the pending migrations are proposed for confirmation. Without a path, the current directory is used.
 
 After an applied run, `marigold migrate` records the last migration in the `package.json` that declares `@marigold/components`, or `@marigold/system` for a standalone theme package, as `"marigold": { "migrated": "v19" }`. Commit this field with the migrated code. It is how the CLI knows what is pending:
 
 - Without a version, only migrations newer than the recorded one are proposed, and only once their major version is installed. Upgrade first, then migrate.
-- A migration named explicitly that is already recorded prints a warning and changes nothing.
+- A migration named explicitly that is already recorded prints a warning, changes nothing and exits with code `1`, so a script that chains a commit after it stops.
 
-Because the record belongs to a package, an applied run has to target that package's folder, the one with the `package.json` that declares `@marigold/components` or `@marigold/system`. A subfolder or a monorepo root is refused with the command to run instead. In a monorepo, migrate each package that declares one of them. A dry run works on any path.
+Because the record belongs to a package, an applied run has to target that package's folder, the one with the `package.json` that declares `@marigold/components` or `@marigold/system`. A subfolder or a monorepo root is refused with the command to run instead. In a monorepo, migrate each package that declares one of them. A run on a package leaves out nested packages that declare one of them, since each records its own run, and names them in the output. A dry run works on any path.
 
 It anchors on imports rather than on file names or directory layout, so it works whatever your project structure is:
 

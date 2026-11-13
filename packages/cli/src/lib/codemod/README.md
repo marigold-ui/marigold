@@ -13,7 +13,8 @@ npx marigold migrate [version] [path] [--dry-run] [--only <names>]
 
 - `version` is optional: when omitted, the installed
   `@marigold/components` is detected (walking up from the target path,
-  falling back to the declared package.json range) and the pending
+  falling back to the declared package.json range, and to `@marigold/system`
+  in a standalone theme package) and the pending
   migrations are proposed for interactive confirmation — Enter runs them.
   Pending means newer than the marker (below) and no newer than the
   installed major: upgrade first, then migrate. Non-interactive sessions must
@@ -23,17 +24,20 @@ npx marigold migrate [version] [path] [--dry-run] [--only <names>]
   package.json that declares `@marigold/components`, or `@marigold/system`
   for a standalone theme package, partial runs included.
   A missing marker means nothing has been applied. A migration named
-  explicitly that the marker already covers warns and does not run, unless
-  `--only` names the changes, which is how a partial run is completed. A
-  dry run of it still reports. A marker that cannot be written stops the
+  explicitly that the marker already covers warns, does not run and exits
+  with code 1, unless
+  `--only` names the changes, which is how a partial run is completed (with
+  a warning to name only changes that did not run). A dry run of it still
+  reports. A marker that cannot be written stops the
   run with exit code 1 and says to add the field by hand.
 - `path` defaults to the current directory. An applied run needs the folder
   of the package.json that declares `@marigold/components` or
   `@marigold/system`, because the
   marker is per package: run from a subfolder it would mark code it never
   touched as migrated, run from a monorepo root it has nowhere to record.
-  Anything else is refused with the command to run instead. `--dry-run`
-  works on any path.
+  Anything else is refused with the command to run instead. Inside a
+  package, the run skips nested packages that declare Marigold and names
+  them, since each records its own run. `--dry-run` works on any path.
 - **Pre-analysis and selection**: before writing anything, an interactive
   run analyzes the target (a dry run in memory) and lists the changes that
   actually fire — name, description, change and file counts — as a

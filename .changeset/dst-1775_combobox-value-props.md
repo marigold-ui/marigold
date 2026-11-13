@@ -22,7 +22,7 @@ feat(DST-1775): `value` means the selected key on ComboBox and Autocomplete
   >
 ```
 
-A string `value` still compiles after the upgrade, because a key can be a string, but it is then looked up as an option `id` and the input stays empty. After upgrading, run `marigold migrate <path> --dry-run`, read the report, then run `marigold migrate <path>` to apply it before writing new code. It renames both prop sets on every ComboBox and Autocomplete and skips elements that already use the `inputValue` props. The CLI then records the migration in your `package.json`, so it never offers to rename the same props twice.
+A string `value` still compiles after the upgrade, because a key can be a string, but it is then looked up as an option `id` and the input stays empty. After upgrading, run `marigold migrate v19 <path> --dry-run`, read the report, then run `marigold migrate v19 <path>` to apply it before writing new code. It renames both prop sets on every ComboBox and Autocomplete and skips elements that already use the `inputValue` props. The CLI then records the migration in your `package.json`, so it never offers to rename the same props twice.
 
 The codemod only sees props written on the element. Spread props get a warning: a react-hook-form `{...field}` spread hides the change from the typechecker too, so pass the handler explicitly as `onInputChange={field.onChange}` for text or `onChange={field.onChange}` for a selection. Your own wrapper components that pass `value` through are not flagged at all, so check those by hand.
 

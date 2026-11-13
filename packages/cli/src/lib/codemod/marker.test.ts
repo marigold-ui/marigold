@@ -195,6 +195,57 @@ describe('writeMarker', () => {
     );
   });
 
+  test('leaves every other field as it was formatted', () => {
+    const file = writePkg(
+      '.',
+      '{\n  "name": "app",\n  "files": ["dist"],\n  "dependencies": { "@marigold/components": "^19.0.0" }\n}\n'
+    );
+
+    writeMarker(file, 'v19');
+
+    expect(fs.readFileSync(file, 'utf8')).toBe(
+      '{\n  "name": "app",\n  "files": ["dist"],\n  "dependencies": { "@marigold/components": "^19.0.0" },\n  "marigold": {\n    "migrated": "v19"\n  }\n}\n'
+    );
+  });
+
+  test('updates a one-line marker on its line', () => {
+    const file = writePkg(
+      '.',
+      '{\n  "marigold": { "migrated": "v18" },\n  "files": ["dist"]\n}\n'
+    );
+
+    writeMarker(file, 'v19');
+
+    expect(fs.readFileSync(file, 'utf8')).toBe(
+      '{\n  "marigold": { "migrated": "v19" },\n  "files": ["dist"]\n}\n'
+    );
+  });
+
+  test('adds the version to a marigold field that has none yet', () => {
+    const file = writePkg('.', '{\n  "marigold": { "other": true }\n}\n');
+
+    writeMarker(file, 'v19');
+
+    expect(fs.readFileSync(file, 'utf8')).toBe(
+      '{\n  "marigold": { "other": true, "migrated": "v19" }\n}\n'
+    );
+  });
+
+  test('handles keys and strings that contain braces and escaped quotes', () => {
+    const file = writePkg(
+      '.',
+      '{\n  "scripts": { "x": "echo \\"}{\\" ]" },\n  "name": "app"\n}\n'
+    );
+
+    writeMarker(file, 'v19');
+
+    expect(JSON.parse(fs.readFileSync(file, 'utf8'))).toEqual({
+      scripts: { x: 'echo "}{" ]' },
+      name: 'app',
+      marigold: { migrated: 'v19' },
+    });
+  });
+
   test('never lowers the marker', () => {
     const before = '{\n  "marigold": { "migrated": "v19" }\n}\n';
     const file = writePkg('.', before);
