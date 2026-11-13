@@ -1,5 +1,20 @@
 # @marigold/theme-rui
 
+## 6.4.0
+
+### Minor Changes
+
+- fb9256b: fix(DST-1885): Pagination keeps keyboard focus when a button becomes unusable or disappears
+
+  "Previous" on the first page, "Next" on the last page and the "1" shown when there are no pages are no longer natively disabled. They now use `aria-disabled`, ignore presses and stay reachable with Tab, so focus is not dropped to the page body when you reach either end. Tests that check these buttons with `toBeDisabled()` or `be.disabled` need to assert `aria-disabled="true"` instead. When the focused page button is removed, for example because `totalItems` shrank, focus moves to the current page's button.
+
+### Patch Changes
+
+- Updated dependencies [4c5665a]
+- Updated dependencies [fb9256b]
+  - @marigold/components@18.5.0
+  - @marigold/system@18.5.0
+
 ## 6.3.0
 
 ### Minor Changes

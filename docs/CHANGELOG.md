@@ -1,5 +1,16 @@
 # @marigold/docs
 
+## 18.5.0
+
+### Patch Changes
+
+- Updated dependencies [4c5665a]
+- Updated dependencies [fb9256b]
+  - @marigold/components@18.5.0
+  - @marigold/icons@2.0.6
+  - @marigold/theme-rui@6.4.0
+  - @marigold/system@18.5.0
+
 ## 18.4.0
 
 ### Patch Changes
