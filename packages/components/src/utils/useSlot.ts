@@ -33,7 +33,6 @@ export const useSlot = (
   // child. The setState has to happen before paint (as in react-aria's useSlot).
   useLayoutEffect(() => {
     if (!hasRunRef.current) {
-      // eslint-disable-next-line
       setHasSlot(false);
     }
   }, []);

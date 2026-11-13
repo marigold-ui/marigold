@@ -42,16 +42,16 @@ export const useSidebarState = (
   } = props;
 
   // Desktop state (cookie-backed)
-  const [_open, _setOpen] = useState(() => {
+  const [desktopOpen, setDesktopOpen] = useState(() => {
     const cookie = readCookie();
     if (cookie) return cookie === 'expanded';
     return defaultOpen;
   });
 
   // Mobile state (always starts closed)
-  const [_openMobile, _setOpenMobile] = useState(false);
+  const [openMobile, setOpenMobile] = useState(false);
 
-  const isOpen = controlledOpen ?? (isMobile ? _openMobile : _open);
+  const isOpen = controlledOpen ?? (isMobile ? openMobile : desktopOpen);
   const state: SidebarState = isOpen ? 'expanded' : 'collapsed';
 
   const toggleSidebar = useCallback(() => {
@@ -61,9 +61,9 @@ export const useSidebarState = (
     }
 
     if (isMobile) {
-      _setOpenMobile(prev => !prev);
+      setOpenMobile(prev => !prev);
     } else {
-      _setOpen(prev => {
+      setDesktopOpen(prev => {
         const next = !prev;
         writeCookie(next ? 'expanded' : 'collapsed');
         return next;

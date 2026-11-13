@@ -3,7 +3,7 @@ import { Accordion, TextField } from '@marigold/components';
 
 export default () => {
   let [expandedKeys, setExpandedKeys] = useState<Set<number | string>>(
-    new Set(['personal'])
+    () => new Set(['personal'])
   );
 
   return (

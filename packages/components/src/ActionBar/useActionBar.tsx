@@ -49,7 +49,7 @@ export const useActionBar = ({
   // Selection state (controlled/uncontrolled)
   const isControlled = controlledKeys !== undefined;
   const [internalKeys, setInternalKeys] = useState<Selection>(
-    defaultSelectedKeys ?? new Set()
+    () => defaultSelectedKeys ?? new Set()
   );
 
   const selectedKeys = isControlled ? controlledKeys : internalKeys;

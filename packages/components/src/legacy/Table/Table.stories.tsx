@@ -242,7 +242,9 @@ export const ControlledTable = meta.story({
         year: '1981',
       },
     ];
-    const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
+    const [selectedKeys, setSelectedKeys] = useState<Selection>(
+      () => new Set()
+    );
     const selected = Array.from(selectedKeys);
     return (
       <Stack space={3}>
@@ -739,9 +741,16 @@ export const ScrollableTable = meta.story({
       { userId: string; id: string; title: string; completed: boolean }[]
     >([]);
     useEffect(() => {
-      fetch('https://jsonplaceholder.typicode.com/todos')
+      const controller = new AbortController();
+      fetch('https://jsonplaceholder.typicode.com/todos', {
+        signal: controller.signal,
+      })
         .then(res => res.json())
-        .then(data => setTodos(data));
+        .then(data => setTodos(data))
+        .catch(error => {
+          if (error.name !== 'AbortError') throw error;
+        });
+      return () => controller.abort();
     }, []);
     const tableHeaders = todos.length ? Object.keys(todos[0]) : [];
     return (

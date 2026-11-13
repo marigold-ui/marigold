@@ -4,8 +4,9 @@ import { useState } from 'react';
 import { DatePicker } from '@marigold/components';
 
 export default () => {
-  const date = new Date().toISOString();
-  const [value, setValue] = useState<DateValue>(parseAbsoluteToLocal(date)!);
+  const [value, setValue] = useState<DateValue>(() =>
+    parseAbsoluteToLocal(new Date().toISOString())!
+  );
 
   return (
     <DatePicker

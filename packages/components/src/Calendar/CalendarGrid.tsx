@@ -1,5 +1,5 @@
 import type { DateDuration } from '@internationalized/date';
-import { useContext } from 'react';
+import { use } from 'react';
 import {
   CalendarCell,
   CalendarGridBody,
@@ -26,7 +26,7 @@ const CalendarGrid = ({ offset }: CalendarGridProps) => {
   // independently of RAC's interactive selection state. Use
   // `highlightedRange` so the fill follows the in-progress selection
   // instead of the previously committed value.
-  const rangeState = useContext(RangeCalendarStateContext);
+  const rangeState = use(RangeCalendarStateContext);
   const range = rangeState?.highlightedRange ?? null;
 
   return (

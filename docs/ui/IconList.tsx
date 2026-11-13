@@ -21,9 +21,9 @@ const IconListItem = ({ icon }: IconListItemProps) => {
   )[icon];
 
   const svgRef = useRef<SVGElement>(undefined);
-  const [isCopied, setCopied] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
   const [, copyToClipboard] = useCopyToClipboard();
-  const [isReady, cancel] = useDebounce(() => setCopied(false), 2000, [
+  const [isReady, cancel] = useDebounce(() => setIsCopied(false), 2000, [
     isCopied,
   ]);
 
@@ -42,7 +42,7 @@ const IconListItem = ({ icon }: IconListItemProps) => {
       ''
     );
     copyToClipboard(svg);
-    setCopied(true);
+    setIsCopied(true);
   };
 
   return (

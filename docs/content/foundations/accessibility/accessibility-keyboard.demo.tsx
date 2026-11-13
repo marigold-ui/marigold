@@ -77,7 +77,7 @@ const STATUS = {
 };
 
 export default () => {
-  const [selected, setSelected] = useState<Selection>(new Set());
+  const [selected, setSelected] = useState<Selection>(() => new Set());
   const count = selected === 'all' ? selected : selected.size;
 
   return (

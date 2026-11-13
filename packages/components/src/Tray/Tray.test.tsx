@@ -96,11 +96,10 @@ vi.mock('motion/react-m', async () => {
   const React = await import('react');
   return {
     create: (Component: React.ComponentType<any>) =>
-      React.forwardRef(function MotionWrapper(props: any, ref: any) {
-        const { onDragEnd, ...rest } = props;
+      function MotionWrapper({ onDragEnd, ...rest }: any) {
         if (onDragEnd) dragState.onDragEnd = onDragEnd;
-        return React.createElement(Component, { ...rest, ref });
-      }),
+        return React.createElement(Component, rest);
+      },
   };
 });
 

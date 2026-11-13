@@ -4,7 +4,9 @@ import { useState } from 'react';
 import { Calendar, Stack } from '@marigold/components';
 
 export default () => {
-  const [value, setValue] = useState<DateValue>(new CalendarDate(2025, 8, 7));
+  const [value, setValue] = useState<DateValue>(
+    () => new CalendarDate(2025, 8, 7)
+  );
 
   return (
     <Stack space={3}>
