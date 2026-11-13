@@ -67,6 +67,7 @@ export function ListBox<T>({
         const label = format(item);
         return (
           <RACListBoxItem
+            // eslint-disable-next-line @eslint-react/no-array-index-key -- the index is the item's identity here: it is also its `id` and selection key, and items have no other unique value
             key={index}
             id={String(index)}
             textValue={String(label)}

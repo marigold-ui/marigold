@@ -173,7 +173,7 @@ const InnerPagination = ({
         {totalPages > 0 ? (
           pageRange.map((pageNumber, index) =>
             pageNumber === 'ellipsis' ? (
-              <Ellipsis key={`ellipsis-${index}`} />
+              <Ellipsis key={`ellipsis-after-${pageRange[index - 1]}`} />
             ) : (
               <PageButton
                 key={pageNumber}

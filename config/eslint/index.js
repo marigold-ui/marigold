@@ -32,6 +32,18 @@ export default [
       '@eslint-react/no-create-ref': 'error',
     },
   },
+  // Components take their content as `children` by public API, so moving off
+  // `Children`/`cloneElement` is an API change. Re-enable after DST-1957 to DST-1965.
+  {
+    files: ['packages/components/**', 'docs/ui/**'],
+    rules: {
+      '@eslint-react/no-children-count': 'off',
+      '@eslint-react/no-children-for-each': 'off',
+      '@eslint-react/no-children-map': 'off',
+      '@eslint-react/no-children-to-array': 'off',
+      '@eslint-react/no-clone-element': 'off',
+    },
+  },
   vitestPlugin.configs.recommended,
   // Testing Library support
   {

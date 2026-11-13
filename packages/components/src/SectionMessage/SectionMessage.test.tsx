@@ -123,6 +123,31 @@ test('does not announce when `announce={false}` overrides the error default', ()
   expect(announce).not.toHaveBeenCalled();
 });
 
+test('does not re-announce when props change while open', () => {
+  const { rerender } = render(
+    <Basic.Component data-testid="messages" variant="error" />
+  );
+  expect(announce).toHaveBeenCalledTimes(1);
+
+  rerender(
+    <Basic.Component data-testid="messages" variant="warning" announce />
+  );
+
+  expect(announce).toHaveBeenCalledTimes(1);
+});
+
+test('announces again on each hidden -> visible transition', () => {
+  const { rerender } = render(
+    <Basic.Component data-testid="messages" variant="error" open />
+  );
+  rerender(
+    <Basic.Component data-testid="messages" variant="error" open={false} />
+  );
+  rerender(<Basic.Component data-testid="messages" variant="error" open />);
+
+  expect(announce).toHaveBeenCalledTimes(2);
+});
+
 test('scopes content action buttons from an inherited ButtonContext cascade', () => {
   render(
     <Provider values={[[ButtonContext, { className: 'leaked-grid' }]]}>
