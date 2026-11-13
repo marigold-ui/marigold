@@ -1001,6 +1001,20 @@ SearchOneKind.test(
   }
 );
 
+SearchOneKind.test(
+  'Typing a prefix keeps the first row of the group active',
+  async ({ canvas, userEvent }) => {
+    await openPalette({ canvas, userEvent });
+    await canvas.findByRole('searchbox');
+
+    await userEvent.keyboard('e:');
+    await expectFirstRowActive(canvas, 'Jazz Night');
+
+    await userEvent.keyboard('a');
+    await expectFirstRowActive(canvas, 'Jazz Night');
+  }
+);
+
 // Late results
 // ---------------
 // Server results that arrive after people moved to a row must not move the

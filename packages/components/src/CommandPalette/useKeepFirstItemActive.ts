@@ -5,14 +5,11 @@ import { useCallback, useEffect, useRef } from 'react';
 // The palette keeps one row active at all times, as Spotlight, Raycast and
 // cmdk do, so Enter always runs something. RAC activates the first row on
 // open (`autoFocus`) and when the user types forward. It clears the row after
-// a delete, paste or undo, and keeps the old row when async results replace
-// the list. This hook covers those two cases, and rows the app searched
-// that replace earlier ones after forward typing. Once people pick another
-// row, rows added later (the next page) keep their place.
-//
-// Known gap: when typing swaps in a different static list that starts with
-// the same row, RAC activates nothing. Pressing `Home` there too races RAC's
-// own handling.
+// a delete, paste or undo, keeps the old row when async results replace the
+// list, and activates nothing when forward typing removes the active row,
+// for example when the search narrows to a group. This hook covers those
+// cases. Once people pick another row, rows added later (the next page) keep
+// their place.
 //
 // `Home` in the search input is RAC's own way to activate the first row, and
 // DOM focus stays in the input. Returns refs for the input and the menu.
@@ -63,14 +60,12 @@ interface SearchStatus {
   loading: boolean;
   /** Whether the app's search waits for people to pause typing. */
   searchWaiting: boolean;
-  /** Whether the app searches some rows itself, which arrive later. */
-  appSearches: boolean;
 }
 
 export const useKeepFirstItemActive = (
   inputValue: string,
   items: unknown,
-  { loading, searchWaiting, appSearches }: SearchStatus
+  { loading, searchWaiting }: SearchStatus
 ) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -82,7 +77,7 @@ export const useKeepFirstItemActive = (
   const pickedRef = useRef(false);
   const enterWaitingRef = useRef(false);
   const heldKeyUpRef = useRef(false);
-  const statusRef = useRef({ loading, searchWaiting, appSearches });
+  const statusRef = useRef({ loading, searchWaiting });
   // How the app answered the last reported search. Answered up front, so
   // without a reported search only `loading` and the pause hold Enter.
   const answerRef = useRef({ sawLoading: false, graceOver: true });
@@ -221,10 +216,10 @@ export const useKeepFirstItemActive = (
   }, [answered]);
 
   useEffect(() => {
-    statusRef.current = { loading, searchWaiting, appSearches };
+    statusRef.current = { loading, searchWaiting };
     if (loading) answerRef.current.sawLoading = true;
     release();
-  }, [loading, searchWaiting, appSearches, release]);
+  }, [loading, searchWaiting, release]);
 
   useEffect(
     () => () => {
@@ -262,17 +257,14 @@ export const useKeepFirstItemActive = (
     }
     const newResults = resultsArrived && awaitingResultsRef.current;
     if (resultsArrived) awaitingResultsRef.current = false;
-    // Forward typing over a static list is RAC's job. Anything else, also a
-    // query set in code, counts as an edit. The flag only covers one change.
+    // Forward typing is RAC's job, so the rows are only watched, without
+    // pressing `Home` now, which would race RAC's handling of the keystroke.
+    // Anything else, also a query set in code, counts as an edit. The flag
+    // only covers one change.
     const edited = queryChanged && !typedForwardRef.current;
     if (queryChanged) typedForwardRef.current = false;
-    // Rows the app searched arrive after forward typing too, and replace
-    // the list without RAC moving the active row. They are watched, without
-    // pressing `Home` now, which would race RAC's handling of the keystroke.
     const activateNow = edited || newResults;
-    const watchRows =
-      activateNow || (queryChanged && statusRef.current.appSearches);
-    if (!watchRows) return;
+    if (!activateNow && !queryChanged) return;
 
     const menu = menuRef.current;
     if (activateNow) activateFirst();
@@ -286,8 +278,14 @@ export const useKeepFirstItemActive = (
     // that only brushes the list picks nothing. And when no row is active at
     // all, say the picked one was replaced, the first one is activated anyway,
     // so Enter always runs something.
+    //
+    // After forward typing the active row is RAC's, and the hook only steps
+    // in when there is none: RAC activates nothing when typing removes the
+    // active row, as narrowing to a group or server rows replacing earlier
+    // ones do. `Home` then waits for the rows, so it never races RAC.
     const observer = new MutationObserver(() => {
-      if (pickedRef.current && menu.querySelector(activeRow)) return;
+      const active = menu.querySelector(activeRow);
+      if (active && (pickedRef.current || !activateNow)) return;
       const first = menu.querySelector(row);
       if (first && !first.hasAttribute('data-focused')) activateFirst();
     });
