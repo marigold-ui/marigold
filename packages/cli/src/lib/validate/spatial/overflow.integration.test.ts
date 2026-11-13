@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validate } from '../index.js';
-import { skipIntegration } from './skipIntegration.js';
+import { probeFailureCause, skipIntegration } from './skipIntegration.js';
 
 // Integration coverage for auto-fit/auto-fill grid detection: the real
 // `declaresAutoFitGrid` (overflow.ts) has to scan stylesheet rules against a
@@ -28,6 +28,7 @@ beforeAll(async () => {
       viewport,
     });
     renderWorks = probe.metadata.renderTimeMs > 0;
+    if (!renderWorks) probeError = probeFailureCause(probe);
   } catch (error) {
     renderWorks = false;
     probeError = error;

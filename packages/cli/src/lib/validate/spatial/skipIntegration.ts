@@ -1,5 +1,6 @@
 import ci from 'ci-info';
 import type { TestContext } from 'vitest';
+import type { ValidationIssue, ValidationReport } from '../types.js';
 
 /**
  * Skips an integration test when this machine lacks what it needs (a working
@@ -21,3 +22,13 @@ export const skipIntegration = (
   }
   return ctx.skip(reason);
 };
+
+/**
+ * `validate()` does not throw when the render fails. It reports a `Renderer`
+ * issue instead (an error, or a warning when the render toolchain is missing).
+ * Returns that issue, so a probe can pass it to `skipIntegration` as `cause`.
+ */
+export const probeFailureCause = (
+  report: ValidationReport
+): ValidationIssue | undefined =>
+  [...report.errors, ...report.warnings].find(i => i.component === 'Renderer');

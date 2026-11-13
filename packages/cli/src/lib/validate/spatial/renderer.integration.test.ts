@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validate } from '../index.js';
-import { skipIntegration } from './skipIntegration.js';
+import { probeFailureCause, skipIntegration } from './skipIntegration.js';
 
 // Integration coverage for the render path (renderer + spatial checks), which
 // the unit tests deliberately do not exercise. A real render needs a working
@@ -25,6 +25,7 @@ beforeAll(async () => {
       viewport,
     });
     renderWorks = probe.metadata.renderTimeMs > 0;
+    if (!renderWorks) probeError = probeFailureCause(probe);
   } catch (error) {
     renderWorks = false;
     probeError = error;
