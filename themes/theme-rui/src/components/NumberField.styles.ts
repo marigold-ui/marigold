@@ -30,8 +30,15 @@ export const NumberField: ThemeComponent<'NumberField'> = {
     base: [
       'ui-input',
       'flex-1',
-      'group-data-stepper/field:text-center',
+      'group-data-stepper/field:not-group-data-max-value/field:text-center',
+      'group-data-max-value/field:text-end group-data-max-value/field:pe-1',
       'disabled:text-inherit disabled:bg-transparent',
+    ],
+  }),
+  maxValue: cva({
+    base: [
+      'pe-3 text-sm text-secondary',
+      'group-data-disabled/field:text-inherit',
     ],
   }),
 };
