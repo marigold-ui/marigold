@@ -55,6 +55,30 @@
   --color-charcoal-950: oklch(0.15 0.008 54);
 
   /* ====================== */
+  /*      ALPHA SCALE       */
+  /* ====================== */
+  /* Five opacity steps for translucent colour: an edge, wash or veil that
+     holds one contrast against whatever ground it sits on instead of one
+     lightness. Mix them into a palette colour with relative colour syntax
+     (`oklch(from var(--color-charcoal-950) l c h / var(--alpha-200))`) or into
+     the text colour with Tailwind's opacity modifier (`bg-current/(--alpha-100)`).
+
+     Four steps are values the theme already used: 10% the ghost hover, 14% the
+     divider (`--color-border`), 26% the control edge (`--color-control-border`),
+     45% the overlay backdrop. Only 5% is new, added for the Keyboard key cap
+     fill (DST-1954). Percentages, because Tailwind's opacity modifier takes a
+     percentage. Based on the alpha ramp explored in DST-1590.
+
+     Tuned one-offs stay off the scale on purpose: `--control-alpha` (16%),
+     `--color-surface-border` (13%), the disabled wash (11%) and the
+     `control-edge` steps. Their comments say why. */
+  --alpha-50: 5%;
+  --alpha-100: 10%;
+  --alpha-200: 14%;
+  --alpha-300: 26%;
+  --alpha-400: 45%;
+
+  /* ====================== */
   /*    SEMANTIC COLORS     */
   /* ====================== */
   /* To switch palette, change the charcoal references below. For which step
@@ -130,7 +154,9 @@
 
      The small boolean controls derive their three edge steps from this one, see
      `control-edge` below. */
-  --color-control-border: oklch(from var(--color-charcoal-950) l c h / 0.26);
+  --color-control-border: oklch(
+    from var(--color-charcoal-950) l c h / var(--alpha-300)
+  );
 
   /* Edge of a small boolean control: Checkbox, Radio, and the selection mark a
      grid row draws to mimic them. Three steps off `control-border` so they
@@ -175,7 +201,9 @@
      other, and within 0.007 of the old value on `surface`. Alpha chosen by
      sweeping 0.04–0.30 and sampling rendered pixels on all three grounds; see
      DST-1672. */
-  --color-border: oklch(from var(--color-charcoal-950) l c h / 0.14);
+  --color-border: oklch(
+    from var(--color-charcoal-950) l c h / var(--alpha-200)
+  );
 
   --color-ring: var(--color-charcoal-600);
 
@@ -235,7 +263,9 @@
   --color-link: var(--color-blue-600);
 
   /* --- Overlay Backdrop --- */
-  --color-overlay-backdrop: oklch(from var(--color-charcoal-950) l c h / 45%);
+  --color-overlay-backdrop: oklch(
+    from var(--color-charcoal-950) l c h / var(--alpha-400)
+  );
 
   /* --- Scrollbar --- */
   --color-scrollbar: var(--color-charcoal-300);

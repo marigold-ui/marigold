@@ -402,6 +402,51 @@ Table footers can be sticky too, keeping the summary row visible while users scr
 
 <ComponentDemo name="table-footer-sticky" />
 
+### Sticky columns
+
+Some tables are wider than the space they get, like a price list with one column per date or an overview with many attributes per record. Scrolling sideways moves every column at once, so the values lose the label that tells users which row they belong to. A sticky column stays in place while the other columns scroll underneath it.
+
+<ComponentDemo name="table-sticky-columns" />
+
+Set `sticky="start"` on the first column to keep the row's label in view. The selection checkbox and the drag handle stick together with it. Set `sticky="end"` on the last column to keep row actions within reach, so users can act on a row without scrolling to the end first. For tables that scroll in both directions, add `sticky` to `Table.Header` too: the column labels and the row labels then both stay in view.
+
+Give a sticky column a fixed `width` rather than a fraction. A fraction grows with the table, and a sticky column that grows leaves less room for the columns that scroll. While users scroll, a thin line marks each edge that has content passing under it, and it disappears once nothing is hidden there anymore. Arrow keys move through sticky and scrolling cells in the same order as before, and a cell that receives focus scrolls into view next to the sticky columns, never under them.
+
+On small screens, sticky columns keep their width while the space around them shrinks, so every pixel they take is missing from the part that scrolls. At 320px, a 128px label column and the selection checkbox already use half the width, which leaves room for about one more column at a time. If users have to scroll through most columns on a phone anyway, consider whether a table is the right component there, see [Alternative components](#alternative-components).
+
+Only the first and the last column can stick. Sticky columns need a scroll area that scrolls sideways, such as a [`<Scrollable>`](/components/layout/scrollable). A cell that spans several columns with `colSpan` scrolls with the content, so in a footer with totals, give the first column a cell of its own.
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use sticky columns when users compare values across a row that is wider
+      than the screen.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't use sticky columns to fit more columns into a table. If users don't
+      need the values side by side, show fewer columns and move the rest to a
+      detail view.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Make the column that names the row sticky, usually the `rowHeader`, and
+      keep it no wider than its content.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't stick columns at both edges on small screens. Every sticky column
+      takes space from the values that scroll.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
 ### Display totals
 
 Use `<Table.Footer>` to display a summary row after the table body, such as totals, counts, or averages. Unlike faking a totals row with an extra `<Table.Row>` inside the body, the footer renders as a semantic `<tfoot>`, which keeps it out of the body's scroll and sticky-header semantics and is announced correctly by assistive technology.

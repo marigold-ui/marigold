@@ -51,9 +51,11 @@ describe('Pagination tests', () => {
     const nextButton = screen.getByLabelText('Next page');
     const pageButton = screen.getByLabelText('Page 1');
 
-    expect(previousButton).toBeDisabled();
-    expect(nextButton).toBeDisabled();
-    expect(pageButton).toBeDisabled();
+    // Disabled for assistive tech, but still focusable so focus is never lost
+    for (const button of [previousButton, nextButton, pageButton]) {
+      expect(button).toHaveAttribute('aria-disabled', 'true');
+      expect(button).not.toHaveAttribute('disabled');
+    }
   });
 
   test('renders single page button when data fits on one page', () => {
@@ -80,7 +82,7 @@ describe('Pagination tests', () => {
   });
 
   it.each([
-    ['Page 1', 1],
+    ['Previous page', 1],
     ['Previous page', 2],
     ['Previous page', 3],
     ['Previous page', 4],
@@ -227,6 +229,156 @@ describe('Pagination tests', () => {
       'data-selected',
       'true'
     );
+  });
+
+  test('ignores presses on the disabled Previous button', async () => {
+    const onChange = vi.fn();
+    render(
+      <Basic.Component totalItems={20} pageSize={10} onChange={onChange} />
+    );
+
+    await userEvent.click(screen.getByLabelText('Previous page'));
+    screen.getByLabelText('Previous page').focus();
+    await userEvent.keyboard('{Enter}');
+    await userEvent.keyboard(' ');
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(screen.getByLabelText('Page 1')).toHaveAttribute(
+      'data-selected',
+      'true'
+    );
+  });
+
+  test('ignores presses on Next when there are no pages', async () => {
+    const onChange = vi.fn();
+    render(
+      <Basic.Component totalItems={0} pageSize={10} onChange={onChange} />
+    );
+
+    await userEvent.click(screen.getByLabelText('Next page'));
+    await userEvent.click(screen.getByLabelText('Page 1'));
+
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  test('keeps focus on Next when the keyboard reaches the last page', async () => {
+    render(<Basic.Component totalItems={30} pageSize={10} />);
+
+    const nextButton = screen.getByLabelText('Next page');
+    nextButton.focus();
+    await userEvent.keyboard('{Enter}');
+    await userEvent.keyboard('{Enter}');
+
+    expect(screen.getByLabelText('Page 3')).toHaveAttribute(
+      'data-selected',
+      'true'
+    );
+    expect(nextButton).toHaveAttribute('aria-disabled', 'true');
+    expect(nextButton).toHaveFocus();
+
+    // Pressing again on the last page does nothing and keeps focus
+    await userEvent.keyboard('{Enter}');
+    expect(screen.getByLabelText('Page 3')).toHaveAttribute(
+      'data-selected',
+      'true'
+    );
+    expect(nextButton).toHaveFocus();
+  });
+
+  test('advances one page per Space press on Next', async () => {
+    const onChange = vi.fn();
+    render(
+      <Basic.Component totalItems={50} pageSize={10} onChange={onChange} />
+    );
+
+    screen.getByLabelText('Next page').focus();
+    await userEvent.keyboard(' ');
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(2);
+  });
+
+  test('keeps focus on Previous when the keyboard reaches the first page', async () => {
+    render(<Basic.Component totalItems={30} pageSize={10} defaultPage={2} />);
+
+    const previousButton = screen.getByLabelText('Previous page');
+    previousButton.focus();
+    await userEvent.keyboard('{Enter}');
+
+    expect(screen.getByLabelText('Page 1')).toHaveAttribute(
+      'data-selected',
+      'true'
+    );
+    expect(previousButton).toHaveAttribute('aria-disabled', 'true');
+    expect(previousButton).toHaveFocus();
+  });
+
+  test('moves focus to the current page when the focused page button is removed', async () => {
+    const { rerender } = render(
+      <Basic.Component totalItems={100} pageSize={10} defaultPage={1} />
+    );
+
+    screen.getByLabelText('Page 10').focus();
+    expect(screen.getByLabelText('Page 10')).toHaveFocus();
+
+    // e.g. a filter change shrinks the result set
+    rerender(<Basic.Component totalItems={50} pageSize={10} defaultPage={1} />);
+
+    expect(screen.queryByLabelText('Page 10')).not.toBeInTheDocument();
+    expect(screen.getByLabelText('Page 1')).toHaveFocus();
+  });
+
+  test('moves focus to the disabled "1" when the result set becomes empty', async () => {
+    const { rerender } = render(
+      <Basic.Component totalItems={30} pageSize={10} />
+    );
+
+    screen.getByLabelText('Page 3').focus();
+
+    rerender(<Basic.Component totalItems={0} pageSize={10} />);
+
+    const pageButton = screen.getByLabelText('Page 1');
+    expect(pageButton).toHaveAttribute('aria-disabled', 'true');
+    expect(pageButton).toHaveFocus();
+  });
+
+  test('moves focus into the pager when the result set shrinks below the current page', async () => {
+    const { rerender } = render(
+      <Basic.Component totalItems={100} pageSize={10} page={10} />
+    );
+
+    screen.getByLabelText('Page 10').focus();
+
+    // The app has not clamped `page` yet, so page 10 no longer exists
+    rerender(<Basic.Component totalItems={50} pageSize={10} page={10} />);
+
+    expect(screen.queryByLabelText('Page 10')).not.toBeInTheDocument();
+    expect(screen.getByLabelText('Page 5')).toHaveFocus();
+    expect(screen.getByLabelText('Next page')).toHaveAttribute(
+      'aria-disabled',
+      'true'
+    );
+  });
+
+  test('does not pull focus back after the user left the pager', async () => {
+    const { rerender } = render(
+      <>
+        <button>Outside</button>
+        <Basic.Component totalItems={100} pageSize={10} />
+      </>
+    );
+
+    screen.getByLabelText('Page 10').focus();
+    screen.getByText('Outside').focus();
+
+    rerender(
+      <>
+        <button>Outside</button>
+        <Basic.Component totalItems={50} pageSize={10} />
+      </>
+    );
+
+    expect(screen.getByText('Outside')).toHaveFocus();
   });
 
   test('use control labels', async () => {

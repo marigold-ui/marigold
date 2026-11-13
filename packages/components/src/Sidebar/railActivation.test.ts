@@ -4,7 +4,7 @@ const section = { key: 'tickets', isSection: true };
 const link = { key: 'berichte', isSection: false };
 
 describe('direct links', () => {
-  test('selects and navigates without toggling', () => {
+  test('selects without toggling', () => {
     const action = resolveRailActivation(link, {
       selectedKey: 'tickets',
       state: 'expanded',
@@ -14,13 +14,12 @@ describe('direct links', () => {
       select: true,
       toggle: false,
       focusPanel: false,
-      navigate: true,
     });
   });
 });
 
 describe('sections', () => {
-  test('re-clicking the active section collapses the panel without navigating', () => {
+  test('re-clicking the active section does not collapse the panel', () => {
     const action = resolveRailActivation(section, {
       selectedKey: 'tickets',
       state: 'expanded',
@@ -28,13 +27,12 @@ describe('sections', () => {
 
     expect(action).toEqual({
       select: false,
-      toggle: true,
+      toggle: false,
       focusPanel: false,
-      navigate: false,
     });
   });
 
-  test('re-clicking while collapsed expands and focuses the panel', () => {
+  test('re-clicking the active section on a collapsed panel expands it', () => {
     const action = resolveRailActivation(section, {
       selectedKey: 'tickets',
       state: 'collapsed',
@@ -44,11 +42,10 @@ describe('sections', () => {
       select: false,
       toggle: true,
       focusPanel: true,
-      navigate: false,
     });
   });
 
-  test('switching sections swaps the panel, focuses it, and navigates', () => {
+  test('switching sections swaps the panel and focuses it', () => {
     const action = resolveRailActivation(section, {
       selectedKey: 'other',
       state: 'expanded',
@@ -58,7 +55,6 @@ describe('sections', () => {
       select: true,
       toggle: false,
       focusPanel: true,
-      navigate: true,
     });
   });
 
@@ -72,7 +68,6 @@ describe('sections', () => {
       select: true,
       toggle: true,
       focusPanel: true,
-      navigate: true,
     });
   });
 });

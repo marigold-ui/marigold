@@ -111,7 +111,7 @@ export const BothSurfaces = meta.story({
 });
 
 export const IconToggleButton = meta.story({
-  render: args => {
+  render: function Render(args) {
     const [isSelected, setIsSelected] = useState(false);
 
     return (

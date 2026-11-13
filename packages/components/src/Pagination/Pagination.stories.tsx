@@ -171,7 +171,7 @@ Basic.test(
 );
 
 Basic.test(
-  'Disables the previous button on the first page',
+  'Disables the previous button on the first page and keeps focus',
   {
     args: {
       defaultPage: 2,
@@ -183,12 +183,14 @@ Basic.test(
     await userEvent.click(previousButton);
 
     await expect(previousButton).not.toHaveAttribute('data-selected', 'true');
-    await expect(previousButton).toHaveAttribute('disabled');
+    await expect(previousButton).toHaveAttribute('aria-disabled', 'true');
+    // Stays focusable, so focus is not dropped to <body>
+    await expect(previousButton).toHaveFocus();
   }
 );
 
 Basic.test(
-  'Disables the next button on the last page',
+  'Disables the next button on the last page and keeps focus',
   {
     args: {
       defaultPage: 9,
@@ -200,7 +202,9 @@ Basic.test(
     await userEvent.click(nextButton);
 
     await expect(nextButton).not.toHaveAttribute('data-selected', 'true');
-    await expect(nextButton).toHaveAttribute('disabled');
+    await expect(nextButton).toHaveAttribute('aria-disabled', 'true');
+    // Stays focusable, so focus is not dropped to <body>
+    await expect(nextButton).toHaveFocus();
   }
 );
 
@@ -226,7 +230,11 @@ export const SurfaceVariants = meta.story({
 export const Controlled = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   tags: ['component-test'],
-  render: ({ totalItems, pageSize, ...rest }: Partial<PaginationProps>) => {
+  render: function Render({
+    totalItems,
+    pageSize,
+    ...rest
+  }: Partial<PaginationProps>) {
     const [basicPage, setBasicPage] = useState(1);
 
     return (
@@ -335,7 +343,7 @@ export const WithTable = meta.story({
   parameters: {
     controls: { exclude: ['totalItems', 'pageSize'] },
   },
-  render: args => {
+  render: function Render(args) {
     interface User {
       id: number;
       name: string;
@@ -431,7 +439,7 @@ export const Mobile = meta.story({
   args: {
     pageSize: 3,
   },
-  render: ({ pageSize, ...rest }) => {
+  render: function Render({ pageSize, ...rest }) {
     const data = Array.from({ length: 12 }, (_, i) => ({
       id: i + 1,
       name: `User ${i + 1}`,

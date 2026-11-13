@@ -112,7 +112,7 @@ A `Sidebar.RailItem` wrapping a `Sidebar.Nav` is a section. Selecting it fills t
 
 <ComponentDemo name="sidebar-rail" background="page" />
 
-Collapsing behaves differently than in the single column: the toggle hides the **panel** while the rail narrows to an icon-only strip, so top-level navigation is always one click away. Re-selecting the active section reopens the panel. On small screens the rail renders as the same drawer as the single-column sidebar: one column where sections [drill in](#drill-down-navigation) (the drawer opens inside the active section) and tapping a link closes the drawer. Every top-level row keeps its rail icon, and the section that holds the current page is marked. Rail items from `Sidebar.Footer` stay pinned below the list at every level instead of scrolling with it.
+Collapsing behaves differently than in the single column: the toggle hides the **panel** while the rail narrows to an icon-only strip, so top-level navigation is always one click away. Selecting the active section again goes to its page and reopens the panel if it was collapsed. Only the toggle and <kbd>Cmd+B</kbd> / <kbd>Ctrl+B</kbd> collapse the panel. On small screens the rail renders as the same drawer as the single-column sidebar: one column where sections [drill in](#drill-down-navigation) (the drawer opens inside the active section) and tapping a link closes the drawer. Every top-level row keeps its rail icon, and the section that holds the current page is marked. Rail items from `Sidebar.Footer` stay pinned below the list at every level instead of scrolling with it.
 
 The rail is paired with a [top navigation](/components/navigation/topnavigation) that spans the full width of the screen, and `AppShell` switches to this layout automatically when it contains a rail. Place the brand and `<Sidebar.Toggle variant="rail" />` in the top navigation's start slot. On small screens the top navigation's brand is out of view while the drawer is open, so also pass a `Sidebar.Header` with the brand to `Sidebar.Rail`. The drawer shows it at the top, and the desktop rail does not render it.
 
@@ -193,7 +193,7 @@ For hierarchies deeper than two levels, pair the sidebar with [breadcrumbs](/com
 
 Users can collapse or expand the sidebar with the toggle button or the keyboard shortcut <kbd>Cmd+B</kbd> / <kbd>Ctrl+B</kbd>. The sidebar remembers this preference across page loads. When combined with a [top navigation](/components/navigation/topnavigation), the sidebar toggle button is typically placed in the top navigation's start slot.
 
-With [two-level navigation](#two-level-navigation), the same toggle and shortcut collapse the section panel while the rail narrows to an icon-only strip, so top-level navigation never disappears.
+With [two-level navigation](#two-level-navigation), the same toggle and shortcut collapse the section panel while the rail narrows to an icon-only strip, so top-level navigation never disappears. Clicking a rail item never collapses the panel.
 
 ### Accessibility
 

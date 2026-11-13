@@ -61,15 +61,20 @@ export const Table: ThemeComponent<'Table'> = {
   row: cva({
     base: [
       'border-border not-last:border-b',
-      'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50',
+      // The ring is drawn by the cells, see `cell`.
+      'outline-none',
       'disabled:cursor-not-allowed',
       'data-hovered:cursor-pointer data-hovered:ui-state-hover',
       'dragging:opacity-50 dragging:transform-gpu',
+      // Opaque in every state, so a sticky cell can inherit it and hide what
+      // scrolls underneath. Body rows only: the footer keeps its translucency.
+      'in-[tbody]:bg-surface',
       // The children carry the group, not the parent: a band across the whole
       // row says what belongs to what even in the leading drag and selection
       // columns, which don't indent. `:not([data-hovered])` is explicit because
       // Tailwind's emit order, not this array's, picks the winning background.
-      '[&[data-level]:not([data-level="1"]):not([data-hovered])]:bg-foreground/8',
+      // Mixed onto the surface rather than translucent, see above.
+      '[&[data-level]:not([data-level="1"]):not([data-hovered])]:bg-[color-mix(in_oklab,var(--color-foreground)_8%,var(--color-surface))]',
     ],
     variants: {
       variant: {
@@ -111,11 +116,13 @@ export const Table: ThemeComponent<'Table'> = {
       'not-has-[[type=checkbox]]:has-focus-visible:outline-2 not-has-[[type=checkbox]]:has-focus-visible:-outline-offset-2 not-has-[[type=checkbox]]:has-focus-visible:outline-ring/50',
       'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50', // This one is for the empty dragging header column
       'aria-[sort]:hover:ui-state-hover aria-[sort]:hover:cursor-pointer',
+      'ui-sticky-edge',
     ],
     variants: {
       variant: {
-        default: '',
-        grid: 'not-last:border-r border-border',
+        // Sticky header cells cover what scrolls under them. `muted` already does.
+        default: 'data-sticky:bg-surface',
+        grid: 'not-last:border-r border-border data-sticky:bg-surface',
         muted: 'bg-muted border-t border-border',
       },
     },
@@ -130,6 +137,9 @@ export const Table: ThemeComponent<'Table'> = {
     base: [
       'bg-surface/90 border-border border-t',
       '**:[[role=gridcell]]:font-semibold **:[[role=rowheader]]:font-semibold',
+      // Footer rows have no background of their own to inherit, see `row`.
+      // `!` because it competes with the cell's own rule at equal specificity.
+      '**:data-sticky:bg-surface!',
     ],
   }),
 
@@ -142,6 +152,14 @@ export const Table: ThemeComponent<'Table'> = {
       '**:data-cell-content:outline-none',
       'data-editable:hover:ui-state-hover',
       'data-editable:has-[:focus-visible]:ui-state-hover',
+      // Covers what scrolls underneath with whatever its row shows.
+      'data-sticky:bg-inherit',
+      // A focused row's ring, drawn by its cells rather than as the row's
+      // outline: sticky cells sit above the row and would cover an outline.
+      'group-focus-visible/row:not-data-sticky:relative',
+      'group-focus-visible/row:before:absolute group-focus-visible/row:before:inset-0 group-focus-visible/row:before:pointer-events-none group-focus-visible/row:before:border-y-2 group-focus-visible/row:before:border-ring/50',
+      'first:group-focus-visible/row:before:border-s-2 last:group-focus-visible/row:before:border-e-2',
+      'ui-sticky-edge',
     ],
   }),
 

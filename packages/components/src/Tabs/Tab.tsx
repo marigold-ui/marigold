@@ -1,6 +1,6 @@
 import * as m from 'motion/react-m';
 import type RAC from 'react-aria-components';
-import { Tab } from 'react-aria-components/Tabs';
+import { Tab as RACTab } from 'react-aria-components/Tabs';
 import { cn } from '@marigold/system';
 import { useTabContext } from './Context';
 
@@ -15,11 +15,11 @@ const INDICATOR_TRANSITION = {
 
 // Component
 // ----------------------
-const _Tab = (props: TabProps) => {
+const Tab = (props: TabProps) => {
   const { classNames } = useTabContext();
   const { children: content, ...restProps } = props;
   return (
-    <Tab
+    <RACTab
       {...restProps}
       className={({ isDisabled }) =>
         cn(
@@ -44,8 +44,8 @@ const _Tab = (props: TabProps) => {
           )}
         </>
       )}
-    </Tab>
+    </RACTab>
   );
 };
 
-export { _Tab as Tab };
+export { Tab };

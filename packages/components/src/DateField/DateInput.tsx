@@ -1,7 +1,7 @@
 import { CalendarDate } from '@internationalized/date';
 import { ReactElement } from 'react';
 import type RAC from 'react-aria-components';
-import { DateInput } from 'react-aria-components/DateField';
+import { DateInput as RACDateInput } from 'react-aria-components/DateField';
 import { Group } from 'react-aria-components/Group';
 import { cn, useClassNames } from '@marigold/system';
 import { DateSegment } from './DateSegment';
@@ -84,7 +84,7 @@ export interface DateInputProps extends Omit<RAC.DateInputProps, RemovedProps> {
   onPaste: (date: CalendarDate) => void;
 }
 
-const _DateInput = ({
+const DateInput = ({
   variant,
   size,
   action,
@@ -115,7 +115,7 @@ const _DateInput = ({
       )}
       onPaste={handlePaste}
     >
-      <DateInput
+      <RACDateInput
         className={cn(
           'flex flex-1 items-center',
           classNames.input,
@@ -126,7 +126,7 @@ const _DateInput = ({
         {segment => (
           <DateSegment className={classNames.segment} segment={segment} />
         )}
-      </DateInput>
+      </RACDateInput>
       {action && (
         <span
           className={cn(
@@ -141,4 +141,4 @@ const _DateInput = ({
   );
 };
 
-export { _DateInput as DateInput };
+export { DateInput };

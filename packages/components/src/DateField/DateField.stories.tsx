@@ -131,7 +131,7 @@ Basic.test('Date entered', async ({ canvas, userEvent }) => {
 
 export const ControlledDateField = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [value, setValue] = useState<DateValue>(new CalendarDate(1970, 1, 1));
     return (
       <I18nProvider locale="de-DE">
