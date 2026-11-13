@@ -1,8 +1,7 @@
 import type { ReactNode, Ref } from 'react';
-import { useId } from 'react';
 import type RAC from 'react-aria-components';
 import {
-  Slider,
+  Slider as RACSlider,
   SliderOutput,
   SliderThumb,
   SliderTrack,
@@ -10,7 +9,7 @@ import {
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { FieldLabel } from '../FieldBase/FieldLabel';
-import { hasAddonContent, joinIds } from '../utils/useLabelAddon';
+import { useAddonDescription } from '../utils/useLabelAddon';
 
 export interface SliderProps<T>
   extends
@@ -58,7 +57,7 @@ export interface SliderProps<T>
   ref?: Ref<HTMLDivElement>;
 }
 
-const _Slider = <T extends number | number[]>({
+const Slider = <T extends number | number[]>({
   variant,
   size,
   width = 'full',
@@ -80,19 +79,19 @@ const _Slider = <T extends number | number[]>({
   const thumbLabelsList = Array.isArray(thumbLabels)
     ? thumbLabels
     : [thumbLabels];
-  const addonId = useId();
+  const { addonId, describedBy } = useAddonDescription(
+    addon,
+    rest['aria-describedby']
+  );
   const props = {
     isDisabled: disabled,
     ...rest,
-    'aria-describedby': joinIds(
-      rest['aria-describedby'],
-      hasAddonContent(addon) ? addonId : undefined
-    ),
+    'aria-describedby': describedBy,
   } satisfies RAC.SliderProps<T>;
 
   return (
     <FieldBase
-      as={Slider}
+      as={RACSlider}
       width={width}
       className={cn(
         'grid w-(--container-width) grid-cols-[auto_1fr] gap-y-1',
@@ -159,4 +158,4 @@ const _Slider = <T extends number | number[]>({
   );
 };
 
-export { _Slider as Slider };
+export { Slider };

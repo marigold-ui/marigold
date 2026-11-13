@@ -1,5 +1,5 @@
-import type { ReactElement, ReactNode, Ref } from 'react';
-import { cloneElement, isValidElement, useId, useMemo, useState } from 'react';
+import type { ReactNode, Ref } from 'react';
+import { isValidElement, useId, useMemo, useState } from 'react';
 import type RAC from 'react-aria-components';
 import { FieldErrorContext } from 'react-aria-components/FieldError';
 import { FormContext } from 'react-aria-components/Form';
@@ -12,15 +12,16 @@ import {
 import { Provider, useSlottedContext } from 'react-aria-components/slots';
 import { useObjectRef } from '@react-aria/utils';
 import { useFormValidationState } from '@react-stately/form';
-import { useControlledState } from '@react-stately/utils';
 import type { Key, Selection, ValidationError } from '@react-types/shared';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { ButtonContext } from '../Button/Context';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { HiddenSelection } from '../HiddenSelection/HiddenSelection';
 import { splitChildren } from '../utils/children.utils';
-import { hasAddonContent, joinIds } from '../utils/useLabelAddon';
-import { TagGroupContext } from './Context';
+import { useFieldHelpText } from '../utils/useFieldHelpText';
+import { joinIds, useAddonDescription } from '../utils/useLabelAddon';
+import { useLiftedSelection } from '../utils/useLiftedSelection';
+import { TagCollapseContext, TagGroupContext } from './Context';
 import { TagGroupRemoveAll } from './TagGroupRemoveAll';
 import { TagGroupShowMore } from './TagGroupShowMore';
 
@@ -141,10 +142,6 @@ export interface TagGroupProps
   ref?: Ref<HTMLDivElement>;
 }
 
-const toSelection = (
-  value: Selection | Iterable<Key> | undefined
-): Selection => (value === 'all' ? 'all' : new Set(value ?? []));
-
 const isKeySelected = (id: Key | undefined, selection: Selection): boolean =>
   id != null && (selection === 'all' || selection.has(id));
 // Cascade the link look onto the bare `<Button>` that `TagGroupRemoveAll`
@@ -154,7 +151,7 @@ const removeAllButtonContext = { variant: 'link', size: 'small' } as const;
 
 // Component
 // ---------------
-const _TagGroup = ({
+const TagGroup = ({
   ref,
   items,
   children,
@@ -185,7 +182,6 @@ const _TagGroup = ({
 }: TagGroupProps) => {
   const classNames = useClassNames({ component: 'Tag', variant, size });
   const labelId = useId();
-  const addonId = useId();
   const tagListRef = useObjectRef(ref);
 
   const staticChildren = typeof children === 'function' ? undefined : children;
@@ -199,11 +195,9 @@ const _TagGroup = ({
   const validationBehavior =
     validationBehaviorProp ?? formCtx?.validationBehavior ?? 'native';
 
-  const [selection, setSelection] = useControlledState<Selection>(
-    selectedKeys !== undefined ? toSelection(selectedKeys) : undefined,
-    defaultSelectedKeys !== undefined
-      ? toSelection(defaultSelectedKeys)
-      : new Set(),
+  const [selection, setSelection] = useLiftedSelection(
+    selectedKeys,
+    defaultSelectedKeys,
     value => onChange?.(value)
   );
 
@@ -218,13 +212,9 @@ const _TagGroup = ({
   const renderedChildren = canCollapse
     ? [
         ...visibleChildren,
-        ...collapsedChildren.map(child =>
-          isValidElement(child)
-            ? cloneElement(child as ReactElement<{ hidden?: boolean }>, {
-                hidden: !expanded,
-              })
-            : child
-        ),
+        <TagCollapseContext key="collapsed" value={{ hidden: !expanded }}>
+          {collapsedChildren}
+        </TagCollapseContext>,
       ]
     : children;
 
@@ -241,6 +231,17 @@ const _TagGroup = ({
     isInvalid: error,
     validate,
     validationBehavior,
+  });
+
+  const { addonId, describedBy: addonDescribedBy } = useAddonDescription(
+    addon,
+    rest['aria-describedby']
+  );
+  const { describedBy, helpTextSlots } = useFieldHelpText({
+    description,
+    errorMessage,
+    isInvalid: validationState.displayValidation.isInvalid,
+    'aria-describedby': addonDescribedBy,
   });
 
   const handleSelectionChange = (keys: Selection) => {
@@ -270,6 +271,7 @@ const _TagGroup = ({
         label={label}
         addon={addon}
         addonId={addonId}
+        helpTextSlots={helpTextSlots}
         description={description}
         errorMessage={errorMessage}
         isInvalid={validationState.displayValidation.isInvalid}
@@ -279,10 +281,7 @@ const _TagGroup = ({
         <RACTagGroup
           {...(rest as RAC.TagGroupProps)}
           aria-labelledby={ariaLabelledBy}
-          aria-describedby={joinIds(
-            rest['aria-describedby'],
-            hasAddonContent(addon) ? addonId : undefined
-          )}
+          aria-describedby={describedBy}
           aria-disabled={disabled || undefined}
           selectionMode={selectionMode}
           selectedKeys={selection}
@@ -371,4 +370,4 @@ const _TagGroup = ({
   );
 };
 
-export { _TagGroup as TagGroup };
+export { TagGroup };

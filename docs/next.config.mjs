@@ -26,6 +26,23 @@ const config = {
       ? 'forceWorkerThreads'
       : undefined,
   },
+  turbopack: {
+    rules: {
+      // Tailwind runs as a webpack loader rather than through PostCSS, so
+      // Turbopack keeps a single loader pool. With worker threads, two pools
+      // can be handed each other's workers and evaluate the wrong transform
+      // (https://github.com/vercel/next.js/pull/96761). Don't add a
+      // `postcss.config` here: even an empty one starts the second pool. The
+      // loader also inlines `@marigold/theme-rui/styles.css`, which otherwise
+      // gets the theme's own PostCSS config.
+      '*.css': {
+        // Paths are relative to the workspace root, not to `docs/`.
+        condition: { path: /^docs\/app\/global\.css$/ },
+        loaders: ['@tailwindcss/webpack'],
+        type: 'css',
+      },
+    },
+  },
   outputFileTracingIncludes: {
     '/mcp': ['./lib/markdown/embeddings.json'],
   },

@@ -2,7 +2,10 @@ import { useState } from 'react';
 import { expect, fn, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
+import { ListView } from '../ListView/ListView';
+import { TextValue } from '../TextValue/TextValue';
 import { ConfirmationDialog } from './ConfirmationDialog';
+import { Dialog } from './Dialog';
 import type { ConfirmationConfig } from './useConfirmation';
 import { ConfirmationProvider, useConfirmation } from './useConfirmation';
 
@@ -274,5 +277,82 @@ Basic.test(
     expect(
       actions.getBoundingClientRect().top - title.getBoundingClientRect().bottom
     ).toBe(0);
+  }
+);
+
+// The most common use: a row action that deletes its own row once confirmed,
+// here inside another overlay. The promise has to settle after the
+// confirmation has closed and returned focus to the row, so the list can move
+// focus on when the row goes away. Settling earlier deletes the row while the
+// confirmation still holds focus, and focus then falls out of the dialog.
+const FILES = ['Invoice March.pdf', 'Invoice April.pdf', 'Invoice May.pdf'];
+
+const RemovableFiles = () => {
+  const [files, setFiles] = useState(FILES);
+  const confirm = useConfirmation();
+
+  const remove = async (file: string) => {
+    const result = await confirm({
+      variant: 'destructive',
+      title: 'Delete file?',
+      content: `“${file}” will be deleted permanently.`,
+      confirmationLabel: 'Delete file',
+    });
+    if (result === 'confirmed') {
+      setFiles(current => current.filter(item => item !== file));
+    }
+  };
+
+  return (
+    <Dialog.Trigger>
+      <Button>Manage files</Button>
+      <Dialog closeButton>
+        <Dialog.Title>Files</Dialog.Title>
+        <Dialog.Content>
+          <ListView aria-label="Files" items={files.map(id => ({ id }))}>
+            {(item: { id: string }) => (
+              <ListView.Item id={item.id} textValue={item.id}>
+                <TextValue>{item.id}</TextValue>
+                <Button
+                  aria-label={`Delete ${item.id}`}
+                  onPress={() => remove(item.id)}
+                >
+                  Delete
+                </Button>
+              </ListView.Item>
+            )}
+          </ListView>
+        </Dialog.Content>
+      </Dialog>
+    </Dialog.Trigger>
+  );
+};
+
+Basic.test(
+  'Keeps focus in the overlay when the confirmed action removes its trigger',
+  {
+    render: () => (
+      <ConfirmationProvider>
+        <RemovableFiles />
+      </ConfirmationProvider>
+    ),
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Manage files' }));
+    await userEvent.click(
+      await canvas.findByRole('button', { name: 'Delete Invoice April.pdf' })
+    );
+    await canvas.findByRole('alertdialog');
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Delete file' }));
+
+    await waitFor(() =>
+      expect(canvas.queryByRole('alertdialog')).not.toBeInTheDocument()
+    );
+    await waitFor(() =>
+      expect(document.activeElement).toBe(
+        canvas.getByRole('row', { name: 'Invoice May.pdf' })
+      )
+    );
   }
 );

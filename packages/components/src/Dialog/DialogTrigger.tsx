@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
-import { DialogTrigger } from 'react-aria-components/Dialog';
+import { DialogTrigger as RACDialogTrigger } from 'react-aria-components/Dialog';
 import { PressResponder } from '@react-aria/interactions';
 import type { DialogContextProps } from './Context';
 import { DialogContext } from './Context';
@@ -21,7 +21,7 @@ export interface DialogTriggerProps
 // Context
 // ---------------
 
-const _DialogTrigger = ({
+const DialogTrigger = ({
   open,
   dismissable,
   // A dialog the keyboard cannot leave is an accessibility defect, so opting
@@ -41,11 +41,11 @@ const _DialogTrigger = ({
 
   return (
     <DialogContext value={ctx}>
-      <DialogTrigger {...props}>
+      <RACDialogTrigger {...props}>
         <PressResponder isPressed={false}>{props.children}</PressResponder>
-      </DialogTrigger>
+      </RACDialogTrigger>
     </DialogContext>
   );
 };
 
-export { _DialogTrigger as DialogTrigger };
+export { DialogTrigger };

@@ -19,21 +19,35 @@ const MobileModal = ({ children, ...props }: RAC.ModalOverlayProps) => (
 
 // Props
 // ---------------
-type DrawerModalProps = NonModalProps;
+/**
+ * The open state is not a prop here: `Drawer` resolves it and publishes it
+ * through `OverlayTriggerStateContext`, which both paths read.
+ */
+type DrawerModalProps = Omit<
+  NonModalProps,
+  'open' | 'defaultOpen' | 'onOpenChange'
+>;
 
 // Component
 // ---------------
 export const DrawerModal = ({
   children,
   className,
+  keyboardDismissable = true,
   ...props
 }: DrawerModalProps) => {
   const isSmallScreen = useSmallScreen();
 
   return isSmallScreen ? (
-    <MobileModal>{children}</MobileModal>
+    <MobileModal isKeyboardDismissDisabled={!keyboardDismissable}>
+      {children}
+    </MobileModal>
   ) : (
-    <NonModal {...props} className={cn('fixed z-50', className)}>
+    <NonModal
+      {...props}
+      keyboardDismissable={keyboardDismissable}
+      className={cn('fixed z-50', className)}
+    >
       {children}
     </NonModal>
   );

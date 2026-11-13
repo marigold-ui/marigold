@@ -125,7 +125,7 @@ export const Basic: any = meta.story({
 });
 
 export const Controlled: any = meta.story({
-  render: args => {
+  render: function Render(args) {
     const [value, setValue] = useState<RangeValue<DateValue> | null>({
       start: new CalendarDate(2025, 8, 7),
       end: new CalendarDate(2025, 8, 14),

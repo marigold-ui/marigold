@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react';
+import { use, useId, useLayoutEffect, useRef } from 'react';
 import { Button } from 'react-aria-components/Button';
 import { Separator } from 'react-aria-components/Separator';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
@@ -7,8 +7,9 @@ import { cn } from '@marigold/system';
 import { ChevronLeft } from '../icons/ChevronLeft';
 import { ChevronRight } from '../icons/ChevronRight';
 import { intlMessages } from '../intl/messages';
-import { useSidebar } from './Context';
-import { SidebarLink } from './SidebarLink';
+import { SidebarHeadingLevelContext, useSidebar } from './Context';
+import { SidebarLink, SidebarRowIcon } from './SidebarLink';
+import { containsActive } from './collection';
 import type { SidebarNode } from './collection';
 import {
   RovingTabIndexProvider,
@@ -19,31 +20,49 @@ import {
 interface BackButtonProps {
   onBack: () => void;
   backLabel: string | null | undefined;
+  headingId: string;
+  headingLevel: HeadingLevel;
   className: string;
 }
 
-const BackButton = ({ onBack, backLabel, className }: BackButtonProps) => {
+type HeadingLevel = 2 | 3 | 4 | 5 | 6;
+
+const toHeadingLevel = (level: number): HeadingLevel =>
+  Math.min(Math.max(level, 2), 6) as HeadingLevel;
+
+// The heading sits beside the button; the button's hit area covers the row.
+const BackButton = ({
+  onBack,
+  backLabel,
+  headingId,
+  headingLevel,
+  className,
+}: BackButtonProps) => {
+  const Heading = `h${headingLevel}` as const;
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const { tabIndex, onFocus } = useRovingItem('__back__');
+  const label = backLabel ?? stringFormatter.format('back');
 
   return (
-    <Button
-      data-back-button
-      aria-label={stringFormatter.format('backTo', {
-        label: backLabel ?? stringFormatter.format('back'),
-      })}
-      className={className}
-      onPress={onBack}
-      excludeFromTabOrder={tabIndex < 0}
-      onFocus={onFocus}
-    >
-      <span className="flex items-center justify-center">
+    <div data-back-row className={cn(className, 'relative')}>
+      <Button
+        data-back-button
+        aria-label={stringFormatter.format('backTo', { label })}
+        className="flex items-center justify-center after:absolute after:inset-0"
+        onPress={onBack}
+        excludeFromTabOrder={tabIndex < 0}
+        onFocus={onFocus}
+      >
         <ChevronLeft aria-hidden="true" size={16} />
-      </span>
-      <span className="truncate text-center font-medium">
-        {backLabel ?? stringFormatter.format('back')}
-      </span>
-    </Button>
+      </Button>
+      <Heading
+        id={headingId}
+        data-slot="title"
+        className="truncate text-center"
+      >
+        {label}
+      </Heading>
+    </div>
   );
 };
 
@@ -69,6 +88,12 @@ export const SidebarPanel = ({
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const panelRef = useRef<HTMLDivElement>(null);
   const { onKeyDown } = usePanelKeyboard(panelRef);
+  const headingId = useId();
+  const parentLevel = use(SidebarHeadingLevelContext);
+  const sectionLevel = toHeadingLevel(parentLevel + 1);
+  const groupLabelLevel = toHeadingLevel(
+    onBack ? sectionLevel + 1 : sectionLevel
+  );
 
   // Focus the right element when this panel becomes active
   const prevPositionRef = useRef(position);
@@ -101,7 +126,10 @@ export const SidebarPanel = ({
       <div
         ref={panelRef}
         role="region"
-        aria-label={backLabel ?? stringFormatter.format('appNavigation')}
+        aria-labelledby={onBack ? headingId : undefined}
+        aria-label={
+          onBack ? undefined : stringFormatter.format('appNavigation')
+        }
         className={classNames.navPanel}
         data-position={position}
         inert={position !== 'active' || undefined}
@@ -111,6 +139,8 @@ export const SidebarPanel = ({
           <BackButton
             onBack={onBack}
             backLabel={backLabel}
+            headingId={headingId}
+            headingLevel={sectionLevel}
             className={classNames.backButton}
           />
         )}
@@ -126,7 +156,7 @@ export const SidebarPanel = ({
               <div
                 key={node.key}
                 role="heading"
-                aria-level={2}
+                aria-level={groupLabelLevel}
                 className={classNames.groupLabel}
               >
                 {node.content}
@@ -140,13 +170,20 @@ export const SidebarPanel = ({
                 key={node.key}
                 href={node.href}
                 data-key={node.key}
-                className={cn(classNames.navLink, 'justify-between')}
+                // Mobile drawer only: the ancestor of the current page. On this
+                // level the leaf itself is out of view, so the branch row is
+                // the only "you are here".
+                aria-current={
+                  isMobile && containsActive(node.children) ? 'true' : undefined
+                }
+                className={classNames.navLink}
                 onPress={() => {
                   onBranchClick?.(node.key);
                   node.onPress?.();
                 }}
               >
-                <span className="truncate">{node.triggerContent}</span>
+                <SidebarRowIcon icon={node.icon} />
+                <span className="flex-1 truncate">{node.triggerContent}</span>
                 <ChevronRight aria-hidden="true" size={16} />
               </SidebarLink>
             );
@@ -165,6 +202,7 @@ export const SidebarPanel = ({
                 if (isMobile) toggleSidebar();
               }}
             >
+              <SidebarRowIcon icon={node.icon} />
               {node.triggerContent}
             </SidebarLink>
           );

@@ -1,4 +1,4 @@
-import { cloneElement, isValidElement } from 'react';
+import { isValidElement } from 'react';
 import type { ReactElement, ReactNode } from 'react';
 import type { SidebarNavProps } from './SidebarNav';
 import type { SidebarRailItemProps } from './SidebarRailItem';
@@ -165,9 +165,10 @@ export const buildRailCollection = (
       for (const kid of footerKids) {
         if (isSidebarRailItem(kid)) nodes.push(buildNode(kid, true));
       }
-      const rest = footerKids.filter(kid => !isSidebarRailItem(kid));
-      footer = rest.length
-        ? cloneElement(child, undefined, ...rest)
+      // `Sidebar.RailItem` renders nothing, so the footer renders as-is; it is
+      // dropped only when rail items are all it holds.
+      footer = footerKids.some(kid => !isSidebarRailItem(kid))
+        ? child
         : undefined;
       continue;
     }

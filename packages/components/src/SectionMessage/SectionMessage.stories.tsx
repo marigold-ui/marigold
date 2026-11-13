@@ -163,7 +163,7 @@ export const MultiLineTitle = meta.story({
 export const ControlledSectionMessage = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true }, surface: false },
-  render: args => {
+  render: function Render(args) {
     const [open, setOpen] = useState(false);
 
     return (

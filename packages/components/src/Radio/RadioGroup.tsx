@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { isValidElement, use } from 'react';
 import type RAC from 'react-aria-components';
 import {
-  RadioGroup,
+  RadioGroup as RACRadioGroup,
   RadioGroupStateContext,
 } from 'react-aria-components/RadioGroup';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
@@ -136,7 +136,7 @@ export interface RadioGroupProps extends Omit<
 
 // Component
 // ---------------
-const _RadioGroup = ({
+const RadioGroup = ({
   variant,
   size,
   label,
@@ -170,7 +170,7 @@ const _RadioGroup = ({
 
   return (
     <FieldBase
-      as={RadioGroup}
+      as={RACRadioGroup}
       width={width}
       label={label}
       addon={addon}
@@ -199,4 +199,4 @@ const _RadioGroup = ({
   );
 };
 
-export { _RadioGroup as RadioGroup };
+export { RadioGroup };

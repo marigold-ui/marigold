@@ -1,5 +1,5 @@
 import type RAC from 'react-aria-components';
-import { Label } from 'react-aria-components/Label';
+import { Label as RACLabel } from 'react-aria-components/Label';
 import { cn, useClassNames } from '@marigold/system';
 
 type RemovedProps = 'className' | 'style';
@@ -8,11 +8,11 @@ export interface LabelProps extends Omit<RAC.LabelProps, RemovedProps> {
   variant?: string;
 }
 
-const _Label = ({ size, variant, children, ...props }: LabelProps) => {
+const Label = ({ size, variant, children, ...props }: LabelProps) => {
   const className = useClassNames({ component: 'Label', size, variant });
 
   return (
-    <Label
+    <RACLabel
       {...props}
       className={cn(
         className,
@@ -20,8 +20,8 @@ const _Label = ({ size, variant, children, ...props }: LabelProps) => {
       )}
     >
       {children}
-    </Label>
+    </RACLabel>
   );
 };
 
-export { _Label as Label };
+export { Label };

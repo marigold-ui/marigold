@@ -1,0 +1,151 @@
+---
+title: Marigold v18.4.0
+date: 2026-11-13
+type: Blog
+changed:
+  - components/collection/table
+  - components/collection/listview
+  - components/form/selectlist
+  - components/form/checkbox
+  - components/form/radio
+  - components/form/switch
+  - components/overlay/drawer
+  - components/navigation/sidebar
+  - patterns/user-input/bulk-actions
+---
+
+v18.4.0 adds sticky first and last columns and <kbd>Shift</kbd>+click range selection to `<Table>`. `<ListView>` and `<SelectList>` get a select-all checkbox, and a `<Drawer>` can now be opened and closed without a trigger. On mobile, the `<Sidebar>` drawer now matches the desktop rail, and read-only `<Checkbox>`, `<Radio>` and `<Switch>` no longer look editable.
+
+## Components
+
+### Table
+
+**Sticky columns.** A wide [`<Table>`](/components/collection/table) lost its row context as soon as it scrolled sideways: the column that names the row and the row actions scrolled out of view. `Table.Column` now takes a `sticky` prop. `sticky="start"` on the first column keeps it in place while the other columns scroll, and `sticky="end"` does the same for the last column, typically the row actions. The selection checkbox and drag handle stick together with the first column. A thin line marks each edge while content scrolls under it.
+
+```tsx
+import { Scrollable, Table } from '@marigold/components';
+
+<Scrollable>
+  <Table aria-label="Orders" selectionMode="multiple">
+    <Table.Header>
+      <Table.Column rowHeader sticky="start">
+        Order
+      </Table.Column>
+      <Table.Column>Customer</Table.Column>
+      <Table.Column>Venue</Table.Column>
+      <Table.Column sticky="end">Actions</Table.Column>
+    </Table.Header>
+    <Table.Body items={orders}>{/* rows */}</Table.Body>
+  </Table>
+</Scrollable>;
+```
+
+Sticky columns need a container that scrolls sideways, such as `<Scrollable>`. They combine with `Table.Header sticky` and `Table.Footer sticky`, which stay independent. When keyboard focus moves to a cell, the table scrolls it clear of the sticky columns instead of leaving it hidden under them. `sticky` on any column other than the first or last is ignored with a development warning, and a cell that spans several columns with `colSpan` does not stick.
+
+**Shift+click selects a range.** In a `<Table selectionMode="multiple">`, <kbd>Shift</kbd>+click on a row's checkbox now selects every row between the last clicked row and this one. Before, the checkbox ignored <kbd>Shift</kbd> and toggled only its own row, while a <kbd>Shift</kbd>+click on the row itself already selected the range. If every row is already selected through the header checkbox, <kbd>Shift</kbd>+click on a row checkbox deselects that one row instead of starting a range. A plain click still toggles only its own row.
+
+### ListView and SelectList
+
+**Select-all.** Until now only `<Table>` could offer a select-all, because it is the only collection with a header to put the checkbox in. [`<ListView>`](/components/collection/listview) and [`<SelectList>`](/components/form/selectlist) now take `allowSelectAll`. With `selectionMode="multiple"`, it renders a "Select all" checkbox above the list, lined up with the row checkboxes, and a count such as "3 of 12 selected" beside it. Both texts are localized. The prop is off by default and has no effect in other selection modes.
+
+```tsx
+<ListView
+  aria-label="Uploads"
+  selectionMode="multiple"
+  allowSelectAll
+  items={uploads}
+  selectedKeys={selected}
+  onSelectionChange={setSelected}
+>
+  {upload => <ListView.Item textValue={upload.name}>…</ListView.Item>}
+</ListView>
+```
+
+The checkbox shows the indeterminate state while only some rows are selected. What `onSelectionChange` receives after select-all differs between the two:
+
+- **`ListView`** receives `'all'`, as it already did for <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd>. Handle `'all'` in your selection code.
+- **`SelectList`** receives the set of selectable keys, because a form field has to submit actual values. A disabled option keeps its selection either way, and clearing respects `disallowEmptySelection`.
+
+If you built your own select-all checkbox above one of these lists, you can replace it with `allowSelectAll`. The [bulk actions pattern](/patterns/user-input/bulk-actions) shows where it fits.
+
+`ListView` now renders its list inside a wrapper element. If your CSS or tests target the list element directly, check that they still match. The `Theme` type gains optional `header` and `count` slots on both components, plus `container` on `ListView`. Custom themes without them still compile and render.
+
+### Drawer
+
+**Open and close without a trigger.** A drawer opened from a table row, an `<ActionBar>` action or a route used to need a `Drawer.Trigger` with a hidden button inside it, and a drawer with only `open` could not be closed. [`<Drawer>`](/components/overlay/drawer) now takes `open`, `defaultOpen` and `onOpenChange` directly, like `<Dialog>`.
+
+```tsx
+// Before: a hidden button inside a trigger
+<Drawer.Trigger open={isOpen} onOpenChange={setOpen}>
+  {/* a visually hidden Button, only there to satisfy the trigger */}
+  <Drawer>{/* … */}</Drawer>
+</Drawer.Trigger>
+
+// After
+<Drawer open={isOpen} onOpenChange={setOpen}>
+  {/* … */}
+</Drawer>
+```
+
+The close button, `slot="close"` buttons, <kbd>Escape</kbd> and opening another drawer all call `onOpenChange(false)`, on desktop and in the mobile sheet. Before, a controlled drawer did not render at all on small screens.
+
+### Sidebar
+
+**Mobile drawer.** On small screens the [`<Sidebar>`](/components/navigation/sidebar) drawer now keeps what makes the desktop rail easy to scan:
+
+- Rows use 16px text instead of 14px.
+- The section that holds the current page is highlighted at the top level and exposed as `aria-current="true"`.
+- Inside a section, its name is shown as the section heading next to a round back button. The whole row is still the back button.
+- The close button and footer links meet the 44 by 44px touch target.
+
+This applies to every Sidebar drawer, including a plain `Sidebar` with `Sidebar.Nav`. Two changes are specific to `Sidebar.Rail`, the icon column used on desktop: every top-level row now shows its rail icon, and pinned footer items, like a help center, stay below the list at every level instead of scrolling with it. To show your brand at the top of the mobile drawer, pass a `Sidebar.Header` as a child of `Sidebar.Rail`. The desktop rail does not render it. None of this needs a code change.
+
+**Clicking the active section navigates.** Clicking the rail item of the section you are already in used to toggle the panel instead of navigating. It now always goes to the section's page, for example from a detail page back to the list. With the panel open, the panel stays open. With the panel collapsed, it reopens and its heading gets focus, as before. Only `Sidebar.Toggle` and <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>B</kbd> collapse the panel now. A section with no link to land on still does not navigate.
+
+**Real headings.** The section name next to the back button used to be part of the button's label. It is now a heading, so screen reader heading navigation finds it. It is an `h2` in a plain sidebar. Group labels on a drilled-in level, and group labels and drill-down headings in the `Sidebar.Rail` panel, start at level 3. Nothing changes visually.
+
+**Group labels.** Groups in a long navigation ran together, and every label in 11px bold uppercase drew the eye. A group label now sits 24px below the previous row, in 12px semibold muted text and sentence case. Rows use the full text color instead of a lighter one, and hovering a row only fills its background. The `Sidebar.Rail` section panel changes with them. If you passed uppercase text to `Sidebar.GroupLabel` to match the old look, switch it to sentence case.
+
+**Sidebar.Nav in a rail.** A `Sidebar.Nav` inside a `Sidebar.Rail` section ignored its own `current` and `aria-label`, so the nav was always named after the panel title. It uses them now and still falls back to the rail and panel title without them.
+
+<Callout title="Custom themes: Sidebar back row" type="info">
+  This only affects custom themes that style the Sidebar `backButton` slot. The
+  slot now styles a row that holds the back `button` and the section heading
+  (`[data-slot=title]`). The row itself is not focusable, so until you update
+  the slot the button shows the browser's default focus ring. Move
+  `focus-visible:` styles to `has-[:focus-visible]:`, reset the button's
+  outline with `[&>button]:outline-none`, and point `span` selectors at
+  `button` for the chevron or `[data-slot=title]` for the section name.
+</Callout>
+
+## Design
+
+- **Read-only looks read-only.** A read-only `<Checkbox>`, `<Radio>` or `<Switch>` used to look exactly like an editable one, so the only way to find out was to click it. Checked, indeterminate and selected controls now drop their fill and draw the mark in the text color. A read-only switch empties its track in both positions. Unchecked controls look as before. Unlike `disabled`, read-only controls stay focusable and keep `aria-readonly`, so screen readers still reach their value. If you used `disabled` to make a value look fixed, switch to `readOnly`.
+- **Keyboard key caps.** A `<Keyboard>` key cap showed as a white box on a highlighted or colored row. It now takes its border and fill from the text color, so it blends in. It also uses the surrounding font instead of the browser's monospace font.
+- **Alpha scale for theme authors.** The theme gains a five-step alpha scale, `--alpha-50` to `--alpha-400` (5, 10, 14, 26 and 45%), for translucent edges, washes and veils. The ghost hover, `border`, `control-border` and the overlay backdrop now read from it and look as before.
+- **Link buttons.** The focus ring of a `link` `<Button>` sat directly on its label. It now has 4px of room, and the label stays where it was.
+
+## Bug fixes
+
+- **`render` on `Table.Cell`.** `Table.Cell` accidentally exposed React Aria's `render` prop. It was never meant to be public or documented, and `Table` and `Table.Column` never accepted it. It is removed again, so TypeScript now reports it as an unknown prop. If you pass `render` to a `Table.Cell`, remove it and put custom content in the cell's children.
+- **Drawer state inside a trigger.** With `open` set on both a `Drawer.Trigger` and the `Drawer` inside it, the two disagreed about who owns the state. The `Drawer` now owns it, as in React Aria, so its close button, <kbd>Escape</kbd> and another drawer opening call the drawer's `onOpenChange`, not the trigger's. Keep `open` on the trigger only, or pass `onOpenChange` to the `Drawer` as well. Setting only `onOpenChange` on a drawer inside a trigger logs a development warning to move it to the trigger.
+- **Escape on the mobile Drawer.** `keyboardDismissable={false}` now also keeps the mobile sheet open on <kbd>Escape</kbd>. Before, the prop only reached the desktop drawer.
+- **Errors in overlays.** Inside a `<Dialog>`, `<Drawer>` or `<Tray>`, `<SelectList>`, `<TagGroup>` and `<RangeCalendar>` crashed with `Invalid slot "errorMessage"` as soon as they showed an error. They now render the error as they do outside an overlay. Their description and error message are also announced with the field now.
+- **FileField names its button.** A screen reader read only "Upload" on the `<FileField>` button. It now reads the field label first, for example "Attachment, Upload", followed by the description, the error and a badge in `addon`. A `<ContextualHelp>` in `addon` stays its own button. In `small` size, an `aria-label` passed to `FileField` now names the upload button instead of having no effect.
+- **Focus after a confirmed delete.** Deleting the row whose button opened a `useConfirmation` dialog dropped focus out of the surrounding dialog, drawer or popover. The promise now resolves after the dialog has closed and returned focus, so focus moves to the next row. It still resolves to `confirmed` or `cancelled`, only after the closing animation instead of on the button press. A second `confirm` call in the same tick is now rejected with `cancelled` instead of replacing the first.
+- **Shift+click on controlled lists.** A `Set` passed to `selectedKeys` was copied on every render, which broke <kbd>Shift</kbd>+click range selection on a controlled `<ListView>` or `<SelectList>`. It works now.
+- **Select all in SelectList.** <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> and a controlled `selectedKeys="all"` on a multi-select `<SelectList>` submitted nothing. They now submit and validate every selectable key.
+- **TagGroup collapse.** `<TagGroup collapseAt>` left tags visible past the limit when you wrapped them in your own component. It hides them now.
+- **Header titles centered.** A `<Page.Header>` or `<Panel.Header>` with actions but no description placed its title 6 to 9px above the center of the actions. The title now lines up with them.
+- **Menu labels line up.** When only some `<Menu>` or `<ActionMenu>` items had a leading icon, their labels started at different positions. Every label now starts in the same column, including `master` and `admin` items and items inside sections. A menu without any icons keeps its compact layout.
+
+## Under the hood
+
+- **React Aria 1.22.1.** The minimum `react-aria-components` version is now 1.22.1. If your app has its own `react-aria-components` dependency, update it to `^1.22.1` so only one copy is installed. No component API changes.
+- **Readable component names.** React DevTools and React's warnings now show components by the name you import, for example `Button` instead of `_Button`. Compound components show their root part, for example `TableRoot`. Update test snapshots that contain the old names.
+- **Table layering.** A sticky table header could cover a sticky `<TopNavigation>` where the two overlapped. Each table now keeps its layers to itself (`isolation: isolate`), and sticky headers and footers use `z-10` instead of `z-1`. If you set your own `z-index` on something that has to sit above or below a table, check that it still does.
+- **Table rows.** Body rows now have an opaque background, and a row's focus ring is drawn by its cells instead of as the row's outline. Both look the same on the table's own background. Custom themes that restyle table rows or cells should check them.
+
+---
+
+That's v18.4.0. If you have a wide table, try pinning its first and last columns.

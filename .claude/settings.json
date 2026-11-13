@@ -7,6 +7,42 @@
     "code-simplifier@claude-plugins-official": true,
     "atlassian@claude-plugins-official": true
   },
+  "permissions": {
+    "allow": [
+      "Bash(pnpm typecheck:only)",
+      "Bash(pnpm lint)",
+      "Bash(pnpm lint:prose)",
+      "Bash(pnpm check:memory)",
+      "Bash(pnpm check:rac-imports)",
+      "Bash(pnpm check:theme-zindex)",
+      "Bash(pnpm vitest run *)"
+    ],
+    "deny": [
+      "Bash(pnpm publish)",
+      "Bash(pnpm publish *)",
+      "Bash(npm publish)",
+      "Bash(npm publish *)",
+      "Bash(pnpm changeset publish)",
+      "Bash(pnpm changeset publish *)",
+      "Bash(pnpm -r publish)",
+      "Bash(pnpm -r publish *)",
+      "Bash(pnpm --filter * publish)",
+      "Bash(pnpm --filter * publish *)",
+      "Bash(pnpm exec changeset publish)",
+      "Bash(pnpm exec changeset publish *)",
+      "Bash(npx changeset publish)",
+      "Bash(npx changeset publish *)",
+      "Edit(**/CHANGELOG.md)",
+      "Read(**/.env)",
+      "Read(**/.env.*)"
+    ],
+    "ask": [
+      "Bash(gh workflow run *)",
+      "Bash(pnpm changeset version)",
+      "Bash(pnpm changeset version *)",
+      "Bash(pnpm changeset pre *)"
+    ]
+  },
   "hooks": {
     "SessionStart": [
       {

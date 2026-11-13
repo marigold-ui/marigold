@@ -1,12 +1,20 @@
+import type { MouseEvent } from 'react';
+import { use } from 'react';
 import type RAC from 'react-aria-components';
 import { Button } from 'react-aria-components/Button';
 import { Collection } from 'react-aria-components/Collection';
-import { Cell, Row, useTableOptions } from 'react-aria-components/Table';
+import {
+  Cell,
+  Row,
+  TableStateContext,
+  useTableOptions,
+} from 'react-aria-components/Table';
 import { cn, useClassNames } from '@marigold/system';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { GripVertical } from '../icons/GripVertical';
 import { verticalAlign } from '../utils/styleProps';
 import { useTableContext } from './Context';
+import { renderStickyCell } from './TableStickyCell';
 
 type RemovedProps = 'className' | 'style';
 
@@ -30,6 +38,50 @@ export interface TableRowProps<T extends object = object> extends Omit<
    */
   expandable?: boolean;
 }
+
+// RAC's selection checkbox only toggles, so extend on Shift like a row click (adobe/react-spectrum#8662).
+const SelectionCheckbox = ({ cellKey }: { cellKey?: RAC.Key }) => {
+  const state = use(TableStateContext);
+
+  const rangeTarget = (e: MouseEvent) => {
+    const manager = state?.selectionManager;
+    const rowKey =
+      cellKey == null ? null : state?.collection.getItem(cellKey)?.parentKey;
+    if (!e.shiftKey || !manager || rowKey == null) return null;
+    // After select-all, extending would collapse the selection to one row.
+    if (manager.selectionMode !== 'multiple' || manager.isSelectAll)
+      return null;
+    return manager.canSelectItem(rowKey) ? { manager, rowKey } : null;
+  };
+
+  return (
+    <div
+      className={lineBox}
+      // Keeps the checkbox's own press, which would toggle, from starting.
+      onPointerDownCapture={e => {
+        if (rangeTarget(e)) e.stopPropagation();
+      }}
+      // That press also kept Shift from extending the page's text selection.
+      onMouseDownCapture={e => {
+        if (rangeTarget(e)) e.preventDefault();
+      }}
+      onClickCapture={e => {
+        // `detail` is 0 for a keyboard click, which keeps toggling.
+        const target = e.detail === 0 ? null : rangeTarget(e);
+        if (!target) return;
+        const { manager, rowKey } = target;
+        e.preventDefault();
+        e.stopPropagation();
+        manager.extendSelection(rowKey);
+        // Like a row click, so Shift+arrows continue from this row.
+        manager.setFocused(true);
+        manager.setFocusedKey(rowKey);
+      }}
+    >
+      <Checkbox slot="selection" />
+    </div>
+  );
+};
 
 const TableRow = <T extends object>({
   id,
@@ -71,7 +123,7 @@ const TableRow = <T extends object>({
       {...otherProps}
     >
       {allowsDragging && (
-        <Cell className={cellClassName}>
+        <Cell className={cellClassName} render={renderStickyCell}>
           <div className={lineBox}>
             <Button
               slot="drag"
@@ -86,10 +138,8 @@ const TableRow = <T extends object>({
         </Cell>
       )}
       {selectionBehavior === 'toggle' && (
-        <Cell className={cellClassName}>
-          <div className={lineBox}>
-            <Checkbox slot="selection" />
-          </div>
+        <Cell className={cellClassName} render={renderStickyCell}>
+          {({ id }) => <SelectionCheckbox cellKey={id} />}
         </Cell>
       )}
       <Collection items={columns}>{children}</Collection>

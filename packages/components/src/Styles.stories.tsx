@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from 'react';
-import { expect, waitFor, within } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { cn } from '@marigold/system';
 import { Button } from './Button/Button';
@@ -443,7 +443,9 @@ SidebarBackAction.test(
 
     // The back action and the nav rows share one inset (mx-2 + px-2), so
     // their content starts on the same column — the alignment we tuned.
-    const backStyle = getComputedStyle(back);
+    const backStyle = getComputedStyle(
+      back.closest<HTMLElement>('[data-back-row]')!
+    );
     const childStyle = getComputedStyle(child);
 
     await expect(backStyle.paddingLeft).toBe(childStyle.paddingLeft);
@@ -459,9 +461,7 @@ SidebarBackAction.test(
     const child = canvas.getByRole('link', { name: 'Users' });
     await waitFor(() => expect(back).toBeVisible());
 
-    // The Button's default `font-medium` is reset, so the back label reads at
-    // the nav item weight.
-    const backLabel = within(back).getByText(/Management/);
+    const backLabel = canvas.getByRole('heading', { name: 'Management' });
 
     await expect(getComputedStyle(backLabel).fontWeight).toBe(
       getComputedStyle(child).fontWeight

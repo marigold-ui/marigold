@@ -18,6 +18,7 @@ import {
 } from '../Calendar/Context';
 import type { DateRangePreset } from '../Calendar/presets';
 import { FieldBase, type FieldBaseProps } from '../FieldBase/FieldBase';
+import { useFieldHelpText } from '../utils/useFieldHelpText';
 
 // Props
 // ---------------
@@ -107,7 +108,7 @@ const EMPTY_VALIDITY_STATE: ValidityState = {
 
 // Component
 // ---------------
-const _RangeCalendar = <T extends DateValue>({
+const RangeCalendar = <T extends DateValue>({
   disabled,
   readOnly,
   error,
@@ -175,6 +176,13 @@ const _RangeCalendar = <T extends DateValue>({
     [error]
   );
 
+  const { describedBy, helpTextSlots } = useFieldHelpText({
+    description,
+    errorMessage,
+    isInvalid: error,
+    'aria-describedby': rest['aria-describedby'],
+  });
+
   const body = (
     <CalendarBody
       selectedDropdown={selectedDropdown}
@@ -201,6 +209,7 @@ const _RangeCalendar = <T extends DateValue>({
           errorMessage={errorMessage}
           isInvalid={error}
           isDisabled={disabled}
+          helpTextSlots={helpTextSlots}
         >
           {/*
            * RAC's <RangeCalendar> only registers an `errorMessage` slot, so
@@ -211,6 +220,7 @@ const _RangeCalendar = <T extends DateValue>({
            */}
           <AriaRangeCalendar
             {...props}
+            aria-describedby={describedBy}
             className={cn(
               'relative flex w-(--width) flex-col',
               // gap-3 below `sm`: with gap-4 a 5-week month overflows the
@@ -246,4 +256,4 @@ const _RangeCalendar = <T extends DateValue>({
   );
 };
 
-export { _RangeCalendar as RangeCalendar };
+export { RangeCalendar };

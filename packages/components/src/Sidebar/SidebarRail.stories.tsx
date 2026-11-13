@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
@@ -103,16 +103,79 @@ const sections: Record<string, { label: string; href: string }> = {
   },
 };
 
+// A settings panel long enough to scroll, with captions that share a word with
+// their first item ("Module" over "Modulbibliothek") next to ones that share
+// none. A caption has to read as a heading for its group, not as one more row.
+type NavGroup = { label: string; items: [string, string][] };
+
+const settingsGroups: NavGroup[] = [
+  {
+    label: 'Allgemein',
+    items: [
+      ['/einstellungen/firma', 'Firmendaten'],
+      ['/einstellungen/sprache', 'Sprache und Region'],
+      ['/einstellungen/rechnungen', 'Rechnungsvorlagen'],
+    ],
+  },
+  {
+    label: 'Module',
+    items: [
+      ['/einstellungen/modulbibliothek', 'Modulbibliothek'],
+      ['/einstellungen/zusatzmodule', 'Zusatzmodule'],
+    ],
+  },
+  {
+    label: 'System',
+    items: [
+      ['/einstellungen/benutzer', 'Benutzer'],
+      ['/einstellungen/schnittstellen', 'Schnittstellen'],
+      ['/einstellungen/protokoll', 'Protokoll'],
+    ],
+  },
+  {
+    label: 'Verkauf',
+    items: [
+      ['/einstellungen/verkaufsstellen', 'Verkaufsstellen'],
+      ['/einstellungen/zahlungsarten', 'Zahlungsarten'],
+      ['/einstellungen/gebuehren', 'Gebühren'],
+      ['/einstellungen/gutscheine', 'Gutscheine'],
+    ],
+  },
+  {
+    label: 'Kommunikation',
+    items: [
+      ['/einstellungen/emailvorlagen', 'E-Mail-Vorlagen'],
+      ['/einstellungen/newsletter', 'Newsletter'],
+      ['/einstellungen/benachrichtigungen', 'Benachrichtigungen'],
+    ],
+  },
+  {
+    label: 'Sicherheit',
+    items: [
+      ['/einstellungen/rollen', 'Rollen und Rechte'],
+      ['/einstellungen/anmeldung', 'Anmeldung'],
+      ['/einstellungen/sicherheitsprotokoll', 'Sicherheitsprotokoll'],
+    ],
+  },
+];
+
 const RailShell = ({
   initialPath = '/tickets/meine',
   bounded = false,
+  settingsGroups: groups,
 }: {
   initialPath?: string;
   /** Bounds the shell to the docs demos' 25rem so the nine tiles overflow. */
   bounded?: boolean;
+  /** Replaces the Einstellungen panel with these groups. */
+  settingsGroups?: NavGroup[];
 }) => {
   const [path, setPath] = useState(initialPath);
-  const label = pages[path] ?? 'Seite';
+  const pageLabels: Record<string, string> = {
+    ...pages,
+    ...Object.fromEntries(groups?.flatMap(group => group.items) ?? []),
+  };
+  const label = pageLabels[path] ?? 'Seite';
 
   // Each path segment becomes a crumb: "Tickets › Archiv › Gelöst".
   const trail = path
@@ -123,8 +186,15 @@ const RailShell = ({
       const section = sections[key];
       return section
         ? { key, href: section.href, label: section.label }
-        : { key, href: key, label: pages[key] ?? 'Seite' };
+        : { key, href: key, label: pageLabels[key] ?? 'Seite' };
     });
+
+  // Rendered in the bar on desktop and in a row below it on small screens.
+  const crumbs = trail.map(({ key, href, label: crumbLabel }) => (
+    <Breadcrumbs.Item key={key} href={href}>
+      {crumbLabel}
+    </Breadcrumbs.Item>
+  ));
 
   // The drawer portals outside the lang="de" wrapper, killing hyphens: auto.
   // A real app sets the document language, so mirror that.
@@ -151,6 +221,14 @@ const RailShell = ({
           <AppShell>
             <Sidebar>
               <Sidebar.Rail current={path}>
+                {/* Brand row of the mobile drawer. On desktop the brand sits in
+                    the top bar, so the rail doesn't render this. */}
+                <Sidebar.Header>
+                  <Text weight="bold" fontSize="lg">
+                    reservix
+                  </Text>
+                </Sidebar.Header>
+
                 <Sidebar.RailItem icon={<LayoutDashboard />} href="/uebersicht">
                   Übersicht
                 </Sidebar.RailItem>
@@ -248,24 +326,41 @@ const RailShell = ({
                 <Sidebar.RailItem icon={<Settings />} id="einstellungen">
                   Einstellungen
                   <Sidebar.Nav aria-label="Einstellungen">
-                    <Sidebar.GroupLabel>Arbeitsbereich</Sidebar.GroupLabel>
-                    <Sidebar.Item href="/einstellungen/allgemein">
-                      Allgemein
-                    </Sidebar.Item>
-                    <Sidebar.Item href="/einstellungen/team">Team</Sidebar.Item>
-                    <Sidebar.GroupLabel>Persönlich</Sidebar.GroupLabel>
-                    <Sidebar.Item
-                      id="benachrichtigungen"
-                      textValue="Benachrichtigungen"
-                    >
-                      Benachrichtigungen
-                      <Sidebar.Item href="/einstellungen/benachrichtigungen/email">
-                        E-Mail
-                      </Sidebar.Item>
-                      <Sidebar.Item href="/einstellungen/benachrichtigungen/push">
-                        Push
-                      </Sidebar.Item>
-                    </Sidebar.Item>
+                    {groups ? (
+                      groups.map(group => (
+                        <Fragment key={group.label}>
+                          <Sidebar.GroupLabel>{group.label}</Sidebar.GroupLabel>
+                          {group.items.map(([href, itemLabel]) => (
+                            <Sidebar.Item key={href} href={href}>
+                              {itemLabel}
+                            </Sidebar.Item>
+                          ))}
+                        </Fragment>
+                      ))
+                    ) : (
+                      <>
+                        <Sidebar.GroupLabel>Arbeitsbereich</Sidebar.GroupLabel>
+                        <Sidebar.Item href="/einstellungen/allgemein">
+                          Allgemein
+                        </Sidebar.Item>
+                        <Sidebar.Item href="/einstellungen/team">
+                          Team
+                        </Sidebar.Item>
+                        <Sidebar.GroupLabel>Persönlich</Sidebar.GroupLabel>
+                        <Sidebar.Item
+                          id="benachrichtigungen"
+                          textValue="Benachrichtigungen"
+                        >
+                          Benachrichtigungen
+                          <Sidebar.Item href="/einstellungen/benachrichtigungen/email">
+                            E-Mail
+                          </Sidebar.Item>
+                          <Sidebar.Item href="/einstellungen/benachrichtigungen/push">
+                            Push
+                          </Sidebar.Item>
+                        </Sidebar.Item>
+                      </>
+                    )}
                   </Sidebar.Nav>
                 </Sidebar.RailItem>
 
@@ -296,20 +391,23 @@ const RailShell = ({
                 <Sidebar.Toggle variant="rail" />
                 {/* Keep the whole trail visible (it is at most three levels)
                     so the active section still reads when the rail collapses to
-                    icons, rather than auto-collapsing to an ellipsis. */}
-                <Breadcrumbs maxVisibleItems={4}>
-                  {trail.map(({ key, href, label: crumbLabel }) => (
-                    <Breadcrumbs.Item key={key} href={href}>
-                      {crumbLabel}
-                    </Breadcrumbs.Item>
-                  ))}
-                </Breadcrumbs>
+                    icons, rather than auto-collapsing to an ellipsis. Small
+                    screens move it to its own row below the bar instead. */}
+                <div className="min-w-0 max-sm:hidden">
+                  <Breadcrumbs maxVisibleItems={4}>{crumbs}</Breadcrumbs>
+                </div>
               </TopNavigation.Start>
               <TopNavigation.End>
                 <Text size="sm" weight="bold">
                   Mara Ellison
                 </Text>
               </TopNavigation.End>
+              {/* Same pattern as TopNavigation's WithBreadcrumbs story: a
+                  full-width second row, collapsing automatically if it runs
+                  out of room. */}
+              <div className="col-span-full min-w-0 pb-2 sm:hidden">
+                <Breadcrumbs>{crumbs}</Breadcrumbs>
+              </div>
             </TopNavigation>
 
             <Page>
@@ -748,6 +846,40 @@ RailMobile.test(
   }
 );
 
+RailMobile.test(
+  'every tappable drawer control is at least 44 by 44px',
+  // Ends with the drawer open, so the snapshot guards the drawer's look.
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Navigation umschalten' })
+    );
+    const drawer = await canvas.findByRole('complementary', {
+      name: 'Seitenleiste',
+    });
+
+    // Inactive drill-down levels stay mounted but inert, so measure only the
+    // controls a finger can actually reach.
+    const targets = [
+      ...within(drawer).queryAllByRole('link'),
+      ...within(drawer).queryAllByRole('button'),
+    ].filter(element => !element.closest('[inert]'));
+
+    expect(targets.length).toBeGreaterThan(0);
+    for (const element of targets) {
+      const target = element.closest<HTMLElement>('[data-back-row]') ?? element;
+      const { width, height } = target.getBoundingClientRect();
+      expect(
+        { name: element.textContent, width, height },
+        'touch target'
+      ).toMatchObject({
+        width: expect.toSatisfy((w: number) => w >= 44),
+        height: expect.toSatisfy((h: number) => h >= 44),
+      });
+    }
+  }
+);
+
 Rail.test(
   'Keyboard focus draws a ring that clears 3:1 on a rail item',
   // Vitest only: `vitest/browser` doesn't resolve in Chromatic.
@@ -769,3 +901,14 @@ Rail.test(
     await waitFor(() => expectFocusRingContrast(second!));
   }
 );
+
+// Captions next to rows that share a word with them ("Module" over
+// "Modulbibliothek"), in a settings panel long enough to scroll.
+export const RailGroupLabels = meta.story({
+  render: () => (
+    <RailShell
+      initialPath="/einstellungen/benutzer"
+      settingsGroups={settingsGroups}
+    />
+  ),
+});

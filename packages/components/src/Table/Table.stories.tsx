@@ -170,7 +170,7 @@ export const Basic = meta.story({
       </Table.Header>
       <Table.Body>
         {users.map(user => (
-          <Table.Row key={user.email}>
+          <Table.Row key={user.email} id={user.email}>
             <Table.Cell textValue={user.name}>
               <Stack space="0.5">
                 <Text weight="medium">{user.name}</Text>
@@ -226,6 +226,206 @@ Basic.test(
       // 10 users + 1 header row = 11 rows
       expect(rows).toHaveLength(11);
     });
+  }
+);
+
+const selectedRows = (rows: HTMLElement[]) =>
+  rows.flatMap((row, i) =>
+    row.getAttribute('aria-selected') === 'true' ? [i] : []
+  );
+
+Basic.test(
+  'Shift+click on a row selects the range from the last selected row',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple' },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+
+    await userEvent.click(rows[1]);
+    await userEvent.keyboard('{Shift>}');
+    await userEvent.click(rows[4]);
+    await userEvent.keyboard('{/Shift}');
+
+    expect(selectedRows(rows)).toEqual([1, 2, 3, 4]);
+  }
+);
+
+Basic.test(
+  'Shift+click on a checkbox selects the range from the last selected row',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple' },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+
+    await userEvent.click(within(rows[1]).getByRole('checkbox'));
+    await userEvent.keyboard('{Shift>}');
+    await userEvent.click(within(rows[4]).getByRole('checkbox'));
+    await userEvent.keyboard('{/Shift}');
+
+    expect(selectedRows(rows)).toEqual([1, 2, 3, 4]);
+  }
+);
+
+Basic.test(
+  'Shift+ArrowDown extends the selection',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple' },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+
+    await userEvent.click(rows[1]);
+    await userEvent.keyboard('{Shift>}{ArrowDown}{ArrowDown}{/Shift}');
+
+    expect(selectedRows(rows)).toEqual([1, 2, 3]);
+  }
+);
+
+Basic.test(
+  'Shift+ArrowDown continues from a Shift+clicked checkbox',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple' },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+
+    await userEvent.click(within(rows[1]).getByRole('checkbox'));
+    await userEvent.keyboard('{Shift>}');
+    await userEvent.click(within(rows[4]).getByRole('checkbox'));
+    await userEvent.keyboard('{ArrowDown}{/Shift}');
+
+    expect(selectedRows(rows)).toEqual([1, 2, 3, 4, 5]);
+  }
+);
+
+Basic.test(
+  'Shift+click on a checkbox inside the range shrinks it to that row',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple' },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+
+    await userEvent.click(within(rows[1]).getByRole('checkbox'));
+    await userEvent.keyboard('{Shift>}');
+    await userEvent.click(within(rows[5]).getByRole('checkbox'));
+    await userEvent.click(within(rows[3]).getByRole('checkbox'));
+    await userEvent.keyboard('{/Shift}');
+
+    expect(selectedRows(rows)).toEqual([1, 2, 3]);
+  }
+);
+
+Basic.test(
+  'Shift+Space on a focused checkbox still toggles only its row',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple' },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+
+    await userEvent.click(within(rows[1]).getByRole('checkbox'));
+    await userEvent.keyboard('{ArrowDown}{ArrowDown}{ArrowDown}');
+    await userEvent.keyboard('{Shift>}{ }{/Shift}');
+
+    expect(selectedRows(rows)).toEqual([1, 4]);
+  }
+);
+
+Basic.test(
+  'A plain click on a checkbox still toggles only its row',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple' },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+
+    await userEvent.click(within(rows[1]).getByRole('checkbox'));
+    await userEvent.click(within(rows[4]).getByRole('checkbox'));
+
+    expect(selectedRows(rows)).toEqual([1, 4]);
+  }
+);
+
+Basic.test(
+  'Shift+click on a disabled row checkbox changes nothing',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple', disabledKeys: [users[4].email] },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+
+    await userEvent.click(within(rows[1]).getByRole('checkbox'));
+    await userEvent.keyboard('{Shift>}');
+    await userEvent.click(within(rows[4]).getByRole('checkbox'));
+    await userEvent.keyboard('{/Shift}');
+
+    expect(selectedRows(rows)).toEqual([1]);
+  }
+);
+
+Basic.test(
+  'Shift+click on a checkbox skips disabled rows inside the range',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple', disabledKeys: [users[2].email] },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+
+    await userEvent.click(within(rows[1]).getByRole('checkbox'));
+    await userEvent.keyboard('{Shift>}');
+    await userEvent.click(within(rows[4]).getByRole('checkbox'));
+    await userEvent.keyboard('{/Shift}');
+
+    expect(selectedRows(rows)).toEqual([1, 3, 4]);
+  }
+);
+
+Basic.test(
+  'Shift+click on a checkbox after select-all still toggles its row',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple' },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+    const [selectAll] = canvas.getAllByRole('checkbox');
+
+    await userEvent.click(selectAll);
+    await userEvent.keyboard('{Shift>}');
+    await userEvent.click(within(rows[4]).getByRole('checkbox'));
+    await userEvent.keyboard('{/Shift}');
+
+    expect(selectedRows(rows)).toEqual([0, 1, 2, 3, 5, 6, 7, 8, 9]);
+  }
+);
+
+Basic.test(
+  'Shift+click on a checkbox in single selection still deselects',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'single' },
+  },
+  async ({ canvas, userEvent }) => {
+    const rows = canvas.getAllByRole('row').slice(1);
+
+    await userEvent.click(within(rows[1]).getByRole('checkbox'));
+    await userEvent.keyboard('{Shift>}');
+    await userEvent.click(within(rows[1]).getByRole('checkbox'));
+    await userEvent.keyboard('{/Shift}');
+
+    expect(selectedRows(rows)).toEqual([]);
   }
 );
 
@@ -307,7 +507,7 @@ export const DynamicData = meta.story({
   args: {
     selectionMode: 'single',
   },
-  render: args => {
+  render: function Render(args) {
     const columns = [
       { name: 'Name', id: 'name', rowHeader: true },
       { name: 'Firstname', id: 'firstname', rowHeader: false },
@@ -413,7 +613,7 @@ DynamicData.test(
 
 export const WidthsAndOverflow = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const [overflow, setOverflow] = useState<'truncate' | 'wrap'>('wrap');
 
     return (
@@ -645,7 +845,7 @@ Loading.test(
 
 export const Sorting = meta.story({
   tags: ['component-test'],
-  render: args => {
+  render: function Render(args) {
     const columns = [
       { name: 'Name', id: 'name', alignX: 'left', rowHeader: true },
       { name: 'Height', id: 'height', alignX: 'right', rowHeader: false },
@@ -935,6 +1135,11 @@ WithActions.test(
   }
 );
 
+type Queries = ReturnType<typeof within>;
+
+const scrollerOf = (canvas: Queries, role: 'grid' | 'treegrid' = 'grid') =>
+  canvas.getByRole(role).closest('.overflow-auto') as HTMLElement;
+
 export const ScrollableAndSticky = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
@@ -981,9 +1186,7 @@ ScrollableAndSticky.test(
   'Keeps the header sticky while scrolling',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }) => {
-    const scrollContainer = canvas
-      .getByRole('grid')
-      .closest('.overflow-auto') as HTMLElement;
+    const scrollContainer = scrollerOf(canvas);
 
     await step('Scroll the container down', async () => {
       // The 30 rows overflow the fixed 400px height, so it can scroll.
@@ -1007,6 +1210,517 @@ ScrollableAndSticky.test(
       const headerTop = thead.getBoundingClientRect().top;
       const containerTop = scrollContainer.getBoundingClientRect().top;
       expect(Math.abs(headerTop - containerTop)).toBeLessThan(5);
+    });
+  }
+);
+
+/**
+ * A price matrix wider than its container: the price category labels every
+ * value in its row, and the actions apply to the whole row, so both stay put
+ * while the dates scroll.
+ */
+const PriceMatrix = ({
+  categoryWidth = 160,
+  stickyActions = true,
+  ...args
+}: TableProps & { categoryWidth?: number; stickyActions?: boolean }) => {
+  const dates = Array.from(
+    { length: 12 },
+    (_, i) => `${String(i + 1).padStart(2, '0')}.12.2026`
+  );
+  const categories = ['Kategorie A', 'Kategorie B', 'Kategorie C', 'Loge'];
+
+  return (
+    <Scrollable>
+      <Table aria-label="Price matrix" {...args}>
+        <Table.Header>
+          <Table.Column
+            id="category"
+            rowHeader
+            sticky="start"
+            width={categoryWidth}
+          >
+            Preiskategorie
+          </Table.Column>
+          {dates.map(date => (
+            <Table.Column key={date} id={date} alignX="right" width={120}>
+              {date}
+            </Table.Column>
+          ))}
+          <Table.Column
+            id="actions"
+            sticky={stickyActions ? 'end' : undefined}
+            width={72}
+          >
+            Actions
+          </Table.Column>
+        </Table.Header>
+        <Table.Body>
+          {categories.map((category, row) => (
+            <Table.Row key={category} id={category}>
+              <Table.Cell>{category}</Table.Cell>
+              {dates.map((date, col) => (
+                <Table.Cell key={date} alignX="right">
+                  {euro(89 - row * 15 + col)}
+                </Table.Cell>
+              ))}
+              <Table.Cell>
+                <ActionMenu
+                  variant="ghost"
+                  size="icon"
+                  aria-label={`Actions for ${category}`}
+                >
+                  <ActionMenu.Item key="edit">Edit</ActionMenu.Item>
+                  <ActionMenu.Item key="delete" variant="destructive">
+                    Delete
+                  </ActionMenu.Item>
+                </ActionMenu>
+              </Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    </Scrollable>
+  );
+};
+
+const euro = (value: number) => (
+  <NumericFormat style="currency" currency="EUR" value={value} />
+);
+
+/** The selection, category and actions cells in the matrix's first row. */
+const priceCells = (canvas: Queries) => ({
+  row: canvas.getByRole('row', { name: /Kategorie A/ }),
+  selection: canvas.getAllByRole('checkbox')[1].closest('td')!,
+  category: canvas.getByRole('rowheader', { name: 'Kategorie A' }),
+  actions: canvas
+    .getByRole('button', { name: 'Actions for Kategorie A' })
+    .closest('td')!,
+});
+
+export const StickyColumns = meta.story({
+  tags: ['component-test'],
+  // At rest it looks like any table, so a test snapshots it scrolled.
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { selectionMode: 'multiple' },
+  render: args => <PriceMatrix {...args} />,
+});
+
+StickyColumns.test(
+  'Keeps the sticky columns at their edges while scrolling sideways',
+  // Ends scrolled halfway: sticky cells, their fill and edge over the dates.
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, step }) => {
+    const scroller = scrollerOf(canvas);
+    const cells = priceCells(canvas);
+    const rects = () => ({
+      selection: cells.selection.getBoundingClientRect(),
+      category: cells.category.getBoundingClientRect(),
+      actions: cells.actions.getBoundingClientRect(),
+      box: scroller.getBoundingClientRect(),
+    });
+
+    await step('Scroll halfway', async () => {
+      expect(scroller.scrollWidth).toBeGreaterThan(scroller.clientWidth);
+
+      scroller.scrollLeft = (scroller.scrollWidth - scroller.clientWidth) / 2;
+      expect(scroller.scrollLeft).toBeGreaterThan(0);
+    });
+
+    await step('The leading columns stay at the start', async () => {
+      const { selection, category, box } = rects();
+
+      expect(Math.abs(selection.left - box.left)).toBeLessThan(2);
+      expect(Math.abs(category.left - selection.right)).toBeLessThan(2);
+    });
+
+    await step('The actions column stays at the end', async () => {
+      const { actions, box } = rects();
+
+      expect(Math.abs(box.right - actions.right)).toBeLessThan(
+        scroller.offsetWidth - scroller.clientWidth + 2
+      );
+    });
+
+    await step('Only the innermost sticky cells draw the edge', async () => {
+      const drawsEdge = (element: Element) =>
+        getComputedStyle(element, '::after').content !== 'none';
+
+      expect(drawsEdge(cells.selection)).toBe(false);
+      expect(drawsEdge(cells.category)).toBe(true);
+      expect(drawsEdge(cells.actions)).toBe(true);
+    });
+
+    await step('Sticky cells hide what scrolls underneath', async () => {
+      // Any alpha below 1 lets the scrolled values show through.
+      const isOpaque = (element: Element) => {
+        const color = getComputedStyle(element).backgroundColor;
+        return !/transparent|\/\s*0?\.\d|rgba\([^)]*,\s*0?\.\d+\)/.test(color);
+      };
+
+      expect(isOpaque(cells.category)).toBe(true);
+      expect(isOpaque(cells.actions)).toBe(true);
+      expect(
+        isOpaque(canvas.getByRole('columnheader', { name: 'Preiskategorie' }))
+      ).toBe(true);
+    });
+  }
+);
+
+StickyColumns.test(
+  'Keeps the focused cell clear of the sticky columns',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const scroller = scrollerOf(canvas);
+    const { row, category, actions } = priceCells(canvas);
+    const cells = within(row).getAllByRole('gridcell');
+
+    await step('Start on the last date, scrolled to the end', async () => {
+      scroller.scrollLeft = scroller.scrollWidth;
+      // A real click: programmatic focus inside a grid lands on the row.
+      await userEvent.click(cells.at(-2)!);
+
+      expect(cells.at(-2)).toHaveFocus();
+    });
+
+    await step('Arrow back to the first date', async () => {
+      for (const cell of cells.slice(1, -2).reverse()) {
+        await userEvent.keyboard('{ArrowLeft}');
+
+        expect(cell).toHaveFocus();
+        // React Aria scrolls the cell into view after focusing it.
+        await waitFor(() => {
+          const box = cell.getBoundingClientRect();
+          expect(box.left).toBeGreaterThanOrEqual(
+            category.getBoundingClientRect().right - 1
+          );
+          expect(box.right).toBeLessThanOrEqual(
+            actions.getBoundingClientRect().left + 1
+          );
+        });
+      }
+    });
+  }
+);
+
+StickyColumns.test(
+  'Arrow keys move through the row in DOM order, sticky cells included',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const { row, category } = priceCells(canvas);
+    // Selection, category, the dates and actions, as they sit in the DOM.
+    const cells = [...row.children] as HTMLElement[];
+    // A cell with a single control hands focus to it, like the actions menu.
+    const focusIsIn = (cell: HTMLElement) =>
+      expect(cell).toContainElement(document.activeElement as HTMLElement);
+
+    // A real click: programmatic focus inside a grid lands on the row.
+    await userEvent.click(category);
+
+    await step('Right to the actions column', async () => {
+      for (const cell of cells.slice(2)) {
+        await userEvent.keyboard('{ArrowRight}');
+
+        focusIsIn(cell);
+      }
+    });
+
+    await step('Left back to the selection column', async () => {
+      for (const cell of cells.slice(0, -1).reverse()) {
+        await userEvent.keyboard('{ArrowLeft}');
+
+        focusIsIn(cell);
+      }
+    });
+  }
+);
+
+StickyColumns.test(
+  'Draws the focused row ring across the sticky cells',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    const { row, category, actions } = priceCells(canvas);
+    const date = within(row).getAllByRole('gridcell')[1];
+    const ring = (cell: Element) => getComputedStyle(cell, '::before');
+
+    // A real click on the first date, then left past the sticky cells.
+    await userEvent.click(date);
+    await userEvent.keyboard('{ArrowLeft}{ArrowLeft}{ArrowLeft}');
+
+    expect(row).toHaveFocus();
+    expect(ring(category).borderTopWidth).toBe('2px');
+    expect(ring(category).borderBottomWidth).toBe('2px');
+    expect(ring(actions).borderRightWidth).toBe('2px');
+    // The scrolling cells draw their part too, and only the ends close it.
+    expect(ring(date).borderTopWidth).toBe('2px');
+    expect(ring(date).borderLeftWidth).toBe('0px');
+    expect(getComputedStyle(row).outlineStyle).toBe('none');
+  }
+);
+
+// The recommended setup at the smallest supported width: only the column that
+// names the row sticks, so the dates keep room to scroll through.
+export const StickyColumnsMobile = meta.story({
+  // For trying the width budget in Storybook. The docs carry the guidance.
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { selectionMode: 'multiple' },
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
+  render: args => (
+    <PriceMatrix {...args} categoryWidth={128} stickyActions={false} />
+  ),
+});
+
+const reclaims = Array.from({ length: 24 }, (_, i) => ({
+  id: `RF-${String(2401 + i)}`,
+  event: ['Night market', 'Summer party', 'Jazz brunch', 'Open air'][i % 4],
+  customer: ['Stadthalle', 'Kulturbüro', 'Theater am Ring'][i % 3],
+  created: `${String((i % 28) + 1).padStart(2, '0')}.10.2026`,
+  due: `${String((i % 28) + 1).padStart(2, '0')}.11.2026`,
+  amount: 120 + i * 37.5,
+  paid: (120 + i * 37.5) * (i % 3 === 0 ? 1 : 0.5),
+  status: ['Open', 'Partly paid', 'Settled'][i % 3],
+  variant: i === 2 ? 'admin' : i === 5 ? 'master' : undefined,
+}));
+
+/**
+ * A reclaim overview (ABR-V): the identifier and the row actions stay put on
+ * both axes, so the header and footer cross the sticky columns in the corners.
+ * Rows marked for admins and masters keep their fill in the sticky cells.
+ */
+export const StickyColumnsWithStickyHeader = meta.story({
+  tags: ['component-test'],
+  // At rest it looks like any table, so a test snapshots it scrolled.
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { selectionMode: 'multiple' },
+  render: args => {
+    const total = reclaims.reduce((sum, reclaim) => sum + reclaim.amount, 0);
+    const paid = reclaims.reduce((sum, reclaim) => sum + reclaim.paid, 0);
+
+    return (
+      <Scrollable height="360px">
+        <Table aria-label="Reclaims" {...args}>
+          <Table.Header sticky>
+            <Table.Column id="id" rowHeader sticky="start" width={120}>
+              Reclaim
+            </Table.Column>
+            <Table.Column id="event" width={180}>
+              Event
+            </Table.Column>
+            <Table.Column id="customer" width={180}>
+              Customer
+            </Table.Column>
+            <Table.Column id="created" width={140}>
+              Created
+            </Table.Column>
+            <Table.Column id="due" width={140}>
+              Due
+            </Table.Column>
+            <Table.Column id="amount" alignX="right" width={140}>
+              Amount
+            </Table.Column>
+            <Table.Column id="paid" alignX="right" width={140}>
+              Paid
+            </Table.Column>
+            <Table.Column id="open" alignX="right" width={140}>
+              Open
+            </Table.Column>
+            <Table.Column id="status" width={140}>
+              Status
+            </Table.Column>
+            <Table.Column id="actions" sticky="end" width={72}>
+              Actions
+            </Table.Column>
+          </Table.Header>
+          <Table.Body>
+            {reclaims.map(reclaim => (
+              <Table.Row
+                key={reclaim.id}
+                id={reclaim.id}
+                variant={reclaim.variant}
+              >
+                <Table.Cell>{reclaim.id}</Table.Cell>
+                <Table.Cell>{reclaim.event}</Table.Cell>
+                <Table.Cell>{reclaim.customer}</Table.Cell>
+                <Table.Cell>{reclaim.created}</Table.Cell>
+                <Table.Cell>{reclaim.due}</Table.Cell>
+                <Table.Cell alignX="right">{euro(reclaim.amount)}</Table.Cell>
+                <Table.Cell alignX="right">{euro(reclaim.paid)}</Table.Cell>
+                <Table.Cell alignX="right">
+                  {euro(reclaim.amount - reclaim.paid)}
+                </Table.Cell>
+                <Table.Cell>{reclaim.status}</Table.Cell>
+                <Table.Cell>
+                  <ActionMenu
+                    variant="ghost"
+                    size="icon"
+                    aria-label={`Actions for ${reclaim.id}`}
+                  >
+                    <ActionMenu.Item key="view">View</ActionMenu.Item>
+                    <ActionMenu.Item key="remind">
+                      Send reminder
+                    </ActionMenu.Item>
+                  </ActionMenu>
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+          <Table.Footer sticky>
+            <Table.Row>
+              <Table.Cell>Total</Table.Cell>
+              <Table.Cell />
+              <Table.Cell />
+              <Table.Cell />
+              <Table.Cell />
+              <Table.Cell alignX="right">{euro(total)}</Table.Cell>
+              <Table.Cell alignX="right">{euro(paid)}</Table.Cell>
+              <Table.Cell alignX="right">{euro(total - paid)}</Table.Cell>
+              <Table.Cell />
+              <Table.Cell />
+            </Table.Row>
+          </Table.Footer>
+        </Table>
+      </Scrollable>
+    );
+  },
+});
+
+StickyColumnsWithStickyHeader.test(
+  'Keeps the corners above the cells that pass under them',
+  // Ends scrolled both ways: the corners, footer and access rows under them.
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, step }) => {
+    const scroller = scrollerOf(canvas);
+    const onTop = (element: Element) => {
+      const box = element.getBoundingClientRect();
+      return document.elementFromPoint(
+        box.left + box.width / 2,
+        box.top + box.height / 2
+      );
+    };
+
+    await step('Scroll down and sideways', async () => {
+      scroller.scrollTop = 200;
+      scroller.scrollLeft = 300;
+
+      expect(scroller.scrollTop).toBeGreaterThan(0);
+      expect(scroller.scrollLeft).toBeGreaterThan(0);
+    });
+
+    await step('The header corner covers the sticky body cells', async () => {
+      const corner = canvas.getByRole('columnheader', { name: 'Reclaim' });
+
+      expect(corner.contains(onTop(corner))).toBe(true);
+    });
+
+    await step('The footer corner covers them too', async () => {
+      const corner = canvas.getByRole('rowheader', { name: 'Total' });
+
+      expect(corner.contains(onTop(corner))).toBe(true);
+    });
+  }
+);
+
+/**
+ * A sticky tree column with drag handles and checkboxes: all three leading
+ * columns stay put, and expanding a group still works from the sticky column.
+ */
+export const StickyColumnsExpandable = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { treeColumn: 'clearing', selectionMode: 'multiple' },
+  render: function Render(args) {
+    const { list, dragAndDropHooks } = useReorderableSettlementRuns();
+
+    return (
+      <I18nProvider locale="en">
+        <Scrollable>
+          <Table
+            aria-label="Clearings"
+            dragAndDropHooks={dragAndDropHooks}
+            defaultExpandedKeys={['run-2026-06-01']}
+            {...args}
+          >
+            <Table.Header>
+              <Table.Column id="clearing" rowHeader sticky="start" width={260}>
+                Clearing no.
+              </Table.Column>
+              <Table.Column id="invoice" width={180}>
+                Invoice no.
+              </Table.Column>
+              <Table.Column id="event" width={220}>
+                Event
+              </Table.Column>
+              <Table.Column id="net" alignX="right" width={180}>
+                Net
+              </Table.Column>
+              <Table.Column id="vat" alignX="right" width={180}>
+                VAT
+              </Table.Column>
+              <Table.Column id="amount" alignX="right" width={180}>
+                Amount
+              </Table.Column>
+            </Table.Header>
+            <Table.Body items={list.items}>
+              {function renderRow(row: SettlementRow) {
+                return (
+                  <Table.Row id={row.id} textValue={row.label ?? row.id}>
+                    <Table.Cell>{row.label ?? row.id}</Table.Cell>
+                    <Table.Cell>{row.invoice ?? '—'}</Table.Cell>
+                    <Table.Cell>{row.event ?? '—'}</Table.Cell>
+                    <Table.Cell alignX="right">
+                      {euro(row.total / 1.19)}
+                    </Table.Cell>
+                    <Table.Cell alignX="right">
+                      {euro(row.total - row.total / 1.19)}
+                    </Table.Cell>
+                    <Table.Cell alignX="right">{euro(row.total)}</Table.Cell>
+                    <Table.ExpandableRows items={row.children}>
+                      {renderRow}
+                    </Table.ExpandableRows>
+                  </Table.Row>
+                );
+              }}
+            </Table.Body>
+          </Table>
+        </Scrollable>
+      </I18nProvider>
+    );
+  },
+});
+
+StickyColumnsExpandable.test(
+  'Holds the drag, selection and tree columns together at the start',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const scroller = scrollerOf(canvas, 'treegrid');
+    const group = rowByName(canvas, 'Settlement run 1 Jun 2026');
+
+    await step('Scroll sideways', async () => {
+      expect(scroller.scrollWidth).toBeGreaterThan(scroller.clientWidth);
+
+      scroller.scrollLeft = scroller.scrollWidth;
+      expect(scroller.scrollLeft).toBeGreaterThan(0);
+    });
+
+    await step('The three leading columns sit side by side', async () => {
+      const box = scroller.getBoundingClientRect();
+      const [drag, selection, tree] = [
+        within(group).getByRole('button', { name: /drag/i }).closest('td')!,
+        within(group).getByRole('checkbox').closest('td')!,
+        within(group).getByRole('rowheader'),
+      ].map(cell => cell.getBoundingClientRect());
+
+      expect(Math.abs(drag.left - box.left)).toBeLessThan(2);
+      expect(Math.abs(selection.left - drag.right)).toBeLessThan(2);
+      expect(Math.abs(tree.left - selection.right)).toBeLessThan(2);
+    });
+
+    await step('The group still collapses from the sticky column', async () => {
+      await userEvent.click(chevronOf(group));
+
+      expect(group).toHaveAttribute('aria-expanded', 'false');
     });
   }
 );
@@ -1287,7 +2001,7 @@ export const DragAndDrop = meta.story({
   args: {
     selectionMode: 'multiple',
   },
-  render: args => {
+  render: function Render(args) {
     const list = useListData({
       initialItems: users.slice(0, 5).map((user, index) => ({
         id: index + 1,
@@ -1390,7 +2104,7 @@ DragAndDrop.test(
     // The story's rows are one line tall, where a handle centered on the cell
     // and one centered on the text line land in the same place. A taller
     // neighbour tells them apart.
-    render: args => {
+    render: function Render(args) {
       const { dragAndDropHooks } = useDragAndDrop({
         getItems: () => [{ 'text/plain': 'Short' }],
       });
@@ -1497,7 +2211,7 @@ export const AllowTextSelection = meta.story({
   args: {
     selectionMode: 'multiple',
   },
-  render: args => {
+  render: function Render(args) {
     const [allowTextSelection, setAllowTextSelection] = useState(false);
 
     return (
@@ -1587,7 +2301,7 @@ AllowTextSelection.test(
 export const EditableCell = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [data, setData] = useState(users.slice(0, 5).map(u => ({ ...u })));
 
     const handleSubmit = (
@@ -1861,7 +2575,7 @@ EditableCell.test(
 export const DynamicColumnsAndRows = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const columns = [
       { name: 'Name', id: 'name', rowHeader: true },
       { name: 'Email', id: 'email', rowHeader: false },
@@ -2429,9 +3143,7 @@ StickyFooter.test(
   'Keeps the footer sticky while scrolling',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, step }) => {
-    const scrollContainer = canvas
-      .getByRole('grid')
-      .closest('.overflow-auto') as HTMLElement;
+    const scrollContainer = scrollerOf(canvas);
 
     await step('Footer sticks to the bottom of the scroll viewport', () => {
       const tfoot = canvas.getByText('Total').closest('tfoot') as HTMLElement;
@@ -2675,7 +3387,7 @@ export const DataEntryGridWithEditableCell = meta.story({
     keyboardNavigationBehavior: 'tab',
     selectionMode: 'none',
   },
-  render: args => {
+  render: function Render(args) {
     const [data, setData] = useState(users.slice(0, 3).map(u => ({ ...u })));
 
     return (
@@ -2846,6 +3558,27 @@ const settlementRuns: SettlementRow[] = [
     total: 990,
   },
 ];
+
+const useReorderableSettlementRuns = () => {
+  const list = useListData({ initialItems: settlementRuns });
+  const { dragAndDropHooks } = useDragAndDrop({
+    renderDropIndicator: Table.renderDropIndicator,
+    renderDragPreview: Table.renderDragPreview,
+    getItems: keys =>
+      [...keys].map(key => ({
+        'text/plain': String(list.getItem(key)?.label ?? key),
+      })),
+    onReorder(e) {
+      if (e.target.dropPosition === 'before') {
+        list.moveBefore(e.target.key, e.keys);
+        return;
+      }
+      list.moveAfter(e.target.key, e.keys);
+    },
+  });
+
+  return { list, dragAndDropHooks };
+};
 
 export const ExpandableRows = meta.story({
   tags: ['component-test'],
@@ -3120,18 +3853,18 @@ ExpandableRows.test(
 
     const fillOf = (name: string) =>
       getComputedStyle(rowByName(canvas, name)).backgroundColor;
-    const transparent = fillOf('CLR-10240');
+    const rootFill = fillOf('CLR-10240');
 
     await step('The children carry the band', () => {
       // The affordance the indent alone did not carry: it spans the whole row,
       // so the leading drag and selection columns are inside the group too.
-      expect(fillOf('CLR-10231')).not.toBe(transparent);
+      expect(fillOf('CLR-10231')).not.toBe(rootFill);
       expect(fillOf('CLR-10232')).toBe(fillOf('CLR-10231'));
     });
 
     await step('A group row and a root row do not', () => {
       // A root row that follows an expanded group has to stay outside it.
-      expect(fillOf('Settlement run 1 Jul 2026')).toBe(transparent);
+      expect(fillOf('Settlement run 1 Jul 2026')).toBe(rootFill);
     });
   }
 );
@@ -3275,7 +4008,7 @@ export const ExpandableRowsWithEditableCell = meta.story({
   tags: ['component-test'],
   args: { treeColumn: 'clearing' },
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
+  render: function Render(args) {
     const [notes, setNotes] = useState<Record<string, string>>({
       'run-2026-06-01': 'Checked by Finance',
       'CLR-10188': 'Awaiting receipt',
@@ -3465,24 +4198,8 @@ export const ExpandableRowsWithDragAndDrop = meta.story({
   tags: ['component-test'],
   args: { treeColumn: 'clearing', selectionMode: 'multiple' },
   parameters: { chromatic: { disableSnapshot: true } },
-  render: args => {
-    const list = useListData({ initialItems: settlementRuns });
-
-    const { dragAndDropHooks } = useDragAndDrop({
-      renderDropIndicator: Table.renderDropIndicator,
-      renderDragPreview: Table.renderDragPreview,
-      getItems: keys =>
-        [...keys].map(key => ({
-          'text/plain': String(list.getItem(key)?.label ?? key),
-        })),
-      onReorder(e) {
-        if (e.target.dropPosition === 'before') {
-          list.moveBefore(e.target.key, e.keys);
-          return;
-        }
-        list.moveAfter(e.target.key, e.keys);
-      },
-    });
+  render: function Render(args) {
+    const { list, dragAndDropHooks } = useReorderableSettlementRuns();
 
     return (
       <I18nProvider locale="en">
