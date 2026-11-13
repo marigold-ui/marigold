@@ -109,7 +109,7 @@ An empty query is the most common start, and the full list is the least helpful 
 
 Keep each group to about five rows, so everything fits without scrolling. Show an item only once: a favourite that was also opened recently stays under Favourites. Leave out the full list of pages, the sidebar already shows it, and anything people didn't ask for, like news or tips. Once people type, switch to the regular groups.
 
-Control the query to know when it is empty. Favourites and recent records come from your app, ideally from the server, so they follow people across devices.
+Control the query with `inputValue` to know when it is empty. It changes with every keystroke, while `onSearchChange` waits until people pause typing. Favourites and recent records come from your app, ideally from the server, so they follow people across devices.
 
 <ComponentDemo name="command-palette-recent" />
 
@@ -123,7 +123,7 @@ People often know exactly which record they need, an event by its name or an ord
 - **Show a few per kind:** about three to five records per group, and no more than about ten rows in total. Beyond that, people stop reading the suggestions and start scanning. Once a prefix leaves only one kind, the group has the list to itself and can show more, about eight. Show what tells the records apart in the description, like the date of an event.
 - **Offer more in the mixed list:** end a group that shows only some of its records with "More events…". Set `more` on the group for it: the row narrows the search to that group and keeps the term, so people get more of one kind without knowing its prefix. Offer it before people type too, so the few recent records don't pass for everything there is.
 - **Hand over to the list page:** in the narrowed list, end the group with a row like "All events for “jazz”" whenever the server has more than it shows, with the count in its description. It opens the list page with the term in its search, where sorting and filters help people who are browsing rather than looking for one record. Name the row after where it goes, as the other rows do, and give it an arrow, since it leaves the palette. Don't load more rows as people scroll: typing another letter finds a record faster than scrolling does.
-- **Keep the rest fast:** pages and actions show right away, only the records group waits for the server. Results that arrive after people have finished typing don't help them anymore, so keep the search quick and the number of results small.
+- **Keep the rest fast:** pages and actions show right away, only the records group waits for the server. People who press <kbd>Enter</kbd> before the results are there wait for them, so keep the search quick and the number of results small.
 
 #### Narrowing to one kind
 
@@ -133,17 +133,16 @@ The footer lists the prefixes next to the keys, like "e: Events", so people come
 
 <ComponentDemo name="command-palette-async" />
 
-<Callout title="Connecting the server">
-  Set `filter={false}` on each group whose rows come from the server, so the
-  palette shows them as they arrive. The other groups, like the pages, keep the
-  built-in match and update as people type. `onSearchChange` hands over the term
-  to search for, without the prefix, and the prefix of the group the search is
-  narrowed to. It waits until people pause typing, so send the request from
-  there, set `loading` while it runs and cancel requests that are out of date.
-  Use `onInputChange` only for what has to follow every keystroke.
-</Callout>
+#### Connecting the server
 
-If people press <kbd>Enter</kbd> while the server results are still on their way, the palette waits for them and runs the first new row. A quick "jazz" and <kbd>Enter</kbd> then opens the jazz event, not the row that matched "ja". A row people picked with the arrow keys or the pointer runs right away.
+The demo searches with [TanStack Query](/patterns/data/fetching-and-mutations), one query per kind of record.
+
+- **Mark the server's groups:** set `filter={false}` on each group whose rows come from the server. The palette shows those rows as they arrive and keeps matching the other groups, like the pages, as people type. A group without rows hides, title included. When every row comes from the server, set `filter={false}` on the palette instead.
+- **Search from `onSearchChange`:** it hands over the term without the prefix, and the prefix of the group the search is narrowed to. It waits until people pause typing, and reports right away when the palette opens, the query is cleared or the search narrows to a group. Don't add a debounce of your own, it only adds to the wait. Use `onInputChange` only for what has to follow every keystroke.
+- **Set `loading` as the request starts:** the search field shows a spinner, and <kbd>Enter</kbd> waits for the results. Without `loading`, the palette waits only a moment and then runs the row on screen, even if newer results are still on their way.
+- **Keep the last results while new ones load:** a list that empties on every keystroke flickers. With TanStack Query, `placeholderData: keepPreviousData` keeps them, and passing its `signal` to `fetch` cancels requests that are out of date.
+
+If people press <kbd>Enter</kbd> before the results for what they typed are there, the palette waits for them and runs the first new row. A quick "jazz" and <kbd>Enter</kbd> then opens the jazz event, not the row that matched "ja". A row people picked with the arrow keys or the pointer runs right away, as does a click.
 
 ### When nothing matches
 
@@ -161,12 +160,12 @@ The palette and a [search field](/components/form/search-field) can sit in the s
 
 The palette follows the [combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/). Focus stays in the search field while the arrow keys move a virtual focus through the list, so screen readers announce the active row and people can keep typing. The empty and loading states sit inside the list, where screen readers announce them.
 
-| Key                                                      | Action                                                    |
-| -------------------------------------------------------- | --------------------------------------------------------- |
-| <kbd>⌘</kbd>+<kbd>K</kbd> / <kbd>Ctrl</kbd>+<kbd>K</kbd> | Opens the palette from anywhere, also inside text fields. |
-| <kbd>↑</kbd> / <kbd>↓</kbd>                              | Moves the active row.                                     |
-| <kbd>Enter</kbd>                                         | Runs the active row.                                      |
-| <kbd>Escape</kbd>                                        | Clears the search, then closes the palette.               |
+| Key                                                      | Action                                                                               |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| <kbd>⌘</kbd>+<kbd>K</kbd> / <kbd>Ctrl</kbd>+<kbd>K</kbd> | Opens the palette from anywhere, also inside text fields.                            |
+| <kbd>↑</kbd> / <kbd>↓</kbd>                              | Moves the active row.                                                                |
+| <kbd>Enter</kbd>                                         | Runs the active row. While results load, runs the first new row once they are there. |
+| <kbd>Escape</kbd>                                        | Clears the search, then closes the palette.                                          |
 
 Letters typed into the search field stay in the palette. Shortcuts your app binds to single keys, for example "c" to create, don't fire while people type a query.
 
