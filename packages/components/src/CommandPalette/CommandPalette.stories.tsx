@@ -9,17 +9,19 @@ import {
   ShoppingCart,
   Ticket,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { expect, fn, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { isAppleDevice } from '@react-aria/utils';
 import { Button } from '../Button/Button';
 import { Description } from '../Description/Description';
 import { Stack } from '../Stack/Stack';
+import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import { TextValue } from '../TextValue/TextValue';
 import { useAsyncList } from '../hooks';
 import { CommandPalette } from './CommandPalette';
+import type { CommandPaletteSearchState } from './CommandPalette';
 
 const meta = preview.meta({
   title: 'Components/CommandPalette',
@@ -959,7 +961,7 @@ export const LateResults = meta.story({
     const [count, setCount] = useState(10);
     useEffect(() => {
       if (!term) return;
-      const timer = setTimeout(() => setCount(allTickets.length), 800);
+      const timer = setTimeout(() => setCount(allTickets.length), 500);
       return () => clearTimeout(timer);
     }, [term]);
     return (
@@ -1003,6 +1005,225 @@ LateResults.test(
     // active row before checking it stayed.
     await new Promise(resolve => setTimeout(resolve, 100));
     await expect(search).toHaveAttribute('aria-activedescendant', third.id);
+  }
+);
+
+// Search after a pause
+// ---------------
+// `onInputChange` follows every keystroke. `onSearchChange` waits until
+// people pause typing (250ms), so a server search runs once for "jazz" and
+// not four times. Opening, clearing the query and narrowing to a group
+// report right away.
+const onKeystroke = fn();
+const onSearch = fn();
+
+export const SearchAfterPause = meta.story({
+  ...noSnapshot,
+  render: function Render(args) {
+    const [keystrokes, setKeystrokes] = useState<string[]>([]);
+    const [searches, setSearches] = useState<string[]>([]);
+    return (
+      <Stack space="related" alignX="left">
+        <CommandPalette.Trigger {...args}>
+          <CommandPalette.Button />
+          <CommandPalette
+            onInputChange={value => {
+              onKeystroke(value);
+              setKeystrokes(current => [...current, value]);
+            }}
+            onSearchChange={search => {
+              onSearch(search);
+              setSearches(current => [...current, search.term]);
+            }}
+          >
+            <CommandPalette.Group title="Events" prefix="e:">
+              <CommandPalette.Item id="jazz">Jazz Night</CommandPalette.Item>
+              <CommandPalette.Item id="summer">
+                Summer Open Air
+              </CommandPalette.Item>
+            </CommandPalette.Group>
+          </CommandPalette>
+        </CommandPalette.Trigger>
+        <Text size="sm">
+          onInputChange, every keystroke:{' '}
+          {keystrokes.map(value => `“${value}”`).join(' ')}
+        </Text>
+        <Text size="sm">
+          onSearchChange, after a pause:{' '}
+          {searches.map(term => `“${term}”`).join(' ')}
+        </Text>
+      </Stack>
+    );
+  },
+});
+
+SearchAfterPause.test(
+  'Reports the search once people pause typing',
+  async ({ canvas, step, userEvent }) => {
+    onKeystroke.mockClear();
+    onSearch.mockClear();
+    await openPalette({ canvas, userEvent });
+    const search = await canvas.findByRole('searchbox');
+
+    await step('Opening reports the empty search right away', async () => {
+      await expect(onSearch).toHaveBeenCalledWith({ term: '', prefix: null });
+    });
+
+    await step('Typing reports one search after the pause', async () => {
+      onSearch.mockClear();
+      await userEvent.keyboard('jazz');
+      await expect(onKeystroke).toHaveBeenCalledTimes(4);
+      await expect(onSearch).not.toHaveBeenCalled();
+      await waitFor(() =>
+        expect(onSearch).toHaveBeenCalledWith({ term: 'jazz', prefix: null })
+      );
+      await expect(onSearch).toHaveBeenCalledTimes(1);
+    });
+
+    await step('Clearing and narrowing report right away', async () => {
+      onSearch.mockClear();
+      await userEvent.clear(search);
+      await expect(onSearch).toHaveBeenLastCalledWith({
+        term: '',
+        prefix: null,
+      });
+      await userEvent.keyboard('e:');
+      await expect(onSearch).toHaveBeenLastCalledWith({
+        term: '',
+        prefix: 'e:',
+      });
+    });
+  }
+);
+
+// Server results in one group
+// ---------------
+// Pages are matched by the palette as people type. Events come from a server
+// search, so their group sets `filter={false}` and shows the rows as they
+// arrive: "42" finds Jazz Night by its number. Enter while the events are
+// on their way runs the first of the new rows. A row people picked runs
+// right away.
+interface ServerEvent {
+  id: string;
+  name: string;
+}
+
+const serverEvents: ServerEvent[] = [
+  { id: '42', name: 'Jazz Night' },
+  { id: '7', name: 'Jazz Brunch' },
+  { id: '8', name: 'Japan Day' },
+  { id: '13', name: 'Summer Open Air' },
+];
+const recentServerEvents = [serverEvents[3], serverEvents[1]];
+const searchServer = (term: string) =>
+  serverEvents.filter(
+    event =>
+      event.id === term || event.name.toLowerCase().includes(term.toLowerCase())
+  );
+const onServerAction = fn();
+
+export const ServerResultsInOneGroup = meta.story({
+  ...noSnapshot,
+  render: function Render(args) {
+    const [events, setEvents] = useState<ServerEvent[] | null>(null);
+    const [loading, setLoading] = useState(false);
+    const requestRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+    const searchEvents = ({ term }: CommandPaletteSearchState) => {
+      clearTimeout(requestRef.current);
+      if (!term) {
+        setEvents(null);
+        setLoading(false);
+        return;
+      }
+      setLoading(true);
+      requestRef.current = setTimeout(() => {
+        setEvents(searchServer(term));
+        setLoading(false);
+      }, 300);
+    };
+    return (
+      <CommandPalette.Trigger {...args}>
+        <CommandPalette.Button />
+        <CommandPalette
+          onSearchChange={searchEvents}
+          loading={loading}
+          onAction={onServerAction}
+        >
+          <CommandPalette.Group title="Pages">
+            <CommandPalette.Item id="events">Events</CommandPalette.Item>
+            <CommandPalette.Item id="orders">Orders</CommandPalette.Item>
+          </CommandPalette.Group>
+          <CommandPalette.Group title="Events" filter={false}>
+            {(events ?? recentServerEvents).map(event => (
+              <CommandPalette.Item
+                key={event.id}
+                id={`event-${event.id}`}
+                textValue={event.name}
+              >
+                <TextValue>{event.name}</TextValue>
+                <Description>#{event.id}</Description>
+              </CommandPalette.Item>
+            ))}
+          </CommandPalette.Group>
+        </CommandPalette>
+      </CommandPalette.Trigger>
+    );
+  },
+});
+
+ServerResultsInOneGroup.test(
+  'Matches the pages and leaves the events to the server',
+  async ({ canvas, step, userEvent }) => {
+    await openPalette({ canvas, userEvent });
+    await canvas.findByRole('searchbox');
+
+    await step('The palette matches the pages as people type', async () => {
+      await userEvent.keyboard('ord');
+      await expect(
+        canvas.queryByRole('menuitem', { name: 'Events' })
+      ).toBeNull();
+      await expect(
+        canvas.getByRole('menuitem', { name: 'Orders' })
+      ).toBeVisible();
+    });
+
+    await step('The events group shows what the server found', async () => {
+      await userEvent.clear(canvas.getByRole('searchbox'));
+      await userEvent.keyboard('42');
+      await expect(
+        await canvas.findByRole('menuitem', { name: /Jazz Night/ })
+      ).toBeVisible();
+      await expect(canvas.getAllByRole('menuitem')).toHaveLength(1);
+    });
+  }
+);
+
+ServerResultsInOneGroup.test(
+  'Enter while results load runs the first new row',
+  async ({ canvas, userEvent }) => {
+    onServerAction.mockClear();
+    await openPalette({ canvas, userEvent });
+    await canvas.findByRole('searchbox');
+    // Typed faster than the pause: the rows still show the recent events,
+    // and Summer Open Air is the active one.
+    await userEvent.keyboard('japan{Enter}');
+    await expect(onServerAction).not.toHaveBeenCalled();
+    await waitFor(() => expect(onServerAction).toHaveBeenCalledWith('event-8'));
+    await expect(onServerAction).toHaveBeenCalledTimes(1);
+  }
+);
+
+ServerResultsInOneGroup.test(
+  'Enter on a picked row runs it right away',
+  async ({ canvas, userEvent }) => {
+    onServerAction.mockClear();
+    await openPalette({ canvas, userEvent });
+    await canvas.findByRole('searchbox');
+    // Jazz Brunch is the second of the recent events. The server would put
+    // Jazz Night first.
+    await userEvent.keyboard('jazz{ArrowDown}{Enter}');
+    await expect(onServerAction).toHaveBeenCalledTimes(1);
+    await expect(onServerAction).toHaveBeenCalledWith('event-7');
   }
 );
 

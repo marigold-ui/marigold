@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Autocomplete, useFilter } from 'react-aria-components/Autocomplete';
+import type { Node } from '@react-types/shared';
 
 // Internal Usage Notes
 // ---------------
@@ -28,7 +29,9 @@ const containTypedCharacters = (el: HTMLDivElement | null) => {
 
 export type SearchableCollectionFilter = (
   textValue: string,
-  inputValue: string
+  inputValue: string,
+  /** The row being matched. Its `parentKey` is the id of its section. */
+  node: Node<object>
 ) => boolean;
 
 export interface SearchableCollectionProps {

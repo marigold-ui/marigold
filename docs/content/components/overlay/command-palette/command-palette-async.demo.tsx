@@ -12,7 +12,7 @@ import {
   Ticket,
 } from 'lucide-react';
 import type { Key } from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   CommandPalette,
   Description,
@@ -53,16 +53,6 @@ const recentVenues: Venue[] = [
 const LIMIT = 3;
 const NARROWED_LIMIT = 8;
 const PREFIXES = { events: 'e:', venues: 'v:' } as const;
-
-// Wait until people pause typing before asking the server.
-const useDebounced = <T,>(value: T, ms = 250) => {
-  const [debounced, setDebounced] = useState(value);
-  useEffect(() => {
-    const timer = setTimeout(() => setDebounced(value), ms);
-    return () => clearTimeout(timer);
-  }, [value, ms]);
-  return debounced;
-};
 
 // One hook per kind. `keepPreviousData` leaves the last results in place
 // while the next ones load, so the list doesn't flash empty as people type.
@@ -133,12 +123,11 @@ const formatDate = (date: string) =>
 
 const Palette = () => {
   // The palette hands over the term without the prefix, and the prefix of
-  // the group the search is narrowed to.
-  const [input, setInput] = useState<CommandPaletteSearchState>({
+  // the group the search is narrowed to, once people pause typing.
+  const [search, setSearch] = useState<CommandPaletteSearchState>({
     term: '',
     prefix: null,
   });
-  const search = useDebounced(input);
   const { term, prefix } = search;
   const events = useSearch<Event>('events', search);
   const venues = useSearch<Venue>('venues', search);
@@ -152,11 +141,6 @@ const Palette = () => {
     total: number;
     limit: number;
   }) => !results.searching || results.total > results.limit;
-  // `filter={false}` turns off the built-in match for every group, so the
-  // static pages are matched here, without waiting for the pause.
-  const matchingPages = pages.filter(page =>
-    page.label.toLowerCase().includes(input.term.toLowerCase())
-  );
 
   return (
     <Stack space="related" alignX="left">
@@ -164,21 +148,23 @@ const Palette = () => {
         <CommandPalette.Button />
         <CommandPalette
           placeholder="Search pages, events and venues…"
-          filter={false}
-          onSearchChange={setInput}
+          onSearchChange={setSearch}
           loading={events.loading || venues.loading}
           onAction={key => setRoute(routeFor(key, term))}
         >
+          {/* The palette matches the pages as people type. */}
           <CommandPalette.Group title="Pages">
-            {matchingPages.map(page => (
+            {pages.map(page => (
               <CommandPalette.Item key={page.id} id={page.id}>
                 {page.icon}
                 {page.label}
               </CommandPalette.Item>
             ))}
           </CommandPalette.Group>
+          {/* The server matched these, the palette shows them as they are. */}
           <CommandPalette.Group
             title="Events"
+            filter={false}
             prefix={PREFIXES.events}
             // In the mixed list, a last row narrows the search to events.
             more={more(events) ? 'More events…' : undefined}
@@ -203,6 +189,7 @@ const Palette = () => {
           </CommandPalette.Group>
           <CommandPalette.Group
             title="Venues"
+            filter={false}
             prefix={PREFIXES.venues}
             more={more(venues) ? 'More venues…' : undefined}
           >

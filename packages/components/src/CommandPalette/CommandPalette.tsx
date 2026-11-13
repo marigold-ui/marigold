@@ -1,12 +1,5 @@
 import type { Key, ReactNode } from 'react';
-import {
-  use,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { use, useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import type RAC from 'react-aria-components';
 import { useFilter } from 'react-aria-components/Autocomplete';
 import { Dialog } from 'react-aria-components/Dialog';
@@ -23,6 +16,7 @@ import { Search } from '../icons/Search';
 import { intlMessages } from '../intl/messages';
 import type { SearchableCollectionFilter } from '../utils/SearchableCollection';
 import { SearchableCollection } from '../utils/SearchableCollection';
+import { useDebouncedValue } from '../utils/useDebouncedValue';
 import { CommandPaletteButton } from './CommandPaletteButton';
 import { CommandPaletteFooter } from './CommandPaletteFooter';
 import { CommandPaletteGroup } from './CommandPaletteGroup';
@@ -99,15 +93,19 @@ export interface CommandPaletteProps<T extends object = object> {
 
   /**
    * Handler that is called with the search term and the prefix of the group
-   * it is narrowed to, also when the palette opens. The term is the query
-   * without the prefix, ready to send to a server search.
+   * it is narrowed to, ready to send to a server search. The term is the
+   * query without the prefix. Called once people pause typing, so the server
+   * isn't asked for every keystroke, and right away when the palette opens,
+   * the query is cleared or the search narrows to a group. Use
+   * `onInputChange` to follow every keystroke.
    */
   onSearchChange?: (search: CommandPaletteSearchState) => void;
 
   /**
    * How items are matched against the query. Defaults to a locale- and
    * accent-aware "contains" match that keeps the authored order and groups.
-   * Pass `false` to filter yourself, e.g. on the server.
+   * Pass `false` to filter yourself, e.g. on the server. To filter only some
+   * groups yourself, set `filter={false}` on those groups.
    */
   filter?: SearchableCollectionFilter | false;
 
@@ -157,6 +155,9 @@ const DefaultEmptyState = ({ query }: { query: string }) => {
     </>
   );
 };
+
+// How long typing must pause before `onSearchChange` reports the search.
+const SEARCH_DELAY = 250;
 
 // Body
 // ---------------
@@ -212,23 +213,58 @@ const CommandPaletteBody = <T extends object>({
     prefixes.find(({ prefix }) => startsWith(inputValue, prefix))?.prefix ??
     null;
   const query = scope ? inputValue.slice(scope.length).trimStart() : inputValue;
-  const match = useMemo(() => {
+  // Groups with `filter={false}` register here. Their rows always pass the
+  // match, the app filters them.
+  const [unfiltered, setUnfiltered] = useState<ReadonlySet<Key>>(
+    () => new Set()
+  );
+  const registerUnfiltered = useCallback((id: Key) => {
+    setUnfiltered(current => new Set(current).add(id));
+    return () =>
+      setUnfiltered(current => {
+        const next = new Set(current);
+        next.delete(id);
+        return next;
+      });
+  }, []);
+  const match = useMemo<SearchableCollectionFilter | false>(() => {
     if (filter === false) return false;
     const base = filter ?? contains;
-    if (!scope) return base;
-    return (text: string, input: string) =>
-      base(text, input.slice(scope.length).trimStart());
-  }, [filter, contains, scope]);
+    return (text, input, node) =>
+      (node.parentKey != null && unfiltered.has(node.parentKey)) ||
+      base(text, scope ? input.slice(scope.length).trimStart() : input, node);
+  }, [filter, contains, scope, unfiltered]);
 
-  // An effect, so the app also hears the empty search of a fresh opening.
-  const reportSearch = useEffectEvent(() =>
-    onSearchChange?.({ term: query.trim(), prefix: scope })
+  // The search settles once typing pauses. Opening, clearing and narrowing
+  // report right away, so recent records and a narrowed group don't wait.
+  const term = query.trim();
+  const search = useMemo(() => ({ term, prefix: scope }), [term, scope]);
+  const [settledSearch, searchWaiting] = useDebouncedValue(search, {
+    delay: SEARCH_DELAY,
+    skipDelay: (settled, next) =>
+      next.term === '' || next.prefix !== settled.prefix,
+  });
+  // An effect, so the app also hears the empty search of a fresh opening. A
+  // layout effect, so the app's `loading` lands before the next frame and
+  // the rows never count as current in between.
+  const reportSearch = useEffectEvent((next: CommandPaletteSearchState) =>
+    onSearchChange?.(next)
   );
-  useEffect(() => {
-    reportSearch();
-  }, [query, scope]);
+  useLayoutEffect(() => {
+    reportSearch(settledSearch);
+  }, [settledSearch]);
 
-  const { inputRef, menuRef } = useKeepFirstItemActive(inputValue, items);
+  // Rows from the app's own search are stale while the next search waits for
+  // the pause or loads. Enter then runs the first of the new rows instead.
+  const appSearches =
+    onSearchChange !== undefined && (filter === false || unfiltered.size > 0);
+  const stale = loading || (appSearches && searchWaiting);
+
+  const { inputRef, menuRef } = useKeepFirstItemActive(
+    inputValue,
+    items,
+    stale
+  );
   const context = useMemo(
     () => ({
       query,
@@ -236,9 +272,18 @@ const CommandPaletteBody = <T extends object>({
       classNames,
       scope,
       registerPrefix,
+      registerUnfiltered,
       narrowTo: (prefix: string) => setInputValue(`${prefix}${query}`),
     }),
-    [query, filter, classNames, scope, registerPrefix, setInputValue]
+    [
+      query,
+      filter,
+      classNames,
+      scope,
+      registerPrefix,
+      registerUnfiltered,
+      setInputValue,
+    ]
   );
 
   return (

@@ -1,3 +1,4 @@
+import type { Key } from 'react';
 import { createContext, use } from 'react';
 import type { ComponentClassNames } from '@marigold/system';
 import type { SearchableCollectionFilter } from '../utils/SearchableCollection';
@@ -44,6 +45,8 @@ interface CommandPaletteContextValue {
   /** The prefix of the group the search is narrowed to, if any. */
   scope: string | null;
   registerPrefix: (prefix: GroupPrefix) => () => void;
+  /** Takes a group with `filter={false}` out of the palette's match. */
+  registerUnfiltered: (id: Key) => () => void;
   /** Narrows the search to the group with this prefix, keeping the term. */
   narrowTo: (prefix: string) => void;
   filter?: SearchableCollectionFilter | false;

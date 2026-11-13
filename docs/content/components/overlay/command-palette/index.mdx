@@ -134,13 +134,16 @@ The footer lists the prefixes next to the keys, like "e: Events", so people come
 <ComponentDemo name="command-palette-async" />
 
 <Callout title="Connecting the server">
-  Pass `filter={false}` to turn off the built-in match and set `loading` while
-  results load. `onSearchChange` hands over the term to search for, without the
-  prefix, and the prefix of the group the search is narrowed to. The built-in
-  match is off for every group then, so match the static pages yourself, as the
-  demo does. Wait until people pause typing before you send a request, and
-  cancel requests that are out of date.
+  Set `filter={false}` on each group whose rows come from the server, so the
+  palette shows them as they arrive. The other groups, like the pages, keep the
+  built-in match and update as people type. `onSearchChange` hands over the term
+  to search for, without the prefix, and the prefix of the group the search is
+  narrowed to. It waits until people pause typing, so send the request from
+  there, set `loading` while it runs and cancel requests that are out of date.
+  Use `onInputChange` only for what has to follow every keystroke.
 </Callout>
+
+If people press <kbd>Enter</kbd> while the server results are still on their way, the palette waits for them and runs the first new row. A quick "jazz" and <kbd>Enter</kbd> then opens the jazz event, not the row that matched "ja". A row people picked with the arrow keys or the pointer runs right away.
 
 ### When nothing matches
 

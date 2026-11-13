@@ -15,6 +15,13 @@ import { useCallback, useEffect, useRef } from 'react';
 //
 // `Home` in the search input is RAC's own way to activate the first row, and
 // DOM focus stays in the input. Returns refs for the input and the menu.
+//
+// Enter on stale rows
+// ---------------
+// While `stale` (the app's search waits for the pause or loads), the first
+// row is about to be replaced. Enter on it then waits and runs the first of
+// the new rows, so a quick "jazz ↵" opens the jazz result and not the row
+// that matched "ja". A row people picked runs right away, as does a click.
 // Keys that move the active row away from the first one. `Home` is missing on
 // purpose: the hook presses it itself.
 const NAVIGATION_KEYS = new Set([
@@ -31,13 +38,35 @@ const FORWARD_TYPING = new Set([
   'insertFromComposition',
 ]);
 
-export const useKeepFirstItemActive = (inputValue: string, items: unknown) => {
+const activeRow = '[role^="menuitem"][data-focused]';
+
+export const useKeepFirstItemActive = (
+  inputValue: string,
+  items: unknown,
+  stale: boolean
+) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
   const queryRef = useRef(inputValue);
   const itemsRef = useRef(items);
   const awaitingResultsRef = useRef(false);
   const typedForwardRef = useRef(false);
+  // Whether people picked a row since the query last changed.
+  const pickedRef = useRef(false);
+  const staleRef = useRef(stale);
+  const enterWaitingRef = useRef(false);
+  const heldKeyUpRef = useRef(false);
+  useEffect(() => {
+    staleRef.current = stale;
+  }, [stale]);
+
+  const activateFirst = useCallback(
+    () =>
+      inputRef.current?.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Home', bubbles: true })
+      ),
+    []
+  );
 
   // A callback ref, so the listener follows the input whenever it mounts.
   // React's `onBeforeInput` is a polyfill without `inputType`.
@@ -47,12 +76,79 @@ export const useKeepFirstItemActive = (inputValue: string, items: unknown) => {
     const track = (e: InputEvent) => {
       typedForwardRef.current = FORWARD_TYPING.has(e.inputType);
     };
+    // On the input itself, so it runs before RAC's handler, which React
+    // calls from the root.
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (NAVIGATION_KEYS.has(e.key)) {
+        pickedRef.current = true;
+        enterWaitingRef.current = false;
+      }
+      if (
+        e.key === 'Enter' &&
+        !e.isComposing &&
+        staleRef.current &&
+        !pickedRef.current
+      ) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        enterWaitingRef.current = true;
+        heldKeyUpRef.current = true;
+      }
+    };
+    // The key press is held as a whole. RAC replays the keyup of the input
+    // on the active row from a capturing listener on `document`, so this one
+    // sits on `window` to run first.
+    const onKeyUp = (e: KeyboardEvent) => {
+      if (e.key !== 'Enter' || e.target !== input || !heldKeyUpRef.current)
+        return;
+      heldKeyUpRef.current = false;
+      e.stopImmediatePropagation();
+    };
+    const win = input.ownerDocument.defaultView;
     input.addEventListener('beforeinput', track);
+    input.addEventListener('keydown', onKeyDown);
+    win?.addEventListener('keyup', onKeyUp, true);
     return () => {
       input.removeEventListener('beforeinput', track);
+      input.removeEventListener('keydown', onKeyDown);
+      win?.removeEventListener('keyup', onKeyUp, true);
       inputRef.current = null;
     };
   }, []);
+
+  // A pointer that lands on a row picks it.
+  const menuCallbackRef = useCallback((menu: HTMLDivElement | null) => {
+    menuRef.current = menu;
+    if (!menu) return;
+    const onPointerMove = (e: PointerEvent) => {
+      if (e.target instanceof Element && e.target.closest('[role^="menuitem"]'))
+        pickedRef.current = true;
+    };
+    menu.addEventListener('pointermove', onPointerMove);
+    return () => {
+      menu.removeEventListener('pointermove', onPointerMove);
+      menuRef.current = null;
+    };
+  }, []);
+
+  // Once the rows are current, run the Enter that waited for them. A frame
+  // later, so the first of the new rows is active by then.
+  useEffect(() => {
+    if (stale || !enterWaitingRef.current) return;
+    const frame = requestAnimationFrame(() => {
+      enterWaitingRef.current = false;
+      // Cancelable like a real key press: RAC cancels it once the row ran,
+      // otherwise it clicks the row a second time.
+      inputRef.current?.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: 'Enter',
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [stale]);
 
   useEffect(() => {
     const queryChanged = queryRef.current !== inputValue;
@@ -60,7 +156,13 @@ export const useKeepFirstItemActive = (inputValue: string, items: unknown) => {
     queryRef.current = inputValue;
     itemsRef.current = items;
 
-    if (queryChanged) awaitingResultsRef.current = true;
+    if (queryChanged) {
+      awaitingResultsRef.current = true;
+      // A new query starts over: nothing picked, and an Enter that waited
+      // for the old one's rows is dropped.
+      pickedRef.current = false;
+      enterWaitingRef.current = false;
+    }
     const newResults = resultsArrived && awaitingResultsRef.current;
     if (resultsArrived) awaitingResultsRef.current = false;
     // Forward typing over a static list is RAC's job. Anything else, also a
@@ -70,11 +172,6 @@ export const useKeepFirstItemActive = (inputValue: string, items: unknown) => {
     if (!edited && !newResults) return;
 
     const menu = menuRef.current;
-    const activateFirst = () =>
-      inputRef.current?.dispatchEvent(
-        new KeyboardEvent('keydown', { key: 'Home', bubbles: true })
-      );
-
     activateFirst();
     if (!menu) return;
     // RAC rebuilds the collection one render after the children or `items`
@@ -86,30 +183,14 @@ export const useKeepFirstItemActive = (inputValue: string, items: unknown) => {
     // that only brushes the list picks nothing. And when no row is active at
     // all, say the picked one was replaced, the first one is activated anyway,
     // so Enter always runs something.
-    let picked = false;
     const observer = new MutationObserver(() => {
-      if (picked && menu.querySelector('[role^="menuitem"][data-focused]'))
-        return;
+      if (pickedRef.current && menu.querySelector(activeRow)) return;
       const first = menu.querySelector('[role^="menuitem"]');
       if (first && !first.hasAttribute('data-focused')) activateFirst();
     });
     observer.observe(menu, { childList: true, subtree: true });
-    const input = inputRef.current;
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (NAVIGATION_KEYS.has(e.key)) picked = true;
-    };
-    const onPointerMove = (e: PointerEvent) => {
-      if (e.target instanceof Element && e.target.closest('[role^="menuitem"]'))
-        picked = true;
-    };
-    input?.addEventListener('keydown', onKeyDown);
-    menu.addEventListener('pointermove', onPointerMove);
-    return () => {
-      observer.disconnect();
-      input?.removeEventListener('keydown', onKeyDown);
-      menu.removeEventListener('pointermove', onPointerMove);
-    };
-  }, [inputValue, items]);
+    return () => observer.disconnect();
+  }, [inputValue, items, activateFirst]);
 
-  return { inputRef: inputCallbackRef, menuRef };
+  return { inputRef: inputCallbackRef, menuRef: menuCallbackRef };
 };
