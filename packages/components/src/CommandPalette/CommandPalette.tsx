@@ -313,7 +313,7 @@ const CommandPaletteBody = <T extends object>({
   const { inputRef, menuRef, searchReported } = useKeepFirstItemActive(
     inputValue,
     items,
-    { loading, searchWaiting: appSearchWaiting }
+    { loading, searchWaiting: appSearchWaiting, appSearches }
   );
 
   // An effect, so the app also hears the empty search of a fresh opening.
@@ -365,6 +365,10 @@ const CommandPaletteBody = <T extends object>({
           loading={loading}
         />
         <Menu
+          // Narrowing to a group starts the list over, so RAC activates the
+          // group's first row as on open. Typing removed the active row and
+          // RAC would activate nothing.
+          key={scope ?? ''}
           ref={menuRef}
           items={items}
           dependencies={dependencies}
