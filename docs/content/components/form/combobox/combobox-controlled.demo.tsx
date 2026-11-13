@@ -1,14 +1,16 @@
 import { useState } from 'react';
+import type { Key } from '@react-types/shared';
 import { ComboBox, Stack, Text } from '@marigold/components';
 
 export default () => {
-  const [currentValue, setCurrentValue] = useState<string | undefined>();
+  const [value, setValue] = useState<Key | null>('cat');
+  const [inputValue, setInputValue] = useState('Cat');
   return (
     <Stack>
       <ComboBox
-        value={currentValue}
-        onChange={setCurrentValue}
-        defaultSelectedKey={3}
+        value={value}
+        onChange={setValue}
+        onInputChange={setInputValue}
         label="Animals"
       >
         <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
@@ -17,7 +19,8 @@ export default () => {
         <ComboBox.Option id="aardvark">Aardvark</ComboBox.Option>
         <ComboBox.Option id="kangaroo">Kangaroo</ComboBox.Option>
       </ComboBox>
-      <Text weight="black">currentValue: "{currentValue}"</Text>
+      <Text weight="black">value: "{value}"</Text>
+      <Text weight="black">inputValue: "{inputValue}"</Text>
     </Stack>
   );
 };

@@ -381,7 +381,13 @@ export const PresetsMobile = meta.story({
   // Chromatic ignores the Storybook viewport global and captures at its
   // 1200px default, where the small-screen UI (and this story's play)
   // doesn't exist. Pin its capture to phone width.
-  parameters: { chromatic: { disableSnapshot: true, viewports: [320] } },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+      viewports: [320],
+      cropToViewport: true,
+    },
+  },
   args: {
     label: 'Period',
   },

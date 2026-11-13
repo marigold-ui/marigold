@@ -1,17 +1,14 @@
 import { useState } from 'react';
+import type { Key } from '@react-types/shared';
 import { ComboBox, Stack, Text } from '@marigold/components';
 
 export default () => {
   const [lastAction, setLastAction] = useState<string | null>(null);
-  const [selectedKey, setSelectedKey] = useState<string | null>(null);
+  const [selectedKey, setSelectedKey] = useState<Key | null>(null);
 
   return (
     <Stack space={4}>
-      <ComboBox
-        label="Projects"
-        menuTrigger="focus"
-        onSelectionChange={key => setSelectedKey(key as string)}
-      >
+      <ComboBox label="Projects" menuTrigger="focus" onChange={setSelectedKey}>
         <ComboBox.Section key="actions" header="Actions">
           <ComboBox.Option
             id="new"

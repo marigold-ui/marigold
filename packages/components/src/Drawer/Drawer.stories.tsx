@@ -322,9 +322,6 @@ export const SelectInsideDrawerSmallScreen = meta.story({
 
 SelectInsideDrawerSmallScreen.test(
   'Shows values on a small screen',
-  {
-    parameters: { chromatic: { disableSnapshot: false } },
-  },
   async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
     await waitFor(() => expect(canvas.getByText('Filter')).toBeInTheDocument());

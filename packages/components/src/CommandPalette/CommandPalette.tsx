@@ -405,9 +405,8 @@ const CommandPaletteBody = <T extends object>({
 // Component
 // ---------------
 // Desktop: a modal dialog near the top of the viewport. Small screens: a
-// bottom `Tray`. ADR-0007 puts edge overlays on the internal Sheet primitive;
-// that primitive does not exist yet, so this follows `Menu` and `TagField` on
-// `Tray` until the overlays migrate together.
+// bottom `Tray`, which is built on the Sheet primitive (ADR-0007), like the
+// trays of `Menu` and `TagField`.
 const CommandPaletteBase = <T extends object>({
   open: openProp,
   defaultOpen = false,

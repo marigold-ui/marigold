@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { expect, userEvent, waitFor } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Copy, Pencil } from '@marigold/icons';
 import { Button } from '../Button/Button';
@@ -9,12 +9,12 @@ import { Inset } from '../Inset/Inset';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { Title } from '../Title/Title';
-import { TRAY_CONTENT_ATTR } from './Context';
 import { Tray } from './Tray';
 
 const meta = preview.meta({
   title: 'Components/Tray',
-  parameters: { surface: false },
+  // A full-height capture resizes the viewport past an open tray, which closes it.
+  parameters: { surface: false, chromatic: { cropToViewport: true } },
   component: Tray,
   decorators: [
     Story => (
@@ -31,13 +31,8 @@ const meta = preview.meta({
       control: {
         type: 'boolean',
       },
-      description: 'Whether clicking outside closes the tray.',
-    },
-    keyboardDismissable: {
-      control: {
-        type: 'boolean',
-      },
-      description: 'Whether pressing the escape key closes the tray.',
+      description:
+        'Whether swiping down, pressing Escape and clicking outside close the tray.',
     },
   },
   args: {},
@@ -73,7 +68,7 @@ export const Basic = meta.story({
   ),
 });
 
-Basic.test('Opens and closes the tray', async ({ canvas, step }) => {
+Basic.test('Opens and closes the tray', async ({ canvas, userEvent, step }) => {
   await step('Opens when trigger is clicked', async () => {
     const openButton = canvas.getByRole('button', { name: 'Open Tray' });
     await userEvent.click(openButton);
@@ -96,7 +91,12 @@ Basic.test('Opens and closes the tray', async ({ canvas, step }) => {
     const openButton = canvas.getByRole('button', { name: 'Open Tray' });
     await userEvent.click(openButton);
 
-    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+    // Escape needs focus inside, RAC moves it in after the slide-in.
+    await waitFor(() =>
+      expect(canvas.getByRole('dialog')).toContainElement(
+        document.activeElement as HTMLElement
+      )
+    );
 
     await userEvent.keyboard('{Escape}');
 
@@ -110,7 +110,7 @@ Basic.test(
   'Opens the tray',
   // Keep the snapshot so Chromatic captures the opened tray.
   { parameters: { chromatic: { disableSnapshot: false } } },
-  async ({ canvas, step }) => {
+  async ({ canvas, userEvent, step }) => {
     await step('Open the tray and keep it open', async () => {
       const openButton = canvas.getByRole('button', { name: 'Open Tray' });
       await userEvent.click(openButton);
@@ -138,7 +138,7 @@ export const DismissControlsWithCallbacks = meta.story({
       <Stack space={4} alignX="left">
         <Tray.Trigger open={open} onOpenChange={onOpenChange}>
           <Button>Open Tray</Button>
-          <Tray {...args} dismissable keyboardDismissable>
+          <Tray {...args} dismissable>
             <Title>Dismiss Controls</Title>
             <Tray.Content>
               <Text>
@@ -166,7 +166,7 @@ export const DismissControlsWithCallbacks = meta.story({
 
 DismissControlsWithCallbacks.test(
   'Dismiss controls and callback hooks',
-  async ({ canvas, step }) => {
+  async ({ canvas, userEvent, step }) => {
     await step('Shows closed state initially', async () => {
       expect(canvas.getByText('Tray is closed')).toBeInTheDocument();
     });
@@ -200,8 +200,11 @@ DismissControlsWithCallbacks.test(
 
       await userEvent.click(openButton);
 
+      // Escape needs focus inside, RAC moves it in after the slide-in.
       await waitFor(() =>
-        expect(canvas.getByRole('dialog')).toBeInTheDocument()
+        expect(canvas.getByRole('dialog')).toContainElement(
+          document.activeElement as HTMLElement
+        )
       );
 
       await userEvent.keyboard('{Escape}');
@@ -257,7 +260,7 @@ SlotPrimitives.test(
   {
     parameters: { chromatic: { disableSnapshot: false } },
   },
-  async ({ canvas }) => {
+  async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Open Tray' }));
     await waitFor(() =>
       expect(canvas.getByText('Manage event')).toBeInTheDocument()
@@ -299,12 +302,6 @@ export const ScrollableContent = meta.story({
   ),
 });
 
-/** Current drag offset, in px. */
-const translateY = (element: HTMLElement) => {
-  const { transform } = getComputedStyle(element);
-  return transform === 'none' ? 0 : new DOMMatrixReadOnly(transform).m42;
-};
-
 interface TrayTestContext {
   canvas: {
     getByRole: (role: string, options?: { name: string }) => HTMLElement;
@@ -316,53 +313,105 @@ const openTray = async ({ canvas, userEvent: user }: TrayTestContext) => {
   await user.click(canvas.getByRole('button', { name: 'Open Tray' }));
 
   const dialog = await waitFor(() => canvas.getByRole('dialog'));
-  const modal = dialog.parentElement as HTMLElement;
-  const content = dialog.querySelector(`[${TRAY_CONTENT_ATTR}]`) as HTMLElement;
+  const content = dialog.querySelector('[data-slot="content"]') as HTMLElement;
 
-  await waitFor(() => expect(translateY(modal)).toBe(0));
+  // Entered: fully in view, focus inside.
+  await waitFor(() => {
+    expect(dialog.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+      window.innerHeight + 1
+    );
+    expect(dialog).toContainElement(document.activeElement as HTMLElement);
+  });
 
-  return { dialog, modal, content };
+  return { dialog, content };
 };
+
+/** Swiping scrolls RAC's snap container, down is toward 0. */
+const swipeDown = (dialog: HTMLElement) => {
+  let scroller = dialog.parentElement;
+  while (scroller && getComputedStyle(scroller).scrollSnapType === 'none') {
+    scroller = scroller.parentElement;
+  }
+  scroller!.scrollTo({ top: 0 });
+};
+
+/** The stacked element that doesn't contain the dialog. */
+const backdrop = () =>
+  document.querySelector(
+    '[data-stack-index]:not(:has([role="dialog"]))'
+  ) as HTMLElement;
+
+/** Gives an unwanted close time to happen. */
+const settle = () => new Promise(resolve => setTimeout(resolve, 500));
+
+Basic.test(
+  'Returns focus to the trigger however it closes',
+  async ({ canvas, userEvent, step }) => {
+    const trigger = canvas.getByRole('button', { name: 'Open Tray' });
+
+    await step('swipe down', async () => {
+      const { dialog } = await openTray({ canvas, userEvent });
+
+      swipeDown(dialog);
+
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+      // RAC restores focus a frame after the sheet unmounts.
+      await waitFor(() => expect(trigger).toHaveFocus());
+    });
+
+    await step('backdrop press', async () => {
+      await openTray({ canvas, userEvent });
+
+      await userEvent.click(backdrop());
+
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+      await waitFor(() => expect(trigger).toHaveFocus());
+    });
+
+    await step('Escape', async () => {
+      await openTray({ canvas, userEvent });
+
+      await userEvent.keyboard('{Escape}');
+
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+      await waitFor(() => expect(trigger).toHaveFocus());
+    });
+  }
+);
+
+Basic.test(
+  'Ignores swipe, backdrop and Escape when not dismissable',
+  { args: { dismissable: false } },
+  async ({ canvas, userEvent, step }) => {
+    const { dialog } = await openTray({ canvas, userEvent });
+
+    await step('swipe, backdrop press and Escape keep it open', async () => {
+      swipeDown(dialog);
+      await userEvent.click(backdrop());
+      await userEvent.keyboard('{Escape}');
+      await settle();
+
+      expect(canvas.getByRole('dialog')).toBeVisible();
+    });
+
+    await step('the close button still closes it', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: 'Close' }));
+
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    });
+  }
+);
 
 const closeButtonBottom = (canvas: TrayTestContext['canvas']) =>
   canvas.getByRole('button', { name: 'Close' }).getBoundingClientRect().bottom;
-
-/** Drives a vertical touch drag; uses page coords and RAF frames so `PanSession`'s 3px threshold triggers. */
-const dragVertically = async (
-  // Must use the context's userEvent.pointer — the module-scope import is a
-  // different instance.
-  pointer: (input: Parameters<typeof userEvent.pointer>[0]) => Promise<unknown>,
-  target: Element,
-  { from, to, steps = 6 }: { from: number; to: number; steps?: number }
-) => {
-  const { left, width } = target.getBoundingClientRect();
-  const x = Math.round(left + width / 2);
-  const at = (y: number) => ({
-    x,
-    y,
-    clientX: x,
-    clientY: y,
-    pageX: x + window.scrollX,
-    pageY: y + window.scrollY,
-  });
-  const frame = () =>
-    new Promise(resolve => requestAnimationFrame(() => resolve(null)));
-
-  await pointer({ keys: '[TouchA>]', target, coords: at(from) });
-  await frame();
-
-  for (let i = 1; i <= steps; i++) {
-    await pointer({
-      pointerName: 'TouchA',
-      target,
-      coords: at(from + ((to - from) * i) / steps),
-    });
-    await frame();
-  }
-
-  await pointer({ keys: '[/TouchA]', target, coords: at(to) });
-  await frame();
-};
 
 ScrollableContent.test(
   'Opens a tray whose content overflows',
@@ -379,57 +428,16 @@ ScrollableContent.test(
 );
 
 ScrollableContent.test(
-  'drags only from the chrome, so a gesture in the content scrolls it',
+  'scrolls its content without dismissing',
   { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas, userEvent, step }) => {
-    const { dialog, modal, content } = await openTray({ canvas, userEvent });
-    const handle = dialog.querySelector(
-      '[class*="grid-area:drag"]'
-    ) as HTMLElement;
+  async ({ canvas, userEvent }) => {
+    const { content } = await openTray({ canvas, userEvent });
 
-    await step('the content can pan and select on touch', async () => {
-      // pan-x/user-select come from motion's drag listener; fail if
-      // `dragListener={false}` is dropped.
-      expect(getComputedStyle(modal).touchAction).not.toBe('pan-x');
-      expect(getComputedStyle(content).userSelect).not.toBe('none');
-      // Chrome owns the vertical gesture.
-      expect(getComputedStyle(handle).touchAction).toBe('none');
-    });
+    content.scrollTop = 200;
+    await settle();
 
-    await step('the content is a scroll container', async () => {
-      expect(content.scrollHeight).toBeGreaterThan(content.clientHeight);
-
-      content.scrollTop = 120;
-      expect(content.scrollTop).toBeGreaterThan(0);
-      content.scrollTop = 0;
-    });
-
-    await step('a downward drag inside the content is ignored', async () => {
-      const { top } = content.getBoundingClientRect();
-
-      await dragVertically(userEvent.pointer, content, {
-        from: top + 20,
-        to: top + 20 + window.innerHeight,
-      });
-
-      // Without the `startsInTrayContent` guard, this would dismiss the tray.
-      expect(translateY(modal)).toBe(0);
-      expect(canvas.getByRole('dialog')).toBeInTheDocument();
-    });
-
-    await step('the same drag from the chrome dismisses the tray', async () => {
-      const { top } = handle.getBoundingClientRect();
-
-      await dragVertically(userEvent.pointer, handle, {
-        from: top,
-        to: top + window.innerHeight,
-      });
-
-      expect(translateY(modal)).toBeGreaterThan(0);
-      await waitFor(() =>
-        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
-      );
-    });
+    expect(content.scrollTop).toBeGreaterThan(0);
+    expect(canvas.getByRole('dialog')).toBeVisible();
   }
 );
 
@@ -557,7 +565,7 @@ export const TitleOnlyWithoutHeader = meta.story({
 
 TitleOnlyWithoutHeader.test(
   'Labels the tray with a bare Title',
-  async ({ canvas }) => {
+  async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Open Tray' }));
 
     const tray = await waitFor(() =>
@@ -567,5 +575,57 @@ TitleOnlyWithoutHeader.test(
 
     expect(title.tagName).toBe('H2');
     expect(tray).toHaveAttribute('aria-labelledby', title.id);
+  }
+);
+
+/** Controlled without `Tray.Trigger`: every close has to reach `onOpenChange`. */
+export const Controlled = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: function Render(args) {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <Stack space={4} alignX="left">
+        <Button onPress={() => setOpen(true)}>Open Tray</Button>
+        <Tray {...args} open={open} onOpenChange={setOpen}>
+          <Tray.Title>Controlled</Tray.Title>
+          <Tray.Content>
+            <Text>Opened without a Tray.Trigger.</Text>
+          </Tray.Content>
+          <Tray.Actions>
+            <Button slot="close">Close</Button>
+          </Tray.Actions>
+        </Tray>
+        <pre>Tray is {open ? 'open' : 'closed'}</pre>
+      </Stack>
+    );
+  },
+});
+
+Controlled.test(
+  'Reports every close through onOpenChange',
+  async ({ canvas, userEvent, step }) => {
+    await step('close button', async () => {
+      await openTray({ canvas, userEvent });
+
+      await userEvent.click(canvas.getByRole('button', { name: 'Close' }));
+
+      await waitFor(() => {
+        expect(canvas.getByText('Tray is closed')).toBeInTheDocument();
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+      });
+    });
+
+    await step('swipe down', async () => {
+      const { dialog } = await openTray({ canvas, userEvent });
+
+      swipeDown(dialog);
+
+      await waitFor(() => {
+        expect(canvas.getByText('Tray is closed')).toBeInTheDocument();
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+      });
+    });
   }
 );
