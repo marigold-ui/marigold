@@ -1512,3 +1512,26 @@ SmallScreen.test('Opens as a tray', snapshot, async ({ canvas, userEvent }) => {
     await canvas.findByRole('dialog', { name: 'Command palette' })
   );
 });
+
+SmallScreen.test(
+  'Keeps the search field in place while the results change',
+  noSnapshot,
+  async ({ canvas, userEvent }) => {
+    await openPalette({ canvas, userEvent });
+    const search = await canvas.findByRole('searchbox');
+    // Measured once the tray is open and its rows are in.
+    await expectFirstRowActive(canvas, 'Events');
+    const top = () => Math.round(search.getBoundingClientRect().top);
+    const opened = top();
+
+    await userEvent.keyboard('cafe');
+    await waitFor(() =>
+      expect(canvas.getAllByRole('menuitem')).toHaveLength(1)
+    );
+    await expect(top()).toBe(opened);
+
+    await userEvent.keyboard('zzz');
+    await canvas.findByText(/No results for/);
+    await expect(top()).toBe(opened);
+  }
+);

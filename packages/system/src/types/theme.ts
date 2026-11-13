@@ -112,7 +112,8 @@ export type Theme = {
       | 'empty'
       | 'footer'
       | 'prefixes'
-      | 'legend',
+      | 'legend'
+      | 'tray',
       ComponentStyleFunction<string, string>
     >;
     Divider?: ComponentStyleFunction<string, string>;

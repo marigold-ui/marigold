@@ -34,6 +34,7 @@ export const v19: MigrationManifest = {
       'footer',
       'prefixes',
       'legend',
+      'tray',
     ],
   },
   restructures: [{ component: 'Popover', primarySlot: 'container' }],

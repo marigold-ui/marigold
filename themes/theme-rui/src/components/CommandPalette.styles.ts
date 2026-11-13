@@ -27,7 +27,7 @@ const itemIconMuted = `${menuItemIconMuted} focus:[&_svg]:text-foreground focus:
 // Compact caps: a quiet reminder, not a call to action.
 const keyList = [
   'flex items-center gap-4 [&>span]:inline-flex [&>span]:items-center [&>span]:gap-1.5',
-  '[&_kbd]:h-4.5 [&_kbd]:min-w-4.5 [&_kbd]:px-1 [&_kbd]:py-0 [&_kbd]:text-[10px] [&_kbd]:leading-none',
+  '[&_kbd]:h-4.5 [&_kbd]:min-w-4.5 [&_kbd]:px-1 [&_kbd]:py-0 [&_kbd]:text-2xs [&_kbd]:leading-none',
 ];
 
 export const CommandPalette: ThemeComponent<'CommandPalette'> = {
@@ -75,10 +75,18 @@ export const CommandPalette: ThemeComponent<'CommandPalette'> = {
   }),
   input: cva({
     base: [
-      'min-w-0 flex-1 bg-transparent text-[15px] font-medium text-foreground outline-none',
+      // 16px, the smallest size iOS Safari doesn't zoom into on focus.
+      'min-w-0 flex-1 bg-transparent text-base font-medium text-foreground outline-none',
       'placeholder:font-normal placeholder:text-placeholder',
       '[&::-webkit-search-cancel-button]:hidden',
     ],
+  }),
+  // The Tray's content on small screens: edge to edge, so the search divider
+  // spans the tray, and a fixed height, so the search field stays put while
+  // the results change. Capped by the sheet's room (`--sheet-available`, which
+  // follows the on-screen keyboard) minus its drag handle and Close row.
+  tray: cva({
+    base: 'flex flex-col p-0 h-[min(70svh,calc(var(--sheet-available)-5.25rem))]',
   }),
   // Same column layout as Menu (icon, label, keyboard; groups subgrid into
   // it), owned here so the palette's density can differ from a menu's. On

@@ -23,6 +23,10 @@
   --font-sans: Inter, system-ui, sans-serif;
   --font-sans-variable: InterVariable, Inter, system-ui, sans-serif;
 
+  /* A step below Tailwind's `text-xs`, for compact key caps (the
+   * CommandPalette's legend), so they stay a quiet reminder. */
+  --text-2xs: 0.625rem;
+
   /* ====================== */
   /*     COLOR PALETTES     */
   /* ====================== */

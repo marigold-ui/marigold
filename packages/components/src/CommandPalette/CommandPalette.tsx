@@ -452,8 +452,7 @@ const CommandPaletteBase = <T extends object>({
   if (isSmallScreen) {
     return (
       <Tray open={open} onOpenChange={setOpen} aria-label={label}>
-        {/* Edge to edge: the search divider spans the tray, like Dialog's. */}
-        <Tray.Content className="flex flex-col p-0">{body}</Tray.Content>
+        <Tray.Content className={classNames.tray}>{body}</Tray.Content>
         <Tray.Actions>
           <Button slot="close">{stringFormatter.format('close')}</Button>
         </Tray.Actions>
