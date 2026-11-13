@@ -1667,6 +1667,52 @@ export const Mobile = meta.story({
 });
 
 /**
+ * A long table in a narrow box with a fixed height, so it scrolls both ways.
+ * Which box scrolls on which axis depends on who holds the height. A box that
+ * only scrolls vertically leaves the sideways scroll to the table, which fades
+ * its edge and puts its scrollbar under the last row, while the box's own
+ * scrollbar runs down the side. A `Scrollable` scrolls both axes itself, so
+ * both scrollbars and their corner share one box and the table adds no fade.
+ */
+export const ScrollsBothWays = meta.story({
+  parameters: { surface: false },
+  render: args => (
+    <Stack space={6}>
+      <div className="h-80 w-[320px] overflow-y-auto">
+        <Panel>
+          <Panel.Header>
+            <Title>Fixed height</Title>
+          </Panel.Header>
+          <Panel.Content bleed>
+            <OrganizersTable
+              aria-label="Organizers in a fixed-height box"
+              rows={20}
+              {...args}
+            />
+          </Panel.Content>
+        </Panel>
+      </div>
+      <div className="w-[320px]">
+        <Panel>
+          <Panel.Header>
+            <Title>Scrollable</Title>
+          </Panel.Header>
+          <Panel.Content bleed>
+            <Scrollable height="320px">
+              <OrganizersTable
+                aria-label="Organizers in a Scrollable"
+                rows={20}
+                {...args}
+              />
+            </Scrollable>
+          </Panel.Content>
+        </Panel>
+      </div>
+    </Stack>
+  ),
+});
+
+/**
  * Regression story for the scroll guard. `DialogContent` scrolls vertically,
  * and CSS computes its `overflow-x` to `auto` along with it, so a guard that
  * read the style alone took the dialog for a sideways scroll area and left the
