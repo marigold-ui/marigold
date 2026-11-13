@@ -34,6 +34,7 @@ import { useCallback, useEffect, useRef } from 'react';
 // changing for a frame and the first one is active. RAC moves the active row
 // a moment after new rows arrive, up to half a second when the old active row
 // is gone, and an Enter before that runs the old row or nothing at all.
+
 // Keys that move the active row away from the first one. `Home` is missing on
 // purpose: the hook presses it itself.
 const NAVIGATION_KEYS = new Set([
@@ -50,7 +51,8 @@ const FORWARD_TYPING = new Set([
   'insertFromComposition',
 ]);
 
-const activeRow = '[role^="menuitem"][data-focused]';
+const row = '[role^="menuitem"]';
+const activeRow = `${row}[data-focused]`;
 
 /** How long the app has to set `loading` after a search, in ms. */
 const ANSWER_GRACE = 100;
@@ -84,9 +86,8 @@ export const useKeepFirstItemActive = (
   // without a reported search only `loading` and the pause hold Enter.
   const answerRef = useRef({ sawLoading: false, graceOver: true });
   const graceTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const frameRef = useRef(0);
-  // Whether the rows changed since the last frame of a waiting Enter.
-  const rowsChangedRef = useRef(false);
+  // Stops watching the rows for a waiting Enter.
+  const stopWatchingRef = useRef<() => void>(undefined);
 
   const answered = useCallback(() => {
     const { loading, searchWaiting } = statusRef.current;
@@ -154,52 +155,42 @@ export const useKeepFirstItemActive = (
     [answered]
   );
 
-  // A pointer that lands on a row picks it. Row changes are tracked for a
-  // waiting Enter.
+  // A pointer that lands on a row picks it.
   const menuCallbackRef = useCallback((menu: HTMLDivElement | null) => {
     menuRef.current = menu;
     if (!menu) return;
     const onPointerMove = (e: PointerEvent) => {
-      if (e.target instanceof Element && e.target.closest('[role^="menuitem"]'))
+      if (e.target instanceof Element && e.target.closest(row))
         pickedRef.current = true;
     };
-    const observer = new MutationObserver(() => {
-      rowsChangedRef.current = true;
-    });
-    observer.observe(menu, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ['data-focused'],
-    });
     menu.addEventListener('pointermove', onPointerMove);
     return () => {
-      observer.disconnect();
       menu.removeEventListener('pointermove', onPointerMove);
       menuRef.current = null;
     };
   }, []);
 
-  // Whether the rows settled with the first one active.
-  const firstRowReady = useCallback(() => {
-    const changed = rowsChangedRef.current;
-    rowsChangedRef.current = false;
-    const first = menuRef.current?.querySelector('[role^="menuitem"]');
-    return !changed && first?.hasAttribute('data-focused') === true;
-  }, []);
-
   // Runs the Enter that waited, once the app has answered and the first of
-  // the new rows is active. Checked every frame until then.
+  // the new rows is active. Checked a frame after the rows last changed, and
+  // the rows are only watched while the Enter waits.
   const release = useCallback(() => {
-    if (!enterWaitingRef.current || !answered()) return;
-    cancelAnimationFrame(frameRef.current);
-    rowsChangedRef.current = true;
+    const menu = menuRef.current;
+    if (!menu || !enterWaitingRef.current || !answered()) return;
+    stopWatchingRef.current?.();
+    let frame = 0;
+    const settle = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(check);
+    };
+    const observer = new MutationObserver(settle);
+    const stop = () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
     const check = () => {
-      if (!enterWaitingRef.current || !answered()) return;
-      if (!firstRowReady()) {
-        frameRef.current = requestAnimationFrame(check);
-        return;
-      }
+      if (!enterWaitingRef.current || !answered()) return stop();
+      if (!menu.querySelector(row)?.hasAttribute('data-focused')) return;
+      stop();
       enterWaitingRef.current = false;
       // Cancelable like a real key press: RAC cancels it once the row ran,
       // otherwise it clicks the row a second time.
@@ -211,8 +202,15 @@ export const useKeepFirstItemActive = (
         })
       );
     };
-    frameRef.current = requestAnimationFrame(check);
-  }, [answered, firstRowReady]);
+    stopWatchingRef.current = stop;
+    observer.observe(menu, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['data-focused'],
+    });
+    settle();
+  }, [answered]);
 
   useEffect(() => {
     statusRef.current = { loading, searchWaiting };
@@ -223,7 +221,7 @@ export const useKeepFirstItemActive = (
   useEffect(
     () => () => {
       clearTimeout(graceTimerRef.current);
-      cancelAnimationFrame(frameRef.current);
+      stopWatchingRef.current?.();
     },
     []
   );
@@ -263,11 +261,11 @@ export const useKeepFirstItemActive = (
     // Rows the app searched arrive after forward typing too, and replace
     // the list without RAC moving the active row. They are watched, without
     // pressing `Home` now, which would race RAC's handling of the keystroke.
-    const appRowsComing = queryChanged && appSearches;
-    if (!edited && !newResults && !appRowsComing) return;
+    const pressHome = edited || newResults;
+    if (!pressHome && !(queryChanged && appSearches)) return;
 
     const menu = menuRef.current;
-    if (edited || newResults) activateFirst();
+    if (pressHome) activateFirst();
     if (!menu) return;
     // RAC rebuilds the collection one render after the children or `items`
     // change, and rows rendered as children can arrive later still, after a
@@ -280,7 +278,7 @@ export const useKeepFirstItemActive = (
     // so Enter always runs something.
     const observer = new MutationObserver(() => {
       if (pickedRef.current && menu.querySelector(activeRow)) return;
-      const first = menu.querySelector('[role^="menuitem"]');
+      const first = menu.querySelector(row);
       if (first && !first.hasAttribute('data-focused')) activateFirst();
     });
     observer.observe(menu, { childList: true, subtree: true });

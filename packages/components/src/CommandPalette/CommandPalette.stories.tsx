@@ -10,7 +10,7 @@ import {
   Ticket,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { expect, fn, waitFor, within } from 'storybook/test';
+import { expect, fn, screen, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { clearAnnouncer } from '@react-aria/live-announcer';
 import { isAppleDevice } from '@react-aria/utils';
@@ -21,7 +21,7 @@ import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import { TextValue } from '../TextValue/TextValue';
 import { useAsyncList } from '../hooks';
-import { CommandPalette } from './CommandPalette';
+import { CommandPalette, SEARCH_DELAY } from './CommandPalette';
 import type { CommandPaletteSearchState } from './CommandPalette';
 
 const meta = preview.meta({
@@ -83,7 +83,9 @@ const expectFirstRowActive = (canvas: StoryContext['canvas'], name?: string) =>
 // What screen readers hear without moving focus: React Aria's polite live
 // region, which sits outside the story and outlives it.
 const politeAnnouncements = () =>
-  document.querySelector('[aria-live="polite"]')?.textContent ?? '';
+  screen
+    .queryAllByRole('log', { hidden: true })
+    .find(log => log.getAttribute('aria-live') === 'polite')?.textContent ?? '';
 
 const onAction = fn();
 
@@ -1266,19 +1268,23 @@ ServerResultsInOneGroup.test(
 
 // A pause after "j" sends a search of its own: its rows arrive while people
 // still type, and the rows for "japan" then replace them.
-const pauseAfterFirstLetter = async (userEvent: StoryContext['userEvent']) => {
+const typeJapanAfterPause = async ({
+  canvas,
+  userEvent,
+}: Pick<StoryContext, 'canvas' | 'userEvent'>) => {
+  onServerAction.mockClear();
+  await openPalette({ canvas, userEvent });
+  await canvas.findByRole('searchbox');
   await userEvent.keyboard('j');
-  await new Promise(resolve => setTimeout(resolve, 260));
+  await new Promise(resolve => setTimeout(resolve, SEARCH_DELAY + 10));
+  await userEvent.keyboard('apan');
 };
 
 ServerResultsInOneGroup.test(
   'Enter after a pause in typing runs the first new row',
   async ({ canvas, userEvent }) => {
-    onServerAction.mockClear();
-    await openPalette({ canvas, userEvent });
-    await canvas.findByRole('searchbox');
-    await pauseAfterFirstLetter(userEvent);
-    await userEvent.keyboard('apan{Enter}');
+    await typeJapanAfterPause({ canvas, userEvent });
+    await userEvent.keyboard('{Enter}');
     await waitFor(() => expect(onServerAction).toHaveBeenCalledWith('event-8'));
     await expect(onServerAction).toHaveBeenCalledTimes(1);
   }
@@ -1287,11 +1293,7 @@ ServerResultsInOneGroup.test(
 ServerResultsInOneGroup.test(
   'Keeps the first row active when server rows replace earlier ones',
   async ({ canvas, userEvent }) => {
-    onServerAction.mockClear();
-    await openPalette({ canvas, userEvent });
-    await canvas.findByRole('searchbox');
-    await pauseAfterFirstLetter(userEvent);
-    await userEvent.keyboard('apan');
+    await typeJapanAfterPause({ canvas, userEvent });
     await waitFor(() =>
       expect(canvas.getAllByRole('menuitem')).toHaveLength(1)
     );

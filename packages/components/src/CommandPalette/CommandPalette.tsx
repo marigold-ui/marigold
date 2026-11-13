@@ -167,7 +167,7 @@ const DefaultEmptyState = ({ query }: { query: string }) => {
 };
 
 // How long typing must pause before `onSearchChange` reports the search.
-const SEARCH_DELAY = 250;
+export const SEARCH_DELAY = 250;
 
 // Screen readers
 // ---------------
@@ -180,8 +180,25 @@ const SEARCH_DELAY = 250;
 const ANNOUNCE_EMPTY_AFTER = 500;
 const ANNOUNCE_LOADING_AFTER = 1000;
 
-// The message for no results, announced after `ANNOUNCE_EMPTY_AFTER` while
-// `announceFor` stays the same. `null` announces nothing.
+// Announces the message politely once `key` stayed the same for `delay`
+// ms. `null` announces nothing.
+const useAnnounceAfter = (
+  key: string | null,
+  delay: number,
+  message: () => string | undefined
+) => {
+  const getMessage = useEffectEvent(message);
+  useEffect(() => {
+    if (key === null) return;
+    const timer = setTimeout(() => {
+      const text = getMessage();
+      if (text) announce(text, 'polite');
+    }, delay);
+    return () => clearTimeout(timer);
+  }, [key, delay]);
+};
+
+// The message for no results, announced while `announceFor` stays the same.
 const EmptyState = ({
   className,
   announceFor,
@@ -192,15 +209,10 @@ const EmptyState = ({
   children: ReactNode;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (announceFor === null) return;
-    const timer = setTimeout(() => {
-      // The rendered text, so a custom `emptyState` is announced as well.
-      const message = ref.current?.innerText.trim();
-      if (message) announce(message, 'polite');
-    }, ANNOUNCE_EMPTY_AFTER);
-    return () => clearTimeout(timer);
-  }, [announceFor]);
+  // The rendered text, so a custom `emptyState` is announced as well.
+  useAnnounceAfter(announceFor, ANNOUNCE_EMPTY_AFTER, () =>
+    ref.current?.innerText.trim()
+  );
   return (
     <div ref={ref} className={className}>
       {children}
@@ -297,10 +309,11 @@ const CommandPaletteBody = <T extends object>({
   // search, see `useKeepFirstItemActive`.
   const appSearches =
     onSearchChange !== undefined && (filter === false || unfiltered.size > 0);
+  const appSearchWaiting = appSearches && searchWaiting;
   const { inputRef, menuRef, searchReported } = useKeepFirstItemActive(
     inputValue,
     items,
-    { loading, searchWaiting: appSearches && searchWaiting, appSearches }
+    { loading, searchWaiting: appSearchWaiting, appSearches }
   );
 
   // An effect, so the app also hears the empty search of a fresh opening.
@@ -313,19 +326,14 @@ const CommandPaletteBody = <T extends object>({
   }, [settledSearch]);
 
   const loadingMessage = stringFormatter.format('loadingMessage');
-  useEffect(() => {
-    if (!loading) return;
-    const timer = setTimeout(
-      () => announce(loadingMessage, 'polite'),
-      ANNOUNCE_LOADING_AFTER
-    );
-    return () => clearTimeout(timer);
-  }, [loading, loadingMessage]);
+  useAnnounceAfter(
+    loading ? loadingMessage : null,
+    ANNOUNCE_LOADING_AFTER,
+    () => loadingMessage
+  );
   // Nothing to announce before people type, or while the answer is pending.
   const emptyAnnouncement =
-    inputValue.trim() === '' || loading || (appSearches && searchWaiting)
-      ? null
-      : inputValue;
+    inputValue.trim() === '' || loading || appSearchWaiting ? null : inputValue;
 
   const context = useMemo(
     () => ({
