@@ -410,14 +410,16 @@
 
   &::-webkit-scrollbar-track {
     background-color: var(--color-scrollbar-track);
-    border-radius: var(--radius-full);
+    border-radius: 9999px;
   }
 
   &::-webkit-scrollbar-thumb {
     transition: background-color 0.2s var(--ease-out-quad);
     background-color: var(--color-scrollbar);
-    border-radius: var(--radius-full);
-    border: 0px solid transparent;
+    border-radius: 9999px;
+    /* Inset the thumb so it reads as a slim pill, like the native one */
+    border: 2px solid transparent;
+    background-clip: padding-box;
   }
   &::-webkit-scrollbar-thumb:hover {
     background-color: var(--color-scrollbar-hover);
