@@ -159,14 +159,15 @@ Hiding the labels also takes away a sighted user's sense of how far along they a
 
 ### Small screens
 
-A row of markers and labels does not fit a phone. Below the small-screen breakpoint the stepper switches to a compact layout by itself: a "Step 2 of 4" counter, the name of the current step, and a track with one segment per step. You do not need to change your code for this, but a few choices in your flow decide how well it reads on a phone.
+A row of markers and labels does not fit a phone. Below the small-screen breakpoint the stepper switches to a compact layout by itself: a track with one segment per step, and below it the name of the current step next to a "Step 2 of 4" counter. You do not need to change your code for this, but a few choices in your flow decide how well it reads on a phone.
 
 <StepperSmallScreenAnatomy />
 
 <ul>
   <li>
-    <b>Counter:</b> Where the user stands, as "Step 2 of 4". It is hidden from
-    screen readers, because every step already announces its own position.
+    <b>Segment:</b> One bar per step, taking over from the marker and the
+    connector. It fills once the step is done, turns red when it failed, and
+    stays the step's button or link, so a finished step can be tapped.
   </li>
   <li>
     <b>Current label:</b> The name of the step the user is on, the only label
@@ -174,9 +175,8 @@ A row of markers and labels does not fit a phone. Below the small-screen breakpo
     off.
   </li>
   <li>
-    <b>Segment:</b> One bar per step, taking over from the marker and the
-    connector. It fills once the step is done, turns red when it failed, and
-    stays the step's button or link, so a finished step can be tapped.
+    <b>Counter:</b> Where the user stands, as "Step 2 of 4". It is hidden from
+    screen readers, because every step already announces its own position.
   </li>
 </ul>
 
@@ -186,7 +186,7 @@ Once the customer reaches the review step and wants a different price, they tap 
 
 Longer flows fit as well. Setting up an event can run to twelve steps, and because the segments share the width equally, each one still keeps a touch target at least 24 pixels wide on the narrowest phones. Beyond twelve the targets shrink, so split such a flow into stages instead of adding steps. `hideLabels` changes nothing here, because small screens show only the current label anyway.
 
-With only one step named, an error further back would go unnoticed. Say the event's dates fail validation while the user is already on the prices step. Mark the dates step with `errorKeys`: its segment turns red, the counter line adds "1 step needs attention", so the error does not rest on colour alone, and the step stays selectable, so the user can tap it and fix it. When the current step is the one that failed, its name shows the warning icon instead.
+With only one step named, an error further back would go unnoticed. Say the event's dates fail validation while the user is already on the prices step. Mark the dates step with `errorKeys`: its segment turns red, a line below the step name adds "1 step needs attention", so the error does not rest on colour alone, and the step stays selectable, so the user can tap it and fix it. When the current step is the one that failed, its name shows the warning icon instead.
 
 ### Accessibility
 

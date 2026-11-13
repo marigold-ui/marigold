@@ -354,6 +354,36 @@ describe('on a small screen', () => {
     expect(currentLabelLine('Choose plan')).toBeVisible();
   });
 
+  test('draws the track above the counter line', () => {
+    render(<Basic.Component />);
+
+    const step = screen.getByRole('button', { name: /Choose plan/ });
+
+    expect(
+      screen.getByText('Step 2 of 4').getBoundingClientRect().top
+    ).toBeGreaterThanOrEqual(step.getBoundingClientRect().bottom);
+  });
+
+  test('puts the current label and the counter on one row', () => {
+    render(<Basic.Component />);
+
+    const label = currentLabelLine('Choose plan').getBoundingClientRect();
+    const count = screen.getByText('Step 2 of 4').getBoundingClientRect();
+
+    expect(count.left).toBeGreaterThanOrEqual(label.right);
+    expect(count.top).toBeLessThan(label.bottom);
+  });
+
+  test('puts the error count below the current label', () => {
+    render(<States.Component />);
+
+    const label = currentLabelLine('Current').getBoundingClientRect();
+
+    expect(
+      screen.getByText('2 steps need attention').getBoundingClientRect().top
+    ).toBeGreaterThanOrEqual(label.bottom);
+  });
+
   test('keeps the current label visible even with hideLabels', () => {
     render(<HideLabels.Component />);
 

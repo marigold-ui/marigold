@@ -648,8 +648,8 @@ ValidationErrors.test(
 );
 
 /**
- * Below the `sm` breakpoint the row turns into a counter, the current step's
- * label and a segmented track. Every segment is still the step's button or
+ * Below the `sm` breakpoint the row turns into a segmented track above the
+ * current step's label and a counter. Every segment is still the step's button or
  * link, so the user can tap back to a finished step.
  */
 export const SmallScreen = Basic.extend({
@@ -712,9 +712,9 @@ export const ManyStepsSmallScreen = meta.story({
 });
 
 /**
- * A failed step that is not the current one turns its segment red, and the
- * counter line says how many need attention, so the error does not rest on
- * colour alone. A failed current step shows the warning on its label instead.
+ * A failed step that is not the current one turns its segment red, and a
+ * line below the label says how many need attention, so the error does not
+ * rest on colour alone. A failed current step shows the warning on its label instead.
  */
 export const ErrorsSmallScreen = meta.story({
   globals: { viewport: { value: 'smallScreen' } },
