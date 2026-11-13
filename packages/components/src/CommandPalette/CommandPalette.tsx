@@ -5,6 +5,7 @@ import {
   useEffect,
   useLayoutEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import type RAC from 'react-aria-components';
@@ -13,6 +14,7 @@ import { Dialog } from 'react-aria-components/Dialog';
 import { Menu } from 'react-aria-components/Menu';
 import { Modal } from 'react-aria-components/Modal';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { announce } from '@react-aria/live-announcer';
 import { useEffectEvent } from '@react-aria/utils';
 import { useControlledState } from '@react-stately/utils';
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
@@ -76,7 +78,8 @@ export interface CommandPaletteProps<T extends object = object> {
 
   /**
    * Whether results are loading. Shows a spinner in the search input and a
-   * loading message while the list is empty.
+   * loading message while the list is empty. Screen readers hear the loading
+   * message once loading takes longer than a second.
    * @default false
    */
   loading?: boolean;
@@ -165,6 +168,45 @@ const DefaultEmptyState = ({ query }: { query: string }) => {
 
 // How long typing must pause before `onSearchChange` reports the search.
 const SEARCH_DELAY = 250;
+
+// Screen readers
+// ---------------
+// Focus stays in the search, so a screen reader hears the active row and
+// nothing else. A search that finds nothing clears the active row, and
+// loading changes no row at all. Both are announced, once they have lasted:
+// the empty state once typing paused, so not every keystroke is read out, and
+// loading only when it is slow, so a quick search stays quiet. Results need
+// no announcement, their first row becomes active and is read.
+const ANNOUNCE_EMPTY_AFTER = 500;
+const ANNOUNCE_LOADING_AFTER = 1000;
+
+// The message for no results, announced after `ANNOUNCE_EMPTY_AFTER` while
+// `announceFor` stays the same. `null` announces nothing.
+const EmptyState = ({
+  className,
+  announceFor,
+  children,
+}: {
+  className?: string;
+  announceFor: string | null;
+  children: ReactNode;
+}) => {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (announceFor === null) return;
+    const timer = setTimeout(() => {
+      // The rendered text, so a custom `emptyState` is announced as well.
+      const message = ref.current?.innerText.trim();
+      if (message) announce(message, 'polite');
+    }, ANNOUNCE_EMPTY_AFTER);
+    return () => clearTimeout(timer);
+  }, [announceFor]);
+  return (
+    <div ref={ref} className={className}>
+      {children}
+    </div>
+  );
+};
 
 // Body
 // ---------------
@@ -270,6 +312,21 @@ const CommandPaletteBody = <T extends object>({
     reportSearch(settledSearch);
   }, [settledSearch]);
 
+  const loadingMessage = stringFormatter.format('loadingMessage');
+  useEffect(() => {
+    if (!loading) return;
+    const timer = setTimeout(
+      () => announce(loadingMessage, 'polite'),
+      ANNOUNCE_LOADING_AFTER
+    );
+    return () => clearTimeout(timer);
+  }, [loading, loadingMessage]);
+  // Nothing to announce before people type, or while the answer is pending.
+  const emptyAnnouncement =
+    inputValue.trim() === '' || loading || (appSearches && searchWaiting)
+      ? null
+      : inputValue;
+
   const context = useMemo(
     () => ({
       query,
@@ -319,13 +376,15 @@ const CommandPaletteBody = <T extends object>({
           // Called after an item's action, unless the item sets
           // `shouldCloseOnSelect={false}`.
           onClose={close}
-          // Inside the menu, where RAC announces it.
           renderEmptyState={() => (
-            <div className={classNames.empty}>
+            <EmptyState
+              className={classNames.empty}
+              announceFor={emptyAnnouncement}
+            >
               {loading
-                ? stringFormatter.format('loadingMessage')
+                ? loadingMessage
                 : (emptyState ?? <DefaultEmptyState query={query} />)}
-            </div>
+            </EmptyState>
           )}
         >
           {children}

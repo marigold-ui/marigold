@@ -154,7 +154,7 @@ If your app has a full search, end the list with a row that runs it for the quer
 
 ## Accessibility
 
-The palette follows the [combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/). Focus stays in the search field while the arrow keys move a virtual focus through the list, so screen readers announce the active row and people can keep typing. The empty and loading states sit inside the list, where screen readers announce them.
+The palette follows the [combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/). Focus stays in the search field while the arrow keys move a virtual focus through the list, so screen readers announce the active row and people can keep typing. When a search finds nothing, screen readers hear the empty message once people pause typing. When loading takes longer than a second, they hear the loading message. Quick searches stay quiet, and new results need no announcement, because their first row becomes active and is read.
 
 | Key                                                      | Action                                                                               |
 | -------------------------------------------------------- | ------------------------------------------------------------------------------------ |

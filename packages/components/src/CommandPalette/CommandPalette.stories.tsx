@@ -12,6 +12,7 @@ import {
 import { useEffect, useRef, useState } from 'react';
 import { expect, fn, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
+import { clearAnnouncer } from '@react-aria/live-announcer';
 import { isAppleDevice } from '@react-aria/utils';
 import { Button } from '../Button/Button';
 import { Description } from '../Description/Description';
@@ -78,6 +79,11 @@ const expectFirstRowActive = (canvas: StoryContext['canvas'], name?: string) =>
       first.id
     );
   });
+
+// What screen readers hear without moving focus: React Aria's polite live
+// region, which sits outside the story and outlives it.
+const politeAnnouncements = () =>
+  document.querySelector('[aria-live="polite"]')?.textContent ?? '';
 
 const onAction = fn();
 
@@ -277,6 +283,22 @@ Basic.test(
 );
 
 Basic.test(
+  'Tells screen readers once typing pauses that nothing matches',
+  noSnapshot,
+  async ({ canvas, userEvent }) => {
+    clearAnnouncer('polite');
+    await openPalette({ canvas, userEvent });
+    await userEvent.keyboard('zzz');
+
+    await waitFor(() =>
+      expect(politeAnnouncements()).toContain('No results for “zzz”')
+    );
+    // The keystrokes before the pause stay quiet.
+    await expect(politeAnnouncements()).not.toContain('“zz”');
+  }
+);
+
+Basic.test(
   'Escape clears the query first, then closes',
   noSnapshot,
   async ({ canvas, userEvent }) => {
@@ -330,6 +352,20 @@ export const CustomEmptyState = meta.story({
 });
 
 CustomEmptyState.test(
+  'Tells screen readers the custom message',
+  noSnapshot,
+  async ({ canvas, userEvent }) => {
+    clearAnnouncer('polite');
+    await openPalette({ canvas, userEvent });
+    await userEvent.keyboard('xyz');
+
+    await waitFor(() =>
+      expect(politeAnnouncements()).toContain('No page with that name')
+    );
+  }
+);
+
+CustomEmptyState.test(
   'Shows the custom message instead of the built-in one',
   snapshot,
   async ({ canvas, userEvent }) => {
@@ -376,6 +412,21 @@ Loading.test(
     await expect(canvas.queryByText('No events found.')).toBeNull();
     await expect(canvas.getByRole('progressbar')).toBeInTheDocument();
     await expect(within(list).queryByText('Events')).toBeNull();
+  }
+);
+
+Loading.test(
+  'Tells screen readers when loading takes a while',
+  noSnapshot,
+  async ({ canvas, userEvent }) => {
+    clearAnnouncer('polite');
+    await openPalette({ canvas, userEvent });
+
+    // Quiet at first, so a quick search doesn't interrupt typing.
+    await expect(politeAnnouncements()).not.toContain('Loading...');
+    await waitFor(() => expect(politeAnnouncements()).toContain('Loading...'), {
+      timeout: 2000,
+    });
   }
 );
 
