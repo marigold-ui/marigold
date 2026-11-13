@@ -1,5 +1,150 @@
 # @marigold/components
 
+## 18.4.0
+
+### Minor Changes
+
+- 0154b3a: feat(DST-1751): add a select-all to ListView and SelectList
+
+  `<Table>` used to be the only collection that could offer a select-all, because it was the only one with a header to put a checkbox in. `allowSelectAll` now renders one for the two multi-select lists, aligned with the row indicators by the component (the padding is a custom property on the wrapper around the list, so a consumer composing a checkbox above it cannot line one up).
+
+  ```tsx
+  <ListView
+    aria-label="Uploads"
+    selectionMode="multiple"
+    allowSelectAll
+    items={uploads}
+  >
+    {upload => <ListView.Item textValue={upload.name}>…</ListView.Item>}
+  </ListView>
+  ```
+
+  The checkbox is mixed while the selection is partial, and becomes checked once every selectable row has been picked. It labels itself "Select all" in the current locale, and a count beside it reports how many rows are selected. The prop only takes effect when `selectionMode="multiple"`, since there is nothing for a select-all to do in the other modes. The header sits outside the grid element rather than claiming column-header semantics a single-column collection does not have, so the checkbox carries its own visible label. A disabled `SelectList` option that was preselected keeps its selection in either direction, since the user cannot toggle it by hand either, and clearing from the header honours `disallowEmptySelection` the way React Aria's own `clearSelection` does.
+
+  `ListView` reports `'all'` from its select-all, the same value <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> already reported. `SelectList` reports concrete keys instead, because a field has to submit a value: it now resolves the `'all'` sentinel to the keys it covers, which also fixes <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> in a multi-select `SelectList` submitting nothing at all. A controlled `selectedKeys="all"` resolves the same way, so it submits and validates like any other selection instead of as nothing.
+
+  Two smaller fixes come with it. A `Set` passed to `selectedKeys` is no longer copied on every render, which kept React Aria resetting the range anchor and broke <kbd>Shift</kbd>+click on a controlled list. And `ListView` now renders its list inside a wrapper element that owns the row-padding custom property, so the header and the rows read the same value.
+
+  On both components the select-all reads as the list's first row: it takes the same padding as a row and is separated by a divider of the same weight as the ones between rows. A `SelectList` keeps it inside the frame. In the `bordered` variant there is no frame to sit in. The select-all stays a control above the option cards, closer to the first card than to the field's label, so it still groups with the list rather than with the label.
+
+  The `Theme` type gains `header` and `count` slots on both components, plus `container` on `ListView`. All three are optional, so a custom theme written before this release still compiles and renders: `useClassNames` returns `undefined` for a slot a theme does not supply, and the components render without it. A `SelectList`'s `p` / `px` / `py` props keep writing their custom properties onto the list as well as the new wrapper, so a theme that declares the same variables on its own `list` slot does not win over the prop.
+
+- 3e3de96: feat(DST-1761): keep a table's row context visible while it scrolls sideways
+
+  `Table.Column` takes a new `sticky` prop. `sticky="start"` on the first column keeps it in place while the other columns scroll sideways, and `sticky="end"` does the same for the last column, typically the row actions. The selection checkbox and drag handle stick together with the first column. A thin line marks each edge while content scrolls under it. `sticky` on any other column is ignored with a warning during development.
+
+  Sticky columns combine with `Table.Header sticky` and `Table.Footer sticky`, and keyboard focus never lands on a cell hidden under a sticky column. They need a container that scrolls sideways, such as `Scrollable`. A cell that spans several columns with `colSpan` does not stick.
+
+  Some changes apply to every table, with or without sticky columns:
+
+  - The table is its own stacking context (`isolation: isolate`), so a sticky header or footer no longer competes with the page. A sticky `TopNavigation` now stays above a sticky table header where the two overlap.
+  - A sticky header and footer sit at `z-10` instead of `z-1`.
+  - The focus ring of a row is drawn by its cells instead of as the row's outline. It looks the same.
+  - Body rows have an opaque background, and the band of nested rows is mixed onto the surface instead of being transparent. Both look the same on the table's own background.
+  - `Table.Cell` no longer accepts `render`, like `Table.Column`.
+
+  The theme adds a `ui-sticky-edge` utility for the edge line.
+
+- 9160448: feat(DST-1862): open and close a Drawer without `Drawer.Trigger`
+
+  `<Drawer>` now takes `open`, `defaultOpen` and `onOpenChange` directly, the same way `<Dialog>` does. A drawer opened from a table row, an ActionBar action or a route no longer needs a `Drawer.Trigger` with a hidden button inside it.
+
+  The close button, `slot="close"` buttons, Escape and another drawer opening all call `onOpenChange(false)`, on desktop and in the mobile sheet. Before, a drawer with only `open` could not be closed, and on small screens it did not render at all.
+
+  Inside a `Drawer.Trigger`, the drawer's own `open` or `defaultOpen` takes precedence over the trigger's state, as in React Aria. Setting only `onOpenChange` on a drawer inside a trigger logs a development warning to move it to the trigger. If you set `open` on both the trigger and the drawer, the drawer now owns its state, so its close button, Escape and another drawer opening no longer reach the trigger's `onOpenChange`. Set `onOpenChange` on the drawer too, or leave `open` on the trigger only. Other `Drawer.Trigger` usage is unchanged.
+
+- 183d72c: feat(DST-1943): select a range of Table rows with Shift+click on their checkboxes
+
+  In a `<Table selectionMode="multiple">`, holding <kbd>Shift</kbd> while clicking a row's checkbox now selects every row between the row last clicked and this one. Before, the checkbox ignored <kbd>Shift</kbd> and toggled only its own row, while a <kbd>Shift</kbd>+click on the row itself already selected the range. Both now behave the same, with one exception: after the header checkbox has selected all rows, <kbd>Shift</kbd>+click on a checkbox deselects just that row instead of starting a new selection from it.
+
+  A plain click on a checkbox still toggles only its row. Nothing changes in the component API, and single selection is unaffected.
+
+### Patch Changes
+
+- 110732b: refactor: components carry their public name
+
+  React DevTools and React's own warnings now show components by the name you import, for example `Button` instead of `_Button`. Compound components show their root part, for example `TableRoot`. Nothing changes in how you use them.
+
+  `ToggleButtonGroup` now logs its development warning about `selectionMode` after the first render instead of during it.
+
+- 94fcae4: fix(DST-1829): name and describe the FileField trigger by its label and addon
+
+  `FileField` now announces itself like every other form field. Its label used to sit next to the field without being linked to anything, so a screen reader read only "Upload" on focus. The upload button is now named by the field label ("Attachment, Upload") and described by its `description`, its error message and a badge in `addon`, which matches what DST-1747 did for the other fields. A `<ContextualHelp>` in `addon` stays its own button and is not part of the description.
+
+  In the default size, the drop zone is named by its text and the field label as well, and an `aria-label` or `aria-labelledby` passed to `FileField` still names it. React Aria does not forward a description to the drop zone's focus target, so the upload button inside it carries the description. In `small` size, an `aria-label` or `aria-labelledby` passed to `FileField` now names the upload button instead of the wrapper element, where it had no effect. The button keeps its visible text in its name ("Contract Upload"), so voice control users can still activate it by saying "Upload".
+
+- 9160448: fix(DST-1862): respect `keyboardDismissable` on the mobile Drawer
+
+  `<Drawer keyboardDismissable={false}>` now also stays open on Escape on small screens, where it renders as a sheet. Before, the prop only reached the desktop drawer.
+
+- a7bacf0: fix(DST-1906): keep focus in place when a confirmed action removes its trigger
+
+  `useConfirmation` now resolves once the confirmation dialog has closed and returned focus, instead of on the button press. Deleting the row whose button opened the confirmation no longer drops focus out of the surrounding overlay: a list inside a dialog, drawer or popover moves focus to the next row. The promise still resolves to `confirmed` or `cancelled`, only slightly later, after the dialog's closing animation.
+
+  Two `confirm` calls in the same tick no longer replace each other: the second is rejected with `cancelled`, as it already was while a dialog is open.
+
+- 3e77b24: fix(DSTSUP-301): stop SelectList, TagGroup and RangeCalendar crashing on an error inside a Dialog, and announce their help text
+
+  Inside a `Dialog`, `Drawer` or `Tray`, these fields threw `Invalid slot "errorMessage"` as soon as they showed an error, whether set through `error` or a `Form`'s `validationErrors`. Their help text read the overlay's text slots instead of the field's own. Each field now publishes its own slots, the way React Aria's fields do, so the error renders as it does outside an overlay.
+
+  Their description and error message are now also linked to the list or calendar through `aria-describedby`, so screen readers read them with the field.
+
+- c59fdc4: fix(DSTSUP-302): center the title on the header actions when there is no description
+
+  A `<Page.Header>` or `<Panel.Header>` with actions but no `<Description>` placed its title 6 to 9px above the center of the actions. The empty description row took part of the actions' height. The title row now absorbs that height and centers the title in it, so the title lines up with the actions. Headers with a description look the same as before.
+
+- 89e5b05: feat(DSTSUP-314): give the mobile Sidebar drawer icons, a clear hierarchy and 44px touch targets
+
+  On small screens the Sidebar drawer now keeps what makes the rail easy to scan on desktop. Most of this is about `Sidebar.Rail`, but the rows, the back row, the footer and the close button are shared, so the drawer of a plain `Sidebar` with `Sidebar.Nav` changes too: 16px rows, the marked current section, the section name as a heading row with the chevron chip, 44px footer links and the larger close button. Only the rail icons and the pinned footer items are rail-only.
+
+  **Current:** every rail item became a plain text row. The icons were dropped, pinned footer items (like a help center) sat at the end of the scrolling list behind a separator, and nothing at the top level showed which section the current page belongs to. The section name inside a section was a small grey back link, and the close button was 28px.
+
+  **New:**
+
+  - Every top-level row shows its rail icon, and the text is 16px instead of 14px.
+  - The section that holds the current page is marked at the top level and announced as the current section (`aria-current="true"`).
+  - Pinned footer items stay below the list at every level instead of scrolling with it.
+  - Inside a section, its name is styled as the section heading, with the back chevron in a round chip. The whole row is still the back button.
+  - The close button and footer links meet the 44 by 44px touch target, like the nav rows already did.
+
+  Nothing changes in the component API. Pass a `Sidebar.Header` to `Sidebar.Rail` to show your brand at the top of the drawer. On desktop the rail does not render it.
+
+- becef91: fix(DSTSUP-323): the active rail section navigates instead of collapsing the panel
+
+  Selecting the active section in `Sidebar.Rail` again now takes users back to the section's page, for example from a detail page to the list.
+
+  **Current:** clicking the rail item of the section you are already in toggled the panel. With the panel open, the click collapsed it, and with the panel collapsed, it reopened it. Either way the click did not navigate, even though the item is a link to the section's page.
+
+  **New:** clicking the active section always goes to its page. With the panel open, the panel stays open. With the panel collapsed, the panel reopens and its heading gets focus, as before. Only `Sidebar.Toggle` and Cmd+B / Ctrl+B collapse the panel. A section whose navigation has no link to land on still does not navigate. Nothing changes in the component API.
+
+- 9882690: chore(DST-1956): update React Aria to 1.22.1.
+
+  **What changed:**
+
+  - `react-aria-components` 1.21.1 → 1.22.1, which pins `react-aria` 3.53.1 and `react-stately` 3.51.0.
+  - The `react-aria-components` floor moves to `^1.22.1`, so consumers can't resolve a version without `Sheet`, which the Tray rewrite in DST-1865 builds on.
+  - `@internationalized/date` → `^3.12.4` and `@react-types/shared` → `^3.37.0`, matching what RAC 1.22.1 declares.
+  - The individual `@react-aria/*` and `@react-stately/*` packages had no new release, so their floors stay as they are.
+
+  **Impact:**
+
+  No API change in Marigold components. 1.22.1 also reverts a keyboard-handler change to `useMenu`, `useDateField`, `useDatePicker` and `useDateRangePicker` that 1.22.0 shipped, so those components behave as they did on 1.21.
+
+- c5efe3c: fix(DST-1948): give a drilled-in Sidebar level a real heading
+
+  The section name beside the back button is now a heading (an `h2` in a plain sidebar) instead of the button's label, so screen-reader heading navigation finds it on mobile and desktop. The back button keeps its "Back to …" name and still covers the whole row, and the level's region is named by the heading. Headings inside a nav now step down from the heading they sit under. Group labels on a drilled-in level move to level 3, under the section heading. In the desktop `Sidebar.Rail` panel, the nav's group labels and drill-down headings start at level 3, under the panel title. Nothing changes visually.
+
+  For custom themes: the `backButton` slot now styles the back row, which holds the chevron `button` and the heading (`[data-slot=title]`). The row is not focusable, so move `focus-visible:` styles to `has-[:focus-visible]:` and reset the button's outline with `[&>button]:outline-none`, and point `span` selectors at `button` or `[data-slot=title]`. Until then the button keeps the browser's focus ring.
+
+- a98043e: refactor(DST-1957): `TagGroup` and `Sidebar` pass state to their parts through context
+
+  `TagGroup` with `collapseAt` now also hides tags that you wrap in your own component. Before, the wrapper received `hidden` and the tag stayed visible unless the wrapper passed it on.
+
+  A `Sidebar.Nav` inside a `Sidebar.Rail` section now respects its own `current` and `aria-label` props. Before, the rail's `current` and the panel title always replaced them, so the nav landmark was always named after the panel. Without the props, the nav still follows the rail and is named after the panel title.
+
+- Updated dependencies [0154b3a]
+  - @marigold/system@18.4.0
+
 ## 18.3.1
 
 ### Patch Changes
