@@ -64,10 +64,7 @@ jobs:
         with:
           payload-file-path: './slack-notification.json'
           webhook: ${{ secrets.SLACK_HOOK }}
-          webhook-type: webhook-trigger
-          # Slack accepts the message but the action reads the response as a
-          # failure, so every retry posted another copy. Send exactly once.
-          retries: 0
+          webhook-type: incoming-webhook
 
       # Rebuild search embeddings when docs content changed
       - name: Rebuild search embeddings
