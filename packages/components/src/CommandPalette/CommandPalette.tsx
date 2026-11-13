@@ -1,5 +1,12 @@
 import type { Key, ReactNode } from 'react';
-import { use, useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import {
+  use,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react';
 import type RAC from 'react-aria-components';
 import { useFilter } from 'react-aria-components/Autocomplete';
 import { Dialog } from 'react-aria-components/Dialog';
@@ -244,27 +251,25 @@ const CommandPaletteBody = <T extends object>({
     skipDelay: (settled, next) =>
       next.term === '' || next.prefix !== settled.prefix,
   });
-  // An effect, so the app also hears the empty search of a fresh opening. A
-  // layout effect, so the app's `loading` lands before the next frame and
-  // the rows never count as current in between.
-  const reportSearch = useEffectEvent((next: CommandPaletteSearchState) =>
-    onSearchChange?.(next)
+  // Rows from the app's own search are stale until it has answered the
+  // search, see `useKeepFirstItemActive`.
+  const appSearches =
+    onSearchChange !== undefined && (filter === false || unfiltered.size > 0);
+  const { inputRef, menuRef, searchReported } = useKeepFirstItemActive(
+    inputValue,
+    items,
+    { loading, searchWaiting: appSearches && searchWaiting }
   );
-  useLayoutEffect(() => {
+
+  // An effect, so the app also hears the empty search of a fresh opening.
+  const reportSearch = useEffectEvent((next: CommandPaletteSearchState) => {
+    onSearchChange?.(next);
+    if (appSearches) searchReported();
+  });
+  useEffect(() => {
     reportSearch(settledSearch);
   }, [settledSearch]);
 
-  // Rows from the app's own search are stale while the next search waits for
-  // the pause or loads. Enter then runs the first of the new rows instead.
-  const appSearches =
-    onSearchChange !== undefined && (filter === false || unfiltered.size > 0);
-  const stale = loading || (appSearches && searchWaiting);
-
-  const { inputRef, menuRef } = useKeepFirstItemActive(
-    inputValue,
-    items,
-    stale
-  );
   const context = useMemo(
     () => ({
       query,

@@ -1227,6 +1227,62 @@ ServerResultsInOneGroup.test(
   }
 );
 
+// Loading that starts late
+// ---------------
+// Some apps set `loading` a moment after the search, from their own effect
+// or a transition. Enter still waits for their answer.
+export const LoadingStartsLate = meta.story({
+  ...noSnapshot,
+  render: function Render(args) {
+    const [term, setTerm] = useState('');
+    const [events, setEvents] = useState<ServerEvent[] | null>(null);
+    const [loading, setLoading] = useState(false);
+    useEffect(() => {
+      if (!term) return;
+      const start = setTimeout(() => setLoading(true), 40);
+      const done = setTimeout(() => {
+        setEvents(searchServer(term));
+        setLoading(false);
+      }, 300);
+      return () => {
+        clearTimeout(start);
+        clearTimeout(done);
+      };
+    }, [term]);
+    return (
+      <CommandPalette.Trigger {...args}>
+        <CommandPalette.Button />
+        <CommandPalette
+          onSearchChange={search => setTerm(search.term)}
+          loading={loading}
+          onAction={onServerAction}
+        >
+          <CommandPalette.Group title="Events" filter={false}>
+            {(term && events ? events : recentServerEvents).map(event => (
+              <CommandPalette.Item key={event.id} id={`event-${event.id}`}>
+                {event.name}
+              </CommandPalette.Item>
+            ))}
+          </CommandPalette.Group>
+        </CommandPalette>
+      </CommandPalette.Trigger>
+    );
+  },
+});
+
+LoadingStartsLate.test(
+  'Enter waits for loading that starts after the search',
+  async ({ canvas, userEvent }) => {
+    onServerAction.mockClear();
+    await openPalette({ canvas, userEvent });
+    await canvas.findByRole('searchbox');
+    await userEvent.keyboard('japan{Enter}');
+    await waitFor(() => expect(onServerAction).toHaveBeenCalled());
+    await expect(onServerAction).toHaveBeenCalledTimes(1);
+    await expect(onServerAction).toHaveBeenCalledWith('event-8');
+  }
+);
+
 // Keep open
 // ---------------
 // `shouldCloseOnSelect={false}`, as on `Menu.Item`.
