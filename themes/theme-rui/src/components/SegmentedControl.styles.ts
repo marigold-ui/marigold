@@ -33,7 +33,7 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
   // negative `-mx` overflows the rounded track (broke at 320px). `scrollTo` defers
   // to `scroll-smooth` via `behavior: 'auto'`, and overscroll is contained (Tabs).
   list: cva({
-    base: 'flex w-full items-center ui-scroll-mask-x p-[3px] -my-[3px] overscroll-x-contain motion-safe:scroll-smooth',
+    base: 'flex w-full items-center ui-scroll-mask-x ui-scrollbar-none p-[3px] -my-[3px] overscroll-x-contain motion-safe:scroll-smooth',
     variants: {
       variant: {
         default: 'gap-0',

@@ -8,7 +8,7 @@ export const Tabs: ThemeComponent<'Tabs'> = {
   // alongside `snap-proximity`: alone the latter sets only the strictness var
   // and never emits `scroll-snap-type`.
   tabsListScroll: cva({
-    base: 'ui-scroll-mask-x -my-1 snap-x snap-proximity scroll-px-6 overscroll-x-contain py-1 motion-safe:scroll-smooth',
+    base: 'ui-scroll-mask-x ui-scrollbar-none -my-1 snap-x snap-proximity scroll-px-6 overscroll-x-contain py-1 motion-safe:scroll-smooth',
   }),
   // Depends on `tabsListScroll` above providing the `overflow-x`: the two slots
   // are a pair.

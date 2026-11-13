@@ -109,11 +109,21 @@ A column without a `width` falls back to react-aria's 75px minimum, so a narrow 
 - **A number** for columns whose content has a predictable size, like a badge, a date or a row action.
 - **`minWidth`** on fraction columns, to set the width at which the column stops shrinking. A static `width` is its own floor already and needs no `minWidth`.
 
-Those floors added together are the smallest width the table can take. Where that can exceed the space available, wrap the table in a [`<Scrollable>`](/components/layout/scrollable) so the columns stay reachable instead of being clipped by the page.
+Those floors added together are the smallest width the table can take. Where less space than that is available, the table scrolls sideways inside its container rather than painting over it, so the columns stay reachable and the layout around the table stays intact.
 
 <ComponentDemo name="table-column-widths" />
 
-A table without a scroll container has to fit its container at every width, so keep its floors low: fraction widths on their own divide up the available space without raising the minimum.
+Scrolling sideways is a fallback, not a layout, so keep the floors low and it stays rare: fraction widths on their own divide up the available space without raising the minimum. While a table scrolls sideways, a sticky header or footer and the `actionBar` pin to that scroll area rather than to the page, and because that area has no height of its own, none of them stay put as the page scrolls. Wrap the table in a [`<Scrollable>`](/components/layout/scrollable) where they have to: a scroll area with a height of its own takes over both directions and keeps them pinned.
+
+### Narrow screens
+
+Avoid tables on phones. A table that only reads with sideways scrolling is the wrong presentation there, not a bug to fix. Comparing values across columns is what a table is for, and at 320px, the minimum supported width, there is room for two or three of them. Prefer a shape that reflows:
+
+- **[`<Card>`](/components/collection/card)** when each record is read on its own rather than compared with its neighbours.
+- **[`<ListView>`](/components/collection/listview)** when the records are scanned quickly and acted on one at a time.
+- **Fewer columns**, with the secondary values moved to a detail view, when the data really is tabular.
+
+Where a table is still the right choice on a small screen, it scrolls sideways inside its container, at the cost described under [Column widths](#column-widths). While it scrolls, the edge that still has columns behind it fades out, so the hidden columns are visible as hidden rather than absent. The native scrollbar stays on either way. The fade needs CSS scroll-driven animations, and without them the scrollbar is the only cue.
 
 ### Selecting rows
 
