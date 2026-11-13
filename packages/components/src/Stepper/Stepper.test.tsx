@@ -364,14 +364,14 @@ describe('on a small screen', () => {
     ).toBeGreaterThanOrEqual(step.getBoundingClientRect().bottom);
   });
 
-  test('puts the current label and the counter on one row', () => {
+  test('puts the counter and then the current label on one row', () => {
     render(<Basic.Component />);
 
     const label = currentLabelLine('Choose plan').getBoundingClientRect();
     const count = screen.getByText('Step 2 of 4').getBoundingClientRect();
 
-    expect(count.left).toBeGreaterThanOrEqual(label.right);
-    expect(count.top).toBeLessThan(label.bottom);
+    expect(label.left).toBeGreaterThanOrEqual(count.right);
+    expect(label.top).toBeLessThan(count.bottom);
   });
 
   test('puts the error count below the current label', () => {

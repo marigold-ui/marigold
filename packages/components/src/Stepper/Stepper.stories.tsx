@@ -648,8 +648,8 @@ ValidationErrors.test(
 );
 
 /**
- * Below the `sm` breakpoint the row turns into a segmented track above the
- * current step's label and a counter. Every segment is still the step's button or
+ * Below the `sm` breakpoint the row turns into a segmented track above a
+ * counter and the current step's label. Every segment is still the step's button or
  * link, so the user can tap back to a finished step.
  */
 export const SmallScreen = Basic.extend({

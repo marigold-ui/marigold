@@ -7,7 +7,7 @@
 
 feat(DST-1839): give `Stepper` a compact layout on small screens and animated step changes
 
-On phones the stepper no longer overflows its container. Below the small-screen breakpoint it switches on its own to a track with one segment per step, with the name of the current step and a "Step 2 of 4" counter below it, so any number of steps fits and the user always sees where they are. Finished steps stay tappable, and a step that failed earlier turns red and is counted on an extra line below. `hideLabels` now only affects large screens, because small screens show the current step's label anyway.
+On phones the stepper no longer overflows its container. Below the small-screen breakpoint it switches on its own to a track with one segment per step, with a "Step 2 of 4" counter and the name of the current step below it, so any number of steps fits and the user always sees where they are. Finished steps stay tappable, and a step that failed earlier turns red and is counted on an extra line below. `hideLabels` now only affects large screens, because small screens show the current step's label anyway.
 
 Moving to another step now fills the line toward it and glides the highlight to the new step, with the same timing as the `Tabs` indicator. The motion is turned off when the user prefers reduced motion. A failed step that is current now gets the current fill on large screens too, with its warning icon on top, instead of a red outline.
 

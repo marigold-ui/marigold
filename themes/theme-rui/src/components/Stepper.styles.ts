@@ -1,8 +1,8 @@
 import type { ThemeComponent } from '@marigold/system';
 import { cva } from '@marigold/system';
 
-// Below `sm` the row turns into a segmented track above the current label and
-// a counter. The DOM stays the same, only these styles switch.
+// Below `sm` the row turns into a segmented track above a counter and the
+// current label. The DOM stays the same, only these styles switch.
 export const Stepper: ThemeComponent<'Stepper'> = {
   root: cva({
     base: 'max-sm:flex-col max-sm:items-stretch max-sm:gap-1',
@@ -19,14 +19,14 @@ export const Stepper: ThemeComponent<'Stepper'> = {
   count: cva({
     base: [
       'text-secondary shrink-0 text-sm font-medium tabular-nums',
-      // Right of the label, level with its first line however long it wraps.
-      'max-sm:order-1 max-sm:self-start max-sm:leading-6',
+      // Level with the label's first line, however long it wraps.
+      'max-sm:self-start max-sm:leading-6',
     ],
   }),
   errorCount: cva({
     base: [
       'items-center gap-1 text-sm text-destructive-accent max-sm:inline-flex',
-      'max-sm:order-2 max-sm:basis-full',
+      'max-sm:order-1 max-sm:basis-full',
       '[&_svg]:size-4 [&_svg]:shrink-0',
     ],
   }),

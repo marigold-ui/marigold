@@ -159,7 +159,7 @@ Hiding the labels also takes away a sighted user's sense of how far along they a
 
 ### Small screens
 
-A row of markers and labels does not fit a phone. Below the small-screen breakpoint the stepper switches to a compact layout by itself: a track with one segment per step, and below it the name of the current step next to a "Step 2 of 4" counter. You do not need to change your code for this, but a few choices in your flow decide how well it reads on a phone.
+A row of markers and labels does not fit a phone. Below the small-screen breakpoint the stepper switches to a compact layout by itself: a track with one segment per step, and below it a "Step 2 of 4" counter followed by the name of the current step. You do not need to change your code for this, but a few choices in your flow decide how well it reads on a phone.
 
 <StepperSmallScreenAnatomy />
 
@@ -170,13 +170,13 @@ A row of markers and labels does not fit a phone. Below the small-screen breakpo
     stays the step's button or link, so a finished step can be tapped.
   </li>
   <li>
+    <b>Counter:</b> Where the user stands, as "Step 2 of 4". It is hidden from
+    screen readers, because every step already announces its own position.
+  </li>
+  <li>
     <b>Current label:</b> The name of the step the user is on, the only label
     shown on small screens. It wraps onto a second line instead of being cut
     off.
-  </li>
-  <li>
-    <b>Counter:</b> Where the user stands, as "Step 2 of 4". It is hidden from
-    screen readers, because every step already announces its own position.
   </li>
 </ul>
 
