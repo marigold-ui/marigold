@@ -58,7 +58,7 @@ Navigation is the core of it. People open the palette, type a few letters of a p
 - **Actions** people start often, such as "Create event". They skip the detour to the page where the button lives.
 - **Records** people know by name or number, such as an event or an order. They skip the list page, the filter and the scanning.
 
-A palette pays off in apps with more pages than the sidebar shows comfortably and for people who work in the app every day. In an app with a handful of pages the sidebar already shows everything at a glance, and the palette is one more thing to learn. It complements the navigation and never replaces it. People who don't know the shortcut, or who use a touch device, still need the sidebar and the buttons on the page, so don't make the palette the only way to reach a page or an action.
+A palette pays off in apps with more pages than the sidebar shows comfortably and for people who work in the app every day. In an app with a handful of pages the sidebar already shows everything at a glance, and the palette is one more thing to learn. It complements the navigation and never replaces it. People who don't know the shortcut, or who use a touch device, still need the sidebar and the buttons on the page, so don't make the palette the only way to reach a page or an action. To narrow what is already on a page, like the rows of a table, use a [search field](/components/form/search-field) instead: the palette takes people somewhere else.
 
 <ComponentDemo name="command-palette-basic" />
 
@@ -152,10 +152,6 @@ If your app has a full search, end the list with a row that runs it for the quer
 
 <ComponentDemo name="command-palette-empty" />
 
-### Palette or search field
-
-The palette and a [search field](/components/form/search-field) can sit in the same place in the top navigation, but they solve different problems. The palette takes people somewhere: to a page, a record or an action, from anywhere in the app. A search field narrows what is already on the page, for example the rows of a table. Use a search field when people look through results together, compare them or refine a filter, and the palette when they know what they want and need to get there fast.
-
 ## Accessibility
 
 The palette follows the [combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/). Focus stays in the search field while the arrow keys move a virtual focus through the list, so screen readers announce the active row and people can keep typing. The empty and loading states sit inside the list, where screen readers announce them.
@@ -212,9 +208,5 @@ The search field is the only Tab stop. The caret is its focus indicator, so the 
 
 ## Alternative components
 
-- [Menu](/components/overlay/menu): Use for a short list of actions opened from a labelled button.
-- [ActionMenu](/components/overlay/action-menu): Use for contextual actions on a row or item.
-- [Autocomplete](/components/form/autocomplete): Use to search and pick a value inside a form.
-- [ComboBox](/components/form/combobox): Use to pick a value from a list inside a form, with free text allowed.
-- [SearchField](/components/form/search-field): Use to narrow what is already on the page, see [Palette or search field](#palette-or-search-field).
-- [Sidebar](/components/navigation/sidebar): Use for the app's main navigation, which the palette complements.
+- [Sidebar](/components/navigation/sidebar): Use for the app's main navigation. The palette complements it and never replaces it.
+- [SearchField](/components/form/search-field): Use to narrow what is already on the page, for example the rows of a table.
