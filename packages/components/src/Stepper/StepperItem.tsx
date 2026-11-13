@@ -8,7 +8,9 @@ export interface StepperItemProps {
 
   /**
    * The visible label of the step. Always authored, even when the Stepper sets
-   * `hideLabels`, because it is the step's accessible name.
+   * `hideLabels`, because it is the step's accessible name. The current step's
+   * label is rendered a second time for the small-screen layout, so it must
+   * not contain elements with an `id`.
    */
   children: ReactNode;
 

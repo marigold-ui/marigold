@@ -223,13 +223,20 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Stepper?: Record<
+      | 'root'
+      | 'summary'
+      | 'count'
+      | 'errorCount'
+      | 'currentLabel'
       | 'container'
       | 'item'
       | 'link'
       | 'marker'
       | 'label'
       | 'connector'
-      | 'count',
+      | 'segment'
+      | 'progressFill'
+      | 'currentIndicator',
       ComponentStyleFunction<string, string>
     >;
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;

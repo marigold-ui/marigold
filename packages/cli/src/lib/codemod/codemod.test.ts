@@ -2,6 +2,7 @@ import { type AnyNode, parseTsx } from '../tsx-ast.js';
 import { asPropertyKey, findThemeComponents } from './anchor.js';
 import { classTokens, detectIndentUnit, reindent } from './engine.js';
 import { v18 } from './manifests/v18.js';
+import { v19 } from './manifests/v19.js';
 import { reportDeadKeys, reportStructure } from './primitives/report.js';
 import { restructureToSlots } from './primitives/restructure-to-slots.js';
 import {
@@ -342,5 +343,81 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = cva({});
     expect(
       (result as Extract<CodemodOutcome, { kind: 'unchanged' }>).warnings[0]
     ).toContain('Switch DOM');
+  });
+});
+
+describe('v19 Stepper slots', () => {
+  const V18_STEPPER = `import { cva, ThemeComponent } from '@marigold/system';
+
+export const Stepper: ThemeComponent<'Stepper'> = {
+    container: cva({ base: 'flex gap-2' }),
+    item: cva({}),
+    link: cva({}),
+    marker: cva({ base: 'in-data-[state=current]:bg-brand' }),
+    label: cva({}),
+    connector: cva({ base: 'in-data-completed:bg-brand' }),
+    count: cva({})
+};
+`;
+
+  test('keeps the hideLabels counter visible', () => {
+    const result = stubMissingSlots(v19).apply(V18_STEPPER);
+
+    assertEdited(result);
+    expect(result.output).toContain(
+      `    summary: cva({
+        base: 'items-center gap-x-2 in-data-hide-labels:flex',
+    }),`
+    );
+  });
+
+  test('stubs the slots that need no starting styles', () => {
+    const result = stubMissingSlots(v19).apply(V18_STEPPER);
+
+    assertEdited(result);
+    for (const slot of [
+      'root',
+      'errorCount',
+      'currentLabel',
+      'segment',
+      'progressFill',
+      'currentIndicator',
+    ]) {
+      expect(result.output).toContain(`    ${slot}: cva({}),`);
+    }
+  });
+
+  test('falls back to an empty stub for an empty default', () => {
+    const manifest = { ...v19, slotDefaults: { Stepper: { summary: '' } } };
+    const result = stubMissingSlots(manifest).apply(V18_STEPPER);
+
+    assertEdited(result);
+    expect(result.output).toContain('    summary: cva({}),');
+  });
+
+  test('leaves the existing slots untouched', () => {
+    const result = stubMissingSlots(v19).apply(V18_STEPPER);
+
+    assertEdited(result);
+    expect(result.output).toContain(
+      `marker: cva({ base: 'in-data-[state=current]:bg-brand' }),`
+    );
+  });
+
+  test('produces parseable output', () => {
+    const result = stubMissingSlots(v19).apply(V18_STEPPER);
+
+    assertEdited(result);
+    const [decl] = findThemeComponents(parse(result.output));
+    expect(decl.init.type).toBe('ObjectExpression');
+  });
+
+  test('points the report at the compact layout', () => {
+    const result = reportStructure(v19).apply(V18_STEPPER);
+
+    expect(result.kind).toBe('unchanged');
+    expect(
+      (result as Extract<CodemodOutcome, { kind: 'unchanged' }>).warnings[0]
+    ).toContain('compact layout');
   });
 });

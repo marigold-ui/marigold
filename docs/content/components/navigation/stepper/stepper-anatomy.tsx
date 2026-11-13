@@ -103,7 +103,7 @@ export const StepperAnatomy = () => (
 
     <g
       fontFamily="ui-sans-serif, system-ui, sans-serif"
-      fontSize="12"
+      fontSize="14"
       fontWeight="600"
       textAnchor="middle"
       className="fill-fd-primary transition-colors duration-300"

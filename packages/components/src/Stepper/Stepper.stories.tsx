@@ -1,11 +1,14 @@
 import type { Key } from 'react';
 import { useState } from 'react';
-import { expect, waitFor } from 'storybook/test';
+import { expect, fn, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
+import { Checkbox } from '../Checkbox/Checkbox';
 import { Form } from '../Form/Form';
 import { Headline } from '../Headline/Headline';
+import { NumberField } from '../NumberField/NumberField';
+import { Radio } from '../Radio/Radio';
 import { RouterProvider } from '../RouterProvider/RouterProvider';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
@@ -275,29 +278,6 @@ export const WithHrefs = meta.story({
   },
 });
 
-/**
- * Long flows drop the labels visually so the markers still fit, but every label
- * is still authored and still read aloud.
- */
-export const HideLabels = meta.story({
-  parameters: { chromatic: { disableSnapshot: true } },
-  args: {
-    'aria-label': 'Event creation progress',
-    hideLabels: true,
-    selectedKey: 'categories',
-    completedKeys: ['basics', 'dates'],
-  },
-  render: args => (
-    <Stepper {...args}>
-      <Stepper.Item id="basics">Basic data</Stepper.Item>
-      <Stepper.Item id="dates">Dates</Stepper.Item>
-      <Stepper.Item id="categories">Ticket categories</Stepper.Item>
-      <Stepper.Item id="prices">Prices</Stepper.Item>
-      <Stepper.Item id="publish">Publish</Stepper.Item>
-    </Stepper>
-  ),
-});
-
 WithHrefs.test(
   'routes through the RouterProvider instead of leaving the page',
   { parameters: { chromatic: { disableSnapshot: true } } },
@@ -335,6 +315,44 @@ WithHrefs.test(
     ).toBeInTheDocument();
   }
 );
+
+WithHrefs.test(
+  'Keyboard focus draws a ring that clears 3:1 on a step link',
+  async ({ canvas, userEvent }) => {
+    const [link] = canvas.getAllByRole('link');
+
+    link!.focus();
+    await userEvent.tab();
+
+    await userEvent.tab({ shift: true });
+
+    await expect(link).toHaveFocus();
+    await waitFor(() => expectFocusRingContrast(link!));
+  }
+);
+
+/**
+ * Long flows drop the labels visually so the markers still fit, but every label
+ * is still authored and still read aloud.
+ */
+export const HideLabels = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: {
+    'aria-label': 'Event creation progress',
+    hideLabels: true,
+    selectedKey: 'categories',
+    completedKeys: ['basics', 'dates'],
+  },
+  render: args => (
+    <Stepper {...args}>
+      <Stepper.Item id="basics">Basic data</Stepper.Item>
+      <Stepper.Item id="dates">Dates</Stepper.Item>
+      <Stepper.Item id="categories">Ticket categories</Stepper.Item>
+      <Stepper.Item id="prices">Prices</Stepper.Item>
+      <Stepper.Item id="publish">Publish</Stepper.Item>
+    </Stepper>
+  ),
+});
 
 const FORM_STEPS = [
   { id: 'contact', label: 'Contact' },
@@ -629,17 +647,260 @@ ValidationErrors.test(
   }
 );
 
-WithHrefs.test(
-  'Keyboard focus draws a ring that clears 3:1 on a step link',
-  async ({ canvas, userEvent }) => {
-    const [link] = canvas.getAllByRole('link');
+/**
+ * Below the `sm` breakpoint the row turns into a segmented track above a
+ * counter and the current step's label. Every segment is still the step's button or
+ * link, so the user can tap back to a finished step.
+ */
+export const SmallScreen = Basic.extend({
+  globals: { viewport: { value: 'smallScreen' } },
+});
 
-    link!.focus();
+SmallScreen.test(
+  'shows the counter instead of the full row',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    await expect(canvas.getByText('Step 2 of 4')).toBeVisible();
+  }
+);
+
+SmallScreen.test(
+  'returns to a finished step from its segment',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onSelectionChange: fn() },
+  },
+  async ({ args, canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: /Sign in/ }));
+
+    await expect(args.onSelectionChange).toHaveBeenCalledWith('signin');
+  }
+);
+
+SmallScreen.test(
+  'draws the focus ring on a segment with keyboard focus',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
     await userEvent.tab();
 
-    await userEvent.tab({ shift: true });
+    const step = canvas.getByRole('button', { name: /Sign in/ });
+    await expect(step).toHaveFocus();
+    await waitFor(() => expectFocusRingContrast(step));
+  }
+);
 
-    await expect(link).toHaveFocus();
-    await waitFor(() => expectFocusRingContrast(link!));
+/**
+ * Twelve steps still fit a phone, because only the current label is shown and
+ * the segments share the width. `hideLabels` changes nothing here.
+ */
+export const ManyStepsSmallScreen = meta.story({
+  globals: { viewport: { value: 'extraSmallScreen' } },
+  parameters: { surface: false },
+  args: ManySteps.input.args,
+  // The narrowest phone with 16px page gutters.
+  render: args => (
+    <div className="px-4">
+      <Stepper {...args}>
+        {EVENT_STEPS.map(step => (
+          <Stepper.Item key={step.id} id={step.id}>
+            {step.label}
+          </Stepper.Item>
+        ))}
+      </Stepper>
+    </div>
+  ),
+});
+
+/**
+ * A failed step that is not the current one turns its segment red, and a
+ * line below the label says how many need attention, so the error does not
+ * rest on colour alone. A failed current step shows the warning on its label instead.
+ */
+export const ErrorsSmallScreen = meta.story({
+  globals: { viewport: { value: 'smallScreen' } },
+  args: {
+    'aria-label': 'Event creation progress',
+    selectedKey: 'prices',
+    completedKeys: ['basics', 'venue', 'categories'],
+    errorKeys: ['dates'],
+    disabledKeys: ['discounts'],
+  },
+  render: args => (
+    <Stepper {...args}>
+      {EVENT_STEPS.slice(0, 7).map(step => (
+        <Stepper.Item key={step.id} id={step.id}>
+          {step.label}
+        </Stepper.Item>
+      ))}
+    </Stepper>
+  ),
+});
+
+/**
+ * A long current label wraps onto a second line instead of being cut off.
+ */
+export const LongLabelSmallScreen = meta.story({
+  globals: { viewport: { value: 'smallScreen' } },
+  args: {
+    'aria-label': 'Checkout progress',
+    selectedKey: 'seats',
+  },
+  render: args => (
+    <Stepper {...args}>
+      <Stepper.Item id="event">Event</Stepper.Item>
+      <Stepper.Item id="seats">
+        Ticket categories and seat reservations for the whole season
+      </Stepper.Item>
+    </Stepper>
+  ),
+});
+
+const RESALE_STEPS = [
+  { id: 'tickets', label: 'Tickets' },
+  { id: 'price', label: 'Price' },
+  { id: 'payout', label: 'Payout' },
+  { id: 'review', label: 'Review and offer' },
+];
+
+const ResalePanel = ({ step }: { step: Key }) => {
+  if (step === 'tickets') {
+    return (
+      <Stack space={4}>
+        <Headline level={2}>Which tickets do you want to sell?</Headline>
+        <Text variant="muted">
+          Pick the tickets you can no longer use. They stay valid until a buyer
+          has paid, so you can still go if nobody buys them.
+        </Text>
+        <Checkbox.Group label="Tickets for Hamlet, Sat 14 March, 7:30 pm">
+          <Checkbox value="a-4-12" label="Stalls, row 4, seat 12" />
+          <Checkbox value="a-4-13" label="Stalls, row 4, seat 13" />
+        </Checkbox.Group>
+      </Stack>
+    );
+  }
+  if (step === 'price') {
+    return (
+      <Stack space={4}>
+        <Headline level={2}>Set your price</Headline>
+        <Text variant="muted">
+          Buyers see this price plus a service fee. You can ask for at most what
+          you paid, €49.00 per ticket.
+        </Text>
+        <NumberField
+          label="Price per ticket"
+          defaultValue={45}
+          maxValue={49}
+          formatOptions={{ style: 'currency', currency: 'EUR' }}
+        />
+      </Stack>
+    );
+  }
+  if (step === 'payout') {
+    return (
+      <Stack space={4}>
+        <Headline level={2}>How do you want to be paid?</Headline>
+        <Text variant="muted">
+          We pay out within five working days after the event.
+        </Text>
+        <Radio.Group label="Payout method" defaultValue="bank">
+          <Radio value="bank">Bank transfer</Radio>
+          <Radio value="voucher">Voucher for your next booking</Radio>
+        </Radio.Group>
+        <TextField label="IBAN" placeholder="DE00 0000 0000 0000 0000 00" />
+      </Stack>
+    );
+  }
+  return (
+    <Stack space={4}>
+      <Headline level={2}>Check your offer</Headline>
+      <Text>
+        Two tickets for Hamlet, Sat 14 March, at €45.00 each, paid out by bank
+        transfer.
+      </Text>
+      <Text variant="muted">
+        Once a buyer pays, your tickets are cancelled and new ones are issued to
+        them. You can withdraw the offer until then.
+      </Text>
+    </Stack>
+  );
+};
+
+/**
+ * A complete flow on a phone: reselling tickets in the customer account. The
+ * stepper takes two lines above the content, names the current step, and
+ * lets the user tap back to anything already finished.
+ */
+export const ResaleFlowSmallScreen = meta.story({
+  tags: ['component-test'],
+  globals: { viewport: { value: 'smallScreen' } },
+  args: {
+    'aria-label': 'Resale progress',
+  },
+  render: function Render(args) {
+    const [index, setIndex] = useState(0);
+    const [completed, setCompleted] = useState<Key[]>([]);
+    const isLast = index === RESALE_STEPS.length - 1;
+    const goTo = (key: Key) =>
+      setIndex(RESALE_STEPS.findIndex(step => step.id === key));
+    const advance = () => {
+      setCompleted(done =>
+        done.includes(RESALE_STEPS[index].id)
+          ? done
+          : [...done, RESALE_STEPS[index].id]
+      );
+      setIndex(current => Math.min(current + 1, RESALE_STEPS.length - 1));
+    };
+
+    return (
+      <Stack space={6}>
+        <Stepper
+          {...args}
+          selectedKey={RESALE_STEPS[index].id}
+          completedKeys={completed}
+          onSelectionChange={goTo}
+        >
+          {RESALE_STEPS.map(step => (
+            <Stepper.Item key={step.id} id={step.id}>
+              {step.label}
+            </Stepper.Item>
+          ))}
+        </Stepper>
+        <ResalePanel step={RESALE_STEPS[index].id} />
+        <ButtonGroup>
+          <Button
+            variant="secondary"
+            disabled={index === 0}
+            onPress={() => setIndex(current => current - 1)}
+          >
+            Back
+          </Button>
+          <Button variant="primary" onPress={advance}>
+            {isLast ? 'Offer for resale' : 'Continue'}
+          </Button>
+        </ButtonGroup>
+      </Stack>
+    );
+  },
+});
+
+ResaleFlowSmallScreen.test(
+  'walks to the last step and back from the stepper',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    await step('Continue to the last step', async () => {
+      for (let i = 0; i < 3; i++) {
+        await userEvent.click(canvas.getByRole('button', { name: 'Continue' }));
+      }
+
+      await expect(canvas.getByText('Step 4 of 4')).toBeVisible();
+    });
+
+    await step('Tap the finished price step', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: /^Price/ }));
+
+      await expect(
+        canvas.getByRole('heading', { name: 'Set your price' })
+      ).toBeInTheDocument();
+    });
   }
 );
