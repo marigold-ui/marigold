@@ -1,4 +1,4 @@
-import { type Ref, useRef } from 'react';
+import { type Ref, useCallback, useRef } from 'react';
 import type RAC from 'react-aria-components';
 import {
   Sheet as RACSheet,
@@ -61,6 +61,33 @@ const SHEET_MAX_HEIGHT =
 // Helpers
 // ---------------
 /**
+ * Publishes how much of the layout viewport the on-screen keyboard covers as
+ * `--sheet-keyboard`. iOS keeps the layout viewport and RAC keeps the sheet at
+ * its bottom, behind the keyboard, so the sheet lifts itself by this much.
+ */
+const trackKeyboard = (overlay: HTMLElement) => {
+  const viewport = window.visualViewport;
+  if (!viewport) {
+    return;
+  }
+  const update = () => {
+    const covered =
+      document.documentElement.clientHeight -
+      viewport.height -
+      viewport.offsetTop;
+    overlay.style.setProperty('--sheet-keyboard', `${Math.max(0, covered)}px`);
+  };
+  update();
+  viewport.addEventListener('resize', update);
+  viewport.addEventListener('scroll', update);
+
+  return () => {
+    viewport.removeEventListener('resize', update);
+    viewport.removeEventListener('scroll', update);
+  };
+};
+
+/**
  * Pins sheet content at `height` so the sheet does not shrink while the
  * content changes, capped so the sheet still fits `--sheet-available`.
  * Publishes the space around the content (handle, title, actions) as
@@ -88,10 +115,14 @@ export const Sheet = ({
 }: SheetProps) => {
   const classNames = useClassNames({ component: 'Sheet' });
   const overlayRef = useRef<HTMLDivElement>(null);
+  const overlayCallbackRef = useCallback((overlay: HTMLDivElement | null) => {
+    overlayRef.current = overlay;
+    return overlay ? trackKeyboard(overlay) : undefined;
+  }, []);
 
   return (
     <SheetOverlay
-      ref={overlayRef}
+      ref={overlayCallbackRef}
       isOpen={open}
       onOpenChange={onOpenChange}
       preventDismissal={!dismissable}
@@ -123,6 +154,7 @@ export const Sheet = ({
             className={cn(
               'flex flex-col',
               SHEET_MAX_HEIGHT,
+              'relative -top-(--sheet-keyboard,0px)',
               classNames.content
             )}
           >

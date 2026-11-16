@@ -17,6 +17,7 @@ What changes for users of those components on small screens:
 - Focus returns to the trigger on close, also without reduced motion.
 - Escape and a press outside are ignored while the tray slides in, so a double tap on the trigger opens it instead of closing it again.
 - Opening the mobile ComboBox, Autocomplete or TagField no longer scrolls the page behind the tray.
+- The tray moves above the on-screen keyboard instead of staying behind it, so the results and actions stay in view while typing.
 
 The [Responsive](/foundations/responsive#overlays-on-small-screens) foundations page describes how the tray behaves.
 

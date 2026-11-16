@@ -148,3 +148,60 @@ Basic.test(
     );
   }
 );
+
+/**
+ * Fakes an on-screen keyboard: the visual viewport shrinks by `height` while
+ * the layout viewport stays, as on iOS. Returns a function that closes it.
+ */
+const openKeyboard = (height: number) => {
+  const viewport = window.visualViewport;
+  if (!viewport) {
+    throw new Error('visualViewport is not supported');
+  }
+  const visible = document.documentElement.clientHeight - height;
+  Object.defineProperty(viewport, 'height', {
+    configurable: true,
+    get: () => visible,
+  });
+  viewport.dispatchEvent(new Event('resize'));
+
+  return () => {
+    Reflect.deleteProperty(viewport, 'height');
+    viewport.dispatchEvent(new Event('resize'));
+  };
+};
+
+Basic.test(
+  'Moves above the on-screen keyboard',
+  async ({ canvas, userEvent, step }) => {
+    const dialog = await openSheet({ canvas, userEvent });
+    const close = canvas.getByRole('button', { name: 'Close' });
+    const layoutBottom = document.documentElement.clientHeight;
+    const closeKeyboard = openKeyboard(300);
+
+    try {
+      await step('keyboard open: the sheet sits above it', async () => {
+        await waitFor(() =>
+          expect(dialog.getBoundingClientRect().bottom).toBeCloseTo(
+            layoutBottom - 300,
+            0
+          )
+        );
+        expect(close.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+          layoutBottom - 300
+        );
+      });
+    } finally {
+      closeKeyboard();
+    }
+
+    await step('keyboard closed: back at the bottom', async () => {
+      await waitFor(() =>
+        expect(dialog.getBoundingClientRect().bottom).toBeCloseTo(
+          layoutBottom,
+          0
+        )
+      );
+    });
+  }
+);
