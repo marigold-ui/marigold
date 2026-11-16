@@ -58,7 +58,7 @@ export const v19: MigrationManifest = {
   structureWarnings: [
     {
       component: 'Tray',
-      text: 'v19 builds Tray on a `Sheet` (DST-1865). `Tray.overlay` is gone: the backdrop moved to `Sheet.backdrop` and the surface (background, shadow, rounding) to `Sheet.container`. `Tray.container` is layout only now. Move customized overlay or surface styles to `Sheet` and remove them from `Tray`.',
+      text: 'v19 builds Tray on a `Sheet` (DST-1865). `Tray.overlay` is gone: the backdrop moved to `Sheet.backdrop` and the surface (background, shadow, rounding) to `Sheet.container`. `Tray.container` is layout only now. Move customized overlay or surface styles to `Sheet` and remove them from `Tray`. The backdrop animates through `@keyframes sheet-backdrop`, which your theme CSS has to define.',
     },
   ],
   jsx: {

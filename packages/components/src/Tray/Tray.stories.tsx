@@ -446,7 +446,9 @@ ScrollableContent.test(
 );
 
 ScrollableContent.test(
-  'scrolls its content without dismissing',
+  // Scrolls programmatically: a swipe on RAC's native scroll snapping can't
+  // be driven here, so the swipe hand-off was checked with touch emulation.
+  'keeps the tray open while its content scrolls',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent }) => {
     const { content } = await openTray({ canvas, userEvent });
