@@ -559,6 +559,19 @@ ShrinkingContent.test(
   }
 );
 
+ShrinkingContent.test(
+  'publishes the space around the content as --sheet-chrome',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    const { dialog, content } = await openTray({ canvas, userEvent });
+
+    const chrome = parseFloat(dialog.style.getPropertyValue('--sheet-chrome'));
+    expect(chrome).toBeCloseTo(dialog.offsetHeight - content.offsetHeight, 0);
+    expect(chrome).toBeGreaterThan(0);
+    expect(content.style.minHeight).toContain('var(--sheet-chrome)');
+  }
+);
+
 /**
  * A bare `<Title slot="title">` (no `<Tray.Header>`, no description) labels the
  * tray dialog automatically via `aria-labelledby`.

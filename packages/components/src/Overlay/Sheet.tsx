@@ -50,6 +50,23 @@ export interface SheetProps extends Omit<
 const SHEET_MAX_HEIGHT =
   '[--sheet-available:calc(var(--visual-viewport-height)*0.95)] max-h-(--sheet-available)';
 
+// Helpers
+// ---------------
+/**
+ * Pins sheet content at `height` so the sheet does not shrink while the
+ * content changes, capped so the sheet still fits `--sheet-available`.
+ * Publishes the space around the content (handle, title, actions) as
+ * `--sheet-chrome` on the sheet, for content that needs a fixed height.
+ */
+export const pinSheetContent = (node: HTMLElement, height: number) => {
+  const sheet = node.closest<HTMLElement>('[data-sheet-content]');
+  if (!sheet) {
+    return;
+  }
+  sheet.style.setProperty('--sheet-chrome', `${sheet.offsetHeight - height}px`);
+  node.style.minHeight = `min(${height}px, calc(var(--sheet-available) - var(--sheet-chrome)))`;
+};
+
 // Component
 // ---------------
 export const Sheet = ({

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { cn } from '@marigold/system';
-import { pinTrayContentHeight } from '../Tray/Context';
+import { pinSheetContent } from '../Overlay/Sheet';
 import { usePopoverContext } from './Context';
 
 // Props
@@ -32,15 +32,14 @@ export interface PopoverContentProps {
 // ---------------
 /**
  * Pins the content's height so the tray does not shrink while the user
- * filters a list inside it. Same measurement as `Tray.Content`, but against
- * the tray dialog, since this content sits one level deeper. It follows the
+ * filters a list inside it, through the same `pinSheetContent` as
+ * `Tray.Content`. Unlike `Tray.Content` it follows the
  * height instead of measuring once: a React Aria collection renders its items
  * in a second pass, so the first layout only holds the padding. The pin only
  * grows, so filtering never shrinks the tray.
  */
 const pinTrayHeight = (node: HTMLDivElement | null) => {
-  const tray = node?.closest<HTMLElement>('[role=dialog]');
-  if (!node || !tray) {
+  if (!node) {
     return;
   }
   let pinned = 0;
@@ -50,7 +49,7 @@ const pinTrayHeight = (node: HTMLDivElement | null) => {
       return;
     }
     pinned = height;
-    pinTrayContentHeight(node, pinned, tray.offsetHeight - height);
+    pinSheetContent(node, pinned);
   });
   observer.observe(node);
 
