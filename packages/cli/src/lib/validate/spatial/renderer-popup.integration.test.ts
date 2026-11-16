@@ -3,13 +3,13 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { type SharedRenderer, createRenderer } from './renderer.js';
+import { skipIntegration } from './skipIntegration.js';
 
 // Integration coverage for the render sandbox's network egress control.
 // page.route only ever covers the single Page it's registered on — a popup
-// (window.open) is a brand-new Page that would otherwise inherit no filter
-// at all and reach the open network. Same self-skip rationale as
-// renderer.integration.test.ts: a real render needs a working Chromium,
-// which isn't available on a bare CI runner.
+// (window.open) is a brand-new Page that would otherwise inherit no filter at
+// all and reach the open network. Needs a working Chromium: see
+// skipIntegration.ts for when this skips and when it fails.
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const example = (name: string): string =>
   path.join(__dirname, '..', 'examples', name);
@@ -18,6 +18,7 @@ const viewport = { width: 1280, height: 720 };
 
 let renderer: SharedRenderer | undefined;
 let renderWorks = false;
+let probeError: unknown;
 
 beforeAll(async () => {
   try {
@@ -25,8 +26,9 @@ beforeAll(async () => {
     const handle = await renderer.render(example('valid-button.tsx'), viewport);
     renderWorks = handle.result.renderTimeMs > 0;
     await handle.close();
-  } catch {
+  } catch (error) {
     renderWorks = false;
+    probeError = error;
   }
 }, 60_000);
 
@@ -36,7 +38,11 @@ afterAll(async () => {
 
 describe('render sandbox network egress (requires a working render environment)', () => {
   it('closes a popup opened by the rendered component instead of letting it reach the network', async ctx => {
-    if (!renderWorks || !renderer) return ctx.skip();
+    if (!renderWorks || !renderer)
+      return skipIntegration(ctx, 'No working Chromium render', {
+        inCI: 'fail',
+        cause: probeError,
+      });
 
     const handle = await renderer.render(
       example('popup-attempt.tsx'),
@@ -63,7 +69,11 @@ describe('render sandbox network egress (requires a working render environment)'
   }, 60_000);
 
   it("does not close a page opened directly on the context (e.g. axe-core's own finishRun helper page)", async ctx => {
-    if (!renderWorks || !renderer) return ctx.skip();
+    if (!renderWorks || !renderer)
+      return skipIntegration(ctx, 'No working Chromium render', {
+        inCI: 'fail',
+        cause: probeError,
+      });
 
     // A page opened via `context.newPage()` (as opposed to
     // `window.open()`/`target="_blank"` from inside the rendered page) has a
