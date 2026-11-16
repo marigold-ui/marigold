@@ -32,8 +32,19 @@ if (
   // Chromatic resizes the window while capturing, which can push an open sheet out
   // of view, and RAC's Sheet closes once it is out of view. Only reports right after
   // a resize are dropped, so swipes and exits (RAC's exit waits for one) still close.
+  // The resize also leaves the sheet scrolled off-screen, so put open ones back at
+  // rest: the bottom of their scroller.
   let resizedAt = -Infinity;
-  window.addEventListener('resize', () => (resizedAt = performance.now()));
+  window.addEventListener('resize', () => {
+    resizedAt = performance.now();
+    requestAnimationFrame(() => {
+      for (const scroller of document.querySelectorAll('[data-sheet-scroll]')) {
+        if (!scroller.closest('[data-exiting]')) {
+          scroller.scrollTop = scroller.scrollHeight;
+        }
+      }
+    });
+  });
   const NativeIntersectionObserver = window.IntersectionObserver;
   window.IntersectionObserver = class extends NativeIntersectionObserver {
     constructor(
