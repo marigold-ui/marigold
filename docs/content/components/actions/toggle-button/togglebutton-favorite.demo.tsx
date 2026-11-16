@@ -12,7 +12,7 @@ import {
 } from '@marigold/components';
 
 export default () => {
-  const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const [favorites, setFavorites] = useState<Set<string>>(() => new Set());
 
   const toggle = (id: string) =>
     setFavorites(prev => {

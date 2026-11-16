@@ -13,6 +13,7 @@ export const __resetMissingContainerWarnings = () =>
 
 const getContainer = (container?: string) => () => {
   if (container) {
+    // eslint-disable-next-line @eslint-react/purity -- not render-time: React Aria calls this lazily when an overlay mounts, and it must read the live DOM because the container may appear after the provider renders
     const element = document.getElementById(container);
     if (!element && !warnedMissingContainers.has(container)) {
       warnedMissingContainers.add(container);

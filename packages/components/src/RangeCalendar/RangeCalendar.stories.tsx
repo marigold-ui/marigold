@@ -367,10 +367,10 @@ export const NonContiguous = meta.story({
   },
   render: function Render(args) {
     const { locale } = useLocale();
-    const [value, setValue] = useState<RangeValue<DateValue> | null>({
+    const [value, setValue] = useState<RangeValue<DateValue> | null>(() => ({
       start: new CalendarDate(2025, 8, 4),
       end: new CalendarDate(2025, 8, 15),
-    });
+    }));
 
     const isUnavailable = (date: DateValue) => isWeekend(date, locale);
 

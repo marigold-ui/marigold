@@ -70,6 +70,7 @@ export const HelpText = ({
           // wraps, which it now does instead of overflowing.
           return (Array.isArray(messages) ? messages : [messages]).map(
             (msg, idx) => (
+              // eslint-disable-next-line @eslint-react/no-array-index-key -- messages are plain strings that can repeat, so content is no unique key; the list is stateless and only changes as a whole
               <div key={idx} className="flex items-start justify-start gap-1">
                 <TriangleAlert
                   className={cn('h-4 w-4 shrink-0', classNames.icon)}
