@@ -25,10 +25,3 @@
       var(--seam-fallback-color, var(--seam-color, var(--color-border))) !important;
   }
 }
-
-/* In Chromatic, show the sheet's backdrop without its swipe-driven fade. RAC
-   drives it from the sheet's scroll timeline, which Chromatic would freeze
-   at its end. See preview.tsx. */
-[data-chromatic] [style*='animation-timeline'] {
-  animation: none !important;
-}
