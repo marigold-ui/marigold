@@ -5,7 +5,7 @@ import {
   isSameDay,
   today,
 } from '@internationalized/date';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DateValue } from 'react-aria-components/Calendar';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, fn, waitFor, within } from 'storybook/test';
@@ -753,12 +753,115 @@ PresetsWithMinValue.test(
   }
 );
 
+// PROBE (DST-1865, throwaway branch): logs what happens to the tray in Chromatic.
+const ProbeLog = () => {
+  const [lines, setLines] = useState<string[]>([]);
+  useEffect(() => {
+    const start = performance.now();
+    const vv = window.visualViewport;
+    const sheet = () => {
+      const el = document.querySelector('[data-sheet-content]');
+      if (!el) return 'sheet=none';
+      const r = el.getBoundingClientRect();
+      return `sheet=${Math.round(r.top)}..${Math.round(r.bottom)}`;
+    };
+    const lift = () => {
+      const o = document.querySelector<HTMLElement>(
+        '[style*="--visual-viewport-height"]'
+      );
+      return o
+        ? `kb=${o.style.getPropertyValue('--sheet-keyboard') || '-'} vvh=${o.style.getPropertyValue('--visual-viewport-height')}`
+        : 'overlay=none';
+    };
+    const add = (what: string) => {
+      const t = Math.round(performance.now() - start);
+      const size = `win=${window.innerWidth}x${window.innerHeight} ch=${document.documentElement.clientHeight} vv=${vv ? `${Math.round(vv.width)}x${Math.round(vv.height)}@${vv.scale} off=${Math.round(vv.offsetTop)}` : '-'}`;
+      setLines(prev =>
+        [...prev, `${t} ${what} | ${size} | ${lift()} | ${sheet()}`].slice(-40)
+      );
+    };
+    const onResize = () => add('win-resize');
+    const onVvResize = () => add('vv-resize');
+    const onVvScroll = () => add('vv-scroll');
+    const onClose = () => add('RAC-SHEET-CLOSE (out of view)');
+    const onKey = (e: KeyboardEvent) => add(`keydown ${e.key}`);
+    const onPointer = (e: PointerEvent) =>
+      add(
+        `pointerdown ${(e.target as Element)?.tagName} @${e.clientX},${e.clientY}`
+      );
+    const onBlur = () => add('window-blur');
+    window.addEventListener('resize', onResize);
+    vv?.addEventListener('resize', onVvResize);
+    vv?.addEventListener('scroll', onVvScroll);
+    document.addEventListener('react-aria-sheet-close', onClose, true);
+    document.addEventListener('keydown', onKey, true);
+    document.addEventListener('pointerdown', onPointer, true);
+    window.addEventListener('blur', onBlur);
+    let open = false;
+    let lastKb = '';
+    const observer = new MutationObserver(() => {
+      const now = !!document.querySelector('[role=dialog]');
+      if (now !== open) {
+        open = now;
+        add(now ? 'DIALOG-ADDED' : 'DIALOG-REMOVED');
+      }
+      const o = document.querySelector<HTMLElement>(
+        '[style*="--visual-viewport-height"]'
+      );
+      const kb = o?.style.getPropertyValue('--sheet-keyboard') ?? '';
+      if (kb !== lastKb) {
+        lastKb = kb;
+        add('kb-change');
+      }
+    });
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['style'],
+    });
+    add('mount');
+    return () => {
+      window.removeEventListener('resize', onResize);
+      vv?.removeEventListener('resize', onVvResize);
+      vv?.removeEventListener('scroll', onVvScroll);
+      document.removeEventListener('react-aria-sheet-close', onClose, true);
+      document.removeEventListener('keydown', onKey, true);
+      document.removeEventListener('pointerdown', onPointer, true);
+      window.removeEventListener('blur', onBlur);
+      observer.disconnect();
+    };
+  }, []);
+  return (
+    <pre
+      data-probe={lines.join('\n')}
+      style={{
+        fontSize: 7,
+        lineHeight: 1.2,
+        whiteSpace: 'pre-wrap',
+        wordBreak: 'break-all',
+        margin: 0,
+      }}
+    >
+      {lines.join('\n')}
+    </pre>
+  );
+};
+
 // Small screens swap the rail for a "Quick selection" row that opens the
 // preset list in a tray. Fixed preset values (instead of the relative
 // built-ins) keep the resolved-date sublabels and the visible month stable,
 // so Chromatic can snapshot the open tray without daily diffs.
 export const PresetsMobile = meta.story({
   tags: ['component-test'],
+  decorators: [
+    Story => (
+      <>
+        <ProbeLog />
+        <Story />
+      </>
+    ),
+  ],
   parameters: {
     chromatic: {
       disableSnapshot: true,
