@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { cn } from '@marigold/system';
-import { pinSheetContent } from '../Overlay/Sheet';
+import { followSheetContent } from '../Overlay/Sheet';
 import { usePopoverContext } from './Context';
 
 // Props
@@ -28,34 +28,6 @@ export interface PopoverContentProps {
   bleed?: boolean;
 }
 
-// Helpers
-// ---------------
-/**
- * Pins the content's height so the tray does not shrink while the user
- * filters a list inside it, through the same `pinSheetContent` as
- * `Tray.Content`. Unlike `Tray.Content` it follows the
- * height instead of measuring once: a React Aria collection renders its items
- * in a second pass, so the first layout only holds the padding. The pin only
- * grows, so filtering never shrinks the tray.
- */
-const pinTrayHeight = (node: HTMLDivElement | null) => {
-  if (!node) {
-    return;
-  }
-  let pinned = 0;
-  const observer = new ResizeObserver(() => {
-    const height = node.offsetHeight;
-    if (height <= pinned) {
-      return;
-    }
-    pinned = height;
-    pinSheetContent(node, pinned);
-  });
-  observer.observe(node);
-
-  return () => observer.disconnect();
-};
-
 // Component
 // ---------------
 export const PopoverContent = ({ children, bleed }: PopoverContentProps) => {
@@ -65,7 +37,8 @@ export const PopoverContent = ({ children, bleed }: PopoverContentProps) => {
     <div
       data-slot="content"
       data-bleed={bleed || undefined}
-      ref={isTray ? pinTrayHeight : undefined}
+      // A collection renders late, so the pin follows the height as it grows.
+      ref={isTray ? followSheetContent : undefined}
       className={cn(
         'min-h-0 flex-1 overflow-y-auto',
         // Bled: drop the padding and publish `--bleed-px` so edge-aware

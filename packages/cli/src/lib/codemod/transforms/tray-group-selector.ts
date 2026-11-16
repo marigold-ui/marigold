@@ -13,16 +13,21 @@ export const trayGroupSelector: Codemod = {
   name: 'tray-group-selector',
   description: `rewrite the tray group selector \`group-[[role=dialog]]/tray:\` to \`${NEW}\``,
   apply: source => {
-    const count = source.includes('@marigold/')
-      ? (source.match(OLD) ?? []).length
-      : 0;
+    if (!source.includes('@marigold/')) {
+      return { kind: 'unchanged', warnings: [] };
+    }
+    let count = 0;
+    const output = source.replace(OLD, () => {
+      count++;
+      return NEW;
+    });
     if (count === 0) {
       return { kind: 'unchanged', warnings: [] };
     }
 
     return {
       kind: 'edited',
-      output: source.replace(OLD, NEW),
+      output,
       changes: [
         `rewrote ${count} \`group-[[role=dialog]]/tray:\` to \`${NEW}\``,
       ],

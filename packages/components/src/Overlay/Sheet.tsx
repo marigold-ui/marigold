@@ -65,12 +65,18 @@ const trackKeyboard = (overlay: HTMLElement) => {
   if (!viewport) {
     return;
   }
+  let last = -1;
   const update = () => {
-    const covered =
+    const covered = Math.max(
+      0,
       document.documentElement.clientHeight -
-      viewport.height -
-      viewport.offsetTop;
-    overlay.style.setProperty('--sheet-keyboard', `${Math.max(0, covered)}px`);
+        viewport.height -
+        viewport.offsetTop
+    );
+    // Fires per frame while iOS pans, only a changed value needs a write.
+    if (covered === last) return;
+    last = covered;
+    overlay.style.setProperty('--sheet-keyboard', `${covered}px`);
   };
   update();
   viewport.addEventListener('resize', update);
@@ -95,6 +101,30 @@ export const pinSheetContent = (node: HTMLElement, height: number) => {
   }
   sheet.style.setProperty('--sheet-chrome', `${sheet.offsetHeight - height}px`);
   node.style.minHeight = `min(${height}px, calc(var(--sheet-available) - var(--sheet-chrome)))`;
+};
+
+/**
+ * Ref callback that keeps `pinSheetContent` up to date while the content
+ * grows, for content that renders late (a React Aria collection fills its
+ * items in a second pass). It only grows, so filtering never shrinks the
+ * sheet. Content that is complete on first render can pin once instead.
+ */
+export const followSheetContent = (node: HTMLElement | null) => {
+  if (!node) {
+    return;
+  }
+  let pinned = 0;
+  const observer = new ResizeObserver(() => {
+    const height = node.offsetHeight;
+    if (height <= pinned) {
+      return;
+    }
+    pinned = height;
+    pinSheetContent(node, pinned);
+  });
+  observer.observe(node);
+
+  return () => observer.disconnect();
 };
 
 // Component
@@ -135,7 +165,8 @@ export const Sheet = ({
     >
       <SheetBackdrop
         className={classNames.backdrop}
-        swipeAnimation="sheet-backdrop"
+        // The theme's `fade-in`, kept in the CSS by `--animate-fade-in`.
+        swipeAnimation="fade-in"
       />
       <RACSheet
         overscrollPadding

@@ -83,7 +83,6 @@ export const Tray = ({
   return (
     <TrayContext value={trayContextValue}>
       {probe}
-      {/* Undefined `open` lets every close reach `Tray.Trigger`'s state. */}
       <Sheet
         {...props}
         aria-label={ariaLabel}

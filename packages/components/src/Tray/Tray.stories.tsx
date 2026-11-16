@@ -88,15 +88,8 @@ Basic.test('Opens and closes the tray', async ({ canvas, userEvent, step }) => {
   });
 
   await step('Can be closed with escape key', async () => {
-    const openButton = canvas.getByRole('button', { name: 'Open Tray' });
-    await userEvent.click(openButton);
-
-    // Escape needs focus inside, RAC moves it in after the slide-in.
-    await waitFor(() =>
-      expect(canvas.getByRole('dialog')).toContainElement(
-        document.activeElement as HTMLElement
-      )
-    );
+    // Escape needs focus inside, which `openTray` waits for.
+    await openTray({ canvas, userEvent });
 
     await userEvent.keyboard('{Escape}');
 
@@ -215,16 +208,8 @@ DismissControlsWithCallbacks.test(
     });
 
     await step('Closes via escape key and logs event', async () => {
-      const openButton = canvas.getByRole('button', { name: 'Open Tray' });
-
-      await userEvent.click(openButton);
-
-      // Escape needs focus inside, RAC moves it in after the slide-in.
-      await waitFor(() =>
-        expect(canvas.getByRole('dialog')).toContainElement(
-          document.activeElement as HTMLElement
-        )
-      );
+      // Escape needs focus inside, which `openTray` waits for.
+      await openTray({ canvas, userEvent });
 
       await userEvent.keyboard('{Escape}');
 

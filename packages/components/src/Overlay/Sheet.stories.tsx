@@ -200,7 +200,13 @@ Basic.test(
     await openSheet({ canvas, userEvent });
 
     // `swipeAnimation` names it only in JS, which Tailwind cannot see.
-    expect(keyframeNames()).toContain('sheet-backdrop');
+    const running = Array.from(document.body.querySelectorAll('*'))
+      .flatMap(el => getComputedStyle(el).animationName.split(', '))
+      .filter(name => name !== 'none');
+    expect(running.length).toBeGreaterThan(0);
+    for (const name of running) {
+      expect(keyframeNames()).toContain(name);
+    }
   }
 );
 
