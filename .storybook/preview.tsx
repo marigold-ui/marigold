@@ -30,7 +30,10 @@ if (
   };
 
   // Chromatic resizes the window while capturing, which can push an open sheet out
-  // of view, and RAC's Sheet closes once it is out of view. Nobody swipes here.
+  // of view, and RAC's Sheet closes once it is out of view. Only reports right after
+  // a resize are dropped, so swipes and exits (RAC's exit waits for one) still close.
+  let resizedAt = -Infinity;
+  window.addEventListener('resize', () => (resizedAt = performance.now()));
   const NativeIntersectionObserver = window.IntersectionObserver;
   window.IntersectionObserver = class extends NativeIntersectionObserver {
     constructor(
@@ -41,7 +44,9 @@ if (
         const kept = entries.filter(
           entry =>
             !entry.target.hasAttribute('data-sheet-content') ||
-            entry.intersectionRatio > 0
+            entry.intersectionRatio > 0 ||
+            entry.target.closest('[data-exiting]') ||
+            performance.now() - resizedAt > 1000
         );
         if (kept.length) callback(kept, observer);
       }, options);
