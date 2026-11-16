@@ -111,30 +111,26 @@ Basic.test(
 );
 
 Basic.test(
-  'Closes on a press outside when the slide-in never settles',
+  'Finishes the slide-in when the browser never fires scrollend',
   async ({ canvas, userEvent }) => {
-    // Safari before 26.2 has no `scrollend`, so RAC's slide-in never ends.
-    const addEventListener = EventTarget.prototype.addEventListener;
-    EventTarget.prototype.addEventListener = function (
-      this: EventTarget,
-      ...args: Parameters<typeof addEventListener>
-    ) {
-      if (args[0] !== 'scrollend') {
-        addEventListener.apply(this, args);
-      }
+    // Safari before 26.2 has no `scrollend`, and RAC's slide-in waits for it.
+    const swallow = (event: Event) => {
+      if (event.isTrusted) event.stopImmediatePropagation();
     };
+    window.addEventListener('scrollend', swallow, true);
 
     try {
       await userEvent.click(canvas.getByRole('button', { name: 'Open sheet' }));
-      await waitFor(() => canvas.getByRole('dialog'));
-      await new Promise(resolve => setTimeout(resolve, 1200));
-      await userEvent.click(document.body);
+      const dialog = await waitFor(() => canvas.getByRole('dialog'));
+
+      await waitFor(() => expect(dialog).toHaveFocus(), { timeout: 2000 });
+      await userEvent.keyboard('{Escape}');
 
       await waitFor(() =>
         expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
       );
     } finally {
-      EventTarget.prototype.addEventListener = addEventListener;
+      window.removeEventListener('scrollend', swallow, true);
     }
   }
 );

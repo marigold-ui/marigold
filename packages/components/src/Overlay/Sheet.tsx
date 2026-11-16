@@ -50,11 +50,28 @@ export interface SheetProps extends Omit<
 const SHEET_MAX_HEIGHT =
   '[--sheet-available:calc(var(--visual-viewport-height)*0.95)] max-h-(--sheet-available)';
 
-/** Longest a slide-in may block outside presses, in ms (normal is ~300). */
+/** Longest a slide-in may take before it is ended by hand, in ms (normal is ~300). */
 const SLIDE_IN_LIMIT = 1000;
 
 // Helpers
 // ---------------
+/**
+ * Ends a slide-in that is still running after `SLIDE_IN_LIMIT`. RAC's slide-in
+ * waits for `scrollend`, which Safari before 26.2 never fires, and until it
+ * ends focus stays outside and the page behind is not hidden.
+ */
+const endSlideIn = (overlay: HTMLElement) => {
+  const timer = setTimeout(() => {
+    if (overlay.hasAttribute('data-entering')) {
+      overlay
+        .querySelector('[data-sheet-scroll]')
+        ?.dispatchEvent(new Event('scrollend'));
+    }
+  }, SLIDE_IN_LIMIT);
+
+  return () => clearTimeout(timer);
+};
+
 /**
  * Publishes how much of the layout viewport the on-screen keyboard covers as
  * `--sheet-keyboard`. iOS keeps the layout viewport and RAC keeps the sheet at
@@ -139,14 +156,18 @@ export const Sheet = ({
 }: SheetProps) => {
   const classNames = useClassNames({ component: 'Sheet' });
   const overlayRef = useRef<HTMLDivElement>(null);
-  const openedAtRef = useRef(0);
   const overlayCallbackRef = useCallback((overlay: HTMLDivElement | null) => {
     overlayRef.current = overlay;
     if (!overlay) {
       return;
     }
-    openedAtRef.current = performance.now();
-    return trackKeyboard(overlay);
+    const stopKeyboard = trackKeyboard(overlay);
+    const stopSlideIn = endSlideIn(overlay);
+
+    return () => {
+      stopKeyboard?.();
+      stopSlideIn();
+    };
   }, []);
 
   return (
@@ -156,10 +177,8 @@ export const Sheet = ({
       onOpenChange={onOpenChange}
       preventDismissal={!dismissable}
       // Closing mid slide-in skips RAC's focus restore, like Escape it waits.
-      // Bounded: without `scrollend` (Safari < 26.2) the slide-in never ends.
       shouldCloseOnInteractOutside={() =>
-        !overlayRef.current?.hasAttribute('data-entering') ||
-        performance.now() - openedAtRef.current > SLIDE_IN_LIMIT
+        !overlayRef.current?.hasAttribute('data-entering')
       }
       className="z-50"
     >
