@@ -22,25 +22,26 @@ export interface SheetProps extends Omit<
   'className' | 'style'
 > {
   /**
-   * Whether the sheet is open (controlled). Leave undefined inside a
-   * `DialogTrigger`, so closing reaches the trigger's state.
+   * Whether the overlay is open (controlled). Leave it unset inside a
+   * trigger, which then owns the open state.
    */
   open?: boolean;
 
   /**
-   * Handler called when the open state changes.
+   * Handler called when the open state changes. Only called together with
+   * `open`. Inside a trigger, use the trigger's `onOpenChange` instead.
    */
   onOpenChange?: (isOpen: boolean) => void;
 
   /**
-   * Whether swiping, Escape and pressing outside close the sheet. RAC can't
-   * separate the three.
+   * Whether swiping down, pressing Escape and pressing outside close the
+   * overlay. The three can't be set separately.
    * @default true
    */
   dismissable?: boolean;
 
   /**
-   * Ref to the sheet's dialog element.
+   * Ref to the dialog element.
    */
   ref?: Ref<HTMLElement>;
 }
