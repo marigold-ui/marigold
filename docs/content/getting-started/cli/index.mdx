@@ -272,7 +272,7 @@ After an applied run, `marigold migrate` records the last migration in the `pack
 - Without a version, only migrations newer than the recorded one are proposed, and only once their major version is installed. Upgrade first, then migrate.
 - A migration named explicitly that is already recorded prints a warning, changes nothing and exits with code `1`, so a script that chains a commit after it stops.
 
-Because the record belongs to a package, an applied run has to target that package's folder, the one with the `package.json` that declares `@marigold/components` or `@marigold/system`. A subfolder or a monorepo root is refused with the command to run instead. In a monorepo, migrate each package that declares one of them. A run on a package leaves out nested packages that declare one of them, since each records its own run, and names them in the output. A dry run works on any path.
+Because the record belongs to a package, an applied run has to target that package's folder, the one with the `package.json` that declares `@marigold/components` or `@marigold/system`. A subfolder, or a monorepo root whose `package.json` declares neither package, is refused with the command to run instead. A peer dependency counts as declaring it. In a monorepo, migrate each package that declares one of them. A run on a package leaves out nested packages that declare one of them, since each records its own run, and names them in the output. A dry run works on any path.
 
 It anchors on imports rather than on file names or directory layout, so it works whatever your project structure is:
 

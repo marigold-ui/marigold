@@ -19,7 +19,10 @@ const isPlainObject = (value: unknown): value is Record<string, unknown> =>
 /** Whether the package.json at `file` declares a Marigold package. */
 export const declaresMarigold = (file: string): boolean => {
   const pkg = readPackageJson(file);
-  return MARIGOLD_PACKAGES.some(name => declaredVersion(pkg, name));
+  // peers count: a shared library or theme package often lists it only there
+  return MARIGOLD_PACKAGES.some(
+    name => declaredVersion(pkg, name) || pkg?.peerDependencies?.[name]
+  );
 };
 
 /**

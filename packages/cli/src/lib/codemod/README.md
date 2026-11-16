@@ -34,7 +34,8 @@ npx marigold migrate [version] [path] [--dry-run] [--only <names>]
   of the package.json that declares `@marigold/components` or
   `@marigold/system`, because the
   marker is per package: run from a subfolder it would mark code it never
-  touched as migrated, run from a monorepo root it has nowhere to record.
+  touched as migrated, run from a monorepo root that declares neither it has
+  nowhere to record. `peerDependencies` count as declaring.
   Anything else is refused with the command to run instead. Inside a
   package, the run skips nested packages that declare Marigold and names
   them, since each records its own run. `--dry-run` works on any path.

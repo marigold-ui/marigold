@@ -55,6 +55,18 @@ describe('findMarkerFile', () => {
     expect(findMarkerFile(dir)).toBe(file);
   });
 
+  test('accepts a library that declares it only as a peer dependency', () => {
+    writePkg('.', declaring);
+    const library = writePkg(
+      'packages/ui',
+      JSON.stringify({
+        peerDependencies: { '@marigold/components': '^19.0.0' },
+      })
+    );
+
+    expect(findMarkerFile(path.join(dir, 'packages/ui'))).toBe(library);
+  });
+
   test('accepts a standalone theme package that declares only @marigold/system', () => {
     writePkg('.', declaring);
     const theme = writePkg(
