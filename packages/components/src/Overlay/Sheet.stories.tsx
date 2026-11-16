@@ -111,6 +111,35 @@ Basic.test(
 );
 
 Basic.test(
+  'Closes on a press outside when the slide-in never settles',
+  async ({ canvas, userEvent }) => {
+    // Safari before 26.2 has no `scrollend`, so RAC's slide-in never ends.
+    const addEventListener = EventTarget.prototype.addEventListener;
+    EventTarget.prototype.addEventListener = function (
+      this: EventTarget,
+      ...args: Parameters<typeof addEventListener>
+    ) {
+      if (args[0] !== 'scrollend') {
+        addEventListener.apply(this, args);
+      }
+    };
+
+    try {
+      await userEvent.click(canvas.getByRole('button', { name: 'Open sheet' }));
+      await waitFor(() => canvas.getByRole('dialog'));
+      await new Promise(resolve => setTimeout(resolve, 1200));
+      await userEvent.click(document.body);
+
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    } finally {
+      EventTarget.prototype.addEventListener = addEventListener;
+    }
+  }
+);
+
+Basic.test(
   'Ignores Escape and a press outside when not dismissable',
   { args: { dismissable: false } },
   async ({ canvas, userEvent }) => {

@@ -50,6 +50,9 @@ export interface SheetProps extends Omit<
 const SHEET_MAX_HEIGHT =
   '[--sheet-available:calc(var(--visual-viewport-height)*0.95)] max-h-(--sheet-available)';
 
+/** Longest a slide-in may block outside presses, in ms (normal is ~300). */
+const SLIDE_IN_LIMIT = 1000;
+
 // Helpers
 // ---------------
 /**
@@ -106,9 +109,14 @@ export const Sheet = ({
 }: SheetProps) => {
   const classNames = useClassNames({ component: 'Sheet' });
   const overlayRef = useRef<HTMLDivElement>(null);
+  const openedAt = useRef(0);
   const overlayCallbackRef = useCallback((overlay: HTMLDivElement | null) => {
     overlayRef.current = overlay;
-    return overlay ? trackKeyboard(overlay) : undefined;
+    if (!overlay) {
+      return;
+    }
+    openedAt.current = performance.now();
+    return trackKeyboard(overlay);
   }, []);
 
   return (
@@ -118,8 +126,10 @@ export const Sheet = ({
       onOpenChange={onOpenChange}
       preventDismissal={!dismissable}
       // Closing mid slide-in skips RAC's focus restore, like Escape it waits.
+      // Bounded: without `scrollend` (Safari < 26.2) the slide-in never ends.
       shouldCloseOnInteractOutside={() =>
-        !overlayRef.current?.hasAttribute('data-entering')
+        !overlayRef.current?.hasAttribute('data-entering') ||
+        performance.now() - openedAt.current > SLIDE_IN_LIMIT
       }
       className="z-50"
     >
