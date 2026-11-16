@@ -166,6 +166,17 @@ Basic.test(
 );
 
 Basic.test(
+  'Defines --sheet-chrome before any content is pinned',
+  async ({ canvas, userEvent }) => {
+    const dialog = await openSheet({ canvas, userEvent });
+
+    expect(
+      getComputedStyle(dialog).getPropertyValue('--sheet-chrome').trim()
+    ).toBe('0px');
+  }
+);
+
+Basic.test(
   'Caps its height at 95% of the visible viewport',
   async ({ canvas, userEvent }) => {
     const dialog = await openSheet({ canvas, userEvent });

@@ -147,6 +147,8 @@ export const Sheet = ({
               'flex flex-col',
               SHEET_MAX_HEIGHT,
               'relative -top-(--sheet-keyboard,0px)',
+              // Until `pinSheetContent` measures it, nothing surrounds the content.
+              '[--sheet-chrome:0px]',
               classNames.content
             )}
           >
