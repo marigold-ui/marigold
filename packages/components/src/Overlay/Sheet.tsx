@@ -41,6 +41,14 @@ export interface SheetProps extends Omit<
   dismissable?: boolean;
 
   /**
+   * Heights the overlay rests at, as the amount of it that is visible.
+   * Numbers are pixels, percentages are relative to the overlay. It opens at
+   * the first one and a swipe moves between them. Content only scrolls once
+   * the overlay is fully expanded.
+   */
+  snapPoints?: Array<number | string>;
+
+  /**
    * Ref to the dialog element.
    */
   ref?: Ref<HTMLElement>;
@@ -73,6 +81,7 @@ export const Sheet = ({
   open,
   onOpenChange,
   dismissable = true,
+  snapPoints,
   children,
   ref,
   ...props
@@ -86,6 +95,7 @@ export const Sheet = ({
       isOpen={open}
       onOpenChange={onOpenChange}
       preventDismissal={!dismissable}
+      snapPoints={snapPoints}
       // Closing mid slide-in skips RAC's focus restore, like Escape it waits.
       shouldCloseOnInteractOutside={() =>
         !overlayRef.current?.hasAttribute('data-entering')
@@ -96,7 +106,15 @@ export const Sheet = ({
         className={classNames.backdrop}
         swipeAnimation="sheet-backdrop"
       />
-      <RACSheet overscrollPadding className={classNames.container}>
+      <RACSheet
+        overscrollPadding
+        className={cn(
+          // Below full height a swipe on the content expands the sheet.
+          snapPoints?.length &&
+            'not-data-expanded:**:data-[slot=content]:overflow-hidden',
+          classNames.container
+        )}
+      >
         <ResetButtonContext>
           <SheetContent
             {...props}
