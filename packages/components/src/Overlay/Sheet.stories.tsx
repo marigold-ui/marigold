@@ -245,6 +245,55 @@ const openKeyboard = (height: number) => {
   };
 };
 
+/**
+ * Fakes a pinch-zoom: the visual viewport shrinks by `scale` while the layout
+ * viewport stays, like a keyboard but with a scale. Returns a function that
+ * zooms back out.
+ */
+const zoomIn = (scale: number) => {
+  const viewport = window.visualViewport;
+  if (!viewport) {
+    throw new Error('visualViewport is not supported');
+  }
+  const visible = document.documentElement.clientHeight / scale;
+  Object.defineProperty(viewport, 'height', {
+    configurable: true,
+    get: () => visible,
+  });
+  Object.defineProperty(viewport, 'scale', {
+    configurable: true,
+    get: () => scale,
+  });
+  viewport.dispatchEvent(new Event('resize'));
+
+  return () => {
+    Reflect.deleteProperty(viewport, 'height');
+    Reflect.deleteProperty(viewport, 'scale');
+    viewport.dispatchEvent(new Event('resize'));
+  };
+};
+
+Basic.test(
+  'Stays at the bottom when the page is zoomed in',
+  async ({ canvas, userEvent }) => {
+    const dialog = await openSheet({ canvas, userEvent });
+    const layoutBottom = document.documentElement.clientHeight;
+    const zoomOut = zoomIn(2);
+
+    try {
+      // Give a wrong lift time to land before asserting it did not.
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      expect(dialog.getBoundingClientRect().bottom).toBeCloseTo(
+        layoutBottom,
+        0
+      );
+    } finally {
+      zoomOut();
+    }
+  }
+);
+
 Basic.test(
   'Moves above the on-screen keyboard',
   async ({ canvas, userEvent, step }) => {
