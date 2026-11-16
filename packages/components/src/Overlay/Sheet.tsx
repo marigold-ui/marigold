@@ -137,7 +137,11 @@ export const Sheet = ({
         className={classNames.backdrop}
         swipeAnimation="sheet-backdrop"
       />
-      <RACSheet overscrollPadding className={classNames.container}>
+      <RACSheet
+        overscrollPadding
+        // Lifts the surface with its content, the background lives here.
+        className={cn('-top-(--sheet-keyboard,0px)', classNames.container)}
+      >
         <ResetButtonContext>
           <SheetContent
             {...props}
@@ -146,7 +150,6 @@ export const Sheet = ({
             className={cn(
               'flex flex-col',
               SHEET_MAX_HEIGHT,
-              'relative -top-(--sheet-keyboard,0px)',
               // Until `pinSheetContent` measures it, nothing surrounds the content.
               '[--sheet-chrome:0px]',
               classNames.content

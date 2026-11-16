@@ -230,6 +230,12 @@ Basic.test(
         expect(close.getBoundingClientRect().bottom).toBeLessThanOrEqual(
           layoutBottom - 300
         );
+        // The surface (RAC's `Sheet`, which carries the background) moves too.
+        const surface = dialog.parentElement as HTMLElement;
+        expect(surface.getBoundingClientRect().top).toBeCloseTo(
+          dialog.getBoundingClientRect().top,
+          0
+        );
       });
     } finally {
       closeKeyboard();
