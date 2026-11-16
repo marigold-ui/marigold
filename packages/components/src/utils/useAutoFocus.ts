@@ -15,10 +15,23 @@ export const useAutoFocus = (
   useEffect(() => {
     const element = ref.current;
     if (focusedRef.current || !enabled || !element) return;
-    focusedRef.current = true;
 
-    // In a sheet, RAC would scroll the content mid slide-in to reveal it.
-    const inSheet = element.closest('[data-sheet-content]') !== null;
-    element.focus({ preventScroll: inSheet });
+    const sheet = element.closest<HTMLElement>('[data-sheet-content]');
+    const focus = () => {
+      focusedRef.current = true;
+      // In a sheet, RAC would scroll the content mid slide-in to reveal it.
+      element.focus({ preventScroll: sheet !== null });
+    };
+
+    if (!sheet || sheet.contains(document.activeElement)) {
+      focus();
+      return;
+    }
+
+    // RAC focuses the sheet once it has slid in. Earlier, the field is below the
+    // screen, and on a phone the keyboard it opens scrolls the page down to it.
+    sheet.addEventListener('focusin', focus, { once: true });
+
+    return () => sheet.removeEventListener('focusin', focus);
   }, [enabled, ref]);
 };

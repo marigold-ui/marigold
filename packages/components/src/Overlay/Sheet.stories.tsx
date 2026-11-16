@@ -1,7 +1,8 @@
-import { createRef, useState } from 'react';
+import { createRef, useRef, useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
+import { useAutoFocus } from '../utils/useAutoFocus';
 import { Sheet } from './Sheet';
 
 const meta = preview.meta({
@@ -216,6 +217,55 @@ Basic.test(
       viewport * 0.95,
       0
     );
+  }
+);
+
+const AutoFocusField = () => {
+  const ref = useRef<HTMLInputElement>(null);
+  useAutoFocus(ref);
+
+  return <input ref={ref} aria-label="Search" />;
+};
+
+export const WithAutoFocusField = meta.story({
+  tags: ['component-test'],
+  render: function Render() {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <>
+        <Button onPress={() => setOpen(true)}>Open sheet</Button>
+        <Sheet aria-label="Sheet" open={open} onOpenChange={setOpen}>
+          <AutoFocusField />
+        </Sheet>
+      </>
+    );
+  },
+});
+
+WithAutoFocusField.test(
+  'Focuses the field only once the sheet is on screen',
+  async ({ canvas, userEvent }) => {
+    // On a phone, focus opens the keyboard, which scrolls the page to the field.
+    let bottomAtFocus = Infinity;
+    const record = (event: FocusEvent) => {
+      if ((event.target as Element).matches('input')) {
+        bottomAtFocus = (event.target as Element).getBoundingClientRect()
+          .bottom;
+      }
+    };
+    document.addEventListener('focusin', record);
+
+    try {
+      await userEvent.click(canvas.getByRole('button', { name: 'Open sheet' }));
+
+      await waitFor(() =>
+        expect(canvas.getByLabelText('Search')).toHaveFocus()
+      );
+      expect(bottomAtFocus).toBeLessThanOrEqual(window.innerHeight);
+    } finally {
+      document.removeEventListener('focusin', record);
+    }
   }
 );
 

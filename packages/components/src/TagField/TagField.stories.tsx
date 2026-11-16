@@ -492,6 +492,12 @@ Basic.test(
     // The tray's underlay swallows clicks until it is gone, so wait it out
     // before touching anything behind it.
     const close = async () => {
+      // Escape reaches the tray once focus has moved in, after the slide-in.
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toContainElement(
+          document.activeElement as HTMLElement
+        )
+      );
       await userEvent.keyboard('{Escape}');
 
       return waitFor(() =>
