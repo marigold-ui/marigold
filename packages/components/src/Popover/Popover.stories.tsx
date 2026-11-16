@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { expect, fn, screen, waitFor, within } from 'storybook/test';
-import preview from '.storybook/preview';
+import preview, { smallScreenWidth } from '.storybook/preview';
 import { Archive, Bell, StickyNote, UserMinus, Users } from '@marigold/icons';
 import { Button } from '../Button/Button';
 import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
@@ -1060,7 +1060,7 @@ export const SmallScreen = meta.story({
   parameters: {
     chromatic: {
       disableSnapshot: true,
-      viewports: [639],
+      viewports: [smallScreenWidth],
       cropToViewport: true,
     },
   },

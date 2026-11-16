@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
-import preview from '.storybook/preview';
+import preview, { smallScreenWidth } from '.storybook/preview';
 import type { Key } from '@react-types/shared';
 import { Button } from '../Button/Button';
 import { Description } from '../Description/Description';
@@ -479,7 +479,7 @@ export const Mobile = meta.story({
   parameters: {
     chromatic: {
       disableSnapshot: true,
-      viewports: [639],
+      viewports: [smallScreenWidth],
       cropToViewport: true,
     },
   },

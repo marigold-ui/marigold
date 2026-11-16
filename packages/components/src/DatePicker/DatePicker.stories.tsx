@@ -8,7 +8,7 @@ import { useState } from 'react';
 import type { DateValue } from 'react-aria-components';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, fn, spyOn, waitFor, within } from 'storybook/test';
-import preview from '.storybook/preview';
+import preview, { smallScreenWidth } from '.storybook/preview';
 import { theme } from '../../../../themes/theme-rui/src/index.js';
 import { Stack } from '../Stack/Stack';
 import { assertCalendarTriggerHitArea } from '../calendarTrigger.utils';
@@ -244,7 +244,7 @@ export const Mobile = meta.story({
   parameters: {
     chromatic: {
       disableSnapshot: true,
-      viewports: [639],
+      viewports: [smallScreenWidth],
       cropToViewport: true,
     },
   },

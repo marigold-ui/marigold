@@ -125,6 +125,12 @@ Basic.test(
       const dialog = await waitFor(() => canvas.getByRole('dialog'));
 
       await waitFor(() => expect(dialog).toHaveFocus(), { timeout: 2000 });
+      // RAC hides the page behind from screen readers with `inert`.
+      await waitFor(() =>
+        expect(
+          canvas.getByRole('button', { name: 'Open sheet' })
+        ).toHaveAttribute('inert')
+      );
       await userEvent.keyboard('{Escape}');
 
       await waitFor(() =>

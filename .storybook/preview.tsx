@@ -68,6 +68,9 @@ if (
 // Storybook viewports only accept fixed pixel values, so we can't use the
 // theme's rem-based `sm` breakpoint directly. 639px = 40rem - 1px (at the
 // default 16px root font size), ensuring this viewport triggers `(width < 40rem)`.
+/** Phone width for Chromatic's `viewports`, which ignores the viewport global. */
+export const smallScreenWidth = 639;
+
 const customViewports = {
   extraSmallScreen: {
     name: 'Extra Small Screen (320px)',
@@ -78,9 +81,9 @@ const customViewports = {
     type: 'mobile' as const,
   },
   smallScreen: {
-    name: 'Small Screen (639px)',
+    name: `Small Screen (${smallScreenWidth}px)`,
     styles: {
-      width: '639px',
+      width: `${smallScreenWidth}px`,
       height: '900px',
     },
     type: 'mobile' as const,

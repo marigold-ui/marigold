@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { Key } from 'react-aria-components/TagGroup';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
-import preview from '.storybook/preview';
+import preview, { smallScreenWidth } from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
 import { TagField } from './TagField';
@@ -314,7 +314,7 @@ export const Mobile = Basic.extend({
   parameters: {
     chromatic: {
       disableSnapshot: true,
-      viewports: [639],
+      viewports: [smallScreenWidth],
       cropToViewport: true,
     },
   },

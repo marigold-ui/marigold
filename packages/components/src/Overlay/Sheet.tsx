@@ -61,15 +61,35 @@ const SLIDE_IN_LIMIT = 1000;
  * ends focus stays outside and the page behind is not hidden.
  */
 const endSlideIn = (overlay: HTMLElement) => {
-  const timer = setTimeout(() => {
-    if (overlay.hasAttribute('data-entering')) {
-      overlay
-        .querySelector('[data-sheet-scroll]')
-        ?.dispatchEvent(new Event('scrollend'));
-    }
-  }, SLIDE_IN_LIMIT);
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const start = () => {
+    observer.disconnect();
+    timer = setTimeout(() => {
+      if (overlay.hasAttribute('data-entering')) {
+        overlay
+          .querySelector('[data-sheet-scroll]')
+          ?.dispatchEvent(new Event('scrollend'));
+      }
+    }, SLIDE_IN_LIMIT);
+  };
+  // On touch devices RAC waits for the keyboard first, so time from the slide-in's start.
+  const observer = new MutationObserver(() => {
+    if (overlay.hasAttribute('data-entering')) start();
+  });
 
-  return () => clearTimeout(timer);
+  if (overlay.hasAttribute('data-entering')) {
+    start();
+  } else {
+    observer.observe(overlay, {
+      attributes: true,
+      attributeFilter: ['data-entering'],
+    });
+  }
+
+  return () => {
+    observer.disconnect();
+    clearTimeout(timer);
+  };
 };
 
 /**

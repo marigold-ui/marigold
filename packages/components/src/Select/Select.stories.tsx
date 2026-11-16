@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Form } from 'react-aria-components/Form';
 import { Key } from 'react-aria-components/Select';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
-import preview from '.storybook/preview';
+import preview, { smallScreenWidth } from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Description } from '../Description/Description';
@@ -824,7 +824,7 @@ export const MultiSelectSummaryMobile = meta.story({
   parameters: {
     chromatic: {
       disableSnapshot: true,
-      viewports: [639],
+      viewports: [smallScreenWidth],
       cropToViewport: true,
     },
   },
@@ -965,7 +965,7 @@ export const Mobile = meta.story({
   parameters: {
     chromatic: {
       disableSnapshot: true,
-      viewports: [639],
+      viewports: [smallScreenWidth],
       cropToViewport: true,
     },
   },

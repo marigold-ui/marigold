@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { expect, spyOn, userEvent, waitFor } from 'storybook/test';
-import preview from '.storybook/preview';
+import preview, { smallScreenWidth } from '.storybook/preview';
 import { Key } from '@react-types/shared';
 import { ClipboardPaste, Copy, Delete, Scissors } from '@marigold/icons';
 import { Description } from '../Description/Description';
@@ -624,7 +624,7 @@ export const Mobile = meta.story({
   parameters: {
     chromatic: {
       disableSnapshot: true,
-      viewports: [639],
+      viewports: [smallScreenWidth],
       cropToViewport: true,
     },
   },
