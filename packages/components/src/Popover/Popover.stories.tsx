@@ -205,7 +205,10 @@ Dismissal.test(
     );
 
     await userEvent.keyboard('{Escape}');
-    await expect(tray).toBeVisible();
+    // A close would only unmount once RAC's exit scroll ends, so wait it out.
+    await new Promise(resolve => setTimeout(resolve, 500));
+    expect(tray).toBeInTheDocument();
+    expect(tray).toBeVisible();
 
     // The story's close slot comes first, the tray's Close action last.
     await userEvent.click(
