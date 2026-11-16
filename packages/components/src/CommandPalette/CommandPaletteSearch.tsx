@@ -3,10 +3,12 @@ import { Button } from 'react-aria-components/Button';
 import { Input } from 'react-aria-components/Input';
 import { SearchField } from 'react-aria-components/SearchField';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { useObjectRef } from '@react-aria/utils';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
 import { Search } from '../icons/Search';
 import { X } from '../icons/X';
 import { intlMessages } from '../intl/messages';
+import { useAutoFocus } from '../utils/useAutoFocus';
 import { useCommandPalette } from './Context';
 
 // Props
@@ -30,18 +32,20 @@ export const CommandPaletteSearch = ({
 }: CommandPaletteSearchProps) => {
   const { classNames } = useCommandPalette();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const inputRef = useObjectRef(ref);
+  // Not a native `autoFocus`, see `useAutoFocus`.
+  useAutoFocus(inputRef);
 
   return (
     <SearchField
       aria-label={stringFormatter.format('search')}
-      autoFocus
       className={classNames.header}
     >
       {({ isEmpty }) => (
         <>
           <Search aria-hidden="true" size="18" />
           <Input
-            ref={ref}
+            ref={inputRef}
             placeholder={
               placeholder ?? stringFormatter.format('commandPaletteGoTo')
             }

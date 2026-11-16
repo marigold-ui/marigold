@@ -1580,6 +1580,19 @@ SmallScreen.test('Opens as a tray', snapshot, async ({ canvas, userEvent }) => {
 });
 
 SmallScreen.test(
+  'Focuses the search field once the tray has slid in',
+  noSnapshot,
+  async ({ canvas, userEvent }) => {
+    await openPalette({ canvas, userEvent });
+
+    const tray = await canvas.findByRole('dialog', { name: 'Command palette' });
+    await waitFor(() =>
+      expect(within(tray).getByRole('searchbox')).toHaveFocus()
+    );
+  }
+);
+
+SmallScreen.test(
   'Keeps the search field in place while the results change',
   noSnapshot,
   async ({ canvas, userEvent }) => {
