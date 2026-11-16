@@ -106,8 +106,8 @@ Pick a breakpoint to see what `useSmallScreen` returns (`true` only below 640px)
 
 Below 640px, components that open a floating list or panel open it as a tray instead: a sheet that slides up from the bottom of the screen and dims the page behind it. This covers `Select`, `ComboBox`, `Autocomplete`, `TagField`, `Menu`, `ActionMenu`, `Popover`, the date pickers and the calendar presets. A tray behaves the same way in all of them:
 
-- **Swipe down anywhere to close it.** When the content scrolls, a swipe first scrolls it back to the top and then moves the tray. The dimmed page fades as the tray moves down.
-- **A slow swipe has to pass about halfway down the screen.** Released earlier, the tray springs back up. A quick flick closes it from anywhere.
+- **Swipe down anywhere to close it.** When the content scrolls, swiping down first scrolls it back to the top. From there, the next swipe moves the tray. The dimmed page fades as the tray moves down.
+- **A slow swipe has to move the tray halfway down the screen.** A tray shorter than that has to leave the screen entirely. Released earlier, the tray springs back up. A quick flick closes it from anywhere.
 - **Escape and a press outside close it once it is fully open.** While it is still sliding in, both are ignored, so a double tap on the trigger opens the tray instead of closing it again.
 - **Focus moves into the tray** when it opens and returns to the trigger when it closes.
 
