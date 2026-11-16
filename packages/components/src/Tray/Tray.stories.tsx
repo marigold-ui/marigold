@@ -107,6 +107,24 @@ Basic.test('Opens and closes the tray', async ({ canvas, userEvent, step }) => {
 });
 
 Basic.test(
+  'Returns focus to the trigger after a double click',
+  async ({ canvas, userEvent }) => {
+    const trigger = canvas.getByRole('button', { name: 'Open Tray' });
+
+    // The second click of a double click lands on the overlay mid slide-in.
+    await userEvent.click(trigger);
+    await userEvent.click(document.body);
+    const dialog = await waitFor(() => canvas.getByRole('dialog'));
+    await waitFor(() =>
+      expect(dialog).toContainElement(document.activeElement as HTMLElement)
+    );
+    await userEvent.keyboard('{Escape}');
+
+    await waitFor(() => expect(trigger).toHaveFocus());
+  }
+);
+
+Basic.test(
   'Opens the tray',
   // Keep the snapshot so Chromatic captures the opened tray.
   { parameters: { chromatic: { disableSnapshot: false } } },

@@ -99,6 +99,18 @@ Basic.test(
 );
 
 Basic.test(
+  'Ignores a press outside while it slides in',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open sheet' }));
+    await userEvent.click(document.body);
+
+    const dialog = await waitFor(() => canvas.getByRole('dialog'));
+    await waitFor(() => expect(dialog).toHaveFocus());
+    expect(canvas.getByText('Sheet is open')).toBeInTheDocument();
+  }
+);
+
+Basic.test(
   'Ignores Escape and a press outside when not dismissable',
   { args: { dismissable: false } },
   async ({ canvas, userEvent }) => {

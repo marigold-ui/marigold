@@ -1,4 +1,4 @@
-import type { Ref } from 'react';
+import { type Ref, useRef } from 'react';
 import type RAC from 'react-aria-components';
 import {
   Sheet as RACSheet,
@@ -60,12 +60,18 @@ export const Sheet = ({
   ...props
 }: SheetProps) => {
   const classNames = useClassNames({ component: 'Sheet' });
+  const overlayRef = useRef<HTMLDivElement>(null);
 
   return (
     <SheetOverlay
+      ref={overlayRef}
       isOpen={open}
       onOpenChange={onOpenChange}
       preventDismissal={!dismissable}
+      // Closing mid slide-in skips RAC's focus restore, like Escape it waits.
+      shouldCloseOnInteractOutside={() =>
+        !overlayRef.current?.hasAttribute('data-entering')
+      }
       className="z-50"
     >
       <SheetBackdrop
