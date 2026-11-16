@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { runAxeAudit } from './aom-extractor.js';
 import { type SharedRenderer, createRenderer } from './renderer.js';
+import { skipIntegration } from './skipIntegration.js';
 
 // The axe audit is invoked behind a per-check try/catch in spatial/index.ts, so
 // a run that silently returns nothing is indistinguishable from a clean page —
@@ -14,8 +15,8 @@ import { type SharedRenderer, createRenderer } from './renderer.js';
 // if a future axe-core or Playwright changes how that page is created, this
 // degrades back to a swallowed warning. This test is the tripwire for that.
 //
-// Same self-skip rationale as renderer.integration.test.ts: a real render needs
-// a working Chromium, which isn't available on a bare CI runner.
+// Needs a working Chromium: see skipIntegration.ts for when this skips and when
+// it fails.
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const example = (name: string): string =>
   path.join(__dirname, '..', 'examples', name);
@@ -24,6 +25,7 @@ const viewport = { width: 1280, height: 720 };
 
 let renderer: SharedRenderer | undefined;
 let renderWorks = false;
+let probeError: unknown;
 
 beforeAll(async () => {
   try {
@@ -31,8 +33,9 @@ beforeAll(async () => {
     const handle = await renderer.render(example('valid-button.tsx'), viewport);
     renderWorks = handle.result.renderTimeMs > 0;
     await handle.close();
-  } catch {
+  } catch (error) {
     renderWorks = false;
+    probeError = error;
   }
 }, 60_000);
 
@@ -42,7 +45,11 @@ afterAll(async () => {
 
 describe('axe audit (requires a working render environment)', () => {
   it('returns a non-empty violation set for a page axe has findings on', async ctx => {
-    if (!renderWorks || !renderer) return ctx.skip();
+    if (!renderWorks || !renderer)
+      return skipIntegration(ctx, 'No working Chromium render', {
+        inCI: 'fail',
+        cause: probeError,
+      });
 
     const handle = await renderer.render(example('valid-button.tsx'), viewport);
     try {

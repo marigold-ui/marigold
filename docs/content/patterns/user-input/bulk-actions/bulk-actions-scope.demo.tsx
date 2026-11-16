@@ -45,7 +45,7 @@ const events = [
 
 export default () => {
   const [status, setStatus] = useState('all');
-  const [selected, setSelected] = useState<Selection>(new Set());
+  const [selected, setSelected] = useState<Selection>(() => new Set());
 
   const visible =
     status === 'all' ? events : events.filter(event => event.status === status);

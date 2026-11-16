@@ -6,12 +6,12 @@ import type { Socket } from 'node:net';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { type SharedRenderer, createRenderer } from './renderer.js';
+import { skipIntegration } from './skipIntegration.js';
 
 // Integration coverage for the render sandbox's network egress control.
-// page.route only intercepts HTTP(S); a WebSocket opened by untrusted
-// generated code would otherwise bypass it. Same self-skip rationale as
-// renderer.integration.test.ts: a real render needs a working Chromium, which
-// isn't available on a bare CI runner.
+// page.route only intercepts HTTP(S); a WebSocket opened by untrusted generated
+// code would otherwise bypass it. Needs a working Chromium: see
+// skipIntegration.ts for when this skips and when it fails.
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const example = (name: string): string =>
   path.join(__dirname, '..', 'examples', name);
@@ -113,6 +113,7 @@ const startWsHandshakeServer = (
 
 let renderer: SharedRenderer | undefined;
 let renderWorks = false;
+let probeError: unknown;
 
 beforeAll(async () => {
   try {
@@ -120,8 +121,9 @@ beforeAll(async () => {
     const handle = await renderer.render(example('valid-button.tsx'), viewport);
     renderWorks = handle.result.renderTimeMs > 0;
     await handle.close();
-  } catch {
+  } catch (error) {
     renderWorks = false;
+    probeError = error;
   }
 }, 60_000);
 
@@ -146,7 +148,8 @@ describe('render sandbox network egress (requires a working render environment)'
     try {
       wsServer = await startWsHandshakeServer();
     } catch (err) {
-      if (err instanceof PortBusyError) return ctx.skip();
+      if (err instanceof PortBusyError)
+        return skipIntegration(ctx, 'The test port is busy', { inCI: 'skip' });
       throw err;
     }
     const socket = new WebSocket(`ws://127.0.0.1:${WS_TARGET_PORT}/`);
@@ -167,11 +170,16 @@ describe('render sandbox network egress (requires a working render environment)'
   }, 10_000);
 
   it('closes a WebSocket opened by the rendered component instead of letting it connect', async ctx => {
-    if (!renderWorks || !renderer) return ctx.skip();
+    if (!renderWorks || !renderer)
+      return skipIntegration(ctx, 'No working Chromium render', {
+        inCI: 'fail',
+        cause: probeError,
+      });
     try {
       wsServer = await startWsHandshakeServer();
     } catch (err) {
-      if (err instanceof PortBusyError) return ctx.skip();
+      if (err instanceof PortBusyError)
+        return skipIntegration(ctx, 'The test port is busy', { inCI: 'skip' });
       throw err;
     }
 

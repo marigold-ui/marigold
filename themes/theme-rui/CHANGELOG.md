@@ -1,5 +1,131 @@
 # @marigold/theme-rui
 
+## 6.3.0
+
+### Minor Changes
+
+- 0154b3a: feat(DST-1751): add a select-all to ListView and SelectList
+
+  `<Table>` used to be the only collection that could offer a select-all, because it was the only one with a header to put a checkbox in. `allowSelectAll` now renders one for the two multi-select lists, aligned with the row indicators by the component (the padding is a custom property on the wrapper around the list, so a consumer composing a checkbox above it cannot line one up).
+
+  ```tsx
+  <ListView
+    aria-label="Uploads"
+    selectionMode="multiple"
+    allowSelectAll
+    items={uploads}
+  >
+    {upload => <ListView.Item textValue={upload.name}>…</ListView.Item>}
+  </ListView>
+  ```
+
+  The checkbox is mixed while the selection is partial, and becomes checked once every selectable row has been picked. It labels itself "Select all" in the current locale, and a count beside it reports how many rows are selected. The prop only takes effect when `selectionMode="multiple"`, since there is nothing for a select-all to do in the other modes. The header sits outside the grid element rather than claiming column-header semantics a single-column collection does not have, so the checkbox carries its own visible label. A disabled `SelectList` option that was preselected keeps its selection in either direction, since the user cannot toggle it by hand either, and clearing from the header honours `disallowEmptySelection` the way React Aria's own `clearSelection` does.
+
+  `ListView` reports `'all'` from its select-all, the same value <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> already reported. `SelectList` reports concrete keys instead, because a field has to submit a value: it now resolves the `'all'` sentinel to the keys it covers, which also fixes <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>A</kbd> in a multi-select `SelectList` submitting nothing at all. A controlled `selectedKeys="all"` resolves the same way, so it submits and validates like any other selection instead of as nothing.
+
+  Two smaller fixes come with it. A `Set` passed to `selectedKeys` is no longer copied on every render, which kept React Aria resetting the range anchor and broke <kbd>Shift</kbd>+click on a controlled list. And `ListView` now renders its list inside a wrapper element that owns the row-padding custom property, so the header and the rows read the same value.
+
+  On both components the select-all reads as the list's first row: it takes the same padding as a row and is separated by a divider of the same weight as the ones between rows. A `SelectList` keeps it inside the frame. In the `bordered` variant there is no frame to sit in. The select-all stays a control above the option cards, closer to the first card than to the field's label, so it still groups with the list rather than with the label.
+
+  The `Theme` type gains `header` and `count` slots on both components, plus `container` on `ListView`. All three are optional, so a custom theme written before this release still compiles and renders: `useClassNames` returns `undefined` for a slot a theme does not supply, and the components render without it. A `SelectList`'s `p` / `px` / `py` props keep writing their custom properties onto the list as well as the new wrapper, so a theme that declares the same variables on its own `list` slot does not win over the prop.
+
+- 3e3de96: feat(DST-1761): keep a table's row context visible while it scrolls sideways
+
+  `Table.Column` takes a new `sticky` prop. `sticky="start"` on the first column keeps it in place while the other columns scroll sideways, and `sticky="end"` does the same for the last column, typically the row actions. The selection checkbox and drag handle stick together with the first column. A thin line marks each edge while content scrolls under it. `sticky` on any other column is ignored with a warning during development.
+
+  Sticky columns combine with `Table.Header sticky` and `Table.Footer sticky`, and keyboard focus never lands on a cell hidden under a sticky column. They need a container that scrolls sideways, such as `Scrollable`. A cell that spans several columns with `colSpan` does not stick.
+
+  Some changes apply to every table, with or without sticky columns:
+
+  - The table is its own stacking context (`isolation: isolate`), so a sticky header or footer no longer competes with the page. A sticky `TopNavigation` now stays above a sticky table header where the two overlap.
+  - A sticky header and footer sit at `z-10` instead of `z-1`.
+  - The focus ring of a row is drawn by its cells instead of as the row's outline. It looks the same.
+  - Body rows have an opaque background, and the band of nested rows is mixed onto the surface instead of being transparent. Both look the same on the table's own background.
+  - `Table.Cell` no longer accepts `render`, like `Table.Column`.
+
+  The theme adds a `ui-sticky-edge` utility for the edge line.
+
+- 2588208: fix(DSTSUP-294): give read-only Checkbox, Radio and Switch a look of their own
+
+  A read-only Checkbox, Radio or Switch used to be pixel for pixel an editable one. Its read-only state only turned off the hover edge and set `cursor-default`, so at rest the only way to find out a control could not be changed was to click it and watch nothing happen. `disabled` was no substitute: a disabled checked box draws its mark at about 2:1, and a disabled control cannot be focused, so people using a screen reader could not reach its value either.
+
+  All three now paint their read-only state by **dropping the fill** rather than lightening it, which is how Carbon and Salt draw theirs. A quieter fill was tried first and read as a variant instead of a state.
+
+  - **Checked, indeterminate, selected:** the box keeps its resting edge and loses its fill, and the mark paints `foreground` at about 17:1 instead of `selected-bold-foreground` on a dark ground. The outline against an editable control's solid `selected-bold` fill is the difference you see at a glance, and the value stays the most legible thing in the box.
+  - **Switch, on and off:** the track empties in both positions and keeps the 2px rim it was already reserving for the thumb inset. With no track fill left to carry the value, the thumb paints `foreground`, so the position still reads at about 17:1.
+  - **Unchecked, unselected:** unchanged. An empty box draws nothing but its edge, and read-only has no reason to repaint it. What tells it apart from an editable box is the missing hover and `cursor-default`, as before.
+  - **Interaction:** no hover change and `cursor-default`, as before. The focus ring stays, because a read-only control is still focusable and still announces `aria-readonly`.
+
+  No new token. An earlier iteration of this change added `--color-selected-readonly` and it is gone again, since the read-only state now reaches for `surface`, `control-edge` and `foreground`, which every theme already defines.
+
+### Patch Changes
+
+- 3b04f93: style(DST-1903): give the link Button variant room around its focus ring
+
+  The `link` Button variant had no padding, so the focus ring `ui-state-focus` draws since DST-1733 sat directly on the label. It now has 4px of padding that a matching negative margin takes back, so the ring clears the text and the label stays where it was.
+
+- 0da7449: style(DST-1905, DSTSUP-323): separate Sidebar groups with a wider gap and a caption that reads as a heading
+
+  Groups in a long sidebar navigation now read as groups instead of one continuous list, and their labels stand apart from the rows below them.
+
+  **Current:** a group label sat 16px below the previous row, about half a row's height, and was set in 11px bold uppercase with wide letter spacing. Once a navigation outgrew the screen, the groups ran together and every label drew the eye.
+
+  **New:** a group label sits 24px below the previous row and is set in 12px semibold grey, in sentence case. Navigation rows now use the full text color instead of a slightly lighter one, so a label reads as a heading for its group and not as one more row, even when it shares a word with the first item, as "Module" does with "Modulbibliothek". The active row keeps its highlight and medium weight, and hovering a row now only fills its background. A label at the top of a list keeps its alignment with the text of the first item.
+
+  The section panel of `Sidebar.Rail` uses the same group label and rows, and changes with them. Nothing changes in the component API. If you passed uppercase text to `Sidebar.GroupLabel` to match the old look, switch it to sentence case.
+
+- 33c9960: style(DST-1954): add an alpha scale and make Keyboard key caps translucent
+
+  The theme now has a five-step alpha scale (`--alpha-50` to `--alpha-400`: 5, 10, 14, 26 and 45%) for translucent edges, washes and veils. The ghost hover, `border`, `control-border` and the overlay backdrop read from it and look exactly as before.
+
+  The `Keyboard` key cap takes its border and fill from its text colour instead of an opaque fill, so it blends into a highlighted or coloured row instead of showing as a white box.
+
+  Key caps also inherit the surrounding font now. Before, they showed in the browser's monospace font.
+
+- 8ea74cc: fix(DSTSUP-303): align Menu item labels when only some items have an icon
+
+  Menu and ActionMenu items now share one set of columns. When any item has a leading icon, or is a `master` or `admin` item, every label in the menu starts at the same position, including items inside sections. Items whose text is a plain string, not wrapped in `TextValue`, also land in the label column now. A menu without any icons keeps its compact layout, and selection menus look the same as before.
+
+- 89e5b05: feat(DSTSUP-314): give the mobile Sidebar drawer icons, a clear hierarchy and 44px touch targets
+
+  On small screens the Sidebar drawer now keeps what makes the rail easy to scan on desktop. Most of this is about `Sidebar.Rail`, but the rows, the back row, the footer and the close button are shared, so the drawer of a plain `Sidebar` with `Sidebar.Nav` changes too: 16px rows, the marked current section, the section name as a heading row with the chevron chip, 44px footer links and the larger close button. Only the rail icons and the pinned footer items are rail-only.
+
+  **Current:** every rail item became a plain text row. The icons were dropped, pinned footer items (like a help center) sat at the end of the scrolling list behind a separator, and nothing at the top level showed which section the current page belongs to. The section name inside a section was a small grey back link, and the close button was 28px.
+
+  **New:**
+
+  - Every top-level row shows its rail icon, and the text is 16px instead of 14px.
+  - The section that holds the current page is marked at the top level and announced as the current section (`aria-current="true"`).
+  - Pinned footer items stay below the list at every level instead of scrolling with it.
+  - Inside a section, its name is styled as the section heading, with the back chevron in a round chip. The whole row is still the back button.
+  - The close button and footer links meet the 44 by 44px touch target, like the nav rows already did.
+
+  Nothing changes in the component API. Pass a `Sidebar.Header` to `Sidebar.Rail` to show your brand at the top of the drawer. On desktop the rail does not render it.
+
+- c5efe3c: fix(DST-1948): give a drilled-in Sidebar level a real heading
+
+  The section name beside the back button is now a heading (an `h2` in a plain sidebar) instead of the button's label, so screen-reader heading navigation finds it on mobile and desktop. The back button keeps its "Back to …" name and still covers the whole row, and the level's region is named by the heading. Headings inside a nav now step down from the heading they sit under. Group labels on a drilled-in level move to level 3, under the section heading. In the desktop `Sidebar.Rail` panel, the nav's group labels and drill-down headings start at level 3, under the panel title. Nothing changes visually.
+
+  For custom themes: the `backButton` slot now styles the back row, which holds the chevron `button` and the heading (`[data-slot=title]`). The row is not focusable, so move `focus-visible:` styles to `has-[:focus-visible]:` and reset the button's outline with `[&>button]:outline-none`, and point `span` selectors at `button` or `[data-slot=title]`. Until then the button keeps the browser's focus ring.
+
+- Updated dependencies [110732b]
+- Updated dependencies [0154b3a]
+- Updated dependencies [3e3de96]
+- Updated dependencies [94fcae4]
+- Updated dependencies [9160448]
+- Updated dependencies [9160448]
+- Updated dependencies [a7bacf0]
+- Updated dependencies [183d72c]
+- Updated dependencies [3e77b24]
+- Updated dependencies [c59fdc4]
+- Updated dependencies [89e5b05]
+- Updated dependencies [becef91]
+- Updated dependencies [9882690]
+- Updated dependencies [c5efe3c]
+- Updated dependencies [a98043e]
+  - @marigold/components@18.4.0
+  - @marigold/system@18.4.0
+
 ## 6.2.2
 
 ### Patch Changes

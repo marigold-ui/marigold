@@ -11,6 +11,7 @@ import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { announce } from '@react-aria/live-announcer';
+import { useEffectEvent } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import { ButtonContext, RESET_BUTTON_CONTEXT } from '../Button/Context';
 import { CloseButton } from '../CloseButton/CloseButton';
@@ -134,17 +135,21 @@ export const SectionMessage = ({
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const isOpen = open ?? internalOpen;
 
-  // Re-announce on each hidden -> visible transition. Same-content re-announce
-  // without a visibility change still needs a `key` remount.
-  useEffect(() => {
-    if (!isOpen) return;
+  // Reads the latest `announce`, `variant` and content without being an
+  // effect dependency, so changing them while open does not re-announce.
+  const announceContent = useEffectEvent(() => {
     const shouldAnnounce = announceProp ?? variant === 'error';
     if (!shouldAnnounce) return;
     const text = containerRef.current?.textContent?.trim();
     if (!text) return;
     const priority = variant === 'error' ? 'assertive' : 'polite';
     announce(text, priority);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  });
+
+  // Re-announce on each hidden -> visible transition. Same-content re-announce
+  // without a visibility change still needs a `key` remount.
+  useEffect(() => {
+    if (isOpen) announceContent();
   }, [isOpen]);
 
   const handleClose = () => {
