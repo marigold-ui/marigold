@@ -1,10 +1,7 @@
-import { LayoutGroup } from 'motion/react';
-import * as m from 'motion/react-m';
-import { useId, useRef } from 'react';
+import { useRef } from 'react';
 import type RAC from 'react-aria-components';
 import { TabList as RACTabList } from 'react-aria-components/Tabs';
 import { cn } from '@marigold/system';
-import { MotionFeatures } from '../lazyMotion';
 import { useDevWarning } from '../utils/useDevWarning';
 import { useWheelScrollX } from '../utils/useWheelScrollX';
 import { useTabContext } from './Context';
@@ -20,7 +17,6 @@ export type TabListProps = Omit<
 // ----------------------
 const TabList = (props: TabListProps) => {
   const { classNames } = useTabContext();
-  const layoutId = useId();
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // The `tabsListScroll` slot is required by the theme type, but a JS theme, an
@@ -38,24 +34,11 @@ const TabList = (props: TabListProps) => {
   useWheelScrollX(scrollRef);
 
   return (
-    <MotionFeatures>
-      <LayoutGroup id={layoutId}>
-        {/*
-         * `layoutScroll` keeps the motion indicator (`layoutId`) correct when an
-         * off-screen tab is scrolled into view, otherwise it projects against a
-         * stale scroll offset.
-         */}
-        <m.div
-          ref={scrollRef}
-          layoutScroll
-          className={classNames.tabsListScroll}
-        >
-          <RACTabList {...props} className={cn('flex', classNames.tabsList)}>
-            {props.children}
-          </RACTabList>
-        </m.div>
-      </LayoutGroup>
-    </MotionFeatures>
+    <div ref={scrollRef} className={classNames.tabsListScroll}>
+      <RACTabList {...props} className={cn('flex', classNames.tabsList)}>
+        {props.children}
+      </RACTabList>
+    </div>
   );
 };
 

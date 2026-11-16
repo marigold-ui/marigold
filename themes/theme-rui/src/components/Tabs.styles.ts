@@ -32,8 +32,13 @@ export const Tabs: ThemeComponent<'Tabs'> = {
   }),
   tabIndicator: cva({
     base: [
-      'absolute inset-x-0 bottom-0 -mb-1 h-0.5 bg-foreground',
+      'absolute bottom-0 left-0 -mb-1 h-0.5 w-full bg-foreground',
       'origin-left',
+      // RAC's SelectionIndicator animates `translate` by the rect delta and any
+      // other listed property from its previous value. `width` needs an explicit
+      // `w-full` (not `inset-x-0`) because `auto` does not transition.
+      'transition-[translate,width] duration-250 ease-[cubic-bezier(0.165,0.84,0.44,1)]',
+      'motion-reduce:transition-none',
     ],
   }),
   tabpanel: cva({
