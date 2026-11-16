@@ -13,7 +13,8 @@ import type { Codemod } from '../types.js';
 // `onChange` moved from the input text to the selected key. In v18 they always
 // meant the text, so both sets are swapped in one pass. Elements already
 // carrying a v19 text prop are skipped; a selection-only element is the one
-// case a re-run would rename again, which is why the changeset says to run once.
+// case a re-run would rename again, which the applied-migrations marker
+// (DST-1969) prevents.
 
 const COMPONENTS = ['ComboBox', 'Autocomplete'];
 
