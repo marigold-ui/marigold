@@ -11,7 +11,7 @@ import { v18 } from './v18.js';
 //   `slotDefaults` entry: it keeps the `hideLabels` counter visible.
 //
 // `slots` mirrors the v19 `Theme` type: the v18 sets plus the new Popover
-// shape. `theme-drift.test.ts` pins this file against the live type.
+// and Stepper shapes. `theme-drift.test.ts` pins this file against the live type.
 // `stylesReferenceUrl` is left out until the v19 release tag exists, rather
 // than pointing reports at a moving branch.
 export const v19: MigrationManifest = {
@@ -24,7 +24,6 @@ export const v19: MigrationManifest = {
       'root',
       'summary',
       'count',
-      'errorCount',
       'currentLabel',
       'container',
       'item',
@@ -44,7 +43,7 @@ export const v19: MigrationManifest = {
   structureWarnings: [
     {
       component: 'Stepper',
-      text: "v19 gives Stepper a compact layout below the small-screen breakpoint. The migration adds its new slots with styles that keep your current row on every screen size. To get the compact layout, copy `root`, `summary`, `errorCount`, `currentLabel`, `segment`, `progressFill` and `currentIndicator` from theme-rui's `Stepper.styles.ts`, and the `max-sm:` rules it adds to the existing slots.",
+      text: "v19 gives Stepper a compact layout below the small-screen breakpoint. The migration adds its new slots with styles that keep your current row on every screen size. To get the compact layout, copy `root`, `summary`, `currentLabel`, `segment`, `progressFill` and `currentIndicator` from theme-rui's `Stepper.styles.ts`, and the `max-sm:` rules it adds to the existing slots.",
     },
   ],
   slotDefaults: {

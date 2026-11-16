@@ -377,7 +377,6 @@ export const Stepper: ThemeComponent<'Stepper'> = {
     assertEdited(result);
     for (const slot of [
       'root',
-      'errorCount',
       'currentLabel',
       'segment',
       'progressFill',

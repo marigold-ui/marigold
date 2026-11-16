@@ -313,10 +313,16 @@ const stepParts = (item: HTMLElement) => {
   };
 };
 
-// Marker: indicator + number. Segment: progress fill + indicator.
+// Marker: indicator + number. Segment: progress fill + indicator, and the
+// warning icon when the step failed.
 const hasIndicator = (part: HTMLElement) =>
   // eslint-disable-next-line testing-library/no-node-access
-  part.childElementCount === 2;
+  Array.from(part.children).filter(child => child.tagName !== 'svg').length ===
+  2;
+
+const warningIcon = (segment: HTMLElement) =>
+  // eslint-disable-next-line testing-library/no-node-access
+  Array.from(segment.children).find(child => child.tagName === 'svg');
 
 // First child in both the marker and the connector.
 const firstPart = (part: HTMLElement) =>
@@ -374,16 +380,6 @@ describe('on a small screen', () => {
     expect(label.top).toBeLessThan(count.bottom);
   });
 
-  test('puts the error count below the current label', () => {
-    render(<States.Component />);
-
-    const label = currentLabelLine('Current').getBoundingClientRect();
-
-    expect(
-      screen.getByText('2 steps need attention').getBoundingClientRect().top
-    ).toBeGreaterThanOrEqual(label.bottom);
-  });
-
   test('keeps the current label visible even with hideLabels', () => {
     render(<HideLabels.Component />);
 
@@ -399,16 +395,39 @@ describe('on a small screen', () => {
     expect(screen.getAllByText('Choose plan')).toHaveLength(2);
   });
 
-  test('flags errored steps other than the current one', () => {
-    render(<States.Component />);
+  test('marks a failed step with a warning icon above its segment', () => {
+    render(<Basic.Component errorKeys={['signin']} />);
 
-    expect(screen.getByText('2 steps need attention')).toBeVisible();
+    const [failed, current] = screen.getAllByRole('listitem');
+    const { segment } = stepParts(failed);
+    const icon = warningIcon(segment);
+
+    expect(icon).toBeVisible();
+    expect(icon?.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+      segment.getBoundingClientRect().top
+    );
+    expect(warningIcon(stepParts(current).segment)).toBeUndefined();
   });
 
-  test('flags errored steps even when no step is current', () => {
+  test('keeps the warning icon inside the touch target of its step', () => {
+    render(<Basic.Component errorKeys={['signin']} />);
+
+    const step = screen.getByRole('button', { name: /Sign in/ });
+    const icon = warningIcon(
+      stepParts(screen.getAllByRole('listitem')[0]).segment
+    );
+
+    expect(icon?.getBoundingClientRect().top).toBeGreaterThanOrEqual(
+      step.getBoundingClientRect().top
+    );
+  });
+
+  test('marks a failed step even when no step is current', () => {
     render(<Basic.Component selectedKey="missing" errorKeys={['plan']} />);
 
-    expect(screen.getByText('1 step needs attention')).toBeVisible();
+    const { segment } = stepParts(screen.getAllByRole('listitem')[1]);
+
+    expect(warningIcon(segment)).toBeVisible();
   });
 
   test('marks the current step on its segment only', () => {
@@ -438,10 +457,15 @@ describe('on a small screen', () => {
     expect(getComputedStyle(segment).borderTopStyle).toBe('dashed');
   });
 
-  test('flags nothing when only the current step has failed', () => {
+  test("shows a failed current step's warning on its label only", () => {
     render(<Basic.Component errorKeys={['plan']} />);
 
-    expect(screen.queryByText(/need/)).not.toBeInTheDocument();
+    const { segment } = stepParts(screen.getAllByRole('listitem')[1]);
+    // eslint-disable-next-line testing-library/no-node-access
+    const labelIcons = currentLabelLine('Choose plan').querySelectorAll('svg');
+
+    expect(warningIcon(segment)).toBeUndefined();
+    expect(labelIcons).toHaveLength(1);
   });
 
   test('gives every segment a touch target of at least 24 by 44 pixels', () => {
@@ -455,13 +479,13 @@ describe('on a small screen', () => {
     }
   });
 
-  test('keeps twelve segments at 24px on a 320px phone with 16px gutters', async () => {
+  test('keeps ten segments at 24px inside a padded card on a 320px phone', async () => {
     await page.viewport(320, 800);
     render(<ManyStepsSmallScreen.Component />);
 
     const steps = screen.getAllByRole('listitem');
 
-    expect(steps).toHaveLength(12);
+    expect(steps).toHaveLength(10);
     for (const step of steps) {
       expect(step.getBoundingClientRect().width).toBeGreaterThanOrEqual(24);
     }
@@ -498,10 +522,12 @@ describe('on a large screen', () => {
     expect(currentLabelLine('Choose plan')).not.toBeVisible();
   });
 
-  test('hides the attention count', () => {
-    render(<States.Component />);
+  test('hides the segment warning icon', () => {
+    render(<Basic.Component errorKeys={['signin']} />);
 
-    expect(screen.getByText('2 steps need attention')).not.toBeVisible();
+    const { segment } = stepParts(screen.getAllByRole('listitem')[0]);
+
+    expect(warningIcon(segment)).not.toBeVisible();
   });
 });
 

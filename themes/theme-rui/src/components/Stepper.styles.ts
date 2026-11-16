@@ -2,7 +2,7 @@ import type { ThemeComponent } from '@marigold/system';
 import { cva } from '@marigold/system';
 
 // Below `sm` the row turns into a segmented track above a counter and the
-// current label. The DOM stays the same, only these styles switch.
+// current label. Only `currentIndicator` moves in the DOM, into the segment.
 export const Stepper: ThemeComponent<'Stepper'> = {
   root: cva({
     base: 'max-sm:flex-col max-sm:items-stretch max-sm:gap-1',
@@ -10,7 +10,7 @@ export const Stepper: ThemeComponent<'Stepper'> = {
   summary: cva({
     // Desktop shows it only as the `hideLabels` counter.
     base: [
-      'flex-wrap items-center gap-x-2',
+      'items-center gap-x-2',
       'in-data-hide-labels:flex max-sm:flex',
       // Under the track, so the label sits next to the content it names.
       'max-sm:order-1',
@@ -21,13 +21,6 @@ export const Stepper: ThemeComponent<'Stepper'> = {
       'text-secondary shrink-0 text-sm font-medium tabular-nums',
       // Level with the label's first line, however long it wraps.
       'max-sm:self-start max-sm:leading-6',
-    ],
-  }),
-  errorCount: cva({
-    base: [
-      'items-center gap-1 text-sm text-destructive-accent max-sm:inline-flex',
-      'max-sm:order-1 max-sm:basis-full',
-      '[&_svg]:size-4 [&_svg]:shrink-0',
     ],
   }),
   currentLabel: cva({
@@ -100,6 +93,8 @@ export const Stepper: ThemeComponent<'Stepper'> = {
       'bg-border h-1 w-full rounded-full',
       'max-sm:block',
       'in-data-[state=error]:bg-destructive-accent',
+      // The warning icon above a failed segment.
+      'text-destructive-accent [&_svg]:size-4',
       'in-data-[state=disabled]:bg-transparent in-data-[state=disabled]:border in-data-[state=disabled]:border-dashed in-data-[state=disabled]:border-control-border',
     ],
   }),

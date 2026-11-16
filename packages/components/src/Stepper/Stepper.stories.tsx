@@ -690,31 +690,33 @@ SmallScreen.test(
 );
 
 /**
- * Twelve steps still fit a phone, because only the current label is shown and
+ * Ten steps still fit a phone, because only the current label is shown and
  * the segments share the width. `hideLabels` changes nothing here.
  */
 export const ManyStepsSmallScreen = meta.story({
   globals: { viewport: { value: 'extraSmallScreen' } },
   parameters: { surface: false },
   args: ManySteps.input.args,
-  // The narrowest phone with 16px page gutters.
+  // The narrowest phone: 16px page gutters, then a padded card.
   render: args => (
     <div className="px-4">
-      <Stepper {...args}>
-        {EVENT_STEPS.map(step => (
-          <Stepper.Item key={step.id} id={step.id}>
-            {step.label}
-          </Stepper.Item>
-        ))}
-      </Stepper>
+      <div className="rounded-lg border p-3">
+        <Stepper {...args}>
+          {EVENT_STEPS.slice(0, 10).map(step => (
+            <Stepper.Item key={step.id} id={step.id}>
+              {step.label}
+            </Stepper.Item>
+          ))}
+        </Stepper>
+      </div>
     </div>
   ),
 });
 
 /**
- * A failed step that is not the current one turns its segment red, and a
- * line below the label says how many need attention, so the error does not
- * rest on colour alone. A failed current step shows the warning on its label instead.
+ * A failed step turns its segment red and gets a warning icon above it, so
+ * the error does not rest on colour alone and the user sees which step to
+ * return to. A failed current step shows the warning on its label instead.
  */
 export const ErrorsSmallScreen = meta.story({
   globals: { viewport: { value: 'smallScreen' } },

@@ -226,7 +226,6 @@ export type Theme = {
       | 'root'
       | 'summary'
       | 'count'
-      | 'errorCount'
       | 'currentLabel'
       | 'container'
       | 'item'

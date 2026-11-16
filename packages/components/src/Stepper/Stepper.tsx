@@ -203,11 +203,6 @@ const Stepper = ({
   const currentIndex = items.findIndex(item => item.props.id === selectedKey);
   const currentItem = items[currentIndex];
   const currentState = currentItem ? getState(currentItem.props.id) : undefined;
-  // The current step's own error shows on its label line instead.
-  const errorCount = items.filter(
-    item => item.props.id !== selectedKey && getState(item.props.id) === 'error'
-  ).length;
-
   if (items.length === 0) return null;
 
   const progressFill = (
@@ -244,42 +239,27 @@ const Stepper = ({
           data-hide-labels={hideLabels || undefined}
         >
           {/* Repeats what every step announces, so hidden from assistive tech. */}
-          {(currentItem || errorCount > 0) && (
+          {currentItem && (
             <div className={cn('hidden', classNames.summary)}>
-              {currentItem && (
-                <span aria-hidden="true" className={classNames.count}>
-                  {stringFormatter.format('stepPosition', {
-                    current: currentIndex + 1,
-                    total: items.length,
-                  })}
-                </span>
-              )}
-              {errorCount > 0 && (
-                <span
-                  aria-hidden="true"
-                  className={cn('hidden', classNames.errorCount)}
-                >
-                  <TriangleAlert />
-                  {stringFormatter.format('stepsNeedAttention', {
-                    count: errorCount,
-                  })}
-                </span>
-              )}
-              {currentItem && (
-                <span
-                  aria-hidden="true"
-                  className={cn('hidden', classNames.currentLabel)}
-                  data-state={currentState}
-                >
-                  {/* Centred on the first line, however long the label wraps. */}
-                  {currentState === 'error' && (
-                    <span className="inline-flex h-lh shrink-0 items-center">
-                      <TriangleAlert />
-                    </span>
-                  )}
-                  {currentItem.props.children}
-                </span>
-              )}
+              <span aria-hidden="true" className={classNames.count}>
+                {stringFormatter.format('stepPosition', {
+                  current: currentIndex + 1,
+                  total: items.length,
+                })}
+              </span>
+              <span
+                aria-hidden="true"
+                className={cn('hidden', classNames.currentLabel)}
+                data-state={currentState}
+              >
+                {/* Centred on the first line, however long the label wraps. */}
+                {currentState === 'error' && (
+                  <span className="inline-flex h-lh shrink-0 items-center">
+                    <TriangleAlert />
+                  </span>
+                )}
+                {currentItem.props.children}
+              </span>
             </div>
           )}
           <ol role="list" className={classNames.container}>
@@ -346,6 +326,11 @@ const Stepper = ({
                     >
                       {progressFill}
                       {hasIndicator && isSmallScreen && indicator('segment')}
+                      {/* Marks the failed step without relying on colour. The
+                          current one carries it on its label instead. */}
+                      {state === 'error' && !isCurrent && (
+                        <TriangleAlert className="absolute bottom-full left-1/2 mb-1 -translate-x-1/2" />
+                      )}
                     </span>
                   </StepContent>
                   {index < items.length - 1 && (
