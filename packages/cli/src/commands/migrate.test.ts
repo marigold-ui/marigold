@@ -312,6 +312,38 @@ export const Search = () => (
     );
   });
 
+  test('v19 scaffolds the Sheet a themed Tray renders and flags Tray.overlay', () => {
+    const root = setupFixture();
+    const components = path.join(root, 'theme', 'components');
+    writeFileSync(
+      path.join(components, 'Tray.styles.ts'),
+      `import { cva, ThemeComponent } from '@marigold/system';
+
+export const Tray: ThemeComponent<'Tray'> = {
+  overlay: cva({ base: 'bg-black/50 fixed inset-0' }),
+  container: cva({ base: 'grid bg-white' }),
+};
+`
+    );
+
+    const { output } = runMigrate({
+      version: 'v19',
+      targetPath: root,
+      dryRun: false,
+    });
+
+    const sheet = readFileSync(
+      path.join(components, 'Sheet.styles.ts'),
+      'utf8'
+    );
+    expect(sheet).toContain(`ThemeComponent<'Sheet'>`);
+    expect(sheet).toContain('ui-surface'); // load-bearing: the tray's surface
+    expect(readFileSync(path.join(components, 'index.ts'), 'utf8')).toContain(
+      `export * from './Sheet.styles';`
+    );
+    expect(output).toContain('Tray.overlay');
+  });
+
   test('scans .jsx and .js application files too', () => {
     const root = mkdtempSync(path.join(os.tmpdir(), 'marigold-migrate-'));
     const appFile = path.join(root, 'App.jsx');

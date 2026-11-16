@@ -81,6 +81,7 @@ export const v18: MigrationManifest = {
       'actions',
     ],
     Tray: [
+      'overlay',
       'container',
       'dragHandle',
       'header',
@@ -180,7 +181,6 @@ export const v18: MigrationManifest = {
       'indicator',
       'action',
     ],
-    Sheet: ['backdrop', 'container', 'content'],
     NumberField: ['group', 'stepper', 'input'],
     SectionMessage: ['container', 'icon', 'title', 'description', 'content'],
     Table: [
