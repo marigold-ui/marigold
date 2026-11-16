@@ -67,16 +67,12 @@ const trackKeyboard = (overlay: HTMLElement) => {
   }
   let last = -1;
   const update = () => {
-    // A zoom shrinks the visual viewport too, only a keyboard keeps scale 1.
-    const zoomed = Math.abs(viewport.scale - 1) > 0.01;
-    const covered = zoomed
-      ? 0
-      : Math.max(
-          0,
-          document.documentElement.clientHeight -
-            viewport.height -
-            viewport.offsetTop
-        );
+    const covered = Math.max(
+      0,
+      document.documentElement.clientHeight -
+        viewport.height -
+        viewport.offsetTop
+    );
     // Fires per frame while iOS pans, only a changed value needs a write.
     if (covered === last) return;
     last = covered;
