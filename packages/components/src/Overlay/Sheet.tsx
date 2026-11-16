@@ -109,13 +109,13 @@ export const Sheet = ({
 }: SheetProps) => {
   const classNames = useClassNames({ component: 'Sheet' });
   const overlayRef = useRef<HTMLDivElement>(null);
-  const openedAt = useRef(0);
+  const openedAtRef = useRef(0);
   const overlayCallbackRef = useCallback((overlay: HTMLDivElement | null) => {
     overlayRef.current = overlay;
     if (!overlay) {
       return;
     }
-    openedAt.current = performance.now();
+    openedAtRef.current = performance.now();
     return trackKeyboard(overlay);
   }, []);
 
@@ -129,7 +129,7 @@ export const Sheet = ({
       // Bounded: without `scrollend` (Safari < 26.2) the slide-in never ends.
       shouldCloseOnInteractOutside={() =>
         !overlayRef.current?.hasAttribute('data-entering') ||
-        performance.now() - openedAt.current > SLIDE_IN_LIMIT
+        performance.now() - openedAtRef.current > SLIDE_IN_LIMIT
       }
       className="z-50"
     >
