@@ -2,12 +2,17 @@ import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { existsSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { detectMigration, runMigrate, runMigrateCommand } from './migrate.js';
+import {
+  type MigrateCommandOptions,
+  detectMigration,
+  runMigrate,
+  runMigrateCommand,
+} from './migrate.js';
 
 const prompts = vi.hoisted(() => ({
   confirm: vi.fn(),
   multiselect: vi.fn(),
-  isCancel: vi.fn(() => false),
+  isCancel: vi.fn<(value: unknown) => boolean>(() => false),
 }));
 vi.mock('@clack/prompts', () => prompts);
 
@@ -56,8 +61,21 @@ const setupFixture = (): string => {
   return root;
 };
 
+// a consumer package.json declaring @marigold/components, optionally migrated
+const consumerPackageJson = (version: string, migrated?: string): string =>
+  JSON.stringify({
+    dependencies: { '@marigold/components': version },
+    ...(migrated && { marigold: { migrated } }),
+  });
+
 describe('detectMigration', () => {
-  const setupRepo = (version: string, installed = true): string => {
+  const setupRepo = (
+    version: string,
+    {
+      installed = true,
+      migrated,
+    }: { installed?: boolean; migrated?: string } = {}
+  ): string => {
     const root = mkdtempSync(path.join(os.tmpdir(), 'marigold-detect-'));
     if (installed) {
       const pkgDir = path.join(root, 'node_modules', '@marigold', 'components');
@@ -66,10 +84,11 @@ describe('detectMigration', () => {
         path.join(pkgDir, 'package.json'),
         JSON.stringify({ name: '@marigold/components', version })
       );
-    } else {
+    }
+    if (!installed || migrated) {
       writeFileSync(
         path.join(root, 'package.json'),
-        JSON.stringify({ dependencies: { '@marigold/components': version } })
+        consumerPackageJson(version, migrated)
       );
     }
     // the migration target usually sits far below the repo root
@@ -78,62 +97,114 @@ describe('detectMigration', () => {
     return target;
   };
 
-  test('walks up to node_modules and proposes the applicable migration', () => {
+  test('walks up to node_modules and holds back migrations for a major not installed yet', () => {
     const detected = detectMigration(setupRepo('17.9.1'));
 
     expect(detected).toEqual({
+      package: '@marigold/components',
       installed: '17.9.1',
       source: 'node_modules',
-      versions: ['v18', 'v19'],
-      heldBack: [],
+      migrated: null,
+      versions: [],
+      awaitingUpgrade: ['v18', 'v19'],
     });
   });
 
   test('falls back to the declared range when nothing is installed', () => {
-    const detected = detectMigration(setupRepo('^17.0.0', false));
+    const detected = detectMigration(
+      setupRepo('^17.0.0', { installed: false })
+    );
 
     expect(detected).toEqual({
+      package: '@marigold/components',
       installed: '17.0.0',
       source: 'package.json',
-      versions: ['v18', 'v19'],
-      heldBack: [],
+      migrated: null,
+      versions: [],
+      awaitingUpgrade: ['v18', 'v19'],
     });
   });
 
-  test('proposes the same-major migration (upgrade first, then migrate)', () => {
+  test('proposes the migration for the installed major (upgrade first, then migrate)', () => {
     const detected = detectMigration(setupRepo('18.0.0-beta.4'));
 
-    expect(detected).toEqual({
-      installed: '18.0.0-beta.4',
-      source: 'node_modules',
-      versions: ['v18', 'v19'],
-      heldBack: [],
+    expect(detected).toMatchObject({
+      versions: ['v18'],
+      awaitingUpgrade: ['v19'],
     });
   });
 
-  test('does not propose a migration that is unsafe to re-run once its major is installed', () => {
+  test('proposes every pending migration without a marker', () => {
     const detected = detectMigration(setupRepo('19.0.0'));
 
+    expect(detected).toMatchObject({
+      migrated: null,
+      versions: ['v18', 'v19'],
+      awaitingUpgrade: [],
+    });
+  });
+
+  test('skips migrations at or below the marker', () => {
+    const detected = detectMigration(setupRepo('19.0.0', { migrated: 'v18' }));
+
+    expect(detected).toMatchObject({
+      migrated: 'v18',
+      versions: ['v19'],
+      awaitingUpgrade: [],
+    });
+  });
+
+  test('proposes nothing once the installed major is migrated', () => {
+    const detected = detectMigration(setupRepo('19.0.0', { migrated: 'v19' }));
+
+    expect(detected).toMatchObject({
+      migrated: 'v19',
+      versions: [],
+      awaitingUpgrade: [],
+    });
+  });
+
+  test('holds back the next migration until its major is installed', () => {
+    const detected = detectMigration(setupRepo('18.3.0', { migrated: 'v18' }));
+
+    expect(detected).toMatchObject({
+      migrated: 'v18',
+      versions: [],
+      awaitingUpgrade: ['v19'],
+    });
+  });
+
+  test('fails on a malformed marker instead of guessing', () => {
+    const target = setupRepo('19.0.0', { migrated: '19' });
+
+    expect(() => detectMigration(target)).toThrow(
+      /expected a migration like "v19"/
+    );
+  });
+
+  test('falls back to @marigold/system in a standalone theme package', () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), 'marigold-detect-'));
+    writeFileSync(
+      path.join(root, 'package.json'),
+      JSON.stringify({
+        dependencies: { '@marigold/system': '^19.0.0' },
+        marigold: { migrated: 'v18' },
+      })
+    );
+
+    const detected = detectMigration(root);
+
     expect(detected).toEqual({
+      package: '@marigold/system',
       installed: '19.0.0',
-      source: 'node_modules',
-      versions: [],
-      heldBack: ['v19'],
+      source: 'package.json',
+      migrated: 'v18',
+      versions: ['v19'],
+      awaitingUpgrade: [],
     });
   });
 
-  test('reports up to date when the installed major is past every migration', () => {
-    const detected = detectMigration(setupRepo('20.0.0'));
-
-    expect(detected).toEqual({
-      installed: '20.0.0',
-      source: 'node_modules',
-      versions: [],
-      heldBack: [],
-    });
-  });
-
-  test('returns null when no @marigold/components exists anywhere', () => {
+  test('returns null when no @marigold/components or @marigold/system exists anywhere', () => {
     const root = mkdtempSync(path.join(os.tmpdir(), 'marigold-detect-'));
 
     expect(detectMigration(root)).toBeNull();
@@ -476,18 +547,38 @@ export const List = () => <SelectList aria-label="x" />;
 describe('runMigrateCommand', () => {
   // a fixture whose Marigold version is discoverable, so the command can be
   // driven through detection + confirmation instead of an explicit version
-  const setupDetectable = (version: string): string => {
+  const setupDetectable = (version: string, migrated?: string): string => {
     const root = setupFixture();
     writeFileSync(
       path.join(root, 'package.json'),
-      JSON.stringify({ dependencies: { '@marigold/components': version } })
+      consumerPackageJson(version, migrated)
     );
     return root;
   };
 
   beforeEach(() => {
+    vi.clearAllMocks();
     prompts.isCancel.mockReturnValue(false);
   });
+
+  // drives the command, non-interactive and applying by default
+  const migrate = async (
+    options: Omit<MigrateCommandOptions, 'write' | 'dryRun'> & {
+      dryRun?: boolean;
+    }
+  ) => {
+    const lines: string[] = [];
+    const code = await runMigrateCommand({
+      dryRun: false,
+      interactive: false,
+      ...options,
+      write: output => lines.push(output),
+    });
+    return { code, lines, output: lines.join('\n') };
+  };
+
+  const acceptAll = async ({ initialValues }: { initialValues: string[] }) =>
+    initialValues;
 
   test('runs the explicitly named migration without prompting', async () => {
     const root = setupFixture();
@@ -506,8 +597,120 @@ describe('runMigrateCommand', () => {
     expect(prompts.confirm).not.toHaveBeenCalled();
   });
 
+  test('refuses a named migration at or below the marker', async () => {
+    const root = setupDetectable('19.0.0', 'v19');
+    const cardPath = path.join(root, 'theme', 'components', 'Card.styles.ts');
+    const before = readFileSync(cardPath, 'utf8');
+
+    const { code, output } = await migrate({
+      version: 'v18',
+      targetPath: root,
+    });
+
+    expect(code).toBe(1);
+    expect(output).toContain(
+      'v18 is already applied (last applied: v19), so nothing was run'
+    );
+    expect(output).toContain(`marigold migrate v18 ${root} --only <names>`);
+    expect(readFileSync(cardPath, 'utf8')).toBe(before);
+  });
+
+  test('names the package folder when refusing a recorded migration on a subfolder', async () => {
+    const root = setupDetectable('19.0.0', 'v19');
+    const subfolder = path.join(root, 'theme');
+
+    const { code, output } = await migrate({
+      version: 'v18',
+      targetPath: subfolder,
+    });
+
+    expect(code).toBe(1);
+    expect(output).toContain(`marigold migrate v18 ${root} --only <names>`);
+  });
+
+  test.each(['^19', '19.x', 'latest', 'workspace:*'])(
+    'refuses a recorded migration when the declared range %s has no version to detect',
+    async range => {
+      const root = setupFixture();
+      writeFileSync(
+        path.join(root, 'package.json'),
+        JSON.stringify({
+          dependencies: { '@marigold/components': range },
+          marigold: { migrated: 'v19' },
+        })
+      );
+      const appFile = path.join(root, 'app', 'Search.tsx');
+      mkdirSync(path.dirname(appFile), { recursive: true });
+      const source = `import { ComboBox } from '@marigold/components';\nexport const Search = () => <ComboBox value={key} label="Animals" />;\n`;
+      writeFileSync(appFile, source);
+
+      const { code, output } = await migrate({
+        version: 'v19',
+        targetPath: root,
+      });
+
+      expect(code).toBe(1);
+      expect(output).toContain('v19 is already applied (last applied: v19)');
+      expect(readFileSync(appFile, 'utf8')).toBe(source);
+    }
+  );
+
+  test('dry-runs a recorded migration and says applying would be refused', async () => {
+    // migrated, selection-only: combobox-value-props would fire on it again
+    const root = setupDetectable('19.0.0', 'v19');
+    const appFile = path.join(root, 'app', 'Search.tsx');
+    mkdirSync(path.dirname(appFile), { recursive: true });
+    const source = `import { ComboBox } from '@marigold/components';\nexport const Search = () => <ComboBox value={key} label="Animals" />;\n`;
+    writeFileSync(appFile, source);
+
+    const { code, output } = await migrate({
+      version: 'v19',
+      targetPath: root,
+      dryRun: true,
+    });
+
+    expect(code).toBe(0);
+    expect(output).toContain(
+      'v19 is already applied (last applied: v19). This dry run shows what a re-run would change.'
+    );
+    expect(output).toContain('marigold migrate v19 (dry run)');
+    expect(output).toContain('ComboBox: renamed `value` to `inputValue`');
+    expect(readFileSync(appFile, 'utf8')).toBe(source);
+  });
+
+  test('runs an applied migration when --only names the changes', async () => {
+    const root = setupDetectable('19.0.0', 'v19');
+
+    const { code, output } = await migrate({
+      version: 'v18',
+      targetPath: root,
+      dryRun: true,
+      only: ['swap-exact-classes'],
+    });
+
+    expect(code).toBe(0);
+    expect(output).not.toContain('already applied');
+    expect(output).toContain('marigold migrate v18 (dry run)');
+  });
+
+  test('warns but runs a named migration for a major that is not installed', async () => {
+    const root = setupDetectable('18.0.0');
+
+    const { code, output } = await migrate({
+      version: 'v19',
+      targetPath: root,
+      dryRun: true,
+    });
+
+    expect(code).toBe(0);
+    expect(output).toContain(
+      'Warning: v19 targets @marigold/components 19, but 18.0.0 is installed'
+    );
+    expect(output).toContain('marigold migrate v19 (dry run)');
+  });
+
   test('refuses to auto-detect without a terminal to confirm in', async () => {
-    const root = setupDetectable('17.9.1');
+    const root = setupDetectable('18.0.0');
 
     const run = runMigrateCommand({
       targetPath: root,
@@ -519,35 +722,35 @@ describe('runMigrateCommand', () => {
     await expect(run).rejects.toThrow(/Non-interactive session/);
   });
 
-  test('reports a target that has no migration left to run', async () => {
-    const root = setupDetectable('20.0.0');
-    const written: string[] = [];
+  test('reports a migrated target as up to date', async () => {
+    const root = setupDetectable('19.0.0', 'v19');
 
-    const code = await runMigrateCommand({
+    const { code, output } = await migrate({
       targetPath: root,
       dryRun: true,
-      write: output => written.push(output),
       interactive: true,
     });
 
     expect(code).toBe(0);
-    expect(written.join('\n')).toContain('already up to date');
+    expect(output).toContain('(last applied: v19) — already up to date');
+    expect(prompts.confirm).not.toHaveBeenCalled();
   });
 
-  test('names a held-back migration instead of claiming up to date', async () => {
-    const root = setupDetectable('19.0.0');
-    const written: string[] = [];
+  test('says to upgrade first when the next migration is for a newer major', async () => {
+    const root = setupDetectable('18.3.0', 'v18');
 
-    const code = await runMigrateCommand({
+    const { code, output } = await migrate({
       targetPath: root,
       dryRun: true,
-      write: output => written.push(output),
       interactive: true,
     });
 
     expect(code).toBe(0);
-    expect(written.join('\n')).not.toContain('already up to date');
-    expect(written.join('\n')).toContain('marigold migrate v19 [path]');
+    expect(output).toContain(
+      'the v19 migration needs @marigold/components 19 installed first'
+    );
+    expect(output).not.toContain('already up to date');
+    expect(prompts.confirm).not.toHaveBeenCalled();
   });
 
   test('fails when the target has no Marigold at all', async () => {
@@ -564,7 +767,7 @@ describe('runMigrateCommand', () => {
   });
 
   test('aborts with 130 when the detected migration is declined', async () => {
-    const root = setupDetectable('17.9.1');
+    const root = setupDetectable('18.0.0');
     const written: string[] = [];
     prompts.confirm.mockResolvedValue(false);
 
@@ -580,7 +783,7 @@ describe('runMigrateCommand', () => {
   });
 
   test('applies only the changes left selected in the multiselect', async () => {
-    const root = setupDetectable('17.9.1');
+    const root = setupDetectable('18.0.0');
     const components = path.join(root, 'theme', 'components');
     const cardBefore = readFileSync(
       path.join(components, 'Card.styles.ts'),
@@ -604,8 +807,324 @@ describe('runMigrateCommand', () => {
     ).toContain(`'grid gap-x-2 items-center'`);
   });
 
+  test('neither applies nor records a migration when every change is deselected', async () => {
+    const root = setupDetectable('18.0.0');
+    const cardPath = path.join(root, 'theme', 'components', 'Card.styles.ts');
+    const before = readFileSync(cardPath, 'utf8');
+    prompts.confirm.mockResolvedValue(true);
+    prompts.multiselect.mockResolvedValue([]);
+
+    const { code, output } = await migrate({
+      targetPath: root,
+      interactive: true,
+    });
+
+    expect(code).toBe(0);
+    expect(output).toContain('Nothing selected — v18 not applied.');
+    expect(readFileSync(cardPath, 'utf8')).toBe(before);
+    expect(
+      JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8')).marigold
+    ).toBeUndefined();
+  });
+
+  describe('applied-migrations marker', () => {
+    const marker = (root: string): unknown =>
+      JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8'))
+        .marigold;
+
+    test('records a real run in the declaring package.json', async () => {
+      const root = setupDetectable('18.0.0');
+
+      const { output } = await migrate({ version: 'v18', targetPath: root });
+
+      expect(marker(root)).toEqual({ migrated: 'v18' });
+      expect(output).toContain('Recorded v18 as applied in');
+    });
+
+    test('never records a dry run', async () => {
+      const root = setupDetectable('18.0.0');
+
+      await migrate({ version: 'v18', targetPath: root, dryRun: true });
+
+      expect(marker(root)).toBeUndefined();
+    });
+
+    test('records the last migration of a multi-version run', async () => {
+      const root = setupDetectable('19.0.0');
+      prompts.confirm.mockResolvedValue(true);
+      prompts.multiselect.mockImplementation(acceptAll);
+
+      await migrate({ targetPath: root, interactive: true });
+
+      expect(marker(root)).toEqual({ migrated: 'v19' });
+    });
+
+    test('records a partial run and names what was skipped', async () => {
+      const root = setupDetectable('18.0.0');
+
+      const { lines } = await migrate({
+        version: 'v18',
+        targetPath: root,
+        only: ['swap-exact-classes'],
+      });
+
+      const skippedLine = lines.find(line =>
+        line.startsWith('Skipped in v18:')
+      );
+      expect(skippedLine).toBeDefined();
+      expect(skippedLine).toContain(`marigold migrate v18 ${root} --only `);
+      expect(skippedLine).not.toContain('swap-exact-classes');
+      expect(marker(root)).toEqual({ migrated: 'v18' });
+    });
+
+    test('lists nothing as skipped when every fired change ran', async () => {
+      const root = setupDetectable('18.0.0');
+      prompts.confirm.mockResolvedValue(true);
+      prompts.multiselect.mockImplementation(acceptAll);
+
+      const { lines } = await migrate({ targetPath: root, interactive: true });
+
+      expect(lines.some(line => line.startsWith('Skipped in'))).toBe(false);
+    });
+
+    test('lists nothing as skipped when completing a recorded migration', async () => {
+      // migrated, selection-only: combobox-value-props would fire on it again
+      const root = setupDetectable('19.0.0', 'v19');
+      const appFile = path.join(root, 'app', 'Search.tsx');
+      mkdirSync(path.dirname(appFile), { recursive: true });
+      writeFileSync(
+        appFile,
+        `import { ComboBox } from '@marigold/components';\nexport const Search = () => <ComboBox value={key} label="Animals" />;\n`
+      );
+
+      const { lines } = await migrate({
+        version: 'v19',
+        targetPath: root,
+        only: ['restructure-to-slots'],
+      });
+
+      expect(lines.some(line => line.startsWith('Skipped in'))).toBe(false);
+      expect(readFileSync(appFile, 'utf8')).toContain(
+        '<ComboBox value={key} label="Animals" />'
+      );
+    });
+
+    test('warns when completing a recorded migration', async () => {
+      const root = setupDetectable('19.0.0', 'v19');
+
+      const { output } = await migrate({
+        version: 'v19',
+        targetPath: root,
+        only: ['restructure-to-slots'],
+      });
+
+      expect(output).toContain(
+        'Completing v19, which is already applied (last applied: v19)'
+      );
+    });
+
+    test('never lowers the marker on an --only run of an older migration', async () => {
+      const root = setupDetectable('19.0.0', 'v19');
+
+      await migrate({
+        version: 'v18',
+        targetPath: root,
+        only: ['swap-exact-classes'],
+      });
+
+      expect(marker(root)).toEqual({ migrated: 'v19' });
+    });
+
+    test('stops with exit 1 when the marker cannot be written', async () => {
+      const root = setupDetectable('19.0.0');
+      // reads as "no marker", but writeMarker refuses to overwrite it
+      writeFileSync(
+        path.join(root, 'package.json'),
+        JSON.stringify({
+          dependencies: { '@marigold/components': '19.0.0' },
+          marigold: 'something else',
+        })
+      );
+      prompts.confirm.mockResolvedValue(true);
+      prompts.multiselect.mockImplementation(acceptAll);
+
+      const { code, output } = await migrate({
+        targetPath: root,
+        interactive: true,
+      });
+
+      expect(code).toBe(1);
+      expect(output).toContain(
+        'Warning: the v18 changes were applied but could not be recorded in'
+      );
+      expect(output).toContain(
+        'Add "marigold": { "migrated": "v18" } to it by hand'
+      );
+      expect(prompts.multiselect).toHaveBeenCalledTimes(1);
+    });
+
+    test('names what already ran when a later migration is aborted', async () => {
+      const root = setupDetectable('19.0.0');
+      // gives v19 a change to offer, so its multiselect is shown
+      const appFile = path.join(root, 'app', 'Search.tsx');
+      mkdirSync(path.dirname(appFile), { recursive: true });
+      writeFileSync(
+        appFile,
+        `import { ComboBox } from '@marigold/components';\nexport const Search = () => <ComboBox value={text} label="Animals" />;\n`
+      );
+      const cancel = Symbol('cancel');
+      prompts.confirm.mockResolvedValue(true);
+      prompts.multiselect
+        .mockImplementationOnce(acceptAll)
+        .mockResolvedValueOnce(cancel);
+      prompts.isCancel.mockImplementation(value => value === cancel);
+
+      const { code, lines } = await migrate({
+        targetPath: root,
+        interactive: true,
+      });
+
+      expect(code).toBe(130);
+      expect(lines.at(-1)).toBe(
+        'Aborted — v19 not applied. Already applied and recorded: v18.'
+      );
+      expect(marker(root)).toEqual({ migrated: 'v18' });
+    });
+
+    test('records a run in a standalone theme package that declares only @marigold/system', async () => {
+      const root = setupFixture();
+      writeFileSync(
+        path.join(root, 'package.json'),
+        JSON.stringify({ dependencies: { '@marigold/system': '^18.0.0' } })
+      );
+
+      await migrate({ version: 'v18', targetPath: root });
+
+      expect(marker(root)).toEqual({ migrated: 'v18' });
+    });
+
+    test('refuses a second run in a standalone theme package', async () => {
+      const root = setupFixture();
+      writeFileSync(
+        path.join(root, 'package.json'),
+        JSON.stringify({ dependencies: { '@marigold/system': '^18.0.0' } })
+      );
+      await migrate({ version: 'v18', targetPath: root });
+      const cardPath = path.join(root, 'theme', 'components', 'Card.styles.ts');
+      const before = readFileSync(cardPath, 'utf8');
+
+      const { code, output } = await migrate({
+        version: 'v18',
+        targetPath: root,
+      });
+
+      expect(code).toBe(1);
+      expect(output).toContain('v18 is already applied (last applied: v18)');
+      expect(readFileSync(cardPath, 'utf8')).toBe(before);
+    });
+
+    test('leaves a nested package that declares Marigold to its own run', async () => {
+      const root = setupDetectable('19.0.0');
+      const app = path.join(root, 'packages', 'app');
+      mkdirSync(app, { recursive: true });
+      writeFileSync(
+        path.join(app, 'package.json'),
+        consumerPackageJson('19.0.0')
+      );
+      const appFile = path.join(app, 'Search.tsx');
+      const source = `import { ComboBox } from '@marigold/components';\nexport const Search = () => <ComboBox value={key} label="Animals" />;\n`;
+      writeFileSync(appFile, source);
+
+      const { output } = await migrate({ version: 'v19', targetPath: root });
+
+      expect(readFileSync(appFile, 'utf8')).toBe(source);
+      expect(output).toContain(
+        `Skipped packages/app: a separate package with its own record. Migrate it on its own: marigold migrate v19 ${app}`
+      );
+      expect(marker(app)).toBeUndefined();
+    });
+
+    test('reports nested packages in a dry run on a folder no package.json claims', async () => {
+      const root = setupFixture();
+      const app = path.join(root, 'packages', 'app');
+      mkdirSync(app, { recursive: true });
+      writeFileSync(
+        path.join(app, 'package.json'),
+        consumerPackageJson('19.0.0')
+      );
+      writeFileSync(
+        path.join(app, 'Search.tsx'),
+        `import { ComboBox } from '@marigold/components';\nexport const Search = () => <ComboBox value={key} label="Animals" />;\n`
+      );
+
+      const { output } = await migrate({
+        version: 'v19',
+        targetPath: root,
+        dryRun: true,
+      });
+
+      expect(output).toContain('ComboBox: renamed `value` to `inputValue`');
+      expect(output).not.toContain('Skipped packages/app');
+    });
+
+    test('refuses to apply where no package.json declares a Marigold package', async () => {
+      const root = setupFixture();
+      const cardPath = path.join(root, 'theme', 'components', 'Card.styles.ts');
+      const before = readFileSync(cardPath, 'utf8');
+
+      const run = migrate({ version: 'v18', targetPath: root });
+
+      await expect(run).rejects.toThrow(
+        /no package.json at or above it declares @marigold\/components/
+      );
+      expect(readFileSync(cardPath, 'utf8')).toBe(before);
+    });
+
+    test('refuses to apply a named migration to a subfolder of the package', async () => {
+      const root = setupDetectable('18.0.0');
+      const cardPath = path.join(root, 'theme', 'components', 'Card.styles.ts');
+      const before = readFileSync(cardPath, 'utf8');
+
+      const run = migrate({
+        version: 'v18',
+        targetPath: path.join(root, 'theme'),
+      });
+
+      await expect(run).rejects.toThrow(
+        `Run it on the package instead: marigold migrate v18 ${root}.`
+      );
+      expect(readFileSync(cardPath, 'utf8')).toBe(before);
+      expect(marker(root)).toBeUndefined();
+    });
+
+    test('refuses a detected migration on a subfolder before confirming', async () => {
+      const root = setupDetectable('18.0.0');
+
+      const run = migrate({
+        targetPath: path.join(root, 'theme'),
+        interactive: true,
+      });
+
+      await expect(run).rejects.toThrow(/migrations are recorded per package/);
+      expect(prompts.confirm).not.toHaveBeenCalled();
+    });
+
+    test('reports on a subfolder in a dry run', async () => {
+      const root = setupDetectable('18.0.0');
+
+      const { code, output } = await migrate({
+        version: 'v18',
+        targetPath: path.join(root, 'theme'),
+        dryRun: true,
+      });
+
+      expect(code).toBe(0);
+      expect(output).toContain('marigold migrate v18 (dry run)');
+    });
+  });
+
   test('offers every change that fired, described, for selection', async () => {
-    const root = setupDetectable('17.9.1');
+    const root = setupDetectable('18.0.0');
     prompts.confirm.mockResolvedValue(true);
     prompts.multiselect.mockResolvedValue([]);
 
