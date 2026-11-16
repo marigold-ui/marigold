@@ -1,4 +1,3 @@
-import * as m from 'motion/react-m';
 import type { ReactNode, Ref } from 'react';
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Toolbar } from 'react-aria-components/Toolbar';
@@ -17,7 +16,7 @@ import { ButtonContext } from '../Button/Context';
 import { IconButton } from '../IconButton/IconButton';
 import { X } from '../icons/X';
 import { intlMessages } from '../intl/messages';
-import { MotionFeatures } from '../lazyMotion';
+import { useAnimatedWidth } from '../utils/useAnimatedWidth';
 import { useActionBarContext } from './ActionBarContext';
 
 // Cascade a ghost/default look onto plain `<Button>` children; a local
@@ -86,6 +85,7 @@ const ActionBarInner = ({
   const ref = (forwardedRef ??
     internalRef) as React.RefObject<HTMLDivElement | null>;
   const isEntering = useEnterAnimation(ref);
+  useAnimatedWidth(ref);
 
   const reportHeight = useCallback(
     () => onHeightChange?.(ref.current?.offsetHeight ?? 0),
@@ -122,54 +122,48 @@ const ActionBarInner = ({
 
   return (
     <FocusScope restoreFocus>
-      <MotionFeatures>
-        <m.div
-          layout
-          ref={ref}
-          id={id}
-          data-actionbar
-          onKeyDown={onKeyDown}
-          onKeyUp={onKeyUp}
-          className={cn(
-            classNames.container,
-            'sticky bottom-(--actionbar-offset,8px) z-30 mx-auto w-max'
-          )}
-          transition={{
-            layout: { type: 'spring', stiffness: 500, damping: 30, mass: 0.5 },
-          }}
-          data-entering={isEntering || undefined}
-          data-exiting={isExiting || undefined}
-        >
-          <div className={classNames.selection}>
-            {onClearSelection && (
-              <IconButton
-                aria-label={stringFormatter.format('clearSelectionAriaLabel')}
-                onPress={onClearSelection}
-                className={classNames.clearButton}
-              >
-                <X />
-              </IconButton>
-            )}
-
-            <div className={classNames.count}>
-              {lastCount === 'all'
-                ? stringFormatter.format('selectedAll')
-                : stringFormatter.format('selectedCount', {
-                    count: lastCount,
-                  })}
-            </div>
-          </div>
-
-          <Provider values={[[ButtonContext, actionButtonContext]]}>
-            <Toolbar
-              className={classNames.toolbar}
-              aria-label={stringFormatter.format('bulkActionsAriaLabel')}
+      <div
+        ref={ref}
+        id={id}
+        data-actionbar
+        onKeyDown={onKeyDown}
+        onKeyUp={onKeyUp}
+        className={cn(
+          classNames.container,
+          'sticky bottom-(--actionbar-offset,8px) z-30 mx-auto w-max'
+        )}
+        data-entering={isEntering || undefined}
+        data-exiting={isExiting || undefined}
+      >
+        <div className={classNames.selection}>
+          {onClearSelection && (
+            <IconButton
+              aria-label={stringFormatter.format('clearSelectionAriaLabel')}
+              onPress={onClearSelection}
+              className={classNames.clearButton}
             >
-              {children}
-            </Toolbar>
-          </Provider>
-        </m.div>
-      </MotionFeatures>
+              <X />
+            </IconButton>
+          )}
+
+          <div className={classNames.count}>
+            {lastCount === 'all'
+              ? stringFormatter.format('selectedAll')
+              : stringFormatter.format('selectedCount', {
+                  count: lastCount,
+                })}
+          </div>
+        </div>
+
+        <Provider values={[[ButtonContext, actionButtonContext]]}>
+          <Toolbar
+            className={classNames.toolbar}
+            aria-label={stringFormatter.format('bulkActionsAriaLabel')}
+          >
+            {children}
+          </Toolbar>
+        </Provider>
+      </div>
 
       {/* Screen reader announcement when ActionBar appears */}
       {!isExiting && (
