@@ -1,11 +1,9 @@
-import { useReducedMotion } from 'motion/react';
 import type { CSSProperties } from 'react';
 import { cn } from '@marigold/system';
 import type { IconProps } from './Icons.types';
 
 const CARET_OPEN = 'M 6 16 L 12 10 L 18 16';
 const CARET_CLOSED = 'M 6 10 L 12 16 L 18 10';
-const MORPH_BEZIER = 'cubic-bezier(0.4, 0, 0.2, 1)';
 
 export interface MorphCaretProps extends IconProps {
   /** Whether the caret should render in its open (up-pointing) state. */
@@ -18,7 +16,6 @@ export const MorphCaret = ({
   expanded = false,
   ...props
 }: MorphCaretProps) => {
-  const reducedMotion = useReducedMotion();
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -36,12 +33,14 @@ export const MorphCaret = ({
     >
       {/* The `d` attribute is the fallback for Safari, which ignores the
           CSS `d` property. Where CSS `d` is supported it wins and animates. */}
+      {/* Transition lives in a class so `prefers-reduced-motion` is resolved by
+          the browser (no JS sampling, no hydration mismatch). */}
       <path
+        className="motion-safe:[transition:d_250ms_cubic-bezier(0.4,0,0.2,1)]"
         d={expanded ? CARET_OPEN : CARET_CLOSED}
         style={
           {
             d: `path("${expanded ? CARET_OPEN : CARET_CLOSED}")`,
-            transition: reducedMotion ? 'none' : `d 250ms ${MORPH_BEZIER}`,
           } as CSSProperties
         }
       />

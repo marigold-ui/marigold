@@ -56,3 +56,17 @@ test('draws the chevron with a d attribute in both states', () => {
 
   expect(chevron()).toHaveAttribute('d', 'M 13 15 L 16 12 L 13 9');
 });
+
+// Reduced motion is handled in CSS, so transitions must only exist behind `motion-safe:`.
+test('only transitions when the user has not asked for reduced motion', () => {
+  render(<SidebarToggleIcon data-testid="icon" />);
+  // eslint-disable-next-line testing-library/no-node-access
+  const svg = screen.getByTestId('icon');
+  // eslint-disable-next-line testing-library/no-node-access
+  const animated = svg.querySelectorAll('g, path:nth-of-type(2)');
+
+  animated.forEach(el => {
+    expect(el.getAttribute('class')).toContain('motion-safe:[transition:');
+    expect((el as SVGElement).style.transition).toBe('');
+  });
+});

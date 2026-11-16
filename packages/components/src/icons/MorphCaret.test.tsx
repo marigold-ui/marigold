@@ -14,3 +14,13 @@ test('draws the caret with a d attribute in both states', () => {
 
   expect(caret()).toHaveAttribute('d', 'M 6 16 L 12 10 L 18 16');
 });
+
+// Reduced motion is handled in CSS, so transitions must only exist behind `motion-safe:`.
+test('only transitions when the user has not asked for reduced motion', () => {
+  render(<MorphCaret data-testid="caret" />);
+  // eslint-disable-next-line testing-library/no-node-access
+  const path = screen.getByTestId('caret').querySelector('path')!;
+
+  expect(path.getAttribute('class')).toContain('motion-safe:[transition:d_');
+  expect(path.style.transition).toBe('');
+});
