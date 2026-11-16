@@ -1,7 +1,7 @@
 import { type FormEvent, useState } from 'react';
 import { type Key } from 'react-aria-components/Select';
 import { expect, waitFor, within } from 'storybook/test';
-import preview from '.storybook/preview';
+import preview, { smallScreenWidth } from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Drawer } from '../Drawer/Drawer';
@@ -74,7 +74,7 @@ export const Basic = meta.story({
 export const Demotion = meta.story({
   tags: ['component-test'],
   globals: { viewport: { value: 'smallScreen' } },
-  parameters: { chromatic: { viewports: [639] } },
+  parameters: { chromatic: { viewports: [smallScreenWidth] } },
   render: () => <DemoRow />,
 });
 

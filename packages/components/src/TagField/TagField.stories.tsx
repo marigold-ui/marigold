@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { Key } from 'react-aria-components/TagGroup';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
-import preview from '.storybook/preview';
+import preview, { smallScreenWidth } from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
 import { TagField } from './TagField';
@@ -314,7 +314,7 @@ export const Mobile = Basic.extend({
   parameters: {
     chromatic: {
       disableSnapshot: true,
-      viewports: [639],
+      viewports: [smallScreenWidth],
       cropToViewport: true,
     },
   },
@@ -374,6 +374,32 @@ Mobile.test(
       expect(within(tray).getByRole('option', { name: 'Rock' })).toBeVisible();
       expect(within(tray).getByRole('option', { name: 'Jazz' })).toBeVisible();
     });
+  }
+);
+
+Mobile.test(
+  'Focuses the search field when the tray opens',
+  async ({ canvas, args, userEvent }) => {
+    await userEvent.click(
+      canvas.getByLabelText(new RegExp(`${args.label}`, 'i'))
+    );
+
+    const tray = await waitFor(() => canvas.getByRole('dialog'));
+    await waitFor(() =>
+      expect(within(tray).getByRole('searchbox')).toHaveFocus()
+    );
+  }
+);
+
+Basic.test(
+  'Focuses the search field when the popover opens',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, args, userEvent }) => {
+    await userEvent.click(
+      canvas.getByLabelText(new RegExp(`${args.label}`, 'i'))
+    );
+
+    await waitFor(() => expect(canvas.getByRole('searchbox')).toHaveFocus());
   }
 );
 
@@ -466,6 +492,12 @@ Basic.test(
     // The tray's underlay swallows clicks until it is gone, so wait it out
     // before touching anything behind it.
     const close = async () => {
+      // Escape reaches the tray once focus has moved in, after the slide-in.
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toContainElement(
+          document.activeElement as HTMLElement
+        )
+      );
       await userEvent.keyboard('{Escape}');
 
       return waitFor(() =>
@@ -488,5 +520,21 @@ Basic.test(
 
       expect(await optionFor('late')).toBeInTheDocument();
     });
+  }
+);
+
+Mobile.test(
+  'Uses 16px text in the tray input, so iOS does not zoom in on focus',
+  async ({ args, canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByLabelText(new RegExp(`${args.label}`, 'i'))
+    );
+    await canvas.findByRole('dialog');
+
+    await waitFor(() => expect(document.activeElement?.tagName).toBe('INPUT'));
+    const input = document.activeElement as HTMLElement;
+    expect(parseFloat(getComputedStyle(input).fontSize)).toBeGreaterThanOrEqual(
+      16
+    );
   }
 );

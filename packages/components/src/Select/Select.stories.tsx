@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Form } from 'react-aria-components/Form';
 import { Key } from 'react-aria-components/Select';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
-import preview from '.storybook/preview';
+import preview, { smallScreenWidth } from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Description } from '../Description/Description';
@@ -820,7 +820,14 @@ MultiSelectSummary.test(
  */
 export const MultiSelectSummaryMobile = meta.story({
   tags: ['component-test'],
-  parameters: { chromatic: { disableSnapshot: true } },
+  // Chromatic ignores the viewport global, so pin its capture to phone width.
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+      viewports: [smallScreenWidth],
+      cropToViewport: true,
+    },
+  },
   globals: {
     viewport: { value: 'smallScreen' },
   },
@@ -958,7 +965,7 @@ export const Mobile = meta.story({
   parameters: {
     chromatic: {
       disableSnapshot: true,
-      viewports: [639],
+      viewports: [smallScreenWidth],
       cropToViewport: true,
     },
   },

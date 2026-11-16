@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { expect, spyOn, userEvent, waitFor } from 'storybook/test';
-import preview from '.storybook/preview';
+import preview, { smallScreenWidth } from '.storybook/preview';
 import { Key } from '@react-types/shared';
 import { ClipboardPaste, Copy, Delete, Scissors } from '@marigold/icons';
 import { Description } from '../Description/Description';
@@ -402,7 +402,7 @@ export const MultiSelection = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   render: function Render() {
-    const [selectedKeys, setSelected] = useState(new Set());
+    const [selectedKeys, setSelectedKeys] = useState(new Set());
     const selected = Array.from(selectedKeys);
 
     return (
@@ -411,7 +411,7 @@ export const MultiSelection = meta.story({
           label="Choose"
           selectionMode="multiple"
           selectedKeys={selectedKeys as Iterable<Key>}
-          onSelectionChange={key => setSelected(new Set(key))}
+          onSelectionChange={key => setSelectedKeys(new Set(key))}
         >
           <Menu.Item id="burger">🍔 Burger</Menu.Item>
           <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
@@ -624,7 +624,7 @@ export const Mobile = meta.story({
   parameters: {
     chromatic: {
       disableSnapshot: true,
-      viewports: [639],
+      viewports: [smallScreenWidth],
       cropToViewport: true,
     },
   },

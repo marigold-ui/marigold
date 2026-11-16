@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { expect, fn, screen, waitFor, within } from 'storybook/test';
-import preview from '.storybook/preview';
+import preview, { smallScreenWidth } from '.storybook/preview';
 import { Archive, Bell, StickyNote, UserMinus, Users } from '@marigold/icons';
 import { Button } from '../Button/Button';
 import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
@@ -205,7 +205,10 @@ Dismissal.test(
     );
 
     await userEvent.keyboard('{Escape}');
-    await expect(tray).toBeVisible();
+    // A close would only unmount once RAC's exit scroll ends, so wait it out.
+    await new Promise(resolve => setTimeout(resolve, 500));
+    expect(tray).toBeInTheDocument();
+    expect(tray).toBeVisible();
 
     // The story's close slot comes first, the tray's Close action last.
     await userEvent.click(
@@ -1053,7 +1056,14 @@ MiniForm.test(
 
 export const SmallScreen = meta.story({
   tags: ['component-test'],
-  parameters: { chromatic: { disableSnapshot: true } },
+  // Chromatic ignores the viewport global, so pin its capture to phone width.
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+      viewports: [smallScreenWidth],
+      cropToViewport: true,
+    },
+  },
   globals: {
     viewport: { value: 'smallScreen' },
   },

@@ -1,9 +1,8 @@
-import { type ReactNode, type Ref, useId, useMemo } from 'react';
-import type RAC from 'react-aria-components';
+import { type ReactNode, useId, useMemo } from 'react';
 import { HeadingContext, Provider, TextContext } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { ActionMenuContext } from '../Menu/ActionMenuContext';
-import { Sheet } from '../Overlay/Sheet';
+import { Sheet, type SheetProps } from '../Overlay/Sheet';
 import { AutocompleteBoundary } from '../utils/AutocompleteBoundary';
 import { useIsHiddenTree } from '../utils/useIsHiddenTree';
 import { useOverlayRootSlotProps } from '../utils/useOverlayRootSlotProps';
@@ -41,47 +40,18 @@ import { TrayTrigger } from './TrayTrigger';
 
 // Props
 // ---------------
-export interface TrayProps extends Omit<
-  RAC.DialogProps,
-  'className' | 'style'
-> {
-  /**
-   * Whether the overlay is open (controlled).
-   * @default undefined
-   */
-  open?: boolean;
-
-  /**
-   * Handler called when the open state changes.
-   */
-  onOpenChange?: (isOpen: boolean) => void;
-
-  /**
-   * Whether swiping down, pressing Escape and clicking outside close the tray.
-   * @default true
-   */
-  dismissable?: boolean;
-
+export interface TrayProps extends Omit<SheetProps, 'children'> {
   /**
    * Children of the tray.
    */
   children?: ReactNode;
-
-  /**
-   * Ref to the tray's dialog element.
-   */
-  ref?: Ref<HTMLElement>;
 }
 
 // Component
 // ---------------
 export const Tray = ({
-  open,
-  onOpenChange,
-  dismissable = true,
   children,
   'aria-label': ariaLabel,
-  ref,
   ...props
 }: TrayProps) => {
   const { isHidden, probe } = useIsHiddenTree();
@@ -113,13 +83,8 @@ export const Tray = ({
   return (
     <TrayContext value={trayContextValue}>
       {probe}
-      {/* Undefined `open` lets every close reach `Tray.Trigger`'s state. */}
       <Sheet
         {...props}
-        ref={ref}
-        open={open}
-        onOpenChange={onOpenChange}
-        dismissable={dismissable}
         aria-label={ariaLabel}
         aria-labelledby={
           !ariaLabel && hasTitle ? titleId : props['aria-labelledby']

@@ -88,15 +88,8 @@ Basic.test('Opens and closes the tray', async ({ canvas, userEvent, step }) => {
   });
 
   await step('Can be closed with escape key', async () => {
-    const openButton = canvas.getByRole('button', { name: 'Open Tray' });
-    await userEvent.click(openButton);
-
-    // Escape needs focus inside, RAC moves it in after the slide-in.
-    await waitFor(() =>
-      expect(canvas.getByRole('dialog')).toContainElement(
-        document.activeElement as HTMLElement
-      )
-    );
+    // Escape needs focus inside, which `openTray` waits for.
+    await openTray({ canvas, userEvent });
 
     await userEvent.keyboard('{Escape}');
 
@@ -105,6 +98,24 @@ Basic.test('Opens and closes the tray', async ({ canvas, userEvent, step }) => {
     );
   });
 });
+
+Basic.test(
+  'Returns focus to the trigger after a double click',
+  async ({ canvas, userEvent }) => {
+    const trigger = canvas.getByRole('button', { name: 'Open Tray' });
+
+    // The second click of a double click lands on the overlay mid slide-in.
+    await userEvent.click(trigger);
+    await userEvent.click(document.body);
+    const dialog = await waitFor(() => canvas.getByRole('dialog'));
+    await waitFor(() =>
+      expect(dialog).toContainElement(document.activeElement as HTMLElement)
+    );
+    await userEvent.keyboard('{Escape}');
+
+    await waitFor(() => expect(trigger).toHaveFocus());
+  }
+);
 
 Basic.test(
   'Opens the tray',
@@ -124,6 +135,7 @@ Basic.test(
 );
 
 export const DismissControlsWithCallbacks = meta.story({
+  tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   render: function Render(args) {
     const [open, setOpen] = useState(false);
@@ -196,16 +208,8 @@ DismissControlsWithCallbacks.test(
     });
 
     await step('Closes via escape key and logs event', async () => {
-      const openButton = canvas.getByRole('button', { name: 'Open Tray' });
-
-      await userEvent.click(openButton);
-
-      // Escape needs focus inside, RAC moves it in after the slide-in.
-      await waitFor(() =>
-        expect(canvas.getByRole('dialog')).toContainElement(
-          document.activeElement as HTMLElement
-        )
-      );
+      // Escape needs focus inside, which `openTray` waits for.
+      await openTray({ canvas, userEvent });
 
       await userEvent.keyboard('{Escape}');
 
@@ -428,7 +432,9 @@ ScrollableContent.test(
 );
 
 ScrollableContent.test(
-  'scrolls its content without dismissing',
+  // Scrolls programmatically: a swipe on RAC's native scroll snapping can't
+  // be driven here, so the swipe hand-off was checked with touch emulation.
+  'keeps the tray open while its content scrolls',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent }) => {
     const { content } = await openTray({ canvas, userEvent });
@@ -538,6 +544,19 @@ ShrinkingContent.test(
     } finally {
       await page.viewport(1280, 720);
     }
+  }
+);
+
+ShrinkingContent.test(
+  'publishes the space around the content as --sheet-chrome',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    const { dialog, content } = await openTray({ canvas, userEvent });
+
+    const chrome = parseFloat(dialog.style.getPropertyValue('--sheet-chrome'));
+    expect(chrome).toBeCloseTo(dialog.offsetHeight - content.offsetHeight, 0);
+    expect(chrome).toBeGreaterThan(0);
+    expect(content.style.minHeight).toContain('var(--sheet-chrome)');
   }
 );
 

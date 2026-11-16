@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
-import preview from '.storybook/preview';
+import preview, { smallScreenWidth } from '.storybook/preview';
 import type { Key } from '@react-types/shared';
 import { Button } from '../Button/Button';
 import { Description } from '../Description/Description';
@@ -479,7 +479,7 @@ export const Mobile = meta.story({
   parameters: {
     chromatic: {
       disableSnapshot: true,
-      viewports: [639],
+      viewports: [smallScreenWidth],
       cropToViewport: true,
     },
   },
@@ -722,6 +722,12 @@ Basic.test(
     // The tray's underlay swallows clicks until it is gone, so wait it out
     // before touching anything behind it.
     const close = async () => {
+      // Escape reaches the tray once focus has moved in, after the slide-in.
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toContainElement(
+          document.activeElement as HTMLElement
+        )
+      );
       await userEvent.keyboard('{Escape}');
 
       return waitFor(() =>
@@ -744,5 +750,19 @@ Basic.test(
 
       expect(await optionFor('late')).toBeInTheDocument();
     });
+  }
+);
+
+Mobile.test(
+  'Uses 16px text in the tray input, so iOS does not zoom in on focus',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(await canvas.findByRole('button'));
+    await canvas.findByRole('dialog');
+
+    await waitFor(() => expect(document.activeElement?.tagName).toBe('INPUT'));
+    const input = document.activeElement as HTMLElement;
+    expect(parseFloat(getComputedStyle(input).fontSize)).toBeGreaterThanOrEqual(
+      16
+    );
   }
 );
