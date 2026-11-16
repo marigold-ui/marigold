@@ -54,7 +54,8 @@ Error: Component "Sheet" is missing styles in the current theme.
 
 2. Remove `overlay` from your `Tray` theme component. Its backdrop styles belong in `Sheet.backdrop`. Positioning such as `fixed inset-0` is no longer needed.
 3. Move the surface styles (background, border, shadow, rounding) from `Tray.container` to `Sheet.container`. `Tray.container` only lays out the grid inside the tray now, for example `grid grid-rows-[auto_auto_1fr_auto]`.
+4. Replace `group-[[role=dialog]]/tray:` with `group-data-tray/tray:` wherever your theme styles something inside a tray, as the ListBox and Calendar styles do. The tray's group moved off the dialog element, so the old selector silently matches nothing and the list or calendar in a tray gets its ring and padding back.
 
-`marigold migrate v19` does step 1 for you: it adds the `Sheet` theme component with these styles when your theme has a `Tray`, and warns that `Tray.overlay` and the surface styles have moved, since steps 2 and 3 depend on your customizations.
+`marigold migrate v19` does steps 1 and 4 for you: it adds the `Sheet` theme component with these styles when your theme has a `Tray`, rewrites the tray selector, and warns that `Tray.overlay` and the surface styles have moved, since steps 2 and 3 depend on your customizations.
 
 The tray sets `--sheet-chrome` on its dialog, the height its handle, title and actions take up. Theme styles that give tray content a fixed height can use `calc(var(--sheet-available) - var(--sheet-chrome))` instead of a hard-coded offset.

@@ -344,6 +344,26 @@ export const Tray: ThemeComponent<'Tray'> = {
     expect(output).toContain('Tray.overlay');
   });
 
+  test('v19 rewrites the old tray group selector in theme files', () => {
+    const root = setupFixture();
+    const listBox = path.join(root, 'theme', 'components', 'ListBox.styles.ts');
+    writeFileSync(
+      listBox,
+      `import { cva, ThemeComponent } from '@marigold/system';
+
+export const ListBox: ThemeComponent<'ListBox'> = {
+  container: cva({ base: 'ring-1 group-[[role=dialog]]/tray:ring-0' }),
+};
+`
+    );
+
+    runMigrate({ version: 'v19', targetPath: root, dryRun: false });
+
+    expect(readFileSync(listBox, 'utf8')).toContain(
+      "'ring-1 group-data-tray/tray:ring-0'"
+    );
+  });
+
   test('scans .jsx and .js application files too', () => {
     const root = mkdtempSync(path.join(os.tmpdir(), 'marigold-migrate-'));
     const appFile = path.join(root, 'App.jsx');
