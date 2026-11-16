@@ -18,6 +18,19 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     expect(result.changes).toHaveLength(1);
   });
 
+  test('rewrites the quoted spellings of the selector too', () => {
+    const source = `import { cva } from '@marigold/system';
+export const x = cva({ base: ["group-[[role='dialog']]/tray:p-0", 'group-[[role="dialog"]]/tray:ring-0'] });
+`;
+
+    const result = trayGroupSelector.apply(source);
+
+    assertEdited(result);
+    expect(result.output).toContain(
+      `["group-data-tray/tray:p-0", 'group-data-tray/tray:ring-0']`
+    );
+  });
+
   test('leaves a migrated theme file alone', () => {
     const source = `import { cva } from '@marigold/system';
 export const x = cva({ base: 'group-data-tray/tray:ring-0' });

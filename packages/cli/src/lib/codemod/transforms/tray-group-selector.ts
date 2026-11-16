@@ -5,22 +5,27 @@ import type { Codemod } from '../types.js';
 // the dialog role silently matches nothing. The rewrite is purely lexical and
 // a second run finds nothing to change.
 
-const OLD = 'group-[[role=dialog]]/tray:';
+/** `group-[[role=dialog]]/tray:`, also with the value in single or double quotes. */
+const OLD = /group-\[\[role=(["']?)dialog\1\]\]\/tray:/g;
 const NEW = 'group-data-tray/tray:';
 
 export const trayGroupSelector: Codemod = {
   name: 'tray-group-selector',
-  description: `rewrite the tray group selector \`${OLD}\` to \`${NEW}\``,
+  description: `rewrite the tray group selector \`group-[[role=dialog]]/tray:\` to \`${NEW}\``,
   apply: source => {
-    if (!source.includes('@marigold/') || !source.includes(OLD)) {
+    const count = source.includes('@marigold/')
+      ? (source.match(OLD) ?? []).length
+      : 0;
+    if (count === 0) {
       return { kind: 'unchanged', warnings: [] };
     }
-    const count = source.split(OLD).length - 1;
 
     return {
       kind: 'edited',
-      output: source.replaceAll(OLD, NEW),
-      changes: [`rewrote ${count} \`${OLD}\` to \`${NEW}\``],
+      output: source.replace(OLD, NEW),
+      changes: [
+        `rewrote ${count} \`group-[[role=dialog]]/tray:\` to \`${NEW}\``,
+      ],
       warnings: [],
     };
   },
