@@ -505,7 +505,9 @@
     }
   }
 
-  /* Sheet backdrop, driven by RAC's `swipeAnimation` */
+  /* Sheet backdrop, driven by RAC's `swipeAnimation`. Only JS names it, so
+     the variable is what keeps Tailwind from dropping the keyframes. */
+  --animate-sheet-backdrop: sheet-backdrop linear both;
   @keyframes sheet-backdrop {
     from {
       opacity: 0;

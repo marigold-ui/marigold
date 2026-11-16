@@ -176,6 +176,34 @@ Basic.test(
   }
 );
 
+/** Names of all `@keyframes` rules the page's stylesheets define. */
+const keyframeNames = () => {
+  const names: string[] = [];
+  const collect = (rules: CSSRuleList) => {
+    for (const rule of Array.from(rules)) {
+      if (rule instanceof CSSKeyframesRule) names.push(rule.name);
+      if ('cssRules' in rule) collect((rule as CSSGroupingRule).cssRules);
+    }
+  };
+  for (const sheet of Array.from(document.styleSheets)) {
+    // Cross-origin sheets (the test runner's own) throw on `cssRules`.
+    const sameOrigin = !sheet.href || sheet.href.startsWith(location.origin);
+    if (sameOrigin) collect(sheet.cssRules);
+  }
+
+  return names;
+};
+
+Basic.test(
+  'Ships the keyframes its backdrop fades with',
+  async ({ canvas, userEvent }) => {
+    await openSheet({ canvas, userEvent });
+
+    // `swipeAnimation` names it only in JS, which Tailwind cannot see.
+    expect(keyframeNames()).toContain('sheet-backdrop');
+  }
+);
+
 Basic.test(
   'Caps its height at 95% of the visible viewport',
   async ({ canvas, userEvent }) => {
