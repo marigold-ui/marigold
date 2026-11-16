@@ -3,6 +3,7 @@
 '@marigold/system': major
 '@marigold/theme-rui': major
 '@marigold/cli': patch
+'@marigold/docs': patch
 ---
 
 refactor(DST-1865): build the mobile tray on React Aria's `Sheet`
@@ -14,7 +15,10 @@ What changes for users of those components on small screens:
 - A downward swipe anywhere on the tray closes it, not only on the drag handle. When the content can scroll, it scrolls first.
 - The backdrop fades with the swipe.
 - Focus returns to the trigger on close, also without reduced motion.
-- Opening the mobile ComboBox or Autocomplete no longer scrolls the page behind the tray.
+- Escape and a press outside are ignored while the tray slides in, so a double tap on the trigger opens it instead of closing it again.
+- Opening the mobile ComboBox, Autocomplete or TagField no longer scrolls the page behind the tray.
+
+The [Responsive](/foundations/responsive#overlays-on-small-screens) foundations page describes how the tray behaves.
 
 Update `@marigold/theme-rui` together with `@marigold/components`. An older theme without `Sheet` styles makes the tray throw on small screens.
 
@@ -50,4 +54,6 @@ Error: Component "Sheet" is missing styles in the current theme.
 2. Remove `overlay` from your `Tray` theme component. Its backdrop styles belong in `Sheet.backdrop`. Positioning such as `fixed inset-0` is no longer needed.
 3. Move the surface styles (background, border, shadow, rounding) from `Tray.container` to `Sheet.container`. `Tray.container` only lays out the grid inside the tray now, for example `grid grid-rows-[auto_auto_1fr_auto]`.
 
-The v18 migration codemod in `@marigold/cli` knows the new `Sheet` theme component and no longer expects a `Tray.overlay` slot.
+`marigold migrate v19` does step 1 for you: it adds the `Sheet` theme component with these styles when your theme has a `Tray`, and warns that `Tray.overlay` and the surface styles have moved, since steps 2 and 3 depend on your customizations.
+
+The tray sets `--sheet-chrome` on its dialog, the height its handle, title and actions take up. Theme styles that give tray content a fixed height can use `calc(var(--sheet-available) - var(--sheet-chrome))` instead of a hard-coded offset.
