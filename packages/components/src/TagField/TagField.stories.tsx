@@ -377,6 +377,32 @@ Mobile.test(
   }
 );
 
+Mobile.test(
+  'Focuses the search field when the tray opens',
+  async ({ canvas, args, userEvent }) => {
+    await userEvent.click(
+      canvas.getByLabelText(new RegExp(`${args.label}`, 'i'))
+    );
+
+    const tray = await waitFor(() => canvas.getByRole('dialog'));
+    await waitFor(() =>
+      expect(within(tray).getByRole('searchbox')).toHaveFocus()
+    );
+  }
+);
+
+Basic.test(
+  'Focuses the search field when the popover opens',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, args, userEvent }) => {
+    await userEvent.click(
+      canvas.getByLabelText(new RegExp(`${args.label}`, 'i'))
+    );
+
+    await waitFor(() => expect(canvas.getByRole('searchbox')).toHaveFocus());
+  }
+);
+
 /**
  * `dependencies` invalidates React Aria's per-item render cache, so it only
  * matters for `items` plus a render function that reads state living outside
