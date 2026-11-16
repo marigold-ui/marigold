@@ -522,3 +522,19 @@ Basic.test(
     });
   }
 );
+
+Mobile.test(
+  'Uses 16px text in the tray input, so iOS does not zoom in on focus',
+  async ({ args, canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByLabelText(new RegExp(`${args.label}`, 'i'))
+    );
+    await canvas.findByRole('dialog');
+
+    await waitFor(() => expect(document.activeElement?.tagName).toBe('INPUT'));
+    const input = document.activeElement as HTMLElement;
+    expect(parseFloat(getComputedStyle(input).fontSize)).toBeGreaterThanOrEqual(
+      16
+    );
+  }
+);
