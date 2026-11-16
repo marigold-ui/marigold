@@ -28,6 +28,25 @@ if (
 
     return list;
   };
+
+  // Chromatic resizes the window while capturing, which can push an open sheet out
+  // of view, and RAC's Sheet closes once it is out of view. Nobody swipes here.
+  const NativeIntersectionObserver = window.IntersectionObserver;
+  window.IntersectionObserver = class extends NativeIntersectionObserver {
+    constructor(
+      callback: IntersectionObserverCallback,
+      options?: IntersectionObserverInit
+    ) {
+      super((entries, observer) => {
+        const kept = entries.filter(
+          entry =>
+            !entry.target.hasAttribute('data-sheet-content') ||
+            entry.intersectionRatio > 0
+        );
+        if (kept.length) callback(kept, observer);
+      }, options);
+    }
+  };
 }
 
 // Storybook viewports only accept fixed pixel values, so we can't use the
