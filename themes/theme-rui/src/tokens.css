@@ -505,7 +505,7 @@
     }
   }
 
-  /* Directional slides (Drawer, Sidebar, Tray) */
+  /* Directional slides (Drawer, Sidebar, ActionBar) */
   --animate-slide-in: slide-in 0.25s var(--ease-out-quart) forwards;
   --animate-slide-out: slide-out 0.2s var(--ease-out-quart) forwards;
 

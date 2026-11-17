@@ -11,7 +11,7 @@ import { Button } from '../Button/Button';
 import type { PopoverProps as OverlayPopoverProps } from '../Overlay/Popover';
 import { Popover as OverlayPopover } from '../Overlay/Popover';
 import { useLightDismiss } from '../Overlay/useLightDismiss';
-import { TRAY_CONTENT_ATTR, useTrayContext } from '../Tray/Context';
+import { useTrayContext } from '../Tray/Context';
 import { Tray } from '../Tray/Tray';
 import { intlMessages } from '../intl/messages';
 import { useOverlayHeaderSlotProps } from '../utils/useOverlayHeaderSlotProps';
@@ -133,12 +133,7 @@ const PopoverTrayBody = ({
   const { titleId, titleSlotRef } = useTrayContext();
 
   return (
-    <div
-      // Content gestures scroll instead of dragging the tray (DSTSUP-272).
-      {...{ [TRAY_CONTENT_ATTR]: true }}
-      data-tray
-      className={cn('[grid-row:title/content]', classNames.body)}
-    >
+    <div data-tray className={cn('[grid-row:title/content]', classNames.body)}>
       <PopoverParts
         classNames={classNames}
         isTray
@@ -233,8 +228,8 @@ const PopoverBase = ({
       <Tray
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledby}
-        dismissable={dismissable}
-        keyboardDismissable={keyboardDismissable}
+        // A sheet has one dismissal flag, the Close action stays as the way out.
+        dismissable={dismissable && keyboardDismissable}
         ref={ref}
       >
         <PopoverTrayBody classNames={classNames}>{children}</PopoverTrayBody>

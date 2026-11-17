@@ -7,6 +7,7 @@ import {
   Key,
 } from 'react-aria-components/ComboBox';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { useObjectRef } from '@react-aria/utils';
 import { WidthProp, cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Center } from '../Center/Center';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
@@ -14,6 +15,7 @@ import { SearchInput } from '../Input/SearchInput';
 import { ListBox, type ListBoxProps } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
 import { intlMessages } from '../intl/messages';
+import { useAutoFocus } from '../utils/useAutoFocus';
 import { MobileAutocomplete } from './MobileAutocomplete';
 
 // Search Input (we can't use our SearchField because of FieldBase)
@@ -57,12 +59,14 @@ const AutocompleteInput = ({
   const state = use(ComboBoxStateContext);
   // needed to get the triggerwidth on the right button
   const classNames = useClassNames({ component: 'ComboBox' });
+  const inputRef = useObjectRef(ref);
+  // Not a native `autoFocus`, see `useAutoFocus`.
+  useAutoFocus(inputRef, !!autoFocus);
 
   return (
     <SearchInput
-      ref={ref}
+      ref={inputRef}
       loading={loading}
-      autoFocus={autoFocus}
       className={{
         action: cn(
           state?.inputValue === '' ? 'invisible' : 'visible',

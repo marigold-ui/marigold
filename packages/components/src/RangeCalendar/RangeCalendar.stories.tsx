@@ -8,7 +8,7 @@ import {
 import { useState } from 'react';
 import type { DateValue } from 'react-aria-components';
 import { I18nProvider, useLocale } from 'react-aria-components/I18nProvider';
-import { expect, fn, within } from 'storybook/test';
+import { expect, fn, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import type { RangeValue } from '@react-types/shared';
 import { RangeCalendar } from './RangeCalendar';
@@ -676,7 +676,13 @@ export const PresetsMobile = meta.story({
   // Chromatic ignores the Storybook viewport global and captures at its
   // 1200px default, where the small-screen UI (and this story's play)
   // doesn't exist. Pin its capture to phone width.
-  parameters: { chromatic: { disableSnapshot: true, viewports: [320] } },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+      viewports: [320],
+      cropToViewport: true,
+    },
+  },
   globals: {
     viewport: { value: 'extraSmallScreen' },
   },
@@ -728,9 +734,12 @@ PresetsMobile.test(
     );
     const tray = await canvas.findByRole('dialog');
 
-    await expect(
-      within(tray).getByRole('listbox', { name: 'Quick selection' })
-    ).toBeVisible();
+    // The tray slides in, so wait for the list.
+    await waitFor(() =>
+      expect(
+        within(tray).getByRole('listbox', { name: 'Quick selection' })
+      ).toBeVisible()
+    );
     // The preset matching the calendar value shows as selected.
     await expect(
       within(tray).getByRole('option', { name: 'Kickoff week' })
