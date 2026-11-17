@@ -216,7 +216,7 @@ const applyPipeline = (
   for (const codemod of codemods) {
     // each transform re-parses its input when chained; babel parse is fast
     // and shared-AST plumbing is not worth it
-    const outcome = codemod.apply(report.output);
+    const outcome = codemod.apply(report.output, file);
     if (outcome.kind === 'skipped') {
       // one parse error hits every parsing codemod — report it once
       if (!report.skips.some(skip => skip.endsWith(outcome.reason))) {

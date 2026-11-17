@@ -1,4 +1,5 @@
 import { comboBoxValueProps } from '../transforms/combobox-value-props.js';
+import { systemTextClassMaps } from '../transforms/system-text-class-maps.js';
 import { trayGroupSelector } from '../transforms/tray-group-selector.js';
 import type { MigrationManifest } from '../types.js';
 import { v18 } from './v18.js';
@@ -9,6 +10,8 @@ import { v18 } from './v18.js';
 // are stubbed. `Tray` renders inside a new `Sheet` (DST-1865), which is
 // scaffolded, and its `overlay` slot is gone. Its `group/tray` moved off the
 // dialog, so `tray-group-selector` rewrites the old theme selector.
+// `@marigold/system` dropped the `fontWeight`/`textSize` maps (DST-1869),
+// which `system-text-class-maps` replaces in application code.
 //
 // `slots` mirrors the v19 `Theme` type: the v18 sets plus the new Popover
 // shape. `theme-drift.test.ts` pins this file against the live type.
@@ -74,5 +77,5 @@ export const v19: MigrationManifest = {
     repurposed: {},
     componentDependencies: {},
   },
-  transforms: [comboBoxValueProps, trayGroupSelector],
+  transforms: [comboBoxValueProps, trayGroupSelector, systemTextClassMaps],
 };
