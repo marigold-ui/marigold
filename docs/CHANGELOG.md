@@ -1,5 +1,101 @@
 # @marigold/docs
 
+## 18.4.0
+
+### Patch Changes
+
+- 3e3de96: feat(DST-1761): keep a table's row context visible while it scrolls sideways
+
+  `Table.Column` takes a new `sticky` prop. `sticky="start"` on the first column keeps it in place while the other columns scroll sideways, and `sticky="end"` does the same for the last column, typically the row actions. The selection checkbox and drag handle stick together with the first column. A thin line marks each edge while content scrolls under it. `sticky` on any other column is ignored with a warning during development.
+
+  Sticky columns combine with `Table.Header sticky` and `Table.Footer sticky`, and keyboard focus never lands on a cell hidden under a sticky column. They need a container that scrolls sideways, such as `Scrollable`. A cell that spans several columns with `colSpan` does not stick.
+
+  Some changes apply to every table, with or without sticky columns:
+
+  - The table is its own stacking context (`isolation: isolate`), so a sticky header or footer no longer competes with the page. A sticky `TopNavigation` now stays above a sticky table header where the two overlap.
+  - A sticky header and footer sit at `z-10` instead of `z-1`.
+  - The focus ring of a row is drawn by its cells instead of as the row's outline. It looks the same.
+  - Body rows have an opaque background, and the band of nested rows is mixed onto the surface instead of being transparent. Both look the same on the table's own background.
+  - `Table.Cell` no longer accepts `render`, like `Table.Column`.
+
+  The theme adds a `ui-sticky-edge` utility for the edge line.
+
+- 9160448: feat(DST-1862): open and close a Drawer without `Drawer.Trigger`
+
+  `<Drawer>` now takes `open`, `defaultOpen` and `onOpenChange` directly, the same way `<Dialog>` does. A drawer opened from a table row, an ActionBar action or a route no longer needs a `Drawer.Trigger` with a hidden button inside it.
+
+  The close button, `slot="close"` buttons, Escape and another drawer opening all call `onOpenChange(false)`, on desktop and in the mobile sheet. Before, a drawer with only `open` could not be closed, and on small screens it did not render at all.
+
+  Inside a `Drawer.Trigger`, the drawer's own `open` or `defaultOpen` takes precedence over the trigger's state, as in React Aria. Setting only `onOpenChange` on a drawer inside a trigger logs a development warning to move it to the trigger. If you set `open` on both the trigger and the drawer, the drawer now owns its state, so its close button, Escape and another drawer opening no longer reach the trigger's `onOpenChange`. Set `onOpenChange` on the drawer too, or leave `open` on the trigger only. Other `Drawer.Trigger` usage is unchanged.
+
+- 183d72c: feat(DST-1943): select a range of Table rows with Shift+click on their checkboxes
+
+  In a `<Table selectionMode="multiple">`, holding <kbd>Shift</kbd> while clicking a row's checkbox now selects every row between the row last clicked and this one. Before, the checkbox ignored <kbd>Shift</kbd> and toggled only its own row, while a <kbd>Shift</kbd>+click on the row itself already selected the range. Both now behave the same, with one exception: after the header checkbox has selected all rows, <kbd>Shift</kbd>+click on a checkbox deselects just that row instead of starting a new selection from it.
+
+  A plain click on a checkbox still toggles only its row. Nothing changes in the component API, and single selection is unaffected.
+
+- 89e5b05: feat(DSTSUP-314): give the mobile Sidebar drawer icons, a clear hierarchy and 44px touch targets
+
+  On small screens the Sidebar drawer now keeps what makes the rail easy to scan on desktop. Most of this is about `Sidebar.Rail`, but the rows, the back row, the footer and the close button are shared, so the drawer of a plain `Sidebar` with `Sidebar.Nav` changes too: 16px rows, the marked current section, the section name as a heading row with the chevron chip, 44px footer links and the larger close button. Only the rail icons and the pinned footer items are rail-only.
+
+  **Current:** every rail item became a plain text row. The icons were dropped, pinned footer items (like a help center) sat at the end of the scrolling list behind a separator, and nothing at the top level showed which section the current page belongs to. The section name inside a section was a small grey back link, and the close button was 28px.
+
+  **New:**
+
+  - Every top-level row shows its rail icon, and the text is 16px instead of 14px.
+  - The section that holds the current page is marked at the top level and announced as the current section (`aria-current="true"`).
+  - Pinned footer items stay below the list at every level instead of scrolling with it.
+  - Inside a section, its name is styled as the section heading, with the back chevron in a round chip. The whole row is still the back button.
+  - The close button and footer links meet the 44 by 44px touch target, like the nav rows already did.
+
+  Nothing changes in the component API. Pass a `Sidebar.Header` to `Sidebar.Rail` to show your brand at the top of the drawer. On desktop the rail does not render it.
+
+- becef91: fix(DSTSUP-323): the active rail section navigates instead of collapsing the panel
+
+  Selecting the active section in `Sidebar.Rail` again now takes users back to the section's page, for example from a detail page to the list.
+
+  **Current:** clicking the rail item of the section you are already in toggled the panel. With the panel open, the click collapsed it, and with the panel collapsed, it reopened it. Either way the click did not navigate, even though the item is a link to the section's page.
+
+  **New:** clicking the active section always goes to its page. With the panel open, the panel stays open. With the panel collapsed, the panel reopens and its heading gets focus, as before. Only `Sidebar.Toggle` and Cmd+B / Ctrl+B collapse the panel. A section whose navigation has no link to land on still does not navigate. Nothing changes in the component API.
+
+- 9882690: chore(DST-1956): update React Aria to 1.22.1.
+
+  **What changed:**
+
+  - `react-aria-components` 1.21.1 → 1.22.1, which pins `react-aria` 3.53.1 and `react-stately` 3.51.0.
+  - The `react-aria-components` floor moves to `^1.22.1`, so consumers can't resolve a version without `Sheet`, which the Tray rewrite in DST-1865 builds on.
+  - `@internationalized/date` → `^3.12.4` and `@react-types/shared` → `^3.37.0`, matching what RAC 1.22.1 declares.
+  - The individual `@react-aria/*` and `@react-stately/*` packages had no new release, so their floors stay as they are.
+
+  **Impact:**
+
+  No API change in Marigold components. 1.22.1 also reverts a keyboard-handler change to `useMenu`, `useDateField`, `useDatePicker` and `useDateRangePicker` that 1.22.0 shipped, so those components behave as they did on 1.21.
+
+- Updated dependencies [110732b]
+- Updated dependencies [0154b3a]
+- Updated dependencies [3e3de96]
+- Updated dependencies [94fcae4]
+- Updated dependencies [9160448]
+- Updated dependencies [9160448]
+- Updated dependencies [3b04f93]
+- Updated dependencies [0da7449]
+- Updated dependencies [a7bacf0]
+- Updated dependencies [183d72c]
+- Updated dependencies [33c9960]
+- Updated dependencies [2588208]
+- Updated dependencies [3e77b24]
+- Updated dependencies [c59fdc4]
+- Updated dependencies [8ea74cc]
+- Updated dependencies [89e5b05]
+- Updated dependencies [becef91]
+- Updated dependencies [9882690]
+- Updated dependencies [c5efe3c]
+- Updated dependencies [a98043e]
+  - @marigold/components@18.4.0
+  - @marigold/theme-rui@6.3.0
+  - @marigold/system@18.4.0
+  - @marigold/icons@2.0.5
+
 ## 18.3.1
 
 ### Patch Changes

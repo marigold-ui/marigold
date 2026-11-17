@@ -151,7 +151,7 @@ export const Controlled = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   render: function Render(args) {
     const [value, setValue] = useState(
-      new CalendarDate(2025, 8, 7) as DateValue
+      () => new CalendarDate(2025, 8, 7) as DateValue
     );
 
     return (
@@ -171,7 +171,7 @@ export const Controlled = meta.story({
               {`Day: ${value.day} Month: ${value.month} Year: ${value.year}`}
             </pre>
           ) : (
-            <pre>`No value (${value}).`</pre>
+            <pre>{`No value (${value}).`}</pre>
           )}
         </Stack>
       </I18nProvider>

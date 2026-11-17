@@ -62,7 +62,9 @@ const meta = preview.meta({
 export const Basic = meta.story({
   tags: ['component-test'],
   render: function Render(args) {
-    const [selectedKeys, setSelectedKeys] = useState(new Set<Key>(['sum']));
+    const [selectedKeys, setSelectedKeys] = useState(
+      () => new Set<Key>(['sum'])
+    );
 
     return (
       <>
@@ -191,7 +193,7 @@ export const DisabledButton = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   render: function Render(args) {
-    const [selectedKeys, setSelectedKeys] = useState(new Set<Key>());
+    const [selectedKeys, setSelectedKeys] = useState(() => new Set<Key>());
 
     return (
       <ToggleButton.Group

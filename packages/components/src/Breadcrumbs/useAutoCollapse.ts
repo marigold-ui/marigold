@@ -66,7 +66,7 @@ export const useAutoCollapse = (
 
     // +1 because the component displays count real items PLUS the ellipsis
     setVisibleItems(count + 1);
-  }, [containerRef, hiddenRef, totalItems]);
+  }, [containerRef, hiddenRef]);
 
   useResizeObserver({ ref: containerRef, onResize: calculate });
 
