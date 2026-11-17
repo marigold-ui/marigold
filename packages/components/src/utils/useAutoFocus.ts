@@ -4,7 +4,9 @@ import { type RefObject, useEffect, useRef } from 'react';
  * Replaces a native `autoFocus`, which scrolls the page behind a `Sheet`.
  * Focusing in an effect is RAC's workaround and still opens the keyboard:
  * https://github.com/adobe/react-spectrum/issues/10878#issuecomment-6482173390
- * It focuses once, the first time it is enabled, not again when `ref` changes.
+ * It focuses at most once, the first time it is enabled, not again when `ref`
+ * changes. In a sheet it waits for the slide-in, and skips focusing when the
+ * user moved focus before that.
  */
 export const useAutoFocus = (
   ref: RefObject<HTMLElement | null>,
