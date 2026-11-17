@@ -35,6 +35,28 @@ export const Title = () => <h1 className={cn(fontWeight.bold)}>Hi</h1>;
     ]);
   });
 
+  test.each([
+    [
+      'two trailing specifiers',
+      "import { cn, fontWeight, textSize } from '@marigold/system';",
+      "import { cn } from '@marigold/system';",
+    ],
+    [
+      'a multi-line import with a trailing comma',
+      "import {\n  cn,\n  fontWeight,\n  textSize,\n} from '@marigold/system';",
+      "import {\n  cn,\n} from '@marigold/system';",
+    ],
+  ])('drops only the maps from %s', (_, imports, kept) => {
+    const source = `${imports}\n\nexport const c = cn(fontWeight.bold, textSize.xs);\n`;
+
+    const result = systemTextClassMaps.apply(source);
+
+    assertEdited(result);
+    expect(result.output.startsWith(`${kept}\n\n// removed from`)).toBe(true);
+    expect(result.output).toContain('const fontWeight = {');
+    expect(result.output).toContain('const textSize = {');
+  });
+
   test('puts the copy where the import was when nothing else is imported', () => {
     const source = `import { textSize } from "@marigold/system";
 
@@ -268,6 +290,17 @@ export const Title = () => <h1 className={fontWeight.bold}>Hi</h1>;
     expect(result.kind).toBe('unchanged');
     expect(warningsOf(result)).toEqual([
       expect.stringContaining('`weight` prop on `<Text>`'),
+    ]);
+  });
+
+  test('warns about a barrel that re-exports all of @marigold/system', () => {
+    const source = `export * from '@marigold/system';\n`;
+
+    const result = systemTextClassMaps.apply(source);
+
+    expect(result.kind).toBe('unchanged');
+    expect(warningsOf(result)).toEqual([
+      expect.stringContaining("`export * from '@marigold/system'`"),
     ]);
   });
 

@@ -29,4 +29,4 @@ import { cn, fontWeight, textSize } from '@marigold/system';
 <h1 className={cn('font-bold', 'text-2xl')}>Title</h1>;
 ```
 
-`marigold migrate v19` keeps your app building. It replaces the import with a copy of the map under the same name in each file that imports it, so the code keeps working unchanged. Replace the copy with the `<Text>` props or the Tailwind classes when you get to it. A re-export such as `export { fontWeight } from '@marigold/system'` and namespace access such as `system.fontWeight` get a warning and need a manual change.
+`marigold migrate v19` keeps your app building. It replaces the import with a copy of the map under the same name in each file that imports it, so the code keeps working unchanged. Replace the copy with the `<Text>` props or the Tailwind classes when you get to it. A re-export such as `export { fontWeight } from '@marigold/system'` or `export * from '@marigold/system'` and namespace access such as `system.fontWeight` get a warning and need a manual change.

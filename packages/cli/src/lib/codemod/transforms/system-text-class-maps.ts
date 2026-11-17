@@ -40,6 +40,8 @@ const MAPS: Record<string, Record<string, string>> = {
 };
 
 const MAP_NAME = /\b(fontWeight|textSize)\b/;
+// a barrel never names the maps, so the quick filter has to let it through
+const EXPORT_ALL = /\bexport\s*\*\s*from\b/;
 const IDENTIFIER = /^[A-Za-z_$][\w$]*$/;
 
 const nameOf = (n: unknown) => (n as { name?: string } | undefined)?.name;
@@ -68,7 +70,10 @@ export const systemTextClassMaps: Codemod = {
   description:
     'copy the removed `fontWeight`/`textSize` maps from @marigold/system into the files that import them',
   apply: (source, path) => {
-    if (!source.includes(MARIGOLD_SYSTEM) || !MAP_NAME.test(source)) {
+    if (
+      !source.includes(MARIGOLD_SYSTEM) ||
+      !(MAP_NAME.test(source) || EXPORT_ALL.test(source))
+    ) {
       return { kind: 'unchanged', warnings: [] };
     }
     return parseOr(source, file => {
@@ -82,6 +87,12 @@ export const systemTextClassMaps: Codemod = {
       // imports and `export … from` are top-level only
       for (const n of body) {
         if (sourceOf(n) !== MARIGOLD_SYSTEM) continue;
+        if (n.type === 'ExportAllDeclaration') {
+          warnings.push(
+            `\`export * from '${MARIGOLD_SYSTEM}'\`: v19 no longer exports \`fontWeight\` or \`textSize\`, so files that import them through this one break. Use the \`weight\` or \`fontSize\` prop on \`<Text>\`, or the Tailwind class directly`
+          );
+          continue;
+        }
         for (const spec of (n.specifiers as AnyNode[] | undefined) ?? []) {
           if (n.type === 'ExportNamedDeclaration') {
             const name = nameOf(spec.local);
