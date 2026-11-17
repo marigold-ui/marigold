@@ -627,6 +627,7 @@ describe('collection classification (contract)', () => {
       'Autocomplete',
       'Breadcrumbs',
       'ComboBox',
+      'CommandPalette',
       'ListBox',
       'ListView',
       'Menu',

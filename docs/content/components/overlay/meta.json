@@ -2,6 +2,7 @@
   "pages": [
     "action-menu",
     "contextual-help",
+    "command-palette",
     "dialog",
     "drawer",
     "menu",

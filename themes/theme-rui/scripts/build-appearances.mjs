@@ -49,6 +49,19 @@ const sharedAppearances = {
 const emptyAppearances = ['TextValue'];
 
 /**
+ * Slots whose variants belong to a child part, not to the component itself.
+ * They are left out of the component's appearance, so the docs don't offer
+ * them as values for the component's own `variant` prop. Document them with
+ * the child part instead.
+ *
+ * @type {Record<string, string[]>}
+ */
+const childPartSlots = {
+  // Item variants are set on each `CommandPalette.Item`.
+  CommandPalette: ['item'],
+};
+
+/**
  * Extract property name keys from a `variants` object literal in a cva() call.
  * Returns `{ variant: string[], size: string[] }`.
  */
@@ -154,7 +167,14 @@ async function main() {
           const variantKeys = new Set();
           const sizeKeys = new Set();
 
-          const cvaCalls = findCvaCalls(decl.initializer);
+          const skipped = childPartSlots[componentName] ?? [];
+          const cvaCalls = decl.initializer.properties
+            .filter(
+              p =>
+                !ts.isPropertyAssignment(p) ||
+                !skipped.includes(p.name.getText())
+            )
+            .flatMap(p => findCvaCalls(p));
           for (const call of cvaCalls) {
             const keys = extractVariantKeys(call.arguments[0]);
             for (const k of keys.variant) variantKeys.add(k);

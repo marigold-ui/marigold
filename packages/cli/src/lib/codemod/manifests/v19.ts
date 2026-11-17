@@ -3,17 +3,18 @@ import { trayGroupSelector } from '../transforms/tray-group-selector.js';
 import type { MigrationManifest } from '../types.js';
 import { v18 } from './v18.js';
 
-// Hand-written v19 manifest. `Popover` became slotted (DST-1485), so the
-// compound `<Popover>` can add its parts next to the surface every popover
-// shares. The consumer's single style moves into `container`, the new slots
-// are stubbed. `Tray` renders inside a new `Sheet` (DST-1865), which is
-// scaffolded, and its `overlay` slot is gone. Its `group/tray` moved off the
-// dialog, so `tray-group-selector` rewrites the old theme selector.
+// Hand-written v19 manifest. v19 adds `CommandPalette`, and `Popover` became
+// slotted (DST-1485), so the compound `<Popover>` can add its parts next to
+// the surface every popover shares. The consumer's single style moves into
+// `container`, the new slots are stubbed. `Tray` renders inside a new `Sheet`
+// (DST-1865), which is scaffolded, and its `overlay` slot is gone. Its
+// `group/tray` moved off the dialog, so `tray-group-selector` rewrites the old
+// theme selector.
 //
 // `slots` mirrors the v19 `Theme` type: the v18 sets plus the new Popover
-// shape. `theme-drift.test.ts` pins this file against the live type.
-// `stylesReferenceUrl` is left out until the v19 release tag exists, rather
-// than pointing reports at a moving branch.
+// shape and CommandPalette. `theme-drift.test.ts` pins this file against the
+// live type. `stylesReferenceUrl` is left out until the v19 release tag
+// exists, rather than pointing reports at a moving branch.
 export const v19: MigrationManifest = {
   schemaVersion: 1,
   version: 'v19',
@@ -30,6 +31,25 @@ export const v19: MigrationManifest = {
       'actions',
     ],
     Sheet: ['backdrop', 'container', 'content'],
+    // New in v19, so no consumer theme has it yet: only stubs, no move.
+    CommandPalette: [
+      'button',
+      'container',
+      'header',
+      'input',
+      'list',
+      'group',
+      'item',
+      'label',
+      'description',
+      'keyboard',
+      'match',
+      'empty',
+      'footer',
+      'prefixes',
+      'legend',
+      'tray',
+    ],
   },
   restructures: [{ component: 'Popover', primarySlot: 'container' }],
   scaffolds: [

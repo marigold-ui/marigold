@@ -1,11 +1,25 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
-const itemBase = 'text-foreground focus:bg-focus-highlight';
+export const menuItemBase = 'text-foreground focus:bg-focus-highlight';
 
 // Muted treatment for regular item icons. Access variants don't share it:
 // their (only) icon is the access glyph, which keeps the full-opacity access
 // foreground color instead.
-const itemIconMuted = '[&_svg]:text-secondary [&_svg]:opacity-60';
+export const menuItemIconMuted = '[&_svg]:text-secondary [&_svg]:opacity-60';
+
+// Column layout every menu-like row shares (Menu, CommandPalette).
+export const menuItemLayout = [
+  // Keep col 1 occupied, so plain-text children (no <Text> slot) auto-place
+  // into the label column instead of the icon column.
+  "before:content-[''] before:col-start-1 before:row-start-1",
+  'disabled:cursor-not-allowed disabled:text-disabled',
+  // The icon's margin, not a column gap, separates it from the label: a gap
+  // would also open next to an empty icon column.
+  '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4 [&_svg]:row-span-full [&_svg]:self-center',
+  // Only the leading icon (the first child) goes into the icon column, so a
+  // trailing icon still places after the label.
+  '[&>svg:first-child]:col-start-1 [&>svg:first-child]:me-2',
+];
 
 export const Menu: ThemeComponent<'Menu'> = {
   container: cva({
@@ -27,31 +41,22 @@ export const Menu: ThemeComponent<'Menu'> = {
   item: cva({
     base: [
       'group/option relative grid grid-cols-subgrid items-center cursor-pointer rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap max-sm:min-h-touch-target',
-      // Keep col 1 occupied, so plain-text children (no <Text> slot) auto-place
-      // into the label column instead of the icon column.
-      "before:content-[''] before:col-start-1 before:row-start-1",
-      'disabled:cursor-not-allowed disabled:text-disabled',
+      ...menuItemLayout,
       // On item, not itemBase: `destructive` doesn't share itemBase, and every
       // variant needs the ring. The variants' focus background is the roving
       // cursor (in a menu, focus follows the mouse, so it doubles as hover);
       // this is the part that only appears for real keyboard focus.
       'focus-visible:ui-state-focus-item',
-      // The icon's margin, not a column gap, separates it from the label: a gap
-      // would also open next to an empty icon column.
-      '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4 [&_svg]:row-span-full [&_svg]:self-center',
-      // Only the leading icon (the first child) goes into the icon column, so a
-      // trailing icon still places after the label.
-      '[&>svg:first-child]:col-start-1 [&>svg:first-child]:me-2',
       // Selection visuals like ListBox: checkmark reserves col 1, row highlights on select. Don't also add a leading icon.
       '[&_.selection-indicator]:invisible [&_.selection-indicator]:text-foreground [&_.selection-indicator]:opacity-100',
       'selected:bg-selected selected:[&_.selection-indicator]:visible',
     ],
     variants: {
       variant: {
-        default: `${itemBase} ${itemIconMuted}`,
+        default: `${menuItemBase} ${menuItemIconMuted}`,
         destructive: 'text-destructive-accent focus:bg-destructive-accent/10',
-        master: `${itemBase} [&_.access-icon]:text-access-master-foreground`,
-        admin: `${itemBase} [&_.access-icon]:text-access-admin-foreground`,
+        master: `${menuItemBase} [&_.access-icon]:text-access-master-foreground`,
+        admin: `${menuItemBase} [&_.access-icon]:text-access-admin-foreground`,
       },
     },
     defaultVariants: {
