@@ -9,6 +9,7 @@ import { useState } from 'react';
 import type { DateValue } from 'react-aria-components';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, fn, spyOn, waitFor, within } from 'storybook/test';
+import { keepSheetsOpenInChromatic } from '.storybook/chromatic';
 import preview from '.storybook/preview';
 import type { RangeValue } from '@react-types/shared';
 import { theme } from '../../../../themes/theme-rui/src/index.js';
@@ -212,6 +213,7 @@ export const WithError: any = meta.story({
 });
 
 export const Mobile: any = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
   tags: ['component-test'],
   globals: {
     viewport: { value: 'smallScreen' },

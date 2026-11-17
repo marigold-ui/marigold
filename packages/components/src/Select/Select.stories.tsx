@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Form } from 'react-aria-components/Form';
 import { Key } from 'react-aria-components/Select';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { keepSheetsOpenInChromatic } from '.storybook/chromatic';
 import preview, { smallScreenWidth } from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
@@ -708,6 +709,7 @@ WithRenderValue.test(
  * Firefox via the `smallScreen` viewport global.
  */
 export const WithRenderValueMobile = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   globals: {
@@ -819,6 +821,7 @@ MultiSelectSummary.test(
  * Runs in real Firefox via the `smallScreen` viewport global.
  */
 export const MultiSelectSummaryMobile = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
   tags: ['component-test'],
   // Chromatic ignores the viewport global, so pin its capture to phone width.
   parameters: {
@@ -960,6 +963,7 @@ QuickFilter.test(
 );
 
 export const Mobile = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
   tags: ['component-test'],
   // Chromatic ignores the viewport global, so pin its capture to phone width.
   parameters: {
@@ -1053,6 +1057,7 @@ Mobile.test('Selects an option and closes the tray', async ({ canvas }) => {
 // DSTSUP-261 regression test in Select.test.tsx: selecting in the tray must
 // round-trip through the controlled `value` prop.
 export const MobileControlled = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
   parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'smallScreen' },

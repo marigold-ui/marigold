@@ -3,17 +3,15 @@ import addonDocs from '@storybook/addon-docs';
 import { definePreview } from '@storybook/react-vite';
 import addonTestCodegen from 'storybook-addon-test-codegen';
 import { MINIMAL_VIEWPORTS } from 'storybook/viewport';
+import { isChromatic } from './chromatic.js';
 import withMarigoldProviders from './decorators.js';
 // @ts-expect-error - CSS side-effect import handled by Vite bundler
 import './styles.css';
 
 // Chromatic freezes animations at their last frame, which would pin scroll-driven
 // styles, such as the Dialog's seams, whatever the scroll position. `styles.css`
-// swaps them for their fallback under this flag, set like Chromatic's `isChromatic()`.
-if (
-  /Chromatic/.test(navigator.userAgent) ||
-  /chromatic=true/.test(location.href)
-) {
+// swaps them for their fallback under this flag.
+if (isChromatic) {
   document.documentElement.dataset.chromatic = '';
 
   // RAC's Sheet slides in with a JS smooth scroll that the `prefersReducedMotion`
@@ -27,41 +25,6 @@ if (
     }
 
     return list;
-  };
-
-  // Chromatic resizes the window while capturing, which can push an open sheet out
-  // of view, and RAC's Sheet closes once it is out of view. Only reports right after
-  // a resize are dropped, so swipes and exits (RAC's exit waits for one) still close.
-  // The resize also leaves the sheet scrolled off-screen, so put open ones back at
-  // rest: the bottom of their scroller.
-  let resizedAt = -Infinity;
-  window.addEventListener('resize', () => {
-    resizedAt = performance.now();
-    requestAnimationFrame(() => {
-      for (const scroller of document.querySelectorAll('[data-sheet-scroll]')) {
-        if (!scroller.closest('[data-exiting]')) {
-          scroller.scrollTop = scroller.scrollHeight;
-        }
-      }
-    });
-  });
-  const NativeIntersectionObserver = window.IntersectionObserver;
-  window.IntersectionObserver = class extends NativeIntersectionObserver {
-    constructor(
-      callback: IntersectionObserverCallback,
-      options?: IntersectionObserverInit
-    ) {
-      super((entries, observer) => {
-        const kept = entries.filter(
-          entry =>
-            !entry.target.hasAttribute('data-sheet-content') ||
-            entry.intersectionRatio > 0 ||
-            entry.target.closest('[data-exiting]') ||
-            performance.now() - resizedAt > 1000
-        );
-        if (kept.length) callback(kept, observer);
-      }, options);
-    }
   };
 }
 

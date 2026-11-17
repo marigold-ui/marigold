@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react';
 import { useState } from 'react';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { keepSheetsOpenInChromatic } from '.storybook/chromatic';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Center } from '../Center/Center';
@@ -393,6 +394,7 @@ LargeDataset.test(
 );
 
 export const Mobile = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   globals: {

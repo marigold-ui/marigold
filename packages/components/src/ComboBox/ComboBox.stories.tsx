@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { keepSheetsOpenInChromatic } from '.storybook/chromatic';
 import preview, { smallScreenWidth } from '.storybook/preview';
 import type { Key } from '@react-types/shared';
 import { Button } from '../Button/Button';
@@ -474,6 +475,7 @@ LargeDataset.test(
 );
 
 export const Mobile = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
   tags: ['component-test'],
   // Chromatic ignores the viewport global, so pin its capture to phone width.
   parameters: {
