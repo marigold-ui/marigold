@@ -1,5 +1,6 @@
 import { render, screen, within } from '@testing-library/react';
 import { vi } from 'vitest';
+import { isAppleDevice } from '@react-aria/utils';
 import { renderWithOverlay } from '../test.utils';
 import { Basic, MoreWithoutPrefix } from './CommandPalette.stories';
 
@@ -16,7 +17,7 @@ test('the trigger announces the shortcut', () => {
 
   expect(screen.getByRole('button', { name: /go to/i })).toHaveAttribute(
     'aria-keyshortcuts',
-    expect.stringMatching(/^(Meta|Control)\+K$/)
+    isAppleDevice() ? 'Meta+K' : 'Control+K'
   );
 });
 

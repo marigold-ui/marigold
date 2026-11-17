@@ -22,9 +22,19 @@ import { TextField } from '../TextField/TextField';
 import { TextValue } from '../TextValue/TextValue';
 import { useAsyncList } from '../hooks';
 import { CommandPalette, SEARCH_DELAY } from './CommandPalette';
-import type { CommandPaletteSearchState } from './CommandPalette';
+import type {
+  CommandPaletteProps,
+  CommandPaletteSearchState,
+} from './CommandPalette';
 
-const meta = preview.meta({
+// The palette's own callbacks, passed as args so Storybook resets them
+// between tests and lists them in the Actions panel.
+type PaletteArgs = Pick<
+  CommandPaletteProps,
+  'onAction' | 'onInputChange' | 'onSearchChange'
+>;
+
+const meta = preview.type<{ args: PaletteArgs }>().meta({
   title: 'Components/CommandPalette',
   component: CommandPalette.Trigger,
   subcomponents: { CommandPalette },
@@ -87,12 +97,11 @@ const politeAnnouncements = () =>
     .queryAllByRole('log', { hidden: true })
     .find(log => log.getAttribute('aria-live') === 'polite')?.textContent ?? '';
 
-const onAction = fn();
-
 // Basic
 // ---------------
 export const Basic = meta.story({
-  render: args => (
+  args: { onAction: fn() },
+  render: ({ onAction, ...args }) => (
     <CommandPalette.Trigger {...args}>
       <CommandPalette.Button />
       <CommandPalette onAction={onAction}>
@@ -216,8 +225,7 @@ Basic.test(
 Basic.test(
   'Runs the action, closes, restores focus and clears on reopen',
   noSnapshot,
-  async ({ canvas, step, userEvent }) => {
-    onAction.mockClear();
+  async ({ args, canvas, step, userEvent }) => {
     const trigger = canvas.getByRole('button', { name: /go to/i });
 
     await step('Choose an action from the keyboard', async () => {
@@ -225,7 +233,7 @@ Basic.test(
       await userEvent.keyboard('voucher');
       await userEvent.keyboard('{ArrowDown}{Enter}');
 
-      await expect(onAction).toHaveBeenCalledWith('create-voucher');
+      await expect(args.onAction).toHaveBeenCalledWith('create-voucher');
       await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
       await expect(trigger).toHaveFocus();
     });
@@ -965,16 +973,14 @@ AsyncSearch.test(
 // ---------------
 // A group with a `prefix`: a query that starts with it narrows the search
 // to that group.
-const onScopedQuery = fn();
-const onSearchChange = fn();
-
 export const SearchOneKind = meta.story({
   ...noSnapshot,
-  render: args => (
+  args: { onInputChange: fn(), onSearchChange: fn() },
+  render: ({ onInputChange, onSearchChange, ...args }) => (
     <CommandPalette.Trigger {...args}>
       <CommandPalette.Button />
       <CommandPalette
-        onInputChange={onScopedQuery}
+        onInputChange={onInputChange}
         onSearchChange={onSearchChange}
       >
         <CommandPalette.Group title="Pages">
@@ -992,9 +998,7 @@ export const SearchOneKind = meta.story({
 
 SearchOneKind.test(
   'Narrows the search to a group by its prefix',
-  async ({ canvas, step, userEvent }) => {
-    onScopedQuery.mockClear();
-    onSearchChange.mockClear();
+  async ({ args, canvas, step, userEvent }) => {
     await openPalette({ canvas, userEvent });
     const search = await canvas.findByRole('searchbox');
 
@@ -1029,9 +1033,9 @@ SearchOneKind.test(
     await step('Only the rest of the query is matched', async () => {
       await userEvent.keyboard('jazz');
       await expect(search).toHaveValue('e:jazz');
-      await expect(onScopedQuery).toHaveBeenLastCalledWith('e:jazz');
+      await expect(args.onInputChange).toHaveBeenLastCalledWith('e:jazz');
       await waitFor(() =>
-        expect(onSearchChange).toHaveBeenLastCalledWith({
+        expect(args.onSearchChange).toHaveBeenLastCalledWith({
           term: 'jazz',
           prefix: 'e:',
         })
@@ -1147,12 +1151,10 @@ LateResults.test(
 // people pause typing (250ms), so a server search runs once for "jazz" and
 // not four times. Opening, clearing the query and narrowing to a group
 // report right away.
-const onKeystroke = fn();
-const onSearch = fn();
-
 export const SearchAfterPause = meta.story({
   ...noSnapshot,
-  render: function Render(args) {
+  args: { onInputChange: fn(), onSearchChange: fn() },
+  render: function Render({ onInputChange, onSearchChange, ...args }) {
     const [keystrokes, setKeystrokes] = useState<string[]>([]);
     const [searches, setSearches] = useState<string[]>([]);
     return (
@@ -1161,11 +1163,11 @@ export const SearchAfterPause = meta.story({
           <CommandPalette.Button />
           <CommandPalette
             onInputChange={value => {
-              onKeystroke(value);
+              onInputChange?.(value);
               setKeystrokes(current => [...current, value]);
             }}
             onSearchChange={search => {
-              onSearch(search);
+              onSearchChange?.(search);
               setSearches(current => [...current, search.term]);
             }}
           >
@@ -1192,9 +1194,9 @@ export const SearchAfterPause = meta.story({
 
 SearchAfterPause.test(
   'Reports the search once people pause typing',
-  async ({ canvas, step, userEvent }) => {
-    onKeystroke.mockClear();
-    onSearch.mockClear();
+  async ({ args, canvas, step, userEvent }) => {
+    const onKeystroke = args.onInputChange as ReturnType<typeof fn>;
+    const onSearch = args.onSearchChange as ReturnType<typeof fn>;
     await openPalette({ canvas, userEvent });
     const search = await canvas.findByRole('searchbox');
 
@@ -1253,11 +1255,10 @@ const searchServer = (term: string) =>
     event =>
       event.id === term || event.name.toLowerCase().includes(term.toLowerCase())
   );
-const onServerAction = fn();
-
 export const ServerResultsInOneGroup = meta.story({
   ...noSnapshot,
-  render: function Render(args) {
+  args: { onAction: fn() },
+  render: function Render({ onAction, ...args }) {
     const [events, setEvents] = useState<ServerEvent[] | null>(null);
     const [loading, setLoading] = useState(false);
     const requestRef = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -1280,7 +1281,7 @@ export const ServerResultsInOneGroup = meta.story({
         <CommandPalette
           onSearchChange={searchEvents}
           loading={loading}
-          onAction={onServerAction}
+          onAction={onAction}
         >
           <CommandPalette.Group title="Pages">
             <CommandPalette.Item id="events">Events</CommandPalette.Item>
@@ -1333,16 +1334,15 @@ ServerResultsInOneGroup.test(
 
 ServerResultsInOneGroup.test(
   'Enter while results load runs the first new row',
-  async ({ canvas, userEvent }) => {
-    onServerAction.mockClear();
+  async ({ args, canvas, userEvent }) => {
     await openPalette({ canvas, userEvent });
     await canvas.findByRole('searchbox');
     // Typed faster than the pause: the rows still show the recent events,
     // and Summer Open Air is the active one.
     await userEvent.keyboard('japan{Enter}');
-    await expect(onServerAction).not.toHaveBeenCalled();
-    await waitFor(() => expect(onServerAction).toHaveBeenCalledWith('event-8'));
-    await expect(onServerAction).toHaveBeenCalledTimes(1);
+    await expect(args.onAction).not.toHaveBeenCalled();
+    await waitFor(() => expect(args.onAction).toHaveBeenCalledWith('event-8'));
+    await expect(args.onAction).toHaveBeenCalledTimes(1);
   }
 );
 
@@ -1352,7 +1352,6 @@ const typeJapanAfterPause = async ({
   canvas,
   userEvent,
 }: Pick<StoryContext, 'canvas' | 'userEvent'>) => {
-  onServerAction.mockClear();
   await openPalette({ canvas, userEvent });
   await canvas.findByRole('searchbox');
   await userEvent.keyboard('j');
@@ -1362,17 +1361,17 @@ const typeJapanAfterPause = async ({
 
 ServerResultsInOneGroup.test(
   'Enter after a pause in typing runs the first new row',
-  async ({ canvas, userEvent }) => {
+  async ({ args, canvas, userEvent }) => {
     await typeJapanAfterPause({ canvas, userEvent });
     await userEvent.keyboard('{Enter}');
-    await waitFor(() => expect(onServerAction).toHaveBeenCalledWith('event-8'));
-    await expect(onServerAction).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(args.onAction).toHaveBeenCalledWith('event-8'));
+    await expect(args.onAction).toHaveBeenCalledTimes(1);
   }
 );
 
 ServerResultsInOneGroup.test(
   'Keeps the first row active when server rows replace earlier ones',
-  async ({ canvas, userEvent }) => {
+  async ({ args, canvas, userEvent }) => {
     await typeJapanAfterPause({ canvas, userEvent });
     await waitFor(() =>
       expect(canvas.getAllByRole('menuitem')).toHaveLength(1)
@@ -1383,21 +1382,20 @@ ServerResultsInOneGroup.test(
       ).toHaveAttribute('data-focused')
     );
     await userEvent.keyboard('{Enter}');
-    await expect(onServerAction).toHaveBeenCalledWith('event-8');
+    await expect(args.onAction).toHaveBeenCalledWith('event-8');
   }
 );
 
 ServerResultsInOneGroup.test(
   'Enter on a picked row runs it right away',
-  async ({ canvas, userEvent }) => {
-    onServerAction.mockClear();
+  async ({ args, canvas, userEvent }) => {
     await openPalette({ canvas, userEvent });
     await canvas.findByRole('searchbox');
     // Jazz Brunch is the second of the recent events. The server would put
     // Jazz Night first.
     await userEvent.keyboard('jazz{ArrowDown}{Enter}');
-    await expect(onServerAction).toHaveBeenCalledTimes(1);
-    await expect(onServerAction).toHaveBeenCalledWith('event-7');
+    await expect(args.onAction).toHaveBeenCalledTimes(1);
+    await expect(args.onAction).toHaveBeenCalledWith('event-7');
   }
 );
 
@@ -1407,7 +1405,8 @@ ServerResultsInOneGroup.test(
 // or a transition. Enter still waits for their answer.
 export const LoadingStartsLate = meta.story({
   ...noSnapshot,
-  render: function Render(args) {
+  args: { onAction: fn() },
+  render: function Render({ onAction, ...args }) {
     const [term, setTerm] = useState('');
     const [events, setEvents] = useState<ServerEvent[] | null>(null);
     const [loading, setLoading] = useState(false);
@@ -1429,7 +1428,7 @@ export const LoadingStartsLate = meta.story({
         <CommandPalette
           onSearchChange={search => setTerm(search.term)}
           loading={loading}
-          onAction={onServerAction}
+          onAction={onAction}
         >
           <CommandPalette.Group title="Events" filter={false}>
             {(term && events ? events : recentServerEvents).map(event => (
@@ -1446,14 +1445,13 @@ export const LoadingStartsLate = meta.story({
 
 LoadingStartsLate.test(
   'Enter waits for loading that starts after the search',
-  async ({ canvas, userEvent }) => {
-    onServerAction.mockClear();
+  async ({ args, canvas, userEvent }) => {
     await openPalette({ canvas, userEvent });
     await canvas.findByRole('searchbox');
     await userEvent.keyboard('japan{Enter}');
-    await waitFor(() => expect(onServerAction).toHaveBeenCalled());
-    await expect(onServerAction).toHaveBeenCalledTimes(1);
-    await expect(onServerAction).toHaveBeenCalledWith('event-8');
+    await waitFor(() => expect(args.onAction).toHaveBeenCalled());
+    await expect(args.onAction).toHaveBeenCalledTimes(1);
+    await expect(args.onAction).toHaveBeenCalledWith('event-8');
   }
 );
 
