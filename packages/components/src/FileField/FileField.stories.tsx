@@ -254,7 +254,9 @@ export const InForm = meta.story({
     multiple: true,
   },
   render: function Render(args) {
-    const [submitted, setSubmitted] = useState<string[]>([]);
+    const [submitted, setSubmitted] = useState<{ id: string; label: string }[]>(
+      []
+    );
     return (
       <I18nProvider locale="en-US">
         <Form
@@ -262,7 +264,12 @@ export const InForm = meta.story({
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
             const files = formData.getAll('attachment') as File[];
-            setSubmitted(files.map(f => `${f.name} (${f.size} bytes)`));
+            setSubmitted(
+              files.map(f => ({
+                id: crypto.randomUUID(),
+                label: `${f.name} (${f.size} bytes)`,
+              }))
+            );
           }}
         >
           <Stack space="related">
@@ -277,8 +284,8 @@ export const InForm = meta.story({
               <div data-testid="submitted-files">
                 <strong>Submitted files:</strong>
                 <ul>
-                  {submitted.map((s, i) => (
-                    <li key={i}>{s}</li>
+                  {submitted.map(s => (
+                    <li key={s.id}>{s.label}</li>
                   ))}
                 </ul>
               </div>

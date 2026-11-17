@@ -39,18 +39,18 @@ export const useLightDismiss = (
 ) => {
   const state = use(OverlayTriggerStateContext);
   const triggerRef = useSlottedContext(PopoverContext)?.triggerRef;
-  const pressedWithin = useRef(false);
+  const pressedWithinRef = useRef(false);
 
   useInteractOutside({
     ref,
     isDisabled,
     // Runs on pointerdown in the capture phase, before React sees the event.
     onInteractOutsideStart: () => {
-      pressedWithin.current = false;
+      pressedWithinRef.current = false;
     },
     onInteractOutside: e => {
       if (
-        pressedWithin.current ||
+        pressedWithinRef.current ||
         triggerRef?.current?.contains(e.target as Node) ||
         shouldCloseOnInteractOutside?.(e.target as Element) === false
       ) {
@@ -63,7 +63,7 @@ export const useLightDismiss = (
   const lightDismissProps = useMemo(
     () => ({
       onPointerDown: () => {
-        pressedWithin.current = true;
+        pressedWithinRef.current = true;
       },
     }),
     []

@@ -64,7 +64,6 @@ export const CommandPaletteTrigger = ({
     [open, setOpen, shortcut]
   );
 
-  // eslint-disable-next-line @eslint-react/no-children-to-array -- the palette has to sit outside the press responder, see above
   const parts = Children.toArray(children);
   const palette = parts.filter(isPalette);
   const pressables = parts.filter(part => !isPalette(part));

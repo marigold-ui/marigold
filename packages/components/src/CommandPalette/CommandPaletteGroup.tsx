@@ -94,7 +94,6 @@ export const CommandPaletteGroup = ({
   // (e.g. while server results load) would show a lone title, so it renders
   // nothing.
   // `toArray`, not `count`: `count` also counts `false` from `{cond && …}`.
-  // eslint-disable-next-line @eslint-react/no-children-to-array -- an empty group must not render its title
   if (Children.toArray(children).length === 0) return null;
   return (
     <MenuSection {...props} id={id}>

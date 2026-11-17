@@ -24,7 +24,7 @@ const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export default () => {
   const [selected, setSelected] = useState<Selection>(
-    new Set(events.map(event => event.id))
+    () => new Set(events.map(event => event.id))
   );
   const [exporting, setExporting] = useState(false);
   const [sending, setSending] = useState<{ done: number; total: number }>();
