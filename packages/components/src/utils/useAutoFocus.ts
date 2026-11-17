@@ -23,15 +23,57 @@ export const useAutoFocus = (
       element.focus({ preventScroll: sheet !== null });
     };
 
-    if (!sheet || sheet.contains(document.activeElement)) {
+    if (!sheet) {
+      focus();
+      return;
+    }
+
+    let observer: MutationObserver | undefined;
+    const onSheetFocused = () => {
+      const overlay = sheet.closest('[data-entering]');
+      if (!overlay) {
+        focus();
+        return;
+      }
+      // A tap on the sheet's text mid slide-in focuses the sheet too, so wait.
+      observer = new MutationObserver(() => {
+        if (overlay.hasAttribute('data-entering')) return;
+        observer?.disconnect();
+        if (document.activeElement === sheet) focus();
+        // Focus moved during the slide-in, leave it.
+        else focusedRef.current = true;
+      });
+      observer.observe(overlay, {
+        attributes: true,
+        attributeFilter: ['data-entering'],
+      });
+    };
+
+    if (document.activeElement === sheet) {
+      onSheetFocused();
+      return () => observer?.disconnect();
+    }
+    if (sheet.contains(document.activeElement)) {
       focus();
       return;
     }
 
     // RAC focuses the sheet once it has slid in. Earlier, the field is below the
     // screen, and on a phone the keyboard it opens scrolls the page down to it.
-    sheet.addEventListener('focusin', focus, { once: true });
+    // Focus on anything else is a tap during the slide-in, so leave it there.
+    const onFocusIn = (event: FocusEvent) => {
+      sheet.removeEventListener('focusin', onFocusIn);
+      if (event.target === sheet) {
+        onSheetFocused();
+      } else {
+        focusedRef.current = true;
+      }
+    };
+    sheet.addEventListener('focusin', onFocusIn);
 
-    return () => sheet.removeEventListener('focusin', focus);
+    return () => {
+      sheet.removeEventListener('focusin', onFocusIn);
+      observer?.disconnect();
+    };
   }, [enabled, ref]);
 };

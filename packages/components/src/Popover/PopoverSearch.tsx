@@ -1,9 +1,10 @@
-import { use, useLayoutEffect } from 'react';
+import { use, useLayoutEffect, useRef } from 'react';
 import type RAC from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useControlledState } from '@react-stately/utils';
 import { SearchField } from '../SearchField/SearchField';
 import { intlMessages } from '../intl/messages';
+import { useAutoFocus } from '../utils/useAutoFocus';
 import { PopoverSearchContext, usePopoverContext } from './Context';
 
 // Props
@@ -79,6 +80,8 @@ export const PopoverSearch = ({
   const { registerSearch, optionsRef, setInputValue } =
     use(PopoverSearchContext)!;
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const inputRef = useRef<HTMLInputElement>(null);
+  useAutoFocus(inputRef, autoFocus);
 
   useLayoutEffect(() => registerSearch(), [registerSearch]);
 
@@ -102,7 +105,7 @@ export const PopoverSearch = ({
       <SearchField
         aria-label={ariaLabel ?? stringFormatter.format('search')}
         placeholder={placeholder}
-        autoFocus={autoFocus}
+        ref={inputRef}
       />
     </div>
   );

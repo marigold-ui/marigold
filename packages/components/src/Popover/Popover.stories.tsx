@@ -915,6 +915,37 @@ SearchableList.test(
   }
 );
 
+SearchableList.test(
+  'Focuses the search only once the tray is on screen',
+  { globals: { viewport: { value: 'smallScreen' } } },
+  async ({ canvas, userEvent }) => {
+    // On a phone, focus opens the keyboard, which scrolls the page to the field.
+    let bottomAtFocus = Infinity;
+    const record = (event: FocusEvent) => {
+      if ((event.target as Element).matches('input')) {
+        bottomAtFocus = (event.target as Element).getBoundingClientRect()
+          .bottom;
+      }
+    };
+    document.addEventListener('focusin', record);
+
+    try {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Manage team' })
+      );
+
+      await waitFor(() =>
+        expect(
+          canvas.getByRole('searchbox', { name: 'Search team members' })
+        ).toHaveFocus()
+      );
+      await expect(bottomAtFocus).toBeLessThanOrEqual(window.innerHeight);
+    } finally {
+      document.removeEventListener('focusin', record);
+    }
+  }
+);
+
 // A controlled search is the only source of truth: this one keeps at most
 // three characters, so the field and the filter never see a fourth.
 export const ControlledSearch = meta.story({
@@ -1108,6 +1139,11 @@ SmallScreenSearch.test(
     // The list renders in a second pass, wait for its rows.
     await waitFor(() => expect(canvas.getAllByRole('row')).toHaveLength(5));
     const before = tray.getBoundingClientRect().height;
+    await waitFor(() =>
+      expect(
+        canvas.getByRole('searchbox', { name: 'Search team members' })
+      ).toHaveFocus()
+    );
 
     await userEvent.keyboard('mara');
 
