@@ -10,7 +10,9 @@ import { CommandPaletteTriggerContext } from './Context';
 export interface CommandPaletteTriggerProps {
   /**
    * The palette and, optionally, the button that opens it: a
-   * `CommandPalette.Button` or any other button.
+   * `CommandPalette.Button` or any other button. The palette has to be a
+   * direct child. Wrapped in a component of your own, it is taken for the
+   * button.
    */
   children: ReactNode;
 

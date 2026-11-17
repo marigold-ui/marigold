@@ -26,7 +26,7 @@ A command palette consists of an optional button and the palette itself, which o
 - **Item:** A single page or action, with an optional icon and description.
 - **Active row:** The highlighted row, which <kbd>Enter</kbd> runs. There is always one while there are results.
 - **List:** Holds the groups and items and scrolls when they don't fit.
-- **Legend:** A footer listing the keys to navigate, select and close, and the prefixes that narrow the search to one group. It is built in and hidden on touch devices.
+- **Legend:** A footer listing the keys to navigate, select and close, and the prefixes that narrow the search to one group. It is built in and hidden on small screens.
 - **Underlay:** Dims the page behind the palette. Clicking it closes the palette.
 
 ## Appearance
@@ -129,7 +129,7 @@ People often know exactly which record they need, an event by its name or an ord
 
 In a mixed list, records compete with pages and actions, and record search stays invisible until people type a name. For each kind of record people look up often, give its group a short prefix, like `e:` for events and `v:` for venues. A query that starts with the prefix narrows the search to that group: `e:jazz` shows only events that match "jazz".
 
-The footer lists the prefixes next to the keys, like "e: Events", so people come across them every time they open the palette. Screen readers hear each prefix as part of its group's name. A prefix alone should list the first records of that kind, not only the recent ones, so people don't take a short list for everything there is. Keep the prefixes few and memorable, one letter per kind of record.
+The footer lists the prefixes next to the keys, like "e: Events", so on larger screens people come across them every time they open the palette. On small screens there is no footer, so mention the prefixes where people meet those records. Screen readers hear each prefix as part of its group's name. A prefix alone should list the first records of that kind, not only the recent ones, so people don't take a short list for everything there is. Keep the prefixes few and memorable, one letter per kind of record.
 
 <ComponentDemo name="command-palette-async" />
 
@@ -165,7 +165,7 @@ The palette follows the [combobox pattern](https://www.w3.org/WAI/ARIA/apg/patte
 
 Letters typed into the search field stay in the palette. Shortcuts your app binds to single keys, for example "c" to create, don't fire while people type a query.
 
-The search field is the only Tab stop. The caret is its focus indicator, so the field has no extra ring. When the palette closes, focus returns to where it was.
+On larger screens the search field is the only Tab stop. On small screens the tray adds a Close button after it. The caret is its focus indicator, so the field has no extra ring. When the palette closes, focus returns to where it was.
 
 ## Props
 

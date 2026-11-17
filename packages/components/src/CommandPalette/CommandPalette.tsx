@@ -86,7 +86,8 @@ export interface CommandPaletteProps<T extends object = object> {
 
   /**
    * The search query (controlled). Use it to drive a server-side search or to
-   * show different content while the query is empty.
+   * show different content while the query is empty. Every opening clears it,
+   * so a query set together with `open` does not survive.
    */
   inputValue?: string;
 
