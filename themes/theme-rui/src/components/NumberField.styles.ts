@@ -37,7 +37,7 @@ export const NumberField: ThemeComponent<'NumberField'> = {
   }),
   maxValue: cva({
     base: [
-      'pe-3 text-sm text-secondary',
+      'pe-3 text-sm leading-normal text-secondary',
       'group-data-disabled/field:text-inherit',
     ],
   }),
