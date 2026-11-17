@@ -417,6 +417,7 @@ Presets.test(
 // built-ins) keep the resolved-date sublabels and the visible month stable,
 // so Chromatic can snapshot the open preset view without daily diffs.
 export const PresetsMobile = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
   tags: ['component-test'],
   globals: {
     viewport: { value: 'extraSmallScreen' },

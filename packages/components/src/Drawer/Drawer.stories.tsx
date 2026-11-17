@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { expect, fn, waitFor } from 'storybook/test';
+import { keepSheetsOpenInChromatic } from '.storybook/chromatic';
 import preview from '.storybook/preview';
 import { Copy, Download, Pencil, Trash2 } from '@marigold/icons';
 import { Accordion } from '../Accordion/Accordion';
@@ -295,6 +296,7 @@ LongContent.test(
 );
 
 export const SelectInsideDrawerSmallScreen = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   globals: {
