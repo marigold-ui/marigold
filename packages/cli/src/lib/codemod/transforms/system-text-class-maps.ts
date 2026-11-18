@@ -162,6 +162,7 @@ export const systemTextClassMaps: Codemod = {
         }
       });
 
+      // overlaps report-namespace-imports on purpose: that one flags the import, this one names the broken usage
       for (const [usage, name] of namespaceUses) {
         warnings.push(removedWarning(usage, name));
       }
