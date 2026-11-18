@@ -792,7 +792,7 @@ SingleSelection.test(
   'Keyboard focus draws an inset ring that clears 3:1 at rest, selected and hovered',
   { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent, step }) => {
-    const standard = canvas.getByRole('row', { name: /standard/i });
+    const standard = await canvas.findByRole('row', { name: /standard/i });
     const express = canvas.getByRole('row', { name: /express/i });
 
     await step('at rest', async () => {
