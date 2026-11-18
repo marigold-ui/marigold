@@ -190,3 +190,100 @@ Basic.test(
     await waitFor(() => expectFocusRingContrast(trigger));
   }
 );
+
+Basic.test(
+  'Keeps a side placement beside the trigger on larger screens',
+  {
+    globals: { viewport: { value: 'desktop' } },
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { placement: 'left' },
+  },
+  async ({ canvas, userEvent }) => {
+    expect(window.innerWidth).toBeGreaterThanOrEqual(640);
+    const trigger = canvas.getByRole('button', { name: /help|hilfe/i });
+
+    await userEvent.click(trigger);
+
+    const popover = await canvas.findByRole('dialog');
+    const triggerRect = trigger.getBoundingClientRect();
+    const popoverRect = popover.getBoundingClientRect();
+    const popoverMiddle = popoverRect.top + popoverRect.height / 2;
+    expect(popoverRect.right).toBeLessThanOrEqual(triggerRect.left);
+    expect(popoverMiddle).toBeGreaterThanOrEqual(triggerRect.top);
+    expect(popoverMiddle).toBeLessThanOrEqual(triggerRect.bottom);
+  }
+);
+
+// React Aria keeps this distance to the viewport edge when it positions a popover.
+const VIEWPORT_INSET = 12;
+
+const smallScreen = { viewport: { value: 'extraSmallScreen' } };
+
+const expectInsideViewport = (popover: HTMLElement) => {
+  const { left, right } = popover.getBoundingClientRect();
+
+  expect(Math.round(left)).toBeGreaterThanOrEqual(VIEWPORT_INSET);
+  expect(Math.round(window.innerWidth - right)).toBeGreaterThanOrEqual(
+    VIEWPORT_INSET
+  );
+  expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(
+    window.innerWidth
+  );
+};
+
+Basic.test(
+  'Keeps the default width clear of both viewport edges on small screens',
+  {
+    globals: smallScreen,
+    parameters: { chromatic: { disableSnapshot: false, viewports: [320] } },
+  },
+  async ({ canvas, userEvent }) => {
+    expect(window.innerWidth).toBeLessThan(344);
+
+    await userEvent.click(canvas.getByRole('button', { name: /help|hilfe/i }));
+
+    expectInsideViewport(await canvas.findByRole('dialog'));
+  }
+);
+
+Basic.test(
+  'Keeps the large width clear of both viewport edges on small screens',
+  { globals: smallScreen, args: { width: 'large' } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: /help|hilfe/i }));
+
+    expectInsideViewport(await canvas.findByRole('dialog'));
+  }
+);
+
+Basic.test(
+  'Opens a left placement below the trigger on small screens',
+  { globals: smallScreen, args: { placement: 'left' } },
+  async ({ canvas, userEvent }) => {
+    const trigger = canvas.getByRole('button', { name: /help|hilfe/i });
+
+    await userEvent.click(trigger);
+
+    const popover = await canvas.findByRole('dialog');
+    expect(popover.getBoundingClientRect().top).toBeGreaterThanOrEqual(
+      trigger.getBoundingClientRect().bottom
+    );
+    expectInsideViewport(popover);
+  }
+);
+
+Basic.test(
+  'Opens a right placement below the trigger on small screens',
+  { globals: smallScreen, args: { placement: 'right' } },
+  async ({ canvas, userEvent }) => {
+    const trigger = canvas.getByRole('button', { name: /help|hilfe/i });
+
+    await userEvent.click(trigger);
+
+    const popover = await canvas.findByRole('dialog');
+    expect(popover.getBoundingClientRect().top).toBeGreaterThanOrEqual(
+      trigger.getBoundingClientRect().bottom
+    );
+    expectInsideViewport(popover);
+  }
+);
