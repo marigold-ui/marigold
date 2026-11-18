@@ -44,6 +44,10 @@ const MAP_NAME = /\b(fontWeight|textSize)\b/;
 const EXPORT_ALL = /\bexport\s*\*\s*from\b/;
 const IDENTIFIER = /^[A-Za-z_$][\w$]*$/;
 
+// own keys only, so `constructor` or `toString` never match
+const isMapName = (name: string | undefined): name is string =>
+  !!name && Object.hasOwn(MAPS, name);
+
 const nameOf = (n: unknown) => (n as { name?: string } | undefined)?.name;
 const sourceOf = (n: AnyNode) =>
   (n.source as AnyNode | null | undefined)?.value;
@@ -96,7 +100,7 @@ export const systemTextClassMaps: Codemod = {
         for (const spec of (n.specifiers as AnyNode[] | undefined) ?? []) {
           if (n.type === 'ExportNamedDeclaration') {
             const name = nameOf(spec.local);
-            if (name && MAPS[name]) {
+            if (isMapName(name)) {
               warnings.push(
                 removedWarning(
                   `export { ${name} } from '${MARIGOLD_SYSTEM}'`,
@@ -112,7 +116,7 @@ export const systemTextClassMaps: Codemod = {
             continue;
           }
           const imported = nameOf(spec.imported);
-          if (spec.type !== 'ImportSpecifier' || !imported || !MAPS[imported]) {
+          if (spec.type !== 'ImportSpecifier' || !isMapName(imported)) {
             continue;
           }
           locals.set(nameOf(spec.local) ?? imported, imported);
@@ -141,7 +145,7 @@ export const systemTextClassMaps: Codemod = {
               ? (property.value as string)
               : undefined
             : nameOf(property);
-          if (ns && namespaces.has(ns) && name && MAPS[name]) {
+          if (ns && namespaces.has(ns) && isMapName(name)) {
             const usage = n.computed ? `${ns}['${name}']` : `${ns}.${name}`;
             namespaceUses.set(usage, name);
           }
@@ -155,7 +159,7 @@ export const systemTextClassMaps: Codemod = {
           if (!ns || !namespaces.has(ns)) return;
           for (const prop of (n.id as AnyNode).properties as AnyNode[]) {
             const name = prop.computed ? undefined : nameOf(prop.key);
-            if (name && MAPS[name]) {
+            if (isMapName(name)) {
               namespaceUses.set(`const { ${name} } = ${ns}`, name);
             }
           }

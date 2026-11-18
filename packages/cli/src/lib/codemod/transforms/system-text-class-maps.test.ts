@@ -315,4 +315,24 @@ export const Title = () => <h1 className={fontWeight.bold}>Hi</h1>;
 
     expect(systemTextClassMaps.apply(source).kind).toBe('unchanged');
   });
+
+  test.each([
+    ['a named import', "import { toString } from '@marigold/system';"],
+    ['a re-export', "export { constructor } from '@marigold/system';"],
+    [
+      'a namespace lookup',
+      "import * as system from '@marigold/system';\nexport const x = system.constructor;",
+    ],
+    [
+      'a namespace destructuring',
+      "import * as system from '@marigold/system';\nconst { toString } = system;",
+    ],
+  ])('ignores an inherited object key in %s', (_, code) => {
+    const source = `${code}\n// fontWeight\n`;
+
+    const result = systemTextClassMaps.apply(source);
+
+    expect(result.kind).toBe('unchanged');
+    expect(warningsOf(result)).toEqual([]);
+  });
 });
