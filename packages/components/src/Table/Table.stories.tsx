@@ -4359,7 +4359,7 @@ interface PriceLevelRow {
 const priceLevels: PriceLevelRow[] = [
   {
     id: 'level-0',
-    name: '0 – Standard price',
+    name: 'Standard price',
     articles: [
       { id: 'article-79104', name: 'Dinner menu (79104)' },
       { id: 'article-79105', name: 'Welcome drink (79105)' },
@@ -4367,12 +4367,12 @@ const priceLevels: PriceLevelRow[] = [
   },
   {
     id: 'level-1',
-    name: '1 – Reduced',
+    name: 'Reduced',
     articles: [{ id: 'article-79106', name: 'Kids menu (79106)' }],
   },
   // A price level without articles is still a price level, so it stays
   // selectable: the level decides, not whether the row has children.
-  { id: 'level-2', name: '2 – Staff' },
+  { id: 'level-2', name: 'Staff' },
 ];
 
 export const ExpandableRowsSelectableLevel = meta.story({
@@ -4427,7 +4427,7 @@ ExpandableRowsSelectableLevel.test(
   'Only rows on the selectable level carry a checkbox',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent, step }) => {
-    const level = rowByName(canvas, '0 – Standard price');
+    const level = rowByName(canvas, 'Standard price');
     const article = rowByName(canvas, 'Dinner menu (79104)');
 
     await step('A price level has a checkbox, an article has none', () => {
@@ -4447,7 +4447,7 @@ ExpandableRowsSelectableLevel.test(
       );
 
       expect(level).toHaveAttribute('aria-selected', 'true');
-      expect(rowByName(canvas, '2 – Staff')).toHaveAttribute(
+      expect(rowByName(canvas, 'Staff')).toHaveAttribute(
         'aria-selected',
         'true'
       );

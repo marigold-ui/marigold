@@ -76,7 +76,9 @@ export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
   /**
    * Which level of rows can be selected. Rows outside it show no checkbox and
    * are left out of select-all and range selection. Use `disabledKeys` for
-   * rows that are selectable in principle but not right now.
+   * rows that are selectable in principle but not right now. After select-all,
+   * `onSelectionChange` receives `'all'`, which then means every row on the
+   * selectable level, not every key.
    * @default 'all'
    */
   selectableRows?: 'all' | 'top-level' | 'nested';

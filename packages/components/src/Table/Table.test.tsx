@@ -757,8 +757,8 @@ describe('selectableRows', () => {
   const checkboxOf = (text: string) =>
     within(rowOf(text)).queryByRole('checkbox');
 
-  const LEVEL = '0 – Standard price';
-  const EMPTY_LEVEL = '2 – Staff';
+  const LEVEL = 'Standard price';
+  const EMPTY_LEVEL = 'Staff';
   const ARTICLE = 'Dinner menu (79104)';
 
   test('a row outside the level has an empty selection cell and no selection state', () => {
@@ -824,7 +824,7 @@ describe('selectableRows', () => {
       />
     );
 
-    expect(rowOf('1 – Reduced')).toHaveAttribute('aria-disabled', 'true');
+    expect(rowOf('Reduced')).toHaveAttribute('aria-disabled', 'true');
     expect(rowOf(ARTICLE)).not.toHaveAttribute('aria-disabled');
   });
 
@@ -851,7 +851,7 @@ describe('selectableRows', () => {
       />
     );
 
-    expect(checkboxOf('1 – Reduced')).toBeDisabled();
+    expect(checkboxOf('Reduced')).toBeDisabled();
   });
 
   test('rows outside the level keep row actions and keyboard focus', async () => {
@@ -944,7 +944,7 @@ describe('treeIndent', () => {
   const xOf = (text: string) =>
     screen.getByText(text).getBoundingClientRect().left;
 
-  const LEVEL = '0 – Standard price';
+  const LEVEL = 'Standard price';
   const ARTICLE = 'Dinner menu (79104)';
 
   test('by default a child row indents one step past its group label', () => {
