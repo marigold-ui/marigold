@@ -217,7 +217,26 @@ Basic.test(
 // React Aria keeps this distance to the viewport edge when it positions a popover.
 const VIEWPORT_INSET = 12;
 
-const smallScreen = { viewport: { value: 'extraSmallScreen' } };
+export const SmallScreen = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
+  parameters: {
+    surface: false,
+    chromatic: { disableSnapshot: true, viewports: [320] },
+  },
+  render: args => (
+    <div className="flex h-96 items-center justify-center">
+      <ContextualHelp {...args}>
+        <ContextualHelp.Title>What's this?</ContextualHelp.Title>
+        <ContextualHelp.Content>
+          At 320px the popover keeps a distance to both edges of the screen.
+        </ContextualHelp.Content>
+      </ContextualHelp>
+    </div>
+  ),
+});
 
 const expectInsideViewport = (popover: HTMLElement) => {
   const { left, right } = popover.getBoundingClientRect();
@@ -231,12 +250,9 @@ const expectInsideViewport = (popover: HTMLElement) => {
   );
 };
 
-Basic.test(
-  'Keeps the default width clear of both viewport edges on small screens',
-  {
-    globals: smallScreen,
-    parameters: { chromatic: { disableSnapshot: false, viewports: [320] } },
-  },
+SmallScreen.test(
+  'Keeps the default width clear of both viewport edges',
+  { parameters: { chromatic: { disableSnapshot: false } } },
   async ({ canvas, userEvent }) => {
     expect(window.innerWidth).toBeLessThan(344);
 
@@ -246,9 +262,9 @@ Basic.test(
   }
 );
 
-Basic.test(
-  'Keeps the large width clear of both viewport edges on small screens',
-  { globals: smallScreen, args: { width: 'large' } },
+SmallScreen.test(
+  'Keeps the large width clear of both viewport edges',
+  { args: { width: 'large' } },
   async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: /help|hilfe/i }));
 
@@ -256,9 +272,9 @@ Basic.test(
   }
 );
 
-Basic.test(
-  'Opens a left placement below the trigger on small screens',
-  { globals: smallScreen, args: { placement: 'left' } },
+SmallScreen.test(
+  'Opens a left placement below the trigger',
+  { args: { placement: 'left' } },
   async ({ canvas, userEvent }) => {
     const trigger = canvas.getByRole('button', { name: /help|hilfe/i });
 
@@ -272,9 +288,9 @@ Basic.test(
   }
 );
 
-Basic.test(
-  'Opens a right placement below the trigger on small screens',
-  { globals: smallScreen, args: { placement: 'right' } },
+SmallScreen.test(
+  'Opens a right placement below the trigger',
+  { args: { placement: 'right' } },
   async ({ canvas, userEvent }) => {
     const trigger = canvas.getByRole('button', { name: /help|hilfe/i });
 
