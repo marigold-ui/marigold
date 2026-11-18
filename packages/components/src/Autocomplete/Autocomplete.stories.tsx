@@ -444,6 +444,7 @@ Mobile.test(
       const input = await canvas.findByRole('combobox');
 
       await waitFor(() => expect(input).toBeVisible());
+      await waitFor(() => expect(input).toHaveFocus());
     });
 
     await step('Select option from list', async () => {

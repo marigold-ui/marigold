@@ -730,15 +730,19 @@ const TeamList = () => {
 
 // `showTitle` is a story control, not a `Popover` prop: with a `<Title>` the
 // search sits between two dividers, without one it is the popover's header
-// and the popover is named by its `aria-label`.
-type SearchableListArgs = PopoverProps & { showTitle?: boolean };
+// and the popover is named by its `aria-label`. `searchAutoFocus` is the
+// search's `autoFocus`.
+type SearchableListArgs = PopoverProps & {
+  showTitle?: boolean;
+  searchAutoFocus?: boolean;
+};
 
 export const SearchableList = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   // Storybook infers a boolean control for `showTitle` from its value.
   args: { size: 'large', showTitle: true } as SearchableListArgs,
-  render: ({ showTitle, ...args }: SearchableListArgs) => (
+  render: ({ showTitle, searchAutoFocus, ...args }: SearchableListArgs) => (
     <Popover.Trigger>
       <Button>
         <Users /> Manage team
@@ -748,6 +752,7 @@ export const SearchableList = meta.story({
         <Popover.Search
           aria-label="Search team members"
           placeholder="Search team members"
+          autoFocus={searchAutoFocus}
         />
         <Popover.Content>
           <TeamList />
@@ -842,6 +847,24 @@ SearchableList.test(
     await expect(
       await canvas.findByText('No team members found')
     ).toBeVisible();
+  }
+);
+
+SearchableList.test(
+  'Leaves the search unfocused with autoFocus off',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { searchAutoFocus: false } as SearchableListArgs,
+  },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Manage team' }));
+    const dialog = await canvas.findByRole('dialog', { name: 'Team members' });
+
+    // Without the search taking it, React Aria focuses the popover itself.
+    await waitFor(() => expect(dialog).toHaveFocus());
+    await expect(
+      canvas.getByRole('searchbox', { name: 'Search team members' })
+    ).not.toHaveFocus();
   }
 );
 
@@ -1108,6 +1131,11 @@ SmallScreenSearch.test(
     // The list renders in a second pass, wait for its rows.
     await waitFor(() => expect(canvas.getAllByRole('row')).toHaveLength(5));
     const before = tray.getBoundingClientRect().height;
+    await waitFor(() =>
+      expect(
+        canvas.getByRole('searchbox', { name: 'Search team members' })
+      ).toHaveFocus()
+    );
 
     await userEvent.keyboard('mara');
 
@@ -1115,5 +1143,35 @@ SmallScreenSearch.test(
     await expect(Math.round(tray.getBoundingClientRect().height)).toBe(
       Math.round(before)
     );
+  }
+);
+
+SmallScreenSearch.test(
+  'Focuses the search only once the tray is on screen',
+  async ({ canvas, userEvent }) => {
+    // On a phone, focus opens the keyboard, which scrolls the page to the field.
+    let bottomAtFocus = Infinity;
+    const record = (event: FocusEvent) => {
+      if ((event.target as Element).matches('input')) {
+        bottomAtFocus = (event.target as Element).getBoundingClientRect()
+          .bottom;
+      }
+    };
+    document.addEventListener('focusin', record);
+
+    try {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Manage team' })
+      );
+
+      await waitFor(() =>
+        expect(
+          canvas.getByRole('searchbox', { name: 'Search team members' })
+        ).toHaveFocus()
+      );
+      await expect(bottomAtFocus).toBeLessThanOrEqual(window.innerHeight);
+    } finally {
+      document.removeEventListener('focusin', record);
+    }
   }
 );
