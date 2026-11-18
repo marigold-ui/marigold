@@ -55,8 +55,9 @@ export const useAutoFocus = (
       onSheetFocused();
       return () => observer?.disconnect();
     }
+    // Focus is already on a control in the sheet (the field mounted late), keep it.
     if (sheet.contains(document.activeElement)) {
-      focus();
+      focusedRef.current = true;
       return;
     }
 

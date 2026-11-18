@@ -4,10 +4,12 @@ import { useAutoFocus } from './useAutoFocus';
 
 const Harness = ({
   inputRef,
+  enabled,
 }: {
   inputRef: RefObject<HTMLInputElement | null>;
+  enabled?: boolean;
 }) => {
-  useAutoFocus(inputRef);
+  useAutoFocus(inputRef, enabled);
 
   return (
     <>
@@ -20,11 +22,13 @@ const Harness = ({
 const SheetHarness = ({
   inputRef,
   entering = false,
+  enabled,
 }: {
   inputRef: RefObject<HTMLInputElement | null>;
   entering?: boolean;
+  enabled?: boolean;
 }) => {
-  useAutoFocus(inputRef);
+  useAutoFocus(inputRef, enabled);
 
   return (
     <div data-entering={entering || undefined}>
@@ -41,6 +45,12 @@ test('focuses the element on mount', () => {
   render(<Harness inputRef={createRef<HTMLInputElement>()} />);
 
   expect(screen.getByLabelText('Search')).toHaveFocus();
+});
+
+test('does not focus when disabled', () => {
+  render(<Harness inputRef={createRef<HTMLInputElement>()} enabled={false} />);
+
+  expect(screen.getByLabelText('Search')).not.toHaveFocus();
 });
 
 test('does not focus again when the ref changes identity', () => {
@@ -75,6 +85,28 @@ test('in a sheet, keeps focus on a control tapped before the sheet took focus', 
   screen.getByRole('dialog').focus();
 
   expect(screen.getByLabelText('Search')).not.toHaveFocus();
+});
+
+test('in a sheet, does not focus when disabled', () => {
+  render(
+    <SheetHarness inputRef={createRef<HTMLInputElement>()} enabled={false} />
+  );
+
+  screen.getByRole('dialog').focus();
+
+  expect(screen.getByRole('dialog')).toHaveFocus();
+});
+
+test('in a sheet, keeps focus on a control focused before the hook was enabled', () => {
+  const inputRef = createRef<HTMLInputElement>();
+  const { rerender } = render(
+    <SheetHarness inputRef={inputRef} enabled={false} />
+  );
+  screen.getByRole('button', { name: 'Elsewhere' }).focus();
+
+  rerender(<SheetHarness inputRef={inputRef} enabled />);
+
+  expect(screen.getByRole('button', { name: 'Elsewhere' })).toHaveFocus();
 });
 
 test('in a sheet, does not take focus from a tapped control when the ref changes identity', () => {
