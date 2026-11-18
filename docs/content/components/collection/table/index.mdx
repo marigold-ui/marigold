@@ -261,43 +261,26 @@ Groups open collapsed, which makes the group row the only thing most people will
 
 #### Selecting one level of a group [#selecting-one-level]
 
-By default every row of a grouped table can be selected, children included. That fits when both levels are records with actions of their own. Often only one level is: the bulk actions act on the groups and the children are what a group contains, or the groups are only headings and the actions act on the items under them. Set `selectableRows` to the level the actions act on.
+By default every row of a grouped table can be selected, children included. That fits when both levels are records people act on. Often only one level is. The bulk actions apply to the groups and the children only show what a group contains, or the groups are only headings for the items under them. Let only that level be selected, so nobody ticks a row an action is going to ignore.
 
-| What the rows are                                                              | Select              | Example                                   |
-| ------------------------------------------------------------------------------ | ------------------- | ----------------------------------------- |
-| A group and its contents. The children are details, not records anyone acts on | `"top-level"`       | A price level and the articles sold at it |
-| Groups that only label what is under them                                      | `"nested"`          | Tickets grouped by status                 |
-| Both levels are records with their own actions                                 | `"all"` (default)   | An event and its individual performances  |
-| A read-only breakdown of a total                                               | No selection at all | Revenue per event, broken down by day     |
+| What the rows are                                                              | Selectable           | `selectableRows`          | Example                                   |
+| ------------------------------------------------------------------------------ | -------------------- | ------------------------- | ----------------------------------------- |
+| A group and its contents. The children are details, not records anyone acts on | The groups           | `"top-level"`             | A price level and the articles sold at it |
+| Groups that only label what is under them                                      | The items under them | `"nested"`                | Tickets grouped by status                 |
+| Both levels are records with their own actions                                 | Every row            | `"all"` (default)         | An event and its individual performances  |
+| A read-only breakdown of a total                                               | No selection at all  | Leave out `selectionMode` | Revenue per event, broken down by day     |
 
-Rows outside the selectable level show no checkbox. Their cell stays empty so the columns don't shift. They stay focusable, can still be expanded and keep their row actions, and screen readers don't announce them as selectable. The level decides, not whether a row has children: a group without children yet is still a group.
-
-Hide by structure, disable by state. A row that can never be selected because of what it is gets no checkbox through `selectableRows`. A row that could be selected but can't right now, because it is sold out, locked or outside the user's permissions, belongs in `disabledKeys` and keeps a disabled checkbox. That disabled checkbox tells people something, so explain the reason nearby. When a combination of selected rows doesn't work for an action, disable the action instead of the rows.
+Rows outside that level show no checkbox, but people can still open them and use their row actions. A group without children stays selectable, because the level counts, not the children. Disable a row only when it could be selected but can't right now, because it's sold out, locked or outside the user's permissions, and say why nearby. A disabled checkbox on a row that can never be selected reads as a bug. When a combination of selected rows doesn't work for an action, disable the action instead of the rows.
 
 <ComponentDemo name="table-grouped-selection" />
 
-After the header checkbox has selected everything, `onSelectionChange` receives `'all'`. With `selectableRows` set, that means every row on the selectable level, not every key in the table. Turn it into keys from that level's items, as the demo does with the price levels, and never from a list of every row.
-
 #### Lining children up with the group label [#tree-indent]
 
-Each level of a grouped table normally indents one step further, which keeps a deep tree readable. For a single level of grouping where every top-level row is a group, the children read more clearly when they line up with the group label. Set `treeIndent="aligned"`: the first nested level then shares the group label's position and any deeper level still indents from there.
+Each level of a grouped table normally indents one step further, which keeps a deep tree readable. With a single level of grouping where every top-level row is a group, the children read more clearly when they line up with the group label. Any deeper level still indents from there.
 
-Keep the default when a table mixes groups with top-level rows that have no children. Aligned, such a row looks like the last child of the group above it.
+<ComponentDemo name="table-tree-indent" />
 
-<GuidelineTiles>
-  <Do>
-    <DoDescription>
-      Let the level your bulk actions act on decide what can be selected, and
-      keep `disabledKeys` for rows that are blocked for now.
-    </DoDescription>
-  </Do>
-  <Dont>
-    <DontDescription>
-      Don't disable rows that can never be selected. A checkbox that can never
-      be checked reads as a bug, and screen readers announce it on every row.
-    </DontDescription>
-  </Dont>
-</GuidelineTiles>
+Keep the default indent when a table mixes groups with top-level rows that have no children. Lined up, such a row looks like the last child of the group above it.
 
 ### Sorting columns
 
