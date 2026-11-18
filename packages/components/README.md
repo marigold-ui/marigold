@@ -30,7 +30,7 @@ export const App = () => (
 | A component's usage, props and examples        | `npx @marigold/cli docs Button`, or `https://www.marigold-ui.io/components/<category>/<name>` |
 | The right component for a job                  | `npx @marigold/cli search "date range"`                                                       |
 | Every page as Markdown                         | Append `.md` to a docs URL. Index: <https://www.marigold-ui.io/llms.txt>                      |
-| How components combine (forms, filters, lists) | <https://www.marigold-ui.io/patterns>, `npx @marigold/cli examples list`                      |
+| How components combine (forms, filters, lists) | `npx @marigold/cli examples list`                                                             |
 | A check for code you wrote                     | `npx @marigold/cli validate src/MyView.tsx`                                                   |
 | Upgrading across a major version               | `npx @marigold/cli migrate`                                                                   |
 
@@ -41,7 +41,7 @@ The prop types ship with JSDoc in `dist/<Name>/<Name>.d.mts`.
 These are the assumptions that most often go wrong, for people and for AI coding agents.
 
 - **No `className` and no `style`.** Appearance is set with `variant` and `size`. The values come from the theme and are listed in the "Appearance" section of each component page. Spacing and arrangement come from the layout components (`Stack`, `Inline`, `Columns`, `Grid`, `Inset`).
-- **React Aria's boolean props are renamed.** `isDisabled` is `disabled`, `isRequired` is `required`, `isReadOnly` is `readOnly`, `isInvalid` is `error`, `isOpen` is `open`, `isPending` is `loading` and `isSelected` is `selected`. A few collection items still use `isDisabled`, so check the props of `Menu.Item`, `Tabs.Item`, `Table.Row` and `Select.Option`.
+- **React Aria's boolean props are renamed.** `isDisabled` is `disabled`, `isRequired` is `required`, `isReadOnly` is `readOnly`, `isInvalid` is `error`, `isOpen` is `open`, `isPending` is `loading` and `isSelected` is `selected` (on `Switch` and `ToggleButton`). `Checkbox` takes `checked` instead, and a `Radio` has no selected prop of its own: set `value` on its `Radio.Group`. A few collection items still use `isDisabled`, so check the props of `Menu.Item`, `Tabs.Item`, `Table.Row` and `Select.Option`.
 - **Buttons and links use `onPress`**, not `onClick`.
 - **`onChange` receives the value**, not an event: `<TextField onChange={value => setName(value)} />`.
 - **Parts of a component are properties of it**: `Dialog.Trigger`, `Table.Row`, `Select.Option`, `Tabs.Item`. They are not separate imports.

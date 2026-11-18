@@ -29,12 +29,17 @@ Without Tailwind, import the pre-built `@marigold/theme-rui/styles.css` instead 
 
 ## What the package exports
 
-| Import                            | What                                                                           |
-| --------------------------------- | ------------------------------------------------------------------------------ |
-| `@marigold/theme-rui`             | The theme object for `<MarigoldProvider theme>`                                |
-| `@marigold/theme-rui/appearances` | The `variant` and `size` values every component accepts in this theme, as data |
-| `@marigold/theme-rui/theme.css`   | Tokens and utilities for a Tailwind CSS v4 build                               |
-| `@marigold/theme-rui/styles.css`  | Pre-built CSS for apps without Tailwind, scoped to `[data-theme="rui"]`        |
-| `@marigold/theme-rui/tokens.css`  | The design tokens alone                                                        |
+| Import                              | What                                                                           |
+| ----------------------------------- | ------------------------------------------------------------------------------ |
+| `@marigold/theme-rui`               | The theme object for `<MarigoldProvider theme>`                                |
+| `@marigold/theme-rui/appearances`   | The `variant` and `size` values every component accepts in this theme, as data |
+| `@marigold/theme-rui/theme.css`     | Tokens and utilities for a Tailwind CSS v4 build                               |
+| `@marigold/theme-rui/styles.css`    | Pre-built CSS for apps without Tailwind, scoped to `[data-theme="rui"]`        |
+| `@marigold/theme-rui/tokens.css`    | The design tokens alone                                                        |
+| `@marigold/theme-rui/preflight.css` | Base rules Marigold needs on `html` and `body`                                 |
+| `@marigold/theme-rui/ui.css`        | The `ui-*` utilities the component styles are built from                       |
+| `@marigold/theme-rui/variants.css`  | The custom Tailwind variants the component styles use                          |
+
+`theme.css` and `styles.css` already import `preflight.css`, `ui.css` and `variants.css`. Import those three on their own only when you assemble the theme's CSS yourself.
 
 Tokens are documented at <https://www.marigold-ui.io/foundations/token-overview>.

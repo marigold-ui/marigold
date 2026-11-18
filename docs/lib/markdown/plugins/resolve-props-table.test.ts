@@ -51,6 +51,12 @@ const entries: DocEntry[] = [
     simplifiedType: 'function',
   }),
   entry({
+    name: 'onAction',
+    description: 'Called with the value of the action.',
+    type: '((a: string) => void) | ((b: number) => void) | undefined',
+    simplifiedType: 'union',
+  }),
+  entry({
     name: 'items',
     type: `Array<{ ${'key: string; '.repeat(30)} }> | undefined`,
     simplifiedType: 'array',
@@ -116,6 +122,14 @@ describe('remarkResolvePropsTable', () => {
     );
     expect(table.disabled.type).toBe('`boolean`');
     expect(table.onPress.type).toBe('`(e: RAC.PressEvent) => void`');
+  });
+
+  it('keeps the parentheses of a union of function types', async () => {
+    const table = await rows();
+
+    expect(table.onAction.type).toBe(
+      '`((a: string) => void) \\| ((b: number) => void)`'
+    );
   });
 
   it('falls back to the kind of type when the real one is too long to read', async () => {

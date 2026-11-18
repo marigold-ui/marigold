@@ -11,14 +11,28 @@ const FILTERED_PROPS = new Set(['variant', 'size']);
 // Longer than this and the type stops being readable in a table cell.
 const MAX_TYPE_LENGTH = 200;
 
+// Whether the `(` at the start of `type` is closed by the `)` at its end, and
+// not earlier, as in `((a: A) => void) | ((b: B) => void)`.
+const isWrapped = (type: string): boolean => {
+  if (!type.startsWith('(') || !type.endsWith(')')) return false;
+  let depth = 0;
+  for (let i = 0; i < type.length; i++) {
+    if (type[i] === '(') depth++;
+    else if (type[i] === ')') depth--;
+    if (depth === 0 && i < type.length - 1) return false;
+  }
+  return true;
+};
+
 // The checker prints every optional prop as `T | undefined`. The table marks
 // required props instead, so the suffix is noise.
 const printType = (entry: DocEntry): string => {
   const type = (entry.type ?? '').replace(/\s*\|\s*undefined$/, '').trim();
   // `((e: Event) => void) | undefined` leaves a pair of redundant parentheses.
-  const unwrapped = /^\(\(.*\) => [^()]*\)$/.test(type)
-    ? type.slice(1, -1)
-    : type;
+  const unwrapped =
+    /^\(\(.*\) => [^()]*\)$/.test(type) && isWrapped(type)
+      ? type.slice(1, -1)
+      : type;
   return unwrapped && unwrapped.length <= MAX_TYPE_LENGTH
     ? unwrapped
     : entry.simplifiedType;
