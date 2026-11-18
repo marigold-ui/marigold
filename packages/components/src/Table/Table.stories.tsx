@@ -4387,6 +4387,10 @@ export const ExpandableRowsSelectableLevel = meta.story({
       control: { type: 'select' },
       options: ['all', 'top-level', 'nested'],
     },
+    treeIndent: {
+      control: { type: 'select' },
+      options: ['default', 'aligned'],
+    },
   },
   render: args => (
     <Table

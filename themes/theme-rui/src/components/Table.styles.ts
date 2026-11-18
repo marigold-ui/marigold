@@ -27,6 +27,10 @@ export const Table: ThemeComponent<'Table'> = {
       // root does: a root row with no children must not read as the previous
       // group's last child.
       '[--tree-indent-skip:1]',
+      // `treeIndent="aligned"`: the first nested level shares its group label's
+      // x too. Opt-in for tables whose top-level rows are all groups, where the
+      // reason above does not apply.
+      'data-[tree-indent=aligned]:[--tree-indent-skip:2]',
     ],
     variants: {
       variant: {

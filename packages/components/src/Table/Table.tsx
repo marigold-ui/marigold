@@ -81,6 +81,14 @@ export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
    */
   selectableRows?: 'all' | 'top-level' | 'nested';
   /**
+   * How far nested rows indent in the `treeColumn`. `aligned` lines the first
+   * nested level up with its group's label, and deeper levels indent from
+   * there. Use it when every top-level row is a group, otherwise a top-level
+   * row without children reads as the previous group's last child.
+   * @default 'default'
+   */
+  treeIndent?: 'default' | 'aligned';
+  /**
    * The keys of the expanded rows (controlled).
    */
   expandedKeys?: RAC.TableProps['expandedKeys'];
@@ -256,6 +264,7 @@ const TableRoot = ({
   actionBar,
   treeColumn,
   selectableRows = 'all',
+  treeIndent = 'default',
   selectedKeys: selectedKeysProp,
   defaultSelectedKeys: defaultSelectedKeysProp,
   onSelectionChange: onSelectionChangeProp,
@@ -381,6 +390,10 @@ const TableRoot = ({
               <TableElement
                 // Only a virtualized table renders a `<div>`, and Marigold's never is.
                 {...(domProps as ComponentProps<'table'>)}
+                // The theme owns the indent, so it only learns which one applies.
+                data-tree-indent={
+                  treeIndent === 'default' ? undefined : treeIndent
+                }
                 loading={loading}
                 onMinWidthChange={setMinTableWidth}
               />

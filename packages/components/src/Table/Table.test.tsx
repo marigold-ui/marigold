@@ -939,6 +939,33 @@ describe('selectableRows', () => {
   });
 });
 
+describe('treeIndent', () => {
+  // The value's own box, which sits in the tree column's second track.
+  const xOf = (text: string) =>
+    screen.getByText(text).getBoundingClientRect().left;
+
+  const LEVEL = '0 – Standard price';
+  const ARTICLE = 'Dinner menu (79104)';
+
+  test('by default a child row indents one step past its group label', () => {
+    render(<ExpandableRowsSelectableLevel.Component />);
+
+    expect(xOf(ARTICLE)).toBeGreaterThan(xOf(LEVEL));
+  });
+
+  test('"aligned" puts the first nested level at the group label', () => {
+    render(<ExpandableRowsSelectableLevel.Component treeIndent="aligned" />);
+
+    expect(xOf(ARTICLE)).toBeCloseTo(xOf(LEVEL), 0);
+  });
+
+  test('"aligned" keeps the header at the same x as the top-level values', () => {
+    render(<ExpandableRowsSelectableLevel.Component treeIndent="aligned" />);
+
+    expect(xOf('Price level')).toBeCloseTo(xOf(LEVEL), 0);
+  });
+});
+
 describe('sticky columns', () => {
   test('a cell spanning several columns does not stick', () => {
     render(
