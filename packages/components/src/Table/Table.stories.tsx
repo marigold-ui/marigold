@@ -23,7 +23,11 @@ import { Switch } from '../Switch/Switch';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import { Title } from '../Title/Title';
-import { expectFocusRingContrast } from '../contrast.utils';
+import {
+  expectFocusRingContrast,
+  expectInsetFocusRingContrast,
+  expectRowRingContrast,
+} from '../contrast.utils';
 import { useListData } from '../hooks';
 import type { Selection } from '../types';
 import type { TableProps } from './Table';
@@ -427,6 +431,63 @@ Basic.test(
     await userEvent.keyboard('{/Shift}');
 
     expect(selectedRows(rows)).toEqual([]);
+  }
+);
+
+Basic.test(
+  'Keyboard focus on a row, cell and column header clears 3:1',
+  {
+    // Only selectable rows hover.
+    args: { selectionMode: 'multiple' },
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent, step }) => {
+    const [header, first, second, third] = canvas.getAllByRole('row');
+    const firstCell = (row: HTMLElement) => within(row).getByRole('rowheader');
+
+    await step('row at rest', async () => {
+      first!.focus();
+
+      await userEvent.keyboard('{ArrowDown}');
+
+      await expect(second).toHaveFocus();
+      await waitFor(() => expectRowRingContrast(firstCell(second!)));
+    });
+
+    await step('row hovered', async () => {
+      await userEvent.hover(third!);
+
+      await userEvent.keyboard('{ArrowDown}');
+
+      await expect(third).toHaveAttribute('data-hovered', 'true');
+      await waitFor(() => expectRowRingContrast(firstCell(third!)));
+    });
+
+    await step('cell hovered', async () => {
+      // Past the checkbox cell.
+      await userEvent.keyboard('{ArrowRight}{ArrowRight}');
+
+      await expect(firstCell(third!)).toHaveFocus();
+      await waitFor(() => expectInsetFocusRingContrast(firstCell(third!)));
+    });
+
+    await step('cell at rest', async () => {
+      await userEvent.keyboard('{ArrowUp}{ArrowUp}');
+
+      await expect(firstCell(first!)).toHaveFocus();
+      await waitFor(() => expectInsetFocusRingContrast(firstCell(first!)));
+    });
+
+    // Focus lands on the header's content, not the header, so this covers
+    // `has-focus-visible:`. Only the empty drag header takes focus itself.
+    await step('column header', async () => {
+      await userEvent.keyboard('{ArrowUp}');
+
+      const name = within(header!).getByRole('columnheader', { name: 'Name' });
+      await expect(name).not.toHaveFocus();
+      await expect(name.contains(document.activeElement)).toBe(true);
+      await waitFor(() => expectInsetFocusRingContrast(name));
+    });
   }
 );
 
@@ -4741,6 +4802,22 @@ DragAndDrop.test(
 
     await expect(handle).toHaveFocus();
     await waitFor(() => expectFocusRingContrast(handle));
+  }
+);
+
+// The drag column's header is empty, so it takes focus itself (`focus-visible:`).
+DragAndDrop.test(
+  'Keyboard focus on the empty drag header clears 3:1',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    canvas.getByRole('row', { name: /Hans Müller/ }).focus();
+
+    await userEvent.keyboard('{ArrowRight}{ArrowUp}');
+
+    const header = document.activeElement as HTMLElement;
+    await expect(header).toHaveAttribute('role', 'columnheader');
+    await expect(header).toHaveTextContent('');
+    await waitFor(() => expectInsetFocusRingContrast(header));
   }
 );
 

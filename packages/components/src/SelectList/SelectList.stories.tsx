@@ -13,7 +13,10 @@ import {
   DISABLED_EDGE_BAND,
   DISABLED_INK_MIN,
   edgeContrast,
+  expectInsetFocusRingContrast,
+  flatten,
   inkContrast,
+  insetFocusRing,
 } from '../contrast.utils';
 import { selectionMark } from '../control.utils';
 import { Info } from '../icons/Info';
@@ -266,6 +269,40 @@ Basic.test(
         expect(args.onChange).not.toHaveBeenCalled();
       }
     );
+  }
+);
+
+Basic.test(
+  'Keyboard focus draws an inset ring that clears 3:1 at rest, selected and hovered',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, step, userEvent }) => {
+    const credit = await canvas.findByRole('row', { name: /credit card/i });
+    const paypal = canvas.getByRole('row', { name: /paypal/i });
+
+    await step('at rest', async () => {
+      credit.focus();
+
+      await userEvent.keyboard('{ArrowDown}');
+
+      await expect(paypal).toHaveFocus();
+      await waitFor(() => expectInsetFocusRingContrast(paypal));
+    });
+
+    await step('selected', async () => {
+      await userEvent.keyboard('{ArrowUp}');
+
+      await expect(credit).toHaveAttribute('aria-selected', 'true');
+      await waitFor(() => expectInsetFocusRingContrast(credit));
+    });
+
+    await step('hovered', async () => {
+      await userEvent.hover(paypal);
+
+      await userEvent.keyboard('{ArrowDown}');
+
+      await expect(paypal).toHaveAttribute('data-hovered', 'true');
+      await waitFor(() => expectInsetFocusRingContrast(paypal));
+    });
   }
 );
 
@@ -799,6 +836,7 @@ const borderedMethods = [
 ];
 
 export const Bordered = meta.story({
+  tags: ['component-test'],
   args: {
     variant: 'bordered',
   },
@@ -825,6 +863,38 @@ export const Bordered = meta.story({
     </SelectList>
   ),
 });
+
+Bordered.test(
+  'Keyboard focus clears 3:1, and a selected row keeps its selected ring',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, step, userEvent }) => {
+    const visa = await canvas.findByRole('row', { name: /visa/i });
+    const mastercard = canvas.getByRole('row', { name: /mastercard/i });
+
+    await step('at rest', async () => {
+      visa.focus();
+
+      await userEvent.keyboard('{ArrowDown}');
+
+      await expect(mastercard).toHaveFocus();
+      await waitFor(() => expectInsetFocusRingContrast(mastercard));
+    });
+
+    await step('selected keeps the selected border color', async () => {
+      await userEvent.keyboard('{ArrowUp}');
+
+      await expect(visa).toHaveAttribute('aria-selected', 'true');
+      await waitFor(() => expectInsetFocusRingContrast(visa));
+      // Through `flatten`: the custom property keeps its source text, the
+      // shadow is normalized, so a string compare would never match.
+      const border =
+        getComputedStyle(visa).getPropertyValue('--ui-border-color');
+      await expect(flatten([insetFocusRing(visa).color!])).toEqual(
+        flatten([border])
+      );
+    });
+  }
+);
 
 export const BorderedWithSelectAll = meta.story({
   args: {
