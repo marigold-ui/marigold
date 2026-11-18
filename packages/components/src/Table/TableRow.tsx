@@ -100,6 +100,7 @@ const TableRow = <T extends object>({
   variant: variantProp,
   size: sizeProp,
   expandable,
+  render,
   ...otherProps
 }: TableRowProps<T>) => {
   let { selectionBehavior, allowsDragging } = useTableOptions();
@@ -153,15 +154,18 @@ const TableRow = <T extends object>({
       // React Aria marks every row `aria-selected` once selection is on, which
       // tells assistive technology the row is selectable. A row outside the
       // selectable level never is, so it carries no selection state at all.
+      // A consumer's own `render` still gets the props, minus that attribute.
       render={
         selectableLevel
-          ? undefined
-          : domProps => (
-              <tr
-                {...(domProps as ComponentProps<'tr'>)}
-                aria-selected={undefined}
-              />
-            )
+          ? render
+          : (domProps, renderProps) => {
+              const props = { ...domProps, 'aria-selected': undefined };
+              return render ? (
+                render(props, renderProps)
+              ) : (
+                <tr {...(props as ComponentProps<'tr'>)} />
+              );
+            }
       }
     >
       {allowsDragging && (

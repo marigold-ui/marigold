@@ -1,8 +1,10 @@
 import { render, renderHook, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import type { ComponentProps } from 'react';
 import { afterEach, vi } from 'vitest';
 import { announce } from '@react-aria/live-announcer';
 import { theme } from '@marigold/theme-rui';
+import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import { mockMatchMedia } from '../test.utils';
 import { useTableContext } from './Context';
 import { Table } from './Table';
@@ -771,6 +773,65 @@ describe('selectableRows', () => {
     expect(rowOf(ARTICLE)).not.toHaveAttribute('aria-disabled');
     // The cell stays, so the columns stay aligned.
     expect(rowOf(ARTICLE).cells).toHaveLength(rowOf(LEVEL).cells.length);
+  });
+
+  describe('a render prop on Table.Row', () => {
+    const MarkedTable = (props: { selectableRows?: 'all' | 'top-level' }) => (
+      <MarigoldProvider theme={theme}>
+        <Table
+          aria-label="Marked rows"
+          selectionMode="multiple"
+          treeColumn="name"
+          defaultExpandedKeys={['group']}
+          {...props}
+        >
+          <Table.Header>
+            <Table.Column id="name" rowHeader>
+              Name
+            </Table.Column>
+          </Table.Header>
+          <Table.Body>
+            <Table.Row
+              id="group"
+              render={domProps => (
+                <tr
+                  {...(domProps as ComponentProps<'tr'>)}
+                  data-marked="group"
+                />
+              )}
+            >
+              <Table.Cell>Group</Table.Cell>
+              <Table.Row
+                id="child"
+                render={domProps => (
+                  <tr
+                    {...(domProps as ComponentProps<'tr'>)}
+                    data-marked="child"
+                  />
+                )}
+              >
+                <Table.Cell>Child</Table.Cell>
+              </Table.Row>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+      </MarigoldProvider>
+    );
+
+    test('still reaches the DOM when selectableRows is not set', () => {
+      render(<MarkedTable />);
+
+      expect(rowOf('Group')).toHaveAttribute('data-marked', 'group');
+      expect(rowOf('Child')).toHaveAttribute('data-marked', 'child');
+    });
+
+    test('still reaches the DOM on a row outside the level, without aria-selected', () => {
+      render(<MarkedTable selectableRows="top-level" />);
+
+      expect(rowOf('Group')).toHaveAttribute('data-marked', 'group');
+      expect(rowOf('Child')).toHaveAttribute('data-marked', 'child');
+      expect(rowOf('Child')).not.toHaveAttribute('aria-selected');
+    });
   });
 
   test('the level decides, not whether a row has children', () => {

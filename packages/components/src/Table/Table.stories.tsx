@@ -4438,7 +4438,8 @@ ExpandableRowsSelectableLevel.test(
     await step('Clicking an article selects nothing', async () => {
       await userEvent.click(canvas.getByText('Dinner menu (79104)'));
 
-      expect(article).not.toHaveAttribute('aria-selected');
+      // `aria-selected` is never on such a row, so check the selection state.
+      expect(article).not.toHaveAttribute('data-selected');
     });
 
     await step('Select all selects every price level only', async () => {
@@ -4451,7 +4452,7 @@ ExpandableRowsSelectableLevel.test(
         'aria-selected',
         'true'
       );
-      expect(article).not.toHaveAttribute('aria-selected');
+      expect(article).not.toHaveAttribute('data-selected');
     });
   }
 );
