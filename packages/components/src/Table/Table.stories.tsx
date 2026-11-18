@@ -4346,6 +4346,113 @@ ExpandableRowsDynamic.test(
 );
 
 /**
+ * Modelled on managing packages: a price level bundles the articles linked to
+ * it. Bulk actions act on price levels, so only they can be selected. The
+ * articles are the price level's contents, not records of their own.
+ */
+interface PriceLevelRow {
+  id: string;
+  name: string;
+  articles?: PriceLevelRow[];
+}
+
+const priceLevels: PriceLevelRow[] = [
+  {
+    id: 'level-0',
+    name: '0 – Standard price',
+    articles: [
+      { id: 'article-79104', name: 'Dinner menu (79104)' },
+      { id: 'article-79105', name: 'Welcome drink (79105)' },
+    ],
+  },
+  {
+    id: 'level-1',
+    name: '1 – Reduced',
+    articles: [{ id: 'article-79106', name: 'Kids menu (79106)' }],
+  },
+  // A price level without articles is still a price level, so it stays
+  // selectable: the level decides, not whether the row has children.
+  { id: 'level-2', name: '2 – Staff' },
+];
+
+export const ExpandableRowsSelectableLevel = meta.story({
+  tags: ['component-test'],
+  args: {
+    treeColumn: 'name',
+    selectionMode: 'multiple',
+    selectableRows: 'top-level',
+  },
+  argTypes: {
+    selectableRows: {
+      control: { type: 'select' },
+      options: ['all', 'top-level', 'nested'],
+    },
+  },
+  render: args => (
+    <Table
+      aria-label="Packages"
+      defaultExpandedKeys={['level-0', 'level-1']}
+      {...args}
+    >
+      <Table.Header>
+        <Table.Column id="name" rowHeader>
+          Price level
+        </Table.Column>
+        <Table.Column id="articles">Articles</Table.Column>
+      </Table.Header>
+      <Table.Body items={priceLevels}>
+        {function renderRow(row: PriceLevelRow) {
+          return (
+            <Table.Row id={row.id}>
+              <Table.Cell>{row.name}</Table.Cell>
+              <Table.Cell>
+                {row.articles ? row.articles.length : '—'}
+              </Table.Cell>
+              <Table.ExpandableRows items={row.articles}>
+                {renderRow}
+              </Table.ExpandableRows>
+            </Table.Row>
+          );
+        }}
+      </Table.Body>
+    </Table>
+  ),
+});
+
+ExpandableRowsSelectableLevel.test(
+  'Only rows on the selectable level carry a checkbox',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const level = rowByName(canvas, '0 – Standard price');
+    const article = rowByName(canvas, 'Dinner menu (79104)');
+
+    await step('A price level has a checkbox, an article has none', () => {
+      expect(within(level).getByRole('checkbox')).toBeInTheDocument();
+      expect(within(article).queryByRole('checkbox')).not.toBeInTheDocument();
+    });
+
+    await step('Clicking an article selects nothing', async () => {
+      await userEvent.click(canvas.getByText('Dinner menu (79104)'));
+
+      expect(article).not.toHaveAttribute('aria-selected');
+    });
+
+    await step('Select all selects every price level only', async () => {
+      await userEvent.click(
+        canvas.getByRole('checkbox', { name: /select all/i })
+      );
+
+      expect(level).toHaveAttribute('aria-selected', 'true');
+      expect(rowByName(canvas, '2 – Staff')).toHaveAttribute(
+        'aria-selected',
+        'true'
+      );
+      expect(article).not.toHaveAttribute('aria-selected');
+    });
+  }
+);
+
+/**
  * When nested rows are fetched on demand they don't exist yet, so the row has to
  * declare itself `expandable` to get a control at all — otherwise there is
  * nothing to press that could start the fetch.

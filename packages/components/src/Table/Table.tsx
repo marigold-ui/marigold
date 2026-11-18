@@ -74,6 +74,13 @@ export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
    */
   treeColumn?: RAC.TableProps['treeColumn'];
   /**
+   * Which level of rows can be selected. Rows outside it show no checkbox and
+   * are left out of select-all and range selection. Use `disabledKeys` for
+   * rows that are selectable in principle but not right now.
+   * @default 'all'
+   */
+  selectableRows?: 'all' | 'top-level' | 'nested';
+  /**
    * The keys of the expanded rows (controlled).
    */
   expandedKeys?: RAC.TableProps['expandedKeys'];
@@ -248,6 +255,7 @@ const TableRoot = ({
   loading = false,
   actionBar,
   treeColumn,
+  selectableRows = 'all',
   selectedKeys: selectedKeysProp,
   defaultSelectedKeys: defaultSelectedKeysProp,
   onSelectionChange: onSelectionChangeProp,
@@ -285,6 +293,13 @@ const TableRoot = ({
     setScrolls(container.getBoundingClientRect().width < minTableWidth);
   }, [minTableWidth]);
 
+  // Without a tree every row is top-level, so "nested" would leave nothing
+  // selectable. Not a type error: the two props are often set at different times.
+  useDevWarning(
+    selectableRows === 'nested' && treeColumn == null,
+    '[Table] `selectableRows="nested"` without a `treeColumn` leaves no row selectable, because every row is top-level. Set `treeColumn`, or use `selectableRows="all"`.'
+  );
+
   useResizeObserver({ ref: containerRef, onResize: measure });
   useLayoutEffect(measure, [measure]);
 
@@ -297,6 +312,8 @@ const TableRoot = ({
       allowTextSelection,
       alignY,
       treeColumn,
+      selectableRows,
+      disabledKeys: props.disabledKeys,
       warnedMissingTextValue,
     }),
     [
@@ -307,6 +324,8 @@ const TableRoot = ({
       allowTextSelection,
       alignY,
       treeColumn,
+      selectableRows,
+      props.disabledKeys,
       warnedMissingTextValue,
     ]
   );
