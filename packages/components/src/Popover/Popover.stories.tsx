@@ -137,6 +137,7 @@ type DismissalArgs = PopoverProps & {
 
 export const Dismissal = meta.story({
   tags: ['component-test', '!autodocs'],
+  beforeEach: keepSheetsOpenInChromatic,
   parameters: { chromatic: { disableSnapshot: true } },
   args: { dismissable: false, keyboardDismissable: false } as DismissalArgs,
   render: ({ dismissable, keyboardDismissable, ...args }: DismissalArgs) => (
