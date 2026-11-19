@@ -287,8 +287,8 @@ importers:
         specifier: ^5.101.4
         version: 5.107.1(@types/react@19.3.0)(react@19.3.1)
       '@upstash/redis':
-        specifier: 1.38.4
-        version: 1.38.4
+        specifier: 1.41.0
+        version: 1.41.0
       '@vercel/analytics':
         specifier: 2.0.1
         version: 2.0.1(next@16.4.6(@babel/core@8.0.10)(@types/node@25.9.7)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)
@@ -3887,8 +3887,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@upstash/redis@1.38.4':
-    resolution: {integrity: sha512-ZX69mKReun/yieyHYLoBg0eSiF6hjCQjd8zUKkJ5eCHehDV6P8S8oZOHxGSfkH1spfOhGZk0EGerBrfUsXow8g==}
+  '@upstash/redis@1.41.0':
+    resolution: {integrity: sha512-TIu9C1B0ToXQLXt2M1LQuGZ6nkMjOZPIdJyU0GGWKZToa/MvJF8x2IRDOPMIAw2BLGXGhi1aZr5AnhlXu4YLXg==}
 
   '@valibot/to-json-schema@1.7.0':
     resolution: {integrity: sha512-Y3pPVibbIOHzohrlxSINvO7w/bvXkoYS3BQHoImV9ynE+bXKf171bdMucPurV2zp7gdmt0L1HCcNAsbo7cFRQw==}
@@ -11288,7 +11288,7 @@ snapshots:
   '@unrs/resolver-binding-win32-x64-msvc@1.12.2':
     optional: true
 
-  '@upstash/redis@1.38.4':
+  '@upstash/redis@1.41.0':
     dependencies:
       uncrypto: 0.1.3
 
