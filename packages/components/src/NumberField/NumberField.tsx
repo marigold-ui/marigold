@@ -8,6 +8,7 @@ import {
   useLocalizedStringFormatter,
   useNumberFormatter,
 } from '@react-aria/i18n';
+import { useObjectRef } from '@react-aria/utils';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { intlMessages } from '../intl/messages';
@@ -77,8 +78,8 @@ export interface NumberFieldProps
 
   /**
    * Shows the `maxValue` next to the value, e.g. "1 / 2", and adds "of 2" to
-   * the field's accessible description. Needs a finite `maxValue`; the label
-   * should name the unit, because screen readers read it before the value.
+   * the field's accessible description. Needs a finite `maxValue`. The label
+   * should name the counted unit, because the maximum has none of its own.
    * @default false
    */
   showMaxValue?: boolean;
@@ -114,6 +115,7 @@ const NumberField = ({
   const numberFormatter = useNumberFormatter(rest.formatOptions);
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const maxValueId = useId();
+  const inputRef = useObjectRef(ref);
   const { maxValue } = rest;
   const formattedMaxValue =
     showMaxValue && maxValue !== undefined && Number.isFinite(maxValue)
@@ -156,7 +158,7 @@ const NumberField = ({
           />
         )}
         <Input
-          ref={ref}
+          ref={inputRef}
           className={cn('h-full flex-1 outline-none', classNames.input)}
           onFocus={e => e.currentTarget.select()}
         />
@@ -164,6 +166,10 @@ const NumberField = ({
           <>
             <span
               aria-hidden="true"
+              onPointerDown={e => {
+                e.preventDefault();
+                inputRef.current?.focus();
+              }}
               className={cn(
                 'flex flex-1 items-center select-none',
                 classNames.maxValue

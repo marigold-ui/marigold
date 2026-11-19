@@ -375,4 +375,28 @@ test('shows no maximum with showMaxValue but without maxValue', () => {
   );
 
   expect(screen.getByRole('textbox')).not.toHaveAttribute('aria-describedby');
+  expect(screen.queryByText(/\//)).not.toBeInTheDocument();
+});
+
+test('shows no maximum with showMaxValue and an infinite maxValue', () => {
+  render(
+    <Basic.Component
+      label="Tickets"
+      description={undefined}
+      maxValue={Infinity}
+      showMaxValue
+    />
+  );
+
+  expect(screen.getByRole('textbox')).not.toHaveAttribute('aria-describedby');
+  expect(screen.queryByText(/\//)).not.toBeInTheDocument();
+});
+
+test('focuses the input when the maximum is clicked', async () => {
+  const user = userEvent.setup();
+  render(<Basic.Component label="Tickets" maxValue={2} showMaxValue />);
+
+  await user.click(screen.getByText('/ 2'));
+
+  expect(screen.getByRole('textbox', { name: 'Tickets' })).toHaveFocus();
 });
