@@ -1,4 +1,4 @@
-import { Fragment, createElement } from 'react';
+import { Children } from 'react';
 import { useCollator } from '@react-aria/i18n';
 import { useClassNames } from '@marigold/system';
 import {
@@ -79,25 +79,20 @@ export const CommandPaletteItem = ({
 
   // Only the default filter has a known matching rule to highlight.
   const query = filter === undefined ? term.trim() : '';
-  // Top-level text is the label, also next to an icon. The parts are spread
-  // as arguments, so the static children need no keys.
+  // Top-level text is the label, also next to an icon. `Children.map` keys
+  // each part by its position.
   const label =
     typeof children === 'function'
       ? children
-      : createElement(
-          Fragment,
-          null,
-          ...(Array.isArray(children) ? children : [children]).map(part =>
-            typeof part === 'string' ? (
-              // eslint-disable-next-line @eslint-react/no-missing-key -- spread as arguments, see above
-              <Highlight
-                text={part}
-                query={query}
-                className={classNames.match}
-              />
-            ) : (
-              part
-            )
+      : Children.map(children, part =>
+          typeof part === 'string' || typeof part === 'number' ? (
+            <Highlight
+              text={String(part)}
+              query={query}
+              className={classNames.match}
+            />
+          ) : (
+            part
           )
         );
 

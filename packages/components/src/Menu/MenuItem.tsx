@@ -70,7 +70,7 @@ export const getItemText = (children: MenuItemProps['children']) => {
   if (typeof children === 'function') return undefined;
   const parts: ReactNode[] = Array.isArray(children) ? children : [children];
   const text = parts
-    .filter(part => typeof part === 'string')
+    .filter(part => typeof part === 'string' || typeof part === 'number')
     .join('')
     .trim();
   return text || undefined;

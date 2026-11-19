@@ -1,6 +1,5 @@
 import type { Key } from 'react';
 import { createContext, use } from 'react';
-import type { ComponentClassNames } from '@marigold/system';
 import type { SearchableCollectionFilter } from '../utils/SearchableCollection';
 
 // Trigger state
@@ -50,7 +49,6 @@ interface CommandPaletteContextValue {
   /** Narrows the search to the group with this prefix, keeping the term. */
   narrowTo: (prefix: string) => void;
   filter?: SearchableCollectionFilter | false;
-  classNames: ComponentClassNames<'CommandPalette'>;
 }
 
 export const CommandPaletteContext =

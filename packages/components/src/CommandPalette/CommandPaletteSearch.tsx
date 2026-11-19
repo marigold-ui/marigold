@@ -4,12 +4,12 @@ import { Input } from 'react-aria-components/Input';
 import { SearchField } from 'react-aria-components/SearchField';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useObjectRef } from '@react-aria/utils';
+import { useClassNames } from '@marigold/system';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
 import { Search } from '../icons/Search';
 import { X } from '../icons/X';
 import { intlMessages } from '../intl/messages';
 import { useAutoFocus } from '../utils/useAutoFocus';
-import { useCommandPalette } from './Context';
 
 // Props
 // ---------------
@@ -30,7 +30,7 @@ export const CommandPaletteSearch = ({
   loading,
   ref,
 }: CommandPaletteSearchProps) => {
-  const { classNames } = useCommandPalette();
+  const classNames = useClassNames({ component: 'CommandPalette' });
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const inputRef = useObjectRef(ref);
   // Not a native `autoFocus`, see `useAutoFocus`.

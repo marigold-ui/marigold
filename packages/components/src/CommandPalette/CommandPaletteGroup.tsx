@@ -4,6 +4,7 @@ import type RAC from 'react-aria-components';
 import { Header } from 'react-aria-components/Header';
 import { MenuSection } from 'react-aria-components/Menu';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { useClassNames } from '@marigold/system';
 import { Description } from '../Description/Description';
 import { TextValue } from '../TextValue/TextValue';
 import { ChevronRight } from '../icons/ChevronRight';
@@ -64,14 +65,9 @@ export const CommandPaletteGroup = ({
   id: idProp,
   ...props
 }: CommandPaletteGroupProps) => {
-  const {
-    classNames,
-    scope,
-    query,
-    registerPrefix,
-    registerUnfiltered,
-    narrowTo,
-  } = useCommandPalette();
+  const classNames = useClassNames({ component: 'CommandPalette' });
+  const { scope, query, registerPrefix, registerUnfiltered, narrowTo } =
+    useCommandPalette();
   // The palette's match finds a row's group by the section id.
   const generatedId = useId();
   const id = idProp ?? generatedId;

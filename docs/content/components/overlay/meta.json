@@ -1,8 +1,8 @@
 {
   "pages": [
     "action-menu",
-    "contextual-help",
     "command-palette",
+    "contextual-help",
     "dialog",
     "drawer",
     "menu",

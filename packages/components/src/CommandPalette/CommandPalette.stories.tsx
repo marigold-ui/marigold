@@ -743,9 +743,9 @@ Controlled.test(
 
 // Search prefix
 // ---------------
-// An app-level pattern, no component API: `e:1024` looks up an event by its
-// number. The built-in filter is off while the prefix is present, because the
-// query is not a label.
+// `e:1024` looks up an event by its number. The group's `prefix` narrows the
+// search to it, and `filter={false}` hands its rows to the app, because the
+// term is a number, not a label. The app answers from `onSearchChange`.
 const events = [
   { id: '1024', name: 'Jazz im Park', date: 'Jun 14, 2026' },
   { id: '1031', name: 'Stadtfest', date: 'Jul 2, 2026' },
@@ -753,9 +753,12 @@ const events = [
 ];
 
 const SearchPrefixPalette = () => {
-  const [query, setQuery] = useState('');
-  const lookup = query.toLowerCase().startsWith('e:');
-  const id = query.slice(2).trim();
+  const [search, setSearch] = useState<CommandPaletteSearchState>({
+    term: '',
+    prefix: null,
+  });
+  const lookup = search.prefix === 'e:';
+  const id = search.term.trim();
   const matches = lookup && id ? events.filter(e => e.id.startsWith(id)) : [];
 
   return (
@@ -763,9 +766,7 @@ const SearchPrefixPalette = () => {
       <CommandPalette.Button />
       <CommandPalette
         placeholder="Search pages, or e:1024 for an event…"
-        inputValue={query}
-        onInputChange={setQuery}
-        filter={lookup ? false : undefined}
+        onSearchChange={setSearch}
         emptyState={
           lookup
             ? id
@@ -774,37 +775,32 @@ const SearchPrefixPalette = () => {
             : undefined
         }
       >
-        {lookup ? (
-          matches.length > 0 && (
-            <CommandPalette.Group title="Events">
-              {matches.map(event => (
-                <CommandPalette.Item
-                  key={event.id}
-                  id={event.id}
-                  href={`#event-${event.id}`}
-                  textValue={event.name}
-                >
-                  <Ticket />
-                  <TextValue>{event.name}</TextValue>
-                  <Description>
-                    #{event.id}, {event.date}
-                  </Description>
-                </CommandPalette.Item>
-              ))}
-            </CommandPalette.Group>
-          )
-        ) : (
-          <CommandPalette.Group title="Pages">
-            <CommandPalette.Item id="events" href="#events">
-              <CalendarDays />
-              Events
+        <CommandPalette.Group title="Pages">
+          <CommandPalette.Item id="events" href="#events">
+            <CalendarDays />
+            Events
+          </CommandPalette.Item>
+          <CommandPalette.Item id="orders" href="#orders">
+            <ShoppingCart />
+            Orders
+          </CommandPalette.Item>
+        </CommandPalette.Group>
+        <CommandPalette.Group title="Events" prefix="e:" filter={false}>
+          {matches.map(event => (
+            <CommandPalette.Item
+              key={event.id}
+              id={event.id}
+              href={`#event-${event.id}`}
+              textValue={event.name}
+            >
+              <Ticket />
+              <TextValue>{event.name}</TextValue>
+              <Description>
+                #{event.id}, {event.date}
+              </Description>
             </CommandPalette.Item>
-            <CommandPalette.Item id="orders" href="#orders">
-              <ShoppingCart />
-              Orders
-            </CommandPalette.Item>
-          </CommandPalette.Group>
-        )}
+          ))}
+        </CommandPalette.Group>
       </CommandPalette>
     </CommandPalette.Trigger>
   );
@@ -826,7 +822,7 @@ SearchPrefix.test(
     await waitFor(() =>
       expect(canvas.getAllByRole('menuitem')).toHaveLength(2)
     );
-    await expect(canvas.getByText('Events')).toBeVisible();
+    await expect(canvas.getByRole('group', { name: /^Events/ })).toBeVisible();
   }
 );
 
@@ -839,8 +835,11 @@ SearchPrefix.test(
 
     await step('A full number finds one event', async () => {
       await userEvent.keyboard('e:1024');
-      await waitFor(() => expect(rows()).toHaveLength(1));
-      await expect(rows()[0]).toHaveTextContent('Jazz im Park');
+      // The app answers once typing pauses.
+      await waitFor(() => {
+        expect(rows()).toHaveLength(1);
+        expect(rows()[0]).toHaveTextContent('Jazz im Park');
+      });
     });
 
     await step('An unknown number shows the lookup message', async () => {
@@ -869,9 +868,9 @@ SearchPrefix.test(
 
 // Async search
 // ---------------
-// Results come from the server: the built-in filter is off and the query is
-// controlled. A local list with a short delay stands in for the API, so the
-// story works offline. Debouncing is left to the consumer.
+// Results come from the server, so the built-in filter is off. A local list with a short delay stands in for the API, so the
+// story works offline. `onSearchChange` reports the search once typing
+// pauses, so the story needs no debounce of its own.
 const characters = [
   'Luke Skywalker',
   'C-3PO',
@@ -916,8 +915,7 @@ const AsyncSearchPalette = () => {
       <CommandPalette
         placeholder="Type a Star Wars name…"
         filter={false}
-        inputValue={list.filterText}
-        onInputChange={list.setFilterText}
+        onSearchChange={({ term }) => list.setFilterText(term)}
         items={list.items}
         loading={list.isLoading}
         emptyState={
@@ -1610,5 +1608,43 @@ SmallScreen.test(
     await userEvent.keyboard('zzz');
     await canvas.findByText(/No results for/);
     await expect(top()).toBe(opened);
+  }
+);
+
+// Number in the label
+// ---------------
+// A number in the children belongs to the label, so a row can be found by
+// it, e.g. an order by its number.
+const orderNumbers = [1024, 2048];
+
+export const NumberInLabel = meta.story({
+  ...noSnapshot,
+  render: args => (
+    <CommandPalette.Trigger {...args}>
+      <CommandPalette.Button />
+      <CommandPalette>
+        <CommandPalette.Group title="Orders">
+          {orderNumbers.map(number => (
+            <CommandPalette.Item key={number} id={`order-${number}`}>
+              Order {number}
+            </CommandPalette.Item>
+          ))}
+        </CommandPalette.Group>
+      </CommandPalette>
+    </CommandPalette.Trigger>
+  ),
+});
+
+NumberInLabel.test(
+  'Finds a row by the number in its label',
+  async ({ canvas, userEvent }) => {
+    await openPalette({ canvas, userEvent });
+    await canvas.findByRole('searchbox');
+    await userEvent.keyboard('1024');
+
+    await waitFor(() =>
+      expect(canvas.getAllByRole('menuitem')).toHaveLength(1)
+    );
+    await expectFirstRowActive(canvas, 'Order 1024');
   }
 );

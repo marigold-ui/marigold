@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 
 // Keep the first row active
 // ---------------
@@ -220,9 +220,15 @@ export const useKeepFirstItemActive = (
     settle();
   }, [answered]);
 
-  useEffect(() => {
+  // The native Enter listener reads the status, so it updates before paint:
+  // a passive effect would leave it stale for a frame after an async commit.
+  // The waiting Enter is released after paint, once RAC rendered the rows.
+  useLayoutEffect(() => {
     statusRef.current = { loading, searchWaiting, appSearches };
     if (loading) answerRef.current.sawLoading = true;
+  }, [loading, searchWaiting, appSearches]);
+
+  useEffect(() => {
     release();
   }, [loading, searchWaiting, appSearches, release]);
 

@@ -336,21 +336,12 @@ const CommandPaletteBody = <T extends object>({
     () => ({
       query,
       filter,
-      classNames,
       scope,
       registerPrefix,
       registerUnfiltered,
       narrowTo: (prefix: string) => setInputValue(`${prefix}${query}`),
     }),
-    [
-      query,
-      filter,
-      classNames,
-      scope,
-      registerPrefix,
-      registerUnfiltered,
-      setInputValue,
-    ]
+    [query, filter, scope, registerPrefix, registerUnfiltered, setInputValue]
   );
 
   return (
