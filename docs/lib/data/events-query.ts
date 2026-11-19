@@ -132,10 +132,10 @@ export const queryEvents = (
     }
     return true;
   });
-  const exact = matches.find(event => event.id === search);
-  const filtered = exact
-    ? [exact, ...matches.filter(event => event !== exact)]
-    : matches;
+  // An event whose id equals the search comes first. The sort is stable.
+  const filtered = matches.sort(
+    (a, b) => Number(b.id === search) - Number(a.id === search)
+  );
 
   const totalItems = filtered.length;
 

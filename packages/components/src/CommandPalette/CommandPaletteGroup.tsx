@@ -95,19 +95,15 @@ export const CommandPaletteGroup = ({
     <MenuSection {...props} id={id}>
       <Header className={classNames.group}>
         {title}
-        {prefix && (
-          <>
-            {/* The footer shows the prefix, this sentence tells screen
-                readers, as part of the group's name. */}
-            {!scope && (
-              <span className="sr-only">
-                {stringFormatter.format('commandPalettePrefixHint', {
-                  prefix,
-                  title: title ?? prefix,
-                })}
-              </span>
-            )}
-          </>
+        {/* The footer shows the prefix, this sentence tells screen readers,
+            as part of the group's name. */}
+        {prefix && !scope && (
+          <span className="sr-only">
+            {stringFormatter.format('commandPalettePrefixHint', {
+              prefix,
+              title: title ?? prefix,
+            })}
+          </span>
         )}
       </Header>
       {children}

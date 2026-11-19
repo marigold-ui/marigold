@@ -64,6 +64,9 @@ const shortcutKeys = () => {
 // A closed palette is only its trigger, which `Basic` already shows. Stories
 // skip their own snapshot and tests that open a state worth guarding opt back
 // in, so Chromatic captures the open palette at the end of the test.
+const pause = (ms: number) =>
+  new Promise<void>(resolve => setTimeout(resolve, ms));
+
 const noSnapshot = { parameters: { chromatic: { disableSnapshot: true } } };
 const snapshot = { parameters: { chromatic: { disableSnapshot: false } } };
 
@@ -746,7 +749,7 @@ Controlled.test(
 // `e:1024` looks up an event by its number. The group's `prefix` narrows the
 // search to it, and `filter={false}` hands its rows to the app, because the
 // term is a number, not a label. The app answers from `onSearchChange`.
-const events = [
+const lookupEvents = [
   { id: '1024', name: 'Jazz im Park', date: 'Jun 14, 2026' },
   { id: '1031', name: 'Stadtfest', date: 'Jul 2, 2026' },
   { id: '2048', name: 'Open-Air Kino', date: 'Aug 21, 2026' },
@@ -759,7 +762,8 @@ const SearchPrefixPalette = () => {
   });
   const lookup = search.prefix === 'e:';
   const id = search.term.trim();
-  const matches = lookup && id ? events.filter(e => e.id.startsWith(id)) : [];
+  const matches =
+    lookup && id ? lookupEvents.filter(e => e.id.startsWith(id)) : [];
 
   return (
     <CommandPalette.Trigger>
@@ -1138,7 +1142,7 @@ LateResults.test(
     );
     // The new rows settle a render later, give them the chance to move the
     // active row before checking it stayed.
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await pause(100);
     await expect(search).toHaveAttribute('aria-activedescendant', third.id);
   }
 );
@@ -1353,7 +1357,7 @@ const typeJapanAfterPause = async ({
   await openPalette({ canvas, userEvent });
   await canvas.findByRole('searchbox');
   await userEvent.keyboard('j');
-  await new Promise(resolve => setTimeout(resolve, SEARCH_DELAY + 10));
+  await pause(SEARCH_DELAY + 10);
   await userEvent.keyboard('apan');
 };
 

@@ -31,12 +31,12 @@ const findMatch = (text: string, query: string, collator: Intl.Collator) => {
 interface HighlightProps {
   text: string;
   query: string;
+  collator: Intl.Collator;
   className?: string;
 }
 
-const Highlight = ({ text, query, className }: HighlightProps) => {
-  const collator = useCollator({ usage: 'search', sensitivity: 'base' });
-  const match = query ? findMatch(text, query, collator) : null;
+const Highlight = ({ text, query, collator, className }: HighlightProps) => {
+  const match = findMatch(text, query, collator);
   if (!match) return text;
 
   const [start, end] = match;
@@ -63,6 +63,7 @@ export const CommandPaletteItem = ({
   ...props
 }: CommandPaletteItemProps) => {
   const { query: term, filter } = useCommandPalette();
+  const collator = useCollator({ usage: 'search', sensitivity: 'base' });
   const classNames = useClassNames({
     component: 'CommandPalette',
     variant,
@@ -80,15 +81,16 @@ export const CommandPaletteItem = ({
   // Only the default filter has a known matching rule to highlight.
   const query = filter === undefined ? term.trim() : '';
   // Top-level text is the label, also next to an icon. `Children.map` keys
-  // each part by its position.
+  // each part by its position. Without a query there is nothing to mark.
   const label =
     typeof children === 'function'
       ? children
       : Children.map(children, part =>
-          typeof part === 'string' || typeof part === 'number' ? (
+          query && (typeof part === 'string' || typeof part === 'number') ? (
             <Highlight
               text={String(part)}
               query={query}
+              collator={collator}
               className={classNames.match}
             />
           ) : (

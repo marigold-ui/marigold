@@ -274,7 +274,11 @@ const CommandPaletteBody = <T extends object>({
   const scope =
     prefixes.find(({ prefix }) => startsWith(inputValue, prefix))?.prefix ??
     null;
-  const query = scope ? inputValue.slice(scope.length).trimStart() : inputValue;
+  const stripScope = useCallback(
+    (value: string) => (scope ? value.slice(scope.length).trimStart() : value),
+    [scope]
+  );
+  const query = stripScope(inputValue);
   // Groups with `filter={false}` register here. Their rows always pass the
   // match, the app filters them.
   const [unfiltered, setUnfiltered] = useState<ReadonlySet<Key>>(
@@ -294,8 +298,8 @@ const CommandPaletteBody = <T extends object>({
     const base = filter ?? contains;
     return (text, input, node) =>
       (node.parentKey != null && unfiltered.has(node.parentKey)) ||
-      base(text, scope ? input.slice(scope.length).trimStart() : input, node);
-  }, [filter, contains, scope, unfiltered]);
+      base(text, stripScope(input), node);
+  }, [filter, contains, stripScope, unfiltered]);
 
   // The search settles once typing pauses. Opening, clearing and narrowing
   // report right away, so recent records and a narrowed group don't wait.

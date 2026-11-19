@@ -4,6 +4,10 @@ import { isAppleDevice } from '@react-aria/utils';
 import { renderWithOverlay } from '../test.utils';
 import { Basic, MoreWithoutPrefix } from './CommandPalette.stories';
 
+afterEach(() => {
+  vi.restoreAllMocks();
+});
+
 test('opens by default with defaultOpen', async () => {
   renderWithOverlay(<Basic.Component defaultOpen />);
 
@@ -38,5 +42,4 @@ test('warns when a group sets more without a prefix', async () => {
     expect.stringContaining('sets `more` without a `prefix`')
   );
   expect(screen.queryByRole('menuitem', { name: /More events/ })).toBeNull();
-  warn.mockRestore();
 });
