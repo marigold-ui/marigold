@@ -5,7 +5,11 @@ import { cn, useClassNames } from '@marigold/system';
 interface PaginationButtonProps {
   onClick: () => void;
   'aria-label': string;
-  isDisabled?: boolean;
+  /**
+   * Marks the button as unusable without taking it out of the tab order, so
+   * focus is kept when it becomes disabled. Presses are ignored.
+   */
+  disabled?: boolean;
   isSelected?: boolean;
   children: ReactNode;
   registerRef?: (ref: HTMLButtonElement | null) => void;
@@ -19,16 +23,24 @@ export const NavigationButton = (props: PaginationButtonProps) => {
   const { navigationButton } = useClassNames({
     component: 'Pagination',
   });
-  let { buttonProps } = useButton(props, ref);
-  let { children, isSelected, isDisabled, controlLabel, position, ...rest } =
-    props;
+  const { buttonProps } = useButton(props, ref);
+  const {
+    children,
+    isSelected,
+    disabled,
+    controlLabel,
+    position,
+    onClick,
+    ...rest
+  } = props;
 
   return (
     <button
       ref={ref}
       {...buttonProps}
       {...rest}
-      disabled={isDisabled}
+      onClick={disabled ? undefined : onClick}
+      aria-disabled={disabled || undefined}
       className={cn(navigationButton, controlLabel && 'w-24 px-2')}
       data-selected={isSelected}
     >

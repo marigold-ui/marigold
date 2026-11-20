@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { expect, spyOn, userEvent, waitFor } from 'storybook/test';
-import preview from '.storybook/preview';
+import preview, { smallScreenWidth } from '.storybook/preview';
 import { Key } from '@react-types/shared';
 import { ClipboardPaste, Copy, Delete, Scissors } from '@marigold/icons';
 import { Description } from '../Description/Description';
@@ -402,7 +402,7 @@ export const MultiSelection = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   render: function Render() {
-    const [selectedKeys, setSelectedKeys] = useState(new Set());
+    const [selectedKeys, setSelectedKeys] = useState(() => new Set());
     const selected = Array.from(selectedKeys);
 
     return (
@@ -620,7 +620,14 @@ DisabledWithDescription.test(
 
 export const Mobile = meta.story({
   tags: ['component-test'],
-  parameters: { chromatic: { disableSnapshot: true } },
+  // Chromatic ignores the viewport global, so pin its capture to phone width.
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+      viewports: [smallScreenWidth],
+      cropToViewport: true,
+    },
+  },
   globals: {
     viewport: { value: 'smallScreen' },
   },

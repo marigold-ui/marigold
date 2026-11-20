@@ -102,6 +102,16 @@ Pick a breakpoint to see what `useSmallScreen` returns (`true` only below 640px)
 
 <ComponentDemo name="use-small-screen" mode="preview" />
 
+## Overlays on small screens
+
+Below 640px, components that open a floating list or panel open it as a tray instead: a sheet that slides up from the bottom of the screen and dims the page behind it. This covers `Select`, `ComboBox`, `Autocomplete`, `TagField`, `Menu`, `ActionMenu`, `Popover`, the date pickers and the calendar presets. A tray behaves the same way in all of them:
+
+- **Swipe down anywhere to close it.** When the content scrolls, swiping down first scrolls it back to the top. From there, the next swipe moves the tray. The dimmed page fades as the tray moves down.
+- **A slow swipe has to move the tray halfway down the screen.** A tray shorter than that has to leave the screen entirely. Released earlier, the tray springs back up. A quick flick closes it from anywhere.
+- **Escape and a press outside close it once it is fully open.** While it is still sliding in, both are ignored, so a double tap on the trigger opens the tray instead of closing it again.
+- **Focus moves into the tray** when it opens and returns to the trigger when it closes.
+- **The tray stays above the on-screen keyboard.** When a text field in it opens the keyboard, the tray moves up and shrinks to the space left, so the results and actions stay in view.
+
 ## Minimum supported width
 
 **Marigold supports a minimum viewport width of 320px.** Components are expected to remain usable and free of overflow all the way down to that width.

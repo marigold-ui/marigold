@@ -15,7 +15,9 @@ export interface PopoverTriggerProps extends Omit<
   open?: RAC.DialogTriggerProps['isOpen'];
 
   /**
-   * Whether the popover closes when the user interacts outside of it.
+   * Whether the popover closes when the user interacts outside of it. On
+   * small screens the popover opens as a tray with a single dismissal setting,
+   * so `false` there also keeps Escape and a swipe from closing it.
    * @default true
    */
   dismissable?: boolean;
@@ -23,7 +25,8 @@ export interface PopoverTriggerProps extends Omit<
   /**
    * Whether the popover closes when the user presses Escape. A popover the
    * keyboard cannot leave is an accessibility defect, so opting out has to be
-   * explicit.
+   * explicit. On small screens `false` also keeps a swipe and a press outside
+   * from closing the tray.
    * @default true
    */
   keyboardDismissable?: boolean;

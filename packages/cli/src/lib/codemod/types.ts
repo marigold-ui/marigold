@@ -6,7 +6,8 @@ export interface Codemod {
    * describes (a runner-side lookup by name silently degrades on a typo).
    */
   description: string;
-  apply: (source: string) => CodemodOutcome;
+  /** `path` is the file being migrated, when there is one */
+  apply: (source: string, path?: string) => CodemodOutcome;
 }
 
 export type CodemodOutcome =

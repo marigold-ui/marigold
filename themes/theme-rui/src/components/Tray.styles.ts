@@ -1,17 +1,8 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Tray: ThemeComponent<'Tray'> = {
-  overlay: cva({
-    base: 'bg-overlay-backdrop fixed inset-0 flex items-end justify-center',
-  }),
   container: cva({
-    base: [
-      'w-full border-0 inset-shadow-black inset-shadow-sm/20',
-      'relative grid-rows-[auto_auto_1fr_auto] rounded-b-none',
-      'ui-surface shadow-elevation-overlay',
-      'outline-hidden grid',
-      "after:absolute after:inset-x-0 after:top-full after:h-screen after:bg-surface after:content-['']",
-    ],
+    base: 'grid grid-rows-[auto_auto_1fr_auto]',
   }),
   dragHandle: cva({
     base: 'bg-border mx-auto mt-2 h-1.5 w-12 rounded-full',

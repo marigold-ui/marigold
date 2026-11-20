@@ -43,7 +43,7 @@ export const HiddenBreadcrumbs = ({
           return (
             <div
               data-hidden-breadcrumb
-              key={idx}
+              key={item.key}
               className={cn('shrink-0', itemClassName)}
             >
               <span className={cn(linkClassName, isLast && currentClassName)}>

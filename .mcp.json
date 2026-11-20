@@ -2,7 +2,7 @@
   "mcpServers": {
     "React Aria": {
       "command": "npx",
-      "args": ["@react-aria/mcp@latest"]
+      "args": ["@react-aria/mcp@1.2.1"]
     },
     "sb-mcp-server": {
       "url": "http://localhost:6006/mcp",

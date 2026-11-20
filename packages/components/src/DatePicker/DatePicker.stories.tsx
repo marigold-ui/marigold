@@ -8,7 +8,7 @@ import { useState } from 'react';
 import type { DateValue } from 'react-aria-components';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, fn, spyOn, waitFor, within } from 'storybook/test';
-import preview from '.storybook/preview';
+import preview, { smallScreenWidth } from '.storybook/preview';
 import { theme } from '../../../../themes/theme-rui/src/index.js';
 import { Stack } from '../Stack/Stack';
 import { assertCalendarTriggerHitArea } from '../calendarTrigger.utils';
@@ -151,7 +151,7 @@ export const Controlled = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   render: function Render(args) {
     const [value, setValue] = useState(
-      new CalendarDate(2025, 8, 7) as DateValue
+      () => new CalendarDate(2025, 8, 7) as DateValue
     );
 
     return (
@@ -171,7 +171,7 @@ export const Controlled = meta.story({
               {`Day: ${value.day} Month: ${value.month} Year: ${value.year}`}
             </pre>
           ) : (
-            <pre>`No value (${value}).`</pre>
+            <pre>{`No value (${value}).`}</pre>
           )}
         </Stack>
       </I18nProvider>
@@ -240,6 +240,14 @@ export const WithError = meta.story({
 
 export const Mobile = meta.story({
   tags: ['component-test'],
+  // Chromatic ignores the viewport global, so pin its capture to phone width.
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+      viewports: [smallScreenWidth],
+      cropToViewport: true,
+    },
+  },
   globals: {
     viewport: { value: 'smallScreen' },
   },
@@ -414,7 +422,13 @@ export const PresetsMobile = meta.story({
   // Chromatic ignores the Storybook viewport global and captures at its
   // 1200px default, where the small-screen UI (and this story's play)
   // doesn't exist. Pin its capture to phone width.
-  parameters: { chromatic: { disableSnapshot: true, viewports: [320] } },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+      viewports: [320],
+      cropToViewport: true,
+    },
+  },
   args: {
     label: 'Event date',
   },

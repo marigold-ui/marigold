@@ -15,11 +15,62 @@ if (
   /chromatic=true/.test(location.href)
 ) {
   document.documentElement.dataset.chromatic = '';
+
+  // RAC's Sheet slides in with a JS smooth scroll that the `prefersReducedMotion`
+  // parameter below doesn't stop, so a tray is captured below the screen. Forcing
+  // the query makes it jump into place. Only RAC's Sheet asks for this exact query.
+  const matchMedia = window.matchMedia.bind(window);
+  window.matchMedia = query => {
+    const list = matchMedia(query);
+    if (query === '(prefers-reduced-motion: reduce)') {
+      Object.defineProperty(list, 'matches', { value: true });
+    }
+
+    return list;
+  };
+
+  // Chromatic resizes the window while capturing, which can push an open sheet out
+  // of view, and RAC's Sheet closes once it is out of view. Only reports right after
+  // a resize are dropped, so swipes and exits (RAC's exit waits for one) still close.
+  // The resize also leaves the sheet scrolled off-screen, so put open ones back at
+  // rest: the bottom of their scroller.
+  let resizedAt = -Infinity;
+  window.addEventListener('resize', () => {
+    resizedAt = performance.now();
+    requestAnimationFrame(() => {
+      for (const scroller of document.querySelectorAll('[data-sheet-scroll]')) {
+        if (!scroller.closest('[data-exiting]')) {
+          scroller.scrollTop = scroller.scrollHeight;
+        }
+      }
+    });
+  });
+  const NativeIntersectionObserver = window.IntersectionObserver;
+  window.IntersectionObserver = class extends NativeIntersectionObserver {
+    constructor(
+      callback: IntersectionObserverCallback,
+      options?: IntersectionObserverInit
+    ) {
+      super((entries, observer) => {
+        const kept = entries.filter(
+          entry =>
+            !entry.target.hasAttribute('data-sheet-content') ||
+            entry.intersectionRatio > 0 ||
+            entry.target.closest('[data-exiting]') ||
+            performance.now() - resizedAt > 1000
+        );
+        if (kept.length) callback(kept, observer);
+      }, options);
+    }
+  };
 }
 
 // Storybook viewports only accept fixed pixel values, so we can't use the
 // theme's rem-based `sm` breakpoint directly. 639px = 40rem - 1px (at the
 // default 16px root font size), ensuring this viewport triggers `(width < 40rem)`.
+/** Phone width for Chromatic's `viewports`, which ignores the viewport global. */
+export const smallScreenWidth = 639;
+
 const customViewports = {
   extraSmallScreen: {
     name: 'Extra Small Screen (320px)',
@@ -30,9 +81,9 @@ const customViewports = {
     type: 'mobile' as const,
   },
   smallScreen: {
-    name: 'Small Screen (639px)',
+    name: `Small Screen (${smallScreenWidth}px)`,
     styles: {
-      width: '639px',
+      width: `${smallScreenWidth}px`,
       height: '900px',
     },
     type: 'mobile' as const,

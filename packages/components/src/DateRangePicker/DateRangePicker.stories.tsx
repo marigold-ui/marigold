@@ -126,10 +126,10 @@ export const Basic: any = meta.story({
 
 export const Controlled: any = meta.story({
   render: function Render(args) {
-    const [value, setValue] = useState<RangeValue<DateValue> | null>({
+    const [value, setValue] = useState<RangeValue<DateValue> | null>(() => ({
       start: new CalendarDate(2025, 8, 7),
       end: new CalendarDate(2025, 8, 14),
-    });
+    }));
 
     return (
       <I18nProvider locale="de-DE">
@@ -381,7 +381,13 @@ export const PresetsMobile = meta.story({
   // Chromatic ignores the Storybook viewport global and captures at its
   // 1200px default, where the small-screen UI (and this story's play)
   // doesn't exist. Pin its capture to phone width.
-  parameters: { chromatic: { disableSnapshot: true, viewports: [320] } },
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+      viewports: [320],
+      cropToViewport: true,
+    },
+  },
   args: {
     label: 'Period',
   },
