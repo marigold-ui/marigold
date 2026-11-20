@@ -247,6 +247,24 @@ test('drops data-completed when a completed step is disabled', () => {
   expect(locked).not.toHaveAttribute('data-completed');
 });
 
+test('shows the check and announces both on a completed step that is disabled', () => {
+  render(<States.Component />);
+
+  const items = screen.getAllByRole('listitem');
+  const check = items[0].innerHTML.match(/<svg[\s\S]*?<\/svg>/)?.[0];
+  const doneLocked = items[5];
+
+  expect(within(doneLocked).queryByText('6')).not.toBeInTheDocument();
+  // Same icon as a plain completed step, so not the error icon.
+  expect(check).toBeDefined();
+  expect(doneLocked).toContainHTML(check!);
+  expect(
+    screen.getByText('Step 6 of 7, completed, not available')
+  ).toBeInTheDocument();
+  // A plain disabled step is not announced as completed.
+  expect(screen.getByText('Step 4 of 7, not available')).toBeInTheDocument();
+});
+
 test('marks only the current step with data-current', () => {
   render(<Basic.Component />);
 
