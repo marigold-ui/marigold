@@ -58,6 +58,13 @@ const activeRow = `${row}[data-focused]`;
 /** How long the app has to set `loading` after a search, in ms. */
 const ANSWER_GRACE = 100;
 
+/**
+ * How long to wait before repairing the input's active row, in ms. Longer
+ * than the 500ms RAC waits after a keystroke before it points the input at
+ * the new row, so screen readers announce the typed letter first.
+ */
+const RESYNC_AFTER = 600;
+
 interface SearchStatus {
   /** Whether results are loading. */
   loading: boolean;
@@ -100,6 +107,25 @@ export const useKeepFirstItemActive = (
     const { loading, searchWaiting } = statusRef.current;
     const { sawLoading, graceOver } = answerRef.current;
     return !loading && !searchWaiting && (sawLoading || graceOver);
+  }, []);
+
+  // RAC points the input at a row 500ms after a keystroke. When the app
+  // replaces that row within those 500ms, for example stale rows it kept
+  // while loading, the input can keep pointing at a row that is gone while
+  // another row shows as active, and Enter does nothing. Telling RAC about
+  // the active row again repairs it. RAC ignores a row it has queued
+  // already, so a part of the row without an id goes first to reset the
+  // queue. Both run in one event, so React renders only the active row. A
+  // row the input points at that still exists is left to RAC.
+  const resyncActiveRow = useCallback(() => {
+    const input = inputRef.current;
+    const active = menuRef.current?.querySelector(activeRow);
+    const pointsTo = input?.getAttribute('aria-activedescendant');
+    if (!input || !active || !pointsTo || pointsTo === active.id) return;
+    if (input.ownerDocument.getElementById(pointsTo)) return;
+    const part = active.querySelector(':not([id])');
+    part?.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+    active.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
   }, []);
 
   const activateFirst = useCallback(
@@ -162,20 +188,32 @@ export const useKeepFirstItemActive = (
     [answered, dropEnter]
   );
 
-  // A pointer that lands on a row picks it.
-  const menuCallbackRef = useCallback((menu: HTMLDivElement | null) => {
-    menuRef.current = menu;
-    if (!menu) return;
-    const onPointerMove = (e: PointerEvent) => {
-      if (e.target instanceof Element && e.target.closest(row))
-        pickedRef.current = true;
-    };
-    menu.addEventListener('pointermove', onPointerMove);
-    return () => {
-      menu.removeEventListener('pointermove', onPointerMove);
-      menuRef.current = null;
-    };
-  }, []);
+  // A pointer that lands on a row picks it. Whenever the rows change, the
+  // input's active row is checked once RAC is done moving it.
+  const menuCallbackRef = useCallback(
+    (menu: HTMLDivElement | null) => {
+      menuRef.current = menu;
+      if (!menu) return;
+      const onPointerMove = (e: PointerEvent) => {
+        if (e.target instanceof Element && e.target.closest(row))
+          pickedRef.current = true;
+      };
+      let resyncTimer: ReturnType<typeof setTimeout> | undefined;
+      const rowsChanged = new MutationObserver(() => {
+        clearTimeout(resyncTimer);
+        resyncTimer = setTimeout(resyncActiveRow, RESYNC_AFTER);
+      });
+      menu.addEventListener('pointermove', onPointerMove);
+      rowsChanged.observe(menu, { childList: true, subtree: true });
+      return () => {
+        menu.removeEventListener('pointermove', onPointerMove);
+        rowsChanged.disconnect();
+        clearTimeout(resyncTimer);
+        menuRef.current = null;
+      };
+    },
+    [resyncActiveRow]
+  );
 
   // Runs the Enter that waited, once the app has answered and the first of
   // the new rows is active. Checked a frame after the rows last changed, and
