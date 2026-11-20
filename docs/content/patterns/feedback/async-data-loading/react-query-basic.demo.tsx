@@ -36,8 +36,8 @@ const ReactQueryAutocomplete = () => {
     <Autocomplete
       label="Search Tickets"
       items={items}
-      value={searchTerm}
-      onChange={setSearchTerm}
+      inputValue={searchTerm}
+      onInputChange={setSearchTerm}
       allowsEmptyCollection
       emptyState={<Center>no tickets found</Center>}
       loading={isLoading}

@@ -7,6 +7,7 @@ import {
   Key,
 } from 'react-aria-components/ComboBox';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { useObjectRef } from '@react-aria/utils';
 import { WidthProp, cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Center } from '../Center/Center';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
@@ -14,6 +15,7 @@ import { SearchInput } from '../Input/SearchInput';
 import { ListBox, type ListBoxProps } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
 import { intlMessages } from '../intl/messages';
+import { useAutoFocus } from '../utils/useAutoFocus';
 import { MobileAutocomplete } from './MobileAutocomplete';
 
 // Search Input (we can't use our SearchField because of FieldBase)
@@ -22,7 +24,7 @@ interface AutocompleteInputProps {
   /**
    * Handler that is called when the SearchAutocomplete is submitted.
    * A `key` will be passed if the submission is a selected item (e.g. a user clicks or presses enter on an option).
-   * If the input is a custom `value`, `key` will be `null`.
+   * If the input is custom text, `key` will be `null`.
    *
    * A `value` will be passed if the submission is a custom value (e.g. a user types then presses enter).
    * If the input is a selected item, `value` will be `null`.
@@ -57,12 +59,14 @@ const AutocompleteInput = ({
   const state = use(ComboBoxStateContext);
   // needed to get the triggerwidth on the right button
   const classNames = useClassNames({ component: 'ComboBox' });
+  const inputRef = useObjectRef(ref);
+  // Not a native `autoFocus`, see `useAutoFocus`.
+  useAutoFocus(inputRef, !!autoFocus);
 
   return (
     <SearchInput
-      ref={ref}
+      ref={inputRef}
       loading={loading}
-      autoFocus={autoFocus}
       className={{
         action: cn(
           state?.inputValue === '' ? 'invisible' : 'visible',
@@ -98,9 +102,6 @@ type RemovedProps =
   | 'isRequired'
   | 'isInvalid'
   | 'isReadOnly'
-  | 'inputValue'
-  | 'onInputChange'
-  | 'defaultValue'
   | 'validate'
   | 'validationState'
   | 'slot';
@@ -118,11 +119,6 @@ export interface AutocompleteProps<T extends object = object>
   children?: ReactNode | ((item: T) => ReactNode);
 
   /**
-   * The value of the input (uncontrolled).
-   */
-  defaultValue?: RAC.ComboBoxProps<object>['defaultInputValue'];
-
-  /**
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
    * Note: `"fit"` is not supported because the virtualizer controls item sizing.
    *
@@ -133,21 +129,12 @@ export interface AutocompleteProps<T extends object = object>
   width?: Exclude<WidthProp['width'], 'fit'>;
 
   /**
-   * The value of the input (controlled).
-   */
-  value?: RAC.ComboBoxProps<object>['inputValue'];
-  /**
    * Values that invalidate the cached items, like a hook's dependency array.
    * Only needed for `items` plus a render function: rendered items are cached
    * per item object, so anything the function reads from outside the item —
    * state, a lookup, a prop — has to be listed here or it renders stale.
    */
   dependencies?: ListBoxProps['dependencies'];
-
-  /**
-   * Called when the input value changes.
-   */
-  onChange?: RAC.ComboBoxProps<object>['onInputChange'];
 
   /**
    * Called when the clear button is pressed.
@@ -200,7 +187,7 @@ export interface AutocompleteProps<T extends object = object>
    * Handler that is called when the SearchAutocomplete is submitted.
    *
    * A `key` will be passed if the submission is a selected item (e.g. a user
-   * clicks or presses enter on an option). If the input is a custom `value`, `key` will be `null`.
+   * clicks or presses enter on an option). If the input is custom text, `key` will be `null`.
    *
    * A `value` will be passed if the submission is a custom value (e.g. a user
    * types then presses enter). If the input is a selected item, `value` will be `null`.
@@ -213,31 +200,31 @@ export interface AutocompleteProps<T extends object = object>
 function AutocompleteBase<T extends object>({
   children,
   dependencies,
-  defaultValue,
-  value,
   disabled,
   error,
   readOnly,
   required,
   emptyState,
   loading,
-  onChange,
+  onSelectionChange,
   onClear,
   onSubmit,
   ref,
   ...rest
 }: AutocompleteProps<T> & { ref?: Ref<HTMLInputElement> }) {
   const props: RAC.ComboBoxProps<T> = {
-    onSelectionChange: key => key !== null && onSubmit?.(key, null),
-    defaultInputValue: defaultValue,
-    inputValue: value,
-    onInputChange: onChange,
     allowsCustomValue: true,
     isDisabled: disabled,
     isInvalid: error,
     isReadOnly: readOnly,
     isRequired: required,
     ...rest,
+    // `onSelectionChange` also fires when the selected option is picked again,
+    // `onChange` doesn't. Set after `...rest` so a consumer can't disable it.
+    onSelectionChange: key => {
+      onSelectionChange?.(key);
+      if (key !== null) onSubmit?.(key, null);
+    },
   };
 
   const stringFormatter = useLocalizedStringFormatter(intlMessages);

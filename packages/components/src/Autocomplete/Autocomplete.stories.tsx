@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react';
 import { useState } from 'react';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { keepSheetsOpenInChromatic } from '.storybook/chromatic';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Center } from '../Center/Center';
@@ -225,8 +226,8 @@ export const Controlled = meta.story({
       <Stack space={4}>
         <Autocomplete
           {...args}
-          value={current}
-          onChange={setCurrent}
+          inputValue={current}
+          onInputChange={setCurrent}
           onSubmit={val => setSubmitted(val)}
           disabledKeys={['star-trek']}
         >
@@ -393,7 +394,9 @@ LargeDataset.test(
 );
 
 export const Mobile = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'smallScreen' },
   },
@@ -419,21 +422,15 @@ export const Mobile = meta.story({
   ),
 });
 
-Mobile.test(
-  'Open Tray',
-  {
-    parameters: { chromatic: { disableSnapshot: false } },
-  },
-  async ({ canvas, step }) => {
-    const trigger = await canvas.findByRole('button');
+Mobile.test('Open Tray', async ({ canvas, step }) => {
+  const trigger = await canvas.findByRole('button');
 
-    await step('Open tray by clicking trigger', async () => {
-      await userEvent.click(trigger);
-    });
+  await step('Open tray by clicking trigger', async () => {
+    await userEvent.click(trigger);
+  });
 
-    expect(trigger).toHaveAttribute('aria-expanded', 'true');
-  }
-);
+  expect(trigger).toHaveAttribute('aria-expanded', 'true');
+});
 
 Mobile.test(
   'Mobile Autocomplete interaction',
@@ -449,6 +446,7 @@ Mobile.test(
       const input = await canvas.findByRole('combobox');
 
       await waitFor(() => expect(input).toBeVisible());
+      await waitFor(() => expect(input).toHaveFocus());
     });
 
     await step('Select option from list', async () => {
@@ -635,5 +633,19 @@ Basic.test(
 
       expect(await optionFor('late')).toBeInTheDocument();
     });
+  }
+);
+
+Mobile.test(
+  'Uses 16px text in the tray input, so iOS does not zoom in on focus',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(await canvas.findByRole('button'));
+    await canvas.findByRole('dialog');
+
+    await waitFor(() => expect(document.activeElement?.tagName).toBe('INPUT'));
+    const input = document.activeElement as HTMLElement;
+    expect(parseFloat(getComputedStyle(input).fontSize)).toBeGreaterThanOrEqual(
+      16
+    );
   }
 );

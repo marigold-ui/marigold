@@ -34,8 +34,8 @@ export default function Example() {
     <ComboBox
       label="Search Star Wars Characters"
       items={list.items}
-      value={list.filterText}
-      onChange={list.setFilterText}
+      inputValue={list.filterText}
+      onInputChange={list.setFilterText}
       loading={showLoading}
       allowsEmptyCollection
       emptyState={<Center>No results found</Center>}

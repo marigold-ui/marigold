@@ -19,10 +19,7 @@ export const TrayActions = ({ children }: TrayActionsProps) => {
   return (
     <div
       data-slot="actions"
-      className={cn(
-        'touch-none select-none [grid-area:actions]',
-        classNames.actions
-      )}
+      className={cn('[grid-area:actions]', classNames.actions)}
     >
       {children}
     </div>

@@ -7,11 +7,7 @@ import {
   reportJsxUsage,
   reportNamespaceImports,
 } from './primitives/jsx.js';
-import { assertEdited } from './test-helpers.js';
-import type { CodemodOutcome } from './types.js';
-
-const warningsOf = (result: CodemodOutcome): string[] =>
-  result.kind === 'skipped' ? [] : result.warnings;
+import { assertEdited, warningsOf } from './test-helpers.js';
 
 describe('rename-jsx-props', () => {
   test('renames Inset spacing props', () => {
