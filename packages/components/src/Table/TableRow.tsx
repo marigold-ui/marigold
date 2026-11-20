@@ -112,7 +112,9 @@ const TableRow = <T extends object>({
   // focusable and actionable whatever the table's own `disabledBehavior` is,
   // unless the consumer disabled it as well.
   const selectableLevel = isSelectableLevel(context.selectableRows, level);
-  const consumerDisabled =
+  // Only read for rows outside the level, so tables without `selectableRows`
+  // never build the Set.
+  const consumerDisabled = () =>
     !!otherProps.isDisabled ||
     (id != null &&
       context.disabledKeys != null &&
@@ -121,7 +123,7 @@ const TableRow = <T extends object>({
     ? {}
     : {
         isDisabled: true,
-        ...(!consumerDisabled && { disabledBehavior: 'selection' }),
+        ...(!consumerDisabled() && { disabledBehavior: 'selection' }),
       };
 
   // RAC reads `hasChildItems` for the control and the data attributes;

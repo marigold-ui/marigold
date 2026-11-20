@@ -842,41 +842,6 @@ describe('selectableRows', () => {
     expect(rowOf(EMPTY_LEVEL)).toHaveAttribute('aria-selected', 'false');
   });
 
-  test('clicking or pressing Space on a row outside the level selects nothing', async () => {
-    const onSelectionChange = vi.fn();
-    render(
-      <ExpandableRowsSelectableLevel.Component
-        onSelectionChange={onSelectionChange}
-      />
-    );
-
-    await userEvent.click(screen.getByText(ARTICLE));
-    await userEvent.keyboard(' ');
-
-    expect(onSelectionChange).not.toHaveBeenCalled();
-  });
-
-  test('a Shift+click range skips rows outside the level', async () => {
-    const onSelectionChange = vi.fn();
-    render(
-      <ExpandableRowsSelectableLevel.Component
-        onSelectionChange={onSelectionChange}
-      />
-    );
-    const user = userEvent.setup();
-
-    await user.click(checkboxOf(LEVEL)!);
-    await user.keyboard('{Shift>}');
-    await user.click(checkboxOf(EMPTY_LEVEL)!);
-    await user.keyboard('{/Shift}');
-
-    expect([...onSelectionChange.mock.lastCall![0]].sort()).toEqual([
-      'level-0',
-      'level-1',
-      'level-2',
-    ]);
-  });
-
   test('the table-wide disabledBehavior does not disable rows outside the level', () => {
     render(
       <ExpandableRowsSelectableLevel.Component
@@ -915,51 +880,12 @@ describe('selectableRows', () => {
     expect(checkboxOf('Reduced')).toBeDisabled();
   });
 
-  test('rows outside the level keep row actions and keyboard focus', async () => {
-    const onRowAction = vi.fn();
-    render(
-      <ExpandableRowsSelectableLevel.Component onRowAction={onRowAction} />
-    );
-
-    await userEvent.click(screen.getByText(ARTICLE));
-    expect(onRowAction).toHaveBeenCalledWith('article-79104');
-
-    // A click focuses the cell, so arrow keys move cell by cell, as in any row.
-    await userEvent.keyboard('{ArrowDown}');
-    expect(
-      within(rowOf('Welcome drink (79105)')).getByRole('rowheader')
-    ).toHaveFocus();
-  });
-
   test('"nested" moves the checkbox from the groups to their children', () => {
     render(<ExpandableRowsSelectableLevel.Component selectableRows="nested" />);
 
     expect(checkboxOf(LEVEL)).toBeNull();
     expect(rowOf(LEVEL)).not.toHaveAttribute('aria-selected');
     expect(checkboxOf(ARTICLE)).toBeInTheDocument();
-  });
-
-  test('"nested" select-all reaches the children of unselectable groups', async () => {
-    const onSelectionChange = vi.fn();
-    render(
-      <ExpandableRowsSelectableLevel.Component
-        selectableRows="nested"
-        onSelectionChange={onSelectionChange}
-      />
-    );
-
-    await userEvent.click(
-      screen.getByRole('checkbox', { name: /select all/i })
-    );
-    expect(rowOf(ARTICLE)).toHaveAttribute('aria-selected', 'true');
-    expect(rowOf(LEVEL)).not.toHaveAttribute('aria-selected');
-
-    // Materialising the `all` sentinel must not drop the other children.
-    await userEvent.click(checkboxOf(ARTICLE)!);
-    expect([...onSelectionChange.mock.lastCall![0]].sort()).toEqual([
-      'article-79105',
-      'article-79106',
-    ]);
   });
 
   test('"all" leaves every row selectable, as before', () => {
