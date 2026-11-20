@@ -5,10 +5,6 @@ import { SortDown } from './SortDown';
 import { SortUp } from './SortUp';
 import { Sortable } from './Sortable';
 
-// Class lists are compared as sets: Prettier sorts class strings, and order
-// has no effect on rendering.
-const sorted = (classes: string | null) => (classes ?? '').split(' ').sort();
-
 // Lucide outline icons: stroke only, no fill, like the other Lucide icons here.
 const lucide = {
   classes: 'shrink-0',
@@ -44,7 +40,7 @@ test.each(icons)(
     expect(svg).toHaveAttribute('width', width);
     expect(svg).toHaveAttribute('height', width);
     expect(svg).toHaveAttribute('viewBox', '0 0 24 24');
-    expect(sorted(svg.getAttribute('class'))).toEqual(sorted(classes));
+    expect(svg).toHaveClass(classes, { exact: true });
     expect(svg).not.toHaveAttribute('style');
     for (const [name, value] of Object.entries(attrs)) {
       expect(svg.getAttribute(name)).toBe(value);
