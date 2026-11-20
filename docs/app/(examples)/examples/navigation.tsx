@@ -1,5 +1,5 @@
 import { people } from '@/lib/data/people';
-import { venues } from '@/lib/data/venues';
+import { venueById } from '@/lib/data/venues';
 import {
   ClipboardList,
   LayoutDashboard,
@@ -108,8 +108,7 @@ export const config: ShellConfig = {
   // Label the dynamic `users/[id]` and `venues/[id]` segments with the
   // member's or the venue's name.
   resolveLabel: id =>
-    people.find(person => person.id === id)?.name ??
-    venues.find(venue => venue.id === id)?.name,
+    people.find(person => person.id === id)?.name ?? venueById(id)?.name,
 };
 
 // Flatten a section's nav tree into demo entries. Plain groupings ("Management")

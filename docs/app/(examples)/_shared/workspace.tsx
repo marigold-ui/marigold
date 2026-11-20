@@ -33,9 +33,12 @@ export const useWorkspace = (): WorkspaceValue => {
   return ctx;
 };
 
-// Newest first, each id once, at most `limit`.
-const pushRecent = (list: string[], id: string, limit = RECENT_LIMIT) =>
-  [id, ...list.filter(item => item !== id)].slice(0, limit);
+// Newest first, each id once, at most `RECENT_LIMIT`. A list that already
+// starts with the id stays the same list, so nothing re-renders.
+const pushRecent = (list: string[], id: string) =>
+  list[0] === id
+    ? list
+    : [id, ...list.filter(item => item !== id)].slice(0, RECENT_LIMIT);
 
 export const WorkspaceProvider = ({ children }: PropsWithChildren) => {
   const [organizerId, setOrganizerId] = useState(organizers[0].id);
@@ -50,8 +53,12 @@ export const WorkspaceProvider = ({ children }: PropsWithChildren) => {
     (id: string) => {
       if (id === organizerId) return;
       // The organizer people leave becomes the most recent one.
+      // The one people switch to is current now, so it leaves the list.
       setRecentOrganizerIds(current =>
-        pushRecent(current, organizerId).filter(item => item !== id)
+        pushRecent(
+          current.filter(item => item !== id),
+          organizerId
+        )
       );
       setOrganizerId(id);
     },
@@ -65,9 +72,9 @@ export const WorkspaceProvider = ({ children }: PropsWithChildren) => {
   const value = useMemo(
     () => ({
       organizer: organizerById(organizerId) ?? organizers[0],
-      recentOrganizers: recentOrganizerIds
-        .map(organizerById)
-        .filter((organizer): organizer is Organizer => Boolean(organizer)),
+      recentOrganizers: recentOrganizerIds.flatMap(
+        id => organizerById(id) ?? []
+      ),
       switchOrganizer,
       recentVenueIds,
       visitVenue,
