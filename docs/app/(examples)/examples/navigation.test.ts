@@ -31,6 +31,7 @@ describe('examplePages', () => {
     expect(names).not.toContain('Teams');
     expect(names).not.toContain('Billing');
     expect(names).not.toContain('Analytics');
+    expect(names).not.toContain('Venues');
     expect(names).not.toContain('General');
     expect(names).not.toContain('Security');
   });
