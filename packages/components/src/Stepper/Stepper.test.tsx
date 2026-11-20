@@ -250,11 +250,14 @@ test('drops data-completed when a completed step is disabled', () => {
 test('shows the check and announces both on a completed step that is disabled', () => {
   render(<States.Component />);
 
-  const doneLocked = screen.getAllByRole('listitem')[5];
+  const items = screen.getAllByRole('listitem');
+  const check = items[0].innerHTML.match(/<svg[\s\S]*?<\/svg>/)?.[0];
+  const doneLocked = items[5];
 
   expect(within(doneLocked).queryByText('6')).not.toBeInTheDocument();
-  // The lucide check path, so it can't be confused with the error icon.
-  expect(doneLocked).toContainHTML('<path d="M20 6 9 17l-5-5"></path>');
+  // Same icon as a plain completed step, so not the error icon.
+  expect(check).toBeDefined();
+  expect(doneLocked).toContainHTML(check!);
   expect(
     screen.getByText('Step 6 of 7, completed, not available')
   ).toBeInTheDocument();
