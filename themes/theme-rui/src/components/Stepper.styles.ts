@@ -25,7 +25,7 @@ export const Stepper: ThemeComponent<'Stepper'> = {
       'border-control-border border text-sm font-medium tabular-nums',
       'transition-colors motion-reduce:transition-none',
       'in-data-[state=upcoming]:text-secondary',
-      'in-data-[state=disabled]:text-disabled in-data-[state=disabled]:border-disabled-border in-data-[state=disabled]:border-dashed',
+      'in-data-[state=disabled]:text-disabled in-data-[state=disabled]:border-control-edge-disabled in-data-[state=disabled]:border-dashed',
       'in-data-[state=completed]:bg-primary in-data-[state=completed]:text-primary-foreground in-data-[state=completed]:border-transparent',
       'in-data-[state=current]:text-foreground in-data-[state=current]:border-primary in-data-[state=current]:border-2',
       'in-data-[state=error]:text-destructive-accent in-data-[state=error]:border-destructive-accent',
