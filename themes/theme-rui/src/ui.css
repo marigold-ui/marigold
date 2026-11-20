@@ -204,11 +204,17 @@
  * outward outline gets clipped at the corners. An inset ring cannot be, and it
  * needs no outline reset from the caller.
  *
+ * Forced colors drop box-shadow, so there it falls back to an inset outline.
+ *
  * Pairs with, rather than replaces, a focus background -- the wash tracks the
  * roving pointer/keyboard cursor, this proves where keyboard focus actually is.
  */
 @utility ui-state-focus-item {
   @apply inset-ring-ring inset-ring-2;
+  @variant forced-colors {
+    outline: 2px solid;
+    outline-offset: -2px;
+  }
 }
 
 /*

@@ -3,16 +3,13 @@ import type RAC from 'react-aria-components';
 import { Button as RACButton } from 'react-aria-components/Button';
 import { MenuTrigger, Menu as RACMenu } from 'react-aria-components/Menu';
 import { useContextProps } from 'react-aria-components/slots';
-import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
-import { Button } from '../Button/Button';
 import { ButtonContext, type ButtonContextValue } from '../Button/Context';
 import type { PopoverProps } from '../Overlay/Popover';
 import { Popover } from '../Overlay/Popover';
-import { Tray } from '../Tray/Tray';
-import { intlMessages } from '../intl/messages';
 import { MenuItem } from './MenuItem';
 import { MenuSection } from './MenuSection';
+import { MenuTray } from './MenuTray';
 
 type RemovedProps = 'isOpen' | 'className' | 'style' | 'children';
 
@@ -89,7 +86,6 @@ const Menu = ({
     size: triggerSize,
   });
   const isSmallScreen = useSmallScreen();
-  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   return (
     <MenuTrigger {...props}>
@@ -103,16 +99,15 @@ const Menu = ({
         {label}
       </RACButton>
       {isSmallScreen ? (
-        <Tray>
-          <Tray.Content>
-            <RACMenu {...props} className={classNames.container}>
-              {children}
-            </RACMenu>
-          </Tray.Content>
-          <Tray.Actions>
-            <Button slot="close">{stringFormatter.format('close')}</Button>
-          </Tray.Actions>
-        </Tray>
+        <MenuTray
+          aria-label={ariaLabel}
+          aria-labelledby={props['aria-labelledby']}
+          nameFromTrigger
+        >
+          <RACMenu {...props} className={classNames.container}>
+            {children}
+          </RACMenu>
+        </MenuTray>
       ) : (
         <Popover open={open} placement={placement}>
           <RACMenu {...props} className={classNames.container}>

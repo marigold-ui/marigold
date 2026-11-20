@@ -28,7 +28,10 @@ export const ContextualHelp: ThemeComponent<'ContextualHelp'> = {
     base: [
       'outline-none',
       'ui-surface shadow-elevation-overlay ui-scrollbar',
-      'data-small:max-w-3xs data-medium:max-w-xs data-large:max-w-md',
+      // 24px mirrors React Aria's 12px edge padding per side. A classic scrollbar can still eat into it.
+      'data-small:max-w-[min(var(--container-3xs),100vw-24px)]',
+      'data-medium:max-w-[min(var(--container-xs),100vw-24px)]',
+      'data-large:max-w-[min(var(--container-md),100vw-24px)]',
     ],
   }),
   title: cva({ base: 'text-lg font-semibold px-5 pt-5 mb-1' }),
