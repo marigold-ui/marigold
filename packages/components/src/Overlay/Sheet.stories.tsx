@@ -1,11 +1,13 @@
 import { createRef, useRef, useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
+import { keepSheetsOpenInChromatic } from '.storybook/chromatic';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { useAutoFocus } from '../utils/useAutoFocus';
 import { Sheet } from './Sheet';
 
 const meta = preview.meta({
+  beforeEach: keepSheetsOpenInChromatic,
   title: 'Components/Sheet',
   component: Sheet,
   // Internal primitive, no docs page.
@@ -165,6 +167,18 @@ Basic.test(
     const dialog = await openSheet({ canvas, userEvent });
 
     expect(sheetRef.current).toBe(dialog);
+  }
+);
+
+// `keepSheetsOpenInChromatic` and `Sheet` key on these private RAC attributes.
+Basic.test(
+  'Marks the open sheet with the attributes RAC uses internally',
+  async ({ canvas, userEvent }) => {
+    const dialog = await openSheet({ canvas, userEvent });
+
+    const content = dialog.closest('[data-sheet-content]');
+    expect(content).not.toBeNull();
+    expect(content?.closest('[data-sheet-scroll]')).not.toBeNull();
   }
 );
 

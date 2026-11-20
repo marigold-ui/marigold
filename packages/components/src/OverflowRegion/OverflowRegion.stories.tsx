@@ -1,6 +1,7 @@
 import { type FormEvent, useState } from 'react';
 import { type Key } from 'react-aria-components/Select';
 import { expect, waitFor, within } from 'storybook/test';
+import { keepSheetsOpenInChromatic } from '.storybook/chromatic';
 import preview, { smallScreenWidth } from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
@@ -221,6 +222,7 @@ const navLinks = [
 // A phone-width viewport forces several links to demote; interaction-only, so
 // no snapshot (the "More" menu is exercised by the play test).
 export const PriorityNavigation = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
   tags: ['component-test'],
   globals: { viewport: { value: 'extraSmallScreen' } },
   parameters: { chromatic: { disableSnapshot: true } },

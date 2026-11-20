@@ -9,6 +9,7 @@ import { useState } from 'react';
 import type { DateValue } from 'react-aria-components';
 import { I18nProvider, useLocale } from 'react-aria-components/I18nProvider';
 import { expect, fn, waitFor, within } from 'storybook/test';
+import { keepSheetsOpenInChromatic } from '.storybook/chromatic';
 import preview from '.storybook/preview';
 import type { RangeValue } from '@react-types/shared';
 import { RangeCalendar } from './RangeCalendar';
@@ -672,6 +673,7 @@ PresetsWithMinValue.test(
 // built-ins) keep the resolved-date sublabels and the visible month stable,
 // so Chromatic can snapshot the open tray without daily diffs.
 export const PresetsMobile = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
   tags: ['component-test'],
   // Chromatic ignores the Storybook viewport global and captures at its
   // 1200px default, where the small-screen UI (and this story's play)
