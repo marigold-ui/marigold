@@ -207,7 +207,7 @@ export default () => {
         >
           <Dialog.Title>Add article to {addingTo?.name}</Dialog.Title>
           <Dialog.Content>
-            <Stack space={3}>
+            <Stack space="regular">
               <TextField label="Name" name="name" required autoFocus />
               <NumberField
                 label="Price"

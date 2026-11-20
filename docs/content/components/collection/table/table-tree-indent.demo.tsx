@@ -34,7 +34,7 @@ export default () => {
   const [aligned, setAligned] = useState(true);
 
   return (
-    <Stack space={4}>
+    <Stack space="regular">
       <Switch
         label="Line up with the group label"
         selected={aligned}

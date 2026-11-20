@@ -78,7 +78,9 @@ export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
    * are left out of select-all and range selection. Use `disabledKeys` for
    * rows that are selectable in principle but not right now. After select-all,
    * `onSelectionChange` receives `'all'`, which then means every row on the
-   * selectable level, not every key.
+   * selectable level, not every key. Once a row is deselected after that, the
+   * selection lists only rendered rows, so the children of a collapsed group
+   * drop out of it.
    * @default 'all'
    */
   selectableRows?: 'all' | 'top-level' | 'nested';
