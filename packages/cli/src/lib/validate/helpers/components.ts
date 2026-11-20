@@ -119,6 +119,13 @@ const loadDtsSource = (): SourceFile => {
       strict: false,
       // Bundler resolution handles the package's `.d.mts` re-export barrel.
       moduleResolution: ts.ModuleResolutionKind.Bundler,
+      // A pinned lib, the same one compiler.ts's ES2022 target loads, so the
+      // prop check and the TypeScript check agree. Left to the defaults, it was
+      // ES5 plus whatever an app's `@types` packages pulled in, and Intl options
+      // the formatters inherit (`dateStyle`, `fractionalSecondDigits`) went
+      // missing depending on the app.
+      lib: ['lib.es2022.full.d.ts'],
+      types: [],
     },
   });
   cachedSource = project.addSourceFileAtPath(dts);
