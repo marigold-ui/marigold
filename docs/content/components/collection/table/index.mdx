@@ -101,6 +101,8 @@ Proper alignment makes data easier to scan and compare. Different data types ben
 
 <ComponentDemo name="table-cell-alignment" />
 
+In a grouped table, nested rows can also line up with their group label, see [Lining children up with the group label](#tree-indent).
+
 ### Column widths
 
 A column without a `width` falls back to react-aria's 75px minimum, so a narrow container squeezes every column down to that floor. Cell content that cannot shrink then paints outside its own cell, because cells do not clip. Give columns a width to keep the table a predictable size:
@@ -227,7 +229,7 @@ When the row header cell holds a link instead of plain text, set `textValue` so 
 
 ### Grouped rows
 
-When a record contains records of its own, like a settlement run that bundles individual clearings, users still need to read those children against the same columns as everything else. Grouped rows keep them in the table instead of moving them into a detail view, and each child stays a row in its own right, with its own actions and its own selection.
+When a record contains records of its own, like a settlement run that bundles individual clearings, users still need to read those children against the same columns as everything else. Grouped rows keep them in the table instead of moving them into a detail view, and each child stays a row in its own right, with its own actions and its own selection. When only one level should be selectable, see [Selecting one level of a group](#selecting-one-level).
 
 Let the hierarchy sit on the column that identifies the row, usually the first one, and leave the rest of the columns as they are. The expand control, the indentation and the emphasis on a group row come with it, so there is nothing to place or style.
 
@@ -255,6 +257,50 @@ Groups open collapsed, which makes the group row the only thing most people will
       Don't use grouped rows for content that isn't tabular. Reach for an
       [Accordion](/components/navigation/accordion) when the expanded content
       doesn't share the table's columns.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+#### Selecting one level of a group [#selecting-one-level]
+
+By default every row of a grouped table can be selected, children included. That fits when both levels are records people act on. Often only one level is. The bulk actions apply to the groups and the children only show what a group contains, or the groups are only headings for the items under them. Let only that level be selected, so nobody ticks a row an action is going to ignore.
+
+| What the rows are                                                              | Selectable           | `selectableRows`          | Example                                   |
+| ------------------------------------------------------------------------------ | -------------------- | ------------------------- | ----------------------------------------- |
+| A group and its contents. The children are details, not records anyone acts on | The groups           | `"top-level"`             | A price level and the articles sold at it |
+| Groups that only label what is under them                                      | The items under them | `"nested"`                | Tickets grouped by status                 |
+| Both levels are records with their own actions                                 | Every row            | `"all"` (default)         | An event and its individual performances  |
+| A read-only breakdown of a total                                               | No selection at all  | Leave out `selectionMode` | Revenue per event, broken down by day     |
+
+Rows outside that level show no checkbox, but people can still open them and use their row actions. A group without children stays selectable, because the level counts, not the children. The same rule applies the other way round: when only the nested rows can be selected, every top-level row has to be a group. Put rows that belong to no group into a group of their own, such as "No status", because a top-level row without children can't be selected. Disable a row only when it could be selected but can't right now, because it's sold out, locked or outside the user's permissions, and say why nearby. A disabled checkbox on a row that can never be selected reads as a bug. When a combination of selected rows doesn't work for an action, disable the action instead of the rows.
+
+<ComponentDemo name="table-grouped-selection" />
+
+<Callout title="Select all and collapsed groups" type="warning">
+  After someone selects all rows and then deselects one, the selection only
+  keeps rows that are on screen. Rows inside a collapsed group drop out, even
+  though nobody deselected them. When a bulk action has to reach every row, open
+  the groups first or keep track of the selection yourself.
+</Callout>
+
+#### Lining children up with the group label [#tree-indent]
+
+Each level of a grouped table normally indents one step further, which keeps a deep tree readable. With a single level of grouping where every top-level row is a group, the children read more clearly when they line up with the group label. Any deeper level still indents from there.
+
+<ComponentDemo name="table-tree-indent" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Line children up with the group label when every top-level row is a group,
+      such as tickets grouped by area.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't line them up when some top-level rows have no children. Such a row
+      then looks like the last child of the group above it, so keep the default
+      indent.
     </DontDescription>
   </Dont>
 </GuidelineTiles>

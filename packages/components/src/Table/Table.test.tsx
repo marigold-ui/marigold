@@ -1,8 +1,10 @@
 import { render, renderHook, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import type { ComponentProps } from 'react';
 import { afterEach, vi } from 'vitest';
 import { announce } from '@react-aria/live-announcer';
 import { theme } from '@marigold/theme-rui';
+import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import { mockMatchMedia } from '../test.utils';
 import { useTableContext } from './Context';
 import { Table } from './Table';
@@ -11,6 +13,7 @@ import {
   ExpandableRows,
   ExpandableRowsDynamic,
   ExpandableRowsLazyChildren,
+  ExpandableRowsSelectableLevel,
   FooterTotals,
   RowTypeahead,
   ScrollableAndSticky,
@@ -747,6 +750,206 @@ describe('Expandable rows', () => {
 
     expect(row).toHaveAttribute('aria-expanded', 'false');
     expect(row).toHaveAttribute('data-has-child-items', 'true');
+  });
+});
+
+describe('selectableRows', () => {
+  // eslint-disable-next-line testing-library/no-node-access
+  const rowOf = (text: string) => screen.getByText(text).closest('tr')!;
+  const checkboxOf = (text: string) =>
+    within(rowOf(text)).queryByRole('checkbox');
+
+  const LEVEL = 'Standard price';
+  const EMPTY_LEVEL = 'Staff';
+  const ARTICLE = 'Dinner menu (79104)';
+
+  test('a row outside the level has an empty selection cell and no selection state', () => {
+    render(<ExpandableRowsSelectableLevel.Component />);
+
+    expect(checkboxOf(ARTICLE)).toBeNull();
+    // `false` would tell assistive technology the row could be selected.
+    expect(rowOf(ARTICLE)).not.toHaveAttribute('aria-selected');
+    // Unselectable by structure, which is not the same as disabled.
+    expect(rowOf(ARTICLE)).not.toHaveAttribute('aria-disabled');
+    // The cell stays, so the columns stay aligned.
+    expect(rowOf(ARTICLE).cells).toHaveLength(rowOf(LEVEL).cells.length);
+  });
+
+  describe('a render prop on Table.Row', () => {
+    const MarkedTable = (props: { selectableRows?: 'all' | 'top-level' }) => (
+      <MarigoldProvider theme={theme}>
+        <Table
+          aria-label="Marked rows"
+          selectionMode="multiple"
+          treeColumn="name"
+          defaultExpandedKeys={['group']}
+          {...props}
+        >
+          <Table.Header>
+            <Table.Column id="name" rowHeader>
+              Name
+            </Table.Column>
+          </Table.Header>
+          <Table.Body>
+            <Table.Row
+              id="group"
+              render={domProps => (
+                <tr
+                  {...(domProps as ComponentProps<'tr'>)}
+                  data-marked="group"
+                />
+              )}
+            >
+              <Table.Cell>Group</Table.Cell>
+              <Table.Row
+                id="child"
+                render={domProps => (
+                  <tr
+                    {...(domProps as ComponentProps<'tr'>)}
+                    data-marked="child"
+                  />
+                )}
+              >
+                <Table.Cell>Child</Table.Cell>
+              </Table.Row>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+      </MarigoldProvider>
+    );
+
+    test('still reaches the DOM when selectableRows is not set', () => {
+      render(<MarkedTable />);
+
+      expect(rowOf('Group')).toHaveAttribute('data-marked', 'group');
+      expect(rowOf('Child')).toHaveAttribute('data-marked', 'child');
+    });
+
+    test('still reaches the DOM on a row outside the level, without aria-selected', () => {
+      render(<MarkedTable selectableRows="top-level" />);
+
+      expect(rowOf('Group')).toHaveAttribute('data-marked', 'group');
+      expect(rowOf('Child')).toHaveAttribute('data-marked', 'child');
+      expect(rowOf('Child')).not.toHaveAttribute('aria-selected');
+    });
+  });
+
+  test('the level decides, not whether a row has children', () => {
+    render(<ExpandableRowsSelectableLevel.Component />);
+
+    expect(checkboxOf(LEVEL)).toBeInTheDocument();
+    expect(checkboxOf(EMPTY_LEVEL)).toBeInTheDocument();
+    expect(rowOf(EMPTY_LEVEL)).toHaveAttribute('aria-selected', 'false');
+  });
+
+  test('the table-wide disabledBehavior does not disable rows outside the level', () => {
+    render(
+      <ExpandableRowsSelectableLevel.Component
+        disabledKeys={['level-1']}
+        disabledBehavior="all"
+      />
+    );
+
+    expect(rowOf('Reduced')).toHaveAttribute('aria-disabled', 'true');
+    expect(rowOf(ARTICLE)).not.toHaveAttribute('aria-disabled');
+  });
+
+  test('a row outside the level that the consumer disabled stays disabled', () => {
+    render(
+      <ExpandableRowsSelectableLevel.Component
+        disabledKeys={['article-79105']}
+        disabledBehavior="all"
+      />
+    );
+
+    expect(rowOf('Welcome drink (79105)')).toHaveAttribute(
+      'aria-disabled',
+      'true'
+    );
+    expect(rowOf(ARTICLE)).not.toHaveAttribute('aria-disabled');
+  });
+
+  test('a disabled row on the selectable level keeps its disabled checkbox', () => {
+    render(
+      <ExpandableRowsSelectableLevel.Component
+        disabledKeys={['level-1']}
+        disabledBehavior="selection"
+      />
+    );
+
+    expect(checkboxOf('Reduced')).toBeDisabled();
+  });
+
+  test('"nested" moves the checkbox from the groups to their children', () => {
+    render(<ExpandableRowsSelectableLevel.Component selectableRows="nested" />);
+
+    expect(checkboxOf(LEVEL)).toBeNull();
+    expect(rowOf(LEVEL)).not.toHaveAttribute('aria-selected');
+    expect(checkboxOf(ARTICLE)).toBeInTheDocument();
+  });
+
+  test('"all" leaves every row selectable, as before', () => {
+    render(<ExpandableRowsSelectableLevel.Component selectableRows="all" />);
+
+    expect(checkboxOf(LEVEL)).toBeInTheDocument();
+    expect(checkboxOf(ARTICLE)).toBeInTheDocument();
+    expect(rowOf(ARTICLE)).toHaveAttribute('aria-selected', 'false');
+  });
+
+  test('warns when "nested" is set without a treeColumn', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    render(
+      <ExpandableRowsSelectableLevel.Component
+        selectableRows="nested"
+        treeColumn={undefined}
+      />
+    );
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('[Table] `selectableRows="nested"`')
+    );
+
+    warnSpy.mockRestore();
+  });
+
+  test('does not warn for "top-level" without a treeColumn', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    render(<ExpandableRowsSelectableLevel.Component treeColumn={undefined} />);
+
+    expect(warnSpy).not.toHaveBeenCalledWith(
+      expect.stringContaining('selectableRows')
+    );
+
+    warnSpy.mockRestore();
+  });
+});
+
+describe('treeIndent', () => {
+  // The value's own box, which sits in the tree column's second track.
+  const xOf = (text: string) =>
+    screen.getByText(text).getBoundingClientRect().left;
+
+  const LEVEL = 'Standard price';
+  const ARTICLE = 'Dinner menu (79104)';
+
+  test('by default a child row indents one step past its group label', () => {
+    render(<ExpandableRowsSelectableLevel.Component />);
+
+    expect(xOf(ARTICLE)).toBeGreaterThan(xOf(LEVEL));
+  });
+
+  test('"aligned" puts the first nested level at the group label', () => {
+    render(<ExpandableRowsSelectableLevel.Component treeIndent="aligned" />);
+
+    expect(xOf(ARTICLE)).toBeCloseTo(xOf(LEVEL), 0);
+  });
+
+  test('"aligned" keeps the header at the same x as the top-level values', () => {
+    render(<ExpandableRowsSelectableLevel.Component treeIndent="aligned" />);
+
+    expect(xOf('Price level')).toBeCloseTo(xOf(LEVEL), 0);
   });
 });
 

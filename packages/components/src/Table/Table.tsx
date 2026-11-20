@@ -74,6 +74,25 @@ export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
    */
   treeColumn?: RAC.TableProps['treeColumn'];
   /**
+   * Which level of rows can be selected. Rows outside it show no checkbox and
+   * are left out of select-all and range selection. Use `disabledKeys` for
+   * rows that are selectable in principle but not right now. After select-all,
+   * `onSelectionChange` receives `'all'`, which then means every row on the
+   * selectable level, not every key. Once a row is deselected after that, the
+   * selection lists only rendered rows, so the children of a collapsed group
+   * drop out of it.
+   * @default 'all'
+   */
+  selectableRows?: 'all' | 'top-level' | 'nested';
+  /**
+   * How far nested rows indent in the `treeColumn`. `aligned` lines the first
+   * nested level up with its group's label, and deeper levels indent from
+   * there. Use it when every top-level row is a group, otherwise a top-level
+   * row without children reads as the previous group's last child.
+   * @default 'default'
+   */
+  treeIndent?: 'default' | 'aligned';
+  /**
    * The keys of the expanded rows (controlled).
    */
   expandedKeys?: RAC.TableProps['expandedKeys'];
@@ -248,6 +267,8 @@ const TableRoot = ({
   loading = false,
   actionBar,
   treeColumn,
+  selectableRows = 'all',
+  treeIndent = 'default',
   selectedKeys: selectedKeysProp,
   defaultSelectedKeys: defaultSelectedKeysProp,
   onSelectionChange: onSelectionChangeProp,
@@ -285,6 +306,13 @@ const TableRoot = ({
     setScrolls(container.getBoundingClientRect().width < minTableWidth);
   }, [minTableWidth]);
 
+  // Without a tree every row is top-level, so "nested" would leave nothing
+  // selectable. Not a type error: the two props are often set at different times.
+  useDevWarning(
+    selectableRows === 'nested' && treeColumn == null,
+    '[Table] `selectableRows="nested"` without a `treeColumn` leaves no row selectable, because every row is top-level. Set `treeColumn`, or use `selectableRows="all"`.'
+  );
+
   useResizeObserver({ ref: containerRef, onResize: measure });
   useLayoutEffect(measure, [measure]);
 
@@ -297,6 +325,8 @@ const TableRoot = ({
       allowTextSelection,
       alignY,
       treeColumn,
+      selectableRows,
+      disabledKeys: props.disabledKeys,
       warnedMissingTextValue,
     }),
     [
@@ -307,6 +337,8 @@ const TableRoot = ({
       allowTextSelection,
       alignY,
       treeColumn,
+      selectableRows,
+      props.disabledKeys,
       warnedMissingTextValue,
     ]
   );
@@ -362,6 +394,10 @@ const TableRoot = ({
               <TableElement
                 // Only a virtualized table renders a `<div>`, and Marigold's never is.
                 {...(domProps as ComponentProps<'table'>)}
+                // The theme owns the indent, so it only learns which one applies.
+                data-tree-indent={
+                  treeIndent === 'default' ? undefined : treeIndent
+                }
                 loading={loading}
                 onMinWidthChange={setMinTableWidth}
               />

@@ -1,4 +1,4 @@
-import type { MouseEvent } from 'react';
+import type { ComponentProps, MouseEvent } from 'react';
 import { use } from 'react';
 import type RAC from 'react-aria-components';
 import { Button } from 'react-aria-components/Button';
@@ -13,7 +13,8 @@ import { cn, useClassNames } from '@marigold/system';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { GripVertical } from '../icons/GripVertical';
 import { verticalAlign } from '../utils/styleProps';
-import { useTableContext } from './Context';
+import { TableRowLevelContext, useTableContext } from './Context';
+import type { TableContextProps } from './Context';
 import { renderStickyCell } from './TableStickyCell';
 
 type RemovedProps = 'className' | 'style';
@@ -83,6 +84,15 @@ const SelectionCheckbox = ({ cellKey }: { cellKey?: RAC.Key }) => {
   );
 };
 
+const isSelectableLevel = (
+  selectableRows: TableContextProps['selectableRows'],
+  level: number
+) => {
+  if (selectableRows === 'top-level') return level === 1;
+  if (selectableRows === 'nested') return level > 1;
+  return true;
+};
+
 const TableRow = <T extends object>({
   id,
   columns,
@@ -90,10 +100,31 @@ const TableRow = <T extends object>({
   variant: variantProp,
   size: sizeProp,
   expandable,
+  render,
   ...otherProps
 }: TableRowProps<T>) => {
   let { selectionBehavior, allowsDragging } = useTableOptions();
   const context = useTableContext();
+  const level = use(TableRowLevelContext);
+
+  // A row outside the selectable level is unselectable by structure, not by
+  // state. React Stately's per-row `disabledBehavior: 'selection'` keeps it
+  // focusable and actionable whatever the table's own `disabledBehavior` is,
+  // unless the consumer disabled it as well.
+  const selectableLevel = isSelectableLevel(context.selectableRows, level);
+  // Only read for rows outside the level, so tables without `selectableRows`
+  // never build the Set.
+  const consumerDisabled = () =>
+    !!otherProps.isDisabled ||
+    (id != null &&
+      context.disabledKeys != null &&
+      new Set(context.disabledKeys).has(id));
+  const levelProps = selectableLevel
+    ? {}
+    : {
+        isDisabled: true,
+        ...(!consumerDisabled() && { disabledBehavior: 'selection' }),
+      };
 
   // RAC reads `hasChildItems` for the control and the data attributes;
   // react-aria's `useTableRow` reads `hasChildRows` for `aria-expanded`. Setting
@@ -121,6 +152,23 @@ const TableRow = <T extends object>({
       className={cn('group/row', classNames.row)}
       {...expandableProps}
       {...otherProps}
+      {...levelProps}
+      // React Aria marks every row `aria-selected` once selection is on, which
+      // tells assistive technology the row is selectable. A row outside the
+      // selectable level never is, so it carries no selection state at all.
+      // A consumer's own `render` still gets the props, minus that attribute.
+      render={
+        selectableLevel
+          ? render
+          : (domProps, renderProps) => {
+              const props = { ...domProps, 'aria-selected': undefined };
+              return render ? (
+                render(props, renderProps)
+              ) : (
+                <tr {...(props as ComponentProps<'tr'>)} />
+              );
+            }
+      }
     >
       {allowsDragging && (
         <Cell className={cellClassName} render={renderStickyCell}>
@@ -139,10 +187,15 @@ const TableRow = <T extends object>({
       )}
       {selectionBehavior === 'toggle' && (
         <Cell className={cellClassName} render={renderStickyCell}>
-          {({ id }) => <SelectionCheckbox cellKey={id} />}
+          {({ id }) =>
+            // The cell stays, so the columns stay aligned.
+            selectableLevel ? <SelectionCheckbox cellKey={id} /> : null
+          }
         </Cell>
       )}
-      <Collection items={columns}>{children}</Collection>
+      <TableRowLevelContext value={level + 1}>
+        <Collection items={columns}>{children}</Collection>
+      </TableRowLevelContext>
     </Row>
   );
 };
