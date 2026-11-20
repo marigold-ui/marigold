@@ -578,6 +578,14 @@ Rail.test(
 );
 
 // Walks the tree instead of matching a theme class, so assertions stay behavioural.
+// Alpha of the first box-shadow color, 0 for none.
+const shadowAlpha = (element: HTMLElement) => {
+  const { boxShadow } = getComputedStyle(element);
+  if (boxShadow === 'none') return 0;
+  const match = boxShadow.match(/\/\s*([\d.]+)\)|rgba\([^)]*,\s*([\d.]+)\)/);
+  return match ? Number(match[1] ?? match[2]) : 1;
+};
+
 const closestScrollable = (element: HTMLElement) => {
   let node = element.parentElement;
   while (node) {
@@ -616,12 +624,14 @@ RailOverflow.test(
     expect(scroller).not.toContainElement(pinnedItem);
     expect(scroller!.parentElement).toContainElement(pinnedItem);
 
-    // Firefox takes the seam's fallback branch, which the rail opts out of, so
-    // nothing is painted. Whether the seam tracks scroll position where the
-    // animation does run is not testable in this suite.
-    expect(getComputedStyle(pinnedItem.parentElement!).boxShadow).toMatch(
-      /none|rgba\(0, 0, 0, 0\)/
-    );
+    // The seam tracks scroll: on while items sit below the fold, off at the end.
+    const footer = pinnedItem.parentElement!;
+
+    expect(shadowAlpha(footer)).toBeGreaterThan(0);
+
+    scroller!.scrollTop = scroller!.scrollHeight;
+
+    await waitFor(() => expect(shadowAlpha(footer)).toBe(0));
   }
 );
 
