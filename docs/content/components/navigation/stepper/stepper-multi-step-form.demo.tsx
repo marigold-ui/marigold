@@ -2,8 +2,8 @@ import type { Key } from 'react';
 import { useState } from 'react';
 import {
   Button,
-  ButtonGroup,
   Headline,
+  Inline,
   Stack,
   Stepper,
   Text,
@@ -48,13 +48,17 @@ const StepPanel = ({ step }: { step: Key }) => {
 export default () => {
   const [index, setIndex] = useState(0);
   const [completed, setCompleted] = useState<Key[]>([]);
+  const [placed, setPlaced] = useState(false);
   const isLast = index === STEPS.length - 1;
 
   const advance = () => {
+    // Ignore a second press instead of disabling the focused button.
+    if (placed) return;
     setCompleted(done =>
       done.includes(STEPS[index].id) ? done : [...done, STEPS[index].id]
     );
-    setIndex(current => current + 1);
+    if (isLast) setPlaced(true);
+    else setIndex(current => current + 1);
   };
 
   return (
@@ -63,6 +67,7 @@ export default () => {
         aria-label="Order progress"
         selectedKey={STEPS[index].id}
         completedKeys={completed}
+        selectableKeys={placed ? [] : undefined}
         onSelectionChange={key =>
           setIndex(STEPS.findIndex(step => step.id === key))
         }
@@ -76,18 +81,23 @@ export default () => {
 
       <StepPanel step={STEPS[index].id} />
 
-      <ButtonGroup>
+      <Inline alignX="between" alignY="center">
         <Button
           variant="secondary"
-          disabled={index === 0}
+          disabled={index === 0 || placed}
           onPress={() => setIndex(current => current - 1)}
         >
           Back
         </Button>
-        <Button variant="primary" disabled={isLast} onPress={advance}>
-          Continue
-        </Button>
-      </ButtonGroup>
+        <Inline space={4} alignY="center">
+          <Text aria-live="polite">
+            {placed && 'Your order has been placed.'}
+          </Text>
+          <Button variant="primary" onPress={advance}>
+            {isLast ? 'Place order' : 'Continue'}
+          </Button>
+        </Inline>
+      </Inline>
     </Stack>
   );
 };

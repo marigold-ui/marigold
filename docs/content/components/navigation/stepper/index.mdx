@@ -88,6 +88,8 @@ A step is in exactly one state, resolved in this order: `disabled`, then `error`
 
 An errored step stays clickable on purpose. A user who is told a step failed needs a way back to it.
 
+A step that is both completed and disabled keeps its check, and screen readers hear it as completed and not available. Locking a step should never hide that the work on it was done.
+
 The connector is the one part not driven by that single state. It reads completion directly, so a completed step the user has come back to keeps its filled line while its marker shows `current`. An `error` or `disabled` state still clears the line, because a step you have to return to has not cleared the run to the next one.
 
 ### Driving a multi-step form
@@ -95,6 +97,8 @@ The connector is the one part not driven by that single state. It reads completi
 Split a form into steps when one page of it would be discouraging, when the fields fall into groups that stand on their own, or when later fields depend on earlier answers. Splitting costs the user a click per step, so a short form is better off on one page. Once it is split, the stepper is what tells people how many steps are left and lets them get back to one they have already filled.
 
 The stepper reports progress, it does not drive it. Your "Continue" button owns both the panel that is shown and the keys handed back to `<Stepper>`: it adds the step being left to `completedKeys` and moves `selectedKey` on. Because completed steps stay clickable, the user can jump back to anything they have already finished without losing it.
+
+Put Back on the far left and Continue on the far right, so each button sits on the side it moves the user towards. Neither button needs an icon, because the position and the button's emphasis already show the direction. On the last step, name the button after what it does, such as "Place order", because that press commits rather than moves on.
 
 <ComponentDemo name="stepper-multi-step-form" />
 
@@ -114,7 +118,7 @@ Two things are worth copying from the example. Clear the step's key as soon as t
 
 ### Which steps can be clicked
 
-By default a user can return to any step they have completed, any step that failed, and the step they are on. Steps still ahead are inert text, not disabled buttons, because they are not controls yet.
+By default a user can return to any step they have completed, any step that failed, and the step they are on. Steps still ahead are inert text rather than disabled buttons, because they are not controls yet. Like every step that cannot be clicked, they show a not-allowed cursor on hover.
 
 Two props change this:
 
