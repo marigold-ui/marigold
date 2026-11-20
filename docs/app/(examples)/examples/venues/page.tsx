@@ -29,19 +29,22 @@ import { useWorkspace } from '../../_shared';
 // the link. Keyboard focus outlines the whole card.
 const stretchedLink = [
   'text-inherit no-underline outline-none',
-  "after:absolute after:inset-0 after:rounded-(--radius-surface) after:content-['']",
-  // The theme's focus outline (`ui-state-focus`), on the whole card.
-  'focus-visible:after:outline-3 focus-visible:after:outline-solid focus-visible:after:outline-(--color-ring)/50',
-  'focus-visible:after:ring-1 focus-visible:after:ring-(--color-ring)',
+  // `<Card>` is positioned, so the `::after` covers exactly the card, above
+  // the photo.
+  "after:absolute after:inset-0 after:z-1 after:rounded-(--radius-surface) after:content-['']",
+  // The card clips its overflow, so the ring sits inside its edge. It is the
+  // only focus indicator here, so it is at full strength, like the theme's
+  // `ui-state-focus-item`.
+  'focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-solid focus-visible:after:outline-(--color-ring)',
 ].join(' ');
+
 const VenuesPage = () => {
   const { organizer } = useWorkspace();
   const term = useSearchParams().get('q')?.trim() ?? '';
-  const shown = term
-    ? venues.filter(venue =>
-        venue.name.toLowerCase().includes(term.toLowerCase())
-      )
-    : venues;
+  // An empty term matches every venue.
+  const shown = venues.filter(venue =>
+    venue.name.toLowerCase().includes(term.toLowerCase())
+  );
 
   return (
     <Page>
@@ -69,7 +72,7 @@ const VenuesPage = () => {
           aria-label="Venues"
         >
           {shown.map(venue => (
-            <div key={venue.id} role="listitem" className="relative flex">
+            <div key={venue.id} role="listitem" className="flex">
               <Card stretch>
                 <Card.Media>
                   <img

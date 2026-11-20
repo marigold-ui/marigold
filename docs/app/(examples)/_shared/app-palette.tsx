@@ -1,8 +1,8 @@
 'use client';
 
-import { organizers } from '@/lib/data/organizers';
+import { organizerById, organizers } from '@/lib/data/organizers';
 import { people } from '@/lib/data/people';
-import { venues } from '@/lib/data/venues';
+import { venueById } from '@/lib/data/venues';
 import { useQuery } from '@tanstack/react-query';
 import {
   ArrowRight,
@@ -15,10 +15,11 @@ import {
   UserRound,
 } from 'lucide-react';
 import type { Key, ReactNode } from 'react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   CommandPalette,
   Description,
+  NumericFormat,
   TextValue,
   useToast,
 } from '@marigold/components';
@@ -42,11 +43,11 @@ const PREFIXES = { organizers: 'o:', venues: 'v:', members: 'm:' } as const;
 const VENUE_LIMIT = 4;
 const NARROWED_VENUE_LIMIT = 8;
 
-interface VenueResult {
-  id: string;
-  name: string;
-  city: string;
-  capacity: number;
+interface VenueResults {
+  /** The term these results are for. */
+  term: string;
+  items: { id: string; name: string; city: string; capacity: number }[];
+  totalItems: number;
 }
 
 interface PageEntry {
@@ -86,42 +87,41 @@ const collectPages = (config: ShellConfig): PageEntry[] => {
   );
 };
 
-// Venues come from the docs' venue API. While people keep typing the same
-// term ("har", "harb"), the last results stay in place until the next ones
-// arrive, so the group doesn't flash empty. Results for another term would
-// be wrong, so they don't stay.
+// Venues come from the docs' venue API, which answers slower than needed
+// (`delay`) so the palette's loading state shows. Each term is fetched once,
+// with enough rows for the narrowed group, and the ungrouped search shows the
+// first few. While people keep typing the same term ("har", "harb"), the
+// last results stay in place until the next ones arrive, so the group
+// doesn't flash empty. Results for another term would be wrong, so they
+// don't stay.
 const useVenueSearch = ({ term, prefix }: CommandPaletteSearchState) => {
-  const inScope = prefix === null || prefix === PREFIXES.venues;
-  const searching = (term !== '' || prefix === PREFIXES.venues) && inScope;
-  const limit = prefix ? NARROWED_VENUE_LIMIT : VENUE_LIMIT;
+  const searching =
+    prefix === PREFIXES.venues || (prefix === null && term !== '');
   const query = useQuery({
-    queryKey: ['palette-venues', { term, limit }],
-    queryFn: async ({ signal }) => {
+    queryKey: ['palette-venues', term],
+    queryFn: async ({ signal }): Promise<VenueResults> => {
       const params = new URLSearchParams({
         q: term,
-        pageSize: String(limit),
+        pageSize: String(NARROWED_VENUE_LIMIT),
         delay: '300',
       });
       const res = await fetch(`/api/venues?${params}`, { signal });
-      return (await res.json()) as {
-        items: VenueResult[];
-        totalItems: number;
-      };
+      if (!res.ok) throw new Error(`Failed to load venues (${res.status})`);
+      return { term, ...(await res.json()) };
     },
     enabled: searching,
-    placeholderData: (previous, previousQuery) => {
-      const [, last] = (previousQuery?.queryKey ?? []) as [
-        string,
-        { term: string } | undefined,
-      ];
-      return last && term.startsWith(last.term) ? previous : undefined;
-    },
+    staleTime: Infinity,
+    placeholderData: previous =>
+      previous && term.startsWith(previous.term) ? previous : undefined,
   });
+  const data = searching ? query.data : undefined;
   return {
     searching,
-    inScope,
-    items: searching ? (query.data?.items ?? []) : [],
-    total: searching ? (query.data?.totalItems ?? 0) : 0,
+    items: (data?.items ?? []).slice(
+      0,
+      prefix ? NARROWED_VENUE_LIMIT : VENUE_LIMIT
+    ),
+    total: data?.totalItems ?? 0,
     loading: searching && query.isFetching,
   };
 };
@@ -136,7 +136,8 @@ export const AppPalette = ({ config, docsHref }: AppPaletteProps) => {
   const { organizer, recentOrganizers, switchOrganizer, recentVenueIds } =
     useWorkspace();
   const { addToast } = useToast();
-  // Every keystroke, to know right away whether people typed anything.
+  // The query, controlled to know on every keystroke whether people typed
+  // anything. The palette clears it each time it opens.
   const [input, setInput] = useState('');
   // Once people pause typing: the term and the group it is narrowed to.
   const [search, setSearch] = useState<CommandPaletteSearchState>({
@@ -145,19 +146,24 @@ export const AppPalette = ({ config, docsHref }: AppPaletteProps) => {
   });
   const typing = input.trim() !== '';
   const venueSearch = useVenueSearch(search);
-  const pages = collectPages(config);
+  const pages = useMemo(() => collectPages(config), [config]);
 
-  const recentVenues = recentVenueIds
-    .map(id => venues.find(venue => venue.id === id))
-    .filter(venue => venue !== undefined);
   // Before people type, the organizers switched to last. The current one is
   // in the top navigation already, and Enter on it would do nothing.
   const shownOrganizers = typing ? organizers : recentOrganizers;
+  const shownVenues = venueSearch.searching
+    ? venueSearch.items
+    : typing
+      ? []
+      : recentVenueIds.flatMap(id => venueById(id) ?? []);
+  // Members and pages are many, so they show only once people type.
+  const shownPeople = typing ? people : [];
+  const shownPages = typing ? pages : [];
 
   const handleAction = (key: Key) => {
     const id = String(key);
     if (id.startsWith('organizer:')) {
-      const next = organizers.find(o => `organizer:${o.id}` === id);
+      const next = organizerById(id.slice('organizer:'.length));
       if (!next || next.id === organizer.id) return;
       switchOrganizer(next.id);
       addToast({
@@ -165,8 +171,7 @@ export const AppPalette = ({ config, docsHref }: AppPaletteProps) => {
         description: `You now work in customer no. ${next.customerNumber}.`,
         variant: 'success',
       });
-    }
-    if (id === 'copy-link') {
+    } else if (id === 'copy-link') {
       void navigator.clipboard?.writeText(window.location.href);
       addToast({
         title: 'Link copied',
@@ -181,13 +186,9 @@ export const AppPalette = ({ config, docsHref }: AppPaletteProps) => {
       <CommandPalette.Button>Search or jump to…</CommandPalette.Button>
       <CommandPalette
         placeholder="Search organizers, venues, members and pages…"
+        inputValue={input}
         onInputChange={setInput}
-        onSearchChange={next => {
-          setSearch(next);
-          // The palette clears the query when it opens and reports that
-          // right away, without `onInputChange`.
-          if (!next.term && !next.prefix) setInput('');
-        }}
+        onSearchChange={setSearch}
         loading={venueSearch.loading}
         onAction={handleAction}
       >
@@ -227,12 +228,7 @@ export const AppPalette = ({ config, docsHref }: AppPaletteProps) => {
               : undefined
           }
         >
-          {(venueSearch.searching
-            ? venueSearch.items
-            : typing
-              ? []
-              : recentVenues
-          ).map(venue => (
+          {shownVenues.map(venue => (
             <CommandPalette.Item
               key={venue.id}
               id={`venue:${venue.id}`}
@@ -242,8 +238,8 @@ export const AppPalette = ({ config, docsHref }: AppPaletteProps) => {
               <MapPin />
               <TextValue>{venue.name}</TextValue>
               <Description>
-                {venue.city}, up to {venue.capacity.toLocaleString('en-US')}{' '}
-                guests
+                {venue.city}, up to{' '}
+                <NumericFormat tabular={false} value={venue.capacity} /> guests
               </Description>
             </CommandPalette.Item>
           ))}
@@ -269,7 +265,7 @@ export const AppPalette = ({ config, docsHref }: AppPaletteProps) => {
         </CommandPalette.Group>
 
         <CommandPalette.Group title="Members" prefix={PREFIXES.members}>
-          {(typing ? people : []).map(person => (
+          {shownPeople.map(person => (
             <CommandPalette.Item
               key={person.id}
               id={`member:${person.id}`}
@@ -284,7 +280,7 @@ export const AppPalette = ({ config, docsHref }: AppPaletteProps) => {
         </CommandPalette.Group>
 
         <CommandPalette.Group title="Pages">
-          {(typing ? pages : []).map(page => (
+          {shownPages.map(page => (
             <CommandPalette.Item
               key={page.href}
               id={`page:${page.href}`}

@@ -21,6 +21,8 @@ export interface PageEntry {
 // ⌘K / Ctrl+K opens the docs search, unless something on the page already
 // claimed the key. The examples' command palette handles ⌘K first and marks
 // the event, so on those pages the palette opens instead of the docs search.
+// Mirrors fumadocs' default hot key, which it does not export, plus the
+// `defaultPrevented` check.
 const noop = () => () => {};
 const MetaOrControl = () =>
   useSyncExternalStore(

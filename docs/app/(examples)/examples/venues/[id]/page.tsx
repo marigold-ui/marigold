@@ -4,6 +4,7 @@ import {
   amenitiesOptions,
   parkingOptions,
   seatingTypeOptions,
+  venueById,
   venueTypes,
   venues,
 } from '@/lib/data/venues';
@@ -43,7 +44,7 @@ import {
   Tiles,
   Title,
 } from '@marigold/components';
-import { useWorkspace } from '../../../_shared';
+import { Field, useWorkspace } from '../../../_shared';
 
 // The venue detail is the "Detail / record" layout: a primary column with
 // what the venue offers and a narrower "Overview" column with the facts
@@ -60,36 +61,75 @@ const amenityIcons: Record<(typeof amenitiesOptions)[number], ReactNode> = {
   WiFi: <Wifi />,
 };
 
-const Field = ({ label, children }: { label: string; children: ReactNode }) => (
-  <Stack space="tight">
-    <Text variant="muted" fontSize="xs">
-      {label}
-    </Text>
-    <Text weight="semibold">{children}</Text>
-  </Stack>
+// A decorative icon in the secondary text colour.
+const Icon = ({
+  size = 'small',
+  children,
+}: {
+  size?: 'small' | 'medium';
+  children: ReactNode;
+}) => (
+  <span
+    aria-hidden="true"
+    className={
+      size === 'small'
+        ? 'text-secondary [&_svg]:size-4'
+        : 'text-secondary [&_svg]:size-5'
+    }
+  >
+    {children}
+  </span>
 );
 
 const KeyFigure = ({
   icon,
   label,
+  unit,
   children,
 }: {
   icon: ReactNode;
   label: string;
+  unit?: string;
   children: ReactNode;
 }) => (
   <Stack space="tight">
     <Inline space="tight" alignY="center" noWrap>
-      <span aria-hidden="true" className="text-secondary [&_svg]:size-4">
-        {icon}
-      </span>
+      <Icon>{icon}</Icon>
       <Text variant="muted" fontSize="xs">
         {label}
       </Text>
     </Inline>
     <Text fontSize="2xl" weight="semibold">
       {children}
+      {unit && (
+        <Text as="span" variant="muted" fontSize="sm">
+          {` ${unit}`}
+        </Text>
+      )}
     </Text>
+  </Stack>
+);
+
+// A titled set of badges, such as the seating or the parking options.
+const BadgeGroup = ({
+  icon,
+  title,
+  items,
+}: {
+  icon: ReactNode;
+  title: string;
+  items: string[];
+}) => (
+  <Stack space="related">
+    <Inline space="tight" alignY="center" noWrap>
+      <Icon>{icon}</Icon>
+      <Text weight="semibold">{title}</Text>
+    </Inline>
+    <Inline space="related">
+      {items.map(item => (
+        <Badge key={item}>{item}</Badge>
+      ))}
+    </Inline>
   </Stack>
 );
 
@@ -105,7 +145,7 @@ const Price = ({ value }: { value: number }) => (
 const VenueDetailPage = () => {
   const params = useParams<{ id: string }>();
   const { visitVenue } = useWorkspace();
-  const venue = venues.find(v => v.id === params.id);
+  const venue = venueById(params.id);
 
   // Opening a venue puts it on top of the palette's recent venues.
   useEffect(() => {
@@ -114,13 +154,14 @@ const VenueDetailPage = () => {
 
   if (!venue) notFound();
 
-  const nearby = venues
-    .filter(other => other.id !== venue.id && other.city === venue.city)
-    .concat(
-      venues.filter(other => other.id !== venue.id && other.type === venue.type)
-    )
-    .filter((other, i, list) => list.indexOf(other) === i)
-    .slice(0, 3);
+  // Venues in the same city first, then venues of the same type elsewhere.
+  const others = venues.filter(other => other.id !== venue.id);
+  const similar = [
+    ...others.filter(other => other.city === venue.city),
+    ...others.filter(
+      other => other.city !== venue.city && other.type === venue.type
+    ),
+  ].slice(0, 3);
 
   return (
     <Page>
@@ -159,19 +200,11 @@ const VenueDetailPage = () => {
                 <KeyFigure icon={<Wallet />} label="Price from">
                   <Price value={venue.price.from} />
                 </KeyFigure>
-                <KeyFigure icon={<Star />} label="Rating">
+                <KeyFigure icon={<Star />} label="Rating" unit="/ 5">
                   {venue.rating.toFixed(1)}
-                  <Text as="span" variant="muted" fontSize="sm">
-                    {' '}
-                    / 5
-                  </Text>
                 </KeyFigure>
-                <KeyFigure icon={<Bus />} label="Public transit">
+                <KeyFigure icon={<Bus />} label="Public transit" unit="min">
                   {venue.publicTransitMinutes}
-                  <Text as="span" variant="muted" fontSize="sm">
-                    {' '}
-                    min
-                  </Text>
                 </KeyFigure>
               </Tiles>
             </Panel.Content>
@@ -209,12 +242,7 @@ const VenueDetailPage = () => {
                       alignY="center"
                       noWrap
                     >
-                      <span
-                        aria-hidden="true"
-                        className="text-secondary [&_svg]:size-5"
-                      >
-                        {amenityIcons[amenity]}
-                      </span>
+                      <Icon size="medium">{amenityIcons[amenity]}</Icon>
                       <Text>{amenity}</Text>
                     </Inline>
                   );
@@ -229,38 +257,16 @@ const VenueDetailPage = () => {
             </Panel.Header>
             <Panel.Content>
               <Columns columns={[1, 1]} space="regular" collapseAt="30rem">
-                <Stack space="related">
-                  <Inline space="tight" alignY="center" noWrap>
-                    <span
-                      aria-hidden="true"
-                      className="text-secondary [&_svg]:size-4"
-                    >
-                      <Armchair />
-                    </span>
-                    <Text weight="semibold">Seating</Text>
-                  </Inline>
-                  <Inline space="related">
-                    {venue.seatingTypes.map(index => (
-                      <Badge key={index}>{seatingTypeOptions[index]}</Badge>
-                    ))}
-                  </Inline>
-                </Stack>
-                <Stack space="related">
-                  <Inline space="tight" alignY="center" noWrap>
-                    <span
-                      aria-hidden="true"
-                      className="text-secondary [&_svg]:size-4"
-                    >
-                      <Car />
-                    </span>
-                    <Text weight="semibold">Parking</Text>
-                  </Inline>
-                  <Inline space="related">
-                    {venue.parking.map(index => (
-                      <Badge key={index}>{parkingOptions[index]}</Badge>
-                    ))}
-                  </Inline>
-                </Stack>
+                <BadgeGroup
+                  icon={<Armchair />}
+                  title="Seating"
+                  items={venue.seatingTypes.map(i => seatingTypeOptions[i])}
+                />
+                <BadgeGroup
+                  icon={<Car />}
+                  title="Parking"
+                  items={venue.parking.map(i => parkingOptions[i])}
+                />
               </Columns>
             </Panel.Content>
           </Panel>
@@ -302,14 +308,14 @@ const VenueDetailPage = () => {
             </Panel.Content>
           </Panel>
 
-          {nearby.length > 0 && (
+          {similar.length > 0 && (
             <Panel>
               <Panel.Header>
                 <Title>Similar venues</Title>
               </Panel.Header>
               <Panel.Content>
                 <Stack space="regular">
-                  {nearby.map(other => (
+                  {similar.map(other => (
                     <Inline
                       key={other.id}
                       space="related"
