@@ -1,4 +1,5 @@
 import { people } from '@/lib/data/people';
+import { venueById } from '@/lib/data/venues';
 import {
   ClipboardList,
   LayoutDashboard,
@@ -19,6 +20,7 @@ const appShellDocs = {
 const appShellItems: NavNode[] = [
   { kind: 'Item', slug: '', label: 'Dashboard', ...appShellDocs },
   { kind: 'Item', slug: 'analytics', label: 'Analytics', ...appShellDocs },
+  { kind: 'Item', slug: 'venues', label: 'Venues', ...appShellDocs },
   {
     kind: 'Item',
     label: 'Management',
@@ -103,8 +105,10 @@ const tiles: RailTile[] = [
 export const config: ShellConfig = {
   base: '/examples',
   tiles,
-  // Label the dynamic `users/[id]` segment with the member's name.
-  resolveLabel: id => people.find(person => person.id === id)?.name,
+  // Label the dynamic `users/[id]` and `venues/[id]` segments with the
+  // member's or the venue's name.
+  resolveLabel: id =>
+    people.find(person => person.id === id)?.name ?? venueById(id)?.name,
 };
 
 // Flatten a section's nav tree into demo entries. Plain groupings ("Management")
