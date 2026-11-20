@@ -36,7 +36,7 @@ test('supports strokewidth with bigger size', () => {
 // A named token must not leak into the SVG length attribute as `<token>px`
 // (e.g. `defaultpx`). Named tokens resolve to the pixel dimension of their
 // theme `size-*` class so the stroke stays proportionate; `fit` has no
-// intrinsic dimension and falls back to the <SVG> default of 24.
+// intrinsic dimension and falls back to 24.
 test.each([
   { token: 'default', dimension: '80px', strokeWidth: '4' },
   { token: 'large', dimension: '144px', strokeWidth: '4' },
@@ -75,6 +75,20 @@ test.each([
     expect(circle).toHaveAttribute('stroke-width', strokeWidth);
   }
 );
+
+test('renders a non-shrinking svg with the theme classes and no inline style', () => {
+  render(<Basic.Component size="default" />);
+
+  const progressCircle = screen.getByRole('progressbar');
+
+  // eslint-disable-next-line testing-library/no-node-access
+  expect(progressCircle.firstChild).toHaveAttribute(
+    'class',
+    'flex-none animate-rotate-spinner origin-center fill-none size-20'
+  );
+  // eslint-disable-next-line testing-library/no-node-access
+  expect(progressCircle.firstChild).not.toHaveAttribute('style');
+});
 
 test('has aria label', () => {
   render(<Basic.Component />);

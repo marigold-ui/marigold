@@ -3,6 +3,9 @@ import { HtmlProps } from '@marigold/types';
 import { cn } from '../../utils/className.utils';
 import { ensureCssVar } from '../../utils/css-variables.utils';
 
+/**
+ * @deprecated Use `@marigold/icons` or a native `<svg>`. Removed in the next major.
+ */
 export interface SVGProps extends Omit<HtmlProps<'svg'>, 'fill' | 'style'> {
   /**
    * The size of an svg.
@@ -18,6 +21,22 @@ export interface SVGProps extends Omit<HtmlProps<'svg'>, 'fill' | 'style'> {
   ref?: Ref<SVGSVGElement>;
 }
 
+let hasWarned = false;
+
+// A function declaration, so a component body never reassigns module state.
+function warnDeprecated() {
+  if (process.env.NODE_ENV === 'production' || hasWarned) return;
+  hasWarned = true;
+  console.warn(
+    '[Marigold] <SVG> from @marigold/system is deprecated and will be removed ' +
+      'in the next major. Use an icon from @marigold/icons, or a native <svg> ' +
+      '(e.g. <svg className="size-6 fill-current">) for other inline graphics.'
+  );
+}
+
+/**
+ * @deprecated Use `@marigold/icons` or a native `<svg>`. Removed in the next major.
+ */
 export const SVG = ({
   size = 24,
   children,
@@ -26,6 +45,8 @@ export const SVG = ({
   ref,
   ...props
 }: SVGProps) => {
+  warnDeprecated();
+
   return (
     <svg
       {...props}
