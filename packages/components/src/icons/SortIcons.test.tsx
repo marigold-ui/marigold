@@ -5,38 +5,46 @@ import { SortDown } from './SortDown';
 import { SortUp } from './SortUp';
 import { Sortable } from './Sortable';
 
-// The outline icons keep `fill-current`, which overrides their `fill="none"`
-// and renders the arrowheads solid. That is how they looked when they still
-// rendered through the deprecated `<SVG>`. Dropping it is a visual change.
-const stroke = {
-  class: 'fill-current flex-none shrink-0 stroke-current',
-  fill: 'none',
-  'stroke-width': '2',
-  'stroke-linecap': 'round',
-  'stroke-linejoin': 'round',
+// Class lists are compared as sets: Prettier sorts class strings, and order
+// has no effect on rendering.
+const sorted = (classes: string | null) => (classes ?? '').split(' ').sort();
+
+// Lucide outline icons: stroke only, no fill, like the other Lucide icons here.
+const lucide = {
+  classes: 'shrink-0',
+  attrs: {
+    fill: 'none',
+    stroke: 'currentColor',
+    'stroke-width': '2',
+    'stroke-linecap': 'round',
+    'stroke-linejoin': 'round',
+  },
 };
-const fill = {
-  class: 'flex-none shrink-0 fill-current',
-  fill: null,
+
+// Solid triangles, not from Lucide: filled with the text color.
+const solid = {
+  classes: 'fill-current flex-none shrink-0',
+  attrs: { fill: null, stroke: null },
 };
 
 const icons = [
-  { name: 'SortAscending', Icon: SortAscending, attrs: stroke },
-  { name: 'SortDescending', Icon: SortDescending, attrs: stroke },
-  { name: 'Sortable', Icon: Sortable, attrs: stroke },
-  { name: 'SortUp', Icon: SortUp, attrs: fill },
-  { name: 'SortDown', Icon: SortDown, attrs: fill },
+  { name: 'SortAscending', Icon: SortAscending, ...lucide, width: '14' },
+  { name: 'SortDescending', Icon: SortDescending, ...lucide, width: '14' },
+  { name: 'Sortable', Icon: Sortable, ...lucide, width: '14' },
+  { name: 'SortUp', Icon: SortUp, ...solid, width: '14px' },
+  { name: 'SortDown', Icon: SortDown, ...solid, width: '14px' },
 ];
 
 test.each(icons)(
-  '$name renders a sized svg with its fill and stroke classes',
-  ({ Icon, attrs }) => {
+  '$name renders a sized svg with its fill and stroke styling',
+  ({ Icon, classes, attrs, width }) => {
     render(<Icon data-testid="icon" size={14} />);
     const svg = screen.getByTestId('icon');
 
-    expect(svg).toHaveAttribute('width', '14px');
-    expect(svg).toHaveAttribute('height', '14px');
+    expect(svg).toHaveAttribute('width', width);
+    expect(svg).toHaveAttribute('height', width);
     expect(svg).toHaveAttribute('viewBox', '0 0 24 24');
+    expect(sorted(svg.getAttribute('class'))).toEqual(sorted(classes));
     expect(svg).not.toHaveAttribute('style');
     for (const [name, value] of Object.entries(attrs)) {
       expect(svg.getAttribute(name)).toBe(value);
@@ -44,14 +52,8 @@ test.each(icons)(
   }
 );
 
-test.each(icons)(
-  '$name defaults to 24px and appends a className',
-  ({ Icon }) => {
-    render(<Icon data-testid="icon" className="inline-block" />);
-    const svg = screen.getByTestId('icon');
+test.each(icons)('$name appends a className', ({ Icon }) => {
+  render(<Icon data-testid="icon" className="inline-block" />);
 
-    expect(svg).toHaveAttribute('width', '24px');
-    expect(svg).toHaveAttribute('height', '24px');
-    expect(svg).toHaveClass('inline-block');
-  }
-);
+  expect(screen.getByTestId('icon')).toHaveClass('inline-block');
+});

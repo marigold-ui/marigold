@@ -26,4 +26,4 @@ To migrate, use the matching icon from `@marigold/icons`. For other graphics, sw
 </svg>
 ```
 
-`ProgressCircle` and the sort icons in `Table` no longer use `<SVG>` internally. They render the same markup as before, so nothing changes in your app, and they do not trigger the warning.
+`ProgressCircle` and the sort icons in `Table` no longer use `<SVG>` internally, so they do not trigger the warning.

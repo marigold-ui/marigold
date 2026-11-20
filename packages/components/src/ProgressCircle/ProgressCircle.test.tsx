@@ -82,10 +82,16 @@ test('renders a non-shrinking svg with the theme classes and no inline style', (
   const progressCircle = screen.getByRole('progressbar');
 
   // eslint-disable-next-line testing-library/no-node-access
-  expect(progressCircle.firstChild).toHaveAttribute(
-    'class',
-    'flex-none animate-rotate-spinner origin-center fill-none size-20'
-  );
+  const classes = (progressCircle.firstChild as Element).classList;
+
+  // Compared as a set: Prettier sorts the class strings, and order has no effect.
+  expect([...classes].sort()).toEqual([
+    'animate-rotate-spinner',
+    'fill-none',
+    'flex-none',
+    'origin-center',
+    'size-20',
+  ]);
   // eslint-disable-next-line testing-library/no-node-access
   expect(progressCircle.firstChild).not.toHaveAttribute('style');
 });
