@@ -8,6 +8,7 @@ import {
 } from './helpers/component-locations.js';
 import { setComponentResolutionRoot } from './helpers/components.js';
 import { setThemeResolutionRoot } from './helpers/design-tokens.js';
+import { renderSkipReason } from './helpers/render-precheck.js';
 import type { RenderTimingError, SharedRenderer } from './spatial/renderer.js';
 import {
   DYNAMIC_ISSUE_SOURCES,
@@ -171,7 +172,10 @@ const buildReport = (
 const runWithRenderer = async (
   filePath: string,
   options: ValidateOptions,
-  renderer: SharedRenderer
+  renderer: SharedRenderer,
+  // Set when the file cannot be rendered in the sandbox at all, see
+  // helpers/render-precheck.ts. The render checks are then skipped, not failed.
+  skipRenderReason?: string
 ): Promise<ValidationReport> => {
   const absolute = path.resolve(filePath);
   // Set before any check dispatch, not just in the `technical` branch: the
@@ -216,7 +220,17 @@ const runWithRenderer = async (
   );
 
   const wantsRender = checks.has('spatial') || checks.has('a11y');
-  if (wantsRender && !fatalTechnical) {
+  if (wantsRender && skipRenderReason) {
+    issues.push({
+      type: 'technical',
+      severity: 'warning',
+      source: 'runtime',
+      component: 'Renderer',
+      message: `Rendered checks skipped: ${skipRenderReason}.`,
+      suggestion:
+        'The static checks above still ran and decide the result. Run with `--checks technical` to skip rendering explicitly, or validate a self-contained file to include the layout and accessibility checks.',
+    });
+  } else if (wantsRender && !fatalTechnical) {
     try {
       // Lazy so the technical-only path and a bare `import '@marigold/cli'`
       // never pull in the optional render toolchain. A missing one surfaces
@@ -345,8 +359,11 @@ const runWithRenderer = async (
         source: 'runtime',
         component: 'Renderer',
         message: `Headless render failed: ${message}`,
-        suggestion:
-          'The render checks need the optional render toolchain plus a browser: `npm i playwright vite @vitejs/plugin-react @axe-core/playwright && npx playwright install chromium`. Or run with `--checks technical` to skip rendering. Also ensure the file exports a default React component.',
+        suggestion: isToolchainUnavailable
+          ? 'The render checks need the optional render toolchain plus a browser: `npm i playwright vite @vitejs/plugin-react @axe-core/playwright && npx playwright install chromium`. Or run with `--checks technical` to skip rendering.'
+          : /budget/i.test(message)
+            ? 'The component did not finish rendering in time. Look for a render loop or an effect that never settles, or run with `--checks technical` to skip rendering.'
+            : 'The file could not be rendered. Fix the error above, or run with `--checks technical` to skip rendering.',
       });
     }
   }
@@ -372,8 +389,10 @@ export const validate = async (
 
   const wantsRender =
     options.checks.includes('spatial') || options.checks.includes('a11y');
-  if (!wantsRender) {
-    // No browser needed; build a stub renderer that throws if used.
+  const skipRenderReason = wantsRender ? renderSkipReason(filePath) : undefined;
+  if (!wantsRender || skipRenderReason) {
+    // No browser needed (technical-only, or a file the sandbox cannot load);
+    // build a stub renderer that throws if used.
     const stub: SharedRenderer = {
       render: () => {
         throw new RenderToolchainUnavailableError(
@@ -382,7 +401,7 @@ export const validate = async (
       },
       close: async () => undefined,
     };
-    return runWithRenderer(filePath, options, stub);
+    return runWithRenderer(filePath, options, stub, skipRenderReason);
   }
 
   // The render toolchain is an optional peer dependency and Chromium may be

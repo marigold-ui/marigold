@@ -278,8 +278,16 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
       });
       cleanup.push(() => context.close());
 
-      // A WebSocket would bypass an HTTP-only filter entirely.
-      await context.routeWebSocket('**/*', ws => ws.close());
+      // A WebSocket would bypass an HTTP-only filter entirely, so every one is
+      // closed except the Vite client's own socket to this local dev server.
+      // Vite reports a compile or resolve error over that socket, and the
+      // error overlay the fail-fast below waits for only appears through it.
+      // Closing it too made a broken import wait out the whole render budget.
+      const serverHost = new URL(serverOrigin).host;
+      await context.routeWebSocket('**/*', ws => {
+        if (new URL(ws.url()).host === serverHost) ws.connectToServer();
+        else ws.close();
+      });
 
       // RTCPeerConnection and Workers are egress paths the route filters
       // cannot see: a peer connection leaks the host IP over UDP/STUN even
