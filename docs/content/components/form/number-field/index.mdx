@@ -19,6 +19,7 @@ It consists of a label, an input field and a help text. Optional you can also sh
 - **Value:** The number that is currently entered.
 - **Help text:** Supplementary text below the input. Can also be an error message.
 - **Steppers (optional):** Buttons that increase or decrease the value by a fixed step.
+- **Maximum (optional):** The highest allowed value, shown after the value.
 
 ## Appearance
 
@@ -51,6 +52,28 @@ when using stepper buttons it is better to have shorter fields, so that the user
       would be high.
     </DoDescription>
   </Do>
+</GuidelineTiles>
+
+### Show the maximum
+
+Show the maximum when knowing it changes what people pick, such as the tickets left in a listing, so they see it without pressing the stepper buttons.
+
+The maximum carries no unit of its own, so the label has to name what is counted. If one step could mean more than one item, say so in the description.
+
+<ComponentDemo name="number-field-max-value" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Name the counted unit in the label, such as "Tickets", not "Amount".
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't show the maximum when it doesn't change what people pick, such as
+      100 for a percentage.
+    </DontDescription>
+  </Dont>
 </GuidelineTiles>
 
 ### Use Format Options
