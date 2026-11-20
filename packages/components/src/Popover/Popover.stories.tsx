@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { expect, fn, screen, waitFor, within } from 'storybook/test';
+import { keepSheetsOpenInChromatic } from '.storybook/chromatic';
 import preview, { smallScreenWidth } from '.storybook/preview';
 import { Archive, Bell, StickyNote, UserMinus, Users } from '@marigold/icons';
 import { Button } from '../Button/Button';
@@ -136,6 +137,7 @@ type DismissalArgs = PopoverProps & {
 
 export const Dismissal = meta.story({
   tags: ['component-test', '!autodocs'],
+  beforeEach: keepSheetsOpenInChromatic,
   parameters: { chromatic: { disableSnapshot: true } },
   args: { dismissable: false, keyboardDismissable: false } as DismissalArgs,
   render: ({ dismissable, keyboardDismissable, ...args }: DismissalArgs) => (
@@ -1078,6 +1080,7 @@ MiniForm.test(
 );
 
 export const SmallScreen = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
   tags: ['component-test'],
   // Chromatic ignores the viewport global, so pin its capture to phone width.
   parameters: {
@@ -1114,6 +1117,7 @@ SmallScreen.test(
 );
 
 export const SmallScreenSearch = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
   tags: ['component-test', '!autodocs'],
   parameters: { chromatic: { disableSnapshot: true } },
   globals: {

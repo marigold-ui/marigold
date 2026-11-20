@@ -45,6 +45,7 @@ export const Stepper: ThemeComponent<'Stepper'> = {
       'flex min-h-11 items-center gap-2 rounded-sm bg-transparent',
       'text-left no-underline',
       '[&:is(a,button)]:ui-interactive',
+      '[&:not(a,button)]:cursor-not-allowed',
       // Room for the focus ring, layout unchanged.
       'px-1 -mx-1',
       'transition-colors motion-reduce:transition-none',
@@ -58,13 +59,15 @@ export const Stepper: ThemeComponent<'Stepper'> = {
       'border-control-border border text-sm font-medium tabular-nums',
       'transition-colors motion-reduce:transition-none',
       'in-data-[state=upcoming]:text-secondary',
-      'in-data-[state=disabled]:text-secondary in-data-[state=disabled]:border-dashed',
-      'in-data-[state=completed]:bg-success-accent in-data-[state=completed]:text-success-foreground in-data-[state=completed]:border-transparent',
-      // The fill comes from `currentIndicator`, which glides between steps.
+      'in-data-[state=disabled]:text-disabled in-data-[state=disabled]:border-control-edge-disabled in-data-[state=disabled]:border-dashed',
+      'in-data-[state=completed]:bg-primary in-data-[state=completed]:text-primary-foreground in-data-[state=completed]:border-transparent',
+      'in-data-[state=current]:text-foreground',
+      // The outline comes from `currentIndicator`, which glides between steps.
       // A disabled step keeps its dashed look, even when current.
-      'in-data-current:not-in-data-[state=disabled]:text-primary-foreground in-data-current:not-in-data-[state=disabled]:border-transparent',
-      // A failed step that is current keeps the current fill.
-      'in-data-[state=error]:not-in-data-current:text-destructive-accent in-data-[state=error]:not-in-data-current:border-destructive-accent',
+      'in-data-current:not-in-data-[state=disabled]:border-transparent',
+      // A failed step that is current keeps the current outline.
+      'in-data-[state=error]:text-destructive-accent',
+      'in-data-[state=error]:not-in-data-current:border-destructive-accent',
       '[&_svg]:size-4',
       'max-sm:hidden',
     ],
@@ -74,16 +77,16 @@ export const Stepper: ThemeComponent<'Stepper'> = {
       'text-sm',
       'transition-colors motion-reduce:transition-none',
       'in-data-[state=upcoming]:text-secondary',
-      'in-data-[state=disabled]:text-secondary',
+      'in-data-[state=disabled]:text-disabled',
       'in-data-[state=current]:text-foreground',
-      'in-data-current:font-medium',
+      'in-data-current:font-semibold',
       'in-data-[state=completed]:text-foreground',
       'in-data-[state=error]:text-destructive-accent',
       'max-sm:sr-only',
     ],
   }),
   connector: cva({
-    base: ['bg-surface-border h-0.5 min-w-4 flex-1', 'max-sm:hidden'],
+    base: ['bg-border h-1 min-w-4 flex-1 rounded-full', 'max-sm:hidden'],
   }),
   segment: cva({
     base: [
@@ -92,17 +95,20 @@ export const Stepper: ThemeComponent<'Stepper'> = {
       'in-data-[state=error]:bg-destructive-accent',
       // The warning icon above a failed segment.
       'text-destructive-accent [&_svg]:size-4',
-      'in-data-[state=disabled]:bg-transparent in-data-[state=disabled]:border in-data-[state=disabled]:border-dashed in-data-[state=disabled]:border-control-border',
+      'in-data-[state=disabled]:bg-transparent in-data-[state=disabled]:border in-data-[state=disabled]:border-dashed in-data-[state=disabled]:border-control-edge-disabled',
     ],
   }),
   progressFill: cva({
     base: [
-      'bg-success-accent scale-x-0',
+      'bg-primary scale-x-0',
       'transition-transform duration-250 ease-out-quart motion-reduce:transition-none',
       'in-data-completed:scale-x-100',
     ],
   }),
   currentIndicator: cva({
-    base: 'bg-primary',
+    base: [
+      'data-[placement=marker]:border-2 data-[placement=marker]:border-primary',
+      'data-[placement=segment]:bg-primary',
+    ],
   }),
 };

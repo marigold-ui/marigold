@@ -9,14 +9,14 @@ feat(DST-1839): give `Stepper` a compact layout on small screens and animated st
 
 On phones the stepper no longer overflows its container. Below the small-screen breakpoint it switches on its own to a track with one segment per step, with a "Step 2 of 4" counter and the name of the current step below it, so any number of steps fits and the user always sees where they are. Finished steps stay tappable, and a step that failed turns red with a warning icon above its segment. `hideLabels` now only affects large screens, because small screens show the current step's label anyway.
 
-Moving to another step now fills the line toward it and glides the highlight to the new step, with the same timing as the `Tabs` indicator. The motion is turned off when the user prefers reduced motion. A failed step that is current now gets the current fill on large screens too, with its warning icon on top, instead of a red outline.
+Moving to another step now fills the line toward it and glides the highlight to the new step, with the same timing as the `Tabs` indicator. The motion is turned off when the user prefers reduced motion. A failed step that is current now gets the current outline on large screens too, with its warning icon inside, instead of a red outline.
 
 Nothing changes in the component API, and apps using `@marigold/theme-rui` need no code changes. Upgrade `@marigold/components` and `@marigold/theme-rui` together.
 
 **BREAKING CHANGE:** the `Stepper` theme entry has six new required slots.
 
 - **Before:** `Stepper` had the slots `container`, `item`, `link`, `marker`, `label`, `connector` and `count`.
-- **After:** it also has `root`, `summary`, `currentLabel`, `segment`, `progressFill` and `currentIndicator`. The stepper's layout, the small-screen parts and the fill of the current marker now come from these slots. `@marigold/theme-rui` is already updated.
+- **After:** it also has `root`, `summary`, `currentLabel`, `segment`, `progressFill` and `currentIndicator`. The stepper's layout, the small-screen parts and the outline of the current marker now come from these slots. `@marigold/theme-rui` is already updated.
 
 ### Migrating a custom theme
 

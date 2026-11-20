@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
+import { keepSheetsOpenInChromatic } from '.storybook/chromatic';
 import preview from '.storybook/preview';
 import { Copy, Pencil } from '@marigold/icons';
 import { Button } from '../Button/Button';
@@ -12,6 +13,7 @@ import { Title } from '../Title/Title';
 import { Tray } from './Tray';
 
 const meta = preview.meta({
+  beforeEach: keepSheetsOpenInChromatic,
   title: 'Components/Tray',
   // A full-height capture resizes the viewport past an open tray, which closes it.
   parameters: { surface: false, chromatic: { cropToViewport: true } },

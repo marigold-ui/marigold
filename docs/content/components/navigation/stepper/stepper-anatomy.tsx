@@ -17,21 +17,30 @@ export const StepperAnatomy = () => (
       strokeDasharray="6 4"
     />
 
-    <g strokeWidth="2" strokeLinecap="round" fill="none">
+    <g strokeWidth="4" strokeLinecap="round" fill="none">
       <path
-        d="M 144 140 L 190 140"
-        className="stroke-fd-foreground transition-colors duration-300"
+        d="M 146 140 L 188 140"
+        className="stroke-fd-primary transition-colors duration-300"
       />
       <g className="stroke-fd-border transition-colors duration-300">
-        <path d="M 310 140 L 356 140" />
-        <path d="M 472 140 L 518 140" />
+        <path d="M 312 140 L 354 140" />
+        <path d="M 474 140 L 516 140" />
       </g>
     </g>
 
-    <g className="fill-fd-primary transition-colors duration-300">
-      <circle cx="55" cy="140" r="15" />
-      <circle cx="213" cy="140" r="15" />
-    </g>
+    <circle
+      cx="55"
+      cy="140"
+      r="15"
+      className="fill-fd-primary transition-colors duration-300"
+    />
+    <circle
+      cx="213"
+      cy="140"
+      r="14"
+      strokeWidth="3"
+      className="fill-fd-card stroke-fd-primary transition-colors duration-300"
+    />
     <path
       d="M 48 140 L 53 145.5 L 62 134.5"
       className="stroke-fd-primary-foreground transition-colors duration-300"
@@ -58,7 +67,7 @@ export const StepperAnatomy = () => (
       <text
         x="213"
         y="145"
-        className="fill-fd-primary-foreground transition-colors duration-300"
+        className="fill-fd-foreground transition-colors duration-300"
       >
         2
       </text>

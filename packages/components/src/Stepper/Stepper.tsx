@@ -224,6 +224,8 @@ const Stepper = ({
         placement === 'marker' ? '-inset-px' : 'inset-0',
         classNames.currentIndicator
       )}
+      // Lets the theme outline the marker but fill the segment.
+      data-placement={placement}
       transition={indicatorTransition}
       // Re-measure only when the step changes, not on every parent render.
       layoutDependency={selectedKey}
@@ -273,7 +275,13 @@ const Stepper = ({
                 current: index + 1,
                 total: items.length,
               });
-              const stateText = stringFormatter.format(STATE_MESSAGE[state]);
+              // A disabled step that was done keeps its check, so say both.
+              const isLockedDone = state === 'disabled' && completed.has(id);
+              const stateText = (
+                isLockedDone ? (['completed', 'disabled'] as const) : [state]
+              )
+                .map(key => stringFormatter.format(STATE_MESSAGE[key]))
+                .join(', ');
               // Not `state === 'current'`: a failed step can be current too.
               const isCurrent = id === selectedKey;
               // A disabled step keeps its dashed look, even when current.
@@ -303,7 +311,7 @@ const Stepper = ({
                       {hasIndicator && !isSmallScreen && indicator('marker')}
                       {/* Positioned, so it paints above the indicator. */}
                       <span aria-hidden="true" className="relative">
-                        {state === 'completed' ? (
+                        {state === 'completed' || isLockedDone ? (
                           <Check />
                         ) : state === 'error' ? (
                           <TriangleAlert />
