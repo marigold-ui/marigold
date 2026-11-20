@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
-import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Form } from '../Form/Form';
 import { Headline } from '../Headline/Headline';
+import { Inline } from '../Inline/Inline';
 import { RouterProvider } from '../RouterProvider/RouterProvider';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
@@ -101,9 +101,11 @@ Basic.test(
  *
  * The two overlapping steps carry `completed` plus a state that outranks it.
  * The connector follows the same order, so both leave a grey line behind them.
- * `current` is the one exception: a revisited step keeps its green connector.
+ * `current` is the one exception: a revisited step keeps its filled connector.
+ * A completed + disabled step still shows its check, so the work stays visible.
  */
 export const States = meta.story({
+  tags: ['component-test'],
   args: {
     'aria-label': 'Step states',
     selectedKey: 'current',
@@ -123,6 +125,34 @@ export const States = meta.story({
     </Stepper>
   ),
 });
+
+States.test(
+  'shows a not-allowed cursor on steps that cannot be clicked',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    for (const label of ['Disabled', 'Completed + disabled', 'Upcoming']) {
+      const step = canvas.getByText(label).parentElement!;
+
+      await expect(getComputedStyle(step).cursor).toBe('not-allowed');
+    }
+  }
+);
+
+States.test(
+  'shows a not-allowed cursor on a step left out by selectableKeys',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectableKeys: ['current'] },
+  },
+  async ({ canvas }) => {
+    const excluded = canvas.getByText('Completed').parentElement!;
+
+    await expect(getComputedStyle(excluded).cursor).toBe('not-allowed');
+    await expect(
+      getComputedStyle(canvas.getByRole('button', { name: /^Current/ })).cursor
+    ).toBe('pointer');
+  }
+);
 
 /**
  * The step is owned by the flow. Marigold never advances it, and never marks a
@@ -395,7 +425,7 @@ export const MultiStepForm = meta.story({
           ? done
           : [...done, FORM_STEPS[index].id]
       );
-      setIndex(current => current + 1);
+      if (!isLast) setIndex(current => current + 1);
     };
 
     return (
@@ -415,7 +445,7 @@ export const MultiStepForm = meta.story({
 
         <StepPanel step={FORM_STEPS[index].id} />
 
-        <ButtonGroup>
+        <Inline alignX="between">
           <Button
             variant="secondary"
             disabled={index === 0}
@@ -423,10 +453,10 @@ export const MultiStepForm = meta.story({
           >
             Back
           </Button>
-          <Button variant="primary" disabled={isLast} onPress={advance}>
-            Continue
+          <Button variant="primary" onPress={advance}>
+            {isLast ? 'Place order' : 'Continue'}
           </Button>
-        </ButtonGroup>
+        </Inline>
       </Stack>
     );
   },
@@ -507,6 +537,7 @@ export const ValidationErrors = meta.story({
     const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
     const [values, setValues] = useState({ email: '', card: '' });
     const step = CHECKOUT_STEPS[index];
+    const isLast = index === CHECKOUT_STEPS.length - 1;
 
     const edit = (field: string) => (value: string) => {
       setValues(current => ({ ...current, [field]: value }));
@@ -526,7 +557,7 @@ export const ValidationErrors = meta.story({
       setCompleted(done =>
         done.includes(step.id) ? done : [...done, step.id]
       );
-      setIndex(current => current + 1);
+      if (!isLast) setIndex(current => current + 1);
     };
 
     return (
@@ -567,7 +598,7 @@ export const ValidationErrors = meta.story({
           {step.id === 'review' && <Text>Everything checks out.</Text>}
         </Form>
 
-        <ButtonGroup>
+        <Inline alignX="between">
           <Button
             variant="secondary"
             disabled={index === 0}
@@ -575,14 +606,10 @@ export const ValidationErrors = meta.story({
           >
             Back
           </Button>
-          <Button
-            variant="primary"
-            disabled={index === CHECKOUT_STEPS.length - 1}
-            onPress={onContinue}
-          >
-            Continue
+          <Button variant="primary" onPress={onContinue}>
+            {isLast ? 'Place order' : 'Continue'}
           </Button>
-        </ButtonGroup>
+        </Inline>
       </Stack>
     );
   },

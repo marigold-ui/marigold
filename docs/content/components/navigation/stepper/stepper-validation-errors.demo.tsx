@@ -2,8 +2,8 @@ import type { Key } from 'react';
 import { useState } from 'react';
 import {
   Button,
-  ButtonGroup,
   Form,
+  Inline,
   Stack,
   Stepper,
   Text,
@@ -36,6 +36,7 @@ export default () => {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [values, setValues] = useState({ email: '', card: '' });
   const step = STEPS[index];
+  const isLast = index === STEPS.length - 1;
 
   const edit = (field: string) => (value: string) => {
     setValues(current => ({ ...current, [field]: value }));
@@ -53,7 +54,7 @@ export default () => {
     }
 
     setCompleted(done => (done.includes(step.id) ? done : [...done, step.id]));
-    setIndex(current => current + 1);
+    if (!isLast) setIndex(current => current + 1);
   };
 
   return (
@@ -94,7 +95,7 @@ export default () => {
         {step.id === 'review' && <Text>Everything checks out.</Text>}
       </Form>
 
-      <ButtonGroup>
+      <Inline alignX="between">
         <Button
           variant="secondary"
           disabled={index === 0}
@@ -102,14 +103,10 @@ export default () => {
         >
           Back
         </Button>
-        <Button
-          variant="primary"
-          disabled={index === STEPS.length - 1}
-          onPress={onContinue}
-        >
-          Continue
+        <Button variant="primary" onPress={onContinue}>
+          {isLast ? 'Place order' : 'Continue'}
         </Button>
-      </ButtonGroup>
+      </Inline>
     </Stack>
   );
 };

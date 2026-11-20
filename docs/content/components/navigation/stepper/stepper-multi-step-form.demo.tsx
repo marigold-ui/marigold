@@ -2,8 +2,8 @@ import type { Key } from 'react';
 import { useState } from 'react';
 import {
   Button,
-  ButtonGroup,
   Headline,
+  Inline,
   Stack,
   Stepper,
   Text,
@@ -54,7 +54,7 @@ export default () => {
     setCompleted(done =>
       done.includes(STEPS[index].id) ? done : [...done, STEPS[index].id]
     );
-    setIndex(current => current + 1);
+    if (!isLast) setIndex(current => current + 1);
   };
 
   return (
@@ -76,7 +76,7 @@ export default () => {
 
       <StepPanel step={STEPS[index].id} />
 
-      <ButtonGroup>
+      <Inline alignX="between">
         <Button
           variant="secondary"
           disabled={index === 0}
@@ -84,10 +84,10 @@ export default () => {
         >
           Back
         </Button>
-        <Button variant="primary" disabled={isLast} onPress={advance}>
-          Continue
+        <Button variant="primary" onPress={advance}>
+          {isLast ? 'Place order' : 'Continue'}
         </Button>
-      </ButtonGroup>
+      </Inline>
     </Stack>
   );
 };
