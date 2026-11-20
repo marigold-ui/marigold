@@ -46,6 +46,8 @@ export default () => {
   };
 
   const onContinue = () => {
+    // Ignore a second press instead of disabling the focused button.
+    if (placed) return;
     const failures = validateStep(step.id, values);
     setFieldErrors(failures);
 
@@ -65,6 +67,7 @@ export default () => {
         aria-label="Checkout progress"
         selectedKey={step.id}
         completedKeys={completed}
+        selectableKeys={placed ? [] : undefined}
         errorKeys={failed}
         onSelectionChange={key =>
           setIndex(STEPS.findIndex(item => item.id === key))
@@ -97,19 +100,22 @@ export default () => {
         {step.id === 'review' && <Text>Everything checks out.</Text>}
       </Form>
 
-      {placed && <Text>Your order has been placed.</Text>}
-
-      <Inline alignX="between">
+      <Inline alignX="between" alignY="center">
         <Button
           variant="secondary"
-          disabled={index === 0}
+          disabled={index === 0 || placed}
           onPress={() => setIndex(current => current - 1)}
         >
           Back
         </Button>
-        <Button variant="primary" onPress={onContinue}>
-          {isLast ? 'Place order' : 'Continue'}
-        </Button>
+        <Inline space={4} alignY="center">
+          <Text aria-live="polite">
+            {placed && 'Your order has been placed.'}
+          </Text>
+          <Button variant="primary" onPress={onContinue}>
+            {isLast ? 'Place order' : 'Continue'}
+          </Button>
+        </Inline>
       </Inline>
     </Stack>
   );

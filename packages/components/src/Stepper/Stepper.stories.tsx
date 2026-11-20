@@ -421,6 +421,8 @@ export const MultiStepForm = meta.story({
       setIndex(FORM_STEPS.findIndex(step => step.id === key));
 
     const advance = () => {
+      // Ignore a second press instead of disabling the focused button.
+      if (placed) return;
       setCompleted(done =>
         done.includes(FORM_STEPS[index].id)
           ? done
@@ -436,6 +438,7 @@ export const MultiStepForm = meta.story({
           {...args}
           selectedKey={FORM_STEPS[index].id}
           completedKeys={completed}
+          selectableKeys={placed ? [] : undefined}
           onSelectionChange={goTo}
         >
           {FORM_STEPS.map(step => (
@@ -447,19 +450,22 @@ export const MultiStepForm = meta.story({
 
         <StepPanel step={FORM_STEPS[index].id} />
 
-        {placed && <Text>Your order has been placed.</Text>}
-
-        <Inline alignX="between">
+        <Inline alignX="between" alignY="center">
           <Button
             variant="secondary"
-            disabled={index === 0}
+            disabled={index === 0 || placed}
             onPress={() => setIndex(current => current - 1)}
           >
             Back
           </Button>
-          <Button variant="primary" onPress={advance}>
-            {isLast ? 'Place order' : 'Continue'}
-          </Button>
+          <Inline space={4} alignY="center">
+            <Text aria-live="polite">
+              {placed && 'Your order has been placed.'}
+            </Text>
+            <Button variant="primary" onPress={advance}>
+              {isLast ? 'Place order' : 'Continue'}
+            </Button>
+          </Inline>
         </Inline>
       </Stack>
     );
@@ -513,7 +519,26 @@ MultiStepForm.test(
 
     await expect(
       canvas.getByText('Your order has been placed.')
-    ).toBeInTheDocument();
+    ).toHaveAttribute('aria-live', 'polite');
+    await expect(canvas.getByRole('button', { name: 'Back' })).toBeDisabled();
+    await expect(
+      canvas.queryByRole('button', { name: /Contact/ })
+    ).not.toBeInTheDocument();
+  }
+);
+
+MultiStepForm.test(
+  'keeps focus on Place order once the order is placed',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Continue' }));
+    await userEvent.click(canvas.getByRole('button', { name: 'Continue' }));
+    const placeOrder = canvas.getByRole('button', { name: 'Place order' });
+
+    await userEvent.click(placeOrder);
+
+    await expect(placeOrder).toBeEnabled();
+    await expect(placeOrder).toHaveFocus();
   }
 );
 
@@ -565,6 +590,8 @@ export const ValidationErrors = meta.story({
     };
 
     const onContinue = () => {
+      // Ignore a second press instead of disabling the focused button.
+      if (placed) return;
       const failures = validateStep(step.id, values);
       setFieldErrors(failures);
 
@@ -586,6 +613,7 @@ export const ValidationErrors = meta.story({
           {...args}
           selectedKey={step.id}
           completedKeys={completed}
+          selectableKeys={placed ? [] : undefined}
           errorKeys={failed}
           onSelectionChange={key =>
             setIndex(CHECKOUT_STEPS.findIndex(item => item.id === key))
@@ -618,19 +646,22 @@ export const ValidationErrors = meta.story({
           {step.id === 'review' && <Text>Everything checks out.</Text>}
         </Form>
 
-        {placed && <Text>Your order has been placed.</Text>}
-
-        <Inline alignX="between">
+        <Inline alignX="between" alignY="center">
           <Button
             variant="secondary"
-            disabled={index === 0}
+            disabled={index === 0 || placed}
             onPress={() => setIndex(current => current - 1)}
           >
             Back
           </Button>
-          <Button variant="primary" onPress={onContinue}>
-            {isLast ? 'Place order' : 'Continue'}
-          </Button>
+          <Inline space={4} alignY="center">
+            <Text aria-live="polite">
+              {placed && 'Your order has been placed.'}
+            </Text>
+            <Button variant="primary" onPress={onContinue}>
+              {isLast ? 'Place order' : 'Continue'}
+            </Button>
+          </Inline>
         </Inline>
       </Stack>
     );
