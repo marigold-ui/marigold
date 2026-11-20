@@ -48,13 +48,15 @@ const StepPanel = ({ step }: { step: Key }) => {
 export default () => {
   const [index, setIndex] = useState(0);
   const [completed, setCompleted] = useState<Key[]>([]);
+  const [placed, setPlaced] = useState(false);
   const isLast = index === STEPS.length - 1;
 
   const advance = () => {
     setCompleted(done =>
       done.includes(STEPS[index].id) ? done : [...done, STEPS[index].id]
     );
-    if (!isLast) setIndex(current => current + 1);
+    if (isLast) setPlaced(true);
+    else setIndex(current => current + 1);
   };
 
   return (
@@ -75,6 +77,8 @@ export default () => {
       </Stepper>
 
       <StepPanel step={STEPS[index].id} />
+
+      {placed && <Text>Your order has been placed.</Text>}
 
       <Inline alignX="between">
         <Button

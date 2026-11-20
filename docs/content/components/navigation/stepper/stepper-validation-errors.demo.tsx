@@ -35,6 +35,7 @@ export default () => {
   const [failed, setFailed] = useState<Key[]>([]);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [values, setValues] = useState({ email: '', card: '' });
+  const [placed, setPlaced] = useState(false);
   const step = STEPS[index];
   const isLast = index === STEPS.length - 1;
 
@@ -54,7 +55,8 @@ export default () => {
     }
 
     setCompleted(done => (done.includes(step.id) ? done : [...done, step.id]));
-    if (!isLast) setIndex(current => current + 1);
+    if (isLast) setPlaced(true);
+    else setIndex(current => current + 1);
   };
 
   return (
@@ -94,6 +96,8 @@ export default () => {
         )}
         {step.id === 'review' && <Text>Everything checks out.</Text>}
       </Form>
+
+      {placed && <Text>Your order has been placed.</Text>}
 
       <Inline alignX="between">
         <Button

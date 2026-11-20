@@ -414,6 +414,7 @@ export const MultiStepForm = meta.story({
   render: function Render(args) {
     const [index, setIndex] = useState(0);
     const [completed, setCompleted] = useState<Key[]>([]);
+    const [placed, setPlaced] = useState(false);
     const isLast = index === FORM_STEPS.length - 1;
 
     const goTo = (key: Key) =>
@@ -425,7 +426,8 @@ export const MultiStepForm = meta.story({
           ? done
           : [...done, FORM_STEPS[index].id]
       );
-      if (!isLast) setIndex(current => current + 1);
+      if (isLast) setPlaced(true);
+      else setIndex(current => current + 1);
     };
 
     return (
@@ -444,6 +446,8 @@ export const MultiStepForm = meta.story({
         </Stepper>
 
         <StepPanel step={FORM_STEPS[index].id} />
+
+        {placed && <Text>Your order has been placed.</Text>}
 
         <Inline alignX="between">
           <Button
@@ -499,6 +503,20 @@ MultiStepForm.test(
   }
 );
 
+MultiStepForm.test(
+  'confirms the order when Place order is pressed',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Continue' }));
+    await userEvent.click(canvas.getByRole('button', { name: 'Continue' }));
+    await userEvent.click(canvas.getByRole('button', { name: 'Place order' }));
+
+    await expect(
+      canvas.getByText('Your order has been placed.')
+    ).toBeInTheDocument();
+  }
+);
+
 const CHECKOUT_STEPS = [
   { id: 'contact', label: 'Contact' },
   { id: 'payment', label: 'Payment' },
@@ -536,6 +554,7 @@ export const ValidationErrors = meta.story({
     const [failed, setFailed] = useState<Key[]>([]);
     const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
     const [values, setValues] = useState({ email: '', card: '' });
+    const [placed, setPlaced] = useState(false);
     const step = CHECKOUT_STEPS[index];
     const isLast = index === CHECKOUT_STEPS.length - 1;
 
@@ -557,7 +576,8 @@ export const ValidationErrors = meta.story({
       setCompleted(done =>
         done.includes(step.id) ? done : [...done, step.id]
       );
-      if (!isLast) setIndex(current => current + 1);
+      if (isLast) setPlaced(true);
+      else setIndex(current => current + 1);
     };
 
     return (
@@ -597,6 +617,8 @@ export const ValidationErrors = meta.story({
           )}
           {step.id === 'review' && <Text>Everything checks out.</Text>}
         </Form>
+
+        {placed && <Text>Your order has been placed.</Text>}
 
         <Inline alignX="between">
           <Button
