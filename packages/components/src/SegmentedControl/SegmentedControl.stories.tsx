@@ -5,6 +5,13 @@ import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
+import {
+  WCAG_NON_TEXT,
+  contrastOn,
+  expectInsetFocusRingContrast,
+  insetFocusRing,
+  paintedGround,
+} from '../contrast.utils';
 import { SegmentedControl } from './SegmentedControl';
 
 const meta = preview.meta({
@@ -93,6 +100,42 @@ Basic.test(
     await userEvent.click(past);
 
     await expect(past).toBeChecked();
+  }
+);
+
+// Arrow keys select, so a focused ghost segment always sits on the selection
+// wash. That wash is the sibling indicator, not an ancestor, so it is measured
+// as its own ground.
+Basic.test(
+  'Ghost: keyboard focus draws an inset ring that clears 3:1 on the selection wash',
+  {
+    args: { variant: 'ghost' },
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent }) => {
+    const past = canvas.getByRole('radio', { name: 'Past' });
+    // Focus lands on the hidden input; the label around it is the segment.
+    const segment = past.closest('label')!;
+
+    await userEvent.tab();
+    await userEvent.keyboard('{ArrowRight}');
+
+    await expect(past).toHaveFocus();
+    await expect(past).toBeChecked();
+    await waitFor(() => expectInsetFocusRingContrast(segment));
+
+    // The selection wash: a painted sibling, not the label itself.
+    const indicator = segment.previousElementSibling as HTMLElement | null;
+    await expect(indicator).not.toBeNull();
+    await expect(indicator!.tagName).not.toBe('LABEL');
+    await expect(getComputedStyle(indicator!).backgroundColor).not.toBe(
+      'rgba(0, 0, 0, 0)'
+    );
+    const ratio = contrastOn(
+      paintedGround(indicator!),
+      insetFocusRing(segment).color!
+    );
+    await expect(ratio).toBeGreaterThanOrEqual(WCAG_NON_TEXT);
   }
 );
 

@@ -17,6 +17,7 @@ import { Popover } from '../Overlay/Popover';
 import { Panel } from '../Panel/Panel';
 import { TextValue } from '../TextValue/TextValue';
 import { Title } from '../Title/Title';
+import { expectInsetFocusRingContrast } from '../contrast.utils';
 import type { Selection } from '../types';
 import { ListView } from './ListView';
 import type { ListViewProps } from './ListView';
@@ -783,6 +784,40 @@ SingleSelection.test(
 
       expect(express).toHaveAttribute('aria-selected', 'false');
       expect(grid.querySelectorAll('[aria-selected="true"]')).toHaveLength(0);
+    });
+  }
+);
+
+SingleSelection.test(
+  'Keyboard focus draws an inset ring that clears 3:1 at rest, selected and hovered',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent, step }) => {
+    const standard = await canvas.findByRole('row', { name: /standard/i });
+    const express = canvas.getByRole('row', { name: /express/i });
+
+    await step('at rest', async () => {
+      standard.focus();
+
+      await userEvent.keyboard('{ArrowDown}');
+
+      await expect(express).toHaveFocus();
+      await waitFor(() => expectInsetFocusRingContrast(express));
+    });
+
+    await step('selected', async () => {
+      await userEvent.keyboard('{ArrowUp}');
+
+      await expect(standard).toHaveAttribute('aria-selected', 'true');
+      await waitFor(() => expectInsetFocusRingContrast(standard));
+    });
+
+    await step('hovered', async () => {
+      await userEvent.hover(express);
+
+      await userEvent.keyboard('{ArrowDown}');
+
+      await expect(express).toHaveAttribute('data-hovered', 'true');
+      await waitFor(() => expectInsetFocusRingContrast(express));
     });
   }
 );
