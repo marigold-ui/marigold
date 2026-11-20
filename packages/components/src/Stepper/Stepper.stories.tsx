@@ -719,6 +719,7 @@ export const ManyStepsSmallScreen = meta.story({
  * return to. A failed current step shows the warning on its label instead.
  */
 export const ErrorsSmallScreen = meta.story({
+  tags: ['component-test'],
   globals: { viewport: { value: 'smallScreen' } },
   args: {
     'aria-label': 'Event creation progress',
@@ -737,6 +738,43 @@ export const ErrorsSmallScreen = meta.story({
     </Stepper>
   ),
 });
+
+// Baselines, since the boxes of two font sizes can't show alignment.
+const textBaseline = (element: Element) => {
+  const range = document.createRange();
+  range.selectNodeContents(element);
+  const { fontWeight, fontSize, fontFamily } = getComputedStyle(element);
+  const context = document.createElement('canvas').getContext('2d')!;
+  context.font = `${fontWeight} ${fontSize} ${fontFamily}`;
+  const { fontBoundingBoxDescent } = context.measureText(element.textContent);
+
+  return range.getClientRects()[0].bottom - fontBoundingBoxDescent;
+};
+
+const expectOneBaseline = (count: HTMLElement) =>
+  expect(textBaseline(count.nextElementSibling!.lastElementChild!)).toBeCloseTo(
+    textBaseline(count),
+    0
+  );
+
+ErrorsSmallScreen.test(
+  'puts the counter and the current label on one baseline',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    await expectOneBaseline(canvas.getByText('Step 5 of 7'));
+  }
+);
+
+ErrorsSmallScreen.test(
+  'keeps the baseline when the current step failed',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectedKey: 'dates' },
+  },
+  async ({ canvas }) => {
+    await expectOneBaseline(canvas.getByText('Step 2 of 7'));
+  }
+);
 
 /**
  * A long current label wraps onto a second line instead of being cut off.

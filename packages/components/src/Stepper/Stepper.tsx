@@ -258,7 +258,10 @@ const Stepper = ({
                     <TriangleAlert />
                   </span>
                 )}
-                {currentItem.props.children}
+                {/* Baseline-aligned, so the text, not the icon, sets the baseline. */}
+                <span className="self-baseline">
+                  {currentItem.props.children}
+                </span>
               </span>
             </div>
           )}

@@ -332,7 +332,9 @@ const firstPart = (part: HTMLElement) =>
 const currentLabelLine = (text: string) => {
   const line = screen
     .getAllByText(text)
-    .find(el => el.getAttribute('aria-hidden') === 'true');
+    // eslint-disable-next-line testing-library/no-node-access
+    .map(el => el.closest<HTMLElement>('[aria-hidden="true"]'))
+    .find(Boolean);
   if (!line) throw new Error(`No current label line reads "${text}"`);
   return line;
 };

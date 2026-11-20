@@ -10,18 +10,15 @@ export const Stepper: ThemeComponent<'Stepper'> = {
   summary: cva({
     // Desktop shows it only as the `hideLabels` counter.
     base: [
-      'items-center gap-x-2',
+      // Baselines, not boxes: the two sizes only line up on their text.
+      'items-baseline gap-x-2',
       'in-data-hide-labels:flex max-sm:flex',
       // Under the track, so the label sits next to the content it names.
       'max-sm:order-1',
     ],
   }),
   count: cva({
-    base: [
-      'text-secondary shrink-0 text-sm font-medium tabular-nums',
-      // Level with the label's first line, however long it wraps.
-      'max-sm:self-start max-sm:leading-6',
-    ],
+    base: 'text-secondary shrink-0 text-sm font-medium tabular-nums',
   }),
   currentLabel: cva({
     base: [
