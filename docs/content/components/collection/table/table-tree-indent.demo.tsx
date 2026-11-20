@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { Stack, Switch, Table } from '@marigold/components';
+import { Table } from '@marigold/components';
 
 interface TicketArea {
   id: string;
@@ -30,44 +29,33 @@ const areas: TicketArea[] = [
   },
 ];
 
-export default () => {
-  const [aligned, setAligned] = useState(true);
-
-  return (
-    <Stack space="regular">
-      <Switch
-        label="Line up with the group label"
-        selected={aligned}
-        onChange={setAligned}
-      />
-      <Table
-        aria-label="Tickets sold per area and category"
-        treeColumn="name"
-        treeIndent={aligned ? 'aligned' : 'default'}
-        defaultExpandedKeys={['seated', 'standing']}
-      >
-        <Table.Header>
-          <Table.Column id="name" rowHeader>
-            Area
-          </Table.Column>
-          <Table.Column id="sold" alignX="right">
-            Sold
-          </Table.Column>
-        </Table.Header>
-        <Table.Body items={areas}>
-          {function renderRow(row: TicketArea) {
-            return (
-              <Table.Row id={row.id}>
-                <Table.Cell>{row.name}</Table.Cell>
-                <Table.Cell alignX="right">{row.sold}</Table.Cell>
-                <Table.ExpandableRows items={row.categories}>
-                  {renderRow}
-                </Table.ExpandableRows>
-              </Table.Row>
-            );
-          }}
-        </Table.Body>
-      </Table>
-    </Stack>
-  );
-};
+export default () => (
+  <Table
+    aria-label="Tickets sold per area and category"
+    treeColumn="name"
+    treeIndent="aligned"
+    defaultExpandedKeys={['seated', 'standing']}
+  >
+    <Table.Header>
+      <Table.Column id="name" rowHeader>
+        Area
+      </Table.Column>
+      <Table.Column id="sold" alignX="right">
+        Sold
+      </Table.Column>
+    </Table.Header>
+    <Table.Body items={areas}>
+      {function renderRow(row: TicketArea) {
+        return (
+          <Table.Row id={row.id}>
+            <Table.Cell>{row.name}</Table.Cell>
+            <Table.Cell alignX="right">{row.sold}</Table.Cell>
+            <Table.ExpandableRows items={row.categories}>
+              {renderRow}
+            </Table.ExpandableRows>
+          </Table.Row>
+        );
+      }}
+    </Table.Body>
+  </Table>
+);
