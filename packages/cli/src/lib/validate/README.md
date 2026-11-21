@@ -109,6 +109,8 @@ validate/index.ts
                                                         server, tmp directory), LIFO
 ```
 
+Before any of this, `helpers/render-precheck.ts` reads the file's source. The sandbox loads only this one file, so a file with a relative import that survives the TypeScript transform (one used only as a type is dropped, so it does not count), or with neither a `default` nor an `App` export, cannot render. `validate()` then skips the browser entirely and reports one `Renderer` issue naming the reason: a warning when the static checks ran and decide the result, an error when they were not requested and nothing was checked.
+
 The actual rendered component comes from [`packages/cli/src/harness/`](../../harness/):
 
 - `entry.tsx` — looks for a `default` or `App` export in the target file and renders it. Waits two `requestAnimationFrame` ticks (layout needs to genuinely settle) before setting the `data-validation-root="ready"` attribute that Playwright waits on.
@@ -118,7 +120,7 @@ The actual rendered component comes from [`packages/cli/src/harness/`](../../har
 
 The rendered file is **untrusted code** (typically LLM-generated). The renderer (`renderer.ts`) protects against that on two levels:
 
-- **Network:** `page.route('**/*')` blocks every HTTP(S) request except to the local Vite server; `context.routeWebSocket('**/*', ws => ws.close())` additionally closes every WebSocket attempt (plain `page.route` doesn't cover WebSockets).
+- **Network:** `page.route('**/*')` blocks every HTTP(S) request except to the local Vite server; `context.routeWebSocket('**/*', …)` additionally closes every WebSocket attempt except the Vite client's own socket to that local server (plain `page.route` doesn't cover WebSockets). That one socket stays open because Vite reports compile and resolve errors through it: without it, the `vite-error-overlay` fail-fast never fires and a broken import waits out the whole render budget. The server runs with `hmr: false`, so the socket carries those errors but no reload or update messages that could reload the page mid-check.
 - **Filesystem:** Vite's `server.fs.deny` blocks a denylist of high-value targets (`.env`, `.ssh/**`, `.aws/**`, private keys, …) via Vite's `/@fs` read path. **This is a denylist, not an allowlist** — the comment directly above `fs.deny` in `renderer.ts` explains exactly what this does NOT cover and why (Vite still needs to serve its own client and the pnpm `node_modules` symlinks).
 
 Anyone changing the sandbox should read that comment in `renderer.ts` first — the tradeoffs there were made deliberately, not overlooked.
