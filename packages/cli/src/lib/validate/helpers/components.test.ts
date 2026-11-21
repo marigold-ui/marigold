@@ -73,6 +73,25 @@ describe('loadMarigoldRegistry (registry source of truth)', () => {
     expect(isMarigoldComponent('ButtonProps')).toBe(false);
   });
 
+  it('includes Intl options newer than ES5 that the formatters inherit', () => {
+    const dateProps = (getComponentProps('DateFormat') ?? []).map(p => p.name);
+    expect(dateProps).toEqual(
+      expect.arrayContaining([
+        'dateStyle',
+        'timeStyle',
+        'fractionalSecondDigits',
+        'dayPeriod',
+      ])
+    );
+
+    const numberProps = (getComponentProps('NumericFormat') ?? []).map(
+      p => p.name
+    );
+    expect(numberProps).toEqual(
+      expect.arrayContaining(['notation', 'signDisplay', 'unit'])
+    );
+  });
+
   it('derives props for a component whose prop type is inline, not a separately-exported *Props interface', () => {
     // IconButton declares its props inline as its function parameter rather
     // than exporting `IconButtonProps`, exercising extractPropsFor's

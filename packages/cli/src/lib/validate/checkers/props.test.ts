@@ -47,6 +47,24 @@ describe('validateProps', () => {
     expect(issue?.severity).toBe('error');
   });
 
+  it('accepts modern Intl options on the formatters but still flags an unknown prop', () => {
+    const file = tmpFile(
+      'formatters-intl.tsx',
+      `import { DateFormat, NumericFormat } from '@marigold/components';
+      const C = () => (
+        <>
+          <DateFormat value={new Date()} dateStyle="medium" fractionalSecondDigits={2} />
+          <NumericFormat value={3} notation="compact" signDisplay="always" unit="meter" />
+          <DateFormat value={new Date()} totallyBogusProp="x" />
+        </>
+      );`
+    );
+    const issues = validateProps(file);
+    expect(issues).toHaveLength(1);
+    expect(issues[0]?.component).toBe('DateFormat');
+    expect(issues[0]?.message).toContain('totallyBogusProp');
+  });
+
   it('reports one issue per invalid prop', () => {
     const issues = validateProps(fixture('invalid-props.tsx'));
     expect(issues).toHaveLength(2);
