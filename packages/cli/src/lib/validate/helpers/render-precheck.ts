@@ -7,53 +7,46 @@ import { parseSource } from './source.js';
 // misleading error. These are the two cases that are knowable from the source.
 
 const isRelative = (specifier: string): boolean =>
-  specifier.startsWith('./') || specifier.startsWith('../');
-
-// `import type`, `import { type A }` and `export { type A } from` are erased
-// before the module runs, so the sandbox never requests them.
-const isErasedImport = (node: ts.ImportDeclaration): boolean => {
-  const clause = node.importClause;
-  if (!clause) return false; // side-effect import: `import './x.css'`
-  if (clause.phaseModifier === ts.SyntaxKind.TypeKeyword) return true;
-  if (clause.name) return false;
-  const bindings = clause.namedBindings;
-  return (
-    bindings !== undefined &&
-    ts.isNamedImports(bindings) &&
-    bindings.elements.length > 0 &&
-    bindings.elements.every(e => e.isTypeOnly)
-  );
-};
-
-const isErasedReexport = (node: ts.ExportDeclaration): boolean =>
-  node.isTypeOnly ||
-  (node.exportClause !== undefined &&
-    ts.isNamedExports(node.exportClause) &&
-    node.exportClause.elements.length > 0 &&
-    node.exportClause.elements.every(e => e.isTypeOnly));
+  specifier === '.' ||
+  specifier === '..' ||
+  /^\.{1,2}\//.test(specifier) ||
+  specifier.startsWith('/');
 
 const hasModifier = (node: ts.Node, kind: ts.SyntaxKind): boolean =>
   ts.canHaveModifiers(node) &&
-  (ts.getModifiers(node) ?? []).some(m => m.kind === kind);
+  (ts.getModifiers(node)?.some(m => m.kind === kind) ?? false);
 
+// The sandbox's TypeScript transform drops every import whose bindings are only
+// used as types, marked `type` or not, before the module runs. TypeScript's own
+// transpile applies the same rule, so the local imports left in its output are
+// the ones the sandbox would actually request.
 const findLocalImport = (source: ts.SourceFile): string | undefined => {
-  for (const node of source.statements) {
+  const { outputText } = ts.transpileModule(source.getFullText(), {
+    fileName: source.fileName,
+    compilerOptions: {
+      jsx: ts.JsxEmit.Preserve,
+      module: ts.ModuleKind.ESNext,
+      target: ts.ScriptTarget.ESNext,
+    },
+  });
+  const emitted = ts.createSourceFile(
+    'emitted.jsx',
+    outputText,
+    ts.ScriptTarget.ESNext,
+    false,
+    ts.ScriptKind.JSX
+  );
+  for (const node of emitted.statements) {
+    const specifier =
+      ts.isImportDeclaration(node) || ts.isExportDeclaration(node)
+        ? node.moduleSpecifier
+        : undefined;
     if (
-      ts.isImportDeclaration(node) &&
-      ts.isStringLiteral(node.moduleSpecifier) &&
-      isRelative(node.moduleSpecifier.text) &&
-      !isErasedImport(node)
+      specifier &&
+      ts.isStringLiteral(specifier) &&
+      isRelative(specifier.text)
     ) {
-      return node.moduleSpecifier.text;
-    }
-    if (
-      ts.isExportDeclaration(node) &&
-      node.moduleSpecifier &&
-      ts.isStringLiteral(node.moduleSpecifier) &&
-      isRelative(node.moduleSpecifier.text) &&
-      !isErasedReexport(node)
-    ) {
-      return node.moduleSpecifier.text;
+      return specifier.text;
     }
   }
   return undefined;
@@ -87,7 +80,9 @@ const mayExportComponent = (source: ts.SourceFile): boolean => {
     if (
       ts.isVariableStatement(node) &&
       node.declarationList.declarations.some(
-        d => ts.isIdentifier(d.name) && d.name.text === 'App'
+        // A destructuring export (`export const { App } = pages`) is not
+        // resolved here, so it counts as possibly exporting `App`.
+        d => !ts.isIdentifier(d.name) || d.name.text === 'App'
       )
     ) {
       return true;

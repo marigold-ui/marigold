@@ -59,6 +59,47 @@ describe('validate() on files the render sandbox cannot load', () => {
     expect(report.errors.filter(e => e.source === 'runtime')).toEqual([]);
   });
 
+  it('reports the skip as an error when no static check ran either', async () => {
+    const file = tmpFile(
+      'render-skip/a11y-only.tsx',
+      `import { format } from './format';
+      export default () => <p>{format('Save')}</p>;`
+    );
+    const report = await validate(file, { ...options, checks: ['a11y'] });
+
+    expect(createRenderer).not.toHaveBeenCalled();
+    const skipped = report.errors.filter(e => e.component === 'Renderer');
+    expect(skipped).toHaveLength(1);
+    expect(skipped[0]?.message).toMatch(/skipped/i);
+    expect(report.metadata.checksRun).toEqual([]);
+  });
+
+  it('lists only the static checks as run when the render is skipped', async () => {
+    const file = tmpFile(
+      'render-skip/checks-run.tsx',
+      `import { format } from './format';
+      export default () => <p>{format('Save')}</p>;`
+    );
+    const report = await validate(file, options);
+    expect(report.metadata.checksRun).toEqual(['technical']);
+  });
+
+  it('adds no skip warning when a compile error already stops the render', async () => {
+    const file = tmpFile(
+      'render-skip/fatal.tsx',
+      `import { format } from './format';
+      export default () => <p>{format(</p>;`
+    );
+    const report = await validate(file, options);
+
+    expect(createRenderer).not.toHaveBeenCalled();
+    expect(
+      [...report.errors, ...report.warnings].filter(
+        i => i.component === 'Renderer'
+      )
+    ).toEqual([]);
+  });
+
   it('still renders a self-contained file', async () => {
     const file = tmpFile(
       'render-skip/self-contained.tsx',

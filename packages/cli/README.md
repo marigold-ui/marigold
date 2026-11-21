@@ -262,7 +262,7 @@ Flags:
 Validation runs in two passes:
 
 - **Static (TypeScript/AST)** always runs on a single `.tsx` file: compiler errors, invalid props/event handlers, compound composition, raw HTML vs. components, section headers, collection ids, component conventions.
-- **Dynamic (rendered in a headless browser)** needs a self-contained file (only imports from packages like `@marigold/components`/`react`, no local files) and Chromium installed: DOM overlap, token compliance, responsive width, keyboard access, text spacing, contrast, focus visibility, and an axe accessibility audit. Skipped (with a single warning, not a crash) when the render toolchain or Chromium isn't available.
+- **Dynamic (rendered in a headless browser)** needs a self-contained file (only imports from packages like `@marigold/components`/`react`, no local files) with a default export or a named export called `App`, and Chromium installed: DOM overlap, token compliance, responsive width, keyboard access, text spacing, contrast, focus visibility, and an axe accessibility audit. Skipped with a single warning, not a crash, when the render toolchain or Chromium isn't available, or when the file imports a local module or has no default or `App` export.
 
 Something is an **error** only if it's deterministic and free of false positives (compile failure, hallucinated component, missing required part, a DOM-event handler on a controlled component). Everything else, including all rendered/a11y findings, is a **warning**. The command exits `1` only on an error, so it's safe to run inside an automatic fix loop. Set `MARIGOLD_VALIDATE_DISABLED=1` to skip validation with a clear message in environments without a browser setup.
 

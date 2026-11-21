@@ -83,6 +83,56 @@ describe('renderSkipReason', () => {
     ).toBeUndefined();
   });
 
+  it('ignores a relative import used only in types, as the sandbox drops it', () => {
+    expect(
+      reasonFor(
+        'unmarked-type.tsx',
+        `import { Row } from './types';
+        export default (_: { row: Row }) => null;`
+      )
+    ).toBeUndefined();
+  });
+
+  it('skips a relative import that keeps one value binding', () => {
+    expect(
+      reasonFor(
+        'mixed.tsx',
+        `import { type Row, format } from './format';
+        export default (_: { row: Row }) => format('x');`
+      )
+    ).toMatch(/\.\/format/);
+  });
+
+  it('skips a bare "." import of a sibling index', () => {
+    expect(
+      reasonFor(
+        'dot.tsx',
+        `import { format } from '.';
+        export default () => format('x');`
+      )
+    ).toMatch(/"\."/);
+  });
+
+  it('names the local import when the file also lacks a component export', () => {
+    expect(
+      reasonFor(
+        'both.tsx',
+        `import { format } from './format';
+        export const Checkout = () => format('x');`
+      )
+    ).toMatch(/\.\/format/);
+  });
+
+  it('does not guess when App may come from a destructuring export', () => {
+    expect(
+      reasonFor(
+        'destructured.tsx',
+        `const pages = { App: () => null };
+        export const { App } = pages;`
+      )
+    ).toBeUndefined();
+  });
+
   it('skips a file with neither a default nor an App export', () => {
     expect(
       reasonFor('named.tsx', `export const Checkout = () => null;`)
