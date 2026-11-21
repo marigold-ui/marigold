@@ -117,6 +117,8 @@ const isBareDomHandler = (entry: DocEntry): boolean =>
 
 const listDomHandlers = (entries: DocEntry[]): Node | null => {
   const names = new Set(entries.map(entry => entry.name));
+  // `xCapture` is folded into `x` only when `x` is in the same list. Otherwise
+  // it stays as its own name, so the line never claims a variant it can't back.
   const base = [...names].filter(
     name => !name.endsWith('Capture') || !names.has(name.slice(0, -7))
   );
@@ -130,9 +132,9 @@ const listDomHandlers = (entries: DocEntry[]): Node | null => {
   });
   if (hasCapture) {
     children.push(
-      text(', each with a '),
+      text(', and their '),
       { type: 'inlineCode', value: 'Capture' } as Node,
-      text(' variant.')
+      text(' variants where React defines one.')
     );
   } else {
     children.push(text('.'));

@@ -8,6 +8,7 @@ import {
 } from './helpers/component-locations.js';
 import { setComponentResolutionRoot } from './helpers/components.js';
 import { setThemeResolutionRoot } from './helpers/design-tokens.js';
+import { assertSupportedFile } from './helpers/source.js';
 import type { RenderTimingError, SharedRenderer } from './spatial/renderer.js';
 import {
   DYNAMIC_ISSUE_SOURCES,
@@ -362,29 +363,25 @@ const runWithRenderer = async (
   });
 };
 
-const SUPPORTED_EXTENSIONS = new Set(['.ts', '.tsx', '.js', '.jsx']);
-
 export const validate = async (
   filePath: string,
   options: ValidateOptions
 ): Promise<ValidationReport> => {
-  if (!fs.existsSync(filePath)) {
+  let stats: fs.Stats;
+  try {
+    stats = fs.statSync(filePath);
+  } catch {
     throw new Error(`File not found: ${filePath}`);
   }
   // Without these two guards every checker failed on its own and the report
   // came back with warnings only, so the command exited 0 for a target it
   // never validated.
-  if (fs.statSync(filePath).isDirectory()) {
+  if (stats.isDirectory()) {
     throw new Error(
       `"${filePath}" is a directory. marigold validate checks one file at a time, so run it once per .tsx file.`
     );
   }
-  const extension = path.extname(filePath);
-  if (!SUPPORTED_EXTENSIONS.has(extension)) {
-    throw new Error(
-      `Unsupported file type "${extension}". marigold validate checks TypeScript/JavaScript files (.ts, .tsx, .js, .jsx).`
-    );
-  }
+  assertSupportedFile(filePath);
 
   const wantsRender =
     options.checks.includes('spatial') || options.checks.includes('a11y');

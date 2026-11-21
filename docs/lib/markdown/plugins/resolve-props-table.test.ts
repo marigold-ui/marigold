@@ -4,7 +4,7 @@ import remarkMdx from 'remark-mdx';
 import remarkParse from 'remark-parse';
 import remarkStringify from 'remark-stringify';
 import { unified } from 'unified';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { remarkResolvePropsTable } from './resolve-props-table';
 
 const entry = (overrides: Partial<DocEntry> & { name: string }): DocEntry => ({
@@ -171,7 +171,62 @@ describe('remarkResolvePropsTable', () => {
     // Documented handlers are API, they keep their row.
     expect(Object.keys(table)).toContain('onPress');
     expect(md).toContain(
-      'Also accepts the DOM event handlers `onClick` and `onMouseDown`, each with a `Capture` variant.'
+      'Also accepts the DOM event handlers `onClick` and `onMouseDown`, and their `Capture` variants where React defines one.'
     );
+  });
+
+  describe('DOM handler line', () => {
+    const original = [...entries];
+    const handler = (name: string) =>
+      entry({
+        name,
+        type: 'EventHandler<SyntheticEvent> | undefined',
+        simplifiedType: 'function',
+      });
+    const setEntries = (next: DocEntry[]) => {
+      entries.splice(0, entries.length, ...next);
+    };
+    const handlerLine = async () => {
+      const md = await toMarkdown(
+        '<AutoTypeTable path="Button" name="ButtonProps" />'
+      );
+      return md.split('\n').find(line => line.startsWith('Also accepts'));
+    };
+    afterEach(() => setEntries(original));
+
+    it('does not promise a Capture variant for handlers React has none for', async () => {
+      setEntries([...original, handler('onMouseEnter')]);
+
+      const line = await handlerLine();
+      expect(line).toContain('`onMouseEnter`');
+      expect(line).not.toContain('onMouseEnterCapture');
+      expect(line).toContain('where React defines one');
+      expect(line).not.toContain('each with a');
+    });
+
+    it('omits the Capture sentence when no handler has a variant', async () => {
+      setEntries([
+        ...original.filter(e => !/^on(Click|MouseDown)/.test(e.name)),
+        handler('onMouseEnter'),
+        handler('onMouseLeave'),
+      ]);
+
+      expect(await handlerLine()).toBe(
+        'Also accepts the DOM event handlers `onMouseEnter` and `onMouseLeave`.'
+      );
+    });
+
+    it('lists xCapture as its own name when x has no bare handler row', async () => {
+      // `onClick` is documented elsewhere, so only the Capture one is bare.
+      setEntries([
+        ...original.filter(e => e.name !== 'onClick'),
+        entry({ name: 'onClick', description: 'Documented click.' }),
+      ]);
+
+      const line = await handlerLine();
+      expect(line).toContain('`onClickCapture`');
+      expect(line).not.toContain('CaptureCapture');
+      expect(line).toContain('`onMouseDown`');
+    });
   });
 });

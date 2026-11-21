@@ -328,7 +328,7 @@ An AI coding agent captures the CLI's output, so it gets JSON by default (see [O
 A loop that works for a single screen:
 
 ```sh
-marigold search "confirm a destructive action" --format json   # 1. find the component or pattern
+marigold search "confirm a destructive action" --format json   # 1. find the component
 marigold docs Dialog --section props --format json             # 2. read its props before using it
 marigold validate src/EventList.tsx --checks technical         # 3. check what you wrote
 ```

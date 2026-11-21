@@ -670,6 +670,13 @@ const exitWhenFlushed = (code: number): void => {
 };
 
 if (isEntryPoint) {
+  // A reader that closes early (`| head`) while a slow command is still
+  // running raises EPIPE on stdout. Without a listener that is an unhandled
+  // 'error' event and a stack trace, so exit quietly. Other errors are left to
+  // `exitWhenFlushed`, which attaches its own listener once main() resolves.
+  process.stdout.on('error', (err: NodeJS.ErrnoException) => {
+    if (err.code === 'EPIPE') process.exit(0);
+  });
   main().then(exitWhenFlushed, err => {
     process.stderr.write(String(err) + '\n');
     exitWhenFlushed(1);

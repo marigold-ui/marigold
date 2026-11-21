@@ -68,5 +68,14 @@ describe('runValidate', () => {
         /Unsupported file type ".css"/
       );
     });
+
+    it('rejects a file without an extension with a readable message', async () => {
+      const file = path.join(dir, 'Dockerfile');
+      writeFileSync(file, 'FROM node');
+
+      await expect(runValidate({ file, checks: 'technical' })).rejects.toThrow(
+        /"Dockerfile" has no extension/
+      );
+    });
   });
 });
