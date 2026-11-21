@@ -33,6 +33,7 @@ export interface AppShellProps extends Omit<
    * does not matter.
    */
   children?: ReactNode;
+  /** Ref to the DOM element the component renders. */
   ref?: Ref<HTMLDivElement>;
 }
 

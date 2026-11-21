@@ -39,7 +39,15 @@ import { TableRow } from './TableRow';
 type RemovedProps = 'className' | 'style' | 'selectionBehavior' | 'render';
 
 export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: 'grid' | 'default' | 'muted' | (string & {});
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: 'compact' | 'default' | 'spacious' | (string & {});
   /**
    * Controls how cell content overflows. Works best when columns have defined width props.

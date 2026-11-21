@@ -1,6 +1,7 @@
 import {
   type ExportedDeclarations,
   Project,
+  ScriptTarget,
   type SourceFile,
   type Type,
 } from 'ts-morph';
@@ -117,6 +118,13 @@ const loadDtsSource = (): SourceFile => {
       declaration: true,
       skipLibCheck: true,
       strict: false,
+      // Without a target the checker loads the ES5 lib, where
+      // `Intl.DateTimeFormatOptions` has no `dateStyle`, so a valid prop on
+      // `<DateFormat>` was reported as an error. It only worked in projects
+      // whose `@types/node` happens to pull in the newer libs. Name the lib
+      // and take no ambient types, so the result is the same in every project.
+      target: ScriptTarget.ES2022,
+      types: [],
       // Bundler resolution handles the package's `.d.mts` re-export barrel.
       moduleResolution: ts.ModuleResolutionKind.Bundler,
     },

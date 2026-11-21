@@ -38,7 +38,9 @@ export interface TitleProps extends AriaLabelingProps, SlotProps {
    * The element id.
    */
   id?: string;
+  /** Children of the component. */
   children?: ReactNode;
+  /** Ref to the DOM element the component renders. */
   ref?: Ref<HTMLElement>;
 }
 

@@ -5,6 +5,7 @@ import { intlMessages } from '../intl/messages';
 import { CloseButton } from './../CloseButton/CloseButton';
 
 export interface FileFieldItemProps {
+  /** Children of the component. */
   children?: ReactNode;
   /**
    * Called when the close button is pressed to remove this item.
@@ -18,6 +19,10 @@ export interface FileFieldItemProps {
    */
   removeLabel?: string;
 
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: 'default' | 'small' | (string & {});
 }
 

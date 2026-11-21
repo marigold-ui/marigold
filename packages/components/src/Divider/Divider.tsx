@@ -4,7 +4,15 @@ import { cn, useClassNames } from '@marigold/system';
 
 type RemovedProps = 'className' | 'style';
 export interface DividerProps extends Omit<RAC.SeparatorProps, RemovedProps> {
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: 'default' | 'bold' | (string & {});
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: string & {};
 }
 
