@@ -1,5 +1,43 @@
 # @marigold/docs
 
+## 18.5.0
+
+### Patch Changes
+
+- 04f4206: docs(DST-1981): document `marigold search` and `marigold validate` for agents
+
+  The CLI page of the docs had no section for `marigold search` and `marigold validate`, and the README pointed AI agents at a file that no longer has the section it named. Both now describe the commands and the loop an agent should follow: search for the component, read its props, write the code, then run `marigold validate --checks technical` until it passes.
+
+- 05e61f3: fix(DST-1617): keep the ContextualHelp popover inside the screen on small viewports
+
+  On narrow screens the ContextualHelp popover could end flush against the edge of the screen. A `medium` popover did so below a 344px viewport and a `large` one below 472px, cutting off its rounded corners and shadow. A popover placed `left` or `right` was squeezed into the little space beside the button, at 320px only 134px wide.
+
+  **New:** the popover keeps a 12px distance to both edges of the screen and gets narrower when it would not fit. On small screens, below the `sm` breakpoint, `left` and `right` placements open at the `bottom` instead. Larger screens are unchanged, and there is nothing to do in your app.
+
+- 36e9ad5: style(DST-2001): Stepper shows progress in neutral colours instead of success green
+
+  A completed step is now a filled check in the primary colour, with a primary connector after it, so plain progress no longer reads as a success message. Connectors are a slightly thicker line with rounded ends. The current step is an outlined marker with a bold label. Disabled steps use the disabled colours, and every step that cannot be clicked shows a not-allowed cursor on hover.
+
+  A step in both `completedKeys` and `disabledKeys` used to show its number and was announced only as "not available". It now shows the check and is announced as "completed, not available". It still cannot be clicked and its connector stays unfilled.
+
+  The Stepper docs put Back on the far left and Continue on the far right in the multi-step form examples, without icons, and end on a "Place order" button that confirms the order. The Button page no longer lists wizards under right-to-left button order.
+
+  Nothing to change in your code.
+
+- Updated dependencies [04f4206]
+- Updated dependencies [04f4206]
+- Updated dependencies [923cef8]
+- Updated dependencies [05e61f3]
+- Updated dependencies [898ad53]
+- Updated dependencies [36e9ad5]
+- Updated dependencies [4c5665a]
+- Updated dependencies [47f2879]
+- Updated dependencies [fb9256b]
+  - @marigold/components@18.5.0
+  - @marigold/system@18.5.0
+  - @marigold/icons@2.0.6
+  - @marigold/theme-rui@6.4.0
+
 ## 18.4.0
 
 ### Patch Changes

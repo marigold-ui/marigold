@@ -1,5 +1,70 @@
 # @marigold/theme-rui
 
+## 6.4.0
+
+### Minor Changes
+
+- fb9256b: fix(DST-1885): Pagination keeps keyboard focus when a button becomes unusable or disappears
+
+  "Previous" on the first page, "Next" on the last page and the "1" shown when there are no pages are no longer natively disabled. They now use `aria-disabled`, ignore presses and stay reachable with Tab, so focus is not dropped to the page body when you reach either end. Tests that check these buttons with `toBeDisabled()` or `be.disabled` need to assert `aria-disabled="true"` instead. When the focused page button is removed, for example because `totalItems` shrank, focus moves to the current page's button.
+
+### Patch Changes
+
+- 04f4206: docs(DST-1981): give the published packages a real README
+
+  The README of each package was a single line. It now says what the package is, how to install and set it up, and where the documentation lives: the docs site, the Markdown version of every page, and the `marigold` CLI. The `@marigold/components` README also lists the conventions that differ from other React libraries, such as `disabled` instead of `isDisabled`, `onPress` instead of `onClick`, and no `className`. This is the first file an AI coding agent reads in `node_modules`, so it no longer has to guess.
+
+- 923cef8: fix(DST-1612): keep a Table inside its container when the columns no longer fit
+
+  A `Table` whose column minimums add up to more than the space available painted outside its container instead of staying in it. At 320px, the minimum supported viewport width, that was every table with more than a couple of columns, and the rows ran across the edge of the surrounding `Panel`.
+
+  **Current:** the columns never shrink below the sum of their minimum widths, and the table simply overflowed whatever box it was in. The content past the container's edge was only reachable by scrolling the page sideways, if the page scrolled at all.
+
+  **New:** when less width than that is available, the table scrolls sideways inside its own container, so nothing paints over the container's edge and every column stays reachable. While it scrolls, whichever edge still has columns behind it fades out, and the fade clears at each end of the travel, so it also says which directions are left. A container that can give the columns their minimums is left alone, and nothing changes in the component API.
+
+  While a table scrolls sideways, a sticky header or footer and the `actionBar` pin to that scroll area rather than to the page, because it is the nearest scrollport. A table wrapped in a `<Scrollable>` is left alone, since that scroll area already contains the table and has a height of its own to pin them to. Tables that fit keep following the page as before.
+
+  The guard that leaves a table alone looks for a `Scrollable` rather than reading the scroll parent's `overflow-x`. CSS computes `overflow-x` to `auto` whenever `overflow-y` is not `visible`, so every vertically scrolling ancestor would otherwise report itself as a sideways scroll area: inside a `Dialog`, a `Drawer` or an app shell whose main region scrolls, the table would keep overflowing its panel.
+
+  One new optional theme part carries the fade, `Table.container`, backed by the existing `ui-scroll-mask-x` utility in `theme-rui`. Set `--sc-mask-width` to change how far the fade reaches. A theme that defines the part as nothing still scrolls, it just shows a plain scrollbar. The same applies without support for CSS scroll-driven animations: there is no fade, only the scrollbar.
+
+  `ui-scroll-mask-x` no longer hides the native scrollbar, because a scroll affordance should not take away the one the browser gives you. Hiding it is now a separate `ui-scrollbar-none` utility, which `Tabs` and `SegmentedControl` opt into so they look as they did. A horizontal scrollbar under a row of tabs is unconventional chrome a fade can replace, but under a table it is what a pointer user reaches for, so `Table.container` pairs the fade with `ui-scrollbar` and keeps it. If you used `ui-scroll-mask-x` in your own code and want no scrollbar, add `ui-scrollbar-none`.
+
+  `ui-scrollbar` now sets `scrollbar-color` only in browsers without `::-webkit-scrollbar`, which today means Firefox. Safari ignores the `::-webkit-scrollbar` styling as soon as `scrollbar-color` is set and falls back to the macOS overlay scrollbar, which stays hidden until you scroll, so the Table's scrollbar never showed there. Chrome and Safari now both draw the styled 12px scrollbar, which also changes how it looks in `Dialog`, `Drawer`, `Sidebar` and `ContextualHelp`.
+
+- 05e61f3: fix(DST-1617): keep the ContextualHelp popover inside the screen on small viewports
+
+  On narrow screens the ContextualHelp popover could end flush against the edge of the screen. A `medium` popover did so below a 344px viewport and a `large` one below 472px, cutting off its rounded corners and shadow. A popover placed `left` or `right` was squeezed into the little space beside the button, at 320px only 134px wide.
+
+  **New:** the popover keeps a 12px distance to both edges of the screen and gets narrower when it would not fit. On small screens, below the `sm` breakpoint, `left` and `right` placements open at the `bottom` instead. Larger screens are unchanged, and there is nothing to do in your app.
+
+- 898ad53: style(DST-1662): Table, ListView, SelectList and ghost SegmentedControl show a keyboard focus ring with at least 3:1 contrast
+
+  Focused table rows, cells and column headers, ListView rows, SelectList options and ghost SegmentedControl segments used a half-opacity ring that measured about 2:1 against its background. They now use the full-opacity `ui-state-focus-item` ring, which reaches at least 3:1 on rest, hover and selected backgrounds.
+
+  In Windows High Contrast and other forced-colors modes, focused rows, list items, tabs, menu items, table cells and ghost segments now show an outline. Their focus ring had been invisible there since v18.
+
+- 36e9ad5: style(DST-2001): Stepper shows progress in neutral colours instead of success green
+
+  A completed step is now a filled check in the primary colour, with a primary connector after it, so plain progress no longer reads as a success message. Connectors are a slightly thicker line with rounded ends. The current step is an outlined marker with a bold label. Disabled steps use the disabled colours, and every step that cannot be clicked shows a not-allowed cursor on hover.
+
+  A step in both `completedKeys` and `disabledKeys` used to show its number and was announced only as "not available". It now shows the check and is announced as "completed, not available". It still cannot be clicked and its connector stays unfilled.
+
+  The Stepper docs put Back on the far left and Continue on the far right in the multi-step form examples, without icons, and end on a "Place order" button that confirms the order. The Button page no longer lists wizards under right-to-left button order.
+
+  Nothing to change in your code.
+
+- Updated dependencies [04f4206]
+- Updated dependencies [04f4206]
+- Updated dependencies [923cef8]
+- Updated dependencies [05e61f3]
+- Updated dependencies [36e9ad5]
+- Updated dependencies [4c5665a]
+- Updated dependencies [47f2879]
+- Updated dependencies [fb9256b]
+  - @marigold/components@18.5.0
+  - @marigold/system@18.5.0
+
 ## 6.3.0
 
 ### Minor Changes
