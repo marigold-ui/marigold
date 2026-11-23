@@ -256,7 +256,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     NumberField?: Record<
-      'group' | 'stepper' | 'input',
+      'group' | 'stepper' | 'input' | 'maxValue',
       ComponentStyleFunction<string, string>
     >;
     SectionMessage?: Record<

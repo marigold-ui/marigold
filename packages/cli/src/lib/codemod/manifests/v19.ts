@@ -52,6 +52,7 @@ export const v19: MigrationManifest = {
       'actions',
     ],
     Sheet: ['backdrop', 'container', 'content'],
+    NumberField: ['group', 'stepper', 'input', 'maxValue'],
   },
   restructures: [{ component: 'Popover', primarySlot: 'container' }],
   scaffolds: [
