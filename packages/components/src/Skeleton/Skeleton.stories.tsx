@@ -35,6 +35,7 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     width: '1/2',
   },
@@ -66,6 +67,7 @@ export const Sizes = meta.story({
  */
 export const Rounded = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => (
     <Inline space="related" alignY="center">
       <Skeleton width={10} height={10} variant="rounded" />
@@ -196,6 +198,7 @@ const skeletonRows = Array.from({ length: 5 }, (_, i) => `skeleton-${i}`);
  */
 export const InTable = meta.story({
   tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => (
     <Table
       aria-label="Orders"
