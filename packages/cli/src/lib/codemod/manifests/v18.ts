@@ -181,7 +181,7 @@ export const v18: MigrationManifest = {
       'indicator',
       'action',
     ],
-    NumberField: ['group', 'stepper', 'input', 'maxValue'],
+    NumberField: ['group', 'stepper', 'input'],
     SectionMessage: ['container', 'icon', 'title', 'description', 'content'],
     Table: [
       'table',
