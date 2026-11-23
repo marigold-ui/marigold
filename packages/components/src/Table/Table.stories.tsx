@@ -4337,16 +4337,18 @@ ExpandableRows.test(
   },
   async ({ canvas, userEvent }) => {
     const button = canvas.getByRole('button', { name: 'Total PDF' });
+
     // Enter the grid with a click: programmatic focus lands on the row.
     await userEvent.click(canvas.getByText('Settlement run 1 Jul 2026'));
     for (let i = 0; i < 6 && document.activeElement !== button; i++) {
       await userEvent.keyboard('{ArrowRight}');
     }
 
-    expect(button).toHaveFocus();
     const ring = parseFloat(getComputedStyle(button).outlineWidth);
     const clip = button.closest('[data-cell-content]')!.getBoundingClientRect();
     const box = button.getBoundingClientRect();
+
+    expect(button).toHaveFocus();
     expect(ring).toBeGreaterThan(0);
     expect(box.top - ring).toBeGreaterThanOrEqual(clip.top);
     expect(box.bottom + ring).toBeLessThanOrEqual(clip.bottom);
