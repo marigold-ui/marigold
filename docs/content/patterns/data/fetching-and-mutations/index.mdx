@@ -133,6 +133,8 @@ const FetchingIndicator = () => {
 };
 ```
 
+The snippet shows the skeleton rows as soon as `isLoading` is true. In an app, wait about a second before you show them, so fast or cached responses never flash a skeleton. See [Skeleton: Usage](/components/content/skeleton#usage).
+
 Pair this with `placeholderData: keepPreviousData` so filtering and paging keep the previous rows visible instead of flashing an empty table.
 
 How to build the skeleton, when to show it and how to announce the load is covered on the [Skeleton](/components/content/skeleton) page. The [Loading States](/patterns/feedback/loading-states) pattern documents the complementary options, an inline spinner inside a button and a `Loader` over a whole section.

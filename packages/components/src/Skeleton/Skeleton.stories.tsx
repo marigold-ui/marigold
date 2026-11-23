@@ -182,9 +182,9 @@ Composition.test(
 );
 
 const columns = [
-  { name: 'Name', width: '3/4' },
-  { name: 'Email', width: 'full' },
-  { name: 'Status', width: '1/2' },
+  { name: 'Name', width: '3/4', alignX: 'left' },
+  { name: 'Email', width: 'full', alignX: 'left' },
+  { name: 'Total', width: '1/2', alignX: 'right' },
 ] as const;
 
 const skeletonRows = Array.from({ length: 5 }, (_, i) => `skeleton-${i}`);
@@ -205,8 +205,8 @@ export const InTable = meta.story({
       disabledKeys={skeletonRows}
     >
       <Table.Header>
-        {columns.map(({ name }, i) => (
-          <Table.Column key={name} rowHeader={i === 0}>
+        {columns.map(({ name, alignX }, i) => (
+          <Table.Column key={name} rowHeader={i === 0} alignX={alignX}>
             {name}
           </Table.Column>
         ))}
@@ -233,6 +233,21 @@ InTable.test(
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvasElement }) => {
     await expect(skeletonsIn(canvasElement)).toHaveLength(15);
+  }
+);
+
+InTable.test(
+  'follows the alignment of its column',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    // The last placeholder sits in the right-aligned "Total" column.
+    const skeleton = skeletonsIn(canvasElement).at(-1)!;
+    const cell = skeleton.closest<HTMLElement>('[data-cell-content]')!;
+
+    await expect(skeleton.getBoundingClientRect().right).toBeCloseTo(
+      cell.getBoundingClientRect().right,
+      0
+    );
   }
 );
 

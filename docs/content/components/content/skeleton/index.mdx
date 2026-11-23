@@ -116,6 +116,7 @@ For a table, render skeleton rows inside the real `<Table>` instead of drawing a
 - **Set `loading`** on the table while the skeleton rows are shown. The table marks itself busy and announces the load to screen readers.
 - **Give the row header cells an empty `textValue`.** A row header needs a text value for type-to-select, and there is none yet.
 - **With selection,** keep `selectionMode` so the checkbox column stays in place, and pass the IDs of the skeleton rows in `disabledKeys`. Nobody can select a placeholder row, and "select all" skips them.
+- **Alignment follows the column.** A placeholder in a column with `alignX="right"` or `alignX="center"` lines up like the content it stands in for, so numbers and their placeholders share an edge.
 
 <ComponentDemo name="skeleton-table" />
 

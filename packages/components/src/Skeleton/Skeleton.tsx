@@ -58,6 +58,8 @@ export const Skeleton = ({
         'h-(--height) w-(--width)',
         // An empty box has no min-content, so a flex row would squeeze a fixed size.
         width !== 'full' && !isFraction(`${width}`) && 'shrink-0',
+        // A block ignores text-align, so follow an aligned table cell by margin.
+        '[[data-cell-content].text-center_&]:mx-auto [[data-cell-content].text-right_&]:ms-auto',
         classNames
       )}
       style={{
