@@ -869,6 +869,103 @@ describe('selectableRows', () => {
     expect(rowOf(ARTICLE)).not.toHaveAttribute('aria-disabled');
   });
 
+  test('a consumer-disabled row outside the level stays disabled in a dynamic collection without ids', () => {
+    // React Aria clones the key from `item.id` onto a row without an `id`
+    // prop, scoped to its parent for nested rows ("group:child-b"). The row
+    // sees the same key `disabledKeys` is matched against.
+    type Item = { id: string; name: string; rows?: Item[] };
+    const items: Item[] = [
+      {
+        id: 'group',
+        name: 'Group',
+        rows: [
+          { id: 'child-a', name: 'Child A' },
+          { id: 'child-b', name: 'Child B' },
+        ],
+      },
+    ];
+    const renderRow = (item: Item) => (
+      <Table.Row>
+        <Table.Cell>{item.name}</Table.Cell>
+        <Table.ExpandableRows items={item.rows}>
+          {renderRow}
+        </Table.ExpandableRows>
+      </Table.Row>
+    );
+
+    render(
+      <MarigoldProvider theme={theme}>
+        <Table
+          aria-label="Dynamic rows"
+          selectionMode="multiple"
+          treeColumn="name"
+          selectableRows="top-level"
+          defaultExpandedKeys={['group']}
+          disabledKeys={['group:child-b']}
+          disabledBehavior="all"
+        >
+          <Table.Header>
+            <Table.Column id="name" rowHeader>
+              Name
+            </Table.Column>
+          </Table.Header>
+          <Table.Body items={items}>{renderRow}</Table.Body>
+        </Table>
+      </MarigoldProvider>
+    );
+
+    expect(rowOf('Child B')).toHaveAttribute('aria-disabled', 'true');
+    expect(rowOf('Child A')).not.toHaveAttribute('aria-disabled');
+  });
+
+  describe('disabledKeys in the table context', () => {
+    // An inline `disabledKeys` is a new array on every render. In the context
+    // it would re-render every row, so it is only there when rows read it.
+    const seen: unknown[] = [];
+    const Probe = () => {
+      seen.push(useTableContext().disabledKeys);
+      return null;
+    };
+    const ProbedTable = (props: { selectableRows?: 'all' | 'top-level' }) => (
+      <MarigoldProvider theme={theme}>
+        <Table
+          aria-label="Probed"
+          selectionMode="multiple"
+          disabledKeys={['a']}
+          {...props}
+        >
+          <Table.Header>
+            <Table.Column rowHeader>Name</Table.Column>
+          </Table.Header>
+          <Table.Body>
+            <Table.Row id="a">
+              <Table.Cell>
+                <Probe />A
+              </Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+      </MarigoldProvider>
+    );
+
+    afterEach(() => {
+      seen.length = 0;
+    });
+
+    test('is left out when every row is selectable', () => {
+      render(<ProbedTable />);
+
+      expect(seen.length).toBeGreaterThan(0);
+      expect(seen.every(keys => keys === undefined)).toBe(true);
+    });
+
+    test('is passed when a level is selectable', () => {
+      render(<ProbedTable selectableRows="top-level" />);
+
+      expect(seen.at(-1)).toEqual(['a']);
+    });
+  });
+
   test('a disabled row on the selectable level keeps its disabled checkbox', () => {
     render(
       <ExpandableRowsSelectableLevel.Component

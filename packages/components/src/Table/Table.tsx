@@ -316,6 +316,12 @@ const TableRoot = ({
   useResizeObserver({ ref: containerRef, onResize: measure });
   useLayoutEffect(measure, [measure]);
 
+  // Only rows outside the selectable level read `disabledKeys`. An inline array
+  // is a new reference on every render, so keeping it out of the context
+  // otherwise spares every row and cell a re-render.
+  const rowDisabledKeys =
+    selectableRows === 'all' ? undefined : props.disabledKeys;
+
   const ctx = useMemo(
     () => ({
       classNames,
@@ -326,7 +332,7 @@ const TableRoot = ({
       alignY,
       treeColumn,
       selectableRows,
-      disabledKeys: props.disabledKeys,
+      disabledKeys: rowDisabledKeys,
       warnedMissingTextValue,
     }),
     [
@@ -338,7 +344,7 @@ const TableRoot = ({
       alignY,
       treeColumn,
       selectableRows,
-      props.disabledKeys,
+      rowDisabledKeys,
       warnedMissingTextValue,
     ]
   );
