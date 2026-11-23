@@ -4316,6 +4316,7 @@ ExpandableRows.test(
     await userEvent.pointer({ keys: '[MouseLeft>]', target: chevron });
 
     const { scale, translate } = getComputedStyle(chevron);
+
     expect(scale).toBe('none');
     expect(translate).toBe('0px 1px');
 

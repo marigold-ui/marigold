@@ -115,7 +115,9 @@ Basic.test(
     await userEvent.pointer({ keys: '[MouseLeft>]', target: button });
 
     await waitFor(() => expect(button).toHaveAttribute('data-pressed'));
+
     const { scale, translate } = getComputedStyle(button);
+
     expect(scale).toBe('none');
     expect(translate).toBe('0px 1px');
 
