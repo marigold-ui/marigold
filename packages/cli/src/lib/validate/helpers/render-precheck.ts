@@ -36,11 +36,16 @@ const findLocalImport = (source: ts.SourceFile): string | undefined => {
     false,
     ts.ScriptKind.JSX
   );
-  for (const node of emitted.statements) {
+  // Static imports and re-exports, plus a dynamic `import('./x')` anywhere in
+  // the file, as in `lazy(() => import('./Page'))`.
+  const visit = (node: ts.Node): string | undefined => {
     const specifier =
       ts.isImportDeclaration(node) || ts.isExportDeclaration(node)
         ? node.moduleSpecifier
-        : undefined;
+        : ts.isCallExpression(node) &&
+            node.expression.kind === ts.SyntaxKind.ImportKeyword
+          ? node.arguments[0]
+          : undefined;
     if (
       specifier &&
       ts.isStringLiteral(specifier) &&
@@ -48,8 +53,9 @@ const findLocalImport = (source: ts.SourceFile): string | undefined => {
     ) {
       return specifier.text;
     }
-  }
-  return undefined;
+    return ts.forEachChild(node, visit);
+  };
+  return visit(emitted);
 };
 
 // True when the harness would find a component, or when the source cannot tell

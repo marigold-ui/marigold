@@ -16,34 +16,17 @@ describe('renderSkipReason', () => {
     ).toBeUndefined();
   });
 
-  it('renders a file whose component is a named App export', () => {
-    expect(
-      reasonFor('app-fn.tsx', `export function App() { return null; }`)
-    ).toBeUndefined();
-    expect(
-      reasonFor('app-const.tsx', `export const App = () => null;`)
-    ).toBeUndefined();
-    expect(
-      reasonFor(
-        'app-clause.tsx',
-        `const Page = () => null; export { Page as App };`
-      )
-    ).toBeUndefined();
-  });
-
-  it('accepts the default export in every syntactic form', () => {
-    expect(
-      reasonFor(
-        'default-fn.tsx',
-        `export default function Page() { return null; }`
-      )
-    ).toBeUndefined();
-    expect(
-      reasonFor(
-        'default-clause.tsx',
-        `const Page = () => null; export { Page as default };`
-      )
-    ).toBeUndefined();
+  it.each([
+    ['app-fn.tsx', `export function App() { return null; }`],
+    ['app-const.tsx', `export const App = () => null;`],
+    ['app-clause.tsx', `const Page = () => null; export { Page as App };`],
+    ['default-fn.tsx', `export default function Page() { return null; }`],
+    [
+      'default-clause.tsx',
+      `const Page = () => null; export { Page as default };`,
+    ],
+  ])('renders a file with a default or App export (%s)', (name, source) => {
+    expect(reasonFor(name, source)).toBeUndefined();
   });
 
   it('skips a file with a relative import and names the import', () => {
@@ -56,20 +39,30 @@ describe('renderSkipReason', () => {
     ).toMatch(/\.\/Header/);
   });
 
-  it('skips a relative re-export and a side-effect import', () => {
-    expect(
-      reasonFor(
-        'reexport.tsx',
-        `export { x } from '../x'; export default () => null;`
-      )
-    ).toMatch(/\.\.\/x/);
-    expect(
-      reasonFor(
-        'side-effect.tsx',
-        `import './styles.css'; export default () => null;`
-      )
-    ).toMatch(/\.\/styles\.css/);
-  });
+  it.each([
+    [
+      'reexport.tsx',
+      `export { x } from '../x'; export default () => null;`,
+      '../x',
+    ],
+    [
+      'side-effect.tsx',
+      `import './styles.css'; export default () => null;`,
+      './styles.css',
+    ],
+    [
+      'lazy.tsx',
+      `import { lazy } from 'react';
+      const Page = lazy(() => import('./Page'));
+      export default () => <Page />;`,
+      './Page',
+    ],
+  ])(
+    'skips a file whose local module is loaded another way (%s)',
+    (name, source, local) => {
+      expect(reasonFor(name, source)).toContain(`"${local}"`);
+    }
+  );
 
   it('ignores relative imports that are erased at build time', () => {
     expect(

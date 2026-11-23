@@ -70,7 +70,7 @@ const renderSkippedIssue = (
   message: `Rendered checks skipped: ${reason}.`,
   suggestion: technicalRan
     ? 'The static checks above still ran and decide the result. Validate a self-contained file to include the layout and accessibility checks, or run with `--checks technical` to skip rendering explicitly.'
-    : 'Nothing was checked. Add `technical` to `--checks`, or validate a self-contained file.',
+    : 'Nothing was checked. Run with `--checks all` or `--checks technical`, or validate a self-contained file.',
 });
 
 // Outer backstop around the combined render+check call. The inner phases carry
