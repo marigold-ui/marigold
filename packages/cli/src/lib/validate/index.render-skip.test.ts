@@ -59,7 +59,7 @@ describe('validate() on files the render sandbox cannot load', () => {
     expect(report.errors.filter(e => e.source === 'runtime')).toEqual([]);
   });
 
-  it('reports the skip as an error when no static check ran either', async () => {
+  it('reports nothing checked, as a warning, when no static check ran either', async () => {
     const file = tmpFile(
       'render-skip/a11y-only.tsx',
       `import { format } from './format';
@@ -68,9 +68,10 @@ describe('validate() on files the render sandbox cannot load', () => {
     const report = await validate(file, { ...options, checks: ['a11y'] });
 
     expect(createRenderer).not.toHaveBeenCalled();
-    const skipped = report.errors.filter(e => e.component === 'Renderer');
+    expect(report.errors).toEqual([]);
+    const skipped = report.warnings.filter(w => w.component === 'Renderer');
     expect(skipped).toHaveLength(1);
-    expect(skipped[0]?.message).toMatch(/skipped/i);
+    expect(skipped[0]?.suggestion).toMatch(/Nothing was checked/);
     expect(report.metadata.checksRun).toEqual([]);
   });
 

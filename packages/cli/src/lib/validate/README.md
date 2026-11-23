@@ -109,7 +109,7 @@ validate/index.ts
                                                         server, tmp directory), LIFO
 ```
 
-Before any of this, `helpers/render-precheck.ts` reads the file's source. The sandbox loads only this one file, so a file with a relative import that survives the TypeScript transform (one used only as a type is dropped, so it does not count), or with neither a `default` nor an `App` export, cannot render. `validate()` then skips the browser entirely and reports one `Renderer` issue naming the reason: a warning when the static checks ran and decide the result, an error when they were not requested and nothing was checked.
+Before any of this, `helpers/render-precheck.ts` reads the file's source. The sandbox loads only this one file, so a file with a relative import that survives the TypeScript transform (one used only as a type is dropped, so it does not count), or with neither a `default` nor an `App` export, cannot render. `validate()` then skips the browser entirely and reports one `Renderer` warning naming the reason. A local import is no defect in the file, so this never fails the run: the static checks decide the result, and when they were not requested the warning says nothing was checked and `checksRun` is empty.
 
 The actual rendered component comes from [`packages/cli/src/harness/`](../../harness/):
 

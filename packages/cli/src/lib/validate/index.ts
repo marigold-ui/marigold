@@ -57,14 +57,15 @@ const renderFailureHint = (err: unknown, toolchainMissing: boolean): string => {
   return `The file could not be rendered. Fix the error above, or ${RUN_TECHNICAL}.`;
 };
 
-// Without `technical`, a skipped render leaves nothing checked, so it must not
-// pass: it is an error then, and a warning when the static checks decide.
+// A warning either way: a local import is no defect in the file, and an error
+// would push an agent to inline it just to pass. Without `technical` nothing
+// was checked, which the message and the empty `checksRun` both say.
 const renderSkippedIssue = (
   reason: string,
   technicalRan: boolean
 ): ValidationIssue => ({
   type: 'technical',
-  severity: technicalRan ? 'warning' : 'error',
+  severity: 'warning',
   source: 'runtime',
   component: 'Renderer',
   message: `Rendered checks skipped: ${reason}.`,
