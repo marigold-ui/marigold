@@ -50,8 +50,14 @@ export const getToastQueue = (): ToastQueue<ToastContentProps> => {
 export type ToastVariant = 'info' | 'success' | 'error' | 'warning';
 
 export type ToastOptions = {
+  /** Title of the toast. Say what happened in a few words. */
   title: string;
+  /** Additional text shown below the title. */
   description?: ReactNode;
+  /**
+   * Sets the tone of the toast, which decides its icon and color: `info`,
+   * `success`, `warning` or `error`.
+   */
   variant?: ToastVariant;
   /**
    * Time in milliseconds before the toast auto-dismisses.
@@ -62,6 +68,7 @@ export type ToastOptions = {
    * regardless of variant. Explicit values are clamped up to a 5000ms minimum.
    */
   timeout?: number;
+  /** An action rendered inside the toast, for example a `<Button>` or a `<Link>`. */
   action?: ReactNode;
   /**
    * Whether the toast renders its own close button. Ignored on a toast that
@@ -119,6 +126,7 @@ export type UndoToastOptions = {
    * toasts apart for a screen reader.
    */
   title: string;
+  /** Additional text shown below the title. */
   description?: ReactNode;
   /**
    * Time in milliseconds the user has to undo, clamped up to 5000ms. Unlike

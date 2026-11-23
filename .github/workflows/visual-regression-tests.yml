@@ -153,7 +153,7 @@ jobs:
 
       - name: Send Slack notification
         if: always() && steps.chromatic.outputs.changeCount != '0' && startsWith(steps.chromatic.outputs.buildUrl, 'http')
-        uses: slackapi/slack-github-action@v4.0.0
+        uses: slackapi/slack-github-action@v4.1.0
         with:
           webhook: ${{ secrets.SLACK_HOOK_DST_REPO_STREAM }}
           webhook-type: incoming-webhook

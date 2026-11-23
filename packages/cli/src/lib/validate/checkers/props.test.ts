@@ -47,6 +47,17 @@ describe('validateProps', () => {
     expect(issue?.severity).toBe('error');
   });
 
+  // The type project ran on the default ES5 lib, where `Intl.DateTimeFormatOptions`
+  // has no `dateStyle`. A valid, working prop was reported as an error.
+  it('accepts props that come from an ES2020 lib type', () => {
+    const file = tmpFile(
+      'dateformat-datestyle.tsx',
+      `import { DateFormat } from '@marigold/components';
+      const C = () => <DateFormat value={new Date()} dateStyle="medium" timeStyle="short" />;`
+    );
+    expect(validateProps(file)).toEqual([]);
+  });
+
   it('accepts modern Intl options on the formatters but still flags an unknown prop', () => {
     const file = tmpFile(
       'formatters-intl.tsx',

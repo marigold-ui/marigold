@@ -25,7 +25,15 @@ export interface HeadlineProps
    * Set the color of the headline.
    */
   color?: string;
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: string;
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: HeadlineSize | (string & {});
   /**
    * Set a different level.

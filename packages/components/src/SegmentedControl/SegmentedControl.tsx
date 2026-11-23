@@ -82,7 +82,9 @@ export interface SegmentedControlProps extends Omit<
    * equally.
    */
   width?: WidthProp['width'];
+  /** Children of the component. */
   children?: ReactNode;
+  /** Ref to the DOM element the component renders. */
   ref?: Ref<HTMLDivElement>;
 }
 
@@ -215,7 +217,9 @@ export interface SegmentedControlOptionProps extends Omit<
    * @default false
    */
   disabled?: RAC.RadioFieldProps['isDisabled'];
+  /** Children of the component. */
   children?: ReactNode;
+  /** Ref to the DOM element the component renders. */
   ref?: Ref<HTMLDivElement>;
 }
 

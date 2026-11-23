@@ -9,6 +9,7 @@ export interface CenterProps extends AriaRegionProps {
    */
   space?: SpaceProp<SpacingTokens>['space'];
 
+  /** Children of the component. */
   children?: ReactNode;
   /**
    * The maximum width of the container.

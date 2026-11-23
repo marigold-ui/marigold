@@ -38,7 +38,16 @@ const icons = {
 // Props
 // ---------------
 export interface SectionMessageProps {
+  /**
+   * Sets the tone of the message, which decides its icon and color: `info`,
+   * `success`, `warning` or `error`.
+   * @default 'info'
+   */
   variant?: keyof typeof icons;
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: string;
   /**
    * Children of the component.

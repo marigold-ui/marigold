@@ -11,6 +11,10 @@ type RemovedProps = 'isDisabled' | 'isPending' | 'className' | 'style';
 
 export interface ButtonProps
   extends Omit<RAC.ButtonProps, RemovedProps>, SlotProps {
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?:
     | 'primary'
     | 'secondary'
@@ -47,6 +51,7 @@ export interface ButtonProps
    * This disables press and hover events while retaining focusability, and announces the loading state to screen readers.
    */
   loading?: RAC.ButtonProps['isPending'];
+  /** Ref to the DOM element the component renders. */
   ref?: Ref<HTMLButtonElement>;
 }
 
