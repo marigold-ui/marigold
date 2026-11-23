@@ -367,6 +367,7 @@ export type Theme = {
       'container' | 'loader' | 'label',
       ComponentStyleFunction<string, string>
     >;
+    Skeleton?: ComponentStyleFunction<string, string>;
     FileField?: Record<
       | 'container'
       | 'dropZone'

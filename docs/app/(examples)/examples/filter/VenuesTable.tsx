@@ -12,6 +12,7 @@ import {
   Button,
   Center,
   Inline,
+  Skeleton,
   Stack,
   Table,
   Text,
@@ -70,22 +71,20 @@ const NoDataEmptyState = () => (
 // initial fetch (`isLoading`); background refetches keep the previous rows on
 // screen and surface activity through FetchingIndicator instead.
 //
-// Purely visual (`aria-hidden`): the loading text is announced by the live
-// region in VenuesTable, which outlives this subtree. See the note there.
+// Skeletons are hidden from screen readers: the loading text is announced by
+// the live region in VenuesTable, which outlives this subtree. See the note there.
 export const VenuesTableSkeleton = ({ rows = 5 }: { rows?: number }) => (
-  <div aria-hidden>
-    <Stack space={4}>
-      {Array.from({ length: rows }, (_, i) => `skeleton-${i}`).map(key => (
-        <Inline key={key} space={6} alignY="center">
-          <div className="h-4 w-1/4 animate-pulse rounded bg-current/10" />
-          <div className="h-4 w-1/6 animate-pulse rounded bg-current/10" />
-          <div className="h-4 grow animate-pulse rounded bg-current/10" />
-          <div className="h-4 w-16 animate-pulse rounded bg-current/10" />
-          <div className="h-4 w-12 animate-pulse rounded bg-current/10" />
-        </Inline>
-      ))}
-    </Stack>
-  </div>
+  <Stack space={4}>
+    {Array.from({ length: rows }, (_, i) => `skeleton-${i}`).map(key => (
+      <Inline key={key} space={6} alignY="center" noWrap>
+        <Skeleton width="1/4" />
+        <Skeleton width="1/6" />
+        <Skeleton />
+        <Skeleton width={16} />
+        <Skeleton width={12} />
+      </Inline>
+    ))}
+  </Stack>
 );
 
 // Renders up to `max` badges and collapses the rest into a single "+N" badge,

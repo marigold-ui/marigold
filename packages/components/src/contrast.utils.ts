@@ -69,6 +69,18 @@ export const flatten = (layers: readonly string[]) => {
   return [r!, g!, b!] as const;
 };
 
+/**
+ * Paints a computed colour onto a transparent pixel and reads its alpha back,
+ * so the check holds whatever colour syntax the browser serialises to.
+ */
+export const alphaOf = (color: string) => {
+  const context = surface();
+  context.clearRect(0, 0, 1, 1);
+  context.fillStyle = color;
+  context.fillRect(0, 0, 1, 1);
+  return context.getImageData(0, 0, 1, 1).data[3]!;
+};
+
 export const contrast = (a: readonly number[], b: readonly number[]) => {
   const luminance = (rgb: readonly number[]) => {
     const [r, g, b] = rgb.map(value => {
