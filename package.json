@@ -40,7 +40,7 @@
     "@vitest/ui": "4.1.12",
     "autoprefixer": "10.6.2",
     "concurrently": "10.0.7",
-    "eslint": "10.13.0",
+    "eslint": "10.15.0",
     "eslint-plugin-storybook": "10.6.7",
     "husky": "9.1.7",
     "playwright": "1.65.1",
