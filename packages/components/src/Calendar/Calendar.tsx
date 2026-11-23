@@ -36,7 +36,15 @@ export interface CalendarProps extends Omit<
    * @default false
    */
   readOnly?: boolean;
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: string;
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: string;
   /**
    * Sets the width of the calendar. You can see allowed tokens here: https://tailwindcss.com/docs/width

@@ -52,6 +52,7 @@ export interface ListViewProps extends Omit<
    * @default false
    */
   allowSelectAll?: boolean;
+  /** Ref to the DOM element the component renders. */
   ref?: Ref<HTMLDivElement>;
 }
 

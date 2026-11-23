@@ -10,6 +10,7 @@ import { noSlot } from '../utils/noSlot';
 import { useAccordionContext } from './AccordionContext';
 
 export interface AccordionHeaderProps {
+  /** Children of the component. */
   children?: ReactNode;
   /**
    * Content rendered next to the title, inside the same header row (e.g. action

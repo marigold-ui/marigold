@@ -8,7 +8,15 @@ import { TopNavigationStart } from './TopNavigationStart';
 // Props
 // ---------------
 export interface TopNavigationProps {
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: string;
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: string;
   /**
    * If `true`, the navigation sticks to the top of the viewport on scroll.

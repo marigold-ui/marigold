@@ -14,7 +14,15 @@ export interface AccordionProps extends Omit<
   RAC.DisclosureGroupProps,
   RemovedProps
 > {
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: 'default' | 'card' | (string & {});
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: string;
   /** Whether all items are disabled. */
   disabled?: RAC.DisclosureGroupProps['isDisabled'];

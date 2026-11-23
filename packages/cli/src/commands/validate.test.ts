@@ -1,4 +1,7 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 import { parseChecks, runValidate } from './validate.js';
 
 describe('parseChecks', () => {
@@ -39,6 +42,40 @@ describe('runValidate', () => {
     expect(JSON.parse(result.output)).toEqual({
       skipped: true,
       reason: 'MARIGOLD_VALIDATE_DISABLED=1',
+    });
+  });
+
+  // Both used to exit 0 with one "check failed: internal error" warning per
+  // checker, which an agent gating on the exit code reads as a clean file.
+  describe('rejects a target it cannot validate', () => {
+    let dir: string;
+    beforeEach(() => {
+      dir = mkdtempSync(path.join(tmpdir(), 'marigold-validate-'));
+    });
+    afterEach(() => rmSync(dir, { recursive: true, force: true }));
+
+    it('rejects a directory and says to pass one file', async () => {
+      await expect(
+        runValidate({ file: dir, checks: 'technical' })
+      ).rejects.toThrow(/is a directory.*one file at a time/s);
+    });
+
+    it('rejects a file that is not TypeScript or JavaScript', async () => {
+      const file = path.join(dir, 'styles.css');
+      writeFileSync(file, 'a { color: red }');
+
+      await expect(runValidate({ file, checks: 'technical' })).rejects.toThrow(
+        /Unsupported file type ".css"/
+      );
+    });
+
+    it('rejects a file without an extension with a readable message', async () => {
+      const file = path.join(dir, 'Dockerfile');
+      writeFileSync(file, 'FROM node');
+
+      await expect(runValidate({ file, checks: 'technical' })).rejects.toThrow(
+        /"Dockerfile" has no extension/
+      );
     });
   });
 });
