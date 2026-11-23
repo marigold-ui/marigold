@@ -145,7 +145,7 @@ Instead, announce the load once for the whole region that is loading:
 
 Don't give each skeleton its own announcement. Thirty placeholders would mean thirty announcements for one load.
 
-Skeleton rows in a table are an exception to "skipped". The placeholders inside them are hidden, but the rows are real table rows, so a screen reader can still reach them and finds empty cells. The busy state and the loading announcement tell people that the content is on its way.
+Skeleton rows in a table are an exception to "skipped". The placeholders inside them are hidden, but the rows are real table rows. Keyboard focus skips them, because they are disabled, but the reading cursor of a screen reader can still reach them and finds empty cells, including an empty row header. Automated checkers such as axe report that empty row header as a minor issue. It is expected while the table loads: the busy state and the loading announcement tell people that the content is on its way.
 
 The pulse animation stops when people have asked their system to reduce motion. The skeleton then stays still.
 
