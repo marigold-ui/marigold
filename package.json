@@ -46,7 +46,7 @@
     "playwright": "1.65.1",
     "postcss-import": "16.2.0",
     "postcss-loader": "8.2.1",
-    "prettier": "3.9.10",
+    "prettier": "3.10.1",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "storybook": "^10.6.3",
