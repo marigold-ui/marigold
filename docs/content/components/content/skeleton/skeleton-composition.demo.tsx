@@ -4,7 +4,7 @@ export default () => (
   <Stack space="group">
     {/* A form field: label, then input */}
     <Stack space="tight">
-      <Skeleton width={32} height={5} />
+      <Skeleton width={32} height="3.5" />
       <Skeleton height={9} />
     </Stack>
     {/* A card: avatar beside a title and two lines of text */}

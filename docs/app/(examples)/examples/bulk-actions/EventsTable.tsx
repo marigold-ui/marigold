@@ -6,9 +6,8 @@ import {
   Badge,
   Button,
   Center,
-  Inline,
   Skeleton,
-  Stack,
+  type SkeletonProps,
   Table,
   Text,
   VisuallyHidden,
@@ -73,25 +72,34 @@ const NoDataEmptyState = () => (
   </div>
 );
 
-// Co-located skeleton that mirrors the table's row rhythm. Shown only for the
-// initial fetch (`isLoading`); background refetches keep the previous rows on
-// screen and surface activity through FetchingIndicator instead.
-//
-// Skeletons are hidden from screen readers: the loading text is announced by
-// the live region in EventsTable, which outlives this subtree.
-export const EventsTableSkeleton = ({ rows = 10 }: { rows?: number }) => (
-  <Stack space={4}>
-    {Array.from({ length: rows }, (_, i) => `skeleton-${i}`).map(key => (
-      <Inline key={key} space={6} alignY="center" noWrap>
-        <Skeleton width="1/4" />
-        <Skeleton width="1/6" />
-        <Skeleton />
-        <Skeleton width={16} />
-        <Skeleton width={12} />
-        <Skeleton width={6} />
-      </Inline>
+// Placeholder rows for the initial fetch (`isLoading`), rendered inside the
+// real table so the header and column widths stay put. Background refetches
+// keep the previous rows on screen and show FetchingIndicator instead.
+const skeletonCells: ReadonlyArray<
+  { column: string } & Pick<SkeletonProps, 'width' | 'height' | 'variant'>
+> = [
+  { column: 'name', width: '3/4' },
+  { column: 'date', width: '3/4' },
+  { column: 'venue', width: '2/3' },
+  { column: 'category', width: '3/4' },
+  { column: 'price', width: 'full' },
+  { column: 'status', width: 16, height: 5, variant: 'rounded' },
+  { column: 'reservations', width: '1/2' },
+  { column: 'actions', width: 8, height: 8 }, // Small button, sets the row height
+];
+
+const skeletonRowIds = (count: number) =>
+  Array.from({ length: count }, (_, i) => `skeleton-${i}`);
+
+const EventSkeletonRow = ({ id }: { id: string }) => (
+  <Table.Row id={id}>
+    {skeletonCells.map(({ column, ...cell }, i) => (
+      // The row header needs a text value for type-to-select, and there is none yet.
+      <Table.Cell key={column} textValue={i === 0 ? '' : undefined}>
+        <Skeleton {...cell} />
+      </Table.Cell>
     ))}
-  </Stack>
+  </Table.Row>
 );
 
 // Per-row menu for one-off operations (see the Table Records pattern). It
@@ -180,69 +188,72 @@ export const EventsTable = () => {
   const { items, totalItems, pageSize, isFiltered, isLoading } = useEvents();
   const { selected, setSelected } = useSelection();
 
-  // The live region stays mounted across loading and loaded, and only its text
-  // changes. A region mounted together with its text is often not announced.
+  // The table announces the load itself (`loading`). This region announces the
+  // result, and stays mounted so only its text changes: a region mounted
+  // together with its text is often not announced.
   const status = isLoading
-    ? 'Loading events…'
+    ? ''
     : `${totalItems} event${totalItems === 1 ? '' : 's'}`;
   const hasSelection = selected === 'all' || selected.size > 0;
+  const skeletonIds = isLoading ? skeletonRowIds(pageSize) : [];
 
   return (
     <div id={EVENTS_REGION_ID} className="scroll-mt-4">
       <VisuallyHidden role="status">{status}</VisuallyHidden>
-      {isLoading ? (
-        <EventsTableSkeleton rows={pageSize} />
-      ) : (
-        <Table
-          aria-label="Events"
-          selectionMode="multiple"
-          selectedKeys={selected}
-          onSelectionChange={setSelected}
-          actionBar={() => <BulkActionBar />}
-        >
-          {/* Columns with predictable short content get a fixed width; the two
+      <Table
+        aria-label="Events"
+        loading={isLoading}
+        selectionMode="multiple"
+        // Placeholder rows can't be selected, but the checkbox column stays.
+        disabledKeys={skeletonIds}
+        selectedKeys={selected}
+        onSelectionChange={setSelected}
+        actionBar={() => <BulkActionBar />}
+      >
+        {/* Columns with predictable short content get a fixed width; the two
             text columns share the rest, weighted toward the event name. */}
-          <Table.Header>
-            <Table.Column id="name" rowHeader width="2fr" minWidth={200}>
-              Event
-            </Table.Column>
-            <Table.Column id="date" width={120}>
-              Date
-            </Table.Column>
-            <Table.Column id="venue" width="1fr" minWidth={140}>
-              Venue
-            </Table.Column>
-            <Table.Column id="category" width={110}>
-              Category
-            </Table.Column>
-            <Table.Column id="price" alignX="right" width={80}>
-              Price
-            </Table.Column>
-            <Table.Column id="status" width={100}>
-              Status
-            </Table.Column>
-            <Table.Column id="reservations" alignX="right" width={120}>
-              Reservations
-            </Table.Column>
-            <Table.Column id="actions" width={56}>
-              <VisuallyHidden>Actions</VisuallyHidden>
-            </Table.Column>
-          </Table.Header>
-          <Table.Body
-            emptyState={() =>
-              isFiltered ? <FilterEmptyState /> : <NoDataEmptyState />
-            }
-          >
-            {items.map(event => (
-              <EventRow
-                key={event.id}
-                event={event}
-                actionsDisabled={hasSelection}
-              />
-            ))}
-          </Table.Body>
-        </Table>
-      )}
+        <Table.Header>
+          <Table.Column id="name" rowHeader width="2fr" minWidth={200}>
+            Event
+          </Table.Column>
+          <Table.Column id="date" width={120}>
+            Date
+          </Table.Column>
+          <Table.Column id="venue" width="1fr" minWidth={140}>
+            Venue
+          </Table.Column>
+          <Table.Column id="category" width={110}>
+            Category
+          </Table.Column>
+          <Table.Column id="price" alignX="right" width={80}>
+            Price
+          </Table.Column>
+          <Table.Column id="status" width={100}>
+            Status
+          </Table.Column>
+          <Table.Column id="reservations" alignX="right" width={120}>
+            Reservations
+          </Table.Column>
+          <Table.Column id="actions" width={56}>
+            <VisuallyHidden>Actions</VisuallyHidden>
+          </Table.Column>
+        </Table.Header>
+        <Table.Body
+          emptyState={() =>
+            isFiltered ? <FilterEmptyState /> : <NoDataEmptyState />
+          }
+        >
+          {isLoading
+            ? skeletonIds.map(id => <EventSkeletonRow key={id} id={id} />)
+            : items.map(event => (
+                <EventRow
+                  key={event.id}
+                  event={event}
+                  actionsDisabled={hasSelection}
+                />
+              ))}
+        </Table.Body>
+      </Table>
     </div>
   );
 };

@@ -80,29 +80,47 @@ queryClient.invalidateQueries({ queryKey: venueKeys.lists() });
 
 There are two distinct loading signals, and they map to two different pieces of UI.
 
-- **`isLoading`** is the initial fetch, before any data exists. Render a [`<Skeleton>`](/components/content/skeleton) placeholder in its place.
+- **`isLoading`** is the initial fetch, before any data exists. Render [`<Skeleton>`](/components/content/skeleton) rows inside the table and set `loading` on it, so the table announces the load.
 - **`useIsFetching()`** counts queries currently fetching, including background refetches that happen while old data is still on screen. Use it for a subtle, non-blocking indicator built from Marigold's `ProgressCircle`.
 
 ```tsx
 const VenuesTable = () => {
-  const { items, isLoading } = useVenues();
-  if (isLoading) return <VenuesTableSkeleton />;
-  return <Table>{/* rows */}</Table>;
+  const { items, totalItems, isLoading } = useVenues();
+  const skeletonIds = isLoading
+    ? Array.from({ length: 5 }, (_, i) => `skeleton-${i}`)
+    : [];
+
+  return (
+    <>
+      {/* The table announces the load. This region announces the result. */}
+      <VisuallyHidden role="status">
+        {isLoading ? '' : `${totalItems} venues`}
+      </VisuallyHidden>
+      <Table aria-label="Venues" loading={isLoading}>
+        <Table.Header>{/* columns */}</Table.Header>
+        <Table.Body>
+          {isLoading
+            ? skeletonIds.map(id => <VenueSkeletonRow key={id} id={id} />)
+            : items.map(venue => <VenueRow key={venue.id} venue={venue} />)}
+        </Table.Body>
+      </Table>
+    </>
+  );
 };
 
-// Lives next to VenuesTable and mirrors its columns, one row per item on a page.
-const VenuesTableSkeleton = ({ rows = 5 }: { rows?: number }) => (
-  <Stack space={4}>
-    {Array.from({ length: rows }, (_, i) => `skeleton-${i}`).map(key => (
-      <Inline key={key} space={6} alignY="center" noWrap>
-        <Skeleton width="1/4" />
-        <Skeleton width="1/6" />
-        <Skeleton />
-        <Skeleton width={16} />
-        <Skeleton width={12} />
-      </Inline>
-    ))}
-  </Stack>
+// Lives next to VenueRow and mirrors its columns, one placeholder per cell.
+const VenueSkeletonRow = ({ id }: { id: string }) => (
+  <Table.Row id={id}>
+    <Table.Cell textValue="">
+      <Skeleton width="3/4" />
+    </Table.Cell>
+    <Table.Cell>
+      <Skeleton width="1/2" />
+    </Table.Cell>
+    <Table.Cell>
+      <Skeleton width={16} height={5} variant="rounded" />
+    </Table.Cell>
+  </Table.Row>
 );
 ```
 

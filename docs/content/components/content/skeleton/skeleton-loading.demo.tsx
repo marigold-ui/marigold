@@ -12,7 +12,9 @@ import {
 } from '@marigold/components';
 
 // Mirrors EventCard: title, two lines of text, a badge. Same layout, same gaps,
-// and text lines as tall as the card's line height, so the card doesn't resize.
+// and text lines as tall as the card's line height. The title and the badge are
+// 18px, off the scale: one placeholder is 2px taller, one 2px shorter, so the
+// card keeps its height.
 const EventCardSkeleton = () => (
   <Card aria-hidden="true" stretch>
     <Card.Header>

@@ -7,22 +7,24 @@ import {
   useClassNames,
 } from '@marigold/system';
 
+// Content-based sizes give an empty box no size, so a placeholder can't use them.
+type ContentSize = 'auto' | 'fit' | 'min' | 'max';
+
 // Props
 // ---------------
 export interface SkeletonProps {
   /**
    * Width of the placeholder. Accepts spacing-scale values (`32`), fractions
-   * (`"1/2"`) and `"full"`. Content-based keywords such as `"fit"` or `"auto"`
-   * give an empty placeholder no width.
+   * (`"1/2"`) and `"full"`.
    * @default full
    */
-  width?: WidthProp['width'];
+  width?: Exclude<WidthProp['width'], ContentSize>;
   /**
-   * Height of the placeholder, on the spacing scale. The default matches one
-   * line of body text.
+   * Height of the placeholder, on the spacing scale. Half steps are strings
+   * (`"3.5"`). The default matches one line of body text.
    * @default 4
    */
-  height?: HeightProp['height'];
+  height?: Exclude<HeightProp['height'], ContentSize>;
   /**
    * Visual variant of the component. `rounded` fully rounds the ends, for
    * avatars (equal `width` and `height`) and pills. Which values exist is

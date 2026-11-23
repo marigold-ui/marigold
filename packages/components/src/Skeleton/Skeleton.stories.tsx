@@ -143,7 +143,7 @@ export const Composition = meta.story({
   render: () => (
     <Stack space="group">
       <Stack space="tight">
-        <Skeleton width={32} height={5} />
+        <Skeleton width={32} height="3.5" />
         <Skeleton height={9} />
       </Stack>
       <div className="w-80">

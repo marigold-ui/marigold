@@ -13,6 +13,7 @@ import {
   Center,
   Inline,
   Skeleton,
+  type SkeletonProps,
   Stack,
   Table,
   Text,
@@ -67,24 +68,47 @@ const NoDataEmptyState = () => (
   </div>
 );
 
-// Co-located skeleton that mirrors the table's row rhythm. Shown only for the
-// initial fetch (`isLoading`); background refetches keep the previous rows on
-// screen and surface activity through FetchingIndicator instead.
-//
-// Skeletons are hidden from screen readers: the loading text is announced by
-// the live region in VenuesTable, which outlives this subtree. See the note there.
-export const VenuesTableSkeleton = ({ rows = 5 }: { rows?: number }) => (
-  <Stack space={4}>
-    {Array.from({ length: rows }, (_, i) => `skeleton-${i}`).map(key => (
-      <Inline key={key} space={6} alignY="center" noWrap>
-        <Skeleton width="1/4" />
-        <Skeleton width="1/6" />
-        <Skeleton />
-        <Skeleton width={16} />
-        <Skeleton width={12} />
-      </Inline>
+// Placeholder rows for the initial fetch (`isLoading`), rendered inside the
+// real table so the header and column widths stay put. Background refetches
+// keep the previous rows on screen and show FetchingIndicator instead.
+type Placeholder = Pick<SkeletonProps, 'width' | 'height' | 'variant'>;
+
+// `secondLine` mirrors a cell that always holds two lines of text.
+const skeletonCells: ReadonlyArray<
+  { column: string; secondLine?: Placeholder } & Placeholder
+> = [
+  { column: 'name', width: '3/4' },
+  { column: 'type', width: '2/3' },
+  { column: 'address', width: '3/4', secondLine: { width: '1/2' } },
+  { column: 'capacity', width: '1/2' },
+  { column: 'price', width: '1/2' },
+  { column: 'traits', width: 16, height: 5, variant: 'rounded' },
+  { column: 'amenities', width: 16, height: 5, variant: 'rounded' },
+  { column: 'parking', width: 16, height: 5, variant: 'rounded' },
+  { column: 'rating', width: '1/2' },
+  { column: 'available', width: '3/4' },
+  { column: 'actions', width: 8, height: 8 }, // Small button
+];
+
+const skeletonRowIds = (count: number) =>
+  Array.from({ length: count }, (_, i) => `skeleton-${i}`);
+
+const VenueSkeletonRow = ({ id }: { id: string }) => (
+  <Table.Row id={id}>
+    {skeletonCells.map(({ column, secondLine, ...cell }, i) => (
+      // The row header needs a text value for type-to-select, and there is none yet.
+      <Table.Cell key={column} textValue={i === 0 ? '' : undefined}>
+        {secondLine ? (
+          <Stack space={2}>
+            <Skeleton {...cell} />
+            <Skeleton {...secondLine} />
+          </Stack>
+        ) : (
+          <Skeleton {...cell} />
+        )}
+      </Table.Cell>
     ))}
-  </Stack>
+  </Table.Row>
 );
 
 // Renders up to `max` badges and collapses the rest into a single "+N" badge,
@@ -194,108 +218,105 @@ export const VenuesTable = () => {
   const [sort, setSort] = useSort();
   const { deleteVenue, isDeleting } = useDeleteVenue();
 
-  // A live region is announced when the text inside an already present node
-  // changes. Mounting the container together with its text is a known failure
-  // mode, where NVDA and JAWS on Chrome can drop that first announcement. So
-  // this region stays mounted across the loading, loaded, and filtered states
-  // and only its text content is swapped, never the node itself.
+  // The table announces the load itself (`loading`). This region announces the
+  // result. A live region is announced when the text inside an already present
+  // node changes. Mounting the container together with its text is a known
+  // failure mode, where NVDA and JAWS on Chrome can drop that first
+  // announcement. So this region stays mounted across the loading, loaded, and
+  // filtered states and only its text content is swapped, never the node itself.
   const status = isLoading
-    ? 'Loading venues…'
+    ? ''
     : `${totalItems} venue${totalItems === 1 ? '' : 's'}`;
+  const skeletonIds = isLoading ? skeletonRowIds(pageSize) : [];
 
   return (
     <div id={VENUES_REGION_ID} className="scroll-mt-4">
       <VisuallyHidden role="status">{status}</VisuallyHidden>
-      {isLoading ? (
-        <VenuesTableSkeleton rows={pageSize} />
-      ) : (
-        <Table
-          aria-label="Venue list"
-          selectionMode="multiple"
-          sortDescriptor={sort}
-          onSortChange={d =>
-            setSort({
-              // RAC types `column` as `Key` (string | number); the cast is
-              // safe because the value can only be one of our Table.Column ids.
-              column: d.column as VenueSortDescriptor['column'],
-              direction: d.direction,
-            })
-          }
-          actionBar={selectedKeys => (
-            <ActionBar>
-              <Button
-                onPress={async () => {
-                  // "Select all" can span pages, so fetch the full matching set
-                  // (same query, no pagination) before exporting.
-                  const selected =
-                    selectedKeys === 'all'
-                      ? (await fetchVenues({ ...params, pageSize: 'all' }))
-                          .items
-                      : items.filter(v => selectedKeys.has(v.id));
-                  exportVenuesToCsv(selected);
-                }}
-              >
-                <Download /> Export CSV
-              </Button>
-            </ActionBar>
-          )}
-        >
-          <Table.Header>
-            <Table.Column id="name" rowHeader allowsSorting width="2fr">
-              Name
-            </Table.Column>
-            <Table.Column id="type" width="1fr">
-              Type
-            </Table.Column>
-            <Table.Column id="address" width="2fr">
-              Address
-            </Table.Column>
-            <Table.Column
-              id="capacity"
-              alignX="right"
-              allowsSorting
-              width="1fr"
+      <Table
+        aria-label="Venue list"
+        loading={isLoading}
+        selectionMode="multiple"
+        // Placeholder rows can't be selected, but the checkbox column stays.
+        disabledKeys={skeletonIds}
+        sortDescriptor={sort}
+        onSortChange={d =>
+          setSort({
+            // RAC types `column` as `Key` (string | number); the cast is
+            // safe because the value can only be one of our Table.Column ids.
+            column: d.column as VenueSortDescriptor['column'],
+            direction: d.direction,
+          })
+        }
+        actionBar={selectedKeys => (
+          <ActionBar>
+            <Button
+              onPress={async () => {
+                // "Select all" can span pages, so fetch the full matching set
+                // (same query, no pagination) before exporting.
+                const selected =
+                  selectedKeys === 'all'
+                    ? (await fetchVenues({ ...params, pageSize: 'all' })).items
+                    : items.filter(v => selectedKeys.has(v.id));
+                exportVenuesToCsv(selected);
+              }}
             >
-              Capacity
-            </Table.Column>
-            <Table.Column id="price" alignX="right" allowsSorting width="1fr">
-              Max. Price
-            </Table.Column>
-            <Table.Column id="traits" width="1.5fr">
-              Traits
-            </Table.Column>
-            <Table.Column id="amenities" width="1.5fr">
-              Amenities
-            </Table.Column>
-            <Table.Column id="parking" width="1fr">
-              Parking
-            </Table.Column>
-            <Table.Column id="rating" alignX="right" width="1fr">
-              Rating
-            </Table.Column>
-            <Table.Column id="available" width="1fr">
-              Available
-            </Table.Column>
-            <Table.Column id="actions" width="1fr">
-              <VisuallyHidden>Actions</VisuallyHidden>
-            </Table.Column>
-          </Table.Header>
-          <Table.Body
-            emptyState={() =>
-              isFiltered ? <FilterEmptyState /> : <NoDataEmptyState />
-            }
-          >
-            {items.map(venue => (
-              <VenueRow
-                key={venue.id}
-                venue={venue}
-                onDelete={deleteVenue}
-                deleteDisabled={isDeleting}
-              />
-            ))}
-          </Table.Body>
-        </Table>
-      )}
+              <Download /> Export CSV
+            </Button>
+          </ActionBar>
+        )}
+      >
+        <Table.Header>
+          <Table.Column id="name" rowHeader allowsSorting width="2fr">
+            Name
+          </Table.Column>
+          <Table.Column id="type" width="1fr">
+            Type
+          </Table.Column>
+          <Table.Column id="address" width="2fr">
+            Address
+          </Table.Column>
+          <Table.Column id="capacity" alignX="right" allowsSorting width="1fr">
+            Capacity
+          </Table.Column>
+          <Table.Column id="price" alignX="right" allowsSorting width="1fr">
+            Max. Price
+          </Table.Column>
+          <Table.Column id="traits" width="1.5fr">
+            Traits
+          </Table.Column>
+          <Table.Column id="amenities" width="1.5fr">
+            Amenities
+          </Table.Column>
+          <Table.Column id="parking" width="1fr">
+            Parking
+          </Table.Column>
+          <Table.Column id="rating" alignX="right" width="1fr">
+            Rating
+          </Table.Column>
+          <Table.Column id="available" width="1fr">
+            Available
+          </Table.Column>
+          <Table.Column id="actions" width="1fr">
+            <VisuallyHidden>Actions</VisuallyHidden>
+          </Table.Column>
+        </Table.Header>
+        <Table.Body
+          emptyState={() =>
+            isFiltered ? <FilterEmptyState /> : <NoDataEmptyState />
+          }
+        >
+          {isLoading
+            ? skeletonIds.map(id => <VenueSkeletonRow key={id} id={id} />)
+            : items.map(venue => (
+                <VenueRow
+                  key={venue.id}
+                  venue={venue}
+                  onDelete={deleteVenue}
+                  deleteDisabled={isDeleting}
+                />
+              ))}
+        </Table.Body>
+      </Table>
     </div>
   );
 };

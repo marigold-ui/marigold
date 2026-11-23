@@ -90,7 +90,7 @@ These values match the default theme:
 | Stands in for        | `height`                   | `width`                       | `variant` |
 | -------------------- | -------------------------- | ----------------------------- | --------- |
 | Text line            | `4`                        | A fraction, last line shorter | `default` |
-| Label or description | `3.5`                      | Fixed, such as `32`           | `default` |
+| Label or description | `"3.5"`                    | Fixed, such as `32`           | `default` |
 | Title                | `5`                        | A fraction, such as `"1/2"`   | `default` |
 | Input or select      | `9`                        | `"full"`                      | `default` |
 | Button               | `9`, small `8`, large `10` | Fixed, such as `24`           | `default` |
@@ -100,9 +100,11 @@ These values match the default theme:
 
 A text line at `4` is a bar thinner than the line itself. Stack lines with `space="related"` to match the rhythm of body text. Where the layout must not shift at all, use the full line height instead: `5` for small text such as card content, `6` for body text.
 
+`height` takes a spacing-scale value. Half steps are strings, such as `height="3.5"`. A bordered badge is exactly `5` tall. A filled badge, such as `success`, is 18px, which has no step on the scale. `4` and `5` are both 2px off, so pick the one that keeps the surrounding layout steady.
+
 How `width` behaves:
 
-- **Values:** a spacing-scale value (`32`), a fraction (`"1/2"`) or `"full"`, the default.
+- **Values:** a spacing-scale value (`32`), a fraction (`"1/2"`) or `"full"`, the default. Content-based keywords such as `"fit"` or `"auto"` are not accepted, because an empty placeholder has no content to take a size from.
 - **Fixed widths** keep their size in a row, so an avatar stays round next to text lines.
 - **Fractions** are relative to the container. A skeleton has no content that could give its container a size.
 - **In a card:** a `<Card>` sizes itself to its content, so it collapses around fractional skeletons. Pass `stretch` and place the card where its width is set, for example in a card grid.

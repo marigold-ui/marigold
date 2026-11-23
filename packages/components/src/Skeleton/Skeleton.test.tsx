@@ -29,6 +29,19 @@ test('sizes itself from width and height', () => {
   );
 });
 
+test('rejects content-based sizes, which draw nothing on an empty box', () => {
+  render(
+    <>
+      {/* @ts-expect-error - a content-based width gives a placeholder no width */}
+      <Basic.Component width="fit" />
+      {/* @ts-expect-error - a content-based height gives a placeholder no height */}
+      <Basic.Component height="auto" />
+    </>
+  );
+
+  expect(getSkeletons()).toHaveLength(2);
+});
+
 test('defaults to full width and one line of text', () => {
   render(<Sizes.Component />);
 
