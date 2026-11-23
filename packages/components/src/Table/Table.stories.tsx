@@ -4329,6 +4329,32 @@ ExpandableRows.test(
   }
 );
 
+ExpandableRows.test(
+  'Keeps the focus ring of a control in a truncated cell unclipped',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { overflow: 'truncate' },
+  },
+  async ({ canvas, userEvent }) => {
+    const button = canvas.getByRole('button', { name: 'Total PDF' });
+    // Enter the grid with a click: programmatic focus lands on the row.
+    await userEvent.click(canvas.getByText('Settlement run 1 Jul 2026'));
+    for (let i = 0; i < 6 && document.activeElement !== button; i++) {
+      await userEvent.keyboard('{ArrowRight}');
+    }
+
+    expect(button).toHaveFocus();
+    const ring = parseFloat(getComputedStyle(button).outlineWidth);
+    const clip = button.closest('[data-cell-content]')!.getBoundingClientRect();
+    const box = button.getBoundingClientRect();
+    expect(ring).toBeGreaterThan(0);
+    expect(box.top - ring).toBeGreaterThanOrEqual(clip.top);
+    expect(box.bottom + ring).toBeLessThanOrEqual(clip.bottom);
+    expect(box.left - ring).toBeGreaterThanOrEqual(clip.left);
+    expect(box.right + ring).toBeLessThanOrEqual(clip.right);
+  }
+);
+
 /**
  * The same table built from data, where `Table.ExpandableRows` renders the child rows
  * and the render function recurses.

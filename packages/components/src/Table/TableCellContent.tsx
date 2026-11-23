@@ -125,7 +125,8 @@ export const TableCellContent = ({
       data-cell-content=""
       className={cn(
         textAlign[alignX || columnAlign || 'left'],
-        overflow === 'truncate' ? 'truncate' : 'wrap-break-word',
+        // Padding gives a focused control's ring room inside the clip, layout unchanged.
+        overflow === 'truncate' ? '-m-1 truncate p-1' : 'wrap-break-word',
         selectable && 'cursor-text select-text',
         className
       )}
