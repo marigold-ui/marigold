@@ -103,6 +103,26 @@ Basic.test(
   }
 );
 
+Basic.test(
+  'Moves by whole pixels while pressed, so its 1px edge stays sharp',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { variant: 'secondary' },
+  },
+  async ({ canvas, userEvent }) => {
+    const button = canvas.getByRole('button');
+
+    await userEvent.pointer({ keys: '[MouseLeft>]', target: button });
+
+    await waitFor(() => expect(button).toHaveAttribute('data-pressed'));
+    const { scale, translate } = getComputedStyle(button);
+    expect(scale).toBe('none');
+    expect(translate).toBe('0px 1px');
+
+    await userEvent.pointer({ keys: '[/MouseLeft]', target: button });
+  }
+);
+
 export const ButtonVariants = meta.story({
   tags: ['component-test'],
   parameters: {

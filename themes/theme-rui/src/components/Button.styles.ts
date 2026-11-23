@@ -4,7 +4,7 @@ import { cva } from '@marigold/system';
 export const Button: ThemeComponent<'Button'> = cva({
   base: [
     'ui-button-base gap-2',
-    'duration-150 active:scale-[0.97] pressed:not-aria-expanded:scale-[0.97]',
+    'duration-150 active:translate-y-px pressed:not-aria-expanded:translate-y-px',
     'pending:ui-state-disabled',
   ],
   variants: {

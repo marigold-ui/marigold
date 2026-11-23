@@ -321,17 +321,20 @@
 }
 
 /*
- * Applies press/tap scale feedback (150ms, 97% scale on :active and [data-pressed]).
+ * Applies press/tap feedback (150ms, 1px down on :active and [data-pressed]).
  * Used by button-like elements that are not regular Buttons (which have a different
  * pressed:not-aria-expanded variant).
+ *
+ * A whole-pixel move, not a scale: scaling puts 1px edges between pixel rows,
+ * which blurs them on 1x screens.
  */
 @utility ui-press {
   transition-duration: 150ms;
   &:active {
-    scale: 0.97;
+    translate: 0 1px;
   }
   &[data-pressed] {
-    scale: 0.97;
+    translate: 0 1px;
   }
 }
 
