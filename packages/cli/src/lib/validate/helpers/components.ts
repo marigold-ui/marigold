@@ -119,11 +119,10 @@ const loadDtsSource = (): SourceFile => {
       strict: false,
       // Bundler resolution handles the package's `.d.mts` re-export barrel.
       moduleResolution: ts.ModuleResolutionKind.Bundler,
-      // Pin the lib to ES2022, the level compiler.ts targets, so the Intl
-      // options the formatters inherit (`dateStyle`, `fractionalSecondDigits`)
-      // are props. `types: []` keeps an app's `@types` packages from changing
-      // the result. ES2023+ options such as `roundingMode` are not included.
-      lib: ['lib.es2022.full.d.ts'],
+      // Pin the lib to ESNext, the level compiler.ts targets, so every Intl
+      // option the formatters inherit (`dateStyle`, `roundingMode`) is a prop.
+      // `types: []` keeps an app's `@types` packages from changing the result.
+      lib: ['lib.esnext.full.d.ts'],
       types: [],
     },
   });

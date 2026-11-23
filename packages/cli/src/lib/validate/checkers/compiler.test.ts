@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { tmpFile } from '../test-support/tmp.js';
@@ -13,6 +14,25 @@ describe('compileFile', () => {
     const result = compileFile(fixture('valid-button.tsx'));
     expect(result.ok).toBe(true);
     expect(result.issues).toHaveLength(0);
+  });
+
+  it('accepts Intl options newer than ES2022 on the formatters', () => {
+    // Next to the examples, not in tmp: @marigold/components must resolve, or
+    // the unresolved import is dropped and the props are never checked.
+    // Written at runtime so the repo typecheck, which has its own lib, skips it.
+    const file = fixture(`esnext-intl-${process.pid}.tsx`);
+    fs.writeFileSync(
+      file,
+      `import { NumericFormat } from '@marigold/components';
+      export default () => (
+        <NumericFormat value={3} roundingMode="halfExpand" trailingZeroDisplay="stripIfInteger" />
+      );`
+    );
+    try {
+      expect(compileFile(file).issues).toEqual([]);
+    } finally {
+      fs.rmSync(file, { force: true });
+    }
   });
 
   it('returns ok=false and structured issues for invalid props', () => {

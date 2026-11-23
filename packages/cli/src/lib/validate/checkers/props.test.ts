@@ -55,6 +55,7 @@ describe('validateProps', () => {
         <>
           <DateFormat value={new Date()} dateStyle="medium" fractionalSecondDigits={2} />
           <NumericFormat value={3} notation="compact" signDisplay="always" unit="meter" />
+          <NumericFormat value={3} roundingMode="halfExpand" trailingZeroDisplay="stripIfInteger" />
           <DateFormat value={new Date()} totallyBogusProp="x" />
         </>
       );`
