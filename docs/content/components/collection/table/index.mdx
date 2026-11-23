@@ -265,16 +265,31 @@ Groups open collapsed, which makes the group row the only thing most people will
 
 By default every row of a grouped table can be selected, children included. That fits when both levels are records people act on. Often only one level is. The bulk actions apply to the groups and the children only show what a group contains, or the groups are only headings for the items under them. Let only that level be selected, so nobody ticks a row an action is going to ignore.
 
-| What the rows are                                                              | Selectable           | `selectableRows`          | Example                                   |
-| ------------------------------------------------------------------------------ | -------------------- | ------------------------- | ----------------------------------------- |
-| A group and its contents. The children are details, not records anyone acts on | The groups           | `"top-level"`             | A price level and the articles sold at it |
-| Groups that only label what is under them                                      | The items under them | `"nested"`                | Tickets grouped by status                 |
-| Both levels are records with their own actions                                 | Every row            | `"all"` (default)         | An event and its individual performances  |
-| A read-only breakdown of a total                                               | No selection at all  | Leave out `selectionMode` | Revenue per event, broken down by day     |
+| What the rows are                                                              | Selectable           | `selectableRows`          | Example                                                                  |
+| ------------------------------------------------------------------------------ | -------------------- | ------------------------- | ------------------------------------------------------------------------ |
+| A group and its contents. The children are details, not records anyone acts on | The groups           | `"top-level"`             | A price level and the articles sold at it                                |
+| Groups that only label what is under them                                      | The items under them | `"nested"`                | Tickets grouped by status, with ungrouped tickets in a "No status" group |
+| Both levels are records with their own actions                                 | Every row            | `"all"` (default)         | An event and its individual performances                                 |
+| A read-only breakdown of a total                                               | No selection at all  | Leave out `selectionMode` | Revenue per event, broken down by day                                    |
 
 Rows outside that level show no checkbox, but people can still open them and use their row actions. A group without children stays selectable, because the level counts, not the children. The same rule applies the other way round: when only the nested rows can be selected, every top-level row has to be a group. Put rows that belong to no group into a group of their own, such as "No status", because a top-level row without children can't be selected. Disable a row only when it could be selected but can't right now, because it's sold out, locked or outside the user's permissions, and say why nearby. A disabled checkbox on a row that can never be selected reads as a bug. When a combination of selected rows doesn't work for an action, disable the action instead of the rows.
 
 <ComponentDemo name="table-grouped-selection" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      With `selectableRows="nested"`, put rows that belong to no group into a
+      group of their own, such as "No status".
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't leave a top-level row without a group under
+      `selectableRows="nested"`. It shows no checkbox and can't be selected.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
 
 <Callout title="Select all and collapsed groups" type="warning">
   After someone selects all rows and then deselects one, the selection only
