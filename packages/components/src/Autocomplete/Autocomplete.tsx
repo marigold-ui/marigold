@@ -192,8 +192,20 @@ export interface AutocompleteProps<T extends object = object>
    * @default false
    */
   loading?: boolean;
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: string;
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: string;
+  /**
+   * Placeholder text shown while the input is empty. It is a hint and does not
+   * replace the `label`.
+   */
   placeholder?: string;
 
   /**

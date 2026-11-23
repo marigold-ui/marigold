@@ -20,13 +20,22 @@ const iconPlacement = 'inline-block size-[1em] align-[-0.125em]';
 const sameWindowTargets = new Set(['_self', '_top', '_parent']);
 
 export interface LinkProps extends Omit<RAC.LinkProps, RemovedProps> {
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: 'default' | 'secondary' | 'master' | 'admin' | (string & {});
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: string;
   /**
    * The link can't be clicked
    * @default false
    */
   disabled?: RAC.LinkProps['isDisabled'];
+  /** Ref to the DOM element the component renders. */
   ref?: Ref<HTMLAnchorElement>;
 }
 

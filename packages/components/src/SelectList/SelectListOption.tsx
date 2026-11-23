@@ -16,12 +16,14 @@ export interface SelectListOptionProps extends Omit<
   RAC.GridListItemProps<object>,
   RemovedProps
 > {
+  /** Children of the component. */
   children?: ReactNode;
   /**
    * Whether the option is disabled.
    * @default false
    */
   disabled?: RAC.GridListItemProps<object>['isDisabled'];
+  /** Ref to the DOM element the component renders. */
   ref?: Ref<HTMLDivElement>;
 }
 

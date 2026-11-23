@@ -39,7 +39,15 @@ import { TableRow } from './TableRow';
 type RemovedProps = 'className' | 'style' | 'selectionBehavior' | 'render';
 
 export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: 'grid' | 'default' | 'muted' | (string & {});
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: 'compact' | 'default' | 'spacious' | (string & {});
   /**
    * Controls how cell content overflows. Works best when columns have defined width props.
@@ -73,6 +81,25 @@ export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
    * role from `grid` to `treegrid`.
    */
   treeColumn?: RAC.TableProps['treeColumn'];
+  /**
+   * Which level of rows can be selected. Rows outside it show no checkbox and
+   * are left out of select-all and range selection. Use `disabledKeys` for
+   * rows that are selectable in principle but not right now. After select-all,
+   * `onSelectionChange` receives `'all'`, which then means every row on the
+   * selectable level, not every key. Once a row is deselected after that, the
+   * selection lists only rendered rows, so the children of a collapsed group
+   * drop out of it.
+   * @default 'all'
+   */
+  selectableRows?: 'all' | 'top-level' | 'nested';
+  /**
+   * How far nested rows indent in the `treeColumn`. `aligned` lines the first
+   * nested level up with its group's label, and deeper levels indent from
+   * there. Use it when every top-level row is a group, otherwise a top-level
+   * row without children reads as the previous group's last child.
+   * @default 'default'
+   */
+  treeIndent?: 'default' | 'aligned';
   /**
    * The keys of the expanded rows (controlled).
    */
@@ -248,6 +275,8 @@ const TableRoot = ({
   loading = false,
   actionBar,
   treeColumn,
+  selectableRows = 'all',
+  treeIndent = 'default',
   selectedKeys: selectedKeysProp,
   defaultSelectedKeys: defaultSelectedKeysProp,
   onSelectionChange: onSelectionChangeProp,
@@ -285,8 +314,21 @@ const TableRoot = ({
     setScrolls(container.getBoundingClientRect().width < minTableWidth);
   }, [minTableWidth]);
 
+  // Without a tree every row is top-level, so "nested" would leave nothing
+  // selectable. Not a type error: the two props are often set at different times.
+  useDevWarning(
+    selectableRows === 'nested' && treeColumn == null,
+    '[Table] `selectableRows="nested"` without a `treeColumn` leaves no row selectable, because every row is top-level. Set `treeColumn`, or use `selectableRows="all"`.'
+  );
+
   useResizeObserver({ ref: containerRef, onResize: measure });
   useLayoutEffect(measure, [measure]);
+
+  // Only rows outside the selectable level read `disabledKeys`. An inline array
+  // is a new reference on every render, so keeping it out of the context
+  // otherwise spares every row and cell a re-render.
+  const rowDisabledKeys =
+    selectableRows === 'all' ? undefined : props.disabledKeys;
 
   const ctx = useMemo(
     () => ({
@@ -297,6 +339,8 @@ const TableRoot = ({
       allowTextSelection,
       alignY,
       treeColumn,
+      selectableRows,
+      disabledKeys: rowDisabledKeys,
       warnedMissingTextValue,
     }),
     [
@@ -307,6 +351,8 @@ const TableRoot = ({
       allowTextSelection,
       alignY,
       treeColumn,
+      selectableRows,
+      rowDisabledKeys,
       warnedMissingTextValue,
     ]
   );
@@ -362,6 +408,10 @@ const TableRoot = ({
               <TableElement
                 // Only a virtualized table renders a `<div>`, and Marigold's never is.
                 {...(domProps as ComponentProps<'table'>)}
+                // The theme owns the indent, so it only learns which one applies.
+                data-tree-indent={
+                  treeIndent === 'default' ? undefined : treeIndent
+                }
                 loading={loading}
                 onMinWidthChange={setMinTableWidth}
               />

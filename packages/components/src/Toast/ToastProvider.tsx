@@ -8,6 +8,10 @@ export interface ToastProviderProps extends Omit<
   RAC.ToastRegionProps<object>,
   RemovedProps
 > {
+  /**
+   * Where on the screen the toasts appear.
+   * @default 'bottom-right'
+   */
   position?: ToastPosition;
 }
 

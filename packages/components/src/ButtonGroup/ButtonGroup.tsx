@@ -37,7 +37,9 @@ export interface ButtonGroupProps
    * @default 'horizontal'
    */
   orientation?: RAC.ToolbarProps['orientation'];
+  /** Children of the component. */
   children?: ReactNode;
+  /** Ref to the DOM element the component renders. */
   ref?: Ref<HTMLDivElement>;
 }
 

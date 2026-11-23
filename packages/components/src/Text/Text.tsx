@@ -79,7 +79,15 @@ export interface TextProps
    * @default "div"
    */
   as?: 'div' | 'p' | 'span';
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: TextVariant | (string & {});
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: TextSize | (string & {});
 }
 

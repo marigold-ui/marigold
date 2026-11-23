@@ -40,6 +40,7 @@ export interface SidebarRailProps {
    * segment matching) or a predicate `(href, key) => boolean`.
    */
   current?: SidebarCurrent;
+  /** Ref to the DOM element the component renders. */
   ref?: Ref<HTMLElement>;
 }
 

@@ -11,7 +11,12 @@ export interface FormProps extends Omit<RAC.FormProps, 'className' | 'style'> {
    */
   unstyled?: boolean;
 
+  /**
+   * Sets the max-width of the form. You can see allowed tokens [here](https://tailwindcss.com/docs/max-width).
+   * @default 'full'
+   */
   maxWidth?: MaxWidthProp['maxWidth'];
+  /** Ref to the DOM element the component renders. */
   ref?: Ref<HTMLFormElement>;
 }
 

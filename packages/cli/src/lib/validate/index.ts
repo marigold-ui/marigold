@@ -9,6 +9,7 @@ import {
 import { setComponentResolutionRoot } from './helpers/components.js';
 import { setThemeResolutionRoot } from './helpers/design-tokens.js';
 import { renderSkipReason } from './helpers/render-precheck.js';
+import { assertSupportedFile } from './helpers/source.js';
 import type { RenderTimingError, SharedRenderer } from './spatial/renderer.js';
 import {
   DYNAMIC_ISSUE_SOURCES,
@@ -414,9 +415,21 @@ export const validate = async (
   filePath: string,
   options: ValidateOptions
 ): Promise<ValidationReport> => {
-  if (!fs.existsSync(filePath)) {
+  let stats: fs.Stats;
+  try {
+    stats = fs.statSync(filePath);
+  } catch {
     throw new Error(`File not found: ${filePath}`);
   }
+  // Without these two guards every checker failed on its own and the report
+  // came back with warnings only, so the command exited 0 for a target it
+  // never validated.
+  if (stats.isDirectory()) {
+    throw new Error(
+      `"${filePath}" is a directory. marigold validate checks one file at a time, so run it once per .tsx file.`
+    );
+  }
+  assertSupportedFile(filePath);
 
   const wantsRender =
     options.checks.includes('spatial') || options.checks.includes('a11y');

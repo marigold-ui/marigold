@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { tmpFile } from '../test-support/tmp.js';
-import { parseSource } from './source.js';
+import { assertSupportedFile, parseSource } from './source.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const fixture = (name: string): string =>
@@ -22,6 +22,19 @@ describe('parseSource — SUPPORTED_EXTENSIONS check', () => {
   it('throws for .png files', () => {
     const file = tmpFile('source-test.png', '');
     expect(() => parseSource(file)).toThrow('Unsupported file type');
+  });
+
+  it('names the file when it has no extension instead of printing an empty one', () => {
+    const file = tmpFile('Makefile', 'all:');
+    expect(() => assertSupportedFile(file)).toThrow(
+      /"Makefile" has no extension/
+    );
+    expect(() => assertSupportedFile(file)).not.toThrow(/type ""/);
+  });
+
+  it('compares the extension case-insensitively', () => {
+    expect(() => assertSupportedFile('/x/Button.TSX')).not.toThrow();
+    expect(() => assertSupportedFile('/x/util.MJS')).not.toThrow();
   });
 
   it('accepts .tsx files', () => {
