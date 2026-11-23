@@ -6,7 +6,8 @@ export interface Codemod {
    * describes (a runner-side lookup by name silently degrades on a typo).
    */
   description: string;
-  apply: (source: string) => CodemodOutcome;
+  /** `path` is the file being migrated, when there is one */
+  apply: (source: string, path?: string) => CodemodOutcome;
 }
 
 export type CodemodOutcome =
@@ -187,6 +188,11 @@ export interface MigrationManifest {
   structureWarnings: StructureWarning[];
   jsx: JsxChanges;
   tokens: TokenChanges;
+  /**
+   * One-off transforms for changes no primitive can express. They run after
+   * the JSX primitives and are selectable like any other edit codemod.
+   */
+  transforms?: Codemod[];
   /**
    * Pinned base URL of the default theme's component style sources
    * (`<url>/<Component>.styles.ts`), used in reports as the reference for

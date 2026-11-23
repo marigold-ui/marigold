@@ -72,8 +72,8 @@ test('does not allow width="fit"', () => {
   expect(container).not.toHaveClass('w-fit');
 });
 
-test('supports default value', () => {
-  renderWithOverlay(<Basic.Component defaultValue="garlic" />);
+test('supports default input value', () => {
+  renderWithOverlay(<Basic.Component defaultInputValue="garlic" />);
 
   expect(screen.getByRole('combobox')).toHaveValue('garlic');
 });
@@ -305,4 +305,32 @@ describe('mobile view', () => {
     // eslint-disable-next-line testing-library/no-node-access
     expect(dialog.closest('[aria-hidden="true"]')).toBeNull();
   });
+});
+
+test('calls both onChange and onSubmit when an option is chosen', async () => {
+  const onChange = vi.fn();
+  const onSubmit = vi.fn();
+  renderWithOverlay(
+    <Basic.Component label="Label" onChange={onChange} onSubmit={onSubmit} />
+  );
+
+  const input = screen.getByRole('combobox');
+  await user.type(input, 'ha');
+  await user.click(await screen.findByRole('option', { name: 'Harry Potter' }));
+
+  expect(onChange).toHaveBeenCalledWith('Harry Potter');
+  expect(onSubmit).toHaveBeenCalledWith('Harry Potter', null);
+});
+
+test('calls onSubmit again when the selected option is picked again', async () => {
+  const onSubmit = vi.fn();
+  renderWithOverlay(<Basic.Component label="Label" onSubmit={onSubmit} />);
+
+  const input = screen.getByRole('combobox');
+  await user.type(input, 'ha');
+  await user.click(await screen.findByRole('option', { name: 'Harry Potter' }));
+  await user.type(input, '{Backspace}');
+  await user.click(await screen.findByRole('option', { name: 'Harry Potter' }));
+
+  expect(onSubmit).toHaveBeenCalledTimes(2);
 });

@@ -26,7 +26,7 @@ React Aria Components 1.22.0 (2026-10-08) added `Sheet`: an edge overlay whose s
 
 ## Decision
 
-**Edge overlays on small screens must render through one internal `Sheet` primitive** in `packages/components/src/Overlay/`, exported `/** @internal */` next to `Popover`, `Modal` and `NonModal`. It wraps RAC's `SheetOverlay`, `SheetBackdrop`, `Sheet` and `SheetContent`, takes its styling from a theme `Sheet` component, and owns the backdrop, dismissal and z-index (`z-50`, per [ADR-0003](0003-z-index-scale.md)). `Tray`, the mobile `Drawer` and the mobile `Sidebar` keep their own parts and compose it.
+**Edge overlays on small screens must render through one internal `Sheet` primitive** in `packages/components/src/Overlay/`, next to `Popover`, `Modal` and `NonModal`. It stays out of the package barrel, because only components inside `@marigold/components` compose it. It wraps RAC's `SheetOverlay`, `SheetBackdrop`, `Sheet` and `SheetContent`, takes its styling from a theme `Sheet` component, and owns the backdrop, dismissal and z-index (`z-50`, per [ADR-0003](0003-z-index-scale.md)). `Tray`, the mobile `Drawer` and the mobile `Sidebar` keep their own parts and compose it.
 
 **Edge follows purpose.** Contextual tasks come from the bottom: `Tray`, and the mobile `Drawer` at near-full height with a backdrop strip left showing. Navigation comes from the start edge: the mobile `Sidebar`, still full width with its close button.
 

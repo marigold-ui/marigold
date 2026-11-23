@@ -213,7 +213,13 @@ const Stepper = ({
             current: index + 1,
             total: items.length,
           });
-          const stateText = stringFormatter.format(STATE_MESSAGE[state]);
+          // A disabled step that was done keeps its check, so say both.
+          const isLockedDone = state === 'disabled' && completed.has(id);
+          const stateText = (
+            isLockedDone ? (['completed', 'disabled'] as const) : [state]
+          )
+            .map(key => stringFormatter.format(STATE_MESSAGE[key]))
+            .join(', ');
 
           return (
             <li
@@ -234,7 +240,7 @@ const Stepper = ({
                 onSelect={() => setSelectedKey(id)}
               >
                 <span aria-hidden="true" className={classNames.marker}>
-                  {state === 'completed' ? (
+                  {state === 'completed' || isLockedDone ? (
                     <Check />
                   ) : state === 'error' ? (
                     <TriangleAlert />

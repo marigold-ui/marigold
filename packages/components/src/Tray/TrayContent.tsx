@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { cn } from '@marigold/system';
-import { TRAY_CONTENT_ATTR, useTrayContext } from './Context';
+import { pinSheetContent } from '../Overlay/Sheet';
+import { useTrayContext } from './Context';
 
 // Props
 // ---------------
@@ -24,17 +25,13 @@ export const TrayContent = ({ children, className }: TrayContentProps) => {
   return (
     <div
       data-slot="content"
+      // Re-runs each render until the content first has a height, then pins once.
       ref={node => {
-        const container = node?.parentElement;
-        if (!node || !container || node.style.minHeight || !node.offsetHeight) {
+        if (!node || node.style.minHeight || !node.offsetHeight) {
           return;
         }
-        const pinned = node.offsetHeight;
-        const chrome = container.offsetHeight - pinned;
-
-        node.style.minHeight = `min(${pinned}px, calc(var(--tray-available) - ${chrome}px))`;
+        pinSheetContent(node, node.offsetHeight);
       }}
-      {...{ [TRAY_CONTENT_ATTR]: true }}
       className={cn('[grid-area:content]', classNames.content, className)}
     >
       {children}

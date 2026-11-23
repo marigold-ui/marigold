@@ -13,6 +13,8 @@ export const Input: ThemeComponent<'Input'> = {
       'group-data-icon/input:pl-8',
       // Reserve the control-sized action box so text never slides under it.
       'group-data-action/input:pr-control',
+      // iOS zooms in on a focused input under 16px, and a tray only shows on phones.
+      'group-data-tray/tray:text-base',
 
       '[&[type=file]]:cursor-pointer [&[type=file]]:border-solid [&[type=file]]:bg-surface [&[type=file]]:h-[calc(var(--spacing-control)-2px)] [&[type=file]]:pl-0 [&[type=file]]:pr-3 [&[type=file]]:italic [&[type=file]]:text-secondary',
       'file:cursor-pointer file:me-3 file:h-full file:border-0 file:border-r file:border-solid file:border-border file:bg-transparent file:px-3 file:text-sm file:font-medium file:not-italic file:text-foreground',

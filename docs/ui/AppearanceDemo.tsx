@@ -77,17 +77,33 @@ export interface AppearanceDemoProps {
     size?: string[];
   };
   /**
+   * Variant and size the picker starts with. Use it when the component's
+   * default is not called `default` in the theme, so the demo opens on what
+   * people get without setting the prop.
+   */
+  defaults?: {
+    variant?: string;
+    size?: string;
+  };
+  /**
    * Background color of the preview area.
    * 'surface' uses white, 'page' uses the theme's background color.
    */
   background?: 'surface' | 'page';
 }
 
+const initialOption = (options: string[], preferred?: string) => {
+  if (options.length === 0) return 'none';
+  if (preferred && options.includes(preferred)) return preferred;
+  return options.includes('default') ? 'default' : options[0];
+};
+
 // Component
 // ---------------
 export const AppearanceDemo = ({
   component,
   exclude,
+  defaults,
   background = 'surface',
 }: AppearanceDemoProps) => {
   const name = `${component.toLowerCase()}-appearance` as RegistryKey;
@@ -113,18 +129,10 @@ export const AppearanceDemo = ({
       : appearance.size,
   };
 
-  const [selected, setSelected] = useState({
-    variant: appearance.variant.length
-      ? appearance.variant.includes('default')
-        ? 'default'
-        : appearance.variant[0]
-      : 'none',
-    size: appearance.size.length
-      ? appearance.size.includes('default')
-        ? 'default'
-        : appearance.size[0]
-      : 'none',
-  });
+  const [selected, setSelected] = useState(() => ({
+    variant: initialOption(appearance.variant, defaults?.variant),
+    size: initialOption(appearance.size, defaults?.size),
+  }));
 
   let disabledAppearance = '';
   if (appearance.variant.length === 0 && appearance.size.length === 0) {

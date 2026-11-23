@@ -174,3 +174,22 @@ export const expectInsetFocusRingContrast = (element: HTMLElement) => {
     ).toBeGreaterThanOrEqual(WCAG_NON_TEXT);
   }
 };
+
+/**
+ * Asserts the ring a focused Table row draws through its cells' `::before`
+ * border clears 3:1 against the cell's ground. Sticky cells cover a row
+ * outline, so the row's ring lives on the cells and needs its own reader.
+ */
+export const expectRowRingContrast = (cell: HTMLElement) => {
+  const { borderTopColor, borderTopWidth } = getComputedStyle(cell, '::before');
+  expect(borderTopWidth, 'no row ring on the cell').not.toBe('0px');
+
+  const ground = paintedGround(cell);
+  expect(ground.length).toBeGreaterThan(0);
+
+  const ratio = contrastOn(ground, borderTopColor);
+  expect(
+    ratio,
+    `row ring is ${ratio.toFixed(2)}:1, needs ${WCAG_NON_TEXT}:1`
+  ).toBeGreaterThanOrEqual(WCAG_NON_TEXT);
+};

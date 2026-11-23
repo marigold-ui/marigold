@@ -26,7 +26,7 @@ export const Menu: ThemeComponent<'Menu'> = {
   // Subgrid of the container: col 1 = icon/checkmark, col 2 = label/description, col 3 = keyboard.
   item: cva({
     base: [
-      'group/option relative grid grid-cols-subgrid items-center cursor-pointer rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap max-sm:min-h-touch-target',
+      'group/option relative grid grid-cols-subgrid items-center cursor-pointer rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-none select-none text-nowrap max-sm:min-h-touch-target',
       // Keep col 1 occupied, so plain-text children (no <Text> slot) auto-place
       // into the label column instead of the icon column.
       "before:content-[''] before:col-start-1 before:row-start-1",

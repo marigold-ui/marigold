@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { use } from 'react';
+import { use, useRef } from 'react';
 import { Button as RACButton } from 'react-aria-components/Button';
 import { ComboBoxStateContext } from 'react-aria-components/ComboBox';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
@@ -11,6 +11,7 @@ import { ListBox, type ListBoxProps } from '../ListBox/ListBox';
 import { Tray } from '../Tray/Tray';
 import { ChevronsVertical } from '../icons/ChevronsVertical';
 import { intlMessages } from '../intl/messages';
+import { useAutoFocus } from '../utils/useAutoFocus';
 import { useComboBoxTrayRef } from '../utils/useComboBoxTrayRef';
 
 // Props
@@ -62,6 +63,14 @@ const MobileComboBoxTrigger = ({ placeholder }: MobileComboBoxTriggerProps) => {
   );
 };
 
+// Not a native `autoFocus`, see `useAutoFocus`.
+const MobileComboBoxInput = () => {
+  const ref = useRef<HTMLInputElement>(null);
+  useAutoFocus(ref);
+
+  return <Input ref={ref} />;
+};
+
 // Component
 // ---------------
 const MobileComboBox = ({
@@ -82,7 +91,7 @@ const MobileComboBox = ({
       <Tray ref={trayRef}>
         <Tray.Title>{label}</Tray.Title>
         <Tray.Content className={'flex flex-col gap-2'}>
-          <Input autoFocus />
+          <MobileComboBoxInput />
           <ListBox
             dependencies={dependencies}
             renderEmptyState={() =>
